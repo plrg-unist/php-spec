@@ -1,0 +1,205 @@
+{
+  "milestone": "I83 implicit invokable Generator factories and direct producers",
+  "status": "private source/state cuts and actual-tail composition/joined strict accepted",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "ed3aaa1fb75b0f69261da0baab11f5e023bc802a",
+  "private_implementation": [
+    "99f1206df922763cf6c3d822ebe84e5304d75085",
+    "b0e1570e45150ff83f41e060100204bed9ae4895",
+    "899765281171cdf33715f863a730285b26a32268",
+    "7e5742621f8f2a3c71b5b5c939051c3fc2301986",
+    "cd59313471a18a1f6ce7607d049488a0504ed5d7",
+    "bd6529541681a932ca74982605e574ccddac39f4",
+    "10a27b83e534eab4f40fc296052532a2d5adc1da"
+  ],
+  "scope": "One local implicit target/source proof reuses the actual runtime effective __invoke descriptor for direct Generator producers, method selection independent of lexical caller and retained ordinary factories. Closed compiled dynamic non-first-class FuncCall guards bind the selected source. A bounded ordinary INSTANCE lookup view authenticates retired factory history; real direct entry requires the actual allocation. Lexical/called scope, real receiver/cache/SEND owners and finite forwarding ancestry keep existing protocols.",
+  "changed_modules": [
+    "spec/semantics/280-generators.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_execute.c",
+      "vendor/php-src/Zend/zend_object_handlers.c"
+    ],
+    "symbols": [
+      "zend_init_dynamic_call_object",
+      "zend_std_get_closure"
+    ],
+    "rule": "Bare object calls select __invoke from the runtime class function table and carry the object/called scope, without lexical-private redirect."
+  },
+  "review": "Independent semantic correctness, bounded completeness, counterexample and test-reliability review CLEAR. Five originals agree and five genuine source-reached fronts pass; original model/fixture failures retain zero credit.",
+  "validation": {
+    "author_native_first": {
+      "revision": "99f1206df922763cf6c3d822ebe84e5304d75085",
+      "result": "three exact normal observations; exit0/empty stderr/no timeout; stable inputs and HEAD; launch/report CPU4/full reap",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83/source-packet/native-first/report.json",
+      "sha256": "9ea04350bd843acd59014be6affe0664f4ff554be538dece564d0ea63bd20339"
+    },
+    "author_direct_native_first": {
+      "revision": "b0e1570e45150ff83f41e060100204bed9ae4895",
+      "result": "one exact direct-producer normal observation; exit0/empty stderr/no timeout; stable inputs and HEAD; launch/report CPU4/full reap",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83/source-packet/native-first-direct/report.json",
+      "sha256": "2e730f51dc0494bdfff121d04a293d77f1d0ccb664f8e443cebb7fc2fdfd0e38"
+    },
+    "independent_native_first": {
+      "revision": "99f1206df922763cf6c3d822ebe84e5304d75085",
+      "result": "exact normal136 bytes; exit0/empty stderr/no timeout; stable inputs and HEAD; launch/report CPU4/full reap",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/independent/native-first/report.json",
+      "sha256": "19b6ffa15e9544e0dcf65876cf87cc7ab81e814db45fd4e1974ffba300e33930",
+      "source_sha256": "9a2730a72d2f4beb1d4bbdd3dc2db1467bd3db8aa396c4007b162374c7a57004"
+    },
+    "unchanged_gate": {
+      "revision": "b0e1570e45150ff83f41e060100204bed9ae4895",
+      "result": "checked Unsupported after exact MAKE|1|1|/5 decimal-string OUTPUT events; generator creation through deferred call scope; exit1/empty stderr/no timeout/stable inputs and HEAD/full reap. Zero normal agreement.",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83/validated/generator-invokable-factory-oldgate-ywv4wf0o/report.json",
+      "sha256": "2b3807c7b057c9a01c682a2ea630cd74e6470d726506e82257853dd02450263c"
+    },
+    "strict_private": {
+      "revision": "899765281171cdf33715f863a730285b26a32268",
+      "result": "432 modules; SL/cache disabled/determinism enabled; true newline/exit0/empty stderr/no timeout; stable inputs and HEAD; CPU4/full reap",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83/strict-private/report.json",
+      "sha256": "cfd1744e47781da48d2b9ffdfecaf1f80f9cefdc578ff95cc08d0f81a13aa3ea",
+      "modules": 432
+    },
+    "author_sources": [
+      {
+        "revision": "7e5742621f8f2a3c71b5b5c939051c3fc2301986",
+        "result": "checked NORMAL; exact retained native bytes; exit0/empty stderr/no timeout; stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/generator-invokable-factory-source-bn6xlr6c/report.json",
+        "sha256": "7890646902ec7025c0d7518b629998d43011a98fda637fe0ff0a84ff27cad54b",
+        "id": "i83-implicit-static"
+      },
+      {
+        "revision": "7e5742621f8f2a3c71b5b5c939051c3fc2301986",
+        "result": "checked NORMAL; exact retained native bytes; exit0/empty stderr/no timeout; stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/generator-invokable-factory-source-4jk3tyu3/report.json",
+        "sha256": "32ea23cc73c951685e4113062b40c87ab09645850cc30ff2c1d213ee5f3a09da",
+        "id": "i83-implicit-protected-close"
+      },
+      {
+        "id": "i83-implicit-forward-chain",
+        "revision": "7e5742621f8f2a3c71b5b5c939051c3fc2301986",
+        "result": "checked NORMAL; exact retained native bytes; exit0/empty stderr/no timeout; stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/generator-invokable-factory-source-q__1a162/report.json",
+        "sha256": "e36f562148c39556ad2ba697f32798009613ae060b534b4112e8830c7b3909b9"
+      },
+      {
+        "id": "i83-implicit-direct-generator",
+        "revision": "cd59313471a18a1f6ce7607d049488a0504ed5d7",
+        "result": "affected source retried once; checked NORMAL/exact retained native bytes/exit0/empty stderr/no timeout/stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/generator-invokable-factory-source-sfvix_p5/report.json",
+        "sha256": "407543626e620f43a9bbb9d7d82ebf29689326a037c7580359e1ccfd96b0deba"
+      }
+    ],
+    "reached_states": [
+      {
+        "id": "i83-static-factory-close",
+        "revision": "10a27b83e534eab4f40fc296052532a2d5adc1da",
+        "custom": 66,
+        "reported": 71,
+        "result": "affected fixture retry once; true newline/exit0/empty stderr/no timeout/stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/fiber-state-review-95rj89rr/report.json",
+        "sha256": "08acaceb0807bc314d9f3210036dbc644745a7c6c8193620ff92d90a80e0fb13"
+      },
+      {
+        "id": "i83-protected-factory-close",
+        "revision": "10a27b83e534eab4f40fc296052532a2d5adc1da",
+        "custom": 64,
+        "reported": 69,
+        "result": "true newline/exit0/empty stderr/no timeout/stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/fiber-state-review-_lwu_k6g/report.json",
+        "sha256": "03281ee28b1497f06448d4cc770b5e4aa60ec14f6933f3093631fd50a0b06b87"
+      },
+      {
+        "id": "i83-forward-factory-fresh",
+        "revision": "10a27b83e534eab4f40fc296052532a2d5adc1da",
+        "custom": 55,
+        "reported": 60,
+        "result": "true newline/exit0/empty stderr/no timeout/stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/fiber-state-review-okpzy6d8/report.json",
+        "sha256": "544b5d8c440bd6e860fbe86d2b8ab07a3fd9576a785e5b7bc992bf66e484950b"
+      },
+      {
+        "id": "i83-direct-invoke-close",
+        "revision": "10a27b83e534eab4f40fc296052532a2d5adc1da",
+        "custom": 47,
+        "reported": 52,
+        "result": "true newline/exit0/empty stderr/no timeout/stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/fiber-state-review-61xx2uo6/report.json",
+        "sha256": "e19bbb3e16fe2c7a2c411fb210d47548cb8af4feb19c9f48f50e160fdaef3715"
+      },
+      {
+        "id": "i83-implicit-inherited-parked-send-independent",
+        "revision": "10a27b83e534eab4f40fc296052532a2d5adc1da",
+        "custom": 142,
+        "reported": 147,
+        "result": "true newline/exit0/empty stderr/no timeout/stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+        "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/fiber-state-review-jn1di024/report.json",
+        "sha256": "3b491cc52643f5d38c63fb43db6644fa1c43605141fd99016924490ac9f9821b"
+      }
+    ],
+    "direct_model_failure": {
+      "id": "i83-implicit-direct-generator",
+      "revision": "7e5742621f8f2a3c71b5b5c939051c3fc2301986",
+      "result": "SL interpreter_failure/nondeterministic instruction evaluation in generator_creation_target: the new conditional true equation overlapped an old unconditional Boolean equation returning false. Exit1/no timeout/stable inputs and HEAD/full reap; zero agreement.",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/generator-invokable-factory-source-fw9wsczc/report.json",
+      "sha256": "b4d7a2f58c3b895cbde8aefa74e009ea82e12d88ce5578ea9b54e3b02197f10b"
+    },
+    "independent_model": {
+      "id": "i83-implicit-inherited-reference-abort-independent",
+      "revision": "cd59313471a18a1f6ce7607d049488a0504ed5d7",
+      "result": "checked NORMAL; exact136 retained-native bytes/exit0/empty stderr/no timeout/stable inputs and HEAD; sampled descendants affineCPU4/full reap",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/generator-invokable-factory-source-ru933md_/report.json",
+      "sha256": "50badacff192dae1f959b718d139669a0e07a74e68c045279e7450c8a9300e11",
+      "limits": "source-local model600/process620; 100000 steps"
+    },
+    "reached_fixture_failure": {
+      "revision": "cd59313471a18a1f6ce7607d049488a0504ed5d7",
+      "result": "Static-close fixture syntax rejected METHOD_TARGET with an inline object-count operand before semantic execution. Exit1/no timeout/stable inputs and HEAD; launchCPU4/full reap; zero assertion/agreement credit.",
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83-review/validated/fiber-state-review-_85_ptic/report.json",
+      "sha256": "83cf1e3cab2b4eaa669032b1f15ffffb4e29eecb2abe03b85c7479258e289acb"
+    },
+    "strict_joined": {
+      "revision": "69e832ad5608d344f981387f67cd3c054fc6773d",
+      "modules": 433,
+      "passed": true,
+      "report": "../php-spec-evidence-archive/generator-invokable-factory-83/strict-joined-d2ac/report.json",
+      "sha256": "340f11f07afd14be6606fa7ca9703bc48ce49f3d7a789e49a01e7e86726103bb",
+      "result": "SL/cache disabled/determinism enabled; CPU4, LC_ALL=C, TZ=UTC; true newline/exit0/empty stderr/no timeout/stable inputs and HEAD/full reap. Completed before live PID sample; affinity comes from launcher/report."
+    }
+  },
+  "counts": {
+    "author_native_normal": 4,
+    "independent_native_normal": 1,
+    "author_model_normal": 4,
+    "independent_model_normal": 1,
+    "unchanged_unsupported_agreement": 0,
+    "reached_custom": 374,
+    "reached_reported": 399
+  },
+  "compatibility": "The 7e574 commit adds only two state scripts over899765. Private strict432 retains899765; native99f/b0e and authored model7e574 observations retain their original tested identities. The later single-equation SL correction is recorded separately; no I82 or accepted source/native replay.",
+  "remaining": "Other implicit/magic/callback/API producers and wider delegation, collection and lifecycle combinations remain partial. Generic method-site/Closure evidence consumers, schema, module list, owners and execution caps are unchanged. Full PHP core, Rocq interaction trees and BOLA verification remain open.",
+  "structuring_correction": {
+    "revision": "cd59313471a18a1f6ce7607d049488a0504ed5d7",
+    "scope": "Fold the live implicit-entry guard into the existing METHOD_TARGET Boolean disjunction and remove the overlapping conditional true equation. Exactly1 insertion/4deletions; helper, source/factory consumers, source bytes, fixtures, owners and caps unchanged.",
+    "compatibility": "Accepted authored A/B/C use SCOPED Generator admission; their private7e574 observations remain at that cut without replay. The direct native observation and failed model are retained; only the affected direct model is retried. New peer/state checks run the corrected equation.",
+    "result": "Affected direct source retry passes atcd593 with the original native bytes; original7e interpreter_failure remains zero agreement. No accepted source/native/private strict replay."
+  },
+  "reached_fixture_correction": {
+    "revisions": [
+      "bd6529541681a932ca74982605e574ccddac39f4",
+      "10a27b83e534eab4f40fc296052532a2d5adc1da"
+    ],
+    "scope": "Name the unbounded natural before constructing the same target-refusal query. Before retry, keep the missing-receipt counterfeit inside firstclass_evaluated\u2019s partial contract by retaining its code unit and erasing only expression receipts. Three setup clauses are added per A/B; no source/code/other fixtures/cap change. Only the original syntax failure executed, with zero credit."
+  },
+  "composition": {
+    "released_tail": "d2acb37cb7998021ea102b3f169a441cd1308710",
+    "private_package": "7e382971669fabb7e83321f256d5bc9ac510735d",
+    "net_spec_delta": [
+      "spec/semantics/280-generators.watsup"
+    ],
+    "review": "Corrected280 and all four source/state files are exact private scope; incoming schema/module433 and other semantic files remain exactd2ac. Bare METHOD/SCOPED calls have no explicit Closure wrapper, so ATTR06 entry/restore/roots stay unchanged. OB444 guard/drain/executor requires user buffers/selected handlers, absent here; supplied Fiber throw is caught. Enum-array captures and enum GC filter do not affect these object tags. Ordinary empty tables stay unmaterialized; no casts/clones/structural comparison/CONFIG pack/anonymous-error route is reached. Normal receiver/cache/SEND owners and all current checkpoint/active/held/paused boundaries remain intact.",
+    "execution_credit": "Only actual433 joined strict compilation is renewed; accepted private native/source/reached observations retain their original revisions and counts.",
+    "tested_candidate": "69e832ad5608d344f981387f67cd3c054fc6773d"
+  }
+}

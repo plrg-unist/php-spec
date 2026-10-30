@@ -313,7 +313,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
   -- if $intrinsic_lookup(preqbytes_lookup, preqbytes_fallback?) = (INTRINSIC_CLONE)
   -- if S_prepared = $intrinsic_pipe(S, INTRINSIC_CLONE, pvalue, porigin, z_call, eps)
   -- if S_prepared.TODO = (CLONE_INVOKE pclonecall) :: ptask_tail*
-def $clone_object(S, n_source) = $intrinsic_firstclass(S, pintrinsic)
+def $clone_object(S, n_source) = $intrinsic_closure_new(S, pintrinsic, false)
   -- if ~$instance_storage_freeing(S, n_source)
   -- if S.OBJECTS[n_source] = INTRINSICCLOSURE pintrinsic
 

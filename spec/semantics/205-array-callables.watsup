@@ -168,7 +168,6 @@ def $array_dynamic(S, n, porigin_site, z_init, z_call) = $array_dynamic_result(S
 
 dec $array_capture_result(pstate, parrayresolution, porigin, int, int) : pstate
 def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_convert) = S[.TODO = (ARRAY_CONVERT ($scope_target_site(S, pcalltarget, porigin_site, true)) {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, NAME ptbytes}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $array_capture_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, porigin_site, z_init, z_convert) = S[.COMPLETION = UNSUPPORTED "enum generated array callable capture"]
 def $array_capture_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_convert) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_capture_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_convert) = S[.COMPLETION = UNSUPPORTED text]
 def $array_firstclass_value(S, n, PORIGIN n_unit pcpath, z_init) = $array_capture_result(S, $array_resolve(S, n, ARRAY_DISPATCH), PORIGIN n_unit pcpath, z_init, z_convert)
@@ -189,7 +188,7 @@ def $array_convert_valid(S, pcalltarget, parrayselection) = false -- otherwise
 def $call_task_valid(S, ARRAY_CONVERT pcalltarget parrayselection) = $array_convert_valid(S, pcalltarget, parrayselection)
 def $task_nodes(ARRAY_CONVERT pcalltarget parrayselection) = $target_nodes(pcalltarget)
 
-rule PhpStep/array-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [ARRAYMETHODCLOSURE pcalltarget parrayselection $method_capture_current(S, parrayselection.SITE)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/array-convert: S ~> S[.GC = $fake_gc_birth(S.GC, n, $fake_gc_receiverless(n_receiver?))][.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [ARRAYMETHODCLOSURE pcalltarget parrayselection $method_capture_current(S, parrayselection.SITE)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ARRAY_CONVERT pcalltarget parrayselection) :: ptask_tail*
   -- if $array_convert_valid(S, pcalltarget, parrayselection)
   -- if $target_function(S, pcalltarget) = (pfunction)

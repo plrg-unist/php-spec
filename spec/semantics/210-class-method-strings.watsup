@@ -198,7 +198,7 @@ def $string_convert_valid(S, pcalltarget, pstringselection) = true
 def $string_convert_valid(S, pcalltarget, pstringselection) = false -- otherwise
 def $call_task_valid(S, STRING_CONVERT pcalltarget pstringselection) = $string_convert_valid(S, pcalltarget, pstringselection)
 def $task_nodes(STRING_CONVERT pcalltarget pstringselection) = $target_nodes(pcalltarget)
-rule PhpStep/string-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [STRINGMETHODCLOSURE pcalltarget pstringselection]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/string-convert: S ~> S[.GC = $fake_gc_birth(S.GC, n, $fake_gc_receiverless(n_receiver?))][.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [STRINGMETHODCLOSURE pcalltarget pstringselection]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (STRING_CONVERT pcalltarget pstringselection) :: ptask_tail*
   -- if $string_convert_valid(S, pcalltarget, pstringselection)
   -- if $string_target_descriptor(S, pstringselection) = (pmethoddesc)

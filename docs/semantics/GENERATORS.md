@@ -444,9 +444,27 @@ reported checks for live mint, retired history, receiver/close and called-scope
 authority, parked cache/input owners, forged receipts and budget continuation.
 Private strict431 and actual-tail joined strict432 pass at their recorded cuts.
 Generic Closure evidence consumers are unchanged;
-implicit factories, broader binding/API/delegation and lifecycle combinations
-remain partial.
+at that I82 cut, implicit factories and broader binding/API/delegation and
+lifecycle combinations remained partial.
 [Bound factory review](../../coverage/semantics/generator-bound-factory-review.json).
+
+I83 authenticates implicit invokable-object factories and direct Generator-bodied
+`__invoke` calls. The existing runtime effective-method query selects `__invoke`
+without lexical-private redirection. One local proof binds that descriptor to
+the compiled dynamic, non-first-class call site. Its bounded lookup view can
+inspect an ordinary retired factory receiver without adding an owner; direct
+Generator entry separately requires the real live allocation. Static factory
+bodies release the maker before entry, while nonstatic and direct producers keep
+their actual receiver frame through close. Finite forwarding chains reuse this
+same retained target proof. Five originals agree at their recorded cuts; five
+reached fronts pass 374 custom/399 reported checks for source/runtime target,
+forwarding, real receiver/cache/input owners and budget continuation. Private
+strict432 retains its original cut; actual-tail joined strict433 passes. The
+direct SL overlap and pre-execution
+fixture syntax failure retain zero credit after narrow corrections.
+Other implicit/callback/API producers and wider delegation, collection and
+lifecycle combinations remain partial.
+[Invokable factory review](../../coverage/semantics/generator-invokable-factory-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

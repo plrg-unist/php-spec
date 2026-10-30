@@ -638,6 +638,12 @@ def $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_si
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
   -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = (pintrinsic)
   -- if $call_line_valid(S, (porigin_site), z)
+def $array_capture_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, porigin_site, z_init, z_convert) = $intrinsic_firstclass(S, pintrinsic)
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if $array_enum_candidate(S, n) = ((pintrinsic, ptbytes_class, ptbytes_method))
+  -- if pintrinsic = INTRINSIC_ENUM porigin_class ptbytes_enum text_method
+  -- if $array_site_valid(S, {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_class, NAME ptbytes_method}, true)
 dec $enum_string_operand_valid(pstate, porigin, ptbytes) : bool
 def $enum_string_operand_valid(S, porigin_site, ptbytes) = true
   -- if $dynamic_fixed_name(S, porigin_site) = (ptbytes_lookup)

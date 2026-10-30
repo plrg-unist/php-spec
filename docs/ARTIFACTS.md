@@ -126,6 +126,18 @@ the applicable GC07 copied-target/cache-borrowing seam and the remaining partial
 routes. Extract the archive and restore the selected `raw/enum-string-capture-*`
 directory under ignored `.tools/` to recover recorded commands and tested inputs.
 
+Generated enum array-capture cuts are under
+`../php-spec-evidence-archive/enum-array-capture-117/`. Its `manifest.json`
+(SHA-256 `a11cf492df4b11db78d1673c7d20e7545bba44433853e0bd8633286189248cf5`)
+binds a 638,573-byte archive with seven raw directories. Four fresh originals,
+123 state/guard conditions and private432 retain their original cuts; the
+initial Unsupported has zero agreement credit. Actual-tail joined433 pins
+`32aa103b7` over `16124e8e1`, with exact `true`, stable inputs and full reap.
+The [array review](../coverage/semantics/enum-array-capture-review.json) records
+the GC08/OB444/clone seams and GC09-open boundary. Extract the archive and restore
+the selected `raw/enum-array-capture-*` directory under ignored `.tools/` for
+recorded commands, original paths and tested inputs.
+
 The guarded getter-recursion milestone retains source/native observations,
 focused checks, all fixture failures and diagnostics in
 `../php-spec-evidence-archive/magic-get-recursion-119/manifest.json`.
@@ -255,6 +267,13 @@ and new source/state evidence is retained across
 `../php-spec-evidence-archive/generator-bound-method-factory-82-review/`.
 The [bound factory ledger](../coverage/semantics/generator-bound-factory-review.json)
 separates completed cuts from pending checks; raw originals remain external.
+
+I83 invokable-object factory native, unchanged refusal, private strict and new
+source/state evidence is retained across
+`../php-spec-evidence-archive/generator-invokable-factory-83/` and
+`../php-spec-evidence-archive/generator-invokable-factory-83-review/`.
+The [invokable ledger](../coverage/semantics/generator-invokable-factory-review.json)
+keeps native predictions/observations, tested cuts and pending checks separate.
 
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under

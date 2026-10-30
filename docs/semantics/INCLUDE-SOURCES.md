@@ -1864,3 +1864,19 @@ retired source history and handler order. The old `B;P;` Unsupported remains
 zero credit. Typed/backed/debt/released or owning cells, owning sends/RETURN,
 Aggregate/Closure/method producers and wider factories/keys/lifetimes remain
 separate.
+
+The [owning by-value Generator increment](../../coverage/semantics/config-generator-owning-value-review.json)
+copies finite quiet ARRAY or ordinary non-Stringable INSTANCE values in either
+integer-key send of an outside-retained named zero-argument BYVAL Generator.
+Each owning value is checked against the live finite graph and reachable
+finalizers when copied and again at normal finish or popped-marker discard;
+immutable ITEMS retain only bounded identity receipts. Copied-prefix task roots
+survive later cache replacement and hand off to selected INI_SET reception or
+release on terminal throw. Four frozen originals agree exactly. Strict432 and
+two reached recipes (296 conditions, four raw steps) prove array COW, literal
+pool accounting, TypeError TraceArgs and fresh-instance weak death before catch.
+An additional derived 36-condition control refuses an owning nonnumeric named
+key before it becomes a stored ITEM while retaining numeric-string key sends.
+The old `B;Y0;` Unsupported remains zero credit. Effectful finalizers, cycles,
+owning reference cells, temporary/indirect producers and wider cleanup remain
+separate.

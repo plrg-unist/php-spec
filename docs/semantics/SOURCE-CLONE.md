@@ -24,6 +24,13 @@ releases it. Five source agreements and 378 focused premises have separate cuts.
 This unary-clone evidence excludes dynamic buckets, clone callbacks, readonly,
 active collection and wider cached/type/lifetime histories.
 
+Initialized private/protected declared caches now use the same copier: each
+mangled INDIRECT locator targets the copy, while typed aliases retain a property
+type source for each live object. Retiring the original leaves the copy's
+constraint; retiring the copy removes it while an array-view alias can survive.
+Existing callback dispatch can mutate the copy's private slot independently.
+[Nonpublic-cache review](../../coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+
 [Cached callbacks](../../coverage/semantics/cached-clone-callback-review.json)
 now consume that declared-public cache path through existing public zero-argument
 `__clone():void` methods. Actual callback foreach reads retargeted copy locators;

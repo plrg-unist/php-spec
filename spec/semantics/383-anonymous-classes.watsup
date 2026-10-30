@@ -408,7 +408,7 @@ def $ppanonymous_class(P, pcpath, statement) = $ppunsupported(P, "anonymous clas
 def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata, PPR) = $ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class)
 dec $anonymous_new_arguments(phpType7*) : bool
 def $anonymous_new_arguments(eps) = true
-def $anonymous_new_arguments((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = $anonymous_new_arguments(phpType7*)
+def $anonymous_new_arguments((NArg ABSENT expression (BOOLEAN false) (BOOLEAN b_unpack) metadata) :: phpType7*) = $anonymous_new_arguments(phpType7*)
 def $anonymous_new_arguments((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*) = ($ptvalidname($base64(text), false) /\ $anonymous_new_arguments(phpType7*))
 def $anonymous_new_arguments(phpType7*) = false -- otherwise
 def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppanonymous_class(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class), pcpath ++ [PCFIELD 1], 0, phpType7*, PNUNSUPPORTED "constructor has deferred argument modes")

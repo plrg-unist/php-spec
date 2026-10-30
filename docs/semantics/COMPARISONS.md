@@ -715,8 +715,7 @@ shared DAGs compare normally without memoizing a repeated pair as equal.
 Identity precedes the existing aggregate/active-left recursion guard, which
 precedes count; key lookup precedes cell dereference. Reached same-class bodies
 include `stdClass` and source instances with authenticated finite parent paths
-and initialized public
-properties, locally authenticated interfaces, no hooks/readonly state, and
+and initialized properties of any visibility, locally authenticated interfaces, no hooks/readonly state, and
 ordinary current tables.
 Their methods are not invoked by comparison. Reached tables materialize through the usual comparer; only
 normal equality continues with the resulting state.
@@ -802,11 +801,12 @@ other held contexts are untouched.
 [Captured-Throwable review](../../coverage/semantics/throwable-captured-comparison-review.json).
 
 The visited ordinary image admits method-bearing source classes with an
-initialized public effective layout, including no instance slots. Published/live class checks,
+initialized effective layout of any visibility, including no instance slots.
+Published/live class checks,
 nonreadonly state, no property hooks and exact inline or ordinary
 cached-table authentication remain required. Methods, including magic get/isset
-traps, are not invoked by object/object comparison. Older fully authenticated
-walkers stay methodless; only the visited image changes. Current ALIAS contents,
+traps, are not invoked by object/object comparison. Older whole-graph admissions
+retain their public-layout and methodless fences; only the visited image changes. Current ALIAS contents,
 DIRECT copies, table locators, early count/key decisions and real active-left
 recursion Error retain the existing fold and ownership rules.
 
@@ -833,6 +833,18 @@ contents, copied arrays and cached INDIRECT fields keep their existing owners.
 Builtin parents and wider layouts/lifetimes remain partial.
 [Inherited-image review](../../coverage/semantics/throwable-trace-inheritance-comparison-review.json).
 
+Initialized private and protected backing slots retain their exact descriptor
+`KEY` and `DECL` authority. Parent/child private declarations with the same name
+keep distinct class-mangled keys; a protected override keeps its physical slot
+position. Inline entries and actual cached INDIRECT fields read the same live
+slots without access callbacks. Initialized nonpublic fields now produce real
+ordinary caches even when foreach yields no visible member; their UNSET table
+policy stays separate. The existing declared clone copier retargets mangled
+locators and attaches each copy's property type source. Shared typed cells remain constrained while the
+property object survives in a captured trace; final object retirement removes
+that property type source while an array-view alias can remain alive.
+[Nonpublic-image review](../../coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+
 Two truly inline same-class objects with no instance slots compare equal before
 checking the active-object recursion guard. Static fields and uncalled methods
 add no instance slots. Identity and class decisions still come first; equal
@@ -854,7 +866,7 @@ existing arity/reference/default/return bounds. It preserves the typed signature
 the separate getter callback predicate in modules 380/408 still requires its
 existing untyped parameter. Other legal getter return declarations remain
 Unsupported.
-Private/uninitialized layouts, builtin parents, hooks, readonly and wider
+Uninitialized/UNSET layouts, builtin parents, hooks, readonly and wider
 callback/lifetime contexts remain partial. Held lanes are unchanged.
 [Method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
 

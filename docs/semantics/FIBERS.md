@@ -1076,6 +1076,15 @@ keeps the token until Generator drop. Five reached fronts pass 500 reported
 checks, including authentic history, parked owners and budget continuation.
 [Bound factory review](../../coverage/semantics/generator-bound-factory-review.json).
 
+I83 retains the runtime-selected implicit `__invoke` factory independently of
+the call site's lexical owner. The native inherited BYREF/SEND source distinguishes
+retired maker history from the real parked input and reference-cache owners;
+direct Generator-bodied `__invoke` retains its actual frame receiver through
+close. All five originals agree at their recorded cuts; five reached fronts
+pass 399 reported checks for exact target/source history, parked owners and
+budgeted abort/cleanup. Private strict432 retains its original cut.
+[Invokable factory review](../../coverage/semantics/generator-invokable-factory-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

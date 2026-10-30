@@ -950,6 +950,7 @@ def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = $trace_visit_parent
   -- if $trace_visit_interfaces(S, pclassdesc_parent)
 def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = false -- otherwise
 ;; Ordinary methods do not participate in standard object/object comparison.
+;; Initialized backing slots compare regardless of their visibility.
 ;; Retain the existing layout and lifecycle bounds without whole-graph admission.
 def $trace_visit_object_class(S, n) = $trace_object_class(S, n)
   -- if $(n < |S.OBJECTS|)
@@ -965,7 +966,6 @@ def $trace_visit_object_class(S, n) = true
   -- if $trace_visit_parent_path(S, pclassdesc, eps)
   -- if ~$property_hook_instance(S, n)
   -- if $property_layout(S, porigin, |S.CLASSES|) = (ppropertydesc*)
-  -- if $trace_instance_public(ppropertydesc*)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slots_valid(S, ppropertydesc*, pobjectprops.SLOTS)
   -- if $property_unique_names(pobjectprops.SLOTS)

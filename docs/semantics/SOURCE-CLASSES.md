@@ -262,7 +262,8 @@ required at that cut. The [constructor review](../../coverage/semantics/anonymou
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Anonymous classes accept finite sequences of direct positional/named `new`
-arguments and unpromoted value or reference parameters, including a final variadic tail.
+arguments, including array unpack, and unpromoted value or reference parameters
+with an optional final variadic tail.
 The ordinary signature compiler validates their types, defaults, requiredness and
 final-only variadic placement; the ordinary binder
 completes named holes before typed reception. A class without `__construct`
@@ -278,8 +279,8 @@ retains its seven native-backed sources, independent weak int-coercion source an
 The [finite-arity review](../../coverage/semantics/anonymous-constructor-arity-review.json)
 records root and successful include/eval sites, inherited constructors, surplus
 positional sends, named-default reception retry and pruned versus eager invalid
-defaults. Promoted or nonpublic constructors, unpacking and wider object lifetimes
-remain partial.
+defaults. Promoted or nonpublic constructors, Traversable unpacking and wider
+object lifetimes remain partial.
 Reference sends use the saved constructor signature and hold their actual cell
 before later argument effects. Named sends select the formal index when they run;
 rebinding a constructor local does not rebind the caller. Missing variables can
@@ -298,10 +299,25 @@ tail errors; invalid reference sends stop later sends. The
 [variadic review](../../coverage/semantics/anonymous-constructor-variadic-review.json)
 retains six agreements and the original excluded `count()` observer separately;
 [CORE](CORE.md#environment-and-ordinary-library-boundary) defines that library boundary.
+Array unpack uses the ordinary CV/VAR/value source classifier. Reference demand
+separates shared writable arrays, keeps embedded aliases and promotes direct
+slots only in the live table. Direct elements of value inputs use fresh cells
+when passed to by-reference formals; existing embedded aliases remain shared.
+Expanded integer positions and string names feed the same binder, including
+named holes filled before typing. Static order errors and dynamic name/duplicate
+errors keep their argument-effect priority. Constructorless classes retain the
+ordinary dummy send frame: positional values are ignored, while a named key stops
+later sends. The [array-unpack review](../../coverage/semantics/anonymous-constructor-unpack-review.json)
+records these source, table, cell and default checks. Existing array/reference and
+source-history limits remain; constructor Traversable producers are still separate.
 Argument TypeErrors, missing named fixed arguments and nonreferenceable-send
 Errors format the whole callable name as one C string. Ordinary too-few-argument
 errors format the lexical declaring class and member separately.
 Stored class names and `::class` values keep their complete bytes.
+Non-constructor anonymous magic methods, including direct `__destruct`, remain
+excluded by member admission and require their ordinary dispatch/lifetime rules.
+They are substantive remaining class behavior; constructor Traversable producers,
+promotion/nonpublic forms and wider factories are also open.
 
 Unit0 anonymous classes may now extend an ordinary named class through the
 ordinary class-reference forms. Parent declarations follow the normal compiler/linker,
@@ -482,5 +498,26 @@ keeps original source comparisons, reached guards and the shared identity-receip
 normalization at separate cuts. The
 [capture review](../../coverage/semantics/enum-string-capture-review.json) keeps
 its new capture sources and owner/ingress checks separate. Callable admission,
-first-class array captures, pipe and `Closure::fromCallable` consumers, first-use loading, enum
+pipe and `Closure::fromCallable` consumers, first-use loading, enum
 collectability and wider object lifetimes remain partial.
+
+## Generated enum array captures
+
+Published enum class names and enum-case receivers in callable arrays can create
+first-class internal Closures for generated `cases()`, `from()` and `tryFrom()`.
+The engine selects them through `zend_init_dynamic_call_array`, followed by
+`ZEND_CALLABLE_CONVERT` and `zend_closure_from_frame`.
+Creation authenticates the actual live array, its selected class/method pair and
+the first-class source/init/conversion line before allocation. The internal
+Closure retains no array, receiver or creator. Existing call owners preserve it
+through argument-side clearing, Stringable conversion and lazy lookup.
+
+A runtime source array can retire when its last real owner disappears; literal
+arrays may remain rooted by compiled constants. Fetching an enum-case receiver
+warms its backed table before capture, while a class-name receiver can keep that
+table cold until invocation. The
+[array-capture review](../../coverage/semantics/enum-array-capture-review.json)
+keeps these cases and source/owner checks separate. Other callable consumers,
+loading and wider backing contexts remain partial. GC08 covers cached enum-case
+GC candidate exclusion; wider GC interactions and GC09 intrinsic fake-Closure
+birth versus clone policy remain separate.

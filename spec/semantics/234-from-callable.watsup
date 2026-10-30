@@ -170,7 +170,7 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, 
   -- if $ptlc(ptbytes_method) = $ptascii("fromcallable")
   -- if $ppfirstclass(phpType7*)
   -- if ~$from_factory_capture(S, phpType19, ptbytes_method, phpType7*, z)
-def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = S[.OBJECTS = S.OBJECTS ++ [FROMCALLABLEFACTORY porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [FROMCALLABLEFACTORY porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
   -- if $from_factory_capture(S, phpType19, ptbytes_method, phpType7*, z)
   -- if S.ORIGIN = (porigin)
@@ -253,11 +253,11 @@ def $from_receive(S, pconfigcall, pvalue_string) = $api_begin(S, CONFIG_INVOKE p
   -- if ~$fiber_factory_candidate(S, pvalue_string)
   -- if ~$typed_registered(S, ptbytes)
   -- if $method_string_parts(ptbytes) =/= eps
-def $from_receive(S, pconfigcall, pvalue_string) = $from_done(S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+def $from_receive(S, pconfigcall, pvalue_string) = $from_done(S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $call_target(S, $typed_callable_name(ptbytes), eps) = (pfunction)
   -- if n = |S.OBJECTS|
-def $from_receive(S, pconfigcall, pvalue_string) = $from_done(S[.OBJECTS = S.OBJECTS ++ [INTRINSICCLOSURE pintrinsic]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+def $from_receive(S, pconfigcall, pvalue_string) = $from_done(S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [INTRINSICCLOSURE pintrinsic]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $call_target(S, $typed_callable_name(ptbytes), eps) = eps
   -- if $intrinsic_named($typed_callable_name(ptbytes)) = (pintrinsic)
@@ -321,7 +321,7 @@ def $from_method(S, papiquery, porigin, ptbytes, b_static, b_invoke) = {SITE pco
   -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes_live)
 def $from_receiver(pfrommethod) = eps -- if pfrommethod.STATIC
 def $from_receiver(pfrommethod) = pfrommethod.CLASS.RECEIVER -- if ~pfrommethod.STATIC
-def $from_allocate(S, pfrommethod) = $from_done(S[.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED pfrommethod.CLASS.CALLED, RECEIVER $from_receiver(pfrommethod), CREATION eps}]], n)
+def $from_allocate(S, pfrommethod) = $from_done(S[.GC = $fake_gc_birth(S.GC, n, pfrommethod.STATIC)][.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED pfrommethod.CLASS.CALLED, RECEIVER $from_receiver(pfrommethod), CREATION eps}]], n)
   -- if $class_method_origin(S.CLASSES, pfrommethod.FUNCTION) = (pmethoddesc)
   -- if n = |S.OBJECTS|
 def $from_input_roots(POBJECT n) = [HOBJECT n]

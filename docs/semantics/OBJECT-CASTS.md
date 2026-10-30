@@ -20,6 +20,13 @@ empty cache shares that table until COW. This narrow admission leaves the
 existing dynamic-history, hook, UNSET and active-collection policies in place.
 [Empty-table comparison and clone review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
 
+Initialized private/protected declared slots also materialize real ordinary
+caches under their existing mangled KEY/ORIGIN checks. Foreach visibility still
+controls yielded members; an empty visible iteration can create a nonempty
+physical cache. Cast views preserve shared aliases and ordinary COW. The retained
+nonpublic UNSET policy still needs dynamic history.
+[Nonpublic-cache review](../../coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+
 [Ordinary mixed tables](../../coverage/semantics/mixed-property-stringable-comparison-review.json)
 now cache nonowning INDIRECT locators for public declared slots alongside owning
 dynamic buckets. The instance owns inline declared values and its current table;
