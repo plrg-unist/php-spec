@@ -1,0 +1,280 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.ordinary-static-methods",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "scope": "Ordinary nonmagic anonymous static methods with flags 8/9/10/12, unpromoted formals, by-value return, required nongenerator body, and no attributes.",
+  "design": "383 adds one disjoint member arm using existing formal admission. 142 formats selected STATIC_METHOD_TARGET and SCOPED_TARGET missing-arity and return names by lexical class/member and identifies their never fallthrough as a method. Existing compiler, call selection, binder, class storage and captured Closure producers are unchanged.",
+  "frozen_sources": [
+    {
+      "path": ".tools/class161-author/frozen.json",
+      "sha256": "54b50ddbe6a2d78700d43ef7eff13b065af1d704438fa9ea3d5aeb7b229a82a2"
+    },
+    {
+      "path": ".tools/class161-review/frozen.json",
+      "sha256": "4ccff8e0fdbf52bda52908c00a6d312d0512c4eaba802e23f17b8a3f0e212bd0"
+    },
+    {
+      "path": ".tools/class161-review/diagnostic-frozen.json",
+      "sha256": "e691d8c0b0bfd8c8b3103eb66e0acf8b19a221e3e569819c21b7ef95c3617ca8"
+    }
+  ],
+  "native_first": {
+    "revision": "0ae623f8920bbb257c876f0023e1b5bd9e74d7f1",
+    "initial_five": {
+      "path": ".tools/class161-artifacts/native-initial5.json",
+      "sha256": "8e60cfaab338de53dd2b01d392e114c4b24409b2fbf257ac1a8766b8a367a393"
+    },
+    "separate_sixth": {
+      "path": ".tools/class161-artifacts/native-sixth-diagnostic1.json",
+      "sha256": "654606a246f15bdc37a193bcbf8ca4d3b22b8bd95ed74f6b25cbb9df179b7efb"
+    },
+    "raw_reports": [
+      {
+        "path": ".tools/class161-artifacts/scoped-static-owner-diagnostics.native-first.json",
+        "sha256": "d61d83676a9d455c6b1fbad3018e014b0389d8a0ec71199e1fad9cd3c8a98f38"
+      },
+      {
+        "path": ".tools/class161-artifacts/captured-static-after-rebinding.native-first.json",
+        "sha256": "46aad53c306be47c5dfcbae5dcd1bafd5f791d4dd255276711f22b6c1a182c20"
+      },
+      {
+        "path": ".tools/class161-artifacts/author-public-static-reference-sends.native-first.json",
+        "sha256": "07bf5abadb808aca4a0faff6ccf9e537868e6385c1772b01b00cdda5973dd364"
+      },
+      {
+        "path": ".tools/class161-artifacts/author-private-static-denial-before-send.native-first.json",
+        "sha256": "a54911af595958187e79d65d152b845c966c1a314e4dd1d86a4e9ebe87c72d4c"
+      },
+      {
+        "path": ".tools/class161-artifacts/author-eval-static-local-shared-class.native-first.json",
+        "sha256": "eb4dd79c60ad83178d481e183d8df1ce9aa72e14e759bf506cc6c8c802f3fc89"
+      },
+      {
+        "path": ".tools/class161-artifacts/static-return-and-object-diagnostics.native-first.json",
+        "sha256": "745be3e8b4b05a344634143d01e508f86c5252c272e2e9441602773eab47ce48"
+      }
+    ],
+    "result": "Six fresh PHP originals, normal/exit0/empty stderr; first five and sixth were separately frozen and run once."
+  },
+  "unchanged_baseline": {
+    "revision": "0ae623f8920bbb257c876f0023e1b5bd9e74d7f1",
+    "records": [
+      {
+        "supervisor": {
+          "path": ".tools/class161-artifacts/unchanged-author-public.json",
+          "sha256": "e5edc9552cfb7c38b55e5f2b875979d2c9ca410297c48b07ceec65c6c8901b0f"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/author-public-static-reference-sends.unchanged-baseline.json",
+          "sha256": "229a96f5e4103e00da38317a6de2e48391b7efd1db839da635b9beb2e9e027f8"
+        }
+      },
+      {
+        "supervisor": {
+          "path": ".tools/class161-artifacts/unchanged-peer-capture.json",
+          "sha256": "6acdbd2d0912658d5adc3c790034adac02b3e7a5e332d5c0798d4a698e4c07c6"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/captured-static-after-rebinding.unchanged-baseline.json",
+          "sha256": "9ca610f9415662cb2c58460f926e0282ddc3211ac888ba6e80491db8c8761bd7"
+        }
+      }
+    ],
+    "result": "Exactly two selected old model-only controls accepted by the frontend, checked as programs and refused at anonymous member admission; zero agreement credit. Other three old controls unrun."
+  },
+  "source_outcomes": {
+    "agreements": 6,
+    "normal": 6,
+    "records": [
+      {
+        "case": "public-static-reference-sends",
+        "revision": "7aa9103b927c8c9dee60bde496f256a8d42cc321",
+        "supervisor": {
+          "path": ".tools/class161-artifacts/model-author-public-static.json",
+          "sha256": "3f5e80352cecd3d3692043a40731ecdb8aa1db2afa3c4605d558318574022724"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/method-runtime-91xbmgjk/report.json",
+          "sha256": "380007ceff32283b8ef18aabfa6676be14d7f8399daa771dcccd5efb4bf3ada4"
+        }
+      },
+      {
+        "case": "private-static-denial-before-send",
+        "revision": "7aa9103b927c8c9dee60bde496f256a8d42cc321",
+        "supervisor": {
+          "path": ".tools/class161-artifacts/model-author-private-denial.json",
+          "sha256": "106b943d66c63833dd996f2ae501bef062e14a35c4bfe2fe83c04ab60f047e4b"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/method-runtime-k6cqo40n/report.json",
+          "sha256": "81813f3f2144a2874a11702452978847f323b3829d9042a86efb4d508dc76586"
+        }
+      },
+      {
+        "case": "eval-static-local-shared-class",
+        "revision": "7aa9103b927c8c9dee60bde496f256a8d42cc321",
+        "supervisor": {
+          "path": ".tools/class161-artifacts/model-author-eval-static.json",
+          "sha256": "a6b798d094341e3a3e824b7289360922a28b06417f4c8aee3f6b4aa9d5676e17"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/method-runtime-jyztqffj/report.json",
+          "sha256": "44b7e49da1073f95017b89342c406b437d4a99e0c41270f0596bb6d0e329ac14"
+        }
+      },
+      {
+        "case": "captured-static-after-rebinding",
+        "revision": "7aa9103b927c8c9dee60bde496f256a8d42cc321",
+        "supervisor": {
+          "path": ".tools/class161-artifacts/model-peer-captured-static.json",
+          "sha256": "4a947eae230042a72b17026cdc0cfb80d63fff10a9f9e67efd5106226ae5dee5"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/method-runtime-pa3oe6ar/report.json",
+          "sha256": "c2a93d74a9b6375565726a63d31e91c7c3371ea88f0f35c11936c1b14dd3b733"
+        }
+      },
+      {
+        "case": "scoped-static-owner-diagnostics",
+        "revision": "a6acc643128f9950444149f139614fe906c06d6c",
+        "supervisor": {
+          "path": ".tools/class161-artifacts/model-peer-scoped-owner-corrected.json",
+          "sha256": "ac35e0848ea369e1c6a3515c1a173c647a98854e3fc15cb7993bde10b5d50643"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/method-runtime-74b68juk/report.json",
+          "sha256": "d88332c629a3b22a74c309e8c3d0c219c895fa1ab870d8205ebef98535dba955"
+        }
+      },
+      {
+        "case": "static-return-and-object-diagnostics",
+        "revision": "a6acc643128f9950444149f139614fe906c06d6c",
+        "supervisor": {
+          "path": ".tools/class161-artifacts/model-sixth-diagnostic.json",
+          "sha256": "5cfa9e3469620907e4b3903ad9b1f708c83d6dc231ae903a61241ec2ee39a0e7"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/method-runtime-q1i4tyig/report.json",
+          "sha256": "b794202d5b48d215fed93db50c53eb524d293b47f437e10b61fb3e22d3d18909"
+        }
+      }
+    ],
+    "result": "All six selected model-only sources match exact PHP stdout, stderr, status and exit at their recorded cuts. First four source reports retain their five-row catalogue cut; corrected scoped and fresh sixth retain the appended row cut."
+  },
+  "strict_sl": {
+    "modules": 433,
+    "first": {
+      "revision": "7aa9103b927c8c9dee60bde496f256a8d42cc321",
+      "report": {
+        "path": ".tools/class161-artifacts/strict-candidate-corrected.json",
+        "sha256": "f48eb7755303e76d68fcc31ba5a5c0105bf2c5a3e8e59811af4e7b897705426d"
+      }
+    },
+    "affected": {
+      "revision": "a6acc643128f9950444149f139614fe906c06d6c",
+      "report": {
+        "path": ".tools/class161-artifacts/strict-affected-a6acc643.json",
+        "sha256": "4474705da774afc83cd568bab309ff5fe281a0eee9b282656506b0d80c76f2fd"
+      }
+    },
+    "result": "Ordered --sl yielded true newline, empty stderr and exit0 at both code cuts; all descendants reaped."
+  },
+  "reached": {
+    "revision": "6d3138bb8b5ee3fbb83d0199ea922148c4e37dc5",
+    "conditions": 220,
+    "source_reached": 215,
+    "derived_controls": 5,
+    "groups": [
+      {
+        "test": "tests/semantics/anonymous_static_method_binding_protocol.py",
+        "conditions": 111,
+        "source_reached": 109,
+        "derived_controls": 2,
+        "supervisor": {
+          "path": ".tools/class161-artifacts/state-author-binding111.json",
+          "sha256": "4b128be8baba0ec157c7ff220aa117f7d31c8e2af535da9e3fa798fc52e9813d"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/anonymous-static-binding-ewf128o9/report.json",
+          "sha256": "c715fd4a25594fc4e9c3b5ba49e965a38758dd24a51f5023da61849fcf1d0462"
+        }
+      },
+      {
+        "test": "tests/semantics/anonymous_static_method_capture_protocol.py",
+        "conditions": 109,
+        "source_reached": 106,
+        "derived_controls": 3,
+        "supervisor": {
+          "path": ".tools/class161-artifacts/independent-static-capture109.json",
+          "sha256": "c87a171cbe7fcece45c1b42ed7f2bb3f4b90e7bd71597ce9f2f5af117626ce86"
+        },
+        "raw_report": {
+          "path": ".tools/class161-artifacts/anonymous-static-method-capture-9w6ncu5s/report.json",
+          "sha256": "2ea40642dd3aa53a386c7c110015a6f889c83680ac66eeae45d5ef17ccdceffc"
+        }
+      }
+    ],
+    "result": "Receiverless argument-rebind/destructor and first-class captured-static target/ref-cell fronts pass strict SL with true newline, empty stderr and exit0."
+  },
+  "preserved_zero_credit": [
+    {
+      "cause": "Fresh worktree lacked ignored local binary hardlinks; supervisor fingerprint stopped before any child or semantic execution. Corrected by linking identical immutable prior binaries.",
+      "record": {
+        "path": ".tools/class161-artifacts/strict-preflight-missing-binaries.json",
+        "sha256": "d8a0672fd3910b1e2feb8792a38fb95e6119d17b40231016e794c8c65a154751"
+      },
+      "stderr": {
+        "path": ".tools/class161-artifacts/strict-preflight-missing-binaries.stderr",
+        "sha256": "a1f41e259af085fe48f7eab5b597f7643ad446ec54761c90c583eb6954e43ca2"
+      }
+    },
+    {
+      "cause": "Initial scoped diagnostic model used the full NUL-bearing class name for own missing arity and function for never fallthrough. Corrected only guarded static/scoped diagnostic formatting in 142; affected source retry passed.",
+      "revision": "7aa9103b927c8c9dee60bde496f256a8d42cc321",
+      "supervisor": {
+        "path": ".tools/class161-artifacts/model-peer-scoped-owner.json",
+        "sha256": "3d1f86e00a0c269c11e4ded32c3229188998e0846d71f8e2e498f54121741610"
+      },
+      "raw_report": {
+        "path": ".tools/class161-artifacts/method-runtime-5sv80ug8/report.json",
+        "sha256": "67a04a90707b65be5de5a7e245880063334b54f485560721b7ed1e6489edf6ed"
+      }
+    }
+  ],
+  "tested_code": {
+    "production_commit": "a6acc643128f9950444149f139614fe906c06d6c",
+    "fixture_commit": "6d3138bb8b5ee3fbb83d0199ea922148c4e37dc5",
+    "first_five_catalogue_sha256": "4350086409f436b37c3e1001ed3b635c758df465c57543c36c855f307f6e408f",
+    "catalogue_sha256_current": "f2bbe1b6149724f971318cd4db04d00b1ebed42c9f9ddecc7bd8fd80cbfd01bb",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "746db694d220378013ce12bfacea513c76e47ef495ad726309b8ec3c586d4e91",
+      "spec/semantics/142-method-runtime.watsup": "d06dfe8ffd37e757103f34789638f52fe71b36775973b9e4ddaa118026283a21"
+    },
+    "state_script_sha256": {
+      "tests/semantics/anonymous_static_method_binding_protocol.py": "7faeba5b004b173642a736872e4c2ad2cca8eecb400aced4472e3ef1e3a74bb5",
+      "tests/semantics/anonymous_static_method_capture_protocol.py": "9330d4834ff932fb7a68e339f64e1f9391921bc30ce34ff5f1633f61ef313127"
+    }
+  },
+  "execution": {
+    "php_binary": {
+      "path": ".tools/class161-dev/.tools/php/bin/php",
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "adapter_binary": {
+      "path": ".tools/class161-dev/_build/default/adapter/main.exe",
+      "sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65"
+    },
+    "numeric_runner": {
+      "path": ".tools/class161-dev/tests/semantics/_build/default/numeric_runner.exe",
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile": {
+      "path": ".tools/class161-dev/tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "environment": "Pinned CPU1, LC_ALL=C, TZ=UTC, local PHP -n profile, serial supervisor and full process-group reap. Each linked report records exact command, revision, fingerprints, exit and streams."
+  },
+  "limits": "Captured METHODCLOSURE CLOSURE_TARGET diagnostic views remain partial, as do Generator-bodied, attributed, promoted, reference-return and other magic method forms, broader static callable/API/lifecycle combinations, and actual-tail integration. OP12, Source47, owned-NUL release, undefined-byref LIST keys, COMP88 supplied-throw comparison, V110 and COMP123 remain held unchanged. This is not complete PHP core or BOLA verification.",
+  "recovery": "Raw originals, supervisors and model/state directories remain outside Git under .tools/class161-author, class161-review and class161-artifacts; supervisor stdout retains original worktree raw paths, with relocated paths recorded above. Local binaries were reused without rebuilding. No push; private worktree retained for coordinated actual-tail integration."
+}

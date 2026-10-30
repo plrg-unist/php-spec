@@ -360,6 +360,14 @@ it. Six normal originals and one invalid-return rejection agree, including a
 `never` fallthrough TypeError at the method end line. Two state groups pass
 210 conditions (207 reached, three controls). The [clone review](../../coverage/semantics/anonymous-clone-review.json)
 keeps the two unchanged admission refusals and one zero-credit fixture correction.
+Ordinary nongenerator anonymous static methods now admit public, protected and
+private unpromoted formals through the existing receiverless call path. Six
+native-first originals check access before sends, typed reference updates,
+shared static locals, inherited lexical scope, captured calls after rebinding,
+and segmented missing-arity/return/`never` diagnostics. Two source-reached
+state groups pass 220 conditions (215 reached, five controls). Captured
+`CLOSURE_TARGET` diagnostic views remain open. The [static-method review](../../coverage/semantics/anonymous-static-method-review.json)
+records the distinct validation cuts and both zero-credit failures.
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.

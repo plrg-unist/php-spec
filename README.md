@@ -4564,6 +4564,9 @@ Public zero-argument nongenerator anonymous `__clone` now uses ordinary copy-bef
 cloning, including shared references after array separation, parent callbacks and
 failed-copy destructor cleanup. An explicit method call can return a value;
 keyword `clone` returns the fresh copy. [Clone review](coverage/semantics/anonymous-clone-review.json).
+Ordinary nongenerator anonymous static methods use the existing receiverless
+call path; missing-arity and return errors name the declaring class and method.
+[Static-method review](coverage/semantics/anonymous-static-method-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
