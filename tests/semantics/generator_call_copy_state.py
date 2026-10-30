@@ -242,7 +242,7 @@ pgeneratorop_no_input = pgeneratorop[.ARGUMENTS = eps]
 FRESH = checks(LOCATE) + checks(COPY.replace('@ACTIVE@', 'Active92C')) + checks(BODY) + checks(r'''
 ~pfunction.SIGNATURE.BYREF
 pgeneratorop.ADVANCE
-~pgenerator.FIRST
+pgenerator.FIRST
 pgenerator.VALUE = eps
 pgenerator.REFCELL = eps
 pgenerator.KEY = eps
