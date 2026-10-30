@@ -210,6 +210,9 @@ dec $generator_implicit_invoke_target(pstate, pcalltarget, porigin) : bool
 dec $generator_raw_method_base(pcalltarget) : pcalltarget?
 dec $generator_raw_method_receiver(pstate, nat?) : bool
 dec $generator_raw_method_selected(pstate, pcalltarget, porigin) : pmethoddesc?
+dec $generator_raw_method_source_owner(pstate, porigin) : porigin?
+dec $generator_raw_method_object_source(pstate, porigin, parrayselection, porigin) : bool
+dec $generator_raw_method_public_source(pstate, pcalltarget, porigin) : bool
 dec $generator_raw_method_scope_source(pstate, pcallableaccess, porigin) : bool
 dec $generator_raw_method_scope_identity(pstate, pcalltarget, porigin) : bool
 dec $generator_creation_method_source(pstate, pcalltarget, porigin) : bool
@@ -412,13 +415,25 @@ def $generator_raw_method_receiver(S, n_receiver?) = false -- otherwise
 ;; A retired permission-bearing call keeps its ordinary source-method scope.
 ;; Normalize only the access query after authenticating that original site;
 ;; no current context, caller frame or physical owner is manufactured.
-def $generator_raw_method_scope_source(S, pcallableaccess, PORIGIN n pcpath) = true
-  -- if pcallableaccess.SITE = (PORIGIN n pcpath) /\ pcallableaccess.CREATION = eps
+def $generator_raw_method_source_owner(S, PORIGIN n pcpath) = (pmethoddesc_source.OWNER)
   -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
   -- if $class_method_origin(S.CLASSES, pfunction_source.ORIGIN) = (pmethoddesc_source)
   -- if pmethoddesc_source.FUNCTION = pfunction_source
-  -- if pcallableaccess.SCOPE = (pmethoddesc_source.OWNER)
-  -- if $method_capture_class_valid(S, pcallableaccess.SCOPE)
+  -- if $method_capture_class_valid(S, (pmethoddesc_source.OWNER))
+def $generator_raw_method_source_owner(S, porigin_site) = eps -- otherwise
+;; An object selector can redirect to its ordinary caller's private method.
+;; Static/class selectors and rebinding-dependent Closure scopes stay separate.
+def $generator_raw_method_object_source(S, porigin_method, parrayselection, porigin_site) = true
+  -- if $generator_raw_method_source_owner(S, porigin_site) = (porigin_scope)
+  -- if $scope_method(S, parrayselection.REQUESTED, parrayselection.NAME, true, (porigin_scope)) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method
+def $generator_raw_method_object_source(S, porigin_method, parrayselection, porigin_site) = false -- otherwise
+def $generator_raw_method_public_source(S, ARRAY_METHOD_TARGET (METHOD_TARGET n porigin_method) parrayselection, porigin_site) = ($generator_raw_method_source_owner(S, porigin_site) = eps \/ $generator_raw_method_object_source(S, porigin_method, parrayselection, porigin_site))
+def $generator_raw_method_public_source(S, pcalltarget, porigin_site) = true -- otherwise
+def $generator_raw_method_scope_source(S, pcallableaccess, porigin_site) = true
+  -- if pcallableaccess.SITE = (porigin_site) /\ pcallableaccess.CREATION = eps
+  -- if $generator_raw_method_source_owner(S, porigin_site) = (porigin_scope)
+  -- if pcallableaccess.SCOPE = (porigin_scope)
 def $generator_raw_method_scope_source(S, pcallableaccess, porigin_site) = false -- otherwise
 def $generator_raw_method_scope_identity(S, ARRAY_METHOD_TARGET (SCOPE_METHOD_TARGET pcalltarget pcallableaccess) parrayselection, porigin_site) = true
   -- if parrayselection.SITE = porigin_site
@@ -444,6 +459,7 @@ def $generator_raw_method_selected(S, pcalltarget, porigin_site) = (pmethoddesc)
   -- if n_receiver? = $target_receiver(S, pcalltarget_method)
   -- if $generator_raw_method_receiver(S, n_receiver?)
   -- if S_lookup = S[.ALLOCATIONS = S.ALLOCATIONS ++ $scoped_receiver_nodes(n_receiver?)]
+  -- if $generator_raw_method_public_source(S_lookup, pcalltarget, porigin_site)
   -- if $call_selected_valid(S_lookup, pcalltarget, (porigin_site)) \/ $generator_raw_method_scope_identity(S_lookup, pcalltarget, porigin_site)
   -- if $target_function(S_lookup, pcalltarget_method) = (pfunction)
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
