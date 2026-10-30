@@ -211,6 +211,7 @@ def $executor_free_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output autoload
 ;; release, preserving the unfinished C tail if its null-C destructor bails.
 dec $executor_queue_targets(pstate, pshutdownentry*) : pshutdownproducer*
 dec $executor_fcc_nodes(pshutdownproducer) : pnode*
+dec $executor_fcc_extra(pcalltarget, pclosurescope?, pclosurebinding?) : pnode*
 dec $executor_queue_nodes(pshutdownentry*, pshutdownproducer*) : pnode*
 dec $executor_targets_valid(pstate, pshutdownentry*, pshutdownproducer*) : bool
 dec $executor_target_valid(pstate, pshutdownproducer) : bool
@@ -229,14 +230,18 @@ dec $executor_scope_frames(pstate, pframe*) : bool
 dec $executor_scope(pstate) : bool
 dec $executor_module_owners(pstate) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
+dec $executor_operation_row(pdestructioncleanup, pdestructionoperation) : bool
 dec $executor_handler_task(ptask) : bool
 dec $executor_handler_tasks(ptask*) : bool
+dec $executor_exception_callback(papicallback) : bool
+dec $executor_task_queue(ptask) : pexecutorqueue?
+dec $executor_scope_task(pstate, ptask) : bool
 
 def $executor_queue_targets(S, eps) = eps
 def $executor_queue_targets(S, pshutdownentry :: pshutdownentry_tail*) = $eager_cleanup_target(S, pshutdownentry.TARGET) :: $executor_queue_targets(S, pshutdownentry_tail*)
-def $executor_fcc_nodes(pshutdownproducer) = $instance_roots($consumer_producer_receiver(pshutdownproducer.SCOPE)) ++ $instance_roots($consumer_producer_bound_receiver(pshutdownproducer.BINDING)) ++ $target_nodes(pshutdownproducer.TARGET)
-  -- if pshutdownproducer.TARGET = CLOSURE_TARGET n
-def $executor_fcc_nodes(pshutdownproducer) = $target_nodes(pshutdownproducer.TARGET) -- otherwise
+def $executor_fcc_extra(CLOSURE_TARGET n, pclosurescope?, pclosurebinding?) = $instance_roots($consumer_producer_receiver(pclosurescope?)) ++ $instance_roots($consumer_producer_bound_receiver(pclosurebinding?))
+def $executor_fcc_extra(pcalltarget, pclosurescope?, pclosurebinding?) = eps -- otherwise
+def $executor_fcc_nodes(pshutdownproducer) = $executor_fcc_extra(pshutdownproducer.TARGET, pshutdownproducer.SCOPE, pshutdownproducer.BINDING) ++ $target_nodes(pshutdownproducer.TARGET)
 def $executor_queue_nodes(eps, eps) = eps
 def $executor_queue_nodes(pshutdownentry :: pshutdownentry_tail*, pshutdownproducer :: pshutdownproducer_tail*) = $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $executor_fcc_nodes(pshutdownproducer) ++ $executor_queue_nodes(pshutdownentry_tail*, pshutdownproducer_tail*)
 def $executor_targets_valid(S, eps, eps) = true
@@ -250,6 +255,13 @@ def $executor_targets_valid(S, pshutdownentry :: pshutdownentry_tail*, pshutdown
   -- if $executor_targets_valid(S, pshutdownentry_tail*, pshutdownproducer_tail*)
 def $executor_targets_valid(S, pshutdownentry*, pshutdownproducer*) = false -- otherwise
 def $executor_target_valid(S, pshutdownproducer) = (pshutdownproducer = $eager_cleanup_target(S, pshutdownproducer.TARGET))
+  -- if $heap_subset($target_nodes(pshutdownproducer.TARGET), S.ALLOCATIONS)
+def $executor_target_valid(S, pshutdownproducer) = true
+  -- if ~$heap_subset($target_nodes(pshutdownproducer.TARGET), S.ALLOCATIONS)
+  -- if S_history = $consumer_producer_history(S, pshutdownproducer)
+  -- if $closure_scope_rows_valid(S_history, $consumer_producer_scopes(pshutdownproducer.SCOPE))
+  -- if $closure_bindings_valid(S_history, $consumer_producer_bindings(pshutdownproducer.BINDING))
+def $executor_target_valid(S, pshutdownproducer) = false -- otherwise
 def $executor_queue_valid(S, pexecutorqueue) = true
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.OUTPUTBUFFERS = eps /\ S.SHUTDOWN.ENTRIES = eps
@@ -259,9 +271,9 @@ def $executor_queue_valid(S, pexecutorqueue) = true
   -- if $executor_targets_valid(S[.SHUTDOWN.ENTRIES = pexecutorqueue.ENTRIES], pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS)
 def $executor_queue_valid(S, pexecutorqueue) = false -- otherwise
 def $executor_queue_tasks(eps, pexecutorqueue) = false
-def $executor_queue_tasks((EXECUTOR_RELEASE pexecutorqueue pexecutorstage) :: eps, pexecutorqueue) = true
-def $executor_queue_tasks(ptask :: ptask_tail*, pexecutorqueue) = $executor_queue_tasks(ptask_tail*, pexecutorqueue)
-  -- otherwise
+def $executor_task_queue(EXECUTOR_RELEASE pexecutorqueue pexecutorstage) = (pexecutorqueue)
+def $executor_task_queue(ptask) = eps -- otherwise
+def $executor_queue_tasks(ptask :: ptask_tail*, pexecutorqueue) = (($executor_task_queue(ptask) = (pexecutorqueue) /\ ptask_tail* = eps) \/ $executor_queue_tasks(ptask_tail*, pexecutorqueue))
 def $executor_queue_frames(eps, pexecutorqueue) = false
 def $executor_queue_frames(pframe :: pframe_tail*, pexecutorqueue) = ((pframe.CONTEXT = eps /\ $executor_queue_tasks(pframe.TODO, pexecutorqueue)) \/ $executor_queue_frames(pframe_tail*, pexecutorqueue))
 def $executor_queue_active(S, pexecutorqueue) = ($executor_queue_valid(S, pexecutorqueue) /\ ((S.CURRENT = eps /\ $executor_queue_tasks(S.TODO, pexecutorqueue)) \/ $executor_queue_frames(S.FRAMES, pexecutorqueue)))
@@ -307,12 +319,13 @@ def $eager_operation_source_guard(S, pdestructionoperation) = true
   -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps
   -- if pdestructionoperation.VALUE = pexecutorqueue.VALUE /\ pdestructionoperation.BASE = pexecutorqueue.BASE
 def $executor_operation_abandoned(eps, pdestructionoperation) = false
-def $executor_operation_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation) = true
+def $executor_operation_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation) = ($executor_operation_row(pdestructioncleanup, pdestructionoperation) \/ $executor_operation_abandoned(pdestructioncleanup_tail*, pdestructionoperation))
+def $executor_operation_row(pdestructioncleanup, pdestructionoperation) = true
   -- if ~pdestructioncleanup.RELEASED
   -- if $eager_bailout_call(pdestructioncleanup.SOURCE) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
-def $executor_operation_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation) = $executor_operation_abandoned(pdestructioncleanup_tail*, pdestructionoperation) -- otherwise
+def $executor_operation_row(pdestructioncleanup, pdestructionoperation) = false -- otherwise
 def $executor_abandoned(S, pdestructioncleanup) = (pexecutorqueue)
   -- if ~pdestructioncleanup.RELEASED
   -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall
@@ -351,16 +364,19 @@ def $executor_pending_cause(S, pexecutorqueue, n) = false -- otherwise
 ;; These are earlier, distinct C phases. Never reinterpret a module callback
 ;; list as an inactive storage hook, or mutate the table being destroyed.
 def $executor_scope_tasks(S, eps) = false
-def $executor_scope_tasks(S, (EXECUTOR_RELEASE pexecutorqueue pexecutorstage) :: ptask_tail*) = $executor_queue_active(S, pexecutorqueue)
-def $executor_scope_tasks(S, ptask :: ptask_tail*) = $executor_scope_tasks(S, ptask_tail*) -- otherwise
+def $executor_scope_tasks(S, ptask :: ptask_tail*) = ($executor_scope_task(S, ptask) \/ $executor_scope_tasks(S, ptask_tail*))
+def $executor_scope_task(S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage) = $executor_queue_active(S, pexecutorqueue)
+def $executor_scope_task(S, ptask) = false -- otherwise
 def $executor_scope_frames(S, eps) = false
 def $executor_scope_frames(S, pframe :: pframe_tail*) = ($executor_scope_tasks(S, pframe.TODO) \/ $executor_scope_frames(S, pframe_tail*))
 def $executor_scope(S) = ($executor_scope_tasks(S, S.TODO) \/ $executor_scope_frames(S, S.FRAMES))
 def $executor_module_owners(S) = ($tick_roots(S.TICKENTRIES) ++ $assertion_callback_roots(S.ASSERTCALLBACK) =/= eps)
 def $executor_handler_task(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
 def $executor_handler_task(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = true
-def $executor_handler_task(API_CALLBACK_SEND papiargcursor) = true -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
-def $executor_handler_task(API_CALLBACK_REF papiargcursor) = true -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $executor_exception_callback(API_EXCEPTION pexceptioncall) = true
+def $executor_exception_callback(papicallback) = false -- otherwise
+def $executor_handler_task(API_CALLBACK_SEND papiargcursor) = $executor_exception_callback(papiargcursor.CALL)
+def $executor_handler_task(API_CALLBACK_REF papiargcursor) = $executor_exception_callback(papiargcursor.CALL)
 def $executor_handler_task(ERROR_HANDLER_RESULT perrorcall) = $executor_handler_task(perrorcall.RESUME)
 def $executor_handler_task(DESTRUCTOR_RESULT pdestructorcall) = $executor_handler_task(pdestructionoperation.SOURCE)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
@@ -390,3 +406,10 @@ def $executor_boundary(S) = ("abrupt exception handler during shutdown-list reti
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $executor_handler_tasks(ptask_tail*)
+def $executor_boundary(S) = ("abrupt destructor visibility warning during shutdown-list retirement")
+  -- if $executor_scope(S)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
+  -- if $error_entered_call_valid(S, perrorcall)
+  -- if ~$executor_handler_tasks((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*)
