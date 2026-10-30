@@ -454,3 +454,10 @@ def $executor_boundary(S) = ("non-Throwable fatal during shutdown-list retiremen
   -- if $(|S.DESTRUCTION.ABANDONED| > 0)
   -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
   -- if $executor_fatal_boundary(S, S.DESTRUCTION.ABANDONED[n_last])
+def $executor_boundary(S) = ("bound tick FCC registration after module shutdown")
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_TICK
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $executor_scope(S)
+  -- if $error_handler_resolution(S, $error_api_value(pconfigcall, 0, PNULL)) = HANDLERRESOLVED pcalltarget
+  -- if $shutdown_fcc_nodes(S, pcalltarget) =/= eps
