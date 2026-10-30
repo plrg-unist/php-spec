@@ -96,6 +96,15 @@ GC graph traversal and owners are unchanged. Wider collection contexts remain
 partial.
 [GC09 review](coverage/semantics/gc-fake-closure-collectability-review.json).
 
+GC10 admits direct calls through a plain childless real Closure as canonical
+materialized collector callers. The active GC receipt binds the caller and its
+real machine root; the Closure stays outside the white set while unrelated
+Closures remain refused. One native-first original agrees exactly, a strict
+pre-begin diagnostic passes 23 checks, and the affected reached group passes
+87 checks. Private strict432 compilation passes. Explicit `->__invoke`, pipe,
+captured and wider active collector contexts remain partial.
+[GC10 review](coverage/semantics/gc-closure-caller-review.json).
+
 Immediate identity cleanup now validates a sole produced right object/array
 temporary with a borrowed or scalar left operand in both AL and SL. Fourteen
 focused conditions pass in each mode, including strict compilation of the actual
@@ -335,7 +344,7 @@ cut keep zero credit.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| GC10 | Direct real-Closure caller collection; native original retained, pre-begin semantic fence under diagnosis. |
+| GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |

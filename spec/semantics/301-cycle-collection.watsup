@@ -409,6 +409,16 @@ def $gc_ordinary_node(S, HARRAY n) = true
 def $gc_ordinary_node(S, HOBJECT n) = true
   -- if S.OBJECTS[n] = STDINSTANCE \/ $weakref_object(S.OBJECTS[n])
 def $gc_ordinary_node(S, HOBJECT n) = true -- if S.OBJECTS[n] = INSTANCE porigin
+;; A live childless real Closure can be the materialized caller's machine root.
+;; It does not enter the white set or grant unrelated Closures a count walk.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin eps eps
+  -- if $node_children(S, HOBJECT n) = eps
+  -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
 def $gc_ordinary_nodes(S, eps) = true
 def $gc_ordinary_nodes(S, pnode :: pnode_tail*) = ($gc_ordinary_node(S, pnode) /\ $gc_ordinary_nodes(S, pnode_tail*))
@@ -1609,12 +1619,18 @@ def $gc_callback_walk_agrees(pgcplan) = true
   -- if $gc_count_walk(H, pgcplan.PROXIES, eps, $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
   -- if $gc_count_walk(H, pgcplan.PROXIES, (eps), $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
 def $gc_callback_walk_agrees(pgcplan) = false -- otherwise
-;; Only ordinary source calls grant this lane caller authority. The saved
-;; frame fold checks contexts without recursively validating its GC consumer.
+;; Source-backed ordinary and real-Closure calls grant this lane caller
+;; authority. Saved frames are checked without recursively validating GC.
 def $gc_materialized_caller_target(S, porigin_function, (porigin_site)) = $call_selected_valid(S, porigin_function, (porigin_site))
 def $gc_materialized_caller_target(S, METHOD_TARGET n porigin_method, (porigin_site)) = $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site))
 def $gc_materialized_caller_target(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site))
 def $gc_materialized_caller_target(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_site)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_site)
+def $gc_materialized_caller_target(S, CLOSURE_TARGET n, (porigin_site)) = $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site))
+  -- if $dynamic_site(S, (porigin_site))
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
 def $gc_materialized_caller_target(S, pcalltarget, porigin?) = false -- otherwise
 def $gc_materialized_caller(S, eps) = true
 def $gc_materialized_caller(S, (pcallcontext)) = true

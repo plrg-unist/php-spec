@@ -3687,6 +3687,11 @@ and bind copies remain collectable even when their target and receiver match an
 original; static Fiber captures made through an object have no receiver edge.
 The [fake Closure GC review](coverage/semantics/gc-fake-closure-collectability-review.json)
 records the native, source and reached-state distinctions.
+Direct calls through a plain childless real Closure now carry materialized GC
+destructor callbacks through the Closure's live caller root and source body.
+An unrelated Closure cannot enter that ordinary count walk; the
+[Closure caller review](coverage/semantics/gc-closure-caller-review.json)
+records the exact destructor/count and refusal checks.
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared
