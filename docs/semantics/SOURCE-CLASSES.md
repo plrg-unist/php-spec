@@ -262,7 +262,8 @@ required at that cut. The [constructor review](../../coverage/semantics/anonymou
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Anonymous classes accept finite sequences of direct positional/named `new`
-arguments and unpromoted value or reference parameters, including a final variadic tail.
+arguments, including array unpack, and unpromoted value or reference parameters
+with an optional final variadic tail.
 The ordinary signature compiler validates their types, defaults, requiredness and
 final-only variadic placement; the ordinary binder
 completes named holes before typed reception. A class without `__construct`
@@ -278,8 +279,8 @@ retains its seven native-backed sources, independent weak int-coercion source an
 The [finite-arity review](../../coverage/semantics/anonymous-constructor-arity-review.json)
 records root and successful include/eval sites, inherited constructors, surplus
 positional sends, named-default reception retry and pruned versus eager invalid
-defaults. Promoted or nonpublic constructors, unpacking and wider object lifetimes
-remain partial.
+defaults. Promoted or nonpublic constructors, Traversable unpacking and wider
+object lifetimes remain partial.
 Reference sends use the saved constructor signature and hold their actual cell
 before later argument effects. Named sends select the formal index when they run;
 rebinding a constructor local does not rebind the caller. Missing variables can
@@ -298,6 +299,16 @@ tail errors; invalid reference sends stop later sends. The
 [variadic review](../../coverage/semantics/anonymous-constructor-variadic-review.json)
 retains six agreements and the original excluded `count()` observer separately;
 [CORE](CORE.md#environment-and-ordinary-library-boundary) defines that library boundary.
+Array unpack uses the ordinary CV/VAR/value source classifier. Reference demand
+separates shared writable arrays, keeps embedded aliases and promotes direct
+slots only in the live table; literal value inputs receive fresh argument cells.
+Expanded integer positions and string names feed the same binder, including
+named holes filled before typing. Static order errors and dynamic name/duplicate
+errors keep their argument-effect priority. Constructorless classes retain the
+ordinary dummy send frame: positional values are ignored, while a named key stops
+later sends. The [array-unpack review](../../coverage/semantics/anonymous-constructor-unpack-review.json)
+records these source, table, cell and default checks. Existing array/reference and
+source-history limits remain; constructor Traversable producers are still separate.
 Argument TypeErrors, missing named fixed arguments and nonreferenceable-send
 Errors format the whole callable name as one C string. Ordinary too-few-argument
 errors format the lexical declaring class and member separately.

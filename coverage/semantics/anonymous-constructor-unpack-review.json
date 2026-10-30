@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.constructor-array-unpack",
+  "status": "partial",
+  "scope": "Array unpack argument sends into existing admitted public unpromoted constructors and constructorless anonymous classes, including ordinary value/reference/variadic binding and root/eval placements. Existing array/reference/body/source-history fences remain; constructor Traversables, promotion/nonpublic/attribute modes and anonymous magic methods remain separate.",
+  "engine_routes": [
+    "Zend/zend_vm_def.h::ZEND_SEND_UNPACK preserves source order, prescans reference demand and separates shared writable arrays; embedded references remain shared while direct elements promote in the live table. Literal value inputs use fresh reference cells.",
+    "Zend argument binding expands integer positions and string names before fixed/named-hole type reception; order/duplicate errors retain their different argument-effect timing. Constructorless sends keep their separate dummy call protocol."
+  ],
+  "design": "Only383 unnamed-argument unpack false becomes a checked Boolean. Named-unpack rejection and104/107 static ordering stay intact;84 supplies NEW field1 source authority,108 owns array send/classifier/COW rules and132 owns constructorless unpack. No new binder, source/cache authority, schema/machine field or native semantic fallback.",
+  "native_groups": [
+    {
+      "report": ".tools/class155-artifacts/native-initial5.json",
+      "sha256": "80c68fcbd309e005365ca863df94f8360cab3bebca6ccc0a0822a47f8cd4d1bf",
+      "revision": "1013314829265f90147b00640a08936dc16ab4c7",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.535
+    },
+    {
+      "report": ".tools/class155-artifacts/native-literal-reference1.json",
+      "sha256": "23ab76c520ca76a25f2b554ae94f711a4e482318a2769ef6627a53a2cd278513",
+      "revision": "8ddbed06528aaa73e42a39533cc043fdb3d56f7e",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.18
+    },
+    {
+      "report": ".tools/class155-artifacts/native-noctor-unpack1.json",
+      "sha256": "d14293cf88d4f74c767e76aa857f39dee174dcb0bf0cc9ba622f3195afdef7eb",
+      "revision": "8ddbed06528aaa73e42a39533cc043fdb3d56f7e",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.185
+    }
+  ],
+  "native_counts": "Seven distinct originals: initial authored3+independent2 at101331482, then separate literal-reference1 and constructorless1 at8ddbed065. Original manifests/tuples stay immutable; no native/accepted154 replay. Reused tool identity is in local-tools.json.",
+  "unchanged_baseline": {
+    "report": ".tools/class155-artifacts/unchanged-baseline2.json",
+    "sha256": "2f9dbd9aedfe2fde18c768cda2ed023b9d02446c637b00f39c855d4217157d9d",
+    "revision": "1013314829265f90147b00640a08936dc16ab4c7",
+    "cpu": [
+      1
+    ],
+    "seconds": 24.986,
+    "result": "Exactly mixed CV-array value sends and independent reference-demand COW old probes are frontend accepted/program checked Unsupported ordinary expression or writable operand compilation at unchanged101331482. All other old probes remain unrun; no agreement credit."
+  },
+  "source_outcomes": {
+    "report": ".tools/class155-artifacts/source7-assessment.json",
+    "sha256": "c85c36241fa394e0faeb9ce5b144cae0ec8b809966f82d0a95032ba77b341b0d",
+    "agreements": 7,
+    "counts": {
+      "normal": 7
+    },
+    "result": "All seven model-only observations at eff1d43a2 exactly match retained native streams/status/exit under the same profile and explicit FILE substitution only. Unchanged method_runtime assertions and full module/catalogue/profile maps; raw directories copied externally."
+  },
+  "strict_sl": {
+    "report": ".tools/class155-artifacts/first-strict432.json",
+    "sha256": "a772a2f63d47adc84dfced7d73ad4ca66ea37713bf6515b8dd6bab0fc19457e7",
+    "revision": "eff1d43a24743ccead31650ffa89c4681518d24f",
+    "cpu": [
+      1
+    ],
+    "seconds": 12.063,
+    "modules": 432,
+    "result": "Ordered full manifest --sl, exact count432/true newlines, empty stderr/exit0/stable inputs/full reap. Later fixture/metadata edits renew no accepted strict credit."
+  },
+  "reached": {
+    "accepted_conditions": 242,
+    "source_reached_conditions": 235,
+    "derived_guards": 7,
+    "groups": [
+      {
+        "report": ".tools/class155-artifacts/authored-unpack-eval113.json",
+        "sha256": "aef35434220c289787d7d74fe62816e441d6ea20afda40279578695ed6e3186e",
+        "revision": "6d0cf284184f1bb6322ead1625b71073fc2acf8d",
+        "cpu": [
+          1
+        ],
+        "seconds": 34.809,
+        "conditions": 113,
+        "reached_conditions": 110,
+        "derived_guards": 3,
+        "test": "tests/semantics/anonymous_constructor_unpack_eval_protocol.py",
+        "state_report": ".tools/class155-artifacts/anonymous-constructor-unpack-eval-d9nyzi_h/report.json",
+        "state_sha256": "6170cab735ba1d8701868291873f973bb488cec2d2805977846983d0ac5c4cde",
+        "result": "Real unit1 source ingress and CV unpack, two source arguments expanding to four fixed slots, original INDEX2 versus ARGC4, preserved HOLES1 and compiled default20 before typing; source/index/early-type guards and final output/class/call/declaration/heap validation."
+      },
+      {
+        "report": ".tools/class155-artifacts/independent-unpack-binding129.json",
+        "sha256": "5f53672e1e5117f26dc612219dbf2e5b5bedea551626223c61676dc80ba8fc6e",
+        "revision": "6d0cf284184f1bb6322ead1625b71073fc2acf8d",
+        "cpu": [
+          1
+        ],
+        "seconds": 21.927,
+        "conditions": 129,
+        "reached_conditions": 125,
+        "derived_guards": 4,
+        "test": "tests/semantics/anonymous_constructor_unpack_binding_protocol.py",
+        "state_report": ".tools/class155-artifacts/anonymous-constructor-unpack-binding-xcpfhcnu/report.json",
+        "state_sha256": "c075d88205e9d4a7e303239810f5b56c6d0a6a7a817dba513e1996f971410731",
+        "result": "Authentic VARIABLE CV classifier, shared old/snapshot table versus live COW table, embedded alias retained/direct slot promoted, raw string through reference sends then in-place int reception and body writes; classifier/index/reference-mode/cursor refusals and final validators."
+      }
+    ]
+  },
+  "representation_projection": {
+    "report": ".tools/class155-artifacts/independent-unpack-binding-projection.json",
+    "sha256": "59cb0f247f1ecead2d9a3214474d6a9d9456b0d3e93c328ac94c06e84cf64481",
+    "revision": "eff1d43a24743ccead31650ffa89c4681518d24f",
+    "cpu": [
+      1
+    ],
+    "seconds": 14.101,
+    "agreement_credit": 0,
+    "state_report": ".tools/class155-review/unpack-binding-projection-e1dswrn3/report.json",
+    "state_sha256": "e08ab7bc8c5e3884f7b2dc0ac0faff19696eb5c9870f32c8c5e26d4927c58f3c",
+    "result": "Actual VARIABLE pack; reference sends share old cell and new direct cell. Old/snapshot array keeps ALIAS0/DIRECT20, live array has ALIAS0/ALIAS3; raw interned7, received7 then final9/30. Observation only, no native/source agreement credit."
+  },
+  "obsolete_refusal": "The last literal-array unpack refusal is promoted. Its now-empty unsupported script and only three current inventory paths were retired; no Makefile invocation existed. Historical review/cuts remain recoverable at101331482; no unrelated refusal/status was removed.",
+  "failures": "No new semantic, recorder or fixture failure in this campaign. The two genuine old refusals and representation projection carry zero agreement credit.",
+  "tested_code": {
+    "implementation_commit": "d761e59ae0091948c96a29fa490c71c5014043b9",
+    "refusal_retirement": "8ddbed06528aaa73e42a39533cc043fdb3d56f7e",
+    "source_and_strict_cut": "eff1d43a24743ccead31650ffa89c4681518d24f",
+    "fixture_cut": "6d0cf284184f1bb6322ead1625b71073fc2acf8d",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "f4dc75aacd8ec0de10e40c807a6591ca1c8949951131920b00a5738e88f039a5"
+    },
+    "qualification": "All changed model/state/projection cuts share the same one-line producer change. Metadata/fixture edits renew no accepted source/native/strict execution."
+  },
+  "limits": [
+    "385 has no constructor-target Iterator/Generator arm; this campaign does not widen Traversable ownership/producer fences.",
+    "Anonymous nonconstructor magic methods, especially direct __destruct, remain substantive required class work alongside promotion/nonpublic forms and wider factories/lifetimes.",
+    "Existing array/object/reference payload and property-source constraints remain authoritative.",
+    "All paused/held boundaries including owned-NUL release, V110 and COMP123 remain unchanged."
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; sole project-local oracle.",
+  "source_pin": "vendor/php-src @34308a6666b2d489c509541ea9befea9e2b42348",
+  "recovery": "Frozen originals/native/probes and raw source/state/projection records are outside Git under .tools/class155-author, class155-review and class155-artifacts. local-tools.json records reused binaries, without a fresh build/portability claim. Internal report paths retain actual tested locations.",
+  "independent_review": "Minimal admission and static-order/source/array protocol authority, all native tuples/catalogue, seven comparisons, authentic projection and113/129 fixtures independently reviewed. Final concise prose/inventory and actual-tail integration remain separate."
+}

@@ -201,17 +201,19 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS154 admits public unpromoted variadic constructors through the
-ordinary positional/named binder. Value tails copy; reference tails retain caller
-cells across later rebinding and typed reception. Fixed defaults precede ordered
-tail collection, including empty arrays; whole-name diagnostics preserve the
-separate ordinary missing-arity display rule. Six eligible originals agree and
-270 conditions pass (263 reached, seven derived guards), with private and
-actual-tail joined strict432 at separate cuts.
-The original excluded COUNT observer and an authored timing-fixture failure retain
-zero credit; the fresh foreach observer has its own native/source cut.
-Promotion/unpacking/nonpublic and wider contexts remain
-partial. [Variadic review](coverage/semantics/anonymous-constructor-variadic-review.json).
+CLASS155 privately validates anonymous array argument unpack through the ordinary
+source classifier, array prescan/COW and binder. Embedded aliases stay shared;
+direct slots promote only in the live table, and literal inputs get fresh argument
+cells. Expanded names preserve holes/default reception and error priority;
+constructorless arrays use the existing dummy send frame. Seven originals agree,
+and 242 conditions pass (235 reached, seven derived guards), with private strict432.
+The original native5/old2 and separate literal/no-ctor natives retain their cuts;
+projection has no agreement credit. Actual-tail integration is pending.
+Traversable constructors, promotion/nonpublic modes and anonymous magic methods,
+especially direct `__destruct`, remain required class work.
+[Array-unpack review](coverage/semantics/anonymous-constructor-unpack-review.json).
+The prior [variadic review](coverage/semantics/anonymous-constructor-variadic-review.json)
+retains CLASS154 source6/state270, its excluded COUNT observer and failed fixture.
 The prior [reference review](coverage/semantics/anonymous-constructor-reference-review.json)
 retains CLASS153 source6/state217 and its own native, strict and fixture cuts.
 The prior [finite-arity review](coverage/semantics/anonymous-constructor-arity-review.json)
@@ -295,7 +297,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS155 | Array constructor unpack; native5+1+1/old2 retained, changed-model validation pending. |
+| CLASS155 | Private source7/state242/strict432 complete; actual-tail integration pending. |
 | GC09 | Coherent fake-Closure allocation flags under implementation. |
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |

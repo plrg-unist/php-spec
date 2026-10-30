@@ -4507,6 +4507,10 @@ omitted defaults stay local. [Reference-constructor review](coverage/semantics/a
 Public unpromoted variadic constructors now share ordinary positional/named tail
 collection, reference aliases and typed reception, including empty tails.
 [Variadic-constructor review](coverage/semantics/anonymous-constructor-variadic-review.json).
+Anonymous array argument unpack now shares ordinary COW/reference acquisition,
+named mapping and default reception; constructorless classes evaluate and ignore
+expanded positional values.
+[Array-unpack review](coverage/semantics/anonymous-constructor-unpack-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
