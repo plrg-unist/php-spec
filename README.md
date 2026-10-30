@@ -4425,7 +4425,12 @@ separately. Raw invokable and array-form callbacks preserve distinct tick
 identity; inline unregister releases arguments before cached object/Closure
 owners, while quiet shutdown owners survive through FINAL. Five normal
 originals and 296 reached/guard checks validate this slice; late free and
-array-form Closure::__invoke callbacks remain partial. See the [cache review](coverage/semantics/callback-fcc-cache-review.json).
+wider cached wrapper consumers remain partial. See the [cache review](coverage/semantics/callback-fcc-cache-review.json).
+Cached tick `[Closure,"__invoke"]` calls now preserve both deprecation phases,
+fresh reference warnings, weak reception, raw/received sensitive snapshots and
+unused-result cleanup under the persistent cache. Five originals and 302 reached/guard
+checks pass; other API wrappers and the older source-wrapper warning-head location
+remain partial. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

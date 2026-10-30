@@ -201,3 +201,19 @@ scoped VM/wrapper receiver owners, shared captures, used arrow results and expir
 entry refusal. Eleven focused checked syntax roundtrips and private strict432 pass.
 General messages, mixed/user attributes and wider consumers remain partial;
 actual-tail composition is pending.
+
+## Cached tick Closure wrappers
+
+Tick `[Closure,"__invoke"]` callbacks use a separate borrowed outer receiver.
+8192 precedes outer copies, required-reference warning 2 names the wrapper and
+creates a private cell, then 16384 precedes inner entry/type reception. The cache
+owns the selected Closure throughout; the entered user call adds its own instance.
+NoDiscard stays masked. Raw and received sensitive snapshots remain distinct;
+trampoline walking supplies the real tick marker. Generic frame cleanup and
+TICK_RESULT retire raw arguments before unused values while the cache remains live.
+Warning throws leave that registry owner intact for later unregister.
+The [ATTR09 review](../../coverage/semantics/callback-closure-invoke-review.json)
+records five normal originals and 302 checks (300 reached, two derived), with private
+strict 432. Other API wrappers and wider histories remain partial. The older source
+wrapper's inner-warning handler trace head still needs its inherited file/line;
+its previous accepted cuts are not renewed by this tick slice.
