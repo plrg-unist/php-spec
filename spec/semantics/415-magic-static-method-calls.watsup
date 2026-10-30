@@ -183,7 +183,9 @@ def $magic_static_method_entered(S, (pcallcontext), pframe :: pframe_tail*, pmag
 def $magic_static_method_entered(S, eps, pframe :: pframe_tail*, pmagicstaticmethodcall, n, pvalue*) = $magic_static_method_entered(S, pframe.CONTEXT, pframe_tail*, pmagicstaticmethodcall, n, pvalue*)
 def $magic_static_method_entered(S, (pcallcontext), eps, pmagicstaticmethodcall, n, pvalue*) = $generator_magic_context_valid(S[.CURRENT = (pcallcontext)][.FRAMES = eps], pcallcontext)
   -- if pcallcontext.TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*
-def $magic_static_method_entered(S, pcallcontext?, eps, pmagicstaticmethodcall, n, pvalue*) = false -- otherwise
+def $magic_static_method_entered(S, (pcallcontext), eps, pmagicstaticmethodcall, n, pvalue*) = false
+  -- if pcallcontext.TARGET =/= MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*
+def $magic_static_method_entered(S, eps, eps, pmagicstaticmethodcall, n, pvalue*) = false
 def $target_function(S, MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*) = (pfunction)
   -- if $magic_static_method_pending(S, pmagicstaticmethodcall, n, pvalue*) \/ $magic_static_method_entered(S, S.CURRENT, S.FRAMES, pmagicstaticmethodcall, n, pvalue*)
   -- if $target_function(S, STATIC_METHOD_TARGET pmagicstaticmethodcall.CLASS pmagicstaticmethodcall.METHOD) = (pfunction)

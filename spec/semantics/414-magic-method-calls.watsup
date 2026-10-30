@@ -327,7 +327,9 @@ def $magic_method_entered(S, (pcallcontext), pframe :: pframe_tail*, pmagicmetho
 def $magic_method_entered(S, eps, pframe :: pframe_tail*, pmagicmethodcall, n, pvalue*) = $magic_method_entered(S, pframe.CONTEXT, pframe_tail*, pmagicmethodcall, n, pvalue*)
 def $magic_method_entered(S, (pcallcontext), eps, pmagicmethodcall, n, pvalue*) = $generator_magic_context_valid(S[.CURRENT = (pcallcontext)][.FRAMES = eps], pcallcontext)
   -- if pcallcontext.TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*
-def $magic_method_entered(S, pcallcontext?, eps, pmagicmethodcall, n, pvalue*) = false -- otherwise
+def $magic_method_entered(S, (pcallcontext), eps, pmagicmethodcall, n, pvalue*) = false
+  -- if pcallcontext.TARGET =/= MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*
+def $magic_method_entered(S, eps, eps, pmagicmethodcall, n, pvalue*) = false
 def $target_function(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*) = (pfunction)
   -- if $magic_method_pending(S, pmagicmethodcall, n, pvalue*) \/ $magic_method_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n, pvalue*)
   -- if $target_function(S, METHOD_TARGET pmagicmethodcall.OBJECT pmagicmethodcall.METHOD) = (pfunction)
