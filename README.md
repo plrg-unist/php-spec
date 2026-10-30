@@ -6656,6 +6656,14 @@ Six native/model originals and private433 retain their recorded cuts. Seven
 reached fronts pass 561 custom/596 reported checks; original failures keep zero
 credit and actual-tail integration remains pending.
 [Raw method review](coverage/semantics/generator-raw-method-factory-review.json).
+
+I88 extends direct raw method Generator transfer to reference caches and
+warm/fresh THROW through the actual-resumer proof. Fresh THROW keeps its pending
+exception reference; nonstatic object-array selection respects an ordinary caller's private
+method. Four native/model originals agree and four reached fronts pass 439 custom/
+459 reported checks at distinct cuts. Private433 keeps its original cut;
+original failures and diagnostic keep zero credit, with actual-tail integration pending.
+[Raw cache review](coverage/semantics/generator-raw-method-cache-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

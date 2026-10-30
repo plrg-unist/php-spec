@@ -1125,6 +1125,15 @@ reported checks at their distinct cuts. Private433 retains its original cut;
 actual-tail integration is pending. Wider caches/transfers remain partial.
 [Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
 
+I88 keeps the same actual Gen/current/raw target for reference caches and
+warm/fresh THROW across a Fiber. Parameter, delivered and caught CV unsets leave
+their separate cache/This/API input owners. Fresh initialization retains a second
+pending exception reference; warm/caught/borrowed phases keep their existing
+owners. Nonstatic object-array selection from an ordinary method preserves its private
+winner. Four native/model originals agree; four reached fronts pass 439 custom/
+459 reported checks. Private433 retains its cut; actual-tail integration is pending.
+[Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

@@ -35,19 +35,20 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
-I87 connects raw array/string method Generator producers and scoped factories
-to their immutable selected-method authority. Argument callbacks and retired
-source values cannot retarget the stored call. Private history authenticates its
-ordinary source method and original site/scope without inventing a caller.
-Bounded lookup validates retired receiver history; direct creation and Fiber
-entry require the real live receiver. Six native/model originals agree; seven
-reached fronts pass 561 custom/596 reported checks at distinct cuts, including
-actual close/cache/SEND owners and budget continuation. Private strict433 keeps
-its original cut; later reached checks compile the permission repair. Actual-tail
-integration is pending. Original refusal, three fixture failures, the private
-history rejection and two projections retain zero credit. Direct raw cached
-references, pipe and wider API/binding/delegation/collection/lifecycles remain partial.
-[I87 review](coverage/semantics/generator-raw-method-factory-review.json).
+I88 carries raw method Generator reference caches and warm/fresh THROW across
+Fibers using the actual resumer/Gen/current proof. Fresh initialization now
+retains Zend's extra pending exception reference until injection; calibrated
+native controls distinguish pending input2 from warm input1 after CV unset.
+Nonstatic object-array calls from fixed ordinary method sources preserve lexical private
+selection over a public child override. Four native/model originals agree;
+four reached fronts pass 439 custom/459 reported checks at distinct cuts.
+Private433 keeps its original cut; later reached checks compile both corrections.
+Original refusal and reached failures plus the native diagnostic keep zero extra
+agreement credit. Eight legacy expectations are maintained without execution
+renewal or historical rewrite. Actual-tail integration and wider captured-Closure,
+API/binding/delegation/collection/lifecycle combinations remain pending.
+[I88 review](coverage/semantics/generator-raw-method-cache-review.json).
+[I87](coverage/semantics/generator-raw-method-factory-review.json),
 [I86](coverage/semantics/generator-captured-method-body-review.json),
 [I85](coverage/semantics/generator-direct-magic-review.json),
 [I84](coverage/semantics/generator-magic-factory-review.json),
@@ -330,7 +331,8 @@ cut keep zero credit.
 | I85 | Reviewed private direct magic Generators: native6/current source5, reached444 custom/469 reported and private strict433 pass at distinct cuts. Actual-tail integration pending; original failures retain zero credit. |
 | I86 | Reviewed private captured method Gen/Fiber and consumed storage: native4/source4, reached501 custom/526 reported and private433 pass at distinct cuts. Shared ATTR07 receiver hunk only; actual-tail integration pending and original failures retain zero credit. |
 | I87 | Reviewed private raw array/string method Gen creation/factory/Fiber: native6/source6, reached561 custom/596 reported and private433 pass at distinct cuts. Source-fixed private history repaired; original failures0 retained, actual-tail integration pending. |
-| I88 | External-only candidate sources for raw Gen reference-cache and warm/fresh throw consumers; native/model/state unrun. |
+| I88 | Reviewed private raw Gen cache/warm/fresh THROW: native4/source4/private433 and reached439 custom/459 reported pass at distinct cuts. Pending exception owner/private selection corrected; original failures0 retained, actual-tail pending. |
+| I89 | Captured nonstatic method-Closure warm/fresh THROW consumer gap identified; source preparation, native/model/state unrun. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
