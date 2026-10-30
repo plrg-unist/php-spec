@@ -246,7 +246,7 @@ S_no_owner = S_live[.FRAMES = eps]
 $fiber_generator_body_id(S_no_owner) = eps
 ~$fiber_generator_method_closure_valid(S_no_owner, pgenerator, pcallcontext_generator)
 S_bad_cell = S_live[.STORE = $set_cell(S_live.STORE, n_cache, UNDEFINED)]
-~$fiber_generator_throw_valid(S_bad_cell, pgeneratorop, pgenerator, pcallcontext_generator)
+~$fiber_generator_cached_reference_valid(S_bad_cell, pgenerator, pcallcontext_generator)
 S_zero = $drive_steps(S, 0)
 S_zero.COMPLETION = BUDGET
 S_zero.TODO = S.TODO
