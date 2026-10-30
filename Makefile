@@ -705,6 +705,9 @@ test-semantics: build
 	python3 tests/semantics/generator_direct_magic_throw_sources.py
 	python3 tests/semantics/generator_direct_magic_throw_state.py
 	python3 tests/semantics/generator_direct_magic_throw_review_state.py
+	python3 tests/semantics/generator_string_method_closure_sources.py
+	python3 tests/semantics/generator_string_method_closure_state.py
+	python3 tests/semantics/generator_string_method_closure_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

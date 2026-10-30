@@ -559,6 +559,17 @@ supplied abort as Previous. Native4/source4 and five reached fronts 623 custom/
 source/API combinations and actual-tail integration remain partial.
 [Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
 
+I91 recognizes static user-method string captures as Closures and removes their
+known-method fallback overlap with admitted bindTo. The existing source/binding
+and Generator authority remains unchanged; first-class binding captures retain
+Unsupported. Native controls distinguish an original string target from later
+retargeting, called-scope reset at compatible static binding, a Closure retained
+through CLOSED and a retired factory's nonowning scoped-body history. Native3,
+source3/private433 and five reached fronts 614 custom/639 reported pass at distinct
+cuts; both original failures remain zero credit. Actual-tail integration and wider
+callable consumers remain partial.
+[String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

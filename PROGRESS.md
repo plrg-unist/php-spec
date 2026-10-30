@@ -35,16 +35,15 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
-I90 carries direct typed BYVAL magic Generator warm/fresh THROW across Fibers
-through a shared actual resumer/Gen/current and entered-handler receipt proof.
-Native fresh abort releases payload before This, then throws the original API
-Throwable with the supplied abort as Previous; the existing initialization rule
-supplies that order unchanged. Four native/model originals agree at distinct
-cuts; five reached fronts pass 623 custom/648 reported checks. Private433 keeps
-its original cut and the unchanged Unsupported keeps zero agreement credit.
-Source/signature and wider producer/API/lifecycle limits remain partial;
-actual-tail integration is pending.
-[I90 review](coverage/semantics/generator-direct-magic-throw-review.json).
+I91 restores nominal Closure identity for static user-method string captures and
+routes admitted non-first-class bindTo calls through existing binding authority.
+Source retargeting, called-scope reset, a retained Gen Closure and a retired
+factory's nonowning history retain distinct controls. Three native/model
+originals and five reached fronts 614 custom/639 reported pass at their recorded
+cuts; private433 keeps its original cut. Both original failures remain zero credit.
+Wider callable/API/lifecycle contexts and actual-tail integration remain partial.
+[I91 review](coverage/semantics/generator-string-method-closure-review.json).
+[I90](coverage/semantics/generator-direct-magic-throw-review.json),
 [I89](coverage/semantics/generator-captured-method-throw-review.json),
 [I88](coverage/semantics/generator-raw-method-cache-review.json),
 [I87](coverage/semantics/generator-raw-method-factory-review.json),
@@ -333,7 +332,8 @@ cut keep zero credit.
 | I88 | Reviewed private raw Gen cache/warm/fresh THROW: native4/source4/private433 and reached439 custom/459 reported pass at distinct cuts. Pending exception owner/private selection corrected; original failures0 retained, actual-tail pending. |
 | I89 | Reviewed private nonstatic method-Closure warm/fresh THROW: native4/source4/private433 and five fronts632 custom/657 reported pass at distinct cuts. ARRAY nominal/bindTo corrections and all original0s retained; actual-tail pending. |
 | I90 | Reviewed private direct BYVAL magic Gen warm/fresh THROW: native4/source4/private433 and five fronts 623 custom/648 reported pass at distinct cuts. Fresh-abort original/Previous and lifetime order agree; actual-tail pending. |
-| I91 | Static string-method Closure identity/bindTo frontier; external native-first originals prepared, unrun with no implementation or validation credit. |
+| I91 | Reviewed private static string Closure identity/bindTo: native3/source3/private433 and five reached fronts 614 custom/639 reported pass at distinct cuts. Original nominal/binding failures0 retained; actual-tail pending. |
+| I92 | Real Closure::call Generator copy branch; external native-first originals prepared, unrun with no implementation or validation credit. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |

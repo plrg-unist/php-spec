@@ -1154,6 +1154,16 @@ checks, including budgeted abort/drop and closed Previous order. Actual-tail
 integration remains pending. Source/signature and wider lifecycle limits remain.
 [Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
 
+I91's static string-method captures reuse the existing callee and warm THROW
+consumers after nominal identity and bindTo dispatch corrections. Direct captured
+Gen bodies keep Closure/cache owners distinct; an ordinary bound factory can
+retire before its scoped BYREF body runs. Native3/source3/private433 retain
+distinct cuts; five reached fronts pass 614 custom/639 reported checks, including
+budgeted abort/drop and closed-cache cleanup. Original nominal/binding failures
+retain zero credit. Actual-tail integration and wider callable/API/lifecycle
+combinations stay partial.
+[String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

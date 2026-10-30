@@ -1,0 +1,143 @@
+{
+  "milestone": "I91 static method string Closure identity and bindTo dispatch",
+  "status": "Reviewed private native3/source3/strict433 and five reached fronts 614 custom/639 reported pass at distinct cuts; actual-tail integration pending",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "a4ef9e7fca26ad52d83695a3367d1bbefdebae6c",
+  "scope": "STRINGMETHODCLOSURE has nominal Closure membership. Exclude admitted non-first-class bindTo from its known-method Unsupported fallback so existing253 source-authenticated handler is sole; preserve FCC Unsupported. Existing selected target, compatible binding, Generator/Fiber consumer, history and owner policies are reused, with no schema or allocation changes.",
+  "changed_modules": [
+    "spec/semantics/210-class-method-strings.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_closures.c",
+      "vendor/php-src/Zend/zend_generators.c",
+      "vendor/php-src/Zend/zend_execute.c"
+    ],
+    "symbols": [
+      "zend_closure_from_frame",
+      "zend_create_fake_closure",
+      "zend_create_closure_ex",
+      "zend_valid_closure_binding",
+      "do_closure_bind",
+      "zend_generator_free_storage"
+    ],
+    "rule": "String method first-class conversion allocates an actual Closure object. Compatible static binding with null receiver uses selected lexical scope as called scope; selected method identity survives later source-string changes. Direct Gen Closure ownership and retired factory permission history remain distinct."
+  },
+  "review": "Independent semantics, completeness, counterexample and test-reliability review CLEAR; final records reviewed CLEAR, actual-tail review pending.",
+  "validation": {
+    "native_packets": [
+      {
+        "revision": "478c02c1ad8801a99d1338aed94bd120f57bc435",
+        "count": 2,
+        "report": "../php-spec-evidence-archive/generator-string-method-closure-91/source-packet/native-first/report.json",
+        "sha256": "9a446b6f03504b66c4e0cad4617f6f2c51ef280edaf665c292279dfcbe0d805b"
+      },
+      {
+        "revision": "478c02c1ad8801a99d1338aed94bd120f57bc435",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/independent/native-first/report.json",
+        "sha256": "a3058a93c5613d361d50f35840bb931eb2c848623bf294102d5345ccfa6afbd1"
+      }
+    ],
+    "nominal_failure": {
+      "revision": "e7587beee448ae6fa268e6bf72f4756b5a22fd3e",
+      "result": "Checked NORMAL with only Closure-instanceof booleans false vs native true; zero agreement credit. Stable HEAD+inputs/exit0/no timeout/three sampledCPU4 processes/full reap.",
+      "report": "../php-spec-evidence-archive/generator-string-method-closure-91/validated/generator-string-method-closure-source-e_2ba1x1/report.json",
+      "sha256": "2252c1ed9980a14d6eda58b1c77b1e9624f0c7a59d03971ccce550038b6c67cb"
+    },
+    "private_strict": {
+      "revision": "a8afdd260866f0c09920eebbbd081aa98d5110da",
+      "modules": 433,
+      "result": "SL/cache-off/determinism-on; true newline/exit0/empty stderr/no timeout/stable HEAD+inputs/launch-reportCPU4/full reap; completed before live sampling.",
+      "report": "../php-spec-evidence-archive/generator-string-method-closure-91/strict-private/report.json",
+      "sha256": "a526cdf893e9b4d5eecfce0ea0a8cbf536634ee18c0f78ee07ed4d2364882f5f"
+    },
+    "binding_failure": {
+      "revision": "a8afdd260866f0c09920eebbbd081aa98d5110da",
+      "result": "New B interpreter failure: STRING known-method Unsupported return overlaps authenticated253 bindTo tail call; zero agreement credit. Stable HEAD+inputs/exit1/no timeout/three sampledCPU4 processes/full reap.",
+      "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/generator-string-method-closure-source-7p54hnvt/report.json",
+      "sha256": "8653f316b0031e98ada260edd03aec74c7c5878f73ca334ca9281b276c21f920"
+    },
+    "source_agreements": [
+      {
+        "id": "i91-static-string-captured-identity-retarget",
+        "revision": "a8afdd260866f0c09920eebbbd081aa98d5110da",
+        "report": "../php-spec-evidence-archive/generator-string-method-closure-91/validated/generator-string-method-closure-source-ojcsstpa/report.json",
+        "sha256": "3b0e46f206e420b88bd50893ebb4103ea58f64f5b2e009701b58c5b45aaf5ab3"
+      },
+      {
+        "id": "i91-bound-private-string-reference-throw-abort",
+        "revision": "50db4ab911f7760e14e6da5d1ebad82cab323b7f",
+        "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/generator-string-method-closure-source-hsbgl11l/report.json",
+        "sha256": "440d880396b46185394947b7a64d917011fb4985022afa9e992160405b2d98fc"
+      },
+      {
+        "id": "i91-bound-string-factory-retired-reference-independent",
+        "revision": "50db4ab911f7760e14e6da5d1ebad82cab323b7f",
+        "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/generator-string-method-closure-source-8zyx9t_7/report.json",
+        "sha256": "ab11b0e0e2d1cd782f9cdc5b046d4334babc96e61ea5a63839d41b7549c41a79"
+      }
+    ],
+    "dispatch_correction": {
+      "revision": "ca05c0c90696c0f0220c981e8c929a46707dc0b3",
+      "result": "One-line scoped non-FCC exclusion; unchanged B only affected retry, A/native/private433 cuts retained."
+    },
+    "reached": {
+      "status": "Five genuinely new fronts pass; no state failures or reruns",
+      "revision": "50db4ab911f7760e14e6da5d1ebad82cab323b7f",
+      "custom_checks": 614,
+      "reported_checks": 639,
+      "result": "True newline/exit0/empty diagnostics/no timeout/stable HEAD+selected inputs; two sampled CPU4 processes absent/full reap at each boundary. Authored322/337 and independent292/302 remain exact selections.",
+      "fronts": [
+        {
+          "id": "i91-string-value-throw-parked",
+          "custom_checks": 105,
+          "reported_checks": 110,
+          "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/fiber-state-review-pi015sqd/report.json",
+          "sha256": "7ae730cc25d137debc1e985b340b68a2b6f49c6288b8dcd20ca5f23bacd80c78"
+        },
+        {
+          "id": "i91-bound-string-reference-throw-parked",
+          "custom_checks": 122,
+          "reported_checks": 127,
+          "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/fiber-state-review-djoz4w0h/report.json",
+          "sha256": "430e69578ed5ef2530b10b8776d7e84dce2fbde9ae20a00100197638173a499e"
+        },
+        {
+          "id": "i91-bound-string-reference-closed",
+          "custom_checks": 95,
+          "reported_checks": 100,
+          "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/fiber-state-review-oh5y_sxi/report.json",
+          "sha256": "c5dee974668e84f01d89148641702d0ddeebd3ada588ce8565629c37396faa69"
+        },
+        {
+          "id": "i91-retired-string-factory-parked-throw-independent",
+          "custom_checks": 172,
+          "reported_checks": 177,
+          "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/fiber-state-review-2mqs0cl8/report.json",
+          "sha256": "5b9782e875d143018dd839141c435842f21f7ba0780c6871313af8bb0afd79b9"
+        },
+        {
+          "id": "i91-retired-string-factory-closed-cache-independent",
+          "custom_checks": 120,
+          "reported_checks": 125,
+          "report": "../php-spec-evidence-archive/generator-string-method-closure-91-review/validated/fiber-state-review-k13c_ui8/report.json",
+          "sha256": "41b15299e02b41052c7a04b65876625f1370fa1e08d401f86eafc18d4358e484"
+        }
+      ]
+    },
+    "actual_tail": {
+      "status": "Unrun; requires valid canonical writer handoff"
+    }
+  },
+  "remaining": [
+    "Wider Closure API/source spellings, binding/error contexts, delegation/collection/lifecycle combinations remain partial.",
+    "No complete callable, Generator/Fiber or full-core claim."
+  ],
+  "reproduction": [
+    "python3 tests/semantics/generator_string_method_closure_sources.py --case CASE --native-report RETAINED_NATIVE_REPORT",
+    "python3 tests/semantics/generator_string_method_closure_state.py --case CASE",
+    "python3 tests/semantics/generator_string_method_closure_review_state.py --case CASE"
+  ],
+  "compatibility": "I84\u2013I90 remain immutable unintegrated packages. The nominal change is constructor classification only; the dispatch change is disjoint from A unbound capture and reuses existing253 authority. No accepted native/source/state/private433 credit is renewed; actual released-tail composition/review/join remain pending."
+}

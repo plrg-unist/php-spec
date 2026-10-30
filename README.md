@@ -6679,6 +6679,14 @@ retain distinct cuts; five reached fronts pass 623 custom/648 reported checks.
 Fresh abort agrees on original-Throwable/Previous and payload-before-This order.
 Actual-tail integration and wider contexts are pending.
 [Magic THROW review](coverage/semantics/generator-direct-magic-throw-review.json).
+
+I91 restores nominal Closure identity for user-method string captures and routes
+admitted non-first-class bindTo calls through the existing authenticated binding
+handler. Stored selection survives source-string retargeting; static binding
+retains its actual called scope and no receiver. Native3/source3/private433 retain
+distinct cuts; five reached fronts pass 614 custom/639 reported checks. Both
+original failures retain zero credit; actual-tail integration remains pending.
+[String Closure review](coverage/semantics/generator-string-method-closure-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
