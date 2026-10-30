@@ -53,8 +53,12 @@ def $ppclosure_outer_check(P, ptbytes, ptbytes_seen*) = $ppstatic_cvrecord(P, pt
 
 def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = P
   -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppunsupported(P, "Closure keyword source line")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $declaration_method_keyword_lines(metadata) =/= eps /\ $ppclosure_line(metadata) = 0
 def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppclosure_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true][.FOLD.CLOSURE = true][.GOTOROOT = pcpath], pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
   -- if P.COMPLETION = PPCNORMAL
+  -- if $declaration_method_keyword_lines(metadata) = eps \/ $ppclosure_line(metadata) > 0
   -- if ptbytes = $ppclosure_name(P, metadata)
 
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, psprogress) = P

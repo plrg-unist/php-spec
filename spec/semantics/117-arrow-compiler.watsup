@@ -79,8 +79,12 @@ def $pparrow_return(P, pcpath, (text)) = $ppconstant_error(P, $ptascii(text), P.
 
 def $pparrow_begin(P, pcpath, phpType16, ptbytes_names*, phpType18, expression_body, b, metadata) = P
   -- if P.COMPLETION =/= PPCNORMAL
+def $pparrow_begin(P, pcpath, phpType16, ptbytes_names*, phpType18, expression_body, b, metadata) = $ppunsupported(P, "Closure keyword source line")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $declaration_method_keyword_lines(metadata) =/= eps /\ $ppclosure_line(metadata) = 0
 def $pparrow_begin(P, pcpath, phpType16, ptbytes_names*, phpType18, expression_body, b, metadata) = $pparrow_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true][.FOLD.CLOSURE = true][.GOTOROOT = pcpath], pcpath, ptbytes, ptbytes_names*, expression_body, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
   -- if P.COMPLETION = PPCNORMAL
+  -- if $declaration_method_keyword_lines(metadata) = eps \/ $ppclosure_line(metadata) > 0
   -- if ptbytes = $ppclosure_name(P, metadata)
 
 def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, psprogress) = P
