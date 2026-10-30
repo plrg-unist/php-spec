@@ -37,8 +37,6 @@ CASES = {
             '~$gc_ordinary_node(S[.GC.ACTIVE = eps], HOBJECT n_closure)',
             '~$gc_ordinary_node(S[.GC.ACTIVE = (pgccall[.CALLER = eps])], HOBJECT n_closure)',
             '~$gc_ordinary_node(S[.OBJECTS[n_wh] = REALCLOSURE porigin_template eps eps], HOBJECT n_wh)',
-            'S_buffered = S[.GC.BUFFER = S.GC.BUFFER ++ [GC_ROOT (HARRAY n_array)]]',
-            '~$gc_ordinary_node(S_buffered, HOBJECT n_closure)',
             '$dynamic_site(S, (porigin_outer_call))',
             '$dynamic_fixed_name(S, porigin_outer_call) = eps',
             '$gc_materialized_caller_target(S, CLOSURE_TARGET n_closure, (porigin_outer_call))',
