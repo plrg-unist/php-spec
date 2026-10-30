@@ -960,7 +960,7 @@ def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = $trace_visit_parent
   -- if $trace_visit_interfaces(S, pclassdesc_parent)
 def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = false -- otherwise
 ;; Ordinary methods do not participate in standard object/object comparison.
-;; Declared backing slots compare regardless of their visibility.
+;; Current declared and dynamic slots retain their authenticated storage images.
 ;; Retain the existing layout and lifecycle bounds without whole-graph admission.
 def $trace_visit_object_class(S, n) = $trace_object_class(S, n)
   -- if $(n < |S.OBJECTS|)
@@ -986,7 +986,9 @@ def $trace_visit_slots_admitted(ppropertyslot :: ppropertyslot_tail*) = $trace_v
   -- if pitem =/= UNINITIALIZED
 def $trace_visit_slots_admitted(ppropertyslot :: ppropertyslot_tail*) = $trace_visit_slots_admitted(ppropertyslot_tail*)
   -- if ppropertyslot.DECL =/= eps
-  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
+  -- if ppropertyslot.STATE = PROP_INITIAL
+def $trace_visit_slots_admitted(ppropertyslot :: ppropertyslot_tail*) = $trace_visit_slots_admitted(ppropertyslot_tail*)
+  -- if ppropertyslot.STATE = PROP_UNSET
 def $trace_visit_slots_admitted(ppropertyslot*) = false -- otherwise
 def $trace_visit_object_image(S, n) = true
   -- if $trace_visit_object_class(S, n)
