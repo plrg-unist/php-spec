@@ -301,7 +301,8 @@ retains six agreements and the original excluded `count()` observer separately;
 [CORE](CORE.md#environment-and-ordinary-library-boundary) defines that library boundary.
 Array unpack uses the ordinary CV/VAR/value source classifier. Reference demand
 separates shared writable arrays, keeps embedded aliases and promotes direct
-slots only in the live table; literal value inputs receive fresh argument cells.
+slots only in the live table. Direct elements of value inputs use fresh cells
+when passed to by-reference formals; existing embedded aliases remain shared.
 Expanded integer positions and string names feed the same binder, including
 named holes filled before typing. Static order errors and dynamic name/duplicate
 errors keep their argument-effect priority. Constructorless classes retain the

@@ -203,8 +203,9 @@ residual tags, workers, hooks, reentry and active contexts remained partial.
 
 CLASS155 privately validates anonymous array argument unpack through the ordinary
 source classifier, array prescan/COW and binder. Embedded aliases stay shared;
-direct slots promote only in the live table, and literal inputs get fresh argument
-cells. Expanded names preserve holes/default reception and error priority;
+direct slots promote only in the live table. Direct elements of value inputs use
+fresh cells when reference demand requires them; embedded aliases remain shared.
+Expanded names preserve holes/default reception and error priority;
 constructorless arrays use the existing dummy send frame. Seven originals agree,
 and 242 conditions pass (235 reached, seven derived guards), with private strict432.
 The original native5/old2 and separate literal/no-ctor natives retain their cuts;

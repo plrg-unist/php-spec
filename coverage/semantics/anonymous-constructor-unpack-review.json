@@ -4,7 +4,7 @@
   "status": "partial",
   "scope": "Array unpack argument sends into existing admitted public unpromoted constructors and constructorless anonymous classes, including ordinary value/reference/variadic binding and root/eval placements. Existing array/reference/body/source-history fences remain; constructor Traversables, promotion/nonpublic/attribute modes and anonymous magic methods remain separate.",
   "engine_routes": [
-    "Zend/zend_vm_def.h::ZEND_SEND_UNPACK preserves source order, prescans reference demand and separates shared writable arrays; embedded references remain shared while direct elements promote in the live table. Literal value inputs use fresh reference cells.",
+    "Zend/zend_vm_def.h::ZEND_SEND_UNPACK preserves source order, prescans reference demand and separates shared writable arrays; embedded references remain shared while direct elements promote in the live table. Direct elements of value inputs use fresh cells when reference demand requires them; existing embedded aliases remain shared.",
     "Zend argument binding expands integer positions and string names before fixed/named-hole type reception; order/duplicate errors retain their different argument-effect timing. Constructorless sends keep their separate dummy call protocol."
   ],
   "design": "Only383 unnamed-argument unpack false becomes a checked Boolean. Named-unpack rejection and104/107 static ordering stay intact;84 supplies NEW field1 source authority,108 owns array send/classifier/COW rules and132 owns constructorless unpack. No new binder, source/cache authority, schema/machine field or native semantic fallback.",
@@ -141,5 +141,5 @@
   "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; sole project-local oracle.",
   "source_pin": "vendor/php-src @34308a6666b2d489c509541ea9befea9e2b42348",
   "recovery": "Frozen originals/native/probes and raw source/state/projection records are outside Git under .tools/class155-author, class155-review and class155-artifacts. local-tools.json records reused binaries, without a fresh build/portability claim. Internal report paths retain actual tested locations.",
-  "independent_review": "Minimal admission and static-order/source/array protocol authority, all native tuples/catalogue, seven comparisons, authentic projection and113/129 fixtures independently reviewed. Final concise prose/inventory and actual-tail integration remain separate."
+  "independent_review": "Minimal admission/static-order/source/array protocol authority, native tuples/catalogue, seven comparisons, authentic projection and113/129 fixtures independently reviewed. Private prose/inventory reviewed with direct-element reference-demand qualification; actual-tail integration review remains separate."
 }
