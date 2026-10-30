@@ -4415,7 +4415,7 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Visited comparison also admits ordinary method declarations on supported
-initialized public field layouts, including locally authenticated source and
+initialized field layouts of any visibility, including locally authenticated source and
 implicit `Stringable` interfaces and finite authenticated parent paths,
 without invoking their methods. Inherited overrides keep physical slot order;
 aliases, COW and cached fields retain their existing owners. Builtin parents,
@@ -4423,6 +4423,13 @@ hooks, readonly state and wider layouts/lifetimes retain their limits.
 [Method-image review](coverage/semantics/throwable-trace-methods-comparison-review.json).
 [Interface-image review](coverage/semantics/throwable-trace-interfaces-comparison-review.json).
 [Inherited-image review](coverage/semantics/throwable-trace-inheritance-comparison-review.json).
+Private and protected slots preserve mangled keys, declaring origins and physical
+order through real foreach caches. Declared cloning retargets those locators and
+preserves each copy's typed-alias constraints. Live typed aliases stay constrained while their object
+survives in a trace; final retirement removes the property type source while a
+cast-view alias can survive. Uninitialized, readonly, hook and wider lifetime
+bounds remain partial.
+[Nonpublic-image review](coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
 Empty ordinary layouts also compare through their real storage route: two inline
 objects return zero before the object recursion guard, while actual caches keep
 table identity/count/key/value order. Empty foreach produces a real table; cast
