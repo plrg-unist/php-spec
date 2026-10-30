@@ -72,7 +72,9 @@ function last_callback() {
     echo "S:", $GLOBALS["weak_cb"]->get() !== null, ":", $GLOBALS["weak_recv"]->get() !== null, ";";
 }
 function final_callback($buffer, $phase) {
-    return $buffer . "F:" . ($phase === 9) . ":" . ($GLOBALS["weak_cb"]->get() !== null) . ":" . ($GLOBALS["weak_recv"]->get() !== null) . ";";
+    $result = $buffer . "F:" . ($phase === 9) . ":" . ($GLOBALS["weak_cb"]->get() !== null) . ":" . ($GLOBALS["weak_recv"]->get() !== null) . ";";
+    $GLOBALS["weak_cb"] = null; $GLOBALS["weak_recv"] = null;
+    return $result;
 }
 $receiver = new ShutdownCacheReceiver(); $callback = $receiver->make(7);
 $weak_recv = WeakReference::create($receiver); $weak_cb = WeakReference::create($callback);
