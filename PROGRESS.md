@@ -358,7 +358,7 @@ cut keep zero credit.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS157 | Public anonymous Stringable admission/interface history and diagnostic candidate prepared; native6+2/old2 retained, changed validation unrun. |
+| CLASS157 | Public anonymous Stringable source3/first433 pass; original-spelling diagnostic correction and native1 added, remaining new validation pending. |
 | CLASS156 | Public anonymous destructor source5/state240/private433 pass; concise package under review, actual-tail integration pending. |
 | GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |

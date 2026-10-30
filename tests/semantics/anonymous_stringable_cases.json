@@ -118,6 +118,19 @@
       "native_group": ".tools/class157-review/never-fallthrough.native-first.json",
       "native_raw_sha256": "33616761d4bc5d101154ba85bf6bdd5d7f1976125c26402cff4c1a09af485d42",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-invalid-mixed-case-return-annotation",
+      "source": "<?php\necho \"unreachable|\";\n$object157 = new class {\n    public function __TOSTRING(): int { echo \"bad-body|\"; return 17; }\n};\n",
+      "source_sha256": "2d28e55ab40ee556ae42c6d9927dcd1feb0b239d242caf7ed657b914e98a45dd",
+      "stdout_base64": "",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IGNsYXNzQGFub255bW91czo6X19UT1NUUklORygpOiBSZXR1cm4gdHlwZSBtdXN0IGJlIHN0cmluZyB3aGVuIGRlY2xhcmVkIGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": ".tools/class157-review/invalid-mixed-case-return-annotation.native-first.json",
+      "native_raw_sha256": "967ba82ef019ed006c6645e58978c224c9d50464817fe1c529fe57ae0bd00ec9",
+      "model_timeout_seconds": 240
     }
   ]
 }
