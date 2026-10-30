@@ -219,6 +219,15 @@ $heap_owners(H, HCELL n_parameter) = 1
 $heap_owners(H, HOBJECT n_token) = 1
 $heap_owners(H, HOBJECT n_input) = 2
 $heap_count(HOBJECT n_input, $fiber_vm_nodes(pfibervm)) = 2
+$generator_pending_exception_nodes(pgeneratorop) = [HOBJECT n_input]
+$generator_operation_nodes(pgeneratorop) = [HOBJECT n_generator, HOBJECT n_input, HOBJECT n_input]
+$generator_pending_exception_nodes(pgeneratorop[.ADVANCE = false]) = eps
+$generator_operation_nodes(pgeneratorop[.ADVANCE = false]) = [HOBJECT n_generator, HOBJECT n_input]
+$generator_pending_exception_nodes(pgeneratorop[.BORROWED = true]) = eps
+$generator_operation_nodes(pgeneratorop[.BORROWED = true]) = [HOBJECT n_input]
+$generator_pending_exception_nodes(pgeneratorop[.NAME = "send"]) = eps
+$generator_pending_exception_nodes(pgeneratorop[.STARTPACK = true]) = eps
+$generator_pending_exception_nodes(pgeneratorop[.ARGUMENTS = eps]) = eps
 $fiber_generator_fresh_throw_valid(S_live, pgeneratorop, pgenerator, pcallcontext_generator)
 ~$fiber_generator_throw_valid(S_live, pgeneratorop, pgenerator, pcallcontext_generator)
 $fiber_generator_body_id(S_live) = (n_generator)
