@@ -15,7 +15,7 @@ VALID = ['$call_descriptors_valid(S)', '$destruction_state_valid(S)',
 ENDPOINT = [
     'S.REQUEST = (Q)',
     '$request_valid(Q) /\\ ~$executor_allocator_fast((Q))',
-    'S.CURRENT = eps /\\ S.FRAMES = eps /\\ S.ORIGIN = eps',
+    'S.CURRENT = eps /\\ S.FRAMES = eps /\\ S.ORIGIN = (pobdrain.SOURCE.ENTRY.CALL.SITE)',
     'S.COMPLETION = NORMAL /\\ S.EXITSTATUS = 0',
     'S.OUTPUTBUFFERS = eps /\\ S.SHUTDOWN.ENTRIES = eps',
     'S.EVENTS = [OUTPUT $ptascii("B|T|A:live|")]',
