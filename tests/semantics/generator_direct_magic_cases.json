@@ -1,0 +1,29 @@
+[
+  {
+    "id": "i85-direct-magic-instance-close",
+    "purpose": "Inherited direct __call defers its body and keeps its real Child receiver through force-close.",
+    "source": "<?php\nclass Base85A {\n    public function __call(string $name, array $arguments) {\n        echo 'BODY|', $name === 'open', '|', $arguments === [85], '|',\n             __CLASS__ === 'Base85A', '|', static::class === 'Child85A', '|';\n        try { yield 85; }\n        finally { echo 'FIN|', $this instanceof Child85A, '|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child85A extends Base85A {}\n$maker = new Child85A();\n$weak = WeakReference::create($maker);\necho 'OPEN|';\n$g = $maker->open(85);\nunset($maker);\necho 'FRESH|', $weak->get() !== null, '|';\necho 'VALUE|', $g->current() === 85, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|';\nunset($weak);\necho 'E';\n",
+    "source_sha256": "c5721b96d957e6c4a18bb0d012d1b0b59adc9416c0eaf74c495bb3c466ff2f88",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|VALUE|BODY|1|1|1|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i85-direct-magic-static-payload-return",
+    "purpose": "Inherited direct __callStatic retains its real packed object until natural completion, then closes with payload dead and return86.",
+    "source": "<?php\nclass Payload85B { public function __destruct() { echo 'ARG|'; } }\nfunction NewPayload85B() {\n    global $weakPayload;\n    $payload = new Payload85B();\n    $weakPayload = WeakReference::create($payload);\n    return $payload;\n}\nclass Base85B {\n    public static function __callStatic(string $name, array $arguments) {\n        global $weakPayload;\n        echo 'BODY|', $name === 'open', '|', count($arguments) === 1, '|',\n             $arguments[0] === $weakPayload->get(), '|',\n             __CLASS__ === 'Base85B', '|', static::class === 'Child85B', '|';\n        try { yield 85; return 86; }\n        finally { echo 'FIN|', $weakPayload->get() !== null, '|'; }\n    }\n}\nclass Child85B extends Base85B {}\necho 'OPEN|';\n$g = Child85B::open(NewPayload85B());\necho 'FRESH|', $weakPayload->get() !== null, '|';\necho 'VALUE|', $g->current() === 85, '|';\n$g->next();\necho 'AFTER|', $weakPayload->get() === null, '|RETURN|', $g->getReturn() === 86, '|';\nunset($g, $weakPayload);\necho 'E';\n",
+    "source_sha256": "5db51a66a8cc7e96f81a5e52f9201cac0151b5d30046be0f0208a89594326c91",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|VALUE|BODY|1|1|1|1|1|1|FIN|1|ARG|AFTER|1|RETURN|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i85-direct-magic-rebound-receiver",
+    "purpose": "Argument callback replaces the source receiver CV; selected Old handler and live deferred receiver remain fixed through close.",
+    "source": "<?php\nclass Old85C {\n    public function __call(string $name, array $arguments) {\n        global $weak;\n        echo 'BODY|', $name === 'open', '|', $arguments === [85], '|',\n             static::class === 'Old85C', '|', $this === $weak->get(), '|';\n        try { yield 85; }\n        finally { echo 'FIN|', $this === $weak->get(), '|'; }\n    }\n    public function __destruct() { echo 'OLD|'; }\n}\nclass Other85C {\n    public function __call(string $name, array $arguments) { echo 'BAD-TARGET|'; yield 0; }\n    public function __destruct() { echo 'NEW|'; }\n}\nfunction Replace85C() {\n    global $maker, $weak;\n    $maker = new Other85C();\n    echo 'REPLACE|', $weak->get() !== null, '|';\n    return 85;\n}\n$maker = new Old85C();\n$weak = WeakReference::create($maker);\n$g = $maker->open(Replace85C());\necho 'FRESH|', $weak->get() !== null, '|', $maker instanceof Other85C, '|';\necho 'VALUE|', $g->current() === 85, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|';\nunset($maker, $weak);\necho 'E';\n",
+    "source_sha256": "71ff0d446f149fcc32a4742fbfa4f9e4438e7c8d3e4a94fc7ccbad502e8839c8",
+    "native_exit": 0,
+    "native_stdout": "REPLACE|1|FRESH|1|1|VALUE|BODY|1|1|1|1|1|FIN|1|OLD|AFTER|1|NEW|E",
+    "native_stderr": ""
+  }
+]
