@@ -1119,12 +1119,13 @@ def $captured_method_diagnostic(S) = (pmethoddesc)
   -- if $(n < |S.OBJECTS|)
   -- if HOBJECT n <- S.ALLOCATIONS
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
-  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
   -- if $method_closure_functions(S, n, pmethoddesc) = (pfunction_base, pfunction_view)
   -- if pfunction_base = pfunction_view
   -- if pfunction_base = pmethoddesc.FUNCTION
   -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, CLOSURE_TARGET n)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
   -- if pcallcontext.CALLED_CLASS = $target_called_class(S, CLOSURE_TARGET n)
 def $captured_method_diagnostic(S) = eps -- otherwise
 
