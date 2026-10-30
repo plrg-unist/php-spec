@@ -1,0 +1,38 @@
+[
+  {
+    "id": "i84-magic-static-retired",
+    "purpose": "One admitted scalar magic send selects inherited __call, then private static body; maker retires before deferred body and Child public body is wrong.",
+    "source": "<?php\nclass Base84 {\n    public function __call(string $name, array $arguments) {\n        echo 'MAKE|', $name === 'open', '|', $arguments === [84], '|',\n             __CLASS__ === 'Base84', '|', static::class === 'Child84', '|';\n        return self::body();\n    }\n    private static function body() {\n        echo 'BODY|', __CLASS__ === 'Base84', '|', static::class === 'Child84', '|';\n        try { yield 84; }\n        finally { echo 'FIN|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child84 extends Base84 {\n    public static function body() { echo 'BAD-TARGET|'; yield 0; }\n}\n$maker = new Child84();\n$weak = WeakReference::create($maker);\n$g = $maker->open(84);\nunset($maker);\necho 'FRESH|', $weak->get() === null, '|';\necho 'VALUE|', $g->current() === 84, '|';\nunset($g, $weak);\necho 'E';\n",
+    "source_sha256": "9f5a90e1327001ef8c4c80a276c04c62a5ed6cee5dbb86f0fa605a3eed67502b",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|1|MAKER|FRESH|1|VALUE|BODY|1|1|1|FIN|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i84-magic-protected-close",
+    "purpose": "Parentless declaring __call factory selects protected nonstatic self body; actual receiver survives through close while packed call metadata owns nothing.",
+    "source": "<?php\nclass Base84B {\n    public function __call(string $name, array $arguments) {\n        global $weak;\n        echo 'MAKE|', $name === 'open', '|', $arguments[0] === 84, '|',\n             __CLASS__ === 'Base84B', '|', static::class === 'Child84B', '|', $this === $weak->get(), '|';\n        return self::body($arguments[0]);\n    }\n    protected function body($value) {\n        global $weak;\n        echo 'BODY|', __CLASS__ === 'Base84B', '|', static::class === 'Child84B', '|',\n             $this === $weak->get(), '|', $value === 84, '|';\n        try { yield $value; }\n        finally { echo 'FIN|', $weak->get() instanceof Child84B, '|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child84B extends Base84B {\n    public function body($value) { echo 'BAD-TARGET|'; yield 0; }\n}\n$maker = new Child84B();\n$weak = WeakReference::create($maker);\n$g = $maker->open(84);\nunset($maker);\necho 'FRESH|', $weak->get() instanceof Child84B, '|';\necho 'VALUE|', $g->current() === 84, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|E';\n",
+    "source_sha256": "a455f317c41adb8f73ab4101f6ce72d33cbfd17a04e5b4f40360178d4cc7d562",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|1|1|FRESH|1|VALUE|BODY|1|1|1|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i84-magic-static-payload-return",
+    "purpose": "Static magic factory receives an object from a real callback; Gen parameter keeps it until natural completion, and it dies while the closed Gen/return remain live.",
+    "source": "<?php\nclass Payload84C {\n    public function __destruct() { echo 'ARG|'; }\n}\nfunction NewPayload84C() {\n    global $weak;\n    $payload = new Payload84C();\n    $weak = WeakReference::create($payload);\n    return $payload;\n}\nclass Base84C {\n    public static function __callStatic(string $name, array $arguments) {\n        global $weak;\n        echo 'MAKE|', $name === 'open', '|', __CLASS__ === 'Base84C', '|',\n             static::class === 'Child84C', '|', $arguments[0] === $weak->get(), '|';\n        return self::body($arguments[0]);\n    }\n    private static function body($payload) {\n        global $weak;\n        echo 'BODY|', __CLASS__ === 'Base84C', '|', static::class === 'Child84C', '|',\n             $payload === $weak->get(), '|';\n        try { yield 84; return 85; }\n        finally { echo 'FIN|', $weak->get() instanceof Payload84C, '|'; }\n    }\n}\nclass Child84C extends Base84C {\n    public static function body($payload) { echo 'BAD-TARGET|'; yield 0; }\n}\n$g = Child84C::open(NewPayload84C());\necho 'FRESH|', $weak->get() instanceof Payload84C, '|';\necho 'VALUE|', $g->current() === 84, '|';\n$g->next();\necho 'AFTER|', $weak->get() === null, '|', 'RETURN|', $g->getReturn() === 85, '|';\nunset($g, $weak);\necho 'E';\n",
+    "source_sha256": "a8911f510300e5822323e02cdbbb68da55e20ab3de7e3e61b969bc66b9141606",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|1|FRESH|1|VALUE|BODY|1|1|1|1|FIN|1|ARG|AFTER|1|RETURN|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i84-magic-argument-rebind",
+    "purpose": "Argument callback overwrites the original receiver CV; selected old maker survives dispatch then retires, and later Gen body must retain old called/private target rather than reread new receiver.",
+    "source": "<?php\nclass Base84D {\n    public function __call(string $name, array $arguments) {\n        global $weakOld;\n        echo 'MAKE|', $name === 'open', '|', $arguments[0] === 84, '|',\n             __CLASS__ === 'Base84D', '|', static::class === 'Old84D', '|', $this === $weakOld->get(), '|';\n        return self::body();\n    }\n    private static function body() {\n        echo 'BODY|', __CLASS__ === 'Base84D', '|', static::class === 'Old84D', '|';\n        try { yield 84; }\n        finally { echo 'FIN|'; }\n    }\n    public function __destruct() { echo 'OLD|'; }\n}\nclass Old84D extends Base84D {\n    public static function body() { echo 'BAD-TARGET|'; yield 0; }\n}\nclass Other84D {\n    public function __call(string $name, array $arguments) { echo 'BAD-NEW|'; return []; }\n    public function __destruct() { echo 'NEW|'; }\n}\nfunction Replace84D() {\n    global $maker, $weakOld;\n    echo 'REPLACE|', $weakOld->get() instanceof Old84D, '|';\n    $maker = new Other84D();\n    echo 'SELECTED|', $weakOld->get() instanceof Old84D, '|';\n    return 84;\n}\n$maker = new Old84D();\n$weakOld = WeakReference::create($maker);\n$g = $maker->open(Replace84D());\necho 'FRESH|', $weakOld->get() === null, '|', $maker instanceof Other84D, '|';\necho 'VALUE|', $g->current() === 84, '|';\nunset($g);\nunset($maker, $weakOld);\necho 'E';\n",
+    "source_sha256": "9045abe78f78a9685618f40934903f119805af70db3a02a0d9e6b1644c81bc7c",
+    "native_exit": 0,
+    "native_stdout": "REPLACE|1|SELECTED|1|MAKE|1|1|1|1|1|OLD|FRESH|1|1|VALUE|BODY|1|1|1|FIN|NEW|E",
+    "native_stderr": ""
+  }
+]
