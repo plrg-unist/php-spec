@@ -69,8 +69,10 @@ def conditions(name, program, path, stdout):
         'n_live =/= n_option',
         'S_mutated.ARRAYS[n_live].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 31))]',
         'S_mutated.ARRAYS[n_option].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 13))]',
+        'S_mutated.OBJECTS[n_generator] = GENERATOR pgenerator_mutated',
+        'pgenerator_mutated.VALUE = (PARRAY n_option)',
         '$heap_count(HARRAY n_option,$frames_roots(S_mutated.FRAMES)) = 1',
-        owners('S_mutated','HARRAY n_option',1),
+        owners('S_mutated','HARRAY n_option',2),
     ] + public('S_mutated') + seek('S_mutated',1902,'S_value') + [
         'S_value.TODO = (CONFIG_GENERATOR pconfiggenerator_first "ready") :: ptask_value*',
         'S_value.OBJECTS[n_generator] = GENERATOR pgenerator_value',
