@@ -113,7 +113,7 @@ def conditions(name, program, source, expected_stdout):
         checks += [
             'S_removed_arrays.TICKENTRIES = [ptickentry_raw]',
             '$heap_owners($heap_prune($heap_graph(S_removed_arrays)), HOBJECT n_object) = 2',
-            '$cc_review_output(S_removed_arrays.EVENTS) = $ptascii("P:1;C:1;C:1;A:1;")',
+            '$cc_review_output(S_removed_arrays.EVENTS) = $ptascii("P:1;C:1;C:1;A:1;U:")',
         ]
         reach('S_body', 'S_removed_arrays', 1)
         checks += [
