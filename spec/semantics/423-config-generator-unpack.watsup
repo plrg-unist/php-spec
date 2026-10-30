@@ -196,7 +196,7 @@ def $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) = true
   -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue)]
 def $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) = true
   -- if $config_generator_reference_owning_source(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue), ENTRY (KINT z_value) (DIRECT pvalue_value)]
+  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue), ENTRY pkey_value (DIRECT pvalue_value)]
   -- if $config_iterator_scalar(S, pvalue_value)
 def $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) = false -- otherwise
 def $config_generator_owning_value_source(S, pconfiggenerator) = true
