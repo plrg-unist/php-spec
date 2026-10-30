@@ -289,6 +289,13 @@ def $tick_wrapper_context_valid(S, pcallcontext, ptickdispatch) = false -- other
 def $wrapper_context_valid(S, pcallcontext) = true
   -- if $tick_invoke_tag(pcallcontext.TARGET)
   -- if $tick_context_valid(S, pcallcontext)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $tick_invoke_tag(pcallcontext.TARGET)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $tick_context_valid(S, pcallcontext)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
 def $closure_invoke_received(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $tick_invoke_tag(pcallcontext.TARGET)
