@@ -42,7 +42,8 @@ n_original = pboundfake_source.SOURCE
 $(n_original < n_source)
 S.OBJECTS[n_original] = FROMCALLABLECLOSURE pfrommethod
 ~pfrommethod.ARRAY
-$string_bytes(pfrommethod.INPUT) = ($ptascii("Base95R::stream"))
+$string_bytes(pfrommethod.INPUT) = ($ptascii("Base95R"))
+pfrommethod.ORIGINAL = $ptascii("Base95R::stream")
 pfrommethod.FUNCTION = pgenerator.FUNCTION
 ~pfrommethod.STATIC
 $from_receiver(pfrommethod) = (n_old)
@@ -232,7 +233,7 @@ $bound_fake_receiver_valid(S_child, pboundfake_child)
 pboundfake_cycle = pboundfake_source[.SOURCE = n_copy]
 S_cycle = S_live[.OBJECTS = $object_set(S_live.OBJECTS, n_source, BOUNDFAKECLOSURE pboundfake_cycle)]
 ~$closure_call_fake_copy_binding(S_cycle, pboundfake_copy)
-pfrommethod_bad_input = pfrommethod[.INPUT = PSTRING ($ptascii("Other95R::bad"))]
+pfrommethod_bad_input = pfrommethod[.INPUT = PSTRING ($ptascii("Other95R"))]
 S_bad_input = S_live[.OBJECTS = $object_set(S_live.OBJECTS, n_original, FROMCALLABLECLOSURE pfrommethod_bad_input)]
 ~$closure_call_fake_copy_binding(S_bad_input, pboundfake_copy)
 pgenerator_source = pgenerator[.CLOSURE = (n_source)]
