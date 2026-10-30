@@ -152,6 +152,7 @@ syntax ptask
 syntax pshellcontext
 syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
 syntax ptickmarker, ptickentry, ptickdispatch
+syntax pexecutorqueue, pexecutorstage
 syntax pintegeroperation
 syntax pintegerphase
 syntax pintegerconversion
@@ -608,6 +609,7 @@ syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
   | OUTPUT_FINAL_PENDING pobdeactivate nat bool
   | OUTPUT_FINAL_EXCEPTION pobinvoke bool
+  | EXECUTOR_RELEASE pexecutorqueue pexecutorstage
 syntax pdirconversion = { NONCE nat, CALLSITE porigin, CALLLINE int, OBJECT nat, RESULT nat*, SELECTION nat?, OWNERDEPTH nat }
 syntax pdircontext = { NONCE nat, CALL pconfigcall, CWD nat*, REQUESTED nat*, CONVERSION nat?, FRAMEOWNER nat, TAIL ptask* }
 syntax pshellcontext = { NONCE nat, SITE porigin, LINE int, CWD preqbytes, ENV (preqbytes, preqbytes)*, COMMAND pvalue, FRAMEOWNER nat, TAIL ptask* }
@@ -709,6 +711,8 @@ syntax pobcall = OB_API pconfigcall | OB_WRITE pobwrite | OB_API_FAILED pconfigc
 syntax pobapimode = OB_API_RETAIN | OB_API_RESTORE | OB_API_RELEASE
 syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
 syntax pobdeactivate = { CALL pobinvoke, BUFFERS poutputbuffer*, INDEX nat, COMPLETION pcompletion }
+syntax pexecutorqueue = { COMPLETION pcompletion, VALUE poperand, BASE pbase, ORIGIN porigin?, ENTRIES pshutdownentry*, TARGETS pshutdownproducer* }
+syntax pexecutorstage = EXECUTOR_QUEUE | EXECUTOR_PENDING nat | EXECUTOR_DONE
 syntax poboutput = { VALUE pvalue, BYTES preqbytes, PRECISION int, FAILED bool }
 syntax pobrelease = { CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue }
 syntax pobnotice = { CALL pconfigcall, VALUE pvalue, SECOND bool, WRAPPER bool, LEVEL nat?, OWNER nat, TAIL ptask* }

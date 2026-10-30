@@ -1,6 +1,6 @@
-;; After output deactivation, the pinned fast executor shutdown disables PHP
-;; entry and sweeps real object-store handles backwards. It marks every header
-;; FREE_CALLED, but only internal free hooks gain a protective count and run.
+;; After output deactivation, executor shutdown disables PHP entry. Nonfast
+;; shutdown first releases executor tables and handler registries. Both modes
+;; sweep real handles backwards; nonfast also runs standard free_obj hooks.
 ;; A local graph computes these terminal effects; the final machine keeps its
 ;; last ownership-valid snapshot, not a claim about process-freed memory.
 syntax pexecutorfree = {HEAP hgraph, MARKED pnode*, FAILED nat?, UNKNOWN bool}
@@ -17,6 +17,21 @@ dec $executor_free_walk(pstate, pexecutorfree, nat) : pexecutorfree
 dec $executor_free_result(pstate, pexecutorfree) : pstate
 dec $executor_allocator_fast(prequest?) : bool
 dec $executor_free_endpoint(pstate) : bool
+dec $executor_free_tables(pstate, pexecutorfree) : pexecutorfree
+dec $executor_table_nodes(pstate) : pnode*
+dec $executor_table_roots(pstate) : pnode*
+dec $executor_symbol_nodes(pbinding*, preqbytes*) : pnode*
+dec $executor_reverse_nodes(pnode*) : pnode*
+dec $executor_constant_nodes(puserconstant*) : pnode*
+dec $executor_function_nodes(pstaticcell*, pfunction) : pnode*
+dec $executor_static_nodes(pstaticcell*, nat, pcodeexpr*) : pnode*
+dec $executor_function_tables(pstate, (preqbytes, porigin)*) : pnode*
+dec $executor_class_tables(pstate, (preqbytes, porigin)*) : pnode*
+dec $executor_property_nodes(pstate, ppropertydesc*) : pnode*
+dec $executor_class_constants(pstate, pclassconstantdesc*, porigin) : pnode*
+dec $executor_class_defaults(pinstancetemplate*, porigin) : pnode*
+dec $executor_method_tables(pstate, pmethoddesc*) : pnode*
+dec $executor_free_finish(pstate) : pstate
 
 ;; getenv takes its first duplicate; ZEND_ATOL reads a signed decimal prefix.
 ;; Nonfast shutdown has earlier table/registry releases before the store sweep.
@@ -93,10 +108,10 @@ def $executor_free_force(S, pexecutorfree, n) = pexecutorfree
   -- if (HOBJECT n) <- pexecutorfree.MARKED
 def $executor_free_force(S, pexecutorfree, n) = pexecutorfree[.MARKED = (HOBJECT n) :: pexecutorfree.MARKED]
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
-  -- if $executor_free_kind(S, n) = 0
+  -- if $executor_free_kind(S, n) = 0 /\ $executor_allocator_fast(S.REQUEST)
 def $executor_free_force(S, pexecutorfree, n) = $executor_free_body(S, pexecutorfree[.HEAP.ROOTS = pexecutorfree.HEAP.ROOTS ++ [HOBJECT n]], HOBJECT n)
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
-  -- if $executor_free_kind(S, n) = 1
+  -- if $executor_free_kind(S, n) = 1 \/ ($executor_free_kind(S, n) = 0 /\ ~$executor_allocator_fast(S.REQUEST))
 def $executor_free_force(S, pexecutorfree, n) = pexecutorfree[.UNKNOWN = true]
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
   -- if $executor_free_kind(S, n) = 2
@@ -130,7 +145,248 @@ def $executor_free_endpoint(S) = true
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
   -- if $shutdown_frozen(S.COMPLETION) \/ $output_drain_completion(S.COMPLETION)
 def $executor_free_endpoint(S) = false -- otherwise
-def $output_executor_finish(S) = $executor_free_result(S, $executor_free_walk(S, {HEAP $heap_graph(S), MARKED eps, FAILED eps, UNKNOWN false}, S.DESTRUCTION.NEXT))
-  -- if $executor_free_endpoint(S) /\ $executor_allocator_fast(S.REQUEST)
-def $output_executor_finish(S) = S[.COMPLETION = UNSUPPORTED "nonfast executor table and storage release"]
-  -- if $executor_free_endpoint(S) /\ ~$executor_allocator_fast(S.REQUEST)
+
+def $executor_reverse_nodes(eps) = eps
+def $executor_reverse_nodes(pnode :: pnode_tail*) = $executor_reverse_nodes(pnode_tail*) ++ [pnode]
+def $executor_symbol_nodes(pbinding*, eps) = eps
+def $executor_symbol_nodes(pbinding*, preqbytes :: preqbytes_tail*) = $executor_symbol_nodes(pbinding*, preqbytes_tail*) ++ [HCELL n]
+  -- if $lookup(pbinding*, preqbytes) = (n)
+def $executor_symbol_nodes(pbinding*, preqbytes :: preqbytes_tail*) = $executor_symbol_nodes(pbinding*, preqbytes_tail*)
+  -- if $lookup(pbinding*, preqbytes) = eps
+def $executor_constant_nodes(eps) = eps
+def $executor_constant_nodes(puserconstant :: puserconstant_tail*) = $executor_constant_nodes(puserconstant_tail*) ++ $value_nodes(puserconstant.VALUE)
+def $executor_function_nodes(pstaticcell*, pfunction) = $executor_static_nodes(pstaticcell*, pfunction.CODE.UNIT, $static_code_entries(pfunction.CODE.EXPRESSIONS))
+def $executor_static_nodes(pstaticcell*, n, eps) = eps
+def $executor_static_nodes(pstaticcell*, n, (CODESTATIC pcpath ptbytes z_begin z_bind b) :: pcodeexpr_tail*) = [HCELL n_cell] ++ $executor_static_nodes(pstaticcell*, n, pcodeexpr_tail*)
+  -- if $static_at(pstaticcell*, PORIGIN n pcpath) = (n_cell)
+def $executor_static_nodes(pstaticcell*, n, (CODESTATIC pcpath ptbytes z_begin z_bind b) :: pcodeexpr_tail*) = $executor_static_nodes(pstaticcell*, n, pcodeexpr_tail*)
+  -- if $static_at(pstaticcell*, PORIGIN n pcpath) = eps
+def $executor_function_tables(S, eps) = eps
+def $executor_function_tables(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $executor_function_tables(S, (preqbytes_tail, porigin_tail)*) ++ $executor_function_nodes(S.STATICS, pfunction)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+def $executor_property_nodes(S, eps) = eps
+def $executor_property_nodes(S, ppropertydesc :: ppropertydesc_tail*) = $class_static_roots([pclassstatic]) ++ $executor_property_nodes(S, ppropertydesc_tail*)
+  -- if ppropertydesc.STATIC
+  -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+def $executor_property_nodes(S, ppropertydesc :: ppropertydesc_tail*) = $executor_property_nodes(S, ppropertydesc_tail*)
+  -- if ~ppropertydesc.STATIC \/ $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = eps
+def $executor_class_constants(S, eps, porigin) = eps
+def $executor_class_constants(S, pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = $value_nodes(pdefaultcache.VALUE) ++ $executor_class_constants(S, pclassconstantdesc_tail*, porigin)
+  -- if pclassconstantdesc.OWNER = porigin
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+def $executor_class_constants(S, pclassconstantdesc :: pclassconstantdesc_tail*, porigin) = $executor_class_constants(S, pclassconstantdesc_tail*, porigin)
+  -- if pclassconstantdesc.OWNER =/= porigin \/ $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+def $executor_class_defaults(eps, porigin) = eps
+def $executor_class_defaults(pinstancetemplate :: pinstancetemplate_tail*, porigin) = $instance_default_roots([pinstancetemplate]) ++ $executor_class_defaults(pinstancetemplate_tail*, porigin)
+  -- if pinstancetemplate.CLASS = porigin
+def $executor_class_defaults(pinstancetemplate :: pinstancetemplate_tail*, porigin) = $executor_class_defaults(pinstancetemplate_tail*, porigin)
+  -- if pinstancetemplate.CLASS =/= porigin
+def $executor_method_tables(S, eps) = eps
+def $executor_method_tables(S, pmethoddesc :: pmethoddesc_tail*) = $executor_function_nodes(S.STATICS, pmethoddesc.FUNCTION) ++ $executor_method_tables(S, pmethoddesc_tail*)
+def $executor_class_tables(S, eps) = eps
+def $executor_class_tables(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $executor_class_tables(S, (preqbytes_tail, porigin_tail)*) ++ $executor_property_nodes(S, pclassdesc.PROPERTIES) ++ $executor_class_constants(S, pclassdesc.CONSTANTS, porigin) ++ $executor_class_defaults(S.INSTANCEDEFAULTS, porigin) ++ $executor_method_tables(S, pclassdesc.METHODS)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+
+;; Binding tables record insertion order separately from their lookup maps.
+;; Saved handler stacks are newest-first; zend_stack_clean walks oldest-first.
+def $executor_table_nodes(S) = $executor_symbol_nodes(psymboltable.ENV, $symbols_add(psymboltable.SYMBOLS, psymboltable.CVS)) ++ $executor_constant_nodes(S.USERCONSTANTS) ++ $trace_roots(S.ERRORFATALTRACE) ++ $executor_function_tables(S, S.CALLABLES) ++ $executor_class_tables(S, S.CLASSNAMES) ++ $error_handler_roots(S.ERRORHANDLER) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $executor_reverse_nodes($error_handler_stack_roots(S.ERRORHANDLERS)) ++ $executor_reverse_nodes($exception_handler_stack_roots(S.EXCEPTIONHANDLERS))
+  -- if psymboltable = $eager_fatal_global(S)
+def $executor_table_roots(S) = $table_roots(($eager_fatal_global(S))) ++ $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.ERRORFATALTRACE) ++ $static_roots(S.STATICS) ++ $class_static_roots(S.CLASSSTATICS) ++ $instance_default_roots(S.INSTANCEDEFAULTS) ++ $class_constant_roots(S.CLASSCONSTANTCACHE) ++ $error_handler_roots(S.ERRORHANDLER) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $error_handler_stack_roots(S.ERRORHANDLERS) ++ $exception_handler_stack_roots(S.EXCEPTIONHANDLERS)
+def $executor_free_tables(S, pexecutorfree) = pexecutorfree -- if $executor_allocator_fast(S.REQUEST)
+def $executor_free_tables(S, pexecutorfree) = $executor_free_release(S, pexecutorfree, pnode_plan*)
+  -- if ~$executor_allocator_fast(S.REQUEST)
+  -- if pnode_plan* = $executor_table_nodes(S)
+  -- if pnode_root* = $executor_table_roots(S)
+  -- if $eager_removed(pnode_plan*, pnode_root*) = eps /\ $eager_removed(pnode_root*, pnode_plan*) = eps
+def $executor_free_tables(S, pexecutorfree) = pexecutorfree[.UNKNOWN = true] -- otherwise
+def $executor_free_finish(S) = $executor_free_result(S, $executor_free_walk(S, $executor_free_tables(S, {HEAP $heap_graph(S), MARKED eps, FAILED eps, UNKNOWN false}), S.DESTRUCTION.NEXT))
+  -- if $executor_free_endpoint(S)
+  -- if $autoload_roots(S.AUTOLOAD.ENTRIES) = eps
+def $executor_free_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output autoload registry release"]
+  -- if $executor_free_endpoint(S)
+  -- if $autoload_roots(S.AUTOLOAD.ENTRIES) =/= eps
+
+;; php_free_shutdown_functions runs after output deactivation but before
+;; EG(active)=0. Transfer each real params/FCC zval once into ordinary eager
+;; release, preserving the unfinished C tail if its null-C destructor bails.
+dec $executor_queue_targets(pstate, pshutdownentry*) : pshutdownproducer*
+dec $executor_fcc_nodes(pshutdownproducer) : pnode*
+dec $executor_queue_nodes(pshutdownentry*, pshutdownproducer*) : pnode*
+dec $executor_targets_valid(pstate, pshutdownentry*, pshutdownproducer*) : bool
+dec $executor_target_valid(pstate, pshutdownproducer) : bool
+dec $executor_queue_valid(pstate, pexecutorqueue) : bool
+dec $executor_queue_tasks(ptask*, pexecutorqueue) : bool
+dec $executor_queue_frames(pframe*, pexecutorqueue) : bool
+dec $executor_queue_active(pstate, pexecutorqueue) : bool
+dec $executor_release_source(pstate, pexecutorqueue, pexecutorstage) : bool
+dec $executor_queue_begin(pstate) : pstate
+dec $executor_queue_release(pstate, pexecutorqueue, pexecutorstage, pnode*) : pstate
+dec $executor_abandoned(pstate, pdestructioncleanup) : pexecutorqueue?
+dec $executor_caught_finish(pstate, pexecutorqueue, pcompletion) : pstate
+dec $executor_pending_cause(pstate, pexecutorqueue, nat) : bool
+dec $executor_scope_tasks(pstate, ptask*) : bool
+dec $executor_scope_frames(pstate, pframe*) : bool
+dec $executor_scope(pstate) : bool
+dec $executor_module_owners(pstate) : bool
+dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
+dec $executor_handler_task(ptask) : bool
+dec $executor_handler_tasks(ptask*) : bool
+
+def $executor_queue_targets(S, eps) = eps
+def $executor_queue_targets(S, pshutdownentry :: pshutdownentry_tail*) = $eager_cleanup_target(S, pshutdownentry.TARGET) :: $executor_queue_targets(S, pshutdownentry_tail*)
+def $executor_fcc_nodes(pshutdownproducer) = $instance_roots($consumer_producer_receiver(pshutdownproducer.SCOPE)) ++ $instance_roots($consumer_producer_bound_receiver(pshutdownproducer.BINDING)) ++ $target_nodes(pshutdownproducer.TARGET)
+  -- if pshutdownproducer.TARGET = CLOSURE_TARGET n
+def $executor_fcc_nodes(pshutdownproducer) = $target_nodes(pshutdownproducer.TARGET) -- otherwise
+def $executor_queue_nodes(eps, eps) = eps
+def $executor_queue_nodes(pshutdownentry :: pshutdownentry_tail*, pshutdownproducer :: pshutdownproducer_tail*) = $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $executor_fcc_nodes(pshutdownproducer) ++ $executor_queue_nodes(pshutdownentry_tail*, pshutdownproducer_tail*)
+def $executor_targets_valid(S, eps, eps) = true
+def $executor_targets_valid(S, pshutdownentry :: pshutdownentry_tail*, pshutdownproducer :: pshutdownproducer_tail*) = true
+  -- if pshutdownproducer.TARGET = pshutdownentry.TARGET
+  -- if pshutdownproducer.SITE = eps /\ pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = eps
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if $executor_target_valid(S, pshutdownproducer)
+  -- if S_history = $consumer_producer_history(S, pshutdownproducer)[.ALLOCATIONS = S.ALLOCATIONS ++ $consumer_producer_nodes(pshutdownproducer) ++ $operands_roots($shutdown_known(pshutdownentry.ARGS))]
+  -- if $shutdown_entry_valid(S_history, pshutdownentry)
+  -- if $executor_targets_valid(S, pshutdownentry_tail*, pshutdownproducer_tail*)
+def $executor_targets_valid(S, pshutdownentry*, pshutdownproducer*) = false -- otherwise
+def $executor_target_valid(S, pshutdownproducer) = (pshutdownproducer = $eager_cleanup_target(S, pshutdownproducer.TARGET))
+def $executor_queue_valid(S, pexecutorqueue) = true
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
+  -- if S.OUTPUTBUFFERS = eps /\ S.SHUTDOWN.ENTRIES = eps
+  -- if pexecutorqueue.ENTRIES =/= eps
+  -- if |pexecutorqueue.ENTRIES| = |pexecutorqueue.TARGETS|
+  -- if $shutdown_frozen(pexecutorqueue.COMPLETION) \/ $output_drain_completion(pexecutorqueue.COMPLETION)
+  -- if $executor_targets_valid(S[.SHUTDOWN.ENTRIES = pexecutorqueue.ENTRIES], pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS)
+def $executor_queue_valid(S, pexecutorqueue) = false -- otherwise
+def $executor_queue_tasks(eps, pexecutorqueue) = false
+def $executor_queue_tasks((EXECUTOR_RELEASE pexecutorqueue pexecutorstage) :: eps, pexecutorqueue) = true
+def $executor_queue_tasks(ptask :: ptask_tail*, pexecutorqueue) = $executor_queue_tasks(ptask_tail*, pexecutorqueue)
+  -- otherwise
+def $executor_queue_frames(eps, pexecutorqueue) = false
+def $executor_queue_frames(pframe :: pframe_tail*, pexecutorqueue) = ((pframe.CONTEXT = eps /\ $executor_queue_tasks(pframe.TODO, pexecutorqueue)) \/ $executor_queue_frames(pframe_tail*, pexecutorqueue))
+def $executor_queue_active(S, pexecutorqueue) = ($executor_queue_valid(S, pexecutorqueue) /\ ((S.CURRENT = eps /\ $executor_queue_tasks(S.TODO, pexecutorqueue)) \/ $executor_queue_frames(S.FRAMES, pexecutorqueue)))
+def $output_drain_task(S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage) = $executor_queue_active(S, pexecutorqueue)
+def $task_nodes(EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) = $executor_queue_nodes(pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS)
+def $task_nodes(EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n)) = [HOBJECT n]
+def $task_nodes(EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) = eps
+def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE, eps) /\ $heap_subset($executor_queue_nodes(pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS), S.ALLOCATIONS))
+def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n)) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n), eps) /\ $executor_pending_cause(S, pexecutorqueue, n))
+def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE, eps))
+def $executor_queue_begin(S) = S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE]][.SHUTDOWN.ENTRIES = eps][.SHUTDOWN.INDEX = 0][.COMPLETION = NORMAL][.ORIGIN = eps]
+  -- if pexecutorqueue = {COMPLETION S.COMPLETION, VALUE S.RESULT, BASE S.BASE, ORIGIN S.ORIGIN, ENTRIES S.SHUTDOWN.ENTRIES, TARGETS $executor_queue_targets(S, S.SHUTDOWN.ENTRIES)}
+def $output_executor_finish(S) = $executor_queue_begin(S)
+  -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES =/= eps /\ ~$executor_module_owners(S)
+def $output_executor_finish(S) = $executor_free_finish(S)
+  -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES = eps /\ ~$executor_module_owners(S)
+def $output_executor_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output module callback-owner release"]
+  -- if $executor_free_endpoint(S) /\ $executor_module_owners(S)
+def $executor_queue_release(S, pexecutorqueue, pexecutorstage, pnode*) = $eager_operation_begin(S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE]], S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage, pnode*)
+rule PhpStep/executor-queue-release: S ~> $executor_queue_release(S, pexecutorqueue, EXECUTOR_QUEUE, $executor_queue_nodes(pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS))
+  -- if S.TODO = (EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE)
+rule PhpStep/executor-pending-release: S ~> $executor_queue_release(S, pexecutorqueue, EXECUTOR_PENDING n, [HOBJECT n])
+  -- if S.TODO = (EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n)) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n))
+rule PhpStep/executor-release-done: S ~> $executor_free_finish(S[.TODO = eps][.COMPLETION = pexecutorqueue.COMPLETION][.ORIGIN = pexecutorqueue.ORIGIN])
+  -- if S.TODO = (EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE)
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+
+;; The source snapshot is documentary once the actual release jobs own its
+;; zvals. A caught bailout preserves their unfinished tail in ABANDONED.
+def $executor_release_source(S, pexecutorqueue, EXECUTOR_QUEUE) = $executor_queue_valid(S, pexecutorqueue)
+def $executor_release_source(S, pexecutorqueue, EXECUTOR_PENDING n) = ($executor_queue_valid(S, pexecutorqueue) /\ $shutdown_frozen(pexecutorqueue.COMPLETION) /\ $(n < |S.OBJECTS|))
+def $executor_release_source(S, pexecutorqueue, EXECUTOR_DONE) = false
+def $eager_operation_source_guard(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = EXECUTOR_RELEASE pexecutorqueue pexecutorstage
+  -- if ($executor_queue_active(S, pexecutorqueue) /\ $executor_release_source(S, pexecutorqueue, pexecutorstage)) \/ ($executor_operation_abandoned(S.DESTRUCTION.ABANDONED, pdestructionoperation) /\ $executor_release_source(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutorqueue, pexecutorstage))
+  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.VALUE = pexecutorqueue.VALUE /\ pdestructionoperation.BASE = pexecutorqueue.BASE
+def $executor_operation_abandoned(eps, pdestructionoperation) = false
+def $executor_operation_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation) = true
+  -- if ~pdestructioncleanup.RELEASED
+  -- if $eager_bailout_call(pdestructioncleanup.SOURCE) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+def $executor_operation_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation) = $executor_operation_abandoned(pdestructioncleanup_tail*, pdestructionoperation) -- otherwise
+def $executor_abandoned(S, pdestructioncleanup) = (pexecutorqueue)
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_RELEASE pexecutorqueue pexecutorstage
+  -- if $executor_release_source(S, pexecutorqueue, pexecutorstage)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+def $executor_abandoned(S, pdestructioncleanup) = eps -- otherwise
+def $executor_caught(S) = ((pexecutorqueue, S.COMPLETION))
+  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if $executor_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutorqueue)
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if $throwable_live(S, n) /\ $throwable_field(S, n, "previous") = PNULL
+  -- if $object_name(S, n) =/= $ptascii("ParseError") /\ $object_name(S, n) =/= $ptascii("CompileError")
+  -- if $ob_user_scalar($throwable_field(S, n, "message")) /\ $throwable_terminal_renderable(S, n, eps)
+  -- if ~$shutdown_render_ready(S)
+def $executor_caught_finish(S, pexecutorqueue, UNCAUGHT n) = S_report[.TODO = [EXECUTOR_RELEASE pexecutorqueue_new (EXECUTOR_PENDING n)]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if S_cached = $throwable_string_cache(S, n, $throwable_chain_string(S, n, [n]))
+  -- if S_report = $shutdown_freeze_marked(S_cached)
+  -- if $shutdown_frozen(S_report.COMPLETION)
+  -- if pexecutorqueue_new = pexecutorqueue[.COMPLETION = S_report.COMPLETION][.VALUE = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps]
+def $output_drive_finalize(S, n) = $drive_steps($executor_caught_finish(S, pexecutorqueue, pcompletion), n)
+  -- if $executor_caught(S) = ((pexecutorqueue, pcompletion))
+def $executor_pending_cause(S, pexecutorqueue, n) = true
+  -- if $throwable_live(S, n)
+  -- if $throwable_field(S, n, "previous") = PNULL
+  -- if $throwable_field(S, n, "line") = PINT z
+  -- if pexecutorqueue.COMPLETION = REQUESTFATAL $object_name(S, n) $echo_value($throwable_field(S, n, "message")) z
+  -- if $throwable_field(S, n, "string") = PSTRING $throwable_chain_string(S, n, [n])
+def $executor_pending_cause(S, pexecutorqueue, n) = false -- otherwise
+
+;; These are earlier, distinct C phases. Never reinterpret a module callback
+;; list as an inactive storage hook, or mutate the table being destroyed.
+def $executor_scope_tasks(S, eps) = false
+def $executor_scope_tasks(S, (EXECUTOR_RELEASE pexecutorqueue pexecutorstage) :: ptask_tail*) = $executor_queue_active(S, pexecutorqueue)
+def $executor_scope_tasks(S, ptask :: ptask_tail*) = $executor_scope_tasks(S, ptask_tail*) -- otherwise
+def $executor_scope_frames(S, eps) = false
+def $executor_scope_frames(S, pframe :: pframe_tail*) = ($executor_scope_tasks(S, pframe.TODO) \/ $executor_scope_frames(S, pframe_tail*))
+def $executor_scope(S) = ($executor_scope_tasks(S, S.TODO) \/ $executor_scope_frames(S, S.FRAMES))
+def $executor_module_owners(S) = ($tick_roots(S.TICKENTRIES) ++ $assertion_callback_roots(S.ASSERTCALLBACK) =/= eps)
+def $executor_handler_task(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
+def $executor_handler_task(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = true
+def $executor_handler_task(API_CALLBACK_SEND papiargcursor) = true -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $executor_handler_task(API_CALLBACK_REF papiargcursor) = true -- if papiargcursor.CALL = API_EXCEPTION pexceptioncall
+def $executor_handler_task(ERROR_HANDLER_RESULT perrorcall) = $executor_handler_task(perrorcall.RESUME)
+def $executor_handler_task(DESTRUCTOR_RESULT pdestructorcall) = $executor_handler_task(pdestructionoperation.SOURCE)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $executor_handler_task(ptask) = false -- otherwise
+def $executor_handler_tasks(eps) = false
+def $executor_handler_tasks(ptask :: ptask_tail*) = ($executor_handler_task(ptask) \/ $executor_handler_tasks(ptask_tail*))
+def $executor_boundary(S) = ("post-output module callback-owner release")
+  -- if S.TODO = (OUTPUT_FINAL_DEACTIVATE pobdeactivate) :: eps
+  -- if pobdeactivate.INDEX = 0 /\ $executor_module_owners(S)
+  -- if $call_task_valid(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate)
+  -- if S.COMPLETION = NORMAL
+def $executor_boundary(S) = ("shutdown-list registration during table destruction")
+  -- if $executor_scope(S)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
+  -- if $config_invoke_valid(S, pconfigcall)
+def $executor_boundary(S) = ("output-handler start after output deactivation")
+  -- if $executor_scope(S)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if $config_invoke_valid(S, pconfigcall)
+def $executor_boundary(S) = ("exit during shutdown-list retirement")
+  -- if $executor_scope(S)
+  -- if $exit_completion(S.COMPLETION)
+def $executor_boundary(S) = ("abrupt exception handler during shutdown-list retirement")
+  -- if $executor_scope(S)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $executor_handler_tasks(ptask_tail*)
