@@ -49,7 +49,6 @@ exit status. [Author sources](../../tests/semantics/tick_sources.py),
 and public-state exclusions. Source/state acceptance is recorded separately from
 static elaboration; expected dependencies receive no agreement credit.
 
-
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
 a raw invokable object can occupy both slots, while [object,"__invoke"] has one
@@ -63,7 +62,7 @@ Quiet shutdown cache owners survive callback completion, the early destructor
 pass and output FINAL. Late registry-free/output policy remains partial. One
 Closure-object __invoke array control stays an exact early lookup Unsupported
 boundary at zero agreement credit; it needs its own wrapper/API consumer.
-Five normal originals agree, four reached groups pass296 checks (292 reached,
-four derived), and private strict432 passes. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
+Five normal originals agree, four reached groups pass 296 checks (292 reached,
+four derived), and private strict 432 passes. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
 keeps the old equality counterexample, failed property/certificate states and
 corrected fixtures at their original cuts; actual-parent composition is pending.

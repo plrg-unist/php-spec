@@ -192,8 +192,8 @@ including duplicate object IDs. Raw invokable and array-form tick identities
 stay distinct; methods borrow This and inline unregister retires arguments,
 cache.object, then cache.closure. Readonly selected metadata validates cleanup
 after scope retirement. Quiet shutdown retention continues through FINAL.
-Five normal originals agree; four reached groups pass296 checks (292 reached,
-four derived), private strict432 passes, and one Closure-array control remains
+Five normal originals agree; four reached groups pass 296 checks (292 reached,
+four derived), private strict 432 passes, and one Closure-array control remains
 an exact Unsupported boundary/zero credit. Late free and wider callback/compiler
 forms remain partial; actual composition is pending.
 [Cache review](coverage/semantics/callback-fcc-cache-review.json).
@@ -218,7 +218,7 @@ constraint, and existing property-reference sources remain authoritative. Missin
 CVs, fresh omitted scalar defaults, VAR reference notices and invalid-TMP priority
 keep their ordinary rules.
 Six exact normal sources and 217 conditions pass (211 reached, six derived guards),
-with private strict431 and actual-tail joined strict432 at separate cuts. Three
+with private strict431 and actual-tail joined strict 432 at separate cuts. Three
 fixture-only failures retain zero credit. Variadic/promotion/unpack/nonpublic and wider source/value/
 callback contexts remain partial. [Reference-constructor review](coverage/semantics/anonymous-constructor-reference-review.json).
 The prior [finite-arity review](coverage/semantics/anonymous-constructor-arity-review.json)

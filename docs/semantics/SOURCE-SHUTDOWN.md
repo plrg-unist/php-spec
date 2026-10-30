@@ -68,11 +68,10 @@ diagnostics freeze. GC, output buffering, queue release and the remaining reques
 stages are required next work; this
 ordered callback phase does not claim complete request cleanup or complete core.
 
-
 Persistent FCC.object and raw-object FCC.closure slots now retain independent
 owners, including equal object IDs. Entered method callbacks borrow This; Closure
 calls retain their separate instance owner. Quiet cache owners survive the
 callback loop, early destructor pass and output FINAL. Late registry-free/output
 policy remains partial. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
-records five normal agreements,296 reached/guard checks and private strict432;
+records five normal agreements,296 reached/guard checks and private strict 432;
 its tick-specific identity and inline release rules are described in [Ticks](TICKS.md).
