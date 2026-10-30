@@ -1,0 +1,97 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "parent-clone-source-rebinding",
+      "source": "<?php\nclass Base160Review {\n    public int $value = 10;\n    public function __clone() { echo \"base|\"; $this->value += 2; }\n    public function __destruct() { echo \"drop\", $this->value, \"|\"; }\n}\n$replacement160Review = new class {};\n$source160Review = new class extends Base160Review {\n    public function __clone() {\n        global $source160Review, $replacement160Review;\n        echo \"child|\";\n        parent::__clone();\n        $source160Review = $replacement160Review;\n        echo \"after-rebind|\";\n    }\n};\n$copy160Review = clone $source160Review;\necho \"observed|\", $copy160Review->value, \"|\";\nunset($copy160Review);\necho \"after\";\n",
+      "source_sha256": "451ea944f4a2c91f0f68c7b61cf89f16363fb2a5ee3c22e424bc1085204b57f5",
+      "stdout_base64": "Y2hpbGR8YmFzZXxkcm9wMTB8YWZ0ZXItcmViaW5kfG9ic2VydmVkfDEyfGRyb3AxMnxhZnRlcg==",
+      "stdout_template_base64": "Y2hpbGR8YmFzZXxkcm9wMTB8YWZ0ZXItcmViaW5kfG9ic2VydmVkfDEyfGRyb3AxMnxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class160-artifacts/parent-clone-source-rebinding.native-first.json",
+      "native_raw_sha256": "44bb961e7b842c2f5a562a554d21032345c41bd50e8f68b1c52de955bc68bed9",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "failed-clone-escaped-receiver",
+      "source": "<?php\n$escaped160Review = null;\n$given160Review = new Exception(\"clone\");\n$destination160Review = 99;\n$source160Review = new class {\n    public int $value = 7;\n    public function __clone() {\n        global $escaped160Review, $given160Review;\n        $escaped160Review = $this;\n        echo \"clone|\";\n        throw $given160Review;\n    }\n    public function __destruct() { echo \"drop\", $this->value, \"|\"; }\n};\ntry {\n    $destination160Review = clone $source160Review;\n} catch (Exception $caught160Review) {\n    echo $caught160Review === $given160Review ? \"same|\" : \"wrong-exception|\";\n}\necho $destination160Review, \"|\";\necho $escaped160Review === $source160Review ? \"bad|\" : \"fresh|\";\necho $escaped160Review->value, \"|manual-before|\";\n$escaped160Review->__destruct();\necho \"manual-after|\";\nunset($escaped160Review);\necho \"source-before|\";\nunset($source160Review);\necho \"after\";\n",
+      "source_sha256": "599a01117f0fbbd25e4481264bdd988970127113c2f5367c0cd7856f71910b6a",
+      "stdout_base64": "Y2xvbmV8c2FtZXw5OXxmcmVzaHw3fG1hbnVhbC1iZWZvcmV8ZHJvcDd8bWFudWFsLWFmdGVyfGRyb3A3fHNvdXJjZS1iZWZvcmV8ZHJvcDd8YWZ0ZXI=",
+      "stdout_template_base64": "Y2xvbmV8c2FtZXw5OXxmcmVzaHw3fG1hbnVhbC1iZWZvcmV8ZHJvcDd8bWFudWFsLWFmdGVyfGRyb3A3fHNvdXJjZS1iZWZvcmV8ZHJvcDd8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class160-artifacts/failed-clone-escaped-receiver.native-first.json",
+      "native_raw_sha256": "b8ba610a7c4756acc9f3e7249bce29e1bb1ae57073573fff295cf844742d3359",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-clone-declared-array-cow-reference",
+      "source": "<?php\n$shared160Author = 4;\n$source160Author = new class {\n    public array $items;\n    public int $mark = 1;\n    public function __clone(): void {\n        echo $this->items[0], \"|\", $this->mark, \"|\";\n        $this->items[0] = 11;\n        $this->items[1] += 3;\n        $this->mark = 8;\n    }\n};\n$source160Author->items = [2, &$shared160Author];\n$copy160Author = clone $source160Author;\necho $source160Author->items[0], \"|\", $copy160Author->items[0], \"|\", $shared160Author, \"|\";\necho $source160Author->items[1], \"|\", $copy160Author->items[1], \"|\";\necho $source160Author->mark, \"|\", $copy160Author->mark, \"|\";\necho $source160Author === $copy160Author ? \"bad|\" : \"distinct|\";\necho \"after\";\n",
+      "source_sha256": "46a6660c823d8cff4c8d9515f093da6a85667318c6cca84d20ce69d187eaf3a0",
+      "stdout_base64": "MnwxfDJ8MTF8N3w3fDd8MXw4fGRpc3RpbmN0fGFmdGVy",
+      "stdout_template_base64": "MnwxfDJ8MTF8N3w3fDd8MXw4fGRpc3RpbmN0fGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class160-artifacts/author-declared-array-cow-reference.native-first.json",
+      "native_raw_sha256": "5c257fb1968095b5e1c8506ef7f171ed280745a1ff4de4b417ec02795dde47b9",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-clone-shallow-child-replacement-release",
+      "source": "<?php\nclass ClonePayload160Author {\n    public int $value = 5;\n    public function __destruct() { echo \"payload\", $this->value, \"|\"; }\n}\n$payload160Author = new ClonePayload160Author;\n$source160Author = new class {\n    public $child;\n    public int $tag = 1;\n    public function __clone(): void {\n        echo $this->child->value, \"|\";\n        $this->child->value = 9;\n        $this->child = new ClonePayload160Author;\n        $this->child->value = 14;\n        $this->tag = 2;\n    }\n};\n$source160Author->child = $payload160Author;\n$copy160Author = clone $source160Author;\necho $source160Author->child === $payload160Author ? \"shared|\" : \"bad|\";\necho $source160Author->child === $copy160Author->child ? \"bad|\" : \"replaced|\";\necho $source160Author->child->value, \"|\", $copy160Author->child->value, \"|\";\necho $source160Author->tag, \"|\", $copy160Author->tag, \"|\";\nunset($payload160Author);\nunset($source160Author);\necho \"between|\";\nunset($copy160Author);\necho \"after\";\n",
+      "source_sha256": "525cc54102d233b61948bbed3b5bc73299d8c67a18336b46a7a611f48ac77820",
+      "stdout_base64": "NXxzaGFyZWR8cmVwbGFjZWR8OXwxNHwxfDJ8cGF5bG9hZDl8YmV0d2VlbnxwYXlsb2FkMTR8YWZ0ZXI=",
+      "stdout_template_base64": "NXxzaGFyZWR8cmVwbGFjZWR8OXwxNHwxfDJ8cGF5bG9hZDl8YmV0d2VlbnxwYXlsb2FkMTR8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class160-artifacts/author-shallow-child-replacement-release.native-first.json",
+      "native_raw_sha256": "a8f0c593623cc08b1eedd6acafa0327ca987a2344b0b05a18d39840297e1a4c4",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-clone-eval-implicit-explicit-return",
+      "source": "<?php\n$sourceText160Author = 'namespace Clone160Author;\nfunction make160Author() {\n    return new class {\n        public int $mark = 1;\n        function __clone() {\n            $this->mark += 2;\n            return \"body-return\";\n        }\n    };\n}';\neval($sourceText160Author);\n$first160Author = Clone160Author\\make160Author();\n$second160Author = Clone160Author\\make160Author();\n$copy160Author = clone $first160Author;\necho $first160Author->mark, \"|\", $copy160Author->mark, \"|\";\necho $copy160Author === $first160Author ? \"bad|\" : \"fresh|\";\necho $first160Author === $second160Author ? \"bad|\" : \"separate|\";\n$explicit160Author = $second160Author->__clone();\necho $explicit160Author, \"|\", $second160Author->mark, \"|\", $first160Author->mark, \"|after\";\n",
+      "source_sha256": "387f184c5bec87e57bc8a21735a659e6acc20608a6917b926bdf47f7ffd1d589",
+      "stdout_base64": "MXwzfGZyZXNofHNlcGFyYXRlfGJvZHktcmV0dXJufDN8MXxhZnRlcg==",
+      "stdout_template_base64": "MXwzfGZyZXNofHNlcGFyYXRlfGJvZHktcmV0dXJufDN8MXxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class160-artifacts/author-eval-implicit-explicit-clone-return.native-first.json",
+      "native_raw_sha256": "da299d3c6e0b792e03184223c0e421666cffe9591ae76895b626777c66d2ffdd",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-clone-invalid-annotation-shape",
+      "source": "<?php\necho \"before|\";\n$receiver160Author = new class {\n    public function __CLONE(): int {\n        echo \"bad-body|\";\n        return 1;\n    }\n};\necho \"after\";\n",
+      "source_sha256": "d5ad30654d293a37451651e472ed433d6542da945e63e3ba9af9ca775f9ffa1d",
+      "stdout_base64": "",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IGNsYXNzQGFub255bW91czo6X19DTE9ORSgpOiBSZXR1cm4gdHlwZSBtdXN0IGJlIHZvaWQgd2hlbiBkZWNsYXJlZCBpbiB7RklMRX0gb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": ".tools/class160-artifacts/invalid-annotation-shape.native-first.json",
+      "native_raw_sha256": "88ad52689ea35bfb25ea467fdd22d4362c8b6d7099b7a45fa73d4c3a6822886e",
+      "model_timeout_seconds": 240
+    }
+  ]
+}
