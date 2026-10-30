@@ -1928,3 +1928,17 @@ its cache edge (three owners to two). TypeError TraceArgs keeps both copied
 identities until the error is released. The old full-prefix Unsupported
 remains zero credit; effectful finalizers, reference cells and broader
 producer/value histories remain separate.
+
+The [owning reference snapshot increment](../../coverage/semantics/config-generator-reference-owning-review.json)
+admits one finite quiet owning value read from an ordinary reference cell of
+a named direct-CV BYREF Generator retained outside the call. The first copied
+ITEM keeps a bounded receipt; a second copied ITEM must be scalar and keeps
+the existing integer or named-key policy. Live acquisition requires the
+ordinary cell, integer-normalized first key and another Generator owner.
+After the cell changes, history does not reread it to justify the first copy.
+Four exact originals, strict432 and two reached recipes (406 conditions,
+seven raw steps) check object and ARRAY snapshots, COW 13 versus live 31, alias 9,
+TypeError TraceArgs, direct DATA release and saved-throw cleanup. The old
+`B;Y0;` Unsupported and first constructed-cycle fixture failure retain zero
+credit. Generic Iterator/storage rules and typed, backed, final owning-cell
+and temporary producer boundaries remain unchanged.

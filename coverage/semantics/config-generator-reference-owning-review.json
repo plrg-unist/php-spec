@@ -1,0 +1,127 @@
+{
+  "milestone": "A81 owning BYREF Generator first-reference snapshot",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "INI_SET unpack from a named zero-argument BYREF Generator held by a direct outside CV. The first integer-key send copies a finite quiet ordinary non-Stringable INSTANCE or ARRAY from an ordinary reference cell; the cell changes to scalar before the second send. The second copied value is scalar and retains existing integer/named key policy.",
+    "behavior": "The copied first ITEM carries its own bounded receipt after the actual cell changes. Normal traversal preserves the old object or ARRAY snapshot in TypeError TraceArgs while the Generator remains outside and an alias can read the changed cell. Terminal saved throw releases the copied payload before catch; later outside Generator unset retires its remaining cell. The direct-CV DATA path goes from finish to invoke without an owning INPUT release.",
+    "limits": "Typed/backed or released cells, owning final cell values, temporary or factory BYREF producers, effectful finalizers and wider owning graphs remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "85157b5271fe5da54cf5a711ce0b2409152d2e4d",
+    "source_freeze": "3789f35f2b0ddfa2ba75277377b490fdd852305c",
+    "runtime_revision": "874da49c7d970d085d164f83302aa93c13275821",
+    "validated_revision": "44e7a01e0a5c7279dbf60dc84cec3f6f95b8f5cb",
+    "change": "Only 423: structural named direct-CV BYREF source; bounded first owning ITEM plus optional scalar second ITEM; live ordinary REFCELL owning copy at first send with integer-normalized key, finite quiet graph and Gen owners>1. Old scalar read, reference_history/storage, finish/discard, generic420/355/schema/manifest unchanged.",
+    "engine": "Zend SEND_UNPACK copies the dereferenced yielded value before later writes to the same reference cell; the retained direct CV keeps the Generator alive through reception or throw, and its final unset releases the scalar cell."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-owning-81",
+    "native_first": {
+      "revision": "3789f35f2b0ddfa2ba75277377b490fdd852305c",
+      "author": {
+        "report": "native-author-3789f35f2/report.json",
+        "sha256": "a6e6b084fd6f5ad77fc1c160e77e5c922e4bb51764137ff20572d93da551640e"
+      },
+      "peer": {
+        "report": "native-peer-3789f35f2/report.json",
+        "sha256": "f8d78353951024f1e8f2212c0835a98cc5a724786f670afbdac64dc3b7c2fba9"
+      },
+      "originals": 4,
+      "result": "Four distinct new originals match handwritten stdout, empty stderr and exit0; native-only preparation has zero model credit."
+    },
+    "old_refusal": {
+      "report": "old-control-3789f35f2/report.json",
+      "sha256": "f3facb2203cc89db6ae388dc842d0f175fa36306a24e94baeb0fde8e0344f453",
+      "revision": "3789f35f2b0ddfa2ba75277377b490fdd852305c",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;Y0;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "report": "strict-874da49c7/report.json",
+      "sha256": "1eb33c84915eafc6f4736e5f8326c67f7cf42e9dbe0e139389df865b4d1577b5",
+      "revision": "874da49c7d970d085d164f83302aa93c13275821",
+      "modules": 432,
+      "seconds": 11.596181154251099
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Retain frozen source/native/profile/process bytes and run only bin/php-semantics for each new case; no PHP application or accepted A80 replay.",
+      "reports": [
+        {
+          "case": "object-typeerror",
+          "revision": "874da49c7d970d085d164f83302aa93c13275821",
+          "report": "model-author-normal-874da49c7/report.json",
+          "sha256": "dcb9161e882ed9f5045c54598efeab81d73219c74f1d6a9a25460b2f506a7a80"
+        },
+        {
+          "case": "object-terminal-throw",
+          "revision": "874da49c7d970d085d164f83302aa93c13275821",
+          "report": "model-author-throw-874da49c7/report.json",
+          "sha256": "5ea241e1010fcadb4a1085f81aa5611f982976e30078ea3300e13c25239cae6a"
+        },
+        {
+          "case": "array-typeerror",
+          "revision": "874da49c7d970d085d164f83302aa93c13275821",
+          "report": "model-peer-normal-874da49c7/report.json",
+          "sha256": "b5b1e8874e769ecd00dc1474e973a067dcb69f7e01a147dfb05f855479e3db12"
+        },
+        {
+          "case": "array-terminal-throw",
+          "revision": "874da49c7d970d085d164f83302aa93c13275821",
+          "report": "model-peer-throw-874da49c7/report.json",
+          "sha256": "39162627280687a62fa54ffc0507ad0fd00021f47994bc5659f2e3b27c9be8a3"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 406,
+      "if_premises": 399,
+      "raw_steps": 7,
+      "author": {
+        "revision": "44e7a01e0a5c7279dbf60dc84cec3f6f95b8f5cb",
+        "conditions": 201,
+        "if_premises": 198,
+        "raw_steps": 3,
+        "report": "reached-author-corrected-44e7a01e0/report.json",
+        "sha256": "f743cfd09382d9d3ff0f2502f0b20f02782846b27bbe04d98882d33f84379d3d",
+        "coverage": "Actual local ordinary REFCELL owns object, first copied prefix survives object-to-scalar overwrite, derived undefined/debt/two-owning refusals and named-second positive, one quiet discard frees payload before saved catch, then outside Gen/cell retire."
+      },
+      "peer": {
+        "revision": "44e7a01e0a5c7279dbf60dc84cec3f6f95b8f5cb",
+        "conditions": 205,
+        "if_premises": 201,
+        "raw_steps": 4,
+        "report": "reached-peer-44e7a01e0/report.json",
+        "sha256": "67bc0d32b9310bb9fb72bd6f9283d6e957336f5cc2ff18ea504bf42f0bd02727",
+        "coverage": "Outside slot and alias share HCELL; first ARRAY13 copy survives live COW31 and cell7-to-9 writes. Direct DATA2-to-invoke1 keeps Gen, TypeError TraceArgs retains ARRAY13 and scalar7, Gen later dies while alias cell9 remains until explicit unsets."
+      }
+    },
+    "failed_checks": {
+      "credit": 0,
+      "reports": [
+        {
+          "cause": "First author fixture applied public-state call-descriptor validity to an intentionally constructed self-cycle; the refusal checks themselves passed. Only that public assertion was removed.",
+          "report": "reached-author-0aa9ef076/report.json",
+          "sha256": "7410a6a6a4485a17fd7bde5dbc92a53be72ce018f8d24ef6906acc1d94473ae5"
+        }
+      ],
+      "result": "Only the affected author reached fixture was corrected and retried; runtime, native, strict, all source models and peer recipe retained their cuts."
+    },
+    "review": "Independent source literals/manual expectations, frozen native/old refusal and runtime/author/peer static seams by CONFIG reviewers; fallback reviewer independently checked strict/source4 and reached406 raw reports. Successful groups fully reaped and tested HEAD/inputs stable."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "5caa1e2e983d5f6bbcdf6693f633c6aef1eb5e6af09c6f407ab9e9ff037159cc",
+    "files": 107,
+    "raw_bytes": 2395442,
+    "commands": "For frozen comparisons, run config_generator_reference_owning_models.py with both native --native-report paths and one --case at a time. Run each reached script with its corresponding frozen --source-report. Makefile has fresh-source entrypoints for later full validation.",
+    "notes": "Raw streams, fixture text and failed attempt remain outside Git."
+  },
+  "integration": {
+    "status": "pending canonical writer grant and actual-tail joined check"
+  }
+}
