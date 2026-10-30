@@ -1,0 +1,157 @@
+{
+  "status": "private implementation, sources, states and final independent ledger approved; actual-tail integration pending",
+  "target": "PHP8.5.10 CLI,NTS,64-bit",
+  "scope": [
+    "Published generated enum method strings are valid values for ordinary callable-typed parameter reception.",
+    "Admission validates but does not convert,capture or replace the received value; later arguments and receiving-frame visibility retain existing timing.",
+    "Raw arrays and internal Closures retain the existing reception paths and identities, validated by a fresh shared-form consistency control."
+  ],
+  "implementation": [
+    "spec/semantics/210-class-method-strings.watsup"
+  ],
+  "inputs": {
+    "spec/semantics/95-type-values.watsup": "2fdc415efb581db428aaf809bbd696240284c15516b64839587c5b1c20681f8f",
+    "spec/semantics/210-class-method-strings.watsup": "e378517ebb38e8c88689b042ea60bf632a344a1efff11109f7a9a02e0b64477f",
+    "spec/semantics/215-scoped-callables.watsup": "c325b382015eac1e422687585f864964ad85f94d80aa317bebfc1bdfe5097e53",
+    "spec/semantics/221-keyword-compound-callables.watsup": "df646c4f2839061bc2d13150ec7ae107546abc56a363b25c17ed5e2dfbacdd52",
+    "spec/semantics/248-callable-receives.watsup": "5a74f6834a5d2684f74a6130c242efaf299a365caca9ba174fc0aab1395d1243",
+    "spec/semantics/301-cycle-collection.watsup": "aee087862dedefcf35393172408d15992e827bd7ed06df24fd251b47125713de",
+    "spec/semantics/437-enum-runtime.watsup": "737867e5b0d09efd8b01bd29ac44fc0b7547cfb07797abf5203553ac9655eaf6",
+    "spec/semantics/modules.json": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3",
+    "tests/semantics/callable_receive_cases.json": "04811495671b55ccafc032501bd263ba972b76ef7ad2d993f2ce338174a14f05",
+    "tests/semantics/user_string.py": "b7b39970298e9e70beea6b9b1947d8ac89a2feafbf02cff92a2dbef6585fa5da",
+    "spec/semantics/95-typed-calls.watsup": "ab089179bccf6464895185ad0d36dea04fa468a850e899857d87b5a80aaface0",
+    "spec/semantics/148-core-intrinsics.watsup": "083cf52979239a3ac9918ad110110bb8eaa8c84b63fe6be5443368fcedff5d8c",
+    "spec/semantics/205-array-callables.watsup": "8ff48fbc308ffdc049c689dff2da7ba927a60e30aaa2f713e97a914bc31af9ed",
+    "tests/semantics/callable_receives.py": "816d36dca50b7ade7a19558582361ecac80c1358c19963e7555e9618ce618ea7",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "source_agreement_count": 5,
+  "source_agreements": [
+    {
+      "id": "callable-parameter-snapshot",
+      "revision": "d2acb37cb7998021ea102b3f169a441cd1308710",
+      "seconds": 16.836,
+      "report": ".tools/enum-string-admission-selected-review-v1/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "callable-cases-lookup-and-refusal",
+      "revision": "d2acb37cb7998021ea102b3f169a441cd1308710",
+      "seconds": 18.058,
+      "report": ".tools/enum-string-admission-dev-v1/callable-cases-lookup-and-refusal/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "strict-callable-string-reception",
+      "revision": "d2acb37cb7998021ea102b3f169a441cd1308710",
+      "seconds": 15.765,
+      "report": ".tools/enum-string-admission-dev-v1/strict-callable-string-reception/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "private-receiving-scope-control",
+      "revision": "d2acb37cb7998021ea102b3f169a441cd1308710",
+      "seconds": 15.319,
+      "report": ".tools/enum-string-admission-dev-v1/private-receiving-scope-control/changed-report.json",
+      "agreement": true
+    },
+    {
+      "id": "generated-array-and-capture-reception",
+      "revision": "d2acb37cb7998021ea102b3f169a441cd1308710",
+      "seconds": 39.498,
+      "report": ".tools/enum-callable-forms-review-v1/changed-report.json",
+      "agreement": true
+    }
+  ],
+  "pending_source_cases": [],
+  "original_boundary": {
+    "revision": "d2acb37cb7998021ea102b3f169a441cd1308710",
+    "id": "callable-parameter-snapshot",
+    "reason": "class or method callable type checking",
+    "seconds": 19.309,
+    "report": ".tools/enum-string-admission-selected-review-v1/baseline-report.json",
+    "agreement": false
+  },
+  "state_checks": {
+    "status": "passed",
+    "checks": 111,
+    "explicitly_derived_checks": 4,
+    "accepted": [
+      {
+        "case": "callable-parameter-snapshot",
+        "checks": 42,
+        "explicitly_derived_checks": 3,
+        "seconds": 30.941,
+        "report": ".tools/enum-string-admission-selected-state-v1/callable-parameter-snapshot/process.json"
+      },
+      {
+        "case": "private-receiving-scope-control",
+        "checks": 34,
+        "explicitly_derived_checks": 0,
+        "seconds": 18.878,
+        "report": ".tools/enum-string-admission-scope-state-v1/private-receiving-scope-control/process.json"
+      },
+      {
+        "case": "generated-array-and-capture-reception",
+        "checks": 35,
+        "explicitly_derived_checks": 1,
+        "seconds": 48.417,
+        "report": ".tools/enum-callable-forms-state-v1/generated-array-and-capture-reception/process.json"
+      }
+    ],
+    "derived_controls": "Global saved-argument and COW-array views plus the computed/fixed common-dispatch component checks; these add no pipe or Closure::fromCallable source agreement.",
+    "processes": "All expected labels were true; exit0, empty stderr, stable inputs, no timeout, PID/group absent. An independent /proc scan found no member of any of the three process groups."
+  },
+  "strict_compilation": {
+    "mode": "SL",
+    "modules": 433,
+    "result": true,
+    "seconds": 19.088,
+    "report": ".tools/enum-string-admission-strict-433-v1/process-SL.json",
+    "revision": "d2acb37cb7998021ea102b3f169a441cd1308710"
+  },
+  "independent_review": {
+    "reviewer": "enum_string_recover_review",
+    "implementation": "exact210(+4/-1) admission-mode partition approved",
+    "native_originals": "five fresh originals/native streams approved",
+    "source_comparisons": "all five fresh source receipts independently approved",
+    "reached_states": "all111 conditions independently approved, including four explicitly derived component/view controls",
+    "final_ledger": "approved"
+  },
+  "compatibility": "Only matching ARRAY_ADMISSION generated candidates bypass the old resolver. Both ARRAY_DISPATCH modes and all ordinary method/visibility,API,pipe,capture and owner paths are unchanged. No historical accepted source/native/state result is replayed or renewed.",
+  "accounting": "All four enum declaration obligations remain partial. Unsupported has zero agreement credit. The frozen source packets,not catalogue registration,are the executed originals. Existing immutable compiler/adapter/oracle binaries are reused with recorded identities; no rebuild is claimed.",
+  "primary_sources": [
+    {
+      "path": "vendor/php-src/Zend/zend_execute.c",
+      "symbol": "zend_check_type_slow / MAY_BE_CALLABLE",
+      "behavior": "Validates the original argument through zend_is_callable without converting the pvalue."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_API.c",
+      "symbol": "zend_is_callable_ex",
+      "behavior": "Uses the first active user frame, which is the receiving function during parameter reception."
+    }
+  ],
+  "private_remaining_at_validation": [
+    "The is_callable API has no runtime implementation here; pipe and Closure::fromCallable generated-string conversion remain separate partial work.",
+    "Default,variadic,reference,return and wider callable contexts retain their existing contracts; this cut validates ordinary parameter routes.",
+    "GC09 intrinsic fake-Closure birth/clone policy and wider enum GC/backing/loading contexts remain separate."
+  ],
+  "current_remaining": [
+    "The is_callable API is absent; direct enum pipe and wider callable API/reception/return contexts remain partial.",
+    "Default loading, wider enum backing/loading and collection contexts retain their existing boundaries."
+  ],
+  "prepared_composition": {
+    "base": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+    "packages": [
+      "ce84d72d3/ba8e8f1d7 callable reception",
+      "220710f0e/a7f072f2e Closure::fromCallable conversion"
+    ],
+    "status": "private candidate prepared; combined seam review and joined gate pending",
+    "validation": "Original source5/state111/private433 and source4/state138/private433 cuts remain separate; their original input hashes are retained, with no claim that old shared inputs match the composed tree.",
+    "shared_policy": "GC09 and GC10 are integrated at this base. Reception creates no Closure; fromCallable uses the existing receiverless original-birth allocator and ordinary cleanup/owners.",
+    "joined_compilation": "unrun; requires explicit parent writer grant and reconfirmed canonical base",
+    "canonical_fast_forward": "unrun; no canonical writer authority inferred"
+  }
+}

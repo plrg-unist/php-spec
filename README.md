@@ -6470,8 +6470,10 @@ after invocation.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Callable admission, pipe routes,
-`Closure::fromCallable` conversion, `is_callable`, case attributes, enum collection
+The private enum extension admits generated method strings as original values
+to callable-typed parameters and converts generated string/array targets with
+`Closure::fromCallable`; its current-tail joined gate remains pending.
+Pipe routes, `is_callable`, case attributes, enum collection
 policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

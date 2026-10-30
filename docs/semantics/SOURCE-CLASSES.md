@@ -595,5 +595,29 @@ table cold until invocation. The
 [array-capture review](../../coverage/semantics/enum-array-capture-review.json)
 keeps these cases and source/owner checks separate. Other callable consumers,
 loading and wider backing contexts remain partial. GC08 covers cached enum-case
-GC candidate exclusion; wider GC interactions and GC09 intrinsic fake-Closure
-birth versus clone policy remain separate.
+GC candidate exclusion; original receiverless Closures use the shared GC09 birth
+policy. Wider GC interactions remain partial.
+
+## Callable-typed generated enum strings
+
+Ordinary callable-typed parameters admit published generated enum method strings
+as their original values. Reception creates no Closure or selected-call record;
+arguments finish before the receiving frame checks callable validity. That
+frame's scope controls ordinary private method strings and arrays, while a
+Closure captured inside the class retains its selected private target. Existing
+array and Closure identities are unchanged. The [admission review](../../coverage/semantics/enum-string-admission-review.json)
+records source, state and receiving-scope checks at its private cut.
+
+## Generated enum conversion with Closure::fromCallable
+
+`Closure::fromCallable` converts published generated enum strings and arrays,
+including through a captured factory. The actual API call and received value
+authenticate conversion; the existing internal Closure allocator stores the
+selected operation without a source array, case receiver or factory owner.
+Existing Closure and `__invoke` array identity forms allocate nothing. Calls
+retain the new Closure through argument clearing and Stringable conversion,
+then can retire it after invocation. The pinned engine routes are
+`zend_create_closure_from_callable`, `zend_is_callable_ex` and
+`zend_create_fake_closure`. The [conversion review](../../coverage/semantics/enum-from-callable-review.json)
+records distinct source and state checks at its private cut. `is_callable`,
+pipe, wider reception, loading and backing contexts remain partial.

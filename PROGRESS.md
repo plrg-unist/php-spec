@@ -35,6 +35,14 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
+The private enum callable extension admits generated method strings as original
+values at ordinary callable-typed parameter reception and converts generated
+string/array targets through `Closure::fromCallable`. Its separate reviewed cuts
+are source5/state111 and source4/state138, each with strict433 compilation.
+The current-tail joined gate and canonical integration are pending.
+[Reception](coverage/semantics/enum-string-admission-review.json),
+[conversion](coverage/semantics/enum-from-callable-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -410,7 +418,7 @@ control is promoted without native replay.
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
-| Enum M3/M4 | Published enum string callable-type validation; other callable APIs, pipe/default loading and wider backing contexts remain partial. |
+| Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion are composed on the current tail; joined validation and integration remain pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
 | A78 | Temporary factory Generator owning first option and scalar last cache; native four and old refusal frozen, implementation and private validation in progress. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
