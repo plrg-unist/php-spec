@@ -3681,6 +3681,12 @@ buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.
 The [enum collectability review](coverage/semantics/gc-enum-collectability-review.json)
 records the native and reached-state controls.
+Receiverless fake Closures now retain Zend's allocation-time GC flag across the
+modeled first-class and `Closure::fromCallable` producer families. Fresh clones
+and bind copies remain collectable even when their target and receiver match an
+original; static Fiber captures made through an object have no receiver edge.
+The [fake Closure GC review](coverage/semantics/gc-fake-closure-collectability-review.json)
+records the native, source and reached-state distinctions.
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared

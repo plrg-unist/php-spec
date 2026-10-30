@@ -1,0 +1,52 @@
+{
+  "scope": "GC09: allocation-time GC_NOT_COLLECTABLE for receiverless fake Closures in every currently modeled producer family; clones and bind copies remain collectable.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_closures.c::zend_create_fake_closure sets GC_NOT_COLLECTABLE only when the resulting this_ptr is absent",
+    "vendor/php-src/Zend/zend_closures.c::zend_closure_clone and Closure::bind/::bindTo use zend_create_closure without that allocation flag",
+    "vendor/php-src/Zend/zend_gc.h::GC_MAY_LEAK skips possible-root buffering for flagged objects; child traversal remains independent"
+  ],
+  "private_cuts": {
+    "gc08_composition": "ec060d02718c5596d58673b4c4648d4176930ddb",
+    "initial_native": "c31141d0924acb436ba919e45e347b65fce2e800",
+    "clone_native": "ea8bb8d328ac01e9a0415b081271f1f27565052d",
+    "producer_native": "1291c457b70592ca9cd8f069ea5e2c53593998d8",
+    "semantic": "62e451a45b712b586c7b39ff8ebd196df17a7291",
+    "source_and_fixture": "8325b0117a5b188eb047c2590490731eb3313749",
+    "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "strict_precommit_diff_sha256": "b8bf4610f0f264db60f67b27ccbe599763cfe51c8ccc5813af10b5bd3b15ec19",
+    "reached_fixture_sha256": "535680ac4da84c905341b1f8786141cba96af2566084e7591a9b6f4b71354f3f"
+  },
+  "validation": {
+    "native": "The 1291c producer batch exits 0 with empty stderr: named/intrinsic/method/array/string/constant/fromCallable/factory originals each leave zero roots after a duplicate decrement; named/intrinsic/factory clones, bind copy, bound method and real Closure each leave one. Its Fiber/enum batch shows enum and all class/object static captures at zero, even with object-style input; enum/static clones and bound Fiber captures leave one. Earlier c311/ea8 controls independently distinguish static original 0, bound/real 1 and static clone 1.",
+    "reached": "Three strict SL groups pass 54+42+57=153 reported assertions at clean 8325: real CV bindings, birth marker membership, absent original physical slots, present clone/bind/real/bound slots, live identity, Fiber object-style static no-child edges and bound receiver/weak identity. Forged real/bound markers fail GC validity. All three sources reach the sole gc_enabled() marker.",
+    "source": "Three new original sources match retained native stdout, stderr and exit exactly at clean 8325: named Z|0|1|5|5|3|END, method Z|0|77777|11|END, corrected Fiber Z|0|1|111|1|END. Each model outcome is normal, exit 0, empty stderr and stable inputs/HEAD.",
+    "strict": "One private 432-module strict SL compilation passes at the reviewed dirty 1291 semantic diff with true newline, empty stderr and full process-group reap. The recorded diff SHA equals the committed 1291-to-62e semantic diff byte for byte; no compilation rerun was needed for the metadata commit.",
+    "zero_credit": "The pre-edit 11-check static-root baseline diagnoses the wrong original slot and gives no fix credit. Packet6's first Fiber reached source used unmodeled count(); its native row is retained but has zero model agreement. Only the corrected packet7 Fiber original contributes the third agreement. GC07 and GC08 accepted sources and state groups were not replayed."
+  },
+  "source_sha256": {
+    "named_reached": "155b2890726478b34d7d1e7a667d05eb6d3a3aa6bd124816c7385cec914bdbed",
+    "method_reached": "a5740001f8c3de5f8ce4be0f32c99e8969153ef0ef1beb247a973bd1f67f15b1",
+    "fiber_reached_corrected": "e2c45c8021a32eba6709bc47f5f4c0e9108712b938050ef85626c769f91bcdbc",
+    "fiber_reached_superseded": "1e4483ddcf25fc0a4fdc28e6c322a4b2d04a9b35c7d179bf99068d5f0ec5b9af"
+  },
+  "reports": {
+    "gc-fake-closure-collectability-author/packet1/native-report.json": "f3ef4825f99109ce6bf65afd491bee4775c12ddebf91236d544902f52dcffbf7",
+    "gc-fake-closure-collectability-author/packet2/native-report.json": "bde966087b2c14f0aefdefe0babb85a6de96926fcff117a4c085b4ee54b19b4b",
+    "gc-fake-closure-collectability-author/packet3/native-report.json": "5b32f507aff7752e5ee8e549c65b140143ef992241c5388f1832ce03004056e2",
+    "gc-fake-closure-collectability-author/packet4/native-report.json": "30769f43a6715672234a384540f38b57057e7ad25cfd7222f70be765dd2d3c9d",
+    "gc-fake-closure-collectability-author/packet5/strict/report.json": "26691fd12fbe2afdbc7636a4f245da38dcda3ad87160bb21dc8c1eb24bdd2dca",
+    "gc-fake-closure-collectability-author/packet6/native-report.json": "411e41ef1d7c5e4f69d826485af57916100247a26fbb3f383fbba9a6376aed6f",
+    "gc-fake-closure-collectability-author/packet6/model-fake-closure-named-reached-report.json": "0ccdfa0082a17d681e01446a5719fb60860cf447258ebecd7902b8ea9cae8e47",
+    "gc-fake-closure-collectability-author/packet6/model-fake-closure-method-reached-report.json": "7e42e62187bdb0147a445da5cfa37e5680658399b94e83c179414021c1b3527c",
+    "gc-fake-closure-collectability-author/packet7/native-report.json": "0948eaff3108f462c2b73ad61522040ed296fc53cee67f14570729865016eb02",
+    "gc-fake-closure-collectability-author/packet7/model-fake-closure-fiber-reached-report.json": "b3949de0b1f045ed8f1f9ffbc81e90b30e20cba037618f16a7708c3e44365559",
+    "php-spec/.tools/shutdown-state-review-supdxmor/report.json": "df3e10113c12a6964733c98712274574e95863f3ea7efafc1d25b7e247d6252a",
+    "php-spec/.tools/shutdown-state-review-f523ukom/report.json": "4d72fbb17accdf170924862710813be5d8a13aa3ddd23b25af3b88ab85d1e06f",
+    "php-spec/.tools/shutdown-state-review-6cbg6c9o/report.json": "362590d2ace8ba9eca269512d67d3ff815a653891cfb6dc5a92e51a6c893e597",
+    "php-spec/.tools/shutdown-state-review-z67skjs8/report.json": "ac30e827b70dde84ffe1e354ce6abbe231f31e533bb48adc25b78f67311699f1"
+  },
+  "review": "Independent semantic/test CLEAR from gc07_fallback_review at clean 8325: the 21 allocation sites for the eight marked body families mapped, original versus clone/bind/identity behavior and Fiber static object-input condition checked against pinned Zend; source, reached and strict reports checked. Actual-tail interaction review and joined gate remain pending.",
+  "limits": "Only already implemented fake Closure creation routes are covered. The marker changes possible-root admission, not GC graph traversal, physical owner counting, collector plans or wider active collection protocols. Unmodeled internal callable bodies and broader fake Closure constructions remain partial.",
+  "recovery": "From php-spec, run tests/semantics/gc_fake_closure_collectability_sources.py with --phase native or --phase model and the selected --case/--output packet; run tests/semantics/gc_fake_closure_state.py with a selected --case. Native-only gc_status scripts have no modeled intrinsic. Raw reports live in ../php-spec-evidence-archive and php-spec/.tools; no bulky artifacts are in Git."
+}

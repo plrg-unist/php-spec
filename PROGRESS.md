@@ -86,6 +86,15 @@ counting are unchanged. Other builtin eligibility and wider collection contexts
 remain partial.
 [GC08 review](coverage/semantics/gc-enum-collectability-review.json).
 
+GC09 records Zend's allocation-time `GC_NOT_COLLECTABLE` flag for receiverless
+fake Closures created by the modeled named, intrinsic, method, constant,
+fromCallable and Fiber capture routes. Clones and bind copies allocate without
+that flag; bound fake and real Closures remain collectable. Two native status
+batches distinguish these cases, three new sources agree exactly, and three
+strict reached groups pass 153 checks. GC graph traversal and owners are
+unchanged. Wider collection contexts remain partial.
+[GC09 review](coverage/semantics/gc-fake-closure-collectability-review.json).
+
 Immediate identity cleanup now validates a sole produced right object/array
 temporary with a borrowed or scalar left operand in both AL and SL. Fourteen
 focused conditions pass in each mode, including strict compilation of the actual
@@ -325,12 +334,13 @@ cut keep zero credit.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| GC09 | Coherent fake-Closure allocation flags under implementation. |
+| GC10 | Direct real-Closure caller collection; native original retained, pre-begin semantic fence under diagnosis. |
+| OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
-| ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
-| CLASS155 | Core-only array-unpack constructor witness preparation. |
-| COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
-| Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
+| ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
+| CLASS155 | Core array-unpack constructor validation. |
+| COMP159 | Initialized nonpublic ordinary images independently cleared and queued. |
+| Enum M3/M4 | Published enum string callable-type validation; other callable APIs, pipe/default loading and wider backing contexts remain partial. |
 | A78 | Temporary factory Generator owning first option and scalar last cache; native four and old refusal frozen, implementation and private validation in progress. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

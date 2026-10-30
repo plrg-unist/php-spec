@@ -277,7 +277,7 @@ def $constant_callable_cached_method_access(S, porigin, porigin_owner, pmethodde
 
 def $constant_callable_method_allocate(S, porigin, pmethoddesc, porigin_called, n_prefix) = $constant_callable_method_result(S, $constant_callable_stamp(S_scoped, n, porigin, n_prefix), porigin, pmethoddesc)
   -- if n = |S.OBJECTS|
-  -- if S_scoped = S[.OBJECTS = S.OBJECTS ++ [METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin porigin_called eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER eps, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_scoped = S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin porigin_called eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER eps, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $constant_callable_method_result(S, S_result, porigin, pmethoddesc) = S_result -- otherwise
 def $constant_callable_method_create(S, porigin) = $constant_callable_method_allocate(S, porigin, pmethoddesc, porigin_called, n_prefix)
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))

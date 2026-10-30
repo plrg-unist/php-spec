@@ -154,6 +154,7 @@ dec $gc_literal_empty_constants(pstate, nat, pconstant*, nat) : bool
 dec $gc_literal_empty_pools(pstate, ppool*, nat) : bool
 dec $gc_immutable_array(pstate, nat) : bool
 dec $gc_object_possible_root(pobject) : bool
+dec $gc_fake_flags_valid(pstate, nat*) : bool
 dec $gc_possible_root(pstate, pnode) : bool
 dec $gc_immutable_flag_valid(pstate, nat) : bool
 dec $gc_immutable_flags_valid(pstate, nat*) : bool
@@ -432,7 +433,7 @@ def $gc_immutable_array(S, n) = false -- otherwise
 ;; GC_MAY_LEAK therefore skips its decrements, including before cache binding.
 def $gc_object_possible_root(ENUMCASE porigin) = false
 def $gc_object_possible_root(pobject) = true -- otherwise
-def $gc_possible_root(S, HOBJECT n) = $gc_object_possible_root(S.OBJECTS[n]) -- if $(n < |S.OBJECTS|)
+def $gc_possible_root(S, HOBJECT n) = ($gc_object_possible_root(S.OBJECTS[n]) /\ ~(n <- S.GC.FAKE_NOCOLLECT)) -- if $(n < |S.OBJECTS|)
 def $gc_possible_root(S, HARRAY n) = (~$gc_immutable_array(S, n)) -- if $(n < |S.ARRAYS|)
 def $gc_possible_root(S, pnode) = false -- otherwise
 def $allocate_immutable_empty(S) = S_next[.GC.IMMUTABLE = S.GC.IMMUTABLE ++ [n]]
@@ -1416,7 +1417,42 @@ def $gc_active_valid(S) = $gc_call_live(S, pgccall)
 def $gc_active_valid(S) = $gc_plan_live(S, pgcplan)
   -- if S.GC.PLAN = (pgcplan)
 def $gc_active_valid(S) = false -- otherwise
-def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S) /\ $(S.GC.SCAN.INDEX <= S.GC.SCAN.END))
+dec $gc_fake_kind(pobject) : bool
+def $gc_fake_kind(NAMEDCLOSURE porigin) = true
+def $gc_fake_kind(INTRINSICCLOSURE pintrinsic) = true
+def $gc_fake_kind(FROMCALLABLEFACTORY porigin) = true
+def $gc_fake_kind(METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?) = true
+def $gc_fake_kind(ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?) = true
+def $gc_fake_kind(STRINGMETHODCLOSURE pcalltarget pstringselection) = true
+def $gc_fake_kind(FROMCALLABLECLOSURE pfrommethod) = true
+def $gc_fake_kind(FIBERAPICLOSURE pfibercapture) = true
+def $gc_fake_kind(pobject) = false -- otherwise
+dec $gc_fake_scope_receiverless(pstate, nat) : bool
+def $gc_fake_scope_receiverless(S, n) = true
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if pclosurescope.RECEIVER = eps
+def $gc_fake_scope_receiverless(S, n) = false -- otherwise
+dec $gc_fake_live_valid(pstate, nat, pobject) : bool
+def $gc_fake_live_valid(S, n, NAMEDCLOSURE porigin) = true
+def $gc_fake_live_valid(S, n, INTRINSICCLOSURE pintrinsic) = true
+def $gc_fake_live_valid(S, n, FROMCALLABLEFACTORY porigin) = true
+def $gc_fake_live_valid(S, n, METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?) = $gc_fake_scope_receiverless(S, n)
+def $gc_fake_live_valid(S, n, ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?) = $gc_fake_scope_receiverless(S, n)
+def $gc_fake_live_valid(S, n, STRINGMETHODCLOSURE pcalltarget pstringselection) = $gc_fake_scope_receiverless(S, n)
+def $gc_fake_live_valid(S, n, FROMCALLABLECLOSURE pfrommethod) = $gc_fake_scope_receiverless(S, n)
+def $gc_fake_live_valid(S, n, FIBERAPICLOSURE pfibercapture) = $fiber_static(pfibercapture.KIND)
+def $gc_fake_live_valid(S, n, pobject) = false -- otherwise
+dec $gc_fake_flag_valid(pstate, nat) : bool
+def $gc_fake_flag_valid(S, n) = $gc_fake_kind($object_body(S.OBJECTS[n]))
+  -- if $(n < |S.OBJECTS|)
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+def $gc_fake_flag_valid(S, n) = $gc_fake_live_valid(S, n, $object_body(S.OBJECTS[n]))
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+def $gc_fake_flag_valid(S, n) = false -- otherwise
+def $gc_fake_flags_valid(S, eps) = true
+def $gc_fake_flags_valid(S, n :: nat_tail*) = ($gc_fake_flag_valid(S, n) /\ $gc_fake_flags_valid(S, nat_tail*))
+def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $destructor_unique(S.GC.FAKE_NOCOLLECT) /\ $gc_fake_flags_valid(S, S.GC.FAKE_NOCOLLECT) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S) /\ $(S.GC.SCAN.INDEX <= S.GC.SCAN.END))
 
 def $gc_simple_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
 def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PBOOL S.GC.ENABLED) -- if pconfigcall.KIND = INTRINSIC_GC_ENABLED
