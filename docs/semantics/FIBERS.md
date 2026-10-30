@@ -1116,6 +1116,15 @@ agree; five reached fronts pass 501 custom/526 reported checks at their distinct
 cuts. Private strict433 retains its original cut; actual-tail compilation is pending.
 [Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
 
+I87 admits direct raw array/string method Generator bodies through the existing
+selected-target proof. The actual allocated RUNNING resumer Gen, exact current
+header and live receiver precede transfer; the VM keeps its ordinary This owner.
+Native controls distinguish receiver release at close from I86's retained Closure.
+Six native/model originals agree; seven reached fronts pass 561 custom/596
+reported checks at their distinct cuts. Private433 retains its original cut;
+actual-tail integration is pending. Wider caches/transfers remain partial.
+[Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

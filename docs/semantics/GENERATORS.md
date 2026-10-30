@@ -515,6 +515,19 @@ array-storage failures retain zero credit. Wider source/API, real-bound Closure,
 delegation, collection and lifecycle combinations remain partial.
 [Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
 
+I87 reuses immutable selected-method authority for raw array/string Generator
+calls and scoped factories. Selection survives argument callback retargeting and
+source value retirement; private history keeps its ordinary source method and
+original site/scope.
+A bounded receiver lookup authenticates history without owning it, while direct
+entry requires the real receiver. Direct raw bodies follow ordinary method
+receipt policy. Six native/model originals agree; seven reached fronts pass
+561 custom/596 reported checks at distinct cuts, including retired private
+permission and real close/cache owners. Private strict433 retains its original
+cut; actual-tail integration is pending and original failures keep zero credit. Raw
+cached-reference bodies, pipe and wider APIs/lifecycles remain partial.
+[Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
