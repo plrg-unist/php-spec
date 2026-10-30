@@ -375,11 +375,22 @@ missing-arity and ordinary return diagnostics with the declaring class and
 member, including explicit `->__invoke`. Typed input and `never` retain the
 whole-name C-string view; `never` identifies a method. Four native-first
 sources, private strict433 and two source-reached state groups pass 295
-conditions (291 reached, four controls). Copied trait parameter views, rebound
-scopes and real Closure/API/wrapper views remain separate. The
+conditions (291 reached, four controls). Copied trait `self` views are handled
+below; other copied views, rebound scopes and real Closure/API/wrapper views
+remain separate. The
 [captured-method review](../../coverage/semantics/anonymous-captured-method-diagnostics-review.json)
 retains two normal pre-fix mismatch observations and the distinct zero-credit
 preflight, strict-placement, comparator and fixture corrections.
+Trait-constant first-class static captures with a saved `self` parameter view
+now report `never` fallthrough as a method when the base and copied function
+views differ. The saved type rejects an importing-class instance where a direct
+method call accepts it; an old clone and later using-class capture retain
+distinct lexical names. Three exact native/source agreements, private strict433
+and two source-reached state groups pass 130 conditions (126 reached, four
+guards). The [trait-capture review](../../coverage/semantics/trait-captured-method-kind-review.json)
+keeps two pre-fix normal mismatches and exact capture-time deprecations.
+Copied `parent` parameters, alias/failure receipts, anonymous using-class names,
+rebound scopes and other Closure/API/wrapper views remain separate.
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.

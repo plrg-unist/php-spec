@@ -4573,6 +4573,10 @@ declaring class and member in missing-arity and ordinary return errors. Direct
 and explicit `->__invoke` calls retain captured scope; typed input and `never`
 keep their whole-name display, while `never` reports a method.
 [Captured-method review](coverage/semantics/anonymous-captured-method-diagnostics-review.json).
+Trait-constant method captures can retain a copied `self` parameter view from
+before class publication. Old cloned and later captures preserve distinct
+lexical names; copied-view `never` fallthrough now identifies a method.
+[Trait-capture review](coverage/semantics/trait-captured-method-kind-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
