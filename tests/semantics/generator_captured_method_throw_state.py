@@ -181,6 +181,12 @@ ARRAY = COMMON + checks(r"""
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Base89C"))) = (porigin_base)
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Leaf89C"))) = (porigin_leaf)
 S.OBJECTS[n_callback] = ARRAYMETHODCLOSURE pcalltarget_original parrayselection_original eps
+$class_instanceof(S, POBJECT n_callback, $ptascii("Closure"))
+~$class_instanceof(S, POBJECT n_callback, $ptascii("Token89C"))
+$getclass_live_object(S, n_callback)
+$lookup(S.ENV, $ptascii("weakCallback")) = (n_weak_callback_cell)
+S.STORE[n_weak_callback_cell] = DEFINED (POBJECT n_weak_callback)
+$weakref_get(S, n_weak_callback) = POBJECT n_callback
 pcalltarget_original = SCOPE_METHOD_TARGET (METHOD_TARGET n_maker pgenerator.FUNCTION) pcallableaccess_original
 parrayselection_original.NAME = $ptascii("stream")
 parrayselection_original.REQUESTED = porigin_leaf
