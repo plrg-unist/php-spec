@@ -346,7 +346,7 @@ syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGAT
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes int | ENUM_CASES pconfigcall porigin* pvalue* | ENUM_CASES_VALUE pconfigcall porigin* pvalue* | ENUM_QUERY_RESULT pconfigcall porigin | ENUM_FROM_CONVERT pconfigcall pvalue | ENUM_FROM_FETCH pconfigcall pvalue | ENUM_FROM_LOSSY pconfigcall pvalue int | ENUM_FROM_NULL pconfigcall | ENUM_FROM_STRING_RESULT pconfigcall nat porigin int int | TICK porigin ptickmarker | TICK_NEXT ptickdispatch | TICK_SEND ptickdispatch nat | TICK_REFERENCE ptickdispatch nat | TICK_ENTER ptickdispatch | TICK_RESULT ptickdispatch | TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
 ;; This witness is operation metadata, never an executable continuation.
-syntax ptask = TICK_UNREGISTER_SOURCE pshutdownentry ptickentry pshutdownproducer
+  | TICK_UNREGISTER_SOURCE pshutdownentry ptickentry pshutdownproducer
   | OUTPUT_WRITE pobwrite | OUTPUT_FINISH pobwrite | OUTPUT_DRAIN pobdrain | OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer | OUTPUT_FINAL_DEACTIVATE pobdeactivate
   | OB_USER_FAIL_ARGS pobinvoke nat | OB_USER_FAIL_DONE pobinvoke | OB_USER_FAIL_COMMIT pobinvoke nat | OUTPUT_FAIL_WRITE pobwrite nat | OUTPUT_FAIL_FINISH pobwrite nat
   | OB_API_FAIL_RELEASE pobrelease pcallcontext? ptask* nat | OB_API_FAIL_DONE pobrelease pcallcontext? ptask*
