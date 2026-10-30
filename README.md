@@ -6640,6 +6640,14 @@ PHP; native observations and private strict433 retain their distinct cuts.
 Five reached fronts pass 444 custom/469 reported checks; actual-tail compilation
 remains pending.
 [Direct magic review](coverage/semantics/generator-direct-magic-review.json).
+
+I86 reuses selected-method Closure authority for Generator Fiber entry and raw
+reference caches. The actual resumer identifies the live Closure; consumed
+storage uses its archived selection/binding without adding owners. The shared
+ATTR07 receiver correction borrows This from that Closure. Native4, private433
+and four source agreements pass at distinct cuts. Five reached fronts pass
+501 custom/526 reported checks; actual-tail compilation remains pending.
+[Captured body review](coverage/semantics/generator-captured-method-body-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

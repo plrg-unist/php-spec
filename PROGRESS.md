@@ -35,20 +35,21 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
-I85 admits direct Generator-bodied `__call`/`__callStatic` within the existing
-typed source policy. Actual entered context supplies a nonowning selected-target
-receipt, authenticated through linked ancestry and retained after argument
-retirement. Active/closing owners precede exact saved-frame search, so a genuine
-same-function sibling cannot lend its receipt. Live bodies keep real receivers;
-closed records own no payload. Five current originals agree, with six native
-observations including the replaced COUNT observer. Five reached fronts pass
-444 custom/469 reported checks for fresh/dead-receiver contrast, completed
-payloads, receiver rebinding, parked cache/Input owners, sibling refusal and
-budget continuation. Private strict433 retains its original cut; actual-tail
-integration is pending. The original compiler, COUNT observer, Fiber-consumer
-and fixture-prefix failures retain zero credit after narrow corrections.
-BYREF magic signatures and wider source/API/lifecycle forms remain partial.
-[I85 review](coverage/semantics/generator-direct-magic-review.json).
+I86 authenticates captured user-method Generators across Fiber transfer and
+nonstatic raw-reference caches using one current selected-method proof. Actual
+resumer/Gen/Closure identity precedes scope and live-receiver validation. The
+shared ATTR07 receiver correction imports only the borrowing hunk: VM INSTANCE
+owns Closure, and Closure owns This. Consumed free_storage reconstructs scope
+from immutable ARRAY/STRING/FROM selection or BF binding without another owner;
+ordinary live APIs stay unchanged. Four native/current source originals agree.
+Five reached fronts pass 501 custom/526 reported checks for physical owners,
+source/header/staging refusals, retired original binding history, cached SEND and
+Closure-before-value release. Private strict433 retains its original cut;
+actual-tail integration is pending. Original compiler/refusal/storage failures
+and diagnostic keep zero credit. Wider real-bound/source/API, delegation,
+collection and lifecycle combinations remain partial.
+[I86 review](coverage/semantics/generator-captured-method-body-review.json).
+[I85](coverage/semantics/generator-direct-magic-review.json),
 [I84](coverage/semantics/generator-magic-factory-review.json),
 [I83](coverage/semantics/generator-invokable-factory-review.json),
 [I82](coverage/semantics/generator-bound-factory-review.json),
@@ -327,6 +328,7 @@ cut keep zero credit.
 | GC09 | Coherent fake-Closure allocation flags under implementation. |
 | I84 | Reviewed private magic-handler Gen factories: native5/source5, reached442 custom/467 reported and private strict433 pass. Actual-tail integration pending; both original fixture failures retain zero credit. |
 | I85 | Reviewed private direct magic Generators: native6/current source5, reached444 custom/469 reported and private strict433 pass at distinct cuts. Actual-tail integration pending; original failures retain zero credit. |
+| I86 | Reviewed private captured method Gen/Fiber and consumed storage: native4/source4, reached501 custom/526 reported and private433 pass at distinct cuts. Shared ATTR07 receiver hunk only; actual-tail integration pending and original failures retain zero credit. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |

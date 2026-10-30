@@ -1106,6 +1106,16 @@ five reached fronts pass 444 custom/469 reported checks. Private strict433
 retains its recorded cut, with actual-tail compilation pending.
 [Direct magic review](../../coverage/semantics/generator-direct-magic-review.json).
 
+I86 anchors captured-method Generator transfer to its actual resumer and live
+Closure, reusing the existing selected-method authority. The VM owns Closure
+once and borrows This; the Closure owns the receiver. Native first-class/array
+and rebound-method probes keep that receiver and Closure through CLOSED.
+The reference cache retains its cell independently of the delivered SEND input;
+Gen drop releases Closure/receiver before the cached value. Four originals
+agree; five reached fronts pass 501 custom/526 reported checks at their distinct
+cuts. Private strict433 retains its original cut; actual-tail compilation is pending.
+[Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
