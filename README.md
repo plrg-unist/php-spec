@@ -6671,6 +6671,14 @@ Generators retain both until Closure-before-cache storage release. Four native/m
 originals agree at distinct cuts; five reached fronts pass 632 custom/657 reported
 checks. Private433 retains its initial cut; original failures keep zero credit and
 actual-tail integration and wider contexts remain pending. [Captured THROW review](coverage/semantics/generator-captured-method-throw-review.json).
+
+I90 reuses the actual entered magic-handler receipt for direct BYVAL Generator
+warm/fresh THROW across Fibers. Actual resumer/Gen/current identity precedes the
+existing source/header and cache/input filters. Native4/source4 and private433
+retain distinct cuts; five reached fronts pass 623 custom/648 reported checks.
+Fresh abort agrees on original-Throwable/Previous and payload-before-This order.
+Actual-tail integration and wider contexts are pending.
+[Magic THROW review](coverage/semantics/generator-direct-magic-throw-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

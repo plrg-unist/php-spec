@@ -1144,6 +1144,16 @@ distinct cuts; private433 retains its initial cut. Original failures keep zero c
 with actual-tail integration and wider contexts still open.
 [Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
 
+I90 shares actual direct magic Gen identity and I85 entered-handler authority
+across callee and BYVAL warm/fresh THROW transfer. Warm caught/parameter unsets
+leave value cache1/input1; fresh pre-yield suspension retains pending input2.
+Native supplied-abort controls distinguish fresh no-cache payload/This retirement
+and original API Throwable priority from warm propagation. Native4/source4 and
+private433 retain distinct cuts; five reached fronts pass 623 custom/648 reported
+checks, including budgeted abort/drop and closed Previous order. Actual-tail
+integration remains pending. Source/signature and wider lifecycle limits remain.
+[Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

@@ -549,6 +549,16 @@ integration remains pending. Wider binding, APIs, delegation, collection and
 lifecycle combinations remain partial.
 [Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
 
+I90 keeps existing typed BYVAL magic-handler policy while sharing the actual
+RUNNING resumer/Gen/current and entered-receipt proof across callee and warm/fresh
+THROW consumers. Warm cached payloads and fresh pending exception copies retain
+their separate owner phases. Native fresh abort closes without a value cache,
+releasing payload before This, then throws the original API Throwable with the
+supplied abort as Previous. Native4/source4 and five reached fronts 623 custom/
+648 reported pass at distinct cuts; private433 keeps its original cut. BYREF magic signatures, wider
+source/API combinations and actual-tail integration remain partial.
+[Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
