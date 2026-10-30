@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare STRING and bound fake Generator Closure::call copies with PHP 8.5.10."""
+"""Compare dynamic-string rejection and bound fake Generator calls with PHP 8.5.10."""
 from pathlib import Path
 import fiber_static_api_sources as source
 
