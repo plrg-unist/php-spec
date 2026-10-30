@@ -35,15 +35,15 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
-I97 validates normal Fiber suspension during copied Generator reference warnings,
-before Gen creation. The actual saved API cursor retains source/copy/argument
-snapshots through root reentry and CV mutation. Real static storage owned only by
-its source Closure is copied; fake method statics remain shared. Native3/source3
-and four reached fronts pass 553 custom/573 reported checks at distinct cuts on
-unchanged semantics. Three fixture failures and two narrow diagnostics retain
-zero credit. Aborts during copied reference warnings, no-Gen receive errors,
-wider contexts and actual-tail integration remain partial.
-[I97 review](coverage/semantics/generator-call-warning-fiber-review.json).
+I98 validates normal suspension in an owning warning-handler retval destructor,
+before copied Gen reference wrapping/creation. Actual caller and cleanup records
+retain source/copy/argument snapshots; a retval property adds an independent
+Token owner. Native2/source2 and three reached fronts pass 459 custom/474 reported
+checks at distinct cuts on unchanged semantics, with no state failures or retries.
+Trace expansion, handler/destructor throws, no-Gen receive errors and wider
+contexts remain partial; actual-tail integration is pending.
+[I98 review](coverage/semantics/generator-call-warning-retval-review.json).
+[I97](coverage/semantics/generator-call-warning-fiber-review.json),
 [I96](coverage/semantics/generator-folded-string-call-review.json),
 [I95](coverage/semantics/generator-fake-string-call-review.json),
 [I94](coverage/semantics/generator-fake-call-copy-review.json),
@@ -346,7 +346,7 @@ cut keep zero credit.
 | I95 | Variable/dynamic string rejection and finite bound-fake Gen call sources: current native3/source3 and four reached fronts 609 custom/629 reported pass at distinct cuts. Shared history fallback disjoint from live lookup; wrong native forecast/storage/two fixture failures0 and withdrawn unrun peer preserved, actual-tail pending. |
 | I96 | Literal-folded private capture and static STRING call consumers: native4/source4 and five reached fronts 516 custom/541 reported pass at distinct cuts. Ordinary call fallback and normal/abrupt binding-warning owners/order repaired; original forecast/dispatch/lifetime failures0 retained, actual-tail pending. |
 | I97 | Copied Generator reference-warning Fiber suspension: native3/source3 and four reached fronts 553 custom/573 reported pass on unchanged semantics at distinct cuts. Three original fixture0s/two diagnostics0 and preparation0 retained; copied-warning abort/no-Gen receive limits and actual-tail integration remain pending. |
-| I98 | Native2 observed for normal suspension in an owning error-handler retval destructor before copied Gen reference wrapping/creation. Model/reached checks remain unrun on unchanged semantics; abrupt/no-Gen receive limits retained. |
+| I98 | Owning copied-call warning retval destructor suspension: native2/source2 and three reached fronts 459 custom/474 reported pass on unchanged semantics at distinct cuts, without state failures/retries. Actual cleanup/caller/API snapshot ownership; trace/abrupt/no-Gen receive limits and actual-tail integration remain pending. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |

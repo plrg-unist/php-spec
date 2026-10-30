@@ -649,6 +649,16 @@ distinct cuts on unchanged semantics. Aborts during copied reference warnings,
 no-Gen receive errors and wider call forms remain partial.
 [Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
 
+I98 validates owning warning-return cleanup before copied Gen creation. The
+handler has returned, and its result's destructor suspends normally while the
+saved ERROR_HANDLER_CLEAN cursor retains source/copy/FIRST/RAW. Reference wrapping
+continues after retval retirement and handler restoration. A property on the
+returned object supplies a separate Token edge from the raw API snapshot.
+Native2/source2 and three reached fronts pass 459 custom/474 reported checks at
+distinct cuts on unchanged semantics, with no state failures or retries. Wider
+trace, handler/destructor-throw and no-Gen receive contexts remain partial.
+[Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

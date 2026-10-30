@@ -1219,6 +1219,16 @@ unchanged semantics. Aborts during copied reference warnings, no-Gen receive
 errors and wider contexts remain partial.
 [Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
 
+I98 validates suspension in a warning-return destructor before Gen creation.
+The real destructor context and caller frames move with the five destruction
+lists; the cleanup cursor keeps its copied-call arguments despite root mutation.
+The handler frame has returned, so its active-handler marker supplies no new
+permission. Native2/source2 and three reached fronts pass 459 custom/474 reported
+checks at distinct cuts on unchanged semantics, with no state failures or retries.
+Trace expansion, handler/destructor throws and no-Gen receive contexts remain
+partial.
+[Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

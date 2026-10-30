@@ -127,6 +127,16 @@ during copied reference warnings and no-Gen receive/mapping errors retain their
 limits.
 [Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
 
+I98 follows an owning handler retval into its normal destructor before reference
+wrapping. Existing cleanup records and the actual emitting caller retain the
+already allocated copy and raw values during a Fiber park. Root reentry preserves
+the independent real static copy; the fake-method control keeps Token in both a
+retval property and the API snapshot until normal cleanup. Native2/source2 and
+three reached fronts pass 459 custom/474 reported checks at distinct cuts on
+unchanged semantics, with no state failures or retries. Trace expansion,
+handler/destructor throws and no-Gen receive errors remain partial.
+[Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

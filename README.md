@@ -6746,6 +6746,15 @@ during copied reference warnings, no-Gen receive errors and wider contexts remai
 partial.
 [Warning Fiber review](coverage/semantics/generator-call-warning-fiber-review.json).
 
+I98 validates normal Fiber suspension in the destructor of an owning warning-handler
+return, before copied Generator reference wrapping and creation. The actual
+cleanup cursor retains source/copy/API arguments while root CVs change; a
+returned object's property independently retains the same Token. Native2/source2
+and three reached fronts pass 459 custom/474 reported checks at distinct cuts on
+unchanged semantics, with no state failures or retries. Handler/destructor throws,
+no-Gen receive errors, trace expansion and wider contexts remain partial.
+[Warning retval review](coverage/semantics/generator-call-warning-retval-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
