@@ -182,7 +182,7 @@ borrows that receiver. Rebinding changes the selected scope used in warnings whi
 the original template name remains intact. Anonymous class and function-name
 components are truncated separately as C strings.
 
-One original without an external selected-Closure owner exposed a suspected native
+One original without an external owner retained across the handler exposed a suspected native
 `assert` reentrancy lifetime defect: replacing the callback registry and clearing the
 outside name during Deprecated retired the real captures/receiver before native
 continued using them. The pinned `assert.c` callback replacement,
