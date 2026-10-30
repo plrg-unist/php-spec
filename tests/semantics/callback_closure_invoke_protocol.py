@@ -143,7 +143,7 @@ def conditions(name, program, source, expected_stdout):
             checks += [
                 # Derived missing genuine tick caller; never another reached state.
                 '~$call_context_valid(S_body[.FRAMES = eps], pcallcontext_body, S_body.CVS)',
-                'pcallcontext_body.WRAPPER = ({SLOTS [NAMED_SENT (KNOWN pvalue_raw), NAMED_SENT (KNOWN (POBJECT n_argument))], NAMED eps})',
+                'pcallcontext_body.WRAPPER = ({SLOTS ([NAMED_SENT (KNOWN pvalue_raw), NAMED_SENT (KNOWN (POBJECT n_argument))]), NAMED eps})',
             ]
             reach('S_value', 'S_body', 4)
             owners('S_value', 'n_closure', 1)
@@ -156,7 +156,7 @@ def conditions(name, program, source, expected_stdout):
         else:
             checks += [
                 '$lookup(S_body.ENV, $ptascii("value")) = (n_private)',
-                'pcallcontext_body.WRAPPER = ({SLOTS [NAMED_SENT (REFERENCE n_private)], NAMED eps})',
+                'pcallcontext_body.WRAPPER = ({SLOTS ([NAMED_SENT (REFERENCE n_private)]), NAMED eps})',
                 '$heap_owners($heap_prune($heap_graph(S_body)), HCELL n_private) = 2',
             ]
             last, retired = 'S_body', ('n_closure',)
