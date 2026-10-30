@@ -180,8 +180,11 @@ finishes with an integer cached value; four sources and 372 reached conditions
 pass at private cuts, including normal TypeError trace and terminal cleanup.
 The joined strict433 and fresh normal source/state gate pass at `04d38dc55`,
 which received independent review before guarded integration.
-Typed Generator cells, effectful finalizers/casts, owning final caches, wider
-last-DATA reference graphs and lifecycles remain partial.
+The same temporary source also admits a finite quiet owning final cache when
+its copied last argument protects the cache child. Four more sources and 405
+reached conditions pass at private cuts, including real storage release and
+terminal saved-throw cleanup. Typed Generator cells, effectful finalizers/casts,
+wider last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -192,6 +195,7 @@ last-DATA reference graphs and lifecycles remain partial.
 [Factory reference cleanup](coverage/semantics/config-generator-factory-reference-review.json),
 [Owning Generator sends](coverage/semantics/config-generator-owning-value-review.json),
 [Temporary owning sends](coverage/semantics/config-generator-owning-temporary-review.json),
+[Owning final caches](coverage/semantics/config-generator-owning-cache-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -447,6 +451,7 @@ control is promoted without native replay.
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
+| A79 | Temporary factory Generator with owning final ARRAY/INSTANCE cache; four source agreements and two reached proofs complete privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

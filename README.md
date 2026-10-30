@@ -782,6 +782,16 @@ two reached recipes check the two cleanup stages, COW and weak lifetimes.
 Owning final caches, reference cells, finalizers and wider factories remain
 partial.
 
+[Temporary Generator owning final caches](coverage/semantics/config-generator-owning-cache-review.json)
+allow that same factory source to send a scalar option followed by a finite
+quiet array or ordinary non-Stringable object. The last copied argument
+protects the Generator's cached child during final INPUT release. Real
+Generator storage drops its cache edge while the argument survives into
+INI_SET's TypeError trace; a saved terminal throw releases both before catch.
+Four new sources agree with PHP, and two reached recipes check storage,
+copied roots, COW and weak lifetimes. Effectful finalizers, reference cells and
+wider producer/value histories remain partial.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
