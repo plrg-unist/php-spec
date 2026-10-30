@@ -1,0 +1,35 @@
+[
+  {
+    "id": "i94-fake-method-call-value-send",
+    "purpose": "METHOD Gen call copy replaces old receiver but keeps new exact declaring-class receiver through CLOSED, then retires copy/This before cached Token.",
+    "source": "<?php\nclass Token94A { function __destruct() { echo 'TOKEN|'; } }\nclass Base94A {\n    public $label;\n    function __construct($label) { $this->label = $label; }\n    function stream($token) {\n        global $weakToken, $weakSource, $weakOld, $weakMaker;\n        echo 'BODY|', self::tag() === 94, '|', static::class === 'Base94A', '|', $this === $weakMaker->get(), '|', $weakSource->get() === null, '|', $weakOld->get() === null, '|';\n        try { yield $token; unset($token); Fiber::suspend('fake94A'); echo 'RESUMED|'; return 94; }\n        finally { echo 'FIN|', $weakToken->get() instanceof Token94A, '|', $weakMaker->get() instanceof Base94A, '|'; }\n    }\n    private static function tag() { return 94; }\n    function __destruct() { echo $this->label, '|'; }\n}\nfunction Run94A() { global $g; echo 'SEND|'; $g->send(null); echo 'RETURNED|'; }\n$old = new Base94A('OLD'); $weakOld = WeakReference::create($old);\n$source = $old->stream(...); $weakSource = WeakReference::create($source);\n$maker = new Base94A('MAKER'); $weakMaker = WeakReference::create($maker);\n$token = new Token94A(); $weakToken = WeakReference::create($token);\necho 'CALL|'; $g = $source->call($maker, $token);\nunset($source, $old, $maker, $token);\necho 'FRESH|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() instanceof Base94A, '|', $weakToken->get() instanceof Token94A, '|';\necho 'PRIME|'; $g->current();\n$fiber = new Fiber('Run94A'); echo 'START|'; $mark = $fiber->start();\necho 'PARK|', $mark === 'fake94A', '|', $g->current() === $weakToken->get(), '|', $weakMaker->get() instanceof Base94A, '|';\necho 'RESUME|'; $fiber->resume();\necho 'DONE|', $fiber->isTerminated(), '|', $g->getReturn() === 94, '|', $weakMaker->get() instanceof Base94A, '|', $weakToken->get() instanceof Token94A, '|';\nunset($g, $fiber); echo 'DROP|', $weakMaker->get() === null, '|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "215c2d064cc20d1d0aa0e656f8b7ab8a0093e2c0c241689e8ff069b7d2c7d204",
+    "native_exit": 0,
+    "native_stdout": "CALL|OLD|FRESH|1|1|1|1|PRIME|BODY|1|1|1|1|1|START|SEND|PARK|1|1|1|RESUME|RESUMED|FIN|1|1|RETURNED|DONE|1|1|1|1|MAKER|TOKEN|DROP|1|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  },
+  {
+    "id": "i94-fake-method-call-static-reference-warning",
+    "purpose": "Fake method copy keeps shared method static table even with seed frame closed, so original warning reentry2 is followed by copied body3, contrasting real singleton copy2.",
+    "source": "<?php\nclass Token94B { function __destruct() { echo 'TOKEN|'; } }\nclass Base94B {\n    public $label;\n    function __construct($label) { $this->label = $label; }\n    function stream(&$token) {\n        static $counter = 0; $counter = $counter + 1;\n        echo 'BODY|', $counter, '|';\n        try { yield $counter; }\n        finally { echo 'FIN|', $counter, '|'; }\n    }\n    function __destruct() { echo $this->label, '|'; }\n}\nfunction NewToken94B() { global $weakToken; $token = new Token94B(); $weakToken = WeakReference::create($token); return $token; }\nfunction Warn94B($severity, $message) {\n    global $source, $warningCount;\n    echo 'WARN|'; $warningCount = $warningCount + 1;\n    $slot = null; $probe = $source($slot); echo 'PROBE|', $probe->current(), '|';\n    unset($probe); return true;\n}\n$old = new Base94B('OLD'); $weakOld = WeakReference::create($old);\n$source = $old->stream(...); $weakSource = WeakReference::create($source); unset($old);\n$slot = null; $seed = $source($slot); echo 'SEED|', $seed->current(), '|'; unset($seed);\n$warningCount = 0; set_error_handler('Warn94B');\n$maker = new Base94B('MAKER'); $weakMaker = WeakReference::create($maker);\necho 'CALL|'; $g = $source->call($maker, NewToken94B());\nrestore_error_handler(); unset($source, $maker);\necho 'FRESH|', $warningCount === 1, '|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() instanceof Base94B, '|', $weakToken->get() instanceof Token94B, '|';\necho 'VALUE|', $g->current(), '|'; $g->next();\necho 'DONE|', $g->getReturn() === null, '|', $weakMaker->get() instanceof Base94B, '|', $weakToken->get() === null, '|';\nunset($g); echo 'DROP|', $weakMaker->get() === null, '|E';\n",
+    "source_sha256": "de2156681804adfa0b0b0c14ed43cb8c890738171da3054f8afd2b1a34f8a11e",
+    "native_exit": 0,
+    "native_stdout": "SEED|BODY|1|1|FIN|1|CALL|WARN|PROBE|BODY|2|2|FIN|2|OLD|FRESH|1|1|1|1|1|VALUE|BODY|3|3|FIN|3|TOKEN|DONE|1|1|1|MAKER|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  },
+  {
+    "id": "i94-fake-array-method-call-unused-result",
+    "purpose": "Ignored Gen from temporary ARRAY first-class method source never executes BODY/FIN; Gen parameter/copy cleanup precedes original source/old receiver release.",
+    "source": "<?php\nclass Token94C { function __destruct() { echo 'TOKEN|'; } }\nclass Base94C {\n    public $label;\n    function __construct($label) { $this->label = $label; }\n    function stream($token) { echo 'BAD-BODY|'; try { yield $token; } finally { echo 'BAD-FIN|'; } }\n    function __destruct() { echo $this->label, '|'; }\n}\nfunction NewSource94C() {\n    global $weakOld, $weakSource;\n    $old = new Base94C('OLD'); $weakOld = WeakReference::create($old);\n    $selection = [$old, 'stream']; $source = $selection(...); $weakSource = WeakReference::create($source);\n    return $source;\n}\nfunction NewMaker94C() { global $weakMaker; $maker = new Base94C('MAKER'); $weakMaker = WeakReference::create($maker); return $maker; }\nfunction NewToken94C() { global $weakToken; $token = new Token94C(); $weakToken = WeakReference::create($token); return $token; }\necho 'CALL|'; NewSource94C()->call(NewMaker94C(), NewToken94C());\necho 'AFTER|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() === null, '|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "34d1c3b17c10bf9c4c78b8ba9d77a0442444f0bb9d4424caf6c9f9d23c193ed5",
+    "native_exit": 0,
+    "native_stdout": "CALL|TOKEN|MAKER|OLD|AFTER|1|1|1|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
