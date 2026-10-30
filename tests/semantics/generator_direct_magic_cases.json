@@ -36,5 +36,14 @@
     "native_stderr": "",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i85-direct-magic-sibling-owner-independent",
+    "purpose": "Two genuine same-function magic Generators retain distinct receivers, names, sites and sends; A closes while B remains fresh, so B cannot substitute for the actual A owner/receipt.",
+    "source": "<?php\nclass Base85S {\n    public function __call(string $name, array $arguments) {\n        global $weakA;\n        echo 'BODY|', $name === 'first', '|', $arguments === [85], '|',\n             __CLASS__ === 'Base85S', '|', static::class === 'Leaf85S', '|';\n        try { yield 85; }\n        finally { echo 'FIN|', $this === $weakA->get(), '|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf85S extends Base85S {}\n$a = new Leaf85S();\n$b = new Leaf85S();\n$weakA = WeakReference::create($a);\n$weakB = WeakReference::create($b);\necho 'OPEN|';\n$ga = $a->first(85);\n$gb = $b->second(86);\nunset($a, $b);\necho 'FRESH|', $weakA->get() !== null, '|', $weakB->get() !== null, '|';\necho 'VALUE|', $ga->current() === 85, '|';\nunset($ga);\necho 'AFTERA|', $weakA->get() === null, '|', $weakB->get() !== null, '|';\nunset($gb);\necho 'AFTERB|', $weakB->get() === null, '|E';\n",
+    "source_sha256": "33e5cb594b01547b18f0db81d77af7089bfcefbdc41df6f0739282041082745b",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|1|VALUE|BODY|1|1|1|1|1|FIN|1|MAKER|AFTERA|1|1|MAKER|AFTERB|1|E",
+    "native_stderr": ""
   }
 ]
