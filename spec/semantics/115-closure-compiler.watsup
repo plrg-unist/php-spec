@@ -14,6 +14,7 @@ dec $ppclosure_ready(ppstate, ppstate, pcpath, ptbytes, phpType22*, statement*, 
 dec $ppclosure_uses(ppstate, pcpath, nat, phpType22*, ptbytes*) : ppstate
 dec $ppclosure_use(ppstate, pcpath, ptbytes, bool, metadata, ptbytes*) : ppstate
 dec $ppclosure_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
+dec $ppclosure_attributes_header(ppstate, pcpath, pssignature, metadata) : ppstate
 
 dec $pparrow_template(pfunction) : bool
 def $ppclosure_template(pfunction) = (pfunction.BODY = pcpath ++ [PCFIELD 6] \/ $pparrow_template(pfunction))
@@ -58,7 +59,8 @@ def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b,
   -- if $declaration_method_keyword_lines(metadata) =/= eps /\ $ppclosure_line(metadata) = 0
 def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppclosure_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true][.FOLD.CLOSURE = true][.GOTOROOT = pcpath], pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
   -- if P.COMPLETION = PPCNORMAL
-  -- if $declaration_method_keyword_lines(metadata) = eps \/ $ppclosure_line(metadata) > 0
+  -- if n_keyword = $ppclosure_line(metadata)
+  -- if $declaration_method_keyword_lines(metadata) = eps \/ $(n_keyword > 0)
   -- if ptbytes = $ppclosure_name(P, metadata)
 
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, psprogress) = P
@@ -74,7 +76,7 @@ def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadat
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
   -- if P_uses = $ppclosure_uses(P_header, pcpath ++ [PCFIELD 4], 0, phpType22*, (psparam.NAME)*)
-  -- if P_body = $ppgenerator_body(P_uses, pcpath ++ [PCFIELD 6], statement*)
+  -- if P_body = $ppgenerator_body($ppclosure_attributes_header(P_uses, pcpath, pssignature, metadata), pcpath ++ [PCFIELD 6], statement*)
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppclosure_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = $ppsignature_attribute($ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)], pscontinuation, phpType14)
