@@ -473,6 +473,21 @@ rule PhpStep/tick-unregister-release: S ~> S[.TODO = ptask_tail*][.RESULT = KNOW
   -- if S.TODO = (TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*
   -- if $call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry ptickentry)
   -- if S.ORIGIN = (pshutdownentry.CALL.SITE)
+;; Retirement prunes Closure scopes. Preserve only the selected cache's
+;; immutable lookup metadata; the live cursor and its owners stay unchanged.
+def $eager_operation_source(S, TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) = TICK_UNREGISTER_SOURCE pshutdownentry ptickentry $eager_cleanup_target(S, ptickentry.ENTRY.TARGET)
+dec $tick_unregister_snapshot_valid(pstate, pshutdownentry, ptickentry, pshutdownproducer) : bool
+def $tick_unregister_snapshot_valid(S, pshutdownentry, ptickentry, pshutdownproducer) = true
+  -- if pshutdownproducer.TARGET = ptickentry.ENTRY.TARGET
+  -- if pshutdownproducer.SITE = eps /\ pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = eps
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if S_history = $consumer_producer_history(S, pshutdownproducer)
+  -- if $callback_cache_valid(S_history, pshutdownentry)
+  -- if $callback_cache_valid(S_history, ptickentry.ENTRY)
+  -- if $tick_unregister_certificate(S_history, pshutdownentry, ptickentry)
+def $tick_unregister_snapshot_valid(S, pshutdownentry, ptickentry, pshutdownproducer) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = ($tick_unregister_snapshot_valid(S, pshutdownentry, ptickentry, pshutdownproducer) /\ pdestructionoperation.ORIGIN = (pshutdownentry.CALL.SITE) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ (pdestructionoperation.COMPLETION = NORMAL \/ $throwable_pending(pdestructionoperation.COMPLETION)))
+  -- if pdestructionoperation.SOURCE = TICK_UNREGISTER_SOURCE pshutdownentry ptickentry pshutdownproducer
 def $eager_operation_source_guard(S, pdestructionoperation) = ($tick_unregister_certificate(S, pshutdownentry, ptickentry) /\ pdestructionoperation.ORIGIN = (pshutdownentry.CALL.SITE) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ (pdestructionoperation.COMPLETION = NORMAL \/ $throwable_pending(pdestructionoperation.COMPLETION)))
   -- if pdestructionoperation.SOURCE = TICK_UNREGISTER_RELEASE pshutdownentry ptickentry
 

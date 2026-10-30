@@ -6,7 +6,7 @@ CASES = (
     'tick-raw-object-cache-distinct-from-invoke-array',
     'tick-scoped-method-closure-cache-arguments-before-owner',
 )
-DERIVED = {CASES[0]: 2, CASES[1]: 1}
+DERIVED = {CASES[0]: 2, CASES[1]: 2}
 HELPERS = r'''
 dec $cc_review_front(pstate, nat, int) : bool
 def $cc_review_front(S, 0, z_line) = true
@@ -177,6 +177,13 @@ def conditions(name, program, source, expected_stdout):
             '~((HOBJECT n_closure) <- S_receiver.ALLOCATIONS)',
             '~((HOBJECT n_argument) <- S_receiver.ALLOCATIONS)',
             '$cc_review_output(S_receiver.EVENTS) = $ptascii("P:1:1:1;C:1:1:1;A:1;T:1:1:1;")',
+            '$closure_scope_at(S_receiver.CLOSURESCOPES, n_closure) = eps',
+            'S_receiver.DESTRUCTION.CALLS = pdestructorcall_receiver :: pdestructorcall_tail*',
+            'pdestructorcall_receiver.OPERATION = (pdestructionoperation_receiver)',
+            'pdestructionoperation_receiver.SOURCE = TICK_UNREGISTER_SOURCE pshutdownentry_query ptickentry_selected pshutdownproducer_selected',
+            '$eager_operation_source_valid(S_receiver, pdestructionoperation_receiver)',
+            # Derived dropped lookup metadata after the actual Closure retires.
+            '~$eager_operation_source_valid(S_receiver, pdestructionoperation_receiver[.SOURCE = TICK_UNREGISTER_SOURCE pshutdownentry_query ptickentry_selected (pshutdownproducer_selected[.SCOPE = eps])])',
         ]
         retired = ('n_closure', 'n_receiver', 'n_argument')
     checks += [
