@@ -1,0 +1,123 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-stringable-saved-receiver-rebinding-order-parent",
+      "source": "<?php\nclass Base157Review {}\nclass Named157Review {\n    public function __toString(): string { return \"named\"; }\n}\n$replacement157Review = new class {\n    public function __toString(): string { echo \"new-call|\"; return \"new\"; }\n};\n$receiver157Review = new class extends Base157Review {\n    public function __toString(): string {\n        global $receiver157Review, $replacement157Review;\n        echo \"old-call|\";\n        $receiver157Review = $replacement157Review;\n        return \"old\";\n    }\n    public function __destruct() { echo \"old-dtor|\"; }\n};\n$following157Review = new class {};\necho $receiver157Review::class, \"|\", $following157Review::class, \"|\";\necho $receiver157Review instanceof Stringable ? \"stringable|\" : \"missing|\";\necho \"(\", $receiver157Review, \")|\", $receiver157Review, \"|after\";\n",
+      "source_sha256": "f4238f71d1c170323a5b37fc57a126749cc1d3da3700d0a72f7c19ef6a794945",
+      "stdout_base64": "QmFzZTE1N1Jldmlld0Bhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTU3LXJldmlldy9vcmlnaW5hbHMvc2F2ZWQtcmVjZWl2ZXItcmViaW5kaW5nLW9yZGVyLXBhcmVudC5waHA6OSQyfGNsYXNzQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNTctcmV2aWV3L29yaWdpbmFscy9zYXZlZC1yZWNlaXZlci1yZWJpbmRpbmctb3JkZXItcGFyZW50LnBocDoxOCQzfHN0cmluZ2FibGV8KG9sZC1jYWxsfG9sZC1kdG9yfG9sZCl8bmV3LWNhbGx8bmV3fGFmdGVy",
+      "stdout_template_base64": "QmFzZTE1N1Jldmlld0Bhbm9ueW1vdXMAe0ZJTEV9OjkkMnxjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjE4JDN8c3RyaW5nYWJsZXwob2xkLWNhbGx8b2xkLWR0b3J8b2xkKXxuZXctY2FsbHxuZXd8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class157-review/saved-receiver-rebinding-order-parent.native-first.json",
+      "native_raw_sha256": "4a524b2764ede7e0d460e40179f3a5ee152abf7d2d0fe6d0cc0460fae47fb524",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-abrupt-echo-and-concat-order",
+      "source": "<?php\nfunction late157Review() { echo \"late|\"; return \"R\"; }\n$value157Review = new class {\n    public function __toString() {\n        echo \"throw|\";\n        throw new Exception(\"conversion\");\n    }\n};\ntry {\n    echo \"echo|\", $value157Review, late157Review();\n} catch (Exception $error) {\n    echo $error->getMessage(), \"|\";\n}\n$destination157Review = 99;\necho \"concat|\";\ntry {\n    $destination157Review = $value157Review . late157Review();\n} catch (Exception $error) {\n    echo $error->getMessage(), \"|\";\n}\necho $destination157Review, \"|after\";\n",
+      "source_sha256": "ad0ab6668de2039aafc728cc2645569efd49deb888de94bd1aabdc8d9931fe90",
+      "stdout_base64": "ZWNob3x0aHJvd3xjb252ZXJzaW9ufGNvbmNhdHxsYXRlfHRocm93fGNvbnZlcnNpb258OTl8YWZ0ZXI=",
+      "stdout_template_base64": "ZWNob3x0aHJvd3xjb252ZXJzaW9ufGNvbmNhdHxsYXRlfHRocm93fGNvbnZlcnNpb258OTl8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class157-review/abrupt-echo-and-concat-order.native-first.json",
+      "native_raw_sha256": "46725bc0cd9c8b5522ad4e1e965ad62b89a1e2ee96f2f1bbad300e8c56a1febd",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-weak-return-and-explicit-call",
+      "source": "<?php\n$object157 = new class {\n    public $calls = 0;\n    public function __toString() {\n        echo \"cast|\";\n        $this->calls++;\n        return 12;\n    }\n};\necho $object157 instanceof Stringable ? \"stringable|\" : \"bad-interface|\";\necho $object157, \"|\", $object157->calls, \"|\";\n$result157 = $object157->__toString();\necho $result157 === \"12\" ? \"string|\" : \"bad-return|\";\necho $object157->calls, \"|after\";\n",
+      "source_sha256": "00aa1441266edbfcbd8d0d4c6f912be95669d0bc0109ee1184f027d1d8dcb6b4",
+      "stdout_base64": "c3RyaW5nYWJsZXxjYXN0fDEyfDF8Y2FzdHxzdHJpbmd8MnxhZnRlcg==",
+      "stdout_template_base64": "c3RyaW5nYWJsZXxjYXN0fDEyfDF8Y2FzdHxzdHJpbmd8MnxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class157-review/author-weak-return-and-explicit-call.native-first.json",
+      "native_raw_sha256": "fe78c4d4080111c3c070f84f2ae45e5899d0248f66e58f56120cbed55ef9f2c2",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-strict-return-error",
+      "source": "<?php\ndeclare(strict_types=1);\n$destination157 = \"kept\";\n$object157 = new class {\n    public function __toString(): string {\n        echo \"body|\";\n        return 17;\n    }\n};\ntry {\n    $destination157 = (string) $object157;\n    echo \"bad|\";\n} catch (TypeError $error157) {\n    echo $error157->getMessage(), \"|\", $error157->getLine(), \"|\";\n    echo $destination157, \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "0a8443595f541df30ab2f8b447b0cabeb050a34ed3dee53963b246a2eb08f2f0",
+      "stdout_base64": "Ym9keXxjbGFzc0Bhbm9ueW1vdXM6Ol9fdG9TdHJpbmcoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIGludCByZXR1cm5lZHw3fGtlcHR8YWZ0ZXI=",
+      "stdout_template_base64": "Ym9keXxjbGFzc0Bhbm9ueW1vdXM6Ol9fdG9TdHJpbmcoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIGludCByZXR1cm5lZHw3fGtlcHR8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class157-review/author-strict-return-error.native-first.json",
+      "native_raw_sha256": "7b401b665ffbaeaad61c99c5c2a3a3d4217ee772a77c002f4935cd694adfe971",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-eval-closed-factory-stringable",
+      "source": "<?php\n$source157 = 'namespace String157Author;\nfunction make157() {\n    return new class {\n        public $tag = 1;\n        public function __toString(): string {\n            echo \"body|\";\n            return \"unit\" . $this->tag;\n        }\n    };\n}';\neval($source157);\n$first157 = String157Author\\make157();\n$second157 = String157Author\\make157();\n$first157->tag = 4;\n$second157->tag = 5;\necho $first157 instanceof Stringable ? \"stringable|\" : \"bad-interface|\";\necho $first157, \"|\", $second157, \"|after\";\n",
+      "source_sha256": "50676330675a5426880316ac5e9f392b5fffc825397d0aad12f7f1dffe09bdeb",
+      "stdout_base64": "c3RyaW5nYWJsZXxib2R5fHVuaXQ0fGJvZHl8dW5pdDV8YWZ0ZXI=",
+      "stdout_template_base64": "c3RyaW5nYWJsZXxib2R5fHVuaXQ0fGJvZHl8dW5pdDV8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class157-review/author-eval-closed-factory-stringable.native-first.json",
+      "native_raw_sha256": "9d4f53df70c40fa9993eb4f69e590bd948889e9bfdd357054321501c80b40ae2",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-invalid-return-annotation",
+      "source": "<?php\necho \"unreachable|\";\n$object157 = new class {\n    public function __toString(): int { echo \"bad-body|\"; return 17; }\n};\n",
+      "source_sha256": "2c7607fd47ac51c58e94492df1157148a5c26fbf6f116e0539bcb56dc803af98",
+      "stdout_base64": "",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IGNsYXNzQGFub255bW91czo6X190b1N0cmluZygpOiBSZXR1cm4gdHlwZSBtdXN0IGJlIHN0cmluZyB3aGVuIGRlY2xhcmVkIGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": ".tools/class157-review/author-invalid-return-annotation.native-first.json",
+      "native_raw_sha256": "a244e05502dde71c15283d79ba4c396a5a617e1418a1e4014f5c60922f6077da",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-implicit-string-fallthrough",
+      "source": "<?php\n$object157 = new class {\n    public function __toString() { echo \"empty|\"; }\n};\ntry {\n    echo $object157;\n    echo \"bad|\";\n} catch (TypeError $error157) {\n    echo $error157->getMessage(), \"|\", $error157->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "c7afb34a4179003d40bab2ba9aa61b1a996cdb11227fb96d595825780d07d56d",
+      "stdout_base64": "ZW1wdHl8Y2xhc3NAYW5vbnltb3VzOjpfX3RvU3RyaW5nKCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgc3RyaW5nLCBub25lIHJldHVybmVkfDN8YWZ0ZXI=",
+      "stdout_template_base64": "ZW1wdHl8Y2xhc3NAYW5vbnltb3VzOjpfX3RvU3RyaW5nKCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgc3RyaW5nLCBub25lIHJldHVybmVkfDN8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class157-review/implicit-string-fallthrough.native-first.json",
+      "native_raw_sha256": "b53fbfee59f68848d9d632633de9febf2cf4e371a8fa94fd5488d23a86ea60ae",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-stringable-never-fallthrough",
+      "source": "<?php\n$object157 = new class {\n    public function __toString(): never { echo \"never|\"; }\n};\ntry {\n    echo $object157;\n    echo \"bad|\";\n} catch (TypeError $error157) {\n    echo $error157->getMessage(), \"|\", $error157->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "1fffa917a4c43d67613755af840fa32544a0d1cf924d19b6cfc7a20e6f8e2546",
+      "stdout_base64": "bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58M3xhZnRlcg==",
+      "stdout_template_base64": "bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58M3xhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class157-review/never-fallthrough.native-first.json",
+      "native_raw_sha256": "33616761d4bc5d101154ba85bf6bdd5d7f1976125c26402cff4c1a09af485d42",
+      "model_timeout_seconds": 240
+    }
+  ]
+}
