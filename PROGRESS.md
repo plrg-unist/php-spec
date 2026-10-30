@@ -369,7 +369,7 @@ cut keep zero credit.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS160 | Public/default-public zero-argument nongenerator anonymous `__clone`: five frozen native normal originals plus a separate invalid-return diagnostic agree with pinned PHP. Exactly two unchanged checked Unsupported controls retain zero credit; private admission/diagnostic candidate prepared, changed strict/model/state validation pending. |
+| CLASS160 | Public/default-public zero-argument nongenerator anonymous `__clone`: seven exact source agreements (six normal, one static rejection), private strict433 and two state groups passing 210 conditions (207 reached, three controls) at separate cuts. Two unchanged checked Unsupported controls and one corrected fixture elaboration failure retain zero credit. Private package review and actual-tail integration pending. [Review](coverage/semantics/anonymous-clone-review.json). |
 | CLASS159 | Public/default-public nongenerator anonymous `__invoke`: five exact fresh source agreements, private strict433 and state275 (272 reached, three controls) pass at separate cuts; final private CLEAR at 1810922a. Two unchanged checked Unsupported controls and two corrected fixture failures retain zero credit; actual-tail integration pending. |
 | CLASS158 | Ordinary non-magic anonymous method formals and lexical-owner missing-arity diagnostics: five fresh exact source agreements, strict433 and 247 focused conditions (243 reached, four guards) pass; final private CLEAR at a0da92ae. Two unchanged Unsupported controls retain zero credit; actual-tail integration pending. |
 | CLASS157 | Anonymous Stringable source9/state285/changed433 pass; final private CLEAR at 40f5cd2c, actual-tail integration pending. |

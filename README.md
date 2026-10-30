@@ -4560,6 +4560,10 @@ declaring class and member separately. [Method-parameter review](coverage/semant
 Public nongenerator anonymous `__invoke` now uses that call path for implicit
 object calls, including named defaults, reference sends, parent dispatch and
 retained receivers through caller rebinding. [Invoke review](coverage/semantics/anonymous-invoke-review.json).
+Public zero-argument nongenerator anonymous `__clone` now uses ordinary copy-before-callback
+cloning, including shared references after array separation, parent callbacks and
+failed-copy destructor cleanup. An explicit method call can return a value;
+keyword `clone` returns the fresh copy. [Clone review](coverage/semantics/anonymous-clone-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain

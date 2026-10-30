@@ -350,6 +350,16 @@ factories, named defaults and a selected receiver retained through argument
 rebinding and frame-release destruction. Two state groups pass 275 conditions
 (272 reached, three controls). The [invoke review](../../coverage/semantics/anonymous-invoke-review.json)
 keeps the unchanged admission refusals and two zero-credit fixture corrections.
+Public/default-public zero-argument nongenerator anonymous `__clone` now uses
+the existing clone copy, callback and cleanup routes. Declared arrays separate
+on callback writes while embedded references stay shared; parent callbacks
+can release a rebound source before the fresh copy is observed. Failed clone
+callbacks may leave an escaped copy eligible for normal automatic destruction.
+Keyword clone ignores a callback's value return, while an explicit call observes
+it. Six normal originals and one invalid-return rejection agree, including a
+`never` fallthrough TypeError at the method end line. Two state groups pass
+210 conditions (207 reached, three controls). The [clone review](../../coverage/semantics/anonymous-clone-review.json)
+keeps the two unchanged admission refusals and one zero-credit fixture correction.
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.

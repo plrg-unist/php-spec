@@ -93,6 +93,12 @@ declaring scope and the copy's called class. Access is checked before allocation
 intrinsic access errors retain the authentic `clone()` trace frame. Fixed formal
 arguments and static methods are rejected in compiler order; variadic-only
 methods receive an empty array. Declared returns must be void-compatible.
+Public/default-public zero-argument nongenerator anonymous callbacks now enter
+this same path. The class-name segment of an invalid return annotation diagnostic
+uses its C-string display; the original method spelling remains intact. A
+`never` callback that falls through reports the end-of-method line. Copy-before-
+callback arrays, parent dispatch and failed-copy destructor eligibility retain
+their existing producers. [Anonymous clone review](../../coverage/semantics/anonymous-clone-review.json).
 
 The callback opens one allowance per physical readonly slot. A successful write
 consumes it; failed type conversion preserves it. Unsetting a genuinely
