@@ -69,7 +69,6 @@ pfunction.ORIGIN = porigin_function
 pcallcontext_handler.FUNCTION =/= porigin_function
 $function_generator(S, pfunction)
 ~pfunction.SIGNATURE.BYREF
-~$closure_static(S, pfunction)
 $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, 0) = (psparam)
 psparam.BYREF
 psparam.NAME = $ptascii("token")
@@ -161,6 +160,7 @@ S_zero.ALLOCATIONS = S.ALLOCATIONS
 REAL = checks(COMMON) + checks(r'''
 S.OBJECTS[n_source] = REALCLOSURE porigin_function eps pstaticcell_sources*
 S.OBJECTS[n_copy] = REALCLOSURE porigin_function eps pstaticcell_copies*
+~$closure_static(S, pfunction)
 pstaticcell_sources* = [pstaticcell_source]
 pstaticcell_copies* = [pstaticcell_copy]
 pstaticcell_source.ORIGIN = pstaticcell_copy.ORIGIN
@@ -202,6 +202,8 @@ pboundfake_copy.RECEIVER = (n_maker)
 porigin_old = porigin_maker
 S.CLOSUREBINDINGS = eps
 $closure_call_fake_method(S, n_source, pfunction)
+$class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+~pmethoddesc.STATIC
 $closure_call_fake_copy_binding(S, pboundfake_copy)
 $bound_fake_valid(S, n_copy)
 $node_children(S, HOBJECT n_copy) = [HOBJECT n_maker]
