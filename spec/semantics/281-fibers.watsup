@@ -289,6 +289,13 @@ def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = tr
   -- if $generator_input_valid(S, pvalue)
   -- if (pgenerator.VALUE =/= eps /\ pgenerator.REFCELL = eps /\ ~$generator_reference_producer(S, pgenerator)) \/ (pgenerator.VALUE = eps /\ pgenerator.REFCELL =/= eps /\ $generator_reference_producer(S, pgenerator))
   -- if $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext)
+def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
+  -- if (pgenerator.VALUE =/= eps /\ pgenerator.REFCELL = eps /\ ~$generator_reference_producer(S, pgenerator)) \/ (pgenerator.VALUE = eps /\ pgenerator.REFCELL =/= eps /\ $generator_reference_producer(S, pgenerator))
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext)
 def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
   -- if pgeneratorop.NAME = "throw"
@@ -342,6 +349,14 @@ def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext
   -- if pgeneratorop.ADVANCE /\ pgenerator.FIRST
   -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
   -- if $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext)
+def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
+  -- if pgeneratorop.ADVANCE /\ pgenerator.FIRST
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext)
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_fresh_advance_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
   -- if (pgeneratorop.NAME = "next" /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1)
