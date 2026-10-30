@@ -459,7 +459,8 @@ their actual receiver frame through close. Finite forwarding chains reuse this
 same retained target proof. Five originals agree at their recorded cuts; five
 reached fronts pass 374 custom/399 reported checks for source/runtime target,
 forwarding, real receiver/cache/input owners and budget continuation. Private
-strict432 retains its original cut. The direct SL overlap and pre-execution
+strict432 retains its original cut; actual-tail joined strict433 passes. The
+direct SL overlap and pre-execution
 fixture syntax failure retain zero credit after narrow corrections.
 Other implicit/callback/API producers and wider delegation, collection and
 lifecycle combinations remain partial.

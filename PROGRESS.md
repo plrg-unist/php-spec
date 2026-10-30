@@ -43,7 +43,7 @@ scope retain the ordinary receiver/cache/SEND owners. Five new originals agree
 at their recorded cuts; five reached fronts pass 374 custom/399 reported checks,
 including live-entry refusal, close/forwarding, parked BYREF input/cache owners
 and budget continuation. Private strict432 retains its original cut; actual-tail
-composition is pending. The original SL-overlap and fixture-syntax failures
+joined strict433 passes at the integration cut. The original SL-overlap and fixture-syntax failures
 retain zero credit after narrow corrections. Wider implicit/callback/API,
 delegation, collection and lifecycle combinations remain partial.
 [I83 review](coverage/semantics/generator-invokable-factory-review.json).
@@ -321,7 +321,7 @@ cut keep zero credit.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | GC09 | Coherent fake-Closure allocation flags under implementation. |
-| I83 | Private native5/source5/reached374/399 accepted; actual-tail joined433 pending. Prior failures retain zero credit. |
+| I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
