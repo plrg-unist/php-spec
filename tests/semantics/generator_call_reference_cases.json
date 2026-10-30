@@ -31,5 +31,16 @@
     "native_stderr": "",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i93-real-call-reference-temporary-static-warning",
+    "purpose": "Temporary seeded source has no outside root: actual API source/copy roots must exist during static duplication before weak-only warning reentry; copied body keeps the isolated static snapshot.",
+    "source": "<?php\nclass Token93C { function __destruct() { echo 'TOKEN|'; } }\nclass Origin93C {\n    function capture() {\n        return function (&$token) {\n            static $counter = 0;\n            $counter = $counter + 1;\n            echo 'BODY|', $counter, '|';\n            try { yield $counter; }\n            finally { echo 'FIN|', $counter, '|'; }\n        };\n    }\n    function __destruct() { echo 'OLD|'; }\n}\nclass Active93C { function __destruct() { echo 'MAKER|'; } }\nfunction NewToken93C() { global $weakToken; $token = new Token93C(); $weakToken = WeakReference::create($token); return $token; }\nfunction Warn93C($severity, $message) {\n    global $weakSource, $warningCount;\n    echo 'WARN|'; $warningCount = $warningCount + 1;\n    $source = $weakSource->get(); $slot = null; $probe = $source($slot);\n    echo 'PROBE|', $probe->current(), '|';\n    unset($probe);\n    return true;\n}\nfunction NewSource93C() {\n    global $weakOld, $weakSource;\n    $old = new Origin93C(); $weakOld = WeakReference::create($old);\n    $source = $old->capture(); $weakSource = WeakReference::create($source); unset($old);\n    $slot = null; $seed = $source($slot); echo 'SEED|', $seed->current(), '|';\n    unset($seed); return $source;\n}\n$warningCount = 0; set_error_handler('Warn93C');\n$maker = new Active93C(); $weakMaker = WeakReference::create($maker);\necho 'CALL|'; $g = NewSource93C()->call($maker, NewToken93C());\nrestore_error_handler();\nunset($maker);\necho 'FRESH|', $warningCount === 1, '|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() instanceof Active93C, '|', $weakToken->get() instanceof Token93C, '|';\necho 'VALUE|', $g->current(), '|'; $g->next();\necho 'DONE|', $g->getReturn() === null, '|', $weakMaker->get() instanceof Active93C, '|', $weakToken->get() === null, '|';\nunset($g); echo 'DROP|', $weakMaker->get() === null, '|E';\n",
+    "source_sha256": "0bdbb8d745e56e243c7c00f684f8cad57b9c0dd532e2b353275110b682523be5",
+    "native_exit": 0,
+    "native_stdout": "CALL|SEED|BODY|1|1|FIN|1|WARN|PROBE|BODY|2|2|FIN|2|OLD|FRESH|1|1|1|1|1|VALUE|BODY|2|2|FIN|2|TOKEN|DONE|1|1|1|MAKER|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
