@@ -31,5 +31,16 @@
     "native_stderr": "",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i96-static-string-binding-warning-supplied-throw",
+    "purpose": "Static STRING binding-warning handler clears source and throws precreated Stop; real API arguments retire before selected source while caught Stop/Previous and weak deaths remain native.",
+    "source": "<?php\nclass Token96C {\n    function __destruct() { global $weakSource; echo 'TOKEN|', $weakSource->get() instanceof Closure, '|'; }\n}\nclass Base96C {\n    static function stream($token) { echo 'BAD-BODY|'; yield $token; }\n    function __destruct() { global $weakSource; echo 'MAKER|', $weakSource->get() instanceof Closure, '|'; }\n}\nfunction NewMaker96C() { global $weakMaker; $maker = new Base96C(); $weakMaker = WeakReference::create($maker); return $maker; }\nfunction NewToken96C() { global $weakToken; $token = new Token96C(); $weakToken = WeakReference::create($token); return $token; }\nfunction Warn96C($severity, $message) {\n    global $source, $weakSource, $weakMaker, $weakToken, $stop;\n    echo 'WARN|', $severity === 2, '|', $message === 'Cannot bind an instance to a static closure, this will be an error in PHP 9', '|', $weakSource->get() instanceof Closure, '|', $weakMaker->get() instanceof Base96C, '|', $weakToken->get() instanceof Token96C, '|';\n    $source = null;\n    echo 'HELD|', $weakSource->get() instanceof Closure, '|'; throw $stop;\n}\n$route = 'Base96C::stream'; $source = $route(...); $weakSource = WeakReference::create($source); unset($route);\n$stop = new Exception('stop96C');\nset_error_handler('Warn96C'); echo 'CALL|';\ntry { $result = $source->call(NewMaker96C(), NewToken96C()); echo 'BAD-RETURN|'; }\ncatch (Throwable $e) { echo 'OUT|', $e === $stop, '|', $e->getPrevious() === null, '|', $weakSource->get() === null, '|', $weakMaker->get() === null, '|', $weakToken->get() === null, '|E'; }\nrestore_error_handler(); unset($e, $stop);\n",
+    "source_sha256": "1d54b5cc32f0952d79f2648210780090f05e77997293e9c5811abc2c91fbe3ed",
+    "native_exit": 0,
+    "native_stdout": "CALL|WARN|1|1|1|1|1|HELD|1|MAKER|1|TOKEN|1|OUT|1|1|1|1|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
