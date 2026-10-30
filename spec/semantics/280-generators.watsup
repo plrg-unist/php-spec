@@ -142,6 +142,7 @@ dec $generator_invoke_effect(pstate, pgeneratorop, pvalue) : pstate
 dec $generator_effect(pstate, pgeneratorop) : pstate
 dec $generator_send_target(ptask*) : bool
 dec $generator_operation_nodes(pgeneratorop) : pnode*
+dec $generator_pending_exception_nodes(pgeneratorop) : pnode*
 dec $generator_arguments_nodes(pvalue*) : pnode*
 dec $generator_arguments_valid(pstate, pgeneratorop) : bool
 dec $generator_resumption_valid(pstate, pgeneratorop) : bool
@@ -1381,7 +1382,14 @@ def $getclass_live_object(S, n) = true
   -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $generator_arguments_nodes(eps) = eps
 def $generator_arguments_nodes(pvalue :: pvalue_tail*) = $value_nodes(pvalue) ++ $generator_arguments_nodes(pvalue_tail*)
-def $generator_operation_nodes(pgeneratorop) = [HOBJECT pgeneratorop.OBJECT] ++ $generator_arguments_nodes(pgeneratorop.ARGUMENTS) -- if ~pgeneratorop.BORROWED
+;; Generator::throw keeps a second exception reference before initialization.
+;; Injection consumes that pending copy; warm and synthetic operations do not.
+def $generator_pending_exception_nodes(pgeneratorop) = [HOBJECT n]
+  -- if pgeneratorop.NAME = "throw" /\ pgeneratorop.ADVANCE /\ ~pgeneratorop.BORROWED
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK
+  -- if pgeneratorop.ARGUMENTS = [POBJECT n]
+def $generator_pending_exception_nodes(pgeneratorop) = eps -- otherwise
+def $generator_operation_nodes(pgeneratorop) = [HOBJECT pgeneratorop.OBJECT] ++ $generator_arguments_nodes(pgeneratorop.ARGUMENTS) ++ $generator_pending_exception_nodes(pgeneratorop) -- if ~pgeneratorop.BORROWED
 def $generator_operation_nodes(pgeneratorop) = $generator_arguments_nodes(pgeneratorop.ARGUMENTS) -- if pgeneratorop.BORROWED
 def $task_nodes(GENERATOR_RESUME pgeneratorop) = $generator_operation_nodes(pgeneratorop)
 def $task_nodes(GENERATOR_ARGS pgeneratorop phpType7* poperand*) = $generator_operation_nodes(pgeneratorop) ++ $operands_roots(poperand*)
