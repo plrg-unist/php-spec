@@ -180,11 +180,12 @@ finishes with an integer cached value; four sources and 372 reached conditions
 pass at private cuts, including normal TypeError trace and terminal cleanup.
 The joined strict433 and fresh normal source/state gate pass at `04d38dc55`,
 which received independent review before guarded integration.
-The same temporary source also admits a finite quiet owning final cache when
-its copied last argument protects the cache child. Four more sources and 405
-reached conditions pass at private cuts, including real storage release and
-terminal saved-throw cleanup. Typed Generator cells, effectful finalizers/casts,
-wider last-DATA reference graphs and lifecycles remain partial.
+With a scalar first option, the same temporary source admits a finite quiet
+owning final cache when its copied last argument protects the cache child.
+Four more sources and 405 reached conditions pass at private cuts, including
+real storage release and terminal saved-throw cleanup. Typed Generator cells,
+effectful finalizers/casts and wider last-DATA reference graphs and lifecycles
+remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
