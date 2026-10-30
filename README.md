@@ -4557,6 +4557,9 @@ emission. [Stringable review](coverage/semantics/anonymous-stringable-review.jso
 Ordinary anonymous methods now bind value, reference, default and variadic
 parameters through the existing call path; missing-arity errors preserve the
 declaring class and member separately. [Method-parameter review](coverage/semantics/anonymous-method-parameters-review.json).
+Public anonymous `__invoke` now uses that call path for implicit object calls,
+including named defaults, reference sends, parent dispatch and retained receivers
+through caller rebinding. [Invoke review](coverage/semantics/anonymous-invoke-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain

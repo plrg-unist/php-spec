@@ -343,6 +343,13 @@ originals agree with the pinned PHP engine; two source-reached state groups pass
 literal reference failure, and fresh local defaults for by-reference formals in
 an eval unit. The [method-parameter review](../../coverage/semantics/anonymous-method-parameters-review.json)
 records the private cuts and retained unchanged refusals.
+Public/default-public nongenerator anonymous `__invoke` with unpromoted formals
+uses the ordinary method descriptor and existing implicit object-call selection.
+Five fresh originals agree, including explicit calls, parent dispatch, eval
+factories, named defaults and a selected receiver retained through argument
+rebinding and frame-release destruction. Two state groups pass 275 conditions
+(272 reached, three controls). The [invoke review](../../coverage/semantics/anonymous-invoke-review.json)
+keeps the unchanged admission refusals and two zero-credit fixture corrections.
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.
