@@ -36,12 +36,6 @@ def $list_warning_frontier(S, 2807) = $a83_peer_echo(S, $ptascii("E:"))
 def $list_warning_frontier(S, 2808) = $a83_peer_echo(S, $ptascii("L:"))
 def $list_warning_frontier(S, 2809) = $a83_peer_echo(S, $ptascii("V:"))
 def $list_warning_frontier(S, 2810) = $a83_peer_echo(S, $ptascii("R:"))
-def $list_warning_frontier(S, 2811) = true
-  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
-  -- if pgenstorage.NEXT = 1
-def $list_warning_frontier(S, 2812) = true
-  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
-  -- if pgenstorage.NEXT = 2
 '''
 
 
@@ -234,30 +228,8 @@ def conditions(name, program, path, stdout):
         '$ordinary_reference_value(S_later,n_payloadref) = (PARRAY n_new)',
         owners('S_later', 'HOBJECT n_generator', 1),
         owners('S_later', 'HARRAY n_new', 1),
-    ] + public('S_later') + seek('S_later', 2811, 'S_slot1') + [
-        'S_slot1.TODO = (GENERATOR_STORAGE_STEP pgenstorage_slot1) :: ptask_slot1*',
-        'pgenstorage_slot1.OBJECT = n_generator',
-        '$generator_storage_valid(S_slot1,pgenstorage_slot1)',
-        'S_slot1.OBJECTS[n_generator] = GENERATOR pgenerator_slot1',
-        '$generator_storage_slot(pgenerator_slot1,1) = [HCELL n_payloadref]',
-        '$ordinary_reference_value(S_slot1,n_payloadref) = (PARRAY n_new)',
-        '$weakref_get(S_slot1,n_genwatch) = POBJECT n_generator',
-        '$weakref_get(S_slot1,n_newwatch) = POBJECT n_newmarker',
-        owners('S_slot1', 'HOBJECT n_generator', 1),
-        owners('S_slot1', 'HCELL n_payloadref', 1),
-        owners('S_slot1', 'HARRAY n_new', 1),
-    ] + public('S_slot1') + seek('S_slot1', 2812, 'S_slot2') + [
-        'S_slot2.TODO = (GENERATOR_STORAGE_STEP pgenstorage_slot2) :: ptask_slot2*',
-        'pgenstorage_slot2.OBJECT = n_generator',
-        '$generator_storage_valid(S_slot2,pgenstorage_slot2)',
-        '$node_children(S_slot2,HOBJECT n_generator) = eps',
-        '~((HCELL n_payloadref) <- S_slot2.ALLOCATIONS)',
-        '~((HARRAY n_new) <- S_slot2.ALLOCATIONS)',
-        '~((HOBJECT n_newmarker) <- S_slot2.ALLOCATIONS)',
-        '$weakref_get(S_slot2,n_genwatch) = POBJECT n_generator',
-        '$weakref_get(S_slot2,n_newwatch) = PNULL',
-        owners('S_slot2', 'HOBJECT n_generator', 1),
-    ] + public('S_slot2') + seek('S_slot2', 2809, 'S_unset_gen') + [
+        '~$destructor_operational(S_later)',
+    ] + public('S_later') + seek('S_later', 2809, 'S_unset_gen') + [
         '~((HOBJECT n_generator) <- S_unset_gen.ALLOCATIONS)',
         '~((HCELL n_payloadref) <- S_unset_gen.ALLOCATIONS)',
         '~((HARRAY n_new) <- S_unset_gen.ALLOCATIONS)',
