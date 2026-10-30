@@ -792,6 +792,15 @@ Four new sources agree with PHP, and two reached recipes check storage,
 copied roots, COW and weak lifetimes. Effectful finalizers, reference cells and
 wider producer/value histories remain partial.
 
+[Two owning temporary Generator sends](coverage/semantics/config-generator-two-owning-review.json)
+allow both integer-key copied arguments from the same named by-value factory
+Generator to own finite quiet arrays or ordinary non-Stringable objects. Four
+new object sources agree with PHP. One reached proof releases two distinct
+objects before a saved catch; the other keeps two copies of the same object
+through real Generator storage release and TypeError TraceArgs. The cached
+child loses one owner while both copied argument roots remain. Effectful
+finalizers, reference cells and wider producers remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical

@@ -461,6 +461,7 @@ CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review
 | CLASS164 | Existing copied trait `parent` capture views: four exact native/model originals and three source-reached state groups pass 258 conditions (79+86+93). The cross-parent case distinguishes saved lexical from called scope. Two corrected fixture failures retain zero credit. No semantic rule changed; private review CLEAR and four-source composed-tail check passed at 5db2cd8f2; integration pending. [Review](coverage/semantics/trait-captured-parent-view-review.json). |
 | COMP160 | Declared INITIAL/UNSET slots and physical cached holes: private normal2/control2, reached1035, joined strict433, and affected COMP159 source/state pass. Final review and integration pending. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
+| A80 | Two finite quiet owning sends from a temporary factory Generator; four exact sources and two reached proofs complete privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

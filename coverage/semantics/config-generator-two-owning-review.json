@@ -1,0 +1,116 @@
+{
+  "milestone": "A80 two owning temporary Generator sends",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "INI_SET unpack from a named zero-argument BYVAL factory returning a distinct named zero-argument BYVAL Generator. Both integer-key sends may copy finite quiet owning ARRAY or ordinary non-Stringable INSTANCE values; the four originals use two distinct objects or the same object twice with no outside strong Generator owner.",
+    "behavior": "A final owning cache remains tied to the exact last copied ITEM. The earlier copied ITEM may also own a payload; its bounded receipt is checked in history and its finite quiet graph is checked live. On normal completion real Generator storage removes the cached edge while both argument roots persist into TypeError TraceArgs. A saved terminal throw discards DATA and INPUT, then releases both distinct payloads before catch.",
+    "limits": "Effectful finalizers, cycles/debt, BYREF or owning reference cells, wider producers and other cached children remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "fd7c1b1bb004d23be2f3b9ca4955bbca29e3ce7a",
+    "source_freeze": "2deeb6b96ab1fe6198fac2b878c20699629d1115",
+    "runtime_revision": "06bafbc065dbaf82cd403267b783492218e75a83",
+    "validated_revision": "136317e7b93d553e3eb746976cca7c0c9c0a61cc",
+    "change": "Only 423: remove the scalar-only first-ITEM premise from the existing cached factory history. Both ITEM receipts, last cache/value/key equality, live finite quiet graph checks, callee/owner gates, generic 420/355, schema and manifest stay unchanged.",
+    "engine": "Zend SEND_UNPACK releases Generator DATA before INPUT; zend_generator_free_storage drops the cached VALUE edge; INI_SET TypeError retains copied arguments in TraceArgs until Throwable release."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1 actor.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-two-owning-80",
+    "native_first": {
+      "revision": "2deeb6b96ab1fe6198fac2b878c20699629d1115",
+      "author": {
+        "report": "native-author-2deeb6b96/report.json",
+        "sha256": "11c6aedc12d6a62940fc18887df4ad2391fc45e63be8a52701fdc35682550b05"
+      },
+      "peer": {
+        "report": "native-peer-2deeb6b96/report.json",
+        "sha256": "0b6453115e69cbc1610f8f9a6a6cc5e19944cd508e0d8c347526bf6ccf2cc2e8"
+      },
+      "originals": 4,
+      "result": "Four new exact originals match handwritten stdout, empty stderr and exit0; native-only preparation has zero model credit."
+    },
+    "old_refusal": {
+      "report": "old-control-2deeb6b96/report.json",
+      "sha256": "05b45beb650b10287fd5c61f63940db5a492517f70d64ff83dd95c935651118f",
+      "revision": "2deeb6b96ab1fe6198fac2b878c20699629d1115",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack last INPUT or callee owner",
+      "prefix": "B;P;Y0;M0:5;Y1;M1:8;T;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "report": "strict-46b001296/report.json",
+      "sha256": "b610523b1dd28e06b0f24098c5cce5e5659f341afa420048f40e268b1bf91932",
+      "revision": "46b001296bde1fa4c4881329925c3cf7880258f8",
+      "modules": 432,
+      "seconds": 11.763118743896484
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Retain frozen source/native/profile/process bytes and run only bin/php-semantics for each new case; no PHP application or accepted A79 replay.",
+      "reports": [
+        {
+          "case": "distinct-object-typeerror",
+          "revision": "136317e7b93d553e3eb746976cca7c0c9c0a61cc",
+          "report": "model-distinct-normal-136317e7b/report.json",
+          "sha256": "f2dedc3e0b2644aa54526c0783fe5ccb92d9f28a7b9617aebe47759d68e55380"
+        },
+        {
+          "case": "distinct-object-terminal-throw",
+          "revision": "136317e7b93d553e3eb746976cca7c0c9c0a61cc",
+          "report": "model-distinct-throw-136317e7b/report.json",
+          "sha256": "7f1fbd2d57838b3cca85b42c222221d59a070586b0d3cc510c33b5567a299e71"
+        },
+        {
+          "case": "same-object-typeerror",
+          "revision": "136317e7b93d553e3eb746976cca7c0c9c0a61cc",
+          "report": "model-peer-normal-136317e7b/report.json",
+          "sha256": "000fe416b510749a2612eb79768b461368c66c06c71d973cb4426082458890c5"
+        },
+        {
+          "case": "same-object-terminal-throw",
+          "revision": "136317e7b93d553e3eb746976cca7c0c9c0a61cc",
+          "report": "model-peer-throw-136317e7b/report.json",
+          "sha256": "241a5ff3ec6cd5c2a67eabbab71d6615347e4c24277777aae0ec3192fc2d1b8a"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 421,
+      "if_premises": 414,
+      "raw_steps": 7,
+      "author": {
+        "revision": "136317e7b93d553e3eb746976cca7c0c9c0a61cc",
+        "conditions": 212,
+        "if_premises": 208,
+        "raw_steps": 4,
+        "report": "reached-author-136317e7b/report.json",
+        "sha256": "46810feabe00fffc971528c1d2643d40508c6661fb86be940859abf8fc8125b4",
+        "coverage": "Distinct first prefix-only payload and last cache-plus-prefix payload; both popped cleanup stages and one public prune retire Generator and both payloads before the same saved Throwable reaches catch."
+      },
+      "peer": {
+        "revision": "136317e7b93d553e3eb746976cca7c0c9c0a61cc",
+        "conditions": 209,
+        "if_premises": 206,
+        "raw_steps": 3,
+        "report": "reached-peer-136317e7b/report.json",
+        "sha256": "5f6c2573e9464e6ced8e45f32857d53d7f94ebcebd2f6c35ce56f0d0b6b80011",
+        "coverage": "Repeated-object arguments retain two separate copied roots: real355 NEXT1 to NEXT2 drops cache-plus-two-prefix owners 3 to two-prefix owners 2; TypeError TraceArgs preserves identical object identity twice and later releases it."
+      }
+    },
+    "review": "Independent source literals/manual expectations, frozen native and old refusal, one-premise runtime seam, model-only comparator, strict432/source4 and reached421 by config71_recover_review. Successful groups fully reaped and tested inputs/HEAD stable."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "6af2488dda7d83244a887d0e4531120e220366ecbfa32b01b751c663ff3e7cf8",
+    "files": 89,
+    "raw_bytes": 1896227,
+    "commands": "For frozen comparisons, run config_generator_two_owning_models.py with both native --native-report paths and one --case at a time. Run each reached script with its corresponding frozen --source-report. Makefile has fresh-source entrypoints for later full validation.",
+    "notes": "Raw streams, fixture text and exits stay outside Git."
+  },
+  "integration": {
+    "status": "pending canonical writer grant and actual-tail joined check"
+  }
+}

@@ -1915,3 +1915,16 @@ the corrected checks use the same runtime and frozen sources. The old
 `B;P;Y0;Y1;M:5;T;` Unsupported remains zero credit. Outside-retained cleanup
 keeps its earlier admission; effectful finalizers, reference cells and wider
 cached values remain separate.
+
+The [two-owning-send increment](../../coverage/semantics/config-generator-two-owning-review.json)
+removes the scalar-first restriction on the existing named BYVAL factory
+Generator cached-value history. Each integer-key copied ITEM still needs a
+bounded value receipt; the live gate rechecks both finite quiet argument
+graphs, and the final cached VALUE/KEY must match the last ITEM. Four object
+originals agree exactly. Strict432 and two reached recipes (421 conditions,
+seven raw steps) show distinct payloads retiring before a saved catch and a
+repeated payload retaining two copied roots when real Generator storage drops
+its cache edge (three owners to two). TypeError TraceArgs keeps both copied
+identities until the error is released. The old full-prefix Unsupported
+remains zero credit; effectful finalizers, reference cells and broader
+producer/value histories remain separate.
