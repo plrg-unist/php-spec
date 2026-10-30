@@ -37,7 +37,9 @@ def $ainvoke_stage(S,1) = true
 def $ainvoke_stage(S,2) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $destructor_context_call(pcallcontext,S.CURRENT,S.FRAMES) = (pdestructorcall)
-  -- if pdestructorcall.OPERATION =/= eps
+  -- if pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.FRAME =/= eps
+  -- if pdestructorcall.RELEASE =/= eps
   -- if S.TODO = (STMT (NStmtEcho (SEQUENCE expression*) metadata)) :: ptask_tail*
   -- if $source_line(metadata) = 15
 def $ainvoke_stage(S,3) = true
@@ -145,9 +147,16 @@ def assertions(fixture, filename, stdout):
         *seek('S_body', 'S_destructor', 2),
         'S_destructor.CURRENT = (pcallcontext_destructor)',
         '$destructor_context_call(pcallcontext_destructor,S_destructor.CURRENT,S_destructor.FRAMES) = (pdestructorcall)',
-        'pdestructorcall.OBJECT = n_old', 'pdestructorcall.OPERATION = (pdestructionoperation)',
-        'pdestructionoperation.PENDING = eps',
-        '$destructor_operation_live(S_destructor,pdestructionoperation)',
+        'pdestructorcall.OBJECT = n_old', 'pdestructorcall.OPERATION = eps',
+        'pdestructorcall.FRAME = (pdestructionframe)',
+        'pdestructorcall.RELEASE = (pdestructionrelease)',
+        'pdestructionframe.FUNCTION = porigin_invoke',
+        'pdestructionframe.CALLER = eps', 'pdestructionframe.PENDING = eps',
+        'pdestructionframe.VALUE = KNOWN pvalue_returned',
+        '$string_bytes(pvalue_returned) = ($ptascii("original"))',
+        '$destructor_frames_valid(S_destructor,S_destructor.DESTRUCTION.FRAMES)',
+        '$destructor_leaf_valid(S_destructor,pdestructorcall)',
+        '$destructor_call_pending_valid(S_destructor,pdestructorcall)',
         'S_destructor.STORE[n_value] = DEFINED (PINT 11)',
         'S_destructor.STORE[n_callable] = DEFINED (POBJECT n_new)',
         '$ainvoke_output(S_destructor.EVENTS) = $ptascii("head-int|")',
