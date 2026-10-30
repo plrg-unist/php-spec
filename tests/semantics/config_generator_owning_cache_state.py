@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import config_generator_owning_cache_cases as cases
 import list_missing_warning_protocol as shared
-from array_generator_unpack_state_review import finish, initial, owners, public, seek
+from array_generator_unpack_state_review import budget, finish, initial, owners, public, seek
 
 
 NAME = 'config-generator-owning-cache-object-terminal-throw'
@@ -108,6 +108,8 @@ def conditions(name, program, path, stdout):
         owners('S_thrown','HOBJECT n_generator',2),
         owners('S_thrown','HOBJECT n_payload',2),
         'S_first_popped = S_thrown[.TODO = (THROW_SEARCH n_exception) :: ptask_tail*]',
+        owners('S_first_popped','HOBJECT n_generator',0),
+        owners('S_first_popped','HOBJECT n_payload',1),
         '$config_generator_factory_cached_history(S_first_popped,pconfiggenerator_second)',
         '$config_generator_discard_allowed(S_first_popped,pconfiggenerator_second)',
         '~$destructor_operational(S_first_popped)',
@@ -127,6 +129,8 @@ def conditions(name, program, path, stdout):
         owners('S_input','HOBJECT n_generator',1),
         owners('S_input','HOBJECT n_payload',2),
         'S_second_popped = S_input[.TODO = (THROW_SEARCH n_exception) :: ptask_input*]',
+        owners('S_second_popped','HOBJECT n_generator',0),
+        owners('S_second_popped','HOBJECT n_payload',1),
         '$config_generator_factory_cached_storage(S_second_popped,pconfiggenerator_second)',
         '$config_generator_discard_allowed(S_second_popped,pconfiggenerator_second)',
         'S_second_raw = $config_generator_discard(S_second_popped,pconfiggenerator_second,"input-release")',
@@ -135,7 +139,18 @@ def conditions(name, program, path, stdout):
         'S_second_raw.EVENTS = S_second_popped.EVENTS',
         'S_second_raw.ALLOCATIONS = S_second_popped.ALLOCATIONS',
         'PhpStep: S_input ~> S_second_raw',
-    ] + public('S_input') + public('S_second_raw') + seek('S_second_raw',2105,'S_catch') + [
+    ] + public('S_input') + public('S_second_raw') + budget('S_input','S_abort_budget') + [
+        'S_disposed = S_abort_budget_one[.COMPLETION = NORMAL]',
+        'S_disposed.TODO = (THROW_SEARCH n_exception) :: ptask_input*',
+        '~((HOBJECT n_generator) <- S_disposed.ALLOCATIONS)',
+        '~((HOBJECT n_payload) <- S_disposed.ALLOCATIONS)',
+        '$weakref_get(S_disposed,n_genwatch) = PNULL',
+        '$weakref_get(S_disposed,n_payloadwatch) = PNULL',
+        '$config_generator_factory_cached_history(S_disposed,pconfiggenerator_second)',
+        '~$config_generator_factory_cached_storage(S_disposed,pconfiggenerator_second)',
+        '$config_generator_retired_scope(S_disposed,pconfiggenerator_second)',
+        '$throwable_live(S_disposed,n_exception)',
+    ] + public('S_disposed') + seek('S_disposed',2105,'S_catch') + [
         cell('S_catch','caught','n_caught_cell'),
         'S_catch.STORE[n_caught_cell] = DEFINED (POBJECT n_exception)',
         'S_catch.STORE[n_result_cell] = DEFINED (PINT 99)',
