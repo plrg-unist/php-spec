@@ -236,6 +236,8 @@ dec $executor_handler_tasks(ptask*) : bool
 dec $executor_exception_callback(papicallback) : bool
 dec $executor_task_queue(ptask) : pexecutorqueue?
 dec $executor_scope_task(pstate, ptask) : bool
+dec $executor_renderable(pstate, nat) : bool
+dec $executor_fatal_boundary(pstate, pdestructioncleanup) : bool
 
 def $executor_queue_targets(S, eps) = eps
 def $executor_queue_targets(S, pshutdownentry :: pshutdownentry_tail*) = $eager_cleanup_target(S, pshutdownentry.TARGET) :: $executor_queue_targets(S, pshutdownentry_tail*)
@@ -342,10 +344,13 @@ def $executor_caught(S) = ((pexecutorqueue, S.COMPLETION))
   -- if $executor_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutorqueue)
   -- if S.COMPLETION = UNCAUGHT n
   -- if S.EXCEPTIONHANDLER = eps
+  -- if $executor_renderable(S, n)
+def $executor_renderable(S, n) = true
   -- if $throwable_live(S, n) /\ $throwable_field(S, n, "previous") = PNULL
   -- if $object_name(S, n) =/= $ptascii("ParseError") /\ $object_name(S, n) =/= $ptascii("CompileError")
   -- if $ob_user_scalar($throwable_field(S, n, "message")) /\ $throwable_terminal_renderable(S, n, eps)
-  -- if ~$shutdown_render_ready(S)
+  -- if ~$shutdown_render_ready(S[.COMPLETION = UNCAUGHT n])
+def $executor_renderable(S, n) = false -- otherwise
 def $executor_caught_finish(S, pexecutorqueue, UNCAUGHT n) = S_report[.TODO = [EXECUTOR_RELEASE pexecutorqueue_new (EXECUTOR_PENDING n)]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S_cached = $throwable_string_cache(S, n, $throwable_chain_string(S, n, [n]))
   -- if S_report = $shutdown_freeze_marked(S_cached)
@@ -413,3 +418,22 @@ def $executor_boundary(S) = ("abrupt destructor visibility warning during shutdo
   -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall
   -- if $error_entered_call_valid(S, perrorcall)
   -- if ~$executor_handler_tasks((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*)
+def $executor_boundary(S) = ("shutdown-list Throwable rendering and release")
+  -- if $executor_scope(S)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_RELEASE pexecutorqueue pexecutorstage
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if ~$executor_renderable(S, n)
+def $executor_fatal_boundary(S, pdestructioncleanup) = true
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
+  -- if $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal)
+  -- if $executor_scope($eager_fatal_history(S, pdestructionfatal))
+def $executor_fatal_boundary(S, pdestructioncleanup) = false -- otherwise
+def $executor_boundary(S) = ("non-Throwable fatal during shutdown-list retirement")
+  -- if $shutdown_frozen(S.COMPLETION)
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if $executor_fatal_boundary(S, S.DESTRUCTION.ABANDONED[n_last])
