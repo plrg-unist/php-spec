@@ -4554,6 +4554,9 @@ Public anonymous `__toString` now adds implicit `Stringable` and links before
 the first allocation, preserving header-derived names and counters. Conversions
 retain their selected receiver through rebinding and last-owner cleanup before
 emission. [Stringable review](coverage/semantics/anonymous-stringable-review.json).
+Ordinary anonymous methods now bind value, reference, default and variadic
+parameters through the existing call path; missing-arity errors preserve the
+declaring class and member separately. [Method-parameter review](coverage/semantics/anonymous-method-parameters-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain

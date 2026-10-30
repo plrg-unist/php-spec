@@ -370,7 +370,7 @@ cut keep zero credit.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS158 | Ordinary non-magic anonymous method formals and lexical-owner missing-arity diagnostics: five fresh exact source agreements, strict433 and 247 focused conditions (243 reached, four guards) pass at private cuts. Two unchanged Unsupported controls retain zero credit; concise package and canonical integration pending. |
-| CLASS157 | Anonymous Stringable source9/state285/changed433 pass; concise package under review, actual-tail integration pending. |
+| CLASS157 | Anonymous Stringable source9/state285/changed433 pass; final private CLEAR at 40f5cd2c, actual-tail integration pending. |
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
 | GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
