@@ -233,6 +233,7 @@ dec $executor_queue_tasks(ptask*, pexecutorqueue) : bool
 dec $executor_queue_frames(pframe*, pexecutorqueue) : bool
 dec $executor_queue_active(pstate, pexecutorqueue) : bool
 dec $executor_release_source(pstate, pexecutorqueue, pexecutorstage) : bool
+dec $executor_operation_guard(pstate, pdestructionoperation, pexecutorqueue, pexecutorstage) : bool
 dec $executor_queue_begin(pstate) : pstate
 dec $executor_queue_release(pstate, pexecutorqueue, pexecutorstage, pnode*) : pstate
 dec $executor_abandoned(pstate, pdestructioncleanup) : pexecutorqueue?
@@ -331,12 +332,9 @@ rule PhpStep/executor-release-done: S ~> $executor_free_finish(S[.TODO = eps][.C
 def $executor_release_source(S, pexecutorqueue, EXECUTOR_QUEUE) = $executor_queue_valid(S, pexecutorqueue)
 def $executor_release_source(S, pexecutorqueue, EXECUTOR_PENDING n) = ($executor_queue_valid(S, pexecutorqueue) /\ $shutdown_frozen(pexecutorqueue.COMPLETION) /\ $(n < |S.OBJECTS|))
 def $executor_release_source(S, pexecutorqueue, EXECUTOR_DONE) = false
-def $eager_operation_source_guard(S, pdestructionoperation) = true
+def $eager_operation_source_guard(S, pdestructionoperation) = $executor_operation_guard(S, pdestructionoperation, pexecutorqueue, pexecutorstage)
   -- if pdestructionoperation.SOURCE = EXECUTOR_RELEASE pexecutorqueue pexecutorstage
-  -- if ($executor_queue_active(S, pexecutorqueue) /\ $executor_release_source(S, pexecutorqueue, pexecutorstage)) \/ ($executor_operation_abandoned(S.DESTRUCTION.ABANDONED, pdestructionoperation) /\ $executor_release_source(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutorqueue, pexecutorstage))
-  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps
-  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps
-  -- if pdestructionoperation.VALUE = pexecutorqueue.VALUE /\ pdestructionoperation.BASE = pexecutorqueue.BASE
+def $executor_operation_guard(S, pdestructionoperation, pexecutorqueue, pexecutorstage) = ((($executor_queue_active(S, pexecutorqueue) /\ $executor_release_source(S, pexecutorqueue, pexecutorstage)) \/ ($executor_operation_abandoned(S.DESTRUCTION.ABANDONED, pdestructionoperation) /\ $executor_release_source(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutorqueue, pexecutorstage))) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = pexecutorqueue.VALUE /\ pdestructionoperation.BASE = pexecutorqueue.BASE)
 def $executor_operation_abandoned(eps, pdestructionoperation) = false
 def $executor_operation_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, pdestructionoperation) = ($executor_operation_row(pdestructioncleanup, pdestructionoperation) \/ $executor_operation_abandoned(pdestructioncleanup_tail*, pdestructionoperation))
 def $executor_operation_row(pdestructioncleanup, pdestructionoperation) = true
