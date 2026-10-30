@@ -79,6 +79,19 @@
       "native_group": ".tools/class161-artifacts/author-eval-static-local-shared-class.native-first.json",
       "native_raw_sha256": "eb4dd79c60ad83178d481e183d8df1ce9aa72e14e759bf506cc6c8c802f3fc89",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "static-return-and-object-diagnostics",
+      "source": "<?php\ndeclare(strict_types=1);\n$object161Diagnostic = new class {\n    public static function wrongReturn(): string {\n        echo \"return|\";\n        return 7;\n    }\n    public static function emptyReturn(): string {\n        echo \"empty|\";\n    }\n    public static function needTwo($one, $two) {\n        echo \"bad-body|\";\n    }\n    public static function neverReturn(): never {\n        echo \"never|\";\n    }\n};\ntry {\n    $object161Diagnostic::wrongReturn();\n} catch (TypeError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\ntry {\n    $object161Diagnostic->emptyReturn();\n} catch (TypeError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\ntry {\n    $object161Diagnostic->needTwo(1);\n} catch (ArgumentCountError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\ntry {\n    $object161Diagnostic->neverReturn();\n} catch (TypeError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "4ab40f8e27e9ebba6f48b1fd10769b43b95d7acc0ae88a3e19195c1279e47a60",
+      "stdout_base64": "cmV0dXJufGNsYXNzQGFub255bW91czo6d3JvbmdSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIGludCByZXR1cm5lZHw2fGVtcHR5fGNsYXNzQGFub255bW91czo6ZW1wdHlSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIG5vbmUgcmV0dXJuZWR8MTB8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gY2xhc3NAYW5vbnltb3VzOjpuZWVkVHdvKCksIDEgcGFzc2VkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2MS1yZXZpZXcvb3JpZ2luYWxzL3N0YXRpYy1yZXR1cm4tYW5kLW9iamVjdC1kaWFnbm9zdGljcy5waHAgb24gbGluZSAyOSBhbmQgZXhhY3RseSAyIGV4cGVjdGVkfDExfG5ldmVyfGNsYXNzQGFub255bW91cygpOiBuZXZlci1yZXR1cm5pbmcgbWV0aG9kIG11c3Qgbm90IGltcGxpY2l0bHkgcmV0dXJufDE2fGFmdGVy",
+      "stdout_template_base64": "cmV0dXJufGNsYXNzQGFub255bW91czo6d3JvbmdSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIGludCByZXR1cm5lZHw2fGVtcHR5fGNsYXNzQGFub255bW91czo6ZW1wdHlSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIG5vbmUgcmV0dXJuZWR8MTB8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gY2xhc3NAYW5vbnltb3VzOjpuZWVkVHdvKCksIDEgcGFzc2VkIGluIHtGSUxFfSBvbiBsaW5lIDI5IGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8MTF8bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58MTZ8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class161-artifacts/static-return-and-object-diagnostics.native-first.json",
+      "native_raw_sha256": "745be3e8b4b05a344634143d01e508f86c5252c272e2e9441602773eab47ce48",
+      "model_timeout_seconds": 240
     }
   ]
 }

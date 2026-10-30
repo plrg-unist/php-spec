@@ -1160,6 +1160,20 @@ def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION = pfunction
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = STATIC_METHOD_TARGET porigin_called pfunction.ORIGIN
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+def $return_function_name(S, pfunction) = $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = SCOPED_TARGET porigin_requested pfunction.ORIGIN porigin_called n_receiver? poperand_selector
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 
 dec $constructor_start(pstate, preqbytes, phpType7*, int) : pstate
 dec $constructor_start_ready(pstate, preqbytes, phpType7*, int) : pstate
