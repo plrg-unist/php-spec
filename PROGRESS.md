@@ -294,6 +294,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
 | ATTR07 | Real Closure/arrow builtin attributes validated privately; actual-parent composition pending. |
+| ATTR08 | Persistent shutdown/tick FCC cache ownership and identity; native-first preparation, separate from ATTR07. |
 | CLASS154 | Variadic reference constructor implementation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | GC08 | Enum possible-root admission fix. |
