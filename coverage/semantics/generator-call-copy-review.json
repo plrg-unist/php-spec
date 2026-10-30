@@ -1,0 +1,194 @@
+{
+  "milestone": "I92 real Generator Closure::call copies and bound consumers",
+  "status": "Private native5/source5/strict433 and six reached fronts 744 custom/774 reported pass at distinct cuts; actual-tail integration pending",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "eab71590850de4b073c6e41d337fcb5a0849608e",
+  "scope": "Real user Generator Closures entered through compiled literal non-FCC Closure::call with value parameters and an ordinary class receiver allocate a real copy using existing capture/static clone rules. A genuine API continuation owns copy/FIRST/RAW/original source until return; copied Gen contexts keep WRAPPER eps. Reuse actual resumer/current/evidence for nonstatic real Closure reference-cache and warm/fresh THROW consumers. Used/ignored result retirement follows the native order. No PHP AST schema or machine-field change; one actual API continuation task.",
+  "changed_modules": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/83-call-traces.watsup",
+    "spec/semantics/105-named-arguments.watsup",
+    "spec/semantics/181-closure-binding.watsup",
+    "spec/semantics/182-closure-call.watsup",
+    "spec/semantics/257-request-destructors.watsup",
+    "spec/semantics/281-fibers.watsup",
+    "spec/semantics/428-closure-call-array-unpack.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_closures.c",
+      "vendor/php-src/Zend/zend_execute_API.c",
+      "vendor/php-src/Zend/zend_execute.h",
+      "vendor/php-src/Zend/zend_vm_def.h",
+      "vendor/php-src/Zend/zend_generators.c"
+    ],
+    "symbols": [
+      "ZEND_METHOD(Closure, call)",
+      "zend_create_closure_ex",
+      "zend_get_called_scope",
+      "ZEND_GENERATOR_CREATE",
+      "zend_generator_close",
+      "zend_generator_free_storage"
+    ],
+    "rule": "The Generator branch creates a real Closure before zend_call_function and later decrements the API-local copy. New This determines effective called scope through zend_get_called_scope; that is distinct from the copied Zend object stored original called_scope. VM argument cleanup precedes an ignored retval and original API receiver release."
+  },
+  "review": "Independent semantic correctness, completeness/counterexamples, test reliability and final records reviewed CLEAR; actual-tail review pending.",
+  "validation": {
+    "native_packets": [
+      {
+        "revision": "c123cbebfd9ab55018759a92c92e6bfc0bbde27b",
+        "count": 3,
+        "report": "../php-spec-evidence-archive/generator-call-copy-92/source-packet/native-first/report.json",
+        "sha256": "e98a2d947e6e41d9353e4442fcd9498c11672f27c09e2625d6f5f18f684779a3"
+      },
+      {
+        "revision": "c123cbebfd9ab55018759a92c92e6bfc0bbde27b",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-call-copy-92-review/independent/native-first/report.json",
+        "sha256": "82bc8fa13c8962cc0792f5025776e00d7f3ac2dbe9c97b38146d7b077484af78"
+      },
+      {
+        "revision": "a5a8f21a8e021a9d4f1819e34879fc3e6ba4eb1a",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-call-copy-92/unused-result/native-first/report.json",
+        "sha256": "c2bd1d09c26e5c76e1491efbcf9a5f6f0ca8dc41fd78f47aa7a929962941b59a",
+        "note": "Native-only unused-result original; uncommitted model edits were not oracle inputs."
+      }
+    ],
+    "native_receive_error": {
+      "revision": "a5a8f21a8e021a9d4f1819e34879fc3e6ba4eb1a",
+      "result": "Native-only diagnostic0: after trace/frame/error/source/newThis roots are unset, original source is dead but receiver remains alive until shutdown. Guarded inner/API trace shapes match. This measured no-Gen path is explicitly Unsupported, with no model agreement credit.",
+      "report": "../php-spec-evidence-archive/generator-call-copy-92-review/missing-required/native-first/report.json",
+      "sha256": "0fb79415cff3f0df2ba648ebb4c2b623858a8a7d8c8f76498a81644ae5c69296"
+    },
+    "unchanged_failure": {
+      "revision": "a5a8f21a8e021a9d4f1819e34879fc3e6ba4eb1a",
+      "result": "Checked Unsupported, prefix CALL|, reason generator creation through deferred call scope; zero agreement. Stable inputs+HEAD/exit1/no timeout/sampled3 CPU4/full reap.",
+      "report": "../php-spec-evidence-archive/generator-call-copy-92/validated/generator-call-copy-source-8g3__rxy/report.json",
+      "sha256": "d791f1ac479a313a8b131f01d2bc3ffabc3ebd161a0c1328f0f49a0b9d524b09"
+    },
+    "private_strict": {
+      "revision": "fbabba5056f169326579261490947e276740efae",
+      "modules": 433,
+      "result": "SL/cache-off/determinism-on; true newline/exit0/empty stderr/no timeout/stable inputs+HEAD/launch-reportCPU4/full reap; fast before live sampling.",
+      "report": "../php-spec-evidence-archive/generator-call-copy-92/strict-private/report.json",
+      "sha256": "59ce4e9427e1abb54ed0a93feb1f8d9b8a4c1775601331620c892d4e32594301"
+    },
+    "source_agreements": [
+      {
+        "id": "i92-real-call-copy-scope-value-send",
+        "revision": "fbabba5056f169326579261490947e276740efae",
+        "report": "../php-spec-evidence-archive/generator-call-copy-92/validated/generator-call-copy-source-roif8kr5/report.json",
+        "sha256": "c743bcbb28c307888c7529004660a81da3cabd9888dda06fa471616cd7009ff7"
+      },
+      {
+        "id": "i92-real-call-copy-reference-warm-throw-abort",
+        "revision": "fbabba5056f169326579261490947e276740efae",
+        "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/generator-call-copy-source-qeldo9ob/report.json",
+        "sha256": "ce4b810a2ee53d6073c01138c05b5bc7f890a2791073ada31e844a71ea0d6d6e"
+      },
+      {
+        "id": "i92-real-call-copy-fresh-throw-abort",
+        "revision": "fbabba5056f169326579261490947e276740efae",
+        "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/generator-call-copy-source-_rws85gt/report.json",
+        "sha256": "1e2776a48f48500eb3c7dbc6adcc7940228592d9a64c41ad4455fcd416592b3a"
+      },
+      {
+        "id": "i92-real-call-copy-unused-result-cleanup",
+        "revision": "fbabba5056f169326579261490947e276740efae",
+        "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/generator-call-copy-source-326nwsd8/report.json",
+        "sha256": "733bd30a013f6bcbb8d017fb2b9bbf6679977f972b84de85bd5996f461df2023"
+      },
+      {
+        "id": "i92-real-call-copied-closure-sibling-reference-independent",
+        "revision": "fbabba5056f169326579261490947e276740efae",
+        "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/generator-call-copy-source-cbnuf22r/report.json",
+        "sha256": "a6fb0e038e5a51e0d481efa08c106286241e89abf9234972106a4ad0014d0922"
+      }
+    ],
+    "reached": {
+      "status": "Six fronts pass: 215/225 at 2c4ab5, 192/202 at 682550, 337/347 at 0d5086; both original fixture failures retain zero credit",
+      "custom_checks": 744,
+      "reported_checks": 774,
+      "records": [
+        {
+          "id": "i92-copy-api-entry",
+          "revision": "2c4ab5bb86f1ff804e09ce1325d71ba80717908d",
+          "custom_checks": 94,
+          "reported_checks": 99,
+          "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-4a_dwvnc/report.json",
+          "sha256": "aa01585e5edd8c84928d7a2a820477913cd545ab2fd764e1d8227c0bcdbaa665"
+        },
+        {
+          "id": "i92-copy-reference-throw",
+          "revision": "2c4ab5bb86f1ff804e09ce1325d71ba80717908d",
+          "custom_checks": 121,
+          "reported_checks": 126,
+          "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-a3r9h7cu/report.json",
+          "sha256": "4e2c1b4747b5ef86850e2a03a210b66d45106b50aabb8e967fac7afcc2f70edd"
+        },
+        {
+          "id": "i92-copy-fresh-throw",
+          "revision": "682550aa61aee000a9469c842f2492826a3e3d79",
+          "custom_checks": 116,
+          "reported_checks": 121,
+          "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-luabag84/report.json",
+          "sha256": "ecf8a597f26b85f1dba62bb4fca4d9cc478a0a9ee3450ad8ef3025518bfe7762"
+        },
+        {
+          "id": "i92-copy-unused-result",
+          "revision": "682550aa61aee000a9469c842f2492826a3e3d79",
+          "custom_checks": 76,
+          "reported_checks": 81,
+          "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-fhqfrtnj/report.json",
+          "sha256": "92b4fc4aea3e7f5618eb45dec7fc0029a7c7151f624d9494aa18c501beef7909"
+        },
+        {
+          "id": "i92-copied-closure-sibling-parked-independent",
+          "revision": "0d5086bd54b9067facb09ad92fc96f0e85b4146b",
+          "custom_checks": 199,
+          "reported_checks": 204,
+          "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-e416al2e/report.json",
+          "sha256": "c50b21c506d75c90d0e3cb0cdadde88974d883d9bb40aef370ffc06f6ca64b1a"
+        },
+        {
+          "id": "i92-copied-closure-sibling-closed-independent",
+          "revision": "0d5086bd54b9067facb09ad92fc96f0e85b4146b",
+          "custom_checks": 138,
+          "reported_checks": 143,
+          "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-idqxc08j/report.json",
+          "sha256": "af62c8132dedbf1a1c683b891ef0b7e4aa64cc8c36838bdb0b2c342b7d0e552f"
+        }
+      ],
+      "result": "True newline/exit0/empty diagnostics/no timeout/stable HEAD and relevant inputs; sampled2 CPU4 descendants absent, exact scan empty/full reap at every boundary."
+    },
+    "actual_tail": {
+      "status": "Unrun; requires valid canonical writer handoff"
+    },
+    "fixture_failures": [
+      {
+        "revision": "2c4ab5bb86f1ff804e09ce1325d71ba80717908d",
+        "result": "Fresh reached condition inverted FIRST before the first yield; zero state credit. One-line fixture-only correction at682550aa61aee000a9469c842f2492826a3e3d79; source/spec/cap/assertion count unchanged.",
+        "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-3f89zx5i/report.json",
+        "sha256": "2b7291c05081029e8955cf7937c8e6fa7147b914b6bcf05243ce10c2b98fd51b"
+      },
+      {
+        "revision": "682550aa61aee000a9469c842f2492826a3e3d79",
+        "result": "Broad Fiber transfer with no resume owners is permitted; zero state credit. One-line fixture-only correction at0d5086bd54b9067facb09ad92fc96f0e85b4146b instead requires the actual copied-Closure/Gen-owner proof to refuse. All other assertions/counts/caps unchanged.",
+        "report": "../php-spec-evidence-archive/generator-call-copy-92-review/validated/fiber-state-review-2qmpl3pk/report.json",
+        "sha256": "9b667a866a29ccf2305761df691309b020a2798643ae23a83c4c2db28aeb178f"
+      }
+    ]
+  },
+  "remaining": [
+    "Measured no-Gen receive-error retained-copy cleanup remains Unsupported.",
+    "Reference-formal callbacks require copying before warnings; remembered named errors, computed/packed and other receiver/source forms remain partial.",
+    "Wider signatures, captures/statics interactions, bindings, delegation, collection/lifecycle and full-core obligations remain partial."
+  ],
+  "reproduction": [
+    "python3 tests/semantics/generator_call_copy_sources.py --case CASE --native-report RETAINED_NATIVE_REPORT",
+    "python3 tests/semantics/generator_call_copy_state.py --case CASE",
+    "python3 tests/semantics/generator_call_copy_review_state.py --case CASE"
+  ],
+  "compatibility": "I84\u2013I91 remain immutable unintegrated packages. Ordinary nongenerator/fake Closure::call and its packed entry remain pointwise unchanged outside required real-Gen copies. Shared ATTR07 receiver borrowing remains inherited. No accepted native/source/state/private433 credit is renewed; actual released-tail composition/review/join pending."
+}

@@ -6687,6 +6687,15 @@ retains its actual called scope and no receiver. Native3/source3/private433 reta
 distinct cuts; five reached fronts pass 614 custom/639 reported checks. Both
 original failures retain zero credit; actual-tail integration remains pending.
 [String Closure review](coverage/semantics/generator-string-method-closure-review.json).
+
+I92 gives literal Closure::call entry for real user Generator Closures its actual
+copied Closure and new receiver, separate from temporary API owners. Existing
+capture/static copying and Generator/Fiber rules preserve that copy through
+CLOSED; ignored results release before the original API receiver. Native5,
+source5/private433 retain distinct cuts; six reached fronts pass 744 custom/774
+reported checks. Receive-error retention, reference parameters, computed/packed
+calls and wider contexts remain partial; actual-tail integration is pending.
+[Call-copy review](coverage/semantics/generator-call-copy-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
