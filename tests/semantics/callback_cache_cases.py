@@ -87,12 +87,41 @@ echo "P:", $weak_cb->get() !== null, ":", $weak_recv->get() !== null, ";";
 '''
 
 
+def closure_invoke_array():
+    return br'''<?php
+$calls = 0;
+class ArrayClosureCacheReceiver {
+    public function make($snapshot) {
+        return function () use ($snapshot) {
+            $GLOBALS["calls"]++;
+            echo "B:", $snapshot === 7, ":", $GLOBALS["weak_recv"]->get() === $this, ":", $GLOBALS["weak_cb"]->get() !== null, ";";
+            return 7;
+        };
+    }
+    public function __destruct() {
+        echo "R:", $GLOBALS["weak_cb"]->get() === null, ":", $GLOBALS["calls"] === 1, ";";
+    }
+}
+$receiver = new ArrayClosureCacheReceiver(); $callback = $receiver->make(7);
+$weak_recv = WeakReference::create($receiver); $weak_cb = WeakReference::create($callback);
+register_tick_function([$callback, "__invoke"]);
+$receiver = null; $callback = null;
+echo "P:", $weak_cb->get() !== null, ":", $weak_recv->get() !== null, ";";
+declare(ticks=1) { $marker = 1; }
+echo "Q:", $calls === 1, ";";
+unregister_tick_function([$weak_cb->get(), "__invoke"]);
+echo "E:", $calls === 1, ":", $weak_cb->get() === null, ":", $weak_recv->get() === null, ";";
+'''
+
+
 CASES = {
+    'tick-closure-invoke-array-caches-outer-closure-only': closure_invoke_array(),
     'tick-bound-closure-cache-and-ordered-unregister': tick_closure(),
     'tick-raw-argument-throw-keeps-cached-callable-retirement': tick_closure(True),
     'shutdown-bound-closure-cache-and-captured-final-observers': shutdown_retention(),
 }
 EXPECTED_STDOUT = {
+    'tick-closure-invoke-array-caches-outer-closure-only': b'P:1:1;B:1:1:1;Q:1;R:1:1;E:1:1:1;',
     'tick-bound-closure-cache-and-ordered-unregister': b'P:1:1:1:1;B:1:1:1:1;Q:1;T:1:1:1:1;C:1:1:1;R:1:1:1;E:1:1:1:1:1;',
     'tick-raw-argument-throw-keeps-cached-callable-retirement': b'P:1:1:1:1;B:1:1:1:1;Q:1;T:1:1:1:1;C:1:1:1;R:1:1:1;X:1:1:1:1:1;E:1:1:1:1:1:1;',
     'shutdown-bound-closure-cache-and-captured-final-observers': b'P:1:1;B:1:1:1;S:1:1;F:1:1:1;',
