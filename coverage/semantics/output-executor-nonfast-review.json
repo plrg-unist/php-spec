@@ -1,0 +1,466 @@
+{
+  "milestone": "OB05",
+  "status": "Private validated bounded milestone; independent package review and actual-tail integration pending; core remains partial",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_size": 8,
+    "oracle_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml_switch": "5.1.0",
+    "semantic_mode": "SL",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Allocator-selected executor table/storage effects after genuine FINAL completion. Nonfast cleanup follows native global, constant, function/class and handler order, shared inherited method-static cells and reverse real handles with standard-hook protective counts. Late shutdown-list arguments and independent FCC receiver/Closure owners retire while PHP is active; authentic abandoned release operations carry the unfinished C owners through caught public destructor throws. Inactive effects use a local graph and preserve the ownership-valid terminal snapshot.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/39-ownership.watsup",
+    "spec/semantics/231-shutdown-functions.watsup",
+    "spec/semantics/391-output-buffers.watsup",
+    "spec/semantics/441-output-finalization.watsup",
+    "spec/semantics/444-executor-final-free.watsup"
+  ],
+  "source_outcomes": {
+    "total_contexts": 12,
+    "exact": 12,
+    "new_programs": 10,
+    "new_native_contexts": 11,
+    "retained_native_contexts": 1,
+    "native_packets": {
+      "native8-3aca4405a": {
+        "report": "ob05-executor-native/native8-3aca4405a/report.json",
+        "sha256": "07df1b459ebbba69b2441e0c01a0b25a67ef0b9eb989149f44709c88b9761aa3",
+        "head": "3aca4405a5881445f755663a6d0bb703e1a613f0",
+        "contexts": [
+          "child-first",
+          "holder-first",
+          "global-order",
+          "function-static",
+          "stack-order",
+          "shutdown-capture-slow",
+          "shutdown-throw",
+          "shutdown-capture-fast"
+        ]
+      },
+      "native-bound-c1768ad89": {
+        "report": "ob05-executor-native/native-bound-c1768ad89/report.json",
+        "sha256": "aee29f8a281783cc022c94d68f7176dbb9f4c8fd3e1149415b402cc0943c459c",
+        "head": "c1768ad89e856b415f3d82b7439cf764b25c9a7d",
+        "contexts": [
+          "bound-fcc"
+        ]
+      },
+      "native-inherited-a98c65caf": {
+        "report": "ob05-executor-native/native-inherited-a98c65caf/report.json",
+        "sha256": "232100606417fa60326501f149d6c6ea0d8e4aa3d104bd00bd7a86c47729aab6",
+        "head": "a98c65caf81f0841a0653c5a13ecba4bc4073cd2",
+        "contexts": [
+          "inherited-static"
+        ]
+      },
+      "native-bound-fake-10e0c22f9": {
+        "report": "ob05-executor-native/native-bound-fake-10e0c22f9/report.json",
+        "sha256": "14d1194d34594bb177c4153f9dd373642872656e7503dae1d62c58cb68e325bd",
+        "head": "10e0c22f953213bb21f553aa267cce05ea1faf55",
+        "contexts": [
+          "bound-fake"
+        ]
+      },
+      "retained-ob04-slow": {
+        "report": "ob04-author-native/native-slow-mode-15ac11339/report.json",
+        "sha256": "a14d251862156206c44303183f4c39625b850486f673034e9fa9b86e3936c3f5",
+        "head": "15ac11339ad1cfab404cc0c0177f44d536ba82ee",
+        "contexts": [
+          "callback_owner_peer_slow_allocator"
+        ],
+        "native_replayed": false
+      }
+    },
+    "cuts": [
+      {
+        "id": "holder-first",
+        "report": "ob05-executor-native/model-holder-87539cc43/report.json",
+        "sha256": "d4d9ac1422256c051abb1957b1ee65a80f73481e72181c611b385442aecc6db3",
+        "head": "87539cc4315a1277d5c3cc7e28efd591f81757da",
+        "source": "tests/semantics/output_executor_nonfast_holder_first.php",
+        "source_sha256": "41d91d92b5af893f73b809d0bc63dbf1bd1852217ba5faffe0e935e39daa098d",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_holder_first.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "normal",
+        "stdout": "B|T|",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit": 0
+      },
+      {
+        "id": "child-first",
+        "report": "ob05-executor-native/model-child-87539cc43/report.json",
+        "sha256": "e18d2824505fe5c82955e1a725d9e7d363a5c5c5d03885b8cde4931283df664f",
+        "head": "87539cc4315a1277d5c3cc7e28efd591f81757da",
+        "source": "tests/semantics/output_executor_nonfast_child_first.php",
+        "source_sha256": "e13b705332e627033fcd6d54476787be97fb8c33156008fad20f5a799509cfcf",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_child_first.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "php_error",
+        "stdout": "B|T|",
+        "stderr_sha256": "81f1bcc4cc13dcf0c1d8fd3e7fd63e462cd93048315aab979061148b60508e20",
+        "exit": 0
+      },
+      {
+        "id": "shutdown-capture-fast",
+        "report": "ob05-executor-native/model-queue-fast-1e73311ec/report.json",
+        "sha256": "a2d16dbffbc67a516c3502517d903d50197cf1253769a12687a84c0a65ba2c2a",
+        "head": "1e73311ecb5727d92c45f771dec1afc304a4e113",
+        "source": "tests/semantics/output_executor_nonfast_shutdown_capture_peer.php",
+        "source_sha256": "ef3608959105aff9038761f6c066dd696394d40e907f8f8d397deb7c8228368a",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_shutdown_capture_peer.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "default fast",
+        "model_status": "normal",
+        "stdout": "B|T|A:live|C|",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit": 0
+      },
+      {
+        "id": "inherited-static",
+        "report": "ob05-executor-native/model-inherited-a98c65caf/report.json",
+        "sha256": "3510a0399dd870f992e0a4da28172b8a51a85a5acb2330729f491fa9b8920d08",
+        "head": "a98c65caf81f0841a0653c5a13ecba4bc4073cd2",
+        "source": "tests/semantics/output_executor_nonfast_inherited_static_peer.php",
+        "source_sha256": "83a06840e85aab1597c5161520db66eab033b49b72cfab57dbcf50984bc02489",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_inherited_static_peer.php",
+        "native_packet": "native-inherited-a98c65caf",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "php_error",
+        "stdout": "B|T|A:live|",
+        "stderr_sha256": "12ab1138c881812e6eff69f570acbac9abe3374aebc9e64ee7b845550c18caee",
+        "exit": 0
+      },
+      {
+        "id": "bound-fake",
+        "report": "ob05-executor-native/model-bound-fake-10e0c22f9/report.json",
+        "sha256": "48841439566689b4fd0aa3224769e351b35422532770d10319ca39933dc5e872",
+        "head": "10e0c22f953213bb21f553aa267cce05ea1faf55",
+        "source": "tests/semantics/output_executor_nonfast_bound_fake_peer.php",
+        "source_sha256": "9494bd4cba35d06efee94e0812b85e39e44d7da6e1376550b815badc83d70fc5",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_bound_fake_peer.php",
+        "native_packet": "native-bound-fake-10e0c22f9",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "normal",
+        "stdout": "B|T|A|R|",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit": 0
+      },
+      {
+        "id": "shutdown-throw",
+        "report": "ob05-executor-native/model-queue-throw-10e0c22f9/report.json",
+        "sha256": "7e8a1c2205b32956cad1f006d17e8f5003fe894cc0bbcc8589b6a60646337592",
+        "head": "10e0c22f953213bb21f553aa267cce05ea1faf55",
+        "source": "tests/semantics/output_executor_nonfast_shutdown_throw.php",
+        "source_sha256": "a55f2801e7491e42e7afe83bad3bfb82ebc8db2608ff95cc1b166bd74a40c1f6",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_shutdown_throw.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "php_error",
+        "stdout": "B|T|Q|",
+        "stderr_sha256": "cbccda7e2cf45896f7ee56643ce8010b6ef2b1262ebd3ba1668d8fbe597f9edb",
+        "exit": 0
+      },
+      {
+        "id": "callback_owner_peer_slow_allocator",
+        "report": "ob05-executor-native/model-retained-slow-5161df2d9/report.json",
+        "sha256": "2d35b15bfc7c11315094cd4b59408154918cd1f0a9ad1e652b52640c4df57be4",
+        "head": "5161df2d9fb36af6d95317150b5e04a5d7fb5d8e",
+        "source": "tests/semantics/output_final_exception_callback_owner_peer.php",
+        "source_sha256": "3f30fcf471c8961c5e3f7a6f6cfebbe5db3d959654f7527362047fedb4fc6ae6",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-final-exception-handler-ob04/tests/semantics/output_final_exception_callback_owner_peer.php",
+        "native_packet": "retained-ob04-slow",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "php_error",
+        "stdout": "A:live:live|",
+        "stderr_sha256": "cf0b40aaadd186f24d55c8cc5c43248210a7786b626d0afd85fe013d8fd6df76",
+        "exit": 0
+      },
+      {
+        "id": "bound-fcc",
+        "report": "ob05-executor-native/model-bound-fcc-9652d158c/report.json",
+        "sha256": "0c0e3d3982fdeb9445141b749592a111b5db7a454aa433d1602d36e0b6874ccf",
+        "head": "9652d158ca689ed3d002ac9bf58608aa9c1605e5",
+        "source": "tests/semantics/output_executor_nonfast_bound_fcc.php",
+        "source_sha256": "570d53172464c0732c1455a8de0967748adbc961a945283a17c79b17a9542f7e",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_bound_fcc.php",
+        "native_packet": "native-bound-c1768ad89",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "normal",
+        "stdout": "B|T|A|C|R|",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit": 0
+      },
+      {
+        "id": "global-order",
+        "report": "ob05-executor-native/model-global-9652d158c/report.json",
+        "sha256": "b1f15b4159faa145e71399d9826225721b8b49699d883f54449021dfabcd1958",
+        "head": "9652d158ca689ed3d002ac9bf58608aa9c1605e5",
+        "source": "tests/semantics/output_executor_nonfast_global_order_peer.php",
+        "source_sha256": "5910a60c35ae9cd7540b80936ef233212e367bfec18a5fec1b85fa3f058a2ffa",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_global_order_peer.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "php_error",
+        "stdout": "B|T|A:live|",
+        "stderr_sha256": "0dd9a17ef3552c06d4a815e5ba602ad6e180dee8a0d1c0489af302705312d8ee",
+        "exit": 0
+      },
+      {
+        "id": "function-static",
+        "report": "ob05-executor-native/model-function-static-9652d158c/report.json",
+        "sha256": "fa4f1a409305b262e4b1e92216e038b162ffd4546733d3fd685e616f703a12e6",
+        "head": "9652d158ca689ed3d002ac9bf58608aa9c1605e5",
+        "source": "tests/semantics/output_executor_nonfast_function_static_peer.php",
+        "source_sha256": "1b1e4a09e458b88e57745cd21a42807e61dbb4d94d3e389b66bdda80e390c741",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_function_static_peer.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "php_error",
+        "stdout": "B|T|A:live|",
+        "stderr_sha256": "18b7af7a24ed62c7698c745f9a73c0e4a8fa2cf141670c95c8ba6c50bdacda0d",
+        "exit": 0
+      },
+      {
+        "id": "stack-order",
+        "report": "ob05-executor-native/model-stack-9652d158c/report.json",
+        "sha256": "2f4e22a0e5a70d5ef215bc33df676972ab9aac2d20633ea7d5029989c327e0eb",
+        "head": "9652d158ca689ed3d002ac9bf58608aa9c1605e5",
+        "source": "tests/semantics/output_executor_nonfast_stack_order_peer.php",
+        "source_sha256": "88525239aad2d9608094d30558d774cab67c301246b738ac452c52098fd55f5c",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_stack_order_peer.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "php_error",
+        "stdout": "B|T|A:live|",
+        "stderr_sha256": "e150ad19d22e00c0725fcfe42d6eca890885c9ebed07bde2907c9c04aefcc621",
+        "exit": 0
+      },
+      {
+        "id": "shutdown-capture-slow",
+        "report": "ob05-executor-native/model-queue-slow-9652d158c/report.json",
+        "sha256": "d7be93461047257cd1e929c68749f73ab79dc343225764f8c574b455fae4c8a4",
+        "head": "9652d158ca689ed3d002ac9bf58608aa9c1605e5",
+        "source": "tests/semantics/output_executor_nonfast_shutdown_capture_peer.php",
+        "source_sha256": "ef3608959105aff9038761f6c066dd696394d40e907f8f8d397deb7c8228368a",
+        "original_file": "/home/user/workspace/php-spec/.tools/output-executor-nonfast-ob05/tests/semantics/output_executor_nonfast_shutdown_capture_peer.php",
+        "native_packet": "native8-3aca4405a",
+        "request_mode": "USE_ZEND_ALLOC=0",
+        "model_status": "normal",
+        "stdout": "B|T|A:live|C|",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "exit": 0
+      }
+    ]
+  },
+  "reached": {
+    "groups": 9,
+    "reported_assertions": 573,
+    "author": {
+      "groups": 3,
+      "reported_assertions": 171
+    },
+    "independent": {
+      "groups": 6,
+      "reported_assertions": 402
+    },
+    "counting": "Reported premises include genuine request initialization, source-reached invariants and derived malformed/budget controls; they are not a count of independent PHP behaviors or a completeness proof.",
+    "cuts": [
+      {
+        "id": "unswept-child-reaches-inactive-callback-before-shield",
+        "report": "ob05-executor-native/front-store-child-b86152c0f/report.json",
+        "sha256": "612ede79c5b6632bf58a069aa55c503b65b640cdf330297c25098896478d0650",
+        "head": "b86152c0f2b3f6a2087120b9ff37a22b189e6d37",
+        "module": "output_executor_nonfast_protocol",
+        "reported_assertions": 57
+      },
+      {
+        "id": "already-swept-standard-child-keeps-its-protective-count",
+        "report": "ob05-executor-native/front-store-holder-2eb102dd3/report.json",
+        "sha256": "9bc762fa10082a0a3636f6d60b3db9c1656bdcc6e79784232967c6ebab7beddb",
+        "head": "2eb102dd3b982d302433578c05f8e5f003ab4d25",
+        "module": "output_executor_nonfast_protocol",
+        "reported_assertions": 53
+      },
+      {
+        "id": "caught-argument-throw-retains-real-unfinished-fcc-owner",
+        "report": "ob05-executor-native/front-caught-queue-b86152c0f/report.json",
+        "sha256": "4047d986154fe26a617e9d32420ba55b42586df4457d36ccd00bb2f712eeb7a5",
+        "head": "b86152c0f2b3f6a2087120b9ff37a22b189e6d37",
+        "module": "output_executor_nonfast_protocol",
+        "reported_assertions": 61
+      },
+      {
+        "id": "bound-fake-fcc-receiver-is-owned-outside-scope-tables",
+        "report": "ob05-executor-native/front-bound-fake-5161df2d9/report.json",
+        "sha256": "93ff443f93cf49e1ac1e4fb2f210066308f544778390f387501283667cc333bf",
+        "head": "5161df2d9fb36af6d95317150b5e04a5d7fb5d8e",
+        "module": "output_executor_nonfast_review_protocol",
+        "reported_assertions": 78
+      },
+      {
+        "id": "bound-fcc-object-releases-before-closure-this-edge",
+        "report": "ob05-executor-native/front-bound-fcc-b86152c0f/report.json",
+        "sha256": "0442508200934fe999f2897786f9dd13597e4687bb879b4066661d009725ea18",
+        "head": "b86152c0f2b3f6a2087120b9ff37a22b189e6d37",
+        "module": "output_executor_nonfast_review_protocol",
+        "reported_assertions": 84
+      },
+      {
+        "id": "reverse-global-symbol-insertion-before-store",
+        "report": "ob05-executor-native/front-global-322e52af9/report.json",
+        "sha256": "852d66cd331e6b4a684cf6ec962dc2bf69c9a10f9027d988cb52b1893109cdc7",
+        "head": "322e52af9fa2146f705003d9bf11b6d293a3add5",
+        "module": "output_executor_nonfast_review_protocol",
+        "reported_assertions": 58
+      },
+      {
+        "id": "reverse-function-publication-before-static-cell-birth",
+        "report": "ob05-executor-native/front-function-static-322e52af9/report.json",
+        "sha256": "07535e4ed2f9fc0642effb10704a6f75a79971cb56dadf6ab58014b2e1bcb58a",
+        "head": "322e52af9fa2146f705003d9bf11b6d293a3add5",
+        "module": "output_executor_nonfast_review_protocol",
+        "reported_assertions": 55
+      },
+      {
+        "id": "oldest-saved-error-handler-before-reverse-store",
+        "report": "ob05-executor-native/front-stack-322e52af9/report.json",
+        "sha256": "63ddc577114f582621f5e1cb3f6631d15d9a496c864ece4928347b114892900d",
+        "head": "322e52af9fa2146f705003d9bf11b6d293a3add5",
+        "module": "output_executor_nonfast_review_protocol",
+        "reported_assertions": 59
+      },
+      {
+        "id": "last-subclass-retires-shared-inherited-method-static-once",
+        "report": "ob05-executor-native/front-inherited-static-322e52af9/report.json",
+        "sha256": "00e71e2fb2012f4a3eb347a2f800b1fda17412510dc2034dec8c6223a7b5bf8c",
+        "head": "322e52af9fa2146f705003d9bf11b6d293a3add5",
+        "module": "output_executor_nonfast_review_protocol",
+        "reported_assertions": 68
+      }
+    ]
+  },
+  "affected_previous_boundary": {
+    "id": "terminal-allocator-mode-keeps-request-data-and-first-duplicate",
+    "report": "ob05-executor-native/affected-ob04-allocator-2eb102dd3/report.json",
+    "sha256": "1d1989a07a5f7869f347aaa50ab38343a76cfd8720af064108481eb591c7312a",
+    "head": "2eb102dd3b982d302433578c05f8e5f003ab4d25",
+    "reported_assertions": 58,
+    "scope": "Only the former allocator-boundary expectation changes: this genuine empty-table endpoint now completes unchanged. Original OB04 58-check cut is retained; no old source/native or whole campaign renewed."
+  },
+  "strict": {
+    "report": "ob05-executor-native/strict433-b86152c0f/report.json",
+    "sha256": "dad18c673b8f86f761401ae30b108b1c68bddc65c56bba5b8dd41677b1a3a12f",
+    "head": "b86152c0f2b3f6a2087120b9ff37a22b189e6d37",
+    "modules": 433,
+    "mode": "SL strict",
+    "seconds": 11.814511861652136,
+    "stdout": "true\n",
+    "stderr_bytes": 0,
+    "exit": 0
+  },
+  "authority": [
+    "main/main.c::php_request_shutdown orders FINAL output, module RSHUTDOWN, output deactivation, shutdown-list freeing, autoload shutdown and executor deactivation.",
+    "ext/standard/basic_functions.c::user_shutdown_function_dtor releases params ascending then FCC; php_free_shutdown_functions catches bailout from that real hash destruction.",
+    "Zend/zend_API.h::zend_fcc_addref and zend_fcc_dtor retain receiver and Closure separately, releasing receiver first. Zend/zend_closures.c::Closure::call uses a temporary override rather than mutating original closure this_ptr.",
+    "Zend/zend_execute_API.c::zend_shutdown_executor_values orders nonfast table cleanup; Zend/zend_stack.c::zend_stack_clean visits saved handlers oldest first.",
+    "Zend/zend_inheritance.c::zend_duplicate_function and do_inherit_method share inherited static_variables_ptr. Existing method_info_layout supplies actual own/inherited function-table order.",
+    "Zend/zend_objects_API.c::zend_objects_store_free_object_storage visits handles backwards; nonfast standard hooks also gain the permanent protective reference. Zend/zend_objects.c::zend_objects_destroy_object checks visibility before inactive public invocation.",
+    "Zend/zend_alloc.c::alloc_globals_ctor selects system allocator when first getenv USE_ZEND_ALLOC has a zero signed decimal prefix. Request ENV is pre-startup input, not rewritten post-startup.",
+    "sapi/cli/php_cli.c::main assigns do_cli return only after request shutdown; an uncaught inactive free_obj fatal skips that assignment and retains CLI SUCCESS0."
+  ],
+  "process_discipline": {
+    "cpu": 5,
+    "one_pair_actor": true,
+    "whole_tree_affinity": true,
+    "fresh_checked_frontend_and_adapter": true,
+    "positive_inputs_and_heads_stable": true,
+    "all_positive_workers_and_groups_fully_reaped": true,
+    "raw_observation": "Exact stdout/stderr bytes and process exit; php_error with CLI0 stays distinct from normal completion. No native evaluation supplies semantic answers.",
+    "source_budgets": {
+      "cold_adapter_seconds": 60,
+      "evaluation_seconds": 120,
+      "fuel": 1000
+    },
+    "reached_process_seconds": 240,
+    "strict_process_seconds": 30
+  },
+  "compatibility": [
+    "Original source/state cuts keep their literal tested revisions. Store sources at875 have no queue or method statics; later queue/inheritance guards are neutral. The fast static shutdown-capture source at1e has no receiver or shared method statics.",
+    "Inherited-static source at a98 has no shutdown queue. Later RECEIVERS stores the same existing ordinary-scope FCC vector and adds genuine header receivers for bound fake/internal Closures; it does not add documentary roots.",
+    "The late-bound-tick publication guard is neutral for all accepted originals, which do not call the tick API. Optional function_scope request environments preserve the original default environment bytes; maintained runners use only local project inputs.",
+    "b861 changes only refusal of malformed operation sources: constructor matching returns the full Bool guard instead of exposing generic true fallback. Authentic operation predicates remain true; affected caught and ordinary-bound fronts validate the repaired refusal, without broad source renewal.",
+    "The later2eb old allocator expectation and322e documentary drain-origin correction are fixture/prose-only. Accepted bound/boundfake/front/source cuts retain their identities.",
+    "The retained OB04 slow source is byte-identical3f30fcf471c8961c5e3f7a6f6cfebbe5db3d959654f7527362047fedb4fc6ae6. Its original FILE/ARGV/CWD and native streams are request facts; bytes are read from the maintained source without recreating the removed OB04 worktree or rerunning PHP."
+  ],
+  "preserved_zero_credit": [
+    {
+      "report": "ob05-executor-native/strict433-e5a394e88/report.json",
+      "sha256": "08bc7f739cc8455d2306393587034aa248082c0205e47cdc7bc057903c1cc629",
+      "head": "e5a394e888cd14d58dc36f354052ba16ff805986",
+      "reason": "New boundary predicate binder inside conjunction; declaration failure before evaluation.",
+      "whole_packet_credit": 0
+    },
+    {
+      "report": "ob05-executor-native/strict433-6f9a11fc0/report.json",
+      "sha256": "e0f08c8656c782bd64dbe475ffe589652ae16df757f9373f8ca943cf10ce2f3b",
+      "head": "6f9a11fc035b3404f778d5b2561ca6f047a653fa",
+      "reason": "Nonpure structural otherwise fallback; declaration failure before evaluation.",
+      "whole_packet_credit": 0
+    },
+    {
+      "report": "ob05-executor-native/strict433-749ddc999/report.json",
+      "sha256": "529b814c5310c15efffd2b9ee198ef0800cf4cd34702904ee8178e75ba5e8971",
+      "head": "749ddc9994009ade7c96a7f92c4092ee2f703a4c",
+      "reason": "Supplemental FCC helper declared after use; declaration failure before evaluation.",
+      "whole_packet_credit": 0
+    },
+    {
+      "report": "ob05-executor-native/front-bound-fake-10e0c22f9/report.json",
+      "sha256": "4b4c4a986b44b6451095723e7834bb056bff32457273fc431356db222dc1fa1b",
+      "head": "10e0c22f953213bb21f553aa267cce05ea1faf55",
+      "reason": "Fixture optional-receiver list typing failed at a genuine reached state; three typed list controls corrected.",
+      "whole_packet_credit": 0
+    },
+    {
+      "report": "ob05-executor-native/front-caught-queue-9652d158c/report.json",
+      "sha256": "ba0abc815cea8b6d98551220486a9ea366d05a318f8ca6f04afaa247ca8ff7c8",
+      "head": "9652d158ca689ed3d002ac9bf58608aa9c1605e5",
+      "reason": "Missing-abandoned authority incorrectly fell through to the generic true operation guard; repaired with constructor-matched Bool result.",
+      "whole_packet_credit": 0
+    },
+    {
+      "report": "ob05-executor-native/front-global-2eb102dd3/report.json",
+      "sha256": "44582bc154176bca62bcb5b888531a5e2b6cf2e64f36d50b5a550042f21443e6",
+      "head": "2eb102dd3b982d302433578c05f8e5f003ab4d25",
+      "reason": "Fixture demanded empty ORIGIN while real drain retained the output registration site; source state unchanged, exact documentary site now checked.",
+      "whole_packet_credit": 0
+    }
+  ],
+  "remaining": [
+    "Owning assert/tick module-RSHUTDOWN cleanup before output deactivation, and owning autoload cleanup after the shutdown list, retain explicit actual-stage dependencies.",
+    "Reentrant shutdown-list registration during table destruction, post-deactivation buffer starts, exit, abrupt selected exception handlers, destructor-visibility warning throws and wider chained/custom/Parse/Compile/non-Throwable fatal cleanup during list retirement remain partial.",
+    "Late bound tick registration after module shutdown remains an actual publication boundary until its independent FCC receiver lifetime is modeled.",
+    "Uncovered represented table-owner layouts, weak flags, other internal free hooks and inactive nonpublic-destructor diagnostics remain explicit dependencies. Reentrant/abrupt raw-zoh deactivation and wider output/rendering protocols remain open.",
+    "No whole-core, interaction-tree, Rocq or BOLA verification claim follows from this bounded milestone."
+  ],
+  "recovery": {
+    "raw_archive": "/home/user/workspace/php-spec-evidence-archive",
+    "packet": "ob05-executor-native",
+    "reports": "Each referenced report retains exact commands, compiler/runtime identity, environment/request facts, source bytes or hashes, output bytes, budgets and full-reap evidence. Raw archives are recovery evidence, never operational build inputs.",
+    "maintained": [
+      "tests/semantics/output_executor_nonfast_sources.py",
+      "tests/semantics/output_executor_nonfast_protocol.py",
+      "tests/semantics/output_executor_nonfast_review_protocol.py"
+    ],
+    "integration": "One exact actual-manifest joined strict gate is pending; no accepted source/native/state campaign is requested again."
+  }
+}

@@ -299,11 +299,24 @@ after executor inactivity preserve the pinned late diagnostic and CLI0. Eleven
 originals agree and eight reached groups pass 465 checks. Private strict432 and
 actual-tail joined strict433 pass.
 The independent 303 checks include retired GC HANDLE authority; author 162 includes
-first-duplicate allocator mode controls. Slow executor teardown, wider internal
-hooks/rendering and reentrant deactivation stay partial. Source/state cuts retain
+first-duplicate allocator mode controls. Slow executor teardown was still open at
+that cut; wider internal hooks/rendering and reentrant deactivation stay partial. Source/state cuts retain
 their original identities; failed forecasts, fixtures and the repaired invariant
 cut keep zero credit.
 [Selected FINAL review](coverage/semantics/output-final-exception-handler-review.json).
+
+OB05 adds allocator-selected executor table/storage effects after FINAL and active
+retirement of late shutdown registrations. Ordered arguments, the independent FCC
+receiver and Closure retain their real C counts through ordinary release and caught
+destructor throws. Native symbol/function/class/handler order, shared inherited
+method statics and standard-hook shields determine the first inactive callback.
+Twelve source/request contexts agree exactly at their recorded cuts; nine reached
+groups pass 573 checks (author 171, independent 402), with a separate affected OB04
+allocator group passing 58. Private strict433 passes. Earlier owning module/autoload
+cleanup, uncovered table owners, wider hooks/rendering and reentrant/abrupt cleanup
+remain partial. Original failures retain zero credit; the retained slow native
+control is promoted without native replay.
+[Nonfast executor review](coverage/semantics/output-executor-nonfast-review.json).
 
 ## Active and unintegrated work
 
