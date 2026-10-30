@@ -25,7 +25,9 @@ CASES = {
             '(HOBJECT n_closure) <- S.ALLOCATIONS',
             '$target_function(S, CLOSURE_TARGET n_closure) = (pfunction_closure)',
             '$function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction_closure)',
-            '$function_deprecated(S, pfunction_closure) = NO_DEPRECATED',
+            '$origin_node(S.SOURCES, pfunction_closure.ORIGIN) = '
+            '(NExprClosure (SEQUENCE eps) (BOOLEAN true) (BOOLEAN false) '
+            '(SEQUENCE eps) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata_template)',
             '$node_children(S, HOBJECT n_closure) = eps',
             '$wrapper_site(S, CLOSURE_TARGET n_closure, pcallcontext.CALLSITE)',
             '$wrapper_receiver_roots(pcallcontext) = [HOBJECT n_closure]',
