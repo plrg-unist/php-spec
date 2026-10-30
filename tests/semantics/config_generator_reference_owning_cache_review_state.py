@@ -163,7 +163,8 @@ def conditions(name, program, path, stdout):
         '$throwable_field(S_error,n_error,"trace") = PARRAY n_trace',
         'S_error.ARRAYS[n_trace].ITEMS[0] = ENTRY (KINT 0) (DIRECT (PARRAY n_frame))',
         '$trace_array_field(S_error,n_frame,$ptascii("args")) = PARRAY n_args',
-        'S_error.ARRAYS[n_args].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_option),ENTRY (KINT 1) (DIRECT (PARRAY n_old))]',
+        'S_error.ARRAYS[n_args].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_trace_option),ENTRY (KINT 1) (DIRECT (PARRAY n_old))]',
+        '$string_bytes(pvalue_trace_option) = ($ptascii("precision"))',
         row('S_error', 'n_old', 13),
     ] + public('S_invoke') + seek('S_invoke', 2706, 'S_throw') + [
         'S_throw.TODO = (THROW_SEARCH n_error) :: (CONFIG_GENERATOR pconfiggenerator_second "invoke") :: ptask_throw*',
