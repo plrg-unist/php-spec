@@ -245,5 +245,37 @@
     "source": "<?php\n$counter = 0;\n$value = \"v\";\necho \"Q;\";\n$original = function (&$cell) use (&$counter) {\n    echo \"B;\";\n    ++$counter;\n    $cell .= \"!\";\n    return $cell;\n};\n$alias = $original->__invoke(...);\necho \"S:\", $alias === $original ? \"same\" : \"different\", \";\";\n$original = null;\necho \"F;\";\n$result = $alias($value);\n$alias = null;\necho \"V:\", $value, \";C:\", $counter, \";Z:\", $result, \";E;\";\n",
     "source_sha256": "0d1a5e20740946cdddc704f4e68b8e23e864728baeabdc82715b8dbbc895e160",
     "expected_model": "normal"
+  },
+  {
+    "id": "enum-generated-from-callable-selected-identity",
+    "source": "<?php\nenum ReviewFromCallableSelected: int { case Only = 5; }\nenum ReviewFromCallableRebound: int { case Other = 5; }\n$target = \"\\\\rEvIeWfRoMcAlLaBlEsElEcTeD::fRoM\";\n$fn = Closure::fromCallable($target);\n$same = Closure::fromCallable($fn);\necho $same === $fn ? \"identity|\" : \"BAD|\";\nunset($same);\n$same = Closure::fromCallable([$fn, \"__invoke\"]);\necho $same === $fn ? \"invoke-identity|\" : \"BAD|\";\nunset($same);\n$weak = WeakReference::create($fn);\n$target = ReviewFromCallableRebound::class . \"::from\";\nfunction reviewFromCallableArgument() {\n    global $fn, $target, $weak;\n    $fn = null;\n    $target = null;\n    echo $weak->get() !== null ? \"held|\" : \"BAD|\";\n    return 5;\n}\n$result = $fn(value: reviewFromCallableArgument());\necho $result === ReviewFromCallableSelected::Only ? \"selected|\" : \"BAD|\";\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\n$target = ReviewFromCallableRebound::class . \"::from\";\necho $target(5) === ReviewFromCallableRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "7ce1bd446e5234a3503b3d89661616d2fe66a1b890a4f59afbd5902ef506be9d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "identity|invoke-identity|held|selected|retired|rebound|",
+    "purpose": "Generated string conversion selects once, preserves both existing Closure identity forms and real call ownership after argument clearing, then retires the Closure."
+  },
+  {
+    "id": "enum-generated-from-callable-cases-lookup",
+    "source": "<?php\nenum DevFromCallableUnit { case First; case Second; }\nenum DevFromCallableInt: int { case One = 1; case Two = 2; }\n$cases = Closure::fromCallable(\"\\\\dEvFrOmCaLlAbLeUnIt::cAsEs\");\n$all = $cases();\necho $all[0] === DevFromCallableUnit::First && $all[1] === DevFromCallableUnit::Second ? \"cases|\" : \"BAD|\";\n$from = Closure::fromCallable([DevFromCallableInt::Two, \"fRoM\"]);\necho $from(value: \"1\") === DevFromCallableInt::One ? \"weak|\" : \"BAD|\";\n$try = Closure::fromCallable(DevFromCallableInt::class . \"::tRyFrOm\");\necho $try(value: 8) === null ? \"miss|\" : \"BAD|\";\ntry { Closure::fromCallable(\"DevFromCallableUnit::from\"); } catch (TypeError $e) { echo \"invalid|\"; }\n",
+    "source_sha256": "706010f64836c00f7b5620f1e6bb9193509cdbf2a9b854ba1b0f4cae729824e7",
+    "expected_model": "normal",
+    "expected_normal_stdout": "cases|weak|miss|invalid|",
+    "purpose": "Direct cases and tryFrom strings plus case-object from conversion preserve case order and weak lookup; receiverTwo yields One for value1, and nonexistent Unit::from is rejected."
+  },
+  {
+    "id": "enum-generated-from-callable-array-stringable",
+    "source": "<?php\nenum DevFromCallableSelected: string { case Only = \"pick\"; }\nenum DevFromCallableRebound: string { case Other = \"pick\"; }\nclass DevFromCallableArgument {\n    public function __toString(): string {\n        global $target, $fn;\n        $target = [DevFromCallableRebound::class, \"from\"];\n        $fn = null;\n        echo \"CAST|\";\n        return \"pick\";\n    }\n    public function __destruct() { echo \"DROP|\"; }\n}\n$class = DevFromCallableSelected::class;\n$method = \"from\";\n$target = [$class, $method];\n$fn = Closure::fromCallable($target);\n$weak = WeakReference::create($fn);\necho \"READY|\";\n$case = $fn(value: new DevFromCallableArgument);\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\necho $case === DevFromCallableSelected::Only ? \"selected|\" : \"BAD|\";\necho $target(\"pick\") === DevFromCallableRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "9e645460bb8db83f3861b39665a3e0a3f37167cbee60f05dd1c5934621d39a45",
+    "expected_model": "normal",
+    "expected_normal_stdout": "READY|CAST|DROP|retired|selected|rebound|",
+    "purpose": "A runtime array conversion selects the enum before a named Stringable callback replaces the source array and clears the Closure variable; temporary and Closure retirement remain ordered."
+  },
+  {
+    "id": "enum-generated-from-callable-factory-strict",
+    "source": "<?php\ndeclare(strict_types=1);\nenum DevFromCallableStrict: int { case One = 1; }\n$string = Closure::fromCallable(\"DevFromCallableStrict::fRoM\");\n$factory = Closure::fromCallable(...);\n$array = $factory([DevFromCallableStrict::class, \"tryFrom\"]);\nunset($factory);\ntry { $string(value: \"1\"); } catch (TypeError $e) { echo \"string-type|\"; }\ntry { $array(value: \"1\"); } catch (TypeError $e) { echo \"array-type|\"; }\necho $string(1) === DevFromCallableStrict::One ? \"string|\" : \"BAD|\";\necho $array(1) === DevFromCallableStrict::One ? \"array|\" : \"BAD|\";\n",
+    "source_sha256": "1fd38470a18e6f4150fa7bd46ffcc22269eae7757e618b11425681f41e651d8a",
+    "expected_model": "normal",
+    "expected_normal_stdout": "string-type|array-type|string|array|",
+    "purpose": "The existing captured fromCallable API converts a generated array target and retires independently; string and array results preserve strict errors and later valid from/tryFrom lookups."
   }
 ]
