@@ -104,6 +104,18 @@ Literal/constant-folded string capture follows a separate compiler route and
 has no new positive validation here. Wider binding/receive contexts remain partial.
 [Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
 
+Literal full-name first-class capture can take the compiler's static-method-init
+route and retain compatible This; variable-string rejection is unchanged. I96
+routes admitted non-first-class STRING call consumers through the existing API.
+A failed static binding has not copied arguments into a callee: SOURCE/FIRST/RAW
+are the real owners and receiver/SENT are borrowed preparation. On normal return
+or a handler throw, ordered jobs release newThis then raw arguments before the
+selected Closure; real pending THROW_SEARCH remains protected during destructors.
+Four current native/source controls agree; five reached fronts pass
+516 custom/541 reported checks. Wider binding, callback and receive contexts
+remain partial.
+[Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

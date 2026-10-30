@@ -626,6 +626,18 @@ zero credit. Literal/constant-folded string captures and wider receive/transfer
 contexts remain separate.
 [Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
 
+I96 follows the literal full-name compiler route: a compatible current This can
+form a private nonstatic capture even where variable-string conversion rejects
+the same method. Ordinary call dispatch then reuses the existing fake copy proof
+without widening STRING selection or scope. Static binding warnings enter no
+Generator and own SOURCE/FIRST/RAW once; prepared receiver/SENT borrow those
+arguments. Existing release jobs retire newThis, raw arguments and source on
+normal return or a warning-handler throw, preserving the real pending exception.
+Four current native/source controls agree; five reached fronts pass
+516 custom/541 reported checks. Variable-string rejection, wider binding/receive
+contexts and actual-tail integration retain their own limits.
+[Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

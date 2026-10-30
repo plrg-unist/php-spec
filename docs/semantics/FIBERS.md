@@ -1201,6 +1201,15 @@ Three current native/source controls agree at distinct cuts; four reached fronts
 pass 609 custom/629 reported checks. Wider source, binding and abrupt receive contexts remain partial.
 [Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
 
+I96 literal private captures reuse the existing copied-method Gen/resumer proof.
+Native fresh-THROW abort releases the unyielded Token at close, retains the copied
+This through CLOSED, and keeps original-Throwable/Previous priority distinct from
+warm input handling. Static binding failure enters no Gen or Fiber transfer;
+its API owners and ordered normal/abrupt cleanup remain separate. Four current
+native/source controls agree; five reached fronts pass 516 custom/541 reported
+checks. Wider source and transfer contexts remain partial.
+[Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

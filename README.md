@@ -6727,6 +6727,15 @@ ambiguity keep zero credit; folded literal captures and wider contexts remain
 separate.
 [Bound-source review](coverage/semantics/generator-fake-string-call-review.json).
 
+I96 distinguishes literal compiler-routed private captures from variable-string
+conversion. Admitted STRING Closure calls use the existing call handler; a static
+binding warning keeps its selected Closure and API arguments alive until ordered
+newThis/argument/source cleanup, including a supplied handler throw. Four current
+native/source controls agree; five reached fronts pass 516 custom/541 reported
+checks. Original message forecast, dispatch and lifetime failures keep zero
+credit; broader contexts and integration remain partial.
+[Folded-call review](coverage/semantics/generator-folded-string-call-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
