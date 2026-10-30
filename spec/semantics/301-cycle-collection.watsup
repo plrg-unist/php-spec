@@ -416,7 +416,7 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if pgccall.CALLER = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
-  -- if S.OBJECTS[n] = REALCLOSURE porigin eps eps
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
   -- if $node_children(S, HOBJECT n) = eps
   -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
