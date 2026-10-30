@@ -171,7 +171,7 @@ pgenerator.PHASE = GENERATOR_FRESH
 pgenerator.CLOSURE = (n_copy)
 pgenerator.VALUE = eps
 pgenerator.REFCELL = eps
-pgenerator.FIRST
+~pgenerator.FIRST
 pgenerator.FRAME = (pframe_generator)
 pframe_generator.CONTEXT = (pcallcontext)
 pframe_generator.LOCALS = (psymboltable_generator)
