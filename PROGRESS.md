@@ -239,8 +239,8 @@ residual tags, workers, hooks, reentry and active contexts remained partial.
 
 CLASS157 admits public zero-argument anonymous `__toString` through ordinary
 implicit Stringable linking and conversion. Raw-header names/counters remain
-stable through deferred publication; saved receivers survive rebinding and retire
-before emission. Nine originals agree (seven normal, two static rejections), and
+stable through deferred publication; saved conversion owners release before
+emission, destroying the receiver when no other owner remains. Nine originals agree (seven normal, two static rejections), and
 285 conditions pass (278 reached, seven controls). Return, never-kind and compile
 diagnostics retain their distinct formats. Three changed private strict433 cuts,
 native6+2+1, old2 and source/state cuts stay separate; the never-kind mismatch

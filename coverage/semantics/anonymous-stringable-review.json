@@ -12,7 +12,7 @@
     "Zend/zend_compile.c::zend_generate_anon_class_name reads the raw extends/implements AST and increments once before method compilation adds implicit Stringable; interface dependencies suppress early binding.",
     "Zend/zend_API.c::zend_check_magic_method_return_type formats separate class and original method-name segments.141 retains ordinary implicit-string/never validity and rejection.",
     "Zend/zend_execute.c::zend_verify_return_error formats lexical class/member separately; zend_verify_never_error uses one full callable C string and chooses method from the real function scope.",
-    "Ordinary168/270 conversion and release keep a selected receiver through rebinding, then destroy it before emitting its returned bytes."
+    "Ordinary168/270 conversion and release keep a selected receiver through rebinding. The conversion owner releases before emission; a last-owner release destroys the receiver then."
   ],
   "design": "383 admits the method and validates effective interfaces in both parentless and dependent descriptors, retaining raw-header prefix and one anonymous counter step.141 changes only the exposed invalid-annotation display.95/142 authenticate current selected method/descriptor owner for ordinary return display and kind, with separate whole-name never handling and existing non-method/Closure fallbacks. Frozen183 source-entry seeds and ordinary binder/ownership rules remain unchanged; no schema, machine or manifest addition.",
   "native_groups": [
