@@ -40,6 +40,8 @@ def main():
                ROOT / 'spec/semantics/39-ownership.watsup',
                ROOT / 'spec/semantics/231-shutdown-functions.watsup',
                ROOT / 'spec/semantics/393-ticks.watsup',
+               ROOT / 'spec/semantics/277-autoload.watsup',
+               ROOT / 'spec/semantics/395-output-handlers.watsup',
                ROOT / 'spec/semantics/79-call-frames.watsup',
                ROOT / 'spec/semantics/80-call-control.watsup',
                ROOT / 'spec/semantics/83-call-traces.watsup',
