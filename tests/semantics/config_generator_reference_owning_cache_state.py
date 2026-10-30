@@ -65,6 +65,7 @@ def conditions(name, program, path, stdout):
         'pgenerator_value.VALUE = eps',
         'pgenerator_value.KEY = (PINT 1)',
         'pgenerator_value.REFCELL = (n_payloadref)',
+        'n_payloadref =/= n_optionref',
         '$ordinary_reference_value(S_value,n_payloadref) = (POBJECT n_payload)',
         '$config_generator_value(S_value,pconfiggenerator_first) = (POBJECT n_payload)',
         '$config_iterator_argument(S_value,POBJECT n_payload)',
