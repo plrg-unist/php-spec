@@ -92,7 +92,7 @@ def conditions(name, program, source, expected_stdout):
             '$nodiscard_frame_valid(S_first, pframe_first)',
         ]
     checks += [
-        '$object_body(S_first.OBJECTS[n_closure]) = REALCLOSURE porigin_function [DIRECT (PINT 7)] eps',
+        '$object_body(S_first.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([DIRECT (PINT 7)]) eps',
         '$target_function(S_first, CLOSURE_TARGET n_closure) = (pfunction)',
         'pfunction.NAME = $ptascii("{closure:Origin::make():7}")',
         'pfunction.LINE = 7',
@@ -112,7 +112,7 @@ def conditions(name, program, source, expected_stdout):
         '$error_call_valid(S_second, perrorcall_second)',
         '$heap_owners($heap_prune($heap_graph(S_second)), HOBJECT n_closure) = 1',
         '$heap_owners($heap_prune($heap_graph(S_second)), HOBJECT n_receiver) = 1',
-        '$object_body(S_second.OBJECTS[n_closure]) = REALCLOSURE porigin_function [DIRECT (PINT 7)] eps',
+        '$object_body(S_second.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([DIRECT (PINT 7)]) eps',
         '$lookup(S_second.ENV, $ptascii("closure")) = (n_outside)',
         'S_second.STORE[n_outside] = DEFINED (POBJECT n_replacement)',
         'n_replacement =/= n_closure',

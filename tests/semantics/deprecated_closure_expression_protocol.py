@@ -103,7 +103,7 @@ def conditions(name, program, source, expected_stdout):
         reach('S_deprecated', 'S_initial', 0)
         parked('S_deprecated', 16384)
         checks += [
-            '$object_body(S_deprecated.OBJECTS[n_closure]) = REALCLOSURE porigin_function [ALIAS n_cell] eps',
+            '$object_body(S_deprecated.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([ALIAS n_cell]) eps',
             '$target_function(S_deprecated, CLOSURE_TARGET n_closure) = (pfunction)',
             'pfunction.LINE = 8',
             f'pfunction.NAME = $ptascii("{{closure:") ++ $base64("{encoded_path}") ++ $ptascii(":8}}")',
@@ -118,7 +118,7 @@ def conditions(name, program, source, expected_stdout):
         parked('S_nodiscard', 512)
         checks += [
             'pframe_S_nodiscard.CONTEXT = pframe_S_deprecated.CONTEXT',
-            '$object_body(S_nodiscard.OBJECTS[n_closure]) = REALCLOSURE porigin_function [ALIAS n_cell] eps',
+            '$object_body(S_nodiscard.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([ALIAS n_cell]) eps',
             'S_nodiscard.STORE[n_cell] = DEFINED (PINT 4)',
             '$heap_owners($heap_prune($heap_graph(S_nodiscard)), HOBJECT n_closure) = 1',
             '$heap_owners($heap_prune($heap_graph(S_nodiscard)), HCELL n_cell) = 2',
@@ -142,7 +142,7 @@ def conditions(name, program, source, expected_stdout):
         reach('S_first_warning', 'S_initial', 0)
         parked('S_first_warning', 16384)
         checks += [
-            '$object_body(S_first_warning.OBJECTS[n_closure]) = REALCLOSURE porigin_function [DIRECT (PINT 3)] eps',
+            '$object_body(S_first_warning.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([DIRECT (PINT 3)]) eps',
             '$target_function(S_first_warning, CLOSURE_TARGET n_closure) = (pfunction)',
             'pfunction.LINE = 7',
             f'pfunction.NAME = $ptascii("{{closure:") ++ $base64("{encoded_path}") ++ $ptascii(":7}}")',
@@ -166,7 +166,7 @@ def conditions(name, program, source, expected_stdout):
         reach('S_second_warning', 'S_first_body', 0)
         parked('S_second_warning', 16384)
         checks += [
-            '$object_body(S_second_warning.OBJECTS[n_closure]) = REALCLOSURE porigin_function [DIRECT (PINT 3)] eps',
+            '$object_body(S_second_warning.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([DIRECT (PINT 3)]) eps',
             '$ce_review_output(S_second_warning.EVENTS) = $ptascii("D:1:1:1;B:1;U:1;")',
         ]
         reach('S_nodiscard', 'S_second_warning', 1)
@@ -178,7 +178,7 @@ def conditions(name, program, source, expected_stdout):
         checks += [
             'S_body.CURRENT = (pcallcontext_body)',
             'pcallcontext_body.TARGET = CLOSURE_TARGET n_closure',
-            '$object_body(S_body.OBJECTS[n_closure]) = REALCLOSURE porigin_function [DIRECT (PINT 3)] eps',
+            '$object_body(S_body.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([DIRECT (PINT 3)]) eps',
             '$ce_review_output(S_body.EVENTS) = $ptascii("D:1:1:1;B:1;U:1;D:1:1:1;N:1:1:1;")',
         ]
         last = 'S_body'
@@ -193,7 +193,7 @@ def conditions(name, program, source, expected_stdout):
             'S_warning.CURRENT = eps', 'S_warning.FRAMES = eps',
             '$error_call_valid(S_warning, perrorcall_warning)',
             '$api_cursor_valid(S_warning, papiargcursor)',
-            '$object_body(S_warning.OBJECTS[n_closure]) = REALCLOSURE porigin_function [ALIAS n_phase] eps',
+            '$object_body(S_warning.OBJECTS[n_closure]) = REALCLOSURE porigin_function ([ALIAS n_phase]) eps',
             'S_warning.STORE[n_phase] = DEFINED (PINT 1)',
             '$target_function(S_warning, CLOSURE_TARGET n_closure) = (pfunction)',
             'pfunction.NAME = $ptascii("{closure:ApiOwner::make():6}")', 'pfunction.LINE = 6',
