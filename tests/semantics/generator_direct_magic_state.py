@@ -169,8 +169,8 @@ $generator_creation_scope_valid(S, pgeneratorcreation)
 $generator_creation_record_valid(S, pgenerator)
 pgeneratorcreation_bad_scope = pgeneratorcreation[.CREATOR = pgeneratorcreation.CREATOR[.CALLED_CLASS = (porigin_base)]]
 ~$generator_creation_scope_valid(S, pgeneratorcreation_bad_scope)
-pmagicstatic_bad_class = pmagicstaticmethodcall[.CLASS = porigin_base]
-pcalltarget_bad_class = MAGIC_STATIC_METHOD_TARGET pmagicstatic_bad_class n_arguments ([POBJECT n_payload])
+pmagicstaticmethodcall_bad_class = pmagicstaticmethodcall[.CLASS = porigin_base]
+pcalltarget_bad_class = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall_bad_class n_arguments ([POBJECT n_payload])
 pgeneratorcreation_bad_class = pgeneratorcreation[.CALLEE = pcalltarget_bad_class][.CREATOR_TARGET = pcalltarget_bad_class][.CREATOR = pgeneratorcreation.CREATOR[.CALLED_CLASS = (porigin_base)]]
 ~$generator_creation_scope_valid(S, pgeneratorcreation_bad_class)
 n_unbounded_array = |S.ARRAYS|
