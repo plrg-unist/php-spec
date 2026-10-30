@@ -1,0 +1,24 @@
+[
+  {
+    "id": "i96-folded-private-string-call-value-send",
+    "purpose": "Literal full-name compiler-routed private nonstatic capture on Child freezes Base selection; call-copy on exact Base retains This/value cache through SEND and CLOSED.",
+    "source": "<?php\nclass Token96A { function __destruct() { echo 'TOKEN|'; } }\nclass Base96A {\n    public $label;\n    function __construct($label) { $this->label = $label; }\n    function capture() { return ('Base96A::stream')(...); }\n    private function stream($token) {\n        global $weakToken, $weakSource, $weakOld, $weakMaker;\n        echo 'BODY|', self::tag() === 96, '|', static::class === 'Base96A', '|', $this === $weakMaker->get(), '|', $weakSource->get() === null, '|', $weakOld->get() === null, '|';\n        try { yield $token; unset($token); Fiber::suspend('fake96A'); echo 'RESUMED|'; return 96; }\n        finally { echo 'FIN|', $weakToken->get() instanceof Token96A, '|', $weakMaker->get() instanceof Base96A, '|'; }\n    }\n    private static function tag() { return 96; }\n    function __destruct() { echo $this->label, '|'; }\n}\nclass Child96A extends Base96A { public function stream($token) { echo 'BAD-CHILD|'; yield $token; } }\nfunction Run96A() { global $g; echo 'SEND|'; $g->send(null); echo 'RETURNED|'; }\n$old = new Child96A('OLD'); $weakOld = WeakReference::create($old);\n$source = $old->capture(); $weakSource = WeakReference::create($source);\n$maker = new Base96A('MAKER'); $weakMaker = WeakReference::create($maker);\n$token = new Token96A(); $weakToken = WeakReference::create($token);\necho 'CALL|'; $g = $source->call($maker, $token);\nunset($source, $old, $maker, $token);\necho 'FRESH|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() instanceof Base96A, '|', $weakToken->get() instanceof Token96A, '|';\necho 'PRIME|'; $g->current();\n$fiber = new Fiber('Run96A'); echo 'START|'; $mark = $fiber->start();\necho 'PARK|', $mark === 'fake96A', '|', $g->current() === $weakToken->get(), '|', $weakMaker->get() instanceof Base96A, '|';\necho 'RESUME|'; $fiber->resume();\necho 'DONE|', $fiber->isTerminated(), '|', $g->getReturn() === 96, '|', $weakMaker->get() instanceof Base96A, '|', $weakToken->get() instanceof Token96A, '|';\nunset($g, $fiber); echo 'DROP|', $weakMaker->get() === null, '|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "9ff69e0e88cd14afd9f1041d5809f48b16a13bfb50b8d9793cf088002e4b7f5f",
+    "native_exit": 0,
+    "native_stdout": "CALL|OLD|FRESH|1|1|1|1|PRIME|BODY|1|1|1|1|1|START|SEND|PARK|1|1|1|RESUME|RESUMED|FIN|1|1|RETURNED|DONE|1|1|1|1|MAKER|TOKEN|DROP|1|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  },
+  {
+    "id": "i96-dynamic-static-string-call-binding-warning",
+    "purpose": "Dynamic static STRING capture rejects a bound receiver before Gen entry; handler clears source root, API holds source/arguments and frees newThis then token before selected Closure.",
+    "source": "<?php\nclass Token96B {\n    function __destruct() { global $weakSource; echo 'TOKEN|', $weakSource->get() instanceof Closure, '|'; }\n}\nclass Base96B {\n    static function stream($token) { echo 'BAD-BODY|'; yield $token; }\n    function __destruct() { global $weakSource; echo 'MAKER|', $weakSource->get() instanceof Closure, '|'; }\n}\nfunction NewMaker96B() { global $weakMaker; $maker = new Base96B(); $weakMaker = WeakReference::create($maker); return $maker; }\nfunction NewToken96B() { global $weakToken; $token = new Token96B(); $weakToken = WeakReference::create($token); return $token; }\nfunction Warn96B($severity, $message) {\n    global $source, $weakSource, $weakMaker, $weakToken;\n    echo 'WARN|', $severity === 2, '|', $message === 'Cannot bind an instance to a static closure', '|', $weakSource->get() instanceof Closure, '|', $weakMaker->get() instanceof Base96B, '|', $weakToken->get() instanceof Token96B, '|';\n    $source = null;\n    echo 'HELD|', $weakSource->get() instanceof Closure, '|'; return true;\n}\n$route = 'Base96B::stream'; $source = $route(...); $weakSource = WeakReference::create($source); unset($route);\nset_error_handler('Warn96B'); echo 'CALL|'; $result = $source->call(NewMaker96B(), NewToken96B()); restore_error_handler();\necho 'AFTER|', $result === null, '|', $weakSource->get() === null, '|', $weakMaker->get() === null, '|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "75a71356f44cfe6d86eb3db03219f6bbdd4017a8cb907530d5c2da7837083435",
+    "native_exit": 0,
+    "native_stdout": "CALL|WARN|1|1|1|1|1|HELD|1|MAKER|1|TOKEN|1|AFTER|1|1|1|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
