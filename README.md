@@ -6696,6 +6696,16 @@ source5/private433 retain distinct cuts; six reached fronts pass 744 custom/774
 reported checks. Receive-error retention, reference parameters, computed/packed
 calls and wider contexts remain partial; actual-tail integration is pending.
 [Call-copy review](coverage/semantics/generator-call-copy-review.json).
+
+I93 copies an admitted real Generator Closure before reference-formal warnings.
+The API freezes top-level values and wraps fresh formal cells after callbacks;
+isolated versus shared static cells follow existing clone ownership. A used
+Generator result stays owned through API/source finalizers, while warning traces
+show the internal handler and real call frame. Native5/source5/private433 retain
+distinct cuts; six reached fronts pass 625 custom/655 reported checks.
+Receive/mapping errors,
+callback throws and wider call contexts remain partial.
+[Reference-call review](coverage/semantics/generator-call-reference-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
