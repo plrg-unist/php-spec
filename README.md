@@ -6716,6 +6716,17 @@ five reached fronts pass 633 custom/658 reported checks. Wider binding/call form
 receive errors remain partial.
 [Fake-copy review](coverage/semantics/generator-fake-call-copy-review.json).
 
+I95 separates variable/dynamic string conversion from the callable API: a
+nonstatic conversion fails before later call arguments, while fromCallable(string)
+can carry compatible This into a finite bound-source chain. Live Closure lookup
+and consumed Generator history now use disjoint proofs; method statics and real
+owners stay unchanged. Three current native/source controls agree at distinct
+cuts; four reached fronts pass 609 custom/629 reported checks. The original
+failed forecast and storage
+ambiguity keep zero credit; folded literal captures and wider contexts remain
+separate.
+[Bound-source review](coverage/semantics/generator-fake-string-call-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

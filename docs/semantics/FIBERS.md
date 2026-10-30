@@ -1193,6 +1193,14 @@ Native4/source4/private433 retain distinct cuts; five reached fronts pass
 Wider producer and abrupt receive contexts remain partial.
 [Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
 
+I95 carries the private fromCallable(string) selection through a bound source and
+the actual Gen call copy. Original and intermediate callables/receivers retire;
+the copied This, cached reference and warm THROW input retain their own owners.
+Live lookup and consumed storage history have disjoint validation paths.
+Three current native/source controls agree at distinct cuts; four reached fronts
+pass 609 custom/629 reported checks. Wider source, binding and abrupt receive contexts remain partial.
+[Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

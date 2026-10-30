@@ -93,6 +93,17 @@ five reached fronts pass 633 custom/658 reported checks. Other receiver/binding/
 abrupt receive paths remain partial.
 [Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
 
+Variable/dynamic string first-class conversion rejects a nonstatic method before
+evaluating later Closure::call arguments. The caller-aware fromCallable(string)
+API can instead retain compatible This and authentic private selection; this is
+a FROMCALLABLE source, not a STRING capture. I95 validates finite bound-source
+chains and makes consumed Gen history a fallback to unavailable live lookup.
+Three current native/source controls agree; four reached fronts pass
+609 custom/629 reported checks.
+Literal/constant-folded string capture follows a separate compiler route and
+has no new positive validation here. Wider binding/receive contexts remain partial.
+[Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

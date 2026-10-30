@@ -717,6 +717,9 @@ test-semantics: build
 	python3 tests/semantics/generator_fake_call_copy_sources.py
 	python3 tests/semantics/generator_fake_call_copy_state.py
 	python3 tests/semantics/generator_fake_call_copy_review_state.py
+	python3 tests/semantics/generator_fake_string_call_sources.py
+	python3 tests/semantics/generator_fake_string_call_state.py
+	python3 tests/semantics/generator_fake_string_call_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

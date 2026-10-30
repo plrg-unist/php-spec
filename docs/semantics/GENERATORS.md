@@ -613,6 +613,19 @@ Computed/packed calls, other binding/receiver forms and abrupt receive paths
 remain partial.
 [Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
 
+I95 keeps live function lookup separate from consumed method-Closure history in
+both storage and Closure validity. A globally retained bound source can remain
+callable after one Gen consumes its own reference; the historical fallback is
+used only when that lookup is unavailable. Genuine METHOD and API string sources
+pass through finite bound-fake chains with shared method statics, retired original
+receivers and actual copied This. Variable/dynamic string first-class conversion
+rejects nonstatic methods before later call arguments; fromCallable(string) uses
+the caller-aware API route. Three current native/source controls agree; four reached fronts pass
+609 custom/629 reported checks. The wrong original forecast and storage ambiguity keep
+zero credit. Literal/constant-folded string captures and wider receive/transfer
+contexts remain separate.
+[Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

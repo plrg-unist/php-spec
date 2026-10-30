@@ -35,15 +35,16 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
-I94 adds fake user-method Generator Closure::call copies with exact declaring-class
-receivers and authentic retired source selection. Method statics stay shared;
-existing API/reference/result tasks preserve the copy and receiver through CLOSED
-and release the copy before the cache. Four native/source originals and private433 pass at distinct cuts; five reached
-fronts pass 633 custom/658 reported checks.
-Original Unsupported, ARRAY dispatch and fixture prefix failures keep zero
-credit. Wider call/receiver and abrupt receive contexts remain partial;
-actual-tail integration is pending.
-[I94 review](coverage/semantics/generator-fake-call-copy-review.json).
+I95 separates variable/dynamic string conversion from caller-aware API conversion
+and validates finite bound-fake Gen call-source chains. Live function lookup now
+excludes the consumed-history fallback in both storage and Closure validity,
+preserving existing statics and owners. Three current native/source controls
+agree at distinct cuts; four reached fronts pass 609 custom/629 reported checks.
+The wrong native forecast, storage ambiguity and two original fixture failures
+retain zero credit; its rejected positive peer stays withdrawn/unrun. Literal-folded capture, wider contexts and actual-tail
+integration remain pending.
+[I95 review](coverage/semantics/generator-fake-string-call-review.json).
+[I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I93](coverage/semantics/generator-call-reference-review.json),
 [I92](coverage/semantics/generator-call-copy-review.json),
 [I91](coverage/semantics/generator-string-method-closure-review.json),
@@ -340,7 +341,7 @@ cut keep zero credit.
 | I92 | Reviewed private real Generator Closure::call copies: native5/source5/private433 and six fronts 744 custom/774 reported pass at distinct cuts. Original Unsupported/two fixture failures0 and native-only receive-error retention0 retained; actual-tail pending. |
 | I93 | Real Generator Closure::call reference-formal timing: Reviewed private native5/source5/private433 and six reached fronts 625 custom/655 reported pass at distinct cuts. Early copy/ref forwarding, warning traces and used-result holder validated; original Unsupported/php_error/diagnostic/fixture0 retained, actual-tail pending. |
 | I94 | Fake user-method Generator Closure::call copies: native4/source4/private433 and five reached fronts 633 custom/658 reported pass at distinct cuts. Exact-class binding/shared method statics/retired selection; original Unsupported/dispatch/prefix failures0 retained, actual-tail pending. |
-| I95 | Native-first nonstatic dynamic-string rejection and bound-fake Generator call chains. Current native3 observed: conversion Error/skip-args, BF shared-static chain and API fromCallable-string/BF warm THROW. Original direct-STRING positive forecast0 and withdrawn unrun peer kept separately; model/state unrun. |
+| I95 | Variable/dynamic string rejection and finite bound-fake Gen call sources: current native3/source3 and four reached fronts 609 custom/629 reported pass at distinct cuts. Shared history fallback disjoint from live lookup; wrong native forecast/storage/two fixture failures0 and withdrawn unrun peer preserved, actual-tail pending. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
