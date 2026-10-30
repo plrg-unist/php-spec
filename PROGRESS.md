@@ -237,6 +237,15 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
+CLASS156 admits public zero-argument anonymous destructors through the ordinary
+method compiler and lifecycle. Alias and temporary release, eval callbacks,
+reverse global cleanup, escaped failed constructors and pending-exception
+replacement have five exact source agreements. Two reached groups pass 240
+conditions (228 reached, 12 derived across six controls); private strict433 passes.
+Native5/old2, source and state cuts stay distinct. Nonpublic/reference-return/
+attributed destructors, other magic methods and wider lifecycle contexts remain
+partial. [Destructor review](coverage/semantics/anonymous-destructors-review.json).
+
 CLASS155 admits anonymous array argument unpack through the ordinary
 source classifier, array prescan/COW and binder. Embedded aliases stay shared;
 direct slots promote only in the live table. Direct elements of value inputs use
@@ -247,8 +256,8 @@ and 242 conditions pass (235 reached, seven derived guards), with private strict
 and actual-tail joined strict433 at separate cuts.
 The original native5/old2 and separate literal/no-ctor natives retain their cuts;
 projection has no agreement credit.
-Traversable constructors, promotion/nonpublic modes and anonymous magic methods,
-especially direct `__destruct`, remain required class work.
+Traversable constructors, promotion/nonpublic modes and other anonymous magic
+methods remain required class work.
 [Array-unpack review](coverage/semantics/anonymous-constructor-unpack-review.json).
 The prior [variadic review](coverage/semantics/anonymous-constructor-variadic-review.json)
 retains CLASS154 source6/state270, its excluded COUNT observer and failed fixture.
@@ -349,7 +358,7 @@ cut keep zero credit.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS156 | Public anonymous destructor sources5/private433 pass; two reached fixtures prepared, native5/old2 retain their cuts. |
+| CLASS156 | Public anonymous destructor source5/state240/private433 pass; concise package under review, actual-tail integration pending. |
 | GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
@@ -377,8 +386,8 @@ for private changes. Integrated work is indexed by the current family docs,
   ArrayAccess/Iterator interactions, COW, released targets and callback lifetimes.
 - Complete remaining class/static/trait/enum/attribute/hook/readonly contexts and
   wider magic/property/callable producers, including reentry and typed aliases.
-  After array constructor unpack, anonymous magic methods (especially direct
-  `__destruct`) remain substantive class work; Traversable constructor producers,
+  Beyond public destructors, anonymous magic methods and wider destructor forms
+  remain substantive class work; Traversable constructor producers,
   promotion/nonpublic modes and wider factories also remain required.
 - Complete wider Generator/Fiber suspension, delegation, destructor reentry,
   physical collection, weak-reference/WeakMap, output/shutdown/tick and other

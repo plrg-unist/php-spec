@@ -4546,6 +4546,10 @@ Anonymous array argument unpack now shares ordinary COW/reference acquisition,
 named mapping and default reception; constructorless classes evaluate and ignore
 expanded positional values.
 [Array-unpack review](coverage/semantics/anonymous-constructor-unpack-review.json).
+Public zero-argument anonymous destructors now use ordinary last-owner and
+request-end cleanup, including eval-defined classes, failed-constructor
+suppression and replacement exceptions during unwind. Explicit calls remain
+ordinary method calls. [Destructor review](coverage/semantics/anonymous-destructors-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain

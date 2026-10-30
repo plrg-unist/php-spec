@@ -314,10 +314,17 @@ Argument TypeErrors, missing named fixed arguments and nonreferenceable-send
 Errors format the whole callable name as one C string. Ordinary too-few-argument
 errors format the lexical declaring class and member separately.
 Stored class names and `::class` values keep their complete bytes.
-Non-constructor anonymous magic methods, including direct `__destruct`, remain
-excluded by member admission and require their ordinary dispatch/lifetime rules.
-They are substantive remaining class behavior; constructor Traversable producers,
-promotion/nonpublic forms and wider factories are also open.
+Public zero-argument anonymous `__destruct` methods with no return annotation or
+reference return now use the ordinary method compiler and destructor lifecycle.
+Last-owner release and reverse global cleanup retain real receivers and callers;
+successful eval classes use their installed unit descriptors. Failed constructors
+suppress later automatic destruction even when `$this` escapes, while explicit
+calls remain ordinary methods. A destructor throwing during unwind chains the
+saved exception as Previous. The [destructor review](../../coverage/semantics/anonymous-destructors-review.json)
+records five agreements and 240 conditions (228 reached, 12 derived across six controls).
+Nonpublic/reference-return/attributed destructors and other anonymous magic
+methods remain open, alongside constructor Traversable producers,
+promotion/nonpublic forms and wider factories/lifetimes.
 
 Unit0 anonymous classes may now extend an ordinary named class through the
 ordinary class-reference forms. Parent declarations follow the normal compiler/linker,
