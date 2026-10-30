@@ -73,5 +73,5 @@ owners, including equal object IDs. Entered method callbacks borrow This; Closur
 calls retain their separate instance owner. Quiet cache owners survive the
 callback loop, early destructor pass and output FINAL. Late registry-free/output
 policy remains partial. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
-records five normal agreements,296 reached/guard checks and private strict 432;
+records five normal agreements, 296 reached/guard checks and private strict 432;
 its tick-specific identity and inline release rules are described in [Ticks](TICKS.md).

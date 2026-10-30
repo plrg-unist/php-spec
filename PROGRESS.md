@@ -218,7 +218,7 @@ constraint, and existing property-reference sources remain authoritative. Missin
 CVs, fresh omitted scalar defaults, VAR reference notices and invalid-TMP priority
 keep their ordinary rules.
 Six exact normal sources and 217 conditions pass (211 reached, six derived guards),
-with private strict431 and actual-tail joined strict 432 at separate cuts. Three
+with private strict431 and actual-tail joined strict432 at separate cuts. Three
 fixture-only failures retain zero credit. Variadic/promotion/unpack/nonpublic and wider source/value/
 callback contexts remain partial. [Reference-constructor review](coverage/semantics/anonymous-constructor-reference-review.json).
 The prior [finite-arity review](coverage/semantics/anonymous-constructor-arity-review.json)
