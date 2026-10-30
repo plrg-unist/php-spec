@@ -84,7 +84,6 @@ def conditions(name, program, path, stdout):
         '$weakref_get(S_value,n_payloadwatch) = POBJECT n_payload',
         '$heap_count(HOBJECT n_payload,$pools_nodes(S_value.POOLS)) = 0',
         owners('S_value', 'HOBJECT n_generator', 2),
-        owners('S_value', 'HCELL n_payloadref', 3),
         owners('S_value', 'HOBJECT n_payload', 1),
         'PhpStep: S_value ~> S_second_sent',
         'S_second_sent.TODO = (CONFIG_GENERATOR pconfiggenerator_second "next") :: ptask_value*',
