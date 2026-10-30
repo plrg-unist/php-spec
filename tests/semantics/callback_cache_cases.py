@@ -127,6 +127,10 @@ EXPECTED_STDOUT = {
     'shutdown-bound-closure-cache-and-captured-final-observers': b'P:1:1;B:1:1:1;S:1:1;F:1:1:1;',
 }
 EXIT_CODES = {name: 0 for name in CASES}
+BOUNDARIES = {
+    'tick-closure-invoke-array-caches-outer-closure-only': (
+        'error-handler class, autoload or internal method lookup', b''),
+}
 
 
 def expected_stderr(name, path):

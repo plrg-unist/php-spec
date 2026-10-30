@@ -9,7 +9,10 @@ from pathlib import Path
 import subprocess
 
 from error_handler_run import ENV, recorded
-from deprecated_closure_invoke_review_cases import BOUNDARIES
+from deprecated_closure_invoke_review_cases import BOUNDARIES as INVOKE_BOUNDARIES
+from callback_cache_cases import BOUNDARIES as CACHE_BOUNDARIES
+
+BOUNDARIES = {**INVOKE_BOUNDARIES, **CACHE_BOUNDARIES}
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -35,6 +38,7 @@ def main():
     php_sha256 = digest(php)
     watched = [Path(__file__), ROOT / 'tests/semantics/error_handler_run.py',
                ROOT / 'tests/semantics/deprecated_closure_invoke_review_cases.py',
+               ROOT / 'tests/semantics/callback_cache_cases.py',
                ROOT / 'tests/semantics/profile.json', ROOT / 'spec/semantics/modules.json',
                ROOT / 'spec/semantics/30-storage.watsup',
                ROOT / 'spec/semantics/39-ownership.watsup',
