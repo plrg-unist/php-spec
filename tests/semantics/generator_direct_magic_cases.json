@@ -9,10 +9,10 @@
     "native_stderr": ""
   },
   {
-    "id": "i85-direct-magic-static-payload-return",
-    "purpose": "Inherited direct __callStatic retains its real packed object until natural completion, then closes with payload dead and return86.",
-    "source": "<?php\nclass Payload85B { public function __destruct() { echo 'ARG|'; } }\nfunction NewPayload85B() {\n    global $weakPayload;\n    $payload = new Payload85B();\n    $weakPayload = WeakReference::create($payload);\n    return $payload;\n}\nclass Base85B {\n    public static function __callStatic(string $name, array $arguments) {\n        global $weakPayload;\n        echo 'BODY|', $name === 'open', '|', count($arguments) === 1, '|',\n             $arguments[0] === $weakPayload->get(), '|',\n             __CLASS__ === 'Base85B', '|', static::class === 'Child85B', '|';\n        try { yield 85; return 86; }\n        finally { echo 'FIN|', $weakPayload->get() !== null, '|'; }\n    }\n}\nclass Child85B extends Base85B {}\necho 'OPEN|';\n$g = Child85B::open(NewPayload85B());\necho 'FRESH|', $weakPayload->get() !== null, '|';\necho 'VALUE|', $g->current() === 85, '|';\n$g->next();\necho 'AFTER|', $weakPayload->get() === null, '|RETURN|', $g->getReturn() === 86, '|';\nunset($g, $weakPayload);\necho 'E';\n",
-    "source_sha256": "5db51a66a8cc7e96f81a5e52f9201cac0151b5d30046be0f0208a89594326c91",
+    "id": "i85-direct-magic-static-payload-return-observed",
+    "purpose": "Direct inherited __callStatic compares the whole packed array with its weakly observed payload, preserving cardinality and identity without the separate unimplemented COUNT intrinsic; payload retires on natural completion before closed Gen return86.",
+    "source": "<?php\nclass Payload85B { public function __destruct() { echo 'ARG|'; } }\nfunction NewPayload85B() {\n    global $weakPayload;\n    $payload = new Payload85B();\n    $weakPayload = WeakReference::create($payload);\n    return $payload;\n}\nclass Base85B {\n    public static function __callStatic(string $name, array $arguments) {\n        global $weakPayload;\n        echo 'BODY|', $name === 'open', '|', $arguments === [$weakPayload->get()], '|',\n             $arguments[0] === $weakPayload->get(), '|',\n             __CLASS__ === 'Base85B', '|', static::class === 'Child85B', '|';\n        try { yield 85; return 86; }\n        finally { echo 'FIN|', $weakPayload->get() !== null, '|'; }\n    }\n}\nclass Child85B extends Base85B {}\necho 'OPEN|';\n$g = Child85B::open(NewPayload85B());\necho 'FRESH|', $weakPayload->get() !== null, '|';\necho 'VALUE|', $g->current() === 85, '|';\n$g->next();\necho 'AFTER|', $weakPayload->get() === null, '|RETURN|', $g->getReturn() === 86, '|';\nunset($g, $weakPayload);\necho 'E';\n",
+    "source_sha256": "1e7e42ecf5e78022339f024d5c9222ae0a7e5746fe62a4664052041445a3c5d3",
     "native_exit": 0,
     "native_stdout": "OPEN|FRESH|1|VALUE|BODY|1|1|1|1|1|1|FIN|1|ARG|AFTER|1|RETURN|1|E",
     "native_stderr": ""
