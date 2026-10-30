@@ -1,0 +1,107 @@
+{
+  "milestone": "A85 temporary direct-call BYREF Generator with a final owning ordinary cell",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...directNamedByrefGenerator()) with a genuine zero-argument BYREF Generator and temporary INPUT/DATA owners",
+    "behavior": "A scalar first send precedes a finite quiet owning object or array copied from the final local ordinary reference cell. DATA2 then INPUT1 release retires the Generator through real storage while TypeError TraceArgs keeps the copied argument; quiet terminal throw retires Generator, cell and payload before saved catch.",
+    "limits": "The final key normalizes to integer and the local cell is sole-owned by the Generator at CLOSED storage. Typed/backed cells, outside cell aliases, effectful finalizers and broader producer or ITEM histories remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "d1d6eab7f22fe97a4d4cac1ad63abc0478576356",
+    "source_freeze": "866b2d38531c1031cc7d1bb0b6133e88319e0183",
+    "runtime_revision": "0bdbaa9cb8e706878bbe5ec3cc0275c0198ecc39",
+    "validated_revision": "d968dc764c3d6b312d281374f98160d9e8819d0d",
+    "change": "Bounded structural temporary-reference owning ITEM receipt, live ordinary sole-cell storage gate, second owning send, and DATA/INPUT/retired-invoke cleanup admission in 423. Scalar temporary, direct-CV and BYVAL factory routes retain their prior guards.",
+    "engine": "Zend SEND_UNPACK copies dereferenced yielded values and releases iterator DATA before operand INPUT. zend_generator_free_storage releases the cached REFCELL; the copied argument keeps its independent root through INI_SET TypeError TraceArgs or releases it during quiet abrupt cleanup."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-owning-reference-85",
+    "native_first": {
+      "revision": "866b2d38531c1031cc7d1bb0b6133e88319e0183",
+      "author": {
+        "report": "native-author-866b2d385/report.json",
+        "sha256": "f276062decb7feb584d1039e9dd31eb1eebf380389dbc9e3b27cf3da0d77f4a9"
+      },
+      "peer": {
+        "report": "native-peer-866b2d385/report.json",
+        "sha256": "6e1e52cadee3da05769de9dc6c7044ad4a41bc65cff9d1609764ba53f1527203"
+      },
+      "originals": 4,
+      "result": "Four new originals match handwritten stdout, empty stderr and exit0; native-only preparation has zero model credit."
+    },
+    "old_refusal": {
+      "revision": "866b2d38531c1031cc7d1bb0b6133e88319e0183",
+      "report": "old-control-866b2d385/report.json",
+      "sha256": "6d1f80473580aa6ae01a64d54e981fb06c324531ba18a0c287ea5c2ded95b77c",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;Y0;Y1;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "bde307ee5b154b2f94be1a11c68c6856153ef862",
+      "modules": 432,
+      "report": "strict-bde307ee5/report.json",
+      "sha256": "93927b12a81e3e90a8f4476f7d0a2072f3a8ea63c529512f4782d7eab8e82d39"
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Model-only comparisons with retained frozen native source bytes/profile/streams; no application PHP rerun.",
+      "reports": [
+        {
+          "revision": "bde307ee5b154b2f94be1a11c68c6856153ef862",
+          "report": "model-author-normal-bde307ee5/report.json",
+          "sha256": "61175bb09f32ee492cb55debaca00d5d6c5c28aa0dc39858a7eca9eb77280357"
+        },
+        {
+          "revision": "d968dc764c3d6b312d281374f98160d9e8819d0d",
+          "report": "model-author-throw-d968dc764/report.json",
+          "sha256": "1b56781cf1248d4b6530f3d930af76520f05e055935283a0757114c7928c36e4"
+        },
+        {
+          "revision": "d968dc764c3d6b312d281374f98160d9e8819d0d",
+          "report": "model-peer-normal-d968dc764/report.json",
+          "sha256": "ff85a9617f7aa3caf012ce3ab952e94afdf45fee2c6aafb976d3d9413eacb4d5"
+        },
+        {
+          "revision": "d968dc764c3d6b312d281374f98160d9e8819d0d",
+          "report": "model-peer-throw-d968dc764/report.json",
+          "sha256": "e33c235b90db462ddce71b69a730cb3020fb163a2dc0710aaec82eafe65260c8"
+        }
+      ]
+    },
+    "reached": {
+      "revision": "d968dc764c3d6b312d281374f98160d9e8819d0d",
+      "conditions": 472,
+      "if_premises": 466,
+      "raw_steps": 6,
+      "author": {
+        "conditions": 152,
+        "if_premises": 150,
+        "raw_steps": 2,
+        "report": "reached-author-d968dc764/report.json",
+        "sha256": "7be81a2054a487c5552689e4cdf1b209250bbb78327e2f2976c80e498854e284"
+      },
+      "peer": {
+        "conditions": 320,
+        "if_premises": 316,
+        "raw_steps": 4,
+        "report": "reached-peer-d968dc764/report.json",
+        "sha256": "e3acaa4a5d40f17841b5a238c7c104fd446265c5347d51b9cc29a59d38c10b3a"
+      }
+    },
+    "review": "Independent source/manual and native/old raw review; runtime/comparator static review; strict432, all four model-only sources and both reached fixtures independently CLEAR. No accepted source/native replay."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "d84301b08b1dcd6d4fc3bd70477b52d328ac6a3d8d6bdaf28ed1733259a39e64",
+    "files": 89,
+    "raw_bytes": 2043464,
+    "commands": "Native-only source runners froze four originals. The model comparator consumed the retained reports one --case at a time. Reached scripts used matching retained native reports via --source-report. Ordered strict used the 432-module manifest and SL runner."
+  },
+  "integration": {
+    "status": "pending exact-parent canonical writer grant, actual-tail review and sole joined ordered-manifest compile"
+  }
+}

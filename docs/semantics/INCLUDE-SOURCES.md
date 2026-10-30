@@ -1982,3 +1982,17 @@ cell to be admitted. The original A83 cuts remain historical. Initial private
 artifact and strict-argv setup failures retain zero credit. Typed/backed
 cells, temporary producers, finalizers and sole-Generator retirement remain
 separate.
+
+The [temporary owning BYREF reference increment](../../coverage/semantics/config-generator-temporary-owning-reference-review.json)
+admits a direct named zero-argument BYREF Generator call with a scalar first
+ITEM and a finite quiet owning second ITEM read from an ordinary local REFCELL.
+The exact call target and returned Generator function agree; the second key
+normalizes to integer. Immutable copied history uses a bounded receipt, while
+live acquisition and cleanup check the cell and payload graph. Normal DATA2
+then INPUT1 release uses real Generator storage before TypeError TraceArgs;
+quiet terminal throw releases both owners before the saved catch. Four exact
+originals, strict432 and two reached recipes (472 conditions, six raw steps)
+check COW 13 versus 31, copied argument retention, physical Gen/cell retirement
+and retired invoke authority. The old `B;Y0;Y1;` Unsupported has zero agreement
+credit. Typed/backed cells, outside aliases, effectful finalizers and broader
+temporary producers remain separate.

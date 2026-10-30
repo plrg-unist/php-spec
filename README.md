@@ -840,6 +840,16 @@ current value live until the last alias is unset. Two reached proofs and one
 affected prior control check these lifetimes. Typed/backed cells, temporary
 producers and effectful finalizers remain separate.
 
+[Temporary owning BYREF Generator cells](coverage/semantics/config-generator-temporary-owning-reference-review.json)
+allow a direct named zero-argument BYREF Generator call to copy a finite quiet
+object or array from its final ordinary local reference cell, after a scalar
+first send. The temporary has no outside strong owner. Normal completion drops
+DATA then INPUT and uses real Generator storage release before TypeError;
+terminal saved throw releases both owners before catch. Four sources agree with
+PHP, and two reached proofs check the copied payload, COW, retired history and
+cell retirement. Typed/backed cells, outside aliases, effectful finalizers and
+wider producer histories remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
