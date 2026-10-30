@@ -366,9 +366,20 @@ native-first originals check access before sends, typed reference updates,
 shared static locals, inherited lexical scope, captured calls after rebinding,
 and segmented missing-arity and ordinary return names, plus the `never` method
 kind. Two source-reached state groups pass 220 conditions (215 reached, five
-controls). Captured `CLOSURE_TARGET` diagnostic views remain open. The
+controls). The
 [static-method review](../../coverage/semantics/anonymous-static-method-review.json)
-records the distinct validation cuts and both zero-credit failures.
+records the distinct validation cuts and both zero-credit failures; ordinary
+captured `CLOSURE_TARGET` diagnostics follow below.
+Ordinary first-class captures of static and instance class methods now format
+missing-arity and ordinary return diagnostics with the declaring class and
+member, including explicit `->__invoke`. Typed input and `never` retain the
+whole-name C-string view; `never` identifies a method. Four native-first
+sources, private strict433 and two source-reached state groups pass 295
+conditions (291 reached, four controls). Copied trait parameter views, rebound
+scopes and real Closure/API/wrapper views remain separate. The
+[captured-method review](../../coverage/semantics/anonymous-captured-method-diagnostics-review.json)
+retains two normal pre-fix mismatch observations and the distinct zero-credit
+preflight, strict-placement, comparator and fixture corrections.
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.

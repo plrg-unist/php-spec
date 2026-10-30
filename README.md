@@ -4568,6 +4568,11 @@ Ordinary nongenerator anonymous static methods use the existing receiverless
 call path; missing-arity and ordinary return errors format the declaring class
 and method separately, while `never` fallthrough identifies the method kind.
 [Static-method review](coverage/semantics/anonymous-static-method-review.json).
+First-class captures of ordinary static and instance methods now name the
+declaring class and member in missing-arity and ordinary return errors. Direct
+and explicit `->__invoke` calls retain captured scope; typed input and `never`
+keep their whole-name display, while `never` reports a method.
+[Captured-method review](coverage/semantics/anonymous-captured-method-diagnostics-review.json).
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
