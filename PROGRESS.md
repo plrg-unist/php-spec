@@ -187,6 +187,17 @@ credit with exact expired-before-copy refusal; the safe control keeps an externa
 owner. General messages and wider consumers remain partial; actual-tail join is
 pending. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
 
+ATTR08 gives shutdown/tick FCC caches separate object and Closure owners,
+including duplicate object IDs. Raw invokable and array-form tick identities
+stay distinct; methods borrow This and inline unregister retires arguments,
+cache.object, then cache.closure. Readonly selected metadata validates cleanup
+after scope retirement. Quiet shutdown retention continues through FINAL.
+Five normal originals agree; four reached groups pass296 checks (292 reached,
+four derived), private strict432 passes, and one Closure-array control remains
+an exact Unsupported boundary/zero credit. Late free and wider callback/compiler
+forms remain partial; actual composition is pending.
+[Cache review](coverage/semantics/callback-fcc-cache-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -294,7 +305,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
 | ATTR07 | Real Closure/arrow builtin attributes validated privately; actual-parent composition pending. |
-| ATTR08 | Persistent shutdown/tick FCC cache ownership and identity; native-first preparation, separate from ATTR07. |
+| ATTR08 | Persistent FCC cache owners/identity validated privately; actual-parent composition pending, separate from ATTR07. |
 | CLASS154 | Variadic reference constructor implementation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | GC08 | Enum possible-root admission fix. |
