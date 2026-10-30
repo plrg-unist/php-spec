@@ -465,12 +465,37 @@ def $nodiscard_reenter(S, pframe, ptask_tail*) = $set_active_table(S_caller[.CUR
   -- if pframe.LOCALS = (psymboltable)
   -- if S_caller = $save_frame(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
 
-dec $nodiscard_warning_message(pstate, pfunction, ptbytes) : ptbytes
-dec $nodiscard_warning_kind(pstate, pfunction) : ptbytes
-def $nodiscard_warning_kind(S, pfunction) = $ptascii("method ")
+;; A real Closure's source name stays fixed while binding changes its selected
+;; scope. These message lookups borrow that selection without adding owners.
+dec $function_attribute_expression(pstate, pfunction) : bool
+def $function_attribute_expression(S, pfunction) = true
+  -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)
+def $function_attribute_expression(S, pfunction) = true
+  -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+def $function_attribute_expression(S, pfunction) = false -- otherwise
+dec $function_attribute_scope(pstate, pfunction, pcalltarget) : ptbytes?
+def $function_attribute_scope(S, pfunction, pcalltarget) = ($bind_scope_name(S, pbindscope))
+  -- if $function_attribute_expression(S, pfunction)
+  -- if $target_instance(pcalltarget) = (n)
+  -- if pbindscope = $fake_bind_scope(S, n)
+  -- if pbindscope =/= BIND_UNSCOPED
+def $function_attribute_scope(S, pfunction, pcalltarget) = eps -- otherwise
+dec $function_attribute_name(pstate, pfunction, pcalltarget) : ptbytes
+def $function_attribute_name(S, pfunction, pcalltarget) = $c_string(ptbytes_scope) ++ $ptascii("::") ++ $c_string(pfunction.NAME)
+  -- if $function_attribute_scope(S, pfunction, pcalltarget) = (ptbytes_scope)
+def $function_attribute_name(S, pfunction, pcalltarget) = $c_string(pfunction.NAME)
+  -- if $function_attribute_expression(S, pfunction)
+  -- if $function_attribute_scope(S, pfunction, pcalltarget) = eps
+def $function_attribute_name(S, pfunction, pcalltarget) = pfunction.NAME
+  -- if ~$function_attribute_expression(S, pfunction)
+dec $nodiscard_warning_message(pstate, pfunction, pcalltarget, ptbytes) : ptbytes
+dec $nodiscard_warning_kind(pstate, pfunction, pcalltarget) : ptbytes
+def $nodiscard_warning_kind(S, pfunction, pcalltarget) = $ptascii("method ")
+  -- if $function_attribute_scope(S, pfunction, pcalltarget) = (ptbytes_scope)
+def $nodiscard_warning_kind(S, pfunction, pcalltarget) = $ptascii("method ")
   -- if $origin_node(S.SOURCES, $origin_source(pfunction.ORIGIN)) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)
-def $nodiscard_warning_kind(S, pfunction) = $ptascii("function ") -- otherwise
-def $nodiscard_warning_message(S, pfunction, ptbytes_suffix) = $ptascii("The return value of ") ++ $nodiscard_warning_kind(S, pfunction) ++ pfunction.NAME ++ $ptascii("() should either be used or intentionally ignored by casting it as (void)") ++ ptbytes_suffix
+def $nodiscard_warning_kind(S, pfunction, pcalltarget) = $ptascii("function ") -- otherwise
+def $nodiscard_warning_message(S, pfunction, pcalltarget, ptbytes_suffix) = $ptascii("The return value of ") ++ $nodiscard_warning_kind(S, pfunction, pcalltarget) ++ $function_attribute_name(S, pfunction, pcalltarget) ++ $ptascii("() should either be used or intentionally ignored by casting it as (void)") ++ ptbytes_suffix
 dec $nodiscard_message_suffix(ptbytes) : ptbytes
 def $nodiscard_message_suffix(eps) = eps
 def $nodiscard_message_suffix(ptbytes) = $ptascii(", ") ++ ptbytes -- if ptbytes =/= eps
@@ -494,22 +519,22 @@ def $nodiscard_begin(S, pfunction, ptbytes_message) = $error_dispatch(S_caller, 
   -- if S.CURRENT = (pcallcontext)
   -- if pframe = $nodiscard_frame_capture(S, pfunction)
   -- if S_caller = $nodiscard_park(S, pfunction)
-  -- if ptbytes_warning = $nodiscard_warning_message(S, pfunction, $nodiscard_message_suffix(ptbytes_message))
+  -- if ptbytes_warning = $nodiscard_warning_message(S, pfunction, pcallcontext.TARGET, $nodiscard_message_suffix(ptbytes_message))
 
 ;; VM sends and named holes are complete. Deprecated runs for every result use,
 ;; then the existing NoDiscard stage decides whether its second warning applies.
 dec $deprecated_since_suffix(ptbytes) : ptbytes
-dec $deprecated_warning_message(pstate, pfunction, ptbytes, ptbytes) : ptbytes
-dec $deprecated_warning_kind(pstate, pfunction) : ptbytes
+dec $deprecated_warning_message(pstate, pfunction, pcalltarget, ptbytes, ptbytes) : ptbytes
+dec $deprecated_warning_kind(pstate, pfunction, pcalltarget) : ptbytes
 dec $deprecated_frame_capture(pstate, pfunction) : pframe
 dec $deprecated_begin(pstate, pfunction, ptbytes, ptbytes) : pstate
 dec $closure_invoke_received(pstate, pfunction) : bool
 def $deprecated_since_suffix(eps) = eps
 def $deprecated_since_suffix(ptbytes) = $ptascii(" since ") ++ ptbytes -- if ptbytes =/= eps
-def $deprecated_warning_kind(S, pfunction) = $ptascii("Method ")
-  -- if $nodiscard_warning_kind(S, pfunction) = $ptascii("method ")
-def $deprecated_warning_kind(S, pfunction) = $ptascii("Function ") -- otherwise
-def $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since) = $deprecated_warning_kind(S, pfunction) ++ $c_string(pfunction.NAME) ++ $ptascii("() is deprecated") ++ $deprecated_since_suffix(ptbytes_since) ++ $nodiscard_message_suffix(ptbytes_message)
+def $deprecated_warning_kind(S, pfunction, pcalltarget) = $ptascii("Method ")
+  -- if $nodiscard_warning_kind(S, pfunction, pcalltarget) = $ptascii("method ")
+def $deprecated_warning_kind(S, pfunction, pcalltarget) = $ptascii("Function ") -- otherwise
+def $deprecated_warning_message(S, pfunction, pcalltarget, ptbytes_message, ptbytes_since) = $deprecated_warning_kind(S, pfunction, pcalltarget) ++ $c_string($function_attribute_name(S, pfunction, pcalltarget)) ++ $ptascii("() is deprecated") ++ $deprecated_since_suffix(ptbytes_since) ++ $nodiscard_message_suffix(ptbytes_message)
 def $deprecated_frame_capture(S, pfunction) = pframe[.TODO = ([DEPRECATED_RECEIVE pfunction.ORIGIN])]
   -- if pframe = $nodiscard_frame_capture(S, pfunction)
 def $deprecated_begin(S, pfunction, ptbytes_message, ptbytes_since) = $error_dispatch(S_caller, 16384, ptbytes_warning, pcallcontext.LINE, DIAGNOSTIC "Deprecated" ptbytes_warning pcallcontext.LINE, NODISCARD_RESUME pframe)
@@ -518,7 +543,7 @@ def $deprecated_begin(S, pfunction, ptbytes_message, ptbytes_since) = $error_dis
   -- if S_caller_raw = $nodiscard_park(S, pfunction)
   -- if S_caller_raw.TODO = (NODISCARD_RESUME pframe_nodiscard) :: ptask_tail*
   -- if S_caller = S_caller_raw[.TODO = (NODISCARD_RESUME pframe) :: ptask_tail*]
-  -- if ptbytes_warning = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if ptbytes_warning = $deprecated_warning_message(S, pfunction, pcallcontext.TARGET, ptbytes_message, ptbytes_since)
 def $call_entry_ready(S, pfunction, n, porigin?, z) = S -- if S.COMPLETION =/= NORMAL
 def $call_entry_ready(S, pfunction, n, porigin?, z) = $nodiscard_entry_ready(S, pfunction, n, porigin?, z)
   -- if S.COMPLETION = NORMAL
@@ -615,16 +640,18 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LINE = pcallcontext.LINE
   -- if $call_warning_matches(S, pfunction, pframe, perrorcall)
 def $call_warning_matches(S, pfunction, pframe, perrorcall) = true
+  -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.TODO = [NODISCARD_RECEIVE pfunction.ORIGIN]
   -- if $function_nodiscard(S, pfunction) = NODISCARD_ATTRIBUTE ptbytes n_attribute
   -- if perrorcall.LEVEL = 512
-  -- if perrorcall.MESSAGE = $nodiscard_warning_message(S, pfunction, $nodiscard_message_suffix(ptbytes))
+  -- if perrorcall.MESSAGE = $nodiscard_warning_message(S, pfunction, pcallcontext.TARGET, $nodiscard_message_suffix(ptbytes))
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
 def $call_warning_matches(S, pfunction, pframe, perrorcall) = true
+  -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.TODO = [DEPRECATED_RECEIVE pfunction.ORIGIN]
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
   -- if perrorcall.LEVEL = 16384
-  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, pcallcontext.TARGET, ptbytes_message, ptbytes_since)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
 def $call_warning_matches(S, pfunction, pframe, perrorcall) = false -- otherwise
 def $iterator_unpack_warning_tail_origin(S, NODISCARD_RESUME pframe) = pcallcontext.CALLSITE
