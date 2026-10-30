@@ -1620,7 +1620,8 @@ def $gc_callback_walk_agrees(pgcplan) = true
   -- if $gc_count_walk(H, pgcplan.PROXIES, (eps), $gc_root_visits(pnode_roots*), pnode_white*) = (pnode_visit*, pnode_counted*)
 def $gc_callback_walk_agrees(pgcplan) = false -- otherwise
 ;; Source-backed ordinary and real-Closure calls grant this lane caller
-;; authority. Saved frames are checked without recursively validating GC.
+;; authority. The explicit no-argument __invoke route has its own wrapper.
+;; Saved frames are checked without recursively validating GC.
 def $gc_materialized_caller_target(S, porigin_function, (porigin_site)) = $call_selected_valid(S, porigin_function, (porigin_site))
 def $gc_materialized_caller_target(S, METHOD_TARGET n porigin_method, (porigin_site)) = $method_call_selected(S, METHOD_TARGET n porigin_method, (porigin_site))
 def $gc_materialized_caller_target(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_site))
@@ -1631,6 +1632,14 @@ def $gc_materialized_caller_target(S, CLOSURE_TARGET n, (porigin_site)) = $call_
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE porigin_template pitem* pstaticcell*
+def $gc_materialized_caller_target(S, CLOSURE_TARGET n, (porigin_site)) = $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE eps) metadata_call)
+  -- if $method_source_name(NIdentifier (BYTES text_name) metadata_name, $ptascii("__invoke"))
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin_template eps eps
+  -- if $function_at(S.CLOSURETEMPLATES, porigin_template) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = NO_DEPRECATED
 def $gc_materialized_caller_target(S, pcalltarget, porigin?) = false -- otherwise
 def $gc_materialized_caller(S, eps) = true
 def $gc_materialized_caller(S, (pcallcontext)) = true
