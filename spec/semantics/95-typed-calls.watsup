@@ -169,6 +169,8 @@ def $typed_return_line(S, z) = z -- otherwise
 dec $typed_return_check(pstate, int) : pstate
 dec $typed_return_checked(pstate, int, bool) : pstate
 def $typed_return_value(S, z) = $resolve_at(S, S.RESULT, z) -- if $generator_active(S)
+dec $return_function_name(pstate, pfunction) : preqbytes
+def $return_function_name(S, pfunction) = $call_function_name(S, pfunction) -- otherwise
 def $typed_return_value(S, z) = $typed_return_check($resolve_at(S, S.RESULT, z), z) -- if ~$generator_active(S)
 def $typed_return_check(S, z) = $typed_return_checked(S, z, false)
 def $typed_return_checked(S, z, b_source) = S -- if S.COMPLETION =/= NORMAL
@@ -185,7 +187,7 @@ def $typed_return_checked(S, z, b_source) = $typed_apply(S, ptypeconversion, z)
   -- if S.RESULT = KNOWN pvalue
   -- if ptypeconversion = $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, b_source)
   -- if ptypeconversion =/= TYPEREJECT
-def $typed_return_checked(S, z, b_source) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z)
+def $typed_return_checked(S, z, b_source) = $throw_scalar(S, "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z)
   -- if S.COMPLETION = NORMAL
   -- if S.CURRENT = (pcallcontext)
   -- if ~$eval_top_level(S)
@@ -196,11 +198,11 @@ rule PhpStep/type-fallthrough-void: S ~> S[.TODO = $reference_empty_task(S, pfun
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if "void" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
-rule PhpStep/type-fallthrough-never: S ~> $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): never-returning ") ++ $call_function_kind(S) ++ $ptascii(" must not implicitly return"), pfunction.ENDLINE)
+rule PhpStep/type-fallthrough-never: S ~> $throw_scalar(S, "TypeError", $c_string($call_function_name(S, pfunction)) ++ $ptascii("(): never-returning ") ++ $call_function_kind(S) ++ $ptascii(" must not implicitly return"), pfunction.ENDLINE)
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
-rule PhpStep/type-fallthrough-value: S ~> $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", none returned"), pfunction.ENDLINE)
+rule PhpStep/type-fallthrough-value: S ~> $throw_scalar(S, "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", none returned"), pfunction.ENDLINE)
   -- if S.TODO = (TYPE_FALLTHROUGH porigin) :: ptask*
   -- if $function_at($all_functions(S), porigin) = (pfunction)
   -- if ~("void" <- $ptmasks(pfunction.SIGNATURE.RETURNS) \/ "never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))

@@ -44,6 +44,9 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = true
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__destruct")
+def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata) = true
+  -- if flags <- [0,1]
+  -- if $ptlc($base64(text)) = $ptascii("__tostring")
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 ABSENT (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__construct")
@@ -294,7 +297,8 @@ def $anonymous_compiled_class_count(pcunit, ptbytes_file, pclassdesc :: pclassde
   -- if pclassdesc.PARENT = eps
   -- if pclassdesc.LINE = $source_line($pcmetadata(pcnode))
   -- if $anonymous_class_name(ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.EARLY
+  -- if pclassdesc.INTERFACES = $ppclass_interfaces(eps, pclassdesc.METHODS)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.EARLY = (pclassdesc.INTERFACES = eps)
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_compiled_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, pstate_external?, n_counter) = $anonymous_compiled_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], pstate_external?, $(n_counter + 1))
   -- if pclassdesc.ORIGIN = PORIGIN pcunit.ID pcpath
@@ -305,7 +309,7 @@ def $anonymous_compiled_class_count(pcunit, ptbytes_file, pclassdesc :: pclassde
   -- if $pchrefs(name*, "interface name", ptcontext) = PCHNAMES ptbytes_interface* eps
   -- if $pchparent(phpType44, ptcontext) = PCHNAMES ptbytes_parent* eps
   -- if pclassdesc.PARENT = $pchparentoption(ptbytes_parent*)
-  -- if pclassdesc.INTERFACES = ptbytes_interface*
+  -- if pclassdesc.INTERFACES = $ppclass_interfaces(ptbytes_interface*, pclassdesc.METHODS)
   -- if $anonymous_interface_prefix(pclassdesc.PARENT, ptbytes_interface*) = (ptbytes_prefix)
   -- if $anonymous_parent_class_name(ptbytes_prefix, ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.EARLY
