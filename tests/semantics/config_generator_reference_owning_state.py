@@ -150,7 +150,7 @@ def conditions(name, program, path, stdout):
         'S_raw.STORE = S_popped.STORE',
         'S_raw.EVENTS = S_popped.EVENTS',
         'S_raw.ALLOCATIONS = S_popped.ALLOCATIONS',
-    ] + public('S_thrown') + public('S_lost') + public('S_cycle') + budget('S_thrown', 'S_abort_budget') + [
+    ] + public('S_thrown') + public('S_lost') + budget('S_thrown', 'S_abort_budget') + [
         'S_disposed = S_abort_budget_one[.COMPLETION = NORMAL]',
         '~((HOBJECT n_payload) <- S_disposed.ALLOCATIONS)',
         '(HOBJECT n_generator) <- S_disposed.ALLOCATIONS',
