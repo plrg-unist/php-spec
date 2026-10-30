@@ -850,6 +850,15 @@ PHP, and two reached proofs check the copied payload, COW, retired history and
 cell retirement. Typed/backed cells, outside aliases, effectful finalizers and
 wider producer histories remain separate.
 
+[Temporary owning BYREF cells with outside aliases](coverage/semantics/config-generator-temporary-owning-alias-review.json)
+allow outside ordinary owners of that final cell under the same direct-call,
+finite quiet and copied-history guards. Four sources bind two global aliases:
+normal TypeError keeps the copied old ARRAY 13 while both aliases see the live
+ARRAY 31; a saved throw drops the old copy. Real storage retires the temporary
+Generator, leaving the cell and current value until the last alias is unset.
+Two reached proofs check these transitions. Typed/backed cells, effectful
+finalizers and wider producer histories remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical

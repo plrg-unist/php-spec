@@ -1996,3 +1996,16 @@ check COW 13 versus 31, copied argument retention, physical Gen/cell retirement
 and retired invoke authority. The old `B;Y0;Y1;` Unsupported has zero agreement
 credit. Typed/backed cells, outside aliases, effectful finalizers and broader
 temporary producers remain separate.
+
+The [temporary owning alias increment](../../coverage/semantics/config-generator-temporary-owning-alias-review.json)
+removes only the one-owner premise for the final ordinary REFCELL in the direct
+temporary BYREF storage gate. Its structural source, bounded copied receipt,
+finite quiet live graph, DATA2/INPUT1 owner counts and retired history stay.
+Four exact originals bind two global aliases to the cell; strict432 and two
+reached recipes (565 conditions, six raw steps) check real Generator storage
+dropping its edge, copied ARRAY 13 versus live alias ARRAY 31, TypeError trace
+retention, saved-throw release and cell death after the last alias unset.
+The unchanged last-DATA Unsupported has zero agreement credit. The runtime
+permits additional ordinary cell owners under these same guards; the originals
+specifically cover two aliases. Typed/backed cells, finalizers and broader
+temporary producers remain separate.
