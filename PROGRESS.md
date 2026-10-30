@@ -340,6 +340,7 @@ cut keep zero credit.
 | I92 | Reviewed private real Generator Closure::call copies: native5/source5/private433 and six fronts 744 custom/774 reported pass at distinct cuts. Original Unsupported/two fixture failures0 and native-only receive-error retention0 retained; actual-tail pending. |
 | I93 | Real Generator Closure::call reference-formal timing: Reviewed private native5/source5/private433 and six reached fronts 625 custom/655 reported pass at distinct cuts. Early copy/ref forwarding, warning traces and used-result holder validated; original Unsupported/php_error/diagnostic/fixture0 retained, actual-tail pending. |
 | I94 | Fake user-method Generator Closure::call copies: native4/source4/private433 and five reached fronts 633 custom/658 reported pass at distinct cuts. Exact-class binding/shared method statics/retired selection; original Unsupported/dispatch/prefix failures0 retained, actual-tail pending. |
+| I95 | Native-first STRING and already-bound fake Generator Closure::call controls; source-only preparation, no new model/state credit. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
