@@ -3696,6 +3696,13 @@ destructor callbacks through the Closure's live caller root and source body.
 An unrelated Closure cannot enter that ordinary count walk; the
 [Closure caller review](coverage/semantics/gc-closure-caller-review.json)
 records the exact destructor/count and refusal checks.
+A plain zero-argument `$collector->__invoke()` call now carries the same
+materialized collection through its real Closure wrapper. The wrapper has two
+current Closure roots and the global `$collector` cell supplies a third owner;
+the held/drop destructor counts still match PHP. This cut requires a literal
+normal method call and a static, attribute-free, childless Closure with no
+by-reference or declared return type. See the
+[explicit Closure caller review](coverage/semantics/gc-closure-invoke-caller-review.json).
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared

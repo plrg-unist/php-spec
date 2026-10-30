@@ -1,0 +1,29 @@
+{
+  "scope": "GC11: canonical materialized destructor collection from a normal literal zero-argument Closure::__invoke call on a plain childless static real Closure.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc10_base": "561850648fb41cd8a8d8b0db1b022bc9801d24bf",
+    "native_source": "3f81b740cdf561ae69898ef17309c97fe09bc148",
+    "first_clause": "8583acb25959a61917c9bc1865c8bc6c744f8789",
+    "source_guard_correction": "6012d53e432af612e1d1c36432f623698859a9f3"
+  },
+  "source_sha256": "e2da1cf5b35cee02722bd512ca005942a0d6991b1fe494c27e7cab2fcb0f9603",
+  "validation": {
+    "native_and_model": "The unchanged original source matches PHP byte for byte at clean 601: P|0|D|3|split|0|H|3|dead|0|END, exit 0 and empty stderr. The model report records stable inputs/HEAD, no timeout and a fully reaped process group.",
+    "preedit": "The pre-edit model refuses cached ordinary property-table collection after P|0|. A strict 24-check reached diagnostic at clean 3f81 verifies the real explicit wrapper, doubled current Closure roots, global-cell owner count 3 and refusal by the old caller and ordinary predicates.",
+    "reached": "One strict source-reached group passes 95 reported assertions at clean 601: the wrapper roots and actual owner count, held/drop count and white-set roles, authenticated GC body and count source, and absent ACTIVE, erased caller/source/wrapper, wrong target and duplicate-plan refusals.",
+    "zero_credit": "The pre-edit unsupported model run is not an agreement. The first post-edit reached run stopped at a 301-to-440 declaration-order error before evaluation; that compiler failure has zero reached credit. The corrected clause uses the exact static attribute-free Closure source form and only the affected reached group and original source were run. No accepted GC07-10 source or state was replayed."
+  },
+  "reports": {
+    "gc-closure-invoke-11-author/packet1/native-report.json": "f5e14507067f9eb220c39825ec7a25e4133d4b8caea596c6438a885058617c88",
+    "gc-closure-invoke-11-author/packet2/model-explicit-real-closure-invoke-report.json": "8635254c23b45cfd7fad612f6e9d533c66a6e1e9fc97f88ff8c11d4a1a6ad23a",
+    "gc-closure-invoke-11-author/packet3/prebegin-result/report.json": "14b0a65949157b73b47e7a41f91ed90354752bdb5a516f9e43e481fc95cb284d",
+    "gc-closure-invoke-11-author/packet4/first-reached-compiler-failure/report.json": "3d739c0cce657a32eed78d5b024143d09a601c8b7f1dc80850fc99c18545dac8",
+    "gc-closure-invoke-11-author/packet4/reached/report.json": "9901c72da0ac0bae2764bc620b20fb1a3df3cc9b8f89c8ab72067732577c0ae2",
+    "gc-closure-invoke-11-author/packet4/post-edit-source/model-explicit-real-closure-invoke-report.json": "907fdf2984beeb26d3507540f007270ccac20619c34132ac766f01e5bf87d835"
+  },
+  "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean 601. Actual-tail interaction review and joined manifest remain pending.",
+  "limits": "Only a normal literal zero-argument __invoke site on a raw childless static attribute-free Closure without a by-reference return or declared return type is admitted. Arguments, captured or attributed/nonstatic Closures, nullsafe and dynamic names, named-hole preflight, Deprecated warning/throw wrappers, pipe, Fiber/worker/residual/reentry contexts and wider graphs retain existing fences. The selected source shape does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-closure-invoke-11-author. The single original source is tests/semantics/gc_closure_invoke_source.php; the focused model and reached fixtures are gc_closure_invoke_sources.py and gc_closure_invoke_state.py. No bulky artifacts are in Git."
+}
