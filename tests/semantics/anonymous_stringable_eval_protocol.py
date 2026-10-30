@@ -30,7 +30,7 @@ dec $string157_eval_stage(pstate,nat) : bool
 def $string157_eval_stage(S,0) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = PORIGIN 1 pcpath
-  -- if S.TODO = (STMT (NStmtReturn (NExprNew statement (SEQUENCE eps) metadata_new) metadata)) :: ptask_tail*
+  -- if S.TODO = (STMT (NStmtReturn (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata_new) metadata)) :: ptask_tail*
   -- if $source_line(metadata) = 3
 def $string157_eval_stage(S,1) = true
   -- if S.CURRENT = eps
@@ -98,7 +98,7 @@ def assertions(fixture, filename, code, response, stdout):
         'S_entered.COMPLETION = NORMAL',
         *seek('S_entered', 'S_factory', 0),
         'S_factory.ORIGIN = (PORIGIN 1 pcpath_return)',
-        '$origin_node(S_factory.SOURCES,PORIGIN 1 pcpath_return) = (NStmtReturn (NExprNew statement_new (SEQUENCE eps) metadata_new) metadata_return)',
+        '$origin_node(S_factory.SOURCES,PORIGIN 1 pcpath_return) = (NStmtReturn (NExprNew (NStmtClass phpType14_new phpType24_new phpType3_new phpType44_new phpType42_new phpType23_new metadata_class) (SEQUENCE eps) metadata_new) metadata_return)',
         '$origin_child(S_factory.ORIGIN,[PCFIELD 0]) = (porigin_new)',
         '$anonymous_new_pending(S_factory,porigin_new) = (pclassdesc)',
         'pclassdesc.ORIGIN = PORIGIN 1 pcpath_class',
