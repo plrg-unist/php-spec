@@ -101,8 +101,9 @@ materialized collector callers. The active GC receipt binds the caller and its
 real machine root; the Closure stays outside the white set while unrelated
 Closures remain refused. One native-first original agrees exactly, a strict
 pre-begin diagnostic passes 23 checks, and the affected reached group passes
-87 checks. Private strict432 compilation passes. Explicit `->__invoke`, pipe,
-captured and wider active collector contexts remain partial.
+87 checks. Private strict432 and actual-tail joined433 compilation pass.
+Explicit `->__invoke`, pipe, captured and wider active collector contexts
+remain partial.
 [GC10 review](coverage/semantics/gc-closure-caller-review.json).
 
 Immediate identity cleanup now validates a sole produced right object/array
