@@ -3,6 +3,23 @@ from deprecated_closure_invoke_review_cases import at80
 
 
 CASES = {
+    'tick-invoke-reference-warning-between-outer-and-inner': at80([
+        '#[\\Deprecated, \\NoDiscard]',
+        'function tick_reference_target(&$value) { $GLOBALS["body"]++; echo "B:", $value === 7, ":", $GLOBALS["calls"] === 3, ";"; $value = 9; return 7; }',
+        'function reference_notice($level, $message, $file, $line) {',
+        '    $GLOBALS["calls"]++;',
+        '    if ($level === 8192) { echo "O:", $GLOBALS["calls"] === 1, ":", $message === "Method Closure::__invoke() is deprecated", ";"; return true; }',
+        '    if ($level === 2) { echo "W:", $GLOBALS["calls"] === 2, ":", $message === \'Closure::__invoke(): Argument #1 ($value) must be passed by reference, value given\', ":", $file === __FILE__ && $line === 80, ";"; return true; }',
+        '    if ($level === 16384) { echo "I:", $GLOBALS["calls"] === 3, ":", $message === "Function tick_reference_target() is deprecated", ";"; return true; }',
+        '    echo "BAD-WARNING;"; return true;',
+        '}',
+        '$calls = 0; $body = 0; $input = 7; $alias =& $input; $callback = tick_reference_target(...);',
+        '$weak_cb = WeakReference::create($callback); register_tick_function([$callback, "__invoke"], $alias); $callback = null;',
+        'set_error_handler("reference_notice");',
+    ], 'declare(ticks=1) { $marker = 1; }', [
+        'restore_error_handler(); unregister_tick_function([$weak_cb->get(), "__invoke"]);',
+        'echo "E:", $body === 1, ":", $calls === 3, ":", $input === 7 && $alias === 7, ":", $weak_cb->get() === null, ";";',
+    ]),
     'tick-invoke-warning-phases-weak-receive-and-unused-result': at80([
         'declare(strict_types=1);',
         'class TickInvokeArgument {}',
@@ -60,6 +77,7 @@ CASES = {
 }
 
 EXPECTED_STDOUT = {
+    'tick-invoke-reference-warning-between-outer-and-inner': b'O:1:1;W:1:1:1;I:1:1;B:1:1;E:1:1:1:1;',
     'tick-invoke-warning-phases-weak-receive-and-unused-result': b'O:1:1:1:1;I:1:1:1:1;B:1:1:1:1:1:1:1:1:1:1;V:1:1:1:1;Q:1:1:1;R:1:1:1;E:1:1:1:1;',
     'tick-invoke-outer-throw-before-raw-copy-keeps-cache': b'O:1:1:1:1:1;C:1:1:1:1:1:1:1;T:1:1;R:1:1;E:1:1:1:1:1;',
 }
