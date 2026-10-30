@@ -101,7 +101,8 @@ def $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext) = true
   -- if $generator_creation_resume_owner(S) = (n_generator)
   -- if $(n_generator < |S.OBJECTS|) /\ (HOBJECT n_generator) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_generator] = GENERATOR pgenerator
-  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.CLOSURE = (n_closure)
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if pgenerator.CLOSURE = (n_closure)
   -- if $(n_closure < |S.OBJECTS|) /\ (HOBJECT n_closure) <- S.ALLOCATIONS
   -- if pcallcontext.TARGET = CLOSURE_TARGET n_closure /\ pcallcontext.INSTANCE = (n_closure)
   -- if pcallcontext.FUNCTION = pgenerator.FUNCTION
@@ -181,7 +182,8 @@ def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
   -- if $generator_reference_valid(S, GENERATOR pgenerator)
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
 def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
-  -- if pgenerator.REFCELL = (n_cell) /\ pgenerator.VALUE = eps
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if pgenerator.VALUE = eps
   -- if pcallcontext.RECEIVER = (n_receiver)
   -- if $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext)
   -- if $generator_reference_producer(S, pgenerator)
