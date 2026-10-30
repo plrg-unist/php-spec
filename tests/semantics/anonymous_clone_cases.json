@@ -92,6 +92,19 @@
       "native_group": ".tools/class160-artifacts/invalid-annotation-shape.native-first.json",
       "native_raw_sha256": "88ad52689ea35bfb25ea467fdd22d4362c8b6d7099b7a45fa73d4c3a6822886e",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-clone-never-fallthrough",
+      "source": "<?php\n$source160Never = new class {\n    public function __clone(): never {\n        echo \"never|\";\n    }\n};\n$destination160Never = 99;\ntry {\n    $destination160Never = clone $source160Never;\n} catch (TypeError $caught160Never) {\n    echo $caught160Never->getMessage(), \"|\", $caught160Never->getLine(), \"|\";\n}\necho $destination160Never, \"|after\";\n",
+      "source_sha256": "a0bd4a5e4ce10530c07c70f02160f7476a058b3800c084d1549a2b4b5bd6c187",
+      "stdout_base64": "bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58NXw5OXxhZnRlcg==",
+      "stdout_template_base64": "bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58NXw5OXxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class160-artifacts/never-clone-fallthrough.native-first.json",
+      "native_raw_sha256": "1d81679eece0713e13b730a77ec90ec8131df9a5ebca275181b749ea142f71ec",
+      "model_timeout_seconds": 240
     }
   ]
 }
