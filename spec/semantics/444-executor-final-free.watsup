@@ -26,11 +26,12 @@ dec $executor_constant_nodes(puserconstant*) : pnode*
 dec $executor_function_nodes(pstaticcell*, pfunction) : pnode*
 dec $executor_static_nodes(pstaticcell*, nat, pcodeexpr*) : pnode*
 dec $executor_function_tables(pstate, (preqbytes, porigin)*) : pnode*
-dec $executor_class_tables(pstate, (preqbytes, porigin)*) : pnode*
+dec $executor_class_tables(pstate, (preqbytes, porigin)*, pnode*) : (pnode*, pnode*)
 dec $executor_property_nodes(pstate, ppropertydesc*) : pnode*
 dec $executor_class_constants(pstate, pclassconstantdesc*, porigin) : pnode*
 dec $executor_class_defaults(pinstancetemplate*, porigin) : pnode*
-dec $executor_method_tables(pstate, pmethoddesc*) : pnode*
+dec $executor_method_tables(pstate, ppmethodinherited*) : pnode*
+dec $executor_static_fresh(pnode*, pnode*) : pnode*
 dec $executor_free_finish(pstate) : pstate
 
 ;; getenv takes its first duplicate; ZEND_ATOL reads a signed decimal prefix.
@@ -182,15 +183,26 @@ def $executor_class_defaults(pinstancetemplate :: pinstancetemplate_tail*, porig
 def $executor_class_defaults(pinstancetemplate :: pinstancetemplate_tail*, porigin) = $executor_class_defaults(pinstancetemplate_tail*, porigin)
   -- if pinstancetemplate.CLASS =/= porigin
 def $executor_method_tables(S, eps) = eps
-def $executor_method_tables(S, pmethoddesc :: pmethoddesc_tail*) = $executor_function_nodes(S.STATICS, pmethoddesc.FUNCTION) ++ $executor_method_tables(S, pmethoddesc_tail*)
-def $executor_class_tables(S, eps) = eps
-def $executor_class_tables(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*) = $executor_class_tables(S, (preqbytes_tail, porigin_tail)*) ++ $executor_property_nodes(S, pclassdesc.PROPERTIES) ++ $executor_class_constants(S, pclassdesc.CONSTANTS, porigin) ++ $executor_class_defaults(S.INSTANCEDEFAULTS, porigin) ++ $executor_method_tables(S, pclassdesc.METHODS)
+def $executor_method_tables(S, (PPMINHERITED pmethoddesc pclassdesc) :: ppmethodinherited_tail*) = $executor_function_nodes(S.STATICS, pmethoddesc.FUNCTION) ++ $executor_method_tables(S, ppmethodinherited_tail*)
+def $executor_static_fresh(eps, pnode_seen*) = eps
+def $executor_static_fresh(pnode :: pnode_tail*, pnode_seen*) = $executor_static_fresh(pnode_tail*, pnode_seen*)
+  -- if pnode <- pnode_seen*
+def $executor_static_fresh(pnode :: pnode_tail*, pnode_seen*) = pnode :: $executor_static_fresh(pnode_tail*, pnode_seen* ++ [pnode])
+  -- if ~(pnode <- pnode_seen*)
+;; An inherited method shares its static_variables_ptr with its parent. The
+;; first reverse class-table visit clears it; fields keep every owning zval.
+def $executor_class_tables(S, eps, pnode_seen*) = (eps, pnode_seen*)
+def $executor_class_tables(S, (preqbytes, porigin) :: (preqbytes_tail, porigin_tail)*, pnode_seen*) = (pnode_class_tail* ++ $executor_property_nodes(S, pclassdesc.PROPERTIES) ++ $executor_class_constants(S, pclassdesc.CONSTANTS, porigin) ++ $executor_class_defaults(S.INSTANCEDEFAULTS, porigin) ++ pnode_static*, pnode_class_seen* ++ pnode_static*)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if (pnode_class_tail*, pnode_class_seen*) = $executor_class_tables(S, (preqbytes_tail, porigin_tail)*, pnode_seen*)
+  -- if pnode_static* = $executor_static_fresh($executor_method_tables(S, $method_info_layout(S, porigin, |S.CLASSES|)), pnode_class_seen*)
 
 ;; Binding tables record insertion order separately from their lookup maps.
 ;; Saved handler stacks are newest-first; zend_stack_clean walks oldest-first.
-def $executor_table_nodes(S) = $executor_symbol_nodes(psymboltable.ENV, $symbols_add(psymboltable.SYMBOLS, psymboltable.CVS)) ++ $executor_constant_nodes(S.USERCONSTANTS) ++ $trace_roots(S.ERRORFATALTRACE) ++ $executor_function_tables(S, S.CALLABLES) ++ $executor_class_tables(S, S.CLASSNAMES) ++ $error_handler_roots(S.ERRORHANDLER) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $executor_reverse_nodes($error_handler_stack_roots(S.ERRORHANDLERS)) ++ $executor_reverse_nodes($exception_handler_stack_roots(S.EXCEPTIONHANDLERS))
+def $executor_table_nodes(S) = $executor_symbol_nodes(psymboltable.ENV, $symbols_add(psymboltable.SYMBOLS, psymboltable.CVS)) ++ $executor_constant_nodes(S.USERCONSTANTS) ++ $trace_roots(S.ERRORFATALTRACE) ++ pnode_functions* ++ pnode_classes* ++ $error_handler_roots(S.ERRORHANDLER) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $executor_reverse_nodes($error_handler_stack_roots(S.ERRORHANDLERS)) ++ $executor_reverse_nodes($exception_handler_stack_roots(S.EXCEPTIONHANDLERS))
   -- if psymboltable = $eager_fatal_global(S)
+  -- if pnode_functions* = $executor_static_fresh($executor_function_tables(S, S.CALLABLES), eps)
+  -- if (pnode_classes*, pnode_visited*) = $executor_class_tables(S, S.CLASSNAMES, pnode_functions*)
 def $executor_table_roots(S) = $table_roots(($eager_fatal_global(S))) ++ $user_constant_roots(S.USERCONSTANTS) ++ $trace_roots(S.ERRORFATALTRACE) ++ $static_roots(S.STATICS) ++ $class_static_roots(S.CLASSSTATICS) ++ $instance_default_roots(S.INSTANCEDEFAULTS) ++ $class_constant_roots(S.CLASSCONSTANTCACHE) ++ $error_handler_roots(S.ERRORHANDLER) ++ $exception_handler_roots(S.EXCEPTIONHANDLER) ++ $error_handler_stack_roots(S.ERRORHANDLERS) ++ $exception_handler_stack_roots(S.EXCEPTIONHANDLERS)
 def $executor_free_tables(S, pexecutorfree) = pexecutorfree -- if $executor_allocator_fast(S.REQUEST)
 def $executor_free_tables(S, pexecutorfree) = $executor_free_release(S, pexecutorfree, pnode_plan*)
