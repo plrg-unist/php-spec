@@ -1134,6 +1134,16 @@ winner. Four native/model originals agree; four reached fronts pass 439 custom/
 459 reported checks. Private433 retains its cut; actual-tail integration is pending.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
+I89 reuses the same actual method-Closure proof for nonstatic warm/fresh THROW.
+Warm caught/parameter CV unsets leave one API input and the independent cache;
+fresh initialization retains its extra pending exception copy. VM INSTANCE owns
+the Closure once, and its receiver edge keeps This through CLOSED. Native controls
+distinguish original source/binding retirement from final Closure-before-cache
+release. Native4/source4 and five reached fronts632 custom/657 reported pass at
+distinct cuts; private433 retains its initial cut. Original failures keep zero credit,
+with actual-tail integration and wider contexts still open.
+[Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

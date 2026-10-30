@@ -35,19 +35,17 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
-I88 carries raw method Generator reference caches and warm/fresh THROW across
-Fibers using the actual resumer/Gen/current proof. Fresh initialization now
-retains Zend's extra pending exception reference until injection; calibrated
-native controls distinguish pending input2 from warm input1 after CV unset.
-Nonstatic object-array calls from fixed ordinary method sources preserve lexical private
-selection over a public child override. Four native/model originals agree;
-four reached fronts pass 439 custom/459 reported checks at distinct cuts.
-Private433 keeps its original cut; later reached checks compile both corrections.
-Original refusal and reached failures plus the native diagnostic keep zero extra
-agreement credit. Eight legacy expectations are maintained without execution
-renewal or historical rewrite. Actual-tail integration and wider captured-Closure,
-API/binding/delegation/collection/lifecycle combinations remain pending.
-[I88 review](coverage/semantics/generator-raw-method-cache-review.json).
+I89 carries authenticated nonstatic captured/bound method-Closure Generators
+through warm by-value/reference THROW and fresh initialization across Fibers.
+The actual resumer/Gen/current proof keeps Closure and This through CLOSED;
+Gen drop releases Closure/receiver before the cache. Four native/model originals
+agree at distinct cuts; five reached fronts pass 632 custom/657 reported checks.
+Private433 keeps its initial cut; later source/front checks compile the ARRAY
+nominal Closure identity and admitted bindTo dispatch corrections. Original
+Unsupported, stdout mismatch and interpreter failure keep zero agreement credit.
+Actual-tail integration and wider producer/API/binding/lifecycle combinations
+remain pending. [I89 review](coverage/semantics/generator-captured-method-throw-review.json).
+[I88](coverage/semantics/generator-raw-method-cache-review.json),
 [I87](coverage/semantics/generator-raw-method-factory-review.json),
 [I86](coverage/semantics/generator-captured-method-body-review.json),
 [I85](coverage/semantics/generator-direct-magic-review.json),
@@ -332,7 +330,8 @@ cut keep zero credit.
 | I86 | Reviewed private captured method Gen/Fiber and consumed storage: native4/source4, reached501 custom/526 reported and private433 pass at distinct cuts. Shared ATTR07 receiver hunk only; actual-tail integration pending and original failures retain zero credit. |
 | I87 | Reviewed private raw array/string method Gen creation/factory/Fiber: native6/source6, reached561 custom/596 reported and private433 pass at distinct cuts. Source-fixed private history repaired; original failures0 retained, actual-tail integration pending. |
 | I88 | Reviewed private raw Gen cache/warm/fresh THROW: native4/source4/private433 and reached439 custom/459 reported pass at distinct cuts. Pending exception owner/private selection corrected; original failures0 retained, actual-tail pending. |
-| I89 | Captured nonstatic method-Closure warm/fresh THROW consumer gap identified; source preparation, native/model/state unrun. |
+| I89 | Reviewed private nonstatic method-Closure warm/fresh THROW: native4/source4/private433 and five fronts632 custom/657 reported pass at distinct cuts. ARRAY nominal/bindTo corrections and all original0s retained; actual-tail pending. |
+| I90 | Typed BYVAL direct magic Generator warm/fresh THROW external native-first originals prepared; unrun, no implementation or validation credit. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |

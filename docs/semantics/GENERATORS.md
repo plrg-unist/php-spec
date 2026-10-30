@@ -537,6 +537,18 @@ cuts. Private433 keeps its original cut. Calibrated native owner diagnostics and
 original failed checks remain separate; actual-tail integration is pending.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
+I89 carries authenticated nonstatic captured or compatibly bound user-method
+Closures through warm by-value/reference THROW and fresh initialization. The
+existing actual Gen/resumer/current proof binds the live Closure and receiver;
+cache, input and phase filters retain their separate contracts. Native first-class,
+fromCallable/bindTo and array captures retain Closure/This through CLOSED, then
+release Closure/receiver before the cache. Four native/model originals agree at
+distinct cuts; five reached fronts pass 632 custom/657 reported checks.
+Private433 retains its initial cut; original failures keep zero credit and actual-tail
+integration remains pending. Wider binding, APIs, delegation, collection and
+lifecycle combinations remain partial.
+[Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

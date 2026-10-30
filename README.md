@@ -6664,6 +6664,13 @@ method. Four native/model originals agree and four reached fronts pass 439 custo
 459 reported checks at distinct cuts. Private433 keeps its original cut;
 original failures and diagnostic keep zero credit, with actual-tail integration pending.
 [Raw cache review](coverage/semantics/generator-raw-method-cache-review.json).
+
+I89 reuses actual selected-method Closure authority for nonstatic warm/fresh
+THROW across Fibers. The VM owns the Closure and borrows its receiver; closed
+Generators retain both until Closure-before-cache storage release. Four native/model
+originals agree at distinct cuts; five reached fronts pass 632 custom/657 reported
+checks. Private433 retains its initial cut; original failures keep zero credit and
+actual-tail integration and wider contexts remain pending. [Captured THROW review](coverage/semantics/generator-captured-method-throw-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
