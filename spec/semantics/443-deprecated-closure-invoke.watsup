@@ -275,7 +275,7 @@ def $tick_invoke_context(S, poperand*) = S[.CURRENT = (pcallcontext[.WRAPPER = (
   -- if S.COMPLETION = NORMAL
   -- if $tick_invoke_tag(pcallcontext.TARGET)
 def $tick_invoke_context(S, poperand*) = S -- otherwise
-def $tick_invoke_enter(S, ptickdispatch, ptask_tail*) = $call_arity($tick_invoke_context($target_after_enter($call_enter(S[.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*], pfunction, ptickdispatch.SENT, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE), ptickentry.ENTRY.TARGET), ptickdispatch.SENT), pfunction, |ptickdispatch.SENT|, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE)
+def $tick_invoke_enter(S, ptickdispatch, ptask_tail*) = $call_entry_ready($tick_invoke_context($target_after_enter($call_enter(S[.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*], pfunction, ptickdispatch.SENT, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE), ptickentry.ENTRY.TARGET), ptickdispatch.SENT), pfunction, |ptickdispatch.SENT|, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
   -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
 
