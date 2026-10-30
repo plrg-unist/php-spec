@@ -15,7 +15,6 @@ dec $fake_bind_history_source(pstate, nat) : pstate
 dec $fake_bind_history_nodes(pstate, nat, pclosurescope?) : pnode*
 dec $fake_bind_source_valid(pstate, pboundfake) : bool
 dec $fake_bind_compatible(pstate, nat, pbindscope) : bool
-dec $bound_fake_valid(pstate, nat) : bool
 dec $bound_fake_receiver_valid(pstate, pboundfake) : bool
 dec $bind_is_instance(pstate, nat) : bool
 dec $fake_bind_getter(pstate, nat) : (nat, pgettermethod, text)?
@@ -458,13 +457,37 @@ def $bound_fake_scope_valid(S, pboundfake) = true
   -- if pboundfake.SCOPE = BIND_INTERNAL ($ptascii("Closure"))
   -- if pboundfake.RECEIVER =/= eps
 def $bound_fake_scope_valid(S, pboundfake) = false -- otherwise
+;; Closure::call preserves fake method identity and its shared static table.
+;; Unlike bindTo, its new receiver must have the exact declaring class.
+def $closure_call_fake_method(S, n, pfunction) = true
+  -- if $fake_bind_object(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+  -- if $function_generator(S, pfunction)
+def $closure_call_fake_method(S, n, pfunction) = false -- otherwise
+def $closure_call_fake_copy_binding(S, pboundfake) = true
+  -- if $closure_call_copy_site(S, pboundfake.SITE)
+  -- if $fake_bind_source_valid(S, pboundfake)
+  -- if S_history = $fake_bind_history(S, pboundfake)
+  -- if $target_function(S_history, CLOSURE_TARGET pboundfake.SOURCE) = (pfunction)
+  -- if $closure_call_fake_method(S_history, pboundfake.SOURCE, pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pboundfake.SCOPE = BIND_CLASS pmethoddesc.OWNER
+  -- if pboundfake.CALLED = pboundfake.SCOPE
+  -- if pboundfake.RECEIVER = (n_receiver)
+  -- if $(n_receiver < |S.OBJECTS|) /\ (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_receiver] = INSTANCE pmethoddesc.OWNER
+  -- if $method_capture_class_valid(S, (pmethoddesc.OWNER))
+  -- if $class_links_valid(S)
+def $closure_call_fake_copy_binding(S, pboundfake) = false -- otherwise
 def $bound_fake_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
   -- if $(pboundfake.SOURCE < n)
   -- if $fake_bind_source_valid(S, pboundfake)
-  -- if $closure_binding_api_site(S, pboundfake.SITE)
+  -- if $closure_binding_api_site(S, pboundfake.SITE) \/ $closure_call_fake_copy_binding(S, pboundfake)
   -- if $bound_fake_scope_valid(S, pboundfake)
   -- if $bound_fake_receiver_valid(S, pboundfake)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
