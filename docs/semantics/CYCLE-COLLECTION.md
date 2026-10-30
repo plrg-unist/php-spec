@@ -354,6 +354,26 @@ the ordinary `stdClass`; the case remains absent while its cache owner is one.
 Forged case slots fail buffer validity. See the
 [enum collectability review](../../coverage/semantics/gc-enum-collectability-review.json).
 
+`zend_create_fake_closure` marks a receiverless fake Closure as
+`GC_NOT_COLLECTABLE` at birth. The model records that flag for the implemented
+named, intrinsic, method, constant, fromCallable and Fiber producers. Original
+static captures skip possible-root buffering; bound captures, real Closures,
+clones and bind copies retain ordinary eligibility. The flag survives an
+identity conversion and trait-cache memory transfer, but is not copied to a
+new clone or bind object. Fiber static captures have no receiver edge even when
+selected through a Fiber object. Graph traversal and owner counts are unchanged.
+See the [fake Closure GC review](../../coverage/semantics/gc-fake-closure-collectability-review.json).
+
+A direct source-selected call through a plain childless real Closure may own a
+materialized collector callback. Its current call context and global
+`$collector` cell root the Closure; the active GC caller receipt admits that
+childless object to the ordinary graph check without admitting unrelated
+Closures or changing the physical owner/count walk. The GC body site and frozen
+count image still require their existing authority checks. This route agrees
+with PHP on a held/drop sibling graph with destructor counts 3 and 3. Explicit
+`->__invoke`, pipe, captured/wrapped Closure and wider collector contexts remain
+outside this cut. See the [Closure caller review](../../coverage/semantics/gc-closure-caller-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

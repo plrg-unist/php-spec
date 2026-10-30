@@ -17,8 +17,10 @@ def $intrinsic_lookup_result(eps, (preqbytes_fallback)) = $intrinsic_named(preqb
 def $intrinsic_lookup_result(eps, eps) = eps
 def $intrinsic_lookup(preqbytes, preqbytes_fallback?) = $intrinsic_lookup_result($intrinsic_named(preqbytes), preqbytes_fallback?)
 
-def $intrinsic_firstclass(S, pintrinsic) = S[.OBJECTS = S.OBJECTS ++ [INTRINSICCLOSURE pintrinsic]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $intrinsic_closure_new(pstate, pintrinsic, bool) : pstate
+def $intrinsic_closure_new(S, pintrinsic, b_birth) = S[.GC = $fake_gc_birth(S.GC, n, b_birth)][.OBJECTS = S.OBJECTS ++ [INTRINSICCLOSURE pintrinsic]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n = |S.OBJECTS|
+def $intrinsic_firstclass(S, pintrinsic) = $intrinsic_closure_new(S, pintrinsic, true)
 def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
 def $closure_callable(S, n) = true
   -- if $(n < |S.OBJECTS|)

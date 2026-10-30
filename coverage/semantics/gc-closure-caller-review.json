@@ -1,0 +1,38 @@
+{
+  "scope": "GC10: canonical materialized destructor collection from a direct plain childless real-Closure caller; the active caller Closure is a live ordinary-graph root, not a white candidate.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc09_base": "e4fe31af82178d291c5ecc2b82f7f21d23c1d5bb",
+    "native_source": "e65834aa7ae8e0e1369ee98b51df25755307a5cb",
+    "direct_caller": "868dc09446a9d743932c399027d1cb21a32e05b8",
+    "fixture_recorder": "51a51f191a21032e8a8e533a332c8dad4e8ee392",
+    "ordinary_caller": "b01ac98f6b5918eeedd267f46800720498240dd5",
+    "ordinary_caller_diff_sha256": "e1b872dfbc3ad31aa33d74d323ff1ecba72ece10b4bce53ce382750ab1b5034e"
+  },
+  "source_sha256": "4a80b8bbcf250c9c27b08ef8893e565acee0f2909b6317a972fc55f36274f47a",
+  "validation": {
+    "native_and_model": "The unchanged original source matches PHP byte for byte at clean b01: P|0|D|3|split|0|H|3|dead|0|END, exit 0 and empty stderr. Native and model reports record stable inputs/HEAD, no timeout and fully reaped groups.",
+    "prebegin": "A strict 23-check reached diagnostic at clean 51a proves the direct raw Closure context and body site, no child edges, and that only the live Closure prevents the old all-allocation ordinary predicate.",
+    "reached": "One strict source-reached group passes 87 reported assertions at clean b01: current Closure target and saved global cell are real roots; the held/drop siblings and destructor count image have their actual graph roles; absent ACTIVE, erased CALLER, unrelated Closure, wrong site/target and erased count image are refused.",
+    "strict": "Private 432-module strict SL compilation passes at the dirty 51a semantic diff with true newline, empty stderr, stable inputs/HEAD and full process-group reap. Its diff SHA equals the committed 51a-to-b01 301 diff exactly.",
+    "zero_credit": "The pre-edit and first direct-caller-only model runs refuse cached ordinary property-table collection after P|0|; neither is a source agreement. The first reached seek failed before its assertions and has zero reached credit. A duplicate spec/php strict launcher failed before evaluation and has zero compilation credit; only its corrected strict432 command is counted. No GC07/08/09 accepted source or state was replayed.",
+    "actual_joined": "One strict SL compilation of the actual 433-module manifest passes at clean e26da549e over exact canonical 6c9e0e507: true newline, empty stderr, exit 0, stable inputs/HEAD and fully reaped CPU5 group. Only report pointer and concise progress prose follow this tested cut."
+  },
+  "reports": {
+    "gc-closure-caller-10-author/packet1/native-report.json": "bb741625b54c3278445b2e1eb65dfb1b8e895fe042105a2fec6de9737747fc03",
+    "gc-closure-caller-10-author/packet1/model-real-closure-caller-report.json": "151d8a081d45762026fc29cf7b0c3cb14d1a12471815b04f267e73f506a06fa9",
+    "gc-closure-caller-10-author/packet2/strict/report.json": "c3343e9c5918f42bc304035277dea72ddf105885961a3c83afe5b76fb3b91e03",
+    "gc-closure-caller-10-author/packet2/strict-corrected/report.json": "592ae732ff03f960f929dddea6a0b0cf12e2a0d9ef29bbd4418128077dc65456",
+    "gc-closure-caller-10-author/packet3/initial-state-failure/report.json": "26ee3f58c8c85d4b6d55305de44e9c48bc8d9ec103a423bcb998b1a07ed4e1be",
+    "gc-closure-caller-10-author/packet3/post-edit-source/model-real-closure-caller-report.json": "291ecb0836d80abfa140eaad9319c85b863fb5e33d37c391c915e1d165e07e19",
+    "gc-closure-caller-10-author/packet3/prebegin-diagnostic-result/report.json": "965dd00c73a0f7f692ed70535d40754742aea8ba76504ed4d32e883e47972f8d",
+    "gc-closure-caller-10-author/packet4/strict/report.json": "ac5025fdfd795c288af4140aa5e094f170f3622d99b4f3e3b1ff538fd341413b",
+    "gc-closure-caller-10-author/packet4/post-edit-source/model-real-closure-caller-report.json": "5d89e4e2a355d14a00d87a36e64aad72fad8acba66c9f9d43e0eed2c35d7af61",
+    "gc-closure-caller-10-author/packet4/reached/report.json": "7d4387b9e9016e9add2b205c0126b840e214739b24106ed75159b955bd102449",
+    "gc-closure-caller-10-join/strict433/report.json": "8eca0034aca02e616497db4c1e0c64b0ecbf7b264e281d44c21f7e4155b3c3a6"
+  },
+  "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean b01. Actual-tail semantic/seam CLEAR at e26 preserves OB444/GC09 collector behavior and the current COMP159 public/dynamic cast and comparison paths; joined433 at e26 passes.",
+  "limits": "The admitted caller is a raw childless REALCLOSURE selected at a direct dynamic function-call site. Captured or wrapped bodies, receiver-bearing closures, explicit __invoke and pipe calls, Fiber/worker/residual/reentry contexts and wider materialized graph shapes retain their existing fences. Source-shape selection does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-closure-caller-10-author. The single original source is tests/semantics/gc_closure_caller_source.php; the focused model and reached fixtures are gc_closure_caller_sources.py and gc_closure_caller_state.py. No bulky artifacts are in Git."
+}

@@ -151,7 +151,36 @@ The original NORMAL/EXIT completion is not restored after a fatal.
 records four exact originals, four reached groups/169 checks and separate affected
 FINAL fronts/110 checks. The older
 [OB02 cut](../../coverage/semantics/output-final-throw-review.json) retains four
-originals and three reached groups/131 checks without renewal. Selected exception
-handlers, previous chains/source overrides or effectful rendering, late `ob_start`
-and reentrant/abrupt raw-owner deactivation remain required. The original timeout,
+originals and three reached groups/131 checks without renewal. Wider previous
+chains/source overrides or effectful rendering, late `ob_start` and
+reentrant/abrupt raw-owner deactivation remain required. The original timeout,
 Unsupported, fixture and interpreter failures keep zero agreement credit.
+
+
+OB04 reuses the authenticated exception API cursor from modules 222/442 during a
+FINAL throw.
+Normal handling ignores and destroys the handler return, then releases the
+original Throwable before restoring the raw registration. Output remains running
+through that cleanup. The original FINAL return stays undefined, so live bytes
+forward through the real lower stack without a produced-output deprecation.
+The new marker binds its exact input carrier, phase, value and drain tail.
+
+A handler-body, ignored-return destructor, original trace-child destructor or
+pre-entry Deprecated-warning throw captures the actual FINAL tail before terminal
+unwinding erases it. Existing270 retains the real original argument, error callback
+and destructor C owners; documentary descriptors add no roots. A fresh default
+fatal precedes raw-zoh deactivation. An interrupted explicit release also keeps its
+occupied, nontraversable GC slot through the authenticated abandoned HANDLE tail.
+
+After normal drain or fatal deactivation, module 444 computes fast executor storage effects
+in a local reference-count graph, following real object-store handles backwards.
+Standard free hooks gain no shield; retained Closures are forcibly freed and can
+attempt an uncalled public destructor after PHP execution is disabled. Its core
+fatal escapes `do_cli` before the outer CLI return assignment, preserving process
+status0. The terminal machine retains its last valid heap snapshot. Nonfast
+`USE_ZEND_ALLOC` modes, other internal hooks, weak flags and late visibility warnings
+remain explicit dependencies; request facts are retained and the mode check uses
+the first environment duplicate and signed decimal prefix. The
+[OB04 ledger](../../coverage/semantics/output-final-exception-handler-review.json)
+records eleven exact originals and eight reached groups/465 checks, including a
+separate nonfast native control with no agreement credit.

@@ -42,7 +42,7 @@ def $task_nodes(FIBER_ARRAY_CONVERT pfiberarray) = $exit_owner_nodes($fiber_arra
 def $call_task_valid(S, FIBER_ARRAY_CONVERT pfiberarray) = $fiber_array_convert_valid(S, pfiberarray)
 def $fiber_marker(FIBER_ARRAY_CONVERT pfiberarray) = true
 def $generator_internal_task(FIBER_ARRAY_CONVERT pfiberarray) = true
-rule PhpStep/fiber-array-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/fiber-array-convert: S ~> S[.GC = $fake_gc_birth(S.GC, n, $fiber_static(pfibercapture.KIND))][.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (FIBER_ARRAY_CONVERT pfiberarray) :: ptask_tail*
   -- if $fiber_array_convert_valid(S, pfiberarray)
   -- if n = |S.OBJECTS|

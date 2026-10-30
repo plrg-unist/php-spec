@@ -204,6 +204,7 @@ dec $generator_creation_target(pstate, pcalltarget, porigin?) : bool
 dec $generator_creation_method(pstate, porigin, porigin?) : bool
 dec $generator_creation_method_site(pcnode?) : bool
 dec $generator_creation_object_method_target(pcalltarget) : bool
+dec $generator_implicit_invoke_target(pstate, pcalltarget, porigin) : bool
 dec $generator_creation_method_source(pstate, pcalltarget, porigin) : bool
 dec $generator_creation_required(pstate, pcallcontext) : bool
 dec $generator_factory_keyword(pstate, porigin, phpType19) : bool
@@ -333,7 +334,7 @@ rule PhpStep/generator-create-scope-unsupported: S ~> S[.TODO = eps][.COMPLETION
 def $generator_creation_supported(S, pcallcontext) = (~$autoload_context_kind(S, pcallcontext) /\ ($generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE) \/ $access_generator_creation(S, pcallcontext)))
 def $generator_creation_target(S, porigin, porigin_site?) = $call_selected_valid(S, porigin, porigin_site?)
 def $generator_creation_target(S, CLOSURE_TARGET n, porigin_site?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin_site?)
-def $generator_creation_target(S, METHOD_TARGET n porigin, (porigin_site)) = ($generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, METHOD_TARGET n porigin, porigin_site) /\ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, METHOD_TARGET n porigin, porigin_site))
+def $generator_creation_target(S, METHOD_TARGET n porigin, (porigin_site)) = ((((HOBJECT n) <- S.ALLOCATIONS) /\ $generator_implicit_invoke_target(S, METHOD_TARGET n porigin, porigin_site)) \/ $generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, METHOD_TARGET n porigin, porigin_site) /\ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, METHOD_TARGET n porigin, porigin_site))
 def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, (porigin_site)) = ($generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) /\ $generator_creation_method_live_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site))
 def $generator_creation_target(S, METHOD_TARGET n porigin, eps) = false
 def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, eps) = false
@@ -360,6 +361,20 @@ def $generator_creation_method_site(pcnode?) = false -- otherwise
 def $generator_creation_object_method_target(METHOD_TARGET n porigin) = true
 def $generator_creation_object_method_target(STATIC_METHOD_TARGET porigin_class porigin) = true
 def $generator_creation_object_method_target(pcalltarget) = false -- otherwise
+;; Bare object calls select the runtime __invoke, independently of lexical
+;; private lookup. A retired factory receiver supplies only borrowed history.
+def $generator_implicit_invoke_target(S, METHOD_TARGET n porigin_function, porigin_site) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_called
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppcall_dynamic(expression)
+  -- if $dynamic_fixed_name(S, porigin_site) = eps
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $firstclass_evaluated(S, porigin_site)
+  -- if S_lookup = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]]
+  -- if $object_invoke_method(S_lookup, n) = (pmethoddesc)
+  -- if porigin_function = pmethoddesc.FUNCTION.ORIGIN
+def $generator_implicit_invoke_target(S, pcalltarget, porigin_site) = false -- otherwise
 ;; A creation certificate is minted from the real caller frame. Its targets
 ;; are immutable selection evidence and add no receiver or argument owners.
 def $generator_creation_required(S, pcallcontext) = true
@@ -445,6 +460,8 @@ def $generator_creator_method_site(S, porigin_site, ptbytes) = false -- otherwis
 
 ;; The old source scope is sufficient only when it selects this exact method.
 ;; Object history remains inspectable after its live allocation retires.
+def $generator_creation_method_source(S, METHOD_TARGET n porigin_method, porigin_site) = true
+  -- if $generator_implicit_invoke_target(S, METHOD_TARGET n porigin_method, porigin_site)
 def $generator_creation_method_source(S, METHOD_TARGET n porigin_method, porigin_site) = true
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC
@@ -631,6 +648,12 @@ def $generator_retained_scoped_target(S, SCOPED_TARGET porigin_requested porigin
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
 def $generator_retained_scoped_target(S, pcalltarget, pmethoddesc) = false -- otherwise
 
+def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = true
+  -- if pgeneratorcreation.CREATOR_TARGET = METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if $generator_implicit_invoke_target(S, pgeneratorcreation.CREATOR_TARGET, porigin_site)
+  -- if S.OBJECTS[n] = INSTANCE porigin_called
+  -- if pgeneratorcreation.CREATOR.CALLED_CLASS = (porigin_called)
 def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = true
   -- if pgeneratorcreation.CREATOR_TARGET = METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN
   -- if pgeneratorcreation.ANCESTORS = eps

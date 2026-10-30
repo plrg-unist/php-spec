@@ -262,7 +262,7 @@ def $method_capture_requested(S, STATIC_METHOD_TARGET porigin_class porigin_meth
 def $method_capture_requested(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector) = (porigin_requested)
 def $method_capture_requested(S, pcalltarget) = eps -- otherwise
 
-rule PhpStep/method-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [METHODCLOSURE pfunction.ORIGIN porigin_site porigin_requested $method_capture_current(S, porigin_site)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/method-convert: S ~> S[.GC = $fake_gc_birth(S.GC, n, $fake_gc_receiverless(n_receiver?))][.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [METHODCLOSURE pfunction.ORIGIN porigin_site porigin_requested $method_capture_current(S, porigin_site)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (METHOD_CONVERT pcalltarget porigin_site z) :: ptask_tail*
   -- if $call_task_valid(S, METHOD_CONVERT pcalltarget porigin_site z)
   -- if $target_function(S, pcalltarget) = (pfunction)

@@ -1,0 +1,289 @@
+{
+  "milestone": "OB04",
+  "status": "Validated and independently reviewed bounded milestone; core remains partial",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "zts": false,
+    "int_size": 8,
+    "oracle_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml_switch": "5.1.0",
+    "semantic_mode": "SL",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Selected FINAL exception callbacks reuse authenticated modules 222/442 weak API reception and module 270 cleanup. Normal return destroys ignored retval then original Throwable while output stays running; original FINAL retval remains UNDEF, so live bytes follow failure forwarding without a produced-output deprecation. Abrupt body, ignored-retval destructor, original-Throwable child destructor and pre-entry Deprecated-warning throws preserve only their actual C owners before fresh fatal reporting and raw callback deactivation. A terminal local heap projection models retained Closure fast-free effects after executor inactivity, including exact corefatal/CLI0; terminal memory stays a valid pre-free snapshot.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/301-cycle-collection.watsup",
+    "spec/semantics/391-output-buffers.watsup",
+    "spec/semantics/441-output-finalization.watsup",
+    "spec/semantics/442-deprecated-api-callbacks.watsup",
+    "spec/semantics/444-executor-final-free.watsup"
+  ],
+  "source_outcomes": {
+    "total": 11,
+    "exact": 11,
+    "cuts": [
+      {
+        "id": "false",
+        "report": "ob04-author-native/model-false-bdb36cc2d/report.json",
+        "sha256": "9610e8b38c005b17b45f9bc3bb57a4dae77fd7440e984298994cabe2cc641dc9",
+        "head": "bdb36cc2dab5e36db6f85ecec3ec0b91a58647c9",
+        "stdout": "B|T|H:final-primary|P|A|",
+        "exit": 0,
+        "fatal_reports": 0
+      },
+      {
+        "id": "result",
+        "report": "ob04-author-native/model-result-a6098376b/report.json",
+        "sha256": "9c2fc169ff91995a21e528ba6c4ea045709ba2d1725fb71638384ef860dd1533",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "B|T|H:final-primary|R|P|A|",
+        "exit": 0,
+        "fatal_reports": 0
+      },
+      {
+        "id": "peer",
+        "report": "ob04-author-native/model-peer-a6098376b/report.json",
+        "sha256": "3dc5554011d2ed8f90f1bb50f4d2fa241d355028f95a4b988fc1eb8aa4359ebb",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "B|T|H:1|C|R|P|A|",
+        "exit": 0,
+        "fatal_reports": 0
+      },
+      {
+        "id": "lower_peer",
+        "report": "ob04-author-native/model-lower-peer-a6098376b/report.json",
+        "sha256": "19db2d67006e4bad915994aa85506b4c010c9df974fda04498069231bccaea23",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "L[B|T|H:1|P|A|]",
+        "exit": 0,
+        "fatal_reports": 0
+      },
+      {
+        "id": "throw",
+        "report": "ob04-author-native/model-throw-a6098376b/report.json",
+        "sha256": "737970a65d9c5c2606f9a3aada74c264d0e1061f3fd1597abe8b9763ce05cadd",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "A|",
+        "exit": 255,
+        "fatal_reports": 1
+      },
+      {
+        "id": "result_throw",
+        "report": "ob04-author-native/model-result-throw-a6098376b/report.json",
+        "sha256": "c6f58e6636a1e141b5bc416c090bae4cf62d11f21389309924ac797996de17dd",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "A|",
+        "exit": 255,
+        "fatal_reports": 1
+      },
+      {
+        "id": "warning_peer",
+        "report": "ob04-author-native/model-warning-peer-a6098376b/report.json",
+        "sha256": "620b6e6a6c0c1e7cbaaa57cb185270d7854bcdeaf216e490aa9843e62ca00a3e",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "A|",
+        "exit": 255,
+        "fatal_reports": 1
+      },
+      {
+        "id": "owner_peer",
+        "report": "ob04-author-native/model-owner-peer-a6098376b/report.json",
+        "sha256": "e9aa196669082f2a97d0b1b8508cd838fbcfd22ff82e2c68c77a76903896f477",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "A:live|",
+        "exit": 255,
+        "fatal_reports": 1
+      },
+      {
+        "id": "callback_owner_peer",
+        "report": "ob04-author-native/model-callback-owner-peer-a6098376b/report.json",
+        "sha256": "904d702336593a83b9cbda61d9dc96277dec73a29940cbf70fafb6a5b730a0a8",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "A:live:live|",
+        "exit": 0,
+        "fatal_reports": 2
+      },
+      {
+        "id": "original_throw_peer",
+        "report": "ob04-author-native/model-original-throw-peer-a6098376b/report.json",
+        "sha256": "8f116205fd4091dfab6d987b7be066029a79103a1a2adbe0548a27a99fa39fc1",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "A:throwing|",
+        "exit": 255,
+        "fatal_reports": 1
+      },
+      {
+        "id": "normal_late_peer",
+        "report": "ob04-author-native/model-normal-late-peer-a6098376b/report.json",
+        "sha256": "19f11344c8e0b26faa17ae606c1defed7ba1d98cacb3d06578c68758c3ca9b3d",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "stdout": "B|T|H|P|A:live|",
+        "exit": 0,
+        "fatal_reports": 1
+      }
+    ],
+    "native_reports": [
+      "ob04-author-native/native6-frozen/report.json",
+      "ob04-author-native/native-warning-793bcac78/report.json",
+      "ob04-author-native/native-owner-a2191c645/report.json",
+      "ob04-author-native/native-callback-owner-frozen/report.json",
+      "ob04-author-native/native-extras-bdb36cc2d/report.json"
+    ],
+    "callback_owner_adjudication": "ob04-author-native/callback-owner-observation-adjudication.json",
+    "note": "The original callback-owner forecast255 failed; recorded stdout, both fatal reports and actual CLI0 were independently explained from the pinned sources and then compared exactly by the new model actor. The failed forecast keeps zero packet credit; its raw tuple was not replayed."
+  },
+  "reached": {
+    "groups": 8,
+    "assertions": 465,
+    "independent_assertions": 303,
+    "author_assertions": 162,
+    "cuts": [
+      {
+        "id": "peer-handler-return-and-original-retire-before-undefined-result",
+        "report": "ob04-author-native/front-peer-a6098376b/raw/report.json",
+        "sha256": "4ac601be938e284d04d2f899b15aa2baa423b2db9dbfb1bf432038e6a0a60c5b",
+        "head": "a6098376b4c1978b0c65b34de4cbecb06a7ccb6f",
+        "assertions": 53
+      },
+      {
+        "id": "lower-user-route-keeps-raw-top-through-forwarding",
+        "report": "ob04-author-native/front-lower-a26bb5eb0/raw/report.json",
+        "sha256": "f61a6980b98064d355ecad47a9eeed916ebdd6c29555778e8fb69fbf8d367bc5",
+        "head": "a26bb5eb0661ab43cd3de38b8d165e4893395228",
+        "assertions": 42
+      },
+      {
+        "id": "warning-abort-retains-the-real-original-c-owner",
+        "report": "ob04-author-native/front-owner-a26bb5eb0/raw/report.json",
+        "sha256": "2058c29ef9903f0df11b4713f6db7b79c86e1801abc46e83cd62f1b79e1325d7",
+        "head": "a26bb5eb0661ab43cd3de38b8d165e4893395228",
+        "assertions": 47
+      },
+      {
+        "id": "warning-abort-retains-the-callback-c-owner-and-capture",
+        "report": "ob04-author-native/front-callback-owner-a26bb5eb0/raw/report.json",
+        "sha256": "53eabb26e851d1c473e6ce6768ae90deb76ee27e60dac0bdd598b1b643f791d8",
+        "head": "a26bb5eb0661ab43cd3de38b8d165e4893395228",
+        "assertions": 73
+      },
+      {
+        "id": "original-release-dtor-enters-after-the-c-owner-decrement",
+        "report": "ob04-author-native/front-original-release-ad5ef196a/raw/report.json",
+        "sha256": "3ea05ce1ad8a99b0d3feabd85801e1fa61aa147c2b6fff414dd527a8845bb475",
+        "head": "ad5ef196a3fbbccd8e859c2a86a291b07b905dec",
+        "assertions": 88
+      },
+      {
+        "id": "terminal-allocator-mode-keeps-request-data-and-first-duplicate",
+        "report": "ob04-author-native/front-allocator-mode-adb224d11/raw/report.json",
+        "sha256": "b551227ac8aaa10b4e2e279d483aff15df0f7808d5ac92678ce1128a669174de",
+        "head": "adb224d115514a97d72b17f634a67ed898898d08",
+        "assertions": 58
+      },
+      {
+        "id": "body-throw-keeps-original-c-local-through-raw-release",
+        "report": "ob04-author-native/front-body-ad5ef196a/raw/report.json",
+        "sha256": "c174719cc7e8fc3f6b426d72c4fe0fde0644c14e5bb5b90cf31556f34846852e",
+        "head": "ad5ef196a3fbbccd8e859c2a86a291b07b905dec",
+        "assertions": 48
+      },
+      {
+        "id": "ignored-return-dtor-bailout-keeps-both-real-receivers",
+        "report": "ob04-author-native/front-retval-ad5ef196a/raw/report.json",
+        "sha256": "2251a0dfef34484c369face375cdd734df8cd96af093b6cfb52953e5bc8062db",
+        "head": "ad5ef196a3fbbccd8e859c2a86a291b07b905dec",
+        "assertions": 56
+      }
+    ]
+  },
+  "strict": {
+    "report": "ob04-author-native/strict432-ad5ef196a/report.json",
+    "sha256": "6622c62624a399a68ee959fc85bae07a5fc6ddae33ca9f6530fb4e9d2c0a575c",
+    "head": "ad5ef196a3fbbccd8e859c2a86a291b07b905dec",
+    "module_count": 432,
+    "mode": "SL strict",
+    "passed": true
+  },
+  "distinct_profile_control": {
+    "report": "ob04-author-native/native-slow-mode-15ac11339/report.json",
+    "sha256": "a14d251862156206c44303183f4c39625b850486f673034e9fa9b86e3936c3f5",
+    "head": "15ac11339ad1cfab404cc0c0177f44d536ba82ee",
+    "environment": {
+      "USE_ZEND_ALLOC": "0"
+    },
+    "source": "unchanged callback_owner_peer bytes in a distinct pre-startup environment",
+    "stdout": "A:live:live|",
+    "exit": 0,
+    "late_fatal": "CallbackTraceOwnerOB04::__destruct",
+    "model_boundary": "nonfast executor table and storage release",
+    "agreement_credit": 0,
+    "note": "Nonfast executor shutdown releases standard Throwable storage before the retained Closure, unlike the default fast mode. Derived mode checks preserve request facts and use first getenv duplicate plus signed decimal-prefix nonzero; no global environment-name ban."
+  },
+  "authority": [
+    "vendor/php-src/Zend/zend_exceptions.c::zend_throw_exception_internal/zend_exception_error",
+    "vendor/php-src/Zend/zend.c::zend_user_exception_handler/zend_error_zstr_at",
+    "vendor/php-src/Zend/zend_execute_API.c::zend_call_function/zend_call_known_function/zend_shutdown_executor_values",
+    "vendor/php-src/Zend/zend_objects_API.c::zend_objects_store_del/zend_objects_store_free_object_storage",
+    "vendor/php-src/Zend/zend_objects.c::zend_objects_destroy_object",
+    "vendor/php-src/Zend/zend_closures.c::zend_closure_free_storage",
+    "vendor/php-src/Zend/zend_alloc.c::alloc_globals_ctor and Zend/zend_long.h::ZEND_ATOL",
+    "vendor/php-src/main/output.c::php_output_handler_op/php_output_deactivate",
+    "vendor/php-src/sapi/cli/php_cli.c::do_cli/main"
+  ],
+  "process_discipline": "One pair actor at a time, whole descendants pinned to explicit CPU3/4/5 loans. Source comparisons and all reached fronts use CPU5; the focused retired-GC diagnostic used CPU3. Every authoritative actor records stable HEAD/inputs and full process/group reap. Model fuel1000, cold initialization capped at60s and evaluation at120s; reached SL cap300s; standalone strict30s. Native facts retain exact profile, original bytes/file/cwd, fixed clock/environment, both raw streams and exit. No accepted OB01/02/03 native/source or whole campaigns renewed.",
+  "compatibility": "Default source ENV has no USE_ZEND_ALLOC; existing reached sources initialize without REQUEST. The later mode predicate is true on those exact inputs and the factored terminal guard is unchanged, so their original cuts remain applicable. The301 addition changes only physical HANDLE accounting for actual abandoned destructor RELEASE tails, without owners, slot mutation, GC plans or runtime transitions; the affected source10 front is rerun at ad5ef with88 checks. The final c_string declaring-owner formatter matches Zend %s and is identity on admitted named OWNERS: current anonymous_member excludes direct magic destructor bodies, and inherited destructor OWNERS are named. Package prose, inventory and test wiring do not renew execution credit.",
+  "preserved_zero_credit": [
+    {
+      "report": "ob04-author-native/native-callback-owner-frozen/report.json",
+      "kind": "Incorrect exit255 native forecast; actual CLI0 and additional inactive-executor fatal retained unchanged"
+    },
+    {
+      "report": "ob04-author-native/strict432-f4de63292/report.json",
+      "kind": "Initial local graph scalar/iteration binder collision"
+    },
+    {
+      "report": "ob04-author-native/front-lower-a6098376b/report.json",
+      "kind": "Fixture comparison attempted to bind a handler inside conjunction"
+    },
+    {
+      "report": "ob04-author-native/front-allocator-mode-15ac11339/report.json",
+      "kind": "Fixture request ARGV sequence lacked record-field parentheses"
+    },
+    {
+      "report": "ob04-author-native/front-original-release-adb224d11/report.json",
+      "kind": "Whole reached front failed final descriptor validity because retired GC slot lost its actual abandoned HANDLE witness"
+    },
+    {
+      "report": "ob04-author-native/gc-retired-probe-adb224d11/report.json",
+      "kind": "Successful focused diagnostic isolates physical retired-slot count0; no additional source/group credit"
+    }
+  ],
+  "remaining": [
+    "Nonfast executor table/registry/storage retirement, wider internal free hooks, weak flags and late nonpublic destructor warnings.",
+    "Secondary previous chains, source Throwable overrides and effectful or Parse/CompileError rendering; wider reentrant C handler cleanup, callback exits and raw-owner deactivation effects.",
+    "Buffered stdout diagnostics and all V110/COMP123/paused holds in PROGRESS.md."
+  ],
+  "recovery": "Raw ../php-spec-evidence-archive/ob04-author-native retains original packets, stdout/stderr, snapshots, binaries/input hashes and commands. Maintained source/protocol files are in Git; the external archive is not a build input.",
+  "integration": {
+    "base": "1013314829265f90147b00640a08936dc16ab4c7",
+    "candidate": "14abf05ecb502403208d12c6f131ddda201f92c4",
+    "status": "Joined strict433 passed; accepted source/state cuts retain their original identities",
+    "strict": {
+      "report": "ob04-author-native/joined-14abf05ec/report.json",
+      "sha256": "63931af6d0a9fbf6d03c1653ed4ab215c11c11725b0ae024a12794f20286cd45",
+      "module_count": 433,
+      "mode": "SL strict",
+      "exit": 0,
+      "stderr_bytes": 0,
+      "seconds": 11.562921861186624,
+      "cpu": 5,
+      "head_stable": true,
+      "inputs_stable": true,
+      "process_group_reaped": true
+    },
+    "composition": "30 is exact canonical plus OUTPUT_FINAL_EXCEPTION. 301 preserves canonical GC08 enum exclusion, NOGC/BASE allocation flags and caller predicates, adding only abandoned destructor tail HANDLE counting. 39/257/270/443 are canonical-identical; 441/444 are private-package-identical. 442 retains the actual shared API cursors; canonical443 explicit wrapper paths are inactive for the internal EH/error callbacks. Sources contain no enums, WeakReferences or active collector calls; the new canonical guards are neutral. Independent actual-union review found no extra affected actor necessary."
+  }
+}

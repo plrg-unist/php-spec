@@ -52,6 +52,11 @@ a fresh process, and an explicit environment/working directory for each test.
 Record loaded extensions: availability in the oracle does not admit their APIs.
 Reviewed profile changes must be supplied consistently to both executions.
 
+The represented FINAL executor-free phase follows default fast shutdown. An
+explicit pre-startup `USE_ZEND_ALLOC` value with a zero/nonnumeric decimal prefix
+selects a distinct, still Unsupported table/storage cleanup path; the request
+input remains available. See the [FINAL output contract](OUTPUT-HANDLERS.md).
+
 Compare exact stdout and stderr bytes and process status. Also retain semantic
 events (output bytes, diagnostic severity/message/location, external requests and
 responses), final completion kind and structured throwable/fatal information.
