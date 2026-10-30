@@ -237,15 +237,16 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
-CLASS155 privately validates anonymous array argument unpack through the ordinary
+CLASS155 admits anonymous array argument unpack through the ordinary
 source classifier, array prescan/COW and binder. Embedded aliases stay shared;
 direct slots promote only in the live table. Direct elements of value inputs use
 fresh cells when reference demand requires them; embedded aliases remain shared.
 Expanded names preserve holes/default reception and error priority;
 constructorless arrays use the existing dummy send frame. Seven originals agree,
-and 242 conditions pass (235 reached, seven derived guards), with private strict432.
+and 242 conditions pass (235 reached, seven derived guards), with private strict432
+and actual-tail joined strict433 at separate cuts.
 The original native5/old2 and separate literal/no-ctor natives retain their cuts;
-projection has no agreement credit. Actual-tail integration is pending.
+projection has no agreement credit.
 Traversable constructors, promotion/nonpublic modes and anonymous magic methods,
 especially direct `__destruct`, remain required class work.
 [Array-unpack review](coverage/semantics/anonymous-constructor-unpack-review.json).
@@ -352,7 +353,6 @@ cut keep zero credit.
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
-| CLASS155 | Private source7/state242/strict432 complete; actual-tail integration pending. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Published enum string callable-type validation; other callable APIs, pipe/default loading and wider backing contexts remain partial. |
 | A78 | Temporary factory Generator owning first option and scalar last cache; native four and old refusal frozen, implementation and private validation in progress. |
