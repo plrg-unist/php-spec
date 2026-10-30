@@ -419,7 +419,7 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
   -- if $node_children(S, HOBJECT n) = eps
   -- if (HOBJECT n) <- $machine_roots(S)
-;; An unbuffered childless stdClass leaf can be the active caller's sole capture.
+;; A childless stdClass leaf can be the active caller's sole capture.
 def $gc_ordinary_node(S, HOBJECT n) = true
   -- if S.GC.ACTIVE = (pgccall)
   -- if pgccall.CALLER = (pcallcontext)
@@ -431,7 +431,6 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if S.OBJECTS[n_token] = STDINSTANCE
   -- if $node_children(S, HOBJECT n) = [HOBJECT n_token]
   -- if $node_children(S, HOBJECT n_token) = eps
-  -- if ~((HOBJECT n_token) <- $gc_nodes(S.GC.BUFFER))
   -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
 def $gc_ordinary_nodes(S, eps) = true
