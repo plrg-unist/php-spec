@@ -301,12 +301,13 @@ def callback_checks(program,path):
         rows += table('S','n_'+node,node,['ppropertydesc_hole','ppropertydesc_value'])
         rows += [f'$object_table_item(S,INDIRECT n_{node} ppropertydesc_hole.KEY) = UNINITIALIZED']
     rows += slot('S','n_left','value_left','ppropertydesc_value','PROP_VALUE (DIRECT (POBJECT n_value))')
-    rows += slot('S','n_right','value_right','ppropertydesc_value','PROP_VALUE (DIRECT (PSTRING ($ptascii("x"))))') + [
+    rows += slot('S','n_right','value_right','ppropertydesc_value','PROP_VALUE (DIRECT pvalue_right)') + [
+        '$string_plain(pvalue_right) = PSTRING ($ptascii("x"))',
         '$aggregate_std_pair(S,n_left,n_right)',
         '~$aggregate_decl_pair(S,n_left,n_right)',
         '~$aggregate_backed_hook_rows(S,n_left,$object_table_slots_at(S,n_left))',
         '$aggregate_decl_has_initial($object_table_slots_at(S,n_left))',
-        '$value_order_effect(S,POBJECT n_value,PSTRING ($ptascii("x")),eps,z_S) = (S,ORDERSTRING paggregatecallback)',
+        '$value_order_effect(S,POBJECT n_value,pvalue_right,eps,z_S) = (S,ORDERSTRING paggregatecallback)',
         '$aggregate_std_cast_order(S,n_left,ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"',
         '$value_order_effect(S,POBJECT n_left,POBJECT n_right,eps,z_S) = (S,ORDERUNSUPPORTED "materialized-property Stringable comparison continuation")',
     ] + list(DERIVED)[1:] + [
