@@ -8,6 +8,15 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Published generated enum array captures now create internal Closures without
+retaining the input array or receiver, preserving selection through COW and
+callback rebinding. Four fresh originals agree and 123 state/guard conditions pass. Private
+compilation covers 432 modules; actual-tail compilation covers 433. Runtime array retirement, warm case
+receivers and cold class-name tables retain separate checks; literal inputs make
+no deallocation claim. Other consumers/loading/backing contexts and intrinsic
+fake-Closure GC09 policy remain partial.
+[Array-capture review](coverage/semantics/enum-array-capture-review.json).
+
 Published generated enum method strings now form first-class internal Closures.
 Real call ownership retains the selected target through argument clearing and
 Stringable callbacks, then releases the Closure after invocation. Four new
@@ -313,7 +322,7 @@ cut keep zero credit.
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
-| Enum M3/M4 | Generated array captures privately accepted: four exact new originals,123 state/guard conditions and private432 pass; actual-tail composition pending. Other consumers and backing/loading contexts remain partial; GC08 case-candidate exclusion is integrated and GC09 intrinsic policy remains separate. |
+| Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
 | A77 | Retained Generator owning ARRAY/INSTANCE option sends; four frozen originals and old refusal, implementation preparation. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
