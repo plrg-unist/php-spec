@@ -176,6 +176,17 @@ throwing value destructor with caller traces. Three full reached groups pass
 at separate cuts. Wider callback, reference-return and reentry histories remain partial.
 [Return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
 
+ATTR07 admits builtin literal/NULL NoDiscard and Deprecated on real Closure/arrow
+expressions. Checked keyword receipts preserve multiline names/lines; shared and
+snapshot captures survive handlers, warnings use selected/rebound scopes, and
+Closure calls borrow their bound receiver. Nine eligible originals agree (six
+normal, three static rejections); five reached groups pass 428 checks (422 reached,
+six derived), focused syntax11 and private strict432 pass. One unsafe `assert`
+reentrancy observation is a suspected native lifetime defect, preserved at zero
+credit with exact expired-before-copy refusal; the safe control keeps an external
+owner. General messages and wider consumers remain partial; actual-tail join is
+pending. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -282,7 +293,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 | --- | --- |
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
-| ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
+| ATTR07 | Real Closure/arrow builtin attributes validated privately; actual-parent composition pending. |
 | CLASS154 | Variadic reference constructor implementation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | GC08 | Enum possible-root admission fix. |
