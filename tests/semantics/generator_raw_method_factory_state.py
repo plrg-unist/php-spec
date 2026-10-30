@@ -65,7 +65,8 @@ S.OBJECTS[n_maker] = INSTANCE porigin_child
 $lookup(S.ENV, $ptascii("maker")) = eps
 $lookup(S.ENV, $ptascii("route")) = eps
 n_selection = 0
-S.ARRAYS[n_selection].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_maker)), ENTRY (KINT 1) (DIRECT (PSTRING $ptascii("stream")))]
+S.ARRAYS[n_selection].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_maker)), ENTRY (KINT 1) (DIRECT pvalue_method)]
+$string_bytes(pvalue_method) = ($ptascii("stream"))
 ~((HARRAY n_selection) <- S.ALLOCATIONS)
 $call_context_roots((pcallcontext_generator)) = [HOBJECT n_maker]
 $node_children(S, HOBJECT n_generator) = eps
@@ -196,7 +197,8 @@ S.OBJECTS[n_maker] = INSTANCE porigin_child
 $lookup(S.ENV, $ptascii("maker")) = eps
 $lookup(S.ENV, $ptascii("route")) = eps
 n_selection = 0
-S.ARRAYS[n_selection].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_maker)), ENTRY (KINT 1) (DIRECT (PSTRING $ptascii("make")))]
+S.ARRAYS[n_selection].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_maker)), ENTRY (KINT 1) (DIRECT pvalue_method)]
+$string_bytes(pvalue_method) = ($ptascii("make"))
 ~((HARRAY n_selection) <- S.ALLOCATIONS)
 $heap_owners($heap_graph(S), HARRAY n_selection) = 0
 $heap_owners($heap_graph(S), HOBJECT n_maker) = 1
@@ -233,7 +235,8 @@ $method_class_selected(S, porigin_child, $ptascii("make"), (porigin_base)) = (pm
 $effective_method(S, porigin_child, $ptascii("make"), |S.CLASSES|) = (pmethoddesc_other)
 pmethoddesc_other.FUNCTION.ORIGIN =/= pmethoddesc_factory.FUNCTION.ORIGIN
 n_selection = 0
-S.ARRAYS[n_selection].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_maker)), ENTRY (KINT 1) (DIRECT (PSTRING $ptascii("make")))]
+S.ARRAYS[n_selection].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_maker)), ENTRY (KINT 1) (DIRECT pvalue_method)]
+$string_bytes(pvalue_method) = ($ptascii("make"))
 ~((HARRAY n_selection) <- S.ALLOCATIONS)
 $heap_owners($heap_graph(S), HARRAY n_selection) = 0
 $heap_owners($heap_graph(S), HOBJECT n_maker) = 0
