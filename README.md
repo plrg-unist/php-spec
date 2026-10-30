@@ -819,6 +819,14 @@ the copied object dying before a saved catch and ARRAY 13 remaining in
 TypeError TraceArgs after a live COW change to 31. A still-owning final cell,
 typed cells and temporary producers remain separate.
 
+[Retained owning reference cells](coverage/semantics/config-generator-reference-owning-live-review.json)
+keep a finite quiet object or array in the final BYREF Generator cell while a
+retained global CV owns the Generator. The copied argument and current cell
+may diverge after COW. Four sources agree with PHP; reached proofs check a
+saved throw and TypeError TraceArgs, then quiet Generator/cell retirement on
+explicit unset. Typed/backed cells, aliases, temporary producers, effectful
+finalizers and sole-Generator cleanup remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
