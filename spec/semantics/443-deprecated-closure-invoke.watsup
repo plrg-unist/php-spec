@@ -24,7 +24,6 @@ def $wrapper_receiver_roots(pcallcontext) = [HOBJECT n]
 def $wrapper_receiver_roots(pcallcontext) = eps -- otherwise
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
-  -- if pcallcontext.WRAPPER =/= eps
 def $call_receiver_roots(pcallcontext) = eps -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
 ;; UNDEF/default handling uses a fake frame before zend_call_function adds its
 ;; inner Closure owner. HOLES is permanent source provenance, so the target
