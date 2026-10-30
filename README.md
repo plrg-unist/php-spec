@@ -6631,6 +6631,15 @@ real Generator frames and caches keep their values. Five originals agree with
 PHP; five reached fronts pass 442 custom/467 reported checks and private
 strict433 passes at its original cut. Actual-tail compilation remains pending.
 [Magic factory review](coverage/semantics/generator-magic-factory-review.json).
+
+I85 admits direct Generator-bodied magic handlers through the same selected
+source target. A real entry receipt follows fresh, resumed and closing frames;
+actual operation ownership prevents a same-function sibling from supplying it.
+The receipt owns no receiver or packed value. Five current originals agree with
+PHP; native observations and private strict433 retain their distinct cuts.
+Five reached fronts pass 444 custom/469 reported checks; actual-tail compilation
+remains pending.
+[Direct magic review](coverage/semantics/generator-direct-magic-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

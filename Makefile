@@ -687,6 +687,9 @@ test-semantics: build
 	python3 tests/semantics/generator_magic_factory_sources.py
 	python3 tests/semantics/generator_magic_factory_state.py
 	python3 tests/semantics/generator_magic_factory_review_state.py
+	python3 tests/semantics/generator_direct_magic_sources.py
+	python3 tests/semantics/generator_direct_magic_state.py
+	python3 tests/semantics/generator_direct_magic_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
