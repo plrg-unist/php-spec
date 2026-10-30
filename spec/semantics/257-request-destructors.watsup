@@ -51,7 +51,6 @@ def $gc_zero(S, H, pnode*) = $destruction_zero(H, pnode*) -- otherwise
 dec $gc_zero_graph(pstate, hgraph, pnode*) : pnode*
 def $gc_zero_graph(S, H, pnode*) = $gc_zero(S, H, pnode*) -- otherwise
 dec $destruction_release_walk(hgraph, pdestructionjob*, pnode*) : pnode*
-dec $destruction_values(pnode*) : pdestructionjob*
 dec $destruction_job_nodes(pdestructionjob*) : pnode*
 dec $destruction_free_job(pnode) : pdestructionjob*
 
@@ -123,7 +122,6 @@ dec $destructor_all(nat, nat) : nat*
 dec $destructor_begin(pstate) : pstate
 dec $destructor_startup_order(pstate) : bool
 dec $destructor_stop(pstate) : pstate
-dec $destructor_release_begin(pstate, pdestructionjob*) : pstate
 dec $destructor_release_replace(pstate, pdestructionrelease) : pstate
 dec $destructor_release_live(pstate, pdestructionrelease) : bool
 dec $destructor_release_valid(pstate, pdestructionrelease) : bool
@@ -160,7 +158,6 @@ dec $destructor_frame_begin(pstate, pstate) : pstate
 dec $destructor_frame_cleanup(pstate) : pstate
 dec $destructor_frame_order(pstate, pstate) : pnode*
 dec $destructor_unused_return(pstate) : bool
-dec $destructor_return_discarded(ptask*) : bool
 dec $destructor_constructor_return(pstate) : bool
 dec $destructor_constructor_marker(ptask*, nat) : bool
 dec $destructor_frame_valid(pstate, pdestructionframe) : bool

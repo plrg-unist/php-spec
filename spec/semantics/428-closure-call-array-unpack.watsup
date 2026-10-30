@@ -273,11 +273,13 @@ def $closure_call_pack_shape(psparam*, pnamedargs) = $closure_call_pack_shape_na
   -- if $closure_call_pack_shape_slots(psparam*, pnamedargs.SLOTS, 0, {SLOTS eps, NAMED eps}) = (pnamedargs_slots)
 def $closure_call_pack_shape(psparam*, pnamedargs) = eps -- otherwise
 def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])]
+  -- if ~$closure_call_copy_required(S, pfunction, pclosurecall)
   -- if pclosurecall.PACKS =/= eps
   -- if $closure_call_pack_named(pclosurecall.RAW)
   -- if S_entered = $target_after_enter($named_enter(S, pfunction, pclosurecall.SENT, (pclosurecall.SITE), pclosurecall.LINE), CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver)
   -- if S_entered.CURRENT = (pcallcontext)
 def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = $call_arity(S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])], pfunction, |$named_operands(pclosurecall.SENT.SLOTS)|, (pclosurecall.SITE), pclosurecall.LINE)
+  -- if ~$closure_call_copy_required(S, pfunction, pclosurecall)
   -- if pclosurecall.PACKS =/= eps
   -- if ~$closure_call_pack_named(pclosurecall.RAW)
   -- if S_entered = $target_after_enter($call_enter(S, pfunction, $named_operands(pclosurecall.SENT.SLOTS), (pclosurecall.SITE), pclosurecall.LINE), CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver)

@@ -358,6 +358,7 @@ dec $named_call_shape(pstate, pcalltarget, porigin?) : pnamedargs
 dec $magic_method_target(pcalltarget) : bool
 def $named_call_shape(S, pcalltarget_function, (porigin)) = $named_shape(pfunction.SIGNATURE.PARAMETERS, phpType7*, 0, {SLOTS eps, NAMED eps})
   -- if ~$closure_call_target(pcalltarget_function)
+  -- if ~$closure_call_copy_target(S, pcalltarget_function, (porigin))
   -- if ~$magic_method_target(pcalltarget_function)
   -- if $target_function(S, pcalltarget_function) = (pfunction)
   -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
@@ -397,6 +398,7 @@ def $named_source_valid(psparam*, phpType7*, n, b_named, pnamedargs) = false -- 
 
 def $named_call_valid(S, pcalltarget_function, (porigin)) = true
   -- if ~$closure_call_target(pcalltarget_function)
+  -- if ~$closure_call_copy_target(S, pcalltarget_function, (porigin))
   -- if ~$stringify_selected(S, pcalltarget_function, porigin)
   -- if ~$call_unpack_site(S, (porigin))
   -- if $target_function(S, pcalltarget_function) = (pfunction)

@@ -551,6 +551,7 @@ syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes
   | API_CALLABLE_RESULT papiquery nat
   | DEFAULT_STRING_RESULT pparameterstring | VARIADIC_STRING_RESULT pvariadicstring
   | CLOSURE_CALL_RESULT porigin int | CLOSURE_CALL_FORWARD pclosurecall nat pnamedargs nat
+  | CLOSURE_CALL_COPY_RESULT pclosurecall nat
   | FIBER_UNPACK_PREP nat? pfiberstart | FIBER_UNPACK_NEXT nat? pfiberstart poperand nat
   | FIBER_TRAVERSE_RESULT pfibertraversal text | FIBER_TRAVERSE_GENERATOR pfibertraversal text
   | FIBER_ARRAY_CONVERT pfiberarray

@@ -24,6 +24,7 @@ def $binding_receiver_roots(pclosurebinding_all*, n) = eps
   -- if $closure_binding_at(pclosurebinding_all*, n) = eps
 
 dec $closure_binding_source_valid(pstate, pclosurebinding) : bool
+dec $closure_call_copy_binding(pstate, pclosurebinding) : bool
 def $closure_binding_source_valid(S, pclosurebinding) = true
   -- if n = pclosurebinding.OBJECT
   -- if $(n < |S.OBJECTS|)
@@ -34,7 +35,7 @@ def $closure_binding_source_valid(S, pclosurebinding) = true
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem_source* pstaticcell_source*
   -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
   -- if ~$closure_static(S, pfunction) \/ pclosurebinding.RECEIVER = eps
-  -- if $closure_binding_api_site(S, pclosurebinding.SITE)
+  -- if $closure_binding_api_site(S, pclosurebinding.SITE) \/ $closure_call_copy_binding(S, pclosurebinding)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $binding_scope_valid(S, pclosurebinding)
 def $closure_binding_source_valid(S, pclosurebinding) = false -- otherwise
