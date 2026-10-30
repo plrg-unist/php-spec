@@ -71,16 +71,18 @@ class ShutdownCacheReceiver {
 function last_callback() {
     echo "S:", $GLOBALS["weak_cb"]->get() !== null, ":", $GLOBALS["weak_recv"]->get() !== null, ";";
 }
-function final_callback($buffer, $phase) {
-    $result = $buffer . "F:" . ($phase === 9) . ":" . ($GLOBALS["weak_cb"]->get() !== null) . ":" . ($GLOBALS["weak_recv"]->get() !== null) . ";";
-    $GLOBALS["weak_cb"] = null; $GLOBALS["weak_recv"] = null;
-    return $result;
-}
 $receiver = new ShutdownCacheReceiver(); $callback = $receiver->make(7);
 $weak_recv = WeakReference::create($receiver); $weak_cb = WeakReference::create($callback);
+$observe_cb = $weak_cb; $observe_recv = $weak_recv;
+$finalizer = function ($buffer, $phase) use (&$observe_cb, &$observe_recv) {
+    $result = $buffer . "F:" . ($phase === 9) . ":" . ($observe_cb->get() !== null) . ":" . ($observe_recv->get() !== null) . ";";
+    $observe_cb = null; $observe_recv = null;
+    $GLOBALS["weak_cb"] = null; $GLOBALS["weak_recv"] = null;
+    return $result;
+};
 register_shutdown_function($callback); register_shutdown_function("last_callback");
 $receiver = null; $callback = null;
-ob_start("final_callback");
+ob_start($finalizer); $finalizer = null;
 echo "P:", $weak_cb->get() !== null, ":", $weak_recv->get() !== null, ";";
 '''
 
@@ -88,12 +90,12 @@ echo "P:", $weak_cb->get() !== null, ":", $weak_recv->get() !== null, ";";
 CASES = {
     'tick-bound-closure-cache-and-ordered-unregister': tick_closure(),
     'tick-raw-argument-throw-keeps-cached-callable-retirement': tick_closure(True),
-    'shutdown-bound-closure-cache-survives-callback-loop-and-final': shutdown_retention(),
+    'shutdown-bound-closure-cache-and-captured-final-observers': shutdown_retention(),
 }
 EXPECTED_STDOUT = {
     'tick-bound-closure-cache-and-ordered-unregister': b'P:1:1:1:1;B:1:1:1:1;Q:1;T:1:1:1:1;C:1:1:1;R:1:1:1;E:1:1:1:1:1;',
     'tick-raw-argument-throw-keeps-cached-callable-retirement': b'P:1:1:1:1;B:1:1:1:1;Q:1;T:1:1:1:1;C:1:1:1;R:1:1:1;X:1:1:1:1:1;E:1:1:1:1:1:1;',
-    'shutdown-bound-closure-cache-survives-callback-loop-and-final': b'P:1:1;B:1:1:1;S:1:1;F:1:1:1;',
+    'shutdown-bound-closure-cache-and-captured-final-observers': b'P:1:1;B:1:1:1;S:1:1;F:1:1:1;',
 }
 EXIT_CODES = {name: 0 for name in CASES}
 
