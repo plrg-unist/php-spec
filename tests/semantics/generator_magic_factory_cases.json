@@ -34,5 +34,16 @@
     "native_exit": 0,
     "native_stdout": "REPLACE|1|SELECTED|1|MAKE|1|1|1|1|1|OLD|FRESH|1|1|VALUE|BODY|1|1|1|FIN|NEW|E",
     "native_stderr": ""
+  },
+  {
+    "id": "i84-magic-packed-reference-abort-independent",
+    "purpose": "Independent typed __call packs a callback object, promotes its real received argument slot for a BYREF Gen body, retires maker/pack while cache and parked SEND input keep distinct owners until supplied abort/drop.",
+    "source": "<?php\nclass Token84R {\n    function __destruct() { echo 'TOKEN|'; }\n}\nclass Input84R {\n    function __construct() {\n        global $weakInput;\n        $weakInput = WeakReference::create($this);\n    }\n    function __destruct() { echo 'INPUT|'; }\n}\nfunction NewToken84R() {\n    global $weakToken;\n    $token = new Token84R();\n    $weakToken = WeakReference::create($token);\n    return $token;\n}\nclass Base84R {\n    public function __call(string $name, array $arguments) {\n        global $weakMaker;\n        echo 'MAKE|', $name === 'open', '|', __CLASS__ === 'Base84R', '|',\n             static::class === 'Leaf84R', '|', $this === $weakMaker->get(), '|';\n        return self::body($arguments[0]);\n    }\n    private static function &body(&$token) {\n        global $weakToken, $weakInput;\n        echo 'BODY|', __CLASS__ === 'Base84R', '|', static::class === 'Leaf84R', '|';\n        try {\n            $received = yield $token;\n            echo 'RECEIVED|', $received === $weakInput->get(), '|';\n            unset($received);\n            Fiber::suspend('magic84');\n            echo 'BAD-RESUME|';\n        } finally {\n            echo 'FIN|', $weakToken->get() instanceof Token84R, '|',\n                 $weakInput->get() instanceof Input84R, '|';\n        }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf84R extends Base84R {\n    public static function body(&$token) { echo 'BAD-TARGET|'; yield 0; }\n}\nfunction Run84R() {\n    global $g;\n    echo 'SEND|';\n    $g->send(new Input84R());\n    echo 'BAD-CALLER|';\n}\n$maker = new Leaf84R();\n$weakMaker = WeakReference::create($maker);\n$g = $maker->open(NewToken84R());\nunset($maker);\necho 'FRESH|', $weakMaker->get() === null, '|', $weakToken->get() instanceof Token84R, '|';\necho 'PRIME|';\n$g->current();\n$fiber = new Fiber('Run84R');\n$stop = new Exception('stop84');\necho 'START|';\n$mark = $fiber->start();\necho 'PARK|', $mark === 'magic84', '|', $g->current() === $weakToken->get(), '|',\n     $weakInput->get() instanceof Input84R, '|';\necho 'ABORT|';\ntry { $fiber->throw($stop); }\ncatch (Throwable $e) {\n    echo 'OUT|', $e === $stop, '|', $e->getPrevious() === null, '|',\n         $fiber->isTerminated(), '|', $weakInput->get() === null, '|',\n         $weakToken->get() instanceof Token84R, '|';\n}\necho 'CLOSED|', $g->current() === null, '|', $weakToken->get() instanceof Token84R, '|';\nunset($g, $fiber, $stop, $e);\necho 'DROP|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "a35cc0c6655e84b8efdf66ae024d4a88d0b048071c0a21b64ab7ccc82bd70b53",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|1|MAKER|FRESH|1|1|PRIME|BODY|1|1|START|SEND|RECEIVED|1|PARK|1|1|1|ABORT|FIN|1|1|INPUT|OUT|1|1|1|1|1|CLOSED|1|1|TOKEN|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
