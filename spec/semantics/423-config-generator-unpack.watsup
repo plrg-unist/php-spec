@@ -1,6 +1,6 @@
 ;; Native Generator unpack owns DATA once, with no PHP Generator-method frame
-;; or public cursor. CV INPUT and completed sends are nonowning; a call-result
-;; INPUT keeps its separate opcode owner until DATA dtor then FREE_OP1.
+;; or public cursor. CV INPUT is nonowning; copied owning sends keep prefix
+;; roots. A call-result INPUT keeps its opcode owner until DATA dtor then FREE_OP1.
 dec $config_generator_input(pstate, pconfiggenerator) : bool
 dec $config_generator_start_input(pstate, poperand, nat) : bool
 dec $config_generator_owning_input(pconfiggenerator) : bool
