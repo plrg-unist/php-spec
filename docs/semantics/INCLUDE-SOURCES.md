@@ -1875,6 +1875,8 @@ survive later cache replacement and hand off to selected INI_SET reception or
 release on terminal throw. Four frozen originals agree exactly. Strict432 and
 two reached recipes (296 conditions, four raw steps) prove array COW, literal
 pool accounting, TypeError TraceArgs and fresh-instance weak death before catch.
+An additional derived 36-condition control refuses an owning nonnumeric named
+key before it becomes a stored ITEM while retaining numeric-string key sends.
 The old `B;Y0;` Unsupported remains zero credit. Effectful finalizers, cycles,
 owning reference cells, temporary/indirect producers and wider cleanup remain
 separate.

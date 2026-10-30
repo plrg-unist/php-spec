@@ -758,7 +758,8 @@ partial.
 [Owning by-value Generator sends](coverage/semantics/config-generator-owning-value-review.json)
 copy finite quiet ARRAY or non-Stringable INSTANCE values from a named zero-argument
 Generator retained by an outside CV. Live acquisition and cleanup reject cycles,
-debt and reachable finalizers; historical sends keep bounded identities. The
+debt and reachable finalizers; owning sends require integer-normalized keys.
+Historical sends keep bounded identities. The
 copied option remains rooted after the Generator cache changes to a scalar.
 Normal traversal hands it to INI_SET's TypeError trace; terminal supplied throw
 releases it before catch while the Generator survives. Four new sources agree
