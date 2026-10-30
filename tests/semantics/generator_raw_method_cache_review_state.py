@@ -116,6 +116,8 @@ $heap_valid(H)
 $call_descriptors_valid(S)
 S_live = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = (n_fiber)][.COMPLETION = NORMAL]
 $generator_creation_resume_owner(S_live) = (n_generator)
+$generator_raw_method_source_owner(S_live, parrayselection.SITE) = (porigin_base)
+$generator_raw_method_object_source(S_live, pgenerator.FUNCTION, parrayselection, parrayselection.SITE)
 $generator_raw_method_selected(S_live, pcallcontext_generator.TARGET, parrayselection.SITE) = (pmethoddesc)
 $fiber_generator_raw_method_valid(S_live, pgenerator, pcallcontext_generator)
 $fiber_generator_callee_valid(S_live, pgenerator, pcallcontext_generator)
