@@ -774,7 +774,8 @@ cleanup remain partial.
 [Temporary factory Generator owning sends](coverage/semantics/config-generator-owning-temporary-review.json)
 allow a named zero-argument by-value factory to return a distinct by-value
 Generator with no outside strong owner. Its first send copies a finite quiet
-object or array; its final send caches integer 7 with integer key 1. The copied
+ordinary non-Stringable object or array; its final send caches an integer
+value with an integer key (7 and 1 in the four originals). The copied
 option survives Generator retirement into INI_SET's TypeError trace, or dies
 before a saved terminal throw reaches catch. Four new sources agree with PHP;
 two reached recipes check the two cleanup stages, COW and weak lifetimes.

@@ -1884,8 +1884,9 @@ separate.
 The [temporary owning Generator increment](../../coverage/semantics/config-generator-owning-temporary-review.json)
 admits a named zero-argument BYVAL factory returning a distinct named BYVAL
 Generator with no outside strong owner. The first integer-key option copies a
-finite quiet INSTANCE or dynamic ARRAY; the second integer-key send caches
-integer 7. The factory's weak observer adds no owner. Normal completion drops
+finite quiet INSTANCE or dynamic ARRAY; the second send caches an integer
+value and key (7 and 1 in the four originals). The factory's weak observer
+adds no owner. Normal completion drops
 DATA then final INPUT, retiring the childless Generator before INI_SET raises
 TypeError while the copied option enters TraceArgs. A terminal saved throw
 discards DATA and INPUT separately, releasing the copied prefix before catch.
