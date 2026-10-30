@@ -82,6 +82,17 @@ Computed/packed calls, other producer/receiver forms and no-Gen receive/callback
 or mapping errors remain partial. [Copy review](../../coverage/semantics/generator-call-copy-review.json),
 [reference review](../../coverage/semantics/generator-call-reference-review.json).
 
+Admitted fake user-method Generator calls also allocate a distinct copy, keeping
+the original method selection as nonowning history. Their new receiver must have
+the exact declaring class, and their method static table stays shared. The copy
+uses the existing API argument, fresh-reference and used/ignored result tasks;
+its This survives through CLOSED and retires before the Gen cache. getCurrent
+continues to reject the fake function. Ordinary ARRAY-capture calls select the
+existing call handler. Native4/source4/private433 retain distinct cuts;
+five reached fronts pass 633 custom/658 reported checks. Other receiver/binding/call forms and
+abrupt receive paths remain partial.
+[Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

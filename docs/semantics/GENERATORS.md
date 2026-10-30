@@ -600,6 +600,19 @@ projection retain zero credit; no-Gen receive/callback errors, mapping errors
 and wider contexts remain partial.
 [Reference-call review](../../coverage/semantics/generator-call-reference-review.json).
 
+I94 preserves the fake flag when a user-method Generator Closure is copied by
+an admitted literal Closure::call. The new receiver has the exact declaring
+class; stored selection authenticates the private method even after the source
+and old receiver retire. Fake method statics stay in the shared function table,
+and getCurrent keeps its ordinary fake-function Error. Existing API/result tasks
+own the copy and arguments until creation returns; the Gen then retains its copy
+and This through CLOSED, releasing the copy before the cache.
+Native4/source4/private433 retain distinct cuts; five reached fronts pass
+633 custom/658 reported checks.
+Computed/packed calls, other binding/receiver forms and abrupt receive paths
+remain partial.
+[Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
