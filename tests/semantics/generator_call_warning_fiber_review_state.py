@@ -220,8 +220,12 @@ $heap_valid(H)
 n_generator = |S.OBJECTS|
 S_one = $drive_steps(S, 1)
 S_one.COMPLETION = BUDGET
-S_one.RESULT = KNOWN (POBJECT n_generator)
-S_one.TODO = (CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) :: ptask_api*
+S_one.RESULT = KNOWN PNULL
+S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) :: ptask_api*
+pdestructionrelease.JOBS = [DESTRUCTION_VALUE HCELL n_formal, DESTRUCTION_VALUE HOBJECT n_copy]
+pdestructionframe.VALUE = KNOWN (POBJECT n_generator)
+pdestructionframe.PENDING = eps
+pdestructionframe.FUNCTION = porigin_function
 S_one.OBJECTS[n_generator] = GENERATOR pgenerator
 pgenerator.FUNCTION = porigin_function
 pgenerator.CLOSURE = (n_copy)
@@ -233,6 +237,10 @@ pframe_generator.LOCALS = (psymboltable_generator)
 $lookup(psymboltable_generator.ENV, $ptascii("slot")) = (n_formal)
 S_one.STORE[n_formal] = DEFINED (POBJECT n_token)
 $generator_frame_valid(S_one, pgenerator, pframe_generator)
+$call_task_valid(S_one, DESTRUCTOR_RELEASE pdestructionrelease)
+$call_task_valid(S_one, DESTRUCTOR_FRAME_EXIT pdestructionframe)
+$task_nodes(DESTRUCTOR_FRAME_EXIT pdestructionframe) = [HOBJECT n_generator]
+$heap_owners($heap_graph(S_one), HOBJECT n_generator) = 1
 $heap_valid($heap_graph(S_one))
 ''')
 
