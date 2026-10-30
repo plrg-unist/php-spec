@@ -1,0 +1,110 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-unpack-array-reference-cow",
+      "source": "<?php\n$shared = \"7\";\n$pack = [&$shared, 20];\n$snapshot = $pack;\n$object = new class(...$pack) {\n    public function __construct(int &$first, &$second) {\n        echo $first === 7 ? \"first-int|\" : \"bad-type|\";\n        $first = 9;\n        $second = 30;\n    }\n};\necho $shared, \"|\", $pack[0], \"|\", $pack[1], \"|\";\necho $snapshot[0], \"|\", $snapshot[1], \"|\";\necho $snapshot[1] === 20 ? \"copy-int|\" : \"changed|\";\n",
+      "source_sha256": "20ff70c05a5323d9f0b54c6aa543484450b3a0b70a42e46ac70767a5261787ef",
+      "stdout_base64": "Zmlyc3QtaW50fDl8OXwzMHw5fDIwfGNvcHktaW50fA==",
+      "stdout_template_base64": "Zmlyc3QtaW50fDl8OXwzMHw5fDIwfGNvcHktaW50fA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class155-review/array-reference-cow.native-first.json",
+      "native_raw_sha256": "c27db521a5c9946db463f7f383279eaca7f6b53989812bc50bd257a3ee98d96f",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-unpack-named-unpack-error-priority",
+      "source": "<?php\nfunction late155Review() { echo \"late|\"; return 99; }\n$pack = [\"head\" => \"bad\", 0 => 2];\ntry {\n    $ordered = new class(...$pack, after: late155Review()) {\n        public function __construct(int $head, ...$rest) { echo \"order-body|\"; }\n    };\n} catch (Error $error) {\n    echo $error instanceof TypeError ? \"type|\" : \"binding|\";\n    echo $error->getMessage(), \"|\";\n}\necho \"after-order|\";\ntry {\n    $duplicate = new class(...[\"head\" => \"bad\"], head: late155Review()) {\n        public function __construct(int $head, ...$rest) { echo \"duplicate-body|\"; }\n    };\n} catch (Error $error) {\n    echo $error instanceof TypeError ? \"type|\" : \"binding|\";\n    echo $error->getMessage(), \"|\";\n}\necho \"after|\";\n",
+      "source_sha256": "219b3ba5ad090ea9818de445a01a9a5d83b5de52e275bc6b0c3f971828a916ba",
+      "stdout_base64": "YmluZGluZ3xDYW5ub3QgdXNlIHBvc2l0aW9uYWwgYXJndW1lbnQgYWZ0ZXIgbmFtZWQgYXJndW1lbnQgZHVyaW5nIHVucGFja2luZ3xhZnRlci1vcmRlcnxsYXRlfGJpbmRpbmd8TmFtZWQgcGFyYW1ldGVyICRoZWFkIG92ZXJ3cml0ZXMgcHJldmlvdXMgYXJndW1lbnR8YWZ0ZXJ8",
+      "stdout_template_base64": "YmluZGluZ3xDYW5ub3QgdXNlIHBvc2l0aW9uYWwgYXJndW1lbnQgYWZ0ZXIgbmFtZWQgYXJndW1lbnQgZHVyaW5nIHVucGFja2luZ3xhZnRlci1vcmRlcnxsYXRlfGJpbmRpbmd8TmFtZWQgcGFyYW1ldGVyICRoZWFkIG92ZXJ3cml0ZXMgcHJldmlvdXMgYXJndW1lbnR8YWZ0ZXJ8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class155-review/named-unpack-error-priority.native-first.json",
+      "native_raw_sha256": "674f394755276beb187feb5264b529d28ea2e1f44e3f3172048c15df3321fc8d",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-unpack-mixed-array-variadic-value-sends",
+      "source": "<?php\n$parts155 = [2, 3];\necho \"before|\";\n$object155 = new class(1, ...$parts155, last: 4) {\n    public $sum;\n    public function __construct(int $head, int ...$rest) {\n        $rest[0] = 12;\n        $this->sum = $head + $rest[0] + $rest[1] + $rest[\"last\"];\n    }\n};\necho $object155->sum, \"|\", $parts155[0], \"|\", $parts155[1], \"|after\";\n",
+      "source_sha256": "b48a04e7740069807a0df23ed6f0f5a39bac6bff93f4c0c56b25cfabd272c61c",
+      "stdout_base64": "YmVmb3JlfDIwfDJ8M3xhZnRlcg==",
+      "stdout_template_base64": "YmVmb3JlfDIwfDJ8M3xhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class155-review/author-mixed-array-variadic-value-sends.native-first.json",
+      "native_raw_sha256": "0d6e2a57d6ce82e5d8e38ba7c627d318504ccdc46c0ebe2c120ca259aec7c421",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-unpack-eval-named-array-default-reception",
+      "source": "<?php\n$source155 = 'namespace Ref155Author;\nfunction make155() {\n    $parts = [\"third\" => 3, \"first\" => 1];\n    return new class(...$parts, last: 4) {\n        public $sum;\n        public function __construct(int $first, int $second = 20, int $third = 30, int $last = 40) {\n            $this->sum = $first + $second + $third + $last;\n        }\n    };\n}';\neval($source155);\n$first155 = Ref155Author\\make155();\n$second155 = Ref155Author\\make155();\necho $first155->sum, \"|\", $second155->sum, \"|after\";\n",
+      "source_sha256": "69777db9fc8ebea21b3a0a2f881bacd57c791760aa9b46deeb98848f693a4389",
+      "stdout_base64": "Mjh8Mjh8YWZ0ZXI=",
+      "stdout_template_base64": "Mjh8Mjh8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class155-review/author-eval-named-array-default-reception.native-first.json",
+      "native_raw_sha256": "71e2c0e0481572a5379d1c60dd4f477459dccb5b5fd1746e2854bd24a0e76332",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-unpack-invalid-unpack-type-priority",
+      "source": "<?php\nfunction late155Author() { echo \"late|\"; return 7; }\necho \"before|\";\ntry {\n    $object155 = new class(...1, later: late155Author()) {\n        public function __construct(...$values) { echo \"body|\"; }\n    };\n} catch (TypeError $error155) {\n    echo $error155->getMessage(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "5bbcdd87f341201660cfdbac53cc19a89c959f55699936741ca47d0644091712",
+      "stdout_base64": "YmVmb3JlfE9ubHkgYXJyYXlzIGFuZCBUcmF2ZXJzYWJsZXMgY2FuIGJlIHVucGFja2VkLCBpbnQgZ2l2ZW58YWZ0ZXI=",
+      "stdout_template_base64": "YmVmb3JlfE9ubHkgYXJyYXlzIGFuZCBUcmF2ZXJzYWJsZXMgY2FuIGJlIHVucGFja2VkLCBpbnQgZ2l2ZW58YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class155-review/author-invalid-unpack-type-priority.native-first.json",
+      "native_raw_sha256": "80f4ea9287c752e1965120ff1ba8efbc5e76b2fb9f63002c61ea59c3a3211ad9",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-unpack-literal-reference-fresh-cells",
+      "source": "<?php\nfunction make155Review() {\n    return new class(...[\"8\", 9]) {\n        public $sum;\n        public function __construct(int &$first, &$second) {\n            echo $first === 8 ? \"first-int|\" : \"changed-literal|\";\n            echo $second, \"|\";\n            $first = 10;\n            $second = 11;\n            $this->sum = $first + $second;\n        }\n    };\n}\n$one = make155Review();\n$two = make155Review();\necho $one->sum, \"|\", $two->sum, \"|after\";\n",
+      "source_sha256": "eb048289eec46b903c07e665612d3b61a9b48cb82f5691e7faf55c3a79fc7396",
+      "stdout_base64": "Zmlyc3QtaW50fDl8Zmlyc3QtaW50fDl8MjF8MjF8YWZ0ZXI=",
+      "stdout_template_base64": "Zmlyc3QtaW50fDl8Zmlyc3QtaW50fDl8MjF8MjF8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class155-review/literal-reference-fresh-cells.native-first.json",
+      "native_raw_sha256": "86af491633ef6b505b435709db3aaf7fe1fd902ede8394f29fe44039bb7c3277",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-unpack-noctor-array-sends",
+      "source": "<?php\nfunction parts155NoCtor() { echo \"parts|\"; return [1, 2]; }\nfunction late155NoCtor() { echo \"late|\"; return 3; }\necho \"before|\";\n$object155 = new class(...parts155NoCtor()) { public $value = 7; };\necho $object155->value, \"|\";\ntry {\n    $bad155 = new class(...[\"unknown\" => 9], later: late155NoCtor()) {};\n} catch (Error $error155) {\n    echo $error155->getMessage(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "3635b6f38762867216aeffb4c1227510893532cb120e6473dbdf207eb6d2e127",
+      "stdout_base64": "YmVmb3JlfHBhcnRzfDd8VW5rbm93biBuYW1lZCBwYXJhbWV0ZXIgJHVua25vd258YWZ0ZXI=",
+      "stdout_template_base64": "YmVmb3JlfHBhcnRzfDd8VW5rbm93biBuYW1lZCBwYXJhbWV0ZXIgJHVua25vd258YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class155-review/noctor-array-sends.native-first.json",
+      "native_raw_sha256": "70bc24095e7beaf7315d22664709b723728c30ff2f3298f5008d38b9bb122a84",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

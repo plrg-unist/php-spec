@@ -295,7 +295,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS155 | Array constructor unpack; native5/old2 retained, separate literal-reference witness pending, changed-model validation next. |
+| CLASS155 | Array constructor unpack; native5+1+1/old2 retained, changed-model validation pending. |
 | GC09 | Coherent fake-Closure allocation flags under implementation. |
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
