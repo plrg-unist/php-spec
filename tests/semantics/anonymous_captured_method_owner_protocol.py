@@ -26,19 +26,21 @@ def $ac162_root_echo(S,z) = true
   -- if S.TODO = (STMT (NStmtEcho (SEQUENCE expression*) metadata)) :: ptask_tail*
   -- if $source_line(metadata) = z
 def $ac162_root_echo(S,z) = false -- otherwise
-dec $ac162_missing(pstate,ptbytes) : bool
-def $ac162_missing(S,ptbytes_name) = true
-  -- if S.TODO = [TYPE_RECEIVE porigin 1]
-  -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.TARGET = CLOSURE_TARGET n
-  -- if pcallcontext.FUNCTION = porigin
-  -- if $class_method_origin(S.CLASSES,porigin) = (pmethoddesc)
+dec $ac162_entry(pstate,ptbytes) : bool
+def $ac162_entry(S,ptbytes_name) = true
+  -- if S.CURRENT = eps
+  -- if S.TODO = (CALL_ARGS (CLOSURE_TARGET n) eps 1 poperand* (porigin_site) z) :: ptask_tail*
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_capture porigin_requested pmethodcapture?
+  -- if $class_method_origin(S.CLASSES,porigin_method) = (pmethoddesc)
   -- if pmethoddesc.NAME = ptbytes_name
-def $ac162_missing(S,ptbytes_name) = false -- otherwise
+def $ac162_entry(S,ptbytes_name) = false -- otherwise
+dec $ac162_step(pstate) : pstate
+def $ac162_step(S) = S_next
+  -- PhpStep: S ~> S_next
 dec $ac162_stage(pstate,nat) : bool
 def $ac162_stage(S,0) = $ac162_root_echo(S,15)
-def $ac162_stage(S,1) = $ac162_missing(S,$ptascii("needOwn"))
-def $ac162_stage(S,2) = $ac162_missing(S,$ptascii("needBase"))
+def $ac162_stage(S,1) = $ac162_entry(S,$ptascii("needOwn"))
+def $ac162_stage(S,2) = $ac162_entry(S,$ptascii("needBase"))
 def $ac162_stage(S,3) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
@@ -118,7 +120,10 @@ def assertions(fixture, filename, stdout):
         '$ac162_output(S_start.EVENTS) = eps',
         '$class_state_valid(S_start)', '$call_descriptors_valid(S_start)',
         '$heap_valid($heap_graph(S_start))',
-        *seek('S_start', 'S_own', 1),
+        *seek('S_start', 'S_send_own', 1),
+        '$call_task_valid(S_send_own,S_send_own.TODO[0])',
+        'S_own = $ac162_step(S_send_own)',
+        'S_own.COMPLETION = THROWN "ArgumentCountError" n_error_own* 7',
         'S_own.CURRENT = (pcallcontext_own)',
         'pcallcontext_own.TARGET = CLOSURE_TARGET n_capture_own',
         'pcallcontext_own.INSTANCE = (n_capture_own)',
@@ -131,6 +136,7 @@ def assertions(fixture, filename, stdout):
         '$target_function(S_own,CLOSURE_TARGET n_capture_own) = (pfunction_own)',
         '$method_closure_functions(S_own,n_capture_own,pmethoddesc_own) = (pfunction_own,pfunction_own)',
         'pfunction_own = pmethoddesc_own.FUNCTION',
+        '~$typed_parameters($call_fixed_parameters(pfunction_own.SIGNATURE.PARAMETERS))',
         'pfunction_own.NAME = pclassdesc_owner.NAME ++ $ptascii("::needOwn")',
         '$captured_method_diagnostic(S_own) = (pmethoddesc_own)',
         '$missing_argument_function_name(S_own,pfunction_own) = $c_string(pclassdesc_owner.NAME) ++ $ptascii("::needOwn")',
@@ -138,11 +144,13 @@ def assertions(fixture, filename, stdout):
         '$call_function_kind(S_own) = $ptascii("method")',
         '$missing_argument_function_name(S_own,pfunction_own[.NAME = $ptascii("forged")]) = $call_function_name(S_own,pfunction_own[.NAME = $ptascii("forged")])',
         '$captured_method_diagnostic(S_own[.CLOSURESCOPES = [pclosurescope_own[.LEXICAL = porigin_class_base],pclosurescope_base,pclosurescope_wrong]][.CURRENT = (pcallcontext_own[.LEXICAL_CLASS = (porigin_class_base)])]) = eps',
-        '$call_task_valid(S_own,TYPE_RECEIVE porigin_method_own 1)',
         '$ac162_output(S_own.EVENTS) = $ptascii("before|")',
         '$call_current_valid(S_own)', '$call_descriptors_valid(S_own)',
         '$heap_valid($heap_graph(S_own))',
-        *seek('S_own', 'S_base', 2),
+        *seek('S_send_own', 'S_send_base', 2),
+        '$call_task_valid(S_send_base,S_send_base.TODO[0])',
+        'S_base = $ac162_step(S_send_base)',
+        'S_base.COMPLETION = THROWN "ArgumentCountError" n_error_base* 4',
         'S_base.CURRENT = (pcallcontext_base)',
         'pcallcontext_base.TARGET = CLOSURE_TARGET n_capture_base',
         'pcallcontext_base.INSTANCE = (n_capture_base)',
@@ -153,13 +161,13 @@ def assertions(fixture, filename, stdout):
         '$class_method_origin(S_base.CLASSES,porigin_method_base) = (pmethoddesc_base)',
         'pmethoddesc_base.OWNER = porigin_class_base',
         '$target_function(S_base,CLOSURE_TARGET n_capture_base) = (pfunction_base)',
+        '~$typed_parameters($call_fixed_parameters(pfunction_base.SIGNATURE.PARAMETERS))',
         '$captured_method_diagnostic(S_base) = (pmethoddesc_base)',
         '$missing_argument_function_name(S_base,pfunction_base) = $ptascii("Base162Review::needBase")',
         '$call_function_name(S_base,pfunction_base) = $ptascii("Base162Review::needBase")',
-        '$call_task_valid(S_base,TYPE_RECEIVE porigin_method_base 1)',
         '$call_current_valid(S_base)', '$call_descriptors_valid(S_base)',
         '$heap_valid($heap_graph(S_base))',
-        *seek('S_base', 'S_return', 3),
+        *seek('S_send_base', 'S_return', 3),
         'S_return.CURRENT = (pcallcontext_return)',
         'pcallcontext_return.TARGET = CLOSURE_TARGET n_capture_wrong',
         'pcallcontext_return.INSTANCE = (n_capture_wrong)',
