@@ -1,0 +1,136 @@
+{
+  "milestone": "A84 outside aliases of final owning BYREF Generator cell",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...$gen) with a retained global direct-CV zero-argument BYREF Generator",
+    "behavior": "After a scalar first option, a finite quiet owning final ordinary reference cell may have additional owners. The copied second argument and current cell can diverge by COW. Global slot/alias originals keep the cell and current payload live after Generator unset, then release them when the last alias is unset.",
+    "limits": "The runtime gate permits additional ordinary cell owners under its existing source/history/live-quiet guards; the new originals specifically cover global slot/alias owners. Second key normalizes to integer. Typed/backed cells, temporary producers, effectful finalizers and sole-Generator owning-cell retirement remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "8c390d98e50c4a18434d81213145a99e1c6f1fb2",
+    "source_freeze": "cf27e2668cca2e1ad3c1ade04571ebc2cf92b43f",
+    "runtime_revision": "95750cbe38d6b167fc0798b4f26fcb35e467677f",
+    "affected_fixture_revision": "73b0580b3082f4afd66a5cc220f56d5a91882a2a",
+    "validated_revision": "1411c1982bdd3a63c4c1de3dae864879cf39a3ed",
+    "change": "Only 423 removes HCELL owner==1 from the A83 retained direct-CV owning-cell storage gate. The affected A83 peer constructed shared-cell denial becomes a positive control. All other source, history, finite quiet graph, Gen CV, copied-ITEM and cleanup fences remain.",
+    "engine": "Zend SEND_UNPACK copies the dereferenced yielded value. A global slot and alias share the ordinary cell: Gen retirement drops its edge but leaves the current value through outside aliases. Ordinary quiet pruning releases the cell/value after final alias unset."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-owning-alias-84",
+    "native_first": {
+      "revision": "cf27e2668cca2e1ad3c1ade04571ebc2cf92b43f",
+      "author": {
+        "report": "native-author-ready-cf27e2668/report.json",
+        "sha256": "27704e3210dcf779a60a6fae9f4131e6a51e646bd7e3fa5186e9aa33f6a26c89"
+      },
+      "peer": {
+        "report": "native-peer-cf27e2668/report.json",
+        "sha256": "9f6aff9ae3ae10f56c951f711a6b90b7044112ab1bc9c1e26ba465a97d24168d"
+      },
+      "originals": 4,
+      "result": "Four distinct new originals match handwritten stdout, empty stderr and exit0; native-only preparation has zero model credit."
+    },
+    "old_refusal": {
+      "revision": "cf27e2668cca2e1ad3c1ade04571ebc2cf92b43f",
+      "report": "old-control-ready-cf27e2668/report.json",
+      "sha256": "63d887acb761f429099585fb1e65cbcf3f0e4e209503090e40f3218e468a0478",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack last DATA or callee owner",
+      "prefix": "B;Y0;Y1;M:5;W:1;T;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "25b81522fe0c3de25e1ebfc9da7b6d56c9aca033",
+      "modules": 432,
+      "report": "strict-ready-25b81522f/report.json",
+      "sha256": "a65cfa628ea6991b505daf902e1561e59ed843d224d1f73bbfe31ac1dc4c43e3"
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Model-only comparisons with retained native source bytes/profile/stdout/stderr; no application PHP rerun.",
+      "reports": [
+        {
+          "revision": "25b81522fe0c3de25e1ebfc9da7b6d56c9aca033",
+          "report": "model-author-normal-25b81522f/report.json",
+          "sha256": "d1eb9cb1914277602627a616a2df8d7cb3c923332ab2438eadd14a4cadba9e64"
+        },
+        {
+          "revision": "25b81522fe0c3de25e1ebfc9da7b6d56c9aca033",
+          "report": "model-author-throw-25b81522f/report.json",
+          "sha256": "d3acff23d138ffea4f2ffb63dc51ff1f233ca0856e0ecc8f15f8b2c25dcf2eb7"
+        },
+        {
+          "revision": "9a509864e3dfabe96d8357fec7c9b8db5b8f087b",
+          "report": "model-peer-normal-9a509864e/report.json",
+          "sha256": "561b6bbebab2750040d02f54e8ce6b989f5994d436f80920ffd9d2bc48fbf6d1"
+        },
+        {
+          "revision": "1411c1982bdd3a63c4c1de3dae864879cf39a3ed",
+          "report": "model-peer-throw-1411c1982/report.json",
+          "sha256": "4440793c6464e61ef333f9c5a9183a727c5acdeea410caf73d7ad6ca691727df"
+        }
+      ]
+    },
+    "reached": {
+      "revision": "1411c1982bdd3a63c4c1de3dae864879cf39a3ed",
+      "conditions": 527,
+      "if_premises": 520,
+      "raw_steps": 7,
+      "author": {
+        "conditions": 226,
+        "if_premises": 223,
+        "raw_steps": 3,
+        "report": "reached-author-1411c1982/report.json",
+        "sha256": "3cdcf671b97fce9cfd69cbb87c846fe1e85c08357047907495b78db5ae1efc29"
+      },
+      "peer": {
+        "conditions": 301,
+        "if_premises": 297,
+        "raw_steps": 4,
+        "report": "reached-peer-1411c1982/report.json",
+        "sha256": "390bf79a040b577b05210e03325e28bba4b7f0ad823a4732d2a65b2ecf261e74"
+      }
+    },
+    "affected_a83": {
+      "revision": "1411c1982bdd3a63c4c1de3dae864879cf39a3ed",
+      "conditions": 266,
+      "if_premises": 262,
+      "raw_steps": 4,
+      "report": "affected-a83-peer-1411c1982/report.json",
+      "sha256": "4c6c8a9f19833ba1def58b8835d149fbe8843acf52e37818e7c98d47a5973f76",
+      "scope": "Only the prior constructed S_shared_cell guard changes sign; retained A83 native and original source tests are not rerun."
+    },
+    "setup_failures": {
+      "credit": 0,
+      "records": [
+        {
+          "report": "native-author-cf27e2668/setup-failure.txt",
+          "sha256": "f062df850244103a43dad24a49a1e285a0b0eeb523fca1f9f5b7bd2a23233e8d"
+        },
+        {
+          "report": "old-control-cf27e2668/report.json",
+          "sha256": "88bf738e52cb44a20c3db5fc02e7d9861a8fa0c0766c1db403336f37764f980d"
+        },
+        {
+          "report": "strict-25b81522f/report.json",
+          "sha256": "7a61cdce67fd5144b11b4a34026039186df6bf6eb52643d0a3ba48c873365407"
+        }
+      ],
+      "result": "The initial private worktree lacked build artifacts; the first old control lacked php-file.so; the first strict argv duplicated spec/php.watsup. Corrected only those setup inputs, preserving failed records and rerunning affected checks."
+    },
+    "review": "Independent literal/manual, native/old, one-premise runtime and comparator static review; strict432, all four model-only sources, both new reached fixtures and the affected A83 peer control independently CLEAR."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "7da3dd8b862f16da7c072a5e083008a912825f911876193013d3fb7529c670d8",
+    "files": 119,
+    "raw_bytes": 3168136,
+    "commands": "Native-only source runners froze four originals. The model comparator consumed retained native reports one --case at a time. Reached scripts used matching retained native reports via --source-report. The affected A83 peer reached script used its original retained native report. Ordered strict used the 432-module manifest and SL runner.",
+    "notes": "Raw streams and setup failures remain outside Git."
+  },
+  "integration": {
+    "status": "pending exact-parent canonical writer grant, actual-tail review and sole joined ordered-manifest compile"
+  }
+}

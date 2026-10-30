@@ -827,6 +827,15 @@ saved throw and TypeError TraceArgs, then quiet Generator/cell retirement on
 explicit unset. Typed/backed cells, aliases, temporary producers, effectful
 finalizers and sole-Generator cleanup remain separate.
 
+[Outside aliases of owning Generator cells](coverage/semantics/config-generator-reference-owning-alias-review.json)
+allow additional ordinary owners of that final reference cell while a global
+CV retains the Generator. Four sources use a top-level slot and alias: TypeError
+keeps a copied old ARRAY 13 while the cell changes to ARRAY 31; a saved throw
+releases the copied value. Unsetting the Generator leaves the aliased cell and
+current value live until the last alias is unset. Two reached proofs and one
+affected prior control check these lifetimes. Typed/backed cells, temporary
+producers and effectful finalizers remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
