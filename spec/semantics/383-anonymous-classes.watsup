@@ -36,7 +36,7 @@ def $anonymous_constructor_parameters(phpType16) = false -- otherwise
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
   -- if flags <- [0,1]
-def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata) = true
+def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1,2,4]
   -- if $ptvalidname($base64(text), false)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct")
