@@ -28,8 +28,8 @@ DERIVED = [
     '~$trace_visit_object_image(S_baddecl,n_left)',
     '$trace_visit_object_effect(S_baddecl,n_left,n_right,eps,z_S) = (S_baddecl,ORDERUNSUPPORTED "Throwable property comparison")',
     'S_unset = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS,n_left,[ppropertyslot_base_left[.STATE = PROP_UNSET],ppropertyslot_rank_left,ppropertyslot_tail_left,ppropertyslot_leaf_left])]',
-    '~$trace_visit_object_image(S_unset,n_left)',
-    '$trace_visit_object_effect(S_unset,n_left,n_right,eps,z_S) = (S_unset,ORDERUNSUPPORTED "Throwable property comparison")',
+    '$trace_visit_object_image(S_unset,n_left)',
+    '$trace_visit_object_effect(S_unset,n_left,n_right,eps,z_S) = (S_unset,ORDER 1)',
 ]
 
 

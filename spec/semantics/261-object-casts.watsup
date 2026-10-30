@@ -68,7 +68,7 @@ def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = $objec
 
 dec $object_table_ordinary_rows(pstate, nat, ppropertyslot*) : bool
 dec $object_table_ordinary_entries(nat, ppropertyslot*) : pentry*
-;; Initialized declared slots materialize under their actual mangled keys.
+;; Declared slots materialize under their actual mangled keys.
 def $object_table_ordinary_rows(S, n, eps) = true
 def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
   -- if ppropertyslot.DECL = eps
