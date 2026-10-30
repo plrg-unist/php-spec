@@ -34,7 +34,7 @@ S_view = $generator_close_frame_scope(S, pframe_generator)
 pgenerator.CLOSURE = eps
 pgeneratorcreation.CLOSURE = eps
 pgeneratorcreation.ANCESTORS = eps
-pgeneratorcreation.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments [PINT 84]
+pgeneratorcreation.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments ([PINT 84])
 pgeneratorcreation.CREATOR.FUNCTION = pmagicmethodcall.METHOD
 pgeneratorcreation.CREATOR.CALLSITE = (pmagicmethodcall.SITE)
 pgeneratorcreation.CREATOR.LEXICAL_CLASS = (porigin_base)
@@ -69,20 +69,20 @@ $generator_creation_owner(S_view) = (pgenclose.OBJECT)
 $generator_creation_selected(S_view, pgeneratorcreation.CALLEE, pgeneratorcreation.SITE)
 $heap_owners($heap_graph(S), HARRAY n_arguments) = 0
 pmagicmethodcall_bad_name = pmagicmethodcall[.NAME = $ptascii("other")]
-pgeneratorcreation_bad_name = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_name n_arguments [PINT 84]]
+pgeneratorcreation_bad_name = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_name n_arguments ([PINT 84])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_name)
 pmagicmethodcall_bad_method = pmagicmethodcall[.METHOD = pgenerator.FUNCTION]
-pgeneratorcreation_bad_method = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_method n_arguments [PINT 84]]
+pgeneratorcreation_bad_method = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_method n_arguments ([PINT 84])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_method)
 pmagicmethodcall_bad_site = pmagicmethodcall[.SITE = pgeneratorcreation.SITE]
-pgeneratorcreation_bad_site = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_site n_arguments [PINT 84]]
+pgeneratorcreation_bad_site = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_site n_arguments ([PINT 84])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_site)
 n_unbounded_object = |S.OBJECTS|
 pmagicmethodcall_unbounded = pmagicmethodcall[.OBJECT = n_unbounded_object]
-pgeneratorcreation_unbounded_object = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_unbounded n_arguments [PINT 84]]
+pgeneratorcreation_unbounded_object = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_unbounded n_arguments ([PINT 84])]
 ~$generator_creator_valid(S, pgeneratorcreation_unbounded_object)
 n_unbounded_array = |S.ARRAYS|
-pgeneratorcreation_unbounded_array = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_unbounded_array [PINT 84]]
+pgeneratorcreation_unbounded_array = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_unbounded_array ([PINT 84])]
 ~$generator_creator_valid(S, pgeneratorcreation_unbounded_array)
 pgeneratorcreation_bad_count = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments eps]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_count)
@@ -117,7 +117,7 @@ $call_context_roots((pcallcontext_generator)) = [HOBJECT n_maker]
 $heap_count(HOBJECT n_maker, $task_nodes(GENERATOR_CLOSE_ENTER pgenclose)) = 1
 $heap_owners($heap_graph(S), HOBJECT n_maker) = 1
 pmagicmethodcall_bad_receiver = pmagicmethodcall[.OBJECT = pgenclose.OBJECT]
-pgeneratorcreation_bad_receiver = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_receiver n_arguments [PINT 84]]
+pgeneratorcreation_bad_receiver = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_receiver n_arguments ([PINT 84])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_receiver)
 ''')
 
@@ -138,7 +138,7 @@ pgenerator.CLOSURE = eps
 pgenerator.RETURN = (PINT 85)
 pgeneratorcreation.CLOSURE = eps
 pgeneratorcreation.ANCESTORS = eps
-pgeneratorcreation.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_arguments [POBJECT n_payload]
+pgeneratorcreation.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_arguments ([POBJECT n_payload])
 pgeneratorcreation.CREATOR.FUNCTION = pmagicstaticmethodcall.METHOD
 pgeneratorcreation.CREATOR.CALLSITE = (pmagicstaticmethodcall.SITE)
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Base84C"))) = (porigin_base)
@@ -175,16 +175,16 @@ $generator_creator_valid(S, pgeneratorcreation)
 $generator_creation_scope_valid(S, pgeneratorcreation)
 $generator_creation_record_valid(S, pgenerator)
 pmagicstaticmethodcall_bad_name = pmagicstaticmethodcall[.NAME = $ptascii("other")]
-pgeneratorcreation_bad_name = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall_bad_name n_arguments [POBJECT n_payload]]
+pgeneratorcreation_bad_name = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall_bad_name n_arguments ([POBJECT n_payload])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_name)
 pmagicstaticmethodcall_bad_method = pmagicstaticmethodcall[.METHOD = pgenerator.FUNCTION]
-pgeneratorcreation_bad_method = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall_bad_method n_arguments [POBJECT n_payload]]
+pgeneratorcreation_bad_method = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall_bad_method n_arguments ([POBJECT n_payload])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_method)
 pmagicstaticmethodcall_bad_class = pmagicstaticmethodcall[.CLASS = porigin_base]
-pgeneratorcreation_bad_class = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall_bad_class n_arguments [POBJECT n_payload]][.CREATOR = pgeneratorcreation.CREATOR[.CALLED_CLASS = (porigin_base)]]
+pgeneratorcreation_bad_class = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall_bad_class n_arguments ([POBJECT n_payload])][.CREATOR = pgeneratorcreation.CREATOR[.CALLED_CLASS = (porigin_base)]]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_class)
 n_unbounded_array = |S.ARRAYS|
-pgeneratorcreation_unbounded_array = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_unbounded_array [POBJECT n_payload]]
+pgeneratorcreation_unbounded_array = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_unbounded_array ([POBJECT n_payload])]
 ~$generator_creator_valid(S, pgeneratorcreation_unbounded_array)
 pgeneratorcreation_bad_count = pgeneratorcreation[.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_arguments eps]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_count)
@@ -217,7 +217,7 @@ pgenerator.FRAME = (pframe_generator)
 pframe_generator.CONTEXT = (pcallcontext_generator)
 pgeneratorcreation.CLOSURE = eps
 pgeneratorcreation.ANCESTORS = eps
-pgeneratorcreation.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments [PINT 84]
+pgeneratorcreation.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments ([PINT 84])
 pgeneratorcreation.CREATOR.FUNCTION = pmagicmethodcall.METHOD
 pgeneratorcreation.CREATOR.CALLSITE = (pmagicmethodcall.SITE)
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Base84D"))) = (porigin_base)
@@ -258,7 +258,7 @@ $generator_creation_selected(S_view, pgeneratorcreation.CALLEE, pgeneratorcreati
 $effective_method(S, porigin_other, $ptascii("__call"), |S.CLASSES|) = (pmethoddesc_other)
 pmagicmethodcall_other = pmagicmethodcall[.OBJECT = n_new][.CLASS = porigin_other][.METHOD = pmethoddesc_other.FUNCTION.ORIGIN]
 $magic_method_descriptor(S, pmagicmethodcall_other)
-pgeneratorcreation_other = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_other n_arguments [PINT 84]]
+pgeneratorcreation_other = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_other n_arguments ([PINT 84])]
 ~$generator_creator_valid(S, pgeneratorcreation_other)
 pmethodcapture_other = pgeneratorcreation.CREATOR[.FUNCTION = pmethoddesc_other.FUNCTION.ORIGIN][.LEXICAL_CLASS = (porigin_other)][.CALLED_CLASS = (porigin_other)]
 pgeneratorcreation_consistent_other = pgeneratorcreation_other[.CREATOR = pmethodcapture_other]

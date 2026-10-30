@@ -43,7 +43,7 @@ pgenerator.REFCELL = (n_cache)
 pgenerator.CREATION = (pgeneratorcreation)
 pgeneratorcreation.CLOSURE = eps
 pgeneratorcreation.ANCESTORS = eps
-pgeneratorcreation.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments [POBJECT n_token]
+pgeneratorcreation.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments ([POBJECT n_token])
 pgeneratorcreation.CREATOR.FUNCTION = pmagicmethodcall.METHOD
 pgeneratorcreation.CREATOR.CALLSITE = (pmagicmethodcall.SITE)
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Base84R"))) = (porigin_base)
@@ -129,26 +129,26 @@ $generator_owners_valid(S)
 $call_descriptors_valid(S)
 $heap_valid(H)
 pmagicmethodcall_bad_name = pmagicmethodcall[.NAME = $ptascii("other")]
-pgeneratorcreation_bad_name = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_name n_arguments [POBJECT n_token]]
+pgeneratorcreation_bad_name = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_name n_arguments ([POBJECT n_token])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_name)
 pmagicmethodcall_bad_site = pmagicmethodcall[.SITE = pgeneratorcreation.SITE]
-pgeneratorcreation_bad_site = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_site n_arguments [POBJECT n_token]]
+pgeneratorcreation_bad_site = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_site n_arguments ([POBJECT n_token])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_site)
 pmagicmethodcall_bad_method = pmagicmethodcall[.METHOD = pgenerator.FUNCTION]
-pgeneratorcreation_bad_method = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_method n_arguments [POBJECT n_token]]
+pgeneratorcreation_bad_method = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_method n_arguments ([POBJECT n_token])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_method)
 pmagicmethodcall_bad_class = pmagicmethodcall[.CLASS = porigin_base]
-pgeneratorcreation_bad_class = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_class n_arguments [POBJECT n_token]][.CREATOR = pgeneratorcreation.CREATOR[.CALLED_CLASS = (porigin_base)]]
+pgeneratorcreation_bad_class = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_class n_arguments ([POBJECT n_token])][.CREATOR = pgeneratorcreation.CREATOR[.CALLED_CLASS = (porigin_base)]]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_class)
 pmagicmethodcall_bad_receiver = pmagicmethodcall[.OBJECT = n_input]
-pgeneratorcreation_bad_receiver = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_receiver n_arguments [POBJECT n_token]]
+pgeneratorcreation_bad_receiver = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_bad_receiver n_arguments ([POBJECT n_token])]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_receiver)
 n_unbounded_object = |S.OBJECTS|
 pmagicmethodcall_unbounded_receiver = pmagicmethodcall[.OBJECT = n_unbounded_object]
-pgeneratorcreation_unbounded_receiver = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_unbounded_receiver n_arguments [POBJECT n_token]]
+pgeneratorcreation_unbounded_receiver = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall_unbounded_receiver n_arguments ([POBJECT n_token])]
 ~$generator_creator_valid(S, pgeneratorcreation_unbounded_receiver)
 n_unbounded_array = |S.ARRAYS|
-pgeneratorcreation_unbounded_array = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_unbounded_array [POBJECT n_token]]
+pgeneratorcreation_unbounded_array = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_unbounded_array ([POBJECT n_token])]
 ~$generator_creator_valid(S, pgeneratorcreation_unbounded_array)
 pgeneratorcreation_bad_count = pgeneratorcreation[.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_arguments eps]
 ~$generator_creator_valid(S, pgeneratorcreation_bad_count)
