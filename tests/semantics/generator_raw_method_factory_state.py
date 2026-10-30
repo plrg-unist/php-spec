@@ -220,6 +220,8 @@ pcallableaccess.SITE = (porigin_creator_site)
 pcallableaccess.SCOPE = (porigin_base)
 pcallableaccess.OBJECT
 pcallableaccess.CREATION = eps
+$generator_raw_method_scope_source(S, pcallableaccess, porigin_creator_site)
+~$generator_raw_method_scope_source(S, pcallableaccess[.CREATION = (pgeneratorcreation.CREATOR)], porigin_creator_site)
 pmethoddesc_factory.VISIBILITY = PROPERTY_PRIVATE
 ~pmethoddesc_factory.STATIC
 pgeneratorcreation.CALLEE = SCOPED_TARGET porigin_base pgenerator.FUNCTION porigin_child eps poperand_body
