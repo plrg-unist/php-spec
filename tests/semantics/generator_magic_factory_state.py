@@ -122,7 +122,7 @@ pgeneratorcreation_bad_receiver = pgeneratorcreation[.CREATOR_TARGET = MAGIC_MET
 ''')
 
 COMPLETED_STAGE = (
-    'S.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_tail* '
+    'S.TODO = (GENERATOR_ARGS pgeneratorop eps eps) :: ptask_tail* '
     '-- if pgeneratorop.NAME = "getreturn" '
     '-- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator '
     '-- if pgenerator.PHASE = GENERATOR_CLOSED '
