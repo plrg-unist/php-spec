@@ -38,5 +38,14 @@
     "native_stderr": "",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i92-real-call-copy-unused-result-cleanup",
+    "purpose": "Ignored fresh copied Gen never runs BODY/FIN; API arguments retire before unused Gen CV/Closure, and the original temporary bound source retires last.",
+    "source": "<?php\nclass Token92D { function __destruct() { echo 'TOKEN|'; } }\nclass Maker92D { function __destruct() { echo 'MAKER|'; } }\nclass Origin92D {\n    function capture() {\n        global $weakSource;\n        $f = function ($token) {\n            echo 'BAD-BODY|';\n            try { yield $token; }\n            finally { echo 'BAD-FIN|'; }\n        };\n        $weakSource = WeakReference::create($f);\n        return $f;\n    }\n    function __destruct() { echo 'OLD|'; }\n}\nfunction NewSource92D() { global $weakOld; $old = new Origin92D(); $weakOld = WeakReference::create($old); return $old->capture(); }\nfunction NewMaker92D() { global $weakMaker; $maker = new Maker92D(); $weakMaker = WeakReference::create($maker); return $maker; }\nfunction NewToken92D() { global $weakToken; $token = new Token92D(); $weakToken = WeakReference::create($token); return $token; }\necho 'CALL|'; NewSource92D()->call(NewMaker92D(), NewToken92D());\necho 'AFTER|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() === null, '|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "a56df18fd1556f2de93dbb055c932f47be78c85af6b554c355b24304bbbfcf8b",
+    "native_exit": 0,
+    "native_stdout": "CALL|TOKEN|MAKER|OLD|AFTER|1|1|1|1|E",
+    "native_stderr": ""
   }
 ]
