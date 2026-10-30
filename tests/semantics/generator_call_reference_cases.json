@@ -1,0 +1,24 @@
+[
+  {
+    "id": "i93-real-call-reference-singleton-static-warning",
+    "purpose": "Closed seed leaves an original singleton static cell; real copy must snapshot1 before reference warning reentry advances original to2, so copied body yields2 rather than late-copy3.",
+    "source": "<?php\nclass Token93A { function __destruct() { echo 'TOKEN|'; } }\nclass Origin93A {\n    function capture() {\n        return function (&$token) {\n            static $counter = 0;\n            $counter = $counter + 1;\n            echo 'BODY|', $counter, '|';\n            try { yield $counter; }\n            finally { echo 'FIN|', $counter, '|'; }\n        };\n    }\n    function __destruct() { echo 'OLD|'; }\n}\nclass Active93A { function __destruct() { echo 'MAKER|'; } }\nfunction NewToken93A() { global $weakToken; $token = new Token93A(); $weakToken = WeakReference::create($token); return $token; }\nfunction Warn93A($severity, $message) {\n    global $source, $warningCount;\n    echo 'WARN|'; $warningCount = $warningCount + 1;\n    $slot = null; $probe = $source($slot);\n    echo 'PROBE|', $probe->current(), '|';\n    unset($probe);\n    return true;\n}\n$old = new Origin93A(); $weakOld = WeakReference::create($old);\n$source = $old->capture(); $weakSource = WeakReference::create($source); unset($old);\n$slot = null; $seed = $source($slot); echo 'SEED|', $seed->current(), '|';\nunset($seed);\n$warningCount = 0; set_error_handler('Warn93A');\n$maker = new Active93A(); $weakMaker = WeakReference::create($maker);\necho 'CALL|'; $g = $source->call($maker, NewToken93A());\nrestore_error_handler();\nunset($source, $maker);\necho 'FRESH|', $warningCount === 1, '|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() instanceof Active93A, '|', $weakToken->get() instanceof Token93A, '|';\necho 'VALUE|', $g->current(), '|'; $g->next();\necho 'DONE|', $g->getReturn() === null, '|', $weakMaker->get() instanceof Active93A, '|', $weakToken->get() === null, '|';\nunset($g); echo 'DROP|', $weakMaker->get() === null, '|E';\n",
+    "source_sha256": "2e0fb7f44952f05f92cc28c49e75529d63aaa364d7aa82259f16edd1d61c256c",
+    "native_exit": 0,
+    "native_stdout": "SEED|BODY|1|1|FIN|1|CALL|WARN|PROBE|BODY|2|2|FIN|2|OLD|FRESH|1|1|1|1|1|VALUE|BODY|2|2|FIN|2|TOKEN|DONE|1|1|1|MAKER|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  },
+  {
+    "id": "i93-real-call-reference-shared-static-warning",
+    "purpose": "Live seed keeps the original static cell shared through the early real copy; warning reentry advances it to2 and copied body then reaches3.",
+    "source": "<?php\nclass Token93B { function __destruct() { echo 'TOKEN|'; } }\nclass Origin93B {\n    function capture() {\n        return function (&$token) {\n            static $counter = 0;\n            $counter = $counter + 1;\n            echo 'BODY|', $counter, '|';\n            try { yield $counter; }\n            finally { echo 'FIN|', $counter, '|'; }\n        };\n    }\n    function __destruct() { echo 'OLD|'; }\n}\nclass Active93B { function __destruct() { echo 'MAKER|'; } }\nfunction NewToken93B() { global $weakToken; $token = new Token93B(); $weakToken = WeakReference::create($token); return $token; }\nfunction Warn93B($severity, $message) {\n    global $source, $warningCount;\n    echo 'WARN|'; $warningCount = $warningCount + 1;\n    $slot = null; $probe = $source($slot);\n    echo 'PROBE|', $probe->current(), '|';\n    unset($probe);\n    return true;\n}\n$old = new Origin93B(); $weakOld = WeakReference::create($old);\n$source = $old->capture(); $weakSource = WeakReference::create($source); unset($old);\n$slot = null; $seed = $source($slot); echo 'SEED|', $seed->current(), '|';\n\n$warningCount = 0; set_error_handler('Warn93B');\n$maker = new Active93B(); $weakMaker = WeakReference::create($maker);\necho 'CALL|'; $g = $source->call($maker, NewToken93B());\nrestore_error_handler();\nunset($source, $maker, $seed);\necho 'FRESH|', $warningCount === 1, '|', $weakSource->get() === null, '|', $weakOld->get() === null, '|', $weakMaker->get() instanceof Active93B, '|', $weakToken->get() instanceof Token93B, '|';\necho 'VALUE|', $g->current(), '|'; $g->next();\necho 'DONE|', $g->getReturn() === null, '|', $weakMaker->get() instanceof Active93B, '|', $weakToken->get() === null, '|';\nunset($g); echo 'DROP|', $weakMaker->get() === null, '|E';\n",
+    "source_sha256": "f8e883314a263561272fc5127cfedf25fa0de76a356c5e0c8885c5746d248aff",
+    "native_exit": 0,
+    "native_stdout": "SEED|BODY|1|1|CALL|WARN|PROBE|BODY|2|2|FIN|2|FIN|2|OLD|FRESH|1|1|1|1|1|VALUE|BODY|3|3|FIN|3|TOKEN|DONE|1|1|1|MAKER|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]

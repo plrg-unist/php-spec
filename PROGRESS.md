@@ -335,6 +335,7 @@ cut keep zero credit.
 | I90 | Reviewed private direct BYVAL magic Gen warm/fresh THROW: native4/source4/private433 and five fronts 623 custom/648 reported pass at distinct cuts. Fresh-abort original/Previous and lifetime order agree; actual-tail pending. |
 | I91 | Reviewed private static string Closure identity/bindTo: native3/source3/private433 and five reached fronts 614 custom/639 reported pass at distinct cuts. Original nominal/binding failures0 retained; actual-tail pending. |
 | I92 | Reviewed private real Generator Closure::call copies: native5/source5/private433 and six fronts 744 custom/774 reported pass at distinct cuts. Original Unsupported/two fixture failures0 and native-only receive-error retention0 retained; actual-tail pending. |
+| I93 | Real Generator Closure::call reference-formal timing: two unrun authored native-first controls distinguish singleton vs shared static cells across warning reentry; independent API snapshot/lifetime control in preparation. No execution credit. |
 | ATTR07 | Builtin attributes on real Closure/arrow expressions; separate producer preparation. |
 | COMP159 | Initialized nonpublic ordinary images; native-first source preparation. |
 | Enum M3/M4 | Published enum string callable-typed reception preparation; frozen independent original is native/model unrun. Other callable APIs, pipe/default-loading and wider backing contexts remain partial; GC09 intrinsic policy is separate. |
