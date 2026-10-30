@@ -236,9 +236,9 @@ def $shutdown_roots(pshutdownentry :: pshutdownentry_tail*) = $target_nodes(pshu
 
 ;; zend_fcc_addref retains a bound Closure's object independently of the
 ;; Closure's own this_ptr edge. Ordinary method targets already own their object.
+dec $shutdown_fcc_nodes(pstate, pcalltarget) : pnode*
 def $shutdown_fcc_roots(S, eps) = eps
 def $shutdown_fcc_roots(S, pshutdownentry :: pshutdownentry_tail*) = $shutdown_fcc_nodes(S, pshutdownentry.TARGET) ++ $shutdown_fcc_roots(S, pshutdownentry_tail*)
-dec $shutdown_fcc_nodes(pstate, pcalltarget) : pnode*
 def $shutdown_fcc_nodes(S, CLOSURE_TARGET n) = $instance_roots($target_receiver(S, CLOSURE_TARGET n))
 def $shutdown_fcc_nodes(S, pcalltarget) = eps -- otherwise
 
