@@ -1210,6 +1210,15 @@ native/source controls agree; five reached fronts pass 516 custom/541 reported
 checks. Wider source and transfer contexts remain partial.
 [Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
 
+I97 parks a reference warning before any Generator resumer exists. The actual
+saved handler and emitting caller retain the pending API cursor for the copy;
+root reentry and CV mutation preserve its selected source and raw snapshot.
+Normal resume continues reference wrapping and Gen creation. Native3/source3 and
+four reached fronts pass 553 custom/573 reported checks at distinct cuts on
+unchanged semantics. Aborts during copied reference warnings, no-Gen receive
+errors and wider contexts remain partial.
+[Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

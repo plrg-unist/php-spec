@@ -116,6 +116,17 @@ Four current native/source controls agree; five reached fronts pass
 remain partial.
 [Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
 
+I97 checks normal Fiber suspension during copied reference forwarding. The copy
+already exists while the warning handler runs, but its Gen frame does not.
+The saved API cursor owns source/copy/newThis/raw values independently of root
+CVs. With the seed retired, a static cell owned only by the real Closure is
+copied; fake method statics remain shared. Continuation wraps the original raw snapshot,
+not a later root alias value. Native3/source3 and four reached fronts pass
+553 custom/573 reported checks at distinct cuts on unchanged semantics. Aborts
+during copied reference warnings and no-Gen receive/mapping errors retain their
+limits.
+[Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

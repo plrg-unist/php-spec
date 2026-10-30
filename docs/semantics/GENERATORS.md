@@ -638,6 +638,17 @@ Four current native/source controls agree; five reached fronts pass
 contexts and actual-tail integration retain their own limits.
 [Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
 
+I97 validates a warning handler suspending before copied Gen creation. The API's
+selected source, copy, newThis and raw values survive changes to their root CVs.
+A real static cell owned only by its source Closure is copied before suspension;
+the fake method keeps shared static storage. Normal resumption wraps the saved
+value into a fresh reference formal before creating the Gen. Reached checks also
+validate the existing frame-cleanup carrier for that created result.
+Native3/source3 and four reached fronts pass 553 custom/573 reported checks at
+distinct cuts on unchanged semantics. Aborts during copied reference warnings,
+no-Gen receive errors and wider call forms remain partial.
+[Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

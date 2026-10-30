@@ -6736,6 +6736,16 @@ checks. Original message forecast, dispatch and lifetime failures keep zero
 credit; broader contexts and integration remain partial.
 [Folded-call review](coverage/semantics/generator-folded-string-call-review.json).
 
+I97 validates normal Fiber suspension in a Closure::call reference warning before
+Generator creation. The saved API cursor preserves selected source, receiver and
+raw arguments after root CV mutation. A real static cell owned only by its source
+Closure is copied, while fake method statics remain shared. Native3/source3 and
+four reached fronts pass 553 custom/573 reported checks at distinct cuts on
+unchanged semantics. Original fixture/diagnostic stops keep zero credit. Aborts
+during copied reference warnings, no-Gen receive errors and wider contexts remain
+partial.
+[Warning Fiber review](coverage/semantics/generator-call-warning-fiber-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
