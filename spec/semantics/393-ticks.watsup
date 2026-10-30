@@ -225,6 +225,13 @@ def $tick_finally(T, pcodeexpr*, pcpath, NStmtFinally (SEQUENCE statement*) meta
   -- if ~$ppnullbody(statement*) \/ $source_line(metadata) = $source_end_line(metadata)
 def $tick_finally(T, pcodeexpr*, pcpath, phpType67) = T[.DEPENDENCY = ("tick compiler line for empty multiline finally")] -- otherwise
 
+;; At frequency zero a property group emits no surrounding tick. Nested
+;; executable declarations still require their own emitted-op summary.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata, b) = T
+  -- if T.FREQUENCY = 0
+  -- if ~$tick_contains(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
+  -- if ~$tick_functions(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
+
 ;; Class member op arrays share file declarables, but their statement-list does
 ;; not execute in the surrounding op array. Wider class/linking placement stays
 ;; explicit until its actual emitted-op summaries are supplied.
