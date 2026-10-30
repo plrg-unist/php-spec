@@ -198,7 +198,7 @@ S_bad_receiver = S_live[.CURRENT = (pcallcontext_bad_receiver)]
 ~$fiber_generator_callee_valid(S_bad_receiver, pgenerator, pcallcontext_bad_receiver)
 S_no_owner = S_live[.FRAMES = eps]
 $fiber_generator_body_id(S_no_owner) = eps
-~$fiber_generator_transfer(S_no_owner)
+~$fiber_generator_real_closure_valid(S_no_owner, pgenerator, pcallcontext_generator)
 S_bad_cell = S_live[.STORE = $set_cell(S_live.STORE, n_cache, UNDEFINED)]
 ~$fiber_generator_cached_reference_valid(S_bad_cell, pgenerator, pcallcontext_generator)
 S_zero = $drive_steps(S, 0)
