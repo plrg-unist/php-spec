@@ -67,8 +67,8 @@ four derived), and private strict 432 passes. The [cache review](../../coverage/
 keeps the old equality counterexample, failed property/certificate states and
 corrected fixtures at their original cuts; actual-parent composition is pending.
 
-Cached user `[Closure,"__invoke"]` tick calls now borrow the outer Closure from
-FCC.object. E_DEPRECATED 8192 precedes its first copied argument; required-reference
+Cached user `[Closure,"__invoke"]` tick calls forward positional arguments and
+borrow the outer Closure from FCC.object. E_DEPRECATED 8192 precedes its first copied argument; required-reference
 warning 2 uses the wrapper name and an isolated cell. E_USER_DEPRECATED 16384 then
 precedes the inner call and weak type reception. The entered call adds one Closure
 instance, borrows its receiver and separately owns the raw outer arguments.
