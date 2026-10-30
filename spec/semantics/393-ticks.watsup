@@ -386,18 +386,17 @@ def $tick_store(S, pconfigcall, pcalltarget) = S[.TICKSEQ = $(S.TICKSEQ + 1)][.T
   -- if pconfigcall.KIND = INTRINSIC_REGISTER_TICK
   -- if $tick_callback_supported(S, pcalltarget)
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
-  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
+  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, CACHEOBJECT $callback_cache_object(S, pcalltarget, $shutdown_snapshot(S, pvalue)), ARGS $shutdown_values(pnamedslot*)}
 def $tick_store(S, pconfigcall, pcalltarget) = $tick_unregister(S, pconfigcall, pshutdownentry, S.TICKENTRIES)
   -- if pconfigcall.KIND = INTRINSIC_UNREGISTER_TICK
   -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
-  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS eps}
+  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, CACHEOBJECT $callback_cache_object(S, pcalltarget, $shutdown_snapshot(S, pvalue)), ARGS eps}
 
 ;; FCC equality uses calling_scope, which can differ from late called_scope.
 def $tick_calling_scope(S, HANDLER_METHOD_TARGET b_class porigin ptbytes pcalltarget) = (porigin)
 def $tick_calling_scope(S, pcalltarget) = $target_called_class(S, pcalltarget) -- otherwise
-def $tick_identity(S, pshutdownentry) = ((pfunction.ORIGIN, $target_receiver(S, pshutdownentry.TARGET), $tick_calling_scope(S, pshutdownentry.TARGET), n_closure?))
+def $tick_identity(S, pshutdownentry) = ((pfunction.ORIGIN, pshutdownentry.CACHEOBJECT, $tick_calling_scope(S, pshutdownentry.TARGET), $callback_cache_closure(pshutdownentry)))
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
-  -- if n_closure? = $target_instance(pshutdownentry.TARGET)
 def $tick_identity(S, pshutdownentry) = eps -- otherwise
 def $tick_same(S, pshutdownentry_left, pshutdownentry_right) = ($tick_identity(S, pshutdownentry_left) = $tick_identity(S, pshutdownentry_right))
 def $tick_remove(eps, n) = eps
@@ -419,9 +418,9 @@ def $tick_unregister_live(S, pconfigcall, pshutdownentry, ptickentry :: ptickent
 ;; user_tick_function_dtor releases params before its cached FCC. This task owns
 ;; only that FCC and the entered unregister call, not the removed params.
 def $tick_unregister_remove(S, pshutdownentry, ptickentry) = S[.TICKENTRIES = $tick_remove(S.TICKENTRIES, ptickentry.ID)][.RESULT = KNOWN PNULL]
-  -- if $target_nodes(ptickentry.ENTRY.TARGET) = eps
+  -- if $callback_cache_nodes(ptickentry.ENTRY) = eps
 def $tick_unregister_remove(S, pshutdownentry, ptickentry) = S[.TICKENTRIES = $tick_remove(S.TICKENTRIES, ptickentry.ID)][.TODO = (TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pshutdownentry.CALL.SITE)]
-  -- if $target_nodes(ptickentry.ENTRY.TARGET) =/= eps
+  -- if $callback_cache_nodes(ptickentry.ENTRY) =/= eps
   -- if S.TODO = (CONFIG_INVOKE pshutdownentry.CALL) :: ptask_tail*
 def $error_api_finish(S, pconfigcall, ptask_tail*) = S
   -- if pconfigcall.KIND = INTRINSIC_UNREGISTER_TICK
@@ -452,17 +451,17 @@ def $tick_unregister_certificate(S, pshutdownentry, ptickentry) = true
   -- if $tick_registration_valid(S, pshutdownentry.CALL)
   -- if pshutdownentry.CALL.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if pshutdownentry.BIRTH = eps /\ pshutdownentry.PRODUCER = eps /\ pshutdownentry.ARGS = eps
-  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $target_nodes(pshutdownentry.TARGET) ++ $target_nodes(ptickentry.ENTRY.TARGET)]
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $target_nodes(pshutdownentry.TARGET) ++ $target_nodes(ptickentry.ENTRY.TARGET) ++ $callback_cache_nodes(pshutdownentry) ++ $callback_cache_nodes(ptickentry.ENTRY)]
   -- if $exception_raw_selected(S_history, pvalue, pshutdownentry.RAW, pshutdownentry.TARGET)
   -- if $shutdown_selection_scope(S_history, pshutdownentry)
   -- if $tick_unregister_entry_certificate(S_history, ptickentry)
-  -- if $target_nodes(ptickentry.ENTRY.TARGET) =/= eps
+  -- if $callback_cache_nodes(ptickentry.ENTRY) =/= eps
   -- if $tick_same(S_history, pshutdownentry, ptickentry.ENTRY)
   -- if $tick_entry_at(S.TICKENTRIES, ptickentry.ID) = eps
 def $tick_unregister_certificate(S, pshutdownentry, ptickentry) = false -- otherwise
-def $tick_unregister_release_valid(S, pshutdownentry, ptickentry) = ($tick_unregister_certificate(S, pshutdownentry, ptickentry) /\ S.ORIGIN = (pshutdownentry.CALL.SITE) /\ $heap_subset($target_nodes(ptickentry.ENTRY.TARGET) ++ $config_nodes(pshutdownentry.CALL), S.ALLOCATIONS))
+def $tick_unregister_release_valid(S, pshutdownentry, ptickentry) = ($tick_unregister_certificate(S, pshutdownentry, ptickentry) /\ S.ORIGIN = (pshutdownentry.CALL.SITE) /\ $callback_cache_valid(S, pshutdownentry) /\ $callback_cache_valid(S, ptickentry.ENTRY) /\ $heap_subset($callback_cache_nodes(ptickentry.ENTRY) ++ $config_nodes(pshutdownentry.CALL), S.ALLOCATIONS))
 def $call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) = $tick_unregister_release_valid(S, pshutdownentry, ptickentry)
-def $task_nodes(TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) = $target_nodes(ptickentry.ENTRY.TARGET) ++ $config_nodes(pshutdownentry.CALL)
+def $task_nodes(TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) = $callback_cache_nodes(ptickentry.ENTRY) ++ $config_nodes(pshutdownentry.CALL)
 rule PhpStep/tick-unregister-release: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pshutdownentry.CALL.SITE)]
   -- if S.TODO = (TICK_UNREGISTER_RELEASE pshutdownentry ptickentry) :: ptask_tail*
   -- if $call_task_valid(S, TICK_UNREGISTER_RELEASE pshutdownentry ptickentry)
@@ -488,7 +487,7 @@ def $tick_entry_valid(S, ptickentry) = true
   -- if $shutdown_selection_scope(S, pshutdownentry)
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
   -- if $shutdown_args_valid(S, pshutdownentry.ARGS)
-  -- if $heap_subset($target_nodes(pshutdownentry.TARGET), S.ALLOCATIONS)
+  -- if $callback_cache_valid(S, pshutdownentry)
 def $tick_entry_valid(S, ptickentry) = false -- otherwise
 
 def $tick_entries_valid(S, eps, n) = true
@@ -643,7 +642,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.MESSAGE = $tick_reference_message(S, ptickdispatch, n)
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE ptickdispatch.MARKER.LINE
 
-rule PhpStep/tick-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*], pfunction, ptickdispatch.SENT, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE), ptickentry.ENTRY.TARGET), pfunction, |ptickdispatch.SENT|, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE)
+rule PhpStep/tick-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*], pfunction, ptickdispatch.SENT, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE), $callback_user_target(ptickentry.ENTRY.TARGET)), pfunction, |ptickdispatch.SENT|, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE)
   -- if S.TODO = (TICK_ENTER ptickdispatch) :: ptask_tail*
   -- if $call_task_valid(S, TICK_ENTER ptickdispatch)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
@@ -665,7 +664,7 @@ def $tick_context_valid(S, pcallcontext) = true
   -- if $tick_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (ptickdispatch)
   -- if $tick_result_valid(S, ptickdispatch)
   -- if $tick_selected(S, ptickdispatch) = (ptickentry)
-  -- if pcallcontext.TARGET = ptickentry.ENTRY.TARGET
+  -- if pcallcontext.TARGET = $callback_user_target(ptickentry.ENTRY.TARGET)
   -- if pcallcontext.CALLSITE = (ptickdispatch.SITE) /\ pcallcontext.LINE = ptickdispatch.MARKER.LINE
   -- if pcallcontext.ARGC = |ptickdispatch.SENT| /\ pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
