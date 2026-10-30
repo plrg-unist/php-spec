@@ -59,7 +59,7 @@ def $object_table_item(S, ALIAS n) = ALIAS n
 def $object_table_item(S, UNINITIALIZED) = UNINITIALIZED
 
 ;; A dynamic slot record keeps mixed-table identity after its value is unset.
-;; Nonpublic declared UNSET rows retain their separate table-admission policy.
+;; Declared INITIAL/UNSET slots keep their physical INDIRECT buckets.
 def $object_table_dynamic_history(eps) = false
 def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
@@ -91,10 +91,17 @@ def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $o
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $object_table_dynamic_history($object_table_slots_at(S, n))
   -- if ppropertydesc.KEY = ppropertyslot.NAME
   -- if ~$property_hook_virtual(S, ppropertydesc)
   -- if ppropertyslot.STATE = PROP_UNSET
+def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid /\ ppropertydesc.KEY = ppropertyslot.NAME
+  -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+  -- if ~$property_hook_virtual(S, ppropertydesc)
+  -- if ppropertyslot.STATE = PROP_INITIAL
 def $object_table_ordinary_rows(S, n, ppropertyslot*) = false -- otherwise
 def $object_table_ordinary(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -118,7 +125,7 @@ def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (E
   -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) (INDIRECT n ppropertyslot.NAME)) :: $object_table_ordinary_entries(n, ppropertyslot_tail*)
   -- if ppropertyslot.DECL =/= eps
-  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
 def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) pitem) :: $object_table_ordinary_entries(n, ppropertyslot_tail*)
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
