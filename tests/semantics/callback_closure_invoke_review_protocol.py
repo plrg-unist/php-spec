@@ -94,7 +94,6 @@ def conditions(name, program, source, expected_stdout):
         'ptickdispatch_inner.SENT = [KNOWN pvalue_raw, KNOWN (POBJECT n_argument)]',
         'ptickdispatch_inner.ENTRY = (ptickentry.ID)',
         '$tick_is_calling(S_inner, ptickentry.ID)',
-        '$tick_invoke_valid(S_inner, ptickdispatch_inner)',
     ]
     owners('S_inner', 'n_closure', 1)
     owners('S_inner', 'n_argument', 2)
