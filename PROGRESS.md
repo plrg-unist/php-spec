@@ -91,8 +91,9 @@ fake Closures created by the modeled named, intrinsic, method, constant,
 fromCallable and Fiber capture routes. Clones and bind copies allocate without
 that flag; bound fake and real Closures remain collectable. Two native status
 batches distinguish these cases, three new sources agree exactly, and three
-strict reached groups pass 153 checks. GC graph traversal and owners are
-unchanged. Wider collection contexts remain partial.
+strict reached groups pass 153 checks. Actual-tail strict433 compilation passes;
+GC graph traversal and owners are unchanged. Wider collection contexts remain
+partial.
 [GC09 review](coverage/semantics/gc-fake-closure-collectability-review.json).
 
 Immediate identity cleanup now validates a sole produced right object/array

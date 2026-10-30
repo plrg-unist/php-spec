@@ -22,7 +22,8 @@
     "reached": "Three strict SL groups pass 54+42+57=153 reported assertions at clean 8325: real CV bindings, birth marker membership, absent original physical slots, present clone/bind/real/bound slots, live identity, Fiber object-style static no-child edges and bound receiver/weak identity. Forged real/bound markers fail GC validity. All three sources reach the sole gc_enabled() marker.",
     "source": "Three new original sources match retained native stdout, stderr and exit exactly at clean 8325: named Z|0|1|5|5|3|END, method Z|0|77777|11|END, corrected Fiber Z|0|1|111|1|END. Each model outcome is normal, exit 0, empty stderr and stable inputs/HEAD.",
     "strict": "One private 432-module strict SL compilation passes at the reviewed dirty 1291 semantic diff with true newline, empty stderr and full process-group reap. The recorded diff SHA equals the committed 1291-to-62e semantic diff byte for byte; no compilation rerun was needed for the metadata commit.",
-    "zero_credit": "The pre-edit 11-check static-root baseline diagnoses the wrong original slot and gives no fix credit. Packet6's first Fiber reached source used unmodeled count(); its native row is retained but has zero model agreement. Only the corrected packet7 Fiber original contributes the third agreement. GC07 and GC08 accepted sources and state groups were not replayed."
+    "zero_credit": "The pre-edit 11-check static-root baseline diagnoses the wrong original slot and gives no fix credit. Packet6's first Fiber reached source used unmodeled count(); its native row is retained but has zero model agreement. Only the corrected packet7 Fiber original contributes the third agreement. GC07 and GC08 accepted sources and state groups were not replayed.",
+    "actual_joined": "One strict SL compilation of the actual 433-module manifest passes at clean 48d2a8769 over exact canonical 0af5f9115: true newline, empty stderr, exit 0, stable inputs/HEAD and fully reaped CPU5 group. The only later changes are this report pointer and concise documentation."
   },
   "source_sha256": {
     "named_reached": "155b2890726478b34d7d1e7a667d05eb6d3a3aa6bd124816c7385cec914bdbed",
@@ -44,9 +45,10 @@
     "php-spec/.tools/shutdown-state-review-supdxmor/report.json": "df3e10113c12a6964733c98712274574e95863f3ea7efafc1d25b7e247d6252a",
     "php-spec/.tools/shutdown-state-review-f523ukom/report.json": "4d72fbb17accdf170924862710813be5d8a13aa3ddd23b25af3b88ab85d1e06f",
     "php-spec/.tools/shutdown-state-review-6cbg6c9o/report.json": "362590d2ace8ba9eca269512d67d3ff815a653891cfb6dc5a92e51a6c893e597",
-    "php-spec/.tools/shutdown-state-review-z67skjs8/report.json": "ac30e827b70dde84ffe1e354ce6abbe231f31e533bb48adc25b78f67311699f1"
+    "php-spec/.tools/shutdown-state-review-z67skjs8/report.json": "ac30e827b70dde84ffe1e354ce6abbe231f31e533bb48adc25b78f67311699f1",
+    "gc-fake-closure-collectability-join/strict433/report.json": "617892574756f8ecfca88ab04c7c5ac34ffd36e5c9a34a0a76e52a843bc1b29e"
   },
-  "review": "Independent semantic/test CLEAR from gc07_fallback_review at clean 8325: the 21 allocation sites for the eight marked body families mapped, original versus clone/bind/identity behavior and Fiber static object-input condition checked against pinned Zend; source, reached and strict reports checked. Actual-tail interaction review and joined gate remain pending.",
+  "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean 8325. The 21 allocation sites for the eight marked body families, original versus clone/bind/identity behavior and Fiber static object-input condition were checked against pinned Zend; source, reached and strict reports agree. Actual-tail semantic/seam CLEAR at 4a15fb0fc preserves OB444 handle accounting, current clone paths and enum array capture; joined433 at 48d2a8769 passes.",
   "limits": "Only already implemented fake Closure creation routes are covered. The marker changes possible-root admission, not GC graph traversal, physical owner counting, collector plans or wider active collection protocols. Unmodeled internal callable bodies and broader fake Closure constructions remain partial.",
   "recovery": "From php-spec, run tests/semantics/gc_fake_closure_collectability_sources.py with --phase native or --phase model and the selected --case/--output packet; run tests/semantics/gc_fake_closure_state.py with a selected --case. Native-only gc_status scripts have no modeled intrinsic. Raw reports live in ../php-spec-evidence-archive and php-spec/.tools; no bulky artifacts are in Git."
 }
