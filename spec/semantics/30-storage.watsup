@@ -552,6 +552,7 @@ syntax ptask = ENUM_CASE_INIT porigin | ENUM_CONST_FETCH porigin ptbytes ptbytes
   | DEFAULT_STRING_RESULT pparameterstring | VARIADIC_STRING_RESULT pvariadicstring
   | CLOSURE_CALL_RESULT porigin int | CLOSURE_CALL_FORWARD pclosurecall nat pnamedargs nat
   | CLOSURE_CALL_COPY_RESULT pclosurecall nat
+  | CLOSURE_CALL_COPY_RETURN nat nat
   | CLOSURE_CALL_COPY_FORWARD pclosurecall nat nat pnamedargs nat
   | CLOSURE_CALL_COPY_REFERENCE pclosurecall nat nat pnamedargs nat
   | FIBER_UNPACK_PREP nat? pfiberstart | FIBER_UNPACK_NEXT nat? pfiberstart poperand nat

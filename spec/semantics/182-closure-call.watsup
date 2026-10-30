@@ -741,6 +741,30 @@ def $closure_call_copy_result_valid(S, pclosurecall, n_copy) = true
   -- if $call_line_valid(S, (pclosurecall.SITE), pclosurecall.LINE)
 def $closure_call_copy_result_valid(S, pclosurecall, n_copy) = false -- otherwise
 def $call_task_valid(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_result_valid(S, pclosurecall, n_copy)
+;; The caller's used retval remains owned while API arguments/This run finalizers.
+dec $closure_call_copy_return_valid(pstate, nat, nat) : bool
+def $closure_call_copy_return_valid(S, n_copy, n_generator) = true
+  -- if $(n_generator < |S.OBJECTS|) /\ (HOBJECT n_generator) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_generator] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if pgenerator.CLOSURE = (n_copy)
+  -- if pgenerator.FRAME = (pframe_generator)
+  -- if pframe_generator.CONTEXT = (pcallcontext)
+  -- if $(n_copy < |S.OBJECTS|) /\ (HOBJECT n_copy) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_copy] = REALCLOSURE pgenerator.FUNCTION pitem* pstaticcell*
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_copy) = (pclosurebinding)
+  -- if $closure_call_copy_binding(S, pclosurebinding)
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION /\ pcallcontext.TARGET = CLOSURE_TARGET n_copy
+  -- if pcallcontext.INSTANCE = (n_copy) /\ pcallcontext.WRAPPER = eps
+  -- if pcallcontext.CALLSITE = (pclosurebinding.SITE)
+  -- if pcallcontext.LEXICAL_CLASS = pclosurebinding.LEXICAL /\ pcallcontext.CALLED_CLASS = pclosurebinding.CALLED
+  -- if pcallcontext.RECEIVER = pclosurebinding.RECEIVER
+def $closure_call_copy_return_valid(S, n_copy, n_generator) = false -- otherwise
+def $call_task_valid(S, CLOSURE_CALL_COPY_RETURN n_copy n_generator) = $closure_call_copy_return_valid(S, n_copy, n_generator)
+def $task_nodes(CLOSURE_CALL_COPY_RETURN n_copy n_generator) = [HOBJECT n_generator]
+rule PhpStep/closure-call-copy-return: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n_generator)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLOSURE_CALL_COPY_RETURN n_copy n_generator) :: ptask_tail*
+  -- if $call_task_valid(S, CLOSURE_CALL_COPY_RETURN n_copy n_generator)
 ;; The early API copy stays rooted while warnings prepare detached references.
 ;; The fresh-cell frontier starts after capture/static duplication.
 dec $closure_call_copy_forward_valid(pstate, pclosurecall, nat, nat, pnamedargs, nat) : bool
@@ -785,7 +809,7 @@ rule PhpStep/closure-call-copy-forward-enter: S ~> $closure_call_copy_invoke(S[.
 dec $closure_call_copy_discarded(ptask*) : bool
 def $closure_call_copy_discarded((CLOSURE_CALL_RESULT porigin z) :: ptask_tail*) = $destructor_return_discarded(ptask_tail*)
 def $closure_call_copy_discarded(ptask*) = false -- otherwise
-rule PhpStep/closure-call-copy-result: S ~> $destructor_release_begin(S[.TODO = ptask_tail*], $destruction_values($task_nodes(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)))
+rule PhpStep/closure-call-copy-result: S ~> $destructor_release_begin(S[.TODO = (CLOSURE_CALL_COPY_RETURN n_copy n_generator) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($task_nodes(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)))
   -- if S.TODO = (CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) :: ptask_tail*
   -- if $call_task_valid(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
   -- if ~$closure_call_copy_discarded(ptask_tail*)
