@@ -42,5 +42,16 @@
     "native_stderr": "",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i93-real-call-reference-warning-trace",
+    "purpose": "Reference warning runs before copied callee entry: handler has an internal header followed by the genuine raw Closure::call API frame, without a phantom Generator body frame.",
+    "source": "<?php\nclass Maker93T {}\nclass Token93T {}\nfunction Warning93T($severity, $message, $file, $line) {\n    global $maker, $token, $callLine;\n    $error = new Exception('trace93T'); $trace = $error->getTrace();\n    echo 'TRACE|', $trace[0]['function'] === 'Warning93T', '|', !isset($trace[0]['file']), '|', !isset($trace[0]['line']), '|', $trace[0]['args'][0] === $severity, '|', $trace[0]['args'][1] === $message, '|', $trace[0]['args'][2] === $file, '|', $trace[0]['args'][3] === $line, '|', $trace[1]['function'] === 'call', '|', $trace[1]['class'] === 'Closure', '|', $trace[1]['type'] === '->', '|', $trace[1]['file'] === __FILE__, '|', $trace[1]['line'] === $callLine, '|', $trace[1]['args'][0] === $maker, '|', $trace[1]['args'][1] === $token, '|', !isset($trace[2]), '|';\n    unset($trace, $error); return true;\n}\n$source = function (&$slot) { yield $slot; };\n$maker = new Maker93T(); $token = new Token93T();\nset_error_handler('Warning93T'); echo 'CALL|';\n$callLine = __LINE__ + 1;\n$g = $source->call($maker, $token);\nrestore_error_handler();\necho 'VALUE|', $g->current() === $token, '|'; $g->next();\necho 'DONE|', $g->getReturn() === null, '|E';\n",
+    "source_sha256": "87b55d0add8d4a25138e994016f2426a2172486bbc7b9643c954dea13696e8b4",
+    "native_exit": 0,
+    "native_stdout": "CALL|TRACE|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|VALUE|1|DONE|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
