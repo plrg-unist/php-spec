@@ -811,6 +811,14 @@ dying before a saved catch and an outside alias changing an array from 13 to
 31 while TypeError TraceArgs still holds 13 and the copied scalar 7. Typed or
 backed cells, owning final cells and temporary producers remain separate.
 
+[Final owning reference snapshots](coverage/semantics/config-generator-reference-owning-cache-review.json)
+copy a finite quiet object or array from an ordinary BYREF Generator cell as
+the second argument after a scalar option. The cell changes back to a scalar
+before the Generator closes. Four sources agree with PHP; reached proofs check
+the copied object dying before a saved catch and ARRAY 13 remaining in
+TypeError TraceArgs after a live COW change to 31. A still-owning final cell,
+typed cells and temporary producers remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical

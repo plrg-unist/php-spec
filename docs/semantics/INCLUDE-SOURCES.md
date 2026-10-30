@@ -1942,3 +1942,18 @@ TypeError TraceArgs, direct DATA release and saved-throw cleanup. The old
 `B;Y0;` Unsupported and first constructed-cycle fixture failure retain zero
 credit. Generic Iterator/storage rules and typed, backed, final owning-cell
 and temporary producer boundaries remain unchanged.
+
+The [final owning reference snapshot increment](../../coverage/semantics/config-generator-reference-owning-cache-review.json)
+admits one finite quiet owning second ITEM from an ordinary REFCELL of a
+retained named direct-CV BYREF Generator, after a scalar first option. The
+second key must normalize to integer. The cell must hold a scalar again at
+closed finish and popped cleanup; an owning final cell is still refused.
+The copied ITEM retains bounded history while the live quiet graph is checked
+for cleanup. Four exact originals, strict432 and two reached recipes (408
+conditions, seven raw steps) check object and dynamic ARRAY snapshots, COW
+13 versus live 31, TypeError TraceArgs, nonowning DATA release and saved-throw
+cleanup. The original `B;Y0;Y1;` Unsupported keeps zero agreement credit; two
+pre-execution artifact setup failures and one metadata-only old-control
+recorder correction are retained externally without extra source credit.
+Generic storage, typed/backed cells, still-owning final cells and temporary
+BYREF producers remain separate.
