@@ -28,12 +28,6 @@ def $list_warning_frontier(S, 2803) = true
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
 def $list_warning_frontier(S, 2804) = $a83_author_echo(S, $ptascii("S:"))
-def $list_warning_frontier(S, 2805) = true
-  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
-  -- if pgenstorage.NEXT = 1
-def $list_warning_frontier(S, 2806) = true
-  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
-  -- if pgenstorage.NEXT = 2
 def $list_warning_frontier(S, 2807) = $a83_author_echo(S, $ptascii("V:"))
 '''
 
@@ -155,35 +149,10 @@ def conditions(name, program, path, stdout):
         '$weakref_get(S_catch,n_payloadwatch) = POBJECT n_payload',
         '$weakref_get(S_catch,n_genwatch) = POBJECT n_generator',
         '$throwable_field(S_catch,n_exception,"previous") = PNULL',
+        '~$destructor_operational(S_catch)',
         owners('S_catch', 'HOBJECT n_generator', 1),
         owners('S_catch', 'HOBJECT n_payload', 1),
-    ] + public('S_catch') + seek('S_catch', 2805, 'S_slot1') + [
-        'S_slot1.TODO = (GENERATOR_STORAGE_STEP pgenstorage_slot1) :: ptask_slot1*',
-        'pgenstorage_slot1.OBJECT = n_generator',
-        'pgenstorage_slot1.NEXT = 1',
-        '$generator_storage_valid(S_slot1,pgenstorage_slot1)',
-        '$generator_storage_slot(pgenerator_closed,1) = [HCELL n_payloadref]',
-        '$ordinary_reference_value(S_slot1,n_payloadref) = (POBJECT n_payload)',
-        '$weakref_get(S_slot1,n_genwatch) = POBJECT n_generator',
-        '$weakref_get(S_slot1,n_payloadwatch) = POBJECT n_payload',
-        owners('S_slot1', 'HOBJECT n_generator', 1),
-        owners('S_slot1', 'HCELL n_payloadref', 1),
-        owners('S_slot1', 'HOBJECT n_payload', 1),
-    ] + public('S_slot1') + seek('S_slot1', 2806, 'S_slot2') + [
-        'S_slot2.TODO = (GENERATOR_STORAGE_STEP pgenstorage_slot2) :: ptask_slot2*',
-        'pgenstorage_slot2.OBJECT = n_generator',
-        'pgenstorage_slot2.NEXT = 2',
-        '$generator_storage_valid(S_slot2,pgenstorage_slot2)',
-        '~((HCELL n_payloadref) <- S_slot2.ALLOCATIONS)',
-        '~((HOBJECT n_payload) <- S_slot2.ALLOCATIONS)',
-        'S_slot2.STORE[n_payloadref] = DEFINED (POBJECT n_payload)',
-        '$ordinary_reference_value(S_slot2,n_payloadref) = eps',
-        '$generator_storage_reference_borrowed(S_slot2,pgenerator_closed,n_payloadref)',
-        '(HOBJECT n_generator) <- S_slot2.ALLOCATIONS',
-        '$weakref_get(S_slot2,n_genwatch) = POBJECT n_generator',
-        '$weakref_get(S_slot2,n_payloadwatch) = PNULL',
-        owners('S_slot2', 'HOBJECT n_generator', 1),
-    ] + public('S_slot2') + seek('S_slot2', 2807, 'S_unset') + [
+    ] + public('S_catch') + seek('S_catch', 2807, 'S_unset') + [
         '~((HOBJECT n_generator) <- S_unset.ALLOCATIONS)',
         '~((HCELL n_payloadref) <- S_unset.ALLOCATIONS)',
         '~((HOBJECT n_payload) <- S_unset.ALLOCATIONS)',
