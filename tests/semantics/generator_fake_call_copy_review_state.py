@@ -33,9 +33,9 @@ pgenerator.CREATION = eps
 pgenerator.ACCESS = eps
 pgenerator.VALUE = eps
 pgenerator.REFCELL = (n_cache)
-S.OBJECTS[n_copy] = BOUNDFAKECLOSURE pboundcopy
+S.OBJECTS[n_copy] = BOUNDFAKECLOSURE pboundfake_copy
 (HOBJECT n_copy) <- S.ALLOCATIONS
-n_source = pboundcopy.SOURCE
+n_source = pboundfake_copy.SOURCE
 $(n_source < n_copy)
 S.OBJECTS[n_source] = FROMCALLABLECLOSURE pfrommethod
 pfrommethod.FUNCTION = pgenerator.FUNCTION
@@ -51,10 +51,10 @@ pmethoddesc_stream.FUNCTION.ORIGIN = pgenerator.FUNCTION
 pmethoddesc_other.FUNCTION.ORIGIN =/= pgenerator.FUNCTION
 pmethoddesc_stream.FUNCTION.SIGNATURE.BYREF
 $function_generator(S, pmethoddesc_stream.FUNCTION)
-pboundcopy.SCOPE = BIND_CLASS porigin_base
-pboundcopy.CALLED = BIND_CLASS porigin_base
-pboundcopy.RECEIVER = (n_maker)
-pboundcopy.ORIGINAL = (pclosurescope_original)
+pboundfake_copy.SCOPE = BIND_CLASS porigin_base
+pboundfake_copy.CALLED = BIND_CLASS porigin_base
+pboundfake_copy.RECEIVER = (n_maker)
+pboundfake_copy.ORIGINAL = (pclosurescope_original)
 pclosurescope_original.OBJECT = n_source
 pclosurescope_original.LEXICAL = porigin_base
 pclosurescope_original.CALLED = porigin_child
@@ -69,13 +69,13 @@ S.OBJECTS[n_maker] = INSTANCE porigin_base
 $closure_scope_at(S.CLOSURESCOPES, n_source) = eps
 $closure_scope_at(S.CLOSURESCOPES, n_copy) = eps
 $closure_binding_at(S.CLOSUREBINDINGS, n_copy) = eps
-$closure_call_copy_site(S, pboundcopy.SITE)
-$fake_bind_source_valid(S, pboundcopy)
+$closure_call_copy_site(S, pboundfake_copy.SITE)
+$fake_bind_source_valid(S, pboundfake_copy)
 $bound_fake_valid(S, n_copy)
-$closure_call_fake_copy_binding(S, pboundcopy)
+$closure_call_fake_copy_binding(S, pboundfake_copy)
 $closure_call_copy_row(S, n_copy) = (pclosurebinding_copy)
 pclosurebinding_copy.OBJECT = n_copy
-pclosurebinding_copy.SITE = pboundcopy.SITE
+pclosurebinding_copy.SITE = pboundfake_copy.SITE
 pclosurebinding_copy.SOURCE = n_source
 pclosurebinding_copy.LEXICAL = (porigin_base)
 pclosurebinding_copy.CALLED = (porigin_base)
@@ -140,7 +140,7 @@ pcallcontext_generator.FUNCTION = pgenerator.FUNCTION
 pcallcontext_generator.LEXICAL_CLASS = (porigin_base)
 pcallcontext_generator.CALLED_CLASS = (porigin_base)
 pcallcontext_generator.RECEIVER = (n_maker)
-pcallcontext_generator.CALLSITE = (pboundcopy.SITE)
+pcallcontext_generator.CALLSITE = (pboundfake_copy.SITE)
 pcallcontext_generator.WRAPPER = eps
 $call_context_roots((pcallcontext_generator)) = [HOBJECT n_copy]
 $call_receiver_roots(pcallcontext_generator) = eps
@@ -181,25 +181,25 @@ $fiber_generator_body_id(S_live) = (n_generator)
 $fiber_generator_transfer(S_live)
 $call_current_valid(S_live)
 $eval_trace_preparser(S_live, (pcallcontext_generator), pframe_send) = eps
-pboundfake_bad_scope = pboundcopy[.SCOPE = BIND_CLASS porigin_child]
+pboundfake_bad_scope = pboundfake_copy[.SCOPE = BIND_CLASS porigin_child]
 S_bad_scope = S_live[.OBJECTS = $object_set(S_live.OBJECTS, n_copy, BOUNDFAKECLOSURE pboundfake_bad_scope)]
 ~$bound_fake_valid(S_bad_scope, n_copy)
 ~$closure_call_fake_copy_binding(S_bad_scope, pboundfake_bad_scope)
 ~$fiber_generator_method_closure_valid(S_bad_scope, pgenerator, pcallcontext_generator)
 pclosurescope_bad_original = pclosurescope_original[.LEXICAL = porigin_child]
-pboundfake_bad_original = pboundcopy[.ORIGINAL = (pclosurescope_bad_original)]
+pboundfake_bad_original = pboundfake_copy[.ORIGINAL = (pclosurescope_bad_original)]
 S_bad_original = S_live[.OBJECTS = $object_set(S_live.OBJECTS, n_copy, BOUNDFAKECLOSURE pboundfake_bad_original)]
 ~$bound_fake_valid(S_bad_original, n_copy)
 ~$closure_call_fake_copy_binding(S_bad_original, pboundfake_bad_original)
-pboundfake_bad_source = pboundcopy[.SOURCE = n_copy]
+pboundfake_bad_source = pboundfake_copy[.SOURCE = n_copy]
 S_bad_source = S_live[.OBJECTS = $object_set(S_live.OBJECTS, n_copy, BOUNDFAKECLOSURE pboundfake_bad_source)]
 ~$bound_fake_valid(S_bad_source, n_copy)
 ~$closure_call_fake_copy_binding(S_bad_source, pboundfake_bad_source)
-pboundfake_bad_site = pboundcopy[.SITE = pfrommethod.SITE]
+pboundfake_bad_site = pboundfake_copy[.SITE = pfrommethod.SITE]
 S_bad_site = S_live[.OBJECTS = $object_set(S_live.OBJECTS, n_copy, BOUNDFAKECLOSURE pboundfake_bad_site)]
 ~$bound_fake_valid(S_bad_site, n_copy)
 ~$closure_call_fake_copy_binding(S_bad_site, pboundfake_bad_site)
-pboundfake_child = pboundcopy[.CALLED = BIND_CLASS porigin_child][.RECEIVER = (n_old)]
+pboundfake_child = pboundfake_copy[.CALLED = BIND_CLASS porigin_child][.RECEIVER = (n_old)]
 S_child = S_live[.ALLOCATIONS = S_live.ALLOCATIONS ++ [HOBJECT n_old]][.OBJECTS = $object_set(S_live.OBJECTS, n_copy, BOUNDFAKECLOSURE pboundfake_child)]
 $bound_fake_receiver_valid(S_child, pboundfake_child)
 ~$closure_call_fake_copy_binding(S_child, pboundfake_child)
@@ -262,7 +262,7 @@ S.STORE[n_fiber_cell] = DEFINED (POBJECT n_fiber)
 S.OBJECTS[n_fiber] = FIBER pfiber
 pfiber.STATUS = FIBER_TERMINATED
 pfiber.VM = eps
-pboundfake_bad_scope = pboundcopy[.SCOPE = BIND_CLASS porigin_child]
+pboundfake_bad_scope = pboundfake_copy[.SCOPE = BIND_CLASS porigin_child]
 S_bad_scope = S[.OBJECTS = $object_set(S.OBJECTS, n_copy, BOUNDFAKECLOSURE pboundfake_bad_scope)]
 ~$bound_fake_valid(S_bad_scope, n_copy)
 ~$generator_closure_valid(S_bad_scope, pgenerator)

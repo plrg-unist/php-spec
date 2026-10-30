@@ -21,30 +21,30 @@ def checks(text):
 
 COPY = r'''
 S.COMPLETION = NORMAL
-S.OBJECTS[n_copy] = BOUNDFAKECLOSURE pboundcopy
+S.OBJECTS[n_copy] = BOUNDFAKECLOSURE pboundfake_copy
 (HOBJECT n_copy) <- S.ALLOCATIONS
-n_source = pboundcopy.SOURCE
+n_source = pboundfake_copy.SOURCE
 $(n_source < n_copy)
-pboundcopy.ORIGINAL = (pclosurescope_original)
+pboundfake_copy.ORIGINAL = (pclosurescope_original)
 pclosurescope_original.OBJECT = n_source
 pclosurescope_original.CREATION = eps
 pclosurescope_original.RECEIVER = (n_old)
 $class_named(S.CLASSNAMES, $ptlc($ptascii("@BASE@"))) = (porigin_base)
-pboundcopy.SCOPE = BIND_CLASS porigin_base
-pboundcopy.CALLED = BIND_CLASS porigin_base
-pboundcopy.RECEIVER = (n_maker)
+pboundfake_copy.SCOPE = BIND_CLASS porigin_base
+pboundfake_copy.CALLED = BIND_CLASS porigin_base
+pboundfake_copy.RECEIVER = (n_maker)
 n_old =/= n_maker
 S.OBJECTS[n_maker] = INSTANCE porigin_base
 S.OBJECTS[n_old] = INSTANCE porigin_base
 $closure_scope_at(S.CLOSURESCOPES, n_copy) = eps
 $closure_binding_at(S.CLOSUREBINDINGS, n_copy) = eps
-$closure_call_copy_site(S, pboundcopy.SITE)
-$closure_call_fake_copy_binding(S, pboundcopy)
+$closure_call_copy_site(S, pboundfake_copy.SITE)
+$closure_call_fake_copy_binding(S, pboundfake_copy)
 $bound_fake_valid(S, n_copy)
 $closure_call_copy_row(S, n_copy) = (pclosurebinding_copy)
 pclosurebinding_copy.OBJECT = n_copy
 pclosurebinding_copy.SOURCE = n_source
-pclosurebinding_copy.SITE = pboundcopy.SITE
+pclosurebinding_copy.SITE = pboundfake_copy.SITE
 pclosurebinding_copy.LEXICAL = (porigin_base)
 pclosurebinding_copy.CALLED = (porigin_base)
 pclosurebinding_copy.RECEIVER = (n_maker)
@@ -60,7 +60,7 @@ $node_children(S, HOBJECT n_copy) = [HOBJECT n_maker]
 $target_lexical_class(S, CLOSURE_TARGET n_copy) = (porigin_base)
 $target_called_class(S, CLOSURE_TARGET n_copy) = (porigin_base)
 $target_receiver(S, CLOSURE_TARGET n_copy) = (n_maker)
-$call_selected_valid(S, CLOSURE_TARGET n_copy, (pboundcopy.SITE))
+$call_selected_valid(S, CLOSURE_TARGET n_copy, (pboundfake_copy.SITE))
 '''
 
 API_STAGE = (
@@ -82,11 +82,11 @@ pcallcontext.INSTANCE = (n_copy)
 pcallcontext.LEXICAL_CLASS = (porigin_base)
 pcallcontext.CALLED_CLASS = (porigin_base)
 pcallcontext.RECEIVER = (n_maker)
-pcallcontext.CALLSITE = (pboundcopy.SITE)
+pcallcontext.CALLSITE = (pboundfake_copy.SITE)
 pcallcontext.WRAPPER = eps
 pcallcontext.ARGC = 1
 pclosurecall.SOURCE = n_source
-pclosurecall.SITE = pboundcopy.SITE
+pclosurecall.SITE = pboundfake_copy.SITE
 pclosurecall.FIRST = (POBJECT n_maker)
 pclosurecall.RECEIVER = (n_maker)
 pclosurecall.RAW = [(KINT 1, KNOWN (POBJECT n_token))]
@@ -122,11 +122,11 @@ $eval_trace_preparser(S, (pcallcontext), pframe_api) = [ptraceframe_api]
 ptraceframe_api.FUNCTION = $ptascii("call")
 ptraceframe_api.CLASS = ($ptascii("Closure"))
 ptraceframe_api.ARGS = [(KINT 0, POBJECT n_maker), (KINT 1, POBJECT n_token)]
-pboundfake_bad_scope = pboundcopy[.SCOPE = BIND_UNSCOPED]
+pboundfake_bad_scope = pboundfake_copy[.SCOPE = BIND_UNSCOPED]
 ~$closure_call_fake_copy_binding(S, pboundfake_bad_scope)
-pboundfake_bad_called = pboundcopy[.CALLED = BIND_UNSCOPED]
+pboundfake_bad_called = pboundfake_copy[.CALLED = BIND_UNSCOPED]
 ~$closure_call_fake_copy_binding(S, pboundfake_bad_called)
-pboundfake_old = pboundcopy[.RECEIVER = (n_old)]
+pboundfake_old = pboundfake_copy[.RECEIVER = (n_old)]
 S_old = S[.OBJECTS = $object_set(S.OBJECTS, n_copy, BOUNDFAKECLOSURE pboundfake_old)]
 $closure_call_fake_copy_binding(S_old, pboundfake_old)
 ~$closure_call_copy_result_valid(S_old, pclosurecall, n_copy)
@@ -135,7 +135,7 @@ S_dead_source = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT
 ~$closure_call_copy_kind(S_dead_source, pfunction, pclosurecall, n_maker)
 S_dead_receiver = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT n_maker)]
 ~$closure_call_copy_kind(S_dead_receiver, pfunction, pclosurecall, n_maker)
-~$closure_call_copy_site(S[.CODE = eps], pboundcopy.SITE)
+~$closure_call_copy_site(S[.CODE = eps], pboundfake_copy.SITE)
 $heap_valid(H)
 ''')
 
@@ -158,7 +158,7 @@ n_counter <- S.REFCELLS
 $(n_counter < n_base)
 $static_roots(S.STATICS) = [HCELL n_counter]
 pclosurecall.SOURCE = n_source
-pclosurecall.SITE = pboundcopy.SITE
+pclosurecall.SITE = pboundfake_copy.SITE
 pclosurecall.ERROR = eps
 pclosurecall.PACKS = eps
 pclosurecall.INDEX = 2
