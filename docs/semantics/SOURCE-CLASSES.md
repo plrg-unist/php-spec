@@ -322,8 +322,19 @@ suppress later automatic destruction even when `$this` escapes, while explicit
 calls remain ordinary methods. A destructor throwing during unwind chains the
 saved exception as Previous. The [destructor review](../../coverage/semantics/anonymous-destructors-review.json)
 records five agreements and 240 conditions (228 reached, 12 derived across six controls).
-Nonpublic/reference-return/attributed destructors and other anonymous magic
-methods remain open, alongside constructor Traversable producers,
+Public zero-argument anonymous `__toString` methods share ordinary signature
+checking, implicit `Stringable` and string-conversion callbacks. The implicit
+interface defers publication without changing the raw-header name prefix or
+one counter step per anonymous site; named Stringable classes keep their own
+ordinary counter cost. Selected receivers survive rebinding until cleanup before
+emission, and successful eval factories retain the same unit-specific identity.
+Ordinary return errors format lexical class and original member separately;
+never-return errors format one callable C string and identify ordinary methods.
+Invalid return annotations preserve the source method spelling.
+The [Stringable review](../../coverage/semantics/anonymous-stringable-review.json)
+records nine agreements and 285 conditions (278 reached, seven controls).
+Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
+stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.
 
 Unit0 anonymous classes may now extend an ordinary named class through the

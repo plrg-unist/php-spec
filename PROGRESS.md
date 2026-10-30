@@ -237,6 +237,17 @@ their original inputs. At that cut, count-ambiguous callbacks, WeakMap callbacks
 residual tags, workers, hooks, reentry and active contexts remained partial.
 [GC05 review](coverage/semantics/gc-materialized-callback-review.json).
 
+CLASS157 admits public zero-argument anonymous `__toString` through ordinary
+implicit Stringable linking and conversion. Raw-header names/counters remain
+stable through deferred publication; saved receivers survive rebinding and retire
+before emission. Nine originals agree (seven normal, two static rejections), and
+285 conditions pass (278 reached, seven controls). Return, never-kind and compile
+diagnostics retain their distinct formats. Three changed private strict433 cuts,
+native6+2+1, old2 and source/state cuts stay separate; the never-kind mismatch
+and fixture elaboration failure retain zero credit. Wider magic, reference,
+attribute, callable and lifecycle contexts remain partial.
+[Stringable review](coverage/semantics/anonymous-stringable-review.json).
+
 CLASS156 admits public zero-argument anonymous destructors through the ordinary
 method compiler and lifecycle. Alias and temporary release, eval callbacks,
 reverse global cleanup, escaped failed constructors and pending-exception
@@ -358,8 +369,8 @@ cut keep zero credit.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS157 | Public anonymous Stringable source9/changed433 pass; two reached fixtures prepared, native6+2+1/old2 and failed never-kind cut retained. |
-| CLASS156 | Public anonymous destructor source5/state240/private433 pass; concise package under review, actual-tail integration pending. |
+| CLASS157 | Anonymous Stringable source9/state285/changed433 pass; concise package under review, actual-tail integration pending. |
+| CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
 | GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
@@ -387,7 +398,7 @@ for private changes. Integrated work is indexed by the current family docs,
   ArrayAccess/Iterator interactions, COW, released targets and callback lifetimes.
 - Complete remaining class/static/trait/enum/attribute/hook/readonly contexts and
   wider magic/property/callable producers, including reentry and typed aliases.
-  Beyond public destructors, anonymous magic methods and wider destructor forms
+  Beyond public destructors and Stringable, anonymous magic methods and wider forms
   remain substantive class work; Traversable constructor producers,
   promotion/nonpublic modes and wider factories also remain required.
 - Complete wider Generator/Fiber suspension, delegation, destructor reentry,
