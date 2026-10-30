@@ -85,9 +85,9 @@ pgeneratorop.LOOP = eps
 pgeneratorop.ADVANCE
 ~pgeneratorop.STARTPACK
 ~pgeneratorop.BORROWED
-$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given]
+$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given, HOBJECT n_given]
 HOBJECT n_given <- $fiber_vm_nodes(pfibervm)
-$heap_owners($heap_graph(S), HOBJECT n_given) = 1
+$heap_owners($heap_graph(S), HOBJECT n_given) = 2
 pcallcontext_generator.FUNCTION = pgenerator.FUNCTION
 pcallcontext_generator.TARGET = METHOD_TARGET n_receiver pgenerator.FUNCTION
 pcallcontext_generator.INSTANCE = eps

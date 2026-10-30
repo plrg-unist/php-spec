@@ -61,7 +61,6 @@ pgeneratorop.ARGUMENTS = [POBJECT n_given]
 pgeneratorop.LOOP = eps
 ~pgeneratorop.STARTPACK
 ~pgeneratorop.BORROWED
-$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given]
 pcallcontext_generator.FUNCTION = pgenerator.FUNCTION
 pcallcontext_generator.INSTANCE = eps
 pcallcontext_generator.RECEIVER = eps
@@ -86,8 +85,9 @@ pgenerator.FIRST
 pgenerator.VALUE = eps
 pgenerator.REFCELL = eps
 pgeneratorop.ADVANCE
+$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given, HOBJECT n_given]
 $node_children(S, HOBJECT n_generator) = eps
-$heap_owners($heap_graph(S), HOBJECT n_given) = 1
+$heap_owners($heap_graph(S), HOBJECT n_given) = 2
 $fiber_generator_fresh_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator)
 ~$fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator)
 ~$fiber_generator_fresh_throw_valid(S_view, pgeneratorop[.ARGUMENTS = eps], pgenerator, pcallcontext_generator)
@@ -199,6 +199,7 @@ PENDING_VALUE = checks(r'''
 ~pfunction.SIGNATURE.BYREF
 ~pgenerator.FIRST
 ~pgeneratorop.ADVANCE
+$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given]
 pgenerator.REFCELL = eps
 $lookup(S.ENV, $ptascii("weakToken")) = (n_weak_token_cell)
 S.STORE[n_weak_token_cell] = DEFINED (POBJECT n_weak_token)
