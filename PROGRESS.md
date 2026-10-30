@@ -166,7 +166,10 @@ An outside-retained named BYVAL Generator now copies finite quiet owning ARRAY
 or ordinary INSTANCE sends. The copied prefix survives cache replacement until
 INI_SET TypeError trace reception, or retires before a terminal saved catch;
 four new sources agree and 296 reached conditions pass at private cuts.
-Typed Generator cells, effectful finalizers/casts, temporary owning producers, wider
+A named BYVAL factory temporary now copies a quiet owning first option and
+finishes with an integer cached value; four sources and 372 reached conditions
+pass at private cuts, including normal TypeError trace and terminal cleanup.
+Typed Generator cells, effectful finalizers/casts, owning final caches, wider
 last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
@@ -177,6 +180,7 @@ last-DATA reference graphs and lifecycles remain partial.
 [Temporary reference cleanup](coverage/semantics/config-generator-temporary-reference-review.json),
 [Factory reference cleanup](coverage/semantics/config-generator-factory-reference-review.json),
 [Owning Generator sends](coverage/semantics/config-generator-owning-value-review.json),
+[Temporary owning sends](coverage/semantics/config-generator-owning-temporary-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -421,7 +425,7 @@ control is promoted without native replay.
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
-| A78 | Temporary factory Generator owning first option and scalar last cache; native four and old refusal frozen, implementation and private validation in progress. |
+| A78 | Temporary factory Generator with owning first option and integer final cache; four source agreements and two reached proofs complete privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
