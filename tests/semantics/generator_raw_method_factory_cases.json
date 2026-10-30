@@ -1,0 +1,38 @@
+[
+  {
+    "id": "i87-raw-array-direct-fiber",
+    "purpose": "Direct raw-array Gen keeps real This through Fiber and releases it at close before CLOSED return observation.",
+    "source": "<?php\nclass Base87A {\n    public function stream($value) {\n        global $weak;\n        echo 'BODY|', __CLASS__ === 'Base87A', '|', static::class === 'Child87A', '|', $this === $weak->get(), '|';\n        try { Fiber::suspend('raw87'); yield $value; return 88; }\n        finally { echo 'FIN|', $weak->get() !== null, '|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child87A extends Base87A {}\nfunction Run87A() {\n    global $g;\n    echo 'CALL|';\n    $value = $g->current();\n    echo 'VALUE|', $value === 87, '|';\n    $g->next();\n    echo 'RETURNED|';\n}\n$maker = new Child87A();\n$weak = WeakReference::create($maker);\n$route = [$maker, 'stream'];\n$g = $route(87);\nunset($route, $maker);\necho 'FRESH|', $weak->get() !== null, '|';\n$fiber = new Fiber('Run87A');\necho 'START|';\n$mark = $fiber->start();\necho 'PARK|', $mark === 'raw87', '|', $weak->get() !== null, '|';\necho 'RESUME|';\n$fiber->resume();\necho 'DONE|', $g->getReturn() === 88, '|', $fiber->isTerminated(), '|', $weak->get() === null, '|';\nunset($g, $fiber, $weak);\necho 'E';\n",
+    "source_sha256": "17d4e81421d842dd0926121cb72c3ae7051682e21dcab0905b895654088d2de7",
+    "native_exit": 0,
+    "native_stdout": "FRESH|1|START|CALL|BODY|1|1|1|PARK|1|1|RESUME|VALUE|1|FIN|1|MAKER|RETURNED|DONE|1|1|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i87-raw-string-static-factory",
+    "purpose": "Raw method-string inherited public factory selects private static body; original source string changes and retires before deferred body.",
+    "source": "<?php\nclass Base87B {\n    public static function make($value) {\n        echo 'MAKE|', __CLASS__ === 'Base87B', '|', static::class === 'Child87B', '|';\n        return self::body($value);\n    }\n    private static function body($value) {\n        echo 'BODY|', __CLASS__ === 'Base87B', '|', static::class === 'Child87B', '|', $value === 87, '|';\n        try { yield $value; }\n        finally { echo 'FIN|'; }\n    }\n}\nclass Child87B extends Base87B {\n    public static function body($value) { echo 'BAD-TARGET|'; yield 0; }\n}\nclass Other87B {\n    public static function bad($value) { echo 'BAD-REDIRECT|'; yield 0; }\n}\n$route = 'Child87B::make';\n$g = $route(87);\n$route = 'Other87B::bad';\nunset($route);\necho 'FRESH|';\necho 'VALUE|', $g->current() === 87, '|';\nunset($g);\necho 'E';\n",
+    "source_sha256": "6d06b473495c1e5a1a9c0f6b2951efb27c80c6cd7db9f82f98330fe775f3b85a",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|FRESH|VALUE|BODY|1|1|1|1|FIN|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i87-raw-array-protected-factory",
+    "purpose": "Raw object-array factory preserves inherited protected body and real Child receiver through close despite public Child override.",
+    "source": "<?php\nclass Base87C {\n    public function make($value) {\n        echo 'MAKE|', __CLASS__ === 'Base87C', '|', static::class === 'Child87C', '|', $this instanceof Child87C, '|';\n        return self::body($value);\n    }\n    protected function body($value) {\n        echo 'BODY|', __CLASS__ === 'Base87C', '|', static::class === 'Child87C', '|';\n        try { yield $value; }\n        finally { echo 'FIN|', $this instanceof Child87C, '|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child87C extends Base87C {\n    public function body($value) { echo 'BAD-TARGET|'; yield 0; }\n}\n$maker = new Child87C();\n$weak = WeakReference::create($maker);\n$route = [$maker, 'make'];\n$g = $route(87);\nunset($route, $maker);\necho 'FRESH|', $weak->get() !== null, '|';\necho 'VALUE|', $g->current() === 87, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|E';\n",
+    "source_sha256": "5e80d59dde90e4086f36ca0dd805e57c0818962f6ae5e393031bcf5773cadd2d",
+    "native_exit": 0,
+    "native_stdout": "MAKE|1|1|1|FRESH|1|VALUE|BODY|1|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i87-raw-string-direct-retarget",
+    "purpose": "Direct raw static method-string target freezes before argument callback retargets source variable to a valid other Gen method.",
+    "source": "<?php\nclass Base87D {\n    public static function stream($value) {\n        echo 'BODY|', __CLASS__ === 'Base87D', '|', static::class === 'Child87D', '|', $value === 87, '|';\n        try { yield $value; return 88; }\n        finally { echo 'FIN|'; }\n    }\n}\nclass Child87D extends Base87D {}\nclass Other87D {\n    public static function bad($value) { echo 'BAD-TARGET|'; yield 0; }\n}\nfunction Retarget87D() {\n    global $route;\n    $route = 'Other87D::bad';\n    echo 'ARG|';\n    return 87;\n}\n$route = 'Child87D::stream';\n$g = $route(Retarget87D());\necho 'FRESH|', $route === 'Other87D::bad', '|';\necho 'VALUE|', $g->current() === 87, '|';\n$g->next();\necho 'RETURN|', $g->getReturn() === 88, '|';\nunset($g, $route);\necho 'E';\n",
+    "source_sha256": "fc15043ad4bb7ee604db7a7c99bf00e77d2defaadb137e11fc734aad3a266544",
+    "native_exit": 0,
+    "native_stdout": "ARG|FRESH|1|VALUE|BODY|1|1|1|1|FIN|RETURN|1|E",
+    "native_stderr": ""
+  }
+]
