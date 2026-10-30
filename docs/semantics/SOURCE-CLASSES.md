@@ -333,6 +333,16 @@ never-return errors format one callable C string and identify ordinary methods.
 Invalid return annotations preserve the source method spelling.
 The [Stringable review](../../coverage/semantics/anonymous-stringable-review.json)
 records nine agreements and 285 conditions (278 reached, seven controls).
+Ordinary anonymous instance methods now accept unpromoted value, reference,
+default and variadic parameters under the existing visibility and return fences.
+The method compiler and call binder retain their ordinary signature, named-hole,
+send and typed-reception rules. Missing-arity errors compose the declaring lexical
+class and member separately, including inherited named methods. Five fresh
+originals agree with the pinned PHP engine; two source-reached state groups pass
+247 conditions (243 reached, four guards), including private caller aliases,
+literal reference failure, and fresh local defaults for by-reference formals in
+an eval unit. The [method-parameter review](../../coverage/semantics/anonymous-method-parameters-review.json)
+records the private cuts and retained unchanged refusals.
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.
