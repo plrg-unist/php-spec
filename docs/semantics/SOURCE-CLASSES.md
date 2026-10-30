@@ -302,6 +302,10 @@ Argument TypeErrors, missing named fixed arguments and nonreferenceable-send
 Errors format the whole callable name as one C string. Ordinary too-few-argument
 errors format the lexical declaring class and member separately.
 Stored class names and `::class` values keep their complete bytes.
+Non-constructor anonymous magic methods, including direct `__destruct`, remain
+excluded by member admission and require their ordinary dispatch/lifetime rules.
+They are substantive remaining class behavior; constructor Traversable producers,
+promotion/nonpublic forms and wider factories are also open.
 
 Unit0 anonymous classes may now extend an ordinary named class through the
 ordinary class-reference forms. Parent declarations follow the normal compiler/linker,

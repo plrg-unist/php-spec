@@ -295,6 +295,7 @@ reentrant/abrupt raw-owner teardown remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CLASS155 | Array constructor unpack; native5/old2 retained, separate literal-reference witness pending, changed-model validation next. |
 | GC09 | Coherent fake-Closure allocation flags under implementation. |
 | I83 | Invokable object Generator factories; native-first source preparation, unrun. |
 | OB04 | Selected error-handler FINAL handling; eleven exact sources and reached validation. |
@@ -322,6 +323,9 @@ for private changes. Integrated work is indexed by the current family docs,
   ArrayAccess/Iterator interactions, COW, released targets and callback lifetimes.
 - Complete remaining class/static/trait/enum/attribute/hook/readonly contexts and
   wider magic/property/callable producers, including reentry and typed aliases.
+  After array constructor unpack, anonymous magic methods (especially direct
+  `__destruct`) remain substantive class work; Traversable constructor producers,
+  promotion/nonpublic modes and wider factories also remain required.
 - Complete wider Generator/Fiber suspension, delegation, destructor reentry,
   physical collection, weak-reference/WeakMap, output/shutdown/tick and other
   required lifecycle behavior.
