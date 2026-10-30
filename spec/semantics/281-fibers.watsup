@@ -70,6 +70,7 @@ dec $fiber_generator_body_id(pstate) : nat?
 dec $fiber_generator_callee_valid(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_receiver_target(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_static_target(pcalltarget, porigin) : bool
+dec $fiber_generator_method_closure_valid(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_cached_reference_valid(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_throw_valid(pstate, pgeneratorop, pgenerator, pcallcontext) : bool
 dec $fiber_generator_fresh_throw_valid(pstate, pgeneratorop, pgenerator, pcallcontext) : bool
@@ -93,6 +94,26 @@ def $fiber_generator_receiver_target(S, pgenerator, pcallcontext) = true
   -- if pcallcontext.RECEIVER = (n_receiver) /\ pcallcontext.INSTANCE = eps
   -- if $generator_creation_context_valid(S, pgenerator, pcallcontext)
 def $fiber_generator_receiver_target(S, pgenerator, pcallcontext) = false -- otherwise
+;; The real resumer identifies the Generator; its active INSTANCE owns the
+;; Closure. Captured and compatibly rebound methods share the target proof.
+def $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $generator_creation_resume_owner(S) = (n_generator)
+  -- if $(n_generator < |S.OBJECTS|) /\ (HOBJECT n_generator) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_generator] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.CLOSURE = (n_closure)
+  -- if $(n_closure < |S.OBJECTS|) /\ (HOBJECT n_closure) <- S.ALLOCATIONS
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n_closure /\ pcallcontext.INSTANCE = (n_closure)
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION
+  -- if $generator_factory_evidence_current(S) = (CLOSURE_SCOPE pclosurescope)
+  -- if pclosurescope.OBJECT = n_closure
+  -- if pcallcontext.LEXICAL_CLASS = (pclosurescope.LEXICAL) /\ pcallcontext.CALLED_CLASS = (pclosurescope.CALLED)
+  -- if pcallcontext.RECEIVER = pclosurescope.RECEIVER
+  -- if $class_method_origin(S.CLASSES, pgenerator.FUNCTION) = (pmethoddesc)
+  -- if $function_generator(S, pmethoddesc.FUNCTION)
+  -- if $scoped_receiver_valid(S, pclosurescope.CALLED, pmethoddesc, pcallcontext.RECEIVER)
+  -- if $generator_captured_factory_valid(S, pclosurescope, pgenerator.FUNCTION)
+def $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = (pcallcontext.TARGET = pgenerator.FUNCTION)
   -- if pgenerator.CLOSURE = eps
   -- if pcallcontext.TARGET = porigin
@@ -123,6 +144,8 @@ def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
   -- if $generator_creation_context_valid(S, pgenerator, pcallcontext)
   -- if $generator_magic_context_valid(S, pcallcontext)
   -- if $call_current_valid(S)
+def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
+  -- if $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext)
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
   -- if pgenerator.REFCELL = eps
@@ -154,6 +177,13 @@ def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
   -- if pgenerator.CLOSURE = (n_callee)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
   -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if $generator_reference_valid(S, GENERATOR pgenerator)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
+  -- if pgenerator.REFCELL = (n_cell) /\ pgenerator.VALUE = eps
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext)
   -- if $generator_reference_producer(S, pgenerator)
   -- if $generator_reference_valid(S, GENERATOR pgenerator)
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
