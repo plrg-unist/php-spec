@@ -852,8 +852,8 @@ A real table on either side instead selects table identity, recursion, count,
 key and value order, materializing the other side when needed. Empty foreach
 now creates an actual empty ordinary table; a pure inline array cast remains a
 copy without materializing the object. Views, live aliases, COW and last-owner
-retirement use the existing storage rules. Dynamic UNSET images and inherited
-dynamic layouts retain their separate limits.
+retirement use the existing storage rules. Inherited zero-layout dynamic images
+retain their separate limits.
 [Empty-image review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
 
 Declared INITIAL and UNSET slots retain their physical positions. In a nonempty
@@ -866,9 +866,22 @@ undefined values without materializing the object. Cached clones retarget the
 hole locators to their copied slots. Live aliases, Previous/trace ownership and
 later severity decisions use the existing stateful fold. A public INITIAL
 image still refuses a reached materialized-property Stringable continuation;
-the existing public declared-UNSET callback policy is unchanged. Dynamic UNSET,
-readonly classes and hook images retain their fences.
+the existing public declared-UNSET callback policy is unchanged. Readonly
+classes and hook images retain their fences.
 [Declared-hole review](../../coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
+
+Deleted dynamic lookup mirrors are also admitted under the existing ordinary
+class/table authority. They have no live bucket, unlike a declared INDIRECT
+hole. Live count, missing keys and current table traversal order decide before
+later values; reinserting a key can change that order despite an older mirror
+position. Synchronization skips a dead mirror when a later live same-name row
+exists, preserving the key's position and serial during unrelated writes.
+Dynamic cast views can share a table; COW separates owning buckets without
+adding owners for lookup mirrors. Existing active-left recursion, identity and
+last-owner cleanup retain their normal rules. No scalar or Stringable callback
+policy changes. Inherited zero-layout dynamic images, readonly classes, hooks
+and wider lifetimes remain bounded.
+[Dynamic-deletion review](../../coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
 
 Legal `__isset` declarations may omit the parameter type while keeping the
 existing arity/reference/default/return restrictions. Its language-triggered
@@ -879,8 +892,8 @@ existing arity/reference/default/return bounds. It preserves the typed signature
 the separate getter callback predicate in modules 380/408 still requires its
 existing untyped parameter. Other legal getter return declarations remain
 Unsupported.
-Dynamic UNSET images, builtin parents, hooks, readonly and wider
-callback/lifetime contexts remain partial. Held lanes are unchanged.
+Builtin parents, hooks, readonly classes and wider callback/lifetime contexts
+remain partial. Held lanes are unchanged.
 [Method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
 
 The older fully authenticated warm route puts nonempty traces in the physical slot

@@ -4540,9 +4540,16 @@ bounds remain partial.
 Declared holes retain physical slot order: inline one-sided UNDEF gives +1 in
 both directions, while cached INDIRECT holes use physical count/key checks and
 directional undefined-value order. Cast views omit holes, and cached clone
-locators target each copy's slots. Dynamic UNSET, readonly classes, hooks and the INITIAL
+locators target each copy's slots. Readonly classes, hooks and the INITIAL
 Stringable continuation remain explicit boundaries.
 [Declared-hole review](coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
+Deleted dynamic mirrors contribute no live bucket. Current table order,
+reinserted keys, shared casts and COW retain their real owners; unrelated writes
+preserve the positions of later live names. Deleted-only clone histories use
+empty-table sharing, uncached callback copies or retargeted declared copying as
+appropriate. Inherited zero-layout dynamic images, readonly classes, hooks and
+wider callback/lifetime contexts remain partial.
+[Dynamic-deletion review](coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
 Empty ordinary layouts also compare through their real storage route: two inline
 objects return zero before the object recursion guard, while actual caches keep
 table identity/count/key/value order. Empty foreach produces a real table; cast

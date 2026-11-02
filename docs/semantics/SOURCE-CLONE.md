@@ -37,6 +37,18 @@ changes only that object's slot; array views still omit undefined values. This
 adds no clone callback, ownership or property-type algorithm.
 [Declared-hole review](../../coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
 
+Deleted-only dynamic histories now retain the native clone route. With no
+inline declarations and no effective `__clone`, the copy shares even an empty
+cached table. With an effective callback and an empty current table, its copy
+starts uncached and drops the deleted lookup mirrors. A nonempty declared
+layout beside deleted-only dynamic mirrors uses the existing mixed copier,
+retargeting declared locators and preserving each object's typed-alias source.
+Mixed layouts with a dead mirror preceding a later live row of the same dynamic
+name still refuse cloning.
+The storage branches stay disjoint; callback dispatch, slot copying, readonly
+and active-collection guards are unchanged.
+[Dynamic-deletion review](../../coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
+
 [Cached callbacks](../../coverage/semantics/cached-clone-callback-review.json)
 now consume that declared-public cache path through existing public zero-argument
 `__clone():void` methods. Actual callback foreach reads retargeted copy locators;
@@ -79,8 +91,9 @@ with an exact `#[AllowDynamicProperties]` attribute, no declared instance
 properties and a dynamic slot history. A clone without an effective `__clone`
 shares the cached table. A later FE_FETCH_RW promotion reaches both objects'
 dynamic mirrors; a writable lookup separates the writer first. If an effective
-`__clone` exists, the copy gets a separate table before the callback, even when
-the source's last dynamic bucket has been unset. Uncached empty instances
+`__clone` exists, a nonempty current table is copied before the callback; an
+empty current table starts the copy uncached even when deleted mirrors remain.
+Uncached empty instances
 retain their no-table clone route. The source and reached checks also cover
 non-clone foreach/cast observations, alias and Payload ownership, callback
 mutation/throw and actual COW after cloning. Linked parents, trait-composed

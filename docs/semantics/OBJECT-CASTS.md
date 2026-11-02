@@ -17,7 +17,7 @@ Ordinary instances with an empty effective layout and no slots can also create
 an honest empty property table through foreach or reached comparison. A pure
 inline array cast still leaves the object without a table; a cast of an actual
 empty cache shares that table until COW. This narrow admission leaves the
-existing dynamic-history, hook, dynamic-UNSET and active-collection policies in place.
+existing dynamic-history, hook and active-collection policies in place.
 [Empty-table comparison and clone review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
 
 Initialized private/protected declared slots also materialize real ordinary
@@ -30,9 +30,19 @@ Declared INITIAL and UNSET slots now also produce physical INDIRECT buckets
 under the same descriptor KEY/ORIGIN checks; INITIAL additionally requires an
 uninitialized declaration default. Casts and iteration omit resolved undefined
 values, while cached comparison counts the physical buckets before looking up
-keys and resolving their current slots. Dynamic UNSET, hooks, readonly classes and
-active collection keep their existing limits.
+keys and resolving their current slots. Hooks, readonly classes and active
+collection keep their existing limits.
 [Declared-hole review](../../coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
+
+Deleted dynamic mirrors remain in lookup history but contribute no live bucket.
+A later live row of the same name hides that dead mirror during synchronization,
+so unrelated writes preserve current key order and bucket serials. Reinserted
+keys follow the table's current order. Shared all-dynamic cast tables retain
+one physical edge for a held alias until object-table COW creates another;
+singleton wrappers keep their ordinary copy rules. Final current-table
+retirement can leave the cast view's cell alive. Inherited zero-layout dynamic
+images and wider callback/collector contexts keep their existing limits.
+[Dynamic-deletion review](../../coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
 
 [Ordinary mixed tables](../../coverage/semantics/mixed-property-stringable-comparison-review.json)
 now cache nonowning INDIRECT locators for public declared slots alongside owning

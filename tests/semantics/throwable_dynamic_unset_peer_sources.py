@@ -8,6 +8,7 @@ from throwable_dynamic_unset_peer_cases import CASES as PEER_CASES
 
 family.CASES = dict(PEER_CASES, **ORDER_CASES)
 family.UNSUPPORTED = {}
+family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 480 for name in family.CASES}
 base_fingerprint = family.fingerprint
 
