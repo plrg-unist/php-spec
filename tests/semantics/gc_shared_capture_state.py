@@ -10,6 +10,8 @@ import shutdown_state_review as runner
 def checks(captures, children):
     extra_array = captures[:-1] + ', DIRECT (PARRAY n_array)]'
     extra_object = captures[:-1] + ', DIRECT (POBJECT n_other)]'
+    two_objects = extra_object
+    destructor_captures = captures.replace('n_leaf', 'n_held')
     return [
         *ordinary.COMMON,
         'pcallcontext.TARGET = CLOSURE_TARGET n_closure',
@@ -50,6 +52,7 @@ def checks(captures, children):
         '$gc_slot_find(pgcplan.BUFFER, HOBJECT n_leaf, 0) = eps',
         '$gc_ordinary_node(S, HOBJECT n_closure)',
         '$gc_ordinary_nodes(S, S.ALLOCATIONS)',
+        '$lookup(S.ENV, $ptascii("leaf")) = (n_leaf_local_cell)',
         '~$gc_shared_array_captures(S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 7))]], '
         f'{captures}, n_array, false)',
         '~$gc_ordinary_node(S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 7))]], HOBJECT n_closure)',
@@ -61,8 +64,19 @@ def checks(captures, children):
         '[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_other]]',
         'S_extra.OBJECTS[n_other] = STDINSTANCE',
         '$node_children(S_extra, HOBJECT n_other) = eps',
+        '$gc_trace_children(S_extra, HOBJECT n_other) = eps',
+        '~((HOBJECT n_other) <- $node_children(S_extra, HARRAY n_array))',
         f'$gc_capture_array_nodes({extra_object}) = [HARRAY n_array]',
         f'~$gc_shared_array_captures(S_extra, {extra_object}, n_array, false)',
+        'S_two = S_extra[.ARRAYS[n_array].ITEMS = '
+        '[ENTRY (KINT 0) (DIRECT (POBJECT n_leaf)), ENTRY (KINT 1) (DIRECT (POBJECT n_other))]]',
+        '$node_children(S_two, HARRAY n_array) = [HOBJECT n_leaf, HOBJECT n_other]',
+        '$gc_plain_array_entries(S_two, S_two.ARRAYS[n_array].ITEMS)',
+        f'$gc_shared_array_captures(S_two, {two_objects}, n_array, false)',
+        '~$gc_shared_array_captures(S, [DIRECT (PARRAY n_array), ALIAS n_leaf_local_cell], n_array, false)',
+        '~$gc_shared_array_captures(S[.ARRAYS[n_array].ITEMS = '
+        '[ENTRY (KINT 0) (DIRECT (POBJECT n_held))]], '
+        f'{destructor_captures}, n_array, false)',
         '~$gc_ordinary_node(S[.GC.ACTIVE = eps], HOBJECT n_closure)',
         '~$gc_ordinary_node(S[.GC.ACTIVE = (pgccall[.CALLER = eps])], HOBJECT n_closure)',
         '$dynamic_site(S, (porigin_outer_call))',
@@ -80,7 +94,6 @@ def checks(captures, children):
         'S.OBJECTS[n_weakleaf] = WEAKREFERENCE (n_leaf)',
         '$lookup(S.ENV, $ptascii("token")) = (n_token_local_cell)',
         'S.STORE[n_token_local_cell] = DEFINED (PARRAY n_array)',
-        '$lookup(S.ENV, $ptascii("leaf")) = (n_leaf_local_cell)',
         'S.STORE[n_leaf_local_cell] = DEFINED (POBJECT n_leaf)',
         '$lookup(S.ENV, $ptascii("copy")) = eps',
         '$lookup(S.ENV, $ptascii("leafCopy")) = eps',
