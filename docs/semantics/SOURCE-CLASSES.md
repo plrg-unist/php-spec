@@ -408,6 +408,24 @@ views remain partial. The engine routes are `zend_check_type_slow` and
 `zend_fetch_ce_from_type` in `Zend/zend_execute.c`, then `zend_fetch_class`
 using `zend_get_executed_scope` in `Zend/zend_execute_API.c`.
 
+A copied alias captured during a failed first class link keeps its selected
+method and lexical scope when a later class reads the constant. If property
+binding fails before trait method fixup, the retained alias has trait scope:
+the reached `parent` parameter fails and its stack frame names `U::q`. If the
+link fails after fixup on an abstract requirement, the retained alias has the
+failed class scope: `parent` accepts that class's parent, and a later wrong
+argument produces `C::q`. The copied method is absent from the published
+method table in both cases. Its authenticated receipt supplies the bare `q`
+function name, while the saved closure scope supplies `U` or `C`. Four exact
+native/model originals and two source-reached trace groups (39 conditions
+each) cover this boundary. [Alias trace review](../../coverage/semantics/trait-captured-alias-parent-trace-review.json).
+The engine routes are `zend_fixup_trait_method` in `Zend/zend_inheritance.c`
+and `zend_fetch_debug_backtrace` in `Zend/zend_builtin_functions.c`.
+Anonymous using-class names, rebound scopes, and wider callable views remain
+partial. Three native tick-wrapper probes print the retained `U::q` frame,
+but the model stops before callback entry at explicit tick placement or eval
+class-constant admission; they have zero agreement credit.
+
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.
@@ -669,3 +687,14 @@ records two exact originals and 43 source-reached strict guards. The third
 by-reference output, autoload and wider magic/user-method cases remain partial.
 Engine routes: `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
 `Zend/zend_API.c:zend_is_callable_at_frame`.
+Malformed arrays with a live published enum class/case receiver at key 0
+return false for wrong length or nonstring method before the syntax-only
+early return. The [shape review](../../coverage/semantics/enum-is-callable-shape-review.json)
+records one exact original and 23 reached guards for both flag modes.
+For absent concrete/generated methods, the query uses a source-certified
+public `__callStatic` for class strings and class-name arrays, or `__call` for
+case arrays. An opposite-kind handler cannot rescue the missing method. The
+[magic review](../../coverage/semantics/enum-is-callable-magic-review.json)
+records eight exact native/model outcomes and 56 reached guards; neither
+magic body runs during the query. Other magic sources and inaccessible-method
+fallback remain partial.

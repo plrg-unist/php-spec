@@ -1514,6 +1514,19 @@ def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL b_syntax))]
 def $enum_is_callable_input(pconfigcall) = eps -- otherwise
 
+dec $enum_is_callable_magic(pstate, porigin, bool) : bool?
+def $enum_is_callable_magic(S, porigin_class, false) = (true)
+  -- if $effective_method(S, porigin_class, $ptascii("__callStatic"), |S.CLASSES|) = (pmethoddesc)
+  -- if $enum_magic_source(S, pmethoddesc, true)
+def $enum_is_callable_magic(S, porigin_class, true) = (true)
+  -- if $effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) = (pmethoddesc)
+  -- if $enum_magic_source(S, pmethoddesc, false)
+def $enum_is_callable_magic(S, porigin_class, false) = (false)
+  -- if $effective_method(S, porigin_class, $ptascii("__callStatic"), |S.CLASSES|) = eps
+def $enum_is_callable_magic(S, porigin_class, true) = (false)
+  -- if $effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) = eps
+def $enum_is_callable_magic(S, porigin_class, b_case) = eps -- otherwise
+
 dec $enum_is_callable_result(pstate, pvalue, bool) : bool?
 def $enum_is_callable_result(S, pvalue, true) = (true)
   -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
@@ -1526,6 +1539,19 @@ def $enum_is_callable_result(S, PARRAY n, false) = (false)
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
   -- if ~$array_magic(S, porigin_class)
   -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = eps
+def $enum_is_callable_result(S, PARRAY n, b_syntax) = (false)
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n] = parray
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
+  -- if $enum_is_callable_receiver(S, $entry_value(S, pitem_receiver)) = ((porigin_class, b_case))
+  -- if ~$typed_callback_array(S, n)
+def $enum_is_callable_result(S, pvalue, false) = (b_magic)
+  -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
+  -- if $typed_callable(S, pvalue) = eps
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
+  -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = eps
+  -- if $array_magic(S, porigin_class)
+  -- if $enum_is_callable_magic(S, porigin_class, b_case) = (b_magic)
 def $enum_is_callable_result(S, pvalue, b_syntax) = eps -- otherwise
 
 dec $enum_is_callable_receive(pstate, pconfigcall) : pstate

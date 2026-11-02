@@ -253,6 +253,10 @@ order. Shutdown registrations created during FINAL retire their arguments and FC
 owners while PHP is still active, including caught destructor throws. Owning
 module/autoload cleanup, uncovered table owners, wider hooks/rendering, reentrant
 deactivation, other byte producers and buffered stdout diagnostics remain dependencies.
+[OB06](coverage/semantics/output-executor-post-deactivate-review.json) covers a
+no-argument `ob_start()` from a shutdown-argument destructor after output
+deactivation: the Notice precedes a false result, and no buffer is created.
+Suppression and selected error handlers retain their native output order.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -826,6 +830,25 @@ may diverge after COW. Four sources agree with PHP; reached proofs check a
 saved throw and TypeError TraceArgs, then quiet Generator/cell retirement on
 explicit unset. Typed/backed cells, aliases, temporary producers, effectful
 finalizers and sole-Generator cleanup remain separate.
+
+[Outside aliases of owning Generator cells](coverage/semantics/config-generator-reference-owning-alias-review.json)
+allow additional ordinary owners of that final reference cell while a global
+CV retains the Generator. Four sources use a top-level slot and alias: TypeError
+keeps a copied old ARRAY 13 while the cell changes to ARRAY 31; a saved throw
+releases the copied value. Unsetting the Generator leaves the aliased cell and
+current value live until the last alias is unset. Two reached proofs and one
+affected prior control check these lifetimes. Typed/backed cells, temporary
+producers and effectful finalizers remain separate.
+
+[Temporary owning BYREF Generator cells](coverage/semantics/config-generator-temporary-owning-reference-review.json)
+allow a direct named zero-argument BYREF Generator call to copy a finite quiet
+object or array from its final ordinary local reference cell, after a scalar
+first send. The temporary has no outside strong owner. Normal completion drops
+DATA then INPUT and uses real Generator storage release before TypeError;
+terminal saved throw releases both owners before catch. Four sources agree with
+PHP, and two reached proofs check the copied payload, COW, retired history and
+cell retirement. Typed/backed cells, outside aliases, effectful finalizers and
+wider producer histories remain separate.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
@@ -3805,6 +3828,11 @@ buffers it behind the array. The two live nodes leave the D count plan as
 black; one exact source and 122 strict reached assertions pass. Exact one-entry
 and childless guards remain; see the
 [buffered array-child caller review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
+GC21 adds one distinct childless object at key 1 of the same captured array.
+The two-entry shape and physical trace order are exact; the array and key-0
+object are buffered while key 1 remains outside the buffer. One source and 136
+strict reached assertions pass; see the
+[two-child array caller review](coverage/semantics/gc-two-array-children-caller-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4736,6 +4764,12 @@ checks. A later using class can call through a capture whose `parent` remains
 the first using class's parent; an old trait-scope capture follows union branch
 order and may fail before its body. Four source originals and three reached
 state groups validate the existing rule. [Parent-view review](coverage/semantics/trait-captured-parent-view-review.json).
+
+Copied trait aliases also preserve their selected function and saved scope
+when the first using class fails to publish. A failure before method fixup
+leaves a `U::q` trace; a later abstract-method failure leaves `C::q`.
+Four native/model originals and two reached trace groups validate the
+retained-receipt rule. [Alias trace review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
 
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
@@ -6628,6 +6662,12 @@ Published enum strings and class/case arrays also answer direct, dynamic-name
 and pipe `is_callable` queries with one or two arguments. Generated and absent
 methods, syntax-only checks and cold-cache behavior have two exact originals
 and 43 reached guards in the [query review](coverage/semantics/enum-is-callable-review.json).
+Malformed arrays with a published enum receiver at key 0 also return false
+for wrong length or method type; one exact source and 23 reached guards pass
+in the [shape review](coverage/semantics/enum-is-callable-shape-review.json).
+For published pure enums, receiver-specific `__callStatic`/`__call` fallback
+also matches eight native outcomes and 56 reached guards in the
+[magic review](coverage/semantics/enum-is-callable-magic-review.json).
 The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
