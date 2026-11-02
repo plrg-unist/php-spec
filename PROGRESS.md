@@ -8,6 +8,14 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+I84 carries admitted `__call`/`__callStatic` factory authority into scoped
+method Generators after the maker or packed argument array retires. Five
+originals agree; five reached fronts pass 442 custom/467 reported checks at
+their recorded private cuts. Private strict433 passes; actual-tail compilation
+is pending. Both original fixture failures retain zero credit. Direct magic
+Generator bodies and wider ancestry/API/lifecycle contexts remain partial.
+[I84 review](coverage/semantics/generator-magic-factory-review.json).
+
 Published generated enum array captures now create internal Closures without
 retaining the input array or receiver, preserving selection through COW and
 callback rebinding. Four fresh originals agree and 123 state/guard conditions pass. Private
@@ -379,7 +387,6 @@ cut keep zero credit.
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
 | GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
-| I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Published enum string callable-type validation; other callable APIs, pipe/default loading and wider backing contexts remain partial. |

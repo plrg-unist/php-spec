@@ -150,7 +150,6 @@ def $magic_method_call_source(S, pmagicmethodcall) = true
 def $magic_method_call_source(S, pmagicmethodcall) = true
   -- if $magic_method_scoped_source(S, pmagicmethodcall)
 def $magic_method_call_source(S, pmagicmethodcall) = false -- otherwise
-dec $magic_method_descriptor(pstate, pmagicmethodcall) : bool
 def $magic_method_descriptor(S, pmagicmethodcall) = true
   -- if $magic_method_call_source(S, pmagicmethodcall)
   -- if (|pmagicmethodcall.ARGUMENTS| <- [1,2] /\ ($magic_method_arguments_source(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0) \/ $magic_named_source(S, pmagicmethodcall))) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
