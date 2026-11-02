@@ -1,6 +1,6 @@
 {
   "milestone": "I84 admitted magic-method Generator factories",
-  "status": "Private native5/source5/strict433 and reached442 custom/467 reported complete; actual-tail composition and joined compilation pending",
+  "status": "Private native5/source5/strict433 and reached442 custom/467 reported complete; joined strict433 and OB05 source seam pass at 5e33a7f88; independent current-tail CLEAR",
   "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
   "private_base": "e69758f0f84b3fde613c89cf9741f6b2d06bc9a7",
   "private_implementation": [
@@ -24,7 +24,7 @@
     "symbol": "ZEND_CALL_TRAMPOLINE",
     "rule": "The trampoline moves positional values into a real argument array, reuses the call frame for the selected magic handler and installs its name/array pair before entering user code. The received array may mutate into an ALIAS slot and retire while the Gen owns the cell."
   },
-  "review": "Independent production semantics, bounded completeness, counterexamples and test reliability reviewed CLEAR. Five originals and all five source-reached fronts pass at their recorded cuts; both original fixture failures retain zero credit.",
+  "review": "Independent production semantics, bounded completeness, counterexamples and test reliability reviewed CLEAR. Five originals and all five source-reached fronts pass at their recorded cuts; both original fixture failures retain zero credit. Current-tail 5e33 strict and protected-close destructor/output seam independently reviewed CLEAR; incoming GC11 collector path is not selected.",
   "validation": {
     "author_native_first": {
       "revision": "c284b84a48c781352ffb8e5352252dee9c941ae0",
@@ -149,7 +149,19 @@
         "custom": 158,
         "reported": 163
       }
-    ]
+    ],
+    "current_tail": {
+      "first_joined_revision": "f40583992d49ddd8e8541f6b94e4e7ac7099af70",
+      "first_joined_result": "SL433 true newline/exit0/empty stderr; four exact author sources; independent packed-reference source exact NORMAL and its reached 163 reported premises pass; stable source/state inputs and HEAD",
+      "first_joined_reports": "../php-spec-evidence-archive/generator-magic-method-factory-84/actual-tail-f405/",
+      "joined_revision": "5e33a7f88827a1a388c20efc0d34b46bfcf9cdad",
+      "joined_result": "SL433 true newline/exit0/empty stderr, stable input digest and HEAD, LC_ALL=C/TZ=UTC/CPU4, 12.29s; exact protected-close NORMAL with stable inputs and HEAD; CPU4 full reap",
+      "joined_strict_report": "../php-spec-evidence-archive/generator-magic-method-factory-84/actual-tail-5e33/iterator84-joined-strict-5e33/report.json",
+      "joined_strict_sha256": "471e4b5bf993ceb6c7a9dd7025cd6523bcc9c04bc6de3586b8d7f2aac1a52228",
+      "seam_source_report": "../php-spec-evidence-archive/generator-magic-method-factory-84/actual-tail-5e33/generator-magic-factory-source-sgck3zef/report.json",
+      "seam_source_sha256": "a1d531af9fd2f71468059f677cae75d93cbb5ee015672b5890962e852a4f975a",
+      "interaction": "I84 three spec modules and tests match the first joined cut byte-for-byte; OB05 changes shared cleanup/output and selected protected close passes; GC11 changes collector paths absent from these source cases."
+    }
   },
   "counts": {
     "author_native_normal": 4,

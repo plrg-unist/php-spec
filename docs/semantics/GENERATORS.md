@@ -475,7 +475,8 @@ entered argument data remains nonowning history after mutation or retirement.
 No pending-pack equality or sent-value liveness is required. The Gen's actual
 frame/cache/input still owns its values. Five originals agree with PHP; five
 reached fronts pass 442 custom/467 reported checks at their distinct cuts.
-Private strict433 retains its original cut; actual-tail compilation is pending.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
 The original syntax and missed-getter-stage fixture failures retain zero credit
 after narrow fixture corrections.
 Existing414/415 source contracts are unchanged. Broader helper ancestry, direct

@@ -6707,7 +6707,8 @@ Existing source and selected-handler descriptors retain the actual called scope
 after the maker or packed argument array retires. Frozen sends add no owners;
 real Generator frames and caches keep their values. Five originals agree with
 PHP; five reached fronts pass 442 custom/467 reported checks and private
-strict433 passes at its original cut. Actual-tail compilation remains pending.
+strict433 passes at its original cut. Joined strict433 and the affected
+protected-close source pass at 5e33a7f88.
 [Magic factory review](coverage/semantics/generator-magic-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

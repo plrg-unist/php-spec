@@ -1093,7 +1093,8 @@ its token until Gen drop. A static natural-completion source releases its
 payload while the closed Gen stays live, distinguishing frozen send history
 from a real owner. Five originals agree; five reached fronts pass 442 custom/467
 reported checks for selected history, physical owners and budgeted continuation.
-Private strict433 retains its original cut; actual-tail compilation is pending.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
 [Magic factory review](../../coverage/semantics/generator-magic-factory-review.json).
 
 Shared pending flags and wider parked ownership

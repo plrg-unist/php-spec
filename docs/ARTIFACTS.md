@@ -279,6 +279,8 @@ I84 magic-handler factory native, unchanged refusal, private strict and new
 source/state evidence is retained across
 `../php-spec-evidence-archive/generator-magic-method-factory-84/` and
 `../php-spec-evidence-archive/generator-magic-method-factory-84-review/`.
+The `actual-tail-f405/` and `actual-tail-5e33/` subdirectories under the
+first archive retain current-tail strict, source and reached-state reports.
 The [magic ledger](../coverage/semantics/generator-magic-factory-review.json)
 binds tested cuts and preserves the initial syntax and missed-stage fixture
 failures with zero credit.

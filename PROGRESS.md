@@ -11,8 +11,9 @@ and current family documents identify implemented routes and remaining obligatio
 I84 carries admitted `__call`/`__callStatic` factory authority into scoped
 method Generators after the maker or packed argument array retires. Five
 originals agree; five reached fronts pass 442 custom/467 reported checks at
-their recorded private cuts. Private strict433 passes; actual-tail compilation
-is pending. Both original fixture failures retain zero credit. Direct magic
+their recorded private cuts. Joined strict433 and the protected-close OB05
+interaction source pass at 5e33a7f88. Both original fixture failures retain
+zero credit. Direct magic
 Generator bodies and wider ancestry/API/lifecycle contexts remain partial.
 [I84 review](coverage/semantics/generator-magic-factory-review.json).
 
