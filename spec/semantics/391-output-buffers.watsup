@@ -112,10 +112,15 @@ def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "stdout diagnostic rendering 
 dec $output_deactivate_boundary(pstate) : bool
 dec $output_final_exception_abrupt(pstate) : bool
 dec $output_final_exception_abort(pstate) : pstate
+dec $executor_boundary(pstate) : text?
+def $executor_boundary(S) = eps -- otherwise
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED $ob_user_boundary_reason(S)] -- if ~S.OUTPUTBLOCKED /\ $ob_user_boundary(S)
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "reentrant or abrupt output deactivation cleanup"] -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ $output_deactivate_boundary(S)
 def $output_guard(S) = $output_final_exception_abort(S) -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ $output_final_exception_abrupt(S)
-def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ ~$output_final_exception_abrupt(S)
+def $output_guard(S) = S[.COMPLETION = UNSUPPORTED text]
+  -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ ~$output_final_exception_abrupt(S)
+  -- if $executor_boundary(S) = (text)
+def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ ~$output_final_exception_abrupt(S) /\ $executor_boundary(S) = eps
 
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 1) =/= 0) -- if S.COMPLETION = FATAL n* z
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 64) =/= 0) -- if S.COMPLETION = STATICERROR text z

@@ -1,7 +1,7 @@
 # Builtin callable attributes
 
-The NoDiscard consumer admits ordinary named functions and source class methods
-marked with builtin `#[NoDiscard]`. Attribute names use the actual
+The NoDiscard consumer admits ordinary named functions, source class methods
+and real Closure/arrow expressions marked with builtin `#[NoDiscard]`. Attribute names use the actual
 lexical namespace/import resolver; groups retain original order and checked
 arguments. The supported optional message is one literal string or NULL,
 positional or named `message`. Runtime lookup reads the authenticated original
@@ -66,8 +66,8 @@ source/state cuts and retained failures are recorded in the
 
 ## Deprecated functions and methods
 
-`#[Deprecated]` now admits ordinary named functions and source class methods
-with literal string or NULL `message` and `since` arguments. Attribute names
+`#[Deprecated]` now admits ordinary named functions, source class methods and
+real Closure/arrow expressions with literal string or NULL `message` and `since` arguments. Attribute names
 use the same authenticated lexical resolver as NoDiscard. Function and method
 attribute target/repeat checks precede signature and body compilation;
 parameter-target errors retain existing parameter/default staging. A class
@@ -164,3 +164,59 @@ returned-argument alias and supplied destructor throw with caller traces. Three
 full reached groups pass 186 checks, with no derived guards. Private and
 actual-tail joined strict432 pass at separate cuts. The old ATTR05 exclusion keeps its original zero-credit cut; no accepted
 ATTR05 normal/native/reached evidence is replayed.
+
+
+## Real Closure and arrow expressions
+
+Builtin attributes use the function target on real Closure/arrow expressions.
+Binding discovery and duplicate `use` errors precede attribute checks; signature
+and parameter/use conflicts precede NoDiscard void/never restrictions, then the
+body. A scoped Closure retains the engine's method wording for those restrictions.
+Checked `function`/`fn` keyword receipts preserve declaration names and lines across
+multiline attributes and `static`, including nested callables in attribute arguments.
+
+Direct VM calls and the selected API/wrapper consumers above reuse their warning
+phases. Reference captures stay shared through handlers; arrow captures keep their
+original snapshots. The selected Closure owns its bound receiver; its call context
+borrows that receiver. Rebinding changes the selected scope used in warnings while
+the original template name remains intact. Anonymous class and function-name
+components are truncated separately as C strings.
+
+One original without an external owner across the handler has an unresolved native
+`assert` reentrancy observation. After the handler replaced the callback registry
+and cleared the outside name, both callback and receiver WeakReferences returned
+NULL during the warning, yet the callback body later ran. The pinned `assert.c`
+callback replacement and `zend_call_function` warning before its later Closure
+addref suggest a lifetime hazard; the retained output does not establish its cause
+or confirm an engine defect. The model keeps its exact expired-before-copy
+Unsupported guard; readonly history never authorizes entry.
+The original SHA `e4d03025507cb170b91446ca466ee58bdf95c1488dabe966186f3b03c0fdf989`
+and mixed raw report remain in the review at zero credit. A separately named safe
+control keeps an external owner; retired-data execution is not emulated.
+
+The [ATTR07 review](../../coverage/semantics/builtin-deprecated-closure-expression-review.json)
+records nine eligible exact originals (six normal and three static rejections),
+using eight retained passed native rows plus the safe API control. Five reached
+groups pass 428 checks (422 reached, six labeled derived assertions), including
+scoped VM/wrapper receiver owners, shared captures, used arrow results and expired
+entry refusal. Eleven focused checked syntax roundtrips and private strict432 pass.
+General messages, mixed/user attributes and wider consumers remain partial;
+current-tail strict433 and three retained-native ATTR07 model comparisons pass at
+separate cuts, with a reviewed bridge for later disjoint code.
+
+## Cached tick Closure wrappers
+
+Tick `[Closure,"__invoke"]` callbacks use a separate borrowed outer receiver.
+8192 precedes outer copies, required-reference warning 2 names the wrapper and
+creates a private cell, then 16384 precedes inner entry/type reception. The cache
+owns the selected Closure throughout; the entered user call adds its own instance.
+NoDiscard stays masked. Raw and received sensitive snapshots remain distinct;
+trampoline walking supplies the real tick marker. Generic frame cleanup and
+TICK_RESULT retire raw arguments before unused values while the cache remains live.
+Warning throws leave that registry owner intact for later unregister.
+The [ATTR09 review](../../coverage/semantics/callback-closure-invoke-review.json)
+records five normal originals and 302 checks (300 reached, two derived), with private
+strict 432 plus joined strict 433 and a retained-native warning/unregister
+comparison. Other API wrappers and wider histories remain partial. The older source
+wrapper's inner-warning handler trace head still needs its inherited file/line;
+its previous accepted cuts are not renewed by this tick slice.

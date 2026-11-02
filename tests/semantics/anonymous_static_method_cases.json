@@ -1,0 +1,97 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "scoped-static-owner-diagnostics",
+      "source": "<?php\nclass Base161Review {\n    protected static function requiredBase($one, $two) { echo \"bad-base|\"; }\n    protected static function lineage() {\n        echo self::class, \"|\", static::class, \"|\";\n    }\n}\n$subject161Review = new class extends Base161Review {\n    public static function requiredOwn($one, $two) { echo \"bad-own|\"; }\n    public static function failNever(): never {\n        echo \"never|\";\n    }\n    private static function effect($text) { echo $text; return 1; }\n    public static function probe() {\n        parent::lineage();\n        try {\n            self::requiredOwn(self::effect(\"own-arg|\"));\n        } catch (ArgumentCountError $caught161Review) {\n            echo $caught161Review->getMessage(), \"|\", $caught161Review->getLine(), \"|\";\n        }\n        try {\n            parent::requiredBase(self::effect(\"base-arg|\"));\n        } catch (ArgumentCountError $caught161Review) {\n            echo $caught161Review->getMessage(), \"|\", $caught161Review->getLine(), \"|\";\n        }\n        try {\n            self::failNever();\n        } catch (TypeError $caught161Review) {\n            echo $caught161Review->getMessage(), \"|\", $caught161Review->getLine(), \"|\";\n        }\n    }\n};\n$subject161Review::probe();\necho \"after\";\n",
+      "source_sha256": "660c04d97dd82be3096f3cab6dcca77eced9464c75a51678438507f3c072cc35",
+      "stdout_base64": "QmFzZTE2MVJldmlld3xCYXNlMTYxUmV2aWV3QGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNjEtcmV2aWV3L29yaWdpbmFscy9zY29wZWQtc3RhdGljLW93bmVyLWRpYWdub3N0aWNzLnBocDo4JDB8b3duLWFyZ3xUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBCYXNlMTYxUmV2aWV3QGFub255bW91czo6cmVxdWlyZWRPd24oKSwgMSBwYXNzZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTYxLXJldmlldy9vcmlnaW5hbHMvc2NvcGVkLXN0YXRpYy1vd25lci1kaWFnbm9zdGljcy5waHAgb24gbGluZSAxNyBhbmQgZXhhY3RseSAyIGV4cGVjdGVkfDl8YmFzZS1hcmd8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gQmFzZTE2MVJldmlldzo6cmVxdWlyZWRCYXNlKCksIDEgcGFzc2VkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2MS1yZXZpZXcvb3JpZ2luYWxzL3Njb3BlZC1zdGF0aWMtb3duZXItZGlhZ25vc3RpY3MucGhwIG9uIGxpbmUgMjIgYW5kIGV4YWN0bHkgMiBleHBlY3RlZHwzfG5ldmVyfEJhc2UxNjFSZXZpZXdAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58MTJ8YWZ0ZXI=",
+      "stdout_template_base64": "QmFzZTE2MVJldmlld3xCYXNlMTYxUmV2aWV3QGFub255bW91cwB7RklMRX06OCQwfG93bi1hcmd8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gQmFzZTE2MVJldmlld0Bhbm9ueW1vdXM6OnJlcXVpcmVkT3duKCksIDEgcGFzc2VkIGluIHtGSUxFfSBvbiBsaW5lIDE3IGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8OXxiYXNlLWFyZ3xUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBCYXNlMTYxUmV2aWV3OjpyZXF1aXJlZEJhc2UoKSwgMSBwYXNzZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMjIgYW5kIGV4YWN0bHkgMiBleHBlY3RlZHwzfG5ldmVyfEJhc2UxNjFSZXZpZXdAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58MTJ8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class161-artifacts/scoped-static-owner-diagnostics.native-first.json",
+      "native_raw_sha256": "d61d83676a9d455c6b1fbad3018e014b0389d8a0ec71199e1fad9cd3c8a98f38",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "captured-static-after-rebinding",
+      "source": "<?php\n$selected161Review = new class {\n    public static function work(int &$head, $tail = 4) {\n        echo $head === 3 ? \"head-int|\" : \"bad-head|\";\n        $head += $tail;\n        return $head;\n    }\n    public function __destruct() { echo \"old-drop|\"; }\n};\n$captured161Review = $selected161Review::work(...);\n$selected161Review = new class {\n    public static function work() { echo \"new-body|\"; return \"new\"; }\n};\necho \"after-rebind|\";\n$head161Review = \"3\";\necho $captured161Review($head161Review, tail: 8), \"|\", $head161Review, \"|\";\necho $head161Review === 11 ? \"int|\" : \"bad-int|\";\necho $selected161Review::work(), \"|after\";\n",
+      "source_sha256": "b43667aa7a8a5965d5dec1179325d2852d5fbda8b9ab8b0445e288628cb748c0",
+      "stdout_base64": "b2xkLWRyb3B8YWZ0ZXItcmViaW5kfGhlYWQtaW50fDExfDExfGludHxuZXctYm9keXxuZXd8YWZ0ZXI=",
+      "stdout_template_base64": "b2xkLWRyb3B8YWZ0ZXItcmViaW5kfGhlYWQtaW50fDExfDExfGludHxuZXctYm9keXxuZXd8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class161-artifacts/captured-static-after-rebinding.native-first.json",
+      "native_raw_sha256": "46aad53c306be47c5dfcbae5dcd1bafd5f791d4dd255276711f22b6c1a182c20",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "public-static-reference-sends",
+      "source": "<?php\nfunction rebind161Author(): int {\n    global $object161Author;\n    echo \"arg|\";\n    $object161Author = null;\n    echo \"rebound|\";\n    return 1;\n}\n$value161Author = 3;\n$object161Author = new class {\n    public static function update161Author(int &$value, int $delta = 4): int {\n        $value += $delta;\n        return $value;\n    }\n    public function __destruct() { echo \"drop|\"; }\n};\necho $object161Author->update161Author($value161Author, delta: 2), \"|\", $value161Author, \"|\";\necho $object161Author::update161Author($value161Author), \"|\", $value161Author, \"|\";\necho \"later|\";\necho $object161Author->update161Author($value161Author, delta: rebind161Author()), \"|\", $value161Author, \"|\";\necho $object161Author === null ? \"gone|\" : \"bad|\";\necho \"after\";\n",
+      "source_sha256": "cf7d7634a0013eb0346c7fc00c7e930ead052fd236eaeefa727b39950ee3d7ff",
+      "stdout_base64": "NXw1fDl8OXxsYXRlcnxhcmd8ZHJvcHxyZWJvdW5kfDEwfDEwfGdvbmV8YWZ0ZXI=",
+      "stdout_template_base64": "NXw1fDl8OXxsYXRlcnxhcmd8ZHJvcHxyZWJvdW5kfDEwfDEwfGdvbmV8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class161-artifacts/author-public-static-reference-sends.native-first.json",
+      "native_raw_sha256": "07bf5abadb808aca4a0faff6ccf9e537868e6385c1772b01b00cdda5973dd364",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "private-static-denial-before-send",
+      "source": "<?php\nfunction effect161Author(): int { echo \"arg|\"; return 9; }\n$object161Author = new class {\n    private static function hidden161Author(int $x): int { echo \"body|\"; return $x + 1; }\n    public function enter161Author(): int { return self::hidden161Author(4); }\n};\necho $object161Author->enter161Author(), \"|\";\ntry {\n    $object161Author::hidden161Author(effect161Author());\n} catch (Error $error161Author) {\n    echo $error161Author->getMessage(), \"|\", $error161Author->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "da7c69110c4098385145e42fe09da5962a431631685f7311946155a6b28a01e4",
+      "stdout_base64": "Ym9keXw1fENhbGwgdG8gcHJpdmF0ZSBtZXRob2QgY2xhc3NAYW5vbnltb3VzOjpoaWRkZW4xNjFBdXRob3IoKSBmcm9tIGdsb2JhbCBzY29wZXw5fGFmdGVy",
+      "stdout_template_base64": "Ym9keXw1fENhbGwgdG8gcHJpdmF0ZSBtZXRob2QgY2xhc3NAYW5vbnltb3VzOjpoaWRkZW4xNjFBdXRob3IoKSBmcm9tIGdsb2JhbCBzY29wZXw5fGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class161-artifacts/author-private-static-denial-before-send.native-first.json",
+      "native_raw_sha256": "a54911af595958187e79d65d152b845c966c1a314e4dd1d86a4e9ebe87c72d4c",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "eval-static-local-shared-class",
+      "source": "<?php\n$source161Author = 'namespace Static161Author;\nfunction make161Author() {\n    return new class {\n        static function tick161Author(int $by = 1): int {\n            static $count = 0;\n            $count += $by;\n            return $count;\n        }\n    };\n}';\neval($source161Author);\n$first161Author = Static161Author\\make161Author();\n$second161Author = Static161Author\\make161Author();\necho $first161Author::tick161Author(), \"|\";\necho $second161Author->tick161Author(4), \"|\";\necho $first161Author::tick161Author(by: 2), \"|\";\necho $first161Author === $second161Author ? \"bad|\" : \"distinct|\";\necho \"after\";\n",
+      "source_sha256": "1cc22de6dbed316bf276b20d42becd16af6d3724ee3a0008be1865294b7b580e",
+      "stdout_base64": "MXw1fDd8ZGlzdGluY3R8YWZ0ZXI=",
+      "stdout_template_base64": "MXw1fDd8ZGlzdGluY3R8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class161-artifacts/author-eval-static-local-shared-class.native-first.json",
+      "native_raw_sha256": "eb4dd79c60ad83178d481e183d8df1ce9aa72e14e759bf506cc6c8c802f3fc89",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "static-return-and-object-diagnostics",
+      "source": "<?php\ndeclare(strict_types=1);\n$object161Diagnostic = new class {\n    public static function wrongReturn(): string {\n        echo \"return|\";\n        return 7;\n    }\n    public static function emptyReturn(): string {\n        echo \"empty|\";\n    }\n    public static function needTwo($one, $two) {\n        echo \"bad-body|\";\n    }\n    public static function neverReturn(): never {\n        echo \"never|\";\n    }\n};\ntry {\n    $object161Diagnostic::wrongReturn();\n} catch (TypeError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\ntry {\n    $object161Diagnostic->emptyReturn();\n} catch (TypeError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\ntry {\n    $object161Diagnostic->needTwo(1);\n} catch (ArgumentCountError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\ntry {\n    $object161Diagnostic->neverReturn();\n} catch (TypeError $caught161Diagnostic) {\n    echo $caught161Diagnostic->getMessage(), \"|\", $caught161Diagnostic->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "4ab40f8e27e9ebba6f48b1fd10769b43b95d7acc0ae88a3e19195c1279e47a60",
+      "stdout_base64": "cmV0dXJufGNsYXNzQGFub255bW91czo6d3JvbmdSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIGludCByZXR1cm5lZHw2fGVtcHR5fGNsYXNzQGFub255bW91czo6ZW1wdHlSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIG5vbmUgcmV0dXJuZWR8MTB8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gY2xhc3NAYW5vbnltb3VzOjpuZWVkVHdvKCksIDEgcGFzc2VkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2MS1yZXZpZXcvb3JpZ2luYWxzL3N0YXRpYy1yZXR1cm4tYW5kLW9iamVjdC1kaWFnbm9zdGljcy5waHAgb24gbGluZSAyOSBhbmQgZXhhY3RseSAyIGV4cGVjdGVkfDExfG5ldmVyfGNsYXNzQGFub255bW91cygpOiBuZXZlci1yZXR1cm5pbmcgbWV0aG9kIG11c3Qgbm90IGltcGxpY2l0bHkgcmV0dXJufDE2fGFmdGVy",
+      "stdout_template_base64": "cmV0dXJufGNsYXNzQGFub255bW91czo6d3JvbmdSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIGludCByZXR1cm5lZHw2fGVtcHR5fGNsYXNzQGFub255bW91czo6ZW1wdHlSZXR1cm4oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIG5vbmUgcmV0dXJuZWR8MTB8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gY2xhc3NAYW5vbnltb3VzOjpuZWVkVHdvKCksIDEgcGFzc2VkIGluIHtGSUxFfSBvbiBsaW5lIDI5IGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8MTF8bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58MTZ8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class161-artifacts/static-return-and-object-diagnostics.native-first.json",
+      "native_raw_sha256": "745be3e8b4b05a344634143d01e508f86c5252c272e2e9441602773eab47ce48",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "scope": "GC12: canonical materialized destructor collection from a live direct real-Closure caller with a complete childless by-value capture.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc11_base": "508f989c24ada4985e7f540246c229396d0b60ea",
+    "native_source": "01b55a3aff69b26653e6b25efb3c5daa18ba1e0d",
+    "childless_capture": "f108a4a993374e9bcc277b71f9055e4cc23417fc"
+  },
+  "source_sha256": "f5a41c300a730e060f4b7e8bbdc6b0d7ad65a3eb855da19007e357051c202a90",
+  "validation": {
+    "native_and_model": "The unchanged scalar use ($seed) original matches PHP byte for byte at clean f108: C|11|P|0|D|3|split|0|H|3|dead|0|END, exit 0 and empty stderr. The model report records stable inputs/HEAD, no timeout and a fully reaped process group.",
+    "preedit": "The pre-edit model refuses cached ordinary property-table collection after C|11|P|0|. A strict 28-check reached diagnostic at clean 01b verifies the real DIRECT integer capture, entered seed CV, no Closure child edge, current/global owner count 2 and that this Closure alone fails the old ordinary classifier.",
+    "reached": "One strict source-reached group passes 95 reported assertions at clean f108: the actual captured item/CV and owner count, held/drop count and white-set roles, authenticated GC body and count source, active caller/source erasure refusals and a constructed object-child capture excluded from ordinary admission.",
+    "zero_credit": "The pre-edit unsupported model run is not a source agreement. The constructed object-child state is a structural negative, not a separate PHP observation. No accepted GC07-11 source or state was replayed."
+  },
+  "reports": {
+    "gc-captured-caller-12-author/packet1/native-report.json": "02ead79628d69c110d70c2c1ebcde53dff655c6ad3b3170cecf845c2be25b9c8",
+    "gc-captured-caller-12-author/packet2/model-scalar-captured-direct-caller-report.json": "80f37dc35d10a73cff1a86e25121a1d0dcb64f5837270c7c40b644d60ded3405",
+    "gc-captured-caller-12-author/packet3/prebegin-result/report.json": "3588699d8a50a53c01f1c7757d45711690c53d04174c30f4d6eae4bd9ecace3d",
+    "gc-captured-caller-12-author/packet4/reached/report.json": "828b0e2b0aff9f7db8edd7bb3f136fd2a70dd1cf1430b3eddeea1bc411f0910a",
+    "gc-captured-caller-12-author/packet4/post-edit-source/model-scalar-captured-direct-caller-report.json": "fc7f4196cbe5c569e4c2f722ddf243551fa437de31e27c9f5f05c3dbfb5b608c"
+  },
+  "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean f108. Actual-tail interaction review and joined manifest remain pending.",
+  "limits": "Only a complete childless capture in an active saved direct raw REALCLOSURE caller with an actual machine root is admitted. The tested original captures one scalar by value; object, array, reference, bound receiver or static-cell edges and explicit invoke/pipe, Fiber/worker/residual/reentry contexts and wider materialized graphs retain existing fences. The source-selected direct target does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-captured-caller-12-author. The original source is tests/semantics/gc_captured_caller_source.php; focused model and reached fixtures are gc_captured_caller_sources.py and gc_captured_caller_state.py. No bulky artifacts are in Git."
+}

@@ -554,6 +554,19 @@ def $call_function_name(S, pfunction) = preqbytes
   -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, CLOSURE_TARGET n)
   -- if pcallcontext.CALLED_CLASS = $target_called_class(S, CLOSURE_TARGET n)
   -- if $trait_fcc_target_name(S, CLOSURE_TARGET n) = (preqbytes)
+def $call_function_kind(S) = $ptascii("method")
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.INSTANCE = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
+  -- if $method_closure_functions(S, n, pmethoddesc) = (pfunction_base, pfunction_view)
+  -- if pfunction_base = pmethoddesc.FUNCTION /\ pfunction_view =/= pfunction_base
+  -- if pcallcontext.FUNCTION = pfunction_base.ORIGIN
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, CLOSURE_TARGET n)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, CLOSURE_TARGET n)
+  -- if $trait_fcc_target_name(S, CLOSURE_TARGET n) = (preqbytes)
 def $wrapper_send_name(S, CLOSURE_TARGET n, porigin?, preqbytes_original) = preqbytes
   -- if ~$wrapper_site(S, CLOSURE_TARGET n, porigin?)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)

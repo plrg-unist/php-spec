@@ -6,12 +6,17 @@ def $pipe_array_plain(STATIC_METHOD_TARGET porigin_class porigin_method) = true
 def $pipe_array_plain(pcalltarget) = false -- otherwise
 
 dec $pipe_array_result(pstate, parrayresolution, pvalue, porigin, int, int, int) : pstate
+dec $enum_pipe_selected(pstate, pintrinsic, ptbytes, ptbytes, pvalue, porigin, int, int) : pstate
 def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_ARRAY_SEND (ARRAY_METHOD_TARGET pcalltarget parrayselection) parrayselection pvalue_left z_send z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $pipe_array_plain(pcalltarget)
   -- if parrayselection = {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}
 def $pipe_array_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "scoped pipe array callable"]
   -- if ~$pipe_array_plain(pcalltarget)
-def $pipe_array_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "enum generated pipe array callable"]
+def $pipe_array_result(S, ARRAYENUM pintrinsic ptbytes_class ptbytes_method, pvalue_left, porigin_site, z_send, z_lookup, z_call) = $enum_pipe_selected(S, pintrinsic, ptbytes_class, ptbytes_method, pvalue_left, porigin_site, z_send, z_call)
+  -- if S.RESULT = KNOWN (PARRAY n)
+  -- if $array_enum_candidate(S, n) = ((pintrinsic, ptbytes_class, ptbytes_method))
+  -- if pintrinsic = INTRINSIC_ENUM porigin_class ptbytes_enum text_method
+  -- if $array_site_valid(S, {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_class, NAME ptbytes_method}, false)
 def $pipe_array_result(S, ARRAYINVALID ptbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.TODO = (PIPE_ARRAY_INVALID pvalue_left porigin_site ptbytes z_lookup) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $pipe_array_result(S, ARRAYUNKNOWN text, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED text]
 def $pipe_array_value(S, n, pvalue_left, porigin, z_send, z_lookup, z_call) = $pipe_array_result(S, $array_resolve(S, n, ARRAY_DISPATCH), pvalue_left, porigin, z_send, z_lookup, z_call)

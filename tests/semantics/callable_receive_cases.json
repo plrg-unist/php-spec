@@ -154,5 +154,45 @@
     "source": "<?php\nclass ActualDefaultConstant248 { public const CB=['self','only']; }\nclass ActualRequested248 {\n private static function only() {}\n public function __toString(): string { echo 'T|'; return 'text'; }\n public function make() {\n  return function(string $text=new self, callable $cb=ActualDefaultConstant248::CB, int $tag=0) {\n   echo 'B:',self::class,':',get_called_class(),':',$text,':',$tag,'|';\n  };\n }\n}\nclass ActualForeign248 {\n public function make() { return Closure::fromCallable(['ActualRequested248','self::make']); }\n}\nset_error_handler(function($level,$message) { echo 'D|'; return true; });\n$parent=(new ActualForeign248)->make();\n$child=$parent(); unset($parent);\n$child(tag:3); unset($child);\nrestore_error_handler();\n",
     "source_sha256": "97d62a7cba7251694e614655913c28e77791277f42ebf584479e795e5d3a1f73",
     "expected_model": "normal"
+  },
+  {
+    "id": "enum-generated-callable-receive-snapshot",
+    "source": "<?php\nenum ReviewCallableAdmissionSelected: int { case Only = 9; }\nenum ReviewCallableAdmissionRebound: int { case Other = 9; }\n$target = \"\\\\rEvIeWcAlLaBlEaDmIsSiOnSeLeCtEd::fRoM\";\nfunction reviewCallableLaterArgument() {\n    global $target;\n    $target = ReviewCallableAdmissionRebound::class . \"::from\";\n    echo \"ARG|\";\n    return 9;\n}\nfunction reviewReceiveCallable(callable $callback, $value) {\n    echo $callback === \"\\\\rEvIeWcAlLaBlEaDmIsSiOnSeLeCtEd::fRoM\" ? \"raw|\" : \"BAD|\";\n    return $callback(value: $value) === ReviewCallableAdmissionSelected::Only;\n}\necho reviewReceiveCallable($target, reviewCallableLaterArgument()) ? \"selected|\" : \"BAD|\";\necho $target(9) === ReviewCallableAdmissionRebound::Other ? \"rebound|\" : \"BAD|\";\n",
+    "source_sha256": "22fefe23b8afd14c5b17ad5acd7e47799d4083ad3d0e64ba4787a1117cfa6c7b",
+    "expected_model": "normal",
+    "expected_normal_stdout": "ARG|raw|selected|rebound|",
+    "purpose": "Later argument rebinding preserves the original raw generated enum method string in a real callable parameter; the body invokes that saved value."
+  },
+  {
+    "id": "enum-generated-callable-receive-cases-lookup",
+    "source": "<?php\nenum DevAdmissionUnit { case First; case Second; }\nenum DevAdmissionInt: int { case One = 1; case Two = 2; }\nfunction admissionCases(callable $fn) { return $fn(); }\nfunction admissionLookup(callable $fn, $value) { return $fn(value: $value); }\n$all = admissionCases(\"\\\\dEvAdMiSsIoNuNiT::cAsEs\");\necho $all[0] === DevAdmissionUnit::First && $all[1] === DevAdmissionUnit::Second ? \"cases|\" : \"BAD|\";\necho admissionLookup(\"DevAdmissionInt::tRyFrOm\", \"2\") === DevAdmissionInt::Two ? \"weak|\" : \"BAD|\";\necho admissionLookup(\"DevAdmissionInt::tryFrom\", 8) === null ? \"miss|\" : \"BAD|\";\ntry { admissionCases(\"DevAdmissionUnit::from\"); } catch (TypeError $e) { echo \"invalid|\"; }\n",
+    "source_sha256": "877c39443b52f4bf54c537359618d5cc09b8baeab9060ff1d043ccf26f60ce4e",
+    "expected_model": "normal",
+    "expected_normal_stdout": "cases|weak|miss|invalid|",
+    "purpose": "Callable reception admits published generated cases/tryFrom strings while rejecting nonexistent unbacked from; ordinary order and weak lookup stay intact."
+  },
+  {
+    "id": "enum-generated-callable-receive-strict",
+    "source": "<?php\ndeclare(strict_types=1);\nenum DevAdmissionStrict: int { case One = 1; }\nfunction admissionStrict(callable $fn, $value) { return $fn(value: $value); }\ntry { admissionStrict(\"DevAdmissionStrict::fRoM\", \"1\"); } catch (TypeError $e) { echo \"type|\"; }\necho admissionStrict(\"DevAdmissionStrict::from\", 1) === DevAdmissionStrict::One ? \"strict|\" : \"BAD|\";\n",
+    "source_sha256": "a5d20da9232d4fcc6264beaa3100023bee3774825afee067fd495d6e58337458",
+    "expected_model": "normal",
+    "expected_normal_stdout": "type|strict|",
+    "purpose": "String callable admission preserves strict argument rejection in the later generated invocation and subsequent valid lookup."
+  },
+  {
+    "id": "enum-generated-callable-receive-private-scope",
+    "source": "<?php\nfunction admissionInvoke(callable $fn) { return $fn(); }\nclass DevAdmissionPrivate {\n    private static function hidden() { return \"hidden|\"; }\n    public static function probe() {\n        try { admissionInvoke(self::class . \"::hidden\"); } catch (TypeError $e) { echo \"private-string|\"; }\n        try { admissionInvoke([self::class, \"hidden\"]); } catch (TypeError $e) { echo \"private-array|\"; }\n        $captured = self::hidden(...);\n        echo admissionInvoke($captured);\n    }\n}\nDevAdmissionPrivate::probe();\nenum DevAdmissionVisible { case Only; }\n$all = admissionInvoke(\"DevAdmissionVisible::cases\");\necho $all[0] === DevAdmissionVisible::Only ? \"public|\" : \"BAD|\";\n",
+    "source_sha256": "bc59379b84570f04aefd9251b242aa1be2bf1d4338931b99b4fa084778322fac",
+    "expected_model": "normal",
+    "expected_normal_stdout": "private-string|private-array|hidden|public|",
+    "purpose": "Global callable reception rejects ordinary private method strings/arrays from a class caller, accepts its genuine private Closure and admits the separate public generated enum target."
+  },
+  {
+    "id": "enum-generated-callable-receive-shared-forms",
+    "source": "<?php\nenum ReviewAdmissionFormsSelected: int { case Only = 7; }\nenum ReviewAdmissionFormsRebound: int { case Other = 7; }\n$class = ReviewAdmissionFormsSelected::class;\n$method = \"from\";\n$target = [$class, $method];\nfunction reviewAdmissionArrayArgument() {\n    global $target;\n    $target[0] = ReviewAdmissionFormsRebound::class;\n    echo \"ARRAY|\";\n    return 7;\n}\nfunction reviewAdmissionArray(callable $fn, $value) {\n    echo $fn[0] === ReviewAdmissionFormsSelected::class ? \"raw|\" : \"BAD|\";\n    return $fn(value: $value) === ReviewAdmissionFormsSelected::Only;\n}\nfunction reviewAdmissionCaptureArgument() {\n    global $held, $weak;\n    $held = null;\n    echo $weak->get() !== null ? \"held|\" : \"BAD|\";\n    return 7;\n}\nfunction reviewAdmissionCapture(callable $fn, $value) {\n    global $weak;\n    echo $weak->get() === $fn ? \"same|\" : \"BAD|\";\n    return $fn(value: $value) === ReviewAdmissionFormsSelected::Only;\n}\necho reviewAdmissionArray($target, reviewAdmissionArrayArgument()) ? \"array|\" : \"BAD|\";\n$target = ReviewAdmissionFormsSelected::class . \"::tryFrom\";\n$held = $target(...);\n$weak = WeakReference::create($held);\necho reviewAdmissionCapture($held, reviewAdmissionCaptureArgument()) ? \"string-capture|\" : \"BAD|\";\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\n$target = [$class, $method];\n$held = $target(...);\n$weak = WeakReference::create($held);\necho reviewAdmissionCapture($held, reviewAdmissionCaptureArgument()) ? \"array-capture|\" : \"BAD|\";\necho $weak->get() === null ? \"retired|\" : \"BAD|\";\n",
+    "source_sha256": "3cbbf70d3776e88e85651f3642b5611d1878902805b3d49ce3265dc7135a34fc",
+    "expected_model": "normal",
+    "expected_normal_stdout": "ARRAY|raw|array|held|same|string-capture|retired|held|same|array-capture|retired|",
+    "purpose": "Fresh raw array and string/array internal Closure inputs preserve table/object identity across COW and later-argument clearing, then retire after reception/body ownership ends."
   }
 ]

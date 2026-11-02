@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.public-invoke",
+  "status": "partial",
+  "scope": "Public/default-public nonstatic nongenerator anonymous __invoke with unpromoted parameters, by-value return, required body and no attributes. Ordinary direct object and explicit method calls retain existing source, send, binder, type, parent and ownership fences.",
+  "design": "383 adds a disjoint __invoke member arm with flags 0/1, the existing formal-shape helper and the existing generator-statement exclusion. The 141 compiler, 142 runtime selection, named/default binder, return and ownership modules are unchanged.",
+  "native_first": {
+    "report": ".tools/class159-artifacts/native-initial5.json",
+    "sha256": "7bb624854d72f3bbfce52f9e9d65dcc56aa554e7cd5f6f32d064e4a4b673bd8d",
+    "revision": "a0da92aeb7ac5967c37b3d3084a8450e7afff63f",
+    "originals": 5,
+    "result": "Five independently frozen fresh originals are normal, quiet and exit0 on the pinned local PHP CLI; no native replay."
+  },
+  "unchanged_baseline": {
+    "revision": "a0da92aeb7ac5967c37b3d3084a8450e7afff63f",
+    "originals": 2,
+    "reports": [
+      [".tools/class159-artifacts/unchanged-author-public-reference-direct-explicit.json", "d27b7ef2f16f8a30c3efe8be06ebe444e293d0a873e655c5b43fe2811e5f0db0"],
+      [".tools/class159-artifacts/unchanged-captured-callable-rebinding-release.json", "4c1c42758f805ad633330c47e5d36108dd2c7926d68017ec23fe0ce0823ff0b7"]
+    ],
+    "result": "Both selected originals are frontend accepted/program checked then Unsupported at the prior anonymous member admission. The other three old probes remain unrun; zero agreement credit."
+  },
+  "source_outcomes": {
+    "agreements": 5,
+    "counts": {"normal": 5},
+    "tested_revision": "418610a662a129b288e1c53a00ea8a2dc07b3ef3",
+    "records": [
+      {"case": "captured-callable-rebinding-release", "supervisor": ".tools/class159-artifacts/model-captured-callable-rebinding-release.json", "supervisor_sha256": "affbf314c9f311dfd80559ded43f8dfc311f1516a55b450703af1b61b1a337a7", "raw_report": ".tools/class159-artifacts/method-runtime-k1dvhh6u/report.json", "raw_sha256": "a0edf52dd3456678056b6ad36833cb6286e82c0cc4a3943709d509ff17b5b5b7"},
+      {"case": "implicit-arity-and-named-hole", "supervisor": ".tools/class159-artifacts/model-implicit-arity-and-named-hole.json", "supervisor_sha256": "08cd521ded51ad7754096e0b74f9448e1aed975325eb10d44d6133d782af34ed", "raw_report": ".tools/class159-artifacts/method-runtime-0rc5s3ql/report.json", "raw_sha256": "9308639b556dbf816fd4460b0717fc70a0a22dc84d7c6759fa890e96eb8e6edd"},
+      {"case": "public-reference-direct-explicit", "supervisor": ".tools/class159-artifacts/model-public-reference-direct-explicit.json", "supervisor_sha256": "08e6c2d5ca8e03f3c01e9c8e17ed077f041a4148cc75486393a50cb2d80ddee0", "raw_report": ".tools/class159-artifacts/method-runtime-qiodj0dp/report.json", "raw_sha256": "5601eebd4211618870a39af39265611e71abd7574de4e6179d6bd16d35ba04e3"},
+      {"case": "anonymous-parent-override", "supervisor": ".tools/class159-artifacts/model-anonymous-parent-override.json", "supervisor_sha256": "0cfb995bdf1e8b2f19b7b782973e8bcd486552a2d7a5807400f6569183efc414", "raw_report": ".tools/class159-artifacts/method-runtime-71hegqhx/report.json", "raw_sha256": "917c46808104d125b8fd941f6bc0db4588f5b347ac9cc606f72c178323bd0703"},
+      {"case": "eval-named-default-factory", "supervisor": ".tools/class159-artifacts/model-eval-named-default-factory.json", "supervisor_sha256": "b92cd08f8a6bfcfc9b231f2a0a33ed0860c4b65327ba48b265ce12a1c462e2ba", "raw_report": ".tools/class159-artifacts/method-runtime-z43sve44/report.json", "raw_sha256": "8be4f8b73308bcf5e7e004c7902df84c221e5641a55779ec48caac2d16d89c93"}
+    ],
+    "result": "Model-only status, stdout, stderr and exit match retained native observations exactly; FILE substitution is the sole output template change. All groups were pinned to CPU1, stable and fully reaped."
+  },
+  "strict_sl": {
+    "report": ".tools/class159-artifacts/strict-candidate-first.json",
+    "sha256": "aa08764e9e4b0e94d88a3facd7d3b4a8fbd85ee6189eaf25b5bc1823ab2a654c",
+    "tested_revision": "418610a662a129b288e1c53a00ea8a2dc07b3ef3",
+    "modules": 433,
+    "result": "Ordered full-manifest --sl returned true newline, empty stderr and exit0 with stable inputs and full reap on CPU1."
+  },
+  "reached": {
+    "conditions": 275,
+    "source_reached_conditions": 272,
+    "derived_conditions": 3,
+    "derived_guards": 3,
+    "groups": [
+      {"test": "tests/semantics/anonymous_invoke_eval_default_protocol.py", "revision": "92f788386e78fa7f6b0b9f7b8d56c8e617bf9407", "supervisor": ".tools/class159-artifacts/state-eval-default-first.json", "supervisor_sha256": "29bb5bf6b2c136f90ddf42ab7d42402c4420fc2a020d4c86e2e25b43165cd5d2", "raw_report": ".tools/class159-artifacts/anonymous-invoke-eval-default-l8l9_lnp/report.json", "raw_sha256": "e94bc655580bc1df4901bf69a8d0011981de8a230e93e4be132a3236b5dd4889", "conditions": 142, "reached_conditions": 142, "derived_guards": 0, "fixture_sha256": "3f5b4f2f343e755424e146f70c636a6b1d0688be80cbfd30ecdd5c7c0c832feb"},
+      {"test": "tests/semantics/anonymous_invoke_capture_protocol.py", "revision": "0e2abe8922aa0f78d9a693f5656857964196a9cf", "supervisor": ".tools/class159-artifacts/independent-invoke-capture133-frame-corrected.json", "supervisor_sha256": "510b3f6d7adde6e91191346a20fc83cc632687c4f172fae193e4aefb3dcf1456", "raw_report": ".tools/class159-artifacts/anonymous-invoke-capture-5n2ycu2y/report.json", "raw_sha256": "01bb64c2a81e63983350173e4995d7b54abdd2d8381943bffcac7f034a677895", "conditions": 133, "reached_conditions": 130, "derived_guards": 3}
+    ],
+    "result": "Actual unit1 eval publication and three implicit default calls retain distinct named-hole/zero-argument paths and fresh callee cells. An independently authored group reaches captured object selection after caller rebinding, reference send/type reception, frame-release destructor before result observation and three targeted task refusals."
+  },
+  "preserved_zero_credit": [
+    {"report": ".tools/class159-artifacts/independent-invoke-capture123.json", "sha256": "42bffbc42f2c46ad926ef174475df627c2f7d4f4c1f9bdbb41a4a6d2dcdd2870", "raw_report": ".tools/class159-artifacts/anonymous-invoke-capture-yjf6j52l/report.json", "raw_sha256": "4e0616d4a289dc9686057b483f74b76c5753b27aaef9214047e6f8599d433bc5", "reason": "Fixture referenced nonexistent frame.ENV; the actual saved Root table is GLOBALTABLE. Stopped during elaboration before execution, then corrected only the affected fixture."},
+    {"report": ".tools/class159-artifacts/independent-invoke-capture125-corrected.json", "sha256": "7b7b9971a80d703f95ecf4d6543966d786849d5efe6694739b5b62fcb5699358", "raw_report": ".tools/class159-artifacts/anonymous-invoke-capture-2gxhixye/report.json", "raw_sha256": "43d77b85cf4a05bb6bbb953a9d8d464ce433229dd296a1ad9c9acf65ab5e0e62", "reason": "A Stringable-operation fixture guard missed the distinct frame-release destructor path; the affected group alone was corrected and retried."}
+  ],
+  "tested_code": {
+    "production_commit": "418610a662a129b288e1c53a00ea8a2dc07b3ef3",
+    "state_fixture_commit": "0e2abe8922aa0f78d9a693f5656857964196a9cf",
+    "production_sha256": {"spec/semantics/383-anonymous-classes.watsup": "7fd93c901812ed74aa657ef491682261b264b61574c72aa11252a1d18e13c833"},
+    "catalogue_sha256": "8db2b08e1e58c808af863ca88f879e8b77c6358805984ca920dadd4c048ac947",
+    "state_script_sha256": {"tests/semantics/anonymous_invoke_eval_default_protocol.py": "3a53dd6d1db3d51976227c1f795e23917429be5c33633cfcb066d425232848ef", "tests/semantics/anonymous_invoke_capture_protocol.py": "6470a5c111526977ccd331f0b5b20ef1f6a0b492e4af8defbc6d3b4b046cd70f"}
+  },
+  "limits": "Other magic methods, nonpublic/static/reference-return/attributed __invoke, promoted formals, Generator bodies, wider callable API and source/lifecycle contexts remain partial. Paused OP12, Source47, owned-NUL release, undefined byref LIST keys, COMP88 supplied-throw comparison, V110 and COMP123 boundaries remain unchanged. This is not a complete PHP-core or BOLA-verification result.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "source_pin": {"php_src_commit": "34308a6666b2d489c509541ea9befea9e2b42348", "local_tools_manifest": ".tools/class159-artifacts/local-tools.json", "local_tools_manifest_sha256": "e39b9a04532e9b4b3d960683a1120a68d134bffdc2030d536b999a154cd90063"},
+  "recovery": "Frozen originals/manifests and native first records are external under .tools/class159-author, class159-review and class159-artifacts. Source/strict/state reports and relocated raw directories remain external. Supervisor stdout retains original worktree raw paths; this review names the relocation. Five local tools were reused without rebuilding; a fresh offline rebuild is still needed. No push.",
+  "independent_review": "The reviewer cleared all five frozen originals, exact production/catalogue cut, both state scripts and affected fixture corrections before their runs, then checked source/strict/state commands, maps, outputs, affinity and descendant reaping. Private package and actual-tail integration remain pending behind CLASS156, CLASS157 and CLASS158."
+}

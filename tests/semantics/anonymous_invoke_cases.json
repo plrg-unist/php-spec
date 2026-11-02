@@ -1,0 +1,84 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-invoke-captured-callable-rebinding-release",
+      "source": "<?php\n$value159Review = \"7\";\n$replacement159Review = new class {\n    public function __invoke($first, $second): string {\n        echo \"replacement-body|\";\n        return \"replacement\";\n    }\n};\n$callable159Review = new class {\n    public function __invoke(int &$value, $ignored): string {\n        echo $value === 7 ? \"head-int|\" : \"bad-head|\";\n        $value = 11;\n        return \"original\";\n    }\n    public function __destruct() { echo \"original-dtor|\"; }\n};\n$result159Review = $callable159Review($value159Review, $callable159Review = $replacement159Review);\necho $result159Review, \"|\", $value159Review, \"|\";\necho $callable159Review(1, 2), \"|after\";\n",
+      "source_sha256": "83c728734479cf3026e0950fcde848684b3e91eb15141b404116a84847266a27",
+      "stdout_base64": "aGVhZC1pbnR8b3JpZ2luYWwtZHRvcnxvcmlnaW5hbHwxMXxyZXBsYWNlbWVudC1ib2R5fHJlcGxhY2VtZW50fGFmdGVy",
+      "stdout_template_base64": "aGVhZC1pbnR8b3JpZ2luYWwtZHRvcnxvcmlnaW5hbHwxMXxyZXBsYWNlbWVudC1ib2R5fHJlcGxhY2VtZW50fGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class159-artifacts/captured-callable-rebinding-release.native-first.json",
+      "native_raw_sha256": "6be352a91475907c5bf617692ac6193a69462b1abb98e2feb99d43fd4dcca524",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-invoke-implicit-arity-and-named-hole",
+      "source": "<?php\nfunction argument159Review() { echo \"argument|\"; return 9; }\n$callable159Review = new class {\n    public function __invoke($first, $last): int { echo \"bad-body|\"; return 0; }\n};\necho \"before|\";\ntry {\n    $callable159Review();\n} catch (ArgumentCountError $error159Review) {\n    echo $error159Review->getMessage(), \"|\", $error159Review->getLine(), \"|\";\n}\ntry {\n    $callable159Review(last: argument159Review());\n} catch (ArgumentCountError $error159Review) {\n    echo $error159Review->getMessage(), \"|\", $error159Review->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "c2ed4b63b83c19349867622aad0d90f1ea9661fd3b9421bc040730cbbec6efc3",
+      "stdout_base64": "YmVmb3JlfFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIGNsYXNzQGFub255bW91czo6X19pbnZva2UoKSwgMCBwYXNzZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTU5LXJldmlldy9vcmlnaW5hbHMvaW1wbGljaXQtYXJpdHktYW5kLW5hbWVkLWhvbGUucGhwIG9uIGxpbmUgOCBhbmQgZXhhY3RseSAyIGV4cGVjdGVkfDR8YXJndW1lbnR8Y2xhc3NAYW5vbnltb3VzKCk6IEFyZ3VtZW50ICMxICgkZmlyc3QpIG5vdCBwYXNzZWR8NHxhZnRlcg==",
+      "stdout_template_base64": "YmVmb3JlfFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIGNsYXNzQGFub255bW91czo6X19pbnZva2UoKSwgMCBwYXNzZWQgaW4ge0ZJTEV9IG9uIGxpbmUgOCBhbmQgZXhhY3RseSAyIGV4cGVjdGVkfDR8YXJndW1lbnR8Y2xhc3NAYW5vbnltb3VzKCk6IEFyZ3VtZW50ICMxICgkZmlyc3QpIG5vdCBwYXNzZWR8NHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class159-artifacts/implicit-arity-and-named-hole.native-first.json",
+      "native_raw_sha256": "d4fe638271e5bd9492e0867cdc92f850e0dc5bd723ef6202e817bc34fa6824c8",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-invoke-public-reference-direct-explicit",
+      "source": "<?php\n$slot159Author = \"7\";\n$alias159Author =& $slot159Author;\n$receiver159Author = new class {\n    public $calls = 0;\n    public function __invoke(int &$value, int $delta = 2): int {\n        $this->calls++;\n        $value += $delta;\n        return $value;\n    }\n};\necho $receiver159Author($slot159Author), \"|\";\necho $slot159Author, \"|\", $slot159Author === 9 ? \"int|\" : \"bad|\";\necho $receiver159Author->__invoke($alias159Author, delta: 4), \"|\";\necho $slot159Author, \"|\", $receiver159Author->calls, \"|after\";\n",
+      "source_sha256": "af1215f5a25e7851f1948925bd475f0a1f1812e2a5eb65049515c7db470ab3c1",
+      "stdout_base64": "OXw5fGludHwxM3wxM3wyfGFmdGVy",
+      "stdout_template_base64": "OXw5fGludHwxM3wxM3wyfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class159-artifacts/author-public-reference-direct-explicit.native-first.json",
+      "native_raw_sha256": "798014a310437a24f9734a5aa1adfea485feef9375a49cb2dc383db5cfcf42f4",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-invoke-anonymous-parent-override",
+      "source": "<?php\nclass Base159Author {\n    public $offset = 10;\n    public function __invoke(int $value): int {\n        echo \"base|\";\n        return $this->offset + $value;\n    }\n}\n$receiver159Author = new class extends Base159Author {\n    public function __invoke(int $value): int {\n        echo \"child|\";\n        return parent::__invoke($value) + 1;\n    }\n};\necho $receiver159Author(2), \"|\";\n$receiver159Author->offset = 20;\necho $receiver159Author->__invoke(3), \"|after\";\n",
+      "source_sha256": "47ff7cf6a7382d400d8c87d4516bc71a9627b86fe81d6f1f9d510222c3f17a8d",
+      "stdout_base64": "Y2hpbGR8YmFzZXwxM3xjaGlsZHxiYXNlfDI0fGFmdGVy",
+      "stdout_template_base64": "Y2hpbGR8YmFzZXwxM3xjaGlsZHxiYXNlfDI0fGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class159-artifacts/author-anonymous-parent-override.native-first.json",
+      "native_raw_sha256": "639297d97575a45424f13703eab4cdbeaac464a825507be8275bd8aa07e7c127",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-invoke-eval-named-default-factory",
+      "source": "<?php\n$source159Author = 'namespace Method159Author;\nfunction make159Author() {\n    return new class {\n        function __invoke(int $first = 3, int $last = 4): int {\n            return $first * 10 + $last;\n        }\n    };\n}';\neval($source159Author);\n$first159Author = Method159Author\\make159Author();\n$second159Author = Method159Author\\make159Author();\necho $first159Author(last: 8), \"|\";\necho $second159Author(), \"|\";\necho $first159Author(), \"|\";\necho $first159Author === $second159Author ? \"bad|\" : \"distinct|\";\necho \"after\";\n",
+      "source_sha256": "3cfb0b3bb3abb151f4d7a402817ff6e0d7ace362e62adf269b591efcb6c4fdeb",
+      "stdout_base64": "Mzh8MzR8MzR8ZGlzdGluY3R8YWZ0ZXI=",
+      "stdout_template_base64": "Mzh8MzR8MzR8ZGlzdGluY3R8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class159-artifacts/author-eval-named-default-factory.native-first.json",
+      "native_raw_sha256": "e1e3e63bb7b004f18d84bf8612621c8ad5dd0468fd45f74650f0edc299ddff7d",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

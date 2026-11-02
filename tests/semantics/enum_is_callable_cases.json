@@ -1,0 +1,25 @@
+[
+  {
+    "id": "enum-is-callable-published-prefix",
+    "source": "<?php\nenum ImmediateInt: int { case One = 1; }\nenum ImmediatePure { case A; }\n\necho is_callable('ImmediateInt::from') ? 'string|' : 'BAD|';\necho is_callable([ImmediateInt::class, 'tryFrom']) ? 'class-array|' : 'BAD|';\necho is_callable([ImmediateInt::One, 'from']) ? 'case-array|' : 'BAD|';\necho is_callable('ImmediatePure::cases') ? 'pure-cases|' : 'BAD|';\necho is_callable('ImmediatePure::from') ? 'BAD|' : 'pure-no-from|';\necho is_callable('ImmediatePure::from', true) ? 'pure-syntax|' : 'BAD|';\necho is_callable([ImmediateInt::One, 'missing']) ? 'BAD|' : 'case-no-method|';\necho is_callable([ImmediateInt::One, 'missing'], true) ? 'case-syntax|' : 'BAD|';\necho ImmediateInt::from(1) === ImmediateInt::One ? 'cold-case|' : 'BAD|';\n",
+    "source_sha256": "1b241c7ebd1d8d9d0d9f4d2705a7626685afedf3fd058eac4d3b21b6cd0fe867",
+    "expected_model": "normal",
+    "expected_normal_stdout": "string|class-array|case-array|pure-cases|pure-no-from|pure-syntax|case-no-method|case-syntax|cold-case|",
+    "purpose": "Published enum strings and class/case arrays, generated positives, absent-method negatives, syntax-only and cold backing table."
+  },
+  {
+    "id": "enum-is-callable-dynamic-pipe",
+    "source": "<?php\nenum QueryBacked: int { case One = 1; }\nenum QueryPure { case A; }\n\n$callee = 'is_callable';\nfunction change_callee(): string {\n    global $callee;\n    $callee = 'is_int';\n    echo 'REBIND|';\n    return 'QueryBacked::from';\n}\n\necho $callee(change_callee()) ? 'selected|' : 'BAD|';\necho $callee === 'is_int' ? 'rebound|' : 'BAD|';\necho ('QueryBacked::from' |> 'is_callable') ? 'pipe-yes|' : 'BAD|';\necho ('QueryPure::from' |> 'is_callable') ? 'BAD|' : 'pipe-no|';\n",
+    "source_sha256": "362b17540ee50b3a1cd6c9a6981220baabb14bd68e03c86cef44d5c77b664f4e",
+    "expected_model": "normal",
+    "expected_normal_stdout": "REBIND|selected|rebound|pipe-yes|pipe-no|",
+    "purpose": "Dynamic callee selection before argument rebinding and pipe string query of backed and pure enums."
+  },
+  {
+    "id": "enum-is-callable-third-output-unsupported",
+    "source": "<?php\nenum NameCheck: int { case A = 1; }\n$name = 'before';\n$ok = is_callable('NameCheck::from', false, $name);\necho ($ok ? 'yes' : 'no'), ':', $name, '|';\n",
+    "source_sha256": "9e33ee2f631e8f116a1a6960c287528040cc4667647377b11e7e16915ae6c93b",
+    "expected_model": "unsupported",
+    "purpose": "The third byref output mutates a caller slot; keep it explicit Unsupported until writable-location semantics are added."
+  }
+]

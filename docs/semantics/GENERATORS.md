@@ -475,7 +475,8 @@ entered argument data remains nonowning history after mutation or retirement.
 No pending-pack equality or sent-value liveness is required. The Gen's actual
 frame/cache/input still owns its values. Five originals agree with PHP; five
 reached fronts pass 442 custom/467 reported checks at their distinct cuts.
-Private strict433 retains its original cut; actual-tail compilation is pending.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
 The original syntax and missed-getter-stage fixture failures retain zero credit
 after narrow fixture corrections.
 I84 covers factory handlers; direct Generator bodies are added below. Broader
@@ -492,8 +493,10 @@ frame search, so a fresh sibling with the same method cannot replace the target.
 The same actual receipt admits the existing Fiber callee transfer route.
 A live body still requires its real receiver; a closed record adds no owner.
 Five current originals agree; five reached fronts pass 444 custom/469 reported
-checks. Private strict433 retains its original cut; actual-tail compilation is
-pending. Original compiler, COUNT, Fiber-consumer and fixture-prefix failures
+checks. Private strict433 retains its original cut; joined strict433, three
+exact sources and 166 independent reached checks pass at bd274e79f. The
+current-tail b1adc40c composition is reviewed. Original compiler, COUNT,
+Fiber-consumer and fixture-prefix failures
 retain zero credit; the fresh whole-array observer preserves cardinality and
 payload identity.
 BYREF magic signatures, broader source spellings and wider callback/API,
@@ -510,7 +513,8 @@ marker is required; ordinary live target queries remain unchanged.
 The shared ATTR07 Closure receiver correction imports only its borrowing hunk.
 Four native/model originals agree; five reached fronts pass 501 custom/526
 reported checks at their recorded cuts. Private strict433 retains its original
-cut; actual-tail compilation is pending. Original compiler, refusal and
+cut; joined strict433, two exact sources and 111 independent reached checks
+pass at 4462bc6d. The 779569a8 composition is reviewed. Original compiler, refusal and
 array-storage failures retain zero credit. Wider source/API, real-bound Closure,
 delegation, collection and lifecycle combinations remain partial.
 [Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
@@ -524,7 +528,9 @@ entry requires the real receiver. Direct raw bodies follow ordinary method
 receipt policy. Six native/model originals agree; seven reached fronts pass
 561 custom/596 reported checks at distinct cuts, including retired private
 permission and real close/cache owners. Private strict433 retains its original
-cut; actual-tail integration is pending and original failures keep zero credit. Raw
+cut; joined strict433 and three exact sources pass at 833e6e8f. The strengthened
+93-assertion closed-history state passes at 1f0e17ba; e0e3ce7f composition is
+reviewed. Original failures keep zero credit. Raw
 cached-reference bodies, pipe and wider APIs/lifecycles remain partial.
 [Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
 

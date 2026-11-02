@@ -1,0 +1,196 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.stringable",
+  "status": "partial",
+  "scope": "Public/default-public zero-argument by-value anonymous __toString without attributes, through ordinary declared/effective returns, implicit Stringable and existing direct method/echo/cast/concat consumers at admitted root/eval sites.",
+  "depends_on": {
+    "private_commit": "da77a68c0713015e595ab06a3883e45fe458b4ca",
+    "milestone": "CLASS156",
+    "reason": "The new parented saved-receiver witness uses the independently accepted public destructor route. Canonical integration of CLASS156 precedes CLASS157."
+  },
+  "engine_routes": [
+    "Zend/zend_compile.c::zend_generate_anon_class_name reads the raw extends/implements AST and increments once before method compilation adds implicit Stringable; interface dependencies suppress early binding.",
+    "Zend/zend_API.c::zend_check_magic_method_return_type formats separate class and original method-name segments.141 retains ordinary implicit-string/never validity and rejection.",
+    "Zend/zend_execute.c::zend_verify_return_error formats lexical class/member separately; zend_verify_never_error uses one full callable C string and chooses method from the real function scope.",
+    "Ordinary168/270 conversion and release keep a selected receiver through rebinding. The conversion owner releases before emission; a last-owner release destroys the receiver then."
+  ],
+  "design": "383 admits the method and validates effective interfaces in both parentless and dependent descriptors, retaining raw-header prefix and one anonymous counter step.141 changes only the exposed invalid-annotation display.95/142 authenticate current selected method/descriptor owner for ordinary return display and kind, with separate whole-name never handling and existing non-method/Closure fallbacks. Frozen183 source-entry seeds and ordinary binder/ownership rules remain unchanged; no schema, machine or manifest addition.",
+  "native_groups": [
+    {
+      "report": ".tools/class157-artifacts/native-initial6.json",
+      "sha256": "f84a140e97b2fb748d7eae6141c16d627c4e19820dc2be8f622e65d05849ccff",
+      "revision": "da77a68c0713015e595ab06a3883e45fe458b4ca",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.633
+    },
+    {
+      "report": ".tools/class157-artifacts/native-fallthrough2.json",
+      "sha256": "f86556810966aad6df3ec65f5e6001b6aaa570a574188e39b8e6a9c74fc9d047",
+      "revision": "da77a68c0713015e595ab06a3883e45fe458b4ca",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.279
+    },
+    {
+      "report": ".tools/class157-artifacts/native-method-spelling1.json",
+      "sha256": "086dfe8ff1fe1e1eb861672ada8bcca574705dc1b0c1f2b3253db8f6992f918b",
+      "revision": "ab1b511596f65753e38abb3d9de63cd9edf55a3f",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.229
+    }
+  ],
+  "native_counts": "Nine unique originals: initial authored4+independent2 at da77a68c, separate fallthrough2 at the same unchanged cut, then original-method-spelling1 at ab1b51159 before its correction. Initial manifests/observations remain immutable; no native replay.",
+  "unchanged_baseline": {
+    "report": ".tools/class157-artifacts/unchanged-baseline2.json",
+    "sha256": "97ff315599378488afe3eae46a87d241c624bd572fca9072941719d62ff985f4",
+    "revision": "da77a68c0713015e595ab06a3883e45fe458b4ca",
+    "cpu": [
+      1
+    ],
+    "seconds": 24.314,
+    "result": "Exactly the authored weak-return and independent parented saved-receiver originals are frontend accepted/program checked Unsupported anonymous class RTD, body, or compiler publication context at unchanged da77a68c. Other old probes stay unrun; zero agreement credit."
+  },
+  "source_outcomes": {
+    "report": ".tools/class157-artifacts/source9-assessment.json",
+    "sha256": "bf68217952d6881a048eff0b78bbad7de8e23d141eb01527798cd7849f699cb5",
+    "agreements": 9,
+    "counts": {
+      "normal": 7,
+      "static_rejection": 2
+    },
+    "result": "Model-only observations exactly match retained native status/streams/exit with FILE substitution only. Original method_runtime assertions and module/catalogue/profile maps are retained. Accepted cuts are source1\u20133 at ab1b51159, four cases at45fddff72, and corrected never plus eval at c41f51d94. The failed never observation contributes zero agreement."
+  },
+  "strict_sl_groups": [
+    {
+      "report": ".tools/class157-artifacts/first-strict433.json",
+      "sha256": "f78839b75c634289aeac19a72e370d28a70d236cf829afe44a112710a093b873",
+      "revision": "ab1b511596f65753e38abb3d9de63cd9edf55a3f",
+      "cpu": [
+        1
+      ],
+      "seconds": 11.857,
+      "modules": 433
+    },
+    {
+      "report": ".tools/class157-artifacts/spelling-strict433.json",
+      "sha256": "32a2e6f4596b804c301670118b8df7c655cb11cd77b95aece0f55b490a803cb8",
+      "revision": "45fddff72e790e54fc56e346d58865ad32c43887",
+      "cpu": [
+        1
+      ],
+      "seconds": 11.808,
+      "modules": 433
+    },
+    {
+      "report": ".tools/class157-artifacts/method-kind-strict433.json",
+      "sha256": "4456ed8bb156d07c33fba45e801988de3bb6dd8e713ff1a5abffb1db6c255d81",
+      "revision": "c41f51d943ad4b24daf958e37f9735c3723e8639",
+      "cpu": [
+        1
+      ],
+      "seconds": 11.908,
+      "modules": 433
+    }
+  ],
+  "strict_qualification": "Each ordered full-manifest --sl group prints exactly Strict SL modules: 433 and true newlines, empty stderr/exit0/stable maps/full reap. Later groups check actual producer changes in141 then142; accepted earlier groups retain their cuts. Fixture/metadata changes renew no accepted native/source/strict evidence.",
+  "reached": {
+    "accepted_conditions": 285,
+    "source_reached_conditions": 278,
+    "derived_conditions": 7,
+    "derived_guards": 7,
+    "groups": [
+      {
+        "report": ".tools/class157-artifacts/authored-stringable-eval138-corrected.json",
+        "sha256": "5001c68caed943b9f2575f6a287effd083cabeb2216db8b4cb226e9cb0c2d0c8",
+        "revision": "998883ca6cb1408a972de14092cb3fe7231b781e",
+        "cpu": [
+          1
+        ],
+        "seconds": 30.891,
+        "test": "tests/semantics/anonymous_stringable_eval_protocol.py",
+        "conditions": 138,
+        "reached_conditions": 134,
+        "derived_conditions": 4,
+        "derived_guards": 4,
+        "state_report": ".tools/class157-artifacts/anonymous-stringable-eval-x6fv1eq8/report.json",
+        "state_sha256": "a929ab5f22a21a5104a57f88431540ae98a224278416e53c3c943922b8267373",
+        "result": "Real unit1 eval ingress and factory ReturnNew before implicit-interface publication, anonymous counter1 and exact source-bound identity; two same-class receiver callbacks with raw returned bytes, full logical versus segmented/whole-name views, exact-function clone/non-method fallback and source-line controls; final output/class/call/declaration/heap checks."
+      },
+      {
+        "report": ".tools/class157-artifacts/independent-stringable-receiver147.json",
+        "sha256": "560fab949b8702a4e1eb71e728268577f9eceade2b14cc5ed498e17c2a25f1b3",
+        "revision": "998883ca6cb1408a972de14092cb3fe7231b781e",
+        "cpu": [
+          1
+        ],
+        "seconds": 45.921,
+        "test": "tests/semantics/anonymous_stringable_receiver_protocol.py",
+        "conditions": 147,
+        "reached_conditions": 144,
+        "derived_conditions": 3,
+        "derived_guards": 3,
+        "state_report": ".tools/class157-artifacts/anonymous-stringable-receiver-saijod2x/report.json",
+        "state_sha256": "e94e67994f1832d89df79684266a8160b4978fcd658a374a3f8ef2776dd16c37",
+        "result": "Five real descriptors validate early Base, deferred named Stringable and two implicit-interface anonymous descriptors, plus early plain successor and counter4. Full raw-header Base/plain names match native. Selected receiver survives global rebinding through STRINGIFY and destructor-before-EMIT; next operand selects the new receiver. Three source/target/interface controls and final validators."
+      }
+    ]
+  },
+  "failures": [
+    {
+      "report": ".tools/class157-artifacts/source7-never-fallthrough.json",
+      "sha256": "c4b59bc43fcf75f8a4848936420190e2ac1754badb68fb5a8987eee3e9b580d0",
+      "revision": "45fddff72e790e54fc56e346d58865ad32c43887",
+      "cpu": [
+        1
+      ],
+      "seconds": 13.501,
+      "raw_report": ".tools/class157-artifacts/method-runtime-w663pzp5/report.json",
+      "raw_report_sha256": "e60391775328afad7a614e720860d7426674f93b0f08e6fd8a1bca6011848a99",
+      "agreement_credit": 0,
+      "state_credit": 0,
+      "reason": "Semantic counterexample: normal model output used function where Zend uses method. Narrow142 kind correction and only the affected original retry establish one agreement."
+    },
+    {
+      "report": ".tools/class157-artifacts/authored-stringable-eval138.json",
+      "sha256": "6aafbd2d7b590120cfe886dfa1365846fafa890c778a6229a199c9bb1e757b58",
+      "revision": "decaedd3b10a5b9676ca6423110ccde435dcd638",
+      "cpu": [
+        1
+      ],
+      "seconds": 8.802,
+      "raw_report": ".tools/class157-artifacts/anonymous-stringable-eval-1r4no14r/report.json",
+      "raw_report_sha256": "cc805f2e8831a95366101b3e2c8d27ece7d4012cdb580abd7ed8486b426af6b4",
+      "agreement_credit": 0,
+      "state_credit": 0,
+      "reason": "Fixture stopped before execution at NExprNew operand elaboration: generic statement was wider than the generated class union. Exact NStmtClass patterns at both sites corrected the fixture; only the affected author group was retried."
+    }
+  ],
+  "tested_code": {
+    "initial_producer_commit": "972c338a1",
+    "spelling_correction": "45fddff72e790e54fc56e346d58865ad32c43887",
+    "method_kind_correction": "c41f51d943ad4b24daf958e37f9735c3723e8639",
+    "source_fixture_commit": "decaedd3b10a5b9676ca6423110ccde435dcd638",
+    "fixture_correction": "998883ca6cb1408a972de14092cb3fe7231b781e",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "409b4c577ab461e9bd9a5a5f2ce66eb6abca3fdc6a1104a85e91d36152f73848",
+      "spec/semantics/141-method-compiler.watsup": "e0cfcf724eafc7895d4e13678cc97b9a8147b907cbd1faec43f3aa47e26e88ba",
+      "spec/semantics/95-typed-calls.watsup": "8e1be89bdba43bdfbcfdbff95b24b5f7672326fae2dad6777e920ffe5ddad7f5",
+      "spec/semantics/142-method-runtime.watsup": "f84804de9a7ffc438671922967ed497ad4129a0bdddfe4222058bebbfe99d7b3"
+    }
+  },
+  "limits": [
+    "Other anonymous magic methods, attributed/reference-return/nonpublic modes and wider callable/return callback contexts remain partial.",
+    "Existing source-entry/reentry, property/reference, Generator/Fiber, collection and wider lifecycle fences remain authoritative.",
+    "Constructor Traversable producers, promotion/nonpublic forms and other class gaps remain required.",
+    "All paused/held boundaries, including owned-NUL release, COMP88 supplied-throw comparison, V110 and COMP123, remain unchanged."
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; sole project-local oracle.",
+  "source_pin": "vendor/php-src @34308a6666b2d489c509541ea9befea9e2b42348",
+  "recovery": "Fresh originals/manifests/native and unchanged probes, selected model records, state raws and commands/maps/exits/affinity/full-reap records are external under .tools/class157-author, class157-review and class157-artifacts. local-tools.json records five reused hardlinked binaries; fresh offline rebuild remains required.",
+  "independent_review": "Admission, effective-interface/name/count semantics, diagnostic consumers and both state fixtures have independent pre-execution CLEAR. Concise private package and eventual actual-tail review/join remain pending."
+}

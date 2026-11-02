@@ -22,7 +22,7 @@ are skipped. A running entry suppresses its own reentry. Unregister compares the
 cached function, receiver, calling class and Closure identity, excluding callback
 arguments. A running match raises `Error` and scanning continues; the first later
 inactive equal match can still be removed while that error remains pending.
-Removal releases captured arguments before the cached callback receiver. A
+Removal releases captured arguments before FCC.object and FCC.closure. A
 source-authenticated continuation retains that receiver through normal or abrupt
 argument cleanup; its old argument values are nonowning selection witnesses.
 
@@ -48,3 +48,40 @@ exit status. [Author sources](../../tests/semantics/tick_sources.py),
 [reached states](../../tests/semantics/tick_state.py) cover the admitted behaviors
 and public-state exclusions. Source/state acceptance is recorded separately from
 static elaboration; expected dependencies receive no agreement credit.
+
+Persistent callback caches now retain FCC.object and raw-object FCC.closure as
+separate owners. A bound Closure therefore has an additional cached receiver;
+a raw invokable object can occupy both slots, while [object,"__invoke"] has one
+object slot. Tick equality preserves that distinction, so repeating array-form
+unregister does not remove a raw registration. Entered API methods borrow This.
+Inline unregister retires arguments, cached object, then cached Closure without
+deduplicating equal IDs. A selected scope/binding witness validates only readonly
+cleanup after Closure retirement; it never restores a live owner or callable entry.
+
+Quiet shutdown cache owners survive callback completion, the early destructor
+pass and output FINAL. The selected buffered executor path retires both FCC
+slots, even when they identify the same raw invokable object. Wider late-free
+policy remains partial. One Closure-object __invoke array control was an exact
+early lookup Unsupported boundary at the ATTR08 cut; its tick consumer is
+extended below.
+Five normal originals agree, four reached groups pass 296 checks (292 reached,
+four derived), and private strict 432 passes. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
+keeps the old equality counterexample, failed property/certificate states and
+corrected fixtures at their original cuts, alongside the OB05 joined checks.
+
+Cached user `[Closure,"__invoke"]` tick calls forward positional arguments and
+borrow the outer Closure from FCC.object. E_DEPRECATED 8192 precedes its first copied argument; required-reference
+warning 2 uses the wrapper name and an isolated cell. E_USER_DEPRECATED 16384 then
+precedes the inner call and weak type reception. The entered call adds one Closure
+instance, borrows its receiver and separately owns the raw outer arguments.
+NoDiscard stays masked. Trace redaction preserves independent raw/received
+snapshots and the inherited tick marker. Normal frame cleanup retires inner owners
+and raw arguments before TICK_RESULT discards the unused value; the persistent
+cache stays live. Warning throws preserve that cache until later unregister.
+
+The [tick wrapper review](../../coverage/semantics/callback-closure-invoke-review.json)
+records five normal agreements, four reached groups/302 checks (300 reached, two
+derived), private strict 432, joined strict 433 and one retained-native
+warning/unregister comparison. Other API wrappers, late registry free and broader
+callable/value histories remain partial. The older explicit source-wrapper warning
+head's missing inherited file/line is a separate concrete follow-up.
