@@ -56,6 +56,7 @@ dec $gc_proxy_tables(pobjecttable*, pnode*, nat) : bool
 dec $gc_plain_array_entries(pstate, pentry*) : bool
 dec $gc_node_free_captures(pitem*) : bool
 dec $gc_one_array_capture(pitem*, nat) : bool
+dec $gc_legacy_array_shape(pstate, pitem*, nat) : bool
 dec $gc_ordinary_node(pstate, pnode) : bool
 dec $gc_ordinary_nodes(pstate, pnode*) : bool
 dec $gc_decrement(pstate, pgc, pnode) : pgc
@@ -431,6 +432,20 @@ def $gc_one_array_capture((DIRECT pvalue) :: pitem_tail*, n_array) = $gc_one_arr
   -- if $value_nodes(pvalue) = eps
   -- if pvalue =/= PUNDEFINED
 def $gc_one_array_capture(pitem*, n_array) = false -- otherwise
+;; Keep the existing exact array admissions separate from the finite rule.
+def $gc_legacy_array_shape(S, [DIRECT (PARRAY n_array)], n_array) = true
+  -- if $node_children(S, HARRAY n_array) = eps
+  -- if $gc_trace_children(S, HARRAY n_array) = eps
+def $gc_legacy_array_shape(S, [DIRECT (PARRAY n_array)], n_array) = true
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_leaf))]
+  -- if $node_children(S, HARRAY n_array) = [HOBJECT n_leaf]
+def $gc_legacy_array_shape(S, [DIRECT (PARRAY n_array)], n_array) = true
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_first)), ENTRY (KINT 1) (DIRECT (POBJECT n_second))]
+  -- if $node_children(S, HARRAY n_array) = [HOBJECT n_first, HOBJECT n_second]
+def $gc_legacy_array_shape(S, [DIRECT pvalue, DIRECT (PARRAY n_array)], n_array) = true
+  -- if $node_children(S, HARRAY n_array) = eps
+  -- if $gc_trace_children(S, HARRAY n_array) = eps
+def $gc_legacy_array_shape(S, pitem*, n_array) = false -- otherwise
 def $gc_ordinary_node(S, HCELL n) = true
 def $gc_ordinary_node(S, HARRAY n) = true
 def $gc_ordinary_node(S, HOBJECT n) = true
@@ -542,6 +557,7 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if ~$gc_immutable_array(S, n_array)
   -- if ~((HARRAY n_array) <- $heap_reach($pools_nodes(S.POOLS), eps, $heap_graph(S).EDGES))
+  -- if ~$gc_legacy_array_shape(S, pitem*, n_array)
   -- if $gc_plain_array_entries(S, S.ARRAYS[n_array].ITEMS)
   -- if $heap_unique($node_children(S, HARRAY n_array))
   -- if $node_children(S, HARRAY n_array) = $gc_trace_children(S, HARRAY n_array)
