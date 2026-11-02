@@ -93,12 +93,18 @@ Malformed callback arrays with a live published enum receiver at key 0 now
 return false for wrong length or nonstring method before syntax-only lookup.
 One native-first original agrees, including valid class/case controls; 23
 source-reached strict guards check both flag modes and unchanged cache.
+For published pure enums without the requested method, `is_callable` now
+checks source-certified `__callStatic` for class strings/name arrays and
+`__call` for case arrays. One native-first original agrees on eight outcomes,
+including opposite-handler false results and explicit user-method controls;
+56 reached strict guards prove no magic body is entered by the query.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
 [pipe review](coverage/semantics/enum-pipe-review.json),
 [query review](coverage/semantics/enum-is-callable-review.json),
-[shape review](coverage/semantics/enum-is-callable-shape-review.json).
+[shape review](coverage/semantics/enum-is-callable-shape-review.json),
+[magic review](coverage/semantics/enum-is-callable-magic-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry

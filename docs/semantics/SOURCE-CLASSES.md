@@ -691,3 +691,10 @@ Malformed arrays with a live published enum class/case receiver at key 0
 return false for wrong length or nonstring method before the syntax-only
 early return. The [shape review](../../coverage/semantics/enum-is-callable-shape-review.json)
 records one exact original and 23 reached guards for both flag modes.
+For absent concrete/generated methods, the query uses a source-certified
+public `__callStatic` for class strings and class-name arrays, or `__call` for
+case arrays. An opposite-kind handler cannot rescue the missing method. The
+[magic review](../../coverage/semantics/enum-is-callable-magic-review.json)
+records eight exact native/model outcomes and 56 reached guards; neither
+magic body runs during the query. Other magic sources and inaccessible-method
+fallback remain partial.
