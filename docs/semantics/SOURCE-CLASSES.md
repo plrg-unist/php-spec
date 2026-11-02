@@ -684,7 +684,8 @@ admission rules; syntax-only queries accept valid string/array shapes even when
 the enum has no such method. A query does not initialize the backing cache.
 The [query review](../../coverage/semantics/enum-is-callable-review.json)
 records two exact originals and 43 source-reached strict guards. The third
-by-reference output, autoload and wider magic/user-method cases remain partial.
+by-reference output for literal generated method strings is described below;
+autoload and wider magic/user-method cases remain partial.
 Engine routes: `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
 `Zend/zend_API.c:zend_is_callable_at_frame`.
 Malformed live arrays return false for wrong length, missing keys, a nonclass
@@ -705,3 +706,13 @@ instance or static method. The [case-method review](../../coverage/semantics/enu
 records seven exact outcomes and 49 reached guards that tie the method
 descriptor to its enum source member without entering the body. Imported,
 inaccessible and attributed methods remain partial.
+For a literal generated enum method string and initialized string-valued
+caller CV, the third positional argument retains a reference to that cell
+through CONFIG, then receives the canonical name before the boolean result. The
+[output-CV review](../../coverage/semantics/enum-is-callable-output-review.json)
+records one exact source and 45 reached guards. Array inputs and old-object
+destructor/input-output alias effects remain explicit Unsupported.
+The same literal route writes the name for an absent method on both runtime
+false and syntax-only true; the
+[false-output review](../../coverage/semantics/enum-is-callable-output-false-review.json)
+records a second exact source and 42 reached guards.

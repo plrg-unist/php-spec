@@ -103,6 +103,13 @@ Live enum case arrays now also query direct public user instance and static
 methods. One native-first original agrees on seven case/class/string controls;
 49 source-reached strict guards tie the method descriptor to its enum source
 member and show that the query enters neither user method body.
+The third output now captures an initialized string-valued CV for a literal
+generated enum method string and writes its canonical name before returning
+the boolean.
+One exact original, strict433 and 45 source-reached guards pass; array input,
+old-object destructor and input/output aliasing remain explicit Unsupported.
+Absent literal methods now also write the name on runtime false and syntax-only
+true results. A second exact original and 42 reached guards pass.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -111,7 +118,9 @@ member and show that the query enters neither user method body.
 [shape review](coverage/semantics/enum-is-callable-shape-review.json),
 [wide-shape review](coverage/semantics/enum-is-callable-wide-shape-review.json),
 [magic review](coverage/semantics/enum-is-callable-magic-review.json),
-[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
+[output-CV review](coverage/semantics/enum-is-callable-output-review.json),
+[false-output review](coverage/semantics/enum-is-callable-output-false-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -752,6 +761,13 @@ obsolete dead mirrors precede a later live row. Four exact source agreements,
 39 reached conditions, two affected clone sources and joined strict433 pass.
 Live/live duplicate names and nonordinary tables remain partial.
 [Review](coverage/semantics/throwable-mixed-reinsert-clone-review.json).
+
+COMP163 admits checked file-mode shebang `ENCODEDPROGRAM` tick plans for main and
+included units. Seven exact native/model sources and 32 source-reached tick-plan
+conditions pass at the committed cut, with joined strict433 on the composed
+master. BOM files follow the existing `PROGRAM`/InlineHTML route; eval uses its
+separate parser mode. HALT with a preamble and wider encodings remain partial.
+[Review](coverage/semantics/source-preamble-tick-review.json).
 
 ## Active and unintegrated work
 
