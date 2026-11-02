@@ -7,19 +7,21 @@
     "private_code_cut": "cdf65b08f",
     "joined_strict_cut": "ea97f7074",
     "actual_tail_base": "a1b1aba3f",
-    "actual_tail_tested": "4c7287514"
+    "actual_tail_tested": "4c7287514",
+    "final_composed_base": "c175c5051",
+    "composition_reviewed_before_metadata": "0213ea7d6"
   },
   "inputs": {
     "catalogue": [
-      ".tools/class165-join/tests/semantics/trait_captured_alias_parent_cases.json",
+      "tests/semantics/trait_captured_alias_parent_cases.json",
       "c67010f91e9f9e2051fc29797a0f6d726f5a7dfe60c23a7000860544c618de70"
     ],
     "state_script": [
-      ".tools/class165-join/tests/semantics/trait_captured_alias_parent_trace_state.py",
+      "tests/semantics/trait_captured_alias_parent_trace_state.py",
       "60729a70c5cc14e4b0327ce667372197c25a759886e278cda6d0ffac6e89eb66"
     ],
     "semantic_rule": [
-      ".tools/class165-join/spec/semantics/347-trait-failed-method-targets.watsup",
+      "spec/semantics/347-trait-failed-method-targets.watsup",
       "cc52768f18e2aa35a1613929e64ac6eaf868b3864cf797d44130608359dceb39"
     ],
     "module_manifest": "spec/semantics/modules.json; 433 ordered modules"
@@ -121,7 +123,8 @@
     "actual_tail_raw": [
       ".tools/class165-artifacts/recovered-worktree-raw/class165-join/method-runtime-usgsm3ey/report.json",
       "131a4c2b1e12095d421c419b047e23ed0501f535fde224a4273da19bfeb6bfe9"
-    ]
+    ],
+    "bridge_gc21_ob06": "The final package composes cleanly over c175c5051. Intervening GC21 adds only an active-GC REALCLOSURE two-childless-object case; OB06 adds only output-buffer start/Notice shutdown tasks. None reaches these four METHODCLOSURE originals or module347 trace guard. The ea97 strict and 4c728 four-source gates are reused under independent interaction review; no semantic file in the CLASS165 delta changed."
   },
   "zero_credit_tick_probes": {
     "finding": "Three pinned native shutdown tick callbacks print U::q followed by Closure->__invoke, but model stops before callback entry: two at explicit tick opcode placement, one at invalid class constant compilation entry in the eval unit. None gives agreement credit or licenses a CALLBACK_INVOKE_TARGET trace rule.",
@@ -179,6 +182,6 @@
     "Zend/zend_builtin_functions.c: zend_fetch_debug_backtrace stores function_name and scope class separately",
     "Zend/zend_execute.c and Zend/zend_execute_API.c: parent parameter resolution uses executed scope"
   ],
-  "remaining": "OB06 current-tail interaction review and final integration CLEAR pending. Tick callback placement/eval admission, anonymous using-class NUL names, rebound and wider callable views remain partial.",
-  "status": "private candidate; final integration review pending"
+  "remaining": "Tick callback placement/eval admission, anonymous using-class NUL names, rebound and wider callable views remain partial. Final independent integration CLEAR pending.",
+  "status": "final composed private candidate; independent integration CLEAR pending"
 }
