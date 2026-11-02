@@ -17,15 +17,22 @@ Ordinary instances with an empty effective layout and no slots can also create
 an honest empty property table through foreach or reached comparison. A pure
 inline array cast still leaves the object without a table; a cast of an actual
 empty cache shares that table until COW. This narrow admission leaves the
-existing dynamic-history, hook, UNSET and active-collection policies in place.
+existing dynamic-history, hook, dynamic-UNSET and active-collection policies in place.
 [Empty-table comparison and clone review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
 
 Initialized private/protected declared slots also materialize real ordinary
 caches under their existing mangled KEY/ORIGIN checks. Foreach visibility still
 controls yielded members; an empty visible iteration can create a nonempty
-physical cache. Cast views preserve shared aliases and ordinary COW. The retained
-nonpublic UNSET policy still needs dynamic history.
+physical cache. Cast views preserve shared aliases and ordinary COW.
 [Nonpublic-cache review](../../coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+
+Declared INITIAL and UNSET slots now also produce physical INDIRECT buckets
+under the same descriptor KEY/ORIGIN checks; INITIAL additionally requires an
+uninitialized declaration default. Casts and iteration omit resolved undefined
+values, while cached comparison counts the physical buckets before looking up
+keys and resolving their current slots. Dynamic UNSET, hooks, readonly classes and
+active collection keep their existing limits.
+[Declared-hole review](../../coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
 
 [Ordinary mixed tables](../../coverage/semantics/mixed-property-stringable-comparison-review.json)
 now cache nonowning INDIRECT locators for public declared slots alongside owning

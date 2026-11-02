@@ -4454,7 +4454,7 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Visited comparison also admits ordinary method declarations on supported
-initialized field layouts of any visibility, including locally authenticated source and
+field layouts of any visibility, including declared INITIAL/UNSET slots, locally authenticated source and
 implicit `Stringable` interfaces and finite authenticated parent paths,
 without invoking their methods. Inherited overrides keep physical slot order;
 aliases, COW and cached fields retain their existing owners. Builtin parents,
@@ -4466,9 +4466,15 @@ Private and protected slots preserve mangled keys, declaring origins and physica
 order through real foreach caches. Declared cloning retargets those locators and
 preserves each copy's typed-alias constraints. Live typed aliases stay constrained while their object
 survives in a trace; final retirement removes the property type source while a
-cast-view alias can survive. Uninitialized, readonly, hook and wider lifetime
+cast-view alias can survive. Readonly, hook and wider lifetime
 bounds remain partial.
 [Nonpublic-image review](coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+Declared holes retain physical slot order: inline one-sided UNDEF gives +1 in
+both directions, while cached INDIRECT holes use physical count/key checks and
+directional undefined-value order. Cast views omit holes, and cached clone
+locators target each copy's slots. Dynamic UNSET, readonly classes, hooks and the INITIAL
+Stringable continuation remain explicit boundaries.
+[Declared-hole review](coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
 Empty ordinary layouts also compare through their real storage route: two inline
 objects return zero before the object recursion guard, while actual caches keep
 table identity/count/key/value order. Empty foreach produces a real table; cast
