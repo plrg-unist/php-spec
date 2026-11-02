@@ -9,7 +9,8 @@ source = Path(__file__).with_name('callback_cache_executor_raw.php').read_text()
 review.CASES = {
     'shutdown-raw-invokable-cache-release': {
         'source': source,
-        'stage': 'S.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE]',
+        'stage': 'S.TODO = [DESTRUCTOR_RELEASE pdestructionrelease, DESTRUCTOR_OPERATION_EXIT pdestructionoperation, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE] '
+                 '-- if pdestructionoperation.SOURCE = EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE',
         'checks': [
             'pexecutorqueue.ENTRIES = [pshutdownentry, pshutdownentry_probe]',
             'pshutdownentry.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n))]',
@@ -20,9 +21,10 @@ review.CASES = {
             '$callback_cache_nodes(pshutdownentry_probe) = eps',
             '$executor_queue_nodes(pexecutorqueue.ENTRIES) = [HOBJECT n, HOBJECT n]',
             '$task_nodes(EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) = [HOBJECT n, HOBJECT n]',
+            'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n), DESTRUCTION_VALUE (HOBJECT n)]',
             '$heap_owners($heap_graph(S), HOBJECT n) = 2',
             '$executor_queue_valid(S, pexecutorqueue)',
-            '$call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE)',
+            '$eager_operation_source_valid(S, pdestructionoperation)',
             '$call_descriptors_valid(S)',
             '$heap_valid($heap_graph(S))',
             'S_paused = $drive_steps(S, 0)',

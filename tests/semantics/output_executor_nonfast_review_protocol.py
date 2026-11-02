@@ -279,7 +279,7 @@ review.CASES = {
             '~$executor_queue_valid(S, pexecutorqueue_forged)',
             'pshutdownproducer_empty = pshutdownproducer[.SCOPE = eps]',
             '~$executor_target_valid(S, pshutdownproducer_empty)',
-            '$executor_queue_nodes(pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS, pexecutorqueue.RECEIVERS) = [HOBJECT n_argument, HOBJECT n_receiver, HOBJECT n_closure]',
+            '$executor_queue_nodes(pexecutorqueue.ENTRIES) = [HOBJECT n_argument, HOBJECT n_receiver, HOBJECT n_closure]',
             '$task_nodes(EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) = eps',
             '$heap_count(HOBJECT n_receiver, $task_nodes(DESTRUCTOR_RELEASE pdestructionrelease)) = 1',
             '$heap_owners($heap_graph(S), HOBJECT n_receiver) = 2',
