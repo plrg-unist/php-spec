@@ -467,6 +467,16 @@ matching ordinary/physical edges, childlessness and real machine-rooted
 caller remain required. See the
 [buffered array-child caller review](../../coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 
+GC21 adds a second, distinct direct childless `stdClass` entry at key 1. A
+separate active direct Closure clause requires the exact two-entry array and
+matching ordinary/physical children in key order. The key-1 leaf remains
+unbuffered; the reached D state has the array and key-0 leaf slots in that
+order. Both slots leave the count plan as black under the live Closure, and
+all four Closure/array/leaf owner counts are 2/3/2/2. The source and pinned
+PHP agree on the full stream. Duplicate child IDs, wider entries, backedges
+and COW after capture remain outside this cut. See the
+[two-child array caller review](../../coverage/semantics/gc-two-array-children-caller-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard
