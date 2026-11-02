@@ -585,6 +585,23 @@ reviewed. Wider
 callable consumers remain partial.
 [String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
 
+I92 follows Closure::call's separate Generator branch: a real user Closure is
+copied with the selected ordinary-class receiver and effective scope. An actual
+API continuation owns its local copy, original source, first argument and raw
+values until creation returns; the saved Gen context has no API wrapper. Existing
+clone rules copy captures/statics. Ordered retirement drops API arguments, then
+an ignored fresh Gen, then the original receiver; a retained Gen keeps its copy
+and This through CLOSED and frees the Closure before a stored cache. Native5,
+source5/private433 pass at distinct cuts; six reached fronts pass 744 custom/774
+reported checks, preserving both original fixture failures with zero credit.
+Joined strict433, four exact sources, API-entry99, unused-result81 and independent
+closed143 checks pass at a84bf6c0; 3486d56c composition is reviewed.
+A native-only missing-argument control retains the new receiver until
+shutdown after trace/source roots disappear; that no-Gen receive-error path
+stays explicitly Unsupported. Reference-parameter callbacks require earlier
+copying, while computed/packed and other producer contexts remain partial.
+[Call-copy review](../../coverage/semantics/generator-call-copy-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

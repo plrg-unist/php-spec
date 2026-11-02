@@ -115,7 +115,18 @@ generated method names through the same direct string CV. Two exact outcomes
 and 68 reached guards pass. Literal class-string arrays also preserve lowercase
 and leading backslash receiver spelling, while case arrays use the canonical
 enum name. Three exact outcomes and 64 reached guards pass; other array
-sources remain partial.
+sources remain partial. The same direct output path now accepts initialized
+int, bool and null CV values, writing the name before returning the boolean.
+Three exact outcomes and 79 reached guards pass; an old output object remains
+explicit Unsupported because its destructor runs during replacement.
+Literal enum method strings now also retain their raw class and method spelling
+in the third output, including lowercase and a leading backslash. Three exact
+outcomes and 88 reached guards pass.
+A separate live variable can now supply the enum method string to a direct
+three-argument `is_callable` call with literal `false`. Its saved and current
+bytes agree, and a distinct initialized output CV receives the name before the
+boolean. One exact original and 46 reached guards pass; same-cell aliases and
+argument-time target rebinding remain explicit Unsupported.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -128,7 +139,10 @@ sources remain partial.
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json),
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
-[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json).
+[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
+[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
+[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json),
+[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -182,6 +196,17 @@ strengthened closed-cache126 state at 5610e476 checks GC09's receiverless
 marker. The 4544a539 composition is reviewed. Wider callable/API/lifecycle
 contexts remain partial.
 [I91 review](coverage/semantics/generator-string-method-closure-review.json).
+
+I92 gives real user Generator Closure::call entry its actual copied Closure and
+new receiver, with separate API owners and ordered used/ignored-result cleanup.
+The saved Gen keeps its copy through CLOSED without an API wrapper or later
+API trace. Five native/model originals and private433 pass at recorded cuts;
+six reached fronts pass 744 custom/774 reported checks at separate fixture cuts.
+Original Unsupported and two fixture failures retain zero credit. Native-only
+receive-error retention and reference formals remain partial. Joined strict433,
+four exact sources, API-entry99, unused-result81 and independent closed143 checks
+pass at a84bf6c0; 3486d56c composition is reviewed. Wider calls remain partial.
+[I92 review](coverage/semantics/generator-call-copy-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -334,24 +359,25 @@ GC20 admits that childless `stdClass` when releasing one owning local copy
 buffers it after the array. Native status observes roots 0→1→2; the exact
 original agrees, and 122 strict reached assertions bind both ordered slots,
 their removal from the D plan, and the rooted Closure/array/leaf owners.
-Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
-nonempty persistent provenance remain open.
+Pre-edit model refusal remains zero credit. At that cut, wider entries,
+backedges, COW and nonempty persistent provenance remained open.
 [GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 
 GC21 admits two distinct childless `stdClass` entries at array keys 0 and 1
 under the same direct Closure caller. The array and key-0 leaf are buffered;
 key-1 stays outside the buffer. One pinned original agrees, and 136 strict
 reached assertions check both slots, black removal, owners and a duplicate
-child refusal. The pre-edit Unsupported retains zero credit. Wider arrays,
-backedges and post-capture COW remain open.
+child refusal at that cut, superseded by GC25. The pre-edit Unsupported
+retains zero credit. At the GC21 cut, wider arrays, backedges and
+post-capture COW remained open.
 [GC21 review](coverage/semantics/gc-two-array-children-caller-review.json).
 
 GC22 admits the same two-entry array after a third owning copy release
 buffers the key-1 leaf. Pinned status sees roots 0→1→2→3; one original
 agrees, and 139 strict reached assertions prove three ordered slots,
 black D-plan removal and owners 2/3/2/2. A corrected fixture selects D
-by collection nonce 2. Pre-edit refusal remains zero credit; broader
-entries, backedges and post-capture COW remain open.
+by collection nonce 2. Pre-edit refusal remains zero credit. At the GC22
+cut, broader entries, backedges and post-capture COW remained open.
 [GC22 review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
 GC23 admits an ordered node-free scalar capture before one childless
@@ -363,14 +389,24 @@ and source/caller bounds. Pre-edit Unsupported retains zero credit.
 
 GC24 admits finite ordered node-free scalar captures around one mutable
 one-level array in the same authenticated direct Closure. Its entries may
-be direct scalars or distinct childless stdClass leaves in physical order;
+be direct scalars or childless stdClass leaves in physical order;
 compiled-pool descendants and materialized property tables are fenced.
 Reversed capture order, three mixed-key leaves and post-capture COW give
 three exact source pairs. Strict reached checks pass 113+146 assertions,
-and the corrected GC23 group passes 110. Duplicate identities, shared
-separate captures, aliases, nested arrays and user-destructor children
-remain refused. Earlier Unsupported, overlap and fixture failures retain
+and the corrected GC23 group passes 110. Its original duplicate-identity
+refusal is superseded by GC25; shared separate captures, aliases, nested
+arrays and user-destructor children remain refused. Earlier Unsupported,
+overlap and fixture failures retain
 zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
+
+GC25 admits repeated direct edges to the same childless stdClass inside
+that finite captured array. With global strong owners removed, two array
+edges keep one leaf alive until Closure release; pinned status sees roots
+0→1→2 and then 0. One full source agrees exactly. Strict reached checks
+pass 127 new and affected GC21/22/24 groups 137+140+147, proving two
+physical edges, one leaf buffer slot, owners 2/2, black D protection and
+nested-array refusal. The source-only Unsupported and first fixture error
+retain zero credit. [GC25 review](coverage/semantics/gc-duplicate-edge-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -822,6 +858,8 @@ promoted with exact model agreement.
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
+CLASS166 is integrated at `0ed9ac41f`: one parented anonymous trait capture source and 48 reached conditions pass with private and joined strict433. [Review](coverage/semantics/anonymous-trait-capture-review.json).
+CLASS167 admits bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -852,7 +890,6 @@ their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

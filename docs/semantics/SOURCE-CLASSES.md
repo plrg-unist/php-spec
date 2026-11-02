@@ -462,9 +462,22 @@ history replays the entire class table. A duplicate forged imported method
 fails that replay. One native/model source and 48 source-reached conditions
 cover the NUL generated name, `self`/`static` capture body and allocation.
 [Trait-capture review](../../coverage/semantics/anonymous-trait-capture-review.json).
-Parentless trait use, interface combinations, multiple uses and adaptations
-remain excluded; the parentless original retains explicit Unsupported with
-zero agreement credit.
+CLASS166 leaves parentless trait use, interface combinations, multiple uses
+and adaptations outside its cut.
+
+CLASS167 admits one unadapted named trait use in a parentless unit0 anonymous
+class within the existing bounded member grammar. The compiled descriptor is
+late, and the generated NUL class name enters lookup with PDRCLASS at the first
+`new`; the imported live descriptor still requires full declaration replay.
+The trait constant's copied method capture uses the ordinary published
+constant-callable receipt. With a `parent` parameter and no linked parent,
+TYPE_RECEIVE raises Error before the method body. The stored trace class keeps
+the full NUL name; the fatal text truncates it for rendering. Two exact sources
+and 45+43 reached conditions cover publication, receipt, forged-import/parent
+guards and the fatal event. A pinned native-only `class_exists` timing control
+is 0 before `new` and 1 after. Interface combinations, multiple uses and
+adaptations remain excluded; dynamic units and rebound views are unvalidated.
+[Parentless trait-capture review](../../coverage/semantics/anonymous-parentless-trait-capture-review.json).
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
@@ -739,4 +752,17 @@ also retain lowercase and leading backslash source spelling, whereas case
 arrays use the canonical enum name. The
 [spelling review](../../coverage/semantics/enum-is-callable-output-spelling-review.json)
 records three exact outcomes and 64 reached guards. Other array sources remain
-partial.
+partial. Initialized int, bool and null output CVs also receive the name
+before the boolean through the same source-certified path. The
+[scalar-output review](../../coverage/semantics/enum-is-callable-output-scalar-review.json)
+records three exact outcomes and 79 reached guards; old-object destructor
+effects remain Unsupported.
+Literal enum method strings also retain raw class and method spelling in the
+third output. The [string-spelling review](../../coverage/semantics/enum-is-callable-output-string-spelling-review.json)
+records canonical, lowercase and leading-backslash outcomes with 88 reached
+guards.
+A live variable holding the enum method string can also feed a direct query
+with literal `false`, provided its saved bytes still match and the output CV is
+distinct. The [variable-output review](../../coverage/semantics/enum-is-callable-output-variable-review.json)
+records one exact original and 46 reached guards; same-cell aliasing and
+argument-time target rebinding remain Unsupported.

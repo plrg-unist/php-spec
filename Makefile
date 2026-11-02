@@ -809,6 +809,9 @@ test-semantics: build
 	python3 tests/semantics/generator_string_method_closure_sources.py
 	python3 tests/semantics/generator_string_method_closure_state.py
 	python3 tests/semantics/generator_string_method_closure_review_state.py
+	python3 tests/semantics/generator_call_copy_sources.py
+	python3 tests/semantics/generator_call_copy_state.py
+	python3 tests/semantics/generator_call_copy_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -919,6 +922,9 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_false_protocol.py
 	python3 tests/semantics/enum_is_callable_output_array_protocol.py
 	python3 tests/semantics/enum_is_callable_output_spelling_protocol.py
+	python3 tests/semantics/enum_is_callable_output_scalar_protocol.py
+	python3 tests/semantics/enum_is_callable_output_string_spelling_protocol.py
+	python3 tests/semantics/enum_is_callable_output_variable_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

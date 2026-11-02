@@ -1,0 +1,40 @@
+{
+  "scope": "GC25: repeated direct edges to one childless stdClass leaf in a finite array captured by an authenticated active direct real Closure.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "base": "ea717939c20ac28ac7bbc7ae90c7aa2aa703580c",
+    "source_only": "9f8d122a27db240a823387c651b1b93d34e68181",
+    "semantic": "eee3db40df773a1620d644dc398996be5b269dc9",
+    "reached": "986e7c1a1fb9178033a4787b297f5be012f528a1",
+    "joined_base": "582867f72642337d7368316411ebbff7aa115fcf",
+    "joined_code": "c2a3eb0ce"
+  },
+  "joined_current_tail": "Composed cleanly on master 582867f72 at code/docs head d10ce6865. Intervening module 210 STRINGMETHODCLOSURE and module 437 enum INTRINSIC_IS_CALLABLE output rules are source-disjoint from the direct REALCLOSURE and INTRINSIC_GC_COLLECT witness. Module 301 and all four affected reached fixtures are byte-identical to the private tested cut. One representative pinned native/model source pair passes exactly on this tail at d10, normal exit 0, stable inputs/HEAD, no timeout and empty child groups. The frozen strict 127+137+140+147 assertions bridge without replay.",
+  "post_comp164_tail": "Recomposed cleanly on master 8f1a14d10 at code/docs head 94cbe7f96. COMP164 adds only an ENCODEDPROGRAM __halt_compiler offset clause in module 46; the GC25 plain-PROGRAM direct REALCLOSURE sources contain no halt statement. Tested module 301, source harness and all affected strict fixtures are byte-identical to the private and 582 compositions. Current-tail 582 source agreement and frozen strict gates bridge this disjoint HALT change without replay.",
+  "post_config_attr13_tail": "Recomposed cleanly on master de39ca1be. OB07 adds selected output Notice and nested ob_start handling in modules 391/444; CONFIG A88–A93 adds owning Generator item/factory/temporary paths in module 423; ATTR13 adds recursive readiness for registered tick entries in module 444. The GC25 witness calls a direct real Closure and GC_COLLECT, with no output handler, Generator, or registered ticks. Module 301 and affected tests retain the privately tested bytes; the exact source pair on 582 and frozen strict groups bridge these disjoint additions without replay.",
+  "rule": "The finite one-level array rule now counts repeated childless STDINSTANCE entries as separate physical and ownership edges while retaining one node identity. The exact two-entry legacy clause continues to own distinct key-0/key-1 identities; its exclusion helper now mirrors that distinctness premise, so duplicate pairs reach only the generic clause. All GC24 direct Closure, source, machine-root, direct-entry, childless, nonproxy and pool-reach fences remain. Count, buffer, graph and owner algorithms are unchanged.",
+  "validation": {
+    "native": "An independent pinned status control sees roots 0→1→2 and then 0 after collection while the duplicate leaf stays live through its Closure owner and dies after Closure unset. The full retained-only source outputs T|P|0|D|3|split|0|H|3|dead|0|live|END|leaf-live|leaf-dead, exit 0 and empty stderr. Both native processes are stable, untimed-out and fully reaped.",
+    "preedit": "At clean source-only 9f8, the full model source exits 1 Unsupported cached ordinary property-table collection after T|P|0|; it earns zero source agreement and retains raw stdout/stderr and process record.",
+    "source": "At clean semantic eee3, the original model finishes normal with byte-exact native stdout/stderr and exit 0: one source agreement, stable HEAD/inputs, no timeout and an empty process group.",
+    "reached": "Strict SL at 986e passes the genuine duplicate D-state group 127 and the affected GC21 137, GC22 140 and GC24 147 assertion groups. The new state proves exactly two ordinary/physical array edges to one leaf, two incoming edge owners, one physical leaf buffer slot, array/leaf owners 2/2 after global strong-owner unsets, black plan removal and an authentic rooted Closure. The older duplicate negatives are superseded by positive admissions with nested-array refusals. The first fixture used gc_slot_find's index counter as a search offset and failed; the corrected heap_count slot assertion passed on the affected rerun. Raw failure remains zero credit."
+  },
+  "reports_sha256": {
+    "gc-duplicate-edge-review-probes/retained-only-duplicate-leaf-native-report.json": "d959c70eaeec76ce342bec682e0c0468dd49178c097422d3f0aeb52e17c3fd03",
+    "gc-duplicate-edge-review-probes/duplicate-leaf-status-native-report.json": "75a7d789a803ec7389292c8c57bdd40480bfbfd27356c932b687db478f8acd2f",
+    "gc-duplicate-edge-25-dev/preedit/native-report.json": "f9fac1e0c70aff29346dd52977031f719ff1696a5e8c928158c2d1a865925d44",
+    "gc-duplicate-edge-25-dev/preedit/model-duplicate-retained-only-report.json": "ca45606278e50b4161f6a220e654f23049b6ef14d12f6b9da6267d0bd7f443d4",
+    "gc-duplicate-edge-25-dev/semantic/model-duplicate-retained-only-report.json": "c3a4726eed911259192d27219a807cb4122d923097c4a03b8440209575a3f45f",
+    "gc-duplicate-edge-25-dev/joined-582/native-report.json": "d01aece5739a7a71f3ee62cb7d7ee64e35adfed7430d28031c456b046ca5fdf4",
+    "gc-duplicate-edge-25-dev/joined-582/model-duplicate-retained-only-report.json": "2272679bee56cb79d1f7c8bc88132f0b429523fdb340a364bf4adf6cbc046681",
+    "gc-duplicate-edge-25-dev/strict/duplicate-retained-only/report.json": "084ef2e7f1c5600ef3abc631ae30f9c32d26f15693e45e47345429d6121be620",
+    "gc-duplicate-edge-25-dev/strict/gc21-superseded-negative/report.json": "cf022dbbb2d5f65691f50a82c1f9396ff38a4f7ec0ba44082dfd5503e49b6e95",
+    "gc-duplicate-edge-25-dev/strict/gc22-superseded-negative/report.json": "03a6997805cfae29d1a3507f1eb71afabbc392bd6661c152ad31fea4e3b6bc65",
+    "gc-duplicate-edge-25-dev/strict/gc24-superseded-negative/report.json": "3cf9f7e88c521947a2f9c722a5a48f8844ac89021ee9c40afb4c8c14bea6b0b2",
+    "gc-duplicate-edge-25-dev/strict/initial-slot-index-failure/report.json": "1387110f55b3e89c63075c1f2a399b77fc8a790b3ce6f73891ced308e12d82b5"
+  },
+  "limits": "Only DIRECT entries to node-free scalars or childless STDINSTANCE objects in one captured mutable array are admitted by this rule. Separately captured shared objects, ALIAS/INDIRECT entries, nested arrays, user-destructor children, compiled-pool descendants, property-table proxies and explicit Closure __invoke remain outside this generic path. Arbitrary cycles, weak-map edges and finalizer-bearing graphs remain partial.",
+  "review": "Independent private GC25 semantic/test CLEAR from gc_review_recovery at 986e7c1a1; joined current-tail docs/inventory and exact-head review requested.",
+  "recovery": "Raw pinned native controls, the pre-edit Unsupported result, exact source pair, first fixture failure and corrected strict reports are outside Git under ../php-spec-evidence-archive/gc-duplicate-edge-review-probes and gc-duplicate-edge-25-dev. Reproduce with gc_duplicate_edge_sources.py native then model and gc_duplicate_edge_state.py plus the three affected existing strict groups; use one fully reaped CPU1 actor at a time."
+}
