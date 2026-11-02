@@ -6706,7 +6706,12 @@ also matches eight native outcomes and 56 reached guards in the
 Live case arrays naming direct public user instance or static methods also
 pass seven exact native controls and 49 reached guards in the
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
-The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
+A literal generated method string now writes the third output through an
+initialized caller CV before returning the boolean; the
+[output-CV review](coverage/semantics/enum-is-callable-output-review.json)
+records one exact original and 45 reached guards. Array inputs, destructor and
+aliasing effects, autoload, case attributes, enum collection policy and wider
+acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

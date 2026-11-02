@@ -1,0 +1,28 @@
+{
+  "scope": "is_callable third positional output for a literal generated enum method string and initialized direct scalar CV",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "2557dcbd95f13e91830846c5ff258715574997b8",
+  "semantic_revision": "b36deccc177605370f093d27330fef4e4f7df56c",
+  "source_revision": "3801415af8436e3cb0e10f8b4307f7551f27085e",
+  "state_revision": "15441eaf9000e49ee867f6dd88c10312dd01d45b",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: third-output SHA 9e33ee2f631e8f116a1a6960c287528040cc4667647377b11e7e16915ae6c93b and output-rebinding SHA 835c8cb6b3beae2c15c8a03d61d2797cd0b0261488b305369ab755e8f41b873f, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-output-evidence/strict-v3/report.json: SL433 true, exit 0, empty stderr, 11.74 s, stable inputs",
+    "source": ".tools/enum-is-callable-output-evidence/positive-source-v1/report.json: yes:NameCheck::from| exact native/model normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-output-evidence/reached-v1/report.json: checked source reached strict SL, 45 checks, true, exit 0, empty stderr, stable inputs",
+    "unsupported_control": ".tools/enum-is-callable-output-evidence/unsupported-rebinding-v1/report.json: array input with old-object destructor/aliasing remains explicit Unsupported",
+    "affected_prior": [
+      ".tools/enum-is-callable-output-evidence/prior-prefix-v1/report.json: nine-outcome published enum query exact normal",
+      ".tools/enum-is-callable-output-evidence/prior-shape-v1/report.json: published malformed-array source exact normal"
+    ]
+  },
+  "preserved_zero_credit": [
+    ".tools/enum-is-callable-output-evidence/strict-v1/report.json: helper declaration after first use",
+    ".tools/enum-is-callable-output-evidence/strict-v2/report.json: incorrect interned-carrier pattern"
+  ],
+  "behavior": "The third direct CV is promoted to a live reference before CONFIG_SEND resolves it. Only a source-matched literal generated enum string with an initialized scalar output cell may carry that reference in CONFIG; the invocation writes the canonical name before the bool result. Reached guards reject an unbound name or forged cell and show unchanged events and backing cache.",
+  "remaining": "Array or dynamic first inputs, old-object destructor effects, output/input aliasing, named/unpacked output and broader is_callable/autoload remain partial."
+}

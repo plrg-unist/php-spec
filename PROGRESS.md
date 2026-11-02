@@ -103,6 +103,10 @@ Live enum case arrays now also query direct public user instance and static
 methods. One native-first original agrees on seven case/class/string controls;
 49 source-reached strict guards tie the method descriptor to its enum source
 member and show that the query enters neither user method body.
+The third output now captures an initialized plain CV for a literal generated
+enum method string and writes its canonical name before returning the boolean.
+One exact original, strict433 and 45 source-reached guards pass; array input,
+old-object destructor and input/output aliasing remain explicit Unsupported.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -111,7 +115,8 @@ member and show that the query enters neither user method body.
 [shape review](coverage/semantics/enum-is-callable-shape-review.json),
 [wide-shape review](coverage/semantics/enum-is-callable-wide-shape-review.json),
 [magic review](coverage/semantics/enum-is-callable-magic-review.json),
-[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
+[output-CV review](coverage/semantics/enum-is-callable-output-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
