@@ -53,6 +53,19 @@
       "native_group": ".tools/class164-artifacts/trait-parent-before-alt-fatal.native-first.json",
       "native_raw_sha256": "900591439a8b5c2d5f1c2905b3efba5bd02f0498d87b930c7e8ca8eeaff2f508",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "cross-parent-lexical-capture",
+      "source": "<?php\nclass BaseA164 {}\nclass BaseB164 {}\ntrait TraitCross164 {\n    public static function take(parent $value): string {\n        echo 'body:', self::class, ':', static::class, ';';\n        return 'ok';\n    }\n    public const array Y = [self::take(...)];\n    public static array $x = self::Y;\n}\ntrait LayerCross164 { use TraitCross164; }\nset_error_handler(static function () { return true; });\nclass FirstCross164 extends BaseA164 { use LayerCross164; public static array $x = self::Y; }\n$old = FirstCross164::Y[0];\n$old = clone $old;\nclass LaterCross164 extends BaseB164 { use LayerCross164; public static array $x = self::Y; }\n$later = LaterCross164::Y[0];\ntry { echo 'later-a:', $later(new BaseA164), ';'; }\ncatch (Throwable $e) { echo 'later-a-error:', $e->getMessage(), ';'; }\ntry { echo 'later-b:', $later(new BaseB164), ';'; }\ncatch (Throwable $e) { echo 'later-b-error:', $e->getMessage(), ';'; }\n",
+      "source_sha256": "5f17730494661a1eaa69e9d45c0e1cedbf8456436d48b56843ce12924853bbbd",
+      "stdout_base64": "bGF0ZXItYTpib2R5OkZpcnN0Q3Jvc3MxNjQ6TGF0ZXJDcm9zczE2NDtvaztsYXRlci1iOmxhdGVyLWItZXJyb3I6Rmlyc3RDcm9zczE2NDo6dGFrZSgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgQmFzZUExNjQsIEJhc2VCMTY0IGdpdmVuLCBjYWxsZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY0LWFydGlmYWN0cy9jcm9zcy1wYXJlbnQtc291cmNlLnBocCBvbiBsaW5lIDIxOw==",
+      "stdout_template_base64": "bGF0ZXItYTpib2R5OkZpcnN0Q3Jvc3MxNjQ6TGF0ZXJDcm9zczE2NDtvaztsYXRlci1iOmxhdGVyLWItZXJyb3I6Rmlyc3RDcm9zczE2NDo6dGFrZSgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgQmFzZUExNjQsIEJhc2VCMTY0IGdpdmVuLCBjYWxsZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMjE7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class164-artifacts/cross-parent-native.json",
+      "native_raw_sha256": "4c340d274e895661ca11dc9cd4cf2e9d08f04423aaf8d9eab5940b9393888382",
+      "model_timeout_seconds": 240
     }
   ]
 }
