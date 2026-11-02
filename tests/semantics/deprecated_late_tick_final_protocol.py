@@ -15,6 +15,7 @@ review.CASES = {
                  '-- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_argument), DESTRUCTION_VALUE (HOBJECT n_callback), DESTRUCTION_VALUE (HOBJECT n_callback)]',
         'checks': [
             'pexecutortick.ENTRY = ptickentry',
+            'pexecutortick.TAIL = eps',
             'ptickentry.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback)), NAMED_SENT (KNOWN (POBJECT n_argument))]',
             'ptickentry.ENTRY.ARGS = [POBJECT n_argument]',
             'ptickentry.ENTRY.CACHEOBJECT = (n_callback)',
