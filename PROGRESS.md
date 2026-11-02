@@ -200,6 +200,10 @@ remain partial.
 The joined strict433 and fresh terminal-throw source/state gate pass at
 `c7eb56942`; disjoint I84/ATTR07 changes were independently reviewed before
 guarded integration.
+Two quiet owning Generator sends now preserve distinct or repeated copied roots
+through cleanup. Four frozen object sources, a separate array COW regression,
+and 421 reached conditions pass; joined strict433 and terminal source/state
+gates passed at `4c6d75817` and `6daa1de90`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -211,6 +215,7 @@ guarded integration.
 [Owning Generator sends](coverage/semantics/config-generator-owning-value-review.json),
 [Temporary owning sends](coverage/semantics/config-generator-owning-temporary-review.json),
 [Owning final caches](coverage/semantics/config-generator-owning-cache-review.json),
+[Two owning sends](coverage/semantics/config-generator-two-owning-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -461,7 +466,6 @@ CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review
 | CLASS164 | Existing copied trait `parent` capture views: four exact native/model originals and three source-reached state groups pass 258 conditions (79+86+93). The cross-parent case distinguishes saved lexical from called scope. Two corrected fixture failures retain zero credit. No semantic rule changed; private review CLEAR and four-source composed-tail check passed at 5db2cd8f2; integration pending. [Review](coverage/semantics/trait-captured-parent-view-review.json). |
 | COMP160 | Declared INITIAL/UNSET slots and physical cached holes: private normal2/control2, reached1035, joined strict433, and affected COMP159 source/state pass. Final review and integration pending. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
-| A80 | Two finite quiet owning sends from a temporary factory Generator; four frozen object sources, one separate array COW regression and two reached proofs pass privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
