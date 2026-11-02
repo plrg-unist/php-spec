@@ -56,6 +56,8 @@ dec $gc_proxy_tables(pobjecttable*, pnode*, nat) : bool
 dec $gc_plain_array_entries(pstate, pentry*) : bool
 dec $gc_node_free_captures(pitem*) : bool
 dec $gc_one_array_capture(pitem*, nat) : bool
+dec $gc_capture_array_nodes(pitem*) : pnode*
+dec $gc_shared_array_captures(pstate, pitem*, nat, bool) : bool
 dec $gc_legacy_array_shape(pstate, pitem*, nat) : bool
 dec $gc_ordinary_node(pstate, pnode) : bool
 dec $gc_ordinary_nodes(pstate, pnode*) : bool
@@ -432,6 +434,22 @@ def $gc_one_array_capture((DIRECT pvalue) :: pitem_tail*, n_array) = $gc_one_arr
   -- if $value_nodes(pvalue) = eps
   -- if pvalue =/= PUNDEFINED
 def $gc_one_array_capture(pitem*, n_array) = false -- otherwise
+def $gc_capture_array_nodes(eps) = eps
+def $gc_capture_array_nodes((DIRECT (PARRAY n_array)) :: pitem_tail*) = (HARRAY n_array) :: $gc_capture_array_nodes(pitem_tail*)
+def $gc_capture_array_nodes(pitem :: pitem_tail*) = $gc_capture_array_nodes(pitem_tail*) -- otherwise
+def $gc_shared_array_captures(S, eps, n_array, true) = true
+def $gc_shared_array_captures(S, (DIRECT (PARRAY n_array)) :: pitem_tail*, n_array, b_seen) = $gc_shared_array_captures(S, pitem_tail*, n_array, b_seen)
+def $gc_shared_array_captures(S, (DIRECT (POBJECT n_leaf)) :: pitem_tail*, n_array, b_seen) = $gc_shared_array_captures(S, pitem_tail*, n_array, true)
+  -- if $(n_leaf < |S.OBJECTS|)
+  -- if (HOBJECT n_leaf) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_leaf] = STDINSTANCE
+  -- if $node_children(S, HOBJECT n_leaf) = eps
+  -- if $gc_trace_children(S, HOBJECT n_leaf) = eps
+  -- if (HOBJECT n_leaf) <- $node_children(S, HARRAY n_array)
+def $gc_shared_array_captures(S, (DIRECT pvalue) :: pitem_tail*, n_array, b_seen) = $gc_shared_array_captures(S, pitem_tail*, n_array, b_seen)
+  -- if $value_nodes(pvalue) = eps
+  -- if pvalue =/= PUNDEFINED
+def $gc_shared_array_captures(S, pitem*, n_array, b_seen) = false -- otherwise
 ;; Keep the existing exact array admissions separate from the finite rule.
 def $gc_legacy_array_shape(S, [DIRECT (PARRAY n_array)], n_array) = true
   -- if $node_children(S, HARRAY n_array) = eps
@@ -561,6 +579,25 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if ~((HARRAY n_array) <- $heap_reach($pools_nodes(S.POOLS), eps, $heap_graph(S).EDGES))
   -- if ~$gc_legacy_array_shape(S, pitem*, n_array)
   -- if $gc_plain_array_entries(S, S.ARRAYS[n_array].ITEMS)
+  -- if $node_children(S, HARRAY n_array) = $gc_trace_children(S, HARRAY n_array)
+  -- if (HOBJECT n) <- $machine_roots(S)
+;; Direct childless object captures may share an identity with array entries.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
+  -- if $gc_capture_array_nodes(pitem*) = [HARRAY n_array]
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_immutable_array(S, n_array)
+  -- if ~$gc_proxy(S, n_array)
+  -- if ~((HARRAY n_array) <- $heap_reach($pools_nodes(S.POOLS), eps, $heap_graph(S).EDGES))
+  -- if $gc_plain_array_entries(S, S.ARRAYS[n_array].ITEMS)
+  -- if $gc_shared_array_captures(S, pitem*, n_array, false)
+  -- if $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
+  -- if $gc_trace_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
   -- if $node_children(S, HARRAY n_array) = $gc_trace_children(S, HARRAY n_array)
   -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
