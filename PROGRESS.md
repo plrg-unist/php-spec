@@ -208,6 +208,10 @@ Two quiet owning Generator sends now preserve distinct or repeated copied roots
 through cleanup. Four frozen object sources, a separate array COW regression,
 and 421 reached conditions pass; joined strict433 and terminal source/state
 gates passed at `4c6d75817` and `6daa1de90`.
+A retained named BYREF Generator now copies a finite quiet owning value from
+an ordinary cell before later writes and a scalar send. Four originals and 406
+reached conditions pass; joined strict433 and terminal source/state pass at
+`186d8c368`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -220,6 +224,7 @@ gates passed at `4c6d75817` and `6daa1de90`.
 [Temporary owning sends](coverage/semantics/config-generator-owning-temporary-review.json),
 [Owning final caches](coverage/semantics/config-generator-owning-cache-review.json),
 [Two owning sends](coverage/semantics/config-generator-two-owning-review.json),
+[Owning reference snapshots](coverage/semantics/config-generator-reference-owning-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and

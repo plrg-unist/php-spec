@@ -802,6 +802,15 @@ child loses one owner while both copied argument roots remain. A separate
 array COW regression preserves first and second snapshots after later local
 writes. Effectful finalizers, reference cells and wider producers remain separate.
 
+[Owning BYREF Generator snapshots](coverage/semantics/config-generator-reference-owning-review.json)
+allow a retained named direct-CV BYREF Generator to copy a finite quiet owning
+object or array from an ordinary reference cell as its first argument. The
+cell changes to a scalar before the second send; the earlier copy keeps its
+own value. Four sources agree with PHP. Reached proofs check a local object
+dying before a saved catch and an outside alias changing an array from 13 to
+31 while TypeError TraceArgs still holds 13 and the copied scalar 7. Typed or
+backed cells, owning final cells and temporary producers remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
