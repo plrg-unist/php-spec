@@ -479,10 +479,27 @@ Private strict433 retains its original cut; joined strict433 and the affected
 protected-close destructor/output source pass at 5e33a7f88.
 The original syntax and missed-getter-stage fixture failures retain zero credit
 after narrow fixture corrections.
-Existing414/415 source contracts are unchanged. Broader helper ancestry, direct
-generator-bodied magic handlers, new argument spellings and wider binding,
-callback/API/delegation/collection/lifecycle combinations remain partial.
+I84 covers factory handlers; direct Generator bodies are added below. Broader
+helper ancestry, new argument spellings and wider binding, callback/API,
+delegation, collection and lifecycle combinations remain partial.
 [Magic factory review](../../coverage/semantics/generator-magic-factory-review.json).
+
+I85 extends the admitted typed `__call`/`__callStatic` source contracts to direct
+Generator bodies. Creation stores the actual entered method target and its
+lexical/called header in the existing nonowning receipt. Its source/handler and
+linked ancestry authenticate after packed-array or payload retirement. Resumed
+and closing contexts use their actual Generator owner before any exact saved
+frame search, so a fresh sibling with the same method cannot replace the target.
+The same actual receipt admits the existing Fiber callee transfer route.
+A live body still requires its real receiver; a closed record adds no owner.
+Five current originals agree; five reached fronts pass 444 custom/469 reported
+checks. Private strict433 retains its original cut; actual-tail compilation is
+pending. Original compiler, COUNT, Fiber-consumer and fixture-prefix failures
+retain zero credit; the fresh whole-array observer preserves cardinality and
+payload identity.
+BYREF magic signatures, broader source spellings and wider callback/API,
+delegation, collection and lifecycle combinations remain partial.
+[Direct magic review](../../coverage/semantics/generator-direct-magic-review.json).
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

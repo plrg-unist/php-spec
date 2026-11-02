@@ -56,7 +56,6 @@ def $magic_method_source(S, pmethoddesc) = true
   -- if pfunction.BODY = pcpath ++ [PCFIELD 6] /\ pfunction.DEFAULTS = eps
   -- if $property_unset_body_source(S.SOURCES, n, pfunction.BODY, statement*, 0)
   -- if pfunction.LINE = $ppmethod_line(metadata) /\ pfunction.ENDLINE = $psendline(metadata)
-  -- if ~$generator_statements(statement*)
 def $magic_method_source(S, pmethoddesc) = true
   -- if $enum_magic_source(S, pmethoddesc, false)
 def $magic_method_source(S, pmethoddesc) = false -- otherwise
@@ -321,12 +320,16 @@ def $magic_method_frame(S, pcallcontext, pframe, pframe_tail*, pmagicmethodcall,
   -- if $magic_method_caller($constant_frame_view(S, pframe, pframe_tail*), pmagicmethodcall)
 def $magic_method_frame(S, pcallcontext, pframe, pframe_tail*, pmagicmethodcall, n, pvalue*) = false -- otherwise
 dec $magic_method_entered(pstate, pcallcontext?, pframe*, pmagicmethodcall, nat, pvalue*) : bool
-def $magic_method_entered(S, (pcallcontext), pframe :: pframe_tail*, pmagicmethodcall, n, pvalue*) = $magic_method_frame(S, pcallcontext, pframe, pframe_tail*, pmagicmethodcall, n, pvalue*)
+def $magic_method_entered(S, (pcallcontext), pframe :: pframe_tail*, pmagicmethodcall, n, pvalue*) = ($magic_method_frame(S, pcallcontext, pframe, pframe_tail*, pmagicmethodcall, n, pvalue*) \/ $generator_magic_context_valid(S[.CURRENT = (pcallcontext)][.FRAMES = pframe :: pframe_tail*], pcallcontext))
   -- if pcallcontext.TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*
 def $magic_method_entered(S, (pcallcontext), pframe :: pframe_tail*, pmagicmethodcall, n, pvalue*) = $magic_method_entered(S, pframe.CONTEXT, pframe_tail*, pmagicmethodcall, n, pvalue*)
   -- if pcallcontext.TARGET =/= MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*
 def $magic_method_entered(S, eps, pframe :: pframe_tail*, pmagicmethodcall, n, pvalue*) = $magic_method_entered(S, pframe.CONTEXT, pframe_tail*, pmagicmethodcall, n, pvalue*)
-def $magic_method_entered(S, pcallcontext?, eps, pmagicmethodcall, n, pvalue*) = false
+def $magic_method_entered(S, (pcallcontext), eps, pmagicmethodcall, n, pvalue*) = $generator_magic_context_valid(S[.CURRENT = (pcallcontext)][.FRAMES = eps], pcallcontext)
+  -- if pcallcontext.TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*
+def $magic_method_entered(S, (pcallcontext), eps, pmagicmethodcall, n, pvalue*) = false
+  -- if pcallcontext.TARGET =/= MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*
+def $magic_method_entered(S, eps, eps, pmagicmethodcall, n, pvalue*) = false
 def $target_function(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*) = (pfunction)
   -- if $magic_method_pending(S, pmagicmethodcall, n, pvalue*) \/ $magic_method_entered(S, S.CURRENT, S.FRAMES, pmagicmethodcall, n, pvalue*)
   -- if $target_function(S, METHOD_TARGET pmagicmethodcall.OBJECT pmagicmethodcall.METHOD) = (pfunction)

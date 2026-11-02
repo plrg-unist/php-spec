@@ -1097,6 +1097,16 @@ Private strict433 retains its original cut; joined strict433 and the affected
 protected-close destructor/output source pass at 5e33a7f88.
 [Magic factory review](../../coverage/semantics/generator-magic-factory-review.json).
 
+I85 keeps a direct magic Generator's real receiver through its body and finally.
+Its independent source promotes the received packed slot to a local alias, then
+retires both array and alias; the ordinary value cache keeps Token while SEND
+keeps its Input. Abort releases the receiver before SEND input, and Gen drop
+releases the cache. A genuine second fresh Generator shares the method without
+supplying the active or closing target's receipt. Five current originals agree;
+five reached fronts pass 444 custom/469 reported checks. Private strict433
+retains its recorded cut, with actual-tail compilation pending.
+[Direct magic review](../../coverage/semantics/generator-direct-magic-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

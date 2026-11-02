@@ -234,6 +234,8 @@ dec $generator_creation_close_owner(pstate) : nat?
 dec $generator_creation_object_selected(pstate, nat, pcallcontext) : bool
 dec $generator_creation_retained(pstate, pnode*, pcallcontext) : bool
 dec $generator_creation_retained_node(pstate, pnode, pcallcontext) : bool
+dec $generator_magic_target(pcalltarget) : bool
+dec $generator_magic_context_valid(pstate, pcallcontext) : bool
 
 ;; Generator detection is lexical: yields in nested declarations belong to
 ;; those declarations. Receives still run before the generator is created.
@@ -336,6 +338,8 @@ rule PhpStep/generator-create-scope-unsupported: S ~> S[.TODO = eps][.COMPLETION
 def $generator_creation_supported(S, pcallcontext) = (~$autoload_context_kind(S, pcallcontext) /\ ($generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE) \/ $access_generator_creation(S, pcallcontext)))
 def $generator_creation_target(S, porigin, porigin_site?) = $call_selected_valid(S, porigin, porigin_site?)
 def $generator_creation_target(S, CLOSURE_TARGET n, porigin_site?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin_site?)
+def $generator_creation_target(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*, porigin_site?) = $call_selected_valid(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*, porigin_site?)
+def $generator_creation_target(S, MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*, porigin_site?) = $call_selected_valid(S, MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*, porigin_site?)
 def $generator_creation_target(S, METHOD_TARGET n porigin, (porigin_site)) = ((((HOBJECT n) <- S.ALLOCATIONS) /\ $generator_implicit_invoke_target(S, METHOD_TARGET n porigin, porigin_site)) \/ $generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, METHOD_TARGET n porigin, porigin_site) /\ $generator_creation_method_live_capture(S, METHOD_TARGET n porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, METHOD_TARGET n porigin, porigin_site))
 def $generator_creation_target(S, STATIC_METHOD_TARGET porigin_class porigin, (porigin_site)) = ($generator_creation_method(S, porigin, (porigin_site)) \/ ($generator_creation_method_source(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) /\ $generator_creation_method_live_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) =/= eps) \/ $generator_creation_target_capture(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site))
 def $generator_creation_target(S, METHOD_TARGET n porigin, eps) = false
@@ -377,8 +381,15 @@ def $generator_implicit_invoke_target(S, METHOD_TARGET n porigin_function, porig
   -- if $object_invoke_method(S_lookup, n) = (pmethoddesc)
   -- if porigin_function = pmethoddesc.FUNCTION.ORIGIN
 def $generator_implicit_invoke_target(S, pcalltarget, porigin_site) = false -- otherwise
-;; A creation certificate is minted from the real caller frame. Its targets
+;; A creation certificate is minted from the real entered or caller frame. Its targets
 ;; are immutable selection evidence and add no receiver or argument owners.
+def $generator_magic_target(MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*) = true
+def $generator_magic_target(MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*) = true
+def $generator_magic_target(pcalltarget) = false -- otherwise
+def $generator_creation_required(S, pcallcontext) = true
+  -- if $generator_magic_target(pcallcontext.TARGET)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
 def $generator_creation_required(S, pcallcontext) = true
   -- if pcallcontext.TARGET = SCOPED_TARGET porigin_requested pcallcontext.FUNCTION porigin_called eps poperand_selector
   -- if pcallcontext.CALLSITE = (porigin_site)
@@ -843,6 +854,19 @@ def $generator_creation_scope_valid(S, pgeneratorcreation) = true
   -- if $class_links_valid(S)
   -- if $method_class_selected(S, porigin_called, pmethoddesc.NAME, pgeneratorcreation.CREATOR.LEXICAL_CLASS) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, pgeneratorcreation.CREATOR.LEXICAL_CLASS)
+def $generator_creation_scope_valid(S, pgeneratorcreation) = true
+  -- if $generator_magic_target(pgeneratorcreation.CALLEE)
+  -- if pgeneratorcreation.CREATOR_TARGET = pgeneratorcreation.CALLEE
+  -- if pgeneratorcreation.CLOSURE = eps /\ pgeneratorcreation.ANCESTORS = eps
+  -- if pgeneratorcreation.CREATOR.CALLSITE = (pgeneratorcreation.SITE)
+  -- if $class_method_origin(S.CLASSES, pgeneratorcreation.CREATOR.FUNCTION) = (pmethoddesc)
+  -- if $function_generator(S, pmethoddesc.FUNCTION)
+  -- if pgeneratorcreation.CREATOR.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if pgeneratorcreation.CREATOR.CALLED_CLASS = (porigin_called)
+  -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
+  -- if $class_links_valid(S)
+  -- if $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, pgeneratorcreation.SITE)
 def $generator_creation_scope_valid(S, pgeneratorcreation) = false -- otherwise
 
 def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
@@ -870,6 +894,14 @@ def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $generator_creation_method_live_capture(S, pcallcontext.TARGET, porigin_site) = (pgeneratorcreation)
   -- if $call_current_valid(S)
+def $generator_creation_capture(S, pcallcontext) = (pgeneratorcreation)
+  -- if $generator_magic_target(pcallcontext.TARGET)
+  -- if $generator_creation_required(S, pcallcontext)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $call_current_valid(S)
+  -- if pgeneratorcreation = {SITE porigin_site, CREATOR {FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, LEXICAL_CLASS pcallcontext.LEXICAL_CLASS, CALLED_CLASS pcallcontext.CALLED_CLASS}, CREATOR_TARGET pcallcontext.TARGET, CALLEE pcallcontext.TARGET, ANCESTORS eps, CLOSURE eps}
+  -- if $generator_creation_scope_valid(S, pgeneratorcreation)
 def $generator_creation_capture(S, pcallcontext) = eps -- otherwise
 
 def $generator_creation_target_capture(S, pcalltarget, porigin_site) = true
@@ -898,6 +930,12 @@ def $generator_creation_record_valid(S, pgenerator) = true
   -- if pgenerator.CREATION = (pgeneratorcreation)
   -- if pgenerator.CLOSURE = eps
   -- if pgeneratorcreation.CALLEE = STATIC_METHOD_TARGET porigin_called pgenerator.FUNCTION
+  -- if $generator_creation_scope_valid(S, pgeneratorcreation)
+def $generator_creation_record_valid(S, pgenerator) = true
+  -- if pgenerator.CREATION = (pgeneratorcreation)
+  -- if pgenerator.CLOSURE = eps
+  -- if $generator_magic_target(pgeneratorcreation.CALLEE)
+  -- if pgeneratorcreation.CREATOR.FUNCTION = pgenerator.FUNCTION
   -- if $generator_creation_scope_valid(S, pgeneratorcreation)
 def $generator_creation_record_valid(S, pgenerator) = false -- otherwise
 
@@ -953,6 +991,24 @@ def $generator_creation_retained_node(S, HOBJECT n, pcallcontext) = true
   -- if pframe.CONTEXT = (pcallcontext)
   -- if $generator_creation_object_selected(S, n, pcallcontext)
 def $generator_creation_retained_node(S, pnode, pcallcontext) = false -- otherwise
+
+;; Retained magic entry follows the actual operation/close owner before any
+;; suspended-frame search; an equivalent sibling cannot supply its receipt.
+def $generator_magic_context_valid(S, pcallcontext) = true
+  -- if $generator_magic_target(pcallcontext.TARGET)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $generator_creation_selected(S, pcallcontext.TARGET, porigin_site)
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.ARGC = 2
+  -- if pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if $class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = (pmethoddesc)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcallcontext.TARGET)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcallcontext.TARGET)
+  -- if $scoped_receiver_valid(S, porigin_called, pmethoddesc, pcallcontext.RECEIVER)
+  -- if $call_line_valid(S, pcallcontext.CALLSITE, pcallcontext.LINE)
+def $generator_magic_context_valid(S, pcallcontext) = false -- otherwise
 
 def $generator_active(S) = true
   -- if S.FRAMES = pframe :: pframe_tail*
