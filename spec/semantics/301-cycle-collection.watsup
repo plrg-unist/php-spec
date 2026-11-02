@@ -53,6 +53,9 @@ dec $gc_compact_back(pgcslot*) : pgcslot*
 dec $gc_compact(pgc) : pgc
 dec $gc_proxy(pstate, nat) : bool
 dec $gc_proxy_tables(pobjecttable*, pnode*, nat) : bool
+dec $gc_plain_array_entries(pstate, pentry*) : bool
+dec $gc_node_free_captures(pitem*) : bool
+dec $gc_one_array_capture(pitem*, nat) : bool
 dec $gc_ordinary_node(pstate, pnode) : bool
 dec $gc_ordinary_nodes(pstate, pnode*) : bool
 dec $gc_decrement(pstate, pgc, pnode) : pgc
@@ -404,6 +407,27 @@ def $gc_count_walk(H, hedge_proxy*, (hedge_weak*), pgcvisit*, pnode_white*) = (p
   -- if (pnode_claimed*, pnode_done*, pnode_counted*) = $gc_walk_roots(H, hedge_weak*, hedge_proxy*, pgcvisit*, pnode_white*, eps, eps, eps)
 def $gc_free_order(pgcplan, pnode_live*) = $heap_intersect(pgcplan.CANDIDATES, pnode_free*) ++ $destruction_nodes_delete(pnode_free*, pgcplan.CANDIDATES)
   -- if pnode_free* = $heap_intersect(pgcplan.FREESET, pnode_live*)
+;; One-level arrays contain only direct scalar values or distinct childless
+;; ordinary objects. No aliases, indirect buckets or nested arrays enter here.
+def $gc_plain_array_entries(S, eps) = true
+def $gc_plain_array_entries(S, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry_tail*) = $gc_plain_array_entries(S, pentry_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $node_children(S, HOBJECT n) = eps
+  -- if $gc_trace_children(S, HOBJECT n) = eps
+def $gc_plain_array_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = $gc_plain_array_entries(S, pentry_tail*)
+  -- if $value_nodes(pvalue) = eps
+def $gc_plain_array_entries(S, pentry*) = false -- otherwise
+def $gc_node_free_captures(eps) = true
+def $gc_node_free_captures((DIRECT pvalue) :: pitem_tail*) = $gc_node_free_captures(pitem_tail*)
+  -- if $value_nodes(pvalue) = eps
+def $gc_node_free_captures(pitem*) = false -- otherwise
+def $gc_one_array_capture(eps, n_array) = false
+def $gc_one_array_capture((DIRECT (PARRAY n_array)) :: pitem_tail*, n_array) = $gc_node_free_captures(pitem_tail*)
+def $gc_one_array_capture((DIRECT pvalue) :: pitem_tail*, n_array) = $gc_one_array_capture(pitem_tail*, n_array)
+  -- if $value_nodes(pvalue) = eps
+def $gc_one_array_capture(pitem*, n_array) = false -- otherwise
 def $gc_ordinary_node(S, HCELL n) = true
 def $gc_ordinary_node(S, HARRAY n) = true
 def $gc_ordinary_node(S, HOBJECT n) = true
@@ -501,6 +525,23 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $gc_trace_children(S, HARRAY n_array) = [HOBJECT n_first, HOBJECT n_second]
   -- if $node_children(S, HOBJECT n_first) = eps /\ $node_children(S, HOBJECT n_second) = eps
   -- if $gc_trace_children(S, HOBJECT n_first) = eps /\ $gc_trace_children(S, HOBJECT n_second) = eps
+  -- if (HOBJECT n) <- $machine_roots(S)
+;; Finite ordered scalar captures may surround one one-level mutable array.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
+  -- if $gc_one_array_capture(pitem*, n_array)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_immutable_array(S, n_array)
+  -- if $heap_count(HARRAY n_array, $pools_nodes(S.POOLS)) = 0
+  -- if $gc_plain_array_entries(S, S.ARRAYS[n_array].ITEMS)
+  -- if $heap_unique($node_children(S, HARRAY n_array))
+  -- if $node_children(S, HOBJECT n) = [HARRAY n_array]
+  -- if $node_children(S, HARRAY n_array) = $gc_trace_children(S, HARRAY n_array)
   -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
 def $gc_ordinary_nodes(S, eps) = true
