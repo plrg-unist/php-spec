@@ -387,6 +387,76 @@ named-hole preflight, warning/throw wrappers, pipe and wider active contexts
 retain their fences. See the
 [explicit Closure caller review](../../coverage/semantics/gc-closure-invoke-caller-review.json).
 
+The live direct real-Closure caller may retain complete by-value captures when
+its node has no child edge and no static cell. A scalar `use ($seed)` capture is
+present in the Closure object and then in the entered local CV; it adds no
+heap edge, so the active caller's machine root still keeps that Closure outside
+the white set. The collector's physical and count walks are unchanged, and the
+held/drop graph matches PHP at counts 3 and 3. Object, array and reference
+captures remain excluded by their child edges. See the
+[captured Closure caller review](../../coverage/semantics/gc-captured-caller-review.json).
+
+The active direct real-Closure caller may have exactly one captured ordinary
+`stdClass` child when that child is allocated and has no outgoing edge. GC13
+established the unbuffered case: the Closure is a real machine root, and its
+only child edge points to the leaf. The token has three owners through its
+global cell, entered local and Closure capture. The materialized held/drop
+graph retains destructor counts 3 and 3. See the
+[object-leaf caller review](../../coverage/semantics/gc-object-leaf-caller-review.json).
+
+GC14's separate native status control showed a global token unset buffering
+one root before the first collection. The model's first-pass reached state
+agreed: the rooted token was black and the `P|0` pass cleared it. GC15 releases
+an owning token copy after that pass, buffering the still-live leaf again for
+the D collection. The authenticated caller has two Closure owners and the
+token has two owners through its local and capture; the valid token slot is
+removed as black before the held/drop count plan. Native and model agree on
+the full destructor/count stream. The GC13 constructed buffered-token negative
+is superseded by this real reached state. Deeper object graphs, other capture
+kinds and captured destructors remain fenced. See the
+[rebuffered-leaf review](../../coverage/semantics/gc-rebuffered-leaf-caller-review.json).
+
+GC16 admits one runtime-written array capture in the same active direct caller
+when the array has no ordinary or physical GC child edge, is not marked immutable
+in the model, and is absent from the candidate buffer. The reached state binds
+one scalar entry and the same array through the global cell, Closure capture
+and entered local, with three owners. Native and model agree on the full
+destructor/count stream; a separate native status control shows an owning copy
+release can buffer this runtime array. GC16 required no active candidate slot;
+COW after capture and nonempty persistent-array provenance are untested. See
+the [array-leaf caller review](../../coverage/semantics/gc-array-leaf-caller-review.json).
+
+GC17 releases an owning copy after `P|0`, leaving one valid array candidate
+before the D pass. The active saved direct caller still has a real Closure
+machine root; the captured array has two owners through the Closure and entered
+local, and remains black. Its physical candidate slot is removed before the
+held/drop count plan. Native and model agree on the full stream. The GC16
+constructed buffered-array refusal is superseded, while both ordinary and
+physical trace childlessness remain required. COW and nonempty persistent-array
+provenance remain untested. See the
+[rebuffered-array caller review](../../coverage/semantics/gc-rebuffered-array-caller-review.json).
+
+GC18 admits exactly one direct `0 => stdClass` child in the captured
+runtime-written array. The authenticated active direct Closure has a real
+machine root; the array and child have ordinary and physical edges of the same
+shape and are absent from the D candidate buffer. The reached state binds
+Closure, array and leaf owners 2, 3 and 2, keeps the leaf black, and retains
+the held/drop count plan. One native-first original agrees on the full stream;
+its final array read checks liveness rather than object identity. Buffered
+array/leaf candidates and wider entries remained fenced at that cut. COW after
+capture and nonempty persistent provenance are untested. See the
+[array-object-child caller review](../../coverage/semantics/gc-array-object-child-caller-review.json).
+
+GC19 releases one owning array copy after `P|0`, yielding a valid array slot
+before the D pass. The globally held childless `stdClass` entry stays outside
+the buffer. The Closure's authenticated machine root keeps both nodes black;
+the array slot leaves the D count plan before held/drop destruction. Reached
+owners remain Closure 2, array 3 and leaf 2. Native and model agree on the
+full destructor/count and final liveness stream. The exact one-entry and
+ordinary/physical edge guards remain, while buffered child objects and wider
+array graphs stay fenced. See the
+[rebuffered-array-child caller review](../../coverage/semantics/gc-rebuffered-array-child-caller-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

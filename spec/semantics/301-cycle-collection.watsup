@@ -416,8 +416,56 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if pgccall.CALLER = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
-  -- if S.OBJECTS[n] = REALCLOSURE porigin eps eps
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
   -- if $node_children(S, HOBJECT n) = eps
+  -- if (HOBJECT n) <- $machine_roots(S)
+;; A childless stdClass leaf can be the active caller's sole capture.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin ([DIRECT (POBJECT n_token)]) eps
+  -- if $(n_token < |S.OBJECTS|)
+  -- if (HOBJECT n_token) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_token] = STDINSTANCE
+  -- if $node_children(S, HOBJECT n) = [HOBJECT n_token]
+  -- if $node_children(S, HOBJECT n_token) = eps
+  -- if (HOBJECT n) <- $machine_roots(S)
+;; A childless array leaf can be the active caller's sole capture.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin ([DIRECT (PARRAY n_array)]) eps
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_immutable_array(S, n_array)
+  -- if $node_children(S, HOBJECT n) = [HARRAY n_array]
+  -- if $node_children(S, HARRAY n_array) = eps
+  -- if $gc_trace_children(S, HARRAY n_array) = eps
+  -- if (HOBJECT n) <- $machine_roots(S)
+;; A captured array may hold one unbuffered childless stdClass object.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin ([DIRECT (PARRAY n_array)]) eps
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_immutable_array(S, n_array)
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_leaf))]
+  -- if $(n_leaf < |S.OBJECTS|)
+  -- if (HOBJECT n_leaf) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_leaf] = STDINSTANCE
+  -- if $node_children(S, HOBJECT n) = [HARRAY n_array]
+  -- if $node_children(S, HARRAY n_array) = [HOBJECT n_leaf]
+  -- if $gc_trace_children(S, HARRAY n_array) = [HOBJECT n_leaf]
+  -- if $node_children(S, HOBJECT n_leaf) = eps
+  -- if $gc_trace_children(S, HOBJECT n_leaf) = eps
+  -- if ~((HOBJECT n_leaf) <- $gc_nodes(S.GC.BUFFER))
   -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
 def $gc_ordinary_nodes(S, eps) = true
