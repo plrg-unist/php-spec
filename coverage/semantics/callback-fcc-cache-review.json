@@ -1,0 +1,338 @@
+{
+  "milestone": "ATTR08: persistent shutdown/tick FCC owners and identity",
+  "status": "selected cache behavior validated at joined cut; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-08",
+  "scope": [
+    "Persistent FCC.object and raw-OBJECT FCC.closure retain separate owners, including duplicate object IDs.",
+    "Tick identity distinguishes a raw invokable object from its [object,__invoke] array; repeated array unregister leaves the raw registration live.",
+    "Method API calls borrow This; Closure calls retain their existing independent instance owner.",
+    "Inline tick unregister retires copied params, FCC.object, FCC.closure, then the genuine call arguments using existing release machinery.",
+    "Selected target scope/binding survives retirement only as readonly operation SOURCE metadata; it grants no heap owner or new entry.",
+    "Quiet shutdown caches remain through callback completion, early object destruction and output FINAL; selected buffered post-output executor release retires cached slots with their exact multiplicity.",
+    "Property groups at tick frequency 0 with no nested callables/tick declarations have an identity summary; wider property/class placement stays Unsupported."
+  ],
+  "production": {
+    "base": "2031cf267ee9c2b91dfa7cefe282de6f6dec74ff",
+    "core": "d8735a17d75edfc1b5ce083d788a0e42a32f282c",
+    "property": "43d41c7b3",
+    "selected_history": "33239f49e06dcecfbb9d8dc93b1e6033e8b1f767",
+    "dependency": "ATTR07 ordinary Closure bound-receiver borrow at443, retained private2031; no ATTR07 renewal."
+  },
+  "authority": [
+    "ext/standard/basic_functions.c:user_shutdown_function_dtor, user_tick_function_dtor, user_shutdown_function_call, user_tick_function_call",
+    "Zend/zend_API.h:zend_fcc_addref, zend_fcc_equals, zend_fcc_dtor",
+    "Zend/zend_API.c:zend_is_callable_at_frame raw IS_OBJECT closure assignment",
+    "Zend/zend_execute_API.c:zend_call_function and Closure/This ownership; zval_call_destructor early singleton-global scan",
+    "main/main.c:php_request_shutdown callbacks, destructor pass, FINAL/tick deactivation, RSHUTDOWN, output deactivation, shutdown registry free, executor",
+    "Zend/zend_compile.c:zend_compile_prop_group, zend_compile_stmt and frequency0 final tick emission"
+  ],
+  "evidence": {
+    "native": {
+      "eligible": 6,
+      "positive_source_controls": 5,
+      "unsupported_wrapper_control": 1,
+      "retained_reports": [
+        {
+          "report": "native-first-be379743b/report.json",
+          "sha256": "546495789259fabba5114318bbd973348c3c3e03c140df47156c27d60ebe61ce",
+          "revision": "be379743b95c2db86cdb0c9aca616c186da8402d",
+          "passed_rows": [
+            "tick-bound-closure-cache-and-ordered-unregister",
+            "tick-raw-argument-throw-keeps-cached-callable-retirement",
+            "tick-raw-object-cache-distinct-from-invoke-array",
+            "tick-scoped-method-closure-cache-arguments-before-owner"
+          ],
+          "failed_rows": [
+            "shutdown-bound-closure-cache-survives-callback-loop-and-final"
+          ]
+        },
+        {
+          "report": "native-captured-final/report.json",
+          "sha256": "db41af8145cfb587b62603d7e1f54bc03b93cc80304ecbf39ca758e48f2a5198",
+          "revision": "80ba9a62af0715b381f745d34551d21dabd8b708",
+          "passed_rows": [
+            "shutdown-bound-closure-cache-and-captured-final-observers"
+          ],
+          "failed_rows": []
+        },
+        {
+          "report": "native-closure-array-ea07c5929/report.json",
+          "sha256": "228e38ac052b54737fb3dcfc5100f9076c49f37c14cac90dc8238bde5f1f70bd",
+          "revision": "ea07c5929420f523dd48ad382ccc7765c47ccab7",
+          "passed_rows": [
+            "tick-closure-invoke-array-caches-outer-closure-only"
+          ],
+          "failed_rows": []
+        }
+      ]
+    },
+    "sources": {
+      "normal_agreements": 5,
+      "reports": [
+        {
+          "report": "source-identity-331d5715e/report.json",
+          "sha256": "59e99acdbc70f0da6f23bc8384504c7f55e8dc9fbc6c5df841e5db694d839030",
+          "revision": "331d5715e7db4b4f9cdd674c431dd10392764048"
+        },
+        {
+          "report": "source-remaining-331d5715e/report.json",
+          "sha256": "9df71d1e0589607c14ca200b1ab41ca02cec847833a067111050db37861b9051",
+          "revision": "331d5715e7db4b4f9cdd674c431dd10392764048"
+        },
+        {
+          "report": "source-final-and-array-331d5715e/report.json",
+          "sha256": "28c70157247df2b426e4ffdbb83950544fcc9b543cc542fd7eea53f84fdf8b58",
+          "revision": "331d5715e7db4b4f9cdd674c431dd10392764048"
+        },
+        {
+          "report": "source-scoped-history-33239f49e/report.json",
+          "sha256": "81730504f094337ab97f0601af9229bb3ee1ad4ff100676a1767c729b4ddf50d",
+          "revision": "33239f49e06dcecfbb9d8dc93b1e6033e8b1f767"
+        }
+      ],
+      "rows": [
+        {
+          "id": "tick-raw-object-cache-distinct-from-invoke-array",
+          "source_sha256": "9146d2af7f6ccd6a189a6ce7d5db05f7ceecb709ca80a9ed412c18aaaa6f505e",
+          "elapsed": 46.98305630683899
+        },
+        {
+          "id": "tick-bound-closure-cache-and-ordered-unregister",
+          "source_sha256": "ec6a1147cacb652e68d0f9a2f5ec266af9195eea87bbfd0a2f7b0a5c47b7cf91",
+          "elapsed": 90.00154042243958
+        },
+        {
+          "id": "tick-raw-argument-throw-keeps-cached-callable-retirement",
+          "source_sha256": "e86c363895287cb286761a304f045f096e627195f2051bc247441ed3175c969e",
+          "elapsed": 121.32107162475586
+        },
+        {
+          "id": "shutdown-bound-closure-cache-and-captured-final-observers",
+          "source_sha256": "2f234887fc759ac90d2906145494d9d5d170cf4845bdca0d1825c9a9c4db52b0",
+          "elapsed": 49.71079349517822
+        },
+        {
+          "id": "tick-scoped-method-closure-cache-arguments-before-owner",
+          "source_sha256": "0b057fbdd7872882bd88486f1b2a1e2965ff736df6869c5bba0f0d7346052394",
+          "elapsed": 66.80116772651672
+        }
+      ],
+      "compatibility": "Four source cuts at 331 retain their owner/output behavior; the later property summary applies only to the failed scoped property source, and the selected-target witness changes readonly metadata only. New reached groups validate the final source paths without renewing those CLI/native cuts."
+    },
+    "private_strict": {
+      "report": "strict-selected-history-sum/report.json",
+      "sha256": "5634b580500199884cc4556cd1f1a7aa533d152e887953d008df38648c2c11dd",
+      "revision": "33239f49e06dcecfbb9d8dc93b1e6033e8b1f767",
+      "modules": 432,
+      "elapsed": 11.752678155899048,
+      "affinity": [
+        3
+      ]
+    },
+    "reached": {
+      "author": {
+        "report": "reached-author-92625092e/report.json",
+        "sha256": "191fd9e151d52acd673bac69f2bec5f182be232f60ebfb3269d0b1fa64af4dba",
+        "revision": "92625092e879209b65974c2a2d1f34b16d22aba5"
+      },
+      "independent": {
+        "report": "reached-peer-92625092e/report.json",
+        "sha256": "7394d9a07980bdbd12bdeeeda5ca61faa69900094badf40ace927cb19bc41bac",
+        "revision": "92625092e879209b65974c2a2d1f34b16d22aba5"
+      },
+      "groups": 4,
+      "conditions": 296,
+      "reached": 292,
+      "derived": 4,
+      "rows": [
+        {
+          "id": "tick-bound-closure-cache-and-ordered-unregister",
+          "conditions": 85,
+          "derived": 0,
+          "elapsed": 104.55416989326477
+        },
+        {
+          "id": "shutdown-bound-closure-cache-and-captured-final-observers",
+          "conditions": 70,
+          "derived": 0,
+          "elapsed": 55.64533066749573
+        },
+        {
+          "id": "tick-raw-object-cache-distinct-from-invoke-array",
+          "conditions": 64,
+          "derived": 2,
+          "elapsed": 49.84138202667236
+        },
+        {
+          "id": "tick-scoped-method-closure-cache-arguments-before-owner",
+          "conditions": 77,
+          "derived": 2,
+          "elapsed": 77.16637659072876
+        }
+      ]
+    },
+    "explicit_boundary": {
+      "report": "boundary-closure-array-331d5715e/report.json",
+      "sha256": "c575de3af71022dc5674c623822f9f966ba389494240a7dc6d3fccb603c39eba",
+      "revision": "331d5715e7db4b4f9cdd674c431dd10392764048",
+      "agreement_credit": 0,
+      "reason": "error-handler class, autoload or internal method lookup",
+      "prefix": "",
+      "model_replayed": false
+    },
+    "old_counterexample": {
+      "report": "old-gate-identity-80ba9a62a/report.json",
+      "sha256": "819c335aa594ba8dcfe6da926e5f047dcfa6f49b8fdd06775cd3cf57e4608fac",
+      "revision": "80ba9a62af0715b381f745d34551d21dabd8b708",
+      "agreement_credit": 0,
+      "elapsed": 40.19597291946411,
+      "status": "php_error",
+      "diagnostic_class": "TypeError",
+      "observation": "Old tick equality removed the raw registration too, retired its receiver early, then unregister(NULL) raised TypeError; native remains normal."
+    },
+    "joined": {
+      "strict_ob05": {
+        "report": "join-ob05-ea1-strict/report.json",
+        "sha256": "39be2c2382e85aefcb161d04e6d21275f1892628211dc5a04b6f60ce26561806",
+        "revision": "ea1cddc8364bd9836660e06f5af166ab300dd95d",
+        "modules": 433,
+        "passed": true
+      },
+      "captured_final": {
+        "report": "join-ob05-03ec-captured-final/report.json",
+        "sha256": "80f073769c16bbf2895c278f7a32beea81c956b326d3754026b13a58853fb125",
+        "revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+        "case": "shutdown-bound-closure-cache-and-captured-final-observers",
+        "native_source_sha256": "2f234887fc759ac90d2906145494d9d5d170cf4845bdca0d1825c9a9c4db52b0",
+        "agreement_credit": 1
+      },
+      "raw_invokable": [
+        {
+          "source": "raw-invokable-first/source.php",
+          "source_sha256": "75aacacf1a11366946f73a6ab735bc711e612d2db4bfa6cc58ed6ea1eb12ccce",
+          "native_report": "raw-invokable-first/report.json",
+          "native_report_sha256": "e6e7c321b11fce2da22f9b443788901d61b4443eb2c9cd4bf9f9fe0dc99c0d6b",
+          "comparison": "raw-invokable-first/comparison.json",
+          "comparison_sha256": "8d524758a7ddc207dd47dbe8c4eb0c14f63c84ed378b5ae3228fe511cc51e1cd",
+          "output": "P:1;B:1:1;S:1:1;D:1;",
+          "exact": true,
+          "note": "No user buffer; demonstrates normal visible behavior but cannot reach module444 output executor queue."
+        },
+        {
+          "source": "raw-invokable-buffered/source.php",
+          "source_sha256": "0703c6495a13594b9b12a9d6ef6bab3fb99ea27e43289741ccdcc05c50f9a5ab",
+          "native_report": "raw-invokable-buffered/report.json",
+          "native_report_sha256": "b915c67135bdaf5168ff55b0dea2472504f4020e546afcb81da854574c50aa11",
+          "comparison": "raw-invokable-buffered/comparison.json",
+          "comparison_sha256": "9582198524f4d559c3bae43b5893425497fe0c5e5e456d9c5ae033a30dc01f22",
+          "model_revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+          "output": "P:1;B:1:1;S:1:1;D:1;",
+          "exact": true,
+          "note": "Named passthrough buffer reaches the post-output executor queue; destructor output is not attributed to that queue."
+        }
+      ],
+      "reached": [
+        {
+          "report": "join-ob05-03ec-reached/raw-cache-release/report.json",
+          "sha256": "f497bd911937cbc4927904a747e26d5b85f12b01f9fc034e0f8912c66b4ffa7f",
+          "revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+          "case": "shutdown-raw-invokable-cache-release",
+          "assertions": 30,
+          "finding": "At real release boundary, one raw invokable object has two FCC cache owners and two release jobs; final owner count is zero."
+        },
+        {
+          "report": "join-ob05-03ec-reached/bound-fcc-ob05/report.json",
+          "sha256": "2d812b7a9c54e4beb759d5ccfbd0efccce1be65baff4e468008a3234d981147c",
+          "revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+          "case": "bound-fcc-object-releases-before-closure-this-edge",
+          "assertions": 84,
+          "finding": "Affected OB05 selected reached case passes with one-argument executor_queue_nodes helper."
+        }
+      ],
+      "strict_current": {
+        "report": "join-master-30bb-9293-strict/report.json",
+        "sha256": "db8f66d44cc6e73bf460b6ce35fb50c82d35d7df461f19dc75beb2e05382424b",
+        "revision": "9293f7db4a1f55d6ed9885eee8edc8e6992ac50d",
+        "modules": 433,
+        "passed": true
+      }
+    }
+  },
+  "preserved_failures": [
+    {
+      "path": "native-first-be379743b",
+      "credit": 0,
+      "detail": "One shutdown observer read direct weak globals already removed by early cleanup. Four tick native rows remain accepted; only corrected captured-FINAL observer ran again."
+    },
+    {
+      "path": "source-remaining-331d5715e",
+      "credit": 0,
+      "detail": "Scoped original first stopped at missing unticked property summary; two earlier positive rows retained."
+    },
+    {
+      "path": "source-scoped-property-c39bbf54a",
+      "credit": 0,
+      "detail": "55.199s interpreter failure after METHODCLOSURE retirement; original scopes were pruned before readonly source-certificate validation."
+    },
+    {
+      "path": "diagnostic-scoped-9cfbc2935",
+      "credit": 0,
+      "detail": "Existing fronts proved real cache owner counts and exact object,Closure,Closure release jobs; actual receiver-enter state rejected the allocation-only certificate. Genuine pre-release scope metadata repaired only that readonly certificate. Diagnostic conditions carry no source agreement credit; external BUDGET-normalization fixture failure remains retained."
+    },
+    {
+      "path": "strict-selected-history",
+      "credit": 0,
+      "detail": "0.604s type-declaration error: witness redeclared ptask instead of extending its sum. One-line syntax correction; no semantic execution."
+    },
+    {
+      "path": "reached-peer-33239f49e",
+      "credit": 0,
+      "detail": "35.689s first raw fixture omitted U: already emitted before the reached WeakRef getter. One expected literal corrected; no runtime/source/native change."
+    },
+    {
+      "path": "failed-reached-3d172a5c5",
+      "sha256": "cb53aed955b40c47a981145bc777d7ec528eec317868e6cfb95204d1283c3b34",
+      "credit": 0,
+      "detail": "First raw executor fixture searched for queue start, and its source lacked the user output buffer needed for the module444 queue."
+    },
+    {
+      "path": "failed-reached-761baf1f2",
+      "sha256": "4386b9e4a25848594b44c0b26fe4fe2842571b7a011b20fe166f5b6205ebfbf6",
+      "credit": 0,
+      "detail": "Corrected stage still missed because the original had no user output buffer; the no-buffer path never enters module444 queue. Buffered native-first source corrects the test shape."
+    }
+  ],
+  "remaining": [
+    "Closure object __invoke arrays need their own callback wrapper/API staging; retained native control is zero agreement.",
+    "Wider late tick/shutdown registry free and executor paths, active observer hooks, wider callable/reentry/reference/throw histories and compiler placements remain partial."
+  ],
+  "review": {
+    "agent": "/root/attr04_recover_review",
+    "core": "CLEAR d873 and metadata normalization",
+    "property_and_boundary": "CLEAR c39",
+    "selected_history": "CLEAR332",
+    "peer_reached": 141,
+    "final_package": "CLEAR at 258504227; prose spacing only afterward",
+    "current_tail": "Scoped semantic CLEAR by /root/attr_review_recovery for 6a4a9bc78e0c7e1929a442fd95fd32b0206b10e3 on master 29fcd8e7f: OB05 owner correction checked directly, later enum pipe/CONFIG/GC/I86 branches disjoint from selected sources; strict433 at 9293 and joined focused source/reached reports retained."
+  },
+  "recovery": {
+    "fixtures": [
+      "tests/semantics/callback_cache_cases.py",
+      "tests/semantics/callback_cache_review_cases.py",
+      "tests/semantics/callback_cache_protocol.py",
+      "tests/semantics/callback_cache_review_protocol.py",
+      "tests/semantics/callback_cache_executor_raw.php",
+      "tests/semantics/callback_cache_executor_protocol.py"
+    ],
+    "method": "Use recorded exact source IDs, profile, retained native source hashes and commands. Mixed native reports require explicit passed-row selection. Preserve historical failures/cuts; do not replay accepted rows without an affected dependency."
+  },
+  "composition": {
+    "head": "6a4a9bc78e0c7e1929a442fd95fd32b0206b10e3",
+    "parents": [
+      "b6dbc2ce1eba145bbd46b53e2657f30ace3a1282",
+      "29fcd8e7f439e31b025683a63b15a21a4c4b349a"
+    ],
+    "compatibility": "Strict433 passed at 9293f7db4 after joining master 30bbd4064. Later cab158b63 enum pipe adds only 432/433/437, A81 42eb400b4 adds CONFIG Generator BYREF cache routes only in 423, GC12-19 915e01f89 adds explicit gc_collect_cycles caller routes only in 301, and I86 29fcd8e7f adds Generator/Fiber paths only in 280/281/355. Selected ATTR08 shutdown/tick/captured-FINAL/raw executor sources use none of those operations. OB05 owner interaction is directly checked by joined source and reached cases above; accepted strict/source/reached cuts are reused across disjoint additions."
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-destructor-failed-constructor-escaped-this",
+      "source": "<?php\n$escaped156Review = null;\n$given156Review = new Exception(\"ctor\");\n$destination156Review = 99;\ntry {\n    $destination156Review = new class($given156Review) {\n        public $value = 7;\n        public function __construct($error) {\n            global $escaped156Review;\n            echo \"ctor|\";\n            $escaped156Review = $this;\n            throw $error;\n        }\n        public function __destruct() { echo \"destruct|\"; }\n    };\n} catch (Exception $error) {\n    echo $error === $given156Review ? \"caught|\" : \"wrong|\";\n}\necho $destination156Review, \"|\", $escaped156Review->value, \"|manual-before|\";\n$escaped156Review->__destruct();\necho \"manual-after|\";\nunset($escaped156Review);\necho \"after|\";\n",
+      "source_sha256": "13ba454200e57a78285507eb62b29c9551dd9621d69988c88253eb84d52b417a",
+      "stdout_base64": "Y3RvcnxjYXVnaHR8OTl8N3xtYW51YWwtYmVmb3JlfGRlc3RydWN0fG1hbnVhbC1hZnRlcnxhZnRlcnw=",
+      "stdout_template_base64": "Y3RvcnxjYXVnaHR8OTl8N3xtYW51YWwtYmVmb3JlfGRlc3RydWN0fG1hbnVhbC1hZnRlcnxhZnRlcnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class156-review/failed-constructor-escaped-this.native-first.json",
+      "native_raw_sha256": "724c7a41433a50222b6349238a0810b97bad50d227fc3c8e5145851c5da2eb12",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-destructor-pending-exception-local-cleanup",
+      "source": "<?php\nfunction fail156Review() {\n    global $unwind156Review;\n    $local = new class {\n        public function __destruct() {\n            echo \"destroy|\";\n            throw new Exception(\"replacement\");\n        }\n    };\n    throw $unwind156Review;\n}\n$unwind156Review = new Exception(\"original\");\ntry {\n    fail156Review();\n} catch (Exception $error) {\n    echo $error->getMessage(), \"|\";\n    echo $error->getPrevious() === $unwind156Review ? \"previous|\" : \"wrong|\";\n    echo $unwind156Review->getPrevious() === null ? \"original-clean|\" : \"changed|\";\n}\necho \"after|\";\n",
+      "source_sha256": "b8304c578cc9e148f7ddd482da9df1f49252102d126bac73114f4ca7657df9db",
+      "stdout_base64": "ZGVzdHJveXxyZXBsYWNlbWVudHxwcmV2aW91c3xvcmlnaW5hbC1jbGVhbnxhZnRlcnw=",
+      "stdout_template_base64": "ZGVzdHJveXxyZXBsYWNlbWVudHxwcmV2aW91c3xvcmlnaW5hbC1jbGVhbnxhZnRlcnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class156-review/pending-exception-local-cleanup.native-first.json",
+      "native_raw_sha256": "08c6a7e2e204c6c9d1731b3fa76a2991b4cf6d802565680933789a5ab02cabc0",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-destructor-aliases-and-temporary-release",
+      "source": "<?php\necho \"start|\";\n$first156 = new class {\n    public $value = 1;\n    function __destruct() { echo \"alias|\", $this->value, \"|\"; }\n};\n$other156 = $first156;\nunset($first156);\necho \"held|\";\n$other156->value = 2;\nunset($other156);\necho \"released|\";\nnew class { public function __destruct() { echo \"temporary|\"; } };\necho \"after\";\n",
+      "source_sha256": "cb71b045eb72988619221b1c100e19147b4e0d0420cb09d3c9ea029b7556da4e",
+      "stdout_base64": "c3RhcnR8aGVsZHxhbGlhc3wyfHJlbGVhc2VkfHRlbXBvcmFyeXxhZnRlcg==",
+      "stdout_template_base64": "c3RhcnR8aGVsZHxhbGlhc3wyfHJlbGVhc2VkfHRlbXBvcmFyeXxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class156-review/author-aliases-and-temporary-release.native-first.json",
+      "native_raw_sha256": "155f62e2a328bd2df87509c86d9d2af105f72bcf019326f39f8fed3b25ecb1ba",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-destructor-eval-closed-factory-release",
+      "source": "<?php\n$source156 = 'namespace Destruct156Author;\nfunction make156() {\n    return new class {\n        public $tag = 1;\n        public function __destruct() { echo \"eval|\", $this->tag, \"|\"; }\n    };\n}';\neval($source156);\n$first156 = Destruct156Author\\make156();\n$second156 = Destruct156Author\\make156();\n$first156->tag = 4;\n$second156->tag = 5;\nunset($first156);\necho \"between|\";\nunset($second156);\necho \"after\";\n",
+      "source_sha256": "38042dbf7ed505730a325d8a5b8ca5c67f858d853b9b790cc16207afd7c07500",
+      "stdout_base64": "ZXZhbHw0fGJldHdlZW58ZXZhbHw1fGFmdGVy",
+      "stdout_template_base64": "ZXZhbHw0fGJldHdlZW58ZXZhbHw1fGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class156-review/author-eval-closed-factory-release.native-first.json",
+      "native_raw_sha256": "aa25684cb8dce89b283918ddfce46c1c8d89f47304bdc659183a808417110057",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-destructor-eof-reverse-global-release",
+      "source": "<?php\n$first156 = new class {\n    public function __destruct() { echo \"first|\"; }\n};\n$second156 = new class {\n    function __destruct() { echo \"second|\"; }\n};\necho \"body|\";\n",
+      "source_sha256": "55f59c9520a0548fee9b59f461430345f9791619141ffda0dc667b02a391b9ca",
+      "stdout_base64": "Ym9keXxzZWNvbmR8Zmlyc3R8",
+      "stdout_template_base64": "Ym9keXxzZWNvbmR8Zmlyc3R8",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class156-review/author-eof-reverse-global-release.native-first.json",
+      "native_raw_sha256": "17dab317ee869fc25fb636329ca13c6a3d43ff07bf504eced57613be3a21ebfa",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "scope": "GC20: active direct real-Closure caller capturing one runtime-written array with a direct key-0 childless stdClass; both array and child may be buffered before D collection.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "base": "29fcd8e7f",
+    "source": "6ce37762d9e66696f6f09cd4650b9982f6540545",
+    "semantic": "9b8e6e1aa6fcd7ab84e63d67ca243bafee9353d2",
+    "reached_fixture": "f6748d90a"
+  },
+  "source_sha256": "4e5add5e0b2ce06c5bcb30391efe99338fad59f596b3116dff2d7742787e3621",
+  "status_sha256": "6719a60edb111269d66dfc279ad3de82ed510f912ff562915ee3e7a81c3918e2",
+  "validation": {
+    "native": "The pinned original outputs T|P|0|D|3|split|0|H|3|dead|0|live|END, exit 0 and empty stderr. The native-only status control outputs P|0|R|0|1|2|live after separate array and leaf copy releases; it earns no model agreement. Stable HEAD/inputs, no timeout and fully reaped process groups are recorded.",
+    "preedit": "At clean source-only 6ce, the original model exits 1 Unsupported cached ordinary property-table collection after T|P|0|. The failing model report is retained with zero agreement, stable HEAD/inputs, no timeout and an empty process group.",
+    "fix": "The sole semantic premise removed is leaf absence from S.GC.BUFFER in the authenticated active direct one-entry caller clause. Source-selected target, one DIRECT HARRAY capture, exact key-0 DIRECT STDINSTANCE entry, ordinary/physical edges, childlessness, model nonimmutable array and real Closure machine root remain required. Graph, owner, count and buffer algorithms are unchanged.",
+    "source": "At clean semantic 9b8, the original model finishes normal with byte-exact stdout/stderr and exit 0 versus pinned native: one source agreement, stable HEAD/inputs, no timeout and empty process group. No earlier accepted campaign was replayed.",
+    "reached": "The strict SL fixture used at semantic 9b8 and committed unchanged at f674 passes 122 assertions, exit 0 with no timeout. The authentic D state has valid array and leaf buffer slots in that order, both absent from the D count plan and black under the live Closure; Closure/array/leaf owners are 2/3/2. Existing source, active-caller and held/drop refusals remain."
+  },
+  "joined_a83": "Composed on clean master 4f8ef665a at 38bda7dc4. A83 changes only CONFIG_GENERATOR owning BYREF storage paths; this direct Closure source creates no Generator. The unchanged GC20 original passes one actual-tail native/model exact pair with normal status, exit 0, identical stdout/stderr, stable HEAD/inputs, no timeout and empty process groups. The frozen module301 and reached fixture are byte-identical to the passing private strict cut; no strict replay was needed. Inventory check passes.",
+  "joined_enum": "Recomposed on clean master 8b547224d. The intervening enum is_callable changes select INTRINSIC_IS_CALLABLE in modules 172/30/437; the GC20 source selects INTRINSIC_GC_COLLECT and has no enum query. Module301 and all GC20 source/state fixture bytes match the passing A83 cut. No unrelated gate was replayed.",
+  "reports_sha256": {
+    "gc-buffered-array-child-caller-20-review/native-report.json": "5ed87080ce305c158844312af05186c6a38de6d0a5d30fd1f36b5f01b849e466",
+    "gc-buffered-array-child-caller-20-dev/preedit/native-report.json": "8fb652a1817723eb186fc2c042edc6c37e5ac7c3e3a0768559ee356614051db9",
+    "gc-buffered-array-child-caller-20-dev/preedit/model-buffered-array-child-leaf-direct-caller-report.json": "be6588f827a96d3104b30c79a3c431ab4448537e9376a8c61b747761297f86a2",
+    "gc-buffered-array-child-caller-20-dev/semantic/native-report.json": "a52cc1457e7830c9a02d8ce0d222297f4ad519695aad50870821bf17558b9e99",
+    "gc-buffered-array-child-caller-20-dev/semantic/model-buffered-array-child-leaf-direct-caller-report.json": "5e7c233f133955920ae88b0acf990db51ff02e13b12ea670e042524973af913e",
+    "gc-buffered-array-child-caller-20-dev/strict/report.json": "09d0c36ce3631d869b2a23d6f3d9883c26ffeebfea72a5b2b9f7469378b4c76f",
+    "gc-buffered-array-child-caller-20-dev/joined-a83/native-report.json": "7884bbd3176463e964cccee2130d3ddacc954b7aaa00e9c5cbd763cdeabc22ac",
+    "gc-buffered-array-child-caller-20-dev/joined-a83/model-buffered-array-child-leaf-direct-caller-report.json": "dfba737013d2907ce4ba47f66ece2fb679a83e1e34d4454170f4f04bd8e95afe"
+  },
+  "review": "Independent GC20 semantic and focused source/state test CLEAR at f674 from gc_review_recovery. Joined A83 docs/inventory and 301/test byte identity checked independently; final clean-head recommendation pending.",
+  "limits": "The source is one runtime-written array with one direct key-0 propertyless stdClass and no COW after capture. The rule requires structural childlessness, not propertyless origin. Wider entries, indirect buckets, backedges, persistent nonempty provenance, explicit invoke and other active contexts are untested. The final read observes liveness, not identity. Historical source selection does not prove arbitrary rewritten operand identity.",
+  "recovery": "Raw pinned native, original failure, exact source pair and reached runner files are outside Git under ../php-spec-evidence-archive/gc-buffered-array-child-caller-20-review and gc-buffered-array-child-caller-20-dev. Reproduce with the GC20 source harness native then model and the GC20 strict reached script; run one heavy CPU1 actor at a time."
+}

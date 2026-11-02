@@ -279,6 +279,8 @@ I84 magic-handler factory native, unchanged refusal, private strict and new
 source/state evidence is retained across
 `../php-spec-evidence-archive/generator-magic-method-factory-84/` and
 `../php-spec-evidence-archive/generator-magic-method-factory-84-review/`.
+The `actual-tail-f405/` and `actual-tail-5e33/` subdirectories under the
+first archive retain current-tail strict, source and reached-state reports.
 The [magic ledger](../coverage/semantics/generator-magic-factory-review.json)
 binds tested cuts and preserves the initial syntax and missed-stage fixture
 failures with zero credit.
@@ -287,6 +289,8 @@ I85 direct magic-Generator native, unchanged refusal, private compiler and new
 source/state evidence is retained under
 `../php-spec-evidence-archive/generator-direct-magic-method-85/` and
 `../php-spec-evidence-archive/generator-direct-magic-method-85-review/`.
+The first archive's `actual-tail-bd274/` retains joined strict, source and
+reached-state reports.
 The [direct magic ledger](../coverage/semantics/generator-direct-magic-review.json)
 keeps original compiler, COUNT, Fiber-consumer and fixture-prefix failures
 separate from corrected and new checks.
@@ -295,9 +299,35 @@ I86 captured-method body native, unchanged refusal, private compiler and new
 source/state evidence is retained under
 `../php-spec-evidence-archive/generator-captured-method-body-86/` and
 `../php-spec-evidence-archive/generator-captured-method-body-86-review/`.
+The first archive's `actual-tail-4462/` retains joined strict, source and
+reached-state reports.
 The [captured body ledger](../coverage/semantics/generator-captured-method-body-review.json)
 records the shared ATTR07 borrowing dependency and original compiler/storage
 failures alongside their narrow corrections.
+
+I87 raw method native, private compiler, source and reached-state evidence is
+retained under `../php-spec-evidence-archive/generator-raw-method-factory-87/`
+and `../php-spec-evidence-archive/generator-raw-method-factory-87-review/`.
+The first archive's `actual-tail-833e/` and `joined-state-1f0e/` retain the
+joined reports, including the strengthened empty-shutdown closed-history state.
+The [raw method ledger](../coverage/semantics/generator-raw-method-factory-review.json)
+keeps original failures separate from accepted checks.
+
+I88 raw method cache and THROW evidence is retained under
+`../php-spec-evidence-archive/generator-raw-method-cache-88/` and
+`../php-spec-evidence-archive/generator-raw-method-cache-88-review/`.
+The first archive's `actual-tail-1ecc/` retains joined strict, three sources,
+affected old fresh/warm states and an independent reached state.
+The [raw cache ledger](../coverage/semantics/generator-raw-method-cache-review.json)
+keeps original failures and the calibrated owner diagnostic separate.
+
+I89 captured method THROW evidence is retained under
+`../php-spec-evidence-archive/generator-captured-method-throw-89/` and
+`../php-spec-evidence-archive/generator-captured-method-throw-89-review/`.
+The first archive's `actual-tail-c81b/` retains joined strict, three exact
+sources and fresh/closed reached-state reports.
+The [captured THROW ledger](../coverage/semantics/generator-captured-method-throw-review.json)
+keeps original nominal, bindTo and interpreter failures separate.
 
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under

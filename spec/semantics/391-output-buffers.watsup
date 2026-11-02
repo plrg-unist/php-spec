@@ -42,6 +42,7 @@ dec $ob_notice_message(pobnotice) : preqbytes
 dec $ob_notice(pstate, pconfigcall, pvalue, bool, bool, nat?) : pstate
 dec $ob_notice_valid(pstate, pobnotice) : bool
 dec $ob_notice_task(ptask, pobnotice) : bool
+dec $ob_notice_tasks(pstate, pobnotice) : bool
 dec $ob_operation(pstate, pconfigcall, pvalue*) : pstate
 dec $ob_chunk(int) : int
 dec $ob_snapshot(pstate, pintrinsic, preqbytes) : pstate
@@ -112,10 +113,17 @@ def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "stdout diagnostic rendering 
 dec $output_deactivate_boundary(pstate) : bool
 dec $output_final_exception_abrupt(pstate) : bool
 dec $output_final_exception_abort(pstate) : pstate
+dec $executor_boundary(pstate) : text?
+dec $executor_scope(pstate) : bool
+dec $executor_normal_scope(pstate) : bool
+def $executor_boundary(S) = eps -- otherwise
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED $ob_user_boundary_reason(S)] -- if ~S.OUTPUTBLOCKED /\ $ob_user_boundary(S)
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "reentrant or abrupt output deactivation cleanup"] -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ $output_deactivate_boundary(S)
 def $output_guard(S) = $output_final_exception_abort(S) -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ $output_final_exception_abrupt(S)
-def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ ~$output_final_exception_abrupt(S)
+def $output_guard(S) = S[.COMPLETION = UNSUPPORTED text]
+  -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ ~$output_final_exception_abrupt(S)
+  -- if $executor_boundary(S) = (text)
+def $output_guard(S) = S -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ ~$output_deactivate_boundary(S) /\ ~$output_final_exception_abrupt(S) /\ $executor_boundary(S) = eps
 
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 1) =/= 0) -- if S.COMPLETION = FATAL n* z
 def $output_deferred_stdout(S) = ($long_and(S.REPORTING, 64) =/= 0) -- if S.COMPLETION = STATICERROR text z
@@ -366,6 +374,9 @@ def $ob_failure_verb(pintrinsic) = $ptascii("send") -- if $ob_pop_kind(pintrinsi
 def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to delete buffer of default output handler (") ++ $decimal_integer(n) ++ [41]
   -- if pobnotice.WRAPPER
   -- if pobnotice.LEVEL = (n)
+def $ob_notice_message(pobnotice) = $ptascii("ob_start(): Failed to create buffer")
+  -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
+  -- if ~pobnotice.WRAPPER /\ ~pobnotice.SECOND /\ pobnotice.LEVEL = eps /\ pobnotice.VALUE = PBOOL false
 def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to ") ++ $ob_failure_verb(pobnotice.CALL.KIND) ++ $ptascii(" buffer of default output handler (") ++ $decimal_integer(n) ++ [41]
   -- if ~pobnotice.WRAPPER
   -- if pobnotice.LEVEL = (n)
@@ -386,17 +397,39 @@ def $ob_notice_valid(S, pobnotice) = true
   -- if pobnotice.OWNER = $dir_warning_owner(S, S.FRAMES)
   -- if pobnotice.CALL.SENT = eps
   -- if $config_slots_valid(S, [NAMED_SENT (KNOWN pobnotice.VALUE)])
-  -- if $ob_pop_kind(pobnotice.CALL.KIND) \/ $ob_active_operation(pobnotice.CALL.KIND)
+  -- if $ob_pop_kind(pobnotice.CALL.KIND) \/ $ob_active_operation(pobnotice.CALL.KIND) \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps /\ pobnotice.VALUE = PBOOL false /\ ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps)
   -- if pobnotice.WRAPPER = false \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.SECOND /\ pobnotice.LEVEL =/= eps)
   -- if ~pobnotice.SECOND \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL =/= eps)
   -- if $ob_get_kind(pobnotice.CALL.KIND) /\ pobnotice.LEVEL =/= eps \/ pobnotice.VALUE = PBOOL false
   -- if ~$ob_get_kind(pobnotice.CALL.KIND) \/ pobnotice.LEVEL = eps \/ $string_bytes(pobnotice.VALUE) =/= eps
-  -- if S.TODO = ptask :: pobnotice.TAIL
-  -- if $ob_notice_task(ptask, pobnotice)
+  -- if $ob_notice_tasks(S, pobnotice)
 def $ob_notice_valid(S, pobnotice) = false -- otherwise
+def $ob_notice_tasks(S, pobnotice) = $ob_notice_task(ptask, pobnotice)
+  -- if S.TODO = ptask :: pobnotice.TAIL
+;; The selected handler's retval is retired before its saved Notice resumes.
+def $ob_notice_tasks(S, pobnotice) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: pobnotice.TAIL
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+def $ob_notice_tasks(S, pobnotice) = false -- otherwise
 def $ob_notice_task(OB_NOTICE_RESULT pobnotice, pobnotice) = true
 def $ob_notice_task(ERROR_HANDLER_INVOKE perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
 def $ob_notice_task(ERROR_HANDLER_RESULT perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+def $ob_notice_task(ERROR_HANDLER_CLEAN perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+def $ob_notice_task(API_CALLBACK_SEND papiargcursor, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_notice_task(API_CALLBACK_REF papiargcursor, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
 def $ob_notice_task(ptask, pobnotice) = false -- otherwise
 def $call_task_valid(S, OB_NOTICE_RESULT pobnotice) = $ob_notice_valid(S, pobnotice)
 def $task_nodes(OB_NOTICE_RESULT pobnotice) = $config_nodes(pobnotice.CALL)
@@ -435,6 +468,7 @@ rule PhpStep/ob-notice-wrapper-no-active: S ~> S[.COMPLETION = UNSUPPORTED "outp
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_return(S[.OUTPUTSEQ = $(S.OUTPUTSEQ + 1)][.OUTPUTBUFFERS = poutputbuffer :: S.OUTPUTBUFFERS], PBOOL true)
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if ~$ob_user_running(S)
+  -- if ~$executor_scope(S)
   -- if n_chunk = $nabs($ob_chunk(i_chunk))
   -- if poutputbuffer = {ID S.OUTPUTSEQ, HANDLER eps, CHUNK n_chunk, FLAGS $long_and($error_int32(i_flags), $(-61456)), SIZE $output_initial_size(n_chunk), BYTES eps}
 def $ob_chunk(i) = 0 -- if $(i < 0)

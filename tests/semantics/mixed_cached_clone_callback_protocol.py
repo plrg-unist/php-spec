@@ -499,7 +499,7 @@ $entry_lookup(S_return.ARRAYS[n_table_copy].ITEMS,KSTRING $ptascii("tail")) = (D
                     reached += ['~(HOBJECT n_source <- S_return.ALLOCATIONS)',
                         '~(HOBJECT n_payload <- S_return.ALLOCATIONS)',
                         '$node_children(S_return,HARRAY n_table_copy) = eps',
-                        '~$clone_mixed_ready(S_return,n_copy)']
+                        '$clone_mixed_ready(S_return,n_copy)']
                 reached += reach('S_result','S_return','CK_RESULT') + RESULT
                 if name == 'singleton':
                     reached += reach('S_changed','S_delivery','CK_OUTPUT ($ptascii("U:C|tag:2|extra:7|tail:8|c|A|1/7|B|9/7|"))') + SINGLETON_LATE

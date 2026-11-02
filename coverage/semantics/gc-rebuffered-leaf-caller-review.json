@@ -1,0 +1,36 @@
+{
+  "scope": "GC15: canonical materialized destructor collection from an active direct real-Closure caller with one childless ordinary stdClass capture, including a buffered leaf protected by the live Closure.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc13_base": "ba5831887d141c3dc78f0f9ccf6e326b8215709c",
+    "gc14_control": "9a189ff265dd9a87784e6d5a83f05478b5ffa27e",
+    "gc15_native": "1cdc3399597e04dd2d20e73673de970234c87a3e",
+    "gc15_semantic": "5ffa273277364c4df6dff78e773a21c0c25b6eba"
+  },
+  "source_sha256": "f1c0af0c8bb2cb9d235b32bb4b071a7ce1b9bd129a23c78f12c1d66834e3ed65",
+  "validation": {
+    "gc14_control": "A separate native status case sees roots 0 to 1 after global token unset. The corrected NEXT0 strict reached group passes 36 checks: the first P|0 collection sees a valid buffered token, owner 2 and black protection. Its unchanged source matches PHP. Two earlier NEXT1 fixture failures sampled the later collection and have zero discrepancy credit; no GC14 production rule was changed.",
+    "native_and_model": "The new GC15 original releases an owning token copy after P|0. Native status observes P|0|R|0|1|live, and native/model agree byte for byte on T|P|0|D|3|split|0|H|3|dead|0|END with exit 0 and empty stderr at clean 5ffa. Reports record stable inputs/HEAD, no timeout and fully reaped groups.",
+    "preedit": "The unchanged model refused cached ordinary property-table collection after T|P|0|, with zero source agreement. A strict 41-check reached diagnostic bound the actual valid buffered childless token, Closure and token owners 2, black protection, and the sole GC13 ordinary-node/count-source refusal.",
+    "reached": "The new strict reached group passes 103 assertions: the real token buffer slot is removed as black before the D/held count plan, which retains the existing source/count/white and erasure checks. The one affected GC13 strict group passes 101 after deleting its two-line constructed buffered-token refusal; the old 103-check report remains historical evidence at its original cut.",
+    "zero_credit": "The GC13 constructed buffered-token negative is superseded by a real GC15 source/reached state, not a PHP failure. GC14's two wrong-phase fixture failures, the GC15 pre-edit Unsupported, and packet4's two pre-execution launcher failures receive no agreement credit. The second launcher refused an existing report before creating its own report; its stderr is archived. No older native or model source campaign was replayed."
+  },
+  "reports": {
+    "gc-buffered-leaf-caller-14-author/packet1/native-report.json": "88684ca5019d062278aa4814ffc06077b737ce5e3c145d0ecde56f42b8c92111",
+    "gc-buffered-leaf-caller-14-author/packet1-status/native-report.json": "1ae11c2e1b3bf1948eda441af0ba05847ab4625d55293aa7dee2ddde597c1154",
+    "gc-buffered-leaf-caller-14-author/packet2/model-buffered-leaf-captured-direct-caller-report.json": "5499e6fd33754f93fe98d1b52732f5cd64d713712d4ed95e6f24bd216a4c81e9",
+    "gc-buffered-leaf-caller-14-author/packet3/prebegin-first-result/report.json": "721c94659025f089317f48b5f10eefd683444ac14fbe550e69ca4a4eff4d4949",
+    "gc-rebuffered-leaf-caller-15-author/packet1/native-report.json": "329189b6ffef77ba7acaf58b517392bf87db401507f4ae16a8538688af98bdf1",
+    "gc-rebuffered-leaf-caller-15-author/packet1/model-rebuffered-leaf-captured-direct-caller-report.json": "83893940e4a65cc4b1ca74a8d3b55724fb4fae0599df2c71166335be63a3c834",
+    "gc-rebuffered-leaf-caller-15-author/packet2/prebegin-result/report.json": "f6b2d048a95bfdd593fdcaadf94d51e9a768bc529cabbb96fe7b1cf503ab1409",
+    "gc-rebuffered-leaf-caller-15-author/packet3/new-reached/report.json": "29d094e77ba273cc7a727f85749e61e914a957c48e62513e70bab71be0f890f3",
+    "gc-rebuffered-leaf-caller-15-author/packet3/affected-gc13/report.json": "baafefd31ee7383c4ab88edd908e250224259853ea171e011581f10507e7280c",
+    "gc-rebuffered-leaf-caller-15-author/packet4/launcher-failure-original-report.json": "c52c9007e41d05453b9489a544cc264484b5a4889815677b0c9e422705836a46",
+    "gc-rebuffered-leaf-caller-15-author/packet4/launcher-refused-existing-report.stderr.txt": "f2d8fabcedea7f683acc859cdda7bd5382fdae0e95db881bbd2e90e29ab41927",
+    "gc-rebuffered-leaf-caller-15-author/packet4/model-rebuffered-leaf-captured-direct-caller-report.json": "fc437c88970e37912f6c701ba9389321376ec9197e1aaa983bdec3fdf5b9412c"
+  },
+  "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean 5ffa. Actual-tail interaction review and joined manifest remain pending.",
+  "limits": "The admitted caller is an authenticated active saved direct CLOSURE_TARGET with a raw REALCLOSURE, one DIRECT captured allocated childless STDINSTANCE and a real machine root. The tested leaf is propertyless; the structural rule also permits scalar-property leaves. Graph traversal, owner counting and physical count order are unchanged. Object backedges, reference/array captures, captured destructors, explicit invoke/pipe, Fiber/worker/residual/reentry and wider materialized plans retain their fences. Source-selected target shape does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-buffered-leaf-caller-14-author and gc-rebuffered-leaf-caller-15-author. The first-pass control is retained at branch semantics/gc-buffered-leaf-caller-14; new source/status and affected reached fixtures are in tests/semantics. No bulky artifacts are in Git."
+}

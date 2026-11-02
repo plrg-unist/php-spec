@@ -135,7 +135,7 @@ def $api_callback_warn(S, pfunction, papiargcursor) = S
   -- if $function_deprecated(S, pfunction) = NO_DEPRECATED
 def $api_callback_warn(S, pfunction, papiargcursor) = $error_dispatch(S, 16384, ptbytes, papiargcursor.LINE, $api_cursor_deprecated_event(S, papiargcursor, ptbytes), API_CALLBACK_SEND papiargcursor)
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
-  -- if ptbytes = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if ptbytes = $deprecated_warning_message(S, pfunction, papiargcursor.TARGET, ptbytes_message, ptbytes_since)
 def $api_callback_warn(S, pfunction, papiargcursor) = S[.COMPLETION = UNSUPPORTED "Deprecated API callback attribute"] -- otherwise
 
 def $api_nodes_present(S, eps) = true
@@ -346,7 +346,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if $target_function(S_history, papiargcursor.TARGET) = (pfunction)
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
   -- if perrorcall.LEVEL = 16384
-  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if perrorcall.MESSAGE = $deprecated_warning_message(S_history, pfunction, papiargcursor.TARGET, ptbytes_message, ptbytes_since)
   -- if perrorcall.EVENT = $api_cursor_deprecated_event(S, papiargcursor, perrorcall.MESSAGE)
 def $error_call_valid(S, perrorcall) = true
   -- if S.ORIGIN = (perrorcall.SITE)

@@ -1,0 +1,28 @@
+{
+  "scope": "GC16: canonical materialized destructor collection from an active direct real-Closure caller with one runtime-written childless array capture absent from the D buffer.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc15_base": "77a95180d52ba2e4beabc79024da3507ebc749a5",
+    "gc16_native": "844773d0e344d8087c1828731988438b3e773266",
+    "gc16_semantic": "77ea428d8ffd1eccebdfda73f47a283c8978009a"
+  },
+  "source_sha256": "201e4a643717193f04bd037fa06696d945c576c194000b0467a3f1176cd4d40b",
+  "validation": {
+    "native": "The original runtime-writes [] then index 0=11 before by-value Closure capture. It outputs T|P|0|D|3|split|0|H|3|dead|0|END, exit 0 and empty stderr. A separate native-only copy-release control outputs P|0|R|0|1|live, showing this runtime array can enter the native candidate buffer. Both run at clean 844 with stable inputs/HEAD, no timeout and fully reaped groups.",
+    "preedit": "The unchanged model stops Unsupported cached ordinary property-table collection after T|P|0|, with zero source agreement. A strict pre-D reached diagnostic passes 43 checks: one allocated nonimmutable HARRAY with scalar 0=>11 is the same global, captured and local array; it has no child edge, no D candidate slot and three owners. Only the active Closure blocks ordinary count-source admission.",
+    "fix": "The new 301 clause admits only the authenticated active saved direct real-Closure caller with one DIRECT array capture, a live nonimmutable array absent from the buffer, no ordinary or physical GC trace children, and a real Closure machine root. Existing graph, count walk and owner functions are unchanged.",
+    "reached": "The affected strict SL group passes 106 assertions at clean 77ea, including the actual array shape/owners, count and white-set continuation, source/body-site/active erasures, and a constructed buffered-array refusal. The constructed refusal is a predicate boundary, not a PHP source agreement.",
+    "model": "The unchanged original source agrees byte for byte with retained native output at clean 77ea: normal, exit 0, empty stderr, one source agreement, stable inputs/HEAD, no timeout and fully reaped process group. No accepted GC11-15 campaign was replayed."
+  },
+  "reports": {
+    "gc-array-leaf-caller-16-author/packet1/native-report.json": "07d3f8570ecd4a9189c386fda35ce28fb7507a340ce5cb2d73d0f287cddc368f",
+    "gc-array-leaf-caller-16-author/packet1/model-array-leaf-captured-direct-caller-report.json": "a6d8e6f23caff3c4e4e0b8c355241ce1eb020b7c56ea071b2d7e07f7c246bdd0",
+    "gc-array-leaf-caller-16-author/packet2/prebegin-result/report.json": "218fb9cec584a0464a896c6a227476da8308c7f649b815a1a44637f74da8b85a",
+    "gc-array-leaf-caller-16-author/packet3/array-leaf-reached/report.json": "d74601e588948202f6019e14079fd7dac73a6286f05ca2f83686a1a66a8810b6",
+    "gc-array-leaf-caller-16-author/packet3/model/model-array-leaf-captured-direct-caller-report.json": "35e157272002e25667031810ace657f8b2c5e48b5b304c5e32ebc1004cba8baf"
+  },
+  "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean 77ea. Concise docs and actual-tail interaction/join review remain pending.",
+  "limits": "The tested array is runtime-written under an opcache-disabled CLI profile. The model's nonimmutable flag is a structural check, not a proof about every nonempty persistent array; that provenance is untested. Buffered active array captures and indirect bucket children are fenced by explicit premises. COW after capture, reference captures, deeper graphs, explicit invoke/pipe and wider collector contexts are untested. Source-selected target shape does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-array-leaf-caller-16-author; new source/status and reached fixtures are in tests/semantics. No bulky artifacts are in Git."
+}

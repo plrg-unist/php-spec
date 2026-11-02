@@ -1,0 +1,57 @@
+[
+  {
+    "id": "enum-is-callable-published-prefix",
+    "source": "<?php\nenum ImmediateInt: int { case One = 1; }\nenum ImmediatePure { case A; }\n\necho is_callable('ImmediateInt::from') ? 'string|' : 'BAD|';\necho is_callable([ImmediateInt::class, 'tryFrom']) ? 'class-array|' : 'BAD|';\necho is_callable([ImmediateInt::One, 'from']) ? 'case-array|' : 'BAD|';\necho is_callable('ImmediatePure::cases') ? 'pure-cases|' : 'BAD|';\necho is_callable('ImmediatePure::from') ? 'BAD|' : 'pure-no-from|';\necho is_callable('ImmediatePure::from', true) ? 'pure-syntax|' : 'BAD|';\necho is_callable([ImmediateInt::One, 'missing']) ? 'BAD|' : 'case-no-method|';\necho is_callable([ImmediateInt::One, 'missing'], true) ? 'case-syntax|' : 'BAD|';\necho ImmediateInt::from(1) === ImmediateInt::One ? 'cold-case|' : 'BAD|';\n",
+    "source_sha256": "1b241c7ebd1d8d9d0d9f4d2705a7626685afedf3fd058eac4d3b21b6cd0fe867",
+    "expected_model": "normal",
+    "expected_normal_stdout": "string|class-array|case-array|pure-cases|pure-no-from|pure-syntax|case-no-method|case-syntax|cold-case|",
+    "purpose": "Published enum strings and class/case arrays, generated positives, absent-method negatives, syntax-only and cold backing table."
+  },
+  {
+    "id": "enum-is-callable-dynamic-pipe",
+    "source": "<?php\nenum QueryBacked: int { case One = 1; }\nenum QueryPure { case A; }\n\n$callee = 'is_callable';\nfunction change_callee(): string {\n    global $callee;\n    $callee = 'is_int';\n    echo 'REBIND|';\n    return 'QueryBacked::from';\n}\n\necho $callee(change_callee()) ? 'selected|' : 'BAD|';\necho $callee === 'is_int' ? 'rebound|' : 'BAD|';\necho ('QueryBacked::from' |> 'is_callable') ? 'pipe-yes|' : 'BAD|';\necho ('QueryPure::from' |> 'is_callable') ? 'BAD|' : 'pipe-no|';\n",
+    "source_sha256": "362b17540ee50b3a1cd6c9a6981220baabb14bd68e03c86cef44d5c77b664f4e",
+    "expected_model": "normal",
+    "expected_normal_stdout": "REBIND|selected|rebound|pipe-yes|pipe-no|",
+    "purpose": "Dynamic callee selection before argument rebinding and pipe string query of backed and pure enums."
+  },
+  {
+    "id": "enum-is-callable-third-output-unsupported",
+    "source": "<?php\nenum NameCheck: int { case A = 1; }\n$name = 'before';\n$ok = is_callable('NameCheck::from', false, $name);\necho ($ok ? 'yes' : 'no'), ':', $name, '|';\n",
+    "source_sha256": "9e33ee2f631e8f116a1a6960c287528040cc4667647377b11e7e16915ae6c93b",
+    "expected_model": "unsupported",
+    "purpose": "The third byref output mutates a caller slot; keep it explicit Unsupported until writable-location semantics are added."
+  },
+  {
+    "id": "enum-is-callable-published-malformed-arrays",
+    "source": "<?php\nenum ShapeBound: int { case One = 1; }\n\necho is_callable([ShapeBound::class, 'from'], true) ? 'class-valid|' : 'BAD|';\necho is_callable([ShapeBound::One, 'from'], true) ? 'case-valid|' : 'BAD|';\necho is_callable([ShapeBound::class], true) ? 'BAD|' : 'class-short|';\necho is_callable([ShapeBound::One], true) ? 'BAD|' : 'case-short|';\necho is_callable([ShapeBound::class, 'from', 'extra'], true) ? 'BAD|' : 'class-long|';\necho is_callable([ShapeBound::class, 1], true) ? 'BAD|' : 'class-method-type|';\necho is_callable([ShapeBound::One, 1], true) ? 'BAD|' : 'case-method-type|';\necho is_callable([ShapeBound::class, 'from']) ? 'class-runtime|' : 'BAD|';\n",
+    "source_sha256": "cc32e227bf4f0050dc047bfb9f0b62095d4f081c2592d5c61d20fa7dc734b38a",
+    "expected_model": "normal",
+    "expected_normal_stdout": "class-valid|case-valid|class-short|case-short|class-long|class-method-type|case-method-type|class-runtime|",
+    "purpose": "Published enum receiver remains source-certified while malformed array length and method type fail syntax-only query."
+  },
+  {
+    "id": "enum-is-callable-magic-prefix",
+    "source": "<?php\nenum QueryStaticMagic {\n    case A;\n    public static function __callStatic(string $name, array $args): mixed { return null; }\n}\nenum QueryInstanceMagic {\n    case A;\n    public function __call(string $name, array $args): mixed { return null; }\n}\nenum QueryUserMethod {\n    case A;\n    public static function from(mixed $value): self { return self::A; }\n}\n\necho is_callable('QueryStaticMagic::from') ? 'static-from|' : 'BAD|';\necho is_callable([QueryStaticMagic::class, 'tryFrom']) ? 'static-try|' : 'BAD|';\necho is_callable([QueryStaticMagic::A, 'missing']) ? 'BAD|' : 'static-case-no|';\necho is_callable('QueryInstanceMagic::missing') ? 'BAD|' : 'instance-string-no|';\necho is_callable([QueryInstanceMagic::class, 'missing']) ? 'BAD|' : 'instance-class-no|';\necho is_callable([QueryInstanceMagic::A, 'missing']) ? 'instance-case|' : 'BAD|';\necho is_callable('QueryUserMethod::from') ? 'user-string|' : 'BAD|';\necho is_callable([QueryUserMethod::class, 'from']) ? 'user-array|' : 'BAD|';\n",
+    "source_sha256": "5c86f066c471249d0a2eb5dbcb67502493f74d1d18a572ed6af206ca4c09a750",
+    "expected_model": "normal",
+    "expected_normal_stdout": "static-from|static-try|static-case-no|instance-string-no|instance-class-no|instance-case|user-string|user-array|",
+    "purpose": "Receiver-specific magic fallback on published pure enums, absent generated names and explicit user method controls."
+  },
+  {
+    "id": "enum-is-callable-user-case-method",
+    "source": "<?php\nenum QueryCaseMethod {\n    case A;\n    public function ping(): string { echo 'BAD:ping|'; return 'ping'; }\n    public static function stat(): string { echo 'BAD:stat|'; return 'stat'; }\n}\n\necho is_callable([QueryCaseMethod::A, 'ping']) ? 'case-instance|' : 'BAD|';\necho is_callable([QueryCaseMethod::class, 'ping']) ? 'BAD|' : 'class-instance-no|';\necho is_callable('QueryCaseMethod::ping') ? 'BAD|' : 'string-instance-no|';\necho is_callable([QueryCaseMethod::A, 'stat']) ? 'case-static|' : 'BAD|';\necho is_callable([QueryCaseMethod::class, 'stat']) ? 'class-static|' : 'BAD|';\necho is_callable('QueryCaseMethod::stat') ? 'string-static|' : 'BAD|';\necho is_callable([QueryCaseMethod::A, 'missing']) ? 'BAD|' : 'case-missing-no|';\n",
+    "source_sha256": "2f89d80f43a159d0206f028f91e76abfbd4c9b775a685312a0bfab8e98d2be09",
+    "expected_model": "normal",
+    "expected_normal_stdout": "case-instance|class-instance-no|string-instance-no|case-static|class-static|string-static|case-missing-no|",
+    "purpose": "Live enum case-array query of direct public instance/static user methods without running either body, plus class and missing controls."
+  },
+  {
+    "id": "enum-is-callable-wide-shape",
+    "source": "<?php\nenum QueryWideShape { case A; }\n\n$missing0 = [1 => QueryWideShape::class, 2 => 'cases'];\n$nonclass = [0 => 17, 1 => 'cases'];\n$reordered = [1 => 'cases', 0 => QueryWideShape::class];\n\necho is_callable($missing0, true) ? 'BAD|' : 'missing-syntax-no|';\necho is_callable($missing0) ? 'BAD|' : 'missing-runtime-no|';\necho is_callable($nonclass, true) ? 'BAD|' : 'nonclass-syntax-no|';\necho is_callable($nonclass) ? 'BAD|' : 'nonclass-runtime-no|';\necho is_callable($reordered, true) ? 'reordered-syntax|' : 'BAD|';\necho is_callable($reordered) ? 'reordered-runtime|' : 'BAD|';\necho is_callable([QueryWideShape::A, 'cases']) ? 'case-valid|' : 'BAD|';\n",
+    "source_sha256": "0d7973a9035ee032b11491af1b2c4b72c5bc7413f72f8032722043ce242f748d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "missing-syntax-no|missing-runtime-no|nonclass-syntax-no|nonclass-runtime-no|reordered-syntax|reordered-runtime|case-valid|",
+    "purpose": "Array shape rejects missing key 0 and nonclass receiver before syntax-only or runtime lookup; reordered valid keys remain callable."
+  }
+]

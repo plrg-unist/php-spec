@@ -715,8 +715,7 @@ shared DAGs compare normally without memoizing a repeated pair as equal.
 Identity precedes the existing aggregate/active-left recursion guard, which
 precedes count; key lookup precedes cell dereference. Reached same-class bodies
 include `stdClass` and source instances with authenticated finite parent paths
-and initialized public
-properties, locally authenticated interfaces, no hooks/readonly state, and
+and declared properties of any visibility, including INITIAL/UNSET holes, locally authenticated interfaces, no hooks/readonly state, and
 ordinary current tables.
 Their methods are not invoked by comparison. Reached tables materialize through the usual comparer; only
 normal equality continues with the resulting state.
@@ -802,11 +801,12 @@ other held contexts are untouched.
 [Captured-Throwable review](../../coverage/semantics/throwable-captured-comparison-review.json).
 
 The visited ordinary image admits method-bearing source classes with an
-initialized public effective layout, including no instance slots. Published/live class checks,
+effective layout of any visibility, including declared INITIAL/UNSET slots or no instance slots.
+Published/live class checks,
 nonreadonly state, no property hooks and exact inline or ordinary
 cached-table authentication remain required. Methods, including magic get/isset
-traps, are not invoked by object/object comparison. Older fully authenticated
-walkers stay methodless; only the visited image changes. Current ALIAS contents,
+traps, are not invoked by object/object comparison. Older whole-graph admissions
+retain their public-layout and methodless fences; only the visited image changes. Current ALIAS contents,
 DIRECT copies, table locators, early count/key decisions and real active-left
 recursion Error retain the existing fold and ownership rules.
 
@@ -833,6 +833,17 @@ contents, copied arrays and cached INDIRECT fields keep their existing owners.
 Builtin parents and wider layouts/lifetimes remain partial.
 [Inherited-image review](../../coverage/semantics/throwable-trace-inheritance-comparison-review.json).
 
+Initialized private and protected backing slots retain their exact descriptor
+`KEY` and `DECL` authority. Parent/child private declarations with the same name
+keep distinct class-mangled keys; a protected override keeps its physical slot
+position. Inline entries and actual cached INDIRECT fields read the same live
+slots without access callbacks. Initialized nonpublic fields now produce real
+ordinary caches even when foreach yields no visible member. The existing declared clone copier retargets mangled
+locators and attaches each copy's property type source. Shared typed cells remain constrained while the
+property object survives in a captured trace; final object retirement removes
+that property type source while an array-view alias can remain alive.
+[Nonpublic-image review](../../coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+
 Two truly inline same-class objects with no instance slots compare equal before
 checking the active-object recursion guard. Static fields and uncalled methods
 add no instance slots. Identity and class decisions still come first; equal
@@ -841,9 +852,36 @@ A real table on either side instead selects table identity, recursion, count,
 key and value order, materializing the other side when needed. Empty foreach
 now creates an actual empty ordinary table; a pure inline array cast remains a
 copy without materializing the object. Views, live aliases, COW and last-owner
-retirement use the existing storage rules. Dynamic UNSET images and inherited
-dynamic layouts retain their separate limits.
+retirement use the existing storage rules. Inherited zero-layout dynamic images
+retain their separate limits.
 [Empty-image review](../../coverage/semantics/throwable-trace-empty-layout-comparison-review.json).
+
+Declared INITIAL and UNSET slots retain their physical positions. In a nonempty
+inline pair, the active-object recursion guard runs first; two undefined slots
+skip, while either one-sided undefined slot gives order +1 in both directions.
+An actual cache retains every declared INDIRECT bucket, including holes. Raw
+bucket count and key lookup precede deindirection; two undefined values skip,
+left undefined gives -1, and right undefined gives +1. Pure cast views omit
+undefined values without materializing the object. Cached clones retarget the
+hole locators to their copied slots. Live aliases, Previous/trace ownership and
+later severity decisions use the existing stateful fold. A public INITIAL
+image still refuses a reached materialized-property Stringable continuation;
+the existing public declared-UNSET callback policy is unchanged. Readonly
+classes and hook images retain their fences.
+[Declared-hole review](../../coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
+
+Deleted dynamic lookup mirrors are also admitted under the existing ordinary
+class/table authority. They have no live bucket, unlike a declared INDIRECT
+hole. Live count, missing keys and current table traversal order decide before
+later values; reinserting a key can change that order despite an older mirror
+position. Synchronization skips a dead mirror when a later live same-name row
+exists, preserving the key's position and serial during unrelated writes.
+Dynamic cast views can share a table; COW separates owning buckets without
+adding owners for lookup mirrors. Existing active-left recursion, identity and
+last-owner cleanup retain their normal rules. No scalar or Stringable callback
+policy changes. Inherited zero-layout dynamic images, readonly classes, hooks
+and wider lifetimes remain bounded.
+[Dynamic-deletion review](../../coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
 
 Legal `__isset` declarations may omit the parameter type while keeping the
 existing arity/reference/default/return restrictions. Its language-triggered
@@ -854,8 +892,8 @@ existing arity/reference/default/return bounds. It preserves the typed signature
 the separate getter callback predicate in modules 380/408 still requires its
 existing untyped parameter. Other legal getter return declarations remain
 Unsupported.
-Private/uninitialized layouts, builtin parents, hooks, readonly and wider
-callback/lifetime contexts remain partial. Held lanes are unchanged.
+Builtin parents, hooks, readonly classes and wider callback/lifetime contexts
+remain partial. Held lanes are unchanged.
 [Method-image review](../../coverage/semantics/throwable-trace-methods-comparison-review.json).
 
 The older fully authenticated warm route puts nonempty traces in the physical slot

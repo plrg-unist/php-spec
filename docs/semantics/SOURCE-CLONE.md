@@ -24,6 +24,36 @@ releases it. Five source agreements and 378 focused premises have separate cuts.
 This unary-clone evidence excludes dynamic buckets, clone callbacks, readonly,
 active collection and wider cached/type/lifetime histories.
 
+Initialized private/protected declared caches now use the same copier: each
+mangled INDIRECT locator targets the copy, while typed aliases retain a property
+type source for each live object. Retiring the original leaves the copy's
+constraint; retiring the copy removes it while an array-view alias can survive.
+Existing callback dispatch can mutate the copy's private slot independently.
+[Nonpublic-cache review](../../coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+
+Declared INITIAL/UNSET holes use the same cached copier: each physical INDIRECT
+bucket targets the copy even when its slot has no value. Later initialization
+changes only that object's slot; array views still omit undefined values. This
+adds no clone callback, ownership or property-type algorithm.
+[Declared-hole review](../../coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
+
+Deleted-only dynamic histories now retain the native clone route. With no
+inline declarations and no effective `__clone`, the copy shares even an empty
+cached table. With an effective callback and an empty current table, its copy
+starts uncached and drops the deleted lookup mirrors. A nonempty declared
+layout beside deleted-only dynamic mirrors uses the existing mixed copier,
+retargeting declared locators and preserving each object's typed-alias source.
+Mixed declared layouts now also clone when a deleted dynamic mirror precedes a
+later live row of the same name. The fresh table copies only its current live
+bucket; the obsolete mirror is dropped from the copy after checking that the
+later live row owns that bucket. Repeated deletions retain the current key order,
+and callback writes and array views remain independent. A dead mirror with a
+copied bucket but no later live row still fails the mixed copier. Live/live
+duplicate-name and nonordinary table images remain outside this cut. Callback
+dispatch, slot copying, readonly and active-collection guards are unchanged.
+[Dynamic-deletion review](../../coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
+[Reinserted-key clone review](../../coverage/semantics/throwable-mixed-reinsert-clone-review.json).
+
 [Cached callbacks](../../coverage/semantics/cached-clone-callback-review.json)
 now consume that declared-public cache path through existing public zero-argument
 `__clone():void` methods. Actual callback foreach reads retargeted copy locators;
@@ -66,8 +96,9 @@ with an exact `#[AllowDynamicProperties]` attribute, no declared instance
 properties and a dynamic slot history. A clone without an effective `__clone`
 shares the cached table. A later FE_FETCH_RW promotion reaches both objects'
 dynamic mirrors; a writable lookup separates the writer first. If an effective
-`__clone` exists, the copy gets a separate table before the callback, even when
-the source's last dynamic bucket has been unset. Uncached empty instances
+`__clone` exists, a nonempty current table is copied before the callback; an
+empty current table starts the copy uncached even when deleted mirrors remain.
+Uncached empty instances
 retain their no-table clone route. The source and reached checks also cover
 non-clone foreach/cast observations, alias and Payload ownership, callback
 mutation/throw and actual COW after cloning. Linked parents, trait-composed
@@ -86,6 +117,12 @@ declaring scope and the copy's called class. Access is checked before allocation
 intrinsic access errors retain the authentic `clone()` trace frame. Fixed formal
 arguments and static methods are rejected in compiler order; variadic-only
 methods receive an empty array. Declared returns must be void-compatible.
+Public/default-public zero-argument nongenerator anonymous callbacks now enter
+this same path. The class-name segment of an invalid return annotation diagnostic
+uses its C-string display; the original method spelling remains intact. A
+`never` callback that falls through reports the end-of-method line. Copy-before-
+callback arrays, parent dispatch and failed-copy destructor eligibility retain
+their existing producers. [Anonymous clone review](../../coverage/semantics/anonymous-clone-review.json).
 
 The callback opens one allowance per physical readonly slot. A successful write
 consumes it; failed type conversion preserves it. Unsetting a genuinely
