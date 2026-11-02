@@ -334,24 +334,25 @@ GC20 admits that childless `stdClass` when releasing one owning local copy
 buffers it after the array. Native status observes roots 0→1→2; the exact
 original agrees, and 122 strict reached assertions bind both ordered slots,
 their removal from the D plan, and the rooted Closure/array/leaf owners.
-Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
-nonempty persistent provenance remain open.
+Pre-edit model refusal remains zero credit. At that cut, wider entries,
+backedges, COW and nonempty persistent provenance remained open.
 [GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 
 GC21 admits two distinct childless `stdClass` entries at array keys 0 and 1
 under the same direct Closure caller. The array and key-0 leaf are buffered;
 key-1 stays outside the buffer. One pinned original agrees, and 136 strict
 reached assertions check both slots, black removal, owners and a duplicate
-child refusal at that cut, superseded by GC25. The pre-edit Unsupported retains zero credit. Wider arrays,
-backedges and post-capture COW remain open.
+child refusal at that cut, superseded by GC25. The pre-edit Unsupported
+retains zero credit. At the GC21 cut, wider arrays, backedges and
+post-capture COW remained open.
 [GC21 review](coverage/semantics/gc-two-array-children-caller-review.json).
 
 GC22 admits the same two-entry array after a third owning copy release
 buffers the key-1 leaf. Pinned status sees roots 0→1→2→3; one original
 agrees, and 139 strict reached assertions prove three ordered slots,
 black D-plan removal and owners 2/3/2/2. A corrected fixture selects D
-by collection nonce 2. Pre-edit refusal remains zero credit; broader
-entries, backedges and post-capture COW remain open.
+by collection nonce 2. Pre-edit refusal remains zero credit. At the GC22
+cut, broader entries, backedges and post-capture COW remained open.
 [GC22 review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
 GC23 admits an ordered node-free scalar capture before one childless

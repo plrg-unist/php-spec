@@ -484,7 +484,8 @@ the live Closure keeps them black, and all three leave the count plan.
 Owners remain Closure 2, array 3 and each child 2. One source matches PHP
 on the full stream. Only the key-1 buffer-absence premise is removed;
 the exact two-entry/trace shape, distinct child IDs, childlessness and
-real direct Closure root remain required. See the
+real direct Closure root remain required by that clause. GC25 admits
+duplicate child IDs through the finite array clause. See the
 [buffered second child review](../../coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
 GC23 admits one node-free by-value capture before a childless mutable array
