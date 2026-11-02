@@ -290,6 +290,9 @@ A retained named BYREF Generator now copies a finite quiet owning value from
 an ordinary cell before later writes and a scalar send. Four originals and 406
 reached conditions pass; joined strict433 and terminal source/state pass at
 `186d8c368`.
+A final owning BYREF cell value now copies after a scalar send and survives
+later cell writes. Four originals and 408 reached conditions pass; joined
+strict433 and terminal source/state pass at `86082901b`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -303,6 +306,7 @@ reached conditions pass; joined strict433 and terminal source/state pass at
 [Owning final caches](coverage/semantics/config-generator-owning-cache-review.json),
 [Two owning sends](coverage/semantics/config-generator-two-owning-review.json),
 [Owning reference snapshots](coverage/semantics/config-generator-reference-owning-review.json),
+[Final owning reference snapshots](coverage/semantics/config-generator-reference-owning-cache-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
