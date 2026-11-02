@@ -89,10 +89,11 @@ one or two arguments and no third output. Two native-first originals agree,
 covering generated and absent methods, syntax-only checks, selected-name
 rebinding and cold backing tables; 43 source-reached strict SL guards pass.
 The third output, autoload and wider magic/user-method cases remain partial.
-Malformed callback arrays with a live published enum receiver at key 0 now
-return false for wrong length or nonstring method before syntax-only lookup.
-One native-first original agrees, including valid class/case controls; 23
-source-reached strict guards check both flag modes and unchanged cache.
+Malformed live callback arrays now return false for wrong length, keys,
+receiver or method type before syntax-only lookup. The first published-enum
+source and 23 reached guards still pass after the broader precheck. A new
+seven-outcome original and 46 reached guards cover missing key 0, nonclass
+receivers and valid reordered keys without cache or event changes.
 For published pure enums without the requested method, `is_callable` now
 checks source-certified `__callStatic` for class strings/name arrays and
 `__call` for case arrays. One native-first original agrees on eight outcomes,
@@ -108,6 +109,7 @@ member and show that the query enters neither user method body.
 [pipe review](coverage/semantics/enum-pipe-review.json),
 [query review](coverage/semantics/enum-is-callable-review.json),
 [shape review](coverage/semantics/enum-is-callable-shape-review.json),
+[wide-shape review](coverage/semantics/enum-is-callable-wide-shape-review.json),
 [magic review](coverage/semantics/enum-is-callable-magic-review.json),
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
 
@@ -732,7 +734,6 @@ Live/live duplicate names and nonordinary tables remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
-| Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

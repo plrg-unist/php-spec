@@ -45,5 +45,13 @@
     "expected_model": "normal",
     "expected_normal_stdout": "case-instance|class-instance-no|string-instance-no|case-static|class-static|string-static|case-missing-no|",
     "purpose": "Live enum case-array query of direct public instance/static user methods without running either body, plus class and missing controls."
+  },
+  {
+    "id": "enum-is-callable-wide-shape",
+    "source": "<?php\nenum QueryWideShape { case A; }\n\n$missing0 = [1 => QueryWideShape::class, 2 => 'cases'];\n$nonclass = [0 => 17, 1 => 'cases'];\n$reordered = [1 => 'cases', 0 => QueryWideShape::class];\n\necho is_callable($missing0, true) ? 'BAD|' : 'missing-syntax-no|';\necho is_callable($missing0) ? 'BAD|' : 'missing-runtime-no|';\necho is_callable($nonclass, true) ? 'BAD|' : 'nonclass-syntax-no|';\necho is_callable($nonclass) ? 'BAD|' : 'nonclass-runtime-no|';\necho is_callable($reordered, true) ? 'reordered-syntax|' : 'BAD|';\necho is_callable($reordered) ? 'reordered-runtime|' : 'BAD|';\necho is_callable([QueryWideShape::A, 'cases']) ? 'case-valid|' : 'BAD|';\n",
+    "source_sha256": "0d7973a9035ee032b11491af1b2c4b72c5bc7413f72f8032722043ce242f748d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "missing-syntax-no|missing-runtime-no|nonclass-syntax-no|nonclass-runtime-no|reordered-syntax|reordered-runtime|case-valid|",
+    "purpose": "Array shape rejects missing key 0 and nonclass receiver before syntax-only or runtime lookup; reordered valid keys remain callable."
   }
 ]
