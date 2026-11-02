@@ -1,0 +1,25 @@
+{
+  "scope": "is_callable third direct string-CV output for canonical two-item literal enum class/case arrays",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "d5e96d05be93a2ff3f9a428b0461cf53db0f45ec",
+  "semantic_revision": "9490de4bb1fa25cc64f8138ab0702d1f13558482",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: output-array-scalar SHA d990cc25ca6fba1218b4f19d489ced3602180203a18669f99ddab80ff79f9cf5, exact stdout, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-array-output-evidence/strict-v2/report.json: SL433 true, exit 0, empty stderr, 11.75 s, stable inputs",
+    "source": ".tools/enum-is-callable-array-output-evidence/array-source-v1/report.json: class:1:ArrayCheck::from|case:1:ArrayCheck::tryFrom| exact native/model normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-array-output-evidence/reached-v1/report.json: checked source reached strict SL, 68 checks, true, exit 0, empty stderr, stable inputs",
+    "affected_prior": [
+      ".tools/enum-is-callable-array-output-evidence/prior-literal-v1/report.json: literal generated output exact normal",
+      ".tools/enum-is-callable-array-output-evidence/prior-false-v1/report.json: absent literal output exact normal",
+      ".tools/enum-is-callable-array-output-evidence/unsupported-rebinding-v1/report.json: object destructor/alias case remains explicit Unsupported"
+    ]
+  },
+  "preserved_zero_credit": [
+    ".tools/enum-is-callable-array-output-evidence/strict-v1/report.json: malformed SEQUENCE source pattern"
+  ],
+  "behavior": "The first argument is an exact unkeyed two-item array literal with a published enum class constant or live enum case and a literal method string. Its live direct values are tied to those source children. Class-string arrays write actual key-0 class bytes plus method bytes; case arrays use the case's canonical enum descriptor name. The caller reference retains its old string through send, then receives the name before the bool without event or backing-cache change.",
+  "remaining": "Other class-name spellings, nonliteral/aliased arrays, old-object destructor effects, input/output aliasing, named/unpacked output and autoload remain partial."
+}

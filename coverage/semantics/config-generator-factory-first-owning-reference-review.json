@@ -1,0 +1,128 @@
+{
+  "milestone": "A91 BYVAL factory returned BYREF Generator first owning reference copy",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...namedZeroArgumentByvalFactory()) returning a distinct named zero-argument BYREF Generator with ordinary local reference cells",
+    "behavior": "In the five originals, the first finite quiet owning value is copied before its source cell becomes scalar. A separate scalar final cell supports normal DATA/INPUT and real storage release, leaving the old copy in TypeError TraceArgs; terminal and one-item early saved throws release the copy before catch. Factory-created weak Generator and payload observers distinguish these lifetimes. Authored object and peer ARRAY COW originals cover the same source route.",
+    "limits": "First and final keys normalize to integer, the two-send final cell uses the existing primitive-scalar policy, and early throw requires a scalar current first cell. Typed/backed cells, owning cached early throw, effectful finalizers and wider factory/Generator forms remain separate; outside aliases are not independently exercised here."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "4f2a81aca3a0989a78ca5856e163a2b4c2ef95ca",
+    "runtime_revision": "8fa7929ea92baffd6d0d33c5e1ebc9bef01bd22b",
+    "validated_revision": "fb5899afcc5e662d0f28ffc2236fc1ec3f4f8e53",
+    "change": "The two existing temporary first-owning structural history rules and first live owning send also accept the already authenticated BYVAL factory\u2192BYREF Generator source. Current ordinary REFCELL, finite quiet value, integer key and Gen owner2 gates remain. Existing bounded first-copy history, scalar final storage/INPUT cleanup and one-item scalar-cell discard carry both completion paths. This factory admission leaves the existing direct-CV path unchanged and does not admit a factory two-owning second send.",
+    "engine": "Zend SEND_UNPACK in zend_vm_def.h copies dereferenced yields and drops iterator DATA before INPUT; zend_generator_free_storage in zend_generators.c releases the cached reference edge."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned project binary/profile; checked frontend and SL/cache-off/determinism-on model; serial pinned CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-factory-first-owning-reference-91",
+    "native_only": {
+      "author": {
+        "revision": "d7def3b6376fbc87fef4502440cb559a976d4288",
+        "report": "native-author-d7def3b63/report.json",
+        "sha256": "50e3f4ef2b3660bc03fd3894e28eba26554662f929370b3f683b02c54e32063d"
+      },
+      "peer": {
+        "revision": "d7def3b6376fbc87fef4502440cb559a976d4288",
+        "report": "native-peer-d7def3b63/report.json",
+        "sha256": "7cc4580dc781725729a3850b4bc94aac37d179ec2b485909de8059ad6c2a5306"
+      },
+      "originals": 5,
+      "model_credit": 0
+    },
+    "old_refusal": {
+      "revision": "d7def3b6376fbc87fef4502440cb559a976d4288",
+      "report": "old-control-d7def3b63/report.json",
+      "sha256": "ad02c57f31444e614787af27cb515ef51c1f733e433050488f3c743d848e417d",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;P;Y0;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "d9c6612e39c080cad3e5fe2c83ef1b8a2ee236fe",
+      "report": "strict-corrected-d9c6612e3/report.json",
+      "sha256": "7bbca17b89965391f7d71e52edd72e990b366bc7279176e081c491c600a45da0",
+      "modules": 432
+    },
+    "source_models": {
+      "agreements": 5,
+      "method": "Model-only comparisons with retained frozen native source bytes/profile/streams; no application PHP rerun.",
+      "reports": [
+        {
+          "revision": "d9c6612e39c080cad3e5fe2c83ef1b8a2ee236fe",
+          "report": "model-object-typeerror-d9c6612e3/report.json",
+          "sha256": "e14097c6e95be1ce7fd8c08f51186f9a9ddd907ba7717184ffa12fe4afb1f82c"
+        },
+        {
+          "revision": "d9c6612e39c080cad3e5fe2c83ef1b8a2ee236fe",
+          "report": "model-object-terminal-d9c6612e3/report.json",
+          "sha256": "f9ab3ce3e50741ec3c777a35565dd06ec40082b615a35c937048a590bf7e080b"
+        },
+        {
+          "revision": "d9c6612e39c080cad3e5fe2c83ef1b8a2ee236fe",
+          "report": "model-object-early-d9c6612e3/report.json",
+          "sha256": "bb95ba931e54364287987ce2de70e6aef52bb80488d4ba749848b319a7382f14"
+        },
+        {
+          "revision": "d9c6612e39c080cad3e5fe2c83ef1b8a2ee236fe",
+          "report": "model-array-typeerror-d9c6612e3/report.json",
+          "sha256": "4b949cb7d81d60a2742ef1a053471586513e1b90a881223ed66e86bb5d082419"
+        },
+        {
+          "revision": "d9c6612e39c080cad3e5fe2c83ef1b8a2ee236fe",
+          "report": "model-array-terminal-d9c6612e3/report.json",
+          "sha256": "bc95c3f0611de794ad8614d203a1b858d4739cba93528166b00f3a911df996af"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 674,
+      "if_premises": 666,
+      "raw_steps": 8,
+      "author_terminal": {
+        "revision": "fb5899afcc5e662d0f28ffc2236fc1ec3f4f8e53",
+        "report": "reached-author-terminal-fb5899afc/report.json",
+        "sha256": "39b495dad80896a00541ae91307721ab022a94f8b168ac327830f10bad1f1008",
+        "conditions": 159,
+        "if_premises": 157,
+        "raw_steps": 2
+      },
+      "author_early": {
+        "revision": "fb5899afcc5e662d0f28ffc2236fc1ec3f4f8e53",
+        "report": "reached-author-early-fb5899afc/report.json",
+        "sha256": "a08743d4fdb7e946f8a757fb1f8a75d903d0bc854e9e86e03e7f2f55aaa5a79f",
+        "conditions": 164,
+        "if_premises": 162,
+        "raw_steps": 2
+      },
+      "peer_normal": {
+        "revision": "fb5899afcc5e662d0f28ffc2236fc1ec3f4f8e53",
+        "report": "reached-peer-fb5899afc/report.json",
+        "sha256": "6a21c84ffd59c843f433b82b29e36bc74ed6a144488bf394678214a3eff79ec9",
+        "conditions": 351,
+        "if_premises": 347,
+        "raw_steps": 4
+      }
+    },
+    "failed_setup": {
+      "revision": "d9c6612e39c080cad3e5fe2c83ef1b8a2ee236fe",
+      "report": "strict-d9c6612e3/report.json",
+      "sha256": "5242e0fe0f433fe1d6467206ddc88d2c82815b4723a63342ae0b6612267d50de",
+      "reason": "The first strict argv repeated spec/php.watsup, already first in modules.json, so compilation stopped at duplicate statement type before semantic checking. Corrected only the argv list.",
+      "agreement_credit": 0
+    },
+    "review": "Independent literal/native/old/comparator/runtime/fixture static review and raw strict/source5/reached674 review. The duplicate-module strict setup failure remains zero credit; no accepted native/source replay."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "24a151387858cf96db08187ae123c0a027a7f051c6ac2d80e97177b5996ceb09",
+    "files": 123,
+    "raw_bytes": 3292086,
+    "commands": "Native-only runners froze five originals. A model-only old control and five selected model-only comparisons consumed retained native sources. Reached scripts consumed matching native reports via --source-report; corrected strict used the ordered 432-module manifest exactly once."
+  },
+  "integration": {
+    "status": "pending exclusive exact-parent canonical writer grant, actual-tail review and one joined ordered-manifest compile"
+  }
+}

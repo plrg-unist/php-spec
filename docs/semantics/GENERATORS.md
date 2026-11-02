@@ -475,7 +475,8 @@ entered argument data remains nonowning history after mutation or retirement.
 No pending-pack equality or sent-value liveness is required. The Gen's actual
 frame/cache/input still owns its values. Five originals agree with PHP; five
 reached fronts pass 442 custom/467 reported checks at their distinct cuts.
-Private strict433 retains its original cut; actual-tail compilation is pending.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
 The original syntax and missed-getter-stage fixture failures retain zero credit
 after narrow fixture corrections.
 I84 covers factory handlers; direct Generator bodies are added below. Broader
@@ -492,8 +493,10 @@ frame search, so a fresh sibling with the same method cannot replace the target.
 The same actual receipt admits the existing Fiber callee transfer route.
 A live body still requires its real receiver; a closed record adds no owner.
 Five current originals agree; five reached fronts pass 444 custom/469 reported
-checks. Private strict433 retains its original cut; actual-tail compilation is
-pending. Original compiler, COUNT, Fiber-consumer and fixture-prefix failures
+checks. Private strict433 retains its original cut; joined strict433, three
+exact sources and 166 independent reached checks pass at bd274e79f. The
+current-tail b1adc40c composition is reviewed. Original compiler, COUNT,
+Fiber-consumer and fixture-prefix failures
 retain zero credit; the fresh whole-array observer preserves cardinality and
 payload identity.
 BYREF magic signatures, broader source spellings and wider callback/API,
@@ -510,7 +513,8 @@ marker is required; ordinary live target queries remain unchanged.
 The shared ATTR07 Closure receiver correction imports only its borrowing hunk.
 Four native/model originals agree; five reached fronts pass 501 custom/526
 reported checks at their recorded cuts. Private strict433 retains its original
-cut; actual-tail compilation is pending. Original compiler, refusal and
+cut; joined strict433, two exact sources and 111 independent reached checks
+pass at 4462bc6d. The 779569a8 composition is reviewed. Original compiler, refusal and
 array-storage failures retain zero credit. Wider source/API, real-bound Closure,
 delegation, collection and lifecycle combinations remain partial.
 [Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
@@ -524,7 +528,9 @@ entry requires the real receiver. Direct raw bodies follow ordinary method
 receipt policy. Six native/model originals agree; seven reached fronts pass
 561 custom/596 reported checks at distinct cuts, including retired private
 permission and real close/cache owners. Private strict433 retains its original
-cut; actual-tail integration is pending and original failures keep zero credit. Raw
+cut; joined strict433 and three exact sources pass at 833e6e8f. The strengthened
+93-assertion closed-history state passes at 1f0e17ba; e0e3ce7f composition is
+reviewed. Original failures keep zero credit. Raw
 cached-reference bodies, pipe and wider APIs/lifecycles remain partial.
 [Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
 
@@ -533,8 +539,10 @@ by-value/reference THROW and fresh THROW initialization. Pending exception copie
 keep their real owner until injection; fixed ordinary nonstatic object-array callers select
 their lexical private method before a public child override. Four native/model
 originals agree; four reached fronts pass 439 custom/459 reported checks at distinct
-cuts. Private433 keeps its original cut. Calibrated native owner diagnostics and
-original failed checks remain separate; actual-tail integration is pending.
+cuts. Private433 keeps its original cut. Joined strict433, three exact sources,
+two affected old THROW states (143+105 checks) and an independent 153-check
+state pass at 1ecc939d; 5096cbb1 composition is reviewed. Calibrated native
+owner diagnostics and original failed checks remain separate.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
 I89 carries authenticated nonstatic captured or compatibly bound user-method
@@ -544,8 +552,10 @@ cache, input and phase filters retain their separate contracts. Native first-cla
 fromCallable/bindTo and array captures retain Closure/This through CLOSED, then
 release Closure/receiver before the cache. Four native/model originals agree at
 distinct cuts; five reached fronts pass 632 custom/657 reported checks.
-Private433 retains its initial cut; original failures keep zero credit and actual-tail
-integration remains pending. Wider binding, APIs, delegation, collection and
+Private433 retains its initial cut; original failures keep zero credit. Joined
+strict433, three exact sources, fresh 117-check and independent closed-body
+118-check states pass at c81b8c5e; 26cf6684 composition is reviewed. Wider
+binding, APIs, delegation, collection and
 lifecycle combinations remain partial.
 [Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
 
@@ -555,8 +565,10 @@ THROW consumers. Warm cached payloads and fresh pending exception copies retain
 their separate owner phases. Native fresh abort closes without a value cache,
 releasing payload before This, then throws the original API Throwable with the
 supplied abort as Previous. Native4/source4 and five reached fronts 623 custom/
-648 reported pass at distinct cuts; private433 keeps its original cut. BYREF magic signatures, wider
-source/API combinations and actual-tail integration remain partial.
+648 reported pass at distinct cuts; private433 keeps its original cut. Joined
+strict433, three exact sources, fresh parked125, affected I85 SEND166 and
+independent closed102 checks pass at dfa4386d; d1f314c0 composition is reviewed.
+BYREF magic signatures and wider source/API combinations remain partial.
 [Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
 
 I91 recognizes static user-method string captures as Closures and removes their
@@ -566,7 +578,10 @@ Unsupported. Native controls distinguish an original string target from later
 retargeting, called-scope reset at compatible static binding, a Closure retained
 through CLOSED and a retired factory's nonowning scoped-body history. Native3,
 source3/private433 and five reached fronts 614 custom/639 reported pass at distinct
-cuts; both original failures remain zero credit. Actual-tail integration and wider
+cuts; both original failures remain zero credit. Joined strict433, three exact
+sources and parked127 pass at ee4b3cdb; strengthened closed-cache126 at
+5610e476 checks GC09's receiverless marker. The 4544a539 composition is
+reviewed. Wider
 callable consumers remain partial.
 [String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
 
@@ -579,6 +594,8 @@ an ignored fresh Gen, then the original receiver; a retained Gen keeps its copy
 and This through CLOSED and frees the Closure before a stored cache. Native5,
 source5/private433 pass at distinct cuts; six reached fronts pass 744 custom/774
 reported checks, preserving both original fixture failures with zero credit.
+Joined strict433, four exact sources, API-entry99, unused-result81 and independent
+closed143 checks pass at a84bf6c0; 3486d56c composition is reviewed.
 A native-only missing-argument control retains the new receiver until
 shutdown after trace/source roots disappear; that no-Gen receive-error path
 stays explicitly Unsupported. Reference-parameter callbacks require earlier

@@ -1,0 +1,71 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "captured-instance-lexical-owner",
+      "source": "<?php\ndeclare(strict_types=1);\nclass Base162Review {\n    public function needBase($one, $two): string { echo \"bad-base|\"; return \"base\"; }\n}\n$owner162Review = new class extends Base162Review {\n    public function needOwn($one, $two): string { echo \"bad-own|\"; return \"own\"; }\n    public function wrongOwn(): string { echo \"return|\"; return 7; }\n    public function __destruct() { echo \"owner-drop|\"; }\n};\n$own162Review = $owner162Review->needOwn(...);\n$base162Review = $owner162Review->needBase(...);\n$wrong162Review = $owner162Review->wrongOwn(...);\nunset($owner162Review);\necho \"before|\";\ntry {\n    $own162Review(1);\n} catch (ArgumentCountError $caught162Review) {\n    echo $caught162Review->getMessage(), \"|\", $caught162Review->getLine(), \"|\";\n}\ntry {\n    $base162Review(1);\n} catch (ArgumentCountError $caught162Review) {\n    echo $caught162Review->getMessage(), \"|\", $caught162Review->getLine(), \"|\";\n}\ntry {\n    $wrong162Review();\n} catch (TypeError $caught162Review) {\n    echo $caught162Review->getMessage(), \"|\", $caught162Review->getLine(), \"|\";\n}\nunset($own162Review, $base162Review, $wrong162Review);\necho \"after\";\n",
+      "source_sha256": "7c9654cd64ebb349af107f88911a3b76cf6b8d6592491b2f6976f7070c5350a5",
+      "stdout_base64": "YmVmb3JlfFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIEJhc2UxNjJSZXZpZXdAYW5vbnltb3VzOjpuZWVkT3duKCksIDEgcGFzc2VkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2Mi1yZXZpZXcvb3JpZ2luYWxzL2NhcHR1cmVkLWluc3RhbmNlLWxleGljYWwtb3duZXIucGhwIG9uIGxpbmUgMTcgYW5kIGV4YWN0bHkgMiBleHBlY3RlZHw3fFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIEJhc2UxNjJSZXZpZXc6Om5lZWRCYXNlKCksIDEgcGFzc2VkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2Mi1yZXZpZXcvb3JpZ2luYWxzL2NhcHR1cmVkLWluc3RhbmNlLWxleGljYWwtb3duZXIucGhwIG9uIGxpbmUgMjIgYW5kIGV4YWN0bHkgMiBleHBlY3RlZHw0fHJldHVybnxCYXNlMTYyUmV2aWV3QGFub255bW91czo6d3JvbmdPd24oKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBzdHJpbmcsIGludCByZXR1cm5lZHw4fG93bmVyLWRyb3B8YWZ0ZXI=",
+      "stdout_template_base64": "YmVmb3JlfFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIEJhc2UxNjJSZXZpZXdAYW5vbnltb3VzOjpuZWVkT3duKCksIDEgcGFzc2VkIGluIHtGSUxFfSBvbiBsaW5lIDE3IGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8N3xUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBCYXNlMTYyUmV2aWV3OjpuZWVkQmFzZSgpLCAxIHBhc3NlZCBpbiB7RklMRX0gb24gbGluZSAyMiBhbmQgZXhhY3RseSAyIGV4cGVjdGVkfDR8cmV0dXJufEJhc2UxNjJSZXZpZXdAYW5vbnltb3VzOjp3cm9uZ093bigpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIHN0cmluZywgaW50IHJldHVybmVkfDh8b3duZXItZHJvcHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class162-artifacts/captured-instance-lexical-owner.native-first.json",
+      "native_raw_sha256": "daba18974914ff63f48240148ddb39c46060707baabd0a142e5b18c5ef01c326",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "captured-static-explicit-invoke",
+      "source": "<?php\ndeclare(strict_types=1);\n$owner162Invoke = new class {\n    public static function need(int $head, $tail): string { echo \"bad-body|\"; return \"bad\"; }\n    public static function wrong(): string { echo \"return|\"; return 7; }\n    public static function neverReturn(): never {\n        echo \"never|\";\n    }\n    public function __destruct() { echo \"static-drop|\"; }\n};\n$need162Invoke = $owner162Invoke::need(...);\n$wrong162Invoke = $owner162Invoke::wrong(...);\n$never162Invoke = $owner162Invoke::neverReturn(...);\nunset($owner162Invoke);\ntry {\n    $need162Invoke->__invoke(1);\n} catch (ArgumentCountError $caught162Invoke) {\n    echo $caught162Invoke->getMessage(), \"|\", $caught162Invoke->getLine(), \"|\";\n}\ntry {\n    $need162Invoke->__invoke(\"bad\", tail: 2);\n} catch (TypeError $caught162Invoke) {\n    echo $caught162Invoke->getMessage(), \"|\", $caught162Invoke->getLine(), \"|\";\n}\ntry {\n    $wrong162Invoke->__invoke();\n} catch (TypeError $caught162Invoke) {\n    echo $caught162Invoke->getMessage(), \"|\", $caught162Invoke->getLine(), \"|\";\n}\ntry {\n    $never162Invoke->__invoke();\n} catch (TypeError $caught162Invoke) {\n    echo $caught162Invoke->getMessage(), \"|\", $caught162Invoke->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "431b4976f1eea6ac36fe7178b4d9715f3cf41b5dca11dc49a83e395d2b880017",
+      "stdout_base64": "c3RhdGljLWRyb3B8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gY2xhc3NAYW5vbnltb3VzOjpuZWVkKCksIDEgcGFzc2VkIGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8NHxjbGFzc0Bhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgKCRoZWFkKSBtdXN0IGJlIG9mIHR5cGUgaW50LCBzdHJpbmcgZ2l2ZW58NHxyZXR1cm58Y2xhc3NAYW5vbnltb3VzOjp3cm9uZygpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIHN0cmluZywgaW50IHJldHVybmVkfDV8bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58OHxhZnRlcg==",
+      "stdout_template_base64": "c3RhdGljLWRyb3B8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gY2xhc3NAYW5vbnltb3VzOjpuZWVkKCksIDEgcGFzc2VkIGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8NHxjbGFzc0Bhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgKCRoZWFkKSBtdXN0IGJlIG9mIHR5cGUgaW50LCBzdHJpbmcgZ2l2ZW58NHxyZXR1cm58Y2xhc3NAYW5vbnltb3VzOjp3cm9uZygpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIHN0cmluZywgaW50IHJldHVybmVkfDV8bmV2ZXJ8Y2xhc3NAYW5vbnltb3VzKCk6IG5ldmVyLXJldHVybmluZyBtZXRob2QgbXVzdCBub3QgaW1wbGljaXRseSByZXR1cm58OHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class162-artifacts/captured-static-explicit-invoke.native-first.json",
+      "native_raw_sha256": "c032a43d712c654794c2ce41e339a512a6898fde329895bead861d2d798f3736",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "captured-static-missing-arity",
+      "source": "<?php\n$source162Author = new class {\n    public static function requiredStatic($first, $last) {\n        echo \"bad-body|\";\n        return 99;\n    }\n};\n$captured162Author = $source162Author::requiredStatic(...);\nfunction effect162Author($label) {\n    echo $label, \"|\";\n    return 7;\n}\ntry {\n    $captured162Author(effect162Author(\"positional\"));\n} catch (ArgumentCountError $caught162Author) {\n    echo $caught162Author->getMessage(), \"|\", $caught162Author->getLine(), \"|\";\n}\ntry {\n    $captured162Author(last: effect162Author(\"named\"));\n} catch (ArgumentCountError $caught162Author) {\n    echo $caught162Author->getMessage(), \"|\", $caught162Author->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "9c4c0ff86abb4c9a955bcde5a741a15fe9d71d96e5d7de126fd56ca032744521",
+      "stdout_base64": "cG9zaXRpb25hbHxUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBjbGFzc0Bhbm9ueW1vdXM6OnJlcXVpcmVkU3RhdGljKCksIDEgcGFzc2VkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2Mi1hdXRob3Ivb3JpZ2luYWxzL2NhcHR1cmVkLXN0YXRpYy1taXNzaW5nLWFyaXR5LnBocCBvbiBsaW5lIDE0IGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8M3xuYW1lZHxjbGFzc0Bhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgKCRmaXJzdCkgbm90IHBhc3NlZHwzfGFmdGVy",
+      "stdout_template_base64": "cG9zaXRpb25hbHxUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBjbGFzc0Bhbm9ueW1vdXM6OnJlcXVpcmVkU3RhdGljKCksIDEgcGFzc2VkIGluIHtGSUxFfSBvbiBsaW5lIDE0IGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8M3xuYW1lZHxjbGFzc0Bhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgKCRmaXJzdCkgbm90IHBhc3NlZHwzfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class162-artifacts/author-captured-static-missing-arity.native-first.json",
+      "native_raw_sha256": "4c2b68b78c5a007f64e3aa41ba20f7744e2cbda477ffc74a63393ce9668e5d54",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "eval-captured-static-returns",
+      "source": "<?php\n$source162Eval = 'namespace Captured162Author;\nfunction make162Author() {\n    return new class {\n        static function WrongReturn162Author(): int {\n            echo \"wrong-body|\";\n            return [];\n        }\n        static function MissingReturn162Author(): int {\n            echo \"missing-body|\";\n        }\n        static function NeverReturn162Author(): never {\n            echo \"never-body|\";\n        }\n    };\n}';\neval($source162Eval);\n$object162Eval = Captured162Author\\make162Author();\n$wrong162Eval = $object162Eval::WrongReturn162Author(...);\n$missing162Eval = $object162Eval::MissingReturn162Author(...);\n$never162Eval = $object162Eval::NeverReturn162Author(...);\ntry {\n    $wrong162Eval();\n} catch (TypeError $caught162Eval) {\n    echo $caught162Eval->getMessage(), \"|\", $caught162Eval->getLine(), \"|\";\n}\ntry {\n    $missing162Eval();\n} catch (TypeError $caught162Eval) {\n    echo $caught162Eval->getMessage(), \"|\", $caught162Eval->getLine(), \"|\";\n}\ntry {\n    $never162Eval();\n} catch (TypeError $caught162Eval) {\n    echo $caught162Eval->getMessage(), \"|\", $caught162Eval->getLine(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "eb62c89012fc22a12be1d4c9b7b182ddd065a1864f6880e55406543bd348b077",
+      "stdout_base64": "d3JvbmctYm9keXxjbGFzc0Bhbm9ueW1vdXM6Oldyb25nUmV0dXJuMTYyQXV0aG9yKCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSByZXR1cm5lZHw2fG1pc3NpbmctYm9keXxjbGFzc0Bhbm9ueW1vdXM6Ok1pc3NpbmdSZXR1cm4xNjJBdXRob3IoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIG5vbmUgcmV0dXJuZWR8MTB8bmV2ZXItYm9keXxjbGFzc0Bhbm9ueW1vdXMoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybnwxM3xhZnRlcg==",
+      "stdout_template_base64": "d3JvbmctYm9keXxjbGFzc0Bhbm9ueW1vdXM6Oldyb25nUmV0dXJuMTYyQXV0aG9yKCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgaW50LCBhcnJheSByZXR1cm5lZHw2fG1pc3NpbmctYm9keXxjbGFzc0Bhbm9ueW1vdXM6Ok1pc3NpbmdSZXR1cm4xNjJBdXRob3IoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIG5vbmUgcmV0dXJuZWR8MTB8bmV2ZXItYm9keXxjbGFzc0Bhbm9ueW1vdXMoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybnwxM3xhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class162-artifacts/author-eval-captured-static-returns.native-first.json",
+      "native_raw_sha256": "2d61687dc45c6f4e9d8d87a1b40daa4baba39c4ae2b70c55553d5f60ff326460",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

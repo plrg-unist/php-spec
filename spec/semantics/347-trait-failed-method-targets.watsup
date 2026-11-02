@@ -97,6 +97,19 @@ def $closure_method_origin(S, porigin) = (pmethoddesc)
   -- if $class_method_origin(S.CLASSES, porigin) = eps
   -- if $method_origin($trait_fcc_failed_methods(S, S.CONSTANTCLOSURES), porigin) = (pmethoddesc)
 
+;; A failed first class has no published method table. Its retained copied
+;; method still supplies the bare function name in a Closure stack frame.
+def $trace_context_function(S, pcallcontext) = pmethoddesc.NAME
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.INSTANCE = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if pcallcontext.FUNCTION = porigin_method
+  -- if $class_method_origin(S.CLASSES, porigin_method) = eps
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
+
 ;; The latent cache becomes usable after the authenticated failure row. It
 ;; never grants a value or a live scope to the retired first Closure itself.
 def $constant_callable_method_cached_at(S, porigin_site, n_prefix) = true

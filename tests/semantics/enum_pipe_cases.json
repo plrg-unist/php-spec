@@ -1,0 +1,34 @@
+[
+  {
+    "id": "enum-pipe-rebinding-left",
+    "source": "<?php\nenum PipeSelected: string { case One = 'one'; }\nenum PipeRebound: string { case Other = 'one'; }\nclass PipeLeftString {\n    public function __toString(): string {\n        global $target;\n        $target = [PipeRebound::class, 'from'];\n        echo 'CAST|';\n        return 'one';\n    }\n    public function __destruct() { echo 'DROP|'; }\n}\n$target = [PipeSelected::class, 'from'];\n$result = (new PipeLeftString) |> $target;\necho $result === PipeSelected::One ? 'selected|' : 'BAD|';\necho $target('one') === PipeRebound::Other ? 'rebound|' : 'BAD|';\n",
+    "source_sha256": "4740f73f5f571ff586b4c1df5aec14f1f86862f22571ca633011ae4b54fc55b3",
+    "expected_model": "normal",
+    "expected_normal_stdout": "CAST|DROP|selected|rebound|",
+    "purpose": "Pipe selects the original enum array target before the forced left Stringable callback rebinds it; temporary destruction precedes lookup."
+  },
+  {
+    "id": "enum-pipe-strict",
+    "source": "<?php\ndeclare(strict_types=1);\nenum PipeStrict: int { case One = 1; }\ntry { $result = '1' |> 'PipeStrict::from'; } catch (TypeError $e) { echo 'string-type|'; }\ntry { $result = '1' |> [PipeStrict::class, 'tryFrom']; } catch (TypeError $e) { echo 'array-type|'; }\ntry { $result = '1' |> [PipeStrict::One, 'from']; } catch (TypeError $e) { echo 'case-type|'; }\necho (1 |> 'PipeStrict::from') === PipeStrict::One ? 'string-ok|' : 'BAD|';\necho (1 |> [PipeStrict::class, 'tryFrom']) === PipeStrict::One ? 'array-ok|' : 'BAD|';\n",
+    "source_sha256": "2d038951766b661666aa463889e6630c53cad5134cec992b3d072abc07bed11b",
+    "expected_model": "normal",
+    "expected_normal_stdout": "string-type|array-type|case-type|string-ok|array-ok|",
+    "purpose": "Strict pipe calls reject string-to-int conversion for method strings, class arrays and case-object arrays, then accept integer values."
+  },
+  {
+    "id": "enum-pipe-case-object",
+    "source": "<?php\nenum PipeCase: string { case A = 'a'; case B = 'b'; }\nenum PipeOtherCase: string { case X = 'b'; }\nclass PipeCaseInput {\n    public function __toString(): string {\n        global $target;\n        $target = [PipeOtherCase::X, 'from'];\n        echo 'CASE-CAST|';\n        return 'b';\n    }\n    public function __destruct() { echo 'CASE-DROP|'; }\n}\n$target = [PipeCase::A, 'from'];\n$result = (new PipeCaseInput) |> $target;\necho $result === PipeCase::B ? 'case-selected|' : 'BAD|';\necho ('b' |> $target) === PipeOtherCase::X ? 'case-rebound|' : 'BAD|';\ntry { $all = 'ignored' |> [PipeCase::A, 'cases']; } catch (ArgumentCountError $e) { echo 'arity|'; }\n",
+    "source_sha256": "559e339d25b4c898295fd3e342f24711d71d5baf4493e516fe00fd0b15fb95da",
+    "expected_model": "normal",
+    "expected_normal_stdout": "CASE-CAST|CASE-DROP|case-selected|case-rebound|arity|",
+    "purpose": "An enum-case receiver selects generated methods before a Stringable callback and preserves cases arity errors."
+  },
+  {
+    "id": "enum-pipe-forced-left-error",
+    "source": "<?php\nenum PipeNoArgs { case A; }\nclass PipeDrop { public function __destruct() { echo 'LEFT-DROP|'; } }\ntry { $value = (new PipeDrop) |> 'PipeNoArgs::cases'; }\ncatch (ArgumentCountError $e) { echo 'arity|'; }\n",
+    "source_sha256": "4f7ee7bdb35650f8e2d21b9b6beffde07770e82c7b8f5627e546e3c37b979b66",
+    "expected_model": "normal",
+    "expected_normal_stdout": "arity|LEFT-DROP|",
+    "purpose": "A caught generated cases arity error precedes destruction of the forced left temporary."
+  }
+]

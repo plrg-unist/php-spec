@@ -1,0 +1,292 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.public-clone",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "scope": "Public/default-public nonstatic zero-argument nongenerator anonymous __clone, by-value return, required body and no attributes.",
+  "design": "383 adds a disjoint member arm under existing visibility/signature/body/Generator fences. 141 converts only the class segment of invalid __clone/__wakeup return diagnostics to a C string while retaining source method spelling. Existing clone copy, callback, return, exception and destructor producers are unchanged.",
+  "frozen_sources": [
+    {
+      "path": ".tools/class160-author/frozen.json",
+      "sha256": "a126f3dfd79132ec15eecd71fe8eb59aa989c62ce865d13ffede849c8eb39955"
+    },
+    {
+      "path": ".tools/class160-review/frozen.json",
+      "sha256": "8501ce5b41d0b61715f3d232ab7156029782c1215dc8a3f107f95ef8952707db"
+    },
+    {
+      "path": ".tools/class160-author/diagnostic-frozen.json",
+      "sha256": "3e81372c0fc34ad40d13c484abd50ccb687d1603fb54c976f414269f6b1ee7df"
+    },
+    {
+      "path": ".tools/class160-review/never-fallthrough-frozen.json",
+      "sha256": "b68b7f0267e31a6ca51468ef3ef7dd505366c2f1ea1077dd817922f66239e354"
+    }
+  ],
+  "native_first": {
+    "revision": "1810922a1792bf03ff0f155110b5bbbdce96adf5",
+    "initial_five": {
+      "path": ".tools/class160-artifacts/native-initial5.json",
+      "sha256": "4ced4235efe157e17c1edeb6b89e8dfeb6055a04ea778db316a3c3ee460d9cc4"
+    },
+    "invalid_annotation_one": {
+      "path": ".tools/class160-artifacts/native-invalid-annotation1.json",
+      "sha256": "28ee7b30b5c60056b65108c6d8cc025b66f055023e65cfe83a0b3920ee3dd07d"
+    },
+    "never_fallthrough_one": {
+      "path": ".tools/class160-artifacts/native-never-fallthrough1.json",
+      "sha256": "e46aa106ceff5bd5baa351b158e6511dc283fae20c8a8c70080f56f524abe037"
+    },
+    "raw_reports": [
+      {
+        "path": ".tools/class160-artifacts/parent-clone-source-rebinding.native-first.json",
+        "sha256": "44bb961e7b842c2f5a562a554d21032345c41bd50e8f68b1c52de955bc68bed9"
+      },
+      {
+        "path": ".tools/class160-artifacts/failed-clone-escaped-receiver.native-first.json",
+        "sha256": "b8ba610a7c4756acc9f3e7249bce29e1bb1ae57073573fff295cf844742d3359"
+      },
+      {
+        "path": ".tools/class160-artifacts/author-declared-array-cow-reference.native-first.json",
+        "sha256": "5c257fb1968095b5e1c8506ef7f171ed280745a1ff4de4b417ec02795dde47b9"
+      },
+      {
+        "path": ".tools/class160-artifacts/author-shallow-child-replacement-release.native-first.json",
+        "sha256": "a8f0c593623cc08b1eedd6acafa0327ca987a2344b0b05a18d39840297e1a4c4"
+      },
+      {
+        "path": ".tools/class160-artifacts/author-eval-implicit-explicit-clone-return.native-first.json",
+        "sha256": "da299d3c6e0b792e03184223c0e421666cffe9591ae76895b626777c66d2ffdd"
+      },
+      {
+        "path": ".tools/class160-artifacts/invalid-annotation-shape.native-first.json",
+        "sha256": "88ad52689ea35bfb25ea467fdd22d4362c8b6d7099b7a45fa73d4c3a6822886e"
+      },
+      {
+        "path": ".tools/class160-artifacts/never-clone-fallthrough.native-first.json",
+        "sha256": "1d81679eece0713e13b730a77ec90ec8131df9a5ebca275181b749ea142f71ec"
+      }
+    ],
+    "result": "Seven native-first originals: six normal and one static rejection, with the never original frozen later and executed separately. No native replay."
+  },
+  "unchanged_baseline": {
+    "revision": "1810922a1792bf03ff0f155110b5bbbdce96adf5",
+    "selected_originals": 2,
+    "reports": [
+      {
+        "supervisor": {
+          "path": ".tools/class160-artifacts/unchanged-author-declared-array.json",
+          "sha256": "704573b6a2e84eca938ce9379b40c0318476d0982f140a0ab734c9ca6a3c67a4"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/author-declared-array-cow-reference.unchanged-baseline.json",
+          "sha256": "516e0342e808f6e5b8b2c886bb42a4534d6aab27d01691cc5d2b4f9b10205acd"
+        }
+      },
+      {
+        "supervisor": {
+          "path": ".tools/class160-artifacts/unchanged-peer-parent-clone.json",
+          "sha256": "2db46fb68555a9ac9828fc57b013314c74c4bd7a49be7157d6133e58c67beb16"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/parent-clone-source-rebinding.unchanged-baseline.json",
+          "sha256": "3c7b736ae1b47a389712610576ef226a52fb1a873874025c5c0d8f1f1c66a0fd"
+        }
+      }
+    ],
+    "result": "Both frontend accepted/program checked then Unsupported at prior anonymous member admission; zero agreement credit. Other old probes unrun."
+  },
+  "source_outcomes": {
+    "agreements": 7,
+    "normal": 6,
+    "static_rejection": 1,
+    "records": [
+      {
+        "case": "anonymous-clone-declared-array-cow-reference",
+        "revision": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+        "supervisor": {
+          "path": ".tools/class160-artifacts/model-author-declared-array.json",
+          "sha256": "8d96f50178d1a751f60e2b50804497b59d99b0918758bca8a21704091cf903af"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/method-runtime-rsjyqcul/report.json",
+          "sha256": "e781caaa14896063b47c569219615250f8ad8cfce8e8ab6b7b9e5a8f702381ad"
+        }
+      },
+      {
+        "case": "parent-clone-source-rebinding",
+        "revision": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+        "supervisor": {
+          "path": ".tools/class160-artifacts/model-peer-parent-rebinding.json",
+          "sha256": "b16633ca9179fdb7e96da086905259c282bddfa21d50130a7367afd8ee4956e9"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/method-runtime-0smh6sch/report.json",
+          "sha256": "507a32ac6b8ba64e56b4c5b3d1742629dc013ef8c30ee47c723ab9dc3ee79eff"
+        }
+      },
+      {
+        "case": "failed-clone-escaped-receiver",
+        "revision": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+        "supervisor": {
+          "path": ".tools/class160-artifacts/model-peer-failed-escaped.json",
+          "sha256": "d48c9eb9b74eab34cf016e2956b8f635a00f53f7df7c5b08a4cc2d1dd78cf0c6"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/method-runtime-un_4wxz8/report.json",
+          "sha256": "a4e3335da095b1f0f8ab0895f43abc2586cb454cf3ca802b5b10226eab64a393"
+        }
+      },
+      {
+        "case": "anonymous-clone-shallow-child-replacement-release",
+        "revision": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+        "supervisor": {
+          "path": ".tools/class160-artifacts/model-author-shallow-child.json",
+          "sha256": "7cd1b100fb136e8dc26ed6e4cb2517ec935a8d9edab694246e7b7d635ac27651"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/method-runtime-m0wgy7a8/report.json",
+          "sha256": "16235bcd657704294277b60037a88415e97de3aeaca6fa79b027019c464f5c25"
+        }
+      },
+      {
+        "case": "anonymous-clone-eval-implicit-explicit-return",
+        "revision": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+        "supervisor": {
+          "path": ".tools/class160-artifacts/model-author-eval-return.json",
+          "sha256": "4a214b31c9537675527648a3a405ff1a55c22e71dc5f2a0b9531b75cc96f5417"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/method-runtime-z75_ysbd/report.json",
+          "sha256": "50acc370a0970a338391b733079b8da851c35bd83016ad4f50cec54cd960f310"
+        }
+      },
+      {
+        "case": "anonymous-clone-invalid-annotation-shape",
+        "revision": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+        "supervisor": {
+          "path": ".tools/class160-artifacts/model-invalid-annotation.json",
+          "sha256": "d8ff11a302090070e8b67a8f764e645038d7de983d732509afe31ef03aa8ea70"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/method-runtime-y1hvvvh4/report.json",
+          "sha256": "535fa03f6ba075dd7efc4bf5a6aa42a3a438ba331e7e2a0e03d0a56999089cb5"
+        }
+      },
+      {
+        "case": "anonymous-clone-never-fallthrough",
+        "revision": "3ab820c8d29248e12efe10e6a618c723bf43b01e",
+        "supervisor": {
+          "path": ".tools/class160-artifacts/model-never-fallthrough.json",
+          "sha256": "34660fc2406acdd7ad2add806645292a47c1d917a768d8b22620507f2fef9de2"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/method-runtime-otn1cymq/report.json",
+          "sha256": "528ca464b262c3b4b33de43e012bd47c0b178e665bad514fe4a67fea6c2a2f14"
+        }
+      }
+    ],
+    "result": "Every selected model-only source matches its native tuple. First six and later never retain separate catalogue/revision cuts."
+  },
+  "strict_sl": {
+    "revision": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+    "modules": 433,
+    "report": {
+      "path": ".tools/class160-artifacts/strict-candidate-first.json",
+      "sha256": "af7af6b2f0b177aeea3f2d13d8a224bdef9116efc7b7e01594e50e460d6fa548"
+    },
+    "result": "Ordered --sl yielded true newline, empty stderr and exit0, with stable inputs and full process reap."
+  },
+  "reached": {
+    "conditions": 210,
+    "source_reached": 207,
+    "derived_controls": 3,
+    "groups": [
+      {
+        "test": "tests/semantics/anonymous_clone_cow_protocol.py",
+        "revision": "7469ee0305ef041feaf9c37423c6197350cb197a",
+        "conditions": 89,
+        "reached": 89,
+        "derived_controls": 0,
+        "supervisor": {
+          "path": ".tools/class160-artifacts/state-author-cow89-corrected.json",
+          "sha256": "dfd0bac268f139c31791943a690f8e78a430070ecd300630e2e42679796fa5a6"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/anonymous-clone-cow-_qd0mfo_/report.json",
+          "sha256": "e55be3b3198ebcb180c3200a1a4038b709acc17cec5bfcc331acac501c1e47b0"
+        }
+      },
+      {
+        "test": "tests/semantics/anonymous_clone_failure_protocol.py",
+        "revision": "7469ee0305ef041feaf9c37423c6197350cb197a",
+        "conditions": 121,
+        "reached": 118,
+        "derived_controls": 3,
+        "supervisor": {
+          "path": ".tools/class160-artifacts/independent-clone-failure121.json",
+          "sha256": "579c5caf0a2669b785f242f6c7903a079f3081558b671e89ee8ef030470f9ccf"
+        },
+        "raw_report": {
+          "path": ".tools/class160-artifacts/anonymous-clone-failure-zxvkv8yo/report.json",
+          "sha256": "fe0927ffb23b740641e3702f86b9102bc950cef09b4120116229b3d96f5d40d8"
+        }
+      }
+    ],
+    "result": "Normal clone COW/alias state passes 89 reached conditions; independent escaped failed-clone state passes 118 reached and three mutated controls."
+  },
+  "preserved_zero_credit": [
+    {
+      "revision": "47846e24b1b7190433ff22d393c9f6c627e73474",
+      "supervisor": {
+        "path": ".tools/class160-artifacts/state-author-cow89.json",
+        "sha256": "8c6ed199dd2834dc888e09e522f54e40753880e1406a1166da1896f385b9e36a"
+      },
+      "raw_report": {
+        "path": ".tools/class160-artifacts/anonymous-clone-cow-75t2ufmn/report.json",
+        "sha256": "5ed1fb98a659bbd67ad02fe82e6c116f6ffec2c000b1d2074cb8727c82b0d275"
+      },
+      "reason": "Original fixture used pslot metavariables where ppropertyslot was required; numeric DSL elaboration stopped before semantic execution. Only 18 fixture type names were corrected for the affected retry."
+    }
+  ],
+  "tested_code": {
+    "production_commit": "5246667d42ec3545753b5fee90f6e3beb39691fe",
+    "state_fixture_commit": "7469ee0305ef041feaf9c37423c6197350cb197a",
+    "never_catalogue_commit": "3ab820c8d29248e12efe10e6a618c723bf43b01e",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "7066697ea426ea1fa7c00a93724e9e0c9c1846ac52405bffe386868ae2504a25",
+      "spec/semantics/141-method-compiler.watsup": "7916bf20514429f0cc11e293e1da128c2a669dc09f36eabdb5223e8232357bb3"
+    },
+    "catalogue_sha256_at_first_six": "b466f93fc50c1e478ba776c8c9df854575317d83820c60a55ee18b893ffb9876",
+    "catalogue_sha256_current": "ff4b6472b1af613eb4b4c50708ad0f167abe73a46463bea6c415e0d3b0654ad3",
+    "state_script_sha256": {
+      "tests/semantics/anonymous_clone_cow_protocol.py": "722b3449446b45751f37afa96a0ccd13efceb73ce08e6e105e48daa6fca669ad",
+      "tests/semantics/anonymous_clone_failure_protocol.py": "323fbf57a03e3a18afd355adac8c7bee4c593d8becd43b358074e823309c8e87"
+    },
+    "actor_script_sha256": {
+      "native_first.py": "1e62618224f525e0a08840b426938c48a9f97cd0cdc01a85907306999a439baf",
+      "run_owned.py": "197724b6829ee374119ef0d7545115c85dfc94d7c7f9f50a8f122a21b45ebe8d",
+      "native_diagnostic.py": "7bc82f25c63fa7b8d213fb26334d94bac1a5deb46a6240ded4d75810031f3f06",
+      "run_diagnostic_owned.py": "932599b66e75830989667a1d3d484ca9a602b85647747d5dd978d84641fc1d02",
+      "native_never.py": "ad870d01bf6c0d595e07d3306d2cd95a31b030a8ca7ce816b78cf1d287b28b5c",
+      "run_never_owned.py": "4cb4b2a85de70369675d5afa8c6b04db01ec52e6c24dc1e01a27d398778c335e",
+      "unchanged_selected.py": "bc15806aaddcafbf1b3f6db3abed78b9f7bcefe36a1f27c77b9f8d74874d563f",
+      "run_old_owned.py": "b962b2d63fb242dea6dd0108952c4166b29b0a7768b8872a66848d2560c82941",
+      "strict_candidate.py": "64096b20ad8850ae443fb6b19c030e1340304eb840d0b8f44c0c91b1e1f8c1cb",
+      "source_selected.py": "97eacb4b79f21535c2c49782d1b55540b864a3374e9f635e794c77cf2fe24ddb",
+      "run_candidate_owned.py": "b1634b3de0e8d98bb55d22c38df8db1d620e10a37477a293e221ec4d01b1c402",
+      "run_state_owned.py": "ad1ff9ac82bf4f99b8b8c885cd716ce2d15753b46145c006739fd9e60eaa69b6"
+    }
+  },
+  "source_pin": {
+    "local_tools_manifest": {
+      "path": ".tools/class160-artifacts/local-tools.json",
+      "sha256": "6b0d775c2dfc892f7701cfd6873e99e84c67d7e0c78bb7fdcbeee1c1911567b2"
+    },
+    "reused_from_class159_revision": "1810922a1792bf03ff0f155110b5bbbdce96adf5",
+    "prior_php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "limits": "Nonpublic, static, reference-return, attributed, Generator-bodied and wider readonly/API/lifecycle contexts remain partial. Paused OP12, Source47, owned-NUL release, undefined-byref LIST keys, COMP88 supplied-throw comparison, V110 and COMP123 remain unchanged. This is not complete PHP core or BOLA verification.",
+  "recovery": "Frozen sources and raw supervisor/report directories remain external under .tools/class160-author, class160-review and class160-artifacts. Source supervisors retain original worktree raw paths; this review records relocated paths. Local tools were reused without rebuild; fresh offline rebuild remains needed. No push.",
+  "independent_review": "Reviewer cleared all frozen sources, exact private production/catalogue cuts, both state fixtures and the affected correction before execution, then checked actual tuples, maps, CPU affinity and full descendant reaping. Private package review and root-authorized actual-tail integration remain pending."
+}

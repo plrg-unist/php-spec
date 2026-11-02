@@ -1,0 +1,25 @@
+{
+  "scope": "Published enum is_callable strings and class/case arrays with one or two arguments and no third output",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "915e01f89706680c45ba062afe75e147af77ddc9",
+  "semantic_revision": "70a0f5c601f36091d167042b38826029bae80b01",
+  "state_revision": "3f72a13586eb2d390fb50c436f2eb59cd7322fd6",
+  "unsupported_revision": "4a750167907b3798a98becbb25d8d95d77e8adc3",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: per-source SHA, command, profile, stdout/stderr and exit"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-tail-evidence/enum-is-callable-strict-v2/report.json: SL433 true, exit 0, empty stderr, 11.56 s, stable inputs",
+    "direct_source": ".tools/enum-is-callable-tail-evidence/user-string-p96e8prz/report.json: nine native/model outcomes exact normal, exit 0, empty stderr",
+    "dynamic_pipe_source": ".tools/enum-is-callable-tail-evidence/user-string-ezcga0tw/report.json: selected dynamic callee and two pipe truth values exact normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-tail-evidence/enum-is-callable-protocol-0m4vhkcg/report.json: checked source reached strict SL, 43 checks, true, exit 0, empty stderr, stable inputs",
+    "unsupported_control": ".tools/enum-is-callable-tail-evidence/user-string-8trgw6np/report.json: third by-reference output explicitly Unsupported, native exit 0, empty stderr"
+  },
+  "preserved_zero_credit": [
+    ".tools/enum-is-callable-tail-evidence/enum-is-callable-strict-v1/report.json: declaration visible too late in module order",
+    ".tools/enum-is-callable-tail-evidence/enum-is-callable-protocol-g7lso_r5/report.json: fixture variable-sort elaboration error"
+  ],
+  "behavior": "Already published enum class-method strings and class/case arrays answer generated and absent method queries. Syntax-only accepts valid shapes before method lookup. Dynamic callee selection precedes argument rebinding; pipe uses the same query. Source-reached guards require a live case receiver and leave the backing cache unchanged.",
+  "remaining": "Third by-reference output mutation/aliasing, autoload, wider magic/user-method fallbacks, invalid array shapes and broader is_callable operands remain partial."
+}

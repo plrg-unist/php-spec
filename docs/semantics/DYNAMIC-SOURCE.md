@@ -105,3 +105,44 @@ remain partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.
+
+## File preambles and tick plans
+
+The checked file parser retains a CLI shebang as `ENCODEDPROGRAM` metadata. The
+tick planner now reads that program's checked statements, including lexical
+`declare(ticks=1)`, just as it does for `PROGRAM`. A shebang is suppressed from
+output but advances `__LINE__`. Included shebang files use their opened path
+for `__FILE__`, return to the caller, and keep their own tick plan. A leading
+BOM takes the existing `PROGRAM` route with an `InlineHTML` node that emits its
+raw bytes; it is an affected control, not a new encoded-program rule. Eval uses
+its separate parser mode: a BOM raises `ParseError`, while a hash-prefixed line
+is a comment and advances the eval line.
+
+Seven [preamble source cases](../../tests/semantics/source_preamble_sources.py)
+compare exact pinned-native streams and statuses, including finite-provider
+include and an encoded tick include. The [reached fixture](../../tests/semantics/source_preamble_state.py)
+checks the actual file-mode AST shapes and source-line tick markers. The
+[review ledger](../../coverage/semantics/source-preamble-tick-review.json)
+keeps earlier failed harness attempts separate. The COMP163 cut did not admit a HALT
+payload combined with a preamble; wider encodings and file-provider forms
+remain partial.
+
+## Raw shebang HALT offsets
+
+A checked file with a raw shebang keeps the preamble in `ENCODEDPROGRAM` and
+retains the terminal `HaltCompiler` node's original end-file byte position.
+For the raw/raw, BOM-free, nonempty-preamble shape with no alternate original
+buffer, the source compiler now uses that position plus one as
+`__COMPILER_HALT_OFFSET__`. The offset includes shebang bytes. Main and included
+units each use their own file identity and filename-local HALT registration;
+direct reads and selected `defined`/`constant` CV queries use the existing
+lookup routes. Plain and BOM files continue through `PROGRAM`.
+
+The [HALT preamble sources](../../tests/semantics/halt_preamble_sources.py)
+compare six exact pinned-native streams, including an included child return.
+The [reached fixture](../../tests/semantics/halt_preamble_state.py) checks the
+file-mode AST offsets and rejects altered encoding metadata. The
+[review ledger](../../coverage/semantics/halt-preamble-review.json) preserves
+the original file-mode refusal and later unrelated builtin refusal. Converted
+encodings, BOM metadata and other HALT/preamble combinations remain outside
+this bounded offset rule.

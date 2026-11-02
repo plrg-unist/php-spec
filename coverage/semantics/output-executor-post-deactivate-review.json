@@ -1,0 +1,78 @@
+{
+  "milestone": "OB06",
+  "scope": "No-argument ob_start during NORMAL executor queue release after output deactivation, from a shutdown-argument destructor with empty buffers and unblocked output.",
+  "semantic_heads": {
+    "private": "678da44082828b0bf2abf1071f16d66b43e5b0a4",
+    "joined_parent": "4f8ef665a938a0534d14b4bc1c3f275f92c07177",
+    "joined": "793cfea1b354bb7a4786284c340faafb51609fdc",
+    "latest_tail_parent": "2c69739633aa720d24e36b65cbd5a06c8a65c0ef",
+    "latest_tail": "10257b9ded75da20e1db8c3c82391b97586e4f93"
+  },
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "frontend_extension_sha256": "386395dc90027be911c3618700a2fda72bb28caf15dbba091bf4cc7484af73f",
+    "request_clock_sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml_switch": "5.1.0",
+    "mode": "strict SL; deterministic; cache disabled",
+    "request": "Explicit LC_ALL=C, TZ=UTC, FIRST=one, CLI file/argv, EGPCS, fixed clock; plain-slow adds USE_ZEND_ALLOC=0."
+  },
+  "private_validation": {
+    "strict433": "true, empty stderr, exit 0, 11.812 s",
+    "source_command": "python3 tests/semantics/output_executor_post_deactivate_sources.py",
+    "source_cases": [
+      "plain",
+      "suppressed",
+      "handler",
+      "fallback",
+      "early",
+      "plain-slow"
+    ],
+    "source_result": "6 exact native/model stdout, stderr and exit 0 agreements; all model status normal",
+    "boundary_command": "python3 tests/semantics/output_executor_post_deactivate_boundaries.py",
+    "boundary_result": "explicit-null, callable and recursive handler-body starts each checked Unsupported with exact prior stdout, empty buffers and OUTPUTSEQ=1",
+    "state_command": "python3 tests/semantics/output_executor_post_deactivate_state.py --case failed-start-notice",
+    "state_result": "one source-reached Notice group, 30 checked conditions; authentic NORMAL queue, noarg call, false value, empty buffers, OUTPUTSEQ=1, malformed refusals and fuel-0/resume",
+    "affected_control": "python3 tests/semantics/output_buffer_sources.py --select notice-empty: exact old selected Notice pass"
+  },
+  "joined_validation": {
+    "strict433": "true, empty stderr, exit 0, 11.620 s",
+    "source": "--match plain: plain and plain-slow exact; --match handler: selected handler exact",
+    "boundary": "three checked Unsupported controls pass",
+    "interaction": "Parent changed executor queue root accounting in module444; the joined source and boundary checks exercise its NORMAL release scope."
+  },
+  "raw_archives": {
+    "private_base": "/home/user/workspace/php-spec-evidence-archive/ob06-post-deactivate-678da4408",
+    "private_reports_sha256": {
+      "output-executor-post-deactivate-f6a4s9yb/report.json": "331960073c23311312ec375bbffe0fb9c4d5e83e1f68fda7edaf1b9812cdcd3f",
+      "output-post-deactivate-boundaries-avpghupz/report.json": "8c8c4b2464b25d3727408b96e9fee894ef4e5f89cd5a49b6ce068905faa77a18",
+      "fiber-state-review-h6fttuxf/report.json": "b669980465e6f65ecafc0e36f3d5f6139a9910c5741653227d463c2f0d0194f5",
+      "ob06-final-strict-678da4408/report.json": "39f80b715c77f0c196e8ca08117406380d04cd9a6027dc7b8639f359ef27280b",
+      "output-buffer-sources-gktgli20/report.json": "fff4daf4f943782d2e8bf90b1851bbcf685052b45f2d9e1ee40841af7678eccd"
+    },
+    "joined_base": "/home/user/workspace/php-spec-evidence-archive/ob06-post-deactivate-joined-793cfea1b",
+    "joined_reports_sha256": {
+      "ob06-joined-strict-793cfea1b/report.json": "b65b8dccd1683aca0846b886f1fcb952628fad2e24ac4bab6dabd07480e45724",
+      "output-executor-post-deactivate-ro_fvmrp/report.json": "36f3ccbd82b0f42999cbb182b18d00237dee3cba4c635c101111b87c831a792c",
+      "output-executor-post-deactivate-h38e9exd/report.json": "e6db6adc315f99ea3f2342b8baac84fb5f1743f61a2db74b6f8ab9b550458748",
+      "output-post-deactivate-boundaries-cbvbqcaw/report.json": "e81756d9b24e49646e2214cc09b1e67ad77220ac87383c6d94bce9d7b6c9c5ea"
+    },
+    "latest_tail_base": "/home/user/workspace/php-spec-evidence-archive/ob06-post-deactivate-tail-10257b9de",
+    "latest_tail_reports_sha256": {
+      "ob06-tail-strict-10257b9de/report.json": "525cfc855e3d4da88a14261ef865a4f0a5f71a5004bc406d9d3ebc6c4e0dd11f",
+      "output-executor-post-deactivate-zybhalgs/report.json": "6240d3050c7f5705431e762727e65700f60ae911ef1cce623ac5beb80a9a0bc2"
+    }
+  },
+  "zero_credit": [
+    "Initial selected Notice failure before API_ERROR cursor continuation; archived output-executor-post-deactivate-uqifkshs/handler/tool-failure.json.",
+    "Selected Notice failure at handler-result retval operation exit before the two-task certificate; archived output-executor-post-deactivate-epl2klf7/handler/tool-failure.json.",
+    "Native fast and USE_ZEND_ALLOC=0 handler-return-object destructor both produce FX|D1|H:8|R1|RF|R2|DF|D2| and one inner Notice, exit 0; model first fails at DESTRUCTOR_ENTER step 185 to 186 before the inner start. Source SHA256 a6742f22384ea3a15b42c1e54a2876f59475afe7d248ecd7eed9ebe0f2f33cce; archived output-post-deactivate-boundaries-0njn0r54 and ob06-retval-bisect."
+  ],
+  "remaining": "Handler-return object destructor cleanup, explicit/callable post-deactivation starts, late registration, abnormal queue completions, blocked output and wider executor cleanup remain outside this bounded cut.",
+  "latest_tail_validation": {
+    "strict433": "true, empty stderr, exit 0, 11.877 s",
+    "source": "--match handler: exact native/model stdout, stderr and exit 0; model normal",
+    "interaction": "Since the prior joined parent, only module443 changed a Closure __invoke warning trace FILE under CLOSURE_INVOKE_ENTER. OB06 selected Notice resumes OB_NOTICE_RESULT; modules391/444 and shared error/cleanup modules are unchanged."
+  }
+}

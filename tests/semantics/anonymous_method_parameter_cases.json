@@ -1,0 +1,84 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-method-private-self-reference-binding",
+      "source": "<?php\nfunction late158Review() { echo \"late|\"; return 9; }\n$receiver158Review = new class {\n    private function accept158Review(int &$head, &$same) {\n        echo \"private|\", $head === 7 ? \"head-int|\" : \"bad-head|\";\n        $head = 8;\n        echo $same === 8 ? \"same-cell|\" : \"bad-alias|\";\n        $same = \"written\";\n    }\n    public function run158Review() {\n        $local158Review = \"7\";\n        $alias158Review =& $local158Review;\n        $this->accept158Review($local158Review, $alias158Review);\n        echo $local158Review, \"|\";\n        try {\n            $this->accept158Review(1, late158Review());\n        } catch (Error $error158Review) {\n            echo $error158Review->getMessage(), \"|\", $error158Review->getLine(), \"|\";\n        }\n        echo \"after\";\n    }\n};\n$receiver158Review->run158Review();\necho \"|done\";\n",
+      "source_sha256": "d12505661821a6794ef10557f333cf70faebb12cf1249d5b15664e2c74dd6f52",
+      "stdout_base64": "cHJpdmF0ZXxoZWFkLWludHxzYW1lLWNlbGx8d3JpdHRlbnxjbGFzc0Bhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgKCRoZWFkKSBjb3VsZCBub3QgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZXwxNnxhZnRlcnxkb25l",
+      "stdout_template_base64": "cHJpdmF0ZXxoZWFkLWludHxzYW1lLWNlbGx8d3JpdHRlbnxjbGFzc0Bhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgKCRoZWFkKSBjb3VsZCBub3QgYmUgcGFzc2VkIGJ5IHJlZmVyZW5jZXwxNnxhZnRlcnxkb25l",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class158-review/private-self-reference-binding.native-first.json",
+      "native_raw_sha256": "a3da5c23648d7663588f73d1f3133224b095a276952cb14d15c5cc62cd0d25d0",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-method-ordinary-missing-arity-lexical-owner",
+      "source": "<?php\nfunction first158Review($label) { echo $label, \"|\"; return 1; }\nclass Base158Review {\n    protected function requiredBase158Review($first, $second) { echo \"base-body|\"; }\n}\n$receiver158Review = new class extends Base158Review {\n    public function requiredOwn158Review($first, $second) { echo \"own-body|\"; }\n    public function run158Review() {\n        try {\n            $this->requiredBase158Review(first158Review(\"base-first\"));\n        } catch (ArgumentCountError $error158Review) {\n            echo $error158Review->getMessage(), \"|\", $error158Review->getLine(), \"|\";\n        }\n    }\n};\necho \"before|\";\ntry {\n    $receiver158Review->requiredOwn158Review(first158Review(\"own-first\"));\n} catch (ArgumentCountError $error158Review) {\n    echo $error158Review->getMessage(), \"|\", $error158Review->getLine(), \"|\";\n}\n$receiver158Review->run158Review();\necho \"after\";\n",
+      "source_sha256": "85ba456a5a4f95f92e0c5f31a707a39e5741e83db15e1087815dabb13a6139df",
+      "stdout_base64": "YmVmb3JlfG93bi1maXJzdHxUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBCYXNlMTU4UmV2aWV3QGFub255bW91czo6cmVxdWlyZWRPd24xNThSZXZpZXcoKSwgMSBwYXNzZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTU4LXJldmlldy9vcmlnaW5hbHMvb3JkaW5hcnktbWlzc2luZy1hcml0eS1sZXhpY2FsLW93bmVyLnBocCBvbiBsaW5lIDE4IGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8N3xiYXNlLWZpcnN0fFRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uIEJhc2UxNThSZXZpZXc6OnJlcXVpcmVkQmFzZTE1OFJldmlldygpLCAxIHBhc3NlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNTgtcmV2aWV3L29yaWdpbmFscy9vcmRpbmFyeS1taXNzaW5nLWFyaXR5LWxleGljYWwtb3duZXIucGhwIG9uIGxpbmUgMTAgYW5kIGV4YWN0bHkgMiBleHBlY3RlZHw0fGFmdGVy",
+      "stdout_template_base64": "YmVmb3JlfG93bi1maXJzdHxUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBCYXNlMTU4UmV2aWV3QGFub255bW91czo6cmVxdWlyZWRPd24xNThSZXZpZXcoKSwgMSBwYXNzZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTggYW5kIGV4YWN0bHkgMiBleHBlY3RlZHw3fGJhc2UtZmlyc3R8VG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gQmFzZTE1OFJldmlldzo6cmVxdWlyZWRCYXNlMTU4UmV2aWV3KCksIDEgcGFzc2VkIGluIHtGSUxFfSBvbiBsaW5lIDEwIGFuZCBleGFjdGx5IDIgZXhwZWN0ZWR8NHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class158-review/ordinary-missing-arity-lexical-owner.native-first.json",
+      "native_raw_sha256": "18d24726714bf8681d3537d52d6a1d74f29d8d321eb3f3258ce32a5f10623eba",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-method-public-reference-default-variadic",
+      "source": "<?php\n$head158 = \"7\";\n$last158 = \"4\";\n$extra158 = \"6\";\n$object158 = new class {\n    public $calls = 0;\n    public function mix(int &$head, int $middle = 20, int &...$tail): int {\n        $this->calls++;\n        $head++;\n        $tail[0] = 30;\n        return $head + $middle + $tail[0] + $tail[\"last\"];\n    }\n};\n$first158 = $object158->mix(head: $head158, last: $last158);\necho $first158, \"|\", $head158, \"|\";\necho $last158 === 4 ? \"last-int|\" : \"bad-type|\";\n$last158 = 7;\n$second158 = $object158->mix($head158, 5, $extra158, last: $last158);\necho $second158, \"|\", $head158, \"|\", $extra158, \"|\", $last158, \"|\", $object158->calls, \"|after\";\n",
+      "source_sha256": "f08c788da686119c03f422792561cf1876f6d7c4072779e2980de938e88c8d08",
+      "stdout_base64": "NjJ8OHxsYXN0LWludHw1MXw5fDMwfDd8MnxhZnRlcg==",
+      "stdout_template_base64": "NjJ8OHxsYXN0LWludHw1MXw5fDMwfDd8MnxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class158-review/author-public-reference-default-variadic.native-first.json",
+      "native_raw_sha256": "be75ce1f2a75dd4f36361c4e8036777b5d3c19b307561872cda6cb9d521ca057",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-method-access-before-send-and-fourth-type",
+      "source": "<?php\nfunction late158Author() { echo \"late|\"; return \"bad\"; }\n$object158 = new class {\n    private function hidden(int $value): int { echo \"hidden|\"; return $value; }\n    public function inside(): int { return $this->hidden(8); }\n    public function typed(int $first, int $second, int $third, int $fourth): int {\n        echo \"bad-body|\";\n        return 1;\n    }\n};\necho $object158->inside(), \"|\";\ntry {\n    $object158->hidden(late158Author());\n} catch (Error $error158) {\n    echo $error158->getMessage(), \"|\";\n}\ntry {\n    $object158->typed(1, 2, 3, late158Author());\n} catch (TypeError $error158) {\n    echo $error158->getMessage(), \"|\";\n}\necho \"after\";\n",
+      "source_sha256": "c165e230f08797585085506129a178cea46d2e4a5442def07b5fa75daaac95b2",
+      "stdout_base64": "aGlkZGVufDh8Q2FsbCB0byBwcml2YXRlIG1ldGhvZCBjbGFzc0Bhbm9ueW1vdXM6OmhpZGRlbigpIGZyb20gZ2xvYmFsIHNjb3BlfGxhdGV8Y2xhc3NAYW5vbnltb3VzKCk6IEFyZ3VtZW50ICM0ICgkZm91cnRoKSBtdXN0IGJlIG9mIHR5cGUgaW50LCBzdHJpbmcgZ2l2ZW4sIGNhbGxlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNTgtYXV0aG9yL2FjY2Vzcy1iZWZvcmUtc2VuZC1hbmQtZm91cnRoLXR5cGUvc291cmNlLnBocCBvbiBsaW5lIDE4fGFmdGVy",
+      "stdout_template_base64": "aGlkZGVufDh8Q2FsbCB0byBwcml2YXRlIG1ldGhvZCBjbGFzc0Bhbm9ueW1vdXM6OmhpZGRlbigpIGZyb20gZ2xvYmFsIHNjb3BlfGxhdGV8Y2xhc3NAYW5vbnltb3VzKCk6IEFyZ3VtZW50ICM0ICgkZm91cnRoKSBtdXN0IGJlIG9mIHR5cGUgaW50LCBzdHJpbmcgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAxOHxhZnRlcg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class158-review/author-access-before-send-and-fourth-type.native-first.json",
+      "native_raw_sha256": "4341d43d8a2a2e62ef463037edd8525b03fed80a9eae55f8fda556dad0116f96",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "anonymous-method-eval-fresh-reference-defaults",
+      "source": "<?php\n$source158 = 'namespace Method158Author;\nfunction make158() {\n    return new class {\n        public $calls = 0;\n        public function calculate(int &$value = 7, int $last = 2): int {\n            $value += 3;\n            $this->calls++;\n            return $value + $last;\n        }\n    };\n}';\neval($source158);\n$first158 = Method158Author\\make158();\n$second158 = Method158Author\\make158();\necho $first158->calculate(last: 4), \"|\";\necho $second158->calculate(), \"|\";\necho $first158->calculate(last: 5), \"|\", $first158->calls, \"|\", $second158->calls, \"|after\";\n",
+      "source_sha256": "9636141591d7961bb922cf95437a823a26534dcd7198e85021ab4e2bc1d1f396",
+      "stdout_base64": "MTR8MTJ8MTV8MnwxfGFmdGVy",
+      "stdout_template_base64": "MTR8MTJ8MTV8MnwxfGFmdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class158-review/author-eval-fresh-reference-defaults.native-first.json",
+      "native_raw_sha256": "27b635a48eee9b66b1e4c0ef22c2c569ce77b5e84d546c7d7e7ba0080dce3ccd",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

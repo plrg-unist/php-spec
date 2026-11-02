@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.public-destructors",
+  "status": "partial",
+  "scope": "Default/public zero-argument, by-value anonymous __destruct with no attributes or return annotation, through existing admitted root and successful include/eval class compilation.",
+  "engine_routes": [
+    "Zend/zend_objects.c::zend_objects_destroy_object calls the selected zero-argument destructor while protecting the old exception, then chains a replacement to that old exception.",
+    "Zend/zend_objects_API.h::zend_object_store_ctor_failed and Zend/zend_objects_API.c retain IS_OBJ_DESTRUCTOR_CALLED for failed constructors and automatic release; explicit method calls use ordinary invocation.",
+    "Zend/zend_execute_API.c::shutdown_destructors removes sole global owners in reverse symbol order before the object-store destructor pass."
+  ],
+  "design": "Only383 gains a disjoint public/default-public destructor admission arm.141 still validates the method prototype/body;257/270 select the real receiver, mark automatic calls once, preserve caller/source/pending owners and retire storage. No runtime, binder, schema or machine domain changes.",
+  "native_groups": [
+    {
+      "report": ".tools/class156-artifacts/native-initial5.json",
+      "sha256": "706fd2c09d790918f0bdd13ab0218b07ac20f2bfa1f7838422d94beed2f64804",
+      "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+      "cpu": [
+        1
+      ],
+      "seconds": 0.583
+    }
+  ],
+  "native_counts": "Five fresh originals, authored3 and independent2, frozen before outcomes at unchanged1fe7ddcb. No prior anonymous-destructor evidence existed to replay.",
+  "unchanged_baseline": {
+    "report": ".tools/class156-artifacts/unchanged-baseline2.json",
+    "sha256": "1ce8c9be038be46b3b68d13eb39f4d4d4364b2c15bf749c4bd4bfae66022a1f8",
+    "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+    "cpu": [
+      1
+    ],
+    "seconds": 24.086,
+    "result": "Exactly alias/temporary release and pending-exception cleanup old probes are frontend accepted/program checked Unsupported anonymous class RTD, body, or compiler publication context at unchanged1fe7ddcb. Other three old probes remain unrun; zero agreement credit."
+  },
+  "source_outcomes": {
+    "report": ".tools/class156-artifacts/source5-assessment.json",
+    "sha256": "c7a124f4f57a13a8acabf65144f0db2a6668cf23f99d658fa88506030a9a8db9",
+    "agreements": 5,
+    "counts": {
+      "normal": 5
+    },
+    "result": "Five model-only observations at068395a91 exactly match retained native streams/status/exit under the same profile and explicit FILE substitution only. Original method_runtime assertions and module/catalogue/profile maps stay intact; raw directories are external."
+  },
+  "strict_sl": {
+    "report": ".tools/class156-artifacts/first-strict433.json",
+    "sha256": "c785c5c780899e05f1c2c247f61953c147b24023bf9f4c825a13b715c91efd6a",
+    "revision": "068395a914cb78a25cbb5c3bd3e2ba84b32bc4a6",
+    "cpu": [
+      1
+    ],
+    "seconds": 11.909,
+    "modules": 433,
+    "result": "Ordered manifest --sl: exact Strict SL modules: 433 and true newlines, empty stderr/exit0/stable inputs/full reap. Later fixture/metadata edits renew no accepted strict credit."
+  },
+  "reached": {
+    "accepted_conditions": 240,
+    "source_reached_conditions": 228,
+    "derived_conditions": 12,
+    "derived_guards": 6,
+    "groups": [
+      {
+        "report": ".tools/class156-artifacts/authored-destructor-eval137.json",
+        "sha256": "c7517f9ae914cab66ccadac9652b0ff9d749053081b6f768629b6d2b15c79315",
+        "revision": "01d4096fbddc3cd788b93f49adf53bd525d28e39",
+        "cpu": [
+          1
+        ],
+        "seconds": 24.306,
+        "conditions": 137,
+        "reached_conditions": 128,
+        "derived_conditions": 9,
+        "derived_guards": 3,
+        "test": "tests/semantics/anonymous_destructor_eval_release_protocol.py",
+        "state_report": ".tools/class156-artifacts/anonymous-destructor-eval-release-jn52un7d/report.json",
+        "state_sha256": "59d9f33e765638acb5ade79d3a21b376a815d06798c32350ac68b32425c7c63e",
+        "result": "Real unit1 ingress, two same-class instances, authenticated unit0 unset14/16 sites, selected METHOD_TARGET and call body, once marking and allocation retirement. Three coherent target/source/line controls install matching CALLS/TODO records; six setup equations remain derived."
+      },
+      {
+        "report": ".tools/class156-artifacts/independent-constructor-failure103.json",
+        "sha256": "c1308cead51144706d3e96184c33e0ad2a8ce07b885c46d74f416ff12cedc8c0",
+        "revision": "01d4096fbddc3cd788b93f49adf53bd525d28e39",
+        "cpu": [
+          1
+        ],
+        "seconds": 18.901,
+        "conditions": 103,
+        "reached_conditions": 100,
+        "derived_conditions": 3,
+        "derived_guards": 3,
+        "test": "tests/semantics/anonymous_destructor_constructor_failure_protocol.py",
+        "state_report": ".tools/class156-artifacts/anonymous-destructor-constructor-failure-g1x1f4x6/report.json",
+        "state_sha256": "2dbebd9eebe23106ed102068ab65761998dedd7572b8ba9c011f94c87fdf0018",
+        "result": "Escaped receiver remains alive and automatically CALLED after constructor failure while destination99 stays unchanged. Ordinary explicit destructor call has no automatic CALL record; later unset retires the object without another invocation. Selected target/count/line guards and final class/call/declaration/heap checks."
+      }
+    ]
+  },
+  "failures": "No new semantic, recorder or fixture failure. The two genuine old Unsupported observations retain zero agreement credit; all other old probes remain unrun. Two fixture issues were corrected during static review before execution (eval line numbering and coherent call-record mutations).",
+  "tested_code": {
+    "implementation_commit": "ac87153b894f28b81aa63b2c0d1e456f2e72b34b",
+    "source_and_strict_cut": "068395a914cb78a25cbb5c3bd3e2ba84b32bc4a6",
+    "fixture_cut": "01d4096fbddc3cd788b93f49adf53bd525d28e39",
+    "production_sha256": {
+      "spec/semantics/383-anonymous-classes.watsup": "bc5bc26c4db7c45b7f598f69c19ff1a605993d41e835d700fa038c31ac0f7a86"
+    },
+    "qualification": "Every changed source/state cut shares the same three-line producer admission. Fixture and metadata edits renew no accepted native/source/strict credit."
+  },
+  "limits": [
+    "Nonpublic, reference-return, attributed and other anonymous magic methods remain required class work.",
+    "Constructor Traversable producers, promotion/nonpublic modes and wider factories/lifecycles remain partial.",
+    "Existing collection, reference/property-source, source-history and destructor reentry policies remain authoritative.",
+    "All paused/held boundaries, including owned-NUL release, V110 and COMP123, remain unchanged."
+  ],
+  "target": "PHP8.5.10 CLI NTS signed64; tests/semantics/profile.json; sole project-local oracle.",
+  "source_pin": "vendor/php-src @34308a6666b2d489c509541ea9befea9e2b42348",
+  "recovery": "Frozen originals/native/probes and raw source/state records are outside Git under .tools/class156-author, class156-review and class156-artifacts. Supervisor records contain commands, tested revision, consumed-input maps, affinity, exits and full reap. local-tools.json records reused hardlinked binaries; this is not a fresh offline rebuild.",
+  "independent_review": "Admission/catalogue and both reached fixtures passed independent semantic review before execution. Private package review, actual-tail interactions and one then-current joined manifest gate remain pending."
+}

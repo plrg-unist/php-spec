@@ -262,7 +262,7 @@ def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
 ;; A C-selected maker may retire its old registry and Closure before the new
 ;; queue entry runs. Keep only its immutable target and scope/binding records.
 ;; Reconstruction below is for pure lookups and creates no heap owners.
-def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext) \/ $fiber_context_kind(S, pcallcontext) \/ $consumer_clone_context(S, pcallcontext)), CLONE $consumer_clone_receipt(S, pcallcontext)})
+def $consumer_producer_current(S) = ({TARGET $callback_original_target(pcallcontext.TARGET), SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext) \/ $fiber_context_kind(S, pcallcontext) \/ $consumer_clone_context(S, pcallcontext)), CLONE $consumer_clone_receipt(S, pcallcontext)})
   -- if S.CURRENT = (pcallcontext)
 def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
 def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
@@ -391,7 +391,7 @@ def $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_s
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN papiquery.VALUE)) :: pnamedslot*
   -- if papiquery_selected = $consumer_query_selected(S, papiquery)
   -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, |S.SHUTDOWN.ENTRIES|)
-  -- if pshutdownentry = {CALL pconfigcall, BIRTH (|S.SHUTDOWN.ENTRIES|), CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
+  -- if pshutdownentry = {CALL pconfigcall, BIRTH (|S.SHUTDOWN.ENTRIES|), CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, CACHEOBJECT $callback_cache_object(S, API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, $consumer_snapshot(S, papiquery_selected)), ARGS $shutdown_values(pnamedslot*)}
 
 def $consumer_exception_invalid(S, pexceptioncall, ptbytes) = S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, pexceptioncall.CALLBACK) ++ $ptascii(", ") ++ ptbytes) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
 def $api_finish(S, EXCEPTION_HANDLER_INVOKE pexceptioncall, pvalue, HANDLERINVALID ptbytes) = $consumer_exception_invalid(S, pexceptioncall, ptbytes)

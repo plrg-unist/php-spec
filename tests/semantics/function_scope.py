@@ -90,7 +90,7 @@ def native(path, payload, output):
             'exit_status': result.returncode, 'command': command}
 
 
-def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), publish=True, model_seconds=30):
+def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), publish=True, model_seconds=30, request_environments=None):
     parser = argparse.ArgumentParser(); parser.add_argument('--match', default=''); args = parser.parse_args()
     cases = {k: v for k, v in catalogue.items() if args.match in k}
     assert cases, 'no source controls selected'
@@ -109,7 +109,7 @@ def main(catalogue=CASES, campaign="function-scope", producer=Path(__file__), pu
     records = []
     for name, source in cases.items():
         directory = out / name; directory.mkdir(); path = directory / 'source.php'; path.write_bytes(source)
-        entries = [b'LC_ALL=C', b'TZ=UTC', b'FIRST=one']
+        entries = (request_environments or {}).get(name, [b'LC_ALL=C', b'TZ=UTC', b'FIRST=one'])
         payload = directory / 'request.input'; payload.write_bytes(q.packet(1700000000, 125000, entries))
         request = {'env': [[q.b64(k), q.b64(v)] for k, v in (e.split(b'=', 1) for e in entries)],
                    'argv': [q.b64(os.fsencode(path))], 'file': q.b64(os.fsencode(path)),

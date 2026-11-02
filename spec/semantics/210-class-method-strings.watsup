@@ -30,10 +30,14 @@ dec $string_fixed_method(pstate, ptbytes, ptbytes) : parrayresolution
 def $string_fixed_method(S, ptbytes_class, ptbytes_method) = $scope_string_fixed(S, ptbytes_class, ptbytes_method)
 
 dec $string_resolve(pstate, ptbytes, parraymode, bool) : parrayresolution
+dec $string_enum_candidate(pstate, ptbytes) : pintrinsic?
+def $string_resolve(S, ptbytes, ARRAY_ADMISSION, b_fixed) = ARRAYADMITTED
+  -- if $string_enum_candidate(S, ptbytes) = (pintrinsic)
 def $string_resolve(S, ptbytes, ARRAY_DISPATCH, true) = $string_fixed_method(S, ptbytes_class, ptbytes_method)
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
 def $string_resolve(S, ptbytes, parraymode, b_fixed) = $array_receiver(S, PSTRING ptbytes_class, ptbytes_method, parraymode)
   -- if parraymode = ARRAY_ADMISSION \/ ~b_fixed
+  -- if parraymode = ARRAY_DISPATCH \/ $string_enum_candidate(S, ptbytes) = eps
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
 def $string_resolve(S, ptbytes, parraymode, b_fixed) = ARRAYINVALID ($ptascii("Invalid class-method string")) -- otherwise
 def $string_callable(S, ptbytes) = $api_admission($api_pure(S, PSTRING ptbytes)) -- if $api_special(S, PSTRING ptbytes)
@@ -167,7 +171,6 @@ def $call_selected_valid(S, STRING_METHOD_TARGET pcalltarget pstringselection, (
   -- if $string_receiver_site_valid(S, pcalltarget, porigin_site)
 
 dec $string_dynamic_result(pstate, parrayresolution, porigin, int, int, ptbytes) : pstate
-dec $string_enum_candidate(pstate, ptbytes) : pintrinsic?
 def $string_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes_method, porigin_site, z_init, z_call, ptbytes) = S[.TODO = $method_args_task(STRING_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, ORIGINAL ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $string_dynamic_result(S, ARRAYINVALID ptbytes_error, porigin_site, z_init, z_call, ptbytes) = $throw_scalar(S, "Error", ptbytes_error, z_init)
 def $string_dynamic_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_call, ptbytes) = S[.COMPLETION = UNSUPPORTED text]
@@ -198,7 +201,7 @@ def $string_convert_valid(S, pcalltarget, pstringselection) = true
 def $string_convert_valid(S, pcalltarget, pstringselection) = false -- otherwise
 def $call_task_valid(S, STRING_CONVERT pcalltarget pstringselection) = $string_convert_valid(S, pcalltarget, pstringselection)
 def $task_nodes(STRING_CONVERT pcalltarget pstringselection) = $target_nodes(pcalltarget)
-rule PhpStep/string-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [STRINGMETHODCLOSURE pcalltarget pstringselection]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/string-convert: S ~> S[.GC = $fake_gc_birth(S.GC, n, $fake_gc_receiverless(n_receiver?))][.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [STRINGMETHODCLOSURE pcalltarget pstringselection]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (STRING_CONVERT pcalltarget pstringselection) :: ptask_tail*
   -- if $string_convert_valid(S, pcalltarget, pstringselection)
   -- if $string_target_descriptor(S, pstringselection) = (pmethoddesc)

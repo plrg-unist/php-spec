@@ -59,7 +59,7 @@ def $object_table_item(S, ALIAS n) = ALIAS n
 def $object_table_item(S, UNINITIALIZED) = UNINITIALIZED
 
 ;; A dynamic slot record keeps mixed-table identity after its value is unset.
-;; Declared-only nonpublic layouts retain their separate comparison route.
+;; Declared INITIAL/UNSET slots keep their physical INDIRECT buckets.
 def $object_table_dynamic_history(eps) = false
 def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
@@ -68,6 +68,7 @@ def $object_table_dynamic_history(ppropertyslot :: ppropertyslot_tail*) = $objec
 
 dec $object_table_ordinary_rows(pstate, nat, ppropertyslot*) : bool
 dec $object_table_ordinary_entries(nat, ppropertyslot*) : pentry*
+;; Declared slots materialize under their actual mangled keys.
 def $object_table_ordinary_rows(S, n, eps) = true
 def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
   -- if ppropertyslot.DECL = eps
@@ -81,7 +82,6 @@ def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $o
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $object_table_dynamic_history($object_table_slots_at(S, n))
   -- if ppropertydesc.KEY = ppropertyslot.NAME
   -- if ~$property_hook_virtual(S, ppropertydesc)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
@@ -91,10 +91,17 @@ def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $o
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC \/ $object_table_dynamic_history($object_table_slots_at(S, n))
   -- if ppropertydesc.KEY = ppropertyslot.NAME
   -- if ~$property_hook_virtual(S, ppropertydesc)
   -- if ppropertyslot.STATE = PROP_UNSET
+def $object_table_ordinary_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = $object_table_ordinary_rows(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ppropertyslot.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid /\ ppropertydesc.KEY = ppropertyslot.NAME
+  -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
+  -- if ~$property_hook_virtual(S, ppropertydesc)
+  -- if ppropertyslot.STATE = PROP_INITIAL
 def $object_table_ordinary_rows(S, n, ppropertyslot*) = false -- otherwise
 def $object_table_ordinary(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -118,7 +125,7 @@ def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (E
   -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) (INDIRECT n ppropertyslot.NAME)) :: $object_table_ordinary_entries(n, ppropertyslot_tail*)
   -- if ppropertyslot.DECL =/= eps
-  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
 def $object_table_ordinary_entries(n, ppropertyslot :: ppropertyslot_tail*) = (ENTRY (KSTRING ppropertyslot.NAME) pitem) :: $object_table_ordinary_entries(n, ppropertyslot_tail*)
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
@@ -403,9 +410,15 @@ def $object_table_sync_rows(ppropertyslot :: ppropertyslot_tail*, parray) = $obj
 def $object_table_sync_rows(ppropertyslot :: ppropertyslot_tail*, parray) = $object_table_sync_rows(ppropertyslot_tail*, $array_insert(parray, KSTRING ppropertyslot.NAME, pitem))
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
+;; A dead lookup mirror must not delete a later live bucket of the same name.
+def $object_table_sync_rows(ppropertyslot :: ppropertyslot_tail*, parray) = $object_table_sync_rows(ppropertyslot_tail*, parray)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if $property_slot_named(ppropertyslot_tail*, ppropertyslot.NAME)
 def $object_table_sync_rows(ppropertyslot :: ppropertyslot_tail*, parray) = $object_table_sync_rows(ppropertyslot_tail*, parray[.ITEMS = $entry_delete(parray.ITEMS, KSTRING ppropertyslot.NAME)][.POSITIONS = $position_delete(parray.POSITIONS, KSTRING ppropertyslot.NAME)])
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
+  -- if ~$property_slot_named(ppropertyslot_tail*, ppropertyslot.NAME)
 def $object_table_sync(S, n) = S[.ARRAYS = $array_replace(S.ARRAYS, n_table, $object_table_insert_entries(pentry*, $object_table_prune_keys(S.ARRAYS[n_table].ITEMS, pentry*, S.ARRAYS[n_table])))]
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)

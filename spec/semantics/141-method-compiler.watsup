@@ -33,7 +33,6 @@ dec $ppmethod_visibility_warning(ppstate, int, ptbytes, ptbytes, nat) : ppstate
 dec $ppmethod_return_valid(ptbranch*) : bool
 dec $ppmethod_wakeup_args_valid(psparam*) : bool
 dec $ppmethod_wakeup_return_valid(ptbranch*) : bool
-dec $declaration_method_source_line(metadata) : int
 dec $declaration_method_keyword_line(metadata, metadata) : int
 dec $ppmethod_line(metadata) : nat
 def $ppmethod_line(metadata) = $nabs($declaration_method_source_line(metadata))
@@ -320,7 +319,7 @@ def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, m
 def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_body, $ptascii("Method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot be static"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__destruct"), $ptascii("__clone")] /\ $ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ $ppproperty_flag(flags, 8)
-def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_checked, pchheader.NAME ++ $ptascii("::__toString(): Return type must be string when declared"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
+def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_checked, $c_string(pchheader.NAME) ++ $ptascii("::") ++ ptbytes ++ $ptascii("(): Return type must be string when declared"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ppmethod_tostring(ptbytes) /\ pssignature.PARAMETERS = eps /\ ~$ppproperty_flag(flags, 8)
   -- if P_checked = $ppmethod_visibility_warning(P_body, flags, ptbytes, pchheader.NAME, $ppmethod_line(metadata))
@@ -333,7 +332,7 @@ def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, m
 def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_body, $ptascii("Method ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("() cannot declare a return type"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if ($ptlc(ptbytes) = $ptascii("__construct") \/ ($ptlc(ptbytes) = $ptascii("__destruct") /\ $ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8))) /\ pssignature.RETURNS =/= eps
-def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_checked, pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii("(): Return type must be void when declared"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
+def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_checked, $c_string(pchheader.NAME) ++ $ptascii("::") ++ ptbytes ++ $ptascii("(): Return type must be void when declared"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ptlc(ptbytes) <- [$ptascii("__wakeup"), $ptascii("__clone")] /\ $ppmethod_wakeup_args_valid(pssignature.PARAMETERS) /\ ~$ppproperty_flag(flags, 8)
   -- if P_checked = $ppmethod_visibility_warning(P_body, flags, ptbytes, pchheader.NAME, $ppmethod_line(metadata))

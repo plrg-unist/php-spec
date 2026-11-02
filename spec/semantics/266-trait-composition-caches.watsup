@@ -467,7 +467,7 @@ def $trait_comparison_memory(ptraitdatavalue_left, TRAITVALUE S pvalue pfdiagnos
   -- if ~$trait_value_error(ptraitdatavalue_left)
 def $trait_comparison_memory(TRAITVALUE S pvalue pfdiagnostic*, TRAITUNINITIALIZED) = (S)
 def $trait_comparison_memory(ptraitdatavalue_left, ptraitdatavalue_right) = eps -- otherwise
-def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.OBJECTS = S_memory.OBJECTS][.OBJECTPROPS = S_memory.OBJECTPROPS][.CLOSURESCOPES = S_memory.CLOSURESCOPES][.CONSTANTCLOSURES = S_memory.CONSTANTCLOSURES][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])
+def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.OBJECTS = S_memory.OBJECTS][.GC.FAKE_NOCOLLECT = S_memory.GC.FAKE_NOCOLLECT][.OBJECTPROPS = S_memory.OBJECTPROPS][.CLOSURESCOPES = S_memory.CLOSURESCOPES][.CONSTANTCLOSURES = S_memory.CONSTANTCLOSURES][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])
 def $trait_cache_transfer(S, eps) = S
 def $trait_cache_failed(S, S_result) = true
   -- if $(|S.CLASSCONSTANTHISTORY| <= |S_result.CLASSCONSTANTHISTORY|)

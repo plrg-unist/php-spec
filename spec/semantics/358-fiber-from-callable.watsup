@@ -160,7 +160,7 @@ def $from_receive(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeE
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $fiber_factory_candidate(S, pvalue)
   -- if $fiber_factory_error(S, pvalue, $fiber_factory_items(S, pvalue)) = (ptbytes)
-def $from_receive(S, pconfigcall, pvalue) = $from_done(S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+def $from_receive(S, pconfigcall, pvalue) = $from_done(S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if $fiber_factory_current(S, pconfigcall, pvalue)
   -- if pentry* = $fiber_factory_items(S, pvalue)
   -- if $fiber_factory_selection(S, pvalue, pentry*) = ((INTRINSIC_FIBER_CURRENT, ptbytes, eps))
@@ -196,7 +196,7 @@ def $from_receive(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "capture
   -- if ~$fiber_factory_return(S, pconfigcall, pvalue)
   -- if ~$fiber_factory_start(S, pconfigcall, pvalue)
   -- if ~$fiber_factory_construct(S, pconfigcall, pvalue)
-def $fiber_factory_new(S, pconfigcall, pvalue, pentry*) = $from_done(S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+def $fiber_factory_new(S, pconfigcall, pvalue, pentry*) = $from_done(S[.GC = $fake_gc_birth(S.GC, n, $fiber_static(pintrinsic))][.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if $config_invoke_valid(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ $fiber_factory_suspended(S, pconfigcall, pvalue) \/ $fiber_factory_statuses(S, pconfigcall, pvalue) \/ $fiber_factory_suspend(S, pconfigcall, pvalue) \/ $fiber_factory_resume(S, pconfigcall, pvalue) \/ $fiber_factory_throw(S, pconfigcall, pvalue) \/ $fiber_factory_return(S, pconfigcall, pvalue) \/ $fiber_factory_start(S, pconfigcall, pvalue) \/ $fiber_factory_construct(S, pconfigcall, pvalue)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]

@@ -1,0 +1,34 @@
+{
+  "scope": "GC24: finite ordered node-free scalar captures around one mutable one-level array in an authenticated active direct real Closure caller.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "base": "e89eb83ab05e354c1b0480c3a31f802d8f663bc9",
+    "source_only": "a3e140d454",
+    "tested_semantic": "90ef326dc106b314abf1ea7c37c3538d187c4b06",
+    "joined_base": "0ed9ac41f35824259bcebbb8e357f8a46f193d47",
+    "joined_code": "932cd1331300a2fc682e7ab6b8fd9dd3d6273e07"
+  },
+  "joined_current_tail": "Composed cleanly on master 5a62dad28 at code/docs head 1d451046c. Intervening modules 30/444 add registered tick release and module 437 adds enum INTRINSIC_IS_CALLABLE array-output queries; the GC24 sources register no ticks and invoke a direct real Closure with INTRINSIC_GC_COLLECT. Module 301 and both reached fixtures are byte-identical to the private tested cut. Lifecycle.cycles gains only its GC24 helper, seven source files, one evidence entry and scoped review text; enum obligations and accepted evidence are preserved. The frozen three source pairs and strict 110+113+146 checks bridge by disjointness, without replay.",
+  "rule": "One DIRECT array capture may occur anywhere among finite DIRECT defined node-free scalar captures. Its finite entries are DIRECT node-free scalars or distinct allocated childless STDINSTANCE leaves; ordinary and physical edges must agree. The array must be allocated, mutable, outside compiled-pool reach and outside materialized object-property tables. Authentic selected direct Closure caller and machine root remain required. Existing exact array clauses retain their prior admissions; a legacy-shape guard keeps the new rule disjoint from them. Graph, owner, buffer and count algorithms are unchanged.",
+  "validation": {
+    "native": "Six pinned controls pass, including reversed Reflection capture order, duplicate leaf identity and childless-array COW. The three distinct mixed-key original and its post-capture COW variant both exit 0 with empty stderr. The independent pinned native COW report agrees with the committed source bytes.",
+    "preedit": "At source-only a3e, reversed capture and duplicate child sources exit 1 Unsupported cached ordinary property-table collection and earn zero agreement; childless COW already agrees. The first generic draft caused an interpreter nondeterminism on childless COW because it overlapped an older exact clause. Its raw failed report is retained; the legacy-shape exclusion restores exact COW behavior.",
+    "source": "At clean semantic 90ef, reversed scalar/array capture, three distinct mixed-key leaves and three-leaf post-capture COW each have byte-exact native/model stdout and stderr and exit 0: three source agreements. All report inputs and HEADs are stable, with no timeout or surviving child process group.",
+    "reached": "Strict SL passes the corrected GC23 group (110), new reversed-capture group (113) and three-leaf group (146). Genuine D states bind capture and entry order, array/leaf owners, buffer order, black protection and count-plan removal. Negatives refuse duplicate object edges, a separately captured shared leaf, ALIAS/INDIRECT or nested entries, PUNDEFINED, a destructor-bearing child, a direct pool root, a materialized proxy table and caller/source erasures. GC23's historical swapped-order refusal was replaced because GC24 admits that order. The initial pool-fixture syntax failure is retained and the affected group passed after correction. The pool mutation tests a direct root; descendant exclusion follows the finite heap-reach definition.",
+    "runtime": "The pinned six-case native phase and all three final model cases use the recorded profile with CLI opcache/JIT disabled. The final model cases take 72, 112 and 120 seconds respectively under 240-second caps."
+  },
+  "reports_sha256": {
+    "gc-finite-capture-24-dev/proxy-cow/native-report.json": "46efdd311fd1a6b0954fce7447e41a2782f491009de67b0bd52780477ebd7e54",
+    "gc-finite-capture-24-dev/proxy-cow/model-finite-reversed-captures-report.json": "344f23eedab42b9afbb7e0213d903c73ca7fddeb4f4f7815afebc51675f0fd3d",
+    "gc-finite-capture-24-dev/proxy-cow/model-finite-three-distinct-mixed-key-report.json": "ae7187bfc6cc35a7e512cbc5a2d4657654e9184f5734d502bf7547d0c65aaa17",
+    "gc-finite-capture-24-dev/proxy-cow/model-finite-three-distinct-cow-report.json": "fd849e1eb714b4ac633634a50db4a925db488ff9a65ee767eebf9bc62b46ccf5",
+    "gc-finite-capture-24-dev/semantic-pool-undef/model-finite-cow-after-capture-report.json": "892a59ac35e6f3d1d33abaedf119c9915a9b7fdd4139c36e2c86b61ee8fe3887",
+    "gc-finite-capture-24-dev/strict/gc23-superseded-negative/report.json": "25121df98c0ad5c89a36399e2571bfa170071e3a6fce519e562e4c8c644b6b10",
+    "gc-finite-capture-24-dev/strict/initial-pool-fixture-syntax/report.json": "6900a19b6857f346ab21253b84213f87e7d40802531786e4aac68ecaea84789e",
+    "gc-finite-capture-24-dev/strict/three-leaf-pool-proxy/report.json": "c60ae14dd50f1d39fe90a9bce6b6978a84019118768f2d3671ce213bbca3f21e"
+  },
+  "limits": "Duplicate object identities, separately captured shared objects, ALIAS and INDIRECT entries, nested arrays, user destructor children, materialized property tables and compiled-pool descendants remain outside the new generic rule. Older exact clauses retain their own historical scope, including any pool-reachable childless states. Explicit Closure __invoke uses its separate GC11 admission. General cyclic, reference and finalizer-bearing graphs remain partial.",
+  "review": "Independent GC24 private semantic/test CLEAR from gc_review_recovery at 90ef326dc; joined documentation, inventory and current-tail disjointness were checked on the 5a62 composition.",
+  "recovery": "Raw pinned native/model sources, stdout, stderr, failed attempts and strict fixtures are outside Git under ../php-spec-evidence-archive/gc-finite-capture-review-probes and gc-finite-capture-24-dev. Reproduce with tests/semantics/gc_finite_capture_sources.py native then selected model phases and gc_finite_capture_state.py strict; run one fully reaped CPU1 actor at a time."
+}
