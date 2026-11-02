@@ -6735,8 +6735,11 @@ the name for runtime false and syntax-only true; the
 records a second exact original and 42 reached guards. Canonical class and
 live case literal arrays add two exact outcomes and 68 reached guards in the
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
-Other array spellings, destructor and aliasing effects, autoload, case
-attributes, enum collection policy and wider acquisition remain partial;
+Literal class-string arrays now preserve lowercase and leading backslash bytes;
+the [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json)
+records three exact outcomes and 64 reached guards. Other array sources,
+destructor and aliasing effects, autoload, case attributes, enum collection
+policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

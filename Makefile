@@ -880,6 +880,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_protocol.py
 	python3 tests/semantics/enum_is_callable_output_false_protocol.py
 	python3 tests/semantics/enum_is_callable_output_array_protocol.py
+	python3 tests/semantics/enum_is_callable_output_spelling_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
