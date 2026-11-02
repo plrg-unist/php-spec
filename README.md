@@ -798,8 +798,9 @@ Generator to own finite quiet arrays or ordinary non-Stringable objects. Four
 new object sources agree with PHP. One reached proof releases two distinct
 objects before a saved catch; the other keeps two copies of the same object
 through real Generator storage release and TypeError TraceArgs. The cached
-child loses one owner while both copied argument roots remain. Effectful
-finalizers, reference cells and wider producers remain separate.
+child loses one owner while both copied argument roots remain. A separate
+array COW regression preserves first and second snapshots after later local
+writes. Effectful finalizers, reference cells and wider producers remain separate.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
