@@ -253,6 +253,10 @@ order. Shutdown registrations created during FINAL retire their arguments and FC
 owners while PHP is still active, including caught destructor throws. Owning
 module/autoload cleanup, uncovered table owners, wider hooks/rendering, reentrant
 deactivation, other byte producers and buffered stdout diagnostics remain dependencies.
+[OB06](coverage/semantics/output-executor-post-deactivate-review.json) covers a
+no-argument `ob_start()` from a shutdown-argument destructor after output
+deactivation: the Notice precedes a false result, and no buffer is created.
+Suppression and selected error handlers retain their native output order.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

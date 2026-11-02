@@ -582,6 +582,18 @@ remain partial. Original failures retain zero credit; the retained slow native
 control is promoted without native replay.
 [Nonfast executor review](coverage/semantics/output-executor-nonfast-review.json).
 
+OB06 models a no-argument buffer start attempted by a shutdown-argument
+destructor after output deactivation. The Notice, false result and unchanged
+buffer stack/sequence agree in six source/request contexts, including suppression,
+selected handler and fallback paths, slow allocation and an early-shutdown
+success control. Three argument/reentrant forms reach checked Unsupported; one
+source-reached Notice state passes 30 checks with budget resume. Private and
+joined strict433 pass; joined plain/slow and selected-handler sources plus the
+three refusals pass on the parent with changed executor queue roots. A retained
+handler-return object destructor has native fast/slow observations but fails
+before its nested call in the model and earns zero credit.
+[Post-deactivation review](coverage/semantics/output-executor-post-deactivate-review.json).
+
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 
 ## Active and unintegrated work
