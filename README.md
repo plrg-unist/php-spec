@@ -4817,6 +4817,15 @@ arguments; body/default errors still arise during compilation. Same-type
 redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
+
+One unadapted named trait use in a parented unit0 anonymous class without
+interfaces can supply a constant holding a first-class method capture. The
+captured invocation prints the generated NUL name for both `self::class` and
+`static::class` in this source. Source-authenticated declaration replay selects
+the composed class at `new`.
+One exact source and 48 reached checks cover this bounded form.
+[Anonymous trait-capture review](coverage/semantics/anonymous-trait-capture-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method

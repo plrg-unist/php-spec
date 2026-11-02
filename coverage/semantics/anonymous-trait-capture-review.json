@@ -1,0 +1,46 @@
+{
+  "scope": "CLASS166: one unadapted named trait use in a parented unit0 anonymous class without interfaces. A trait constant captures a copied static method; its invocation prints the generated NUL name for self::class and static::class in this source.",
+  "pin": {
+    "oracle": "project-local PHP 8.5.10 CLI/NTS/64-bit, -n plus tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "private_base": "59c987a02",
+    "catalogue_commit": "35ede74dd",
+    "implementation_commit": "c21d47d88",
+    "state_commit": "28c0c5e68"
+  },
+  "inputs": {
+    "module_manifest": ["spec/semantics/modules.json", "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3"],
+    "semantic_rule": ["spec/semantics/383-anonymous-classes.watsup", "9dba79f559f27f689c42af0f034999ae55c6a93f0b1e0666be0c4ae19958bafc"],
+    "catalogue": ["tests/semantics/anonymous_trait_capture_cases.json", "d3708f4fa9ed5e3be5022a9cf6a96693e9f48df1ec1db8877808d3de0a95a767"],
+    "state_script": ["tests/semantics/anonymous_trait_capture_protocol.py", "570340c73dfceb6be1a1ff511bf44d57941fbbddd75ea3896b8ac2bbdf43b09e"]
+  },
+  "native_original": {
+    "id": "parented-anonymous-trait-first-capture",
+    "source_sha256": "a94ee0efef4a247e18c74c9232a9d1db047aaddfd48438b1dc95a5e0b54a5ce0",
+    "status": "normal",
+    "exit": 0,
+    "result": "Three Base166@anonymous NUL/file:9$0 names; body executes with anonymous self/static scope; exact bytes are in the pinned raw record and filename template.",
+    "raw": [".tools/class166-artifacts/parented-anonymous-trait-capture.native.json", "d1f2652e55a1d64a84a4538987b881e3b82969de40cc8c5b6fab413713f61507"]
+  },
+  "validation": {
+    "private_source": "One exact native/model normal tuple and exit0 at the final semantic bytes. The source supervisor ran before the commits at 35ede74dd with stable 383 hash matching the committed rule; CPU2/full reap.",
+    "source_supervisor": [".tools/class166-artifacts/parented-final-private.json", "c733b1fc37d60cdc3681a97582b9a00e507209cbd96490fdb9ce5f176965e31d"],
+    "source_raw": [".tools/class166-artifacts/recovered-private-raw/method-runtime-lclvtr8l/report.json", "14d71280650789946e9c880d50edeaccb5a4cd2e379542846d3b8746e7347abf"],
+    "reached_state": "One source-reached SL fixture passed 48 conditions at the final semantic/test bytes. It checks the exact raw and composed descriptors, generated NUL name, Base166 parent link, PDRCLASS and full declaration replay, one-step allocation, two-name/two-use exclusions, and forged duplicate imported method rejection. CPU2/full reap, true newline/empty stderr/exit0, watched inputs stable.",
+    "state_supervisor": [".tools/class166-artifacts/class166-state-count-fix.json", "0067bfd5616317435e77361fc6bc88e15fd5aa9725f0530c860314a219f61c51"],
+    "state_raw": [".tools/class166-artifacts/recovered-private-raw/anonymous-trait-capture-cu8dbxn3/report.json", "d4f745b132c570da462b3150f32f9faf3a882db546424e5fcb0f66f84d63e544"],
+    "strict": "All 433 ordered semantic modules compile under strict SL at exact private 28c0c5e68: true newline/empty stderr/exit0, CPU2/full reap, stable inputs.",
+    "strict_supervisor": [".tools/class166-artifacts/class166-strict-private.json", "3d716dddf47c971de3577eec31a44988c8a089529e333e7e75a47e96107c7bbf"]
+  },
+  "zero_credit": {
+    "parentless": "Pinned parentless source is normal, but the model remains explicit Unsupported after the scope guard; it earns no agreement. A temporary broad admission yielded interpreter_failure and was removed. Parentless late publication needs its own rule.",
+    "parentless_native": [".tools/class166-artifacts/anonymous-trait-capture.native.json", "3882236fa495268b8a97e5b98b055acf71142b4d97b114f0667314e8b2ed4d6b"],
+    "parentless_final_supervisor": [".tools/class166-artifacts/parentless-scope-guard.json", "783e2c052778047cbe1b6d0ad51d31a0a3bb6b62cbec0eb1256effb9af61a96e"],
+    "parentless_final_raw": [".tools/class166-artifacts/recovered-private-raw/method-runtime-iebl8bt9/report.json", "19867339cccbca179d508dac964b816f41a9a0f14b9dde22890fd195d76cfee6"],
+    "other_failures": "Parented baseline Unsupported, first rule elaboration failure, intermediate step13 interpreter failure, and four corrected state fixture cuts retain zero credit. All eight method and five state raw report directories are preserved in the external recovery map.",
+    "raw_map": [".tools/class166-artifacts/recovered-private-raw/locations.json", "16b593a0ea299dff48296ab5100381566b2ef4695da22d03448dd185465b2e5b"]
+  },
+  "limits": "Parentless trait use, trait use with interfaces, two uses, multi-name use and adaptations remain excluded or explicitly Unsupported. Dynamic-unit anonymous captures and parent-typed or rebound closure views are unvalidated by this cut.",
+  "actual_tail": "Private composition and current-tail affected checks pending."
+}
