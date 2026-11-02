@@ -1515,7 +1515,7 @@ def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
 def $enum_is_callable_input(pconfigcall) = eps -- otherwise
 
 ;; The third argument is a writable CV, captured before invocation. Its old
-;; value is a string, so replacing it cannot run user code.
+;; value has no heap root, so replacing it cannot run user code.
 dec $enum_is_callable_ref_array_receiver(pstate, pvalue, porigin, ptbytes, ptbytes, bool) : ptbytes?
 def $enum_is_callable_ref_array_receiver(S, pvalue_class, porigin_class, ptbytes_class, ptbytes_member, false) = (ptbytes_class)
   -- if ptbytes_member = $ptascii("class")
@@ -1572,7 +1572,7 @@ def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED pvalue_old
-  -- if $string_bytes(pvalue_old) = (ptbytes_old)
+  -- if $value_nodes(pvalue_old) = eps /\ pvalue_old =/= PUNDEFINED
   -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
   -- if ~$foreach_released_cell(S, n_cell)
 def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = eps -- otherwise
