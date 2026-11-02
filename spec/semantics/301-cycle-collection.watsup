@@ -418,15 +418,18 @@ def $gc_plain_array_entries(S, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry_tail*
   -- if $gc_trace_children(S, HOBJECT n) = eps
 def $gc_plain_array_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = $gc_plain_array_entries(S, pentry_tail*)
   -- if $value_nodes(pvalue) = eps
+  -- if pvalue =/= PUNDEFINED
 def $gc_plain_array_entries(S, pentry*) = false -- otherwise
 def $gc_node_free_captures(eps) = true
 def $gc_node_free_captures((DIRECT pvalue) :: pitem_tail*) = $gc_node_free_captures(pitem_tail*)
   -- if $value_nodes(pvalue) = eps
+  -- if pvalue =/= PUNDEFINED
 def $gc_node_free_captures(pitem*) = false -- otherwise
 def $gc_one_array_capture(eps, n_array) = false
 def $gc_one_array_capture((DIRECT (PARRAY n_array)) :: pitem_tail*, n_array) = $gc_node_free_captures(pitem_tail*)
 def $gc_one_array_capture((DIRECT pvalue) :: pitem_tail*, n_array) = $gc_one_array_capture(pitem_tail*, n_array)
   -- if $value_nodes(pvalue) = eps
+  -- if pvalue =/= PUNDEFINED
 def $gc_one_array_capture(pitem*, n_array) = false -- otherwise
 def $gc_ordinary_node(S, HCELL n) = true
 def $gc_ordinary_node(S, HARRAY n) = true
