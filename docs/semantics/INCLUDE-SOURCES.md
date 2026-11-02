@@ -1915,3 +1915,30 @@ the corrected checks use the same runtime and frozen sources. The old
 `B;P;Y0;Y1;M:5;T;` Unsupported remains zero credit. Outside-retained cleanup
 keeps its earlier admission; effectful finalizers, reference cells and wider
 cached values remain separate.
+
+The [two-owning-send increment](../../coverage/semantics/config-generator-two-owning-review.json)
+removes the scalar-first restriction on the existing named BYVAL factory
+Generator cached-value history. Each integer-key copied ITEM still needs a
+bounded value receipt; the live gate rechecks both finite quiet argument
+graphs, and the final cached VALUE/KEY must match the last ITEM. Four object
+originals agree exactly. Strict432 and two reached recipes (421 conditions,
+seven raw steps) show distinct payloads retiring before a saved catch and a
+repeated payload retaining two copied roots when real Generator storage drops
+its cache edge (three owners to two). TypeError TraceArgs keeps both copied
+identities until the error is released. The old full-prefix Unsupported
+remains zero credit; effectful finalizers, reference cells and broader
+producer/value histories remain separate.
+
+The [owning reference snapshot increment](../../coverage/semantics/config-generator-reference-owning-review.json)
+admits one finite quiet owning value read from an ordinary reference cell of
+a named direct-CV BYREF Generator retained outside the call. The first copied
+ITEM keeps a bounded receipt; a second copied ITEM must be scalar and keeps
+the existing integer or named-key policy. Live acquisition requires the
+ordinary cell, integer-normalized first key and another Generator owner.
+After the cell changes, history does not reread it to justify the first copy.
+Four exact originals, strict432 and two reached recipes (406 conditions,
+seven raw steps) check object and ARRAY snapshots, COW 13 versus live 31, alias 9,
+TypeError TraceArgs, direct DATA release and saved-throw cleanup. The old
+`B;Y0;` Unsupported and first constructed-cycle fixture failure retain zero
+credit. Generic Iterator/storage rules and typed, backed, final owning-cell
+and temporary producer boundaries remain unchanged.

@@ -792,6 +792,25 @@ Four new sources agree with PHP, and two reached recipes check storage,
 copied roots, COW and weak lifetimes. Effectful finalizers, reference cells and
 wider producer/value histories remain partial.
 
+[Two owning temporary Generator sends](coverage/semantics/config-generator-two-owning-review.json)
+allow both integer-key copied arguments from the same named by-value factory
+Generator to own finite quiet arrays or ordinary non-Stringable objects. Four
+new object sources agree with PHP. One reached proof releases two distinct
+objects before a saved catch; the other keeps two copies of the same object
+through real Generator storage release and TypeError TraceArgs. The cached
+child loses one owner while both copied argument roots remain. A separate
+array COW regression preserves first and second snapshots after later local
+writes. Effectful finalizers, reference cells and wider producers remain separate.
+
+[Owning BYREF Generator snapshots](coverage/semantics/config-generator-reference-owning-review.json)
+allow a retained named direct-CV BYREF Generator to copy a finite quiet owning
+object or array from an ordinary reference cell as its first argument. The
+cell changes to a scalar before the second send; the earlier copy keeps its
+own value. Four sources agree with PHP. Reached proofs check a local object
+dying before a saved catch and an outside alias changing an array from 13 to
+31 while TypeError TraceArgs still holds 13 and the copied scalar 7. Typed or
+backed cells, owning final cells and temporary producers remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -4625,6 +4644,13 @@ Trait-constant method captures can retain a copied `self` parameter view from
 before class publication. Old cloned and later captures preserve distinct
 lexical names; copied-view `never` fallthrough now identifies a method.
 [Trait-capture review](coverage/semantics/trait-captured-method-kind-review.json).
+
+Copied trait captures also retain the saved lexical scope for `parent` parameter
+checks. A later using class can call through a capture whose `parent` remains
+the first using class's parent; an old trait-scope capture follows union branch
+order and may fail before its body. Four source originals and three reached
+state groups validate the existing rule. [Parent-view review](coverage/semantics/trait-captured-parent-view-review.json).
+
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
@@ -6505,12 +6531,14 @@ after invocation.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-The private enum extension admits generated method strings as original values
-to callable-typed parameters and converts generated string/array targets with
-`Closure::fromCallable`; its [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json)
-passes strict compilation and three focused originals at 2614477b2.
-Pipe routes, `is_callable`, case attributes, enum collection
-policy, the default loader and wider acquisition remain partial;
+Generated method strings remain raw values through callable-typed parameters;
+`Closure::fromCallable` converts generated string/array targets. Their
+[joined gate](coverage/semantics/enum-callable-current-tail-review.json) passes
+strict compilation and three originals. Pipe strings and class/case arrays now
+select generated methods before receiving the left value, preserving strict
+typing, Stringable rebinding, cold tables and temporary cleanup; four exact
+originals and 68 reached guards pass in the [pipe review](coverage/semantics/enum-pipe-review.json).
+`is_callable`, case attributes, enum collection policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
