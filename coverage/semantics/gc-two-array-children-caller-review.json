@@ -1,0 +1,31 @@
+{
+  "scope": "GC21: active direct real-Closure caller capturing an array with two distinct direct childless stdClass entries at keys 0 and 1; the array and key-0 leaf may be buffered while key 1 is not.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "base": "8e836b78f876bfd475d821dddd276d1d29c8db18",
+    "source": "aae90f05346f6b2737e21d10cf2bf2cb1d043e1d",
+    "semantic": "05621300f1b781658151cd8cc0fab8e5bae21286",
+    "reached_fixture": "c746b055f08e300280fe4321146b327f7ab88e65"
+  },
+  "source_sha256": "ad044f87720e870741b30e4944e14336716e10ba8875f74b5b7db095cfb233bd",
+  "status_sha256": "324a92c5ff6415ebaa921c11b78ab6a307903a7803a559b1b6bb718be17652ee",
+  "validation": {
+    "native": "The pinned original outputs T|P|0|D|3|split|0|H|3|dead|0|live|END, exit 0 and empty stderr. The native-only status control outputs P|0|R|0|1|2|live after separate array and key-0 leaf copy releases. Neither status control nor final liveness read proves object identity. Inputs/head stable, no timeout and process groups fully reaped.",
+    "preedit": "At clean source-only aae, the model exits 1 Unsupported cached ordinary property-table collection after T|P|0|. The original failure retains zero source agreement, stable head/inputs, no timeout and an empty process group.",
+    "fix": "A separate GC ordinary-node clause requires the authenticated active direct Closure, one DIRECT HARRAY capture and machine root, model nonimmutable array, exact key-0/key-1 DIRECT entries with distinct allocated childless STDINSTANCE leaves, ordered ordinary/physical children, and key-1 absence from GC.BUFFER. Positive slot presence is not a premise because the ordinary caller is also checked before root buffering and after plan removal. Graph, owners, count walk and buffer algorithms are unchanged.",
+    "source": "At clean semantic 056, the original model finishes normal with byte-exact stdout/stderr and exit 0 versus pinned native: one source agreement, stable HEAD/inputs, no timeout and empty process group. No accepted earlier campaign was replayed.",
+    "reached": "Strict SL at semantic 056 uses the fixture committed unchanged at c746 and passes 136 assertions, exit 0, no timeout. The authentic D state has valid array and key-0 slots in order, key-1 outside the buffer, the array and both leaves black and absent from the D plan, and Closure/array/key-0/key-1 owners 2/3/2/2. Duplicate key-1 value, source erasure, inactive and wrong-caller controls are refused."
+  },
+  "reports_sha256": {
+    "gc-two-array-children-21-review/native-report.json": "ddc79ea48e03b4b49b5236bcf1cfff3748b90b186ecd4b6cd811f8e3901ea562",
+    "gc-two-array-children-21-dev/preedit/native-report.json": "fd2a72f39cfe9b4bb47a185b62ecbfee5178eba3cf360254808b39d98633b1ec",
+    "gc-two-array-children-21-dev/preedit/model-two-array-children-direct-caller-report.json": "d7bdd334b3177f8973819f2753002c6523db63dff88c450930abfea71c3255b6",
+    "gc-two-array-children-21-dev/semantic/native-report.json": "f4b57c21cfcb854861e65d0a806b7471b97659f39a683fda204ac125ed83a11a",
+    "gc-two-array-children-21-dev/semantic/model-two-array-children-direct-caller-report.json": "f6ca76c4f64c15cc138b6d258e8bbad56dc5bc616b294f23a88a97fa23946d33",
+    "gc-two-array-children-21-dev/strict/report.json": "50dd1a61209189fed7f8ed9067afc44791aa9cdc981a97cdc38659700ddc416a"
+  },
+  "review": "Independent GC21 semantic and focused source/state test CLEAR at c746 from gc_review_recovery. Actual-master-tail composition and joined interaction review pending.",
+  "limits": "The source uses one runtime-written array, distinct direct key-0/key-1 propertyless stdClass leaves and no COW after capture. The rule requires structural childlessness, not propertyless origin. Wider entries, indirect buckets, backedges, persistent nonempty provenance, buffered key-1 leaf, explicit invoke and other active contexts remain untested. Historical source selection does not prove arbitrary rewritten operand identity.",
+  "recovery": "Raw native, original failure, exact source pair and reached runner files are outside Git under ../php-spec-evidence-archive/gc-two-array-children-21-review and gc-two-array-children-21-dev. Reproduce with the GC21 source harness native then model and the strict reached script; use one fully reaped CPU1 actor at a time."
+}

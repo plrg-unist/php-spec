@@ -255,6 +255,14 @@ Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
 nonempty persistent provenance remain open.
 [GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 
+GC21 admits two distinct childless `stdClass` entries at array keys 0 and 1
+under the same direct Closure caller. The array and key-0 leaf are buffered;
+key-1 stays outside the buffer. One pinned original agrees, and 136 strict
+reached assertions check both slots, black removal, owners and a duplicate
+child refusal. The pre-edit Unsupported retains zero credit. Wider arrays,
+backedges and post-capture COW remain open.
+[GC21 review](coverage/semantics/gc-two-array-children-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator

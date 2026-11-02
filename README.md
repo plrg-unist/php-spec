@@ -3814,6 +3814,11 @@ buffers it behind the array. The two live nodes leave the D count plan as
 black; one exact source and 122 strict reached assertions pass. Exact one-entry
 and childless guards remain; see the
 [buffered array-child caller review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
+GC21 adds one distinct childless object at key 1 of the same captured array.
+The two-entry shape and physical trace order are exact; the array and key-0
+object are buffered while key 1 remains outside the buffer. One source and 136
+strict reached assertions pass; see the
+[two-child array caller review](coverage/semantics/gc-two-array-children-caller-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
