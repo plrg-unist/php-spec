@@ -8,6 +8,17 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+I86 authenticates captured ordinary method Generator bodies during Fiber
+transfer and reference-cache reads using the actual resumer, Closure and
+selected method. After Closure storage retirement, the recorded selection
+reconstructs a nonowning scope without a new owner. Four originals agree;
+five reached fronts pass 501 custom/526 reported checks at their private cuts.
+Joined strict433, two exact sources and 111 independent reached checks pass at
+4462bc6d; the 779569a8 composition is reviewed. Original compiler,
+refusal and storage failures retain zero credit. Wider bound/API and lifecycle
+contexts remain partial.
+[I86 review](coverage/semantics/generator-captured-method-body-review.json).
+
 I85 admits direct Generator-bodied `__call` and `__callStatic` through the
 existing typed source policy. Actual entered context retains the selected
 target through close and Fiber transfer, while live bodies require their real
@@ -154,6 +165,73 @@ Calls with arguments, computed receivers,
 attributes, return declarations, nullsafe selection and wider active contexts
 remain partial.
 [GC11 review](coverage/semantics/gc-closure-invoke-caller-review.json).
+
+GC12 admits a complete childless by-value capture in a live direct real-Closure
+collector caller. A scalar `use ($seed)` source agrees with PHP; a pre-edit
+reached diagnostic passes 28 checks and the affected strict reached group
+passes 95. The active caller, machine root and empty child set still guard the
+ordinary count walk; object/reference captures and static cells remain outside
+this cut. [GC12 review](coverage/semantics/gc-captured-caller-review.json).
+
+GC13 admits one unbuffered, childless ordinary `stdClass` capture under an
+authenticated live direct real-Closure collector caller. The captured object
+stays outside the white set through the Closure's real root. One native-first
+original agrees exactly, a pre-edit diagnostic passes 35 checks, and the
+affected strict reached group passes 103. This cut left buffered leaves,
+captured object graphs and reference/array captures fenced.
+[GC13 review](coverage/semantics/gc-object-leaf-caller-review.json).
+
+GC15 admits the same childless capture after a real post-`P|0` copy release
+buffers it again. The live Closure keeps the token black; the second pass
+removes its physical slot before the D/held count plan. A native status witness
+shows roots 0→1 after that release. One new source agrees exactly; the new
+strict reached group passes 103 checks and the affected GC13 group passes 101.
+The old constructed buffered-token refusal is superseded; object graphs,
+reference/array captures and wider collector contexts remain fenced.
+[GC15 review](coverage/semantics/gc-rebuffered-leaf-caller-review.json).
+
+GC16 admits one runtime-written, childless array capture in the active direct
+real-Closure caller. The model binds the same nonimmutable array in the global
+cell, Closure capture and entered local; both ordinary and physical GC tracing
+find no child edge. A native status control observes roots 0→1 after an owning
+copy release, and the original source agrees exactly. Pre-edit reached checks
+pass 43; the affected strict group passes 106. At that cut, buffered active
+array captures remained fenced; COW after capture, nonempty persistent
+provenance and wider collector contexts are untested.
+[GC16 review](coverage/semantics/gc-array-leaf-caller-review.json).
+
+GC17 admits that same childless array after an owning copy release following
+`P|0` buffers it for the D pass. The rooted capture keeps the real array black,
+and its slot leaves the count plan before held/drop destruction. A native status
+control observes roots 0→1; one source agrees exactly. Pre-edit reached checks
+pass 45, the new strict group passes 106, and the affected GC16 group passes
+104 after removing its superseded constructed buffered-array refusal. COW and
+nonempty persistent provenance remain untested; graph/count/owners are unchanged.
+[GC17 review](coverage/semantics/gc-rebuffered-array-caller-review.json).
+
+GC18 admits one runtime-written array capture with exactly one direct childless
+`stdClass` entry. The active direct Closure caller remains machine-rooted; the
+array and leaf are unbuffered, with matching ordinary and physical GC edges.
+One native-first source agrees exactly, a pre-edit reached group passes 54,
+and the strict affected group passes 115. The final source read proves child
+liveness only. At that cut, buffered array or leaf candidates and wider entry
+shapes remained fenced; COW and nonempty persistent provenance were untested.
+[GC18 review](coverage/semantics/gc-array-object-child-caller-review.json).
+
+GC19 admits that same array after a post-`P|0` owning copy release buffers it
+for the D pass. The globally held childless `stdClass` remains unbuffered, and
+the live Closure keeps the array black. Native status observes roots 0→1; one
+original agrees exactly. Pre-edit reached checks pass 57 and the strict D
+group passes 118, including removal of the real array slot before held/drop
+counting. Leaf candidates and wider entries remain fenced; COW and nonempty
+persistent provenance are untested. Graph/count/owners are unchanged.
+[GC19 review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
+
+The cumulative GC12–19 join passes seven exact original source pairs and seven
+strict SL reached groups (742 assertions) at its frozen cut. One representative
+GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
+factory path is disjoint. Separate native status controls and original failures
+retain their own evidence. [Joined review](coverage/semantics/gc-caller-cumulative-review.json).
 
 Immediate identity cleanup now validates a sole produced right object/array
 temporary with a borrowed or scalar left operand in both AL and SL. Fourteen
@@ -323,7 +401,9 @@ tick consumer. The OB05 join passes strict433,
 the retained captured-FINAL original, and two new exact raw-invokable originals.
 Buffered post-output release reaches two equal FCC owners before retirement;
 the affected bound-Closure executor case also passes. Other late-free and wider
-callback/compiler forms remain partial; current-parent review is pending.
+callback/compiler forms remain partial. The current-parent bridge retains the accepted
+strict and focused source/reached gates across disjoint enum pipe, Generator and
+explicit-GC additions.
 [Cache review](coverage/semantics/callback-fcc-cache-review.json).
 
 ATTR09 stages cached tick `[Closure,"__invoke"]` calls: 8192 before outer copies,

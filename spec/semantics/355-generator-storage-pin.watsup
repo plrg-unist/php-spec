@@ -71,6 +71,8 @@ def $generator_storage_history(S, pgenerator) = true
   -- if $(n < |S.OBJECTS|)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
   -- if pfunction.ORIGIN = pgenerator.FUNCTION
+def $generator_storage_history(S, pgenerator) = true
+  -- if $generator_storage_method_history(S, pgenerator)
 def $generator_storage_history(S, pgenerator) = false -- otherwise
 def $generator_storage_basic(S, pgenstorage) = true
   -- if $(pgenstorage.OBJECT < |S.OBJECTS|) /\ HOBJECT pgenstorage.OBJECT <- S.ALLOCATIONS

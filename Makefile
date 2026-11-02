@@ -720,6 +720,9 @@ test-semantics: build
 	python3 tests/semantics/generator_direct_magic_sources.py
 	python3 tests/semantics/generator_direct_magic_state.py
 	python3 tests/semantics/generator_direct_magic_review_state.py
+	python3 tests/semantics/generator_captured_method_body_sources.py
+	python3 tests/semantics/generator_captured_method_body_state.py
+	python3 tests/semantics/generator_captured_method_body_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

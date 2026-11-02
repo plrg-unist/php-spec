@@ -295,6 +295,16 @@ The [direct magic ledger](../coverage/semantics/generator-direct-magic-review.js
 keeps original compiler, COUNT, Fiber-consumer and fixture-prefix failures
 separate from corrected and new checks.
 
+I86 captured-method body native, unchanged refusal, private compiler and new
+source/state evidence is retained under
+`../php-spec-evidence-archive/generator-captured-method-body-86/` and
+`../php-spec-evidence-archive/generator-captured-method-body-86-review/`.
+The first archive's `actual-tail-4462/` retains joined strict, source and
+reached-state reports.
+The [captured body ledger](../coverage/semantics/generator-captured-method-body-review.json)
+records the shared ATTR07 borrowing dependency and original compiler/storage
+failures alongside their narrow corrections.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent
