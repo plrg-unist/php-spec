@@ -813,6 +813,8 @@ test-semantics: build
 	python3 tests/semantics/pipe_nonpublic_object.py
 	python3 tests/semantics/pipe_nonpublic_object_protocol.py
 	python3 tests/semantics/pipe_protocol.py
+	python3 tests/semantics/enum_pipe.py
+	python3 tests/semantics/enum_pipe_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

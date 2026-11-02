@@ -6530,12 +6530,14 @@ after invocation.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-The private enum extension admits generated method strings as original values
-to callable-typed parameters and converts generated string/array targets with
-`Closure::fromCallable`; its [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json)
-passes strict compilation and three focused originals at 2614477b2.
-Pipe routes, `is_callable`, case attributes, enum collection
-policy, the default loader and wider acquisition remain partial;
+Generated method strings remain raw values through callable-typed parameters;
+`Closure::fromCallable` converts generated string/array targets. Their
+[joined gate](coverage/semantics/enum-callable-current-tail-review.json) passes
+strict compilation and three originals. Pipe strings and class/case arrays now
+select generated methods before receiving the left value, preserving strict
+typing, Stringable rebinding, cold tables and temporary cleanup; four exact
+originals and 68 reached guards pass in the [pipe review](coverage/semantics/enum-pipe-review.json).
+`is_callable`, case attributes, enum collection policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

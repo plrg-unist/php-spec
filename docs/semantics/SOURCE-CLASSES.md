@@ -591,8 +591,8 @@ keeps original source comparisons, reached guards and the shared identity-receip
 normalization at separate cuts. The
 [capture review](../../coverage/semantics/enum-string-capture-review.json) keeps
 its new capture sources and owner/ingress checks separate. Callable admission,
-pipe and `Closure::fromCallable` consumers, first-use loading, enum
-collectability and wider object lifetimes remain partial.
+pipe and `Closure::fromCallable` have separate reviewed cuts below; first-use
+loading and wider object lifetimes remain partial.
 
 ## Generated enum array captures
 
@@ -637,6 +637,21 @@ then can retire it after invocation. The pinned engine routes are
 `zend_create_closure_from_callable`, `zend_is_callable_ex` and
 `zend_create_fake_closure`. The [conversion review](../../coverage/semantics/enum-from-callable-review.json)
 records distinct source and state checks at its private cut. `is_callable`,
-pipe, wider reception, loading and backing contexts remain partial. The
+wider reception, loading and backing contexts remain partial. The
 [current-tail gate](../../coverage/semantics/enum-callable-current-tail-review.json)
 joins reception and conversion in one original program.
+
+## Generated enum pipe calls
+
+An evaluated method string, class-name array or enum-case array can select a
+published generated `cases()`, `from()` or `tryFrom()` target for `|>`. The pipe
+fixes that target before sending its forced left value. The saved invoke has
+one positional value and a source-bound selected nonce; the right callable
+retires without becoming an owner of the selected enum. A Stringable left
+argument uses the pipe's left source child, so its callback can rebind the
+original callable while lookup still uses the selected enum and cold backing
+table. Strict scalar errors, case-object selection and `cases()` arity follow
+the same reception rules as direct generated calls. The
+[pipe review](../../coverage/semantics/enum-pipe-review.json) records four exact
+native-first originals and two source-reached strict SL guard groups. Wider
+callable APIs and default loading remain partial.
