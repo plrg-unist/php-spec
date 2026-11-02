@@ -4755,6 +4755,12 @@ the first using class's parent; an old trait-scope capture follows union branch
 order and may fail before its body. Four source originals and three reached
 state groups validate the existing rule. [Parent-view review](coverage/semantics/trait-captured-parent-view-review.json).
 
+Copied trait aliases also preserve their selected function and saved scope
+when the first using class fails to publish. A failure before method fixup
+leaves a `U::q` trace; a later abstract-method failure leaves `C::q`.
+Four native/model originals and two reached trace groups validate the
+retained-receipt rule. [Alias trace review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
+
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain

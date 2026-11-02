@@ -643,12 +643,13 @@ before its nested call in the model and earns zero credit.
 [Post-deactivation review](coverage/semantics/output-executor-post-deactivate-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
+CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS164 | Existing copied trait `parent` capture views: four exact native/model originals and three source-reached state groups pass 258 conditions (79+86+93). The cross-parent case distinguishes saved lexical from called scope. Two corrected fixture failures retain zero credit. No semantic rule changed; private review CLEAR and four-source composed-tail check passed at 5db2cd8f2; integration pending. [Review](coverage/semantics/trait-captured-parent-view-review.json). |
+| CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
 | COMP161 | Deleted dynamic-property images, clone histories and stable key synchronization: private and joined strict433, source5/control2, reached1169, affected COMP158/160 sources and mixed readiness182 pass. Final review and integration pending. |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
