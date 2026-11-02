@@ -486,7 +486,6 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $gc_trace_children(S, HARRAY n_array) = [HOBJECT n_first, HOBJECT n_second]
   -- if $node_children(S, HOBJECT n_first) = eps /\ $node_children(S, HOBJECT n_second) = eps
   -- if $gc_trace_children(S, HOBJECT n_first) = eps /\ $gc_trace_children(S, HOBJECT n_second) = eps
-  -- if ~((HOBJECT n_second) <- $gc_nodes(S.GC.BUFFER))
   -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
 def $gc_ordinary_nodes(S, eps) = true
