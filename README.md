@@ -257,6 +257,10 @@ deactivation, other byte producers and buffered stdout diagnostics remain depend
 no-argument `ob_start()` from a shutdown-argument destructor after output
 deactivation: the Notice precedes a false result, and no buffer is created.
 Suppression and selected error handlers retain their native output order.
+[OB07](coverage/semantics/output-executor-retval-review.json) covers a direct
+returned-object destructor during normal post-deactivation cleanup. It runs
+while the selected handler is disabled; a nested no-argument `ob_start()` emits the built-in
+Notice and returns false before the outer handler resumes.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

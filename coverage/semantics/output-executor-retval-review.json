@@ -1,0 +1,72 @@
+{
+  "milestone": "OB07",
+  "status": "Private semantic CLEAR; latest-master composition and guarded integration pending.",
+  "scope": "Direct selected Notice handler returned-object destructor during NORMAL post-deactivation executor queue release; echo-only and nested noarg failed ob_start.",
+  "base": "c175c50513d9ca4075ddc9c43db49430ef379cd4",
+  "semantic_head": "fdc07f58b2a05f0eb2da6f917748b58edc80c0d6",
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "frontend_extension_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml_switch": "5.1.0",
+    "mode": "strict SL; deterministic request LC_ALL=C, TZ=UTC, FIRST=one, fixed clock; slow adds USE_ZEND_ALLOC=0"
+  },
+  "engine": "vendor/php-src/Zend/zend.c:1562-1616 disables the selected handler, invokes built-in fallback only for an IS_FALSE retval, destroys any defined retval, then restores the saved handler.",
+  "validation": {
+    "strict433": {
+      "command": "tests/semantics/_build/default/numeric_runner.exe --sl <spec/semantics/modules.json entries> .tools/ob07-result-strict/strict.watsup (archived input: ob07-result-strict/strict.watsup)",
+      "result": "true, empty stderr, exit 0",
+      "seconds": 11.829
+    },
+    "source": {
+      "command": "python3 tests/semantics/output_executor_retval_sources.py",
+      "cases": [
+        "echo-only",
+        "echo-only-slow",
+        "nested-start",
+        "nested-start-slow"
+      ],
+      "result": "4 exact native/model stdout, stderr and exit-0 agreements; model normal",
+      "echo_stdout": "FX|D1|H:8|R1|R2|DF|D2|",
+      "nested_stdout": "FX|D1|H:8|R1|RF|R2|DF|D2|",
+      "nested_stderr": "one built-in Notice at inner ob_start line 5",
+      "fingerprint_sha256": "724c76b556b666d704e2eae202309657bf46a3fd91812c9c8ef55ba7d8676ec7"
+    },
+    "reached_state": {
+      "command": "python3 tests/semantics/output_executor_retval_state.py",
+      "result": "40 conditions pass: saved RESULT/RELEASE/OP/CLEAN and NORMAL queue, disabled handler, outer Notice validity, malformed callback/cleanup/release refusals, normal finish"
+    },
+    "boundary": {
+      "command": "python3 tests/semantics/output_executor_post_deactivate_boundaries.py",
+      "result": "explicit-null, callable and handler-body reentrant starts remain exact checked Unsupported with empty buffers and OUTPUTSEQ=1"
+    }
+  },
+  "tracked_inputs_sha256": {
+    "spec/semantics/391-output-buffers.watsup": "135f350bc018323d510edd8f06b787b1f6f617f25ac1c033d98286d3e92b0ec2",
+    "spec/semantics/444-executor-final-free.watsup": "76a06a883dd484c84abbbe2735df9b2ee67b75fd157657a1d6b6b031d7048eec",
+    "tests/semantics/output_executor_retval_echo_ob07.php": "609e4f0e1496757d4ad86be78284a0f6fc1e43a10290f1c0d02800380bf300cc",
+    "tests/semantics/output_executor_retval_sources.py": "3e4e1b133eb54894dd4437bd6f11ca9054f575fc111de4d32aade8ff42e40b3d",
+    "tests/semantics/output_executor_retval_state.py": "966a95014083f9ed3d96b60bae3da167e5989522c27d3f1e7bc6751ee10ef130",
+    "tests/semantics/output_executor_post_deactivate_retval.php": "a6742f22384ea3a15b42c1e54a2876f59475afe7d248ecd7eed9ebe0f2f33cce"
+  },
+  "raw_archive": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/ob07-handler-retval-fdc07f58b",
+    "reports_sha256": {
+      "ob07-strict-fdc07f58b/report.json": "a29692d386571ac82f16762834bcba1eea83c0e460dc301fee3bfa4f4fbb395c",
+      "output-executor-retval-a4piug5w/report.json": "cf69c7fd55027b38cc82bdda84de32fd74861bdd31b2f5c353dfe2ebced72d19",
+      "fiber-state-review-9h3go_r9/report.json": "46b1e4e11e4cf57ca3d4e29212e5c3584de38c3f4a172f1d75b77aae13a3b067",
+      "output-post-deactivate-boundaries-urmripws/report.json": "ee0839e8dc377d80eabff1c613d5fe83f229f857af1f3bfd18dd294cd6655cbf",
+      "ob07-echo-bisect/report.json": "c5dd35c3db46f9f9d3ed8a194cc44afbb676d2330e1e97a530122096c6cd75f2",
+      "ob07-echo-bisect2/report.json": "a789e37698baab50845e4f3dd283b5f3b71f63126c5a7a8c741221b2e7366923",
+      "output-executor-retval-kssikjsw/report.json": "89fb266efe8d42511805547e4b1e1773b8c5ebd263e4a4a9f6a5573a69ea538d"
+    },
+    "retention": "Raw packets, source/request facts, states and failures retained; generated original-inputs snapshots omitted because report direct_inputs hashes and the semantic commit reconstruct them."
+  },
+  "preserved_failures": [
+    "OB06 retained nested source SHA256 a6742f22384ea3a15b42c1e54a2876f59475afe7d248ecd7eed9ebe0f2f33cce first failed at DESTRUCTOR_ENTER 185->186; original OB06 archive remains unchanged.",
+    "OB07 echo-only old-model 185->186 and result 198->199 failures remain in ob07-echo-bisect and ob07-echo-bisect2.",
+    "After the structural destructor certificate, nested start first reached checked Unsupported at CONFIG_INVOKE in output-executor-retval-kssikjsw; after initial admission it failed at OB_PARSE 204->205 in output-executor-retval-uf6nua0o. All retain zero agreement credit."
+  ],
+  "remaining": "Exactly two saved frames and a direct returned-object destructor are admitted. Wider callback nesting, argument-bearing late starts, abnormal executor completion, blocked output and other executor cleanup remain partial."
+}

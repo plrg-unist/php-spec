@@ -787,8 +787,18 @@ source-reached Notice state passes 30 checks with budget resume. Private and
 joined strict433 pass; joined plain/slow and selected-handler sources plus the
 three refusals pass on the parent with changed executor queue roots. A retained
 handler-return object destructor has native fast/slow observations but fails
-before its nested call in the model and earns zero credit.
+before its nested call at the OB06 cut and earns zero credit there.
 [Post-deactivation review](coverage/semantics/output-executor-post-deactivate-review.json).
+
+OB07 models the selected Notice handler's returned-object destructor during
+normal post-deactivation queue release. Echo-only and nested no-argument
+`ob_start()` destructors agree with pinned PHP in both allocator modes; the
+nested call uses the built-in Notice while the selected handler is disabled,
+returns false and leaves the buffer stack/sequence unchanged. One source-reached
+state passes 40 conditions, and OB06's explicit-argument, callable and active
+handler-body starts remain checked Unsupported. Private strict433 passes;
+the retained OB06 native original is now promoted with exact model agreement.
+[Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
