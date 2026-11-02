@@ -236,6 +236,17 @@ credit with exact expired-before-copy refusal; the safe control keeps an externa
 owner. General messages and wider consumers remain partial; actual-tail join is
 pending. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
 
+ATTR08 gives shutdown/tick FCC caches separate object and Closure owners,
+including duplicate object IDs. Raw invokable and array-form tick identities
+stay distinct; methods borrow This and inline unregister retires arguments,
+cache.object, then cache.closure. Readonly selected metadata validates cleanup
+after scope retirement. Quiet shutdown retention continues through FINAL.
+Five normal originals agree; four reached groups pass 296 checks (292 reached,
+four derived), private strict 432 passes, and one Closure-array control remains
+an exact Unsupported boundary/zero credit. Late free and wider callback/compiler
+forms remain partial; actual composition is pending.
+[Cache review](coverage/semantics/callback-fcc-cache-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The

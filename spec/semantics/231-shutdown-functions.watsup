@@ -1,5 +1,47 @@
 ;; Zend stores a selected FCC and copied values, not a live raw registration.
 ;; Its owners survive this queue into the later destructor/output/free phases.
+dec $callback_cache_array_object(parray?) : nat?
+dec $callback_cache_object(pstate, pcalltarget, parray?) : nat?
+dec $callback_cache_closure(pshutdownentry) : nat?
+dec $callback_cache_nodes(pshutdownentry) : pnode*
+dec $callback_cache_valid(pstate, pshutdownentry) : bool
+dec $callback_user_target(pcalltarget) : pcalltarget
+dec $callback_original_target(pcalltarget) : pcalltarget
+
+;; The frozen selector fixes FCC.object, including Closure::__invoke arrays.
+;; Raw IS_OBJECT also stores FCC.closure, even for an ordinary invokable object.
+def $callback_cache_array_object((parray)) = (n)
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (DIRECT (POBJECT n))
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (DIRECT pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+def $callback_cache_array_object(parray?) = eps -- otherwise
+def $callback_cache_object(S, pcalltarget, parray?) = (n)
+  -- if $callback_cache_array_object(parray?) = (n)
+def $callback_cache_object(S, pcalltarget, parray?) = $target_receiver(S, pcalltarget)
+  -- if $callback_cache_array_object(parray?) = eps
+def $callback_cache_closure(pshutdownentry) = (n)
+  -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN (POBJECT n))) :: pnamedslot*
+def $callback_cache_closure(pshutdownentry) = eps -- otherwise
+def $callback_cache_nodes(pshutdownentry) = $instance_roots(pshutdownentry.CACHEOBJECT) ++ $instance_roots($callback_cache_closure(pshutdownentry))
+def $callback_cache_valid(S, pshutdownentry) = (pshutdownentry.CACHEOBJECT = $callback_cache_object(S, pshutdownentry.TARGET, pshutdownentry.RAW) /\ $heap_subset($callback_cache_nodes(pshutdownentry), S.ALLOCATIONS))
+
+;; zend_call_known_fcc borrows This; its cache remains the actual owner.
+;; Closure calls keep their separate instance owner and existing binding rules.
+def $callback_user_target(METHOD_TARGET n porigin) = CALLBACK_BORROWED_TARGET (METHOD_TARGET n porigin)
+def $callback_user_target(HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget) = CALLBACK_BORROWED_TARGET (HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget)
+def $callback_user_target(API_METHOD_TARGET papiquery porigin ptbytes b) = CALLBACK_BORROWED_TARGET (API_METHOD_TARGET papiquery porigin ptbytes b)
+def $callback_user_target(pcalltarget) = pcalltarget -- otherwise
+def $callback_original_target(CALLBACK_BORROWED_TARGET pcalltarget) = pcalltarget
+def $callback_original_target(pcalltarget) = pcalltarget -- otherwise
+def $target_nodes(CALLBACK_BORROWED_TARGET pcalltarget) = eps
+def $target_instance(CALLBACK_BORROWED_TARGET pcalltarget) = eps
+def $call_receiver_roots(pcallcontext) = eps -- if pcallcontext.TARGET = CALLBACK_BORROWED_TARGET pcalltarget
+def $target_receiver(S, CALLBACK_BORROWED_TARGET pcalltarget) = $target_receiver(S, pcalltarget)
+def $target_lexical_class(S, CALLBACK_BORROWED_TARGET pcalltarget) = $target_lexical_class(S, pcalltarget)
+def $target_called_class(S, CALLBACK_BORROWED_TARGET pcalltarget) = $target_called_class(S, pcalltarget)
+def $target_function(S, CALLBACK_BORROWED_TARGET pcalltarget) = $target_function(S, pcalltarget)
+
 dec $shutdown_unknown_source(pstate, pconfigcall, nat) : bool
 dec $shutdown_unknown_items(pentry*) : bool
 dec $shutdown_unknown_item(pentry) : bool
@@ -136,7 +178,7 @@ def $shutdown_register(S, pconfigcall, pvalue) = S[.SHUTDOWN.ENTRIES = S.SHUTDOW
   -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
-  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, ARGS $shutdown_values(pnamedslot*)}
+  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW $shutdown_snapshot(S, pvalue), TARGET pcalltarget, CACHEOBJECT $callback_cache_object(S, pcalltarget, $shutdown_snapshot(S, pvalue)), ARGS $shutdown_values(pnamedslot*)}
 def $shutdown_register(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("register_shutdown_function(): Argument #1 ($callback) must be a valid callback, ") ++ ptbytes)
   -- if ~$exception_deprecated_raw(S, pvalue)
   -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID ptbytes
@@ -227,12 +269,13 @@ def $shutdown_entry_valid(S, pshutdownentry) = true
   -- if $exception_raw_selected(S, pvalue, pshutdownentry.RAW, pshutdownentry.TARGET)
   -- if $shutdown_selection_scope(S, pshutdownentry)
   -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if $callback_cache_valid(S, pshutdownentry)
   -- if $shutdown_args_valid(S, pshutdownentry.ARGS)
 def $shutdown_entry_valid(S, pshutdownentry) = false -- otherwise
 def $shutdown_entries_valid(S, eps) = true
 def $shutdown_entries_valid(S, pshutdownentry :: pshutdownentry_tail*) = ($shutdown_entry_valid(S, pshutdownentry) /\ $shutdown_entries_valid(S, pshutdownentry_tail*))
 def $shutdown_roots(eps) = eps
-def $shutdown_roots(pshutdownentry :: pshutdownentry_tail*) = $target_nodes(pshutdownentry.TARGET) ++ $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $shutdown_roots(pshutdownentry_tail*)
+def $shutdown_roots(pshutdownentry :: pshutdownentry_tail*) = $callback_cache_nodes(pshutdownentry) ++ $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $shutdown_roots(pshutdownentry_tail*)
 
 def $shutdown_known(eps) = eps
 def $shutdown_known(pvalue :: pvalue_tail*) = (KNOWN pvalue) :: $shutdown_known(pvalue_tail*)
@@ -451,7 +494,7 @@ def $shutdown_enter_valid(S, n_index, poperand*) = true
 def $shutdown_enter_valid(S, n_index, poperand*) = false -- otherwise
 def $call_task_valid(S, SHUTDOWN_ENTER n_index poperand*) = $shutdown_enter_valid(S, n_index, poperand*)
 def $task_nodes(SHUTDOWN_ENTER n_index poperand*) = $operands_roots(poperand*)
-rule PhpStep/shutdown-enter: S ~> $call_arity($target_after_enter($call_enter(S[.SHUTDOWN.RECEIVED = poperand*[n_received:n_extra]][.TODO = [SHUTDOWN_RESULT n_index poperand*]], pfunction, poperand*, eps, $(-1)), pshutdownentry.TARGET), pfunction, |poperand*|, eps, $(-1))
+rule PhpStep/shutdown-enter: S ~> $call_arity($target_after_enter($call_enter(S[.SHUTDOWN.RECEIVED = poperand*[n_received:n_extra]][.TODO = [SHUTDOWN_RESULT n_index poperand*]], pfunction, poperand*, eps, $(-1)), $callback_user_target(pshutdownentry.TARGET)), pfunction, |poperand*|, eps, $(-1))
   -- if S.TODO = (SHUTDOWN_ENTER n_index poperand*) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, SHUTDOWN_ENTER n_index poperand*)
@@ -511,7 +554,7 @@ def $shutdown_context_valid(S, pcallcontext) = true
   -- if S.SHUTDOWN.INDEX = n_index /\ $(n_index < |S.SHUTDOWN.ENTRIES|)
   -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
   -- if $shutdown_entry_valid(S, pshutdownentry)
-  -- if pcallcontext.TARGET = pshutdownentry.TARGET
+  -- if pcallcontext.TARGET = $callback_user_target(pshutdownentry.TARGET)
   -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
   -- if pcallcontext.ARGC = |pshutdownentry.ARGS| /\ |poperand*| = |pshutdownentry.ARGS|
   -- if poperand* = S.SHUTDOWN.SENT
