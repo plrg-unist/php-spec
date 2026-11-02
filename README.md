@@ -3861,6 +3861,12 @@ GC23 admits a node-free scalar capture before the childless array in the
 same direct Closure. Native Reflection confirms capture order; one original
 and 110 strict reached assertions pass. See the
 [scalar-array caller review](coverage/semantics/gc-scalar-array-caller-review.json).
+GC24 extends this direct caller to finite ordered scalar captures around
+one mutable array with distinct childless stdClass and scalar entries.
+Three sources, including a three-leaf post-capture COW case, agree with
+PHP; 113+146 new reached assertions cover order, owners, buffer slots and
+explicit graph/provenance refusals. See the
+[finite capture review](coverage/semantics/gc-finite-capture-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4677,6 +4683,11 @@ continues to the shutdown-list queue. Two native-first sources agree; three
 reached states check 88 conditions, including callback ownership 2→1→0, and
 joined strict433 passes. Other late-free routes remain partial. See the
 [late tick review](coverage/semantics/callback-late-tick-final-review.json).
+Two retained raw invokable tick entries now retire oldest first after output
+FINAL. Each copied argument retires before its callback's separate FCC object
+and closure slots. One native-first source agrees exactly; four reached states
+check 120 conditions, including each callback's 2→1→0 owners. The singleton
+regression and strict433 pass. See the [tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -4817,6 +4828,15 @@ arguments; body/default errors still arise during compilation. Same-type
 redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
+
+One unadapted named trait use in a parented unit0 anonymous class without
+interfaces can supply a constant holding a first-class method capture. The
+captured invocation prints the generated NUL name for both `self::class` and
+`static::class` in this source. Source-authenticated declaration replay selects
+the composed class at `new`.
+One exact source and 48 reached checks cover this bounded form.
+[Anonymous trait-capture review](coverage/semantics/anonymous-trait-capture-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
@@ -6712,9 +6732,11 @@ initialized string-valued caller CV before returning the boolean; the
 records one exact original and 45 reached guards. An absent method also writes
 the name for runtime false and syntax-only true; the
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json)
-records a second exact original and 42 reached guards. Array inputs, destructor and
-aliasing effects, autoload, case attributes, enum collection policy and wider
-acquisition remain partial;
+records a second exact original and 42 reached guards. Canonical class and
+live case literal arrays add two exact outcomes and 68 reached guards in the
+[array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
+Other array spellings, destructor and aliasing effects, autoload, case
+attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

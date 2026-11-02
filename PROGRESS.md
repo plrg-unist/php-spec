@@ -110,6 +110,9 @@ One exact original, strict433 and 45 source-reached guards pass; array input,
 old-object destructor and input/output aliasing remain explicit Unsupported.
 Absent literal methods now also write the name on runtime false and syntax-only
 true results. A second exact original and 42 reached guards pass.
+Canonical class-name and live case-object literal arrays now write their
+generated method names through the same direct string CV. Two exact outcomes
+and 68 reached guards pass; other class spellings remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -120,7 +123,8 @@ true results. A second exact original and 42 reached guards pass.
 [magic review](coverage/semantics/enum-is-callable-magic-review.json),
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json),
-[false-output review](coverage/semantics/enum-is-callable-output-false-review.json).
+[false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
+[array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -347,9 +351,19 @@ GC23 admits an ordered node-free scalar capture before one childless
 runtime-written array capture in the same direct Closure. A pinned
 Reflection control observes `seed,token` order; one original agrees and
 110 strict reached assertions bind the capture layout, shared array owners
-and swapped-order refusal. Pre-edit Unsupported retains zero credit.
-Other capture orders, child graphs and COW remain open.
+and source/caller bounds. Pre-edit Unsupported retains zero credit.
 [GC23 review](coverage/semantics/gc-scalar-array-caller-review.json).
+
+GC24 admits finite ordered node-free scalar captures around one mutable
+one-level array in the same authenticated direct Closure. Its entries may
+be direct scalars or distinct childless stdClass leaves in physical order;
+compiled-pool descendants and materialized property tables are fenced.
+Reversed capture order, three mixed-key leaves and post-capture COW give
+three exact source pairs. Strict reached checks pass 113+146 assertions,
+and the corrected GC23 group passes 110. Duplicate identities, shared
+separate captures, aliases, nested arrays and user-destructor children
+remain refused. Earlier Unsupported, overlap and fixture failures retain
+zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -591,6 +605,17 @@ exploratory output-buffer restart controls retain zero agreement credit. Wider
 tick entries, assertion callback, abrupt reentry and late-free paths remain
 partial. [Late tick review](coverage/semantics/callback-late-tick-final-review.json).
 
+ATTR12 extends normal post-FINAL tick retirement to two raw invokable entries,
+each with one copied object argument. The first task owns only its argument and
+two FCC slots while the second stays rooted in the tick list; after the first
+callback retires, the second follows in registration order. One native-first
+source agrees exactly (`B;F;A1;C1;A2;C2;`). Four reached states pass 120
+assertions, including both callbacks' 2→1→0 owner transitions; the ATTR11
+singleton source and reached state still pass. Strict433 passes. The original
+two-entry Unsupported baseline and an unanchored stage selector have zero
+agreement credit. More than two entries, mixed callbacks, assertion callbacks
+and abrupt reentry remain partial. [Tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -760,6 +785,7 @@ before its nested call in the model and earns zero credit.
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
+CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -783,7 +809,7 @@ separate parser mode. HALT with a preamble and wider encodings remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
+| CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
 | I91 | Reviewed private static string Closure identity/bindTo: native3/source3/private433 and five reached fronts614 custom/639 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

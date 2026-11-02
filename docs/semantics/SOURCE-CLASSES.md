@@ -452,6 +452,20 @@ records the corrected first-NEW publication phase and typed extension.
 Wider inheritance remains partial or explicit Unsupported; later-unit dependency
 sites retain the placement and argument limits described below.
 
+One unadapted named trait use is admitted in a parented unit0 anonymous class
+without interfaces. At the reached `new`, PDRCLASS already records publication
+of the class with a trait constant holding `self::name(...)`; its live descriptor
+contains copied trait methods and constants. The compiler projection keeps
+their raw source forms. The anonymous `new` selects that live descriptor only when
+its own-member projection matches the compiled descriptor and declaration
+history replays the entire class table. A duplicate forged imported method
+fails that replay. One native/model source and 48 source-reached conditions
+cover the NUL generated name, `self`/`static` capture body and allocation.
+[Trait-capture review](../../coverage/semantics/anonymous-trait-capture-review.json).
+Parentless trait use, interface combinations, multiple uses and adaptations
+remain excluded; the parentless original retains explicit Unsupported with
+zero agreement credit.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
@@ -716,3 +730,9 @@ The same literal route writes the name for an absent method on both runtime
 false and syntax-only true; the
 [false-output review](../../coverage/semantics/enum-is-callable-output-false-review.json)
 records a second exact source and 42 reached guards.
+For two-item literal arrays with canonical enum class spelling, direct class
+strings and live enum cases derive the callable name from their actual
+receiver and literal method values. The
+[array-output review](../../coverage/semantics/enum-is-callable-output-array-review.json)
+records two exact outcomes and 68 reached guards. Other class spellings and
+array sources remain partial.

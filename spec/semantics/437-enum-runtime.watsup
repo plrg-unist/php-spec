@@ -1514,20 +1514,48 @@ def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL b_syntax))]
 def $enum_is_callable_input(pconfigcall) = eps -- otherwise
 
-;; The third argument is a writable CV, captured before invocation. This
-;; source route keeps the callable a literal method string on a published enum and
-;; the prior output value scalar, so the write cannot run user code.
-dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
-def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
-  -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
-  -- if $intrinsic_count(S, pconfigcall.SITE) = (3)
+;; The third argument is a writable CV, captured before invocation. Its old
+;; value is a string, so replacing it cannot run user code.
+dec $enum_is_callable_ref_array_receiver(pstate, pvalue, porigin, ptbytes, ptbytes, bool) : ptbytes?
+def $enum_is_callable_ref_array_receiver(S, pvalue_class, porigin_class, ptbytes_class, ptbytes_member, false) = (ptbytes_class)
+  -- if ptbytes_member = $ptascii("class")
+  -- if $enum_array_string_valid(S, pvalue_class)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+def $enum_is_callable_ref_array_receiver(S, POBJECT n_case, porigin_class, ptbytes_class, ptbytes_member, true) = (pclassdesc.NAME)
+  -- if $(n_case < |S.OBJECTS|) /\ (HOBJECT n_case) <- S.ALLOCATIONS
+  -- if $enum_case_object(S, n_case) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = porigin_class /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.NAME = ptbytes_class
+def $enum_is_callable_ref_array_receiver(S, pvalue, porigin_class, ptbytes_class, ptbytes_member, b_case) = eps -- otherwise
+
+dec $enum_is_callable_ref_name(pstate, pconfigcall, pvalue) : ptbytes?
+def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NScalarString (BYTES text_input) metadata_input, false, eps, porigin_input, z_input))
   -- if pvalue_input = PSTRING_CARRIER INTERNED_STRING ptbytes_input
   -- if $string_carrier_valid(S, pvalue_input)
   -- if ptbytes_input = $base64(text_input)
   -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if $base64(text_input) = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
+  -- if ptbytes_input = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
+def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprClassConstFetch (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_member) metadata_member) metadata_receiver) (BOOLEAN false) (BOOLEAN false) metadata_item_receiver), (NArrayItem ABSENT (NScalarString (BYTES text_method) metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_item_method)])) metadata_array, false, eps, porigin_input, z_input))
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_receiver), ENTRY (KINT 1) (DIRECT pvalue_method)]
+  -- if pvalue_method = PSTRING_CARRIER INTERNED_STRING ptbytes_method
+  -- if $string_carrier_valid(S, pvalue_method)
+  -- if ptbytes_method = $base64(text_method)
+  -- if $enum_is_callable_target(S, PARRAY n_array) = ((porigin_class, ptbytes_method, b_case))
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.NAME = $base64(text_class)
+  -- if $enum_is_callable_ref_array_receiver(S, pvalue_receiver, porigin_class, pclassdesc.NAME, $base64(text_member), b_case) = (ptbytes_receiver)
+def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = eps -- otherwise
+
+dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
+def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+  -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (3)
+  -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((NExprVariable (BYTES text_output) metadata_output, false, eps, porigin_output, z_output))
   -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_name*)
   -- if ~$environment_blocked(S, n_name*)
@@ -1635,7 +1663,7 @@ def $enum_is_callable_receive(S, pconfigcall) = S_write[.TODO = ptask_tail*][.RE
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
   -- if $enum_is_callable_ref_slots_valid(S, pconfigcall)
   -- if $enum_is_callable_result(S, pvalue_input, b_syntax) = (b_callable)
-  -- if $string_bytes(pvalue_input) = (ptbytes_name)
+  -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
   -- if S_write = $write_cell_checked(S, n_cell, PSTRING ptbytes_name, pconfigcall.LINE)
   -- if S_write.COMPLETION = NORMAL
 def $enum_is_callable_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b_callable)][.BASE = BASE_VALUE (KNOWN PNULL)]

@@ -242,3 +242,12 @@ records exact cuts and the joined strict check. Other tick-list shapes,
 assertion callbacks, abrupt reentry and later inactive-executor hooks remain
 outside this cut. Output-buffer restart during late destruction is retained as
 an Unsupported control, not a source agreement.
+
+With exactly two eligible entries, the first tick task holds only its copied
+argument and two FCC slots; the second entry stays in the tick registry until
+that task finishes. The next task retires the second entry in registration
+order. A pinned native source and the model both print `B;F;A1;C1;A2;C2;`.
+Four source-reached states check the separate roots and each callback's
+2→1→0 owner transition. The [ATTR12 review](../../coverage/semantics/callback-late-tick-pair-review.json)
+records the focused gates and zero-credit failed selector. Other list shapes
+and abrupt module-shutdown paths remain partial.

@@ -493,9 +493,24 @@ then the runtime-written array; native Reflection confirms their order.
 The array remains the sole Closure graph child, shared by its global and
 entered local owners, while the scalar adds no heap edge. The same rooted
 Closure keeps the array black through D collection. One full source agrees
-with PHP; the strict reached state refuses reversed capture order. Other
-capture orders, array child graphs and COW after capture remain open. See
+with PHP. GC24 supersedes the earlier reversed-order negative while retaining
+the original source and caller checks. See
 the [scalar-array caller review](../../coverage/semantics/gc-scalar-array-caller-review.json).
+
+GC24 accepts one mutable array anywhere in a finite list of direct defined
+node-free scalar Closure captures. The array's finite entries are direct
+node-free scalars or distinct allocated childless stdClass objects; the
+ordinary and physical child lists must agree. The real selected direct
+Closure and machine root still protect the entire array component during
+the D count pass. The new clause excludes compiled-pool descendants and
+materialized object property tables, and remains disjoint from older exact
+array clauses. Reversed captures, three mixed-key leaves and a post-capture
+COW variant agree with PHP. Reached states prove array/key-0 buffer order,
+all three live leaves black, owners 2/3/2/2/2 and refusal of duplicate or
+separately captured leaves, aliases, indirect entries, nested arrays,
+undefined sentinels, destructor-bearing children, a direct pool root and a
+proxy table. General duplicate-edge, nested, reference and user-finalizer
+graphs remain open. See the [finite capture review](../../coverage/semantics/gc-finite-capture-review.json).
 
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
