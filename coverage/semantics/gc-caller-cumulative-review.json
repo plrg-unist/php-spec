@@ -121,8 +121,13 @@
     "model_report": "cab-join/gc12/model-scalar-captured-direct-caller-report.json",
     "model_sha256": "1357919277d5779584a24fa56ad14afc24351171e0416d3dbb2463c1c6ef3290"
   },
+  "post_a81": {
+    "base": "42eb400b455af2e66bab34206898de93bc855d10",
+    "pre_receipt_candidate": "04454fc7130c21eedbd7e40de667602c511ea20d",
+    "compatibility": "GC 301, all GC12–19 tests and modules.json remain byte-identical to frozen f301. The intervening A81 change is confined to module423's named BYREF Generator factory clauses, whose actual Generator/config-generator prerequisites are absent from the direct Closure GC sources. No source or strict gate was relabeled or repeated for this metadata-only bridge."
+  },
   "compatibility": "The GC 301 clauses, seven test families and module manifest are byte-identical from frozen f301 to cab candidate. A80 object-cast additions require declared INITIAL/UNSET slots, while every GC proxy cast has no declared properties and one dynamic back slot. Its Generator/Fiber/magic/comparison/CONFIG changes are not selected. Enum pipe invokes require pipe/enum source absent from these direct Closure sources. No frozen seven-case evidence is relabeled as cab evidence.",
-  "review": "Independent private semantic/test reviews of GC12–GC19 and joined f301 docs/301/inventory are CLEAR. The independent A80 and enum-pipe compatibility review supports the one-source cab bridge. Final latest-tail review and integration remain pending.",
+  "review": "Independent private semantic/test reviews of GC12–GC19 and joined f301 docs/301/inventory are CLEAR. Independent A80 and enum-pipe compatibility review supports the one-source cab bridge; independent A81 module423 review finds the named Generator path source-disjoint. Exact final-tip review and integration remain pending.",
   "limits": "The rules require an authentic active direct Closure caller and machine root, exact bounded capture/child shapes, and existing physical count/owner walks. GC14 status has no model source agreement. COW after capture, nonempty persistent-array provenance, wider array/object graphs, explicit captured __invoke/pipe, workers, residual/reentry and other active contexts remain open.",
   "recovery": "Raw reports are outside Git under ../php-spec-evidence-archive/gc-caller-cumulative-12-19-joined. Original private cuts and failures remain under their per-milestone branches and archive folders; GC12 old-base current reports are under gc-captured-caller-12-current. No bulky artifacts are committed."
 }
