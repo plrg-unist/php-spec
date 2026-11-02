@@ -114,6 +114,21 @@ Explicit `->__invoke`, pipe, captured and wider active collector contexts
 remain partial.
 [GC10 review](coverage/semantics/gc-closure-caller-review.json).
 
+GC11 admits a normal literal, zero-argument `->__invoke()` call through a live
+global variable holding a plain static real Closure without captures,
+attributes, a by-reference return or a declared return type. Its wrapper owns
+two current Closure roots and the global cell supplies a third owner; the existing
+active caller and count rules still protect the held sibling. The native-first
+original agrees exactly, a pre-edit reached diagnostic passes 24 checks, and
+the private strict reached group passes 95 checks; the current-tail group passes
+96 after the global receiver guard. The independent computed-receiver refusal
+passes 18 strict checks; joined OB05 strict96 and the unchanged native/model
+original also pass.
+Calls with arguments, computed receivers,
+attributes, return declarations, nullsafe selection and wider active contexts
+remain partial.
+[GC11 review](coverage/semantics/gc-closure-invoke-caller-review.json).
+
 Immediate identity cleanup now validates a sole produced right object/array
 temporary with a borrowed or scalar left operand in both AL and SL. Fourteen
 focused conditions pass in each mode, including strict compilation of the actual
@@ -400,7 +415,6 @@ control is promoted without native replay.
 | CLASS158 | Ordinary non-magic anonymous method formals and lexical-owner missing-arity diagnostics: five fresh exact source agreements, strict433 and 247 focused conditions (243 reached, four guards) pass; final private CLEAR at a0da92ae. Two unchanged Unsupported controls retain zero credit; actual-tail integration pending. |
 | CLASS157 | Anonymous Stringable source9/state285/changed433 pass; final private CLEAR at 40f5cd2c, actual-tail integration pending. |
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
-| GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Published enum string callable-type validation; other callable APIs, pipe/default loading and wider backing contexts remain partial. |
