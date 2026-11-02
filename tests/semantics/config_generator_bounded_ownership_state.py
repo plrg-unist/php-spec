@@ -7,7 +7,7 @@ import config_generator_bounded_ownership_cases as cases
 import list_missing_warning_protocol as shared
 from array_generator_unpack_state_review import initial, owners, public, seek, finish
 
-NAME = 'config-generator-bounded-factory-alias-terminal-throw'
+NAME = 'config-generator-bounded-factory-alias-normal'
 SOURCES = SimpleNamespace(CASES={NAME: cases.CASES[NAME]}, __file__=cases.__file__)
 HELPERS = shared.HELPERS + r'''
 dec $bounded_echo(pstate, ptbytes) : bool
@@ -28,7 +28,7 @@ def $list_warning_frontier(S, 9303) = true
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask*
 def $list_warning_frontier(S, 9304) = true
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "storage-released") :: ptask*
-def $list_warning_frontier(S, 9305) = $bounded_echo(S, $ptascii("S:"))
+def $list_warning_frontier(S, 9305) = $bounded_echo(S, $ptascii("E:"))
 def $list_warning_frontier(S, 9306) = $bounded_echo(S, $ptascii("U0:"))
 def $list_warning_frontier(S, 9307) = $bounded_echo(S, $ptascii("U1:"))
 '''
@@ -115,7 +115,6 @@ def conditions(name, program, path, stdout):
         '$ordinary_reference_value(S_catch,n_lastref) = (POBJECT n_payload)',
         '~((HOBJECT n_generator) <- S_catch.ALLOCATIONS)',
         owners('S_catch', 'HCELL n_lastref', 2),
-        owners('S_catch', 'HOBJECT n_payload', 1),
     ] + public('S_catch') + seek('S_catch', 9306, 'S_after_first_unset') + [
         '$ordinary_reference_value(S_after_first_unset,n_lastref) = (POBJECT n_payload)',
         owners('S_after_first_unset', 'HCELL n_lastref', 1),
