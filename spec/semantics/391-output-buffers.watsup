@@ -43,6 +43,7 @@ dec $ob_notice(pstate, pconfigcall, pvalue, bool, bool, nat?) : pstate
 dec $ob_notice_valid(pstate, pobnotice) : bool
 dec $ob_notice_task(ptask, pobnotice) : bool
 dec $ob_notice_tasks(pstate, pobnotice) : bool
+dec $ob_notice_retval_destructor(pstate, pdestructorcall, pdestructionrelease, pdestructionoperation, perrorcall, pobnotice) : bool
 dec $ob_operation(pstate, pconfigcall, pvalue*) : pstate
 dec $ob_chunk(int) : int
 dec $ob_snapshot(pstate, pintrinsic, preqbytes) : pstate
@@ -421,6 +422,35 @@ def $ob_notice_tasks(S, pobnotice) = true
   -- if pdestructionoperation.ORIGIN = S.ORIGIN
   -- if pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
   -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+def $ob_notice_tasks(S, pobnotice) = $ob_notice_retval_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, perrorcall, pobnotice)
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: pobnotice.TAIL
+def $ob_notice_tasks(S, pobnotice) = $ob_notice_retval_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, perrorcall, pobnotice)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: pobnotice.TAIL
+def $ob_notice_retval_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, perrorcall, pobnotice) = $ob_notice_tasks(S[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: pobnotice.TAIL], pobnotice)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_saved)
+  -- if pdestructionrelease_saved.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]
+  -- if pdestructionrelease.JOBS = eps
+  -- if pdestructionrelease.CALLER = pdestructionrelease_saved.CALLER
+  -- if pdestructionrelease.ORIGIN = pdestructionrelease_saved.ORIGIN
+  -- if pdestructionrelease.CONSTCONTEXT = pdestructionrelease_saved.CONSTCONTEXT
+  -- if pdestructionrelease.USER = pdestructionrelease_saved.USER
+  -- if pdestructionrelease_saved.CALLER = pdestructorcall.CALLER
+  -- if pdestructionrelease_saved.ORIGIN = pdestructorcall.ORIGIN
+  -- if pdestructionrelease_saved.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+  -- if pdestructionrelease_saved.USER = pdestructorcall.USER
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED
+  -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if ~pdestructorcall.STORE
+  -- if pdestructorcall.USER
+  -- if pdestructorcall.FRAME = eps
+  -- if pdestructorcall.PENDING = eps
+  -- if pdestructorcall.CALLER = S.CURRENT
+  -- if pdestructorcall.ORIGIN = S.ORIGIN
+  -- if pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+def $ob_notice_retval_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, perrorcall, pobnotice) = false -- otherwise
 def $ob_notice_tasks(S, pobnotice) = false -- otherwise
 def $ob_notice_task(OB_NOTICE_RESULT pobnotice, pobnotice) = true
 def $ob_notice_task(ERROR_HANDLER_INVOKE perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
