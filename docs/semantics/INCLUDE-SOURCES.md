@@ -1957,3 +1957,15 @@ pre-execution artifact setup failures and one metadata-only old-control
 recorder correction are retained externally without extra source credit.
 Generic storage, typed/backed cells, still-owning final cells and temporary
 BYREF producers remain separate.
+
+The [retained owning reference-cell increment](../../coverage/semantics/config-generator-reference-owning-live-review.json)
+keeps the final ordinary BYREF cell owning a finite quiet value at closed
+finish and popped cleanup. A global direct CV still owns the Generator; the
+copied second argument and live cell value are checked separately. Four exact
+originals, strict432 and two reached recipes (448 conditions, seven raw steps)
+show saved-throw prefix release, TypeError TraceArgs retaining an old ARRAY13
+after the cell changes to ARRAY31, and quiet physical Gen/cell/payload death
+after explicit unset. The initial author fixture assumed an unreachable
+operational storage step and retains zero credit. Typed/backed cells, aliases,
+temporary BYREF producers, effectful finalizers and sole-Generator retirement
+remain separate.

@@ -819,6 +819,14 @@ the copied object dying before a saved catch and ARRAY 13 remaining in
 TypeError TraceArgs after a live COW change to 31. A still-owning final cell,
 typed cells and temporary producers remain separate.
 
+[Retained owning reference cells](coverage/semantics/config-generator-reference-owning-live-review.json)
+keep a finite quiet object or array in the final BYREF Generator cell while a
+retained global CV owns the Generator. The copied argument and current cell
+may diverge after COW. Four sources agree with PHP; reached proofs check a
+saved throw and TypeError TraceArgs, then quiet Generator/cell retirement on
+explicit unset. Typed/backed cells, aliases, temporary producers, effectful
+finalizers and sole-Generator cleanup remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -3792,6 +3800,11 @@ again, while the child remains unbuffered. The rooted array leaves the D count
 plan as black, and the full source stream matches PHP. Wider entries and
 buffered child objects remain fenced; see the
 [rebuffered-array-child caller review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
+GC20 also admits the childless `stdClass` after a local owning copy release
+buffers it behind the array. The two live nodes leave the D count plan as
+black; one exact source and 122 strict reached assertions pass. Exact one-entry
+and childless guards remain; see the
+[buffered array-child caller review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -6611,7 +6624,11 @@ strict compilation and three originals. Pipe strings and class/case arrays now
 select generated methods before receiving the left value, preserving strict
 typing, Stringable rebinding, cold tables and temporary cleanup; four exact
 originals and 68 reached guards pass in the [pipe review](coverage/semantics/enum-pipe-review.json).
-`is_callable`, case attributes, enum collection policy, the default loader and wider acquisition remain partial;
+Published enum strings and class/case arrays also answer direct, dynamic-name
+and pipe `is_callable` queries with one or two arguments. Generated and absent
+methods, syntax-only checks and cold-cache behavior have two exact originals
+and 43 reached guards in the [query review](coverage/semantics/enum-is-callable-review.json).
+The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

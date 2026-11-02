@@ -74,11 +74,17 @@ originals at 2614477b2. Published generated methods now also run through pipe
 strings and arrays. Four native-first originals agree, including strict typing,
 cold table selection across Stringable rebinding, case-object arrays, arity and
 temporary cleanup. Private strict433 and two source-reached strict SL groups
-pass 68 guards at db3b26b16. Wider APIs and default loading remain partial.
+pass 68 guards at db3b26b16. Published enum method strings and class/case
+arrays now answer direct, dynamic-name and pipe `is_callable` queries with
+one or two arguments and no third output. Two native-first originals agree,
+covering generated and absent methods, syntax-only checks, selected-name
+rebinding and cold backing tables; 43 source-reached strict SL guards pass.
+The third output, autoload and wider magic/user-method cases remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
-[pipe review](coverage/semantics/enum-pipe-review.json).
+[pipe review](coverage/semantics/enum-pipe-review.json),
+[query review](coverage/semantics/enum-is-callable-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -227,6 +233,14 @@ counting. Leaf candidates and wider entries remain fenced; COW and nonempty
 persistent provenance are untested. Graph/count/owners are unchanged.
 [GC19 review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
 
+GC20 admits that childless `stdClass` when releasing one owning local copy
+buffers it after the array. Native status observes roots 0→1→2; the exact
+original agrees, and 122 strict reached assertions bind both ordered slots,
+their removal from the D plan, and the rooted Closure/array/leaf owners.
+Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
+nonempty persistent provenance remain open.
+[GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -293,6 +307,10 @@ reached conditions pass; joined strict433 and terminal source/state pass at
 A final owning BYREF cell value now copies after a scalar send and survives
 later cell writes. Four originals and 408 reached conditions pass; joined
 strict433 and terminal source/state pass at `86082901b`.
+A retained BYREF Generator can keep that final ordinary owning cell through
+closed storage while the copied send remains stable. Four originals and 448
+reached conditions pass; joined strict433 and terminal source/state pass at
+`c5086c205`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -307,6 +325,7 @@ strict433 and terminal source/state pass at `86082901b`.
 [Two owning sends](coverage/semantics/config-generator-two-owning-review.json),
 [Owning reference snapshots](coverage/semantics/config-generator-reference-owning-review.json),
 [Final owning reference snapshots](coverage/semantics/config-generator-reference-owning-cache-review.json),
+[Retained owning reference cells](coverage/semantics/config-generator-reference-owning-live-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
