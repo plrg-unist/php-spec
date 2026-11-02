@@ -6709,7 +6709,10 @@ pass seven exact native controls and 49 reached guards in the
 A literal generated method string now writes the third output through an
 initialized caller CV before returning the boolean; the
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json)
-records one exact original and 45 reached guards. Array inputs, destructor and
+records one exact original and 45 reached guards. An absent method also writes
+the name for runtime false and syntax-only true; the
+[false-output review](coverage/semantics/enum-is-callable-output-false-review.json)
+records a second exact original and 42 reached guards. Array inputs, destructor and
 aliasing effects, autoload, case attributes, enum collection policy and wider
 acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).

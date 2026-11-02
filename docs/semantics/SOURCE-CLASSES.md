@@ -712,3 +712,7 @@ then receives the canonical name before the boolean result. The
 [output-CV review](../../coverage/semantics/enum-is-callable-output-review.json)
 records one exact source and 45 reached guards. Array inputs and old-object
 destructor/input-output alias effects remain explicit Unsupported.
+The same literal route writes the name for an absent method on both runtime
+false and syntax-only true; the
+[false-output review](../../coverage/semantics/enum-is-callable-output-false-review.json)
+records a second exact source and 42 reached guards.
