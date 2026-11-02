@@ -555,12 +555,9 @@ def $executor_retval_notice_start(S) = true
   -- if ptask_saved* = pobnotice.TAIL
   -- if perrorcall.TARGET =/= eps
   -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
-  -- if pobnotice.CALL.SENT = eps
   -- if pobnotice.CALL.SITE = perrorcall.SITE
-  -- if pobnotice.VALUE = PBOOL false
-  -- if ~pobnotice.SECOND
-  -- if ~pobnotice.WRAPPER
-  -- if pobnotice.LEVEL = eps
+  -- if S_view = S[.TODO = pframe.TODO][.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.CONSTCONTEXT = pframe.CONSTCONTEXT][.FRAMES = [pframe_executor]]
+  -- if $ob_notice_valid(S_view, pobnotice)
   -- if ~$executor_error_handler_tasks(S.TODO)
   -- if ~$executor_error_handler_tasks(pobnotice.TAIL)
   -- if ~$executor_error_handler_tasks(pframe_executor.TODO)
