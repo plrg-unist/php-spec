@@ -275,6 +275,19 @@ throwing value destructor with caller traces. Three full reached groups pass
 at separate cuts. Wider callback, reference-return and reentry histories remain partial.
 [Return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
 
+ATTR07 admits builtin literal/NULL NoDiscard and Deprecated on real Closure/arrow
+expressions. Checked keyword receipts preserve multiline names/lines; shared and
+snapshot captures survive handlers, warnings use selected/rebound scopes, and
+Closure calls borrow their bound receiver. Nine eligible originals agree (six
+normal, three static rejections); five reached groups pass 428 checks (422 reached,
+six derived), focused syntax11 and private strict432 pass. One unsafe `assert`
+reentrancy source has an unresolved native lifetime observation, preserved at zero
+credit with exact expired-before-copy refusal; the safe control keeps an external
+owner. General messages and wider consumers remain partial. The current-tail
+join passed strict433 and three retained-native source comparisons at separate
+cuts; later disjoint GC, enum, CONFIG and magic Generator changes have a reviewed
+compatibility bridge. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -442,7 +455,6 @@ control is promoted without native replay.
 | CLASS158 | Ordinary non-magic anonymous method formals and lexical-owner missing-arity diagnostics: five fresh exact source agreements, strict433 and 247 focused conditions (243 reached, four guards) pass; final private CLEAR at a0da92ae. Two unchanged Unsupported controls retain zero credit; actual-tail integration pending. |
 | CLASS157 | Anonymous Stringable source9/state285/changed433 pass; final private CLEAR at 40f5cd2c, actual-tail integration pending. |
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
-| ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

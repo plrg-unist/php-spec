@@ -12,9 +12,8 @@ dec $closure_invoke_discard(pstate, ptask) : pstate
 dec $closure_invoke_return_nodes(pstate, pcallcontext) : pnode*
 dec $closure_invoke_named_pending(pstate) : pstate
 
-;; zend_call_function retains the inner Closure at entry, while __invoke still
-;; owns its receiver. Its selected bound receiver is borrowed from that Closure.
-;; The outer owner retires after the raw wrapper arguments.
+;; A Closure call borrows its bound receiver from the retained Closure. An
+;; explicit __invoke also owns that Closure until its raw arguments retire.
 def $wrapper_receiver_roots(pcallcontext) = [HOBJECT n]
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.WRAPPER =/= eps
@@ -24,7 +23,6 @@ def $wrapper_receiver_roots(pcallcontext) = [HOBJECT n]
 def $wrapper_receiver_roots(pcallcontext) = eps -- otherwise
 def $call_receiver_roots(pcallcontext) = eps
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
-  -- if pcallcontext.WRAPPER =/= eps
 def $call_receiver_roots(pcallcontext) = eps -- if pcallcontext.TARGET = CLOSURE_INVOKE_PENDING_TARGET n
 ;; UNDEF/default handling uses a fake frame before zend_call_function adds its
 ;; inner Closure owner. HOLES is permanent source provenance, so the target
@@ -118,7 +116,7 @@ rule PhpStep/closure-invoke-inner-warning: S ~> $error_dispatch(S[.TODO = (CLOSU
   -- if $closure_invoke_source(ptask_source) = ((pcalltarget, pnamedargs, porigin, z))
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
-  -- if ptbytes = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if ptbytes = $deprecated_warning_message(S, pfunction, pcalltarget, ptbytes_message, ptbytes_since)
 rule PhpStep/closure-invoke-enter: S ~> $source_call_enter_raw(S[.TODO = ptask_source :: ptask_tail*], pfunction)
   -- if S.TODO = (CLOSURE_INVOKE_ENTER ptask_source) :: ptask_tail*
   -- if $closure_invoke_valid(S, ptask_source)
@@ -163,7 +161,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 16384
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
-  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, pcalltarget, ptbytes_message, ptbytes_since)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE z
 
 ;; The inner API warning runs inside __invoke, before any user callee frame.
