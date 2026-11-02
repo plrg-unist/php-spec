@@ -6707,7 +6707,7 @@ Live case arrays naming direct public user instance or static methods also
 pass seven exact native controls and 49 reached guards in the
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
 A literal generated method string now writes the third output through an
-initialized caller CV before returning the boolean; the
+initialized string-valued caller CV before returning the boolean; the
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json)
 records one exact original and 45 reached guards. An absent method also writes
 the name for runtime false and syntax-only true; the

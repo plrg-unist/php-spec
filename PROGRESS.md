@@ -103,8 +103,9 @@ Live enum case arrays now also query direct public user instance and static
 methods. One native-first original agrees on seven case/class/string controls;
 49 source-reached strict guards tie the method descriptor to its enum source
 member and show that the query enters neither user method body.
-The third output now captures an initialized plain CV for a literal generated
-enum method string and writes its canonical name before returning the boolean.
+The third output now captures an initialized string-valued CV for a literal
+generated enum method string and writes its canonical name before returning
+the boolean.
 One exact original, strict433 and 45 source-reached guards pass; array input,
 old-object destructor and input/output aliasing remain explicit Unsupported.
 Absent literal methods now also write the name on runtime false and syntax-only

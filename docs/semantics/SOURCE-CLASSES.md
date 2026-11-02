@@ -706,9 +706,9 @@ instance or static method. The [case-method review](../../coverage/semantics/enu
 records seven exact outcomes and 49 reached guards that tie the method
 descriptor to its enum source member without entering the body. Imported,
 inaccessible and attributed methods remain partial.
-For a literal generated enum method string and initialized plain caller CV,
-the third positional argument retains a reference to that cell through CONFIG,
-then receives the canonical name before the boolean result. The
+For a literal generated enum method string and initialized string-valued
+caller CV, the third positional argument retains a reference to that cell
+through CONFIG, then receives the canonical name before the boolean result. The
 [output-CV review](../../coverage/semantics/enum-is-callable-output-review.json)
 records one exact source and 45 reached guards. Array inputs and old-object
 destructor/input-output alias effects remain explicit Unsupported.
