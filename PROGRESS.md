@@ -657,12 +657,16 @@ before its nested call in the model and earns zero credit.
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 
+COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
+images and deleted dynamic histories retain comparison, cast and clone behavior.
+Their exact source, reached-state and affected gates are in
+[SOURCE-CLONE](docs/semantics/SOURCE-CLONE.md) and the linked reviews.
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
-| COMP161 | Deleted dynamic-property images, clone histories and stable key synchronization: private and joined strict433, source5/control2, reached1169, affected COMP158/160 sources and mixed readiness182 pass. Final review and integration pending. |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

@@ -1,0 +1,11 @@
+{
+  "milestone": "COMP162",
+  "scope": "Ordinary mixed declared-layout cloning after deleted dynamic mirrors precede a later live row of the same name",
+  "implementation": "150-clone-runtime checks the copied bucket and a later live dynamic lookup row before omitting an obsolete dead mirror; dead-only rows and malformed source refusal remain unchanged.",
+  "oracle": "PHP 8.5.10 CLI NTS 64-bit, pinned .tools/php/bin/php SHA256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398, baseline profile.json, LC_ALL=C, TZ=UTC",
+  "baseline": "At 084768600 the frozen main source reached Unsupported cached ordinary property-table cloning after exact B|2:2:7|; ../php-spec-evidence-archive/comp162/oldgate-v1/report.json.",
+  "private_validation": "At 1a587733e strict SL433 passed; four frozen native/model source pairs agreed exactly; the reached main case passed 39 conditions including dead+bucket/no-later-live refusal; affected COMP161 deleted-only and prior mixed live callback sources agreed. Raw reports: ../php-spec-evidence-archive/comp162/current-parent-1a587733e-v1/.",
+  "failed_checks": "The first strict check found an impure otherwise rule; the next omitted main.watsup. Both archived reports have zero validation credit.",
+  "limits": "Live/live duplicate-name history, nonordinary property tables, readonly and active collection remain outside this clone cut.",
+  "review": "Independent semantic and source/state review pending actual-master composition."
+}

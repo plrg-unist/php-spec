@@ -43,11 +43,16 @@ cached table. With an effective callback and an empty current table, its copy
 starts uncached and drops the deleted lookup mirrors. A nonempty declared
 layout beside deleted-only dynamic mirrors uses the existing mixed copier,
 retargeting declared locators and preserving each object's typed-alias source.
-Mixed layouts with a dead mirror preceding a later live row of the same dynamic
-name still refuse cloning.
-The storage branches stay disjoint; callback dispatch, slot copying, readonly
-and active-collection guards are unchanged.
+Mixed declared layouts now also clone when a deleted dynamic mirror precedes a
+later live row of the same name. The fresh table copies only its current live
+bucket; the obsolete mirror is dropped from the copy after checking that the
+later live row owns that bucket. Repeated deletions retain the current key order,
+and callback writes and array views remain independent. A dead mirror with a
+copied bucket but no later live row still fails the mixed copier. Live/live
+duplicate-name and nonordinary table images remain outside this cut. Callback
+dispatch, slot copying, readonly and active-collection guards are unchanged.
 [Dynamic-deletion review](../../coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
+[Reinserted-key clone review](../../coverage/semantics/throwable-mixed-reinsert-clone-review.json).
 
 [Cached callbacks](../../coverage/semantics/cached-clone-callback-review.json)
 now consume that declared-public cache path through existing public zero-argument
