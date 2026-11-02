@@ -32,6 +32,14 @@
     "purpose": "A literal missing method on a published enum writes the output name on both false runtime and true syntax-only results."
   },
   {
+    "id": "enum-is-callable-third-output-array",
+    "source": "<?php\nenum ArrayCheck: int { case A = 1; }\n$name = 'old';\n$ok = is_callable([ArrayCheck::class, 'from'], false, $name);\necho 'class:', (int)$ok, ':', $name, '|';\n$name = 'old';\n$ok = is_callable([ArrayCheck::A, 'tryFrom'], false, $name);\necho 'case:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "d990cc25ca6fba1218b4f19d489ced3602180203a18669f99ddab80ff79f9cf5",
+    "expected_model": "normal",
+    "expected_normal_stdout": "class:1:ArrayCheck::from|case:1:ArrayCheck::tryFrom|",
+    "purpose": "Canonical class-string and live enum-case literal arrays write their generated method names through the third direct string output CV."
+  },
+  {
     "id": "enum-is-callable-third-output-rebinding-unsupported",
     "source": "<?php\nenum FirstCheck: string { case A = 'a'; }\nenum OtherCheck: string { case B = 'a'; }\nclass NameDrop {\n    public function __destruct() { echo 'NAME-DROP|'; }\n}\n\n$target = [FirstCheck::class, 'from'];\n$name = new NameDrop;\necho 'before|';\n$ok = is_callable($target, false, $name);\necho 'selected:', ($ok ? '1' : '0'), ':', $name, '|';\n$target = [OtherCheck::B, 'tryFrom'];\necho 'rebound:', (is_callable($target) ? '1' : '0'), '|';\n$same = [FirstCheck::class, 'from'];\n$ok = is_callable($same, false, $same);\necho 'alias:', ($ok ? '1' : '0'), ':', $same, '|';\n",
     "source_sha256": "835c8cb6b3beae2c15c8a03d61d2797cd0b0261488b305369ab755e8f41b873f",
