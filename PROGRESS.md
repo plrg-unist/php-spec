@@ -169,6 +169,8 @@ four new sources agree and 296 reached conditions pass at private cuts.
 A named BYVAL factory temporary now copies a quiet owning first option and
 finishes with an integer cached value; four sources and 372 reached conditions
 pass at private cuts, including normal TypeError trace and terminal cleanup.
+The joined strict433 and fresh normal source/state gate pass at `04d38dc55`,
+which received independent review before guarded integration.
 Typed Generator cells, effectful finalizers/casts, owning final caches, wider
 last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
@@ -425,7 +427,6 @@ control is promoted without native replay.
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
-| A78 | Temporary factory Generator with owning first option and integer final cache; four source agreements and two reached proofs complete privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
