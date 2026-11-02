@@ -779,7 +779,7 @@ value with an integer key (7 and 1 in the four originals). The copied
 option survives Generator retirement into INI_SET's TypeError trace, or dies
 before a saved terminal throw reaches catch. Four new sources agree with PHP;
 two reached recipes check the two cleanup stages, COW and weak lifetimes.
-Owning final caches, reference cells, finalizers and wider factories remain
+Other final-cache shapes, reference cells, finalizers and wider factories remain
 partial.
 
 [Temporary Generator owning final caches](coverage/semantics/config-generator-owning-cache-review.json)
