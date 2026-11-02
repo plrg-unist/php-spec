@@ -44,6 +44,16 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
+The private enum callable extension admits generated method strings as original
+values at ordinary callable-typed parameter reception and converts generated
+string/array targets through `Closure::fromCallable`. Its separate reviewed cuts
+are source5/state111 and source4/state138, each with strict433 compilation.
+The current-tail strict433 and three exact joined/representative originals pass
+at 2614477b2; canonical integration is pending.
+[Reception](coverage/semantics/enum-string-admission-review.json),
+[conversion](coverage/semantics/enum-from-callable-review.json),
+[current-tail gate](coverage/semantics/enum-callable-current-tail-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -165,7 +175,12 @@ An outside-retained named BYVAL Generator now copies finite quiet owning ARRAY
 or ordinary INSTANCE sends. The copied prefix survives cache replacement until
 INI_SET TypeError trace reception, or retires before a terminal saved catch;
 four new sources agree and 296 reached conditions pass at private cuts.
-Typed Generator cells, effectful finalizers/casts, temporary owning producers, wider
+A named BYVAL factory temporary now copies a quiet owning first option and
+finishes with an integer cached value; four sources and 372 reached conditions
+pass at private cuts, including normal TypeError trace and terminal cleanup.
+The joined strict433 and fresh normal source/state gate pass at `04d38dc55`,
+which received independent review before guarded integration.
+Typed Generator cells, effectful finalizers/casts, owning final caches, wider
 last-DATA reference graphs and lifecycles remain partial.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
@@ -176,6 +191,7 @@ last-DATA reference graphs and lifecycles remain partial.
 [Temporary reference cleanup](coverage/semantics/config-generator-temporary-reference-review.json),
 [Factory reference cleanup](coverage/semantics/config-generator-factory-reference-review.json),
 [Owning Generator sends](coverage/semantics/config-generator-owning-value-review.json),
+[Temporary owning sends](coverage/semantics/config-generator-owning-temporary-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -418,8 +434,7 @@ control is promoted without native replay.
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
-| Enum M3/M4 | Published enum string callable-type validation; other callable APIs, pipe/default loading and wider backing contexts remain partial. |
-| A78 | Temporary factory Generator owning first option and scalar last cache; native four and old refusal frozen, implementation and private validation in progress. |
+| Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
