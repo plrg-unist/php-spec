@@ -1141,6 +1141,30 @@ sources, two affected old THROW states (143+105 checks) and an independent
 153-check state pass at 1ecc939d; 5096cbb1 composition is reviewed.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
+I89 reuses the same actual method-Closure proof for nonstatic warm/fresh THROW.
+Warm caught/parameter CV unsets leave one API input and the independent cache;
+fresh initialization retains its extra pending exception copy. VM INSTANCE owns
+the Closure once, and its receiver edge keeps This through CLOSED. Native controls
+distinguish original source/binding retirement from final Closure-before-cache
+release. Native4/source4 and five reached fronts632 custom/657 reported pass at
+distinct cuts; private433 retains its initial cut. Original failures keep zero credit,
+while joined strict433, three exact sources, fresh 117-check and independent
+closed-body 118-check states pass at c81b8c5e. The 26cf6684 composition is
+reviewed; wider contexts remain open.
+[Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
+
+I90 shares actual direct magic Gen identity and I85 entered-handler authority
+across callee and BYVAL warm/fresh THROW transfer. Warm caught/parameter unsets
+leave value cache1/input1; fresh pre-yield suspension retains pending input2.
+Native supplied-abort controls distinguish fresh no-cache payload/This retirement
+and original API Throwable priority from warm propagation. Native4/source4 and
+private433 retain distinct cuts; five reached fronts pass 623 custom/648 reported
+checks, including budgeted abort/drop and closed Previous order. Joined
+strict433, three exact sources, fresh parked125, affected I85 SEND166 and
+independent closed102 checks pass at dfa4386d; d1f314c0 composition is
+reviewed. Source/signature and wider lifecycle limits remain.
+[Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

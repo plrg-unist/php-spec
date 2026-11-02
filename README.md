@@ -4817,6 +4817,15 @@ arguments; body/default errors still arise during compilation. Same-type
 redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
+
+One unadapted named trait use in a parented unit0 anonymous class without
+interfaces can supply a constant holding a first-class method capture. The
+captured invocation prints the generated NUL name for both `self::class` and
+`static::class` in this source. Source-authenticated declaration replay selects
+the composed class at `new`.
+One exact source and 48 reached checks cover this bounded form.
+[Anonymous trait-capture review](coverage/semantics/anonymous-trait-capture-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
@@ -6706,7 +6715,15 @@ also matches eight native outcomes and 56 reached guards in the
 Live case arrays naming direct public user instance or static methods also
 pass seven exact native controls and 49 reached guards in the
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
-The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
+A literal generated method string now writes the third output through an
+initialized string-valued caller CV before returning the boolean; the
+[output-CV review](coverage/semantics/enum-is-callable-output-review.json)
+records one exact original and 45 reached guards. An absent method also writes
+the name for runtime false and syntax-only true; the
+[false-output review](coverage/semantics/enum-is-callable-output-false-review.json)
+records a second exact original and 42 reached guards. Array inputs, destructor and
+aliasing effects, autoload, case attributes, enum collection policy and wider
+acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
@@ -6984,6 +7001,25 @@ joined strict433, three exact sources, two affected old THROW states (143+105
 checks) and an independent 153-check state pass at 1ecc939d. The 5096cbb1
 composition is reviewed; original failures and diagnostic keep zero credit.
 [Raw cache review](coverage/semantics/generator-raw-method-cache-review.json).
+
+I89 reuses actual selected-method Closure authority for nonstatic warm/fresh
+THROW across Fibers. The VM owns the Closure and borrows its receiver; closed
+Generators retain both until Closure-before-cache storage release. Four native/model
+originals agree at distinct cuts; five reached fronts pass 632 custom/657 reported
+checks. Private433 retains its initial cut; original failures keep zero credit and
+joined strict433, three exact sources, fresh 117-check and independent closed-body
+118-check states pass at c81b8c5e. The 26cf6684 composition is reviewed;
+wider contexts remain pending. [Captured THROW review](coverage/semantics/generator-captured-method-throw-review.json).
+
+I90 reuses the actual entered magic-handler receipt for direct BYVAL Generator
+warm/fresh THROW across Fibers. Actual resumer/Gen/current identity precedes the
+existing source/header and cache/input filters. Native4/source4 and private433
+retain distinct cuts; five reached fronts pass 623 custom/648 reported checks.
+Fresh abort agrees on original-Throwable/Previous and payload-before-This order.
+Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
+and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
+reviewed. Wider contexts remain pending.
+[Magic THROW review](coverage/semantics/generator-direct-magic-throw-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

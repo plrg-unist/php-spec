@@ -762,6 +762,12 @@ test-semantics: build
 	python3 tests/semantics/generator_raw_method_cache_sources.py
 	python3 tests/semantics/generator_raw_method_cache_state.py
 	python3 tests/semantics/generator_raw_method_cache_review_state.py
+	python3 tests/semantics/generator_captured_method_throw_sources.py
+	python3 tests/semantics/generator_captured_method_throw_state.py
+	python3 tests/semantics/generator_captured_method_throw_review_state.py
+	python3 tests/semantics/generator_direct_magic_throw_sources.py
+	python3 tests/semantics/generator_direct_magic_throw_state.py
+	python3 tests/semantics/generator_direct_magic_throw_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -868,6 +874,8 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_magic_protocol.py
 	python3 tests/semantics/enum_is_callable_case_method_protocol.py
 	python3 tests/semantics/enum_is_callable_wide_shape_protocol.py
+	python3 tests/semantics/enum_is_callable_output_protocol.py
+	python3 tests/semantics/enum_is_callable_output_false_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

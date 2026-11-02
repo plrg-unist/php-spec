@@ -52,6 +52,10 @@ def $tick_plan(PROGRAM statement*, pcodeexpr*) = {FREQUENCY 0, LAST false, LINE 
   -- if ~$tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
 def $tick_plan(PROGRAM statement*, pcodeexpr*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps}, pcodeexpr*, eps, 0, statement*, true)
   -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
+def $tick_plan(ENCODEDPROGRAM text_1 text_2 text_3 text_4 text? statement*, pcodeexpr*) = {FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps}
+  -- if ~$tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
+def $tick_plan(ENCODEDPROGRAM text_1 text_2 text_3 text_4 text? statement*, pcodeexpr*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps}, pcodeexpr*, eps, 0, statement*, true)
+  -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
 
 def $tick_statements(T, pcodeexpr*, pcpath, n, eps, b_top) = T
 def $tick_statements(T, pcodeexpr*, pcpath, n, statement :: statement_tail*, b_top) = $tick_statements($tick_statement(T, pcodeexpr*, pcpath ++ [PCINDEX n], statement, b_top), pcodeexpr*, pcpath, $(n + 1), statement_tail*, b_top)

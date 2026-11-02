@@ -103,6 +103,13 @@ Live enum case arrays now also query direct public user instance and static
 methods. One native-first original agrees on seven case/class/string controls;
 49 source-reached strict guards tie the method descriptor to its enum source
 member and show that the query enters neither user method body.
+The third output now captures an initialized string-valued CV for a literal
+generated enum method string and writes its canonical name before returning
+the boolean.
+One exact original, strict433 and 45 source-reached guards pass; array input,
+old-object destructor and input/output aliasing remain explicit Unsupported.
+Absent literal methods now also write the name on runtime false and syntax-only
+true results. A second exact original and 42 reached guards pass.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -111,7 +118,9 @@ member and show that the query enters neither user method body.
 [shape review](coverage/semantics/enum-is-callable-shape-review.json),
 [wide-shape review](coverage/semantics/enum-is-callable-wide-shape-review.json),
 [magic review](coverage/semantics/enum-is-callable-magic-review.json),
-[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
+[output-CV review](coverage/semantics/enum-is-callable-output-review.json),
+[false-output review](coverage/semantics/enum-is-callable-output-false-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -128,6 +137,31 @@ old THROW states (143+105 checks) and an independent 153-check state pass at
 1ecc939d; 5096cbb1 current composition is reviewed. Wider captured-Closure,
 API/binding/delegation/collection/lifecycle combinations remain pending.
 [I88 review](coverage/semantics/generator-raw-method-cache-review.json).
+
+I89 carries authenticated nonstatic captured/bound method-Closure Generators
+through warm by-value/reference THROW and fresh initialization across Fibers.
+The actual resumer/Gen/current proof keeps Closure and This through CLOSED;
+Gen drop releases Closure/receiver before the cache. Four native/model originals
+agree at distinct cuts; five reached fronts pass 632 custom/657 reported checks.
+Private433 keeps its initial cut; later source/front checks compile the ARRAY
+nominal Closure identity and admitted bindTo dispatch corrections. Original
+Unsupported, stdout mismatch and interpreter failure keep zero agreement credit.
+Joined strict433, three exact sources, a fresh 117-check state and independent
+closed-body 118-check state pass at c81b8c5e; 26cf6684 composition is reviewed.
+Wider producer/API/binding/lifecycle combinations remain pending.
+[I89 review](coverage/semantics/generator-captured-method-throw-review.json).
+
+I90 carries direct typed BYVAL magic Generator warm/fresh THROW across Fibers
+through a shared actual resumer/Gen/current and entered-handler receipt proof.
+Native fresh abort releases payload before This, then throws the original API
+Throwable with the supplied abort as Previous; the existing initialization rule
+supplies that order unchanged. Four native/model originals agree at distinct
+cuts; five reached fronts pass 623 custom/648 reported checks. Private433 keeps
+its original cut and the unchanged Unsupported keeps zero agreement credit.
+Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
+and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
+reviewed. Source/signature and wider producer/API/lifecycle limits remain partial.
+[I90 review](coverage/semantics/generator-direct-magic-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -717,6 +751,7 @@ before its nested call in the model and earns zero credit.
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
+CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -729,11 +764,18 @@ obsolete dead mirrors precede a later live row. Four exact source agreements,
 Live/live duplicate names and nonordinary tables remain partial.
 [Review](coverage/semantics/throwable-mixed-reinsert-clone-review.json).
 
+COMP163 admits checked file-mode shebang `ENCODEDPROGRAM` tick plans for main and
+included units. Seven exact native/model sources and 32 source-reached tick-plan
+conditions pass at the committed cut, with joined strict433 on the composed
+master. BOM files follow the existing `PROGRAM`/InlineHTML route; eval uses its
+separate parser mode. HALT with a preamble and wider encodings remain partial.
+[Review](coverage/semantics/source-preamble-tick-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
+| CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

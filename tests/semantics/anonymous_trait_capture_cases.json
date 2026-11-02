@@ -1,0 +1,32 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "parented-anonymous-trait-first-capture",
+      "source": "<?php\nclass Base166 {}\ntrait T166 {\n    public static function name() {\n        echo 'body:', self::class, ':', static::class, ';';\n    }\n    public const Y = self::name(...);\n}\n$object = new class extends Base166 { use T166; };\n$capture = $object::Y;\necho 'class:', get_class($object), ';';\n$capture();\necho 'done;';\n",
+      "source_sha256": "a94ee0efef4a247e18c74c9232a9d1db047aaddfd48438b1dc95a5e0b54a5ce0",
+      "stdout_base64": "Y2xhc3M6QmFzZTE2NkBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY2LWFydGlmYWN0cy9wYXJlbnRlZC1hbm9ueW1vdXMtdHJhaXQtY2FwdHVyZS5waHA6OSQwO2JvZHk6QmFzZTE2NkBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY2LWFydGlmYWN0cy9wYXJlbnRlZC1hbm9ueW1vdXMtdHJhaXQtY2FwdHVyZS5waHA6OSQwOkJhc2UxNjZAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2Ni1hcnRpZmFjdHMvcGFyZW50ZWQtYW5vbnltb3VzLXRyYWl0LWNhcHR1cmUucGhwOjkkMDtkb25lOw==",
+      "stdout_template_base64": "Y2xhc3M6QmFzZTE2NkBhbm9ueW1vdXMAe0ZJTEV9OjkkMDtib2R5OkJhc2UxNjZAYW5vbnltb3VzAHtGSUxFfTo5JDA6QmFzZTE2NkBhbm9ueW1vdXMAe0ZJTEV9OjkkMDtkb25lOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class166-artifacts/parented-anonymous-trait-capture.native.json",
+      "native_raw_sha256": "d1f2652e55a1d64a84a4538987b881e3b82969de40cc8c5b6fab413713f61507",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

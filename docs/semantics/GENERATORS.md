@@ -545,6 +545,32 @@ state pass at 1ecc939d; 5096cbb1 composition is reviewed. Calibrated native
 owner diagnostics and original failed checks remain separate.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
+I89 carries authenticated nonstatic captured or compatibly bound user-method
+Closures through warm by-value/reference THROW and fresh initialization. The
+existing actual Gen/resumer/current proof binds the live Closure and receiver;
+cache, input and phase filters retain their separate contracts. Native first-class,
+fromCallable/bindTo and array captures retain Closure/This through CLOSED, then
+release Closure/receiver before the cache. Four native/model originals agree at
+distinct cuts; five reached fronts pass 632 custom/657 reported checks.
+Private433 retains its initial cut; original failures keep zero credit. Joined
+strict433, three exact sources, fresh 117-check and independent closed-body
+118-check states pass at c81b8c5e; 26cf6684 composition is reviewed. Wider
+binding, APIs, delegation, collection and
+lifecycle combinations remain partial.
+[Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
+
+I90 keeps existing typed BYVAL magic-handler policy while sharing the actual
+RUNNING resumer/Gen/current and entered-receipt proof across callee and warm/fresh
+THROW consumers. Warm cached payloads and fresh pending exception copies retain
+their separate owner phases. Native fresh abort closes without a value cache,
+releasing payload before This, then throws the original API Throwable with the
+supplied abort as Previous. Native4/source4 and five reached fronts 623 custom/
+648 reported pass at distinct cuts; private433 keeps its original cut. Joined
+strict433, three exact sources, fresh parked125, affected I85 SEND166 and
+independent closed102 checks pass at dfa4386d; d1f314c0 composition is reviewed.
+BYREF magic signatures and wider source/API combinations remain partial.
+[Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

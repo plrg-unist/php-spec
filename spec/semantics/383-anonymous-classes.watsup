@@ -33,6 +33,7 @@ def $anonymous_constructor_parameters(SEQUENCE eps) = true
 def $anonymous_constructor_parameters(SEQUENCE (phpType17 :: phpType17_tail*)) = ($anonymous_constructor_parameter(phpType17) /\ $anonymous_constructor_parameters(SEQUENCE phpType17_tail*))
 def $anonymous_constructor_parameters(phpType16) = false -- otherwise
 
+dec $anonymous_reference(name) : bool
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
   -- if flags <- [0,1]
@@ -64,12 +65,13 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 ABSENT (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__construct")
+def $anonymous_member(NStmtTraitUse (SEQUENCE (name :: name_tail*)) (SEQUENCE eps) metadata) = $anonymous_reference(name)
+  -- if name_tail* = eps
 def $anonymous_member(statement) = false -- otherwise
 dec $anonymous_members(statement*) : bool
 def $anonymous_members(eps) = true
 def $anonymous_members(statement :: statement_tail*) = ($anonymous_member(statement) /\ $anonymous_members(statement_tail*))
 
-dec $anonymous_reference(name) : bool
 def $anonymous_reference(name) = $ptvalidname(ptbytes, true)
   -- if $ptast(name) = PTNAME ptqual ptbytes
 dec $anonymous_interface_references(name*) : bool
@@ -83,6 +85,7 @@ def $anonymous_interface_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT
   -- if $anonymous_interface_parent_node(phpType44)
   -- if $anonymous_interface_references(name :: name_tail*)
   -- if $anonymous_members(statement*)
+  -- if ~$pptrait_body_uses(SEQUENCE statement*)
   -- if $($source_line(metadata) > 0 /\ $source_end_line(metadata) >= $source_line(metadata))
 def $anonymous_interface_class_node(pcnode) = false -- otherwise
 dec $anonymous_interface_node(pcnode) : bool
@@ -91,15 +94,22 @@ def $anonymous_interface_node(NStmtInterface (SEQUENCE eps) (NIdentifier (BYTES 
   -- if $($source_line(metadata) > 0 /\ $source_end_line(metadata) >= $source_line(metadata))
 def $anonymous_interface_node(pcnode) = false -- otherwise
 
+dec $anonymous_trait_use_count(statement*) : nat
+def $anonymous_trait_use_count(eps) = 0
+def $anonymous_trait_use_count((NStmtTraitUse phpType42 phpType62 metadata) :: statement_tail*) = $(1 + $anonymous_trait_use_count(statement_tail*))
+def $anonymous_trait_use_count(statement :: statement_tail*) = $anonymous_trait_use_count(statement_tail*)
+  -- if ~$pptrait_member_use(statement)
 dec $anonymous_class_node(pcnode) : bool
 def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
   -- if $anonymous_members(statement*)
+  -- if ~$pptrait_body_uses(SEQUENCE statement*)
   -- if z_line = $source_line(metadata)
   -- if z_end = $source_end_line(metadata)
   -- if $(z_line > 0 /\ z_end >= z_line)
 def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT name (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
   -- if $anonymous_reference(name)
   -- if $anonymous_members(statement*)
+  -- if $($anonymous_trait_use_count(statement*) <= 1)
   -- if z_line = $source_line(metadata)
   -- if z_end = $source_end_line(metadata)
   -- if $(z_line > 0 /\ z_end >= z_line)
@@ -439,6 +449,7 @@ def $ppdispatch(P, pcpath, NExprNew (NStmtClass phpType14 phpType24 phpType3 php
 ;; links on its first DECLARE_ANON_CLASS, before allocation and argument sends.
 dec $anonymous_history_seed(pstate, nat) : nat?
 dec $anonymous_new_descriptor(pstate, porigin) : pclassdesc?
+dec $anonymous_runtime_declaration(pdeclaration*, porigin) : bool
 def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc)
   -- if $source_unit(S.SOURCES, 0) = (pcunit)
   -- if $anonymous_unit(pcunit)
@@ -448,6 +459,20 @@ def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $anonymous_class_prefix(pcunit, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), ppinstalled.CLASSES, 0)
+def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc_live)
+  -- if $source_unit(S.SOURCES, 0) = (pcunit)
+  -- if $anonymous_unit(pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
+  -- if $anonymous_new_arguments(phpType7*)
+  -- if $compilation_projection(S, pcunit) = (ppinstalled)
+  -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_live)
+  -- if pclassdesc_live =/= pclassdesc
+  -- if pclassdesc_live[.PROPERTIES = $trait_notice_own_properties(pclassdesc_live.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc_live.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc_live.METHODS, pclassdesc_live.ORIGIN)] = pclassdesc
+  -- if $anonymous_class_prefix(pcunit, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), ppinstalled.CLASSES, 0)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_live.NAME)) = (pclassdesc_live.ORIGIN)
+  -- if $anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc_live.ORIGIN)
+  -- if $declaration_history_valid(S)
 def $anonymous_new_descriptor(S, PORIGIN n pcpath) = (pclassdesc)
   -- if $(n > 0)
   -- if $declaration_unit_complete(S.DECLARATIONS, n)
@@ -463,7 +488,6 @@ def $anonymous_new_descriptor(S, PORIGIN n pcpath) = (pclassdesc)
   -- if $anonymous_compiled_class_count(pcunit, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), ppinstalled.CLASSES, eps, (S_entry), n_seed) =/= eps
 def $anonymous_new_descriptor(S, porigin) = eps -- otherwise
 
-dec $anonymous_runtime_declaration(pdeclaration*, porigin) : bool
 dec $anonymous_runtime_item(pdeclaration, porigin) : bool
 def $anonymous_runtime_item(PDRCLASS porigin pdeclcause, porigin) = true
 def $anonymous_runtime_item(pdeclaration, porigin) = false -- otherwise

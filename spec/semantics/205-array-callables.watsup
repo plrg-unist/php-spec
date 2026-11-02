@@ -238,6 +238,9 @@ def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if S.OBJECTS[n] = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
 def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)], n_source, n)
@@ -302,6 +305,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.OBJECTS[n] = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
   -- if $closure_known_other_method(ptbytes)
   -- if $ptlc(ptbytes) =/= $ptascii("fromcallable")
+  -- if $ptlc(ptbytes) =/= $ptascii("bindto") \/ $ppfirstclass(phpType7*)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method Closure::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
