@@ -10,6 +10,8 @@ ROOT = family.ROOT
 FILES = {
     'finite-reversed-captures': ('gc_finite_reversed_scalar_array.php',
         'cca7681ec5bc033216ab17bd2f641e685ec2b13bc61690e8654f58c24949636b'),
+    'finite-three-distinct-mixed-key': ('gc_finite_three_distinct_mixed_key.php',
+        '33184290cbbbac695d37c9c3521eb0eb84455defc926fcab77c6d080d112ca3b'),
     'finite-duplicate-child': ('gc_finite_duplicate_array_child.php',
         'b5a3f6a19ec336778ca8b3c1a76e3512748cd9b1af0d0a6c16b320b1a2ddf867'),
     'finite-cow-after-capture': ('gc_finite_cow_after_array_capture.php',
