@@ -538,7 +538,7 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $(n_array < |S.ARRAYS|)
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if ~$gc_immutable_array(S, n_array)
-  -- if $heap_count(HARRAY n_array, $pools_nodes(S.POOLS)) = 0
+  -- if ~((HARRAY n_array) <- $heap_reach($pools_nodes(S.POOLS), eps, $heap_graph(S).EDGES))
   -- if $gc_plain_array_entries(S, S.ARRAYS[n_array].ITEMS)
   -- if $heap_unique($node_children(S, HARRAY n_array))
   -- if $node_children(S, HARRAY n_array) = $gc_trace_children(S, HARRAY n_array)
