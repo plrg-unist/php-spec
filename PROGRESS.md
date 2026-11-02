@@ -115,7 +115,13 @@ generated method names through the same direct string CV. Two exact outcomes
 and 68 reached guards pass. Literal class-string arrays also preserve lowercase
 and leading backslash receiver spelling, while case arrays use the canonical
 enum name. Three exact outcomes and 64 reached guards pass; other array
-sources remain partial.
+sources remain partial. The same direct output path now accepts initialized
+int, bool and null CV values, writing the name before returning the boolean.
+Three exact outcomes and 79 reached guards pass; an old output object remains
+explicit Unsupported because its destructor runs during replacement.
+Literal enum method strings now also retain their raw class and method spelling
+in the third output, including lowercase and a leading backslash. Three exact
+outcomes and 88 reached guards pass.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -128,7 +134,9 @@ sources remain partial.
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json),
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
-[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json).
+[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
+[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
+[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -345,24 +353,25 @@ GC20 admits that childless `stdClass` when releasing one owning local copy
 buffers it after the array. Native status observes roots 0→1→2; the exact
 original agrees, and 122 strict reached assertions bind both ordered slots,
 their removal from the D plan, and the rooted Closure/array/leaf owners.
-Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
-nonempty persistent provenance remain open.
+Pre-edit model refusal remains zero credit. At that cut, wider entries,
+backedges, COW and nonempty persistent provenance remained open.
 [GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 
 GC21 admits two distinct childless `stdClass` entries at array keys 0 and 1
 under the same direct Closure caller. The array and key-0 leaf are buffered;
 key-1 stays outside the buffer. One pinned original agrees, and 136 strict
 reached assertions check both slots, black removal, owners and a duplicate
-child refusal. The pre-edit Unsupported retains zero credit. Wider arrays,
-backedges and post-capture COW remain open.
+child refusal at that cut, superseded by GC25. The pre-edit Unsupported
+retains zero credit. At the GC21 cut, wider arrays, backedges and
+post-capture COW remained open.
 [GC21 review](coverage/semantics/gc-two-array-children-caller-review.json).
 
 GC22 admits the same two-entry array after a third owning copy release
 buffers the key-1 leaf. Pinned status sees roots 0→1→2→3; one original
 agrees, and 139 strict reached assertions prove three ordered slots,
 black D-plan removal and owners 2/3/2/2. A corrected fixture selects D
-by collection nonce 2. Pre-edit refusal remains zero credit; broader
-entries, backedges and post-capture COW remain open.
+by collection nonce 2. Pre-edit refusal remains zero credit. At the GC22
+cut, broader entries, backedges and post-capture COW remained open.
 [GC22 review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
 GC23 admits an ordered node-free scalar capture before one childless
@@ -374,14 +383,24 @@ and source/caller bounds. Pre-edit Unsupported retains zero credit.
 
 GC24 admits finite ordered node-free scalar captures around one mutable
 one-level array in the same authenticated direct Closure. Its entries may
-be direct scalars or distinct childless stdClass leaves in physical order;
+be direct scalars or childless stdClass leaves in physical order;
 compiled-pool descendants and materialized property tables are fenced.
 Reversed capture order, three mixed-key leaves and post-capture COW give
 three exact source pairs. Strict reached checks pass 113+146 assertions,
-and the corrected GC23 group passes 110. Duplicate identities, shared
-separate captures, aliases, nested arrays and user-destructor children
-remain refused. Earlier Unsupported, overlap and fixture failures retain
+and the corrected GC23 group passes 110. Its original duplicate-identity
+refusal is superseded by GC25; shared separate captures, aliases, nested
+arrays and user-destructor children remain refused. Earlier Unsupported,
+overlap and fixture failures retain
 zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
+
+GC25 admits repeated direct edges to the same childless stdClass inside
+that finite captured array. With global strong owners removed, two array
+edges keep one leaf alive until Closure release; pinned status sees roots
+0→1→2 and then 0. One full source agrees exactly. Strict reached checks
+pass 127 new and affected GC21/22/24 groups 137+140+147, proving two
+physical edges, one leaf buffer slot, owners 2/2, black D protection and
+nested-array refusal. The source-only Unsupported and first fixture error
+retain zero credit. [GC25 review](coverage/semantics/gc-duplicate-edge-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative

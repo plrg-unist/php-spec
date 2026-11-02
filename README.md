@@ -3878,11 +3878,15 @@ same direct Closure. Native Reflection confirms capture order; one original
 and 110 strict reached assertions pass. See the
 [scalar-array caller review](coverage/semantics/gc-scalar-array-caller-review.json).
 GC24 extends this direct caller to finite ordered scalar captures around
-one mutable array with distinct childless stdClass and scalar entries.
+one mutable array with childless stdClass and scalar entries.
 Three sources, including a three-leaf post-capture COW case, agree with
 PHP; 113+146 new reached assertions cover order, owners, buffer slots and
 explicit graph/provenance refusals. See the
 [finite capture review](coverage/semantics/gc-finite-capture-review.json).
+GC25 also admits repeated direct edges to the same childless stdClass in
+that array. A pinned weak-lifetime source and 127 new plus three affected
+reached groups check two edges, one buffer slot and release after Closure
+death. See the [duplicate-edge review](coverage/semantics/gc-duplicate-edge-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -6758,9 +6762,15 @@ live case literal arrays add two exact outcomes and 68 reached guards in the
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
 Literal class-string arrays now preserve lowercase and leading backslash bytes;
 the [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json)
-records three exact outcomes and 64 reached guards. Other array sources,
-destructor and aliasing effects, autoload, case attributes, enum collection
-policy and wider acquisition remain partial;
+records three exact outcomes and 64 reached guards. Initialized int, bool and
+null output CVs now receive names before the boolean result; the
+[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json)
+records three exact outcomes and 79 reached guards. Literal enum method strings
+also preserve raw lowercase, leading backslash and method spelling in the
+third output; the [string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json)
+records three exact outcomes and 88 reached guards. Old-object destructor and
+input/output alias effects, other array sources, autoload, case attributes,
+enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

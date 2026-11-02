@@ -1,0 +1,18 @@
+{
+  "scope": "is_callable third direct CV output preserves literal enum method-string spelling",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "d716f59cff8217aaab5eab243c3878600cade633",
+  "semantic_revision": "db24492d56b610b83e4f19e8bc0ac25a349a95d8",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: output-string-spelling SHA eb0dd7f4f8a613b26ad9c21c4eb493f6bfe2d473cc27aada4f0b598c4ddc3ba9, exact stdout, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-string-output-evidence/strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.67 s, stable inputs",
+    "source": ".tools/enum-is-callable-string-output-evidence/source-v1/report.json: canonical/lowercase/leading-backslash names exact native/model normal",
+    "state": ".tools/enum-is-callable-string-output-evidence/reached-v1/report.json: 88 checked source-reached SL guards true, exit 0, empty stderr, stable inputs",
+    "affected_prior": ".tools/enum-is-callable-string-output-evidence/prior-scalar-v1/report.json: prior int/bool/null output exact normal"
+  },
+  "behavior": "An exact literal NScalarString and live interned carrier authenticate the original callable bytes; published enum lookup determines the boolean, and the third output copies those original bytes, preserving lowercase class spelling, one leading backslash and uppercase method spelling. All three reached sends retain the old CV value until invoke; the name is written before the boolean without event or class-cache change.",
+  "remaining": "Nonliteral method strings, old array/object output values, destructor order, input/output aliasing, named/unpacked output and autoload remain partial."
+}

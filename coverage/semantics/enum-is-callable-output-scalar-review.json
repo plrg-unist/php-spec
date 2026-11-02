@@ -1,0 +1,19 @@
+{
+  "scope": "is_callable third direct CV output when its initialized old value has no heap root",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "582867f72642337d7368316411ebbff7aa115fcf",
+  "semantic_revision": "cebb4dbd8aa4585fd1e008d07821f6a69f627635",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: output-old-scalars-simple SHA 1854a358c2ab016fcc5ccb9204e26a2dd25c26f1ead92bc1f583344f05989f24 and output-old-object-control SHA 0b6a405a9e53537e2ac3cb67905037b03fbdf743d3aaf1107a69e73357b22b08, both exit 0 and empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-old-scalar-evidence/strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.49 s, stable inputs",
+    "source": ".tools/enum-is-callable-old-scalar-evidence/source-v1/report.json: int/bool/null outputs exact native/model normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-old-scalar-evidence/reached-v1/report.json: 79 checked source-reached SL guards true, exit 0, empty stderr, stable inputs",
+    "affected_prior": ".tools/enum-is-callable-old-scalar-evidence/prior-string-v1/report.json: original initialized string output exact normal",
+    "boundary": ".tools/enum-is-callable-old-scalar-evidence/object-control-v1/report.json: OldDrop model emits before| then explicit Unsupported; native emits before|DROP|after:1:OldCheck::from|"
+  },
+  "behavior": "The existing source-certified literal generated method query captures the direct caller CV before CONFIG invoke. A defined old null, bool, int, float or string value has no HARRAY/HOBJECT root; replacing it cannot invoke a destructor. Three exact int/bool/null cases and reached guards show that the name write precedes the boolean with no event or class-cache change. The no-root guard also applies to previously certified literal array names.",
+  "remaining": "Old array/object output values, destructor ordering, input/output aliasing, nonliteral array sources, named/unpacked output and autoload remain partial."
+}

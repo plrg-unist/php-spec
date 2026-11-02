@@ -739,4 +739,12 @@ also retain lowercase and leading backslash source spelling, whereas case
 arrays use the canonical enum name. The
 [spelling review](../../coverage/semantics/enum-is-callable-output-spelling-review.json)
 records three exact outcomes and 64 reached guards. Other array sources remain
-partial.
+partial. Initialized int, bool and null output CVs also receive the name
+before the boolean through the same source-certified path. The
+[scalar-output review](../../coverage/semantics/enum-is-callable-output-scalar-review.json)
+records three exact outcomes and 79 reached guards; old-object destructor
+effects remain Unsupported.
+Literal enum method strings also retain raw class and method spelling in the
+third output. The [string-spelling review](../../coverage/semantics/enum-is-callable-output-string-spelling-review.json)
+records canonical, lowercase and leading-backslash outcomes with 88 reached
+guards.

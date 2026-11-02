@@ -48,6 +48,29 @@
     "purpose": "Literal class-string arrays preserve raw lowercase/leading-slash receiver and method bytes, while a case-object array uses the canonical enum class name."
   },
   {
+    "id": "enum-is-callable-third-output-string-spelling",
+    "source": "<?php\nenum NameSpell: int { case A = 1; }\n$name = 'old';\n$ok = is_callable('NameSpell::from', false, $name);\necho 'canonical:', (int)$ok, ':', $name, '|';\n$name = 'old';\n$ok = is_callable('namespell::FROM', false, $name);\necho 'lower:', (int)$ok, ':', $name, '|';\n$name = 'old';\n$ok = is_callable('\\\\NameSpell::TRYFROM', false, $name);\necho 'slash:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "eb0dd7f4f8a613b26ad9c21c4eb493f6bfe2d473cc27aada4f0b598c4ddc3ba9",
+    "expected_model": "normal",
+    "expected_normal_stdout": "canonical:1:NameSpell::from|lower:1:namespell::FROM|slash:1:\\NameSpell::TRYFROM|",
+    "purpose": "Literal generated enum method strings preserve raw class and method spelling in the third output CV."
+  },
+  {
+    "id": "enum-is-callable-third-output-old-scalars",
+    "source": "<?php\nenum ScalarCheck: int { case A = 1; }\n$name = 42;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'int:', (int)$ok, ':', $name, '|';\n$name = false;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'bool:', (int)$ok, ':', $name, '|';\n$name = null;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'null:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "1854a358c2ab016fcc5ccb9204e26a2dd25c26f1ead92bc1f583344f05989f24",
+    "expected_model": "normal",
+    "expected_normal_stdout": "int:1:ScalarCheck::from|bool:1:ScalarCheck::from|null:1:ScalarCheck::from|",
+    "purpose": "Initialized int, bool and null output CVs are overwritten with the literal generated enum callable name."
+  },
+  {
+    "id": "enum-is-callable-third-output-old-object-unsupported",
+    "source": "<?php\nclass OldDrop { public function __destruct() { echo 'DROP|'; } }\nenum OldCheck: int { case A = 1; }\n$name = new OldDrop;\necho 'before|';\n$ok = is_callable('OldCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "0b6a405a9e53537e2ac3cb67905037b03fbdf743d3aaf1107a69e73357b22b08",
+    "expected_model": "unsupported",
+    "purpose": "Old output object destructor ordering remains outside the scalar no-heap-root route."
+  },
+  {
     "id": "enum-is-callable-third-output-rebinding-unsupported",
     "source": "<?php\nenum FirstCheck: string { case A = 'a'; }\nenum OtherCheck: string { case B = 'a'; }\nclass NameDrop {\n    public function __destruct() { echo 'NAME-DROP|'; }\n}\n\n$target = [FirstCheck::class, 'from'];\n$name = new NameDrop;\necho 'before|';\n$ok = is_callable($target, false, $name);\necho 'selected:', ($ok ? '1' : '0'), ':', $name, '|';\n$target = [OtherCheck::B, 'tryFrom'];\necho 'rebound:', (is_callable($target) ? '1' : '0'), '|';\n$same = [FirstCheck::class, 'from'];\n$ok = is_callable($same, false, $same);\necho 'alias:', ($ok ? '1' : '0'), ':', $same, '|';\n",
     "source_sha256": "835c8cb6b3beae2c15c8a03d61d2797cd0b0261488b305369ab755e8f41b873f",
