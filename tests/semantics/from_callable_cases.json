@@ -277,5 +277,13 @@
     "expected_model": "normal",
     "expected_normal_stdout": "string-type|array-type|string|array|",
     "purpose": "The existing captured fromCallable API converts a generated array target and retires independently; string and array results preserve strict errors and later valid from/tryFrom lookups."
+  },
+  {
+    "id": "enum-generated-typed-from-callable-joined",
+    "source": "<?php\nenum EnumCallableJoined: int { case One = 1; }\nfunction makeEnumClosure(callable $callback) {\n    echo $callback === 'EnumCallableJoined::from' ? 'raw|' : 'BAD|';\n    return Closure::fromCallable($callback);\n}\n$closure = makeEnumClosure('EnumCallableJoined::from');\necho $closure(1) === EnumCallableJoined::One ? 'selected|' : 'BAD|';\n",
+    "source_sha256": "a915d7780e216f135d997954303869b54b08cdf00b69f282babb46385097d851",
+    "expected_model": "normal",
+    "expected_normal_stdout": "raw|selected|",
+    "purpose": "A callable-typed receiver preserves the raw generated enum string and passes it into Closure::fromCallable in one original run."
   }
 ]
