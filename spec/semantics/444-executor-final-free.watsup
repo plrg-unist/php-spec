@@ -244,6 +244,7 @@ dec $executor_normal_task(pstate, ptask) : bool
 dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
 dec $executor_tick_entry_ready(pstate, ptickentry) : bool
+dec $executor_tick_entries_ready(pstate, ptickentry*) : bool
 dec $executor_tick_ready(pstate) : bool
 dec $executor_tick_valid(pstate, pexecutortick) : bool
 dec $executor_tick_nodes(ptickentry) : pnode*
@@ -332,15 +333,15 @@ def $executor_tick_entry_ready(S, ptickentry) = true
   -- if ~$closure_callable(S, n_callback) /\ n_callback =/= n_argument
   -- if $tick_entry_valid(S, ptickentry)
 def $executor_tick_entry_ready(S, ptickentry) = false -- otherwise
+def $executor_tick_entries_ready(S, eps) = true
+def $executor_tick_entries_ready(S, ptickentry :: ptickentry_tail*) = true
+  -- if $executor_tick_entry_ready(S, ptickentry) /\ $executor_tick_entries_ready(S, ptickentry_tail*)
+def $executor_tick_entries_ready(S, ptickentry*) = false -- otherwise
 def $executor_tick_ready(S) = true
-  -- if S.TICKENTRIES = [ptickentry]
-  -- if S.COMPLETION = NORMAL /\ S.ASSERTCALLBACK = eps
-  -- if $executor_tick_entry_ready(S, ptickentry)
-def $executor_tick_ready(S) = true
-  -- if S.TICKENTRIES = [ptickentry_first, ptickentry_second]
+  -- if S.TICKENTRIES = ptickentry :: ptickentry_tail*
   -- if S.COMPLETION = NORMAL /\ S.ASSERTCALLBACK = eps
   -- if $tick_entries_valid(S, S.TICKENTRIES, 0)
-  -- if $executor_tick_entry_ready(S, ptickentry_first) /\ $executor_tick_entry_ready(S, ptickentry_second)
+  -- if $executor_tick_entries_ready(S, S.TICKENTRIES)
 def $executor_tick_ready(S) = false -- otherwise
 def $executor_tick_valid(S, pexecutortick) = true
   -- if S.TICKENTRIES = pexecutortick.TAIL /\ S.ASSERTCALLBACK = eps
