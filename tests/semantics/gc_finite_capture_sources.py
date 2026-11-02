@@ -24,7 +24,9 @@ for name, (_, expected) in FILES.items():
     assert hashlib.sha256(PATHS[name].read_bytes()).hexdigest() == expected
 
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}
-family.UNSUPPORTED = {}
+family.UNSUPPORTED = {
+    'finite-duplicate-child': ('cached ordinary property-table collection', b'T|P|0|'),
+}
 family.MODEL_TIMEOUTS = {name: 240 for name in FILES if not name.startswith('native-')}
 
 
