@@ -446,7 +446,7 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $node_children(S, HARRAY n_array) = eps
   -- if $gc_trace_children(S, HARRAY n_array) = eps
   -- if (HOBJECT n) <- $machine_roots(S)
-;; A captured array may hold one unbuffered childless stdClass object.
+;; A captured array may hold one childless stdClass object.
 def $gc_ordinary_node(S, HOBJECT n) = true
   -- if S.GC.ACTIVE = (pgccall)
   -- if pgccall.CALLER = (pcallcontext)
@@ -465,7 +465,6 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $gc_trace_children(S, HARRAY n_array) = [HOBJECT n_leaf]
   -- if $node_children(S, HOBJECT n_leaf) = eps
   -- if $gc_trace_children(S, HOBJECT n_leaf) = eps
-  -- if ~((HOBJECT n_leaf) <- $gc_nodes(S.GC.BUFFER))
   -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
 def $gc_ordinary_nodes(S, eps) = true
