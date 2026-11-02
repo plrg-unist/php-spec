@@ -86,7 +86,7 @@ if __name__ == '__main__':
         'S_zero.COMPLETION = BUDGET',
         'S_done = $drive(S_zero[.COMPLETION = NORMAL], 5000)',
         'S_done.COMPLETION = NORMAL',
-        '$eic_output(S_done.EVENTS) = ' + expected,
+        '$eic_output(S_done.EVENTS) = (' + expected + ')',
     ]
     fixture = OUT / 'output-spelling.watsup'
     fixture.write_text(base.PREFIX + output.SEND_PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
