@@ -208,6 +208,10 @@ Two quiet owning Generator sends now preserve distinct or repeated copied roots
 through cleanup. Four frozen object sources, a separate array COW regression,
 and 421 reached conditions pass; joined strict433 and terminal source/state
 gates passed at `4c6d75817` and `6daa1de90`.
+A retained named BYREF Generator now copies a finite quiet owning value from
+an ordinary cell before later writes and a scalar send. Four originals and 406
+reached conditions pass; joined strict433 and terminal source/state pass at
+`186d8c368`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -220,6 +224,7 @@ gates passed at `4c6d75817` and `6daa1de90`.
 [Temporary owning sends](coverage/semantics/config-generator-owning-temporary-review.json),
 [Owning final caches](coverage/semantics/config-generator-owning-cache-review.json),
 [Two owning sends](coverage/semantics/config-generator-two-owning-review.json),
+[Owning reference snapshots](coverage/semantics/config-generator-reference-owning-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -470,7 +475,6 @@ CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review
 | CLASS164 | Existing copied trait `parent` capture views: four exact native/model originals and three source-reached state groups pass 258 conditions (79+86+93). The cross-parent case distinguishes saved lexical from called scope. Two corrected fixture failures retain zero credit. No semantic rule changed; private review CLEAR and four-source composed-tail check passed at 5db2cd8f2; integration pending. [Review](coverage/semantics/trait-captured-parent-view-review.json). |
 | COMP160 | Declared INITIAL/UNSET slots and physical cached holes: private normal2/control2, reached1035, joined strict433, and affected COMP159 source/state pass. Final review and integration pending. |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
-| A81 | Retained direct-CV BYREF Generator copies one owning reference-cell snapshot before a scalar send; four exact sources and two reached proofs complete privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
