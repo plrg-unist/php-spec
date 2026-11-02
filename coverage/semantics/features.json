@@ -9065,9 +9065,10 @@
       ],
       "source_tests": [
         "tests/semantics/validate.py",
-        "coverage/semantics/phase0.json"
+        "coverage/semantics/phase0.json",
+        "tests/semantics/source_preamble_sources.py"
       ],
-      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending."
+      "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only. A BOM file's leading InlineHTML bytes are an affected source control for the later shebang tick-plan cut; wider contextual behavior remains partial."
     },
     {
       "node": "Scalar_InterpolatedString",
@@ -12027,15 +12028,23 @@
     {
       "id": "source.preamble",
       "milestone": "0b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+      "implementation": [
+        "spec/semantics/393-ticks.watsup",
+        "spec/semantics/46-source-compiler.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/source_preamble_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/source_preamble_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/source-preamble-tick-review.json"
+      ],
+      "review": "File-mode shebang ENCODEDPROGRAM now derives quiet and tick-containing plans from checked statements, including dynamically included units. Seven exact native/model sources cover shebang line identity, opened child paths/returns, raw BOM InlineHTML and separate eval parsing; source-reached checks authenticate file AST shapes and marker lines. BOM follows existing PROGRAM handling. HALT combined with a preamble, wider encodings and provider forms remain partial."
     },
     {
       "id": "source.magic-constants",
