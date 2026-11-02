@@ -40,6 +40,8 @@ def $config_kind(INTRINSIC_INI_RESTORE) = true
 def $config_kind(INTRINSIC_CHDIR) = true
 def $config_kind(pintrinsic) = false -- otherwise
 dec $config_invoke_valid(pstate, pconfigcall) : bool
+dec $enum_is_callable_ref_argument(pstate, pconfigcall) : bool
+dec $enum_is_callable_ref_slots_valid(pstate, pconfigcall) : bool
 dec $config_iterator_copied_call(pstate, pconfigcall) : bool
 dec $config_strict(pstate, pconfigcall) : bool
 dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
@@ -1549,8 +1551,6 @@ def $config_sent_shape(S, pconfigcall) = true
   -- if ~pconfigcall.NAMED
 def $config_sent_shape(S, pconfigcall) = false -- otherwise
 dec $config_call_valid(pstate, pconfigcall) : bool
-dec $enum_is_callable_ref_argument(pstate, pconfigcall) : bool
-dec $enum_is_callable_ref_slots_valid(pstate, pconfigcall) : bool
 dec $config_call_slots_valid(pstate, pconfigcall) : bool
 def $config_call_slots_valid(S, pconfigcall) = ($config_slots_valid(S, pconfigcall.SENT) \/ $enum_is_callable_ref_slots_valid(S, pconfigcall))
 def $config_call_valid(S, pconfigcall) = true
