@@ -246,9 +246,13 @@ are discarded. [OB04](coverage/semantics/output-final-exception-handler-review.j
 adds selected FINAL exception handlers, ignored-return/original cleanup, pre-entry
 warning throws and their real abandoned C owners. Normal handling forwards live
 bytes through genuine lower callbacks; retained Closure free effects after executor
-inactivity preserve the pinned late fatal and CLI status. Wider rendering, nonfast
-executor teardown, reentrant deactivation, other byte producers and buffered stdout
-diagnostics remain dependencies.
+inactivity preserve the pinned late fatal and CLI status.
+[OB05](coverage/semantics/output-executor-nonfast-review.json) adds allocator-selected
+table and storage cleanup, inherited method-static sharing and oldest saved-handler
+order. Shutdown registrations created during FINAL retire their arguments and FCC
+owners while PHP is still active, including caught destructor throws. Owning
+module/autoload cleanup, uncovered table owners, wider hooks/rendering, reentrant
+deactivation, other byte producers and buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

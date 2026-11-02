@@ -52,10 +52,13 @@ a fresh process, and an explicit environment/working directory for each test.
 Record loaded extensions: availability in the oracle does not admit their APIs.
 Reviewed profile changes must be supplied consistently to both executions.
 
-The represented FINAL executor-free phase follows default fast shutdown. An
-explicit pre-startup `USE_ZEND_ALLOC` value with a zero/nonnumeric decimal prefix
-selects a distinct, still Unsupported table/storage cleanup path; the request
-input remains available. See the [FINAL output contract](OUTPUT-HANDLERS.md).
+The represented FINAL executor-free phase follows the allocator selected by the
+first pre-startup `USE_ZEND_ALLOC` environment entry. Zero/nonnumeric decimal
+prefixes select nonfast table and storage cleanup; default fast shutdown retains
+its distinct free-hook effects. Late shutdown-list arguments and FCC owners retire
+before PHP execution is disabled. Owning module/autoload cleanup, uncovered table
+owners and wider weak/internal/nonpublic hooks remain partial. Request facts stay
+available; see the [FINAL output contract](OUTPUT-HANDLERS.md).
 
 Compare exact stdout and stderr bytes and process status. Also retain semantic
 events (output bytes, diagnostic severity/message/location, external requests and
