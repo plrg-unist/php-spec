@@ -407,6 +407,10 @@ def $ob_notice_valid(S, pobnotice) = false -- otherwise
 def $ob_notice_task(OB_NOTICE_RESULT pobnotice, pobnotice) = true
 def $ob_notice_task(ERROR_HANDLER_INVOKE perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
 def $ob_notice_task(ERROR_HANDLER_RESULT perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+def $ob_notice_task(API_CALLBACK_SEND papiargcursor, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_notice_task(API_CALLBACK_REF papiargcursor, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
 def $ob_notice_task(ptask, pobnotice) = false -- otherwise
 def $call_task_valid(S, OB_NOTICE_RESULT pobnotice) = $ob_notice_valid(S, pobnotice)
 def $task_nodes(OB_NOTICE_RESULT pobnotice) = $config_nodes(pobnotice.CALL)
