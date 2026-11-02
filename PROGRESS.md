@@ -114,7 +114,8 @@ active caller and count rules still protect the held sibling. The native-first
 original agrees exactly, a pre-edit reached diagnostic passes 24 checks, and
 the private strict reached group passes 95 checks; the current-tail group passes
 96 after the global receiver guard. The independent computed-receiver refusal
-passes 18 strict checks, and the unchanged original agrees on the current tail.
+passes 18 strict checks; joined OB05 strict96 and the unchanged native/model
+original also pass.
 Calls with arguments, computed receivers,
 attributes, return declarations, nullsafe selection and wider active contexts
 remain partial.
@@ -406,7 +407,6 @@ control is promoted without native replay.
 | CLASS158 | Ordinary non-magic anonymous method formals and lexical-owner missing-arity diagnostics: five fresh exact source agreements, strict433 and 247 focused conditions (243 reached, four guards) pass; final private CLEAR at a0da92ae. Two unchanged Unsupported controls retain zero credit; actual-tail integration pending. |
 | CLASS157 | Anonymous Stringable source9/state285/changed433 pass; final private CLEAR at 40f5cd2c, actual-tail integration pending. |
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
-| GC11 | Plain explicit Closure `__invoke` caller privately composed, source/state and independent computed-receiver refusal pass; integration pending final OB05 interaction check. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
