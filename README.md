@@ -261,6 +261,11 @@ Suppression and selected error handlers retain their native output order.
 returned-object destructor during normal post-deactivation cleanup. It runs
 while the selected handler is disabled; a nested no-argument `ob_start()`
 emits the built-in Notice and returns false before the outer handler resumes.
+[OB08](coverage/semantics/output-executor-explicit-null-review.json) admits a
+positional `ob_start(null)` during normal post-deactivation queue release. It
+uses the same default-handler Notice and false result without creating a buffer.
+Named-null, unpacked-null, callable and invalid-integer starts remain outside
+this cut.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

@@ -1,0 +1,84 @@
+{
+  "milestone": "OB08",
+  "status": "Private semantic CLEAR; joined current-master composition pending.",
+  "scope": "Direct positional ob_start(null) in NORMAL post-deactivation executor queue release; default handler failure and selected E_NOTICE handler.",
+  "base": "7f031e6f0008662926177d790779c7bafdd4c7c7",
+  "semantic_head": "48e08301986d0d482970137f32fe5e1674acdd56",
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "frontend_extension_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "spectec_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "strict SL; fixed request clock and LC_ALL=C,TZ=UTC,FIRST=one; slow adds USE_ZEND_ALLOC=0"
+  },
+  "engine": "vendor/php-src/main/output.c:1374-1392 parses |zll and emits E_NOTICE/false on start failure; lines 465-482 create the internal default handler for explicit IS_NULL; lines 536-542 reject the inactive output system before any push.",
+  "validation": {
+    "strict433": {
+      "command": "tests/semantics/_build/default/numeric_runner.exe --sl <433 spec/semantics/modules.json entries> .tools/ob08-strict-48e083019/strict.watsup",
+      "result": "true, empty stderr, exit0",
+      "seconds": 11.831
+    },
+    "source": {
+      "command": "python3 tests/semantics/output_executor_explicit_sources.py",
+      "cases": [
+        "explicit-null",
+        "explicit-null-slow",
+        "handled-null"
+      ],
+      "result": "3 exact pinned native/model stdout, stderr, exit0 agreements; model normal",
+      "plain_stdout": "FX|D1|F|0|D2|",
+      "handled_stdout": "FX|D1|H:8|F|0|D2|",
+      "notice": "one built-in E_NOTICE at the explicit-null call unless selected handler returns true"
+    },
+    "state": {
+      "command": "python3 tests/semantics/output_executor_explicit_state.py",
+      "result": "2 source-reached invoke/Notice checkpoints, 48 conditions; authenticated positional NULL, empty buffers and unchanged sequence, malformed NAMED/non-null/PACKS refusals, budget resume and normal finish"
+    },
+    "boundary": {
+      "command": "python3 tests/semantics/output_executor_post_deactivate_boundaries.py",
+      "result": "callable, handler-body reentrant, named-null and invalid-integer exact checked Unsupported; empty buffers and OUTPUTSEQ=1"
+    },
+    "noarg_regression": {
+      "command": "python3 tests/semantics/output_executor_post_deactivate_state.py --case failed-start-notice",
+      "result": "source-reached noarg Notice state passes"
+    }
+  },
+  "tracked_inputs_sha256": {
+    "spec/semantics/391-output-buffers.watsup": "3b49fc9ab8c737750708e1d21a7d88a90fa4ea22683c8a90c3b66f939eeb1557",
+    "spec/semantics/444-executor-final-free.watsup": "aee4f76108c63a3b76aaa44b4b139647fd67561eedf53c8522a169e95fb166bf",
+    "tests/semantics/output_executor_post_deactivate_explicit.php": "c8a2845a8ddabdd5973226d74cd7067bd5e990ebf1934ae95aa504ca604edfdf",
+    "tests/semantics/output_executor_post_deactivate_handled_ob08.php": "314768c22b3be13cd4ead101efafcd9a9cf5e3b94f6a68bc161adedd14c10c22",
+    "tests/semantics/output_executor_post_deactivate_named_ob08.php": "2ccd050f3471c0bb6e832d034400a60c1860eabf593b149d88ef10482f50a143",
+    "tests/semantics/output_executor_post_deactivate_invalid_ob08.php": "8bcc88bb6963f4255fb670cec5d943a7238282a303d4a95a5f0e3ed6499027ae",
+    "tests/semantics/output_executor_explicit_sources.py": "2e7a7b840a8197fa527cedd9f6443b26e48276acd09775e00b97ad22fee41803",
+    "tests/semantics/output_executor_explicit_state.py": "bc0dd6c158fb78d39a7b21df12ac5e3373c215b98afc4c7ea593d7feb4da0656",
+    "tests/semantics/output_executor_post_deactivate_boundaries.py": "9990b983ec49d0f66517b0e0d8b952b41e0ff9fbd1601bb8259d76b795feabba"
+  },
+  "raw_archive": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/ob08-explicit-null-48e083019",
+    "reports_sha256": {
+      "ob08-strict-48e083019/report.json": "f26e6b16ecc287893f5b8bd4197f5f277b26c5e4ea5f695905285689ac690fac",
+      "output-executor-explicit-null-o0y88o9y/report.json": "7d4ba51b5736ccf6dc30a4762eca3edc7e75fdcbf0957f3003da54e6255444d8",
+      "fiber-state-review-60adiojo/report.json": "45129ddb950d6ee10cf0ff93e538ea36c8837781c13e0c1ec2ae24893b8b4cde",
+      "output-post-deactivate-boundaries-g79bligp/report.json": "d4c0295d21fe181ebc8a24a9f8b5aa780fb616ce41b1fbe06224c02a9afe8157",
+      "fiber-state-review-53ly1r_p/report.json": "d403dc6c5c4423bcb82c1efe8628512b8247b15912fe9f28984c85fe455959b9"
+    },
+    "retention": "Raw reports and focused states retained outside Git; generated original-inputs snapshots omitted because source/direct-input hashes and commits reconstruct them."
+  },
+  "native_first": {
+    "directories": [
+      "/home/user/workspace/php-spec-evidence-archive/ob08-explicit-null-native-v1",
+      "/home/user/workspace/php-spec-evidence-archive/ob08-explicit-null-native-v2",
+      "/home/user/workspace/php-spec-evidence-archive/ob08-explicit-null-native-v3"
+    ],
+    "report_sha256": {
+      "ob08-explicit-null-native-v1": "9e6ddad304c86647b022d5c3f0be11660b32c21c6f2330132f0858e8ae19a39c",
+      "ob08-explicit-null-native-v2": "e4c0538cee799c44baf53d6c0d42fb6571aaed570776d56d88327c1a6f568427",
+      "ob08-explicit-null-native-v3": "a5a20b94f50b16522d4593199ed1d976e48a116f3a86e7425af37f6ec2b67a5f"
+    },
+    "controls": "Noarg, explicit NULL, callable and invalid integer; named NULL, explicit slow allocator and selected-handler explicit NULL. Invalid integer emits Warning before Notice. Callable and named NULL have native agreement only and remain model Unsupported."
+  },
+  "preserved_failure": "OB06 explicit-null checked Unsupported remains archived unchanged and has zero agreement credit at that historical cut.",
+  "remaining": "Named, unpacked, callable and invalid-handler starts, argument-bearing starts during returned-object cleanup, abnormal executor completion and blocked output remain partial."
+}

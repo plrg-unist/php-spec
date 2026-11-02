@@ -235,3 +235,15 @@ OB06 refusal controls still pass. Joined strict433, nested fast/slow sources
 and the three refusals pass with the executor tick-owner branch present.
 Wider callback nesting, abnormal queue completion and argument forms remain open.
 [OB07 evidence](../../coverage/semantics/output-executor-retval-review.json).
+
+OB08 admits a direct positional `ob_start(null)` during the same normal
+post-deactivation executor queue release. PHP creates the internal default
+handler for an explicit NULL, then the inactive output check fails. The call
+emits the same E_NOTICE and false result as noarg, with no buffer or sequence
+change. The admission requires one known NULL slot, positional argument form
+and no unpack record. Fast/slow and selected-handler sources agree; source
+checkpoints validate the call and Notice with malformed slot/name/pack refusals.
+Named NULL, callable, invalid-integer and active handler-body reentry remain
+checked Unsupported. Argument-bearing starts during returned-object cleanup
+and wider executor completion remain open.
+[OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json).

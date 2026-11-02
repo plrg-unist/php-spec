@@ -869,6 +869,15 @@ executor tick-owner branch present. The retained OB06 native original is now
 promoted with exact model agreement.
 [Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
+OB08 admits one positional `ob_start(null)` after output deactivation during
+normal executor queue release. The default handler creation fails before any
+buffer push, emits E_NOTICE and returns false. Fast and slow allocator sources
+and a selected-handler source agree exactly with pinned PHP. Two source-reached
+checkpoints validate call/Notice authority, empty buffers and unchanged output
+sequence; named-null, callable, invalid-integer and handler-body reentrant
+forms remain checked Unsupported. The previous noarg Notice state still passes.
+[Explicit-null executor review](coverage/semantics/output-executor-explicit-null-review.json).
+
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
