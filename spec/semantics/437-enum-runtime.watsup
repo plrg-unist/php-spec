@@ -1537,7 +1537,6 @@ def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if ptbytes_input = $base64(text_input)
   -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if ptbytes_input = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
 def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprClassConstFetch (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_member) metadata_member) metadata_receiver) (BOOLEAN false) (BOOLEAN false) metadata_item_receiver), (NArrayItem ABSENT (NScalarString (BYTES text_method) metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_item_method)])) metadata_array, false, eps, porigin_input, z_input))
   -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
