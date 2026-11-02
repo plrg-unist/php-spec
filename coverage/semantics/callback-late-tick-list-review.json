@@ -77,9 +77,9 @@
   ],
   "remaining": "Mixed callback/argument shapes, assertion callback roots, abrupt/reentrant module shutdown and other late-free routes remain partial. Three distinct entries and a two-entry shared callback are selected source witnesses; the recursive rule admits more finite entries without claiming exhaustive source validation.",
   "composition": {
-    "head": "c6ac153928302411506aee38c8ca4ee3dcb67c15",
-    "parents": ["e93d2436df710a01d1ba0f5d655cb4eba2c6e7c8", "cae595492dc56101e4d5d2d2d809ed3edd33e4bc"],
-    "compatibility": "OB07 adds a saved Notice/error-handler retval destructor path in 391/444 that requires an EXECUTOR_RELEASE shutdown queue; selected ATTR13 paths use EXECUTOR_TICK_RELEASE and no error handler. Joined strict433 on c6ac passes. Current-tail 301 explicit GC, 210 string Closure, 437 enum query, and 46 HALT compiler changes are absent from the selected tick sources and reached states. Production diff from cae595 is only the reviewed 444 readiness change.",
-    "review": "Independent semantic/test CLEAR for e93d and post-OB07 semantic bridge CLEAR for c6ac by /root/attr_review_recovery."
+    "head": "8c284c86883b3c25b545bce5d87109f6f21878e3",
+    "parents": ["fcba5c48226ea68861657d81797fd9a2222a7f12", "7f031e6f0008662926177d790779c7bafdd4c7c7"],
+    "compatibility": "OB07 adds a saved Notice/error-handler retval destructor path in 391/444 that requires an EXECUTOR_RELEASE shutdown queue; selected ATTR13 paths use EXECUTOR_TICK_RELEASE and no error handler. Joined strict433 on c6ac passes. Current-tail 301 explicit GC, 210 string Closure, 437 enum query, 46 HALT compiler and 423 CONFIG Generator unpack changes are absent from the direct-object tick sources and reached states. Production diff from 7f master is only the reviewed 444 readiness change.",
+    "review": "Independent semantic/test CLEAR for e93d, post-OB07 bridge CLEAR for c6ac, and post-A88 423 bridge CLEAR for 8c284c868 by /root/attr_review_recovery."
   }
 }
