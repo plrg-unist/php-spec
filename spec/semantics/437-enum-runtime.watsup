@@ -67,7 +67,6 @@ def $enum_generated_kind(S, porigin, ptbytes) = (INTRINSIC_ENUM porigin pclassde
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= "" /\ $ptlc(ptbytes) = $ptascii("tryfrom")
 def $enum_generated_kind(S, porigin, ptbytes) = eps -- otherwise
-dec $enum_array_string_valid(pstate, pvalue) : bool
 def $enum_array_string_valid(S, PSTRING ptbytes) = true
 def $enum_array_string_valid(S, PSTRING_CARRIER pstringidentity ptbytes) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)
 def $enum_array_string_valid(S, pvalue) = false -- otherwise

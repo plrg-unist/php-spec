@@ -771,6 +771,17 @@ with PHP and two reached recipes check COW, trace and weak-reference lifetimes.
 Temporary/indirect producers, owning reference cells, finalizers and wider
 cleanup remain partial.
 
+[Temporary factory Generator owning sends](coverage/semantics/config-generator-owning-temporary-review.json)
+allow a named zero-argument by-value factory to return a distinct by-value
+Generator with no outside strong owner. Its first send copies a finite quiet
+ordinary non-Stringable object or array; its final send caches an integer
+value with an integer key (7 and 1 in the four originals). The copied
+option survives Generator retirement into INI_SET's TypeError trace, or dies
+before a saved terminal throw reaches catch. Four new sources agree with PHP;
+two reached recipes check the two cleanup stages, COW and weak lifetimes.
+Owning final caches, reference cells, finalizers and wider factories remain
+partial.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -3696,6 +3707,15 @@ destructor callbacks through the Closure's live caller root and source body.
 An unrelated Closure cannot enter that ordinary count walk; the
 [Closure caller review](coverage/semantics/gc-closure-caller-review.json)
 records the exact destructor/count and refusal checks.
+A plain zero-argument `$collector->__invoke()` call from a live global variable
+now carries the same materialized collection through its real Closure wrapper.
+The wrapper has two
+current Closure roots and the global `$collector` cell supplies a third owner;
+the held/drop destructor counts still match PHP. This cut requires a literal
+normal method call and a static, attribute-free, childless Closure with no
+by-reference or declared return type. Computed receiver expressions remain
+outside this cut. See the
+[explicit Closure caller review](coverage/semantics/gc-closure-invoke-caller-review.json).
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared
@@ -6468,8 +6488,11 @@ after invocation.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Callable admission, pipe routes,
-`Closure::fromCallable` conversion, `is_callable`, case attributes, enum collection
+The private enum extension admits generated method strings as original values
+to callable-typed parameters and converts generated string/array targets with
+`Closure::fromCallable`; its [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json)
+passes strict compilation and three focused originals at 2614477b2.
+Pipe routes, `is_callable`, case attributes, enum collection
 policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
