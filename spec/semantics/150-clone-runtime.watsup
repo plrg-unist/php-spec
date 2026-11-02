@@ -141,6 +141,14 @@ dec $clone_mixed_mirrors(ppropertyslot*, pentry*) : ppropertyslot*?
 def $clone_mixed_mirrors(eps, pentry*) = (eps)
 def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = $clone_mixed_mirrors(ppropertyslot_tail*, pentry*)
   -- if ppropertyslot.DECL =/= eps
+;; The copied live bucket belongs to a later reinserted mirror, not this tombstone.
+def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = $clone_mixed_mirrors(ppropertyslot_tail*, pentry*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if $entry_lookup(pentry*, KSTRING ppropertyslot.NAME) = (pitem_new)
+  -- if $property_slot_at(ppropertyslot_tail*, ppropertyslot.NAME) = (ppropertyslot_live)
+  -- if ppropertyslot_live.DECL = eps
+  -- if ppropertyslot_live.STATE = PROP_VALUE pitem_live
 def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = (ppropertyslot :: ppropertyslot_new*)
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
