@@ -1,0 +1,29 @@
+{
+  "scope": "GC17: materialized D collection from an active direct real-Closure caller with one rebuffered runtime-written childless array capture.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc16_base": "c8f43e7223108f1999ad88df1a6f8ac114a61c7b",
+    "gc17_native": "09a0b43245f6b6a20fd559086a89e3538d676576",
+    "gc17_semantic": "04f1ab065343a726a1e42734d07b74b1f1b8e3e5"
+  },
+  "source_sha256": "084190eb271ba06547698b3fd78bd572c7c68697a6b5623f328d01c3aa72893d",
+  "validation": {
+    "native": "The original removes the global token owner, then releases one owning local array copy after P|0 and before the D pass. Native outputs T|P|0|D|3|split|0|H|3|dead|0|END. A separate native-only status control outputs P|0|R|0|1|live, showing a new candidate after that release. Both exit 0 with empty stderr, stable inputs/HEAD, no timeout and fully reaped groups at clean 09a.",
+    "preedit": "The unchanged model stops Unsupported cached ordinary property-table collection after T|P|0|, with zero agreement. A strict 45-check pre-D diagnostic binds the actual valid HARRAY candidate slot, nonimmutable scalar 0=>11 table, no ordinary or physical children, array owner 2 with global and copy cells absent, and black protection through the live Closure. The GC16 buffer-absence premise alone blocks active ordinary/count-source admission.",
+    "fix": "Only the array buffer-absence premise is removed from the GC16 active one-array caller clause. Source-selected direct caller, raw one-DIRECT HARRAY capture, allocation, model nonimmutable flag, both childless predicates and real Closure machine root remain. Graph, owner and count-walk functions are unchanged.",
+    "reached": "The new strict reached group passes 106 assertions: the real pre-plan array slot leaves the D plan as black, while source/count/white and held/drop controls remain valid. The affected GC16 group passes 104 after deleting only its superseded two-line constructed buffered-array negative. The original GC16 reached106 report stays historical evidence at its own cut.",
+    "model": "At clean 04f the unchanged original source agrees byte for byte with retained native output: normal, exit 0, empty stderr, one source agreement, stable inputs/HEAD, no timeout and fully reaped process group. No accepted earlier campaign was replayed."
+  },
+  "reports": {
+    "gc-rebuffered-array-caller-17-author/packet1/native-report.json": "7d63eab7676c20ac97650c0f90f4c76565f65f11a23b7dafcaaba1bcae9f1748",
+    "gc-rebuffered-array-caller-17-author/packet1/model-rebuffered-array-captured-direct-caller-report.json": "863da6de86012e2f403eca6b35d6dc59b1fc87df43da6e8d8ea11817d916680d",
+    "gc-rebuffered-array-caller-17-author/packet2/prebegin-result/report.json": "3280ab46eac913b936e82c50bf3a2a7255d9fd4799a4182769e6d8d5634cd715",
+    "gc-rebuffered-array-caller-17-author/packet3/new-reached/report.json": "5626ee1db25672cfcba9d0a5856e2fad78b009e53172cbdecbb98ce3972d984f",
+    "gc-rebuffered-array-caller-17-author/packet3/affected-gc16/report.json": "5ec9abd41444af7af5e46b48bf9f7328bde31d3e7971ddaafc8f4b8e1359a5ce",
+    "gc-rebuffered-array-caller-17-author/packet3/model/model-rebuffered-array-captured-direct-caller-report.json": "1787e97321bd6046778f2d6ec24e5c03ccaeee0a971f37593ab939fb400dd236"
+  },
+  "review": "Independent private semantic/test and concise docs CLEAR from gc07_fallback_review at clean 04f. Actual-tail interaction/join review remains pending.",
+  "limits": "The tested array is runtime-written under an opcache-disabled CLI profile. The model nonimmutable flag does not prove provenance for every nonempty persistent array. Indirect bucket children, reference captures and deeper array graphs are fenced by the exact capture and physical trace guards. COW after capture, nonempty persistent provenance, explicit invoke/pipe and wider collector contexts are untested. Source-selected target shape does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-rebuffered-array-caller-17-author. New source/status and reached fixtures are in tests/semantics; the GC16 affected fixture records its current expectation. No bulky artifacts are in Git."
+}

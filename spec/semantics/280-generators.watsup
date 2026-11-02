@@ -162,6 +162,7 @@ dec $generator_record_valid(pstate, pgenerator) : bool
 dec $generator_closure_valid(pstate, pgenerator) : bool
 dec $generator_storage_active(pstate, nat) : bool
 dec $generator_storage_closure_borrowed(pstate, pgenerator) : bool
+dec $generator_storage_method_history(pstate, pgenerator) : bool
 dec $generator_storage_reference_borrowed(pstate, pgenerator, nat) : bool
 dec $generator_storage_state_valid(pstate) : bool
 dec $generator_storage_node_valid(pstate, nat) : bool
@@ -217,6 +218,7 @@ dec $generator_creator_closure_target(pstate, pcalltarget, pmethodcapture, pclos
 dec $generator_captured_factory_valid(pstate, pclosurescope, porigin) : bool
 dec $generator_captured_factory_receiver(pstate, pmethoddesc, pclosurescope) : bool
 dec $generator_captured_factory_method(pobject) : pcalltarget?
+dec $generator_captured_factory_scope(pstate, nat) : pclosurescope?
 dec $generator_creator_receiver(pstate, pcalltarget, pclosureevidence?) : nat?
 dec $generator_creator_target_valid(pstate, pgeneratorcreation, pmethoddesc, porigin) : bool
 dec $magic_method_descriptor(pstate, pmagicmethodcall) : bool
@@ -586,6 +588,31 @@ def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = true
   -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
   -- if $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
 def $generator_captured_factory_valid(S, pclosurescope, porigin_function) = false -- otherwise
+;; free_storage has already consumed the Closure and pruned its live row.
+;; Its selected target/binding still authenticates nonowning method history.
+def $generator_captured_factory_scope(S, n) = ({OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER n_receiver?, CREATION eps})
+  -- if $(n < |S.OBJECTS|)
+  -- if $generator_captured_factory_method(S.OBJECTS[n]) = (pcalltarget)
+  -- if $target_lexical_class(S, pcalltarget) = (porigin_lexical)
+  -- if $target_called_class(S, pcalltarget) = (porigin_called)
+  -- if n_receiver? = $target_receiver(S, pcalltarget)
+def $generator_captured_factory_scope(S, n) = ({OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER pboundfake.RECEIVER, CREATION eps})
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SCOPE = BIND_CLASS porigin_lexical
+  -- if pboundfake.CALLED = BIND_CLASS porigin_called
+def $generator_captured_factory_scope(S, n) = ({OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED pfrommethod.CLASS.CALLED, RECEIVER $from_receiver(pfrommethod), CREATION eps})
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if $class_method_origin(S.CLASSES, pfrommethod.FUNCTION) = (pmethoddesc)
+def $generator_captured_factory_scope(S, n) = eps -- otherwise
+def $generator_storage_method_history(S, pgenerator) = true
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+  -- if $generator_storage_closure_borrowed(S, pgenerator)
+  -- if pgenerator.CLOSURE = (n)
+  -- if $generator_captured_factory_scope(S, n) = (pclosurescope)
+  -- if $generator_captured_factory_valid(S, pclosurescope, pgenerator.FUNCTION)
+def $generator_storage_method_history(S, pgenerator) = false -- otherwise
 def $generator_creator_closure_target(S, CLOSURE_TARGET n, pmethodcapture, pclosureevidence) = true
   -- if $generator_creator_direct_closure(pclosureevidence)
   -- if $closure_evidence_object(pclosureevidence) = n
@@ -1654,6 +1681,8 @@ def $generator_closure_valid(S, pgenerator) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS \/ $generator_storage_closure_borrowed(S, pgenerator)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
   -- if pfunction.ORIGIN = pgenerator.FUNCTION
+def $generator_closure_valid(S, pgenerator) = true
+  -- if $generator_storage_method_history(S, pgenerator)
 def $generator_closure_valid(S, pgenerator) = false -- otherwise
 def $generator_integer(z) = $(z >= -9223372036854775808 /\ z <= 9223372036854775807)
 def $generator_record_valid(S, pgenerator) = true

@@ -3745,6 +3745,47 @@ normal method call and a static, attribute-free, childless Closure with no
 by-reference or declared return type. Computed receiver expressions remain
 outside this cut. See the
 [explicit Closure caller review](coverage/semantics/gc-closure-invoke-caller-review.json).
+Direct real-Closure collector calls also admit complete by-value captures with
+no heap child. A scalar `use ($seed)` capture keeps its value while the live
+caller root protects the Closure, and its held/drop destructor counts match
+PHP. Object/reference captures and static cells remain fenced by the
+unchanged child and body guards; see the
+[captured Closure caller review](coverage/semantics/gc-captured-caller-review.json).
+One ordinary `stdClass` leaf may also be captured by the live direct Closure
+caller. GC13 established the unbuffered case: the Closure's machine root keeps
+the childless leaf live while the materialized held/drop destructor counts stay
+3 and 3. See the [object-leaf caller review](coverage/semantics/gc-object-leaf-caller-review.json).
+GC15 also admits that leaf when an owning copy is released after the first
+collection and buffers it for the next pass. The rooted leaf is removed as black
+before the held/drop count plan; object graphs and captured destructors remain
+fenced. See the [rebuffered-leaf review](coverage/semantics/gc-rebuffered-leaf-caller-review.json).
+One runtime-written array with one scalar entry can likewise be the live direct
+Closure caller's sole capture. The entered local and global cell retain that
+same array; ordinary ownership and physical GC tracing find no child edge, and
+the held/drop destructor counts match PHP. GC16 required the array to be absent
+from the candidate buffer; COW after capture and nonempty persistent-array
+provenance remain untested.
+See the
+[array-leaf caller review](coverage/semantics/gc-array-leaf-caller-review.json).
+GC17 admits the same array after a post-`P|0` owning copy release buffers it
+for the D pass. The rooted array is removed as black before the held/drop count
+plan, and the original matches PHP. The earlier constructed buffered-array
+refusal is superseded; see the
+[rebuffered-array caller review](coverage/semantics/gc-rebuffered-array-caller-review.json).
+One runtime-written array captured by that direct Closure caller may also own
+one childless `stdClass` element. The array and child remain unbuffered and
+rooted through the live Closure while the materialized destructor counts agree
+with PHP. The final source read observes child liveness; it does not prove
+identity. GC18 required both array and child to be absent from the D buffer;
+COW after capture and nonempty persistent provenance are untested. See the
+[array-object-child caller review](coverage/semantics/gc-array-object-child-caller-review.json).
+GC19 admits the same array when a post-`P|0` owning copy release buffers it
+again, while the child remains unbuffered. The rooted array leaves the D count
+plan as black, and the full source stream matches PHP. Wider entries and
+buffered child objects remain fenced; see the
+[rebuffered-array-child caller review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
+The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
+records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared
@@ -6794,6 +6835,16 @@ Five reached fronts pass 444 custom/469 reported checks. Joined strict433,
 three exact sources and 166 independent reached checks pass at bd274e79f;
 current-tail composition is reviewed at b1adc40c.
 [Direct magic review](coverage/semantics/generator-direct-magic-review.json).
+
+I86 reuses selected-method Closure authority for Generator Fiber entry and raw
+reference caches. The actual resumer identifies the live Closure; consumed
+storage uses its archived selection/binding without adding owners. The shared
+ATTR07 receiver correction borrows This from that Closure. Native4, private433
+and four source agreements pass at distinct cuts. Five reached fronts pass
+501 custom/526 reported checks. Joined strict433, two exact sources and 111
+independent reached checks pass at 4462bc6d; current-tail composition is
+reviewed at 779569a8.
+[Captured body review](coverage/semantics/generator-captured-method-body-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

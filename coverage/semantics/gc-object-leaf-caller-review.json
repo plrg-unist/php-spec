@@ -1,0 +1,27 @@
+{
+  "scope": "GC13: canonical materialized destructor collection from a live direct real-Closure caller with exactly one unbuffered childless ordinary stdClass capture.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc12_base": "7ed0821fa4a6fc260a02e7fcbe382122ae2f1b57",
+    "native_source": "b5bfb97d462ac121e5d6c892ebc1665a50fe14ce",
+    "object_leaf_capture": "8cce8d13d802861d8b1e7bd31648f90fba1a8e34"
+  },
+  "source_sha256": "4bdc5d67cc1ab5853d9fb7406857338ebe2065ace47b6cd734209e36c8be36dc",
+  "validation": {
+    "native_and_model": "The unchanged original with a globally held stdClass capture matches PHP byte for byte at clean 8cce: T|P|0|D|3|split|0|H|3|dead|0|END, exit 0 and empty stderr. The model report records stable inputs/HEAD, no timeout and a fully reaped process group.",
+    "preedit": "The pre-edit model refuses cached ordinary property-table collection after T|P|0|. A strict 35-check reached diagnostic at clean b5b binds one real DIRECT object capture, an allocated childless STDINSTANCE leaf, its absence from GC.BUFFER, Closure owner 2, token owner 3 and the Closure as the sole old ordinary-node refusal.",
+    "reached": "One strict source-reached group passes 103 reported assertions at clean 8cce: the actual leaf and physical buffer absence, caller/child owner counts, protected token outside the white set, held/drop plan and count image, active caller/source erasure refusals and a constructed buffered-token exclusion.",
+    "zero_credit": "The pre-edit unsupported model run is not a source agreement. The constructed buffered-token state checks only the admission boundary and is not a PHP observation. No accepted GC07-12 source or state was replayed."
+  },
+  "reports": {
+    "gc-object-leaf-caller-13-author/packet1/native-report.json": "c9473d351a3da6803687045665d8e3e83f5ce05f274c367cd81f59121bf69a1d",
+    "gc-object-leaf-caller-13-author/packet2/model-object-leaf-captured-direct-caller-report.json": "47aa04c1690dc527f0f4176f5bb333474289a4df3e3c9c8791ac5e448b875093",
+    "gc-object-leaf-caller-13-author/packet3/prebegin-result/report.json": "7b0d70c2817a4ae21472b29510c5e67472546de29252709c7b52ae9ac75508e3",
+    "gc-object-leaf-caller-13-author/packet4/reached/report.json": "cacaf4e6826cce25667992ab844df1438fd76f63a4ee25e16721a87d8aaa3fee",
+    "gc-object-leaf-caller-13-author/packet4/post-edit-source/model-object-leaf-captured-direct-caller-report.json": "3afe81edb2b8ba4a3a9dad7163e5440df9a0dda5762b43b5b45fbb3809fb1de0"
+  },
+  "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean 8cce. Actual-tail interaction review and joined manifest remain pending.",
+  "limits": "The admitted caller is raw REALCLOSURE with one DIRECT object capture; the child is an allocated childless STDINSTANCE absent from GC.BUFFER, and the Closure is an authentic active saved caller in machine roots. The tested original uses a propertyless token, while the structural rule also permits a childless stdClass with scalar properties. Buffered leaves, object backedges or deeper graphs, reference/array captures, captured destructors, explicit invoke/pipe, Fiber/worker/residual/reentry contexts and wider materialized plans retain existing fences. Source-selected target shape does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-object-leaf-caller-13-author. The original source is tests/semantics/gc_object_leaf_caller_source.php; focused model and reached fixtures are gc_object_leaf_caller_sources.py and gc_object_leaf_caller_state.py. No bulky artifacts are in Git."
+}

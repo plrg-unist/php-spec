@@ -1,0 +1,28 @@
+{
+  "scope": "GC19: materialized D collection from an active direct real-Closure caller with a buffered runtime-written array containing one unbuffered childless stdClass entry.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc18_base": "60c2908389a4c6aa212d6ba8e2ab4270335144a2",
+    "gc19_native": "f1c4940edcac20f708576f07c96e00fe5c2febc6",
+    "gc19_semantic": "6a162b4880ad4fd7ca9e757fc156278ae490aa54"
+  },
+  "source_sha256": "02675d819f15576db9ee7ae33448f405ed941bb16cb46b15ee18dccc92019d08",
+  "validation": {
+    "native": "The original releases one owning array copy after P|0 while the global array and child remain held; no COW write follows capture. PHP outputs T|P|0|D|3|split|0|H|3|dead|0|live|END, exit 0 and empty stderr. A separate native-only status control outputs P|0|R|0|1|live, confirming a new root after the copy release. Both reports record stable inputs/HEAD, no timeout and fully reaped groups. Final live is a liveness observation, not identity proof.",
+    "preedit": "The unchanged model stops Unsupported cached ordinary property-table collection after T|P|0|, with zero source agreement. Strict pre-D reached57 binds the real valid buffered HARRAY slot, exact Closure→array→childless stdClass ordinary and physical edges, unbuffered leaf, owners 2/3/2 and black machine-root protection. GC18's array-absence premise alone blocks active ordinary/count-source admission.",
+    "fix": "Only the array buffer-absence premise is deleted from GC18's authenticated active one-entry caller clause. The leaf must still be unbuffered and childless; source-selected direct caller, raw one-DIRECT HARRAY capture, exact ordinary/physical edges, model nonimmutable array, and real Closure machine root remain required. Graph, owner, count-walk and candidate-order functions are unchanged.",
+    "reached": "The new strict reached group passes 118 assertions at clean 6a16: the real array slot leaves the D plan as black, while the unbuffered leaf, source/count/white and held/drop controls stay valid. The GC18 unbuffered group had no constructed buffered negative to revise and retains its original report.",
+    "model": "The unchanged original agrees byte for byte with retained native output at clean 6a16: normal, exit 0, empty stderr, one source agreement, stable inputs/HEAD, no timeout and fully reaped process group. No accepted earlier campaign was replayed."
+  },
+  "reports": {
+    "gc-rebuffered-array-child-caller-19-author/packet1/native-report.json": "230ab0cce2a8104985ce89f2a973d116144c828b0b4dbe00a5ee105a75045bd4",
+    "gc-rebuffered-array-child-caller-19-author/packet1/model-rebuffered-array-child-captured-direct-caller-report.json": "cf88c145c0e45a686c309dc56e1b4ab8faedfd81ef47d7d88f60e51131eb1ff2",
+    "gc-rebuffered-array-child-caller-19-author/packet2/prebegin-result/report.json": "9d336e2d56b677cd34c4eb8920d46a0553634f08831ea700864ae88c3ce1f664",
+    "gc-rebuffered-array-child-caller-19-author/packet3/reached/report.json": "c1bb28cca9846f834181bcb6fb292464d5e5879ff7ac4cebe3ed33eb584ca14f",
+    "gc-rebuffered-array-child-caller-19-author/packet3/model/model-rebuffered-array-child-captured-direct-caller-report.json": "d92abab0180723aeced1e92d066e1fefb9758691c7e388513356589db5e9dda0"
+  },
+  "review": "Independent private semantic/test and concise docs CLEAR from gc07_fallback_review at clean 6a16. Actual-tail interaction/join review remains pending.",
+  "limits": "The tested array is runtime-written under an opcache-disabled CLI profile and holds one direct key-0 propertyless stdClass; the structural rule admits a childless STDINSTANCE leaf. A buffered child object, wider entries, indirect buckets and graph backedges are fenced by exact premises. COW after capture, nonempty persistent provenance, explicit invoke/pipe, destructor-bearing children and wider collector contexts are untested. Source-selected target shape does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-rebuffered-array-child-caller-19-author. New source/status and reached fixtures are in tests/semantics; no bulky artifacts are in Git."
+}
