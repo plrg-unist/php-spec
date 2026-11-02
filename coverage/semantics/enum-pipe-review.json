@@ -1,0 +1,26 @@
+{
+  "scope": "Published generated enum methods consumed by pipe calls through evaluated strings, class-name arrays and enum-case arrays",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "db3b26b16c77ccfbecc31d9c8fcd0db337f461d9",
+  "tested_ancestor": "a6637e030",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-pipe-native-review/native.json: four source SHA records, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-pipe-tail-gate-v3/report.json: strict433 true, exit 0, 11.885 s, stable inputs",
+    "sources": [
+      ".tools/enum-pipe-tail-source-v2/report.json: forced-left-error and rebinding-left exact normal, exit 0, empty stderr",
+      ".tools/enum-pipe-tail-gate-v3/report.json: strict and case-object exact normal, exit 0, empty stderr"
+    ],
+    "state": ".tools/enum-pipe-protocol-fztnf0tq/report.json: two checked source reached strict SL groups, 34 checks each, true, exit 0, empty stderr",
+    "state_wrapper": ".tools/enum-pipe-state-only-v2/report.json: 38.61 s, no surviving process"
+  },
+  "preserved_zero_credit": [
+    ".tools/enum-pipe-tail-strict-v1/report.json: initial noninvertible binding error",
+    ".tools/enum-pipe-tail-source-v1/report.json: four interpreter failures before popped-task repair",
+    ".tools/enum-pipe-protocol-h95266mg: initial fixture output-helper syntax error"
+  ],
+  "behavior": "Pipe fixes the generated enum target before forced-left reception. Stringable conversion can rebind a source callable; the selected enum and cold backing table remain fixed. Strict scalar rejection, case-object receiver selection, cases arity and temporary destructor order match native observations. Saved CONFIG_INVOKE carries a source-bound nonce and one owned positional value.",
+  "remaining": "Default loader, is_callable, wider callable APIs/reception and enum lifetime/attribute contexts remain partial."
+}

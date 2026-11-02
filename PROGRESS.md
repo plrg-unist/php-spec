@@ -55,15 +55,19 @@ The separately reviewed 301 receipt normalization repairs the preserved ordinary
 the default loader remain partial.
 [String-callable review](coverage/semantics/enum-string-callable-review.json).
 
-The private enum callable extension admits generated method strings as original
-values at ordinary callable-typed parameter reception and converts generated
-string/array targets through `Closure::fromCallable`. Its separate reviewed cuts
-are source5/state111 and source4/state138, each with strict433 compilation.
-The current-tail strict433 and three exact joined/representative originals pass
-at 2614477b2; canonical integration is pending.
+Generated enum method strings pass through ordinary callable-typed parameters as
+raw values, and `Closure::fromCallable` converts generated string/array targets.
+The separate reviewed cuts are source5/state111 and source4/state138, each with
+strict433 compilation; the joined current-tail cut has strict433 and three exact
+originals at 2614477b2. Published generated methods now also run through pipe
+strings and arrays. Four native-first originals agree, including strict typing,
+cold table selection across Stringable rebinding, case-object arrays, arity and
+temporary cleanup. Private strict433 and two source-reached strict SL groups
+pass 68 guards at db3b26b16. Wider APIs and default loading remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
-[current-tail gate](coverage/semantics/enum-callable-current-tail-review.json).
+[current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
+[pipe review](coverage/semantics/enum-pipe-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -465,7 +469,7 @@ CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review
 | --- | --- |
 | CLASS164 | Existing copied trait `parent` capture views: four exact native/model originals and three source-reached state groups pass 258 conditions (79+86+93). The cross-parent case distinguishes saved lexical from called scope. Two corrected fixture failures retain zero credit. No semantic rule changed; private review CLEAR and four-source composed-tail check passed at 5db2cd8f2; integration pending. [Review](coverage/semantics/trait-captured-parent-view-review.json). |
 | COMP160 | Declared INITIAL/UNSET slots and physical cached holes: private normal2/control2, reached1035, joined strict433, and affected COMP159 source/state pass. Final review and integration pending. |
-| Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
+| Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
