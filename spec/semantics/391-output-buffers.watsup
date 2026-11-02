@@ -113,6 +113,8 @@ dec $output_deactivate_boundary(pstate) : bool
 dec $output_final_exception_abrupt(pstate) : bool
 dec $output_final_exception_abort(pstate) : pstate
 dec $executor_boundary(pstate) : text?
+dec $executor_scope(pstate) : bool
+dec $executor_normal_scope(pstate) : bool
 def $executor_boundary(S) = eps -- otherwise
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED $ob_user_boundary_reason(S)] -- if ~S.OUTPUTBLOCKED /\ $ob_user_boundary(S)
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "reentrant or abrupt output deactivation cleanup"] -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ $output_deactivate_boundary(S)
@@ -371,6 +373,9 @@ def $ob_failure_verb(pintrinsic) = $ptascii("send") -- if $ob_pop_kind(pintrinsi
 def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to delete buffer of default output handler (") ++ $decimal_integer(n) ++ [41]
   -- if pobnotice.WRAPPER
   -- if pobnotice.LEVEL = (n)
+def $ob_notice_message(pobnotice) = $ptascii("ob_start(): Failed to create buffer")
+  -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
+  -- if ~pobnotice.WRAPPER /\ ~pobnotice.SECOND /\ pobnotice.LEVEL = eps /\ pobnotice.VALUE = PBOOL false
 def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to ") ++ $ob_failure_verb(pobnotice.CALL.KIND) ++ $ptascii(" buffer of default output handler (") ++ $decimal_integer(n) ++ [41]
   -- if ~pobnotice.WRAPPER
   -- if pobnotice.LEVEL = (n)
@@ -391,7 +396,7 @@ def $ob_notice_valid(S, pobnotice) = true
   -- if pobnotice.OWNER = $dir_warning_owner(S, S.FRAMES)
   -- if pobnotice.CALL.SENT = eps
   -- if $config_slots_valid(S, [NAMED_SENT (KNOWN pobnotice.VALUE)])
-  -- if $ob_pop_kind(pobnotice.CALL.KIND) \/ $ob_active_operation(pobnotice.CALL.KIND)
+  -- if $ob_pop_kind(pobnotice.CALL.KIND) \/ $ob_active_operation(pobnotice.CALL.KIND) \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps /\ pobnotice.VALUE = PBOOL false /\ ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps)
   -- if pobnotice.WRAPPER = false \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.SECOND /\ pobnotice.LEVEL =/= eps)
   -- if ~pobnotice.SECOND \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL =/= eps)
   -- if $ob_get_kind(pobnotice.CALL.KIND) /\ pobnotice.LEVEL =/= eps \/ pobnotice.VALUE = PBOOL false
@@ -440,6 +445,7 @@ rule PhpStep/ob-notice-wrapper-no-active: S ~> S[.COMPLETION = UNSUPPORTED "outp
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_return(S[.OUTPUTSEQ = $(S.OUTPUTSEQ + 1)][.OUTPUTBUFFERS = poutputbuffer :: S.OUTPUTBUFFERS], PBOOL true)
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if ~$ob_user_running(S)
+  -- if ~$executor_scope(S)
   -- if n_chunk = $nabs($ob_chunk(i_chunk))
   -- if poutputbuffer = {ID S.OUTPUTSEQ, HANDLER eps, CHUNK n_chunk, FLAGS $long_and($error_int32(i_flags), $(-61456)), SIZE $output_initial_size(n_chunk), BYTES eps}
 def $ob_chunk(i) = 0 -- if $(i < 0)
