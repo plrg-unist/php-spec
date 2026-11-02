@@ -223,9 +223,7 @@ def $executor_free_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output autoload
 ;; release, preserving the unfinished C tail if its null-C destructor bails.
 dec $executor_queue_targets(pstate, pshutdownentry*) : pshutdownproducer*
 dec $executor_queue_receivers(pstate, pshutdownentry*) : nat?*
-dec $executor_fcc_nodes(pshutdownproducer, nat?) : pnode*
-dec $executor_fcc_extra(pcalltarget, nat?) : pnode*
-dec $executor_queue_nodes(pshutdownentry*, pshutdownproducer*, nat?*) : pnode*
+dec $executor_queue_nodes(pshutdownentry*) : pnode*
 dec $executor_targets_valid(pstate, pshutdownentry*, pshutdownproducer*, nat?*) : bool
 dec $executor_target_valid(pstate, pshutdownproducer) : bool
 dec $executor_queue_valid(pstate, pexecutorqueue) : bool
@@ -257,11 +255,8 @@ def $executor_queue_targets(S, eps) = eps
 def $executor_queue_targets(S, pshutdownentry :: pshutdownentry_tail*) = $eager_cleanup_target(S, pshutdownentry.TARGET) :: $executor_queue_targets(S, pshutdownentry_tail*)
 def $executor_queue_receivers(S, eps) = eps
 def $executor_queue_receivers(S, pshutdownentry :: pshutdownentry_tail*) = $target_receiver(S, pshutdownentry.TARGET) :: $executor_queue_receivers(S, pshutdownentry_tail*)
-def $executor_fcc_extra(CLOSURE_TARGET n, n_receiver?) = $instance_roots(n_receiver?)
-def $executor_fcc_extra(pcalltarget, n_receiver?) = eps -- otherwise
-def $executor_fcc_nodes(pshutdownproducer, n_receiver?) = $executor_fcc_extra(pshutdownproducer.TARGET, n_receiver?) ++ $target_nodes(pshutdownproducer.TARGET)
-def $executor_queue_nodes(eps, eps, eps) = eps
-def $executor_queue_nodes(pshutdownentry :: pshutdownentry_tail*, pshutdownproducer :: pshutdownproducer_tail*, n_receiver? :: (n_receiver_tail?)*) = $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $executor_fcc_nodes(pshutdownproducer, n_receiver?) ++ $executor_queue_nodes(pshutdownentry_tail*, pshutdownproducer_tail*, (n_receiver_tail?)*)
+def $executor_queue_nodes(eps) = eps
+def $executor_queue_nodes(pshutdownentry :: pshutdownentry_tail*) = $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $callback_cache_nodes(pshutdownentry) ++ $executor_queue_nodes(pshutdownentry_tail*)
 def $executor_targets_valid(S, eps, eps, eps) = true
 def $executor_targets_valid(S, pshutdownentry :: pshutdownentry_tail*, pshutdownproducer :: pshutdownproducer_tail*, n_receiver? :: (n_receiver_tail?)*) = true
   -- if pshutdownproducer.TARGET = pshutdownentry.TARGET
@@ -298,10 +293,10 @@ def $executor_queue_frames(eps, pexecutorqueue) = false
 def $executor_queue_frames(pframe :: pframe_tail*, pexecutorqueue) = ((pframe.CONTEXT = eps /\ $executor_queue_tasks(pframe.TODO, pexecutorqueue)) \/ $executor_queue_frames(pframe_tail*, pexecutorqueue))
 def $executor_queue_active(S, pexecutorqueue) = ($executor_queue_valid(S, pexecutorqueue) /\ ((S.CURRENT = eps /\ $executor_queue_tasks(S.TODO, pexecutorqueue)) \/ $executor_queue_frames(S.FRAMES, pexecutorqueue)))
 def $output_drain_task(S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage) = $executor_queue_active(S, pexecutorqueue)
-def $task_nodes(EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) = $executor_queue_nodes(pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS, pexecutorqueue.RECEIVERS)
+def $task_nodes(EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) = $executor_queue_nodes(pexecutorqueue.ENTRIES)
 def $task_nodes(EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n)) = [HOBJECT n]
 def $task_nodes(EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) = eps
-def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE, eps) /\ $heap_subset($executor_queue_nodes(pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS, pexecutorqueue.RECEIVERS), S.ALLOCATIONS))
+def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE, eps) /\ $heap_subset($executor_queue_nodes(pexecutorqueue.ENTRIES), S.ALLOCATIONS))
 def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n)) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n), eps) /\ $executor_pending_cause(S, pexecutorqueue, n))
 def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE, eps))
 def $executor_queue_begin(S) = S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE]][.SHUTDOWN.ENTRIES = eps][.SHUTDOWN.INDEX = 0][.COMPLETION = NORMAL][.ORIGIN = eps]
@@ -313,7 +308,7 @@ def $output_executor_finish(S) = $executor_free_finish(S)
 def $output_executor_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output module callback-owner release"]
   -- if $executor_free_endpoint(S) /\ $executor_module_owners(S)
 def $executor_queue_release(S, pexecutorqueue, pexecutorstage, pnode*) = $eager_operation_begin(S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE]], S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage, pnode*)
-rule PhpStep/executor-queue-release: S ~> $executor_queue_release(S, pexecutorqueue, EXECUTOR_QUEUE, $executor_queue_nodes(pexecutorqueue.ENTRIES, pexecutorqueue.TARGETS, pexecutorqueue.RECEIVERS))
+rule PhpStep/executor-queue-release: S ~> $executor_queue_release(S, pexecutorqueue, EXECUTOR_QUEUE, $executor_queue_nodes(pexecutorqueue.ENTRIES))
   -- if S.TODO = (EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE)

@@ -88,7 +88,7 @@ def $ob_user_start(S, pconfigcall, pvalue_values*, HANDLERRESOLVED pcalltarget) 
   -- if $tick_callback_supported(S, pcalltarget)
   -- if parray? = $shutdown_snapshot(S, pvalue)
   -- if $ob_user_name(S, pvalue, parray?, pcalltarget) = (n_name*)
-  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW parray?, TARGET pcalltarget, ARGS eps}
+  -- if pshutdownentry = {CALL pconfigcall, BIRTH eps, CAPTURE $method_capture_current(S, pconfigcall.SITE), PRODUCER eps, RAW parray?, TARGET pcalltarget, CACHEOBJECT eps, ARGS eps}
   -- if poutputhandler = {ENTRY pshutdownentry, VALUES pvalue_values*, ZOH pvalue, NAME n_name*}
   -- if poutputbuffer = {ID S.OUTPUTSEQ, HANDLER (poutputhandler), CHUNK $nabs($ob_chunk(i_chunk)), FLAGS $ob_user_flags(poutputhandler), SIZE $output_initial_size($nabs($ob_chunk(i_chunk))), BYTES eps}
 def $ob_user_start(S, pconfigcall, pvalue_values*, phandlerresolution) = S[.COMPLETION = UNSUPPORTED "user output-handler signature or callable name"] -- otherwise

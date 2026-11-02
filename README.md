@@ -811,6 +811,14 @@ dying before a saved catch and an outside alias changing an array from 13 to
 31 while TypeError TraceArgs still holds 13 and the copied scalar 7. Typed or
 backed cells, owning final cells and temporary producers remain separate.
 
+[Final owning reference snapshots](coverage/semantics/config-generator-reference-owning-cache-review.json)
+copy a finite quiet object or array from an ordinary BYREF Generator cell as
+the second argument after a scalar option. The cell changes back to a scalar
+before the Generator closes. Four sources agree with PHP; reached proofs check
+the copied object dying before a saved catch and ARRAY 13 remaining in
+TypeError TraceArgs after a live COW change to 31. A still-owning final cell,
+typed cells and temporary producers remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -4532,9 +4540,16 @@ bounds remain partial.
 Declared holes retain physical slot order: inline one-sided UNDEF gives +1 in
 both directions, while cached INDIRECT holes use physical count/key checks and
 directional undefined-value order. Cast views omit holes, and cached clone
-locators target each copy's slots. Dynamic UNSET, readonly classes, hooks and the INITIAL
+locators target each copy's slots. Readonly classes, hooks and the INITIAL
 Stringable continuation remain explicit boundaries.
 [Declared-hole review](coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
+Deleted dynamic mirrors contribute no live bucket. Current table order,
+reinserted keys, shared casts and COW retain their real owners; unrelated writes
+preserve the positions of later live names. Deleted-only clone histories use
+empty-table sharing, uncached callback copies or retargeted declared copying as
+appropriate. Inherited zero-layout dynamic images, readonly classes, hooks and
+wider callback/lifetime contexts remain partial.
+[Dynamic-deletion review](coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json).
 Empty ordinary layouts also compare through their real storage route: two inline
 objects return zero before the object recursion guard, while actual caches keep
 table identity/count/key/value order. Empty foreach produces a real table; cast
@@ -4570,6 +4585,19 @@ Wider API consumers remain partial. See the [VM review](coverage/semantics/built
 [exception API review](coverage/semantics/builtin-deprecated-exception-api-review.json),
 [Closure-wrapper review](coverage/semantics/builtin-deprecated-closure-invoke-review.json) and
 [wrapper-return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
+Persistent shutdown/tick caches now retain their object and Closure slots
+separately. Raw invokable and array-form callbacks preserve distinct tick
+identity; inline unregister releases arguments before cached object/Closure
+owners, while quiet shutdown owners survive through FINAL. Five normal
+originals and 296 reached/guard checks validate the private cache slice. The OB05
+join matches two new raw-invokable originals and reaches buffered cache release
+with two equal owners; broader late free remains partial. See the [cache review](coverage/semantics/callback-fcc-cache-review.json).
+Cached tick `[Closure,"__invoke"]` calls now preserve both deprecation phases,
+fresh reference warnings, weak reception, raw/received sensitive snapshots and
+unused-result cleanup under the persistent cache. Five originals and 302 reached/guard
+checks pass; joined strict433 and a retained-native warning/unregister comparison
+pass on corrected cache owners. Other API wrappers and the older source-wrapper
+inner-warning trace-head location remain partial. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

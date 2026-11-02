@@ -7,7 +7,7 @@ from throwable_uninitialized_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {name: ('Throwable property comparison', b'B|')
-    for name in ('dynamic-unset-hole-control', 'readonly-hole-control')}
+    for name in ('readonly-hole-control',)}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 480 for name in CASES}
 base_fingerprint = family.fingerprint
