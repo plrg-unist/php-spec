@@ -5,12 +5,12 @@
   "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-11",
   "scope": "A singleton raw invokable tick entry with one copied object argument and no assert callback reaches basic RSHUTDOWN after output FINAL. Its argument retires before two cached FCC slots for the same callback object; the shutdown-function list remains live until its later queue. Normal completion only.",
   "authority": [
-    "main/main.c:php_request_shutdown_function — destructors, output FINAL, tick deactivation, module shutdown, then shutdown-function free",
+    "main/main.c:php_request_shutdown — destructors, output FINAL, tick deactivation, module shutdown, then shutdown-function free",
     "main/php_ticks.c:php_deactivate_ticks — PG dispatch cleanup, not the BG user tick list",
     "ext/standard/basic_functions.c:PHP_RSHUTDOWN_FUNCTION(basic) and user_tick_function_dtor — tick arguments before FCC dtor",
     "Zend/zend_API.h:zend_fcc_addref and zend_fcc_dtor — separate object and closure owners"
   ],
-  "production": "b4608164e: 30 task/snapshot and 444 tick transfer, ordered eager release, completion and source guards; 6613ad72b composes OB06 without changing its noarg ob_start path",
+  "production": "b4608164e: 30 task/snapshot and 444 tick transfer, ordered eager release, completion and source guards; 6613ad72b composes OB06 without changing its noarg ob_start path; 3c9acf98e carries the same ATTR11 production delta on current master",
   "identities": {
     "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
@@ -75,12 +75,12 @@
     "The selected post-output shape is certified at its reached entry; the source examples create it during FINAL, but the rule does not prove every admitted entry was born in FINAL."
   ],
   "composition": {
-    "head": "6613ad72b10a5a889863d9f446289e060224a262",
+    "head": "3c9acf98e59ab76714f47e62e758d2ff94aa7a6e",
     "parents": [
-      "b4608164edd4dfd782fa3fcf4aa7c3b2c42d3654",
-      "792d3fc5c8a00e763f56af1490e23669ce61b0ef"
+      "79daf1acc61fc524806ae12f3d18db09b71e2dc6",
+      "e89eb83ab05e354c1b0480c3a31f802d8f663bc9"
     ],
-    "compatibility": "Master adds OB06 noarg post-deactivation ob_start handling in 391/444. The merge retains its executor_normal_scope/error-handler guards and adds only a separate tick-scope refusal; selected ATTR11 sources call named ob_start before shutdown. Other intervening Generator/Fiber, enum query, clone, GC and trait arms are absent from the selected sources and reached states. Joined strict433 passes without replaying unaffected source/state cuts.",
-    "review": "Independent semantic CLEAR for b460 and scoped post-OB06 merge CLEAR for 6613 by /root/attr_review_recovery; final metadata review pending."
+    "compatibility": "The 6613 join preserves OB06 noarg post-deactivation ob_start handling in 391/444 and adds only a separate tick-scope refusal; selected ATTR11 sources call named ob_start before shutdown. GC23 adds explicit collection in 301 and A87 adds factory Generator reference ownership in 423; neither selected source calls GC or Generator unpack. Other intervening Generator/Fiber, enum query, clone and trait arms are also absent. Production diff from e89 master is only ATTR11 30/444. Joined strict433 at 6613 remains valid without replaying unaffected source/state cuts.",
+    "review": "Independent semantic CLEAR for b460 and scoped post-OB06 merge CLEAR for 6613 by /root/attr_review_recovery; GC23/A87 disjointness prechecked, final metadata review pending."
   }
 }
