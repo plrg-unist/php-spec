@@ -4500,7 +4500,8 @@ handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
 bound receivers. Nine eligible originals agree (six normal, three static errors);
 five reached groups pass 428 checks. One unsafe `assert` reentrancy source has an
 unresolved native lifetime observation at zero credit, with exact expired
-entry refusal retained. See the [producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
+entry refusal retained. Current-tail strict433 and three focused retained-native
+comparisons pass at recorded cuts; see the [producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The

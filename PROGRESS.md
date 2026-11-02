@@ -273,8 +273,10 @@ normal, three static rejections); five reached groups pass 428 checks (422 reach
 six derived), focused syntax11 and private strict432 pass. One unsafe `assert`
 reentrancy source has an unresolved native lifetime observation, preserved at zero
 credit with exact expired-before-copy refusal; the safe control keeps an external
-owner. General messages and wider consumers remain partial; actual-tail join is
-pending. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
+owner. General messages and wider consumers remain partial. The current-tail
+join passed strict433 and three retained-native source comparisons at separate
+cuts; later disjoint GC, enum, CONFIG and magic Generator changes have a reviewed
+compatibility bridge. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
