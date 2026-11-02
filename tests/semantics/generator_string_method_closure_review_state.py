@@ -39,6 +39,7 @@ n_factory = pclosurescope.OBJECT
 pgeneratorcreation.CREATOR_TARGET = CLOSURE_TARGET n_factory
 S.OBJECTS[n_factory] = BOUNDFAKECLOSURE pboundfake
 n_source = pboundfake.SOURCE
+n_source <- S.GC.FAKE_NOCOLLECT
 pboundfake.ORIGINAL = (pclosurescope_original)
 S.OBJECTS[n_source] = STRINGMETHODCLOSURE pcalltarget_source pstringselection
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Base91R"))) = (porigin_base)
