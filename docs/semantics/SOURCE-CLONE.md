@@ -31,6 +31,12 @@ constraint; retiring the copy removes it while an array-view alias can survive.
 Existing callback dispatch can mutate the copy's private slot independently.
 [Nonpublic-cache review](../../coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
 
+Declared INITIAL/UNSET holes use the same cached copier: each physical INDIRECT
+bucket targets the copy even when its slot has no value. Later initialization
+changes only that object's slot; array views still omit undefined values. This
+adds no clone callback, ownership or property-type algorithm.
+[Declared-hole review](../../coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
+
 [Cached callbacks](../../coverage/semantics/cached-clone-callback-review.json)
 now consume that declared-public cache path through existing public zero-argument
 `__clone():void` methods. Actual callback foreach reads retargeted copy locators;
