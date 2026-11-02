@@ -859,6 +859,17 @@ Generator, leaving the cell and current value until the last alias is unset.
 Two reached proofs check these transitions. Typed/backed cells, effectful
 finalizers and wider producer histories remain separate.
 
+[Factory returned owning BYREF Generator cells](coverage/semantics/config-generator-factory-owning-reference-review.json)
+admit a named zero-argument BYVAL factory returning a distinct named BYREF
+Generator. A scalar first send precedes a finite quiet owning value in its final
+ordinary local cell. The factory publishes only a weak Generator observer.
+Normal DATA/INPUT cleanup and real storage retire the Generator and cell before
+TypeError, while the copied value survives in TraceArgs; terminal saved throw
+retires all three before catch. Four new sources and two reached proofs validate
+object identity, ARRAY COW, weak lifetime and retired source history. Factory
+cells with outside aliases, typed/backed cells and effectful finalizers remain
+separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical

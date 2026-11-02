@@ -388,6 +388,10 @@ Outside aliases now keep that temporary Generator's ordinary final cell and its
 current value after real storage release; copied arguments remain independent.
 Four sources and 565 reached conditions pass; joined strict433 and fresh terminal
 source/state pass at `9cde7e64d`.
+A named BYVAL factory can return a distinct BYREF Generator with a final owning
+ordinary cell. Four sources and 512 reached conditions pass; copied arguments
+survive DATA/INPUT release and real Generator storage cleanup. Joined strict433
+and fresh terminal source/state pass at `1a7c38d0b`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -406,6 +410,7 @@ source/state pass at `9cde7e64d`.
 [Outside owning-cell aliases](coverage/semantics/config-generator-reference-owning-alias-review.json),
 [Temporary owning reference cells](coverage/semantics/config-generator-temporary-owning-reference-review.json),
 [Temporary owning-cell aliases](coverage/semantics/config-generator-temporary-owning-alias-review.json),
+[Factory owning reference cells](coverage/semantics/config-generator-factory-owning-reference-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
