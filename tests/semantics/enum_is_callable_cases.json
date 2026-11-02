@@ -24,6 +24,13 @@
     "purpose": "The third byref output captures an initialized direct CV and writes the generated enum callable name before returning the bool."
   },
   {
+    "id": "enum-is-callable-third-output-rebinding-unsupported",
+    "source": "<?php\nenum FirstCheck: string { case A = 'a'; }\nenum OtherCheck: string { case B = 'a'; }\nclass NameDrop {\n    public function __destruct() { echo 'NAME-DROP|'; }\n}\n\n$target = [FirstCheck::class, 'from'];\n$name = new NameDrop;\necho 'before|';\n$ok = is_callable($target, false, $name);\necho 'selected:', ($ok ? '1' : '0'), ':', $name, '|';\n$target = [OtherCheck::B, 'tryFrom'];\necho 'rebound:', (is_callable($target) ? '1' : '0'), '|';\n$same = [FirstCheck::class, 'from'];\n$ok = is_callable($same, false, $same);\necho 'alias:', ($ok ? '1' : '0'), ':', $same, '|';\n",
+    "source_sha256": "835c8cb6b3beae2c15c8a03d61d2797cd0b0261488b305369ab755e8f41b873f",
+    "expected_model": "unsupported",
+    "purpose": "Array input, old-object destructor and input/output aliasing remain outside the direct literal scalar-CV output route."
+  },
+  {
     "id": "enum-is-callable-published-malformed-arrays",
     "source": "<?php\nenum ShapeBound: int { case One = 1; }\n\necho is_callable([ShapeBound::class, 'from'], true) ? 'class-valid|' : 'BAD|';\necho is_callable([ShapeBound::One, 'from'], true) ? 'case-valid|' : 'BAD|';\necho is_callable([ShapeBound::class], true) ? 'BAD|' : 'class-short|';\necho is_callable([ShapeBound::One], true) ? 'BAD|' : 'case-short|';\necho is_callable([ShapeBound::class, 'from', 'extra'], true) ? 'BAD|' : 'class-long|';\necho is_callable([ShapeBound::class, 1], true) ? 'BAD|' : 'class-method-type|';\necho is_callable([ShapeBound::One, 1], true) ? 'BAD|' : 'case-method-type|';\necho is_callable([ShapeBound::class, 'from']) ? 'class-runtime|' : 'BAD|';\n",
     "source_sha256": "cc32e227bf4f0050dc047bfb9f0b62095d4f081c2592d5c61d20fa7dc734b38a",
