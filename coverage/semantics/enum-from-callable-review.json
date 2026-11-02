@@ -1,0 +1,178 @@
+{
+  "status": "private implementation, sources, states and final independent ledger approved; actual-tail integration pending",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "scope": [
+    "Closure::fromCallable converts published generated enum string and array targets through the existing direct or captured API.",
+    "Both producers authenticate actual CONFIG_INVOKE, matching received value and existing candidate authority before shared internal Closure allocation.",
+    "New Closures retain no source array, case receiver or API factory; existing Closure and __invoke identity forms remain unchanged."
+  ],
+  "implementation": {
+    "behavior": "spec/semantics/234-from-callable.watsup",
+    "declaration_only": "spec/semantics/437-enum-runtime.watsup",
+    "shared_allocator": "spec/semantics/148-core-intrinsics.watsup"
+  },
+  "inputs": {
+    "spec/semantics/modules.json": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3",
+    "spec/semantics/148-core-intrinsics.watsup": "49c6f3b3ecd67c28962091e31c6ef421027603598f24f8b92e93d73114eb563c",
+    "spec/semantics/150-clone-runtime.watsup": "5ce01ea42cc77709905d80ad434dd29b1feb53e42acd11b35d1ee94ad8c1f849",
+    "spec/semantics/172-file-context-intrinsics.watsup": "eb70aa650a7a7a7b8a9d99e4cbccfbf352c100d0be6b4c41d252668ebeaee313",
+    "spec/semantics/205-array-callables.watsup": "9c665feb60b97bee0a320286452296377f879cebf13946177507834fbf2ee33d",
+    "spec/semantics/210-class-method-strings.watsup": "fc3a02b9c5c270d75fc26bfee88f2117bb62b159a2fc15a7d8811b2c98319c34",
+    "spec/semantics/234-from-callable.watsup": "753264da893c57d81d33bda6cdca18fb0df8713ce65f953477b3aaec38136add",
+    "spec/semantics/301-cycle-collection.watsup": "11a343fbbd4ad859585ca9f4e555ed211e31948fdd14d7495fefe4d2bc34c119",
+    "spec/semantics/437-enum-runtime.watsup": "32a6fb0d9ad9a89a7cef2db3ba5f58bec99c1f269e9d334efea7f65ddffcea8f",
+    "tests/semantics/from_callable.py": "27c3f9761e41d119ee967292e752b23afb00dca17146497d5bdbe6df43ec78ba",
+    "tests/semantics/from_callable_cases.json": "0096083098fd45a692565f91c35c2d7baa1f186ab33dfe23e1b31052faca26de",
+    "tests/semantics/user_string.py": "b7b39970298e9e70beea6b9b1947d8ac89a2feafbf02cff92a2dbef6585fa5da",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "primary_sources": [
+    {
+      "path": "vendor/php-src/Zend/zend_closures.c",
+      "symbol": "zend_create_closure_from_callable / zend_create_fake_closure",
+      "behavior": "Caches the selected handler/scope and creates the fake Closure after validating the callable."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_closures.c",
+      "symbol": "Closure::fromCallable / zend_create_closure_ex",
+      "behavior": "Closure identity forms reuse the existing object; static functions have no this_ptr, including a case-object callable receiver."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_API.c",
+      "symbol": "zend_is_callable_ex",
+      "behavior": "Uses the genuine selecting user frame; generated enum methods retain their public static authority."
+    }
+  ],
+  "source_agreement_count": 4,
+  "source_agreements": [
+    {
+      "id": "from-callable-selected-retirement",
+      "seconds": 25.113,
+      "report": ".tools/enum-from-callable-selected-review-v1/changed-report.json",
+      "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+      "agreement": true
+    },
+    {
+      "id": "from-callable-cases-lookup",
+      "seconds": 22.633,
+      "report": ".tools/enum-from-callable-dev-v1/from-callable-cases-lookup/changed-report.json",
+      "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+      "agreement": true
+    },
+    {
+      "id": "array-stringable-from-callable-selected",
+      "seconds": 24.2,
+      "report": ".tools/enum-from-callable-dev-v1/array-stringable-from-callable-selected/changed-report.json",
+      "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+      "agreement": true
+    },
+    {
+      "id": "strict-from-callable-string-array",
+      "seconds": 16.16,
+      "report": ".tools/enum-from-callable-dev-v1/strict-from-callable-string-array/changed-report.json",
+      "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+      "agreement": true
+    }
+  ],
+  "original_boundary": {
+    "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+    "id": "from-callable-selected-retirement",
+    "status": "php_error",
+    "model_exit_status": 255,
+    "error": "TypeError: class ReviewFromCallableSelected does not have a method fRoM",
+    "seconds": 16.056,
+    "agreement": false,
+    "report": ".tools/enum-from-callable-selected-review-v1/baseline-report.json"
+  },
+  "state_checks": {
+    "status": "passed",
+    "synthetic_state_views": 0,
+    "accepted": [
+      {
+        "case": "from-callable-selected-retirement",
+        "checks": 50,
+        "seconds": 49.507,
+        "report": ".tools/enum-from-callable-selected-state-v2/from-callable-selected-retirement/process.json"
+      },
+      {
+        "case": "from-callable-cases-lookup",
+        "checks": 23,
+        "seconds": 30.363,
+        "report": ".tools/enum-from-callable-array-state-v1/from-callable-cases-lookup/process.json"
+      },
+      {
+        "case": "strict-from-callable-string-array",
+        "checks": 25,
+        "seconds": 22.901,
+        "report": ".tools/enum-from-callable-array-state-v1/strict-from-callable-string-array/process.json"
+      },
+      {
+        "case": "array-stringable-from-callable-selected",
+        "checks": 40,
+        "seconds": 50.087,
+        "report": ".tools/enum-from-callable-stringable-state-v2/array-stringable-from-callable-selected/process.json"
+      }
+    ],
+    "controls": "Positive states are genuine ordinary runs and actual driver successors. Forged descriptor/value arguments are negative component controls, with no public-state or source agreement claimed for synthetic inputs.",
+    "checks": 138
+  },
+  "strict_compilation": {
+    "revision": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+    "mode": "SL",
+    "modules": 433,
+    "result": true,
+    "seconds": 11.68,
+    "report": ".tools/enum-from-callable-strict-433-v1/process-SL.json"
+  },
+  "independent_review": {
+    "reviewer": "enum_string_recover_review",
+    "implementation": "234 producer/authentication partition and 437 declaration-only move approved",
+    "native_originals": "all four fresh native streams approved",
+    "source_comparisons": "all four fresh changed source receipts approved",
+    "reached_states": "all138 conditions independently approved; no synthetic public-state views",
+    "final_ledger": "approved"
+  },
+  "compatibility": "Generic string api_begin excludes only matching enum candidates; common string dispatch and ordinary API, identity, getter and Fiber paths retain their definitions. Shared148 preserves integrated GC09 original-birth policy, while clone/bind policy is unchanged. No historical accepted source/native/state cut is replayed or renewed.",
+  "remaining": [
+    "The is_callable API is absent; direct enum pipe, wider API and default-loader routes remain partial.",
+    "Wider enum loading, backing, collection and callback source contexts retain their existing boundaries."
+  ],
+  "accounting": "All four enum declaration obligations remain partial. The wrong-PHP-error baseline has zero agreement credit. Frozen source packets, not catalogue registration, are the executed originals; their preparation bases and native tool context are recorded separately from the actual model revision and dirty semantic hashes. Existing immutable binaries are reused without a rebuild.",
+  "fixture_corrections": [
+    {
+      "original_packet": ".tools/enum-from-callable-selected-state-v1/from-callable-selected-retirement/process.json",
+      "status": "elaboration failure; no semantic checks or agreement credit",
+      "seconds": 9.333,
+      "error": "n_owner introduced inside a non-invertible Boolean conjunction",
+      "correction": "Peer v2 splits the three helper OWNER bindings into standalone premises; same50 rows and unchanged runtime/source inputs."
+    },
+    {
+      "original_packet": ".tools/enum-from-callable-stringable-state-v1/array-stringable-from-callable-selected/process.json",
+      "status": "main premise failed; no condition vector or semantic credit",
+      "seconds": 16.409,
+      "error": "One real driver step parks the fresh Closure in DESTRUCTION.OPERATIONS.VALUE while releasing the array input; RESULT is temporarily PNULL.",
+      "correction": "Stringable v2 drives to genuine METHOD_RESULT with the live enum Closure result and separately binds the original target CV array for retirement; same40 rows and unchanged runtime/source inputs.",
+      "diagnostic": {
+        "report": ".tools/enum-from-callable-creation-diagnostic-v2/array-stringable-from-callable-selected/process.json",
+        "seconds": 17.542,
+        "result": "Raw PhpStep returns POBJECT0; real driver returns PNULL with DESTRUCTION_VALUE HARRAY0 and protected VALUE POBJECT0.",
+        "credit": "causal localization only; no source agreement or state-condition credit",
+        "original_renderer_failure": {
+          "report": ".tools/enum-from-callable-creation-diagnostic-v1/array-stringable-from-callable-selected/process.json",
+          "seconds": 8.555,
+          "error": "PhpStep relation incorrectly rendered as a Boolean if premise; v2 corrects only this syntax.",
+          "credit": 0
+        }
+      }
+    }
+  ],
+  "prepared_composition": {
+    "base": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+    "reception_record": "coverage/semantics/enum-string-admission-review.json",
+    "status": "private union prepared from the two approved packages; actual gate and integration unrun",
+    "validation": "Original source4/state138/private433 inputs and the source5/state111 reception cut remain historical validation records; no source/state replay or new behavior is claimed.",
+    "shared_policy": "The base retains integrated GC09/GC10, CLASS154 and ordinary source/root/cache/Closure rules; only the reviewed210/234 behavior and437 declaration move are composed.",
+    "joined_compilation": "unrun; explicit parent writer grant required",
+    "canonical_fast_forward": "unrun; no canonical writer authority inferred"
+  }
+}

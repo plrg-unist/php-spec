@@ -1,0 +1,18 @@
+{
+  "scope": "Published pure-enum is_callable receiver-specific magic fallback with no requested concrete/generated method",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "a1b1aba3fcf8371836697265626ff1d5d449fc14",
+  "semantic_revision": "318c4726fcbddb1ec641c73e18a7c91a9cb5fa1c",
+  "state_revision": "5a4335984aea4e62d068c904273f447e4c320cac",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: magic-prefix source SHA 5c86f066c471249d0a2eb5dbcb67502493f74d1d18a572ed6af206ca4c09a750, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-magic-evidence/enum-is-callable-magic-strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.48 s, stable inputs",
+    "source": ".tools/enum-is-callable-magic-evidence/user-string-olx6dlsa/report.json: eight receiver-specific and user-method control outcomes exact normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-magic-evidence/enum-is-callable-protocol-0pawou6y/report.json: checked source reached strict SL, 56 checks, true, exit 0, empty stderr, stable inputs"
+  },
+  "behavior": "Class-method strings and class-name arrays use source-certified public __callStatic; enum-case arrays use source-certified public __call. A handler of the opposite kind yields false when the requested method is absent. A present but uncertified handler remains Unsupported. Querying returns a bool without entering the magic body or initializing the backing cache. Explicit user from controls continue through the ordinary method path.",
+  "remaining": "Trait/imported or Generator magic, inaccessible concrete-method fallback, case-array explicit user methods, third by-reference output and autoload remain partial."
+}

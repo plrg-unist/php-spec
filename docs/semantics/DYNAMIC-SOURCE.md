@@ -105,3 +105,24 @@ remain partial. The
 [lookup ledger](../../coverage/semantics/halt-lookup-review.json) binds two original
 sources and their reached state checks, keeping counterfactual history/source
 projections separate from execution.
+
+## File preambles and tick plans
+
+The checked file parser retains a CLI shebang as `ENCODEDPROGRAM` metadata. The
+tick planner now reads that program's checked statements, including lexical
+`declare(ticks=1)`, just as it does for `PROGRAM`. A shebang is suppressed from
+output but advances `__LINE__`. Included shebang files use their opened path
+for `__FILE__`, return to the caller, and keep their own tick plan. A leading
+BOM takes the existing `PROGRAM` route with an `InlineHTML` node that emits its
+raw bytes; it is an affected control, not a new encoded-program rule. Eval uses
+its separate parser mode: a BOM raises `ParseError`, while a hash-prefixed line
+is a comment and advances the eval line.
+
+Seven [preamble source cases](../../tests/semantics/source_preamble_sources.py)
+compare exact pinned-native streams and statuses, including finite-provider
+include and an encoded tick include. The [reached fixture](../../tests/semantics/source_preamble_state.py)
+checks the actual file-mode AST shapes and source-line tick markers. The
+[review ledger](../../coverage/semantics/source-preamble-tick-review.json)
+keeps earlier failed harness attempts separate. This cut does not admit a HALT
+payload combined with a preamble; wider encodings and file-provider forms
+remain partial.

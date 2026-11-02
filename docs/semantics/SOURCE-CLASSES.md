@@ -262,7 +262,8 @@ required at that cut. The [constructor review](../../coverage/semantics/anonymou
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Anonymous classes accept finite sequences of direct positional/named `new`
-arguments and unpromoted value or reference parameters, including a final variadic tail.
+arguments, including array unpack, and unpromoted value or reference parameters
+with an optional final variadic tail.
 The ordinary signature compiler validates their types, defaults, requiredness and
 final-only variadic placement; the ordinary binder
 completes named holes before typed reception. A class without `__construct`
@@ -278,8 +279,8 @@ retains its seven native-backed sources, independent weak int-coercion source an
 The [finite-arity review](../../coverage/semantics/anonymous-constructor-arity-review.json)
 records root and successful include/eval sites, inherited constructors, surplus
 positional sends, named-default reception retry and pruned versus eager invalid
-defaults. Promoted or nonpublic constructors, unpacking and wider object lifetimes
-remain partial.
+defaults. Promoted or nonpublic constructors, Traversable unpacking and wider
+object lifetimes remain partial.
 Reference sends use the saved constructor signature and hold their actual cell
 before later argument effects. Named sends select the formal index when they run;
 rebinding a constructor local does not rebind the caller. Missing variables can
@@ -298,10 +299,136 @@ tail errors; invalid reference sends stop later sends. The
 [variadic review](../../coverage/semantics/anonymous-constructor-variadic-review.json)
 retains six agreements and the original excluded `count()` observer separately;
 [CORE](CORE.md#environment-and-ordinary-library-boundary) defines that library boundary.
+Array unpack uses the ordinary CV/VAR/value source classifier. Reference demand
+separates shared writable arrays, keeps embedded aliases and promotes direct
+slots only in the live table. Direct elements of value inputs use fresh cells
+when passed to by-reference formals; existing embedded aliases remain shared.
+Expanded integer positions and string names feed the same binder, including
+named holes filled before typing. Static order errors and dynamic name/duplicate
+errors keep their argument-effect priority. Constructorless classes retain the
+ordinary dummy send frame: positional values are ignored, while a named key stops
+later sends. The [array-unpack review](../../coverage/semantics/anonymous-constructor-unpack-review.json)
+records these source, table, cell and default checks. Existing array/reference and
+source-history limits remain; constructor Traversable producers are still separate.
 Argument TypeErrors, missing named fixed arguments and nonreferenceable-send
 Errors format the whole callable name as one C string. Ordinary too-few-argument
 errors format the lexical declaring class and member separately.
 Stored class names and `::class` values keep their complete bytes.
+Public zero-argument anonymous `__destruct` methods with no return annotation or
+reference return now use the ordinary method compiler and destructor lifecycle.
+Last-owner release and reverse global cleanup retain real receivers and callers;
+successful eval classes use their installed unit descriptors. Failed constructors
+suppress later automatic destruction even when `$this` escapes, while explicit
+calls remain ordinary methods. A destructor throwing during unwind chains the
+saved exception as Previous. The [destructor review](../../coverage/semantics/anonymous-destructors-review.json)
+records five agreements and 240 conditions (228 reached, 12 derived across six controls).
+Public zero-argument anonymous `__toString` methods share ordinary signature
+checking, implicit `Stringable` and string-conversion callbacks. The implicit
+interface defers publication without changing the raw-header name prefix or
+one counter step per anonymous site; named Stringable classes keep their own
+ordinary counter cost. Selected receivers survive rebinding until cleanup before
+emission, and successful eval factories retain the same unit-specific identity.
+Ordinary return errors format lexical class and original member separately;
+never-return errors format one callable C string and identify ordinary methods.
+Invalid return annotations preserve the source method spelling.
+The [Stringable review](../../coverage/semantics/anonymous-stringable-review.json)
+records nine agreements and 285 conditions (278 reached, seven controls).
+Ordinary anonymous instance methods now accept unpromoted value, reference,
+default and variadic parameters under the existing visibility and return fences.
+The method compiler and call binder retain their ordinary signature, named-hole,
+send and typed-reception rules. Missing-arity errors compose the declaring lexical
+class and member separately, including inherited named methods. Five fresh
+originals agree with the pinned PHP engine; two source-reached state groups pass
+247 conditions (243 reached, four guards), including private caller aliases,
+literal reference failure, and fresh local defaults for by-reference formals in
+an eval unit. The [method-parameter review](../../coverage/semantics/anonymous-method-parameters-review.json)
+records the private cuts and retained unchanged refusals.
+Public/default-public nongenerator anonymous `__invoke` with unpromoted formals
+uses the ordinary method descriptor and existing implicit object-call selection.
+Five fresh originals agree, including explicit calls, parent dispatch, eval
+factories, named defaults and a selected receiver retained through argument
+rebinding and frame-release destruction. Two state groups pass 275 conditions
+(272 reached, three controls). The [invoke review](../../coverage/semantics/anonymous-invoke-review.json)
+keeps the unchanged admission refusals and two zero-credit fixture corrections.
+Public/default-public zero-argument nongenerator anonymous `__clone` now uses
+the existing clone copy, callback and cleanup routes. Declared arrays separate
+on callback writes while embedded references stay shared; parent callbacks
+can release a rebound source before the fresh copy is observed. Failed clone
+callbacks may leave an escaped copy eligible for normal automatic destruction.
+Keyword clone ignores a callback's value return, while an explicit call observes
+it. Six normal originals and one invalid-return rejection agree, including a
+`never` fallthrough TypeError at the method end line. Two state groups pass
+210 conditions (207 reached, three controls). The [clone review](../../coverage/semantics/anonymous-clone-review.json)
+keeps the two unchanged admission refusals and one zero-credit fixture correction.
+Ordinary nongenerator anonymous static methods now admit public, protected and
+private unpromoted formals through the existing receiverless call path. Six
+native-first originals check access before sends, typed reference updates,
+shared static locals, inherited lexical scope, captured calls after rebinding,
+and segmented missing-arity and ordinary return names, plus the `never` method
+kind. Two source-reached state groups pass 220 conditions (215 reached, five
+controls). The
+[static-method review](../../coverage/semantics/anonymous-static-method-review.json)
+records the distinct validation cuts and both zero-credit failures; ordinary
+captured `CLOSURE_TARGET` diagnostics follow below.
+Ordinary first-class captures of static and instance class methods now format
+missing-arity and ordinary return diagnostics with the declaring class and
+member, including explicit `->__invoke`. Typed input and `never` retain the
+whole-name C-string view; `never` identifies a method. Four native-first
+sources, private strict433 and two source-reached state groups pass 295
+conditions (291 reached, four controls). Copied trait `self` views are handled
+below; other copied views, rebound scopes and real Closure/API/wrapper views
+remain separate. The
+[captured-method review](../../coverage/semantics/anonymous-captured-method-diagnostics-review.json)
+retains two normal pre-fix mismatch observations and the distinct zero-credit
+preflight, strict-placement, comparator and fixture corrections.
+Trait-constant first-class static captures with a saved `self` parameter view
+now report `never` fallthrough as a method when the base and copied function
+views differ. The saved type rejects an importing-class instance where a direct
+method call accepts it; an old clone and later using-class capture retain
+distinct lexical names. Three exact native/source agreements, private strict433
+and two source-reached state groups pass 130 conditions (126 reached, four
+guards). The [trait-capture review](../../coverage/semantics/trait-captured-method-kind-review.json)
+keeps two pre-fix normal mismatches and exact capture-time deprecations.
+Alias/failure receipts, anonymous using-class names, rebound scopes and other
+Closure/API/wrapper views remain separate.
+
+For existing copied trait first-class captures, a `parent` parameter is checked
+against the saved lexical scope. An old cloned capture can retain a trait scope
+without a parent: a reached object argument then fails before the body if its
+union reaches `parent`; an earlier matching class branch succeeds. A later
+capture can retain the first using class as lexical scope while the called
+class differs, so its `parent` type follows the first class's parent. Null
+bypasses the unresolved class lookup in `?parent`. Four exact source originals
+and three source-reached state groups (79, 86 and 93 conditions) validate these
+existing rules without a semantic edit. The
+[parent-view review](../../coverage/semantics/trait-captured-parent-view-review.json)
+records the native/model cuts and the two corrected fixture failures. Trait
+alias/failure receipts, anonymous using-class names, rebound and wider callable
+views remain partial. The engine routes are `zend_check_type_slow` and
+`zend_fetch_ce_from_type` in `Zend/zend_execute.c`, then `zend_fetch_class`
+using `zend_get_executed_scope` in `Zend/zend_execute_API.c`.
+
+A copied alias captured during a failed first class link keeps its selected
+method and lexical scope when a later class reads the constant. If property
+binding fails before trait method fixup, the retained alias has trait scope:
+the reached `parent` parameter fails and its stack frame names `U::q`. If the
+link fails after fixup on an abstract requirement, the retained alias has the
+failed class scope: `parent` accepts that class's parent, and a later wrong
+argument produces `C::q`. The copied method is absent from the published
+method table in both cases. Its authenticated receipt supplies the bare `q`
+function name, while the saved closure scope supplies `U` or `C`. Four exact
+native/model originals and two source-reached trace groups (39 conditions
+each) cover this boundary. [Alias trace review](../../coverage/semantics/trait-captured-alias-parent-trace-review.json).
+The engine routes are `zend_fixup_trait_method` in `Zend/zend_inheritance.c`
+and `zend_fetch_debug_backtrace` in `Zend/zend_builtin_functions.c`.
+Anonymous using-class names, rebound scopes, and wider callable views remain
+partial. Three native tick-wrapper probes print the retained `U::q` frame,
+but the model stops before callback entry at explicit tick placement or eval
+class-constant admission; they have zero agreement credit.
+
+Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
+stay open, alongside constructor Traversable producers,
+promotion/nonpublic forms and wider factories/lifetimes.
 
 Unit0 anonymous classes may now extend an ordinary named class through the
 ordinary class-reference forms. Parent declarations follow the normal compiler/linker,
@@ -482,8 +609,8 @@ keeps original source comparisons, reached guards and the shared identity-receip
 normalization at separate cuts. The
 [capture review](../../coverage/semantics/enum-string-capture-review.json) keeps
 its new capture sources and owner/ingress checks separate. Callable admission,
-pipe and `Closure::fromCallable` consumers, first-use loading, enum
-collectability and wider object lifetimes remain partial.
+pipe and `Closure::fromCallable` have separate reviewed cuts below; first-use
+loading and wider object lifetimes remain partial.
 
 ## Generated enum array captures
 
@@ -503,5 +630,89 @@ table cold until invocation. The
 [array-capture review](../../coverage/semantics/enum-array-capture-review.json)
 keeps these cases and source/owner checks separate. Other callable consumers,
 loading and wider backing contexts remain partial. GC08 covers cached enum-case
-GC candidate exclusion; wider GC interactions and GC09 intrinsic fake-Closure
-birth versus clone policy remain separate.
+GC candidate exclusion; original receiverless Closures use the shared GC09 birth
+policy. Wider GC interactions remain partial.
+
+## Callable-typed generated enum strings
+
+Ordinary callable-typed parameters admit published generated enum method strings
+as their original values. Reception creates no Closure or selected-call record;
+arguments finish before the receiving frame checks callable validity. That
+frame's scope controls ordinary private method strings and arrays, while a
+Closure captured inside the class retains its selected private target. Existing
+array and Closure identities are unchanged. The [admission review](../../coverage/semantics/enum-string-admission-review.json)
+records source, state and receiving-scope checks at its private cut.
+
+## Generated enum conversion with Closure::fromCallable
+
+`Closure::fromCallable` converts published generated enum strings and arrays,
+including through a captured factory. The actual API call and received value
+authenticate conversion; the existing internal Closure allocator stores the
+selected operation without a source array, case receiver or factory owner.
+Existing Closure and `__invoke` array identity forms allocate nothing. Calls
+retain the new Closure through argument clearing and Stringable conversion,
+then can retire it after invocation. The pinned engine routes are
+`zend_create_closure_from_callable`, `zend_is_callable_ex` and
+`zend_create_fake_closure`. The [conversion review](../../coverage/semantics/enum-from-callable-review.json)
+records distinct source and state checks at its private cut. `is_callable`,
+wider reception, loading and backing contexts remain partial. The
+[current-tail gate](../../coverage/semantics/enum-callable-current-tail-review.json)
+joins reception and conversion in one original program.
+
+## Generated enum pipe calls
+
+An evaluated method string, class-name array or enum-case array can select a
+published generated `cases()`, `from()` or `tryFrom()` target for `|>`. The pipe
+fixes that target before sending its forced left value. The saved invoke has
+one positional value and a source-bound selected nonce; the right callable
+retires without becoming an owner of the selected enum. A Stringable left
+argument uses the pipe's left source child, so its callback can rebind the
+original callable while lookup still uses the selected enum and cold backing
+table. Strict scalar errors, case-object selection and `cases()` arity follow
+the same reception rules as direct generated calls. The
+[pipe review](../../coverage/semantics/enum-pipe-review.json) records four exact
+native-first originals and two source-reached strict SL guard groups. Wider
+callable APIs and default loading remain partial.
+
+## Published enum is_callable queries
+
+For already published enums, `is_callable` checks generated method strings,
+class-name arrays and live enum-case arrays without invoking the target.
+One- and two-argument direct, selected dynamic-name and pipe calls use the
+ordinary CONFIG argument path. Runtime queries consult the existing callable
+admission rules; syntax-only queries accept valid string/array shapes even when
+the enum has no such method. A query does not initialize the backing cache.
+The [query review](../../coverage/semantics/enum-is-callable-review.json)
+records two exact originals and 43 source-reached strict guards. The third
+by-reference output for literal generated method strings is described below;
+autoload and wider magic/user-method cases remain partial.
+Engine routes: `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
+`Zend/zend_API.c:zend_is_callable_at_frame`.
+Malformed live arrays return false for wrong length, missing keys, a nonclass
+receiver or nonstring method before the syntax-only early return. The
+[shape review](../../coverage/semantics/enum-is-callable-shape-review.json)
+records the published enum key-0 cut; the
+[wide-shape review](../../coverage/semantics/enum-is-callable-wide-shape-review.json)
+adds seven exact outcomes, 46 reached guards and an affected prior-state check.
+For absent concrete/generated methods, the query uses a source-certified
+public `__callStatic` for class strings and class-name arrays, or `__call` for
+case arrays. An opposite-kind handler cannot rescue the missing method. The
+[magic review](../../coverage/semantics/enum-is-callable-magic-review.json)
+records eight exact native/model outcomes and 56 reached guards; neither
+magic body runs during the query. Other magic sources and inaccessible-method
+fallback remain partial.
+An array with a live enum case receiver can also name a direct public user
+instance or static method. The [case-method review](../../coverage/semantics/enum-is-callable-case-method-review.json)
+records seven exact outcomes and 49 reached guards that tie the method
+descriptor to its enum source member without entering the body. Imported,
+inaccessible and attributed methods remain partial.
+For a literal generated enum method string and initialized string-valued
+caller CV, the third positional argument retains a reference to that cell
+through CONFIG, then receives the canonical name before the boolean result. The
+[output-CV review](../../coverage/semantics/enum-is-callable-output-review.json)
+records one exact source and 45 reached guards. Array inputs and old-object
+destructor/input-output alias effects remain explicit Unsupported.
+The same literal route writes the name for an absent method on both runtime
+false and syntax-only true; the
+[false-output review](../../coverage/semantics/enum-is-callable-output-false-review.json)
+records a second exact source and 42 reached guards.

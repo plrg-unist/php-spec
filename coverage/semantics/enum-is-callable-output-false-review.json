@@ -1,0 +1,19 @@
+{
+  "scope": "is_callable third direct string-CV output for an absent literal method on a published enum",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "3d0996749b6cb81b8a59c5af4b97cb4b44182510",
+  "semantic_revision": "724b521fc4e72bfc0ddb4bb723de5ade33fef8d3",
+  "source_revision": "418124c4a7150931948679a8ef004f668d195d80",
+  "state_revision": "2e7f42bf2a2743b673a8d3730f1bb2e4b62d62a6",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: output-false-prefix SHA 6914519ebb14aa5ee591035a69f61b1b1487525bb06b701aecf582ed13c97266, exact stdout, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-false-evidence/strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.74 s, stable inputs",
+    "source": ".tools/enum-is-callable-false-evidence/false-source-v1/report.json: runtime:0:MissingCheck::missing|syntax:1:MissingCheck::missing| exact native/model normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-false-evidence/reached-v1/report.json: checked source reached strict SL, 42 checks, true, exit 0, empty stderr, stable inputs"
+  },
+  "behavior": "For a literal method string on an already published enum and initialized string output CV, the existing source-bound reference is written even when runtime callability is false. The same absent name returns true under syntax-only and is written again. Both writes precede their boolean results and leave events/backing cache unchanged.",
+  "remaining": "Array or dynamic first inputs, object destructor effects, input/output aliasing, named/unpacked output and autoload remain partial."
+}

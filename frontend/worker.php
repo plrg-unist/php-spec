@@ -302,6 +302,18 @@ while (($line = fgets(STDIN)) !== false) {
                             }
                         }
                     }
+                    if ($node instanceof PhpParser\Node\Expr\Closure || $node instanceof PhpParser\Node\Expr\ArrowFunction) {
+                        $index = $node->attrGroups === [] ? $node->getStartTokenPos()
+                            : $node->attrGroups[count($node->attrGroups) - 1]->getEndTokenPos() + 1;
+                        while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                        if ($tokens[$index]->id === T_STATIC) {
+                            ++$index;
+                            while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                        }
+                        $keyword = $node instanceof PhpParser\Node\Expr\Closure ? T_FUNCTION : T_FN;
+                        if ($tokens[$index]->id !== $keyword) throw new RuntimeException('Closure keyword token is missing');
+                        $node->setAttribute('methodKeywordLine', $tokens[$index]->line);
+                    }
                     if ($node instanceof PhpParser\Node\Stmt\If_ || $node instanceof PhpParser\Node\Stmt\ElseIf_ || $node instanceof PhpParser\Node\Stmt\Else_ || $node instanceof PhpParser\Node\Stmt\While_ || $node instanceof PhpParser\Node\Stmt\Do_ || $node instanceof PhpParser\Node\Stmt\For_ || $node instanceof PhpParser\Node\Stmt\Foreach_) {
                         $index = $node->getStartTokenPos() + 1;
                         if (!($node instanceof PhpParser\Node\Stmt\Do_) && !($node instanceof PhpParser\Node\Stmt\Else_)) {

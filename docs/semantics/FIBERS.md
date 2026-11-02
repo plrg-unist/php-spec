@@ -1093,7 +1093,8 @@ its token until Gen drop. A static natural-completion source releases its
 payload while the closed Gen stays live, distinguishing frozen send history
 from a real owner. Five originals agree; five reached fronts pass 442 custom/467
 reported checks for selected history, physical owners and budgeted continuation.
-Private strict433 retains its original cut; actual-tail compilation is pending.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
 [Magic factory review](../../coverage/semantics/generator-magic-factory-review.json).
 
 I85 keeps a direct magic Generator's real receiver through its body and finally.
@@ -1102,8 +1103,9 @@ retires both array and alias; the ordinary value cache keeps Token while SEND
 keeps its Input. Abort releases the receiver before SEND input, and Gen drop
 releases the cache. A genuine second fresh Generator shares the method without
 supplying the active or closing target's receipt. Five current originals agree;
-five reached fronts pass 444 custom/469 reported checks. Private strict433
-retains its recorded cut, with actual-tail compilation pending.
+five reached fronts pass 444 custom/469 reported checks. Joined strict433,
+three exact sources and 166 independent reached checks pass at bd274e79f;
+current-tail b1adc40c composition is reviewed.
 [Direct magic review](../../coverage/semantics/generator-direct-magic-review.json).
 
 I86 anchors captured-method Generator transfer to its actual resumer and live
@@ -1113,7 +1115,8 @@ and rebound-method probes keep that receiver and Closure through CLOSED.
 The reference cache retains its cell independently of the delivered SEND input;
 Gen drop releases Closure/receiver before the cached value. Four originals
 agree; five reached fronts pass 501 custom/526 reported checks at their distinct
-cuts. Private strict433 retains its original cut; actual-tail compilation is pending.
+cuts. Joined strict433, two exact sources and 111 independent reached checks
+pass at 4462bc6d; current-tail 779569a8 composition is reviewed.
 [Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
 
 I87 admits direct raw array/string method Generator bodies through the existing
@@ -1122,7 +1125,9 @@ header and live receiver precede transfer; the VM keeps its ordinary This owner.
 Native controls distinguish receiver release at close from I86's retained Closure.
 Six native/model originals agree; seven reached fronts pass 561 custom/596
 reported checks at their distinct cuts. Private433 retains its original cut;
-actual-tail integration is pending. Wider caches/transfers remain partial.
+joined strict433 and three exact sources pass at 833e6e8f. The strengthened
+93-assertion closed-history state passes at 1f0e17ba; e0e3ce7f composition is
+reviewed. Wider caches/transfers remain partial.
 [Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
 
 I88 keeps the same actual Gen/current/raw target for reference caches and
@@ -1131,7 +1136,9 @@ their separate cache/This/API input owners. Fresh initialization retains a secon
 pending exception reference; warm/caught/borrowed phases keep their existing
 owners. Nonstatic object-array selection from an ordinary method preserves its private
 winner. Four native/model originals agree; four reached fronts pass 439 custom/
-459 reported checks. Private433 retains its cut; actual-tail integration is pending.
+459 reported checks. Private433 retains its cut. Joined strict433, three exact
+sources, two affected old THROW states (143+105 checks) and an independent
+153-check state pass at 1ecc939d; 5096cbb1 composition is reviewed.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
 I89 reuses the same actual method-Closure proof for nonstatic warm/fresh THROW.
@@ -1141,7 +1148,9 @@ the Closure once, and its receiver edge keeps This through CLOSED. Native contro
 distinguish original source/binding retirement from final Closure-before-cache
 release. Native4/source4 and five reached fronts632 custom/657 reported pass at
 distinct cuts; private433 retains its initial cut. Original failures keep zero credit,
-with actual-tail integration and wider contexts still open.
+while joined strict433, three exact sources, fresh 117-check and independent
+closed-body 118-check states pass at c81b8c5e. The 26cf6684 composition is
+reviewed; wider contexts remain open.
 [Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
 
 I90 shares actual direct magic Gen identity and I85 entered-handler authority
@@ -1150,8 +1159,10 @@ leave value cache1/input1; fresh pre-yield suspension retains pending input2.
 Native supplied-abort controls distinguish fresh no-cache payload/This retirement
 and original API Throwable priority from warm propagation. Native4/source4 and
 private433 retain distinct cuts; five reached fronts pass 623 custom/648 reported
-checks, including budgeted abort/drop and closed Previous order. Actual-tail
-integration remains pending. Source/signature and wider lifecycle limits remain.
+checks, including budgeted abort/drop and closed Previous order. Joined
+strict433, three exact sources, fresh parked125, affected I85 SEND166 and
+independent closed102 checks pass at dfa4386d; d1f314c0 composition is
+reviewed. Source/signature and wider lifecycle limits remain.
 [Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
 
 I91's static string-method captures reuse the existing callee and warm THROW

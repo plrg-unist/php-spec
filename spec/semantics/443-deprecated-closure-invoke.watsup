@@ -12,9 +12,8 @@ dec $closure_invoke_discard(pstate, ptask) : pstate
 dec $closure_invoke_return_nodes(pstate, pcallcontext) : pnode*
 dec $closure_invoke_named_pending(pstate) : pstate
 
-;; zend_call_function retains the inner Closure at entry, while __invoke still
-;; owns its receiver. Its selected bound receiver is borrowed from that Closure.
-;; The outer owner retires after the raw wrapper arguments.
+;; A Closure call borrows its bound receiver from the retained Closure. An
+;; explicit __invoke also owns that Closure until its raw arguments retire.
 def $wrapper_receiver_roots(pcallcontext) = [HOBJECT n]
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.WRAPPER =/= eps
@@ -117,7 +116,7 @@ rule PhpStep/closure-invoke-inner-warning: S ~> $error_dispatch(S[.TODO = (CLOSU
   -- if $closure_invoke_source(ptask_source) = ((pcalltarget, pnamedargs, porigin, z))
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
-  -- if ptbytes = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if ptbytes = $deprecated_warning_message(S, pfunction, pcalltarget, ptbytes_message, ptbytes_since)
 rule PhpStep/closure-invoke-enter: S ~> $source_call_enter_raw(S[.TODO = ptask_source :: ptask_tail*], pfunction)
   -- if S.TODO = (CLOSURE_INVOKE_ENTER ptask_source) :: ptask_tail*
   -- if $closure_invoke_valid(S, ptask_source)
@@ -162,7 +161,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 16384
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
-  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, ptbytes_message, ptbytes_since)
+  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, pcalltarget, ptbytes_message, ptbytes_since)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE z
 
 ;; The inner API warning runs inside __invoke, before any user callee frame.
@@ -171,11 +170,170 @@ def $closure_invoke_warning_context(S, pcallcontext) = true
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = CLOSURE_INVOKE_ENTER ptask
 def $closure_invoke_warning_context(S, pcallcontext) = false -- otherwise
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}, {FILE $call_sourcefile(S.FILES, porigin), LINE z, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $sensitive_trace_arguments(S, pfunction_selected, $trace_indexed_args($wrapper_values(S, pnamedargs.SLOTS), 0) ++ $trace_named_args(S, pnamedargs.NAMED)), HASARGS true}]
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, porigin), LINE z, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}, {FILE $call_sourcefile(S.FILES, porigin), LINE z, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $sensitive_trace_arguments(S, pfunction_selected, $trace_indexed_args($wrapper_values(S, pnamedargs.SLOTS), 0) ++ $trace_named_args(S, pnamedargs.NAMED)), HASARGS true}]
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = CLOSURE_INVOKE_ENTER ptask
   -- if $closure_invoke_source(ptask) = ((pcalltarget, pnamedargs, porigin, z))
   -- if $target_function(S, pcalltarget) = (pfunction_selected)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+
+;; A tick FCC caches the outer Closure in its object slot. The outer wrapper
+;; borrows that pointer; only the entered user call adds a Closure instance.
+def $tick_invoke_tag(CALLBACK_INVOKE_TARGET n) = true
+def $tick_invoke_tag(pcalltarget) = false -- otherwise
+def $target_nodes(CALLBACK_INVOKE_TARGET n) = $target_nodes(CLOSURE_TARGET n)
+def $target_instance(CALLBACK_INVOKE_TARGET n) = $target_instance(CLOSURE_TARGET n)
+def $target_function(S, CALLBACK_INVOKE_TARGET n) = $target_function(S, CLOSURE_TARGET n)
+def $target_receiver(S, CALLBACK_INVOKE_TARGET n) = $target_receiver(S, CLOSURE_TARGET n)
+def $target_lexical_class(S, CALLBACK_INVOKE_TARGET n) = $target_lexical_class(S, CLOSURE_TARGET n)
+def $target_called_class(S, CALLBACK_INVOKE_TARGET n) = $target_called_class(S, CLOSURE_TARGET n)
+def $call_receiver_roots(pcallcontext) = eps -- if $tick_invoke_tag(pcallcontext.TARGET)
+def $nodiscard_api_target(CALLBACK_INVOKE_TARGET n) = true
+;; The common builtin Closure scope is constant for all such trampolines.
+def $tick_calling_scope(S, CALLBACK_INVOKE_TARGET n) = eps
+
+;; Selection stays local to ticks. Other API consumers retain their own gates.
+def $tick_callback_resolution(S, PARRAY n_array) = HANDLERRESOLVED (CALLBACK_INVOKE_TARGET n)
+  -- if $typed_callback_array(S, n_array)
+  -- if $callback_cache_array_object($shutdown_snapshot(S, PARRAY n_array)) = (n)
+  -- if $closure_callable(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $tick_callback_resolution(S, pvalue) = $error_handler_resolution(S, pvalue) -- otherwise
+def $tick_raw_selected(S, PARRAY n_array, (parray), CALLBACK_INVOKE_TARGET n) = true
+  -- if $(n_array < |S.ARRAYS|)
+  -- if |parray.ITEMS| = 2
+  -- if $callback_cache_array_object((parray)) = (n)
+  -- if $closure_callable(S, n)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+def $tick_raw_selected(S, pvalue, parray?, pcalltarget) = $exception_raw_selected(S, pvalue, parray?, pcalltarget)
+  -- if ~$tick_invoke_tag(pcalltarget)
+def $tick_raw_selected(S, pvalue, parray?, pcalltarget) = false -- otherwise
+
+;; zend_call_function warns before copying the first outer argument. Its
+;; existing send cursor then owns just the copied raw argument table.
+def $tick_callback_begin(S, ptickdispatch, ptask_tail*) = $error_dispatch(S_pending, 8192, ptbytes, ptickdispatch.MARKER.LINE, DIAGNOSTIC "Deprecated" ptbytes ptickdispatch.MARKER.LINE, TICK_SEND ptickdispatch 0)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $tick_invoke_tag(ptickentry.ENTRY.TARGET)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if ptbytes = $closure_invoke_message(S, pfunction)
+  -- if S_pending = S[.TODO = (TICK_SEND ptickdispatch 0) :: ptask_tail*][.ORIGIN = (ptickdispatch.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $tick_callback_begin(S, ptickdispatch, ptask_tail*) = S[.TODO = (TICK_SEND ptickdispatch 0) :: ptask_tail*] -- otherwise
+def $wrapper_send_name(S, CALLBACK_INVOKE_TARGET n, porigin?, preqbytes) = $ptascii("Closure::__invoke")
+def $tick_reference_warning(S, pfunction, ptickdispatch, n, ptbytes) = $error_dispatch(S, 2, ptbytes, ptickdispatch.MARKER.LINE, DIAGNOSTIC "Warning" ptbytes ptickdispatch.MARKER.LINE, TICK_REFERENCE ptickdispatch n)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $tick_invoke_tag(ptickentry.ENTRY.TARGET)
+def $tick_reference_warning(S, pfunction, ptickdispatch, n, ptbytes) = $deprecated_api_reference(S, pfunction, ptbytes, ptickdispatch.MARKER.LINE, DIAGNOSTIC "Warning" ptbytes ptickdispatch.MARKER.LINE, TICK_REFERENCE ptickdispatch n) -- otherwise
+
+dec $tick_invoke_valid(pstate, ptickdispatch) : bool
+dec $tick_invoke_context(pstate, poperand*) : pstate
+dec $tick_invoke_enter(pstate, ptickdispatch, ptask*) : pstate
+def $tick_invoke_valid(S, ptickdispatch) = true
+  -- if S.ORIGIN = (ptickdispatch.SITE)
+  -- if $tick_result_valid(S, ptickdispatch)
+  -- if $tick_send_valid(S, ptickdispatch, |ptickdispatch.SENT|)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $tick_invoke_tag(ptickentry.ENTRY.TARGET)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+def $tick_invoke_valid(S, ptickdispatch) = false -- otherwise
+def $call_task_valid(S, TICK_INVOKE_ENTER ptickdispatch) = $tick_invoke_valid(S, ptickdispatch)
+def $task_nodes(TICK_INVOKE_ENTER ptickdispatch) = $operands_roots(ptickdispatch.SENT)
+def $tick_active_task(TICK_INVOKE_ENTER ptickdispatch) = ptickdispatch.ENTRY
+def $call_after_origin(S, TICK_INVOKE_ENTER ptickdispatch) = S[.ORIGIN = (ptickdispatch.SITE)]
+def $error_read_discard(S, TICK_INVOKE_ENTER ptickdispatch) = $closure_invoke_discard(S, TICK_INVOKE_ENTER ptickdispatch)
+
+rule PhpStep/tick-invoke-inner-warning: S ~> $error_dispatch(S[.TODO = (TICK_INVOKE_ENTER ptickdispatch) :: ptask_tail*], 16384, ptbytes, ptickdispatch.MARKER.LINE, DIAGNOSTIC "Deprecated" ptbytes ptickdispatch.MARKER.LINE, TICK_INVOKE_ENTER ptickdispatch)
+  -- if S.TODO = (TICK_ENTER ptickdispatch) :: ptask_tail*
+  -- if $call_task_valid(S, TICK_ENTER ptickdispatch)
+  -- if $tick_invoke_valid(S, ptickdispatch)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if ptbytes = $deprecated_warning_message(S, pfunction, ptickentry.ENTRY.TARGET, ptbytes_message, ptbytes_since)
+rule PhpStep/tick-invoke-unmarked-enter: S ~> $tick_invoke_enter(S, ptickdispatch, ptask_tail*)
+  -- if S.TODO = (TICK_ENTER ptickdispatch) :: ptask_tail*
+  -- if $call_task_valid(S, TICK_ENTER ptickdispatch)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $tick_invoke_tag(ptickentry.ENTRY.TARGET)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = NO_DEPRECATED
+rule PhpStep/tick-invoke-enter: S ~> $tick_invoke_enter(S, ptickdispatch, ptask_tail*)
+  -- if S.TODO = (TICK_INVOKE_ENTER ptickdispatch) :: ptask_tail*
+  -- if $tick_invoke_valid(S, ptickdispatch)
+rule PhpStep/tick-invoke-unsupported-attributes: S ~> S[.COMPLETION = UNSUPPORTED "tick Closure wrapper attribute metadata"]
+  -- if S.TODO = (TICK_ENTER ptickdispatch) :: ptask_tail*
+  -- if $call_task_valid(S, TICK_ENTER ptickdispatch)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $tick_invoke_tag(ptickentry.ENTRY.TARGET)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE_UNSUPPORTED
+def $tick_invoke_context(S, poperand*) = S[.CURRENT = (pcallcontext[.WRAPPER = ({SLOTS (NAMED_SENT poperand)*, NAMED eps})])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.COMPLETION = NORMAL
+  -- if $tick_invoke_tag(pcallcontext.TARGET)
+def $tick_invoke_context(S, poperand*) = S -- otherwise
+def $tick_invoke_enter(S, ptickdispatch, ptask_tail*) = $call_entry_ready($tick_invoke_context($target_after_enter($call_enter(S[.TODO = (TICK_RESULT ptickdispatch) :: ptask_tail*], pfunction, ptickdispatch.SENT, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE), ptickentry.ENTRY.TARGET), ptickdispatch.SENT), pfunction, |ptickdispatch.SENT|, (ptickdispatch.SITE), ptickdispatch.MARKER.LINE)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+
+def $tick_wrapper_context_valid(S, pcallcontext, ptickdispatch) = true
+  -- if $tick_invoke_tag(pcallcontext.TARGET)
+  -- if pcallcontext.WRAPPER = ({SLOTS (NAMED_SENT poperand)*, NAMED eps})
+  -- if poperand* = ptickdispatch.SENT
+def $tick_wrapper_context_valid(S, pcallcontext, ptickdispatch) = (pcallcontext.WRAPPER = eps)
+  -- if ~$tick_invoke_tag(pcallcontext.TARGET)
+def $tick_wrapper_context_valid(S, pcallcontext, ptickdispatch) = false -- otherwise
+def $wrapper_context_valid(S, pcallcontext) = true
+  -- if $tick_invoke_tag(pcallcontext.TARGET)
+  -- if $tick_context_valid(S, pcallcontext)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $tick_invoke_tag(pcallcontext.TARGET)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $tick_context_valid(S, pcallcontext)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
+def $closure_invoke_received(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $tick_invoke_tag(pcallcontext.TARGET)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $tick_context_valid(S, pcallcontext)
+  -- if $call_context_valid(S, pcallcontext, S.CVS)
+  -- if $named_receives_ready(S, pfunction)
+
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = TICK_SEND ptickdispatch 0
+  -- if $call_task_valid(S, TICK_SEND ptickdispatch 0)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $tick_invoke_tag(ptickentry.ENTRY.TARGET)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if perrorcall.SITE = ptickdispatch.SITE /\ perrorcall.LINE = ptickdispatch.MARKER.LINE /\ perrorcall.LEVEL = 8192
+  -- if perrorcall.MESSAGE = $closure_invoke_message(S, pfunction)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = TICK_INVOKE_ENTER ptickdispatch
+  -- if $tick_invoke_valid(S, ptickdispatch)
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction)
+  -- if $function_deprecated(S, pfunction) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if perrorcall.SITE = ptickdispatch.SITE /\ perrorcall.LINE = ptickdispatch.MARKER.LINE /\ perrorcall.LEVEL = 16384
+  -- if perrorcall.MESSAGE = $deprecated_warning_message(S, pfunction, ptickentry.ENTRY.TARGET, ptbytes_message, ptbytes_since)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
+;; The warning is emitted inside the trampoline. Its borrowed raw args are
+;; visible before user reception, and the trampoline inherits the tick marker.
+def $closure_invoke_warning_context(S, pcallcontext) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = TICK_INVOKE_ENTER ptickdispatch
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, ptickdispatch.SITE), LINE ptickdispatch.MARKER.LINE, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}, {FILE $call_sourcefile(S.FILES, ptickdispatch.SITE), LINE ptickdispatch.MARKER.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $sensitive_trace_arguments(S, pfunction_selected, $trace_indexed_args($trace_extra(S, ptickdispatch.SENT), 0)), HASARGS true}]
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = TICK_INVOKE_ENTER ptickdispatch
+  -- if $tick_selected(S, ptickdispatch) = (ptickentry)
+  -- if $target_function(S, ptickentry.ENTRY.TARGET) = (pfunction_selected)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)

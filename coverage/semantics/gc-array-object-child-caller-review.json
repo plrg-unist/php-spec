@@ -1,0 +1,28 @@
+{
+  "scope": "GC18: materialized D collection from an active direct real-Closure caller whose captured runtime-written array has exactly one direct childless stdClass entry.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "gc17_base": "ca8908dd5df3233c228b1d93b00cfd79f66bc282",
+    "gc18_native": "9033d157b0b2aa3bfb3b48a63a974fa73b086ab3",
+    "gc18_semantic": "831c84043204c16492d7f055574207c3d8cc3703"
+  },
+  "source_sha256": "7ab4e4aa25d90bf3dc38659f39b06a45e5c990bb12f2f0abf118987f641e4357",
+  "validation": {
+    "native": "The original writes one globally held stdClass into a runtime array before by-value Closure capture, with no later array mutation. It does not read the child until after the final GC. PHP outputs T|P|0|D|3|split|0|H|3|dead|0|live|END, exit 0 and empty stderr. The final live marker is a liveness observation, not an identity proof. The report records stable inputs/HEAD, no timeout and a fully reaped group.",
+    "preedit": "The unchanged model stops Unsupported cached ordinary property-table collection after T|P|0|, with zero agreement. Strict reached54 binds Closure→HARRAY→HOBJECT in ordinary and physical GC tracing, exact array 0=>DIRECT stdClass, array and leaf absent from D buffer, owners 2/3/2 and black root protection. Only the active Closure blocks ordinary/count-source admission.",
+    "fix": "A new 301 clause admits only an authenticated active saved direct real-Closure caller with one DIRECT array capture, an allocated model-nonimmutable array containing exactly key 0's direct allocated STDINSTANCE, both exact ordinary/physical child edges, a childless leaf, array and leaf absent from the candidate buffer, and a real Closure machine root. Graph, owner, count-walk and candidate-order functions are unchanged.",
+    "reached": "The affected strict SL group passes 115 assertions at clean 831c, including source-selected call and capture, actual owner and trace edges, D/held count3 and white protection, and active/source/body-site refusals.",
+    "model": "The unchanged original agrees byte for byte with retained native output at clean 831c: normal, exit 0, empty stderr, one source agreement, stable inputs/HEAD, no timeout and fully reaped process group. No accepted earlier campaign was replayed."
+  },
+  "reports": {
+    "gc-array-object-child-caller-18-author/packet1/native-report.json": "aaad7133f4e5a8e4058120d681e3885b15251cd12efa4f05cd039cc8fb5458d2",
+    "gc-array-object-child-caller-18-author/packet1/model-array-object-child-captured-direct-caller-report.json": "e1988e866dedde7344ee3bac1b9a37a3f836be701f5b0a79f5fff984716396d0",
+    "gc-array-object-child-caller-18-author/packet2/prebegin-result/report.json": "b45702aa67125e18c1c58367ccf1e909de4f94de47cfd445fab7c8575c559788",
+    "gc-array-object-child-caller-18-author/packet3/reached/report.json": "06ac024bbe0ae6c33312970a0d00f77ec49191fe662a2528b7c0a5ee4cea9236",
+    "gc-array-object-child-caller-18-author/packet3/model/model-array-object-child-captured-direct-caller-report.json": "36d7dd9cb55083738ce2222efa813e048d6c38fcf6574afa3d850b09c239b477"
+  },
+  "review": "Independent private semantic/test and concise docs CLEAR from gc07_fallback_review at clean 831c. Actual-tail interaction/join review remains pending.",
+  "limits": "The tested leaf is propertyless and globally held; the model guard also admits childless scalar-property STDINSTANCE leaves at exact array key 0. Buffered array or leaf candidates, other array entries and indirect buckets remain fenced. COW after capture, nonempty persistent provenance, object backedges, destructor-bearing children and wider active contexts are untested. Source-selected target shape does not prove arbitrary rewritten historical operand identity.",
+  "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-array-object-child-caller-18-author. New source and reached fixtures are in tests/semantics; no bulky artifacts are in Git."
+}

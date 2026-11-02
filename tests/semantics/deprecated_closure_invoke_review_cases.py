@@ -164,6 +164,22 @@ CASES = {
     ], '$closure->__invoke("7");', [
         'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2 && $other === 0, ";";',
     ]),
+    'invoke-inner-warning-trace-head-inherits-call-location': at80([
+        '#[\\Deprecated("head", "20")]',
+        'function traced($value) { $GLOBALS["body"]++; echo "B:", $value === 7, ";"; return 9; }',
+        'function head_notice($level, $message, $file, $line) {',
+        '    $GLOBALS["calls"]++; $trace = (new Exception("trace"))->getTrace();',
+        '    if ($level === 8192) { echo "O:", $file === __FILE__, ":", $line === 80, ":", !isset($trace[1]), ";"; return true; }',
+        '    if ($level === 16384) {',
+        '        echo "I:", $file === __FILE__, ":", $line === 80, ":", $trace[0]["file"] === __FILE__, ":", $trace[0]["line"] === 80, ":", $trace[0]["function"] === "head_notice", ":", $trace[1]["file"] === __FILE__, ":", $trace[1]["line"] === 80, ":", $trace[1]["function"] === "__invoke", ":", $trace[1]["class"] === "Closure", ":", !isset($trace[2]), ";";',
+        '        return true;',
+        '    }',
+        '    echo "BAD-WARNING;"; return true;',
+        '}',
+        '$body = 0; $calls = 0; $closure = traced(...); set_error_handler("head_notice");',
+    ], '$closure->__invoke(7);', [
+        'restore_error_handler(); echo "E:", $body === 1, ":", $calls === 2, ";";',
+    ]),
 }
 
 EXPECTED_STDOUT = {
@@ -174,6 +190,7 @@ EXPECTED_STDOUT = {
     'invoke-named-unpack-default-hole-stays-raw-through-warnings': b'O:1:1:1;I:1:1:1:1:1;B:1:1:1;E:1:1;',
     'invoke-unused-owning-result-retires-between-raw-argument-and-receiver': b'O:1:1:1;I:1:1;B:1:1:1;T:1:1:1:1;V:1:1:1;R:1:1:1;E:1:1:1:1:1:1;',
     'invoke-sensitive-raw-wrapper-and-coerced-body-snapshots': b'O:1:1;I:1:1:1:1:1;B:1:1:1:1:1:1:1:1:1;E:1:1;',
+    'invoke-inner-warning-trace-head-inherits-call-location': b'O:1:1:1;I:1:1:1:1:1:1:1:1:1:1;B:1;E:1:1;',
 }
 
 EXIT_CODES = {name: 0 for name in CASES}

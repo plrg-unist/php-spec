@@ -73,7 +73,7 @@ def $clone_empty_callback_ready(S, n_source) = true
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
   -- if $(n_table < |S.ARRAYS|) /\ (HARRAY n_table) <- S.ALLOCATIONS
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
-  -- if pobjectprops.MATERIALIZED /\ pobjectprops.SLOTS = eps
+  -- if pobjectprops.MATERIALIZED
   -- if S.ARRAYS[n_table].ITEMS = eps
   -- if $clone_method(S, n_source) =/= eps
   -- if $object_tables_valid(S) /\ S.GC.ACTIVE = eps
@@ -141,6 +141,14 @@ dec $clone_mixed_mirrors(ppropertyslot*, pentry*) : ppropertyslot*?
 def $clone_mixed_mirrors(eps, pentry*) = (eps)
 def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = $clone_mixed_mirrors(ppropertyslot_tail*, pentry*)
   -- if ppropertyslot.DECL =/= eps
+;; The copied live bucket belongs to a later reinserted mirror, not this tombstone.
+def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = $clone_mixed_mirrors(ppropertyslot_tail*, pentry*)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if $entry_lookup(pentry*, KSTRING ppropertyslot.NAME) = (pitem_new)
+  -- if $property_slot_at(ppropertyslot_tail*, ppropertyslot.NAME) = (ppropertyslot_live)
+  -- if ppropertyslot_live.DECL = eps
+  -- if ppropertyslot_live.STATE = PROP_VALUE pitem_live
 def $clone_mixed_mirrors(ppropertyslot :: ppropertyslot_tail*, pentry*) = (ppropertyslot :: ppropertyslot_new*)
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
@@ -161,7 +169,7 @@ def $clone_mixed_ready(S, n_source) = true
   -- if $(n_table < |S.ARRAYS|) /\ (HARRAY n_table) <- S.ALLOCATIONS
   -- if $objectprops_record_at(S.OBJECTPROPS, n_source) = (pobjectprops)
   -- if S.OBJECTS[n_source] = INSTANCE porigin
-  -- if pobjectprops.MATERIALIZED /\ ($clone_mixed_dynamic(pobjectprops.SLOTS) \/ ($property_layout(S, porigin, |S.CLASSES|) = eps /\ $object_table_dynamic_history(pobjectprops.SLOTS)))
+  -- if pobjectprops.MATERIALIZED /\ $object_table_dynamic_history(pobjectprops.SLOTS)
   -- if $object_tables_valid(S) /\ S.GC.ACTIVE = eps
   -- if ~$clone_readonly_updates(S, n_source)
   -- if $clone_mixed_table(S, n_source, |S.OBJECTS|, pobjectprops.SLOTS, S.ARRAYS[n_table].ITEMS, $array_empty()) = (parray)
@@ -169,7 +177,7 @@ def $clone_mixed_ready(S, n_source) = true
 def $clone_mixed_ready(S, n_source) = false -- otherwise
 def $clone_plain(S, n_source) = S_declared[.OBJECTPROPS = $objectprops_set(S_declared.OBJECTPROPS, n, pobjectprops_new.SLOTS ++ ppropertyslot_dynamic*)][.ARRAYS = S_declared.ARRAYS ++ [parray]][.OBJECTTABLES = S_declared.OBJECTTABLES ++ [{OBJECT n, TABLE n_table_new}]][.ALLOCATIONS = S_declared.ALLOCATIONS ++ [HARRAY n_table_new]]
   -- if $clone_mixed_ready(S, n_source)
-  -- if ~$clone_dynamic_share_ready(S, n_source)
+  -- if ~$clone_dynamic_share_ready(S, n_source) /\ ~$clone_empty_callback_ready(S, n_source)
   -- if n = |S.OBJECTS|
   -- if n_table_new = |S.ARRAYS|
   -- if $object_table_at(S.OBJECTTABLES, n_source) = (n_table)
@@ -313,7 +321,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
   -- if $intrinsic_lookup(preqbytes_lookup, preqbytes_fallback?) = (INTRINSIC_CLONE)
   -- if S_prepared = $intrinsic_pipe(S, INTRINSIC_CLONE, pvalue, porigin, z_call, eps)
   -- if S_prepared.TODO = (CLONE_INVOKE pclonecall) :: ptask_tail*
-def $clone_object(S, n_source) = $intrinsic_firstclass(S, pintrinsic)
+def $clone_object(S, n_source) = $intrinsic_closure_new(S, pintrinsic, false)
   -- if ~$instance_storage_freeing(S, n_source)
   -- if S.OBJECTS[n_source] = INTRINSICCLOSURE pintrinsic
 

@@ -1,0 +1,130 @@
+{
+  "milestone": "A78 temporary owning by-value Generator CONFIG sends",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "INI_SET unpack from a named zero-argument BYVAL factory returning a distinct named zero-argument BYVAL Generator temporary with no outside strong Generator owner. First integer-key option is a finite quiet ARRAY or ordinary non-Stringable INSTANCE; final cached value and key are integers (7 and 1 in the four originals).",
+    "behavior": "Copied owning prefix retains its source receipt and task roots after the final scalar cache replaces the owning value. Normal DATA then INPUT cleanup retires the childless Generator before TypeError TraceArgs receives the prefix. Terminal saved throw discards DATA and INPUT separately and releases the prefix before catch. Weak observations distinguish Generator and payload lifetimes.",
+    "limits": "Owning final caches, BYREF or owning reference cells, effectful finalizers, cycles/debt, Aggregate/Closure/method producers and wider keys/lifetimes remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "916283aa45a474542f3e731ca98870203c0d50e0",
+    "source_freeze": "d5bea93a1307828f1475c0dae12e126eb899aee0",
+    "runtime_revision": "8850b7c7bc561696daa14d2fa86c7c07afc0c50a",
+    "validated_revision": "fe4d98424d66e6a8ad94c86d5680aac1dde3d7d6",
+    "change": "Only 423: authenticate the distinct emitted factory call and returned Generator function; admit owning INPUT/DATA2 acquisition; preserve copied prefix under exact childless integer-cache final INPUT and retired invoke cleanup. Existing outside-retained CV path and generic 420/355/schema/manifest are unchanged.",
+    "engine": "Zend SEND_UNPACK consumes Generator DATA before INPUT; zend_generator_free_storage releases cached VALUE; INI_SET TypeError retains copied TraceArgs until Throwable release."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1-5 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-owning-temporary-78",
+    "native_first": {
+      "revision": "d5bea93a1307828f1475c0dae12e126eb899aee0",
+      "author": {
+        "report": "native-d5b/author/report.json",
+        "sha256": "58f1766143ca694a9cd06c21bab99361f4fd177981a530ec6aebd9dbd9bc00cc"
+      },
+      "peer": {
+        "report": "native-d5b/peer/report.json",
+        "sha256": "38874664b4e03912b199ddaf935c1c0541a36851e6b6c7e10ab32dac16d92207"
+      },
+      "originals": 4,
+      "result": "Four distinct new originals match manually authored stdout, empty stderr and exit0; native-only preparation has zero model credit."
+    },
+    "old_refusal": {
+      "report": "old-control-d5b/report.json",
+      "sha256": "e1dfa7b5cc35e99a9438f303aa9f1635c893207df48e99bbd9f8db0bc6219e0a",
+      "revision": "d5bea93a1307828f1475c0dae12e126eb899aee0",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;P;Y0;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "report": "candidate-79bc/strict/report.json",
+      "sha256": "facb0adc8c94eaa0151399bc6724d125e67c06112b7e3844c61b8d84991c1f0c",
+      "revision": "79bc48a2248b2630308daafb32a1bf33e35f973a",
+      "modules": 432,
+      "seconds": 12.765489339828491
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Retain frozen source/native/profile/process bytes; run only bin/php-semantics for each new case. No PHP application or accepted A77 replay.",
+      "reports": [
+        {
+          "case": "normal",
+          "revision": "79bc48a2248b2630308daafb32a1bf33e35f973a",
+          "report": "candidate-79bc/model-author-normal/report.json",
+          "sha256": "48430797858f4f29b53acbc5af184d6e7471f49da1390d22931fd21c20730198"
+        },
+        {
+          "case": "terminal-throw",
+          "revision": "1161323e94d5a03d203e8abae967e1929ff09db0",
+          "report": "candidate-116/model-author-terminal/report.json",
+          "sha256": "f40b7058ee0f0ec486b15c65296816db2e7e22ddfd0f03ae9bd8df8e8a738230"
+        },
+        {
+          "case": "array-cow-typeerror",
+          "revision": "1161323e94d5a03d203e8abae967e1929ff09db0",
+          "report": "candidate-116/model-peer-array-typeerror/report.json",
+          "sha256": "9dedc35d64c399a50b24a0783134d623d8b666729793f648d9313b1c08a33940"
+        },
+        {
+          "case": "array-cow-terminal-throw",
+          "revision": "1161323e94d5a03d203e8abae967e1929ff09db0",
+          "report": "candidate-116/model-peer-array-terminal/report.json",
+          "sha256": "e07ac34f6072a175648d584cbded000e4ef1f855a15491dedfe2644d4bb4f890"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 372,
+      "if_premises": 364,
+      "raw_steps": 8,
+      "author": {
+        "revision": "1161323e94d5a03d203e8abae967e1929ff09db0",
+        "conditions": 197,
+        "if_premises": 193,
+        "raw_steps": 4,
+        "report": "candidate-116/author-state/report.json",
+        "sha256": "77a69624c579a13fcf47ee78ba53ad8cad33a1e8c936ab3c08148b55606e1609",
+        "coverage": "Factory/returned descriptors, owning payload cache2 to prefix1, DATA2 to INPUT1 to retired Generator0, direct TypeError trace and retired invoke cleanup."
+      },
+      "peer": {
+        "revision": "fe4d98424d66e6a8ad94c86d5680aac1dde3d7d6",
+        "conditions": 175,
+        "if_premises": 171,
+        "raw_steps": 4,
+        "report": "candidate-fe4/peer-state/report.json",
+        "sha256": "06791aa6906994789d56e03f768a6badb3c26f70a7b77f583248021ebcad8043",
+        "coverage": "Dynamic ARRAY COW13 versus live31, suspended caller prefix plus old cache2, closed prefix1, two quiet discards and physical Gen/array death before same saved catch."
+      }
+    },
+    "failed_fixtures": {
+      "credit": 0,
+      "cause": "The first peer test-only mid-resume owner assertion omitted the still-cached Generator VALUE edge; corrected fixture counts both the suspended caller prefix and cached VALUE. Runtime and accepted source/author checks did not change.",
+      "reports": [
+        {
+          "report": "candidate-116/peer-state/report.json",
+          "sha256": "3a0bdac154325ecd791527a360f4bdecc3236e59b378612271cc2b922415b780"
+        }
+      ]
+    },
+    "review": "Independent source literals, frozen native/old boundary, runtime/cleanup fences, model-only comparator, strict432/source4 and reached372 by config71_recover_review. Successful groups fully reaped; inputs and tested HEAD stable."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "85695cca6d038b4a16b1b2e2ca1f5bbcf90d7c484ff32707630b5eceefbdb377",
+    "files": 107,
+    "raw_bytes": 2260754,
+    "commands": "For frozen comparisons, run config_generator_owning_temporary_models.py with both native-d5b --native-report paths and one --case at a time. Run each reached script with its corresponding frozen --source-report. Makefile has fresh-source entrypoints for later full validation.",
+    "notes": "Raw streams, fixture text, exits and failed fixture history remain outside Git."
+  },
+  "integration": {
+    "status": "guarded fast-forward after independent actual-tail CLEAR",
+    "candidate": "04d38dc55d92b15cd2be4bbb244117b25b397fb3",
+    "base": "fe41c9fce44f36057bd6f70d0e54476d19dd6a52",
+    "joined_archive_root": "/home/user/workspace/php-spec-evidence-archive/config-current-join-78-04d",
+    "joined_checks": "strict433 true, fresh exact normal source, reached normal state 197 conditions and four raw steps; all exits zero and actors reaped"
+  }
+}
