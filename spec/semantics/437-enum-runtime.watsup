@@ -1553,11 +1553,10 @@ def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiv
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NExprArray (SEQUENCE ([(NArrayItem ABSENT (NScalarString (BYTES text_receiver) metadata_receiver) (BOOLEAN false) (BOOLEAN false) metadata_item_receiver), (NArrayItem ABSENT (NScalarString (BYTES text_method) metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_item_method)])) metadata_array, false, eps, porigin_input, z_input))
   -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
   -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_receiver), ENTRY (KINT 1) (DIRECT pvalue_method)]
-  -- if pvalue_receiver = PSTRING_CARRIER INTERNED_STRING ptbytes_receiver
-  -- if $string_carrier_valid(S, pvalue_receiver)
+  -- if $enum_array_string_valid(S, pvalue_receiver) /\ $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver)
   -- if ptbytes_receiver = $base64(text_receiver)
-  -- if pvalue_method = PSTRING_CARRIER INTERNED_STRING ptbytes_method
-  -- if $string_carrier_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
   -- if ptbytes_method = $base64(text_method)
   -- if $enum_is_callable_target(S, PARRAY n_array) = ((porigin_class, ptbytes_method, false))
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = eps -- otherwise
