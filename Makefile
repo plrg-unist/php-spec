@@ -87,6 +87,8 @@ test-semantics: build
 	python3 tests/semantics/output_executor_post_deactivate_state.py
 	python3 tests/semantics/output_executor_retval_sources.py
 	python3 tests/semantics/output_executor_retval_state.py
+	python3 tests/semantics/output_executor_explicit_sources.py
+	python3 tests/semantics/output_executor_explicit_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
