@@ -4862,6 +4862,14 @@ the composed class at `new`.
 One exact source and 48 reached checks cover this bounded form.
 [Anonymous trait-capture review](coverage/semantics/anonymous-trait-capture-review.json).
 
+A parentless unit0 anonymous class can also defer publication for one unadapted
+named trait use within the existing bounded member grammar. Its trait constant
+captures the copied method under the generated NUL name. A captured `parent`
+parameter fails at receive before the body when the class has no parent; the
+fatal stack frame renders the short anonymous name while `get_class` retains
+the full name. Two exact sources and 88 reached conditions cover this cut.
+[Parentless trait-capture review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
