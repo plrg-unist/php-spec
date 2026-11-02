@@ -1,0 +1,43 @@
+{
+  "scope": "Existing copied trait first-class method captures with parent parameter views: old cloned trait scope, later saved class scope, ordered union branches, nullable parent and different first/later parents. This milestone adds source and reached-state validation; module307 and all other semantic rules are unchanged.",
+  "cuts": {
+    "base": "0d756bb0e2bcd901091971fc77e8887aa5b1bd34",
+    "three_native_sources": "0d756bb0e2bcd901091971fc77e8887aa5b1bd34",
+    "three_model_sources": "d45daa397b78a34a438a225e077214db7263a9e1",
+    "cross_parent_catalogue": "1b3aa109970baa20ef9d75140df636159209b683",
+    "state_script": "8aad58b3f",
+    "state_execution": "1b3aa109970baa20ef9d75140df636159209b683 with the committed state-script hash below"
+  },
+  "inputs": {
+    "target": "project-local PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C, TZ=UTC, tests/semantics/profile.json",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "catalogue": "tests/semantics/trait_captured_parent_view_cases.json",
+    "initial_three_row_catalogue_sha256": "e373019f2f5b21cffa3e7a6237b68482264ce69c4fd98e329aaebbc4423ecab6",
+    "catalogue_sha256": "38c1915811486a2a298d6a62a2855588b006a627d0ce3073206ea9154058aa75",
+    "state_script": "tests/semantics/trait_captured_parent_view_state.py",
+    "state_script_sha256": "57340796a8379b22835dc526604b6ce9f92235d883b1e3211899738d975c3569",
+    "module_manifest": "spec/semantics/modules.json; 433 ordered modules, unchanged from the CLASS163 joined gate"
+  },
+  "validation": {
+    "native": "Three frozen native-first originals plus one new cross-parent original, all exact; three normal outcomes and one PHP fatal. The cross-parent case accepts First's BaseA parent and rejects Later's BaseB parent.",
+    "source": "Four selected model-only originals match pinned native stdout, stderr, exit and status exactly; frontend accepted and checked program. The first three used the three-row catalogue on CPU1; the cross-parent case used the four-row catalogue on CPU2. Supervisors retain commands, input hashes, exits and complete reap.",
+    "state": "Three source-reached --sl groups pass 79+86+93=258 conditions with true, empty stderr, stable inputs, CPU2 affinity and complete descendant reap. The old clone has a direct METHODCLOSURE and unresolved PTPARENT view; the later closure uses the first class's parent. Parent-first union reaches an exact FATAL helper and an actual REQUESTFATAL before method body output.",
+    "strict": "The inherited exact cumulative CLASS163 gate passed 433 SL modules at 0d756bb0e; CLASS164 changes no semantic module. The three new state fixtures elaborate and execute through the same full ordered manifest.",
+    "failures": "Two earlier parent-first state cuts failed only at incorrect driver-completion assertions (first expected helper FATAL, second BUDGET). Both remain zero-credit; the separate completion diagnostic established actual REQUESTFATAL. No original source failure was erased."
+  },
+  "raw": {
+    "native_three": [".tools/class164-artifacts/native-initial3.json", "914a5fdb17bd438c5f017e230ca2ce545c0ee8770d2454627c864c996dba47aa"],
+    "native_cross": [".tools/class164-artifacts/cross-parent-native.json", "4c340d274e895661ca11dc9cd4cf2e9d08f04423aaf8d9eab5940b9393888382"],
+    "source_nullable": [".tools/class164-artifacts/source-author-nullable-parent.json", "88556f1a94a3317088047f89276822909e2ed1187cf9099f0620cc7b86717907"],
+    "source_alt_first": [".tools/class164-artifacts/source-peer-alt-before-parent.json", "83830267fd233668437f89a81973e9ee5273d43626292edd0b8179e584ee687b"],
+    "source_parent_first": [".tools/class164-artifacts/source-peer-parent-before-alt-fatal.json", "9eb165341ee943296e57e1374e72f04531d1c242d7522c3cf873ec54130df96b"],
+    "source_cross": [".tools/class164-artifacts/source-cross-parent.json", "b126897fe8db94a3d45a3f67e4c8bb7e50ef33cbe83d2f52cc6521e85d434975"],
+    "state_final": [".tools/class164-artifacts/state-final3.json", "fd37d43b66b70a93ba7d219fc503ceb21d2d2888a58ea8107a291bf6f9d32f84"],
+    "state_first_failure": [".tools/class164-artifacts/state-initial3.json", "f60c195277de69b77f2e0e1679d41baa17de23a49c6cf7ec8eb397f87b2d1bee"],
+    "state_second_failure": [".tools/class164-artifacts/state-corrected3.json", "359f1d09c1cd38eec52dfd779cd2586ee57d0de0aec112adb063af5fffbebf69"],
+    "driver_diagnostic": [".tools/class164-artifacts/debug-parent-completion.json", "2451a958531fa3527b1bc21d5e6edb6d9999cb21c29b03e20f0b5154e2bf4281"]
+  },
+  "engine_routes": "zend_check_type_slow and zend_fetch_ce_from_type in Zend/zend_execute.c, and zend_fetch_class using zend_get_executed_scope in Zend/zend_execute_API.c, at vendor/php-src 8.5.10.",
+  "remaining": "Trait alias/failure receipts, anonymous using-class NUL names, rebound scopes, real Closure/API/wrapper/Generator views and other copied method contracts remain partial.",
+  "status": "private independently reviewed; actual-tail integration pending"
+}

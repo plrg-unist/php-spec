@@ -4625,6 +4625,13 @@ Trait-constant method captures can retain a copied `self` parameter view from
 before class publication. Old cloned and later captures preserve distinct
 lexical names; copied-view `never` fallthrough now identifies a method.
 [Trait-capture review](coverage/semantics/trait-captured-method-kind-review.json).
+
+Copied trait captures also retain the saved lexical scope for `parent` parameter
+checks. A later using class can call through a capture whose `parent` remains
+the first using class's parent; an old trait-scope capture follows union branch
+order and may fail before its body. Four source originals and three reached
+state groups validate the existing rule. [Parent-view review](coverage/semantics/trait-captured-parent-view-review.json).
+
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain

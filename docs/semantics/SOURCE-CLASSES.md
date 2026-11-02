@@ -389,8 +389,25 @@ distinct lexical names. Three exact native/source agreements, private strict433
 and two source-reached state groups pass 130 conditions (126 reached, four
 guards). The [trait-capture review](../../coverage/semantics/trait-captured-method-kind-review.json)
 keeps two pre-fix normal mismatches and exact capture-time deprecations.
-Copied `parent` parameters, alias/failure receipts, anonymous using-class names,
-rebound scopes and other Closure/API/wrapper views remain separate.
+Alias/failure receipts, anonymous using-class names, rebound scopes and other
+Closure/API/wrapper views remain separate.
+
+For existing copied trait first-class captures, a `parent` parameter is checked
+against the saved lexical scope. An old cloned capture can retain a trait scope
+without a parent: a reached object argument then fails before the body if its
+union reaches `parent`; an earlier matching class branch succeeds. A later
+capture can retain the first using class as lexical scope while the called
+class differs, so its `parent` type follows the first class's parent. Null
+bypasses the unresolved class lookup in `?parent`. Four exact source originals
+and three source-reached state groups (79, 86 and 93 conditions) validate these
+existing rules without a semantic edit. The
+[parent-view review](../../coverage/semantics/trait-captured-parent-view-review.json)
+records the native/model cuts and the two corrected fixture failures. Trait
+alias/failure receipts, anonymous using-class names, rebound and wider callable
+views remain partial. The engine routes are `zend_check_type_slow` and
+`zend_fetch_ce_from_type` in `Zend/zend_execute.c`, then `zend_fetch_class`
+using `zend_get_executed_scope` in `Zend/zend_execute_API.c`.
+
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.
