@@ -1,0 +1,18 @@
+{
+  "scope": "Malformed is_callable arrays with a live published enum class/case receiver at key 0",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "8b547224df9e44fb54c7519f893f18a029ef3b0a",
+  "semantic_revision": "0be959a42c0259c49a3db0a76ec84d7a150ef213",
+  "tested_revision": "9b486296e1a36e4a1113a5a423055c9cc1d61011",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: malformed-prefix source SHA cc32e227bf4f0050dc047bfb9f0b62095d4f081c2592d5c61d20fa7dc734b38a, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-shape-evidence/enum-is-callable-shape-strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.56 s, stable inputs",
+    "source": ".tools/enum-is-callable-shape-evidence/user-string-4qxni2c5/report.json: published class/case valid controls and five malformed shape outcomes exact normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-shape-evidence/enum-is-callable-protocol-a5o0dyre/report.json: checked source reached strict SL, 23 checks, true, exit 0, empty stderr, stable inputs"
+  },
+  "behavior": "A live published enum receiver at array key 0 cannot rescue a malformed callback shape. Wrong length or nonstring method returns false before syntax-only early return or method lookup. The reached guard checks false for both syntax flags, one-step result, no backing-cache mutation and rejection after removing the live array allocation.",
+  "remaining": "Missing key 0, nonclass receivers, autoload, magic/user methods and other is_callable operands remain partial."
+}

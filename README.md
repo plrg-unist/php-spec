@@ -6641,6 +6641,9 @@ Published enum strings and class/case arrays also answer direct, dynamic-name
 and pipe `is_callable` queries with one or two arguments. Generated and absent
 methods, syntax-only checks and cold-cache behavior have two exact originals
 and 43 reached guards in the [query review](coverage/semantics/enum-is-callable-review.json).
+Malformed arrays with a published enum receiver at key 0 also return false
+for wrong length or method type; one exact source and 23 reached guards pass
+in the [shape review](coverage/semantics/enum-is-callable-shape-review.json).
 The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

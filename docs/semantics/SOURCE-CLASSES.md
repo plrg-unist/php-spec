@@ -669,3 +669,7 @@ records two exact originals and 43 source-reached strict guards. The third
 by-reference output, autoload and wider magic/user-method cases remain partial.
 Engine routes: `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
 `Zend/zend_API.c:zend_is_callable_at_frame`.
+Malformed arrays with a live published enum class/case receiver at key 0
+return false for wrong length or nonstring method before the syntax-only
+early return. The [shape review](../../coverage/semantics/enum-is-callable-shape-review.json)
+records one exact original and 23 reached guards for both flag modes.
