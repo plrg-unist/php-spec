@@ -493,8 +493,10 @@ frame search, so a fresh sibling with the same method cannot replace the target.
 The same actual receipt admits the existing Fiber callee transfer route.
 A live body still requires its real receiver; a closed record adds no owner.
 Five current originals agree; five reached fronts pass 444 custom/469 reported
-checks. Private strict433 retains its original cut; actual-tail compilation is
-pending. Original compiler, COUNT, Fiber-consumer and fixture-prefix failures
+checks. Private strict433 retains its original cut; joined strict433, three
+exact sources and 166 independent reached checks pass at bd274e79f. The
+current-tail b1adc40c composition is reviewed. Original compiler, COUNT,
+Fiber-consumer and fixture-prefix failures
 retain zero credit; the fresh whole-array observer preserves cardinality and
 payload identity.
 BYREF magic signatures, broader source spellings and wider callback/API,

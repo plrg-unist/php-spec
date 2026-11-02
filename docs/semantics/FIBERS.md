@@ -1103,8 +1103,9 @@ retires both array and alias; the ordinary value cache keeps Token while SEND
 keeps its Input. Abort releases the receiver before SEND input, and Gen drop
 releases the cache. A genuine second fresh Generator shares the method without
 supplying the active or closing target's receipt. Five current originals agree;
-five reached fronts pass 444 custom/469 reported checks. Private strict433
-retains its recorded cut, with actual-tail compilation pending.
+five reached fronts pass 444 custom/469 reported checks. Joined strict433,
+three exact sources and 166 independent reached checks pass at bd274e79f;
+current-tail b1adc40c composition is reviewed.
 [Direct magic review](../../coverage/semantics/generator-direct-magic-review.json).
 
 Shared pending flags and wider parked ownership

@@ -289,6 +289,8 @@ I85 direct magic-Generator native, unchanged refusal, private compiler and new
 source/state evidence is retained under
 `../php-spec-evidence-archive/generator-direct-magic-method-85/` and
 `../php-spec-evidence-archive/generator-direct-magic-method-85-review/`.
+The first archive's `actual-tail-bd274/` retains joined strict, source and
+reached-state reports.
 The [direct magic ledger](../coverage/semantics/generator-direct-magic-review.json)
 keeps original compiler, COUNT, Fiber-consumer and fixture-prefix failures
 separate from corrected and new checks.

@@ -6754,8 +6754,9 @@ source target. A real entry receipt follows fresh, resumed and closing frames;
 actual operation ownership prevents a same-function sibling from supplying it.
 The receipt owns no receiver or packed value. Five current originals agree with
 PHP; native observations and private strict433 retain their distinct cuts.
-Five reached fronts pass 444 custom/469 reported checks; actual-tail compilation
-remains pending.
+Five reached fronts pass 444 custom/469 reported checks. Joined strict433,
+three exact sources and 166 independent reached checks pass at bd274e79f;
+current-tail composition is reviewed at b1adc40c.
 [Direct magic review](coverage/semantics/generator-direct-magic-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

@@ -12,8 +12,9 @@ I85 admits direct Generator-bodied `__call` and `__callStatic` through the
 existing typed source policy. Actual entered context retains the selected
 target through close and Fiber transfer, while live bodies require their real
 receiver. Five current originals agree; five reached fronts pass 444 custom/469
-reported checks at their private cuts. Private strict433 passes; actual-tail
-validation is pending. The original compiler, COUNT, Fiber-consumer and
+reported checks at their private cuts. Joined strict433, three exact sources
+and 166 independent reached checks pass at bd274e79f; b1adc40c composition is
+reviewed. The original compiler, COUNT, Fiber-consumer and
 fixture-prefix failures retain zero credit. BYREF magic signatures and wider
 source/API/lifecycle forms remain partial.
 [I85 review](coverage/semantics/generator-direct-magic-review.json).
