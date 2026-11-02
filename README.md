@@ -6792,7 +6792,9 @@ reference caches. The actual resumer identifies the live Closure; consumed
 storage uses its archived selection/binding without adding owners. The shared
 ATTR07 receiver correction borrows This from that Closure. Native4, private433
 and four source agreements pass at distinct cuts. Five reached fronts pass
-501 custom/526 reported checks; actual-tail compilation remains pending.
+501 custom/526 reported checks. Joined strict433, two exact sources and 111
+independent reached checks pass at 4462bc6d; current-tail composition is
+reviewed at 779569a8.
 [Captured body review](coverage/semantics/generator-captured-method-body-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

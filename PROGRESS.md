@@ -13,7 +13,8 @@ transfer and reference-cache reads using the actual resumer, Closure and
 selected method. After Closure storage retirement, the recorded selection
 reconstructs a nonowning scope without a new owner. Four originals agree;
 five reached fronts pass 501 custom/526 reported checks at their private cuts.
-Private strict433 passes; actual-tail validation is pending. Original compiler,
+Joined strict433, two exact sources and 111 independent reached checks pass at
+4462bc6d; the 779569a8 composition is reviewed. Original compiler,
 refusal and storage failures retain zero credit. Wider bound/API and lifecycle
 contexts remain partial.
 [I86 review](coverage/semantics/generator-captured-method-body-review.json).

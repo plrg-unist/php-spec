@@ -1115,7 +1115,8 @@ and rebound-method probes keep that receiver and Closure through CLOSED.
 The reference cache retains its cell independently of the delivered SEND input;
 Gen drop releases Closure/receiver before the cached value. Four originals
 agree; five reached fronts pass 501 custom/526 reported checks at their distinct
-cuts. Private strict433 retains its original cut; actual-tail compilation is pending.
+cuts. Joined strict433, two exact sources and 111 independent reached checks
+pass at 4462bc6d; current-tail 779569a8 composition is reviewed.
 [Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
 
 Shared pending flags and wider parked ownership

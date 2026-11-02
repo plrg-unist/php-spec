@@ -513,7 +513,8 @@ marker is required; ordinary live target queries remain unchanged.
 The shared ATTR07 Closure receiver correction imports only its borrowing hunk.
 Four native/model originals agree; five reached fronts pass 501 custom/526
 reported checks at their recorded cuts. Private strict433 retains its original
-cut; actual-tail compilation is pending. Original compiler, refusal and
+cut; joined strict433, two exact sources and 111 independent reached checks
+pass at 4462bc6d. The 779569a8 composition is reviewed. Original compiler, refusal and
 array-storage failures retain zero credit. Wider source/API, real-bound Closure,
 delegation, collection and lifecycle combinations remain partial.
 [Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
