@@ -861,6 +861,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_protocol.py
 	python3 tests/semantics/enum_is_callable_shape_protocol.py
 	python3 tests/semantics/enum_is_callable_magic_protocol.py
+	python3 tests/semantics/enum_is_callable_case_method_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
