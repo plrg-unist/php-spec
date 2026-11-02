@@ -4,7 +4,9 @@
   "semantic_heads": {
     "private": "678da44082828b0bf2abf1071f16d66b43e5b0a4",
     "joined_parent": "4f8ef665a938a0534d14b4bc1c3f275f92c07177",
-    "joined": "793cfea1b354bb7a4786284c340faafb51609fdc"
+    "joined": "793cfea1b354bb7a4786284c340faafb51609fdc",
+    "latest_tail_parent": "2c69739633aa720d24e36b65cbd5a06c8a65c0ef",
+    "latest_tail": "10257b9ded75da20e1db8c3c82391b97586e4f93"
   },
   "runtime": {
     "php": "8.5.10 CLI NTS 64-bit",
@@ -19,7 +21,14 @@
   "private_validation": {
     "strict433": "true, empty stderr, exit 0, 11.812 s",
     "source_command": "python3 tests/semantics/output_executor_post_deactivate_sources.py",
-    "source_cases": ["plain", "suppressed", "handler", "fallback", "early", "plain-slow"],
+    "source_cases": [
+      "plain",
+      "suppressed",
+      "handler",
+      "fallback",
+      "early",
+      "plain-slow"
+    ],
     "source_result": "6 exact native/model stdout, stderr and exit 0 agreements; all model status normal",
     "boundary_command": "python3 tests/semantics/output_executor_post_deactivate_boundaries.py",
     "boundary_result": "explicit-null, callable and recursive handler-body starts each checked Unsupported with exact prior stdout, empty buffers and OUTPUTSEQ=1",
@@ -48,6 +57,11 @@
       "output-executor-post-deactivate-ro_fvmrp/report.json": "36f3ccbd82b0f42999cbb182b18d00237dee3cba4c635c101111b87c831a792c",
       "output-executor-post-deactivate-h38e9exd/report.json": "e6db6adc315f99ea3f2342b8baac84fb5f1743f61a2db74b6f8ab9b550458748",
       "output-post-deactivate-boundaries-cbvbqcaw/report.json": "e81756d9b24e49646e2214cc09b1e67ad77220ac87383c6d94bce9d7b6c9c5ea"
+    },
+    "latest_tail_base": "/home/user/workspace/php-spec-evidence-archive/ob06-post-deactivate-tail-10257b9de",
+    "latest_tail_reports_sha256": {
+      "ob06-tail-strict-10257b9de/report.json": "525cfc855e3d4da88a14261ef865a4f0a5f71a5004bc406d9d3ebc6c4e0dd11f",
+      "output-executor-post-deactivate-zybhalgs/report.json": "6240d3050c7f5705431e762727e65700f60ae911ef1cce623ac5beb80a9a0bc2"
     }
   },
   "zero_credit": [
@@ -55,5 +69,10 @@
     "Selected Notice failure at handler-result retval operation exit before the two-task certificate; archived output-executor-post-deactivate-epl2klf7/handler/tool-failure.json.",
     "Native fast and USE_ZEND_ALLOC=0 handler-return-object destructor both produce FX|D1|H:8|R1|RF|R2|DF|D2| and one inner Notice, exit 0; model first fails at DESTRUCTOR_ENTER step 185 to 186 before the inner start. Source SHA256 a6742f22384ea3a15b42c1e54a2876f59475afe7d248ecd7eed9ebe0f2f33cce; archived output-post-deactivate-boundaries-0njn0r54 and ob06-retval-bisect."
   ],
-  "remaining": "Handler-return object destructor cleanup, explicit/callable post-deactivation starts, late registration, abnormal queue completions, blocked output and wider executor cleanup remain outside this bounded cut."
+  "remaining": "Handler-return object destructor cleanup, explicit/callable post-deactivation starts, late registration, abnormal queue completions, blocked output and wider executor cleanup remain outside this bounded cut.",
+  "latest_tail_validation": {
+    "strict433": "true, empty stderr, exit 0, 11.877 s",
+    "source": "--match handler: exact native/model stdout, stderr and exit 0; model normal",
+    "interaction": "Since the prior joined parent, only module443 changed a Closure __invoke warning trace FILE under CLOSURE_INVOKE_ENTER. OB06 selected Notice resumes OB_NOTICE_RESULT; modules391/444 and shared error/cleanup modules are unchanged."
+  }
 }
