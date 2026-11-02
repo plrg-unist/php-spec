@@ -342,7 +342,6 @@ def $config_generator_reference_owning_live_storage(S, pconfiggenerator) = true
   -- if $config_iterator_argument(S, pvalue_cell)
   -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue_cell), eps, $heap_graph(S).EDGES))
   -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = [HCELL n_cell]
-  -- if $heap_owners($heap_graph(S), HCELL n_cell) = 1
   -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
   -- if $lookup($global_table_view(S).ENV, ptbytes) = (n_cv)
   -- if S.STORE[n_cv] = DEFINED (POBJECT pconfiggenerator.OBJECT)

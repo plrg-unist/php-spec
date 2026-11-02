@@ -457,6 +457,16 @@ ordinary/physical edge guards remain, while buffered child objects and wider
 array graphs stay fenced. See the
 [rebuffered-array-child caller review](../../coverage/semantics/gc-rebuffered-array-child-caller-review.json).
 
+GC20 releases one local owning copy of that array's childless `stdClass`
+after the array copy release. Pinned PHP records buffer roots 0→1→2 and
+the full destructor/count stream agrees with the model. The reached D state
+has two valid slots in array-then-leaf order. Both are black under the live
+Closure and leave the count plan; owners remain Closure 2, array 3, leaf 2.
+Only the leaf buffer-absence premise changes. The direct key-0 entry,
+matching ordinary/physical edges, childlessness and real machine-rooted
+caller remain required. See the
+[buffered array-child caller review](../../coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

@@ -655,3 +655,17 @@ the same reception rules as direct generated calls. The
 [pipe review](../../coverage/semantics/enum-pipe-review.json) records four exact
 native-first originals and two source-reached strict SL guard groups. Wider
 callable APIs and default loading remain partial.
+
+## Published enum is_callable queries
+
+For already published enums, `is_callable` checks generated method strings,
+class-name arrays and live enum-case arrays without invoking the target.
+One- and two-argument direct, selected dynamic-name and pipe calls use the
+ordinary CONFIG argument path. Runtime queries consult the existing callable
+admission rules; syntax-only queries accept valid string/array shapes even when
+the enum has no such method. A query does not initialize the backing cache.
+The [query review](../../coverage/semantics/enum-is-callable-review.json)
+records two exact originals and 43 source-reached strict guards. The third
+by-reference output, autoload and wider magic/user-method cases remain partial.
+Engine routes: `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
+`Zend/zend_API.c:zend_is_callable_at_frame`.

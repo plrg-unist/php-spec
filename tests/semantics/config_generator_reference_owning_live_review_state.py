@@ -162,10 +162,10 @@ def conditions(name, program, path, stdout):
         '~$config_generator_discard_allowed(S_no_cv_popped,pconfiggenerator_second)',
         'S_shared_cell = S_finish[.HELD = S_finish.HELD ++ [HCELL n_payloadref]]',
         '$heap_owners($heap_graph(S_shared_cell), HCELL n_payloadref) = 2',
-        '~$config_generator_reference_owning_live_storage(S_shared_cell,pconfiggenerator_second)',
-        '~$config_generator_finish_allowed(S_shared_cell,pconfiggenerator_second)',
+        '$config_generator_reference_owning_live_storage(S_shared_cell,pconfiggenerator_second)',
+        '$config_generator_finish_allowed(S_shared_cell,pconfiggenerator_second)',
         'S_shared_popped = S_shared_cell[.TODO = (THROW_SEARCH n_saved) :: ptask_finish*]',
-        '~$config_generator_discard_allowed(S_shared_popped,pconfiggenerator_second)',
+        '$config_generator_discard_allowed(S_shared_popped,pconfiggenerator_second)',
     ] + public('S_finish') + seek('S_finish', 2805, 'S_invoke') + [
         'S_invoke.TODO = (CONFIG_GENERATOR pconfiggenerator_second "invoke") :: ptask_finish*',
         '$config_generator_valid(S_invoke,pconfiggenerator_second,"invoke")',

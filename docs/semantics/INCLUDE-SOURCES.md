@@ -1969,3 +1969,16 @@ after explicit unset. The initial author fixture assumed an unreachable
 operational storage step and retains zero credit. Typed/backed cells, aliases,
 temporary BYREF producers, effectful finalizers and sole-Generator retirement
 remain separate.
+
+The [outside-alias owning reference increment](../../coverage/semantics/config-generator-reference-owning-alias-review.json)
+removes only the exact one-owner check for the final ordinary REFCELL under the
+retained global Generator CV, bounded copied history and live finite quiet
+value gates. Four exact originals, strict432 and two reached recipes (527
+conditions, seven raw steps) check an object or ARRAY copied before cell
+mutation, TypeError TraceArgs versus a saved throw, and quiet Gen retirement
+while the aliased cell/current value survive until the last alias is unset.
+One affected A83 constructed control (266 conditions) now expects the shared
+cell to be admitted. The original A83 cuts remain historical. Initial private
+artifact and strict-argv setup failures retain zero credit. Typed/backed
+cells, temporary producers, finalizers and sole-Generator retirement remain
+separate.

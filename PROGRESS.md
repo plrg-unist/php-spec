@@ -8,6 +8,15 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+I87 authenticates direct raw array and string method Generator creation and
+scoped factories from the immutable selected method. Archived receiver history
+adds no owner; direct producer and Fiber entry require the real live receiver.
+Six originals agree and seven reached fronts pass 561 custom/596 reported
+checks at private cuts. Joined strict433, three exact sources and a strengthened
+93-assertion closed-history state pass; e0e3ce7f composition is reviewed.
+Wider binding, callback and lifecycle contexts remain partial.
+[I87 review](coverage/semantics/generator-raw-method-factory-review.json).
+
 I86 authenticates captured ordinary method Generator bodies during Fiber
 transfer and reference-cache reads using the actual resumer, Closure and
 selected method. After Closure storage retirement, the recorded selection
@@ -74,11 +83,17 @@ originals at 2614477b2. Published generated methods now also run through pipe
 strings and arrays. Four native-first originals agree, including strict typing,
 cold table selection across Stringable rebinding, case-object arrays, arity and
 temporary cleanup. Private strict433 and two source-reached strict SL groups
-pass 68 guards at db3b26b16. Wider APIs and default loading remain partial.
+pass 68 guards at db3b26b16. Published enum method strings and class/case
+arrays now answer direct, dynamic-name and pipe `is_callable` queries with
+one or two arguments and no third output. Two native-first originals agree,
+covering generated and absent methods, syntax-only checks, selected-name
+rebinding and cold backing tables; 43 source-reached strict SL guards pass.
+The third output, autoload and wider magic/user-method cases remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
-[pipe review](coverage/semantics/enum-pipe-review.json).
+[pipe review](coverage/semantics/enum-pipe-review.json),
+[query review](coverage/semantics/enum-is-callable-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -227,6 +242,14 @@ counting. Leaf candidates and wider entries remain fenced; COW and nonempty
 persistent provenance are untested. Graph/count/owners are unchanged.
 [GC19 review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
 
+GC20 admits that childless `stdClass` when releasing one owning local copy
+buffers it after the array. Native status observes roots 0→1→2; the exact
+original agrees, and 122 strict reached assertions bind both ordered slots,
+their removal from the D plan, and the rooted Closure/array/leaf owners.
+Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
+nonempty persistent provenance remain open.
+[GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -297,6 +320,10 @@ A retained BYREF Generator can keep that final ordinary owning cell through
 closed storage while the copied send remains stable. Four originals and 448
 reached conditions pass; joined strict433 and terminal source/state pass at
 `c5086c205`.
+Outside aliases can keep the ordinary owning cell after Generator retirement;
+the copied final argument remains stable across later cell writes and COW.
+Four originals, 527 reached conditions and an affected 266-condition control
+pass; joined strict433 and fresh terminal source/state pass at `a00e229f9`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -425,7 +452,15 @@ pass 302 checks (300 reached, two derived); private strict 432 and joined
 strict 433 pass. A retained-native reference-warning/unregister source agrees
 again on the corrected cache owners. The first normal deadline and two fixture
 failures retain zero credit. Other API wrappers, late free and the older
-source-wrapper inner-warning trace-head location remain partial. [Tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+source-wrapper inner-warning trace-head location remained partial at that cut.
+[Tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+
+ATTR10 gives that source-wrapper inner warning's handler trace head the real
+explicit `Closure->__invoke` call file/line, matching its existing wrapper frame.
+One native-first original now agrees exactly; a reached warning state passes 24
+assertions and full strict433 passes. The old model's two missing location
+predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
+callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

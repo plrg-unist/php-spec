@@ -831,6 +831,15 @@ saved throw and TypeError TraceArgs, then quiet Generator/cell retirement on
 explicit unset. Typed/backed cells, aliases, temporary producers, effectful
 finalizers and sole-Generator cleanup remain separate.
 
+[Outside aliases of owning Generator cells](coverage/semantics/config-generator-reference-owning-alias-review.json)
+allow additional ordinary owners of that final reference cell while a global
+CV retains the Generator. Four sources use a top-level slot and alias: TypeError
+keeps a copied old ARRAY 13 while the cell changes to ARRAY 31; a saved throw
+releases the copied value. Unsetting the Generator leaves the aliased cell and
+current value live until the last alias is unset. Two reached proofs and one
+affected prior control check these lifetimes. Typed/backed cells, temporary
+producers and effectful finalizers remain separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -3804,6 +3813,11 @@ again, while the child remains unbuffered. The rooted array leaves the D count
 plan as black, and the full source stream matches PHP. Wider entries and
 buffered child objects remain fenced; see the
 [rebuffered-array-child caller review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
+GC20 also admits the childless `stdClass` after a local owning copy release
+buffers it behind the array. The two live nodes leave the D count plan as
+black; one exact source and 122 strict reached assertions pass. Exact one-entry
+and childless guards remain; see the
+[buffered array-child caller review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4609,7 +4623,11 @@ fresh reference warnings, weak reception, raw/received sensitive snapshots and
 unused-result cleanup under the persistent cache. Five originals and 302 reached/guard
 checks pass; joined strict433 and a retained-native warning/unregister comparison
 pass on corrected cache owners. Other API wrappers and the older source-wrapper
-inner-warning trace-head location remain partial. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+inner-warning trace-head location remained partial at that cut. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+The source `Closure->__invoke` inner-warning handler trace now inherits the real
+call file/line for both its head and wrapper frame. One native-first original,
+a reached trace state and strict433 pass; broader wrapper/reentry paths remain
+partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -6619,7 +6637,11 @@ strict compilation and three originals. Pipe strings and class/case arrays now
 select generated methods before receiving the left value, preserving strict
 typing, Stringable rebinding, cold tables and temporary cleanup; four exact
 originals and 68 reached guards pass in the [pipe review](coverage/semantics/enum-pipe-review.json).
-`is_callable`, case attributes, enum collection policy, the default loader and wider acquisition remain partial;
+Published enum strings and class/case arrays also answer direct, dynamic-name
+and pipe `is_callable` queries with one or two arguments. Generated and absent
+methods, syntax-only checks and cold-cache behavior have two exact originals
+and 43 reached guards in the [query review](coverage/semantics/enum-is-callable-review.json).
+The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
@@ -6877,6 +6899,16 @@ and four source agreements pass at distinct cuts. Five reached fronts pass
 independent reached checks pass at 4462bc6d; current-tail composition is
 reviewed at 779569a8.
 [Captured body review](coverage/semantics/generator-captured-method-body-review.json).
+
+I87 adds raw array/string method Generator creation and scoped factory history
+using the existing selected-method proof. Stored selection and retired factory
+history add no owners; direct Fiber entry keeps the actual live This.
+Six native/model originals and private433 retain their recorded cuts. Seven
+reached fronts pass 561 custom/596 reported checks; original failures keep zero
+credit. Joined strict433 and three exact sources pass at 833e6e8f; the
+strengthened 93-assertion closed-history state passes at 1f0e17ba. The
+e0e3ce7f current composition is reviewed.
+[Raw method review](coverage/semantics/generator-raw-method-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
