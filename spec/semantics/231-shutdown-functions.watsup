@@ -277,6 +277,14 @@ def $shutdown_entries_valid(S, pshutdownentry :: pshutdownentry_tail*) = ($shutd
 def $shutdown_roots(eps) = eps
 def $shutdown_roots(pshutdownentry :: pshutdownentry_tail*) = $callback_cache_nodes(pshutdownentry) ++ $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $shutdown_roots(pshutdownentry_tail*)
 
+;; zend_fcc_addref retains a bound Closure's object independently of the
+;; Closure's own this_ptr edge. Ordinary method targets already own their object.
+dec $shutdown_fcc_nodes(pstate, pcalltarget) : pnode*
+def $shutdown_fcc_roots(S, eps) = eps
+def $shutdown_fcc_roots(S, pshutdownentry :: pshutdownentry_tail*) = $shutdown_fcc_nodes(S, pshutdownentry.TARGET) ++ $shutdown_fcc_roots(S, pshutdownentry_tail*)
+def $shutdown_fcc_nodes(S, CLOSURE_TARGET n) = $instance_roots($target_receiver(S, CLOSURE_TARGET n))
+def $shutdown_fcc_nodes(S, pcalltarget) = eps -- otherwise
+
 def $shutdown_known(eps) = eps
 def $shutdown_known(pvalue :: pvalue_tail*) = (KNOWN pvalue) :: $shutdown_known(pvalue_tail*)
 def $shutdown_args_valid(S, eps) = true
