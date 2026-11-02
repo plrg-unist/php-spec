@@ -446,6 +446,21 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $node_children(S, HARRAY n_array) = eps
   -- if $gc_trace_children(S, HARRAY n_array) = eps
   -- if (HOBJECT n) <- $machine_roots(S)
+;; An earlier node-free capture can precede the childless array capture.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin ([DIRECT pvalue_scalar, DIRECT (PARRAY n_array)]) eps
+  -- if $value_nodes(pvalue_scalar) = eps
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_immutable_array(S, n_array)
+  -- if $node_children(S, HOBJECT n) = [HARRAY n_array]
+  -- if $node_children(S, HARRAY n_array) = eps
+  -- if $gc_trace_children(S, HARRAY n_array) = eps
+  -- if (HOBJECT n) <- $machine_roots(S)
 ;; A captured array may hold one childless stdClass object.
 def $gc_ordinary_node(S, HOBJECT n) = true
   -- if S.GC.ACTIVE = (pgccall)

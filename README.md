@@ -3846,6 +3846,10 @@ GC22 also admits the key-1 child after its local owning copy release puts
 it in the buffer. All three live array/child slots leave the D count plan;
 one exact source and 139 strict reached assertions pass. See the
 [buffered second child review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
+GC23 admits a node-free scalar capture before the childless array in the
+same direct Closure. Native Reflection confirms capture order; one original
+and 110 strict reached assertions pass. See the
+[scalar-array caller review](coverage/semantics/gc-scalar-array-caller-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
