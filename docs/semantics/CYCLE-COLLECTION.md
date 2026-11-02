@@ -499,7 +499,7 @@ the [scalar-array caller review](../../coverage/semantics/gc-scalar-array-caller
 
 GC24 accepts one mutable array anywhere in a finite list of direct defined
 node-free scalar Closure captures. The array's finite entries are direct
-node-free scalars or distinct allocated childless stdClass objects; the
+node-free scalars or allocated childless stdClass objects; the
 ordinary and physical child lists must agree. The real selected direct
 Closure and machine root still protect the entire array component during
 the D count pass. The new clause excludes compiled-pool descendants and
@@ -507,10 +507,22 @@ materialized object property tables, and remains disjoint from older exact
 array clauses. Reversed captures, three mixed-key leaves and a post-capture
 COW variant agree with PHP. Reached states prove array/key-0 buffer order,
 all three live leaves black, owners 2/3/2/2/2 and refusal of duplicate or
-separately captured leaves, aliases, indirect entries, nested arrays,
+separately captured leaves at that cut, aliases, indirect entries, nested arrays,
 undefined sentinels, destructor-bearing children, a direct pool root and a
-proxy table. General duplicate-edge, nested, reference and user-finalizer
+proxy table. GC25 supersedes the duplicate-entry refusal. General nested, reference and user-finalizer
 graphs remain open. See the [finite capture review](../../coverage/semantics/gc-finite-capture-review.json).
+
+GC25 admits repeated direct entries to one childless stdClass under the
+same rooted Closure. The two array buckets remain separate physical and
+ownership edges, while the leaf has one identity and one GC buffer slot.
+After the source unsets its original leaf names and global array, the
+captured array owns the leaf twice; the live Closure protects both during
+the D count pass. Native and model agree through weak liveness after the
+call and weak death after Closure release. Reached checks prove two array
+edges, one leaf slot, array/leaf owners 2/2, black removal and continued
+refusal of nested or separately captured heap children. Distinct two-entry
+shapes still use their earlier exact clause. See the
+[duplicate-edge review](../../coverage/semantics/gc-duplicate-edge-review.json).
 
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;

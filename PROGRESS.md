@@ -342,7 +342,7 @@ GC21 admits two distinct childless `stdClass` entries at array keys 0 and 1
 under the same direct Closure caller. The array and key-0 leaf are buffered;
 key-1 stays outside the buffer. One pinned original agrees, and 136 strict
 reached assertions check both slots, black removal, owners and a duplicate
-child refusal. The pre-edit Unsupported retains zero credit. Wider arrays,
+child refusal at that cut, superseded by GC25. The pre-edit Unsupported retains zero credit. Wider arrays,
 backedges and post-capture COW remain open.
 [GC21 review](coverage/semantics/gc-two-array-children-caller-review.json).
 
@@ -363,14 +363,24 @@ and source/caller bounds. Pre-edit Unsupported retains zero credit.
 
 GC24 admits finite ordered node-free scalar captures around one mutable
 one-level array in the same authenticated direct Closure. Its entries may
-be direct scalars or distinct childless stdClass leaves in physical order;
+be direct scalars or childless stdClass leaves in physical order;
 compiled-pool descendants and materialized property tables are fenced.
 Reversed capture order, three mixed-key leaves and post-capture COW give
 three exact source pairs. Strict reached checks pass 113+146 assertions,
-and the corrected GC23 group passes 110. Duplicate identities, shared
-separate captures, aliases, nested arrays and user-destructor children
-remain refused. Earlier Unsupported, overlap and fixture failures retain
+and the corrected GC23 group passes 110. Its original duplicate-identity
+refusal is superseded by GC25; shared separate captures, aliases, nested
+arrays and user-destructor children remain refused. Earlier Unsupported,
+overlap and fixture failures retain
 zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
+
+GC25 admits repeated direct edges to the same childless stdClass inside
+that finite captured array. With global strong owners removed, two array
+edges keep one leaf alive until Closure release; pinned status sees roots
+0→1→2 and then 0. One full source agrees exactly. Strict reached checks
+pass 127 new and affected GC21/22/24 groups 137+140+147, proving two
+physical edges, one leaf buffer slot, owners 2/2, black D protection and
+nested-array refusal. The source-only Unsupported and first fixture error
+retain zero credit. [GC25 review](coverage/semantics/gc-duplicate-edge-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
