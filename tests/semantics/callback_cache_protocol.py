@@ -9,15 +9,17 @@ from pathlib import Path
 import subprocess
 
 import callback_cache_review_protocol as reviewed
+import callback_closure_invoke_protocol as invokes
 from error_handler_run import recorded
 from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
-CASES = (
+CACHE_CASES = (
     'tick-bound-closure-cache-and-ordered-unregister',
     'shutdown-bound-closure-cache-and-captured-final-observers',
     *reviewed.CASES,
 )
+CASES = CACHE_CASES + invokes.CASES
 AUTHOR_HELPERS = r'''
 dec $cc_test_front(pstate, nat) : bool
 def $cc_test_front(S, 0) = true
@@ -82,7 +84,7 @@ def $cc_test_seek(S, n_stage, n) = S
   -- if ~$cc_test_front(S, n_stage) /\ $(n > 0)
   -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
 '''
-HELPERS = AUTHOR_HELPERS + reviewed.HELPERS
+HELPERS = AUTHOR_HELPERS + reviewed.HELPERS + invokes.HELPERS
 
 
 def digest(path):
@@ -90,6 +92,8 @@ def digest(path):
 
 
 def conditions(name, program, source, expected_stdout):
+    if name in invokes.CASES:
+        return invokes.conditions(name, program, source, expected_stdout)
     if name in reviewed.CASES:
         return reviewed.conditions(name, program, source, expected_stdout)
     encoded_path = base64.b64encode(str(source).encode()).decode()
@@ -239,6 +243,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--native-report', action='append', required=True, type=Path)
     parser.add_argument('--case', choices=CASES, action='append')
+    parser.add_argument('--group', choices=('attr08', 'attr09'), default='attr08')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     assert len(os.sched_getaffinity(0)) == 1 and next(iter(os.sched_getaffinity(0))) in range(1, 6)
@@ -247,7 +252,8 @@ def main():
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     php = ROOT / '.tools/php/bin/php'
     watched = [Path(__file__), ROOT / 'tests/semantics/error_handler_run.py',
-               ROOT / 'tests/semantics/recorded_worker.py', Path(reviewed.__file__), ROOT / 'tests/semantics/profile.json',
+               ROOT / 'tests/semantics/recorded_worker.py', Path(reviewed.__file__), Path(invokes.__file__), Path(invokes.reviewed.__file__),
+               ROOT / 'tests/semantics/profile.json',
                ROOT / 'spec/semantics/modules.json', ROOT / 'spec/semantics/30-storage.watsup',
                *[ROOT / ('spec/semantics/' + name) for name in (
                    '79-call-frames.watsup', '80-call-control.watsup', '83-call-traces.watsup',
@@ -285,7 +291,7 @@ def main():
             assert row['id'] not in native
             native[row['id']] = (source, row)
             watched.append(source)
-    selected = args.case or CASES
+    selected = args.case or (CACHE_CASES if args.group == 'attr08' else invokes.CASES)
     assert len(set(selected)) == len(selected) and set(selected) <= native.keys()
     before = {str(path): digest(path) for path in watched}
     out = args.output.resolve()
@@ -323,7 +329,7 @@ def main():
                   and not (out / (name + '-model.stderr')).read_bytes())
         rows.append({'id': name, 'source_sha256': digest(source),
                      'fixture_sha256': digest(fixture), 'conditions': len(checks),
-                     'derived_guard_assertions': reviewed.DERIVED.get(name, 0),
+                     'derived_guard_assertions': {**reviewed.DERIVED, **invokes.DERIVED}.get(name, 0),
                      'model': process, 'passed': passed})
         print(name, passed, flush=True)
         if not passed:
@@ -335,7 +341,7 @@ def main():
     (out / 'report.json').write_text(json.dumps({'revision': revision, 'profile': profile,
         'inputs': before, 'selection': selected, 'affinity': sorted(os.sched_getaffinity(0)),
         'rows': rows, 'passed': passed,
-        'scope': 'Reached persistent callback caches and borrowed calls; inline retirement and quiet shutdown through FINAL; no late-free policy or native execution'}, indent=2) + '\n')
+        'scope': 'Reached persistent callback caches, tick wrapper warning/receive/return phases, inline retirement and quiet FINAL retention; no late-free policy or native execution'}, indent=2) + '\n')
     return passed
 
 

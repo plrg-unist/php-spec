@@ -39,6 +39,8 @@ def main():
     watched = [Path(__file__), ROOT / 'tests/semantics/error_handler_run.py',
                ROOT / 'tests/semantics/deprecated_closure_invoke_review_cases.py',
                ROOT / 'tests/semantics/callback_cache_cases.py',
+               ROOT / 'tests/semantics/callback_closure_invoke_cases.py',
+               ROOT / 'tests/semantics/callback_closure_invoke_review_cases.py',
                ROOT / 'tests/semantics/profile.json', ROOT / 'spec/semantics/modules.json',
                ROOT / 'spec/semantics/30-storage.watsup',
                ROOT / 'spec/semantics/39-ownership.watsup',

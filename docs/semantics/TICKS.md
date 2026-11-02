@@ -60,9 +60,25 @@ cleanup after Closure retirement; it never restores a live owner or callable ent
 
 Quiet shutdown cache owners survive callback completion, the early destructor
 pass and output FINAL. Late registry-free/output policy remains partial. One
-Closure-object __invoke array control stays an exact early lookup Unsupported
-boundary at zero agreement credit; it needs its own wrapper/API consumer.
+Closure-object __invoke array control was an exact early lookup Unsupported
+boundary at the ATTR08 cut; its tick consumer is extended below.
 Five normal originals agree, four reached groups pass 296 checks (292 reached,
 four derived), and private strict 432 passes. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
 keeps the old equality counterexample, failed property/certificate states and
 corrected fixtures at their original cuts; actual-parent composition is pending.
+
+Cached user `[Closure,"__invoke"]` tick calls forward positional arguments and
+borrow the outer Closure from FCC.object. E_DEPRECATED 8192 precedes its first copied argument; required-reference
+warning 2 uses the wrapper name and an isolated cell. E_USER_DEPRECATED 16384 then
+precedes the inner call and weak type reception. The entered call adds one Closure
+instance, borrows its receiver and separately owns the raw outer arguments.
+NoDiscard stays masked. Trace redaction preserves independent raw/received
+snapshots and the inherited tick marker. Normal frame cleanup retires inner owners
+and raw arguments before TICK_RESULT discards the unused value; the persistent
+cache stays live. Warning throws preserve that cache until later unregister.
+
+The [tick wrapper review](../../coverage/semantics/callback-closure-invoke-review.json)
+records five normal agreements, four reached groups/302 checks (300 reached, two
+derived) and private strict 432. Other API wrappers, late registry free and broader
+callable/value histories remain partial. The older explicit source-wrapper warning
+head's missing inherited file/line is a separate concrete follow-up.

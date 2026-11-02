@@ -247,6 +247,17 @@ an exact Unsupported boundary/zero credit. Late free and wider callback/compiler
 forms remain partial; actual composition is pending.
 [Cache review](coverage/semantics/callback-fcc-cache-review.json).
 
+ATTR09 stages cached tick `[Closure,"__invoke"]` calls: 8192 before outer copies,
+reference warning 2 with a fresh private cell, then 16384 before inner reception.
+The FCC owns the outer Closure; the user call adds one instance and borrows This.
+Raw/received sensitive traces stay distinct, and unused results retire after raw
+arguments while the cache remains live. Five normal originals agree (four new
+native originals plus one retained-native former boundary); four reached groups
+pass 302 checks (300 reached, two derived), and private strict 432 passes. The first
+normal deadline and two fixture failures retain zero credit. Other API wrappers,
+late free and the older source-wrapper warning-head location remain partial;
+actual composition is pending. [Tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The

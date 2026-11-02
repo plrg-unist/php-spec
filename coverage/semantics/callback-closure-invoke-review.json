@@ -1,0 +1,202 @@
+{
+  "milestone": "ATTR09",
+  "status": "private validated; canonical composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project oracle/profile; pure SL semantics",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09",
+  "scope": [
+    "Tick-local [user Closure,__invoke] selection authenticates the frozen array and forwards positional arguments; other callback API resolvers remain unchanged.",
+    "The persistent FCC.object owns the outer Closure. Warning/send cursors own only copied raw arguments; the entered inner call adds one Closure instance and borrows its bound receiver.",
+    "8192 precedes outer argument copying. Required-reference warning 2 names Closure::__invoke and creates an isolated fresh cell; 16384 follows raw sends and precedes inner entry/type reception.",
+    "NoDiscard remains masked. Raw/coerced sensitive trace snapshots are separate and both body frames inherit the real tick marker through the trampoline.",
+    "Existing frame release drops inner owners then raw wrapper arguments while retaining RESULT; TICK_RESULT then discards the unused value with the persistent cache still live.",
+    "Abrupt warning completion drops only prepared raw owners. The registry survives the catch; inline unregister retains the existing argument-before-cache/query order."
+  ],
+  "production": {
+    "revision": "4c7e37d9ce03acf16d682e23415df75f27facfa9",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "162f9ecae0c5220da8b078f57640e2b460560383723c18188e94a08d07bd3ad6",
+      "spec/semantics/393-ticks.watsup": "357db44d4d0e14116d6ec0a6a7831ac0f36d7ec2369afc94d652438665c435ae",
+      "spec/semantics/443-deprecated-closure-invoke.watsup": "231bbd4b0d9292c307dde06e9da0c94cff55b40a3ba231964929546f57958280"
+    },
+    "compatibility": "Production is unchanged after this runtime cut; later edits affect reached fixtures/recorder and documentation only. Strict and accepted source cuts retain their original identities."
+  },
+  "authority": [
+    "vendor/php-src/ext/standard/basic_functions.c:user_tick_function_call,register_tick_function,unregister_tick_function,user_tick_function_dtor",
+    "vendor/php-src/Zend/zend_API.h:zend_call_known_fcc,zend_fcc_addref,zend_fcc_equals,zend_fcc_dtor",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function,zend_call_known_function",
+    "vendor/php-src/Zend/zend_closures.c:Closure::__invoke,zend_get_closure_invoke_method",
+    "vendor/php-src/Zend/zend_compile.h:ZEND_ACC_CALL_VIA_HANDLER alias",
+    "vendor/php-src/Zend/zend_builtin_functions.c:zend_fetch_debug_backtrace,debug_backtrace_get_args"
+  ],
+  "evidence": {
+    "native_new": 4,
+    "native_retained": 1,
+    "native_reports": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/native-first-2b5da1ffd/report.json",
+        "sha256": "76e6de92e46ceb8301ea74c77df209b7465a38df9729153ae477d40dea86e42d",
+        "revision": "2b5da1ffd5459bcb99550de93a2990047ba42565",
+        "selected_passed": [
+          "tick-invoke-outer-throw-before-raw-copy-keeps-cache",
+          "tick-invoke-inner-throw-keeps-raw-wrapper-and-persistent-cache"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/native-location-corrected/report.json",
+        "sha256": "85bd24ed6352b992ac0c6e3caf318bf0ede0843f41ac4575146a84ea58ab925d",
+        "revision": "372690539f36a91984e234a2a481c500e30ff327",
+        "selected_passed": [
+          "tick-invoke-warning-phases-weak-receive-and-unused-result"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/native-reference-first/report.json",
+        "sha256": "168b7bf320e2a6d4440cbd69677648b895691bc4e181c5d5f5fce76e2052b652",
+        "revision": "1c921c37974a353303eca8d90045aed60b9e734d",
+        "selected_passed": [
+          "tick-invoke-reference-warning-between-outer-and-inner"
+        ]
+      }
+    ],
+    "native_retained_report": "../builtin-attributes-08/native-closure-array-ea07c5929/report.json",
+    "source_agreements": 5,
+    "source_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/source-retained-unmarked-4c7e37d9c/report.json",
+        "sha256": "622b9e4ff09bdf973228718ef961fbe9928f4f6dfff91b5c227fc6f370a78c94",
+        "revision": "4c7e37d9ce03acf16d682e23415df75f27facfa9",
+        "id": "tick-closure-invoke-array-caches-outer-closure-only",
+        "source_sha256": "e8a77b2aba0383b51442cdee8c55069d9a9bc70ad8287e635b4760490625eecd",
+        "elapsed_seconds": 33.07195210456848
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/source-reference-4c7e37d9c/report.json",
+        "sha256": "5ef4edd8b502c60f9ad52fcee1912e57c1c49cfed9b4fd6a6b502ba77c8806d1",
+        "revision": "4c7e37d9ce03acf16d682e23415df75f27facfa9",
+        "id": "tick-invoke-reference-warning-between-outer-and-inner",
+        "source_sha256": "f5388cf22ab82e77fd5cda58c7d80842a876b9634e4eefadb82bd151ba99aac6",
+        "elapsed_seconds": 35.93385863304138
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/source-outer-throw-4c7e37d9c/report.json",
+        "sha256": "550edaf830c0d7342042caf17b339e61801986b0752840d197d4090daf6ac27c",
+        "revision": "4c7e37d9ce03acf16d682e23415df75f27facfa9",
+        "id": "tick-invoke-outer-throw-before-raw-copy-keeps-cache",
+        "source_sha256": "7869a69b0792da0f9aea1780b6ddcd36f5de65cfedf07cbf18c7d837401d09bf",
+        "elapsed_seconds": 74.00834774971008
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/source-normal-measured-30c875ec4/report.json",
+        "sha256": "11e8dd2522cfc1f0c2da8ffc48fde877c4cac479ba8b078d5accfeac40623df3",
+        "revision": "30c875ec435f9bcc237d2c13f99ba6bc4ea9cc6a",
+        "id": "tick-invoke-warning-phases-weak-receive-and-unused-result",
+        "source_sha256": "d9d6159e39673cc75f67899ea13b3bcd4933e10ea4c94f3dbfd90a92bb69a44a",
+        "elapsed_seconds": 196.48665833473206
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/source-inner-measured-af864252a/report.json",
+        "sha256": "0c5ad1ea19d4b0e799fd5dfc20b45fd6924bae26b9ba381ab4feecd0b2d61428",
+        "revision": "af864252a245a44593a1c387bf854e5c360e8495",
+        "id": "tick-invoke-inner-throw-keeps-raw-wrapper-and-persistent-cache",
+        "source_sha256": "3ae34c1e1197a28c44c7eda1e12ade693e3dbf8d7bc7768dae566aaf7fae4b8a",
+        "elapsed_seconds": 145.1821358203888
+      }
+    ],
+    "reached_groups": 4,
+    "conditions": 302,
+    "reached": 300,
+    "derived": 2,
+    "state_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/reached-normal-list-fixed/report.json",
+        "sha256": "b2fa6712b5aa0d8817034e5d4db4749112ac4658d7d620d05cf1025f823e7990",
+        "revision": "30c875ec435f9bcc237d2c13f99ba6bc4ea9cc6a",
+        "rows": [
+          {
+            "id": "tick-invoke-warning-phases-weak-receive-and-unused-result",
+            "conditions": 78,
+            "derived": 1,
+            "elapsed_seconds": 252.08529090881348
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/reached-peer-af864252a/report.json",
+        "sha256": "06c6a489102d2595cac5fedd891966001f9262ab8da5eb44246f8d7405ed2775",
+        "revision": "af864252a245a44593a1c387bf854e5c360e8495",
+        "rows": [
+          {
+            "id": "tick-invoke-inner-throw-keeps-raw-wrapper-and-persistent-cache",
+            "conditions": 103,
+            "derived": 1,
+            "elapsed_seconds": 177.91170716285706
+          }
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/reached-author-rest-af864252a/report.json",
+        "sha256": "2aa11c0a2a3559937f88b18ac438678818c3454e54c5a825e6207265ecb177a0",
+        "revision": "af864252a245a44593a1c387bf854e5c360e8495",
+        "rows": [
+          {
+            "id": "tick-invoke-reference-warning-between-outer-and-inner",
+            "conditions": 75,
+            "derived": 0,
+            "elapsed_seconds": 41.51685571670532
+          },
+          {
+            "id": "tick-invoke-outer-throw-before-raw-copy-keeps-cache",
+            "conditions": 46,
+            "derived": 0,
+            "elapsed_seconds": 79.6503336429596
+          }
+        ]
+      }
+    ],
+    "private_strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09/strict-first-4c7e37d9c/report.json",
+      "sha256": "0d4adad621bc1a5d2ee0fe948ffd89d8655fe8c34bf1aee0210e9f65b879578c",
+      "revision": "4c7e37d9ce03acf16d682e23415df75f27facfa9",
+      "modules": 432,
+      "elapsed_seconds": 11.476901292800903
+    }
+  },
+  "preserved_failures": [
+    {
+      "report": "native-first-2b5da1ffd/report.json",
+      "credit": 0,
+      "note": "Only the first normal-row body location predicate was false. CALL_VIA_TRAMPOLINE walks to the user tick marker; that one source predicate was corrected and only that native row reran."
+    },
+    {
+      "report": "source-normal-4c7e37d9c/report.json",
+      "credit": 0,
+      "note": "The first CLI deadline of 150 seconds expired. The already-planned full normal 78-check state group completed in 252.085s, justifying one unchanged CLI retry with a 300-second cap, exact in 196.487s."
+    },
+    {
+      "report": "reached-normal-6f9da5770/report.json",
+      "credit": 0,
+      "note": "Parser-only fixture failure: two record SLOTS list arguments needed parentheses; no semantic execution."
+    },
+    {
+      "report": "reached-peer-30c875ec4/report.json",
+      "credit": 0,
+      "note": "A redundant direct caller-phase validator was applied to active handler state. Removing only that premise preserved descriptor/owner/source checks; affected peer 103 then passed."
+    }
+  ],
+  "remaining": [
+    "Shutdown and other API Closure-object wrappers, builtin/magic targets and wider callable/reference/variadic/reentry/throw histories remain partial.",
+    "The explicit source-wrapper inner-warning handler trace head still uses eps/-1 in the older443 arm. Native trampoline walking requires its inherited user marker; this is the next concrete location repair, outside the accepted old cuts.",
+    "Late tick/shutdown registry free/output and wider collector/cache histories remain partial."
+  ],
+  "review": {
+    "agent": "/root/attr04_recover_review",
+    "runtime": "CLEAR at 4c7e",
+    "peer_reached": 103,
+    "final_package": "CLEAR at 5017c9155; positional scope wording and review status only afterward"
+  },
+  "recovery": "Use maintained callback_closure_invoke case/component files and the existing deprecated_api_native/models and callback_cache_protocol recorders; select passing rows explicitly from mixed native reports. Raw records hold exact commands, inputs, profile, exits and groups; no accepted replay is required for metadata.",
+  "composition": {
+    "status": "pending exact released parent, interaction review and one full actual-manifest joined check",
+    "canonical_mutated": false
+  }
+}
