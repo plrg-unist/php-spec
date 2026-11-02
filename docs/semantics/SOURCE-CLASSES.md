@@ -744,3 +744,7 @@ before the boolean through the same source-certified path. The
 [scalar-output review](../../coverage/semantics/enum-is-callable-output-scalar-review.json)
 records three exact outcomes and 79 reached guards; old-object destructor
 effects remain Unsupported.
+Literal enum method strings also retain raw class and method spelling in the
+third output. The [string-spelling review](../../coverage/semantics/enum-is-callable-output-string-spelling-review.json)
+records canonical, lowercase and leading-backslash outcomes with 88 reached
+guards.

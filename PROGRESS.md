@@ -119,6 +119,9 @@ sources remain partial. The same direct output path now accepts initialized
 int, bool and null CV values, writing the name before returning the boolean.
 Three exact outcomes and 79 reached guards pass; an old output object remains
 explicit Unsupported because its destructor runs during replacement.
+Literal enum method strings now also retain their raw class and method spelling
+in the third output, including lowercase and a leading backslash. Three exact
+outcomes and 88 reached guards pass.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -132,7 +135,8 @@ explicit Unsupported because its destructor runs during replacement.
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
 [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
-[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json).
+[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
+[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now

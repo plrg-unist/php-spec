@@ -6765,7 +6765,10 @@ the [spelling review](coverage/semantics/enum-is-callable-output-spelling-review
 records three exact outcomes and 64 reached guards. Initialized int, bool and
 null output CVs now receive names before the boolean result; the
 [scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json)
-records three exact outcomes and 79 reached guards. Old-object destructor and
+records three exact outcomes and 79 reached guards. Literal enum method strings
+also preserve raw lowercase, leading backslash and method spelling in the
+third output; the [string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json)
+records three exact outcomes and 88 reached guards. Old-object destructor and
 input/output alias effects, other array sources, autoload, case attributes,
 enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
