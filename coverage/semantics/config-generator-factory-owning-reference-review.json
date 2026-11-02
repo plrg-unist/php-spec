@@ -1,0 +1,112 @@
+{
+  "milestone": "A87 factory returned owning BYREF Generator cell",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...namedByvalFactory()) whose returned temporary is a distinct named zero-argument BYREF Generator",
+    "behavior": "A scalar first send precedes a finite quiet owning final ordinary reference cell. A factory-created weak observer does not own the Generator. Normal DATA/INPUT and real storage retire the Generator/cell before TypeError while a copied object or ARRAY remains in TraceArgs; quiet terminal throw retires copied payload before saved catch.",
+    "limits": "The factory branch requires the final cell to have one live owner at last INPUT. A86 direct temporary outside aliases remain admitted. The second key normalizes to integer. Factory cell aliases, typed/backed cells, effectful finalizers and wider producer/ITEM histories remain separate."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "8e33edeaea845e922cee02c03ee228b794c68a81",
+    "source_freeze": "861fe8010a8430fef3f3cf9f24edf8b05e052fc3",
+    "runtime_revision": "3f32cc2d73f4f2c3c9d049f995d0c97619060499",
+    "validated_revision": "87b9937eb2fe469ceef2b6e67a187f971ea473fb",
+    "change": "One bounded factory-reference source alternative is added to A85 copied final-cell history/value, with a factory-specific sole ordinary cell guard in live storage. Existing direct temporary alias admission and all generic 355, 420, schema and manifest rules remain unchanged.",
+    "engine": "Zend SEND_UNPACK copies dereferenced yielded values and releases DATA before INPUT. zend_generator_free_storage drops the Generator-to-REFCELL edge; the copied value follows TypeError TraceArgs or abrupt prefix cleanup."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-factory-owning-reference-87",
+    "native_first": {
+      "revision": "861fe8010a8430fef3f3cf9f24edf8b05e052fc3",
+      "author": {
+        "report": "native-author-861fe8010/report.json",
+        "sha256": "9d5c642e76456623e292441fa57209a23e8e3bbcfc98161281bf97bdfb664c05"
+      },
+      "peer": {
+        "report": "native-peer-861fe8010/report.json",
+        "sha256": "740648bc23a4bc1d113bd0bbb9f8950ccb8262008335902c2cc27ebdd13c8515"
+      },
+      "originals": 4,
+      "result": "Four distinct new originals match handwritten stdout, empty stderr and exit0; native-only preparation has zero model credit."
+    },
+    "old_refusal": {
+      "revision": "861fe8010a8430fef3f3cf9f24edf8b05e052fc3",
+      "report": "old-control-861fe8010/report.json",
+      "sha256": "c6d626d65a65fc3ea61f4dcdcdf28221a2c3061038b75bab0af03c372e138dc0",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;P;Y0;Y1;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "87b9937eb2fe469ceef2b6e67a187f971ea473fb",
+      "modules": 432,
+      "report": "strict-87b9937eb/report.json",
+      "sha256": "55fe6d2bf61de70fedfd1f4086990d7ba04d55f2db074cd8c48353e042afacda"
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Model-only comparisons with retained frozen native source bytes/profile/streams; no application PHP rerun.",
+      "reports": [
+        {
+          "revision": "87b9937eb2fe469ceef2b6e67a187f971ea473fb",
+          "report": "model-object-normal-87b9937eb/report.json",
+          "sha256": "8c2198d469950eb3391745c2db83c2f4f8bfe0a65e04e98c6f039c0426b10eb1"
+        },
+        {
+          "revision": "87b9937eb2fe469ceef2b6e67a187f971ea473fb",
+          "report": "model-object-throw-87b9937eb/report.json",
+          "sha256": "539537bec5e6186ba72564fce74561301870dd054ffba25d678ba7c8201a5eb7"
+        },
+        {
+          "revision": "87b9937eb2fe469ceef2b6e67a187f971ea473fb",
+          "report": "model-array-normal-87b9937eb/report.json",
+          "sha256": "3bf669c92d0f9eef464fb59d682e228ab8e79ce649c4bd12b9c5c76ee0ca28f0"
+        },
+        {
+          "revision": "87b9937eb2fe469ceef2b6e67a187f971ea473fb",
+          "report": "model-array-throw-87b9937eb/report.json",
+          "sha256": "a3b92579d3c537a1ccc64ebe0b547254d41adecb4abe7eb627b879b628fec555"
+        }
+      ]
+    },
+    "reached": {
+      "revision": "87b9937eb2fe469ceef2b6e67a187f971ea473fb",
+      "conditions": 512,
+      "if_premises": 506,
+      "raw_steps": 6,
+      "author": {
+        "conditions": 161,
+        "if_premises": 159,
+        "raw_steps": 2,
+        "report": "reached-author-87b9937eb/report.json",
+        "sha256": "147dadbbe295c28db5778f89a2ae6c06470ffcafb392094056dc57eb1d282d90"
+      },
+      "peer": {
+        "conditions": 351,
+        "if_premises": 347,
+        "raw_steps": 4,
+        "report": "reached-peer-87b9937eb/report.json",
+        "sha256": "d3bcafc269145d358ab42e85da337ab032394081588fc75cc1afd66166e3ca18"
+      }
+    },
+    "review": "Independent source/manual/native/old raw review; factory/source/runtime/comparator/static fixture review; strict432, all four retained-native model comparisons and both reached fixtures independently CLEAR. No accepted source/native replay."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "075aca118654e3522810ee0782135d4f939067517fd5dbcc9de1622766f40183",
+    "files": 89,
+    "raw_bytes": 2230340,
+    "commands": "Native-only source runners froze four originals. The model comparator consumed retained native reports one --case at a time. Reached scripts used corresponding retained native reports via --source-report. Ordered strict used the 432-module manifest and SL runner."
+  },
+  "integration": {
+    "status": "integrated after independent actual-tail review and guarded fast-forward",
+    "candidate": "b0c742d2ed877638b97b7e68a551265a89f5bea8",
+    "base": "bf86098d8df33be735bd3e02a1d8a9cee907ad02",
+    "joined_archive": "/home/user/workspace/php-spec-evidence-archive/config-current-join-87",
+    "joined_revision": "1a7c38d0b4de1b3909b3676747dcfda890da572e",
+    "checks": "Strict SL 433 exit0 true with empty stderr and stable inputs/HEAD; fresh object terminal source exact native/model exit0; reached terminal 161 conditions/2 steps passed. Runtime and fixtures are byte-identical at the integrated candidate; intervening enum case callable and GC23 active Closure collection paths are disjoint."
+  }
+}

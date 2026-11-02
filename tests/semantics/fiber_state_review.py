@@ -794,6 +794,18 @@ def run(selected, *, process_seconds=120):
         finally:
             adapter.close()
         fixture = directory / 'test.watsup'
+        encoded_file = json.dumps(base64.b64encode(str(source).encode()).decode())
+        initial = '$php_run(' + checked['fixture'] + ', 0, ' + encoded_file + ')'
+        request_prefix = ''
+        if 'request_env' in case:
+            entries = ', '.join('(' + str(list(key)) + ', ' + str(list(value)) + ')'
+                                for key, value in case['request_env'])
+            encoded_cwd = json.dumps(base64.b64encode(str(directory).encode()).decode())
+            request_prefix = ('  -- if preqbytes_fixture = $base64(' + encoded_file + ')\n'
+                '  -- if preqbytes_cwd = $base64(' + encoded_cwd + ')\n'
+                '  -- if Q = {ENV ([' + entries + ']), ARGV ([preqbytes_fixture]), FILE preqbytes_fixture, SECONDS 1700000000, MICROSECONDS 125000, VARIABLES $ptascii("EGPCS"), JIT true, CWD (preqbytes_cwd)}\n'
+                '  -- if $request_valid(Q)\n')
+            initial = '$php_request_run(' + checked['fixture'] + ', 0, ' + encoded_file + ', Q)'
         fixture.write_text(
             'dec $stage(pstate) : bool\ndef $stage(S) = true -- if ' + case['stage'] + '\n'
             'def $stage(S) = false -- otherwise\ndec $seek(pstate, nat) : pstate\n'
@@ -802,8 +814,7 @@ def run(selected, *, process_seconds=120):
             '-- if ~$stage(S) -- if $(n > 0) -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
             'def $seek(S, n) = S -- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET\n'
             'dec $main() : bool\ndef $main() = true\n'
-            '  -- if S_initial = $php_run(' + checked['fixture'] + ', 0, '
-            + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')\n'
+            + request_prefix + '  -- if S_initial = ' + initial + '\n'
             '  -- if S_reached = $seek(S_initial[.COMPLETION = NORMAL], 4000)\n'
             '  -- if S_reached.COMPLETION = NORMAL \\/ S_reached.COMPLETION = BUDGET\n'
             '  -- if S = S_reached[.COMPLETION = NORMAL]\n'
@@ -815,7 +826,11 @@ def run(selected, *, process_seconds=120):
                   (directory / 'model.stdout').read_bytes() == b'true\n' and
                   not (directory / 'model.stderr').read_bytes())
         records.append({'id': name, 'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
-                        'assertions': len(case['checks']) + 5, 'process': process, 'passed': passed})
+                        'assertions': len(case['checks']) + 5 + (4 if 'request_env' in case else 0),
+                        'process': process, 'passed': passed})
+        if 'request_env' in case:
+            records[-1]['request_env_base64'] = [[base64.b64encode(key).decode(),
+                base64.b64encode(value).decode()] for key, value in case['request_env']]
         print(name, passed, flush=True)
         if not passed:
             print((directory / 'model.stderr').read_text()[-2500:], flush=True)

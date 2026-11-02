@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous.captured-method-diagnostics",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "scope": "Existing ordinary first-class METHODCLOSURE captures of static and instance class methods, called directly or through explicit ->__invoke; no new method admission.",
+  "design": "173 authenticates the live captured method, selected call context and declaring lexical owner, with an unchanged base/view descriptor. Missing-arity and ordinary return consumers format the declaring class and member separately; never fallthrough identifies method kind. Global call_function_name, typed-input whole-name display, never whole-name display, producers and binders stay unchanged.",
+  "frozen_sources": [
+    {
+      "path": ".tools/class162-author/frozen.json",
+      "sha256": "1d63071b72411ecacb7412990fb2959dc2926182ddaefb68847c43d58753d24a"
+    },
+    {
+      "path": ".tools/class162-review/frozen.json",
+      "sha256": "6b176412787aea1c93e757627fb4a15a6d58486284407b0b284dd122edacb1c9"
+    }
+  ],
+  "native_first": {
+    "revision": "2610dcdda82c0686c8251de119f1ab18be4145cc",
+    "supervisor": {
+      "path": ".tools/class162-artifacts/native-initial4-corrected.json",
+      "sha256": "5ab18966dd9a8c9876de98907e9f60137c678c19b4ea6138e70c43420b1640c1"
+    },
+    "case_reports": [
+      {
+        "path": ".tools/class162-artifacts/captured-instance-lexical-owner.native-first.json",
+        "sha256": "daba18974914ff63f48240148ddb39c46060707baabd0a142e5b18c5ef01c326"
+      },
+      {
+        "path": ".tools/class162-artifacts/captured-static-explicit-invoke.native-first.json",
+        "sha256": "c032a43d712c654794c2ce41e339a512a6898fde329895bead861d2d798f3736"
+      },
+      {
+        "path": ".tools/class162-artifacts/author-captured-static-missing-arity.native-first.json",
+        "sha256": "4c2b68b78c5a007f64e3aa41ba20f7744e2cbda477ffc74a63393ce9668e5d54"
+      },
+      {
+        "path": ".tools/class162-artifacts/author-eval-captured-static-returns.native-first.json",
+        "sha256": "2d61687dc45c6f4e9d8d87a1b40daa4baba39c4ae2b70c55553d5f60ff326460"
+      }
+    ],
+    "result": "Four new originals normal/exit0/empty stderr under the pinned profile; each was run once after a recorder-only preflight correction."
+  },
+  "unchanged_baseline": {
+    "revision": "2610dcdda82c0686c8251de119f1ab18be4145cc",
+    "author_arity": {
+      "supervisor": {
+        "path": ".tools/class162-artifacts/unchanged-author-arity.json",
+        "sha256": "958e45edb0b2c9a4be8ef25a1da384be47a2c5faf9aca1562ef9a09dc3f15482"
+      },
+      "raw_observation": {
+        "path": ".tools/class162-artifacts/author-captured-static-missing-arity.unchanged-baseline.json",
+        "sha256": "a606104325a529ed3b68f770b9beab93c163c6e30fac07e6f0e02f907188414c"
+      },
+      "read_only_decoded_comparison": {
+        "path": ".tools/class162-artifacts/author-arity-baseline-decoded.json",
+        "sha256": "7f4fa834fdaab6b60437c363f695c0b83a83bbe0e04aba65caddffca8585c0f7"
+      },
+      "original_comparison_credit": 0
+    },
+    "peer_explicit": {
+      "supervisor": {
+        "path": ".tools/class162-artifacts/unchanged-peer-explicit.json",
+        "sha256": "bb4bb11bc9a2421e6f5fbdd95690a36a2a4f905fc6452e52a1748a7d1820088d"
+      },
+      "raw_observation": {
+        "path": ".tools/class162-artifacts/captured-static-explicit-invoke.unchanged-baseline-corrected.json",
+        "sha256": "3c8d56243714a718a695222891d3cdae16301ddf8e70883b4922aedeee5bc346"
+      }
+    },
+    "result": "Two normal pre-fix observations expose NUL-bearing missing-arity/return names and generic never function kind. The author raw is valid; its original undecoded-stdout assertion has zero credit and the mismatch was established by read-only decoding. Typed-input and named-hole whole-name displays already matched."
+  },
+  "validation": {
+    "strict_sl": {
+      "revision": "7a3a85258289b4752247e251959e2a81c8c63f89",
+      "modules": 433,
+      "supervisor": {
+        "path": ".tools/class162-artifacts/strict-candidate-relocated.json",
+        "sha256": "e5cc9bc61c15a8e21e4ef5fa7e1a4407a02f46ea2571d3823217af485ff108fa"
+      },
+      "result": "true newline, empty stderr, exit0"
+    },
+    "sources": {
+      "agreements": 4,
+      "records": [
+        {
+          "case": "captured-static-missing-arity",
+          "revision": "7a3a85258289b4752247e251959e2a81c8c63f89",
+          "supervisor": {
+            "path": ".tools/class162-artifacts/model-author-arity.json",
+            "sha256": "3cb9d8cf6e7145e7bda80acd2d852e7de94cd187df07ee0fe36f8b9617a59a3e"
+          },
+          "raw_report": {
+            "path": ".tools/class162-artifacts/method-runtime-ukp9g_dq/report.json",
+            "sha256": "f247084ba74a66b96156b35a9161885d649521ca4f8caac4235d7dafc805f3c0"
+          }
+        },
+        {
+          "case": "captured-instance-lexical-owner",
+          "revision": "7a3a85258289b4752247e251959e2a81c8c63f89",
+          "supervisor": {
+            "path": ".tools/class162-artifacts/model-peer-instance.json",
+            "sha256": "8ff9731aa2fb2289ae8249ea9e606511860225b57a01514d22f04a2c95554720"
+          },
+          "raw_report": {
+            "path": ".tools/class162-artifacts/method-runtime-bxlwopdq/report.json",
+            "sha256": "6c51fd7f2e5e30ce69d91cbe8b13c38deb29acf617236e631095a39ad05a7aed"
+          }
+        },
+        {
+          "case": "captured-static-explicit-invoke",
+          "revision": "7a3a85258289b4752247e251959e2a81c8c63f89",
+          "supervisor": {
+            "path": ".tools/class162-artifacts/model-peer-explicit.json",
+            "sha256": "fe3ef6561490dabaa068590739ed5de52576b7221f50c0a514c13392524a1ffa"
+          },
+          "raw_report": {
+            "path": ".tools/class162-artifacts/method-runtime-7csn5lt5/report.json",
+            "sha256": "5e77ade92bc966fcee8ece21ae2fca6efa1bd59cb94615915523007f64423d28"
+          }
+        },
+        {
+          "case": "eval-captured-static-returns",
+          "revision": "7a3a85258289b4752247e251959e2a81c8c63f89",
+          "supervisor": {
+            "path": ".tools/class162-artifacts/model-author-eval.json",
+            "sha256": "409f6bcafc25e0d1aafa4bfb5c5e0f69d005347248346eb7098cfc2d9bca3056"
+          },
+          "raw_report": {
+            "path": ".tools/class162-artifacts/method-runtime-zf5p7f6n/report.json",
+            "sha256": "d0000f21ca0e8e3c1f3fe0f472d27ee5c4f209a2cb3c90eaeef3c874539d943b"
+          }
+        }
+      ],
+      "result": "All four selected model-only sources match the exact native normal stdout/stderr/status/exit tuples."
+    },
+    "state": {
+      "conditions": 295,
+      "reached_conditions": 291,
+      "derived_guards": 4,
+      "records": [
+        {
+          "name": "eval captured return",
+          "revision": "5ef985b427574e75f4a0c37eff1db34445e2e0ea",
+          "conditions": 140,
+          "reached_conditions": 139,
+          "derived_guards": 1,
+          "supervisor": {
+            "path": ".tools/class162-artifacts/authored-captured-eval140.json",
+            "sha256": "828b308c53d4742b32ed0bbde0e01043da60a54d8976c2880fa69eb81ae22d5f"
+          },
+          "raw_report": {
+            "path": ".tools/class162-artifacts/anonymous-captured-method-eval-7hqccxbe/report.json",
+            "sha256": "05cee5eddf82c4c95ddabd4b4e6e7728c2f2de7fd6f07e4959f286a0a4032bca"
+          }
+        },
+        {
+          "name": "instance lexical owner",
+          "revision": "b90c476578ebd6de7c54e339558dfc6838fab65b",
+          "conditions": 155,
+          "reached_conditions": 152,
+          "derived_guards": 3,
+          "supervisor": {
+            "path": ".tools/class162-artifacts/independent-captured-owner155.json",
+            "sha256": "24efc2b144ad10278a9a2fb35edb5e366d717ca315eae7e12c92c07d009093e2"
+          },
+          "raw_report": {
+            "path": ".tools/class162-artifacts/anonymous-captured-method-owner-1r76yog8/report.json",
+            "sha256": "43a975bb6e3dead4d30b31321d3c8ffd00d1adbc5fb0f042e9135cffa62f12d3"
+          }
+        }
+      ],
+      "result": "Both strict SL source-reached groups returned true newline with empty stderr/exit0; exact input maps and revisions remained stable, supervisors and descendants fully reaped."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "reason": "Initial four-source native recorder retained a stale five-case unique-name assertion and stopped before PHP execution.",
+      "report": {
+        "path": ".tools/class162-artifacts/native-initial4.json",
+        "sha256": "740fbd12f37083c553a685c79a25012be057bd9e0929da61eb6e79060cbaa54d"
+      }
+    },
+    {
+      "reason": "Initial strict gate rejected a forward reference from module142 to module173; the same rules were relocated after the declaration.",
+      "report": {
+        "path": ".tools/class162-artifacts/strict-candidate.json",
+        "sha256": "7cda3f50b97933d98ea230e228d573fd911fb819d3a6b0f32e25abcaf39403a5"
+      }
+    },
+    {
+      "reason": "Initial instance fixture sought an impossible typed receive for untyped required formals.",
+      "supervisor": {
+        "path": ".tools/class162-artifacts/independent-captured-owner149.json",
+        "sha256": "b566f22d2b7ff63b647e4459f0142a9870ce77bc7d0d5dfd47f96525dc1a4f92"
+      },
+      "raw_report": {
+        "path": ".tools/class162-artifacts/anonymous-captured-method-owner-x7923umf/report.json",
+        "sha256": "3e1ecf85b8d27aecace49c1874dff4fa13c5d392be51788fa521e2a8e1837d9e"
+      }
+    }
+  ],
+  "tested_code": {
+    "source_revision": "7a3a85258289b4752247e251959e2a81c8c63f89",
+    "author_state_revision": "5ef985b427574e75f4a0c37eff1db34445e2e0ea",
+    "peer_state_revision": "b90c476578ebd6de7c54e339558dfc6838fab65b",
+    "implementation": {
+      "path": ".tools/class162-dev/spec/semantics/173-method-callables.watsup",
+      "sha256": "3c96dcb6edd96e7101fcbac25e891fca3028a986dce27da4db45614c5c8c218a"
+    },
+    "catalogue": {
+      "path": ".tools/class162-dev/tests/semantics/anonymous_captured_method_cases.json",
+      "sha256": "eda5cad064dd5ddd8d901faf319e9dee95c4d297fb35e6eeda3b6eab9a2c7b83"
+    },
+    "state_scripts": [
+      {
+        "path": ".tools/class162-dev/tests/semantics/anonymous_captured_method_eval_protocol.py",
+        "sha256": "162f5ba3fad4332ad709a70b9c882ed8547a3060336f721507125348db90ba55"
+      },
+      {
+        "path": ".tools/class162-dev/tests/semantics/anonymous_captured_method_owner_protocol.py",
+        "sha256": "d6ac18bf3e21b6aa9fa45f700183dc324d8e6148fbafe1b0d8e7b44a7662cac5"
+      }
+    ]
+  },
+  "execution": {
+    "cpu": 1,
+    "php_profile": {
+      "path": ".tools/class162-dev/tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "module_catalogue": {
+      "path": ".tools/class162-dev/spec/semantics/modules.json",
+      "sha256": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3"
+    },
+    "note": "Supervisor/raw records retain commands, exits, affinities, module and consumed-input fingerprints; all descendants were reaped at each serial boundary."
+  },
+  "limits": "Copied trait parameter views, rebound scopes, real Closure literals, Closure::fromCallable and other API/fake wrapper views, Generator bodies and broader callable diagnostics remain outside this slice. The feature remains partial.",
+  "recovery": "Raw archives are external under .tools/class162-artifacts. Keep the unintegrated private worktree and evidence until ordered canonical integration and its then-current joined gate are authorized; do not replay accepted cuts."
+}

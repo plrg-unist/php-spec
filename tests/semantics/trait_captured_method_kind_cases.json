@@ -1,0 +1,58 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "trait-cached-cloned-later-never",
+      "source": "<?php\ntrait Trait163Review {\n    public static function stop(?self $value = null): never {\n        echo 'body:', self::class, ':', static::class, ';';\n    }\n    public const array Y = [self::stop(...)];\n    public static array $x = self::Y;\n}\ntrait Layer163Review { use Trait163Review; }\nset_error_handler(static function () { return true; });\nclass First163Review {\n    use Layer163Review;\n    public static array $x = self::Y;\n}\n$old = First163Review::Y[0];\n$old = clone $old;\nclass Later163Review {\n    use Layer163Review;\n    public static array $x = self::Y;\n}\n$later = Later163Review::Y[0];\ntry { $old(); } catch (TypeError $e) {\n    echo 'old:', $e->getMessage(), ':', $e->getLine(), ';';\n}\ntry { $later(); } catch (TypeError $e) {\n    echo 'later:', $e->getMessage(), ':', $e->getLine(), ';';\n}\n",
+      "source_sha256": "d58cd8d7dad9a86819240bd219c68b9a2638feed352ae16d9e12095980d1ba54",
+      "stdout_base64": "Ym9keTpMYXllcjE2M1JldmlldzpGaXJzdDE2M1JldmlldztvbGQ6TGF5ZXIxNjNSZXZpZXc6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo1O2JvZHk6Rmlyc3QxNjNSZXZpZXc6TGF0ZXIxNjNSZXZpZXc7bGF0ZXI6Rmlyc3QxNjNSZXZpZXc6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo1Ow==",
+      "stdout_template_base64": "Ym9keTpMYXllcjE2M1JldmlldzpGaXJzdDE2M1JldmlldztvbGQ6TGF5ZXIxNjNSZXZpZXc6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo1O2JvZHk6Rmlyc3QxNjNSZXZpZXc6TGF0ZXIxNjNSZXZpZXc7bGF0ZXI6Rmlyc3QxNjNSZXZpZXc6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo1Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class163-artifacts/trait-cached-cloned-later-never.native-first.json",
+      "native_raw_sha256": "76f57694bd5c3cf51299f1c590a598690d6b4dd0b05b293831758f05e329689a",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "trait-cached-self-parameter",
+      "source": "<?php\ntrait Trait163AuthorA {\n    public const CALL = self::take(...);\n    public static $seed = self::CALL;\n    public static function take(self $value): string {\n        echo 'body:', self::class, ':', static::class, ';';\n        return 'ok';\n    }\n}\nclass Owner163AuthorA {\n    use Trait163AuthorA;\n    public static $seed = self::CALL;\n}\n$capture = Owner163AuthorA::CALL;\ntry { $capture(); } catch (ArgumentCountError $e) {\n    echo 'missing:', $e->getMessage(), ':', $e->getLine(), ';';\n}\ntry { echo 'captured:', $capture(new Owner163AuthorA), ';'; }\ncatch (TypeError $e) { echo 'captured-type:', $e->getMessage(), ':', $e->getLine(), ';'; }\ntry { echo 'direct:', Owner163AuthorA::take(new Owner163AuthorA), ';'; }\ncatch (TypeError $e) { echo 'direct-type:', $e->getMessage(), ':', $e->getLine(), ';'; }\n",
+      "source_sha256": "218a6733dd64eef881f2f54ba79336f8a4196d92fb0050ca0df8d51f236746b3",
+      "stdout_base64": "bWlzc2luZzpUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBUcmFpdDE2M0F1dGhvckE6OnRha2UoKSwgMCBwYXNzZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTYzLWF1dGhvci9vcmlnaW5hbHMvdHJhaXQtY2FjaGVkLXNlbGYtcGFyYW1ldGVyLnBocCBvbiBsaW5lIDE1IGFuZCBleGFjdGx5IDEgZXhwZWN0ZWQ6NTtjYXB0dXJlZDpjYXB0dXJlZC10eXBlOlRyYWl0MTYzQXV0aG9yQTo6dGFrZSgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgVHJhaXQxNjNBdXRob3JBLCBPd25lcjE2M0F1dGhvckEgZ2l2ZW4sIGNhbGxlZCBpbiAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNjMtYXV0aG9yL29yaWdpbmFscy90cmFpdC1jYWNoZWQtc2VsZi1wYXJhbWV0ZXIucGhwIG9uIGxpbmUgMTg6NTtkaXJlY3Q6Ym9keTpPd25lcjE2M0F1dGhvckE6T3duZXIxNjNBdXRob3JBO29rOw==",
+      "stdout_template_base64": "bWlzc2luZzpUb28gZmV3IGFyZ3VtZW50cyB0byBmdW5jdGlvbiBUcmFpdDE2M0F1dGhvckE6OnRha2UoKSwgMCBwYXNzZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTUgYW5kIGV4YWN0bHkgMSBleHBlY3RlZDo1O2NhcHR1cmVkOmNhcHR1cmVkLXR5cGU6VHJhaXQxNjNBdXRob3JBOjp0YWtlKCk6IEFyZ3VtZW50ICMxICgkdmFsdWUpIG11c3QgYmUgb2YgdHlwZSBUcmFpdDE2M0F1dGhvckEsIE93bmVyMTYzQXV0aG9yQSBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSBvbiBsaW5lIDE4OjU7ZGlyZWN0OmJvZHk6T3duZXIxNjNBdXRob3JBOk93bmVyMTYzQXV0aG9yQTtvazs=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFRyYWl0MTYzQXV0aG9yQTo6dGFrZSBpcyBkZXByZWNhdGVkLCBpdCBzaG91bGQgb25seSBiZSBjYWxsZWQgb24gYSBjbGFzcyB1c2luZyB0aGUgdHJhaXQgaW4ge0ZJTEV9IG9uIGxpbmUgMwo=",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class163-artifacts/author-trait-cached-self-parameter.native-first.json",
+      "native_raw_sha256": "9e00d47a6ec008b7096f7e77afb85ff0402180fb7a447c2d23e5cd3da1c8590c",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "trait-cached-optional-return",
+      "source": "<?php\ntrait Trait163AuthorB {\n    public const BAD = self::bad(...);\n    public const END = self::end(...);\n    public static $badSeed = self::BAD;\n    public static $endSeed = self::END;\n    public static function bad(?self $value = null): int {\n        echo 'bad-body:', self::class, ':', static::class, ';';\n        return [];\n    }\n    public static function end(?self $value = null): never {\n        echo 'end-body:', self::class, ':', static::class, ';';\n    }\n}\nclass Owner163AuthorB {\n    use Trait163AuthorB;\n    public static $badSeed = self::BAD;\n    public static $endSeed = self::END;\n}\n$bad = Owner163AuthorB::BAD;\n$end = Owner163AuthorB::END;\ntry { $bad(); } catch (TypeError $e) {\n    echo 'return:', $e->getMessage(), ':', $e->getLine(), ';';\n}\ntry { $end(); } catch (TypeError $e) {\n    echo 'never:', $e->getMessage(), ':', $e->getLine(), ';';\n}\n",
+      "source_sha256": "82cfce81b761e6c9e8f9a6e6ef4d6cc5d8818388ffd9d236c8ff3459f1ec76d7",
+      "stdout_base64": "YmFkLWJvZHk6VHJhaXQxNjNBdXRob3JCOk93bmVyMTYzQXV0aG9yQjtyZXR1cm46VHJhaXQxNjNBdXRob3JCOjpiYWQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IHJldHVybmVkOjk7ZW5kLWJvZHk6VHJhaXQxNjNBdXRob3JCOk93bmVyMTYzQXV0aG9yQjtuZXZlcjpUcmFpdDE2M0F1dGhvckI6OmVuZCgpOiBuZXZlci1yZXR1cm5pbmcgbWV0aG9kIG11c3Qgbm90IGltcGxpY2l0bHkgcmV0dXJuOjEzOw==",
+      "stdout_template_base64": "YmFkLWJvZHk6VHJhaXQxNjNBdXRob3JCOk93bmVyMTYzQXV0aG9yQjtyZXR1cm46VHJhaXQxNjNBdXRob3JCOjpiYWQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IHJldHVybmVkOjk7ZW5kLWJvZHk6VHJhaXQxNjNBdXRob3JCOk93bmVyMTYzQXV0aG9yQjtuZXZlcjpUcmFpdDE2M0F1dGhvckI6OmVuZCgpOiBuZXZlci1yZXR1cm5pbmcgbWV0aG9kIG11c3Qgbm90IGltcGxpY2l0bHkgcmV0dXJuOjEzOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFRyYWl0MTYzQXV0aG9yQjo6YmFkIGlzIGRlcHJlY2F0ZWQsIGl0IHNob3VsZCBvbmx5IGJlIGNhbGxlZCBvbiBhIGNsYXNzIHVzaW5nIHRoZSB0cmFpdCBpbiB7RklMRX0gb24gbGluZSAzCkRlcHJlY2F0ZWQ6IENhbGxpbmcgc3RhdGljIHRyYWl0IG1ldGhvZCBUcmFpdDE2M0F1dGhvckI6OmVuZCBpcyBkZXByZWNhdGVkLCBpdCBzaG91bGQgb25seSBiZSBjYWxsZWQgb24gYSBjbGFzcyB1c2luZyB0aGUgdHJhaXQgaW4ge0ZJTEV9IG9uIGxpbmUgNAo=",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class163-artifacts/author-trait-cached-optional-return.native-first.json",
+      "native_raw_sha256": "b0621604c5f40ee183fabe3d2a3a1e933dd15ae0ee38b44ea12dd04e3244e662",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

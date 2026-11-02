@@ -1,0 +1,19 @@
+{
+  "scope": "is_callable array shape rejection before syntax-only lookup for any live array",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "792d3fc5c8a00e763f56af1490e23669ce61b0ef",
+  "semantic_revision": "f311467e7457c383e0d2cfd29d81317bd6b44971",
+  "state_revision": "5e4a8f94fb463c5a143c8a09d7de3cfb05d8baf3",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: wide-shape source SHA 0d7973a9035ee032b11491af1b2c4b72c5bc7413f72f8032722043ce242f748d, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-wide-shape-evidence/enum-is-callable-wide-shape-strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.84 s, stable inputs",
+    "source": ".tools/enum-is-callable-wide-shape-evidence/user-string-hjd_9ziz/report.json: seven missing-key/nonclass/reordered-key outcomes exact normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-wide-shape-evidence/enum-is-callable-protocol-xzn8grix/report.json: checked source reached strict SL, 46 checks, true, exit 0, empty stderr, stable inputs",
+    "affected_prior_shape": ".tools/enum-is-callable-wide-shape-evidence/enum-is-callable-protocol-2t6zsalo/report.json: earlier published enum key-0 shape fixture, strict SL23 true, exit 0, empty stderr, stable inputs"
+  },
+  "behavior": "The existing array_shape_error precheck returns false for a live array with wrong length, missing keys, nonclass receiver or nonstring method before syntax-only return, method lookup or autoload. Reordered keys 1 then 0 remain valid. Source-reached checks prove exact key/receiver errors, false under both flags, no event/cache change and full output.",
+  "remaining": "Valid arrays with unpublished classes, wider method lookup, third by-reference output and autoload remain partial."
+}

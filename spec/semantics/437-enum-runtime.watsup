@@ -67,7 +67,6 @@ def $enum_generated_kind(S, porigin, ptbytes) = (INTRINSIC_ENUM porigin pclassde
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= "" /\ $ptlc(ptbytes) = $ptascii("tryfrom")
 def $enum_generated_kind(S, porigin, ptbytes) = eps -- otherwise
-dec $enum_array_string_valid(pstate, pvalue) : bool
 def $enum_array_string_valid(S, PSTRING ptbytes) = true
 def $enum_array_string_valid(S, PSTRING_CARRIER pstringidentity ptbytes) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)
 def $enum_array_string_valid(S, pvalue) = false -- otherwise
@@ -630,6 +629,13 @@ def $enum_selected_prepare(S, pintrinsic, ptbytes_original, ptbytes_lookup, pori
   -- if n_depth = |S.FRAMES|
   -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z}
   -- if $selected_entry_source_valid(S, pselectedcall)
+def $enum_pipe_selected(S, pintrinsic, ptbytes_original, ptbytes_lookup, pvalue_left, porigin_site, z_send, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_INVOKE {SITE porigin_site, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue_left)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin_site)
+  -- if $pipe_lines_valid(S, porigin_site, z_send, z_call)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z_call}
+  -- if $selected_entry_source_valid(S, pselectedcall)
 def $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z) = $enum_selected_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z)
   -- if S.ORIGIN = (porigin_site)
   -- if S.RESULT = KNOWN (PARRAY n)
@@ -773,6 +779,13 @@ def $enum_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if ~$ppfirstclass(phpType7*)
   -- if $enum_dynamic_string_selected(S, S.SELECTEDCALLS, PORIGIN n_unit pcpath_parent, z_call)
   -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+def $enum_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 1)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 1))]
+  -- if pcpath_child = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_parent) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $enum_dynamic_string_selected(S, S.SELECTEDCALLS, PORIGIN n_unit pcpath_parent, z_call)
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $enum_string_child_site(S, porigin, z) = false -- otherwise
 def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
   -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
@@ -838,6 +851,19 @@ def $selected_entry_source_valid(S, pselectedcall) = true
   -- if ~$ppfirstclass(phpType7*)
   -- if $string_name_site(S, pselectedcall.SITE, pselectedcall.ORIGINAL)
   -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.OWNER = eps
+  -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(pselectedcall.ORIGINAL))) = (porigin)
+  -- if $enum_generated_kind(S, porigin, pselectedcall.LOOKUP) = (pselectedcall.KIND)
+  -- if $pipe_fixed_name(S, pselectedcall.SITE) = eps
+  -- if $array_site_valid(S, {SITE pselectedcall.SITE, INIT $pipe_lookup_line(S, pselectedcall.SITE), LINE pselectedcall.LINE, REQUESTED porigin, NAME pselectedcall.LOOKUP}, false)
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.OWNER = eps
+  -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $method_string_parts(pselectedcall.ORIGINAL) = ((ptbytes_class, pselectedcall.LOOKUP))
+  -- if $string_enum_candidate(S, pselectedcall.ORIGINAL) = (pselectedcall.KIND)
+  -- if $string_site_valid(S, {SITE pselectedcall.SITE, INIT $pipe_lookup_line(S, pselectedcall.SITE), LINE pselectedcall.LINE, REQUESTED porigin, ORIGINAL pselectedcall.ORIGINAL}, false)
 def $selected_entry_source_valid(S, pselectedcall) = true
   -- if pselectedcall.OWNER = (n_owner)
   -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
@@ -1428,3 +1454,224 @@ def $activate_parented_class(S, pclassdesc, ptbytes_parent) = $pil_method_fatal(
 def $pil_order_rooted(S, pclassdesc, METHOD_OK) = METHOD_RUNTIMEISSUE ($ptascii("Enum ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement interface Throwable")) pclassdesc.LINE
   -- if pclassdesc.KIND = "enum"
 def $class_constant_kind(pclassdesc) = $ptascii("Enum") -- if pclassdesc.KIND = "enum"
+
+;; is_callable checks the already-published enum without constructing a call.
+;; The third output parameter and loader acquisition have separate lifetimes.
+def $enum_is_callable_kind(INTRINSIC_IS_CALLABLE) = true
+def $enum_is_callable_kind(pintrinsic) = false -- otherwise
+def $intrinsic_name(INTRINSIC_IS_CALLABLE) = $ptascii("is_callable")
+def $intrinsic_named(preqbytes) = (INTRINSIC_IS_CALLABLE)
+  -- if $ptlc(preqbytes) = $ptascii("is_callable")
+def $config_kind(INTRINSIC_IS_CALLABLE) = true
+def $config_required(INTRINSIC_IS_CALLABLE) = 1
+def $config_parameter(INTRINSIC_IS_CALLABLE, preqbytes) = (0)
+  -- if preqbytes = $ptascii("value")
+def $config_parameter(INTRINSIC_IS_CALLABLE, preqbytes) = (1)
+  -- if preqbytes = $ptascii("syntax_only")
+def $config_parameter(INTRINSIC_IS_CALLABLE, preqbytes) = (2)
+  -- if preqbytes = $ptascii("callable_name")
+def $config_parameter_name(INTRINSIC_IS_CALLABLE, 0) = $ptascii("value")
+def $config_parameter_name(INTRINSIC_IS_CALLABLE, 1) = $ptascii("syntax_only")
+def $config_parameter_name(INTRINSIC_IS_CALLABLE, 2) = $ptascii("callable_name")
+
+dec $enum_is_callable_receiver(pstate, pvalue) : (porigin, bool)?
+def $enum_is_callable_receiver(S, pvalue_class) = ((porigin_class, false))
+  -- if $enum_array_string_valid(S, pvalue_class)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $enum_is_callable_receiver(S, POBJECT n_case) = ((pclassconstantdesc.OWNER, true))
+  -- if $(n_case < |S.OBJECTS|) /\ (HOBJECT n_case) <- S.ALLOCATIONS
+  -- if $enum_case_object(S, n_case) = (pclassconstantdesc)
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $enum_is_callable_receiver(S, pvalue) = eps -- otherwise
+
+dec $enum_is_callable_target(pstate, pvalue) : (porigin, ptbytes, bool)?
+def $enum_is_callable_target(S, pvalue_string) = ((porigin_class, ptbytes_method, false))
+  -- if $enum_array_string_valid(S, pvalue_string)
+  -- if $string_bytes(pvalue_string) = (ptbytes_string)
+  -- if $method_string_parts(ptbytes_string) = ((ptbytes_class, ptbytes_method))
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $enum_is_callable_target(S, PARRAY n) = ((porigin_class, ptbytes_method, b_case))
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if $typed_callback_array(S, n)
+  -- if S.ARRAYS[n] = parray
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
+  -- if $enum_is_callable_receiver(S, $entry_value(S, pitem_receiver)) = ((porigin_class, b_case))
+  -- if $enum_array_string_valid(S, $entry_value(S, pitem_method))
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes_method)
+def $enum_is_callable_target(S, pvalue) = eps -- otherwise
+
+dec $enum_is_callable_input(pconfigcall) : (pvalue, bool)?
+def $enum_is_callable_input(pconfigcall) = ((pvalue, false))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL b_syntax))]
+def $enum_is_callable_input(pconfigcall) = eps -- otherwise
+
+;; The third argument is a writable CV, captured before invocation. Its old
+;; value is a string, so replacing it cannot run user code.
+dec $enum_is_callable_ref_array_receiver(pstate, pvalue, porigin, ptbytes, ptbytes, bool) : ptbytes?
+def $enum_is_callable_ref_array_receiver(S, pvalue_class, porigin_class, ptbytes_class, ptbytes_member, false) = (ptbytes_class)
+  -- if ptbytes_member = $ptascii("class")
+  -- if $enum_array_string_valid(S, pvalue_class)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+def $enum_is_callable_ref_array_receiver(S, POBJECT n_case, porigin_class, ptbytes_class, ptbytes_member, true) = (pclassdesc.NAME)
+  -- if $(n_case < |S.OBJECTS|) /\ (HOBJECT n_case) <- S.ALLOCATIONS
+  -- if $enum_case_object(S, n_case) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = porigin_class /\ pclassconstantdesc.NAME = ptbytes_member
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.NAME = ptbytes_class
+def $enum_is_callable_ref_array_receiver(S, pvalue, porigin_class, ptbytes_class, ptbytes_member, b_case) = eps -- otherwise
+
+dec $enum_is_callable_ref_name(pstate, pconfigcall, pvalue) : ptbytes?
+def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NScalarString (BYTES text_input) metadata_input, false, eps, porigin_input, z_input))
+  -- if pvalue_input = PSTRING_CARRIER INTERNED_STRING ptbytes_input
+  -- if $string_carrier_valid(S, pvalue_input)
+  -- if ptbytes_input = $base64(text_input)
+  -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if ptbytes_input = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
+def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprClassConstFetch (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_member) metadata_member) metadata_receiver) (BOOLEAN false) (BOOLEAN false) metadata_item_receiver), (NArrayItem ABSENT (NScalarString (BYTES text_method) metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_item_method)])) metadata_array, false, eps, porigin_input, z_input))
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_receiver), ENTRY (KINT 1) (DIRECT pvalue_method)]
+  -- if pvalue_method = PSTRING_CARRIER INTERNED_STRING ptbytes_method
+  -- if $string_carrier_valid(S, pvalue_method)
+  -- if ptbytes_method = $base64(text_method)
+  -- if $enum_is_callable_target(S, PARRAY n_array) = ((porigin_class, ptbytes_method, b_case))
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.NAME = $base64(text_class)
+  -- if $enum_is_callable_ref_array_receiver(S, pvalue_receiver, porigin_class, pclassdesc.NAME, $base64(text_member), b_case) = (ptbytes_receiver)
+def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = eps -- otherwise
+
+dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
+def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+  -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (3)
+  -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((NExprVariable (BYTES text_output) metadata_output, false, eps, porigin_output, z_output))
+  -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_name*)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED pvalue_old
+  -- if $string_bytes(pvalue_old) = (ptbytes_old)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if ~$foreach_released_cell(S, n_cell)
+def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = eps -- otherwise
+
+def $enum_is_callable_ref_argument(S, pconfigcall) = true
+  -- if pconfigcall.INDEX = 2 /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax))]
+  -- if $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+def $enum_is_callable_ref_argument(S, pconfigcall) = false -- otherwise
+
+rule PhpStep/enum-is-callable-ref-send: S ~> S_ref[.TODO = (CONFIG_ARGS ($config_sent(pconfigcall, REFERENCE n_cell, eps)[.INDEX = 3])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_SEND pconfigcall) :: ptask_tail*
+  -- if $enum_is_callable_ref_argument(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax))]
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((expression, false, eps, porigin_output, z_output))
+  -- if $reference_cv(expression) = (n_name*)
+  -- if S.RESULT = VARIABLE n_name* z_variable
+  -- if $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+  -- if S_checked = $config_send_check(S, pconfigcall, eps, z_output)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_ref = $call_location_reference(S_checked[.LOCATION = ROOT n_cell])
+  -- if S_ref.COMPLETION = NORMAL
+
+def $enum_is_callable_ref_slots_valid(S, pconfigcall) = true
+  -- if pconfigcall.INDEX = 3 /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
+  -- if $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $enum_is_callable_ref_slots_valid(S, pconfigcall) = false -- otherwise
+
+dec $enum_is_callable_magic(pstate, porigin, bool) : bool?
+def $enum_is_callable_magic(S, porigin_class, false) = (true)
+  -- if $effective_method(S, porigin_class, $ptascii("__callStatic"), |S.CLASSES|) = (pmethoddesc)
+  -- if $enum_magic_source(S, pmethoddesc, true)
+def $enum_is_callable_magic(S, porigin_class, true) = (true)
+  -- if $effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) = (pmethoddesc)
+  -- if $enum_magic_source(S, pmethoddesc, false)
+def $enum_is_callable_magic(S, porigin_class, false) = (false)
+  -- if $effective_method(S, porigin_class, $ptascii("__callStatic"), |S.CLASSES|) = eps
+def $enum_is_callable_magic(S, porigin_class, true) = (false)
+  -- if $effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) = eps
+def $enum_is_callable_magic(S, porigin_class, b_case) = eps -- otherwise
+
+dec $enum_is_callable_case_user_method(pstate, porigin, ptbytes) : bool
+def $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method) = true
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_class
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ pclassdesc.ORIGIN = porigin_class
+  -- if $method_origin(pclassdesc.METHODS, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if porigin_class = PORIGIN n pcpath_owner
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if PCINDEX n_method = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_owner ++ [PCFIELD 4, PCINDEX n_method]
+  -- if $origin_node(S.SOURCES, porigin_class) = (NStmtEnum phpType14_owner phpType3_owner phpType50_owner phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
+  -- if $(n_method < |statement_owner*|)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if statement_owner*[n_method] = statement_method
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata
+  -- if pmethoddesc.NAME = $base64(text_method) /\ $ptlc(pmethoddesc.NAME) = $ptlc(ptbytes_method)
+  -- if $ppmethod_visibility(flags) = PROPERTY_PUBLIC /\ pmethoddesc.STATIC = $ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
+  -- if pmethoddesc.FUNCTION.BODY = pcpath ++ [PCFIELD 6]
+def $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method) = false -- otherwise
+
+dec $enum_is_callable_result(pstate, pvalue, bool) : bool?
+def $enum_is_callable_result(S, pvalue, true) = (true)
+  -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
+def $enum_is_callable_result(S, pvalue, false) = (b_callable)
+  -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
+  -- if $typed_callable(S, pvalue) = (b_callable)
+def $enum_is_callable_result(S, PARRAY n, false) = (false)
+  -- if $enum_is_callable_target(S, PARRAY n) = ((porigin_class, ptbytes_method, true))
+  -- if $typed_callable(S, PARRAY n) = eps
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
+  -- if ~$array_magic(S, porigin_class)
+  -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = eps
+def $enum_is_callable_result(S, PARRAY n, false) = (true)
+  -- if $enum_is_callable_target(S, PARRAY n) = ((porigin_class, ptbytes_method, true))
+  -- if $typed_callable(S, PARRAY n) = eps
+  -- if $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method)
+def $enum_is_callable_result(S, PARRAY n, b_syntax) = (false)
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if $array_shape_error(S, n) = (ptbytes_error)
+def $enum_is_callable_result(S, pvalue, false) = (b_magic)
+  -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
+  -- if $typed_callable(S, pvalue) = eps
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
+  -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = eps
+  -- if $array_magic(S, porigin_class)
+  -- if $enum_is_callable_magic(S, porigin_class, b_case) = (b_magic)
+def $enum_is_callable_result(S, pvalue, b_syntax) = eps -- otherwise
+
+dec $enum_is_callable_receive(pstate, pconfigcall) : pstate
+def $enum_is_callable_receive(S, pconfigcall) = S_write[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b_callable)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
+  -- if $enum_is_callable_ref_slots_valid(S, pconfigcall)
+  -- if $enum_is_callable_result(S, pvalue_input, b_syntax) = (b_callable)
+  -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
+  -- if S_write = $write_cell_checked(S, n_cell, PSTRING ptbytes_name, pconfigcall.LINE)
+  -- if S_write.COMPLETION = NORMAL
+def $enum_is_callable_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b_callable)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
+  -- if $enum_is_callable_result(S, pvalue, b_syntax) = (b_callable)
+def $enum_is_callable_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "is_callable outside published enum query without output parameter"] -- otherwise
+rule PhpStep/enum-is-callable-invoke: S ~> $enum_is_callable_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
+  -- if $config_invoke_valid(S, pconfigcall)
