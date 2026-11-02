@@ -231,6 +231,7 @@ destructor/result and error-handler cleanup records, the original Notice, and
 the normal executor queue; it keeps active handler-body reentry and explicit
 arguments outside the admitted path. Fast and slow allocator source cases
 agree exactly, a source-reached state checks the ownership links, and the
-OB06 refusal controls still pass. Wider callback nesting, abnormal queue
-completion and argument forms remain open.
+OB06 refusal controls still pass. Joined strict433, nested fast/slow sources
+and the three refusals pass with the executor tick-owner branch present.
+Wider callback nesting, abnormal queue completion and argument forms remain open.
 [OB07 evidence](../../coverage/semantics/output-executor-retval-review.json).

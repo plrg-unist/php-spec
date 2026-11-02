@@ -796,8 +796,10 @@ normal post-deactivation queue release. Echo-only and nested no-argument
 nested call uses the built-in Notice while the selected handler is disabled,
 returns false and leaves the buffer stack/sequence unchanged. One source-reached
 state passes 40 conditions, and OB06's explicit-argument, callable and active
-handler-body starts remain checked Unsupported. Private strict433 passes;
-the retained OB06 native original is now promoted with exact model agreement.
+handler-body starts remain checked Unsupported. Private and joined strict433
+pass; joined nested fast/slow sources and the three refusals pass with the
+executor tick-owner branch present. The retained OB06 native original is now
+promoted with exact model agreement.
 [Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
