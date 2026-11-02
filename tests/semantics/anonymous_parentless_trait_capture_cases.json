@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "parentless-trait-first-capture",
+      "source": "<?php\ntrait T166 {\n    public static function name() {\n        echo 'body:', self::class, ':', static::class, ';';\n    }\n    public const Y = self::name(...);\n}\n$object = new class { use T166; };\n$capture = $object::Y;\necho 'class:', get_class($object), ';';\n$capture();\necho 'done;';\n",
+      "source_sha256": "86349facf77e7dd625803db46bc0a286667b118eebeb9a276a589ea07454c897",
+      "stdout_base64": "Y2xhc3M6Y2xhc3NAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2Ni1hcnRpZmFjdHMvYW5vbnltb3VzLXRyYWl0LWNhcHR1cmUucGhwOjgkMDtib2R5OmNsYXNzQGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNjYtYXJ0aWZhY3RzL2Fub255bW91cy10cmFpdC1jYXB0dXJlLnBocDo4JDA6Y2xhc3NAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2Ni1hcnRpZmFjdHMvYW5vbnltb3VzLXRyYWl0LWNhcHR1cmUucGhwOjgkMDtkb25lOw==",
+      "stdout_template_base64": "Y2xhc3M6Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo4JDA7Ym9keTpjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjgkMDpjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjgkMDtkb25lOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class166-artifacts/anonymous-trait-capture.native.json",
+      "native_raw_sha256": "3882236fa495268b8a97e5b98b055acf71142b4d97b114f0667314e8b2ed4d6b",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "parentless-trait-parent-receive",
+      "source": "<?php\ntrait T167Parent {\n    public static function take(parent $value) { echo 'body;'; }\n    public const Y = self::take(...);\n}\necho 'pre;';\n$object = new class { use T167Parent; };\n$capture = $object::Y;\necho 'cap:', get_class($object), ';';\n$capture(new stdClass);\necho 'done;';\n",
+      "source_sha256": "70fba100381b3b5a3fdd9d1955829f3567081dca8639aa2409cdec042329b663",
+      "stdout_base64": "cHJlO2NhcDpjbGFzc0Bhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY3LWFydGlmYWN0cy9wYXJlbnRsZXNzLXBhcmVudC10eXBlLnBocDo3JDA7",
+      "stderr_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhY2Nlc3MgInBhcmVudCIgd2hlbiBjdXJyZW50IGNsYXNzIHNjb3BlIGhhcyBubyBwYXJlbnQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY3LWFydGlmYWN0cy9wYXJlbnRsZXNzLXBhcmVudC10eXBlLnBocCBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2Ny1hcnRpZmFjdHMvcGFyZW50bGVzcy1wYXJlbnQtdHlwZS5waHAoMTApOiBjbGFzc0Bhbm9ueW1vdXM6OnRha2UoT2JqZWN0KHN0ZENsYXNzKSkKIzEge21haW59Cg==",
+      "stdout_template_base64": "cHJlO2NhcDpjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjckMDs=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhY2Nlc3MgInBhcmVudCIgd2hlbiBjdXJyZW50IGNsYXNzIHNjb3BlIGhhcyBubyBwYXJlbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEwKTogY2xhc3NAYW5vbnltb3VzOjp0YWtlKE9iamVjdChzdGRDbGFzcykpCiMxIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": ".tools/class167-artifacts/parentless-parent-type.native.json",
+      "native_raw_sha256": "77aa4df578e86b3760cb96d7fc03b3774b53413f220796b1f2b9a36dabf6c737",
+      "model_timeout_seconds": 240
+    }
+  ]
+}
