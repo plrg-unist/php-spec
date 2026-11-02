@@ -4713,6 +4713,11 @@ list: each head retires while its tail stays rooted. A three-entry original
 agrees exactly, six reached states check 143 conditions, and a shared-callback
 alias control agrees. One/two-entry source regressions and joined strict433
 pass. See the [tick-list review](coverage/semantics/callback-late-tick-list-review.json).
+Each retained raw invokable tick entry can now copy zero or more object
+arguments distinct from its callback. Mixed zero/one and shared zero/two
+sources agree exactly, as does a duplicate-argument control. Six reached
+states check 122 conditions, including argument order and shared FCC owners;
+strict433 passes. See the [tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

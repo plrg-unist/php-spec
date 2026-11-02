@@ -676,6 +676,17 @@ Unsupported baseline and three fixture elaboration failures retain zero
 credit. Mixed callback shapes, assertion roots and abrupt reentry remain
 partial. [Tick-list review](coverage/semantics/callback-late-tick-list-review.json).
 
+ATTR14 admits any finite number of copied object arguments, including zero,
+per raw invokable entry in that ordered post-FINAL list. Each copied argument
+must differ from its callback object. Two native-first mixed-arity sources
+agree exactly, including a shared callback across zero- and two-argument
+entries; a repeated-argument control also agrees. Six source-reached states
+pass 122 checks and show the shared callback's FCC owners 4→3→2→1→0, with both
+arguments retiring before the callback. Private strict433 passes. The earlier
+Unsupported baseline and a draft binding error retain zero credit. Scalar,
+array/reference and callback-as-argument payloads, assertion roots and abrupt
+reentry remain partial. [Tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
