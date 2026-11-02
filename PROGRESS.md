@@ -74,11 +74,17 @@ originals at 2614477b2. Published generated methods now also run through pipe
 strings and arrays. Four native-first originals agree, including strict typing,
 cold table selection across Stringable rebinding, case-object arrays, arity and
 temporary cleanup. Private strict433 and two source-reached strict SL groups
-pass 68 guards at db3b26b16. Wider APIs and default loading remain partial.
+pass 68 guards at db3b26b16. Published enum method strings and class/case
+arrays now answer direct, dynamic-name and pipe `is_callable` queries with
+one or two arguments and no third output. Two native-first originals agree,
+covering generated and absent methods, syntax-only checks, selected-name
+rebinding and cold backing tables; 43 source-reached strict SL guards pass.
+The third output, autoload and wider magic/user-method cases remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
-[pipe review](coverage/semantics/enum-pipe-review.json).
+[pipe review](coverage/semantics/enum-pipe-review.json),
+[query review](coverage/semantics/enum-is-callable-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry

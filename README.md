@@ -6615,7 +6615,11 @@ strict compilation and three originals. Pipe strings and class/case arrays now
 select generated methods before receiving the left value, preserving strict
 typing, Stringable rebinding, cold tables and temporary cleanup; four exact
 originals and 68 reached guards pass in the [pipe review](coverage/semantics/enum-pipe-review.json).
-`is_callable`, case attributes, enum collection policy, the default loader and wider acquisition remain partial;
+Published enum strings and class/case arrays also answer direct, dynamic-name
+and pipe `is_callable` queries with one or two arguments. Generated and absent
+methods, syntax-only checks and cold-cache behavior have two exact originals
+and 43 reached guards in the [query review](coverage/semantics/enum-is-callable-review.json).
+The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
