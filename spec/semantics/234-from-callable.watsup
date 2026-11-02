@@ -9,6 +9,7 @@ dec $from_receive(pstate, pconfigcall, pvalue) : pstate
 dec $fiber_factory_candidate(pstate, pvalue) : bool
 dec $from_finish(pstate, pconfigcall, pvalue, phandlerresolution) : pstate
 dec $from_done(pstate, nat) : pstate
+dec $enum_array_string_valid(pstate, pvalue) : bool
 dec $from_method(pstate, papiquery, porigin, ptbytes, bool, bool) : pfrommethod
 dec $from_allocate(pstate, pfrommethod) : pstate
 dec $from_receiver(pfrommethod) : nat?
@@ -234,9 +235,13 @@ def $from_receive(S, pconfigcall, PARRAY n) = $api_begin(S, CONFIG_INVOKE pconfi
   -- if $array_enum_candidate(S, n) = eps
   -- if $error_handler_array_invalid(S, n) = eps
   -- if $from_getter(S, n) = eps
-def $from_receive(S, pconfigcall, PARRAY n) = S[.COMPLETION = UNSUPPORTED "enum generated array callable conversion"]
+def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done($intrinsic_firstclass(S, pintrinsic), n)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $from_kind(pconfigcall.KIND)
-  -- if $array_enum_candidate(S, n) = ((pintrinsic, ptbytes_class, ptbytes_method))
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $array_enum_candidate(S, n_array) = ((pintrinsic, ptbytes_class, ptbytes_method))
+  -- if n = |S.OBJECTS|
 def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base pconfigcall.SITE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
@@ -248,8 +253,18 @@ def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OB
   -- if pconfigcall.OWNER = (n_factory)
   -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
   -- if n = |S.OBJECTS|
+def $from_receive(S, pconfigcall, pvalue_string) = $from_done($intrinsic_firstclass(S, pintrinsic), n)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $from_kind(pconfigcall.KIND)
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_string)]
+  -- if $enum_array_string_valid(S, pvalue_string)
+  -- if $string_bytes(pvalue_string) = (ptbytes)
+  -- if $string_enum_candidate(S, ptbytes) = (pintrinsic)
+  -- if n = |S.OBJECTS|
 def $from_receive(S, pconfigcall, pvalue_string) = $api_begin(S, CONFIG_INVOKE pconfigcall, pvalue_string)
   -- if $string_bytes(pvalue_string) = (ptbytes)
+  -- if $string_enum_candidate(S, ptbytes) = eps
   -- if ~$fiber_factory_candidate(S, pvalue_string)
   -- if ~$typed_registered(S, ptbytes)
   -- if $method_string_parts(ptbytes) =/= eps

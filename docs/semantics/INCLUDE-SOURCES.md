@@ -1880,3 +1880,51 @@ key before it becomes a stored ITEM while retaining numeric-string key sends.
 The old `B;Y0;` Unsupported remains zero credit. Effectful finalizers, cycles,
 owning reference cells, temporary/indirect producers and wider cleanup remain
 separate.
+
+The [temporary owning Generator increment](../../coverage/semantics/config-generator-owning-temporary-review.json)
+admits a named zero-argument BYVAL factory returning a distinct named BYVAL
+Generator with no outside strong owner. The first integer-key option copies a
+finite quiet INSTANCE or dynamic ARRAY; the second send caches an integer
+value and key (7 and 1 in the four originals). The factory's weak observer
+adds no owner. Normal completion drops
+DATA then final INPUT, retiring the childless Generator before INI_SET raises
+TypeError while the copied option enters TraceArgs. A terminal saved throw
+discards DATA and INPUT separately, releasing the copied prefix before catch.
+Four frozen originals agree exactly through model-only comparisons. Strict432
+and two reached recipes (372 conditions, eight raw steps) prove COW, weak
+visibility, retired invoke history and saved Throwable identity. The first
+peer fixture's premature mid-resume owner assertion remains zero credit; the
+corrected proof counts both the suspended prefix and still-cached value. The
+old `B;P;Y0;` Unsupported remains zero credit. Owning final caches, reference
+cells, effectful finalizers and wider producers remain separate.
+
+The [owning final-cache increment](../../coverage/semantics/config-generator-owning-cache-review.json)
+uses the same named BYVAL factory and distinct BYVAL Generator, with a copied
+scalar option followed by a finite quiet ARRAY or ordinary non-Stringable
+INSTANCE as the last integer-key value. Its cached VALUE and KEY must match
+that last copied ITEM. The normal final INPUT enters the real Generator
+storage pin: slot 1 drops the cached child edge while the copied argument
+remains, then the Generator dies before INI_SET TypeError retains the value in
+TraceArgs. A saved terminal throw discards DATA and INPUT separately, then
+prunes the Generator and payload before catch. Four frozen originals agree
+exactly. Strict432 and two reached recipes (405 conditions, seven raw steps)
+check COW, weak lifetimes, storage 2-to-1 ownership, retired invoke history,
+and the original selected Throwable. The initial duplicate-manifest strict
+command and first peer trace-representation assertion retain zero credit;
+the corrected checks use the same runtime and frozen sources. The old
+`B;P;Y0;Y1;M:5;T;` Unsupported remains zero credit. Outside-retained cleanup
+keeps its earlier admission; effectful finalizers, reference cells and wider
+cached values remain separate.
+
+The [two-owning-send increment](../../coverage/semantics/config-generator-two-owning-review.json)
+removes the scalar-first restriction on the existing named BYVAL factory
+Generator cached-value history. Each integer-key copied ITEM still needs a
+bounded value receipt; the live gate rechecks both finite quiet argument
+graphs, and the final cached VALUE/KEY must match the last ITEM. Four object
+originals agree exactly. Strict432 and two reached recipes (421 conditions,
+seven raw steps) show distinct payloads retiring before a saved catch and a
+repeated payload retaining two copied roots when real Generator storage drops
+its cache edge (three owners to two). TypeError TraceArgs keeps both copied
+identities until the error is released. The old full-prefix Unsupported
+remains zero credit; effectful finalizers, reference cells and broader
+producer/value histories remain separate.

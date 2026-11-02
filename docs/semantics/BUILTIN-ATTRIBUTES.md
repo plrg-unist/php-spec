@@ -200,5 +200,6 @@ using eight retained passed native rows plus the safe API control. Five reached
 groups pass 428 checks (422 reached, six labeled derived assertions), including
 scoped VM/wrapper receiver owners, shared captures, used arrow results and expired
 entry refusal. Eleven focused checked syntax roundtrips and private strict432 pass.
-General messages, mixed/user attributes and wider consumers remain partial;
-actual-tail composition is pending.
+General messages, mixed/user attributes and wider consumers remain partial.
+Current-tail strict433 and three retained-native model comparisons pass at
+separate cuts; the review records the later disjoint-code bridge.

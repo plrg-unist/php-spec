@@ -13,13 +13,17 @@ dec $config_generator_origin(pstate, pconfiggenerator, pgenerator, pfunction) : 
 dec $config_generator_reference_input(pconfiggenerator) : bool
 dec $config_generator_temporary_reference_input(pstate, pconfiggenerator) : bool
 dec $config_generator_factory_reference_input(pstate, pconfiggenerator) : bool
+dec $config_generator_factory_owning_input(pstate, pconfiggenerator) : bool
 dec $config_generator_owning_value_source(pstate, pconfiggenerator) : bool
+dec $config_generator_factory_owning_cleanup(pstate, pconfiggenerator) : bool
 dec $config_generator_history(pstate, pconfiggenerator) : bool
 dec $config_generator_quiet_closed(pstate, pconfiggenerator) : bool
 dec $config_generator_return_history(pstate, pconfiggenerator) : bool
 dec $config_generator_return_storage(pstate, pconfiggenerator) : bool
 dec $config_generator_reference_history(pstate, pconfiggenerator) : bool
 dec $config_generator_reference_storage(pstate, pconfiggenerator) : bool
+dec $config_generator_factory_cached_history(pstate, pconfiggenerator) : bool
+dec $config_generator_factory_cached_storage(pstate, pconfiggenerator) : bool
 dec $config_generator_storage_history(pstate, pconfiggenerator) : bool
 dec $config_generator_storage_child(pstate, pconfiggenerator) : bool
 dec $config_generator_storage_release(pstate, pconfiggenerator, ptask*) : pstate
@@ -28,6 +32,7 @@ dec $config_generator_retired_scope(pstate, pconfiggenerator) : bool
 dec $config_generator_saved_scope(pstate, pconfiggenerator) : bool
 dec $config_generator_stage_scope(pstate, pconfiggenerator, text) : bool
 dec $config_generator_finish_allowed(pstate, pconfiggenerator) : bool
+dec $config_generator_last_input_allowed(pstate, pconfiggenerator) : bool
 dec $config_generator_callee(pstate, nat?, nat) : bool
 dec $config_generator_stage(pstate, pconfiggenerator, text) : bool
 dec $config_generator_at(ptask, porigin) : bool
@@ -149,6 +154,28 @@ def $config_generator_factory_reference_input(S, pconfiggenerator) = true
   -- if pfunction_generator.SIGNATURE.PARAMETERS = eps /\ pfunction_generator.SIGNATURE.BYREF
   -- if $function_generator(S, pfunction_generator)
 def $config_generator_factory_reference_input(S, pconfiggenerator) = false -- otherwise
+def $config_generator_factory_owning_input(S, pconfiggenerator) = true
+  -- if pconfiggenerator.PRODUCER = eps
+  -- if pconfiggenerator.INPUT = KNOWN (POBJECT pconfiggenerator.OBJECT)
+  -- if $config_generator_input(S, pconfiggenerator)
+  -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if expression = NExprFuncCall name (SEQUENCE eps) metadata
+  -- if $source_emission_noarg_call(S, n_source, pcpath, expression) = (z_call)
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $ppunpack_class(pcode, pcunit, pcpath) = (UNPACK_VAR)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $call_target(S, preqbytes, eps) = (pfunction_factory)
+  -- if $origin_node(S.SOURCES, pfunction_factory.ORIGIN) = (NStmtFunction phpType14_factory phpType4_factory phpType11_factory phpType16_factory phpType18_factory phpType23_factory metadata_factory)
+  -- if pfunction_factory.SIGNATURE.PARAMETERS = eps /\ ~pfunction_factory.SIGNATURE.BYREF
+  -- if ~$function_generator(S, pfunction_factory)
+  -- if $(pconfiggenerator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction_generator)
+  -- if $origin_node(S.SOURCES, pfunction_generator.ORIGIN) = (NStmtFunction phpType14_generator phpType4_generator phpType11_generator phpType16_generator phpType18_generator phpType23_generator metadata_generator)
+  -- if pfunction_generator.SIGNATURE.PARAMETERS = eps /\ ~pfunction_generator.SIGNATURE.BYREF
+  -- if $function_generator(S, pfunction_generator)
+def $config_generator_factory_owning_input(S, pconfiggenerator) = false -- otherwise
 def $config_generator_owning_value_source(S, pconfiggenerator) = true
   -- if pconfiggenerator.PRODUCER = eps
   -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
@@ -159,6 +186,8 @@ def $config_generator_owning_value_source(S, pconfiggenerator) = true
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
   -- if $function_generator(S, pfunction)
+def $config_generator_owning_value_source(S, pconfiggenerator) = true
+  -- if $config_generator_factory_owning_input(S, pconfiggenerator)
 def $config_generator_owning_value_source(S, pconfiggenerator) = false -- otherwise
 ;; SEND_UNPACK normalizes a numeric string key for the argument, not the
 ;; Generator's cached key. Other string keys remain named arguments.
@@ -262,8 +291,33 @@ def $config_generator_reference_storage(S, pconfiggenerator) = true
   -- if $config_iterator_scalar(S, pvalue)
   -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = [HCELL n_cell]
 def $config_generator_reference_storage(S, pconfiggenerator) = false -- otherwise
-def $config_generator_storage_history(S, pconfiggenerator) = ($config_generator_return_history(S, pconfiggenerator) \/ $config_generator_reference_history(S, pconfiggenerator))
-def $config_generator_storage_child(S, pconfiggenerator) = ($config_generator_return_storage(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator))
+;; A final owning cache may retire only when its exact last copied ITEM still
+;; protects that child. History uses bounded slots after physical retirement;
+;; the storage gate alone reads the live graph and quiet payload.
+def $config_generator_factory_cached_history(S, pconfiggenerator) = true
+  -- if $config_generator_history(S, pconfiggenerator)
+  -- if $config_generator_factory_owning_input(S, pconfiggenerator)
+  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue_option), ENTRY (KINT z_cache) (DIRECT pvalue_cache)]
+  -- if $value_nodes(pvalue_cache) =/= eps
+  -- if $config_iterator_value_receipt(S, pvalue_cache)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps /\ pgenerator.REFCELL = eps
+  -- if pgenerator.VALUE = (pvalue_cache)
+  -- if pgenerator.KEY = (PINT z_cache)
+  -- if pgenerator.RETURN = eps \/ pgenerator.RETURN = (PNULL)
+def $config_generator_factory_cached_history(S, pconfiggenerator) = false -- otherwise
+def $config_generator_factory_cached_storage(S, pconfiggenerator) = true
+  -- if $config_generator_factory_cached_history(S, pconfiggenerator)
+  -- if (HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS
+  -- if ~$generator_storage_active(S, pconfiggenerator.OBJECT)
+  -- if $config_generator_owning_items_live(S, pconfiggenerator.ITEMS)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.VALUE = (pvalue_cache)
+  -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = $value_nodes(pvalue_cache)
+def $config_generator_factory_cached_storage(S, pconfiggenerator) = false -- otherwise
+def $config_generator_storage_history(S, pconfiggenerator) = ($config_generator_return_history(S, pconfiggenerator) \/ $config_generator_reference_history(S, pconfiggenerator) \/ $config_generator_factory_cached_history(S, pconfiggenerator))
+def $config_generator_storage_child(S, pconfiggenerator) = ($config_generator_return_storage(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_factory_cached_storage(S, pconfiggenerator))
 def $config_generator_retired_scope(S, pconfiggenerator) = (($config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_storage_history(S, pconfiggenerator)) /\ ~$generator_storage_active(S, pconfiggenerator.OBJECT) /\ ~((HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS))
 def $config_generator_saved_scope(S, pconfiggenerator) = $config_generator_scope(S, pconfiggenerator)
   -- if (HOBJECT pconfiggenerator.OBJECT) <- S.ALLOCATIONS
@@ -404,7 +458,7 @@ def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if $value_nodes(pvalue) =/= eps
   -- if $config_iterator_argument(S, pvalue)
   -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
+  -- if ($config_generator_reference_input(pconfiggenerator) /\ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)) \/ ($config_generator_factory_owning_input(S, pconfiggenerator) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2)
 def $config_generator_value(S, pconfiggenerator) = eps -- otherwise
 def $config_generator_send_allowed(S, pconfiggenerator) = true
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
@@ -457,6 +511,21 @@ def $config_generator_argument_nodes(pconfiggenerator) = eps -- otherwise
 def $config_generator_owning_items_live(S, eps) = true
 def $config_generator_owning_items_live(S, (ENTRY pkey (DIRECT pvalue)) :: pentry*) = (($value_nodes(pvalue) = eps \/ ($config_iterator_argument(S, pvalue) /\ ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES)))) /\ $config_generator_owning_items_live(S, pentry*))
 def $config_generator_owning_items_live(S, pentry*) = false -- otherwise
+;; The temporary's last INPUT may retire a CLOSED childless integer cache while
+;; the copied owning prefix remains rooted by this CONFIG task. Slot metadata
+;; also authenticates a later retired-invoke throw without rereading that prefix.
+def $config_generator_factory_owning_cleanup(S, pconfiggenerator) = true
+  -- if $config_generator_factory_owning_input(S, pconfiggenerator)
+  -- if $config_generator_argument_nodes(pconfiggenerator) =/= eps
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps /\ pgenerator.REFCELL = eps
+  -- if pgenerator.VALUE = (PINT z_cache)
+  -- if pgenerator.KEY = (PINT z_key)
+  -- if pgenerator.RETURN = eps \/ pgenerator.RETURN = (PNULL)
+  -- if ~$generator_storage_active(S, pconfiggenerator.OBJECT)
+  -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = eps
+def $config_generator_factory_owning_cleanup(S, pconfiggenerator) = false -- otherwise
 def $config_generator_nodes(pconfiggenerator, text) = $config_generator_argument_nodes(pconfiggenerator) ++ $config_nodes(pconfiggenerator.CALL)
   -- if text <- ["invoke", "storage-released"]
 def $config_generator_nodes(pconfiggenerator, "input-release") = $config_generator_input_nodes(pconfiggenerator) ++ $config_generator_argument_nodes(pconfiggenerator) ++ $config_nodes(pconfiggenerator.CALL)
@@ -468,6 +537,7 @@ def $selected_task_nonce(CONFIG_GENERATOR pconfiggenerator text) = pconfiggenera
 def $generator_internal_task(CONFIG_GENERATOR pconfiggenerator text) = true
 def $eager_explicit_task(CONFIG_GENERATOR pconfiggenerator text) = true
 def $config_generator_finish_allowed(S, pconfiggenerator) = ($config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ ($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_storage_child(S, pconfiggenerator)) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS))
+def $config_generator_last_input_allowed(S, pconfiggenerator) = ($config_generator_finish_allowed(S, pconfiggenerator) \/ ($config_generator_factory_cached_storage(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1) \/ ($config_generator_factory_owning_cleanup(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1))
 def $config_generator_finish(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
   -- if ~$config_generator_owning_input(pconfiggenerator)
@@ -487,14 +557,14 @@ rule PhpStep/config-generator-finish: S ~> $config_generator_finish(S, pconfigge
   -- if $config_generator_valid(S, pconfiggenerator, "finish")
 ;; SEND_UNPACK destroys iterator DATA first, then FREE_OP1 drops INPUT.
 def $config_generator_release_input(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $config_generator_input_nodes(pconfiggenerator))
-  -- if $config_generator_finish_allowed(S, pconfiggenerator)
+  -- if $config_generator_last_input_allowed(S, pconfiggenerator)
   -- if ~$config_generator_storage_child(S, pconfiggenerator) \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
 def $config_generator_release_input(S, pconfiggenerator, ptask*) = $config_generator_storage_release(S, pconfiggenerator, ptask*)
-  -- if $config_generator_finish_allowed(S, pconfiggenerator)
+  -- if $config_generator_last_input_allowed(S, pconfiggenerator)
   -- if $config_generator_storage_child(S, pconfiggenerator)
   -- if $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1
 def $config_generator_release_input(S, pconfiggenerator, ptask*) = S[.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last INPUT or callee owner"]
-  -- if ~$config_generator_finish_allowed(S, pconfiggenerator)
+  -- if ~$config_generator_last_input_allowed(S, pconfiggenerator)
 rule PhpStep/config-generator-input-release: S ~> $config_generator_release_input(S, pconfiggenerator, ptask*)
   -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "input-release") :: ptask*
   -- if $config_generator_valid(S, pconfiggenerator, "input-release")
@@ -539,7 +609,7 @@ def $config_generator_discard_nodes(pconfiggenerator, text) = [HOBJECT pconfigge
   -- if ~(text <- ["input-release", "invoke", "storage-released"])
 def $config_generator_discard_nodes(pconfiggenerator, text) = $config_generator_nodes(pconfiggenerator, text)
   -- if ~$config_generator_owning_input(pconfiggenerator) \/ (text <- ["input-release", "invoke", "storage-released"])
-def $config_generator_discard_allowed(S, pconfiggenerator) = (($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 0) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0)) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS))
+def $config_generator_discard_allowed(S, pconfiggenerator) = (($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_factory_cached_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 0) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_factory_owning_cleanup(S, pconfiggenerator) \/ $config_generator_factory_cached_history(S, pconfiggenerator)) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS))
 def $config_generator_discard(S, pconfiggenerator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]
   -- if ~$config_generator_discard_allowed(S, pconfiggenerator)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
