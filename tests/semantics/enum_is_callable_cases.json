@@ -37,5 +37,13 @@
     "expected_model": "normal",
     "expected_normal_stdout": "static-from|static-try|static-case-no|instance-string-no|instance-class-no|instance-case|user-string|user-array|",
     "purpose": "Receiver-specific magic fallback on published pure enums, absent generated names and explicit user method controls."
+  },
+  {
+    "id": "enum-is-callable-user-case-method",
+    "source": "<?php\nenum QueryCaseMethod {\n    case A;\n    public function ping(): string { echo 'BAD:ping|'; return 'ping'; }\n    public static function stat(): string { echo 'BAD:stat|'; return 'stat'; }\n}\n\necho is_callable([QueryCaseMethod::A, 'ping']) ? 'case-instance|' : 'BAD|';\necho is_callable([QueryCaseMethod::class, 'ping']) ? 'BAD|' : 'class-instance-no|';\necho is_callable('QueryCaseMethod::ping') ? 'BAD|' : 'string-instance-no|';\necho is_callable([QueryCaseMethod::A, 'stat']) ? 'case-static|' : 'BAD|';\necho is_callable([QueryCaseMethod::class, 'stat']) ? 'class-static|' : 'BAD|';\necho is_callable('QueryCaseMethod::stat') ? 'string-static|' : 'BAD|';\necho is_callable([QueryCaseMethod::A, 'missing']) ? 'BAD|' : 'case-missing-no|';\n",
+    "source_sha256": "2f89d80f43a159d0206f028f91e76abfbd4c9b775a685312a0bfab8e98d2be09",
+    "expected_model": "normal",
+    "expected_normal_stdout": "case-instance|class-instance-no|string-instance-no|case-static|class-static|string-static|case-missing-no|",
+    "purpose": "Live enum case-array query of direct public instance/static user methods without running either body, plus class and missing controls."
   }
 ]
