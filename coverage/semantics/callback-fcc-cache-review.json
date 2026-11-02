@@ -249,7 +249,14 @@
           "assertions": 84,
           "finding": "Affected OB05 selected reached case passes with one-argument executor_queue_nodes helper."
         }
-      ]
+      ],
+      "strict_current": {
+        "report": "join-master-30bb-9293-strict/report.json",
+        "sha256": "db8f66d44cc6e73bf460b6ce35fb50c82d35d7df461f19dc75beb2e05382424b",
+        "revision": "9293f7db4a1f55d6ed9885eee8edc8e6992ac50d",
+        "modules": 433,
+        "passed": true
+      }
     }
   },
   "preserved_failures": [
@@ -320,12 +327,12 @@
     "method": "Use recorded exact source IDs, profile, retained native source hashes and commands. Mixed native reports require explicit passed-row selection. Preserve historical failures/cuts; do not replay accepted rows without an affected dependency."
   },
   "composition": {
-    "head": "d70b1ef45c680c520484a64262b237f9db559b5f",
+    "head": "b8e80b40d49c9d8e1e5df137de7f26fafe560af6",
     "parents": [
-      "03ecaaaf83936952d6681826df90c24f354b0c65",
-      "30bbd4064d3dd456fd7d6fc896c9878427a5a89a"
+      "9293f7db4a1f55d6ed9885eee8edc8e6992ac50d",
+      "cab158b634d458b07566cb528c40999fa040860c"
     ],
-    "status": "final review pending",
-    "compatibility": "New master paths since ATTR07 are bounded GC explicit unmarked Closure invoke, enum generated-string/fromCallable, CONFIG Generator cached-item/unpack, COMP160 object cast/structural comparison, and I84/I85 magic Generator contexts. Selected ATTR08 shutdown/tick sources use none of those constructors or operations; OB05 ownership intersection was checked directly above. Joined strict on this exact composition pending."
+    "status": "scoped final review pending",
+    "compatibility": "Strict433 passed at 9293f7db4 after joining master 30bbd4064. Since then master cab158b63 adds only enum pipe selection in modules432/433/437; ATTR08 selected shutdown/tick sources use no enum pipe. Earlier additions since ATTR07 were bounded GC unmarked Closure invoke, enum generated-string/fromCallable, CONFIG Generator cached-item/unpack, COMP160 object cast/structural comparison, and I84/I85 magic Generator contexts, absent from selected source paths. OB05 ownership intersection was checked directly by joined source and reached cases above."
   }
 }
