@@ -4610,7 +4610,11 @@ fresh reference warnings, weak reception, raw/received sensitive snapshots and
 unused-result cleanup under the persistent cache. Five originals and 302 reached/guard
 checks pass; joined strict433 and a retained-native warning/unregister comparison
 pass on corrected cache owners. Other API wrappers and the older source-wrapper
-inner-warning trace-head location remain partial. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+inner-warning trace-head location remained partial at that cut. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+The source `Closure->__invoke` inner-warning handler trace now inherits the real
+call file/line for both its head and wrapper frame. One native-first original,
+a reached trace state and strict433 pass; broader wrapper/reentry paths remain
+partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

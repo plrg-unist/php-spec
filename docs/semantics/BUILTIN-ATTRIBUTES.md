@@ -218,5 +218,7 @@ The [ATTR09 review](../../coverage/semantics/callback-closure-invoke-review.json
 records five normal originals and 302 checks (300 reached, two derived), with private
 strict 432 plus joined strict 433 and a retained-native warning/unregister
 comparison. Other API wrappers and wider histories remain partial. The older source
-wrapper's inner-warning handler trace head still needs its inherited file/line;
-its previous accepted cuts are not renewed by this tick slice.
+wrapper's inner-warning handler trace head was repaired separately in
+[ATTR10](../../coverage/semantics/builtin-deprecated-closure-trace-head-review.json):
+its file/line now comes from the authenticated explicit callsite. The earlier
+accepted cuts are retained without replay.
