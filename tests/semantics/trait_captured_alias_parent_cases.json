@@ -40,6 +40,31 @@
       "native_group": ".tools/class165-artifacts/alias-parent-own-override.native.json",
       "native_raw_sha256": "a69082c832411d0c0245a5a24294b47dd45d83622fbb199fb1f9f4a7368523f1",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "failed-first-alias-parent-shutdown",
+      "source": "<?php\nclass BaseA165Failure {}\nclass BaseB165Failure {}\ntrait T {\n    public static function m(parent $v) {\n        static $n = 0;\n        echo \"ALIAS:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n    public const Y = self::q(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E extends BaseB165Failure {\n        use U;\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    try { echo \"A:\", $f(new BaseA165Failure), \";\"; }\n    catch (Throwable $e) { echo \"AERR:\", $e->getMessage(), \";\"; }\n    try { echo \"B:\", $f(new BaseB165Failure), \";\"; }\n    catch (Throwable $e) { echo \"BERR:\", $e->getMessage(), \";\"; }\n    $g = clone $f;\n    try { echo \"CLONE:\", $g(new BaseA165Failure), \";\"; }\n    catch (Throwable $e) { echo \"CLONEERR:\", $e->getMessage(), \";\"; }\n    E::m();\n});\necho \"PRE;\";\nclass C extends BaseA165Failure {\n    use U { m as q; }\n    public static $x = 0;\n}\necho \"POST;\";\n",
+      "source_sha256": "1c388d6e32e750670ae4883fa0f1d9bd4a04b51514f55dfc61c092c59f0879f2",
+      "stdout_base64": "UFJFO1NIVVQ7QTo=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6OnEgaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDkKRmF0YWwgZXJyb3I6IEMgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMzAKU3RhY2sgdHJhY2U6CiMwIHttYWlufQpGYXRhbCBlcnJvcjogQ2Fubm90IGFjY2VzcyAicGFyZW50IiB3aGVuIGN1cnJlbnQgY2xhc3Mgc2NvcGUgaGFzIG5vIHBhcmVudCBpbiB7RklMRX0gb24gbGluZSA1ClN0YWNrIHRyYWNlOgojMCB7RklMRX0oMjApOiBVOjpxKE9iamVjdChCYXNlQTE2NUZhaWx1cmUpKQojMSBbaW50ZXJuYWwgZnVuY3Rpb25dOiB7Y2xvc3VyZTp7RklMRX06MTN9KCkKIzIge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": ".tools/class165-artifacts/failed-first-alias-parent-shutdown.native.json",
+      "native_raw_sha256": "068cc0ddc05b2d03af7e60010d3614fc55b8195c8297b9fd360f2c2f5343b0a1",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "failed-first-post-fixup-alias-parent-shutdown",
+      "source": "<?php\nclass BaseA165Fixed {}\nclass BaseB165Fixed {}\ntrait T {\n    abstract public static function n();\n    public static function m(parent $v) {\n        echo \"T:\", self::class, \":\", static::class, \";\";\n    }\n    public const Y = self::q(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E extends BaseB165Fixed {\n        use U;\n        public static $x = self::Y;\n        public static function n() {}\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    echo \"A:\";\n    $f(new BaseA165Fixed);\n    echo \"B:\";\n    $f(new BaseB165Fixed);\n});\necho \"PRE;\";\nclass C extends BaseA165Fixed {\n    use U { m as q; }\n    public static $x = self::Y;\n}\necho \"POST;\";\n",
+      "source_sha256": "dfc12faea2de53de64ff2d5116f9ac598c52a51f3c5e4d8bda5d8520de7b0f12",
+      "stdout_base64": "UFJFO1NIVVQ7QTpUOkM6RTtCOg==",
+      "stdout_template_base64": "UFJFO1NIVVQ7QTpUOkM6RTtCOg==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6OnEgaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDkKRmF0YWwgZXJyb3I6IENsYXNzIEMgY29udGFpbnMgMSBhYnN0cmFjdCBtZXRob2QgYW5kIG11c3QgdGhlcmVmb3JlIGJlIGRlY2xhcmVkIGFic3RyYWN0IG9yIGltcGxlbWVudCB0aGUgcmVtYWluaW5nIG1ldGhvZCAoQzo6bikgaW4ge0ZJTEV9IG9uIGxpbmUgMjgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQpGYXRhbCBlcnJvcjogVW5jYXVnaHQgVHlwZUVycm9yOiBDOjpxKCk6IEFyZ3VtZW50ICMxICgkdikgbXVzdCBiZSBvZiB0eXBlIEJhc2VBMTY1Rml4ZWQsIEJhc2VCMTY1Rml4ZWQgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAyNSBhbmQgZGVmaW5lZCBpbiB7RklMRX06NgpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDI1KTogQzo6cShPYmplY3QoQmFzZUIxNjVGaXhlZCkpCiMxIFtpbnRlcm5hbCBmdW5jdGlvbl06IHtjbG9zdXJlOntGSUxFfToxM30oKQojMiB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgNgo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": ".tools/class165-artifacts/failed-first-post-fixup-alias-parent.native.json",
+      "native_raw_sha256": "66ff4d13e8bd1dfb06a26536c57b5a1b263b21a8819b90dd4d194410b98b345c",
+      "model_timeout_seconds": 240
     }
   ]
 }
