@@ -320,6 +320,10 @@ A retained BYREF Generator can keep that final ordinary owning cell through
 closed storage while the copied send remains stable. Four originals and 448
 reached conditions pass; joined strict433 and terminal source/state pass at
 `c5086c205`.
+Outside aliases can keep the ordinary owning cell after Generator retirement;
+the copied final argument remains stable across later cell writes and COW.
+Four originals, 527 reached conditions and an affected 266-condition control
+pass; joined strict433 and fresh terminal source/state pass at `a00e229f9`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -622,7 +626,6 @@ CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review
 | CLASS164 | Existing copied trait `parent` capture views: four exact native/model originals and three source-reached state groups pass 258 conditions (79+86+93). The cross-parent case distinguishes saved lexical from called scope. Two corrected fixture failures retain zero credit. No semantic rule changed; private review CLEAR and four-source composed-tail check passed at 5db2cd8f2; integration pending. [Review](coverage/semantics/trait-captured-parent-view-review.json). |
 | COMP161 | Deleted dynamic-property images, clone histories and stable key synchronization: private and joined strict433, source5/control2, reached1169, affected COMP158/160 sources and mixed readiness182 pass. Final review and integration pending. |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
-| A84 | Outside aliases keep the final owning ordinary BYREF cell after retained Generator retirement; four exact sources, two reached proofs and one affected control complete privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
