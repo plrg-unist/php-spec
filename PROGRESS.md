@@ -186,6 +186,9 @@ Four more sources and 405 reached conditions pass at private cuts, including
 real storage release and terminal saved-throw cleanup. Typed Generator cells,
 effectful finalizers/casts and wider last-DATA reference graphs and lifecycles
 remain partial.
+The joined strict433 and fresh terminal-throw source/state gate pass at
+`c7eb56942`; disjoint I84/ATTR07 changes were independently reviewed before
+guarded integration.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -452,7 +455,6 @@ control is promoted without native replay.
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
-| A79 | Temporary factory Generator with owning final ARRAY/INSTANCE cache; four source agreements and two reached proofs complete privately. Current-master joined validation and integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
