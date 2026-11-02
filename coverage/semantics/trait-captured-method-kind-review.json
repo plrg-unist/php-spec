@@ -1,0 +1,119 @@
+{
+  "scope": "Existing trait class-constant first-class static method captures with saved self or nullable self parameter view; old cloned capture and later using-class capture. The only new rule reports never fallthrough as a method for authenticated copied base/view captures.",
+  "private_cuts": {
+    "base": "eee9c00c95e1bb7349af66e1044180a3f668fc74",
+    "semantics_and_catalogue": "233749d655e1fb3611da0064271d10a75d547b30",
+    "state_fixtures": "60333139e798d5d978f6b075cef551b87381498b"
+  },
+  "inputs": {
+    "author_manifest": {
+      "path": ".tools/class163-author/frozen.json",
+      "sha256": "478e5c69c3cdcc21e8d3cf82fa77840650c525ec3b5b23ce08ede2aac19c92fb"
+    },
+    "peer_manifest": {
+      "path": ".tools/class163-review/frozen.json",
+      "sha256": "540d1871181d6ecde0125f86b78c28831f1cc22d54fea9e039c6b6e256948ef7"
+    },
+    "catalogue": {
+      "path": ".tools/class163-dev/tests/semantics/trait_captured_method_kind_cases.json",
+      "sha256": "0d34338be59a9f2b19858d2f1856628fd8807766502bdabea247feb29af5c332"
+    },
+    "profile": {
+      "path": ".tools/class163-dev/tests/semantics/profile.json",
+      "sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "changed_semantics": {
+      "path": ".tools/class163-dev/spec/semantics/307-trait-callable-target-fixups.watsup",
+      "sha256": "ff38b26f12b152c7862058f09aa095734dd698058a57e1fcd4d8c43fda3b6016"
+    }
+  },
+  "validation": {
+    "native": "3 fresh exact originals at immutable base, exit0; author capture-time deprecations retained",
+    "pre_fix": "2 selected unchanged normal observations, each differs only function versus method for the copied never capture; stderr agrees exactly",
+    "strict": "433 ordered modules, --sl true newline, empty stderr, exit0 at semantics cut",
+    "source": "3 selected model-only originals, accepted/program/normal/exit0 and exact native stdout/stderr after FILE substitution at semantics cut",
+    "state": "2 source-reached --sl groups at fixture cut: 130 conditions = 126 reached + 4 derived guards; author typed receive 62=60+2, reviewer old clone/later 68=66+2",
+    "execution": "pinned PHP 8.5.10 CLI/profile; LC_ALL=C, TZ=UTC, CPU1 whole-tree affinity and full descendant reaping; supervisors record command, revisions, consumed input maps, exit and process cleanup; source/state stdout identifies raw report paths"
+  },
+  "evidence": {
+    "native-supervisor": {
+      "path": ".tools/class163-artifacts/native-initial3.json",
+      "sha256": "c062a5cabb03699332015891d143db6f1b00c10e15aee80bfacb7ad2d8223c92"
+    },
+    "native-peer": {
+      "path": ".tools/class163-artifacts/trait-cached-cloned-later-never.native-first.json",
+      "sha256": "76f57694bd5c3cf51299f1c590a598690d6b4dd0b05b293831758f05e329689a"
+    },
+    "native-author-self": {
+      "path": ".tools/class163-artifacts/author-trait-cached-self-parameter.native-first.json",
+      "sha256": "9e00d47a6ec008b7096f7e77afb85ff0402180fb7a447c2d23e5cd3da1c8590c"
+    },
+    "native-author-return": {
+      "path": ".tools/class163-artifacts/author-trait-cached-optional-return.native-first.json",
+      "sha256": "b0621604c5f40ee183fabe3d2a3a1e933dd15ae0ee38b44ea12dd04e3244e662"
+    },
+    "baseline-peer-supervisor": {
+      "path": ".tools/class163-artifacts/old-peer-never.json",
+      "sha256": "17939c76504369cc398d2c461afc6f544cc4b8dd6775988d8599040664adb474"
+    },
+    "baseline-peer-raw": {
+      "path": ".tools/class163-artifacts/trait-cached-cloned-later-never.unchanged-baseline.json",
+      "sha256": "3681a9bfef4188d09a557203baef15ec990ac758471fbb5a188421b1db056484"
+    },
+    "baseline-author-supervisor": {
+      "path": ".tools/class163-artifacts/old-author-return-never.json",
+      "sha256": "d9547b49242d6f9d5275ac5d7a3c266c98cefed336cd1d4d51e4f8bb69513e46"
+    },
+    "baseline-author-raw": {
+      "path": ".tools/class163-artifacts/author-trait-cached-optional-return.unchanged-baseline.json",
+      "sha256": "64c41ab00ad9ac4cd5282303774afbcee3c0fa2198ad08a5952f8f40be3f87d1"
+    },
+    "strict-supervisor": {
+      "path": ".tools/class163-artifacts/strict433.json",
+      "sha256": "c2c0e020f1a4e70a999dde04738c7713c8cc485e19e6fb733610750ddc7e7541"
+    },
+    "source-peer-supervisor": {
+      "path": ".tools/class163-artifacts/source-peer-never.json",
+      "sha256": "d871b05dee7d41c9eabbed66f8098ab726087cee47b784461834b6647515a843"
+    },
+    "source-peer-raw": {
+      "path": ".tools/class163-artifacts/method-runtime-4jyy2l4v/report.json",
+      "sha256": "b4df7f4b12b2364ef7d3ce233c0db2875cc790d411d374aad5437591eb76688e"
+    },
+    "source-author-self-supervisor": {
+      "path": ".tools/class163-artifacts/source-author-self.json",
+      "sha256": "49cb4dba9649be77b35d64956279939180daf0417763cb8f80e248a82e2f4a3b"
+    },
+    "source-author-self-raw": {
+      "path": ".tools/class163-artifacts/method-runtime-bew2dy0q/report.json",
+      "sha256": "ec91152be6512062f200d35b75827f3a96a196923200c7419e3fa8db116f69b0"
+    },
+    "source-author-return-supervisor": {
+      "path": ".tools/class163-artifacts/source-author-return-never.json",
+      "sha256": "c3edc263309d80f8b047f3be8d0ddea91d091d0be02d289cb45e159be22ecdc6"
+    },
+    "source-author-return-raw": {
+      "path": ".tools/class163-artifacts/method-runtime-qww2e2w9/report.json",
+      "sha256": "51663b3e453c5bb30367fb9dbd4e5ea38a481823dee8b942422c8f57d593dc57"
+    },
+    "state-author-supervisor": {
+      "path": ".tools/class163-artifacts/state-author-typed-view.json",
+      "sha256": "b966e83e389f5afdee3f293efaa12ee75abd86b481c59f336193cb1b4499efef"
+    },
+    "state-author-raw": {
+      "path": ".tools/class163-artifacts/trait-captured-parameter-view-ve97f6xv/report.json",
+      "sha256": "40cde5556a201b3cc795eb5afb11ae2500578c1e368f3fb8b668375b7b14697c"
+    },
+    "state-peer-supervisor": {
+      "path": ".tools/class163-artifacts/state-peer-old-clone.json",
+      "sha256": "5560fcf1ecb3109a160fc9de5de7f5009cf0861b747d8841c3dd9dbcd2e93360"
+    },
+    "state-peer-raw": {
+      "path": ".tools/class163-artifacts/trait-captured-method-kind-ils36t95/report.json",
+      "sha256": "f961b7275c72bdf1887e9585ff2e6a1de1d9dd759f3030e150b0112b4c868a6f"
+    }
+  },
+  "implementation": "One guarded $call_function_kind rule in module307 requires selected CLOSURE_TARGET/current instance/function, class-method origin, base!=view, matching lexical/called target and authenticated trait FCC target name. Existing 91/95/173 names, binder, view producer and source compiler are unchanged.",
+  "remaining": "The reviewed slice does not cover copied parent parameter views, alias/failure receipts, anonymous using-class NUL names, rebound/API/REALCLOSURE/wrapper/Generator views, or complete trait semantics. CLASS156\u2013162 precede this private cut for actual-tail integration; no canonical writer lease or joined gate was assumed.",
+  "status": "private independently reviewed; actual-tail integration pending"
+}

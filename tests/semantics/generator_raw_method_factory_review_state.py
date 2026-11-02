@@ -24,6 +24,7 @@ S.COMPLETION = NORMAL
 S.CURRENT = eps
 S.FRAMES = eps
 S.GC.ACTIVE = eps
+S.SHUTDOWN.ENTRIES = eps
 $lookup(S.ENV, $ptascii("g")) = (n_generator_cell)
 S.STORE[n_generator_cell] = DEFINED (POBJECT n_generator)
 S.OBJECTS[n_generator] = GENERATOR pgenerator

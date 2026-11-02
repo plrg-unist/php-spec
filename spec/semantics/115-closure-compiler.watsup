@@ -1,4 +1,7 @@
 ;; Real closure templates are source descriptors, never named callable entries.
+dec $ppclosure_line(metadata) : nat
+dec $declaration_method_source_line(metadata) : int
+dec $declaration_method_keyword_lines(metadata) : int*
 dec $ppclosure_name(ppstate, metadata) : ptbytes
 dec $ppclosure_parent(ppstate) : ptbytes
 dec $ppclosure_outer(ppstate, pcpath, nat, phpType22*, ptbytes*) : ppstate
@@ -11,6 +14,7 @@ dec $ppclosure_ready(ppstate, ppstate, pcpath, ptbytes, phpType22*, statement*, 
 dec $ppclosure_uses(ppstate, pcpath, nat, phpType22*, ptbytes*) : ppstate
 dec $ppclosure_use(ppstate, pcpath, ptbytes, bool, metadata, ptbytes*) : ppstate
 dec $ppclosure_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
+dec $ppclosure_attributes_header(ppstate, pcpath, pssignature, metadata) : ppstate
 
 dec $pparrow_template(pfunction) : bool
 def $ppclosure_template(pfunction) = (pfunction.BODY = pcpath ++ [PCFIELD 6] \/ $pparrow_template(pfunction))
@@ -18,7 +22,13 @@ def $ppclosure_template(pfunction) = (pfunction.BODY = pcpath ++ [PCFIELD 6] \/ 
 def $ppclosure_parent(P) = P.LOCATION.FILE -- if P.FOLD.FUNCTION = eps
 def $ppclosure_parent(P) = P.FOLD.FUNCTION -- if P.FOLD.FUNCTION =/= eps /\ P.CLOSURE
 def $ppclosure_parent(P) = P.FOLD.FUNCTION ++ $ptascii("()") -- if P.FOLD.FUNCTION =/= eps /\ ~P.CLOSURE
-def $ppclosure_name(P, metadata) = $ptascii("{closure:") ++ $ppclosure_parent(P) ++ [58] ++ $ntunsigned($psline(metadata)) ++ [125]
+;; Source parsing supplies the function/fn keyword independently of attributes
+;; and static. Older unattributed checked inputs keep their original line fact.
+def $ppclosure_line(metadata) = $psline(metadata)
+  -- if $declaration_method_keyword_lines(metadata) = eps
+def $ppclosure_line(metadata) = $nabs($declaration_method_source_line(metadata))
+  -- if $declaration_method_keyword_lines(metadata) =/= eps
+def $ppclosure_name(P, metadata) = $ptascii("{closure:") ++ $ppclosure_parent(P) ++ [58] ++ $ntunsigned($ppclosure_line(metadata)) ++ [125]
 
 def $ppdispatch(P, pcpath, NExprClosure (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 (SEQUENCE phpType22*) phpType18 (SEQUENCE statement*) metadata, PPR) = $ppclosure_begin(P_outer, pcpath, phpType16, phpType22*, phpType18, statement*, b_ref, metadata)
   -- if P_outer = $ppclosure_outer(P, pcpath ++ [PCFIELD 4], 0, phpType22*, eps)
@@ -44,8 +54,13 @@ def $ppclosure_outer_check(P, ptbytes, ptbytes_seen*) = $ppstatic_cvrecord(P, pt
 
 def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = P
   -- if P.COMPLETION =/= PPCNORMAL
+def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppunsupported(P, "Closure keyword source line")
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $declaration_method_keyword_lines(metadata) =/= eps /\ $ppclosure_line(metadata) = 0
 def $ppclosure_begin(P, pcpath, phpType16, phpType22*, phpType18, statement*, b, metadata) = $ppclosure_step(P, $ppfunction_start(P, ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.CLOSURE = true][.FOLD.CLOSURE = true][.GOTOROOT = pcpath], pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P, ptbytes)))
   -- if P.COMPLETION = PPCNORMAL
+  -- if n_keyword = $ppclosure_line(metadata)
+  -- if $declaration_method_keyword_lines(metadata) = eps \/ $(n_keyword > 0)
   -- if ptbytes = $ppclosure_name(P, metadata)
 
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, psprogress) = P
@@ -61,7 +76,7 @@ def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadat
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
   -- if P_uses = $ppclosure_uses(P_header, pcpath ++ [PCFIELD 4], 0, phpType22*, (psparam.NAME)*)
-  -- if P_body = $ppgenerator_body(P_uses, pcpath ++ [PCFIELD 6], statement*)
+  -- if P_body = $ppgenerator_body($ppclosure_attributes_header(P_uses, pcpath, pssignature, metadata), pcpath ++ [PCFIELD 6], statement*)
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppclosure_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = $ppsignature_attribute($ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)], pscontinuation, phpType14)
@@ -93,7 +108,7 @@ def $ppclosure_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_bod
   -- if P_body.COMPLETION =/= PPCNORMAL
 def $ppclosure_finish(P, P_body, pcpath, ptbytes, pssignature, metadata) = P_restored[.CLOSURETEMPLATES = P_body.CLOSURETEMPLATES ++ [pfunction]]
   -- if P_body.COMPLETION = PPCNORMAL
-  -- if pfunction = { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $psline(metadata), ENDLINE $psendline(metadata) }
+  -- if pfunction = { DEFAULTS $ppfunction_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, SIGNATURE pssignature, CVS P_body.CVS, ENV P.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $ppclosure_line(metadata), ENDLINE $psendline(metadata) }
   -- if P_restored = P_body[.CLOSURE = P.CLOSURE][.RETURNREF = P.RETURNREF][.RETURNS = P.RETURNS][.CVS = P.CVS][.HEADERASSIGNED = P.HEADERASSIGNED][.LOOPS = P.LOOPS][.SWITCHES = P.SWITCHES][.GOTOROOT = P.GOTOROOT][.LABELS = P.LABELS][.GOTOS = P.GOTOS][.EARLY = P.EARLY][.ENV = P_body.ENV][.FOLD = P_body.FOLD[.CONSTANT = P.FOLD.CONSTANT][.DEFAULT = P.FOLD.DEFAULT][.FUNCTION = P.FOLD.FUNCTION][.CLASSCONTEXT = P.FOLD.CLASSCONTEXT][.CLOSURE = P.FOLD.CLOSURE][.VALUE = eps]][.LOCATION = P.LOCATION[.LINE = $psendline(metadata)]][.EXPRESSIONS = P.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P.ACCESS ++ P_body.ACCESS][.NAMES = P.NAMES ++ P_body.NAMES][.REDIRECTS = P.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P.WRITES ++ P_body.WRITES][.GLOBALS = P.GLOBALS ++ P_body.GLOBALS]
 
 def $ppstatic_seen_entry(pfunction*, PPCLEXICAL pcpath ptbytes_name b n_line, ptbytes) = (ptbytes_name = ptbytes /\ ~$ppinner(pfunction*, pcpath))

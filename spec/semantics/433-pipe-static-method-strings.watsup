@@ -3,6 +3,15 @@
 ;; this rule.
 dec $pipe_static_excluded(pstate, preqbytes) : bool
 dec $pipe_static_site(pstate, porigin, preqbytes) : bool
+dec $pipe_enum_string_input_valid(pstate, porigin, ptbytes) : bool
+def $pipe_enum_string_input_valid(S, porigin_site, preqbytes) = true
+  -- if $pipe_fixed_name(S, porigin_site) =/= eps
+def $pipe_enum_string_input_valid(S, porigin_site, preqbytes) = true
+  -- if $pipe_fixed_name(S, porigin_site) = eps
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $enum_array_string_valid(S, pvalue_string)
+  -- if $string_bytes(pvalue_string) = (preqbytes)
+def $pipe_enum_string_input_valid(S, porigin_site, preqbytes) = false -- otherwise
 def $pipe_static_site(S, porigin_site, preqbytes) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left expression_right metadata)
   -- if ~$pppipe_optimized(expression_right)
@@ -36,9 +45,18 @@ def $pipe_static_string(S, preqbytes, pvalue_left, porigin_site, z_send, z_looku
 def $pipe_static_string(S, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = S[.COMPLETION = UNSUPPORTED "excluded pipe method string"]
   -- if $pipe_static_site(S, porigin_site, preqbytes)
   -- if $pipe_static_excluded(S, preqbytes)
+def $pipe_static_string(S, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = $enum_pipe_selected(S, pintrinsic, preqbytes, ptbytes_method, pvalue_left, porigin_site, z_send, z_call)
+  -- if $pipe_static_site(S, porigin_site, preqbytes)
+  -- if ~$pipe_static_excluded(S, preqbytes)
+  -- if $method_string_parts(preqbytes) = ((ptbytes_requested, ptbytes_method))
+  -- if $string_enum_candidate(S, preqbytes) = (pintrinsic)
+  -- if pintrinsic = INTRINSIC_ENUM porigin_class ptbytes_enum text_method
+  -- if $pipe_enum_string_input_valid(S, porigin_site, preqbytes)
+  -- if $string_site_valid(S, {SITE porigin_site, INIT z_lookup, LINE z_call, REQUESTED porigin_class, ORIGINAL preqbytes}, false)
 def $pipe_static_string(S, preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call) = $pipe_static_result(S, $string_resolve(S, preqbytes, ARRAY_DISPATCH, false), preqbytes, pvalue_left, porigin_site, z_send, z_lookup, z_call)
   -- if $pipe_static_site(S, porigin_site, preqbytes)
   -- if ~$pipe_static_excluded(S, preqbytes)
+  -- if $string_enum_candidate(S, preqbytes) = eps
 
 def $task_nodes(PIPE_STRING_SEND pcalltarget pstringselection pvalue_left z_send z_call) = $value_nodes(pvalue_left) ++ $target_nodes(pcalltarget)
 dec $pipe_string_send_valid(pstate, pcalltarget, pstringselection, pvalue, int, int) : bool

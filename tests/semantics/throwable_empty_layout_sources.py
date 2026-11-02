@@ -7,7 +7,7 @@ from throwable_empty_layout_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {name: ('Throwable property comparison', b'B|')
-    for name in ('empty-dynamic-unset-control', 'empty-inherited-dynamic-control')}
+    for name in ('empty-inherited-dynamic-control',)}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 480 for name in CASES}
 base_fingerprint = family.fingerprint

@@ -38,7 +38,7 @@ def $fiber_capture_live(S, n) = true
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
 def $fiber_capture_live(S, n) = false -- otherwise
-def $fiber_capture_new(S, pintrinsic, ptbytes, n_input?) = S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $fiber_capture_new(S, pintrinsic, ptbytes, n_input?) = S[.GC = $fake_gc_birth(S.GC, n, $fiber_static(pintrinsic))][.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = ptask :: ptask_tail*
   -- if n = |S.OBJECTS|
