@@ -173,7 +173,10 @@ Source retargeting, called-scope reset, a retained Gen Closure and a retired
 factory's nonowning history retain distinct controls. Three native/model
 originals and five reached fronts 614 custom/639 reported pass at their recorded
 cuts; private433 keeps its original cut. Both original failures remain zero credit.
-Wider callable/API/lifecycle contexts and actual-tail integration remain partial.
+Joined strict433, three exact sources and parked127 pass at ee4b3cdb; the
+strengthened closed-cache126 state at 5610e476 checks GC09's receiverless
+marker. The 4544a539 composition is reviewed. Wider callable/API/lifecycle
+contexts remain partial.
 [I91 review](coverage/semantics/generator-string-method-closure-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
@@ -810,7 +813,6 @@ separate parser mode. HALT with a preamble and wider encodings remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
-| I91 | Reviewed private static string Closure identity/bindTo: native3/source3/private433 and five reached fronts614 custom/639 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

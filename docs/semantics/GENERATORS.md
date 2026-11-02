@@ -578,7 +578,10 @@ Unsupported. Native controls distinguish an original string target from later
 retargeting, called-scope reset at compatible static binding, a Closure retained
 through CLOSED and a retired factory's nonowning scoped-body history. Native3,
 source3/private433 and five reached fronts 614 custom/639 reported pass at distinct
-cuts; both original failures remain zero credit. Actual-tail integration and wider
+cuts; both original failures remain zero credit. Joined strict433, three exact
+sources and parked127 pass at ee4b3cdb; strengthened closed-cache126 at
+5610e476 checks GC09's receiverless marker. The 4544a539 composition is
+reviewed. Wider
 callable consumers remain partial.
 [String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
 

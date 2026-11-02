@@ -7039,7 +7039,9 @@ admitted non-first-class bindTo calls through the existing authenticated binding
 handler. Stored selection survives source-string retargeting; static binding
 retains its actual called scope and no receiver. Native3/source3/private433 retain
 distinct cuts; five reached fronts pass 614 custom/639 reported checks. Both
-original failures retain zero credit; actual-tail integration remains pending.
+original failures retain zero credit. Joined strict433, three exact sources and
+parked127 pass at ee4b3cdb; strengthened closed-cache126 at 5610e476 checks
+GC09's receiverless marker. The 4544a539 composition is reviewed.
 [String Closure review](coverage/semantics/generator-string-method-closure-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
