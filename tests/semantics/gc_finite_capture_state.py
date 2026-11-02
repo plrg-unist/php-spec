@@ -15,7 +15,7 @@ reversed_checks = [check.replace(old_order, new_order)
 
 CASES = {
     'finite-reversed-captures': {
-        'source': sources.family.CASES['finite-reversed-captures'].decode(),
+        'source': sources.PATHS['finite-reversed-captures'].read_text(),
         'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
                  '-- if pgccall.PASS = 0 -- if S.GC.NEXT = 2',
         'checks': [
@@ -26,7 +26,7 @@ CASES = {
         ], 'timeout': 240,
     },
     'finite-three-distinct-mixed-key': {
-        'source': sources.family.CASES['finite-three-distinct-mixed-key'].decode(),
+        'source': sources.PATHS['finite-three-distinct-mixed-key'].read_text(),
         'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
                  '-- if pgccall.PASS = 0 -- if S.GC.NEXT = 2',
         'checks': [
