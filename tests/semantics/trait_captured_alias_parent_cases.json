@@ -1,0 +1,45 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "alias-parent-first-later",
+      "source": "<?php\nclass BaseA165 {}\nclass BaseB165 {}\ntrait Body165 {\n    public static function m(parent $value): string {\n        echo 'body:', self::class, ':', static::class, ';';\n        return 'ok';\n    }\n    public const array Y = [self::alias(...)];\n    public static array $x = self::Y;\n}\ntrait Layer165 { use Body165; }\nset_error_handler(static function () { return true; });\nclass First165 extends BaseA165 {\n    use Layer165 { m as alias; }\n    public static array $x = self::Y;\n}\n$old = First165::Y[0];\n$old = clone $old;\nclass Later165 extends BaseB165 {\n    use Layer165 { m as alias; }\n    public static array $x = self::Y;\n}\n$later = Later165::Y[0];\ntry { echo 'later-a:', $later(new BaseA165), ';'; }\ncatch (Throwable $e) { echo 'later-a-error:', $e->getMessage(), ';'; }\ntry { echo 'later-b:', $later(new BaseB165), ';'; }\ncatch (Throwable $e) { echo 'later-b-error:', $e->getMessage(), ';'; }\ntry { echo 'direct-b:', Later165::alias(new BaseB165), ';'; }\ncatch (Throwable $e) { echo 'direct-b-error:', $e->getMessage(), ';'; }\n",
+      "source_sha256": "5f949fe5740de71dd59e1853d612c770f0573587b815e268bec3d2364cc7fe6a",
+      "stdout_base64": "bGF0ZXItYTpib2R5OkZpcnN0MTY1OkxhdGVyMTY1O29rO2xhdGVyLWI6bGF0ZXItYi1lcnJvcjpGaXJzdDE2NTo6YWxpYXMoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIEJhc2VBMTY1LCBCYXNlQjE2NSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2NS1hcnRpZmFjdHMvYWxpYXMtcGFyZW50LWZpcnN0LWxhdGVyLnBocCBvbiBsaW5lIDI3O2RpcmVjdC1iOmJvZHk6TGF0ZXIxNjU6TGF0ZXIxNjU7b2s7",
+      "stdout_template_base64": "bGF0ZXItYTpib2R5OkZpcnN0MTY1OkxhdGVyMTY1O29rO2xhdGVyLWI6bGF0ZXItYi1lcnJvcjpGaXJzdDE2NTo6YWxpYXMoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIEJhc2VBMTY1LCBCYXNlQjE2NSBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSBvbiBsaW5lIDI3O2RpcmVjdC1iOmJvZHk6TGF0ZXIxNjU6TGF0ZXIxNjU7b2s7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class165-artifacts/alias-parent-first-later.native.json",
+      "native_raw_sha256": "10df30c02be705a2716dcdf64031130abae84879acce904309f77df5db4b6636",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "alias-parent-own-override",
+      "source": "<?php\nclass BaseA165 {}\nclass BaseB165 {}\ntrait Body165 {\n    public static function m(parent $value): string {\n        echo 'body:', self::class, ':', static::class, ';';\n        return 'ok';\n    }\n    public const array Y = [self::alias(...)];\n    public static array $x = self::Y;\n}\ntrait Layer165 { use Body165; }\nset_error_handler(static function () { return true; });\nclass First165 extends BaseA165 {\n    use Layer165 { m as alias; }\n    public static array $x = self::Y;\n}\n$old = First165::Y[0];\n$old = clone $old;\nclass Later165 extends BaseB165 {\n    use Layer165 { m as alias; }\n    public static array $x = self::Y;\n    public static function alias(BaseB165 $value): string {\n        echo 'own:', self::class, ':', static::class, ';';\n        return 'own';\n    }\n}\n$later = Later165::Y[0];\ntry { echo 'later-a:', $later(new BaseA165), ';'; }\ncatch (Throwable $e) { echo 'later-a-error:', $e->getMessage(), ';'; }\ntry { echo 'later-b:', $later(new BaseB165), ';'; }\ncatch (Throwable $e) { echo 'later-b-error:', $e->getMessage(), ';'; }\ntry { echo 'direct-b:', Later165::alias(new BaseB165), ';'; }\ncatch (Throwable $e) { echo 'direct-b-error:', $e->getMessage(), ';'; }\n",
+      "source_sha256": "8d940f32aab0d2a9d3d6fbece2a1627cda230624a8f742d12ebec01d56cc1e54",
+      "stdout_base64": "bGF0ZXItYTpib2R5OkZpcnN0MTY1OkxhdGVyMTY1O29rO2xhdGVyLWI6bGF0ZXItYi1lcnJvcjpGaXJzdDE2NTo6YWxpYXMoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIEJhc2VBMTY1LCBCYXNlQjE2NSBnaXZlbiwgY2FsbGVkIGluIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2NS1hcnRpZmFjdHMvYWxpYXMtcGFyZW50LW93bi1vdmVycmlkZS5waHAgb24gbGluZSAzMTtkaXJlY3QtYjpvd246TGF0ZXIxNjU6TGF0ZXIxNjU7b3duOw==",
+      "stdout_template_base64": "bGF0ZXItYTpib2R5OkZpcnN0MTY1OkxhdGVyMTY1O29rO2xhdGVyLWI6bGF0ZXItYi1lcnJvcjpGaXJzdDE2NTo6YWxpYXMoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIEJhc2VBMTY1LCBCYXNlQjE2NSBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSBvbiBsaW5lIDMxO2RpcmVjdC1iOm93bjpMYXRlcjE2NTpMYXRlcjE2NTtvd247",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class165-artifacts/alias-parent-own-override.native.json",
+      "native_raw_sha256": "a69082c832411d0c0245a5a24294b47dd45d83622fbb199fb1f9f4a7368523f1",
+      "model_timeout_seconds": 240
+    }
+  ]
+}
