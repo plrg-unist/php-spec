@@ -3861,6 +3861,12 @@ GC23 admits a node-free scalar capture before the childless array in the
 same direct Closure. Native Reflection confirms capture order; one original
 and 110 strict reached assertions pass. See the
 [scalar-array caller review](coverage/semantics/gc-scalar-array-caller-review.json).
+GC24 extends this direct caller to finite ordered scalar captures around
+one mutable array with distinct childless stdClass and scalar entries.
+Three sources, including a three-leaf post-capture COW case, agree with
+PHP; 113+146 new reached assertions cover order, owners, buffer slots and
+explicit graph/provenance refusals. See the
+[finite capture review](coverage/semantics/gc-finite-capture-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit

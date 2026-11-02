@@ -342,9 +342,19 @@ GC23 admits an ordered node-free scalar capture before one childless
 runtime-written array capture in the same direct Closure. A pinned
 Reflection control observes `seed,token` order; one original agrees and
 110 strict reached assertions bind the capture layout, shared array owners
-and swapped-order refusal. Pre-edit Unsupported retains zero credit.
-Other capture orders, child graphs and COW remain open.
+and source/caller bounds. Pre-edit Unsupported retains zero credit.
 [GC23 review](coverage/semantics/gc-scalar-array-caller-review.json).
+
+GC24 admits finite ordered node-free scalar captures around one mutable
+one-level array in the same authenticated direct Closure. Its entries may
+be direct scalars or distinct childless stdClass leaves in physical order;
+compiled-pool descendants and materialized property tables are fenced.
+Reversed capture order, three mixed-key leaves and post-capture COW give
+three exact source pairs. Strict reached checks pass 113+146 assertions,
+and the corrected GC23 group passes 110. Duplicate identities, shared
+separate captures, aliases, nested arrays and user-destructor children
+remain refused. Earlier Unsupported, overlap and fixture failures retain
+zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
