@@ -1,4 +1,6 @@
 <?php
+function pass_buffer($b, $phase) { return $b; }
+ob_start("pass_buffer");
 class ShutdownRawInvoker {
     public function __invoke() {
         $GLOBALS["calls"]++;
