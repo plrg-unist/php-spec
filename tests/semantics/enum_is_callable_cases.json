@@ -24,6 +24,14 @@
     "purpose": "The third byref output captures an initialized direct CV and writes the generated enum callable name before returning the bool."
   },
   {
+    "id": "enum-is-callable-third-output-false",
+    "source": "<?php\nenum MissingCheck: int { case A = 1; }\n$name = 'old';\n$ok = is_callable('MissingCheck::missing', false, $name);\necho 'runtime:', (int)$ok, ':', $name, '|';\n$name = 'old';\n$ok = is_callable('MissingCheck::missing', true, $name);\necho 'syntax:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "6914519ebb14aa5ee591035a69f61b1b1487525bb06b701aecf582ed13c97266",
+    "expected_model": "normal",
+    "expected_normal_stdout": "runtime:0:MissingCheck::missing|syntax:1:MissingCheck::missing|",
+    "purpose": "A literal missing method on a published enum writes the output name on both false runtime and true syntax-only results."
+  },
+  {
     "id": "enum-is-callable-third-output-rebinding-unsupported",
     "source": "<?php\nenum FirstCheck: string { case A = 'a'; }\nenum OtherCheck: string { case B = 'a'; }\nclass NameDrop {\n    public function __destruct() { echo 'NAME-DROP|'; }\n}\n\n$target = [FirstCheck::class, 'from'];\n$name = new NameDrop;\necho 'before|';\n$ok = is_callable($target, false, $name);\necho 'selected:', ($ok ? '1' : '0'), ':', $name, '|';\n$target = [OtherCheck::B, 'tryFrom'];\necho 'rebound:', (is_callable($target) ? '1' : '0'), '|';\n$same = [FirstCheck::class, 'from'];\n$ok = is_callable($same, false, $same);\necho 'alias:', ($ok ? '1' : '0'), ':', $same, '|';\n",
     "source_sha256": "835c8cb6b3beae2c15c8a03d61d2797cd0b0261488b305369ab755e8f41b873f",
