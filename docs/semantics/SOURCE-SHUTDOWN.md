@@ -72,6 +72,9 @@ Persistent FCC.object and raw-object FCC.closure slots now retain independent
 owners, including equal object IDs. Entered method callbacks borrow This; Closure
 calls retain their separate instance owner. Quiet cache owners survive the
 callback loop, early destructor pass and output FINAL. Late registry-free/output
+release consumes each cached slot in the selected buffered executor path,
+including two slots containing the same raw invokable object. Wider late-free
 policy remains partial. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
-records five normal agreements, 296 reached/guard checks and private strict 432;
+records five earlier normal agreements, two joined raw-invokable comparisons,
+296 earlier reached/guard checks and private strict 432;
 its tick-specific identity and inline release rules are described in [Ticks](TICKS.md).

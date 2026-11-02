@@ -1,6 +1,6 @@
 {
   "milestone": "ATTR08: persistent shutdown/tick FCC owners and identity",
-  "status": "private validated; canonical composition pending",
+  "status": "current-parent composed; independent final review pending",
   "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
   "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-08",
   "scope": [
@@ -9,7 +9,7 @@
     "Method API calls borrow This; Closure calls retain their existing independent instance owner.",
     "Inline tick unregister retires copied params, FCC.object, FCC.closure, then the genuine call arguments using existing release machinery.",
     "Selected target scope/binding survives retirement only as readonly operation SOURCE metadata; it grants no heap owner or new entry.",
-    "Quiet shutdown caches remain through callback completion, early object destruction and output FINAL. Late registry/free policy remains partial.",
+    "Quiet shutdown caches remain through callback completion, early object destruction and output FINAL; selected buffered post-output executor release retires cached slots with their exact multiplicity.",
     "Property groups at tick frequency 0 with no nested callables/tick declarations have an identity summary; wider property/class placement stays Unsupported."
   ],
   "production": {
@@ -190,6 +190,66 @@
       "status": "php_error",
       "diagnostic_class": "TypeError",
       "observation": "Old tick equality removed the raw registration too, retired its receiver early, then unregister(NULL) raised TypeError; native remains normal."
+    },
+    "joined": {
+      "strict_ob05": {
+        "report": "join-ob05-ea1-strict/report.json",
+        "sha256": "39be2c2382e85aefcb161d04e6d21275f1892628211dc5a04b6f60ce26561806",
+        "revision": "ea1cddc8364bd9836660e06f5af166ab300dd95d",
+        "modules": 433,
+        "passed": true
+      },
+      "captured_final": {
+        "report": "join-ob05-03ec-captured-final/report.json",
+        "sha256": "80f073769c16bbf2895c278f7a32beea81c956b326d3754026b13a58853fb125",
+        "revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+        "case": "shutdown-bound-closure-cache-and-captured-final-observers",
+        "native_source_sha256": "2f234887fc759ac90d2906145494d9d5d170cf4845bdca0d1825c9a9c4db52b0",
+        "agreement_credit": 1
+      },
+      "raw_invokable": [
+        {
+          "source": "raw-invokable-first/source.php",
+          "source_sha256": "75aacacf1a11366946f73a6ab735bc711e612d2db4bfa6cc58ed6ea1eb12ccce",
+          "native_report": "raw-invokable-first/report.json",
+          "native_report_sha256": "e6e7c321b11fce2da22f9b443788901d61b4443eb2c9cd4bf9f9fe0dc99c0d6b",
+          "comparison": "raw-invokable-first/comparison.json",
+          "comparison_sha256": "8d524758a7ddc207dd47dbe8c4eb0c14f63c84ed378b5ae3228fe511cc51e1cd",
+          "output": "P:1;B:1:1;S:1:1;D:1;",
+          "exact": true,
+          "note": "No user buffer; demonstrates normal visible behavior but cannot reach module444 output executor queue."
+        },
+        {
+          "source": "raw-invokable-buffered/source.php",
+          "source_sha256": "0703c6495a13594b9b12a9d6ef6bab3fb99ea27e43289741ccdcc05c50f9a5ab",
+          "native_report": "raw-invokable-buffered/report.json",
+          "native_report_sha256": "b915c67135bdaf5168ff55b0dea2472504f4020e546afcb81da854574c50aa11",
+          "comparison": "raw-invokable-buffered/comparison.json",
+          "comparison_sha256": "9582198524f4d559c3bae43b5893425497fe0c5e5e456d9c5ae033a30dc01f22",
+          "model_revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+          "output": "P:1;B:1:1;S:1:1;D:1;",
+          "exact": true,
+          "note": "Named passthrough buffer reaches the post-output executor queue; destructor output is not attributed to that queue."
+        }
+      ],
+      "reached": [
+        {
+          "report": "join-ob05-03ec-reached/raw-cache-release/report.json",
+          "sha256": "f497bd911937cbc4927904a747e26d5b85f12b01f9fc034e0f8912c66b4ffa7f",
+          "revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+          "case": "shutdown-raw-invokable-cache-release",
+          "assertions": 30,
+          "finding": "At real release boundary, one raw invokable object has two FCC cache owners and two release jobs; final owner count is zero."
+        },
+        {
+          "report": "join-ob05-03ec-reached/bound-fcc-ob05/report.json",
+          "sha256": "2d812b7a9c54e4beb759d5ccfbd0efccce1be65baff4e468008a3234d981147c",
+          "revision": "03ecaaaf83936952d6681826df90c24f354b0c65",
+          "case": "bound-fcc-object-releases-before-closure-this-edge",
+          "assertions": 84,
+          "finding": "Affected OB05 selected reached case passes with one-argument executor_queue_nodes helper."
+        }
+      ]
     }
   },
   "preserved_failures": [
@@ -222,11 +282,23 @@
       "path": "reached-peer-33239f49e",
       "credit": 0,
       "detail": "35.689s first raw fixture omitted U: already emitted before the reached WeakRef getter. One expected literal corrected; no runtime/source/native change."
+    },
+    {
+      "path": "failed-reached-3d172a5c5",
+      "sha256": "cb53aed955b40c47a981145bc777d7ec528eec317868e6cfb95204d1283c3b34",
+      "credit": 0,
+      "detail": "First raw executor fixture searched for queue start, and its source lacked the user output buffer needed for the module444 queue."
+    },
+    {
+      "path": "failed-reached-761baf1f2",
+      "sha256": "4386b9e4a25848594b44c0b26fe4fe2842571b7a011b20fe166f5b6205ebfbf6",
+      "credit": 0,
+      "detail": "Corrected stage still missed because the original had no user output buffer; the no-buffer path never enters module444 queue. Buffered native-first source corrects the test shape."
     }
   ],
   "remaining": [
     "Closure object __invoke arrays need their own callback wrapper/API staging; retained native control is zero agreement.",
-    "Late tick/shutdown registry free, active observer hooks, wider callable/reentry/reference/throw histories and compiler placements remain partial."
+    "Wider late tick/shutdown registry free and executor paths, active observer hooks, wider callable/reentry/reference/throw histories and compiler placements remain partial."
   ],
   "review": {
     "agent": "/root/attr04_recover_review",
@@ -241,9 +313,19 @@
       "tests/semantics/callback_cache_cases.py",
       "tests/semantics/callback_cache_review_cases.py",
       "tests/semantics/callback_cache_protocol.py",
-      "tests/semantics/callback_cache_review_protocol.py"
+      "tests/semantics/callback_cache_review_protocol.py",
+      "tests/semantics/callback_cache_executor_raw.php",
+      "tests/semantics/callback_cache_executor_protocol.py"
     ],
     "method": "Use recorded exact source IDs, profile, retained native source hashes and commands. Mixed native reports require explicit passed-row selection. Preserve historical failures/cuts; do not replay accepted rows without an affected dependency."
   },
-  "composition": null
+  "composition": {
+    "head": "d70b1ef45c680c520484a64262b237f9db559b5f",
+    "parents": [
+      "03ecaaaf83936952d6681826df90c24f354b0c65",
+      "30bbd4064d3dd456fd7d6fc896c9878427a5a89a"
+    ],
+    "status": "final review pending",
+    "compatibility": "New master paths since ATTR07 are bounded GC explicit unmarked Closure invoke, enum generated-string/fromCallable, CONFIG Generator cached-item/unpack, COMP160 object cast/structural comparison, and I84/I85 magic Generator contexts. Selected ATTR08 shutdown/tick sources use none of those constructors or operations; OB05 ownership intersection was checked directly above. Joined strict on this exact composition pending."
+  }
 }

@@ -4524,8 +4524,10 @@ Persistent shutdown/tick caches now retain their object and Closure slots
 separately. Raw invokable and array-form callbacks preserve distinct tick
 identity; inline unregister releases arguments before cached object/Closure
 owners, while quiet shutdown owners survive through FINAL. Five normal
-originals and 296 reached/guard checks validate this slice; late free and
-array-form Closure::__invoke callbacks remain partial. See the [cache review](coverage/semantics/callback-fcc-cache-review.json).
+originals and 296 reached/guard checks validate the private slice. The OB05
+join matches two new raw-invokable originals and reaches buffered cache release
+with two equal owners; broader late free and array-form Closure::__invoke
+callbacks remain partial. See the [cache review](coverage/semantics/callback-fcc-cache-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

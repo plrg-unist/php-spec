@@ -309,8 +309,11 @@ cache.object, then cache.closure. Readonly selected metadata validates cleanup
 after scope retirement. Quiet shutdown retention continues through FINAL.
 Five normal originals agree; four reached groups pass 296 checks (292 reached,
 four derived), private strict 432 passes, and one Closure-array control remains
-an exact Unsupported boundary/zero credit. Late free and wider callback/compiler
-forms remain partial; actual composition is pending.
+an exact Unsupported boundary/zero credit. The OB05 join passes strict433,
+the retained captured-FINAL original, and two new exact raw-invokable originals.
+Buffered post-output release reaches two equal FCC owners before retirement;
+the affected bound-Closure executor case also passes. Other late-free and wider
+callback/compiler forms remain partial; current-parent review is pending.
 [Cache review](coverage/semantics/callback-fcc-cache-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
