@@ -339,7 +339,8 @@ Four originals, 527 reached conditions and an affected 266-condition control
 pass; joined strict433 and fresh terminal source/state pass at `a00e229f9`.
 A direct temporary BYREF Generator now copies an owning final value from its
 ordinary local cell after a scalar send. Four sources and 472 reached conditions
-pass privately; DATA then INPUT cleanup releases the temporary before API or catch.
+pass; DATA then INPUT cleanup releases the temporary before API or catch.
+Joined strict433 and fresh terminal source/state pass at `3699279a5`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -657,7 +658,6 @@ CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source o
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
 | COMP161 | Deleted dynamic-property images, clone histories and stable key synchronization: private and joined strict433, source5/control2, reached1169, affected COMP158/160 sources and mixed readiness182 pass. Final review and integration pending. |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
-| A85 | Direct temporary BYREF Generator keeps a final finite quiet owning local cell through DATA/INPUT release; four exact sources and two reached proofs complete privately, integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
