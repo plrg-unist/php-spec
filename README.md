@@ -6681,6 +6681,9 @@ in the [shape review](coverage/semantics/enum-is-callable-shape-review.json).
 For published pure enums, receiver-specific `__callStatic`/`__call` fallback
 also matches eight native outcomes and 56 reached guards in the
 [magic review](coverage/semantics/enum-is-callable-magic-review.json).
+Live case arrays naming direct public user instance or static methods also
+pass seven exact native controls and 49 reached guards in the
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
 The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

@@ -98,13 +98,18 @@ checks source-certified `__callStatic` for class strings/name arrays and
 `__call` for case arrays. One native-first original agrees on eight outcomes,
 including opposite-handler false results and explicit user-method controls;
 56 reached strict guards prove no magic body is entered by the query.
+Live enum case arrays now also query direct public user instance and static
+methods. One native-first original agrees on seven case/class/string controls;
+49 source-reached strict guards tie the method descriptor to its enum source
+member and show that the query enters neither user method body.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
 [pipe review](coverage/semantics/enum-pipe-review.json),
 [query review](coverage/semantics/enum-is-callable-review.json),
 [shape review](coverage/semantics/enum-is-callable-shape-review.json),
-[magic review](coverage/semantics/enum-is-callable-magic-review.json).
+[magic review](coverage/semantics/enum-is-callable-magic-review.json),
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now

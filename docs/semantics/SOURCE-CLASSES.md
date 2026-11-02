@@ -698,3 +698,8 @@ case arrays. An opposite-kind handler cannot rescue the missing method. The
 records eight exact native/model outcomes and 56 reached guards; neither
 magic body runs during the query. Other magic sources and inaccessible-method
 fallback remain partial.
+An array with a live enum case receiver can also name a direct public user
+instance or static method. The [case-method review](../../coverage/semantics/enum-is-callable-case-method-review.json)
+records seven exact outcomes and 49 reached guards that tie the method
+descriptor to its enum source member without entering the body. Imported,
+inaccessible and attributed methods remain partial.
