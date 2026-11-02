@@ -14,6 +14,7 @@ dec $config_generator_reference_input(pconfiggenerator) : bool
 dec $config_generator_temporary_reference_input(pstate, pconfiggenerator) : bool
 dec $config_generator_factory_reference_input(pstate, pconfiggenerator) : bool
 dec $config_generator_reference_owning_source(pstate, pconfiggenerator) : bool
+dec $config_generator_reference_owning_item_source(pstate, pconfiggenerator) : bool
 dec $config_generator_reference_owning_first(pstate, pconfiggenerator, pvalue) : bool
 dec $config_generator_reference_two_owning_items(pstate, pconfiggenerator) : bool
 dec $config_generator_temporary_reference_owning_first(pstate, pconfiggenerator, pvalue) : bool
@@ -201,6 +202,9 @@ def $config_generator_reference_owning_source(S, pconfiggenerator) = true
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.SIGNATURE.BYREF
   -- if $function_generator(S, pfunction)
 def $config_generator_reference_owning_source(S, pconfiggenerator) = false -- otherwise
+;; Bounded BYREF sends and copied ITEM receipts share authenticated source
+;; provenance; temporary sources still require integer keys.
+def $config_generator_reference_owning_item_source(S, pconfiggenerator) = ($config_generator_reference_owning_source(S, pconfiggenerator) \/ $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator))
 def $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) = true
   -- if $config_generator_reference_owning_source(S, pconfiggenerator)
   -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue)]
@@ -304,7 +308,7 @@ def $config_generator_key_input(pconfiggenerator, PSTRING_CARRIER pstringidentit
 def $config_generator_key_input(pconfiggenerator, pvalue) = false -- otherwise
 ;; Owning ITEMS keep bounded history; their graph and finalizer gates are live.
 def $config_generator_items(S, pconfiggenerator, eps) = true
-def $config_generator_items(S, pconfiggenerator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*) = (($config_iterator_scalar(S, pvalue) \/ (($config_generator_owning_value_source(S, pconfiggenerator) \/ $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) \/ $config_generator_temporary_reference_owning_first(S, pconfiggenerator, pvalue) \/ $config_generator_reference_owning_last(S, pconfiggenerator, pvalue) \/ $config_generator_reference_two_owning_items(S, pconfiggenerator) \/ $config_generator_temporary_reference_owning_last_items(S, pconfiggenerator)) /\ $value_nodes(pvalue) =/= eps /\ $config_iterator_value_receipt(S, pvalue))) /\ $config_generator_items(S, pconfiggenerator, pentry*))
+def $config_generator_items(S, pconfiggenerator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*) = (($config_iterator_scalar(S, pvalue) \/ (($config_generator_owning_value_source(S, pconfiggenerator) \/ $config_generator_reference_owning_item_source(S, pconfiggenerator)) /\ $value_nodes(pvalue) =/= eps /\ $config_iterator_value_receipt(S, pvalue))) /\ $config_generator_items(S, pconfiggenerator, pentry*))
 def $config_generator_items(S, pconfiggenerator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry*) = ($config_generator_string_key_input(pconfiggenerator) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_scalar(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
 def $config_generator_items(S, pconfiggenerator, pentry*) = false -- otherwise
 def $config_generator_history(S, pconfiggenerator) = true
@@ -575,69 +579,13 @@ def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if pgenerator.REFCELL = (n_cell)
   -- if $ordinary_reference_value(S, n_cell) = (pvalue)
   -- if $config_iterator_scalar(S, pvalue)
+;; The copied prefix and current ordinary cell are checked separately.
+;; A retained CV may have more Generator owners; a temporary/factory result
+;; has exactly DATA and INPUT owners at acquisition.
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_reference_owning_source(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = eps
-  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps
-  -- if pgenerator.REFCELL = (n_cell)
-  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
-  -- if pgenerator.KEY = (pvalue_key)
-  -- if $config_generator_key(S, pvalue_key) = (KINT z)
-  -- if $value_nodes(pvalue) =/= eps
-  -- if $config_iterator_argument(S, pvalue)
-  -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
-def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = eps
-  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps
-  -- if pgenerator.REFCELL = (n_cell)
-  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
-  -- if pgenerator.KEY = (pvalue_key)
-  -- if $config_generator_key(S, pvalue_key) = (KINT z)
-  -- if $value_nodes(pvalue) =/= eps
-  -- if $config_iterator_argument(S, pvalue)
-  -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2
-def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_reference_owning_source(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = [ENTRY pkey_option (DIRECT pvalue_option)]
-  -- if $config_iterator_scalar(S, pvalue_option)
-  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps
-  -- if pgenerator.REFCELL = (n_cell)
-  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
-  -- if pgenerator.KEY = (pvalue_key)
-  -- if $config_generator_key(S, pvalue_key) = (KINT z)
-  -- if $value_nodes(pvalue) =/= eps
-  -- if $config_iterator_argument(S, pvalue)
-  -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
-def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue_option)]
-  -- if $config_iterator_scalar(S, pvalue_option)
-  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps
-  -- if pgenerator.REFCELL = (n_cell)
-  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
-  -- if pgenerator.KEY = (pvalue_key)
-  -- if $config_generator_key(S, pvalue_key) = (KINT z)
-  -- if $value_nodes(pvalue) =/= eps
-  -- if $config_iterator_argument(S, pvalue)
-  -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2
-def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_reference_owning_source(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_first) (DIRECT pvalue_first)]
-  -- if $config_generator_reference_owning_first(S, pconfiggenerator, pvalue_first)
-  -- if $config_iterator_value_receipt(S, pvalue_first)
+  -- if $config_generator_reference_owning_item_source(S, pconfiggenerator)
+  -- if $(|pconfiggenerator.ITEMS| < 2)
+  -- if $config_generator_items(S, pconfiggenerator, pconfiggenerator.ITEMS)
   -- if $config_generator_owning_items_live(S, pconfiggenerator.ITEMS)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if $generator_reference_producer(S, pgenerator)
@@ -649,23 +597,7 @@ def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if $value_nodes(pvalue) =/= eps
   -- if $config_iterator_argument(S, pvalue)
   -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
-def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_first) (DIRECT pvalue_first)]
-  -- if $config_generator_temporary_reference_owning_first_items(S, pconfiggenerator)
-  -- if $config_generator_owning_items_live(S, pconfiggenerator.ITEMS)
-  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps
-  -- if pgenerator.REFCELL = (n_cell)
-  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
-  -- if pgenerator.KEY = (pvalue_key)
-  -- if $config_generator_key(S, pvalue_key) = (KINT z)
-  -- if $value_nodes(pvalue) =/= eps
-  -- if $config_iterator_argument(S, pvalue)
-  -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2
+  -- if ($config_generator_reference_owning_source(S, pconfiggenerator) /\ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)) \/ (($config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2)
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if $config_generator_owning_value_source(S, pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
