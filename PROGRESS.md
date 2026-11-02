@@ -662,6 +662,12 @@ images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
 [SOURCE-CLONE](docs/semantics/SOURCE-CLONE.md) and the linked reviews.
 
+COMP162 copies ordinary mixed declared tables after dynamic reinsertion when
+obsolete dead mirrors precede a later live row. Four exact source agreements,
+39 reached conditions, two affected clone sources and joined strict433 pass.
+Live/live duplicate names and nonordinary tables remain partial.
+[Review](coverage/semantics/throwable-mixed-reinsert-clone-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
