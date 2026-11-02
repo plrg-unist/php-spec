@@ -835,6 +835,7 @@ their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CONFIG A88-A93 | A shared authenticated BYREF Generator copied-ITEM rule covers retained, direct temporary and BYVAL-factory producers for at most two INI_SET sends. Owning copies use integer keys; retained CVs keep their supported scalar named prefix. Private strict433, six selected original terminal agreements, four crossed/effectful new agreements and 827 reached conditions/11 raw steps pass. Stringable conversion and a factory-retained Generator stop at exact Unsupported send frontiers with zero agreement credit. Current-master composition/review pending. [Review](coverage/semantics/config-generator-bounded-ownership-review.json). |
 | CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
