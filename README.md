@@ -6990,7 +6990,9 @@ THROW across Fibers. The VM owns the Closure and borrows its receiver; closed
 Generators retain both until Closure-before-cache storage release. Four native/model
 originals agree at distinct cuts; five reached fronts pass 632 custom/657 reported
 checks. Private433 retains its initial cut; original failures keep zero credit and
-actual-tail integration and wider contexts remain pending. [Captured THROW review](coverage/semantics/generator-captured-method-throw-review.json).
+joined strict433, three exact sources, fresh 117-check and independent closed-body
+118-check states pass at c81b8c5e. The 26cf6684 composition is reviewed;
+wider contexts remain pending. [Captured THROW review](coverage/semantics/generator-captured-method-throw-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

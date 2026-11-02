@@ -137,8 +137,10 @@ agree at distinct cuts; five reached fronts pass 632 custom/657 reported checks.
 Private433 keeps its initial cut; later source/front checks compile the ARRAY
 nominal Closure identity and admitted bindTo dispatch corrections. Original
 Unsupported, stdout mismatch and interpreter failure keep zero agreement credit.
-Actual-tail integration and wider producer/API/binding/lifecycle combinations
-remain pending. [I89 review](coverage/semantics/generator-captured-method-throw-review.json).
+Joined strict433, three exact sources, a fresh 117-check state and independent
+closed-body 118-check state pass at c81b8c5e; 26cf6684 composition is reviewed.
+Wider producer/API/binding/lifecycle combinations remain pending.
+[I89 review](coverage/semantics/generator-captured-method-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -745,7 +747,6 @@ Live/live duplicate names and nonordinary tables remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
-| I89 | Reviewed private captured method-Closure warm/fresh THROW: native4/source4/private433 and reached632 custom/657 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

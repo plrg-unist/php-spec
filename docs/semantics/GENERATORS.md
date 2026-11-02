@@ -552,8 +552,10 @@ cache, input and phase filters retain their separate contracts. Native first-cla
 fromCallable/bindTo and array captures retain Closure/This through CLOSED, then
 release Closure/receiver before the cache. Four native/model originals agree at
 distinct cuts; five reached fronts pass 632 custom/657 reported checks.
-Private433 retains its initial cut; original failures keep zero credit and actual-tail
-integration remains pending. Wider binding, APIs, delegation, collection and
+Private433 retains its initial cut; original failures keep zero credit. Joined
+strict433, three exact sources, fresh 117-check and independent closed-body
+118-check states pass at c81b8c5e; 26cf6684 composition is reviewed. Wider
+binding, APIs, delegation, collection and
 lifecycle combinations remain partial.
 [Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
 

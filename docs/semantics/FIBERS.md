@@ -1148,7 +1148,9 @@ the Closure once, and its receiver edge keeps This through CLOSED. Native contro
 distinguish original source/binding retirement from final Closure-before-cache
 release. Native4/source4 and five reached fronts632 custom/657 reported pass at
 distinct cuts; private433 retains its initial cut. Original failures keep zero credit,
-with actual-tail integration and wider contexts still open.
+while joined strict433, three exact sources, fresh 117-check and independent
+closed-body 118-check states pass at c81b8c5e. The 26cf6684 composition is
+reviewed; wider contexts remain open.
 [Captured THROW review](../../coverage/semantics/generator-captured-method-throw-review.json).
 
 Shared pending flags and wider parked ownership
