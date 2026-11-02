@@ -125,8 +125,10 @@ outcomes and 88 reached guards pass.
 A separate live variable can now supply the enum method string to a direct
 three-argument `is_callable` call with literal `false`. Its saved and current
 bytes agree, and a distinct initialized output CV receives the name before the
-boolean. One exact original and 46 reached guards pass; same-cell aliases and
-argument-time target rebinding remain explicit Unsupported.
+boolean. One exact original and 46 reached guards pass. A shared scalar
+input/output reference cell also retains the saved name through its write;
+one exact original and 43 reached guards pass. Argument-time target rebinding
+remains explicit Unsupported.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -142,7 +144,8 @@ argument-time target rebinding remain explicit Unsupported.
 [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
 [scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
 [string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json),
-[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json).
+[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json),
+[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now

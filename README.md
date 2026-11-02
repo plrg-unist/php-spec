@@ -6784,9 +6784,11 @@ third output; the [string-spelling review](coverage/semantics/enum-is-callable-o
 records three exact outcomes and 88 reached guards. A separate variable holding
 the enum method string also writes its saved name through a distinct output
 CV; the [variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact source and 46 reached guards. Old-object destructor and
-input/output alias effects, other array sources, autoload, case attributes,
-enum collection policy and wider acquisition remain partial;
+records one exact source and 46 reached guards. Shared scalar input/output
+reference cells add one exact source and 43 reached guards in the
+[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
+Old-object destructor and wider alias effects, other array sources, autoload,
+case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
