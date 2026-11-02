@@ -298,6 +298,14 @@ by collection nonce 2. Pre-edit refusal remains zero credit; broader
 entries, backedges and post-capture COW remain open.
 [GC22 review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
+GC23 admits an ordered node-free scalar capture before one childless
+runtime-written array capture in the same direct Closure. A pinned
+Reflection control observes `seed,token` order; one original agrees and
+110 strict reached assertions bind the capture layout, shared array owners
+and swapped-order refusal. Pre-edit Unsupported retains zero credit.
+Other capture orders, child graphs and COW remain open.
+[GC23 review](coverage/semantics/gc-scalar-array-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator

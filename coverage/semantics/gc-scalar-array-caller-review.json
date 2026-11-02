@@ -1,0 +1,31 @@
+{
+  "scope": "GC23: active direct real-Closure caller capturing a node-free scalar before one runtime-written childless array by value.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "base": "15f309e91a675a28300cac8129a877e5dad4dda9",
+    "source": "e3af115b6a4a6b66f8c2cf6fce5a66cb3ac993ec",
+    "semantic": "12cb13ecbf344000ab5ed4cb7872fc251a52943b",
+    "reached_fixture": "cde61ce05"
+  },
+  "source_sha256": "02109ae9d222288f941f2750b0400b6be361dd871a631fa93560b552700e621a",
+  "capture_control_sha256": "f5d7317ea1f0aff24acf61445b6825cbed718b3688e49c282ee9fb1fd7b52222",
+  "validation": {
+    "native": "Pinned full source outputs C|11|T|P|0|D|3|split|0|H|3|dead|0|END, exit 0 and empty stderr. Native-only Reflection capture-order control outputs seed|token|11|11, confirming source-order lexical binding; it earns no model agreement. Stable head/inputs, no timeout and fully reaped process groups are recorded.",
+    "preedit": "At clean source-only e3af, the model exits 1 Unsupported cached ordinary property-table collection after C|11|T|P|0|. The retained failure has zero source agreement, stable HEAD/inputs, no timeout and an empty process group.",
+    "fix": "A separate ordinary-node clause requires authenticated active direct Closure and real machine root, exact ordered raw captures [DIRECT node-free scalar, DIRECT PARRAY], an allocated model-nonimmutable array, one Closure-to-array child edge, and empty ordinary and physical array child lists. The rule admits the modeled node-free scalar family; the source exercises PINT 11. Graph, owner, count and buffer algorithms are unchanged.",
+    "source": "At clean semantic 12cb, the original model finishes normal with byte-exact stdout/stderr and exit 0 versus pinned native: one source agreement, stable HEAD/inputs, no timeout and empty process group. No earlier accepted campaign was replayed.",
+    "reached": "Strict SL at semantic 12cb uses the fixture committed unchanged at cde and passes 110 assertions, exit 0 with no timeout. The authentic D state has exact ordered PINT 11 then PARRAY capture, node-free scalar, shared global/captured/local array ID with owners 2/3 for Closure/array, black array protection and retained held/drop count plan. Swapped capture order, source erasure, inactive and wrong-caller controls are refused."
+  },
+  "reports_sha256": {
+    "gc-scalar-array-capture-23-review/native-report.json": "81f1a9c1bea30d0792116147822edfd470a9e98696d7ac49690dab4e9593077a",
+    "gc-scalar-array-capture-23-dev/preedit/native-report.json": "15e780db6d27136a87bd3b0d99d22a252cb03258f04be94e3833ecf651e22713",
+    "gc-scalar-array-capture-23-dev/preedit/model-scalar-array-captured-direct-caller-report.json": "b72702b6c4ce3530237c20a21312ec8cf22fcfd3de457a2298827df3dbc13356",
+    "gc-scalar-array-capture-23-dev/semantic/native-report.json": "7785b6d694bbb05ddfb78c62c3a95a9062bbe8758d8c8cfcaeedb6723d49db23",
+    "gc-scalar-array-capture-23-dev/semantic/model-scalar-array-captured-direct-caller-report.json": "50b836d15db4984849a38c2da38f659ed3a93fb3ee87ed7be8802b31e4faaa9e",
+    "gc-scalar-array-capture-23-dev/strict/report.json": "d500b6a895a8b171ea70a95d2709b894297b8d50df771da04ed3f7e21938190d"
+  },
+  "review": "Independent GC23 semantic and focused source/state test CLEAR at cde from gc_review_recovery. Actual-master-tail composition and joined interaction review pending.",
+  "limits": "The source uses one node-free PINT value followed by a runtime-written childless nonimmutable array. The rule admits other modeled node-free scalar values under the same shape. Reversed capture order, extra captures, arrays with child edges, post-capture COW, explicit invoke and other active contexts remain untested. Historical source selection does not prove arbitrary rewritten operand identity.",
+  "recovery": "Raw pinned native, Reflection control, original failure, exact source pair and strict reached files are outside Git under ../php-spec-evidence-archive/gc-scalar-array-capture-23-review and gc-scalar-array-capture-23-dev. Reproduce with the GC23 source harness native then model and strict reached script; run one fully reaped CPU1 actor at a time."
+}
