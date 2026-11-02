@@ -7007,7 +7007,9 @@ warm/fresh THROW across Fibers. Actual resumer/Gen/current identity precedes the
 existing source/header and cache/input filters. Native4/source4 and private433
 retain distinct cuts; five reached fronts pass 623 custom/648 reported checks.
 Fresh abort agrees on original-Throwable/Previous and payload-before-This order.
-Actual-tail integration and wider contexts are pending.
+Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
+and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
+reviewed. Wider contexts remain pending.
 [Magic THROW review](coverage/semantics/generator-direct-magic-throw-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

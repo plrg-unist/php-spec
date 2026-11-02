@@ -329,6 +329,14 @@ sources and fresh/closed reached-state reports.
 The [captured THROW ledger](../coverage/semantics/generator-captured-method-throw-review.json)
 keeps original nominal, bindTo and interpreter failures separate.
 
+I90 direct magic Generator THROW evidence is retained under
+`../php-spec-evidence-archive/generator-direct-magic-throw-90/` and
+`../php-spec-evidence-archive/generator-direct-magic-throw-90-review/`.
+The first archive's `actual-tail-dfa4/` retains joined strict, three exact
+sources, fresh/closed states and the affected I85 SEND state.
+The [magic THROW ledger](../coverage/semantics/generator-direct-magic-throw-review.json)
+keeps the unchanged Unsupported separate from accepted checks.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

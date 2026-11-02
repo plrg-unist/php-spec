@@ -138,17 +138,6 @@ old THROW states (143+105 checks) and an independent 153-check state pass at
 API/binding/delegation/collection/lifecycle combinations remain pending.
 [I88 review](coverage/semantics/generator-raw-method-cache-review.json).
 
-I90 carries direct typed BYVAL magic Generator warm/fresh THROW across Fibers
-through a shared actual resumer/Gen/current and entered-handler receipt proof.
-Native fresh abort releases payload before This, then throws the original API
-Throwable with the supplied abort as Previous; the existing initialization rule
-supplies that order unchanged. Four native/model originals agree at distinct
-cuts; five reached fronts pass 623 custom/648 reported checks. Private433 keeps
-its original cut and the unchanged Unsupported keeps zero agreement credit.
-Source/signature and wider producer/API/lifecycle limits remain partial;
-actual-tail integration is pending.
-[I90 review](coverage/semantics/generator-direct-magic-throw-review.json).
-
 I89 carries authenticated nonstatic captured/bound method-Closure Generators
 through warm by-value/reference THROW and fresh initialization across Fibers.
 The actual resumer/Gen/current proof keeps Closure and This through CLOSED;
@@ -161,6 +150,18 @@ Joined strict433, three exact sources, a fresh 117-check state and independent
 closed-body 118-check state pass at c81b8c5e; 26cf6684 composition is reviewed.
 Wider producer/API/binding/lifecycle combinations remain pending.
 [I89 review](coverage/semantics/generator-captured-method-throw-review.json).
+
+I90 carries direct typed BYVAL magic Generator warm/fresh THROW across Fibers
+through a shared actual resumer/Gen/current and entered-handler receipt proof.
+Native fresh abort releases payload before This, then throws the original API
+Throwable with the supplied abort as Previous; the existing initialization rule
+supplies that order unchanged. Four native/model originals agree at distinct
+cuts; five reached fronts pass 623 custom/648 reported checks. Private433 keeps
+its original cut and the unchanged Unsupported keeps zero agreement credit.
+Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
+and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
+reviewed. Source/signature and wider producer/API/lifecycle limits remain partial.
+[I90 review](coverage/semantics/generator-direct-magic-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -774,7 +775,6 @@ separate parser mode. HALT with a preamble and wider encodings remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
-| I90 | Reviewed private direct BYVAL magic Generator warm/fresh THROW: native4/source4/private433 and reached623 custom/648 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

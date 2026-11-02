@@ -1159,8 +1159,10 @@ leave value cache1/input1; fresh pre-yield suspension retains pending input2.
 Native supplied-abort controls distinguish fresh no-cache payload/This retirement
 and original API Throwable priority from warm propagation. Native4/source4 and
 private433 retain distinct cuts; five reached fronts pass 623 custom/648 reported
-checks, including budgeted abort/drop and closed Previous order. Actual-tail
-integration remains pending. Source/signature and wider lifecycle limits remain.
+checks, including budgeted abort/drop and closed Previous order. Joined
+strict433, three exact sources, fresh parked125, affected I85 SEND166 and
+independent closed102 checks pass at dfa4386d; d1f314c0 composition is
+reviewed. Source/signature and wider lifecycle limits remain.
 [Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
 
 Shared pending flags and wider parked ownership
