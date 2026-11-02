@@ -206,6 +206,11 @@ dec $generator_creation_method(pstate, porigin, porigin?) : bool
 dec $generator_creation_method_site(pcnode?) : bool
 dec $generator_creation_object_method_target(pcalltarget) : bool
 dec $generator_implicit_invoke_target(pstate, pcalltarget, porigin) : bool
+dec $generator_raw_method_base(pcalltarget) : pcalltarget?
+dec $generator_raw_method_receiver(pstate, nat?) : bool
+dec $generator_raw_method_selected(pstate, pcalltarget, porigin) : pmethoddesc?
+dec $generator_raw_method_scope_source(pstate, pcallableaccess, porigin) : bool
+dec $generator_raw_method_scope_identity(pstate, pcalltarget, porigin) : bool
 dec $generator_creation_method_source(pstate, pcalltarget, porigin) : bool
 dec $generator_creation_required(pstate, pcallcontext) : bool
 dec $generator_factory_keyword(pstate, porigin, phpType19) : bool
@@ -360,6 +365,10 @@ def $generator_creation_target(S, SCOPED_TARGET porigin_requested porigin porigi
   -- if $target_function(S, SCOPED_TARGET porigin_requested porigin porigin_called (n_receiver) poperand_selector) = (pmethoddesc.FUNCTION)
   -- if $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin porigin_called (n_receiver) poperand_selector, (porigin_site))
   -- if $generator_creation_target_capture(S, SCOPED_TARGET porigin_requested porigin porigin_called (n_receiver) poperand_selector, porigin_site)
+def $generator_creation_target(S, pcalltarget, (porigin_site)) = true
+  -- if $generator_raw_method_selected(S, pcalltarget, porigin_site) = (pmethoddesc)
+  -- if $target_called_class(S, pcalltarget) = (porigin_called)
+  -- if $scoped_receiver_valid(S, porigin_called, pmethoddesc, $target_receiver(S, pcalltarget))
 def $generator_creation_target(S, pcalltarget, porigin_site?) = false -- otherwise
 def $generator_creation_method(S, porigin, (porigin_site)) = ($generator_creation_method_site($origin_node(S.SOURCES, porigin_site)) /\ $method_target_caller(S.CURRENT, S.FRAMES, porigin, porigin_site) = $closure_source_class(S, porigin_site))
 def $generator_creation_method(S, porigin, eps) = false
@@ -383,6 +392,62 @@ def $generator_implicit_invoke_target(S, METHOD_TARGET n porigin_function, porig
   -- if $object_invoke_method(S_lookup, n) = (pmethoddesc)
   -- if porigin_function = pmethoddesc.FUNCTION.ORIGIN
 def $generator_implicit_invoke_target(S, pcalltarget, porigin_site) = false -- otherwise
+;; Raw array/string calls keep their selected wrapper after the source value
+;; changes. A bounded lookup view authenticates retired factory receivers.
+def $generator_raw_method_base(ARRAY_METHOD_TARGET pcalltarget parrayselection) = (pcalltarget)
+  -- if $scope_method_base(pcalltarget)
+def $generator_raw_method_base(ARRAY_METHOD_TARGET (SCOPE_METHOD_TARGET pcalltarget pcallableaccess) parrayselection) = (pcalltarget)
+  -- if $scope_method_base(pcalltarget)
+def $generator_raw_method_base(STRING_METHOD_TARGET pcalltarget pstringselection) = (pcalltarget)
+  -- if $scope_method_base(pcalltarget)
+def $generator_raw_method_base(STRING_METHOD_TARGET (SCOPE_METHOD_TARGET pcalltarget pcallableaccess) pstringselection) = (pcalltarget)
+  -- if $scope_method_base(pcalltarget)
+def $generator_raw_method_base(pcalltarget) = eps -- otherwise
+def $generator_raw_method_receiver(S, eps) = true
+def $generator_raw_method_receiver(S, (n)) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_called
+def $generator_raw_method_receiver(S, n_receiver?) = false -- otherwise
+;; A retired permission-bearing call keeps its ordinary source-method scope.
+;; Normalize only the access query after authenticating that original site;
+;; no current context, caller frame or physical owner is manufactured.
+def $generator_raw_method_scope_source(S, pcallableaccess, PORIGIN n pcpath) = true
+  -- if pcallableaccess.SITE = (PORIGIN n pcpath) /\ pcallableaccess.CREATION = eps
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction_source)
+  -- if $class_method_origin(S.CLASSES, pfunction_source.ORIGIN) = (pmethoddesc_source)
+  -- if pmethoddesc_source.FUNCTION = pfunction_source
+  -- if pcallableaccess.SCOPE = (pmethoddesc_source.OWNER)
+  -- if $method_capture_class_valid(S, pcallableaccess.SCOPE)
+def $generator_raw_method_scope_source(S, pcallableaccess, porigin_site) = false -- otherwise
+def $generator_raw_method_scope_identity(S, ARRAY_METHOD_TARGET (SCOPE_METHOD_TARGET pcalltarget pcallableaccess) parrayselection, porigin_site) = true
+  -- if parrayselection.SITE = porigin_site
+  -- if $generator_raw_method_scope_source(S, pcallableaccess, porigin_site)
+  -- if $array_site_valid(S, parrayselection, false)
+  -- if $scope_array_kind_valid(S, porigin_site, pcallableaccess.OBJECT)
+  -- if $scope_identity(S, pcalltarget, parrayselection.REQUESTED, parrayselection.NAME, pcallableaccess[.SITE = eps])
+  -- if pcallableaccess.OBJECT \/ $scope_static_base(pcalltarget)
+def $generator_raw_method_scope_identity(S, STRING_METHOD_TARGET (SCOPE_METHOD_TARGET pcalltarget pcallableaccess) pstringselection, porigin_site) = true
+  -- if pstringselection.SITE = porigin_site /\ ~pcallableaccess.OBJECT
+  -- if $generator_raw_method_scope_source(S, pcallableaccess, porigin_site)
+  -- if $string_site_valid(S, pstringselection, false)
+  -- if $method_string_parts(pstringselection.ORIGINAL) = ((ptbytes_class, ptbytes_method))
+  -- if $string_target_descriptor(S, pstringselection) = (pmethoddesc)
+  -- if $scope_string_base(pcalltarget, pmethoddesc, $dynamic_fixed_name(S, porigin_site) =/= eps)
+  -- if $scope_identity(S, pcalltarget, pstringselection.REQUESTED, ptbytes_method, pcallableaccess[.SITE = eps])
+  -- if $string_receiver_site_valid(S, pcalltarget, porigin_site)
+def $generator_raw_method_scope_identity(S, pcalltarget, porigin_site) = false -- otherwise
+def $generator_raw_method_selected(S, pcalltarget, porigin_site) = (pmethoddesc)
+  -- if $generator_raw_method_base(pcalltarget) = (pcalltarget_method)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $target_lexical_class(S, pcalltarget_method) =/= eps
+  -- if n_receiver? = $target_receiver(S, pcalltarget_method)
+  -- if $generator_raw_method_receiver(S, n_receiver?)
+  -- if S_lookup = S[.ALLOCATIONS = S.ALLOCATIONS ++ $scoped_receiver_nodes(n_receiver?)]
+  -- if $call_selected_valid(S_lookup, pcalltarget, (porigin_site)) \/ $generator_raw_method_scope_identity(S_lookup, pcalltarget, porigin_site)
+  -- if $target_function(S_lookup, pcalltarget_method) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+def $generator_raw_method_selected(S, pcalltarget, porigin_site) = eps -- otherwise
 ;; A creation certificate is minted from the real entered or caller frame. Its targets
 ;; are immutable selection evidence and add no receiver or argument owners.
 def $generator_magic_target(MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*) = true
@@ -778,6 +843,10 @@ def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_
   -- if $method_accessible(S, pmethoddesc, pgenfactorycapture.CONTEXT.LEXICAL_CLASS)
   -- if pgeneratorcreation_parent = pgeneratorcreation[.SITE = porigin_site][.CREATOR = pgenfactorycapture.CONTEXT][.CREATOR_TARGET = pgenfactorycapture.TARGET][.ANCESTORS = pgenfactorycapture_tail*][.CLOSURE = pgenfactorycapture.CLOSURE]
   -- if $generator_creator_valid(S, pgeneratorcreation_parent)
+def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = true
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if $generator_raw_method_selected(S, pgeneratorcreation.CREATOR_TARGET, porigin_site) = (pmethoddesc)
+  -- if pgeneratorcreation.CREATOR.CALLED_CLASS = $target_called_class(S, pgeneratorcreation.CREATOR_TARGET)
 def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = false -- otherwise
 
 def $generator_creator_valid(S, pgeneratorcreation) = true

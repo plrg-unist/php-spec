@@ -8,6 +8,15 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+I87 authenticates direct raw array and string method Generator creation and
+scoped factories from the immutable selected method. Archived receiver history
+adds no owner; direct producer and Fiber entry require the real live receiver.
+Six originals agree and seven reached fronts pass 561 custom/596 reported
+checks at private cuts. Joined strict433, three exact sources and a strengthened
+93-assertion closed-history state pass; e0e3ce7f composition is reviewed.
+Wider binding, callback and lifecycle contexts remain partial.
+[I87 review](coverage/semantics/generator-raw-method-factory-review.json).
+
 I86 authenticates captured ordinary method Generator bodies during Fiber
 transfer and reference-cache reads using the actual resumer, Closure and
 selected method. After Closure storage retirement, the recorded selection
