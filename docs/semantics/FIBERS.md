@@ -1125,7 +1125,9 @@ header and live receiver precede transfer; the VM keeps its ordinary This owner.
 Native controls distinguish receiver release at close from I86's retained Closure.
 Six native/model originals agree; seven reached fronts pass 561 custom/596
 reported checks at their distinct cuts. Private433 retains its original cut;
-actual-tail integration is pending. Wider caches/transfers remain partial.
+joined strict433 and three exact sources pass at 833e6e8f. The strengthened
+93-assertion closed-history state passes at 1f0e17ba; e0e3ce7f composition is
+reviewed. Wider caches/transfers remain partial.
 [Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
 
 Shared pending flags and wider parked ownership

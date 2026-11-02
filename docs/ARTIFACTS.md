@@ -305,6 +305,14 @@ The [captured body ledger](../coverage/semantics/generator-captured-method-body-
 records the shared ATTR07 borrowing dependency and original compiler/storage
 failures alongside their narrow corrections.
 
+I87 raw method native, private compiler, source and reached-state evidence is
+retained under `../php-spec-evidence-archive/generator-raw-method-factory-87/`
+and `../php-spec-evidence-archive/generator-raw-method-factory-87-review/`.
+The first archive's `actual-tail-833e/` and `joined-state-1f0e/` retain the
+joined reports, including the strengthened empty-shutdown closed-history state.
+The [raw method ledger](../coverage/semantics/generator-raw-method-factory-review.json)
+keeps original failures separate from accepted checks.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

@@ -528,7 +528,9 @@ entry requires the real receiver. Direct raw bodies follow ordinary method
 receipt policy. Six native/model originals agree; seven reached fronts pass
 561 custom/596 reported checks at distinct cuts, including retired private
 permission and real close/cache owners. Private strict433 retains its original
-cut; actual-tail integration is pending and original failures keep zero credit. Raw
+cut; joined strict433 and three exact sources pass at 833e6e8f. The strengthened
+93-assertion closed-history state passes at 1f0e17ba; e0e3ce7f composition is
+reviewed. Original failures keep zero credit. Raw
 cached-reference bodies, pipe and wider APIs/lifecycles remain partial.
 [Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
 
