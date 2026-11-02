@@ -556,6 +556,7 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $(n_array < |S.ARRAYS|)
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if ~$gc_immutable_array(S, n_array)
+  -- if ~$gc_proxy(S, n_array)
   -- if ~((HARRAY n_array) <- $heap_reach($pools_nodes(S.POOLS), eps, $heap_graph(S).EDGES))
   -- if ~$gc_legacy_array_shape(S, pitem*, n_array)
   -- if $gc_plain_array_entries(S, S.ARRAYS[n_array].ITEMS)
