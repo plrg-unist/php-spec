@@ -1,0 +1,128 @@
+{
+  "scope": "GC12–GC19: bounded direct real-Closure collector caller with scalar, ordinary object, runtime array and one array-object-child captures; GC14 is a native/status control, not a new collector rule.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "frozen_tested_revision": "f3018cc03cd61e9737ac9ba63ec617bada469570",
+  "frozen_base": "fee2d7b3861cff16124d1b4b8023a086ec78019e",
+  "frozen_validation": {
+    "strict_command": "taskset -c 1 python3 tests/semantics/gc_<family>_caller_state.py --case <case> (seven selected families, serial)",
+    "strict": "Seven strict SL source-reached groups load all 433 modules, pass 742 assertions, exit 0 and have no timeout.",
+    "strict_reports": {
+      "GC12": {
+        "case": "scalar-captured-direct-caller",
+        "assertions": 95,
+        "report_sha256": "3c95c34893c144aded98d666abd85123669e67d1fa0eb93dae31e31644d09cab",
+        "report": "strict/shutdown-state-review-8yao734g/report.json"
+      },
+      "GC13": {
+        "case": "object-leaf-captured-direct-caller",
+        "assertions": 101,
+        "report_sha256": "5a57f2281d0adf6d82cdac0c1032c97cab7550df06c5e8b36f7d10039eb406d2",
+        "report": "strict/shutdown-state-review-6q_vdkul/report.json"
+      },
+      "GC15": {
+        "case": "rebuffered-leaf-captured-direct-caller",
+        "assertions": 103,
+        "report_sha256": "435d85bb96238cfaeb895d98dd94479cf732f71bc91bad3ed741062cd687191d",
+        "report": "strict/shutdown-state-review-0im0rk6u/report.json"
+      },
+      "GC16": {
+        "case": "array-leaf-captured-direct-caller",
+        "assertions": 104,
+        "report_sha256": "b3e8f559399e2c5cac5a464e6bc812bc3e0d97df0afbaf6b93e31185ad1a991c",
+        "report": "strict/shutdown-state-review-bbm02lci/report.json"
+      },
+      "GC17": {
+        "case": "rebuffered-array-captured-direct-caller",
+        "assertions": 106,
+        "report_sha256": "f5f6823744f030936abe1c01edbac468631d3d1e3ec19351327fd79fe97c8f47",
+        "report": "strict/shutdown-state-review-ctzba4un/report.json"
+      },
+      "GC18": {
+        "case": "array-object-child-captured-direct-caller",
+        "assertions": 115,
+        "report_sha256": "e7adc29e37710d1f37d04e21e3809a9f34309b79f08cb7cb240fe530e35d6cfd",
+        "report": "strict/shutdown-state-review-za58otq2/report.json"
+      },
+      "GC19": {
+        "case": "rebuffered-array-child-captured-direct-caller",
+        "assertions": 118,
+        "report_sha256": "80e05028956f5e1685d0c38c3e0fcc23e130c32601299cf45ff878c6b3a7bf49",
+        "report": "strict/shutdown-state-review-tainn4ta/report.json"
+      }
+    },
+    "source_command": "taskset -c 1 python3 tests/semantics/gc_<family>_caller_sources.py --phase native/model --case <case> --output <external case directory> (seven selected originals, serial)",
+    "sources": "Seven native/model original pairs each have one exact source agreement, exit 0, empty stderr, stable inputs and HEAD, no timeout and empty reaped process groups.",
+    "source_reports": {
+      "GC12": {
+        "case": "scalar-captured-direct-caller",
+        "stdout": "C|11|P|0|D|3|split|0|H|3|dead|0|END",
+        "native_report": "source/gc12/native-report.json",
+        "native_sha256": "203741d4cd6fef7f4911f81239f3a73c31121e1dacd1b85754e57b3dc6e7242e",
+        "model_report": "source/gc12/model-scalar-captured-direct-caller-report.json",
+        "model_sha256": "046c47112cb383642f7d9f601f2b79230a48c32ca1c9312874085148ffa586c1"
+      },
+      "GC13": {
+        "case": "object-leaf-captured-direct-caller",
+        "stdout": "T|P|0|D|3|split|0|H|3|dead|0|END",
+        "native_report": "source/gc13/native-report.json",
+        "native_sha256": "d1498ea703b45f2a1dbb29d7af120ce945d92899ca67bc96b42b4a8b6912ac49",
+        "model_report": "source/gc13/model-object-leaf-captured-direct-caller-report.json",
+        "model_sha256": "90e8ab4d3248826d69fa8268213a9ecf0bf9a6d032bece10d973a72106a9dc8e"
+      },
+      "GC15": {
+        "case": "rebuffered-leaf-captured-direct-caller",
+        "stdout": "T|P|0|D|3|split|0|H|3|dead|0|END",
+        "native_report": "source/gc15/native-report.json",
+        "native_sha256": "eb700f6a85ef95407d8a22eadcc37ecf8207dbd4187c7ee7fda613ed0ba81b9c",
+        "model_report": "source/gc15/model-rebuffered-leaf-captured-direct-caller-report.json",
+        "model_sha256": "1b60692844fceb2703ec6ab76aca1509782147d187ae86a8f4f9e75bf79faee7"
+      },
+      "GC16": {
+        "case": "array-leaf-captured-direct-caller",
+        "stdout": "T|P|0|D|3|split|0|H|3|dead|0|END",
+        "native_report": "source/gc16/native-report.json",
+        "native_sha256": "b593d159e9acf3fe1ef7cb5758ac90ca74dafc9270f0d0edff84bd585d4f63d9",
+        "model_report": "source/gc16/model-array-leaf-captured-direct-caller-report.json",
+        "model_sha256": "480a6e9d1f85409209577362c76ca49e1602d0b88af106ce54922dd961d84b00"
+      },
+      "GC17": {
+        "case": "rebuffered-array-captured-direct-caller",
+        "stdout": "T|P|0|D|3|split|0|H|3|dead|0|END",
+        "native_report": "source/gc17/native-report.json",
+        "native_sha256": "21917a94405779c1c1a84590f3229c90bd56cbb89ede9f4769c2cb93bd024167",
+        "model_report": "source/gc17/model-rebuffered-array-captured-direct-caller-report.json",
+        "model_sha256": "d4d7bace9bc7cdbea5cc44fc38d130f05edb71357c42fccff7e35ca98a151029"
+      },
+      "GC18": {
+        "case": "array-object-child-captured-direct-caller",
+        "stdout": "T|P|0|D|3|split|0|H|3|dead|0|live|END",
+        "native_report": "source/gc18/native-report.json",
+        "native_sha256": "6fe39c967dc522cd8e48ede5c631896ebe1f9b7fb6794f1af7edf787ca534652",
+        "model_report": "source/gc18/model-array-object-child-captured-direct-caller-report.json",
+        "model_sha256": "41203a0e53cd331e5afb089bebde78c0efd0a04159b75a06375d6330494d18ff"
+      },
+      "GC19": {
+        "case": "rebuffered-array-child-captured-direct-caller",
+        "stdout": "T|P|0|D|3|split|0|H|3|dead|0|live|END",
+        "native_report": "source/gc19/native-report.json",
+        "native_sha256": "5c57a11c390dc15cc8f38eba3cdf86a4e04f283e2e5f246e2047ad08813f4d37",
+        "model_report": "source/gc19/model-rebuffered-array-child-captured-direct-caller-report.json",
+        "model_sha256": "4228a531e27a61a2ade325d8b43a1ee1184cbdecb71c2dd613de7068092b37e2"
+      }
+    }
+  },
+  "cab_join": {
+    "base": "cab158b634d458b07566cb528c40999fa040860c",
+    "tested_candidate": "02abc87dfe9f5e9fc356d7258623589b0872c380",
+    "result": "One representative GC12 original native/model pair passes exact stdout/stderr/exit on the actual A80 plus enum-pipe tail; inputs and HEAD are stable, no timeout, process groups fully reaped.",
+    "native_report": "cab-join/gc12/native-report.json",
+    "native_sha256": "689667baf04d2724c830a9fd3ca15e36e3d0b2547502a0b84be39ca054b18394",
+    "model_report": "cab-join/gc12/model-scalar-captured-direct-caller-report.json",
+    "model_sha256": "1357919277d5779584a24fa56ad14afc24351171e0416d3dbb2463c1c6ef3290"
+  },
+  "compatibility": "The GC 301 clauses, seven test families and module manifest are byte-identical from frozen f301 to cab candidate. A80 object-cast additions require declared INITIAL/UNSET slots, while every GC proxy cast has no declared properties and one dynamic back slot. Its Generator/Fiber/magic/comparison/CONFIG changes are not selected. Enum pipe invokes require pipe/enum source absent from these direct Closure sources. No frozen seven-case evidence is relabeled as cab evidence.",
+  "review": "Independent private semantic/test reviews of GC12–GC19 and joined f301 docs/301/inventory are CLEAR. The independent A80 and enum-pipe compatibility review supports the one-source cab bridge. Final latest-tail review and integration remain pending.",
+  "limits": "The rules require an authentic active direct Closure caller and machine root, exact bounded capture/child shapes, and existing physical count/owner walks. GC14 status has no model source agreement. COW after capture, nonempty persistent-array provenance, wider array/object graphs, explicit captured __invoke/pipe, workers, residual/reentry and other active contexts remain open.",
+  "recovery": "Raw reports are outside Git under ../php-spec-evidence-archive/gc-caller-cumulative-12-19-joined. Original private cuts and failures remain under their per-milestone branches and archive folders; GC12 old-base current reports are under gc-captured-caller-12-current. No bulky artifacts are committed."
+}

@@ -3784,6 +3784,8 @@ again, while the child remains unbuffered. The rooted array leaves the D count
 plan as black, and the full source stream matches PHP. Wider entries and
 buffered child objects remain fenced; see the
 [rebuffered-array-child caller review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
+The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
+records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared

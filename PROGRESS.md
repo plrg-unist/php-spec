@@ -216,6 +216,12 @@ counting. Leaf candidates and wider entries remain fenced; COW and nonempty
 persistent provenance are untested. Graph/count/owners are unchanged.
 [GC19 review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
 
+The cumulative GC12–19 join passes seven exact original source pairs and seven
+strict SL reached groups (742 assertions) at its frozen cut. One representative
+GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
+factory path is disjoint. Separate native status controls and original failures
+retain their own evidence. [Joined review](coverage/semantics/gc-caller-cumulative-review.json).
+
 Immediate identity cleanup now validates a sole produced right object/array
 temporary with a borrowed or scalar left operand in both AL and SL. Fourteen
 focused conditions pass in each mode, including strict compilation of the actual
