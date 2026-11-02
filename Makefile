@@ -306,6 +306,10 @@ test-semantics: build
 		python3 tests/semantics/config_generator_reference_two_owning_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_generator_reference_two_owning_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/config_generator_reference_two_owning_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/config-generator-bounded-ownership-XXXXXX)" && \
+		python3 tests/semantics/config_generator_bounded_ownership_sources.py --output "$$out/source" && \
+		python3 tests/semantics/config_generator_bounded_ownership_state.py --source-report "$$out/source/report.json" --output "$$out/state" && \
+		python3 tests/semantics/config_generator_bounded_ownership_refusals.py --output "$$out/refusals"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
