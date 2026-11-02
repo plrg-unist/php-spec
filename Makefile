@@ -244,6 +244,11 @@ test-semantics: build
 		python3 tests/semantics/config_generator_reference_owning_cache_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_generator_reference_owning_cache_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/config_generator_reference_owning_cache_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a83-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_reference_owning_live_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_reference_owning_live_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_reference_owning_live_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_reference_owning_live_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -831,6 +836,8 @@ test-semantics: build
 	python3 tests/semantics/pipe_protocol.py
 	python3 tests/semantics/enum_pipe.py
 	python3 tests/semantics/enum_pipe_protocol.py
+	python3 tests/semantics/enum_is_callable.py
+	python3 tests/semantics/enum_is_callable_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

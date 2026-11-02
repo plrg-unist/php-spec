@@ -1,0 +1,116 @@
+{
+  "milestone": "A83 retained owning BYREF Generator cell at closed cleanup",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...$gen) with a retained global direct-CV zero-argument BYREF Generator",
+    "behavior": "A scalar first option is followed by a finite quiet owning value from an ordinary reference cell. The final cell remains owning at closed finish and popped cleanup; the copied second argument and current cell may diverge after COW. A retained outside CV keeps the Generator alive through TypeError or saved-Throwable handling. Explicit unset then quietly retires the Generator, cell and current payload.",
+    "limits": "Second owning key normalizes to integer; no typed/backed cell, extra cell alias, temporary BYREF producer, effectful finalizer, or sole-Generator owning-cell retirement is claimed."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "5309326d847ad0d9543c31b240e9a82ae1860d46",
+    "source_freeze": "16669d35282199892e256d1bda4bf9ddbb3607fa",
+    "runtime_revision": "ab7751bcb8a7316c1b26a801fe61d19e269eb346",
+    "validated_revision": "ac146d184600c839bbb295407497951d98fc8f3d",
+    "change": "Only 423: a live closed reference-cell owning-value gate, added to retained direct-CV finish and popped discard. It checks the current ordinary cell and copied bounded history separately, with one HCELL owner, a retained global Generator CV and a finite quiet current graph. Generic355/420/schema/manifest remain at base.",
+    "engine": "Zend SEND_UNPACK copies dereferenced yielded values. The Generator keeps its BYREF cell, while copied arguments retain their prior value. Ordinary explicit unset uses quiet graph pruning here; no operational GENERATOR_STORAGE_STEP is claimed."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned binary/profile; LC_ALL=C, TZ=UTC; checked frontend and SL/cache-off/determinism-on model; serial CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-owning-live-83",
+    "native_first": {
+      "revision": "16669d35282199892e256d1bda4bf9ddbb3607fa",
+      "author": {
+        "report": "native-author-16669d352/report.json",
+        "sha256": "b0ed1b41021fb30674e05220342422e733aa81aaae955a079543c9295fed2d64"
+      },
+      "peer": {
+        "report": "native-peer-16669d352/report.json",
+        "sha256": "71f3ea7856787af9c443ab066936b77f3b0d87a8a18f1ad8ca3338b7550b4c4d"
+      },
+      "originals": 4,
+      "result": "Four distinct new originals match handwritten stdout, empty stderr and exit0; native-only preparation carries zero model credit."
+    },
+    "old_refusal": {
+      "revision": "16669d35282199892e256d1bda4bf9ddbb3607fa",
+      "report": "old-control-16669d352/report.json",
+      "sha256": "1fde0db0bdd34a18dfe87de1de3cc069f557ecc6affa41c246cfa69402d0948e",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack last DATA or callee owner",
+      "prefix": "B;Y0;Y1;M:5;W:1;T;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "9b84e83c02bd37b3a3b27468ae57219ae6e0bc7a",
+      "modules": 432,
+      "report": "strict-9b84e83c02/report.json",
+      "sha256": "85b753766fe777704853bed04990f1fe80a1d0935699d308c13fe5b7e350968c"
+    },
+    "source_models": {
+      "revision": "9b84e83c02bd37b3a3b27468ae57219ae6e0bc7a",
+      "agreements": 4,
+      "method": "Model-only comparisons with retained native bytes, profile and outputs; no application PHP rerun.",
+      "reports": [
+        {
+          "report": "model-author-normal-9b84e83c02/report.json",
+          "sha256": "3dd655f837b25942c81854cba17a691a3112e0c5f6bd36c876301520984698d7"
+        },
+        {
+          "report": "model-author-throw-9b84e83c02/report.json",
+          "sha256": "c59b8a2f1a785d2a553711f40e62909283525304c56e2c7bcf00ab2f049c5b80"
+        },
+        {
+          "report": "model-peer-normal-9b84e83c02/report.json",
+          "sha256": "2446fd43a904a6e13c3c9b81778991f678a901212f1667acab00556e0721bea5"
+        },
+        {
+          "report": "model-peer-throw-9b84e83c02/report.json",
+          "sha256": "06819a4869e42935ee4e074add2e8a8e19a9159cf75c14a834b3209d1268db24"
+        }
+      ]
+    },
+    "reached": {
+      "revision": "ac146d184600c839bbb295407497951d98fc8f3d",
+      "conditions": 448,
+      "if_premises": 441,
+      "raw_steps": 7,
+      "author": {
+        "conditions": 182,
+        "if_premises": 179,
+        "raw_steps": 3,
+        "report": "reached-author-ac146d184/report.json",
+        "sha256": "be1de1261f7ce3130c2e3cf5b5a8145544469aa40136fe98f3a12ac61a8463ed"
+      },
+      "peer": {
+        "conditions": 266,
+        "if_premises": 262,
+        "raw_steps": 4,
+        "report": "reached-peer-ac146d184/report.json",
+        "sha256": "2774dc0f3204daae50ed4507c5731a241142c11412aff6834b88d26a97b0ed34"
+      }
+    },
+    "failed_fixture": {
+      "revision": "ba9b1f1470b2635f856075359e24400b0d547c0d",
+      "report": "reached-author-ba9b1f147/report.json",
+      "sha256": "c1cb62463a1623c5a430c35135761d8eb7f924fcc01e951c14bf166cc960d9b2",
+      "credit": 0,
+      "cause": "Fixture expected a GENERATOR_STORAGE_STEP on ordinary explicit unset, but this quiet source does not create an operational storage task. Both affected recipes were corrected without changing runtime or originals."
+    },
+    "review": "Independent literal/manual, frozen native/old, runtime/comparator and reached-fixture static review; strict432, all four model-only source agreements and both corrected reached raw fixtures independently CLEAR. No remaining private semantic blocker."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "f7f8173cca6a45c09ddf57f11969d090789fb93a6648222c061fbea0e02db2c4",
+    "files": 107,
+    "raw_bytes": 2702722,
+    "commands": "Native-only source runners freeze four originals. The model comparator consumes retained native reports one --case at a time. Reached scripts use the matching retained native report via --source-report. Ordered strict uses the 432-module manifest and SL runner.",
+    "notes": "Raw streams and failed fixture history remain outside Git."
+  },
+  "integration": {
+    "status": "guarded fast-forward after independent actual-tail CLEAR",
+    "candidate": "0ad4bf333a419e36b4aeb88f88d8579714e6a01e",
+    "base": "08476860068440e6a479c2cde3e227037eba9377",
+    "joined_archive_root": "/home/user/workspace/php-spec-evidence-archive/config-current-join-83-c508",
+    "joined_checks": "strict433 true, fresh exact object terminal-throw source, reached terminal-throw state 182 conditions and three raw steps; all exits zero and actors reaped"
+  }
+}
