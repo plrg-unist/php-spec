@@ -29,5 +29,13 @@
     "expected_model": "normal",
     "expected_normal_stdout": "class-valid|case-valid|class-short|case-short|class-long|class-method-type|case-method-type|class-runtime|",
     "purpose": "Published enum receiver remains source-certified while malformed array length and method type fail syntax-only query."
+  },
+  {
+    "id": "enum-is-callable-magic-prefix",
+    "source": "<?php\nenum QueryStaticMagic {\n    case A;\n    public static function __callStatic(string $name, array $args): mixed { return null; }\n}\nenum QueryInstanceMagic {\n    case A;\n    public function __call(string $name, array $args): mixed { return null; }\n}\nenum QueryUserMethod {\n    case A;\n    public static function from(mixed $value): self { return self::A; }\n}\n\necho is_callable('QueryStaticMagic::from') ? 'static-from|' : 'BAD|';\necho is_callable([QueryStaticMagic::class, 'tryFrom']) ? 'static-try|' : 'BAD|';\necho is_callable([QueryStaticMagic::A, 'missing']) ? 'BAD|' : 'static-case-no|';\necho is_callable('QueryInstanceMagic::missing') ? 'BAD|' : 'instance-string-no|';\necho is_callable([QueryInstanceMagic::class, 'missing']) ? 'BAD|' : 'instance-class-no|';\necho is_callable([QueryInstanceMagic::A, 'missing']) ? 'instance-case|' : 'BAD|';\necho is_callable('QueryUserMethod::from') ? 'user-string|' : 'BAD|';\necho is_callable([QueryUserMethod::class, 'from']) ? 'user-array|' : 'BAD|';\n",
+    "source_sha256": "5c86f066c471249d0a2eb5dbcb67502493f74d1d18a572ed6af206ca4c09a750",
+    "expected_model": "normal",
+    "expected_normal_stdout": "static-from|static-try|static-case-no|instance-string-no|instance-class-no|instance-case|user-string|user-array|",
+    "purpose": "Receiver-specific magic fallback on published pure enums, absent generated names and explicit user method controls."
   }
 ]
