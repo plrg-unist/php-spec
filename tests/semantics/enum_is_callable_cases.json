@@ -14,5 +14,12 @@
     "expected_model": "normal",
     "expected_normal_stdout": "REBIND|selected|rebound|pipe-yes|pipe-no|",
     "purpose": "Dynamic callee selection before argument rebinding and pipe string query of backed and pure enums."
+  },
+  {
+    "id": "enum-is-callable-third-output-unsupported",
+    "source": "<?php\nenum NameCheck: int { case A = 1; }\n$name = 'before';\n$ok = is_callable('NameCheck::from', false, $name);\necho ($ok ? 'yes' : 'no'), ':', $name, '|';\n",
+    "source_sha256": "9e33ee2f631e8f116a1a6960c287528040cc4667647377b11e7e16915ae6c93b",
+    "expected_model": "unsupported",
+    "purpose": "The third byref output mutates a caller slot; keep it explicit Unsupported until writable-location semantics are added."
   }
 ]
