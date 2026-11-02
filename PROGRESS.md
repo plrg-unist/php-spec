@@ -285,6 +285,14 @@ child refusal. The pre-edit Unsupported retains zero credit. Wider arrays,
 backedges and post-capture COW remain open.
 [GC21 review](coverage/semantics/gc-two-array-children-caller-review.json).
 
+GC22 admits the same two-entry array after a third owning copy release
+buffers the key-1 leaf. Pinned status sees roots 0→1→2→3; one original
+agrees, and 139 strict reached assertions prove three ordered slots,
+black D-plan removal and owners 2/3/2/2. A corrected fixture selects D
+by collection nonce 2. Pre-edit refusal remains zero credit; broader
+entries, backedges and post-capture COW remain open.
+[GC22 review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
