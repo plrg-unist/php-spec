@@ -84,4 +84,5 @@ records five normal agreements, four reached groups/302 checks (300 reached, two
 derived), private strict 432, joined strict 433 and one retained-native
 warning/unregister comparison. Other API wrappers, late registry free and broader
 callable/value histories remain partial. The older explicit source-wrapper warning
-head's missing inherited file/line is a separate concrete follow-up.
+head's missing inherited file/line is repaired by the separate
+[ATTR10 source-wrapper cut](../../coverage/semantics/builtin-deprecated-closure-trace-head-review.json).

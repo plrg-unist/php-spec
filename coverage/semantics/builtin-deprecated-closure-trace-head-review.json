@@ -1,0 +1,62 @@
+{
+  "milestone": "ATTR10: explicit Closure wrapper inner-warning trace location",
+  "status": "private validated; current-parent review pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-10",
+  "scope": "The inner Deprecated warning from a source Closure->__invoke call occurs before the user callee frame. Its handler trace head and Closure::__invoke frame both use the authenticated explicit call file/line; the outer 8192 warning still has no wrapper frame.",
+  "authority": [
+    "Zend/zend_closures.c:zend_get_closure_invoke_method and Closure::__invoke",
+    "Zend/zend_execute_API.c:zend_call_function pre-entry deprecation",
+    "Zend/zend_builtin_functions.c:zend_fetch_debug_backtrace trampoline location walk",
+    "spec/semantics/443-deprecated-closure-invoke.watsup:$closure_invoke_source, $closure_invoke_valid, $trace_context"
+  ],
+  "production": "c38057d57: first handler trace frame reuses the source-authenticated porigin/z already used by the wrapper frame; no owner/guard change",
+  "source_sha256": "6f9a48c04698f81ac3584625f36d121a6110b19acbb7ace15c69a9f39c23b44f",
+  "evidence": {
+    "native_original": {
+      "report": "native-trace-head/report.json",
+      "sha256": "406711dbe764b6e491186de068d51b94a0326500e9f80c4cce730b04d046fe83",
+      "revision": "08476860068440e6a479c2cde3e227037eba9377",
+      "exit": 0,
+      "stdout": "O:1:1:1;I:1:1:1:1:1:1:1:1:1:1;B:1;E:1:1;"
+    },
+    "old_model_counterexample": {
+      "report": "baseline-model/report.json",
+      "sha256": "9b1daaf1c54fbfbd59c3069d7ad24cad0a9f4c98108609d5d04177d10d39d93f",
+      "revision": "08476860068440e6a479c2cde3e227037eba9377",
+      "agreement_credit": 0,
+      "observation": "The inner handler's first trace FILE/LINE predicates were false; the wrapper frame and other output agreed."
+    },
+    "native_selected": {
+      "report": "native-selected-964/report.json",
+      "sha256": "ea22bd7c42752a53ee61aa8f1c6b08c88b6f013ad17606f4b1170475de25df89",
+      "revision": "964f309d3e80fc444a6b2b8899e690dd116895dd",
+      "case": "invoke-inner-warning-trace-head-inherits-call-location"
+    },
+    "model_selected": {
+      "report": "model-selected-964/report.json",
+      "sha256": "effa15d4c43ef3d5e776bb1ed8855ec08bfac4811ea10ebbc6a25afdc0d77797",
+      "revision": "964f309d3e80fc444a6b2b8899e690dd116895dd",
+      "normal_agreements": 1
+    },
+    "reached": {
+      "report": "reached-964/report.json",
+      "sha256": "f3fc2a1e4be0b3f5476553542d7aa7c260d94be1b2e47403a16cd68b18a425d6",
+      "revision": "964f309d3e80fc444a6b2b8899e690dd116895dd",
+      "groups": 1,
+      "assertions": 24
+    },
+    "strict": {
+      "report": "strict-964/report.json",
+      "sha256": "5a8e52c2bcd1b71013446c450a3272d90b06a5c93e8491efb27f29685f9e29e1",
+      "revision": "964f309d3e80fc444a6b2b8899e690dd116895dd",
+      "modules": 433
+    }
+  },
+  "remaining": [
+    "Other source-wrapper warning/reentry histories and broader callback APIs remain partial.",
+    "ATTR07 unsafe assert WeakReference lifetime observation remains suspected, zero credit, and is not used here.",
+    "Post-output tick/shutdown registry free and wider cleanup remain separate work."
+  ],
+  "composition": null
+}

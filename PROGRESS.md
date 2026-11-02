@@ -420,7 +420,15 @@ pass 302 checks (300 reached, two derived); private strict 432 and joined
 strict 433 pass. A retained-native reference-warning/unregister source agrees
 again on the corrected cache owners. The first normal deadline and two fixture
 failures retain zero credit. Other API wrappers, late free and the older
-source-wrapper inner-warning trace-head location remain partial. [Tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+source-wrapper inner-warning trace-head location remained partial at that cut.
+[Tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+
+ATTR10 gives that source-wrapper inner warning's handler trace head the real
+explicit `Closure->__invoke` call file/line, matching its existing wrapper frame.
+One native-first original now agrees exactly; a reached warning state passes 24
+assertions and full strict433 passes. The old model's two missing location
+predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
+callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
