@@ -730,3 +730,9 @@ The same literal route writes the name for an absent method on both runtime
 false and syntax-only true; the
 [false-output review](../../coverage/semantics/enum-is-callable-output-false-review.json)
 records a second exact source and 42 reached guards.
+For two-item literal arrays with canonical enum class spelling, direct class
+strings and live enum cases derive the callable name from their actual
+receiver and literal method values. The
+[array-output review](../../coverage/semantics/enum-is-callable-output-array-review.json)
+records two exact outcomes and 68 reached guards. Other class spellings and
+array sources remain partial.

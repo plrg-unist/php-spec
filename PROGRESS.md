@@ -110,6 +110,9 @@ One exact original, strict433 and 45 source-reached guards pass; array input,
 old-object destructor and input/output aliasing remain explicit Unsupported.
 Absent literal methods now also write the name on runtime false and syntax-only
 true results. A second exact original and 42 reached guards pass.
+Canonical class-name and live case-object literal arrays now write their
+generated method names through the same direct string CV. Two exact outcomes
+and 68 reached guards pass; other class spellings remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -120,7 +123,8 @@ true results. A second exact original and 42 reached guards pass.
 [magic review](coverage/semantics/enum-is-callable-magic-review.json),
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json),
-[false-output review](coverage/semantics/enum-is-callable-output-false-review.json).
+[false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
+[array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now

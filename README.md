@@ -6726,9 +6726,11 @@ initialized string-valued caller CV before returning the boolean; the
 records one exact original and 45 reached guards. An absent method also writes
 the name for runtime false and syntax-only true; the
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json)
-records a second exact original and 42 reached guards. Array inputs, destructor and
-aliasing effects, autoload, case attributes, enum collection policy and wider
-acquisition remain partial;
+records a second exact original and 42 reached guards. Canonical class and
+live case literal arrays add two exact outcomes and 68 reached guards in the
+[array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
+Other array spellings, destructor and aliasing effects, autoload, case
+attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
