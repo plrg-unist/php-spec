@@ -207,7 +207,7 @@
       "model_elapsed": 59.67739725112915
     }
   ],
-  "suspected_native_lifetime_defect": {
+  "unresolved_native_lifetime_observation": {
     "source_id": "closure-expression-assert-api-selected-before-registry-replacement",
     "source_sha256": "e4d03025507cb170b91446ca466ee58bdf95c1488dabe966186f3b03c0fdf989",
     "revision": "6f6ee399b48eea2f078395d577a4061f047e58e3",
@@ -217,7 +217,8 @@
       "revision": "6f6ee399b48eea2f078395d577a4061f047e58e3"
     },
     "agreement_credit": 0,
-    "observation": "Replacing ASSERTG(callback) and dropping the outside selected Closure during its early Deprecated handler retires the real Closure/receiver; native then executes stale capture/receiver data. This one build observation is not stable intended behavior.",
+    "observation": "The pinned native run exited 0. During the Deprecated handler both callback and receiver WeakReference::get() returned NULL; the selected callback body then ran, while its own WeakReference and receiver-identity checks were false. The original expected output disagreed; this row has zero agreement credit.",
+    "inference": "assert.c passes the registry callback to zend_call_function, whose Deprecated warning precedes its later Closure addref. The handler can replace the registry and clear the outside name. This sequence suggests a lifetime hazard, but the retained output does not establish the cause or confirm an engine defect.",
     "source_authority": [
       "ext/standard/assert.c:PHP_FUNCTION(assert) and assert_options callback replacement",
       "Zend/zend_execute_API.c:_call_user_function_impl and zend_call_function before Closure GC_ADDREF",

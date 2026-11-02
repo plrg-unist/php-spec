@@ -182,13 +182,14 @@ borrows that receiver. Rebinding changes the selected scope used in warnings whi
 the original template name remains intact. Anonymous class and function-name
 components are truncated separately as C strings.
 
-One original without an external owner retained across the handler exposed a suspected native
-`assert` reentrancy lifetime defect: replacing the callback registry and clearing the
-outside name during Deprecated retired the real captures/receiver before native
-continued using them. The pinned `assert.c` callback replacement,
-`_call_user_function_impl`/`zend_call_function` early warning and later Closure addref,
-and `zend_closure_free_storage` explain this observation. The model keeps its exact
-expired-before-copy Unsupported guard; readonly history never authorizes entry.
+One original without an external owner across the handler has an unresolved native
+`assert` reentrancy observation. After the handler replaced the callback registry
+and cleared the outside name, both callback and receiver WeakReferences returned
+NULL during the warning, yet the callback body later ran. The pinned `assert.c`
+callback replacement and `zend_call_function` warning before its later Closure
+addref suggest a lifetime hazard; the retained output does not establish its cause
+or confirm an engine defect. The model keeps its exact expired-before-copy
+Unsupported guard; readonly history never authorizes entry.
 The original SHA `e4d03025507cb170b91446ca466ee58bdf95c1488dabe966186f3b03c0fdf989`
 and mixed raw report remain in the review at zero credit. A separately named safe
 control keeps an external owner; retired-data execution is not emulated.
