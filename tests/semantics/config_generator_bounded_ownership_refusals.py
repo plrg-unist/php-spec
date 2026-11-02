@@ -13,6 +13,10 @@ SOURCE_FILES = {
 }
 CASES = {name: path.read_bytes() for name, path in SOURCE_FILES.items()}
 BOUNDARIES = {name: 'CONFIG Generator unpack send outside scalar/key domain' for name in CASES}
+BOUNDARY_STDOUT = {
+    'config-generator-bounded-stringable-refusal': b'B;P;Y0;',
+    'config-generator-bounded-retained-refusal': b'B;P;Y0;Y1;',
+}
 EXPECTED_NATIVE = {
     'config-generator-bounded-stringable-refusal': b'B;P;Y0;Y1;T;STR;R:14:6;',
     'config-generator-bounded-retained-refusal': b'B;P;Y0;Y1;T;E:1:6;A:8;L:1;U:1;',
