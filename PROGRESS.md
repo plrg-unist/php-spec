@@ -233,6 +233,14 @@ counting. Leaf candidates and wider entries remain fenced; COW and nonempty
 persistent provenance are untested. Graph/count/owners are unchanged.
 [GC19 review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
 
+GC20 admits that childless `stdClass` when releasing one owning local copy
+buffers it after the array. Native status observes roots 0→1→2; the exact
+original agrees, and 122 strict reached assertions bind both ordered slots,
+their removal from the D plan, and the rooted Closure/array/leaf owners.
+Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
+nonempty persistent provenance remain open.
+[GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator

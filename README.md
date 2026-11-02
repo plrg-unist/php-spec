@@ -3800,6 +3800,11 @@ again, while the child remains unbuffered. The rooted array leaves the D count
 plan as black, and the full source stream matches PHP. Wider entries and
 buffered child objects remain fenced; see the
 [rebuffered-array-child caller review](coverage/semantics/gc-rebuffered-array-child-caller-review.json).
+GC20 also admits the childless `stdClass` after a local owning copy release
+buffers it behind the array. The two live nodes leave the D count plan as
+black; one exact source and 122 strict reached assertions pass. Exact one-entry
+and childless guards remain; see the
+[buffered array-child caller review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
