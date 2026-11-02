@@ -69,7 +69,6 @@ pgeneratorop.ARGUMENTS = [POBJECT n_given]
 pgeneratorop.LOOP = eps
 ~pgeneratorop.STARTPACK
 ~pgeneratorop.BORROWED
-$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given]
 pcallcontext_generator.FUNCTION = pgenerator.FUNCTION
 pcallcontext_generator.TARGET = METHOD_TARGET n_receiver pgenerator.FUNCTION
 pcallcontext_generator.INSTANCE = eps
@@ -89,8 +88,9 @@ FRESH = checks(r"""
 pgenerator.FIRST
 pgenerator.VALUE = eps
 pgeneratorop.ADVANCE
+$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given, HOBJECT n_given]
 $node_children(S, HOBJECT n_generator) = eps
-$heap_owners($heap_graph(S), HOBJECT n_given) = 1
+$heap_owners($heap_graph(S), HOBJECT n_given) = 2
 $lookup(S.ENV, $ptascii("input")) = (n_input)
 S.STORE[n_input] = DEFINED (PINT 9)
 $lookup(pfibervm.TABLE.ENV, $ptascii("item")) = (n_item)
@@ -159,6 +159,7 @@ $node_children(S, HOBJECT n_generator) = [HOBJECT n_token]
 """)
 CACHED = checks(r"""
 ~pgeneratorop.ADVANCE
+$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given]
 $fiber_generator_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator)
 ~$fiber_generator_fresh_throw_valid(S_view, pgeneratorop, pgenerator, pcallcontext_generator)
 $heap_owners($heap_graph(S), HOBJECT n_token) = 2

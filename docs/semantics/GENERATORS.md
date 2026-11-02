@@ -534,6 +534,17 @@ reviewed. Original failures keep zero credit. Raw
 cached-reference bodies, pipe and wider APIs/lifecycles remain partial.
 [Raw method review](../../coverage/semantics/generator-raw-method-factory-review.json).
 
+I88 retains actual raw method authority through reference-cache, warm
+by-value/reference THROW and fresh THROW initialization. Pending exception copies
+keep their real owner until injection; fixed ordinary nonstatic object-array callers select
+their lexical private method before a public child override. Four native/model
+originals agree; four reached fronts pass 439 custom/459 reported checks at distinct
+cuts. Private433 keeps its original cut. Joined strict433, three exact sources,
+two affected old THROW states (143+105 checks) and an independent 153-check
+state pass at 1ecc939d; 5096cbb1 composition is reviewed. Calibrated native
+owner diagnostics and original failed checks remain separate.
+[Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
@@ -848,6 +859,9 @@ previous exception. Ordinary catch/finally execution can yield again before the
 pending exception resumes.
 
 The saved API operation owns its argument through initialization and resumption.
+Fresh `throw` also keeps Zend's pending exception reference during initialization;
+injection transfers that copy into the normal exception/catch owner. The original
+API argument remains independently owned.
 Arrays keep copied-container behavior and shared embedded references; objects
 retain identity. API trace rows retain the actual argument and live caller.
 Admission separates pending argument evaluation from completed resume arity,

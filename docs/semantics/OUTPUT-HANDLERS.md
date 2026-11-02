@@ -210,3 +210,16 @@ abrupt handler/visibility-warning cleanup and wider Throwable rendering during l
 retirement remain partial, as do late bound-tick publication, uncovered table owners,
 weak/internal hooks and inactive nonpublic-destructor diagnostics. Earlier failed
 cuts retain zero credit.
+
+OB06 admits only a no-argument `ob_start()` during normal executor queue release
+after output deactivation. The failed start leaves the buffer stack empty and
+the output sequence unchanged, emits `ob_start(): Failed to create buffer` as
+E_NOTICE, and returns false. Suppression, selected handlers that return true or
+false, and direct fallback rendering follow the existing diagnostic protocol.
+An ordinary shutdown callback still starts a buffer before deactivation.
+Explicit arguments, callable handlers and nested starts from an active error
+handler remain checked Unsupported. A handler-return object whose destructor
+starts a buffer remains outside this cut: its pending destructor is not yet
+admitted by the selected-Notice cleanup certificate. The pinned native original
+and the model's first failing step retain zero agreement credit.
+[OB06 evidence](../../coverage/semantics/output-executor-post-deactivate-review.json).

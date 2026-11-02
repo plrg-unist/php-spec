@@ -213,6 +213,13 @@ def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
   -- if $generator_reference_producer(S, pgenerator)
   -- if $generator_reference_valid(S, GENERATOR pgenerator)
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if pgenerator.VALUE = eps
+  -- if $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext)
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if $generator_reference_valid(S, GENERATOR pgenerator)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
 def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
   -- if pgeneratorop.NAME = "throw"
@@ -276,6 +283,12 @@ def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = tr
   -- if $generator_reference_producer(S, pgenerator)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
   -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
+def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
+  -- if (pgenerator.VALUE =/= eps /\ pgenerator.REFCELL = eps /\ ~$generator_reference_producer(S, pgenerator)) \/ (pgenerator.VALUE = eps /\ pgenerator.REFCELL =/= eps /\ $generator_reference_producer(S, pgenerator))
+  -- if $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext)
 def $fiber_generator_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
   -- if pgeneratorop.NAME = "throw"
@@ -322,6 +335,13 @@ def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext
   -- if $generator_reference_producer(S, pgenerator)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n_callee
   -- if pcallcontext.INSTANCE = (n_callee) /\ pcallcontext.RECEIVER = eps
+def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
+  -- if pgeneratorop.NAME = "throw"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if $generator_input_valid(S, pvalue)
+  -- if pgeneratorop.ADVANCE /\ pgenerator.FIRST
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
+  -- if $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext)
 def $fiber_generator_fresh_throw_valid(S, pgeneratorop, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_fresh_advance_valid(S, pgeneratorop, pgenerator, pcallcontext) = true
   -- if (pgeneratorop.NAME = "next" /\ pgeneratorop.ARGUMENTS = eps) \/ (pgeneratorop.NAME = "send" /\ |pgeneratorop.ARGUMENTS| = 1)

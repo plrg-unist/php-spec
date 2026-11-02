@@ -313,6 +313,14 @@ joined reports, including the strengthened empty-shutdown closed-history state.
 The [raw method ledger](../coverage/semantics/generator-raw-method-factory-review.json)
 keeps original failures separate from accepted checks.
 
+I88 raw method cache and THROW evidence is retained under
+`../php-spec-evidence-archive/generator-raw-method-cache-88/` and
+`../php-spec-evidence-archive/generator-raw-method-cache-88-review/`.
+The first archive's `actual-tail-1ecc/` retains joined strict, three sources,
+affected old fresh/warm states and an independent reached state.
+The [raw cache ledger](../coverage/semantics/generator-raw-method-cache-review.json)
+keeps original failures and the calibrated owner diagnostic separate.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

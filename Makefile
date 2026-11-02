@@ -82,6 +82,9 @@ test-semantics: build
 	python3 tests/semantics/output_executor_nonfast_sources.py
 	python3 tests/semantics/output_executor_nonfast_protocol.py
 	python3 tests/semantics/output_executor_nonfast_review_protocol.py
+	python3 tests/semantics/output_executor_post_deactivate_sources.py
+	python3 tests/semantics/output_executor_post_deactivate_boundaries.py
+	python3 tests/semantics/output_executor_post_deactivate_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -249,6 +252,21 @@ test-semantics: build
 		python3 tests/semantics/config_generator_reference_owning_live_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_generator_reference_owning_live_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/config_generator_reference_owning_live_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a84-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_reference_owning_alias_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_reference_owning_alias_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_reference_owning_alias_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_reference_owning_alias_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a85-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_temporary_owning_reference_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_temporary_owning_reference_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_temporary_owning_reference_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_temporary_owning_reference_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a86-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_temporary_owning_alias_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_temporary_owning_alias_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_temporary_owning_alias_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_temporary_owning_alias_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -736,6 +754,9 @@ test-semantics: build
 	python3 tests/semantics/generator_raw_method_factory_sources.py
 	python3 tests/semantics/generator_raw_method_factory_state.py
 	python3 tests/semantics/generator_raw_method_factory_review_state.py
+	python3 tests/semantics/generator_raw_method_cache_sources.py
+	python3 tests/semantics/generator_raw_method_cache_state.py
+	python3 tests/semantics/generator_raw_method_cache_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -838,6 +859,9 @@ test-semantics: build
 	python3 tests/semantics/enum_pipe_protocol.py
 	python3 tests/semantics/enum_is_callable.py
 	python3 tests/semantics/enum_is_callable_protocol.py
+	python3 tests/semantics/enum_is_callable_shape_protocol.py
+	python3 tests/semantics/enum_is_callable_magic_protocol.py
+	python3 tests/semantics/enum_is_callable_case_method_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

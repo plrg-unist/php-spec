@@ -1,0 +1,18 @@
+{
+  "scope": "is_callable on a live enum case array naming a direct public user instance or static method",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "eeec802fab3de903a47f3d24cd64c688ddc47323",
+  "semantic_revision": "f28e8f858e93165609a7137621f3d21063756054",
+  "state_revision": "5f1a44bdff6d4a621b74bf42ea8d003a66d18262",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: user-case-method source SHA 2f89d80f43a159d0206f028f91e76abfbd4c9b775a685312a0bfab8e98d2be09, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-case-method-evidence/enum-is-callable-case-method-strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.57 s, stable inputs",
+    "source": ".tools/enum-is-callable-case-method-evidence/user-string-lzkzymxj/report.json: seven case/class/string user-method and absent-method outcomes exact normal, exit 0, empty stderr",
+    "state": ".tools/enum-is-callable-case-method-evidence/enum-is-callable-protocol-vtv_y0i1/report.json: checked source reached strict SL, 49 checks, true, exit 0, empty stderr, stable inputs"
+  },
+  "behavior": "A live case-array receiver can name a direct public enum user instance or static method. The descriptor is tied to its source enum member, flags and body path before the query returns true. Querying neither enters the method body nor changes the enum backing cache. Class-string/name-array and missing-method controls preserve their separate outcomes.",
+  "remaining": "Trait/imported, inaccessible, abstract or attributed methods; third by-reference output, autoload and broader is_callable operands remain partial."
+}

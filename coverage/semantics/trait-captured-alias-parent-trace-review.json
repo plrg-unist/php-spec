@@ -1,0 +1,187 @@
+{
+  "scope": "CLASS165: copied trait alias first-class captures across failed first using-class publication. A retained selected method supplies the bare trace function name; saved lexical scope supplies the trace class. Ordinary alias/parent and own-override controls preserve birth-time selection.",
+  "pin": {
+    "target": "project-local PHP 8.5.10 CLI/NTS/64-bit, -n plus tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "private_code_cut": "cdf65b08f",
+    "joined_strict_cut": "ea97f7074",
+    "actual_tail_base": "a1b1aba3f",
+    "actual_tail_tested": "4c7287514",
+    "final_composed_base": "c175c5051",
+    "composition_reviewed_before_metadata": "0213ea7d6"
+  },
+  "inputs": {
+    "catalogue": [
+      "tests/semantics/trait_captured_alias_parent_cases.json",
+      "c67010f91e9f9e2051fc29797a0f6d726f5a7dfe60c23a7000860544c618de70"
+    ],
+    "state_script": [
+      "tests/semantics/trait_captured_alias_parent_trace_state.py",
+      "60729a70c5cc14e4b0327ce667372197c25a759886e278cda6d0ffac6e89eb66"
+    ],
+    "semantic_rule": [
+      "spec/semantics/347-trait-failed-method-targets.watsup",
+      "cc52768f18e2aa35a1613929e64ac6eaf868b3864cf797d44130608359dceb39"
+    ],
+    "module_manifest": "spec/semantics/modules.json; 433 ordered modules"
+  },
+  "native_originals": [
+    {
+      "id": "alias-parent-first-later",
+      "source_sha256": "5f949fe5740de71dd59e1853d612c770f0573587b815e268bec3d2364cc7fe6a",
+      "status": "normal",
+      "exit": 0,
+      "raw": [
+        ".tools/class165-artifacts/alias-parent-first-later.native.json",
+        "10df30c02be705a2716dcdf64031130abae84879acce904309f77df5db4b6636"
+      ]
+    },
+    {
+      "id": "alias-parent-own-override",
+      "source_sha256": "8d940f32aab0d2a9d3d6fbece2a1627cda230624a8f742d12ebec01d56cc1e54",
+      "status": "normal",
+      "exit": 0,
+      "raw": [
+        ".tools/class165-artifacts/alias-parent-own-override.native.json",
+        "a69082c832411d0c0245a5a24294b47dd45d83622fbb199fb1f9f4a7368523f1"
+      ]
+    },
+    {
+      "id": "failed-first-alias-parent-shutdown",
+      "source_sha256": "1c388d6e32e750670ae4883fa0f1d9bd4a04b51514f55dfc61c092c59f0879f2",
+      "status": "php_error",
+      "exit": 255,
+      "raw": [
+        ".tools/class165-artifacts/failed-first-alias-parent-shutdown.native.json",
+        "068cc0ddc05b2d03af7e60010d3614fc55b8195c8297b9fd360f2c2f5343b0a1"
+      ]
+    },
+    {
+      "id": "failed-first-post-fixup-alias-parent-shutdown",
+      "source_sha256": "dfc12faea2de53de64ff2d5116f9ac598c52a51f3c5e4d8bda5d8520de7b0f12",
+      "status": "php_error",
+      "exit": 255,
+      "raw": [
+        ".tools/class165-artifacts/failed-first-post-fixup-alias-parent.native.json",
+        "66ff4d13e8bd1dfb06a26536c57b5a1b263b21a8819b90dd4d194410b98b345c"
+      ]
+    }
+  ],
+  "validation": {
+    "private_sources": "Both normal alias/parent controls passed before the trace edit. The pre-fixup U and post-fixup C failed-publication originals each failed only in the duplicated stack-frame function segment (U::C::q, C::C::q); those baseline cuts retain zero agreement. Each passed exact native stdout/stderr/status/exit after the guarded rule.",
+    "private_fixed_supervisors": [
+      [
+        ".tools/class165-artifacts/fixed-failed-first.json",
+        "888f698cd9e5eeedc5541d3abff80bf17ca56ee7903e3d54fd713d38fbc5474d"
+      ],
+      [
+        ".tools/class165-artifacts/fixed-post-fixup.json",
+        "33605ed2054df5cccb6a53fa02d76d11d2d2d7bdaa01ce3e2644ac09a6afb866"
+      ]
+    ],
+    "baseline_failure_supervisors": [
+      [
+        ".tools/class165-artifacts/baseline-failed-first.json",
+        "dd22abb80ed31dd66ecab02cd80418ee6abd8c705423db2418644ac35368bd74"
+      ],
+      [
+        ".tools/class165-artifacts/baseline-post-fixup.json",
+        "bcf08e44c71bbb9834872b2b0ef53d0e964340d5e98344662762ba38eed04c42"
+      ]
+    ],
+    "state": "Two source-reached --sl groups passed 39 assertions each: missing published method, reconstructed q, authentic failed-header/scope receipt, U or C as separate trace class, bare q in the actual frame, and tampered INSTANCE fallback. Both true/empty stderr; CPU2 supervisor exit0, stable inputs, no surviving descendant.",
+    "state_supervisor": [
+      ".tools/class165-artifacts/state-first.json",
+      "bf5dbe7edd3be0653d6b5207291bbf2f09f0e6c3f5f558c9d2ffec649bb570fb"
+    ],
+    "state_raw": [
+      [
+        ".tools/class165-artifacts/recovered-worktree-raw/class165-dev/trait-captured-alias-parent-trace-hm6jl_2z/report.json",
+        "4601f3fde0b5978c4b73184a0491cd57f0115fbc17f36803346dd3f78572ccaf"
+      ],
+      [
+        ".tools/class165-artifacts/recovered-worktree-raw/class165-dev/trait-captured-alias-parent-trace-hy1bsaek/report.json",
+        "a6dcbe82bbaceb1980cdfe99e6ff0ff4b5edac73432db9ba83f2726e99acb092"
+      ]
+    ],
+    "joined_strict": "433-module strict SL at exact ea97f7074 passed true/empty stderr/exit0, stable inputs, CPU2/full reap.",
+    "joined_strict_supervisor": [
+      ".tools/class165-artifacts/joined-strict433.json",
+      "bc28c364200dc7f84c9c3a8ef4f33fe6d9b7ab2c9d3e8139556878a50ea971cb"
+    ],
+    "joined_four": "Four originals passed exact native/model at ea97f7074: normal/normal/php_error/php_error, exits 0/0/255/255; CPU2/full reap and stable inputs.",
+    "joined_four_supervisor": [
+      ".tools/class165-artifacts/joined-four-source.json",
+      "d8e18289a26aabc7d3df6021a82b6f4280dc6ba94d3843df0184af7728bdb045"
+    ],
+    "actual_tail_four": "Four same originals passed exact at 4c7287514 over a1b1aba3f, same outcomes and exits; CPU2/full reap and stable inputs.",
+    "actual_tail_supervisor": [
+      ".tools/class165-artifacts/final-a1-four-source.json",
+      "aef24e26b4920e58178dd85018843655ccf2050132bb1e80655bc5fe31679e18"
+    ],
+    "actual_tail_raw": [
+      ".tools/class165-artifacts/recovered-worktree-raw/class165-join/method-runtime-usgsm3ey/report.json",
+      "131a4c2b1e12095d421c419b047e23ed0501f535fde224a4273da19bfeb6bfe9"
+    ],
+    "bridge_gc21_ob06": "The final package composes cleanly over c175c5051. Intervening GC21 adds only an active-GC REALCLOSURE two-childless-object case; OB06 adds only output-buffer start/Notice shutdown tasks. None reaches these four METHODCLOSURE originals or module347 trace guard. The ea97 strict and 4c728 four-source gates are reused under independent interaction review; no semantic file in the CLASS165 delta changed."
+  },
+  "zero_credit_tick_probes": {
+    "finding": "Three pinned native shutdown tick callbacks print U::q followed by Closure->__invoke, but model stops before callback entry: two at explicit tick opcode placement, one at invalid class constant compilation entry in the eval unit. None gives agreement credit or licenses a CALLBACK_INVOKE_TARGET trace rule.",
+    "native": [
+      [
+        ".tools/class165-artifacts/failed-first-alias-tick.native.json",
+        "96474e3e8163884e27d681a90456265174b658d480eff5e0239ee3ed13f00b7d"
+      ],
+      [
+        ".tools/class165-artifacts/failed-first-alias-tick-eval.native.json",
+        "9f1039ff4f9758e79583e261cecf5de15081e7346601eaef535d805c29a20111"
+      ],
+      [
+        ".tools/class165-artifacts/failed-first-alias-tick-eval-unit.native.json",
+        "240b22356b1397e4ab154db3cf341c846053914fe718bfcbb0735a50b6d3b250"
+      ]
+    ],
+    "model_supervisors": [
+      [
+        ".tools/class165-artifacts/tick-baseline.json",
+        "5e6c3803403da3a88e3f245d474222fad63b7bedf5686542d672e9c3ff48e322"
+      ],
+      [
+        ".tools/class165-artifacts/tick-eval-baseline.json",
+        "b841b4cbd1ef5eb243b3cf74a6ec130aefde15c8eb4078386fc454133e19874e"
+      ],
+      [
+        ".tools/class165-artifacts/tick-eval-unit-baseline.json",
+        "b2e68a53787fb5ca2c955389e330b194b1084695208ffada50a82378445390af"
+      ]
+    ],
+    "probe_catalogues": [
+      [
+        ".tools/class165-artifacts/tick-probe-catalogue.json",
+        "1640aff9ff72fd7d96207a11e6de3638b140a23fb015d9564bdd468bf8eecd4c"
+      ],
+      [
+        ".tools/class165-artifacts/tick-eval-unit-probe-catalogue.json",
+        "6619b3235aa134b93d43a12171afe35ebe04841b09dd93a2037101aa7547b5d7"
+      ]
+    ]
+  },
+  "raw_relocation": [
+    [
+      ".tools/class165-artifacts/recovered-worktree-raw/class165-dev/locations.json",
+      "d66983876b1655022ae4c3632464a1517a93e9ff000433fd3d302378f88f3b4a"
+    ],
+    [
+      ".tools/class165-artifacts/recovered-worktree-raw/class165-join/locations.json",
+      "3f85e1652cc7da90a796026cd535c5a4b0819a91202b106481fe2ef5072e9b0f"
+    ]
+  ],
+  "engine_routes": [
+    "Zend/zend_inheritance.c: trait property binding precedes zend_fixup_trait_method, and alias clones set function_name",
+    "Zend/zend_builtin_functions.c: zend_fetch_debug_backtrace stores function_name and scope class separately",
+    "Zend/zend_execute.c and Zend/zend_execute_API.c: parent parameter resolution uses executed scope"
+  ],
+  "remaining": "Tick callback placement/eval admission, anonymous using-class NUL names, rebound and wider callable views remain partial. Final independent integration CLEAR pending.",
+  "status": "final composed private candidate; independent integration CLEAR pending"
+}

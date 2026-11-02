@@ -466,6 +466,27 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if $node_children(S, HOBJECT n_leaf) = eps
   -- if $gc_trace_children(S, HOBJECT n_leaf) = eps
   -- if (HOBJECT n) <- $machine_roots(S)
+;; Two direct childless stdClass entries can share the active caller's array.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin ([DIRECT (PARRAY n_array)]) eps
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_immutable_array(S, n_array)
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_first)), ENTRY (KINT 1) (DIRECT (POBJECT n_second))]
+  -- if n_first =/= n_second
+  -- if $(n_first < |S.OBJECTS|) /\ $(n_second < |S.OBJECTS|)
+  -- if (HOBJECT n_first) <- S.ALLOCATIONS /\ (HOBJECT n_second) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_first] = STDINSTANCE /\ S.OBJECTS[n_second] = STDINSTANCE
+  -- if $node_children(S, HOBJECT n) = [HARRAY n_array]
+  -- if $node_children(S, HARRAY n_array) = [HOBJECT n_first, HOBJECT n_second]
+  -- if $gc_trace_children(S, HARRAY n_array) = [HOBJECT n_first, HOBJECT n_second]
+  -- if $node_children(S, HOBJECT n_first) = eps /\ $node_children(S, HOBJECT n_second) = eps
+  -- if $gc_trace_children(S, HOBJECT n_first) = eps /\ $gc_trace_children(S, HOBJECT n_second) = eps
+  -- if (HOBJECT n) <- $machine_roots(S)
 def $gc_ordinary_node(S, pnode) = false -- otherwise
 def $gc_ordinary_nodes(S, eps) = true
 def $gc_ordinary_nodes(S, pnode :: pnode_tail*) = ($gc_ordinary_node(S, pnode) /\ $gc_ordinary_nodes(S, pnode_tail*))

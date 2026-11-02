@@ -89,11 +89,43 @@ one or two arguments and no third output. Two native-first originals agree,
 covering generated and absent methods, syntax-only checks, selected-name
 rebinding and cold backing tables; 43 source-reached strict SL guards pass.
 The third output, autoload and wider magic/user-method cases remain partial.
+Malformed callback arrays with a live published enum receiver at key 0 now
+return false for wrong length or nonstring method before syntax-only lookup.
+One native-first original agrees, including valid class/case controls; 23
+source-reached strict guards check both flag modes and unchanged cache.
+For published pure enums without the requested method, `is_callable` now
+checks source-certified `__callStatic` for class strings/name arrays and
+`__call` for case arrays. One native-first original agrees on eight outcomes,
+including opposite-handler false results and explicit user-method controls;
+56 reached strict guards prove no magic body is entered by the query.
+Live enum case arrays now also query direct public user instance and static
+methods. One native-first original agrees on seven case/class/string controls;
+49 source-reached strict guards tie the method descriptor to its enum source
+member and show that the query enters neither user method body.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
 [pipe review](coverage/semantics/enum-pipe-review.json),
-[query review](coverage/semantics/enum-is-callable-review.json).
+[query review](coverage/semantics/enum-is-callable-review.json),
+[shape review](coverage/semantics/enum-is-callable-shape-review.json),
+[magic review](coverage/semantics/enum-is-callable-magic-review.json),
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
+
+I88 carries raw method Generator reference caches and warm/fresh THROW across
+Fibers using the actual resumer/Gen/current proof. Fresh initialization now
+retains Zend's extra pending exception reference until injection; calibrated
+native controls distinguish pending input2 from warm input1 after CV unset.
+Nonstatic object-array calls from fixed ordinary method sources preserve lexical private
+selection over a public child override. Four native/model originals agree;
+four reached fronts pass 439 custom/459 reported checks at distinct cuts.
+Private433 keeps its original cut; later reached checks compile both corrections.
+Original refusal and reached failures plus the native diagnostic keep zero extra
+agreement credit. Eight legacy expectations are maintained without execution
+renewal or historical rewrite. Joined strict433, three exact sources, two affected
+old THROW states (143+105 checks) and an independent 153-check state pass at
+1ecc939d; 5096cbb1 current composition is reviewed. Wider captured-Closure,
+API/binding/delegation/collection/lifecycle combinations remain pending.
+[I88 review](coverage/semantics/generator-raw-method-cache-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -250,6 +282,22 @@ Pre-edit model refusal remains zero credit. Wider entries, backedges, COW and
 nonempty persistent provenance remain open.
 [GC20 review](coverage/semantics/gc-buffered-array-child-leaf-caller-review.json).
 
+GC21 admits two distinct childless `stdClass` entries at array keys 0 and 1
+under the same direct Closure caller. The array and key-0 leaf are buffered;
+key-1 stays outside the buffer. One pinned original agrees, and 136 strict
+reached assertions check both slots, black removal, owners and a duplicate
+child refusal. The pre-edit Unsupported retains zero credit. Wider arrays,
+backedges and post-capture COW remain open.
+[GC21 review](coverage/semantics/gc-two-array-children-caller-review.json).
+
+GC22 admits the same two-entry array after a third owning copy release
+buffers the key-1 leaf. Pinned status sees roots 0→1→2→3; one original
+agrees, and 139 strict reached assertions prove three ordered slots,
+black D-plan removal and owners 2/3/2/2. A corrected fixture selects D
+by collection nonce 2. Pre-edit refusal remains zero credit; broader
+entries, backedges and post-capture COW remain open.
+[GC22 review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -320,6 +368,18 @@ A retained BYREF Generator can keep that final ordinary owning cell through
 closed storage while the copied send remains stable. Four originals and 448
 reached conditions pass; joined strict433 and terminal source/state pass at
 `c5086c205`.
+Outside aliases can keep the ordinary owning cell after Generator retirement;
+the copied final argument remains stable across later cell writes and COW.
+Four originals, 527 reached conditions and an affected 266-condition control
+pass; joined strict433 and fresh terminal source/state pass at `a00e229f9`.
+A direct temporary BYREF Generator now copies an owning final value from its
+ordinary local cell after a scalar send. Four sources and 472 reached conditions
+pass; DATA then INPUT cleanup releases the temporary before API or catch.
+Joined strict433 and fresh terminal source/state pass at `3699279a5`.
+Outside aliases now keep that temporary Generator's ordinary final cell and its
+current value after real storage release; copied arguments remain independent.
+Four sources and 565 reached conditions pass; joined strict433 and fresh terminal
+source/state pass at `9cde7e64d`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -335,6 +395,9 @@ reached conditions pass; joined strict433 and terminal source/state pass at
 [Owning reference snapshots](coverage/semantics/config-generator-reference-owning-review.json),
 [Final owning reference snapshots](coverage/semantics/config-generator-reference-owning-cache-review.json),
 [Retained owning reference cells](coverage/semantics/config-generator-reference-owning-live-review.json),
+[Outside owning-cell aliases](coverage/semantics/config-generator-reference-owning-alias-review.json),
+[Temporary owning reference cells](coverage/semantics/config-generator-temporary-owning-reference-review.json),
+[Temporary owning-cell aliases](coverage/semantics/config-generator-temporary-owning-alias-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -613,14 +676,37 @@ remain partial. Original failures retain zero credit; the retained slow native
 control is promoted without native replay.
 [Nonfast executor review](coverage/semantics/output-executor-nonfast-review.json).
 
+OB06 models a no-argument buffer start attempted by a shutdown-argument
+destructor after output deactivation. The Notice, false result and unchanged
+buffer stack/sequence agree in six source/request contexts, including suppression,
+selected handler and fallback paths, slow allocation and an early-shutdown
+success control. Three argument/reentrant forms reach checked Unsupported; one
+source-reached Notice state passes 30 checks with budget resume. Private and
+joined strict433 pass; joined plain/slow and selected-handler sources plus the
+three refusals pass on the parent with changed executor queue roots. A retained
+handler-return object destructor has native fast/slow observations but fails
+before its nested call in the model and earns zero credit.
+[Post-deactivation review](coverage/semantics/output-executor-post-deactivate-review.json).
+
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
+CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
+
+COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
+images and deleted dynamic histories retain comparison, cast and clone behavior.
+Their exact source, reached-state and affected gates are in
+[SOURCE-CLONE](docs/semantics/SOURCE-CLONE.md) and the linked reviews.
+
+COMP162 copies ordinary mixed declared tables after dynamic reinsertion when
+obsolete dead mirrors precede a later live row. Four exact source agreements,
+39 reached conditions, two affected clone sources and joined strict433 pass.
+Live/live duplicate names and nonordinary tables remain partial.
+[Review](coverage/semantics/throwable-mixed-reinsert-clone-review.json).
 
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS164 | Existing copied trait `parent` capture views: four exact native/model originals and three source-reached state groups pass 258 conditions (79+86+93). The cross-parent case distinguishes saved lexical from called scope. Two corrected fixture failures retain zero credit. No semantic rule changed; private review CLEAR and four-source composed-tail check passed at 5db2cd8f2; integration pending. [Review](coverage/semantics/trait-captured-parent-view-review.json). |
-| COMP161 | Deleted dynamic-property images, clone histories and stable key synchronization: private and joined strict433, source5/control2, reached1169, affected COMP158/160 sources and mixed readiness182 pass. Final review and integration pending. |
+| CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

@@ -239,7 +239,9 @@ dec $executor_caught_finish(pstate, pexecutorqueue, pcompletion) : pstate
 dec $executor_pending_cause(pstate, pexecutorqueue, nat) : bool
 dec $executor_scope_tasks(pstate, ptask*) : bool
 dec $executor_scope_frames(pstate, pframe*) : bool
-dec $executor_scope(pstate) : bool
+dec $executor_normal_tasks(pstate, ptask*) : bool
+dec $executor_normal_task(pstate, ptask) : bool
+dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
 dec $executor_tick_ready(pstate) : bool
 dec $executor_tick_valid(pstate, pexecutortick) : bool
@@ -252,6 +254,10 @@ dec $executor_tick_scope_tasks(pstate, ptask*) : bool
 dec $executor_tick_scope_frames(pstate, pframe*) : bool
 dec $executor_tick_scope(pstate) : bool
 dec $executor_tick_begin(pstate) : pstate
+dec $executor_error_handler_task(ptask) : bool
+dec $executor_error_handler_tasks(ptask*) : bool
+dec $executor_error_handler_frames(pframe*) : bool
+dec $executor_error_handler_active(pstate) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
 dec $executor_operation_row(pdestructioncleanup, pdestructionoperation) : bool
 dec $executor_handler_task(ptask) : bool
@@ -462,7 +468,28 @@ def $executor_scope_task(S, ptask) = false -- otherwise
 def $executor_scope_frames(S, eps) = false
 def $executor_scope_frames(S, pframe :: pframe_tail*) = ($executor_scope_tasks(S, pframe.TODO) \/ $executor_scope_frames(S, pframe_tail*))
 def $executor_scope(S) = ($executor_scope_tasks(S, S.TODO) \/ $executor_scope_frames(S, S.FRAMES))
+def $executor_normal_tasks(S, eps) = false
+def $executor_normal_tasks(S, ptask :: ptask_tail*) = ($executor_normal_task(S, ptask) \/ $executor_normal_tasks(S, ptask_tail*))
+def $executor_normal_task(S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage) = (pexecutorqueue.COMPLETION = NORMAL /\ $executor_queue_active(S, pexecutorqueue))
+def $executor_normal_task(S, ptask) = false -- otherwise
+def $executor_normal_frames(S, eps) = false
+def $executor_normal_frames(S, pframe :: pframe_tail*) = ($executor_normal_tasks(S, pframe.TODO) \/ $executor_normal_frames(S, pframe_tail*))
+def $executor_normal_scope(S) = ($executor_normal_tasks(S, S.TODO) \/ $executor_normal_frames(S, S.FRAMES))
 def $executor_module_owners(S) = ($tick_roots(S.TICKENTRIES) ++ $assertion_callback_roots(S.ASSERTCALLBACK) =/= eps)
+def $executor_error_handler_task(ERROR_HANDLER_INVOKE perrorcall) = true
+def $executor_error_handler_task(ERROR_HANDLER_RESULT perrorcall) = true
+def $executor_error_handler_task(ERROR_HANDLER_CLEAN perrorcall) = true
+def $executor_error_handler_task(ptask) = false -- otherwise
+def $executor_error_handler_tasks(eps) = false
+def $executor_error_handler_tasks(ptask :: ptask_tail*) = ($executor_error_handler_task(ptask) \/ $executor_error_handler_tasks(ptask_tail*))
+def $executor_error_handler_frames(eps) = false
+def $executor_error_handler_frames(pframe :: pframe_tail*) = ($executor_error_handler_tasks(pframe.TODO) \/ $executor_error_handler_frames(pframe_tail*))
+def $executor_error_handler_active(S) = ($executor_error_handler_tasks(S.TODO) \/ $executor_error_handler_frames(S.FRAMES))
+def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
+  -- if pconfigcall.KIND = INTRINSIC_OB_START /\ pconfigcall.SENT = eps
+  -- if i_chunk = 0 /\ i_flags = 112
+  -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_normal_scope(S) /\ ~$executor_error_handler_active(S)
 def $executor_handler_task(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
 def $executor_handler_task(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = true
 def $executor_exception_callback(API_EXCEPTION pexceptioncall) = true
@@ -490,6 +517,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.SENT =/= eps \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ $executor_error_handler_active(S)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

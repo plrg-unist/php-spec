@@ -170,8 +170,8 @@ pgeneratorop.ARGUMENTS = [POBJECT n_given]
 pgeneratorop.ADVANCE
 ~pgeneratorop.BORROWED
 $throwable_member(S, n_given)
-$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given]
-$heap_owners($heap_graph(S), HOBJECT n_given) = 1
+$task_nodes(GENERATOR_RESUME pgeneratorop) = [HOBJECT n_generator, HOBJECT n_given, HOBJECT n_given]
+$heap_owners($heap_graph(S), HOBJECT n_given) = 2
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Base77C"))) = (porigin_base)
 $class_named(S.CLASSNAMES, $ptlc($ptascii("Leaf77C"))) = (porigin_leaf)
 $class_method_origin(S.CLASSES, pgenerator.FUNCTION) = (pmethoddesc_body)
