@@ -1537,6 +1537,25 @@ def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if ptbytes_input = $base64(text_input)
   -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NExprVariable (BYTES text_target) metadata_target, false, eps, porigin_target, z_target))
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 1) = ((NExprConstFetch (NName (BYTES text_false) metadata_false_name) metadata_false, false, eps, porigin_false, z_false))
+  -- if $base64(text_false) = $ptascii("false")
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((NExprVariable (BYTES text_output) metadata_output, false, eps, porigin_output, z_output))
+  -- if $reference_cv(NExprVariable (BYTES text_target) metadata_target) = (n_target_name*)
+  -- if ~$environment_blocked(S, n_target_name*)
+  -- if $lookup(S.ENV, n_target_name*) = (n_target)
+  -- if $(n_target < |S.STORE|) /\ (HCELL n_target) <- S.ALLOCATIONS
+  -- if S.STORE[n_target] = DEFINED pvalue_target
+  -- if $propref_at(S.PROPREFS, n_target) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_target) = eps
+  -- if ~$foreach_released_cell(S, n_target)
+  -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_output_name*)
+  -- if $lookup(S.ENV, n_output_name*) = (n_output)
+  -- if n_target =/= n_output
+  -- if $enum_array_string_valid(S, pvalue_input) /\ $enum_array_string_valid(S, pvalue_target)
+  -- if $string_bytes(pvalue_input) = (ptbytes_input)
+  -- if $string_bytes(pvalue_target) = (ptbytes_input)
+  -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
 def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NExprArray (SEQUENCE ([(NArrayItem ABSENT (NExprClassConstFetch (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_member) metadata_member) metadata_receiver) (BOOLEAN false) (BOOLEAN false) metadata_item_receiver), (NArrayItem ABSENT (NScalarString (BYTES text_method) metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_item_method)])) metadata_array, false, eps, porigin_input, z_input))
   -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
