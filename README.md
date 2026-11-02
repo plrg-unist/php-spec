@@ -6837,6 +6837,14 @@ and four source agreements pass at distinct cuts. Five reached fronts pass
 independent reached checks pass at 4462bc6d; current-tail composition is
 reviewed at 779569a8.
 [Captured body review](coverage/semantics/generator-captured-method-body-review.json).
+
+I87 adds raw array/string method Generator creation and scoped factory history
+using the existing selected-method proof. Stored selection and retired factory
+history add no owners; direct Fiber entry keeps the actual live This.
+Six native/model originals and private433 retain their recorded cuts. Seven
+reached fronts pass 561 custom/596 reported checks; original failures keep zero
+credit and actual-tail integration remains pending.
+[Raw method review](coverage/semantics/generator-raw-method-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

@@ -71,6 +71,7 @@ dec $fiber_generator_callee_valid(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_receiver_target(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_static_target(pcalltarget, porigin) : bool
 dec $fiber_generator_method_closure_valid(pstate, pgenerator, pcallcontext) : bool
+dec $fiber_generator_raw_method_valid(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_cached_reference_valid(pstate, pgenerator, pcallcontext) : bool
 dec $fiber_generator_throw_valid(pstate, pgeneratorop, pgenerator, pcallcontext) : bool
 dec $fiber_generator_fresh_throw_valid(pstate, pgeneratorop, pgenerator, pcallcontext) : bool
@@ -115,6 +116,27 @@ def $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext) = true
   -- if $scoped_receiver_valid(S, pclosurescope.CALLED, pmethoddesc, pcallcontext.RECEIVER)
   -- if $generator_captured_factory_valid(S, pclosurescope, pgenerator.FUNCTION)
 def $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext) = false -- otherwise
+;; Ordinary wrapped method bodies use the actual operation's Generator and
+;; existing selected-target authority, with their real live This owner.
+def $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $generator_creation_resume_owner(S) = (n_generator)
+  -- if $(n_generator < |S.OBJECTS|) /\ (HOBJECT n_generator) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_generator] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.CLOSURE = eps
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = eps
+  -- if $generator_raw_method_selected(S, pcallcontext.TARGET, porigin_site) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = pgenerator.FUNCTION
+  -- if $function_generator(S, pmethoddesc.FUNCTION)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcallcontext.TARGET)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcallcontext.TARGET)
+  -- if $scoped_receiver_valid(S, porigin_called, pmethoddesc, pcallcontext.RECEIVER)
+  -- if $generator_creation_context_valid(S, pgenerator, pcallcontext)
+  -- if $call_current_valid(S)
+def $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = (pcallcontext.TARGET = pgenerator.FUNCTION)
   -- if pgenerator.CLOSURE = eps
   -- if pcallcontext.TARGET = porigin
@@ -147,6 +169,8 @@ def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
   -- if $call_current_valid(S)
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
   -- if $fiber_generator_method_closure_valid(S, pgenerator, pcallcontext)
+def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
+  -- if $fiber_generator_raw_method_valid(S, pgenerator, pcallcontext)
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
   -- if pgenerator.REFCELL = eps
