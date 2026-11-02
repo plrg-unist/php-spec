@@ -809,8 +809,15 @@ COMP163 admits checked file-mode shebang `ENCODEDPROGRAM` tick plans for main an
 included units. Seven exact native/model sources and 32 source-reached tick-plan
 conditions pass at the committed cut, with joined strict433 on the composed
 master. BOM files follow the existing `PROGRAM`/InlineHTML route; eval uses its
-separate parser mode. HALT with a preamble and wider encodings remain partial.
+separate parser mode. Other preamble profiles and wider encodings remain partial.
 [Review](coverage/semantics/source-preamble-tick-review.json).
+
+COMP164 admits terminal HALT offsets in raw, BOM-free file shebang units. Six
+exact native/model sources cover direct offsets, an included child, CV lookup
+and filename-local registration; ten checked-AST premises cover source offsets
+and nonraw/BOM refusal. Joined strict433 passes. Plain and BOM files retain
+their `PROGRAM` behavior; other encoded HALT profiles remain partial.
+[Review](coverage/semantics/halt-preamble-review.json).
 
 ## Active and unintegrated work
 
