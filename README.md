@@ -4677,6 +4677,11 @@ continues to the shutdown-list queue. Two native-first sources agree; three
 reached states check 88 conditions, including callback ownership 2→1→0, and
 joined strict433 passes. Other late-free routes remain partial. See the
 [late tick review](coverage/semantics/callback-late-tick-final-review.json).
+Two retained raw invokable tick entries now retire oldest first after output
+FINAL. Each copied argument retires before its callback's separate FCC object
+and closure slots. One native-first source agrees exactly; four reached states
+check 120 conditions, including each callback's 2→1→0 owners. The singleton
+regression and strict433 pass. See the [tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

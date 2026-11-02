@@ -582,6 +582,17 @@ exploratory output-buffer restart controls retain zero agreement credit. Wider
 tick entries, assertion callback, abrupt reentry and late-free paths remain
 partial. [Late tick review](coverage/semantics/callback-late-tick-final-review.json).
 
+ATTR12 extends normal post-FINAL tick retirement to two raw invokable entries,
+each with one copied object argument. The first task owns only its argument and
+two FCC slots while the second stays rooted in the tick list; after the first
+callback retires, the second follows in registration order. One native-first
+source agrees exactly (`B;F;A1;C1;A2;C2;`). Four reached states pass 120
+assertions, including both callbacks' 2→1→0 owner transitions; the ATTR11
+singleton source and reached state still pass. Strict433 passes. The original
+two-entry Unsupported baseline and an unanchored stage selector have zero
+agreement credit. More than two entries, mixed callbacks, assertion callbacks
+and abrupt reentry remain partial. [Tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The

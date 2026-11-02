@@ -1,0 +1,77 @@
+{
+  "milestone": "ATTR12: ordered retirement of two post-FINAL raw invokable tick entries",
+  "status": "selected normal source and ownership behavior validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-12",
+  "scope": "Exactly two retained raw invokable tick entries, each with one copied object argument and no assertion callback, retire in registration order after output FINAL. Each argument is released before its callback's separate FCC.object and FCC.closure owners. The first task leaves the second entry rooted in the tick list. Normal completion only.",
+  "authority": [
+    "Zend/zend_llist.c:zend_llist_add_element and zend_llist_destroy — append at tail and destroy from head",
+    "ext/standard/basic_functions.c:PHP_RSHUTDOWN_FUNCTION(basic) and user_tick_function_dtor — tick list destruction and argument before FCC release",
+    "Zend/zend_API.h:zend_fcc_addref and zend_fcc_dtor — separate object and closure owners"
+  ],
+  "production": "936ba00087f520b8de80edf27d41ce23b1a7d922 changes only 30 task TAIL and 444 ordered head transfer; 42fe7c44c745d8a91cde71cfcd3a91f09eda5e46 adds the singleton fixture TAIL assertion",
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "semantic_mode": "SL; P4-SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; CPU5"
+  },
+  "evidence": {
+    "native": {
+      "source_sha256": "2fd2823d49f8a197c44c3572c0d64e7b3d7738c116a3d30306b38577f53b11e6",
+      "report": "native-first/report.json",
+      "report_sha256": "61cafaa751d156ff065ec19726280aa4a6d88bcdcfb4e3f5f056224a94cdd873",
+      "exit": 0,
+      "stdout": "B;F;A1;C1;A2;C2;"
+    },
+    "source_model": {
+      "revision": "42fe7c44c745d8a91cde71cfcd3a91f09eda5e46",
+      "report": "source-42fe/report.json",
+      "report_sha256": "ae23d71e5c993aee9ddd8ae57f135ea1075e82b9db274b9d07f3b2af68f7a4f5",
+      "exit": 0,
+      "elapsed_seconds": 76.15,
+      "normal_exact": true
+    },
+    "reached": {
+      "revision": "42fe7c44c745d8a91cde71cfcd3a91f09eda5e46",
+      "report": "reached-42fe/report.json",
+      "report_sha256": "c53cf2343012e19b3abc61020152b8f65a5e2c7b923d00454e28338524eca450",
+      "assertions": [39, 25, 33, 23],
+      "observation": "First task roots and second registry roots remain separate; first callback retires before second task begins; both callbacks have 2→1→0 owners."
+    },
+    "affected_singleton_source": {
+      "revision": "42fe7c44c745d8a91cde71cfcd3a91f09eda5e46",
+      "report": "affected-singleton-source-42fe/report.json",
+      "report_sha256": "c96ec6dca11d5725652f119f8604bb92f675bbb92aa21e093cc2971d9011d762",
+      "exit": 0,
+      "normal_exact": true
+    },
+    "affected_singleton_reached": {
+      "revision": "42fe7c44c745d8a91cde71cfcd3a91f09eda5e46",
+      "report": "affected-singleton-reached-42fe/report.json",
+      "report_sha256": "7f1eb78daed4132b8b8960f9b4b8718ebb77e4841859fdab61fb8bb4fdb42a6d",
+      "assertions": 39,
+      "passed": true
+    },
+    "strict": {
+      "revision": "936ba00087f520b8de80edf27d41ce23b1a7d922",
+      "report": "strict-936/report.json",
+      "report_sha256": "000fe13e0fd36bec5ff84d46f8ee42654186eac615f251d0f247c8b3fa24c887",
+      "modules": 433,
+      "exit": 0
+    }
+  },
+  "zero_credit": [
+    "baseline-model/report.json: original 2557 model Unsupported after B;F; with two entries",
+    "reached-failure-second-selector/report.json: unanchored triple-job selector matched the first task, not the second; corrected stage requires TAIL=eps",
+    "exploratory-constructors/source.php and dirty model attempt: no final agreement credit",
+    "ATTR07 unsafe assert WeakReference observation remains suspected and zero agreement credit"
+  ],
+  "remaining": "More than two entries, mixed callback/argument shapes, assertion callback roots and abrupt or reentrant module shutdown remain partial.",
+  "composition": {
+    "head": "021318b639ead98649d92279bd182862c35b59c2",
+    "parents": ["42fe7c44c745d8a91cde71cfcd3a91f09eda5e46", "0ed9ac41f35824259bcebbb8e357f8a46f193d47"],
+    "compatibility": "Current-tail 393 adds tick planning only for ENCODEDPROGRAM; the selected plain PHP source is PROGRAM with no declare(ticks), so its existing empty-marker branch is unchanged. 383 adds anonymous trait admission; the source uses named classes and no traits. 172/205/281/437 add enum query and captured-method Generator/Fiber behavior absent from these sources and reached states. Production diff from current master remains only 30/444; accepted 42fe focused checks and 936 strict433 remain valid without replay.",
+    "review": "Independent semantic/test CLEAR for 42fe and exact current-tail composition 021318b63 by /root/attr_review_recovery; final metadata review pending."
+  }
+}
