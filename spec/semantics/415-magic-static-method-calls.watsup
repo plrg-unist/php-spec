@@ -42,7 +42,6 @@ def $magic_static_method_source(S, pmethoddesc) = false -- otherwise
 
 ;; Source/class/caller identities are immutable history after selection.
 ;; Later argument evaluation may change a scalar CV but cannot change the send.
-dec $magic_static_method_descriptor(pstate, pmagicstaticmethodcall) : bool
 def $magic_static_method_descriptor(S, pmagicstaticmethodcall) = true
   -- if pmagicstaticmethodcall.SITE = PORIGIN n_unit pcpath
   -- if $origin_node(S.SOURCES, pmagicstaticmethodcall.SITE) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)

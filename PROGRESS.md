@@ -8,6 +8,15 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+I84 carries admitted `__call`/`__callStatic` factory authority into scoped
+method Generators after the maker or packed argument array retires. Five
+originals agree; five reached fronts pass 442 custom/467 reported checks at
+their recorded private cuts. Joined strict433 and the protected-close OB05
+interaction source pass at 5e33a7f88. Both original fixture failures retain
+zero credit. Direct magic
+Generator bodies and wider ancestry/API/lifecycle contexts remain partial.
+[I84 review](coverage/semantics/generator-magic-factory-review.json).
+
 Published generated enum array captures now create internal Closures without
 retaining the input array or receiver, preserving selection through COW and
 callback rebinding. Four fresh originals agree and 123 state/guard conditions pass. Private
@@ -434,7 +443,6 @@ control is promoted without native replay.
 | CLASS158 | Ordinary non-magic anonymous method formals and lexical-owner missing-arity diagnostics: five fresh exact source agreements, strict433 and 247 focused conditions (243 reached, four guards) pass; final private CLEAR at a0da92ae. Two unchanged Unsupported controls retain zero credit; actual-tail integration pending. |
 | CLASS157 | Anonymous Stringable source9/state285/changed433 pass; final private CLEAR at 40f5cd2c, actual-tail integration pending. |
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
-| I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Private reviewed callable reception and `Closure::fromCallable` conversion pass current-tail strict433 and three exact originals at 2614477b2; canonical integration remains pending. Other APIs, pipe/default loading and wider backing contexts remain partial. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

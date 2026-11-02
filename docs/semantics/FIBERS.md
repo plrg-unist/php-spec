@@ -1085,6 +1085,18 @@ pass 399 reported checks for exact target/source history, parked owners and
 budgeted abort/cleanup. Private strict432 retains its original cut.
 [Invokable factory review](../../coverage/semantics/generator-invokable-factory-review.json).
 
+I84 carries existing magic-handler source/selection history into scoped Gen
+creation. Its independent source promotes a real packed argument slot for a
+BYREF body, then retires the maker/array while the Gen retains the cell. SEND's
+input survives received-CV unset until supplied abort; the reference cache keeps
+its token until Gen drop. A static natural-completion source releases its
+payload while the closed Gen stays live, distinguishing frozen send history
+from a real owner. Five originals agree; five reached fronts pass 442 custom/467
+reported checks for selected history, physical owners and budgeted continuation.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
+[Magic factory review](../../coverage/semantics/generator-magic-factory-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

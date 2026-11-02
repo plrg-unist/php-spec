@@ -219,6 +219,8 @@ dec $generator_captured_factory_receiver(pstate, pmethoddesc, pclosurescope) : b
 dec $generator_captured_factory_method(pobject) : pcalltarget?
 dec $generator_creator_receiver(pstate, pcalltarget, pclosureevidence?) : nat?
 dec $generator_creator_target_valid(pstate, pgeneratorcreation, pmethoddesc, porigin) : bool
+dec $magic_method_descriptor(pstate, pmagicmethodcall) : bool
+dec $magic_static_method_descriptor(pstate, pmagicstaticmethodcall) : bool
 dec $generator_retained_scoped_target(pstate, pcalltarget, pmethoddesc) : bool
 dec $generator_creator_valid(pstate, pgeneratorcreation) : bool
 dec $generator_creation_scope_valid(pstate, pgeneratorcreation) : bool
@@ -648,6 +650,28 @@ def $generator_retained_scoped_target(S, SCOPED_TARGET porigin_requested porigin
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
 def $generator_retained_scoped_target(S, pcalltarget, pmethoddesc) = false -- otherwise
 
+;; Entered magic calls retain their source and selected handler after return.
+;; Packed array and sent identities remain nonowning history after retirement.
+def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = true
+  -- if pgeneratorcreation.CREATOR_TARGET = MAGIC_METHOD_TARGET pmagicmethodcall n_array pvalue*
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if pmagicmethodcall.SITE = porigin_site /\ pmagicmethodcall.METHOD = pmethoddesc.FUNCTION.ORIGIN
+  -- if pgeneratorcreation.CREATOR.CALLED_CLASS = (pmagicmethodcall.CLASS)
+  -- if $(pmagicmethodcall.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pmagicmethodcall.OBJECT] = INSTANCE pmagicmethodcall.CLASS
+  -- if $(n_array < |S.ARRAYS|)
+  -- if |pvalue*| = |pmagicmethodcall.ARGUMENTS|
+  -- if $magic_method_descriptor(S, pmagicmethodcall)
+  -- if $effective_method(S, pmagicmethodcall.CLASS, $ptascii("__call"), |S.CLASSES|) = (pmethoddesc)
+def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = true
+  -- if pgeneratorcreation.CREATOR_TARGET = MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n_array pvalue*
+  -- if pgeneratorcreation.ANCESTORS = eps
+  -- if pmagicstaticmethodcall.SITE = porigin_site /\ pmagicstaticmethodcall.METHOD = pmethoddesc.FUNCTION.ORIGIN
+  -- if pgeneratorcreation.CREATOR.CALLED_CLASS = (pmagicstaticmethodcall.CLASS)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if |pvalue*| = |pmagicstaticmethodcall.ARGUMENTS|
+  -- if $magic_static_method_descriptor(S, pmagicstaticmethodcall)
+  -- if $effective_method(S, pmagicstaticmethodcall.CLASS, $ptascii("__callstatic"), |S.CLASSES|) = (pmethoddesc)
 def $generator_creator_target_valid(S, pgeneratorcreation, pmethoddesc, porigin_site) = true
   -- if pgeneratorcreation.CREATOR_TARGET = METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN
   -- if pgeneratorcreation.ANCESTORS = eps

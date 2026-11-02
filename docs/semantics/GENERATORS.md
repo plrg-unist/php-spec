@@ -466,6 +466,24 @@ Other implicit/callback/API producers and wider delegation, collection and
 lifecycle combinations remain partial.
 [Invokable factory review](../../coverage/semantics/generator-invokable-factory-review.json).
 
+I84 retains scope for direct admitted `__call`/`__callStatic` handlers that create
+scoped method Generators. Existing magic source/selection descriptors bind the
+creator method, call site and called class to the complete effective handler;
+the ordinary instance case also checks its archived receiver identity/class.
+The packed-array identity is bounded and snapshot cardinality is checked, while
+entered argument data remains nonowning history after mutation or retirement.
+No pending-pack equality or sent-value liveness is required. The Gen's actual
+frame/cache/input still owns its values. Five originals agree with PHP; five
+reached fronts pass 442 custom/467 reported checks at their distinct cuts.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
+The original syntax and missed-getter-stage fixture failures retain zero credit
+after narrow fixture corrections.
+Existing414/415 source contracts are unchanged. Broader helper ancestry, direct
+generator-bodied magic handlers, new argument spellings and wider binding,
+callback/API/delegation/collection/lifecycle combinations remain partial.
+[Magic factory review](../../coverage/semantics/generator-magic-factory-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

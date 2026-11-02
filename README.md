@@ -6722,6 +6722,15 @@ actual live receiver. Five originals agree with PHP; five reached fronts pass
 strict433 pass at their recorded cuts.
 Other implicit/API and lifecycle forms remain partial.
 [Invokable factory review](coverage/semantics/generator-invokable-factory-review.json).
+
+I84 adds admitted `__call`/`__callStatic` factories for scoped Generators.
+Existing source and selected-handler descriptors retain the actual called scope
+after the maker or packed argument array retires. Frozen sends add no owners;
+real Generator frames and caches keep their values. Five originals agree with
+PHP; five reached fronts pass 442 custom/467 reported checks and private
+strict433 passes at its original cut. Joined strict433 and the affected
+protected-close source pass at 5e33a7f88.
+[Magic factory review](coverage/semantics/generator-magic-factory-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
