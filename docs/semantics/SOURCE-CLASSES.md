@@ -620,4 +620,6 @@ then can retire it after invocation. The pinned engine routes are
 `zend_create_closure_from_callable`, `zend_is_callable_ex` and
 `zend_create_fake_closure`. The [conversion review](../../coverage/semantics/enum-from-callable-review.json)
 records distinct source and state checks at its private cut. `is_callable`,
-pipe, wider reception, loading and backing contexts remain partial.
+pipe, wider reception, loading and backing contexts remain partial. The
+[current-tail gate](../../coverage/semantics/enum-callable-current-tail-review.json)
+joins reception and conversion in one original program.
