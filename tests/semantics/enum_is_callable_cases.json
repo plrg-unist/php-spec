@@ -48,6 +48,14 @@
     "purpose": "Literal class-string arrays preserve raw lowercase/leading-slash receiver and method bytes, while a case-object array uses the canonical enum class name."
   },
   {
+    "id": "enum-is-callable-third-output-string-spelling",
+    "source": "<?php\nenum NameSpell: int { case A = 1; }\n$name = 'old';\n$ok = is_callable('NameSpell::from', false, $name);\necho 'canonical:', (int)$ok, ':', $name, '|';\n$name = 'old';\n$ok = is_callable('namespell::FROM', false, $name);\necho 'lower:', (int)$ok, ':', $name, '|';\n$name = 'old';\n$ok = is_callable('\\\\NameSpell::TRYFROM', false, $name);\necho 'slash:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "eb0dd7f4f8a613b26ad9c21c4eb493f6bfe2d473cc27aada4f0b598c4ddc3ba9",
+    "expected_model": "normal",
+    "expected_normal_stdout": "canonical:1:NameSpell::from|lower:1:namespell::FROM|slash:1:\\NameSpell::TRYFROM|",
+    "purpose": "Literal generated enum method strings preserve raw class and method spelling in the third output CV."
+  },
+  {
     "id": "enum-is-callable-third-output-old-scalars",
     "source": "<?php\nenum ScalarCheck: int { case A = 1; }\n$name = 42;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'int:', (int)$ok, ':', $name, '|';\n$name = false;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'bool:', (int)$ok, ':', $name, '|';\n$name = null;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'null:', (int)$ok, ':', $name, '|';\n",
     "source_sha256": "1854a358c2ab016fcc5ccb9204e26a2dd25c26f1ead92bc1f583344f05989f24",
