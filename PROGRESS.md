@@ -8,6 +8,16 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+I86 authenticates captured ordinary method Generator bodies during Fiber
+transfer and reference-cache reads using the actual resumer, Closure and
+selected method. After Closure storage retirement, the recorded selection
+reconstructs a nonowning scope without a new owner. Four originals agree;
+five reached fronts pass 501 custom/526 reported checks at their private cuts.
+Private strict433 passes; actual-tail validation is pending. Original compiler,
+refusal and storage failures retain zero credit. Wider bound/API and lifecycle
+contexts remain partial.
+[I86 review](coverage/semantics/generator-captured-method-body-review.json).
+
 I85 admits direct Generator-bodied `__call` and `__callStatic` through the
 existing typed source policy. Actual entered context retains the selected
 target through close and Fiber transfer, while live bodies require their real

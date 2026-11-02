@@ -503,6 +503,21 @@ BYREF magic signatures, broader source spellings and wider callback/API,
 delegation, collection and lifecycle combinations remain partial.
 [Direct magic review](../../coverage/semantics/generator-direct-magic-review.json).
 
+I86 gives captured ordinary method Generators a shared current Closure proof
+for Fiber transfer and nonstatic raw-reference caches. Actual resumer, Gen,
+Closure identity and live receiver precede existing source-selected method
+validation across first-class, array/string and compatible fake binding routes.
+After free_storage consumes the Closure, the same source authority reconstructs
+its nonowning scope from the stored selection/binding. The actual consumed-slot
+marker is required; ordinary live target queries remain unchanged.
+The shared ATTR07 Closure receiver correction imports only its borrowing hunk.
+Four native/model originals agree; five reached fronts pass 501 custom/526
+reported checks at their recorded cuts. Private strict433 retains its original
+cut; actual-tail compilation is pending. Original compiler, refusal and
+array-storage failures retain zero credit. Wider source/API, real-bound Closure,
+delegation, collection and lifecycle combinations remain partial.
+[Captured body review](../../coverage/semantics/generator-captured-method-body-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
