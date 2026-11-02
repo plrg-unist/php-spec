@@ -5,7 +5,7 @@ from pathlib import Path
 import function_scope as scope
 
 HERE = Path(__file__).resolve().parent
-STEMS = ('plain', 'suppressed', 'handler', 'early')
+STEMS = ('plain', 'suppressed', 'handler', 'fallback', 'early')
 ORIGINALS = {
     name: (HERE / ('output_executor_post_deactivate_' + name + '.php')).read_bytes()
     for name in STEMS
