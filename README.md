@@ -4692,6 +4692,11 @@ FINAL. Each copied argument retires before its callback's separate FCC object
 and closure slots. One native-first source agrees exactly; four reached states
 check 120 conditions, including each callback's 2→1→0 owners. The singleton
 regression and strict433 pass. See the [tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
+The same normal raw-invokable tick shape now supports any nonempty ordered
+list: each head retires while its tail stays rooted. A three-entry original
+agrees exactly, six reached states check 143 conditions, and a shared-callback
+alias control agrees. One/two-entry source regressions and joined strict433
+pass. See the [tick-list review](coverage/semantics/callback-late-tick-list-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

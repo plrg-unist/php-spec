@@ -1,0 +1,85 @@
+{
+  "milestone": "ATTR13: ordered post-FINAL raw invokable tick list retirement",
+  "status": "selected normal source and ownership behavior validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-13",
+  "scope": "Any nonempty finite ordered tick list whose entries each have the admitted raw invokable callback and one copied object argument, with no assertion callback and normal completion. Each head task owns its argument and two FCC slots; the saved tail stays rooted. Cross-entry callback sharing is admitted and checked by a two-entry alias control.",
+  "authority": [
+    "Zend/zend_llist.c:zend_llist_add_element and zend_llist_destroy — append at tail and destroy from head",
+    "ext/standard/basic_functions.c:PHP_RSHUTDOWN_FUNCTION(basic) and user_tick_function_dtor — arguments before FCC release",
+    "Zend/zend_API.h:zend_fcc_addref and zend_fcc_dtor — independent FCC.object and FCC.closure owners"
+  ],
+  "production": "fa37b6a53fb1e95a9313af0a4562c2c39d29e3e7 adds recursive all-entry readiness and replaces the fixed one/two-entry gate; head transfer, saved TAIL and per-entry certificate are unchanged. e93d2436df710a01d1ba0f5d655cb4eba2c6e7c8 corrects fixture-only typed entry binding.",
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "semantic_mode": "SL; P4-SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; CPU5"
+  },
+  "evidence": {
+    "three_entry_native": {
+      "source_sha256": "fc370c80438f2b21a06550d36e9c7a44a46b714af28e5d1e5c0f4433b262b3ad",
+      "report": "native-first/report.json",
+      "report_sha256": "214a8a2dae9c5c3ffdb350b6f7b8c5771328cb86e5526fe263a2bfb2e6ebd1f3",
+      "exit": 0,
+      "stdout": "B;F;A1;C1;A2;C2;A3;C3;"
+    },
+    "three_entry_model": {
+      "revision": "fa37b6a53fb1e95a9313af0a4562c2c39d29e3e7",
+      "report": "source-fa37/report.json",
+      "report_sha256": "e083731ae45794eb8d6a3eb520948e9c3650c4989b1e988acac016ec6d4b227e",
+      "normal_exact": true,
+      "exit": 0,
+      "elapsed_seconds": 146.41
+    },
+    "reached": {
+      "first_start": "reached-first-62bf/report.json; SHA256 9ea1a1f4d00d51f846c2f8ace939a0552c5976874d0d02a73e021caa3b56ab2e; revision 62bf9e3036da52d10de09fda933b5576f7bab500; 28 assertions passed",
+      "middle_last_starts": "reached-failure-direct-entry-62bf/report.json; SHA256 2fcc8d3bd11fd8cb522e5dae77144482544b42ea6696fec04d51a0f993180d39; revision 62bf9e3036da52d10de09fda933b5576f7bab500; selected middle/last start rows alone passed 28+29 assertions; report overall failed from other rows",
+      "one_owner": "reached-intermediate-e93d/report.json; SHA256 6d128e2ab9b2afa82edd7fb7534c5fb4c2c69225179076950bb3e43b83697084; revision e93d2436df710a01d1ba0f5d655cb4eba2c6e7c8; first/middle/last intermediate rows passed 17+17+24 assertions",
+      "selected_assertions": 143,
+      "observation": "First/middle/last head tasks retain only their own argument and two FCC slots; 2/1/0 tail entries remain in the registry respectively; each callback goes from two owners to one to zero."
+    },
+    "alias_control": {
+      "source_sha256": "89333e1c603f9aa6b5106609e0f90d30e2f2a1729c185346170733087ff036ad",
+      "native_report": "alias-native/report.json",
+      "native_report_sha256": "d0a060a3e528c4be5fbb8af6b1d76abcd902deaba1a9c69949baf8de0d14ea16",
+      "model_report": "alias-model-e93d/report.json",
+      "model_report_sha256": "a3c9c2a251e2a4477d5dd33e3c41fda8f36d65cb9ba2eba8307607a0a9a4c48e",
+      "revision": "e93d2436df710a01d1ba0f5d655cb4eba2c6e7c8",
+      "normal_exact": true,
+      "stdout": "B;F;A1;A2;C;"
+    },
+    "affected_sources": {
+      "revision": "62bf9e3036da52d10de09fda933b5576f7bab500",
+      "report": "affected-source-62bf/report.json",
+      "report_sha256": "30ef446a65fc416ab93ebde955e5418ab2d0dbd55e83637e3db8fc8129642214",
+      "normal_exact": ["ATTR11 singleton", "ATTR12 pair"]
+    },
+    "strict_private": {
+      "revision": "fa37b6a53fb1e95a9313af0a4562c2c39d29e3e7",
+      "report": "strict-fa37/report.json",
+      "report_sha256": "6b5f849a4167e26696126b2af021b056c85be061e4bad4f244d94aceff33d442",
+      "modules": 433,
+      "exit": 0
+    },
+    "strict_joined": {
+      "revision": "c6ac153928302411506aee38c8ca4ee3dcb67c15",
+      "report": "strict-c6ac/report.json",
+      "report_sha256": "322b0ccb8f7601173fd0089a3fc82463c68d5c5c545f78b0d24ae1175b5e233c",
+      "modules": 433,
+      "exit": 0
+    }
+  },
+  "zero_credit": [
+    "baseline-model/report.json: old 5a62 model Unsupported after B;F; for the three-entry source",
+    "reached-failure-direct-entry-62bf/report.json: three intermediate rows fail elaboration before evaluation; only the two separately passed start rows are credited",
+    "ATTR07 unsafe assert WeakReference observation remains suspected and zero agreement credit"
+  ],
+  "remaining": "Mixed callback/argument shapes, assertion callback roots, abrupt/reentrant module shutdown and other late-free routes remain partial. Three distinct entries and a two-entry shared callback are selected source witnesses; the recursive rule admits more finite entries without claiming exhaustive source validation.",
+  "composition": {
+    "head": "c6ac153928302411506aee38c8ca4ee3dcb67c15",
+    "parents": ["e93d2436df710a01d1ba0f5d655cb4eba2c6e7c8", "cae595492dc56101e4d5d2d2d809ed3edd33e4bc"],
+    "compatibility": "OB07 adds a saved Notice/error-handler retval destructor path in 391/444 that requires an EXECUTOR_RELEASE shutdown queue; selected ATTR13 paths use EXECUTOR_TICK_RELEASE and no error handler. Joined strict433 on c6ac passes. Current-tail 301 explicit GC, 210 string Closure, 437 enum query, and 46 HALT compiler changes are absent from the selected tick sources and reached states. Production diff from cae595 is only the reviewed 444 readiness change.",
+    "review": "Independent semantic/test CLEAR for e93d and post-OB07 semantic bridge CLEAR for c6ac by /root/attr_review_recovery."
+  }
+}

@@ -623,6 +623,17 @@ two-entry Unsupported baseline and an unanchored stage selector have zero
 agreement credit. More than two entries, mixed callbacks, assertion callbacks
 and abrupt reentry remain partial. [Tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
 
+ATTR13 removes that length cap for a nonempty ordered tick list whose entries
+have the same normal raw-invokable/one-object-argument shape. Its task still
+transfers one head at a time and leaves the tail rooted. A three-entry
+native-first source agrees exactly in registration order; six reached states
+pass 143 selected checks across first, middle and last entries, including each
+callback's 2→1→0 owners. One shared-callback alias source also agrees, and the
+ATTR11/12 source regressions and private/joined strict433 pass. The prior
+Unsupported baseline and three fixture elaboration failures retain zero
+credit. Mixed callback shapes, assertion roots and abrupt reentry remain
+partial. [Tick-list review](coverage/semantics/callback-late-tick-list-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
