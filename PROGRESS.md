@@ -182,7 +182,7 @@ snapshot captures survive handlers, warnings use selected/rebound scopes, and
 Closure calls borrow their bound receiver. Nine eligible originals agree (six
 normal, three static rejections); five reached groups pass 428 checks (422 reached,
 six derived), focused syntax11 and private strict432 pass. One unsafe `assert`
-reentrancy observation is a suspected native lifetime defect, preserved at zero
+reentrancy source has an unresolved native lifetime observation, preserved at zero
 credit with exact expired-before-copy refusal; the safe control keeps an external
 owner. General messages and wider consumers remain partial; actual-tail join is
 pending. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).

@@ -4430,8 +4430,8 @@ Real Closure and arrow expressions now admit the same builtin literal/NULL flags
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
 bound receivers. Nine eligible originals agree (six normal, three static errors);
-five reached groups pass 428 checks. One unsafe `assert` reentrancy observation
-remains a suspected native lifetime defect at zero credit, with exact expired
+five reached groups pass 428 checks. One unsafe `assert` reentrancy source has an
+unresolved native lifetime observation at zero credit, with exact expired
 entry refusal retained. See the [producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
