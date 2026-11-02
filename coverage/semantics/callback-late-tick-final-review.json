@@ -10,7 +10,7 @@
     "ext/standard/basic_functions.c:PHP_RSHUTDOWN_FUNCTION(basic) and user_tick_function_dtor — tick arguments before FCC dtor",
     "Zend/zend_API.h:zend_fcc_addref and zend_fcc_dtor — separate object and closure owners"
   ],
-  "production": "b4608164e: 30 task/snapshot and 444 tick transfer, ordered eager release, completion and source guards; 6613ad72b composes OB06 without changing its noarg ob_start path; 3c9acf98e carries the same ATTR11 production delta on current master",
+  "production": "b4608164e: 30 task/snapshot and 444 tick transfer, ordered eager release, completion and source guards; 6613ad72b composes OB06 without changing its noarg ob_start path; ab3115cd4 carries the same ATTR11 production delta on current master",
   "identities": {
     "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
@@ -75,12 +75,12 @@
     "The selected post-output shape is certified at its reached entry; the source examples create it during FINAL, but the rule does not prove every admitted entry was born in FINAL."
   ],
   "composition": {
-    "head": "3c9acf98e59ab76714f47e62e758d2ff94aa7a6e",
+    "head": "ab3115cd4e6334a4bf35a0fb417225f2123f3352",
     "parents": [
-      "79daf1acc61fc524806ae12f3d18db09b71e2dc6",
-      "e89eb83ab05e354c1b0480c3a31f802d8f663bc9"
+      "dd6e0d5e4612e89f18b431e469c102aa7f940d7f",
+      "49fbd2a3ff59bf69ccf4ff9003c4e69dfcca375b"
     ],
-    "compatibility": "The 6613 join preserves OB06 noarg post-deactivation ob_start handling in 391/444 and adds only a separate tick-scope refusal; selected ATTR11 sources call named ob_start before shutdown. GC23 adds explicit collection in 301 and A87 adds factory Generator reference ownership in 423; neither selected source calls GC or Generator unpack. Other intervening Generator/Fiber, enum query, clone and trait arms are also absent. Production diff from e89 master is only ATTR11 30/444. Joined strict433 at 6613 remains valid without replaying unaffected source/state cuts.",
-    "review": "Independent semantic CLEAR for b460 and scoped post-OB06 merge CLEAR for 6613 by /root/attr_review_recovery; GC23/A87 disjointness prechecked, final metadata review pending."
+    "compatibility": "The 6613 join preserves OB06 noarg post-deactivation ob_start handling in 391/444 and adds only a separate tick-scope refusal; selected ATTR11 sources call named ob_start before shutdown. GC23 adds explicit collection in 301 and A87 adds factory Generator reference ownership in 423; neither selected source calls GC or Generator unpack. ENUM adds malformed-array is_callable refusal in 437; selected sources use raw-object registration and no is_callable query. Other intervening Generator/Fiber, clone and trait arms are absent. Production diff from 49f master is only ATTR11 30/444. Joined strict433 at 6613 remains valid without replaying unaffected source/state cuts.",
+    "review": "Independent semantic CLEAR for b460 and scoped post-OB06 merge CLEAR for 6613 by /root/attr_review_recovery; GC23/A87/ENUM disjointness prechecked, final current-head metadata review pending."
   }
 }
