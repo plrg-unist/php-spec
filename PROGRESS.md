@@ -372,7 +372,9 @@ destructor throws. Native symbol/function/class/handler order, shared inherited
 method statics and standard-hook shields determine the first inactive callback.
 Twelve source/request contexts agree exactly at their recorded cuts; nine reached
 groups pass 573 checks (author 171, independent 402), with a separate affected OB04
-allocator group passing 58. Private strict433 passes. Earlier owning module/autoload
+allocator group passing 58. Private strict433 and current-master joined strict433
+pass; one inherited-static original agrees again at the joined 95f5bebf7 cut.
+Earlier owning module/autoload
 cleanup, uncovered table owners, wider hooks/rendering and reentrant/abrupt cleanup
 remain partial. Original failures retain zero credit; the retained slow native
 control is promoted without native replay.

@@ -1,6 +1,6 @@
 {
   "milestone": "OB05",
-  "status": "Privately validated and independently reviewed bounded milestone; prepared union awaits released-base writer handoff and joined check; core remains partial",
+  "status": "Privately validated and independently reviewed bounded milestone; current-master composition passes joined strict and selected original differential at 95f5bebf7; guarded integration pending; core remains partial",
   "target": {
     "version": "8.5.10",
     "sapi": "cli",
@@ -461,7 +461,7 @@
       "tests/semantics/output_executor_nonfast_protocol.py",
       "tests/semantics/output_executor_nonfast_review_protocol.py"
     ],
-    "integration": "One exact actual-manifest joined strict gate is pending; no accepted source/native/state campaign is requested again."
+    "integration": "Current-master composition at 95f5bebf7 passes strict433 and one selected inherited-static original differential. Raw joined artifacts are in ob05-executor-current-95f5bebf7; accepted private source/native/state campaigns retain their original cuts."
   },
   "private_review": {
     "candidate": "00d4ec495412b6e9330045d14a377a4978f59a6d",
@@ -469,9 +469,41 @@
     "result": "CLEAR; no further private runtime requested"
   },
   "integration_preparation": {
-    "base": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
-    "status": "Private composition only; canonical branch untouched; exact released-base lease and one joined gate pending",
+    "original_base": "1fe7ddcbf40209fa30e51f87fa18d82a53146329",
+    "current_master_base": "0d756bb0e2bcd901091971fc77e8887aa5b1bd34",
+    "tested_merge_head": "95f5bebf7ef83fcf06019a4bbdc494486cda381f",
+    "status": "Private current-master composition validated; canonical branch untouched; independent joined review pending",
     "manifest_modules": 433,
-    "preserved": "Canonical301/442/443/manifest and all active/held rows are unchanged; only the two intended inventory obligations differ."
+    "preserved": "OB05 semantic and test files are byte-identical to e18f08327; the shared lifecycle inventory unites OB05 with CLASS156. Original private review cuts retain their identities."
+  },
+  "joined_validation": {
+    "head": "95f5bebf7ef83fcf06019a4bbdc494486cda381f",
+    "base": "0d756bb0e2bcd901091971fc77e8887aa5b1bd34",
+    "cpu": 3,
+    "execution": "One actor with whole-process CPU3 affinity; both commands exited and all children reaped. Existing private cuts were not renewed.",
+    "strict": {
+      "modules": 433,
+      "mode": "SL",
+      "command": "numeric_runner.exe --sl <ordered paths from spec/semantics/modules.json> .tools/ob05-current-joined/strict.watsup",
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr_bytes": 0,
+      "seconds": 11.651,
+      "report": "ob05-executor-current-95f5bebf7/ob05-current-joined/report.json",
+      "sha256": "ec25e9f4538d55fe8827510370346d4d850f79d0ca3a4b857505733e8fca0d0d"
+    },
+    "differential": {
+      "selection": "inherited-static",
+      "command": "python3 tests/semantics/output_executor_nonfast_sources.py --match inherited-static",
+      "selected": 1,
+      "exact": 1,
+      "model_status": "php_error",
+      "native_exit": 0,
+      "model_exit": 0,
+      "stdout_stderr_equal": true,
+      "report": "ob05-executor-current-95f5bebf7/output-executor-nonfast-cjf1_97k/report.json",
+      "sha256": "2791caa90782b3c3e700b2c2627cd47bf5e5f1d70d0787460b351283480712c3"
+    },
+    "raw_archive": "/home/user/workspace/php-spec-evidence-archive"
   }
 }
