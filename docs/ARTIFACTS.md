@@ -337,6 +337,14 @@ sources, fresh/closed states and the affected I85 SEND state.
 The [magic THROW ledger](../coverage/semantics/generator-direct-magic-throw-review.json)
 keeps the unchanged Unsupported separate from accepted checks.
 
+I91 string-method Closure evidence is retained under
+`../php-spec-evidence-archive/generator-string-method-closure-91/` and
+`../php-spec-evidence-archive/generator-string-method-closure-91-review/`.
+The first archive's `actual-tail-ee4b/` and `actual-tail-5610/` retain joined
+strict, three exact sources and parked/closed states, including the GC09 marker.
+The [string Closure ledger](../coverage/semantics/generator-string-method-closure-review.json)
+keeps original nominal and binding failures separate.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

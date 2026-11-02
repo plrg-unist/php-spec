@@ -1165,6 +1165,18 @@ independent closed102 checks pass at dfa4386d; d1f314c0 composition is
 reviewed. Source/signature and wider lifecycle limits remain.
 [Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
 
+I91's static string-method captures reuse the existing callee and warm THROW
+consumers after nominal identity and bindTo dispatch corrections. Direct captured
+Gen bodies keep Closure/cache owners distinct; an ordinary bound factory can
+retire before its scoped BYREF body runs. Native3/source3/private433 retain
+distinct cuts; five reached fronts pass 614 custom/639 reported checks, including
+budgeted abort/drop and closed-cache cleanup. Original nominal/binding failures
+retain zero credit. Joined strict433, three exact sources and parked127 pass at
+ee4b3cdb; strengthened closed-cache126 at 5610e476 checks GC09's receiverless
+marker. The 4544a539 composition is reviewed. Wider callable/API/lifecycle
+combinations stay partial.
+[String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

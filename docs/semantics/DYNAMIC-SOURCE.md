@@ -123,6 +123,26 @@ compare exact pinned-native streams and statuses, including finite-provider
 include and an encoded tick include. The [reached fixture](../../tests/semantics/source_preamble_state.py)
 checks the actual file-mode AST shapes and source-line tick markers. The
 [review ledger](../../coverage/semantics/source-preamble-tick-review.json)
-keeps earlier failed harness attempts separate. This cut does not admit a HALT
+keeps earlier failed harness attempts separate. The COMP163 cut did not admit a HALT
 payload combined with a preamble; wider encodings and file-provider forms
 remain partial.
+
+## Raw shebang HALT offsets
+
+A checked file with a raw shebang keeps the preamble in `ENCODEDPROGRAM` and
+retains the terminal `HaltCompiler` node's original end-file byte position.
+For the raw/raw, BOM-free, nonempty-preamble shape with no alternate original
+buffer, the source compiler now uses that position plus one as
+`__COMPILER_HALT_OFFSET__`. The offset includes shebang bytes. Main and included
+units each use their own file identity and filename-local HALT registration;
+direct reads and selected `defined`/`constant` CV queries use the existing
+lookup routes. Plain and BOM files continue through `PROGRAM`.
+
+The [HALT preamble sources](../../tests/semantics/halt_preamble_sources.py)
+compare six exact pinned-native streams, including an included child return.
+The [reached fixture](../../tests/semantics/halt_preamble_state.py) checks the
+file-mode AST offsets and rejects altered encoding metadata. The
+[review ledger](../../coverage/semantics/halt-preamble-review.json) preserves
+the original file-mode refusal and later unrelated builtin refusal. Converted
+encodings, BOM metadata and other HALT/preamble combinations remain outside
+this bounded offset rule.

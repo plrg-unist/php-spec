@@ -112,7 +112,10 @@ Absent literal methods now also write the name on runtime false and syntax-only
 true results. A second exact original and 42 reached guards pass.
 Canonical class-name and live case-object literal arrays now write their
 generated method names through the same direct string CV. Two exact outcomes
-and 68 reached guards pass; other class spellings remain partial.
+and 68 reached guards pass. Literal class-string arrays also preserve lowercase
+and leading backslash receiver spelling, while case arrays use the canonical
+enum name. Three exact outcomes and 64 reached guards pass; other array
+sources remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -124,7 +127,8 @@ and 68 reached guards pass; other class spellings remain partial.
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json),
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
-[array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
+[array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
+[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -166,6 +170,18 @@ Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
 and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
 reviewed. Source/signature and wider producer/API/lifecycle limits remain partial.
 [I90 review](coverage/semantics/generator-direct-magic-throw-review.json).
+
+I91 restores nominal Closure identity for static user-method string captures and
+routes admitted non-first-class bindTo calls through existing binding authority.
+Source retargeting, called-scope reset, a retained Gen Closure and a retired
+factory's nonowning history retain distinct controls. Three native/model
+originals and five reached fronts 614 custom/639 reported pass at their recorded
+cuts; private433 keeps its original cut. Both original failures remain zero credit.
+Joined strict433, three exact sources and parked127 pass at ee4b3cdb; the
+strengthened closed-cache126 state at 5610e476 checks GC09's receiverless
+marker. The 4544a539 composition is reviewed. Wider callable/API/lifecycle
+contexts remain partial.
+[I91 review](coverage/semantics/generator-string-method-closure-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -342,9 +358,19 @@ GC23 admits an ordered node-free scalar capture before one childless
 runtime-written array capture in the same direct Closure. A pinned
 Reflection control observes `seed,token` order; one original agrees and
 110 strict reached assertions bind the capture layout, shared array owners
-and swapped-order refusal. Pre-edit Unsupported retains zero credit.
-Other capture orders, child graphs and COW remain open.
+and source/caller bounds. Pre-edit Unsupported retains zero credit.
 [GC23 review](coverage/semantics/gc-scalar-array-caller-review.json).
+
+GC24 admits finite ordered node-free scalar captures around one mutable
+one-level array in the same authenticated direct Closure. Its entries may
+be direct scalars or distinct childless stdClass leaves in physical order;
+compiled-pool descendants and materialized property tables are fenced.
+Reversed capture order, three mixed-key leaves and post-capture COW give
+three exact source pairs. Strict reached checks pass 113+146 assertions,
+and the corrected GC23 group passes 110. Duplicate identities, shared
+separate captures, aliases, nested arrays and user-destructor children
+remain refused. Earlier Unsupported, overlap and fixture failures retain
+zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -761,8 +787,20 @@ source-reached Notice state passes 30 checks with budget resume. Private and
 joined strict433 pass; joined plain/slow and selected-handler sources plus the
 three refusals pass on the parent with changed executor queue roots. A retained
 handler-return object destructor has native fast/slow observations but fails
-before its nested call in the model and earns zero credit.
+before its nested call at the OB06 cut and earns zero credit there.
 [Post-deactivation review](coverage/semantics/output-executor-post-deactivate-review.json).
+
+OB07 models the selected Notice handler's returned-object destructor during
+normal post-deactivation queue release. Echo-only and nested no-argument
+`ob_start()` destructors agree with pinned PHP in both allocator modes; the
+nested call uses the built-in Notice while the selected handler is disabled,
+returns false and leaves the buffer stack/sequence unchanged. One source-reached
+state passes 40 conditions, and OB06's explicit-argument, callable and active
+handler-body starts remain checked Unsupported. Private and joined strict433
+pass; joined nested fast/slow sources and the three refusals pass with the
+executor tick-owner branch present. The retained OB06 native original is now
+promoted with exact model agreement.
+[Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
@@ -783,8 +821,15 @@ COMP163 admits checked file-mode shebang `ENCODEDPROGRAM` tick plans for main an
 included units. Seven exact native/model sources and 32 source-reached tick-plan
 conditions pass at the committed cut, with joined strict433 on the composed
 master. BOM files follow the existing `PROGRAM`/InlineHTML route; eval uses its
-separate parser mode. HALT with a preamble and wider encodings remain partial.
+separate parser mode. Other preamble profiles and wider encodings remain partial.
 [Review](coverage/semantics/source-preamble-tick-review.json).
+
+COMP164 admits terminal HALT offsets in raw, BOM-free file shebang units. Six
+exact native/model sources cover direct offsets, an included child, CV lookup
+and filename-local registration; ten checked-AST premises cover source offsets
+and nonraw/BOM refusal. Joined strict433 passes. Plain and BOM files retain
+their `PROGRAM` behavior; other encoded HALT profiles remain partial.
+[Review](coverage/semantics/halt-preamble-review.json).
 
 ## Active and unintegrated work
 

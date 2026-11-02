@@ -218,8 +218,20 @@ E_NOTICE, and returns false. Suppression, selected handlers that return true or
 false, and direct fallback rendering follow the existing diagnostic protocol.
 An ordinary shutdown callback still starts a buffer before deactivation.
 Explicit arguments, callable handlers and nested starts from an active error
-handler remain checked Unsupported. A handler-return object whose destructor
-starts a buffer remains outside this cut: its pending destructor is not yet
-admitted by the selected-Notice cleanup certificate. The pinned native original
-and the model's first failing step retain zero agreement credit.
+handler remain checked Unsupported. At the OB06 cut, a handler-return object
+whose destructor starts a buffer still fails before the nested call and retains
+zero agreement credit.
 [OB06 evidence](../../coverage/semantics/output-executor-post-deactivate-review.json).
+
+OB07 covers that returned-object path. The selected error handler is disabled
+while its return value is destroyed, so an echo-only destructor runs before
+the outer failed-start result and a nested no-argument `ob_start()` emits one
+built-in Notice and returns false. The cleanup rule requires the saved
+destructor/result and error-handler cleanup records, the original Notice, and
+the normal executor queue; it keeps active handler-body reentry and explicit
+arguments outside the admitted path. Fast and slow allocator source cases
+agree exactly, a source-reached state checks the ownership links, and the
+OB06 refusal controls still pass. Joined strict433, nested fast/slow sources
+and the three refusals pass with the executor tick-owner branch present.
+Wider callback nesting, abnormal queue completion and argument forms remain open.
+[OB07 evidence](../../coverage/semantics/output-executor-retval-review.json).

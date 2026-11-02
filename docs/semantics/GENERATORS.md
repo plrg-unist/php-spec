@@ -571,6 +571,20 @@ independent closed102 checks pass at dfa4386d; d1f314c0 composition is reviewed.
 BYREF magic signatures and wider source/API combinations remain partial.
 [Magic THROW review](../../coverage/semantics/generator-direct-magic-throw-review.json).
 
+I91 recognizes static user-method string captures as Closures and removes their
+known-method fallback overlap with admitted bindTo. The existing source/binding
+and Generator authority remains unchanged; first-class binding captures retain
+Unsupported. Native controls distinguish an original string target from later
+retargeting, called-scope reset at compatible static binding, a Closure retained
+through CLOSED and a retired factory's nonowning scoped-body history. Native3,
+source3/private433 and five reached fronts 614 custom/639 reported pass at distinct
+cuts; both original failures remain zero credit. Joined strict433, three exact
+sources and parked127 pass at ee4b3cdb; strengthened closed-cache126 at
+5610e476 checks GC09's receiverless marker. The 4544a539 composition is
+reviewed. Wider
+callable consumers remain partial.
+[String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

@@ -33,7 +33,7 @@ CASES = {
             '~((HARRAY n_array) <- $gc_nodes(S.GC.BUFFER))',
             '$gc_buffer_valid(S, S.GC)',
             '$gc_ordinary_node(S, HOBJECT n_closure)',
-            '~$gc_ordinary_node(S[.OBJECTS[n_closure] = REALCLOSURE porigin_template ([DIRECT (PARRAY n_array), DIRECT (PINT 11)]) eps], HOBJECT n_closure)',
+            '~$gc_ordinary_node(S[.OBJECTS[n_closure] = REALCLOSURE porigin_template ([DIRECT (PINT 11), DIRECT (PARRAY n_array), DIRECT (POBJECT n_held)]) eps], HOBJECT n_closure)',
             '$gc_ordinary_node(S, HARRAY n_array)',
             '$gc_ordinary_nodes(S, S.ALLOCATIONS)',
             '~$gc_ordinary_node(S[.GC.ACTIVE = eps], HOBJECT n_closure)',

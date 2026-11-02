@@ -734,5 +734,9 @@ For two-item literal arrays with canonical enum class spelling, direct class
 strings and live enum cases derive the callable name from their actual
 receiver and literal method values. The
 [array-output review](../../coverage/semantics/enum-is-callable-output-array-review.json)
-records two exact outcomes and 68 reached guards. Other class spellings and
-array sources remain partial.
+records two exact outcomes and 68 reached guards. Literal class-string arrays
+also retain lowercase and leading backslash source spelling, whereas case
+arrays use the canonical enum name. The
+[spelling review](../../coverage/semantics/enum-is-callable-output-spelling-review.json)
+records three exact outcomes and 64 reached guards. Other array sources remain
+partial.

@@ -260,6 +260,8 @@ dec $executor_error_handler_task(ptask) : bool
 dec $executor_error_handler_tasks(ptask*) : bool
 dec $executor_error_handler_frames(pframe*) : bool
 dec $executor_error_handler_active(pstate) : bool
+dec $executor_retval_notice_start(pstate) : bool
+dec $executor_ob_start_allowed(pstate) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
 dec $executor_operation_row(pdestructioncleanup, pdestructionoperation) : bool
 dec $executor_handler_task(ptask) : bool
@@ -494,11 +496,87 @@ def $executor_error_handler_tasks(ptask :: ptask_tail*) = ($executor_error_handl
 def $executor_error_handler_frames(eps) = false
 def $executor_error_handler_frames(pframe :: pframe_tail*) = ($executor_error_handler_tasks(pframe.TODO) \/ $executor_error_handler_frames(pframe_tail*))
 def $executor_error_handler_active(S) = ($executor_error_handler_tasks(S.TODO) \/ $executor_error_handler_frames(S.FRAMES))
+;; zend_error drops a selected handler's returned object with the handler disabled.
+;; A direct destructor call may therefore emit a built-in failed-start Notice.
+def $executor_retval_notice_start(S) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if pconfigcall.SENT = eps
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if S.ERRORHANDLER.CALLBACK = eps
+  -- if S.FRAMES = [pframe, pframe_executor]
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_saved*
+  -- if pframe_executor.TODO = (DESTRUCTOR_RESULT pdestructorcall_outer) :: (DESTRUCTOR_RELEASE pdestructionrelease_outer) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_outer) :: (EXECUTOR_RELEASE pexecutorqueue pexecutorstage) :: eps
+  -- if pdestructorcall_outer.OPERATION = (pdestructionoperation_outer)
+  -- if pdestructionoperation_outer.SOURCE = EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE
+  -- if pexecutorqueue.COMPLETION = NORMAL
+  -- if $executor_queue_active(S, pexecutorqueue)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_saved)
+  -- if pdestructionrelease_saved.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]
+  -- if pdestructionrelease.JOBS = eps
+  -- if pdestructionrelease.CALLER = pdestructionrelease_saved.CALLER
+  -- if pdestructionrelease.ORIGIN = pdestructionrelease_saved.ORIGIN
+  -- if pdestructionrelease.CONSTCONTEXT = pdestructionrelease_saved.CONSTCONTEXT
+  -- if pdestructionrelease.USER = pdestructionrelease_saved.USER
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED
+  -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if pdestructorcall.USER
+  -- if ~pdestructorcall.STORE
+  -- if pdestructorcall.FRAME = eps
+  -- if pdestructorcall.PENDING = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pdestructorcall.TARGET
+  -- if pcallcontext.RECEIVER = (pdestructorcall.OBJECT)
+  -- if pcallcontext.CALLSITE = pdestructorcall.SITE
+  -- if pframe.CONTEXT = pdestructorcall.CALLER
+  -- if pframe.ORIGIN = pdestructorcall.ORIGIN
+  -- if pframe.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+  -- if pdestructionrelease_saved.CALLER = pframe.CONTEXT
+  -- if pdestructionrelease_saved.ORIGIN = pframe.ORIGIN
+  -- if pdestructionrelease_saved.CONSTCONTEXT = pframe.CONSTCONTEXT
+  -- if pdestructionrelease_saved.USER = pdestructorcall.USER
+  -- if pdestructionoperation.CALLER = pframe.CONTEXT
+  -- if pdestructionoperation.ORIGIN = pframe.ORIGIN
+  -- if pdestructionoperation.CONSTCONTEXT = pframe.CONSTCONTEXT
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.CALLER = pframe.CONTEXT
+  -- if pdestructioncleanup.ORIGIN = pframe.ORIGIN
+  -- if pdestructioncleanup.CONSTCONTEXT = pframe.CONSTCONTEXT
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+  -- if ptask_saved* = pobnotice.TAIL
+  -- if perrorcall.TARGET =/= eps
+  -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
+  -- if pobnotice.CALL.SITE = perrorcall.SITE
+  -- if S_view = S[.TODO = pframe.TODO][.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.CONSTCONTEXT = pframe.CONSTCONTEXT][.FRAMES = [pframe_executor]]
+  -- if $ob_notice_valid(S_view, pobnotice)
+  -- if ~$executor_error_handler_tasks(S.TODO)
+  -- if ~$executor_error_handler_tasks(pobnotice.TAIL)
+  -- if ~$executor_error_handler_tasks(pframe_executor.TODO)
+def $executor_retval_notice_start(S) = $executor_retval_notice_start(S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*])
+  -- if S.TODO = (OB_PARSE pconfigcall 3 pvalue_values*) :: ptask_tail*
+  -- if pvalue_values* = [PNULL, PINT i_chunk, PINT i_flags]
+  -- if i_chunk = 0
+  -- if i_flags = 112
+  -- if $ob_parse_valid(S, pconfigcall, 3, [PNULL, PINT i_chunk, PINT i_flags])
+def $executor_retval_notice_start(S) = false -- otherwise
+def $executor_ob_start_allowed(S) = true -- if ~$executor_error_handler_active(S)
+def $executor_ob_start_allowed(S) = true -- if $executor_retval_notice_start(S)
+def $executor_ob_start_allowed(S) = false -- otherwise
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
   -- if pconfigcall.KIND = INTRINSIC_OB_START /\ pconfigcall.SENT = eps
   -- if i_chunk = 0 /\ i_flags = 112
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
-  -- if $executor_normal_scope(S) /\ ~$executor_error_handler_active(S)
+  -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
 def $executor_handler_task(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
 def $executor_handler_task(EXCEPTION_HANDLER_CLEAN pexceptioncall b) = true
 def $executor_exception_callback(API_EXCEPTION pexceptioncall) = true
@@ -526,7 +604,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $config_invoke_valid(S, pconfigcall)
-  -- if pconfigcall.SENT =/= eps \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ $executor_error_handler_active(S)
+  -- if pconfigcall.SENT =/= eps \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ ~$executor_ob_start_allowed(S)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

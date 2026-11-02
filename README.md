@@ -257,6 +257,10 @@ deactivation, other byte producers and buffered stdout diagnostics remain depend
 no-argument `ob_start()` from a shutdown-argument destructor after output
 deactivation: the Notice precedes a false result, and no buffer is created.
 Suppression and selected error handlers retain their native output order.
+[OB07](coverage/semantics/output-executor-retval-review.json) covers a direct
+returned-object destructor during normal post-deactivation cleanup. It runs
+while the selected handler is disabled; a nested no-argument `ob_start()`
+emits the built-in Notice and returns false before the outer handler resumes.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3861,6 +3865,12 @@ GC23 admits a node-free scalar capture before the childless array in the
 same direct Closure. Native Reflection confirms capture order; one original
 and 110 strict reached assertions pass. See the
 [scalar-array caller review](coverage/semantics/gc-scalar-array-caller-review.json).
+GC24 extends this direct caller to finite ordered scalar captures around
+one mutable array with distinct childless stdClass and scalar entries.
+Three sources, including a three-leaf post-capture COW case, agree with
+PHP; 113+146 new reached assertions cover order, owners, buffer slots and
+explicit graph/provenance refusals. See the
+[finite capture review](coverage/semantics/gc-finite-capture-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -6729,8 +6739,11 @@ the name for runtime false and syntax-only true; the
 records a second exact original and 42 reached guards. Canonical class and
 live case literal arrays add two exact outcomes and 68 reached guards in the
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
-Other array spellings, destructor and aliasing effects, autoload, case
-attributes, enum collection policy and wider acquisition remain partial;
+Literal class-string arrays now preserve lowercase and leading backslash bytes;
+the [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json)
+records three exact outcomes and 64 reached guards. Other array sources,
+destructor and aliasing effects, autoload, case attributes, enum collection
+policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
@@ -7027,6 +7040,16 @@ Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
 and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
 reviewed. Wider contexts remain pending.
 [Magic THROW review](coverage/semantics/generator-direct-magic-throw-review.json).
+
+I91 restores nominal Closure identity for user-method string captures and routes
+admitted non-first-class bindTo calls through the existing authenticated binding
+handler. Stored selection survives source-string retargeting; static binding
+retains its actual called scope and no receiver. Native3/source3/private433 retain
+distinct cuts; five reached fronts pass 614 custom/639 reported checks. Both
+original failures retain zero credit. Joined strict433, three exact sources and
+parked127 pass at ee4b3cdb; strengthened closed-cache126 at 5610e476 checks
+GC09's receiverless marker. The 4544a539 composition is reviewed.
+[String Closure review](coverage/semantics/generator-string-method-closure-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
