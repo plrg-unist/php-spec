@@ -751,6 +751,13 @@ obsolete dead mirrors precede a later live row. Four exact source agreements,
 Live/live duplicate names and nonordinary tables remain partial.
 [Review](coverage/semantics/throwable-mixed-reinsert-clone-review.json).
 
+COMP163 admits checked file-mode shebang `ENCODEDPROGRAM` tick plans for main and
+included units. Seven exact native/model sources and 32 source-reached tick-plan
+conditions pass at the committed cut, with joined strict433 on the composed
+master. BOM files follow the existing `PROGRAM`/InlineHTML route; eval uses its
+separate parser mode. HALT with a preamble and wider encodings remain partial.
+[Review](coverage/semantics/source-preamble-tick-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
