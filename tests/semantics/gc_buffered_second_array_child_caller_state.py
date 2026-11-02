@@ -11,7 +11,7 @@ CASES = {
     'buffered-second-array-child-direct-caller': {
         'source': sources.family.CASES['buffered-second-array-child-direct-caller'].decode(),
         'stage': 'S.TODO = (GC_TRACE pgccall) :: ptask_tail* '
-                 '-- if pgccall.PASS = 0 -- if S.GC.NEXT = 3',
+                 '-- if pgccall.PASS = 0 -- if S.GC.NEXT = 2',
         'checks': [
             *ordinary.COMMON,
             'pcallcontext.TARGET = CLOSURE_TARGET n_closure',
