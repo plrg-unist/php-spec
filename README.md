@@ -7074,7 +7074,9 @@ capture/static copying and Generator/Fiber rules preserve that copy through
 CLOSED; ignored results release before the original API receiver. Native5,
 source5/private433 retain distinct cuts; six reached fronts pass 744 custom/774
 reported checks. Receive-error retention, reference parameters, computed/packed
-calls and wider contexts remain partial; actual-tail integration is pending.
+calls and wider contexts remain partial. Joined strict433, four exact sources,
+API-entry99, unused-result81 and independent closed143 checks pass at a84bf6c0;
+3486d56c composition is reviewed.
 [Call-copy review](coverage/semantics/generator-call-copy-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

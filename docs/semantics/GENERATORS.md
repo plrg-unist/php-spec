@@ -594,6 +594,8 @@ an ignored fresh Gen, then the original receiver; a retained Gen keeps its copy
 and This through CLOSED and frees the Closure before a stored cache. Native5,
 source5/private433 pass at distinct cuts; six reached fronts pass 744 custom/774
 reported checks, preserving both original fixture failures with zero credit.
+Joined strict433, four exact sources, API-entry99, unused-result81 and independent
+closed143 checks pass at a84bf6c0; 3486d56c composition is reviewed.
 A native-only missing-argument control retains the new receiver until
 shutdown after trace/source roots disappear; that no-Gen receive-error path
 stays explicitly Unsupported. Reference-parameter callbacks require earlier

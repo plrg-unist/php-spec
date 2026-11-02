@@ -1183,7 +1183,9 @@ unchanged; the API copy/source/raw owners disappear before later suspension.
 Native5 and source5/private433 retain their cuts; six reached fronts pass
 744 custom/774 reported checks. The copied Closure/receiver survives
 CLOSED, separately from cached values and pending inputs. Receive errors,
-reference-parameter callbacks and wider call spellings remain partial.
+reference-parameter callbacks and wider call spellings remain partial. Joined
+strict433, four exact sources, API-entry99, unused-result81 and independent
+closed143 checks pass at a84bf6c0; 3486d56c composition is reviewed.
 [Call-copy review](../../coverage/semantics/generator-call-copy-review.json).
 
 Shared pending flags and wider parked ownership

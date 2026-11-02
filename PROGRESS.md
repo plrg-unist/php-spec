@@ -189,8 +189,10 @@ The saved Gen keeps its copy through CLOSED without an API wrapper or later
 API trace. Five native/model originals and private433 pass at recorded cuts;
 six reached fronts pass 744 custom/774 reported checks at separate fixture cuts.
 Original Unsupported and two fixture failures retain zero credit. Native-only
-receive-error retention, reference formals, wider calls and actual-tail integration
-remain partial. [I92 review](coverage/semantics/generator-call-copy-review.json).
+receive-error retention and reference formals remain partial. Joined strict433,
+four exact sources, API-entry99, unused-result81 and independent closed143 checks
+pass at a84bf6c0; 3486d56c composition is reviewed. Wider calls remain partial.
+[I92 review](coverage/semantics/generator-call-copy-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -862,7 +864,6 @@ their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
-| I92 | Reviewed private real Generator Closure::call copy: native5/private433 and six reached fronts744 custom/774 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
