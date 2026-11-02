@@ -43,6 +43,7 @@ CASES = {
             '$lookup(psymboltable_global.ENV, $ptascii("collector")) = (n_collector_cell)',
             'S.STORE[n_collector_cell] = DEFINED (POBJECT n_closure)',
             '(HCELL n_collector_cell) <- $machine_roots(S)',
+            '~$gc_materialized_caller_target(S[.STORE[n_collector_cell] = DEFINED PNULL], CLOSURE_TARGET n_closure, (porigin_outer_call))',
             '$heap_owners($heap_graph(S), HOBJECT n_closure) = 3',
             '$lookup(S.ENV, $ptascii("held")) = (n_held_cell)',
             'S.STORE[n_held_cell] = DEFINED (POBJECT n_held)',
