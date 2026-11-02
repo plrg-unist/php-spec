@@ -1,0 +1,42 @@
+{
+  "milestone": "A88-A93 bounded BYREF Generator argument ownership",
+  "status": "integrated after independent current-master review",
+  "scope": {
+    "consumer": "ini_set(...Generator) by-value consumer with at most two sends; owning copies use integer keys, temporary/factory sends require integer keys throughout, and retained CVs keep their supported scalar named prefix",
+    "producers": "Authenticated retained named BYREF Generator CV, direct temporary BYREF Generator, or named zero-argument BYVAL factory returning a distinct BYREF Generator",
+    "behavior": "SEND_UNPACK copies the current ordinary reference-cell value into each immutable ITEM. Scalar and finite quiet owning values keep separate copied receipts; retained and temporary/factory Generator owners and scalar-final versus owning-final cleanup remain distinct.",
+    "limits": "BYREF consumers, Stringable conversion, factories retaining a Generator CV, typed/backed cells, wider keys/producers and untested finalizer/reentry shapes remain outside this rule."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "2557dcbd95f13e91830846c5ff258715574997b8",
+    "common_rule": "4e5722ad5d36a5457f2cb3499218b6029a0ae496",
+    "design": "One source authenticator and copied ITEM/current-cell send rule replaces six shape-specific acquisition arms. Stage-specific live storage, DATA/INPUT release and retired cleanup remain the cumulative A93 rules."
+  },
+  "historical_ledgers": [
+    "config-generator-factory-owning-alias-review.json",
+    "config-generator-temporary-first-owning-reference-review.json",
+    "config-generator-temporary-two-owning-reference-review.json",
+    "config-generator-factory-first-owning-reference-review.json",
+    "config-generator-factory-two-owning-reference-review.json",
+    "config-generator-reference-two-owning-review.json"
+  ],
+  "validation": {
+    "target": "Pinned PHP 8.5.10 CLI NTS64 -n/profile, LC_ALL=C, TZ=UTC; checked frontend, P4-SpecTec SL/cache-off/determinism-on; serial CPU2/CPU3 actors, all fully reaped",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-owning-matrix",
+    "native_freeze": "/home/user/workspace/php-spec-evidence-archive/config-broad-generator-ownership-native/report.json",
+    "strict": "strict/report.json: 23c943bdf, 433 modules, exit0 true, empty stderr and stable inputs/HEAD",
+    "selected_original_sources": "selected-source/report.json: 633cb7226, one exact terminal native/model agreement for each A88-A93 family, 6/6 exit0, no timeout/survivors",
+    "crossed_sources": "crossed-source/report.json: 23c943bdf, factory alias normal and terminal throw plus direct same-REFCELL ARRAY COW, 3/3 exact agreements with manual native output assertions",
+    "effectful_first_cell": "effectful-routine-source/report.json: 633cb7226, exact native/model B;Y0;Y1;T;D;E:4:8:6; after overwriting the first cell with a destructor object",
+    "reached": "selected-state/report.json: 633cb7226, A89/A90/A91/A93 685 conditions/9 raw steps; crossed-state-normal/report.json: 4a808aa3b, factory two-owning outside aliases 142/2; combined 827/11 pass",
+    "refusals": "refusals/report.json: 1e3da5840, effectful Stringable first ITEM and factory-retained Generator stop at their exact send prefix with explicit Unsupported, agreement credit0",
+    "preserved_failures": "Six historical ledgers retain original failed/Unsupported controls at zero credit; crossed-state/report.json retains the first terminal-fixture finish-frontier failure at zero credit."
+  },
+  "integration": {
+    "status": "integrated by guarded fast-forward",
+    "candidate": "dddece74c96fcb72378df97b5cee1214087095ad",
+    "base": "cae595492dc56101e4d5d2d2d809ed3edd33e4bc",
+    "checks": "All 56 CONFIG runtime/source/state fixture blobs match validated 9ebe805fd; COMP164 HALT offset and OB07 OB_START Notice paths are disjoint from named Generator INI_SET. Accepted strict, 10 source agreements, 827/11 reached and two zero-credit refusals transfer without rerun."
+  }
+}

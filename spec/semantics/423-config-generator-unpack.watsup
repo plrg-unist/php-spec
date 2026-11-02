@@ -14,7 +14,13 @@ dec $config_generator_reference_input(pconfiggenerator) : bool
 dec $config_generator_temporary_reference_input(pstate, pconfiggenerator) : bool
 dec $config_generator_factory_reference_input(pstate, pconfiggenerator) : bool
 dec $config_generator_reference_owning_source(pstate, pconfiggenerator) : bool
+dec $config_generator_reference_owning_item_source(pstate, pconfiggenerator) : bool
 dec $config_generator_reference_owning_first(pstate, pconfiggenerator, pvalue) : bool
+dec $config_generator_reference_two_owning_items(pstate, pconfiggenerator) : bool
+dec $config_generator_temporary_reference_owning_first(pstate, pconfiggenerator, pvalue) : bool
+dec $config_generator_temporary_reference_owning_first_items(pstate, pconfiggenerator) : bool
+dec $config_generator_temporary_reference_owning_first_completed(pstate, pconfiggenerator) : bool
+dec $config_generator_temporary_reference_two_owning_items(pstate, pconfiggenerator) : bool
 dec $config_generator_reference_owning_last(pstate, pconfiggenerator, pvalue) : bool
 dec $config_generator_reference_owning_last_items(pstate, pconfiggenerator) : bool
 dec $config_generator_temporary_reference_owning_last_items(pstate, pconfiggenerator) : bool
@@ -196,6 +202,9 @@ def $config_generator_reference_owning_source(S, pconfiggenerator) = true
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.SIGNATURE.BYREF
   -- if $function_generator(S, pfunction)
 def $config_generator_reference_owning_source(S, pconfiggenerator) = false -- otherwise
+;; Bounded BYREF sends and copied ITEM receipts share authenticated source
+;; provenance; temporary sources still require integer keys.
+def $config_generator_reference_owning_item_source(S, pconfiggenerator) = ($config_generator_reference_owning_source(S, pconfiggenerator) \/ $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator))
 def $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) = true
   -- if $config_generator_reference_owning_source(S, pconfiggenerator)
   -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue)]
@@ -204,6 +213,42 @@ def $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) = true
   -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue), ENTRY pkey_value (DIRECT pvalue_value)]
   -- if $config_iterator_scalar(S, pvalue_value)
 def $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) = false -- otherwise
+;; A retained direct-CV BYREF Generator may copy two bounded owning values.
+def $config_generator_reference_two_owning_items(S, pconfiggenerator) = true
+  -- if $config_generator_reference_owning_source(S, pconfiggenerator)
+  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_first) (DIRECT pvalue_first), ENTRY (KINT z_last) (DIRECT pvalue_last)]
+  -- if $value_nodes(pvalue_first) =/= eps /\ $value_nodes(pvalue_last) =/= eps
+  -- if $config_iterator_value_receipt(S, pvalue_first) /\ $config_iterator_value_receipt(S, pvalue_last)
+def $config_generator_reference_two_owning_items(S, pconfiggenerator) = false -- otherwise
+;; A direct BYREF temporary or BYVAL factory result may copy one owning first
+;; cell. A completed two-item history has a scalar final ITEM; cleanup checks
+;; the current scalar cell.
+def $config_generator_temporary_reference_owning_first(S, pconfiggenerator, pvalue) = true
+  -- if $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
+  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue)]
+def $config_generator_temporary_reference_owning_first(S, pconfiggenerator, pvalue) = true
+  -- if $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
+  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue), ENTRY (KINT z_value) (DIRECT pvalue_value)]
+  -- if $config_iterator_scalar(S, pvalue_value)
+def $config_generator_temporary_reference_owning_first(S, pconfiggenerator, pvalue) = false -- otherwise
+def $config_generator_temporary_reference_owning_first_items(S, pconfiggenerator) = true
+  -- if pconfiggenerator.ITEMS = (ENTRY (KINT z_option) (DIRECT pvalue)) :: pentry*
+  -- if $config_generator_temporary_reference_owning_first(S, pconfiggenerator, pvalue)
+  -- if $value_nodes(pvalue) =/= eps
+  -- if $config_iterator_value_receipt(S, pvalue)
+def $config_generator_temporary_reference_owning_first_items(S, pconfiggenerator) = false -- otherwise
+def $config_generator_temporary_reference_owning_first_completed(S, pconfiggenerator) = true
+  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue_option), ENTRY (KINT z_value) (DIRECT pvalue_value)]
+  -- if $config_generator_temporary_reference_owning_first_items(S, pconfiggenerator)
+def $config_generator_temporary_reference_owning_first_completed(S, pconfiggenerator) = false -- otherwise
+;; Two owning copies from a direct BYREF temporary or BYVAL factory result
+;; retain separate bounded receipts; cleanup checks their current nodes.
+def $config_generator_temporary_reference_two_owning_items(S, pconfiggenerator) = true
+  -- if $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
+  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_first) (DIRECT pvalue_first), ENTRY (KINT z_last) (DIRECT pvalue_last)]
+  -- if $value_nodes(pvalue_first) =/= eps /\ $value_nodes(pvalue_last) =/= eps
+  -- if $config_iterator_value_receipt(S, pvalue_first) /\ $config_iterator_value_receipt(S, pvalue_last)
+def $config_generator_temporary_reference_two_owning_items(S, pconfiggenerator) = false -- otherwise
 ;; A final owning snapshot may follow one scalar option.
 def $config_generator_reference_owning_last(S, pconfiggenerator, pvalue) = true
   -- if $config_generator_reference_owning_source(S, pconfiggenerator)
@@ -214,6 +259,8 @@ def $config_generator_reference_owning_last_items(S, pconfiggenerator) = true
   -- if pconfiggenerator.ITEMS = [ENTRY pkey_option (DIRECT pvalue_option), ENTRY (KINT z_value) (DIRECT pvalue)]
   -- if $value_nodes(pvalue) =/= eps
   -- if $config_generator_reference_owning_last(S, pconfiggenerator, pvalue)
+def $config_generator_reference_owning_last_items(S, pconfiggenerator) = true
+  -- if $config_generator_reference_two_owning_items(S, pconfiggenerator)
 def $config_generator_reference_owning_last_items(S, pconfiggenerator) = false -- otherwise
 ;; A direct BYREF call or BYVAL factory has no outside Generator CV. Its copied
 ;; final ITEM keeps a bounded receipt after the temporary and local cell retire.
@@ -223,6 +270,8 @@ def $config_generator_temporary_reference_owning_last_items(S, pconfiggenerator)
   -- if $config_iterator_scalar(S, pvalue_option)
   -- if $value_nodes(pvalue) =/= eps
   -- if $config_iterator_value_receipt(S, pvalue)
+def $config_generator_temporary_reference_owning_last_items(S, pconfiggenerator) = true
+  -- if $config_generator_temporary_reference_two_owning_items(S, pconfiggenerator)
 def $config_generator_temporary_reference_owning_last_items(S, pconfiggenerator) = false -- otherwise
 def $config_generator_owning_value_source(S, pconfiggenerator) = true
   -- if pconfiggenerator.PRODUCER = eps
@@ -259,7 +308,7 @@ def $config_generator_key_input(pconfiggenerator, PSTRING_CARRIER pstringidentit
 def $config_generator_key_input(pconfiggenerator, pvalue) = false -- otherwise
 ;; Owning ITEMS keep bounded history; their graph and finalizer gates are live.
 def $config_generator_items(S, pconfiggenerator, eps) = true
-def $config_generator_items(S, pconfiggenerator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*) = (($config_iterator_scalar(S, pvalue) \/ (($config_generator_owning_value_source(S, pconfiggenerator) \/ $config_generator_reference_owning_first(S, pconfiggenerator, pvalue) \/ $config_generator_reference_owning_last(S, pconfiggenerator, pvalue) \/ $config_generator_temporary_reference_owning_last_items(S, pconfiggenerator)) /\ $value_nodes(pvalue) =/= eps /\ $config_iterator_value_receipt(S, pvalue))) /\ $config_generator_items(S, pconfiggenerator, pentry*))
+def $config_generator_items(S, pconfiggenerator, (ENTRY (KINT z) (DIRECT pvalue)) :: pentry*) = (($config_iterator_scalar(S, pvalue) \/ (($config_generator_owning_value_source(S, pconfiggenerator) \/ $config_generator_reference_owning_item_source(S, pconfiggenerator)) /\ $value_nodes(pvalue) =/= eps /\ $config_iterator_value_receipt(S, pvalue))) /\ $config_generator_items(S, pconfiggenerator, pentry*))
 def $config_generator_items(S, pconfiggenerator, (ENTRY (KSTRING n*) (DIRECT pvalue)) :: pentry*) = ($config_generator_string_key_input(pconfiggenerator) /\ $string_key(n*) = STRINGKEY /\ $config_iterator_scalar(S, pvalue) /\ $config_generator_items(S, pconfiggenerator, pentry*))
 def $config_generator_items(S, pconfiggenerator, pentry*) = false -- otherwise
 def $config_generator_history(S, pconfiggenerator) = true
@@ -372,7 +421,6 @@ def $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) = 
   -- if $config_iterator_argument(S, pvalue_cell)
   -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue_cell), eps, $heap_graph(S).EDGES))
   -- if $node_children(S, HOBJECT pconfiggenerator.OBJECT) = [HCELL n_cell]
-  -- if ~$config_generator_factory_reference_input(S, pconfiggenerator) \/ $heap_owners($heap_graph(S), HCELL n_cell) = 1
   -- if $config_generator_owning_items_live(S, pconfiggenerator.ITEMS)
 def $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) = false -- otherwise
 ;; A final owning cache may retire only when its exact last copied ITEM still
@@ -515,7 +563,7 @@ def $fiber_traversal_complete(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "CO
   -- if $config_generator_valid(S, pconfiggenerator, text)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if ~(pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED])
-;; SEND_UNPACK copies the current dereferenced scalar, leaving the Generator's
+;; SEND_UNPACK copies the current dereferenced value, leaving the Generator's
 ;; real cache cell and all earlier DIRECT sends distinct through later writes.
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
@@ -531,9 +579,14 @@ def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if pgenerator.REFCELL = (n_cell)
   -- if $ordinary_reference_value(S, n_cell) = (pvalue)
   -- if $config_iterator_scalar(S, pvalue)
+;; The copied prefix and current ordinary cell are checked separately.
+;; A retained CV may have more Generator owners; a temporary/factory result
+;; has exactly DATA and INPUT owners at acquisition.
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_reference_owning_source(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = eps
+  -- if $config_generator_reference_owning_item_source(S, pconfiggenerator)
+  -- if $(|pconfiggenerator.ITEMS| < 2)
+  -- if $config_generator_items(S, pconfiggenerator, pconfiggenerator.ITEMS)
+  -- if $config_generator_owning_items_live(S, pconfiggenerator.ITEMS)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
   -- if $generator_reference_producer(S, pgenerator)
   -- if pgenerator.VALUE = eps
@@ -544,37 +597,7 @@ def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if $value_nodes(pvalue) =/= eps
   -- if $config_iterator_argument(S, pvalue)
   -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
-def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_reference_owning_source(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = [ENTRY pkey_option (DIRECT pvalue_option)]
-  -- if $config_iterator_scalar(S, pvalue_option)
-  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps
-  -- if pgenerator.REFCELL = (n_cell)
-  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
-  -- if pgenerator.KEY = (pvalue_key)
-  -- if $config_generator_key(S, pvalue_key) = (KINT z)
-  -- if $value_nodes(pvalue) =/= eps
-  -- if $config_iterator_argument(S, pvalue)
-  -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)
-def $config_generator_value(S, pconfiggenerator) = (pvalue)
-  -- if $config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)
-  -- if pconfiggenerator.ITEMS = [ENTRY (KINT z_option) (DIRECT pvalue_option)]
-  -- if $config_iterator_scalar(S, pvalue_option)
-  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
-  -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps
-  -- if pgenerator.REFCELL = (n_cell)
-  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
-  -- if pgenerator.KEY = (pvalue_key)
-  -- if $config_generator_key(S, pvalue_key) = (KINT z)
-  -- if $value_nodes(pvalue) =/= eps
-  -- if $config_iterator_argument(S, pvalue)
-  -- if ~$destructor_waiting(S, $heap_reach($value_nodes(pvalue), eps, $heap_graph(S).EDGES))
-  -- if $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2
+  -- if ($config_generator_reference_owning_source(S, pconfiggenerator) /\ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)) \/ (($config_generator_temporary_reference_input(S, pconfiggenerator) \/ $config_generator_factory_reference_input(S, pconfiggenerator)) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2)
 def $config_generator_value(S, pconfiggenerator) = (pvalue)
   -- if $config_generator_owning_value_source(S, pconfiggenerator)
   -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
@@ -665,7 +688,7 @@ def $selected_task_nonce(CONFIG_GENERATOR pconfiggenerator text) = pconfiggenera
 def $generator_internal_task(CONFIG_GENERATOR pconfiggenerator text) = true
 def $eager_explicit_task(CONFIG_GENERATOR pconfiggenerator text) = true
 def $config_generator_finish_allowed(S, pconfiggenerator) = ($config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ ($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_storage_child(S, pconfiggenerator)) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 1)) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ (~$config_generator_reference_owning_last_items(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_reference_owning_live_storage(S, pconfiggenerator)) /\ (~$config_generator_temporary_reference_owning_last_items(S, pconfiggenerator) \/ ($config_generator_temporary_reference_owning_storage(S, pconfiggenerator) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 2)))
-def $config_generator_last_input_allowed(S, pconfiggenerator) = ($config_generator_finish_allowed(S, pconfiggenerator) \/ ($config_generator_factory_cached_storage(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1) \/ ($config_generator_factory_owning_cleanup(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1) \/ ($config_generator_temporary_reference_owning_storage(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1))
+def $config_generator_last_input_allowed(S, pconfiggenerator) = ($config_generator_finish_allowed(S, pconfiggenerator) \/ ($config_generator_factory_cached_storage(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1) \/ ($config_generator_factory_owning_cleanup(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1) \/ ($config_generator_temporary_reference_owning_storage(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1) \/ ($config_generator_temporary_reference_owning_first_completed(S, pconfiggenerator) /\ $config_generator_reference_storage(S, pconfiggenerator) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 1) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ $heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) = 1))
 def $config_generator_finish(S, pconfiggenerator, ptask*) = $fiber_start_unpack_release(S[.ORIGIN = (pconfiggenerator.CALL.SITE)][.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [HOBJECT pconfiggenerator.OBJECT])
   -- if $config_generator_finish_allowed(S, pconfiggenerator)
   -- if ~$config_generator_owning_input(pconfiggenerator)
@@ -737,7 +760,7 @@ def $config_generator_discard_nodes(pconfiggenerator, text) = [HOBJECT pconfigge
   -- if ~(text <- ["input-release", "invoke", "storage-released"])
 def $config_generator_discard_nodes(pconfiggenerator, text) = $config_generator_nodes(pconfiggenerator, text)
   -- if ~$config_generator_owning_input(pconfiggenerator) \/ (text <- ["input-release", "invoke", "storage-released"])
-def $config_generator_discard_allowed(S, pconfiggenerator) = (($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_factory_cached_storage(S, pconfiggenerator) \/ $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 0) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_factory_owning_cleanup(S, pconfiggenerator) \/ $config_generator_factory_cached_history(S, pconfiggenerator) \/ $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) \/ ($config_generator_temporary_reference_owning_last_items(S, pconfiggenerator) /\ $config_generator_retired_scope(S, pconfiggenerator))) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ (~$config_generator_reference_owning_last_items(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_reference_owning_live_storage(S, pconfiggenerator)) /\ (~$config_generator_temporary_reference_owning_last_items(S, pconfiggenerator) \/ $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)))
+def $config_generator_discard_allowed(S, pconfiggenerator) = (($($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_quiet_closed(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_factory_cached_storage(S, pconfiggenerator) \/ $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)) /\ $config_generator_callee(S, pconfiggenerator.CALL.OWNER, 0) /\ ($config_generator_argument_nodes(pconfiggenerator) = eps \/ $($heap_owners($heap_graph(S), HOBJECT pconfiggenerator.OBJECT) > 0) \/ $config_generator_factory_owning_cleanup(S, pconfiggenerator) \/ $config_generator_factory_cached_history(S, pconfiggenerator) \/ $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) \/ ($config_generator_temporary_reference_owning_last_items(S, pconfiggenerator) /\ $config_generator_retired_scope(S, pconfiggenerator)) \/ ($config_generator_temporary_reference_owning_first_items(S, pconfiggenerator) /\ ($config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)))) /\ $config_generator_owning_items_live(S, pconfiggenerator.ITEMS) /\ (~$config_generator_reference_owning_last_items(S, pconfiggenerator) \/ $config_generator_reference_storage(S, pconfiggenerator) \/ $config_generator_reference_owning_live_storage(S, pconfiggenerator)) /\ (~$config_generator_temporary_reference_owning_last_items(S, pconfiggenerator) \/ $config_generator_temporary_reference_owning_storage(S, pconfiggenerator) \/ $config_generator_retired_scope(S, pconfiggenerator)))
 def $config_generator_discard(S, pconfiggenerator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]
   -- if ~$config_generator_discard_allowed(S, pconfiggenerator)
   -- if S.TODO = (THROW_SEARCH n) :: ptask*

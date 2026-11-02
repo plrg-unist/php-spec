@@ -458,6 +458,12 @@ A named BYVAL factory can return a distinct BYREF Generator with a final owning
 ordinary cell. Four sources and 512 reached conditions pass; copied arguments
 survive DATA/INPUT release and real Generator storage cleanup. Joined strict433
 and fresh terminal source/state pass at `1a7c38d0b`.
+The cumulative A88-A93 rule shares authenticated copied ITEM and live ordinary
+cell sends across retained, direct temporary and BYVAL-factory BYREF Generators.
+Six selected originals and four crossed/effectful sources agree exactly; strict433
+and 827 reached conditions/11 raw steps pass. Stringable conversion and a
+factory-retained Generator stop at exact send frontiers with zero credit.
+[Bounded ownership review](coverage/semantics/config-generator-bounded-ownership-review.json).
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),

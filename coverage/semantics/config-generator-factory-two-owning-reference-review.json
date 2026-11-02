@@ -1,0 +1,108 @@
+{
+  "milestone": "A92 BYVAL factory returned BYREF Generator two owning reference copies",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...namedZeroArgumentByvalFactory()) returning a distinct named zero-argument BYREF Generator with ordinary local reference cells",
+    "behavior": "Two finite quiet owning cell values are copied from one factory returned Generator. In the four originals, the first source cell becomes scalar before the second send. Normal DATA/INPUT and real storage release retire the Generator while both copies survive into TypeError TraceArgs; terminal saved throw releases both before catch. Four originals distinguish separate objects from two copies of one object, including weak lifetime and owner multiplicity.",
+    "limits": "Both keys normalize to integer, cells are ordinary, and owning argument graphs remain finite and quiet. Typed/backed cells, effectful finalizers and wider factory or Generator forms remain separate; outside aliases are not independently exercised here."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "76590853999708c909a3a1228769d9038db9c91d",
+    "runtime_revision": "5b72d5ca79c1ad3b67f9bfbc4661fd4974e8b2e8",
+    "validated_revision": "78a9f913fa6b8bf32726561387a299a65cc0dd7d",
+    "change": "Only the existing two-owning ITEM source guard and second live owning send also accept the already authenticated BYVAL factory to BYREF Generator route. Existing two-copy history, live finite quiet graph checks, normal storage and quiet two-pop discard rules carry the values without expanding other producers.",
+    "engine": "Zend SEND_UNPACK in zend_vm_def.h copies dereferenced yields and releases iterator DATA before INPUT; zend_generator_free_storage in zend_generators.c releases the cached final reference edge."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned project binary/profile; checked frontend and SL/cache-off/determinism-on model; serial pinned CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-factory-two-owning-reference-92",
+    "native_only": {
+      "author": {
+        "revision": "978af96152e16075a7444973f1d06e353f234992",
+        "report": "native-author-978af9615/report.json",
+        "sha256": "35dc0dddde4b534d05e821b85053a2a04dfc2c0548866c357342d920904f67d2"
+      },
+      "peer": {
+        "revision": "978af96152e16075a7444973f1d06e353f234992",
+        "report": "native-peer-978af9615/report.json",
+        "sha256": "2b86e28a81e0b32461d6368d101836f357af3a8a7f626adaac6db2005a355d8c"
+      },
+      "originals": 4,
+      "model_credit": 0
+    },
+    "old_refusal": {
+      "revision": "978af96152e16075a7444973f1d06e353f234992",
+      "report": "old-control-978af9615/report.json",
+      "sha256": "dcec313df8374e94ed8a531a43b6a06676db1dfb8165025d414f6819ad7f9461",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;P;Y0;M0:5;W0:1;Y1;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "8d545cb9ca7c9d5800dc9bef83bd846402367db8",
+      "report": "strict-8d545cb9c/report.json",
+      "sha256": "9e26d4b9af47d570d8808757d53f234f92e3f7f519ef2db83cf530d4e6b6be77",
+      "modules": 432
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Model-only comparisons with retained frozen native source bytes/profile/streams; no application PHP rerun.",
+      "reports": [
+        {
+          "revision": "8d545cb9ca7c9d5800dc9bef83bd846402367db8",
+          "report": "model-distinct-typeerror-8d545cb9c/report.json",
+          "sha256": "4c13ccf586e2cca0ae80ad761c171568acd2ba780f7069508a3647def9d69e98"
+        },
+        {
+          "revision": "8d545cb9ca7c9d5800dc9bef83bd846402367db8",
+          "report": "model-distinct-terminal-8d545cb9c/report.json",
+          "sha256": "222c62fbfeaf075b638657909e6c7a29c7e4fefceb73ccaeb239975db6bc9f9c"
+        },
+        {
+          "revision": "8d545cb9ca7c9d5800dc9bef83bd846402367db8",
+          "report": "model-shared-typeerror-8d545cb9c/report.json",
+          "sha256": "2f0418790d328fa591cfde31890f4262a9e012a38435b1c5e38d2c2d8448e7d1"
+        },
+        {
+          "revision": "8d545cb9ca7c9d5800dc9bef83bd846402367db8",
+          "report": "model-shared-terminal-8d545cb9c/report.json",
+          "sha256": "42f8c46fc80204038b893993665dd7997b64c9a56a68a1c9b8ecb71fa554cb07"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 504,
+      "if_premises": 498,
+      "raw_steps": 6,
+      "author_terminal": {
+        "revision": "78a9f913fa6b8bf32726561387a299a65cc0dd7d",
+        "report": "reached-author-78a9f913f/report.json",
+        "sha256": "788a2f65dde7ce37c418ba1cd713623b7006ba918a7d2b2dd380292f8a0a6e32",
+        "conditions": 177,
+        "if_premises": 175,
+        "raw_steps": 2
+      },
+      "peer_normal": {
+        "revision": "04127c98ebbf59095a18a471711880508093bf95",
+        "report": "reached-peer-04127c98e/report.json",
+        "sha256": "052f192d027459640d8936486fcb5841fdb86b6dccb3b5c72f76399acb0a7926",
+        "conditions": 327,
+        "if_premises": 323,
+        "raw_steps": 4
+      }
+    },
+    "review": "Independent literal/native/old/comparator/runtime/fixture static review and raw strict/source4/reached504 review. No accepted native or source replay."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "b47ed6d7b5ecdb9fb1e987b3a417846c93f1f864b6e0e2724203e4f7436abd5c",
+    "files": 89,
+    "raw_bytes": 2210527,
+    "commands": "Native-only runners froze four originals. The old control and four selected model-only comparisons consumed retained native sources. Reached scripts consumed matching native reports via --source-report; strict used the ordered 432-module manifest once."
+  },
+  "integration": {
+    "status": "pending exclusive exact-parent canonical writer grant, actual-tail review and one joined ordered-manifest compile"
+  }
+}

@@ -870,9 +870,21 @@ ordinary local cell. The factory publishes only a weak Generator observer.
 Normal DATA/INPUT cleanup and real storage retire the Generator and cell before
 TypeError, while the copied value survives in TraceArgs; terminal saved throw
 retires all three before catch. Four new sources and two reached proofs validate
-object identity, ARRAY COW, weak lifetime and retired source history. Factory
-cells with outside aliases, typed/backed cells and effectful finalizers remain
-separate.
+object identity, ARRAY COW, weak lifetime and retired source history. Typed or
+backed cells and wider producer histories remain separate.
+
+[Bounded BYREF Generator argument ownership](coverage/semantics/config-generator-bounded-ownership-review.json)
+uses one copied-ITEM send rule for at most two arguments from a retained named
+Generator, a direct temporary, or a named BYVAL factory returning a BYREF
+Generator. Owning copies use integer keys; temporary and factory sends require
+integer keys throughout, while a retained CV keeps its supported scalar named
+prefix. Each send reads its current ordinary cell; earlier OBJECT identities
+and ARRAY COW snapshots remain independent of later cell writes. The existing
+scalar or owning final-cell cleanup and retained or temporary owner stages stay
+distinct. Crossed outside aliases, two copies of one ARRAY cell and a destructor
+in an overwritten first cell have focused source coverage. Effectful Stringable
+sends and factories retaining the Generator remain explicit Unsupported; BYREF
+consumers, wider keys, cells and finalizers remain partial.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
