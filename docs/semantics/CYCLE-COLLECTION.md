@@ -375,13 +375,14 @@ with PHP on a held/drop sibling graph with destructor counts 3 and 3. Explicit
 outside this cut. See the [Closure caller review](../../coverage/semantics/gc-closure-caller-review.json).
 
 A normal literal, zero-argument `$collector->__invoke()` call can also own that
-callback when its target is a raw childless static real Closure with no source
-attributes, by-reference return or declared return type. The explicit wrapper
-retains the Closure twice in the current context; the global `$collector` cell
-gives it owner count 3. Existing active caller receipt, GC body-site and frozen
-count-image checks remain in force.
+callback when the live global variable holds a raw childless static real Closure
+with no source attributes, by-reference return or declared return type. The
+explicit wrapper retains the Closure twice in the current context; the global
+receiver cell gives it owner count 3. Existing active caller receipt, GC body-site
+and frozen count-image checks remain in force.
 The same held/drop graph agrees with PHP at destructor counts 3 and 3.
-Arguments, nullsafe calls, attributed or captured Closures, return declarations,
+Arguments, computed receivers, nullsafe calls, attributed or captured Closures,
+return declarations,
 named-hole preflight, warning/throw wrappers, pipe and wider active contexts
 retain their fences. See the
 [explicit Closure caller review](../../coverage/semantics/gc-closure-invoke-caller-review.json).

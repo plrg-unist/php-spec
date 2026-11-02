@@ -106,13 +106,14 @@ Explicit `->__invoke`, pipe, captured and wider active collector contexts
 remain partial.
 [GC10 review](coverage/semantics/gc-closure-caller-review.json).
 
-GC11 admits a normal literal, zero-argument `->__invoke()` call through a plain
-static real Closure without captures, attributes, a by-reference return or a
-declared return type. Its wrapper owns two
-current Closure roots and the global cell supplies a third owner; the existing
+GC11 admits a normal literal, zero-argument `->__invoke()` call through a live
+global variable holding a plain static real Closure without captures,
+attributes, a by-reference return or a declared return type. Its wrapper owns
+two current Closure roots and the global cell supplies a third owner; the existing
 active caller and count rules still protect the held sibling. The native-first
 original agrees exactly, a pre-edit reached diagnostic passes 24 checks, and
-the affected strict reached group passes 95 checks. Calls with arguments,
+the private strict reached group passes 95 checks; the current-tail group passes
+96 after the global receiver guard. Calls with arguments, computed receivers,
 attributes, return declarations, nullsafe selection and wider active contexts
 remain partial.
 [GC11 review](coverage/semantics/gc-closure-invoke-caller-review.json).
@@ -403,7 +404,7 @@ control is promoted without native replay.
 | CLASS158 | Ordinary non-magic anonymous method formals and lexical-owner missing-arity diagnostics: five fresh exact source agreements, strict433 and 247 focused conditions (243 reached, four guards) pass; final private CLEAR at a0da92ae. Two unchanged Unsupported controls retain zero credit; actual-tail integration pending. |
 | CLASS157 | Anonymous Stringable source9/state285/changed433 pass; final private CLEAR at 40f5cd2c, actual-tail integration pending. |
 | CLASS156 | Public anonymous destructor source5/state240/private433 final CLEAR at da77a68c; canonical lease pending. |
-| GC11 | Plain explicit Closure `__invoke` collector caller privately cleared and composed on current master; actual-tail validation and integration pending. |
+| GC11 | Plain explicit Closure `__invoke` caller privately composed on current master; global receiver guard and strict reached validation pass, actual-tail model recheck and integration pending. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
 | ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |

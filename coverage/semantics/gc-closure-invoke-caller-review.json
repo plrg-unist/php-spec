@@ -1,5 +1,5 @@
 {
-  "scope": "GC11: canonical materialized destructor collection from a normal literal zero-argument Closure::__invoke call on a plain childless static real Closure.",
+  "scope": "GC11: canonical materialized destructor collection from a normal literal zero-argument Closure::__invoke call on a live global variable holding a plain childless static real Closure.",
   "target": "PHP 8.5.10 CLI, NTS, 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
   "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
   "private_cuts": {
@@ -24,6 +24,6 @@
     "gc-closure-invoke-11-author/packet4/post-edit-source/model-explicit-real-closure-invoke-report.json": "907fdf2984beeb26d3507540f007270ccac20619c34132ac766f01e5bf87d835"
   },
   "review": "Independent private semantic/test CLEAR from gc07_fallback_review at clean 601. Actual-tail interaction review and joined manifest remain pending.",
-  "limits": "Only a normal literal zero-argument __invoke site on a raw childless static attribute-free Closure without a by-reference return or declared return type is admitted. Arguments, captured or attributed/nonstatic Closures, nullsafe and dynamic names, named-hole preflight, Deprecated warning/throw wrappers, pipe, Fiber/worker/residual/reentry contexts and wider graphs retain existing fences. The selected source shape does not prove arbitrary rewritten historical operand identity.",
+  "limits": "Only a normal literal zero-argument __invoke site through a live global variable holding a raw childless static attribute-free Closure without a by-reference return or declared return type is admitted. Arguments, computed receivers, captured or attributed/nonstatic Closures, nullsafe and dynamic names, named-hole preflight, Deprecated warning/throw wrappers, pipe, Fiber/worker/residual/reentry contexts and wider graphs retain existing fences. The selected source shape does not prove arbitrary rewritten historical operand identity.",
   "recovery": "Raw reports are under ../php-spec-evidence-archive/gc-closure-invoke-11-author. The single original source is tests/semantics/gc_closure_invoke_source.php; the focused model and reached fixtures are gc_closure_invoke_sources.py and gc_closure_invoke_state.py. No bulky artifacts are in Git."
 }
