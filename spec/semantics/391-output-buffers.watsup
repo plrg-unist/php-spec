@@ -42,6 +42,7 @@ dec $ob_notice_message(pobnotice) : preqbytes
 dec $ob_notice(pstate, pconfigcall, pvalue, bool, bool, nat?) : pstate
 dec $ob_notice_valid(pstate, pobnotice) : bool
 dec $ob_notice_task(ptask, pobnotice) : bool
+dec $ob_notice_tasks(pstate, pobnotice) : bool
 dec $ob_operation(pstate, pconfigcall, pvalue*) : pstate
 dec $ob_chunk(int) : int
 dec $ob_snapshot(pstate, pintrinsic, preqbytes) : pstate
@@ -401,12 +402,30 @@ def $ob_notice_valid(S, pobnotice) = true
   -- if ~pobnotice.SECOND \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL =/= eps)
   -- if $ob_get_kind(pobnotice.CALL.KIND) /\ pobnotice.LEVEL =/= eps \/ pobnotice.VALUE = PBOOL false
   -- if ~$ob_get_kind(pobnotice.CALL.KIND) \/ pobnotice.LEVEL = eps \/ $string_bytes(pobnotice.VALUE) =/= eps
-  -- if S.TODO = ptask :: pobnotice.TAIL
-  -- if $ob_notice_task(ptask, pobnotice)
+  -- if $ob_notice_tasks(S, pobnotice)
 def $ob_notice_valid(S, pobnotice) = false -- otherwise
+def $ob_notice_tasks(S, pobnotice) = $ob_notice_task(ptask, pobnotice)
+  -- if S.TODO = ptask :: pobnotice.TAIL
+;; The selected handler's retval is retired before its saved Notice resumes.
+def $ob_notice_tasks(S, pobnotice) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: pobnotice.TAIL
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+def $ob_notice_tasks(S, pobnotice) = false -- otherwise
 def $ob_notice_task(OB_NOTICE_RESULT pobnotice, pobnotice) = true
 def $ob_notice_task(ERROR_HANDLER_INVOKE perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
 def $ob_notice_task(ERROR_HANDLER_RESULT perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
+def $ob_notice_task(ERROR_HANDLER_CLEAN perrorcall, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
 def $ob_notice_task(API_CALLBACK_SEND papiargcursor, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)
   -- if papiargcursor.CALL = API_ERROR perrorcall
 def $ob_notice_task(API_CALLBACK_REF papiargcursor, pobnotice) = (perrorcall.RESUME = OB_NOTICE_RESULT pobnotice)

@@ -406,6 +406,7 @@ def $executor_normal_scope(S) = ($executor_normal_tasks(S, S.TODO) \/ $executor_
 def $executor_module_owners(S) = ($tick_roots(S.TICKENTRIES) ++ $assertion_callback_roots(S.ASSERTCALLBACK) =/= eps)
 def $executor_error_handler_task(ERROR_HANDLER_INVOKE perrorcall) = true
 def $executor_error_handler_task(ERROR_HANDLER_RESULT perrorcall) = true
+def $executor_error_handler_task(ERROR_HANDLER_CLEAN perrorcall) = true
 def $executor_error_handler_task(ptask) = false -- otherwise
 def $executor_error_handler_tasks(eps) = false
 def $executor_error_handler_tasks(ptask :: ptask_tail*) = ($executor_error_handler_task(ptask) \/ $executor_error_handler_tasks(ptask_tail*))
