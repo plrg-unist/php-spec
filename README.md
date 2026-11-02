@@ -4656,6 +4656,12 @@ The source `Closure->__invoke` inner-warning handler trace now inherits the real
 call file/line for both its head and wrapper frame. One native-first original,
 a reached trace state and strict433 pass; broader wrapper/reentry paths remain
 partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
+After output FINAL, one raw invokable tick callback with a copied object
+argument now releases the argument before its two equal FCC owners, then
+continues to the shutdown-list queue. Two native-first sources agree; three
+reached states check 88 conditions, including callback ownership 2→1→0, and
+joined strict433 passes. Other late-free routes remain partial. See the
+[late tick review](coverage/semantics/callback-late-tick-final-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

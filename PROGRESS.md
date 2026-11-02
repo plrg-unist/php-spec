@@ -521,6 +521,18 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
+ATTR11 retires a single raw invokable tick callback and one copied object
+argument after output FINAL, with no assertion callback and normal completion.
+The tick task owns the argument and both equal FCC object/closure slots while
+the registry empties; it releases the argument first, then the two FCC slots,
+before the existing shutdown-list queue. Two native-first originals agree
+exactly, including a retained shutdown entry. Three reached states pass 88
+assertions and show callback owners 2→1→0; private and joined strict433 pass.
+The earlier Unsupported baseline, two compiler attempts, recorder failure and
+exploratory output-buffer restart controls retain zero agreement credit. Wider
+tick entries, assertion callback, abrupt reentry and late-free paths remain
+partial. [Late tick review](coverage/semantics/callback-late-tick-final-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The

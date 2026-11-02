@@ -1,0 +1,86 @@
+{
+  "milestone": "ATTR11: normal post-FINAL raw invokable tick owner retirement",
+  "status": "selected normal source and ownership behavior validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-11",
+  "scope": "A singleton raw invokable tick entry with one copied object argument and no assert callback reaches basic RSHUTDOWN after output FINAL. Its argument retires before two cached FCC slots for the same callback object; the shutdown-function list remains live until its later queue. Normal completion only.",
+  "authority": [
+    "main/main.c:php_request_shutdown_function — destructors, output FINAL, tick deactivation, module shutdown, then shutdown-function free",
+    "main/php_ticks.c:php_deactivate_ticks — PG dispatch cleanup, not the BG user tick list",
+    "ext/standard/basic_functions.c:PHP_RSHUTDOWN_FUNCTION(basic) and user_tick_function_dtor — tick arguments before FCC dtor",
+    "Zend/zend_API.h:zend_fcc_addref and zend_fcc_dtor — separate object and closure owners"
+  ],
+  "production": "b4608164e: 30 task/snapshot and 444 tick transfer, ordered eager release, completion and source guards; 6613ad72b composes OB06 without changing its noarg ob_start path",
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "semantic_cli_sha256": "ad5dfd7b2bb012beebca4fbfb084abacab37b40b6b5ea4327a8aabf76aef8cee",
+    "semantic_mode": "SL; local OCaml 5.1.0; LC_ALL=C; TZ=UTC; affinity CPU5"
+  },
+  "evidence": {
+    "native_raw": {
+      "source_sha256": "36b55893431e46371174cf3fad8b9db3ffd016866c84b9ef23218cece2c8c5bc",
+      "report": "native-first/report.json",
+      "report_sha256": "a7e5f5776e5a4872ef3cb8188e9369611abd974e1aa4c9e808f2d487f723cb15",
+      "exit": 0,
+      "stdout": "B;F;A;C;"
+    },
+    "native_shutdown_peer": {
+      "source_sha256": "963b0d3b86f3e09664aa6bd3c41ccaec0ffcc04fb04bd9bcda04aaa2b78d1b4d",
+      "report": "shutdown-peer-native/report.json",
+      "report_sha256": "638e42b112d517f1bad83d14b2c63e8915f5f2d962ab51c9e2fae0172e663af4",
+      "exit": 0,
+      "stdout": "B;S;F;A;C;"
+    },
+    "model_sources": {
+      "revision": "b4608164edd4dfd782fa3fcf4aa7c3b2c42d3654",
+      "report": "source-b460/report.json",
+      "report_sha256": "50c0400fb0e1a8cd22b64416d51cf9c9928966d05bf7a9091d2edf2d157e21f2",
+      "normal_exact_agreements": 2,
+      "elapsed_seconds": [31.26, 33.49]
+    },
+    "reached": {
+      "revision": "b4608164edd4dfd782fa3fcf4aa7c3b2c42d3654",
+      "report": "reached-b460/report.json",
+      "report_sha256": "0ad495a7407c14c3b06af2582506c510977752eb3d6099375c989ec0df27e2c5",
+      "groups": 3,
+      "assertions": [38, 25, 25],
+      "observation": "Queued arg plus duplicate callback jobs; callback owners 2 then 1 then 0; named shutdown entry remains during tick release."
+    },
+    "strict_private": {
+      "revision": "b4608164edd4dfd782fa3fcf4aa7c3b2c42d3654",
+      "report": "strict-b460/report.json",
+      "report_sha256": "0fefacc8c81e1a6ed2496f60c748be44b9435f59de2eb7b995bc795144e8de33",
+      "modules": 433,
+      "exit": 0
+    },
+    "strict_joined": {
+      "revision": "6613ad72b10a5a889863d9f446289e060224a262",
+      "report": "strict-6613/report.json",
+      "report_sha256": "2ec2d7abb73f4d1f4cdb9bb9377972e2e954d761e76cd3b76df615c628ae1583",
+      "modules": 433,
+      "exit": 0
+    }
+  },
+  "zero_credit": [
+    "baseline-model/report.json: original e37 model Unsupported after B;F; (post-output module callback-owner release)",
+    "model-attempt-1 and model-attempt-2: forward syntax declaration and binding-position compiler failures",
+    "source-b460/attempt-1.json: recorder KeyError after the first model process; corrected source report is separate",
+    "obstart-control-native/model and obstart-simple-native/model: PHP B;F;A; but model Unsupported at an earlier ordinary-destructor guard; these do not prove the new ob_start boundary fired",
+    "ATTR07 unsafe assert WeakReference observation remains suspected and zero agreement credit"
+  ],
+  "remaining": [
+    "Multiple tick entries, other raw/array/Closure callback and argument shapes, assertion callbacks, abrupt or reentrant module shutdown, and inactive executor hooks remain partial.",
+    "The selected post-output shape is certified at its reached entry; the source examples create it during FINAL, but the rule does not prove every admitted entry was born in FINAL."
+  ],
+  "composition": {
+    "head": "6613ad72b10a5a889863d9f446289e060224a262",
+    "parents": [
+      "b4608164edd4dfd782fa3fcf4aa7c3b2c42d3654",
+      "792d3fc5c8a00e763f56af1490e23669ce61b0ef"
+    ],
+    "compatibility": "Master adds OB06 noarg post-deactivation ob_start handling in 391/444. The merge retains its executor_normal_scope/error-handler guards and adds only a separate tick-scope refusal; selected ATTR11 sources call named ob_start before shutdown. Other intervening Generator/Fiber, enum query, clone, GC and trait arms are absent from the selected sources and reached states. Joined strict433 passes without replaying unaffected source/state cuts.",
+    "review": "Independent semantic CLEAR for b460 and scoped post-OB06 merge CLEAR for 6613 by /root/attr_review_recovery; final metadata review pending."
+  }
+}
