@@ -6942,7 +6942,9 @@ warm/fresh THROW through the actual-resumer proof. Fresh THROW keeps its pending
 exception reference; nonstatic object-array selection respects an ordinary caller's private
 method. Four native/model originals agree and four reached fronts pass 439 custom/
 459 reported checks at distinct cuts. Private433 keeps its original cut;
-original failures and diagnostic keep zero credit, with actual-tail integration pending.
+joined strict433, three exact sources, two affected old THROW states (143+105
+checks) and an independent 153-check state pass at 1ecc939d. The 5096cbb1
+composition is reviewed; original failures and diagnostic keep zero credit.
 [Raw cache review](coverage/semantics/generator-raw-method-cache-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

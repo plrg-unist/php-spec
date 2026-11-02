@@ -539,8 +539,10 @@ by-value/reference THROW and fresh THROW initialization. Pending exception copie
 keep their real owner until injection; fixed ordinary nonstatic object-array callers select
 their lexical private method before a public child override. Four native/model
 originals agree; four reached fronts pass 439 custom/459 reported checks at distinct
-cuts. Private433 keeps its original cut. Calibrated native owner diagnostics and
-original failed checks remain separate; actual-tail integration is pending.
+cuts. Private433 keeps its original cut. Joined strict433, three exact sources,
+two affected old THROW states (143+105 checks) and an independent 153-check
+state pass at 1ecc939d; 5096cbb1 composition is reviewed. Calibrated native
+owner diagnostics and original failed checks remain separate.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
 Shared Generator delegation records pending initialization separately from the

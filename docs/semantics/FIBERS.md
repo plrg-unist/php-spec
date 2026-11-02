@@ -1136,7 +1136,9 @@ their separate cache/This/API input owners. Fresh initialization retains a secon
 pending exception reference; warm/caught/borrowed phases keep their existing
 owners. Nonstatic object-array selection from an ordinary method preserves its private
 winner. Four native/model originals agree; four reached fronts pass 439 custom/
-459 reported checks. Private433 retains its cut; actual-tail integration is pending.
+459 reported checks. Private433 retains its cut. Joined strict433, three exact
+sources, two affected old THROW states (143+105 checks) and an independent
+153-check state pass at 1ecc939d; 5096cbb1 composition is reviewed.
 [Raw cache review](../../coverage/semantics/generator-raw-method-cache-review.json).
 
 Shared pending flags and wider parked ownership

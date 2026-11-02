@@ -116,7 +116,9 @@ four reached fronts pass 439 custom/459 reported checks at distinct cuts.
 Private433 keeps its original cut; later reached checks compile both corrections.
 Original refusal and reached failures plus the native diagnostic keep zero extra
 agreement credit. Eight legacy expectations are maintained without execution
-renewal or historical rewrite. Actual-tail integration and wider captured-Closure,
+renewal or historical rewrite. Joined strict433, three exact sources, two affected
+old THROW states (143+105 checks) and an independent 153-check state pass at
+1ecc939d; 5096cbb1 current composition is reviewed. Wider captured-Closure,
 API/binding/delegation/collection/lifecycle combinations remain pending.
 [I88 review](coverage/semantics/generator-raw-method-cache-review.json).
 
@@ -688,7 +690,6 @@ Live/live duplicate names and nonordinary tables remain partial.
 | --- | --- |
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
-| I88 | Reviewed private raw method cache and warm/fresh THROW: native4/source4/private433 and reached439 custom/459 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
