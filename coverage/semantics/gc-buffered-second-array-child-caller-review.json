@@ -1,0 +1,33 @@
+{
+  "scope": "GC22: active direct real-Closure caller capturing an exact two-entry array with distinct childless stdClass leaves; array and both leaves buffered before D collection.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "base": "5fa9c24fa59b2d8d69d556befe23b5ef0c1e8ed0",
+    "source": "a58cb898c9e4d4a9ec0e1a505d2de28dda344580",
+    "semantic": "a1743c55a",
+    "initial_fixture": "7a84858ddd45451cbdf323703e2047ae4f65276c",
+    "corrected_fixture": "473af87bc1c8a67351d2377470ca7be6fbe16521"
+  },
+  "source_sha256": "e42f4cc6b81317f7a70e94260581b63cb8e4a02b337e6990ef1a79e2196f3037",
+  "status_sha256": "1657e96b4d2cd9bbbac7c11acaec3d2295ea3929fb8da43231a830e474c20110",
+  "validation": {
+    "native": "The pinned full original outputs T|P|0|D|3|split|0|H|3|dead|0|live|END, exit 0 and empty stderr. The native-only status control outputs P|0|R|0|1|2|3|live after the three separate owning-copy releases. Stable head/inputs, no timeout and fully reaped process groups are recorded. Status and final reads prove liveness, not identity.",
+    "preedit": "At clean source-only a58, the model exits 1 Unsupported cached ordinary property-table collection after T|P|0|. This retained failure has zero source agreement, stable HEAD/inputs, no timeout and an empty process group.",
+    "fix": "Only the key-1 leaf buffer-absence premise is removed from GC21's authenticated exact two-entry direct Closure clause. Distinct allocated childless STDINSTANCE leaves, matching ordinary/physical edge order, model nonimmutable array, source-selected target and real Closure machine root remain required. Graph, owner, count and buffer algorithms are unchanged.",
+    "source": "At clean 7a, the original model finishes normal with byte-exact stdout/stderr and exit 0 versus pinned native: one source agreement, stable HEAD/inputs, no timeout and empty process group. No earlier accepted campaign was replayed.",
+    "reached": "Strict SL at corrected clean fixture 473 passes 139 assertions, exit 0 with no timeout. The authentic D state is selected by collection nonce NEXT=2 and has valid array/key-0/key-1 buffer slots in order; all three are black and absent from the D count plan, with Closure/array/leaf owner counts 2/3/2/2. Duplicate child, source erasure, inactive and wrong-caller controls remain refused.",
+    "fixture_correction": "The initial fixture commit 7a copied GC21's state selector and mistakenly set NEXT=3 as though NEXT counted buffer slots. Independent review identified that NEXT counts collection calls. Commit 473 corrected it to D's NEXT=2 before any strict fixture run; the corrected group alone earns reached credit, and the source agreement was not rerun for this test-only change."
+  },
+  "reports_sha256": {
+    "gc-buffered-second-array-child-22-review/native-report.json": "93ae7284f0e15694e98f93faf1592c9df5ede9b30d406a459634428ad6851507",
+    "gc-buffered-second-array-child-22-dev/preedit/native-report.json": "ce4b8f672ad7e32abf315b4118d0e3b40021aa6e43ce59394c7f219c3cb54562",
+    "gc-buffered-second-array-child-22-dev/preedit/model-buffered-second-array-child-direct-caller-report.json": "f063cc36dbc22d3c53247a301f1f444d0297e7e317679bec03c52bbb7c0f8c3b",
+    "gc-buffered-second-array-child-22-dev/semantic/native-report.json": "9d03b5bf70cdefa3745bb702deda63800620e9a82a9ec1d3c07d889b2d5f3ca1",
+    "gc-buffered-second-array-child-22-dev/semantic/model-buffered-second-array-child-direct-caller-report.json": "de74acfb089ee6dd34b8023e7ae6ea900c9a88b678e68b44b907dd8131404639",
+    "gc-buffered-second-array-child-22-dev/strict/report.json": "d8eaa876cc1e7ce39fcc5d83632e6e43d5d6fc7de21d5f69b899155fbcc33871"
+  },
+  "review": "Independent GC22 semantic and focused source/state test CLEAR at corrected 473 from gc_review_recovery. Actual-master-tail composition and joined interaction review pending.",
+  "limits": "The source uses one runtime-written exact key-0/key-1 array, distinct direct childless propertyless stdClass leaves and no COW after capture. The rule requires structural childlessness, not propertyless origin. Wider entries, indirect buckets, backedges, persistent nonempty provenance, explicit invoke and other active contexts remain untested. Historical source selection does not prove arbitrary rewritten operand identity.",
+  "recovery": "Raw native, original failure, exact source pair and corrected strict reached runner files are outside Git under ../php-spec-evidence-archive/gc-buffered-second-array-child-22-review and gc-buffered-second-array-child-22-dev. Reproduce with the GC22 source harness native then model and the corrected strict reached script; use one fully reaped CPU1 actor at a time."
+}

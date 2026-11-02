@@ -477,6 +477,16 @@ PHP agree on the full stream. Duplicate child IDs, wider entries, backedges
 and COW after capture remain outside this cut. See the
 [two-child array caller review](../../coverage/semantics/gc-two-array-children-caller-review.json).
 
+GC22 releases an owning local copy of the key-1 child after the array and
+key-0 copy releases. The pinned buffer-root count progresses 0→1→2→3.
+The authentic D state has array, key-0 and key-1 slots in that order;
+the live Closure keeps them black, and all three leave the count plan.
+Owners remain Closure 2, array 3 and each child 2. One source matches PHP
+on the full stream. Only the key-1 buffer-absence premise is removed;
+the exact two-entry/trace shape, distinct child IDs, childlessness and
+real direct Closure root remain required. See the
+[buffered second child review](../../coverage/semantics/gc-buffered-second-array-child-caller-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard
