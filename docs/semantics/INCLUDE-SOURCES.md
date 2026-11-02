@@ -2020,5 +2020,21 @@ their A86 outside-alias policy. Four native-first originals and old Unsupported0
 are retained at the source freeze; strict432, four model-only agreements and two
 reached recipes (512 conditions, six raw steps) validate real storage, Gen/cell
 weak death, TypeError copied object/ARRAY retention and quiet saved-throw cleanup.
-Typed/backed cells, effectful finalizers, factory cell aliases and wider
-producer histories remain partial.
+At the A87 cut, typed/backed cells, effectful finalizers, factory cell aliases
+and wider producer histories remain partial.
+
+The [bounded BYREF Generator ownership rule](../../coverage/semantics/config-generator-bounded-ownership-review.json)
+shares a source-authenticated current-cell send and immutable copied ITEM receipt
+across retained named, direct temporary and named BYVAL-factory BYREF producers.
+At most two sends may carry finite quiet owning values. Owning copies use
+integer keys, temporary/factory sends require integer keys throughout, and a
+retained CV keeps its supported scalar named prefix. Each send checks the live
+ordinary cell separately from earlier copies. Scalar-final and
+owning-final storage, DATA/INPUT release and retained versus temporary Generator
+owners keep their existing distinct gates. Native-first controls exercise a
+factory with two owning copies plus outside cell aliases, repeated ARRAY COW
+snapshots from one cell, and an overwritten first cell whose destructor runs
+at Generator close. An effectful Stringable first ITEM and a factory retaining
+its Generator CV stop at the exact send frontier with zero agreement credit.
+BYREF consumers, typed or backed cells, effectful conversion and wider
+finalizer/reentry shapes remain outside this bounded rule.

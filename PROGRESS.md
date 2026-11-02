@@ -112,7 +112,10 @@ Absent literal methods now also write the name on runtime false and syntax-only
 true results. A second exact original and 42 reached guards pass.
 Canonical class-name and live case-object literal arrays now write their
 generated method names through the same direct string CV. Two exact outcomes
-and 68 reached guards pass; other class spellings remain partial.
+and 68 reached guards pass. Literal class-string arrays also preserve lowercase
+and leading backslash receiver spelling, while case arrays use the canonical
+enum name. Three exact outcomes and 64 reached guards pass; other array
+sources remain partial.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -124,7 +127,8 @@ and 68 reached guards pass; other class spellings remain partial.
 [case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json),
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
-[array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
+[array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
+[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -463,6 +467,12 @@ A named BYVAL factory can return a distinct BYREF Generator with a final owning
 ordinary cell. Four sources and 512 reached conditions pass; copied arguments
 survive DATA/INPUT release and real Generator storage cleanup. Joined strict433
 and fresh terminal source/state pass at `1a7c38d0b`.
+The cumulative A88-A93 rule shares authenticated copied ITEM and live ordinary
+cell sends across retained, direct temporary and BYVAL-factory BYREF Generators.
+Six selected originals and four crossed/effectful sources agree exactly; strict433
+and 827 reached conditions/11 raw steps pass. Stringable conversion and a
+factory-retained Generator stop at exact send frontiers with zero credit.
+[Bounded ownership review](coverage/semantics/config-generator-bounded-ownership-review.json).
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -628,6 +638,17 @@ two-entry Unsupported baseline and an unanchored stage selector have zero
 agreement credit. More than two entries, mixed callbacks, assertion callbacks
 and abrupt reentry remain partial. [Tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
 
+ATTR13 removes that length cap for a nonempty ordered tick list whose entries
+have the same normal raw-invokable/one-object-argument shape. Its task still
+transfers one head at a time and leaves the tail rooted. A three-entry
+native-first source agrees exactly in registration order; six reached states
+pass 143 selected checks across first, middle and last entries, including each
+callback's 2→1→0 owners. One shared-callback alias source also agrees, and the
+ATTR11/12 source regressions and private/joined strict433 pass. The prior
+Unsupported baseline and three fixture elaboration failures retain zero
+credit. Mixed callback shapes, assertion roots and abrupt reentry remain
+partial. [Tick-list review](coverage/semantics/callback-late-tick-list-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -792,8 +813,20 @@ source-reached Notice state passes 30 checks with budget resume. Private and
 joined strict433 pass; joined plain/slow and selected-handler sources plus the
 three refusals pass on the parent with changed executor queue roots. A retained
 handler-return object destructor has native fast/slow observations but fails
-before its nested call in the model and earns zero credit.
+before its nested call at the OB06 cut and earns zero credit there.
 [Post-deactivation review](coverage/semantics/output-executor-post-deactivate-review.json).
+
+OB07 models the selected Notice handler's returned-object destructor during
+normal post-deactivation queue release. Echo-only and nested no-argument
+`ob_start()` destructors agree with pinned PHP in both allocator modes; the
+nested call uses the built-in Notice while the selected handler is disabled,
+returns false and leaves the buffer stack/sequence unchanged. One source-reached
+state passes 40 conditions, and OB06's explicit-argument, callable and active
+handler-body starts remain checked Unsupported. Private and joined strict433
+pass; joined nested fast/slow sources and the three refusals pass with the
+executor tick-owner branch present. The retained OB06 native original is now
+promoted with exact model agreement.
+[Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
@@ -814,8 +847,15 @@ COMP163 admits checked file-mode shebang `ENCODEDPROGRAM` tick plans for main an
 included units. Seven exact native/model sources and 32 source-reached tick-plan
 conditions pass at the committed cut, with joined strict433 on the composed
 master. BOM files follow the existing `PROGRAM`/InlineHTML route; eval uses its
-separate parser mode. HALT with a preamble and wider encodings remain partial.
+separate parser mode. Other preamble profiles and wider encodings remain partial.
 [Review](coverage/semantics/source-preamble-tick-review.json).
+
+COMP164 admits terminal HALT offsets in raw, BOM-free file shebang units. Six
+exact native/model sources cover direct offsets, an included child, CV lookup
+and filename-local registration; ten checked-AST premises cover source offsets
+and nonraw/BOM refusal. Joined strict433 passes. Plain and BOM files retain
+their `PROGRAM` behavior; other encoded HALT profiles remain partial.
+[Review](coverage/semantics/halt-preamble-review.json).
 
 ## Active and unintegrated work
 

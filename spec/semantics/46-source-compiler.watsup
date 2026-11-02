@@ -30,6 +30,9 @@ def $pphalt_last(statement*) = eps -- otherwise
 dec $pphalt_offset(program) : int?
 def $pphalt_offset(PROGRAM statement*) = $pphalt_end(metadata)
   -- if $pphalt_last(statement*) = (NStmtHaltCompiler phpType33 metadata)
+def $pphalt_offset(ENCODEDPROGRAM text_1 text_2 text_3 text_4 text? statement*) = $pphalt_end(metadata)
+  -- if text_1 = "cmF3" /\ text_2 = "cmF3" /\ text_3 = "" /\ text_4 =/= "" /\ text? = eps
+  -- if $pphalt_last(statement*) = (NStmtHaltCompiler phpType33 metadata)
 def $pphalt_offset(program) = eps -- otherwise
 dec $pphalt_valid(pcunit, pcpath, statement) : bool
 def $pphalt_valid(pcunit, pcpath, NStmtHaltCompiler phpType33 metadata) = true

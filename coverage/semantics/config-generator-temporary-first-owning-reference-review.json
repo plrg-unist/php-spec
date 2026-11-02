@@ -1,0 +1,133 @@
+{
+  "milestone": "A89 direct temporary BYREF Generator first owning reference copy",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...namedZeroArgumentByrefGenerator()) with a fresh temporary Generator and ordinary local BYREF yield cells",
+    "behavior": "A finite quiet owning first cell is copied into the argument prefix. Later writes to that cell preserve the old object or ARRAY snapshot. In two-send paths, a distinct scalar final cell permits DATA/INPUT and real storage retirement before TypeError trace or saved catch. A one-send early throw is supported after the current first cell becomes scalar.",
+    "limits": "First key normalizes to integer, and the two-send final key normalizes to integer. Existing primitive-scalar policy governs the final cell; the originals use integer 7. Early throw with an owning cached cell, typed/backed cells, effectful finalizers and wider producers remain separate. Outside ordinary aliases are not independently exercised here."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "946fc2249c6b02c043cf47b6af6e243ec54011f1",
+    "runtime_revision": "9de9ff70100350509007a31252c997567db48bb4",
+    "validated_revision": "ffa49d690cf434fdac851396992810c9155dc375",
+    "change": "Dedicated direct temporary first-owning structural receipt and bounded copied ITEM history; live acquisition requires genuine ordinary REFCELL, finite quiet value, integer-normalized first key and Gen owner2. Completed scalar second ITEM gets last-INPUT storage admission at Gen owner1. Popped one/two-item cleanup admits only scalar current-cell storage or retired scope. Prior direct-CV/final-owning paths are unchanged.",
+    "engine": "Zend SEND_UNPACK in zend_vm_def.h copies dereferenced yielded values, drops iterator DATA before INPUT, and zend_generator_free_storage in zend_generators.c releases the cached reference edge."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned project binary/profile; checked frontend and SL/cache-off/determinism-on model; serial pinned CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-first-owning-reference-89",
+    "native_only": {
+      "author": {
+        "revision": "3c8e45b7b607a6e6ac31bf3893a18c655539e08e",
+        "report": "native-author-3c8e45b7b/report.json",
+        "sha256": "a5509c08956804ea9363282dd1caa3aa3465d2f043cb73fda8794cc7dd3c5a3d"
+      },
+      "peer": {
+        "revision": "3c8e45b7b607a6e6ac31bf3893a18c655539e08e",
+        "report": "native-peer-3c8e45b7b/report.json",
+        "sha256": "ec83256fe2020ef8e1db69e67d78d57445939aec70e6f5ef385037efbb35b8c7"
+      },
+      "early": {
+        "revision": "27d9b8d7c223d82fae75ee122f384dd54bf09561",
+        "report": "native-early-27d9b8d7c/report.json",
+        "sha256": "0493ce818f747d40dd426499d2cb063f51c25ce0003c04db4fdfd75ec3923fa9"
+      },
+      "originals": 5,
+      "model_credit": 0
+    },
+    "old_refusal": {
+      "revision": "3c8e45b7b607a6e6ac31bf3893a18c655539e08e",
+      "report": "old-control-3c8e45b7b/report.json",
+      "sha256": "ad81d928c4e83893f408d2ab25442f7ce309fb2370e3f19170c9cb8df22c2de5",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;Y0;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "84f74ae8cce4afced95ab13aa234213f492eb9e3",
+      "report": "strict-84f74ae8c/report.json",
+      "sha256": "4edc30607acded1e709fa701a27fba1fe21d048e3e95809f124d1f7d6c5839a9",
+      "modules": 432
+    },
+    "source_models": {
+      "agreements": 5,
+      "method": "Model-only comparisons with retained frozen native source bytes/profile/streams; no application PHP rerun.",
+      "reports": [
+        {
+          "revision": "84f74ae8cce4afced95ab13aa234213f492eb9e3",
+          "report": "model-object-typeerror-84f74ae8c/report.json",
+          "sha256": "2237c749cd25d44261aa6149f04520f2e1da7c381f64fbae81b6fc2e2c5ce95a"
+        },
+        {
+          "revision": "81e794e24ee1add5e7590506bd6756778db6e579",
+          "report": "model-object-terminal-81e794e24/report.json",
+          "sha256": "01baead23782d4dc32d30752e73d69f244fe11364509fe4f6cf84623bc0358dc"
+        },
+        {
+          "revision": "0e807c2f7396dac7e2ea35469c79167fbebe0a76",
+          "report": "model-object-early-0e807c2f7/report.json",
+          "sha256": "0cda474454960b0864a524e3ae22f1c7a2167170923fb432714ebff07eab7fcc"
+        },
+        {
+          "revision": "81e794e24ee1add5e7590506bd6756778db6e579",
+          "report": "model-array-typeerror-81e794e24/report.json",
+          "sha256": "566ffd8cdafaa85037e57f20fae4646ed521b0396c401b55fa8726eec245c4dc"
+        },
+        {
+          "revision": "0e807c2f7396dac7e2ea35469c79167fbebe0a76",
+          "report": "model-array-terminal-0e807c2f7/report.json",
+          "sha256": "a430d2151086e64d63e4f7746c8c1d36fe8edbe2678192fe9ba920923749a790"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 623,
+      "if_premises": 615,
+      "raw_steps": 8,
+      "author_terminal": {
+        "revision": "37183e7f70e63b27ca4a36a25e1c8c8353ef823f",
+        "report": "reached-author-terminal-37183e7f7/report.json",
+        "sha256": "512036f4e149860f51e4690e78341eee2057004ffacd6b6d449469841aacdad8",
+        "conditions": 150,
+        "if_premises": 148,
+        "raw_steps": 2
+      },
+      "author_early": {
+        "revision": "ffa49d690cf434fdac851396992810c9155dc375",
+        "report": "reached-author-early-ffa49d690/report.json",
+        "sha256": "0f344948e2371cdb149800a50b0e0ef735ecb4489cb20514a5cec2890881b446",
+        "conditions": 155,
+        "if_premises": 153,
+        "raw_steps": 2
+      },
+      "peer_normal": {
+        "revision": "ffa49d690cf434fdac851396992810c9155dc375",
+        "report": "reached-peer-normal-ffa49d690/report.json",
+        "sha256": "713ccf0720200e6959b96808265014ada838a61fe3dbf8f514a6e4e58b52ad1e",
+        "conditions": 318,
+        "if_premises": 314,
+        "raw_steps": 4
+      }
+    },
+    "failed_fixture": {
+      "revision": "0e807c2f7396dac7e2ea35469c79167fbebe0a76",
+      "report": "reached-author-terminal-0e807c2f7/report.json",
+      "sha256": "627a931b68b13d0f329c6c8de00332129989718b029abb0cf594c8c982536a30",
+      "reason": "Synthetic popped CONFIG marker had zero copied-payload owners, not one; two affected owner assertions corrected without runtime/source change.",
+      "agreement_credit": 0
+    },
+    "review": "Independent literal/native/old/comparator/runtime and fixture static review, raw strict/source5/reached623 review; first failed fixture retained at zero. No accepted source/native replay."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "7de0b7cef60f7a5ac6940b87aa1f3a641380ec0167ef70e5c33b7fe29f9286a8",
+    "files": 136,
+    "raw_bytes": 3571473,
+    "commands": "Native-only runners froze four originals and a separate early original. Model-only comparator consumed the three retained native reports one case at a time. Reached scripts consumed matching native reports by --source-report; strict used the ordered 432-module manifest."
+  },
+  "integration": {
+    "status": "pending exclusive exact-parent canonical writer grant, actual-tail review and one joined ordered-manifest compile"
+  }
+}

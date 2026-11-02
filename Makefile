@@ -85,6 +85,8 @@ test-semantics: build
 	python3 tests/semantics/output_executor_post_deactivate_sources.py
 	python3 tests/semantics/output_executor_post_deactivate_boundaries.py
 	python3 tests/semantics/output_executor_post_deactivate_state.py
+	python3 tests/semantics/output_executor_retval_sources.py
+	python3 tests/semantics/output_executor_retval_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -272,6 +274,42 @@ test-semantics: build
 		python3 tests/semantics/config_generator_factory_owning_reference_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
 		python3 tests/semantics/config_generator_factory_owning_reference_review_sources.py --output "$$out/peer-source" && \
 		python3 tests/semantics/config_generator_factory_owning_reference_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a88-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_factory_owning_alias_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_factory_owning_alias_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_factory_owning_alias_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_factory_owning_alias_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a89-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_temporary_first_owning_reference_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_temporary_first_owning_reference_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-terminal-state" && \
+		python3 tests/semantics/config_generator_temporary_first_owning_reference_early_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-early-state" && \
+		python3 tests/semantics/config_generator_temporary_first_owning_reference_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_temporary_first_owning_reference_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a90-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_temporary_two_owning_reference_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_temporary_two_owning_reference_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_temporary_two_owning_reference_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_temporary_two_owning_reference_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a91-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_factory_first_owning_reference_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_factory_first_owning_reference_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_factory_first_owning_reference_early_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-early-state" && \
+		python3 tests/semantics/config_generator_factory_first_owning_reference_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_factory_first_owning_reference_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a92-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_factory_two_owning_reference_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_factory_two_owning_reference_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_factory_two_owning_reference_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_factory_two_owning_reference_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/a93-test-semantics-XXXXXX)" && \
+		python3 tests/semantics/config_generator_reference_two_owning_sources.py --output "$$out/author-source" && \
+		python3 tests/semantics/config_generator_reference_two_owning_state.py --source-report "$$out/author-source/report.json" --output "$$out/author-state" && \
+		python3 tests/semantics/config_generator_reference_two_owning_review_sources.py --output "$$out/peer-source" && \
+		python3 tests/semantics/config_generator_reference_two_owning_review_state.py --source-report "$$out/peer-source/report.json" --output "$$out/peer-state"
+	@out="$$(mktemp -d .tools/config-generator-bounded-ownership-XXXXXX)" && \
+		python3 tests/semantics/config_generator_bounded_ownership_sources.py --output "$$out/source" && \
+		python3 tests/semantics/config_generator_bounded_ownership_state.py --source-report "$$out/source/report.json" --output "$$out/state" && \
+		python3 tests/semantics/config_generator_bounded_ownership_refusals.py --output "$$out/refusals"
 	python3 tests/semantics/destructuring.py
 	python3 tests/semantics/destructuring_compiler.py
 	python3 tests/semantics/globals_compiler.py
@@ -883,6 +921,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_protocol.py
 	python3 tests/semantics/enum_is_callable_output_false_protocol.py
 	python3 tests/semantics/enum_is_callable_output_array_protocol.py
+	python3 tests/semantics/enum_is_callable_output_spelling_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

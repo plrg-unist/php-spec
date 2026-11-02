@@ -1,0 +1,23 @@
+{
+  "scope": "is_callable third direct string-CV output for two-item literal class-string enum arrays with source spelling",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "5a62dad28b8b9194b7b3ccd90158e76f0fa532bc",
+  "semantic_revision": "1e2c62b92f1440c51430959664a6ef149450b4c1",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: output-array-string-spelling SHA 52dbaee88d491168993d419adf864a289ae0e9e00b465c0209c036b81a354c08, exact stdout, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-spelling-evidence/strict-v2/report.json: SL433 true, exit 0, empty stderr, 11.63 s, stable inputs",
+    "source": ".tools/enum-is-callable-spelling-evidence/source-v3-pass/report.json: lower:1:casespell::FROM|slash:1:\\CaseSpell::FROM|case:1:CaseSpell::TRYFROM| exact native/model normal",
+    "state": ".tools/enum-is-callable-spelling-evidence/reached-v1/report.json: checked source reached SL64 true, exit 0, empty stderr, stable inputs",
+    "affected_prior": ".tools/enum-is-callable-spelling-evidence/prior-array-v1/report.json: prior canonical class/case array and new spelling exact normal"
+  },
+  "preserved_zero_credit": [
+    ".tools/enum-is-callable-spelling-evidence/source-v1-fail/report.json: original exact source stopped at Unsupported because the assumed interned-carrier premise failed",
+    ".tools/enum-is-callable-spelling-evidence/source-v2-elaboration-fail/report.json: conjunctive binding premise failed P4 elaboration"
+  ],
+  "provenance": "Passing reports name precommit HEAD 0f02f64a6; direct input SHA for 437/cases/fixture equals clean committed 1e2c62b92 byte for byte.",
+  "behavior": "The actual live two-item DIRECT array values equal the literal source bytes. Published enum lookup uses normalized class spelling, while output uses raw key-0 and key-1 string bytes. The captured direct string CV is unchanged on reference send and receives the name before the boolean; events and class-constant cache remain unchanged.",
+  "remaining": "Nonliteral/aliased arrays, old-object destructor effects, input/output aliasing, named/unpacked output and autoload remain partial."
+}

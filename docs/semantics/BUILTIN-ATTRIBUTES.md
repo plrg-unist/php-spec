@@ -251,3 +251,11 @@ Four source-reached states check the separate roots and each callback's
 2→1→0 owner transition. The [ATTR12 review](../../coverage/semantics/callback-late-tick-pair-review.json)
 records the focused gates and zero-credit failed selector. Other list shapes
 and abrupt module-shutdown paths remain partial.
+
+The head transfer also applies recursively to any nonempty ordered list of
+the same eligible entries. The saved tail remains rooted until its own turn.
+A three-entry native source prints `B;F;A1;C1;A2;C2;A3;C3;` in both PHP and
+the model; six reached states check first, middle and last task roots and
+2→1→0 callback ownership. A repeated callback object survives both entries
+in a separate exact alias control. The [ATTR13 review](../../coverage/semantics/callback-late-tick-list-review.json)
+records report hashes, retained failures and the joined strict check.

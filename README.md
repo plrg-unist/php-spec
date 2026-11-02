@@ -257,6 +257,10 @@ deactivation, other byte producers and buffered stdout diagnostics remain depend
 no-argument `ob_start()` from a shutdown-argument destructor after output
 deactivation: the Notice precedes a false result, and no buffer is created.
 Suppression and selected error handlers retain their native output order.
+[OB07](coverage/semantics/output-executor-retval-review.json) covers a direct
+returned-object destructor during normal post-deactivation cleanup. It runs
+while the selected handler is disabled; a nested no-argument `ob_start()`
+emits the built-in Notice and returns false before the outer handler resumes.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -866,9 +870,21 @@ ordinary local cell. The factory publishes only a weak Generator observer.
 Normal DATA/INPUT cleanup and real storage retire the Generator and cell before
 TypeError, while the copied value survives in TraceArgs; terminal saved throw
 retires all three before catch. Four new sources and two reached proofs validate
-object identity, ARRAY COW, weak lifetime and retired source history. Factory
-cells with outside aliases, typed/backed cells and effectful finalizers remain
-separate.
+object identity, ARRAY COW, weak lifetime and retired source history. Typed or
+backed cells and wider producer histories remain separate.
+
+[Bounded BYREF Generator argument ownership](coverage/semantics/config-generator-bounded-ownership-review.json)
+uses one copied-ITEM send rule for at most two arguments from a retained named
+Generator, a direct temporary, or a named BYVAL factory returning a BYREF
+Generator. Owning copies use integer keys; temporary and factory sends require
+integer keys throughout, while a retained CV keeps its supported scalar named
+prefix. Each send reads its current ordinary cell; earlier OBJECT identities
+and ARRAY COW snapshots remain independent of later cell writes. The existing
+scalar or owning final-cell cleanup and retained or temporary owner stages stay
+distinct. Crossed outside aliases, two copies of one ARRAY cell and a destructor
+in an overwritten first cell have focused source coverage. Effectful Stringable
+sends and factories retaining the Generator remain explicit Unsupported; BYREF
+consumers, wider keys, cells and finalizers remain partial.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
@@ -4688,6 +4704,11 @@ FINAL. Each copied argument retires before its callback's separate FCC object
 and closure slots. One native-first source agrees exactly; four reached states
 check 120 conditions, including each callback's 2→1→0 owners. The singleton
 regression and strict433 pass. See the [tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
+The same normal raw-invokable tick shape now supports any nonempty ordered
+list: each head retires while its tail stays rooted. A three-entry original
+agrees exactly, six reached states check 143 conditions, and a shared-callback
+alias control agrees. One/two-entry source regressions and joined strict433
+pass. See the [tick-list review](coverage/semantics/callback-late-tick-list-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -6735,8 +6756,11 @@ the name for runtime false and syntax-only true; the
 records a second exact original and 42 reached guards. Canonical class and
 live case literal arrays add two exact outcomes and 68 reached guards in the
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
-Other array spellings, destructor and aliasing effects, autoload, case
-attributes, enum collection policy and wider acquisition remain partial;
+Literal class-string arrays now preserve lowercase and leading backslash bytes;
+the [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json)
+records three exact outcomes and 64 reached guards. Other array sources,
+destructor and aliasing effects, autoload, case attributes, enum collection
+policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

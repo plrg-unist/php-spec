@@ -185,8 +185,8 @@ def conditions(name, program, path, stdout):
         'S_shared_cell = S_finish[.HELD = S_finish.HELD ++ [HCELL n_payloadref]]',
         owners('S_shared_cell', 'HCELL n_payloadref', 2),
         '$config_generator_factory_reference_input(S_shared_cell,pconfiggenerator_second)',
-        '~$config_generator_temporary_reference_owning_storage(S_shared_cell,pconfiggenerator_second)',
-        '~$config_generator_finish_allowed(S_shared_cell,pconfiggenerator_second)',
+        '$config_generator_temporary_reference_owning_storage(S_shared_cell,pconfiggenerator_second)',
+        '$config_generator_finish_allowed(S_shared_cell,pconfiggenerator_second)',
     ] + public('S_finish') + budget('S_finish', 'S_data_budget') + seek('S_finish', 8705, 'S_input') + [
         'S_input.TODO = (CONFIG_GENERATOR pconfiggenerator_second "input-release") :: ptask_input*',
         '$config_generator_valid(S_input,pconfiggenerator_second,"input-release")',
