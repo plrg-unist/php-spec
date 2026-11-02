@@ -1527,6 +1527,29 @@ def $enum_is_callable_magic(S, porigin_class, true) = (false)
   -- if $effective_method(S, porigin_class, $ptascii("__call"), |S.CLASSES|) = eps
 def $enum_is_callable_magic(S, porigin_class, b_case) = eps -- otherwise
 
+dec $enum_is_callable_case_user_method(pstate, porigin, ptbytes) : bool
+def $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method) = true
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_class
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum" /\ pclassdesc.ORIGIN = porigin_class
+  -- if $method_origin(pclassdesc.METHODS, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if porigin_class = PORIGIN n pcpath_owner
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| > 0)
+  -- if PCINDEX n_method = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_owner ++ [PCFIELD 4, PCINDEX n_method]
+  -- if $origin_node(S.SOURCES, porigin_class) = (NStmtEnum phpType14_owner phpType3_owner phpType50_owner phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
+  -- if $(n_method < |statement_owner*|)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if statement_owner*[n_method] = statement_method
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata
+  -- if pmethoddesc.NAME = $base64(text_method) /\ $ptlc(pmethoddesc.NAME) = $ptlc(ptbytes_method)
+  -- if $ppmethod_visibility(flags) = PROPERTY_PUBLIC /\ pmethoddesc.STATIC = $ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
+  -- if pmethoddesc.FUNCTION.BODY = pcpath ++ [PCFIELD 6]
+def $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method) = false -- otherwise
+
 dec $enum_is_callable_result(pstate, pvalue, bool) : bool?
 def $enum_is_callable_result(S, pvalue, true) = (true)
   -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
@@ -1539,12 +1562,13 @@ def $enum_is_callable_result(S, PARRAY n, false) = (false)
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
   -- if ~$array_magic(S, porigin_class)
   -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = eps
+def $enum_is_callable_result(S, PARRAY n, false) = (true)
+  -- if $enum_is_callable_target(S, PARRAY n) = ((porigin_class, ptbytes_method, true))
+  -- if $typed_callable(S, PARRAY n) = eps
+  -- if $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method)
 def $enum_is_callable_result(S, PARRAY n, b_syntax) = (false)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
-  -- if S.ARRAYS[n] = parray
-  -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
-  -- if $enum_is_callable_receiver(S, $entry_value(S, pitem_receiver)) = ((porigin_class, b_case))
-  -- if ~$typed_callback_array(S, n)
+  -- if $array_shape_error(S, n) = (ptbytes_error)
 def $enum_is_callable_result(S, pvalue, false) = (b_magic)
   -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
   -- if $typed_callable(S, pvalue) = eps

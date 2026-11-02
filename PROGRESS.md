@@ -89,22 +89,29 @@ one or two arguments and no third output. Two native-first originals agree,
 covering generated and absent methods, syntax-only checks, selected-name
 rebinding and cold backing tables; 43 source-reached strict SL guards pass.
 The third output, autoload and wider magic/user-method cases remain partial.
-Malformed callback arrays with a live published enum receiver at key 0 now
-return false for wrong length or nonstring method before syntax-only lookup.
-One native-first original agrees, including valid class/case controls; 23
-source-reached strict guards check both flag modes and unchanged cache.
+Malformed live callback arrays now return false for wrong length, keys,
+receiver or method type before syntax-only lookup. The first published-enum
+source and 23 reached guards still pass after the broader precheck. A new
+seven-outcome original and 46 reached guards cover missing key 0, nonclass
+receivers and valid reordered keys without cache or event changes.
 For published pure enums without the requested method, `is_callable` now
 checks source-certified `__callStatic` for class strings/name arrays and
 `__call` for case arrays. One native-first original agrees on eight outcomes,
 including opposite-handler false results and explicit user-method controls;
 56 reached strict guards prove no magic body is entered by the query.
+Live enum case arrays now also query direct public user instance and static
+methods. One native-first original agrees on seven case/class/string controls;
+49 source-reached strict guards tie the method descriptor to its enum source
+member and show that the query enters neither user method body.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
 [pipe review](coverage/semantics/enum-pipe-review.json),
 [query review](coverage/semantics/enum-is-callable-review.json),
 [shape review](coverage/semantics/enum-is-callable-shape-review.json),
-[magic review](coverage/semantics/enum-is-callable-magic-review.json).
+[wide-shape review](coverage/semantics/enum-is-callable-wide-shape-review.json),
+[magic review](coverage/semantics/enum-is-callable-magic-review.json),
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -304,6 +311,14 @@ by collection nonce 2. Pre-edit refusal remains zero credit; broader
 entries, backedges and post-capture COW remain open.
 [GC22 review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
+GC23 admits an ordered node-free scalar capture before one childless
+runtime-written array capture in the same direct Closure. A pinned
+Reflection control observes `seed,token` order; one original agrees and
+110 strict reached assertions bind the capture layout, shared array owners
+and swapped-order refusal. Pre-edit Unsupported retains zero credit.
+Other capture orders, child graphs and COW remain open.
+[GC23 review](coverage/semantics/gc-scalar-array-caller-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -386,6 +401,10 @@ Outside aliases now keep that temporary Generator's ordinary final cell and its
 current value after real storage release; copied arguments remain independent.
 Four sources and 565 reached conditions pass; joined strict433 and fresh terminal
 source/state pass at `9cde7e64d`.
+A named BYVAL factory can return a distinct BYREF Generator with a final owning
+ordinary cell. Four sources and 512 reached conditions pass; copied arguments
+survive DATA/INPUT release and real Generator storage cleanup. Joined strict433
+and fresh terminal source/state pass at `1a7c38d0b`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -404,6 +423,7 @@ source/state pass at `9cde7e64d`.
 [Outside owning-cell aliases](coverage/semantics/config-generator-reference-owning-alias-review.json),
 [Temporary owning reference cells](coverage/semantics/config-generator-temporary-owning-reference-review.json),
 [Temporary owning-cell aliases](coverage/semantics/config-generator-temporary-owning-alias-review.json),
+[Factory owning reference cells](coverage/semantics/config-generator-factory-owning-reference-review.json),
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
 ATTR01 adds builtin NoDiscard declarations with literal/NULL messages and
@@ -526,6 +546,18 @@ One native-first original now agrees exactly; a reached warning state passes 24
 assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
+
+ATTR11 retires a single raw invokable tick callback and one copied object
+argument after output FINAL, with no assertion callback and normal completion.
+The tick task owns the argument and both equal FCC object/closure slots while
+the registry empties; it releases the argument first, then the two FCC slots,
+before the existing shutdown-list queue. Two native-first originals agree
+exactly, including a retained shutdown entry. Three reached states pass 88
+assertions and show callback owners 2→1→0; private and joined strict433 pass.
+The earlier Unsupported baseline, two compiler attempts, recorder failure and
+exploratory output-buffer restart controls retain zero agreement credit. Wider
+tick entries, assertion callback, abrupt reentry and late-free paths remain
+partial. [Late tick review](coverage/semantics/callback-late-tick-final-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -713,7 +745,6 @@ Live/live duplicate names and nonordinary tables remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
-| Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
 | I89 | Reviewed private captured method-Closure warm/fresh THROW: native4/source4/private433 and reached632 custom/657 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

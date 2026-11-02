@@ -243,6 +243,17 @@ dec $executor_normal_tasks(pstate, ptask*) : bool
 dec $executor_normal_task(pstate, ptask) : bool
 dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
+dec $executor_tick_ready(pstate) : bool
+dec $executor_tick_valid(pstate, pexecutortick) : bool
+dec $executor_tick_nodes(ptickentry) : pnode*
+dec $executor_tick_task(ptask) : pexecutortick?
+dec $executor_tick_tasks(ptask*, pexecutortick) : bool
+dec $executor_tick_frames(pframe*, pexecutortick) : bool
+dec $executor_tick_active(pstate, pexecutortick) : bool
+dec $executor_tick_scope_tasks(pstate, ptask*) : bool
+dec $executor_tick_scope_frames(pstate, pframe*) : bool
+dec $executor_tick_scope(pstate) : bool
+dec $executor_tick_begin(pstate) : pstate
 dec $executor_error_handler_task(ptask) : bool
 dec $executor_error_handler_tasks(ptask*) : bool
 dec $executor_error_handler_frames(pframe*) : bool
@@ -307,12 +318,78 @@ def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n)) = 
 def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE, eps))
 def $executor_queue_begin(S) = S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE]][.SHUTDOWN.ENTRIES = eps][.SHUTDOWN.INDEX = 0][.COMPLETION = NORMAL][.ORIGIN = eps]
   -- if pexecutorqueue = {COMPLETION S.COMPLETION, VALUE S.RESULT, BASE S.BASE, ORIGIN S.ORIGIN, ENTRIES S.SHUTDOWN.ENTRIES, TARGETS $executor_queue_targets(S, S.SHUTDOWN.ENTRIES), RECEIVERS $executor_queue_receivers(S, S.SHUTDOWN.ENTRIES)}
+;; basic RSHUTDOWN frees copied tick arguments before FCC.object and FCC.closure.
+;; The same raw invokable object occupies both FCC slots. Keep the registered
+;; source as a nonowning snapshot after transferring its roots into the task.
+def $executor_tick_nodes(ptickentry) = $operands_roots($shutdown_known(ptickentry.ENTRY.ARGS)) ++ $callback_cache_nodes(ptickentry.ENTRY)
+def $executor_tick_ready(S) = true
+  -- if S.TICKENTRIES = [ptickentry]
+  -- if S.COMPLETION = NORMAL
+  -- if S.ASSERTCALLBACK = eps
+  -- if ptickentry.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback)), NAMED_SENT (KNOWN (POBJECT n_argument))]
+  -- if ptickentry.ENTRY.ARGS = [POBJECT n_argument]
+  -- if ptickentry.ENTRY.CACHEOBJECT = (n_callback)
+  -- if $callback_cache_nodes(ptickentry.ENTRY) = [HOBJECT n_callback, HOBJECT n_callback]
+  -- if $target_receiver(S, ptickentry.ENTRY.TARGET) = (n_callback)
+  -- if ~$closure_callable(S, n_callback) /\ n_callback =/= n_argument
+  -- if $tick_entry_valid(S, ptickentry)
+def $executor_tick_ready(S) = false -- otherwise
+def $executor_tick_valid(S, pexecutortick) = true
+  -- if S.TICKENTRIES = eps /\ S.ASSERTCALLBACK = eps
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
+  -- if S.OUTPUTBUFFERS = eps /\ pexecutortick.COMPLETION = NORMAL
+  -- if pexecutortick.ENTRY = ptickentry
+  -- if pexecutortick.TARGET = pshutdownproducer
+  -- if pshutdownproducer.TARGET = ptickentry.ENTRY.TARGET
+  -- if pshutdownproducer.SITE = eps /\ pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = eps
+  -- if $consumer_producer_snapshot(pshutdownproducer) /\ $executor_target_valid(S, pshutdownproducer)
+  -- if S_history = $consumer_producer_history(S, pshutdownproducer)[.ALLOCATIONS = S.ALLOCATIONS ++ $consumer_producer_nodes(pshutdownproducer) ++ $instance_roots(pexecutortick.RECEIVER) ++ $executor_tick_nodes(ptickentry)]
+  -- if pexecutortick.RECEIVER = $target_receiver(S_history, pshutdownproducer.TARGET)
+  -- if $executor_tick_ready(S_history[.TICKENTRIES = [ptickentry]])
+def $executor_tick_valid(S, pexecutortick) = false -- otherwise
+def $executor_tick_task(EXECUTOR_TICK_RELEASE pexecutortick b) = (pexecutortick)
+def $executor_tick_task(ptask) = eps -- otherwise
+def $executor_tick_tasks(eps, pexecutortick) = false
+def $executor_tick_tasks(ptask :: ptask_tail*, pexecutortick) = (($executor_tick_task(ptask) = (pexecutortick) /\ ptask_tail* = eps) \/ $executor_tick_tasks(ptask_tail*, pexecutortick))
+def $executor_tick_frames(eps, pexecutortick) = false
+def $executor_tick_frames(pframe :: pframe_tail*, pexecutortick) = ((pframe.CONTEXT = eps /\ $executor_tick_tasks(pframe.TODO, pexecutortick)) \/ $executor_tick_frames(pframe_tail*, pexecutortick))
+def $executor_tick_active(S, pexecutortick) = ($executor_tick_valid(S, pexecutortick) /\ ((S.CURRENT = eps /\ $executor_tick_tasks(S.TODO, pexecutortick)) \/ $executor_tick_frames(S.FRAMES, pexecutortick)))
+def $executor_tick_scope_tasks(S, eps) = false
+def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = ($executor_tick_active(S, pexecutortick) \/ $executor_tick_scope_tasks(S, ptask_tail*))
+  -- if $executor_tick_task(ptask) = (pexecutortick)
+def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = $executor_tick_scope_tasks(S, ptask_tail*)
+  -- if $executor_tick_task(ptask) = eps
+def $executor_tick_scope_frames(S, eps) = false
+def $executor_tick_scope_frames(S, pframe :: pframe_tail*) = ($executor_tick_scope_tasks(S, pframe.TODO) \/ $executor_tick_scope_frames(S, pframe_tail*))
+def $executor_tick_scope(S) = ($executor_tick_scope_tasks(S, S.TODO) \/ $executor_tick_scope_frames(S, S.FRAMES))
+def $output_drain_task(S, EXECUTOR_TICK_RELEASE pexecutortick b) = $executor_tick_active(S, pexecutortick)
+def $task_nodes(EXECUTOR_TICK_RELEASE pexecutortick true) = $executor_tick_nodes(pexecutortick.ENTRY)
+def $task_nodes(EXECUTOR_TICK_RELEASE pexecutortick false) = eps
+def $call_task_valid(S, EXECUTOR_TICK_RELEASE pexecutortick true) = ($executor_tick_valid(S, pexecutortick) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_RELEASE pexecutortick true, eps) /\ $heap_subset($executor_tick_nodes(pexecutortick.ENTRY), S.ALLOCATIONS))
+def $call_task_valid(S, EXECUTOR_TICK_RELEASE pexecutortick false) = ($executor_tick_valid(S, pexecutortick) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_RELEASE pexecutortick false, eps))
+def $executor_tick_begin(S) = S[.TODO = [EXECUTOR_TICK_RELEASE pexecutortick true]][.TICKENTRIES = eps][.COMPLETION = NORMAL][.ORIGIN = eps]
+  -- if S.TICKENTRIES = [ptickentry]
+  -- if pexecutortick = {COMPLETION S.COMPLETION, VALUE S.RESULT, BASE S.BASE, ORIGIN S.ORIGIN, ENTRY ptickentry, TARGET $eager_cleanup_target(S, ptickentry.ENTRY.TARGET), RECEIVER $target_receiver(S, ptickentry.ENTRY.TARGET)}
+  -- if $executor_tick_ready(S)
+def $output_executor_finish(S) = $executor_tick_begin(S)
+  -- if $executor_free_endpoint(S) /\ $executor_tick_ready(S)
 def $output_executor_finish(S) = $executor_queue_begin(S)
   -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES =/= eps /\ ~$executor_module_owners(S)
 def $output_executor_finish(S) = $executor_free_finish(S)
   -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES = eps /\ ~$executor_module_owners(S)
 def $output_executor_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output module callback-owner release"]
-  -- if $executor_free_endpoint(S) /\ $executor_module_owners(S)
+  -- if $executor_free_endpoint(S) /\ $executor_module_owners(S) /\ ~$executor_tick_ready(S)
+rule PhpStep/executor-tick-release: S ~> $eager_operation_begin(S[.TODO = [EXECUTOR_TICK_RELEASE pexecutortick false]], S, EXECUTOR_TICK_RELEASE pexecutortick true, $executor_tick_nodes(pexecutortick.ENTRY))
+  -- if S.TODO = (EXECUTOR_TICK_RELEASE pexecutortick true) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_TICK_RELEASE pexecutortick true)
+rule PhpStep/executor-tick-done: S ~> $output_executor_finish(S[.TODO = eps][.COMPLETION = pexecutortick.COMPLETION][.RESULT = pexecutortick.VALUE][.BASE = pexecutortick.BASE][.ORIGIN = pexecutortick.ORIGIN])
+  -- if S.TODO = (EXECUTOR_TICK_RELEASE pexecutortick false) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_TICK_RELEASE pexecutortick false)
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+def $eager_operation_source_guard(S, pdestructionoperation) = ($executor_tick_active(S, pexecutortick) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = pexecutortick.VALUE /\ pdestructionoperation.BASE = pexecutortick.BASE)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
 def $executor_queue_release(S, pexecutorqueue, pexecutorstage, pnode*) = $eager_operation_begin(S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE]], S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage, pnode*)
 rule PhpStep/executor-queue-release: S ~> $executor_queue_release(S, pexecutorqueue, EXECUTOR_QUEUE, $executor_queue_nodes(pexecutorqueue.ENTRIES))
   -- if S.TODO = (EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE) :: ptask_tail*
@@ -427,7 +504,7 @@ def $executor_handler_tasks(eps) = false
 def $executor_handler_tasks(ptask :: ptask_tail*) = ($executor_handler_task(ptask) \/ $executor_handler_tasks(ptask_tail*))
 def $executor_boundary(S) = ("post-output module callback-owner release")
   -- if S.TODO = (OUTPUT_FINAL_DEACTIVATE pobdeactivate) :: eps
-  -- if pobdeactivate.INDEX = 0 /\ $executor_module_owners(S)
+  -- if pobdeactivate.INDEX = 0 /\ $executor_module_owners(S) /\ ~$executor_tick_ready(S)
   -- if $call_task_valid(S, OUTPUT_FINAL_DEACTIVATE pobdeactivate)
   -- if S.COMPLETION = NORMAL
 def $executor_boundary(S) = ("shutdown-list registration during table destruction")
@@ -436,7 +513,7 @@ def $executor_boundary(S) = ("shutdown-list registration during table destructio
   -- if pconfigcall.KIND = INTRINSIC_REGISTER_SHUTDOWN_FUNCTION
   -- if $config_invoke_valid(S, pconfigcall)
 def $executor_boundary(S) = ("output-handler start after output deactivation")
-  -- if $executor_scope(S)
+  -- if $executor_scope(S) \/ $executor_tick_scope(S)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $config_invoke_valid(S, pconfigcall)

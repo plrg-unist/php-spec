@@ -2009,3 +2009,16 @@ The unchanged last-DATA Unsupported has zero agreement credit. The runtime
 permits additional ordinary cell owners under these same guards; the originals
 specifically cover two aliases. Typed/backed cells, finalizers and broader
 temporary producers remain separate.
+
+The [factory returned owning BYREF increment](../../coverage/semantics/config-generator-factory-owning-reference-review.json)
+extends the A85 copied final-cell route to an authenticated named zero-argument
+BYVAL nongenerator factory returning a distinct named BYREF Generator. The
+emitted UNPACK_VAR source, bounded Generator origin, finite quiet copied ITEM
+receipt and DATA2/INPUT1 history are retained. The factory branch requires the
+ordinary final cell's sole live owner at last INPUT; direct temporary calls keep
+their A86 outside-alias policy. Four native-first originals and old Unsupported0
+are retained at the source freeze; strict432, four model-only agreements and two
+reached recipes (512 conditions, six raw steps) validate real storage, Gen/cell
+weak death, TypeError copied object/ARRAY retention and quiet saved-throw cleanup.
+Typed/backed cells, effectful finalizers, factory cell aliases and wider
+producer histories remain partial.

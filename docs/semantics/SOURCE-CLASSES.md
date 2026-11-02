@@ -687,10 +687,12 @@ records two exact originals and 43 source-reached strict guards. The third
 by-reference output, autoload and wider magic/user-method cases remain partial.
 Engine routes: `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
 `Zend/zend_API.c:zend_is_callable_at_frame`.
-Malformed arrays with a live published enum class/case receiver at key 0
-return false for wrong length or nonstring method before the syntax-only
-early return. The [shape review](../../coverage/semantics/enum-is-callable-shape-review.json)
-records one exact original and 23 reached guards for both flag modes.
+Malformed live arrays return false for wrong length, missing keys, a nonclass
+receiver or nonstring method before the syntax-only early return. The
+[shape review](../../coverage/semantics/enum-is-callable-shape-review.json)
+records the published enum key-0 cut; the
+[wide-shape review](../../coverage/semantics/enum-is-callable-wide-shape-review.json)
+adds seven exact outcomes, 46 reached guards and an affected prior-state check.
 For absent concrete/generated methods, the query uses a source-certified
 public `__callStatic` for class strings and class-name arrays, or `__call` for
 case arrays. An opposite-kind handler cannot rescue the missing method. The
@@ -698,3 +700,8 @@ case arrays. An opposite-kind handler cannot rescue the missing method. The
 records eight exact native/model outcomes and 56 reached guards; neither
 magic body runs during the query. Other magic sources and inaccessible-method
 fallback remain partial.
+An array with a live enum case receiver can also name a direct public user
+instance or static method. The [case-method review](../../coverage/semantics/enum-is-callable-case-method-review.json)
+records seven exact outcomes and 49 reached guards that tie the method
+descriptor to its enum source member without entering the body. Imported,
+inaccessible and attributed methods remain partial.

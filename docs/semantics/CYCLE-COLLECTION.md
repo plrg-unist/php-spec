@@ -487,6 +487,16 @@ the exact two-entry/trace shape, distinct child IDs, childlessness and
 real direct Closure root remain required. See the
 [buffered second child review](../../coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
+GC23 admits one node-free by-value capture before a childless mutable array
+capture in the active direct Closure. The authentic source uses scalar 11
+then the runtime-written array; native Reflection confirms their order.
+The array remains the sole Closure graph child, shared by its global and
+entered local owners, while the scalar adds no heap edge. The same rooted
+Closure keeps the array black through D collection. One full source agrees
+with PHP; the strict reached state refuses reversed capture order. Other
+capture orders, array child graphs and COW after capture remain open. See
+the [scalar-array caller review](../../coverage/semantics/gc-scalar-array-caller-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

@@ -222,3 +222,23 @@ wrapper's inner-warning handler trace head was repaired separately in
 [ATTR10](../../coverage/semantics/builtin-deprecated-closure-trace-head-review.json):
 its file/line now comes from the authenticated explicit callsite. The earlier
 accepted cuts are retained without replay.
+
+## Post-FINAL tick callback retirement
+
+At the normal post-output endpoint, one cached raw invokable tick entry with
+one copied object argument moves into an executor task. The task owns the
+argument and both FCC slots, even when `FCC.object` and `FCC.closure` name the
+same object. Basic module shutdown frees the argument first, then those two
+slots. The retained shutdown-function list is released by the existing later
+queue. The registration source and selected target remain certified through a
+readonly snapshot after the tick registry is emptied.
+
+Two pinned native sources agree exactly with the model: a FINAL handler creates
+the entry and prints `B;F;A;C;`; a named shutdown function adds `S;` before
+FINAL. Three source-reached states check the three queued release jobs, live
+shutdown entry and callback owner counts 2→1→0. The
+[ATTR11 review](../../coverage/semantics/callback-late-tick-final-review.json)
+records exact cuts and the joined strict check. Other tick-list shapes,
+assertion callbacks, abrupt reentry and later inactive-executor hooks remain
+outside this cut. Output-buffer restart during late destruction is retained as
+an Unsupported control, not a source agreement.

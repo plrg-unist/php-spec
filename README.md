@@ -859,6 +859,17 @@ Generator, leaving the cell and current value until the last alias is unset.
 Two reached proofs check these transitions. Typed/backed cells, effectful
 finalizers and wider producer histories remain separate.
 
+[Factory returned owning BYREF Generator cells](coverage/semantics/config-generator-factory-owning-reference-review.json)
+admit a named zero-argument BYVAL factory returning a distinct named BYREF
+Generator. A scalar first send precedes a finite quiet owning value in its final
+ordinary local cell. The factory publishes only a weak Generator observer.
+Normal DATA/INPUT cleanup and real storage retire the Generator and cell before
+TypeError, while the copied value survives in TraceArgs; terminal saved throw
+retires all three before catch. Four new sources and two reached proofs validate
+object identity, ARRAY COW, weak lifetime and retired source history. Factory
+cells with outside aliases, typed/backed cells and effectful finalizers remain
+separate.
+
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
 Both producer and Generator effects preserve the selected setter and historical
@@ -3846,6 +3857,10 @@ GC22 also admits the key-1 child after its local owning copy release puts
 it in the buffer. All three live array/child slots leave the D count plan;
 one exact source and 139 strict reached assertions pass. See the
 [buffered second child review](coverage/semantics/gc-buffered-second-array-child-caller-review.json).
+GC23 admits a node-free scalar capture before the childless array in the
+same direct Closure. Native Reflection confirms capture order; one original
+and 110 strict reached assertions pass. See the
+[scalar-array caller review](coverage/semantics/gc-scalar-array-caller-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4656,6 +4671,12 @@ The source `Closure->__invoke` inner-warning handler trace now inherits the real
 call file/line for both its head and wrapper frame. One native-first original,
 a reached trace state and strict433 pass; broader wrapper/reentry paths remain
 partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
+After output FINAL, one raw invokable tick callback with a copied object
+argument now releases the argument before its two equal FCC owners, then
+continues to the shutdown-list queue. Two native-first sources agree; three
+reached states check 88 conditions, including callback ownership 2→1→0, and
+joined strict433 passes. Other late-free routes remain partial. See the
+[late tick review](coverage/semantics/callback-late-tick-final-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -6675,12 +6696,16 @@ Published enum strings and class/case arrays also answer direct, dynamic-name
 and pipe `is_callable` queries with one or two arguments. Generated and absent
 methods, syntax-only checks and cold-cache behavior have two exact originals
 and 43 reached guards in the [query review](coverage/semantics/enum-is-callable-review.json).
-Malformed arrays with a published enum receiver at key 0 also return false
-for wrong length or method type; one exact source and 23 reached guards pass
-in the [shape review](coverage/semantics/enum-is-callable-shape-review.json).
+Malformed live arrays return false for bad length, keys, receiver or method
+type before lookup. The [shape review](coverage/semantics/enum-is-callable-shape-review.json)
+and [wide-shape review](coverage/semantics/enum-is-callable-wide-shape-review.json)
+record two exact sources, 69 reached guards and valid reordered-key controls.
 For published pure enums, receiver-specific `__callStatic`/`__call` fallback
 also matches eight native outcomes and 56 reached guards in the
 [magic review](coverage/semantics/enum-is-callable-magic-review.json).
+Live case arrays naming direct public user instance or static methods also
+pass seven exact native controls and 49 reached guards in the
+[case-method review](coverage/semantics/enum-is-callable-case-method-review.json).
 The third output, autoload, case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

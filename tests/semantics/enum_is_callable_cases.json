@@ -37,5 +37,21 @@
     "expected_model": "normal",
     "expected_normal_stdout": "static-from|static-try|static-case-no|instance-string-no|instance-class-no|instance-case|user-string|user-array|",
     "purpose": "Receiver-specific magic fallback on published pure enums, absent generated names and explicit user method controls."
+  },
+  {
+    "id": "enum-is-callable-user-case-method",
+    "source": "<?php\nenum QueryCaseMethod {\n    case A;\n    public function ping(): string { echo 'BAD:ping|'; return 'ping'; }\n    public static function stat(): string { echo 'BAD:stat|'; return 'stat'; }\n}\n\necho is_callable([QueryCaseMethod::A, 'ping']) ? 'case-instance|' : 'BAD|';\necho is_callable([QueryCaseMethod::class, 'ping']) ? 'BAD|' : 'class-instance-no|';\necho is_callable('QueryCaseMethod::ping') ? 'BAD|' : 'string-instance-no|';\necho is_callable([QueryCaseMethod::A, 'stat']) ? 'case-static|' : 'BAD|';\necho is_callable([QueryCaseMethod::class, 'stat']) ? 'class-static|' : 'BAD|';\necho is_callable('QueryCaseMethod::stat') ? 'string-static|' : 'BAD|';\necho is_callable([QueryCaseMethod::A, 'missing']) ? 'BAD|' : 'case-missing-no|';\n",
+    "source_sha256": "2f89d80f43a159d0206f028f91e76abfbd4c9b775a685312a0bfab8e98d2be09",
+    "expected_model": "normal",
+    "expected_normal_stdout": "case-instance|class-instance-no|string-instance-no|case-static|class-static|string-static|case-missing-no|",
+    "purpose": "Live enum case-array query of direct public instance/static user methods without running either body, plus class and missing controls."
+  },
+  {
+    "id": "enum-is-callable-wide-shape",
+    "source": "<?php\nenum QueryWideShape { case A; }\n\n$missing0 = [1 => QueryWideShape::class, 2 => 'cases'];\n$nonclass = [0 => 17, 1 => 'cases'];\n$reordered = [1 => 'cases', 0 => QueryWideShape::class];\n\necho is_callable($missing0, true) ? 'BAD|' : 'missing-syntax-no|';\necho is_callable($missing0) ? 'BAD|' : 'missing-runtime-no|';\necho is_callable($nonclass, true) ? 'BAD|' : 'nonclass-syntax-no|';\necho is_callable($nonclass) ? 'BAD|' : 'nonclass-runtime-no|';\necho is_callable($reordered, true) ? 'reordered-syntax|' : 'BAD|';\necho is_callable($reordered) ? 'reordered-runtime|' : 'BAD|';\necho is_callable([QueryWideShape::A, 'cases']) ? 'case-valid|' : 'BAD|';\n",
+    "source_sha256": "0d7973a9035ee032b11491af1b2c4b72c5bc7413f72f8032722043ce242f748d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "missing-syntax-no|missing-runtime-no|nonclass-syntax-no|nonclass-runtime-no|reordered-syntax|reordered-runtime|case-valid|",
+    "purpose": "Array shape rejects missing key 0 and nonclass receiver before syntax-only or runtime lookup; reordered valid keys remain callable."
   }
 ]
