@@ -6762,9 +6762,12 @@ live case literal arrays add two exact outcomes and 68 reached guards in the
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json).
 Literal class-string arrays now preserve lowercase and leading backslash bytes;
 the [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json)
-records three exact outcomes and 64 reached guards. Other array sources,
-destructor and aliasing effects, autoload, case attributes, enum collection
-policy and wider acquisition remain partial;
+records three exact outcomes and 64 reached guards. Initialized int, bool and
+null output CVs now receive names before the boolean result; the
+[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json)
+records three exact outcomes and 79 reached guards. Old-object destructor and
+input/output alias effects, other array sources, autoload, case attributes,
+enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

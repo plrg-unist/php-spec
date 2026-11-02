@@ -115,7 +115,10 @@ generated method names through the same direct string CV. Two exact outcomes
 and 68 reached guards pass. Literal class-string arrays also preserve lowercase
 and leading backslash receiver spelling, while case arrays use the canonical
 enum name. Three exact outcomes and 64 reached guards pass; other array
-sources remain partial.
+sources remain partial. The same direct output path now accepts initialized
+int, bool and null CV values, writing the name before returning the boolean.
+Three exact outcomes and 79 reached guards pass; an old output object remains
+explicit Unsupported because its destructor runs during replacement.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -128,7 +131,8 @@ sources remain partial.
 [output-CV review](coverage/semantics/enum-is-callable-output-review.json),
 [false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
-[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json).
+[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
+[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
