@@ -1,0 +1,108 @@
+{
+  "milestone": "A90 direct temporary BYREF Generator two owning reference copies",
+  "status": "private validation complete; canonical integration pending",
+  "scope": {
+    "consumer": "ini_set(...namedZeroArgumentByrefGenerator()) with a fresh temporary Generator and two owning ordinary BYREF sends",
+    "behavior": "The copied first and second finite quiet values remain distinct argument-prefix roots. In the four originals, the first local cell becomes scalar before a distinct final owning cell is yielded; the receipt does not require distinct cell IDs or that overwrite. Normal DATA/INPUT and real Generator storage release the final cell/cache edge while both copied values survive to TypeError TraceArgs. Terminal saved throw releases both copies before catch. Distinct objects and the same object copied twice are covered.",
+    "limits": "Both keys normalize to integer. Genuine direct named zero-argument BYREF Generator origin, ordinary cells, finite quiet copied graphs and temporary INPUT/DATA ownership remain required. Typed/backed cells, effectful finalizers and wider producers remain separate; outside aliases are not independently exercised here."
+  },
+  "implementation": {
+    "module": "spec/semantics/423-config-generator-unpack.watsup",
+    "base": "7191c2a57c3154a3583475c6cc8741d99e8f3956",
+    "runtime_revision": "3347527295403e2c8c67b78c26c1b050683b500d",
+    "validated_revision": "262c0a88a111253443b72fade41fd58fbf16762b",
+    "change": "Dedicated exact two-ITEM copied history extends the existing temporary last-owning receipt. Live second owning acquisition checks the first copied ITEM, ordinary final REFCELL, finite quiet graph, integer-normalized key and Gen DATA/INPUT owner2. Existing final storage, bounded history and cleanup rules then protect both copies; scalar-first and other producer routes remain unchanged.",
+    "engine": "Zend SEND_UNPACK in zend_vm_def.h copies dereferenced yielded values and drops iterator DATA before INPUT; zend_generator_free_storage in zend_generators.c releases the cached reference edge."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64 pinned project binary/profile; checked frontend and SL/cache-off/determinism-on model; serial pinned CPU1 actors.",
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-temporary-two-owning-reference-90",
+    "native_only": {
+      "author": {
+        "revision": "c24e06e4041034b49bfbae95060c39753a8ce7e3",
+        "report": "native-author-c24e06e40/report.json",
+        "sha256": "ab2d1b19043da3f962e5a50f1736c308c163d2870cd60645c8ac152af412165f"
+      },
+      "peer": {
+        "revision": "c24e06e4041034b49bfbae95060c39753a8ce7e3",
+        "report": "native-peer-c24e06e40/report.json",
+        "sha256": "837353a3ae81934b9198f8901817e0e719f7cbb35995487aeb1cf410b32ee188"
+      },
+      "originals": 4,
+      "model_credit": 0
+    },
+    "old_refusal": {
+      "revision": "c24e06e4041034b49bfbae95060c39753a8ce7e3",
+      "report": "old-control-c24e06e40/report.json",
+      "sha256": "85903060efecc5edc45372c9e8c084863f99122c953979f2d0a396e7315c8d79",
+      "status": "Unsupported",
+      "reason": "CONFIG Generator unpack send outside scalar/key domain",
+      "prefix": "B;Y0;M0:5;W0:1;Y1;",
+      "agreement_credit": 0
+    },
+    "private_strict": {
+      "revision": "280c590934e4770e16218d50e3656cd22d1dfb73",
+      "report": "strict-280c59093/report.json",
+      "sha256": "f3e2254125f576607652782b4b770a807aaf644a13f9c3193cc2da81e5320b42",
+      "modules": 432
+    },
+    "source_models": {
+      "agreements": 4,
+      "method": "Model-only comparisons with retained frozen native source bytes/profile/streams; no application PHP rerun.",
+      "reports": [
+        {
+          "revision": "6cb0ffd7430172d7fd8880a6c199392277774e65",
+          "report": "model-distinct-typeerror-6cb0ffd74/report.json",
+          "sha256": "13cde7b8fb94dc430693df54a34bb5aa287a997dc8e701dc988fb12d1eddae47"
+        },
+        {
+          "revision": "6cb0ffd7430172d7fd8880a6c199392277774e65",
+          "report": "model-distinct-terminal-6cb0ffd74/report.json",
+          "sha256": "e7340688402c4fb998e1a1657ef51d507dc1cd56d915310691fed0b7c72e9430"
+        },
+        {
+          "revision": "262c0a88a111253443b72fade41fd58fbf16762b",
+          "report": "model-shared-typeerror-262c0a88a/report.json",
+          "sha256": "55636dfc0888c4b4dc1425b138a3dda22be778f5b556e03e5181be8bc5cd15c0"
+        },
+        {
+          "revision": "262c0a88a111253443b72fade41fd58fbf16762b",
+          "report": "model-shared-terminal-262c0a88a/report.json",
+          "sha256": "a42d52125fbdf653f3271c52697e922941bd225993133745874a762b023322be"
+        }
+      ]
+    },
+    "reached": {
+      "conditions": 461,
+      "if_premises": 455,
+      "raw_steps": 6,
+      "author_terminal": {
+        "revision": "262c0a88a111253443b72fade41fd58fbf16762b",
+        "report": "reached-author-262c0a88a/report.json",
+        "sha256": "6981053a0b9ebaaac9dd376915c2042e8c984bc0b5ef3cb3589b8bbcf0bec8ec",
+        "conditions": 167,
+        "if_premises": 165,
+        "raw_steps": 2
+      },
+      "peer_normal": {
+        "revision": "262c0a88a111253443b72fade41fd58fbf16762b",
+        "report": "reached-peer-262c0a88a/report.json",
+        "sha256": "159277d2cf23c137dd90260ce39cd54660fdbf32fb15bbed5216383b21b9fa46",
+        "conditions": 294,
+        "if_premises": 290,
+        "raw_steps": 4
+      }
+    },
+    "review": "Independent literal/native/old/comparator/runtime and fixture static review, raw strict/source4/reached461 review. Frozen native streams were reused; no accepted source/native replay."
+  },
+  "recovery": {
+    "manifest": "manifest.json",
+    "manifest_sha256": "6fa87f83133104bcc84db44e770d41b66eb1a6f86ddcfff67bb371f11d574262",
+    "files": 89,
+    "raw_bytes": 2112345,
+    "commands": "Native-only runners froze four originals. Model-only comparator consumed the two retained native reports one case at a time. Reached scripts consumed matching native reports by --source-report; strict used the ordered 432-module manifest."
+  },
+  "integration": {
+    "status": "pending exclusive exact-parent canonical writer grant, actual-tail review and one joined ordered-manifest compile"
+  }
+}
