@@ -59,13 +59,15 @@ deduplicating equal IDs. A selected scope/binding witness validates only readonl
 cleanup after Closure retirement; it never restores a live owner or callable entry.
 
 Quiet shutdown cache owners survive callback completion, the early destructor
-pass and output FINAL. Late registry-free/output policy remains partial. One
-Closure-object __invoke array control was an exact early lookup Unsupported
-boundary at the ATTR08 cut; its tick consumer is extended below.
+pass and output FINAL. The selected buffered executor path retires both FCC
+slots, even when they identify the same raw invokable object. Wider late-free
+policy remains partial. One Closure-object __invoke array control was an exact
+early lookup Unsupported boundary at the ATTR08 cut; its tick consumer is
+extended below.
 Five normal originals agree, four reached groups pass 296 checks (292 reached,
 four derived), and private strict 432 passes. The [cache review](../../coverage/semantics/callback-fcc-cache-review.json)
 keeps the old equality counterexample, failed property/certificate states and
-corrected fixtures at their original cuts; actual-parent composition is pending.
+corrected fixtures at their original cuts, alongside the OB05 joined checks.
 
 Cached user `[Closure,"__invoke"]` tick calls forward positional arguments and
 borrow the outer Closure from FCC.object. E_DEPRECATED 8192 precedes its first copied argument; required-reference

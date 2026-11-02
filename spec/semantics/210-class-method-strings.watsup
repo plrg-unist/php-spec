@@ -30,10 +30,14 @@ dec $string_fixed_method(pstate, ptbytes, ptbytes) : parrayresolution
 def $string_fixed_method(S, ptbytes_class, ptbytes_method) = $scope_string_fixed(S, ptbytes_class, ptbytes_method)
 
 dec $string_resolve(pstate, ptbytes, parraymode, bool) : parrayresolution
+dec $string_enum_candidate(pstate, ptbytes) : pintrinsic?
+def $string_resolve(S, ptbytes, ARRAY_ADMISSION, b_fixed) = ARRAYADMITTED
+  -- if $string_enum_candidate(S, ptbytes) = (pintrinsic)
 def $string_resolve(S, ptbytes, ARRAY_DISPATCH, true) = $string_fixed_method(S, ptbytes_class, ptbytes_method)
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
 def $string_resolve(S, ptbytes, parraymode, b_fixed) = $array_receiver(S, PSTRING ptbytes_class, ptbytes_method, parraymode)
   -- if parraymode = ARRAY_ADMISSION \/ ~b_fixed
+  -- if parraymode = ARRAY_DISPATCH \/ $string_enum_candidate(S, ptbytes) = eps
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
 def $string_resolve(S, ptbytes, parraymode, b_fixed) = ARRAYINVALID ($ptascii("Invalid class-method string")) -- otherwise
 def $string_callable(S, ptbytes) = $api_admission($api_pure(S, PSTRING ptbytes)) -- if $api_special(S, PSTRING ptbytes)
@@ -167,7 +171,6 @@ def $call_selected_valid(S, STRING_METHOD_TARGET pcalltarget pstringselection, (
   -- if $string_receiver_site_valid(S, pcalltarget, porigin_site)
 
 dec $string_dynamic_result(pstate, parrayresolution, porigin, int, int, ptbytes) : pstate
-dec $string_enum_candidate(pstate, ptbytes) : pintrinsic?
 def $string_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes_method, porigin_site, z_init, z_call, ptbytes) = S[.TODO = $method_args_task(STRING_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, ORIGINAL ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $string_dynamic_result(S, ARRAYINVALID ptbytes_error, porigin_site, z_init, z_call, ptbytes) = $throw_scalar(S, "Error", ptbytes_error, z_init)
 def $string_dynamic_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_call, ptbytes) = S[.COMPLETION = UNSUPPORTED text]

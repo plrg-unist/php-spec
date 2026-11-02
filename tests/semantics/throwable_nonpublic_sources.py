@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native-first initialized nonpublic ordinary comparison images."""
+"""Native-first nonpublic ordinary comparison images."""
 from pathlib import Path
 
 import global_constant_sources as family
@@ -7,7 +7,7 @@ from throwable_nonpublic_cases import CASES
 
 family.CASES = CASES
 family.UNSUPPORTED = {name: ('Throwable property comparison', b'B|')
-    for name in ('nonpublic-uninitialized-control', 'nonpublic-readonly-control')}
+    for name in ('nonpublic-readonly-control',)}
 family.BASELINE = ('Throwable property comparison', b'B|')
 family.MODEL_TIMEOUTS = {name: 480 for name in CASES}
 base_fingerprint = family.fingerprint

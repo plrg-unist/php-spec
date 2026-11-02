@@ -67,7 +67,6 @@ def $enum_generated_kind(S, porigin, ptbytes) = (INTRINSIC_ENUM porigin pclassde
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "enum" /\ $enum_backing(S, porigin) =/= "" /\ $ptlc(ptbytes) = $ptascii("tryfrom")
 def $enum_generated_kind(S, porigin, ptbytes) = eps -- otherwise
-dec $enum_array_string_valid(pstate, pvalue) : bool
 def $enum_array_string_valid(S, PSTRING ptbytes) = true
 def $enum_array_string_valid(S, PSTRING_CARRIER pstringidentity ptbytes) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity ptbytes)
 def $enum_array_string_valid(S, pvalue) = false -- otherwise
@@ -630,6 +629,13 @@ def $enum_selected_prepare(S, pintrinsic, ptbytes_original, ptbytes_lookup, pori
   -- if n_depth = |S.FRAMES|
   -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z}
   -- if $selected_entry_source_valid(S, pselectedcall)
+def $enum_pipe_selected(S, pintrinsic, ptbytes_original, ptbytes_lookup, pvalue_left, porigin_site, z_send, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_INVOKE {SITE porigin_site, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue_left)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin_site)
+  -- if $pipe_lines_valid(S, porigin_site, z_send, z_call)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z_call}
+  -- if $selected_entry_source_valid(S, pselectedcall)
 def $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z) = $enum_selected_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z)
   -- if S.ORIGIN = (porigin_site)
   -- if S.RESULT = KNOWN (PARRAY n)
@@ -773,6 +779,13 @@ def $enum_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
   -- if ~$ppfirstclass(phpType7*)
   -- if $enum_dynamic_string_selected(S, S.SELECTEDCALLS, PORIGIN n_unit pcpath_parent, z_call)
   -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
+def $enum_string_child_site(S, PORIGIN n_unit pcpath_child, z_call) = true
+  -- if $(|pcpath_child| >= 1)
+  -- if pcpath_parent = pcpath_child[0:$nabs($(|pcpath_child| - 1))]
+  -- if pcpath_child = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_parent) = (NExprBinaryOpPipe expression_left expression_right metadata)
+  -- if $enum_dynamic_string_selected(S, S.SELECTEDCALLS, PORIGIN n_unit pcpath_parent, z_call)
+  -- if $call_line_valid(S, (PORIGIN n_unit pcpath_parent), z_call)
 def $enum_string_child_site(S, porigin, z) = false -- otherwise
 def $enum_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call) = true
   -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
@@ -838,6 +851,19 @@ def $selected_entry_source_valid(S, pselectedcall) = true
   -- if ~$ppfirstclass(phpType7*)
   -- if $string_name_site(S, pselectedcall.SITE, pselectedcall.ORIGINAL)
   -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.OWNER = eps
+  -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(pselectedcall.ORIGINAL))) = (porigin)
+  -- if $enum_generated_kind(S, porigin, pselectedcall.LOOKUP) = (pselectedcall.KIND)
+  -- if $pipe_fixed_name(S, pselectedcall.SITE) = eps
+  -- if $array_site_valid(S, {SITE pselectedcall.SITE, INIT $pipe_lookup_line(S, pselectedcall.SITE), LINE pselectedcall.LINE, REQUESTED porigin, NAME pselectedcall.LOOKUP}, false)
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.OWNER = eps
+  -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
+  -- if $method_string_parts(pselectedcall.ORIGINAL) = ((ptbytes_class, pselectedcall.LOOKUP))
+  -- if $string_enum_candidate(S, pselectedcall.ORIGINAL) = (pselectedcall.KIND)
+  -- if $string_site_valid(S, {SITE pselectedcall.SITE, INIT $pipe_lookup_line(S, pselectedcall.SITE), LINE pselectedcall.LINE, REQUESTED porigin, ORIGINAL pselectedcall.ORIGINAL}, false)
 def $selected_entry_source_valid(S, pselectedcall) = true
   -- if pselectedcall.OWNER = (n_owner)
   -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method

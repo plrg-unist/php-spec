@@ -246,9 +246,13 @@ are discarded. [OB04](coverage/semantics/output-final-exception-handler-review.j
 adds selected FINAL exception handlers, ignored-return/original cleanup, pre-entry
 warning throws and their real abandoned C owners. Normal handling forwards live
 bytes through genuine lower callbacks; retained Closure free effects after executor
-inactivity preserve the pinned late fatal and CLI status. Wider rendering, nonfast
-executor teardown, reentrant deactivation, other byte producers and buffered stdout
-diagnostics remain dependencies.
+inactivity preserve the pinned late fatal and CLI status.
+[OB05](coverage/semantics/output-executor-nonfast-review.json) adds allocator-selected
+table and storage cleanup, inherited method-static sharing and oldest saved-handler
+order. Shutdown registrations created during FINAL retire their arguments and FCC
+owners while PHP is still active, including caught destructor throws. Owning
+module/autoload cleanup, uncovered table owners, wider hooks/rendering, reentrant
+deactivation, other byte producers and buffered stdout diagnostics remain dependencies.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -766,6 +770,46 @@ releases it before catch while the Generator survives. Four new sources agree
 with PHP and two reached recipes check COW, trace and weak-reference lifetimes.
 Temporary/indirect producers, owning reference cells, finalizers and wider
 cleanup remain partial.
+
+[Temporary factory Generator owning sends](coverage/semantics/config-generator-owning-temporary-review.json)
+allow a named zero-argument by-value factory to return a distinct by-value
+Generator with no outside strong owner. Its first send copies a finite quiet
+ordinary non-Stringable object or array; its final send caches an integer
+value with an integer key (7 and 1 in the four originals). The copied
+option survives Generator retirement into INI_SET's TypeError trace, or dies
+before a saved terminal throw reaches catch. Four new sources agree with PHP;
+two reached recipes check the two cleanup stages, COW and weak lifetimes.
+Other final-cache shapes, reference cells, finalizers and wider factories remain
+partial.
+
+[Temporary Generator owning final caches](coverage/semantics/config-generator-owning-cache-review.json)
+allow that same factory source to send a scalar option followed by a finite
+quiet array or ordinary non-Stringable object. The last copied argument
+protects the Generator's cached child during final INPUT release. Real
+Generator storage drops its cache edge while the argument survives into
+INI_SET's TypeError trace; a saved terminal throw releases both before catch.
+Four new sources agree with PHP, and two reached recipes check storage,
+copied roots, COW and weak lifetimes. Effectful finalizers, reference cells and
+wider producer/value histories remain partial.
+
+[Two owning temporary Generator sends](coverage/semantics/config-generator-two-owning-review.json)
+allow both integer-key copied arguments from the same named by-value factory
+Generator to own finite quiet arrays or ordinary non-Stringable objects. Four
+new object sources agree with PHP. One reached proof releases two distinct
+objects before a saved catch; the other keeps two copies of the same object
+through real Generator storage release and TypeError TraceArgs. The cached
+child loses one owner while both copied argument roots remain. A separate
+array COW regression preserves first and second snapshots after later local
+writes. Effectful finalizers, reference cells and wider producers remain separate.
+
+[Owning BYREF Generator snapshots](coverage/semantics/config-generator-reference-owning-review.json)
+allow a retained named direct-CV BYREF Generator to copy a finite quiet owning
+object or array from an ordinary reference cell as its first argument. The
+cell changes to a scalar before the second send; the earlier copy keeps its
+own value. Four sources agree with PHP. Reached proofs check a local object
+dying before a saved catch and an outside alias changing an array from 13 to
+31 while TypeError TraceArgs still holds 13 and the copied scalar 7. Typed or
+backed cells, owning final cells and temporary producers remain separate.
 
 [Aggregate-returned Generators](coverage/semantics/config-aggregate-generator-unpack-review.json)
 now transfer a real non-generator getIterator result into native Generator DATA.
@@ -3692,6 +3736,15 @@ destructor callbacks through the Closure's live caller root and source body.
 An unrelated Closure cannot enter that ordinary count walk; the
 [Closure caller review](coverage/semantics/gc-closure-caller-review.json)
 records the exact destructor/count and refusal checks.
+A plain zero-argument `$collector->__invoke()` call from a live global variable
+now carries the same materialized collection through its real Closure wrapper.
+The wrapper has two
+current Closure roots and the global `$collector` cell supplies a third owner;
+the held/drop destructor counts still match PHP. This cut requires a literal
+normal method call and a static, attribute-free, childless Closure with no
+by-reference or declared return type. Computed receiver expressions remain
+outside this cut. See the
+[explicit Closure caller review](coverage/semantics/gc-closure-invoke-caller-review.json).
 Materialized ordinary property tables now participate in callback-free explicit
 collection of finite instance/array/cell cycles. The collector traces declared
 slots through the table while physical owners remain unchanged; zero-declared
@@ -4420,7 +4473,7 @@ eager; invalid/cyclic paths, reached callbacks and wider layouts remain partial.
 [Linked-base review](coverage/semantics/throwable-base-previous-comparison-review.json).
 [Captured-Throwable review](coverage/semantics/throwable-captured-comparison-review.json).
 Visited comparison also admits ordinary method declarations on supported
-initialized field layouts of any visibility, including locally authenticated source and
+field layouts of any visibility, including declared INITIAL/UNSET slots, locally authenticated source and
 implicit `Stringable` interfaces and finite authenticated parent paths,
 without invoking their methods. Inherited overrides keep physical slot order;
 aliases, COW and cached fields retain their existing owners. Builtin parents,
@@ -4432,9 +4485,15 @@ Private and protected slots preserve mangled keys, declaring origins and physica
 order through real foreach caches. Declared cloning retargets those locators and
 preserves each copy's typed-alias constraints. Live typed aliases stay constrained while their object
 survives in a trace; final retirement removes the property type source while a
-cast-view alias can survive. Uninitialized, readonly, hook and wider lifetime
+cast-view alias can survive. Readonly, hook and wider lifetime
 bounds remain partial.
 [Nonpublic-image review](coverage/semantics/throwable-trace-nonpublic-comparison-review.json).
+Declared holes retain physical slot order: inline one-sided UNDEF gives +1 in
+both directions, while cached INDIRECT holes use physical count/key checks and
+directional undefined-value order. Cast views omit holes, and cached clone
+locators target each copy's slots. Dynamic UNSET, readonly classes, hooks and the INITIAL
+Stringable continuation remain explicit boundaries.
+[Declared-hole review](coverage/semantics/throwable-trace-uninitialized-comparison-review.json).
 Empty ordinary layouts also compare through their real storage route: two inline
 objects return zero before the object recursion guard, while actual caches keep
 table identity/count/key/value order. Empty foreach produces a real table; cast
@@ -4474,8 +4533,9 @@ Persistent shutdown/tick caches now retain their object and Closure slots
 separately. Raw invokable and array-form callbacks preserve distinct tick
 identity; inline unregister releases arguments before cached object/Closure
 owners, while quiet shutdown owners survive through FINAL. Five normal
-originals and 296 reached/guard checks validate this slice; late free and
-wider cached wrapper consumers remain partial. See the [cache review](coverage/semantics/callback-fcc-cache-review.json).
+originals and 296 reached/guard checks validate the private cache slice. The OB05
+join matches two new raw-invokable originals and reaches buffered cache release
+with two equal owners; broader late free remains partial. See the [cache review](coverage/semantics/callback-fcc-cache-review.json).
 Cached tick `[Closure,"__invoke"]` calls now preserve both deprecation phases,
 fresh reference warnings, weak reception, raw/received sensitive snapshots and
 unused-result cleanup under the persistent cache. Five originals and 302 reached/guard
@@ -4487,7 +4547,8 @@ handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
 bound receivers. Nine eligible originals agree (six normal, three static errors);
 five reached groups pass 428 checks. One unsafe `assert` reentrancy source has an
 unresolved native lifetime observation at zero credit, with exact expired
-entry refusal retained. See the [producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
+entry refusal retained. Current-tail strict433 and three focused retained-native
+comparisons pass at recorded cuts; see the [producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
 Ordinary and promoted constructor parameters accept one zero-argument builtin
 `#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
 snapshots; `getValue()` and trace strings observe the same wrappers. The
@@ -4595,6 +4656,13 @@ Trait-constant method captures can retain a copied `self` parameter view from
 before class publication. Old cloned and later captures preserve distinct
 lexical names; copied-view `never` fallthrough now identifies a method.
 [Trait-capture review](coverage/semantics/trait-captured-method-kind-review.json).
+
+Copied trait captures also retain the saved lexical scope for `parent` parameter
+checks. A later using class can call through a capture whose `parent` remains
+the first using class's parent; an old trait-scope capture follows union branch
+order and may fail before its body. Four source originals and three reached
+state groups validate the existing rule. [Parent-view review](coverage/semantics/trait-captured-parent-view-review.json).
+
 Unit0 anonymous classes may also extend an ordinary Base.
 Inherited or overridden constructors see Base property defaults; inherited
 methods preserve lexical and called scopes, and private Base slots remain
@@ -6475,9 +6543,14 @@ after invocation.
 Class constants can consume cached enum cases in scalar conditions and select a
 case through a source-certified case or negated-case condition, including a case
 from another enum. Wider object-valued conditional transfers remain Unsupported.
-Callable admission, pipe routes,
-`Closure::fromCallable` conversion, `is_callable`, case attributes, enum collection
-policy, the default loader and wider acquisition remain partial;
+Generated method strings remain raw values through callable-typed parameters;
+`Closure::fromCallable` converts generated string/array targets. Their
+[joined gate](coverage/semantics/enum-callable-current-tail-review.json) passes
+strict compilation and three originals. Pipe strings and class/case arrays now
+select generated methods before receiving the left value, preserving strict
+typing, Stringable rebinding, cold tables and temporary cleanup; four exact
+originals and 68 reached guards pass in the [pipe review](coverage/semantics/enum-pipe-review.json).
+`is_callable`, case attributes, enum collection policy, the default loader and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)
@@ -6706,6 +6779,25 @@ actual live receiver. Five originals agree with PHP; five reached fronts pass
 strict433 pass at their recorded cuts.
 Other implicit/API and lifecycle forms remain partial.
 [Invokable factory review](coverage/semantics/generator-invokable-factory-review.json).
+
+I84 adds admitted `__call`/`__callStatic` factories for scoped Generators.
+Existing source and selected-handler descriptors retain the actual called scope
+after the maker or packed argument array retires. Frozen sends add no owners;
+real Generator frames and caches keep their values. Five originals agree with
+PHP; five reached fronts pass 442 custom/467 reported checks and private
+strict433 passes at its original cut. Joined strict433 and the affected
+protected-close source pass at 5e33a7f88.
+[Magic factory review](coverage/semantics/generator-magic-factory-review.json).
+
+I85 admits direct Generator-bodied magic handlers through the same selected
+source target. A real entry receipt follows fresh, resumed and closing frames;
+actual operation ownership prevents a same-function sibling from supplying it.
+The receipt owns no receiver or packed value. Five current originals agree with
+PHP; native observations and private strict433 retain their distinct cuts.
+Five reached fronts pass 444 custom/469 reported checks. Joined strict433,
+three exact sources and 166 independent reached checks pass at bd274e79f;
+current-tail composition is reviewed at b1adc40c.
+[Direct magic review](coverage/semantics/generator-direct-magic-review.json).
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

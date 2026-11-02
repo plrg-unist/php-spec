@@ -389,8 +389,25 @@ distinct lexical names. Three exact native/source agreements, private strict433
 and two source-reached state groups pass 130 conditions (126 reached, four
 guards). The [trait-capture review](../../coverage/semantics/trait-captured-method-kind-review.json)
 keeps two pre-fix normal mismatches and exact capture-time deprecations.
-Copied `parent` parameters, alias/failure receipts, anonymous using-class names,
-rebound scopes and other Closure/API/wrapper views remain separate.
+Alias/failure receipts, anonymous using-class names, rebound scopes and other
+Closure/API/wrapper views remain separate.
+
+For existing copied trait first-class captures, a `parent` parameter is checked
+against the saved lexical scope. An old cloned capture can retain a trait scope
+without a parent: a reached object argument then fails before the body if its
+union reaches `parent`; an earlier matching class branch succeeds. A later
+capture can retain the first using class as lexical scope while the called
+class differs, so its `parent` type follows the first class's parent. Null
+bypasses the unresolved class lookup in `?parent`. Four exact source originals
+and three source-reached state groups (79, 86 and 93 conditions) validate these
+existing rules without a semantic edit. The
+[parent-view review](../../coverage/semantics/trait-captured-parent-view-review.json)
+records the native/model cuts and the two corrected fixture failures. Trait
+alias/failure receipts, anonymous using-class names, rebound and wider callable
+views remain partial. The engine routes are `zend_check_type_slow` and
+`zend_fetch_ce_from_type` in `Zend/zend_execute.c`, then `zend_fetch_class`
+using `zend_get_executed_scope` in `Zend/zend_execute_API.c`.
+
 Nonpublic/reference-return/attributed magic methods and remaining magic dispatch
 stay open, alongside constructor Traversable producers,
 promotion/nonpublic forms and wider factories/lifetimes.
@@ -574,8 +591,8 @@ keeps original source comparisons, reached guards and the shared identity-receip
 normalization at separate cuts. The
 [capture review](../../coverage/semantics/enum-string-capture-review.json) keeps
 its new capture sources and owner/ingress checks separate. Callable admission,
-pipe and `Closure::fromCallable` consumers, first-use loading, enum
-collectability and wider object lifetimes remain partial.
+pipe and `Closure::fromCallable` have separate reviewed cuts below; first-use
+loading and wider object lifetimes remain partial.
 
 ## Generated enum array captures
 
@@ -595,5 +612,46 @@ table cold until invocation. The
 [array-capture review](../../coverage/semantics/enum-array-capture-review.json)
 keeps these cases and source/owner checks separate. Other callable consumers,
 loading and wider backing contexts remain partial. GC08 covers cached enum-case
-GC candidate exclusion; wider GC interactions and GC09 intrinsic fake-Closure
-birth versus clone policy remain separate.
+GC candidate exclusion; original receiverless Closures use the shared GC09 birth
+policy. Wider GC interactions remain partial.
+
+## Callable-typed generated enum strings
+
+Ordinary callable-typed parameters admit published generated enum method strings
+as their original values. Reception creates no Closure or selected-call record;
+arguments finish before the receiving frame checks callable validity. That
+frame's scope controls ordinary private method strings and arrays, while a
+Closure captured inside the class retains its selected private target. Existing
+array and Closure identities are unchanged. The [admission review](../../coverage/semantics/enum-string-admission-review.json)
+records source, state and receiving-scope checks at its private cut.
+
+## Generated enum conversion with Closure::fromCallable
+
+`Closure::fromCallable` converts published generated enum strings and arrays,
+including through a captured factory. The actual API call and received value
+authenticate conversion; the existing internal Closure allocator stores the
+selected operation without a source array, case receiver or factory owner.
+Existing Closure and `__invoke` array identity forms allocate nothing. Calls
+retain the new Closure through argument clearing and Stringable conversion,
+then can retire it after invocation. The pinned engine routes are
+`zend_create_closure_from_callable`, `zend_is_callable_ex` and
+`zend_create_fake_closure`. The [conversion review](../../coverage/semantics/enum-from-callable-review.json)
+records distinct source and state checks at its private cut. `is_callable`,
+wider reception, loading and backing contexts remain partial. The
+[current-tail gate](../../coverage/semantics/enum-callable-current-tail-review.json)
+joins reception and conversion in one original program.
+
+## Generated enum pipe calls
+
+An evaluated method string, class-name array or enum-case array can select a
+published generated `cases()`, `from()` or `tryFrom()` target for `|>`. The pipe
+fixes that target before sending its forced left value. The saved invoke has
+one positional value and a source-bound selected nonce; the right callable
+retires without becoming an owner of the selected enum. A Stringable left
+argument uses the pipe's left source child, so its callback can rebind the
+original callable while lookup still uses the selected enum and cold backing
+table. Strict scalar errors, case-object selection and `cases()` arity follow
+the same reception rules as direct generated calls. The
+[pipe review](../../coverage/semantics/enum-pipe-review.json) records four exact
+native-first originals and two source-reached strict SL guard groups. Wider
+callable APIs and default loading remain partial.

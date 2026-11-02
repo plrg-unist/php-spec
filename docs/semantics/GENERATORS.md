@@ -466,6 +466,43 @@ Other implicit/callback/API producers and wider delegation, collection and
 lifecycle combinations remain partial.
 [Invokable factory review](../../coverage/semantics/generator-invokable-factory-review.json).
 
+I84 retains scope for direct admitted `__call`/`__callStatic` handlers that create
+scoped method Generators. Existing magic source/selection descriptors bind the
+creator method, call site and called class to the complete effective handler;
+the ordinary instance case also checks its archived receiver identity/class.
+The packed-array identity is bounded and snapshot cardinality is checked, while
+entered argument data remains nonowning history after mutation or retirement.
+No pending-pack equality or sent-value liveness is required. The Gen's actual
+frame/cache/input still owns its values. Five originals agree with PHP; five
+reached fronts pass 442 custom/467 reported checks at their distinct cuts.
+Private strict433 retains its original cut; joined strict433 and the affected
+protected-close destructor/output source pass at 5e33a7f88.
+The original syntax and missed-getter-stage fixture failures retain zero credit
+after narrow fixture corrections.
+I84 covers factory handlers; direct Generator bodies are added below. Broader
+helper ancestry, new argument spellings and wider binding, callback/API,
+delegation, collection and lifecycle combinations remain partial.
+[Magic factory review](../../coverage/semantics/generator-magic-factory-review.json).
+
+I85 extends the admitted typed `__call`/`__callStatic` source contracts to direct
+Generator bodies. Creation stores the actual entered method target and its
+lexical/called header in the existing nonowning receipt. Its source/handler and
+linked ancestry authenticate after packed-array or payload retirement. Resumed
+and closing contexts use their actual Generator owner before any exact saved
+frame search, so a fresh sibling with the same method cannot replace the target.
+The same actual receipt admits the existing Fiber callee transfer route.
+A live body still requires its real receiver; a closed record adds no owner.
+Five current originals agree; five reached fronts pass 444 custom/469 reported
+checks. Private strict433 retains its original cut; joined strict433, three
+exact sources and 166 independent reached checks pass at bd274e79f. The
+current-tail b1adc40c composition is reviewed. Original compiler, COUNT,
+Fiber-consumer and fixture-prefix failures
+retain zero credit; the fresh whole-array observer preserves cardinality and
+payload identity.
+BYREF magic signatures, broader source spellings and wider callback/API,
+delegation, collection and lifecycle combinations remain partial.
+[Direct magic review](../../coverage/semantics/generator-direct-magic-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

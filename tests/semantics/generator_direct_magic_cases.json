@@ -1,0 +1,49 @@
+[
+  {
+    "id": "i85-direct-magic-instance-close",
+    "purpose": "Inherited direct __call defers its body and keeps its real Child receiver through force-close.",
+    "source": "<?php\nclass Base85A {\n    public function __call(string $name, array $arguments) {\n        echo 'BODY|', $name === 'open', '|', $arguments === [85], '|',\n             __CLASS__ === 'Base85A', '|', static::class === 'Child85A', '|';\n        try { yield 85; }\n        finally { echo 'FIN|', $this instanceof Child85A, '|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Child85A extends Base85A {}\n$maker = new Child85A();\n$weak = WeakReference::create($maker);\necho 'OPEN|';\n$g = $maker->open(85);\nunset($maker);\necho 'FRESH|', $weak->get() !== null, '|';\necho 'VALUE|', $g->current() === 85, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|';\nunset($weak);\necho 'E';\n",
+    "source_sha256": "c5721b96d957e6c4a18bb0d012d1b0b59adc9416c0eaf74c495bb3c466ff2f88",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|VALUE|BODY|1|1|1|1|1|FIN|1|MAKER|AFTER|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i85-direct-magic-static-payload-return-observed",
+    "purpose": "Direct inherited __callStatic compares the whole packed array with its weakly observed payload, preserving cardinality and identity without the separate unimplemented COUNT intrinsic; payload retires on natural completion before closed Gen return86.",
+    "source": "<?php\nclass Payload85B { public function __destruct() { echo 'ARG|'; } }\nfunction NewPayload85B() {\n    global $weakPayload;\n    $payload = new Payload85B();\n    $weakPayload = WeakReference::create($payload);\n    return $payload;\n}\nclass Base85B {\n    public static function __callStatic(string $name, array $arguments) {\n        global $weakPayload;\n        echo 'BODY|', $name === 'open', '|', $arguments === [$weakPayload->get()], '|',\n             $arguments[0] === $weakPayload->get(), '|',\n             __CLASS__ === 'Base85B', '|', static::class === 'Child85B', '|';\n        try { yield 85; return 86; }\n        finally { echo 'FIN|', $weakPayload->get() !== null, '|'; }\n    }\n}\nclass Child85B extends Base85B {}\necho 'OPEN|';\n$g = Child85B::open(NewPayload85B());\necho 'FRESH|', $weakPayload->get() !== null, '|';\necho 'VALUE|', $g->current() === 85, '|';\n$g->next();\necho 'AFTER|', $weakPayload->get() === null, '|RETURN|', $g->getReturn() === 86, '|';\nunset($g, $weakPayload);\necho 'E';\n",
+    "source_sha256": "1e7e42ecf5e78022339f024d5c9222ae0a7e5746fe62a4664052041445a3c5d3",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|VALUE|BODY|1|1|1|1|1|1|FIN|1|ARG|AFTER|1|RETURN|1|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i85-direct-magic-rebound-receiver",
+    "purpose": "Argument callback replaces the source receiver CV; selected Old handler and live deferred receiver remain fixed through close.",
+    "source": "<?php\nclass Old85C {\n    public function __call(string $name, array $arguments) {\n        global $weak;\n        echo 'BODY|', $name === 'open', '|', $arguments === [85], '|',\n             static::class === 'Old85C', '|', $this === $weak->get(), '|';\n        try { yield 85; }\n        finally { echo 'FIN|', $this === $weak->get(), '|'; }\n    }\n    public function __destruct() { echo 'OLD|'; }\n}\nclass Other85C {\n    public function __call(string $name, array $arguments) { echo 'BAD-TARGET|'; yield 0; }\n    public function __destruct() { echo 'NEW|'; }\n}\nfunction Replace85C() {\n    global $maker, $weak;\n    $maker = new Other85C();\n    echo 'REPLACE|', $weak->get() !== null, '|';\n    return 85;\n}\n$maker = new Old85C();\n$weak = WeakReference::create($maker);\n$g = $maker->open(Replace85C());\necho 'FRESH|', $weak->get() !== null, '|', $maker instanceof Other85C, '|';\necho 'VALUE|', $g->current() === 85, '|';\nunset($g);\necho 'AFTER|', $weak->get() === null, '|';\nunset($maker, $weak);\necho 'E';\n",
+    "source_sha256": "71ff0d446f149fcc32a4742fbfa4f9e4438e7c8d3e4a94fc7ccbad502e8839c8",
+    "native_exit": 0,
+    "native_stdout": "REPLACE|1|FRESH|1|1|VALUE|BODY|1|1|1|1|1|FIN|1|OLD|AFTER|1|NEW|E",
+    "native_stderr": ""
+  },
+  {
+    "id": "i85-direct-magic-alias-abort-independent",
+    "purpose": "Independent direct inherited __call keeps its real receiver, promotes then retires the received array slot/local alias, and distinguishes ordinary cache and SEND owners through Fiber abort/drop without a BYREF handler signature.",
+    "source": "<?php\nclass Token85R {\n    function __destruct() { echo 'TOKEN|'; }\n}\nclass Input85R {\n    function __construct() {\n        global $weakInput;\n        $weakInput = WeakReference::create($this);\n    }\n    function __destruct() { echo 'INPUT|'; }\n}\nfunction NewToken85R() {\n    global $weakToken;\n    $token = new Token85R();\n    $weakToken = WeakReference::create($token);\n    return $token;\n}\nclass Base85R {\n    public function __call(string $name, array $arguments) {\n        global $weakMaker, $weakToken, $weakInput;\n        echo 'BODY|', $name === 'open', '|', __CLASS__ === 'Base85R', '|',\n             static::class === 'Leaf85R', '|', $this === $weakMaker->get(), '|';\n        $alias =& $arguments[0];\n        unset($arguments);\n        try {\n            $received = yield $alias;\n            echo 'RECEIVED|', $received === $weakInput->get(), '|';\n            unset($received, $alias);\n            Fiber::suspend('direct85');\n            echo 'BAD-RESUME|';\n        } finally {\n            echo 'FIN|', $weakMaker->get() instanceof Leaf85R, '|',\n                 $weakToken->get() instanceof Token85R, '|',\n                 $weakInput->get() instanceof Input85R, '|';\n        }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf85R extends Base85R {}\nfunction Run85R() {\n    global $g;\n    echo 'SEND|';\n    $g->send(new Input85R());\n    echo 'BAD-CALLER|';\n}\n$maker = new Leaf85R();\n$weakMaker = WeakReference::create($maker);\necho 'OPEN|';\n$g = $maker->open(NewToken85R());\nunset($maker);\necho 'FRESH|', $weakMaker->get() !== null, '|', $weakToken->get() instanceof Token85R, '|';\necho 'PRIME|';\n$g->current();\n$fiber = new Fiber('Run85R');\n$stop = new Exception('stop85');\necho 'START|';\n$mark = $fiber->start();\necho 'PARK|', $mark === 'direct85', '|', $g->current() === $weakToken->get(), '|',\n     $weakInput->get() instanceof Input85R, '|';\necho 'ABORT|';\ntry { $fiber->throw($stop); }\ncatch (Throwable $e) {\n    echo 'OUT|', $e === $stop, '|', $e->getPrevious() === null, '|',\n         $fiber->isTerminated(), '|', $weakMaker->get() === null, '|',\n         $weakInput->get() === null, '|', $weakToken->get() instanceof Token85R, '|';\n}\necho 'CLOSED|', $g->current() === null, '|', $weakMaker->get() === null, '|',\n     $weakToken->get() instanceof Token85R, '|';\nunset($g, $fiber, $stop, $e);\necho 'DROP|', $weakToken->get() === null, '|E';\n",
+    "source_sha256": "3aee2c3310e4342d8b9a76fd04aa7e75402267d90a6a77fff08da4019d72f3fe",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|1|PRIME|BODY|1|1|1|1|START|SEND|RECEIVED|1|PARK|1|1|1|ABORT|FIN|1|1|1|MAKER|INPUT|OUT|1|1|1|1|1|1|CLOSED|1|1|1|TOKEN|DROP|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
+  },
+  {
+    "id": "i85-direct-magic-sibling-owner-independent",
+    "purpose": "Two genuine same-function magic Generators retain distinct receivers, names, sites and sends; A closes while B remains fresh, so B cannot substitute for the actual A owner/receipt.",
+    "source": "<?php\nclass Base85S {\n    public function __call(string $name, array $arguments) {\n        global $weakA;\n        echo 'BODY|', $name === 'first', '|', $arguments === [85], '|',\n             __CLASS__ === 'Base85S', '|', static::class === 'Leaf85S', '|';\n        try { yield 85; }\n        finally { echo 'FIN|', $this === $weakA->get(), '|'; }\n    }\n    public function __destruct() { echo 'MAKER|'; }\n}\nclass Leaf85S extends Base85S {}\n$a = new Leaf85S();\n$b = new Leaf85S();\n$weakA = WeakReference::create($a);\n$weakB = WeakReference::create($b);\necho 'OPEN|';\n$ga = $a->first(85);\n$gb = $b->second(86);\nunset($a, $b);\necho 'FRESH|', $weakA->get() !== null, '|', $weakB->get() !== null, '|';\necho 'VALUE|', $ga->current() === 85, '|';\nunset($ga);\necho 'AFTERA|', $weakA->get() === null, '|', $weakB->get() !== null, '|';\nunset($gb);\necho 'AFTERB|', $weakB->get() === null, '|E';\n",
+    "source_sha256": "33e5cb594b01547b18f0db81d77af7089bfcefbdc41df6f0739282041082745b",
+    "native_exit": 0,
+    "native_stdout": "OPEN|FRESH|1|1|VALUE|BODY|1|1|1|1|1|FIN|1|MAKER|AFTERA|1|1|MAKER|AFTERB|1|E",
+    "native_stderr": ""
+  }
+]

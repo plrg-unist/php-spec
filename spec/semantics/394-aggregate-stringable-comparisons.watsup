@@ -61,6 +61,7 @@ dec $aggregate_guards_unique(pcompareguard*) : bool
 dec $aggregate_decl_rows(pstate, nat, ppropertyslot*) : bool
 dec $aggregate_decl_item(ppropstate) : pitem?
 dec $aggregate_decl_initialized(ppropertyslot*) : bool
+dec $aggregate_decl_has_initial(ppropertyslot*) : bool
 dec $aggregate_decl_keys(ppropertyslot*) : ptbytes*
 dec $aggregate_decl_public(ppropertydesc*) : bool
 dec $aggregate_decl_cast_order(pstate, nat, porder) : porder
@@ -214,6 +215,11 @@ def $aggregate_decl_initialized(ppropertyslot :: ppropertyslot_tail*) = $aggrega
   -- if ppropertyslot.STATE = PROP_VALUE pitem
   -- if pitem =/= UNINITIALIZED
 def $aggregate_decl_initialized(ppropertyslot*) = false -- otherwise
+def $aggregate_decl_has_initial(eps) = false
+def $aggregate_decl_has_initial(ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.STATE = PROP_INITIAL
+def $aggregate_decl_has_initial(ppropertyslot :: ppropertyslot_tail*) = $aggregate_decl_has_initial(ppropertyslot_tail*)
+  -- if ppropertyslot.STATE =/= PROP_INITIAL
 def $aggregate_decl_rows(S, n, eps) = true
 def $aggregate_decl_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggregate_decl_rows(S, n, ppropertyslot_tail*))
   -- if S.OBJECTS[n] = INSTANCE porigin
@@ -248,7 +254,7 @@ def $aggregate_backed_hook_rows(S, n, eps) = false
 def $aggregate_backed_hook_rows(S, n, ppropertyslot :: ppropertyslot_tail*) = ($aggregate_backed_hook_slot(S, n, ppropertyslot) \/ $aggregate_backed_hook_rows(S, n, ppropertyslot_tail*))
 def $aggregate_std_cast_order(S, n, ORDERSTRING paggregatecallback) = ORDERUNSUPPORTED "materialized-property Stringable comparison continuation"
   -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if ~$aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|)) \/ $aggregate_backed_hook_rows(S, n, $object_table_slots_at(S, n))
+  -- if ~$aggregate_decl_public($property_layout(S, porigin, |S.CLASSES|)) \/ $aggregate_backed_hook_rows(S, n, $object_table_slots_at(S, n)) \/ $aggregate_decl_has_initial($object_table_slots_at(S, n))
 def $aggregate_std_cast_order(S, n, porder) = porder -- otherwise
 def $aggregate_decl_image(S, n, ptbytes*) = true
   -- if $(n < |S.OBJECTS|)
@@ -874,6 +880,10 @@ dec $trace_visit_captured_same_kind(pstate, nat, nat) : bool
 dec $trace_visit_inline_pair(pstate, nat, nat) : bool
 dec $trace_visit_inline_empty_pair(pstate, nat, nat) : bool
 dec $trace_visit_item_value(pstate, pitem) : pvalue?
+dec $trace_visit_slots_admitted(ppropertyslot*) : bool
+dec $trace_visit_items_effect(pstate, pitem, pitem, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_slots_effect(pstate, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
+dec $trace_visit_slots_continue(pstate, porder, ppropertyslot*, ppropertyslot*, pcompareguard*, int) : (pstate, porder)
 dec $trace_visit_array_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $trace_visit_object_effect(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
 dec $trace_visit_object_contents(pstate, nat, nat, pcompareguard*, int) : (pstate, porder)
@@ -950,7 +960,7 @@ def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = $trace_visit_parent
   -- if $trace_visit_interfaces(S, pclassdesc_parent)
 def $trace_visit_parent_path(S, pclassdesc, porigin_seen*) = false -- otherwise
 ;; Ordinary methods do not participate in standard object/object comparison.
-;; Initialized backing slots compare regardless of their visibility.
+;; Declared backing slots compare regardless of their visibility.
 ;; Retain the existing layout and lifecycle bounds without whole-graph admission.
 def $trace_visit_object_class(S, n) = $trace_object_class(S, n)
   -- if $(n < |S.OBJECTS|)
@@ -970,16 +980,24 @@ def $trace_visit_object_class(S, n) = true
   -- if $property_slots_valid(S, ppropertydesc*, pobjectprops.SLOTS)
   -- if $property_unique_names(pobjectprops.SLOTS)
 def $trace_visit_object_class(S, n) = false -- otherwise
+def $trace_visit_slots_admitted(eps) = true
+def $trace_visit_slots_admitted(ppropertyslot :: ppropertyslot_tail*) = $trace_visit_slots_admitted(ppropertyslot_tail*)
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if pitem =/= UNINITIALIZED
+def $trace_visit_slots_admitted(ppropertyslot :: ppropertyslot_tail*) = $trace_visit_slots_admitted(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+  -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
+def $trace_visit_slots_admitted(ppropertyslot*) = false -- otherwise
 def $trace_visit_object_image(S, n) = true
   -- if $trace_visit_object_class(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
-  -- if S.OBJECTS[n] = STDINSTANCE \/ $aggregate_decl_initialized(pobjectprops.SLOTS)
+  -- if S.OBJECTS[n] = STDINSTANCE \/ $trace_visit_slots_admitted(pobjectprops.SLOTS)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $trace_object_inline_shape(S, n)
 def $trace_visit_object_image(S, n) = true
   -- if $trace_visit_object_class(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
-  -- if S.OBJECTS[n] = STDINSTANCE \/ $aggregate_decl_initialized(pobjectprops.SLOTS)
+  -- if S.OBJECTS[n] = STDINSTANCE \/ $trace_visit_slots_admitted(pobjectprops.SLOTS)
   -- if $object_table_at(S.OBJECTTABLES, n) = (n_table)
   -- if $aggregate_hash_image(S, n, n_table)
   -- if S.OBJECTS[n] = STDINSTANCE \/ $object_table_ordinary(S, n)
@@ -1060,7 +1078,7 @@ def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (
   -- if ~$trace_visit_inline_empty_pair(S, n_left, n_right)
   -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
   -- if pcompareguard_object <- (pcompareguard_seen* ++ $aggregate_compare_seen(S))
-def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, $trace_object_current_entries(S, n_left), $trace_object_current_entries(S, n_right), pcompareguard_object :: pcompareguard_seen*, z)
+def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = $trace_visit_slots_effect(S, $object_table_slots_at(S, n_left), $object_table_slots_at(S, n_right), pcompareguard_object :: pcompareguard_seen*, z)
   -- if $trace_visit_inline_pair(S, n_left, n_right)
   -- if ~$trace_visit_inline_empty_pair(S, n_left, n_right)
   -- if pcompareguard_object = $aggregate_object_guard(S, n_left, n_right)
@@ -1085,6 +1103,36 @@ def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (
   -- if S_tables.COMPLETION = UNSUPPORTED text
 def $trace_visit_object_contents(S, n_left, n_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
 
+def $trace_visit_items_effect(S, UNINITIALIZED, UNINITIALIZED, pcompareguard_seen*, z) = (S, ORDER 0)
+def $trace_visit_items_effect(S, UNINITIALIZED, pitem, pcompareguard_seen*, z) = (S, ORDER $(-1)) -- if pitem =/= UNINITIALIZED
+def $trace_visit_items_effect(S, pitem, UNINITIALIZED, pcompareguard_seen*, z) = (S, ORDER 1) -- if pitem =/= UNINITIALIZED
+def $trace_visit_items_effect(S, pitem_left, pitem_right, pcompareguard_seen*, z) = $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
+  -- if pitem_left =/= UNINITIALIZED /\ pitem_right =/= UNINITIALIZED
+  -- if $trace_visit_item_value(S, pitem_left) = (pvalue_left)
+  -- if $trace_visit_item_value(S, pitem_right) = (pvalue_right)
+def $trace_visit_items_effect(S, pitem_left, pitem_right, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+
+;; Inline declared positions retain holes; either one-sided UNDEF is incomparable.
+def $trace_visit_slots_effect(S, eps, eps, pcompareguard_seen*, z) = (S, ORDER 0)
+def $trace_visit_slots_effect(S, ppropertyslot_left :: ppropertyslot_tail_left*, ppropertyslot_right :: ppropertyslot_tail_right*, pcompareguard_seen*, z) = $trace_visit_slots_effect(S, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pcompareguard_seen*, z)
+  -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
+  -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
+def $trace_visit_slots_effect(S, ppropertyslot_left :: ppropertyslot_tail_left*, ppropertyslot_right :: ppropertyslot_tail_right*, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if ppropertyslot_left.STATE = PROP_INITIAL \/ ppropertyslot_left.STATE = PROP_UNSET
+  -- if ppropertyslot_right.STATE = PROP_VALUE pitem
+def $trace_visit_slots_effect(S, ppropertyslot_left :: ppropertyslot_tail_left*, ppropertyslot_right :: ppropertyslot_tail_right*, pcompareguard_seen*, z) = (S, ORDER 1)
+  -- if ppropertyslot_left.STATE = PROP_VALUE pitem
+  -- if ppropertyslot_right.STATE = PROP_INITIAL \/ ppropertyslot_right.STATE = PROP_UNSET
+def $trace_visit_slots_effect(S, ppropertyslot_left :: ppropertyslot_tail_left*, ppropertyslot_right :: ppropertyslot_tail_right*, pcompareguard_seen*, z) = $trace_visit_slots_continue(S_next, porder, ppropertyslot_tail_left*, ppropertyslot_tail_right*, pcompareguard_seen*, z)
+  -- if ppropertyslot_left.STATE = PROP_VALUE pitem_left
+  -- if ppropertyslot_right.STATE = PROP_VALUE pitem_right
+  -- if pitem_left =/= UNINITIALIZED /\ pitem_right =/= UNINITIALIZED
+  -- if (S_next, porder) = $trace_visit_items_effect(S, pitem_left, pitem_right, pcompareguard_seen*, z)
+def $trace_visit_slots_effect(S, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
+def $trace_visit_slots_continue(S, ORDER 0, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z) = $trace_visit_slots_effect(S, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z)
+  -- if S.COMPLETION = NORMAL
+def $trace_visit_slots_continue(S, porder, ppropertyslot_left*, ppropertyslot_right*, pcompareguard_seen*, z) = (S, porder) -- otherwise
+
 def $trace_visit_entries_effect(S, eps, pentry_right*, pcompareguard_seen*, z) = (S, ORDER 0)
 def $trace_visit_entries_effect(S, (ENTRY pkey UNINITIALIZED) :: pentry_tail*, pentry_right*, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, pentry_tail*, pentry_right*, pcompareguard_seen*, z)
 def $trace_visit_entries_effect(S, (ENTRY pkey pitem_left) :: pentry_tail*, pentry_right*, pcompareguard_seen*, z) = (S, ORDER 1)
@@ -1096,9 +1144,7 @@ def $trace_visit_entries_effect(S, (ENTRY pkey pitem_rawleft) :: pentry_tail*, p
   -- if pitem_rawright =/= UNINITIALIZED
   -- if pitem_left = $object_table_item(S, pitem_rawleft)
   -- if pitem_right = $object_table_item(S, pitem_rawright)
-  -- if $trace_visit_item_value(S, pitem_left) = (pvalue_left)
-  -- if $trace_visit_item_value(S, pitem_right) = (pvalue_right)
-  -- if (S_next, porder) = $trace_visit_value_effect(S, pvalue_left, pvalue_right, pcompareguard_seen*, z)
+  -- if (S_next, porder) = $trace_visit_items_effect(S, pitem_left, pitem_right, pcompareguard_seen*, z)
 def $trace_visit_entries_effect(S, pentry_left*, pentry_right*, pcompareguard_seen*, z) = (S, ORDERUNSUPPORTED "Throwable property comparison") -- otherwise
 def $trace_visit_entries_continue(S, ORDER 0, pentry_left*, pentry_right*, pcompareguard_seen*, z) = $trace_visit_entries_effect(S, pentry_left*, pentry_right*, pcompareguard_seen*, z)
   -- if S.COMPLETION = NORMAL

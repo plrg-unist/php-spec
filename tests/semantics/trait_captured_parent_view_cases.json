@@ -1,0 +1,71 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "nullable-parent-never-captures",
+      "source": "<?php\nclass Base164Author {}\ntrait Trait164Author {\n    public static function stop(?parent $value = null): never {\n        echo 'body:', self::class, ':', static::class, ';';\n    }\n    public const array Y = [self::stop(...)];\n    public static array $x = self::Y;\n}\ntrait Layer164Author { use Trait164Author; }\nset_error_handler(static function () { return true; });\nclass First164Author extends Base164Author {\n    use Layer164Author;\n    public static array $x = self::Y;\n}\n$old = First164Author::Y[0];\n$old = clone $old;\nclass Later164Author extends Base164Author {\n    use Layer164Author;\n    public static array $x = self::Y;\n}\n$later = Later164Author::Y[0];\ntry { $old(); } catch (TypeError $e) {\n    echo 'old:', $e->getMessage(), ':', $e->getLine(), ';';\n}\ntry { $later(); } catch (TypeError $e) {\n    echo 'later:', $e->getMessage(), ':', $e->getLine(), ';';\n}\n",
+      "source_sha256": "0e8e3cba70580013ce92f83b5834f1b5e076b0aab334916f3b48f1541169bd85",
+      "stdout_base64": "Ym9keTpMYXllcjE2NEF1dGhvcjpGaXJzdDE2NEF1dGhvcjtvbGQ6TGF5ZXIxNjRBdXRob3I6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo2O2JvZHk6Rmlyc3QxNjRBdXRob3I6TGF0ZXIxNjRBdXRob3I7bGF0ZXI6Rmlyc3QxNjRBdXRob3I6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo2Ow==",
+      "stdout_template_base64": "Ym9keTpMYXllcjE2NEF1dGhvcjpGaXJzdDE2NEF1dGhvcjtvbGQ6TGF5ZXIxNjRBdXRob3I6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo2O2JvZHk6Rmlyc3QxNjRBdXRob3I6TGF0ZXIxNjRBdXRob3I7bGF0ZXI6Rmlyc3QxNjRBdXRob3I6OnN0b3AoKTogbmV2ZXItcmV0dXJuaW5nIG1ldGhvZCBtdXN0IG5vdCBpbXBsaWNpdGx5IHJldHVybjo2Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class164-artifacts/author-nullable-parent-never-captures.native-first.json",
+      "native_raw_sha256": "44e0f9b83c42d2c3099e3810bc518cb4a68f48f56c30fb77fb6aabbd4ffb0d3a",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "trait-alt-before-parent-capture",
+      "source": "<?php\nclass Base164ReviewA {}\nclass Alt164ReviewA {}\ntrait Trait164ReviewA {\n    public static function receive(Alt164ReviewA|parent $value): string {\n        echo 'body:', self::class, ':', static::class, ';';\n        return 'ok';\n    }\n    public const array Y = [self::receive(...)];\n    public static array $x = self::Y;\n}\ntrait Layer164ReviewA { use Trait164ReviewA; }\nset_error_handler(static function () { return true; });\nclass First164ReviewA extends Base164ReviewA {\n    use Layer164ReviewA;\n    public static array $x = self::Y;\n}\n$old = First164ReviewA::Y[0];\n$old = clone $old;\nclass Later164ReviewA extends Base164ReviewA {\n    use Layer164ReviewA;\n    public static array $x = self::Y;\n}\n$later = Later164ReviewA::Y[0];\necho 'old:', $old(new Alt164ReviewA), ';';\necho 'later:', $later(new Base164ReviewA), ';';\n",
+      "source_sha256": "37d28c13e6821a18972d088edeb4c3cf3980166f5abdd361079ca14d16c31755",
+      "stdout_base64": "b2xkOmJvZHk6TGF5ZXIxNjRSZXZpZXdBOkZpcnN0MTY0UmV2aWV3QTtvaztsYXRlcjpib2R5OkZpcnN0MTY0UmV2aWV3QTpMYXRlcjE2NFJldmlld0E7b2s7",
+      "stdout_template_base64": "b2xkOmJvZHk6TGF5ZXIxNjRSZXZpZXdBOkZpcnN0MTY0UmV2aWV3QTtvaztsYXRlcjpib2R5OkZpcnN0MTY0UmV2aWV3QTpMYXRlcjE2NFJldmlld0E7b2s7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class164-artifacts/trait-alt-before-parent-capture.native-first.json",
+      "native_raw_sha256": "44035ae9a8cfaae29a91eeac0b1a5bbb657ea7e01a5374df2491a7a7c4df558d",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "trait-parent-before-alt-fatal",
+      "source": "<?php\nclass Base164ReviewB {}\nclass Alt164ReviewB {}\ntrait Trait164ReviewB {\n    public static function receive(parent|Alt164ReviewB $value): string {\n        echo 'body:', self::class, ':', static::class, ';';\n        return 'ok';\n    }\n    public const array Y = [self::receive(...)];\n    public static array $x = self::Y;\n}\ntrait Layer164ReviewB { use Trait164ReviewB; }\nset_error_handler(static function () { return true; });\nclass First164ReviewB extends Base164ReviewB {\n    use Layer164ReviewB;\n    public static array $x = self::Y;\n}\n$old = First164ReviewB::Y[0];\n$old = clone $old;\nclass Later164ReviewB extends Base164ReviewB {\n    use Layer164ReviewB;\n    public static array $x = self::Y;\n}\n$later = Later164ReviewB::Y[0];\necho 'later:', $later(new Alt164ReviewB), ';';\necho 'before-old;';\n$old(new Alt164ReviewB);\necho 'unexpected;';\n",
+      "source_sha256": "b7040df1a22a43d77ed5193135ac372820db080fa9baf5f9cafd96a6e92b4175",
+      "stdout_base64": "bGF0ZXI6Ym9keTpGaXJzdDE2NFJldmlld0I6TGF0ZXIxNjRSZXZpZXdCO29rO2JlZm9yZS1vbGQ7",
+      "stdout_template_base64": "bGF0ZXI6Ym9keTpGaXJzdDE2NFJldmlld0I6TGF0ZXIxNjRSZXZpZXdCO29rO2JlZm9yZS1vbGQ7",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhY2Nlc3MgInBhcmVudCIgd2hlbiBjdXJyZW50IGNsYXNzIHNjb3BlIGhhcyBubyBwYXJlbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDI3KTogTGF5ZXIxNjRSZXZpZXdCOjpyZWNlaXZlKE9iamVjdChBbHQxNjRSZXZpZXdCKSkKIzEge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": ".tools/class164-artifacts/trait-parent-before-alt-fatal.native-first.json",
+      "native_raw_sha256": "900591439a8b5c2d5f1c2905b3efba5bd02f0498d87b930c7e8ca8eeaff2f508",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "cross-parent-lexical-capture",
+      "source": "<?php\nclass BaseA164 {}\nclass BaseB164 {}\ntrait TraitCross164 {\n    public static function take(parent $value): string {\n        echo 'body:', self::class, ':', static::class, ';';\n        return 'ok';\n    }\n    public const array Y = [self::take(...)];\n    public static array $x = self::Y;\n}\ntrait LayerCross164 { use TraitCross164; }\nset_error_handler(static function () { return true; });\nclass FirstCross164 extends BaseA164 { use LayerCross164; public static array $x = self::Y; }\n$old = FirstCross164::Y[0];\n$old = clone $old;\nclass LaterCross164 extends BaseB164 { use LayerCross164; public static array $x = self::Y; }\n$later = LaterCross164::Y[0];\ntry { echo 'later-a:', $later(new BaseA164), ';'; }\ncatch (Throwable $e) { echo 'later-a-error:', $e->getMessage(), ';'; }\ntry { echo 'later-b:', $later(new BaseB164), ';'; }\ncatch (Throwable $e) { echo 'later-b-error:', $e->getMessage(), ';'; }\n",
+      "source_sha256": "5f17730494661a1eaa69e9d45c0e1cedbf8456436d48b56843ce12924853bbbd",
+      "stdout_base64": "bGF0ZXItYTpib2R5OkZpcnN0Q3Jvc3MxNjQ6TGF0ZXJDcm9zczE2NDtvaztsYXRlci1iOmxhdGVyLWItZXJyb3I6Rmlyc3RDcm9zczE2NDo6dGFrZSgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgQmFzZUExNjQsIEJhc2VCMTY0IGdpdmVuLCBjYWxsZWQgaW4gL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY0LWFydGlmYWN0cy9jcm9zcy1wYXJlbnQtc291cmNlLnBocCBvbiBsaW5lIDIxOw==",
+      "stdout_template_base64": "bGF0ZXItYTpib2R5OkZpcnN0Q3Jvc3MxNjQ6TGF0ZXJDcm9zczE2NDtvaztsYXRlci1iOmxhdGVyLWItZXJyb3I6Rmlyc3RDcm9zczE2NDo6dGFrZSgpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgQmFzZUExNjQsIEJhc2VCMTY0IGdpdmVuLCBjYWxsZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMjE7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class164-artifacts/cross-parent-native.json",
+      "native_raw_sha256": "4c340d274e895661ca11dc9cd4cf2e9d08f04423aaf8d9eab5940b9393888382",
+      "model_timeout_seconds": 240
+    }
+  ]
+}

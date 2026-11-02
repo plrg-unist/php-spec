@@ -277,6 +277,12 @@ def $shutdown_entries_valid(S, pshutdownentry :: pshutdownentry_tail*) = ($shutd
 def $shutdown_roots(eps) = eps
 def $shutdown_roots(pshutdownentry :: pshutdownentry_tail*) = $callback_cache_nodes(pshutdownentry) ++ $operands_roots($shutdown_known(pshutdownentry.ARGS)) ++ $shutdown_roots(pshutdownentry_tail*)
 
+;; The post-output tick boundary still inspects a bound Closure's receiver.
+;; Registered callback owners are counted by $callback_cache_nodes above.
+dec $shutdown_fcc_nodes(pstate, pcalltarget) : pnode*
+def $shutdown_fcc_nodes(S, CLOSURE_TARGET n) = $instance_roots($target_receiver(S, CLOSURE_TARGET n))
+def $shutdown_fcc_nodes(S, pcalltarget) = eps -- otherwise
+
 def $shutdown_known(eps) = eps
 def $shutdown_known(pvalue :: pvalue_tail*) = (KNOWN pvalue) :: $shutdown_known(pvalue_tail*)
 def $shutdown_args_valid(S, eps) = true

@@ -275,6 +275,26 @@ source/state evidence is retained across
 The [invokable ledger](../coverage/semantics/generator-invokable-factory-review.json)
 keeps native predictions/observations, tested cuts and pending checks separate.
 
+I84 magic-handler factory native, unchanged refusal, private strict and new
+source/state evidence is retained across
+`../php-spec-evidence-archive/generator-magic-method-factory-84/` and
+`../php-spec-evidence-archive/generator-magic-method-factory-84-review/`.
+The `actual-tail-f405/` and `actual-tail-5e33/` subdirectories under the
+first archive retain current-tail strict, source and reached-state reports.
+The [magic ledger](../coverage/semantics/generator-magic-factory-review.json)
+binds tested cuts and preserves the initial syntax and missed-stage fixture
+failures with zero credit.
+
+I85 direct magic-Generator native, unchanged refusal, private compiler and new
+source/state evidence is retained under
+`../php-spec-evidence-archive/generator-direct-magic-method-85/` and
+`../php-spec-evidence-archive/generator-direct-magic-method-85-review/`.
+The first archive's `actual-tail-bd274/` retains joined strict, source and
+reached-state reports.
+The [direct magic ledger](../coverage/semantics/generator-direct-magic-review.json)
+keeps original compiler, COUNT, Fiber-consumer and fixture-prefix failures
+separate from corrected and new checks.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

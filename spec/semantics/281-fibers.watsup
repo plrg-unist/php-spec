@@ -116,6 +116,13 @@ def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
   -- if S.OBJECTS[n] = REALCLOSURE pgenerator.FUNCTION pitem* pstaticcell*
   -- if $generator_closure_valid(S, pgenerator)
   -- if $call_current_valid(S)
+def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = true
+  -- if pgenerator.CLOSURE = eps
+  -- if $generator_magic_target(pcallcontext.TARGET)
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION
+  -- if $generator_creation_context_valid(S, pgenerator, pcallcontext)
+  -- if $generator_magic_context_valid(S, pcallcontext)
+  -- if $call_current_valid(S)
 def $fiber_generator_callee_valid(S, pgenerator, pcallcontext) = false -- otherwise
 def $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext) = true
   -- if pgenerator.REFCELL = eps

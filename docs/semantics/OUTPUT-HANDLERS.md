@@ -172,15 +172,41 @@ and destructor C owners; documentary descriptors add no roots. A fresh default
 fatal precedes raw-zoh deactivation. An interrupted explicit release also keeps its
 occupied, nontraversable GC slot through the authenticated abandoned HANDLE tail.
 
-After normal drain or fatal deactivation, module 444 computes fast executor storage effects
+At the OB04 cut, after normal drain or fatal deactivation, module 444 computed fast executor storage effects
 in a local reference-count graph, following real object-store handles backwards.
 Standard free hooks gain no shield; retained Closures are forcibly freed and can
 attempt an uncalled public destructor after PHP execution is disabled. Its core
 fatal escapes `do_cli` before the outer CLI return assignment, preserving process
 status0. The terminal machine retains its last valid heap snapshot. Nonfast
-`USE_ZEND_ALLOC` modes, other internal hooks, weak flags and late visibility warnings
-remain explicit dependencies; request facts are retained and the mode check uses
-the first environment duplicate and signed decimal prefix. The
+`USE_ZEND_ALLOC` modes were then an explicit dependency; the mode check retains
+request facts and uses the first environment duplicate and signed decimal prefix. The
 [OB04 ledger](../../coverage/semantics/output-final-exception-handler-review.json)
 records eleven exact originals and eight reached groups/465 checks, including a
 separate nonfast native control with no agreement credit.
+
+OB05 implements that nonfast cleanup stage. It releases globals in reverse symbol
+insertion order, then constants, function/class tables and the active/saved handler
+registrations in native order. Inherited method statics retire at their first real
+class-table visit, once per shared cell; saved handler stacks retire oldest first.
+Both allocator modes then sweep actual object-store handles backwards. Nonfast
+standard free hooks gain the protective count that can suppress a later child
+destructor attempt; the default fast path still skips those hooks without that count.
+An exact root-multiset check refuses uncovered table owners.
+
+Before executor inactivity, late shutdown registrations created during FINAL are
+freed without calling their queued bodies. Arguments retire in order, then the
+separate FCC receiver and Closure owners. Bound fake Closures retain their actual
+header receiver even without scope rows. Ordinary release jobs preserve PHP entry,
+and the shutdown-list catch retains unfinished C owners after a destructor throw,
+reports/releases the new Throwable, then resumes executor cleanup. The local
+inactive effect projection still leaves the terminal heap snapshot ownership-valid.
+
+[OB05 evidence](../../coverage/semantics/output-executor-nonfast-review.json)
+records twelve exact source/request contexts, including promotion of the retained
+nonfast native control without native replay. Owning assert/tick cleanup at module
+RSHUTDOWN and owning autoload cleanup after the shutdown list remain explicit
+dependencies. Reentrant list registration, post-deactivation buffer starts, exit,
+abrupt handler/visibility-warning cleanup and wider Throwable rendering during list
+retirement remain partial, as do late bound-tick publication, uncovered table owners,
+weak/internal hooks and inactive nonpublic-destructor diagnostics. Earlier failed
+cuts retain zero credit.

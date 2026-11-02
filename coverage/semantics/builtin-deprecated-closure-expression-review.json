@@ -1,6 +1,6 @@
 {
   "milestone": "ATTR07: builtin callable attributes on real Closure and arrow expressions",
-  "status": "private validated; actual-parent composition pending",
+  "status": "private validated; current-tail composition reviewed for integration",
   "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
   "scope": [
     "Literal/NULL NoDiscard and Deprecated attributes on real Closure/arrow expressions, using lexical namespace/import resolution.",
@@ -259,5 +259,29 @@
     ],
     "method": "Recover retained scripts/source from recorded commits and reports; use recorded exact selections/profile/commands. Prior accepted rows keep their cuts; do not replay without a changed dependency or unresolved concern."
   },
-  "composition": null
+  "composition": {
+    "semantic_candidate": "e2f7fd824397820c8457d679cac14ea154a7c77e",
+    "current_master_parent": "1daf73164a1aa275ec2fa3bb44209aba0e8a2291",
+    "strict": {
+      "revision": "760c501e362ffae0b26adae9857c2fd50beeed60",
+      "report": "join-master-fe597-760c-strict/report.json",
+      "sha256": "d6b1a94546e414b163460a2a84461c4a426a1a4426d52a71e766d720b8d1a782",
+      "modules": 433,
+      "passed": true
+    },
+    "focused_sources": {
+      "revision": "a5f47026f86c1b797adc848e4eb85b0ce5741da1",
+      "report": "join-master-b671-a5f-sources/report.json",
+      "sha256": "d58a6518aaea4b9f70958227baa5dc8c84de4b60818ed0cf26bee8c6c9286753",
+      "selected_passed": [
+        "closure-expression-reference-capture-through-both-vm-warnings",
+        "scoped-rebound-closure-wrapper-flags-retain-selected-receiver",
+        "closure-expression-owned-assert-api-selection"
+      ],
+      "native_replayed": false,
+      "unsafe_original_credit": 0
+    },
+    "compatibility_bridge": "After the focused source cut, GC11 added only an explicit unmarked static Closure gc_collect_cycles arm; enum callable admission added generated enum string/fromCallable routes; CONFIG added noarg factory Generator unpack cleanup. After strict, I84 added magic method/static Generator creator arms and moved their declarations. None is selected by the three ATTR07 sources. I84's changed modules passed its separate joined strict433; ATTR07's changed modules did not overlap the I84 delta.",
+    "review": "Scoped CLEAR by /root/attr_review_recovery for exact semantic candidate e2f7fd824; metadata only afterward."
+  }
 }
