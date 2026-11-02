@@ -1,0 +1,10 @@
+[
+  {
+    "id": "enum-is-callable-published-prefix",
+    "source": "<?php\nenum ImmediateInt: int { case One = 1; }\nenum ImmediatePure { case A; }\n\necho is_callable('ImmediateInt::from') ? 'string|' : 'BAD|';\necho is_callable([ImmediateInt::class, 'tryFrom']) ? 'class-array|' : 'BAD|';\necho is_callable([ImmediateInt::One, 'from']) ? 'case-array|' : 'BAD|';\necho is_callable('ImmediatePure::cases') ? 'pure-cases|' : 'BAD|';\necho is_callable('ImmediatePure::from') ? 'BAD|' : 'pure-no-from|';\necho is_callable('ImmediatePure::from', true) ? 'pure-syntax|' : 'BAD|';\necho is_callable([ImmediateInt::One, 'missing']) ? 'BAD|' : 'case-no-method|';\necho is_callable([ImmediateInt::One, 'missing'], true) ? 'case-syntax|' : 'BAD|';\necho ImmediateInt::from(1) === ImmediateInt::One ? 'cold-case|' : 'BAD|';\n",
+    "source_sha256": "1b241c7ebd1d8d9d0d9f4d2705a7626685afedf3fd058eac4d3b21b6cd0fe867",
+    "expected_model": "normal",
+    "expected_normal_stdout": "string|class-array|case-array|pure-cases|pure-no-from|pure-syntax|case-no-method|case-syntax|cold-case|",
+    "purpose": "Published enum strings and class/case arrays, generated positives, absent-method negatives, syntax-only and cold backing table."
+  }
+]
