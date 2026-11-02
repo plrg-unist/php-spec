@@ -416,10 +416,11 @@ The FCC owns the outer Closure; the user call adds one instance and borrows This
 Raw/received sensitive traces stay distinct, and unused results retire after raw
 arguments while the cache remains live. Five normal originals agree (four new
 native originals plus one retained-native former boundary); four reached groups
-pass 302 checks (300 reached, two derived), and private strict 432 passes. The first
-normal deadline and two fixture failures retain zero credit. Other API wrappers,
-late free and the older source-wrapper warning-head location remain partial;
-actual composition is pending. [Tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+pass 302 checks (300 reached, two derived); private strict 432 and joined
+strict 433 pass. A retained-native reference-warning/unregister source agrees
+again on the corrected cache owners. The first normal deadline and two fixture
+failures retain zero credit. Other API wrappers, late free and the older
+source-wrapper inner-warning trace-head location remain partial. [Tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

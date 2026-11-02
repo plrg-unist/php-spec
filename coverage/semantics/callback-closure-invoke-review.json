@@ -1,6 +1,6 @@
 {
   "milestone": "ATTR09",
-  "status": "private validated; canonical composition pending",
+  "status": "selected tick wrapper behavior validated at joined cut; broader core partial",
   "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project oracle/profile; pure SL semantics",
   "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-09",
   "scope": [
@@ -159,6 +159,25 @@
       "revision": "4c7e37d9ce03acf16d682e23415df75f27facfa9",
       "modules": 432,
       "elapsed_seconds": 11.476901292800903
+    },
+    "joined": {
+      "strict": {
+        "report": "join-attr08-067-strict/report.json",
+        "sha256": "705535b5a72a957ed155a1c6cf4d22ab8fc2a40d700219d83017207869abb48c",
+        "revision": "0674a390a2b184b3d6eae44d1d080afd037a2e3d",
+        "modules": 433,
+        "passed": true
+      },
+      "reference_warning_and_retirement": {
+        "report": "join-attr08-067-reference/report.json",
+        "sha256": "55cae5d1d9a58da9d4bad2edc7e04ece0226c831c93d7ef0be99f58b98153816",
+        "revision": "0674a390a2b184b3d6eae44d1d080afd037a2e3d",
+        "native_report": "native-reference-first/report.json",
+        "case": "tick-invoke-reference-warning-between-outer-and-inner",
+        "source_sha256": "f5388cf22ab82e77fd5cda58c7d80842a876b9634e4eefadb82bd151ba99aac6",
+        "agreement_credit": 1,
+        "scope": "8192, required-reference warning 2, 16384, body, unregister and WeakReference expiry"
+      }
     }
   },
   "preserved_failures": [
@@ -192,11 +211,17 @@
     "agent": "/root/attr04_recover_review",
     "runtime": "CLEAR at 4c7e",
     "peer_reached": 103,
-    "final_package": "CLEAR at 5017c9155; positional scope wording and review status only afterward"
+    "final_package": "CLEAR at 5017c9155; positional scope wording and review status only afterward",
+    "current_tail": "Scoped semantic CLEAR by /root/attr_review_recovery for 3a24f88d2 on master ce3417944; production diff is original ATTR09 30/393/443, joined strict/source at 0674 and disjoint GC/I86/A82 bridge accepted."
   },
   "recovery": "Use maintained callback_closure_invoke case/component files and the existing deprecated_api_native/models and callback_cache_protocol recorders; select passing rows explicitly from mixed native reports. Raw records hold exact commands, inputs, profile, exits and groups; no accepted replay is required for metadata.",
   "composition": {
-    "status": "pending exact released parent, interaction review and one full actual-manifest joined check",
-    "canonical_mutated": false
+    "head": "3a24f88d2df3dbbbd9f0fac8ed320b0b6bd2e9d3",
+    "parents": [
+      "dd1df0cd208395fa44c62fdec16062f1a0a48b7a",
+      "ce34179440e1b70227c34050554aadecc6b14576"
+    ],
+    "compatibility": "ATTR09 joins corrected ATTR08/OB05 cache owners without changing 39/231/444. The strict433 and retained-native reference-warning/unregister source passed at 0674. Later master additions relative to that cut are explicit GC caller shapes in 301, Generator/Fiber contexts in 280/281/355, and A82 CONFIG Generator reference snapshot in 423; selected tick wrapper sources use no explicit GC, Generator or Fiber. Their foo(...) constructs first-class callable Closures, not Generator argument unpack. Source and strict receipts are retained across these disjoint paths.",
+    "known_limitation": "The older explicit source-wrapper inner-warning handler trace-head location in 443 still uses eps/-1; this tick wrapper slice does not repair or claim that behavior."
   }
 }

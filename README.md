@@ -4588,8 +4588,9 @@ with two equal owners; broader late free remains partial. See the [cache review]
 Cached tick `[Closure,"__invoke"]` calls now preserve both deprecation phases,
 fresh reference warnings, weak reception, raw/received sensitive snapshots and
 unused-result cleanup under the persistent cache. Five originals and 302 reached/guard
-checks pass; other API wrappers and the older source-wrapper warning-head location
-remain partial. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
+checks pass; joined strict433 and a retained-native warning/unregister comparison
+pass on corrected cache owners. Other API wrappers and the older source-wrapper
+inner-warning trace-head location remain partial. See the [tick wrapper review](coverage/semantics/callback-closure-invoke-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

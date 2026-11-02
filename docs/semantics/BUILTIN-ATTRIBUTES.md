@@ -216,6 +216,7 @@ TICK_RESULT retire raw arguments before unused values while the cache remains li
 Warning throws leave that registry owner intact for later unregister.
 The [ATTR09 review](../../coverage/semantics/callback-closure-invoke-review.json)
 records five normal originals and 302 checks (300 reached, two derived), with private
-strict 432. Other API wrappers and wider histories remain partial. The older source
+strict 432 plus joined strict 433 and a retained-native warning/unregister
+comparison. Other API wrappers and wider histories remain partial. The older source
 wrapper's inner-warning handler trace head still needs its inherited file/line;
 its previous accepted cuts are not renewed by this tick slice.
