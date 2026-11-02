@@ -49,8 +49,9 @@ review.CASES = {
         'source': SOURCE,
         'stage': PREFIX + '-- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_callback1)] -- if pexecutortick.TAIL = [ptickentry_second, ptickentry_third]',
         'checks': [
+            'pexecutortick.ENTRY = ptickentry_first',
             'S.TICKENTRIES = [ptickentry_second, ptickentry_third]',
-            'pexecutortick.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback1)), NAMED_SENT (KNOWN (POBJECT n_arg1))]',
+            'ptickentry_first.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback1)), NAMED_SENT (KNOWN (POBJECT n_arg1))]',
             '$heap_owners($heap_graph(S), HOBJECT n_arg1) = 0',
             '$heap_owners($heap_graph(S), HOBJECT n_callback1) = 1',
             'n_arg1 <- S.DESTRUCTION.CALLED',
@@ -89,8 +90,9 @@ review.CASES = {
         'source': SOURCE,
         'stage': PREFIX + '-- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_callback2)] -- if pexecutortick.TAIL = [ptickentry_third]',
         'checks': [
+            'pexecutortick.ENTRY = ptickentry_second',
             'S.TICKENTRIES = [ptickentry_third]',
-            'pexecutortick.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback2)), NAMED_SENT (KNOWN (POBJECT n_arg2))]',
+            'ptickentry_second.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback2)), NAMED_SENT (KNOWN (POBJECT n_arg2))]',
             '$heap_owners($heap_graph(S), HOBJECT n_arg2) = 0',
             '$heap_owners($heap_graph(S), HOBJECT n_callback2) = 1',
             'n_arg2 <- S.DESTRUCTION.CALLED',
@@ -130,8 +132,9 @@ review.CASES = {
         'source': SOURCE,
         'stage': PREFIX + '-- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_callback3)] -- if pexecutortick.TAIL = eps',
         'checks': [
+            'pexecutortick.ENTRY = ptickentry_third',
             'S.TICKENTRIES = eps',
-            'pexecutortick.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback3)), NAMED_SENT (KNOWN (POBJECT n_arg3))]',
+            'ptickentry_third.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback3)), NAMED_SENT (KNOWN (POBJECT n_arg3))]',
             '$heap_owners($heap_graph(S), HOBJECT n_arg3) = 0',
             '$heap_owners($heap_graph(S), HOBJECT n_callback3) = 1',
             'n_arg3 <- S.DESTRUCTION.CALLED',
