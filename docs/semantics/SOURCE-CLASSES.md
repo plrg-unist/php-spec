@@ -454,10 +454,9 @@ sites retain the placement and argument limits described below.
 
 One unadapted named trait use is admitted in a parented unit0 anonymous class
 without interfaces. At the reached `new`, PDRCLASS already records publication
-of the class with a trait constant holding `self::name(...)`; its live
-descriptor contains
-copied trait methods and constants while the compiler projection keeps their
-raw source forms. The anonymous `new` selects that live descriptor only when
+of the class with a trait constant holding `self::name(...)`; its live descriptor
+contains copied trait methods and constants. The compiler projection keeps
+their raw source forms. The anonymous `new` selects that live descriptor only when
 its own-member projection matches the compiled descriptor and declaration
 history replays the entire class table. A duplicate forged imported method
 fails that replay. One native/model source and 48 source-reached conditions

@@ -775,7 +775,7 @@ separate parser mode. HALT with a preamble and wider encodings remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks and private strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Current-tail composition and integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
+| CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
