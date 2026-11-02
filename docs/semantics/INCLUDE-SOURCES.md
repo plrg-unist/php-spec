@@ -1897,3 +1897,21 @@ peer fixture's premature mid-resume owner assertion remains zero credit; the
 corrected proof counts both the suspended prefix and still-cached value. The
 old `B;P;Y0;` Unsupported remains zero credit. Owning final caches, reference
 cells, effectful finalizers and wider producers remain separate.
+
+The [owning final-cache increment](../../coverage/semantics/config-generator-owning-cache-review.json)
+uses the same named BYVAL factory and distinct BYVAL Generator, with a copied
+scalar option followed by a finite quiet ARRAY or ordinary non-Stringable
+INSTANCE as the last integer-key value. Its cached VALUE and KEY must match
+that last copied ITEM. The normal final INPUT enters the real Generator
+storage pin: slot 1 drops the cached child edge while the copied argument
+remains, then the Generator dies before INI_SET TypeError retains the value in
+TraceArgs. A saved terminal throw discards DATA and INPUT separately, then
+prunes the Generator and payload before catch. Four frozen originals agree
+exactly. Strict432 and two reached recipes (405 conditions, seven raw steps)
+check COW, weak lifetimes, storage 2-to-1 ownership, retired invoke history,
+and the original selected Throwable. The initial duplicate-manifest strict
+command and first peer trace-representation assertion retain zero credit;
+the corrected checks use the same runtime and frozen sources. The old
+`B;P;Y0;Y1;M:5;T;` Unsupported remains zero credit. Outside-retained cleanup
+keeps its earlier admission; effectful finalizers, reference cells and wider
+cached values remain separate.
