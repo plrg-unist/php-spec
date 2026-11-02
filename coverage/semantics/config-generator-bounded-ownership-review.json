@@ -1,6 +1,6 @@
 {
   "milestone": "A88-A93 bounded BYREF Generator argument ownership",
-  "status": "private validation complete; current-master integration pending",
+  "status": "integrated after independent current-master review",
   "scope": {
     "consumer": "ini_set(...Generator) by-value consumer with at most two sends; owning copies use integer keys, temporary/factory sends require integer keys throughout, and retained CVs keep their supported scalar named prefix",
     "producers": "Authenticated retained named BYREF Generator CV, direct temporary BYREF Generator, or named zero-argument BYVAL factory returning a distinct BYREF Generator",
@@ -34,6 +34,9 @@
     "preserved_failures": "Six historical ledgers retain original failed/Unsupported controls at zero credit; crossed-state/report.json retains the first terminal-fixture finish-frontier failure at zero credit."
   },
   "integration": {
-    "status": "pending independent current-master bridge and guarded fast-forward"
+    "status": "integrated by guarded fast-forward",
+    "candidate": "dddece74c96fcb72378df97b5cee1214087095ad",
+    "base": "cae595492dc56101e4d5d2d2d809ed3edd33e4bc",
+    "checks": "All 56 CONFIG runtime/source/state fixture blobs match validated 9ebe805fd; COMP164 HALT offset and OB07 OB_START Notice paths are disjoint from named Generator INI_SET. Accepted strict, 10 source agreements, 827/11 reached and two zero-credit refusals transfer without rerun."
   }
 }
