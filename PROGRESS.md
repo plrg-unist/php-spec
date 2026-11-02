@@ -225,6 +225,17 @@ throwing value destructor with caller traces. Three full reached groups pass
 at separate cuts. Wider callback, reference-return and reentry histories remain partial.
 [Return review](coverage/semantics/builtin-deprecated-closure-return-review.json).
 
+ATTR07 admits builtin literal/NULL NoDiscard and Deprecated on real Closure/arrow
+expressions. Checked keyword receipts preserve multiline names/lines; shared and
+snapshot captures survive handlers, warnings use selected/rebound scopes, and
+Closure calls borrow their bound receiver. Nine eligible originals agree (six
+normal, three static rejections); five reached groups pass 428 checks (422 reached,
+six derived), focused syntax11 and private strict432 pass. One unsafe `assert`
+reentrancy source has an unresolved native lifetime observation, preserved at zero
+credit with exact expired-before-copy refusal; the safe control keeps an external
+owner. General messages and wider consumers remain partial; actual-tail join is
+pending. [Producer review](coverage/semantics/builtin-deprecated-closure-expression-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -380,7 +391,6 @@ cut keep zero credit.
 | GC11 | Explicit real-Closure `__invoke` caller source prepared; native-first validation unrun. |
 | OB05 | Nonfast executor, table and registry cleanup under implementation; new native controls pass. |
 | I84 | Magic-method Generator factories; authored native4 pass in a separate private lane. Independent native and model/state checks unrun. |
-| ATTR07 | Builtin attributes on real Closure and arrow expressions under implementation. |
 | COMP160 | Declared INITIAL/UNSET ordinary slots; native-first validation and callback-fence preparation. |
 | Enum M3/M4 | Published enum string callable-type validation; other callable APIs, pipe/default loading and wider backing contexts remain partial. |
 | A78 | Temporary factory Generator owning first option and scalar last cache; native four and old refusal frozen, implementation and private validation in progress. |

@@ -16,12 +16,15 @@ import deprecated_closure_invoke_cases as wrappers
 import deprecated_closure_invoke_review_cases as wrapper_reviewed
 import deprecated_closure_return_cases as returns
 import deprecated_closure_return_review_cases as return_reviewed
+import deprecated_closure_expression_cases as expressions
+import deprecated_closure_expression_review_cases as expression_reviewed
 from error_handler_run import ENV, recorded
 
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {**cases.CASES, **reviewed.CASES, **exceptions.CASES, **exception_reviewed.CASES,
-         **wrappers.CASES, **wrapper_reviewed.CASES, **returns.CASES, **return_reviewed.CASES}
+         **wrappers.CASES, **wrapper_reviewed.CASES, **returns.CASES, **return_reviewed.CASES,
+         **expressions.CASES, **expression_reviewed.CASES}
 
 
 def digest(path):
@@ -32,7 +35,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--case', choices=tuple(CASES))
-    parser.add_argument('--group', choices=('attr03', 'attr04', 'attr05', 'attr06'), default='attr03')
+    parser.add_argument('--group', choices=('attr03', 'attr04', 'attr05', 'attr06', 'attr07'), default='attr03')
     args = parser.parse_args()
     affinity = sorted(os.sched_getaffinity(0))
     assert len(affinity) == 1 and affinity[0] in range(1, 6)
@@ -41,14 +44,16 @@ def main():
     output.mkdir(parents=True)
     watched = [Path(__file__), Path(cases.__file__), Path(reviewed.__file__), Path(exceptions.__file__), Path(exception_reviewed.__file__),
                Path(wrappers.__file__), Path(wrapper_reviewed.__file__), Path(returns.__file__),
-               Path(return_reviewed.__file__), ROOT / '.tools/php/bin/php',
+               Path(return_reviewed.__file__), Path(expressions.__file__),
+               Path(expression_reviewed.__file__), ROOT / '.tools/php/bin/php',
                ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py']
     inputs = {str(path): digest(path) for path in watched}
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     flags = [item for key, value in profile.items() for item in ('-d', key + '=' + value)]
     groups = {'attr03': (cases, reviewed), 'attr04': (exceptions, exception_reviewed),
-              'attr05': (wrappers, wrapper_reviewed), 'attr06': (returns, return_reviewed)}
+              'attr05': (wrappers, wrapper_reviewed), 'attr06': (returns, return_reviewed),
+              'attr07': (expressions, expression_reviewed)}
     selected = ((args.case,) if args.case else
                 tuple(name for module in groups[args.group] for name in module.CASES))
     rows = []
@@ -61,7 +66,8 @@ def main():
         stdout = (folder / 'native.stdout').read_bytes()
         stderr = (folder / 'native.stderr').read_bytes()
         expected = next(module for module in (cases, reviewed, exceptions, exception_reviewed,
-                                               wrappers, wrapper_reviewed, returns, return_reviewed) if name in module.CASES)
+                                               wrappers, wrapper_reviewed, returns, return_reviewed,
+                                               expressions, expression_reviewed) if name in module.CASES)
         expected_stdout = expected.EXPECTED_STDOUT[name]
         expected_stderr = expected.expected_stderr(name, source)
         passed = (process['exit'] == expected.EXIT_CODES[name] and not process['timeout']
@@ -72,7 +78,9 @@ def main():
                      'stderr_b64': base64.b64encode(stderr).decode(),
                      'expected_stdout_b64': base64.b64encode(expected_stdout).decode(),
                      'expected_stderr_b64': base64.b64encode(expected_stderr).decode(),
-                     'passed': passed, 'agreement_credit': 0})
+                     'passed': passed, 'agreement_credit': 0,
+                     'expected_model_status': getattr(expected, 'STATUSES', {}).get(
+                         name, 'php_error' if expected.EXIT_CODES[name] == 255 else 'normal')})
         print(name, passed, flush=True)
     assert inputs == {str(path): digest(path) for path in watched}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()

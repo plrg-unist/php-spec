@@ -1,0 +1,263 @@
+{
+  "milestone": "ATTR07: builtin callable attributes on real Closure and arrow expressions",
+  "status": "private validated; actual-parent composition pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "scope": [
+    "Literal/NULL NoDiscard and Deprecated attributes on real Closure/arrow expressions, using lexical namespace/import resolution.",
+    "Binding discovery/use errors before attributes, signature/use conflicts before NoDiscard void/never restrictions, then body compilation.",
+    "Checked function/fn keyword receipts determine declaration names and error lines independently of multiline attributes/static tokens.",
+    "Direct VM, selected assert API and explicit Closure wrapper reuse existing warning/copy/receive protocols; bound receivers are borrowed from their owning Closure.",
+    "Scoped/rebound warnings use selected lexical scope and original template name; anonymous scope and function components have separate C-string truncation."
+  ],
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-07",
+  "production": {
+    "revision": "4cd7720b15d4f51b19af8bfbe4be1a497811394a",
+    "files": [
+      "frontend/worker.php",
+      "spec/semantics/115-closure-compiler.watsup",
+      "spec/semantics/117-arrow-compiler.watsup",
+      "spec/semantics/141-method-compiler.watsup",
+      "spec/semantics/194-compiler-preflight.watsup",
+      "spec/semantics/440-builtin-function-attributes.watsup",
+      "spec/semantics/442-deprecated-api-callbacks.watsup",
+      "spec/semantics/443-deprecated-closure-invoke.watsup"
+    ]
+  },
+  "evidence": {
+    "native": {
+      "retained_passed": 8,
+      "separate_safe_api": 1,
+      "eligible": 9,
+      "unsafe_original_credit": 0,
+      "first_mixed_packet": {
+        "report": "native-first-6f6ee399b/report.json",
+        "sha256": "520e880c47a4f3e909f5dcf49366e1de8a7d9bcfd8f13d7a170bf1f26fadd37f",
+        "revision": "6f6ee399b48eea2f078395d577a4061f047e58e3"
+      },
+      "safe_api": {
+        "report": "native-owned-api-714c452dd/report.json",
+        "sha256": "b41abc493f4ff2b9a3712aa9ec06c88081150034078b9e0f16dbd093771c444e",
+        "revision": "714c452dd59ebeeb2649c6067e2052bacbfa49a9"
+      }
+    },
+    "sources": {
+      "report": "source-first-4cd7720b1/report.json",
+      "sha256": "9649d135b82067e3cb73125547d4515bf0eff850a447dbf4d62692884d6375e6",
+      "revision": "4cd7720b15d4f51b19af8bfbe4be1a497811394a",
+      "normal": 6,
+      "static_rejection": 3,
+      "agreement_credit": 9,
+      "first_attempt": true
+    },
+    "syntax": {
+      "report": "keyword-roundtrip-wireint-4cd7720b1/checks/report.json",
+      "sha256": "8865657653f635152b67ee792013bea9ab730d2a5770eb7e52859cba0de0b2a7",
+      "revision": "4cd7720b15d4f51b19af8bfbe4be1a497811394a",
+      "originals": 9,
+      "focused_nested_or_trivia": 2,
+      "checks": "original/checked fresh reconstruction, printed parser acceptance, recheck, idempotence and normalized AST; original keyword receipts"
+    },
+    "private_strict": {
+      "report": "strict-4cd7720b1/report.json",
+      "sha256": "7325994b418e7d18352a1945beb8b7e5863f034e57e616a52afff2055b176c18",
+      "revision": "4cd7720b15d4f51b19af8bfbe4be1a497811394a",
+      "modules": 432,
+      "elapsed": 12.584668636322021,
+      "affinity": [
+        3
+      ]
+    },
+    "reached": {
+      "author": {
+        "report": "reached-author-list-6caa1667e/report.json",
+        "sha256": "40477212a7418f867b30d7d86efe400d889583a394c888a942407259773f315b",
+        "revision": "0d618327e1fa9ab4531bbd7bd921f881ebf58de0"
+      },
+      "independent": {
+        "report": "reached-review-0d618327e/report.json",
+        "sha256": "89f343c4893bd05355bc42ac1175c062a62b5847c7d2d6e945fe5bde90856b9b",
+        "revision": "0d618327e1fa9ab4531bbd7bd921f881ebf58de0"
+      },
+      "groups": 5,
+      "conditions": 428,
+      "source_reached": 422,
+      "derived_assertions": 6,
+      "derived_scope": "Two missing/out-of-span checked-AST keyword refusals; four premises in one expired-selected-API projection. No source agreement credit.",
+      "rows": [
+        {
+          "id": "closure-expression-reference-capture-through-both-vm-warnings",
+          "conditions": 77,
+          "derived": 2,
+          "elapsed": 41.1981987953186
+        },
+        {
+          "id": "arrow-expression-multiline-static-name-and-used-result",
+          "conditions": 93,
+          "derived": 0,
+          "elapsed": 45.697468280792236
+        },
+        {
+          "id": "closure-expression-owned-assert-api-selection",
+          "conditions": 74,
+          "derived": 4,
+          "elapsed": 73.57073044776917
+        },
+        {
+          "id": "scoped-rebound-closure-vm-flags-retain-selected-receiver",
+          "conditions": 93,
+          "derived": 0,
+          "elapsed": 126.23468899726868
+        },
+        {
+          "id": "scoped-rebound-closure-wrapper-flags-retain-selected-receiver",
+          "conditions": 91,
+          "derived": 0,
+          "elapsed": 120.01845049858093
+        }
+      ]
+    },
+    "old_model_gate": {
+      "report": "old-gate-714c452dd/report.json",
+      "sha256": "a93944125d1607e45d0872af23ca825e692efa6aa7e10340eac4b63f76d803aa",
+      "revision": "714c452dd59ebeeb2649c6067e2052bacbfa49a9",
+      "agreement_credit": 0,
+      "expected_model_comparison_passed": false,
+      "observed": {
+        "status": "unsupported",
+        "stdout": "",
+        "stderr": "",
+        "exit_status": null,
+        "diagnostic": null,
+        "reason": "ordinary expression or writable operand compilation",
+        "events": [],
+        "frontend": "accepted",
+        "checked": "program"
+      },
+      "elapsed": 11.30177927017212
+    },
+    "native_selection_negatives": {
+      "report": "native-selection-negatives-714c452dd/report.json",
+      "sha256": "cc0326a229f908e977405672a22a21485d93941b2ffa2d8a22d6578118a7aa36",
+      "revision": "714c452dd59ebeeb2649c6067e2052bacbfa49a9",
+      "scope": "Default mixed false packet and explicitly selected failed row refuse before any model actor; passed selected rows require explicit selection."
+    }
+  },
+  "sources": [
+    {
+      "id": "closure-expression-reference-capture-through-both-vm-warnings",
+      "source_sha256": "710e35273d6b59686522ce0d515c3aac43f96ad11a45b392d4217f2f76c3eab6",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "normal",
+      "model_elapsed": 37.369996547698975
+    },
+    {
+      "id": "arrow-expression-multiline-static-name-and-used-result",
+      "source_sha256": "f355f95632c9e19fd74f919b90172de828af8c6983b4888f316f5d5818b59a1c",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "normal",
+      "model_elapsed": 36.209856033325195
+    },
+    {
+      "id": "arrow-expression-nodiscard-never-before-invalid-body",
+      "source_sha256": "9d6ae1a0809dda4cd1f8ba9e4aaa17cb5a0468c8551b97ba297af05963abc4f5",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "static_rejection",
+      "model_elapsed": 11.812177419662476
+    },
+    {
+      "id": "scoped-rebound-closure-vm-flags-retain-selected-receiver",
+      "source_sha256": "c26cc9cb1556f2f23d798232a2e4e7e4cc53bc458e3c07b161f65ec7951bcb7a",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "normal",
+      "model_elapsed": 102.89869284629822
+    },
+    {
+      "id": "scoped-rebound-closure-wrapper-flags-retain-selected-receiver",
+      "source_sha256": "451e3fcc856a95c1238993c4e7d80d35e6c9a777c4041ef82bff7516934bb794",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "normal",
+      "model_elapsed": 100.8438766002655
+    },
+    {
+      "id": "anonymous-scope-closure-warnings-use-two-c-strings",
+      "source_sha256": "992e064359731d64cbe678a7bd6a3d2630d5b287d31bff78eb8b5f798f4372c2",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "normal",
+      "model_elapsed": 23.772119760513306
+    },
+    {
+      "id": "closure-duplicate-use-before-repeated-deprecated",
+      "source_sha256": "f5f5b9648e07710bbbe3040c2775c1f17a8c1a3d45c3b38e579134b10896ce89",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "static_rejection",
+      "model_elapsed": 12.550822257995605
+    },
+    {
+      "id": "class-scoped-nodiscard-void-closure-before-bad-body",
+      "source_sha256": "506d3df57ae3a5e3ddec442aa43568cb8c9dd0500bf272147fbd9e4067316a8c",
+      "native_report": "native-first-6f6ee399b/report.json",
+      "status": "static_rejection",
+      "model_elapsed": 12.80564284324646
+    },
+    {
+      "id": "closure-expression-owned-assert-api-selection",
+      "source_sha256": "1d2b563b99b682319001e9411af25fb67e93b258e720eda514c60c9d74719cbc",
+      "native_report": "native-owned-api-714c452dd/report.json",
+      "status": "normal",
+      "model_elapsed": 59.67739725112915
+    }
+  ],
+  "unresolved_native_lifetime_observation": {
+    "source_id": "closure-expression-assert-api-selected-before-registry-replacement",
+    "source_sha256": "e4d03025507cb170b91446ca466ee58bdf95c1488dabe966186f3b03c0fdf989",
+    "revision": "6f6ee399b48eea2f078395d577a4061f047e58e3",
+    "raw_report": {
+      "report": "native-first-6f6ee399b/report.json",
+      "sha256": "520e880c47a4f3e909f5dcf49366e1de8a7d9bcfd8f13d7a170bf1f26fadd37f",
+      "revision": "6f6ee399b48eea2f078395d577a4061f047e58e3"
+    },
+    "agreement_credit": 0,
+    "observation": "The pinned native run exited 0. During the Deprecated handler both callback and receiver WeakReference::get() returned NULL; the selected callback body then ran, while its own WeakReference and receiver-identity checks were false. The original expected output disagreed; this row has zero agreement credit.",
+    "inference": "assert.c passes the registry callback to zend_call_function, whose Deprecated warning precedes its later Closure addref. The handler can replace the registry and clear the outside name. This sequence suggests a lifetime hazard, but the retained output does not establish the cause or confirm an engine defect.",
+    "source_authority": [
+      "ext/standard/assert.c:PHP_FUNCTION(assert) and assert_options callback replacement",
+      "Zend/zend_execute_API.c:_call_user_function_impl and zend_call_function before Closure GC_ADDREF",
+      "Zend/zend_API.c:zend_is_callable_at_frame",
+      "Zend/zend_closures.c:zend_closure_get_closure and zend_closure_free_storage"
+    ],
+    "model_disposition": "Existing live-node guard refuses expired selected API callback before argument copy; readonly history is never entry authority. The derived projection checks that exact Unsupported without a source-agreement claim. Safe control retains a separately named external owner."
+  },
+  "preserved_failures": [
+    {
+      "path": "keyword-roundtrip-4cd7720b1",
+      "credit": 0,
+      "reason": "External diagnostic receipt decoder compared a wire integer record to int; corrected decoder only, then eleven syntax cases passed."
+    },
+    {
+      "path": "reached-author-6caa1667e",
+      "credit": 0,
+      "reason": "Fixture parser rejected unparenthesized REALCLOSURE capture-list arguments before execution. Fixture-only 0d618327e corrects eight patterns; no source/native/production renewal."
+    }
+  ],
+  "remaining": [
+    "General attribute messages/constructor coercions and user/mixed attributes.",
+    "Wider special callback, registry cache, reference-return, lifecycle/reentry and dynamic producer histories retain their existing partial scope."
+  ],
+  "review": {
+    "agent": "/root/attr04_recover_review",
+    "production": "CLEAR at4cd7720b1",
+    "fixture_correction": "CLEAR at0d618327e",
+    "independent_reached": 184,
+    "final_package": "CLEAR at ab7e734c8; source-reference/owner wording corrected only"
+  },
+  "recovery": {
+    "fixtures": [
+      "tests/semantics/deprecated_closure_expression_cases.py",
+      "tests/semantics/deprecated_closure_expression_review_cases.py",
+      "tests/semantics/deprecated_closure_expression_protocol.py",
+      "tests/semantics/deprecated_closure_expression_review_protocol.py"
+    ],
+    "method": "Recover retained scripts/source from recorded commits and reports; use recorded exact selections/profile/commands. Prior accepted rows keep their cuts; do not replay without a changed dependency or unresolved concern."
+  },
+  "composition": null
+}

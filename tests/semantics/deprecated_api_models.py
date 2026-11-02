@@ -42,6 +42,11 @@ def main():
                ROOT / 'spec/semantics/83-call-traces.watsup',
                ROOT / 'spec/semantics/105-named-arguments.watsup',
                ROOT / 'spec/semantics/108-call-unpack.watsup',
+               ROOT / 'spec/semantics/115-closure-compiler.watsup',
+               ROOT / 'spec/semantics/117-arrow-compiler.watsup',
+               ROOT / 'spec/semantics/141-method-compiler.watsup',
+               ROOT / 'spec/semantics/194-compiler-preflight.watsup',
+               ROOT / 'spec/semantics/253-closure-current-binding.watsup',
                ROOT / 'spec/semantics/142-method-runtime.watsup',
                ROOT / 'spec/semantics/379-sensitive-parameters.watsup',
                ROOT / 'spec/semantics/301-cycle-collection.watsup',
@@ -62,11 +67,14 @@ def main():
     native_rows = []
     for path in args.native_report:
         report = json.loads(path.read_bytes())
-        assert report['passed'] and report['profile'] == profile
+        assert report['profile'] == profile
+        assert report['passed'] or args.case is not None
         binary_hashes = [value for key, value in report['inputs'].items()
                          if key.endswith('.tools/php/bin/php')]
         assert binary_hashes == [php_sha256]
         for row in report['rows']:
+            if args.case and row['id'] not in args.case:
+                continue
             assert row['passed'] and row['native']['exit'] in (0, 255)
             assert not row['native']['timeout'] and not row['native']['group_after']
             source = Path(row['native']['argv'][-1])
@@ -94,6 +102,9 @@ def main():
         finished = (not model['timeout'] and model['interruption'] is None
                   and not model['group_after'] and not (directory / 'model.stderr').read_bytes()
                   and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program')
+        expected_status = native_row.get('expected_model_status',
+            'php_error' if native_row['native']['exit'] == 255 else 'normal')
+        assert expected_status in ('normal', 'php_error', 'static_rejection')
         boundary = BOUNDARIES.get(native_row['id'])
         if boundary:
             reason, prefix = boundary
@@ -103,7 +114,7 @@ def main():
                       and outcome.get('stderr') == '')
         else:
             passed = (finished and model['exit'] == 0
-                      and outcome.get('status') == ('php_error' if native_row['native']['exit'] == 255 else 'normal')
+                      and outcome.get('status') == expected_status
                       and outcome.get('reason') is None
                       and outcome.get('exit_status') == native_row['native']['exit']
                       and outcome.get('stdout') == native_row['stdout_b64']
