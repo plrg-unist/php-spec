@@ -1,0 +1,21 @@
+{
+  "scope": "is_callable third direct CV output from a separate live variable holding an enum method string",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "952f8027de09f1191e2b19e8f5cae5b39e55d7b2",
+  "semantic_revision": "7580b26bb7a57eccb40616580303faba597bd794",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: separate SHA 708c3064f4f5c858d8c8c07eb692b9a365be397ba7a5c31177c7fc9dd43f364a, alias SHA 680f2b2f7826d814260522dc433ab88e823242a2ad8e6b3e129f345e4af4795e, rebind SHA c14d7f9272ecd562cd60b97b09c9d012f0d5e0c7bedf8679a0694437fe19e707; all exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-variable-output-evidence/strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.56 s, stable inputs",
+    "source": ".tools/enum-is-callable-variable-output-evidence/source-v1/report.json: separate:1:DynamicCheck::from:DynamicCheck::from| exact native/model normal",
+    "state": ".tools/enum-is-callable-variable-output-evidence/reached-v1/report.json: 46 checked source-reached SL guards true, exit 0, empty stderr, stable inputs",
+    "boundaries": [
+      ".tools/enum-is-callable-variable-output-evidence/alias-control-v1/report.json: same-cell alias remains explicit Unsupported; native alias:1:DynamicCheck::from:DynamicCheck::from|",
+      ".tools/enum-is-callable-variable-output-evidence/rebind-control-v1/report.json: second-argument rebind emits REBIND| then explicit Unsupported; native REBIND|selected:1:FirstCheck::from|target:OtherCheck::from|"
+    ]
+  },
+  "behavior": "The first argument is a source-certified direct variable, the second is literal false, and the third is a distinct direct output CV. A live unforwarded target cell retains the saved string bytes; the published enum query uses the saved operand, then writes its raw name to the output cell before returning the boolean. The reached gate rejects a forged change to the target store and observes no event/cache change at the write.",
+  "remaining": "Same-cell input/output aliases, argument-time target rebinding, old array/object output values, destructor ordering, nonliteral array inputs, named/unpacked output and autoload remain partial."
+}

@@ -122,6 +122,11 @@ explicit Unsupported because its destructor runs during replacement.
 Literal enum method strings now also retain their raw class and method spelling
 in the third output, including lowercase and a leading backslash. Three exact
 outcomes and 88 reached guards pass.
+A separate live variable can now supply the enum method string to a direct
+three-argument `is_callable` call with literal `false`. Its saved and current
+bytes agree, and a distinct initialized output CV receives the name before the
+boolean. One exact original and 46 reached guards pass; same-cell aliases and
+argument-time target rebinding remain explicit Unsupported.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -136,7 +141,8 @@ outcomes and 88 reached guards pass.
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
 [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
 [scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
-[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json).
+[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json),
+[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now

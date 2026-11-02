@@ -761,3 +761,8 @@ Literal enum method strings also retain raw class and method spelling in the
 third output. The [string-spelling review](../../coverage/semantics/enum-is-callable-output-string-spelling-review.json)
 records canonical, lowercase and leading-backslash outcomes with 88 reached
 guards.
+A live variable holding the enum method string can also feed a direct query
+with literal `false`, provided its saved bytes still match and the output CV is
+distinct. The [variable-output review](../../coverage/semantics/enum-is-callable-output-variable-review.json)
+records one exact original and 46 reached guards; same-cell aliasing and
+argument-time target rebinding remain Unsupported.
