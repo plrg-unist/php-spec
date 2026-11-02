@@ -400,7 +400,9 @@ an exact Unsupported boundary/zero credit. The OB05 join passes strict433,
 the retained captured-FINAL original, and two new exact raw-invokable originals.
 Buffered post-output release reaches two equal FCC owners before retirement;
 the affected bound-Closure executor case also passes. Other late-free and wider
-callback/compiler forms remain partial; current-parent review is pending.
+callback/compiler forms remain partial. The current-parent bridge retains the accepted
+strict and focused source/reached gates across disjoint enum pipe, Generator and
+explicit-GC additions.
 [Cache review](coverage/semantics/callback-fcc-cache-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
