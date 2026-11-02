@@ -389,8 +389,9 @@ current value after real storage release; copied arguments remain independent.
 Four sources and 565 reached conditions pass; joined strict433 and fresh terminal
 source/state pass at `9cde7e64d`.
 A named BYVAL factory can return a distinct BYREF Generator with a final owning
-ordinary cell. Four sources and 512 reached conditions pass privately; copied
-arguments survive DATA/INPUT release and real Generator storage cleanup.
+ordinary cell. Four sources and 512 reached conditions pass; copied arguments
+survive DATA/INPUT release and real Generator storage cleanup. Joined strict433
+and fresh terminal source/state pass at `1a7c38d0b`.
 [Owning arguments](coverage/semantics/config-iterator-argument-review.json),
 [INPUT cleanup](coverage/semantics/config-iterator-input-finalizer-review.json),
 [Generator scalars](coverage/semantics/config-generator-scalar-review.json),
@@ -720,7 +721,6 @@ Live/live duplicate names and nonordinary tables remain partial.
 | --- | --- |
 | CLASS165 | Copied trait alias traces across failed first-class publication: four native/model originals and two reached trace groups pass privately. A retained method receipt supplies bare `q`; saved scope distinguishes `U::q` before fixup from `C::q` after fixup. Three tick-wrapper probes stop at explicit unsupported admission with zero agreement. Composed strict433 and four-source actual-tail gates pass; integration review pending. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json). |
 | Enum pipe | Generated method strings/class and case arrays pass four exact native-first originals, private strict433 and two source-reached SL groups with 68 checks at db3b26b16. Current-tail composition and integration pending; wider APIs/default loading remain partial. [Review](coverage/semantics/enum-pipe-review.json). |
-| A87 | A named BYVAL factory returns a distinct BYREF Generator whose final ordinary owning cell is released through DATA/INPUT and real storage; four exact sources and two reached proofs complete privately, integration pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 
