@@ -1515,7 +1515,7 @@ def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
 def $enum_is_callable_input(pconfigcall) = eps -- otherwise
 
 ;; The third argument is a writable CV, captured before invocation. This
-;; first route keeps the callable a literal generated enum method string and
+;; source route keeps the callable a literal method string on a published enum and
 ;; the prior output value scalar, so the write cannot run user code.
 dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
 def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
@@ -1526,7 +1526,6 @@ def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
   -- if $string_carrier_valid(S, pvalue_input)
   -- if ptbytes_input = $base64(text_input)
   -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
-  -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = (pintrinsic_generated)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $base64(text_input) = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
   -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((NExprVariable (BYTES text_output) metadata_output, false, eps, porigin_output, z_output))
