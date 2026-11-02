@@ -1514,6 +1514,56 @@ def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL b_syntax))]
 def $enum_is_callable_input(pconfigcall) = eps -- otherwise
 
+;; The third argument is a writable CV, captured before invocation. This
+;; first route keeps the callable a literal generated enum method string and
+;; the prior output value scalar, so the write cannot run user code.
+dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
+def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+  -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (3)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((NScalarString (BYTES text_input) metadata_input, false, eps, porigin_input, z_input))
+  -- if $string_bytes(pvalue_input) = ($base64(text_input))
+  -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
+  -- if $enum_generated_kind(S, porigin_class, ptbytes_method) = (pintrinsic_generated)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $base64(text_input) = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((NExprVariable (BYTES text_output) metadata_output, false, eps, porigin_output, z_output))
+  -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_name*)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED pvalue_old
+  -- if $string_bytes(pvalue_old) = (ptbytes_old)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+  -- if ~$foreach_released_cell(S, n_cell)
+def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = eps -- otherwise
+
+def $enum_is_callable_ref_argument(S, pconfigcall) = true
+  -- if pconfigcall.INDEX = 2 /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax))]
+  -- if $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+def $enum_is_callable_ref_argument(S, pconfigcall) = false -- otherwise
+
+rule PhpStep/enum-is-callable-ref-send: S ~> S_ref[.TODO = (CONFIG_ARGS ($config_sent(pconfigcall, REFERENCE n_cell, eps)[.INDEX = 3])) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_SEND pconfigcall) :: ptask_tail*
+  -- if $enum_is_callable_ref_argument(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax))]
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((expression, false, eps, porigin_output, z_output))
+  -- if $reference_cv(expression) = (n_name*)
+  -- if S.RESULT = VARIABLE n_name* z_variable
+  -- if $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+  -- if S_checked = $config_send_check(S, pconfigcall, eps, z_output)
+  -- if S_checked.COMPLETION = NORMAL
+  -- if S_ref = $call_location_reference(S_checked[.LOCATION = ROOT n_cell])
+  -- if S_ref.COMPLETION = NORMAL
+
+def $enum_is_callable_ref_slots_valid(S, pconfigcall) = true
+  -- if pconfigcall.INDEX = 3 /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
+  -- if $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $enum_is_callable_ref_slots_valid(S, pconfigcall) = false -- otherwise
+
 dec $enum_is_callable_magic(pstate, porigin, bool) : bool?
 def $enum_is_callable_magic(S, porigin_class, false) = (true)
   -- if $effective_method(S, porigin_class, $ptascii("__callStatic"), |S.CLASSES|) = (pmethoddesc)
@@ -1579,6 +1629,14 @@ def $enum_is_callable_result(S, pvalue, false) = (b_magic)
 def $enum_is_callable_result(S, pvalue, b_syntax) = eps -- otherwise
 
 dec $enum_is_callable_receive(pstate, pconfigcall) : pstate
+def $enum_is_callable_receive(S, pconfigcall) = S_write[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b_callable)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
+  -- if $enum_is_callable_ref_slots_valid(S, pconfigcall)
+  -- if $enum_is_callable_result(S, pvalue_input, b_syntax) = (b_callable)
+  -- if $string_bytes(pvalue_input) = (ptbytes_name)
+  -- if S_write = $write_cell_checked(S, n_cell, PSTRING ptbytes_name, pconfigcall.LINE)
+  -- if S_write.COMPLETION = NORMAL
 def $enum_is_callable_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL b_callable)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
