@@ -117,7 +117,7 @@ def prepare(out):
         checks += [s + '_found = $test_encoding_seek(' + previous + ',0,2500)',
             s + '_found.COMPLETION = NORMAL \\/ ' + s + '_found.COMPLETION = BUDGET',
             s + ' = ' + s + '_found[.COMPLETION = NORMAL]',
-            s + '.ORIGIN = (PORIGIN 0 [PCINDEX ' + str(i) + '])',
+            s + '.ORIGIN = (PORIGIN 0 ([PCINDEX ' + str(i) + ']))',
             s + '.TODO = (STMT statement_body_' + str(i) + ') :: ptask_' + str(i) + '*',
             'statement_body_' + str(i) + ' = NStmtDeclare (SEQUENCE phpType49_' + str(i) + '*) (SEQUENCE statement_' + str(i) + '*) metadata_' + str(i),
             '$encoding_declare_valid(' + s + ',statement_body_' + str(i) + ')',
@@ -137,8 +137,8 @@ def prepare(out):
         '$test_outputs(S_final.EVENTS) = $ptascii("B|S|C|Z|")', *public('S_final'),
         '~$encoding_declare_valid(S_0[.ORIGIN = eps],statement_body_0)',
         '~$encoding_declare_valid(S_0[.SOURCES = eps],statement_body_0)',
-        '~$encoding_declare_valid(S_0[.ORIGIN = (PORIGIN 0 [PCINDEX 1])],statement_body_0)',
-        '~$encoding_declare_valid(S_0[.ORIGIN = (PORIGIN 1 [PCINDEX 0])],statement_body_0)']
+        '~$encoding_declare_valid(S_0[.ORIGIN = (PORIGIN 0 ([PCINDEX 1]))],statement_body_0)',
+        '~$encoding_declare_valid(S_0[.ORIGIN = (PORIGIN 1 ([PCINDEX 0]))],statement_body_0)']
     (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
     (out / 'protocol.watsup').write_text('var U : program\n' + PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
         + ''.join('  -- if ' + check + '\n' for check in checks))
