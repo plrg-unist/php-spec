@@ -243,8 +243,6 @@ dec $executor_normal_tasks(pstate, ptask*) : bool
 dec $executor_normal_task(pstate, ptask) : bool
 dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
-dec $executor_tick_entry_ready(pstate, ptickentry) : bool
-dec $executor_tick_entries_ready(pstate, ptickentry*) : bool
 dec $executor_tick_ready(pstate) : bool
 dec $executor_tick_valid(pstate, pexecutortick) : bool
 dec $executor_tick_nodes(ptickentry) : pnode*
@@ -323,28 +321,14 @@ def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue (EXECUTOR_PENDING n)) = 
 def $call_task_valid(S, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE) = ($executor_queue_valid(S, pexecutorqueue) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE, eps))
 def $executor_queue_begin(S) = S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE]][.SHUTDOWN.ENTRIES = eps][.SHUTDOWN.INDEX = 0][.COMPLETION = NORMAL][.ORIGIN = eps]
   -- if pexecutorqueue = {COMPLETION S.COMPLETION, VALUE S.RESULT, BASE S.BASE, ORIGIN S.ORIGIN, ENTRIES S.SHUTDOWN.ENTRIES, TARGETS $executor_queue_targets(S, S.SHUTDOWN.ENTRIES), RECEIVERS $executor_queue_receivers(S, S.SHUTDOWN.ENTRIES)}
-;; basic RSHUTDOWN frees copied tick arguments before FCC.object and FCC.closure.
-;; The same raw invokable object occupies both FCC slots. Keep the registered
-;; source as a nonowning snapshot after transferring its roots into the task.
+;; basic RSHUTDOWN frees copied tick arguments before any independent FCC.object
+;; and FCC.closure slots. Keep the registered source as a nonowning snapshot
+;; after transferring its roots into the task.
 def $executor_tick_nodes(ptickentry) = $operands_roots($shutdown_known(ptickentry.ENTRY.ARGS)) ++ $callback_cache_nodes(ptickentry.ENTRY)
-def $executor_tick_entry_ready(S, ptickentry) = true
-  -- if ptickentry.ENTRY.CALL.SENT = (NAMED_SENT (KNOWN (POBJECT n_callback))) :: pnamedslot*
-  -- if ptickentry.ENTRY.ARGS = $shutdown_values(pnamedslot*)
-  -- if ptickentry.ENTRY.CACHEOBJECT = (n_callback)
-  -- if $callback_cache_nodes(ptickentry.ENTRY) = [HOBJECT n_callback, HOBJECT n_callback]
-  -- if $target_receiver(S, ptickentry.ENTRY.TARGET) = (n_callback)
-  -- if ~$closure_callable(S, n_callback)
-  -- if $tick_entry_valid(S, ptickentry)
-def $executor_tick_entry_ready(S, ptickentry) = false -- otherwise
-def $executor_tick_entries_ready(S, eps) = true
-def $executor_tick_entries_ready(S, ptickentry :: ptickentry_tail*) = true
-  -- if $executor_tick_entry_ready(S, ptickentry) /\ $executor_tick_entries_ready(S, ptickentry_tail*)
-def $executor_tick_entries_ready(S, ptickentry*) = false -- otherwise
 def $executor_tick_ready(S) = true
   -- if S.TICKENTRIES = ptickentry :: ptickentry_tail*
   -- if S.COMPLETION = NORMAL /\ S.ASSERTCALLBACK = eps
   -- if $tick_entries_valid(S, S.TICKENTRIES, 0)
-  -- if $executor_tick_entries_ready(S, S.TICKENTRIES)
 def $executor_tick_ready(S) = false -- otherwise
 def $executor_tick_valid(S, pexecutortick) = true
   -- if S.TICKENTRIES = pexecutortick.TAIL /\ S.ASSERTCALLBACK = eps
@@ -386,9 +370,9 @@ def $executor_tick_begin(S) = S[.TODO = [EXECUTOR_TICK_RELEASE pexecutortick tru
 def $output_executor_finish(S) = $executor_tick_begin(S)
   -- if $executor_free_endpoint(S) /\ $executor_tick_ready(S)
 def $output_executor_finish(S) = $executor_queue_begin(S)
-  -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES =/= eps /\ ~$executor_module_owners(S)
+  -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES =/= eps /\ ~$executor_module_owners(S) /\ ~$executor_tick_ready(S)
 def $output_executor_finish(S) = $executor_free_finish(S)
-  -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES = eps /\ ~$executor_module_owners(S)
+  -- if $executor_free_endpoint(S) /\ S.SHUTDOWN.ENTRIES = eps /\ ~$executor_module_owners(S) /\ ~$executor_tick_ready(S)
 def $output_executor_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output module callback-owner release"]
   -- if $executor_free_endpoint(S) /\ $executor_module_owners(S) /\ ~$executor_tick_ready(S)
 rule PhpStep/executor-tick-release: S ~> $eager_operation_begin(S[.TODO = [EXECUTOR_TICK_RELEASE pexecutortick false]], S, EXECUTOR_TICK_RELEASE pexecutortick true, $executor_tick_nodes(pexecutortick.ENTRY))
