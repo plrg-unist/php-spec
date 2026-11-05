@@ -179,6 +179,10 @@ def $tick_new_named(NName phpType33 metadata) = true
 def $tick_new_named(NNameFullyQualified phpType33 metadata) = true
 def $tick_new_named(NNameRelative phpType33 metadata) = true
 def $tick_new_named(phpType28) = false -- otherwise
+;; YIELD compiles key before value; YIELD_FROM has one operand. Nested callable
+;; bodies contribute their own plans and file declarables in that same order.
+def $tick_expression_body(T, pcodeexpr*, pcpath, NExprYield phpType5_key phpType5_value metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYield phpType5_key phpType5_value metadata, pcpath))
+def $tick_expression_body(T, pcodeexpr*, pcpath, NExprYieldFrom expression metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYieldFrom expression metadata, pcpath))
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
   -- if ~$tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata, 6)
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
@@ -898,6 +902,8 @@ def $tick_expression_opcode(NExprThrow expression metadata) = true
 def $tick_expression_opcode(NExprUnaryMinus expression metadata) = true
 def $tick_expression_opcode(NExprUnaryPlus expression metadata) = true
 def $tick_expression_opcode(NExprVariable phpType32 metadata) = true
+def $tick_expression_opcode(NExprYield phpType5_key phpType5_value metadata) = true
+def $tick_expression_opcode(NExprYieldFrom expression metadata) = true
 def $tick_expression_opcode(NScalarFloat phpType41 metadata) = true
 def $tick_expression_opcode(NScalarInt phpType24 metadata) = true
 def $tick_expression_opcode(NScalarInterpolatedString phpType29 metadata) = true
