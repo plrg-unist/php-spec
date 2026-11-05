@@ -1,0 +1,40 @@
+{
+  "scope": "A102 initialized user Iterator copies a Stringable INI_SET option that converts to exact zend.assertions and a PINT 0 or PINT 1 value after traversal and DATA/INPUT cleanup.",
+  "behavior": "The converted option retires before assertion setting. A temporary call changes startup 1 to 0, returns old 1, and restores 1. A retained first-class setter stays selected after key-time rebinding, makes a 1-to-1 call, then changes 1 to 0 before restore. The pending assertion result keeps a nonowning certificate of its original Iterator receipt after the converted scalar call loses its last heap root.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_set", "Zend/zend_ini.c zend_alter_ini_entry_ex", "Zend/zend.c OnUpdateAssertions"]
+  },
+  "tested_cut": {
+    "revision": "f55224d28f0787549685fcd4729dc841255ce1da plus the private A102 edit",
+    "semantic_module_sha256": {
+      "172-file-context-intrinsics.watsup": "26796673b574eb9116125c3aa8850ec116f710e49d50e3bb4412d3aac0d2df10",
+      "368-assertion-quantity.watsup": "e7df1d9231b774777cad608a9ccd4a1702f4422a0f17e5ee6e205b9a5f67b0a4",
+      "420-config-iterator-unpack.watsup": "13e70ea8860846804b2225709aa64536b38814cdff2e64c9442fda5bd8815894"
+    },
+    "manifest_sha256": "743339812651b2c1317ae062abe926ea0ff797f611d9b516a385f627edf2f255",
+    "case_catalog_sha256": "b7ebd43982c814d45f204b2b79a4bd89b9c5064db369588c30b88037d83e3062",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, sole CPU4 actor",
+    "sources": [
+      {"id": "temporary-option-sets-assertions-zero-after-retirement", "sha256": "518aacc6be34e0e90380af4e674491a7a8106cd81f3a1c85aaba58265eab04dd"},
+      {"id": "selected-setter-uses-assertions-one-after-rebinding", "sha256": "2a2e65692c9a37e27c0854ed6dc3035ab44df6674897a8136bd40be0cfd288e4"}
+    ],
+    "source_result": "Both pinned-native/model exact normal comparisons passed: decoded stdout equal, exit 0, empty stderr, stable watched inputs and tested HEAD.",
+    "reached": "temporary-zero-captures-old-one-and-restores passed 73 conditions; selected-one-keeps-owner-after-cv-rebinding passed 80. They check initial/raw/original assertion values, nonowning receipt certificate, copied option retirement, selected Closure owner, old return, completed write and restore. PINT 2 is refused, and a forged rootless assertion record with CONVERSION=eps fails call and record validity.",
+    "strict_sl": "Ordered 434-module manifest, exit 0, stdout true, empty stderr; 12.076 seconds.",
+    "joined_strict_sl": "Rebased onto 7f3140d16dad6d1ae56cd35af9f62e2120cff56d with byte-identical tested 172/368/420 and case catalog; ordered 435-module manifest, exit 0, stdout true, empty stderr; 19.841 seconds. The added 446 module handles rejected main sources, while these accepted main sources use the unchanged adapter path.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-int-102/author-certificate-f55224d28",
+    "commands": [
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_int_sources.py --case temporary-option-sets-assertions-zero-after-retirement",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_int_sources.py --case selected-setter-uses-assertions-one-after-rebinding",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_int_state.py --case temporary-zero-captures-old-one-and-restores",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_int_state.py --case selected-one-keeps-owner-after-cv-rebinding",
+      "taskset -c 4 tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json entries> .tools/a102-strict.watsup",
+      "taskset -c 4 tests/semantics/_build/default/numeric_runner.exe --sl <rebased ordered modules.json entries> .tools/a102-joined-strict.watsup"
+    ]
+  },
+  "prior_boundary": "At integrated A101, the direct native source completed while the model returned CONFIG Iterator Stringable option Unsupported; raw is at /home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-int-102/baseline-unsupported-f55224d28. A first one-line admission exposed missing rootless assertion-record call authority; its source and reached failures are preserved separately. The first certificate run lacked a forward declaration and is also preserved. None receives agreement credit.",
+  "limits": "Only PINT 0/1 is newly admitted for exact zend.assertions after this copied Stringable route. PINT 2 and other accepted scalar shapes remain outside it; rejected ARRAY/OBJECT values retain A101. Warning-handler reentry, wider option/value graphs, other CONFIG consumers and A97 warning-handler exception work remain outside this result. No full-core, equivalence or BOLA claim.",
+  "review": "independent exact-head CLEAR at 751ad0b0d603140d4a4910042a1d996efd9ab252"
+}

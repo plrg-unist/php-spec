@@ -1,0 +1,1 @@
+declare(encoding=1)

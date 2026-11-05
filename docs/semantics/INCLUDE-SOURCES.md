@@ -1748,7 +1748,57 @@ configuration writes affect API validation; a supplied Throwable instead release
 the copied prefix after INPUT and keeps the original pending identity. Array COW,
 embedded aliases and API TraceArgs retain their ordinary ownership behavior.
 
-Other CONFIG intrinsic acquisition, temporary source/key forms, Stringable/effectful
+The [Iterator Stringable option increment](../../coverage/semantics/config-iterator-stringable-name-review.json)
+copies an ordinary Stringable option through the existing finite Iterator send,
+then casts it after traversal and DATA/INPUT cleanup. Its raw option owner retires
+before INI_SET samples the old setting. A retained first-class setter keeps its
+original Closure owner when a callback rebinds the source variable. Reception
+accepts a quiet scalar/null value or a live finite ordinary object value; the
+latter raises the value TypeError without casting a Stringable value, even for
+an unknown ordinary option name. The TypeError trace owns the copied value until
+the catch releases it. `zend.assertions` options and wider object graphs still
+stop explicitly on this receipt.
+
+The [copied array value increment](../../coverage/semantics/config-iterator-stringable-array-value-review.json)
+lets the same ordinary option receive a live finite ARRAY graph already admitted
+at Iterator send. INI_SET rejects that raw value before directive lookup, while
+the TypeError trace retains its copied table and embedded aliases. One source
+checks a temporary Iterator's retirement, option-destructor writes, COW table
+slot 3 versus source slot 31, and a shared alias changing from 17 to 42 and 66.
+A reached-state control refuses a cyclic copied table. Object descendants in
+otherwise admitted finite graphs, other alias shapes and callback failures
+remain unvalidated on this receipt.
+
+The [strict Iterator option checks](../../coverage/semantics/config-iterator-stringable-strict-review.json)
+validate the existing strict-caller path for a copied Stringable option. Direct
+and retained first-class INI_SET calls reject argument 1 after Iterator cleanup,
+without calling `__toString`. The raw option and copied COW array remain in
+TypeError TraceArgs until catch release; a selected setter still works after
+its source variable is rebound to a getter. No new semantic rule was needed.
+
+The [special-option rejection increment](../../coverage/semantics/config-iterator-assertions-reject-review.json)
+allows a copied Stringable option that converts to exact `zend.assertions` when
+its copied value is an admitted array or object. INI_SET rejects that raw value
+with TypeError before directive lookup, after option conversion and disposal;
+TraceArgs retains the copied value. An accepted scalar value with the same
+option still stops explicitly before assertion setting.
+
+The [integer assertion setting increment](../../coverage/semantics/config-iterator-assertions-int-review.json)
+admits copied integer 0 or 1 after the same Stringable option conversion. A
+temporary Iterator retires before a 1-to-0 write returns the old 1; a retained
+setter survives key-time callable rebinding, performs a 1-to-1 call, then writes
+0 before restore returns the setting to 1. The pending assertion record keeps a
+nonowning certificate of the original receipt after the converted call loses
+its last argument root. A bare rootless record fails validation, and integer 2
+remains outside this receipt.
+
+The [Boolean assertion setting increment](../../coverage/semantics/config-iterator-assertions-bool-review.json)
+uses the same saved receipt for copied `false` and `true`. `false` stores a
+present empty raw INI string with assertion quantity 0; `true` stores `"1"`.
+Old return, selected setter identity and restore follow the ordinary assertion
+record. Copied integer 2 and null still fail this receipt's admission.
+
+Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root
 remains Unsupported. Constructed first-key and graph-rejection

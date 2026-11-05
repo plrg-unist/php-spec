@@ -102,7 +102,8 @@ syntax pfilephase = FILE_RESOLVE_WAIT | FILE_PARSE_WAIT | FILE_UNIT_RUN | FILE_W
 syntax pfilebinding = { UNIT nat, SITE porigin, KIND int, REQUESTED nat*, RESOLVED nat*, OPENED nat*, BYTES nat*, CLASS porigin? }
 syntax pfileopenresponse = FILE_MISSING nat nat* nat* nat* | FILE_OPEN_FAILURE nat nat* nat* nat* nat* nat* | FILE_OPENED nat nat* nat* nat* nat* nat*
 syntax pdirresponse = DIR_CHANGED nat nat* nat* nat* | DIR_FAILED nat nat* nat* nat* nat
-syntax psourceresponse = SOURCE_ACCEPT nat nat* program | SOURCE_PARSE_REJECT nat nat* nat* int | SOURCE_COMPILE_REJECT nat nat* nat* int
+syntax pparseheader = PARSE_HEADER int int int int phpType49*
+syntax psourceresponse = SOURCE_ACCEPT nat nat* program | SOURCE_PARSE_REJECT nat nat* nat* int | SOURCE_COMPILE_REJECT nat nat* nat* int | SOURCE_REJECT_HEADERS nat nat* pfailedkind nat* int pparseheader*
 syntax pupdate = INCREMENT | DECREMENT
 syntax psilence = SILENCE porigin int
 syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
@@ -392,7 +393,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | CALLABLE_DEFAULT_RECEIVE porigin nat
   | CALLABLE_SCALAR_RESULT ptask poperand pvalue int
   | CALLABLE_STRING_RESULT ptask poperand nat nat int
-  | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
+  | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_C_RETURN pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
   | GENERATOR_REQUEST_RESUME pgenclose
   | GENERATOR_REQUEST_REPORT pgenfatal | GENERATOR_REQUEST_BAILOUT pgenfatal
   | GENERATOR_REQUEST_RENDER_RETURN pgenfatal nat bool
@@ -541,6 +542,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | FOREACH_AGGREGATE pforeachaggregate text
   | ITERATOR_UNPACK piteratorunpack text
   | CONFIG_ITERATOR pconfigiterator text
+  | CONFIG_ITERATOR_STRING_RECEIVE pconfigcall nat pvalue
   | CONFIG_AGGREGATE pconfigaggregate
   | CONFIG_GENERATOR pconfiggenerator text
   | GENERATOR_UNPACK pgeneratorunpack text
@@ -743,6 +745,7 @@ syntax pstate = { TICKCOUNT nat, TICKSEQ nat, TICKENTRIES ptickentry*, OUTPUTSEQ
 
 dec $output_write(pstate, preqbytes) : pstate
 dec $output_display(pstate, pevent*) : pstate
+dec $destruction_store_new(pstate) : pstate
 dec $output_finalize(pstate) : pstate
 dec $output_drive_finalize(pstate, nat) : pstate
 dec $output_drain_ready(pstate) : bool

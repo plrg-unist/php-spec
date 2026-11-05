@@ -262,7 +262,7 @@ required at that cut. The [constructor review](../../coverage/semantics/anonymou
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Anonymous classes accept finite sequences of direct positional/named `new`
-arguments, including array unpack, and unpromoted value or reference parameters
+arguments, including array unpack, and ordinary value or reference parameters
 with an optional final variadic tail.
 The ordinary signature compiler validates their types, defaults, requiredness and
 final-only variadic placement; the ordinary binder
@@ -485,7 +485,7 @@ and [alias-capture](../../coverage/semantics/anonymous-trait-alias-capture-revie
 reviews.
 
 Imported `__toString` and ordinary methods aliased to it also retain inferred
-Stringable interfaces in unit0 anonymous classes. Before stripping imported
+Stringable interfaces in admitted anonymous classes. Before stripping imported
 members, the live interface list must equal the shared trait importer's derived
 list. Only the own-member comparison restores the raw interface field; full
 declaration replay remains mandatory. Inference does not change the compiler's
@@ -500,15 +500,103 @@ empty-interface path and saved-snapshot branches are unchanged. Return,
 visibility and static Stringable contract conflicts retain the physical trait
 method line and short class display, without publication or allocation.
 [Stringable trait review](../../coverage/semantics/anonymous-trait-stringable-review.json)
-records these sources and reached guards. Dynamic-source trait combinations,
-wider explicit-interface/unpublished/collision scope histories and other
-member/type/lifetime contexts remain partial.
+records its original main-unit sources and reached guards.
+
+Successfully compiled include/eval units use the same own-member and derived
+interface projection. Their completed source-unit receipt, exact NEW occurrence,
+frozen compilation-entry view, history seed and compiler-derived counter remain
+mandatory. The composed view additionally requires the published name, runtime
+publication receipt and full declaration replay; duplicate imported methods or
+interfaces cannot gain authority by surviving the own-member projection.
+Skipped conflicts keep their compiler key without linking; reached interface
+conflicts precede constructor argument effects. Repeated allocation uses one
+compiled class, while recompilation creates a fresh name. A copied trait
+constant's retained callable target still follows its first selected binding,
+even across distinct eval-created class identities.
+
+Ordinary cached-method history and scope checks finish before the extra trait
+view requests full replay. This breaks the dynamic compiler/cache validation
+cycle without changing source-entry authority or weakening the parameter view's
+interface checks. Resolved expected argument types and object trace names use
+the engine's C-string display boundary; stored names and type atoms remain full.
+[Dynamic trait review](../../coverage/semantics/dynamic-anonymous-traits-review.json)
+records native originals, source-entry/counter/capture checks and preserved
+failures. Wider dynamic source, explicit-interface/unpublished/collision scope
+histories and other member/type/lifetime contexts remain partial.
 
 Engine routes: `Zend/zend_compile.c::zend_compile_use_trait`,
 `zend_compile_trait_alias`, `zend_compile_trait_precedence`;
 `Zend/zend_inheritance.c::zend_traits_init_trait_structures`,
 `zend_traits_copy_functions`, `zend_add_trait_method`,
 `do_inherit_method`; and `Zend/zend_execute.c::zend_verify_recv_arg_type`.
+
+Own anonymous class constants reuse the ordinary class-constant compiler for
+types, values, declaration lines and public/protected/private/final modifiers.
+Nonempty groups may contain multiple declarators. Types and initializers follow
+the ordinary compiler's admission. Private-final and wrong typed values
+fail during compilation before body effects. Parent-final and incompatible trait
+constants fail at first-new linking before constructor argument effects; matching
+trait/own definitions compose normally.
+
+Own callable constants retain their class's method and source identity. Separate
+eval compilations therefore accept their respective self types and reject a
+cross-class argument. Full class/constant names remain in descriptors and the
+successful value path. Initializer, access, final-override and trait-conflict
+diagnostics truncate only class-name operands as the engine's C-string calls do.
+The [own constant review](../../coverage/semantics/anonymous-own-constants-review.json)
+records exact originals, table/source forgery refusals, actual own-FCC receives
+and compile-versus-link ordering. Attribute-bearing constants and wider
+member/type/initializer contexts remain partial.
+
+Attribute-free, hook-free anonymous property groups now share the ordinary
+property compiler, including multiple declarators, types and nonliteral defaults.
+Modifier admission shares the ordinary finite predicate for read/set visibility,
+static, readonly and final combinations; compiler-invalid forms retain the shared
+error order. No-argument constructorless allocation first runs pending instance/static
+default work through the existing source-authenticated constructor marker. When
+both default task lists are empty, allocation follows the original direct path.
+
+Private parent and child slots retain separate full-name keys. Instance arrays
+separate on clone writes; repeated visits to one class share static cells, while
+fresh eval compilations receive distinct cells and source identities. Visibility,
+static/instance inheritance and readonly checks use the existing runtime rules.
+The exercised diagnostic class-name operands truncate at NUL without changing
+stored names, keys or successful lookup identities. The
+[property review](../../coverage/semantics/anonymous-properties-review.json)
+records actual default-work/allocation fronts, private-key reads, static sharing
+and compile/link order.
+
+Equivalent read/set visibility normalizes to the ordinary setter, while genuine
+private(set) is implicitly final. Parent-final conflicts precede private-slot
+independence; setter narrowing is checked before read visibility/type inheritance.
+Final properties remain writable. Explicit public(set) readonly permits its first
+global initialization, then ordinary readonly checks reject another write.
+Setter authorization remains lexical; diagnostic caller display uses called scope.
+The [modifier review](../../coverage/semantics/anonymous-property-modifiers-review.json)
+checks stored flags/cells, actual permitted and denied stores, scope/descriptor
+forgeries and compile/link boundaries. Attributes, hooks and wider
+member/type/default/lifetime combinations remain partial.
+
+Public/default-public anonymous constructors also admit attribute-free, hook-free
+promoted formals using the shared nonstatic property modifier predicate. The
+ordinary signature compiler retains parameter types/defaults and rejects promotion
+outside constructors; the method compiler owns promoted declarations, duplicate,
+variadic and property-type checks. Each declaration keeps the actual NParam origin
+and full private key. Parameter defaults remain parameter defaults, while the
+promoted property starts in its ordinary uninitialized/null state.
+
+Source-authenticated PROMOTE_PARAMETER tasks run after reception and before the
+body. Value stores separate later local writes and array COW; reference stores
+attach the declared property constraint to the sent cell. Readonly reference
+acquisition fails before the body. Separate eval compilations keep distinct
+promoted declarations and self scopes. The pinned engine accepts final/private
+promotion because that route bypasses ordinary property-group validation; the
+ordinary declaration error remains in place. Only the exercised duplicate,
+forbidden-property-type and complete optional-warning callable display operands
+truncate at NUL. The [promotion review](../../coverage/semantics/anonymous-promotion-review.json)
+retains source/prologue/reference and compile/link evidence. Attributes, hooks,
+nonpublic constructor admission and wider signature/default/lifetime contexts
+remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

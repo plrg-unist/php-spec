@@ -1,0 +1,32 @@
+;; Main parsing precedes user work. Rejected units install no partial program.
+;; The existing foreign response supplies syntax facts, not a terminal outcome.
+dec $main_rejection(psourceresponse) : (pfailedkind, nat*, int, pparseheader*)?
+def $main_rejection(SOURCE_PARSE_REJECT 0 n_bytes* n_message* z) = ((FAILED_PARSE, n_message*, z, eps))
+def $main_rejection(SOURCE_COMPILE_REJECT 0 n_bytes* n_message* z) = ((FAILED_COMPILE, n_message*, z, eps))
+def $main_rejection(SOURCE_REJECT_HEADERS 0 n_bytes* pfailedkind n_message* z pparseheader*) = ((pfailedkind, n_message*, z, pparseheader*))
+def $main_rejection(psourceresponse) = eps -- otherwise
+
+dec $main_rejection_severity(pfailedkind) : text
+def $main_rejection_severity(FAILED_PARSE) = "Parse error"
+def $main_rejection_severity(FAILED_COMPILE) = "Fatal error"
+dec $main_rejection_level(pfailedkind) : int
+def $main_rejection_level(FAILED_PARSE) = 4
+def $main_rejection_level(FAILED_COMPILE) = 64
+dec $main_rejection_finish(pstate, pfailedkind, nat*, int) : pstate
+def $main_rejection_finish(S, pfailedkind, n_message*, z) = S_report[.EXITSTATUS = 255][.COMPLETION = REQUESTFATAL ($ptascii($failed_source_kind(pfailedkind))) n_message* z]
+  -- if S_report = $report_event(S, DIAGNOSTIC_SOURCE 0 ($main_rejection_severity(pfailedkind)) n_message* z, $main_rejection_level(pfailedkind))
+
+dec $php_rejected_main_run(preqbytes, psourceresponse, preqbytes, pstartup?, bool, preqbytes?, preqbytes, preqbytes, prequest?, preqbytes?) : pstate
+def $php_rejected_main_run(preqbytes_source, psourceresponse, preqbytes_file, pstartup?, b_display, preqbytes_display?, preqbytes_precision, preqbytes_assertions, prequest?, preqbytes_cwd?) = $main_rejection_finish($rejected_source_warnings(S_initial, 0, z_lines*), pfailedkind, n_message*, z)
+  -- if $source_filename(preqbytes_file)
+  -- if $startup_bytes(preqbytes_source)
+  -- if $eval_response_shape(psourceresponse)
+  -- if $eval_response_bytes(psourceresponse) = preqbytes_source
+  -- if $main_rejection(psourceresponse) = ((pfailedkind, n_message*, z, pparseheader*))
+  -- if $startup_bytes(n_message*)
+  -- if $rejected_header_prefix(pparseheader*) = (z_lines*, z_stop?)
+  -- if $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision)
+  -- if $assertion_ini_mode(preqbytes_assertions) = (z_assertions)
+  -- if pvalue_assertions = PSTRING_CARRIER INTERNED_STRING preqbytes_assertions
+  -- if S_initial = $assertion_entry($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 preqbytes_file]][.ASSERTIONS = z_assertions][.ASSERTIONSINIT = preqbytes_assertions][.ASSERTIONSINI = preqbytes_assertions][.ASSERTIONSRAW = pvalue_assertions][.ASSERTIONSORIGINAL = pvalue_assertions][.ASSERTIONSMODE = {INPUT pvalue_assertions, VALUE z_assertions}], prequest?, preqbytes_cwd?)
+def $php_rejected_main_run(preqbytes_source, psourceresponse, preqbytes_file, pstartup?, b_display, preqbytes_display?, preqbytes_precision, preqbytes_assertions, prequest?, preqbytes_cwd?) = $initial_state(UNSUPPORTED "invalid rejected main source or startup facts") -- otherwise

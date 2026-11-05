@@ -155,12 +155,31 @@ An unknown or overwritten ordinary named target throws after the successfully
 prepared prefix, retaining the hidden copy before ordered argv/API cleanup.
 The generated Error's trace owns raw argument values until the Error is released;
 it adds no implicit SOURCE or old-receiver owner beyond those arguments.
-Required named holes retain the copy
-at the authentic existing fake-receive failure, preserving default priority and
-callee/API traces. Frame cleanup drops its prepared values before the API cursor
-releases FIRST, RAW and SOURCE. Later receives, default throws and bailout paths
-remain partial; the ordinary non-Generator dispatch is unchanged.
+Required named holes use existing fake-receive/default machinery, preserving
+default priority and callee/API traces. Frame cleanup drops its prepared values
+before the API cursor releases FIRST, RAW and SOURCE. The ordinary non-Generator
+dispatch is unchanged; I101 below generalizes receive failures.
 [Named-failure review](../../coverage/semantics/generator-call-mapping-review.json).
+
+I101 retains an authentic copied Closure when a PHP throw reaches its restored
+API result cursor and all object history proves no Generator was created for it.
+This covers admitted arity/type errors and default-constructor throws without
+separate formal-specific release rules. Callee cleanup has already dropped its
+cells, so the cursor releases only FIRST, RAW and SOURCE. An immediate entry error
+authenticates the actual entered state and saved API owner before propagating.
+Generated Error traces keep their raw aliases independently; a precreated supplied
+exception need not own any API argument. Earlier warning/mapping prefix cleanup
+is unchanged. Wider producers, collection and bailout contexts remain partial.
+[Receive-failure review](../../coverage/semantics/generator-call-receive-review.json).
+
+I102 handles ordinary exit from a copied reference warning or named-default
+constructor before Gen creation. It authenticates the emitting cursor before
+exit clears its scope, restores the warning handler and releases prepared/API
+owners in order while retaining only the hidden copy. Failed construction is
+marked before its object is released; caller catch/finally and Gen body never
+run. Integer status survives cleanup and shutdown. Owning warning-retval/CLEAN,
+cleanup replacements and wider bailout contexts remain partial.
+[Exit review](../../coverage/semantics/generator-call-exit-review.json).
 
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
