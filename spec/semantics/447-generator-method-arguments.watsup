@@ -140,7 +140,9 @@ def $config_iterator_history(S, pconfigiterator) = true
   -- if ~pconfigiterator.CALL.NAMED /\ pconfigiterator.CALL.PACKS = eps
   -- if pconfigiterator.PRODUCER = eps
   -- if pconfigiterator.INPUT = VARIABLE ptbytes z
-  -- if $config_pending_valid(S[.ORIGIN = (pconfigiterator.CALL.SITE)], pconfigiterator.CALL, true)
+  -- if pconfigiterator.CALL.OWNER = (n_receiver)
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_receiver]][.ORIGIN = (pconfigiterator.CALL.SITE)]
+  -- if $config_pending_valid(S_history, pconfigiterator.CALL, true)
   -- if $config_iterator_input(S, pconfigiterator)
   -- if $config_iterator_items(S, pconfigiterator, pconfigiterator.ITEMS)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
@@ -248,3 +250,14 @@ rule PhpStep/generator-api-throw-return-release: S ~> S[.TODO = (THROW_SEARCH n)
   -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_API_RETURN pgeneratorop pvalue) :: ptask_tail*
   -- if $call_task_valid(S, GENERATOR_API_RETURN pgeneratorop pvalue)
   -- if $throwable_live(S, n)
+
+
+;; History may outlive the selected receiver after cancellation. Its lookup
+;; view above adds no physical owner; active stages still use real membership.
+def $config_iterator_owner_live(S, pconfigcall) = true
+  -- if ~$generator_api_kind(pconfigcall.KIND)
+def $config_iterator_owner_live(S, pconfigcall) = true
+  -- if $generator_iterator_site(S, pconfigcall)
+  -- if pconfigcall.OWNER = (n_receiver)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+def $config_iterator_owner_live(S, pconfigcall) = false -- otherwise

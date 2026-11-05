@@ -17,6 +17,7 @@ dec $config_aggregate_source(pstate, pconfigaggregate) : bool
 dec $config_iterator_input(pstate, pconfigiterator) : bool
 dec $generator_iterator_site(pstate, pconfigcall) : bool
 dec $generator_iterator_data(pstate, pconfigiterator) : bool
+dec $config_iterator_owner_live(pstate, pconfigcall) : bool
 dec $config_iterator_owning_input(pconfigiterator) : bool
 dec $config_iterator_input_nodes(pconfigiterator) : pnode*
 dec $config_iterator_quiet_input(pstate, pconfigiterator) : bool
@@ -709,6 +710,7 @@ def $config_iterator_history(S, pconfigiterator) = true
 def $config_iterator_history(S, pconfigiterator) = false -- otherwise
 def $config_iterator_scope(S, pconfigiterator) = true
   -- if $config_iterator_history(S, pconfigiterator)
+  -- if $config_iterator_owner_live(S, pconfigiterator.CALL)
   -- if $useriter_instance(S, pconfigiterator.OBJECT)
   -- if $config_iterator_methods(S, pconfigiterator.OBJECT, ["rewind", "valid", "current", "key", "next"])
 def $config_iterator_scope(S, pconfigiterator) = false -- otherwise
@@ -850,6 +852,7 @@ def $config_iterator_valid(S, pconfigiterator, "input-release") = true
   -- if $useriter_cursor_count(S.ITERATORS, pconfigiterator.ITERATOR) = 0
   -- if $config_iterator_stage(S, pconfigiterator, "input-release")
 def $config_iterator_valid(S, pconfigiterator, "ready") = true
+  -- if $config_iterator_owner_live(S, pconfigiterator.CALL)
   -- if $config_iterator_scope(S, pconfigiterator) \/ $config_iterator_retired_scope(S, pconfigiterator)
   -- if S.ORIGIN = (pconfigiterator.CALL.SITE)
   -- if $(pconfigiterator.ITERATOR < S.NEXTITER)
