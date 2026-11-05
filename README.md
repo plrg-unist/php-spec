@@ -298,6 +298,8 @@ compilation, lexical frequency changes and constant/CV versus temporary-release
 adjacency; unproved compiler-special subjects and wider placement/callable forms
 remain explicit dependencies. Witnessed Generator markers survive yield/SEND
 pauses and flat-array delegation while sharing the caller's request counter.
+Match plans preserve all-condition compilation before arm results, lexical
+effects from unselected arms and assignment/discard marker lines.
 
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;

@@ -23,6 +23,17 @@ from binary/unary syntax around a compiler-special call.
 The matching source routes are `zend_compile_switch`, `zend_emit_tick`,
 `zend_compile_print` and `zend_compile_func_defined` in `Zend/zend_compile.c`.
 
+Match plans visit the subject, every arm condition, then every arm result in
+compiler order. Unselected arms still contribute callable compilation and lexical
+declarables. Result assignments and jumps clear adjacency; nonempty Match results
+are temporaries. The empty-arm case has a CONST-null compiler result and raises
+`UnhandledMatchError`. Assignment markers use the checked target line, while a
+discarded Match keeps the last compiled arm's line. Completed Match values also
+retain their pending Generator statement marker across suspension. Existing
+switch-subject guards still refuse compiler-special builtin descendants through
+Match, and unproved child-order/elision contexts remain explicit dependencies.
+The source authority is `zend_compile_match` in `Zend/zend_compile.c`.
+
 Admitted Generator sources preserve statement markers across suspension. A bare
 yield keeps its discard before the pending tick; a direct assignment keeps its
 write before that marker. The marker runs when the Generator resumes. Flat-array
@@ -79,6 +90,8 @@ the compiler-order, marker-line, cleanup and resumption witnesses at their
 individual cuts, including scoped passing rows from preserved failed packets.
 The [Generator tick review](../../coverage/semantics/tick-generator-review.json)
 records the focused source and parked-continuation witnesses.
+The [Match tick review](../../coverage/semantics/tick-match-review.json) records
+arm-order, line, result-kind, abrupt-callback and suspension witnesses.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

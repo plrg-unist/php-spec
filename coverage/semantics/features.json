@@ -6650,15 +6650,25 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/143-match-compiler.watsup",
-        "spec/semantics/144-match-runtime.watsup"
+        "spec/semantics/144-match-runtime.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
-        "tests/semantics/match_expressions.py"
+        "tests/semantics/match_expressions.py",
+        "tests/semantics/tick_match_sources.py",
+        "tests/semantics/tick_match_review_sources.py",
+        "tests/semantics/tick_match_generator.php",
+        "tests/semantics/tick_match_empty.php",
+        "tests/semantics/tick_match_review_cases.py"
       ],
-      "review": "Ordered compiler and strict lazy runtime match semantics, value demand and owned continuations are reviewed in match-review.json. Unhandled cases use the existing error completion; Throwable/catch/finally/lifecycle integration remains pending.",
+      "review": "Ordered compiler and strict lazy runtime match semantics, value demand and owned continuations are reviewed in match-review.json. Unhandled cases use the existing error completion; Throwable/catch/finally/lifecycle integration remains pending. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial.",
       "evidence": [
         "coverage/semantics/match-review.json",
-        "docs/semantics/SOURCE-MATCH.md"
+        "docs/semantics/SOURCE-MATCH.md",
+        "coverage/semantics/tick-match-review.json"
+      ],
+      "helper_tests": [
+        "tests/semantics/tick_match_review_protocol.py"
       ]
     },
     {
@@ -8532,15 +8542,25 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/143-match-compiler.watsup",
-        "spec/semantics/144-match-runtime.watsup"
+        "spec/semantics/144-match-runtime.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
-        "tests/semantics/match_expressions.py"
+        "tests/semantics/match_expressions.py",
+        "tests/semantics/tick_match_sources.py",
+        "tests/semantics/tick_match_review_sources.py",
+        "tests/semantics/tick_match_generator.php",
+        "tests/semantics/tick_match_empty.php",
+        "tests/semantics/tick_match_review_cases.py"
       ],
-      "review": "Ordered compiler and strict lazy runtime match semantics, value demand and owned continuations are reviewed in match-review.json. Unhandled cases use the existing error completion; Throwable/catch/finally/lifecycle integration remains pending.",
+      "review": "Ordered compiler and strict lazy runtime match semantics, value demand and owned continuations are reviewed in match-review.json. Unhandled cases use the existing error completion; Throwable/catch/finally/lifecycle integration remains pending. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial.",
       "evidence": [
         "coverage/semantics/match-review.json",
-        "docs/semantics/SOURCE-MATCH.md"
+        "docs/semantics/SOURCE-MATCH.md",
+        "coverage/semantics/tick-match-review.json"
+      ],
+      "helper_tests": [
+        "tests/semantics/tick_match_review_protocol.py"
       ]
     },
     {
@@ -10323,21 +10343,28 @@
         "tests/semantics/tick_generator_sources.py",
         "tests/semantics/tick_generator_review_sources.py",
         "tests/semantics/tick_generator_resume.php",
-        "tests/semantics/tick_generator_review_cases.py"
+        "tests/semantics/tick_generator_review_cases.py",
+        "tests/semantics/tick_match_sources.py",
+        "tests/semantics/tick_match_review_sources.py",
+        "tests/semantics/tick_match_generator.php",
+        "tests/semantics/tick_match_empty.php",
+        "tests/semantics/tick_match_review_cases.py"
       ],
-      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, ticks/encoding and wider declare contexts and dependent core protocols remain pending; no family closes. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Encoding and wider literal/body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts. Module393 now derives whole-source tick plans, lexical frequencies and compiler lines, and executes the live callback registry with source frames, mutation and cached-receiver cleanup. Wider placement/header/foreach/callable dependencies remain Unsupported; tick-review.json keeps the obligation partial. Disabled-multibyte closed single-line encoding declarations now derive a source-wide parser Warning128 prefix before compiler diagnostics and execute as source-authenticated no-ops. Two exact sources/public177 cover handler bypass, once skip/reparse, helper stderr custody and budget resume; wider encoding/placement/parser-failure domains remain partial. encoding-declare-review.json preserves all cuts and syntax failures0. ATTR08 preserves distinct persistent FCC.object/FCC.closure owners, raw-object versus array tick identity, API This borrowing, inline argument\u2192object\u2192Closure retirement and readonly selected-scope cleanup witnesses. Quiet shutdown cache retention extends through FINAL; selected buffered post-output executor release preserves two equal FCC owner slots. Five earlier normal originals, two joined raw-invokable comparisons, 296 earlier reached/guard checks, focused executor reached checks and strict 433 retain recorded cuts; Closure-object wrapper and wider late-free policy remain partial (callback-fcc-cache-review.json). ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change.",
+      "review": "Independent lexical strict declaration review on917/309b046c: source literal/placement/line rules, no-op work, source-derived unit/function flags and forged-metadata rejection;21 source profiles18native+3pending,7builtin boundaries,2cache states543assertions,17protocol168 and three complete909 weak-state bridges. Parameter/return enforcement, builtin execution, ticks/encoding and wider declare contexts and dependent core protocols remain pending; no family closes. Unknown literal declare names now emit ordered E_COMPILE_WARNING (128) with original spelling/first-item line and compile/execute optional nested bodies. Two fresh eval originals, strict3 and 228 source-frontier/guard checks plus six pure exclusions pass at 713be74f4 /373. Encoding and wider literal/body/publication contexts remain required; compiler-declare-review.json preserves the compile-stage Unsupported0 and earlier strict cuts. Module393 now derives whole-source tick plans, lexical frequencies and compiler lines, and executes the live callback registry with source frames, mutation and cached-receiver cleanup. Wider placement/header/foreach/callable dependencies remain Unsupported; tick-review.json keeps the obligation partial. Disabled-multibyte closed single-line encoding declarations now derive a source-wide parser Warning128 prefix before compiler diagnostics and execute as source-authenticated no-ops. Two exact sources/public177 cover handler bypass, once skip/reparse, helper stderr custody and budget resume; wider encoding/placement/parser-failure domains remain partial. encoding-declare-review.json preserves all cuts and syntax failures0. ATTR08 preserves distinct persistent FCC.object/FCC.closure owners, raw-object versus array tick identity, API This borrowing, inline argument\u2192object\u2192Closure retirement and readonly selected-scope cleanup witnesses. Quiet shutdown cache retention extends through FINAL; selected buffered post-output executor release preserves two equal FCC owner slots. Five earlier normal originals, two joined raw-invokable comparisons, 296 earlier reached/guard checks, focused executor reached checks and strict 433 retain recorded cuts; Closure-object wrapper and wider late-free policy remain partial (callback-fcc-cache-review.json). ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial.",
       "evidence": [
         "coverage/semantics/encoding-declare-review.json",
         "coverage/semantics/encoding-placement-review.json",
         "coverage/semantics/callback-fcc-cache-review.json",
         "coverage/semantics/tick-switch-review.json",
-        "coverage/semantics/tick-generator-review.json"
+        "coverage/semantics/tick-generator-review.json",
+        "coverage/semantics/tick-match-review.json"
       ],
       "helper_tests": [
         "tests/semantics/callback_cache_protocol.py",
         "tests/semantics/callback_cache_review_protocol.py",
         "tests/semantics/tick_switch_review_protocol.py",
-        "tests/semantics/tick_generator_review_protocol.py"
+        "tests/semantics/tick_generator_review_protocol.py",
+        "tests/semantics/tick_match_review_protocol.py"
       ]
     },
     {
@@ -22227,23 +22254,31 @@
       ],
       "implementation": [
         "spec/semantics/143-match-compiler.watsup",
-        "spec/semantics/144-match-runtime.watsup"
+        "spec/semantics/144-match-runtime.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/match_compiler.py",
-        "tests/semantics/match_protocol.py"
+        "tests/semantics/match_protocol.py",
+        "tests/semantics/tick_match_review_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/match_expressions.py"
+        "tests/semantics/match_expressions.py",
+        "tests/semantics/tick_match_sources.py",
+        "tests/semantics/tick_match_review_sources.py",
+        "tests/semantics/tick_match_generator.php",
+        "tests/semantics/tick_match_empty.php",
+        "tests/semantics/tick_match_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "vendor/php-src/Zend/zend_execute.c",
         "docs/semantics/SOURCE-MATCH.md",
-        "coverage/semantics/match-review.json"
+        "coverage/semantics/match-review.json",
+        "coverage/semantics/tick-match-review.json"
       ],
-      "review": "Modules143/144 implement strict lazy selection, delayed CV versus retained temporary subjects, multiple conditions/default ordering, compiler priority, result value demand, source lines and raw-wrapper UnhandledMatchError diagnostics. Maintained88 production outcomes,13 compiler source lints/67 assertions and8 paused stages/118 assertions pass. Independent62 ordinary originals and3 paused states/57 assertions, plus1 separate explicit-request original, bind the reviewed semantics. General Throwable objects, catch/finally and lifecycle integration remain pending; match-review.json records the exact scope and separate Unsupported controls.",
+      "review": "Modules143/144 implement strict lazy selection, delayed CV versus retained temporary subjects, multiple conditions/default ordering, compiler priority, result value demand, source lines and raw-wrapper UnhandledMatchError diagnostics. Maintained88 production outcomes,13 compiler source lints/67 assertions and8 paused stages/118 assertions pass. Independent62 ordinary originals and3 paused states/57 assertions, plus1 separate explicit-request original, bind the reviewed semantics. General Throwable objects, catch/finally and lifecycle integration remain pending; match-review.json records the exact scope and separate Unsupported controls. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial.",
       "planned_source_tests": [
         "tests/semantics/conformance/switch-match.php"
       ]
@@ -39713,7 +39748,8 @@
         "tests/semantics/deprecated_late_tick_body_exit_review_protocol.py",
         "tests/semantics/deprecated_late_tick_body_reexit_review_protocol.py",
         "tests/semantics/tick_switch_review_protocol.py",
-        "tests/semantics/tick_generator_review_protocol.py"
+        "tests/semantics/tick_generator_review_protocol.py",
+        "tests/semantics/tick_match_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/tick_sources.py",
@@ -39785,7 +39821,12 @@
         "tests/semantics/tick_generator_sources.py",
         "tests/semantics/tick_generator_review_sources.py",
         "tests/semantics/tick_generator_resume.php",
-        "tests/semantics/tick_generator_review_cases.py"
+        "tests/semantics/tick_generator_review_cases.py",
+        "tests/semantics/tick_match_sources.py",
+        "tests/semantics/tick_match_review_sources.py",
+        "tests/semantics/tick_match_generator.php",
+        "tests/semantics/tick_match_empty.php",
+        "tests/semantics/tick_match_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -39815,9 +39856,10 @@
         "coverage/semantics/callback-late-tick-body-reexit-review.json",
         "vendor/php-src/main/main.c",
         "coverage/semantics/tick-switch-review.json",
-        "coverage/semantics/tick-generator-review.json"
+        "coverage/semantics/tick-generator-review.json",
+        "coverage/semantics/tick-match-review.json"
       ],
-      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change."
+      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",

@@ -1,0 +1,69 @@
+{
+  "milestone": "ATTR30: Match tick compiler order and result discipline",
+  "status": "Independently accepted bounded implementation; Match and ticks remain partial",
+  "target": "PHP8.5.10 CLI NTS64; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "6dd605950",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "f371461cfa75a00abfda3def0789a71b0d20bcc97c122b65d06c002f6b1a8709",
+    "scope": "Compile the subject, all arm conditions, then all arm results; retain callable declarables and reset adjacency after result/jump emission. Dedicated traversal excludes the generic route. Empty Match keeps a CONST-null compiler result; nonempty Match is TMP. No shared state, runtime task or143/144/280 changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_compile.c",
+    "symbols": [
+      "zend_compile_match",
+      "zend_compile_assign",
+      "zend_emit_tick"
+    ]
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-match-30/strict-report.json",
+      "sha256": "404967ae1be587e4a64fda13bb73711a86df5ba33d3f55174e5745737e180574",
+      "passed": true,
+      "modules": 436,
+      "revision": "dbb298dbf: unchanged production6dd plus test wrapper"
+    },
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-match-30/source-author-v1/report.json",
+      "sha256": "8f90164a0a9aded80b18d3bf8cf0e7985116c593eeafe64f9a09aa6550adf7be",
+      "passed": true,
+      "agreements": 3,
+      "scope": "Completed Match value across Generator suspension; caught empty Match as Switch subject; observable nonempty Match temporary/Switch marker."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-match-30/source-review-v1/report.json",
+      "sha256": "cc4dd82a581aed01a809f3a2bc87269fee518d58b4ad3194324c3f786ffa10d4",
+      "passed": true,
+      "agreements": 5,
+      "scope": "Later condition before earlier selected callable; unselected last-body declarables; table assignment/discard lines; callback throw after assignment commit."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-match-30/review-protocol-v1/run/report.json",
+      "sha256": "742b84aa5f02419ac8500678bae26f897b1b079a0ffe2b32fe2b5668663dcd25",
+      "passed": true,
+      "groups": 4,
+      "reported_conditions": 157,
+      "group_conditions": [
+        43,
+        39,
+        39,
+        36
+      ],
+      "labeled_malformed_marker_guards": 2,
+      "process_sha256": "270b91950ba4c68572b24180f232c7ff99d3790c0b2364963a3692dbb815280f",
+      "revision": "e352dc72a: reviewed production6dd and four fronts"
+    }
+  },
+  "behavior": "Unselected arms contribute compilation without executing their PHP bodies. Selected earlier callables inherit later-condition declarables. Assignment restores the target line before its Tick; a discarded Match uses the final compiled arm line. Callback throws occur after result assignment. Completed Match values preserve the ordinary parked Generator marker and budget/unpause behavior.",
+  "result_control": "The empty-Match front starts from genuine compiled source and authenticates its AST/CODEEXPR, complete tick plan, switch_free(false) and absent enclosing Switch marker before finishing to UZ. The nonempty composition instead observes the real extra Switch marker from a temporary subject. Terminal MATCH_ERROR does not become a PHP null return.",
+  "independent_review": "/root/attributes_review accepted6dd605950 and all four fronts; final393 hash matches the independently executed private tree.",
+  "environment": "Controlled source processes use LC_ALL=C, TZ=UTC and the fixed PHP profile without ambient PHP settings. Strict/reached processes use CPU5; exact commands, source/path/cwd identity, compiler/runtime/helper fingerprints, raw channels, exits and full reaping are external. Provisioned copied tools establish no rebuild or portability claim.",
+  "remaining": "Existing Switch subject guards still refuse compiler-special fixed builtin/fallback descendants, including through Match. Callable-bearing conditional elision and other unproved child order, broader result producers and lifetime/control/SEND combinations remain partial.",
+  "zero_credit": [
+    "The author baseline atc612fe6cd remains Unsupported with empty output and zero agreement credit.",
+    "Initial independent native preparation expected line7 for an assignment marker; raw native line5 was preserved and the expectation corrected. The false preparation packet remains false; actual raw source observations are not suppressed.",
+    "No source or reached execution failed on production6dd; no engine bug, intentional engine divergence, portability or complete-core claim is added."
+  ]
+}

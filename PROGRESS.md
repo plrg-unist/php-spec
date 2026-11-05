@@ -930,6 +930,15 @@ guards. No Generator transport or280/289 change is needed. Earlier Unsupported,
 overlapping-summary and fixture-binding failures remain zero credit.
 [Generator tick review](coverage/semantics/tick-generator-review.json).
 
+ATTR30 compiles Match subjects, all conditions, then all results for tick plans.
+Unselected callable declarables, target/discard marker lines and assignment before
+callback throw match the engine. Nonempty Match temporaries and empty CONST-null
+compiler results preserve canonical Switch markers; completed Match values retain
+their parked Generator marker. Eight exact originals, strict436 and four reached
+fronts/157 reported conditions pass, including two malformed-marker guards.
+Compiler-special descendants and wider child/result/control contexts stay partial.
+[Match tick review](coverage/semantics/tick-match-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -1539,7 +1548,7 @@ wider rejected-source/compiler behavior remains partial.
 | GC43 | Singleton WeakMap value cleanup through finite payload validation; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
-| ATTR30 | Match-expression tick compilation and selected-arm effects; private implementation/review. |
+| ATTR31 | Conditional and short-circuit branch elision in tick plans; private implementation/review. |
 | Enum callable arrays | Wrong-length and missing-key third-output arrays; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
