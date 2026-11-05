@@ -48,6 +48,18 @@ const TickClosureCarry38 = static function () {
 TickScalarCarry38 = 2;
 echo 'Z';
 ''', b'[4][7]Z[9]'),
+    'review-constant-array-compiles-value-before-key-lines': (b'''<?php
+const TickKeyOrder38 = 'k';
+const TickValueOrder38 = 9;
+function t() { $e = new Exception; echo '[' . $e->getTrace()[0]['line'] . ']'; }
+register_tick_function('t');
+declare(ticks=1);
+const TickTableOrder38 = [
+    TickKeyOrder38 =>
+    TickValueOrder38
+];
+echo TickTableOrder38['k'];
+''', b'[6][8]9[11]'),
 }
 
 CONTROLS = {
