@@ -10,5 +10,17 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i112-peer-ignored-current-retval-before-capture",
+    "purpose": "An ignored owning CURRENT return clears before releasing the active capture. An empty-pack producer clears its last variable; the cached Token destructor sees the Generator still live but the retired capture already dead.",
+    "source": "<?php\nclass Token112D {\n    function __destruct() { global $weakGenerator, $weakCapture; echo 'TOKEN|', $weakGenerator->get() instanceof Generator, '|', $weakCapture->get() === null, '|'; }\n}\nfunction stream112D() { try { echo 'INIT|'; yield new Token112D(); } finally { echo 'FIN|'; } }\nfunction pack112D() { global $capture; echo 'PACK|'; $capture = null; return []; }\n$generator = stream112D(); $weakGenerator = WeakReference::create($generator);\n$capture = $generator->current(...); $weakCapture = WeakReference::create($capture); $generator = null;\necho 'CALL|'; $capture(...pack112D());\necho 'AFTER|', $weakGenerator->get() === null, '|', $weakCapture->get() === null, '|';\n",
+    "source_sha256": "7d208d030dfb6c21732cd57cde88b6e06daf0598f110af6e9e60e05332e0c897",
+    "native_exit": 0,
+    "native_stdout": "CALL|PACK|INIT|FIN|TOKEN|1|1|AFTER|1|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
