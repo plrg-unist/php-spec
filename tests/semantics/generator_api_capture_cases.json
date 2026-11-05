@@ -36,15 +36,14 @@
     "process_seconds": 320
   },
   {
-    "id": "i112-bind-protocol-remains-unsupported",
-    "purpose": "Native normal bind uses a replacement Generator; separate protocol remains visible Unsupported at the new-tag boundary.",
+    "id": "i114-promoted-bindto-generator-capture",
+    "purpose": "The exact earlier bindTo Unsupported original now retargets the captured native method to its replacement Generator.",
     "source": "<?php\nfunction old112U() { $value = yield 'head'; echo 'BAD-OLD|'; yield $value; }\nfunction new112U() { echo 'NEW|'; $value = yield 'head'; echo 'VALUE|', $value, '|'; yield 'tail'; }\n$generator = old112U(); $other = new112U(); $capture = $generator->send(...);\necho 'BIND|'; $bound = $capture->bindTo($other); echo 'RESULT|', $bound(41), '|';\n",
     "source_sha256": "b162d50cacb9d8e67e2beb7713af8f7a7ed143f9094232c707bc0ece07af0dd9",
     "native_exit": 0,
     "native_stdout": "BIND|RESULT|NEW|VALUE|41|tail|",
     "native_stderr": "",
-    "expected_model": "unsupported",
-    "unsupported_reason": "captured Generator API Closure rebinding",
+    "expected_model": "normal",
     "unsupported_stdout": "BIND|",
     "unsupported_events": [
       {

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "i114-bindto-warning-type-and-retarget-chain",
+    "purpose": "Binding preserves native warning priority and count/type traces before initialization. Named bindTo keeps original and replacement targets distinct; a chained copy survives its source copy and source Generator retirement.",
+    "source": "<?php\nclass Scope114A {}\nfunction flow114A($name) {\n    try { echo 'INIT|', $name, '|'; $value = yield 'head'; echo 'VALUE|', $name, '|', $value, '|'; yield 'tail'; }\n    finally { echo 'FIN|', $name, '|'; }\n}\n$old = flow114A('old'); $new = flow114A('new'); $capture = $old->send(...);\nset_error_handler(function($level, $message) { echo 'WARN|', $level, '|', $message, '|'; return true; });\necho 'NULL|', $capture->bindTo(null) === null, '|';\necho 'OBJECT|', $capture->bindTo(new stdClass()) === null, '|';\necho 'UNSCOPED|', $capture->bindTo($new, null) === null, '|';\necho 'INTERNAL|', $capture->bindTo($new, 'stdClass') === null, '|';\necho 'SCOPE|', $capture->bindTo($new, 'Scope114A') === null, '|';\necho 'MISSING|', $capture->bindTo($new, 'Missing114A') === null, '|';\nrestore_error_handler();\ntry { $capture->bindTo(); } catch (ArgumentCountError $e) { $t = $e->getTrace(); echo 'COUNT|', $e->getMessage(), '|', $t[0]['class'] === 'Closure', '|', $t[0]['function'] === 'bindTo', '|', !isset($t[1]), '|'; }\ntry { $capture->bindTo(17); } catch (TypeError $e) { $t = $e->getTrace(); echo 'THIS|', $e->getMessage(), '|', $t[0]['class'] === 'Closure', '|', $t[0]['function'] === 'bindTo', '|', !isset($t[1]), '|'; }\ntry { $capture->bindTo($new, []); } catch (TypeError $e) { $t = $e->getTrace(); echo 'TYPE-SCOPE|', $e->getMessage(), '|', $t[0]['class'] === 'Closure', '|', $t[0]['function'] === 'bindTo', '|', !isset($t[1]), '|'; }\nunset($e, $t);\n$bound = $capture->bindTo(newThis: $new, newScope: 'Generator');\necho 'BOUND|', $bound(41), '|';\necho 'ORIGINAL|', $capture(9), '|';\n$chained = $bound->bindTo($old); unset($bound, $new);\necho 'CHAIN|', $chained(13), '|';\nunset($chained, $capture, $old); echo 'DONE|';\n",
+    "source_sha256": "c27acd24957d314374d73dfef6bd692d364920499b26a9da876dc3ef30fe2bbb",
+    "native_exit": 0,
+    "native_stdout": "NULL|WARN|2|Cannot unbind $this of method, this will be an error in PHP 9|1|OBJECT|WARN|2|Cannot bind method Generator::send() to object of class stdClass, this will be an error in PHP 9|1|UNSCOPED|WARN|2|Cannot rebind scope of closure created from method, this will be an error in PHP 9|1|INTERNAL|WARN|2|Cannot bind closure to scope of internal class stdClass, this will be an error in PHP 9|1|SCOPE|WARN|2|Cannot rebind scope of closure created from method, this will be an error in PHP 9|1|MISSING|WARN|2|Class \"Missing114A\" not found|1|COUNT|Closure::bindTo() expects at least 1 argument, 0 given|1|1|1|THIS|Closure::bindTo(): Argument #1 ($newThis) must be of type ?object, int given|1|1|1|TYPE-SCOPE|Closure::bindTo(): Argument #2 ($newScope) must be of type object|string|null, array given|1|1|1|BOUND|INIT|new|VALUE|new|41|tail|ORIGINAL|INIT|old|VALUE|old|9|tail|FIN|new|CHAIN|FIN|old||DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
+  },
+  {
+    "id": "i114-binding-warning-supplied-throw",
+    "purpose": "A binding warning callback clears original capture and both Generator CVs, while native argv/receiver owners keep all alive. Supplied Stop aborts before allocation; replacement argument finally precedes original-capture release, with exact weak visibility and exception identity.",
+    "source": "<?php\nclass Stop114T extends Exception {}\nfunction old114T() {\n    try { echo 'OLD-INIT|'; yield 'old'; }\n    finally { global $weakOld, $weakCapture; echo 'OLD-FIN|', $weakOld->get() !== null, '|', $weakCapture->get() === null, '|'; }\n}\nfunction new114T() {\n    try { echo 'NEW-INIT|'; yield 'new'; }\n    finally { global $weakOld, $weakCapture, $weakNew; echo 'NEW-FIN|', $weakNew->get() !== null, '|', $weakOld->get() !== null, '|', $weakCapture->get() !== null, '|'; }\n}\n$old = old114T(); $old->current(); $replacement = new114T(); $replacement->current();\n$capture = $old->send(...); $weakOld = WeakReference::create($old); $weakNew = WeakReference::create($replacement); $weakCapture = WeakReference::create($capture); $stop = new Stop114T('given');\nset_error_handler(function($level, $message) {\n    global $old, $replacement, $capture, $weakOld, $weakNew, $weakCapture, $stop;\n    echo 'WARN|', $level, '|', $message, '|'; $old = null; $replacement = null; $capture = null;\n    echo 'HELD|', $weakOld->get() !== null, '|', $weakNew->get() !== null, '|', $weakCapture->get() !== null, '|';\n    throw $stop;\n});\ntry { echo 'BIND|'; $bound = $capture->bindTo($replacement, 'stdClass'); echo 'BAD|'; }\ncatch (Stop114T $caught) { echo 'CATCH|', $caught === $stop, '|', $caught->getPrevious() === null, '|', $caught->getTrace() === [], '|', $weakOld->get() === null, '|', $weakNew->get() === null, '|', $weakCapture->get() === null, '|', !isset($bound), '|'; }\nrestore_error_handler(); echo 'DONE|';\n",
+    "source_sha256": "48493903f6eca519902a32412c5931f4ec49bb87dbe3b68013f46628ad326055",
+    "native_exit": 0,
+    "native_stdout": "OLD-INIT|NEW-INIT|BIND|WARN|2|Cannot bind closure to scope of internal class stdClass, this will be an error in PHP 9|HELD|1|1|1|NEW-FIN|1|1|1|OLD-FIN|1|1|CATCH|1|1|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
+  },
+  {
+    "id": "i114-bound-call-remains-unsupported",
+    "purpose": "Retargeted native captures still expose an explicit boundary for the separate temporary Closure::call protocol. Native is normal; checked Unsupported carries zero agreement.",
+    "source": "<?php\nfunction flow114U() { yield 'head'; yield 'tail'; }\n$first = flow114U(); $second = flow114U(); $third = flow114U(); $capture = $first->send(...);\necho 'BIND|'; $bound = $capture->bindTo($second);\necho 'CALL|'; $bound->call($third, 41); echo 'END|';\n",
+    "source_sha256": "530a7f77e6fa5f4fe489115f38aa2657b122b4b89ffdea6349b054119509ea38",
+    "native_exit": 0,
+    "native_stdout": "BIND|CALL|END|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "captured Generator API Closure::call",
+    "model_stdout": "BIND|CALL|"
+  }
+]
