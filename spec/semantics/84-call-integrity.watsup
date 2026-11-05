@@ -364,9 +364,11 @@ dec $api_saved_frame_scope(pstate, pframe, pframe*) : pstate
 def $api_saved_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 dec $destructor_saved_frame_scope(pstate, pframe) : pstate
 def $destructor_saved_frame_scope(S, pframe) = S -- otherwise
+dec $call_frame_scope(pstate, pframe, pframe*) : pstate
+def $call_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*) -- otherwise
 def $call_frames_valid(S, eps) = true
 def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe), pframe.TODO) /\ $reference_notice_presence(S_scope) /\ $retired_current_valid(S_scope) /\ $borrowed_read_scope_valid(S_scope) /\ $object_cast_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
-  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if S_scope = $call_frame_scope(S, pframe, pframe_tail*)
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool

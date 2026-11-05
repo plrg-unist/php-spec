@@ -351,6 +351,7 @@ dec $executor_tick_task(ptask) : pexecutortick?
 dec $executor_tick_tasks(ptask*, pexecutortick) : bool
 dec $executor_tick_frames(pframe*, pexecutortick) : bool
 dec $executor_tick_active(pstate, pexecutortick) : bool
+dec $executor_tick_unwind(pstate) : pexecutortick?
 dec $executor_tick_scope_tasks(pstate, ptask*) : bool
 dec $executor_tick_scope_frames(pstate, pframe*) : bool
 dec $executor_tick_scope(pstate) : bool
@@ -489,7 +490,34 @@ def $executor_tick_tasks(eps, pexecutortick) = false
 def $executor_tick_tasks(ptask :: ptask_tail*, pexecutortick) = (($executor_tick_task(ptask) = (pexecutortick) /\ ptask_tail* = eps) \/ $executor_tick_tasks(ptask_tail*, pexecutortick))
 def $executor_tick_frames(eps, pexecutortick) = false
 def $executor_tick_frames(pframe :: pframe_tail*, pexecutortick) = ((pframe.CONTEXT = eps /\ $executor_tick_tasks(pframe.TODO, pexecutortick)) \/ $executor_tick_frames(pframe_tail*, pexecutortick))
-def $executor_tick_active(S, pexecutortick) = ($executor_tick_valid(S, pexecutortick) /\ ((S.CURRENT = eps /\ $executor_tick_tasks(S.TODO, pexecutortick)) \/ $executor_tick_frames(S.FRAMES, pexecutortick)))
+;; Only a genuine current null-C unwind may look back at the tick's old status.
+;; On that view the actual unwind target no longer matches, stopping recursion.
+def $executor_tick_unwind(S) = (pexecutortick)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if S.TODO = (EXIT_UNWIND z) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.EXITSTATUS = z /\ $exit_unwind_valid(S, z)
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = [pframe]
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
+  -- if pexecutortick.COMPLETION = EXITED z_saved
+  -- if z_saved =/= z /\ z_saved = $ntprecision32(z_saved)
+  -- if S_history = S[.EXITSTATUS = z_saved]
+  -- if $executor_tick_valid(S_history, pexecutortick)
+  -- if $executor_tick_frames(S.FRAMES, pexecutortick)
+  -- if $destructor_context_valid(S_history, pcallcontext)
+def $executor_tick_unwind(S) = eps -- otherwise
+def $executor_tick_active(S, pexecutortick) = (($executor_tick_valid(S, pexecutortick) /\ ((S.CURRENT = eps /\ $executor_tick_tasks(S.TODO, pexecutortick)) \/ $executor_tick_frames(S.FRAMES, pexecutortick))) \/ $executor_tick_unwind(S) = (pexecutortick))
+;; Frame validation keeps the real unwind witness before dropping caller scope.
+def $call_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S[.EXITSTATUS = z_saved], pframe, pframe_tail*)
+  -- if pframe_tail* = eps /\ S.FRAMES = [pframe]
+  -- if $executor_tick_unwind(S) = (pexecutortick)
+  -- if pexecutortick.COMPLETION = EXITED z_saved
 def $executor_tick_scope_tasks(S, eps) = false
 def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = ($output_drain_task(S, ptask) \/ $executor_tick_scope_tasks(S, ptask_tail*))
   -- if $executor_tick_task(ptask) =/= eps
