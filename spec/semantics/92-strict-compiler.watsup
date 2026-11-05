@@ -106,7 +106,7 @@ def $ppstrict_line(eps) = 0
 def $encoding_declare_item(NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = ($ptlc($base64(text)) = $ptascii("encoding"))
 def $encoding_declare_item(pcnode) = false -- otherwise
 def $encoding_declare_count(eps, z) = (0)
-def $encoding_declare_count(phpType49 :: phpType49*, z) = $encoding_declare_count(phpType49*, z)
+def $encoding_declare_count(phpType49 :: phpType49_tail*, z) = $encoding_declare_count(phpType49_tail*, z)
   -- if ~$encoding_declare_item(phpType49)
 def $encoding_declare_count((NDeclareItem (NIdentifier (BYTES text_name) metadata_name) expression metadata_item) :: phpType49*, z) = ($(n + 1))
   -- if $ptlc($base64(text_name)) = $ptascii("encoding")

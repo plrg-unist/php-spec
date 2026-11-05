@@ -2,13 +2,14 @@
 """Checked source compiler prefixes and reached encoding-body scheduling."""
 import argparse
 import base64
+import copy
 import hashlib
 import json
 import os
 from pathlib import Path
 import subprocess
 
-from encoding_declare_protocol import PREFIX, public
+from encoding_declare_protocol import CLI, PREFIX, public
 from encoding_list_sources import HASHES, SOURCE
 from error_handler_run import recorded
 from recorded_worker import Worker
@@ -21,20 +22,34 @@ FATAL = 'Encoding declaration pragma must be the very first statement in the scr
 
 
 def prepare(out):
-    names = ['lists', 'body', 'nested', 'late-prefix', 'strict', 'multiline-header', 'multiline-body']
+    names = ['lists', 'body', 'nested', 'late-prefix', 'strict', 'order', 'multiline-header', 'multiline-body']
     frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d',
         'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
-    units = {}
+    units, parsed_asts = {}, {}
     try:
         for name in names:
             path = SOURCE / (name + '.php')
             parsed = frontend.request({'op': 'parse', 'source': b64(path.read_bytes())})
             assert parsed['accepted'], (name, parsed)
+            parsed_asts[name] = parsed['ast']
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
             units[name.replace('-', '_')] = checked['fixture']
     finally:
         adapter.close(); frontend.close()
+
+    lines = CLI['encoding_warning_lines']
+    assert lines(parsed_asts['body']) == [2, 3, 3, 4]
+    assert lines(parsed_asts['order']) == [3, 5]
+    assert lines(parsed_asts['multiline-header']) is None
+    assert lines(parsed_asts['multiline-body']) is None
+    missing = copy.deepcopy(parsed_asts['body'])
+    del missing['program'][0]['fields'][0][0]['meta']['startTokenPos']
+    assert lines(missing) is None
+    duplicate = copy.deepcopy(parsed_asts['body'])
+    duplicate['program'][1]['fields'][0][1]['meta']['startTokenPos'] = duplicate['program'][1]['fields'][0][0]['meta']['startTokenPos']
+    assert lines(duplicate) is None
+    (out / 'cli-controls.json').write_text(json.dumps({'passed': True, 'checks': 6}) + '\n')
 
     checks = []
     for name, program in units.items():
@@ -45,6 +60,7 @@ def prepare(out):
         'P_body.COMPLETION = PPCNORMAL',
         'P_nested.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii(' + json.dumps(FATAL) + ')) 2)',
         'P_late_prefix.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii(' + json.dumps(FATAL) + ')) 4)',
+        'P_order.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii(' + json.dumps(FATAL) + ')) 5)',
         'P_strict.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("strict_types declaration must not use block mode")) 2)',
         'P_multiline_header.COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
         'P_multiline_body.COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")']
@@ -58,6 +74,8 @@ def prepare(out):
         'late_prefix': [('encoding-disabled', 4, '[PCINDEX 2]'), ('encoding-disabled', 4, '[PCINDEX 2]'),
                         ('Foo', 2, '[PCINDEX 0]')],
         'strict': [('encoding-disabled', 2, '[PCINDEX 0]')],
+        'order': [('encoding-disabled', 3, '[PCINDEX 0,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1,PCFIELD 6,PCINDEX 0]'),
+                  ('encoding-disabled', 5, '[PCINDEX 0,PCFIELD 0,PCFIELD 0,PCFIELD 5,PCINDEX 0,PCFIELD 6,PCINDEX 0]')],
     }
     for name, records in prefixes.items():
         checks.append('P_' + name + '.DIAGNOSTICS = [' + ','.join('pldiagnostic_' + name + '_' + str(i) for i in range(len(records))) + ']')
@@ -85,6 +103,11 @@ def prepare(out):
         '$ppencoding_node(P_bad,pcpath_encoding,phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
         '$ppencoding_node(P_reset,pcpath_encoding ++ [PCFIELD 1],phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
         '$ppencoding_node(P_reset,pcpath_inner ++ [PCFIELD 0,PCINDEX 0],phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")']
+    checks += [
+        'phpType49_encoding = NDeclareItem phpType11_encoding expression_encoding metadata_encoding',
+        'pcnode_missing = NDeclareItem phpType11_encoding expression_encoding eps',
+        '$ppencoding_collect(P_reset,[(PCOCCURRENCE pcpath_encoding pcnode_missing)],eps).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source position")',
+        '$ppencoding_collect(P_reset,[(PCOCCURRENCE pcpath_encoding phpType49_encoding),(PCOCCURRENCE pcpath_encoding phpType49_encoding)],eps).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source position")']
 
     file = json.dumps(b64(os.fsencode(SOURCE / 'body.php')))
     checks += ['S_start = $php_run(U_body,0,' + file + ')', 'S_start.COMPLETION = BUDGET']
@@ -139,11 +162,11 @@ def main():
         ROOT / 'tests/semantics/encoding_list_sources.py', ROOT / 'tests/semantics/recorded_worker.py',
         ROOT / 'tests/semantics/error_handler_run.py', ROOT / 'tests/semantics/static_types.py',
         ROOT / 'tests/semantics/_build/default/numeric_runner.exe', out / 'protocol.watsup',
-        out / 'assertions.json', *(SOURCE / name for name in HASHES)]
+        out / 'assertions.json', out / 'cli-controls.json', *(SOURCE / name for name in HASHES)]
     inputs = {str(path): sha(path) for path in watched}
     run = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                     *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 180)
-    report = {'head': head, 'module_count': len(modules), 'premises': count, 'inputs': inputs,
+    report = {'head': head, 'module_count': len(modules), 'premises': count, 'cli_controls': 6, 'inputs': inputs,
         'process': run, 'stdout': (out / 'check.stdout').read_text(errors='replace'),
         'stderr': (out / 'check.stderr').read_text(errors='replace'),
         'head_stable': head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),

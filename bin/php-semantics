@@ -67,7 +67,10 @@ def encoding_warning_lines(ast):
                         continue
                     name, expression = item['fields']
                     line = int(value['meta']['startLine']['int'])
-                    token = int(item['meta']['startTokenPos']['int'])
+                    token = item.get('meta', {}).get('startTokenPos', {}).get('int')
+                    if token is None:
+                        return None
+                    token = int(token)
                     if (line <= 0 or token < 0 or not literal(expression)
                             or any(int(node['meta'][key]['int']) != line
                                    for node in (value, item, name, expression)

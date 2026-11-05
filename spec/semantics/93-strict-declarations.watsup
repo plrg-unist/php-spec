@@ -43,7 +43,7 @@ def $encoding_work_items(eps, b_strict) = true
 def $encoding_work_items((NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) :: phpType49*, b_strict) = $encoding_work_items(phpType49*, b_strict)
   -- if $ptlc($base64(text)) = $ptascii("encoding")
   -- if $parser_literal(expression) = (pvalue)
-def $encoding_work_items(phpType49 :: phpType49*, b_strict) = $encoding_work_items(phpType49*, b_strict)
+def $encoding_work_items(phpType49 :: phpType49_tail*, b_strict) = $encoding_work_items(phpType49_tail*, b_strict)
   -- if $declare_work_items([phpType49], b_strict)
 def $encoding_work_items(phpType49*, b_strict) = false -- otherwise
 dec $encoding_declare_valid(pstate, statement) : bool
