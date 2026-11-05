@@ -153,7 +153,13 @@ compiled lexical owner and actual post-created scope. An inherited Child receive
 keeps Base lexical cache policy; clone and same-Base bind/call share it, while
 Child scope changes are fresh. Unknown first births still block later inference.
 The [scoped-birth review](coverage/semantics/enum-is-callable-scoped-cache-review.json)
-records the source/lifetime and unknown-first control cuts.
+records the source/lifetime and unknown-first control cuts. Raw ordinary named
+and inherited nongenerator methods now authenticate their shared function cache
+from the exact descriptor, actual target/function and lexical owner. `is_callable` selection
+stays before arguments and survives argument/output throws and receiver retirement;
+a fresh method can choose the newly published local function. The
+[method-cache review](coverage/semantics/enum-is-callable-method-cache-review.json)
+records this slice; copied/captured, Generator and Fiber owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1846,7 +1852,7 @@ pipe controls pass; parser inputs stay fixed.
 | COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR40 | EnumCase ticks before DECLARE_CLASS, class availability and abort/resume; private implementation/review. |
-| Enum callable arrays | Raw ordinary named/inherited method cache owners; private implementation/review. |
+| Enum callable arrays | User function/method capture cache identity: cold/private versus initialized shared; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

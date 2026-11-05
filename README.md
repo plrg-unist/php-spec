@@ -7231,7 +7231,11 @@ Named and inherited method factories now record a known first literal cache
 scope from the actual creator and lexical class. Clones and same-scope bind/call
 share that cache; changing scope creates a fresh cache. See the
 [scoped-birth review](coverage/semantics/enum-is-callable-scoped-cache-review.json).
-Unknown first births and wider owners retain their explicit bounds.
+Raw ordinary named/inherited methods now retain `is_callable` namespace fallback through their
+actual shared function cache, including argument and output throws; receiver
+changes preserve that function identity. See the
+[method-cache review](coverage/semantics/enum-is-callable-method-cache-review.json).
+Unknown first births, copied/captured methods and wider owners retain their bounds.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

@@ -1426,5 +1426,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "null|is_callable:RawMethodDrop\\Target::cases:UNCHANGED|query:1:RawMethodDrop\\Target::cases|",
     "purpose": "Actual ordinary named/inherited static method op_array cache selects builtin before argument publication, retains it after output throw and across inherited calls, while a fresh method uses current USER."
+  },
+  {
+    "id": "enum-is-callable-third-output-raw-method-cache-raw-inherited-instance-cache-argthrow-and-fresh-method",
+    "source": "<?php\nnamespace RawInstance;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n        throw new \\Exception('first');\n    }\n    return false;\n}\nclass Base {\n    public function query($install) {\n        $name = 'OLD'; $ok = 'UNCHANGED';\n        try {\n            $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n            echo 'query:', (int)$ok, ':', $name, '|';\n        } catch (\\Exception $e) {\n            echo 'caught:', $ok, ':', $name, '|';\n        }\n    }\n    public function fresh() {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], false, $name);\n        echo 'fresh:', (int)$ok, ':', $name, '|';\n    }\n}\nclass Child extends Base {}\n$first = new Base; $first->query(true); unset($first);\n$later = new Child; $later->query(false); $later->fresh(); unset($later);\n$last = new Base; $last->query(false); unset($last);\n",
+    "source_sha256": "dfe61ed63760c93192f9389382f31216c0910d5b8c0a3720344ca8020316c647",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "caught:UNCHANGED:OLD|query:1:RawInstance\\Target::cases|USER:OLD|fresh:0:OLD|query:1:RawInstance\\Target::cases|",
+    "purpose": "An argument throw warms the actual inherited method cache across retired Base/Child receivers; a fresh method selects USER independently of receiver identity."
+  },
+  {
+    "id": "enum-is-callable-third-output-raw-method-cache-captured-method-after-raw-warm-remains-unproved",
+    "source": "<?php\nnamespace RawCaptured;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass Owner {\n    public function query($install) {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\n$owner = new Owner;\n$owner->query(true);\n$captured = $owner->query(...);\nunset($owner);\n$captured(false);\nunset($captured);\necho 'end|';\n",
+    "source_sha256": "7af674f3acb8fcd36ef75d38501455e869ec865660cf41b3899ac1681499dce7",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:RawCaptured\\Target::cases|query:1:RawCaptured\\Target::cases|end|",
+    "purpose": "A captured method after raw warming remains explicit cache-authority Unsupported until copy policy is proved; zero engine-agreement credit."
   }
 ]

@@ -1178,9 +1178,17 @@ and original retirement, while Child scope changes get fresh caches. Canonical
 literal scope also rejects wrong-class history after retirement. An earlier
 unknown Fiber birth still blocks a later root birth from claiming sharing. The
 [scoped-birth review](../../coverage/semantics/enum-is-callable-scoped-cache-review.json)
-records these cuts. Raw method query-site caches, unknown births, computed/packed
-entry variants, internal/fake/Trait/anonymous/Fiber and inherited include/eval
-creation contexts remain partial.
+records these cuts. Raw ordinary named/inherited nongenerator methods now use
+their actual shared op_array cache. Pure history binds the query opcode to its
+exact owning descriptor; current authority additionally matches ordinary target,
+full function, lexical owner and empty temporary cache key in a valid context.
+Receiver/CALLED identity never chooses this cache. Before-argument selection
+survives publication, argument throw, output destruction and receiver retirement;
+a fresh second method can select USER. The
+[method-cache review](../../coverage/semantics/enum-is-callable-method-cache-review.json)
+records this cut. Captured/fake and resumed Generator method owners remain
+explicit authority Unsupported; unknown births, computed/packed variants,
+internal/Trait/anonymous/Fiber and inherited include/eval contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
