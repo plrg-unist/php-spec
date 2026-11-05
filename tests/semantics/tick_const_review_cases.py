@@ -60,6 +60,14 @@ const TickTableOrder38 = [
 ];
 echo TickTableOrder38['k'];
 ''', b'[6][8]9[11]'),
+    'review-constant-header-seeds-first-name-line': (b'''<?php
+function t() { $e = new Exception; echo '[' . $e->getTrace()[0]['line'] . ']'; }
+register_tick_function('t');
+declare(ticks=1);
+const
+    TickHeaderA38 = 1, TickHeaderB38 = 2;
+echo 'Z';
+''', b'[4][6]Z[7]'),
 }
 
 # Boundary controls pair the source with its expected model prefix.
