@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i112-peer-escaped-sole-active-capture",
+    "purpose": "A computed SeNd first-class capture keeps its Generator alive after source receiver/name retirement. A pack producer clears the sole capture variable; the actual capture survives body execution, then retires before its Generator finally and before caller return.",
+    "source": "<?php\nfunction stream112P() {\n    global $weakGenerator, $weakCapture;\n    try {\n        echo 'INIT|', $weakGenerator->get() instanceof Generator, '|', $weakCapture->get() instanceof Closure, '|';\n        $value = yield 'head'; echo 'VALUE|', $value, '|', $weakCapture->get() instanceof Closure, '|'; yield 'tail';\n    } finally { echo 'FIN|', $weakGenerator->get() instanceof Generator, '|', $weakCapture->get() instanceof Closure, '|'; }\n}\nfunction pack112P() { global $capture; echo 'PACK|', $capture instanceof Closure, '|'; $capture=null; return ['value'=>41]; }\n$generator=stream112P(); $weakGenerator=WeakReference::create($generator); $method='SeNd';\n$capture=$generator->{$method}(...); $weakCapture=WeakReference::create($capture); $generator=null; $method='throw';\necho 'CAPTURE|', $weakGenerator->get() instanceof Generator, '|';\n$result=$capture(...pack112P());\necho 'RETURN|', $result === 'tail', '|', $capture===null, '|', $weakGenerator->get()===null, '|', $weakCapture->get()===null, '|';\n",
+    "source_sha256": "763841127ac2cc3598431a059e7c91935af0a0d332e1c05bf4b845b345348c61",
+    "native_exit": 0,
+    "native_stdout": "CAPTURE|1|PACK|1|INIT|1|1|VALUE|41|1|FIN|1||RETURN|1|1|1|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
