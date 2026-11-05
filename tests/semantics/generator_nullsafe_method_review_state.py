@@ -47,6 +47,8 @@ $lookup(S.ENV, $ptascii("weakToken")) = (n_weak_token_cv)
 S.STORE[n_weak_token_cv] = DEFINED (POBJECT n_weak_token)
 $weakref_get(S, n_weak_token) = POBJECT n_token
 S.ERRORHANDLER.CALLBACK = eps
+ptask_tail* = METHOD_RESULT :: (DIM_FETCH z_fetch) :: ptask_after*
+$task_nodes(METHOD_RESULT) = eps
 $origin_node(S.SOURCES, pconfigcall.SITE) = (NExprNullsafeMethodCall expression_receiver (NIdentifier (BYTES text_method) metadata_name) (SEQUENCE phpType7*) metadata_site)
 $ptlc($base64(text_method)) = $ptascii("send")
 ~$generator_method_node((NExprNullsafeMethodCall expression_receiver expression_receiver (SEQUENCE phpType7*) metadata_site), $ptascii("send"))
