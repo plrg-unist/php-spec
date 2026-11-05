@@ -336,7 +336,8 @@ def $from_method(S, papiquery, porigin, ptbytes, b_static, b_invoke) = {SITE pco
   -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes_live)
 def $from_receiver(pfrommethod) = eps -- if pfrommethod.STATIC
 def $from_receiver(pfrommethod) = pfrommethod.CLASS.RECEIVER -- if ~pfrommethod.STATIC
-def $from_allocate(S, pfrommethod) = $from_done(S[.GC = $fake_gc_birth(S.GC, n, pfrommethod.STATIC)][.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED pfrommethod.CLASS.CALLED, RECEIVER $from_receiver(pfrommethod), CREATION eps}]], n)
+dec $closure_cache_method_api_birth(pstate, nat) : pstate
+def $from_allocate(S, pfrommethod) = $from_done($closure_cache_method_api_birth(S[.GC = $fake_gc_birth(S.GC, n, pfrommethod.STATIC)][.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED pfrommethod.CLASS.CALLED, RECEIVER $from_receiver(pfrommethod), CREATION eps}]], n), n)
   -- if $class_method_origin(S.CLASSES, pfrommethod.FUNCTION) = (pmethoddesc)
   -- if n = |S.OBJECTS|
 def $from_input_roots(POBJECT n) = [HOBJECT n]
@@ -622,7 +623,7 @@ def $getclass_live_object(S, n) = true
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
-def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)], n_source, n)
+def $clone_object(S, n_source) = $closure_cache_capture_copy($clone_scope(S[.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)], n_source, n), n_source, n)
   -- if S.OBJECTS[n_source] = FROMCALLABLECLOSURE pfrommethod
   -- if n = |S.OBJECTS|
 def $clone_same_kind(FROMCALLABLECLOSURE pfrommethod, FROMCALLABLECLOSURE pfrommethod) = true

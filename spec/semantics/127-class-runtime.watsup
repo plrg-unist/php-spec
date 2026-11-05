@@ -26,7 +26,8 @@ dec $declaration_class_success(pstate, pstate, pclassdesc) : pstate
 dec $class_constant_publish(pstate, pstate, pclassdesc) : pstate
 dec $runtime_class_link_result(pstate, pstate, pclassdesc) : pstate
 def $runtime_class_link_result(S, S_result, pclassdesc) = S_result -- otherwise
-def $activate_class(S, pclassdesc) = $runtime_class_link_result(S, $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_prelink(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc)
+dec $function_cache_register(pstate, pclassdesc) : pstate
+def $activate_class(S, pclassdesc) = $function_cache_register($runtime_class_link_result(S, $iterator_notice_publication(S, $class_constant_publish(S, $declaration_class_success(S, $activate_class_prelink(S, pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc), pclassdesc)
   -- if ~$autoload_parent_pending(S, pclassdesc)
   -- if ~$autoload_interface_pending(S, pclassdesc)
   -- if ~$autoload_trait_pending(S, pclassdesc)

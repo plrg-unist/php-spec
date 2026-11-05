@@ -188,7 +188,8 @@ rule PhpStep/closure-receive-complete: S ~> S[.TODO = $closure_body(S, pfunction
   -- if n_slot = |$closure_lexicals(pfunction.CODE.EXPRESSIONS)|
 
 def $context_target(pcallcontext) = pcallcontext.TARGET
-def $target_after_enter(S, pcalltarget) = S[.CURRENT = (pcallcontext[.TARGET = pcalltarget][.INSTANCE = $target_instance(pcalltarget)][.RECEIVER = $target_receiver(S, pcalltarget)][.LEXICAL_CLASS = $target_lexical_class(S, pcalltarget)][.CALLED_CLASS = $target_called_class(S, pcalltarget)])]
+dec $function_cache_enter(pstate, pcalltarget) : pstate
+def $target_after_enter(S, pcalltarget) = $function_cache_enter(S[.CURRENT = (pcallcontext[.TARGET = pcalltarget][.INSTANCE = $target_instance(pcalltarget)][.RECEIVER = $target_receiver(S, pcalltarget)][.LEXICAL_CLASS = $target_lexical_class(S, pcalltarget)][.CALLED_CLASS = $target_called_class(S, pcalltarget)])], pcalltarget)
   -- if S.CURRENT = (pcallcontext)
 def $target_after_enter(S, pcalltarget) = S -- otherwise
 

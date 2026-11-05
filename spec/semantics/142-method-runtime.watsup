@@ -498,14 +498,17 @@ def $method_capture(S, true, z) = (S_read, S_read.RESULT)
   -- if ~$method_base_value(S.BASE)
   -- if S_read = $base_read(S, S.BASE, z)
 
-def $method_args_task(pcalltarget, phpType7*, (porigin), z) = METHOD_CONVERT pcalltarget porigin z
+dec $function_cache_task(pcalltarget, ptask) : ptask
+dec $method_args_task_raw(pcalltarget, phpType7*, porigin?, int) : ptask
+def $method_args_task(pcalltarget, phpType7*, porigin?, z) = $function_cache_task(pcalltarget, $method_args_task_raw(pcalltarget, phpType7*, porigin?, z))
+def $method_args_task_raw(pcalltarget, phpType7*, (porigin), z) = METHOD_CONVERT pcalltarget porigin z
   -- if $ppfirstclass(phpType7*)
-def $method_args_task(pcalltarget, phpType7*, porigin?, z) = UNPACK_ARGS {FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX 0, SENT {SLOTS eps, NAMED eps}, CALLSITE porigin?, LINE z}
+def $method_args_task_raw(pcalltarget, phpType7*, porigin?, z) = UNPACK_ARGS {FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX 0, SENT {SLOTS eps, NAMED eps}, CALLSITE porigin?, LINE z}
   -- if ~$ppfirstclass(phpType7*) /\ $call_unpack_present(phpType7*)
-def $method_args_task(pcalltarget, phpType7*, porigin?, z) = NAMED_ARGS pcalltarget phpType7* 0 {SLOTS eps, NAMED eps} porigin? z
+def $method_args_task_raw(pcalltarget, phpType7*, porigin?, z) = NAMED_ARGS pcalltarget phpType7* 0 {SLOTS eps, NAMED eps} porigin? z
   -- if ~$ppfirstclass(phpType7*) /\ ~$call_unpack_present(phpType7*)
   -- if $named_present(phpType7*)
-def $method_args_task(pcalltarget, phpType7*, porigin?, z) = CALL_ARGS pcalltarget phpType7* 0 eps porigin? z
+def $method_args_task_raw(pcalltarget, phpType7*, porigin?, z) = CALL_ARGS pcalltarget phpType7* 0 eps porigin? z
   -- if ~$ppfirstclass(phpType7*) /\ ~$named_present(phpType7*)
 
 dec $getter_select(pstate, nat, ptbytes, phpType7*, int) : pstate

@@ -18,6 +18,8 @@ def $closure_cache_function(pobject) = (porigin)
   -- if $object_body(pobject) = NAMEDCLOSURE porigin
 def $closure_cache_function(pobject) = (porigin)
   -- if $object_body(pobject) = METHODCLOSURE porigin porigin_site porigin_requested pmethodcapture?
+def $closure_cache_function(pobject) = (pfrommethod.FUNCTION)
+  -- if $object_body(pobject) = FROMCALLABLECLOSURE pfrommethod
 def $closure_cache_function(pobject) = eps -- otherwise
 dec $closure_cache_prior(pobject*, porigin) : bool
 def $closure_cache_prior(eps, porigin) = false
@@ -144,6 +146,10 @@ def $closure_cache_object_scope(S, n) = (BIND_CLASS pclosurescope.LEXICAL)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin porigin_site porigin_requested pmethodcapture?
   -- if ~$internal_closure_object(S, n)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $closure_cache_object_scope(S, n) = (BIND_CLASS pclosurescope.LEXICAL)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $closure_cache_object_scope(S, n) = eps -- otherwise
 def $closure_cache_copy(S, n_source, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [pclosurecache]]
   -- if $(n_source < n) /\ $(n < |S.OBJECTS|)
@@ -192,7 +198,8 @@ dec $closure_cache_records(pstate, pclosurecache*, pclosurecache*) : bool
 def $closure_cache_records(S, pclosurecache_prefix*, eps) = true
 def $closure_cache_records(S, pclosurecache_prefix*, pclosurecache :: pclosurecache_tail*) = ($closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) /\ $closure_cache_records(S, pclosurecache_prefix* ++ [pclosurecache], pclosurecache_tail*))
 dec $closure_call_cache_records(pstate, pclosurecallcache*, nat) : bool
-def $closure_cache_records_valid(S) = ($closure_cache_records(S, eps, S.CLOSURECACHES) /\ $closure_call_cache_records(S, S.CLOSURECALLCACHES, 0))
+dec $function_cache_records(pstate, pfunctioncache*, pfunctioncache*) : bool
+def $closure_cache_records_valid(S) = ($function_cache_records(S, eps, S.FUNCTIONCACHES) /\ $closure_cache_records(S, eps, S.CLOSURECACHES) /\ $closure_call_cache_records(S, S.CLOSURECALLCACHES, 0))
 
 def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
@@ -211,6 +218,20 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
 def $closure_function_cache_owner(S, porigin) = eps -- otherwise
 
 dec $closure_cache_capture_scope(pstate, nat, porigin) : pbindscope?
+dec $closure_cache_method_api_scope(pstate, nat, porigin) : pbindscope?
+dec $closure_cache_shared_birth(pstate, pclosurecache, porigin) : bool
+dec $closure_cache_shared_history(pstate, pclosurecache*, porigin) : bool
+def $closure_cache_shared_history(S, eps, porigin) = false
+def $closure_cache_shared_history(S, pclosurecache :: pclosurecache_tail*, porigin) = ($closure_cache_shared_birth(S, pclosurecache, porigin) \/ $closure_cache_shared_history(S, pclosurecache_tail*, porigin))
+def $closure_cache_shared_birth(S, pclosurecache, porigin) = true
+  -- if pclosurecache.FUNCTION = porigin /\ pclosurecache.SOURCE = eps /\ pclosurecache.CACHE = (CACHE_SHARED)
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $closure_cache_capture_scope(S, pclosurecache.OBJECT, porigin) = (pbindscope) \/ $closure_cache_method_api_scope(S, pclosurecache.OBJECT, porigin) = (pbindscope)
+def $closure_cache_shared_birth(S, pclosurecache, porigin) = false -- otherwise
+def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = true
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $closure_cache_query_source(S, pfunction.ORIGIN)
+  -- if $closure_cache_shared_history(S, S.CLOSURECACHES, pfunction.ORIGIN)
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = true
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
   -- if $closure_cache_query_source(S, pfunction.ORIGIN)
@@ -377,3 +398,195 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope)
   -- if $closure_cache_capture_scope(S, pclosurecache.OBJECT, pclosurecache.FUNCTION) = (pbindscope)
+
+;; Raw method op_arrays start cold at registration. Object-count boundaries keep
+;; capture policy stable after later INIT or uncertain events, without owners.
+dec $function_cache_at(pfunctioncache*, porigin) : pfunctioncache?
+def $function_cache_at(eps, porigin) = eps
+def $function_cache_at(pfunctioncache :: pfunctioncache_tail*, porigin) = (pfunctioncache) -- if pfunctioncache.FUNCTION = porigin
+def $function_cache_at(pfunctioncache :: pfunctioncache_tail*, porigin) = $function_cache_at(pfunctioncache_tail*, porigin) -- if pfunctioncache.FUNCTION =/= porigin
+dec $function_cache_set(pfunctioncache*, pfunctioncache) : pfunctioncache*
+def $function_cache_set(eps, pfunctioncache) = [pfunctioncache]
+def $function_cache_set(pfunctioncache_old :: pfunctioncache_tail*, pfunctioncache) = pfunctioncache :: pfunctioncache_tail* -- if pfunctioncache_old.FUNCTION = pfunctioncache.FUNCTION
+def $function_cache_set(pfunctioncache_old :: pfunctioncache_tail*, pfunctioncache) = pfunctioncache_old :: $function_cache_set(pfunctioncache_tail*, pfunctioncache) -- if pfunctioncache_old.FUNCTION =/= pfunctioncache.FUNCTION
+dec $function_cache_source(pstate, porigin) : pmethoddesc?
+def $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if $closure_cache_declared_method(S, porigin) = (pmethoddesc)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $function_cache_source(S, porigin) = eps -- otherwise
+dec $function_cache_boundary(nat?, nat) : bool
+def $function_cache_boundary(eps, n) = true
+def $function_cache_boundary((n_before), n) = $(n_before <= n)
+def $function_cache_records(S, pfunctioncache_prefix*, eps) = true
+def $function_cache_records(S, pfunctioncache_prefix*, pfunctioncache :: pfunctioncache_tail*) = true
+  -- if $function_cache_source(S, pfunctioncache.FUNCTION) =/= eps
+  -- if $function_cache_at(pfunctioncache_prefix*, pfunctioncache.FUNCTION) = eps
+  -- if $function_cache_boundary(pfunctioncache.INITIALIZED, |S.OBJECTS|)
+  -- if $function_cache_boundary(pfunctioncache.UNKNOWN, |S.OBJECTS|)
+  -- if $function_cache_records(S, pfunctioncache_prefix* ++ [pfunctioncache], pfunctioncache_tail*)
+def $function_cache_records(S, pfunctioncache_prefix*, pfunctioncache*) = false -- otherwise
+
+dec $function_cache_register_methods(pstate, porigin, pmethoddesc*) : pstate
+def $function_cache_register_methods(S, porigin, eps) = S
+dec $function_cache_register_method(pstate, porigin, pmethoddesc) : pstate
+def $function_cache_register_methods(S, porigin, pmethoddesc :: pmethoddesc_tail*) = $function_cache_register_methods($function_cache_register_method(S, porigin, pmethoddesc), porigin, pmethoddesc_tail*)
+def $function_cache_register_method(S, porigin, pmethoddesc) = S[.FUNCTIONCACHES = S.FUNCTIONCACHES ++ [{FUNCTION pmethoddesc.FUNCTION.ORIGIN, INITIALIZED eps, UNKNOWN eps}]]
+  -- if pmethoddesc.OWNER = porigin
+  -- if $function_cache_source(S, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if $function_cache_at(S.FUNCTIONCACHES, pmethoddesc.FUNCTION.ORIGIN) = eps
+def $function_cache_register_method(S, porigin, pmethoddesc) = S -- otherwise
+def $function_cache_register(S, pclassdesc) = $function_cache_register_methods(S, pclassdesc.ORIGIN, pclassdesc_live.METHODS)
+  -- if S.COMPLETION = NORMAL
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_live)
+def $function_cache_register(S, pclassdesc) = S -- otherwise
+
+dec $function_cache_event(pfunctioncache?, porigin, bool, nat) : pfunctioncache
+def $function_cache_event(eps, porigin, b, n) = $function_cache_event(({FUNCTION porigin, INITIALIZED eps, UNKNOWN (0)}), porigin, b, n)
+def $function_cache_event((pfunctioncache), porigin, true, n) = pfunctioncache[.INITIALIZED = (n)] -- if pfunctioncache.INITIALIZED = eps
+def $function_cache_event((pfunctioncache), porigin, false, n) = pfunctioncache[.UNKNOWN = (n)] -- if pfunctioncache.UNKNOWN = eps
+def $function_cache_event((pfunctioncache), porigin, true, n) = pfunctioncache -- if pfunctioncache.INITIALIZED =/= eps
+def $function_cache_event((pfunctioncache), porigin, false, n) = pfunctioncache -- if pfunctioncache.UNKNOWN =/= eps
+syntax pfunctioncacheevent = SOURCE_CACHE_INIT | SOURCE_CACHE_COPY | SOURCE_CACHE_UNKNOWN
+dec $function_cache_observe(pstate, pcalltarget, pfunctioncacheevent) : pstate
+def $function_cache_observe(S, pcalltarget, SOURCE_CACHE_COPY) = S
+def $function_cache_observe(S, pcalltarget, pfunctioncacheevent) = S[.FUNCTIONCACHES = $function_cache_set(S.FUNCTIONCACHES, $function_cache_event($function_cache_at(S.FUNCTIONCACHES, pfunction.ORIGIN), pfunction.ORIGIN, b_init, |S.OBJECTS|))]
+  -- if pfunctioncacheevent =/= SOURCE_CACHE_COPY
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $function_cache_source(S, pfunction.ORIGIN) = (pmethoddesc)
+  -- if b_init = (pfunctioncacheevent = SOURCE_CACHE_INIT /\ pmethoddesc.FUNCTION = pfunction)
+def $function_cache_observe(S, pcalltarget, pfunctioncacheevent) = S -- otherwise
+
+;; Only original raw opcode targets initialize before their PHP arguments.
+;; Trampolines reach the handler's raw cache later, at actual CAPI entry.
+dec $function_cache_opcode_kind(pcalltarget) : pfunctioncacheevent
+def $function_cache_opcode_kind(METHOD_TARGET n porigin) = SOURCE_CACHE_INIT
+def $function_cache_opcode_kind(STATIC_METHOD_TARGET porigin_class porigin) = SOURCE_CACHE_INIT
+def $function_cache_opcode_kind(SCOPED_TARGET porigin_class porigin porigin_called n? poperand) = SOURCE_CACHE_INIT
+def $function_cache_opcode_kind(ARRAY_METHOD_TARGET pcalltarget parrayselection) = $function_cache_opcode_kind(pcalltarget)
+def $function_cache_opcode_kind(STRING_METHOD_TARGET pcalltarget pstringselection) = $function_cache_opcode_kind(pcalltarget)
+def $function_cache_opcode_kind(SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $function_cache_opcode_kind(pcalltarget)
+def $function_cache_opcode_kind(PIPE_OBJECT_TARGET pcalltarget pobjectselection) = $function_cache_opcode_kind(pcalltarget)
+def $function_cache_opcode_kind(CLOSURE_TARGET n) = SOURCE_CACHE_COPY
+def $function_cache_opcode_kind(CLOSURE_CALL_TARGET n_source n_receiver) = SOURCE_CACHE_COPY
+def $function_cache_opcode_kind(CLOSURE_INVOKE_PENDING_TARGET n) = SOURCE_CACHE_COPY
+def $function_cache_opcode_kind(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = SOURCE_CACHE_COPY
+def $function_cache_opcode_kind(MAGIC_STATIC_METHOD_SEND_TARGET pmagicstaticmethodcall) = SOURCE_CACHE_COPY
+def $function_cache_opcode_kind(pcalltarget) = SOURCE_CACHE_UNKNOWN -- otherwise
+
+dec $function_cache_task_target(ptask) : pcalltarget?
+def $function_cache_task_target(CALL_ARGS pcalltarget phpType7* 0 eps porigin? z) = (pcalltarget)
+def $function_cache_task_target(NAMED_ARGS pcalltarget phpType7* 0 pnamedargs porigin? z) = (pcalltarget) -- if pnamedargs = {SLOTS eps, NAMED eps}
+def $function_cache_task_target(UNPACK_ARGS punpackcall) = (punpackcall.FUNCTION) -- if punpackcall.INDEX = 0 /\ punpackcall.SENT = {SLOTS eps, NAMED eps}
+def $function_cache_task_target(METHOD_CONVERT pcalltarget porigin z) = (pcalltarget)
+def $function_cache_task_target(ptask) = eps -- otherwise
+def $function_cache_task(pcalltarget, ptask) = FUNCTION_CACHE_INIT pcalltarget ptask -- if $function_cache_opcode_kind(pcalltarget) =/= SOURCE_CACHE_COPY
+def $function_cache_task(pcalltarget, ptask) = ptask -- otherwise
+def $task_nodes(FUNCTION_CACHE_INIT pcalltarget ptask) = $task_nodes(ptask)
+def $call_task_valid(S, FUNCTION_CACHE_INIT pcalltarget ptask) = ($function_cache_task_target(ptask) = (pcalltarget) /\ $call_task_valid(S, ptask))
+rule PhpStep/function-cache-init: S ~> $function_cache_observe(S[.TODO = ptask :: ptask_tail*], pcalltarget, $function_cache_opcode_kind(pcalltarget))
+  -- if S.TODO = (FUNCTION_CACHE_INIT pcalltarget ptask) :: ptask_tail*
+  -- if $function_cache_task_target(ptask) = (pcalltarget)
+  -- if $call_task_valid(S[.TODO = ptask :: ptask_tail*], ptask)
+
+def $function_cache_fcc(S, pcalltarget, PORIGIN n_unit pcpath) = $function_cache_observe(S, pcalltarget, $function_cache_opcode_kind(pcalltarget))
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if ~$constant_class_origin_allowed(pcunit, pcpath)
+def $function_cache_fcc(S, pcalltarget, porigin) = $function_cache_observe(S, pcalltarget, SOURCE_CACHE_UNKNOWN) -- otherwise
+
+;; Existing Closure bodies are copied functions; magic trampoline bodies forward
+;; to a raw handler. Unknown wrappers taint a source instead of inventing cold.
+dec $function_cache_copy_body(pobject) : bool
+def $function_cache_copy_body(pobject) = true -- if $closure_cache_function(pobject) =/= eps
+def $function_cache_copy_body(pobject) = true -- if $object_body(pobject) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
+def $function_cache_copy_body(pobject) = true -- if $object_body(pobject) = STRINGMETHODCLOSURE pcalltarget pstringselection
+def $function_cache_copy_body(pobject) = false -- otherwise
+dec $function_cache_closure_kind(pstate, nat) : pfunctioncacheevent
+def $function_cache_closure_kind(S, n) = SOURCE_CACHE_COPY
+  -- if $(n < |S.OBJECTS|)
+  -- if $function_cache_copy_body(S.OBJECTS[n])
+def $function_cache_closure_kind(S, n) = SOURCE_CACHE_UNKNOWN -- otherwise
+dec $function_cache_entry_kind(pstate, pcalltarget) : pfunctioncacheevent
+def $function_cache_entry_kind(S, CLOSURE_TARGET n) = $function_cache_closure_kind(S, n)
+def $function_cache_entry_kind(S, CLOSURE_CALL_TARGET n_source n_receiver) = SOURCE_CACHE_COPY
+def $function_cache_entry_kind(S, CLOSURE_INVOKE_PENDING_TARGET n) = SOURCE_CACHE_COPY
+def $function_cache_entry_kind(S, CALLBACK_INVOKE_TARGET n) = $function_cache_entry_kind(S, CLOSURE_TARGET n)
+def $function_cache_entry_kind(S, ARRAY_METHOD_TARGET pcalltarget parrayselection) = $function_cache_entry_kind(S, pcalltarget)
+def $function_cache_entry_kind(S, STRING_METHOD_TARGET pcalltarget pstringselection) = $function_cache_entry_kind(S, pcalltarget)
+def $function_cache_entry_kind(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $function_cache_entry_kind(S, pcalltarget)
+def $function_cache_entry_kind(S, PIPE_OBJECT_TARGET pcalltarget pobjectselection) = $function_cache_entry_kind(S, pcalltarget)
+def $function_cache_entry_kind(S, HANDLER_METHOD_TARGET b porigin ptbytes pcalltarget) = $function_cache_entry_kind(S, pcalltarget)
+def $function_cache_entry_kind(S, OUTPUT_BORROWED_TARGET pcalltarget) = $function_cache_entry_kind(S, pcalltarget)
+def $function_cache_entry_kind(S, CALLBACK_BORROWED_TARGET pcalltarget) = $function_cache_entry_kind(S, pcalltarget)
+def $function_cache_entry_kind(S, API_BORROWED_TARGET pshutdownproducer) = $function_cache_entry_kind(S, pshutdownproducer.TARGET)
+def $function_cache_entry_kind(S, PROPERTY_GET_TARGET n porigin) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, PROPERTY_ISSET_TARGET ppropertyisset) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, PROPERTY_UNSET_TARGET ppropertyunset) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, PROPERTY_EMPTY_TARGET ppropertyempty b) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, PROPERTY_COALESCE_TARGET ppropertycoalesce b) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, PROPERTY_MAGIC_SET_TARGET ppropertymagicset) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, AGGREGATE_METHOD_TARGET n porigin) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, UNPACK_ITERATOR_TARGET n porigin) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, FIBER_METHOD_TARGET pfibercallable) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, MAGIC_UNPACK_TARGET pcalltarget n_arguments n_named? pnamedargs) = SOURCE_CACHE_INIT
+def $function_cache_entry_kind(S, pcalltarget) = $function_cache_opcode_kind(pcalltarget) -- otherwise
+
+def $function_cache_enter(S, pcalltarget) = $function_cache_observe(S, pcalltarget, $function_cache_entry_kind(S, pcalltarget))
+  -- if S.COMPLETION = NORMAL
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pcalltarget
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+def $function_cache_enter(S, pcalltarget) = S -- otherwise
+
+dec $function_cache_policy(pstate, porigin, nat) : pfncacheowner?
+dec $function_cache_after(nat?, nat) : bool
+def $function_cache_after(eps, n) = true
+def $function_cache_after((n_before), n) = $(n_before > n)
+dec $function_cache_policy_raw(pstate, porigin, nat) : pfncacheowner?
+def $function_cache_policy_raw(S, porigin, n) = (CACHE_SHARED)
+  -- if $function_cache_at(S.FUNCTIONCACHES, porigin) = (pfunctioncache)
+  -- if pfunctioncache.INITIALIZED = (n_init)
+  -- if $(n_init <= n)
+def $function_cache_policy_raw(S, porigin, n) = (CACHE_PRIVATE n)
+  -- if $function_cache_at(S.FUNCTIONCACHES, porigin) = (pfunctioncache)
+  -- if $function_cache_after(pfunctioncache.INITIALIZED, n)
+  -- if $function_cache_after(pfunctioncache.UNKNOWN, n)
+def $function_cache_policy_raw(S, porigin, n) = eps -- otherwise
+
+def $function_cache_policy(S, porigin, n) = $function_cache_policy_raw(S, porigin, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if $function_cache_source(S, porigin) =/= eps
+  -- if $function_cache_at(S.FUNCTIONCACHES, porigin) = (pfunctioncache)
+  -- if $function_cache_boundary(pfunctioncache.INITIALIZED, |S.OBJECTS|)
+  -- if $function_cache_boundary(pfunctioncache.UNKNOWN, |S.OBJECTS|)
+def $function_cache_policy(S, porigin, n) = eps -- otherwise
+
+;; API method-table lookup does not itself allocate the source runtime cache.
+def $closure_cache_method_api_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if pfrommethod.FUNCTION = porigin
+  -- if $from_source_valid(S, pfrommethod)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if pmethoddesc.STATIC = pfrommethod.STATIC
+def $closure_cache_method_api_scope(S, n, porigin) = eps -- otherwise
+
+def $closure_cache_method_api_birth(S, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [{OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (pbindscope), CACHE $function_cache_policy(S, porigin, n)}]]
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $closure_cache_function(S.OBJECTS[n]) = (porigin)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = eps
+  -- if $closure_cache_method_api_scope(S, n, porigin) = (pbindscope)
+  -- if $closure_cache_object_scope(S, n) = (pbindscope)
+def $closure_cache_method_api_birth(S, n) = S -- otherwise
+
+def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
+  -- if $closure_cache_record_object(S, pclosurecache)
+  -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
+  -- if pclosurecache.SOURCE = eps
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $closure_cache_method_api_scope(S, pclosurecache.OBJECT, pclosurecache.FUNCTION) = (pbindscope)
+  -- if $function_cache_policy(S, pclosurecache.FUNCTION, pclosurecache.OBJECT) = pclosurecache.CACHE
