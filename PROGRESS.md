@@ -117,9 +117,15 @@ the destructor, then commit the chosen name before returning or propagating its
 throw. Output unset/rebinding, saved input, API trace snapshots and resurrection
 retain their actual cells and owners. Twelve normal originals, five explicit
 boundary controls, strict433, 345 independent guards and affected retained77
-checks pass at their recorded cuts. Exit, owning rebound values, late attached
-type sources and variable array inputs remain partial.
+checks pass at their recorded cuts.
 [Unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json).
+Root VM destructor exits now drain local cleanup before committing the saved
+name. Nested live queries commit in order while preserving exit status and
+leaving result assignments untouched. Seven exact exit originals, seven explicit
+controls, strict433 and 247 independent guards pass. Switched Fiber exits,
+replacement cleanup, owning rebound values, late attached type sources and
+variable array inputs remain partial.
+[Exit review](coverage/semantics/enum-is-callable-output-exit-review.json).
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
