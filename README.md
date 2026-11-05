@@ -231,8 +231,10 @@ echo, print and inline output, with copied snapshots, source call contexts and
 PHP8.5 callback-output deprecation. Automatic and explicit API reception failures
 or callback throws preserve pending cleanup and stack operations before caller
 catch. Defined scalar returns survive callee cleanup throws, with callee-only
-reference wrappers and borrowed method receivers. Explicit API argument-warning
-throws release only the prepared prefix before failed-buffer cleanup.
+reference wrappers and borrowed method receivers. Explicit API and automatic
+source-output argument-warning throws release only the prepared prefix before
+failed-buffer cleanup. Automatic failure preserves lower-layer routing, producer
+ownership and interrupted print assignment.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

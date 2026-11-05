@@ -1123,6 +1123,18 @@ conditions, and private strict435 passes. The selected handler resumes for the
 original failed-start Notice after nested default Notice reporting. Throwing
 paths through this new Warning-retval bridge remain outside this milestone.
 [Normal Warning retval review](coverage/semantics/output-executor-warning-retval-nested-review.json).
+OB15 adds ordinary positive-chunk pre-entry reference-warning throws from echo,
+print and inline output. Diagnostic cursors retain the exact running producer;
+prepared scalar wrappers retire before undefined-result failure routes live bytes
+through lower buffers. Reached lower user chunks skip entry while smaller chunks
+retain their bytes. Warning output retains PRODUCED without deprecation, and
+owned print operands retire before catch without assigning the print result.
+Six new originals agree; author prepared-prefix and producer fronts pass 108
+reported conditions at their separate cuts. Independent validation is pending;
+[author evidence](coverage/semantics/output-vm-reference-warning-author.json)
+preserves both accepted fronts and the original failed fixture.
+Explicit lower-cascade/FINAL pre-entry warnings and wider diagnostic cleanup
+remain partial.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

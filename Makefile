@@ -82,6 +82,8 @@ test-semantics: build
 	python3 tests/semantics/output_reference_warning_review_sources.py
 	python3 tests/semantics/output_reference_warning_state.py --select live-prefix
 	python3 tests/semantics/output_reference_warning_state.py --select retired-prefix
+	python3 tests/semantics/output_vm_reference_warning_state.py
+	python3 tests/semantics/output_abrupt_sources.py --select reference-warning-throw,callback-exit,produced-warning-throw
 	python3 tests/semantics/output_request_end_sources.py
 	python3 tests/semantics/output_final_protocol.py
 	python3 tests/semantics/output_final_review_protocol.py

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Output callback reference-warning Throwables before callee entry."""
+"""Explicit and automatic callback reference-warning throws before entry."""
 import argparse
 import base64
 import hashlib
@@ -12,6 +12,27 @@ import output_api_failure_sources as common
 ROOT = common.ROOT
 CASES = {
     'api-reference-warning-throw': (b'<?php echo "P";$e=new Exception;$x=99;$called=0;$warnings=0;set_error_handler(function($n){global $e,$warnings;$warnings++;throw $e;});function h(&$b,$p){global $called;$called++;return "X";}ob_start("h");echo "A";try{$x=ob_flush();}catch(Exception $c){$s=ob_get_status();$report=($c===$e?"C":"N").":".$x.":".$called.":".$warnings.":".$s["flags"].":".$s["buffer_used"];}ob_end_clean();echo "|".$report."Z";', b'PA|C:99:0:1:12401:0Z'),
+    'vm-phase-warning-trace': (b'''<?php
+$hits=0;$x=99;
+function e($n,$m,$f,$l){throw new Exception("R");}
+function h($b,&$p){global $hits;$hits++;return "X";}
+set_error_handler("e");ob_start("h",1);
+try{$x=print "AB";}catch(Exception $c){$t=$c->getTrace();$s=ob_get_status();echo "C:".$hits.":".$x.":".$s["flags"].":".$s["buffer_size"].":".$t[0]["function"].":".($t[0]["file"]===__FILE__?"F":"N").":".$t[0]["line"].":".(isset($t[1])?"E":"-");}
+ob_end_clean();echo "Z";
+''', b'ABC:0:99:12401:0:e:F:6:-Z'),
+    'vm-second-warning-owned-print': (b'''<?php
+$e=new Exception;$warnings=0;$hits=0;$x=99;
+function e(){global $warnings,$e;if(++$warnings===2){echo "H";throw $e;}return true;}
+function h(&$b,&$p){global $hits;$hits++;return "X";}
+class C{function __toString(){return "A";}function __destruct(){echo "D".ob_get_level();}}
+set_error_handler("e");ob_start("h",1);
+try{$x=print new C;}catch(Exception $c){$s=ob_get_status();echo ($c===$e?"C":"N").":".$warnings.":".$hits.":".$x.":".$s["flags"].":".$s["buffer_used"];}
+ob_end_clean();echo "Z";
+''', b'AHD1C:2:0:99:45169:0Z'),
+    'vm-inline-warning': (b'<?php $e=new Exception;function e(){global $e;throw $e;}function h(&$b,$p){return "X";}set_error_handler("e");ob_start("h",1);try{?>AB<?php echo "T";}catch(Exception $c){$s=ob_get_status();echo ($c===$e?"C":"N").":".$s["flags"].":".$s["buffer_used"];}ob_end_clean();echo "Z";', b'ABC:12401:0Z'),
+    'vm-lower-pending': (b'<?php $e=new Exception;$hits=0;function e(){global $e;echo "H";throw $e;}function u(&$b,$p){return "U";}function l($b,$p){global $hits;$hits++;return "L".$b;}set_error_handler("e");ob_start("l",1);ob_start("u",1);try{echo "AB";}catch(Exception $c){$a=ob_get_status(true);echo ($c===$e?"C":"N").":".$hits.":".$a[0]["flags"].":".$a[1]["flags"];}ob_end_clean();ob_end_clean();echo "Z";', b'ABHC:0:12401:45169Z'),
+    'vm-lower-retain': (b'<?php $e=new Exception;$log="";function e(){global $e;echo "H";throw $e;}function u(&$b,$p){return "U";}function l($b,$p){global $log;$log.=$p;return "L".$b;}set_error_handler("e");ob_start("l",100);ob_start("u",1);try{echo "A";}catch(Exception $c){}ob_end_clean();$s=ob_get_status();$a=ob_get_clean();echo $a.":".$s["flags"].":".$s["buffer_used"].":".$log."Z";', b'AH:113:2:11Z'),
+    'vm-later-write-phase': (b'<?php $e=new Exception;$warnings=0;$hits=0;function e(){global $warnings,$e;if(++$warnings===2){throw $e;}return true;}function h(&$b,$p){global $hits;$hits++;return $b;}set_error_handler("e");ob_start("h",1);echo "A";try{echo "B";}catch(Exception $c){$s=ob_get_status();echo ($c===$e?"C":"N").":".$warnings.":".$hits.":".$s["flags"];}ob_end_clean();echo "Z";', b'ABC:2:1:28785Z'),
 }
 
 

@@ -45,10 +45,10 @@ API callee-cleanup destructors retain an internal site and the originating API
 trace frame for both normal-return and body-throw cleanup.
 
 Module401 handles throws from fixed by-reference argument warnings before an
-explicit API callback enters. Only the already prepared parameter prefix owns
+explicit API or source VM callback enters. Only the prepared parameter prefix owns
 fresh wrappers; those wrappers still contain the original copied input or phase.
 After releasing that prefix, the undefined-result path retains the pending
-Throwable and performs the ordinary API failure cleanup. The output callback
+Throwable and performs the ordinary failure cleanup. The output callback
 never enters, caller assignment is interrupted, and warning-handler output remains in
 the live buffer without a failure-path deprecation. Historical cleanup metadata
 does not retain or revive retired reference cells.
@@ -103,7 +103,7 @@ producer tail until writing finishes, releasing it before print assignment or
 caller catch. Plain variable operands stay borrowed; wider owned Stringable
 forms remain an explicit dependency.
 
-Callback exit, automatic pre-entry reference-warning throws,
+Callback exit,
 throwing produced-output warning handlers, owning warning-handler abrupt cleanup,
 automatic dispatch from other byte
 producers, wider request-end/fatal callback paths, non-scalar or
@@ -339,3 +339,19 @@ agreement credit; separate explicit-cleanup controls cover the creation protocol
 [OB12 evidence](../../coverage/semantics/output-executor-notice-discard-review.json),
 [OB13 evidence](../../coverage/semantics/output-executor-notice-retval-throw-review.json),
 [OB14 evidence](../../coverage/semantics/output-executor-warning-retval-nested-review.json).
+
+OB15 extends pre-entry warning failure to positive-chunk callbacks triggered by
+echo, print and inline output. Diagnostic argument cursors retain the running
+handler and its exact producer tail. A second warning releases the original
+scalar prefix before restoring the independent two FCI arguments; its retired
+reference metadata adds no owner. Undefined callback results disable the selected
+handler and forward its live bytes while the Throwable remains pending. Reached
+lower user chunks skip callback entry, while lower chunks below their threshold
+retain bytes. Warning output preserves PRODUCED without a failure-path
+deprecation. Owned Stringable producer operands retire before caller catch;
+interrupted print never assigns its normal result.
+
+This does not admit warning-handler owning abrupt cleanup, pre-entry warnings
+from explicit lower cascades or FINAL, produced-output warning throws, or exit.
+[Author evidence](../../coverage/semantics/output-vm-reference-warning-author.json)
+retains exact sources, the reached release/producer fronts and original failures.
