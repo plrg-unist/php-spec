@@ -265,6 +265,19 @@ while (($line = fgets(STDIN)) !== false) {
                         if ($token->id !== ord(';') && $token->id !== T_CLOSE_TAG) throw new RuntimeException('Loop control terminator token is missing');
                         $node->setAttribute('statementTerminatorLine', $token->line);
                     }
+                    if ($node instanceof PhpParser\Node\Stmt\Declare_) {
+                        $index = $node->getStartTokenPos() + 1;
+                        while (in_array($tokens[$index]->id, [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) ++$index;
+                        if ($tokens[$index]->id !== ord('(')) throw new RuntimeException('Declare header opener is missing');
+                        $depth = 0;
+                        do {
+                            if ($tokens[$index]->id === ord('(')) ++$depth;
+                            elseif ($tokens[$index]->id === ord(')')) --$depth;
+                            if ($depth !== 0) ++$index;
+                        } while ($depth !== 0);
+                        $node->setAttribute('declareHeaderCloseLine', $tokens[$index]->line);
+                        $node->setAttribute('declareHeaderCloseTokenPos', $index);
+                    }
                     if (($node instanceof PhpParser\Node\Stmt\Class_ && $node->name !== null)
                         || (($node instanceof PhpParser\Node\Stmt\Trait_ || $node instanceof PhpParser\Node\Stmt\Interface_ || $node instanceof PhpParser\Node\Stmt\Enum_)
                             && $node->attrGroups !== [])) {

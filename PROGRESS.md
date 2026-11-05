@@ -950,8 +950,18 @@ sources agree, including strict/tick interactions and include/eval body returns.
 Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
 pass, alongside six CLI guards and two explicit multiline Unsupported controls.
 Actual cuts and preserved failures are in the
-[review](coverage/semantics/encoding-list-review.json). Multiline declarations,
-rejected sources with warnings and multibyte conversion remain partial.
+[review](coverage/semantics/encoding-list-review.json). COMP167 below extends its
+multiline boundary; rejected sources with warnings and multibyte conversion remain partial.
+
+COMP167 retains checked declaration header-close line/token facts. Multiline
+headers use their closing line for parser warnings while compiler diagnostics
+keep the first item's line. Nested header reductions precede enclosing headers;
+comment-only Nops retain their genuine empty token spans. Twenty-one new original
+comparisons, independent compiler/state gates and affected regressions pass;
+strict compilation covers 433 modules. Fresh classified syntax covers 30,980
+profiles and independent metadata checks cover 17 profiles. Original failures
+and exact cuts remain in the [review](coverage/semantics/encoding-header-review.json).
+Rejected sources with warnings and multibyte conversion remain partial.
 
 ## Active and unintegrated work
 
