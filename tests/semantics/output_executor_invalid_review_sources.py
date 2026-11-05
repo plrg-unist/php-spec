@@ -94,6 +94,11 @@ ORIGINALS = {
     'warning-throw-notice-mask-excluded': PENDING_BASE,
     'warning-throw-notice-suppressed': PENDING_BASE.replace(b'ob_start(42)', b'@ob_start(42)'),
 }
+ORIGINALS['invalid-direct-cycle-warning-throw'] = ORIGINALS['invalid-direct-cycle'].replace(
+    b'    echo "H:", $level, "|", ($weak->get() === null ? "D|" : "L|"), gc_collect_cycles(), "|";\n    return true;',
+    b'    echo "H:", $level, "|G|", gc_collect_cycles(), "|";\n    if ($level === 2) { throw new Exception("warning"); }\n    return true;').replace(
+    b'echo ob_start(invalidCycleOB11()) ? "T|" : "F|";',
+    b'try { ob_start(invalidCycleOB11()); echo "BAD_RETURN|"; } catch (Throwable $error) { echo "CAUGHT|"; }')
 
 if __name__ == '__main__':
     raise SystemExit(0 if scope.main(ORIGINALS, 'output-executor-invalid-review',
