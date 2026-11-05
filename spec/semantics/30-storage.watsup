@@ -153,7 +153,7 @@ syntax ptask
 syntax pshellcontext
 syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode
 syntax ptickmarker, ptickentry, ptickdispatch
-syntax pexecutorqueue, pexecutorstage, pexecutortick
+syntax pexecutorqueue, pexecutorstage, pexecutortick, pexecutortickfatal
 syntax pintegeroperation
 syntax pintegerphase
 syntax pintegerconversion
@@ -623,7 +623,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
   | OUTPUT_FINAL_PENDING pobdeactivate nat bool
   | OUTPUT_FINAL_EXCEPTION pobinvoke bool
-  | EXECUTOR_RELEASE pexecutorqueue pexecutorstage | EXECUTOR_TICK_RELEASE pexecutortick bool
+  | EXECUTOR_RELEASE pexecutorqueue pexecutorstage | EXECUTOR_TICK_RELEASE pexecutortick bool | EXECUTOR_TICK_FATAL pexecutortickfatal bool
 syntax pdirconversion = { NONCE nat, CALLSITE porigin, CALLLINE int, OBJECT nat, RESULT nat*, SELECTION nat?, OWNERDEPTH nat }
 syntax pdircontext = { NONCE nat, CALL pconfigcall, CWD nat*, REQUESTED nat*, CONVERSION nat?, FRAMEOWNER nat, TAIL ptask* }
 syntax pshellcontext = { NONCE nat, SITE porigin, LINE int, CWD preqbytes, ENV (preqbytes, preqbytes)*, COMMAND pvalue, FRAMEOWNER nat, TAIL ptask* }
@@ -727,6 +727,7 @@ syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pva
 syntax pobdeactivate = { CALL pobinvoke, BUFFERS poutputbuffer*, INDEX nat, COMPLETION pcompletion }
 syntax pexecutorqueue = { COMPLETION pcompletion, VALUE poperand, BASE pbase, ORIGIN porigin?, ENTRIES pshutdownentry*, TARGETS pshutdownproducer*, RECEIVERS nat?* }
 syntax pexecutortick = { COMPLETION pcompletion, VALUE poperand, BASE pbase, ORIGIN porigin?, ENTRY ptickentry, TAIL ptickentry*, TARGET pshutdownproducer, RECEIVER nat? }
+syntax pexecutortickfatal = { TICK pexecutortick, COMPLETION pcompletion, OBJECT nat }
 syntax pexecutorstage = EXECUTOR_QUEUE | EXECUTOR_PENDING nat | EXECUTOR_DONE
 syntax poboutput = { VALUE pvalue, BYTES preqbytes, PRECISION int, FAILED bool }
 syntax pobrelease = { CALL pconfigcall, BUFFER poutputbuffer, VALUE pvalue }

@@ -1,0 +1,160 @@
+{
+  "milestone": "ATTR19: uncaught post-FINAL tick argument destructor bailout",
+  "status": "selected bailout sources and ownership behavior independently validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-19",
+  "scope": "Normal-origin, null-C tick argument destructor bailout with a renderable builtin Throwable, no previous exception and no selected exception handler. Literal Exception originals validate the selected routes, including untouched tick tail, later shutdown-list cleanup and default-fast inactive Closure free.",
+  "authority": [
+    "ext/standard/basic_functions.c:user_tick_function_dtor releases positional params before zend_fcc_dtor; the bailout stops that C tail.",
+    "Zend/zend_objects_API.c:zend_objects_store_del and Zend/zend_objects.c:zend_objects_destroy_object retain the store/destructor protections when the API call bails out.",
+    "Zend/zend_execute_API.c:zend_call_function and Zend/zend_exceptions.c:zend_throw_exception_internal render and release an uncaught Throwable without current execute data, then bail out.",
+    "Zend/zend_API.c:zend_deactivate_modules catches the module-local bailout; main/main.c:php_request_shutdown still frees shutdown functions before inactive executor cleanup.",
+    "Zend/zend_closures.c:zend_closure_free_storage releases captures during inactive free; existing 444 executor-free projection determines the separate child-method fatal."
+  ],
+  "production": {
+    "revision": "32fdfc8f841801c1eb502d13c3049a7909f61528",
+    "spec_sha256": {
+      "spec/semantics/30-storage.watsup": "e766f6a40a0e0343d69de28a07f72e8437e886e68356f48be6b400f37d5aaaf9",
+      "spec/semantics/441-output-finalization.watsup": "f72425a1e02f6a78c1d5a3e50b2b6d84f002e2921b385eb7318f774ed4214635",
+      "spec/semantics/444-executor-final-free.watsup": "7facece9ca60d954469e7d19cd356be402064df3d889a3e06574c32e6906f4c2"
+    },
+    "change": "Recognize a source-authenticated abandoned tick release, render its builtin Throwable, and give only that Throwable to a two-stage cleanup task. Validate cause/cache while live; later stages preserve frozen completion without reading retired properties or adding documentary owners. Keep unfinished argument/FCC jobs and registry tail rooted, then route remaining shutdown entries through existing active queue cleanup before inactive free."
+  },
+  "tests": {
+    "independent_revision": "786ab13e2c8904f76191a2231eb87a29bf71400c",
+    "protocol": "tests/semantics/deprecated_late_tick_throw_review_protocol.py",
+    "fixture_correction_revision": "53fcea9886df6cefbc78610af637d372650349aa",
+    "fixture_correction": "Replace only the noninvertible late STDERR append assertion with its exact four-event list pattern; unchanged first four groups keep their original cut."
+  },
+  "identities": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "semantic_mode": "SL; SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; native CPU3, model/state CPU5"
+  },
+  "evidence": {
+    "native4": {
+      "report": "review-native/report.json",
+      "report_sha256": "98396e45ef71ce374b6ccf10f080aa03a053b09973524a98e864b1f416d16539",
+      "originals": 4,
+      "preserved_sources": "review-native/{raw,tail,closure,owning-capture}.php"
+    },
+    "native_shutdown": {
+      "report": "review-native-shutdown/report.json",
+      "report_sha256": "3a378c1817d511d6b3e0523a2a31d632cbca09e236b9ac3db602afed00b32e19",
+      "originals": 1,
+      "preserved_source": "review-native/shutdown.php"
+    },
+    "source": {
+      "revision": "32fdfc8f841801c1eb502d13c3049a7909f61528",
+      "reports": [
+        {
+          "report": "source-live-cause/report.json",
+          "report_sha256": "31a9a35fcb4cd83e2d6ab2d7ad30bc2482d82a8ab2933d137710d24e566b3f63",
+          "agreements": 1
+        },
+        {
+          "report": "source-live-cause-rest/report.json",
+          "report_sha256": "b6f0491888d45ba574bf1e4c7e45031bbba8a4af956d3254ff98a330ed0ace84",
+          "agreements": 4
+        }
+      ],
+      "agreements": 5,
+      "rows": [
+        {
+          "id": "raw",
+          "source_sha256": "6f4a80ad9f4f5dff535ab6c9b19084b5083f15b2dc11d22992b7885e63583873",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;"
+        },
+        {
+          "id": "closure",
+          "source_sha256": "2db1e5392d91bcaa6c00720466e168befcc231a7b2f93cdf8b20a3dea37baad5",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;"
+        },
+        {
+          "id": "tail",
+          "source_sha256": "61906f3f4ec9afca6fa26afb7b67c60e413778946a524c274ef76fc444ed8ae2",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;"
+        },
+        {
+          "id": "shutdown",
+          "source_sha256": "239ec5d4d49196a20a9cac60551925168496ee81b1d8088513299f2795828219",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;Q;"
+        },
+        {
+          "id": "owning-capture",
+          "source_sha256": "91a0c480fb8cc13bb908aea360482146668f693ef1c8b7b3ddcec3a2765dc54e",
+          "status": "php_error",
+          "exit_status": 0,
+          "stdout": "B;F;A;"
+        }
+      ],
+      "observation": "All stdout/fatal stderr bytes and CLI statuses agree. Four ordinary uncaught cases exit255; owning capture also emits the existing inactive-child fatal and exits0 under default fast allocation."
+    },
+    "strict_private": {
+      "report": "strict-live-cause/report.json",
+      "report_sha256": "61da1ddd22cccf6ab1f725e951c0b65c3809e3a987be41b502d7282b25a8028c",
+      "revision": "32fdfc8f841801c1eb502d13c3049a7909f61528",
+      "modules": 433,
+      "exit": 0
+    },
+    "reached": {
+      "reports": [
+        {
+          "report": "reached-786ab/run/report.json",
+          "report_sha256": "69c188be2a5544f48136c58a43f6409ccd4281e4a8f3c7b158e26c252112dad4",
+          "revision": "786ab13e2c8904f76191a2231eb87a29bf71400c",
+          "selected_records": [
+            "reported-throwable-does-not-own-unconsumed-module-slots",
+            "retired-cause-keeps-no-root-and-tail-never-restarts",
+            "scalar-capture-closure-keeps-one-abandoned-fcc-owner",
+            "later-shutdown-queue-runs-with-tick-owners-abandoned"
+          ],
+          "conditions": 208
+        },
+        {
+          "report": "reached-owning-correction/run/report.json",
+          "report_sha256": "03889269901f0b860f2ca5477d7de1399e7abf5fb2abaa19d494a7d1d89ed4b4",
+          "revision": "53fcea9886df6cefbc78610af637d372650349aa",
+          "selected_records": [
+            "owning-closure-capture-reaches-existing-inactive-child-fatal"
+          ],
+          "conditions": 46
+        }
+      ],
+      "groups": 5,
+      "selected_assertions": [
+        56,
+        61,
+        44,
+        47,
+        46
+      ],
+      "conditions": 254,
+      "source_reached_conditions": 243,
+      "derived_conditions": 11,
+      "derived_scope": "Seven live cause/status/abandoned-source refusals and four retired-continuation/index/live-wrapper controls, explicitly labeled in the independent protocol.",
+      "observation": "A retains two destructor/store protections; later argument/FCC jobs and tail entries remain owned. The live Throwable owns exactly one root, then retires with its property row absent. Actual pending release remains within the destructor protocol. Budget resume, later active queue cleanup and the separate inactive captured-child fatal preserve source order and CLI status.",
+      "selection_note": "Select only the first four passing records 208 from the original report, whose overall passed=false preserves the last fixture error. The corrected owning-only report supplies 46; no failed record receives credit."
+    }
+  },
+  "zero_credit": [
+    "strict-dd4 preserves the initial unbound-premise compile failure. source-746 preserves five interpreter failures; source-e069 and source-ec06 each preserve one failed raw comparison, with their packets stopped at that failure.",
+    "debug-caught-e069, debug-fatal-e069, debug-fatal-valid-e069, debug-eager-begin-e069 and later focused diagnostics preserve the localization work without native agreement credit. Fixes add task scope, use established constructor-head binding, and authenticate cause before property retirement; no assertion or semantic standard was weakened.",
+    "ATTR07 unsafe assert WeakReference observation remains unresolved, is not rerun here and retains zero agreement credit.",
+    "The initial owning-capture reached record in reached-786ab has an unbound late-event fixture variable and retains zero credit. Only that assertion is corrected and only its 46 conditions are rerun; the four passing records retain 208 conditions at 786ab."
+  ],
+  "preserved_earlier_evidence": "callback-late-tick-exit-review.json, callback-late-tick-callables-review.json and callback-late-tick-values-review.json retain their original tested cuts; their source/state credit is not renewed here.",
+  "remaining": "Pending-exit or other changed-phase origins, selected exception handlers, user Throwable subclasses/chains, wider payload/constructor shapes, exits/reentry during module cleanup, assertion roots and broader lifecycle/core coverage remain partial.",
+  "recovery": "Raw reports retain exact commands, cwd, profile, environment, source/binary hashes, exits and process-group reaping. Restore committed originals at their recorded private path for exact diagnostic filenames; local tool copies are reused, with no rebuild or portability claim.",
+  "review": "Independent /root/attr_review_current accepts the source/C bailout reasoning, live-only report authentication and selected ownership/counterexample checks. Five exact originals, selected 208 plus corrected 46 reached conditions and private strict433 pass. Original source/fixture failures remain preserved at zero credit; prior milestones retain their original cuts."
+}
