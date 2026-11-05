@@ -679,6 +679,27 @@ def $closure_call_copy_row(S, n) = ({OBJECT n, SITE pboundfake.SITE, SOURCE pbou
   -- if $closure_call_fake_copy_binding(S, pboundfake)
   -- if $bound_fake_valid(S, n)
 def $closure_call_copy_row(S, n) = eps -- otherwise
+;; A pre-Gen warning abort leaves the engine's hidden copy at refcount zero
+;; without free_obj. One abstract request owner preserves only its descendants;
+;; these lookup rows grant no new binding and own neither SOURCE nor API argv.
+dec $closure_call_retained_valid(pstate) : bool
+dec $closure_call_retained_rows(pstate, pclosurebinding*, nat*) : bool
+dec $closure_call_copy_generator(pobject, nat) : bool
+dec $closure_call_copy_created(pobject*, nat) : bool
+def $closure_call_copy_generator(GENERATOR pgenerator, n) = (pgenerator.CLOSURE = (n))
+def $closure_call_copy_generator(pobject, n) = false -- otherwise
+def $closure_call_copy_created(eps, n) = false
+def $closure_call_copy_created(pobject :: pobject_tail*, n) = ($closure_call_copy_generator(pobject, n) \/ $closure_call_copy_created(pobject_tail*, n))
+def $closure_call_retained_nodes(eps) = eps
+def $closure_call_retained_nodes(pclosurebinding :: pclosurebinding_tail*) = (HOBJECT pclosurebinding.OBJECT) :: $closure_call_retained_nodes(pclosurebinding_tail*)
+def $closure_call_retained_rows(S, eps, nat*) = true
+def $closure_call_retained_rows(S, pclosurebinding :: pclosurebinding_tail*, nat*) = true
+  -- if ~(pclosurebinding.OBJECT <- nat*)
+  -- if $closure_call_copy_row(S, pclosurebinding.OBJECT) = (pclosurebinding)
+  -- if ~$closure_call_copy_created(S.OBJECTS, pclosurebinding.OBJECT)
+  -- if $closure_call_retained_rows(S, pclosurebinding_tail*, nat* ++ [pclosurebinding.OBJECT])
+def $closure_call_retained_rows(S, pclosurebinding*, nat*) = false -- otherwise
+def $closure_call_retained_valid(S) = $closure_call_retained_rows(S, S.CLOSURECALLRETAINED, eps)
 def $closure_call_copy_target(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $closure_call_copy_row(S, n) = (pclosurebinding)
   -- if pclosurebinding.SITE = porigin_site
@@ -855,6 +876,12 @@ rule PhpStep/closure-call-copy-discarded: S ~> $destructor_release_begin(S[.TODO
   -- if pgenerator.CLOSURE = (n_copy)
 ;; The pinned no-Generator receive-error branch retains a zero-ref copy until
 ;; shutdown. Stop before that decrement rather than invent ordinary release.
+dec $closure_call_copy_warning_pending(ptask) : bool
+def $closure_call_copy_warning_pending(CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = true
+def $closure_call_copy_warning_pending(ERROR_HANDLER_RESULT perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
+def $closure_call_copy_warning_pending(ERROR_HANDLER_INVOKE perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
+def $closure_call_copy_warning_pending(ERROR_HANDLER_CLEAN perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
+def $closure_call_copy_warning_pending(ptask) = false -- otherwise
 dec $closure_call_copy_pending(ptask) : bool
 def $closure_call_copy_pending(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = true
 def $closure_call_copy_pending(CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) = true
@@ -867,6 +894,7 @@ def $source_exception_transition(S, S_next) = S_next[.COMPLETION = UNSUPPORTED "
   -- if S_next.SOURCEPENDING = eps
   -- if S_next.TODO = (THROW_SEARCH n) :: ptask_copy :: ptask_tail*
   -- if $closure_call_copy_pending(ptask_copy)
+  -- if ~$closure_call_copy_warning_pending(ptask_copy)
   -- if $throwable_member(S_next, n)
 
 dec $closure_call_copy_trace(pstate, pframe) : ptraceframe*
