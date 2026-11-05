@@ -31,5 +31,16 @@
     "native_stderr": "",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i94-bound-fake-source-chain-independent",
+    "purpose": "Independent resumed I94 review: finite BOUNDFAKE history and fake binding controls.",
+    "source": "<?php\nclass Token94S { function __destruct() { echo 'TOKEN|'; } }\nclass Base94S {\n    public $label;\n    function __construct($label) { $this->label=$label; }\n    function stream($token) {\n        static $counter=0; $counter=$counter+1;\n        echo 'BODY|',$counter,'|',static::class,'|';\n        try { yield $token; }\n        finally { echo 'FIN|',$counter,'|'; }\n        return $counter;\n    }\n    function __destruct() { echo $this->label,'|'; }\n}\nclass Child94S extends Base94S {}\n$old=new Base94S('OLD'); $weakOld=WeakReference::create($old);\n$raw=$old->stream(...); $weakRaw=WeakReference::create($raw);\n$middle=new Child94S('MID'); $weakMiddle=WeakReference::create($middle);\n$bound=$raw->bindTo($middle,'Base94S'); $weakBound=WeakReference::create($bound);\nunset($raw,$old); echo 'A|',$weakRaw->get()===null,'|',$weakOld->get()===null,'|';\n$seed=$bound(null); echo 'SEED|',$seed->current()===null,'|'; $seed->next(); unset($seed);\n$new=new Base94S('NEW'); $weakNew=WeakReference::create($new);\n$token=new Token94S(); $weakToken=WeakReference::create($token);\necho 'CALL|'; $g=$bound->call($new,$token); unset($bound,$middle,$new,$token);\necho 'FRESH|',$weakBound->get()===null,'|',$weakMiddle->get()===null,'|';\necho 'VALUE|',$g->current()===$weakToken->get(),'|'; $g->next();\necho 'CLOSED|',$g->getReturn()===2,'|',$weakNew->get() instanceof Base94S,'|',$weakToken->get()===null,'|';\nunset($g); echo 'END|',$weakNew->get()===null,'|',$weakToken->get()===null,'|';\n",
+    "source_sha256": "de861f6e9f6afc90bfb39d7ae1b0968f18561ce2a23a02e8d6fe2c6588213836",
+    "native_exit": 0,
+    "native_stdout": "OLD|A|1|1|SEED|BODY|1|Child94S|1|FIN|1|CALL|MID|FRESH|1|1|VALUE|BODY|2|Base94S|1|FIN|2|CLOSED|1|1||NEW|TOKEN|END|1|1|",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]

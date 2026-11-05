@@ -42,5 +42,16 @@
     "native_stderr": "",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i94-fake-child-static-rejections-independent",
+    "purpose": "Independent resumed I94 review: finite BOUNDFAKE history and fake binding controls.",
+    "source": "<?php\nclass Base94T { function stream(){echo 'BAD-BODY|';yield 1;} static function staticStream(){echo 'BAD-STATIC|';yield 1;} }\nclass Child94T extends Base94T {}\nfunction Warn94T($severity,$message){echo 'WARN|',$message,'|';return true;}\nset_error_handler('Warn94T');\n$base=new Base94T(); $source=$base->stream(...);\necho 'CHILD|',$source->call(new Child94T())===null,'|';\n$static=Base94T::staticStream(...); echo 'STATIC|',$static->call($base)===null,'|';\nrestore_error_handler(); echo 'E';\n",
+    "source_sha256": "31af7ffea37567932203ec364dca86bdbb18dd238d428f58575f585b63b9fa49",
+    "native_exit": 0,
+    "native_stdout": "CHILD|WARN|Cannot rebind scope of closure created from method, this will be an error in PHP 9|1|STATIC|WARN|Cannot bind an instance to a static closure, this will be an error in PHP 9|1|E",
+    "native_stderr": "",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
