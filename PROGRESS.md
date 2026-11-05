@@ -57,9 +57,17 @@ integer exit status survives catch and later string exit. Eight new/promoted
 source agreements, one affected enum exit-status source, three explicit
 controls, strict433 and 256+47 independent guards pass at their recorded cuts.
 [Cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json).
-Repeated cleanup exits, switched Fiber completion/force-close, owning rebound
-values, late attached type sources, variable-array query inputs, named/unpacked
-output, loading and wider enum member/lifetime contexts remain partial.
+Nested cleanup exits now return through their own C pins and preserve the
+original output receipt. The latest integer exit supplies status; string exit
+preserves it. Ordinary Child throws cancel exit while the name still commits;
+nested queries commit their separate names without assigning abandoned booleans.
+Nine source agreements, three explicit Unsupported controls, strict433 and five
+separate reached groups (90+62+35+43+78 checks) pass at recorded cuts.
+[Reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json).
+Cleanup exit with an ordinary Throwable already pending, switched Fiber
+completion/force-close, owning rebound values, late attached type sources,
+variable-array query inputs, named/unpacked output, loading and wider enum
+member/lifetime contexts remain partial.
 
 I92 gives real user Generator Closure::call entry its actual copied Closure and
 new receiver, with separate API owners and ordered used/ignored-result cleanup.
@@ -654,25 +662,27 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR22 retires ignored owning destructor-body values after PHP local cleanup and
-before the inner C protection. RESULT transfers into ordinary VALUE jobs while
-the same C-return/result pair and both protections remain live. Fresh objects,
-alias arrays and static Closure captures retire before the original child;
-externally retained returns survive until their actual later owner. Four new
-originals and two affected controls agree, and strict434 passes. Eight independent
-groups pass 438 genuine source-reached checks. Earlier exact output concealed a
-one-reference error; reached checks now preserve both C protections and the
-original call through returned-value cleanup.
-[Body-return review](coverage/semantics/callback-late-tick-body-return-review.json).
-The [handler review](coverage/semantics/callback-late-tick-handler-review.json)
-retains ATTR21's normal named-handler/Arg2/source-authority coverage and original
-failures. Earlier [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
+ATTR23 preserves pending outer C wrappers when an ignored destructor-body value
+throws a literal Exception during post-FINAL tick retirement. Each authenticated
+parent retains both receiver protections and its unfinished arguments/FCC slots;
+shared operation/frame/pending owners belong to the selected bailout record once.
+An externally retained value that throws after its original call finishes adds
+no parent. Later active queue cleanup runs with the tick tail still stopped.
+Four new originals and two affected controls agree, and strict435 passes. Seven
+independent groups pass 612 conditions (603 reached, nine derived). The original
+Unsupported outcome, focused owner-loss diagnostic and strict DSL failure retain
+zero agreement credit.
+[Body-value bailout review](coverage/semantics/callback-late-tick-body-throw-review.json).
+Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+[handler](coverage/semantics/callback-late-tick-handler-review.json),
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
 [bailout](coverage/semantics/callback-late-tick-throw-review.json),
 [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
 [copied-value](coverage/semantics/callback-late-tick-values-review.json) evidence
-keeps its original cuts. Abrupt body-value cleanup, direct reference-return bodies,
-selected-handler owning retval cleanup and wider lifecycle contexts remain partial.
+keeps its original cuts. Distinct pending ownership contexts, direct
+reference-return bodies, selected-handler owning retval and wider lifecycle
+contexts remain partial.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -869,7 +879,16 @@ Consumed Closure metadata uses borrowed source certificates and owns nothing.
 The VM argument's root decrement skips GC candidate buffering; array children
 still use ordinary cleanup. The source and reached checks retain their separate
 cuts in the [creation review](coverage/semantics/output-executor-creation-review.json).
-Invalid/effectful creation, active handler-body reentry, deprecation-handler returned-object
+OB11 freezes known invalid callback lookup after conversion, emits Warning then
+the failed-start Notice, and keeps failure final even if the Warning callback
+defines the missing function or repairs referenced selectors. Declaration-prefix
+history and DIRECT snapshots are borrowed checking data. Retired Warning-handler
+objects release before the current Notice handler runs. Warning-return destructor
+throws preserve the pending operation and real builtin argument trace, retaining
+the argument through catch and caller-local cleanup. Pending Notice selection
+distinguishes eligible-handler skip from ordinary reporting/suppression.
+[Failed-lookup review](coverage/semantics/output-executor-invalid-review.json).
+Unresolved/effectful creation, active handler-body reentry, Warning/deprecation-handler returned-object
 starts, allocation failure/memory limits and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
 [general reception review](coverage/semantics/output-executor-reception-review.json).
@@ -1023,6 +1042,16 @@ include/eval controls pass; strict compilation covers 435 modules. The original
 fixture's misplaced VM-history check remains a failed gate with zero credit.
 Parser/schema contracts are unchanged; wider source profiles remain partial.
 [Review](coverage/semantics/main-source-rejection-review.json).
+
+COMP171 supplies rejected file/eval units with parser-mode lexical token tapes,
+without calling the Zend grammar. Trivia and original positions survive; malformed
+Unicode/heredoc segments stop later headers while retaining earlier interpolation
+declarations. Accepted lexers, schema, adapter and authored P4 rules are unchanged.
+Private native build, 53 independent scanner/service controls, 30 affected controls,
+35 exact source cases, 200 reached conditions and four main-file regressions pass.
+The initial null-scanner eval/file heredoc failures remain zero-credit packets.
+Multibyte conversion and wider core remain partial.
+[Review](coverage/semantics/rejected-scanner-tape-review.json).
 
 ## Active and unintegrated work
 

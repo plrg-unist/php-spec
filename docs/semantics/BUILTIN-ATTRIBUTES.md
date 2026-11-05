@@ -300,7 +300,17 @@ separate from a selected handler's ignored retval. The
 [body-return review](../../coverage/semantics/callback-late-tick-body-return-review.json)
 records four new exact originals, two affected controls, eight genuine reached
 groups/438 checks and strict434. The original hidden early decrement remains
-recorded; abrupt body-value cleanup and direct reference-return bodies stay partial.
+recorded at that cut. An unhandled literal Exception from the ignored value now
+retains pending outer C wrappers and unfinished copied arguments/FCC slots before
+the module-local fatal report. Parent C-return records precede the selected result
+record; shared operation/frame/pending roots belong to that selected record once.
+The original call must still be live, so an externally retained returned object
+that throws later adds no phantom parent. Later active queue cleanup runs while
+the stopped tick tail stays rooted. Distinct pending-owner contexts remain an
+explicit boundary. Four new originals and two affected controls agree; strict435
+and seven independent groups/612 conditions (603 reached, nine derived) pass.
+See the [body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json);
+direct reference-return bodies and selected-handler owning retval remain partial.
 
 Four new handled originals and two affected controls agree; strict433 passes.
 Nine independent groups pass 508 conditions (497 reached, 11 derived). The
@@ -313,5 +323,5 @@ Earlier [exit/throw](../../coverage/semantics/callback-late-tick-exit-throw-revi
 and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
 evidence keeps its original cuts. Wider callable producers, assertion roots,
 changed phase completions, other throws, abrupt/owning-result handlers, pre-body
-callbacks, abrupt destructor-body returns and reentrant module shutdown remain
+callbacks, wider abrupt destructor-body returns and reentrant module shutdown remain
 partial; this is no full lifecycle or core closure.

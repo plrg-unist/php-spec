@@ -270,7 +270,13 @@ now resolves admitted pure callbacks after conversion without invoking them.
 Its transient handler owner releases before the Notice; normal argument cleanup
 then preserves callback, captured-cell and receiver destructor timing before the
 caller observes false. A Notice handler changing a referenced selector does not
-repeat lookup. Invalid/effectful creation and active handler-body reentry remain partial.
+repeat lookup. [Failed callable lookup](coverage/semantics/output-executor-invalid-review.json)
+now preserves its original failure across Warning callbacks that publish a
+missing function or repair array members. Warning precedes the failed-start
+Notice; current handler selection and real argument/Throwable owners preserve
+cleanup order. A pending Throwable skips an eligible Notice handler, while the
+default Notice still follows reporting and suppression rules. Unresolved or
+effectful lookup and wider reentry remain partial.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3179,13 +3185,17 @@ faults; 32 new originals agree. Unexplained native/foreign prefix differences
 and multibyte-enabled conversion remain partial. Rejected main files now emit
 their warning prefix and final parser error before any program work, honoring
 separate reporting bits and startup display. Thirty-seven source profiles and
-240 independent terminal-state conditions pass.
+240 independent terminal-state conditions pass. Rejected file/eval lexing also
+retains declarations inside interpolation before a later bad Unicode segment,
+including heredocs. Thirty-five source cases and 200 reached conditions pass;
+accepted lexers, the receipt schema and authored runtime rules are unchanged.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
 [rejected-unit review](coverage/semantics/encoding-rejection-review.json),
 [lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
-[main-rejection review](coverage/semantics/main-source-rejection-review.json).
+[main-rejection review](coverage/semantics/main-source-rejection-review.json),
+[rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -4797,20 +4807,22 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Ignored owning destructor-body results now retire after PHP local cleanup and
-before the inner C decrement, using ordinary VALUE jobs while both protections
-and the original C call remain live. Fresh objects, alias arrays and static
-Closure captures retire before the original child; externally shared returns
-survive until their later real owner. Four new body-return originals and two
-affected controls agree, and private strict434 passes. Eight independent groups pass 438 genuine source-reached checks. See the [body-return review](coverage/semantics/callback-late-tick-body-return-review.json);
-earlier [handler](coverage/semantics/callback-late-tick-handler-review.json),
-[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
-[bailout](coverage/semantics/callback-late-tick-throw-review.json),
-[exit](coverage/semantics/callback-late-tick-exit-review.json) and
+Ignored owning destructor-body results retire after PHP local cleanup and before
+the inner C decrement, retaining both protections and the original C call. An
+unhandled literal Exception during that disposal now preserves authenticated
+pending outer C wrappers and unfinished arguments/FCC slots. Shared
+operation/frame/pending owners count once. Later active queue cleanup runs while
+the stopped tick tail stays rooted; a returned value that throws after its
+original call finishes adds no parent. Four new originals and two affected
+controls agree, and private strict435 passes. Seven independent groups pass 612
+conditions (603 reached, nine derived). See the [body-value bailout review](coverage/semantics/callback-late-tick-body-throw-review.json);
+earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+[handler](coverage/semantics/callback-late-tick-handler-review.json),
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) and
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence
-retains its original cuts. Wider producers, assertion roots, changed phases,
-abrupt body-value cleanup, direct reference-return bodies, owning-result handlers
-and reentrant release remain partial.
+retains its original cuts. Distinct pending-owner contexts, wider producers,
+assertion roots, changed phases, direct reference-return bodies, owning-result
+handlers and reentrant release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -6953,7 +6965,14 @@ with compiled CV/alias release order and preserved exit status. The
 [cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json)
 records eight new/promoted agreements, one affected enum exit-status source,
 three explicit controls and 256+47 independent guards at separate cuts.
-Switched Fiber exits, repeated cleanup exits, owning rebound values, late type
+Nested cleanup exits now return through their own C pins, preserving the
+original output receipt and latest integer status. A Child throw cancels exit
+while the name still commits; nested queries keep separate output cells. The
+[reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json)
+records nine agreements, three Unsupported controls and five separately run
+reached groups (308 clauses) at their actual cuts.
+Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
+owning rebound values, late type
 sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).

@@ -280,13 +280,37 @@ Factory-local byref captures and bound method receivers retain their native
 destructor timing. Selected-handler throws and callback-destructor throws follow
 the existing Throwable trace and cleanup protocol.
 
-Invalid/effectful callback creation, active handler-body reentry,
-deprecation-handler returned-object starts and wider executor completion remain
+OB11 handles known pure invalid callbacks without creating a `zoh` owner. A
+failed selection emits Warning before processing the failed-start Notice;
+normal completion returns false. A declaration-prefix function view and DIRECT
+array snapshot preserve that failure
+when a Warning handler publishes the missing function, repairs a selector or
+retires the old receiver. These checking views never replace live lookup tables
+or add real owners. Current handler state selects the following Notice after
+cleanup of the selected handler's temporary raw callback and return owners.
+
+Diagnostic cleanup authenticates the actual RESULT/unreleased and CLEAN/released
+operation records separately. A live pending Throwable remains owned by the
+operation; a throwing return destructor contributes the genuine `ob_start` frame
+and current arguments to its Throwable trace. An eligible Notice handler is
+skipped while that Throwable is pending; otherwise the default Notice follows
+reporting/display and silence, before propagation to the caller's catch.
+Abrupt Warning continuation cleanup also uses the VM's root-only NOGC decrement.
+A borrowed source record authenticates the consumed continuation, pending Throwable
+and exact temporary release; it adds no owner or executable task. Array children
+still use ordinary cleanup.
+
+Whole declaration-history validation remains open for late handler function
+publication; a default-NULL Notice baseline reproduces the same frontier.
+Unresolved/effectful callback creation, other abrupt VM argument-release paths,
+active handler-body reentry,
+Warning/deprecation-handler returned-object starts and wider executor completion remain
 partial. Handler initialization also allocates the aligned chunk buffer before
 the inactive-output check; allocation failure and PHP memory limits remain
-pending effects, as in the active buffer model. Original weak-observer GC
-controls stop at the inactive custom free-hook frontier and retain zero full
+pending effects, as in the active buffer model. At their OB10 cut, the original
+weak-observer GC controls stopped at the inactive custom free-hook frontier and retained zero full
 agreement credit; separate explicit-cleanup controls cover the creation protocol.
 [OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json),
 [OB09 evidence](../../coverage/semantics/output-executor-reception-review.json),
-[OB10 evidence](../../coverage/semantics/output-executor-creation-review.json).
+[OB10 evidence](../../coverage/semantics/output-executor-creation-review.json),
+[OB11 evidence](../../coverage/semantics/output-executor-invalid-review.json).
