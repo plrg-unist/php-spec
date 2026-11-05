@@ -7774,6 +7774,12 @@ values remain owned. Iterator retirement precedes API entry; normal direct
 preserving saved values through reentry and supplied destructor throws.
 [Iterator reception review](coverage/semantics/generator-method-iterator-pack-review.json).
 
+Ordinary named by-value Generators also retain a direct `send` receiver through
+argument cleanup after a nondelegated body throw. Supplied exceptions preserve
+identity, Previous and original traces; an argv destructor may replace the pending
+exception before receiver retirement.
+[Body-throw review](coverage/semantics/generator-send-body-throw-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

@@ -409,6 +409,15 @@ separate. Original failures and the expensive diagnostic timeout retain zero
 credit; wider Traversable/lifecycle scope remains partial.
 [I116 review](coverage/semantics/generator-method-iterator-pack-review.json).
 
+I117 keeps an ordinary named by-value Generator's direct literal SEND receiver
+through body-Throwable argv cleanup. The real pending search survives; an argv
+destructor may replace its supplied Throwable through Previous without altering
+the original traces or assigning the interrupted result. Two unique originals
+agree through full446 SL; the sole 88/93 reached owner/budget front passes at its
+recorded cut. Shared Throwable search rules are unchanged. Active delegation,
+pending initialization, reference bodies and wider API/lifecycle modes remain
+partial. [I117 review](coverage/semantics/generator-send-body-throw-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -2023,7 +2032,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS195 | Nonreference first-CV flat-array magic sends with integer/ordinary leaf-object entries and real COW snapshots; private implementation/review. |
-| I117 | Direct named-Generator SEND body-Throwable unwind and receiver/argument cleanup; private implementation/review. |
+| I118 | Computed direct named-Generator SEND body-Throwable cleanup through the authenticated frozen-name receipt; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |
