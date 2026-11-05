@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the authenticated named-class keyword line across fresh transport."""
+"""Check the authenticated class keyword line across fresh transport."""
 import base64
 import copy
 import json
@@ -11,7 +11,26 @@ CASES = [
     (b'<?php\nreadonly\nclass C {}', 3),
     (b'<?php\nreadonly\nclass\nC {}', 3),
     (b'<?php\n#[A(Foo::class)]\nfinal\nclass C {}', 4),
+    (b'<?php\n$o = new\nreadonly\nclass {};', 4),
+    (b'<?php\n$o = new #[A(Foo::class)]\nreadonly /* class decoy */\nclass {};', 4),
+    (b'<?php\n$o = new readonly /* comment\nclass fake */\nclass {};', 4),
 ]
+
+
+def class_node(value):
+    if isinstance(value, dict):
+        if value.get('node') == 'Stmt_Class':
+            return value
+        children = value.values()
+    elif isinstance(value, list):
+        children = value
+    else:
+        return None
+    for child in children:
+        found = class_node(child)
+        if found is not None:
+            return found
+    return None
 
 
 def main():
@@ -24,7 +43,7 @@ def main():
             parsed = require(frontend.call(op='parse', source=base64.b64encode(source).decode()), 'parse')
             assert parsed['accepted'], parsed
             ast = parsed['ast']
-            node = next(n for n in ast['program'] if n['node'] == 'Stmt_Class')
+            node = class_node(ast)
             assert node['meta']['classKeywordLine'] == {'int': str(line)}
             checked = require(adapter.call(op='elaborate', ast=ast, fixture=True), 'check')
             assert checked['ast'] == ast
@@ -33,7 +52,7 @@ def main():
             reparsed = require(frontend.call(op='parse', source=printed['source']), 'reparse')
             assert reparsed['accepted'] and structurally_equal(normalize(ast), normalize(reparsed['ast']))
             malformed = copy.deepcopy(ast)
-            next(n for n in malformed['program'] if n['node'] == 'Stmt_Class')['meta']['classKeywordLine'] = {'bytes': 'MQ=='}
+            class_node(malformed)['meta']['classKeywordLine'] = {'bytes': 'MQ=='}
             assert not adapter.call(op='check', ast=malformed)['ok']
             checks += 5
     finally:

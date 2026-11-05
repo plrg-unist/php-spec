@@ -210,6 +210,37 @@ remaining items and all later reductions, after already completed nested headers
 The compiler never receives a partial program; earlier unknown/strict directives
 contribute no compiler diagnostics when parsing fails.
 
+Nested namespace validation also belongs to compilation. The rejected-only
+parser therefore defers PHP-Parser's `checkNamespace` callback, retaining later
+completed headers after any nesting depth. Its throwing handler still stops at
+real grammar errors and other validations; the ordinary parser keeps its namespace
+checks. A later ParseError takes priority over the namespace compiler fatal, while
+the first nonliteral encoding still stops the authored warning prefix.
+The [dynamic originals](../../tests/semantics/namespace_rejected_sources.py) and
+[main originals](../../tests/semantics/namespace_main_rejected_sources.py) pass
+16 and four exact comparisons. Independent service controls cover recursive
+nesting and unchanged parser stops; 100 [reached conditions](../../tests/semantics/rejected_namespace_review_state.py)
+check real source identity, warning order, suppression, handle reuse, zero-budget
+publication and catch/finally continuation. The [review](../../coverage/semantics/rejected-namespace-review.json)
+retains their actual cuts and the corrected service fixture failure.
+
+The same phase distinction applies to class/interface/enum names and parents,
+static magic methods and `try` without catch/finally. Their rejected-only callbacks
+defer compiler checks so later headers survive a subsequent ParseError. Ordinary
+parsing keeps its validation. Duplicate modifiers and readonly methods still stop
+the foreign parser: native method-modifier validation precedes the method body,
+so a readonly body's extra foreign header remains an explicit admission refusal.
+
+The [static-phase originals](../../tests/semantics/static_rejected_sources.py)
+pass 38 eval/include comparisons; [four main files](../../tests/semantics/static_main_rejected_sources.py)
+also agree. The [independent service](../../tests/rejected_static_service_review.py)
+checks 49 controls, including two readonly-body refusals and unchanged ordinary
+validation. All 110 [reached conditions](../../tests/semantics/rejected_static_review_state.py)
+pass: no child class/function/constant installation, exactly the required
+`PDEXIT` rejection-history append, valid handles/budget states and source identity
+through catch/finally. The [review](../../coverage/semantics/rejected-static-validation-review.json)
+keeps the first fixture's mistaken history equality as a zero-credit failure.
+
 Warning128 uses the current reporting/display state and bypasses error handlers.
 The subsequent catchable ParseError/CompileError retains a failed-source record
 and file entry without an accepted source/code/binding. Its lifecycle handle is
@@ -241,6 +272,32 @@ selected legacy sources and 220 reached conditions pass. Their
 cuts and earlier fixture failure. Errors not reported by that foreign lexer
 still use exact prefix admission; differing native/foreign prefixes refuse.
 Multibyte conversion and wider source behavior remain partial.
+
+Rejected file/eval units now use the native scanner's parser-mode lexical flag
+and token callback. This enables deferred string/heredoc escape and indentation
+checks while retaining skipped trivia, original bytes, token ordinals and lines.
+The helper calls no Zend grammar and exports no decoded values or diagnostics.
+Transient value-token AST leaves are destroyed once in a private arena; lexical
+and compiler state is restored before returning. Accepted lexers remain unchanged.
+
+The PHP-Parser grammar still determines completed headers. A bad segment after
+an interpolation expression preserves declarations already parsed inside that
+expression, while a heredoc indentation pre-scan error can stop before them.
+Single-quoted/nowdoc text, escaped backslashes, maximum codepoints and admitted
+surrogates do not invent a cutoff. New rejected-only file/eval lexer classes use
+the same checked header receipt and authored warning/runtime rules.
+
+The [scanner originals](../../tests/semantics/unicode_rejected_sources.py) compare
+35 exact streams, including six file counterparts. Independent
+[raw/service controls](../../tests/rejected_eval_lexer_review.py) cover both modes,
+EOF, tag normalization, shebang/BOM positions, saved-state restoration and profile
+refusal; 53 controls and 30 affected controls pass. The
+[reached fixture](../../tests/semantics/rejected_eval_unicode_review_state.py)
+checks genuine pending eval sources, embedded double/heredoc headers, startup
+suppression, failed-source identity, handle reuse, valid zero-budget publication
+and catch/finally continuation. All 200 SL conditions and four selected main-file
+regressions pass. The [review](../../coverage/semantics/rejected-scanner-tape-review.json)
+preserves both earlier producer failures; no historical syntax gate is renewed.
 
 When the existing main parser rejects a file, the semantic CLI can obtain its
 rejection from the same checked file service. Accepted main parsing is unchanged.

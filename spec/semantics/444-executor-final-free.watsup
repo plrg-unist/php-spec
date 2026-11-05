@@ -83,10 +83,8 @@ def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
   -- if $weakref_find(S, $destruction_nodes_delete(S.ALLOCATIONS, pnode_marked*), n) =/= eps \/ $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) =/= eps
 def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
   -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
-  -- if $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) = eps
 def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
   -- if $weakmap_object(S.OBJECTS[n]) /\ ~$instance_storage_freeing(S, n)
-  -- if $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) = eps
 def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
   -- if $closure_callable(S, n) /\ ~$executor_free_weak(S, pnode_marked*, n)
 def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 2 -- otherwise
@@ -120,9 +118,13 @@ def $executor_free_mark(pnode, pnode_marked*) = pnode_marked* -- otherwise
 ;; The physical force guard is already installed. Marking the Key prevents
 ;; recursive value retirement from entering its free_obj twice.
 def $executor_free_body(S, pexecutorfree, HOBJECT n) = $executor_free_fields(S, $executor_free_notify(S, pexecutorfree[.MARKED = $executor_free_mark(HOBJECT n, pexecutorfree.MARKED)], n), HOBJECT n)
-  -- if $executor_free_standard(S.OBJECTS[n])
+  -- if $executor_free_standard(S.OBJECTS[n]) \/ $weakref_object(S.OBJECTS[n])
+;; A Map unregisters every outgoing key at MARKED, then releases its own
+;; values before std_dtor can notify Maps that use this Map as their key.
+def $executor_free_body(S, pexecutorfree, HOBJECT n) = $executor_free_notify(S, $executor_free_fields(S, pexecutorfree[.MARKED = $executor_free_mark(HOBJECT n, pexecutorfree.MARKED)], HOBJECT n), n)
+  -- if $weakmap_object(S.OBJECTS[n])
 def $executor_free_body(S, pexecutorfree, HOBJECT n) = $executor_free_fields(S, pexecutorfree[.MARKED = $executor_free_mark(HOBJECT n, pexecutorfree.MARKED)], HOBJECT n)
-  -- if ~$executor_free_standard(S.OBJECTS[n])
+  -- if ~$executor_free_standard(S.OBJECTS[n]) /\ ~$weakref_object(S.OBJECTS[n]) /\ ~$weakmap_object(S.OBJECTS[n])
 def $executor_free_body(S, pexecutorfree, HCELL n) = $executor_free_fields(S, pexecutorfree, HCELL n)
 def $executor_free_body(S, pexecutorfree, HARRAY n) = $executor_free_fields(S, pexecutorfree, HARRAY n)
 ;; All remaining fields stay owned while earlier fields decrement. Marked std
@@ -141,9 +143,13 @@ def $executor_free_map_insert(S, n_key, n, n_head :: nat_tail*) = n_head :: $exe
   -- if ~$gc_ephemeron_before(S, n, n_head, n_key)
 def $executor_free_map_order(S, n_key, eps) = eps
 def $executor_free_map_order(S, n_key, n_map :: nat_tail*) = $executor_free_map_insert(S, n_key, n_map, $executor_free_map_order(S, n_key, nat_tail*))
+def $executor_free_notify(S, pexecutorfree, n_key) = pexecutorfree
+  -- if pexecutorfree.FAILED =/= eps \/ pexecutorfree.UNKNOWN
 def $executor_free_notify(S, pexecutorfree, n_key) = $executor_free_notify_maps(S, pexecutorfree, n_key, $executor_free_map_order(S, n_key, $executor_free_live_maps(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n_key)))
+  -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
   -- if $gc_ephemeron_key_order_safe(S, n_key)
 def $executor_free_notify(S, pexecutorfree, n_key) = pexecutorfree[.UNKNOWN = true]
+  -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
   -- if ~$gc_ephemeron_key_order_safe(S, n_key)
 def $executor_free_notify_maps(S, pexecutorfree, n_key, nat*) = pexecutorfree
   -- if pexecutorfree.FAILED =/= eps \/ pexecutorfree.UNKNOWN

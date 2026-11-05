@@ -24,9 +24,9 @@ def case(source, value, owner):
         'S.ITERATORS = eps', 'S.ASSERTIONS = 1',
         'S.ASSERTIONSINI = $ptascii("1")', '~S.ASSERTIONSMODIFIED',
         'S.ASSERTIONINI = eps',
-        'pconfigcall_two = pconfigcall[.SENT = '
-        '[NAMED_SENT (KNOWN (POBJECT n_name)), NAMED_SENT (KNOWN (PINT 2))]]',
-        '~$config_iterator_string_receive_valid(S, pconfigcall_two, n_name, pvalue_name)',
+        'pconfigcall_negative = pconfigcall[.SENT = '
+        '[NAMED_SENT (KNOWN (POBJECT n_name)), NAMED_SENT (KNOWN (PINT $(-1)))]]',
+        '~$config_iterator_string_receive_valid(S, pconfigcall_negative, n_name, pvalue_name)',
     ]
     if owner:
         checks += [
@@ -66,7 +66,7 @@ def case(source, value, owner):
         '$assertion_ini_record(S_pending.ASSERTIONINI, passertini.ID) = (passertini)',
         '$assertion_ini_record_shape(S_pending, passertini)',
         '$assertion_ini_input_valid(S_pending, passertini)',
-        '$assertion_ini_conversion_valid(S_pending, (passertiniconversion), passertini.CALL)',
+        '$assertion_ini_conversion_valid(S_pending, (passertiniconversion), passertini.CALL, passertini.PRECISION)',
         '$assertion_ini_call_valid(S_pending, passertini)',
         '$assertion_ini_valid(S_pending, passertini)',
         'S_pending.ASSERTIONINI = [passertini]',

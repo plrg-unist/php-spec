@@ -1,0 +1,45 @@
+{
+  "scope": "A105 initialized user Iterator copies a finite float INI_SET value while its Stringable option converts to exact zend.assertions after DATA/INPUT cleanup. Option retirement may change precision before value stringification.",
+  "behavior": "The early receipt admits the finite float before option disposal. The later receive admits only a warning-free nonnegative quantity at the then-live precision; other finite conversions stop explicitly as Unsupported. A saved nonowning receipt validates the assertion record against its frozen entry precision. Option destruction changes precision 14 to 1, making copied 1.4 store raw 1 and copied 1.6 store raw 2; the ordinary setter returns old 1, retains the selected callee, and restores assertions 1 and precision 14.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_set", "Zend/zend_operators.c zend_double_to_str", "Zend/zend_ini.c zend_ini_parse_quantity_internal", "Zend/zend.c OnUpdateAssertions"]
+  },
+  "tested_cut": {
+    "revision": "46d85f2f01768b761f9eab9717ee0ac05b4c49d4 plus private semantic/test commits 8e1b9429940f0168321294b7a1eb3bd0782ace8f and 7905431e48add5746ff8e7f67b554925e89a2811",
+    "semantic_module_sha256": {
+      "172-file-context-intrinsics.watsup": "8ef207e626728008d1202718c77ec72e86366cdc55e677f51c5ebc784e190824",
+      "368-assertion-quantity.watsup": "19698414db85076067656b0b5e3071edd73c02c7dd5c84886a9207122ac241ff",
+      "420-config-iterator-unpack.watsup": "c1b0780180a3527e242d5db807d0ab66935a55bed2352b7f729eeb9a9b9e5a86"
+    },
+    "manifest_sha256": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "case_catalog_sha256": "861a1147f3cc11c6be8618cb320f7e92074b79be7957929b56fe61b5e3042484",
+    "state_fixture_sha256": "9694995d158395c886c3ac359995b9b5ab4f4f52dc1d3bc0444712639d0f3915",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC; direct CPU5 native pin, direct CPU4 old baseline and selected retries, direct CPU2 first changed packet; each loan fully reaped",
+    "sources": [
+      {"id": "temporary-float-after-option-precision-change", "sha256": "581e354cf893e0e24cb6964a6dc14dda75c810ad0979f8bafda20db3422ee24a", "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:1;T:A:done;D:A:1:1;R:1:1:1:1;E:1:14;"},
+      {"id": "selected-float-after-option-precision-change", "sha256": "1a02ae76ca068c87e7ed757b5aefe6fccb9136c9c07cd00a78e2f90877172f33", "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:A:done;D:A:1:1;R:1:2:1:B:2:2:0;D:B:0:1;E:1:14;"}
+    ],
+    "source_result": "Both exact pinned-native/model normal comparisons passed with byte-equal decoded stdout, exit 0, empty stderr and stable watched inputs/head. The selected pass was a single targeted retry after the first fixed 240-second model timeout, which retains zero agreement credit.",
+    "reached": "Temporary float passed 98 conditions; selected float passed 105 on one targeted retry after an original fixed 300-second process timeout, which retains zero reached credit. The affected A104 temporary string case passed 85 after the conversion-validity precision parameter change. Reached checks distinguish post-retirement precision 1 from constructed precision 14 late Unsupported, float raw 1/2 and quantity, selected owner, old return, saved certificate valid after live precision changes, forged precision 14 and bare records invalid, completed write and restore. NaN/Infinity fail early finite admission; negative float fails late quantity admission.",
+    "strict_sl": "Ordered 435-module manifest, exit 0, stdout true, empty stderr; 46.550 seconds.",
+    "external_raw": [
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-float-105/native-46d85f2",
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-float-105/author-8e1b94299",
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-float-105/selected-source-retry-7905431e4",
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-float-105/selected-reached-retry-7905431e4"
+    ],
+    "commands": [
+      "taskset -c 2 python3 tests/semantics/config_iterator_assertions_float_sources.py --case temporary-float-after-option-precision-change",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_float_sources.py --case selected-float-after-option-precision-change",
+      "taskset -c 2 python3 tests/semantics/config_iterator_assertions_float_state.py --case temporary-float-freezes-post-retirement-precision",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_float_state.py --case selected-float-freezes-owner-and-precision",
+      "taskset -c 2 python3 tests/semantics/config_iterator_assertions_string_state.py --case temporary-prefixed-string-keeps-raw-and-quantity",
+      "taskset -c 2 python3 <strict launcher>; full ordered numeric_runner argv is in a105-strict.process.json"
+    ]
+  },
+  "prior_boundary": "On integrated A104, the direct exact native source completed while the old model returned CONFIG Iterator Stringable option outside normal scalar reception; raw is at /home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-float-105/baseline-unsupported-46d85f2 and receives zero agreement credit. First selected model/source cap 240 and reached cap 300 timeouts are retained separately in author-8e1b94299 with zero credit; no semantic/source edit preceded the fixed-cap retries.",
+  "limits": "Only finite copied floats whose post-option precision stringifies to a warning-free nonnegative assertion quantity are newly admitted. NaN/Infinity are rejected before the new receipt; negative or warning-producing finite float conversions stop at explicit late Unsupported. Wider option/value effects, other CONFIG consumers and held A97 work remain outside this result. No full-core, equivalence or BOLA claim.",
+  "review": "independent exact-head CLEAR at e38bd14e5b1f16e5e297df907aacda01e694a344"
+}

@@ -858,14 +858,14 @@ def $error_call_valid(S, perrorcall) = true
 def $error_call_valid(S, perrorcall) = false -- otherwise
 def $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall) = ($error_call_valid(S, perrorcall) /\ perrorcall.TARGET = eps /\ S.ERRORHANDLER.CALLBACK = (perrorcall.CALLBACK) /\ $error_handler_eligible(S, perrorcall.LEVEL))
 def $error_entered_call_valid(S, perrorcall) = true
-  -- if $error_call_valid(S, perrorcall)
   -- if perrorcall.TARGET = (pcalltarget)
   -- if ~$api_borrowed_target(pcalltarget)
+  -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_selected(S, perrorcall.CALLBACK, pcalltarget)
   -- if $handler_emitter_valid(S, pcalltarget)
 def $error_entered_call_valid(S, perrorcall) = true
-  -- if $error_call_valid(S, perrorcall)
   -- if perrorcall.TARGET = (API_BORROWED_TARGET pshutdownproducer)
+  -- if $error_call_valid(S, perrorcall)
   -- if pshutdownproducer.SITE = (perrorcall.SITE) /\ pshutdownproducer.INTERNAL /\ pshutdownproducer.CLONE = eps
   -- if $consumer_producer_snapshot(pshutdownproducer)
   -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET pshutdownproducer)

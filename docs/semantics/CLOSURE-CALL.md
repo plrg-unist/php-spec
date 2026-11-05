@@ -181,6 +181,16 @@ run. Integer status survives cleanup and shutdown. Owning warning-retval/CLEAN,
 cleanup replacements and wider bailout contexts remain partial.
 [Exit review](../../coverage/semantics/generator-call-exit-review.json).
 
+I103 carries ordinary exit inside an owning warning-retval destructor through
+its actual C operation, Child and field releases, then CLEAN and copied API
+cleanup. The saved operation authenticates the destructor's original site even
+when an outer exit operation is newly prepended. Fake prefix and independent
+real Child originals exit29/41; author and joined peer reached checks validate
+owners, weak observations, handler restoration and split/full shutdown. Repeated
+cleanup exit is Unsupported; a cleanup throw replacing this exit and hard
+bailout remain partial.
+[Owning retval exit review](../../coverage/semantics/generator-call-cleanup-exit-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

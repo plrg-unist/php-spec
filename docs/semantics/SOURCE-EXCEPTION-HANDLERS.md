@@ -64,10 +64,15 @@ C protections remain throughout handling; remaining arguments, FCC slots, tick
 entries and the later queue then retire. Stable main exit 263 remains current despite handler
 return 23; captured children and bound receivers still run active destructors.
 The [tick-handler review](../../coverage/semantics/callback-late-tick-handler-review.json)
-records this bounded coverage extension; abrupt handlers, owning retval cleanup
-and wider late handler forms remain partial. Normal owning destructor-body returns follow the separate
-[ignored-body-value cleanup](SOURCE-DESTRUCTORS.md); abrupt body-value cleanup
-remains partial.
+records that bounded coverage extension. Existing ordinary VALUE jobs also
+retire normal owning results from named handlers before the original Throwable
+and registry restoration, preserving both C protections during returned-object
+or captured-child destruction. A shared result survives until its later real
+owner. The [handler-value review](../../coverage/semantics/callback-late-tick-handler-value-review.json)
+tracks the new witnesses. Abrupt handler-value disposal, owning handler callables
+and wider late forms remain partial. Destructor-body results have the separate
+[ignored-body-value cleanup](SOURCE-DESTRUCTORS.md) and bounded
+[body-value bailout](../../coverage/semantics/callback-late-tick-body-throw-review.json).
 The shared FINAL extension in modules 441/442 preserves that null caller and original
 argument through output-handler failure. Normal handling resumes the original
 undefined return; body, ignored-return/original-cleanup and pre-entry warning

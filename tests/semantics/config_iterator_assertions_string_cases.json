@@ -1,0 +1,22 @@
+[
+  {
+    "id": "temporary-prefixed-string-preserves-raw-and-quantity",
+    "source": "<?php\nclass AssertionsStringOption104 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"zend.assertions\"),\";\";}\n}\nclass AssertionsStringTemporary104 implements Iterator {\n    public int $pos=0; public AssertionsStringOption104 $name;\n    public function __construct() {$this->name=new AssertionsStringOption104(\"A\",\"zend.assertions\");}\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$this->name:\" 0x2 \";}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n    public function __destruct() {echo \"I:\",ini_get(\"zend.assertions\"),\";\";}\n}\nfunction makeString104() {$it=new AssertionsStringTemporary104;$GLOBALS[\"watch\"]=WeakReference::create($it);return $it;}\n$stage=\"walk\";$watch=null;echo \"B;\";\n$result=ini_set(...makeString104());echo \"R:\",$result,\":\",ini_get(\"zend.assertions\"),\":\",($watch->get()===null?1:0),\";\";\nunset($watch);ini_restore(\"zend.assertions\");echo \"E:\",ini_get(\"zend.assertions\"),\";\";\n",
+    "source_sha256": "8f051757f7b3e1b03520a60e9238fbab355fe4301a8766ee59d8826015a592a2",
+    "purpose": "A copied string with whitespace and a hexadecimal prefix retains exact raw INI bytes while setting the parsed nonnegative assertion quantity; option and Iterator retire before the write, then restore returns startup 1.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:1;T:A:done;D:A:1;R:1: 0x2 :1;E:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "selected-decimal-string-keeps-setter-after-rebinding",
+    "source": "<?php\nclass AssertionsStringSelectedOption104 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"zend.assertions\"),\";\";}\n}\nclass AssertionsStringValues104 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:\"0\";}\n    public function key():mixed {echo \"K\",$this->pos,\";\";if($this->pos===0){$GLOBALS[\"name\"]=new AssertionsStringSelectedOption104(\"B\",\"display_errors\");$GLOBALS[\"call\"]=ini_get(...);}return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n}\n$stage=\"walk\";$name=new AssertionsStringSelectedOption104(\"A\",\"zend.assertions\");$it=new AssertionsStringValues104;$call=ini_set(...);$keep=$call;echo \"B;\";\n$result=$call(...$it);echo \"R:\",$result,\":\",ini_get(\"zend.assertions\"),\":\",$name->id,\":\",$call(\"zend.assertions\"),\":\",$keep(\"zend.assertions\",\"2\"),\":\",ini_get(\"zend.assertions\"),\";\";\nunset($it,$name,$call,$keep);ini_restore(\"zend.assertions\");echo \"E:\",ini_get(\"zend.assertions\"),\";\";\n",
+    "source_sha256": "a03ece440e5483912c0d8a21fcaf6e5c863cfb3634c292ad60903025be289950",
+    "purpose": "Copied decimal string 0 sets quantity 0; the selected first-class setter survives key-time option and callable rebinding, then a retained string setting 2 updates before restore.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:A:done;D:A:1;R:1:0:B:0:0:2;D:B:2;E:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

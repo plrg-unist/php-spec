@@ -127,7 +127,7 @@ def normal(owners):
 
 HIGHER = normal(2)
 for label, key, observer_kind, parent_kind, retired_kind in [
-        ('map_observer', 'n_weak', 2, 1, 1),
+        ('map_observer', 'n_weak', 1, 1, 1),
         ('map_referent', 'n_parent', 1, 1, 0)]:
     HIGHER += [
         f'S_{label} = S_endpoint[.OBJECTS[n_child] = WEAKMAP ({{KEY {key}, VALUE (PINT 17), BEFORE eps, ORDER 1}})]',
@@ -147,9 +147,12 @@ for label, key, observer_kind, parent_kind, retired_kind in [
         f'pexecutorfree_{label} = $executor_free_force(S_{label}, {{HEAP H_{label}, MARKED eps, DETACHED eps, FAILED eps, UNKNOWN false}}, {key})',
     ]
     if key == 'n_weak':
-        HIGHER += [f'pexecutorfree_{label}.UNKNOWN',
-                   f'pexecutorfree_{label}.MARKED = eps',
-                   f'pexecutorfree_{label}.HEAP = H_{label}']
+        HIGHER += [f'~pexecutorfree_{label}.UNKNOWN /\\ pexecutorfree_{label}.FAILED = eps',
+                   f'pexecutorfree_{label}.MARKED = [HOBJECT n_weak]',
+                   f'pexecutorfree_{label}.DETACHED = [(n_child, n_weak)]',
+                   f'pexecutorfree_{label}.HEAP.EDGES = H_{label}.EDGES',
+                   f'$executor_free_live_maps(S_{label}, pexecutorfree_{label}.MARKED, pexecutorfree_{label}.DETACHED, n_weak) = eps',
+                   f'$heap_owners(pexecutorfree_{label}.HEAP, HOBJECT n_weak) = 3']
     else:
         HIGHER += [f'~pexecutorfree_{label}.UNKNOWN /\\ pexecutorfree_{label}.FAILED = eps',
                    f'pexecutorfree_{label}.MARKED = [HOBJECT n_child, HOBJECT n_parent]',

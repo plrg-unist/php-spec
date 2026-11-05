@@ -423,7 +423,7 @@ def $trait_data_property_items(S, pclassdesc, pclassdesc_trait, eps, pclassdesc_
 def $trait_data_property_items(S, pclassdesc, pclassdesc_trait, ppropertydesc :: ppropertydesc_tail*, pclassdesc_prior*) = $trait_data_property_items($trait_data_property_one(S, pclassdesc_current, pclassdesc_trait, ppropertydesc, pclassdesc_prior*), pclassdesc, pclassdesc_trait, ppropertydesc_tail*, pclassdesc_prior*)
   -- if S.COMPLETION = NORMAL
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_current)
-def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $ptascii("Readonly class ") ++ pclassdesc.NAME ++ $ptascii(" cannot use trait with a non-readonly property ") ++ pclassdesc_trait.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME)
+def $trait_data_property_one(S, pclassdesc, pclassdesc_trait, ppropertydesc, pclassdesc_prior*) = $trait_data_fatal(S, pclassdesc, $ptascii("Readonly class ") ++ $c_string(pclassdesc.NAME) ++ $ptascii(" cannot use trait with a non-readonly property ") ++ $c_string(pclassdesc_trait.NAME) ++ $ptascii("::$") ++ ppropertydesc.NAME)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = eps
   -- if pclassdesc.READONLY
   -- if ~ppropertydesc.READONLY

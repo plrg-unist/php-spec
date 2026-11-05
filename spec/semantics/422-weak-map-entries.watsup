@@ -825,6 +825,30 @@ def $gc_ephemeron_before(S, n_first, n_second, n_key) = true
   -- if $(pweakmapentry_first.ORDER < pweakmapentry_second.ORDER)
 def $gc_ephemeron_before(S, n_first, n_second, n_key) = false -- otherwise
 def $gc_ephemeron_key_order_safe(S, n_key) = $gc_ephemeron_ranks_valid($gc_ephemeron_key_records(S, n_key, S.ALLOCATIONS))
+
+;; Internal-Key std_dtor uses the actual per-Key registration ranks. Each
+;; removed bucket transfers exactly one value owner before its PHP callback.
+dec $weakmap_notice_first(pstate, nat, nat*) : nat?
+def $weakmap_notice_first(S, n_key, eps) = eps
+def $weakmap_notice_first(S, n_key, n_map :: n_tail*) = (n_map)
+  -- if $weakmap_notice_first(S, n_key, n_tail*) = eps
+def $weakmap_notice_first(S, n_key, n_map :: n_tail*) = (n_map)
+  -- if $weakmap_notice_first(S, n_key, n_tail*) = (n_other)
+  -- if $gc_ephemeron_before(S, n_map, n_other, n_key)
+def $weakmap_notice_first(S, n_key, n_map :: n_tail*) = (n_other)
+  -- if $weakmap_notice_first(S, n_key, n_tail*) = (n_other)
+  -- if ~$gc_ephemeron_before(S, n_map, n_other, n_key)
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_internal_key(S, n_key)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if pinstancestorage.OBJECT = n_key /\ $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps
+  -- if $gc_ephemeron_key_order_safe(S, n_key)
+  -- if $weakmap_notice_first(S, n_key, $weakmap_key_maps(S, S.ALLOCATIONS, n_key)) = (n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.KEY = n_key /\ $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_release_slot_allowed(S, pweakmapentry.VALUE)
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
 def $gc_ephemeron_entries_valid(S, n_map, eps) = true
 def $gc_ephemeron_entries_valid(S, n_map, pweakmapentry :: pweakmapentry_tail*) = true
   -- if n_key = pweakmapentry.KEY
