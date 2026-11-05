@@ -1707,6 +1707,7 @@ test-semantics: build
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/rejected_encoding_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/sources"
+	python3 tests/semantics/rejected_encoding_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/state"
 	python3 tests/semantics/rejected_header_review_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/review-state"
 	python3 tests/semantics/eval_class_scope_protocol.py
 	python3 tests/semantics/eval_saved_protocol.py
