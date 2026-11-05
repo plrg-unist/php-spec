@@ -15,7 +15,7 @@ FILES = {
     'map-values-ba': ('gc_inactive_weakmap_ba_source.php',
         '3477eec1ef1dc3b70617c359f25f41fd6d255ed6a82b9f21c91609455a5bf1e3'),
     'map-alias-empty': ('gc_inactive_weakmap_alias_source.php',
-        'c9545e0a2a86e3c830380727216efde07e5e7c0a4868a3baf4a20d8e6187481c'),
+        '8319b88feadf1bca7a0965e11de594327525955f1798a22fddc7ce20fcf2e314'),
     'key-notify-before-fields': ('gc_inactive_weakmap_key_notify_source.php',
         '031031b64f89f54e5d778af80480411546d5cec7b2536c96a14f5477d84fccbd'),
     'key-before-map-field': ('gc_inactive_weakmap_key_field_source.php',

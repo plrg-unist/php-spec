@@ -7,7 +7,7 @@ class GcMapAliasLate31 {
         $value = new GcMapPayload31;
         $map = new WeakMap;
         $map[$key] = $value;
-        foreach ($map as &$alias) {}
+        foreach ($map as $loopKey => &$alias) {}
         $GLOBALS['mapKey31'] = $key;
         $GLOBALS['mapAlias31'] =& $alias;
         $GLOBALS['map31'] = $map;
