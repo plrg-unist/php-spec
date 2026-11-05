@@ -137,11 +137,13 @@ def $exit_conversion(pvalue, false) = $typed_weak(["int", "string"], pvalue)
   -- if pvalue =/= PNULL
 def $exit_conversion(pvalue, b) = TYPEREJECT -- otherwise
 dec $source_static_exit_tail(pstate, ptask*) : ptask*
+dec $closure_call_copy_exit_pending(pstate) : bool
+dec $closure_call_copy_exit_scope(pstate, pstate) : pstate
 dec $eval_compile_exit_pending(pstate) : bool
 dec $exit_ready(pstate, int) : pstate
 def $exit_ready(S, z) = $exit_start_unwind(S[.RETIREDOWNERS = eps][.COMPLETION = EXITED z], z)
   -- if ~$eval_compile_exit_pending(S)
-  -- if $source_static_exit_tail(S, S.TODO) =/= eps
+  -- if $source_static_exit_tail(S, S.TODO) =/= eps \/ $closure_call_copy_exit_pending(S)
 def $exit_ready(S, z) = S[.RETIREDOWNERS = eps][.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED z][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps] -- otherwise
 dec $exit_finish(pstate) : pstate
 ;; Process status survives a caught unwind replacement and is shared by saved
@@ -193,14 +195,14 @@ dec $update_warning_exit_pending(pstate) : bool
 dec $update_warning_exit_unwind(pstate) : bool
 dec $enum_is_callable_output_exit_pending(pstate) : bool
 dec $enum_is_callable_output_exit_unwind(pstate) : bool
-def $exit_start_unwind(S, z) = $clone_exit_drop($file_warning_drop_scope($error_release_iterators($silence_unwind($file_notice_exit_scope(S)))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $exit_start_unwind(S, z) = $closure_call_copy_exit_scope(S, $clone_exit_drop($file_warning_drop_scope($error_release_iterators($silence_unwind($file_notice_exit_scope(S)))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if ~$fiber_closing(S, S.ACTIVEFIBER)
   -- if ~$property_dynamic_exit_pending(S)
   -- if ~$foreach_bind_exit_pending(S)
   -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
   -- if ~$enum_is_callable_output_exit_pending(S) \/ $enum_is_callable_output_exit_unwind(S)
   -- if $source_static_exit_tail(S, S.TODO) = eps
-def $exit_start_unwind(S, z) = $clone_exit_drop($error_release_iterators($silence_unwind($file_notice_exit_scope(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = (EXIT_UNWIND z) :: ptask*][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $exit_start_unwind(S, z) = $closure_call_copy_exit_scope(S, $clone_exit_drop($error_release_iterators($silence_unwind($file_notice_exit_scope(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = (EXIT_UNWIND z) :: ptask*][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if ~$fiber_closing(S, S.ACTIVEFIBER)
   -- if ~$property_dynamic_exit_pending(S)
   -- if ~$foreach_bind_exit_pending(S)
