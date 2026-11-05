@@ -1880,6 +1880,8 @@ test-semantics: build
 	python3 tests/semantics/attributed_constant_compile_protocol.py --output "$$(mktemp -d /tmp/php-spec-attributed-constant-compile.XXXXXXXX)/protocol"
 	python3 tests/semantics/single_attributed_constant_sources.py --output "$$(mktemp -d /tmp/php-spec-single-attributed-constant.XXXXXXXX)/sources"
 	python3 tests/semantics/single_attributed_constant_protocol.py --output "$$(mktemp -d /tmp/php-spec-single-attributed-constant.XXXXXXXX)/protocol"
+	python3 tests/semantics/deprecated_global_constant_sources.py --output "$$(mktemp -d /tmp/php-spec-deprecated-global-constant.XXXXXXXX)/sources"
+	python3 tests/semantics/deprecated_global_constant_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-global-constant.XXXXXXXX)/protocol"
 	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
 	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
 	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"

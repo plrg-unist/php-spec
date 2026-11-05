@@ -1,3 +1,5 @@
+dec $constant_attribute_deprecation(pbuiltinattribute*, ptcontext) : pdeprecatedattribute
+dec $constant_declaration_context(pcunit, pcode, pcpath) : ptcontext?
 ;; Attribute arguments compile after the initializer/name, but remain deferred
 ;; metadata. They never become runtime constant initializer roots.
 dec $ppsingle_attributed_declaration(pcunit, porigin) : bool
@@ -150,11 +152,12 @@ def $ppconstant_attribute_finish(P, pcpath, phpType15*) = $ppconstant_attribute_
 def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES pbuiltinattribute*) = P[.COMPLETION = PPCABRUPT (FATAL ptbytes P.LOCATION.LINE)]
   -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = (ptbytes)
 def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES pbuiltinattribute*) = $ppunsupported(P, "Deprecated global constant metadata")
+  -- if $constant_attribute_deprecation(pbuiltinattribute*, $ppfunction_context(P, eps)) = DEPRECATED_ATTRIBUTE_UNSUPPORTED
   -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = eps
   -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) =/= eps
 def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES pbuiltinattribute*) = P
+  -- if $constant_attribute_deprecation(pbuiltinattribute*, $ppfunction_context(P, eps)) =/= DEPRECATED_ATTRIBUTE_UNSUPPORTED
   -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = eps
-  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = eps
 def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES_UNSUPPORTED text) = $ppunsupported(P, text)
 
 def $constant_attribute_entry_valid(S, PORIGIN n pcpath) = true
@@ -167,7 +170,8 @@ def $constant_attribute_entry_valid(S, PORIGIN n pcpath) = true
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $constant_attribute_groups(pcunit, pcode, pcpath_statement ++ [PCFIELD 0], 0, phpType15*) = BUILTIN_ATTRIBUTES pbuiltinattribute*
   -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = eps
-  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = eps
+  -- if $constant_declaration_context(pcunit, pcode, pcpath) = (ptcontext)
+  -- if $constant_attribute_deprecation(pbuiltinattribute*, ptcontext) =/= DEPRECATED_ATTRIBUTE_UNSUPPORTED
 def $constant_attribute_present(pcunit*, PORIGIN n pcpath) = true
   -- if $(|pcpath| >= 2)
   -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]

@@ -220,6 +220,7 @@ def $enter_compiled_task(S, porigin, DIM_PREP expression, ptask*) = S[.TODO = pt
   -- if $compiled_effects(S, porigin) = eps
 def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue]
   -- if $compiled_read(S, porigin) = eps
+  -- if ~$deprecated_constant_selected(S, porigin)
   -- if $compiled_name(S, porigin) = (VALUE pvalue)
 def $enter_compiled_task(S, porigin, EVAL (NExprConstFetch name metadata), ptask*) = S[.TODO = eps][.COMPLETION = pcompletion]
   -- if $compiled_read(S, porigin) = eps

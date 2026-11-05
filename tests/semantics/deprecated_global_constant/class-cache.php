@@ -1,0 +1,1 @@
+<?php #[Deprecated("old")]const X=7;class C{const V=X;}set_error_handler(function($n,$m){echo $n,"|",$m,"|";return true;});echo C::V,"|",C::V,"|";

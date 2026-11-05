@@ -432,7 +432,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread
-  | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | REPORTING_LONG_RESULT pconfigcall int
+  | DEPRECATED_CONSTANT_RESULT pdeprecatedconstant | DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall nat | REPORTING_LONG_RESULT pconfigcall int
   | INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase | INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion nat
   | MOD_NAN_PENDING pintegeroperation pintegerconversion nat nat
   | ARITHMETIC_ADD_CONVERT pintegeroperation parithmeticphase | ARITHMETIC_ADD_WARNING pintegeroperation parithmeticphase pvalue pnumber nat

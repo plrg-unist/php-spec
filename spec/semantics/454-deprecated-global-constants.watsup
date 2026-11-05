@@ -1,0 +1,210 @@
+;; Deprecation belongs to the installed entry, not its read spelling. Values
+;; outside the nonowning scalar domain retain an explicit delivery boundary.
+dec $deprecated_global_row(pstate, preqbytes, preqbytes?) : puserconstant?
+dec $deprecated_source_row(pstate, porigin) : puserconstant?
+dec $deprecated_global_metadata(pstate, porigin) : pdeprecatedattribute
+dec $deprecated_global_message(pstate, puserconstant) : preqbytes
+dec $deprecated_global_protected(pstate, preqbytes) : bool
+dec $deprecated_api_query(pconfigcall) : preqbytes?
+dec $deprecated_api_flag(pstate, preqbytes) : bool
+dec $deprecated_api_value(pstate, preqbytes) : pvalue?
+dec $deprecated_api_identity(pstate, preqbytes) : preqbytes
+dec $deprecated_api_message(pstate, preqbytes) : preqbytes
+dec $deprecated_api_level(pstate, preqbytes) : int
+dec $deprecated_api_valid(pstate, pconfigcall, nat) : bool
+dec $deprecated_api_finish(pstate, pconfigcall, nat, ptask*) : pstate
+dec $deprecated_api_task(ptask, pconfigcall, nat) : bool
+dec $constant_declaration_namespace(ptbytes, ptbytes) : ptbytes?
+
+def $constant_attribute_deprecation(pbuiltinattribute_all*, ptcontext) = NO_DEPRECATED
+  -- if $builtin_named_attributes(pbuiltinattribute_all*, $ptascii("deprecated")) = eps
+def $constant_attribute_deprecation(pbuiltinattribute_all*, ptcontext) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+  -- if $builtin_named_attributes(pbuiltinattribute_all*, $ptascii("deprecated")) = [pbuiltinattribute]
+  -- if $deprecated_message(ptcontext, pbuiltinattribute.ARGUMENTS) = DEPRECATED_MESSAGE ptbytes_message ptbytes_since
+def $constant_attribute_deprecation(pbuiltinattribute_all*, ptcontext) = DEPRECATED_ATTRIBUTE_UNSUPPORTED -- otherwise
+def $constant_declaration_namespace(ptbytes_full, ptbytes_terminal) = (eps)
+  -- if ptbytes_full = ptbytes_terminal
+def $constant_declaration_namespace(ptbytes_full, ptbytes_terminal) = (ptbytes_namespace)
+  -- if $(|ptbytes_full| > |ptbytes_terminal|)
+  -- if ptbytes_namespace = ptbytes_full[0:$nabs($(|ptbytes_full| - |ptbytes_terminal| - 1))]
+  -- if $ptjoin(ptbytes_namespace, ptbytes_terminal) = ptbytes_full
+def $constant_declaration_namespace(ptbytes_full, ptbytes_terminal) = eps -- otherwise
+def $constant_declaration_context(pcunit, pcode, pcpath) = ({NAMESPACE ptbytes_namespace, IMPORTS eps, SCOPE PTGLOBAL, POSITION PTRETURN, OWNER eps, MEMBER ptbytes_full, FILE eps, LINE $psline(metadata)})
+  -- if pcode.UNIT = pcunit.ID
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (NConst (NIdentifier (BYTES text) metadata_name) expression metadata)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_full, eps))
+  -- if ptbytes_terminal = $base64(text)
+  -- if $constant_declaration_namespace(ptbytes_full, ptbytes_terminal) = (ptbytes_namespace)
+def $constant_declaration_context(pcunit, pcode, pcpath) = eps -- otherwise
+def $deprecated_global_metadata(S, PORIGIN n pcpath) = $constant_attribute_deprecation(pbuiltinattribute*, ptcontext)
+  -- if $(|pcpath| >= 2)
+  -- if $global_constant_declaration_source(S.SOURCES, PORIGIN n pcpath)
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_statement) = (NStmtConst (SEQUENCE phpType15*) phpType45 metadata)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $constant_declaration_context(pcunit, pcode, pcpath) = (ptcontext)
+  -- if $constant_attribute_groups(pcunit, pcode, pcpath_statement ++ [PCFIELD 0], 0, phpType15*) = BUILTIN_ATTRIBUTES pbuiltinattribute*
+def $deprecated_global_metadata(S, porigin) = NO_DEPRECATED -- otherwise
+
+def $deprecated_global_row(S, preqbytes, preqbytes_fallback?) = (puserconstant)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+def $deprecated_global_row(S, preqbytes, (preqbytes_fallback)) = $deprecated_global_row(S, preqbytes_fallback, eps)
+  -- if $source_constant_lookup(S, preqbytes) = eps
+def $deprecated_global_row(S, preqbytes, preqbytes_fallback?) = eps -- otherwise
+def $deprecated_global_present(S, preqbytes, preqbytes_fallback?) = true
+  -- if $deprecated_global_row(S, preqbytes, preqbytes_fallback?) = (puserconstant)
+  -- if $deprecated_global_metadata(S, puserconstant.ORIGIN) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+def $deprecated_global_present(S, preqbytes, preqbytes_fallback?) = false -- otherwise
+def $deprecated_source_row(S, PORIGIN n pcpath) = $deprecated_global_row(S, preqbytes, preqbytes_fallback?)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+def $deprecated_source_row(S, porigin) = eps -- otherwise
+def $deprecated_global_message(S, puserconstant) = $ptascii("Constant ") ++ preqbytes ++ $ptascii(" is deprecated") ++ $deprecated_since_suffix(ptbytes_since) ++ $nodiscard_message_suffix(ptbytes_message)
+  -- if puserconstant.ORIGIN = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $deprecated_global_metadata(S, puserconstant.ORIGIN) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+def $deprecated_global_message(S, puserconstant) = eps -- otherwise
+def $deprecated_global_nonowning(pvalue) = true -- if $constant_nonstring_scalar(pvalue)
+def $deprecated_global_nonowning(PSTRING ptbytes) = true
+def $deprecated_global_nonowning(PSTRING_CARRIER INTERNED_STRING ptbytes) = true
+def $deprecated_global_nonowning(pvalue) = false -- otherwise
+def $deprecated_value_class(PSTRING ptbytes) = PVSTRING true
+def $deprecated_value_class(PSTRING_CARRIER INTERNED_STRING ptbytes) = PVSTRING true
+def $deprecated_value_class(pvalue) = PVSCALAR -- otherwise
+def $trait_record_name(F, pcpath, ptbytes, ptbytes_fallback?, z) = F[.MEMORY.COMPLETION = UNSUPPORTED "Deprecated global constant trait fold"]
+  -- if F.EXTERNAL = (S_external)
+  -- if $deprecated_global_present(S_external, ptbytes, ptbytes_fallback?)
+def $deprecated_constant_message_at(S, porigin) = $deprecated_global_message(S, puserconstant)
+  -- if $deprecated_source_row(S, porigin) = (puserconstant)
+def $deprecated_constant_value(S, porigin) = puserconstant.VALUE
+  -- if $deprecated_source_row(S, porigin) = (puserconstant)
+def $deprecated_constant_identity(S, porigin) = puserconstant.NAME
+  -- if $deprecated_source_row(S, porigin) = (puserconstant)
+def $deprecated_constant_level(S, porigin) = 16384
+  -- if $deprecated_source_row(S, porigin) = (puserconstant)
+def $deprecated_constant_level(S, porigin) = 8192 -- otherwise
+
+;; Cross opcode/API recursion protects the same installed name. Native constants
+;; cannot be removed; a prefix keeps a later namespace shadow from retargeting.
+def $deprecated_global_protected(S, preqbytes) = $deprecated_constant_protected_tasks(S, $live_control_tasks(S), preqbytes)
+def $deprecated_api_query(pconfigcall) = ($dynamic_constant_query(preqbytes))
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $string_bytes(pvalue) = (preqbytes)
+def $deprecated_api_query(pconfigcall) = eps -- otherwise
+def $deprecated_api_flag(S, preqbytes) = true -- if $deprecated_global_present(S, preqbytes, eps)
+def $deprecated_api_flag(S, preqbytes) = true
+  -- if preqbytes = $ptascii("E_STRICT")
+  -- if $user_constant_at(S.USERCONSTANTS, preqbytes) = eps
+def $deprecated_api_flag(S, preqbytes) = false -- otherwise
+def $deprecated_api_value(S, preqbytes) = (PINT 2048)
+  -- if preqbytes = $ptascii("E_STRICT")
+  -- if $user_constant_at(S.USERCONSTANTS, preqbytes) = eps
+def $deprecated_api_value(S, preqbytes) = $dynamic_global_constant_value(S, preqbytes) -- otherwise
+def $deprecated_api_identity(S, preqbytes) = puserconstant.NAME
+  -- if $deprecated_global_row(S, preqbytes, eps) = (puserconstant)
+def $deprecated_api_identity(S, preqbytes) = $ptascii("E_STRICT") -- otherwise
+def $deprecated_api_message(S, preqbytes) = $deprecated_global_message(S, puserconstant)
+  -- if $deprecated_global_row(S, preqbytes, eps) = (puserconstant)
+def $deprecated_api_message(S, preqbytes) = $deprecated_constant_message() -- otherwise
+def $deprecated_api_level(S, preqbytes) = 16384
+  -- if $deprecated_global_row(S, preqbytes, eps) = (puserconstant)
+def $deprecated_api_level(S, preqbytes) = 8192 -- otherwise
+def $deprecated_coerced_global_query(S, pconfigcall) = true
+  -- if S.RESULT = KNOWN pvalue
+  -- if $deprecated_coerced_query_value(S, pconfigcall, pvalue)
+def $deprecated_coerced_global_query(S, pconfigcall) = false -- otherwise
+def $deprecated_coerced_query_value(S, pconfigcall, pvalue) = true
+  -- if pconfigcall.KIND = INTRINSIC_CONSTANT
+  -- if $string_bytes(pvalue) = (preqbytes)
+  -- if $deprecated_api_flag(S, $dynamic_constant_query(preqbytes))
+def $deprecated_coerced_query_value(S, pconfigcall, pvalue) = false -- otherwise
+
+def $deprecated_global_constant_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "Deprecated constant owning value"]
+  -- if $dynamic_global_constant_valid(S, pconfigcall)
+  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
+  -- if $deprecated_api_flag(S, preqbytes)
+  -- if $deprecated_api_value(S, preqbytes) = (pvalue)
+  -- if ~$deprecated_global_nonowning(pvalue)
+def $deprecated_global_constant_begin(S, pconfigcall) = $deprecated_api_finish(S, pconfigcall, |S.USERCONSTANTS|, ptask_tail*)
+  -- if $dynamic_global_constant_valid(S, pconfigcall)
+  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
+  -- if $deprecated_api_flag(S, preqbytes)
+  -- if $deprecated_api_value(S, preqbytes) = (pvalue)
+  -- if $deprecated_global_nonowning(pvalue)
+  -- if $deprecated_global_protected(S, $deprecated_api_identity(S, preqbytes))
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $deprecated_global_constant_begin(S, pconfigcall) = $error_dispatch(S_pending, $deprecated_api_level(S, preqbytes), $deprecated_api_message(S, preqbytes), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $deprecated_api_message(S, preqbytes) pconfigcall.LINE, DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix)
+  -- if $dynamic_global_constant_valid(S, pconfigcall)
+  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
+  -- if $deprecated_api_flag(S, preqbytes)
+  -- if $deprecated_api_value(S, preqbytes) = (pvalue)
+  -- if $deprecated_global_nonowning(pvalue)
+  -- if ~$deprecated_global_protected(S, $deprecated_api_identity(S, preqbytes))
+  -- if n_prefix = |S.USERCONSTANTS|
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if S_pending = S[.TODO = (DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix) :: ptask_tail*]
+def $deprecated_global_constant_begin(S, pconfigcall) = $dynamic_global_constant_finish(S, pconfigcall) -- otherwise
+def $deprecated_api_finish(S, pconfigcall, n_prefix, ptask*) = S[.TODO = ptask*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $(n_prefix <= |S.USERCONSTANTS|)
+  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
+  -- if $deprecated_api_value(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes) = (pvalue)
+  -- if $deprecated_global_nonowning(pvalue)
+def $deprecated_api_finish(S, pconfigcall, n_prefix, ptask*) = S[.COMPLETION = UNSUPPORTED "Deprecated constant API result"] -- otherwise
+def $deprecated_constant_protected_task(S, DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix, preqbytes_identity) = true
+  -- if $(n_prefix <= |S.USERCONSTANTS|)
+  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
+  -- if preqbytes_identity = $deprecated_api_identity(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes)
+def $deprecated_constant_protected_task(S, API_CALLBACK_SEND papiargcursor, preqbytes) = $deprecated_constant_protected_task(S, perrorcall.RESUME, preqbytes)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $deprecated_constant_protected_task(S, API_CALLBACK_REF papiargcursor, preqbytes) = $deprecated_constant_protected_task(S, perrorcall.RESUME, preqbytes)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $deprecated_constant_task(API_CALLBACK_SEND papiargcursor, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $deprecated_constant_task(API_CALLBACK_REF papiargcursor, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $deprecated_api_task(DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n, pconfigcall, n) = true
+def $deprecated_api_task(ERROR_HANDLER_INVOKE perrorcall, pconfigcall, n) = (perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n)
+def $deprecated_api_task(ERROR_HANDLER_RESULT perrorcall, pconfigcall, n) = (perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n)
+def $deprecated_api_task(ERROR_HANDLER_CLEAN perrorcall, pconfigcall, n) = (perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n)
+def $deprecated_api_task(API_CALLBACK_SEND papiargcursor, pconfigcall, n) = (perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $deprecated_api_task(API_CALLBACK_REF papiargcursor, pconfigcall, n) = (perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $deprecated_api_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pconfigcall, n) = (perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $deprecated_api_task(ptask, pconfigcall, n) = false -- otherwise
+def $deprecated_api_valid(S, pconfigcall, n_prefix) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $deprecated_api_task(ptask, pconfigcall, n_prefix)
+  -- if $(n_prefix <= |S.USERCONSTANTS|)
+  -- if $dynamic_global_constant_valid(S, pconfigcall)
+  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
+  -- if $deprecated_api_flag(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes)
+  -- if $deprecated_api_value(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes) = (pvalue)
+  -- if $deprecated_global_nonowning(pvalue)
+def $deprecated_api_valid(S, pconfigcall, n_prefix) = false -- otherwise
+rule PhpStep/deprecated-global-constant-done: S ~> $deprecated_api_finish(S, pconfigcall, n_prefix, ptask_tail*)
+  -- if S.TODO = (DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix) :: ptask_tail*
+  -- if $deprecated_api_valid(S, pconfigcall, n_prefix)
+def $call_task_valid(S, DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix) = $deprecated_api_valid(S, pconfigcall, n_prefix)
+def $task_nodes(DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix) = $config_nodes(pconfigcall)
+def $selected_task_nonce(DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix) = pconfigcall.SELECTION
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix
+  -- if $deprecated_api_valid(S, pconfigcall, n_prefix)
+  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
+  -- if perrorcall.SITE = pconfigcall.SITE
+  -- if perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.LEVEL = $deprecated_api_level(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes)
+  -- if perrorcall.MESSAGE = $deprecated_api_message(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix
