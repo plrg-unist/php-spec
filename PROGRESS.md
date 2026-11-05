@@ -506,6 +506,33 @@ Unsupported with zero agreement. Wider Value layouts, extra child owners,
 Map-first teardown and active-pin collection remain partial.
 [GC37 review](coverage/semantics/gc-declared-value-child-review.json).
 
+GC38 admits ordinary Map-first retirement of the GC37 one-declared-Child
+Value while its leaf `stdClass` Key remains live. The Map unregisters its Key
+and transfers its Value owner before the Value releases Child. During Child's
+destructor, the Value observer's get is null while the Map observer's get is
+still live under the Map storage pin. The new free arm requires no incoming
+Map-key registrations; the existing leaf-Value free path remains available.
+Three new exact sources (including caught Child throw), two affected exact
+sources and 97 reached conditions (author57, independent40) pass at recorded
+cuts. Retained Child owners and incoming Map-key registration stop explicitly
+with zero agreement. Wider Value layouts and active-pin collection remain
+partial; earlier fixture/source drafts retain zero credit.
+[GC38 review](coverage/semantics/gc-map-first-value-child-review.json).
+
+GC39 admits ordinary Map-first retirement of a one-declared-Child Value whose
+Child has two physical owners: the Value property and one other strong owner.
+The Map is the Value's sole owner and has no incoming Map-key registration.
+In the tested outside-CV source, Map and Value weak gets become null after
+teardown while Child stays live; unsetting that owner later runs its destructor.
+The new arm leaves GC37 insertion, GC38 sole-owned Child cleanup and
+replacement/foreach unchanged.
+Two fresh exact sources (one caught Child throw), two affected exact sources,
+and 96 reached conditions (author62, independent34) pass at recorded cuts. An
+owner-three Child remains explicitly Unsupported with zero agreement. Wider
+ownership graphs and active-pin collection remain partial; the baseline and
+early fixture elaboration failures retain zero credit.
+[GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -873,6 +900,12 @@ first-class restorer keeps its original Closure through key-time rebinding;
 held/named options stop before the unvalidated restore.
 [A108 review](coverage/semantics/config-iterator-restore-stringable-review.json).
 
+A borrowed direct-CV `IteratorAggregate` may now return a fresh initialized
+user Iterator for positional `ini_get` or `ini_restore` with the copied
+Stringable `precision` option. The existing unary receipt runs after Iterator
+and option cleanup; selected restore retains its original callee. Generator
+returns remain SET-only. [A109 review](coverage/semantics/config-aggregate-unary-stringable-review.json).
+
 ## Decisions that constrain further work
 
 - Implement PHP behavior in authored semantics, including pure arithmetic; the
@@ -1014,7 +1047,15 @@ also exposes the shared output-intrinsic trace frame. Seven exact originals
 agree, and three reached groups pass 165 reported conditions (author 54,
 independent 76, off-kind 35). Private strict435 passes; earlier failed packets
 retain zero credit. [Returned-Notice throw review](coverage/semantics/output-executor-notice-retval-throw-review.json).
-Unresolved/effectful creation, active handler-body reentry, Warning/deprecation-handler returned-object
+OB14 admits the normal Warning handler's returned-object destructor to a nested
+post-deactivation `ob_start`. Its saved Warning receipt and unreleased RESULT
+cleanup authenticate the start while the handler is disabled. Three exact
+originals agree with native PHP; the genuine reached state passes 42 reported
+conditions, and private strict435 passes. The selected handler resumes for the
+original failed-start Notice after nested default Notice reporting. Throwing
+paths through this new Warning-retval bridge remain outside this milestone.
+[Normal Warning retval review](coverage/semantics/output-executor-warning-retval-nested-review.json).
+Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
@@ -1259,6 +1300,32 @@ comparisons, 42 service controls, 108 reached conditions/SL435 and 37 affected
 controls pass at one cut. The mistaken native control missing `const` remains
 separate; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
 [Review](coverage/semantics/rejected-constant-modifier-review.json).
+
+COMP176 checks rejected trait-use alias modifiers at the named and unnamed
+foreign reductions, retaining earlier encoding headers but cutting off later
+ones for readonly and asymmetric-set flags. Six method-target flags still allow
+later parsing; a missing semicolon stops in the foreign grammar with the same
+empty later prefix. Native diagnostics retain their own message and alias-end
+line. Thirty-eight dynamic and four main originals, 73 service controls, 108
+reached conditions/SL435 and affected constant42/method37 controls pass at
+their recorded cuts. The preliminary relative-path and multiline-line fixture
+failures and an interrupted unwatchable-`cases.json` run have zero credit;
+corrected authoritative campaigns hash their expectations. Accepted parser,
+native helper, schema, adapter and P4 interfaces are unchanged. Broader
+rejected-source prefixes remain partial.
+[Review](coverage/semantics/rejected-trait-alias-modifier-review.json).
+
+COMP177 defers rejected-only property-hook name, `get(...)` parameter-list and
+empty-list checks until compilation, retaining completed encoding headers before
+later parser failure. Property, promoted and ordinary parameter, and interface
+contexts agree; parser-time invalid modifiers keep their earlier cutoff and can
+preempt deferred checks. Thirty-six dynamic and four main originals, 62 service
+controls, 110 reached conditions/SL435 and affected method37/constant42/trait
+alias73 controls pass at their recorded cuts. Two multi-property grammar controls
+are explicit Unsupported refusals with zero agreement, and the initial service
+fixture failures have zero credit. Accepted parsing, native helper, schema,
+adapter and P4 interfaces are unchanged; wider rejected-source prefixes remain
+partial. [Review](coverage/semantics/rejected-property-hook-static-review.json).
 
 ## Active and unintegrated work
 

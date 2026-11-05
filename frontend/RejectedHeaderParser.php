@@ -38,6 +38,8 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
     protected function checkEnum(PhpParser\Node\Stmt\Enum_ $node, int $namePos): void {}
     protected function checkTryCatch(PhpParser\Node\Stmt\TryCatch $node): void {}
     protected function checkClassMethod(PhpParser\Node\Stmt\ClassMethod $node, int $modifierPos): void {}
+    protected function checkPropertyHook(PhpParser\Node\PropertyHook $hook, ?int $paramListPos): void {}
+    protected function checkEmptyPropertyHookList(array $hooks, int $hookPos): void {}
 
     protected function doParse(): ?array {
         // Lexing inspects the complete source before grammar reductions start.
@@ -105,6 +107,24 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
                     ? 'Invalid modifier for method' : 'Invalid modifier for class constant');
             }
         };
+        // Zend validates a trait alias's single modifier while reducing the
+        // alias, before parsing later declarations in a rejected unit.
+        foreach ([372 => 5, 373 => 4] as $rule => $length) {
+            if ($this->ruleToLength[$rule] !== $length || !is_callable($this->reduceCallbacks[$rule])) {
+                throw new RuntimeException('Trait alias reduction contract changed');
+            }
+            $reduce = $this->reduceCallbacks[$rule];
+            $this->reduceCallbacks[$rule] = static function (self $self, int $stackPos) use ($reduce, $length): void {
+                $modifier = $self->semStack[$stackPos - ($length - 3)];
+                $allowed = PhpParser\Modifiers::PUBLIC | PhpParser\Modifiers::PROTECTED
+                    | PhpParser\Modifiers::PRIVATE | PhpParser\Modifiers::STATIC
+                    | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL;
+                if ($modifier & ~$allowed) {
+                    throw new PhpParser\Error('Invalid modifier for trait alias');
+                }
+                $reduce($self, $stackPos);
+            };
+        }
     }
 }
 

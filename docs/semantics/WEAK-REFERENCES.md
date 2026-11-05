@@ -157,6 +157,40 @@ Child owners, Map-first teardown, and active-pin collection retain their
 existing boundaries. The [declared Value child review](../../coverage/semantics/gc-declared-value-child-review.json)
 records source, reached-state and affected evidence.
 
+GC38 admits Map-first free of that one-declared-Child Value with a live leaf
+`stdClass` Key. The Map unregisters the Key entry and transfers its Value owner
+before the Value's storage pin releases Child. A WeakReference to the Value
+already returns null in Child's destructor; the Map's own storage pin still
+keeps its WeakReference get live until the callback and cleanup finish. The
+Key remains live through this ordinary free path.
+
+This new arm applies only with no incoming Map-key registrations and the same
+sole-owned declared Child authenticated at GC37 insertion. The older leaf
+Value free path, occupied replacement and foreach predicates are unchanged.
+Additional Value fields or Child owners, incoming Map-key notification and
+collection with active pins retain their boundaries. The
+[Map-first Value child review](../../coverage/semantics/gc-map-first-value-child-review.json)
+records three new exact sources, two affected exact sources, 97 reached
+conditions, and two explicit Unsupported controls with zero agreement.
+
+GC39 admits the same ordinary Map-first free when the declared Child has a
+second strong owner. The Map must be the Value's sole owner and have no incoming
+Map-key registration. Freeing the Map removes its Key entry and releases Value;
+Value's declared slot drops one Child owner without calling the Child destructor.
+In the tested outside-CV sources, Map and Value weak gets are null after
+teardown, while the live Key and retained Child remain observable. The later
+release of Child's last owner runs its destructor, including an ordinary caught
+throw.
+
+The admission requires exactly two Child owners at the Map free checkpoint;
+it does not constrain where the second owner resides. The tested sources keep
+it in an outside CV. GC37 first insertion, the GC38 owner-one free arm, and
+replacement/foreach remain unchanged. Three Child owners and other retained
+graphs remain outside this slice. The
+[retained Child review](../../coverage/semantics/gc-map-first-retained-child-review.json)
+records two fresh exact sources, two affected exact sources, 96 reached
+conditions, and the owner-three Unsupported control with zero agreement.
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

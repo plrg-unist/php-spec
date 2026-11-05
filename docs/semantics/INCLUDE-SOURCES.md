@@ -1837,6 +1837,16 @@ A selected first-class restorer remains the original Closure after `key()`
 rebinds the option and callable variables. Held owners, named keys, other
 directives and wider restore inputs stop outside this receipt.
 
+The [borrowed Aggregate unary increment](../../coverage/semantics/config-aggregate-unary-stringable-review.json)
+lets a direct-CV `IteratorAggregate::getIterator()` return a fresh initialized
+user Iterator for positional `ini_get` and `ini_restore`. Its producer and
+finalizer authenticate the Iterator DATA handoff; the existing copied unary
+receipt then disposes the last Stringable `precision` option before getter
+readback or restore. A selected restorer retains its original Closure through
+key-time rebinding. Held owners, named keys and other options stop at the
+explicit unary boundary. Aggregate Generator returns and their producer
+certificates remain INI_SET-only.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root

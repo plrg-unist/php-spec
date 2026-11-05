@@ -1,0 +1,33 @@
+{
+  "scope": "A109 borrowed direct-CV IteratorAggregate returns a fresh initialized user Iterator for one positional copied Stringable precision option on INI_GET or INI_RESTORE.",
+  "behavior": "The existing producer/finalizer receipt transfers fresh Iterator DATA before unary copied-option reception. The last option owner retires before getter readback or restore; a selected first-class restorer remains the original callee after key-time rebinding. Aggregate Generator returns and their producer certificate remain INI_SET-only.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_interfaces.c zend_user_it_get_iterator", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_get/zif_ini_restore"]
+  },
+  "tested": {
+    "source_revision": "1b5a372c93a9167d31057ad8cf863657d30866f0",
+    "reached_affected_strict_revision": "13b2f07f4f6d963753827e18e973554f8e60c88d",
+    "module_421_sha256": "f961420ba870333d4f5ed7204dd2393c8f78c0018c87055c52cf19f1e496c3ba",
+    "manifest_sha256": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "case_catalog_sha256": "69edf61e96175aac6475f393337576fbcb177142af9f43fc3d8dca2f7c166195",
+    "source_wrapper_sha256": "aa43bc2547d96ea8e1d88de48a294aa88c6f6de283e18fb61450a7885e94c2bd",
+    "state_fixture_sha256": "67b0f604f362a7e9f4fa40ac013ecf83e3790ab0bf7b84f3d0bd82e14521d610",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC; serial direct CPU3/1 loans, each fully reaped",
+    "native_report_sha256": "642ec313783d34915e116a99e3a63c46dd726057a294c4c507e076f5a64f50a4",
+    "sources": [
+      {"id": "aggregate-get-reads-after-fresh-iterator-disposal", "source_sha256": "be77e1c5efab3674170686a6bf8dc7e5410e5c5e5fccd9e5f6350bb3719dd5fb", "report_sha256": "e8ceb17ed0671eaf370cce748132db29b3de10f41a744a2d892562019f988ff4"},
+      {"id": "aggregate-selected-restore-keeps-original-owner", "source_sha256": "96a6bced2e5706f4c7ec49b75839cc49154993041a0e973007b999d3f524d4df", "report_sha256": "5396d4a7fcae753575cd08eea4e3f69b728adc28af48a14f747b1e34242609d7"}
+    ],
+    "source_result": "Both frozen sources have byte-equal pinned native/model stdout, normal exit 0, empty stderr and stable head/inputs. GET has fresh G;I:7 then D:A:1 before R:1:1:1; selected RESTORE has D:A:1 before R:1:14:B:14:1:14, delayed D:B:1 and E:14.",
+    "reached": "GET real Aggregate promotion/producer 47/47, selected RESTORE retired receipt/owner 44/44, and constructed GET held/named/other-option refusal 27/27 passed at 13b2f07f4. Report SHA256s fb5dcef932911c528c3f76b84df2d541e7e63e7e2318e544ba0c5727ba7a1186, 1d1afb83d93e340a7c46706453e0a13ab3175310e508b907964fc046086ed519, 6d99e0fa3bd65ba47c220b0c065140fb1e1574aee523078c08bbf3d9532ac80c. Each SL runner returned true, exit 0, empty stderr and stable head/author inputs.",
+    "affected": "Prior INI_SET typed-current Aggregate fresh return/finalizer passed 200 conditions and one raw step using its archived A67 native source, report SHA256 ac07f9c02a1e6424353ba33b33c2388317a85439f87b3406807e7a7b208dd3c4. Model exit 0, no timeout, empty stderr or surviving group.",
+    "strict_sl": "Ordered 435-module manifest returned true, exit 0, empty stderr and no timeout; report SHA256 20e6f86aced4116590b3705ed543df7627c9917ffdf0375096197b95ea479423 and process SHA256 d68fc3afc6dc0adb49917ff33aab4d8164a3a7307c32103506a388fd9b36030c.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-aggregate-unary-stringable-109",
+    "commands": "Native report records the pinned project-local PHP -n/profile commands. Source: taskset -c 3 python3 tests/semantics/config_aggregate_unary_stringable_sources.py --case ID --native-report EXTERNAL/native-547008075/report.json. Reached: taskset -c N python3 tests/semantics/config_aggregate_unary_stringable_state.py --case ID (N=3,1,3). Affected: timeout --signal=TERM --kill-after=5s 330s taskset -c 1 python3 tests/semantics/config_iterator_typed_current_state.py --source-report EXTERNAL_A67/candidate-8ba6c05df/config-typed-current-owned-aggregate/report.json --case config-typed-current-owned-aggregate --output .tools/a109-affected-set-13b2f07f. Strict process JSON records the complete ordered --sl command.",
+    "prior_boundary": "The borrowed Aggregate source gate admitted INI_SET only before this change. No old-model public outcome is claimed. An initial A109 reached fixture referenced an undefined test_outputs helper and failed compilation; archived report SHA256 1ca71e1268181f93fe580ffa60dd8bfd2dc4ed2fbbd7bb5d569aff761c01e858 has zero passing credit. The two redundant output checks were removed; source agreements already check exact output.",
+    "limits": "Native agreements cover two borrowed direct-CV Aggregate sources returning fresh initialized user Iterators with one positional integer-key Stringable precision option. Held/named/other-option refusals are constructed reached controls, not native agreements. Aggregate Generator returns remain SET-only; wider Aggregate owners, keys, options, values, effects and lifecycle histories remain partial. Held A97 is untouched; no full-core or BOLA claim.",
+    "review": "independent semantic/test and actual-parent interaction CLEAR on a57a48ce25258c6f7690bf5d13f5162b7e48ed5b"
+  }
+}

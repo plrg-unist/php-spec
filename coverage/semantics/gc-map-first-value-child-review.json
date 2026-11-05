@@ -1,0 +1,77 @@
+{
+  "scope": "GC38: ordinary Map-first free of a singleton WeakMap owning the GC37 one-declared-Child Value, with a live leaf stdClass Key and no incoming Map-key registration.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "cuts": {
+    "base": "2382586d87ae89e86d94d733b8a9c02450769ea4",
+    "runtime_initial": "08e6e85aeeb487a60d221d9dc72088652ebd2750",
+    "runtime_final": "f0c2c684f5a72655079c38832407b3a4d3778874",
+    "author_source": "6561cf0f9bd5b4bfe2f9cf23bccf7be92ade0d93",
+    "author_reached_correction": "c8e6be147ac6039a7076e2823b7e695686159f4b",
+    "author_retained_boundary": "23ddf07b5254d8278d0dfe6037f2f7e7f4a64e64",
+    "author_incoming_boundary": "bf53a702417c4e4f67863af47cc505b79d5cf6da",
+    "independent_source_reached": "5bc588c69c2fd09f7c9e2b897906b557e1e73b78",
+    "independent_throw": "6f113ff1c76a3899334e0cd8237a1e5693ed0f0a",
+    "actual_parent": "a44e735b0974c90edd47e5506be8c6ff717e767c",
+    "joined_read_only_review": "9cc9572f6fecc4cfbbd1a829fb08725b494162da"
+  },
+  "rule_basis": "The singleton Map free rule releases the GC37-authenticated one-public-untyped-declared-slot Value with one sole-owned childless destructor Child. It unregisters its live leaf Key and transfers the Value owner before Child cleanup. The Map storage pin keeps Map weak get live while Value weak get is null in Child callback. The new arm requires no incoming Map-key registration; its fallback is the old leaf-Value policy, and replacement/foreach predicates are unchanged.",
+  "counts": {
+    "new_normal_exact_sources": 3,
+    "author_new": 1,
+    "independent_new": 2,
+    "affected_exact_sources": 2,
+    "prior_gc37_key_first": 1,
+    "prior_gc34_map_as_key": 1,
+    "new_unsupported_controls": 2,
+    "affected_unsupported_controls": 1,
+    "reported_reached_conditions": 97,
+    "author_reached": 57,
+    "independent_reached": 40
+  },
+  "validation": {
+    "author": "One new Map-first source agrees exactly on final f0; its Map release checkpoint passes 57 source-reached conditions.",
+    "independent": "Triple-observer Map-first source with Key BEFORE wrapper and caught Child-throw source agree exactly; Child callback checkpoint passes 40 source-reached conditions with simultaneous Map and Value pins.",
+    "affected": "Prior GC37 Key-first source agrees at initial runtime; prior GC34 leaf-Value Map-as-Key source agrees on final f0, confirming the old fallback.",
+    "unsupported": "Outside-owned Child and incoming Map-key registration stop explicitly at nonempty WeakMap storage destruction after B|, both zero agreement. Prior occupied replacement remains Unsupported with zero agreement."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc38_map_first_value_child.php": "23c0e8ea02e9b6c499d86d0541014a6f3c59c0f323bdb99c83e14c90bcecf617",
+    "tests/semantics/gc38_map_first_retained_child.php": "48cb09f8f1f4060247aac3fbdd0fa4edac9563987a9a85fad6d5a6104848f697",
+    "tests/semantics/gc38_map_first_incoming_key.php": "4c0fc383a7897b6fc3524c0aeea2d238af0ac8019748780e3fbf3093e744496e",
+    "tests/semantics/gc38_peer_map_first_observers.php": "1f8ebf1c4dcc997135f06f50af10c90bc5bc79eae6d380b7639169d94b99ff4b",
+    "tests/semantics/gc38_peer_map_first_throw.php": "a5e6452f0eeb89d1efebf96fb85d221ac4c56737502da8c6c31e95f05abbfc35",
+    "tests/semantics/gc37_value_child_preinsert.php": "f8f23710c740a7acfab562d06568d6f50b995322dc69974ef29a19e477184f1f",
+    "tests/semantics/gc_ordinary_review_map_own_phase_global.php": "ce6db0a565e8d6152bbab6e26c4d717c26d3590fa106f74d0d6bf1833e15c878",
+    "tests/semantics/gc37_value_child_occupied_replacement.php": "fefb8f3a053c74a150bd92a183d25bf3e2760888e378c7610b29c1dac29e663b"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/harness-final-f0-v1/native-report.json": "87ce3898cf0556438001d96f708e13c5d68a2c72bf0c62630a7875d24b9f95d5",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/harness-final-f0-v1/model-map-first-declared-child-report.json": "c2e7949348bdb747622381268b6aa0863f18e983c66b5ec186525aa261489380",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/reached-final-f0-v1/report.json": "e7e9d0bb61d173558d3c3117f7b71dc24b28128594839ba9c506eaf665ca7505",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/boundary-harness-v1/native-report.json": "914cbf85ae6123aa11535c627eb179bdaed615ee367a282ea4a8dad77f61bb52",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/boundary-harness-v1/model-report.json": "b4341bc33473f8b399b475fe2d34d5e1e441ac981ec33fdf104566e120599189",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/boundary-incoming-f0-v2/native-report.json": "f1694af2583a7f33a349b691f221a83c7a57cffe0561a2d775a126b38457eadd",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/boundary-incoming-f0-v2/model-incoming-map-key-unsupported-report.json": "2f629d2bcca63d68a38e27a19d99e03b1d78aa0d8f8444339a1c9024089c8923",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/affected-gc37-v1/native-report.json": "087afdf2d7b8c059f8fc3a8cc2c6e794b4af44d1a561c9245e1ed3a944724cd0",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/affected-gc37-v1/model-child-before-insertion-report.json": "9f6cc203f35fca230d937dda9739238816e9f60e78fe1114b40be7382887b616",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/affected-gc34-final-f0-v1/native-report.json": "40b12e6eef26a13c1fba6e0d611769eb5650e37ff848404474c8426144174e3a",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/affected-gc34-final-f0-v1/model-map-own-phase-global-report.json": "5e8ba1d12fc509138c44f40491a7926a59209f2c17945337d221ff5d46500174",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/affected-replacement-v1/native-report.json": "a9d56acf71ad3f233b46088edde08c0073566fa2565f4053b29c716044da61d3",
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/affected-replacement-v1/model-report.json": "8272aa400e4436aa3bab78b53553548f952b35581e9d6059357c84b5c3a27caa",
+    "../php-spec-evidence-archive/gc-map-first-value-peer-38/baseline-native-v1/report.json": "75aaacf0ee08cf42ff38c7b4c65c97d14733f1a48123902099b82b7ed8335802",
+    "../php-spec-evidence-archive/gc-map-first-value-peer-38/final-f0-observers-model-v1/report.json": "8e63133fd867574342d9dc0e28374cfe4c60fa540705aecba733ddf10c00fec3",
+    "../php-spec-evidence-archive/gc-map-first-value-peer-38/reached-child-final-f0-v1/report.json": "41d3591190664282e7b35bdd811eb35340a2a03db028daf410be2dd8a4d07c40",
+    "../php-spec-evidence-archive/gc-map-first-value-peer-38/throw-native-f0-v1/report.json": "bac95602a8739a3bdbbc9d0d27c1fe1cd42a5c50eff69af02fef910aa2dd1fe5",
+    "../php-spec-evidence-archive/gc-map-first-value-peer-38/throw-model-f0-v1/report.json": "c2b3f280387218eb74019316a068c999a8380aa125bf7935a2b6db6c5b7a3906"
+  },
+  "archive_manifest_sha256": {
+    "../php-spec-evidence-archive/gc-map-first-value-child-author-38/manifest.json": "cc34fe1145710bf5ae21a42c4f1c302e9b343cc7bc50d1eddffb35bea2d75d1f",
+    "../php-spec-evidence-archive/gc-map-first-value-peer-38/manifest.json": "adbc17cbe5e8a226ce98368b395e9f62d343da938a674ff35126933ae10d3596"
+  },
+  "zero_credit": "Master238 Map-first baseline Unsupported is zero. The first incoming-Map draft used an inadmissible stdClass outer Value and stopped before B|; its report is archived with zero boundary credit. The first author reached fixture asserted Key allocation at full shutdown and is zero. Independent Child fixture binding failures and final-Key endpoint mistake are zero; initial08e peer passes are superseded by final-f0 cuts.",
+  "limits": "One singleton Map without incoming Map-key registrations, one live leaf stdClass Key, one GC37 methodless Value with exactly one direct public untyped declared sole-owned childless destructor Child, ordinary Map-first free. Extra owners/fields, incoming Map notification, field-bearing Value replacement, multi-entry/shared-key writes, reference cells, freeing-object mutation and active-pin collection remain outside this slice.",
+  "recovery": "Run gc38_map_first_value_child_sources.py, gc38_map_first_value_child_state.py, gc38_map_first_value_child_boundary.py, gc38_map_first_incoming_key_boundary.py, gc38_peer_map_first_sources.py and gc38_peer_map_first_state.py with the pinned profile and external outputs. Original raw and receipts remain outside Git under ../php-spec-evidence-archive/gc-map-first-value-child-author-38/ and ../php-spec-evidence-archive/gc-map-first-value-peer-38/.",
+  "review": "Independent private semantic/source review CLEAR at 37a07ad; exact-parent joined read-only review CLEAR at 9cc9572 on a44e735: clean expected16-file delta, only386 semantic change byte-identical to frozen f0, valid hashes/inventory/diffcheck, and no concrete replay seam.",
+  "compatibility_bridge": "Since base238, parent semantic edits affect named-file CONFIG/INI paths, anonymous classes, enum is_callable array ownership, OB notice pending and terminal EXITED tick cleanup. GC38 uses named user classes, ordinary Map unset, read-only weak gets and a caught Child Exception returning to normal completion; none enters those paths. COMP176 a44 added tests/docs only. Frozen source/reached and affected reports retain their original cuts without replay."
+}
