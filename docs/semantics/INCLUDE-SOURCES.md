@@ -1783,6 +1783,15 @@ with TypeError before directive lookup, after option conversion and disposal;
 TraceArgs retains the copied value. An accepted scalar value with the same
 option still stops explicitly before assertion setting.
 
+The [integer assertion setting increment](../../coverage/semantics/config-iterator-assertions-int-review.json)
+admits copied integer 0 or 1 after the same Stringable option conversion. A
+temporary Iterator retires before a 1-to-0 write returns the old 1; a retained
+setter survives key-time callable rebinding, performs a 1-to-1 call, then writes
+0 before restore returns the setting to 1. The pending assertion record keeps a
+nonowning certificate of the original receipt after the converted call loses
+its last argument root. A bare rootless record fails validation, and integer 2
+remains outside this receipt.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root
