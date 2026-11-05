@@ -2272,7 +2272,7 @@ def $enum_is_callable_receive(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT =
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
   -- if $enum_is_callable_result(S, pvalue, b_syntax) = (b_callable)
-def $enum_is_callable_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "is_callable outside published enum query without output parameter"] -- otherwise
+def $enum_is_callable_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "is_callable outside admitted published enum query"] -- otherwise
 rule PhpStep/enum-is-callable-invoke: S ~> $enum_is_callable_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
