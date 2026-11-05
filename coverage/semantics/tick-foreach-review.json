@@ -1,0 +1,72 @@
+{
+  "milestone": "ATTR36: Foreach target tick compilation and execution",
+  "status": "Independently accepted bounded implementation; broader target/source/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "88820b9b1",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "8dbe21348c1a0ab9126f64f76806544b795d45fa0da54f5e86dcc7d57f1ce408",
+    "scope": "Replace the blanket callable-target refusal with the existing compiler-fact visitor in iterable, value target, optional key target, body order. Fetch/assign operations reset adjacency between targets; the final marker retains the foreach header line. No 67/69, task/state/schema or ownership protocol changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_compile.c",
+    "symbol": "zend_compile_foreach",
+    "order": "Iterable expression, FE_RESET/FETCH, value assignment target, optional key assignment target, body; final jump/free resets the compiler line to the foreach header.",
+    "existing_rules": "Module 67 already compiles the same operand/target order. Module 69 already schedules the value LIST_STORE before the key LIST_STORE and body, and owns iteration/abrupt cleanup. Only the Tick summary admission changes."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-foreach-36/strict-report-v2.json",
+      "sha256": "83ad7e3e1d169562fbf29987dfc8dde380e2d978904aa46cc50283ea56cfe993",
+      "revision": "c04a61ea83252ef3b24b24013ab7425abef7bdeb",
+      "passed": true,
+      "modules": 440
+    },
+    "author_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-foreach-36/source-author-v1/report.json",
+      "sha256": "9d144b498f54c7a7c3a94138ad2b4cb41ab155e412e3a17c9d1475d8cd7f4390",
+      "revision": "c04a61ea83252ef3b24b24013ab7425abef7bdeb",
+      "passed": true,
+      "agreements": 1,
+      "source_sha256": "3420a18df8185db4cfa5726e95c8b829093fb3f90186e093fef8d708b453d751",
+      "observation": "VTTKTBTVTTKTBTTZT201",
+      "scope": "Two iterations execute value then key target callbacks, with bare declarables 2 then 1 contributing distinct marker frequencies. The body inherits the final key frequency; final written value 20 and key 1 are observed."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-foreach-36/source-review-v1/report.json",
+      "sha256": "6005410d5e5dbe6e0c5015941aefd7e20e05549e1b7662cd4a1ec0a1acba8789",
+      "revision": "c04a61ea83252ef3b24b24013ab7425abef7bdeb",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "review-empty-foreach-compiles-value-before-key-without-evaluation": "PTZT",
+        "review-abrupt-value-target-skips-key-body-and-releases-iterator": "VTCKWZ"
+      },
+      "scope": "Empty input still compiles the value target's bare frequency 3 before key frequency 2 while neither target/body executes. A balanced frequency 1 value-target callback precedes a throw; key/body are skipped and both arrays stay empty."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-foreach-targets-36/review-protocol-v1/run/report.json",
+      "sha256": "cddf995c4562fe0e07bf3a4feb112d21aefed3f27793a51607e421cbf3a06fad",
+      "revision": "6d27d94e77840e168aa7bb379cf89155d505b6f9",
+      "passed": true,
+      "groups": 2,
+      "reported_conditions": 111,
+      "group_conditions": [50, 61],
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "process": "/home/user/workspace/php-spec-evidence-archive/tick-foreach-targets-36/review-protocol-v1/process.json",
+      "process_sha256": "cd193f57e35e7f58372ce2953a67ad40d36540d7859f886f40aa9f77f71f0b42",
+      "scope": "The genuine empty-input outer Tick has compiled target frequencies 3 then 2, untouched target arrays and no iterator. At the actual V Tick, the saved caller retains its pending key store, body and FOREACH_NEXT with pool 1 plus frame 1 iterator owners. Throw cleanup removes the iterator and frame owner, leaving pool-only 1 and both arrays empty. Canonical source/line, descriptor/heap validity, budget-resumption and complete native streams agree."
+    }
+  },
+  "behavior": "Foreach target callable bodies contribute lexical Tick plans in compiler order even when the iterable is empty. Runtime target evaluation stays lazy per iteration. Value writes precede key writes, callback frequencies reflect compiled declarables, and abrupt target execution retains the iterator until ordinary unwinding releases it.",
+  "independent_review": "/root/attributes_review independently checked the Zend and existing 67/69 order, compiler-fact traversal and unchanged header line, then accepted both actual lazy/abrupt fronts on exact 88820b9b1 production.",
+  "remaining": "Existing expression-order, writable-target, callable, iterator and lifecycle dependencies remain partial. No general callable-target syntax or Generator transport admission is implied by these flat-array, dimension-target witnesses.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-foreach-36 and tick-foreach-targets-36. Source processes use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached fixtures use checked SL on CPU 5 with caches disabled and encountered determinism checks. Before/after identities remained stable, accepted exits were 0 and stderr empty. Regular copied tools are not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "The original source-baseline/report.json at 29ff17c90 remains false (SHA 8feb6436615a9f0ef86618a5398e6c1ed8546f6506e95f1dd7e6987c27c4052b): the old model returned Unsupported with empty prefix and reason tick opcode placement for this statement. Native completed VTTKTBTVTTKTBTTZT201; baseline refusal has zero agreement credit.",
+    "strict-report-v1.json listed spec/php.watsup twice in argv and immediately failed duplicate type elaboration. It remains a zero-credit preparation failure; corrected v2 alone establishes strict acceptance. No production change or source repetition followed this argv-only repair.",
+    "No older 35, output, Generator or paused-boundary campaign was repeated. No engine bug, intentional divergence or full-core closure is claimed."
+  ]
+}

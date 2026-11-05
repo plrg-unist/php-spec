@@ -989,6 +989,8 @@ and static operations interleave canonical ticks with completed operations and
 later item evaluation, preserving late targets, reads, initializers and compiler
 lines/frequencies. Unset cleanup finishes before its Tick; abrupt callbacks leave
 later owners intact. Cached static bindings still tick on later calls.
+Foreach value/key targets compile before the body even for empty input; actual
+target callbacks remain lazy per iteration, and failure skips the key and body.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -1005,7 +1007,8 @@ Exact source, strict and reached-state cuts remain in the
 [conditional](coverage/semantics/tick-elision-review.json),
 [coalesce](coverage/semantics/tick-coalesce-review.json),
 [Echo](coverage/semantics/tick-echo-review.json),
-[grouped emitters](coverage/semantics/tick-grouped-review.json) and
+[grouped emitters](coverage/semantics/tick-grouped-review.json),
+[Foreach targets](coverage/semantics/tick-foreach-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -1704,7 +1707,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | GC47 | Explicit WeakMap offsetUnset with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
-| ATTR36 | Foreach target tick traversal and per-iteration effects; private implementation/review. |
+| ATTR37 | Destructuring and Foreach list targets with defined keys and value copying; private implementation/review. |
 | Enum callable arrays | Closure cache ownership and bound-scope identity; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

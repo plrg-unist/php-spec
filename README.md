@@ -313,6 +313,8 @@ children in Zend order. Grouped Echo, unset, global and static operations run
 their own ticks before the next item is evaluated, preserving late names/reads,
 initializer order, callback aborts and compiler lines/frequencies. Static bindings
 retain their ticks on warm calls, and unset cleanup finishes before its callback.
+Foreach targets compile value before key, including for an empty input, while
+execution retains per-iteration target callbacks and abrupt cleanup.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.

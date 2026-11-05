@@ -24,6 +24,15 @@ The source authority is the split lists in `Zend/zend_language_parser.y` and
 `zend_compile_echo`, `zend_compile_unset`, `zend_compile_global_var` and static
 binding emitters in `Zend/zend_compile.c`.
 
+Foreach plans visit the iterable, value assignment target, optional key target
+and body in Zend compiler order. Target children use the same compiled operands,
+redirects and retained effects as other expressions. Empty inputs still compile
+callable declarables in both targets; execution evaluates those targets only for
+an actual iteration. Value-target failure skips the key and body and releases the
+iterator through ordinary cleanup. The final marker retains the foreach header
+line after the real jump/free operations. Module67 and69 already supply the
+matching compilation and runtime assignment order.
+
 Switch plans visit the subject, every case condition, then every body in compiler
 order. Case bodies share adjacency across selected and unselected branches;
 fallthrough and jumps retain the ordinary switch runtime. A final temporary
@@ -117,8 +126,9 @@ blocked during the callback and its returned-value cleanup.
 
 The source summary is deliberately bounded. Wider class/linking placement,
 other unmodeled statement/expression emission, callable defaults or
-attributes containing nested callables/ticks, and callable-bearing foreach
-targets remain `Unsupported`, as do dynamic and anonymous construction summaries.
+attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
+and anonymous construction summaries. Foreach targets retain the existing
+expression-order, writable-target and callable-context dependencies.
 Empty multiline catch/finally/declare bodies without
 the necessary compiler-line description are also explicit dependencies. Empty
 switch cases whose recorded span covers multiple lines and unproved subject
@@ -151,6 +161,9 @@ and the actual output-chunk suffix interaction.
 The [grouped-emitter review](../../coverage/semantics/tick-grouped-review.json)
 records late unset/global targets, cold/warm static bindings, later initializers
 and destructor completion before an intermediate callback abort.
+The [Foreach target review](../../coverage/semantics/tick-foreach-review.json)
+records value-before-key declarables, repeated target callbacks, empty-input
+target skipping and abrupt target cleanup.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
