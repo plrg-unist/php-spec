@@ -494,7 +494,8 @@ def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
   -- if $(|S.DESTRUCTION.ABANDONED| > 0)
   -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
   -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortickfatal.TICK)
-  -- if $executor_report_cause(S, pexecutortickfatal.COMPLETION, pexecutortickfatal.OBJECT)
+  -- if $(pexecutortickfatal.OBJECT < |S.OBJECTS|)
+  -- if $shutdown_frozen(pexecutortickfatal.COMPLETION)
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = false -- otherwise
 def $executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n) = S_report[.TODO = [EXECUTOR_TICK_FATAL pexecutortickfatal true]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S_cached = $throwable_string_cache(S, n, $throwable_chain_string(S, n, [n]))
@@ -506,7 +507,7 @@ def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pe
 def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active(S, pexecutortickfatal.TICK)
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT pexecutortickfatal.OBJECT]
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal false) = eps
-def $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal true) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $throwable_live(S, pexecutortickfatal.OBJECT) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_FATAL pexecutortickfatal true, eps))
+def $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal true) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $throwable_live(S, pexecutortickfatal.OBJECT) /\ $executor_report_cause(S, pexecutortickfatal.COMPLETION, pexecutortickfatal.OBJECT) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_FATAL pexecutortickfatal true, eps))
 def $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal false) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_FATAL pexecutortickfatal false, eps))
 rule PhpStep/executor-tick-fatal-release: S ~> $eager_operation_begin(S[.TODO = [EXECUTOR_TICK_FATAL pexecutortickfatal false]], S, EXECUTOR_TICK_FATAL pexecutortickfatal true, [HOBJECT pexecutortickfatal.OBJECT])
   -- if S.TODO = (EXECUTOR_TICK_FATAL pexecutortickfatal true) :: ptask_tail*
