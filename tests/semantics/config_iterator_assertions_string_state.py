@@ -23,8 +23,8 @@ def case(source, text, quantity, owner):
         '$config_iterator_assertion_scalar(pvalue_string)',
         '~$config_iterator_assertion_scalar(PSTRING_CARRIER INTERNED_STRING $ptascii("bad"))',
         '~$config_iterator_assertion_scalar(PSTRING_CARRIER INTERNED_STRING $ptascii("-1"))',
-        '~$config_iterator_assertion_scalar(PINT 2)',
-        '~$config_iterator_assertion_scalar(PNULL)',
+        '~$config_iterator_assertion_scalar(PINT $(-1))',
+        '$config_iterator_assertion_scalar(PNULL)',
         '$string_bytes(pvalue_name) = ($ptascii("zend.assertions"))',
         '$config_iterator_string_receive_valid(S, pconfigcall, n_name, pvalue_name)',
         '~((HOBJECT n_name) <- S.ALLOCATIONS)',
@@ -32,12 +32,12 @@ def case(source, text, quantity, owner):
         'S.ITERATORS = eps', 'S.ASSERTIONS = 1',
         'S.ASSERTIONSINI = $ptascii("1")', '~S.ASSERTIONSMODIFIED',
         'S.ASSERTIONINI = eps',
-        'pconfigcall_two = pconfigcall[.SENT = '
-        '[NAMED_SENT (KNOWN (POBJECT n_name)), NAMED_SENT (KNOWN (PINT 2))]]',
-        '~$config_iterator_string_receive_valid(S, pconfigcall_two, n_name, pvalue_name)',
+        'pconfigcall_negative = pconfigcall[.SENT = '
+        '[NAMED_SENT (KNOWN (POBJECT n_name)), NAMED_SENT (KNOWN (PINT $(-1)))]]',
+        '~$config_iterator_string_receive_valid(S, pconfigcall_negative, n_name, pvalue_name)',
         'pconfigcall_null = pconfigcall[.SENT = '
         '[NAMED_SENT (KNOWN (POBJECT n_name)), NAMED_SENT (KNOWN PNULL)]]',
-        '~$config_iterator_string_receive_valid(S, pconfigcall_null, n_name, pvalue_name)',
+        '$config_iterator_string_receive_valid(S, pconfigcall_null, n_name, pvalue_name)',
     ]
     if owner:
         checks += [
