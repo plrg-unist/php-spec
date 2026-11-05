@@ -652,7 +652,7 @@ arguments. Existing release jobs retire newThis, raw arguments and source on
 normal return or a warning-handler throw, preserving the real pending exception.
 Four current native/source controls agree; five reached fronts pass
 516 custom/541 reported checks. Variable-string rejection, wider binding/receive
-contexts and actual-tail integration retain their own limits.
+contexts retain their own limits.
 [Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
 
 I97 validates a warning handler suspending before copied Gen creation. The API's
@@ -675,6 +675,9 @@ Native2/source2 and three reached fronts pass 459 custom/474 reported checks at
 distinct cuts on unchanged semantics, with no state failures or retries. Wider
 trace, handler/destructor-throw and no-Gen receive contexts remain partial.
 [Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+The [joined review](../../coverage/semantics/generator-call-series-current-review.json)
+records strict433, four source comparisons and 187 custom/192 reported ownership
+checks while preserving every original cut and zero-credit failure.
 
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;

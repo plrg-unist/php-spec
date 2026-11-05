@@ -1,0 +1,64 @@
+{
+  "milestone": "I94-I98 joined Generator call-copy validation",
+  "status": "All planned joined gates pass; independently reviewed production, source, ownership and fixture compatibility.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "tested_revision": "10e99f71acadd330a331cdc015489930b5355b42",
+  "scope": "Fake user-method Generator call copies with exact declaring-class This and shared method statics; finite bound source histories; distinct dynamic/folded STRING dispatch; normal/abrupt binding-warning owners and release order; existing reference-warning handler/retval Fiber suspension.",
+  "gates": [
+    {
+      "gate": "joined compiler",
+      "revision": "10e99f71acadd330a331cdc015489930b5355b42",
+      "report": "../php-spec-evidence-archive/generator-call-series-94-98-current/strict-10e99/report.json",
+      "sha256": "7100b37a2d80845cd7b14855c2c6a7590b0e7a560e7403a94b57d59fa0cae421",
+      "result": "433 actual modules; SL/cache-off/determinism-on; true newline/exit0/empty stderr/no timeout/stable inputs+HEAD; CPU4 sampled/full reap."
+    },
+    {
+      "gate": "ARRAY copy cleanup",
+      "revision": "10e99f71acadd330a331cdc015489930b5355b42",
+      "report": "../php-spec-evidence-archive/generator-call-series-94-98-current/i94-array-source-10e99/report.json",
+      "sha256": "8148631e86261284af25e2bbf972c016cce85a08a618a7f48f453b3011e1625b",
+      "result": "i94-fake-array-method-call-unused-result: exact NORMAL agreement with retained original native source; no native replay."
+    },
+    {
+      "gate": "folded private STRING copy",
+      "revision": "10e99f71acadd330a331cdc015489930b5355b42",
+      "report": "../php-spec-evidence-archive/generator-call-series-94-98-current/i96-folded-source-10e99/report.json",
+      "sha256": "8100096fe300898c9d4fe37185dacb3aceef55d9c0c7d9c9f18f5f9ab0e9417a",
+      "result": "i96-folded-private-string-call-value-send: exact NORMAL agreement with retained original native source; no native replay."
+    },
+    {
+      "gate": "independent bound-source and rejection controls",
+      "revision": "3606d80c61da8f1675ae14ae7b7ad6d4393dd060",
+      "report": "../php-spec-evidence-archive/generator-fake-call-copy-94-review/resumed-current/source-pass-3606/report.json",
+      "sha256": "0d13ef7c133de60014067a9f2193a0946e0ff4528d30007888f794810d1cee96",
+      "result": "Two exact NORMAL agreements: finite BOUNDFAKE source history/shared method statics/cache lifetime, plus exact-child/static binding warnings."
+    },
+    {
+      "gate": "independent saved retval destructor",
+      "revision": "3606d80c61da8f1675ae14ae7b7ad6d4393dd060",
+      "report": "../php-spec-evidence-archive/generator-fake-call-copy-94-review/resumed-current/state-pass-3606/report.json",
+      "sha256": "aebb8e15e6ea09ac8620429dabf358cdcd108357977319862adfa7a1658b6e14",
+      "result": "i98-retval-dtor-saved-copy-independent: 187 custom/192 reported source-reached checks, malformed guards and split/full cleanup."
+    }
+  ],
+  "result": "All successful gates exit0 without timeout or stderr and keep their recorded HEAD and inputs stable. Model actors ran serially on CPU4; sampled processes are absent with full-reap sidecars. Original milestone evidence retains its original cuts and counts.",
+  "preserved_failure": {
+    "revision": "27029f363ec23ef1280e640fccefe7ab4612b551",
+    "credit": 0,
+    "report": "../php-spec-evidence-archive/generator-fake-call-copy-94-review/resumed-current/source-failure-27029/report.json",
+    "sha256": "56ceb5feba559e16fb0aed8128e05aa29cd3d9b2a6062e9168136761d7fde958",
+    "result": "Known I95 live/history overlap reproduced before CALL in the I94-only composition; only affected source retried after merging the preserved I95 guard."
+  },
+  "native_fixture_correction": {
+    "report": "../php-spec-evidence-archive/generator-fake-call-copy-94-review/resumed-current/native-corrected-report.json",
+    "sha256": "b02a5c29332404ecb4ee5e4d9a92f215c03a1cc4654d1e6f09eadb5e6cf2c05d",
+    "result": "Corrected only a forecast that released cached Token at CLOSED. Original report keeps zero credit; original source/command/raw native bytes unchanged and never replayed."
+  },
+  "compatibility": "Fresh source/state cuts remain3606. Appended case rows preserve exact measured source bytes. The10e99 composition retains entered copy/history/cleanup protocols and current GC births; intervening compiler, enum, anonymous-class and CLI changes were independently checked on the named-class/no-trait paths. No historical semantic replay.",
+  "remaining": [
+    "Broader producer/receiver/signature and computed/packed calls remain partial.",
+    "Copied-warning aborts, mapping and no-Generator receive errors retain their explicit boundaries.",
+    "This validation does not close PHP core, the feature inventory or return verification."
+  ],
+  "reproduction": "Project-local source/state scripts name the selected cases. External reports retain commands, fingerprinted inputs, exact source paths, runtime/compiler identities, raw output and full-reap sidecars."
+}

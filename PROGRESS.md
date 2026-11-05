@@ -154,8 +154,9 @@ source histories and distinct dynamic/folded string policies. Fake copies keep
 shared method statics and exact declaring-class receivers; normal/abrupt binding
 warnings release actual API owners in native order. Existing reference-warning
 cursors also survive Fiber suspension in handlers and owning retval destructors.
-Each milestone retains its original native/source/reached cuts and failures;
-current composition review and actual-tail validation are pending. Wider
+Each milestone retains its original native/source/reached cuts and failures.
+Joined strict433, four source comparisons and 187 custom/192 reported ownership
+checks pass at their recorded cuts; see the [joined review](coverage/semantics/generator-call-series-current-review.json). Wider
 call/receiver/signature, mapping, no-Gen receive and abrupt warning contexts remain
 partial. Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I95](coverage/semantics/generator-fake-string-call-review.json),
@@ -895,7 +896,6 @@ remain partial. [Review](coverage/semantics/encoding-placement-review.json).
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| I94–I98 | Preserved Generator call-copy, source-history, binding cleanup and Fiber-warning milestones; combined current composition review and actual-tail validation pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

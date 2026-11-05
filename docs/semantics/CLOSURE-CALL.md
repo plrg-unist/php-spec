@@ -100,8 +100,8 @@ a FROMCALLABLE source, not a STRING capture. I95 validates finite bound-source
 chains and makes consumed Gen history a fallback to unavailable live lookup.
 Three current native/source controls agree; four reached fronts pass
 609 custom/629 reported checks.
-Literal/constant-folded string capture follows a separate compiler route and
-has no new positive validation here. Wider binding/receive contexts remain partial.
+At the I95 cut, literal/constant-folded capture had no new positive validation;
+I96 below covers its separate compiler route. Wider binding/receive contexts remain partial.
 [Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
 
 Literal full-name first-class capture can take the compiler's static-method-init
@@ -136,6 +136,9 @@ three reached fronts pass 459 custom/474 reported checks at distinct cuts on
 unchanged semantics, with no state failures or retries. Trace expansion,
 handler/destructor throws and no-Gen receive errors remain partial.
 [Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+The [joined review](../../coverage/semantics/generator-call-series-current-review.json)
+records strict433, four source comparisons and 187 custom/192 reported ownership
+checks while preserving every original cut and zero-credit failure.
 
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,

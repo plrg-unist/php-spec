@@ -1243,6 +1243,9 @@ checks at distinct cuts on unchanged semantics, with no state failures or retrie
 Trace expansion, handler/destructor throws and no-Gen receive contexts remain
 partial.
 [Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+The [joined review](../../coverage/semantics/generator-call-series-current-review.json)
+records strict433, four source comparisons and 187 custom/192 reported ownership
+checks while preserving every original cut and zero-credit failure.
 
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

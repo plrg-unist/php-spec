@@ -7150,9 +7150,11 @@ folded literal and caller-aware API captures retain their distinct permissions.
 Binding-warning cleanup releases actual API owners in native order. Existing
 copied-reference warning cursors retain argument snapshots and copy ownership
 through Fiber suspension in handlers and owning retval destructors. Each review
-keeps its original native/source/reached cuts and zero-credit failures; combined
-current-tail validation is pending. Wider call/receiver/signature and abrupt
-warning or no-Generator receive contexts remain partial.
+keeps its original native/source/reached cuts and zero-credit failures. The
+[joined review](coverage/semantics/generator-call-series-current-review.json) records
+strict433, four source comparisons and 187 custom ownership checks. Wider
+call/receiver/signature and abrupt warning or no-Generator receive contexts remain
+partial.
 Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I95](coverage/semantics/generator-fake-string-call-review.json),
 [I96](coverage/semantics/generator-folded-string-call-review.json),

@@ -1,6 +1,6 @@
 {
   "milestone": "I96 literal-folded captures and static STRING call binding cleanup",
-  "status": "Current native4/source4 and five reached fronts 516 custom/541 reported pass at distinct cuts; actual-tail integration pending",
+  "status": "Current native4/source4 and five reached fronts 516 custom/541 reported pass at distinct cuts; joined current-tail validation passed; original cuts retained",
   "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
   "private_base": "31771b2594733175a7e75db58b04ef4624f6cb21",
   "scope": "Literal full-name private nonstatic capture can follow compiler static-method-init with compatible This, unlike variable/dynamic string conversion. Admitted non-FCC STRING call dispatch now excludes its overlapping known-method fallback. Before inner call, binding-warning SOURCE/FIRST/RAW are single real API owners and prepared receiver/SENT borrow them. Existing release jobs retire FIRST then RAW then selected SOURCE on normal result and scoped warning-handler abrupt discard, retaining the actual pending THROW_SEARCH. No new producer/source/scope/signature policy, task/schema, generic invoke or destructor rule.",
@@ -26,7 +26,7 @@
     ],
     "rule": "Constant full-name callables may use the compiler static-method-init path and compatible current This. Closure::call parses pointers into argv and returns on failed binding before inner-call copies; warning includes the PHP9 suffix. VM cleanup frees argument zvals in order before releasing the selected Closure, including when the callback throws a precreated Throwable."
   },
-  "review": "Independent production/source/reached-fixture correctness and reliability reviewed CLEAR; final records reviewed CLEAR; actual-tail review pending.",
+  "review": "Independent semantic and fixture review CLEAR; joined current-tail review is linked below. Original evidence retains its tested revisions.",
   "validation": {
     "native_packets": [
       {
@@ -153,7 +153,11 @@
       "reported": 541,
       "fronts": 5
     },
-    "actual_tail": "Pending valid canonical writer lease, then-current composition/review and actual-manifest joined check; no canonical write or old accepted renewal.",
+    "actual_tail": {
+      "review": "coverage/semantics/generator-call-series-current-review.json",
+      "tested_revision": "10e99f71acadd330a331cdc015489930b5355b42",
+      "result": "Planned combined strict, selected source and independent owner/cache gates pass; see shared record. Original private cuts/counts are not renewed."
+    },
     "state_result": "All five first-run fronts true/exit0/empty diagnostics/no timeout/stable HEAD+inputs at41ce9b6; sampled CPU4 descendants absent and exact actor scan empty/full reap. Authored200custom215reported plus peer316custom326reported; no state failures/retries. Initial authored300/peer600 caps unchanged."
   },
   "remaining": [

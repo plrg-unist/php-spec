@@ -1,11 +1,11 @@
 {
   "milestone": "I98 copied-reference warning retval destructor Fiber suspension",
-  "status": "Native2/source2 and three reached fronts 459 custom/474 reported pass on unchanged semantics at distinct cuts; actual-tail integration pending",
+  "status": "Native2/source2 and three reached fronts 459 custom/474 reported pass on unchanged semantics at distinct cuts; joined current-tail validation passed; original cuts retained",
   "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
   "private_base": "53e617e8daa677266e224fa86a0b0b914727ef98",
   "scope": "Normal Fiber suspension during destruction of an owning error-handler return, before copied Gen reference wrapping/creation. Existing ERROR_HANDLER_CLEAN and actual operation/cleanup/caller records retain COPY_REFERENCE source/copy/FIRST/RAW through root CV mutation. A real static cell owned only by its source Closure is copied before the warning; independent fake-method control retains old Token in both retval property and API raw snapshot. The active handler frame has already returned; no new trace, abrupt or no-Gen receive behavior. No production rule/owner edge/task/schema/source admission change.",
   "changed_modules": [],
-  "review": "Independent native/source/reached-fixture correctness and reliability reviewed CLEAR; final records reviewed CLEAR; actual-tail review pending.",
+  "review": "Independent semantic and fixture review CLEAR; joined current-tail review is linked below. Original evidence retains its tested revisions.",
   "validation": {
     "native_packets": [
       {
@@ -68,7 +68,11 @@
       "reported": 474,
       "fronts": 3
     },
-    "actual_tail": "Pending valid writer handoff and then-current composition/review; no canonical mutation/joined compilation/old accepted renewal.",
+    "actual_tail": {
+      "review": "coverage/semantics/generator-call-series-current-review.json",
+      "tested_revision": "10e99f71acadd330a331cdc015489930b5355b42",
+      "result": "Planned combined strict, selected source and independent owner/cache gates pass; see shared record. Original private cuts/counts are not renewed."
+    },
     "source_result": "Both first-run source comparisons match exact retained-native NORMAL at921d: exit0/empty stderr/no timeout/stable HEAD+inputs; sampled CPU4 descendants absent/exact actor scans empty/full reap. Source caps600/620 unchanged; no production correction, source retry or accepted evidence renewal.",
     "state_result": "All three first-run fronts true/exit0/empty stderr/no timeout/stable HEAD+inputs at20f8. Authored150custom155reported plus independent309custom319reported; sampled CPU4 actors absent/exact scans empty/full reap. Initial author600/peer900 and source600/620 caps unchanged. No state failures/retries/diagnostics. No production change or accepted source/native/standalone strict renewal."
   },
