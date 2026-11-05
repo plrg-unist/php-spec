@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reached finite append adds one Value owner without copying its Child edges."""
+"""Reached finite write guards and append ownership without copied Child edges."""
 import argparse
 from pathlib import Path
 
@@ -100,7 +100,39 @@ CHECKS = [
     '~((HOBJECT n_y) <- S_done.ALLOCATIONS)',
     '$heap_valid($heap_graph(S_done))',
 ]
-review.CASES = {'finite-value-append-owner': {'source': SOURCE, 'stage': STAGE, 'checks': CHECKS}}
+FIRST_WRITE_STAGE = (
+    'S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail* '
+    '-- if $lookup(S.ENV, $ptascii("map")) = (n_map_cell) '
+    '-- if S.STORE[n_map_cell] = DEFINED (POBJECT n_map) '
+    '-- if S.OBJECTS[n_map] = WEAKMAP eps '
+    '-- if $lookup(S.ENV, $ptascii("value")) = (n_value_cell) '
+    '-- if S.STORE[n_value_cell] = DEFINED (POBJECT n_value) '
+    '-- if $object_name(S, n_value) = $ptascii("GC44Value")')
+FIRST_WRITE_CHECKS = [
+    '$access_set_plan(S) = (paccess_plan)',
+    'paccess_plan.OBJECT = (n_map)',
+    'S_value = $quiet_operand(S, paccess_plan.RHS)',
+    'S_value.RESULT = KNOWN (POBJECT n_value)',
+    'S_key = $quiet_operand(S, paccess_plan.INPUT)',
+    'S_key.RESULT = KNOWN (POBJECT n_key)',
+    'paccess = paccess_plan[.SELECTED = $rcontainer_selected(S, paccess_plan.RHS)][.VALUE = POBJECT n_value][.OFFSET = POBJECT n_key]',
+    'paccess.RHS = S.RESULT',
+    '$node_children(S, HOBJECT n_value) =/= eps',
+    '$weakmap_entries_child_value_free(S, paccess.VALUE)',
+    '$weakmap_write_value_allowed(S, paccess)',
+    '$weakmap_write_allowed(S, paccess)',
+    '~$weakmap_write_value_allowed(S, paccess[.VALUE = POBJECT |S.OBJECTS|])',
+    'S_missing = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT n_value)]',
+    '~$weakmap_write_value_allowed(S_missing, paccess)',
+    '~$weakmap_write_value_allowed(S, paccess[.SELECTED = KNOWN PNULL])',
+    '~$weakmap_write_value_allowed(S, paccess[.RHS = KNOWN PNULL])',
+    '~$weakmap_write_value_allowed(S[.TODO = eps], paccess)',
+]
+review.CASES = {
+    'finite-value-append-owner': {'source': SOURCE, 'stage': STAGE, 'checks': CHECKS},
+    'finite-value-first-write-guards': {
+        'source': SOURCE, 'stage': FIRST_WRITE_STAGE, 'checks': FIRST_WRITE_CHECKS},
+}
 
 
 if __name__ == '__main__':
