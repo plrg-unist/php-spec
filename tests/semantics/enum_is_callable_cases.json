@@ -685,7 +685,16 @@
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildThrow {\n    public function __destruct() {\n        global $call;\n        echo $call === null ? 'D-null|' : 'D-other|';\n        throw new Exception('drop');\n    }\n}\nfunction rebind_owner(): bool {\n    global $call;\n    $call = [new ChildThrow, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($call, rebind_owner(), $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':',\n         $call === null ? 'NULL' : (is_string($call) ? $call : 'ARRAY'), ':',\n         $name === null ? 'NULL' : (is_string($name) ? $name : 'ARRAY'), ':',\n         $ok, '|';\n}\n",
     "source_sha256": "0d2c5b9ada24154a17db728550072e4b8dc2e89563ad8ab9e5d0c56d3bca1bb0",
     "expected_model": "unsupported",
-    "purpose": "Throwing rebound-array child is a pinned exception-order control until its pending-throw name commit has an authenticated reached check.",
+    "purpose": "Throwing rebound-array child is a native exception-order control whose catch uses the excluded is_string builtin; the modeled core prefix has a separate reached check.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "REBIND|D-null|caught:drop:FirstCheck::from:FirstCheck::from:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-owning-throw-catch-direct",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildThrow {\n    public function __destruct() {\n        global $call;\n        echo $call === null ? 'D-null|' : 'D-other|';\n        throw new Exception('drop');\n    }\n}\nfunction rebind_owner(): bool {\n    global $call;\n    $call = [new ChildThrow, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($call, rebind_owner(), $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':', $call, ':', $name, ':', $ok, '|';\n}\n",
+    "source_sha256": "c661326bae3357163742b9540a9c6410aaaf19ff6c498e8dc4ab19cdc9bf6c70",
+    "expected_model": "normal",
+    "purpose": "Throwing rebound-array child commits the saved callable name before the pending exception reaches catch; direct catch output stays within modeled core operations.",
     "model_timeout_seconds": 90,
     "expected_normal_stdout": "REBIND|D-null|caught:drop:FirstCheck::from:FirstCheck::from:UNCHANGED|"
   }
