@@ -1,0 +1,73 @@
+{
+  "scope": "GC46: many-table WeakMap offsetGet/offsetExists direct and quiet consumers for common finite methodless payloads.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "584c5db2748e13feb0a5129b8e9177a74e209a28",
+  "semantic_revision": "edd128ae7af21e12d533ae5d4f929d9dae3a58ca",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "b80f9090be15ea2e02012d4f156f4dee3ca3b17cb29e046e3327f60468ce7a3d"
+  },
+  "tested_revisions": {
+    "gc-finite-value-reads-author-46/native-v1/native-report.json": "85aad3c149c3746b4fa488a558dc187e94d4f0b9",
+    "gc-finite-value-reads-author-46/native-v1/baseline-report.json": "85aad3c149c3746b4fa488a558dc187e94d4f0b9",
+    "gc-finite-value-reads-author-46/native-v1/model-report.json": "edd128ae7af21e12d533ae5d4f929d9dae3a58ca",
+    "gc-finite-value-reads-author-46/fixture-variant-native-5e6-v1/report.json": "5e665e30248ad53ae85058a8e93e8df12b41a154",
+    "gc-finite-value-reads-author-46/reached-5e6-v1/report.json": "5e665e30248ad53ae85058a8e93e8df12b41a154",
+    "gc-finite-value-dimension-read-peer-46/native-v1/native-report.json": "61130be1fa8b79f8d5f19baff0a9c48dbcc75fd3",
+    "gc-finite-value-dimension-read-peer-46/native-v1/model-report.json": "6fcf8ac37b6d5a57b2caf6973d5a2a4fe1f0a21a"
+  },
+  "rule_basis": "Eight new access_allowed lines authenticate the existing offsetGet/offsetExists read/presence/quiet source task before requiring an actual many-table object, allocated/ranged nonfreeing input Key and common child_storage EPS. The old access arm and access_storage remain byte-unchanged. Stored Keys are private leaf stdClass. An absent direct KEY_R input retains the old ordinary allocated-object domain and real handle checks, while quiet/presence retain their stdClass rules. Explicit method selection excludes offsetUnset; the additional nonfreeing input check fences absent pending-Key pins that the old generic reader can accept. Result, predicate, missing-Key Error, ownership and cleanup executors are untouched.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_read_dimension,zend_weakmap_has_dimension",
+    "spec/semantics/386-weak-map-lifetime.watsup:weakmap_read_allowed,weakmap_quiet_read_allowed,weakmap_presence_allowed,weakmap_read_key_allowed",
+    "spec/semantics/422-weak-map-entries.watsup:weakmap_entries_access_allowed,weakmap_entries_child_storage,access_call",
+    "spec/semantics/284-arrayaccess-dimensions.watsup:access_dimension,access_record,access_valid"
+  ],
+  "counts": {
+    "exact_sources": 2,
+    "newly_supported_exact_sources": 2,
+    "author_exact_sources": 1,
+    "independent_exact_sources": 1,
+    "old_runtime_baseline_zero_agreement": 1,
+    "new_unsupported_php_controls": 0,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 73,
+    "supplemental_native_fixture_variant_checks": 1,
+    "additional_original_agreements_from_variant": 0
+  },
+  "validation": {
+    "direct_original": "Borrowed isset1/empty0 precede a direct fetched result. After Key death removes the Map edge, fetched CV keeps Value/Children live. Map retirement clears its weak identity and sibling leaf while fetched Value survives. Final fetched-CV release runs Y then X despite a supplied Y Exception; catch observes the same Throwable and fully cleaned Value/Children.",
+    "quiet_original": "Missing isset0/empty1/coalescing fallback and direct missing-Key Error match, including Object stdClass#4 not contained in WeakMap and the skipped assignment. The Error CV is cleared before lifetime observations. A present used KEY_IS coalescing result retains Value across Key death, then its later CV release runs Y/X while Map and sibling remain live; final Map release clears the leaf.",
+    "actual_reached": "The source-reached variant stops at the real direct KEY_R task after the exact borrowed-output prefix. Value has one owner and Child X/Y have two/one owners before the fetch. The actual PhpStep yields KNOWN Value, adds one owner to make 2, and leaves Map storage, child edges and output unchanged. Projected zero/nonzero one-step driver pause and full resumed equality pass through later caught-throw cleanup and normal request completion.",
+    "counterstates": "A held spare Key allows a constructed canonical many table whose input Key is absent. A constructed pending-Key pin leaves generic read_allowed and common storage explicitly true while finite access rejects, discriminating the extra input fence. The offsetUnset query uses an existing READ record and is a wrong-protocol helper counterstate, not a fresh source-valid unset refusal. Missing-Child/receiver controls also reject. These counterstates add no PHP execution or Unsupported-control agreement.",
+    "identities": "Both source campaigns retain stable inputs/head. Supplemental native variant uses the same pinned oracle/profile and byte-identical transcript, with oracle identity rechecked. Four executed binaries in the reached report were directly rechecked after completion and remained unchanged. Raw commands, original bytes, source context/profiles/process outcomes and compiled fixture remain external."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc46_direct_fetched_retained.php": "3095190576f96e347ffdd6e17b71068cdc75dec8c1f573c17db98f3945b1d415",
+    "tests/semantics/gc46_peer_quiet_missing_retained.php": "4fc3b189107d4a1612c2d8a154090d212ef9b44d0cd6b2d3f8ab7e8f1c9f4e0a"
+  },
+  "fixture_variant": {
+    "source_sha256": "1714242f3b1c82d77e9c23e79401c9f90e81341cd678a052e3d24951a938a96c",
+    "native_source": "../php-spec-evidence-archive/gc-finite-value-reads-author-46/fixture-variant-native-5e6-v1/source.php",
+    "reached_source": "../php-spec-evidence-archive/gc-finite-value-reads-author-46/reached-5e6-v1/finite-value-read-owner/source.php",
+    "explanation": "The state fixture inserts one held spare stdClass Key into the direct original, solely for the canonical absent-input counterstate. Its native transcript was checked once against the frozen original. Both source hashes match; it is not the identical original program and contributes no additional original agreement."
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-reads-author-46/native-v1/native-report.json": "11e2b21983edc24a39224f064e7de2f35304e307a2aeba0123c632bf67a3795c",
+    "../php-spec-evidence-archive/gc-finite-value-reads-author-46/native-v1/baseline-report.json": "c34e3c5c4bdeedd0db71969c1b4c68432d960ee39f4fc1ed4233d591bdb88b13",
+    "../php-spec-evidence-archive/gc-finite-value-reads-author-46/native-v1/model-report.json": "bfdcbaf9e8f1e9dfd9189ade8594b1665e1c94112e16bb71cba663bbb96c8496",
+    "../php-spec-evidence-archive/gc-finite-value-reads-author-46/fixture-variant-native-5e6-v1/report.json": "cf2d914f86e68772df4c171e0e3fe6ab306a6066260bc632af00e0bbd0cb45ec",
+    "../php-spec-evidence-archive/gc-finite-value-reads-author-46/reached-5e6-v1/report.json": "c3e17bbbc23cfce78b81bf56f844c0f152d1a93b8637cdba1e2116fb20ffb387",
+    "../php-spec-evidence-archive/gc-finite-value-dimension-read-peer-46/native-v1/native-report.json": "9e648dde67bcdffe332f8a18e83aade5f16e293da55cd020e3d41caef7c38600",
+    "../php-spec-evidence-archive/gc-finite-value-dimension-read-peer-46/native-v1/model-report.json": "dfe7e16b6ea413fdd883ad61ea3653b1a906b867866ed930c53b2255fc1892f6"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-reads-author-46/manifest.json": "924d88ad71ba921a59cc67c136c90315fa8987ae396851d9ffc32093cd8158a6",
+    "../php-spec-evidence-archive/gc-finite-value-dimension-read-peer-46/independent-summary.json": "94c92351e307f84d5e872070348e9f9aa0509d9bb06e50a8d488ddc242aa2084"
+  },
+  "zero_credit": "The old author baseline at 85aad3c14 is explicit Unsupported at WeakMap multiple-entry dimension protocol after B|, during the first presence read; it has zero agreement. The native-checked spare variant and constructed pin/protocol controls add no extra original agreement. No new runtime/source/fixture failure or interrupted run occurred; no fresh offsetUnset/replacement/shared-Key PHP-control result is claimed.",
+  "compatibility_bridge": "The old access branch, access_storage, generic singleton consumers and all Get/predicate/Error/release executors are unchanged. The new separate arm is selected only for authenticated Get/Exists operations over common finite storage; it adds no offsetUnset, replacement, shared-stored-Key, cursor or collection admission. The input Key fence additionally excludes the absent active-pin seam without changing old leaf active-pin behavior. GC44/45 and earlier accepted campaigns retain their source/code cuts and are not renewed.",
+  "limits": "Common finite public untyped nonstatic/nonreadonly backed primitive/fieldless-destructor-Child payloads, private nonfreeing leaf stored Keys, no active cursor/incoming Map-key association and nonfreeing allocated read input only for the new arm. Typed/reference/virtual/inherited/deeper/owning-array payloads, occupied replacement/shared-stored-Key finite payloads, source-valid offsetUnset on this new payload domain, freeing-Map dimension access, active-pin collection and wider producer/caller/mutation contexts remain partial. Global leaf/GC admission and property/type-source executors are unchanged. Held GC35 and paused work remain untouched.",
+  "recovery": "Run gc46_finite_read_sources.py native then model in fresh external outputs; recover its single old baseline at 85aad3c14 only if needed. Run gc46_peer_quiet_sources.py native then model for missing/direct-Error/coalescing contexts. Run gc46_finite_read_state.py for the one 73-condition strict-SL group; SOURCE visibly adds the spare Key. Its supplementary native argv/source/report are separately bound under fixture-variant-native-5e6-v1. Original source/model and state variant provenance remain distinct.",
+  "review": "Independent runtime/source/static 73 review is CLEAR; final clean documentation/ledger read-only acceptance is requested on the completed private candidate."
+}

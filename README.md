@@ -3676,7 +3676,9 @@ Values with untyped declared Child/primitive storage. Backed stored values clear
 without getter/setter calls; ordered entry/property releases preserve repeated
 Values, shared Children and outside owners. The same payloads now enter empty
 Maps or append under private Keys while retaining source evaluation and owner
-increments. Selective Key death removes their slots individually and preserves
+increments. Strong direct/quiet fetches retain real Value owners across Key
+death; terminal isset/empty only borrow storage. Selective Key death removes
+slots individually and preserves
 weak-registration order through Child cleanup and throws. Virtual/wider layouts,
 replacement/shared-Key finite payloads,
 freeing-Map dimension access and active-pin collection remain partial.

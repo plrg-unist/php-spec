@@ -320,6 +320,28 @@ The finite notice arm excludes active cursors and incoming Map-key associations;
 replacement/shared-Key, wider payload/mutation and active-pin collection policies
 remain unchanged.
 
+Multiple-entry direct and quiet reads reuse the common finite payload policy.
+A separate `offsetGet`/`offsetExists` arm first authenticates the existing source
+read/presence/quiet task, then requires a ranged allocated nonfreeing input Key
+and canonical private finite storage. The previous access arm stays unchanged;
+`offsetUnset`, replacement and mutation receive no new admission. Stored Keys
+remain leaf `stdClass` objects. An absent direct `KEY_R` input keeps the existing
+ordinary allocated object domain; quiet/presence input retains its existing
+`stdClass` rules. The new finite arm excludes a freeing absent input even when
+the older generic reader admits its pending physical Key pin.
+
+A direct fetch or used `KEY_IS` coalescing result owns its returned Value;
+terminal isset/empty tests borrow storage. Key death can remove the Map edge
+while that fetched owner keeps Value/Children live. Later last-owner release
+runs the ordinary property jobs, including pending cleanup after a Child throw.
+Missing presence/coalescing and direct-Get Error text use the unchanged consumer
+executors. The [finite-read review](../../coverage/semantics/gc-finite-value-reads-review.json)
+separates both original comparisons from the reached ownership/budget fixture,
+whose source adds one held spare Key for a canonical absent-input counterstate.
+That variant has its own source hash/native transcript check and adds no new
+original agreement. Helper pin/protocol counterstates are not PHP executions.
+Freeing-Map dimension access, active-pin collection and wider consumers remain partial.
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release
