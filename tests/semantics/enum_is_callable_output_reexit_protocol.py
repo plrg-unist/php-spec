@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import time
 
 import enum_is_callable_output_cleanup_protocol as cleanup
 
@@ -300,12 +301,19 @@ if __name__ == '__main__':
                                  + check + '\n' for check in checks))
     command = [str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                *map(str, MODULES), str(fixture)]
-    result = subprocess.run(command, capture_output=True, timeout=480)
     (OUT / 'command.json').write_text(json.dumps(command) + '\n')
+    start = time.monotonic()
+    timed_out = False
+    try:
+        result = subprocess.run(command, capture_output=True, timeout=480)
+    except subprocess.TimeoutExpired as error:
+        timed_out = True
+        result = subprocess.CompletedProcess(command, 124, error.stdout or b'', error.stderr or b'')
     (OUT / 'stdout').write_bytes(result.stdout)
     (OUT / 'stderr').write_bytes(result.stderr)
     record = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'group': args.group, 'checks': len(checks), 'exit': result.returncode,
+              'timeout_seconds': 480, 'timed_out': timed_out, 'elapsed': time.monotonic() - start,
               'stdout': result.stdout.decode(errors='replace'),
               'stderr': result.stderr.decode(errors='replace'),
               'stable': before == {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
