@@ -7116,15 +7116,17 @@ API-entry99, unused-result81 and independent closed143 checks pass at a84bf6c0;
 3486d56c composition is reviewed.
 [Call-copy review](coverage/semantics/generator-call-copy-review.json).
 
-I93 copies an admitted real Generator Closure before reference-formal warnings.
-The API freezes top-level values and wraps fresh formal cells after callbacks;
-isolated versus shared static cells follow existing clone ownership. A used
-Generator result stays owned through API/source finalizers, while warning traces
-show the internal handler and real call frame. Native5/source5/private433 retain
-distinct cuts; six reached fronts pass 625 custom/655 reported checks.
-Receive/mapping errors,
-callback throws and wider call contexts remain partial.
+I93 copies an admitted real Generator Closure before reference-formal
+warnings. The API freezes top-level values and wraps fresh formal cells after
+callbacks; isolated and shared static cells follow their native ownership.
+A used Generator result stays owned through API cleanup, and warning traces
+show the handler and real call frame. Five private native/model sources and six
+reached fronts pass at recorded cuts. Joined strict433, three exact I93 sources,
+one affected I92 value SEND source, temporary return92 and independent parked
+cache169 states pass at f34d1214a. Receive/mapping errors, callback throws and
+wider calls remain partial.
 [Reference-call review](coverage/semantics/generator-call-reference-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
