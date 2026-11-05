@@ -1829,6 +1829,14 @@ its original Closure when `key()` rebinds both option and callable variables.
 Held option owners, named keys, other directives and wider getter inputs stop
 explicitly outside this receipt.
 
+The [copied restore increment](../../coverage/semantics/config-iterator-restore-stringable-review.json)
+uses the same one-item positional Iterator boundary for `ini_restore` with a
+Stringable `precision` option. The option destructor can write precision 1
+after conversion; restore then writes startup precision 14 and returns null.
+A selected first-class restorer remains the original Closure after `key()`
+rebinds the option and callable variables. Held owners, named keys, other
+directives and wider restore inputs stop outside this receipt.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root

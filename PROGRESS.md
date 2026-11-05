@@ -854,6 +854,12 @@ option to retire before reading the live value; selected first-class getters
 keep their original Closure through key-time rebinding. Held/named inputs stop
 outside this receipt. [A107 review](coverage/semantics/config-iterator-get-stringable-review.json).
 
+Copied positional Iterator `ini_restore` now waits for the same sole Stringable
+`precision` option to retire before restoring startup precision. A selected
+first-class restorer keeps its original Closure through key-time rebinding;
+held/named options stop before the unvalidated restore.
+[A108 review](coverage/semantics/config-iterator-restore-stringable-review.json).
+
 ## Decisions that constrain further work
 
 - Implement PHP behavior in authored semantics, including pure arithmetic; the

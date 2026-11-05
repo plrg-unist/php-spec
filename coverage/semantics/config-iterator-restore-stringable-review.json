@@ -1,0 +1,39 @@
+{
+  "scope": "A108 unary INI_RESTORE after one positional initialized Iterator send copies a Stringable precision option and retires DATA/INPUT before reception.",
+  "behavior": "The copied option and cast pin are the last two model roots. Their release runs the option destructor, which can set precision 1, before INI_RESTORE restores startup precision 14 and returns null. A selected first-class restorer retains its original Closure when key() rebinds the option and callable variables. Held owners, named keys and other option names stop outside this receipt.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_restore", "Zend/zend_ini.c zend_restore_ini_entry"]
+  },
+  "tested_cuts": {
+    "source_revision": "22114cc457b9a02d42e6a5e55523dc7e0708f6dc",
+    "positive_reached_revision": "22114cc457b9a02d42e6a5e55523dc7e0708f6dc",
+    "held_reached_revision": "91f90c8d3ab395a3c797cae408d6fde834aba695",
+    "affected_getter_revision": "91f90c8d3ab395a3c797cae408d6fde834aba695",
+    "affected_restore_strict_revision": "9e299aa4e0f0f10452337d977240e2586c5a2e77",
+    "module_172_sha256": "47e3cc14e4182128f35d638df281245e445cab5476d4d5db939a94965ed8d6da",
+    "module_420_sha256": "2328a9aa7353f83c46bc2240b5903f4df66e6350e8fea4e1bc6fb9420974d45a",
+    "manifest_sha256": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "case_catalog_sha256": "b91095171c6dcce71651cfd32492b05dd911e3ace5b6c0807ba89c2821d2a154",
+    "source_wrapper_sha256": "0a143d34b7aba8e4587d5182b2a217a895d6acec567c3ea275d45795aee0deba",
+    "state_fixture_sha256": "f4e6230cdc2c2d71a1892265bd5f4dfe720c01142d7f106377c7262322c93764",
+    "affected_getter_fixture_sha256": "262926772657252653b49c3bdb8d8e3021f74cb3a1fd46534f1f45ffdb856696",
+    "affected_restore_fixture_sha256": "c1473e397d4b28d532a94f2313961be189fa548decaa662e34a35fb426e68b56",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC; serial direct CPU4/1/2/3 loans, each fully reaped",
+    "native_report_sha256": "6afd4dfbba05707d10d2f03e3f83c8c8fe5d6c7f2ded5880c913c79330d0e2af",
+    "sources": [
+      {"id": "temporary-restore-runs-after-option-disposal", "source_sha256": "419434615ead2caddd830a0a597b8634711cd117fa74786b6c9c4f75cf486f78", "native_process_sha256": "a968d7a59a123824bd62c4a4a4b2b91cb15accc7beb8468f96c830eea456354b", "report_sha256": "cf17fb697843ef55b3668d826b3d54dbf6b8ee443c9919446a896a906a50c000"},
+      {"id": "selected-restore-keeps-original-callee", "source_sha256": "7786974a7bcc91c9ef169ee25ee0d9f245af9f504a9400f58c03ddbb143a56c1", "native_process_sha256": "ac036c55105f7844212dd9448bc7dbfb9f64560ecb65d322ff473ef500e27415", "report_sha256": "40bbf46d6bb21ce600dc96b8aa2f689883a54c1b3cd585215b921355b2fca77e"}
+    ],
+    "source_result": "Both frozen native/model cases completed normally with byte-equal stdout, exit 0, empty stderr and stable head/inputs. Temporary trace has I:7;T:A:done;D:A:1;R:1:14:1. Selected trace has D:A:1;R:1:14:B:14:1:14, delayed D:B:1 and final E:14.",
+    "reached": "Temporary receipt 43/43 and selected owner 52/52 passed at 22114cc45; constructed HELD-root/named refusal 25/25 passed at 91f90c8d. All used SL runner true, exit 0, empty stderr and stable head/author inputs. Report SHA256s eec45bb93b58e1d141af58d2f74cc7f78fa45c9cec80d1f47b6cebcfa30670c4, 45d01b9fe210d93fbe80947c9b856102157140f3d2d8bd1a36df078590419304, 1ba6bfbf5aac4a78009459a94160db37dbc75c0b72e710dfe54673744217daa6.",
+    "affected": "Prior A107 held/named getter passed 25/25 after the shared unary helper rename, report SHA256 068680a12d2331e64b7ff2cc746a4385cdbc12a4eaa3b4e5d5071a2db898a0cc. Ordinary named non-Iterator Stringable restore passed 50/50 after a carrier-neutral fixture correction, report SHA256 b0dbd5feee36734b480d28d41d26dfcc539b4cad89413a8e9ed1235a49d208e8.",
+    "strict_sl": "Ordered 435-module manifest, true, exit 0, empty stderr; external process JSON SHA256 249dc289055f13be6f821e5a4994078eba47f0dec93258a5d6919c14e6da67d9 and report SHA256 54f4aeeb1ee4400efffd44ebf3226c0d180b6cef846f8f3cdee8bf4045061622.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-restore-stringable-108",
+    "commands": "Native process JSON records the exact pinned PHP -n/profile argv for each source. Source: taskset -c N python3 tests/semantics/config_iterator_restore_stringable_sources.py --case ID --native-report EXTERNAL/native-a18e02033/report.json (N=1,4). Reached: taskset -c N python3 tests/semantics/config_iterator_restore_stringable_state.py --case ID (N=4,4,1). Affected getter uses config_iterator_get_stringable_state.py --case held-option-stops-before-unvalidated-getter-read; ordinary restore calls include_mutable_protocol.main with only ini-prefix-restore-invoke-exact-result. Strict process JSON records the complete ordered --sl argv.",
+    "prior_boundary": "The old copied header and Iterator history did not admit INI_RESTORE; no old-model public outcome or agreement was asserted. A premature immediate precision assertion in the constructed held fixture and a legacy PSTRING-only premise in the ordinary restore affected fixture failed before correction. Their archived raw has zero agreement/reached credit; only corrected exact cuts above pass.",
+    "limits": "Native agreements cover two positional integer-key Iterator sources with exact precision and last-owner option disposal. HELD/named refusals are constructed reached controls, not native agreements. Other names, held owners, named or scalar restore spreads, strict callers, wider Stringable effects and lifecycle combinations remain outside this receipt. Held A97 is untouched; no full-core or BOLA claim.",
+    "review": "independent semantic/test and actual-parent interaction CLEAR on 6138ab61d8004bc7f50133fd486bf26b1afd4c7b"
+  }
+}
