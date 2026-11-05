@@ -43,6 +43,9 @@ def $eir_drop(eps, penumqueryoutput, z, pdestructorcall) = eps
 def $eir_drop((ENUM_IS_CALLABLE_CLEANUP_RESTORE penumqueryoutput z pdestructorcall) :: ptask_tail*, penumqueryoutput, z, pdestructorcall) = $eir_drop(ptask_tail*, penumqueryoutput, z, pdestructorcall)
 def $eir_drop(ptask :: ptask_tail*, penumqueryoutput, z, pdestructorcall) = ptask :: $eir_drop(ptask_tail*, penumqueryoutput, z, pdestructorcall)
   -- if ptask =/= ENUM_IS_CALLABLE_CLEANUP_RESTORE penumqueryoutput z pdestructorcall
+dec $eir_drop_root_frames(pframe*, penumqueryoutput, int) : pframe*
+def $eir_drop_root_frames(eps, penumqueryoutput, z) = eps
+def $eir_drop_root_frames(pframe :: pframe_tail*, penumqueryoutput, z) = pframe[.TODO = $eix_drop_restore(pframe.TODO, penumqueryoutput, z)] :: $eir_drop_root_frames(pframe_tail*, penumqueryoutput, z)
 '''
 
 
@@ -111,6 +114,12 @@ def own():
         '$enum_is_callable_cleanup_scope(S_missing, penumqueryoutput_own, 23, pdestructorcall_own_anchor) = eps',
         '~$eager_operation_source_guard(S_missing, pdestructionoperation_own_child)',
         'S_own_body = $drive_steps(S_own_entry[.COMPLETION = NORMAL], 1)',
+        'S_own_body.CURRENT = (pcallcontext_own_body)',
+        '$enum_is_callable_cleanup_body(S_own_body)',
+        'S_missing_root = S_own_body[.TODO = $eix_drop_restore(S_own_body.TODO, penumqueryoutput_own, 23)][.FRAMES = $eir_drop_root_frames(S_own_body.FRAMES, penumqueryoutput_own, 23)]',
+        '$enum_is_callable_exit_frame_scope(S_missing_root, penumqueryoutput_own, 23) = eps',
+        '~$destructor_context_valid(S_missing_root, pcallcontext_own_body)',
+        '~$enum_is_callable_cleanup_body(S_missing_root)',
         '$trace_context(S_own_body, S_own_body.ENV, S_own_body.CURRENT) = [ptraceframe_own_child, ptraceframe_own_api]',
         'ptraceframe_own_child.CLASS = ($ptascii("ChildDrop"))',
         'ptraceframe_own_child.FUNCTION = $ptascii("__destruct")',
