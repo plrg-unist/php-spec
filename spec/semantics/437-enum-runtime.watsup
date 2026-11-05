@@ -1746,6 +1746,12 @@ def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = 
   -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
   -- if $($heap_owners($heap_graph(S_write), HARRAY n_array) > 0)
   -- if $($heap_owners($heap_graph(S_write), HOBJECT n_child) > 0)
+def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = true
+  -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
+  -- if $heap_owners($heap_graph(S_write), HARRAY n_array) = 0
+  -- if $heap_owners($heap_graph(S_write), HOBJECT n_child) = 2
+  -- if (HOBJECT n_child) <- $heap_prune($heap_graph(S_write)).NODES
+  -- if ~((HARRAY n_array) <- $gc_prune_nodes(S_write))
 def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = false -- otherwise
 
 dec $enum_is_callable_ref_array_alias_old(pstate, pconfigcall, nat, pvalue, ptbytes, int) : bool
