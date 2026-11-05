@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i111-peer-computed-selection-before-arguments",
+    "purpose": "NULL skips computed-name and pack producers. A nonnull computed nullsafe SeNd selection survives an argument producer rebinding both receiver and name aliases, while the copied reference value and sole old receiver retire in native order.",
+    "source": "<?php\nclass Token111P { function __destruct() { echo 'TOKEN|'; } }\nfunction old111P() {\n    global $cell, $weakToken, $weakOld;\n    try {\n        echo 'INIT|', $weakOld->get() instanceof Generator, '|';\n        $received = yield 'head'; $cell = 41;\n        echo 'GOT|', $received === $weakToken->get(), '|', $cell === 41, '|';\n        yield 'tail'; echo 'BAD-RESUME|';\n    } finally { echo 'FIN|', $weakOld->get() instanceof Generator, '|', $weakToken->get() instanceof Token111P, '|'; }\n}\nfunction other111P() { echo 'BAD-OTHER|'; yield 'other'; }\nfunction producer111P() {\n    global $generator, $other, $methodAlias, $pack;\n    echo 'PACK|'; $saved = $pack; $generator = $other; $methodAlias = 'throw'; $pack = null; return $saved;\n}\nfunction badName111P() { echo 'BAD-NAME|'; return 'send'; }\nfunction badPack111P() { echo 'BAD-PACK|'; return []; }\n$generator = null; $nullResult = $generator?->{badName111P()}(...badPack111P());\necho 'NULL|', $nullResult === null, '|';\n$cell = new Token111P(); $weakToken = WeakReference::create($cell); $pack = ['value' => &$cell];\n$generator = old111P(); $weakOld = WeakReference::create($generator); $other = other111P();\n$method = 'SeNd'; $methodAlias =& $method;\necho 'CALL|'; $result = $generator?->{$method}(...producer111P());\necho 'RETURN|', $result === 'tail', '|', $generator === $other, '|', $method === 'throw', '|', $pack === null, '|', $weakOld->get() === null, '|', $weakToken->get() === null, '|', $cell === 41, '|';\n",
+    "source_sha256": "ecaf8a127fc4da039d98644ef1be643c12c9c5a050fec08d3a401d399ff71c1f",
+    "native_exit": 0,
+    "native_stdout": "NULL|1|CALL|PACK|INIT|1|GOT|1|1|FIN|1|1|TOKEN|RETURN|1|1|1|1|1|1|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
