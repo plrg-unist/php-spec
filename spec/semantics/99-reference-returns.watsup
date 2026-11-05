@@ -256,6 +256,7 @@ def $reference_return_null_valid(S, z) = true
   -- if pfunction.SIGNATURE.BYREF
   -- if S.ORIGIN = (pfunction.ORIGIN)
   -- if z = pfunction.ENDLINE
+  -- if ~$arrow_context(S)
   -- if pfunction.SIGNATURE.RETURNS = eps \/ "void" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
 def $reference_return_null_valid(S, z) = false -- otherwise
 

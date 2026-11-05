@@ -197,11 +197,17 @@ def $anonymous_method_factory_members(statement*) = false -- otherwise
 ;; positions retain their class-free fence while its key is reserved.
 dec $anonymous_only_anonymous_classes(pcoccurrence*) : bool
 dec $anonymous_method_closure_body(pcnode) : nat?
-def $anonymous_method_closure_body(NExprClosure (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN false) phpType16 (SEQUENCE phpType22*) phpType18 (SEQUENCE statement*) metadata) = (6)
+def $anonymous_method_closure_body(NExprClosure (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 (SEQUENCE phpType22*) phpType18 (SEQUENCE statement*) metadata) = (6)
   -- if $anonymous_constructor_parameters(phpType16)
-def $anonymous_method_closure_body(NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN false) phpType16 phpType18 expression metadata) = (5)
+  -- if ~b_ref \/ ~$generator_statements(statement*)
+def $anonymous_method_closure_body(NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 phpType18 expression metadata) = (5)
   -- if $anonymous_constructor_parameters(phpType16)
+  -- if ~b_ref \/ ~$generator_syntax(expression)
 def $anonymous_method_closure_body(pcnode) = eps -- otherwise
+dec $anonymous_method_closure_returnref(pcnode) : bool?
+def $anonymous_method_closure_returnref(NExprClosure phpType14 phpType4_static (BOOLEAN b_ref) phpType16 phpType21 phpType18 phpType23 metadata) = (b_ref)
+def $anonymous_method_closure_returnref(NExprArrowFunction phpType14 phpType4_static (BOOLEAN b_ref) phpType16 phpType18 expression metadata) = (b_ref)
+def $anonymous_method_closure_returnref(pcnode) = eps -- otherwise
 dec $anonymous_owner_deferred_scope(pcnode) : bool
 def $anonymous_owner_deferred_scope(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
 def $anonymous_owner_deferred_scope(NExprClosure phpType14 phpType4_static phpType4_byref phpType16 phpType21 phpType18 phpType23 metadata) = ($anonymous_method_closure_body(NExprClosure phpType14 phpType4_static phpType4_byref phpType16 phpType21 phpType18 phpType23 metadata) = eps)
@@ -572,7 +578,7 @@ def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = $anonymous_method_s
 def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = eps -- otherwise
 
 def $anonymous_factory_context(P, pcpath) = true
-  -- if P.FOLD.SOURCE.ID = 0 /\ P.CLOSURE /\ P.FOLD.CLOSURE /\ ~P.RETURNREF
+  -- if P.FOLD.SOURCE.ID = 0 /\ P.CLOSURE /\ P.FOLD.CLOSURE
   -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
   -- if P.CLASSCONTEXT = (ptcontext)
   -- if P.FOLD.CLASSCONTEXT = P.CLASSCONTEXT
@@ -580,6 +586,8 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if P.FOLD.FUNCTION = ptbytes_function
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (P.GOTOROOT)) = (pcnode)
   -- if $anonymous_method_closure_body(pcnode) = (n_body)
+  -- if $anonymous_method_closure_returnref(pcnode) = (b_ref)
+  -- if P.RETURNREF = b_ref
   -- if pcpath_body = P.GOTOROOT ++ [PCFIELD n_body]
   -- if $(|pcpath_body| <= |pcpath|)
   -- if pcpath[0:|pcpath_body|] = pcpath_body

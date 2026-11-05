@@ -1,0 +1,64 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "ref-closure-cv-receiver-lifetime",
+      "source": "<?php\nclass Owner188Cell { public function capture() { return function &() { $child = new class { public function __destruct() { echo 'CHILD;'; } }; return $child; }; } public function __destruct() { echo 'OWNER;'; } }\n$owner = new Owner188Cell; $factory = $owner->capture(); unset($owner); $value =& $factory(); echo 'MADE;'; unset($factory); echo 'HELD;'; unset($value); echo 'DONE;';\n",
+      "source_sha256": "b3bfdcf68088c34fbe8c6e2157ec899b451bbd657e54412439d8162b623c6289",
+      "stdout_template_base64": "TUFERTtPV05FUjtIRUxEO0NISUxEO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-arrow-temporary-return-notice",
+      "source": "<?php\nclass Owner188Arrow { public function capture() { return fn &() => new class { public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\n$owner = new Owner188Arrow; $factory = $owner->capture(); unset($owner); $value =& $factory(); echo 'MADE;'; unset($factory); echo 'HELD;'; unset($value); echo 'DONE;';\n",
+      "source_sha256": "d156a560bb4eb7a1fc38c9595b88f5666deccfc0caf0abf627150ecef1300f9d",
+      "stdout_template_base64": "TUFERTtPV05FUjtIRUxEO0NISUxEO0RPTkU7",
+      "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlIHJlZmVyZW5jZXMgc2hvdWxkIGJlIHJldHVybmVkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAyCg==",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-arrow-temporary-warning-throw",
+      "source": "<?php\nfunction warn188($severity, $message) { echo 'WARN;'; throw new Exception('stop'); }\nclass Owner188Throw { public function capture() { return fn &() => new class { public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nset_error_handler('warn188'); try { $value =& ((new Owner188Throw)->capture())(); } catch (Exception $e) { echo 'CAUGHT;'; }\n",
+      "source_sha256": "0225985a68d6e5cb826da20ca8340ba4e23e65218baf6580b979176fd7fcb649",
+      "stdout_template_base64": "V0FSTjtPV05FUjtDSElMRDtDQVVHSFQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-trait-method-and-closure-scopes",
+      "source": "<?php\ntrait T188Scope { public function &capture() { $factory = function &() { $child = new class(self::VALUE, static::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $self, public int $called, public string $owner, public string $method) {} }; return $child; }; return $factory; } }\nclass A188Scope { use T188Scope; public const VALUE = 1; } class B188Scope { use T188Scope; public const VALUE = 2; } class C188Scope extends A188Scope { public const VALUE = 3; }\n$a = new C188Scope; $b = new B188Scope; $fa =& $a->capture(); $fb =& $b->capture(); unset($a, $b); $x =& $fa(); $y =& $fb(); $after = new class {}; echo $x->self, ':', $x->called, ':', $x->owner, ':', $x->method, ';', $y->self, ':', $y->called, ':', $y->owner, ':', $y->method, ';', ($x::class === $y::class), ';', $x::class, ';', $after::class, ';';\n",
+      "source_sha256": "607d7c3c593ebba4c5bb3478d57502bc6af516f1573f0d732eb3838e88f219e3",
+      "stdout_template_base64": "MTozOkExODhTY29wZTp7Y2xvc3VyZTpUMTg4U2NvcGU6OmNhcHR1cmUoKToyfTsyOjI6QjE4OFNjb3BlOntjbG9zdXJlOlQxODhTY29wZTo6Y2FwdHVyZSgpOjJ9OzE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-anonymous-static-closure-template",
+      "source": "<?php\n$owner = new class { public function &capture() { $factory = static function &() { $child = new class(__CLASS__, __METHOD__) { public function __construct(public string $owner, public string $method) {} }; return $child; }; return $factory; } public function __destruct() { echo 'OWNER;'; } };\n$factory =& $owner->capture(); unset($owner); $child =& $factory(); $after = new class {}; echo $child->owner, ';', $child->method, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "e553ab93a822300ce609154277ad94d1844b496bd5968ee8e7954b7314d75f3d",
+      "stdout_template_base64": "T1dORVI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7e2Nsb3N1cmU6Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA6OmNhcHR1cmUoKToyfTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjMkMjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
