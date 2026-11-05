@@ -175,6 +175,7 @@ def $assertion_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = $confi
   -- if S_call = S[.ORIGIN = (pconfigcall.SITE)]
 def $assertion_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI Stringable option entry retirement"] -- otherwise
 def $config_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = $assertion_ini_string_finish(S, pconfigcall, pvalue_option, pvalue)
+  -- if ~$config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
   -- if $string_bytes(pvalue_option) = (n_option*)
   -- if n_option* = $ptascii("zend.assertions")
 def $assertion_ini_restore_string_finish(S, pconfigcall, pvalue_option) = $assertion_ini_restore(S_call, pconfigcall_converted)

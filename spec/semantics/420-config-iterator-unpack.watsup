@@ -43,6 +43,7 @@ dec $config_iterator_scalar(pstate, pvalue) : bool
 dec $config_iterator_current_scalar(pstate, pconfigiterator) : bool
 dec $config_iterator_value_receipt(pstate, pvalue) : bool
 dec $config_iterator_argument(pstate, pvalue) : bool
+dec $config_iterator_send_argument(pstate, pvalue) : bool
 dec $config_iterator_current_argument(pstate, pconfigiterator) : bool
 dec $config_iterator_owning_release(pstate, pconfigiterator) : bool
 dec $config_iterator_copied_slots(pstate, pnamedslot*) : bool
@@ -298,6 +299,9 @@ def $config_iterator_argument(S, POBJECT n) = true
 def $config_iterator_argument(S, pvalue) = $config_iterator_data_value(S, pvalue, eps)
   -- if ~$getclass_is_object(pvalue)
 def $config_iterator_argument(S, pvalue) = false -- otherwise
+;; Iterator copies may carry a Stringable name to later INI reception. The
+;; shared Generator argument policy above keeps its independent boundary.
+def $config_iterator_send_argument(S, pvalue) = $config_iterator_data_value(S, pvalue, eps)
 ;; A raw current CELL stays selected through key(); its current contents are
 ;; checked at acquisition/send, not while authenticating callback/history frames.
 def $config_iterator_byref_current(S, pconfigiterator) = true
@@ -310,7 +314,7 @@ def $config_iterator_current_receipt(S, pconfigiterator, KNOWN pvalue) = $config
 def $config_iterator_current_receipt(S, pconfigiterator, REFERENCE n) = $config_iterator_byref_current(S, pconfigiterator)
 def $config_iterator_current_receipt(S, pconfigiterator, poperand) = false -- otherwise
 def $config_iterator_current_value(S, pconfigiterator, KNOWN pvalue) = (pvalue)
-  -- if $config_iterator_argument(S, pvalue)
+  -- if $config_iterator_send_argument(S, pvalue)
 def $config_iterator_current_value(S, pconfigiterator, REFERENCE n) = (pvalue)
   -- if $config_iterator_byref_current(S, pconfigiterator)
   -- if $config_iterator_reference_value(S, n) = (pvalue)
@@ -326,7 +330,7 @@ def $config_iterator_current_scalar(S, pconfigiterator) = true
 def $config_iterator_current_scalar(S, pconfigiterator) = false -- otherwise
 def $config_iterator_current_argument(S, pconfigiterator) = true
   -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
-  -- if $config_iterator_argument(S, pvalue)
+  -- if $config_iterator_send_argument(S, pvalue)
 def $config_iterator_current_argument(S, pconfigiterator) = false -- otherwise
 ;; This is a live producer check, not send-time graph admission or history.
 ;; A key may have replaced the referenced payload with another owning value.
@@ -403,7 +407,8 @@ def $config_iterator_copied_slots(S, eps) = true
 def $config_iterator_copied_slots(S, NAMED_HOLE :: pnamedslot*) = $config_iterator_copied_slots(S, pnamedslot*)
 def $config_iterator_copied_slots(S, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*) = ($config_iterator_value_receipt(S, pvalue) /\ $config_iterator_copied_slots(S, pnamedslot*))
 def $config_iterator_copied_slots(S, pnamedslot*) = false -- otherwise
-def $config_iterator_copied_call(S, pconfigcall) = true
+dec $config_iterator_copied_header(pstate, pconfigcall) : bool
+def $config_iterator_copied_header(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps
   -- if ~$pipe_site(S, pconfigcall.SITE)
@@ -415,9 +420,118 @@ def $config_iterator_copied_call(S, pconfigcall) = true
   -- if $ppunpack_class(pcode, pcunit, pcpath) = (punpackclass)
   -- if punpackclass = UNPACK_CV \/ punpackclass = UNPACK_VAR
   -- if ~pconfigcall.NAMED \/ punpackclass = UNPACK_CV
+def $config_iterator_copied_header(S, pconfigcall) = false -- otherwise
+def $config_iterator_copied_call(S, pconfigcall) = true
+  -- if $config_iterator_copied_header(S, pconfigcall)
   -- if $config_iterator_copied_slots(S, pconfigcall.SENT)
   -- if $named_slots_roots(pconfigcall.SENT) =/= eps
 def $config_iterator_copied_call(S, pconfigcall) = false -- otherwise
+
+;; The consumed spread supplies one actual child site for option conversion.
+def $config_string_source(S, pconfigcall) = ((porigin, z))
+  -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, true, eps, porigin, z))
+dec $config_iterator_string_receive_valid(pstate, pconfigcall, nat, pvalue) : bool
+dec $config_iterator_string_value(pstate, pvalue) : bool
+def $config_iterator_string_value(S, pvalue) = true
+  -- if $config_ini_quiet_value(S, pvalue)
+;; The copied value remains a live argument and becomes a TypeError trace root.
+;; INI_SET rejects objects at reception even when they implement Stringable.
+def $config_iterator_string_value(S, POBJECT n) = true
+  -- if $config_iterator_data_value(S, POBJECT n, eps)
+  -- if $config_ini_value_conversion(POBJECT n) = TYPEREJECT
+  -- if $($heap_owners($heap_graph(S), HOBJECT n) > 0)
+def $config_iterator_string_value(S, pvalue) = false -- otherwise
+def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_iterator_copied_header(S, pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]])
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $config_iterator_string(S, pvalue_name)
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+  -- if preqbytes =/= $ptascii("zend.assertions")
+  -- if $config_iterator_string_value(S, pvalue)
+  -- if $(n_object < |S.OBJECTS|)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue) = false -- otherwise
+def $config_ini_string_finish(S, pconfigcall, pvalue_name, pvalue) = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_iterator_string_receive_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall, n_object, pvalue_name)
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_string_finish(S, pconfigcall, pvalue_name, pvalue) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator Stringable option outside normal scalar reception"]
+  -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if ~$config_iterator_string_receive_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall, n_object, pvalue_name)
+def $task_nodes(CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) = $config_nodes(pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name), pnamedslot_value]])
+  -- if pconfigcall.SENT = [pnamedslot_name, pnamedslot_value]
+def $selected_task_nonce(CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) = pconfigcall.SELECTION
+def $call_task_valid(S, CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) = $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue)
+rule PhpStep/config-iterator-string-receive: S ~> $config_ini_finish(S[.TODO = (CONFIG_INVOKE pconfigcall_received) :: ptask_tail*], pconfigcall_received, preqbytes, pvalue)
+  -- if S.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*
+  -- if $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if pconfigcall_received = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]]
+  -- if $string_bytes(pvalue_name) = (preqbytes)
+
+;; Raw option/cast owners retire before this receipt samples the old INI value.
+dec $config_iterator_string_release_tail(ptask*, pdestructionoperation) : ptask?
+def $config_iterator_string_release_tail((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation) = $config_iterator_string_release_tail(ptask_tail*, pdestructionoperation)
+def $config_iterator_string_release_tail((DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*, pdestructionoperation) = $config_iterator_string_release_tail(ptask_tail*, pdestructionoperation)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $config_iterator_string_release_tail((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructionoperation) = $config_iterator_string_release_tail(ptask_tail*, pdestructionoperation)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $config_iterator_string_release_tail((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) :: ptask_tail*, pdestructionoperation) = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue)
+def $config_iterator_string_release_tail(ptask*, pdestructionoperation) = eps -- otherwise
+dec $config_iterator_string_release_valid(pstate, pdestructionoperation, pconfigcall, nat, pvalue) : bool
+def $config_iterator_string_release_valid(S, pdestructionoperation, pconfigcall, n_object, pvalue) = true
+  -- if pdestructionoperation.SOURCE = CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call
+  -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.ORIGIN = (pconfigcall.SITE)
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ S.ORIGIN = pdestructionoperation.ORIGIN
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.NOGC = eps
+  -- if $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue)
+  -- if pconfigcall.LINE = z_call
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, true, eps, porigin_child, z_child))
+def $config_iterator_string_release_valid(S, pdestructionoperation, pconfigcall, n_object, pvalue) = false -- otherwise
+def $destructor_frame_internal_site(S) = true
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if $config_iterator_string_release_tail(S.TODO, pdestructionoperation) = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue)
+  -- if $config_iterator_string_release_valid(S, pdestructionoperation, pconfigcall, n_object, pvalue)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, [POBJECT n_object, pvalue])
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call
+  -- if pdestructorcall.OBJECT = n_object
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if S_history = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
+  -- if $config_iterator_string_release_tail(S_history.TODO, pdestructionoperation) = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name)
+  -- if $config_iterator_string_release_valid(S_history, pdestructionoperation, pconfigcall, n_object, pvalue_name)
+
+;; Exceptional disposal and wider values remain outside normal reception.
+def $return_discard(S, CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) = S_stop[.COMPLETION = UNSUPPORTED "CONFIG Iterator Stringable option disposal exception"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if S_stop = S[.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) :: ptask_tail*]
+  -- if $config_iterator_string_receive_valid(S_stop, pconfigcall, n_object, pvalue)
+dec $config_iterator_string_blocked(pstate) : bool
+def $config_iterator_string_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "CONFIG Iterator Stringable option outside normal scalar reception"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+def $config_iterator_string_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "CONFIG Iterator Stringable option disposal exception"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue)
+def $config_iterator_string_blocked(S) = false -- otherwise
+def $generator_close_terminal_pending(S) = true -- if $config_iterator_string_blocked(S)
+def $drive_steps(S, n) = S -- if $config_iterator_string_blocked(S)
 def $config_ini_null_valid(S, pconfigcall) = true
   -- if $config_iterator_copied_call(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL), NAMED_SENT (KNOWN pvalue)]
@@ -744,7 +858,7 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
 
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_clear(S, pconfigiterator[.ITEMS = pconfigiterator.ITEMS ++ [ENTRY pkey (DIRECT pvalue)]], "next-start", ptask_tail*)
   -- if $config_iterator_current_value(S, pconfigiterator, pconfigiterator.CURRENT) = (pvalue)
-  -- if $config_iterator_argument(S, pvalue)
+  -- if $config_iterator_send_argument(S, pvalue)
   -- if pconfigiterator.KEY = KNOWN pvalue_key
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)

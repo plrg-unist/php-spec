@@ -1,0 +1,1 @@
+declare(Foo=function(){declare(encoding=2);}, encoding=1); echo ;

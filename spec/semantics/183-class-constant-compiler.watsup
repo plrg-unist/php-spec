@@ -127,7 +127,7 @@ def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTUN
 def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTERROR ptdiagnostic*, pchheader, z) = $ppproperty_diagnostics(P, ptdiagnostic*)
 def $ppclass_constant_typed(P, pcpath, porigin, flags, ptbytes, expression, PTOK ptbranch* ptdiagnostic*, pchheader, z) = $ppclass_constant_flags($ppproperty_diagnostics(P, ptdiagnostic*), pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z)
 
-def $ppclass_constant_flags(P, pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Private constant ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" cannot be final as it is not visible to other classes"), $nabs(z))
+def $ppclass_constant_flags(P, pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Private constant ") ++ $c_string(pchheader.NAME) ++ $ptascii("::") ++ ptbytes ++ $ptascii(" cannot be final as it is not visible to other classes"), $nabs(z))
   -- if $ppproperty_flag(flags, 4) /\ $ppproperty_flag(flags, 32)
 def $ppclass_constant_flags(P, pcpath, porigin, flags, ptbytes, expression, ptbranch*, pchheader, z) = $ppclass_constant_value($ppclass_constant_expression(P, pcpath ++ [PCFIELD 1], expression, pchheader, z), pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z)
   -- if flags <- [0,1,2,4,32,33,34]
@@ -163,7 +163,7 @@ def $class_constant_replace_operand(ppexprdone :: ppexprdone_tail*, pcpath, pval
 
 def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Cannot use ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as value for class constant ") ++ pchheader.NAME ++ $ptascii("::") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ptbranch*), $nabs(z))
+def $ppclass_constant_value(P, pcpath, porigin, flags, ptbytes, ptbranch*, pchheader, z) = $ppconstant_error(P, $ptascii("Cannot use ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as value for class constant ") ++ $c_string(pchheader.NAME) ++ $ptascii("::") ++ ptbytes ++ $ptascii(" of type ") ++ $pttypename(ptbranch*), $nabs(z))
   -- if P.COMPLETION = PPCNORMAL
   -- if P.FOLD.VALUE = (pvalue)
   -- if ~$class_constant_value_type(ptbranch*, pvalue)

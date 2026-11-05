@@ -485,7 +485,7 @@ and [alias-capture](../../coverage/semantics/anonymous-trait-alias-capture-revie
 reviews.
 
 Imported `__toString` and ordinary methods aliased to it also retain inferred
-Stringable interfaces in unit0 anonymous classes. Before stripping imported
+Stringable interfaces in admitted anonymous classes. Before stripping imported
 members, the live interface list must equal the shared trait importer's derived
 list. Only the own-member comparison restores the raw interface field; full
 declaration replay remains mandatory. Inference does not change the compiler's
@@ -500,15 +500,53 @@ empty-interface path and saved-snapshot branches are unchanged. Return,
 visibility and static Stringable contract conflicts retain the physical trait
 method line and short class display, without publication or allocation.
 [Stringable trait review](../../coverage/semantics/anonymous-trait-stringable-review.json)
-records these sources and reached guards. Dynamic-source trait combinations,
-wider explicit-interface/unpublished/collision scope histories and other
-member/type/lifetime contexts remain partial.
+records its original main-unit sources and reached guards.
+
+Successfully compiled include/eval units use the same own-member and derived
+interface projection. Their completed source-unit receipt, exact NEW occurrence,
+frozen compilation-entry view, history seed and compiler-derived counter remain
+mandatory. The composed view additionally requires the published name, runtime
+publication receipt and full declaration replay; duplicate imported methods or
+interfaces cannot gain authority by surviving the own-member projection.
+Skipped conflicts keep their compiler key without linking; reached interface
+conflicts precede constructor argument effects. Repeated allocation uses one
+compiled class, while recompilation creates a fresh name. A copied trait
+constant's retained callable target still follows its first selected binding,
+even across distinct eval-created class identities.
+
+Ordinary cached-method history and scope checks finish before the extra trait
+view requests full replay. This breaks the dynamic compiler/cache validation
+cycle without changing source-entry authority or weakening the parameter view's
+interface checks. Resolved expected argument types and object trace names use
+the engine's C-string display boundary; stored names and type atoms remain full.
+[Dynamic trait review](../../coverage/semantics/dynamic-anonymous-traits-review.json)
+records native originals, source-entry/counter/capture checks and preserved
+failures. Wider dynamic source, explicit-interface/unpublished/collision scope
+histories and other member/type/lifetime contexts remain partial.
 
 Engine routes: `Zend/zend_compile.c::zend_compile_use_trait`,
 `zend_compile_trait_alias`, `zend_compile_trait_precedence`;
 `Zend/zend_inheritance.c::zend_traits_init_trait_structures`,
 `zend_traits_copy_functions`, `zend_add_trait_method`,
 `do_inherit_method`; and `Zend/zend_execute.c::zend_verify_recv_arg_type`.
+
+Own anonymous class constants reuse the ordinary class-constant compiler for
+types, values, declaration lines and public/protected/private/final modifiers.
+Nonempty groups may contain multiple declarators. Types and initializers follow
+the ordinary compiler's admission. Private-final and wrong typed values
+fail during compilation before body effects. Parent-final and incompatible trait
+constants fail at first-new linking before constructor argument effects; matching
+trait/own definitions compose normally.
+
+Own callable constants retain their class's method and source identity. Separate
+eval compilations therefore accept their respective self types and reject a
+cross-class argument. Full class/constant names remain in descriptors and the
+successful value path. Initializer, access, final-override and trait-conflict
+diagnostics truncate only class-name operands as the engine's C-string calls do.
+The [own constant review](../../coverage/semantics/anonymous-own-constants-review.json)
+records exact originals, table/source forgery refusals, actual own-FCC receives
+and compile-versus-link ordering. Attribute-bearing constants and wider
+member/type/initializer contexts remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
@@ -830,8 +868,20 @@ assignment. Cleanup destructors have an internal site followed by the actual
 records seven exact exits, seven explicit controls, strict433 and 247 independent
 guards. Pending output in an active Fiber caller chain refuses explicitly;
 unrelated dormant Fibers do not trigger an early commit. Their force-close
-protocol, cleanup throws or repeated exits, owning rebound values and newly
-attached type sources remain partial.
+protocol remains partial.
+Local cleanup throws replace pending exit; the name commits before a caller
+receives the exception.
+Compiled CV order preserves each shared-wrapper decrement; the remaining
+receiver release and real C pin stay distinct owners until their respective
+stages finish. Further local throws retain the ordinary previous-exception
+chain. Integer exit status survives a catch and later string exit; another
+integer exit replaces it. The
+[cleanup review](../../coverage/semantics/enum-is-callable-output-cleanup-review.json)
+records eight new/promoted agreements, one affected enum exit-status source,
+three explicit controls, strict433 and independent 256+47 guards at separate cuts.
+Repeated
+cleanup exits refuse before generic unwinding can discard the C return.
+Owning rebound values and newly attached type sources remain partial.
 Native raw overwrite can retain an abandoned count for a destructor-created
 object until the store sweep; it cannot be modeled as a second checked write.
 Variable array inputs remain outside third-output name authentication.

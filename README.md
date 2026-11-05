@@ -3170,10 +3170,15 @@ before compiler diagnostics. Checked header-close positions support multiline
 headers and ordinary bodies, preserving nested parser reductions and separate
 first-item compiler lines. Twenty-one new originals and independent compiler/state
 checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
-sources with warnings and multibyte-enabled conversion remain partial.
+eval/include units also preserve completed-header warnings before catchable
+ParseError or CompileError, including nested reductions and literal-item prefixes.
+Twenty-two originals agree; reached checks cover once skip/reparse, source identity,
+suppression and valid zero-budget Throwable handles. Lexer-preempted prefixes and
+multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
-[header review](coverage/semantics/encoding-header-review.json).
+[header review](coverage/semantics/encoding-header-review.json),
+[rejected-unit review](coverage/semantics/encoding-rejection-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3534,6 +3539,12 @@ composition separately passes strict277 initialization and one exact weak lifeti
 source; earlier cuts retain their inputs.
 Wrappers also satisfy nominal `WeakReference` argument and property types after
 their referent retires; diagnostics retain the actual internal class name.
+
+GC30 adds quiet inactive WeakReference unregister and standard-object notification.
+Observer retirement changes the terminal weak-association view without adding a
+referent owner. Real handle order preserves fast-shutdown field shielding and the
+existing inactive public-destructor fatal. WeakMap notification and weak custom
+hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
@@ -4907,14 +4918,15 @@ redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
 
-Unit0 anonymous classes admit finite trait uses and ordinary adaptations with or
-without a parent and explicit interfaces. Qualified and unqualified aliases,
+Anonymous classes in the main unit and admitted successful include/eval units
+admit finite trait uses and ordinary adaptations with or without a parent and
+explicit interfaces. Qualified and unqualified aliases,
 visibility changes, final aliases and `insteadof` share named-class resolution;
 an excluded method can still supply a qualified alias. Linking occurs at the
 first reached `new`, before constructor arguments. Copied constant method
-captures keep the generated NUL name and the importing lexical/parent scope;
+captures keep the generated NUL name and their selected lexical/parent scope;
 failed links publish no class. Trait-link diagnostics truncate each class-name
-argument while keeping stored identities complete. Dynamic-source trait combinations and wider member/lifetime contexts
+argument while keeping stored identities complete. Wider member/lifetime contexts
 remain partial. [Adaptation review](coverage/semantics/anonymous-trait-adaptations-review.json).
 
 Imported and aliased `__toString` methods now retain inferred Stringable
@@ -4924,6 +4936,26 @@ history authenticate the inferred list. Ordinary parentless copied captures
 also retain the missing-parent receive error with inferred interfaces. Stringable
 return, visibility and static conflicts fail before allocation at the trait
 method source. [Stringable trait review](coverage/semantics/anonymous-trait-stringable-review.json).
+
+Closed dynamic units authenticate composed trait members and inferred interfaces
+against their compiler image, frozen source-entry bindings and request counter.
+Publication and full declaration replay remain required. Recompiling an eval
+creates fresh class identities while a copied trait constant's callable retains
+its native selected target. Argument type errors and object trace text truncate
+display names without changing stored names or types. Ordinary cached scopes
+validate before requesting the extra trait parameter view, avoiding a recursive
+dynamic replay dependency.
+[Dynamic trait review](coverage/semantics/dynamic-anonymous-traits-review.json).
+
+Anonymous classes also admit own constant groups through the ordinary constant
+compiler: typed and nullable values, multiple declarators, visibility, final
+rules and trait compatibility retain their source locations and error order.
+Own callable constants preserve separate targets across eval compilations.
+Initializer-type and private-final errors precede execution; parent/trait link
+conflicts precede constructor arguments. Stored names remain complete through
+successful lookups, while diagnostic class-name arguments use native C strings.
+Attributes and wider member/type/initializer contexts remain partial.
+[Own constant review](coverage/semantics/anonymous-own-constants-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -6849,7 +6881,12 @@ guards. Root VM destructor exits now finish local cleanup before committing the
 name; nested queries preserve exit status and skip result assignment. The
 [exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
 records seven exact exits, seven explicit controls and 247 independent guards.
-Switched Fiber exits, replacement cleanup, owning rebound values, late type
+Local cleanup throws now cancel exit and commit the name before propagation,
+with compiled CV/alias release order and preserved exit status. The
+[cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json)
+records eight new/promoted agreements, one affected enum exit-status source,
+three explicit controls and 256+47 independent guards at separate cuts.
+Switched Fiber exits, repeated cleanup exits, owning rebound values, late type
 sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).

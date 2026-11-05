@@ -37,6 +37,24 @@ release and notifies on final retirement. The ordinary pin, saved Fiber and
 Generator RETURN-child checks are recorded in the
 [property lifetime review](../../coverage/semantics/duplicate-property-reference-review.json).
 
+GC30 adds quiet inactive `zend_weakref_free` and standard weak notification in
+module444's terminal local graph. MARKED observers have completed unregister;
+only the WeakReference association scan excludes them. The association view never
+filters the owning graph; ordinary field releases and C guards still update the
+local heap, while fast-skipped fields remain retained. Final S keeps its
+ownership-valid snapshot. During the store sweep, active observers force
+a guarded standard hook even in fast mode; after unregister, fast standard
+headers retain their fields without an extra guard. An uncalled public destructor
+still fails before the already-MARKED exemption.
+
+WeakReference chains, singleton aliases and retired referents add no referent
+owner. Callable validation uses the full state, including retained MARKED
+receivers. WeakMap associations remain visible and fenced because notification
+can release owning values; weak Closure/custom hooks remain partial. The engine
+basis is `zend_weakref_free`, `zend_weakref_unregister`, `zend_weakrefs_notify`,
+`zend_object_std_dtor` and `zend_objects_store_free_object_storage` in the pinned
+Zend sources. See the [inactive hook review](../../coverage/semantics/gc-inactive-weak-free-review.json).
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

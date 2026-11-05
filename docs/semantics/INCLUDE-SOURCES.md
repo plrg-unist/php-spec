@@ -1748,7 +1748,18 @@ configuration writes affect API validation; a supplied Throwable instead release
 the copied prefix after INPUT and keeps the original pending identity. Array COW,
 embedded aliases and API TraceArgs retain their ordinary ownership behavior.
 
-Other CONFIG intrinsic acquisition, temporary source/key forms, Stringable/effectful
+The [Iterator Stringable option increment](../../coverage/semantics/config-iterator-stringable-name-review.json)
+copies an ordinary Stringable option through the existing finite Iterator send,
+then casts it after traversal and DATA/INPUT cleanup. Its raw option owner retires
+before INI_SET samples the old setting. A retained first-class setter keeps its
+original Closure owner when a callback rebinds the source variable. Reception
+accepts a quiet scalar/null value or a live finite ordinary object value; the
+latter raises the value TypeError without casting a Stringable value, even for
+an unknown ordinary option name. The TypeError trace owns the copied value until
+the catch releases it. ARRAY values, `zend.assertions` options and wider object
+graphs still stop explicitly on this receipt.
+
+Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root
 remains Unsupported. Constructed first-key and graph-rejection
