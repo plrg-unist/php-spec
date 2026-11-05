@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""Independent C-return pending transfer, cleanup order and exit-status checks."""
+import hashlib
+import json
+import subprocess
+
+import enum_is_callable_output_exit_protocol as exitcase
+
+base = exitcase.base
+ROOT, OUT, MODULES = base.ROOT, base.OUT, base.MODULES
+WATCHED = [*exitcase.WATCHED,
+           ROOT / 'tests/semantics/enum_is_callable_output_cleanup_protocol.py']
+PREFIX = r'''
+dec $eit_front(pstate, penumqueryoutput, bool) : bool
+def $eit_front(S, penumqueryoutput, true) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
+def $eit_front(S, penumqueryoutput, false) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
+  -- if pdestructionoperation.PENDING =/= eps
+def $eit_front(S, penumqueryoutput, b_throw) = false -- otherwise
+dec $eit_seek(pstate, penumqueryoutput, bool, nat) : pstate
+def $eit_seek(S, penumqueryoutput, b_throw, 0) = S
+def $eit_seek(S, penumqueryoutput, b_throw, n) = S
+  -- if $(n > 0) /\ $eit_front(S, penumqueryoutput, b_throw)
+def $eit_seek(S, penumqueryoutput, b_throw, n) = $eit_seek($drive_steps($eix_resume(S), 1), penumqueryoutput, b_throw, $nabs($(n - 1)))
+  -- if $(n > 0) /\ ~$eit_front(S, penumqueryoutput, b_throw)
+'''
+
+
+def reached(label, suffix, message, completion, status, two_locals=False):
+    row, checks = exitcase.source(label, suffix)
+    checks += exitcase.capture(label, f'S_{label}_initial', 'FirstCheck::from')
+    start = f'S_{label}_clear'
+    if two_locals:
+        checks += [
+            f'S_{label}_first = $eix_seek_local({start}, penumqueryoutput_{label}, 7000)',
+            f'$eix_local(S_{label}_first, penumqueryoutput_{label})',
+            f'S_{label}_first.TODO = (DESTRUCTOR_ENTER pdestructorcall_{label}_first) :: ptask_{label}_first_tail*',
+            f'$object_name(S_{label}_first, pdestructorcall_{label}_first.OBJECT) = $ptascii("LocalFirst")',
+            f'pdestructorcall_{label}_first.PENDING = eps',
+            f'S_{label}_first_body = $drive_steps(S_{label}_first[.COMPLETION = NORMAL], 1)',
+            f'S_{label}_second = $eix_seek_local(S_{label}_first_body, penumqueryoutput_{label}, 7000)',
+            f'$eix_local(S_{label}_second, penumqueryoutput_{label})',
+            f'S_{label}_second.TODO = (DESTRUCTOR_ENTER pdestructorcall_{label}_second) :: ptask_{label}_second_tail*',
+            f'$object_name(S_{label}_second, pdestructorcall_{label}_second.OBJECT) = $ptascii("LocalSecond")',
+            f'pdestructorcall_{label}_second.PENDING = (n_{label}_first)',
+            f'$string_bytes($throwable_field(S_{label}_second, n_{label}_first, "message")) = ($ptascii("first"))',
+            f'~((HOBJECT pdestructorcall_{label}_first.OBJECT) <- S_{label}_second.ALLOCATIONS)',
+            f'S_{label}_second.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
+            f'$heap_owners($heap_graph(S_{label}_second), HOBJECT penumqueryoutput_{label}.OLD) = 1',
+            f'$eic_output(S_{label}_second.EVENTS) = $ptascii("D-null|FIRST-null|")',
+        ]
+        start = f'S_{label}_second'
+    checks += [
+        f'S_{label}_throw = $eit_seek({start}, penumqueryoutput_{label}, true, 8000)',
+        f'$eit_front(S_{label}_throw, penumqueryoutput_{label}, true)',
+        f'S_{label}_throw.TODO = (THROW_SEARCH n_{label}) :: (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput_{label} 23) :: (DESTRUCTOR_RESULT pdestructorcall_{label}) :: ptask_{label}_restore_tail*',
+        f'$enum_is_callable_exit_restore_valid(S_{label}_throw, penumqueryoutput_{label}, 23)',
+        f'S_{label}_throw.DESTRUCTION.CALLS = pdestructorcall_{label} :: pdestructorcall_{label}_tail*',
+        f'pdestructorcall_{label}.OPERATION = (pdestructionoperation_{label}_old)',
+        f'pdestructorcall_{label}.PENDING = eps',
+        f'S_{label}_throw.DESTRUCTION.OPERATIONS = pdestructionoperation_{label}_old :: pdestructionoperation_{label}_tail*',
+        f'pdestructionoperation_{label}_old.PENDING = eps',
+        f'pdestructionoperation_{label}_old.COMPLETION = NORMAL',
+        f'S_{label}_throw.EXITSTATUS = 23',
+        f'S_{label}_throw.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
+        f'$heap_owners($heap_graph(S_{label}_throw), HOBJECT penumqueryoutput_{label}.OLD) = 1',
+        f'$heap_owners($heap_graph(S_{label}_throw), HOBJECT n_{label}) = 1',
+        f'$task_nodes(THROW_SEARCH n_{label}) = [HOBJECT n_{label}]',
+        f'$task_nodes(ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput_{label} 23) = eps',
+        f'$string_bytes($throwable_field(S_{label}_throw, n_{label}, "message")) = ($ptascii(' + json.dumps(message) + '))',
+        f'S_{label}_rebased = $drive_steps(S_{label}_throw[.COMPLETION = NORMAL], 1)',
+        f'pdestructionoperation_{label}_new = pdestructionoperation_{label}_old[.PENDING = (n_{label})][.COMPLETION = NORMAL]',
+        f'S_{label}_rebased.DESTRUCTION.OPERATIONS = pdestructionoperation_{label}_new :: pdestructionoperation_{label}_tail*',
+        f'S_{label}_rebased.DESTRUCTION.CALLS = pdestructorcall_{label}_tail*',
+        f'S_{label}_rebased.EXITSTATUS = 23',
+        f'S_{label}_rebased.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
+        f'$heap_owners($heap_graph(S_{label}_rebased), HOBJECT penumqueryoutput_{label}.OLD) = 1',
+        f'$heap_owners($heap_graph(S_{label}_rebased), HOBJECT n_{label}) = 1',
+        f'S_{label}_rebased.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_{label}) :: ptask_{label}_rebased_tail*',
+        f'$task_nodes(DESTRUCTOR_RELEASE pdestructionrelease_{label}) = [HOBJECT penumqueryoutput_{label}.OLD]',
+        f'$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_{label}_new) = [HOBJECT n_{label}]',
+        f'S_{label}_commit = $eit_seek(S_{label}_rebased, penumqueryoutput_{label}, false, 4000)',
+        f'$eit_front(S_{label}_commit, penumqueryoutput_{label}, false)',
+        f'S_{label}_commit.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_{label}_new) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}) :: ptask_{label}_tail*',
+        f'~((HOBJECT penumqueryoutput_{label}.OLD) <- S_{label}_commit.ALLOCATIONS)',
+        f'$heap_owners($heap_graph(S_{label}_commit), HOBJECT n_{label}) = 1',
+        f'S_{label}_commit.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
+        f'$eager_operation_source_guard(S_{label}_commit, pdestructionoperation_{label}_new)',
+        f'S_{label}_atomic = $destructor_operation_finish(S_{label}_commit[.COMPLETION = NORMAL], pdestructionoperation_{label}_new)',
+        f'S_{label}_atomic.TODO = (THROW_SEARCH n_{label}) :: ptask_{label}_tail*',
+        f'S_{label}_atomic.COMPLETION = NORMAL',
+        f'S_{label}_atomic.EXITSTATUS = 23',
+        f'S_{label}_atomic.RESULT = KNOWN PNULL',
+        f'S_{label}_atomic.STORE[penumqueryoutput_{label}.CELL] = DEFINED (PSTRING penumqueryoutput_{label}.NAME)',
+        f'$heap_owners($heap_graph(S_{label}_atomic), HOBJECT n_{label}) = 1',
+        f'$lookup(S_{label}_atomic.ENV, $ptascii("ok")) = (n_{label}_ok)',
+        f'S_{label}_atomic.STORE[n_{label}_ok] = DEFINED pvalue_{label}_ok',
+        f'$string_bytes(pvalue_{label}_ok) = ($ptascii("UNCHANGED"))',
+        f'S_{label}_done = $drive($eix_resume(S_{label}_commit), 10000)',
+        f'S_{label}_done.COMPLETION = {completion}',
+        f'S_{label}_done.EXITSTATUS = {status}',
+        f'$eic_output(S_{label}_done.EVENTS) = $ptascii(' + json.dumps(row['expected_normal_stdout']) + ')',
+        f'S_{label}_zero = $drive_steps(S_{label}_throw[.COMPLETION = NORMAL], 0)',
+        f'S_{label}_zero.COMPLETION = BUDGET',
+        f'$drive($eix_resume(S_{label}_zero), 10000) = S_{label}_done',
+    ]
+    if two_locals:
+        checks += [
+            f'$throwable_field(S_{label}_throw, n_{label}, "previous") = POBJECT n_{label}_first',
+            f'$heap_owners($heap_graph(S_{label}_throw), HOBJECT n_{label}_first) = 1',
+            f'$heap_owners($heap_graph(S_{label}_rebased), HOBJECT n_{label}_first) = 1',
+            f'$throwable_field(S_{label}_atomic, n_{label}, "previous") = POBJECT n_{label}_first',
+        ]
+    return checks
+
+
+if __name__ == '__main__':
+    before = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in WATCHED}
+    checks = reached('string', 'integer-exit-cleanup-throw-later-string', 'local', 'EXITED 23', 23)
+    checks += reached('integer', 'integer-exit-cleanup-throw-later-integer', 'local', 'EXITED 7', 7)
+    checks += reached('ordered', 'two-locals-both-throw', 'second', 'NORMAL', 23, two_locals=True)
+    checks += [
+        'S_missing = S_string_throw[.TODO = (THROW_SEARCH n_string) :: (DESTRUCTOR_RESULT pdestructorcall_string) :: ptask_string_restore_tail*]',
+        '~$enum_is_callable_exit_restore_valid(S_missing, penumqueryoutput_string, 23)',
+        'S_bad_status = S_string_throw[.TODO = (THROW_SEARCH n_string) :: (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput_string 4294967296) :: (DESTRUCTOR_RESULT pdestructorcall_string) :: ptask_string_restore_tail*]',
+        '~$enum_is_callable_exit_restore_valid(S_bad_status, penumqueryoutput_string, 4294967296)',
+        'penumqueryoutput_depth = penumqueryoutput_string[.DEPTH = $(penumqueryoutput_string.DEPTH + 1)]',
+        '~$enum_is_callable_exit_restore_valid(S_string_throw, penumqueryoutput_depth, 23)',
+        '~$throwable_live(S_string_throw, |S_string_throw.OBJECTS|)',
+    ]
+    fixture = OUT / 'output-cleanup.watsup'
+    fixture.write_text(base.PREFIX + exitcase.PREFIX + PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
+                       + ''.join('  -- if ' + check + '\n' for check in checks))
+    command = [str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
+               *map(str, MODULES), str(fixture)]
+    result = subprocess.run(command, capture_output=True, timeout=240)
+    (OUT / 'command.json').write_text(json.dumps(command) + '\n')
+    (OUT / 'stdout').write_bytes(result.stdout)
+    (OUT / 'stderr').write_bytes(result.stderr)
+    record = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+              'checks': len(checks), 'exit': result.returncode,
+              'stdout': result.stdout.decode(errors='replace'),
+              'stderr': result.stderr.decode(errors='replace'),
+              'stable': before == {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
+                                  for path in WATCHED}, 'direct_inputs': before}
+    (OUT / 'report.json').write_text(json.dumps(record, indent=2) + '\n')
+    print(json.dumps({k: record[k] for k in ['revision', 'checks', 'exit', 'stdout', 'stderr', 'stable']}), OUT, flush=True)
+    assert result.returncode == 0 and result.stdout == b'true\n' and not result.stderr and record['stable'], OUT
