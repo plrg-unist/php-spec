@@ -82,7 +82,7 @@ review.CASES['uncalled-trait-method-compiles-frequency-without-runtime-body'] = 
 name = 'review-empty-enum-emitter-breaks-adjacency-without-outer-tick'
 review.CASES['enum-emitter-enables-following-declare-without-an-enum-marker'] = {
     'source': sources.CASES[name][0].decode(),
-    'stage': 'S.TODO = (TICK porigin ptickmarker) :: ptask_tail* -- if S.CURRENT = eps -- if S.EVENTS = ' + output('T', 'P'),
+    'stage': 'S.TODO = (TICK porigin ptickmarker) :: ptask_tail* -- if S.CURRENT = eps -- if ptickmarker.FREQUENCY = 3 -- if S.EVENTS = ' + output('T', 'P'),
     'checks': [
         'porigin = PORIGIN n pcpath', 'pcpath = [PCINDEX 6]',
         'porigin_enum = PORIGIN n ([PCINDEX 5])',
