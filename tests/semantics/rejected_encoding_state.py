@@ -82,7 +82,7 @@ def prepare(out):
             'pfilecontext_first.PHASE = FILE_RESOLVE_WAIT', 'S_open.FILESEQ = 1',
             'S_parse = $file_open_resume(S_open,' + opened('pfilecontext_first') + ')',
             'S_parse.COMPLETION = SOURCE_PENDING', 'S_parse.FILECONTEXTS = [pfilecontext_parse]',
-            'pfilecontext_parse.UNIT = (1)', 'S_parse.INCLUDEDOPENED = [' + term(bytes(child)) + ']',
+            'pfilecontext_parse.UNIT = (1)', 'S_parse.INCLUDEDOPENED = S_open.INCLUDEDOPENED ++ [' + term(bytes(child)) + ']',
             '$file_parse_response_valid(S_parse,' + response + ')',
             'S_throw = $file_parse_resume(S_parse,' + response + ')',
             'S_throw.COMPLETION = NORMAL', 'S_throw.ERRORHANDLER = S_parse.ERRORHANDLER',
