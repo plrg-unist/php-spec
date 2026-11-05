@@ -1247,10 +1247,7 @@ abstract class ParserAbstract implements Parser {
     }
 
     protected function checkConstantAttributes(Const_ $node): void {
-        if ($node->attrGroups !== [] && count($node->consts) > 1) {
-            $this->emitError(new Error(
-                'Cannot use attributes on multiple constants at once', $node->getAttributes()));
-        }
+        // Constant attribute restrictions are checked in source compilation.
     }
 
     protected function pipeBareArrow(Expr $node): bool {

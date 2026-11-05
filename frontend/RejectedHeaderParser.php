@@ -40,7 +40,6 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
     protected function checkClassMethod(PhpParser\Node\Stmt\ClassMethod $node, int $modifierPos): void {}
     protected function checkPropertyHook(PhpParser\Node\PropertyHook $hook, ?int $paramListPos): void {}
     protected function checkEmptyPropertyHookList(array $hooks, int $hookPos): void {}
-    protected function checkConstantAttributes(PhpParser\Node\Stmt\Const_ $node): void {}
 
     protected function doParse(): ?array {
         // Lexing inspects the complete source before grammar reductions start.

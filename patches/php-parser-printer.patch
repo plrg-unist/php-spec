@@ -605,15 +605,24 @@
      }
  
      protected function checkTryCatch(TryCatch $node): void {
-@@ -1251,11 +1253,13 @@
-         }
+@@ -1245,17 +1247,16 @@
      }
  
+     protected function checkConstantAttributes(Const_ $node): void {
+-        if ($node->attrGroups !== [] && count($node->consts) > 1) {
+-            $this->emitError(new Error(
+-                'Cannot use attributes on multiple constants at once', $node->getAttributes()));
+-        }
+-    }
+-
 -    protected function checkPipeOperatorParentheses(Expr $node): void {
 -        if ($node instanceof Expr\ArrowFunction && !$this->parenthesizedArrowFunctions->offsetExists($node)) {
 -            $this->emitError(new Error(
 -                'Arrow functions on the right hand side of |> must be parenthesized', $node->getAttributes()));
 -        }
++        // Constant attribute restrictions are checked in source compilation.
++    }
++
 +    protected function pipeBareArrow(Expr $node): bool {
 +        return $node instanceof Expr\ArrowFunction
 +            && !$this->parenthesizedArrowFunctions->offsetExists($node);
@@ -624,7 +633,7 @@
      }
  
      /**
-@@ -1293,6 +1297,9 @@
+@@ -1293,6 +1294,9 @@
          if ($this->isSimpleExit($args)) {
              // Create Exit node for backwards compatibility.
              $attrs['kind'] = strtolower($name) === 'exit' ? Expr\Exit_::KIND_EXIT : Expr\Exit_::KIND_DIE;

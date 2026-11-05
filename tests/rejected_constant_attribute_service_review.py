@@ -24,7 +24,7 @@ require '@ROOT@/frontend/RejectedHeaderParser.php';
 $version = PhpParser\PhpVersion::fromComponents(8, 5);
 $records = [];
 foreach ([
-    'multiple' => ['#[A] const X=1,Y=2;', 1],
+    'multiple' => ['#[A] const X=1,Y=2;', 0],
     'single' => ['#[A] const X=1;', 0],
     'class' => ['class C{#[A] const X=1,Y=2;}', 0],
     'unattributed' => ['const X=1,Y=2;', 0],

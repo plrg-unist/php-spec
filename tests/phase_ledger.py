@@ -95,7 +95,11 @@ RETIRED_NAMESPACE_PLACEMENT = [('vendor/php-src/Zend/tests/function_outside_name
   'a2baa591d147e6f71633f82a9736d8663b31c4fccb685e2bd6a506fdf294eb47',
   'Namespace declaration statement has to be the very first statement in the script on line 4',
   'Namespace declaration statement has to be the very first statement or after any declare call in the script')]
-for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLES + RETIRED_FOREACH_KEYS + RETIRED_NAMESPACE_PLACEMENT:
+RETIRED_CONSTANT_ATTRIBUTES = [('vendor/php-src/Zend/tests/attributes/constants/multiple_constants_error.phpt',
+  '19c530903bc055c71f9d1c1a84773b6d0aaf18efe0409da23d4b9550499ac531',
+  'Cannot use attributes on multiple constants at once on line 3',
+  'Cannot apply attributes to multiple constants at once')]
+for source_id, source_hash, frontend_message, lint_message in RETIRED_ARRAY_HOLES + RETIRED_FOREACH_KEYS + RETIRED_NAMESPACE_PLACEMENT + RETIRED_CONSTANT_ATTRIBUTES:
     retired_record = {'id': source_id, 'sha256': source_hash, 'ini': {}}
     retired_result = {
         'status': 'unreviewed_phase_difference',
