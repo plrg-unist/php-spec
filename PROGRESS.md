@@ -864,9 +864,18 @@ copied FCC scope. Sixteen exact originals, 190 author and 135 independent reache
 conditions, 229 affected conditions and private strict433 pass. The repaired
 private-final warning retains class-site authority until `new` resumes before
 allocation. Original Unsupported/interpreter and fixture failures retain zero
-agreement credit. Implicit imported Stringable, dynamic-source combinations,
-illegal-modifier diagnostics and wider member/lifetime contexts remain partial.
-[Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+agreement credit. [Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+CLASS170 authenticates inferred Stringable interfaces before restoring the raw
+anonymous header view. Direct imports and aliases preserve original name prefixes,
+interface spelling and copied parameter scope; return/private/static conflicts
+fail at the trait method before publication or allocation. Eight exact originals,
+277 independent and 121 author reached conditions and strict433 pass. The ordinary
+parentless `parent` receive view requires published interface targets and full
+history; old empty-interface and snapshot paths stay unchanged. Original source
+failures and three fixture corrections retain zero agreement credit.
+Dynamic-source combinations, wider explicit/unpublished/collision scope histories,
+illegal-modifier diagnostics and other member/lifetime contexts remain partial.
+[Review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

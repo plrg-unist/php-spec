@@ -4885,9 +4885,16 @@ an excluded method can still supply a qualified alias. Linking occurs at the
 first reached `new`, before constructor arguments. Copied constant method
 captures keep the generated NUL name and the importing lexical/parent scope;
 failed links publish no class. Trait-link diagnostics truncate each class-name
-argument while keeping stored identities complete. Imported implicit Stringable
-interfaces, dynamic-source trait combinations and wider member/lifetime contexts
+argument while keeping stored identities complete. Dynamic-source trait combinations and wider member/lifetime contexts
 remain partial. [Adaptation review](coverage/semantics/anonymous-trait-adaptations-review.json).
+
+Imported and aliased `__toString` methods now retain inferred Stringable
+interfaces through the anonymous descriptor check. The raw header keeps name
+prefixes and interface spelling authoritative; live targets and declaration
+history authenticate the inferred list. Ordinary parentless copied captures
+also retain the missing-parent receive error with inferred interfaces. Stringable
+return, visibility and static conflicts fail before allocation at the trait
+method source. [Stringable trait review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
