@@ -108,9 +108,9 @@ pgenerator_history = {FUNCTION porigin_function, FRAME eps, PHASE GENERATOR_CLOS
 S_history = S_cancel[.OBJECTS = S_cancel.OBJECTS ++ [GENERATOR pgenerator_history]]
 ~$closure_call_retained_valid(S_history)
 pclosurecall_bad_source = pclosurecall[.SOURCE = n_copy]
-~$closure_call_copy_reference_valid(S, pclosurecall_bad_source, n_copy, n_done, pnamedargs, n_base)
+~$closure_call_copy_reference_valid(S_emit, pclosurecall_bad_source, n_copy, n_done, pnamedargs, n_base)
 pnamedargs_bad = pnamedargs[.SLOTS = [NAMED_SENT (REFERENCE n_stop_cell)]]
-~$closure_call_copy_reference_valid(S, pclosurecall, n_copy, n_done, pnamedargs_bad, n_base)
+~$closure_call_copy_reference_valid(S_emit, pclosurecall, n_copy, n_done, pnamedargs_bad, n_base)
 S_done = $drive(S, 4000)
 S_pause = $drive(S, 0)
 S_pause.COMPLETION = BUDGET
