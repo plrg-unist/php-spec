@@ -49,6 +49,7 @@ dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
 dec $tick_block_hook(pcnode) : bool
 dec $tick_hook_bodies(pcoccurrence*) : bool
 dec $tick_property_line(phpType18, phpType56) : int?
+dec $tick_first_type_line(pcoccurrence*) : int?
 dec $tick_type_line(pcnode) : int
 dec $tick_early(statement, bool) : bool
 dec $tick_unticked(statement) : bool
@@ -539,7 +540,9 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty (SEQUENCE eps) php
 ;; Zend's group AST inherits the type line, or the first property name's line.
 def $tick_property_line(ABSENT, SEQUENCE eps) = eps
 def $tick_property_line(ABSENT, SEQUENCE ((NPropertyItem phpType40 phpType5 metadata) :: phpType57*)) = ($source_line($pcmetadata(phpType40)))
-def $tick_property_line(phpType18, phpType56) = ($tick_type_line(phpType18)) -- if phpType18 =/= ABSENT
+def $tick_property_line(phpType18, phpType56) = $tick_first_type_line($pcfield_phpType18(phpType18, eps)) -- if phpType18 =/= ABSENT
+def $tick_first_type_line(eps) = eps
+def $tick_first_type_line((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_type_line(pcnode))
 def $tick_type_line(NNullableType phpType35 metadata) = $source_line($pcmetadata(phpType35))
 def $tick_type_line(NIntersectionType (SEQUENCE (phpType35 :: phpType35*)) metadata) = $source_line($pcmetadata(phpType35))
 def $tick_type_line(NUnionType (SEQUENCE (phpType69 :: phpType69*)) metadata) = $tick_type_line(phpType69)
