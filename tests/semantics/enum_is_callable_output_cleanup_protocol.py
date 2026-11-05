@@ -65,7 +65,8 @@ def reached(label, suffix, message, completion, status, two_locals=False, shared
             f'$heap_count(HCELL n_{label}_other, pnode_{label}_cells*) = 1',
             f'$heap_owners($heap_graph(S_{label}_frame), HCELL n_{label}_shared) = 2',
             f'pnode_{label}_order* = $eager_owner_order(S_{label}_frame)',
-            f'pnode_{label}_order* = pnode_{label}_cells* ++ pnode_{label}_rest*',
+            f'n_{label}_cell_count = |pnode_{label}_cells*|',
+            f'pnode_{label}_order*[0:n_{label}_cell_count] = pnode_{label}_cells*',
             f'$heap_count(HCELL n_{label}_shared, pnode_{label}_order*) = 2',
             f'$heap_count(HCELL n_{label}_other, pnode_{label}_order*) = 1',
         ]
