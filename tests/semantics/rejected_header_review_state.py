@@ -118,7 +118,10 @@ def prepare(out):
                 'S_' + tag + ' = $eval_resume(S_eval,' + value + ')',
                 'S_' + tag + ' = S_eval[.COMPLETION = UNSUPPORTED "invalid eval parser response"]']
         compile_code = b'declare(encoding=1,encoding=true);'
-        compile_result = frontend.parse({'op': 'parse-eval', 'id': '1', 'mode': 'eval', 'profile': 'cli-raw-85', 'source': b64(compile_code)})
+        compile_result = frontend.request({'op': 'parse-eval', 'id': '1', 'mode': 'eval', 'profile': 'cli-raw-85', 'source': b64(compile_code)})
+        raw = (frontend.output / 'stderr').read_bytes()[len(frontend.recorded_stderr):]
+        frontend.recorded_stderr.extend(raw)
+        assert CLI['dynamic_parser_stderr'](compile_result, 'eval', raw)
         assert compile_result['category'] == 'parser_static_rejection'
         checks.append('$eval_response_shape(' + response(compile_result, 'compile') + ')')
         for key, value in [('category', 'parser_rejection'), ('message', b64(b'other')), ('line', 2)]:
