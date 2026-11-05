@@ -23,8 +23,14 @@ COMMON = [
     'S_global = $global_table_view(S)',
     '$lookup(S_global.ENV, $ptascii("savedParent")) = (n_parent_cell)',
     '$lookup(S_global.ENV, $ptascii("savedWeak")) = (n_weak_cell)',
+    '$lookup(S_global.ENV, $ptascii("parent")) = (n_original_parent_cell)',
+    '$lookup(S_global.ENV, $ptascii("weak")) = (n_original_weak_cell)',
+    'n_original_parent_cell =/= n_parent_cell',
+    'n_original_weak_cell =/= n_weak_cell',
     'S.STORE[n_parent_cell] = DEFINED (POBJECT n_parent)',
     'S.STORE[n_weak_cell] = DEFINED (POBJECT n_weak)',
+    'S.STORE[n_original_parent_cell] = DEFINED (POBJECT n_parent)',
+    'S.STORE[n_original_weak_cell] = DEFINED (POBJECT n_weak)',
     'S.OBJECTS[n_weak] = WEAKREFERENCE (n_parent)',
     '$node_children(S, HOBJECT n_parent) = [HOBJECT n_child]',
     '$object_name(S, n_child) = $ptascii("GcWeakOrderChild30")',
@@ -37,7 +43,13 @@ COMMON = [
     'H = $heap_graph(S_endpoint)',
     '$heap_valid(H)',
     '$heap_owners(H, HOBJECT n_parent) = n_parent_owners',
-    '$heap_owners(H, HOBJECT n_weak) = 1',
+    '$heap_owners(H, HOBJECT n_weak) = 2',
+    '$heap_edge_owners(HOBJECT n_parent, H.EDGES, [HCELL n_parent_cell, HCELL n_original_parent_cell]) = 2',
+    '$heap_edge_owners(HOBJECT n_weak, H.EDGES, [HCELL n_weak_cell, HCELL n_original_weak_cell]) = 2',
+    '$heap_count(HCELL n_parent_cell, H.ROOTS) = 1',
+    '$heap_count(HCELL n_original_parent_cell, H.ROOTS) = 1',
+    '$heap_count(HCELL n_weak_cell, H.ROOTS) = 1',
+    '$heap_count(HCELL n_original_weak_cell, H.ROOTS) = 1',
     '$heap_owners(H, HOBJECT n_child) = 1',
     '$heap_edge_owners(HOBJECT n_child, H.EDGES, [HOBJECT n_parent]) = 1',
     '$heap_edge_owners(HOBJECT n_parent, H.EDGES, [HOBJECT n_weak]) = 0',
@@ -57,7 +69,7 @@ COMMON = [
     'pexecutorfree_observer.HEAP.EDGES = H.EDGES',
     'pexecutorfree_observer.HEAP.ROOTS = H.ROOTS ++ [HOBJECT n_weak]',
     '$heap_owners(pexecutorfree_observer.HEAP, HOBJECT n_parent) = n_parent_owners',
-    '$heap_owners(pexecutorfree_observer.HEAP, HOBJECT n_weak) = 2',
+    '$heap_owners(pexecutorfree_observer.HEAP, HOBJECT n_weak) = 3',
     '$heap_owners(pexecutorfree_observer.HEAP, HOBJECT n_child) = 1',
     '~$executor_free_weak(S_endpoint, pexecutorfree_observer.MARKED, n_parent)',
     'pexecutorfree_parent = $executor_free_force(S_endpoint, pexecutorfree_observer, n_parent)',
@@ -85,7 +97,7 @@ COMMON = [
     '$heap_valid($heap_graph(S_done))',
 ]
 
-LOWER = ['n_parent_owners = 1', *COMMON,
+LOWER = ['n_parent_owners = 2', *COMMON,
     '$(n_handle_weak < n_handle_parent)',
     'pexecutorfree_done.FAILED = (n_child)',
     '~((HOBJECT n_weak) <- pexecutorfree_done.MARKED)',
@@ -113,7 +125,7 @@ def normal(owners):
     ]
 
 
-HIGHER = normal(1)
+HIGHER = normal(2)
 for label, key, observer_kind, parent_kind in [
         ('map_observer', 'n_weak', 2, 1),
         ('map_referent', 'n_parent', 1, 2)]:
@@ -136,7 +148,7 @@ HIGHER += [
     '$executor_free_kind(S_custom, [HOBJECT n_weak], n_child) = 2',
 ]
 
-BOUND = normal(2) + [
+BOUND = normal(3) + [
     'S.ERRORHANDLER.CALLBACK = (POBJECT n_closure)',
     '$closure_callable(S_endpoint, n_closure)',
     '$node_children(S_endpoint, HOBJECT n_closure) = [HOBJECT n_parent]',
@@ -146,7 +158,7 @@ BOUND = normal(2) + [
     '~pexecutorfree_bound.UNKNOWN',
     'pexecutorfree_bound.FAILED = eps',
     '$heap_edge_owners(HOBJECT n_parent, pexecutorfree_bound.HEAP.EDGES, [HOBJECT n_closure]) = 0',
-    '$heap_owners(pexecutorfree_bound.HEAP, HOBJECT n_parent) = 1',
+    '$heap_owners(pexecutorfree_bound.HEAP, HOBJECT n_parent) = 2',
     '$heap_children(HOBJECT n_parent, pexecutorfree_bound.HEAP.EDGES) = [HOBJECT n_child]',
     '$heap_owners(pexecutorfree_bound.HEAP, HOBJECT n_child) = 1',
     'S_hidden = S_endpoint[.ALLOCATIONS = $destruction_nodes_delete(S_endpoint.ALLOCATIONS, [HOBJECT n_parent])]',
