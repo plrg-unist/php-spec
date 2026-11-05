@@ -548,7 +548,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S[.OBJECTPROPS = $o
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = eps
   -- if ~$property_alias(ppropertyslot.STATE)
-def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot create dynamic property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)
+def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Cannot create dynamic property ") ++ $c_string($object_name(S, n)) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.READONLY
