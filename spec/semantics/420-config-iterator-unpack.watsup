@@ -436,6 +436,9 @@ def $config_iterator_assertion_scalar(PINT 0) = true
 def $config_iterator_assertion_scalar(PINT 1) = true
 def $config_iterator_assertion_scalar(PBOOL false) = true
 def $config_iterator_assertion_scalar(PBOOL true) = true
+def $config_iterator_assertion_scalar(PSTRING_CARRIER pstringidentity n*) = true
+  -- if (z, eps) = $assertion_quantity_decode(n*)
+  -- if $(z >= 0)
 def $config_iterator_assertion_scalar(pvalue) = false -- otherwise
 def $config_iterator_string_value(S, pvalue) = true
   -- if $config_ini_quiet_value(S, pvalue)
@@ -458,7 +461,7 @@ def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
   -- if ~$config_strict(S, pconfigcall)
   -- if $config_iterator_string(S, pvalue_name)
   -- if $string_bytes(pvalue_name) = (preqbytes)
-  ;; Rejected values precede lookup; the four admitted scalars use the setter.
+  ;; Rejected values precede lookup; admitted scalars use the setter.
   -- if preqbytes =/= $ptascii("zend.assertions") \/ $config_ini_value_conversion(pvalue) = TYPEREJECT \/ $config_iterator_assertion_scalar(pvalue)
   -- if $config_iterator_string_value(S, pvalue)
   -- if $(n_object < |S.OBJECTS|)
