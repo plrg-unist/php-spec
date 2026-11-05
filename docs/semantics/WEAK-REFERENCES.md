@@ -152,7 +152,8 @@ weakly dead before its storage pin transfers the declared Child slot, including
 when the Child destructor throws into the surrounding catch.
 
 The admission checks the real property layout, direct edge, Child class and
-sole owner. Occupied replacement remains Unsupported. Extra Value fields or
+sole owner. At the GC37 cut, occupied replacement was Unsupported; that control
+retains zero agreement. Extra Value fields or
 Child owners, Map-first teardown, and active-pin collection retain their
 existing boundaries. The [declared Value child review](../../coverage/semantics/gc-declared-value-child-review.json)
 records source, reached-state and affected evidence.
@@ -291,8 +292,8 @@ source confirms that the Key runs before the clone RHS: overwriting the seed
 retires its Children inside the Key function and the clone never executes.
 The [insertion review](../../coverage/semantics/gc-finite-value-insertion-review.json)
 separates that affected source from newly supported producers and source-reached
-owner/budget checks. Occupied replacement and shared-Key finite payloads remain
-explicit Unsupported; the global leaf predicates, quiet/shared-Key/collection
+owner/budget checks. At the GC44 cut, occupied replacement and shared-Key finite
+payloads remained explicit Unsupported; the global leaf predicates, quiet/shared-Key/collection
 admission, property executors and broader mutation boundaries are unchanged.
 
 Selective ordinary Key death in a multiple-entry table uses the same finite
@@ -1440,6 +1441,33 @@ ephemeron protocols remain required;
 mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
 
 ## Occupied entry replacement
+
+Canonical singleton and multiple-entry tables also accept occupied writes when
+both stored Values and the incoming Value satisfy the common finite
+methodless-object policy. Existing task, RHS,
+selected operand, receiver and Key authority still apply. The finite arm excludes
+both older writer domains explicitly; private leaf stored Keys, no cursor or
+incoming Map-key association, backed untyped primitive/direct-Child storage and
+the existing deeper-layout limits remain required.
+
+The new slot is visible before the old Value releases. A fetched old owner can
+delay its Children while callbacks read the installed replacement. Last-owner
+Child throws preserve supplied Throwable identity/creation trace or a fresh
+destructor trace, allow RHS-CV rebinding and leave the outer result target
+unassigned. The existing receiver carrier owns Map during cleanup and copies a
+used result only after the handler returns.
+
+Even identical old/new refcounted values undergo native increment/decrement.
+A helper used by both occupied writers records the existing GC possible-root visit
+after publication when raw identities match; distinct old values retain ordinary
+release jobs. The source-reached same-value fixture observes the specific Value
+absent from the buffer before its actual write and one new candidate afterward,
+with Value/Child counts and registration unchanged. Its observer-free source and
+native-only roots probe are separate from original source agreement. The
+[finite replacement review](../../coverage/semantics/gc-finite-value-replacement-review.json)
+binds the source, ownership, candidate-count and budget evidence. Shared-Key
+finite payloads, freeing mutation/access, active-pin collection and wider caller
+contexts remain partial.
 
 The singleton module386 admits same-key replacement with a leaf `stdClass` key and
 ordinary leaf old/new INSTANCE values. Only VALUE changes: KEY and BEFORE preserve

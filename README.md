@@ -3692,9 +3692,12 @@ Maps or append under private Keys while retaining source evaluation and owner
 increments. Strong direct/quiet fetches retain real Value owners across Key
 death; terminal isset/empty only borrow storage. Explicit unset removes its
 entry before Child cleanup and retains selected operands through cleanup.
+Occupied writes between these validated objects publish the new Value before old
+cleanup; used results copy afterward. Same-value replacement still performs its
+real old-zval GC visit.
 Selective Key death removes slots individually and preserves
 weak-registration order through Child cleanup and throws. Virtual/wider layouts,
-replacement/shared-Key finite payloads,
+shared-Key finite payloads,
 freeing-Map dimension access and active-pin collection remain partial.
 [Finite Value retirement](docs/semantics/WEAK-REFERENCES.md).
 

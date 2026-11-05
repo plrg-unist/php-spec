@@ -655,8 +655,9 @@ property owning a child before first insertion into an empty Map. The leaf
 null, then releases its sole child through the ordinary storage pin.
 Three new exact programs include a caught Child destructor throw; three affected
 post-insertion/GC36 sources and 90 source-reached conditions (author46,
-independent44) pass at recorded cuts. Occupied replacement remains explicitly
-Unsupported with zero agreement. Wider Value layouts, extra child owners,
+independent44) pass at recorded cuts. At the GC37 cut, occupied replacement was
+Unsupported; that historical control retains zero agreement. Wider Value
+layouts, extra child owners,
 Map-first teardown and active-pin collection remain partial.
 [GC37 review](coverage/semantics/gc-declared-value-child-review.json).
 
@@ -688,7 +689,8 @@ early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
 
 Finite methodless WeakMap payloads share validation across prebuilt insertion,
-private-Key append, reads/explicit entry removal from multiple-entry tables,
+private-Key append, occupied replacement, reads/explicit entry removal from
+multiple-entry tables,
 singleton/multiple-entry Map retirement and selective Key notification. Public untyped nonstatic/nonreadonly
 backed slots contain primitives or fieldless destructor Children; matching
 identities and keys fix declaration order. Ordered jobs preserve repeated Value
@@ -698,7 +700,7 @@ clones retain their existing evaluation and owner transfers. Direct fetches
 and used coalescing results add actual Value owners; terminal isset/empty borrow
 storage. These many-table reads keep existing source/key authority, require a
 nonfreeing input Key. Explicit offsetUnset now shares the same guard and
-existing detach/release executor; replacement/shared-Key and wider mutation
+existing detach/release executor; shared-Key and wider mutation
 remain separate. Missing-Key bool/coalescing/Error behavior is unchanged.
 Two new originals and one 73-condition spare-Key reached group pass at their
 separate cuts; the native-checked variant adds no original agreement.
@@ -717,6 +719,16 @@ new originals and one 102-condition reached group pass at their recorded cuts;
 the original overlap failure and old baseline keep zero credit.
 [Explicit-removal review](coverage/semantics/gc-finite-value-unset-review.json).
 
+Occupied singleton and multiple-entry writes publish the new slot before old
+Value cleanup, preserving registration/order. A fetched old Value owner delays
+its Children; immediate Child throws preserve supplied/fresh traces and skip
+the outer result assignment after RHS rebinding. Same-identity replacement
+records the native old-zval GC visit despite unchanged Value/Child owner counts.
+The old writer domains remain disjoint and authoritative.
+Three new originals agree exactly and one 71-condition source-reached group
+passes. The supplemental native-only roots probe adds no source agreement;
+the original baseline and initial independent timeout retain zero credit.
+[Replacement review](coverage/semantics/gc-finite-value-replacement-review.json).
 
 Finite-payload notification admits only the actual retiring leaf `stdClass` Key
 under its validated storage pin. The other Keys remain nonfreeing and registered
@@ -726,8 +738,8 @@ are weak-null during Child cleanup; later wrappers remain weak-live until that
 cleanup finishes, including a caught throw. Existing leaf/reference, callback,
 ordinary singleton and cursor policies retain their prior domains.
 
-Typed/alias/virtual/inherited/deeper and owning-array layouts, occupied
-replacement/shared-Key finite payloads, wider mutation/caller contexts,
+Typed/alias/virtual/inherited/deeper and owning-array layouts,
+shared-Key finite payloads, wider mutation/caller contexts,
 freeing-Map dimension access and active-pin collection remain partial. Paused
 work is untouched. Three new originals agree exactly and one 91-condition
 reached group passes at their cuts. The [current Key-notification review](coverage/semantics/gc-finite-value-key-notice-review.json)
@@ -1781,7 +1793,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | --- | --- |
 | CLASS189 | Byvalue nongenerator __invoke/__get/__toString anonymous factories; native/source preparation. |
 | I115 | Temporary Closure::call on captured native Generator APIs; private implementation/review. |
-| GC48 | Occupied WeakMap replacement with finite payloads; private implementation/review. |
+| GC49 | Shared scalar/finite-object payload policy for mixed WeakMap storage; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR39 | Class-like declaration tick plans and compiler traversal; private implementation/review. |
