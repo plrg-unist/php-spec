@@ -6,8 +6,9 @@ def $global_constant_declaration_source(pcunit*, PORIGIN n_unit pcpath_decl) = t
   -- if pcpath_decl[$nabs($(|pcpath_decl| - 1))] = PCINDEX n_const
   -- if pcpath_decl[$nabs($(|pcpath_decl| - 2))] = PCFIELD 1
   -- if pcpath_statement = pcpath_decl[0:$nabs($(|pcpath_decl| - 2))]
-  -- if $origin_node(pcunit*, PORIGIN n_unit pcpath_statement) = (NStmtConst (SEQUENCE eps) (SEQUENCE phpType46*) metadata_statement)
+  -- if $origin_node(pcunit*, PORIGIN n_unit pcpath_statement) = (NStmtConst (SEQUENCE phpType15*) (SEQUENCE phpType46*) metadata_statement)
   -- if $origin_node(pcunit*, PORIGIN n_unit pcpath_decl) = (NConst phpType11 expression metadata)
+  -- if phpType15* = eps \/ |phpType46*| = 1
 def $global_constant_declaration_source(pcunit*, porigin_decl) = false -- otherwise
 
 dec $global_constant_closure_parent(pcunit, pcpath) : bool
@@ -503,6 +504,7 @@ def $global_constant_transfer_reads_valid(S, porigin_decl, pvalueclass, pusercon
   -- if $global_constant_reads_valid(S, porigin_decl, pconstantfact_read*, puserconstant_prior*)
 def $global_constant_transfer_reads_valid(S, porigin_decl, pvalueclass, puserconstant_prior*, pconstantfact_read*) = false -- otherwise
 def $global_constant_user_valid(S, puserconstant) = $global_constant_transfer_reads_valid(S, puserconstant.ORIGIN, puserconstant.CLASS, puserconstant_prior*, puserconstant.READS)
+  -- if $constant_attribute_entry_valid(S, puserconstant.ORIGIN)
   -- if $global_constant_prefix(S.USERCONSTANTS, puserconstant.ORIGIN, eps) = (puserconstant_prior*)
 def $global_constant_user_valid(S, puserconstant) = false -- otherwise
 

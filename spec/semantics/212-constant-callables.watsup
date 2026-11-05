@@ -102,7 +102,7 @@ def $constant_callable_invalid_class(phpType19) = eps -- otherwise
 ;; concatenations, while CALL/STATIC_CALL operands are not compiler-folded.
 dec $ppconstant_literal_class(ppstate, phpType19) : ptbytes?
 def $ppconstant_literal_class(P, expression) = ($ppcall_literal_name(ptbytes))
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, P.LOCATION.PATH)
   -- if $parser_literal_at(expression, P.FOLD.PARSEPRECISION) = (PSTRING ptbytes)
 def $ppconstant_literal_class(P, phpType19) = $constant_callable_literal_class(phpType19) -- otherwise
 dec $ppconstant_callable_class(ppstate, phpType19) : bool
@@ -114,7 +114,7 @@ def $ppconstant_callable_invalid_class(P, phpType19) = (ptbytes)
 def $ppconstant_callable_invalid_class(P, phpType19) = eps -- otherwise
 dec $ppconstant_method_name(ppstate, phpType20) : ptbytes?
 def $ppconstant_method_name(P, expression) = (ptbytes)
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, P.LOCATION.PATH)
   -- if $parser_literal_at(expression, P.FOLD.PARSEPRECISION) = (PSTRING ptbytes)
 def $ppconstant_method_name(P, phpType20) = $constant_callable_method_name(phpType20) -- otherwise
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppconstant_error(P, $ptascii("Illegal class name"), $psline(metadata))

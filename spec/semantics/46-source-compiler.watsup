@@ -224,11 +224,16 @@ def $ppeffective_line(pffact*, pcpath, expression, PPR) = z
 def $ppeffective_line(pffact*, pcpath, expression, ppmode) = $expression_line(expression)
   -- otherwise
 
+dec $ppconstant_compiled_closure(ppstate, pcpath, expression, ppmode) : int?
 def $ppexpr(P, pcpath, expression, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
+def $ppexpr(P, pcpath, expression, ppmode) = $pplocate($ppclearvalue(P), pcpath, z)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $ppconstant_compiled_closure(P, pcpath, expression, ppmode) = (z)
 def $ppexpr(P, pcpath, expression, ppmode) = $ppdone($ppexprbody($pplocate(P[.FOLD = $ppclass_fold(P)], pcpath, $ppeffective_line(P.FOLD.FACTS, pcpath, expression, ppmode)), pcpath, expression, ppmode), pcpath, ppmode)
   -- if ~$ppcall_read(expression, ppmode)
   -- if P.COMPLETION = PPCNORMAL
+  -- if $ppconstant_compiled_closure(P, pcpath, expression, ppmode) = eps
 def $ppdone(P, pcpath, ppmode) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppdone(P, pcpath, ppmode) = $pprecord_precision(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR pcpath P.LOCATION.LINE P.FOLD.VALUE]][.ACCESS = P.ACCESS ++ [(pcpath, ppmode)]], pcpath)

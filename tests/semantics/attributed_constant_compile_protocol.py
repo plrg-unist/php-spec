@@ -64,7 +64,7 @@ def prepare(out):
                     checks += ['$pptrace(' + state + ') = [("fatal",$ptascii(' + json.dumps(case['message'])
                         + '),' + types.byte_expr(str(path)) + ',' + str(case['line']) + ')]']
                 checks += [state + '.WORK = eps']
-            elif name == 'ordinary-control':
+            elif name in ('ordinary-control', 'single-unsupported'):
                 checks += [state + '.COMPLETION = PPCNORMAL']
             else:
                 checks += [state + '.COMPLETION = PPCABRUPT (UNSUPPORTED "ordinary statement compilation")']
@@ -88,7 +88,7 @@ def prepare(out):
             checks += ['~$ppattributed_constant_declaration_source(' + unit + ',PORIGIN 91 ' + declaration + ')',
                 '~$ppattributed_constant_initializer(' + unit + ',' + initializer + ')']
         checks += ['$global_constant_declaration_source([P_ordinary_control.FOLD.SOURCE],PORIGIN 91 ' + declaration + ')',
-            '~$global_constant_declaration_source([P_single_unsupported.FOLD.SOURCE],PORIGIN 91 ' + declaration + ')']
+            '$global_constant_declaration_source([P_single_unsupported.FOLD.SOURCE],PORIGIN 91 ' + declaration + ')']
         checks += ['$origin_node([P_visitor_fcc_class_concat.FOLD.SOURCE],PORIGIN 91 '
             + initializer + ') = (NExprStaticCall phpType19_class phpType20_class (SEQUENCE phpType7_class*) metadata_class)',
             '$ppconstant_literal_class(P_ordinary_control,phpType19_class) = $constant_callable_literal_class(phpType19_class)',

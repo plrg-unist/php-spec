@@ -112,11 +112,11 @@ def $ppparameter_new_ready(P, pcpath, phpType7*, metadata) = $ppconstant_error(P
 def $ppparameter_new_ready(P, pcpath, phpType7*, metadata) = $ppparameter_new_args(P, pcpath ++ [PCFIELD 1], 0, phpType7*, false)
   -- if P.COMPLETION = PPCNORMAL
   -- if ~$ppfirstclass(phpType7*)
-  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if ~$ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
 def $ppparameter_new_ready(P, pcpath, phpType7*, metadata) = $ppparameter_new_args($ppattributed_new_prefix(P, phpType7*, false), pcpath ++ [PCFIELD 1], 0, phpType7*, false)
   -- if P.COMPLETION = PPCNORMAL
   -- if ~$ppfirstclass(phpType7*)
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
 def $ppparameter_new(P, pcpath, phpType28, SEQUENCE phpType7*, metadata) = $ppparameter_new_ready($ppparameter_new_class(P, phpType28, metadata), pcpath, phpType7*, metadata)
 
 ;; Genuine parameter NEW has a separate suspended AST evaluation context.

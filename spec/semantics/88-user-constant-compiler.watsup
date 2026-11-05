@@ -3,6 +3,9 @@ dec $ppparameter_callable_initializer(ppstate) : bool
 dec $ppparameter_new_site(ppstate, pcpath) : bool
 dec $ppglobal_new_deferred(ppstate, pcpath, name) : bool
 dec $ppglobal_constant_initializer(ppstate) : bool
+dec $ppconstant_ordered_context(pcunit, pcpath) : bool
+dec $ppconstant_deferred_context(pcunit, pcpath) : bool
+dec $ppconstant_metadata_argument(pcunit, pcpath) : bool
 dec $ppattributed_constant_initializer(pcunit, pcpath) : bool
 dec $ppparameter_new(ppstate, pcpath, phpType28, phpType6, metadata) : ppstate
 dec $ppconstant_closure(ppstate, bool, phpType21, metadata) : ppstate
@@ -38,7 +41,7 @@ def $ppconstant_qualified_keyword(name) = ($ptinvalidname(ptqual, ptbytes))
 def $ppconstant_qualified_keyword(phpType19) = eps -- otherwise
 dec $ppconstant_qualified_class(ppstate, phpType19) : ppstate
 def $ppconstant_qualified_class(P, phpType19) = $ppconstant_error(P, $ptascii("'") ++ ptbytes ++ $ptascii("' is an invalid class name"), $nabs(P.LOCATION.LINE))
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, P.LOCATION.PATH)
   -- if $ppconstant_qualified_keyword(phpType19) = (ptbytes)
 def $ppconstant_qualified_class(P, phpType19) = P -- otherwise
 dec $ppconstant_method_target(ppstate, phpType19, phpType20, metadata) : ppstate
@@ -48,9 +51,9 @@ def $ppconstant_method_target(P, phpType19, phpType20, metadata) = P_class
 def $ppconstant_method_target(P, phpType19, phpType20, metadata) = $ppconstant_method_callable(P, phpType19, phpType20, metadata)
   -- if $ppconstant_qualified_class(P, phpType19).COMPLETION = PPCNORMAL
 def $ppconstant_error(P, ptbytes, n) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes P.LOCATION.LINE)]
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, P.LOCATION.PATH)
 def $ppconstant_error(P, ptbytes, n) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes n)]
-  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if ~$ppconstant_ordered_context(P.FOLD.SOURCE, P.LOCATION.PATH)
 dec $ppconstant_attributes(ppstate, pcpath, phpType46*, metadata) : ppstate
 dec $ppconstant_attributes_error(ppstate) : ppstate
 def $ppconstant_attributes(P, pcpath, phpType46*, metadata) = $ppconstant_attributes_error($ppconstant_list($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 1], 0, phpType46*))
@@ -85,12 +88,12 @@ def $ppconstant_list(P, pcpath, n, (NConst phpType11 expression metadata) :: php
 
 def $ppconstant_expr(P, pcpath, expression) = $ppconstant_emit($ppconstant_validate($ppfoldresult(P, $pfprepare($ppclass_fold(P)[.CONSTANT = true], pcpath, expression, P.ENV, P.LOCATION.LINE)), pcpath, expression), pcpath, expression)[.FOLD.CONSTANT = false]
 
-;; These attributed lists cannot execute. Their constant walk compiles reached
-;; closure bodies in place; ordinary operand emission would repeat that work.
+;; Doomed lists and deferred attribute arguments need no operand emission.
+;; Their ordered walk compiles reached closure bodies in place.
 def $ppconstant_emit(P, pcpath, expression) = P
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if $ppconstant_deferred_context(P.FOLD.SOURCE, pcpath)
 def $ppconstant_emit(P, pcpath, expression) = $ppcall_done($ppexpr(P, pcpath, expression, PPR), pcpath, P.LOCATION.LINE)
-  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if ~$ppconstant_deferred_context(P.FOLD.SOURCE, pcpath)
 
 def $ppconstant_name(P, pcpath, phpType11) = P
   -- if P.COMPLETION =/= PPCNORMAL
@@ -131,15 +134,15 @@ def $ppconstant_node(P, pcpath, pcnode) = $ppconstant_children_at(P, pcpath, pcn
   -- if $ppconstant_allowed(pcnode)
 def $ppconstant_node(P, pcpath, NExprFuncCall phpType19 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_function_callable(P[.LOCATION.PATH = pcpath], phpType19, metadata)
 def $ppconstant_node(P, pcpath, NExprClosure phpType14 (BOOLEAN b) phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = $ppexpr($ppconstant_closure(P[.LOCATION.PATH = pcpath], b, phpType21, metadata), pcpath, NExprClosure phpType14 (BOOLEAN b) phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata, PPR)
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
 def $ppconstant_node(P, pcpath, NExprClosure phpType14 (BOOLEAN b) phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = $ppconstant_closure(P[.LOCATION.PATH = pcpath], b, phpType21, metadata)
-  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if ~$ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppconstant_error(P, $ptascii("New expressions are not supported in this context"), $nabs($source_line(metadata)))
   -- if $ppclass_constant_initializer(P)
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppunsupported(P, "object constant initializer")
-  -- if ~$ppclass_constant_initializer(P) /\ ~$ppparameter_new_site(P, pcpath) /\ ~$ppglobal_constant_initializer(P[.LOCATION.PATH = pcpath])
+  -- if ~$ppclass_constant_initializer(P) /\ ~$ppparameter_new_site(P, pcpath) /\ ~$ppglobal_constant_initializer(P[.LOCATION.PATH = pcpath]) /\ ~$ppconstant_metadata_argument(P.FOLD.SOURCE, pcpath)
 def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppparameter_new(P, pcpath, phpType28, phpType6, metadata)
-  -- if ~$ppclass_constant_initializer(P) /\ ($ppparameter_new_site(P, pcpath) \/ $ppglobal_constant_initializer(P[.LOCATION.PATH = pcpath]))
+  -- if ~$ppclass_constant_initializer(P) /\ ($ppparameter_new_site(P, pcpath) \/ $ppglobal_constant_initializer(P[.LOCATION.PATH = pcpath]) \/ $ppconstant_metadata_argument(P.FOLD.SOURCE, pcpath))
 def $ppconstant_node(P, pcpath, NExprPropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprNullsafePropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_method_target(P[.LOCATION.PATH = pcpath], phpType19, phpType20, metadata)
@@ -152,7 +155,7 @@ def $ppconstant_node(P, pcpath, pcnode) = $ppcheck(P, $context_error("Constant e
 
 ;; Zend's constant AST stores an array value before its optional key.
 def $ppconstant_children_at(P, pcpath, NArrayItem phpType5 expression (BOOLEAN false) phpType4 metadata) = $ppconstant_children($ppconstant_validate(P, pcpath ++ [PCFIELD 1], expression), $pcfield_phpType5(phpType5, pcpath ++ [PCFIELD 0]))
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
 def $ppconstant_children_at(P, pcpath, pcnode) = $ppconstant_children($ppconstant_location(P, pcnode), $pcchildren(pcnode, pcpath))
   -- otherwise
 
@@ -200,14 +203,14 @@ def $ppconstant_location(P, pcnode) = P
 ;; Source static restrictions apply
 ;; after folded branch selection and before any runtime class lookup.
 def $ppconstant_class(P, pcpath, phpType19) = $ppattributed_constant_class(P, phpType19, $pffact(P.FOLD.FACTS, pcpath))
-  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if $ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
 def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("\"static::\" is not allowed in compile-time constants"), P.LOCATION.LINE)
-  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if ~$ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
   -- if phpType19 = name
   -- if $ptast(name) = PTNAME PTPLAIN ptbytes
   -- if $ptlc(ptbytes) = [115,116,97,116,105,99]
 def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("Dynamic class names are not allowed in compile-time class constant references"), P.LOCATION.LINE)
-  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
+  -- if ~$ppconstant_ordered_context(P.FOLD.SOURCE, pcpath)
   -- if phpType19 = expression
   -- if $pffact(P.FOLD.FACTS, pcpath) = eps
 def $ppconstant_class(P, pcpath, phpType19) = P

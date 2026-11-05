@@ -1,0 +1,210 @@
+;; Attribute arguments compile after the initializer/name, but remain deferred
+;; metadata. They never become runtime constant initializer roots.
+dec $ppsingle_attributed_declaration(pcunit, porigin) : bool
+dec $ppsingle_attributed_initializer(pcunit, pcpath) : bool
+dec $ppconstant_metadata_root(pcunit, pcpath) : bool
+dec $ppsingle_constant(ppstate, pcpath, phpType15*, phpType46, metadata) : ppstate
+dec $ppconstant_attribute_groups(ppstate, pcpath, nat, phpType15*) : ppstate
+dec $ppconstant_attribute_items(ppstate, pcpath, nat, phpType9*) : ppstate
+dec $ppconstant_attribute(ppstate, pcpath, name, phpType6, metadata) : ppstate
+dec $ppconstant_attribute_name(ppstate, pcpath, name) : ppstate
+dec $ppconstant_attribute_reference(plenv, name) : pnresult
+dec $ppconstant_attribute_args(ppstate, pcpath, nat, phpType7*, bool, ptbytes*) : ppstate
+dec $constant_attribute_groups(pcunit, pcode, pcpath, nat, phpType15*) : pbuiltinattributes
+dec $constant_attribute_items(pcunit, pcode, pcpath, nat, phpType9*) : pbuiltinattributes
+dec $constant_attribute_targets(ptbytes) : text
+dec $constant_attribute_internal(ptbytes) : bool
+dec $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, bool) : ptbytes?
+dec $ppconstant_attribute_finish(ppstate, pcpath, phpType15*) : ppstate
+dec $ppconstant_attribute_checked(ppstate, pbuiltinattributes) : ppstate
+dec $constant_attribute_present(pcunit*, porigin) : bool
+dec $constant_attribute_name_path(pcunit, pcpath) : bool
+dec $constant_attribute_name_entries_valid(pcunit, pcode, pcodename*, pcodename*) : bool
+
+def $ppsingle_attributed_declaration(pcunit, PORIGIN n pcpath) = true
+  -- if $(|pcpath| >= 2)
+  -- if pcpath[$nabs($(|pcpath| - 1))] = PCINDEX 0
+  -- if pcpath[$nabs($(|pcpath| - 2))] = PCFIELD 1
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if $origin_node([pcunit], PORIGIN n pcpath_statement) = (NStmtConst (SEQUENCE phpType15*) (SEQUENCE ([NConst phpType11 expression metadata])) metadata_statement)
+  -- if phpType15* =/= eps
+def $ppsingle_attributed_declaration(pcunit, porigin) = false -- otherwise
+def $ppsingle_attributed_initializer(pcunit, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if pcpath[$nabs($(|pcpath| - 1))] = PCFIELD 1
+  -- if $ppsingle_attributed_declaration(pcunit, PORIGIN pcunit.ID pcpath[0:$nabs($(|pcpath| - 1))])
+def $ppsingle_attributed_initializer(pcunit, pcpath) = $ppsingle_attributed_initializer(pcunit, pcpath_parent)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if ~$ppsingle_attributed_declaration(pcunit, PORIGIN pcunit.ID pcpath_parent)
+  -- if ~$global_constant_closure_parent(pcunit, pcpath_parent)
+def $ppsingle_attributed_initializer(pcunit, pcpath) = false -- otherwise
+def $ppconstant_metadata_root(pcunit, pcpath) = true
+  -- if $(|pcpath| >= 7)
+  -- if pcpath[$nabs($(|pcpath| - 1))] = PCFIELD 1
+  -- if pcpath[$nabs($(|pcpath| - 2))] = PCINDEX n_arg
+  -- if pcpath[$nabs($(|pcpath| - 3))] = PCFIELD 1
+  -- if pcpath[$nabs($(|pcpath| - 4))] = PCINDEX n_attribute
+  -- if pcpath[$nabs($(|pcpath| - 5))] = PCFIELD 0
+  -- if pcpath[$nabs($(|pcpath| - 6))] = PCINDEX n_group
+  -- if pcpath[$nabs($(|pcpath| - 7))] = PCFIELD 0
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 7))]
+  -- if $ppsingle_attributed_declaration(pcunit, PORIGIN pcunit.ID (pcpath_statement ++ [PCFIELD 1, PCINDEX 0]))
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath[0:$nabs($(|pcpath| - 1))]) = (NArg phpType3 expression phpType4_ref phpType4_unpack metadata)
+def $ppconstant_metadata_root(pcunit, pcpath) = false -- otherwise
+def $ppconstant_metadata_argument(pcunit, pcpath) = true -- if $ppconstant_metadata_root(pcunit, pcpath)
+def $ppconstant_metadata_argument(pcunit, pcpath) = $ppconstant_metadata_argument(pcunit, pcpath_parent)
+  -- if ~$ppconstant_metadata_root(pcunit, pcpath)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if ~$global_constant_closure_parent(pcunit, pcpath_parent)
+def $ppconstant_metadata_argument(pcunit, pcpath) = false -- otherwise
+def $ppconstant_ordered_context(pcunit, pcpath) = ($ppattributed_constant_initializer(pcunit, pcpath) \/ $ppsingle_attributed_initializer(pcunit, pcpath) \/ $ppconstant_metadata_argument(pcunit, pcpath))
+def $ppconstant_deferred_context(pcunit, pcpath) = ($ppattributed_constant_initializer(pcunit, pcpath) \/ $ppconstant_metadata_argument(pcunit, pcpath))
+def $ppconstant_callable_initializer(P) = true
+  -- if P.FOLD.CONSTANT /\ $ppconstant_metadata_argument(P.FOLD.SOURCE, P.LOCATION.PATH)
+
+;; The ordered validator has already compiled this exact initializer closure.
+;; Ordinary operand emission reuses its code, without duplicating templates.
+def $ppconstant_compiled_closure(P, pcpath, NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata, PPR) = (pfunction.ENDLINE)
+  -- if $ppsingle_attributed_initializer(P.FOLD.SOURCE, pcpath)
+  -- if $function_at(P.CLOSURETEMPLATES, PORIGIN P.FOLD.SOURCE.ID pcpath) = (pfunction)
+  -- if pfunction.BODY = pcpath ++ [PCFIELD 6]
+  -- if pfunction.LINE = $ppclosure_line(metadata)
+  -- if pfunction.ENDLINE = $psendline(metadata)
+def $ppconstant_compiled_closure(P, pcpath, expression, ppmode) = eps -- otherwise
+
+def $ppstatement(P, pcpath, NStmtConst (SEQUENCE phpType15*) (SEQUENCE ([NConst phpType11 expression metadata_first])) metadata) = $ppsingle_constant(P, pcpath, phpType15*, NConst phpType11 expression metadata_first, metadata_first)
+  -- if P.COMPLETION = PPCNORMAL /\ phpType15* =/= eps
+def $ppsingle_constant(P, pcpath, phpType15*, phpType46, metadata) = $ppconstant_attribute_finish($ppconstant_attribute_groups($ppconstant_list($pplocate(P, pcpath, $source_line(metadata)), pcpath ++ [PCFIELD 1], 0, [phpType46]), pcpath ++ [PCFIELD 0], 0, phpType15*), pcpath, phpType15*)
+  -- if $($source_line(metadata) > 0)
+def $ppsingle_constant(P, pcpath, phpType15*, phpType46, metadata) = $ppunsupported(P, "attributed constant declaration location") -- otherwise
+
+def $ppconstant_attribute_groups(P, pcpath, n, phpType15*) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppconstant_attribute_groups(P, pcpath, n, eps) = P -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_groups(P, pcpath, n, (NAttributeGroup (SEQUENCE phpType9*) metadata) :: phpType15*) = $ppconstant_attribute_groups($ppconstant_attribute_items(P, pcpath ++ [PCINDEX n, PCFIELD 0], 0, phpType9*), pcpath, $(n + 1), phpType15*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_items(P, pcpath, n, phpType9*) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppconstant_attribute_items(P, pcpath, n, eps) = P -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_items(P, pcpath, n, (NAttribute name phpType6 metadata) :: phpType9*) = $ppconstant_attribute_items($ppconstant_attribute(P, pcpath ++ [PCINDEX n], name, phpType6, metadata), pcpath, $(n + 1), phpType9*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute(P, pcpath, name, SEQUENCE phpType7*, metadata) = $ppconstant_error(P, $ptascii("Cannot create Closure as attribute argument"), $nabs(P.LOCATION.LINE))
+  -- if $ppfirstclass(phpType7*)
+def $ppconstant_attribute(P, pcpath, name, SEQUENCE phpType7*, metadata) = $ppconstant_attribute_args($ppconstant_attribute_name(P, pcpath ++ [PCFIELD 0], name), pcpath ++ [PCFIELD 1], 0, phpType7*, false, eps)
+  -- if ~$ppfirstclass(phpType7*)
+def $ppconstant_attribute(P, pcpath, name, phpType6, metadata) = $ppunsupported(P, "edited attribute arguments") -- otherwise
+def $ppconstant_attribute_reference(plenv, name) = PNRESOLVED { ORIGINAL name, KIND PLCLASS, RESOLVED ptbytes, FULL true, FALLBACK eps }
+  -- if $ptast(name) = PTNAME PTPLAIN ptbytes
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $ppconstant_attribute_reference(plenv, name) = $pnclassresolve(plenv, name) -- otherwise
+def $ppconstant_attribute_name(P, pcpath, name) = $ppconstant_error(P, $ptascii("'") ++ ptbytes ++ $ptascii("' is an invalid class name"), $nabs(P.LOCATION.LINE))
+  -- if $ppconstant_qualified_keyword(name) = (ptbytes)
+def $ppconstant_attribute_name(P, pcpath, name) = P[.NAMES = P.NAMES ++ [(pcpath, pnreference)]]
+  -- if $ppconstant_qualified_keyword(name) = eps
+  -- if $ppconstant_attribute_reference(P.ENV, name) = PNRESOLVED pnreference
+def $ppconstant_attribute_name(P, pcpath, name) = $ppunsupported(P, "attribute class name") -- otherwise
+def $ppconstant_attribute_args(P, pcpath, n, phpType7*, b_named, ptbytes_seen*) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppconstant_attribute_args(P, pcpath, n, eps, b_named, ptbytes_seen*) = P -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_args(P, pcpath, n, (NArg phpType3 expression phpType4_ref (BOOLEAN true) metadata) :: phpType7*, b_named, ptbytes_seen*) = $ppconstant_error(P, $ptascii("Cannot use unpacking in attribute argument list"), $nabs(P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_args(P, pcpath, n, (NArg ABSENT expression phpType4_ref (BOOLEAN false) metadata) :: phpType7*, true, ptbytes_seen*) = $ppconstant_error(P, $ptascii("Cannot use positional argument after named argument"), $nabs(P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression phpType4_ref (BOOLEAN false) metadata) :: phpType7*, b_named, ptbytes_seen*) = $ppconstant_error(P, $ptascii("Duplicate named parameter $") ++ $base64(text), $nabs(P.LOCATION.LINE))
+  -- if P.COMPLETION = PPCNORMAL /\ $base64(text) <- ptbytes_seen*
+def $ppconstant_attribute_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, false, ptbytes_seen*) = $ppconstant_attribute_args($ppconstant_expr(P[.LOCATION.PATH = pcpath ++ [PCINDEX n, PCFIELD 1]], pcpath ++ [PCINDEX n, PCFIELD 1], expression), pcpath, $(n + 1), phpType7*, false, ptbytes_seen*)
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_args(P, pcpath, n, (NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, b_named, ptbytes_seen*) = $ppconstant_attribute_args($ppconstant_expr(P[.LOCATION.PATH = pcpath ++ [PCINDEX n, PCFIELD 1]], pcpath ++ [PCINDEX n, PCFIELD 1], expression), pcpath, $(n + 1), phpType7*, true, ptbytes_seen* ++ [($base64(text))])
+  -- if P.COMPLETION = PPCNORMAL /\ ~($base64(text) <- ptbytes_seen*)
+def $ppconstant_attribute_args(P, pcpath, n, phpType7*, b_named, ptbytes_seen*) = $ppunsupported(P, "edited attribute arguments") -- otherwise
+
+;; Both compiler validation and runtime admission read the same resolved names
+;; from genuine source paths in the unit's compiled code.
+def $constant_attribute_groups(pcunit, pcode, pcpath, n, eps) = BUILTIN_ATTRIBUTES eps
+def $constant_attribute_groups(pcunit, pcode, pcpath, n, (NAttributeGroup (SEQUENCE phpType9*) metadata) :: phpType15*) = $builtin_attribute_append($constant_attribute_items(pcunit, pcode, pcpath ++ [PCINDEX n, PCFIELD 0], 0, phpType9*), $constant_attribute_groups(pcunit, pcode, pcpath, $(n + 1), phpType15*))
+def $constant_attribute_items(pcunit, pcode, pcpath, n, eps) = BUILTIN_ATTRIBUTES eps
+def $constant_attribute_items(pcunit, pcode, pcpath, n, (NAttribute name phpType6 metadata) :: phpType9*) = $builtin_attribute_append(BUILTIN_ATTRIBUTES ([{NAME ptbytes, ARGUMENTS phpType6, LINE n_line}]), $constant_attribute_items(pcunit, pcode, pcpath, $(n + 1), phpType9*))
+  -- if pcode.UNIT = pcunit.ID
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID (pcpath ++ [PCINDEX n])) = (NAttribute name phpType6 metadata)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCINDEX n, PCFIELD 0]) = ((ptbytes, eps))
+  -- if n_line = $psline(metadata)
+  -- if $(n_line > 0)
+def $constant_attribute_items(pcunit, pcode, pcpath, n, phpType9*) = BUILTIN_ATTRIBUTES_UNSUPPORTED "attribute source or resolved name" -- otherwise
+def $constant_attribute_targets(ptbytes) = "class" -- if $ptlc(ptbytes) <- [$ptascii("attribute"), $ptascii("allowdynamicproperties")]
+def $constant_attribute_targets(ptbytes) = "method" -- if $ptlc(ptbytes) = $ptascii("returntypewillchange")
+def $constant_attribute_targets(ptbytes) = "parameter" -- if $ptlc(ptbytes) = $ptascii("sensitiveparameter")
+def $constant_attribute_targets(ptbytes) = "method, property" -- if $ptlc(ptbytes) = $ptascii("override")
+def $constant_attribute_targets(ptbytes) = "function, method" -- if $ptlc(ptbytes) = $ptascii("nodiscard")
+def $constant_attribute_targets(ptbytes) = "" -- otherwise
+def $constant_attribute_internal(ptbytes) = ($constant_attribute_targets(ptbytes) =/= "" \/ $ptlc(ptbytes) <- [$ptascii("deprecated"), $ptascii("delayedtargetvalidation")])
+def $constant_attribute_error(eps, pbuiltinattribute_all*, b_delayed) = eps
+def $constant_attribute_error(pbuiltinattribute :: pbuiltinattribute_tail*, pbuiltinattribute_all*, false) = ($ptascii("Attribute \"") ++ pbuiltinattribute.NAME ++ $ptascii("\" cannot target constant (allowed targets: ") ++ $ptascii($constant_attribute_targets(pbuiltinattribute.NAME)) ++ $ptascii(")"))
+  -- if $constant_attribute_targets(pbuiltinattribute.NAME) =/= ""
+def $constant_attribute_error(pbuiltinattribute :: pbuiltinattribute_tail*, pbuiltinattribute_all*, b_delayed) = ($ptascii("Attribute \"") ++ pbuiltinattribute.NAME ++ $ptascii("\" must not be repeated"))
+  -- if b_delayed \/ $constant_attribute_targets(pbuiltinattribute.NAME) = ""
+  -- if $constant_attribute_internal(pbuiltinattribute.NAME)
+  -- if $(|$builtin_named_attributes(pbuiltinattribute_all*, $ptlc(pbuiltinattribute.NAME))| > 1)
+def $constant_attribute_error(pbuiltinattribute :: pbuiltinattribute_tail*, pbuiltinattribute_all*, b_delayed) = $constant_attribute_error(pbuiltinattribute_tail*, pbuiltinattribute_all*, b_delayed)
+  -- if b_delayed \/ $constant_attribute_targets(pbuiltinattribute.NAME) = ""
+  -- if ~$constant_attribute_internal(pbuiltinattribute.NAME) \/ |$builtin_named_attributes(pbuiltinattribute_all*, $ptlc(pbuiltinattribute.NAME))| = 1
+def $ppconstant_attribute_finish(P, pcpath, phpType15*) = P -- if P.COMPLETION =/= PPCNORMAL
+def $ppconstant_attribute_finish(P, pcpath, phpType15*) = $ppconstant_attribute_checked(P, $constant_attribute_groups(P.FOLD.SOURCE, $ppfunction_code(P), pcpath ++ [PCFIELD 0], 0, phpType15*))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES pbuiltinattribute*) = P[.COMPLETION = PPCABRUPT (FATAL ptbytes P.LOCATION.LINE)]
+  -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = (ptbytes)
+def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES pbuiltinattribute*) = $ppunsupported(P, "Deprecated global constant metadata")
+  -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = eps
+  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) =/= eps
+def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES pbuiltinattribute*) = P
+  -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = eps
+  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = eps
+def $ppconstant_attribute_checked(P, BUILTIN_ATTRIBUTES_UNSUPPORTED text) = $ppunsupported(P, text)
+
+def $constant_attribute_entry_valid(S, PORIGIN n pcpath) = true
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_statement) = (NStmtConst (SEQUENCE phpType15*) (SEQUENCE ([NConst phpType11 expression metadata])) metadata_statement)
+  -- if phpType15* =/= eps
+  -- if $global_constant_declaration_source(S.SOURCES, PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $constant_attribute_groups(pcunit, pcode, pcpath_statement ++ [PCFIELD 0], 0, phpType15*) = BUILTIN_ATTRIBUTES pbuiltinattribute*
+  -- if $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, $builtin_named_attributes(pbuiltinattribute*, $ptascii("delayedtargetvalidation")) =/= eps) = eps
+  -- if $builtin_named_attributes(pbuiltinattribute*, $ptascii("deprecated")) = eps
+def $constant_attribute_present(pcunit*, PORIGIN n pcpath) = true
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if $origin_node(pcunit*, PORIGIN n pcpath_statement) = (NStmtConst (SEQUENCE phpType15*) phpType45 metadata_statement)
+  -- if $origin_node(pcunit*, PORIGIN n pcpath) = (NConst phpType11 expression metadata)
+  -- if phpType15* =/= eps
+def $constant_attribute_present(pcunit*, porigin) = false -- otherwise
+def $constant_attribute_entry_valid(S, porigin) = ~$constant_attribute_present(S.SOURCES, porigin) -- otherwise
+
+;; Metadata name entries have no CODEEXPR. Authenticate exactly these entries
+;; against canonical compilation without changing ordinary call-node policy.
+def $constant_attribute_name_path(pcunit, pcpath) = true
+  -- if $(|pcpath| >= 5)
+  -- if pcpath[$nabs($(|pcpath| - 1))] = PCFIELD 0
+  -- if pcpath[$nabs($(|pcpath| - 2))] = PCINDEX n_attribute
+  -- if pcpath[$nabs($(|pcpath| - 3))] = PCFIELD 0
+  -- if pcpath[$nabs($(|pcpath| - 4))] = PCINDEX n_group
+  -- if pcpath[$nabs($(|pcpath| - 5))] = PCFIELD 0
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 5))]
+  -- if $ppsingle_attributed_declaration(pcunit, PORIGIN pcunit.ID (pcpath_statement ++ [PCFIELD 1, PCINDEX 0]))
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath[0:$nabs($(|pcpath| - 1))]) = (NAttribute name phpType6 metadata)
+def $constant_attribute_name_path(pcunit, pcpath) = false -- otherwise
+def $constant_attribute_unit_names_valid(P, pcode) = $constant_attribute_name_entries_valid(P.FOLD.SOURCE, pcode, $compiled_names(P.NAMES), pcode.NAMES ++ $compiled_names(P.NAMES))
+def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, eps) = true
+def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, (CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*) = $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, pcodename*)
+  -- if ~$constant_attribute_name_path(pcunit, pcpath)
+def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, (CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*) = $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, pcodename*)
+  -- if $constant_attribute_name_path(pcunit, pcpath)
+  -- if pcode.UNIT = pcunit.ID
+  -- if $call_name_count(pcode.NAMES, pcpath) = 1
+  -- if $call_name_count(pcodename_compiled*, pcpath) = 1
+  -- if $code_name(pcode.NAMES, pcpath) = $code_name(pcodename_compiled*, pcpath)
+def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, pcodename*) = false -- otherwise
+rule PhpStep/attributed-constant-statement: S ~> S[.TODO = $constant_statement_tasks([NConst phpType11 expression metadata_first], S.ORIGIN, 0) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtConst (SEQUENCE phpType15*) (SEQUENCE ([NConst phpType11 expression metadata_first])) metadata)) :: ptask_tail*
+  -- if phpType15* =/= eps
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $constant_attribute_entry_valid(S, PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0]))
