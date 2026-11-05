@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Reach inherited arm tick frequency and the committed Match result marker."""
 import argparse
+from pathlib import Path
 
 import fiber_state_review as review
 import tick_match_review_cases as sources
@@ -56,9 +57,29 @@ review.CASES = {
             'S_done.EVENTS = [OUTPUT $ptascii("A"), OUTPUT $ptascii("T"), OUTPUT $ptascii("5"), OUTPUT $ptascii(";"), OUTPUT $ptascii("Z"), OUTPUT $ptascii("T"), OUTPUT $ptascii("9"), OUTPUT $ptascii(";")]',
         ],
     },
+    'unselected-arm-declarables-survive-generator-pause': {
+        'source': Path(__file__).with_name('tick_match_generator.php').read_text(),
+        'stage': 'S.CURRENT = eps -- if $lookup(S.ENV, $ptascii("generator")) = (n_cell) -- if S.STORE[n_cell] = DEFINED (POBJECT n) -- if S.OBJECTS[n] = GENERATOR pgenerator -- if pgenerator.PHASE = GENERATOR_PAUSED -- if pgenerator.FRAME = (pframe) -- if S.EVENTS = [OUTPUT $ptascii("I")]',
+        'checks': [
+            'S.TICKCOUNT = 0', 'pgenerator.VALUE = (pvalue_yield)',
+            '$type_bytes(pvalue_yield) = $ptascii("string")',
+            '$echo_value(pvalue_yield) = $ptascii("V")',
+            'pframe.TODO = (ORIGIN_RETURN (porigin_statement)) :: DISCARD :: (TICK porigin_statement ptickmarker) :: ptask_tail*',
+            'ptickmarker.FREQUENCY = 1',
+            '$tick_marker_valid(S, porigin_statement, ptickmarker)',
+            '$generator_record_valid(S, pgenerator)', '$generator_state_valid(S)',
+            *valid('S'), *PAUSE,
+            'S_paused.OBJECTS = S.OBJECTS', '$generator_state_valid(S_paused)',
+            'S_done.EVENTS = [OUTPUT $ptascii("I"), OUTPUT $ptascii("V"), OUTPUT $ptascii("|"), OUTPUT $ptascii("T"), OUTPUT $ptascii("G"), OUTPUT $ptascii("T"), OUTPUT $ptascii("Z")]',
+        ],
+    },
 }
 
-DERIVED_GUARDS = {name: 1 for name in review.CASES}
+DERIVED_GUARDS = {
+    'selected-callable-inherits-later-condition-frequency': 1,
+    'table-result-assignment-restores-marker-line-after-last-arm': 1,
+    'unselected-arm-declarables-survive-generator-pause': 0,
+}
 
 
 if __name__ == '__main__':
