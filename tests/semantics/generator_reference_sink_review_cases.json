@@ -53,96 +53,11 @@
     "id": "same-key-index-value-replacement-cell",
     "source": "<?php\nfunction &valuesReview95() { global $a95,$b95; echo \"Y0;\"; yield 0 => $a95; echo \"Y1;\"; yield 0 => $b95; echo \"N;\"; }\nfunction sinkReview95(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warningReview95($level,$message) { global $g95,$alias95; echo \"H;\"; $g95->next(); $alias95=22; echo \"K:\",$g95->current(),\":\",$alias95,\";\"; return true; }\n$a95=11; $b95=11; $alias95=&$a95; set_error_handler('warningReview95'); echo \"B;\"; $g95=valuesReview95(); sinkReview95(...$g95); echo \"A:\",$a95,\";B:\",$b95,\";\"; unset($g95);\n",
     "source_sha256": "0c30c2163ce24ff6ef5f8b432cd6e20b18adb88a96969f47028c4e0f282b337c",
-    "purpose": "Native-first explicit frontier control; expected Unsupported gives zero semantic agreement.",
-    "expected_model": "unsupported",
+    "purpose": "A96 promotes saved live CELL delivery across replacement even when key/index/value stay equal; original A95 Unsupported evidence remains unchanged with zero agreement credit.",
+    "expected_model": "normal",
     "native_stdout": "B;Y0;H;Y1;K:11:22;N;S:22;R:33;A:22;B:11;",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Generator unpack reference payload changed during warning",
-    "unsupported_stdout": "B;Y0;H;Y1;K:11:22;",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "66",
-            "59"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "89",
-            "48",
-            "59"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "72",
-            "59"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "89",
-            "49",
-            "59"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "75",
-            "58"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "49",
-            "49"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "58"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "50",
-            "50"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "59"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   },
   {
     "id": "runtime-string-cache-ordinary-offset-copy",

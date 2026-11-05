@@ -660,15 +660,22 @@ runtime-string carriers and owning values remain outside this rule. The same
 ordinary-cell and carrier checks apply after the handler, before creating a
 fresh private callee cell. Earlier private cells survive the second Warning.
 
-Delivery requires the same physical reference cache cell, key and INDEX with
-the Generator still PAUSED. INDEX is the largest used integer key, not a
-resumption counter: repeated explicit keys can leave it unchanged. Reference-cell
-replacement is therefore detected independently even when key/index/value are
-equal. By-value delivery keeps its previous cached-value equality check.
+The [captured-cell extension](../../coverage/semantics/generator-captured-cell-sink-review.json)
+reads the selected live CELL after normal callback return, independently of the
+current cache cell, key, INDEX or Generator phase. The prechecked key still selects
+the original argument slot. Cache replacement cannot redirect that read, even
+when key/index/value stay equal. INDEX is the largest used integer key, not a
+resumption counter. Closing a Generator frees its frame but retains its cached
+value/key until storage retirement; that real cache owner is distinct from the
+nonowning CELL designation. The ordinary iterator NEXT then advances the actual
+Generator, including a used yield's NULL continuation or the Error for a running
+Generator. A producer exception caught inside the callback leaves normal Warning
+return and can still deliver the live cell.
 
-By-value payload changes, key/index or producer-phase changes, replacement
-reference cells, dynamic-string sinks and ineligible reference kinds stop with
-a rooted, source-valid Unsupported cursor. A throwing handler also stays explicit
+By-value delivery keeps its existing cached-value/key/index/phase equality and
+`DELEGATE = PARKED = eps` guards. Dynamic-string sinks, unavailable or ineligible
+reference cells and these changed by-value states stop with a rooted, source-valid
+Unsupported cursor. A throwing handler also stays explicit
 Unsupported: Zend still calls the native iterator's `move_forward` with its
 exception pending before propagating it. The pending Throwable, Generator,
 INPUT, sent prefix and held scalar remain rooted at this unmodeled frontier;

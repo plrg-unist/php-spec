@@ -550,6 +550,10 @@ test-semantics: build
 	python3 tests/semantics/generator_reference_sink_review_sources.py
 	python3 tests/semantics/generator_reference_sink_state.py
 	python3 tests/semantics/generator_reference_sink_review_state.py
+	python3 tests/semantics/generator_captured_cell_sink_sources.py
+	python3 tests/semantics/generator_captured_cell_sink_review_sources.py
+	python3 tests/semantics/generator_captured_cell_sink_state.py
+	python3 tests/semantics/generator_captured_cell_sink_review_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_sources.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_review_sources.py
