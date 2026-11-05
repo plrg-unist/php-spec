@@ -7,7 +7,7 @@ import fiber_state_review as review
 
 
 ROOT = Path(__file__).resolve().parents[2]
-VALID = ['$destruction_state_valid(S)', '$call_descriptors_valid(S)',
+VALID = ['$destructor_operational(S)', '$destruction_state_valid(S)', '$call_descriptors_valid(S)',
          'H = $heap_graph(S)', '$heap_valid(H)',
          'S_global = $global_table_view(S)']
 DONE = ['S_zero = $drive_steps(S, 0)', 'S_zero.COMPLETION = BUDGET',

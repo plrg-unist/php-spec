@@ -1136,12 +1136,25 @@ def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = true
   -- if $weakmap_reference_key_retiring(S, pnode)
 def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = $weakmap_reference_keys_retiring(S, pnode_tail*)
   -- if ~$weakmap_reference_key_retiring(S, pnode)
-;; A registered Many table or pending cleanup already proves activation;
+;; Internal Keys need free_obj notification even with quiet singleton values.
+;; This witness scans registrations, without repeatedly computing their reach.
+dec $weakmap_internal_registration(pstate, pnode) : bool
+def $weakmap_internal_registration(S, HOBJECT n_map) = true
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if $weakmap_internal_key(S, pweakmapentry.KEY)
+def $weakmap_internal_registration(S, pnode) = false -- otherwise
+dec $weakmap_internal_registrations(pstate, pnode*) : bool
+def $weakmap_internal_registrations(S, eps) = false
+def $weakmap_internal_registrations(S, pnode :: pnode_tail*) = true
+  -- if $weakmap_internal_registration(S, pnode)
+def $weakmap_internal_registrations(S, pnode :: pnode_tail*) = $weakmap_internal_registrations(S, pnode_tail*)
+  -- if ~$weakmap_internal_registration(S, pnode)
+;; A registered Many table/internal Key or pending cleanup proves activation;
 ;; scan RC candidates only when none of those witnesses is present.
 dec $weakmap_reference_active(pstate, bool) : bool
 def $weakmap_reference_active(S, true) = true
 def $weakmap_reference_active(S, false) = $weakmap_reference_keys_retiring(S, S.ALLOCATIONS)
-def $weakmap_reference_operational(S) = $weakmap_reference_active(S, S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ S.DESTRUCTION.FRAMES =/= eps \/ $weakmap_entries_present(S, S.ALLOCATIONS))
+def $weakmap_reference_operational(S) = $weakmap_reference_active(S, S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ S.DESTRUCTION.FRAMES =/= eps \/ $weakmap_entries_present(S, S.ALLOCATIONS) \/ $weakmap_internal_registrations(S, S.ALLOCATIONS))
 dec $weakmap_foreach_cursor_valid(pstate, nat, nat, nat) : bool
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
