@@ -626,7 +626,7 @@ def $tick_statement_prefix(S, porigin, STMT (NStmtEnum phpType14 phpType3 phpTyp
 def $tick_statement_prefix(S, porigin, ptask) = S -- otherwise
 def $tick_case_tasks(S, porigin, n, eps) = eps
 def $tick_case_tasks(S, porigin, n, (NStmtEnumCase phpType14 phpType11 phpType5 metadata) :: statement*) = $group_tick_tasks(S, $origin_child((porigin), [PCFIELD 4, PCINDEX n])) ++ $tick_case_tasks(S, porigin, $(n + 1), statement*)
-def $tick_case_tasks(S, porigin, n, statement :: statement*) = $tick_case_tasks(S, porigin, $(n + 1), statement*) -- otherwise
+def $tick_case_tasks(S, porigin, n, statement_head :: statement*) = $tick_case_tasks(S, porigin, $(n + 1), statement*) -- otherwise
 
 dec $tick_kind(pintrinsic) : bool
 dec $tick_registration_valid(pstate, pconfigcall) : bool

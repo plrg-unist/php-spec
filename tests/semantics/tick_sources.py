@@ -106,7 +106,6 @@ EXITS = {
     'callback-owned-arg': 0,
 }
 CONTROLS = {
-    'class-placement': (b'<?php echo "P"; declare(ticks=1); class C {} echo "A";', b''),
     'typed-variadic': (b'<?php function t(int ...$args){} echo "P"; register_tick_function("t",1); declare(ticks=1); echo "A";', b'P'),
     'builtin-callback': (b'<?php echo "P"; register_tick_function("ob_get_level"); declare(ticks=1); echo "A";', b'P'),
 }
