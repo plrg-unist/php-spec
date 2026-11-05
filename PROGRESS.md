@@ -797,16 +797,17 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR26 continues handler-free integer/string exit during ignored destructor-body
-value cleanup. Existing abandoned sources retain both C protections, unfinished
-arguments/FCC slots and the stopped tick tail; the actual full exit status passes
-to later active queue cleanup without fatal reporting. Cacheless/noqueue finish
-returns the read-only terminal result directly. Fresh object/alias-array/static
-Closure and later-retained values have native witnesses. Five new originals and
-two affected controls agree; strict435 and five independent groups/739 conditions
-(734 genuine, five derived) pass, covering ownership, queue, full-status and
-resumption. The original model's missing-Q baseline retains zero credit.
-[Body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json).
+ATTR27 preserves pending C owners when an ignored body-value integer exit replaces
+a saved main exit 263. Actual 9/515/519 remains separate from saved phase 263 and
+CLI status. A genuine NORMAL/BUDGET canonical unwind and its current singleton
+null-C Tick-source frame authenticate a status-only history view. Frame validation
+retains that witness before ordinary caller-scope drop; readiness, actual status,
+phase facts and148 delivery are unchanged. Five new originals and two affected26
+controls agree; strict435 and five independent groups/775 conditions (765 genuine,
+ten derived) pass. Original Unsupported and narrow owner-loss diagnostic keep0.
+[Replacement review](coverage/semantics/callback-late-tick-body-reexit-review.json).
+Earlier [body-value exit](coverage/semantics/callback-late-tick-body-exit-review.json)
+retains its normal/stable-main integer/string and 739-condition cuts.
 Earlier [handler-value throw](coverage/semantics/callback-late-tick-handler-throw-review.json)
 retains its separate disabled-handler/old-Throwable cut.
 Earlier [normal handler-value](coverage/semantics/callback-late-tick-handler-value-review.json),

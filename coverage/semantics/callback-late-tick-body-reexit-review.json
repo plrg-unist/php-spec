@@ -1,0 +1,120 @@
+{
+  "milestone": "ATTR27: changed saved-main status during ignored body-value exit",
+  "status": "Bounded private validation accepted: strict435, seven source agreements and independent5/775",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-27",
+  "scope": "A handler-free integer exit from an ignored destructor-body value replaces a saved main exit263. Fresh object/alias array/static Closure, retained-later and cacheless/noqueue witnesses use new9/515/519; the original main UnwindExit is already disposed before FINAL.",
+  "production": {
+    "revision": "f72d2f0ed34df92116d5c975a3503f4880f0997c",
+    "implementation": [
+      "spec/semantics/84-call-integrity.watsup",
+      "spec/semantics/444-executor-final-free.watsup"
+    ],
+    "behavior": "Only genuine NORMAL/BUDGET canonical EXIT_UNWIND matching actual full status may authenticate a changed saved status through its current singleton null-C destructor frame and original Tick operation. Strict history/current-context validation uses an EXITSTATUS-only lookup view; the view stops matching the actual unwind, preventing recursion. Frame validation sees that witness before dropping caller scope. Ordinary readiness/validity and148 delivery remain unchanged; the lookup leaves new actual status and saved phase completions intact; no new owner/task/state representation."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit) overwrites integer status before zend_throw_unwind_exit",
+      "main/main.c:php_execute_script disposes pending main exception before php_request_shutdown/FINAL",
+      "Zend/zend_execute_API.c:zend_call_function null-current tail and zend_call_known_function dummy retval cleanup",
+      "Zend/zend_exceptions.c:zend_throw_exception_internal UnwindExit release/bailout without fatal",
+      "Zend/zend_objects.c:zend_objects_destroy_object inner protection",
+      "Zend/zend_objects_API.c:zend_objects_store_del outer protection"
+    ]
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "f1f15d89ddea35edcf0a1e642c794822b571446f5594dfc9588a74efccf2c11a",
+      "revision": "5d3567c7a3f065f7aa25fc265c785bd89b21a670",
+      "new_originals": 5,
+      "affected_controls": 2,
+      "result": "New object9,array3,Closure7,retained9,noqueue7; all empty stderr. Fresh/array/Closure continue Q; retained prints K before R. Controls normal-main7 and stable-string7 preserve26 streams. Full515/519 are distinguished from CLI3/7 in reached states."
+    },
+    "baseline": {
+      "report": "source-baseline-5d35/report.json",
+      "report_sha256": "bf5dcc941e4538bc52c6e1ec8a0ded38634d660cb88e4be12fa38c70dde28f1a",
+      "revision": "5d3567c7a3f065f7aa25fc265c785bd89b21a670",
+      "result": "Unsupported ordinary destructor release before request stage after B;F;A;R;, no Q/exit status.76.95s, no timeout, stable/full reap. Zero agreement credit."
+    },
+    "diagnostic": {
+      "report": "debug-exit-delivery-5d35/report.json",
+      "report_sha256": "9d749e6c55bd3f064a816824d1c54cc510d35b32bdbe67382ad714efe76b885c",
+      "revision": "5d3567c7a3f065f7aa25fc265c785bd89b21a670",
+      "result": "Genuine R EXIT_INVOKE starts at263 with Arg/R/K/L/C owners2/2/1/1/2. Raw EXITED9 and normalized EXIT_UNWIND9 preserve them; actual source/descriptor validity fails while readonly263 restores it. Next actual frame-unwind loses Arg/R/L/C to0/0/0/0 and returns Unsupported. No early delivery hook is needed. Diagnostic only, zero agreement credit."
+    },
+    "strict": {
+      "report": "strict-unwind-f72/report.json",
+      "report_sha256": "548a410470c480b100a96fde226956d8318ae35137b9a2eb3e4ff1ca87a1d37b",
+      "revision": "f72d2f0ed34df92116d5c975a3503f4880f0997c",
+      "passed": true,
+      "modules": 435
+    },
+    "source_first": {
+      "report": "source-unwind-f72/report.json",
+      "report_sha256": "8b9f3a1a2537d37d79b9ca2044524acdfc6446e89c4357e577c41c61a86317c3",
+      "revision": "f72d2f0ed34df92116d5c975a3503f4880f0997c",
+      "passed": true,
+      "selected": [
+        "object"
+      ],
+      "result": "Exact source including Q and new exit9,100.41s; stable/full reap."
+    },
+    "source_remaining": {
+      "report": "source-unwind-f72-rest/report.json",
+      "report_sha256": "d27440f74ec6270bd1225dd6821932d21559ce7f57b5247113c2cff9ed1aa43e",
+      "revision": "aab4fcc9373cf9f7c7c0568734e3b749edd51615",
+      "passed": true,
+      "selected": [
+        "array",
+        "closure",
+        "retained",
+        "noqueue",
+        "normal-main-control",
+        "stable-string-control"
+      ],
+      "result": "All six exact; combined with first object, five new originals and two affected26 controls pass. Stable inputs/empty worker stderr/full reap."
+    },
+    "reached": {
+      "report": "reached-first/run/report.json",
+      "report_sha256": "3e92678b7271a3afbc183a891a0a4079c6ac1be83cbfa9bea88d4d36161c5df7",
+      "outer_report": "reached-first/process.json",
+      "outer_report_sha256": "7c58e3d27a7badcef40763cfea9694f7325467d82a6d2e1435d93fddd544cd5d",
+      "revision": "aab4fcc9373cf9f7c7c0568734e3b749edd51615",
+      "passed": true,
+      "groups": 5,
+      "conditions": 775,
+      "genuine": 765,
+      "derived": 10,
+      "group_conditions": [
+        175,
+        158,
+        161,
+        145,
+        136
+      ],
+      "result": "Real EXIT_UNWIND frame/capture/terminal/queue/free steps preserve CPP2 and unfinished slots, alias ownerArg3, retired Arg/K0 and actual full9/515/519. Strict ordinary validity stays false while genuine source-history lookup/frame validation succeeds; history recursion stops and ordinary/mismatched controls are refused. Mid-unwind Budget and terminal idempotence pass. No correction/failure; stable inputs/empty stderr/full reap."
+    }
+  },
+  "tests": {
+    "new_sources": [
+      "tests/semantics/deprecated_late_tick_body_reexit_object.php",
+      "tests/semantics/deprecated_late_tick_body_reexit_array.php",
+      "tests/semantics/deprecated_late_tick_body_reexit_review_closure.php",
+      "tests/semantics/deprecated_late_tick_body_reexit_review_retained.php",
+      "tests/semantics/deprecated_late_tick_body_reexit_no_queue.php"
+    ],
+    "controls": [
+      "tests/semantics/deprecated_late_tick_body_exit_object.php",
+      "tests/semantics/deprecated_late_tick_body_exit_array.php"
+    ],
+    "protocol": "tests/semantics/deprecated_late_tick_body_reexit_review_protocol.py"
+  },
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; tests/semantics/profile.json. Exact commands/caps/source/runtime/helper hashes, exits and full reaping are external. Copied tools establish no rebuild/portability claim.",
+  "remaining": "Multiple/USER/non-Tick frames, handlers, unshared owning channels, uncovered selected completions, wider cleanup/ref-return/GC/Fiber/reentry contexts remain partial. No engine-bug or lifecycle/core closure claim.",
+  "zero_credit": [
+    "Original Unsupported and source/owner-loss diagnostic retain zero agreement credit.",
+    "ATTR07 unsafe observation is not rerun and has no renewed credit."
+  ]
+}

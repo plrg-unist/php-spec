@@ -372,8 +372,17 @@ is identity, so repeated terminal driving changes no events or owners. Five
 new source witnesses distinguish fresh, shared, alias, capture and cacheless
 cases; five independent groups pass 739 conditions (734 genuine, five derived).
 The [body-value exit review](../../coverage/semantics/callback-late-tick-body-exit-review.json)
-records the source/state cuts. Saved integer replacement and wider frame/handler
-contexts remain partial.
+records the source/state cuts. A different integer exit can now replace the saved
+main status in a singleton current null-C Tick-source frame. The real canonical
+unwind must match actual full status; only then may its strict old-phase source
+and context validate through an EXITSTATUS-only lookup. That lookup stops matching
+the real unwind, preventing recursion. Frame validation captures the witness
+before caller-scope projection. The lookup leaves new status and saved phases intact;
+ordinary readiness and148 delivery keep their previous rules. The
+[replacement review](../../coverage/semantics/callback-late-tick-body-reexit-review.json)
+records seven source agreements and five independent groups/775 conditions
+(765 genuine, ten derived). Multiple/USER/non-Tick frames,
+handlers and wider cleanup remain partial.
 
 An engine fatal bailout also skips live VM frame cleanup. The snapshot retains
 current and saved local, receiver and temporary owners before structural cleanup;

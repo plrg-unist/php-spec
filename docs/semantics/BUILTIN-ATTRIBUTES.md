@@ -341,8 +341,13 @@ value exiting later adds no phantom original receiver. Five new originals and
 two affected controls agree; strict435 and five independent groups/739 conditions
 (734 genuine, five derived) pass.
 [Body-value exit review](../../coverage/semantics/callback-late-tick-body-exit-review.json).
-Replacing a saved main integer with a different integer during the nested body,
-wider active frames and handlers remain partial.
+The [saved-status replacement review](../../coverage/semantics/callback-late-tick-body-reexit-review.json)
+extends the singleton null-C Tick-source case to a different integer exit. Actual
+full 9/515/519 survives while old phase 263 remains documentary. Only genuine
+canonical unwind permits status-only source/frame lookup; ordinary readiness
+remains strict. Five new originals and two26 controls agree; strict435 and five
+independent groups/775 conditions (765 genuine, ten derived) pass. Multiple/USER/non-Tick
+frames and handlers remain partial.
 
 Four new handled originals and two affected controls agree; strict433 passes.
 Nine independent groups pass 508 conditions (497 reached, 11 derived). The

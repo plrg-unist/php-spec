@@ -4853,22 +4853,24 @@ restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact
 Normal and abrupt ignored named-handler values keep their original
 [handler-value](coverage/semantics/callback-late-tick-handler-value-review.json)
 and [handler-value throw](coverage/semantics/callback-late-tick-handler-throw-review.json) cuts.
-Ignored destructor-body values retire before the inner C decrement. A handler-free
-integer or string exit during their disposal now preserves the pending C pairs
-and unfinished argument/FCC jobs, continues later active queue cleanup, and stops
-the remaining tick list. Full status 263 remains distinct from CLI status 7; string
-exit preserves a stable earlier status. A later-retained value exits after its
-original receiver has retired. Cacheless/noqueue finalization is idempotent.
+Ignored destructor-body values retire before the inner C decrement. A later
+integer exit can now replace a saved main exit status while pending C pairs and
+unfinished arguments/FCC jobs remain. Actual status 519 stays distinct from saved
+phase 263 and CLI status 7. Only genuine canonical unwind authenticates an old-status
+source view; frame validation captures that witness before dropping caller scope.
+Ordinary tick readiness stays strict; the lookup leaves actual status and saved
+phases intact.
 Five new originals and two affected controls agree; strict435 and five independent
-groups/739 conditions (734 genuine, five derived) pass.
-[Body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json).
+groups/775 conditions (765 genuine, ten derived) pass.
+[Saved-status replacement review](coverage/semantics/callback-late-tick-body-reexit-review.json).
+The earlier [body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json)
+keeps its integer/string, queue/noqueue and 739-check cuts.
 Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
 [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
 [handler](coverage/semantics/callback-late-tick-handler-review.json) and
 [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) evidence
-retains its original cuts. Replacing an earlier integer exit during nested cleanup,
-unshared owning contexts, handlers, direct reference-return bodies, wider frame
-cleanup and reentry remain partial.
+retains its original cuts. Multiple/USER/non-Tick frames, unshared owning contexts,
+handlers, direct reference-return bodies, wider cleanup and reentry remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
