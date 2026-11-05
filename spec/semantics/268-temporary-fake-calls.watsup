@@ -249,6 +249,10 @@ def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit[.COMPLETION = UNSUPP
 def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit -- otherwise
 dec $closure_call_copy_cleanup_exit(pstate) : (pdestructorcall, pdestructionoperation)?
 dec $closure_call_copy_cleanup_exit_rebase(pstate, int) : pstate
+dec $destructor_operation_valid(pstate, pdestructionoperation) : bool
+dec $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation) : ptask*
+dec $destructor_operation_postfinish(pstate, pdestructionoperation) : pstate
+dec $eager_cleanup_history(pstate, pdestructioncleanup) : pstate
 def $closure_call_copy_exit_scope(S, S_exit) = $closure_call_copy_cleanup_exit_rebase(S, z)
   -- if S_exit.TODO = (EXIT_UNWIND z) :: ptask_tail*
   -- if $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))

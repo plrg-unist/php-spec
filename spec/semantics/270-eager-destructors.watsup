@@ -53,12 +53,9 @@ dec $eager_operation_tail(pstate) : ptask*
 dec $eager_operation_value(pstate) : poperand
 dec $eager_operation_completion_roots(pdestructionoperation) : pnode*
 dec $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation*) : pdestructionoperation?
-dec $destructor_operation_valid(pstate, pdestructionoperation) : bool
 dec $destructor_operation_live(pstate, pdestructionoperation) : bool
 dec $eager_operation_value_valid(pstate, pdestructionoperation) : bool
-dec $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation) : ptask*
 dec $destructor_operation_finish(pstate, pdestructionoperation) : pstate
-dec $destructor_operation_postfinish(pstate, pdestructionoperation) : pstate
 def $destructor_operation_postfinish(S, pdestructionoperation) = S -- otherwise
 dec $destructor_pending_finish(pstate, pdestructionoperation, nat, ptask*) : pstate
 dec $ref_abrupt_destructor_old_source(pstate, prefreturncursor) : bool
@@ -77,7 +74,6 @@ dec $eager_cleanup_hold(pstate, pdestructioncleanup?) : pstate
 dec $eager_cleanup_finish(pstate, pdestructionoperation) : pstate
 dec $eager_cleanup_final(ptask) : bool
 dec $eager_cleanup_source(ptask) : ptask
-dec $eager_cleanup_history(pstate, pdestructioncleanup) : pstate
 dec $eager_cleanup_warning(ptask) : pdestructorcall?
 dec $eager_cleanup_object(pstate, ptask) : pnode*
 dec $eager_raw_history_nodes(pstate, pvalue) : pnode*
