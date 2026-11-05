@@ -27,9 +27,9 @@ def $static_descriptor(S, PORIGIN n pcpath) = $static_code(pcode.EXPRESSIONS, pc
   -- if $code_at(S.CODE, n) = (pcode)
 def $static_descriptor(S, porigin) = eps -- otherwise
 
-dec $static_tasks(phpType59*, porigin?, nat) : ptask*
-def $static_tasks(eps, porigin?, n) = eps
-def $static_tasks(phpType59 :: phpType59_tail*, porigin?, n) = [$at_task((porigin_item), STATIC_INIT porigin_item)] ++ $static_tasks(phpType59_tail*, porigin?, $(n + 1))
+dec $static_tasks(pstate, phpType59*, porigin?, nat) : ptask*
+def $static_tasks(S, eps, porigin?, n) = eps
+def $static_tasks(S, phpType59 :: phpType59_tail*, porigin?, n) = [$at_task((porigin_item), STATIC_INIT porigin_item)] ++ $group_tick_tasks(S, (porigin_item)) ++ $static_tasks(S, phpType59_tail*, porigin?, $(n + 1))
   -- if $origin_child(porigin?, [PCINDEX n]) = (porigin_item)
 
 dec $static_local(pstate, ptbytes, nat) : pstate
@@ -62,7 +62,7 @@ def $static_finish(S, porigin, ptbytes, z) = S_value
   -- if S_value = $resolve_at(S, S.RESULT, z)
   -- if S_value.COMPLETION =/= NORMAL
 
-rule PhpStep/static-statement: S ~> S[.TODO = $static_tasks(phpType59*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
+rule PhpStep/static-statement: S ~> S[.TODO = $static_tasks(S, phpType59*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtStatic (SEQUENCE phpType59*) metadata)) :: ptask_tail*
 rule PhpStep/static-existing: S ~> $static_local(S[.TODO = ptask_tail*], ptbytes, n)
   -- if S.TODO = (STATIC_INIT porigin) :: ptask_tail*

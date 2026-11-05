@@ -70,7 +70,7 @@ rule PhpStep/expression: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIE
   -- if S.TODO = (STMT (NStmtExpression expression metadata)) :: ptask_tail*
 rule PhpStep/discard: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = DISCARD :: ptask_tail*
-rule PhpStep/unset: S ~> S[.TODO = $unset_tasks(expression_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
+rule PhpStep/unset: S ~> S[.TODO = $unset_tasks(S, expression_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtUnset (SEQUENCE expression_tail*) metadata)) :: ptask_tail*
 rule PhpStep/literal: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN $string_literal_value(pvalue)]
   -- if S.TODO = (EVAL expression) :: ptask_tail*

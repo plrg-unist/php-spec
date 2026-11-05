@@ -24,7 +24,10 @@ dec $tick_conditional(expression) : bool
 dec $tick_logical(expression) : bool
 dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_new_named(phpType28) : bool
-dec $tick_echo_operands(pticksummary, pcodeexpr*, pcpath, nat, expression*) : pticksummary
+dec $tick_group_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
+dec $tick_group_emitter(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
+dec $tick_group_site(pstate, porigin, int) : bool
+dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
@@ -270,19 +273,25 @@ def $tick_node(T, pcodeexpr*, pcpath, statement) = $tick_statement(T, pcodeexpr*
 def $tick_node(T, pcodeexpr*, pcpath, pcnode) = $tick_nodes(T, pcodeexpr*, $pcchildren(pcnode, pcpath)) -- otherwise
 
 ;; ECHO/BIND/UNSET/RETURN/jumps emit real operations even with literal operands.
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtEcho (SEQUENCE expression*) metadata, b) = $tick_echo_operands(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, expression*)
-;; Zend's parser splits a comma-separated Echo into individual statements. Each
-;; nonfinal operand owns an intermediate marker; the final one keeps the ordinary
-;; enclosing statement marker and its existing source context.
-def $tick_echo_operands(T, pcodeexpr*, pcpath, n, eps) = T[.LAST = false]
-def $tick_echo_operands(T, pcodeexpr*, pcpath, n, [expression]) = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n], expression)[.LAST = false]
-def $tick_echo_operands(T, pcodeexpr*, pcpath, n, expression :: expression_tail*) = $tick_echo_operands($tick_emit(T_operand[.LAST = false], pcpath ++ [PCINDEX n], T_operand.LINE), pcodeexpr*, pcpath, $(n + 1), expression_tail*)
-  -- if expression_tail* =/= eps
-  -- if T_operand = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n], expression)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtEcho phpType25 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtEcho phpType25 metadata, pcpath))
+;; Zend's parser splits these comma-separated groups into individual statements.
+;; Interleave each real emitter with its marker before compiling the next item;
+;; the final item keeps the existing enclosing statement marker and source scope.
+def $tick_group_nodes(T, pcodeexpr*, eps) = T[.LAST = false]
+def $tick_group_nodes(T, pcodeexpr*, [(PCOCCURRENCE pcpath pcnode)]) = $tick_group_emitter(T, pcodeexpr*, pcpath, pcnode)
+def $tick_group_nodes(T, pcodeexpr*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $tick_group_nodes($tick_emit(T_item, pcpath, T_item.LINE), pcodeexpr*, pcoccurrence*)
+  -- if pcoccurrence* =/= eps
+  -- if T_item = $tick_group_emitter(T, pcodeexpr*, pcpath, pcnode)
+def $tick_group_emitter(T, pcodeexpr*, pcpath, NStaticVar phpType10 phpType5 metadata) = T_body[.LAST = false][.LINE = z_bind]
+  -- if $static_code(pcodeexpr*, pcpath) = ((ptbytes, z_begin, z_bind, b))
+  -- if T_body = $tick_nodes(T, pcodeexpr*, $pcchildren(NStaticVar phpType10 phpType5 metadata, pcpath))
+def $tick_group_emitter(T, pcodeexpr*, pcpath, NStaticVar phpType10 phpType5 metadata) = T[.DEPENDENCY = ("tick static binding descriptor")]
+  -- if $static_code(pcodeexpr*, pcpath) = eps
+def $tick_group_emitter(T, pcodeexpr*, pcpath, expression) = $tick_node(T, pcodeexpr*, pcpath, expression)[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtInlineHTML phpType33 metadata, b) = T[.LAST = false]
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUnset phpType25 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtUnset phpType25 metadata, pcpath))[.LAST = false]
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGlobal phpType25 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtGlobal phpType25 metadata, pcpath))[.LAST = false]
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtStatic phpType58 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtStatic phpType58 metadata, pcpath))[.LAST = false]
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUnset phpType25 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtUnset phpType25 metadata, pcpath))
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGlobal phpType25 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtGlobal phpType25 metadata, pcpath))
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtStatic phpType58 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtStatic phpType58 metadata, pcpath))
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtReturn phpType5 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtReturn phpType5 metadata, pcpath))[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtBreak phpType5 metadata, b) = T[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtContinue phpType5 metadata, b) = T[.LAST = false]
@@ -470,13 +479,30 @@ def $tick_marker_valid(S, porigin, ptickmarker) = true
   -- if $origin_node(S.SOURCES, porigin) = (statement)
 def $tick_marker_valid(S, porigin, ptickmarker) = true
   -- if $tick_marker(S, porigin) = (ptickmarker)
-  -- if $echo_emit_source(S, $origin_source(porigin), ptickmarker.LINE)
+  -- if $tick_group_site(S, porigin, ptickmarker.LINE)
 def $tick_marker_valid(S, porigin, ptickmarker) = false -- otherwise
-;; EMIT's original producer/owner scope ends before this wrapper begins. Output
-;; continuations preserve that exact suffix, and the next operand remains delayed.
-def $echo_tick_tasks(S, (porigin)) = [AT porigin (TICK porigin ptickmarker)]
+def $tick_target_group(NStmtUnset phpType25 metadata) = true
+def $tick_target_group(NStmtGlobal phpType25 metadata) = true
+def $tick_target_group(statement) = false -- otherwise
+def $tick_group_site(S, porigin, z) = true
+  -- if $echo_emit_source(S, $origin_source(porigin), z)
+def $tick_group_site(S, porigin, z) = true
+  -- if $reference_origin_parent($origin_source(porigin), 2) = ((porigin_parent, [PCFIELD 0, PCINDEX n]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (statement)
+  -- if $tick_target_group(statement)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $code_expression_at_source(S, porigin, eps) = (z)
+def $tick_group_site(S, porigin, z_bind) = true
+  -- if $reference_origin_parent($origin_source(porigin), 2) = ((porigin_parent, [PCFIELD 0, PCINDEX n]))
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtStatic phpType58 metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NStaticVar phpType10 phpType5 metadata_var)
+  -- if $static_descriptor(S, $origin_source(porigin)) = ((ptbytes, z_begin, z_bind, b))
+def $tick_group_site(S, porigin, z) = false -- otherwise
+;; Each original operation/owner scope finishes before its marker wrapper begins.
+;; Existing continuations preserve the exact suffix; the next item stays delayed.
+def $group_tick_tasks(S, (porigin)) = [AT porigin (TICK porigin ptickmarker)]
   -- if $tick_marker(S, porigin) = (ptickmarker)
-def $echo_tick_tasks(S, porigin?) = eps -- otherwise
+def $group_tick_tasks(S, porigin?) = eps -- otherwise
 
 def $tick_enter(S, porigin, STMT statement, ptask_tail*) = S[.TODO = [STMT statement, TICK porigin ptickmarker, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)]
   -- if $tick_marker(S, porigin) = (ptickmarker)

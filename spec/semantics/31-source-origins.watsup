@@ -50,14 +50,14 @@ def $statement_tasks(statement :: statement_tail*, porigin?, n) = [$at_task($ori
 
 dec $echo_expression_line(pstate, expression) : int
 def $echo_expression_line(S, expression) = $runtime_line(S, eps, expression) -- otherwise
-dec $echo_tick_tasks(pstate, porigin?) : ptask*
+dec $group_tick_tasks(pstate, porigin?) : ptask*
 dec $echo_tasks(pstate, expression*, porigin?, nat) : ptask*
 def $echo_tasks(S, eps, porigin?, n) = eps
-def $echo_tasks(S, expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), $at_task($origin_child(porigin?, [PCINDEX n]), EMIT $echo_expression_line(S[.ORIGIN = $origin_child(porigin?, [PCINDEX n])], expression))] ++ $echo_tick_tasks(S, $origin_child(porigin?, [PCINDEX n])) ++ $echo_tasks(S, expression_tail*, porigin?, $(n + 1))
+def $echo_tasks(S, expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), $at_task($origin_child(porigin?, [PCINDEX n]), EMIT $echo_expression_line(S[.ORIGIN = $origin_child(porigin?, [PCINDEX n])], expression))] ++ $group_tick_tasks(S, $origin_child(porigin?, [PCINDEX n])) ++ $echo_tasks(S, expression_tail*, porigin?, $(n + 1))
 
-dec $unset_tasks(expression*, porigin?, nat) : ptask*
-def $unset_tasks(eps, porigin?, n) = eps
-def $unset_tasks(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), UNSET expression)] ++ $unset_tasks(expression_tail*, porigin?, $(n + 1))
+dec $unset_tasks(pstate, expression*, porigin?, nat) : ptask*
+def $unset_tasks(S, eps, porigin?, n) = eps
+def $unset_tasks(S, expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), UNSET expression)] ++ $group_tick_tasks(S, $origin_child(porigin?, [PCINDEX n])) ++ $unset_tasks(S, expression_tail*, porigin?, $(n + 1))
 
 ;; ARRAY_NEXT runs at the current item occurrence. Moving to a sibling does
 ;; not add another scope; the surrounding array EVAL restores its caller.

@@ -24,11 +24,11 @@ def $global_binding(S, n_name*, z) = $scope_bind_name(S_cell, eps, n_name*, z)[.
   -- if ~$this_name(n_name*)
   -- if S_cell = $global_acquire_name(S, n_name*)
   -- if S_cell.COMPLETION = NORMAL
-dec $global_bind_tasks(expression*, porigin?, nat) : ptask*
-def $global_bind_tasks(eps, porigin?, n) = eps
-def $global_bind_tasks(expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCFIELD 0, PCINDEX n]), GLOBAL_BIND expression $expression_line(expression))] ++ $global_bind_tasks(expression_tail*, porigin?, $(n + 1))
+dec $global_bind_tasks(pstate, expression*, porigin?, nat) : ptask*
+def $global_bind_tasks(S, eps, porigin?, n) = eps
+def $global_bind_tasks(S, expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCFIELD 0, PCINDEX n]), GLOBAL_BIND expression $expression_line(expression))] ++ $group_tick_tasks(S, $origin_child(porigin?, [PCFIELD 0, PCINDEX n])) ++ $global_bind_tasks(S, expression_tail*, porigin?, $(n + 1))
 def $task_source_node(GLOBAL_BIND expression z) = (expression)
-rule PhpStep/global-statement: S ~> S[.TODO = $global_bind_tasks(expression*, S.ORIGIN, 0) ++ ptask_tail*]
+rule PhpStep/global-statement: S ~> S[.TODO = $global_bind_tasks(S, expression*, S.ORIGIN, 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtGlobal (SEQUENCE expression*) metadata)) :: ptask_tail*
 rule PhpStep/global-bind-literal: S ~> $global_binding(S[.TODO = ptask_tail*], n_name*, z)
   -- if S.TODO = (GLOBAL_BIND (NExprVariable phpType32 metadata) z) :: ptask_tail*
