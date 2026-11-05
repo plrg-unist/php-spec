@@ -263,7 +263,11 @@ dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
 dec $ob_creation_ready(pstate, pconfigcall, pvalue*) : bool
 dec $ob_creation_target(phandlerresolution) : pcalltarget?
+dec $ob_creation_producer(pstate, pvalue) : pshutdownproducer?
 dec $ob_creation_history(pstate, pobcreation) : pstate
+dec $ob_creation_missing_scope(pstate, pshutdownproducer) : pclosurescope?
+dec $ob_creation_missing_binding(pstate, pshutdownproducer) : pclosurebinding?
+dec $ob_creation_consumed_history(pstate, pobcreation) : pstate
 dec $ob_creation_selected(pstate, pobcreation) : bool
 dec $ob_creation_task_valid(pstate, pobcreation) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
@@ -580,6 +584,10 @@ def $ob_creation_ready(S, pconfigcall, pvalue_values*) = true
 def $ob_creation_ready(S, pconfigcall, pvalue_values*) = false -- otherwise
 def $ob_creation_target(HANDLERRESOLVED pcalltarget) = (pcalltarget)
 def $ob_creation_target(phandlerresolution) = eps -- otherwise
+def $ob_creation_producer(S, POBJECT n) = ($eager_cleanup_target(S, CLOSURE_TARGET n))
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_name(S, n) = $ptascii("Closure")
+def $ob_creation_producer(S, pvalue) = eps -- otherwise
 ;; A borrowed lookup certificate may name a receiver retired during the Notice.
 ;; Restore only the saved array selectors for checking; never root that snapshot.
 def $ob_creation_history(S, pobcreation) = S[.ORIGIN = (pobcreation.CALL.SITE)][.ALLOCATIONS = S.ALLOCATIONS ++ $config_nodes(pobcreation.CALL) ++ $error_selected_roots($ob_creation_target(pobcreation.RESOLUTION))][.ARRAYS[n] = parray]
@@ -587,6 +595,28 @@ def $ob_creation_history(S, pobcreation) = S[.ORIGIN = (pobcreation.CALL.SITE)][
   -- if pobcreation.RAW = (parray)
   -- if $(n < |S.ARRAYS|)
 def $ob_creation_history(S, pobcreation) = S[.ORIGIN = (pobcreation.CALL.SITE)][.ALLOCATIONS = S.ALLOCATIONS ++ $config_nodes(pobcreation.CALL) ++ $error_selected_roots($ob_creation_target(pobcreation.RESOLUTION))] -- otherwise
+;; Consumed Closure arguments may already have retired their cells and receiver.
+;; Reuse the borrowed producer tables only for operation-metadata checking.
+def $ob_creation_missing_scope(S, pshutdownproducer) = pshutdownproducer.SCOPE
+  -- if $consumer_producer_scope(S, pshutdownproducer.TARGET) = eps
+def $ob_creation_missing_scope(S, pshutdownproducer) = eps -- otherwise
+def $ob_creation_missing_binding(S, pshutdownproducer) = pshutdownproducer.BINDING
+  -- if $consumer_producer_binding(S, pshutdownproducer.TARGET) = eps
+def $ob_creation_missing_binding(S, pshutdownproducer) = eps -- otherwise
+def $ob_creation_consumed_history(S, pobcreation) = S_borrowed
+  -- if pobcreation.VALUE = POBJECT n
+  -- if $(n < |S.OBJECTS|)
+  -- if pobcreation.PRODUCER = (pshutdownproducer)
+  -- if pshutdownproducer.TARGET = CLOSURE_TARGET n
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if $consumer_producer_scope(S, pshutdownproducer.TARGET) = eps \/ $consumer_producer_scope(S, pshutdownproducer.TARGET) = pshutdownproducer.SCOPE
+  -- if $consumer_producer_binding(S, pshutdownproducer.TARGET) = eps \/ $consumer_producer_binding(S, pshutdownproducer.TARGET) = pshutdownproducer.BINDING
+  -- if pshutdownproducer_missing = pshutdownproducer[.SCOPE = $ob_creation_missing_scope(S, pshutdownproducer)][.BINDING = $ob_creation_missing_binding(S, pshutdownproducer)]
+  -- if S_tables = $consumer_producer_history(S, pshutdownproducer_missing)
+  -- if S_borrowed = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $node_children(S_tables, HOBJECT n)]
+  -- if $closure_scope_rows_valid(S_borrowed, $consumer_producer_scopes(pshutdownproducer.SCOPE))
+  -- if $closure_bindings_valid(S_borrowed, $consumer_producer_bindings(pshutdownproducer.BINDING))
+def $ob_creation_consumed_history(S, pobcreation) = S -- otherwise
 def $ob_creation_selected(S, pobcreation) = true
   -- if pobcreation.RESOLUTION = HANDLERRESOLVED pcalltarget
   -- if $exception_raw_selected(S, pobcreation.VALUE, pobcreation.RAW, pcalltarget)
@@ -602,6 +632,7 @@ def $ob_creation_valid(S, pobcreation) = true
   -- if (pobcreation.RAW = eps /\ ~$is_array_value(pobcreation.VALUE)) \/ (pobcreation.RAW =/= eps /\ $is_array_value(pobcreation.VALUE))
   -- if S_history = $ob_creation_history(S, pobcreation)
   -- if $ob_parse_valid(S_history, pobcreation.CALL, 3, [pobcreation.VALUE, PINT pobcreation.CHUNK, PINT pobcreation.FLAGS])
+  -- if pobcreation.PRODUCER = $ob_creation_producer(S_history, pobcreation.VALUE)
   -- if ~$exception_deprecated_raw(S_history, pobcreation.VALUE) /\ ~$api_special(S_history, pobcreation.VALUE)
   -- if $ob_creation_selected(S_history, pobcreation)
 def $ob_creation_valid(S, pobcreation) = false -- otherwise
@@ -625,7 +656,7 @@ def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.TOD
   -- if ~$ob_user_running(S)
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
   -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
-  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE)}
+  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER $ob_creation_producer(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE)}
 rule PhpStep/ob-start-created-free: S ~> S[.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*]
   -- if S.TODO = (OB_START_CREATED pobcreation) :: ptask_tail*
   -- if $call_task_valid(S, OB_START_CREATED pobcreation)
@@ -649,7 +680,7 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps
   -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
   -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
-  -- if $ob_creation_valid(S_history, pobcreation)
+  -- if $ob_creation_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
   -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
   -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
   -- if $gc_temporary_bounded(S, pnode)

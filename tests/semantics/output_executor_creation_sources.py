@@ -46,6 +46,19 @@ ORIGINALS['notice-handler-throw'] = ORIGINALS['invokable-temporary'].replace(b'<
 set_error_handler(static function ($level, $message) { echo "H:", $level, "|"; throw new Exception("notice"); });
 ''').replace(b'echo ob_start(new InactiveCallbackOB10) ? "T|" : "F|";',
     b'try { echo ob_start(new InactiveCallbackOB10) ? "T|" : "F|"; } catch (Exception $error) { echo "E:", $error->getMessage(), "|"; }')
+ORIGINALS['closure-lifetime-byref'] = BASE.replace(b'<?php\n', b'''<?php
+class CapturedChildOB10 { function __destruct() { echo "C|"; } }
+function capturedCallbackOB10() { $child = new CapturedChildOB10; return static function ($bytes) use (&$child) { echo "BAD|"; return $bytes; }; }
+set_error_handler(static function ($level, $message) { echo "H:", $level, "|"; return true; });
+''').replace(b'ob_start(null)', b'ob_start(capturedCallbackOB10())')
+ORIGINALS['closure-lifetime-method'] = BASE.replace(b'<?php\n', b'''<?php
+class CapturedMethodOB10 { function run($a, $b, $c, $d) { echo "BAD|"; } function __destruct() { echo "C|"; } }
+function methodCallbackOB10() { $receiver = new CapturedMethodOB10; return $receiver->run(...); }
+set_error_handler(static function ($level, $message) { echo "H:", $level, "|"; return true; });
+''').replace(b'ob_start(null)', b'ob_start(methodCallbackOB10())')
+ORIGINALS['notice-return-callable'] = (HERE / 'output_executor_post_deactivate_retval.php').read_bytes().replace(b'<?php\n', b'''<?php
+class ReturnedCallbackOB10 { function __invoke($a, $b, $c, $d) { echo "BAD|"; } function __destruct() { echo "C|"; } }
+''').replace(b'echo ob_start() ? "RT|"', b'echo ob_start(new ReturnedCallbackOB10) ? "RT|"')
 SLOW = [b'LC_ALL=C', b'TZ=UTC', b'FIRST=one', b'USE_ZEND_ALLOC=0']
 ENVIRONMENTS = {'invokable-slow': SLOW, 'array-slow': SLOW}
 
