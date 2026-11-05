@@ -38,6 +38,8 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
     protected function checkEnum(PhpParser\Node\Stmt\Enum_ $node, int $namePos): void {}
     protected function checkTryCatch(PhpParser\Node\Stmt\TryCatch $node): void {}
     protected function checkClassMethod(PhpParser\Node\Stmt\ClassMethod $node, int $modifierPos): void {}
+    protected function checkPropertyHook(PhpParser\Node\PropertyHook $hook, ?int $paramListPos): void {}
+    protected function checkEmptyPropertyHookList(array $hooks, int $hookPos): void {}
 
     protected function doParse(): ?array {
         // Lexing inspects the complete source before grammar reductions start.
