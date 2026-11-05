@@ -169,12 +169,12 @@ def $generator_iterator_data(S, pconfigiterator) = false -- otherwise
 
 def $config_iterator_discard_allowed(S, pconfigiterator) = true
   -- if S_hold = $config_iterator_discard_scope(S, pconfigiterator)
-  -- if $heap_owners($heap_graph(S_hold), HOBJECT pconfigiterator.OBJECT) = 0
   -- if (HOBJECT pconfigiterator.OBJECT) <- S.ALLOCATIONS
   -- if $config_iterator_scope(S, pconfigiterator)
   -- if $generator_iterator_data(S, pconfigiterator)
   -- if pconfigiterator.CALL.OWNER = (n_receiver)
   -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S_hold), HOBJECT pconfigiterator.OBJECT) = 0 \/ $heap_owners($heap_graph(S_hold), HOBJECT n_receiver) = 0
 
 rule PhpStep/generator-iterator-ready: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*

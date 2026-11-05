@@ -710,7 +710,6 @@ def $config_iterator_history(S, pconfigiterator) = true
 def $config_iterator_history(S, pconfigiterator) = false -- otherwise
 def $config_iterator_scope(S, pconfigiterator) = true
   -- if $config_iterator_history(S, pconfigiterator)
-  -- if $config_iterator_owner_live(S, pconfigiterator.CALL)
   -- if $useriter_instance(S, pconfigiterator.OBJECT)
   -- if $config_iterator_methods(S, pconfigiterator.OBJECT, ["rewind", "valid", "current", "key", "next"])
 def $config_iterator_scope(S, pconfigiterator) = false -- otherwise
@@ -723,7 +722,7 @@ def $config_iterator_retired_scope(S, pconfigiterator) = true
   -- if $class_origin_matches(S, porigin_class, $ptascii("Iterator"), |S.CLASSES|)
   -- if $config_iterator_retired_methods(S, pconfigiterator.OBJECT, ["rewind", "valid", "current", "key", "next"])
 def $config_iterator_retired_scope(S, pconfigiterator) = false -- otherwise
-def $config_iterator_start(S, pconfigcall, poperand, n) = $config_iterator_scope(S, {CALL pconfigcall, ITERATOR S.NEXTITER, OBJECT n, INPUT poperand, PRODUCER eps, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)})
+def $config_iterator_start(S, pconfigcall, poperand, n) = ($config_iterator_owner_live(S, pconfigcall) /\ $config_iterator_scope(S, {CALL pconfigcall, ITERATOR S.NEXTITER, OBJECT n, INPUT poperand, PRODUCER eps, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)}))
 
 rule PhpStep/config-iterator-start: S ~> S_value[.ITERATORS = S_value.ITERATORS ++ [OBJECTITER n_iterator n_object 0 false]][.NEXTITER = $(n_iterator + 1)][.ORIGIN = (porigin)][.TODO = (CONFIG_ITERATOR {CALL pconfigcall, ITERATOR n_iterator, OBJECT n_object, INPUT S.RESULT, PRODUCER eps, ITEMS eps, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL)} "rewind-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_UNPACK_PREP pconfigcall) :: ptask_tail*
@@ -837,6 +836,7 @@ def $config_iterator_stage(S, pconfigiterator, "send") = true
 def $config_iterator_stage(S, pconfigiterator, text) = false -- otherwise
 
 def $config_iterator_valid(S, pconfigiterator, text) = true
+  -- if $config_iterator_owner_live(S, pconfigiterator.CALL)
   -- if ~(text <- ["ready", "input-release"])
   -- if $config_iterator_scope(S, pconfigiterator)
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
@@ -845,6 +845,7 @@ def $config_iterator_valid(S, pconfigiterator, text) = true
   -- if $config_iterator_stage(S, pconfigiterator, text)
   -- if $generator_id_count($useriter_tasks_ids(S.TODO), pconfigiterator.ITERATOR) = 1
 def $config_iterator_valid(S, pconfigiterator, "input-release") = true
+  -- if $config_iterator_owner_live(S, pconfigiterator.CALL)
   -- if $config_iterator_scope(S, pconfigiterator)
   -- if $config_iterator_owning_input(pconfigiterator)
   -- if S.ORIGIN = (pconfigiterator.CALL.SITE)
