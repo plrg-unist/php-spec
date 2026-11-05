@@ -593,6 +593,22 @@ def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_r
 ;; has_dimension passes a borrowed table zval to i_zend_is_true. NaN warns
 ;; before the DVAL word is reread; a callback may replace that same row.
 syntax pweakmapnan = { ACCESS paccess, ENTRY pweakmapentry, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+;; API argument delivery wraps the same error resume before handler entry.
+;; This projection must not call cursor validation, which validates us again.
+dec $weakmap_nan_marker(ptask) : ptask
+def $weakmap_nan_marker(API_CALLBACK_SEND papiargcursor) = WEAKMAP_NAN pweakmapnan
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if perrorcall.RESUME = WEAKMAP_NAN pweakmapnan
+def $weakmap_nan_marker(API_CALLBACK_REF papiargcursor) = WEAKMAP_NAN pweakmapnan
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if perrorcall.RESUME = WEAKMAP_NAN pweakmapnan
+def $weakmap_nan_marker(ptask) = $source_operand_marker(ptask) -- otherwise
+dec $weakmap_nan_suffix(ptask*, ptask, ptask*) : bool
+def $weakmap_nan_suffix(eps, ptask_expected, ptask_expected_tail*) = false
+def $weakmap_nan_suffix(ptask :: ptask_tail*, ptask_expected, ptask_expected_tail*) = (ptask_tail* = ptask_expected_tail*)
+  -- if $weakmap_nan_marker(ptask) = ptask_expected
+def $weakmap_nan_suffix(ptask :: ptask_tail*, ptask_expected, ptask_expected_tail*) = $weakmap_nan_suffix(ptask_tail*, ptask_expected, ptask_expected_tail*)
+  -- if $weakmap_nan_marker(ptask) =/= ptask_expected
 dec $weakmap_nan_receipt(pstate, pweakmapnan) : bool
 def $weakmap_nan_receipt(S, pweakmapnan) = true
   -- if paccess = pweakmapnan.ACCESS
@@ -608,14 +624,14 @@ def $weakmap_nan_receipt(S, pweakmapnan) = true
   -- if $access_source(S[.TODO = paccess.TASK :: pweakmapnan.TAIL], paccess)
   -- if $access_phase(paccess) /\ $access_capture_valid(paccess) /\ $access_selected_valid(paccess)
   -- if pweakmapnan.OWNER = |S.FRAMES| /\ pweakmapnan.CALLER = S.CURRENT
-  -- if $source_operand_suffix(S.TODO, WEAKMAP_NAN pweakmapnan, pweakmapnan.TAIL)
+  -- if $weakmap_nan_suffix(S.TODO, WEAKMAP_NAN pweakmapnan, pweakmapnan.TAIL)
 def $weakmap_nan_receipt(S, pweakmapnan) = false -- otherwise
 
 ;; Guard lookup is immutable receipt validation only. In particular it must
 ;; survive CV rebinding/last-owner removal, without recursively tracing heap.
 dec $weakmap_nan_task(pstate, ptask, nat) : bool
 def $weakmap_nan_task(S, ptask, n_map) = true
-  -- if $source_operand_marker(ptask) = WEAKMAP_NAN pweakmapnan
+  -- if $weakmap_nan_marker(ptask) = WEAKMAP_NAN pweakmapnan
   -- if pweakmapnan.ACCESS.OBJECT = (n_map)
   -- if $weakmap_nan_receipt(S, pweakmapnan)
 def $weakmap_nan_task(S, ptask, n_map) = false -- otherwise
