@@ -1640,6 +1640,19 @@ classified syntax/inventory gate passes30,981 profiles with zero unresolved
 failures at its frozen syntax cut; the [review](coverage/semantics/attributed-constant-compile-review.json)
 records the pointwise bridge to final semantic bytes.
 
+COMP182 compiles quiet single attributed constants in initializer/name/metadata
+order and activates them through their original declaration. Metadata arguments
+stay deferred; structural argument errors retain their per-value order and builtin
+target/repetition errors follow every group. Existing compiled-image authentication
+and exact closure-template reuse preserve source/code authority and initializer
+behavior. The former COMP181 quiet singleton refusal is promoted. Successful
+Deprecated metadata remains Unsupported for the next fetch-consumer milestone;
+wider attributes and full core remain partial. Thirty-seven new source agreements,
+two explicit Deprecated refusals, six affected originals and132 strict conditions
+across438 modules pass at the recorded cuts. Final pipe controls pass. The failed metadata-array pool case
+is preserved; its source-domain fix admits no runtime metadata root.
+[Review](coverage/semantics/single-attributed-constant-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
@@ -1647,7 +1660,7 @@ records the pointwise bridge to final semantic bytes.
 | CLASS186 | Method-owned generator Closure/arrow factories; native/source preparation. |
 | I113 | Explicit Closure::__invoke wrapper for captured Generator APIs; private implementation/review. |
 | GC46 | WeakMap offsetGet and offsetExists with finite payloads; private implementation/review. |
-| COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
+| COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
 | ATTR34 | Coalesce reader with a callable key and registered handlers; bounded diagnosis. |
 | Enum callable arrays | Namespace fallback preserving a saved builtin through local publication; private implementation/review. |

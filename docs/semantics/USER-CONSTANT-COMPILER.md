@@ -34,8 +34,24 @@ Attribute arguments are not compiled before this error; completed parser encodin
 warnings inside them still precede it. The error terminates eval/included units
 before catch/finally. Compiler-only source predicates admit initializer contexts
 without extending runtime constant declaration authority. Single attributed
-constants, attribute compilation and the full constant family remain partial.
+constants were left Unsupported at that cut.
 [COMP181 evidence](../../coverage/semantics/attributed-constant-compile-review.json).
+
+Quiet single attributed constants now compile their initializer and name before
+metadata. Attribute arguments check unpacking, duplicate names and positional
+order immediately before each value; secondary builtin target/repetition checks
+follow all groups. Arguments remain deferred, including NEW/callable values and
+compiled closure bodies. Initializer closures retain ordinary runtime operands
+while reusing their exact compiled template, body and source lines.
+
+Resolved attribute names are stored at genuine source paths without CODEEXPR.
+The existing source-image projection authenticates the complete compiled code
+and pool, including metadata names. Runtime activation and constant receipts admit only the genuine
+single declaration and quiet validated metadata; attribute fields stay outside
+initializer roots. Duplicate registration retains the original constant origin.
+Successful builtin Deprecated metadata remains explicitly Unsupported until
+fetch/constant() warnings and recursive-handler behavior are paired with it.
+[COMP182 evidence](../../coverage/semantics/single-attributed-constant-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

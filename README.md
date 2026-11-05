@@ -2631,8 +2631,14 @@ Attributed global lists with two or more constants now compile their initializer
 and names in native order before the final attribute error. Reached closure
 bodies, folded branches and the retained diagnostic line keep their priority;
 parser warnings survive ignored attribute arguments. Eval and included units
-terminate before catch/finally. Single attributed constants remain Unsupported.
+terminate before catch/finally.
 [Attributed constant review](coverage/semantics/attributed-constant-compile-review.json).
+Quiet single attributed constants now compile metadata arguments in order and
+activate through their genuine declaration origin. Arguments stay deferred;
+builtin target/repetition errors follow all argument compilation. Resolved
+metadata names use the existing compiled-image integrity check. Successful
+`Deprecated` constants remain Unsupported pending their fetch consumer.
+[Single-attribute review](coverage/semantics/single-attributed-constant-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional

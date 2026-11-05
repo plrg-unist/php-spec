@@ -1,0 +1,114 @@
+{
+  "milestone": "COMP182",
+  "status": "Implementation,focused source/strict/pipe evidence complete; ready for final independent acceptance.",
+  "base": "4b8e1b99084a6a97ae9c1fd71f64584f704a3d54",
+  "branch": "semantics/single-attributed-constants-182",
+  "production_and_tests": "fda0e734b826cdec0f6553ba67d8f9d45ea1fbdd",
+  "raw_root": "../php-spec-evidence-archive/comp182",
+  "behavior": "Quiet single attributed global constants compile their initializer/name first, then attribute names and argument values in source order. Arguments remain deferred. Per-argument structural errors precede that value; secondary internal target/repeat checks follow all groups. DelayedTargetValidation suppresses wrong targets but preserves nonrepeatability. Normal registration keeps the actual NConst origin and duplicate candidates do not replace it. Successful builtin Deprecated constants remain Unsupported, including resolved aliases; unknown namespaced Deprecated remains quiet.",
+  "implementation": "452 reuses ordered constant validation with distinct genuine initializer/metadata argument roots and closure barriers. Initializers retain ordinary operand emission and reuse an exact already-compiled closure template/body/lines; deferred metadata emits no ordinary operands. Attribute class names use native namespace/import/special-name rules and are retained at genuine Code.NAMES paths. Existing193 whole-image code/pool authentication protects them.89 admits compiler PCCLASS companions only at genuine metadata argument expressions. Runtime declaration/receipt admission remains NConst/field1 based and checks quiet compiled metadata; no attribute field becomes a runtime initializer root. No parser/schema/native/adapter/state-shape changes.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_const_decl/zend_compile_attributes/zend_resolve_class_name",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_DECLARE_ATTRIBUTED_CONST",
+    "vendor/php-src/Zend/zend_constants.c::zend_constant_add_attributes",
+    "vendor/php-src/Zend/zend_attributes.c and zend_attributes_arginfo.h::internal registration/flags",
+    "spec/semantics/193-installed-compilation.watsup::compilation_image_valid"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; include_path=.:; reporting30719/display_errors=stderr",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "validation": {
+    "strict": {
+      "report": "protocol-v6/report.json",
+      "sha256": "e3f9653d2a22bcc742adda69a3bb90029e100dc857604b387b1ace15be720dbb",
+      "scope": "132 conditions/438 modules:normal registration,duplicate first-origin retention,real metadata/initializer roots,array-pool ownership,no metadata runtime root,closure/template/unit/path mismatches and public changed/missing/duplicate metadata-name cache rejection. Final fda bytes match precommit8e hashes.",
+      "head": "8e92070267ddb449bd62df56f2e68d2cbd025410",
+      "passed": true,
+      "module_count": 438,
+      "premises": 132,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "affected_strict": {
+      "report": "affected-multi-protocol-v1/report.json",
+      "sha256": "f0fecca08a7586413b5ea1291a5a7cf23d7cafcd823e902d6a5862cdee623a60",
+      "scope": "412 existing COMP181 conditions/438 modules after promoting its quiet singleton control. Later exact rename,metadata-only PCCLASS admission and removal of an unreferenced duplicate guard keep this cut; no historical renewal.",
+      "head": "4b8e1b99084a6a97ae9c1fd71f64584f704a3d54",
+      "passed": true,
+      "module_count": 438,
+      "premises": 412,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "focused_array": {
+      "report": "array-source-v1/report.json",
+      "sha256": "9792c374df2cc21ba57a7cee395690df2742da06f54797abeba789f6aea9f43e",
+      "scope": "Exact original native/model stdout/stderr/exit after the metadata PCCLASS fix; included again in final source family.",
+      "head": "8e92070267ddb449bd62df56f2e68d2cbd025410",
+      "passed": true,
+      "agreements": 1,
+      "refusal_controls": 0,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "rename": {
+      "report": "rename-v1/report.json",
+      "sha256": "9b6bc88385511cd83df1375323e706472828d384dec77109a3901c5536022f77",
+      "scope": "d293449->8e920452 is byte-identical with unchanged module position/order;452 is the integration reservation. Source agreement credit0.",
+      "passed": true
+    },
+    "sources": {
+      "report": "sources-v2/report.json",
+      "sha256": "da230d33f31e591a73038f7ef29ac7a900cda8afa354bd378a70eb07a3814389",
+      "scope": "39 originals:37 exact stdout/stderr/exit/diagnostic agreements plus2 separate successful Deprecated Unsupported controls. Includes quiet metadata,new/FCC/closure/array arguments,initializer closures/objects,namespace aliases,structural and secondary target/repeat priority,cursors,eval/file activation and duplicate first-origin retention.",
+      "head": "fda0e734b826cdec0f6553ba67d8f9d45ea1fbdd",
+      "passed": true,
+      "agreements": 37,
+      "refusal_controls": 2,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "affected_originals": {
+      "report": "affected-originals-v1/report.json",
+      "sha256": "8ab635630f0d01c8213fb0031a70d437359176d736b0adef0fe6f126d50c40ab",
+      "scope": "Six exact old source controls on final bytes:promoted quiet singleton,ordinary declaration,nested closure priority,ignored-attribute warning,qualified unfolded member and E_ERROR eval bypass.",
+      "head": "fda0e734b826cdec0f6553ba67d8f9d45ea1fbdd",
+      "passed": true,
+      "agreements": 6,
+      "refusal_controls": 0,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "pipe": {
+      "report": "pipe-final-v1/report.json",
+      "sha256": "a3c11f46de9ccb7aa5383368cc8f8fa4835a0e2d48949b706531de32dc790074",
+      "scope": "Eight pipe arrow source/roundtrip/lint profiles and missing-fact compiler control on final semantic bytes; source-agreement credit0.",
+      "head": "fda0e734b826cdec0f6553ba67d8f9d45ea1fbdd",
+      "passed": true,
+      "head_stable": true,
+      "inputs_stable": true
+    }
+  },
+  "bridge": {
+    "report": "bridge-v1/report.json",
+    "sha256": "02df804dbfab2d0a0abeb585b51b099861a258c1a95ef91f4e338a55c96d3301",
+    "scope": "Eight syntax/provenance files remain exact b288; parser/schema/native/adapter/printer/generator/corpus unchanged. No new full syntax gate. Old181 source bytes/hash manifest remain exact; only single-unsupported expectation is promoted to normal. Its original181 refusal remains historical. Canonical193 authentication already covers complete metadata code/pool."
+  },
+  "zero_credit": [
+    "author-baseline-v1 preserves native execution versus the original explicit model refusal. Native ordering/name/fixture matrices and frontend packets provide phase authority only,not model source agreement.",
+    "sources-v1 stops at array-named-arguments: native normal versus model invalid declaration history. Component debug isolates the actual pre-drive invalid compiled constant pool;89 metadata companion source admission fixes it. Failed packet/debug/setup runs retain zero complete-campaign credit.",
+    "Early author smoke/protocol setup mistakes (forward declarations,otherwise/binding syntax,internal error representation,slice length and budget resume) remain external and receive zero final gate credit.",
+    "reviewer-name-auth-baseline-v1 was a superseded static review hypothesis:193 already compares full CODE. Our redundant84/452 check was removed; meaningful public corrupt-cache controls pass through the existing projection. No public authenticity defect or extra audit closure is claimed."
+  ],
+  "review": {
+    "status": "Code,all39 source rows,six affected originals,strict132,affected412 and bridges independently clear; final pipe/docs submitted for acceptance.",
+    "findings": "Real metadata-array companion admission was fixed at its narrow source boundary; initializer and argument contexts remain separate. The redundant name-projection hypothesis was corrected and own code removed. No runtime attribute construction or unrelated held boundary is approached."
+  },
+  "limits": "Successful Deprecated constants await actual fetch/constant() warning delivery and recursive-handler protection; defined() remains quiet. Reflection/attribute instantiation,unsupported constant-expression forms,wider attribute targets/consumers,portability and full PHP core remain partial. No paused boundary including COMP88 changed."
+}
