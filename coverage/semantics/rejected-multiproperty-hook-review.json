@@ -1,6 +1,6 @@
 {
   "milestone": "COMP178",
-  "status": "Private implementation validated; independent acceptance pending.",
+  "status": "Independently reviewed implementation and original-source evidence; ready for guarded integration.",
   "base": "97d2e2e4b4ef1fa749f8df6b129938b5766aee09",
   "branch": "semantics/rejected-multiproperty-hook-178",
   "production_and_tests": "164191f05ff68500fe3bebb99ce0630b14cedae5",
@@ -54,7 +54,7 @@
     "independent_service": {
       "report": "reviewer-matrix-v1/report.json",
       "sha256": "ddaae091528ec5032010b00d03d89cc499962a15f8b4aaa2a0caf6d2062c3d82",
-      "scope": "40 independent eval/file native+worker challenges:2/3 lists,trivia/multiline,first/last default closures,attributes,readonly/asymmetric/interface/trait,nested hooked initializer classes,prior deferred single hooks,hook-before-comma,ordinary/single/parameter lists,earlier grammar/nonliteral and body lexical priorities. Source-model agreement credit0.",
+      "scope": "40 independent eval/file native+worker challenges:2/3 lists,trivia/multiline,first/last default closures,attributes,readonly/asymmetric/interface/trait,nested hooked initializer classes,prior deferred single hooks,hook-before-comma,ordinary property/single-hook controls,earlier grammar/nonliteral and body lexical priorities. Source-model agreement credit0.",
       "head": "97d2e2e4b4ef1fa749f8df6b129938b5766aee09",
       "head_stable": true,
       "inputs_stable": true,
@@ -63,7 +63,9 @@
     "identity": "Dynamic/main reports bind clean164191f05 and stable watched inputs before/after execution. Earlier service/challenge reports bind97d2e2e4b plus candidate bytes; their production and maintained service/test bytes were committed unchanged in164191f05. All raw requests/replies, source hashes, streams, command/cwd and process records stay outside Git."
   },
   "review": {
-    "status": "Independent production/test review and40-row challenge found no defect; final report acceptance pending."
+    "status": "Independent exact CLEAR on production/tests164191f05 and documentation25f8da55d.",
+    "findings": "No production defect found. The wrapped rule399 only appends a property; its brace lookahead matches Zend's single-variable hooked_property grammar before hook-body reductions. All maintained source wrappers preserve original bytes and discriminate unrelated parameter/property lists. The ordinary parser, native helper, schema, adapter and authored P4 rules are unchanged.",
+    "evidence": "Reviewer authored and ran the40-row native/worker challenge, then independently decoded and compared every preserved model/native stdout and stderr in sources-v1 and main-v1. All12 dynamic comparisons have normal exit0; all4 main comparisons have native exit255 and modeled source_rejection/php_error exit255. Recorded heads/inputs are stable and no process timed out or survived. Earlier service/challenge watched production bytes match164191f05; committing those bytes adds no new semantic evidence."
   },
   "limits": "Trusted native parser replies remain foreign facts, not a derivation from submitted bytes. Broader rejected prefixes, multibyte conversion, portability and full core coverage remain partial. Existing P4/state evidence keeps its original identities; no unchanged semantic suite was renewed. Paused routes including COMP88 were untouched."
 }
