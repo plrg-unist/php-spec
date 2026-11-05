@@ -1219,9 +1219,20 @@ Selection history borrows source/line/function identity and adds no roots;
 capture requires a cold builtin lookup or genuine prior authority. The
 [fixed-fallback review](../../coverage/semantics/enum-is-callable-fixed-fallback-review.json)
 records these source, owner and pending-throw checks. Closure scope changes can
-create a private Zend runtime cache, so closure/method/fake/bound and other
+create a private Zend runtime cache, so unproved closure/method/fake/bound and other
 unproved owners refuse explicitly. Named/unpacked and wider output places
 retain their existing bounds.
+Known unscoped real-Closure births at root or in ordinary named functions now
+carry a nonowning cache stamp. The first literal birth fixes the template's
+scope policy; an unknown birth prevents a later unscoped shape from claiming a
+shared cache. Ordinary clones copy a known shared policy, so new factory results
+and clones retain the warmed builtin after their creator retires. Selected-call
+records distinguish cache identity from the call's real heap owners. Stamps
+check immutable function identity and known scope while the object is live;
+retired parent IDs remain borrowed history. The
+[Closure cache review](../../coverage/semantics/enum-is-callable-closure-cache-review.json)
+records this first shared slice. Private bind/call lineage and other unproved
+owners remain explicit Unsupported.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

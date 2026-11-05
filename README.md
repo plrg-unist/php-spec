@@ -7214,9 +7214,15 @@ their normal cell identities and order. See the
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local
-function. Closure, method and other unproved cache owners remain explicit
+function. Unproved cache owners remain explicit
 `Unsupported`; see the
 [fixed-fallback review](coverage/semantics/enum-is-callable-fixed-fallback-review.json).
+Unscoped real Closures created at root or in ordinary named functions now retain
+their actual template cache policy. New factory instances and normal clones
+share that cache after the original Closure retires. Nonowning birth stamps
+preserve unknown first births and validate live function/scope identity; see the
+[Closure cache review](coverage/semantics/enum-is-callable-closure-cache-review.json).
+Private bind/call caches and wider owners retain their explicit bounds.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

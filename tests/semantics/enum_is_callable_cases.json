@@ -1291,5 +1291,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "query:1:CacheRepeat\\Target::cases|query:1:CacheRepeat\\Target::cases|USER:FRESH|fresh:0:FRESH|",
     "purpose": "The explicit CACHE_SHARED schema preserves the accepted ordinary named-function warm-site authority and fresh local-site dispatch."
+  },
+  {
+    "id": "enum-is-callable-third-output-closure-cache-factory-shared-cache-after-argument-throw",
+    "source": "<?php\nnamespace FactoryThrow;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n        throw new \\Exception('first');\n    }\n    return false;\n}\nfunction makeQuery() {\n    return function($install) {\n        $ok = 'UNCHANGED';\n        try {\n            $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n            echo 'query:', (int)$ok, ':', $name, '|';\n        } catch (\\Exception $e) {\n            echo 'caught:', $ok, ':', isset($name) ? 'set' : 'absent', '|';\n        }\n    };\n}\n$one = makeQuery();\n$one(true);\nunset($one);\n$two = makeQuery();\n$copy = clone $two;\n$two(false); $copy(false);\n$fresh = 'FRESH';\n$ok = is_callable([Target::class, 'cases'], false, $fresh);\necho 'fresh:', (int)$ok, ':', $fresh, '|';\n",
+    "source_sha256": "5a156742f0189b4d7dd9e4ca35efb3c0271e0034a56ac123801eff77d0d29839",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "caught:UNCHANGED:absent|query:1:FactoryThrow\\Target::cases|query:1:FactoryThrow\\Target::cases|USER:FRESH|fresh:0:FRESH|",
+    "purpose": "A failed argument still warms the actual unscoped template cache; after the old factory result retires, a new factory result and clone retain builtin reference acquisition while a fresh site chooses USER."
+  },
+  {
+    "id": "enum-is-callable-third-output-closure-cache-shared-clone-after-output-throw",
+    "source": "<?php\nnamespace SharedOutput;\nenum Target { case A; }\nclass Drop {\n    function __destruct() {\n        echo $GLOBALS['name'] === null ? 'null|' : 'wrong|';\n        throw new \\Exception('drop');\n    }\n}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\n$query = function($install) {\n    global $name, $ok;\n    $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n};\n$name = new Drop;\n$ok = 'UNCHANGED';\ntry { $query(true); }\ncatch (\\Exception $e) {\n    $trace = $e->getTrace();\n    echo $trace[1]['function'], ':', $name, ':', $ok, '|';\n}\n$copy = clone $query;\n$name = 'OLD';\n$copy(false);\n",
+    "source_sha256": "98b38e55e01d7feb385fa1f9ea5c61f0d0e5cf1a597b3aec614359f33a79bea3",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|is_callable:SharedOutput\\Target::cases:UNCHANGED|query:1:SharedOutput\\Target::cases|",
+    "purpose": "A throwing output destructor preserves the selected builtin API/name and unassigned result; a retained clone later reuses the same shared template cache."
   }
 ]

@@ -1,0 +1,47 @@
+{
+  "scope": "Unscoped real Closure literal births and normal clone sharing for namespace-fallback is_callable caches",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_revision": "74e2984c9c25ddf5b038aa3eff4ae0bfbd0fa169",
+  "base_revision": "32196508f7902afcfbeb050c551a92277846bec3",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "0c795ca8aea75ad46815c49b3691ab0a99c3c4575501c68bc7bfdc95beaa0dda",
+    "spec/semantics/40-control.watsup": "7a735b663f91cf0bffc589ba8c189fc32b41374618ee39e715c747b31eb6aa8d",
+    "spec/semantics/116-closures.watsup": "750614b55627ba640787ed9efd274b6b619a47e867797f20f135d0e731052bbb",
+    "spec/semantics/150-clone-runtime.watsup": "5e19760a3d3689f14112e052ef5ec5441546e932fdd9210c0fce750f42acb02c",
+    "spec/semantics/172-file-context-intrinsics.watsup": "482c3b027e5d7066a74135344fa44ea1360d93956cbdbadcd905b4b6ba12ece0",
+    "spec/semantics/199-argument-introspection-runtime.watsup": "1057aa42a7fe0c06e646b92c95fa66dd60c50e4998ac55e4573f9dac98c31f7e",
+    "spec/semantics/437-enum-runtime.watsup": "d0d17f51a575670d9e2da7bd89b6376437d9b85ae4539616d04259f102553110",
+    "spec/semantics/455-closure-function-caches.watsup": "1043dbc576422abd60e266fc62cdae63e22a9758cf98a35b3c2514a08d7b3355",
+    "spec/semantics/modules.json": "007a541c3bebf32166f6b7f3d99290f272959b618a08a998cbb1f459c5fc7719"
+  },
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "behavior": "Optional CACHE on selected calls distinguishes real cache identity from callee/argument owners. CLOSURECACHES records literal births, including unknown births, and clone policy without heap roots. Known unscoped root/raw named-function births and clones share the template cache after old Closure retirement. A missing/unknown first birth cannot establish sharing. A current unknown owner with prior SITE history explicitly refuses instead of selecting the current USER function. Old nonfixed selected records have CACHE=eps; ordinary fixed root/named caches use Some CACHE_SHARED. Private copy policy is represented but no bind/call creation hook is admitted in this first slice.",
+  "source_results": "Four distinct exact CLI comparisons at recorded cuts: one authored shared factory/clone original, one affected ordinary-function warm-root discriminator, and two independent shared originals. They cover original retirement, new factory instances, clones, argument throw warming, throwing output API/name commitment and fresh local USER dispatch. The two peer original bytes/hashes are copied exactly into the maintained catalogue. No prior fallback3 or acquisition7 source campaign is replayed.",
+  "cut_bridge": "The author two-source report ran before the final stamp hardening. That final change adds immutable function identity and known-live-scope equality guards; it changes no genuine birth/copy policy. Final74 strict441 and independent source/state checks bind the hardened cut. Original pre-hardening hashes remain recorded; author sources are not silently relabeled or counted again.",
+  "strict_results": "Final strict-v4 passes441 modules,true/exit0/empty stderr/stable. Strict-v1 stopped on a forward pbindscope declaration and strict-v2 on repeated declarations; both original failures remain zero credit. Strict-v3 was the intermediate pre-hardening pass.",
+  "reached_results": "Independent stamps-v3 passes129 checks/all441 modules,true/exit0/empty stderr/stable/no timeout on74. It proves known literal/clone CACHE_SHARED, distinct real Closure identities using one template key, original retirement without stamp/history roots, warmed authority after argument/output throw, pending name commit and budget0/1. Malformed function/object identity, live-scope and copy-key forgeries refuse. Nonfixed CACHE forgery refuses. A captured named-function owner with prior warm SITE history remains explicit Unsupported and never falls through to the current USER function.",
+  "ownership": "CACHE/private IDs and stamp SOURCE/FUNCTION/SCOPE are nonowning history. No task_nodes or heap-root edges are added. Current stamps check actual function identity and known live scope; retired history needs no source liveness or captured-value read. Literal stamps follow allocation/scope creation; clone stamps follow copied scopes/captures/statics.",
+  "remaining": "Scope-changing bind/call and HEAP/private copy creation, ambiguous retired binding lineage, unknown first template scope, captured named-function/fake caches, method/Trait/Fiber owners, constant/parameter/inherited include/eval creation and wider query/output contexts remain explicit partial dependencies. CACHE=None is unknown policy, never proof of an unscoped cache. Full core remains unfinished.",
+  "author_reports": {
+    "strict-v1/report.json": "fb32063e572373a8e047e350cbd84a163b91045a17a5032fa8a8e7aecf89b38c",
+    "strict-v2/report.json": "edd20d96347ac07ffea67e3e48977d570a9a924a74b312269a539856d289e117",
+    "strict-v3/report.json": "3ca90c8c47103a0c24b72f991233f4c9ff68acf2c3fa65bc67b643370ad93f09",
+    "strict-v4/report.json": "9a786074dbfcf70eaab8de714fa4b7fa06e8b3517d46bb46d196d88c926ba83d",
+    "raw/user-string-fvnofjfs/report.json": "2a6ed937706b6145dc795eeb5ed37eb3a681a8d4072822a02f1a8ce52640e7ab"
+  },
+  "independent_reports": {
+    "native-report.json": "2a2966ee74c8076fcb7a3ec54fa6008bb081df31d14e00cc7ddba51f460f89e9",
+    "compare-v1/report.json": "de0f5ab21694a97719652b4c4e11a49c4e3e7b3cf8829dec285a67eaccc7a230",
+    "stamps-v1/report.json": "ef751d9923452ae65894faf8cfb3751b1e082c53f670b59a9fea8bd5be84eb31",
+    "stamps-v2/report.json": "4951b26dc9368bb19b26a93a3de423808038e548c9ebdeef69bc42c7c45df425",
+    "stamps-v3/report.json": "e65cd4b1500f40248bbc7f7f38dba4d1550073031aad98e0fe84ec937fd1597b"
+  },
+  "recovery": "Author raw/ and manifest.json: ../php-spec-evidence-archive/enum-closure-cache-owner-126/. Independent native.py, compare.py, stamps.py and report/recorder directories: ../php-spec-evidence-archive/enum-closure-cache-review-126/. Maintained CLI sources: enum_is_callable.py --match third-output-closure-cache-. Fresh review tree imports74 onto accepted321 with shared-tool links, no fresh build or portability claim. Private native cache probes and captured/unknown-scope controls remain separately scoped.",
+  "review": "Independent runtime, source, fixture and final metadata/source-copy review CLEAR by /root/enum_review at74. Later docs/source-copy edits leave production bytes unchanged.",
+  "failure_disposition": "Original author schema failures (forward pbindscope reference, duplicate forward declarations) remain zero credit. Author source2 ran before final immutable-function/live-scope guards; the explicit cut bridge preserves those identities. Independent stamps-v1 failed a fixture namespace escape before execution, and stamps-v2 used the wrong lowercase class-helper lookup; stamps-v3 fixes only these fixture issues. Original failures/recorders remain external with zero credit; production is unchanged after74."
+}
