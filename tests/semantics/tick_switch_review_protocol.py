@@ -58,7 +58,7 @@ review.CASES = {
             'S_changed_name = S[.CODE = [pcode[.NAMES = (CODENAME (pcpath ++ [PCFIELD 0]) $ptascii("defined") eps) :: pcode.NAMES]]]',
             '$tick_source_plan(S_changed_name, n_unit) = eps',
             '~$call_task_valid(S_changed_name, TICK porigin ptickmarker)',
-            'S_changed_fallback = S[.CODE = [pcode[.NAMES = (CODENAME (pcpath ++ [PCFIELD 0]) $ptascii("Local\\defined") ($ptascii("defined"))) :: pcode.NAMES]]]',
+            'S_changed_fallback = S[.CODE = [pcode[.NAMES = (CODENAME (pcpath ++ [PCFIELD 0]) $ptascii("local_defined") ($ptascii("defined"))) :: pcode.NAMES]]]',
             '$tick_source_plan(S_changed_fallback, n_unit) = eps',
             '~$call_task_valid(S_changed_fallback, TICK porigin ptickmarker)',
             '~$tick_marker_valid(S, porigin, ptickmarker[.LINE = 9])',
