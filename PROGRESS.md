@@ -329,8 +329,8 @@ retaining the exact argument/Throwable roots through ordinary reception. Unused
 owning returns clear before capture retirement; last-capture forced close runs
 Generator finally after capture weak notification. Active call authority requires a real live marker;
 saved source history remains nonowning. Its earlier binding and explicit
-`__invoke` boundaries are promoted by I114 and I113; `Closure::call` stays
-Unsupported. Six unique originals agree;
+`__invoke` boundaries are promoted by I114 and I113; the call boundary is
+promoted by I115. Six unique originals agree;
 the 89/94 ownership/history gate passes with the private 438-module SL manifest.
 Earlier compile/fixture failures retain zero credit; wider lifecycle combinations
 remain partial.
@@ -356,9 +356,23 @@ original receiver through a dedicated owner continuation, including nullsafe
 supplied-finally throws. Six unique originals agree; the sole 132/137 unused-copy
 owner/resumption front passes with the private 441-module SL manifest. A generic
 fresh/started request predicate
-overlap has a separate truth-preserving guard already integrated. `Closure::call`
-remains Unsupported; no core obligation closes.
+overlap has a separate truth-preserving guard already integrated. Its captured
+call boundary is promoted by I115; no core obligation closes.
 [I114 review](coverage/semantics/generator-api-binding-review.json).
+
+
+I115 invokes captured native Generator APIs through `Closure::call` on the frozen
+replacement receiver. The original capture and replacement argument retain their
+actual owners; the temporary internal function adds no heap Closure or cache
+owner. Raw outer argv and copied inner arguments preserve native mapping/trace
+phases. The always-used inner return survives replacement/argv cleanup; source
+demand controls its release before original capture or through supplied argv
+throws. Compiled SEND locations also govern callback/default undefined-CV
+warnings independently of API frame lines. Seven unique originals agree; the
+sole 123/128 bounded owner/forward/budget front passes full 444 SL. It does not
+drive terminal cleanup. Original failures retain zero credit;
+Traversable and wider lifecycle combinations remain partial.
+[I115 review](coverage/semantics/generator-api-call-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -1850,7 +1864,7 @@ pipe controls pass; parser inputs stay fixed.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS190 | Byvalue nongenerator __set/__isset/__unset anonymous factories; private implementation/review. |
-| I115 | Temporary Closure::call on captured native Generator APIs; private implementation/review. |
+| I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
 | GC50 | Validated PFLOAT WeakMap payloads with disjoint property-float handling; private implementation/review. |
 | COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |

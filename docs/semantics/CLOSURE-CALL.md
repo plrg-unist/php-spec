@@ -46,6 +46,20 @@ requested class. An unscoped fake function cannot acquire a user-class scope.
 Exact internal scopes admit supported getters and dummy Closure-scope functions;
 free-intrinsic internal scope changes remain warnings.
 
+
+Captured native Generator APIs use Module457 instead of a compiled user body.
+The original real capture owns its old Generator, while the API's `newThis`
+argument owns the replacement. The temporary native function has no heap Closure
+or PHP function-cache owner. Source, raw argv and the temporary-mode receipt stay
+frozen across producers. Inner name mapping errors have only `Closure::call` in
+their trace; native count/type errors add an internal Generator frame.
+
+The inner return remains used through replacement/argv release. An ignored
+owning return releases before the original capture; a used uncommitted return
+survives that capture if an argument destructor throws. The
+[native Generator call review](../../coverage/semantics/generator-api-call-review.json)
+records source and ownership checks. Traversable packs remain outside this route.
+
 User nongenerator bodies enter through the ordinary call machinery with temporary
 lexical/called scope and receiver. Source captures retain their original binding
 and share source static cells; a later ordinary invocation restores that binding.

@@ -42,7 +42,9 @@ dynamic deferred contexts remain partial.
 [Closure factory review](../../coverage/semantics/anonymous-generator-closure-factories-review.json).
 
 Trace locations follow the actual resumer. A native Generator API frame makes
-the resumed body frame internal; the API frame keeps its source call location.
+the resumed body frame internal. Direct API frames keep their source call
+location; temporary native calls use an internal API frame above the outer
+`Closure::call` source frame.
 Resumptions without that API trace retain their existing user location, including
 `foreach`. Lazy anonymous child-link errors preserve these frames before arguments.
 
@@ -104,8 +106,7 @@ Checked arguments transfer into the ordinary operation without another receiver
 owner. An ignored owning return retires before the capture, then capture storage
 releases the Generator; its finally observes the capture already weak-dead.
 Creation/source receipts remain historical, while active calls require the live
-capture and real result continuation. `Closure::call` remains a separate
-Unsupported protocol.
+capture and real result continuation.
 [API capture review](../../coverage/semantics/generator-api-capture-review.json).
 
 Explicit `__invoke` receives the copied native signature before its handler, then
@@ -125,6 +126,24 @@ then receiver cleanup. An ignored instance `bindTo` result uses a small owner
 continuation so the copied return releases before original `This`, including
 nullsafe calls and exceptions from the replacement Generator finally.
 [Binding review](../../coverage/semantics/generator-api-binding-review.json).
+
+
+Module457 invokes captured native APIs through `Closure::call` on a frozen
+replacement Generator. The original capture still owns its own Generator;
+`newThis` is a real outer argument owner, and the temporary internal function
+adds no heap Closure or receiver edge. Named/ARRAY collection retains raw outer
+arguments, then copies the inner argv. Inner mapping errors show only the outer
+API frame; count/type errors add the internal Generator frame. A temporary-mode
+receipt requires its matching live outer carrier and cannot use ordinary capture
+or `__invoke` markers. Saved source history remains nonowning.
+
+The inner return is always used. Cleanup releases replacement `newThis`, then
+outer arguments, then an ignored return and original capture. A used return
+escapes normally, or survives original-capture retirement when an argument
+destructor throws before assignment. Supplied exception identity, caller-only
+cleanup traces and weak/finally order follow the native protocol.
+[Native call review](../../coverage/semantics/generator-api-call-review.json).
+Traversable packs and wider callable/delegation/lifecycle combinations remain partial.
 
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
 inside an already running Fiber. Its actual resume operation and parameter cells

@@ -49,4 +49,7 @@ see the [wrapper review](../../coverage/semantics/generator-explicit-invoke-revi
 Binding now creates an owning copy with its replacement Generator and preserves
 source/scope history after original retirement; see the
 [binding review](../../coverage/semantics/generator-api-binding-review.json).
-`Closure::call` remains open.
+Temporary `Closure::call` now invokes the selected replacement Generator while
+the original capture retains its own receiver. The temporary function adds no
+heap Closure; outer argv and saved-return cleanup have their own native order.
+See the [native call review](../../coverage/semantics/generator-api-call-review.json).
