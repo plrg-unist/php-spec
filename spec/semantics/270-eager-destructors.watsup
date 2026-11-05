@@ -1037,7 +1037,8 @@ def $eager_bailout_records(S, ptask) = (pdestructioncleanup_parent* ++ [$eager_c
   -- if $eager_bailout_parents(S, pdestructorcall, S.DESTRUCTION.CALLS) = (pdestructioncleanup_parent*)
 def $eager_bailout_records(S, ptask) = eps -- otherwise
 def $eager_bailout_parent_anchor_row(S, pdestructorcall_parent, pdestructioncleanup) = true
-  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if $eager_bailout_call(pdestructioncleanup.SOURCE) = (pdestructorcall)
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall \/ pdestructioncleanup.SOURCE = DESTRUCTOR_WARNING pdestructorcall
   -- if pdestructorcall_parent.OBJECT =/= pdestructorcall.OBJECT
   -- if ~pdestructioncleanup.RELEASED
   -- if $eager_bailout_parent_shared(pdestructorcall_parent, pdestructorcall)
