@@ -140,6 +140,15 @@
       "stderr_template_base64": "",
       "exit_status": 0,
       "status": "normal"
+    },
+    {
+      "id": "generator-copied-and-fake-magic-method",
+      "source": "<?php\nclass Owner182G { function make(){return function(){echo __METHOD__===__FUNCTION__ ? 'closure-name|' : 'BAD|'; yield 1;};} function stream(){echo __METHOD__==='Owner182G::stream' ? 'method-name|' : 'BAD|';yield 2;} }\nclass Receiver182G {} $owner=new Owner182G(); $source=$owner->make(); $gen=$source->call(new Receiver182G()); echo $gen->current()===1,'|'; unset($gen); $fake=$owner->stream(...); $gen=$fake->call(new Owner182G()); echo $gen->current()===2,'|';\n",
+      "source_sha256": "267506a76dd531b8185b44cd2b8c62a032f696f34f408b34e89c97dd53d410ed",
+      "stdout_template_base64": "Y2xvc3VyZS1uYW1lfDF8bWV0aG9kLW5hbWV8MXw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     }
   ]
 }
