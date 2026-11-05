@@ -2022,6 +2022,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CLASS195 | Nonreference first-CV flat-array magic sends with integer/ordinary leaf-object entries and real COW snapshots; private implementation/review. |
 | I117 | Direct named-Generator SEND body-Throwable unwind and receiver/argument cleanup; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
