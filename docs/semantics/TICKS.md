@@ -96,6 +96,11 @@ flattens the wrappers, so a state-aware projection merges these markers into
 the unchanged compiled work stream, including empty bodies/EOF. Main, eval/file,
 source-body authentication and goto reconstruction use that same projection.
 There is no synthetic Namespace statement consumer or schema change.
+Ordinary `use` and grouped imports also disappear from lexical WORK. Their one
+statement Tick uses the checked first-name/prefix line and is merged recursively
+through namespace bodies without new consumers. Literal eval imports use the
+same projection and request counter; callbacks can abort before pending class
+activation, then restore the caller continuation.
 Old no-fact plan helpers retain their quiet Class route. Missing facts and
 unproved class/member/header emission remain dependencies.
 
@@ -272,6 +277,9 @@ trace identity through callback abort/retry with physical-source state checks.
 The [namespace-form tick review](../../coverage/semantics/tick-namespace-review.json)
 records the paired native forms, missing braced marker, empty EOF/header events
 and callback line/abort before pending namespace body activation.
+The [import-emission tick review](../../coverage/semantics/tick-import-review.json)
+records multi-item ordinary/group name lines, one Tick per statement and actual
+eval-unit counter/abort/resume with pending activation and cleanup state.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

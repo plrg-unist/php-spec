@@ -1,0 +1,74 @@
+{
+  "milestone": "ATTR47: ordinary/group import Tick emission",
+  "status": "Independently accepted bounded implementation; wider source/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "3da002349",
+    "modules": {
+      "spec/semantics/33-runtime-compiler.watsup": "ca72f51e0243f57715e6e887faedc18ddd642aaeb3e3999845a1199a7e7f2b12",
+      "spec/semantics/393-ticks.watsup": "3a46727ec625aa8dff479325eeed2140d84d4ba4ea72dbd4207654a19006c510"
+    },
+    "scope": "Use/GroupUse use existing checked name/prefix lines and each contributes one statement Tick. The existing state-aware lexical projection now walks namespace bodies with explicit paths and inserts these missing metadata events among unchanged WORK slices. Public compiled_source_work, all callers, raw images, schemas and runtime consumers are unchanged."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "zend_compile_use updates import tables without opcodes. zend_compile_group_use invokes that metadata routine for its items, without per-item compile_stmt/Tick calls. USE/GROUP_USE are absent from zend_is_unticked_stmt, so compile_stmt emits one final Tick for the whole statement. These helpers do not retime CG(zend_lineno); existing plcompileline supplies the first name/group prefix.",
+    "projection": "21-source-context consumes imports lexically without PPCWORK. Authenticated AST/line facts and one installed-source/code tick_source_plan supply marker events. Disjoint namespace/import/ordinary branches preserve structural order, source paths and existing EOF handling."
+  },
+  "evidence": {
+    "native_author_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-import-47/native-author-v1/report.json",
+      "sha256": "0fb9c8033fd4b5d18690babd765e5fa0888ae7b841b1ebfe3a194da271bd80b2",
+      "revision": "e8fcb38c85a9161ad3acb51d575ea6871542b8e4",
+      "passed": true,
+      "scope": "Two-item ordinary and grouped imports each emit one callback at first-name/prefix lines7/11, followed by final Echo line15. Native-only preparation has no differential credit."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-import-47/strict-report-v1.json",
+      "sha256": "4c5423ecda22f927d27007598f5c0687b3d71bbaf1c6e7918ccc562d49639c2c",
+      "revision": "f3a80ed9f807220a646461560362bd7335d2c1fd",
+      "passed": true,
+      "modules": 445
+    },
+    "author_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-import-47/source-author-v1/report.json",
+      "sha256": "1fbe6399c3baead4f758fb815a4644bb5596b738095a536ff08713fec02d4321",
+      "revision": "f3a80ed9f807220a646461560362bd7335d2c1fd",
+      "passed": true,
+      "agreements": 1,
+      "observation": "7;11;Z15;",
+      "scope": "An uncalled method enables ticks; real DECLARE_CLASS separates ordinary and grouped import markers. Multiple import items do not create extra callbacks."
+    },
+    "independent_dynamic_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-import-47/source-review-v1/report.json",
+      "sha256": "3fc69e9bee7aedb0e867784a41944ea20d36860eea38530b42c0210ffb2c5960",
+      "revision": "f3a80ed9f807220a646461560362bd7335d2c1fd",
+      "passed": true,
+      "agreements": 1,
+      "observation": "T7NCN1Z",
+      "scope": "Main ticks2 primes request count1, then main ticks0. A literal eval Namespace/method enables ticks2; import dispatches before pending class activation, reads already-bound VALUE7 and observes the pending class absent before throwing. Main catch/read/count confirm abort and restoration."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-import-47/review-protocol-v2/run/report.json",
+      "sha256": "0a470f140ca5d7937652a971cc6e1701f0cbb8a6a02319d204b1df0ef729624f",
+      "process_sha256": "20302a2936c83ea79d670884afabceb3d90f61fe3a777f1b505c83975bc56357",
+      "revision": "0d65f7b6583f7ed49afa56a1492b5da8da7fe3d7",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 50,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At the actual unit>0 UNIT_RUN import, canonical frequency2/line4 consumes the parent count1. Trigger VALUE7 is bound/Pending absent; callback abort clears the eval context and yields T7NCN1Z with n1/counter0. Full-state zero-budget/full-resume equality and heap/descriptors/Tick validity pass."
+    }
+  },
+  "bridge": "Without imports, namespace-body recursion concatenates the same contiguous descendant WORK slices as ATTR46; namespace styles/markers and EOF order are pointwise unchanged. Non-lexical units keep the raw helper. No ATTR46 campaign was replayed. The eval original/front is new import behavior and directly exercises the installed dynamic-unit projection, not a renewal gate.",
+  "independent_review": "Peer reviewed disjoint branches, line facts, raw-image/caller preservation and the46 pointwise bridge. The actual eval/import front passed after adding its missing checked parser response; source/compiler/runtime production was unchanged during fixture correction.",
+  "remaining": "Wider source emitters, import/static diagnostic combinations and dynamic-source ownership/lifetime contexts remain partial. The eval witness uses scalar/literal source only, with no new owning-source consumer or whole-family closure.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool fingerprints remain external in tick-import-47. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs were stable with exit 0/empty driver stderr; all campaign executables were reaped. Regular local tools were preserved from idle ATTR46; no fresh build/portability claim.",
+  "zero_credit": [
+    "source-baseline/report.json at e8fcb38c8 remains false (SHA e012bde88cabcc733e112632c0c8854d9eb4bfefc3c48c6399a20f54739ed67f): native 7;11;Z15; versus model normal Z15;. The missing import callbacks are a real semantic defect, not Unsupported or an agreement.",
+    "No ATTR46, earlier compiler family, owning-source, output, Generator or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed.",
+    "review-protocol-v1/run/report.json (SHA f8ad9dbdcb7b43ad1a2f9d71023b5e61a066a50f8c11a449ea95ef1ebf471c14; process SHA 0ca6aced951a3788c3d57fef0c8d985a80ce9d76fdc2280311771f2e87fbd8fc) is false/zero: seek reached SOURCE_PENDING before any50-condition assertions because the generic fixture omitted eval parser responses. A narrow diagnostic confirmed that valid request, not a semantic error. Only the corrected affected front ran in v2."
+  ],
+  "test_helper": "fiber_state_review accepts optional exact eval_sources through existing pinned parse-eval/checked adapter. Seek resumes only matching literal-byte SOURCE_ACCEPT requests after eval_response_valid, then eval_resume; no Zend execution supplies answers. Cases without eval_sources retain identical seek/default behavior. The affected front alone reran after this preparation correction; its inputs include eval-byte hashes."
+}

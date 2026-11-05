@@ -1156,6 +1156,9 @@ through abort and retry.
 Namespace markers use authenticated form/name/brace facts: semicolon headers
 precede following work, braced markers follow it, and empty/EOF boundaries remain
 in the flattened compiled stream. Header callback abort skips pending body activation.
+Ordinary/group imports contribute one metadata Tick per statement at name/prefix
+lines. Literal eval namespace/import events share the caller's request counter;
+callback abort skips pending class activation and restores the eval continuation.
 Certified EnumCase markers run before the existing enum activation task, retaining
 member order, prior-marker frequency, backed-value lines and abort/resume behavior.
 
@@ -1185,7 +1188,8 @@ Exact source, strict and reached-state cuts remain in the
 [property hooks](coverage/semantics/tick-hook-review.json),
 [plain trait use](coverage/semantics/tick-trait-use-review.json),
 [trait adaptations](coverage/semantics/tick-trait-adaptation-review.json),
-[namespace forms](coverage/semantics/tick-namespace-review.json) and
+[namespace forms](coverage/semantics/tick-namespace-review.json),
+[import emission](coverage/semantics/tick-import-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -2015,7 +2019,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |
-| ATTR47 | Authenticated Use/GroupUse import Tick events with focused eval continuation; private implementation/review. |
+| ATTR48 | Authenticated `__halt_compiler` Tick emission through existing global-file offset facts and runtime; private implementation/review. |
 | Enum callable arrays | Runtime ARRAY/STRING method capture cache identity and clone retirement; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

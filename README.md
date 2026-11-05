@@ -345,6 +345,8 @@ method callbacks retain physical source, alias trace name and receiver through
 abort and retry.
 Namespace ticks follow checked source form: semicolon headers precede their
 following statements, while braced markers follow the body, including at EOF.
+Ordinary/group imports emit their own metadata Tick at checked name/prefix lines;
+literal eval units share the request counter and preserve callback abort cleanup.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.
