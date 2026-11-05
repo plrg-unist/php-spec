@@ -29,7 +29,6 @@ HASHES = {
 }
 CASES = ['lists', 'body', 'nested', 'late-prefix', 'strict', 'nonliteral', 'ticks', 'order', 'include-main', 'eval',
          'multiline-header', 'multiline-body']
-CONTROLS = {'multiline-header', 'multiline-body'}
 MESSAGE = b'declare(encoding=...) ignored because Zend multibyte feature is turned off by settings'
 FATAL = b'Encoding declaration pragma must be the very first statement in the script'
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
@@ -67,9 +66,9 @@ def expected(name):
         child = path + b"(3) : eval()'d code"
         return 0, b'M|E|8|A|', encoding(1, child) * 2 + warning(b"Unsupported declare 'Foo'", 1, child), 'normal'
     if name == 'multiline-header':
-        return 0, b'H|', encoding(3), 'unsupported'
+        return 0, b'H|', encoding(3), 'normal'
     assert name == 'multiline-body'
-    return 0, b'B|', encoding(2), 'unsupported'
+    return 0, b'B|', encoding(2), 'normal'
 
 
 def main():
@@ -88,6 +87,7 @@ def main():
     watched = [Path(__file__), ROOT / 'spec/semantics/92-strict-compiler.watsup',
                ROOT / 'spec/semantics/93-strict-declarations.watsup', ROOT / 'spec/semantics/modules.json',
                ROOT / 'spec/semantics/194-compiler-preflight.watsup',
+               ROOT / 'spec/php.watsup', ROOT / 'spec/schema.json',
                ROOT / 'bin/php-semantics', ROOT / 'frontend/worker.php', ROOT / '.tools/php-file.so',
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
                ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py',
@@ -95,12 +95,12 @@ def main():
     inputs = {str(path.relative_to(ROOT)): sha(path) for path in watched}
     report = {'head': head, 'inputs': inputs, 'profile': profile, 'oracle_sha256': ORACLE,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'selected': names,
-              'records': [], 'agreements': 0, 'controls': 0, 'passed': False}
+              'records': [], 'agreements': 0, 'passed': False}
     try:
         for name in names:
             path = SOURCE / (name + '.php'); case = out / name; case.mkdir()
             exit_status, stdout, stderr, status = expected(name)
-            row = {'id': name, 'source_sha256': sha(path), 'control': name in CONTROLS}; report['records'].append(row)
+            row = {'id': name, 'source_sha256': sha(path)}; report['records'].append(row)
             native = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(path)], case / 'native', 15)
             row['native'] = native
             assert native['exit'] == exit_status and not native['timeout'] and not native['group_after']
@@ -122,16 +122,12 @@ def main():
             row['model'] = model
             outcome = json.loads((case / 'model.stdout').read_bytes())
             row['status'] = outcome.get('status'); row['reason'] = outcome.get('reason')
-            valid = (model['exit'] == (1 if name in CONTROLS else 0) and not model['timeout'] and not model['group_after']
+            valid = (model['exit'] == 0 and not model['timeout'] and not model['group_after']
                 and (case / 'model.stderr').read_bytes() == b'' and outcome['frontend'] == 'accepted'
                 and outcome['checked'] == 'program' and outcome['status'] == status)
-            if name in CONTROLS:
-                row['passed'] = valid and outcome['reason'] == 'encoding parser warning source shape'
-                report['controls'] += int(row['passed'])
-            else:
-                row['passed'] = (valid and outcome['reason'] is None and outcome['exit_status'] == exit_status
-                    and outcome['stdout'] == b64(stdout) and outcome['stderr'] == b64(stderr))
-                report['agreements'] += int(row['passed'])
+            row['passed'] = (valid and outcome['reason'] is None and outcome['exit_status'] == exit_status
+                and outcome['stdout'] == b64(stdout) and outcome['stderr'] == b64(stderr))
+            report['agreements'] += int(row['passed'])
             print(name, 'pass' if row['passed'] else 'fail', flush=True)
         report['passed'] = all(row['passed'] for row in report['records'])
     finally:

@@ -482,8 +482,27 @@ records native/model sources, reached-state guards and original failures.
 Earlier bounded cuts remain in the [trait-capture](../../coverage/semantics/anonymous-trait-capture-review.json),
 [parentless](../../coverage/semantics/anonymous-parentless-trait-capture-review.json)
 and [alias-capture](../../coverage/semantics/anonymous-trait-alias-capture-review.json)
-reviews. Imported implicit Stringable interface inference, dynamic-source trait
-combinations and wider member/type/lifetime contexts remain partial.
+reviews.
+
+Imported `__toString` and ordinary methods aliased to it also retain inferred
+Stringable interfaces in unit0 anonymous classes. Before stripping imported
+members, the live interface list must equal the shared trait importer's derived
+list. Only the own-member comparison restores the raw interface field; full
+declaration replay remains mandatory. Inference does not change the compiler's
+generated name prefix or RTD key. Explicit mixed-case Stringable keeps its source
+spelling and gains no duplicate; a Base and an explicit interface retain their
+normal prefix and link targets.
+
+The ordinary parentless trait capture view permits authenticated nonempty live
+interfaces after publication, with matching linked targets and full declaration
+history. It retains the no-parent receive fatal before the body. The former
+empty-interface path and saved-snapshot branches are unchanged. Return,
+visibility and static Stringable contract conflicts retain the physical trait
+method line and short class display, without publication or allocation.
+[Stringable trait review](../../coverage/semantics/anonymous-trait-stringable-review.json)
+records these sources and reached guards. Dynamic-source trait combinations,
+wider explicit-interface/unpublished/collision scope histories and other
+member/type/lifetime contexts remain partial.
 
 Engine routes: `Zend/zend_compile.c::zend_compile_use_trait`,
 `zend_compile_trait_alias`, `zend_compile_trait_precedence`;

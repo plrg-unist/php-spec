@@ -1,0 +1,123 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "parentless-imported-stringable-capture",
+      "source": "<?php\ntrait Probe170Direct {\n    public function __toString(): string { return 'direct;'; }\n    public static function m(self $value): string { return self::class === $value::class ? 'scope;' : 'BAD;'; }\n    public const CAPTURE = self::m(...);\n}\n$object = new class { use Probe170Direct; };\n$capture = $object::CAPTURE;\necho $object instanceof Stringable ? 'interface;' : 'BAD;';\necho $object;\necho $capture($object);\n",
+      "source_sha256": "5da730522a9ae68c402e9af136ce88cf2b2fa81e0afbb1c5e57bdcf8c9f04e05",
+      "stdout_base64": "aW50ZXJmYWNlO2RpcmVjdDtzY29wZTs=",
+      "stdout_template_base64": "aW50ZXJmYWNlO2RpcmVjdDtzY29wZTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/parentless-imported-stringable-capture.native.json",
+      "native_raw_sha256": "ba44aa2bfa7ef27d300b5fdbdfd62df88a5cb48e4ba180b5f5eaf7fce7164d74",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "parentless-aliased-stringable",
+      "source": "<?php\ntrait Probe170Alias { public function render(): string { return __FUNCTION__; } }\n$object = new class { use Probe170Alias { Probe170Alias::render as public __toString; } };\necho $object instanceof Stringable ? 'interface;' : 'BAD;';\necho $object, ':', $object->render(), ';';\n",
+      "source_sha256": "76325d79761f8ade64d6529db069f912dc6aafa54d9a727a413cf14a24c1fac4",
+      "stdout_base64": "aW50ZXJmYWNlO3JlbmRlcjpyZW5kZXI7",
+      "stdout_template_base64": "aW50ZXJmYWNlO3JlbmRlcjpyZW5kZXI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/parentless-aliased-stringable.native.json",
+      "native_raw_sha256": "bd34ee816ed0d43643a4485d7b5d7ffd79e45b1b3e8d6780574808dcf3b5736d",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "parented-interface-imported-stringable-capture",
+      "source": "<?php\nclass Probe170Base {}\ninterface Probe170I { public function label(): string; }\ntrait Probe170Mixed {\n    public function __toString(): string { return 'mixed;'; }\n    public function label(): string { return 'iface;'; }\n    public static function m(parent $value): string { return 'selected;'; }\n    public const CAPTURE = self::q(...);\n}\n$object = new class extends Probe170Base implements Probe170I { use Probe170Mixed { m as q; } };\n$capture = $object::CAPTURE;\necho $object instanceof Stringable && $object instanceof Probe170I ? 'interfaces;' : 'BAD;';\necho $capture(new Probe170Base), $object, $object->label();\n",
+      "source_sha256": "f1a61c721deb7b61c54a6724600fda59d5daa45251ca280f9dde0905acff1239",
+      "stdout_base64": "aW50ZXJmYWNlcztzZWxlY3RlZDttaXhlZDtpZmFjZTs=",
+      "stdout_template_base64": "aW50ZXJmYWNlcztzZWxlY3RlZDttaXhlZDtpZmFjZTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/parented-interface-imported-stringable-capture.native.json",
+      "native_raw_sha256": "279234461665a0c3b17d53f21f1447d5db1279d7a3faec725db625716d2090e2",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "aliased-stringable-return-conflict",
+      "source": "<?php\ntrait Probe170BadReturn { public function render(): int { return 1; } }\necho 'before;';\n$object = new class { use Probe170BadReturn { render as public __toString; } };\necho 'BAD;';\n",
+      "source_sha256": "877e09e479fe99d95b7bf0a71de8be004123f8dc459d60a2c4aa394217bdd386",
+      "stdout_base64": "YmVmb3JlOw==",
+      "stdout_template_base64": "YmVmb3JlOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIGNsYXNzQGFub255bW91czo6X190b1N0cmluZygpOiBpbnQgbXVzdCBiZSBjb21wYXRpYmxlIHdpdGggU3RyaW5nYWJsZTo6X190b1N0cmluZygpOiBzdHJpbmcgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/aliased-stringable-return-conflict.native.json",
+      "native_raw_sha256": "cba86d7540d047fb68d85aed009b8c083b487013110f0f90e1f1daa3202a0d1c",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "aliased-stringable-private-conflict",
+      "source": "<?php\ntrait Probe170Private { public function render(): string { return 'value'; } }\necho 'before;';\n$object = new class { use Probe170Private { render as private __toString; } };\necho 'BAD;';\n",
+      "source_sha256": "d4d2f55baeff2a4e664ed61b5c60067985a838b5e079c4b0220971756595098a",
+      "stdout_base64": "YmVmb3JlOw==",
+      "stdout_template_base64": "YmVmb3JlOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEFjY2VzcyBsZXZlbCB0byBjbGFzc0Bhbm9ueW1vdXM6Ol9fdG9TdHJpbmcoKSBtdXN0IGJlIHB1YmxpYyAoYXMgaW4gY2xhc3MgU3RyaW5nYWJsZSkgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/aliased-stringable-private-conflict.native.json",
+      "native_raw_sha256": "a371652ba9e87bcc86d96510f3b0afa04b948620622de21bcfb92ac01648dd20",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "explicit-mixedcase-stringable-alias-control",
+      "source": "<?php\ntrait Probe170Explicit { public function render(): string { return 'render;'; } }\n$object = new class implements \\sTrInGaBlE { use Probe170Explicit { render as public __toString; } };\necho $object instanceof Stringable ? 'interface;' : 'BAD;';\necho $object::class, ';', $object;\n",
+      "source_sha256": "acb235f9a311ffd3c365c5248c7264aa0e852ebd3e2b236245eeb7bc51f8fe81",
+      "stdout_base64": "aW50ZXJmYWNlO3NUckluR2FCbEVAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE3MC1yZXZpZXctYXJ0aWZhY3RzL2V4cGxpY2l0LW1peGVkY2FzZS1zdHJpbmdhYmxlLWFsaWFzLWNvbnRyb2wucGhwOjMkMDtyZW5kZXI7",
+      "stdout_template_base64": "aW50ZXJmYWNlO3NUckluR2FCbEVAYW5vbnltb3VzAHtGSUxFfTozJDA7cmVuZGVyOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/explicit-mixedcase-stringable-alias-control.native.json",
+      "native_raw_sha256": "4e35ad68e71a10bcb5bae3678a5ec5b3be9eaebea2b28d86fc15874e5b185867",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "aliased-stringable-static-conflict",
+      "source": "<?php\ntrait Probe170Static { public static function render(): string { return 'BAD;'; } }\necho 'before;';\n$object = new class { use Probe170Static { render as public __toString; } };\necho 'BAD;';\n",
+      "source_sha256": "405aa3e365ead7ef50f6a9eb1067acfddbbfaf9564c03ba83cc2db92ca824e2e",
+      "stdout_base64": "YmVmb3JlOw==",
+      "stdout_template_base64": "YmVmb3JlOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBtYWtlIG5vbiBzdGF0aWMgbWV0aG9kIFN0cmluZ2FibGU6Ol9fdG9TdHJpbmcoKSBzdGF0aWMgaW4gY2xhc3MgY2xhc3NAYW5vbnltb3VzIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/aliased-stringable-static-conflict.native.json",
+      "native_raw_sha256": "07ce3131b0b0d6ec4dce3efc9742a3e48f5187a6ba5ce32b24def123140df940",
+      "model_timeout_seconds": 300
+    },
+    {
+      "id": "parentless-stringable-parent-receive",
+      "source": "<?php\ntrait Probe170NoParent {\n    public function __toString(): string { return 'string;'; }\n    public static function m(parent $value) { echo 'body;'; }\n    public const CAPTURE = self::m(...);\n}\necho 'before;';\n$object = new class { use Probe170NoParent; };\n$capture = $object::CAPTURE;\necho 'captured;';\n$capture(new stdClass);\necho 'BAD;';\n",
+      "source_sha256": "f978cb09a9593a4f313d4fa72673d356774863d9f899f8cff82f6d46a9dfe828",
+      "stdout_base64": "YmVmb3JlO2NhcHR1cmVkOw==",
+      "stdout_template_base64": "YmVmb3JlO2NhcHR1cmVkOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhY2Nlc3MgInBhcmVudCIgd2hlbiBjdXJyZW50IGNsYXNzIHNjb3BlIGhhcyBubyBwYXJlbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge0ZJTEV9KDExKTogY2xhc3NAYW5vbnltb3VzOjptKE9iamVjdChzdGRDbGFzcykpCiMxIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/class170-review-artifacts/parentless-stringable-parent-receive.native.json",
+      "native_raw_sha256": "020363585d7402a18dd74d3984e2a80e8884dc886a6702b58cb5f5394e994b9c",
+      "model_timeout_seconds": 300
+    }
+  ]
+}

@@ -41,15 +41,20 @@ def prepare(out):
     lines = CLI['encoding_warning_lines']
     assert lines(parsed_asts['body']) == [2, 3, 3, 4]
     assert lines(parsed_asts['order']) == [3, 5]
-    assert lines(parsed_asts['multiline-header']) is None
-    assert lines(parsed_asts['multiline-body']) is None
+    assert lines(parsed_asts['multiline-header']) == [3]
+    assert lines(parsed_asts['multiline-body']) == [2]
+    for name in ('multiline-header', 'multiline-body'):
+        legacy = copy.deepcopy(parsed_asts[name])
+        for key in ('declareHeaderCloseLine', 'declareHeaderCloseTokenPos'):
+            del legacy['program'][0]['meta'][key]
+        assert lines(legacy) is None
     missing = copy.deepcopy(parsed_asts['body'])
     del missing['program'][0]['fields'][0][0]['meta']['startTokenPos']
     assert lines(missing) is None
     duplicate = copy.deepcopy(parsed_asts['body'])
     duplicate['program'][1]['fields'][0][1]['meta']['startTokenPos'] = duplicate['program'][1]['fields'][0][0]['meta']['startTokenPos']
     assert lines(duplicate) is None
-    (out / 'cli-controls.json').write_text(json.dumps({'passed': True, 'checks': 6}) + '\n')
+    (out / 'cli-controls.json').write_text(json.dumps({'passed': True, 'checks': 8}) + '\n')
 
     checks = []
     for name, program in units.items():
@@ -62,8 +67,8 @@ def prepare(out):
         'P_late_prefix.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii(' + json.dumps(FATAL) + ')) 4)',
         'P_order.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii(' + json.dumps(FATAL) + ')) 5)',
         'P_strict.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("strict_types declaration must not use block mode")) 2)',
-        'P_multiline_header.COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
-        'P_multiline_body.COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")']
+        'P_multiline_header.COMPLETION = PPCNORMAL',
+        'P_multiline_body.COMPLETION = PPCNORMAL']
     prefixes = {
         'lists': [('encoding-disabled', 2, '[PCINDEX 0]'), ('encoding-disabled', 2, '[PCINDEX 0]'),
                   ('encoding-disabled', 3, '[PCINDEX 1]'), ('Foo', 2, '[PCINDEX 0]'), ('Bar', 2, '[PCINDEX 0]')],
@@ -74,6 +79,8 @@ def prepare(out):
         'late_prefix': [('encoding-disabled', 4, '[PCINDEX 2]'), ('encoding-disabled', 4, '[PCINDEX 2]'),
                         ('Foo', 2, '[PCINDEX 0]')],
         'strict': [('encoding-disabled', 2, '[PCINDEX 0]')],
+        'multiline_header': [('encoding-disabled', 3, '[PCINDEX 0]')],
+        'multiline_body': [('encoding-disabled', 2, '[PCINDEX 0]')],
         'order': [('encoding-disabled', 3, '[PCINDEX 0,PCFIELD 0,PCFIELD 1,PCINDEX 0,PCFIELD 1,PCFIELD 6,PCINDEX 0]'),
                   ('encoding-disabled', 5, '[PCINDEX 0,PCFIELD 0,PCFIELD 0,PCFIELD 5,PCINDEX 0,PCFIELD 6,PCINDEX 0]')],
     }
@@ -156,6 +163,7 @@ def main():
     watched = [Path(__file__), ROOT / 'spec/semantics/92-strict-compiler.watsup',
         ROOT / 'spec/semantics/93-strict-declarations.watsup', ROOT / 'spec/semantics/modules.json',
         ROOT / 'spec/semantics/194-compiler-preflight.watsup',
+        ROOT / 'spec/php.watsup', ROOT / 'spec/schema.json',
         ROOT / 'bin/php-semantics', ROOT / 'frontend/worker.php', ROOT / '.tools/php-file.so',
         ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
         ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/encoding_declare_protocol.py',
@@ -166,7 +174,7 @@ def main():
     inputs = {str(path): sha(path) for path in watched}
     run = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                     *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 180)
-    report = {'head': head, 'module_count': len(modules), 'premises': count, 'cli_controls': 6, 'inputs': inputs,
+    report = {'head': head, 'module_count': len(modules), 'premises': count, 'cli_controls': 8, 'inputs': inputs,
         'process': run, 'stdout': (out / 'check.stdout').read_text(errors='replace'),
         'stderr': (out / 'check.stderr').read_text(errors='replace'),
         'head_stable': head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),

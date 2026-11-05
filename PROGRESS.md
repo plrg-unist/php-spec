@@ -456,12 +456,18 @@ two sends. By-value caches keep their Warning snapshot; ordinary reference
 caches reread a nonowning source-cell designation after the handler. Alias writes
 change delivery, while actual global-name rebinding preserves the old cell.
 Distinct private cells retain earlier sends across the second Warning.
-A95 adds ten new and two affected legacy source agreements; independent
-source-derived ownership, authority, retirement and budget gates pass. Two
-Unsupported controls retain zero agreement credit. Cache replacement, ineligible
-reference carriers and pending warning exceptions remain partial.
+A96 extends delivery from the selected live reference cell through cache
+replacement, changed keys/index, normal closure and a running Generator in a
+suspended Fiber. The next iterator advance retains its ordinary phase behavior.
+Closed Generators keep their cache until storage retirement; CELL adds no owner.
+By-value delivery retains its existing restrictions. Ineligible reference
+carriers and pending warning exceptions remain partial. Eight new and two legacy
+source agreements, strict433 and source-derived ownership/continuation gates pass
+at their recorded cuts; two Unsupported controls retain zero agreement credit.
+Original fixture failures remain preserved separately.
 [Snapshot review](coverage/semantics/generator-byref-sink-review.json),
-[reference-cell review](coverage/semantics/generator-reference-sink-review.json).
+[reference-cell review](coverage/semantics/generator-reference-sink-review.json),
+[captured-cell review](coverage/semantics/generator-captured-cell-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
 ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
@@ -677,19 +683,21 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR18 retains stable pending main-body exits through post-FINAL tick cleanup.
-Saved shutdown/destructor completions authenticate NORMAL or the same EXITED
-code; an exit also matches the full stored status. Copied values and separate
-FCC owners retire under temporary NORMAL execution, then the saved completion
-returns before later entries/queues. Four new exit originals agree exactly,
-including status 263→CLI 7 and string exit at 0; one affected normal cacheless
-control, six reached groups/176 conditions (164 reached, 12 derived) and
-private strict433 also pass. Wider producers, assertion roots,
-changed phase completions and abrupt/reentrant cleanup remain partial.
-[Exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json).
-The earlier [cache-shape](coverage/semantics/callback-late-tick-callables-review.json)
-and [copied-value](coverage/semantics/callback-late-tick-values-review.json)
-ledgers retain their original cuts and zero-credit failures.
+ATTR19 handles selected uncaught builtin Exceptions from normal-origin tick
+argument destructors after FINAL. The module-local bailout leaves two argument
+protections and unfinished argument/FCC/tail owners intact. Live report
+authentication precedes Throwable release; later active shutdown-list cleanup
+and inactive executor free preserve native order. Five new originals agree,
+including a later queue argument and an owning Closure capture's separate
+inactive-child fatal/CLI 0. Five independent groups pass 254 conditions
+(243 reached, 11 derived), and private strict433 passes; the original late-event
+fixture error keeps zero credit.
+[Bailout review](coverage/semantics/callback-late-tick-throw-review.json).
+Wider Throwable/handler, changed-phase and exit/reentry contexts remain partial.
+The earlier [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
+[copied-value](coverage/semantics/callback-late-tick-values-review.json) ledgers
+retain their original cuts and zero-credit failures.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -894,9 +902,18 @@ copied FCC scope. Sixteen exact originals, 190 author and 135 independent reache
 conditions, 229 affected conditions and private strict433 pass. The repaired
 private-final warning retains class-site authority until `new` resumes before
 allocation. Original Unsupported/interpreter and fixture failures retain zero
-agreement credit. Implicit imported Stringable, dynamic-source combinations,
-illegal-modifier diagnostics and wider member/lifetime contexts remain partial.
-[Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+agreement credit. [Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+CLASS170 authenticates inferred Stringable interfaces before restoring the raw
+anonymous header view. Direct imports and aliases preserve original name prefixes,
+interface spelling and copied parameter scope; return/private/static conflicts
+fail at the trait method before publication or allocation. Eight exact originals,
+277 independent and 121 author reached conditions and strict433 pass. The ordinary
+parentless `parent` receive view requires published interface targets and full
+history; old empty-interface and snapshot paths stay unchanged. Original source
+failures and three fixture corrections retain zero agreement credit.
+Dynamic-source combinations, wider explicit/unpublished/collision scope histories,
+illegal-modifier diagnostics and other member/lifetime contexts remain partial.
+[Review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -939,8 +956,18 @@ sources agree, including strict/tick interactions and include/eval body returns.
 Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
 pass, alongside six CLI guards and two explicit multiline Unsupported controls.
 Actual cuts and preserved failures are in the
-[review](coverage/semantics/encoding-list-review.json). Multiline declarations,
-rejected sources with warnings and multibyte conversion remain partial.
+[review](coverage/semantics/encoding-list-review.json). COMP167 below extends its
+multiline boundary; rejected sources with warnings and multibyte conversion remain partial.
+
+COMP167 retains checked declaration header-close line/token facts. Multiline
+headers use their closing line for parser warnings while compiler diagnostics
+keep the first item's line. Nested header reductions precede enclosing headers;
+comment-only Nops retain their genuine empty token spans. Twenty-one new original
+comparisons, independent compiler/state gates and affected regressions pass;
+strict compilation covers 433 modules. Fresh classified syntax covers 30,980
+profiles and independent metadata checks cover 17 profiles. Original failures
+and exact cuts remain in the [review](coverage/semantics/encoding-header-review.json).
+Rejected sources with warnings and multibyte conversion remain partial.
 
 ## Active and unintegrated work
 

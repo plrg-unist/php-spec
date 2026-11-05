@@ -1,0 +1,230 @@
+{
+  "scope": "CLASS170: authenticated inferred Stringable interfaces for unit 0 anonymous trait imports/aliases, preserving raw header/name authority and ordinary copied parameter scope. Finite successful-source and link-fatal contexts only; no family closure.",
+  "implementation": {
+    "base": "afa7e24505189f903bf1f05671f3e172b621e022",
+    "semantic_and_catalogue": "4857f50f69e98085c3fdea37010fc307cebc590b",
+    "engine_routes": [
+      "Zend/zend_inheritance.c::zend_traits_copy_functions, zend_add_trait_method, zend_do_link_class (post-trait Stringable inference), do_inherit_method",
+      "Zend/zend_execute.c::zend_verify_recv_arg_type"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "mode": "Strict SL elaboration, algorithmic checks and structuring; caches disabled and encountered determinism checks",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "inputs": {
+    "spec/semantics/modules.json": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3",
+    "spec/semantics/189-internal-interface-prototypes.watsup": "0f1e4719840fc6080c664469d48c4fd03046508b2f2f44fcb99e7e3e07b4e831",
+    "spec/semantics/307-trait-callable-target-fixups.watsup": "8ab470897b4df6e394c193d5cf05de30db7168527c4c420d24a6dfc1ea6e470c",
+    "spec/semantics/383-anonymous-classes.watsup": "4b09cda69631a6d97fa360eb344b8390a66ce26a1b9a52adbe00dcdb202750fd",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tests/semantics/anonymous_trait_stringable_cases.json": "4897ac00ed79c717530307643631a3ead16f6f4954a5a7841bc2202f1520c6ce",
+    "tests/semantics/anonymous_trait_stringable_contract_protocol.py": "417f1310cf0e4dabf7bd3859e8e394278bbaafc76a800530be9ded0e030a33fc",
+    "tests/semantics/anonymous_trait_stringable_review_protocol.py": "5a8f927f0d6d02efa437ace67f565c3d3a96b989aa57d0f37ef23a25923c07ab"
+  },
+  "decisions": [
+    "Require live.INTERFACES to equal the shared trait-derived interface list before restoring raw.INTERFACES only for the own-member projection; retain full declaration history and the raw compiler prefix/name check.",
+    "Already explicit mixed-case Stringable remains one interface with its original spelling. Inference adds no compiler RTD key or name-prefix dependency.",
+    "Keep the old empty-interface copied-scope branch and saved snapshots unchanged. The new nonempty parentless branch requires published class-name ownership, a publication receipt, matching linked interface targets and full declaration replay before ordinary copied-method history can authorize the view.",
+    "Return, visibility and static conflicts retain physical trait method location and per-class C-string diagnostic display. They stop before allocation/publication; main-unit compile-fatal ERRORORIGIN remains unchanged as specified."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 433,
+      "result": "true newline, empty stderr, exit0; final semantic bytes match 4857f50f6 although the run preceded its commit",
+      "supervisor": [
+        ".tools/class170-artifacts/strict-scope1.json",
+        "e5034e180d85e1504a256c8c610cc53a8c474a63dd3dbe33c4a22e16be84b13f"
+      ]
+    },
+    "sources": {
+      "exact_agreements": 8,
+      "observation": "Frozen original bytes, exact FILE-template normalization, raw stdout/stderr, PHP status and exit. Catalogue binds native raw groups/hashes.",
+      "reports": [
+        {
+          "id": "parentless-imported-stringable-capture",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-r9ntpnii/report.json",
+            "1b34025584219ad4a6cd9d1b9a0e8f3c2df7604c4017b8fc3037074c76406f86"
+          ]
+        },
+        {
+          "id": "parentless-aliased-stringable",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-oio9nch7/report.json",
+            "adb6a7de7543d26c6e9036a787100f27deba75a6240dedba6d589f959905a7cd"
+          ]
+        },
+        {
+          "id": "parented-interface-imported-stringable-capture",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-xd2h59ld/report.json",
+            "cc7a785df38c3a18b3e7bb30a94aa053edccff047a9e67e0a65297220e2b8be7"
+          ]
+        },
+        {
+          "id": "aliased-stringable-return-conflict",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-30qqmsx3/report.json",
+            "b2dd3e3361de9152f62c9ec45660927cf7a307c36dc01a4ceb96a7ff235be628"
+          ]
+        },
+        {
+          "id": "aliased-stringable-private-conflict",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-u1st1dff/report.json",
+            "f4db5edf14b628bf2059dfe737d46aebef7eeac72f702632a233633eede44ce3"
+          ]
+        },
+        {
+          "id": "explicit-mixedcase-stringable-alias-control",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-zw5g1grx/report.json",
+            "707cd02419479551cef147e7f396c6b6b3286df6e28d5e0b0050d8e47747aa37"
+          ]
+        },
+        {
+          "id": "aliased-stringable-static-conflict",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-6zb_rb3b/report.json",
+            "e7272afbda84969de797e88194540aa20446a03980a5431c0f5a28abaad67b68"
+          ]
+        },
+        {
+          "id": "parentless-stringable-parent-receive",
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/method-runtime-ragvc7yx/report.json",
+            "eab2fd888e03b1bb46db657bbc7ae737e2258fa0064b75f26c3660958a845582"
+          ]
+        }
+      ],
+      "supervisors": [
+        [
+          ".tools/class170-artifacts/source-direct-projection1.json",
+          "1bb5e9d511555e05ec7b8949c07360305c13bca45bcc164ff5d0c81d94499d61"
+        ],
+        [
+          ".tools/class170-artifacts/source-other6-projection1.json",
+          "421027a1b67d67f5ca4fc9908152c30ddbb36790122c96d8e89b0adf0118aa55"
+        ],
+        [
+          ".tools/class170-artifacts/source-parent-missing-scope1.json",
+          "25e660d1383f95bb5b2e002c048b66f39b38de734d3fa00ce8f341e921d5375b"
+        ]
+      ],
+      "cuts": "The direct SELF and other six sources passed on the383/189 projection draft before the307 scope extension; their selected resolved functions and bodies stay unchanged. The final independent SELF/parent groups explicitly validate resolved-function identity. The missing-parent source alone exercises the new scope branch and was rerun after repair. Adding catalogue controls changes no earlier source bytes or observation. No accepted record is relabelled as a newer execution."
+    },
+    "independent_state": {
+      "tested_head": "6f5114d30003203b86e6c9f7f42804f77efa9ef1",
+      "semantic_inputs": "Exactly 4857f50f6; final 307 included",
+      "conditions": 277,
+      "groups": [
+        69,
+        71,
+        49,
+        88
+      ],
+      "scope": "Actual raw/published/allocated fronts, full generated prefixes and interface order, SELF/parent resolved-function identity, exact linked targets and missing-parent receive. Removed/duplicate/replaced interface and missing-target forgeries fail. A synchronized duplicate descriptor+PIL list passes target/ordinary-history checks but fails full declaration history and scope admission. Ordinary post-publication missing-parent cache has no CCTRAITBIRTH.",
+      "supervisor": [
+        ".tools/class170-artifacts/review-four-state1.json",
+        "81a8e1f93bab1a258d232db9e6f0934fe5f7312a94ef86e061ab31214bd93c20"
+      ],
+      "report": [
+        ".tools/class170-review-artifacts/recovered-state/class170-review-state-we542j0j/report.json",
+        "446217be0eb3bd7e39b0f90139982454167c620fd117b09aeeed440f3ca6fe2e"
+      ]
+    },
+    "author_contract_state": {
+      "conditions": 121,
+      "groups": [
+        {
+          "case": "aliased-stringable-private-conflict",
+          "conditions": 40,
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/anonymous-trait-stringable-contract-02zwng6t/report.json",
+            "003711d32056ec8eb3a9cbc06a094d4c6daae513a8d9143f68b4d4f027c5f538"
+          ]
+        },
+        {
+          "case": "aliased-stringable-return-conflict",
+          "conditions": 41,
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/anonymous-trait-stringable-contract-2gb298v4/report.json",
+            "a196647a9d149979afa3af10aac988664bc1cb8276f1b945800a17727c62d0b7"
+          ]
+        },
+        {
+          "case": "aliased-stringable-static-conflict",
+          "conditions": 40,
+          "report": [
+            ".tools/class170-artifacts/recovered-private-raw/anonymous-trait-stringable-contract-bx_xi4zk/report.json",
+            "07b345792bae70409410050be3cdefae63abaec06df7e12ad319f2252c081d2a"
+          ]
+        }
+      ],
+      "scope": "Source-derived trait copies and inferred interface contract, real physical method origin/line, exact fatal completion, no bodies/objects/publication/links and descriptor rollback for return/private/static conflicts.",
+      "supervisor": [
+        ".tools/class170-artifacts/author-contract-state4.json",
+        "27a72f0088d915d7dbc2b9e2fb394d6ed22fe3de44a32144fbd33095e37a4a75"
+      ]
+    },
+    "compatibility": "The old no-Stringable live projection is algebraically identical: derived interfaces equal raw interfaces. The old empty-interface307 branch and snapshot branches are unchanged. No unrelated CLASS169/native/source/state replay is required for those paths. Partial statuses remain open.",
+    "resources": "Authoritative actors run serially on owned CPU1 or2 with frozen watched inputs, no bad affinity and full reap. Raw supervisors retain commands, tested revisions, executable identities and environment."
+  },
+  "review": {
+    "reviewer": "/root/classes_review_current",
+    "decision": "accepted",
+    "current_tail": "14afdb45f6733480b2ecbe737406ed78fc37a67f",
+    "scope": "Published finite plans are accepted. Full class/interface authority is required on the newly admitted ordinary scope path; wider unpublished/collision histories are not inferred from these tests.",
+    "compatibility": "Since the tested base,148/437 add enum is_callable destructor/exit continuations,30 adds those tasks plus Generator-unpack CELL,405/439 change Generator/aggregate unpack receipts, and301 extends active-GC REALCLOSURE reference captures. I99 adds CLOSURECALLRETAINED, initially empty, only for Closure::call pre-Generator reference-warning cancellation. These sources/reached fronts have none of those tasks/representations or pending warning cursors; class semantics and declaration replay are unchanged. Independent actual-parent review requests no combined gate or source/state replay."
+  },
+  "zero_credit": {
+    "source_failures": [
+      [
+        ".tools/class170-artifacts/recovered-private-raw/method-runtime-64iinnuf/report.json",
+        "e1bc5bf9f37fe05f1b7c704b2a58b4ad71ef35ac56e802128f3d870ae1c9cf4d"
+      ],
+      [
+        ".tools/class170-artifacts/recovered-private-raw/method-runtime-pl8he8hi/report.json",
+        "3ffbf6ee1753880a32933e9b942bf8c0ad8155894a3c56d929908f18c4c7ae9d"
+      ]
+    ],
+    "source_summary": "Original direct import failed with interpreter_failure before the projection repair. After that repair, the missing-parent case was explicit Unsupported (unconnected function signature) before the scope guard. Both remain zero agreement credit.",
+    "author_fixture_failures": [
+      [
+        ".tools/class170-artifacts/recovered-private-raw/anonymous-trait-stringable-contract-38grs7d0/report.json",
+        "722ddb04f74f221c6f3a6b71f303eb9d878f8ad63e4ae8d91569e76750c29109"
+      ],
+      [
+        ".tools/class170-artifacts/recovered-private-raw/anonymous-trait-stringable-contract-dl85cv93/report.json",
+        "36b45a6d55867ea14d16cde7680f691439ec4ceb73b48c09aeeff5e51355216d"
+      ],
+      [
+        ".tools/class170-artifacts/recovered-private-raw/anonymous-trait-stringable-contract-xr1ww6uz/report.json",
+        "bba1fabb478c5826b103d9cc7d613755859a2234df8ae3cb62d600828655aa43"
+      ]
+    ],
+    "fixture_summary": "PTINT was an invalid fixture atom; two subsequent false expectations confused runtime method origin with compile-fatal origin, then missed compiled_error_origin n>0. Final fixture uses PTBUILTIN int, pins physical FILEISSUE origin/line and verifies unchanged main-unit ERRORORIGIN. No semantic/native/accepted-state replay followed these fixture corrections."
+  },
+  "limits": "Unit0 source and existing member grammar only. Dynamic-source combinations, wider explicit-interface parentless/unpublished/collision scope histories, rebinding and other member/type/lifetime contexts remain partial. No ordinary-library model or native execution fallback was added.",
+  "recovery": {
+    "private_raw_map": [
+      ".tools/class170-artifacts/recovered-private-raw/locations.json",
+      "e49a8f0551271708f5214343301066df731ee9be55f831399ce34c8f82c21288"
+    ],
+    "review_raw_map": [
+      ".tools/class170-review-artifacts/recovered-state/locations.json",
+      "e82bbfb97b05a59377eac2d2f40958d29f5c222d80157f9364beca48b60d4c6e"
+    ],
+    "instructions": "Ignored raw roots retain unchanged reports and original source identities. Restore a mapped root at its original path with the retained Git cut and pinned local tools to reproduce that context. Review WT was removed after full reap; branch refs remain."
+  }
+}

@@ -29,6 +29,8 @@ dec $output_executor_finish(pstate) : pstate
 def $output_executor_finish(S) = S -- otherwise
 dec $executor_caught(pstate) : (pexecutorqueue, pcompletion)?
 def $executor_caught(S) = eps -- otherwise
+dec $executor_tick_caught(pstate) : (pexecutortick, pcompletion)?
+def $executor_tick_caught(S) = eps -- otherwise
 
 def $output_drain_completion(NORMAL) = true
 def $output_drain_completion(EXITED z) = true
@@ -42,10 +44,11 @@ dec $output_final_throw(pstate, pobinvoke, nat) : pstate
 dec $output_pending_secondary(pstate) : pobdeactivate?
 def $output_drive_finalize(S, n) = $drive_steps($output_final_throw(S, pobdeactivate.CALL, n_throwable), n)
   -- if $executor_caught(S) = eps
+  -- if $executor_tick_caught(S) = eps
   -- if $output_pending_secondary(S) = (pobdeactivate)
   -- if S.COMPLETION = UNCAUGHT n_throwable
-def $output_drive_finalize(S, n) = $drive_steps($output_finalize(S), n) -- if $executor_caught(S) = eps /\ $output_pending_secondary(S) = eps /\ $output_drain_ready(S)
-def $output_drive_finalize(S, n) = $output_finalize(S) -- if $executor_caught(S) = eps /\ $output_pending_secondary(S) = eps /\ ~$output_drain_ready(S)
+def $output_drive_finalize(S, n) = $drive_steps($output_finalize(S), n) -- if $executor_caught(S) = eps /\ $executor_tick_caught(S) = eps /\ $output_pending_secondary(S) = eps /\ $output_drain_ready(S)
+def $output_drive_finalize(S, n) = $output_finalize(S) -- if $executor_caught(S) = eps /\ $executor_tick_caught(S) = eps /\ $output_pending_secondary(S) = eps /\ ~$output_drain_ready(S)
 
 def $output_request_destructors(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ ($destructor_active(S) \/ $output_has_user(S.OUTPUTBUFFERS) /\ S.DESTRUCTION.PHASE = DESTRUCTION_PENDING /\ ~S.COMPILESTOP /\ S.SOURCEPENDING = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ $output_drain_completion(S.COMPLETION) /\ (S.COMPLETION =/= NORMAL \/ S.TODO = eps)))
 ;; Even without a user destructor, Zend retires sole global objects before

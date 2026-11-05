@@ -2168,11 +2168,16 @@ Direct named functions returning by value receive scalar Generator sends in
 fixed untyped reference parameters at positions 1 or 2, within the first two
 sends. By-value yields keep snapshots; ordinary reference yields reread saved
 cells after normal Warning handlers. Private callee cells stay distinct from
-source aliases and each other through global-name rebinding. Changed by-value
-payloads, keys or producer phase, replacement reference cells, unsupported
-carriers, dynamic-string sinks and pending warning exceptions remain Unsupported.
+source aliases and each other through global-name rebinding. A live selected
+reference cell still supplies delivery after cache replacement, changed keys or
+normal Generator closure; the subsequent iterator advance observes its actual
+phase, including the ordinary running-Generator Error. By-value delivery keeps
+its existing cache/key/index/phase restrictions. Ineligible reference carriers,
+dynamic-string sinks and pending warning exceptions remain Unsupported.
 See the [snapshot review](coverage/semantics/generator-byref-sink-review.json)
-and [reference-cell review](coverage/semantics/generator-reference-sink-review.json).
+and [reference-cell review](coverage/semantics/generator-reference-sink-review.json);
+the [captured-cell extension](coverage/semantics/generator-captured-cell-sink-review.json)
+records the later delivery rule.
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
@@ -3156,13 +3161,14 @@ registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
 Disabled-multibyte encoding declarations emit source-derived parser warnings
-before compiler diagnostics. Single-line declarations accept literal values,
-mixed/repeated items and ordinary bodies; token positions preserve recursive
-parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
-return premises extend the earlier eval/once checks. Multiline declarations and
-rejected sources with warnings remain explicit boundaries.
+before compiler diagnostics. Checked header-close positions support multiline
+headers and ordinary bodies, preserving nested parser reductions and separate
+first-item compiler lines. Twenty-one new originals and independent compiler/state
+checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
+sources with warnings and multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
-[list/body review](coverage/semantics/encoding-list-review.json).
+[list/body review](coverage/semantics/encoding-list-review.json),
+[header review](coverage/semantics/encoding-header-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -4741,13 +4747,17 @@ After output FINAL, source-certified tick entries retire in registration order,
 releasing copied values before their independent FCC object/Closure owners.
 Normal completion and stable pending exits use agreeing saved phase completions;
 the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
-Cacheless entries still drain before queue/executor fallbacks. Four new exit
-originals and one affected normal control agree exactly; six reached groups pass
-176 conditions (12 derived), and private strict433 passes.
-Wider producers, assertion roots, changed phase completions and abrupt/reentrant
-late release remain partial. See the
-[exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json)
-and retained [cache-shape evidence](coverage/semantics/callback-late-tick-callables-review.json).
+An uncaught builtin Exception from a normal-origin argument destructor now stops
+that tick-list cleanup, retaining unfinished arguments, FCC owners and tail
+entries. Its Throwable retires before later active shutdown-queue cleanup and
+inactive executor free. An owning Closure capture can produce the separate
+inactive-child fatal with native exit 0. Five new originals agree exactly;
+five independent groups pass 254 conditions (11 derived), and private strict433
+passes. See the [bailout review](coverage/semantics/callback-late-tick-throw-review.json);
+earlier [exit](coverage/semantics/callback-late-tick-exit-review.json) and
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
+Wider producers, assertion roots, changed phase completions, exception handlers,
+other throws and exits/reentry during late release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -4896,9 +4906,16 @@ an excluded method can still supply a qualified alias. Linking occurs at the
 first reached `new`, before constructor arguments. Copied constant method
 captures keep the generated NUL name and the importing lexical/parent scope;
 failed links publish no class. Trait-link diagnostics truncate each class-name
-argument while keeping stored identities complete. Imported implicit Stringable
-interfaces, dynamic-source trait combinations and wider member/lifetime contexts
+argument while keeping stored identities complete. Dynamic-source trait combinations and wider member/lifetime contexts
 remain partial. [Adaptation review](coverage/semantics/anonymous-trait-adaptations-review.json).
+
+Imported and aliased `__toString` methods now retain inferred Stringable
+interfaces through the anonymous descriptor check. The raw header keeps name
+prefixes and interface spelling authoritative; live targets and declaration
+history authenticate the inferred list. Ordinary parentless copied captures
+also retain the missing-parent receive error with inferred interfaces. Stringable
+return, visibility and static conflicts fail before allocation at the trait
+method source. [Stringable trait review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
