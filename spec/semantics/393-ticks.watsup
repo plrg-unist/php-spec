@@ -24,6 +24,7 @@ dec $tick_conditional(expression) : bool
 dec $tick_logical(expression) : bool
 dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_new_named(phpType28) : bool
+dec $tick_echo_operands(pticksummary, pcodeexpr*, pcpath, nat, expression*) : pticksummary
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
@@ -269,7 +270,15 @@ def $tick_node(T, pcodeexpr*, pcpath, statement) = $tick_statement(T, pcodeexpr*
 def $tick_node(T, pcodeexpr*, pcpath, pcnode) = $tick_nodes(T, pcodeexpr*, $pcchildren(pcnode, pcpath)) -- otherwise
 
 ;; ECHO/BIND/UNSET/RETURN/jumps emit real operations even with literal operands.
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtEcho phpType25 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtEcho phpType25 metadata, pcpath))[.LAST = false]
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtEcho (SEQUENCE expression*) metadata, b) = $tick_echo_operands(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, expression*)
+;; Zend's parser splits a comma-separated Echo into individual statements. Each
+;; nonfinal operand owns an intermediate marker; the final one keeps the ordinary
+;; enclosing statement marker and its existing source context.
+def $tick_echo_operands(T, pcodeexpr*, pcpath, n, eps) = T[.LAST = false]
+def $tick_echo_operands(T, pcodeexpr*, pcpath, n, [expression]) = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n], expression)[.LAST = false]
+def $tick_echo_operands(T, pcodeexpr*, pcpath, n, expression :: expression_tail*) = $tick_echo_operands($tick_emit(T_operand[.LAST = false], pcpath ++ [PCINDEX n], T_operand.LINE), pcodeexpr*, pcpath, $(n + 1), expression_tail*)
+  -- if expression_tail* =/= eps
+  -- if T_operand = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n], expression)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtInlineHTML phpType33 metadata, b) = T[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUnset phpType25 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtUnset phpType25 metadata, pcpath))[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGlobal phpType25 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtGlobal phpType25 metadata, pcpath))[.LAST = false]
@@ -459,7 +468,15 @@ def $tick_marker(S, porigin) = eps -- otherwise
 def $tick_marker_valid(S, porigin, ptickmarker) = true
   -- if $tick_marker(S, porigin) = (ptickmarker)
   -- if $origin_node(S.SOURCES, porigin) = (statement)
+def $tick_marker_valid(S, porigin, ptickmarker) = true
+  -- if $tick_marker(S, porigin) = (ptickmarker)
+  -- if $echo_emit_source(S, $origin_source(porigin), ptickmarker.LINE)
 def $tick_marker_valid(S, porigin, ptickmarker) = false -- otherwise
+;; EMIT's original producer/owner scope ends before this wrapper begins. Output
+;; continuations preserve that exact suffix, and the next operand remains delayed.
+def $echo_tick_tasks(S, (porigin)) = [AT porigin (TICK porigin ptickmarker)]
+  -- if $tick_marker(S, porigin) = (ptickmarker)
+def $echo_tick_tasks(S, porigin?) = eps -- otherwise
 
 def $tick_enter(S, porigin, STMT statement, ptask_tail*) = S[.TODO = [STMT statement, TICK porigin ptickmarker, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)]
   -- if $tick_marker(S, porigin) = (ptickmarker)
@@ -775,12 +792,14 @@ def $tick_result_valid(S, ptickdispatch) = true
 def $tick_result_valid(S, ptickdispatch) = false -- otherwise
 
 def $tick_task_origin(TICK porigin ptickmarker) = (porigin)
+def $tick_task_origin(AT porigin ptask) = $tick_task_origin(ptask)
 def $tick_task_origin(ptask) = eps -- otherwise
 def $tick_task_duplicate(eps, porigin) = false
-def $tick_task_duplicate((TICK porigin ptickmarker) :: ptask_tail*, porigin) = true
+def $tick_task_duplicate(ptask :: ptask_tail*, porigin) = true -- if $tick_task_origin(ptask) = (porigin)
 def $tick_task_duplicate(ptask :: ptask_tail*, porigin) = $tick_task_duplicate(ptask_tail*, porigin) -- if $tick_task_origin(ptask) =/= (porigin)
 def $tick_tasks_unique(eps) = true
-def $tick_tasks_unique((TICK porigin ptickmarker) :: ptask_tail*) = (~$tick_task_duplicate(ptask_tail*, porigin) /\ $tick_tasks_unique(ptask_tail*))
+def $tick_tasks_unique(ptask :: ptask_tail*) = (~$tick_task_duplicate(ptask_tail*, porigin) /\ $tick_tasks_unique(ptask_tail*))
+  -- if $tick_task_origin(ptask) = (porigin)
 def $tick_tasks_unique(ptask :: ptask_tail*) = $tick_tasks_unique(ptask_tail*) -- if $tick_task_origin(ptask) = eps
 def $tick_state_valid(S) = ($tick_entries_valid(S, S.TICKENTRIES, 0) /\ $tick_tasks_unique(S.TODO)) -- if $(S.TICKCOUNT < 4294967296)
 def $tick_state_valid(S) = false -- otherwise
