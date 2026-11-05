@@ -1,0 +1,44 @@
+{
+  "milestone": "OB15: automatic user output-handler pre-entry reference-warning throws",
+  "status": "independently accepted for the stated partial scope",
+  "implementation_commits": [
+    "e7732df98",
+    "ae9f5bc0d"
+  ],
+  "tested_revision": "aeded97d62e9c9304bfa14cb0b341927bc0ec8fd",
+  "identity": "The review tree contains equivalent cherry-picks of both implementation commits. Source and SL reports bind the current435 modules, scripts, binaries and original inputs with equal before/after fingerprints; later acceptance edits change only documentation/catalog links.",
+  "runtime": {
+    "target": "PHP 8.5.10 CLI NTS64; pinned profile, original file/cwd identity, LC_ALL=C, TZ=UTC",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "modules": 435,
+    "preparation_sha256": "71a02e057d14d64088fd8a41dc5275aeab5f9ab10a77ef3f99e28cbad2d0920a",
+    "reference_failure_sha256": "f29418c4740de3fe33ae26c59eee4198b48756b5c89986fe29e16eb2f487f163",
+    "compiler": "pinned SpecTec da36ac3c434cd291940293a63da64544307730a3; SL with caches disabled and encountered determinism checks"
+  },
+  "authority": [
+    "main/output.c::php_output_handler_op/append/stack_apply_op",
+    "Zend/zend_execute_API.c::zend_call_function fixed-argument loop/cleanup_args",
+    "Zend/zend_vm_def.h::ZEND_ECHO/ZEND_PRINT producer retirement"
+  ],
+  "finding": "Independent original exposed a missing lifetime case: warning1 retired a reference-backed raw method receiver before warning2 threw. Cached function metadata now permits argument preparation without reviving/owning the receiver; actual callback ENTER retains the original live-target guard and explicit retired-entry refusal.",
+  "sources": {
+    "command": "python3 tests/semantics/output_automatic_reference_warning_review_sources.py --output /home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/sources-01",
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/sources-01/report.json",
+    "sha256": "8f524ac9681c62ec7f11e593f30e37e9af684da39743b38bf56a0d055f52fdf3",
+    "scope": "11 exact originals, raw stdout/stderr/exit and normal0. Distinct first/second/typed/known prefixes, default/user lower thresholds and retained lower bytes, retired cached receiver, owned/borrowed Stringable timing, inline interruption and normal produced-deprecation cursor. The retirement original was copied into the author repair campaign; it is one source, not additional distinct coverage."
+  },
+  "reached": {
+    "command": "python3 tests/semantics/output_automatic_reference_warning_review_state.py --output /home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/state-02",
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/state-02/report.json",
+    "sha256": "f8a9eb60c66ec84dac9d4181ae92f6a7bdc1e7d061bab72528938cd8f6f58680",
+    "fixture_sha256": "35ecfe145f3d072bd57c6c9d1d44beda296ead661a0f9f5069382af2fe0749d8",
+    "scope": "One SL435 front, seven groups/475 group premises, true/empty stderr/exit0. All six SEND/REF output projections discriminate, including temporary disabled=true. Source-reached prefix ownership/types and retirement, zero retired-receiver roots, genuine release SOURCE/operation, exact producer tail, pending lower skip, coherent authority/ownership negatives, zero-budget preservation and resumed completion. REF wrapper projection queries are helper checks on reached SEND cursors; actual REF callback entry is not claimed."
+  },
+  "author_evidence": "output-vm-reference-warning-author.json retains its distinct source/reached/affected cuts, promoted original and callback-exit/produced-warning/retired-entry Unsupported controls; those controls earn no native agreement credit.",
+  "preserved_zero_credit": [
+    "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/state-01/report.json: initial combined front failed; no packet credit.",
+    "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/retired-receiver-01/report.json: genuine original-source interpreter failure before395 repair.",
+    "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/debug-cursor-01: diagnostic fixture typo/elaboration failure; debug-cursor-02 returned22 true diagnostic queries only. No source or packet credit."
+  ],
+  "limits": "Actual entry after receiver retirement, owning diagnostic abrupt cleanup, explicit lower-cascade/FINAL pre-entry warnings, callback exit, produced-output-warning throws and wider conversion/callable/capability/mutation/Fiber/stdout/lifecycle behavior remain partial. No engine divergence or full-core claim."
+}

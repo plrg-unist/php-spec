@@ -1132,9 +1132,12 @@ owned print operands retire before catch without assigning the print result.
 Seven targeted originals and one promoted original agree. Cached parameter
 metadata survives a warning retiring its borrowed method receiver; actual entry
 after retirement stays explicitly Unsupported. Prepared-prefix and producer fronts pass 108
-reported conditions at their separate cuts. Independent validation is pending;
+reported conditions at their separate cuts. Eleven independent originals and one
+SL435 front with seven reached groups/475 conditions pass at the repaired cut.
+[Independent review](coverage/semantics/output-vm-reference-warning-review.json)
+retains the receiver-retirement finding and original failures; the
 [author evidence](coverage/semantics/output-vm-reference-warning-author.json)
-preserves both accepted fronts and the original failed fixture.
+keeps its separate source and reached cuts.
 Explicit lower-cascade/FINAL pre-entry warnings and wider diagnostic cleanup
 remain partial.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
@@ -1460,7 +1463,7 @@ wider rejected-source/compiler behavior remains partial.
 | I109 | Native Generator method named/ARRAY-packed argument reception; private implementation/review. |
 | GC42 | Finite declared-property WeakMap value cleanup; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
-| OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
+| OB16 | Deprecation-handler throws during produced output; private implementation/review. |
 | ATTR29 | Yield/yield-from tick compilation and counter/resumption behavior; private implementation/review. |
 | Enum callable arrays | Temporary/literal reference-array inputs; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

@@ -360,3 +360,7 @@ This does not admit warning-handler owning abrupt cleanup, pre-entry warnings
 from explicit lower cascades or FINAL, produced-output warning throws, or exit.
 [Author evidence](../../coverage/semantics/output-vm-reference-warning-author.json)
 retains exact sources, the reached release/producer fronts and original failures.
+[Independent review](../../coverage/semantics/output-vm-reference-warning-review.json)
+records eleven exact originals and one SL435 front with seven groups/475 reached
+conditions, including cursor authority, sole prefix ownership and retired receiver
+metadata without live roots.
