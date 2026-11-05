@@ -3645,11 +3645,11 @@ three GC33 unset controls. Original failures retain zero credit; wider producers
 freeing-object escape/mutation and active-pin GC remain partial.
 [Ordinary key review](coverage/semantics/gc-ordinary-key-review.json).
 
-Finite ordinary Map retirement admits methodless Values with public untyped
-declared properties holding fieldless Children or primitives. Held leaf Keys
-unregister before ordered entry/property releases preserve repeated Values,
-shared Children and outside owners. Wider layouts, freeing-Map dimension access
-and active-pin collection remain partial.
+Singleton and multi-entry Map retirement share finite validation for methodless
+Values with untyped declared Child/primitive storage. Backed stored values clear
+without getter/setter calls; ordered entry/property releases preserve repeated
+Values, shared Children and outside owners. Virtual/wider layouts, freeing-Map
+dimension access and active-pin collection remain partial.
 [Finite Value retirement](docs/semantics/WEAK-REFERENCES.md).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton

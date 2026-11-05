@@ -583,8 +583,8 @@ teardown while Child stays live; unsetting that owner later runs its destructor.
 The new arm leaves GC37 insertion, GC38 sole-owned Child cleanup and
 replacement/foreach unchanged.
 Two fresh exact sources (one caught Child throw), two affected exact sources,
-and 96 reached conditions (author62, independent34) pass at recorded cuts. An
-owner-three Child remains explicitly Unsupported with zero agreement. Wider
+and 96 reached conditions (author62, independent34) pass at recorded cuts. At
+the GC39 cut, an owner-three Child was Unsupported with zero agreement. Wider
 ownership graphs and active-pin collection remain partial; the baseline and
 early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
@@ -617,8 +617,8 @@ access remains Unsupported.
 Wider layouts, mutation, active-pin collection and caller contexts remain partial.
 [GC41 review](coverage/semantics/gc-finite-map-first-review.json).
 
-GC42 admits a finite declared-slot layout for direct methodless Map Values:
-public untyped nonstatic/nonreadonly fields without hooks, holding primitive
+GC42 introduced a finite declared-slot layout for direct methodless Map Values:
+initially public untyped nonstatic/nonreadonly fields without hooks, holding primitive
 leaves or fieldless public-destructor Children. Descriptor identities and keys
 authenticate physical declaration order; existing jobs preserve repeated Child
 edges and borrowed snapshots add no owners. Reverse writes of `[X,Y,X,Z]` drop
@@ -630,6 +630,22 @@ Typed and deeper layouts, property aliases/hooks, freeing-Map dimension access/m
 active-pin collection and wider contexts remain partial; singleton and ordinary
 consumer/type-source rules are unchanged.
 [GC42 review](coverage/semantics/gc-finite-declared-properties-review.json).
+
+GC43 shares that finite payload validation with ordinary singleton Map free,
+removing the separate one-property and Child-owner1/2 arms. Each release keeps
+its actual physical owners: a retained Value survives Map retirement and its
+shared Children run only after the outside Value CV later releases. Singleton
+multi-field Child throws preserve later field cleanup under the Map pin.
+The old leaf/reference fallback and incoming notification behavior remain.
+Backed property storage now uses the common nonvirtual-slot check; teardown
+never calls getters/setters. An already accepted singleton backed getter and
+the old leaf/incoming order are preserved; the old owner3 refusal is freshly
+promoted. Virtual/typed/deeper layouts and incoming-Child notification remain
+explicit limits; property executors/type-source rules and paused work are unchanged.
+Six exact originals (three newly supported, one promoted, two affected), two
+Unsupported controls with zero agreement and one 95-condition reached
+transfer/budget group pass at their cuts.
+[GC43 review](coverage/semantics/gc-singleton-finite-values-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -1545,7 +1561,7 @@ wider rejected-source/compiler behavior remains partial.
 | --- | --- |
 | CLASS183 | Anonymous owner interfaces and trait/constant siblings; private implementation/review. |
 | I110 | Literal nullsafe native Generator API selection; private implementation/review. |
-| GC43 | Singleton WeakMap value cleanup through finite payload validation; private implementation/review. |
+| GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
 | ATTR31 | Conditional and short-circuit branch elision in tick plans; private implementation/review. |

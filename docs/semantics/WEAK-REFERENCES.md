@@ -185,8 +185,8 @@ throw.
 The admission requires exactly two Child owners at the Map free checkpoint;
 it does not constrain where the second owner resides. The tested sources keep
 it in an outside CV. GC37 first insertion, the GC38 owner-one free arm, and
-replacement/foreach remain unchanged. Three Child owners and other retained
-graphs remain outside this slice. The
+replacement/foreach remain unchanged. At the GC39 cut, three Child owners and
+other retained graphs remained outside that slice. The
 [retained Child review](../../coverage/semantics/gc-map-first-retained-child-review.json)
 records two fresh exact sources, two affected exact sources, 96 reached
 conditions, and the owner-three Unsupported control with zero agreement.
@@ -227,9 +227,9 @@ The [finite Map review](../../coverage/semantics/gc-finite-map-first-review.json
 separates newly authored sources, the freshly promoted two-Child control and
 source-reached multiplicity/budget checks from historical evidence.
 
-GC42 replaces that one-property check with a finite descriptor/slot fold. A
-Child-bearing Value has public, untyped, nonstatic, nonreadonly declared slots
-without hooks. Each slot matches its declaration identity and key in physical
+GC42 replaced that one-property check with a finite descriptor/slot fold. At
+that cut, a Child-bearing Value had public, untyped, nonstatic, nonreadonly
+declared slots without hooks. Each slot matches its declaration identity and key in physical
 declaration order. Direct primitive leaves and fieldless public-destructor
 Children are admitted; an unset slot owns nothing. Existing ordered property
 jobs clear and transfer each real edge, while the stored original slot snapshot
@@ -248,6 +248,30 @@ Typed/alias/hooked/inherited or deeper object layouts, owning array properties,
 freeing-Map dimension access/mutation and active-pin collection remain partial.
 The entry/Key restrictions, empty/singleton guards, ordinary consumers and
 property executors/type-source handling are unchanged.
+
+GC43 shares the finite Value validator with ordinary singleton Map free. The
+singleton path keeps its real consumed release, held leaf `stdClass` Key,
+BEFORE/registration checks and no incoming Map-key association for this new
+arm. The earlier leaf/reference fallback, including incoming notification,
+remains unchanged. There is no separate one-property or Child-owner1/2 test.
+Repeated declared Child edges and outside Value/Child owners use the same
+ordered jobs and physical pins as the multi-entry path.
+
+A retained singleton Value loses only its Map owner. The Value and its Children
+stay weakly live after the Map becomes weakly dead; later release of the outside
+Value CV runs the Children. A singleton multi-field Child throw instead retains
+later field roots under the Map pin until cleanup and catch finish.
+
+The common slot validator excludes virtual properties and admits real backed
+storage, including backed hooks. `zend_object_std_dtor` releases stored values
+without invoking getters/setters. An old singleton backed-getter program already
+agreed before this change; the shared check preserves it, and a new multi-entry
+getter-marker source confirms teardown never calls the getter. Actual property
+access/hook execution and type-source updates are unchanged. The
+[shared Value review](../../coverage/semantics/gc-singleton-finite-values-review.json)
+separates new/promoted sources, affected positives and explicit virtual/incoming
+Child refusals. Typed, alias, inherited/deeper and owning-array layouts,
+freeing-Map dimension access/mutation, active-pin GC and wider callers remain partial.
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

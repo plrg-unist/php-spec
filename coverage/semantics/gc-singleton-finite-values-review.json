@@ -1,0 +1,75 @@
+{
+  "scope": "GC43: ordinary singleton Map-first free shares finite direct methodless Value validation with multi-entry storage, replacing separate one-property/Childowner1-or2 arms. The new arm retains no incoming Map-key association; the exact earlier leaf/reference fallback and all free executors remain. Common slot validation supports real backed hook storage and rejects virtual layouts without executing hooks.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "44f24f8dc",
+  "semantic_revision": "49116cafb",
+  "semantic_sha256": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "836f86341aea2319c407258cd1c22efe42fa1c6ed3d24220f92971b5c0cf2794",
+    "spec/semantics/422-weak-map-entries.watsup": "2a1fb9bf737278006cc768892fc98c0254d21fdf7c9ee0bd4bb5536416c2cd5b"
+  },
+  "tested_revisions": {
+    "author_native_and_baseline": "708274bddfa4e850b90bb15205717927eee3e250",
+    "author_model": "49116cafb4d3f749575fb6b2b9d045f66fc0d27a",
+    "source_reached": "8633759afc9b623a9c4276851d399f5667a0ed46",
+    "independent_models": "35145075b68f4ba7be859aa0a10e903d670d8083",
+    "old_singleton_hook_positive": "052042b3abce3a16406b45daf16ebd284a9a91bf"
+  },
+  "rule_basis": "One no-incoming common payload arm replaces the two singleton declared-Child/count-specific arms, with the earlier leaf/reference fallback unchanged. The common declaration moves to386 and definition stays422. Actual ordered Value/property jobs, shared release, physical pins and pending cleanup are unchanged. Descriptor identity/key/type/layout/physical edge validity remains; the slot predicate now rejects source-authenticated virtual storage rather than all hooks. Backed stored values clear directly through zend_object_std_dtor with no getter/setter call.",
+  "preservation_finding": "Before refactor, a plain singleton backed get-only Child property already agreed exactly B|C|A| at052042b3a. Blindly reusing the prior hook-absence guard would narrow that accepted source. The common physical-storage predicate preserves it and admits a new many-entry backed getter whose HOOK output marker never executes. Actual hook/property/type-source executors are unchanged; no singleton-only exception rule is added.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakrefs_hash_clean_ex,zend_weakmap_free_obj",
+    "vendor/php-src/Zend/zend_objects.c:zend_object_std_dtor,zend_object_dtor_property",
+    "vendor/php-src/Zend/zend_objects_API.c:zend_objects_store_del",
+    "spec/semantics/382-backed-get-hooks.watsup:property_hook_virtual,hook_body_backed",
+    "spec/semantics/257-request-destructors.watsup:destructor-release-shared"
+  ],
+  "counts": {
+    "exact_sources": 6,
+    "newly_supported_exact_sources": 3,
+    "promoted_prior_control": 1,
+    "affected_exact_sources": 2,
+    "author_exact_sources": 2,
+    "independent_exact_sources": 4,
+    "unsupported_controls_zero_agreement": 2,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 95
+  },
+  "validation": {
+    "new_and_promoted": "Singleton three-field first-Child throw preserves later Child cleanup under the Map pin. Retained singleton [X,X,Y] Value survives Map free under its outside CV; later Value release invokes X thenY with Map weak-null and Key live. Many-entry backed getter storage tears down without HOOK marker. The old GC39 owner3 control receives fresh native/model agreement with deferred Child destruction at final outside-owner release.",
+    "affected": "The same old singleton backed-getter program agrees before and after the change and counts once. The prior ordinary leaf/incoming source still emits OWN with Map weak-live before IN. These are two affected positives, separate from three newly supported plus one promoted source.",
+    "reached": "One strict-SL source-reached group authenticates the actual singleton release and shared finite guard. Map-to-one-Value-job transfer conserves Valueowner2/Xowner2/Yowner1, then shared release drops only Value2-to1, preserves the actual outside CV and Child edges, starts no Value storage pin/callback, and keeps heap/destruction validity. Old leaf fallback and missing-Child refusal controls pass. Projected zero/nonzero driver budget and full resumed completion equality pass through later outside-Value cleanup.",
+    "unsupported": "Incoming Child-bearing Map notification and virtual+Child layout remain explicit Unsupported after B|; native programs complete, each model control has zero agreement.",
+    "identities": "All source campaigns bind stable inputs/head. Four executed binary identities from the reached report were directly rechecked after completion and remained unchanged."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc43_singleton_declared_throw.php": "8d7ac06dcbab7f37aa12c907cc857a47765caa2fb4e495f2159beecd2bd6dd7e",
+    "tests/semantics/gc39_peer_owner3_boundary.php": "5876e20422701f1e6fbe8cf6c4c9936d825b9c16f5ae48548c2113f5b2314e26",
+    "tests/semantics/gc43_peer_retained_fields.php": "9c1673081fbedee2c011f300761bb88517dd1815331dac22c13c05786e2f8bab",
+    "tests/semantics/gc43_peer_many_backed_getter.php": "15c776c6698f797b42b7fa4bd833de074233f5957e8092443d7498c3968b4209",
+    "tests/semantics/gc43_peer_backed_get_only.php": "28053e3f155faf3c247539366ea92d8e69117978741556bc135a2b1306ca5275",
+    "tests/semantics/gc_ordinary_review_map_own_phase_global.php": "ce6db0a565e8d6152bbab6e26c4d717c26d3590fa106f74d0d6bf1833e15c878",
+    "tests/semantics/gc38_map_first_incoming_key.php": "4c0fc383a7897b6fc3524c0aeea2d238af0ac8019748780e3fbf3093e744496e",
+    "tests/semantics/gc43_peer_virtual_property_boundary.php": "3275fe8e99419e3c626dcf5fac554ba72e05254448e6155628e60751fd8da7ff"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-singleton-finite-values-author-43/native-v1/native-report.json": "1a27a736d446ca7142f3145ceadc36ba5e7817aaf25a1b1bd8261ceb712579c5",
+    "../php-spec-evidence-archive/gc-singleton-finite-values-author-43/native-v1/baseline-report.json": "de41541bc1326b64f5d63cfd1bc468e44a5a964430ccc76782e25f1335525407",
+    "../php-spec-evidence-archive/gc-singleton-finite-values-author-43/native-v1/model-report.json": "b10724515e348e09d039546c00ef1c341137e139447d32f0c7a5d260543cfd16",
+    "../php-spec-evidence-archive/gc-singleton-finite-values-author-43/reached-863-v1/report.json": "8cdbb32f6ae9d36678951d3242bc1ffbe0a1356879a050c8962ff31f45b812a7",
+    "../php-spec-evidence-archive/gc-singleton-finite-value-peer-43/native-v1/native-report.json": "9dea37bd166f1f6504600ca788d88e9cb6890dbd830bb75d2ce8eade31343617",
+    "../php-spec-evidence-archive/gc-singleton-finite-value-peer-43/native-v1/model-report.json": "9bf4eece162239ecad4eb7005b8a5e4f823a35bfbdc779f392e21606e8608982",
+    "../php-spec-evidence-archive/gc-singleton-finite-value-peer-43/hook-old-v1/native-report.json": "274eb54e359d43fcb32f57bc6f37d9b5679afab064cfa35d655893adeb82c825",
+    "../php-spec-evidence-archive/gc-singleton-finite-value-peer-43/hook-old-v1/model-report.json": "781b74ea100895843c09004b62b53851d08126a8423b34a0c14ffa7650f400ca",
+    "../php-spec-evidence-archive/gc-singleton-finite-value-peer-43/hook-old-v1/model-singleton-backed-getter-report.json": "7676268e0dc08154a58a7063f7805e72e726262d93efef89972fee28fa39c457"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-singleton-finite-values-author-43/manifest.json": "f9a257e689245522a66f0bb6574e633d8b8a8408d7811bc36174521f0e91a284",
+    "../php-spec-evidence-archive/gc-singleton-finite-value-peer-43/independent-summary.json": "cbf85334b66d0dbf38192dd7053fe40c6938930f209fe363a7f05b687febeeac"
+  },
+  "zero_credit": "The author708274 singleton multi-field baseline is explicit Unsupported after B|Q| and has zero agreement. The historical GC39 owner3 refusal keeps zero credit; the fresh GC43 comparison is separate. Old052/current491 getter observations are one affected program, not two source agreements. No new fixture/runtime failure or interrupted run occurred; helper-only negatives add no PHP agreement.",
+  "limits": "The finite nonleaf arm keeps live held leaf stdClass Key/registration/BEFORE checks and no incoming Map-key association. Public untyped nonstatic/nonreadonly direct primitive/fieldless-destructor-Child backed slots and unset slots only; virtual/typed/reference/inherited/deeper object/owning-array layouts, Child-bearing incoming notification, freeing-Map dimension access/mutation, active-pin GC and wider caller contexts remain partial. Earlier scalar/reference/callback-leaf domains, ordinary entry consumers, physical owner/count/graph and property/type-source executors are unchanged. Held GC35 work is untouched.",
+  "compatibility_bridge": "For the prior42 ordinary unhooked inputs, both old hook-absence and new nonvirtual predicates hold. Only free admission and that predicate change; all entry/property jobs and executors are byte-unchanged. Targeted43 source/state checks cover the concrete singleton/backed/old-notification seams; no broad42 campaign is renewed.",
+  "recovery": "Run gc43_singleton_finite_sources.py native then model in fresh external outputs; recover baseline singleton-declared-child-throw at708274 if needed. Run gc43_peer_singleton_sources.py for normal3/control2 and gc43_peer_hook_sources.py for current singleton getter preservation. Old hook-old-v1/model-report and current model-singleton-backed-getter-report preserve separate cuts. Run gc43_singleton_finite_state.py for strict SL. Reports retain commands, original bytes, contexts/profiles/process outcomes. Current GC39 runner hands its promoted owner3 source to43 without renewing historical evidence.",
+  "review": "Independent semantic/source/static95-assertion review is CLEAR; final documentation/ledger read-only acceptance is requested on the completed private candidate."
+}
