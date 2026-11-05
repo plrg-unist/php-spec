@@ -708,18 +708,18 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR25 extends ignored named-handler value cleanup to a literal Exception while
-H is disabled. The existing EH cleanup retains oldE once; typed documentary
-parent/selected-call sources preserve pending C receiver pairs and unfinished
-release tails. Omitted frame/operation/pending channels must be shared or have
-no canonical roots, and selected completion owners must already be covered.
-Tick fatal admission follows the associated parent rather than assuming the last
-selected operation is a tick. A shared value throwing later calls restored H2
-and completes normally, with no phantom parent. Four new originals and two
-affected controls agree; strict435 and seven independent groups/723 conditions
-(690 genuine, 33 derived) pass. The original Unsupported, preservation diagnostic
-and two corrected event-binding failures retain zero agreement credit.
-[Handler-value throw review](coverage/semantics/callback-late-tick-handler-throw-review.json).
+ATTR26 continues handler-free integer/string exit during ignored destructor-body
+value cleanup. Existing abandoned sources retain both C protections, unfinished
+arguments/FCC slots and the stopped tick tail; the actual full exit status passes
+to later active queue cleanup without fatal reporting. Cacheless/noqueue finish
+returns the read-only terminal result directly. Fresh object/alias-array/static
+Closure and later-retained values have native witnesses. Five new originals and
+two affected controls agree; strict435 and five independent groups/739 conditions
+(734 genuine, five derived) pass, covering ownership, queue, full-status and
+resumption. The original model's missing-Q baseline retains zero credit.
+[Body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json).
+Earlier [handler-value throw](coverage/semantics/callback-late-tick-handler-throw-review.json)
+retains its separate disabled-handler/old-Throwable cut.
 Earlier [normal handler-value](coverage/semantics/callback-late-tick-handler-value-review.json),
 [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
 [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
