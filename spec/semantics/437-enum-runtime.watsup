@@ -1526,6 +1526,29 @@ def $enum_is_callable_member_live(S, DIRECT pvalue) = true
   -- if pvalue =/= PUNDEFINED
 def $enum_is_callable_member_live(S, ALIAS n_cell) = $enum_is_callable_member_snapshot(S, ALIAS n_cell, PNULL)
 def $enum_is_callable_member_live(S, pitem) = false -- otherwise
+
+;; Wrong length or keys are decided without reading member values. Reference
+;; identity must remain genuine, but a shape-only query needs no typed-source
+;; coercion or callable admission for the referenced payload.
+dec $enum_is_callable_bad_shape(pentry*) : bool
+def $enum_is_callable_bad_shape(pentry*) = (|pentry*| =/= 2 \/ $entry_lookup(pentry*, KINT 0) = eps \/ $entry_lookup(pentry*, KINT 1) = eps)
+dec $enum_is_callable_raw_item(pstate, pitem) : bool
+def $enum_is_callable_raw_item(S, DIRECT pvalue) = (pvalue =/= PUNDEFINED)
+def $enum_is_callable_raw_item(S, ALIAS n_cell) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if pvalue =/= PUNDEFINED
+def $enum_is_callable_raw_item(S, pitem) = false -- otherwise
+dec $enum_is_callable_raw_items(pstate, pentry*) : bool
+def $enum_is_callable_raw_items(S, eps) = true
+def $enum_is_callable_raw_items(S, (ENTRY pkey pitem) :: pentry_tail*) = ($enum_is_callable_raw_item(S, pitem) /\ $enum_is_callable_raw_items(S, pentry_tail*))
+dec $enum_is_callable_bad_array(pstate, nat) : bool
+def $enum_is_callable_bad_array(S, n) = true
+  -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
+  -- if $enum_is_callable_bad_shape(S.ARRAYS[n].ITEMS)
+  -- if $enum_is_callable_raw_items(S, S.ARRAYS[n].ITEMS)
+def $enum_is_callable_bad_array(S, n) = false -- otherwise
+
 dec $enum_is_callable_array_snapshot(pstate, nat, pvalue*) : bool
 def $enum_is_callable_array_snapshot(S, n, [pvalue_receiver, pvalue_method]) = true
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
@@ -1534,6 +1557,7 @@ def $enum_is_callable_array_snapshot(S, n, [pvalue_receiver, pvalue_method]) = t
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
   -- if $enum_is_callable_member_snapshot(S, pitem_receiver, pvalue_receiver)
   -- if $enum_is_callable_member_snapshot(S, pitem_method, pvalue_method)
+def $enum_is_callable_array_snapshot(S, n, eps) = $enum_is_callable_bad_array(S, n)
 def $enum_is_callable_array_snapshot(S, n, pvalue*) = false -- otherwise
 dec $enum_is_callable_array_values(pstate, nat) : pvalue*?
 def $enum_is_callable_array_values(S, n) = ([pvalue_receiver, pvalue_method])
@@ -1546,6 +1570,8 @@ def $enum_is_callable_array_values(S, n) = ([pvalue_receiver, pvalue_method])
   -- if pvalue_receiver = $entry_value(S, pitem_receiver)
   -- if pvalue_method = $entry_value(S, pitem_method)
   -- if $enum_is_callable_array_snapshot(S, n, [pvalue_receiver, pvalue_method])
+def $enum_is_callable_array_values(S, n) = (eps)
+  -- if $enum_is_callable_bad_array(S, n)
 def $enum_is_callable_array_values(S, n) = eps -- otherwise
 ;; A receipt label describes only the saved bytes or cached case identity. It
 ;; performs no class lookup and never decides whether the eventual query is
@@ -1586,8 +1612,10 @@ def $enum_is_callable_pair_name(S, pvalue*) = eps -- otherwise
 ;; The first SEND fixes the array identity, not the payloads of its references.
 ;; Both snapshots are metadata: the actual argument remains owned in SENT.
 dec $enum_is_callable_variable_array_name(pstate, pvalue) : ptbytes?
-def $enum_is_callable_variable_array_name(S, PARRAY n) = $enum_is_callable_pair_name(S, pvalue*)
-  -- if $enum_is_callable_array_values(S, n) = (pvalue*)
+def $enum_is_callable_variable_array_name(S, PARRAY n) = $enum_is_callable_pair_name(S, [pvalue_receiver, pvalue_method])
+  -- if $enum_is_callable_array_values(S, n) = ([pvalue_receiver, pvalue_method])
+def $enum_is_callable_variable_array_name(S, PARRAY n) = ($ptascii("Array"))
+  -- if $enum_is_callable_bad_array(S, n)
 def $enum_is_callable_variable_array_name(S, pvalue) = eps -- otherwise
 
 dec $enum_is_callable_input_source(pstate, penumqueryinput) : bool

@@ -605,8 +605,8 @@
     "id": "enum-is-callable-third-output-variable-array-malformed",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$call = [0 => FirstCheck::class, 2 => 'from'];\n$name = 'old';\n$ok = is_callable($call, false, $name);\necho 'malformed:', (int)$ok, ':', $name, '|';\n",
     "source_sha256": "57567358189f1c6bf7bde1c0f7d5a7e49b5fd53cc9ef96f2157222b3c2152694",
-    "expected_model": "unsupported",
-    "purpose": "Malformed live key-2 array returns false/Array natively; explicit Unsupported boundary for bounded array receipt.",
+    "expected_model": "normal",
+    "purpose": "A two-entry variable array missing key1 now authenticates its fixed bad shape and writes Array before returning false.",
     "expected_normal_stdout": "malformed:0:Array|"
   },
   {
@@ -1093,5 +1093,41 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "drop:Array:UNCHANGED|__destruct:NOAPI|Array:UNCHANGED|",
     "purpose": "A last DIRECT argument child throws after C handler return: Array is committed, the result stays unassigned, and the trace has no is_callable frame."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-basic-shapes",
+    "source": "<?php\nenum ShapeCheck { case A; }\n$name = 'OLD';\n$ok = is_callable([], false, $name); echo 'empty:', (int)$ok, ':', $name, '|';\n$call = [ShapeCheck::class];\n$ok = is_callable($call, true, $name); echo 'one:', (int)$ok, ':', $name, '|';\n$ok = is_callable([ShapeCheck::class, 'cases', 17], false, $name); echo 'three:', (int)$ok, ':', $name, '|';\n$ok = is_callable(['zero' => ShapeCheck::class, 1 => 'cases'], true, $name); echo 'key:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "8f874d8e12ef519ed52cb8ba304514f3296e0569ff71c2a05f422a08aa1ac125",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "empty:0:Array|one:0:Array|three:0:Array|key:0:Array|",
+    "purpose": "Empty, one-entry, three-entry and missing-key arrays return false/Array before syntax-only admission."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-second-shape-repair",
+    "source": "<?php\nenum ShapeCheck { case A; }\nfunction repair(): bool { global $call; $call = [ShapeCheck::class, 'cases']; echo 'REPAIR|'; return true; }\n$call = [0 => ShapeCheck::class, 2 => 'cases']; $name = 'OLD';\n$ok = is_callable($call, repair(), $name);\necho 'saved:', (int)$ok, ':', $name, '|';\necho is_callable($call) ? 'live|' : 'BAD|';\n",
+    "source_sha256": "6f2701585ac09a6fe41b9df797e8dc933014c14288641ca416739fd46b5b7918",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "REPAIR|saved:0:Array|live|",
+    "purpose": "A later argument repairs the source array, but SENT keeps the original missing-key table and its false/Array result."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-one-owning-child",
+    "source": "<?php\nclass ShapeDrop { public function __destruct() { global $name, $ok; echo 'DROP:', $name, ':', $ok, '|'; } }\n$name = 'OLD'; $ok = 'UNCHANGED';\n$ok = is_callable([new ShapeDrop], false, $name);\necho 'after:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "89cb9852faec706b5f88c22b7f8335d86c9198ddb40c083be76a033a966abd1a",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "DROP:Array:UNCHANGED|after:0:Array|",
+    "purpose": "A one-entry temporary retains its ordinary child until after C handler return; the destructor sees Array and an unassigned result."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-bad-shape-typed-reference",
+    "source": "<?php\nclass ShapeHolder { public string $method = 'cases'; }\n$holder = new ShapeHolder; $name = 'OLD';\n$ok = is_callable([2 => &$holder->method], true, $name);\necho 'typed:', (int)$ok, ':', $name, ':', $holder->method, '|';\n",
+    "source_sha256": "1e5a7b2ec668fd01c3bfabd735a0a3e37130f18068876c976006f1edeef5e81f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "typed:0:Array:cases|",
+    "purpose": "Structural rejection ignores a genuine typed-reference payload; no class/method read or coercion is needed."
   }
 ]
