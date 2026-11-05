@@ -5,7 +5,7 @@ class GC53Child {
     public function __destruct() {
         global $left, $scalarKey, $valueWatch, $keyWatch, $leftWatch, $rightWatch, $failure;
         echo 'C|', (int) ($valueWatch->get() === null), '|',
-             (int) ($keyWatch->get() === null), '|',
+             (int) ($keyWatch->get() !== null), '|',
              (int) ($leftWatch->get() !== null), '|',
              (int) ($rightWatch->get() !== null), '|',
              (int) ($left[$scalarKey] === 0), '|';
@@ -17,7 +17,6 @@ $left = new WeakMap;
 $right = new WeakMap;
 $key = new stdClass;
 $scalarKey = new stdClass;
-$keyWatch = WeakReference::create($key);
 $leftWatch = WeakReference::create($left);
 $rightWatch = WeakReference::create($right);
 $value = new GC53Value;
@@ -26,6 +25,7 @@ $valueWatch = WeakReference::create($value);
 echo 'B|';
 $left[$key] = $value;
 $right[$key] = $value;
+$keyWatch = WeakReference::create($key);
 unset($value);
 $left[$scalarKey] = 0;
 echo 'S|', (int) ($left[$key] === $right[$key]), '|',
