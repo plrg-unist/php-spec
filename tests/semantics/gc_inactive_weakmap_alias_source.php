@@ -7,13 +7,13 @@ class GcMapAliasLate31 {
         $value = new GcMapPayload31;
         $map = new WeakMap;
         $map[$key] = $value;
-        $alias =& $map[$key];
+        foreach ($map as &$alias) {}
         $GLOBALS['mapKey31'] = $key;
         $GLOBALS['mapAlias31'] =& $alias;
         $GLOBALS['map31'] = $map;
         $GLOBALS['emptyMap31'] = new WeakMap;
+        echo $alias === $value ? 'alias|' : 'BAD|';
         unset($value);
-        echo $alias === $map[$key] ? 'alias|' : 'BAD|';
         echo 'D2|';
     }
 }
