@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i117-fresh-send-body-throw-argv-before-receiver",
+    "purpose": "Fresh ordinary named Generator direct SEND reaches its first yield and throws the supplied root-constructed Stop after dropping its delivered Token. Selected receiver survives argument-factory CV retirement, body finally and actual API-argv Token destruction; catch preserves Stop identity, null Previous and empty original trace, observes both weak deaths and an uncommitted result assignment.",
+    "source": "<?php\nclass Stop117A extends Exception {}\nclass Token117A {\n    function __construct() { global $weakToken; $weakToken = WeakReference::create($this); }\n    function __destruct() { global $weak; echo 'TOKEN|', $weak->get() instanceof Generator, '|'; }\n}\nfunction stream117A() {\n    try { $received = yield 'head'; unset($received); global $stop; throw $stop; }\n    finally { global $weak; echo 'FIN|', $weak->get() instanceof Generator, '|'; }\n}\nfunction argument117A() { global $generator, $weak; $generator = null; echo 'HELD|', $weak->get() instanceof Generator, '|'; return new Token117A; }\nfunction run117A() {\n    global $generator, $weak, $weakToken, $stop;\n    $result = 'waiting';\n    try { $result = $generator->send(argument117A()); echo 'BAD|'; }\n    catch (Stop117A $caught) { echo 'CATCH|', $caught === $stop, '|', $caught->getPrevious() === null, '|', $caught->getTrace() === [], '|', $result === 'waiting', '|', $weak->get() === null, '|', $weakToken->get() === null, '|'; }\n}\n$stop = new Stop117A('given'); $generator = stream117A(); $weak = WeakReference::create($generator);\nrun117A(); echo 'DONE|';\n",
+    "source_sha256": "1bcb7bda2d9bf8198a1cf130d417025a95db964567a6b50c86dd02d9e9929a73",
+    "native_exit": 0,
+    "native_stdout": "HELD|1|FIN|1|TOKEN|1|CATCH|1|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
