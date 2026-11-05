@@ -64,7 +64,7 @@ def checks(row, fixture, filename, code, response):
         '$anonymous_new_pending(S_pre,porigin_new) = (pclassdesc_raw)',
         'pclassdesc_raw.ORIGIN = PORIGIN 1 (pcpath_new ++ [PCFIELD 0])',
         '~pclassdesc_raw.EARLY',
-        'pclassdesc_raw.NAME = $ptascii("Stringable@anonymous") ++ [0] ++ ' + term(filename) + ' ++ $ptascii("(5) : eval()\'d code:8$2")',
+        'pclassdesc_raw.NAME = $ptascii("Stringable@anonymous") ++ [0] ++ ' + term(filename) + ' ++ $ptascii("(5) : eval()\'d code:9$2")',
         'pclassdesc_raw.INTERFACES = [$ptascii("Stringable")]',
         '$class_named(S_pre.CLASSNAMES,$ptlc(pclassdesc_raw.NAME)) = eps',
         '~$anonymous_runtime_declaration(S_pre.DECLARATIONS,pclassdesc_raw.ORIGIN)',
@@ -86,7 +86,7 @@ def checks(row, fixture, filename, code, response):
         '$anonymous_new_descriptor(S_link,porigin_new) = (pclassdesc_live)',
         '$anonymous_new_available(S_link,pclassdesc_live)',
         '$anonymous_interface_targets_valid(S_link,pclassdesc_live)',
-        '|S_link.OBJECTS| = 1',
+        '~((INSTANCE pclassdesc_live.ORIGIN) <- S_link.OBJECTS)',
         '$trait_plan(S_link,pclassdesc_live) = ptraitplan',
         '|ptraitplan.TRAITS| = 2 /\\ |ptraitplan.PRECEDENCES| = 1 /\\ |ptraitplan.ALIASES| = 2',
         '$method_named(pclassdesc_live.METHODS,$ptascii("q")) = (pmethoddesc_q)',
@@ -132,7 +132,7 @@ def checks(row, fixture, filename, code, response):
 
 def main():
     os.environ.update(LC_ALL='C', TZ='UTC', GIT_OPTIONAL_LOCKS='0')
-    row, = [r for r in json.loads(CATALOGUE.read_text())['cases'] if r['id'] == 'author-eval-seeded-adapted-capture']
+    row, = [r for r in json.loads(CATALOGUE.read_text())['cases'] if r['id'] == 'author-eval-seeded-imported-capture']
     raw = Path(tempfile.mkdtemp(prefix='dynamic-anonymous-trait-', dir=ROOT / '.tools'))
     source = raw / 'source.php'
     source.write_bytes(row['source'].encode())

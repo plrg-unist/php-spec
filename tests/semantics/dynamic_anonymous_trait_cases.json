@@ -121,16 +121,16 @@
       "model_timeout_seconds": 240
     },
     {
-      "id": "author-eval-seeded-adapted-capture",
-      "source": "<?php\n$before = new class {};\necho $before::class, ';';\neval(<<<'CODE'\nnamespace Author171;\ntrait LeftSource {\n public function value(): string { return 'left'; }\n public static function take(self $value): string { return 'scope'; }\n}\ntrait RightSource { public function value(): string { return 'right'; } }\nfunction make() {\n return new class implements \\Stringable {\n  use LeftSource, RightSource {\n   LeftSource::value insteadof RightSource;\n   RightSource::value as q;\n   LeftSource::value as __toString;\n  }\n  public const CAPTURE = self::take(...);\n };\n}\n$one = make();\n$captured = $one::CAPTURE;\necho $one::class, ';', $one, ';', $one->q(), ';', $captured($one), ';';\n$two = make();\necho $one !== $two ? 'fresh;' : 'bad;';\nCODE);\n$after = new class {};\necho $after::class;\n",
-      "source_sha256": "331ddc1c97009d089fb96b8d72373aded371c1d18526acadc6da0824cd2d7947",
-      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7U3RyaW5nYWJsZUBhbm9ueW1vdXMAe0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZTo4JDI7bGVmdDtyaWdodDtzY29wZTtmcmVzaDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjI3JDE=",
-      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7U3RyaW5nYWJsZUBhbm9ueW1vdXMAe0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZTo4JDI7bGVmdDtyaWdodDtzY29wZTtmcmVzaDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjI3JDE=",
+      "id": "author-eval-seeded-imported-capture",
+      "source": "<?php\n$before = new class {};\necho $before::class, ';';\neval(<<<'CODE'\nnamespace Author171;\ntrait LeftSource {\n public function value(): string { return 'left'; }\n public static function take(self $value): string { return 'scope'; }\n public const CAPTURE = self::take(...);\n}\ntrait RightSource { public function value(): string { return 'right'; } }\nfunction make() {\n return new class implements \\Stringable {\n  use LeftSource, RightSource {\n   LeftSource::value insteadof RightSource;\n   RightSource::value as q;\n   LeftSource::value as __toString;\n  }\n };\n}\n$one = make();\n$captured = $one::CAPTURE;\necho $one::class, ';', $one, ';', $one->q(), ';', $captured($one), ';';\n$two = make();\necho $one !== $two ? 'fresh;' : 'bad;';\nCODE);\n$after = new class {};\necho $after::class;\n",
+      "source_sha256": "6ba78bfad4afe8b150070b20e7f07f8741052f0e405b864c7d390d52bda29431",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7U3RyaW5nYWJsZUBhbm9ueW1vdXMAe0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZTo5JDI7bGVmdDtyaWdodDtzY29wZTtmcmVzaDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjI3JDE=",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7U3RyaW5nYWJsZUBhbm9ueW1vdXMAe0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZTo5JDI7bGVmdDtyaWdodDtzY29wZTtmcmVzaDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjI3JDE=",
       "stderr_template_base64": "",
       "exit_status": 0,
       "status": "normal",
-      "native_group": "/home/user/workspace/php-spec/.tools/class171-artifacts/author-eval-seeded-adapted-capture.native.json",
-      "native_raw_sha256": "325c1acc856165c1bd373f4c08b419ef8fc20b54796e9c31fb7eb57eec134e34",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-artifacts/author-eval-seeded-imported-capture.native.json",
+      "native_raw_sha256": "255a6e6b46417d75fcf39c45b242b742a979589e3ead60fd2ecd8920ba12834e",
       "model_timeout_seconds": 240
     },
     {
@@ -145,6 +145,15 @@
       "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/eval-repeat-caught-type-trace/native.json",
       "native_raw_sha256": "bf64457c0170afe7fbbeed8792248790f54b4484b8e53d188eb11738c68ed97e",
       "model_timeout_seconds": 240
+    }
+  ],
+  "native_only_controls": [
+    {
+      "id": "author-eval-seeded-adapted-capture",
+      "source_sha256": "331ddc1c97009d089fb96b8d72373aded371c1d18526acadc6da0824cd2d7947",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-artifacts/author-eval-seeded-adapted-capture.native.json",
+      "native_raw_sha256": "325c1acc856165c1bd373f4c08b419ef8fc20b54796e9c31fb7eb57eec134e34",
+      "reason": "Own anonymous class constants are outside the existing member grammar; the original author fixture failed its NORMAL-entry premise and grants zero agreement credit."
     }
   ]
 }
