@@ -1,0 +1,73 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-invoke-captured-factory",
+      "source": "<?php\nclass Invoke189 { private const VALUE = 'ok'; public function __invoke() { return fn() => new class(self::VALUE, __METHOD__) { public function __construct(public string $value, public string $method) {} public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\n$owner = new Invoke189; $factory = $owner(); unset($owner); echo 'MADE;'; $child = $factory(); unset($factory); echo 'HELD;', $child->value, ':', $child->method, ';'; unset($child); echo 'DONE;';\n",
+      "source_sha256": "336685045978f66b7b6f455e19ed96accd83b6ce4d3ad4f8f8b35f72828340f1",
+      "stdout_template_base64": "TUFERTtPV05FUjtIRUxEO29rOntjbG9zdXJlOkludm9rZTE4OTo6X19pbnZva2UoKToyfTtDSElMRDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-get-anonymous-cleared-receiver",
+      "source": "<?php\n$owner = new class { public string $tag = 'OLD'; public function __get($name) { global $owner; $owner = null; echo 'GET;'; return new class($name, $this->tag, __METHOD__) { public function __construct(public string $name, public string $tag, public string $method) {} public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } };\n$child = $owner->missing; $after = new class {}; echo 'HELD;', $child->name, ':', $child->tag, ':', $child->method, ';', $child::class, ';', $after::class, ';'; unset($child); echo 'DONE;';\n",
+      "source_sha256": "5ed0ce1d591939f9d852ca382460aa0ea6f041fc11c3ee32b2a4d3d2d41312b6",
+      "stdout_template_base64": "R0VUO09XTkVSO0hFTEQ7bWlzc2luZzpPTEQ6Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA6Ol9fZ2V0O2NsYXNzQGFub255bW91cwB7RklMRX06MiQxO2NsYXNzQGFub255bW91cwB7RklMRX06MyQyO0NISUxEO0RPTkU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-tostring-anonymous-child-keys",
+      "source": "<?php\n$owner = new class { public function __toString(): string { $child = new class {}; echo 'BODY;'; return $child::class; } };\necho 'PRE;', $owner, ';POST;'; $after = new class {}; echo $owner::class, ';', $after::class, ';';\n",
+      "source_sha256": "082e9a189ed1d8bd72500675955f53f6294ccfb3bd1a54fd8d5413aec4e82073",
+      "stdout_template_base64": "UFJFO0JPRFk7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7UE9TVDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjMkMjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-tostring-trait-cleared-receiver",
+      "source": "<?php\ntrait StringTrait189 { public function __toString(): string { global $owner; $owner = null; $child = new class(self::VALUE) { public function __construct(public string $value) { echo 'CHILD;'; } public function __destruct() { echo 'DROP-CHILD;'; } }; echo 'TEXT;'; return $child->value; } }\nclass StringOwner189 { use StringTrait189; private const VALUE = 'ok'; public function __destruct() { echo 'OWNER;'; } }\n$owner = new StringOwner189; echo 'PRE;', $owner, ';POST;';\n",
+      "source_sha256": "3991bc192e9b386a274181a999e5b3a614195e88e68420870475fe4c35578797",
+      "stdout_template_base64": "UFJFO0NISUxEO1RFWFQ7RFJPUC1DSElMRDtPV05FUjtvaztQT1NUOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-invoke-child-warning",
+      "source": "<?php\necho 'PRE;';\nclass BadInvoke189 { public static function __invoke() { $child = new class { final private function hidden() {} }; return $child; } }\n",
+      "source_sha256": "95bbf7ef850d234d06d0e7ea7caca54d0cd04f7796807189405200ccea1ed489",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogTWV0aG9kIEJhZEludm9rZTE4OTo6X19pbnZva2UoKSBjYW5ub3QgYmUgc3RhdGljIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "magic-tostring-return-type-child-warning",
+      "source": "<?php\necho 'PRE;';\nclass BadString189 { public function __toString(): int { $child = new class { final private function hidden() {} }; return 1; } }\n",
+      "source_sha256": "c77d8e08d93283fd79cfb38566ab966caf31bff7a34f58c14609d1554912fc95",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQmFkU3RyaW5nMTg5OjpfX3RvU3RyaW5nKCk6IFJldHVybiB0eXBlIG11c3QgYmUgc3RyaW5nIHdoZW4gZGVjbGFyZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    }
+  ]
+}

@@ -49,6 +49,12 @@ def $anonymous_trait_adaptations((NStmtTraitUseAdaptationPrecedence name (NIdent
   -- if $anonymous_reference(name) /\ $ptvalidname($base64(text_method), false)
   -- if $anonymous_interface_references(name_excluded :: name_tail*)
 def $anonymous_trait_adaptations(phpType63*) = false -- otherwise
+dec $anonymous_get_factory_parameters(phpType16) : bool
+def $anonymous_get_factory_parameters(SEQUENCE eps) = true
+def $anonymous_get_factory_parameters(SEQUENCE ((NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) :: phpType17*)) = ($ptvalidname($base64(text), false) /\ $anonymous_get_factory_parameters(SEQUENCE phpType17*))
+def $anonymous_get_factory_parameters(phpType16) = false -- otherwise
+dec $anonymous_magic_factory(int, bool, ptbytes, phpType16, phpType18, statement*) : bool
+def $anonymous_magic_factory(flags, b_ref, ptbytes, phpType16, phpType18, statement*) = (~b_ref /\ ~$generator_statements(statement*) /\ ($ppmethod_invoke(flags, ptbytes) \/ $ppmethod_tostring(ptbytes) \/ ($ppmethod_get(flags, ptbytes) /\ phpType18 = ABSENT /\ $anonymous_get_factory_parameters(phpType16))))
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType57 :: phpType57_tail*)) (SEQUENCE eps) metadata) = true
   -- if $ppproperty_supported(flags)
@@ -63,6 +69,9 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__invoke")
+  -- if ~$generator_statements(statement*)
+def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 ABSENT (SEQUENCE statement*) metadata) = $anonymous_get_factory_parameters(phpType16)
+  -- if $ppmethod_get(flags, $base64(text))
   -- if ~$generator_statements(statement*)
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata) = true
   -- if flags <- [0,1]
@@ -180,7 +189,7 @@ dec $anonymous_method_factory_node(pcnode) : bool
 def $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = true
   -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
   -- if $ptvalidname($base64(text), false)
-  -- if ~$ppmethod_magic($base64(text)) \/ $ptlc($base64(text)) = $ptascii("__construct")
+  -- if ~$ppmethod_magic($base64(text)) \/ $ptlc($base64(text)) = $ptascii("__construct") \/ $anonymous_magic_factory(flags, b_ref, $base64(text), phpType16, phpType18, statement*)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct") \/ (~b_ref /\ ~$generator_statements(statement*))
   -- if ~b_ref \/ ~$generator_statements(statement*)
   -- if $anonymous_constructor_parameters(phpType16)
@@ -522,14 +531,14 @@ def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_me
   -- if pcpath_body = pcpath_method ++ [PCFIELD 6]
   -- if $(|pcpath_body| < |pcpath_child|)
   -- if pcpath_child[0:|pcpath_body|] = pcpath_body
-;; A failed trait can lack its descriptor until all members have compiled.
+;; Failed named/trait owners can lack descriptors until their members finish.
 def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_method (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)) = true
   -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $(|pcpath_method| >= 2)
   -- if pcpath_owner = pcpath_method[0:$nabs($(|pcpath_method| - 2))]
-  -- if pcpath_method[$nabs($(|pcpath_method| - 2)):2] = [PCFIELD 2, PCINDEX n_method]
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_owner) = (pcnode_owner)
-  -- if $anonymous_named_method_owner(pcnode_owner) = (2)
+  -- if $anonymous_named_method_owner(pcnode_owner) = (n_members)
+  -- if pcpath_method[$nabs($(|pcpath_method| - 2)):2] = [PCFIELD n_members, PCINDEX n_method]
   -- if $class_at(P.INSTALLED.CLASSES, PORIGIN 0 pcpath_owner) = eps
   -- if pcpath_body = pcpath_method ++ [PCFIELD 6]
   -- if $(|pcpath_body| < |pcpath_child|)
