@@ -561,6 +561,27 @@ property-table proxies, user finalizers, static cells and explicit `__invoke`
 captures remain outside this lane. See the
 [multi-array review](../../coverage/semantics/gc-multi-array-review.json).
 
+GC28 extends the rooted direct caller to finite nested DIRECT-array DAGs.
+Every capture and array entry is direct and defined; every reached array is
+mutable, nonproxy and outside compiled-pool reach, and every object is an
+allocated childless stdClass. Ordinary and physical children agree. Existing
+heap reach deduplicates traversal identities while retaining every edge occurrence;
+rejecting each array's self-reach from its children excludes forged DIRECT cycles.
+An actual array-to-array edge inside this capture component keeps the new clause
+disjoint from flat lanes; unrelated nested tables grant no admission.
+
+Three original source pairs agree: a three-array shared DAG with duplicate leaf
+buckets, local COW separating parent and inner tables from captured originals,
+and an actual self-copy assignment that creates a finite old-child snapshot. Final weak death occurs after Closure retirement. Strict
+D-state fronts pass 246+191 assertions and the changed GC27 group passes 207;
+its same-arity nested-DAG admission supersedes the earlier refusal. Independent
+fronts pass 63+85 conditions, including the component-local guard and actual
+self-copy owners 2/2/1/2. The genuine source/caller
+root, exact capture arity, empty static cells and black hidden capture-table
+boundary remain. ALIAS/INDIRECT entries, user finalizers, proxies, pooled graphs
+and arbitrary Closure cycles remain outside this lane. See the
+[nested-array review](../../coverage/semantics/gc-nested-array-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

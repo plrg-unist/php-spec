@@ -89,6 +89,10 @@ test-semantics: build
 	python3 tests/semantics/output_executor_retval_state.py
 	python3 tests/semantics/output_executor_explicit_sources.py
 	python3 tests/semantics/output_executor_explicit_state.py
+	python3 tests/semantics/output_executor_reception_sources.py
+	python3 tests/semantics/output_executor_reception_state.py
+	python3 tests/semantics/output_executor_reception_review_sources.py
+	python3 tests/semantics/output_executor_reception_review_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -952,6 +956,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_alias_protocol.py
 	python3 tests/semantics/enum_is_callable_saved_input_protocol.py
 	python3 tests/semantics/enum_is_callable_output_retained_protocol.py
+	python3 tests/semantics/enum_is_callable_output_unique_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

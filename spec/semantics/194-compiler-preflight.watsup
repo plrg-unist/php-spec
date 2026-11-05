@@ -103,6 +103,7 @@ dec $declaration_encoding_literal(expression) : bool
 def $declaration_encoding_literal(NScalarInt phpType24 metadata) = true
 def $declaration_encoding_literal(NScalarFloat phpType41 metadata) = true
 def $declaration_encoding_literal(NScalarString phpType33 metadata) = true
+def $declaration_encoding_literal(NExprBinaryOpConcat expression_left expression_right metadata) = ($declaration_encoding_literal(expression_left) /\ $declaration_encoding_literal(expression_right))
 def $declaration_encoding_literal(expression) = false -- otherwise
 def $declaration_parser_node(NStmtClassMethod phpType14 (INTEGER flags) phpType4 phpType11 phpType16 phpType18 phpType47 metadata) = $declaration_parser_method(flags, metadata, $pcmetadata(phpType11))
 def $declaration_parser_node(NStmtClass phpType14 (INTEGER flags) phpType3 phpType44 phpType42 phpType23 metadata) = $declaration_parser_class(flags, phpType3, metadata)

@@ -1,0 +1,122 @@
+{
+  "milestone": "ATTR18: stable pending exit through post-FINAL tick retirement",
+  "status": "selected stable-exit source and ownership behavior independently validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-18",
+  "scope": "Existing certified tick caches retire after NORMAL or stable main-body EXITED completion. Shutdown/destructor saved completions must agree; EXITED also matches the full stored status. Assertion callback remains empty; changed phase completions and abrupt/reentrant cleanup remain partial.",
+  "authority": [
+    "Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit) \u2014 integer sets EG(exit_status), string writes without resetting it, then zend_throw_unwind_exit",
+    "main/main.c:php_request_shutdown \u2014 output FINAL precedes module deactivation/tick-list destruction",
+    "ext/standard/basic_functions.c:user_tick_function_dtor \u2014 copied arguments retire before independent FCC slots",
+    "270-eager-destructors.watsup:shutdown_queue_begin, 257-request-destructors.watsup:destructor_begin/store-done and 441-output-finalization.watsup:output-drain-done \u2014 existing saved phase completions"
+  ],
+  "production": {
+    "revision": "84cd16f43bbc5cc023f860d9d85f4c9c073a1838",
+    "spec_sha256": "24b3bce69600ff46523bb9087dc042a624abdc4bd5443b61dd09d1f798a7cf0c",
+    "change": "Add one completion predicate over existing phase/status facts. NORMAL requires both saved phase completions NORMAL without constraining status to 0. EXITED z requires both saved phase completions EXITED z and EXITSTATUS=z. Entry cleanup runs NORMAL; immutable target validation reconstructs the original saved completion, then tick completion restores it as before."
+  },
+  "tests": {
+    "independent_revision": "932f96d4187a15b1343d2318cb0b419a40a5e50f",
+    "protocol": "tests/semantics/deprecated_late_tick_exit_review_protocol.py"
+  },
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "semantic_mode": "SL; SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; CPU5"
+  },
+  "evidence": {
+    "native_exit": {
+      "report": "review-native/report.json",
+      "report_sha256": "4bb58a69122b28edabc26002c0ba3746ad2066954f4b18cef50970503f9807a3",
+      "new_exit_rows": 4,
+      "originals": "review-native/{integer-closure,string-bound,raw,cacheless}.php"
+    },
+    "native_affected_normal": {
+      "report": "normal-native/report.json",
+      "report_sha256": "17e04a6ce481700f7bc30488f714d0512d9ca55860691480bf44de93cb5e3562",
+      "affected_controls": 1,
+      "reason": "NORMAL readiness now checks saved phase completions; rerun only the affected cacheless source at the same private path/cwd for native/model."
+    },
+    "source": {
+      "revision": "84cd16f43bbc5cc023f860d9d85f4c9c073a1838",
+      "report": "source-84c/report.json",
+      "report_sha256": "5eefc8b32848c286c99992fcae32249ddfceaa529d1233d875ef0b5ecb120b03",
+      "new_exit_agreements": 4,
+      "affected_normal_controls": 1,
+      "rows": [
+        {
+          "id": "cacheless",
+          "source_sha256": "ecdee746a9bb2207bba696bfc7f510bd23130731fa58acb32fafdf52eef0c142",
+          "status": "explicit_exit",
+          "exit_status": 7,
+          "stdout": "B;F;",
+          "regression_control": false
+        },
+        {
+          "id": "integer-closure",
+          "source_sha256": "5bd4e84a8cd8148d3f15bf797f262dfe76e98489b302cb8a63826bbb26e3ffdd",
+          "status": "explicit_exit",
+          "exit_status": 7,
+          "stdout": "B;F;A;K;",
+          "regression_control": false
+        },
+        {
+          "id": "normal-legacy",
+          "source_sha256": "9af2fc1a3a4fb2c2f5c0e8a8a3bc2025828fd9049a20c0ea3ed23914ea0e7eb2",
+          "status": "normal",
+          "exit_status": 0,
+          "stdout": "B;F;",
+          "regression_control": true
+        },
+        {
+          "id": "raw",
+          "source_sha256": "604d7b1d1ae8fcee31b204a6daa953f484226e476bb04e790949123fe11058dd",
+          "status": "explicit_exit",
+          "exit_status": 7,
+          "stdout": "B;F;A;C;",
+          "regression_control": false
+        },
+        {
+          "id": "string-bound",
+          "source_sha256": "2462b840bd83871fd3fcbb63e81359d6ad38960e9762c9e46d1f7027f0af97ed",
+          "status": "explicit_exit",
+          "exit_status": 0,
+          "stdout": "B;E;F;A;R;",
+          "regression_control": false
+        }
+      ]
+    },
+    "strict_private": {
+      "revision": "84cd16f43bbc5cc023f860d9d85f4c9c073a1838",
+      "report": "strict-84c/report.json",
+      "report_sha256": "9f98ce275a5bafcd34050fc18f18f378ffde1288235a3703aee2721d0003d316",
+      "modules": 433,
+      "exit": 0
+    },
+    "reached": {
+      "revision": "932f96d4187a15b1343d2318cb0b419a40a5e50f",
+      "report": "reached-932f/run/report.json",
+      "report_sha256": "389cdf33ade6a875a54a0441e2d1ac554ffbd913a5d16bde8374e64734a623b6",
+      "selected_assertions": [
+        34,
+        37,
+        30,
+        27,
+        24,
+        24
+      ],
+      "conditions": 176,
+      "source_reached_conditions": 164,
+      "derived_conditions": 12,
+      "derived_scope": "Labeled saved-kind/code, phase/status/task guards and a fully valid nonzero-status clone of the genuine normal state.",
+      "observation": "Actual cleanup is NORMAL while saved EXITED7/0/263 remains protected. Array/reference and Closure/FCC owners retire in order, zero-budget resumes preserve completion, and full stored263 remains distinct from CLI7. Forged saved exit\u2192NORMAL, low-byte code replacement and mismatched phase/status are refused; phase-consistent NORMAL accepts nonzero status."
+    }
+  },
+  "preserved_earlier_evidence": "coverage/semantics/callback-late-tick-callables-review.json and callback-late-tick-values-review.json retain previous normal cache/value cuts and original failures. This increment reruns one explicitly affected normal source, not those whole campaigns.",
+  "zero_credit": [
+    "ATTR07 unsafe assert WeakReference observation remains unresolved, is not rerun here and retains zero agreement credit."
+  ],
+  "remaining": "Phase replacement, throws/reentry during module cleanup, wider callable producers, assertion roots and cycles remain partial; selected witnesses are not exhaustive exit/lifecycle/core validation.",
+  "review": "Independent /root/attr_review_current accepts the source/phase/status reasoning and six-group ownership/counterexample checks. Four new explicit-exit agreements and one affected normal control pass with private strict433, without test correction or failures. Earlier execution cuts keep their original identities; disjoint parent review does not renew source credit."
+}

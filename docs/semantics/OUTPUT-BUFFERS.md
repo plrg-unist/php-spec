@@ -51,7 +51,9 @@ the sole pinned oracle. Source-reached SL checks cover copies, lower-layer write
 notice reentry, shutdown and malformed state; synthetic completion probes are
 helper controls, separate from reached service pauses. Wider callback dispatch,
 startup buffering/handler profiles, stdout diagnostic rendering and non-CLI SAPI
-output effects remain required. Full core stays partial.
+output effects remain required. Handler creation allocates its initial byte buffer
+before start checks; allocation failure and PHP memory limits remain pending
+effects. Full core stays partial.
 
 Accepted private evidence retains26 author originals at identical1+25 cuts,
 6 independent originals, and separate4+2 Unsupported controls with zero native

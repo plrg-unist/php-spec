@@ -1,0 +1,107 @@
+{
+  "milestone": "ATTR17: certified callback cache shapes in normal post-FINAL tick retirement",
+  "status": "selected normal source and ownership behavior independently validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-17",
+  "scope": "Normal nonempty source-certified tick lists reuse existing copied-value and optional FCC.object/FCC.closure roots. Named functions, method arrays and real Closures join raw invokable objects; assertion callback remains empty.",
+  "authority": [
+    "ext/standard/basic_functions.c:register_tick_function \u2014 selected FCC plus copied positional zvals",
+    "ext/standard/basic_functions.c:user_tick_function_dtor \u2014 arguments in order before zend_fcc_dtor",
+    "Zend/zend_API.h:zend_fcc_addref/zend_fcc_dtor \u2014 independent optional object and closure slots",
+    "Zend/zend_closures.c:zend_closure_free_storage \u2014 owned captured/static values retire before this_ptr; existing Closure child roots preserve that order",
+    "393-ticks.watsup:tick_entry_valid/tick_entries_valid and 231-shutdown-functions.watsup:callback_cache_nodes \u2014 existing source and ownership certificates"
+  ],
+  "production": {
+    "revision": "8454f36c9ef4942e06ad2db63dca0d69e195b710",
+    "spec_sha256": "322033b40f12c566546d75df0931129d7203beb7f032fa43785393b4e22bdd3b",
+    "change": "Remove redundant raw-object-only entry/list readiness helpers. Require the existing tick_entries_valid certificate directly, with the same normal/empty-assertion boundary. Add not-tick-ready guards only to queue/free fallbacks so zero-root normal entries cannot overlap dispatch; executor_module_owners and abnormal behavior remain unchanged."
+  },
+  "tests": {
+    "independent_revision": "9a609e8962a666b614fb677d3dd55802b41beb13",
+    "protocol": "tests/semantics/deprecated_late_tick_callables_review_protocol.py"
+  },
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "semantic_mode": "SL; SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; author CPU4, reviewer CPU5"
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "8a4cb1b056ab3077c95d20f146b5bd8fe353088631fc3715c7cabd1e1fde9caf",
+      "normal_rows": 5,
+      "originals": "review-native/{closure,bound,mixed,named-scalar,named-empty-shutdown}.php"
+    },
+    "source": {
+      "revision": "8454f36c9ef4942e06ad2db63dca0d69e195b710",
+      "report": "source-845/report.json",
+      "report_sha256": "930df4a154004864b520351175943d91cbd6ef10bbcabf3f99978158cdc80972",
+      "normal_exact_rows": 5,
+      "rows": [
+        {
+          "id": "named-empty-shutdown",
+          "source_sha256": "38d8b5f8aa67857e8c66d3152e47677f43e056379b8d00f346f7086d46980c44",
+          "stdout": "B;S;F;",
+          "elapsed_seconds": 18.40250336501049
+        },
+        {
+          "id": "named-scalar",
+          "source_sha256": "9af2fc1a3a4fb2c2f5c0e8a8a3bc2025828fd9049a20c0ea3ed23914ea0e7eb2",
+          "stdout": "B;F;",
+          "elapsed_seconds": 18.054646131990012
+        },
+        {
+          "id": "bound",
+          "source_sha256": "a617ceff85f28ab9d7408b0c8687d5f5241e7b170aefa2029655a0f29952c0da",
+          "stdout": "B;F;A;R;",
+          "elapsed_seconds": 39.19427011400694
+        },
+        {
+          "id": "closure",
+          "source_sha256": "ab3cc0c4c79a79cc85e07e3772abe54bef874fc72a64164eb4acad7cfc450047",
+          "stdout": "B;F;A;K;",
+          "elapsed_seconds": 34.382555885997135
+        },
+        {
+          "id": "mixed",
+          "source_sha256": "31ce031c276b67676ec133448ed54e86aa24316243720c8bfd087c6566de56c6",
+          "stdout": "B;F;A;M;",
+          "elapsed_seconds": 42.549060223973356
+        }
+      ]
+    },
+    "strict_private": {
+      "revision": "8454f36c9ef4942e06ad2db63dca0d69e195b710",
+      "report": "strict-845/report.json",
+      "report_sha256": "725f756881ce8db70ae82b58ab0ede4ffe1875db1a10b9d9476fce4648776de3",
+      "modules": 433,
+      "exit": 0
+    },
+    "reached": {
+      "revision": "9a609e8962a666b614fb677d3dd55802b41beb13",
+      "report": "reached-9a609/run/report.json",
+      "report_sha256": "944ca67c9655065fe7d1217f6554d627852422975ef0015b2f3e3c16425747c0",
+      "selected_assertions": [
+        32,
+        29,
+        30,
+        21,
+        23,
+        22,
+        30
+      ],
+      "conditions": 187,
+      "source_reached_conditions": 180,
+      "derived_conditions": 7,
+      "derived_scope": "Six explicitly reconstructed endpoint clauses and one forged CALL guard.",
+      "observation": "Cacheless zero-root entries create real tasks ahead of both fallback arms, preserve shutdown queue order and resume across budget zero. Closure captures and distinct bound receiver owners retire in native order; mixed cacheless/function and method-array entries keep shared array children and nonowning raw-selector history separate."
+    }
+  },
+  "preserved_earlier_evidence": "coverage/semantics/callback-late-tick-values-review.json retains finite copied-value/list/self evidence and its linked original cuts. Earlier agreements are not rerun or renewed here.",
+  "zero_credit": [
+    "ATTR07 unsafe assert WeakReference observation remains unresolved, is not rerun here and retains zero agreement credit."
+  ],
+  "remaining": "Wider callable producers, assertion roots, cycles and abrupt/reentrant module shutdown remain partial. Five source witnesses do not establish exhaustive callback or full lifecycle/core coverage.",
+  "review": "Independent /root/attr_review_current accepts production845, five exact source originals and reached9a609 correctness/counterexamples/test reliability. All seven groups pass without fixture correction. Earlier execution cuts keep their original identities; disjoint parent review does not renew source credit."
+}
