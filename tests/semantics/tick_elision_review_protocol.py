@@ -63,7 +63,7 @@ review.CASES['constant-logical-aliases-preserve-real-opcode-adjacency'] = {
         'S.TICKCOUNT = 0', '$tick_marker_valid(S, porigin, ptickmarker)',
         '$tick_source_plan(S, n) = (T)', 'T.DEPENDENCY = eps',
         '|T.MARKERS| = 2',
-        *['$tick_marker(S, PORIGIN n [PCINDEX 2, PCFIELD 1, PCINDEX ' + str(index) + ']) = eps'
+        *['$tick_marker(S, PORIGIN n ([PCINDEX 2, PCFIELD 1, PCINDEX ' + str(index) + '])) = eps'
           for index in range(1, 5)],
         'S_bad = S[.TODO = (TICK porigin ptickmarker[.LINE = 9]) :: ptask_tail*]',
         '~$call_descriptors_valid(S_bad)',
@@ -88,7 +88,7 @@ review.CASES['retained-print-survives-constant-result-without-skipped-redirect']
         '$code_redirect(pcode.REDIRECTS, pcpath_skipped) = eps',
         '$tick_source_plan(S, n) = (T)', 'T.DEPENDENCY = eps',
         '|T.MARKERS| = 3',
-        '$tick_marker(S, PORIGIN n [PCINDEX 2, PCFIELD 1, PCINDEX 1]) = (ptickmarker)',
+        '$tick_marker(S, PORIGIN n ([PCINDEX 2, PCFIELD 1, PCINDEX 1])) = (ptickmarker)',
         'ptickmarker.FREQUENCY = 1', 'ptickmarker.LINE = 6',
         *valid('S'), *PAUSE,
         'S_done.EVENTS = ' + output(sources.CASES[name][1]),
