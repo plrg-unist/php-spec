@@ -304,7 +304,7 @@ def observe(state, filename, display_mode=2):
                 name = 'stdClass'
             elif obj['tag'] == 'INSTANCE':
                 name = next(row['NAME'] for row in state['CLASSES'] if row['ORIGIN'] == obj['args'][0])
-                return b'Object(' + bytes(map(int, name)) + b')'
+                return b'Object(' + bytes(map(int, name)).split(b'\0', 1)[0] + b')'
             else:
                 name = 'Closure'
             return b'Object(' + name.encode() + b')'
