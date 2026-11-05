@@ -14,8 +14,8 @@
    +----------------------------------------------------------------------+
 */
 
-/* File-mode adaptation of PHP 8.5.10 tokenizer lifecycle/lex loop.
- * Local modifications: file input, raw lexer metadata, and parse-only oracle.
+/* File/eval adaptation of PHP 8.5.10 tokenizer lifecycle/lex loop.
+ * Local modifications: input modes, raw lexer metadata, and parse-only oracle.
  * No compilation, opcode generation, or evaluation entrypoint is called. */
 #include "php.h"
 #include "Zend/zend_smart_str.h"
@@ -221,8 +221,8 @@ static void scan_file(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
 PHP_FUNCTION(php_spec_parse_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, true); }
 PHP_FUNCTION(php_spec_lex_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, false); }
 
-/* Parse eval bytes after an opening tag, without compiling or executing them. */
-PHP_FUNCTION(php_spec_parse_eval) {
+/* Scan original eval bytes after an opening tag, without synthetic offsets. */
+static void scan_eval(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
     zend_string *source;
     ZEND_PARSE_PARAMETERS_START(1, 1)
         Z_PARAM_STR(source)
@@ -233,7 +233,11 @@ PHP_FUNCTION(php_spec_parse_eval) {
         RETURN_THROWS();
     }
     /* compile_string() returns before scanning empty eval source. */
-    if (ZSTR_LEN(source) == 0) RETURN_TRUE;
+    if (ZSTR_LEN(source) == 0) {
+        if (parse) RETURN_TRUE;
+        array_init(return_value);
+        return;
+    }
 
     bool compiling = CG(in_compilation), shebang = CG(skip_shebang);
     bool encoding_declared = CG(encoding_declared);
@@ -246,21 +250,60 @@ PHP_FUNCTION(php_spec_parse_eval) {
     zend_prepare_string_for_scanning(&code, filename);
     zend_string_release(filename);
     CG(in_compilation) = 1;
-    CG(ast) = NULL;
-    CG(ast_arena) = zend_arena_create(1024 * 32);
     LANG_SCNG(yy_state) = yycST_IN_SCRIPTING;
-    bool accepted = zendparse() == SUCCESS;
-    zend_ast_destroy(CG(ast));
-    zend_arena_destroy(CG(ast_arena));
+    if (parse) {
+        CG(ast) = NULL;
+        CG(ast_arena) = zend_arena_create(1024 * 32);
+        bool accepted = zendparse() == SUCCESS;
+        zend_ast_destroy(CG(ast));
+        zend_arena_destroy(CG(ast_arena));
+        RETVAL_BOOL(accepted);
+    } else {
+        zval token;
+        ZVAL_UNDEF(&token);
+        array_init(return_value);
+        int id, line = 1, remaining = -1;
+        while ((id = lex_scan(&token, NULL))) {
+            append_token(return_value, id, LANG_SCNG(yy_text), LANG_SCNG(yy_leng),
+                line, LANG_SCNG(yy_text) - LANG_SCNG(yy_start));
+            if (Z_TYPE(token) != IS_UNDEF) {
+                zval_ptr_dtor_nogc(&token);
+                ZVAL_UNDEF(&token);
+            }
+            if (EG(exception)) break;
+            if (remaining != -1) {
+                if (id != T_WHITESPACE && id != T_OPEN_TAG && id != T_COMMENT
+                    && id != T_DOC_COMMENT && --remaining == 0) {
+                    if (LANG_SCNG(yy_cursor) < LANG_SCNG(yy_limit)) {
+                        append_token(return_value, T_INLINE_HTML, LANG_SCNG(yy_cursor),
+                            LANG_SCNG(yy_limit) - LANG_SCNG(yy_cursor), line,
+                            LANG_SCNG(yy_cursor) - LANG_SCNG(yy_start));
+                    }
+                    break;
+                }
+            } else if (id == T_HALT_COMPILER) {
+                remaining = 3;
+            }
+            if (CG(increment_lineno)) {
+                CG(zend_lineno)++;
+                CG(increment_lineno) = 0;
+            }
+            line = CG(zend_lineno);
+        }
+    }
     zend_restore_lexical_state(&saved);
     CG(in_compilation) = compiling;
     CG(skip_shebang) = shebang;
     CG(encoding_declared) = encoding_declared;
     CG(increment_lineno) = increment_lineno;
     zval_ptr_dtor(&code);
+    /* Raw scanner failures delimit the token tape, not a semantic answer. */
+    if (!parse) zend_clear_exception();
     if (EG(exception)) RETURN_THROWS();
-    RETURN_BOOL(accepted);
 }
+
+PHP_FUNCTION(php_spec_parse_eval) { scan_eval(INTERNAL_FUNCTION_PARAM_PASSTHRU, true); }
+PHP_FUNCTION(php_spec_lex_eval) { scan_eval(INTERNAL_FUNCTION_PARAM_PASSTHRU, false); }
 
 /* Use the exact pinned registry (canonical, MIME, then aliases), including
  * its C-string declaration semantics. This reads metadata, never source code. */
@@ -287,10 +330,14 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_parse_eval, 0, 1, _IS_BOOL, 0)
     ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_lex_eval, 0, 1, IS_ARRAY, 0)
+    ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 static const zend_function_entry functions[] = {
     PHP_FE(php_spec_parse_file, arginfo_parse_file)
     PHP_FE(php_spec_lex_file, arginfo_lex_file)
     PHP_FE(php_spec_parse_eval, arginfo_parse_eval)
+    PHP_FE(php_spec_lex_eval, arginfo_lex_eval)
     PHP_FE(php_spec_encoding_name, arginfo_encoding_name)
     PHP_FE_END
 };
