@@ -337,6 +337,8 @@ preserve its adjacency and type/name/default/hook line provenance.
 Trait use and admitted alias/precedence metadata stay unticked while imported
 method callbacks retain physical source, alias trace name and receiver through
 abort and retry.
+Namespace ticks follow checked source form: semicolon headers precede their
+following statements, while braced markers follow the body, including at EOF.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.

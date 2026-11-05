@@ -127,6 +127,9 @@ test-semantics: build
 	python3 tests/semantics/tick_trait_adaptation_sources.py
 	python3 tests/semantics/tick_trait_adaptation_review_sources.py
 	python3 tests/semantics/tick_trait_adaptation_review_protocol.py
+	python3 tests/semantics/tick_namespace_sources.py
+	python3 tests/semantics/tick_namespace_review_sources.py
+	python3 tests/semantics/tick_namespace_review_protocol.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/output_reference_warning_sources.py

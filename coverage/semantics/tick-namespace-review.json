@@ -1,0 +1,81 @@
+{
+  "milestone": "ATTR46: source-form namespace Tick placement",
+  "status": "Independently accepted bounded implementation; wider source/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revisions": [
+      "2210fa875",
+      "5da395416"
+    ],
+    "modules": {
+      "spec/semantics/33-runtime-compiler.watsup": "3f3f7995c7e5498b2a776954dc5d91cc09bc1c974993a5decac226cd74690ea2",
+      "spec/semantics/393-ticks.watsup": "cb90b0e39a48b8438c427c69131b860d713cae534676aa8d59cb3081f258f4b5"
+    },
+    "scope": "Checked namespace kind/header lines control compiler order: semicolon header emission precedes the following normalized body; braced emission follows its body. A state-aware compiled_source_work wrapper merges certified Namespace AT/TICK events into unchanged raw compiler work, including empty/EOF roots. No Namespace statement consumer, parser/frontend/schema change or raw image mutation.",
+    "call_sites": "Eight substitutions keep main declaration finish (192), eval (160), include (171), eval notices (236 twice), source-body authentication (287 twice) and goto reconstruction (129) coherent. No conversion/control-projection or paused-route logic changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "Zend parser namespace rules use a NULL body for semicolon syntax and a statement-list body for braces. zend_compile_namespace compiles only a braced body before compile_stmt's Tick; a semicolon header precedes its following top statements. Existing checked Mkind/plstyle identifies form; plcompileline uses the name or authenticated namespaceBraceLine.",
+    "facts": "Namespace_ kind1/2 and worker brace-token metadata already exist. Source AST, installed CODE and completed class facts supply one canonical tick_source_plan. Structural root/descendant slices preserve existing WORK order without guessing form from the wrapped body.",
+    "installed_callers": "Peer verified image installation precedes192 finish;160/171 use S_compiled;236 retains installed completed images;287 requires UNIT_RUN/source reconstruction;129 requires complete declaration history. Goto skips preceding AT/TICK while finding its label and retains the later marker suffix. Non-Namespace units delegate to the old raw helper."
+  },
+  "evidence": {
+    "native_pair_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-namespace-46/native-pair-v1/report.json",
+      "sha256": "73172141a5593cf1f49c70d46e780507a44dad0d0a2a6000835938dbbd830707",
+      "revision": "f684e808f9e8d6f29b874e6b3c2bca5d361c6c56",
+      "passed": true,
+      "scope": "Identical callback/class bodies produce empty stdout with a semicolon namespace and T with braces. Both were native-pinned before model calibration; native-only observations carry no differential agreement credit."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-namespace-46/strict-report-v1.json",
+      "sha256": "eadbb1122a8dcf5c3fc8a54454295ec866df1a10b75c5519b80ccf3f40bf7cc3",
+      "revision": "d2ddac0e1d42a2d68b258aa763aaf37c4fd04221",
+      "passed": true,
+      "modules": 445
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-namespace-46/source-author-v1/report.json",
+      "sha256": "8f2e108bb48618d8853d32d88fea3ed902fb6fb8ffbc861a32493eda9e7d1447",
+      "revision": "d2ddac0e1d42a2d68b258aa763aaf37c4fd04221",
+      "passed": true,
+      "agreements": 3,
+      "observations": {
+        "semicolon tail": "",
+        "braced tail": "T",
+        "empty semicolon namespace at EOF": "T"
+      },
+      "scope": "Uncalled method declarables enable ticks without creating a class emitter; the namespace form decides the actual boundary. A second empty semicolon namespace still emits its header marker after the last ordinary WORK item."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-namespace-46/source-review-v1/report.json",
+      "sha256": "ba1b3691fe2ae8b3eb822772081839fc46a23ed0f1dd0f76ca466c20b1448d4d",
+      "revision": "d2ddac0e1d42a2d68b258aa763aaf37c4fd04221",
+      "passed": true,
+      "agreements": 1,
+      "observation": "T[24]NCN",
+      "scope": "A later semicolon header uses name line24 rather than keyword23. Its callback reads/throws before the next namespace's non-early class activation; the exception handler confirms that the class remains absent."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-namespace-46/review-protocol-v1/run/report.json",
+      "sha256": "5603918aee45c8022cf893d789712c39884d9c1d7c81f887a87828ed2e3288c9",
+      "process_sha256": "ade51b27476197cda649769955afcf3aabb93a23e43404bd9ebf00944128311c",
+      "revision": "0ee557bcd138d60d16676ad05392e02f209a1ebf",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 52,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "The genuine header Tick checks Mkind1/name line24 versus keyword23 and current Namespace origin. Its real ORIGIN_RETURN plus AT pending-Class tail leaves Barrier bound/Pending absent; callback read/throw finishes T[24]NCN with full-state zero-budget/full-resume equality and heap/descriptors/Tick validity."
+    }
+  },
+  "calibration": "source-baseline/report.json (SHA cb6dafcb81230c7883aa10e804c6c0dc0cbaf1805f88f4e92acf0478faa99665) already passed the semicolon empty case at f684e808f. The proposed phantom runtime Tick was not observed there: lexical work flattening discarded the wrapper. The actual failing braced observation below localized the missing runtime projection. These are not extra unique final originals.",
+  "independent_review": "Peer verified existing source-form authority, every installed-source/code caller, root/path WORK order, empty/EOF events and goto suffixes. The actual52-condition header front passed first execution using ORIGIN_RETURN plus pending-body AT, never a fabricated Namespace STMT.",
+  "remaining": "Wider flattened lexical emitters and dynamic-source ownership/lifetime contexts remain partial. Main CLI source witnesses and the targeted namespace boundary are validated here; no whole namespace/runtime-family closure or new source producer is claimed.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and implementation/tool fingerprints remain external in tick-namespace-46. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs were stable with exit 0/empty driver stderr; all campaign executables were reaped. Regular local tools were preserved from idle ATTR45; no fresh build or portability proof.",
+  "zero_credit": [
+    "source-braced-before/report.json at f684e808f remains false (SHA 33918939a038bdbc706a8c36645288a761875be6ffe404ab20e2e9563719f212): native T versus model normal/empty stdout. This is a missing runtime marker, never Unsupported or an agreement.",
+    "No ATTR45, earlier compiler family, owning-source, output, Generator or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed."
+  ]
+}

@@ -89,6 +89,13 @@ backing return, then leave the object available for a later successful read.
 Compiler entry uses completed `P.CLASSES`; runtime lookup borrows `S.CLASSES`
 after public descriptor/declaration-history validation. These facts live only in
 the transient summary, with no new machine field or per-statement recompilation.
+Namespace form comes from checked `Mkind`/`plstyle`, with name/anonymous-brace
+lines supplied by `plcompileline`. Semicolon headers emit before their normalized
+following statements; braced declarations emit afterward. Lexical compilation
+flattens the wrappers, so a state-aware projection merges these markers into
+the unchanged compiled work stream, including empty bodies/EOF. Main, eval/file,
+source-body authentication and goto reconstruction use that same projection.
+There is no synthetic Namespace statement consumer or schema change.
 Old no-fact plan helpers retain their quiet Class route. Missing facts and
 unproved class/member/header emission remain dependencies.
 
@@ -262,6 +269,9 @@ physical source, receiver, retained slots and budget equivalence.
 The [trait-adaptation tick review](../../coverage/semantics/tick-trait-adaptation-review.json)
 records selected and aliased methods, exact earlier-control promotion and alias
 trace identity through callback abort/retry with physical-source state checks.
+The [namespace-form tick review](../../coverage/semantics/tick-namespace-review.json)
+records the paired native forms, missing braced marker, empty EOF/header events
+and callback line/abort before pending namespace body activation.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

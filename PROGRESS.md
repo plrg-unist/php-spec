@@ -1137,6 +1137,9 @@ no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
 compilation; callbacks retain physical source, alias trace name and receiver
 through abort and retry.
+Namespace markers use authenticated form/name/brace facts: semicolon headers
+precede following work, braced markers follow it, and empty/EOF boundaries remain
+in the flattened compiled stream. Header callback abort skips pending body activation.
 Certified EnumCase markers run before the existing enum activation task, retaining
 member order, prior-marker frequency, backed-value lines and abort/resume behavior.
 
@@ -1165,7 +1168,8 @@ Exact source, strict and reached-state cuts remain in the
 [plain property defaults](coverage/semantics/tick-property-review.json),
 [property hooks](coverage/semantics/tick-hook-review.json),
 [plain trait use](coverage/semantics/tick-trait-use-review.json),
-[trait adaptations](coverage/semantics/tick-trait-adaptation-review.json) and
+[trait adaptations](coverage/semantics/tick-trait-adaptation-review.json),
+[namespace forms](coverage/semantics/tick-namespace-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -1974,7 +1978,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
-| ATTR46 | Authenticated bracketed/unbracketed Namespace Tick placement; native/compiler calibration and private review. |
+| ATTR47 | Authenticated Use/GroupUse import Tick events with focused eval continuation; private implementation/review. |
 | Enum callable arrays | Runtime ARRAY/STRING method capture cache identity and clone retirement; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
