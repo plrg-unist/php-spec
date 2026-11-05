@@ -57,6 +57,7 @@ def reached(label, case_id, thrown=False):
         f'S_{label}_invoke = $eic_seek(S_{label}_initial, 0, 3000)',
         f'$eic_front(S_{label}_invoke)',
         f'S_{label}_invoke.TODO = (CONFIG_INVOKE pconfigcall_{label}) :: ptask_{label}_tail*',
+        f'ptask_{label}_after_tail* = $enum_is_callable_ref_tail(S_{label}_invoke, pconfigcall_{label}, ptask_{label}_tail*)',
         f'$config_invoke_valid(S_{label}_invoke, pconfigcall_{label})',
         f'$enum_is_callable_output_capture(S_{label}_invoke, pconfigcall_{label}) = (penumqueryoutput_{label})',
         f'penumqueryoutput_{label}.CALL = pconfigcall_{label}',
@@ -70,7 +71,7 @@ def reached(label, case_id, thrown=False):
         f'~$call_task_valid(S_{label}_invoke, ENUM_IS_CALLABLE_CLEAR penumqueryoutput_{label})',
         f'S_{label}_clear = $drive_steps(S_{label}_invoke[.COMPLETION = NORMAL], 1)',
         f'S_{label}_clear.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
-        f'S_{label}_clear.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_{label}) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_{label}_initial) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}) :: ptask_{label}_tail*',
+        f'S_{label}_clear.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_{label}) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_{label}_initial) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}) :: ptask_{label}_after_tail*',
         f'pdestructionoperation_{label}_initial.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_{label}',
         f'pdestructionoperation_{label}_initial.CELL = penumqueryoutput_{label}.CELL',
         f'pdestructionoperation_{label}_initial.VALUE = KNOWN (PBOOL true)',
@@ -84,7 +85,7 @@ def reached(label, case_id, thrown=False):
         f'S_{label}_entry.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
         f'S_{label}_exit = $eiu_seek(S_{label}_entry, penumqueryoutput_{label}, false, 5000)',
         f'$eiu_exit(S_{label}_exit, penumqueryoutput_{label})',
-        f'S_{label}_exit.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_{label}) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}) :: ptask_{label}_tail*',
+        f'S_{label}_exit.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_{label}) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}) :: ptask_{label}_after_tail*',
         f'$enum_is_callable_output_ready(S_{label}_exit, penumqueryoutput_{label})',
         f'$eager_operation_source_guard(S_{label}_exit, pdestructionoperation_{label})',
     ]
@@ -101,13 +102,13 @@ def reached(label, case_id, thrown=False):
     ]
     if thrown:
         checks += [
-            f'S_{label}_after.TODO = (THROW_SEARCH n_{label}_exception) :: ptask_{label}_tail*',
+            f'S_{label}_after.TODO = (THROW_SEARCH n_{label}_exception) :: ptask_{label}_after_tail*',
             f'S_{label}_after.RESULT = KNOWN PNULL',
             f'$throwable_live(S_{label}_after, n_{label}_exception)',
         ]
     else:
         checks += [
-            f'S_{label}_after.TODO = ptask_{label}_tail*',
+            f'S_{label}_after.TODO = ptask_{label}_after_tail*',
             f'S_{label}_after.RESULT = KNOWN (PBOOL true)',
         ]
     checks += [
@@ -186,6 +187,20 @@ if __name__ == '__main__':
         'S_heap_after = $enum_is_callable_output_commit(S_heap, penumqueryoutput_resurrect)',
         'S_heap_after.COMPLETION = UNSUPPORTED "is_callable output rebound to owning value or new type source"',
         'S_heap_after.STORE = S_heap.STORE',
+    ]
+    checks += reached('target', 'unique-string-target-rebind')
+    checks += [
+        'penumqueryoutput_target.INPUT = (penumqueryinput_target)',
+        'penumqueryinput_target.VALUE = $ptascii("FirstCheck::from")',
+        '$lookup(S_target_exit.ENV, $ptascii("target")) = (n_target_cell)',
+        'S_target_exit.STORE[n_target_cell] = DEFINED pvalue_target',
+        '$string_bytes(pvalue_target) = ($ptascii("OtherCheck::from"))',
+        '~((ENUM_IS_CALLABLE_INPUT penumqueryinput_target) <- S_target_clear.TODO)',
+        'penumqueryoutput_missing_input = penumqueryoutput_target[.INPUT = eps]',
+        '~$enum_is_callable_output_valid(S_target_exit, penumqueryoutput_missing_input)',
+        'penumqueryinput_wrong = penumqueryinput_target[.VALUE = $ptascii("OtherCheck::from")]',
+        'penumqueryoutput_wrong_input = penumqueryoutput_target[.INPUT = (penumqueryinput_wrong)]',
+        '~$enum_is_callable_output_valid(S_target_exit, penumqueryoutput_wrong_input)',
     ]
     fixture = OUT / 'output-unique.watsup'
     fixture.write_text(base.PREFIX + PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
