@@ -1,0 +1,82 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-generator-resumed-receiver",
+      "source": "<?php\nclass Base185Frame { public const VALUE = 1; }\nclass Owner185Frame extends Base185Frame { public const VALUE = 2; public function make() { yield 'PAUSE'; yield new class(parent::VALUE, self::VALUE, static::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $parent, public int $self, public int $called, public string $owner, public string $method) {} }; } public function __destruct() { echo 'DROP;'; } }\nclass Child185Frame extends Owner185Frame { public const VALUE = 3; }\n$owner = new Child185Frame; $g = $owner->make(); unset($owner); echo 'CREATED;', $g->current(), ';'; $g->next(); $child = $g->current(); echo $child->parent, ';', $child->self, ';', $child->called, ';', $child->owner, ';', $child->method, ';', $child::class, ';'; $g->next(); echo 'CLOSED;'; unset($g); echo 'AFTER;';\n",
+      "source_sha256": "f3eee3d0373789bd7fc99399dff4d097367692c36876f02685e0f162839f2d7c",
+      "stdout_template_base64": "Q1JFQVRFRDtQQVVTRTsxOzI7MztPd25lcjE4NUZyYW1lO093bmVyMTg1RnJhbWU6Om1ha2U7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDA7RFJPUDtDTE9TRUQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "trait-static-generator-throw",
+      "source": "<?php\ntrait T185Static { public static function make() { try { yield 'PAUSE'; } catch (Exception $e) { yield new class(self::VALUE, static::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $self, public int $called, public string $owner, public string $method) {} }; } } }\nclass Owner185Static { use T185Static; public const VALUE = 4; }\nclass Child185Static extends Owner185Static { public const VALUE = 5; }\n$g = Child185Static::make(); echo $g->current(), ';'; $child = $g->throw(new Exception('resume')); echo $child->self, ';', $child->called, ';', $child->owner, ';', $child->method, ';', $child::class, ';'; $g->next(); echo 'DONE;';\n",
+      "source_sha256": "0f72d12fb75c2e9d1bc76355b86cfe5ed3eca76e78110d988637c90ddd20a80d",
+      "stdout_template_base64": "UEFVU0U7NDs1O093bmVyMTg1U3RhdGljO1QxODVTdGF0aWM6Om1ha2U7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-owner-generator-return",
+      "source": "<?php\n$owner = new class { public function make() { yield 7; return new class {}; } };\n$g = $owner->make(); $g->next(); $child = $g->getReturn(); $after = new class {}; echo $owner::class, ';', $child::class, ';', $after::class, ';', ($owner !== $child), ';';\n",
+      "source_sha256": "081e2996933e69946dd70ee8b7d14c799d6df492fd8b0651040b789aeb693799",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDI7MTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "generator-nested-arrow-retains-receiver",
+      "source": "<?php\nclass Owner185Arrow { public const VALUE = 9; public function make() { yield fn() => new class(self::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $value, public string $owner, public string $method) {} }; } public function __destruct() { echo 'DROP;'; } }\n$owner = new Owner185Arrow; $g = $owner->make(); unset($owner); $factory = $g->current(); unset($g); echo 'HELD;'; $child = $factory(); echo $child->value, ';', $child->owner, ';', $child->method, ';', $child::class, ';'; unset($factory); echo 'AFTER;';\n",
+      "source_sha256": "35ed8179105b2c5f0a522f6eb93e64a0315cb140b013f422c1a3655d1831addf",
+      "stdout_template_base64": "SEVMRDs5O093bmVyMTg1QXJyb3c7e2Nsb3N1cmU6T3duZXIxODVBcnJvdzo6bWFrZSgpOjJ9O2NsYXNzQGFub255bW91cwB7RklMRX06MiQwO0RST1A7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "generator-return-type-before-child-warning",
+      "source": "<?php\nclass Owner185Return { public function make(): int { yield new class { final private function hidden() {} }; } }\necho 'BAD;';\n",
+      "source_sha256": "b6401b10c5163a788255f0c89bdd6d03c40d0c58ab72e00a208170f29c0ee427",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEdlbmVyYXRvciByZXR1cm4gdHlwZSBtdXN0IGJlIGEgc3VwZXJ0eXBlIG9mIEdlbmVyYXRvciwgaW50IGdpdmVuIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "uncalled-generator-child-default",
+      "source": "<?php\ntrait T185Default { public function make() { yield 1; return new class { public function bad(int $value = 'wrong') {} }; } }\necho 'BAD;';\n",
+      "source_sha256": "8b34702304a445fee0b74a945b77a452c880d69d84bb6f611cf3c7d4a34bc9e6",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "anonymous-owner-static-generator-return",
+      "source": "<?php\n$owner = new class { public static function make() { yield 8; return new class {}; } };\n$g = $owner::make(); $g->next(); $child = $g->getReturn(); $after = new class {}; echo $owner::class, ';', $child::class, ';', $after::class, ';', ($owner !== $child), ';';\n",
+      "source_sha256": "19a44a91adf1559ac8bac73cc4b75bd3b08928e06133a2661147e59c4740bdd3",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDI7MTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
