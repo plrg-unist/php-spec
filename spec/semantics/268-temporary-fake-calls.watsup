@@ -307,7 +307,8 @@ def $closure_call_copy_cleanup_exit_rebase(S, z) = S[.COMPLETION = UNSUPPORTED "
 def $destructor_operation_postfinish(S, pdestructionoperation) = $exit_start_unwind(S, z)
   -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
-  -- if pdestructionoperation.COMPLETION = EXITED z /\ pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.COMPLETION = EXITED z
+  -- if pdestructionoperation.PENDING = eps
   -- if S.COMPLETION = EXITED z
   -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall)

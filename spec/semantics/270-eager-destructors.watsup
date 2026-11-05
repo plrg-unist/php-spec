@@ -799,7 +799,8 @@ dec $closure_call_copy_warning_call_prefix(pstate, pdestructorcall) : pstate?
 def $closure_call_copy_warning_call_prefix(S, pdestructorcall) = (S[.DESTRUCTION.CALLS = pdestructorcall_tail*])
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if pdestructorcall.CALLER = S.CURRENT /\ pdestructorcall.ORIGIN = S.ORIGIN /\ pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
-  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.FRAME = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
   -- if pdestructionoperation.CALLER = pdestructorcall.CALLER /\ pdestructionoperation.ORIGIN = pdestructorcall.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
   -- if pdestructionoperation.PENDING = pdestructorcall.PENDING
@@ -818,6 +819,15 @@ def $closure_call_copy_warning_prefix(S, DESTRUCTOR_OPERATION_EXIT pdestructiono
   -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
 def $closure_call_copy_warning_prefix(S, THROW_SEARCH n) = (S)
   -- if $throwable_member(S, n)
+def $closure_call_copy_warning_prefix(S, INSTANCE_STORAGE_STEP pinstancestorage) = (S)
+  -- if pinstancestorage.CALLER = S.CURRENT /\ pinstancestorage.ORIGIN = S.ORIGIN /\ pinstancestorage.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $instance_storage_for(S, pinstancestorage.OBJECT) = (pinstancestorage)
+  -- if $(pinstancestorage.OBJECT < |S.DESTRUCTION.HANDLES|)
+  -- if S.DESTRUCTION.HANDLES[pinstancestorage.OBJECT] = pinstancestorage.HANDLE
+  -- if $(pinstancestorage.HANDLE > 0) /\ $(pinstancestorage.HANDLE < S.DESTRUCTION.NEXT)
+  -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
+  -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
+  -- if $(pinstancestorage.NEXT <= |pinstancestorage.SLOTS|)
 def $closure_call_copy_warning_prefix(S, ptask) = eps -- otherwise
 dec $closure_call_copy_warning_split(pstate, ptask*, perrorcall) : (ptask*, ptask*)?
 def $closure_call_copy_warning_split(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*, perrorcall) = (([DESTRUCTOR_OPERATION_EXIT pdestructionoperation], ptask_tail*))
