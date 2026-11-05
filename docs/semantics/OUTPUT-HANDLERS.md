@@ -208,8 +208,17 @@ RSHUTDOWN and owning autoload cleanup after the shutdown list remain explicit
 dependencies. Reentrant list registration, post-deactivation buffer starts, exit,
 abrupt handler/visibility-warning cleanup and wider Throwable rendering during list
 retirement remain partial, as do late bound-tick publication, uncovered table owners,
-weak/internal hooks and inactive nonpublic-destructor diagnostics. Earlier failed
+WeakMap/custom hooks and inactive nonpublic-destructor diagnostics. Earlier failed
 cuts retain zero credit.
+
+GC30 adds quiet inactive WeakReference unregister and standard weak notification.
+Reverse handle order determines whether a live standard object runs its guarded
+hook or keeps fast-skipped fields after its observer unregisters. The local
+association view never filters the owning graph; field releases and C guards
+still update the local heap. Bound Closure validation sees MARKED receivers in
+the full state. WeakMap value releases
+and weak Closure/custom notification stay fenced. See the
+[inactive weak-hook review](../../coverage/semantics/gc-inactive-weak-free-review.json).
 
 OB06 admits only a no-argument `ob_start()` during normal executor queue release
 after output deactivation. The failed start leaves the buffer stack empty and
