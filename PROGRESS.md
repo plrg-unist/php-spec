@@ -419,6 +419,17 @@ changed GC27 group passes 207. Independent graph/self-copy fronts pass 63+85.
 Reference, proxy, pooled and finalizer graphs remain partial.
 [GC28 review](coverage/semantics/gc-nested-array-review.json).
 
+GC29 admits mixed value/reference captures through ordinary untyped HCELLs.
+Capture/local aliases own wrappers separately while each wrapper owns its payload
+once; surviving reference decrements buffer only a collectable payload. Three
+originals preserve shared/separate wrapper lifetime and request-string rebinding,
+and one combined A95 original preserves old-cell 22/global 44 through Generator
+retirement and actual GC. All four agree; strict reached fronts pass 177+197+154.
+Independent mixed COW gives a fifth exact source and 214 further assertions.
+Constrained/backed cells, ALIAS array entries
+and arbitrary reference/Closure cycles remain partial.
+[GC29 review](coverage/semantics/gc-reference-capture-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
