@@ -244,7 +244,11 @@ def $ordinary_internal_string_site_valid(S, porigin, z) = true
   -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
   -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
 def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
-  -- if $ob_object_site_tasks(pframe.TODO) =/= eps
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*
+  -- if n = pobobjectreturn.OBJECT
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if ptask_tail* = pobobjectreturn.TAIL
 def $ob_object_finish_string(S, pobobjectreturn, pvalue_text, n?) = S[.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn[.PENDING = n?] $ob_user_output(S, pvalue_text)) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $ob_object_string_value(S, pvalue_text)
 def $return_discard(S, STRINGIFY_RESULT n porigin z) = $ob_object_finish_string(S, pobobjectreturn, PSTRING eps, (n_pending))
