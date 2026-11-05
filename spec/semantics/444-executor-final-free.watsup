@@ -643,6 +643,13 @@ def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
   -- if S.EXCEPTIONHANDLER = eps
   -- if $executor_renderable(S, n)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+;; UnwindExit bails out of the module with no report, preserving its full status.
+;; The abandoned source still carries the original phase completion.
+def $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.COMPLETION = EXITED z /\ S.EXITSTATUS = z /\ $exit_status_valid(S)
+  -- if $executor_free_endpoint(S)
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if $executor_tick_bailout(S) = (pexecutortick)
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.OUTPUTBUFFERS = eps /\ S.EXITSTATUS = 255
@@ -655,8 +662,14 @@ def $executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n) = S_report[.TODO = 
   -- if S_report = $shutdown_freeze_marked(S_cached)
   -- if $shutdown_frozen(S_report.COMPLETION)
   -- if pexecutortickfatal = {TICK pexecutortick, COMPLETION S_report.COMPLETION, OBJECT n}
-def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, pcompletion), n)
-  -- if $executor_tick_caught(S) = ((pexecutortick, pcompletion))
+def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n_throwable), n)
+  -- if $executor_tick_caught(S) = ((pexecutortick, UNCAUGHT n_throwable))
+def $output_drive_finalize(S, n) = $drive_steps($executor_queue_begin(S), n)
+  -- if $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.SHUTDOWN.ENTRIES =/= eps
+def $output_drive_finalize(S, n) = $executor_free_finish(S)
+  -- if $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.SHUTDOWN.ENTRIES = eps
 def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active($executor_tick_history(S, pexecutortickfatal.TICK.COMPLETION), pexecutortickfatal.TICK)
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT pexecutortickfatal.OBJECT]
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal false) = eps
