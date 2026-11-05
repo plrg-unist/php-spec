@@ -1365,11 +1365,10 @@ rule PhpStep/weakmap-key-next: S ~> $weakmap_key_continue(S, pinstancestorage.OB
   -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
   -- if $weakmap_key_waiting(S, pinstancestorage.OBJECT)
 
-;; A live own-free callback may reuse or recreate its weak wrapper. Only the
-;; borrowed notification identity changes; the physical pin still owns the map.
+;; An internal free_obj callback may reuse or recreate its weak wrapper while
+;; notification is pending. Only the borrowed identity changes; the pin remains.
 def $weakmap_storage_create(S, n_map) = true
-  -- if $weakmap_at(S, n_map)
-  -- if S.OBJECTS[n_map] = WEAKMAP eps
+  -- if $weakmap_internal_key(S, n_map)
   -- if $instance_storage_for(S, n_map) = (pinstancestorage)
   -- if pinstancestorage.NOTIFY = (n_wrapper)
   -- if $instance_storage_basic(S, pinstancestorage)
@@ -1397,6 +1396,10 @@ def $weakref_create(S, n_map) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAKREF
   -- if $weakmap_storage_create(S, n_map)
   -- if $weakref_find(S, S.ALLOCATIONS, n_map) = eps
   -- if n_wrapper = |S.OBJECTS|
+def $weakref_create(S, n_target) = S[.COMPLETION = UNSUPPORTED "WeakReference creation on freeing internal object without notification authority"]
+  -- if $weakmap_internal_key(S, n_target)
+  -- if $instance_storage_freeing(S, n_target)
+  -- if ~$weakmap_storage_create(S, n_target)
 
 ;; A callback may leave the admitted singleton shape. Refuse its real retrace
 ;; rather than silently restoring a strong map-value edge and a zero count.

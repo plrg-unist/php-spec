@@ -7,15 +7,15 @@ import global_constant_sources as family
 
 ROOT = family.ROOT
 FILES = {
-    'wr-recreate-in-incoming': 'gc_ordinary_review_wr_recreate_in_incoming.php',
     'wr-recreate-global': 'gc_ordinary_review_wr_recreate_global.php',
     'wr-old-get-before-observer': 'gc_ordinary_review_wr_old_get_before_observer.php',
     'wr-two-incoming-leaves': 'gc_ordinary_review_wr_two_incoming_leaves.php',
-    'map-own-phase-weak-visibility': 'gc_ordinary_review_map_own_phase_weak_visibility.php',
     'map-own-phase-global': 'gc_ordinary_review_map_own_phase_global.php',
     'map-own-throw-suffix': 'gc_ordinary_review_map_own_throw_suffix.php',
-    'wr-incoming-throw-suffix': 'gc_ordinary_review_wr_incoming_throw_suffix.php',
     'wr-single-throw': 'gc_ordinary_review_wr_single_throw.php',
+    'wr-self-create': 'gc_ordinary_review_wr_self_create.php',
+    'map-multi-own-reuse': 'gc_ordinary_review_map_multi_own_reuse.php',
+    'map-multi-own-recreate': 'gc_ordinary_review_map_multi_own_recreate.php',
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, filename in FILES.items()}
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}
