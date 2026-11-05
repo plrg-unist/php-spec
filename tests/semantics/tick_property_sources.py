@@ -22,6 +22,17 @@ class TickPropertyOrder42 {
 echo "Z";
 echo "W";
 ''', b'TPZTWT'),
+    'quiet-multiline-constant-default-has-one-compiler-line-summary': (b'''<?php
+function t(){echo "T";}
+register_tick_function("t");
+const TickValue42=7;
+class TickQuiet42 {
+    public $value =
+        TickValue42;
+}
+declare(ticks=1);
+echo "Z";
+''', b'TZT'),
 }
 
 
