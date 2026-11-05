@@ -1264,6 +1264,7 @@ rule PhpStep/config-ini-get-string-result: S ~> $config_ini_get_finish(S_call, p
   -- if $string_bytes(pvalue_string) = (n_option*)
   -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
 def $config_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = $config_ini_finish(S_call, pconfigcall, n_option*, pvalue)
+  -- if ~$config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
   -- if $string_bytes(pvalue_option) = (n_option*)
   -- if n_option* =/= $ptascii("zend.assertions")
   -- if S.TODO = ptask :: ptask_tail*

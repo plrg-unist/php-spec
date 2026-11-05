@@ -31,7 +31,6 @@ dec $generator_close_frame_active(pstate) : bool
 def $generator_close_frame_active(S) = false -- otherwise
 dec $destructor_pending_valid(pstate, nat?) : bool
 dec $destructor_return_operand_valid(pstate, poperand) : bool
-dec $destruction_store_new(pstate) : pstate
 dec $destruction_store_drop(pstate, pnode*) : pstate
 dec $gc_store_drop(pstate, pnode) : pstate
 def $gc_store_drop(S, pnode) = S -- otherwise

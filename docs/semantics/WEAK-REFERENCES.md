@@ -37,6 +37,40 @@ release and notifies on final retirement. The ordinary pin, saved Fiber and
 Generator RETURN-child checks are recorded in the
 [property lifetime review](../../coverage/semantics/duplicate-property-reference-review.json).
 
+At the GC30 cut, module444 added quiet inactive `zend_weakref_free` and standard
+weak notification. MARKED observers had completed unregister;
+only the WeakReference association scan excluded them. The association view never
+filters the owning graph; ordinary field releases and C guards still update the
+local heap, while fast-skipped fields remain retained. Final S keeps its
+ownership-valid snapshot. During the store sweep, active observers force
+a guarded standard hook even in fast mode; after unregister, fast standard
+headers retain their fields without an extra guard. An uncalled public destructor
+still fails before the already-MARKED exemption.
+
+WeakReference chains, singleton aliases and retired referents add no referent
+owner. Callable validation uses the full state, including retained MARKED
+receivers. WeakMap associations remained visible and fenced at that cut because
+notification can release owning values; weak Closure/custom hooks remain partial. The engine
+basis is `zend_weakref_free`, `zend_weakref_unregister`, `zend_weakrefs_notify`,
+`zend_object_std_dtor` and `zend_objects_store_free_object_storage` in the pinned
+Zend sources. See the [inactive hook review](../../coverage/semantics/gc-inactive-weak-free-review.json).
+
+GC31 adds ordinary inactive WeakMap free outside active storage pins and active
+incoming Map-key associations. `zend_weakmap_free_obj` calls
+`zend_weakrefs_hash_clean_ex`: every key unregisters first, then `zend_hash_clean`
+releases values in entry order. MARKED Maps therefore leave the association view
+while their owning value edges remain leased until each ordered release.
+Repeated values keep every owner; a shared ALIAS cell loses its Map owner without
+duplicating or prematurely releasing its payload. Later leases survive an earlier
+inactive public-destructor fatal. Final S still keeps its ownership-valid snapshot.
+
+Seven exact source/request contexts and 599 new/affected strict conditions pass.
+The independent fatal C-before-later-B original observes whole-key unregister
+before nested value retirement. Active key-triggered entry removal still needs
+its own owning-edge protocol; the two corresponding Unsupported originals keep
+zero agreement. Existing insertion/reference producer policies and wider custom
+hooks remain partial. See the [inactive Map review](../../coverage/semantics/gc-inactive-weakmap-free-review.json).
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

@@ -1,0 +1,1 @@
+<?php declare(encoding=1, encoding=true);

@@ -24,125 +24,42 @@ reviews [I84](coverage/semantics/generator-magic-factory-review.json),
 [I90](coverage/semantics/generator-direct-magic-throw-review.json), and
 [I91](coverage/semantics/generator-string-method-closure-review.json).
 
-Published generated enum array captures now create internal Closures without
-retaining the input array or receiver, preserving selection through COW and
-callback rebinding. Four fresh originals agree and 123 state/guard conditions pass. Private
-compilation covers 432 modules; actual-tail compilation covers 433. Runtime array retirement, warm case
-receivers and cold class-name tables retain separate checks; literal inputs make
-no deallocation claim. Other consumers, loading and backing contexts remain
-partial.
-[Array-capture review](coverage/semantics/enum-array-capture-review.json).
+Published enum `cases()`/`from()`/`tryFrom()` support admitted direct,
+captured and pipe calls through method strings and class/case arrays. Selection
+and original bytes survive argument rebinding and named Stringable callbacks;
+internal Closure captures add no owner of an input array or receiver. Callable
+typed parameters and `Closure::fromCallable` share these generated targets.
+The [enum/callable scope](docs/semantics/SOURCE-CLASSES.md) and
+[feature inventory](coverage/semantics/features.json) retain the individual cuts.
 
-Published generated enum method strings now form first-class internal Closures.
-Real call ownership retains the selected target through argument clearing and
-Stringable callbacks, then releases the Closure after invocation. Four new
-originals agree; 114 state/guard conditions, private431 and actual-tail joined432
-pass. Array captures, other string consumers, loading and backing contexts remain
-partial; enum collectability is separately owned by GC08.
-[Capture review](coverage/semantics/enum-string-capture-review.json).
-
-Published enum class-method strings now select generated `cases()`/`from()`/
-`tryFrom()` before arguments, retaining full original bytes through rebinding and
-real named Stringable callbacks. Temporary Stringable inputs retire before lookup;
-packed source origins remain Unsupported. Six new originals agree exactly and
-159 state/guard conditions pass; private and actual-tail joined strict431 pass.
-The separately reviewed 301 receipt normalization repairs the preserved ordinary
-136/137 identity observer. Wider callable consumers, backing dependencies and
-the default loader remain partial.
-[String-callable review](coverage/semantics/enum-string-callable-review.json).
-
-Generated enum method strings pass through ordinary callable-typed parameters as
-raw values, and `Closure::fromCallable` converts generated string/array targets.
-The separate reviewed cuts are source5/state111 and source4/state138, each with
-strict433 compilation; the joined current-tail cut has strict433 and three exact
-originals at 2614477b2. Published generated methods now also run through pipe
-strings and arrays. Four native-first originals agree, including strict typing,
-cold table selection across Stringable rebinding, case-object arrays, arity and
-temporary cleanup. Private strict433 and two source-reached strict SL groups
-pass 68 guards at db3b26b16. Published enum method strings and class/case
-arrays now answer direct, dynamic-name and pipe `is_callable` queries with
-one or two arguments and no third output. Two native-first originals agree,
-covering generated and absent methods, syntax-only checks, selected-name
-rebinding and cold backing tables; 43 source-reached strict SL guards pass.
-The third output, autoload and wider magic/user-method cases remain partial.
-Malformed live callback arrays now return false for wrong length, keys,
-receiver or method type before syntax-only lookup. The first published-enum
-source and 23 reached guards still pass after the broader precheck. A new
-seven-outcome original and 46 reached guards cover missing key 0, nonclass
-receivers and valid reordered keys without cache or event changes.
-For published pure enums without the requested method, `is_callable` now
-checks source-certified `__callStatic` for class strings/name arrays and
-`__call` for case arrays. One native-first original agrees on eight outcomes,
-including opposite-handler false results and explicit user-method controls;
-56 reached strict guards prove no magic body is entered by the query.
-Live enum case arrays now also query direct public user instance and static
-methods. One native-first original agrees on seven case/class/string controls;
-49 source-reached strict guards tie the method descriptor to its enum source
-member and show that the query enters neither user method body.
-The third output now captures an initialized string-valued CV for a literal
-generated enum method string and writes its canonical name before returning
-the boolean.
-One exact original, strict433 and 45 source-reached guards pass; the later cuts
-below extend array input, old-object replacement and aliases.
-Absent literal methods now also write the name on runtime false and syntax-only
-true results. A second exact original and 42 reached guards pass.
-Canonical class-name and live case-object literal arrays now write their
-generated method names through the same direct string CV. Two exact outcomes
-and 68 reached guards pass. Literal class-string arrays also preserve lowercase
-and leading backslash receiver spelling, while case arrays use the canonical
-enum name. Three exact outcomes and 64 reached guards pass; other array
-sources remain partial. The same direct output path now accepts initialized
-int, bool and null CV values, writing the name before returning the boolean.
-Three exact outcomes and 79 reached guards pass; old-object replacement follows
-the lifetime rules below.
-Literal enum method strings now also retain their raw class and method spelling
-in the third output, including lowercase and a leading backslash. Three exact
-outcomes and 88 reached guards pass.
-A source-authenticated receipt now saves a direct variable's enum method string
-at its first SEND. Later argument callbacks can rebind its current CV, including
-a shared input/output cell, without changing the query. Nested queries consume
-their own receipts; a later argument throw skips the query's output and result
-assignment.
-Seven exact originals, strict433, 200 independent guards and the affected
-46/43 variable/alias guards pass.
+Published enum `is_callable` queries cover generated, absent and syntax-only
+methods, source-certified magic fallback and direct public case methods.
+Malformed live arrays return false before syntax-only lookup. Positional name
+output accepts admitted literal/string-variable inputs and initialized scalar
+CVs, preserving spelling and the captured reference cell. A first-SEND receipt
+keeps a variable input fixed through later callbacks, output aliases and nested
+queries; argument throws skip the query's assignments.
 [Saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json).
-Retained childless ordinary old output objects now receive the callable name
-while another owner survives; their destructor runs only after the last owner
-is released. The postwrite ownership guard separates this direct write from
-last-owner cleanup and rejects dead objects.
-One exact original, strict433 and 77 independent reached guards pass.
-[Retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json).
-Last-owner childless ordinary output objects now clear the captured cell before
-the destructor, then commit the chosen name before returning or propagating its
-throw. Output unset/rebinding, saved input, API trace snapshots and resurrection
-retain their actual cells and owners. Twelve normal originals, five explicit
-boundary controls, strict433, 345 independent guards and affected retained77
-checks pass at their recorded cuts.
-[Unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json).
-Root VM destructor exits now drain local cleanup before committing the saved
-name. Nested live queries commit in order while preserving exit status and
-leaving result assignments untouched. Seven exact exit originals, seven explicit
-controls, strict433 and 247 independent guards pass. Switched Fiber exits,
-replacement cleanup, owning rebound values, late attached type sources and
-variable array inputs remain partial.
-[Exit review](coverage/semantics/enum-is-callable-output-exit-review.json).
-[Reception](coverage/semantics/enum-string-admission-review.json),
-[conversion](coverage/semantics/enum-from-callable-review.json),
-[current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
-[pipe review](coverage/semantics/enum-pipe-review.json),
-[query review](coverage/semantics/enum-is-callable-review.json),
-[shape review](coverage/semantics/enum-is-callable-shape-review.json),
-[wide-shape review](coverage/semantics/enum-is-callable-wide-shape-review.json),
-[magic review](coverage/semantics/enum-is-callable-magic-review.json),
-[case-method review](coverage/semantics/enum-is-callable-case-method-review.json),
-[output-CV review](coverage/semantics/enum-is-callable-output-review.json),
-[false-output review](coverage/semantics/enum-is-callable-output-false-review.json),
-[array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
-[spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
-[scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
-[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json),
-[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json),
-[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
+
+Retained childless ordinary output objects delay destruction until their last
+owner leaves. Last-owner output clears to NULL before the destructor, then
+commits the saved name before return, throw or root VM exit. Unset/rebinding,
+resurrection and API trace snapshots retain real cells and owners. Root exit
+drains locals before the C pin; nested queries preserve status and skip
+interrupted result assignments.
+[Retained](coverage/semantics/enum-is-callable-output-retained-review.json),
+[unique](coverage/semantics/enum-is-callable-output-unique-review.json) and
+[exit](coverage/semantics/enum-is-callable-output-exit-review.json) reviews.
+
+Cleanup throws now cancel exit and commit the name before propagating.
+Compiled CV order preserves shared-wrapper decrements and exception previous chains;
+integer exit status survives catch and later string exit. Eight new/promoted
+source agreements, one affected enum exit-status source, three explicit
+controls, strict433 and 256+47 independent guards pass at their recorded cuts.
+[Cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json).
+Repeated cleanup exits, switched Fiber completion/force-close, owning rebound
+values, late attached type sources, variable-array query inputs, named/unpacked
+output, loading and wider enum member/lifetime contexts remain partial.
 
 I92 gives real user Generator Closure::call entry its actual copied Closure and
 new receiver, with separate API owners and ordered used/ignored-result cleanup.
@@ -188,6 +105,24 @@ pass; one front also matches repeated native output without extra CLI credit.
 The affected 59/64 trace checks and joined strict433 pass at recorded cuts.
 Receive/mapping and bailout paths remain partial.
 [I99 review](coverage/semantics/generator-call-cancellation-review.json).
+
+I100 extends hidden-copy cleanup to ordinary unknown/overwritten named arguments
+and required named holes. Generated Error traces retain raw arguments until the
+Error is released; prepared argv and original source owners still retire in order.
+Three native/source originals, one affected successful call and strict433 pass.
+Two joined reached fronts pass 243 custom/253 reported checks. Original baseline,
+compile and fixture failures retain zero credit. Later receives, default throws
+and bailout paths remain partial.
+[I100 review](coverage/semantics/generator-call-mapping-review.json).
+
+I101 replaces required-hole-specific retention with one authenticated restored
+API cursor for admitted pre-Generator receive failures. Arity, type and default
+throws preserve the copy while callee cells retire before API arguments/source.
+Three native/source originals, strict433, new259 custom/269 reported checks and
+the affected129/134 hole recipe pass. A matching adapter and joined default134/139
+gate load current434, covering changed weak-free cleanup. Baseline and fixture
+parser failures retain zero credit; wider producers, collection and bailout
+contexts remain partial. [I101 review](coverage/semantics/generator-call-receive-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -429,6 +364,23 @@ Independent mixed COW gives a fifth exact source and 214 further assertions.
 Constrained/backed cells, ALIAS array entries
 and arbitrary reference/Closure cycles remain partial.
 [GC29 review](coverage/semantics/gc-reference-capture-review.json).
+
+GC30 adds quiet inactive WeakReference unregister and standard notification in
+terminal cleanup. The association view preserves owning edges while ordinary
+field releases/C guards update the local heap; real handle order preserves fast
+field shielding and inactive-destructor failure. Eight exact source/request
+contexts include all three unchanged OB10 originals on their actual canonical
+composition. Author206 and independent341 strict conditions pass. WeakMap/custom
+notifications remain partial. [GC30 review](coverage/semantics/gc-inactive-weak-free-review.json).
+
+GC31 adds inactive WeakMap free with all-key unregister before ordered value
+release. Later value leases and shared ALIAS payload ownership survive correctly;
+retired Maps no longer force unrelated key-field cleanup. Seven exact source/request
+contexts cover empty/singleton/multi-entry Maps, AB/BA fatal order, fast/slow alias
+cells and an independent all-unregister-before-value discriminator. Author292,
+peer172 and affected GC30 HIGHER135 pass (599 total); two key-notification
+Unsupported controls keep zero agreement. Active key/incoming-Map notification
+and active free pins remain partial. [GC31 review](coverage/semantics/gc-inactive-weakmap-free-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -775,7 +727,7 @@ not repeat historical receipt counts or renew their execution credit.
 | Arrays and references | Physical owner edges distinguish DIRECT copies from ALIAS cells, COW table copies, selected lvalues and shared descendants. Iterator spreads retain raw current references through key before copying the value; invalid-key cleanup retires current before DATA while protecting the partial builder. Ordinary initialized declared fields share the reviewed fold across legal return modes. Materialized/special/cyclic graphs and wider callback lifetimes retain their documented limits. [Array unpack](docs/semantics/ARRAY-UNPACK.md), [reference wrappers](docs/semantics/REFERENCE-WRAPPERS.md), [cleanup review](coverage/semantics/array-iterator-invalid-key-cleanup-review.json), [field review](coverage/semantics/array-iterator-byval-fields-review.json). |
 | Comparisons | Reached physical slots, count/key/value order, live reference contents and COW snapshots decide comparisons. Visited captured-graph traversal has no fixed depth limit and reports an authentic active-left recursion Error; earlier identity/class/leaf decisions skip later unsupported payloads. Canonical root admission and acyclic Previous-path validation have no numeric context/length ceiling. Canonical same-kind roots of the admitted builtin kinds share the visited physical-slot fold after older admissions once both finite Previous paths authenticate, preserving cache/trace/previous/severity order and reached table effects. Invalid/cyclic/materialized/freeing Previous nodes, pending states and actually reached callback contexts retain family limits. Captured canonical builtin Throwables share this fold; every distinct equal-kind entry checks active-left recursion before slots, including Previous descent. Supported ordinary images of any visibility admit uncalled methods, locally authenticated interfaces including implicit Stringable, and finite source-parent paths validated by actual names, links and publication order. Seen origins reject parent cycles before layout expansion; builtin parents/hook/readonly and wider layout fences remain. Whole-path authentication stays eager. Empty inline same-class images return zero before the object recursion guard; actual empty caches retain table order, COW and ordinary owners. Empty foreach produces a real table, and empty cached clones share without a callback or start uncached with one. Private/protected fields retain mangled KEY/DECL authority through actual caches and final typed-alias source retirement. Declared INITIAL/UNSET holes retain inline position and physical cached INDIRECT count/key order. Deleted dynamic mirrors leave current live count/order intact; deleted-only clone histories preserve sharing and callback copy routes. [Dynamic-deletion review](coverage/semantics/throwable-trace-dynamic-unset-comparison-review.json). [Declared-hole review](coverage/semantics/throwable-trace-uninitialized-comparison-review.json). [Nonpublic-image review](coverage/semantics/throwable-trace-nonpublic-comparison-review.json). [Empty-image review](coverage/semantics/throwable-trace-empty-layout-comparison-review.json). [Current comparison contract](docs/semantics/COMPARISONS.md), [finite captured graphs](coverage/semantics/throwable-trace-unbounded-comparison-review.json), [finite Previous paths](coverage/semantics/throwable-previous-finite-comparison-review.json), [standalone traces](coverage/semantics/throwable-null-trace-comparison-review.json), [base fallback](coverage/semantics/throwable-base-null-comparison-review.json), [linked base](coverage/semantics/throwable-base-previous-comparison-review.json), [captured Throwables](coverage/semantics/throwable-captured-comparison-review.json), [ordinary methods](coverage/semantics/throwable-trace-methods-comparison-review.json), [local interfaces](coverage/semantics/throwable-trace-interfaces-comparison-review.json), [inherited images](coverage/semantics/throwable-trace-inheritance-comparison-review.json). |
 | Calls and callable values | Ordinary, scoped, captured and magic-call routes retain the selected callee/receiver, lexical/called scope, argument origin, positional/named ordering and reference mode across later effects. Closure and pipe consumers preserve their real owners, send diagnostics and abrupt cleanup. Callable producers, signatures and reentry remain partial. Bounded NoDiscard declarations preserve pre-body warning and pending-owner behavior. [Attributes](docs/semantics/BUILTIN-ATTRIBUTES.md), [Calls](docs/semantics/SOURCE-CALLS.md), [Closure::call](docs/semantics/CLOSURE-CALL.md), [first-class callables](docs/semantics/SOURCE-FIRST-CLASS-CALLABLES.md). |
-| Configuration and constants | Supported INI_SET/DEFINE/CONSTANT/DEFINED routes retain their selected callee, option/name and API timing. Iterator and named Generator inputs preserve real DATA/INPUT and Aggregate producer history, copied sends, named-key Error priority and pre-API cleanup. CONFIG typed-current reads reuse property-source validation; structural receipts remain valid after physical cache retirement. Iterator sends retain raw scalar snapshots or real finite ARRAY/ordinary-instance slot roots, then defer INI_SET binding/conversion until after DATA/INPUT cleanup. COW, shared embedded aliases and API TraceArgs keep their ordinary owners. Generator/other consumers, effectful casts and wider lifetimes retain their documented limits. [Include/configuration](docs/semantics/INCLUDE-SOURCES.md), [constants](docs/semantics/SOURCE-USER-CONSTANTS.md). |
+| Configuration and constants | Supported INI_SET/DEFINE/CONSTANT/DEFINED routes retain their selected callee, option/name and API timing. Iterator and named Generator inputs preserve real DATA/INPUT and Aggregate producer history, copied sends, named-key Error priority and pre-API cleanup. CONFIG typed-current reads reuse property-source validation; structural receipts remain valid after physical cache retirement. Iterator sends retain raw scalar snapshots or real finite ARRAY/ordinary-instance slot roots, then defer INI_SET binding/conversion until after DATA/INPUT cleanup. Strict callers reject copied Stringable INI_SET options before casting, including retained setters after source-variable rebinding. COW, shared embedded aliases and API TraceArgs keep their ordinary owners. Generator/other consumers, effectful casts and wider lifetimes retain their documented limits. [Include/configuration](docs/semantics/INCLUDE-SOURCES.md), [constants](docs/semantics/SOURCE-USER-CONSTANTS.md). |
 | Classes, properties and enums | Linked declarations preserve receiver identity, slot declaration, visibility, typed-reference sources, readonly/hook policy and diagnostic order. Supported magic getters and reference-get chains preserve alias/copy and rebind timing. Enum declarations lower to cached singleton cases with lazy backing checks, readonly slots, ordered interfaces and generated/user methods. Registered-loader first use for static calls and class-constant fetches preserves selected class/member order and source-authenticated resume; reached dynamic/named/folded/enum cases and forged-target rejection retain separate raw cuts under `.tools/enum-acquisition-review-state-*`. Captured enum `cases(...)` preserves its selected target and singleton cache after closure retirement. Captured scalar `from(...)`/`tryFrom(...)` preserve cold backing tables, ordinary/inherited constant aliases, caller strictness and cached case identity after closure retirement. Captured Stringable arguments preserve their real callback child and line, selected closure lifetime and temporary retirement before lookup. For published enums, class-string array callables select generated `cases()`/`from()`/`tryFrom()` before argument evaluation; a case-object receiver also invokes `from()`. Array Stringable conversion preserves the selected enum and temporary retirement. Computed, literal and folded class-method strings also fix generated targets before arguments, preserving full original bytes and real named Stringable children across rebinding and temporary retirement; packed Stringable origins remain Unsupported. First-class string and array captures use internal Closures held through argument clears and released after invocation. Source-certified direct or negated enum-case conditions in class constants retain selected case identity or scalar results, including a condition from another enum; wider object-valued conditional transfers, other callable routes, the default loader, case attributes, link/type contexts and object lifetimes remain partial. [Classes](docs/semantics/SOURCE-CLASSES.md), [properties](docs/semantics/SOURCE-PROPERTIES.md), [property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md), [enum evidence](docs/ARTIFACTS.md). |
 | Generators and Fibers | Supported named/method/Closure producers retain actual resumer and callee owners, by-value or reference caches, supplied Throwables and catch/finally continuations across Fiber suspension. Receiver-free static and same-`$this` nonstatic Generator bodies called through finite scoped chains retain real scope after return; supported real Closure, captured/bound user-method, implicit invokable and admitted magic-handler factories also authenticate scoped method-created bodies when the original source scope differs. Direct Generator-bodied __invoke uses its runtime-selected method; admitted direct magic handlers retain their actual target/owner receipt through close and Fiber transfer. Delegation and SEND preserve their selected chains and copied/delivered owners. Wider producers, binding/delegation combinations and teardown remain partial. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [reference yields](docs/semantics/GENERATOR-REFERENCE-YIELDS.md). |
 | Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles admitted ordinary/materialized graphs; quiet same-Key entries and no-Map ordinary siblings use claimed first-visit counts. Canonical materialized destructor callbacks retain claimed count and nested-buffer authority across retrace, including ordinary caller locals and receivers. Source-authenticated temporary cleanup, borrowed result caches and unused WeakReference result transfer preserve potential-root order. Enum cases and original receiverless fake Closures skip GC candidate buffering while retaining their owners and graph edges; clone and bind copies remain collectable. WeakMap callbacks, skipped prior histories, residual and other active collector contexts remain open. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
@@ -925,9 +877,28 @@ fail at the trait method before publication or allocation. Eight exact originals
 parentless `parent` receive view requires published interface targets and full
 history; old empty-interface and snapshot paths stay unchanged. Original source
 failures and three fixture corrections retain zero agreement credit.
-Dynamic-source combinations, wider explicit/unpublished/collision scope histories,
-illegal-modifier diagnostics and other member/lifetime contexts remain partial.
+Wider source and explicit/unpublished/collision scope histories, illegal-modifier
+diagnostics and other member/lifetime contexts remain partial.
 [Review](coverage/semantics/anonymous-trait-stringable-review.json).
+CLASS171 shares composed trait views with closed successful include/eval units,
+retaining source-entry bindings, request counters, publication and full replay.
+Ordinary cached scopes validate before extra trait parameter views, breaking the
+dynamic replay/cache cycle while retaining interface forgery refusals. Nine exact
+originals, strict433, 82 author, 263 independent and 79 retained saved-view
+conditions pass. Argument type and object trace displays use native C strings;
+fresh eval classes preserve copied constants' selected callable targets. Original
+display/timeout failures and the own-constant author control retain zero credit.
+Wider source/member/scope histories remain partial.
+[Review](coverage/semantics/dynamic-anonymous-traits-review.json).
+CLASS172 admits nonempty own constant groups through the ordinary class compiler,
+including multiple declarators, types, visibility and final checks. Own FCCs keep
+separate source/function scopes across eval compilations; trait compatibility and
+parent-final failures retain first-new ordering. Eleven exact originals,
+strict433, 75 author and 192 independent reached conditions pass. Full stored
+names remain authoritative; diagnostic operands use native C strings. The author
+sort-prefix elaboration failure retains zero credit. Attributes and wider
+member/type/initializer contexts remain partial.
+[Review](coverage/semantics/anonymous-own-constants-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -970,8 +941,8 @@ sources agree, including strict/tick interactions and include/eval body returns.
 Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
 pass, alongside six CLI guards and two explicit multiline Unsupported controls.
 Actual cuts and preserved failures are in the
-[review](coverage/semantics/encoding-list-review.json). COMP167 below extends its
-multiline boundary; rejected sources with warnings and multibyte conversion remain partial.
+[review](coverage/semantics/encoding-list-review.json). COMP167/168 below extend its multiline and rejected-source boundaries;
+multibyte conversion remains partial.
 
 COMP167 retains checked declaration header-close line/token facts. Multiline
 headers use their closing line for parser warnings while compiler diagnostics
@@ -981,7 +952,25 @@ comparisons, independent compiler/state gates and affected regressions pass;
 strict compilation covers 433 modules. Fresh classified syntax covers 30,980
 profiles and independent metadata checks cover 17 profiles. Original failures
 and exact cuts remain in the [review](coverage/semantics/encoding-header-review.json).
-Rejected sources with warnings and multibyte conversion remain partial.
+COMP168 below extends rejected dynamic sources; multibyte conversion remains partial.
+
+COMP168 preserves encoding warnings from completed foreign header reductions
+when eval/include parsing later fails, without compiling a partial AST. Literal
+items warn in reduction order until the first nonliteral encoding item raises
+CompileError. Rejected-source Throwable handles are installed before publishing
+zero-budget continuations. Twenty-two exact sources plus one explicit lexical
+refusal, 214 authored and 375 independent reached conditions pass; accepted
+eval/file service controls also pass. Actual cuts, prior failures and the remaining
+lexer/multibyte limits are in the [review](coverage/semantics/encoding-rejection-review.json).
+
+COMP169 preserves completed headers before the first foreign lexer error by
+validating its token boundary and parsing the preceding token prefix. Earlier
+grammar errors still stop parsing; harmless control bytes inside strings/comments
+do not truncate it. All 32 new eval/file originals agree, with 30 independent
+boundary controls, 40 affected service checks, three selected legacy originals
+and 220 reached conditions. Accepted syntax and authored P4 rules are unchanged;
+unreported prefix differences, rejected-main warnings and multibyte conversion
+remain partial. [Review](coverage/semantics/encoding-lexical-review.json).
 
 ## Active and unintegrated work
 

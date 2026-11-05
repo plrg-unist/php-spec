@@ -1,0 +1,1 @@
+echo ; declare(encoding=1);

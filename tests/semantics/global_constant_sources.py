@@ -69,6 +69,7 @@ echo 'B|'; constant('GlobalArray21'); echo 'after';
 UNSUPPORTED = {}
 BASELINE = ('class constant value query', b'B|')
 MODEL_TIMEOUTS = {}
+MODEL_STATUSES = {}
 
 
 def fingerprint():
@@ -152,7 +153,7 @@ def main():
                     reason, prefix = UNSUPPORTED[name]
                     assert outcome['reason'] == reason and outcome['stdout'] == b64(prefix)
                 else:
-                    assert row['process']['exit'] == 0 and outcome['status'] == 'normal' and outcome['reason'] is None
+                    assert row['process']['exit'] == 0 and outcome['status'] == MODEL_STATUSES.get(name, 'normal') and outcome['reason'] is None
                     assert outcome['exit_status'] == original['process']['exit']
                     assert outcome['stdout'] == original['stdout'] and outcome['stderr'] == original['stderr']
                     report['source_agreements'] += 1

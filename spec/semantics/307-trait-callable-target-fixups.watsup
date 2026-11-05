@@ -475,9 +475,13 @@ def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclo
   -- if $trait_fcc_parentless_interfaces(S, pclassdesc)
   -- if $class_constant_callable_method_history_ordinary(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
 def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps -- otherwise
+;; Ordinary published receipts already authorize their cached scopes. Ask the
+;; extra trait view only after those paths fail, avoiding dynamic replay cycles.
 def $class_constant_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+  -- if $class_constant_callable_method_history_ordinary(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps
   -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
 def $method_closure_scope_valid(S, pclosurescope) = true
+  -- if ~$method_closure_scope_ordinary(S, pclosurescope)
   -- if HOBJECT pclosurescope.OBJECT <- S.ALLOCATIONS
   -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps

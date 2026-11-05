@@ -38,26 +38,30 @@ def request(command, value, timeout, with_stderr=False):
     return (response, result.stderr) if with_stderr else response
 
 
+def encoding_item(item):
+    return (item.get('node') == 'DeclareItem'
+            and item['fields'][0].get('node') == 'Identifier'
+            and base64.b64decode(item['fields'][0]['fields'][0]['bytes']).lower() == b'encoding')
+
+def encoding_literal(value):
+    pending = [value]
+    while pending:
+        node = pending.pop()
+        if node['node'] == 'Expr_BinaryOp_Concat':
+            pending.extend(node['fields'])
+        elif node['node'] not in {'Scalar_String', 'Scalar_Int', 'Scalar_Float'}:
+            return False
+    return True
+
+
+def encoding_integer(node, key):
+    value = node.get('meta', {}).get(key, {}).get('int')
+    return None if value is None else int(value)
+
+
 def encoding_warning_lines(ast):
     """Source-ordered raw-profile declarations with authenticated parser lines."""
-    def encoding(item):
-        return (item.get('node') == 'DeclareItem'
-                and item['fields'][0].get('node') == 'Identifier'
-                and base64.b64decode(item['fields'][0]['fields'][0]['bytes']).lower() == b'encoding')
-
-    def literal(value):
-        pending = [value]
-        while pending:
-            node = pending.pop()
-            if node['node'] == 'Expr_BinaryOp_Concat':
-                pending.extend(node['fields'])
-            elif node['node'] not in {'Scalar_String', 'Scalar_Int', 'Scalar_Float'}:
-                return False
-        return True
-
-    def integer(node, key):
-        value = node.get('meta', {}).get(key, {}).get('int')
-        return None if value is None else int(value)
+    integer = encoding_integer
 
     def header(statement):
         line = integer(statement, 'declareHeaderCloseLine')
@@ -98,12 +102,12 @@ def encoding_warning_lines(ast):
             if value.get('node') == 'Stmt_Declare':
                 items, body = value['fields']
                 for item in items:
-                    if not encoding(item):
+                    if not encoding_item(item):
                         continue
                     name, expression = item['fields']
                     receipt = header(value)
                     token = integer(item, 'startTokenPos')
-                    if receipt is None or token is None or token < 0 or not literal(expression):
+                    if receipt is None or token is None or token < 0 or not encoding_literal(expression):
                         return None
                     line, close = receipt
                     begin = integer(value, 'startLine')
@@ -113,7 +117,7 @@ def encoding_warning_lines(ast):
                         return None
                     warnings.append((token if close is None else close, token, line))
                     admitted.add(id(item))
-            if encoding(value) and id(value) not in admitted:
+            if encoding_item(value) and id(value) not in admitted:
                 return None
             pending.extend(reversed(list(value.values())))
         elif isinstance(value, list):
@@ -124,11 +128,68 @@ def encoding_warning_lines(ast):
     return [line for close, token, line in warnings]
 
 
+def rejected_encoding_warning_lines(parsed):
+    """Validate foreign header facts, then derive only their encoding prefix."""
+    if 'headers' not in parsed:
+        return []
+
+    def span(node):
+        values = tuple(encoding_integer(node, key) for key in
+                       ('startLine', 'endLine', 'startTokenPos', 'endTokenPos'))
+        if None in values:
+            return None
+        begin, end, first, last = values
+        return values if 0 < begin <= end and 0 <= first <= last else None
+
+    def inside(node, parent):
+        child = span(node)
+        return (child is not None and parent[0] <= child[0] <= child[1] <= parent[1]
+                and parent[2] <= child[2] <= child[3] <= parent[3])
+
+    try:
+        headers = parsed['headers']
+        if not isinstance(headers, list):
+            return None
+        previous, previous_line = -1, 1
+        for header in headers:
+            if set(header) != {'beginLine', 'beginTokenPos', 'closeLine', 'closeTokenPos', 'items'}:
+                return None
+            begin, first, line, close = (header[key] for key in
+                ('beginLine', 'beginTokenPos', 'closeLine', 'closeTokenPos'))
+            if (any(type(value) is not int for value in (begin, first, line, close))
+                    or not 0 < begin <= line or not 0 <= first < close
+                    or not previous < close or not previous_line <= line
+                    or not isinstance(header['items'], list) or not header['items']):
+                return None
+            previous, previous_line = close, line
+            for item in header['items']:
+                bounds = span(item)
+                if (item['node'] != 'DeclareItem' or bounds is None
+                        or not begin <= bounds[0] <= bounds[1] <= line
+                        or not first < bounds[2] <= bounds[3] < close):
+                    return None
+                name, expression = item['fields']
+                if (name['node'] != 'Identifier' or not inside(name, bounds) or not inside(expression, bounds)
+                        or not span(name)[3] < span(expression)[2]):
+                    return None
+                begin, first = bounds[1], bounds[3]
+        lines = []
+        for header in headers:
+            for item in header['items']:
+                if encoding_item(item):
+                    if not encoding_literal(item['fields'][1]):
+                        return lines if (parsed['category'] == 'parser_static_rejection'
+                            and base64.b64decode(parsed['message']) == b'Encoding must be a literal'
+                            and parsed['line'] == header['closeLine']) else None
+                    lines.append(header['closeLine'])
+        return lines
+    except (KeyError, TypeError, ValueError, IndexError):
+        return None
+
+
 def dynamic_parser_stderr(parsed, mode, stderr):
-    # A rejected source has no checked AST from which to authenticate warnings.
-    if not parsed.get('accepted'):
-        return not stderr
-    lines = encoding_warning_lines(parsed['ast'])
+    lines = (encoding_warning_lines(parsed['ast']) if parsed.get('accepted') else
+             rejected_encoding_warning_lines(parsed))
     if lines is None:
         return False
     records = stderr.splitlines(keepends=True)
@@ -339,7 +400,7 @@ def observe(state, filename, display_mode=2):
                 name = 'stdClass'
             elif obj['tag'] == 'INSTANCE':
                 name = next(row['NAME'] for row in state['CLASSES'] if row['ORIGIN'] == obj['args'][0])
-                return b'Object(' + bytes(map(int, name)) + b')'
+                return b'Object(' + bytes(map(int, name)).split(b'\0', 1)[0] + b')'
             else:
                 name = 'Closure'
             return b'Object(' + name.encode() + b')'

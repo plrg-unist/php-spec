@@ -1,0 +1,240 @@
+{
+  "scope": "CLASS171: source-owned composed anonymous trait descriptors in closed successful include/eval units, with ordinary cached-scope validation before extra parameter-view replay. Existing member/source grammar and wider scope/lifetime limits remain partial.",
+  "implementation": {
+    "base": "d8f35c66896a2ea637c13ee45801eb289ba52ea5",
+    "dynamic_projection": "b1df4be71f201f077e913061fc26bd7e81b5c9ef",
+    "final_semantic_cut": "9bef2e5ee51a60749312f2dd5edf6a012b07b556",
+    "engine_routes": [
+      "Zend/zend_compile.c::zend_compile_class_decl, zend_generate_anon_class_name",
+      "Zend/zend_vm_def.h::ZEND_DECLARE_ANON_CLASS; Zend/zend_inheritance.c::zend_do_link_class",
+      "Zend/zend_execute.c::zend_verify_arg_error (resolved expected type passed through %s)",
+      "Zend/zend_exceptions.c::_build_trace_args (Object class-name C string), Exception::__toString (called-in/and-defined detection)"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "mode": "Strict SL elaboration, algorithmic checks and structuring; caches disabled and encountered determinism checks"
+  },
+  "inputs": {
+    "spec/semantics/modules.json": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3",
+    "spec/semantics/383-anonymous-classes.watsup": "222e73afeead74b1b64da3bcba890fa6c167d338be954e058252de9d6a86aa57",
+    "spec/semantics/307-trait-callable-target-fixups.watsup": "1a6f763022a806447bb9980ec8fea0a8b1dd67b6259c04e5c2c920d12e016485",
+    "spec/semantics/95-typed-calls.watsup": "fdef03346e7a0a915eee911a29b35564773f1fdd350c0a0959c3c0ea8575bc1c",
+    "spec/semantics/83-call-traces.watsup": "de6d676413eaea2e6f0b4bb78328c374ef508e461a9b449957f9157c29b405dc",
+    "bin/php-semantics": "8cf7fe1bd2886bea594534859f06fce544554fa13419339e6aab0f3a61e8cd32",
+    "tests/semantics/dynamic_anonymous_trait_cases.json": "6128e99614c264ed2cf3b4e326b56448c31659d1d685b3c36a9aeb2464af629d",
+    "tests/semantics/dynamic_anonymous_trait_protocol.py": "6f812ba40d2192fd41170ee5989e19b0bddab5a6c913ee4f518e070700a0ac4f",
+    "tests/semantics/dynamic_anonymous_trait_review_protocol.py": "5f95ba7b6c72c28e6bbf200848e7cf24926364092742154b4841859aea2bcfed",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "decisions": [
+    "Share exactly the former unit0 own-member/derived-interface equation. The new dynamic live path retains completed-unit, exact NEW/arguments, compiler image, frozen entry, history seed and compiled-counter checks; additionally require published name/runtime receipt/full declaration replay.",
+    "Ordinary cached-method history and scope validation precede extra307 scope authority. Reviewed returned owners are unchanged; saved/rewritten lexical views still use the extra path when ordinary admission fails. Direct parameter/interface authority remains full declaration replay.",
+    "Fresh eval compilations retain fresh class names while copied trait constant callables keep their native selected target. Full NUL names/type atoms remain stored; only fixed-parameter expected-type and object trace display operands use C-string truncation.",
+    "The original author own anonymous constant is outside the existing member grammar. Preserve it as native-only with its failed state; a separately pinned imported-constant source checks the intended counter/entry scope. No production member admission was added."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 433,
+      "supervisor": [
+        ".tools/class171-artifacts/strict-cut1.json",
+        "1e0eccca3fc287a25714fe91cb44aed647c2cab0e1267c9549dd3b4e99a808ec"
+      ]
+    },
+    "sources": {
+      "exact_agreements": 9,
+      "reports": [
+        {
+          "id": "eval-parentless-trait-self-capture",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-x83dri9c/report.json",
+            "4709c0fca75fc8b2b6ffa170123454a52badd40442bb1c752e3c5deb6b0e6453"
+          ]
+        },
+        {
+          "id": "eval-imported-stringable-self-capture",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-zzyk2j8g/report.json",
+            "45391b1f79598290517966d5c6f202f880945fbff72365b0c5308bb7fd0016bd"
+          ]
+        },
+        {
+          "id": "include-parent-interface-excluded-alias-capture",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-djrn5jrn/report.json",
+            "62ea8b56d8f31525ba557985fbaf16cf122cd27a223ce087b1ee3d4acf26cd75"
+          ]
+        },
+        {
+          "id": "eval-recompile-distinct-capture-scopes",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-ocr7ztnf/report.json",
+            "7688a95ca140dcec9bcd72e633d0f5a7f2069573c778a250e7ad1838d6bf4df8"
+          ]
+        },
+        {
+          "id": "eval-stringable-missing-parent-receive",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-yk_fn1eq/report.json",
+            "e67a5ed6f8d67866789298d62661190f7e154ae0bc3b66e9c86d2cd74cef3a1e"
+          ]
+        },
+        {
+          "id": "include-stringable-conflict-before-argument",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-qbm_42a1/report.json",
+            "b5285603cb7163d33c02b5b5951b49c24e153b9778fc0e988ce729450bc6fbde"
+          ]
+        },
+        {
+          "id": "eval-skipped-trait-conflict-counter",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-jx181slf/report.json",
+            "3721e05cbb9c5834f42e6ba84f820abc8167931ab8bb208c028ffeea77a855ef"
+          ]
+        },
+        {
+          "id": "author-eval-seeded-imported-capture",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-d2nn8n_s/report.json",
+            "052eca0d1b02bfec3859cc5800bf8968aeeb5b7773e550faa303c8079273a51f"
+          ]
+        },
+        {
+          "id": "eval-repeat-caught-type-trace",
+          "report": [
+            ".tools/class171-artifacts/recovered-private-raw/method-runtime-z5hqdcdo/report.json",
+            "2510b54c2dd5ef9dd201b99f90e1e6e389aeb3fc28ffa297187639f3e807e3f8"
+          ]
+        }
+      ],
+      "normal": 6,
+      "php_error": 3,
+      "supervisors": [
+        [
+          ".tools/class171-artifacts/first-source1.json",
+          "45215038a210fdbabecac0cb4cc7fd2ad338b346f0d9b2d8f21c80fcf9b9822e"
+        ],
+        [
+          ".tools/class171-artifacts/source-repeat2.json",
+          "27fc2c5493d359ac3ca96c850015335faa58b32ec18b59e034e8a7aa451122f2"
+        ],
+        [
+          ".tools/class171-artifacts/source-stringable-cut1.json",
+          "92650a56bd72fb2d91958834942eb87b6f7f4b5b7f9c9a6de652ce83f52e2856"
+        ],
+        [
+          ".tools/class171-artifacts/author-source2.json",
+          "3082e99d1cf63bf4ca17c733fcd8304ea2aff4b5a36b6841d01de2645e0bae9b"
+        ],
+        [
+          ".tools/class171-artifacts/source-remaining2.json",
+          "c737f564cc7b8ffb29076aac25739343e61830d38804adf6f06cc1fdd445be64"
+        ]
+      ]
+    },
+    "author_state": {
+      "conditions": 82,
+      "supervisor": [
+        ".tools/class171-artifacts/author-state2.json",
+        "b8807fcf88e27064f7237fdd0f6f13ca46a0f1f35cab3232759d6d953eee6d3c"
+      ],
+      "report": [
+        ".tools/class171-artifacts/recovered-private-raw/dynamic-anonymous-trait-21skle2i/report.json",
+        "86d2b71f362043001a88b92e9dc23a2492543772f49ab78cdde8464b3902bd79"
+      ]
+    },
+    "independent_state": {
+      "conditions": 263,
+      "groups": {
+        "include_parent_excluded_alias": 83,
+        "skipped_conflict_counter": 87,
+        "dynamic_missing_parent_forgery": 93
+      },
+      "revision": "7d926f1130af05a70f857476a0ad3322b99b697b",
+      "supervisor": [
+        ".tools/class171-artifacts/review-three-state1.json",
+        "ab88a6d0f866f9ef3e40820bb585ab7b2c6a2b29f28e4aa6978129b9a78d6028"
+      ],
+      "report": [
+        ".tools/class171-review-artifacts/recovered-state/class171-review-state-ebkej2tt/report.json",
+        "d0d0964ececc4ac2fd142e4f34e40bed76f25c4822d7b8437b323d362dc30c73"
+      ]
+    },
+    "affected_saved_view": {
+      "case": "trait-alt-before-parent-capture",
+      "conditions": 79,
+      "supervisor": [
+        ".tools/class171-artifacts/affected-saved-view1.json",
+        "db0bc7cc96a15630358ea0c24ad29830b7b3c7b25efa1fa1b74a0b61250d7f08"
+      ],
+      "report": [
+        ".tools/class171-artifacts/recovered-private-raw/trait-captured-parent-view-zsv76twh/report.json",
+        "b4adb98f181e8b66bdc8daffd2d4ccddd84b3ebe03c7d8c050c088845825fdde"
+      ]
+    },
+    "compatibility": "The first plain eval and retained-target fatal keep their original tested cuts; later307 routing preserves ordinary owners. Independent263 uses unchanged selected source rows and semantic bytes despite the unrelated author catalogue correction. Original observations never acquire a new tested identity.",
+    "resources": "All authoritative model actors run serially on CPU2 with frozen watched inputs, no bad affinity and full reap; supervisors retain exact commands, revisions and input identities."
+  },
+  "zero_credit": {
+    "source_failures": [
+      "source-repeat1: correct retained-target fatal behavior, mismatching expected-type/trace display before the narrow formatter fixes.",
+      "source-remaining1: first dynamic Stringable/capture row reached the250s host cap, was cleaned up and reported runner_failure without a complete modeled observation. Six following selections were unrun; no agreement credit."
+    ],
+    "author_failure": "author-state1: own-constant source outside the existing anonymous-member gate failed the NORMAL-entry premise. Original native source and failed state remain distinct; the later imported-constant source is a new pin.",
+    "supervisors": [
+      [
+        ".tools/class171-artifacts/source-repeat1.json",
+        "8f1873464de51da1b78fe8dc9185401f6ba5d447ac02d470f129a5f9608e449a"
+      ],
+      [
+        ".tools/class171-artifacts/source-remaining1.json",
+        "9aa6e4aa79bd6e3643be357fa3e924ee2124bf5059645453a0746ae9a0bca5d3"
+      ],
+      [
+        ".tools/class171-artifacts/author-state1.json",
+        "04f7176fb38ffe98be830c56ab4ab3dc8cebe2d4cd6b0b031e116ce3a58b27c8"
+      ]
+    ],
+    "raw_reports": [
+      [
+        ".tools/class171-artifacts/recovered-private-raw/method-runtime-82n6jdcv/report.json",
+        "4ec9235f33b07ca31053ad64b12430429d3396a3cd3f90bc80a2ce0155c02756"
+      ],
+      [
+        ".tools/class171-artifacts/recovered-private-raw/method-runtime-8hn715ff/report.json",
+        "72b787a3f6e0de5432cf67df938a7bc04a39d313e2b96570dcda42cf76339249"
+      ],
+      [
+        ".tools/class171-artifacts/recovered-private-raw/dynamic-anonymous-trait-9gei6jru/report.json",
+        "56258ef1e62953e879b86e5069c238d4e4c53173f3b7391582ce4fcb5d759f13"
+      ]
+    ]
+  },
+  "review": {
+    "reviewer": "/root/classes_review_current",
+    "decision": "accepted",
+    "current_tail": "dc72b15b618333b61f68a59aef62896e9c6fbf2d",
+    "compatibility": "Actual d8f35c668 to8a7d19 parent changes encoding/header metadata and CLI encoding-warning rendering, Generator unpack, output-buffer creation and late executor tick/destructor cursors. Selected sources/bodies have no declare nodes, Generator unpack, ob_start or tick/destructor queues; class/declaration/cache modules are unchanged. The merged CLI keeps the reviewed C-string trace operand alongside the disjoint encoding-warning routine. inputs.bin/php-semantics retains the original tested CLI hash; the merged CLI is accepted by exact-delta review, not represented as freshly tested. No combined source/state gate is justified. The subsequent8a7d19 todc72b15 parent delta changes Generator Closure::call mapping/cancellation, enum is_callable exit cleanup and weak-free completion. These selected runs have none of their task markers, Generator calls or WeakReference/WeakMap associations, so the new guards reduce to the prior paths, including uncaught TypeError cleanup. Class/declaration/cache modules and CLI bytes are unchanged in this segment; exact merged-delta review retains the same accepted gates."
+  },
+  "recovery": {
+    "private_raw_index": [
+      ".tools/class171-artifacts/recovered-private-raw/locations.json",
+      "b726e8268bd67a04ca966c6824e7fb23f1c13ea8937816d354c720ce14850dfd"
+    ],
+    "review_raw_index": [
+      ".tools/class171-review-artifacts/recovered-state/locations.json",
+      "02c84bd90ec849469b9d71a986db4f41018f1dace2789ed3f597a12036e5f693"
+    ],
+    "instructions": "Retained refs and raw include successes and original failures. Restore original logical source/worktree paths at the retained tested cuts for replay; raw records retain commands, input hashes, profile/environment and exits. No bulk artifacts are tracked. Finished worktrees are removed after integration and no-use/process checks."
+  }
+}

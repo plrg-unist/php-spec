@@ -150,6 +150,28 @@ lifetime model, not raw refcount equality; wider receive/mapping and bailout
 paths remain partial.
 [Cancellation review](../../coverage/semantics/generator-call-cancellation-review.json).
 
+I100 uses the same raw forwarding cursor for copied value and reference arguments.
+An unknown or overwritten ordinary named target throws after the successfully
+prepared prefix, retaining the hidden copy before ordered argv/API cleanup.
+The generated Error's trace owns raw argument values until the Error is released;
+it adds no implicit SOURCE or old-receiver owner beyond those arguments.
+Required named holes use existing fake-receive/default machinery, preserving
+default priority and callee/API traces. Frame cleanup drops its prepared values
+before the API cursor releases FIRST, RAW and SOURCE. The ordinary non-Generator
+dispatch is unchanged; I101 below generalizes receive failures.
+[Named-failure review](../../coverage/semantics/generator-call-mapping-review.json).
+
+I101 retains an authentic copied Closure when a PHP throw reaches its restored
+API result cursor and all object history proves no Generator was created for it.
+This covers admitted arity/type errors and default-constructor throws without
+separate formal-specific release rules. Callee cleanup has already dropped its
+cells, so the cursor releases only FIRST, RAW and SOURCE. An immediate entry error
+authenticates the actual entered state and saved API owner before propagating.
+Generated Error traces keep their raw aliases independently; a precreated supplied
+exception need not own any API argument. Earlier warning/mapping prefix cleanup
+is unchanged. Wider producers, collection and bailout contexts remain partial.
+[Receive-failure review](../../coverage/semantics/generator-call-receive-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

@@ -1,0 +1,208 @@
+{
+  "scope": "CLASS172: nonempty own constant groups in admitted anonymous classes, delegated to the ordinary class-constant compiler/linker. Types, multiple declarators, visibility/final checks, values and own callable identities retain source authority. Attributes and wider member/type/initializer contexts remain partial.",
+  "implementation": {
+    "base": "82feaf1dd57c93dcb54d752369a490371fc2bdb7",
+    "semantic_cut": "9c801f0f9f362fd517ad9aaddc0f8a8a2bfbef83",
+    "engine_routes": [
+      "Zend/zend_compile.c::zend_compile_class_decl, zend_compile_class_const_decl",
+      "Zend/zend_vm_def.h::ZEND_FETCH_CLASS_CONSTANT",
+      "Zend/zend_inheritance.c::zend_do_link_class (constant inheritance and trait composition)"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "mode": "Strict SL elaboration, algorithmic checks and structuring; caches disabled and encountered determinism checks"
+  },
+  "inputs": {
+    "spec/semantics/modules.json": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3",
+    "spec/semantics/383-anonymous-classes.watsup": "8e6eb4d8e675db0c61e9877ae3f4a8693bdfc85e186e05637440ccb0063bdca2",
+    "spec/semantics/183-class-constant-compiler.watsup": "41826d272cc13d25e6cb7452997d42252879126f3e69b0ea787a38473a33ba83",
+    "spec/semantics/184-class-constants.watsup": "fe6d78b36ca5efd038cccb3358f4e057bc1d4640c38e593c9f236819ab9a4fbe",
+    "spec/semantics/238-trait-data.watsup": "c69f793d23afd6954abd5da0b9cdf98662b1b2f89469209649977831174c4bc8",
+    "tests/semantics/anonymous_own_constant_cases.json": "c89a6a5b4c257b48e10f11090546a7a0309b34346eeaaa3fc92a3bd17c8a219a",
+    "tests/semantics/anonymous_own_constant_protocol.py": "d2aa0f38079f22eee5114359a30cd5dc586f6489367b1a3d06fb8564fcf68721",
+    "tests/semantics/anonymous_own_constant_review_protocol.py": "3658ca5ecaae3123a21130688f656b636397bc56422923ac1c0dffc9033212ba",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "decisions": [
+    "Admit nonempty attribute-free groups with the ordinary0/1/2/4/32/33/34 modifier forms plus36, whose private-final diagnostic is already owned by183. No separate type/value compiler or single-declarator/literal-only cap is introduced.",
+    "Keep static initializer/private-final failures distinct from runtime parent-final/trait-composition failures. The latter stop before constructor argument effects and allocation/publication.",
+    "Own constant FCCs retain their own method/source identities across eval recompilation. The original author source excluded from171 now has a fresh172 model agreement; its earlier native-only/failed identity remains unchanged.",
+    "Truncate class-name diagnostic operands at the compiler/access/final-override/trait-conflict call sites. Stored OWNERNAME, successful class_constant_message_class and the general trait_data_prior result remain complete. On ordinary non-NUL named class names these formatting changes preserve their previous bytes."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 433,
+      "supervisor": [
+        ".tools/class172-artifacts/strict-draft1.json",
+        "30d5830c4f93a24ce4189d2fdf318da869b89788208d7083973368d73d5313a1"
+      ]
+    },
+    "sources": {
+      "exact_agreements": 11,
+      "normal": 7,
+      "php_error": 2,
+      "static_rejection": 2,
+      "reports": [
+        {
+          "id": "own-typed-multiple-constant-table",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-iy7b9n3p/report.json",
+            "c7ebebda37a2fa3ae3272a0d3f8c948532644dc35ccdf4cc8e50e16c5b02a45f"
+          ]
+        },
+        {
+          "id": "own-constant-private-protected-access",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-083sdjia/report.json",
+            "54151d7ae0b4945fe66c78748324b45b77ef9f78716a6a33313c7ffd1a1ae6bf"
+          ]
+        },
+        {
+          "id": "own-parent-shadow-and-final-constant",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-76rwx3ms/report.json",
+            "5fe909ef0756a9600cdecf8f4f203c131fbfd2fd1d68896ff0a7adf51c44c6fb"
+          ]
+        },
+        {
+          "id": "own-final-parent-conflict-before-argument",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-1anidz8g/report.json",
+            "4c6fdda30b83b25a2785172354199edcd1b7f61e8f39e3d74cc579b335ce7f0b"
+          ]
+        },
+        {
+          "id": "own-typed-constant-wrong-value",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-ilr6xwmn/report.json",
+            "c53ba6cb8a51fe42a34f5a363e1302a27573c56778eb4d9445b7fd954c8d8a5e"
+          ]
+        },
+        {
+          "id": "own-self-callable-constant",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-xou08dfa/report.json",
+            "e6293db01a67852dc156f90fbfbb7188e00e843ec7f46c0112d36d9c1ed63d19"
+          ]
+        },
+        {
+          "id": "eval-own-callable-recompile-scopes",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-oeomv7vx/report.json",
+            "ede9cc6c8fb8b17ef6c698a61c5723b117bc75c7a50f99db35eb67ba544b2813"
+          ]
+        },
+        {
+          "id": "own-trait-constant-compatible",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-4tj04aga/report.json",
+            "45aac74ed3a8b48fbcd5da4e8dd25233176eeb2414d47c63bf2d7aa583498632"
+          ]
+        },
+        {
+          "id": "own-trait-constant-conflict-before-argument",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-c3lripln/report.json",
+            "5d79a662654a0bb6010931e7eaafdd6bef08ef90c593f41eb11c3e8ea367ccf6"
+          ]
+        },
+        {
+          "id": "own-private-final-constant-error",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-k1kj5q7c/report.json",
+            "68804d5da9f28736ebbe8b06454e3219d761519a101c24b068380716c867d19d"
+          ]
+        },
+        {
+          "id": "author-eval-own-constant-adapted-capture",
+          "report": [
+            ".tools/class172-artifacts/recovered-private-raw/method-runtime-zwbxkdhr/report.json",
+            "8dd41229f476dd13e1dae0f463e88bf5032f10392ed43272c1020fa57d24616e"
+          ]
+        }
+      ],
+      "supervisors": [
+        [
+          ".tools/class172-artifacts/source-own-callable1.json",
+          "c79ec50c9ab54e22df0e1c1ed3fa2eb0d6bc678d33d4444e76c66b6ae1e23534"
+        ],
+        [
+          ".tools/class172-artifacts/source-remaining1.json",
+          "8a3481b43f92059c22876a600980578d9508021fab982d5068a3e2beba917ca2"
+        ]
+      ]
+    },
+    "author_state": {
+      "conditions": 75,
+      "supervisor": [
+        ".tools/class172-artifacts/author-table-state2.json",
+        "c584fefdca4002595b784d8c7f6493895033b7b93493129c11a3dc7bdbf0b31d"
+      ],
+      "report": [
+        ".tools/class172-artifacts/recovered-private-raw/anonymous-own-constant-n03dh4wx/report.json",
+        "9d7b07fade7330cbf4f0031e67a4bf4db5214ac50227eb2e89e174edefdbd575"
+      ],
+      "coverage": "Seven source-owned descriptors and values, multiple declarator origins, visibility/nullable types, full stored name and successful lookup identity, type/duplicate/name forgeries, allocation and final output."
+    },
+    "independent_state": {
+      "conditions": 192,
+      "groups": {
+        "own_fcc": 54,
+        "two_eval_own_fcc": 90,
+        "final_link_before_argument": 38,
+        "typed_compile": 5,
+        "private_final_compile": 5
+      },
+      "revision": "2ccfb86710a1ea946beaea262f0197330fa451f3",
+      "supervisor": [
+        ".tools/class172-artifacts/review-five-state1.json",
+        "df16e74d467f17a6ae6e0e62f09c43f91065278b09ced0a88f41ea1e7a414cfd"
+      ],
+      "report": [
+        ".tools/class172-review-artifacts/recovered-state/class172-review-state-jss26z9i/report.json",
+        "07c20700c9a0dafaf1fef068788ee5e15b8ec8f56093e562d1823b49132268ae"
+      ]
+    },
+    "compatibility": "The review cut differs only by tests; later author correction changes local variable sort prefixes only. Prior named-class behavior is preserved because admission adds an anonymous-member case and the diagnostic operands are unchanged on non-NUL names. No unrelated historical named-class source/state gate is renewed.",
+    "resources": "Authoritative model actors run serially on CPU2 with frozen watched inputs, no bad affinity and full reap; supervisors retain exact commands, tested revisions and input identities."
+  },
+  "zero_credit": {
+    "author_fixture_failure": "author-table-state1 used undeclared pcc_* local sort prefixes and failed elaboration. The corrected fixture alone reran; no semantic/source/strict results were relabeled.",
+    "supervisor": [
+      ".tools/class172-artifacts/author-table-state1.json",
+      "bdaa7f6eb321b4c37f7bb08ffe06f1887e233fec07a7e1d952dfb6c372bf7a79"
+    ],
+    "report": [
+      ".tools/class172-artifacts/recovered-private-raw/anonymous-own-constant-2eer4llo/report.json",
+      "e981bd255914f99f6ea81779d4d6411c3afa2f0b1c92563d064fba57f0e1c303"
+    ],
+    "retained171_control": "The earlier171 own-constant native-only source and failed NORMAL-entry fixture remain excluded from171 agreement; this172 source row records its separately executed current agreement."
+  },
+  "review": {
+    "reviewer": "/root/classes_review_current",
+    "decision": "accepted",
+    "current_tail": "22dabb15f3ff41e580592c948d716ae8e24f1149",
+    "compatibility": "Actual-parent review accepts the composed434-module/new-adapter tree by an exact interaction bridge. Accepted SOURCE_ACCEPT/check paths are unchanged; rejected-source headers,445 and destruction-store additions require parser rejection, absent from all selected source/eval bodies (the two static errors are frontend-accepted semantic compilation failures). Encoding helpers preserve these accepted inputs and no selected source declares encoding.257 only moves a declaration to30. Earlier Closure::call/Generator, enum is_callable and WeakReference/WeakMap cleanup additions are inactive on these runs. The inputs/tool hashes and strict433 identity above retain their actual tested cuts; no merged434/new-adapter campaign is claimed or justified."
+  },
+  "recovery": {
+    "private_raw_index": [
+      ".tools/class172-artifacts/recovered-private-raw/locations.json",
+      "7d4ee8a683949486103ec87fb9b6dbea09561e2c7ad98873adefd762dea8794c"
+    ],
+    "review_raw_index": [
+      ".tools/class172-review-artifacts/recovered-state/locations.json",
+      "40f736177ac7eed75182abe1934c929ca34dcaa8eac8da37ecc66c2a0345dcf0"
+    ],
+    "instructions": "Native originals and supervised runs remain outside Git under the class172 artifact roots; the reused author native pin remains under class171-artifacts. Restore mapped original source/worktree paths and retained tested cuts with pinned local tools for replay. Completed reviewer WT is removed; refs/raw are retained."
+  }
+}
