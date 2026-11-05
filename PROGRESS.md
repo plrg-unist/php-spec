@@ -677,18 +677,18 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR19 handles selected uncaught builtin Exceptions from normal-origin tick
-argument destructors after FINAL. The module-local bailout leaves two argument
-protections and unfinished argument/FCC/tail owners intact. Live report
-authentication precedes Throwable release; later active shutdown-list cleanup
-and inactive executor free preserve native order. Five new originals agree,
-including a later queue argument and an owning Closure capture's separate
-inactive-child fatal/CLI 0. Five independent groups pass 254 conditions
-(243 reached, 11 derived), and private strict433 passes; the original late-event
-fixture error keeps zero credit.
-[Bailout review](coverage/semantics/callback-late-tick-throw-review.json).
+ATTR20 retains stable main exit authority when a post-FINAL tick argument
+destructor throws a selected builtin Throwable. Before reporting, the catch
+validates the actual full exit status; afterward a lookup view restores only
+the saved code for source validation, with both saved phases unchanged. Actual
+fatal status 255 and a later inactive-child fatal's CLI 0 remain distinct.
+Four new originals and one affected normal control agree exactly; five independent
+groups pass 265 conditions (256 reached, 9 derived), and private strict433 passes
+without correction.
+[Exit/throw review](coverage/semantics/callback-late-tick-exit-throw-review.json).
 Wider Throwable/handler, changed-phase and exit/reentry contexts remain partial.
-The earlier [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
+The earlier [bailout](coverage/semantics/callback-late-tick-throw-review.json),
+[stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
 [copied-value](coverage/semantics/callback-late-tick-values-review.json) ledgers
 retain their original cuts and zero-credit failures.

@@ -1,0 +1,131 @@
+{
+  "milestone": "ATTR20: saved main exit authority across late tick Throwable reporting",
+  "status": "selected saved-exit bailout source and ownership behavior independently validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-20",
+  "scope": "Stable main-body EXITED completion followed by the existing selected renderable builtin Throwable bailout from a post-FINAL tick argument destructor, with no previous exception or selected exception handler. Existing NORMAL behavior remains admitted; changed phase completions and reentry remain partial.",
+  "authority": [
+    "Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit) stores the canonical full integer exit status or writes a string, then unwind-exits.",
+    "Zend/zend.c:zend_execute_script and Zend/zend_exceptions.c:zend_exception_error clear and release the main unwind-exit without reporting it before later FINAL/tick API cleanup.",
+    "Zend/zend_execute_API.c:zend_call_function, Zend/zend_exceptions.c:zend_throw_exception_internal and zend_exception_error report the new uncaught Throwable and replace actual status with 255 before module-local bailout.",
+    "Existing 257/270/441 saved phase completions and 444 abandoned ownership preserve source authority independently of the later reported status; the ATTR19 C destructor/module/queue/free chain remains unchanged."
+  ],
+  "production": {
+    "revision": "9bb9f063ed24de2dfaccbd7183be101cd66f54a5",
+    "spec_sha256": "6fabf36299def753775929f4f8a16f790ae3b8b3d6d2a9c3c8ee5e15945905bf",
+    "change": "A lookup view restores only the original saved exit status for matching abandoned-source validation and FATAL task scope. Both actual saved phase completions still authenticate the original completion. Live entry/release and pre-report caught validation remain current-status strict; actual machine status/phase/completion/owners are never replaced by the lookup view. Classified tick scope reuses existing task-specific output scope so normal RELEASE stays strict."
+  },
+  "tests": {
+    "protocol": "tests/semantics/deprecated_late_tick_exit_throw_review_protocol.py",
+    "independent_revision": "293c7b50a2ac4a662ff9619b4c9d10cd097fb07b"
+  },
+  "identities": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "semantic_mode": "SL; SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; CPU5"
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "2d8af71f39b2bc75838ee4ce16635db0a0af4ba36f02065f5c051dc152075342",
+      "new_exit_throw_originals": 4,
+      "affected_normal_controls": 1,
+      "preserved_sources": "review-native/{cacheless,owning-capture,exit7-tail-queue,string-bound,normal-control}.php"
+    },
+    "source": {
+      "revision": "9bb9f063ed24de2dfaccbd7183be101cd66f54a5",
+      "reports": [
+        {
+          "report": "source-9bb9/report.json",
+          "report_sha256": "a9df74f7946fd5616749c0549e9ab8a84b6f0deaf31fd44c1a4382c1d3477f43",
+          "new_exit_throw_agreements": 1
+        },
+        {
+          "report": "source-9bb9-rest/report.json",
+          "report_sha256": "14e91dcfa49ebd47e8c933a1dd05f0a41b4658c719ffcd45921391171b51d982",
+          "new_exit_throw_agreements": 3,
+          "affected_normal_controls": 1
+        }
+      ],
+      "new_exit_throw_agreements": 4,
+      "affected_normal_controls": 1,
+      "rows": [
+        {
+          "id": "cacheless",
+          "source_sha256": "7d020e0f6b76c5840a55b8d9f0c80a2dc5f96add011a786c4eff8dd3dfaa119f",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;",
+          "regression_control": false
+        },
+        {
+          "id": "exit7-tail-queue",
+          "source_sha256": "9bc7f58804b94df18c013f54a5924bd5a304debdfcf833a3d01856d81982bee2",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;Q;",
+          "regression_control": false
+        },
+        {
+          "id": "string-bound",
+          "source_sha256": "4df2dc62f617f549ebdfd3197fa5a77bda70411585d04fac03653f1e83d75099",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;E;F;A;",
+          "regression_control": false
+        },
+        {
+          "id": "owning-capture",
+          "source_sha256": "73556f7303191268ea4d2f19499920cea96f82cdb3ee6e5bdc7035d8d89bcccf",
+          "status": "php_error",
+          "exit_status": 0,
+          "stdout": "B;F;A;",
+          "regression_control": false
+        },
+        {
+          "id": "normal-control",
+          "source_sha256": "6f4a80ad9f4f5dff535ab6c9b19084b5083f15b2dc11d22992b7885e63583873",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;",
+          "regression_control": true
+        }
+      ],
+      "observation": "Exact stdout/fatal stderr bytes and CLI statuses agree. Sources use main exit 7, exit 263 and string exit; a late shutdown argument still prints Q after the first fatal without restarting the retained tick tail. Owning capture reaches the separate inactive-child fatal/CLI 0; other sources end 255."
+    },
+    "strict_private": {
+      "report": "strict-9bb9/report.json",
+      "report_sha256": "5bc61083f9edeb0d9b859bd8af1cd8079838e44ec09887b4a5167a4f8f0fed4e",
+      "revision": "9bb9f063ed24de2dfaccbd7183be101cd66f54a5",
+      "modules": 433,
+      "exit": 0
+    },
+    "reached": {
+      "revision": "293c7b50a2ac4a662ff9619b4c9d10cd097fb07b",
+      "report": "reached-first/run/report.json",
+      "report_sha256": "ec089c2692605e16eaa3a720144e2a149f85874c8a0dd9f9b49a6a62ec6854eb",
+      "groups": 5,
+      "selected_assertions": [
+        37,
+        54,
+        62,
+        57,
+        55
+      ],
+      "conditions": 265,
+      "source_reached_conditions": 256,
+      "derived_conditions": 9,
+      "derived_scope": "Five pre-report status/phase/kind controls and four post-report saved-code/phase/kind refusals. A derived current 7 view may authenticate historical source 263, but it cannot pass the actual pre-report catch.",
+      "observation": "Genuine pre-report 263 remains actual 263 with no fatal event; actual caught authority rejects low-byte 7. After reporting, actual 255 and saved 263 remain distinct, phase records/roots stay unchanged, and the genuine pending release preserves scope/heap. Bound EXITED 0 pause/resume, retained tail/later queue 7 and owning capture 263 through later actual 0 all preserve descriptor/heap/status validity."
+    }
+  },
+  "preserved_earlier_evidence": "callback-late-tick-throw-review.json retains ATTR19 original execution/fixture failures and its selected 208 + corrected 46 checks at their recorded cuts. The new affected NORMAL source is explicitly rerun at the new private file identity; historical source/state agreement credit is not renewed.",
+  "zero_credit": [
+    "ATTR07 unsafe assert WeakReference observation remains unresolved, is not rerun here and retains zero agreement credit."
+  ],
+  "remaining": "Changed saved phase completions; exit/throw from FINAL or earlier shutdown/destructor replacement; user exception handlers, Throwable subclasses/chains and wider payloads; exit/reentry during module cleanup, assertion roots and broader lifecycle/core coverage remain partial.",
+  "recovery": "Raw reports retain actual commands, cwd, profile, environment, source/binary identities, exits and full reap records. Restore committed source bytes at the recorded private path for exact fatal filenames; tool copies are reused without a rebuild/portability claim.",
+  "review": "Independent /root/attr_review_current accepts the C phase/status reasoning, lookup scope and source/ownership counterexamples. Four new exit/throw originals, one affected NORMAL control, five groups/265 conditions (256 reached+9 derived) and private strict433 pass without source or fixture correction."
+}
