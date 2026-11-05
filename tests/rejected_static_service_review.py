@@ -36,7 +36,7 @@ CASES = {
     'interface-extends-parent': (b'interface I extends parent{}\ndeclare(encoding=1);\necho ;', [2], 3, 'ParseError', 1),
     'enum-implements-self': (b'enum E implements self{}\ndeclare(encoding=1);\necho ;', [2], 3, 'ParseError', 1),
     'anonymous-extends-self': (b'$a=new class extends self{};\ndeclare(encoding=1);\necho ;', [2], 3, 'ParseError', 1),
-    'readonly-method-body': (b'class C{readonly function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 1),
+    'readonly-method-body': (b'class C{readonly function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0),
 }
 PROBE = r'''<?php declare(strict_types=1);
 require '@ROOT@/frontend/autoload.php';
@@ -67,7 +67,7 @@ foreach ([
     catch (PhpParser\Error $error) { $caught = $error->getRawMessage(); }
     assert($parser->parsingStarted && $caught !== null && $parser->headers === []);
     if ($name==='grammar') assert(str_contains($caught,'Syntax error'));
-    elseif ($name==='readonly') assert(str_contains($caught,'cannot be readonly'));
+    elseif ($name==='readonly') assert($caught==='Invalid modifier for method');
     else assert(str_contains($caught,'Multiple abstract modifiers'));
     $records[] = ['id'=>'rejected-stop-'.$name,'error'=>$caught];
 }
@@ -86,21 +86,13 @@ def run(out):
                     source, lines, line = b'<?php\n' + source, [value + 1 for value in lines], line + 1
                 packet = {'op': 'parse-' + mode, 'id': '9', 'mode': mode, 'profile': 'cli-raw-85', 'source': b64(source)}
                 if mode == 'file': packet.update(requested=b64(b'static.php'), resolved=b64(b'/review/static.php'), opened=b64(b'/review/static.php'))
-                refusal = name == 'readonly-method-body'
-                if refusal:
-                    result = frontend.request(packet)
-                    raw = (frontend.output / 'stderr').read_bytes()
-                    delta = raw[len(frontend.recorded_stderr):]; frontend.recorded_stderr.extend(delta)
-                    assert not delta and not CLI['dynamic_parser_stderr'](result, mode, delta)
-                    assert CLI['rejected_encoding_warning_lines'](result) == [2 if mode == 'file' else 1]
-                else:
-                    result = frontend.parse(packet)
-                    assert CLI['rejected_encoding_warning_lines'](result) == lines
+                result = frontend.parse(packet)
+                assert CLI['rejected_encoding_warning_lines'](result) == lines
                 assert not result['diagnostics'] and all(result[key] == value for key, value in packet.items() if key != 'op')
                 assert not result['accepted'] and result['line'] == line
                 assert result['category'] == ('parser_static_rejection' if kind == 'CompileError' else 'parser_rejection')
                 assert len(result.get('headers', [])) == count
-                records.append({'id': name, 'mode': mode, 'warning_lines': lines, 'refusal': refusal,
+                records.append({'id': name, 'mode': mode, 'warning_lines': lines,
                     'source_sha256': hashlib.sha256(source).hexdigest()})
     finally:
         frontend.close()

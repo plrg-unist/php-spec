@@ -88,8 +88,8 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
                 'beginTokenPos' => $begin, 'closeLine' => $close->line,
                 'closeTokenPos' => $self->tokenPos, 'items' => $self->semValue];
         };
-        // Nonempty member modifiers reduce before a method's parameters/body.
-        // Properties/constants share this rule, so use its actual lookahead.
+        // Nonempty method modifiers reduce before parameters/body. Constants
+        // share this rule, so distinguish the actual function lookahead.
         if ($this->ruleToLength[384] !== 1 || $this->reduceCallbacks[384] !== null) {
             throw new RuntimeException('Member modifier reduction contract changed');
         }

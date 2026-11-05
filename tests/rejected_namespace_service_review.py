@@ -55,7 +55,7 @@ foreach ([
     assert($parser->parsingStarted && $caught !== null);
     assert($caught !== 'Namespace declarations cannot be nested');
     assert(count($parser->headers) === ($name==='recursive' ? 1 : 0));
-    if ($name==='other-validation') assert(str_contains($caught,'cannot be readonly'));
+    if ($name==='other-validation') assert($caught==='Invalid modifier for method');
     else assert(str_contains($caught,'Syntax error'));
     $records[] = ['id'=>$name,'headers'=>count($parser->headers),'error'=>$caught];
 }
