@@ -1,0 +1,118 @@
+{
+  "milestone": "OB10",
+  "status": "Independent semantic CLEAR; private gates and actual e5f0ecac2 composition review/strict433 pass. Fast-forward candidate prepared.",
+  "scope": "Pure known-callable creation after complete ob_start conversion in a normal post-output executor queue, including the authenticated Notice-handler returned-object destructor. Failed start emits Notice/false without callback invocation or buffer push.",
+  "base": "33fe388ebd41b71ed7652cada9a5699334972d23",
+  "implementation_commit": "6ae013df4a2fa52170b6aba982ab5272cbdb0668",
+  "consumed_closure_commit": "efb7a3205c87fd33ff49138a4032f5e22d3e3137",
+  "review_fixture_commit": "fd180d40f940795125330dfb4edc9d3ae467e011",
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "main/output.c::zif_ob_start parses |zll before php_output_handler_create_user and the inactive guard",
+      "main/output.c::php_output_handler_dtor releases user->zoh with ordinary zval_ptr_dtor before failed-start Notice",
+      "Zend/zend_API.c::zend_fcall_info_init retains a borrowed cached FCC while the raw callback argument owns its value",
+      "Zend/zend_execute.h::zend_vm_stack_free_args uses zval_ptr_dtor_nogc; array children still decrement normally"
+    ]
+  },
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "environment": "tests/semantics/profile.json; fixed request clock; LC_ALL=C,TZ=UTC,FIRST=one; selected slow contexts add USE_ZEND_ALLOC=0"
+  },
+  "behavior": [
+    "Snapshot selection only after all conversion callbacks. Notice-time referenced selector/receiver changes do not repeat lookup.",
+    "Creation contributes one transient zoh owner. It releases before Notice; raw argument owners retain callbacks and children through diagnostics and normal or caught-throw cleanup.",
+    "Consumed direct Closure metadata reuses borrowed producer scope/binding rows, restores only missing compatible rows and direct child allocation facts, and validates existing source certificates. STORE/REFCELLS and real owners are unchanged; early live callability checks are not weakened.",
+    "Normal argument-root NOGC differs from the ordinary zoh decrement and ordinary array-child cleanup. Manual GC controls distinguish all three routes."
+  ],
+  "validation": {
+    "strict433": "Final consumed-history production bytes: true, empty stderr, exit0, 12.226s.",
+    "author_sources": "17 distinct exact normal source/request contexts: initial simple Closure1 plus ordinary13 at6ae; final affected4 at efb bytes replay that Closure and add factory byref capture, factory bound-method Closure and returned-Notice-object callable creation. Original uncorrected Closure failures retain zero credit.",
+    "independent_sources": "Four ordinary exact normal rows retained from mixed original packet at6ae; three GC originals in that packet remain Unsupported/zero full agreement. Three distinct explicit observer/cycle cleanup derivatives separately match exact native tuples and finish normal. No whole failed-packet credit.",
+    "author_states": "Two source-reached groups pass30+36 reported conditions at6ae (66 total).",
+    "independent_states": "Original four groups pass38+30+43+46 at6ae (157 reported/121 custom). Two consumed-Closure groups pass54+65 at efb (119 reported/101 custom), with genuine release/operation pairing, malformed producers, retired owners and budget/final-state checks.",
+    "diagnostic": "Genuine byref retirement front passes22 diagnostic conditions: callback/capture unallocated, retained REFCELLS and defined STORE, old live validator false, borrowed capture membership sufficient. This is diagnostic evidence, not an additional source agreement.",
+    "public_refusals": "Active handler-body reentry and invalid integer callback remain checked Unsupported at fd180d40f; no native agreement credit. Every accepted full source also uses the ordinary active initial user output buffer."
+  },
+  "compatibility": "efb selects its new producer/history path only for direct Closure callbacks. Earlier author non-Closure13, independent ordinary4/cleanup3, author state2 and original review state4 retain PRODUCEReps and unchanged selection/ownership. The affected simple-Closure replay and two historical controls cover the selected branch; returned-object callable covers the new bridge. Reviewer confirms no unchanged replay is warranted.",
+  "preserved_failures": [
+    "Initial strict undefined forward type and first Closure missing metadata/fixture-binding failures remain externally archived with zero failed-stage credit.",
+    "Original factory byref and bound-method sources interpreter-failed after native pinning; both exact originals now pass after the local consumed-metadata correction.",
+    "Three byref diagnostic syntax/iteration attempts retain zero credit; the same genuine reached front passes after fixture-only correction.",
+    "Three original GC contexts match body observations but stop at inactive WeakReference custom free_obj cleanup. GC peers independently classify that existing executor hook frontier; explicit cleanup derivatives are separate sources."
+  ],
+  "remaining": [
+    "Invalid callback Warning-to-Notice protocol, effectful/deprecated/autoload lookup and other unresolved callable forms.",
+    "Active handler-body and deprecation-handler returned-object reentry, abnormal executor queues and wider cleanup hooks.",
+    "Pre-inactive allocation failure/PHP memory limits and automatic GC trigger/resource effects.",
+    "Inherited folded-TODO live certificate gap recorded in output-executor-reception-review.json; no generic validator closure is claimed."
+  ],
+  "raw_archive": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/ob10-creation",
+    "native_directories": [
+      "/home/user/workspace/php-spec-evidence-archive/ob10-creation-native-v1",
+      "/home/user/workspace/php-spec-evidence-archive/ob10-creation-native-v2",
+      "/home/user/workspace/php-spec-evidence-archive/ob10-creation-native-v3",
+      "/home/user/workspace/php-spec-evidence-archive/ob10-review-native-20261105",
+      "/home/user/workspace/php-spec-evidence-archive/ob10-review-native-controls-20261105",
+      "/home/user/workspace/php-spec-evidence-archive/ob10-review-native-cleanup-20261105"
+    ],
+    "reports_sha256": {
+      "output-executor-creation-pvtde62x/report.json": "3bcbbdd8f0bf709695ed8867ac4e2938c6661e0f842ecb5a7e7e7b83330cdcc0",
+      "output-executor-creation-rest-uagsx6d1/report.json": "92b99fd78145b077a0f479e8d4d075d6c7d0bf05250142352ad81cd14b809fed",
+      "output-executor-creation-consumed-1846mklq/report.json": "e6de37e58b96ccc705ce6aa32dce528cd88cf593db4454fb013c9eafef56aab4",
+      "output-executor-creation-review-m_hjm3br/report.json": "0ba7ed4466eeb4c7101ef67491d2ef746354d91b7fec6567b7a3ea993bf2c50d",
+      "output-executor-creation-review-oxsh3ywj/report.json": "0137f387581761a8e3620b84bcc8efe7cea8a497ae0d13046d43744644c44acf",
+      "fiber-state-review-0q4kmt9z/report.json": "28343024ce9892300a4f5d753590a7592044ec5bd703e5aede07a4b39bd623f9",
+      "fiber-state-review-tcnp_l6r/report.json": "80ad21c159cbb6851c8d4b7f2dcec8c4cf7b91bbba26e2a52446b810ab16baff",
+      "fiber-state-review-dmck13wk/report.json": "c41063292ed9129f78f088c9b7271a0bc9f92dfc2975130fb2fe199c3bd89d78",
+      "fiber-state-review-ybr6jm0m/report.json": "526b6a6f7301bf0fdcfd8fb04a1c38d1022e3dfa0fc4d2c0dc096734f3c4a15b",
+      "ob10-strict-consumed/report.json": "624e07fd8094673699cfd66b382eade6d4d835a2d4dc2a761db6ca67dab855be",
+      "output-post-deactivate-boundaries-0w8ju0km/report.json": "91241c1f44cf49ea4c7950b89c0e82c45e2d42d384cb6de8ba91047dfd521ee4",
+      "ob10-composed-strict/report.json": "c29a6444e5221fe995b8c16b287e185b8549327e0f1bac932b6c61da961650e8"
+    },
+    "recovery": "Each packet retains exact source bytes, commands, input/tool hashes, request facts, stdout/stderr and process results. Failed tool packets retain recorded wire failures even where no final report was emitted. Use the private commits above and tracked test commands; no raw archive is in Git."
+  },
+  "review": {
+    "reviewer": "/root/output_review_current",
+    "decision": "Semantic CLEAR including Closure correction; docs/inventory and actual current-parent union CLEAR."
+  },
+  "reproduce": [
+    "taskset -c 3 python3 tests/semantics/output_executor_creation_sources.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_creation_state.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_creation_review_sources.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_creation_review_state.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_post_deactivate_boundaries.py"
+  ],
+  "private_inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "b4f64ec744b81c488621a16ec7df2ddb048353fab9447f2f2f829ebaf136a215",
+    "spec/semantics/391-output-buffers.watsup": "026e89ea43cc338d5d0375aaf0e307c2f1f69f8f76b45ff36ca275e2260a7e6c",
+    "spec/semantics/395-output-handlers.watsup": "98419b0e39ebd66b23670b9647407acb297ef14883a3d3d4574429a395cc818c",
+    "spec/semantics/444-executor-final-free.watsup": "9ad36301e20b7072733f1eccf0e7e187347358b6f2cb5459f7fbe37998aeabf5",
+    "tests/semantics/output_executor_creation_sources.py": "f0ff8f4d95718cd342cb63a2a47a36c4acc503039b25a3e5649d7dc712c8ed18",
+    "tests/semantics/output_executor_creation_state.py": "d3fa510770b96a2e7ee805aac55314e5eff5c3512b94ca7bf9c677ab4f3fd639",
+    "tests/semantics/output_executor_creation_review_sources.py": "d899ade3052b999d13c6dbed322f31e661627c32c1209192aa3265000857ed77",
+    "tests/semantics/output_executor_creation_review_state.py": "e5f3f263dcba19167dee1f9d96cad43438d455424e21e5978653f9ab354ecb69",
+    "tests/semantics/output_executor_post_deactivate_boundaries.py": "9c4ee0c162942666e345c044de211abd8a5ae07590b975e485407622bc111c72"
+  },
+  "composition": {
+    "master": "e5f0ecac2bb83c56945b4ea5f29baf78565a8f7c",
+    "review": "Actual30/391/395/444 union CLEAR: parent-relative delta is reviewed OB10, active/inactive creation predicates are disjoint and borrowed history adds no real roots. Tick exit/throw receipts are absent; Closure::call retained-root remains eps; parent GC capture admissions require a genuine captured GC caller absent from these handlers. No selected interaction warrants source/state replay.",
+    "strict433": {
+      "result": "true; empty stderr; exit0",
+      "seconds": 12.195,
+      "report": "ob10-composed-strict/report.json",
+      "command": "tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json433 entries> strict.watsup"
+    },
+    "inputs_sha256": {
+      "spec/semantics/30-storage.watsup": "5bc1abd8c3c0c4cfa34f522574f0b6ee8c5a269d17fbf5250913c1770cdcfb45",
+      "spec/semantics/391-output-buffers.watsup": "026e89ea43cc338d5d0375aaf0e307c2f1f69f8f76b45ff36ca275e2260a7e6c",
+      "spec/semantics/395-output-handlers.watsup": "98419b0e39ebd66b23670b9647407acb297ef14883a3d3d4574429a395cc818c",
+      "spec/semantics/444-executor-final-free.watsup": "0aa2559bea8dce3c5f3acc7d0d600853386a3550ce13e4ee2ee7c6e30f1814e8"
+    }
+  }
+}

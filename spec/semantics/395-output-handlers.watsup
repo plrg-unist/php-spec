@@ -73,11 +73,13 @@ def $ob_operation(S, pconfigcall, pvalue_values*) = S[.COMPLETION = UNSUPPORTED 
   -- if $ob_user_running(S)
 def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = $ob_user_start(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags], $error_handler_resolution(S, pvalue))
   -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if ~$executor_scope(S)
   -- if ~$ob_user_running(S)
   -- if pvalue =/= PNULL
   -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
 def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.COMPLETION = UNSUPPORTED "effectful user output-handler callable selection"]
   -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if ~$executor_scope(S)
   -- if ~$ob_user_running(S)
   -- if pvalue =/= PNULL
   -- if $exception_deprecated_raw(S, pvalue) \/ $api_special(S, pvalue)

@@ -267,6 +267,15 @@ dec $executor_error_handler_active(pstate) : bool
 dec $executor_retval_notice_start(pstate) : bool
 dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
+dec $ob_creation_ready(pstate, pconfigcall, pvalue*) : bool
+dec $ob_creation_target(phandlerresolution) : pcalltarget?
+dec $ob_creation_producer(pstate, pvalue) : pshutdownproducer?
+dec $ob_creation_history(pstate, pobcreation) : pstate
+dec $ob_creation_missing_scope(pstate, pshutdownproducer) : pclosurescope?
+dec $ob_creation_missing_binding(pstate, pshutdownproducer) : pclosurebinding?
+dec $ob_creation_consumed_history(pstate, pobcreation) : pstate
+dec $ob_creation_selected(pstate, pobcreation) : bool
+dec $ob_creation_task_valid(pstate, pobcreation) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
 dec $executor_operation_row(pdestructioncleanup, pdestructionoperation) : bool
 dec $executor_handler_task(ptask) : bool
@@ -626,8 +635,8 @@ def $executor_retval_notice_start(S) = true
   -- if ~$executor_error_handler_tasks(pframe_executor.TODO)
 def $executor_retval_notice_start(S) = $executor_retval_notice_start(S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*])
   -- if S.TODO = (OB_PARSE pconfigcall 3 pvalue_values*) :: ptask_tail*
-  -- if pvalue_values* = [PNULL, PINT i_chunk, PINT i_flags]
-  -- if $ob_parse_valid(S, pconfigcall, 3, [PNULL, PINT i_chunk, PINT i_flags])
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
 def $executor_retval_notice_start(S) = false -- otherwise
 def $executor_default_start_sent(pconfigcall) = ($error_api_value(pconfigcall, 0, PNULL) = PNULL)
 def $executor_default_start_valid(S, pconfigcall) = true
@@ -641,6 +650,119 @@ def $executor_default_start_valid(S, pconfigcall) = false -- otherwise
 def $executor_ob_start_allowed(S) = true -- if ~$executor_error_handler_active(S)
 def $executor_ob_start_allowed(S) = true -- if $executor_retval_notice_start(S)
 def $executor_ob_start_allowed(S) = false -- otherwise
+;; Creation observes the fully parsed arguments, not their earlier SEND values.
+;; Signature/body/name restrictions belong to an invocation, which never occurs.
+def $ob_creation_ready(S, pconfigcall, pvalue_values*) = true
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
+  -- if $error_handler_callable(S, pvalue) = (true)
+def $ob_creation_ready(S, pconfigcall, pvalue_values*) = false -- otherwise
+def $ob_creation_target(HANDLERRESOLVED pcalltarget) = (pcalltarget)
+def $ob_creation_target(phandlerresolution) = eps -- otherwise
+def $ob_creation_producer(S, POBJECT n) = ($eager_cleanup_target(S, CLOSURE_TARGET n))
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_name(S, n) = $ptascii("Closure")
+def $ob_creation_producer(S, pvalue) = eps -- otherwise
+;; A borrowed lookup certificate may name a receiver retired during the Notice.
+;; Restore only the saved array selectors for checking; never root that snapshot.
+def $ob_creation_history(S, pobcreation) = S[.ORIGIN = (pobcreation.CALL.SITE)][.ALLOCATIONS = S.ALLOCATIONS ++ $config_nodes(pobcreation.CALL) ++ $error_selected_roots($ob_creation_target(pobcreation.RESOLUTION))][.ARRAYS[n] = parray]
+  -- if pobcreation.VALUE = PARRAY n
+  -- if pobcreation.RAW = (parray)
+  -- if $(n < |S.ARRAYS|)
+def $ob_creation_history(S, pobcreation) = S[.ORIGIN = (pobcreation.CALL.SITE)][.ALLOCATIONS = S.ALLOCATIONS ++ $config_nodes(pobcreation.CALL) ++ $error_selected_roots($ob_creation_target(pobcreation.RESOLUTION))] -- otherwise
+;; Consumed Closure arguments may already have retired their cells and receiver.
+;; Reuse the borrowed producer tables only for operation-metadata checking.
+def $ob_creation_missing_scope(S, pshutdownproducer) = pshutdownproducer.SCOPE
+  -- if $consumer_producer_scope(S, pshutdownproducer.TARGET) = eps
+def $ob_creation_missing_scope(S, pshutdownproducer) = eps -- otherwise
+def $ob_creation_missing_binding(S, pshutdownproducer) = pshutdownproducer.BINDING
+  -- if $consumer_producer_binding(S, pshutdownproducer.TARGET) = eps
+def $ob_creation_missing_binding(S, pshutdownproducer) = eps -- otherwise
+def $ob_creation_consumed_history(S, pobcreation) = S_borrowed
+  -- if pobcreation.VALUE = POBJECT n
+  -- if $(n < |S.OBJECTS|)
+  -- if pobcreation.PRODUCER = (pshutdownproducer)
+  -- if pshutdownproducer.TARGET = CLOSURE_TARGET n
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if $consumer_producer_scope(S, pshutdownproducer.TARGET) = eps \/ $consumer_producer_scope(S, pshutdownproducer.TARGET) = pshutdownproducer.SCOPE
+  -- if $consumer_producer_binding(S, pshutdownproducer.TARGET) = eps \/ $consumer_producer_binding(S, pshutdownproducer.TARGET) = pshutdownproducer.BINDING
+  -- if pshutdownproducer_missing = pshutdownproducer[.SCOPE = $ob_creation_missing_scope(S, pshutdownproducer)][.BINDING = $ob_creation_missing_binding(S, pshutdownproducer)]
+  -- if S_tables = $consumer_producer_history(S, pshutdownproducer_missing)
+  -- if S_borrowed = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $node_children(S_tables, HOBJECT n)]
+  -- if $closure_scope_rows_valid(S_borrowed, $consumer_producer_scopes(pshutdownproducer.SCOPE))
+  -- if $closure_bindings_valid(S_borrowed, $consumer_producer_bindings(pshutdownproducer.BINDING))
+def $ob_creation_consumed_history(S, pobcreation) = S -- otherwise
+def $ob_creation_selected(S, pobcreation) = true
+  -- if pobcreation.RESOLUTION = HANDLERRESOLVED pcalltarget
+  -- if $exception_raw_selected(S, pobcreation.VALUE, pobcreation.RAW, pcalltarget)
+  -- if pshutdownentry = {CALL pobcreation.CALL, BIRTH eps, CAPTURE pobcreation.CAPTURE, PRODUCER eps, RAW pobcreation.RAW, TARGET pcalltarget, CACHEOBJECT eps, ARGS eps}
+  -- if $shutdown_selection_scope(S, pshutdownentry)
+def $ob_creation_selected(S, pobcreation) = true
+  -- if pobcreation.RESOLUTION = HANDLERUNKNOWN text
+  -- if $typed_callable(S, pobcreation.VALUE) = (true)
+def $ob_creation_selected(S, pobcreation) = false -- otherwise
+def $ob_creation_valid(S, pobcreation) = true
+  -- if pobcreation.CALL.KIND = INTRINSIC_OB_START
+  -- if pobcreation.VALUE =/= PNULL
+  -- if (pobcreation.RAW = eps /\ ~$is_array_value(pobcreation.VALUE)) \/ (pobcreation.RAW =/= eps /\ $is_array_value(pobcreation.VALUE))
+  -- if S_history = $ob_creation_history(S, pobcreation)
+  -- if $ob_parse_valid(S_history, pobcreation.CALL, 3, [pobcreation.VALUE, PINT pobcreation.CHUNK, PINT pobcreation.FLAGS])
+  -- if pobcreation.PRODUCER = $ob_creation_producer(S_history, pobcreation.VALUE)
+  -- if ~$exception_deprecated_raw(S_history, pobcreation.VALUE) /\ ~$api_special(S_history, pobcreation.VALUE)
+  -- if $ob_creation_selected(S_history, pobcreation)
+def $ob_creation_valid(S, pobcreation) = false -- otherwise
+def $ob_creation_task_valid(S, pobcreation) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ptask = OB_START_CREATED pobcreation \/ ptask = OB_START_FAILED pobcreation
+  -- if $ob_creation_valid(S, pobcreation)
+  -- if S.ORIGIN = (pobcreation.CALL.SITE)
+  -- if $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_ob_start_allowed(S[.TODO = (CONFIG_INVOKE pobcreation.CALL) :: ptask_tail*])
+def $ob_creation_task_valid(S, pobcreation) = false -- otherwise
+def $call_task_valid(S, OB_START_CREATED pobcreation) = $ob_creation_task_valid(S, pobcreation)
+def $call_task_valid(S, OB_START_FAILED pobcreation) = $ob_creation_task_valid(S, pobcreation)
+def $task_nodes(OB_START_CREATED pobcreation) = $config_nodes(pobcreation.CALL) ++ $value_nodes(pobcreation.VALUE)
+def $task_nodes(OB_START_FAILED pobcreation) = $config_nodes(pobcreation.CALL)
+def $selected_task_nonce(OB_START_CREATED pobcreation) = pobcreation.CALL.SELECTION
+def $selected_task_nonce(OB_START_FAILED pobcreation) = pobcreation.CALL.SELECTION
+def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.TODO = (OB_START_CREATED pobcreation) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ob_creation_ready(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags])
+  -- if ~$ob_user_running(S)
+  -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
+  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER $ob_creation_producer(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE)}
+rule PhpStep/ob-start-created-free: S ~> S[.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*]
+  -- if S.TODO = (OB_START_CREATED pobcreation) :: ptask_tail*
+  -- if $call_task_valid(S, OB_START_CREATED pobcreation)
+rule PhpStep/ob-start-failed-notice: S ~> $ob_notice_with_creation(S, pobcreation.CALL, PBOOL false, false, false, eps, (pobcreation))
+  -- if S.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*
+  -- if $call_task_valid(S, OB_START_FAILED pobcreation)
+;; zend_vm_stack_free_args uses zval_ptr_dtor_nogc, unlike the zoh destructor.
+def $gc_operation_temporary_extra(S, S_next, OB_NOTICE_RESULT pobnotice, pnode_slots*) = pgctemporary*
+  -- if pobnotice.CREATION = (pobcreation)
+  -- if $ob_notice_valid(S, pobnotice)
+  -- if pgctemporary* = $gc_binary_temp_receipt(KNOWN pobcreation.VALUE)
+  -- if $gc_binary_temp_slots(pgctemporary*, pnode_slots*)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.SOURCE = OB_NOTICE_RESULT pobnotice
+  -- if pdestructionoperation.VALUE = KNOWN (PBOOL false)
+  -- if pobnotice.CREATION = (pobcreation)
+  -- if pobnotice.CALL = pobcreation.CALL /\ pobnotice.VALUE = PBOOL false
+  -- if ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps
+  -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $ob_creation_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
+  -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_temporary_bounded(S, pnode)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
   -- if pconfigcall.KIND = INTRINSIC_OB_START /\ $executor_default_start_sent(pconfigcall)
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
@@ -680,7 +802,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
   -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
-  -- if pvalue =/= PNULL
+  -- if pvalue =/= PNULL /\ ~$ob_creation_ready(S, pconfigcall, pvalue_values*)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

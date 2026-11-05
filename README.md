@@ -255,7 +255,7 @@ module/autoload cleanup, uncovered table owners, wider hooks/rendering, reentran
 deactivation, other byte producers and buffered stdout diagnostics remain dependencies.
 [OB06](coverage/semantics/output-executor-post-deactivate-review.json) covers a
 no-argument `ob_start()` from a shutdown-argument destructor after output
-deactivation: the Notice precedes a false result, and no buffer is created.
+deactivation: the Notice precedes a false result, and no buffer is pushed.
 Suppression and selected error handlers retain their native output order.
 [OB07](coverage/semantics/output-executor-retval-review.json) covers a direct
 returned-object destructor during normal post-deactivation cleanup. It runs
@@ -265,7 +265,12 @@ emits the built-in Notice and returns false before the outer handler resumes.
 now uses ordinary named/unpacked argument binding and scalar conversion before
 the inactive-output failure. Default/NULL callbacks emit the Notice and return
 false without pushing a buffer, including during cleanup of a Notice handler's
-returned object. Callback creation and active handler-body reentry remain partial.
+returned object. [Late callable creation](coverage/semantics/output-executor-creation-review.json)
+now resolves admitted pure callbacks after conversion without invoking them.
+Its transient handler owner releases before the Notice; normal argument cleanup
+then preserves callback, captured-cell and receiver destructor timing before the
+caller observes false. A Notice handler changing a referenced selector does not
+repeat lookup. Invalid/effectful creation and active handler-body reentry remain partial.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

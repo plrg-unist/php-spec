@@ -884,7 +884,17 @@ deprecations and type/count errors precede callback creation. NULL/default
 callbacks then emit E_NOTICE and return false without pushing a buffer,
 including in the authenticated destructor of a Notice handler's returned object.
 Private and actual2257 composition strict433, author17 and independent4
-source/request contexts and scoped reached checks pass at the recorded cuts. Non-NULL creation, active handler-body reentry, deprecation-handler returned-object
+source/request contexts and scoped reached checks pass at the recorded cuts.
+OB10 adds pure callable creation after conversion, with no callback invocation
+or buffer push. Its transient owner releases before the Notice, while ordinary
+argument ownership preserves temporary invokable/array receivers, captured
+Closure cells, bound method receivers and caught-throw cleanup. Selection survives
+Notice-time reference mutation; earlier conversion-handler mutation affects lookup.
+Consumed Closure metadata uses borrowed source certificates and owns nothing.
+The VM argument's root decrement skips GC candidate buffering; array children
+still use ordinary cleanup. The source and reached checks retain their separate
+cuts in the [creation review](coverage/semantics/output-executor-creation-review.json).
+Invalid/effectful creation, active handler-body reentry, deprecation-handler returned-object
 starts, allocation failure/memory limits and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
 [general reception review](coverage/semantics/output-executor-reception-review.json).
