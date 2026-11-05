@@ -108,11 +108,13 @@ def $magic_named_source(S, pmagicmethodcall) = true
   -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
   -- if $magic_named_sources(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0)
 def $magic_named_source(S, pmagicmethodcall) = false -- otherwise
+dec $magic_method_value(pstate, pvalue) : bool
 dec $magic_named_capture_argument(pstate, phpType7) : bool
 def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if $lookup(S.ENV, $base64(text)) = (n)
   -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ ~(n <- S.REFCELLS)
-  -- if S.STORE[n] = DEFINED (PINT i)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $magic_method_value(S, pvalue)
 def $magic_named_capture_argument(S, NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if ~$call_reference_variable(expression)
 def $magic_named_capture_argument(S, phpType7) = false -- otherwise
@@ -171,7 +173,6 @@ def $magic_method_caller(S, pmagicmethodcall) = true
   -- if ~$instance_storage_freeing(S, pmagicmethodcall.OBJECT)
 def $magic_method_caller(S, pmagicmethodcall) = false -- otherwise
 
-dec $magic_method_value(pstate, pvalue) : bool
 dec $magic_method_argument_capture(pstate, phpType7) : bool
 def $magic_method_argument_capture(S, NArg ABSENT (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if $lookup(S.ENV, $base64(text)) = (n)

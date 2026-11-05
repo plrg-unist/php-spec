@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-named-first-object-buffer-last-owner",
+      "source": "<?php\nclass Payload194 { public function __construct(public string $tag) {} public function __destruct() { echo 'PAY-', $this->tag, ';'; } }\nfunction shift194() { global $owner, $payload; $owner = null; $payload = new Payload194('NEW'); echo 'SHIFT;'; return 9; }\nclass Base194 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { echo $name, '|', $arguments['first']->tag, '|', $arguments['later'], '|', self::secret(), '|', self::class, '|', static::class, '|', __METHOD__, ';'; $child = new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo 'CHILD;'; } }; unset($arguments); $child->saved = []; echo 'BUFFER;'; return $child; } public function __destruct() { echo 'OWNER;'; } }\nclass Derived194 extends Base194 {}\n$owner = new Derived194; $payload = new Payload194('OLD'); $child = $owner->MiSsInG(first: $payload, later: shift194()); echo 'RETURN;'; unset($payload); echo 'HELD;', $child->saved === [], ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "1ba7875d8c89a0c69a440cd71f1c18802ea88411a42bb798fea5298d0684cf43",
+      "stdout_template_base64": "U0hJRlQ7TWlTc0luR3xPTER8OXxQUklWQVRFfEJhc2UxOTR8RGVyaXZlZDE5NHxCYXNlMTk0OjpfX2NhbGw7QlVGRkVSO1BBWS1PTEQ7T1dORVI7UkVUVVJOO1BBWS1ORVc7SEVMRDsxO0NISUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
