@@ -703,6 +703,16 @@ cover entry provenance, trace owners and shutdown. Wider producer/collection and
 bailout contexts remain partial.
 [Receive-failure review](../../coverage/semantics/generator-call-receive-review.json).
 
+I108 extends copied real and fake `Closure::call` creation to the existing ARRAY
+argument-list collector. Canonical RAW separates newThis from forwarded arguments
+and retains positional-before-named order across distinct packs. Completed pack
+rows authenticate frozen values without owning the retired arrays; prepared
+references remain distinct from caller aliases changed by a warning. Generated
+inner-name Errors retain raw API arguments and leave the hidden copy's receiver
+live through shutdown. Computed method names, Traversable packs and wider
+lifecycle combinations remain partial.
+[Packed-call review](../../coverage/semantics/generator-call-array-pack-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

@@ -1,0 +1,44 @@
+{
+  "milestone": "I108 ARRAY-packed copied Generator Closure::call",
+  "status": "Independently accepted: five exact original source agreements and one reached ownership/reference-resumption gate; wider core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64; php-src 34308a6666b2d489c509541ea9befea9e2b42348; baseline profile, LC_ALL=C, TZ=UTC, one heavy runner",
+  "scope": "Existing ARRAY-list collection now reaches copied real Closure and fake user-method Generators. Captured newThis, canonical positional/named RAW, default holes, copied ALIAS values and deferred inner-name errors survive source-array retirement. Reference warnings prepare fresh cells after callbacks; raw Error traces and hidden-copy cleanup use the existing API lifetimes.",
+  "rules": "Modules182/428 admit packed copy sites, select named entry from captured RAW keys and authenticate completed pack rows against the reconstructed frozen collection view after prepared references replace SENT. Reconstructed ERROR must match the saved error. Erased pack receipts reject before the old partial source-key helper. No new state field or owner root is introduced.",
+  "engine": "zend_closures.c::ZEND_METHOD(Closure, call) binds newThis and positional/named extras, then creates the Generator Closure copy before zend_call_function. zend_vm_def.h::ZEND_SEND_UNPACK has a fresh have_named_params for each pack. zend_execute_API.c::zend_call_function forwards positional storage before named_params, warns before wrapping fresh references and reports a later duplicate named parameter after the positional warning.",
+  "validation": {
+    "author_sources": {
+      "report": "../php-spec-evidence-archive/generator-call-array-pack-108/author-source-4f016c4/report.json",
+      "sha256": "fce34a48cdc8239442533ca9ed22ec0c21a1b4e1d1215841e0b6670ddc5bbbba",
+      "revision": "4f016c493b727cf24087976a6dcfc84658abc3ae",
+      "result": "Two original native/model normal stdout, stderr and exits agree exactly: real positional pack after source/receiver/pack CV retirement; fake named newThis/second followed by a separate positional pack. Model240/process260, stable HEAD/inputs."
+    },
+    "independent_sources": {
+      "report": "../php-spec-evidence-archive/generator-call-array-pack-108/peer-sources-328/report.json",
+      "sha256": "28f2cf314ab354e1d18851233b7a948d3cb080f89d818615f741934d103cf072",
+      "revision": "d5d4e6aeb074d0a7d03c459b6ca7c6a30ea909c0",
+      "result": "Two original native/model normal stdout, stderr and exits agree exactly: captured real named-newThis/multipack ALIAS snapshot with warning-time source retirement and caller-cell replacement; fake positional reference Warning before deferred duplicate-name Error with raw API trace, cancelled assignment and late copied receiver release. Model600/process620, stable HEAD/inputs."
+    },
+    "independent_named_holes": {
+      "report": "../php-spec-evidence-archive/generator-call-array-pack-108/peer-source-hole-306/report.json",
+      "sha256": "382c262e8932a5bfa7b61f2a1297f4a87516dc515dd4b0b47bcddf4e5f8f11f9",
+      "revision": "3df02c605645cd9c817d32b6b42d9ed028b4414b",
+      "result": "One tiny original native/model normal stdout, stderr and exit agree exactly. Named third77 leaves first11/second22 as defaults, discriminating actual named entry; current yields the selected newThis and getReturn108 succeeds. Final production guards, stable HEAD/inputs."
+    },
+    "independent_reached": {
+      "report": "../php-spec-evidence-archive/generator-call-array-pack-108/peer-state-306/report.json",
+      "sha256": "2261b23a0b7afd8e478e381a44abf49562cfb172f58e8952202679445f4fa096",
+      "revision": "3df02c605645cd9c817d32b6b42d9ed028b4414b",
+      "result": "84 custom/89 reported true premises, exit0, empty stderr, no timeout; full 435-module SL. Two retired nonowning pack histories, canonical RAW/SENT, caller alias41 versus captured Token, copy/source/old/newThis/capture/Token owner counts, malformed ERROR/PACKS/order/items/raw/source/receiver refusal, budget0 identity, handler restoration and fresh detached-reference handoff. The first reached run passes at the final production guards."
+    }
+  },
+  "compiler": "All source and reached gates load the full 435-module SL manifest through elaboration, algorithmic checks and structuring with matching local tools. Named-hole source and independent reached gates include the final production guards; no separate repeated compilation campaign was needed.",
+  "composition": "Source cuts precede the final erased-receipt guard, which only rejects malformed empty PACKS on a packed source. The successful cuts all retain nonempty PACKS, so this guard does not change those paths. The ERROR equality strengthening is exercised by the independent source cut; the author successes have the same empty saved/replayed error. Documentation and inventory edits do not renew execution credit.",
+  "preserved_zero": "The unchanged-model representative at ed358b3eb returned checked Unsupported: Generator Closure::call source or argument form. Report ../php-spec-evidence-archive/generator-call-array-pack-108/author-baseline-ed358b3/report.json, SHA574d9c9767b30c851ac6dc3f00d794a9ff91cc89caad67a3eda50003bd463306. It is not semantic agreement. The unrun duplicate author reached draft is external and supplies no validation credit.",
+  "remaining": "Computed method names, Traversable packs, wider receivers/signatures/producers, Fiber/GC and broader cleanup combinations remain partial. This cut does not close Generator, Fiber, Closure or full PHP core coverage.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_call_array_pack_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_array_pack_review_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_array_pack_review_state.py"
+  ],
+  "independent_review": "Replacement Generator/Fiber reviewer accepted final rules4f016c493+3287035cd+30612ecc8 after static source analysis, three independent native/model originals and the bounded84/89 state gate. The review-only malformed-state counterexample was corrected statically, then its final rejection executed; no earlier malformed execution is claimed."
+}

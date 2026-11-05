@@ -217,6 +217,17 @@ close and shutdown; reached checks cover fake terminal owners and the real
 captured-copy handoff. No production rule changes.
 [Normal cleanup review](../../coverage/semantics/generator-call-cleanup-return-review.json).
 
+I108 admits the existing ARRAY argument-list collector to copied real and fake
+Generator calls. Its nonowning pack rows authenticate the original frozen values
+after source arrays retire and forwarded reference cells replace SENT. Inner
+named entry follows canonical RAW keys, including names delivered inside packs;
+each pack retains its own positional-order check. A warning can clear all source
+CVs without changing the pending value, and a later duplicate inner name still
+throws after the earlier reference warning. Erased, reordered and altered pack
+rows are rejected before partial source-key helpers. Computed method names,
+Traversable packs and wider lifecycle combinations remain partial.
+[Packed-call review](../../coverage/semantics/generator-call-array-pack-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

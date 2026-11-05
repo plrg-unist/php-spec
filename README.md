@@ -7477,6 +7477,14 @@ independent reached checks confirm the real handoff and fake terminal owners.
 The existing rules suffice for this selected case.
 [Normal cleanup review](coverage/semantics/generator-call-cleanup-return-review.json).
 
+ARRAY-packed `Closure::call` now also creates real and fake user Generators.
+Saved pack history preserves the selected receiver and canonical positional/named
+arguments after source arrays retire. Reference warnings wrap frozen values in
+fresh cells; later caller writes stay separate. A warning can precede a deferred
+inner duplicate-name Error. The [packed-call review](coverage/semantics/generator-call-array-pack-review.json)
+records the source and ownership checks; computed method names, Traversable
+packs and wider lifecycle combinations remain partial.
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

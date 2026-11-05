@@ -902,6 +902,9 @@ test-semantics: build
 	python3 tests/semantics/generator_call_cleanup_return_sources.py
 	python3 tests/semantics/generator_call_cleanup_return_state.py
 	python3 tests/semantics/generator_call_cleanup_return_review_state.py
+	python3 tests/semantics/generator_call_array_pack_sources.py
+	python3 tests/semantics/generator_call_array_pack_review_sources.py
+	python3 tests/semantics/generator_call_array_pack_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

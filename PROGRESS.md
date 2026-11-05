@@ -205,6 +205,16 @@ fixture error and timed-out full peer retain zero credit; wider Fiber, GC and
 warning cleanup remain partial.
 [I107 review](coverage/semantics/generator-call-cleanup-return-review.json).
 
+I108 admits ARRAY-packed real and fake Generator `Closure::call` through the
+existing collector. Retired source arrays leave nonowning authenticated history;
+canonical RAW selects named entry and freezes values through reference warnings.
+The saved value gets a fresh cell despite caller-alias replacement, and deferred
+inner duplicate-name errors retain warning priority and raw API traces. Five
+original source agreements and independent 84/89 ownership/reference-resumption
+checks pass with the full 435-module SL manifest at their recorded cuts. Computed
+method names, Traversable packs and wider lifecycles remain partial.
+[I108 review](coverage/semantics/generator-call-array-pack-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -1379,9 +1389,9 @@ wider rejected-source prefixes remain partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS182 | Anonymous child factories inside method-owned Closures and arrows; private implementation/review. |
-| I108 | ARRAY-packed real/fake Generator `Closure::call`; private implementation/review. |
-| GC40 | Two-entry WeakMap release with a sole-owned Child value and methodless leaf; source-reached tests and independent callback checks. |
-| COMP178 | Rejected multiproperty brace cutoff and completed-header retention; source/main/reached validation and independent review. |
+| I109 | Native Generator method named/ARRAY-packed argument reception; private implementation/review. |
+| GC41 | Finite-entry WeakMap release generalization; private implementation/review. |
+| COMP179 | Rejected-only constant-attribute validation; private source/service checks and independent review. |
 | OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
 | ATTR28 | Source-derived switch tick plans, fallthrough and final-value cleanup; private implementation/review. |
 | Enum callable arrays | Embedded reference members and stable first-SEND selection; private implementation/review. |
