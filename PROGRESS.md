@@ -1254,6 +1254,20 @@ controls pass at one cut. The mistaken native control missing `const` remains
 separate; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
 [Review](coverage/semantics/rejected-constant-modifier-review.json).
 
+COMP176 checks rejected trait-use alias modifiers at the named and unnamed
+foreign reductions, retaining earlier encoding headers but cutting off later
+ones for readonly and asymmetric-set flags. Six method-target flags still allow
+later parsing; a missing semicolon stops in the foreign grammar with the same
+empty later prefix. Native diagnostics retain their own message and alias-end
+line. Thirty-eight dynamic and four main originals, 73 service controls, 108
+reached conditions/SL435 and affected constant42/method37 controls pass at
+their recorded cuts. The preliminary relative-path and multiline-line fixture
+failures and an interrupted unwatchable-`cases.json` run have zero credit;
+corrected authoritative campaigns hash their expectations. Accepted parser,
+native helper, schema, adapter and P4 interfaces are unchanged. Broader
+rejected-source prefixes remain partial.
+[Review](coverage/semantics/rejected-trait-alias-modifier-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |

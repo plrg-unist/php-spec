@@ -1,0 +1,45 @@
+{
+  "milestone": "COMP176",
+  "status": "Candidate gates passed; independent exact review pending.",
+  "base": "ac50423d74d98a7ff0afed2906ea6491b8dd923a",
+  "branch": "semantics/trait-alias-rejected-176",
+  "commits": {
+    "production": "f10f3eb6a",
+    "tests": "ddef08e22"
+  },
+  "raw_root": "../php-spec-evidence-archive/comp176",
+  "behavior": "Rejected eval, opened-file and main units stop at invalid trait-use alias modifiers before later encoding headers. Named and unnamed aliases use the Zend method-target flag set: public/protected/private, static, abstract and final continue; readonly and public/protected/private(set) stop. Completed earlier method/attribute headers remain. Earlier nonliteral encoding and grammar errors retain priority. Native CompileError message and alias-end line are taken from the native reply, never the foreign parser stop.",
+  "implementation": "RejectedHeaderParser wraps pinned PHP-Parser rules 372/373 after checking their arities and uses the single modifier semantic value; the original callbacks still build the foreign alias. Missing-semicolon inputs fail in the foreign grammar before these wrappers but retain the same empty later-header prefix. Ordinary aliases, reserved-name aliases and precedence use their unchanged reductions. Accepted parsing, native helper, worker/adapter/schema and authored P4 rules are unchanged.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_language_parser.y::trait_alias",
+    "vendor/php-src/Zend/zend_compile.c::zend_modifier_token_to_flag",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php::rules372/373",
+    "frontend/RejectedHeaderParser.php"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; source include_path=.:; reached startup reporting30719/0",
+    "environment": {"LC_ALL": "C", "TZ": "UTC"}
+  },
+  "validation": {
+    "run_head": "ac50423d74d98a7ff0afed2906ea6491b8dd923a",
+    "identity": "All passing reports fingerprint their inputs before and after execution; production and test bytes were committed afterward without edits. The corrected source/main wrappers watch cases.json as well as fixture hashes and files. Commit-byte bridge is in commit-bridge-v1/report.json.",
+    "service": {"controls": 73, "report": "service-v3/report.json", "sha256": "78889e27a03ba29de8c8c5ff831e50a39d8d1f577400dbb47421d874f5301a8a", "scope": "38 exact worker responses; 24 generated valid method-flag named/unnamed controls; two native trait-host responses; nine direct foreign/ordinary parser controls. Original parser acceptance, named/unnamed aliases, precedence, missing semicolon and method/constant context stay distinct."},
+    "dynamic_sources": {"agreements": 38, "report": "sources-v2/report.json", "sha256": "484d9a0be1754c0d71bd5289437b55a957a46484f3907834c064677a20350c4c", "scope": "19 eval and 19 opened-file originals; native/model raw stdout and stderr, structured normal result and exit0 are exact. Earlier header, attribute, nonliteral, grammar, multiline, missing semicolon and valid modifier controls are included."},
+    "main_sources": {"agreements": 4, "report": "main-v1/report.json", "sha256": "99b8bc12237c0fc7a03247a099a56359038f4dc88433feceea76efe91e71343d", "scope": "Default-profile rejected main-file warning/fatal prefixes, native exit255 and modeled structured php_error exit255 agree at zero VM steps."},
+    "reached": {"premises": 108, "modules": 435, "report": "reached-v1/report.json", "sha256": "b197b707c9885aacd86836c141833dd1188c1a6b3e6fb63824d61795cfc56481", "scope": "Genuine earlier-header eval receipt; native message/line/source identity, exact PDEXIT PCSREJECT and failed-source record, no source/code/declaration/binding installation, free-handle reuse, reporting masks, catch/finally, zero-budget continuation and wrong-unit/bytes/replay refusal. Strict SL returns true with empty stderr."},
+    "affected": [
+      {"controls": 42, "report": "affected-constant-v1/report.json", "sha256": "de6af2f13d05259e2f833e0ea902a4027dd13e0d1918d546628910e96440a799"},
+      {"controls": 37, "report": "affected-method-v1/report.json", "sha256": "419a3e06aa5816210b64cd997cff068cf590beb2a29bf4507fc902869b13c2d0"}
+    ],
+    "independent_reserved_alias": "reviewer-reserved-v1/report.json; fbb848c6dcfa8e007aaaf98856f8190537980f4540f0dc6025e17813e75340d5"
+  },
+  "zero_credit": [
+    "probe-native-v1/report.json: 0/38 provisional matches because expected file paths were relative; this was a fixture error, not semantic evidence.",
+    "probe-native-v2/report.json: 36/38 provisional matches; two multiline rows expected the modifier line, while native reports the alias end line. Corrected before the authoritative source run.",
+    "sources-v1/report.json: interrupted after 18 complete rows when the expectation manifest lacked cases.json. The 19th row is interrupted; the entire packet has zero acceptance credit. Child processes were reaped."
+  ],
+  "limits": "Trusted native parser receipts are explicit foreign facts, not a derivation from source bytes. The missing-semicolon forms have the same prefix but do not exercise the new callback. This parser-phase result does not establish full trait composition, broader rejected-source prefixes, multibyte conversion, portability or full core coverage. No held route was approached."
+}
