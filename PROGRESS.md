@@ -144,14 +144,19 @@ and independent parked-cache169 states pass at f34d1214a. Original failures
 retain zero credit. Receive/callback/mapping errors and wider calls remain
 partial. [I93 review](coverage/semantics/generator-call-reference-review.json).
 
-I94 adds fake user-method Generator Closure::call copies with exact declaring-class
-receivers and authentic retired source selection. Method statics stay shared;
-existing API/reference/result tasks preserve the copy and receiver through CLOSED
-and release the copy before the cache. Four native/source originals and private433
-pass at distinct cuts; five reached fronts pass 633 custom/658 reported checks.
-Original Unsupported, ARRAY dispatch and fixture prefix failures keep zero credit.
-Wider call/receiver and abrupt receive contexts remain partial; actual-tail
-integration is pending. [I94 review](coverage/semantics/generator-fake-call-copy-review.json).
+I94–I98 cover fake user-method Generator Closure::call copies, finite bound
+source histories and distinct dynamic/folded string policies. Fake copies keep
+shared method statics and exact declaring-class receivers; normal/abrupt binding
+warnings release actual API owners in native order. Existing reference-warning
+cursors also survive Fiber suspension in handlers and owning retval destructors.
+Each milestone retains its original native/source/reached cuts and failures;
+current composition review and actual-tail validation are pending. Wider
+call/receiver/signature, mapping, no-Gen receive and abrupt warning contexts remain
+partial. Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
+[I95](coverage/semantics/generator-fake-string-call-review.json),
+[I96](coverage/semantics/generator-folded-string-call-review.json),
+[I97](coverage/semantics/generator-call-warning-fiber-review.json) and
+[I98](coverage/semantics/generator-call-warning-retval-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -866,7 +871,7 @@ their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| I94 | Fake user-method Generator Closure::call copies independently reviewed at the original private cut; current composition and actual-tail validation pending. |
+| I94–I98 | Preserved Generator call-copy, source-history, binding cleanup and Fiber-warning milestones; combined current composition review and actual-tail validation pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

@@ -7127,14 +7127,21 @@ cache169 states pass at f34d1214a. Receive/mapping errors, callback throws and
 wider calls remain partial.
 [Reference-call review](coverage/semantics/generator-call-reference-review.json).
 
-I94 gives admitted fake user-method Generator Closure::call calls an authentic
-copied binding on an exact declaring-class receiver. Method statics stay shared;
-the old callable and receiver are nonowning selection history after retirement.
-Existing API/result cleanup and Generator/Fiber rules retain the copy through
-CLOSED and release it before the cache. Native4/source4/private433 retain distinct cuts;
-five reached fronts pass 633 custom/658 reported checks. Wider binding/call forms and
-receive errors remain partial.
-[Fake-copy review](coverage/semantics/generator-fake-call-copy-review.json).
+I94–I98 extend admitted Generator Closure::call behavior to fake user methods
+with exact declaring-class receivers, shared method statics and finite retired
+source histories. Dynamic nonstatic method strings keep their conversion Error;
+folded literal and caller-aware API captures retain their distinct permissions.
+Binding-warning cleanup releases actual API owners in native order. Existing
+copied-reference warning cursors retain argument snapshots and copy ownership
+through Fiber suspension in handlers and owning retval destructors. Each review
+keeps its original native/source/reached cuts and zero-credit failures; combined
+current-tail validation is pending. Wider call/receiver/signature and abrupt
+warning or no-Generator receive contexts remain partial.
+Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
+[I95](coverage/semantics/generator-fake-string-call-review.json),
+[I96](coverage/semantics/generator-folded-string-call-review.json),
+[I97](coverage/semantics/generator-call-warning-fiber-review.json) and
+[I98](coverage/semantics/generator-call-warning-retval-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
