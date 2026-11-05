@@ -142,10 +142,16 @@ S_raw.CLOSURECALLRETAINED = eps
 S_raw.ERRORHANDLER.CALLBACK = eps
 S_raw.EVENTS = S.EVENTS
 S_changed = $literal_reference_debt_step(S, $sensitive_trace_freeze($source_exception_transition(S, $throwable_transition(S, S_raw))))
+S_changed.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_receiver) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_receiver) :: S_raw.TODO
+S_changed.DESTRUCTION.RELEASES = pdestructionrelease_receiver :: S_raw.DESTRUCTION.RELEASES
+pdestructionoperation_receiver.SOURCE = EXIT_UNWIND 29
+pdestructionoperation_receiver.COMPLETION = NORMAL
+pdestructionoperation_receiver.PENDING = eps
+(HOBJECT n_child) <- $destruction_job_nodes(pdestructionrelease_receiver.JOBS)
 H_changed = $heap_graph(S_changed)
 $heap_valid(H_changed)
 $heap_owners(H_changed, HOBJECT n_return) = 1
-$heap_owners(H_changed, HOBJECT n_child) = 1
+$heap_owners(H_changed, HOBJECT n_child) = 2
 $heap_owners(H_changed, HOBJECT n_after) = 1
 $call_descriptors_valid(S_changed)
 S_pause = $drive(S, 0)
