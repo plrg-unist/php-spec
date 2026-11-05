@@ -1015,7 +1015,7 @@ alias43 checks. Named/unpacked forms remain partial. Engine routes are
 `zend_compile_args`, VM `ZEND_SEND_VAR`/`ZEND_SEND_VAR_EX` and
 `ext/standard/type.c:PHP_FUNCTION(is_callable)`.
 For a live two-entry variable array, the first SEND records its actual array ID
-and selected name without owning a second copy. Direct class-string members
+and borrowed member history without owning a second copy. Direct class-string members
 retain raw spelling; a case receiver uses its enum's canonical class name.
 The sent array stays owned while later arguments or the old output destructor
 rebind the source CV. A shared input/output cell receives the name after its
@@ -1080,11 +1080,21 @@ selection and throwing argument cleanup use the existing owners. In particular,
 a last temporary array releases an ordinary child held in its reference cell
 before catch, without writing the skipped name/result. The
 [temporary-array review](../../coverage/semantics/enum-is-callable-temporary-array-review.json)
-records the separate source and reached cuts. First-SEND members must already
-name a published enum receiver and a string method; initially malformed or
-non-enum members that later become valid remain Unsupported. Source routes
+records the separate source and reached cuts. Source routes
 include `Zend/zend_vm_def.h:ZEND_SEND_VAL` and `ZEND_SEND_VAR` for returned VAR
 and ordinary CV operands.
+Capture now records genuine slots independently of whether their initial values
+form a callable. Its label uses saved bytes or cached case metadata and never
+resolves a class name; invocation alone admits the current receiver and method.
+Old objects or array children in referenced members can be destroyed during
+argument evaluation while their borrowed history remains valid. Type-invalid
+current pairs return false and the name `Array` before syntax-only lookup;
+output destruction may repair those cells without changing that saved result.
+After the C handler returns, argument-child destruction sees the committed name
+and an unassigned result, with no `is_callable` trace frame. The
+[initial-member review](../../coverage/semantics/enum-is-callable-initial-members-review.json)
+records these source and ownership cuts. Wrong length or missing keys, typed
+member cells and wider non-enum lookup/lifetime contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

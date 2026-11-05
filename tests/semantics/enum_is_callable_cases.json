@@ -1030,5 +1030,68 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "true|labelcheck::cases|",
     "purpose": "An initially unknown class string in a shared receiver cell changes to a published enum spelling without an early class lookup."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-receiver-object-drop",
+    "source": "<?php\nenum LabelCheck { case A; }\nclass EarlyDrop { public function __destruct() { global $method; echo 'EARLY|'; $method = 'cases'; } }\nfunction change() { global $receiver; $receiver = LabelCheck::class; return false; }\n$receiver = new EarlyDrop; $method = 'missing'; $target = [&$receiver, &$method]; $name = 'OLD';\n$ok = is_callable($target, change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, ':', $method, '|';\n",
+    "source_sha256": "37f4135154db23e7c3fdf265fe4e4b9efc7ac5f9222c01f9691cd2953bb76cd8",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "EARLY|true|LabelCheck::cases:cases|",
+    "purpose": "A referenced ordinary receiver is destroyed by argument evaluation before query admission; its retired metadata adds no owner and the repaired enum receiver is read live."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-method-object-drop",
+    "source": "<?php\nenum LabelCheck { case A; }\nenum OtherLabel { case B; }\nclass EarlyDrop { public function __destruct() { global $receiver; echo 'EARLY|'; $receiver = OtherLabel::B; } }\nfunction change() { global $method; $method = 'cases'; return false; }\n$receiver = LabelCheck::class; $method = new EarlyDrop; $name = 'OLD';\n$ok = is_callable([&$receiver, &$method], change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, ':', $method, '|';\n",
+    "source_sha256": "6bcc3021c60ac322bd905790fc85ede74fdf68c3b66f61687dd49977673459b7",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "EARLY|true|OtherLabel::cases:cases|",
+    "purpose": "An initially owning method reference releases its old object before querying the repaired enum-case receiver and method."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-method-array-child-drop",
+    "source": "<?php\nenum LabelCheck { case A; }\nenum OtherLabel { case B; }\nclass EarlyDrop { public function __destruct() { global $receiver; echo 'EARLY|'; $receiver = OtherLabel::B; } }\nfunction change() { global $method; $method = 'cases'; return false; }\n$receiver = LabelCheck::class; $method = [new EarlyDrop]; $name = 'OLD';\n$ok = is_callable([&$receiver, &$method], change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, ':', $method, '|';\n",
+    "source_sha256": "e4a48dbeafc163d77db4d438e2905cff921a22156feda665b54870d795353e59",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "EARLY|true|OtherLabel::cases:cases|",
+    "purpose": "An old method array and its child retire before invocation while the saved first-SEND metadata remains valid and nonowning."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-owned-history-output-throw",
+    "source": "<?php\nenum LabelCheck { case A; }\nclass EarlyDrop { public function __destruct() { echo 'EARLY|'; } }\nclass OutputDrop { public function __destruct() { global $name, $method; echo $name === null ? 'null|' : 'BAD|'; $method = 'cases'; throw new Exception('drop'); } }\nfunction produce() { global $receiver, $method; return [&$receiver, &$method]; }\nfunction change() { global $method; $method = 'missing'; return false; }\n$receiver = 'labelcheck'; $method = new EarlyDrop; $name = new OutputDrop; $ok = 'UNCHANGED';\ntry { $ok = is_callable(produce(), change(), $name); echo 'BAD|'; }\ncatch (Exception $e) { echo 'caught:', $e->getMessage(), '|'; }\necho $name, ':', $ok, ':', $method, '|';\n",
+    "source_sha256": "e5533f2d78d73b63262824563620db9ebda7bbeb7e942261941c29c0e9ae7ebd",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "EARLY|null|caught:drop|labelcheck::missing:UNCHANGED:cases|",
+    "purpose": "Retired owning input history remains nonowning while an output destructor repairs a selected false method and throws; the saved name commits before catch."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-same-cell-both-members",
+    "source": "<?php\nenum SameLabel { case A; public static function SameLabel() { echo 'BODY|'; } }\nfunction change() { global $member; $member = 'SameLabel'; return false; }\n$member = 17; $target = [&$member, &$member]; $name = 'OLD';\n$ok = is_callable($target, change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, ':', $member, '|';\n",
+    "source_sha256": "c8001fbc13b9a028da33226919af8dc8ce55e16f4661931fd013389aae2b7d88",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "true|SameLabel::SameLabel:SameLabel|",
+    "purpose": "Both members may share one initially invalid reference cell; later repair gives a public enum method without executing its body."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-invalid-output-throw-repairs",
+    "source": "<?php\nenum LabelCheck { case A; }\nclass OutputDrop { public function __destruct() { global $name, $receiver, $method; echo $name === null ? 'null|' : 'BAD|'; $receiver = LabelCheck::A; $method = 'cases'; throw new Exception('drop'); } }\n$receiver = LabelCheck::class; $method = 17; $name = new OutputDrop; $ok = 'UNCHANGED';\ntry { $ok = is_callable([&$receiver, &$method], true, $name); echo 'BAD|'; }\ncatch (Exception $e) { echo 'caught:', $e->getMessage(), '|'; }\necho $name, ':', $ok, ':', $method, '|';\n",
+    "source_sha256": "2ea43ab73a80f616d10ebeb5aa13b9d77611ddad2f70bff73bb7da53422c8810",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|caught:drop|Array:UNCHANGED:cases|",
+    "purpose": "False and Array remain frozen when output destruction repairs the current invalid method and then throws."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-invalid-direct-argument-throws",
+    "source": "<?php\nenum LabelCheck { case A; }\nclass ArgDrop { public function __destruct() { global $name, $ok; echo 'drop:', $name, ':', $ok, '|'; throw new Exception('argdrop'); } }\n$name = 'OLD'; $ok = 'UNCHANGED';\ntry { $ok = is_callable([LabelCheck::class, [new ArgDrop]], false, $name); echo 'BAD|'; }\ncatch (Exception $e) { $trace = $e->getTrace(); echo $trace[0]['function'], ':'; echo isset($trace[1]) ? $trace[1]['function'] : 'NOAPI'; echo '|'; }\necho $name, ':', $ok, '|';\n",
+    "source_sha256": "c4680b0a326532686a88bce9b928a03d0715de07a554ed1e971b282a18f18a54",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "drop:Array:UNCHANGED|__destruct:NOAPI|Array:UNCHANGED|",
+    "purpose": "A last DIRECT argument child throws after C handler return: Array is committed, the result stays unassigned, and the trace has no is_callable frame."
   }
 ]

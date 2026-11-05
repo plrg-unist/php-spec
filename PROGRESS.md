@@ -104,8 +104,15 @@ receipt and invocation snapshot. Actual SEND transfers retain the table without
 an extra pin; argument throws release a last referenced child before catch and
 skip output/result assignment. Nine originals agree; the
 [temporary-array review](coverage/semantics/enum-is-callable-temporary-array-review.json)
-records source-bound transfer/owner/resumption checks. Initially invalid
-members that become valid only during later arguments remain Unsupported.
+records source-bound transfer/owner/resumption checks.
+First-SEND capture now accepts initially invalid untyped members and defers
+callable admission until invocation. Borrowed old object/array history survives
+its actual retirement without adding owners or resolving class names. Current
+type-invalid pairs return false/`Array`, including syntax-only queries; output
+repair/throw preserves that selection, and argument cleanup runs after the
+handler with the result still unassigned. Sixteen originals agree at recorded
+cuts, with independent history178 and focused55/37 checks in the
+[initial-member review](coverage/semantics/enum-is-callable-initial-members-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt member cells, named/unpacked output,
@@ -1533,7 +1540,7 @@ wider rejected-source/compiler behavior remains partial.
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
 | ATTR30 | Match-expression tick compilation and selected-arm effects; private implementation/review. |
-| Enum callable arrays | First-SEND capture of initially invalid reference members; private investigation/review. |
+| Enum callable arrays | Wrong-length and missing-key third-output arrays; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

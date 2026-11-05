@@ -7115,6 +7115,11 @@ Literal and expression-produced arrays, including reference returns, use the
 same receipt with normal SEND owner transfer and argument-throw cleanup;
 the [temporary-array review](coverage/semantics/enum-is-callable-temporary-array-review.json)
 records nine originals and the transfer checks.
+Reference members may now become valid during later arguments; the receipt
+does not resolve class names or retain retired old payloads. Invalid current
+types return false/`Array`, preserving that result through repair and cleanup;
+the [initial-member review](coverage/semantics/enum-is-callable-initial-members-review.json)
+records the bounded source and owner checks.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt reference members, wider arrays and autoload,
