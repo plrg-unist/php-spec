@@ -196,9 +196,9 @@ def $anonymous_method_factory_members(statement*) = false -- otherwise
 dec $anonymous_only_anonymous_classes(pcoccurrence*) : bool
 dec $anonymous_method_closure_body(pcnode) : nat?
 def $anonymous_method_closure_body(NExprClosure (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN false) phpType16 (SEQUENCE phpType22*) phpType18 (SEQUENCE statement*) metadata) = (6)
-  -- if $anonymous_constructor_parameters(phpType16) /\ ~$generator_statements(statement*)
+  -- if $anonymous_constructor_parameters(phpType16)
 def $anonymous_method_closure_body(NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN false) phpType16 phpType18 expression metadata) = (5)
-  -- if $anonymous_constructor_parameters(phpType16) /\ ~$generator_syntax(expression)
+  -- if $anonymous_constructor_parameters(phpType16)
 def $anonymous_method_closure_body(pcnode) = eps -- otherwise
 dec $anonymous_owner_deferred_scope(pcnode) : bool
 def $anonymous_owner_deferred_scope(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true

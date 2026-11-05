@@ -1,0 +1,64 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "generator-closure-closed-owner",
+      "source": "<?php\nclass Base186Owner { public const VALUE = 1; }\nclass Owner186Owner extends Base186Owner { public const VALUE = 2; public function capture() { return function() { yield 'PAUSE'; yield new class(parent::VALUE, self::VALUE, static::VALUE, __CLASS__, __FUNCTION__, __METHOD__) { public function __construct(public int $parent, public int $self, public int $called, public string $owner, public string $function, public string $method) {} }; }; } public function __destruct() { echo 'DROP;'; } }\nclass Child186Owner extends Owner186Owner { public const VALUE = 3; }\n$owner = new Child186Owner; $factory = $owner->capture(); $g = $factory(); unset($owner, $factory); echo 'CREATED;', $g->current(), ';'; $g->next(); $child = $g->current(); echo $child->parent, ';', $child->self, ';', $child->called, ';', $child->owner, ';', $child->function, ';', $child->method, ';', $child::class, ';'; $g->next(); echo 'CLOSED;'; unset($g); echo 'AFTER;';\n",
+      "source_sha256": "c013a2f89b82253b4263cce922040cb5c1251f5564e3af040e45e65394ee3073",
+      "stdout_template_base64": "Q1JFQVRFRDtQQVVTRTsxOzI7MztPd25lcjE4Nk93bmVyO3tjbG9zdXJlOk93bmVyMTg2T3duZXI6OmNhcHR1cmUoKTozfTt7Y2xvc3VyZTpPd25lcjE4Nk93bmVyOjpjYXB0dXJlKCk6M307Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDA7Q0xPU0VEO0RST1A7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "generator-trait-arrow-consumers",
+      "source": "<?php\ntrait T186Arrow { public function capture() { return fn() => yield new class(self::VALUE, static::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $self, public int $called, public string $owner, public string $method) {} }; } }\nclass A186Arrow { use T186Arrow; public const VALUE = 1; } class B186Arrow { use T186Arrow; public const VALUE = 2; } class C186Arrow extends A186Arrow { public const VALUE = 3; }\n$a = new C186Arrow; $b = new B186Arrow; $fa = $a->capture(); $fb = $b->capture(); $ga = $fa(); $gb = $fb(); unset($a, $b, $fa, $fb); $y = $gb->current(); $x = $ga->current(); $after = new class {}; echo $x->self, ':', $x->called, ':', $x->owner, ':', $x->method, ';', $y->self, ':', $y->called, ':', $y->owner, ':', $y->method, ';', ($x::class === $y::class), ';', $x::class, ';', $after::class, ';';\n",
+      "source_sha256": "72f4e36850cac497cda0e0b89cd234256bddaff1325b2b534f0616a9de42a8bd",
+      "stdout_template_base64": "MTozOkExODZBcnJvdzp7Y2xvc3VyZTpUMTg2QXJyb3c6OmNhcHR1cmUoKToyfTsyOjI6QjE4NkFycm93OntjbG9zdXJlOlQxODZBcnJvdzo6Y2FwdHVyZSgpOjJ9OzE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-owner-static-generator-closure",
+      "source": "<?php\n$owner = new class { public function capture() { return static function() { yield new class(__CLASS__, __METHOD__) { public function __construct(public string $owner, public string $method) {} }; }; } public function __destruct() { echo 'OWNER-DROP;'; } };\n$factory = $owner->capture(); $g = $factory(); unset($owner, $factory); $child = $g->current(); $after = new class {}; echo $child->owner, ';', $child->method, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "91fe0a3a6b19b8d4cc2afeff8c3e2aed837703585584e6991cc94b4d216e63bd",
+      "stdout_template_base64": "T1dORVItRFJPUDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDt7Y2xvc3VyZTpjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDo6Y2FwdHVyZSgpOjJ9O2NsYXNzQGFub255bW91cwB7RklMRX06MiQxO2NsYXNzQGFub255bW91cwB7RklMRX06MyQyOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "generator-closure-return-type-before-child-warning",
+      "source": "<?php\n$owner = new class { public function capture() { return function(): int { yield new class { final private function hidden() {} }; }; } };\necho 'BAD;';\n",
+      "source_sha256": "e79818ef3104dc4fa0952bfd39b4a53e83d8c451aa7c0f652d32e0d75747e562",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEdlbmVyYXRvciByZXR1cm4gdHlwZSBtdXN0IGJlIGEgc3VwZXJ0eXBlIG9mIEdlbmVyYXRvciwgaW50IGdpdmVuIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "uncalled-generator-trait-arrow-default",
+      "source": "<?php\ntrait T186Default { public function capture() { return static fn() => yield new class { public function bad(int $value = 'wrong') {} }; } }\necho 'BAD;';\n",
+      "source_sha256": "484eb9ab8a19de7b765cb844374bbd3e3dda2197bfe59f7180540705be41e102",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    }
+  ]
+}
