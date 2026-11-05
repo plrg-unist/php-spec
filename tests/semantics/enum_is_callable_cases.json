@@ -1480,5 +1480,23 @@
     "expected_normal_stdout": "array:1:ArrayPrime\\Target::cases|array:1:ArrayPrime\\Target::cases|array:1:ArrayPrime\\Target::cases|string:1:StringPrime\\Target::cases|string:1:StringPrime\\Target::cases|string:1:StringPrime\\Target::cases|warmed|capi:1:CapiPrime\\Target::cases|capi:1:CapiPrime\\Target::cases|end|",
     "model_timeout_seconds": 180,
     "purpose": "Runtime array/string FCC and actual raw CAPI destructor entry initialize source caches independently of query execution; subsequent API captures and clones share those initialized caches after source-capture retirement."
+  },
+  {
+    "id": "enum-is-callable-third-output-method-api-cache-method-init-argument-throw-primes-without-body-entry",
+    "source": "<?php\nnamespace ThrowingINIT;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nfunction failarg() { throw new \\Exception('arguments'); }\nclass Owner {\n    public static function query($install, $run) {\n        if (!$run) { return; }\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\n\ntry { Owner::query(failarg(), true); }\ncatch (\\Exception $e) { echo 'caught|'; }\n$first = \\Closure::fromCallable([Owner::class, 'query']);\n$first(true, true);\nOwner::query(false, true);\n$clone = clone $first;\nunset($first);\n$clone(false, true);\n",
+    "source_sha256": "b4c20e0f06b49e51edad827a12019a4bcfcba338dda195a580fdd64e0f9d0ace",
+    "expected_model": "normal",
+    "expected_normal_stdout": "caught|query:1:ThrowingINIT\\Target::cases|query:1:ThrowingINIT\\Target::cases|query:1:ThrowingINIT\\Target::cases|",
+    "model_timeout_seconds": 150,
+    "purpose": "Actual raw method INIT initializes its source cache before arguments/body independently of query execution; later method API captures/clones share after a throwing argument or a body path that never queried."
+  },
+  {
+    "id": "enum-is-callable-third-output-method-api-cache-method-entry-without-query-primes-from-callable-sharing",
+    "source": "<?php\nnamespace NoQueryEntry;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nfunction failarg() { throw new \\Exception('arguments'); }\nclass Owner {\n    public static function query($install, $run) {\n        if (!$run) { return; }\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\n\nOwner::query(false, false);\n$first = \\Closure::fromCallable([Owner::class, 'query']);\n$second = \\Closure::fromCallable([Owner::class, 'query']);\n$first(true, true);\nOwner::query(false, true);\n$second(false, true);\n$clone = clone $first;\nunset($first);\n$clone(false, true);\n",
+    "source_sha256": "1890b0cd9b4dd161010d54c8c4b799a817a0ef615bf3a82f5b0e9941b3f16119",
+    "expected_model": "normal",
+    "expected_normal_stdout": "query:1:NoQueryEntry\\Target::cases|query:1:NoQueryEntry\\Target::cases|query:1:NoQueryEntry\\Target::cases|query:1:NoQueryEntry\\Target::cases|",
+    "model_timeout_seconds": 150,
+    "purpose": "Actual raw method INIT initializes its source cache before arguments/body independently of query execution; later method API captures/clones share after a throwing argument or a body path that never queried."
   }
 ]

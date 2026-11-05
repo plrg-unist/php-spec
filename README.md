@@ -7278,7 +7278,11 @@ Runtime named-function and direct method first-class captures and plain-function
 `Closure::fromCallable` now retain their INIT/lookup-proven shared cache through
 clones and original retirement. Existing-Closure aliases preserve identity; see
 the [shared-capture review](coverage/semantics/enum-is-callable-shared-capture-cache-review.json).
-Cold method API/constant captures and wider owners remain partial.
+Method `fromCallable` now distinguishes explicit cold/private from initialized/shared
+source caches using actual INIT facts, including argument throws and CAPI entry.
+Clone policy and retired histories preserve that distinction; missing or uncertain
+history stays unknown. See the [method-API cache review](coverage/semantics/enum-is-callable-method-api-cache-review.json).
+Constant/default captures, bound copies and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

@@ -1232,10 +1232,17 @@ history after retirement; parent-stamped clone copies preserve policy, while
 unstamped constant/API parents stay unstamped. Converting an existing Closure
 through FCC or fromCallable preserves identity and creates no stamp. The
 [shared-capture review](../../coverage/semantics/enum-is-callable-shared-capture-cache-review.json)
-records this bounded slice. Cold/initialized method-fromCallable policy needs
-persistent actual INIT facts, including attempted calls that throw before the
-body. Constant/default/static/property method captures, bound/dummy-scope/private
-copies, resumed Generator, internal/Trait/anonymous/Fiber and wider transformed
+records this bounded slice. Method `fromCallable` now uses explicit source-cache
+registration and actual INIT facts, including attempts that throw before body
+entry. Runtime invokable/array/string FCC also records allocation independently
+of capture-query admission; raw CAPI method entry supplies its actual later event.
+Known cold births and private clones have fresh private keys; initialized sources
+share. Initialization/uncertainty boundaries preserve each old capture policy after
+later events, and missing history remains unknown. Existing Closure copies never
+initialize the original raw source cache. See the
+[method-API cache review](../../coverage/semantics/enum-is-callable-method-api-cache-review.json).
+Constant/default/static/property captures, bound/dummy-scope copies, resumed
+Generator, internal/Trait/anonymous/Fiber query owners and wider transformed
 contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written

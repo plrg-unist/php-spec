@@ -1,0 +1,51 @@
+{
+  "scope": "Method-fromCallable cold/private versus initialized/shared source cache identities",
+  "target": "PHP8.5.10 CLI NTS64-bit, pinned local oracle/profile with OPcache CLI disabled",
+  "base_revision": "097c82158b18c9591d4bc564789a5127c71ea6f2",
+  "semantic_revision": "70f50ea54886a2deeb664d1348c6065ae6f20ed0",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "519796aaa23504f11072e2b58436c301cb059d8723f7b9f31eb2634dad54daca",
+    "spec/semantics/40-control.watsup": "198189991b46dc314f7f028f7b557ffdfbe1e1ba71b8de692ba54f36e2ad4291",
+    "spec/semantics/116-closures.watsup": "25508e59e3688bd55a3d3593c5086f311ffe310ec237f47ae85837f6f704232b",
+    "spec/semantics/120-first-class-callables.watsup": "ab9e7b47754852396c85d340f27c261abce1f276d76d299e59b2f624f2785870",
+    "spec/semantics/127-class-runtime.watsup": "e01e3f12e437600bef695ee4a99400859907c3a62b09c6996d5915ea83321fa4",
+    "spec/semantics/142-method-runtime.watsup": "42ee3d9ae79baf6e99b7f70b2c3c05776a08a3faa838cddc03e52e8d8a86669b",
+    "spec/semantics/205-array-callables.watsup": "347835d6ea09c9b4e41283aaa9a32c3c1b65e60fd9eaae9dc0e124991f8e7c47",
+    "spec/semantics/210-class-method-strings.watsup": "d8a8c54af24f3d49135c34838daa199208c56ce2bca193d75348ebf5eeacd729",
+    "spec/semantics/234-from-callable.watsup": "6542791b41c9d083298a963c2081fcb4d275154c5581a1be252a2dbd5193a6c4",
+    "spec/semantics/455-closure-function-caches.watsup": "6fe1e83bf6aed4c1da336eb2a94f3a95ce93fc761b8f4cc0d6c3ccdb5888c025"
+  },
+  "mechanism": "FUNCTIONCACHES records own-method cold publication plus first actual INIT and first uncertainty object-count boundaries. Missing rows are unknown. Birth n is Shared if INIT<=n; otherwise uncertainty<=n is unknown; otherwise only an explicitly registered row proves cold/private. Later events preserve earlier capture policy. Raw opcode INIT precedes PHP arguments and argument throw; runtime direct/invokable/array/string FCC observes actual INIT; authenticated raw CAPI entry records its later allocation. Closure copies do not initialize original source. Eligible-origin/full-function mismatch taints unknown. Inherited aliases never reseed facts.",
+  "capture_policy": "FROMCALLABLECLOSURE immutable function/source/scope facts bind actual API births. Cold births and every private clone get distinct object keys; initialized same-scope captures/clones share. Public Shared history searches a genuine shared capture birth even after an earlier private birth; real template-first policy is unchanged. Unknown source/cache owners remain explicit Unsupported.",
+  "ownership": "The request-state facts and stamp history add no heap roots and are outside saved call contexts. FUNCTION_CACHE_INIT delegates all actual roots to its real nested argument task; target metadata adds none. Actual Closure scope/receiver edges retain receivers, while retired source/cache rows read no captured values. The independent packet checks exact delegated roots, retirement and budgets.",
+  "sources": "Four distinct exact normal originals at recorded final70 bytes: author cold methodAPI (old024 Unsupported preserved), author runtime ARRAY/STRING FCC plus raw destructor-entry source, and frozen peer INIT-argument-throw/no-query-entry originals. Peer compare-v1 pass/stable at reviewer4490. No shared-capture131 or older campaign replay; independent279 state gate also passes.",
+  "strict": "Final strict-v8 passes445,true/exit0/empty stderr/stable13.17s. Recorded097+fingerprinted working diff equals committed70 production; no metadata-only rerun.",
+  "independent": "CLEAR70: original reviewer enum_review peer2 exact/stable CLI at4490; replacement independent enum_state_review completed only remaining state review, with no source reruns. state-v3 passes279/all445,true/exit0/empty stderr/stable/no timeout214.21s. Actual cold registration, raw preargs/argument throw, NEW wrapper validity/delegated graph/zero-one budget, private nonpriming, fresh clones and later Shared history/retirement, inheritance without reseed, real ARRAY/STRING/CAPI transitions, missing/UNKNOWN/full-view mismatch and malformed bounds/scope pass.",
+  "author_reports": {
+    "strict-v1/report.json": "436544c3f66fd341917b5409c70efa8603a7e1f6d840d69d0ee2216b848c48be",
+    "strict-v2/report.json": "9357281c42dc6fa545ac25deaf610eb58f236682e6f6eda69b16ac7360426451",
+    "strict-v3/report.json": "92d74d60c6d7d589e663af12a3e8477f4b64b8964409358f8badd44363e4c640",
+    "strict-v4/report.json": "3d2e1de62ae2c80ef5a706eecb089d27d1537216455da4d100922cc624cb3a63",
+    "strict-v5/report.json": "e796c8ebf2737b01044645095623cc15f13a5a48be602bbbea63dffe0476d098",
+    "strict-v6/report.json": "428e72bbe3df1e338db86c3ae2f7102e686ddf704ac3fa7ad1d8aea41eadf595",
+    "strict-v7/report.json": "df153937b326e2b2c2eb4c6dcd23535b2626115cccfb1243b9315602a8aa182b",
+    "strict-v8/report.json": "c4fbdb5c9d7f332f9d2d3a0d6771af2d417d89562c080bef8d49596c985b82b2",
+    "runtime-fcc-and-capi-source-initialization/native.json": "ed80e986ca091877e6078a2c3dfe560ad2ea8f76065668972b31d458566abc88",
+    "raw/user-string-nfnepcvj/report.json": "8550d5ff915da06f1c0d0eb000414c83f9074c17ed00a8a815ffb197b58e4690",
+    "raw/user-string-7oa2bqul/report.json": "d66521c4e2520a80407af38aba02e16b7b75f85769131710dd2e26099b2c9fb6",
+    "raw/user-string-qr_5s49t/report.json": "5fa92f69a0cb12fe0bba668c96d1092542a80f24cda9afe0c7e14116011acf00",
+    "author-command.json": "106f581071525dc34f3559991aadc51057e72927ac2af75af24f0a0cd130cb5a"
+  },
+  "failure_disposition": "strict-v1..v5 andv7 are preserved elaboration/binding failures, zero credit;v6 passed before event-dispatch correction. First cold API run raw/user-string-qr_5s49t failed with interpreter nondeterminism in optional-boolean observer dispatch. Observer dispatch was rewritten with explicit INIT/COPY/UNKNOWN events and full-view mismatch/unknown-Closure hardening. Affected cold source rerun and new source both pass at70. No failed attempt is relabeled or counted as agreement. Independent state-v1 syntax andv2 empty-iteration elaboration failures are preserved with original fixtures, commands, raw streams and zero credit; correctedv3 passes. No production edit followed semantic freeze70.",
+  "source_authority": "Pinned zend_opcode.c init_op_array starts run_time_cache NULL. Zend VM INIT_METHOD_CALL/INIT_STATIC_METHOD_CALL/NEW initialize user cache before argument evaluation; CALLABLE_CONVERT follows INIT. Actual raw CAPI user-function entry initializes its cache; Closure copies have their own already-allocated cache. Closure::fromCallable method-table lookup creates a fake closure without raw source INIT; zend_create_closure_ex selects private for cold source and fresh cache for HEAP copies, otherwise same-scope initialized cache shares.",
+  "remaining": "Constant/default/static/property method capture birth authority, bound/dummy-scope copies and unproved transformed/captured protocols remain unfinished core. Resumed Generator, Trait/anonymous/Fiber and wider query owners retain explicit fences; their unclassified allocation views cannot prove cold.",
+  "recovery": "Author ../php-spec-evidence-archive/enum-method-api-cache-132/: run_strict.py, strict-v*/command.json/reports, author-command.json, native source and intact raw/. Frozen native cold/no-query/INIT-throw originals remain in enum-capture-cache-review-131; peer final evidence in enum-method-api-cache-review-132. Source selectors: capture-shared-cold-method-from-callable-private-versus-source-and-clones and method-api-cache-. Explicit existing local tool links, no rebuild/portability claim.",
+  "review": "Independent original source/event review and replacement state/metadata/docs/exact source-copy review CLEAR70. No further execution or reread needed.",
+  "peer_reports": {
+    "compare-v1/report.json": "91c84d71f5b9fe30fc23a1040531bf051e9db38d7e8ecf229e4a9326aeb83995",
+    "state-v1/report.json": "48b33d4e79406d0506a4038470ac2383324289034fa6ea82cd063e18eb0c68c4",
+    "state-v2/report.json": "91f37ab8a20739ab3c4af2f8514be79872b90920aef60726fe72609c22f9983d",
+    "state-v3/report.json": "cd1a556a0641b5d13fde1a553bd6db724b0c12cdda8e90b230a2c4c51881714c",
+    "state-review.json": "4ca2b2d387b47bca1235dae0b8301022d2a87afba792b2bcd2677a4f3fc099a9"
+  }
+}

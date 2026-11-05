@@ -164,9 +164,15 @@ records this slice. Runtime named-function and direct method FCC and plain-funct
 Clones preserve that policy after original retirement; existing-Closure FCC/API
 conversions retain the same object and add no birth. The
 [shared-capture review](coverage/semantics/enum-is-callable-shared-capture-cache-review.json)
-records ownership, aliases and the promoted runtime-method control. Cold method
-API/constant/default captures, transformed bound/private copies and Generator/Fiber
-owners remain partial.
+records ownership, aliases and the promoted runtime-method control. Method
+`fromCallable` now distinguishes known cold/private births from initialized/shared
+source caches. Own-method registration, before-argument INIT, runtime FCC and
+authenticated raw CAPI entry supply nonowning facts; missing or uncertain views
+stay unknown. Birth-relative history preserves old private captures and fresh
+private clones after later source initialization and retirement. The
+[method-API cache review](coverage/semantics/enum-is-callable-method-api-cache-review.json)
+records the source/owner/budget cuts. Constant/default captures, transformed bound
+copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1959,7 +1965,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR46 | Authenticated bracketed/unbracketed Namespace Tick placement; native/compiler calibration and private review. |
-| Enum callable arrays | Method fromCallable cache identity from proven cold and actual INIT history; private implementation/review. |
+| Enum callable arrays | Runtime ARRAY/STRING method capture cache identity and clone retirement; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
