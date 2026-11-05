@@ -154,7 +154,8 @@ I100 uses the same raw forwarding cursor for copied value and reference argument
 An unknown or overwritten ordinary named target throws after the successfully
 prepared prefix, retaining the hidden copy before ordered argv/API cleanup.
 The generated Error's trace owns raw argument values until the Error is released;
-it owns neither SOURCE nor the old receiver. Required named holes retain the copy
+it adds no implicit SOURCE or old-receiver owner beyond those arguments.
+Required named holes retain the copy
 at the authentic existing fake-receive failure, preserving default priority and
 callee/API traces. Frame cleanup drops its prepared values before the API cursor
 releases FIRST, RAW and SOURCE. Later receives, default throws and bailout paths

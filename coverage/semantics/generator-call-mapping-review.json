@@ -9,7 +9,7 @@
     "environment": "LC_ALL=C; TZ=UTC; one actor pinned to CPU4"
   },
   "scope": "Ordinary unknown/overwritten named arguments after an owning prepared prefix, and missing required named holes before Generator creation. Real/fake copies keep only This/captures request-late. Generated Error traces own raw arguments until released; SOURCE/oldThis and prepared argv retain separate cleanup.",
-  "representation": "Reuses I99 unique authenticated CLOSURECALLRETAINED rows and all-object Gen history. The abstract request root owns only the copied OBJECT, not SOURCE or API argv; it models hidden native retention, not raw Zend refcount equality. All copied calls use the existing raw forwarding cursor. Required-hole failure uses the existing fake-receive/default/trace machinery, then releases API owners after frame cleanup.",
+  "representation": "Reuses I99 unique authenticated CLOSURECALLRETAINED rows and all-object Gen history. The abstract request root directly roots only the copied OBJECT and adds no SOURCE or API argv roots; it models hidden native retention, not raw Zend refcount equality. All copied calls use the existing raw forwarding cursor. Required-hole failure uses the existing fake-receive/default/trace machinery, then releases API owners after frame cleanup.",
   "changed_modules": [
     "spec/semantics/182-closure-call.watsup",
     "spec/semantics/268-temporary-fake-calls.watsup"
