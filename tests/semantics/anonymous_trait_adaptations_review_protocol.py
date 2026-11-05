@@ -110,7 +110,7 @@ def checks(fixture,filename,case):
   c += [
    'pclassdesc_live.PARENT = eps /\\ pclassdesc_live.INTERFACES = [$ptascii("Probe169I")]',
    '$class_named(S_link.CLASSNAMES,$ptascii("probe169i")) = (porigin_interface)',
-   '$pil_at(S_link.LINKEDINTERFACES,pclassdesc_live.ORIGIN) = (PILTARGETS [PILSOURCE $ptascii("Probe169I") porigin_interface])',
+   '$pil_at(S_link.LINKEDINTERFACES,pclassdesc_live.ORIGIN) = (PILTARGETS ([PILSOURCE $ptascii("Probe169I") porigin_interface]))',
    '$anonymous_interface_targets_valid(S_link,pclassdesc_live)',
    '~$anonymous_new_available(S_link[.LINKEDINTERFACES = S_pre.LINKEDINTERFACES],pclassdesc_live)',
   ]
