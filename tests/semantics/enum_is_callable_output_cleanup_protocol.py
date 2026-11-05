@@ -229,7 +229,8 @@ if __name__ == '__main__':
     ]
     fixture = OUT / 'output-cleanup.watsup'
     fixture.write_text(base.PREFIX + exitcase.PREFIX + PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
-                       + ''.join('  -- if ' + check + '\n' for check in checks))
+                       + ''.join(('  -- ' if check.startswith('PhpStep:') else '  -- if ')
+                                 + check + '\n' for check in checks))
     command = [str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                *map(str, MODULES), str(fixture)]
     result = subprocess.run(command, capture_output=True, timeout=240)
