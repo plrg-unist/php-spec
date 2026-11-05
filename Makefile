@@ -1017,6 +1017,8 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group retained
 	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group throw
 	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group last_owner
+	python3 tests/semantics/enum_is_callable_array_alias_owning_protocol.py --group retained
+	python3 tests/semantics/enum_is_callable_array_alias_owning_protocol.py --group throw
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

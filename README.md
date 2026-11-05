@@ -7048,9 +7048,16 @@ the first SEND, the selected original name overwrites that cell. A retained
 owner keeps the rebound array live; a pre-output throw leaves it and the
 result assignment target untouched. The [array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
 records four exact agreements, one Unsupported owning-object control and five
-separately run reached groups (229 checks).
+separately run reached groups (229 checks) at that historical cut.
+For a rebound array with one ordinary object child, last-owner replacement
+clears the shared cell before destruction, while a separate holder delays the
+destructor until after the selected name is written. A throwing child still
+commits that name before exception transfer. The
+[owning-array review](coverage/semantics/enum-is-callable-array-alias-owning-review.json)
+records three exact agreements, one excluded-builtin control and three separate
+reached groups (200 checks).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
-rebound arrays with owning children, late type
+other owning rebound arrays, late type
 sources, wider array sources (including embedded references) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).

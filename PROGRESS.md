@@ -78,8 +78,15 @@ rebound array and result assignment target untouched. Four exact agreements, one
 Unsupported owning-object control, strict435 and five separate reached groups
 (64+50+53+29+33 checks) pass at recorded cuts.
 [Array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json).
+An exact rebound array with one ordinary childless object follows two owner
+paths: last-owner output clears the shared cell before destruction, while a
+separate holder delays destruction until after the saved name commits. A
+throwing child commits the name before exception transfer without assigning
+the interrupted result target. Three exact agreements, one excluded-builtin
+control, strict435 and three separate reached groups (53+60+87 checks) pass
+at recorded cuts. [Owning-array review](coverage/semantics/enum-is-callable-array-alias-owning-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
-completion/force-close, rebound arrays with owning children, late attached type sources,
+completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, embedded reference members, named/unpacked output,
 loading and wider enum
 member/lifetime contexts remain partial.
