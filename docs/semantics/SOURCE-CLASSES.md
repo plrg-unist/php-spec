@@ -686,8 +686,8 @@ positional originals admit zero sends or the existing one/two-send family:
 integer literals, an initialized nonreference integer/ordinary-object first CV,
 nullary named producers and no-ctor named `new`, with supported int/leaf-instance
 values. Objects require actual `node_children(...)=eps`; primitive fields are
-admitted. Mixed instance sends may keep that positional object before a named
-later argument; explicitly named first CVs retain their integer bound. A later
+admitted. Instance sends admit a positional or explicitly named first object CV,
+including a positional object before a named later argument. A later
 argument may change the caller's CV and receiver binding while the earlier send
 stays fixed. The trampoline then supplies the real name/array pair. With no sends,
 Zend supplies `ZVAL_EMPTY_ARRAY`; the model represents that empty value by an
@@ -699,7 +699,10 @@ The parameter CV owns that array; its historical target metadata adds no payload
 owner. Instance magic retains its actual receiver and lexical/called classes;
 static magic invents no receiver. A returned child may retain a payload or the
 actual array after magic-local/receiver cleanup. These source/ownership extensions
-reuse the existing [magic-call consumers](SOURCE-METHODS.md). Array/string and
+reuse the existing [magic-call consumers](SOURCE-METHODS.md). Named-only calls
+share the parameter table with the actual retained named buffer: releasing the
+parameter and child copies leaves that buffer as the last table/payload owner
+until return cleanup, before receiver release. Array/string and
 reference first CVs, wider object graphs and unproved producer/layout combinations remain visible
 unfinished core boundaries rather than new dispatch rules.
 
@@ -774,7 +777,8 @@ ledgers preserve their historical scopes and source/state evidence. The
 [property magic](../../coverage/semantics/anonymous-property-magic-factories-review.json)
 [argument magic](../../coverage/semantics/anonymous-magic-argument-factories-review.json)
 [zero-send magic](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
-and [object-CV magic](../../coverage/semantics/anonymous-object-cv-magic-review.json)
+[object-CV magic](../../coverage/semantics/anonymous-object-cv-magic-review.json)
+and [named object-CV magic](../../coverage/semantics/anonymous-named-object-cv-magic-review.json)
 reviews distinguish exact originals, genuine reached ownership/resumption,
 explicitly derived context refusals and native-only preparations.
 

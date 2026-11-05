@@ -5262,11 +5262,13 @@ packed array and lexical/called scope after later arguments change caller bindin
 Returned children may retain payloads/arrays after receiver cleanup. Zero-send
 calls use the same selected source and ordinary method frame, with the real
 name and immutable empty array parameters, with no first-argument read.
-An initialized nonreference first positional CV may hold an integer or an
-admitted ordinary leaf object; it keeps its original value through later
-rebinding. Existing instance mixed sends retain a positional object before a
-named later argument. Arrays/strings/reference CVs, explicitly named first object
-CVs and wider producer/header forms remain partial.
+An initialized nonreference first CV may hold an integer or an admitted ordinary
+leaf object, retaining its original value through later rebinding. Instance calls
+allow positional, mixed and explicitly named first object sends. Named-only calls
+share the real argument table with its retained named buffer; parameter/copy
+release leaves buffer ownership until return cleanup, before receiver release.
+Arrays/strings/reference CVs, static named calls and wider producer/header forms
+remain partial.
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
@@ -5277,7 +5279,8 @@ Trait magic declarations remain partial.
 [property magic](coverage/semantics/anonymous-property-magic-factories-review.json)
 [argument magic](coverage/semantics/anonymous-magic-argument-factories-review.json)
 [zero-send magic](coverage/semantics/anonymous-zero-argument-magic-review.json)
-and [object-CV magic](coverage/semantics/anonymous-object-cv-magic-review.json) reviews.
+[object-CV magic](coverage/semantics/anonymous-object-cv-magic-review.json)
+and [named object-CV magic](coverage/semantics/anonymous-named-object-cv-magic-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

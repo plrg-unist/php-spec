@@ -22,10 +22,11 @@ callbacks that clear the receiver CV and change the live RHS.
 
 The admitted byvalue nongenerator `__call`/`__callStatic` bodies may also compile
 source-owned anonymous child factories. Plain headers and the current argument
-producer/value bounds remain intact. A nonreference first positional CV may
-contain an integer or supported live ordinary leaf object. It is read by value
-before later arguments rebind the CV or clear the receiver. Mixed instance calls
-may retain this positional object before a named later send. The real packed
+producer/value bounds remain intact. A nonreference first CV may contain an
+integer or supported live ordinary leaf object. It is read by value before later
+arguments rebind the CV or clear the receiver. Object sends retain the same
+object identity, with shared fields. Instance calls admit positional,
+mixed and explicitly named first object sends. The real packed
 array owns leaf payloads through entry and may survive
 through a returned child's field or an escaped Closure. Instance receiver and
 static lexical/called scope remain actual saved context. The
@@ -35,6 +36,14 @@ separate from out-of-domain design attempts and retained boundaries. The
 [object-CV review](../../coverage/semantics/anonymous-object-cv-magic-review.json)
 promotes the two preserved original sources at a new cut and checks actual first
 CV/array ownership after caller rebinding, return and receiver retirement.
+For named-only instance calls, the actual argument table and retained named buffer
+share one array identity, with separate holders and one table edge per payload.
+The saved named-result marker owns that buffer and receiver; the current receiver
+borrows this hold. Parameter/child-copy release can leave the buffer as the sole
+table owner, retaining an original object through return. Buffer payload cleanup
+then precedes receiver cleanup while the cached result stays protected. The
+[named object-CV review](../../coverage/semantics/anonymous-named-object-cv-magic-review.json)
+binds those actual owners and release order.
 
 Zero-send instance/static calls now authenticate the same source, selected target
 and plain header without reading a first argument. Their raw zero-argument task
@@ -46,8 +55,8 @@ the collector graph. A write retains the ordinary COW separation rule.
 Instance receiver cleanup and static lexical/called scope keep their existing
 rules. The [zero-send review](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
 binds actual packing, empty-array ownership and budget-resumption checks.
-Array/string/reference first CVs, explicitly named first object CVs and wider
-producers remain unfinished consumer work; no generic dispatch, schema or header
+Array/string/reference first CVs, static named sends, unpacking and wider
+producers remain outside this extension; no generic dispatch, schema or header
 rule changes.
 
 For the sole argument-array cases, compiled-local cleanup retires the array and

@@ -1743,11 +1743,10 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
-CLASS191–193 admit anonymous factories in ordinary byvalue nongenerator `__call`
+CLASS191–194 admit anonymous factories in ordinary byvalue nongenerator `__call`
 and `__callStatic` bodies under their existing plain headers and argument
 consumers. Captured scalar/ordinary leaf-object sends stay fixed through later
-CV/receiver mutation;
-real packed arrays and actual lexical/called scope preserve child/payload ownership
+CV/receiver mutation; real packed arrays and actual lexical/called scope preserve child/payload ownership
 after return and receiver cleanup. The
 [review](coverage/semantics/anonymous-magic-argument-factories-review.json)
 separates exact admitted originals, one real frame/array ownership front and
@@ -1756,10 +1755,13 @@ the real name and immutable empty array parameters, with actual ownership and bu
 checks in the [zero-send review](coverage/semantics/anonymous-zero-argument-magic-review.json).
 The [object-CV review](coverage/semantics/anonymous-object-cv-magic-review.json)
 promotes byte-exact original191 sources and tracks real captured-object owners;
-mixed instance sends retain a positional object before a named later send. Old
-Unsupported cuts keep zero credit. Array/string/reference first CVs, explicitly
-named first object CVs, Trait, reference/generator, attributes and wider
-producer/dispatch scope remain partial.
+instance sends retain positional, mixed or explicitly named first object CVs.
+Named-only argument tables share the real retained buffer, which can remain the
+last payload owner through return before receiver cleanup; the
+[named-CV review](coverage/semantics/anonymous-named-object-cv-magic-review.json)
+tracks this source/ownership slice. Old Unsupported cuts keep zero credit.
+Array/string/reference first CVs, static named sends, Trait, reference/generator,
+attributes and wider producer/dispatch scope remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -2020,7 +2022,6 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS194 | Explicitly named first ordinary-object CV in existing instance magic calls; private implementation/review. |
 | I117 | Direct named-Generator SEND body-Throwable unwind and receiver/argument cleanup; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |

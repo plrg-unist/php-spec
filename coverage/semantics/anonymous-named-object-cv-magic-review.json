@@ -1,0 +1,87 @@
+{
+  "scope": "CLASS194: explicitly named first initialized nonreference ordinary leaf-object CVs in existing1\u20132send instance magic consumers. Actual allnamed argument table/named-buffer sharing, copies and return/receiver retirement; static named/unpack/refCV/array/string/widergraph/header/source forms remain separate.",
+  "base": "399b086f2889ca3d5e5d6419797bbb5627f0c5e0",
+  "implementation_commit": "3786f8f3a2e41d0887910c9f24ecafa6a4d99aa8",
+  "module_count": 445,
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h ZEND_SEND_VAR/_EX ZVAL_COPY_DEREF takes the original object before later arguments rebind its CV.",
+    "ZEND_CALL_TRAMPOLINE preserves extra_named_params; with no positional sends it retains that table for actual arg2, sharing with the named buffer. zend_leave_helper frees extra_named_params before releasing This; zend_execute.c zend_free_extra_named_params drops its table owner."
+  ],
+  "mechanism": "Only414 named-first CV guard uses existing magic_method_value (PINT/live nonfreeing ordinary INSTANCE with node_children=eps), preserving allocated/nonreference cell and exact source/header checks. Its declaration moves earlier. Existing named send, pack/shared-table/result-marker and cleanup protocols supply ownership. No415/schema/allocator/header/producer or generic dispatch edit.",
+  "author": {
+    "source1": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class194-named-object-cv-magic/author/class180-source-7vb7gmgl/report.json",
+      "sha256": "0ed2932d37cae500545af6504c7cbb216a72e23f113876c01c4d771f20bb944a",
+      "result": "Exact/native/model/stable, explicit240s/outer250. Later producer replaces rootCV with NEW/clears receiver; body copies allnamed args into child, unsets formal and clears child.saved. Buffer retains OLD until return, OLD destructor precedes This, cached child survives, NEW retires later beforeHELD."
+    },
+    "SL445": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class194-named-object-cv-magic/author/closure-call-protocol-y9dxxijt/report.json",
+      "sha256": "cf3553bd17328635df09890d78e1d11cbc8baebc848dc562ce92227633584739",
+      "result": "Final76 TRUE/exit0/empty stderr/stable. Actual BUFFER statement has n_arguments=n_named and tableowner1\u2192OLD1 after parameter/child-copy release. Current receiver/context roots are empty; saved NAMED_RESULT owns [table,This]. Child has only its cleared immutable empty array, rootNEW remains separate. Full/split2+4096=4098 exact/native output/state, all runtime owners retire and GCstatevalid.",
+      "counts": {
+        "compiler_setup": 5,
+        "genuine_buffer_alias_copy_release_receiver_budget_retirement": 69,
+        "derived_buffer_identity_and_called_class_refusals": 2
+      }
+    },
+    "commands": [
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_named_object_cv_magic_cases.json --model-timeout 240",
+      "python3 tests/semantics/anonymous_named_object_cv_magic_protocol.py"
+    ]
+  },
+  "preserved_zero_credit": {
+    "reports": [
+      "/home/user/workspace/php-spec-evidence-archive/class194-named-object-cv-magic/author/closure-call-protocol-g6msyaha/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/class194-named-object-cv-magic/author/closure-call-protocol-0qhc0lre/report.json"
+    ],
+    "reason": "Two fixture parser failures from missing parentheses around SEQUENCE list argument; no compiled/runtime premise credit. Only grouping corrected to existing maintained spelling, production unchanged."
+  },
+  "independent_review": {
+    "decision": "accepted_private",
+    "semantic_cut": "3786f8f3a2e41d0887910c9f24ecafa6a4d99aa8",
+    "record": "coverage/semantics/anonymous-named-object-cv-magic-independent.json",
+    "source2": {
+      "report_sha256": "e628ddfb895ba9cbe6622c829cef78d56da90d3931799566b32c01784230ecf2",
+      "result": "Retained allnamed array/private Base-C and anonymousowner/staticClosure originals exact/native/model/stable, explicit300s/no timeout."
+    },
+    "SL445": {
+      "report_sha256": "b429ea8710d2888b6e3080be42134e86e3dd494572aa3e286dc339ac05b84abb",
+      "result": "First attempt RETURN\u2192HELD107 TRUE/exit0/empty stderr/stable. Actual allnamed sharedtable OLD/rootreferenceNEW; markerowns[table,This], CurrentThis borrows. Multiple return holders become sole child.savedarray\u2192OLD atHELD after marker/receiver/NEW cleanup. Full/split2+8192=8194 exact/native output/state/allfinalretirement/GCvalid.",
+      "counts": {
+        "compiler_setup": 5,
+        "genuine_shared_table_marker_array_capture_receiver_budget_retirement": 100,
+        "derived_refusals": 2
+      }
+    },
+    "notes": "No independent fixture failure, semantic defect, timeout or engine divergence; compact independent record owns exact external paths/commands."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class194-named-object-cv-magic/author",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/class194-named-object-cv-magic/author/reports.json",
+    "provenance": "/home/user/workspace/php-spec-evidence-archive/class194-named-object-cv-magic/author/provenance.json",
+    "recovery": "Use committed catalogue/renderer and recorded commands in a provisioned private root; native/model commands/exits/outputs, failed/current fixtures and executed binary/module fingerprints remain external. No193/history replay."
+  },
+  "engine_divergence": "None identified; no production/state repair.",
+  "summary": {
+    "distinct_original_agreements": 3,
+    "semantic_cut": "Singlefixed3786f8f3a; author1+peer2.",
+    "author_SL445": {
+      "compiler_setup": 5,
+      "genuine_runtime": 69,
+      "derived_refusals": 2
+    },
+    "independent_SL445": {
+      "compiler_setup": 5,
+      "genuine_runtime": 100,
+      "derived_refusals": 2
+    },
+    "remaining": "Static named/unpacked/reference/array/string first values and wider source/header/objectgraph forms remain separate; no193/history replay.",
+    "zero_credit": "Two author fixture parser failures only; no production correction or semantic divergence."
+  }
+}
