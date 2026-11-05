@@ -91,6 +91,17 @@ $generator_capture_saved(S_copy, n_copy)
 $getter_capture_live(S_copy, n_copy)
 $call_descriptors_valid(S_copy)
 $heap_valid($heap_graph(S_copy))
+pconfigcall.SITE = PORIGIN n_unit pcpath_bind
+pcpath_bound = [PCFIELD 0, PCINDEX 15, PCFIELD 0, PCINDEX 1]
+porigin_bound = PORIGIN n_unit pcpath_bound
+$origin_node(S.SOURCES, porigin_bound) = (NExprFuncCall (NExprVariable (BYTES text_bound) metadata_name) (SEQUENCE phpType7*) metadata_call)
+$base64(text_bound) = $ptascii("bound")
+$code_at(S.CODE, n_unit) = (pcode)
+$code_expression(pcode.EXPRESSIONS, pcpath_bound) = ((z_bound, false))
+pgettercall = {SITE porigin_bound, RECEIVER n_receiver, BASE "Generator", METHOD GENERATOR_API_METHOD "send", CAPTURE (n_copy), INDEX 0, SENT eps, LINE z_bound}
+S_cursor = S_copy[.ORIGIN = (porigin_bound)]
+$getter_selected(S_cursor, pgettercall)
+~$getter_call_valid(S_cursor, pgettercall)
 S_history = S_copy[.ALLOCATIONS = $destruction_node_delete($destruction_node_delete(S_copy.ALLOCATIONS, HOBJECT n_source), HOBJECT n_old)]
 $bound_fake_valid(S_history, n_copy)
 $generator_capture_saved(S_history, n_copy)
