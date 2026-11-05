@@ -46,5 +46,17 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i110-peer-unused-cache-supplied-throw",
+    "purpose": "An ignored nullsafe owning CURRENT retires the receiver despite a cached Token destructor throwing a supplied Exception. A fresh destructor probe sees only destructor/caller frames; original identity/trace/Previous and both weak deaths survive to catch.",
+    "source": "<?php\nclass Token110T {\n    function __destruct() {\n        global $weakGenerator, $weakToken, $stop;\n        echo 'DTOR|', $weakGenerator->get() instanceof Generator, '|', $weakToken->get() === $this, '|';\n        $probe = new Exception('probe110T'); $trace = $probe->getTrace();\n        echo 'TRACE|', $trace[0]['function'] === '__destruct', '|', $trace[0]['class'] === 'Token110T', '|', $trace[0]['type'] === '->', '|', $trace[1]['function'] === 'run110T', '|', !isset($trace[2]), '|';\n        unset($trace, $probe);\n        throw $stop;\n    }\n}\nfunction stream110T() {\n    global $weakToken;\n    try { $token = new Token110T(); $weakToken = WeakReference::create($token); yield $token; }\n    finally { echo 'FIN|'; }\n}\nfunction make110T() { global $weakGenerator; $generator = stream110T(); $weakGenerator = WeakReference::create($generator); return $generator; }\nfunction run110T() { echo 'RUN|'; make110T()?->current(); echo 'BAD-RETURN|'; }\n$stop = new Exception('stop110T');\necho 'CALL|';\ntry { run110T(); echo 'BAD-CALLER|'; }\ncatch (Throwable $caught) {\n    $trace = $caught->getTrace();\n    echo 'CATCH|', $caught === $stop, '|', $caught->getPrevious() === null, '|', !isset($trace[0]), '|', $weakGenerator->get() === null, '|', $weakToken->get() === null, '|';\n}\necho 'DONE|';\n",
+    "source_sha256": "b31b76f8c5d97407dca8bf9f042c9114d5509adbba6259fa9638537503145236",
+    "native_exit": 0,
+    "native_stdout": "CALL|RUN|FIN|DTOR|1|1|TRACE|1|1|1|1|1|CATCH|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]

@@ -59,7 +59,9 @@ values through receiver retirement. An ignored owning zero-argument `current`,
 `key` or `getReturn` result releases its temporary before the receiver; the
 Generator cache/return still owns the value through storage cleanup. Used results
 retain their caller copy. Independent CURRENT sources distinguish both lifetime
-orders, including an ordinary empty-pack call through Module447.
+orders, including an ordinary empty-pack call through Module447. A supplied
+cache-destructor exception keeps its identity and caller trace, and receiver
+retirement completes before catch.
 [Nullsafe review](../../coverage/semantics/generator-nullsafe-method-review.json).
 
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend

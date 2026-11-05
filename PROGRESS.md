@@ -254,7 +254,8 @@ receiver/argument protocol. NULL skips named-CV reception and spread producers;
 nonnull calls preserve their selected receiver, copied values and method-result
 handoff. Ignored owning zero-argument getter copies release before the receiver,
 while used copies survive. Source checks distinguish cache-destructor weak
-liveness and actual empty-pack normalization. Six unique originals agree, one
+liveness, supplied cache-destructor throws and actual empty-pack normalization.
+Seven unique originals agree, one
 Unsupported assertion earns zero agreement, and the 83/88 ownership gate passes
 with the full 436-module SL manifest. Earlier mismatches retain zero credit.
 Dynamic names, Traversable inputs, wider delegation and lifetimes remain partial.
