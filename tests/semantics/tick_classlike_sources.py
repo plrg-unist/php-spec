@@ -46,24 +46,12 @@ echo "Z";
 ''', b'TT[18]7CTZT'),
 }
 
-# Controls pair source bytes with the expected model prefix, not native output.
-CONTROLS = {
-    'enum-case-emission-remains-an-explicit-dependency': (b'''<?php
-function t(){echo "T";}
-register_tick_function("t");
-declare(ticks=1);
-enum TickCases39 { case A; }
-echo "Z";
-''', b''),
-}
-
-
 def main(cases=CASES, producer=Path(__file__), controls=None):
     previous = ticks.fingerprint
     ticks.fingerprint = lambda: {**previous(), **{
         str(path.relative_to(ticks.ROOT)): ticks.sha(path) for path in [Path(__file__), producer]}}
     ticks.CASES = cases
-    ticks.CONTROLS = CONTROLS if controls is None else controls
+    ticks.CONTROLS = controls or {}
     ticks.STATUSES = {name: 'normal' for name in cases}
     ticks.EXITS = {name: 0 for name in cases}
     ticks.main()
