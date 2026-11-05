@@ -91,6 +91,24 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
                 'beginTokenPos' => $begin, 'closeLine' => $close->line,
                 'closeTokenPos' => $self->tokenPos, 'items' => $self->semValue];
         };
+        // Anonymous class modifiers reject before constructor arguments/body.
+        // Match the NEW terminal, not a statement-list value beginning there.
+        if ($this->ruleToLength[221] !== 2 || $this->reduceCallbacks[221] !== null) {
+            throw new RuntimeException('Class entry reduction contract changed');
+        }
+        $this->reduceCallbacks[221] = static function (self $self, int $stackPos): void {
+            $self->semValue = $self->semStack[$stackPos - 1];
+            if ($self->tokens[$self->tokenStartStack[$stackPos]]->id !== T_CLASS) {
+                throw new RuntimeException('Class entry reduction lost its class token');
+            }
+            $new = $self->tokenStartStack[$stackPos - 3] ?? null;
+            if (($self->semValue & (PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL))
+                && $new !== null && $new >= 0 && $self->tokens[$new]->id === T_NEW
+                && $self->tokenEndStack[$stackPos - 3] === $new
+                && $self->semStack[$stackPos - 3] === $self->tokens[$new]->text) {
+                throw new PhpParser\Error('Invalid modifier for anonymous class');
+            }
+        };
         // Methods/constants share this reduction before parameters/initializers.
         // Their actual lookahead selects the target-specific flag set.
         if ($this->ruleToLength[384] !== 1 || $this->reduceCallbacks[384] !== null) {
