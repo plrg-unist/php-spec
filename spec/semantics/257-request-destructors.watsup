@@ -132,7 +132,6 @@ dec $destructor_call_valid(pstate, pdestructorcall) : bool
 dec $destructor_call_live(pstate, pdestructorcall) : bool
 dec $destructor_enter_valid(pstate, pdestructorcall) : bool
 dec $destructor_result_valid(pstate, pdestructorcall) : bool
-dec $destructor_c_return_source(ptask*, pdestructorcall) : bool
 dec $destructor_c_return_valid(pstate, pdestructorcall) : bool
 dec $destructor_c_frame(pstate) : pdestructorcall?
 dec $destructor_c_frame_restore(pstate, pstate) : pstate
@@ -514,10 +513,13 @@ def $destructor_enter_valid(S, pdestructorcall) = false -- otherwise
 def $destructor_result_valid(S, pdestructorcall) = $destructor_call_valid(S, pdestructorcall)
 def $call_task_valid(S, DESTRUCTOR_ENTER pdestructorcall) = $destructor_enter_valid(S, pdestructorcall)
 def $call_task_valid(S, DESTRUCTOR_RESULT pdestructorcall) = $destructor_result_valid(S, pdestructorcall)
-def $destructor_c_return_source((DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructorcall) = true
-def $destructor_c_return_source(ptask :: ptask_tail*, pdestructorcall) = $destructor_c_return_source(ptask_tail*, pdestructorcall) -- otherwise
-def $destructor_c_return_source(eps, pdestructorcall) = false
-def $destructor_c_return_valid(S, pdestructorcall) = (~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ $destructor_result_valid(S, pdestructorcall) /\ $destructor_c_return_source(S.TODO, pdestructorcall))
+def $destructor_c_return_valid(S, pdestructorcall) = true
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if $destructor_call_tail(S.TODO, pdestructorcall) = (ptask_tail*)
+  -- if $source_operand_suffix(S.TODO, DESTRUCTOR_C_RETURN pdestructorcall, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*)
+def $destructor_c_return_valid(S, pdestructorcall) = false -- otherwise
 def $call_task_valid(S, DESTRUCTOR_C_RETURN pdestructorcall) = $destructor_c_return_valid(S, pdestructorcall)
 def $task_nodes(DESTRUCTOR_ENTER pdestructorcall) = [HOBJECT pdestructorcall.OBJECT, HOBJECT pdestructorcall.OBJECT]
 def $task_nodes(DESTRUCTOR_RESULT pdestructorcall) = [HOBJECT pdestructorcall.OBJECT]
