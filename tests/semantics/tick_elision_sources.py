@@ -7,6 +7,7 @@ import tick_sources as ticks
 
 CASES = {
     'logical-bool-redirect-cv-and-switch-free': (b'<?php function t(){echo "T";}$flag=1;register_tick_function("t");declare(ticks=1){echo "P";true && $flag;switch(true && $flag){case true:echo "A";break;default:echo "B";}echo "Z";}unregister_tick_function("t");', b'PTTATTZT'),
+    'redirect-retains-effect-outside-selected-cv': (b'<?php function t(){echo "T";}$flag=1;register_tick_function("t");declare(ticks=1){echo "P";(print "L") && $flag;echo "Z";}unregister_tick_function("t");', b'PTLTZT'),
     'shorthand-compiles-runtime-unselected-body': (b'<?php function t(){echo "T";}register_tick_function("t");declare(ticks=0){$value=true ?: (static function(){declare(ticks=2);return 0;})();echo "Z";echo "W";}', b'ZTW'),
 }
 
