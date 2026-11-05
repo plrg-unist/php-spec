@@ -11,7 +11,9 @@
     "author_retained_boundary": "23ddf07b5254d8278d0dfe6037f2f7e7f4a64e64",
     "author_incoming_boundary": "bf53a702417c4e4f67863af47cc505b79d5cf6da",
     "independent_source_reached": "5bc588c69c2fd09f7c9e2b897906b557e1e73b78",
-    "independent_throw": "6f113ff1c76a3899334e0cd8237a1e5693ed0f0a"
+    "independent_throw": "6f113ff1c76a3899334e0cd8237a1e5693ed0f0a",
+    "actual_parent": "a44e735b0974c90edd47e5506be8c6ff717e767c",
+    "joined_read_only_review": "9cc9572f6fecc4cfbbd1a829fb08725b494162da"
   },
   "rule_basis": "The singleton Map free rule releases the GC37-authenticated one-public-untyped-declared-slot Value with one sole-owned childless destructor Child. It unregisters its live leaf Key and transfers the Value owner before Child cleanup. The Map storage pin keeps Map weak get live while Value weak get is null in Child callback. The new arm requires no incoming Map-key registration; its fallback is the old leaf-Value policy, and replacement/foreach predicates are unchanged.",
   "counts": {
@@ -70,6 +72,6 @@
   "zero_credit": "Master238 Map-first baseline Unsupported is zero. The first incoming-Map draft used an inadmissible stdClass outer Value and stopped before B|; its report is archived with zero boundary credit. The first author reached fixture asserted Key allocation at full shutdown and is zero. Independent Child fixture binding failures and final-Key endpoint mistake are zero; initial08e peer passes are superseded by final-f0 cuts.",
   "limits": "One singleton Map without incoming Map-key registrations, one live leaf stdClass Key, one GC37 methodless Value with exactly one direct public untyped declared sole-owned childless destructor Child, ordinary Map-first free. Extra owners/fields, incoming Map notification, field-bearing Value replacement, multi-entry/shared-key writes, reference cells, freeing-object mutation and active-pin collection remain outside this slice.",
   "recovery": "Run gc38_map_first_value_child_sources.py, gc38_map_first_value_child_state.py, gc38_map_first_value_child_boundary.py, gc38_map_first_incoming_key_boundary.py, gc38_peer_map_first_sources.py and gc38_peer_map_first_state.py with the pinned profile and external outputs. Original raw and receipts remain outside Git under ../php-spec-evidence-archive/gc-map-first-value-child-author-38/ and ../php-spec-evidence-archive/gc-map-first-value-peer-38/.",
-  "review": "Independent private semantic/source review pending final exact cut.",
-  "compatibility_bridge": "Actual-parent composition pending; frozen runtime f0 source/reached and affected cuts retain their recorded inputs."
+  "review": "Independent private semantic/source review CLEAR at 37a07ad; exact-parent joined read-only review CLEAR at 9cc9572 on a44e735: clean expected16-file delta, only386 semantic change byte-identical to frozen f0, valid hashes/inventory/diffcheck, and no concrete replay seam.",
+  "compatibility_bridge": "Since base238, parent semantic edits affect named-file CONFIG/INI paths, anonymous classes, enum is_callable array ownership, OB notice pending and terminal EXITED tick cleanup. GC38 uses named user classes, ordinary Map unset, read-only weak gets and a caught Child Exception returning to normal completion; none enters those paths. COMP176 a44 added tests/docs only. Frozen source/reached and affected reports retain their original cuts without replay."
 }
