@@ -1,0 +1,87 @@
+{
+  "milestone": "I112 owning native Generator API capture and invocation",
+  "status": "Independently accepted: six unique exact original normal agreements, three explicit Unsupported assertions with zero agreement, and one 89/94 reached front. Wider core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64, php-src 34308a6666b2d489c509541ea9befea9e2b42348; baseline profile, LC_ALL=C, TZ=UTC; one heavy runner per pair",
+  "scope": "Literal/computed native Generator API first-class captures and fromCallable share existing internal getter Closure storage. The capture owns its Generator after source variables retire; invocation retains that capture and borrows Gen This. All eight API names reuse ordinary count/type/mapping and Generator operations. Normal capture/body/last-owner release and unused owning results are validated; rebinding/call/explicit __invoke are separate Unsupported protocols.",
+  "rules": "New 450 uses GENERATOR_API_METHOD and GENERATOR_CAPTURE tags with GETTERCLOSURE and the existing GETTER_CAPTURE_RESULT task. The existing Closure child edge owns Gen. Selection.CAPTURE is borrowed metadata, so CONFIG and operation root projections omit an extra receiver owner but preserve argument/pending-Throwable roots. Creation proves actual METHOD_PREP/METHOD_NAME source, string and selected receiver. Saved capture/source validation is liveness-independent; active CONFIG/op validation requires live capture and a genuine marker in VM/frame tasks. The finish step drops an unused owning return while its marker remains, then pops the capture. BORROWED semantics, pgenerator/frame fields, and 257/182/428 remain unchanged.",
+  "engine": "zend_vm_def INIT_DYNAMIC_CALL addrefs the Closure and uses fcc.object as borrowed This without RELEASE_THIS. zend_closure_internal_handler invokes the native method, replaces EX(This) with its Closure and sets RELEASE_THIS. fcall_end releases arguments, then unused retval, then capture. Capture weak notification therefore precedes its Generator child finally; no extra physical Gen receiver owner is added.",
+  "validation": {
+    "literal_apis": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-literal-cf690/report.json",
+      "sha256": "d2570f6a3e8655d82bc0f8d588bf0af3687a495627b26e09d85b0486e19995fc",
+      "revision": "cf690f97b1725c4fdb9fd2112d59c12081103a92",
+      "result": "One exact original normal agreement: all eight literal API captures retain Gen; captured throw(int) fails before initialization with native frame/argument trace, then current/key/valid/rewind/named send/throw/empty-pack next/getReturn work. Dropping all captures retires closed Gen. Model300/process320, exit0/quiet/stable; full 438-module SL."
+    },
+    "factory_and_unused_send": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-factory-send-cf690/report.json",
+      "sha256": "b5e22709523dfd330585c20739821a648ce56179d75b159da15a55b83ebfd38d",
+      "revision": "cf690f97b1725c4fdb9fd2112d59c12081103a92",
+      "result": "Two exact original normal agreements: fromCallable ARRAY target survives source-array/Gen CV retirement; ignored owning SEND clears its copy before a producer-retired sole capture releases Gen. Cached Token destructor sees Gen weak-live and capture weak-dead. Model300/process320, exit0/quiet/stable."
+    },
+    "unsupported_protocols": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-boundaries-c2ecd/report.json",
+      "sha256": "0307485697b9b5f48183d645bbde22881002b6f7ce04a469a9b67d9a5e858352",
+      "revision": "4d87816cf8504def04073de31a451f276a5663b9",
+      "result": "Two native-normal bindTo/call originals assert exact Unsupported at the new-tag fences with only BIND| or CALL|. Zero agreements. Existing zero-argument getter rebinding paths cannot consume this tag; stable HEAD/inputs, model exit1/quiet, no timeout."
+    },
+    "independent_sources": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/peer-source-c2ecd/report.json",
+      "sha256": "d75ce1f23f7015d124915dab06b0f552993431844707fa80045b2298d81830d3",
+      "revision": "42776314c82404217332f49810a6d5e8dccda913",
+      "result": "Two exact original normal agreements: escaped computed SeNd capture stays live through the body after its last CV clears, then is weak-dead before Gen finally; ignored owning literal CURRENT through an empty pack preserves I110 demand cleanup and Gen-live/capture-dead Token destruction. Model600/process620, exit0/quiet/stable, final runtime91d+379+c2ecd."
+    },
+    "supplied_cache_throw": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-cache-throw-c2ecd/report.json",
+      "sha256": "88c7f2b08a38770e19f91272b026d19d496c380a1fe4ae050db1689494f0af39",
+      "revision": "6a4a1ef2830c40718ce043512f10ded5c910c671",
+      "result": "One exact original normal agreement at unchanged final runtime: capture weak-dead and Gen storage weak-live in cache destructor, trace exactly __destruct then run112T, supplied Stop identity/original empty trace/Previous null preserved, all weak targets dead at catch. Model300/process320, exit0/quiet/stable. No new reached front."
+    },
+    "explicit_invoke_boundary": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-explicit-invoke-a73/report.json",
+      "sha256": "14610a3440d68a1f7dde5f16d5969b0ac9b0634d3ca7996b4ea2285e2b9e8300",
+      "revision": "a73b939d1ab37cf0b81ce6a23dde445e63a002d9",
+      "result": "Native-normal explicit throw capture->__invoke adds a separate Closure::__invoke frame after Generator::throw. Model asserts exact Unsupported with only INVOKE|; zero agreement. Ordinary function invocation bypasses this removed wrapper branch; no positive replay. Stable HEAD/inputs, exit1/quiet/no timeout."
+    },
+    "independent_reached": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/peer-state-a73/report.json",
+      "sha256": "6def52d5d6505b0de60414b9b1078c85a3ef39ba3100164d212922e59418b1f4",
+      "revision": "7163282aa5544db77ee04ccbe66418292e8eb12d",
+      "result": "89 custom/94 reported true LF, exit0/quiet/no timeout, stable clean HEAD. Full 438-module SL manifest plus fixture. Actual capture owner1 gives Gen child owner1, with no CONFIG/op receiver root; pool ARRAY owns1 while PACKS borrows it. Exact CONFIG-to-operation transfer and budget0 restoration, malformed source/capture/receiver/line/kind, missing marker and dead active capture refusal. Historical source remains valid after capture retirement. One actual front."
+    }
+  },
+  "preserved_zero": {
+    "baseline": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/baseline-7dc-unsupported0/report.json",
+      "sha256": "c1bec1cf1079bedd4909b59c09ba5a13d4f75f0ec472045dc8da4d201c26da8b",
+      "revision": "7dc3d2b56d5e268a88a6d9d84cf47e3c91dc8086",
+      "result": "Independent escaped computed first-class source returned checked Unsupported: generator dynamic or nullsafe method call; stable source/HEAD, zero agreement."
+    },
+    "first_compile": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-first-91d-failure0/report.json",
+      "sha256": "d77ab9ede1025e5b53f2066f0e048f9da687aff8f6d6c813afed5ace5eeaeef0",
+      "revision": "91d621b73e0389d1a63d262ba5521bc1751fdab8",
+      "result": "SpecTec rejected recursive otherwise marker lookup before execution. 379dc replaces it with total list recursion; zero credit."
+    },
+    "count_fixture": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-379-unsupported0/report.json",
+      "sha256": "52067377cb19533388f3fa65bbc622ff22826771651258dd99584f397979e6e5",
+      "revision": "379dc4a1c0372e515211972149e3a09650dded64",
+      "result": "Literal capture/type/frame observations matched before fixture count(trace) hit an unrelated registered-builtin Unsupported. Original source/result retained; the corrected equivalent dense-trace check uses frame0 fields and no frame1, native-refrozen for this case only. Zero agreement for the earlier attempt."
+    },
+    "pool_fixture": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/peer-state-pool-assumption0/report.json",
+      "sha256": "e0dc09eaa37764c11d5d5df0ea2cf5546087cafe6fe132821404aa8f1550ddd4",
+      "revision": "42776314c82404217332f49810a6d5e8dccda913",
+      "result": "First ownership gate reached its actual CONFIG front but wrongly expected a constant ARRAY to retire. Its real compiler pool owns that table; final fixture checks pool membership/owner1 and PACKS nonownership. Zero credit for the failed assertion."
+    }
+  },
+  "composition": "c2ecd0f4c changes only new-tag bind/call paths; accepted normal originals bypass them. Literal/direct I111 operations carry CAPTURE eps, preserving their owner projections and source gates. Existing Throwable getters keep their dispatch/body/root behavior; the new tag is excluded from their availability/receive branches. No historical binding/Closure campaign is replayed. Held I106/V110 stay untouched. Final a73b939d1 removes only explicit method-wrapper forwarding and marks it Unsupported; all normal source cuts use ordinary function invocation and retain their exact inputs.",
+  "remaining": "Captured-method bind/call/rebinding and explicit __invoke wrappers, wider callable wrappers, Traversable packs, specialized delegation/parked input histories, cycles/collection and wider abrupt/lifecycle combinations remain partial. No core obligation closes.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_api_capture_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_api_capture_review_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_api_capture_review_state.py"
+  ],
+  "compiler": "Public source and reached gates load the full private 438-module SL manifest through elaboration, algorithmic checks and structuring with pinned local tools. The reached gate adds one fixture module; no fresh offline rebuild or portability claim.",
+  "independent_review": "The Generator/Fiber reviewer independently accepted 91d621b73 + 379dc4a1c + c2ecd0f4c + a73b939d1 after static source/root/finish review, two complementary original comparisons, inspection of the four author normal originals and three Unsupported controls, and the final 89/94 gate. The final wrapper fence only removes explicit method-wrapper forwarding; ordinary function-invocation cuts are unchanged. Earlier compile/fixture/Unsupported attempts retain zero credit."
+}

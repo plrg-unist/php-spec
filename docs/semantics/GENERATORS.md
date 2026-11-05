@@ -88,6 +88,18 @@ invalid name types fail without Stringable conversion, and unknown names fail
 before arguments or initialization.
 [Computed selection review](../../coverage/semantics/generator-computed-method-review.json).
 
+Native API first-class captures, including computed names and `fromCallable`,
+own the selected Generator through the existing internal Closure edge. Capture
+does not initialize the body. Invocation keeps that Closure alive while argument
+producers may clear its last CV; native `This` borrows the owned Generator.
+Checked arguments transfer into the ordinary operation without another receiver
+owner. An ignored owning return retires before the capture, then capture storage
+releases the Generator; its finally observes the capture already weak-dead.
+Creation/source receipts remain historical, while active calls require the live
+capture and real result continuation. `bind`/`bindTo`, `Closure::call` and explicit `__invoke` on these
+captures remain explicit Unsupported protocols, separate from normal invocation.
+[API capture review](../../coverage/semantics/generator-api-capture-review.json).
+
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
 inside an already running Fiber. Its actual resume operation and parameter cells
 move with that VM; the running Generator owns no duplicate frame. Resume restores
@@ -1118,8 +1130,8 @@ Notice/cleanup readback. Aggregate acquisition has separate START and
 null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
-producers, native API callable creation and wider named/unpacked API contexts
-remain required. Module447 covers the admitted native method reception above.
+producers, native API rebinding and wider named/unpacked API contexts remain
+required. Module447 covers the admitted native method reception above.
 Other callable factory kinds, wider receiver bindings, implicit
 callback creation and remaining changed/imported caller-scope combinations
 remain required.

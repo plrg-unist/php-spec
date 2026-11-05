@@ -37,3 +37,9 @@ source calls and allocated catches are separate from those raw-step claims.
 The original COMP71 stored-name failure keeps its cut and zero credit; these fresh
 sources validate the bounded reception repair. Nonstatic class-string expansion,
 autoload and invalid/embedded-NUL names remain partial.
+
+Native Generator API literal and computed captures now own their selected
+Generator without initializing its body. Normal invocation retains the capture
+and borrows that receiver, preserving escaped-capture and last-owner cleanup.
+The [API capture review](../../coverage/semantics/generator-api-capture-review.json)
+keeps explicit `__invoke`, binding and `Closure::call` protocols open.

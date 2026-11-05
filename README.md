@@ -7605,8 +7605,14 @@ Computed names now freeze the actual method and receiver before argument effects
 preserving selection after either source variable changes. NULL nullsafe calls
 skip computed-name producers too; non-string names and unknown methods fail
 before arguments. The [computed selection review](coverage/semantics/generator-computed-method-review.json)
-records the receipt, ownership and binding-site checks. Traversable packs, native
-API callable creation and wider call/lifetime combinations remain partial.
+records the receipt, ownership and binding-site checks.
+
+First-class native Generator API captures and `fromCallable` retain their
+Generator after its source variable clears. Invocation keeps the capture alive
+through the body; unused owning results retire before capture storage releases
+the Generator. The [API capture review](coverage/semantics/generator-api-capture-review.json)
+checks reception, escaped captures and weak/finally order. Rebinding these captures,
+Traversable packs and wider call/lifetime combinations remain partial.
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

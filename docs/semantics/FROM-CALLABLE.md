@@ -31,6 +31,12 @@ creator evidence survives the parent capture retiring. Static children retain no
 parent or former receiver; nonstatic children own their actual bound receiver.
 Cold private static references and source statics use the consuming trait class.
 
+Module450 also captures native Generator API method arrays through the existing
+internal getter Closure representation. The capture owns its Generator after the
+source array and receiver CV retire; ordinary invocation shares native argument
+reception and releases the capture before last-owner Generator cleanup.
+[Generator API capture review](../../coverage/semantics/generator-api-capture-review.json).
+
 Module358 also selects Fiber APIs from simple method arrays and static
 class-method strings. Its capture records dereferenced members and the completed
 factory call, including named or unpacked arguments. Later array mutation and

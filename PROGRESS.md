@@ -289,6 +289,19 @@ failures retain zero credit. Wider callable, Traversable, delegation and lifecyc
 combinations remain partial.
 [I111 review](coverage/semantics/generator-computed-method-review.json).
 
+I112 owns native Generator API first-class captures through the existing internal
+Closure child edge. Literal/computed capture and `fromCallable` preserve a Gen
+after its CV retires. Invocation roots the capture and borrows its receiver,
+retaining the exact argument/Throwable roots through ordinary reception. Unused
+owning returns clear before capture retirement; last-capture forced close runs
+Generator finally after capture weak notification. Active call authority requires a real live marker;
+saved source history remains nonowning. New-tag binding, `Closure::call` and explicit `__invoke` are
+explicit Unsupported protocols with zero agreement. Six unique originals agree;
+the 89/94 ownership/history gate passes with the private 438-module SL manifest.
+Earlier compile/fixture failures retain zero credit; wider lifecycle combinations
+remain partial.
+[I112 review](coverage/semantics/generator-api-capture-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -1632,7 +1645,7 @@ records the pointwise bridge to final semantic bytes.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS186 | Method-owned generator Closure/arrow factories; native/source preparation. |
-| I112 | Owning native Generator API captures and invocation; private implementation/review. |
+| I113 | Explicit Closure::__invoke wrapper for captured Generator APIs; private implementation/review. |
 | GC46 | WeakMap offsetGet and offsetExists with finite payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
