@@ -3173,12 +3173,15 @@ checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
 eval/include units also preserve completed-header warnings before catchable
 ParseError or CompileError, including nested reductions and literal-item prefixes.
 Twenty-two originals agree; reached checks cover once skip/reparse, source identity,
-suppression and valid zero-budget Throwable handles. Lexer-preempted prefixes and
-multibyte-enabled conversion remain partial.
+suppression and valid zero-budget Throwable handles. A foreign lexical boundary
+also preserves earlier headers before bad-character or unterminated-comment
+faults; 32 new originals agree. Unexplained native/foreign prefix differences
+and multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
-[rejected-unit review](coverage/semantics/encoding-rejection-review.json).
+[rejected-unit review](coverage/semantics/encoding-rejection-review.json),
+[lexical-boundary review](coverage/semantics/encoding-lexical-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)

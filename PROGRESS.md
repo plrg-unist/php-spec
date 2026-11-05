@@ -932,6 +932,15 @@ refusal, 214 authored and 375 independent reached conditions pass; accepted
 eval/file service controls also pass. Actual cuts, prior failures and the remaining
 lexer/multibyte limits are in the [review](coverage/semantics/encoding-rejection-review.json).
 
+COMP169 preserves completed headers before the first foreign lexer error by
+validating its token boundary and parsing the preceding token prefix. Earlier
+grammar errors still stop parsing; harmless control bytes inside strings/comments
+do not truncate it. All 32 new eval/file originals agree, with 30 independent
+boundary controls, 40 affected service checks, three selected legacy originals
+and 220 reached conditions. Accepted syntax and authored P4 rules are unchanged;
+unreported prefix differences, rejected-main warnings and multibyte conversion
+remain partial. [Review](coverage/semantics/encoding-lexical-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
