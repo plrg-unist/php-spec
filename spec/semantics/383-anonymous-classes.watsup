@@ -54,8 +54,9 @@ def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SE
   -- if $ppproperty_supported(flags)
 def $anonymous_member(NStmtClassConst (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType46 :: phpType46_tail*)) metadata) = true
   -- if flags <- [0,1,2,4,32,33,34,36]
-def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
+def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
+  -- if ~b_ref \/ ~$generator_statements(statement*)
   -- if $ptvalidname($base64(text), false)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct")
   -- if ~$ppmethod_magic($base64(text))
@@ -176,11 +177,12 @@ def $anonymous_no_named_classes(eps) = true
 def $anonymous_no_named_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode) \/ $anonymous_co_resident_node(pcnode)) /\ $anonymous_no_named_classes(pcoccurrence*))
 
 dec $anonymous_method_factory_node(pcnode) : bool
-def $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = true
+def $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = true
   -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
   -- if $ptvalidname($base64(text), false)
   -- if ~$ppmethod_magic($base64(text)) \/ $ptlc($base64(text)) = $ptascii("__construct")
-  -- if $ptlc($base64(text)) =/= $ptascii("__construct") \/ ~$generator_statements(statement*)
+  -- if $ptlc($base64(text)) =/= $ptascii("__construct") \/ (~b_ref /\ ~$generator_statements(statement*))
+  -- if ~b_ref \/ ~$generator_statements(statement*)
   -- if $anonymous_constructor_parameters(phpType16)
 def $anonymous_method_factory_node(pcnode) = false -- otherwise
 dec $anonymous_method_factory_members(statement*) : bool
@@ -502,8 +504,8 @@ def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $anonymous
 ;; Diagnostic replay still runs before this source-authenticated skip.
 dec $anonymous_failed_owner_child_occurrences(ppstate, pcpath, pcoccurrence*) : bool
 dec $anonymous_failed_owner_child_member(ppstate, pcpath, pcoccurrence) : bool
-def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_method (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)) = true
-  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_method (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)) = true
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $(|pcpath_method| >= 2)
   -- if pcpath_owner = pcpath_method[0:$nabs($(|pcpath_method| - 2))]
   -- if pcpath_method[$nabs($(|pcpath_method| - 2)):2] = [PCFIELD 5, PCINDEX n_method]
@@ -515,8 +517,8 @@ def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_me
   -- if $(|pcpath_body| < |pcpath_child|)
   -- if pcpath_child[0:|pcpath_body|] = pcpath_body
 ;; A failed trait can lack its descriptor until all members have compiled.
-def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_method (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)) = true
-  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_method (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)) = true
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $(|pcpath_method| >= 2)
   -- if pcpath_owner = pcpath_method[0:$nabs($(|pcpath_method| - 2))]
   -- if pcpath_method[$nabs($(|pcpath_method| - 2)):2] = [PCFIELD 2, PCINDEX n_method]
@@ -554,8 +556,8 @@ def $anonymous_method_scope_boundary((pcnode)) = true -- if $anonymous_class_lik
 def $anonymous_method_scope_boundary(pcnode?) = false -- otherwise
 dec $anonymous_method_scope(pcunit, pcpath, ptbytes) : (pcpath, pcpath, ptbytes, nat)?
 def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = ((pcpath, pcpath, ptbytes_owner ++ $ptascii("::") ++ $base64(text) ++ $ptascii("()"), 6))
-  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
-  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
 def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = ((pcpath, pcpath_method, $ptascii("{closure:") ++ ptbytes_parent ++ [58] ++ $ntunsigned($ppclosure_line($pcmetadata(pcnode))) ++ [125], n_body))
   -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (pcnode)
   -- if $anonymous_method_closure_body(pcnode) = (n_body)
@@ -581,8 +583,8 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if pcpath_body = P.GOTOROOT ++ [PCFIELD n_body]
   -- if $(|pcpath_body| <= |pcpath|)
   -- if pcpath[0:|pcpath_body|] = pcpath_body
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_method) = (NStmtClassMethod phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata)
-  -- if $anonymous_factory_context(P[.CLOSURE = false][.GOTOROOT = pcpath_method][.FOLD = P.FOLD[.CLOSURE = false][.FUNCTION = ptcontext.OWNER ++ $ptascii("::") ++ $base64(text)]], pcpath)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_method) = (NStmtClassMethod phpType14 phpType24 (BOOLEAN b_method_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata)
+  -- if $anonymous_factory_context(P[.CLOSURE = false][.RETURNREF = b_method_ref][.GOTOROOT = pcpath_method][.FOLD = P.FOLD[.CLOSURE = false][.FUNCTION = ptcontext.OWNER ++ $ptascii("::") ++ $base64(text)]], pcpath)
 def $anonymous_factory_context(P, pcpath) = true
   -- if $anonymous_compilation_unit(P.FOLD.SOURCE)
   -- if P.CLASSCONTEXT = eps /\ P.FOLD.CLASSCONTEXT = eps
@@ -596,10 +598,11 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if pcpath[0:|pcpath_body|] = pcpath_body
 def $anonymous_factory_context(P, pcpath) = true
   -- if P.FOLD.SOURCE.ID = 0 /\ $anonymous_unit(P.FOLD.SOURCE)
-  -- if ~P.CLOSURE /\ ~P.FOLD.CLOSURE /\ ~P.RETURNREF
+  -- if ~P.CLOSURE /\ ~P.FOLD.CLOSURE
   -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (P.GOTOROOT)) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
-  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (P.GOTOROOT)) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if P.RETURNREF = b_ref
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $(|P.GOTOROOT| >= 2)
   -- if pcpath_owner = P.GOTOROOT[0:$nabs($(|P.GOTOROOT| - 2))]
   -- if P.GOTOROOT[$nabs($(|P.GOTOROOT| - 2)):2] = [PCFIELD 5, PCINDEX n_method]
@@ -624,10 +627,11 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if pcpath[0:|pcpath_body|] = pcpath_body
 def $anonymous_factory_context(P, pcpath) = true
   -- if $anonymous_compilation_unit(P.FOLD.SOURCE)
-  -- if ~P.CLOSURE /\ ~P.FOLD.CLOSURE /\ ~P.RETURNREF
+  -- if ~P.CLOSURE /\ ~P.FOLD.CLOSURE
   -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (P.GOTOROOT)) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
-  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (P.GOTOROOT)) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if P.RETURNREF = b_ref
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN b_ref) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $(|P.GOTOROOT| >= 2)
   -- if pcpath_owner = P.GOTOROOT[0:$nabs($(|P.GOTOROOT| - 2))]
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath_owner) = (pcnode_owner)

@@ -1,0 +1,82 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "ref-method-cv-owner-lifetime",
+      "source": "<?php\nclass Owner187Life { public function &make() { $child = new class { public function __destruct() { echo 'CHILD;'; } }; return $child; } public function __destruct() { echo 'OWNER;'; } }\n$owner = new Owner187Life; $value =& $owner->make(); unset($owner); $alias =& $value; $copy = $alias; $value = null; echo 'HOLD;'; unset($copy); echo 'DONE;';\n",
+      "source_sha256": "e7b68453d49c878e5019c8910de6a878cf043e40e013d0f7e6a74194c2d763ee",
+      "stdout_template_base64": "T1dORVI7SE9MRDtDSElMRDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-trait-static-scope",
+      "source": "<?php\ntrait T187Scope { public static function &make() { $child = new class(self::VALUE, static::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $self, public int $called, public string $owner, public string $method) {} }; return $child; } }\nclass A187Scope { use T187Scope; public const VALUE = 1; } class C187Scope extends A187Scope { public const VALUE = 2; }\n$value =& C187Scope::make(); echo $value->self, ';', $value->called, ';', $value->owner, ';', $value->method, ';', $value::class, ';';\n",
+      "source_sha256": "43d75e00ae9bad8f16eafa4b77e2f6672435c9371a5cea756933b2239e8ec723",
+      "stdout_template_base64": "MTsyO0ExODdTY29wZTtUMTg3U2NvcGU6Om1ha2U7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-anonymous-owner-template",
+      "source": "<?php\n$owner = new class { public function &make() { $child = new class {}; return $child; } };\n$a =& $owner->make(); $b =& $owner->make(); $after = new class {}; echo $owner::class, ';', $a::class, ';', ($a::class === $b::class), ';', ($a !== $b), ';', $after::class, ';';\n",
+      "source_sha256": "98be4ba9f3450027e2701f5e4bdaa01f2f775ec622cd29cc94b077b8ea808070",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7MTsxO2NsYXNzQGFub255bW91cwB7RklMRX06MyQyOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-method-temporary-return-notice",
+      "source": "<?php\nclass Owner187Temp { public function &make() { return new class { public function __destruct() { echo 'CHILD;'; } }; } }\n$owner = new Owner187Temp; $value =& $owner->make(); echo 'HOLD;'; unset($value); echo 'DONE;';\n",
+      "source_sha256": "9e65864d878ee8cf20f01ab4555eec9762f52fbba1b0224c1b8c49e4705a8dc1",
+      "stdout_template_base64": "SE9MRDtDSElMRDtET05FOw==",
+      "stderr_template_base64": "Tm90aWNlOiBPbmx5IHZhcmlhYmxlIHJlZmVyZW5jZXMgc2hvdWxkIGJlIHJldHVybmVkIGJ5IHJlZmVyZW5jZSBpbiB7RklMRX0gb24gbGluZSAyCg==",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-method-temporary-warning-throw",
+      "source": "<?php\nfunction warn187($severity, $message) { echo 'WARN;'; throw new Exception('stop'); }\nclass Owner187Throw { public function &make() { return new class { public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nset_error_handler('warn187'); try { $value =& (new Owner187Throw)->make(); } catch (Exception $e) { echo 'CAUGHT;'; }\n",
+      "source_sha256": "a37947e1f2de91ed8bd9fdaec2a78474e6bbf601b50e49a239f0692b176d4f43",
+      "stdout_template_base64": "V0FSTjtPV05FUjtDSElMRDtDQVVHSFQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-method-nested-closure",
+      "source": "<?php\nclass Owner187Closure { public const VALUE = 7; public function &capture() { $factory = function() { return new class(self::VALUE, __METHOD__) { public function __construct(public int $value, public string $method) {} }; }; return $factory; } public function __destruct() { echo 'OWNER;'; } }\n$owner = new Owner187Closure; $factory =& $owner->capture(); unset($owner); $child = $factory(); echo $child->value, ';', $child->method, ';', $child::class, ';'; unset($factory); echo 'DONE;';\n",
+      "source_sha256": "78cda34f3d83e84434c83a4703d2e7b3001d920632d9bde93377700d8bae2521",
+      "stdout_template_base64": "Nzt7Y2xvc3VyZTpPd25lcjE4N0Nsb3N1cmU6OmNhcHR1cmUoKToyfTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDtPV05FUjtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ref-method-unused-temporary-warning-throw",
+      "source": "<?php\nfunction warn187($severity, $message) { echo 'WARN;'; throw new Exception('stop'); }\nclass Owner187Throw { public function &make() { return new class { public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nset_error_handler('warn187'); try { (new Owner187Throw)->make(); } catch (Exception $e) { echo 'CAUGHT;'; }\n",
+      "source_sha256": "ea6015a59af31619dccc6d7c391187f27dd50479cc2bb74502b782ca8f9055de",
+      "stdout_template_base64": "V0FSTjtDSElMRDtPV05FUjtDQVVHSFQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
