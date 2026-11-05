@@ -114,7 +114,7 @@ def assertions(name, fixture, directory, path):
             'pobrefreturn.INVOKE.CALL = OB_API pconfigcall',
             'pconfigcall.KIND = INTRINSIC_OB_GET_FLUSH', 'pconfigcall.LINE = 7',
             'n_cell = pobrefreturn.CELL', 'S_reached.STORE[n_cell] = DEFINED (PBOOL true)',
-            '$ob_ref_context(S_reached, pobrefreturn)', '~$ob_ref_current(S_reached, pobrefreturn)',
+            '$ob_return_context(S_reached, OB_USER_REF_DEPRECATED pobrefreturn, pobrefreturn.CALLER, $ob_call_site(pobrefreturn.INVOKE.CALL), pobrefreturn.TAIL)', '~$ob_ref_current(S_reached, pobrefreturn)',
             '$call_task_valid(S_reached, OB_USER_REF_DEPRECATED pobrefreturn)',
             '$heap_count(HCELL n_cell, $machine_roots(S_reached)) = 2',
             '$heap_count(HCELL n_cell, $task_nodes(OB_USER_REF_DEPRECATED pobrefreturn)) = 1',

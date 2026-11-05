@@ -107,7 +107,7 @@ Callback exit,
 throwing produced-output warnings from FINAL or lower API cascades, wider owning
 warning-handler abrupt cleanup,
 automatic dispatch from other byte
-producers, wider request-end/fatal callback paths, non-scalar
+producers, wider request-end/fatal callback paths, object/resource
 return conversion, typed variadic reception and by-reference variadic
 extra arguments, mutating buffer APIs
 during a handler, capability
@@ -119,9 +119,10 @@ cannot be invoked again by this slice. Buffered stdout diagnostics keep the
 existing Module391 boundary. Access through a retired callback receiver,
 computed-name reads and nonstatic closure creation in that context are explicitly
 refused; its metadata does not revive the object.
-Direct non-scalar returns are refused before callee cleanup can erase the
-defined value. Referenced values retain their actual cell until conversion;
-non-scalar payloads remain Unsupported there. Full core remains partial.
+Object/resource returns are refused before callee cleanup can erase the defined
+value. Referenced values retain their actual cell until conversion; admitted
+scalar and Array payloads transfer their actual owner. FINAL Array conversion
+remains explicitly Unsupported. Full core remains partial.
 
 Primary authority is `main/output.c` handler creation/op/stack-pop/destruction and
 `Zend/zend_API.c` callable names/selection and
@@ -408,3 +409,21 @@ COMMIT record and native suffix; its consumed cell metadata adds no owner.
 [Independent review](../../coverage/semantics/output-reference-return-review.json)
 records eight exact originals, both diagnostic-return destructor traces and one
 SL438 front with two groups/183 conditions through real release and resumption.
+
+Module451 retains a returned Array through the conversion Warning, releases it,
+then commits the fixed string `Array`, including when a Throwable is pending.
+Reference unwrapping transfers the Array owner before the Warning; later writes
+to that cell cannot replace it. Callee cleanup and return-by-reference Notice
+throws preserve a defined return. A pending exception prevents selected Warning
+handler entry; child destructors can replace it with their own Previous-linked
+Throwable. API and VM destructor traces retain their ordinary sites. Getter
+copies, lower routing and interrupted assignment reuse the existing output paths.
+Output during Warning/Array cleanup retains the new PRODUCED flag for the next
+invocation, after the earlier deprecation check has already finished.
+
+The GC handoff hook suppresses only the real reference-wrapper transfer visits,
+including its modeled last-cell child job; actual Array retval destruction keeps
+ordinary GC candidacy. Exact source, successor, retired-cell identity and release
+guards distinguish them. [Author evidence](../../coverage/semantics/output-array-return-author.json)
+records 20 exact originals, two checked refusal controls and two reached groups
+with 234 conditions. Independent acceptance remains separate.

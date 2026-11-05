@@ -1312,6 +1312,14 @@ two groups/183 conditions pass. The real HCELL release authenticates its COMMIT
 continuation even after cell retirement. [Independent review](coverage/semantics/output-reference-return-review.json)
 records the return-demand regression, release guard and affected checks;
 [author evidence](coverage/semantics/output-reference-return-author.json) retains its separate cuts.
+OB18 adds Array return conversion through the real Warning and child release,
+then commits `Array` while preserving pending replacements, traces, frozen getters
+and late PRODUCED flags. Reference unwrap transfers the actual Array before
+warning-time alias changes; a narrow GC handoff hook leaves the later retval
+decrement ordinary. Twenty author originals and two reached groups/234 conditions
+pass at recorded cuts; independent review is pending. FINAL Array and object/resource
+conversion remain Unsupported. [Author evidence](coverage/semantics/output-array-return-author.json)
+retains the failed dispatch diagnosis and affected renewals.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

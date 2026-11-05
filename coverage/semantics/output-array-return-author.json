@@ -1,0 +1,90 @@
+{
+  "milestone": "OB18: Array output callback return reception and conversion",
+  "status": "author validation complete; independent output decision pending",
+  "tested_parent": "c6c7288ac1e62727efcc8a1849ff19835ea117ea",
+  "identity": "Each external report binds its exact parent plus stable before/after input fingerprints; the runtime hashes below describe the final author cut. Later selected-case additions do not change earlier original bytes. No metadata-only change renews an old semantic result.",
+  "runtime": {
+    "target": "PHP 8.5.10 CLI NTS64, sole project-local oracle; each report retains the full pinned ini profile",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; SL, caches disabled and encountered determinism",
+    "modules": 439,
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "26190595c2da56751f17a7ba69f10d55b3cf22c0e7cde362766644f4480ab1cd",
+      "spec/semantics/301-cycle-collection.watsup": "7ff2cfd903cb8eb1f48ad8e1e2251ed840c828be2e59aa0cc65740fec94d5d3d",
+      "spec/semantics/395-output-handlers.watsup": "a7d6aa7b34138d78956bdf3e5d7352b8ffc5bf28c1292be2593eabb778f1b6cc",
+      "spec/semantics/399-output-result-cleanup.watsup": "93075429cf7a74f021a5b346cb30528ced7a7068ffa444c37e64ee8f801e0bed",
+      "spec/semantics/449-output-reference-returns.watsup": "84b0a16e543422013ab134774456ebdda816c7ae3e5c24639eb61c7571d6ec10",
+      "spec/semantics/451-output-array-returns.watsup": "91e2973f2818950c6762f4458ac07407fa8ed28b9b3f519dc1ad9162c3339b22",
+      "spec/semantics/modules.json": "97bec251522ea1af0b9c66c17b20439d028a6f981da7f4aab46b44a5137ea657"
+    }
+  },
+  "authority": [
+    "main/output.c::php_output_handler_op raw sentinel tests, produced-output deprecation and convert_to_string",
+    "Zend/zend_operators.c::_convert_to_string IS_ARRAY: Warning, zval_ptr_dtor then fixed Array string even with EG(exception)",
+    "Zend/zend_operators.h::zend_unwrap_reference: native unique/shared payload transfer has no possible-root check",
+    "Zend/zend_vm_def.h RETURN_BY_REF and Zend/zend_objects.c destructor exception save/replace"
+  ],
+  "behavior": [
+    "A genuine returned Array remains owned through callee cleanup and the conversion Warning. Reference unwrap installs its Array owner before releasing the actual CELL; later alias mutation does not replace that returned Array. Readonly normal-result seals borrow the actual FRAME_EXIT/RESULT owner.",
+    "After Warning, the Array retval releases before fixed Array bytes/header commit. A preexisting exception skips selected Warning handler entry; child destructor exceptions retain Previous and authentic VM/API traces. Frozen getters, lower cascades and interrupted assignment reuse existing output cleanup.",
+    "Warning/child output occurs after the one earlier produced-output deprecation check, so its late PRODUCED flag survives for the next invocation."
+  ],
+  "sources": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18/sources-01/report.json",
+      "sha256": "72966df52e680642566361ed52dc26cfd90d824be8d1554a3932344f70a2be28",
+      "scope": "Two exact normal originals: direct Array/getter Warning and reference Warning-time alias mutation.",
+      "passed": true,
+      "stable_fingerprints": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18/sources-02/report.json",
+      "sha256": "3c2809c5c16003a1f74b4a30c8816b2211ddf39daf4cf18692f55d29b89e741c",
+      "scope": "Five exact normal originals: observer-free unique/shared transfer, Warning throw, normal child destructor and child throw replacing its Warning exception.",
+      "passed": true,
+      "stable_fingerprints": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18/sources-03/report.json",
+      "sha256": "43f803ef43cd815c37ec6504c44554ebdb8678e7ccc9e4c5a193540c5daeae50",
+      "scope": "Eight new exact normal originals: callee cleanup exception, fresh API/VM child traces, late PRODUCED, deprecation-before-Warning routing, native default Warning and two promoted reference-array controls. FINAL Array/object controls are Unsupported with zero native agreement credit.",
+      "passed": true,
+      "stable_fingerprints": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18/sources-04/report.json",
+      "sha256": "d845376cb1b834b754ce2a6a6c3bfc076b8711a76eb13a509e1e2a9b688682bf",
+      "scope": "Five new exact normal originals: get-clean replacement, lower-API pending cascade, defined return Notice and two promoted direct-array controls; two affected unique/shared originals renew the final301 dispatch repair. Total20 distinct exact normal originals, not22.",
+      "passed": true,
+      "stable_fingerprints": true
+    }
+  ],
+  "cut_bridge": "The first seven originals preceded the borrowed CELL identity field; eight next originals used that field. All retain exact historical fingerprints. The final301 change only delegates its unmatched identity default to451, with TEMP/NOGC unchanged and authenticated REF_ARRAY handoff clauses. The final234-condition unique/shared front and two affected source renewals bind this changed handoff path. Other admitted source behavior and the common runner remain unchanged; no broad OB17/GC replay.",
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18/state-02/report.json",
+    "sha256": "b55ae87e00d16a67de8a514eed2a3be47eb31211c1f67c5508575c77b7530d41",
+    "scope": "One SL439 front, two source-reached groups/234 premises: unique/shared CELL-to-Array transfer; real singleton HCELL and synthetic unique-child jobs; public owner/call/output validators; exact SOURCE/CELL/op/current/successor/tail/CONST negatives; no premature Array candidate; later real shared retval candidate; cell/Array/child retirement; fuel0 and exact completed resume.",
+    "passed": true,
+    "stable_fingerprints": true
+  },
+  "dispatch_repair": {
+    "finding": "At genuine DESTRUCTOR_RELEASE/VALUE states, the original same-function451 overloads were bypassed by301 default dispatch: all source/job guards were true but the global call was identity. A cloned exact clause removed the CELL visit. Initial state43 and narrow phase/guard/dispatch diagnostics are preserved externally with zero agreement credit.",
+    "change": "301 adds only a dedicated hook declaration and delegates its final default; its two original TEMP/NOGC clauses are byte-identical.451 defines all three authenticated filters and identity default together. They suppress only actual no-check wrapper-transfer visits, including257 last-cell synthetic Array child cleanup. Actual ARRAY_RESULT destruction cannot match and remains ordinary.",
+    "probe": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18/dispatch-repaired-01/report.json",
+      "sha256": "ddd087c1d7ccfa1499877a958f3f305853d317d5ec71caf151c1555114f9cdf7",
+      "scope": "Tiny exact reached-state probe: global=clone=direct deletion in both unique/shared real release states; stable identities. Earlier debug-wrapper-dispatch-01 preserves the mismatch.",
+      "passed": true,
+      "stable_fingerprints": true
+    },
+    "bounded_review": "gc_impl and gc_review independently clear final301 SHA7ff2cfd9.../451 SHA91e2973f... source/job/default authority, unchanged TEMP clauses and lack of dispatch recursion. Both reviewed the repaired actual-dispatch and234-condition results. This is scoped GC-domain acceptance, not full output acceptance."
+  },
+  "promotions": {
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18/promoted-controls/manifest.json",
+    "scope": "Four obsolete Unsupported selectors retain original source bytes and previous reason/hash externally, and are now normal cases in output_array_return_sources.py. Their old refusal reports remain zero native agreement credit. Shared runner changes remove only obsolete table entries; execution/profile code is unchanged."
+  },
+  "reproduce": "Run python3 tests/semantics/output_array_return_sources.py --select <report.selected joined by comma> --output <external directory>; run python3 tests/semantics/output_array_return_state.py --output <external directory>. Original source, fixture, raw channels/exits and report identities remain with each packet. Diagnostic-only gc_status studies are native-only and have no model credit.",
+  "limits": "FINAL Array conversion, object/resource conversion, wider output control/mutation/Fiber/stdout and remaining core semantics stay explicitly Unsupported or partial. No native fallback, deliberate PHP divergence or full-core completion claim.",
+  "integration": "Based on clean composed OB17 c6c7288ac.451 follows449 in this439-module cut; independent later Generator450 and other lane modules compose by manifest order.301 declaration and451 hook definitions must integrate together.",
+  "checks": "Inventory169 constructors/306 runtime obligations consistent; Python compile and git diff --check pass. All current source/state gates compile439 modules."
+}

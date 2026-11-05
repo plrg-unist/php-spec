@@ -14,11 +14,9 @@ CASES = {'api-normal-result-argv-throw': (b'<?php $e=new Exception;$x=99;$log=""
 STDERR = {'pending-default-deprecation': b'Deprecated: ob_flush(): Producing output from user output handler h is deprecated in {FILE} on line 1\n'}
 CONTROLS = {
     'byref-variadic-ownership': b'<?php echo "P";set_error_handler(function(){return true;});function h(&...$a){return "X";}ob_start("h");echo "A";ob_end_clean();',
-    'nonscalar-result-cleanup-throw': b'<?php echo "P";$e=new Exception;set_error_handler(function(){return true;});class D{function __destruct(){global $e;throw $e;}}function h(&$b,$p){$b=new D;return [];}ob_start("h");echo "A";try{ob_end_clean();}catch(Exception $c){}',
 }
 CONTROL_REASONS = {
     'byref-variadic-ownership': 'by-reference variadic output-handler argument ownership',
-    'nonscalar-result-cleanup-throw': 'non-scalar user output-handler return conversion',
 }
 
 

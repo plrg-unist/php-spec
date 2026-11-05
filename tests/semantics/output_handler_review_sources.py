@@ -25,13 +25,11 @@ CASES = {
 CONTROLS = {
     'automatic-handler-chunk': b'<?php echo "P"; function h($b,$p){return "X".$b;} ob_start("h",1); echo "A"; ob_end_flush();',
     'request-end-handler-drain': b'<?php echo "P"; function h($b,$p){return "X".$b;} ob_start("h"); echo "A";',
-    'nonscalar-handler-result': b'<?php echo "P"; function h($b,$p){return [];} ob_start("h"); echo "A"; ob_end_flush(); echo "Z";',
     'handler-stack-mutation': b'<?php echo "P"; function h($b,$p){ob_clean(); return $b;} ob_start("h"); echo "A"; ob_end_flush(); echo "Z";',
 }
 CONTROL_REASONS = {
     'automatic-handler-chunk': 'automatic user output-handler chunk dispatch',
     'request-end-handler-drain': 'request-end user output-handler callback drain',
-    'nonscalar-handler-result': 'non-scalar user output-handler return conversion',
     'handler-stack-mutation': 'output-buffer mutation from a running user handler',
 }
 

@@ -1,0 +1,290 @@
+;; _convert_to_string warns with the real array RV alive, destroys it even
+;; with EG(exception), then installs the fixed string "Array". A reference is
+;; unwrapped before that warning; later alias writes cannot replace this RV.
+dec $ob_array_current(pstate, pobarrayreturn) : bool
+dec $ob_array_metadata(pstate, ptask, pobarrayreturn) : bool
+dec $ob_array_live(pstate, ptask, pobarrayreturn) : bool
+dec $ob_array_nodes(pobarrayreturn) : pnode*
+dec $ob_array_from_ref(pobrefreturn, nat) : pobarrayreturn
+dec $ob_array_capture(pstate, pobinvoke, nat, nat?) : pstate
+dec $ob_array_begin(pstate, pobarrayreturn) : pstate
+dec $ob_array_report(pstate, pobarrayreturn) : pstate
+dec $ob_array_deprecation_discard(pstate, pobarrayreturn) : pstate
+dec $ob_array_warning_discard(pstate, pobarrayreturn) : pstate
+dec $ob_array_commit(pstate, pobarrayreturn, poboutput) : pstate
+dec $ob_array_pending(pstate, pobarrayreturn) : nat?
+dec $ob_array_pending_operations(pstate, pdestructionoperation*, pobarrayreturn) : nat?
+dec $ob_array_pending_tasks(ptask*, pobarrayreturn) : nat?
+dec $ob_array_pending_boundary(ptask) : bool
+dec $ob_array_release_completion(pdestructionoperation, nat?) : bool
+dec $ob_array_release_successor(ptask*, pdestructionoperation, pobarrayreturn) : bool
+dec $ob_array_release_frames(pframe*, pdestructionoperation, pobarrayreturn) : bool
+dec $ob_array_release_scope(pstate, pdestructionoperation, pobarrayreturn) : bool
+dec $ob_array_ref_successor(pstate, ptask*, pdestructionoperation, pobrefreturn, nat) : bool
+dec $ob_array_ref_transferred(pstate, pobrefreturn, nat) : bool
+dec $ob_array_diagnostic(ptask) : pobarrayreturn?
+
+def $ob_normal_value(S, PARRAY n) = $config_slots_valid(S, [NAMED_SENT (KNOWN (PARRAY n))])
+def $ob_array_current(S, pobarrayreturn) = (S.CURRENT = pobarrayreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobarrayreturn.INVOKE.CALL)))
+def $ob_array_metadata(S, ptask, pobarrayreturn) = true
+  -- if $ob_return_context(S, ptask, pobarrayreturn.CALLER, $ob_call_site(pobarrayreturn.INVOKE.CALL), pobarrayreturn.TAIL)
+  -- if S_scope = S[.CURRENT = pobarrayreturn.CALLER][.ORIGIN = ($ob_call_site(pobarrayreturn.INVOKE.CALL))][.TODO = (OB_USER_RESULT pobarrayreturn.INVOKE) :: pobarrayreturn.TAIL]
+  -- if $call_task_valid(S_scope, OB_USER_RESULT pobarrayreturn.INVOKE)
+def $ob_array_metadata(S, ptask, pobarrayreturn) = false -- otherwise
+def $ob_array_live(S, ptask, pobarrayreturn) = ($ob_array_metadata(S, ptask, pobarrayreturn) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN (PARRAY pobarrayreturn.ARRAY))]) /\ $destructor_pending_valid(S, pobarrayreturn.PENDING))
+def $ob_array_nodes(pobarrayreturn) = $ob_user_nodes(pobarrayreturn.INVOKE) ++ [HARRAY pobarrayreturn.ARRAY] ++ $instance_roots(pobarrayreturn.PENDING)
+def $ob_array_from_ref(pobrefreturn, n) = {INVOKE pobrefreturn.INVOKE, ARRAY n, CELL (pobrefreturn.CELL), PENDING pobrefreturn.PENDING, CALLER pobrefreturn.CALLER, TAIL pobrefreturn.TAIL}
+
+def $task_nodes(OB_USER_REF_ARRAY pobrefreturn n) = $ob_ref_nodes(pobrefreturn)
+def $task_nodes(OB_USER_ARRAY_DEPRECATED pobarrayreturn) = $ob_array_nodes(pobarrayreturn)
+def $task_nodes(OB_USER_ARRAY_WARN pobarrayreturn) = $ob_array_nodes(pobarrayreturn)
+def $task_nodes(OB_USER_ARRAY_RESULT pobarrayreturn) = $ob_array_nodes(pobarrayreturn)
+;; DONE borrows the consumed ARRAY and old exception. Actual release/THROW
+;; carries the pending exception until COMMIT receives its resumed identity.
+def $task_nodes(OB_USER_ARRAY_DONE pobarrayreturn) = $ob_user_nodes(pobarrayreturn.INVOKE)
+def $task_nodes(OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) = $ob_user_nodes(pobarrayreturn.INVOKE) ++ $value_nodes(poboutput.VALUE) ++ $instance_roots(pobarrayreturn.PENDING)
+def $ob_user_active_task(OB_USER_REF_ARRAY pobrefreturn n) = (pobrefreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_ARRAY_DEPRECATED pobarrayreturn) = (pobarrayreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_ARRAY_WARN pobarrayreturn) = (pobarrayreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_ARRAY_RESULT pobarrayreturn) = (pobarrayreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_ARRAY_DONE pobarrayreturn) = (pobarrayreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) = (pobarrayreturn.INVOKE.BUFFER.ID)
+def $ob_user_disabled_task(OB_USER_ARRAY_DEPRECATED pobarrayreturn, n) = (pobarrayreturn.INVOKE.BUFFER.ID = n)
+def $output_task_write(OB_USER_REF_ARRAY pobrefreturn n) = $output_call_write(pobrefreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_ARRAY_DEPRECATED pobarrayreturn) = $output_call_write(pobarrayreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_ARRAY_WARN pobarrayreturn) = $output_call_write(pobarrayreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_ARRAY_RESULT pobarrayreturn) = $output_call_write(pobarrayreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_ARRAY_DONE pobarrayreturn) = $output_call_write(pobarrayreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) = $output_call_write(pobarrayreturn.INVOKE.CALL)
+def $ob_user_resume_api(OB_USER_ARRAY_DEPRECATED pobarrayreturn) = $ob_call_api(pobarrayreturn.INVOKE.CALL)
+def $ob_user_resume_api(OB_USER_ARRAY_RESULT pobarrayreturn) = $ob_call_api(pobarrayreturn.INVOKE.CALL)
+
+def $call_task_valid(S, OB_USER_REF_ARRAY pobrefreturn n) = ($ob_ref_valid(S, OB_USER_REF_ARRAY pobrefreturn n, pobrefreturn, true) /\ S.STORE[pobrefreturn.CELL] = DEFINED (PARRAY n) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN (PARRAY n))]) /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_ARRAY_DEPRECATED pobarrayreturn) = ($ob_array_live(S, OB_USER_ARRAY_DEPRECATED pobarrayreturn, pobarrayreturn) /\ pobarrayreturn.PENDING = eps /\ $ob_user_temporary(S, poutputbuffer.ID) /\ $long_and(poutputbuffer.FLAGS, 40960) = 8192)
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_ARRAY_WARN pobarrayreturn) = ($ob_array_live(S, OB_USER_ARRAY_WARN pobarrayreturn, pobarrayreturn) /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_ARRAY_RESULT pobarrayreturn) = ($ob_array_live(S, OB_USER_ARRAY_RESULT pobarrayreturn, pobarrayreturn) /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_ARRAY_DONE pobarrayreturn) = ($ob_array_metadata(S, OB_USER_ARRAY_DONE pobarrayreturn, pobarrayreturn) /\ (pobarrayreturn.PENDING = eps \/ $ob_array_pending(S, pobarrayreturn) =/= eps) /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) = ($ob_array_metadata(S, OB_USER_ARRAY_COMMIT pobarrayreturn poboutput, pobarrayreturn) /\ $destructor_pending_valid(S, pobarrayreturn.PENDING) /\ $ob_user_output_valid(S, poboutput) /\ poboutput.VALUE = PSTRING $ptascii("Array") /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+
+def $ob_user_nonscalar_return(S, pobinvoke, PARRAY n) = $ob_array_capture(S, pobinvoke, n, eps)
+def $ob_ref_nonscalar_return(S, pobrefreturn, PARRAY n) = S[.TODO = (OB_USER_REF_ARRAY pobrefreturn n) :: pobrefreturn.TAIL]
+  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL)
+def $ob_ref_nonscalar_return(S, pobrefreturn, PARRAY n) = S[.COMPLETION = UNSUPPORTED "FINAL array output-handler return conversion"]
+  -- if $output_drain_final_call(pobrefreturn.INVOKE.CALL)
+rule PhpStep/ob-reference-array-transfer: S ~> S[.TODO = (OB_USER_ARRAY_WARN $ob_array_from_ref(pobrefreturn, n)) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_REF_ARRAY pobrefreturn n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_ARRAY pobrefreturn n) /\ $ob_ref_current(S, pobrefreturn)
+rule PhpStep/ob-array-normal-pending: S ~> $ob_array_capture(S, pobinvoke, n, pdestructionframe.PENDING)
+  -- if S.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe)
+  -- if pdestructionframe.VALUE = KNOWN (PARRAY n)
+def $ob_array_capture(S, pobinvoke, n, n_pending?) = $ob_array_begin(S[.TODO = (OB_USER_ARRAY_WARN pobarrayreturn) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pobarrayreturn)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pobarrayreturn = {INVOKE pobinvoke, ARRAY n, CELL eps, PENDING n_pending?, CALLER S.CURRENT, TAIL ptask_tail*}
+def $ob_array_begin(S, pobarrayreturn) = S[.COMPLETION = UNSUPPORTED "FINAL array output-handler return conversion"] -- if $output_drain_final_call(pobarrayreturn.INVOKE.CALL)
+def $ob_array_begin(S, pobarrayreturn) = S
+  -- if ~$output_drain_final_call(pobarrayreturn.INVOKE.CALL)
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
+def $ob_array_begin(S, pobarrayreturn) = $error_dispatch(S[.TODO = (OB_USER_ARRAY_DEPRECATED pobarrayreturn) :: pobarrayreturn.TAIL][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], 8192, $ob_user_deprecation(pobarrayreturn.INVOKE), $ob_call_line(pobarrayreturn.INVOKE.CALL), $ob_call_event(pobarrayreturn.INVOKE.CALL, "Deprecated", $ob_user_deprecation(pobarrayreturn.INVOKE), $ob_call_line(pobarrayreturn.INVOKE.CALL)), OB_USER_ARRAY_DEPRECATED pobarrayreturn)
+  -- if ~$output_drain_final_call(pobarrayreturn.INVOKE.CALL) /\ pobarrayreturn.PENDING = eps
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+def $ob_array_begin(S, pobarrayreturn) = $ob_normal_deprecation(S, pobarrayreturn.INVOKE)
+  -- if ~$output_drain_final_call(pobarrayreturn.INVOKE.CALL) /\ pobarrayreturn.PENDING =/= eps
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+rule PhpStep/ob-array-deprecated: S ~> S[.TODO = (OB_USER_ARRAY_WARN pobarrayreturn) :: ptask_tail*][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])]
+  -- if S.TODO = (OB_USER_ARRAY_DEPRECATED pobarrayreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_DEPRECATED pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn)
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+rule PhpStep/ob-array-warning: S ~> $error_dispatch(S, 2, $ptascii("Array to string conversion"), $ob_call_line(pobarrayreturn.INVOKE.CALL), $ob_call_event(pobarrayreturn.INVOKE.CALL, "Warning", $ptascii("Array to string conversion"), $ob_call_line(pobarrayreturn.INVOKE.CALL)), OB_USER_ARRAY_RESULT pobarrayreturn)
+  -- if S.TODO = (OB_USER_ARRAY_WARN pobarrayreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_WARN pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn)
+  -- if pobarrayreturn.PENDING = eps
+rule PhpStep/ob-array-warning-pending: S ~> $ob_array_report(S[.TODO = (OB_USER_ARRAY_RESULT pobarrayreturn) :: ptask_tail*], pobarrayreturn)
+  -- if S.TODO = (OB_USER_ARRAY_WARN pobarrayreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_WARN pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn)
+  -- if pobarrayreturn.PENDING =/= eps
+def $ob_array_report(S, pobarrayreturn) = S[.ERRORFATALTRACE = eps] -- if $eval_compile_recorded_error(S, 2) \/ $error_handler_eligible(S, 2)
+def $ob_array_report(S, pobarrayreturn) = $error_default(S[.ERRORFATALTRACE = eps], $ob_call_event(pobarrayreturn.INVOKE.CALL, "Warning", $ptascii("Array to string conversion"), $ob_call_line(pobarrayreturn.INVOKE.CALL)), 2) -- if ~$eval_compile_recorded_error(S, 2) /\ ~$error_handler_eligible(S, 2)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_USER_ARRAY_DEPRECATED pobarrayreturn
+  -- if $call_task_valid(S, OB_USER_ARRAY_DEPRECATED pobarrayreturn)
+  -- if perrorcall.SITE = $ob_call_site(pobarrayreturn.INVOKE.CALL) /\ perrorcall.LINE = $ob_call_line(pobarrayreturn.INVOKE.CALL)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = $ob_user_deprecation(pobarrayreturn.INVOKE)
+  -- if perrorcall.EVENT = $ob_call_event(pobarrayreturn.INVOKE.CALL, "Deprecated", perrorcall.MESSAGE, perrorcall.LINE)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_USER_ARRAY_RESULT pobarrayreturn
+  -- if $call_task_valid(S, OB_USER_ARRAY_RESULT pobarrayreturn)
+  -- if perrorcall.SITE = $ob_call_site(pobarrayreturn.INVOKE.CALL) /\ perrorcall.LINE = $ob_call_line(pobarrayreturn.INVOKE.CALL)
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = $ob_call_event(pobarrayreturn.INVOKE.CALL, "Warning", perrorcall.MESSAGE, perrorcall.LINE)
+
+def $error_read_discard(S, OB_USER_ARRAY_DEPRECATED pobarrayreturn) = $ob_array_deprecation_discard(S, pobarrayreturn)
+def $return_discard(S, OB_USER_ARRAY_DEPRECATED pobarrayreturn) = $ob_array_deprecation_discard(S, pobarrayreturn)
+def $ob_array_deprecation_discard(S, pobarrayreturn) = S[.TODO = (OB_USER_ARRAY_WARN pobarrayreturn[.PENDING = (n)]) :: pobarrayreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])]
+  -- if S.TODO = (THROW_SEARCH n) :: pobarrayreturn.TAIL
+  -- if S_proof = S[.TODO = (OB_USER_ARRAY_DEPRECATED pobarrayreturn) :: pobarrayreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_ARRAY_DEPRECATED pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn) /\ $throwable_live(S, n)
+  -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
+def $error_read_discard(S, OB_USER_ARRAY_RESULT pobarrayreturn) = $ob_array_warning_discard(S, pobarrayreturn)
+def $return_discard(S, OB_USER_ARRAY_RESULT pobarrayreturn) = $ob_array_warning_discard(S, pobarrayreturn)
+def $ob_array_warning_discard(S, pobarrayreturn) = S[.TODO = (OB_USER_ARRAY_RESULT pobarrayreturn[.PENDING = (n)]) :: pobarrayreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n) :: pobarrayreturn.TAIL
+  -- if S_proof = S[.TODO = (OB_USER_ARRAY_RESULT pobarrayreturn) :: pobarrayreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_ARRAY_RESULT pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn) /\ $throwable_live(S, n)
+
+rule PhpStep/ob-array-release: S ~> S[.TODO = (OB_USER_ARRAY_DONE pobarrayreturn) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_ARRAY_RESULT pobarrayreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_RESULT pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn)
+  -- if pobarrayreturn.PENDING = eps
+rule PhpStep/ob-array-release-pending: S ~> S[.TODO = (OB_USER_ARRAY_DONE pobarrayreturn) :: ptask_tail*][.COMPLETION = THROWING n][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_ARRAY_RESULT pobarrayreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_RESULT pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn)
+  -- if pobarrayreturn.PENDING = (n)
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (OB_USER_ARRAY_RESULT pobarrayreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_RESULT pobarrayreturn)
+  -- if pobarrayreturn.PENDING = (n)
+  -- if S_next.TODO = (OB_USER_ARRAY_DONE pobarrayreturn) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+rule PhpStep/ob-array-done: S ~> S[.TODO = (OB_USER_ARRAY_COMMIT pobarrayreturn $ob_user_output(S, PSTRING $ptascii("Array"))) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_ARRAY_DONE pobarrayreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_DONE pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn)
+  -- if pobarrayreturn.PENDING = eps
+def $return_discard(S, OB_USER_ARRAY_DONE pobarrayreturn) = S[.TODO = (OB_USER_ARRAY_COMMIT pobarrayreturn[.PENDING = (n)] $ob_user_output(S, PSTRING $ptascii("Array"))) :: pobarrayreturn.TAIL]
+  -- if S.TODO = (THROW_SEARCH n) :: pobarrayreturn.TAIL
+  -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_USER_ARRAY_DONE pobarrayreturn) :: pobarrayreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_ARRAY_DONE pobarrayreturn) /\ $ob_array_current(S, pobarrayreturn) /\ $throwable_live(S, n)
+rule PhpStep/ob-array-commit: S ~> $ob_array_commit(S, pobarrayreturn, poboutput)
+  -- if S.TODO = (OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) /\ $ob_array_current(S, pobarrayreturn)
+def $ob_array_commit(S, pobarrayreturn, poboutput) = $ob_user_commit(S, pobarrayreturn.INVOKE[.SENT = eps], poboutput) -- if pobarrayreturn.PENDING = eps
+def $ob_array_commit(S, pobarrayreturn, poboutput) = $ob_deprecation_commit(S, pobarrayreturn.INVOKE[.SENT = eps], poboutput, n) -- if pobarrayreturn.PENDING = (n)
+
+def $ob_array_pending(S, pobarrayreturn) = $eager_operation_pending(S) -- if $eager_operation_pending(S) =/= eps
+def $ob_array_pending(S, pobarrayreturn) = n? -- if $eager_operation_pending(S) = eps -- if n? = $ob_array_pending_operations(S, S.DESTRUCTION.OPERATIONS, pobarrayreturn) -- if n? =/= eps
+def $ob_array_pending(S, pobarrayreturn) = $ob_array_pending_tasks(S.TODO, pobarrayreturn) -- if $eager_operation_pending(S) = eps -- if $ob_array_pending_operations(S, S.DESTRUCTION.OPERATIONS, pobarrayreturn) = eps
+def $ob_array_pending_operations(S, pdestructionoperation :: pdestructionoperation_tail*, pobarrayreturn) = pdestructionoperation.PENDING
+  -- if pdestructionoperation.SOURCE = OB_USER_ARRAY_RESULT pobarrayreturn
+  -- if $ob_array_release_scope(S, pdestructionoperation, pobarrayreturn)
+def $ob_array_pending_operations(S, pdestructionoperation :: pdestructionoperation_tail*, pobarrayreturn) = $ob_array_pending_operations(S, pdestructionoperation_tail*, pobarrayreturn)
+  -- if pdestructionoperation.SOURCE =/= OB_USER_ARRAY_RESULT pobarrayreturn \/ ~$ob_array_release_scope(S, pdestructionoperation, pobarrayreturn)
+def $ob_array_pending_operations(S, eps, pobarrayreturn) = eps
+;; Descriptor projection can remove the operation registry before checking its
+;; queued DONE. The unchanged real EXIT still supplies the resumed pending RV.
+def $ob_array_pending_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_ARRAY_DONE pobarrayreturn) :: ptask_tail*, pobarrayreturn) = pdestructionoperation.PENDING
+  -- if pdestructionoperation.SOURCE = OB_USER_ARRAY_RESULT pobarrayreturn
+  -- if ptask_tail* = pobarrayreturn.TAIL
+def $ob_array_pending_boundary(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $ob_array_pending_boundary(ptask) = false -- otherwise
+def $ob_array_pending_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*, pobarrayreturn) = $ob_array_pending_tasks(ptask_tail*, pobarrayreturn) -- if pdestructionoperation.SOURCE =/= OB_USER_ARRAY_RESULT pobarrayreturn
+def $ob_array_pending_tasks(ptask :: ptask_tail*, pobarrayreturn) = $ob_array_pending_tasks(ptask_tail*, pobarrayreturn) -- if ~$ob_array_pending_boundary(ptask)
+def $ob_array_pending_tasks(ptask*, pobarrayreturn) = eps -- otherwise
+
+def $ob_array_release_completion(pdestructionoperation, eps) = (pdestructionoperation.COMPLETION = NORMAL)
+def $ob_array_release_completion(pdestructionoperation, (n)) = (pdestructionoperation.COMPLETION = THROWING n)
+def $ob_array_release_successor((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobarrayreturn) = $ob_array_release_successor(ptask_tail*, pdestructionoperation, pobarrayreturn)
+def $ob_array_release_successor((DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*, pdestructionoperation, pobarrayreturn) = $ob_array_release_successor(ptask_tail*, pdestructionoperation, pobarrayreturn) -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $ob_array_release_successor((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructionoperation, pobarrayreturn) = $ob_array_release_successor(ptask_tail*, pdestructionoperation, pobarrayreturn) -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $ob_array_release_successor((DESTRUCTOR_WARNING pdestructorcall) :: ptask_tail*, pdestructionoperation, pobarrayreturn) = $ob_array_release_successor(ptask_tail*, pdestructionoperation, pobarrayreturn) -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $ob_array_release_successor((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (OB_USER_ARRAY_DONE pobarrayreturn_actual) :: ptask_tail*, pdestructionoperation, pobarrayreturn) = (pdestructionoperation_actual = pdestructionoperation /\ pobarrayreturn_actual = pobarrayreturn /\ ptask_tail* = pobarrayreturn.TAIL)
+def $ob_array_release_successor(ptask*, pdestructionoperation, pobarrayreturn) = false -- otherwise
+def $ob_array_release_frames(eps, pdestructionoperation, pobarrayreturn) = false
+def $ob_array_release_frames(pframe :: pframe_tail*, pdestructionoperation, pobarrayreturn) = ((pframe.CONTEXT = pobarrayreturn.CALLER /\ pframe.ORIGIN = ($ob_call_site(pobarrayreturn.INVOKE.CALL)) /\ pframe.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT /\ $ob_array_release_successor(pframe.TODO, pdestructionoperation, pobarrayreturn)) \/ $ob_array_release_frames(pframe_tail*, pdestructionoperation, pobarrayreturn))
+def $ob_array_release_scope(S, pdestructionoperation, pobarrayreturn) = (($ob_array_current(S, pobarrayreturn) /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT /\ $ob_array_release_successor(S.TODO, pdestructionoperation, pobarrayreturn)) \/ $ob_array_release_frames(S.FRAMES, pdestructionoperation, pobarrayreturn))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_array_metadata(S, OB_USER_ARRAY_DONE pobarrayreturn, pobarrayreturn) /\ pdestructionoperation.CALLER = pobarrayreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobarrayreturn.INVOKE.CALL)) /\ $ob_array_release_scope(S, pdestructionoperation, pobarrayreturn) /\ $ob_array_release_completion(pdestructionoperation, pobarrayreturn.PENDING) /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps)
+  -- if pdestructionoperation.SOURCE = OB_USER_ARRAY_RESULT pobarrayreturn
+
+;; This source is distinct from scalar UNWRAP, whose successor stays the real
+;; string COMMIT. Here the ARRAY owner exists before the old CELL decrement.
+def $ob_array_ref_successor(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobrefreturn, n) = $ob_array_ref_successor(S, ptask_tail*, pdestructionoperation, pobrefreturn, n)
+def $ob_array_ref_successor(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (OB_USER_ARRAY_WARN pobarrayreturn) :: ptask_tail*, pdestructionoperation, pobrefreturn, n) = (pdestructionoperation_actual = pdestructionoperation /\ pobarrayreturn = $ob_array_from_ref(pobrefreturn, n) /\ ptask_tail* = pobrefreturn.TAIL /\ $call_task_valid(S, OB_USER_ARRAY_WARN pobarrayreturn))
+def $ob_array_ref_successor(S, ptask*, pdestructionoperation, pobrefreturn, n) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_ref_current(S, pobrefreturn) /\ pdestructionoperation.CALLER = pobrefreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobrefreturn.INVOKE.CALL)) /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps /\ $ob_array_ref_successor(S, S.TODO, pdestructionoperation, pobrefreturn, n))
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_ARRAY pobrefreturn n
+def $ob_array_ref_transferred(S, pobrefreturn, n) = true
+  -- if S.COMPLETION = NORMAL /\ $ob_ref_current(S, pobrefreturn)
+  -- if S.TODO = (OB_USER_ARRAY_WARN pobarrayreturn) :: pobrefreturn.TAIL
+  -- if pobarrayreturn = $ob_array_from_ref(pobrefreturn, n)
+  -- if $call_task_valid(S, OB_USER_ARRAY_WARN pobarrayreturn)
+def $ob_array_ref_transferred(S, pobrefreturn, n) = true
+  -- if S.COMPLETION = NORMAL /\ $ob_ref_current(S, pobrefreturn)
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_ARRAY pobrefreturn n
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+def $ob_array_ref_transferred(S, pobrefreturn, n) = false -- otherwise
+
+;; zend_unwrap_reference uses Z_DELREF/ZVAL_COPY, without a possible-root check.
+;; Skip exactly its CELL visit, either now or when its real VALUE job retires;
+;; the later converter's HARRAY zval_ptr_dtor remains an ordinary decrement.
+def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HCELL pobrefreturn.CELL)
+  -- if S.TODO = (OB_USER_REF_ARRAY pobrefreturn n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_ARRAY pobrefreturn n) /\ $ob_ref_current(S, pobrefreturn)
+  -- if S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $ob_array_ref_transferred(S_next, pobrefreturn, n)
+def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HCELL pobrefreturn.CELL)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HCELL n_cell)]
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_ARRAY pobrefreturn n
+  -- if n_cell = pobrefreturn.CELL
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation <- S_next.DESTRUCTION.OPERATIONS
+  -- if S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $ob_array_ref_transferred(S_next, pobrefreturn, n)
+;; Freeing a unique modeled wrapper exposes its one payload edge as a VALUE
+;; job. That edge is the transfer already owned by WARN, not another native
+;; Array decrement. The later ARRAY_RESULT source cannot match this clause.
+def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HARRAY n)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HARRAY n)]
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_ARRAY pobrefreturn n
+  -- if ~((HCELL pobrefreturn.CELL) <- S.ALLOCATIONS)
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation <- S_next.DESTRUCTION.OPERATIONS
+  -- if S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $ob_array_ref_transferred(S_next, pobrefreturn, n)
+def $gc_consumed_handoff(S, S_next, pnode*) = pnode* -- otherwise
+
+;; Array-child release executes in the originating API/VM conversion site.
+;; Ignored diagnostic-return cleanup retains its separate authenticated receipt.
+def $destructor_internal_site_source(OB_USER_ARRAY_RESULT pobarrayreturn) = ($ob_call_api(pobarrayreturn.INVOKE.CALL) =/= eps)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_USER_ARRAY_RESULT pobarrayreturn
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if $ob_call_api(pobarrayreturn.INVOKE.CALL) = (pconfigcall)
+  -- if S_history = S[.CURRENT = pobarrayreturn.CALLER][.ORIGIN = ($ob_call_site(pobarrayreturn.INVOKE.CALL))][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+def $ob_array_diagnostic(OB_USER_ARRAY_DEPRECATED pobarrayreturn) = (pobarrayreturn)
+def $ob_array_diagnostic(OB_USER_ARRAY_RESULT pobarrayreturn) = (pobarrayreturn)
+def $ob_array_diagnostic(ptask) = eps -- otherwise
+def $destructor_internal_site_source(ERROR_HANDLER_RESULT perrorcall) = false
+  -- if $ob_array_diagnostic(perrorcall.RESUME) = (pobarrayreturn)
+  -- if pobarrayreturn.INVOKE.CALL = OB_WRITE pobwrite
+  -- if $output_vm_source(pobwrite.CALLER)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $ob_array_diagnostic(perrorcall.RESUME) = (pobarrayreturn)
+  -- if $ob_call_api(pobarrayreturn.INVOKE.CALL) = (pconfigcall)
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+
+def $return_discard(S, OB_USER_REF_ARRAY pobrefreturn n) = S[.TODO = (OB_USER_REF_ARRAY pobrefreturn n) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt reference array output-handler transfer"]
+def $return_discard(S, OB_USER_ARRAY_WARN pobarrayreturn) = S[.TODO = (OB_USER_ARRAY_WARN pobarrayreturn) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt array output-handler conversion entry"]
+def $return_discard(S, OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) = S[.TODO = (OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt array output-handler conversion commit"]

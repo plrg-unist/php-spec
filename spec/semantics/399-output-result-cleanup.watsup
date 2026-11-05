@@ -7,6 +7,7 @@ dec $ob_normal_seal(ptask*, pdestructionframe, pobinvoke, ptask*) : ptask*
 dec $ob_normal_certificate(pstate, pobinvoke, pdestructionframe) : bool
 dec $ob_normal_deprecation(pstate, pobinvoke) : pstate
 dec $ob_normal_operand(pstate, poperand) : bool
+dec $ob_normal_value(pstate, pvalue) : bool
 dec $ob_normal_result_owner(pstate, pdestructionframe) : bool
 dec $ob_normal_result_prefix(ptask*, pdestructionframe) : bool
 dec $ob_normal_result_boundary(ptask) : bool
@@ -86,13 +87,15 @@ def $generator_frame_release(S_before, S_after) = S_after[.TODO = $ob_normal_sea
 def $generator_frame_release(S_before, S_after) = S_after[.COMPLETION = UNSUPPORTED "non-scalar user output-handler return conversion"]
   -- if S_before.COMPLETION = NORMAL /\ S_before.TODO = eps
   -- if S_before.RESULT = KNOWN pvalue
-  -- if ~$ob_user_scalar(pvalue)
+  -- if ~$ob_normal_value(S_before, pvalue)
   -- if S_before.CURRENT = (pcallcontext)
   -- if $ob_user_context_valid(S_before, pcallcontext)
   -- if S_before.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
   -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
-def $ob_normal_operand(S, KNOWN pvalue) = ($ob_user_scalar(pvalue) /\ $config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]))
+def $ob_normal_value(S, pvalue) = $config_slots_valid(S, [NAMED_SENT (KNOWN pvalue)]) -- if $ob_user_scalar(pvalue)
+def $ob_normal_value(S, pvalue) = false -- otherwise
+def $ob_normal_operand(S, KNOWN pvalue) = $ob_normal_value(S, pvalue)
 def $ob_normal_operand(S, REFERENCE n) = $call_reference_operand_valid(S, REFERENCE n)
 def $ob_normal_operand(S, poperand) = false -- otherwise
 
@@ -104,9 +107,8 @@ def $ob_normal_result_boundary(ptask) = false -- otherwise
 def $ob_normal_result_prefix((DESTRUCTOR_FRAME_EXIT pdestructionframe_actual) :: (OB_USER_NORMAL_RESULT pobinvoke pdestructionframe) :: ptask_tail*, pdestructionframe) = (pdestructionframe_actual[.PENDING = eps] = pdestructionframe)
 def $ob_normal_result_prefix(ptask :: ptask_tail*, pdestructionframe) = $ob_normal_result_prefix(ptask_tail*, pdestructionframe) -- if ~$ob_normal_result_boundary(ptask)
 def $ob_normal_result_prefix(ptask*, pdestructionframe) = false -- otherwise
-def $ob_normal_result_owner(S, pdestructionframe) = true -- if pdestructionframe.VALUE = KNOWN pvalue
-def $ob_normal_result_owner(S, pdestructionframe) = (S.RESULT = pdestructionframe.VALUE \/ $ob_normal_result_prefix(S.TODO, pdestructionframe)) -- if pdestructionframe.VALUE = REFERENCE n
-def $ob_normal_result_owner(S, pdestructionframe) = false -- otherwise
+def $ob_normal_result_owner(S, pdestructionframe) = true -- if $operand_nodes(pdestructionframe.VALUE) = eps
+def $ob_normal_result_owner(S, pdestructionframe) = (S.RESULT = pdestructionframe.VALUE \/ $ob_normal_result_prefix(S.TODO, pdestructionframe)) -- if $operand_nodes(pdestructionframe.VALUE) =/= eps
 
 def $ob_normal_certificate(S, pobinvoke, pdestructionframe) = true
   -- if $ob_user_live(S, pobinvoke)
@@ -204,12 +206,14 @@ rule PhpStep/ob-user-normal-pending-produced: S ~> $ob_normal_deprecation(S[.TOD
   -- if S.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe)
   -- if pdestructionframe.VALUE = KNOWN pvalue
+  -- if $ob_user_scalar(pvalue)
   -- if $output_selected(S, pobinvoke) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
 rule PhpStep/ob-user-normal-pending: S ~> S[.TODO = (OB_USER_NORMAL_COMMIT pobinvoke[.SENT = eps] pdestructionframe $ob_user_output(S, pvalue)) :: ptask_tail*]
   -- if S.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe)
   -- if pdestructionframe.VALUE = KNOWN pvalue
+  -- if $ob_user_scalar(pvalue)
   -- if $output_selected(S, pobinvoke) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
 

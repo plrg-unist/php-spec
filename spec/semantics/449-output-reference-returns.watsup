@@ -1,12 +1,12 @@
 ;; output.c tests raw FALSE/TRUE before convert_to_string unwraps a reference.
 ;; Keep the real returned cell through CV cleanup and produced-output warnings;
 ;; only scalar conversion reads its current payload and drops the retval owner.
-dec $ob_ref_task(ptask) : pobrefreturn?
-dec $ob_ref_tasks(ptask*, pobrefreturn) : bool
-dec $ob_ref_frames(pframe*, pobrefreturn) : bool
-dec $ob_ref_context(pstate, pobrefreturn) : bool
+dec $ob_return_marker(ptask) : ptask
+dec $ob_return_tasks(ptask*, ptask, ptask*) : bool
+dec $ob_return_frames(pframe*, ptask, pcallcontext?, porigin, ptask*) : bool
+dec $ob_return_context(pstate, ptask, pcallcontext?, porigin, ptask*) : bool
 dec $ob_ref_current(pstate, pobrefreturn) : bool
-dec $ob_ref_valid(pstate, pobrefreturn, bool) : bool
+dec $ob_ref_valid(pstate, ptask, pobrefreturn, bool) : bool
 dec $ob_ref_nodes(pobrefreturn) : pnode*
 dec $ob_ref_begin(pstate, pobrefreturn) : pstate
 dec $ob_ref_discard(pstate, pobrefreturn) : pstate
@@ -15,36 +15,33 @@ dec $ob_ref_pending(pstate, pobinvoke, nat, nat) : pstate
 dec $ob_ref_bytes(pvalue, int) : preqbytes
 dec $ob_ref_notice_restore(pstate, pstate, pobinvoke, nat, nat, ptask*) : pstate
 dec $ob_ref_unwrap_successor(pstate, ptask*, pdestructionoperation, pobrefreturn) : bool
+dec $ob_ref_nonscalar_return(pstate, pobrefreturn, pvalue) : pstate
 
 ;; Zend always requests the callback retval, even when the source print's own
 ;; result is discarded by its surrounding statement or for clause.
 def $reference_callback_used(S, pcallcontext) = (true) -- if $ob_user_context_valid(S, pcallcontext)
 
-def $ob_ref_task(OB_USER_REF_DEPRECATED pobrefreturn) = (pobrefreturn)
-def $ob_ref_task(OB_USER_REF_UNWRAP pobrefreturn) = (pobrefreturn)
-def $ob_ref_task(OB_USER_REF_COMMIT pobrefreturn poboutput) = (pobrefreturn)
-def $ob_ref_task(OB_USER_REF_NOTICE pobrefreturn n) = (pobrefreturn)
-def $ob_ref_task(ERROR_HANDLER_INVOKE perrorcall) = $ob_ref_task(perrorcall.RESUME)
-def $ob_ref_task(ERROR_HANDLER_RESULT perrorcall) = $ob_ref_task(perrorcall.RESUME)
-def $ob_ref_task(ERROR_HANDLER_CLEAN perrorcall) = $ob_ref_task(perrorcall.RESUME)
-def $ob_ref_task(API_CALLBACK_SEND papiargcursor) = $ob_ref_task(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
-def $ob_ref_task(API_CALLBACK_REF papiargcursor) = $ob_ref_task(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
-def $ob_ref_task(ptask) = eps -- otherwise
-def $ob_ref_tasks(ptask :: ptask_tail*, pobrefreturn) = (ptask_tail* = pobrefreturn.TAIL) -- if $ob_ref_task(ptask) = (pobrefreturn)
-def $ob_ref_tasks(ptask :: ptask_tail*, pobrefreturn) = $ob_ref_tasks(ptask_tail*, pobrefreturn) -- if $ob_ref_task(ptask) =/= (pobrefreturn)
-def $ob_ref_tasks(eps, pobrefreturn) = false
-def $ob_ref_frames(eps, pobrefreturn) = false
-def $ob_ref_frames(pframe :: pframe_tail*, pobrefreturn) = ((pframe.CONTEXT = pobrefreturn.CALLER /\ pframe.ORIGIN = ($ob_call_site(pobrefreturn.INVOKE.CALL)) /\ $ob_ref_tasks(pframe.TODO, pobrefreturn)) \/ $ob_ref_frames(pframe_tail*, pobrefreturn))
+def $ob_return_marker(ERROR_HANDLER_INVOKE perrorcall) = $ob_return_marker(perrorcall.RESUME)
+def $ob_return_marker(ERROR_HANDLER_RESULT perrorcall) = $ob_return_marker(perrorcall.RESUME)
+def $ob_return_marker(ERROR_HANDLER_CLEAN perrorcall) = $ob_return_marker(perrorcall.RESUME)
+def $ob_return_marker(API_CALLBACK_SEND papiargcursor) = $ob_return_marker(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_return_marker(API_CALLBACK_REF papiargcursor) = $ob_return_marker(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_return_marker(ptask) = ptask -- otherwise
+def $ob_return_tasks(ptask :: ptask_tail*, ptask_expected, ptask_native*) = (ptask_tail* = ptask_native*) -- if $ob_return_marker(ptask) = ptask_expected
+def $ob_return_tasks(ptask :: ptask_tail*, ptask_expected, ptask_native*) = $ob_return_tasks(ptask_tail*, ptask_expected, ptask_native*) -- if $ob_return_marker(ptask) =/= ptask_expected
+def $ob_return_tasks(eps, ptask, ptask_native*) = false
+def $ob_return_frames(eps, ptask, pcallcontext?, porigin, ptask_native*) = false
+def $ob_return_frames(pframe :: pframe_tail*, ptask, pcallcontext?, porigin, ptask_native*) = ((pframe.CONTEXT = pcallcontext? /\ pframe.ORIGIN = (porigin) /\ $ob_return_tasks(pframe.TODO, ptask, ptask_native*)) \/ $ob_return_frames(pframe_tail*, ptask, pcallcontext?, porigin, ptask_native*))
 def $ob_ref_current(S, pobrefreturn) = (S.CURRENT = pobrefreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobrefreturn.INVOKE.CALL)))
-def $ob_ref_context(S, pobrefreturn) = (($ob_ref_current(S, pobrefreturn) /\ $ob_ref_tasks(S.TODO, pobrefreturn)) \/ $ob_ref_frames(S.FRAMES, pobrefreturn))
-def $ob_ref_valid(S, pobrefreturn, b_cell) = true
-  -- if $ob_ref_context(S, pobrefreturn)
+def $ob_return_context(S, ptask, pcallcontext?, porigin, ptask_native*) = ((S.CURRENT = pcallcontext? /\ S.ORIGIN = (porigin) /\ $ob_return_tasks(S.TODO, ptask, ptask_native*)) \/ $ob_return_frames(S.FRAMES, ptask, pcallcontext?, porigin, ptask_native*))
+def $ob_ref_valid(S, ptask, pobrefreturn, b_cell) = true
+  -- if $ob_return_context(S, ptask, pobrefreturn.CALLER, $ob_call_site(pobrefreturn.INVOKE.CALL), pobrefreturn.TAIL)
   -- if pobinvoke = pobrefreturn.INVOKE
   -- if S_scope = S[.CURRENT = pobrefreturn.CALLER][.ORIGIN = ($ob_call_site(pobinvoke.CALL))][.TODO = (OB_USER_RESULT pobinvoke) :: pobrefreturn.TAIL]
   -- if $call_task_valid(S_scope, OB_USER_RESULT pobinvoke)
   -- if ~b_cell \/ $call_reference_operand_valid(S, REFERENCE pobrefreturn.CELL)
   -- if $destructor_pending_valid(S, pobrefreturn.PENDING)
-def $ob_ref_valid(S, pobrefreturn, b_cell) = false -- otherwise
+def $ob_ref_valid(S, ptask, pobrefreturn, b_cell) = false -- otherwise
 def $ob_ref_nodes(pobrefreturn) = $ob_user_nodes(pobrefreturn.INVOKE) ++ [HCELL pobrefreturn.CELL] ++ $instance_roots(pobrefreturn.PENDING)
 def $task_nodes(OB_USER_REF_DEPRECATED pobrefreturn) = $ob_ref_nodes(pobrefreturn)
 def $task_nodes(OB_USER_REF_UNWRAP pobrefreturn) = $ob_ref_nodes(pobrefreturn)
@@ -66,13 +63,13 @@ def $output_drain_task(S, OB_USER_REF_DEPRECATED pobrefreturn) = $output_drain_a
 def $output_drain_task(S, OB_USER_REF_UNWRAP pobrefreturn) = $output_drain_active(S, pobdrain) -- if pobrefreturn.INVOKE.CALL = OB_FINAL pobdrain
 def $output_drain_task(S, OB_USER_REF_COMMIT pobrefreturn poboutput) = $output_drain_active(S, pobdrain) -- if pobrefreturn.INVOKE.CALL = OB_FINAL pobdrain
 
-def $call_task_valid(S, OB_USER_REF_DEPRECATED pobrefreturn) = ($ob_ref_valid(S, pobrefreturn, true) /\ pobrefreturn.PENDING = eps /\ $ob_user_temporary(S, pobrefreturn.INVOKE.BUFFER.ID) /\ $long_and(poutputbuffer.FLAGS, 40960) = 8192)
+def $call_task_valid(S, OB_USER_REF_DEPRECATED pobrefreturn) = ($ob_ref_valid(S, OB_USER_REF_DEPRECATED pobrefreturn, pobrefreturn, true) /\ pobrefreturn.PENDING = eps /\ $ob_user_temporary(S, pobrefreturn.INVOKE.BUFFER.ID) /\ $long_and(poutputbuffer.FLAGS, 40960) = 8192)
   -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
-def $call_task_valid(S, OB_USER_REF_UNWRAP pobrefreturn) = ($ob_ref_valid(S, pobrefreturn, true) /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+def $call_task_valid(S, OB_USER_REF_UNWRAP pobrefreturn) = ($ob_ref_valid(S, OB_USER_REF_UNWRAP pobrefreturn, pobrefreturn, true) /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
   -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
-def $call_task_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput) = ($ob_ref_valid(S, pobrefreturn, false) /\ $ob_user_output_valid(S, poboutput) /\ $string_bytes(poboutput.VALUE) = (poboutput.BYTES) /\ ~poboutput.FAILED /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+def $call_task_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput) = ($ob_ref_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput, pobrefreturn, false) /\ $ob_user_output_valid(S, poboutput) /\ $string_bytes(poboutput.VALUE) = (poboutput.BYTES) /\ ~poboutput.FAILED /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
   -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
-def $call_task_valid(S, OB_USER_REF_NOTICE pobrefreturn n) = ($ob_ref_valid(S, pobrefreturn, true) /\ pobrefreturn.PENDING = eps /\ $throwable_live(S, n))
+def $call_task_valid(S, OB_USER_REF_NOTICE pobrefreturn n) = ($ob_ref_valid(S, OB_USER_REF_NOTICE pobrefreturn n, pobrefreturn, true) /\ pobrefreturn.PENDING = eps /\ $throwable_live(S, n))
 
 def $ob_user_reference_return(S, pobinvoke, n) = $ob_ref_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {INVOKE pobinvoke, CELL n, PENDING eps, CALLER S.CURRENT, TAIL ptask_tail*})
   -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
@@ -107,11 +104,12 @@ rule PhpStep/ob-reference-unwrap: S ~> S[.TODO = (OB_USER_REF_COMMIT pobrefretur
   -- if $call_task_valid(S, OB_USER_REF_UNWRAP pobrefreturn) /\ $ob_ref_current(S, pobrefreturn)
   -- if S.STORE[pobrefreturn.CELL] = DEFINED pvalue
   -- if $ob_user_scalar(pvalue)
-rule PhpStep/ob-reference-nonscalar: S ~> S[.COMPLETION = UNSUPPORTED "non-scalar reference user output-handler return conversion"]
+rule PhpStep/ob-reference-nonscalar: S ~> $ob_ref_nonscalar_return(S, pobrefreturn, pvalue)
   -- if S.TODO = (OB_USER_REF_UNWRAP pobrefreturn) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_REF_UNWRAP pobrefreturn) /\ $ob_ref_current(S, pobrefreturn)
   -- if S.STORE[pobrefreturn.CELL] = DEFINED pvalue
   -- if ~$ob_user_scalar(pvalue)
+def $ob_ref_nonscalar_return(S, pobrefreturn, pvalue) = S[.COMPLETION = UNSUPPORTED "non-scalar reference user output-handler return conversion"] -- otherwise
 rule PhpStep/ob-reference-commit: S ~> $ob_ref_commit(S, pobrefreturn, poboutput)
   -- if S.TODO = (OB_USER_REF_COMMIT pobrefreturn poboutput) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput) /\ $ob_ref_current(S, pobrefreturn)

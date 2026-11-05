@@ -71,14 +71,10 @@ CASES['discarded-for-demand'] = (
     CASES['unused-print-demand'][0].replace(b';print "A";', b';for(print "A";false;){};'),
     b'P1|20593:T')
 CONTROLS = {
-    'ref-array': scalar(b'[]'),
     'pending-final-ref': b'<?php echo "P";$e=new Exception;class D{function __destruct(){global $e;throw $e;}}function &h($b,$p){$r=true;$d=new D;return $r;}ob_start("h");echo "A";',
-    'warning-changes-to-array': b'<?php echo "P";$r=false;set_error_handler(function(){global $r;$r=[];return true;});function &h($b,$p){global $r;echo "H";return $r;}ob_start("h");echo "A";ob_get_flush();echo "Z";',
 }
 CONTROL_REASONS = {
-    'ref-array': 'non-scalar reference user output-handler return conversion',
     'pending-final-ref': 'pending FINAL reference output-handler return cleanup',
-    'warning-changes-to-array': 'non-scalar reference user output-handler return conversion',
 }
 
 _common_fingerprint = common.fingerprint

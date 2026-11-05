@@ -67,6 +67,7 @@ dec $ob_user_present(poutputbuffer*, nat) : bool
 dec $ob_user_result_discard(pstate, pobinvoke) : pstate
 dec $ob_user_deprecation_discard(pstate, pobinvoke, pvalue) : pstate
 dec $ob_user_reference_return(pstate, pobinvoke, nat) : pstate
+dec $ob_user_nonscalar_return(pstate, pobinvoke, pvalue) : pstate
 
 ;; Source selection happens after ordinary ZPP conversion. Invalid/effectful
 ;; callback creation has its own Warning+Notice protocol, not a tick TypeError.
@@ -411,11 +412,12 @@ rule PhpStep/ob-user-result: S ~> S[.TODO = (OB_USER_COMMIT pobinvoke[.SENT = ep
   -- if $ob_user_scalar(pvalue)
   -- if $output_selected(S, pobinvoke) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
-rule PhpStep/ob-user-nonscalar: S ~> S[.COMPLETION = UNSUPPORTED "non-scalar user output-handler return conversion"]
+rule PhpStep/ob-user-nonscalar: S ~> $ob_user_nonscalar_return(S, pobinvoke, pvalue)
   -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
   -- if S.RESULT = KNOWN pvalue
   -- if ~$ob_user_scalar(pvalue)
+def $ob_user_nonscalar_return(S, pobinvoke, pvalue) = S[.COMPLETION = UNSUPPORTED "non-scalar user output-handler return conversion"] -- otherwise
 rule PhpStep/ob-user-reference-return: S ~> $ob_user_reference_return(S, pobinvoke, n)
   -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
