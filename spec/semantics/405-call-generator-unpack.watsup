@@ -302,7 +302,7 @@ def $generator_unpack_reference_target(S, pgeneratorunpack, pnamedtarget) = fals
 def $generator_unpack_reference_stage(S, pgeneratorunpack) = true
   -- if $generator_unpack_reference_source(S, pgeneratorunpack)
   -- if pgeneratorunpack.HOLD = KNOWN pvalue
-  -- if $value_nodes(pvalue) = eps
+  -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
   -- if pgeneratorunpack.KEY = (pvalue_key)
   -- if $fiber_traversal_key(pvalue_key) = (KINT z)
   -- if $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, KINT z, |pgeneratorunpack.CALL.SENT.SLOTS|) = NAMED_POSITION n
@@ -343,7 +343,7 @@ def $generator_unpack_send(S, pgeneratorunpack, ptask*) = $error_dispatch(S, 2, 
   -- if pgenerator.PHASE = GENERATOR_PAUSED
   -- if z_index = pgenerator.INDEX
   -- if pvalue = $generator_cached_value(S, pgeneratorunpack.OBJECT, false)
-  -- if $value_nodes(pvalue) = eps
+  -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
   -- if ptbytes = $generator_unpack_warning_message(S, pgeneratorunpack[.KEY = (pvalue_key)])
   -- if ptbytes =/= eps
   -- if z_line = $unpack_line(S, pgeneratorunpack.CALL)
