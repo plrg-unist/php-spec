@@ -6855,7 +6855,12 @@ guards. Root VM destructor exits now finish local cleanup before committing the
 name; nested queries preserve exit status and skip result assignment. The
 [exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
 records seven exact exits, seven explicit controls and 247 independent guards.
-Switched Fiber exits, replacement cleanup, owning rebound values, late type
+Local cleanup throws now cancel exit and commit the name before propagation,
+with compiled CV/alias release order and preserved exit status. The
+[cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json)
+records eight new/promoted agreements, one affected enum exit-status source,
+three explicit controls and 256+47 independent guards at separate cuts.
+Switched Fiber exits, repeated cleanup exits, owning rebound values, late type
 sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).

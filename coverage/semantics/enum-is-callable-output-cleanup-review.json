@@ -1,0 +1,53 @@
+{
+  "scope": "published-enum is_callable root VM output completion when ordinary local cleanup throws, including compiled CV aliases and nested queries",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_routes": [
+    "ext/standard/type.c:PHP_FUNCTION(is_callable)",
+    "Zend/zend_API.h:_ZEND_TRY_ASSIGN_STR",
+    "Zend/zend_execute.c:zend_free_compiled_variables",
+    "Zend/zend_objects_API.c:zend_objects_store_del",
+    "Zend/zend_objects.c:zend_objects_destroy_object",
+    "Zend/zend_exceptions.c:zend_exception_set_previous"
+  ],
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "native_first": ".tools/enum-is-callable-output-cleanup-native-review/native.json: ten cleanup originals plus two raw-only ordinary-frame probes; prior exit-local-throw and affected exit-status are in the exit native manifest. The ordinary probes have no new model-execution credit."
+  },
+  "accepted_cuts": {
+    "151d92ea82d4f58bdc2905591234bbde34913fc5": "source-v1 overall fail: first7 observations pass/stable (5 agreements including the affected enum exit-status source,2 Unsupported controls); last3 order-dependent failures retained.",
+    "3b43c88e65987bd5adc63a435849133b43222120": "strict-v2 SL433 true/exit0/empty; source-v2 overall fail retains first4 pass/stable (3 agreements,1 Unsupported control). Exact shared-reference source alone at explicit90s CLI bound then agrees/stable in44.5s; no semantic edits between those runs.",
+    "53be4333e54f07af91738cdc779689bbafe4e279": "reached-v3 fails at guard287 of300, after all256 guards in the three positive groups and30 control-prefix guards pass. Accept the complete positive256; do not count a whole300 run or repeat the overlapping control prefix.",
+    "d3cacbdd6b831a061e646f0144de0e1dd76c6fc7": "corrected control-only47 true/exit0/empty/stable; raw PhpStep captures refusal before driver administrative error unwind. Combined303 obligations are across256+47 cuts, not one full303 execution.",
+    "positive_prefix_report_sha256": "0642c4c7988834f62fb54347d0c566bdeaeeb08996daaad8817a717681c7bfd3",
+    "control_report_sha256": "b6b485afd60dcd24ea50d7a49238ef56f9ec698a25cd39f0e0099d11062ce9a3"
+  },
+  "totals": {
+    "new_or_promoted_source_agreements": 8,
+    "affected_enum_exit_status_source": 1,
+    "explicit_unsupported_controls": 3,
+    "complete_positive_group_guards": 256,
+    "final_control_guards": 47,
+    "unique_guard_obligations_across_cuts": 303,
+    "strict_modules": 433
+  },
+  "review": {
+    "reviewer": "/root/enum_review_current",
+    "status": "CLEAR for substantive semantic/source/state cuts and per-row timeout binding",
+    "focus": "Compiled CV occurrence order and shared-wrapper multiplicity; live pending receiver release plus distinct real C pin; once-only pending Throwable transfer; raw name commit before catch; previous chaining; process status and untouched results; nested inner/outer C continuations; early repeated-exit refusal and marker/budget controls."
+  },
+  "behavior": "A cleanup Throwable replaces the pending exit in the existing authenticated C operation and destructor-call record. Ordinary pin release and raw postfinish commit then run before THROW_SEARCH resumes. Compiled local-cell occurrences move once to the front of the existing owner multiset; aliases keep separate decrements, followed by the receiver release and original C pin. Catch and later string exit preserve process status; a later integer exit replaces it.",
+  "default_dispatch": "Only a genuine enum EXIT_UNWIND frame capture selects the owner-order rule. Default ordinary exits and held update-warning task heads remain statically disjoint; no new outside-enum model run is claimed.",
+  "harness": "user_string now honors the existing family model_timeout_seconds field. Only shared-reference cleanup sets90; nonalias model/native bounds stay45 and model host bound55. Its effective90s model command matches the accepted exact retry; the100s host cap exceeds observed44.5s. Static independent review binds this small harness change without source replay.",
+  "retained_failures": {
+    "source-v1": "two locals were reversed; both-throw previous chain was reversed; throw-then-exit incorrectly reached php_error255. Corrected by the scoped compiled-cell multiset move and early refusal.",
+    "source-v2": "public45s shared-reference timeout has zero agreement credit; retain it beside the unchanged-input90s success.",
+    "reached-v1": "noninvertible concatenation binding; no execution credit.",
+    "reached-v2": "OLD-owner count1 was overstrict while pending receiver release plus C pin own2; no complete-suite credit.",
+    "reached-v3": "drive_steps started administrative error unwind after Unsupported; positive256 accepted, whole300 not accepted.",
+    "control-v1": "relational premise emitted with Boolean -- if; no execution credit."
+  },
+  "remaining": "Repeated cleanup exits, eval/static exit tails, switched Fiber return/force-close, owning rebound payloads, late attached type sources, variable-array callable inputs for third-output authentication and wider enum callable/loading contexts remain partial. Native throw-then-exit additionally emits an UnwindExit::$previous dynamic-property deprecation; the source is an Unsupported control, not an agreement.",
+  "recovery": "Raw outside Git: canonical .tools/enum-is-callable-output-cleanup-evidence. It preserves strict-v1/v2, source-v1/v2, alias-90-v1, reached-v1/v2/v3, control-v1/v2 commands/streams and source-selection-v1/v2 JSON. Original raw basenames remain under raw/: user-string-pr8xkqjc, user-string-rt8wvcde, and enum-is-callable-protocol-{x5fe5anz,id89oyal,qhbxt7zh,caiz_wmz,xoeekw8p}. Tracked catalogue preserves exact source bytes/hashes; the tested private branch preserves all cuts. Default cleanup protocol has303 checks; --control-only selects the affected47. Unchanged positive fronts/source/strict checks were not replayed for fixture or metadata corrections.",
+  "compiler_runtime_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+}
