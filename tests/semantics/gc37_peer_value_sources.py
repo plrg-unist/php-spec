@@ -9,6 +9,7 @@ ROOT = family.ROOT
 FILES = {
     'child-before-first-insertion': 'gc37_peer_value_preinsert.php',
     'child-after-first-insertion': 'gc37_peer_value_postinsert.php',
+    'preinsert-child-throw': 'gc37_peer_value_throw.php',
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, filename in FILES.items()}
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}
