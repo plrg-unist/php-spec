@@ -101,7 +101,8 @@ outcomes and 88 reached guards pass.
 A source-authenticated receipt now saves a direct variable's enum method string
 at its first SEND. Later argument callbacks can rebind its current CV, including
 a shared input/output cell, without changing the query. Nested queries consume
-their own receipts; a pre-output throw leaves output and result unchanged.
+their own receipts; a later argument throw skips the query's output and result
+assignment.
 Seven exact originals, strict433, 200 independent guards and the affected
 46/43 variable/alias guards pass.
 [Saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json).
