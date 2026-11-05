@@ -27,7 +27,7 @@ review.CASES = {
         'source': source('scalar'),
         'stage': PREFIX + '-- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_callback), DESTRUCTION_VALUE (HOBJECT n_callback)] -- if pexecutortick.ENTRY = ptickentry',
         'checks': [
-            'ptickentry.ENTRY.ARGS = [PNULL, PBOOL false, PBOOL true, PINT 7, PFLOAT 4609434218613702656, PSTRING $ptascii("s")]',
+            'ptickentry.ENTRY.ARGS = [PNULL, PBOOL false, PBOOL true, PINT 7, PFLOAT 4609434218613702656, PSTRING_CARRIER INTERNED_STRING $ptascii("s")]',
             '$executor_tick_nodes(ptickentry) = [HOBJECT n_callback, HOBJECT n_callback]',
             '$heap_owners($heap_graph(S), HOBJECT n_callback) = 2',
             'S.TICKENTRIES = eps', 'pexecutortick.TAIL = eps',
