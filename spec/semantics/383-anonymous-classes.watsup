@@ -181,6 +181,7 @@ def $anonymous_method_factory_node(pcnode) = false -- otherwise
 dec $anonymous_method_factory_members(statement*) : bool
 def $anonymous_method_factory_members(eps) = true
 def $anonymous_method_factory_members(statement :: statement_tail*) = true
+  -- if ~$anonymous_class_like(statement)
   -- if $anonymous_no_classes($pcwalk($pcchildren(statement, eps))) \/ ($anonymous_method_factory_node(statement) /\ $anonymous_no_named_classes($pcwalk($pcchildren(statement, eps))))
   -- if $anonymous_method_factory_members(statement_tail*)
 def $anonymous_method_factory_members(statement*) = false -- otherwise
