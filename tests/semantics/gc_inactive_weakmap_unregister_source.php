@@ -9,9 +9,11 @@ class GcMapUnregisterLate31 {
         $keyB = new stdClass;
         $holder = new GcMapHolder31;
         $holder->child = null;
+        $spare = new GcMapHolder31;
+        $spare->child = null;
         $map = new WeakMap;
         $map[$keyA] = $holder;
-        $map[$keyB] = 17;
+        $map[$keyB] = $spare;
         $holder->child = $keyB;
         $GLOBALS['savedMap'] = $map;
         $GLOBALS['savedKeyA'] = $keyA;
