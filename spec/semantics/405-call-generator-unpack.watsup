@@ -27,6 +27,7 @@ dec $generator_unpack_delegated_blocked(pstate) : bool
 dec $generator_unpack_reference_source(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_reference_target(pstate, pgeneratorunpack, pnamedtarget) : bool
 dec $generator_unpack_reference_stage(pstate, pgeneratorunpack) : bool
+dec $generator_unpack_warning_hold(pstate, pgeneratorunpack) : pgeneratorunpack?
 dec $generator_unpack_warning_message(pstate, pgeneratorunpack) : ptbytes
 dec $generator_unpack_warning_same(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_byref(pstate, pgeneratorunpack, ptask*) : pstate
@@ -308,6 +309,17 @@ def $generator_unpack_reference_stage(S, pgeneratorunpack) = true
   -- if $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, KINT z, |pgeneratorunpack.CALL.SENT.SLOTS|) = NAMED_POSITION n
   -- if $generator_unpack_reference_target(S, pgeneratorunpack, NAMED_POSITION n)
 def $generator_unpack_reference_stage(S, pgeneratorunpack) = false -- otherwise
+def $generator_unpack_warning_hold(S, pgeneratorunpack) = (pgeneratorunpack[.HOLD = KNOWN pvalue][.KEY = (pvalue_key)][.INDEX = (pgenerator.INDEX)])
+  -- if $generator_cached_value(S, pgeneratorunpack.OBJECT, true) = pvalue_key
+  -- if $fiber_traversal_key(pvalue_key) = (KINT z_key)
+  -- if $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, KINT z_key, |pgeneratorunpack.CALL.SENT.SLOTS|) = NAMED_POSITION n
+  -- if $generator_unpack_reference_target(S, pgeneratorunpack, NAMED_POSITION n)
+  -- if $generator_unpack_reference_source(S, pgeneratorunpack)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED
+  -- if pvalue = $generator_cached_value(S, pgeneratorunpack.OBJECT, false)
+  -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
+def $generator_unpack_warning_hold(S, pgeneratorunpack) = eps -- otherwise
 def $generator_unpack_warning_message(S, pgeneratorunpack) = $ptascii("Cannot pass by-reference argument ") ++ $ntunsigned($(n + 1)) ++ $ptascii(" of ") ++ $iterator_unpack_warning_target(S, pgeneratorunpack.CALL.FUNCTION) ++ $ptascii("() by unpacking a Traversable, passing by-value instead")
   -- if pgeneratorunpack.KEY = (pvalue_key)
   -- if $fiber_traversal_key(pvalue_key) = (KINT z)
@@ -330,21 +342,14 @@ def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S_check
   -- if pnamedtarget = $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
   -- if S_check = $unpack_check(S, pgeneratorunpack.CALL.SENT, pnamedtarget, pkey, pgeneratorunpack.NAMED, $unpack_line(S, pgeneratorunpack.CALL))
   -- if S_check.COMPLETION =/= NORMAL
-def $generator_unpack_send(S, pgeneratorunpack, ptask*) = $error_dispatch(S, 2, ptbytes, z_line, DIAGNOSTIC "Warning" ptbytes z_line, GENERATOR_UNPACK pgeneratorunpack[.HOLD = KNOWN pvalue][.KEY = (pvalue_key)][.INDEX = (z_index)] "byref")
-  -- if $generator_cached_value(S, pgeneratorunpack.OBJECT, true) = pvalue_key
-  -- if $fiber_traversal_key(pvalue_key) = (KINT z_key)
-  -- if $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, KINT z_key, |pgeneratorunpack.CALL.SENT.SLOTS|) = NAMED_POSITION n
-  -- if S_check = $unpack_check(S, pgeneratorunpack.CALL.SENT, NAMED_POSITION n, KINT z_key, pgeneratorunpack.NAMED, $unpack_line(S, pgeneratorunpack.CALL))
+def $generator_unpack_send(S, pgeneratorunpack, ptask*) = $error_dispatch(S, 2, ptbytes, z_line, DIAGNOSTIC "Warning" ptbytes z_line, GENERATOR_UNPACK pgeneratorunpack_warning "byref")
+  -- if $fiber_traversal_key($generator_cached_value(S, pgeneratorunpack.OBJECT, true)) = (pkey)
+  -- if pnamedtarget = $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
+  -- if S_check = $unpack_check(S, pgeneratorunpack.CALL.SENT, pnamedtarget, pkey, pgeneratorunpack.NAMED, $unpack_line(S, pgeneratorunpack.CALL))
   -- if S_check.COMPLETION = NORMAL
-  -- if $unpack_send_reference(S, pgeneratorunpack.CALL.FUNCTION, NAMED_POSITION n)
-  -- if $generator_unpack_reference_target(S, pgeneratorunpack, NAMED_POSITION n)
-  -- if $generator_unpack_reference_source(S, pgeneratorunpack)
-  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
-  -- if pgenerator.PHASE = GENERATOR_PAUSED
-  -- if z_index = pgenerator.INDEX
-  -- if pvalue = $generator_cached_value(S, pgeneratorunpack.OBJECT, false)
-  -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
-  -- if ptbytes = $generator_unpack_warning_message(S, pgeneratorunpack[.KEY = (pvalue_key)])
+  -- if $unpack_send_reference(S, pgeneratorunpack.CALL.FUNCTION, pnamedtarget)
+  -- if $generator_unpack_warning_hold(S, pgeneratorunpack) = (pgeneratorunpack_warning)
+  -- if ptbytes = $generator_unpack_warning_message(S, pgeneratorunpack_warning)
   -- if ptbytes =/= eps
   -- if z_line = $unpack_line(S, pgeneratorunpack.CALL)
 def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S[.COMPLETION = UNSUPPORTED "Generator unpack by-reference target"]
@@ -353,6 +358,7 @@ def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S[.COMPLETION = UNSUPP
   -- if S_check = $unpack_check(S, pgeneratorunpack.CALL.SENT, pnamedtarget, pkey, pgeneratorunpack.NAMED, $unpack_line(S, pgeneratorunpack.CALL))
   -- if S_check.COMPLETION = NORMAL
   -- if $unpack_send_reference(S, pgeneratorunpack.CALL.FUNCTION, pnamedtarget)
+  -- if $generator_unpack_warning_hold(S, pgeneratorunpack) = eps
 def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S[.TODO = (GENERATOR_UNPACK pgeneratorunpack_next "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $fiber_traversal_key($generator_cached_value(S, pgeneratorunpack.OBJECT, true)) = (pkey)
   -- if pnamedtarget = $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, pkey, |pgeneratorunpack.CALL.SENT.SLOTS|)
