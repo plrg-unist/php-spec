@@ -109,9 +109,62 @@
   ],
   "review": {
     "reviewer": "classes_review_daybreak",
-    "decision": "private_clear_joined_pending",
-    "private_cut": null,
-    "basis": "Independent static/native scope review and fixed-input private source 15+1, reached79+pure17, strict435, boundary35 and affected source4 CLEAR; actual-parent joined interaction review pending.",
-    "semantic_cut": "2ef515d53f59eb05035f1736bd155ff58c66cbb8"
+    "decision": "accepted",
+    "private_cut": "d5962cd2176a0fe41335189c9cbe3dd5cf455bcd",
+    "basis": "Independent private and joined semantic/evidence CLEAR: unchanged patch-id on actual parent, private source 15+1, joined source5/strict435/reached79+pure17/boundary35/affected source3, exact GC39/OB14 source2, and exact enum-parent cast source1. COMP177 rejected-only property-hook parser and enum is_callable owner2 arm are disjoint from the admitted source route.",
+    "semantic_cut": "2ef515d53f59eb05035f1736bd155ff58c66cbb8",
+    "joined_semantic_cut": "cb9e98242f79a81af48fbf2901da5ac2f3c5499a"
+  },
+  "joined": {
+    "reviewed_patch_id": "d7a28e8384b703b35342e3cf4f7a2f3dd1183cdc",
+    "first_parent": "d659b89138373a2d21b52125220155c13d85d464",
+    "first_candidate": "2e4b2cb0523b6a9de55aa7bbfa700e6133f4f77f",
+    "first_packet": {
+      "source5": {
+        "report": ".tools/class181-artifacts/joined-d659b8913/class180-source-vouxzq78/report.json",
+        "sha256": "79246c3d4fc6b067d53e6eeeecf8882c0591a86068d273073f03309c74408131"
+      },
+      "strict435": {
+        "report": ".tools/class181-artifacts/joined-d659b8913/class181-joined-strict-mbxedmf8/report.json",
+        "sha256": "8f6a9150a442b0f3089d8e0f8ddf016c06cff559a3aa73eee032dbe8a02898bc"
+      },
+      "reached79_pure17": {
+        "report": ".tools/class181-artifacts/joined-d659b8913/class181-protocol-zvrz3jfq/report.json",
+        "sha256": "0b20dc64813b0f47ba387e8142594bfbe0c0f9f9fec662d301dc21c2abee3c8e"
+      },
+      "boundary35": {
+        "report": ".tools/class181-artifacts/joined-d659b8913/class180-boundaries-9y4mih9g/report.json",
+        "sha256": "e882a16d2d6a5a400a514e63af0653d951632fcc50e2a1cc4f9af83284bf25c1"
+      },
+      "affected_class180_source2": {
+        "report": ".tools/class181-artifacts/joined-d659b8913/class180-source-u996bz1n/report.json",
+        "sha256": "8c15a8d94ade0d64468e76165968b640fc8df19d99b89ad0750bf1ac798c639e"
+      },
+      "affected_stringable_normal1": {
+        "report": ".tools/class181-artifacts/joined-d659b8913/method-runtime-qjuezu5l/report.json",
+        "sha256": "e42bbe64f4804876b8ebe73bb10dd4901ca4b2b4d149263b2e7da0806fcea8b2"
+      }
+    },
+    "first_packet_result": "all exact or true; exit0; empty stderr; stable inputs",
+    "first_parent_delta": "30 enum-query OLDARRAY, 391 output notices, 437 enum query, 444 destructor trace, and rejected trait-alias frontend; no direct 383 overlap.",
+    "bridge_parent": "d49b4aad4a9bee459562a0fc6df42ae206ce8bd1",
+    "bridge_candidate": "c6ec16af3e2b76df15834f3b45a642df7694c161",
+    "bridge_parent_delta": "GC39 386 WeakMap Map-free owner arm and OB14 444 selected error-handler/ob_start warning return; neither is reached by admitted CLASS181 sources.",
+    "bridge_source2": {
+      "report": ".tools/class181-artifacts/joined-d49b4aad4/class180-source-g04_md_q/report.json",
+      "sha256": "7c654b8f9ea7ef7ed42b1212762c05d06b2faa05825ceea6a35315cc474ba440"
+    },
+    "bridge_result": "owner Stringable cast and child compile warning before later static fatal both exact native/model raw streams and exit status; stable inputs",
+    "final_parent": "8f1365ed88bd0fd7c4d96398a1f03c6de1fd843c",
+    "final_semantic_candidate": "cb9e98242f79a81af48fbf2901da5ac2f3c5499a",
+    "final_parent_delta": "ENUM retained-child adds only 437 enum is_callable rebound-array old-value owner2 case; CLASS181 admitted sources have no enum, is_callable, or rebound array.",
+    "comp177_parent": "97d2e2e4b4ef1fa749f8df6b129938b5766aee09",
+    "comp177_semantic_candidate": "72b851c8ae30eb4182a23d748fcea6b1e1d12373",
+    "comp177_parent_delta": "COMP177 adds rejected-only property-hook parser callbacks; admitted CLASS181 sources have no property hooks and accepted AST mapping is unchanged.",
+    "final_bridge_source1": {
+      "report": ".tools/class181-artifacts/joined-8f1365ed8/class180-source-grdlnzkf/report.json",
+      "sha256": "83603fd610c89b19e0fdce374a0e9999f28a12dd02653cfba5afec627b9bd76c"
+    },
+    "final_bridge_result": "owner Stringable cast exact native/model raw streams and exit status; stable inputs"
   }
 }
