@@ -1777,6 +1777,7 @@ def $enum_is_callable_output_valid(S, penumqueryoutput) = true
   -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
   -- if pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE penumqueryoutput.CELL)]
+  -- if S.ORIGIN = (pconfigcall.SITE)
   -- if penumqueryoutput.DEPTH = |S.FRAMES| /\ penumqueryoutput.CALLER = S.CURRENT
   -- if $config_selected_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall)
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
@@ -1856,7 +1857,7 @@ def $enum_is_callable_output_scope(S, pdestructionoperation) = ((S, penumqueryou
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_scope(S, pdestructionoperation) = $enum_is_callable_output_frames(S, S.FRAMES, pdestructionoperation)
   -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = eps
-def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput = penumqueryoutput_source /\ pdestructionoperation.VALUE = KNOWN (PBOOL penumqueryoutput.RESULT) /\ pdestructionoperation.CELL = penumqueryoutput.CELL)
+def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput = penumqueryoutput_source /\ pdestructionoperation.VALUE = KNOWN (PBOOL penumqueryoutput.RESULT) /\ pdestructionoperation.CELL = penumqueryoutput.CELL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE))
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
   -- if $enum_is_callable_output_scope(S, pdestructionoperation) = ((S_scope, penumqueryoutput))
 def $eager_operation_source_guard(S, pdestructionoperation) = false
@@ -1878,19 +1879,23 @@ def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, 
   -- if $enum_is_callable_output_scope(S, pdestructionoperation) = ((S_history, penumqueryoutput))
   -- if penumqueryoutput = penumqueryoutput_source
 
+dec $enum_is_callable_output_task(ptask) : bool
+def $enum_is_callable_output_task(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) = true
+def $enum_is_callable_output_task(ptask) = false -- otherwise
 dec $enum_is_callable_output_tasks_pending(ptask*) : bool
 def $enum_is_callable_output_tasks_pending(eps) = false
 def $enum_is_callable_output_tasks_pending((ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*) = true
 def $enum_is_callable_output_tasks_pending(ptask :: ptask_tail*) = $enum_is_callable_output_tasks_pending(ptask_tail*)
   -- if ~$enum_is_callable_output_task(ptask)
-dec $enum_is_callable_output_task(ptask) : bool
-def $enum_is_callable_output_task(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) = true
-def $enum_is_callable_output_task(ptask) = false -- otherwise
 dec $enum_is_callable_output_frames_pending(pframe*) : bool
 def $enum_is_callable_output_frames_pending(eps) = false
 def $enum_is_callable_output_frames_pending(pframe :: pframe_tail*) = ($enum_is_callable_output_tasks_pending(pframe.TODO) \/ $enum_is_callable_output_frames_pending(pframe_tail*))
 def $enum_is_callable_output_exit_pending(S) = ($enum_is_callable_output_tasks_pending(S.TODO) \/ $enum_is_callable_output_frames_pending(S.FRAMES))
 def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "is_callable output destructor exit continuation"]
+  -- if ~$fiber_closing(S, S.ACTIVEFIBER)
+  -- if ~$property_dynamic_exit_pending(S)
+  -- if ~$foreach_bind_exit_pending(S)
+  -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
   -- if $enum_is_callable_output_exit_pending(S)
 
 dec $enum_is_callable_receive(pstate, pconfigcall) : pstate
