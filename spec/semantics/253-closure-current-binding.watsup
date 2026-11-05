@@ -587,10 +587,12 @@ def $closure_binding_api_site(S, porigin) = true
   -- if $exit_method_site(S, porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
+  -- if ~($closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO) \/ $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND))
 def $closure_binding_api_site(S, porigin) = true
   -- if $exit_method_site(S, porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
+  -- if ~($closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO) \/ $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BIND))
 def $closure_binding_api_site(S, porigin) = false -- otherwise
 def $config_selected_valid(S, pconfigcall) = true
   -- if $closure_bind_kind(pconfigcall.KIND)

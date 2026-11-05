@@ -37,18 +37,6 @@ def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $generator_api_arguments(phpType7*)
   -- if ~$fiber_any_method_site(S, porigin)
   -- if ~$weakref_any_method_site(S, porigin)
-;; This projects arguments only; selected receiver/name authority is checked by
-;; config_selected_valid against the receipt carried in the intrinsic kind.
-def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
-  -- if $generator_computed_method_node($origin_node(S.SOURCES, porigin))
-  -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
-  -- if $generator_api_arguments(phpType7*)
-  -- if ~$exit_method_site(S, porigin)
-  -- if ~$from_method_site(S, porigin)
-  -- if ~$closure_current_method_site(S, porigin)
-  -- if ~$closure_binding_api_site(S, porigin)
-  -- if ~$fiber_any_method_site(S, porigin)
-  -- if ~$weakref_any_method_site(S, porigin)
 
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION eps, LINE z, PACKS eps}) :: $generator_method_return_tasks(S, porigin, ptask_tail*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
