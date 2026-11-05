@@ -60,9 +60,9 @@ def prepare(out):
         'strict': [('encoding-disabled', 2, '[PCINDEX 0]')],
     }
     for name, records in prefixes.items():
-        checks.append('P_' + name + '.DIAGNOSTICS = [' + ','.join('D_' + name + '_' + str(i) for i in range(len(records))) + ']')
+        checks.append('P_' + name + '.DIAGNOSTICS = [' + ','.join('pldiagnostic_' + name + '_' + str(i) for i in range(len(records))) + ']')
         for i, (kind, line, path) in enumerate(records):
-            d = 'D_' + name + '_' + str(i); loc = 'L_' + name + '_' + str(i)
+            d = 'pldiagnostic_' + name + '_' + str(i); loc = 'pllocation_' + name + '_' + str(i)
             tag, args = ('encoding-disabled', 'eps') if kind == 'encoding-disabled' else ('unknown-declare', '([$ptascii(' + json.dumps(kind) + ')])')
             checks += [d + ' = PLDIAGNOSTIC "warning" ' + json.dumps(tag) + ' ' + args + ' ' + loc,
                 loc + '.UNIT = 0', loc + '.PATH = ' + path, loc + '.LINE = ' + str(line),
@@ -77,14 +77,14 @@ def prepare(out):
         'statement_outer = NStmtDeclare (SEQUENCE phpType49_outer*) (SEQUENCE ([statement_inner,statement_echo])) metadata_outer',
         'statement_inner = NStmtDeclare (SEQUENCE phpType49_inner*) ABSENT metadata_inner',
         'phpType49_inner* = [phpType49_foo,phpType49_encoding]',
-        'path_inner = [PCINDEX 0,PCFIELD 1,PCINDEX 0]',
-        'path_encoding = path_inner ++ [PCFIELD 0,PCINDEX 1]',
+        'pcpath_inner = [PCINDEX 0,PCFIELD 1,PCINDEX 0]',
+        'pcpath_encoding = pcpath_inner ++ [PCFIELD 0,PCINDEX 1]',
         'P_reset = P_nested[.COMPLETION = PPCNORMAL][.DIAGNOSTICS = eps]',
-        '$ppencoding_node(P_reset,path_encoding,phpType49_encoding).DIAGNOSTICS = [D_nested_1]',
+        '$ppencoding_node(P_reset,pcpath_encoding,phpType49_encoding).DIAGNOSTICS = [pldiagnostic_nested_1]',
         'P_bad = P_reset[.FOLD.SOURCE.OCCURRENCES = eps]',
-        '$ppencoding_node(P_bad,path_encoding,phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
-        '$ppencoding_node(P_reset,path_encoding ++ [PCFIELD 1],phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
-        '$ppencoding_node(P_reset,path_inner ++ [PCFIELD 0,PCINDEX 0],phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")']
+        '$ppencoding_node(P_bad,pcpath_encoding,phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
+        '$ppencoding_node(P_reset,pcpath_encoding ++ [PCFIELD 1],phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")',
+        '$ppencoding_node(P_reset,pcpath_inner ++ [PCFIELD 0,PCINDEX 0],phpType49_encoding).COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")']
 
     file = json.dumps(b64(os.fsencode(SOURCE / 'body.php')))
     checks += ['S_start = $php_run(U_body,0,' + file + ')', 'S_start.COMPLETION = BUDGET']
