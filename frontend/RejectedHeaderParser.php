@@ -125,6 +125,18 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
                 $reduce($self, $stackPos);
             };
         }
+        // Zend's hooked-property branch has one variable. After a comma,
+        // its grammar rejects the opening brace before parsing any hook body.
+        if ($this->ruleToLength[399] !== 3 || !is_callable($this->reduceCallbacks[399])) {
+            throw new RuntimeException('Property list reduction contract changed');
+        }
+        $reduce = $this->reduceCallbacks[399];
+        $this->reduceCallbacks[399] = static function (self $self, int $stackPos) use ($reduce): void {
+            $reduce($self, $stackPos);
+            if ($self->tokens[$self->tokenPos]->id === ord('{')) {
+                throw new PhpParser\Error('Invalid multi-property hook syntax');
+            }
+        };
     }
 }
 

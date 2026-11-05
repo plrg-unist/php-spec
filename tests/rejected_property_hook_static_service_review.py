@@ -15,6 +15,7 @@ from error_handler_run import recorded
 import static_types as types
 
 SOURCE = ROOT / 'tests/semantics/property_hook_static_rejections'
+MULTI_SOURCE = ROOT / 'tests/semantics/multiproperty_hook_rejections'
 b64 = lambda data: base64.b64encode(data).decode()
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 PROBE = r'''<?php declare(strict_types=1);
@@ -40,7 +41,9 @@ foreach ([
     'empty-property' => ['class C{public int $x{}} declare(encoding=2); echo ;', 1, 'Syntax error'],
     'empty-promoted' => ['class C{function __construct(public int $x {}){}} declare(encoding=2); echo ;', 1, 'Syntax error'],
     'bad-modifier' => ['declare(encoding=1); class C{public int $x{foo=>1; public get=>2;}} declare(encoding=2); echo ;', 1, 'Cannot use the public modifier on a property hook'],
-    'multi-property-grammar' => ['class C{public $p,$q {get{declare(encoding=2);return 1;}}} declare(encoding=3); echo ;', 1, 'Cannot use hooks when declaring multiple properties'],
+    'multi-property-grammar' => ['class C{public $p,$q {get{declare(encoding=2);return 1;}}} declare(encoding=3); echo ;', 0, 'Invalid multi-property hook syntax'],
+    'ordinary-multiple' => ['class C{public $p,$q;function f(){declare(encoding=1);}} declare(encoding=2); echo ;', 2, 'Syntax error'],
+    'hook-before-comma' => ['class C{public $p{get{declare(encoding=1);return 1;}},$q;} declare(encoding=2); echo ;', 1, 'Syntax error'],
 ] as $name => [$source, $count, $errorPrefix]) {
     $parser = new RejectedHeaderParser(new RejectedEvalLexer(), $version);
     $caught = null;
@@ -78,6 +81,23 @@ def run(out):
             assert len(result.get('headers', [])) == expected_headers
             records.append({'id': name, 'source_sha256': hashlib.sha256(source).hexdigest(),
                 'warnings': case['warning_lines'], 'headers': len(result.get('headers', []))})
+        for name, case in json.loads((MULTI_SOURCE / 'cases.json').read_text()).items():
+            source = (MULTI_SOURCE / name / 'unit.php').read_bytes()
+            mode = case['mode']
+            packet = {'op': 'parse-' + mode, 'id': '12', 'mode': mode,
+                'profile': 'cli-raw-85', 'source': b64(source)}
+            if mode == 'file':
+                packet.update(requested=b64(b'multi.php'), resolved=b64(b'/review/multi.php'),
+                    opened=b64(b'/review/multi.php'))
+            result = frontend.parse(packet)
+            assert not result['accepted'] and result['category'] == 'parser_rejection'
+            assert result['line'] == case['line']
+            assert base64.b64decode(result['message']) == case['message'].encode()
+            assert [header['beginLine'] for header in result.get('headers', [])] == case['warning_lines']
+            assert CLI['rejected_encoding_warning_lines'](result) == case['warning_lines']
+            records.append({'id': 'multiproperty-' + name, 'mode': mode,
+                'source_sha256': hashlib.sha256(source).hexdigest(),
+                'warnings': case['warning_lines'], 'headers': len(result.get('headers', []))})
         for modifier in ('public', 'protected', 'private', 'static', 'abstract', 'readonly',
                 'public(set)', 'protected(set)', 'private(set)', 'final final',
                 'final public', 'public final', 'final', ''):
@@ -107,17 +127,17 @@ def run(out):
             if mode == 'file':
                 packet.update(requested=b64(b'multi.php'), resolved=b64(b'/review/multi.php'),
                     opened=b64(b'/review/multi.php'))
-            result = frontend.request(packet)
+            result = frontend.parse(packet)
             assert not result['accepted'] and result['category'] == 'parser_rejection'
             assert result['line'] == 1 + int(mode == 'file')
             assert base64.b64decode(result['message']) == b'syntax error, unexpected token "{", expecting "," or ";"'
-            assert len(result.get('headers', [])) == 1
-            assert CLI['rejected_encoding_warning_lines'](result) == [1 + int(mode == 'file')]
+            assert len(result.get('headers', [])) == 0
+            assert CLI['rejected_encoding_warning_lines'](result) == []
             assert (frontend.output / 'stderr').read_bytes() == bytes(frontend.recorded_stderr)
-            assert not CLI['dynamic_parser_stderr'](result, mode, b'')
-            records.append({'id': 'multi-property-grammar-refusal', 'mode': mode,
-                'source_sha256': hashlib.sha256(source).hexdigest(), 'foreign_headers': 1,
-                'native_warning_lines': [], 'agreement_credit': 0})
+            assert CLI['dynamic_parser_stderr'](result, mode, b'')
+            records.append({'id': 'multi-property-grammar', 'mode': mode,
+                'source_sha256': hashlib.sha256(source).hexdigest(), 'foreign_headers': 0,
+                'native_warning_lines': [], 'source_agreement_credit': 0})
     finally:
         frontend.close()
     path = out / 'probe.php'; path.write_text(PROBE.replace('@ROOT@', str(ROOT)))
@@ -134,9 +154,12 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     out = parser.parse_args().output.resolve(); out.mkdir(parents=True, exist_ok=False)
     hashes = json.loads((SOURCE / 'hashes.json').read_text())
+    multi_hashes = json.loads((MULTI_SOURCE / 'hashes.json').read_text())
     assert hashes == {name: sha(SOURCE / name) for name in hashes}
+    assert multi_hashes == {name: sha(MULTI_SOURCE / name) for name in multi_hashes}
     paths = [Path(__file__), SOURCE / 'cases.json', SOURCE / 'hashes.json',
-        *(SOURCE / name for name in hashes), *(ROOT / name for name in (
+        *(SOURCE / name for name in hashes), MULTI_SOURCE / 'cases.json', MULTI_SOURCE / 'hashes.json',
+        *(MULTI_SOURCE / name for name in multi_hashes), *(ROOT / name for name in (
             'frontend/RejectedHeaderParser.php', 'frontend/worker.php', 'frontend/EvalLexer.php',
             'frontend/FileLexer.php', 'frontend/encoding-literal.php', '.tools/php/bin/php',
             '.tools/php-file.so', 'spec/schema.json', 'tests/semantics/profile.json',
@@ -147,7 +170,7 @@ def main():
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     report = {'head': head, 'inputs': before, 'profile': types.PROFILE,
         'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'source_agreement_credit': 0,
-        'refusal_controls': 2, 'passed': False}
+        'refusal_controls': 0, 'passed': False}
     try:
         report['records'], report['process'] = run(out)
         report['head_stable'] = head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()

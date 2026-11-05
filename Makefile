@@ -1796,6 +1796,8 @@ test-semantics: build
 	python3 tests/semantics/property_hook_static_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-property-hook-static.XXXXXXXX)/sources"
 	python3 tests/semantics/property_hook_static_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-property-hook-static.XXXXXXXX)/main"
 	python3 tests/semantics/rejected_property_hook_static_review_state.py --output "$$(mktemp -d /tmp/php-spec-property-hook-static.XXXXXXXX)/state"
+	python3 tests/semantics/multiproperty_hook_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-multiproperty-hook.XXXXXXXX)/sources"
+	python3 tests/semantics/multiproperty_hook_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-multiproperty-hook.XXXXXXXX)/main"
 	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
 	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
 	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"
