@@ -319,7 +319,8 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtStatic phpType58 metadata, 
 ;; its DECLARE_CONST, but only the completed group receives a trailing Tick.
 ;; Declaration receipts certify the list, but retain diagnostic line contexts.
 ;; The constant-AST walk below threads the actual compiler emitter line.
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtConst (SEQUENCE eps) (SEQUENCE phpType46*) metadata, b) = $tick_constant_list(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType46*)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtConst (SEQUENCE eps) (SEQUENCE phpType46*) metadata, b) = $tick_constant_list(T[.LINE = $source_line(metadata_first)], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType46*)
+  -- if phpType46* = (NConst phpType11 expression metadata_first) :: phpType46_tail*
 def $tick_constant_list(T, pcodeexpr*, pcpath, n, eps) = T
 def $tick_constant_list(T, pcodeexpr*, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $tick_constant_list(T_value[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType46*)
   -- if $code_expression(pcodeexpr*, pcpath ++ [PCINDEX n]) =/= eps
