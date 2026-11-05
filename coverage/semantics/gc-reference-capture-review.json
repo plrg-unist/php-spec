@@ -1,0 +1,45 @@
+{
+  "scope": "GC29: mixed DIRECT/ALIAS captures of authentic ordinary untyped reference cells with scalar or mutable DIRECT-array-DAG/childless-stdClass payloads under an active real Closure root.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "base": "afa7e24505189f903bf1f05671f3e172b621e022",
+    "source_only": "ce514e2d830a6742e82cff108cfe1d65d8d29c2e",
+    "semantic": "753cb8b8d568a35414db34b8641c7923af1e6d45",
+    "author_state": "db220b42c895a326b298dfa1027255cedd767e6e",
+    "combined_source_native": "d167edce1d3060dc1e5c43d12ef0baf7a069bbaa",
+    "combined_a95_source": "d96cb8ebf62a0ffa895ee6f49dd752731aca25da",
+    "reviewed_a95": "76434e984986411a21f65aca5a581644b7a0857b",
+    "independent_native": "41d53c50a95ef36e90ee7d1f52d1cf18b9610190",
+    "independent_source_state": "69db07f7358182ed0661bf95f0ead85c9a0a0b18"
+  },
+  "rule": "At least one genuine ALIAS capture makes the new clause disjoint from DIRECT lanes. ordinary_reference_value authenticates captured/reached HCELLs and excludes typed/coercion/backing/debt/released forms; cells have exact ordinary/trace payload children and stay outside pooled reach. Capture/cell-payload string carriers use string_carrier_valid, not string_getter. Noncell graph nodes reuse GC28 direct-DAG validation. Exact ordered Closure children, genuine source/capture-mode/arity/current-caller root and empty static cells remain. Owner, candidate buffer, trial-root and count algorithms are unchanged.",
+  "engine_basis": "Pinned Zend/zend_closures.c zend_closure_get_gc exposes capture zvals; Zend/zend_gc.c mark-grey/scan-black decrement/restore every incoming wrapper edge and traverse its payload on the first color visit. Zend/zend_gc.h gc_check_possible_root redirects a surviving reference decrement to a collectable payload, matching existing module 301 gc_decrement(HCELL). String carriers are immutable nonowning metadata in 30-string-carriers. Closure hidden-table flattening stays confined to a black rooted component.",
+  "validation": {
+    "source": "Three originals agree exactly at 753cb8b8d: two captures sharing one wrapper release the leaf when either alias clears; two distinct wrappers sharing an array retain the leaf until Closure retirement; a concatenated request-string reference preserves the old captured cell across fresh global-name assignment and frees the Closure. All normal 0/empty stderr, stable HEAD/inputs and reaped.",
+    "author_reached": "Strict SL source-reached D fronts pass 177+197+154 at db220b42c. Shared wrapper owners 4 versus distinct 2/2 produce one versus two payload edges/owners; array leaf entries remain two owners regardless of wrapper count. Exact buffer identity/order, no HCELL candidate slot, payload redirection/deduplication, full-drive cell retirement and metadata/carrier refusals pass.",
+    "combined_a95": "One native-first combined original agrees exactly at d96cb8ebf containing reviewed A95 and GC29. Named values95/warning95/sink95 preserve old 22 while global v rebinds to other 44; fresh sink delivery changes only its own cell to 33. After Generator/handler/old-global retirement, GC runs under the genuine Closure and preserves captured 22/global 44 through normal D/H counts and final Closure weak death. It exercises both new paths, with no Generator collection or callback caller expansion.",
+    "independent": "Independent mixed DIRECT/ALIAS source agrees exactly at 69db07f73, using native original41d53c50a. Strict source-reached front passes214 assertions: three cells own their wrappers2/2/4 while each of three current parent payload tables has one owner; the shared old inner has four edges, two copied inners have one each, and the common leaf has three owners. Current-payload decrement, local-name rebinding with frozen capture identities, carrier/source-mode and fresh-H ALIAS-entry/Closure-cycle controls pass. All exits0/no timeouts/empty stderr, stable inputs/HEAD and fully reaped. Separate tiny native rebind/root controls remain native-only.",
+    "stability": "Author state gates preserve HEAD db220b42c and all 458 relevant hashes; only two unexecuted combined-fixture files were prepared while they ran. Combined source preserves its actual composed HEAD and runtime/test inputs. Every source actor has empty final groups; state frontend/adapter/numeric/top-level actors are reaped before lane handoff.",
+    "failures": "Source-only shared-cell execution reaches Unsupported cached ordinary property-table collection after T|P|0|. Raw remains preserved and earns zero agreement; no other source/state failure has occurred at this cut.",
+    "compiler": "Five complete source executions and four strict SL reached fronts compile/run the same 433-module specification with encountered determinism checks; no equivalence proof is claimed."
+  },
+  "limits": "Ordinary untyped cells only; array descendants retain the DIRECT/defined entry policy, without separately authenticating nested scalar carrier metadata. Typed/backed/coercion/debt/released cells, ALIAS array entries, pooled/proxy/user-finalizer children, static cells, explicit Closure __invoke captures and arbitrary Closure/reference cycles remain outside this lane. No full-core or whole-collection claim.",
+  "review": "Independent semantic/source/test and scope review CLEAR from gc_review_current. The actual combined A95/GC29 source is validated at its composed cut; final current-parent compatibility is established by focused review messages without renewing earlier execution credit.",
+  "recovery": "Raw original sources, pre-edit Unsupported and accepted source/state records remain outside Git under ../php-spec-evidence-archive/gc-reference-capture-29-dev; independent controls remain under gc-reference-capture-29-review. Run gc_reference_capture_sources.py native then model with a fresh output directory, gc_reference_capture_state.py for reached checks, and gc_reference_capture_a95_sources.py for the combined original. Use one fully reaped CPU1 actor per pair. Independent full COW uses gc_reference_capture_review_sources.py and gc_reference_capture_review_state.py; the older ALIAS-only native source and local-rebind probes keep their native-only credit.",
+  "reports_sha256": {
+    "gc-reference-capture-29-dev/source/native-report.json": "cd5381dfb6c123e61086aa60a58c4acdbea57db09f4a8bafc77e8fa682e2c2b2",
+    "gc-reference-capture-29-dev/source/baseline-report.json": "f11d171facf57209bc565f548395e43d26e7a1b8fd473d4d03ac0f1313b9d885",
+    "gc-reference-capture-29-dev/source/model-report.json": "9cfb1f434b0be34888b31084fe7735d5ee36be9f75eaeabfbaee2e3258d9868e",
+    "gc-reference-capture-29-dev/author-states/report.json": "7ba01fba9c0364c4d7b8f05d4adcd7b8706295ab5810aebfc38475c7723efa9e",
+    "gc-reference-capture-29-dev/state-inputs-before.json": "1227821038c27ae43add23f684313527687b87533fa34dae6bb35cd8a0a76ec6",
+    "gc-reference-capture-29-dev/state-gate-stability.json": "9ae94abff2ba4221f5c109caf44cc7d4dc4ed0e62b4ce502608d144bc9202f64",
+    "gc-reference-capture-29-dev/a95-combined-source/native-report.json": "1cc4baaad894e30df7ab647fee9e6b911ee9469ef1d0b2d1d346391a4ea46963",
+    "gc-reference-capture-29-dev/a95-combined-source/model-report.json": "269ca5954e52a15edd4e67dd168f955013fae31616892de94c006ff8931db19e",
+    "gc-reference-capture-29-review/native-independent/report.json": "6e3e07a6a25fc9a4195f633143d10bfd8500dafa86043900ef8a11c3b911ac45",
+    "gc-reference-capture-29-review/cow-mixed-source/native-report.json": "f56bc28b2e255692fb310bfe11e4eb927c99f72bed30c56bcc17ca4c1cd5bb70",
+    "gc-reference-capture-29-review/cow-mixed-source/model-report.json": "521155612db1157b41e5de83fd503c93dc8f2211cce701fc5334e81bbf8d50ab",
+    "gc-reference-capture-29-review/strict-independent/independent-report.json": "b8ffbec0a2860e044ee42b5226037c705f46f0b50f4454e560323f7331f3022c",
+    "gc-reference-capture-29-review/native-local-rebind/report.json": "3b84c4dc89ea94fd71f1769f2797cdb1947405bfa37a9c424c4b76ad8ba72240"
+  }
+}
