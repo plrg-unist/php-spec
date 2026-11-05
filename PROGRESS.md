@@ -57,9 +57,17 @@ integer exit status survives catch and later string exit. Eight new/promoted
 source agreements, one affected enum exit-status source, three explicit
 controls, strict433 and 256+47 independent guards pass at their recorded cuts.
 [Cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json).
-Repeated cleanup exits, switched Fiber completion/force-close, owning rebound
-values, late attached type sources, variable-array query inputs, named/unpacked
-output, loading and wider enum member/lifetime contexts remain partial.
+Nested cleanup exits now return through their own C pins and preserve the
+original output receipt. The latest integer exit supplies status; string exit
+preserves it. Ordinary Child throws cancel exit while the name still commits;
+nested queries commit their separate names without assigning abandoned booleans.
+Nine source agreements, three explicit Unsupported controls, strict433 and five
+separate reached groups (90+62+35+43+78 checks) pass at recorded cuts.
+[Reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json).
+Cleanup exit with an ordinary Throwable already pending, switched Fiber
+completion/force-close, owning rebound values, late attached type sources,
+variable-array query inputs, named/unpacked output, loading and wider enum
+member/lifetime contexts remain partial.
 
 I92 gives real user Generator Closure::call entry its actual copied Closure and
 new receiver, with separate API owners and ordered used/ignored-result cleanup.

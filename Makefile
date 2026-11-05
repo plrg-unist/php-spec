@@ -991,6 +991,11 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_unique_protocol.py
 	python3 tests/semantics/enum_is_callable_output_exit_protocol.py
 	python3 tests/semantics/enum_is_callable_output_cleanup_protocol.py
+	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group own
+	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group nested
+	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group alias
+	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group thrown
+	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group roots
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
