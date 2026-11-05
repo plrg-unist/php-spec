@@ -629,19 +629,19 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR17 generalizes normal post-FINAL tick retirement to existing certified
-named-function, method-array and real Closure caches. Each entry releases its
-copied values before its optional FCC object/Closure roots; capture and bound
-receiver children keep their own owners. Cacheless scalar/zero-argument entries
-now drain before the shutdown-queue and executor fallbacks without changing the
-shared module-owner predicate or abrupt boundary. Five native-first originals
-agree exactly; seven reached groups pass 187 conditions (180 reached, seven
-derived), and private strict433 passes. Wider producers, assertion roots
-and abrupt/reentrant module shutdown remain partial.
-[Callable-cache review](coverage/semantics/callback-late-tick-callables-review.json).
-ATTR16's copied-container/reference/self evidence keeps its own accepted cuts
-and original zero-credit scalar fixture failure in the
-[copied-value ledger](coverage/semantics/callback-late-tick-values-review.json).
+ATTR18 retains stable pending main-body exits through post-FINAL tick cleanup.
+Saved shutdown/destructor completions authenticate NORMAL or the same EXITED
+code; an exit also matches the full stored status. Copied values and separate
+FCC owners retire under temporary NORMAL execution, then the saved completion
+returns before later entries/queues. Four new exit originals agree exactly,
+including status 263→CLI 7 and string exit at 0; one affected normal cacheless
+control, six reached groups/176 conditions (164 reached, 12 derived) and
+private strict433 also pass. Wider producers, assertion roots,
+changed phase completions and abrupt/reentrant cleanup remain partial.
+[Exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json).
+The earlier [cache-shape](coverage/semantics/callback-late-tick-callables-review.json)
+and [copied-value](coverage/semantics/callback-late-tick-values-review.json)
+ledgers retain their original cuts and zero-credit failures.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

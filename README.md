@@ -4720,16 +4720,17 @@ The source `Closure->__invoke` inner-warning handler trace now inherits the real
 call file/line for both its head and wrapper frame. One native-first original,
 a reached trace state and strict433 pass; broader wrapper/reentry paths remain
 partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
-After output FINAL, source-certified tick entries retire in registration order.
-Copied values retire before the independent FCC object/Closure owners; arrays
-preserve snapshots and shared references. Named functions, method arrays, real
-Closures and raw invokable objects use their existing cache roots. Cacheless
-scalar/zero-argument entries drain before shutdown-queue or executor fallbacks.
-Five new native-first sources agree exactly; seven reached groups pass 187
-conditions (seven derived), and private strict433 passes. Wider
-producers, assertion roots and abrupt/reentrant late release remain partial.
-See the [callable-cache review](coverage/semantics/callback-late-tick-callables-review.json)
-and retained [copied-value evidence](coverage/semantics/callback-late-tick-values-review.json).
+After output FINAL, source-certified tick entries retire in registration order,
+releasing copied values before their independent FCC object/Closure owners.
+Normal completion and stable pending exits use agreeing saved phase completions;
+the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
+Cacheless entries still drain before queue/executor fallbacks. Four new exit
+originals and one affected normal control agree exactly; six reached groups pass
+176 conditions (12 derived), and private strict433 passes.
+Wider producers, assertion roots, changed phase completions and abrupt/reentrant
+late release remain partial. See the
+[exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json)
+and retained [cache-shape evidence](coverage/semantics/callback-late-tick-callables-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
