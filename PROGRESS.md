@@ -386,6 +386,15 @@ passes 73, and both affected GC26 groups pass 148. Nested, reference, proxy and 
 remain partial; the hidden Closure capture table remains black under the real
 caller root. [GC27 review](coverage/semantics/gc-multi-array-review.json).
 
+GC28 admits finite nested DIRECT-array capture DAGs under the same real Closure
+root. Unique traversal preserves repeated owner/trace edges; per-array self-reach
+rejects forged DIRECT cycles, and the nested-edge guard is component-local.
+Shared depth-three nesting, local parent/child COW and an independent self-copy
+snapshot give three exact source pairs through final weak death. Strict reached fronts pass 246+191 assertions and the
+changed GC27 group passes 207. Independent graph/self-copy fronts pass 63+85.
+Reference, proxy, pooled and finalizer graphs remain partial.
+[GC28 review](coverage/semantics/gc-nested-array-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
