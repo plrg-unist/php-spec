@@ -35,7 +35,7 @@ pclosurecall.INDEX = 2
 pclosurecall.PACKS = eps
 pclosurecall.ERROR = eps
 pclosurecall.RAW = [(KINT 1, KNOWN (POBJECT n_token))]
-pclosurecall.SENT = {SLOTS [NAMED_SENT (KNOWN (POBJECT n_token))], NAMED eps}
+pclosurecall.SENT = {SLOTS ([NAMED_SENT (KNOWN (POBJECT n_token))]), NAMED eps}
 porigin_call = pclosurecall.SITE
 S.OBJECTS[n_capture] = GETTERCLOSURE n_old (GENERATOR_API_METHOD "send") "Generator" (GENERATOR_CAPTURE pgeneratormethodselection_origin)
 ~pgeneratormethodselection_origin.TEMPORARY
