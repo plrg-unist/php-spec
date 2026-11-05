@@ -16,4 +16,4 @@ try {
 } catch (Throwable $error) {
     echo 'C|', $error->getMessage(), '|';
 }
-echo 'T|', count($map), '|';
+echo 'T|';

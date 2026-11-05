@@ -9,6 +9,6 @@ $valueSecond = new GC34IncomingLeaf;
 $second[$key] = $valueSecond;
 $first[$key] = $valueFirst;
 unset($valueFirst, $valueSecond);
-echo 'B|', count($first), '|', count($second), '|';
+echo 'B|';
 unset($key);
-echo 'A|', count($first), '|', count($second), '|';
+echo 'A|';

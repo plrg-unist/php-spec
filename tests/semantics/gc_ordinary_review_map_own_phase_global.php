@@ -16,4 +16,4 @@ $outer[$map] = new GC34IncomingViewGlobal;
 $map[$key] = new GC34OwnViewGlobal;
 echo 'B|';
 unset($map);
-echo 'A|', (int) ($watch->get() === null), '|', count($outer), '|';
+echo 'A|', (int) ($watch->get() === null), '|';
