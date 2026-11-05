@@ -1720,7 +1720,7 @@ def $enum_is_callable_ref_last(S, n_cell, z) = true
   -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
   -- if S_clear.COMPLETION = NORMAL /\ S_clear.STORE[n_cell] = DEFINED PNULL
   -- if $heap_owners($heap_graph(S_clear), HARRAY n_array) = 0
-  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_child) = 0
+  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_child) = 1
 def $enum_is_callable_ref_last(S, n_cell, z) = false -- otherwise
 
 dec $enum_is_callable_ref_old(pstate, nat, pvalue, ptbytes, int) : bool
