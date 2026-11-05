@@ -85,9 +85,7 @@ pnode_trace* = $heap_reach([HARRAY n_trace], eps, $heap_graph(S_retained).EDGES)
 ~((HOBJECT n_source) <- pnode_trace*)
 ~((HOBJECT n_old) <- pnode_trace*)
 ~((HOBJECT n_capture) <- pnode_trace*)
-S_observed = $literal_reference_debt_step(S, $sensitive_trace_freeze(S_retained))
-S_observed.CLOSURECALLRETAINED = [pclosurebinding]
-S_begin = $throwable_begin(S_observed)
+S_begin = $throwable_begin($literal_reference_debt_step(S, $sensitive_trace_freeze(S_retained)))
 S_begin.COMPLETION = NORMAL
 S_begin.TODO = [THROW_SEARCH n_error]
 $call_descriptors_valid(S_begin)
