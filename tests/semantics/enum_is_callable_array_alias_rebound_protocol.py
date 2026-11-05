@@ -101,24 +101,38 @@ def retained():
     return checks
 
 
-def control():
-    row, checks = variable.begin('control', 'alias-rebound-owning-rebound-control', 'FirstCheck::from')
+def last_owner():
+    row, checks = variable.begin('owner', 'alias-rebound-owning-rebound-control', 'FirstCheck::from')
+    checks += variable.send('owner')
     checks += [
-        'S_control_send = $eis_seek(S_control_cap, pconfigcall_control_first.SITE, 2, 7000)',
-        '$eis_site(S_control_send, pconfigcall_control_first.SITE, 2)',
-        'S_control_send.TODO = (CONFIG_SEND pconfigcall_control_send) :: (ENUM_IS_CALLABLE_INPUT penumqueryinput_control) :: ptask_control_tail*',
-        'pconfigcall_control_send.SENT = [NAMED_SENT (KNOWN (PARRAY n_control_array)), NAMED_SENT (KNOWN (PBOOL false))]',
-        '$enum_is_callable_saved(S_control_send, pconfigcall_control_send, PARRAY n_control_array) = (penumqueryinput_control)',
-        '$enum_is_callable_ref_name(S_control_send, pconfigcall_control_send, PARRAY n_control_array) = (penumqueryinput_control.VALUE)',
-        '$lookup(S_control_send.ENV, $ptascii("call")) = (n_control_output)',
-        '$lookup(S_control_send.ENV, $ptascii("name")) = (n_control_output)',
-        'S_control_send.STORE[n_control_output] = DEFINED (PARRAY n_control_old)',
-        'n_control_old =/= n_control_array',
-        'S_control_send.ARRAYS[n_control_old].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_child)), ENTRY (KINT 1) (DIRECT pvalue_control_method)]',
-        '$typed_callback_array(S_control_send, n_control_old)',
-        '~$enum_array_string_valid(S_control_send, POBJECT n_child)',
-        '$enum_is_callable_ref_array_alias_old(S_control_send, pconfigcall_control_send, n_control_output, PARRAY n_control_old, penumqueryinput_control.VALUE, pconfigcall_control_send.LINE) = false',
-        '$enum_is_callable_ref_cell(S_control_send, pconfigcall_control_send, PARRAY n_control_array) = eps',
+        '$lookup(S_owner_send.ENV, $ptascii("call")) = (n_owner_output)',
+        '$lookup(S_owner_send.ENV, $ptascii("name")) = (n_owner_output)',
+        'S_owner_send.STORE[n_owner_output] = DEFINED (PARRAY n_owner_old)',
+        'n_owner_old =/= n_owner_array',
+        '$enum_is_callable_rebound_array_child(S_owner_send, n_owner_output) = ((n_owner_old, n_child))',
+        '$enum_is_callable_ref_last(S_owner_send, n_owner_output, pconfigcall_owner_send.LINE)',
+        '$enum_is_callable_ref_array_alias_old(S_owner_send, pconfigcall_owner_send, n_owner_output, PARRAY n_owner_old, penumqueryinput_owner.VALUE, pconfigcall_owner_send.LINE)',
+        'S_owner_ref = $drive_steps(S_owner_send[.COMPLETION = NORMAL], 1)',
+        'S_owner_ref.TODO = (CONFIG_ARGS pconfigcall_owner_ref) :: (ENUM_IS_CALLABLE_INPUT penumqueryinput_owner) :: ptask_owner_tail*',
+        'pconfigcall_owner_ref.SENT = [NAMED_SENT (KNOWN (PARRAY n_owner_array)), NAMED_SENT (KNOWN (PBOOL false)), NAMED_SENT (REFERENCE n_owner_output)]',
+        'S_owner_invoke = $eis_seek(S_owner_ref, pconfigcall_owner_first.SITE, 3, 3000)',
+        '$eis_site(S_owner_invoke, pconfigcall_owner_first.SITE, 3)',
+        'S_owner_invoke.TODO = (CONFIG_INVOKE pconfigcall_owner_invoke) :: (ENUM_IS_CALLABLE_INPUT penumqueryinput_owner) :: ptask_owner_tail*',
+        '$enum_is_callable_output_capture(S_owner_invoke, pconfigcall_owner_invoke) = (penumqueryoutput_owner)',
+        'penumqueryoutput_owner.OLDARRAY = (n_owner_old)',
+        'penumqueryoutput_owner.OLD = n_child',
+        '$enum_is_callable_output_valid(S_owner_invoke, penumqueryoutput_owner)',
+        'penumqueryoutput_forged = penumqueryoutput_owner[.OLDARRAY = (n_owner_array)]',
+        '~$enum_is_callable_output_valid(S_owner_invoke, penumqueryoutput_forged)',
+        'S_owner_clear = $drive_steps(S_owner_invoke[.COMPLETION = NORMAL], 1)',
+        'S_owner_clear.STORE[n_owner_output] = DEFINED PNULL',
+        'S_owner_clear.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_owner) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_owner) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_owner) :: ptask_owner_tail*',
+        'pdestructionoperation_owner.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_owner',
+        '$eager_operation_source_guard(S_owner_clear, pdestructionoperation_owner)',
+        'S_owner_done = $drive(S_owner_clear[.COMPLETION = NORMAL], 10000)',
+        'S_owner_done.COMPLETION = NORMAL',
+        'S_owner_done.STORE[n_owner_output] = DEFINED (PSTRING penumqueryinput_owner.VALUE)',
+        '$eic_output(S_owner_done.EVENTS) = $ptascii(' + json.dumps(row['expected_normal_stdout']) + ')',
     ]
     return checks
 
@@ -143,7 +157,7 @@ def thrown():
 
 if __name__ == '__main__':
     groups = {'raw': raw, 'case': case, 'retained': retained,
-              'control': control, 'throw': thrown}
+              'last_owner': last_owner, 'throw': thrown}
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--group', choices=['all', *groups], default='all')
     args = parser.parse_args()
