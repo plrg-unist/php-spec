@@ -1,0 +1,48 @@
+[
+  {
+    "id": "i110-nullsafe-zero-argument-generator-protocol",
+    "purpose": "Literal nonnull nullsafe current/key/valid/rewind/next/getReturn preserve initialization, first-yield history, empty ARRAY argument packs, keys and completion.",
+    "source": "<?php\nfunction Flow110A() { echo 'INIT|'; yield 5 => 'head'; yield 6 => 'tail'; return 110; }\n$generator = Flow110A();\necho 'CURRENT|', $generator?->current(), '|', $generator?->key(), '|', $generator?->valid(), '|';\n$generator?->rewind(); echo 'REWOUND|', $generator?->current(), '|';\n$generator?->next(...[]); echo 'NEXT|', $generator?->current(), '|', $generator?->key(), '|';\n$generator?->next(); echo 'RETURN|', $generator?->getReturn(), '|', $generator?->valid() === false, '|';\n",
+    "source_sha256": "47e4e5324cd1e27238ed53dcd9206818a3c99f2a2030663829c2b6830b243cef",
+    "native_exit": 0,
+    "native_stdout": "CURRENT|INIT|head|5|1|REWOUND|head|NEXT|tail|6|RETURN|110|1|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "i110-nullsafe-named-send-throw-and-type-priority",
+    "purpose": "Nullsafe named reception checks invalid Throwable before body initialization and retains the native API trace, then valid send and supplied throw retain ordinary catch/finally behavior.",
+    "source": "<?php\nclass Stop110B extends Exception {}\nfunction Flow110B() {\n    global $stop;\n    echo 'INIT|'; $value = yield 'head'; echo 'VALUE|', $value, '|';\n    try { yield 'tail'; }\n    catch (Stop110B $caught) { echo 'CATCH|', $caught === $stop, '|'; yield 'caught'; }\n    finally { echo 'FIN|'; }\n    return 110;\n}\n$stop = new Stop110B(); $generator = Flow110B();\ntry { $generator?->throw(exception: 17); }\ncatch (TypeError $error) {\n    $trace = $error->getTrace();\n    echo 'TYPE|', $error->getMessage() === 'Generator::throw(): Argument #1 ($exception) must be of type Throwable, int given', '|', $trace[0]['function'] === 'throw', '|', $trace[0]['class'] === 'Generator', '|', $trace[0]['args'][0] === 17, '|', !isset($trace[1]), '|';\n    unset($trace, $error);\n}\necho 'SEND|', $generator?->send(value: 41), '|';\necho 'THROW|', $generator?->throw(exception: $stop), '|';\n$generator?->next(); echo 'RETURN|', $generator?->getReturn(), '|';\n",
+    "source_sha256": "e3ed1b8c5c352a42eb7a6f5bb0a04f6f32acdfbf10a3b1760b8f3d60d130f915",
+    "native_exit": 0,
+    "native_stdout": "TYPE|1|1|1|1|1|SEND|INIT|VALUE|41|tail|THROW|CATCH|1|caught|FIN|RETURN|110|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "i110-dynamic-generator-name-stays-visible-unsupported",
+    "purpose": "Boundary only, zero agreement: dynamic method-name selection remains separate from literal nullsafe admission.",
+    "source": "<?php\nfunction Flow110U() { echo 'BODY|'; $value = yield 'head'; echo 'VALUE|', $value, '|'; yield 'tail'; }\n$generator = Flow110U(); $method = 'send';\necho 'CALL|', $generator->$method(value: 41), '|';\n",
+    "source_sha256": "ceba3076aeb0413a7a04a2dd568bca3eddb24970a5e9ceaf87dda5f99cc6d2a7",
+    "native_exit": 0,
+    "native_stdout": "CALL|BODY|VALUE|41|tail|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "generator dynamic or nullsafe method call",
+    "unsupported_stdout": "CALL|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "65",
+            "76",
+            "76",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]
