@@ -101,7 +101,7 @@ pinstancestorage.NOTIFY = eps
 pinstancestorage.NEXT = 1
 |pinstancestorage.SLOTS| = 1
 pinstancestorage.SLOTS[0].NAME = $ptascii("child")
-pinstancestorage.SLOTS[0].STATE = PROP_VALUE (VALUE (POBJECT n_child))
+pinstancestorage.SLOTS[0].STATE = PROP_VALUE (DIRECT (POBJECT n_child))
 $objectprops_at(S.OBJECTPROPS, n_retval) = (ppropertyslot*)
 ppropertyslot*[0].STATE = PROP_UNSET
 (HOBJECT n_retval) <- S.ALLOCATIONS
