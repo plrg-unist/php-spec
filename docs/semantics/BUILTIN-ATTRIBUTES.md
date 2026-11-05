@@ -262,26 +262,56 @@ and `zend_closures.c:zend_closure_free_storage` (owned captured/static values
 before `this_ptr`), with the existing source-authenticated entry and executor-task
 guards.
 
-For a normally completed request, a builtin literal-message Exception thrown
-by an argument destructor can bail out of tick-list destruction. The consumed
-argument retains the two abandoned destructor/store protections; later argument
-jobs, independent FCC slots and later tick entries stay owned. The report is
+With no selected exception handler, after normal completion or a stable main exit, a builtin Exception
+with a literal message thrown by an argument destructor can bail out of tick-list
+destruction. The consumed argument retains the two abandoned destructor/store
+protections; later argument jobs, independent FCC slots and later tick entries
+stay owned. The report is
 authenticated while the Exception is live, then only its frozen completion
 survives its ordinary release. No released property row is read or retained.
 Remaining shutdown-function arguments still retire while PHP entry is active.
 Inactive executor free follows: an owning Closure capture can then cause the
 separate inactive-method fatal, preserving its native CLI status 0.
 
-Five native-first bailout originals agree exactly. Four have one fatal and
-CLI 255; the owning capture has the additional inactive-child fatal and CLI 0.
-The [ATTR19 review](../../coverage/semantics/callback-late-tick-throw-review.json)
-records five reached groups/254 conditions (11 derived), including the actual
-pending release, budget resume and untouched owners. The original late-event
-fixture error keeps zero credit; only its corrected group is rerun.
-Earlier [stable-exit](../../coverage/semantics/callback-late-tick-exit-review.json),
+Before reporting, the current status still matches the full saved exit code.
+After reporting replaces it with 255, abandoned-source validation restores only
+the saved status in a lookup view; both actual saved phase completions must still
+agree. Entry readiness remains tied to the current full status. Fatal-task scope
+uses the same lookup view without adding owners or changing the actual status,
+which can later become 0 in the separate inactive-child fatal.
+
+A selected named handler returning NULL or a scalar instead resumes the C
+destructor continuation. Its original Throwable retires before registry
+restoration; the throwing argument keeps both C protections until that return.
+Remaining arguments, FCC slots, tick entries and the later queue then retire
+normally. Bound receivers and captured children execute their destructors while
+PHP entry is active. The saved full main exit remains current: handler return 23
+does not replace status 263 or its CLI projection 7. An authenticated C-return
+continuation receives the entered PHP frame's receiver protection before local
+cleanup; its ordinary VALUE decrement occurs after handler restoration and before
+the outer destructor/store result. Unhandled bailout retains the same two roots.
+This does not settle pre-body callback or wider destructor lifetimes.
+
+Ignored owning values returned by the destructor body retire after its PHP locals
+and before the inner C receiver protection. Ordinary VALUE jobs preserve the same
+C-return/result pair through returned-object and captured-child destructors;
+shared returned objects stay alive under other roots. This normal cleanup is
+separate from a selected handler's ignored retval. The
+[body-return review](../../coverage/semantics/callback-late-tick-body-return-review.json)
+records four new exact originals, two affected controls, eight genuine reached
+groups/438 checks and strict434. The original hidden early decrement remains
+recorded; abrupt body-value cleanup and direct reference-return bodies stay partial.
+
+Four new handled originals and two affected controls agree; strict433 passes.
+Nine independent groups pass 508 conditions (497 reached, 11 derived). The
+[handler review](../../coverage/semantics/callback-late-tick-handler-review.json)
+retains the original Arg2 failure, dormant-field seek failures and corrected cuts.
+Earlier [exit/throw](../../coverage/semantics/callback-late-tick-exit-throw-review.json),
+[bailout](../../coverage/semantics/callback-late-tick-throw-review.json),
+[stable-exit](../../coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](../../coverage/semantics/callback-late-tick-callables-review.json)
 and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
 evidence keeps its original cuts. Wider callable producers, assertion roots,
-changed phase completions, other throws, exits during cleanup, exception handlers
-and reentrant module shutdown remain partial; this is no full lifecycle or core
-closure.
+changed phase completions, other throws, abrupt/owning-result handlers, pre-body
+callbacks, abrupt destructor-body returns and reentrant module shutdown remain
+partial; this is no full lifecycle or core closure.

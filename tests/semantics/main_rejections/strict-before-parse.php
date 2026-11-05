@@ -1,0 +1,3 @@
+<?php
+declare(strict_types=2);declare(encoding=1);
+echo ;

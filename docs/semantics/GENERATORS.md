@@ -687,6 +687,22 @@ is unchanged. Repeated cancellation validates two distinct copies and shared
 capture owner2. Receive/mapping and bailout cleanup remain partial.
 [Cancellation review](../../coverage/semantics/generator-call-cancellation-review.json).
 
+I100 also handles ordinary named mapping failures and required named holes before
+Generator creation. Existing fake-receive cleanup and Error traces preserve their
+own argument owners; only the copied Closure stays request-retained. Three new
+originals and two joined reached fronts validate these paths, with an affected
+successful value call. Later receives/default errors and bailout remain partial.
+[Named-failure review](../../coverage/semantics/generator-call-mapping-review.json).
+
+I101 uses one restored API cursor for admitted arity/type/default throws before
+Generator creation. The callee frame and cells retire first; API cleanup then
+retains only the copied Closure and releases its original arguments/source.
+All-object history rejects an already-created Generator copy. New type, aliased
+fake-arity and supplied default-throw originals agree; reached and joined gates
+cover entry provenance, trace owners and shutdown. Wider producer/collection and
+bailout contexts remain partial.
+[Receive-failure review](../../coverage/semantics/generator-call-receive-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

@@ -1,0 +1,130 @@
+{
+  "milestone": "I102 pre-Generator Closure::call exit cleanup",
+  "status": "Private and joined gates pass; wider core boundaries remain partial.",
+  "target": {
+    "php": "8.5.10 CLI NTS64",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": "LC_ALL=C; TZ=UTC; one actor pinned to CPU4"
+  },
+  "scope": "Ordinary integer exit in a copied reference-warning handler after a prepared prefix, or a named-default constructor before Generator creation. No Gen/body/caller catch/finally runs; API values and original receiver retire before shutdown, while the hidden copied Closure keeps its new receiver/capture late.",
+  "semantics": "Authenticate the saved emitting cursor before generic exit clears TODO/ORIGIN. Retain once, restore the warning handler, and queue prepared cells then FIRST/RAW/SOURCE; a restored receive cursor owns only the API values. Preserve the original EXIT_UNWIND/source suffix. Failed automatic construction is marked only when an authentic Generator-copy context is pending. Non-Generator and existing PHP-throw paths remain pointwise unchanged. Final production diff is 43 insertions/4 deletions in modules 148/268.",
+  "representation": "Reuses authenticated CLOSURECALLRETAINED rows and the all-object no-prior-Gen guard. Only the copy is rooted; binding metadata creates no implicit SOURCE/API owner. No new field/tag and no raw Zend refcount equality or externally confirmed engine-bug claim.",
+  "implementation": [
+    "spec/semantics/148-core-intrinsics.watsup",
+    "spec/semantics/268-temporary-fake-calls.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_builtin_functions.c",
+      "vendor/php-src/Zend/zend_exceptions.c",
+      "vendor/php-src/Zend/zend_execute_API.c",
+      "vendor/php-src/Zend/zend_closures.c",
+      "vendor/php-src/Zend/zend_execute.c",
+      "vendor/php-src/Zend/zend_vm_def.h"
+    ],
+    "symbols": [
+      "ZEND_FUNCTION(exit)",
+      "zend_throw_unwind_exit",
+      "zend_handle_undef_args",
+      "zend_call_function",
+      "ZEND_METHOD(Closure, call)",
+      "cleanup_live_vars"
+    ],
+    "rule": "exit uses UnwindExit, distinct from zend_bailout. It returns through argument/default cleanup and the raw copied-Closure decrement. Catch/finally are skipped and a failed NEW remains destructor-ineligible."
+  },
+  "review": "Independent pinned-source, body-kind exclusion, native counterexample, genuine reached-state and actual merged-delta review. Constructor suppression is copy-scoped; ordinary constructor behavior is not widened.",
+  "validation": {
+    "native_warning": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102/source-packet/native-first/report.json",
+      "sha256": "3d5ba2642672df7b08b8f547d6b0fa98fd6753afb961ca106d50630227c6eae4",
+      "revision": "63d3e03d45c9a40d8d983eb8accb323d00f87ad6",
+      "passed": true,
+      "result": "First forecast exact: exit23, prefix/pending/old destructor order, handler restored, copy children survive SHUT."
+    },
+    "native_default": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102-review/prepared/native-report.json",
+      "sha256": "cb3b259217f80c755a04071f157d3f1624680b8a6845dc959e6b936d424b1d5e",
+      "revision": "63d3e03d45c9a40d8d983eb8accb323d00f87ad6",
+      "passed": true,
+      "result": "First forecast exact: exit31, failed constructor has no destructor, copy children survive SHUT."
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102-review/validated/source-c745/report.json",
+      "sha256": "f1311b0af1fca3b83759e31232e8981f70a87dd2350be5193ef5eba8065b43f2",
+      "revision": "c745502397af4928b35e5207de4fb1ff4c2884ea",
+      "passed": true,
+      "result": "2 exact explicit_exit CLI agreements (23/31), native reused; zero NORMAL agreements by design."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102/strict-97f/report.json",
+      "sha256": "bee37beccf87a9bab3419bd2a78a59fc57d2b05648333e62c7e6af58a63ceb4d",
+      "revision": "97f783b08d70753a643453d5faf297ceaeb2c141",
+      "passed": true,
+      "result": "434-module strict SL true, cache off/encountered determinism on. One subsequent supported-cursor premise compiles in the source/reached gates."
+    },
+    "warning_state": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102/author-state-b3ef/report.json",
+      "sha256": "71b9bd52ab81566cccc0008f9b87c6e5f6751a78071bbe39a8b30974d49d1ed2",
+      "revision": "b3ef7f9f9dfe438686b3e3130dcd45495c904bac",
+      "passed": true,
+      "result": "137 custom/142 reported: genuine restored warning cursor, prepared-prefix/API jobs and exact owners, handler restoration, malformed source/prefix and retired-Gen refusals, nonzero split/full shutdown."
+    },
+    "joined_peer_state": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102-review/validated/default-state-393e/report.json",
+      "sha256": "e81cb23760aff6bd3548448771bb370c90bd1e74e26d57d67ccced13f426d3d8",
+      "revision": "393e94b0025fafd710b88a5ea2000b9af9bd310c",
+      "passed": true,
+      "result": "167 custom/172 reported with all 435 modules and adapter 3f85: actual ctor exit, marked-yet-live failed object, borrowed receiver ownership, genuine bounded API-stage seek, no intervening output, API-only jobs/noGen guards and full/nonzero shutdown continuation. Also covers the composed null-C destructor-return seam; no duplicate author gate."
+    },
+    "adapter_reuse": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102/joined-adapter-reuse-a9a/report.json",
+      "sha256": "0b396095e989f14aadb4550282e68baaa0ee64baa0fd46e9ab4744de9058b8cb",
+      "revision": "a9a875f64c6c2c726d151a23417a8291a8ba32c6",
+      "passed": true,
+      "result": "Tested COMP170 binary 3f85 reused after exact adapter source/binary comparison to its accepted build/service inputs; no new build/offline-rebuild credit."
+    },
+    "totals": "2 native originals/2 exact explicit_exit CLI agreements; 304 new custom/314 reported reached checks. Strict 434 at 97f; joined peer loads 435. Cache off/encountered determinism on; model/state/strict process exits0, quiet/no timeout; expected native exits23/31. Relevant HEAD/inputs and 4 binary identities stable; sampled workers absent and full reap checked before every loan."
+  },
+  "composition": "Clean actual master 27a6 merge at a9a875f64c6c2c726d151a23417a8291a8ba32c6; I102 production matches c745. Null-C DESTRUCTOR_C_RETURN changes touch the same echo-only cleanup destructors, covered by the mandatory joined peer retry instead of an extra repeat. WeakMap association paths, rejected-main/header446/adapter dispatch, anonymous/static-property and zend.assertions INI_SET paths are absent these originals. Accepted Main_program dispatch is unchanged. Final c40867d298e4121e43f68700a0a7e95afbac8777 cleanly composes actual cb8 master. GC32 touches only local module 444 WeakMap notifications: no WeakMaps gives empty map associations, safe empty ordering, no-op notify and pointwise previous field/free traversal. No adapter/pstate change or renewed run/receipt.",
+  "preserved_failures": [
+    {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102/baseline-656b/report.json",
+      "sha256": "8ecd7e02570fc5902ce3c32ba65f3a86194d8f0bbde7e84f2d097ebc812ff2e8",
+      "revision": "656b9e4b731393011d874e9d89113b46f0ed9242",
+      "passed": false,
+      "result": "Correct exit23 but wrong destructor order, prematurely dead copy descendants and disabled handler; zero agreement."
+    },
+    {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102-review/validated/default-state-owner-failure-b3ef/report.json",
+      "sha256": "69e2b375322a6339c74039fd94c58d5989284953101963ac74b50aced40cc434",
+      "revision": "b3ef7f9f9dfe438686b3e3130dcd45495c904bac",
+      "passed": false,
+      "result": "Fixture pre-exit Maker forecast3 overcounted the callee borrowed This; corrected to2 with explicit receiver/borrowed-root facts. Zero credit."
+    },
+    {
+      "report": "../php-spec-evidence-archive/generator-call-exit-102-review/validated/default-state-phase-failure-a9a/report.json",
+      "sha256": "532e1ab335adab297e234df42e5270c86d11a7021fce59c0f22bcc8a6597f3de",
+      "revision": "a9a875f64c6c2c726d151a23417a8291a8ba32c6",
+      "passed": false,
+      "result": "Fixture assumed a fixed third step; eager cleanup legitimately inserts pending release work. Replaced with bounded actual seek to exact API jobs and no intervening output. Zero credit."
+    }
+  ],
+  "tests": [
+    "tests/semantics/generator_call_exit_cases.json",
+    "tests/semantics/generator_call_exit_sources.py",
+    "tests/semantics/generator_call_exit_state.py",
+    "tests/semantics/generator_call_exit_review_state.py"
+  ],
+  "remaining": [
+    "Owning warning-retval/CLEAN and other unsupported copied exit continuations remain explicit Unsupported; wider Fiber/collection, cleanup replacements, post-creation and hard-bailout combinations remain partial."
+  ],
+  "reproduction": [
+    "taskset -c CPU python3 tests/semantics/generator_call_exit_sources.py",
+    "Native reuse: --native-report ../php-spec-evidence-archive/generator-call-exit-102/source-packet/native-first/report.json --native-report ../php-spec-evidence-archive/generator-call-exit-102-review/prepared/native-report.json",
+    "taskset -c CPU python3 tests/semantics/generator_call_exit_state.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_exit_review_state.py",
+    "Reports retain exact commands, tested revisions, binary/compiler identities, relevant inputs, profile, budgets and raw output. Source caps 600/620s with 100000 steps; reached cap 600s, initial seek/finish 4000, local API seek 128. Preserved semantics/generator-call-exit-102 history contains the tested cuts."
+  ]
+}

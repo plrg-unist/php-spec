@@ -56,6 +56,18 @@ callbacks may mutate referenced methods, restore or replace handlers, throw or
 exit; the original selected continuation and Throwable remain authenticated.
 Module270 releases returned values and the original Throwable before restoring
 the old handler, preserving genuine callback state during destructor effects.
+The same general path handles selected named NULL/scalar-return handlers during
+post-FINAL tick argument destruction. The entered null-C destructor frame
+transfers its receiver protection to an authenticated C-return continuation
+before local cleanup; ordinary release drops it after handler restoration. Both
+C protections remain throughout handling; remaining arguments, FCC slots, tick
+entries and the later queue then retire. Stable main exit 263 remains current despite handler
+return 23; captured children and bound receivers still run active destructors.
+The [tick-handler review](../../coverage/semantics/callback-late-tick-handler-review.json)
+records this bounded coverage extension; abrupt handlers, owning retval cleanup
+and wider late handler forms remain partial. Normal owning destructor-body returns follow the separate
+[ignored-body-value cleanup](SOURCE-DESTRUCTORS.md); abrupt body-value cleanup
+remains partial.
 The shared FINAL extension in modules 441/442 preserves that null caller and original
 argument through output-handler failure. Normal handling resumes the original
 undefined return; body, ignored-return/original-cleanup and pre-entry warning

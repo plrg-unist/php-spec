@@ -8,6 +8,8 @@ dec $destructor_boundary_scope(pstate, pdestructorcall, pframe*) : pstate
 dec $eager_explicit_task(ptask) : bool
 dec $eager_edge_nodes(hedge*) : pnode*
 dec $eager_owner_order(pstate) : pnode*
+dec $enum_exit_owner_reordered(pstate) : bool
+def $enum_exit_owner_reordered(S) = false -- otherwise
 dec $update_exit_owner_reordered(pstate) : bool
 dec $eager_task_inputs(pstate, ptask) : pnode*
 dec $eager_base_inputs(pstate, ptask) : pnode*
@@ -155,6 +157,7 @@ def $eager_explicit_task(AT porigin ptask) = $eager_explicit_task(ptask)
 def $eager_explicit_task(DESTRUCTOR_RELEASE pdestructionrelease) = true
 def $eager_explicit_task(DESTRUCTOR_ENTER pdestructorcall) = true
 def $eager_explicit_task(DESTRUCTOR_RESULT pdestructorcall) = true
+def $eager_explicit_task(DESTRUCTOR_C_RETURN pdestructorcall) = true
 def $eager_explicit_task(DESTRUCTOR_WARNING pdestructorcall) = true
 def $eager_explicit_task(DESTRUCTOR_FRAME_EXIT pdestructionframe) = true
 def $eager_explicit_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
@@ -169,6 +172,7 @@ def $eager_edge_nodes((HEDGE pnode_from pnode_to) :: hedge*) = pnode_to :: $eage
 def $eager_owner_order(S) = $eager_edge_nodes($heap_graph(S).EDGES) ++ $eager_task_inputs(S, ptask) ++ $operand_nodes(S.RESULT) ++ $eager_base_inputs(S, ptask) ++ $machine_roots(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$update_exit_owner_reordered(S)
+  -- if ~$enum_exit_owner_reordered(S)
 def $update_exit_owner_reordered(S) = false -- otherwise
 ;; ASSIGN_OBJ keeps OP_DATA's RHS but the plain CV receiver is borrowed.
 ;; Its completed BASE cache must not become an extra owner across GC(old slot).
@@ -944,6 +948,10 @@ def $eager_bailout_unwind(S) = true
   -- if ptask_tail* = eps
   -- if $exit_unwind_valid(S, z)
 def $eager_bailout_unwind(S) = false -- otherwise
+def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if $destructor_c_return_valid(S, pdestructorcall)
+  -- if $eager_bailout_source(S[.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*]) = (DESTRUCTOR_RESULT pdestructorcall)
 def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ ~pdestructorcall.USER

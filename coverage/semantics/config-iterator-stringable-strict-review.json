@@ -1,0 +1,32 @@
+{
+  "scope": "A100 existing ordinary CONFIG path: a strict caller sends a copied Stringable option through an initialized user Iterator to direct or retained first-class INI_SET, with a copied array value.",
+  "behavior": "After traversal and temporary DATA/INPUT cleanup, argument 1 raises TypeError before option __toString. The raw option and copied COW array remain in TraceArgs until catch release. A retained setter stays selected after its source variable is rebound to a getter and works on recovery.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_slow", "ext/standard/basic_functions.c zif_ini_set"]
+  },
+  "tested_cut": {
+    "revision": "63d3e03d45c9a40d8d983eb8accb323d00f87ad6",
+    "case_catalog_sha256": "91fa0f143368f757d25344b92977c573f83e1d2d10aeab7ce31dfa0e3c69e77b",
+    "state_fixture_sha256": "a3a6be88fdc48de93f6ccc94f8241787e25f2106e20d1857bf7ac95537483990",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, sole CPU4 actor",
+    "sources": [
+      {"id": "strict-direct-option-rejects-after-iterator-cleanup", "sha256": "ebc0aa2d664e4e273a650e6a909547828c781d7d01016f25bf539c68d98f352b"},
+      {"id": "strict-selected-setter-survives-rebinding-before-option-error", "sha256": "a2d3b4dfbdab85b1d39f8a3f484f52699249010afa7955aa68e074a644311552"}
+    ],
+    "source_result": "Both pinned-native/model exact normal comparisons passed: decoded stdout equal, exit 0, empty stderr, stable watched inputs and tested HEAD.",
+    "reached": "strict-direct-raw-option-and-array-trace passed 53 conditions; strict-selected-owner-survives-cv-rebinding passed 60. They check copied roots, strict receipt, the intermediate CONFIG_INVOKE, TypeError TraceArgs, owner/rebind identity, and final release.",
+    "strict_sl": "No rerun: no semantic module or harness changed. The parent A99 strict434 cut remains the compilation result for these unchanged rules.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-stringable-strict-100/author-63d3e03d4",
+    "commands": [
+      "taskset -c 4 python3 tests/semantics/config_iterator_stringable_strict_sources.py --case strict-direct-option-rejects-after-iterator-cleanup",
+      "taskset -c 4 python3 tests/semantics/config_iterator_stringable_strict_sources.py --case strict-selected-setter-survives-rebinding-before-option-error",
+      "taskset -c 4 python3 tests/semantics/config_iterator_stringable_strict_state.py --case strict-direct-raw-option-and-array-trace",
+      "taskset -c 4 python3 tests/semantics/config_iterator_stringable_strict_state.py --case strict-selected-owner-survives-cv-rebinding"
+    ]
+  },
+  "result": "Validation of existing semantics; no new rule was necessary. Strictness comes from the caller site. The selected Closure owner does not make this an internal method-receiver call.",
+  "limits": "These two named-class sources validate one flat copied array with an embedded ordinary alias. Wider effectful graphs, other CONFIG consumers, special assertion options, and A97 warning-handler exception work remain outside this result. No full-core, equivalence or BOLA claim.",
+  "review": "independent exact-head CLEAR at dc93e3edcb8ecc697c6b679e09d5921124096674"
+}

@@ -406,7 +406,7 @@ def $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program) = 
 dec $file_parse_resume_valid(pstate, psourceresponse) : pstate
 def $file_parse_resume_valid(S, SOURCE_ACCEPT n_unit n_bytes* program) = $file_parse_resume_accepted(S, pfilecontext, pfilecontext_tail*, program)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
-def $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, pfailedkind, n_message*, z) = S_object[.FILECONTEXTS = pfilecontext_tail*][.TODO = $source_operand_throw(n_object, pfilecontext.TAIL)][.ORIGIN = (pfilecontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
+def $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, pfailedkind, n_message*, z) = $destruction_store_new(S_object)[.FILECONTEXTS = pfilecontext_tail*][.TODO = $source_operand_throw(n_object, pfilecontext.TAIL)][.ORIGIN = (pfilecontext.SITE)][.SERVICELEFT = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.CONSTCONTEXT = eps]
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)

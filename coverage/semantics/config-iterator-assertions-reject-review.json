@@ -1,0 +1,37 @@
+{
+  "scope": "A101 ordinary Iterator-copied Stringable INI_SET option converting to exact zend.assertions, followed by an already admitted ARRAY or OBJECT value.",
+  "behavior": "INI_SET converts and releases the option after Iterator DATA/INPUT cleanup, then rejects the raw array/object value before directive lookup. TypeError TraceArgs retains the copied value. Scalar values with this special option remain explicitly Unsupported at this receipt.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_set"]
+  },
+  "tested_cut": {
+    "revision": "dc93e3edcb8ecc697c6b679e09d5921124096674 plus the private A101 edit",
+    "semantic_module_sha256": "074fee83ae5b0417d2b5e548412bd35b90ef7e7790e3f936933e520b32cd826e",
+    "manifest_sha256": "743339812651b2c1317ae062abe926ea0ff797f611d9b516a385f627edf2f255",
+    "case_catalog_sha256": "329444c3ed3f437ebd2f905fc74fa157f705dd0ffe0e4f60666b3d14521280ae",
+    "positive_source_catalog_sha256": "3e6eb63be3fb727229b59d361de57ac15819151798d7e0792afa98dacbce95a6",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, sole CPU4 actor",
+    "sources": [
+      {"id": "assertions-option-rejects-copied-array-before-lookup", "sha256": "22cadc4474488476ed76ac5b9ec3111cd5372283065da851ad0ab373e58cf5b7"},
+      {"id": "assertions-option-rejects-copied-object-without-value-cast", "sha256": "270c9f4c38eb9b1c2a61d6082e17dfc7241aa1c61ff5f877fd60b05dd7c83bbd"}
+    ],
+    "source_result": "Two pinned-native/model exact normal comparisons passed: decoded stdout equal, exit 0, empty stderr, stable watched inputs and tested HEAD. The later control-catalog correction did not change either positive source or the semantic module; both source-era and final catalogs are preserved externally.",
+    "reached": "assertions-copied-array-priority-and-cow-trace passed 53 conditions; assertions-copied-object-priority-and-raw-trace passed 45. The array case checks COW slot versus shared alias and cyclic-table refusal; both check converted option, raw copied value, TypeError trace owner and final release.",
+    "unsupported_control": "assertions-option-accepted-value-remains-unsupported passed: native exit 0/quiet, model exit 1 with the existing CONFIG Iterator Stringable option boundary after conversion. This is zero native agreement credit.",
+    "strict_sl": "Ordered 434-module manifest, exit 0, stdout true, empty stderr; 12.422 seconds.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-reject-101/author-changed-rule-dc93e3edc",
+    "commands": [
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_reject_sources.py --case assertions-option-rejects-copied-array-before-lookup",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_reject_sources.py --case assertions-option-rejects-copied-object-without-value-cast",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_reject_sources.py --case assertions-option-accepted-value-remains-unsupported",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_reject_state.py --case assertions-copied-array-priority-and-cow-trace",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_reject_state.py --case assertions-copied-object-priority-and-raw-trace",
+      "taskset -c 4 tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json entries> .tools/a101-strict.watsup"
+    ]
+  },
+  "prior_boundary": "The old exact-option guard returned Unsupported after option conversion for the array source while pinned native completed normally; original raw report is at /home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-reject-101/baseline-unsupported-dc93e3edc. An initial bare-new Iterator control stopped at the existing producer boundary before reception; its original failure is preserved separately with zero credit.",
+  "limits": "Only exact zend.assertions plus rejected ARRAY/OBJECT values are newly admitted; assertion setting, other special option values, wider effectful graphs, other CONFIG consumers and A97 warning-handler exception work remain outside this result. No full-core, equivalence or BOLA claim.",
+  "review": "independent exact-head CLEAR at f55224d28f0787549685fcd4729dc841255ce1da"
+}

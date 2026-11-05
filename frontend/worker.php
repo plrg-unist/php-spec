@@ -3,6 +3,7 @@
 require __DIR__ . '/autoload.php';
 require __DIR__ . '/FileLexer.php';
 require __DIR__ . '/EvalLexer.php';
+require __DIR__ . '/RejectedHeaderParser.php';
 require __DIR__ . '/encoding-literal.php';
 require __DIR__ . '/encoding.php';
 require __DIR__ . '/wire.php';
@@ -147,7 +148,8 @@ while (($line = fgets(STDIN)) !== false) {
                             continue 2;
                         }
                         $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
-                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()]
+                            + rejectedHeaderFacts($source, true, $version);
                         break;
                     } catch (CompileError $error) {
                         if (get_class($error) !== CompileError::class || $error->getLine() < 1) {
@@ -156,7 +158,8 @@ while (($line = fgets(STDIN)) !== false) {
                             continue 2;
                         }
                         $result = $identity + ['accepted' => false, 'category' => 'parser_static_rejection',
-                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()]
+                            + rejectedHeaderFacts($source, true, $version);
                         break;
                     } catch (Throwable $error) {
                         echo json_encode(['ok' => false, 'category' => 'helper_unsupported',
@@ -198,7 +201,8 @@ while (($line = fgets(STDIN)) !== false) {
                             continue 2;
                         }
                         $result = $identity + ['accepted' => false, 'category' => 'parser_rejection',
-                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()]
+                            + rejectedHeaderFacts($source, false, $version);
                         break;
                     } catch (CompileError $error) {
                         if (get_class($error) !== CompileError::class || $error->getLine() < 1) {
@@ -207,7 +211,8 @@ while (($line = fgets(STDIN)) !== false) {
                             continue 2;
                         }
                         $result = $identity + ['accepted' => false, 'category' => 'parser_static_rejection',
-                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()];
+                            'message' => base64_encode($error->getMessage()), 'line' => $error->getLine()]
+                            + rejectedHeaderFacts($source, false, $version);
                         break;
                     } catch (Throwable $error) {
                         echo json_encode(['ok' => false, 'category' => 'helper_unsupported',

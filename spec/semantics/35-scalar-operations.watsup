@@ -52,7 +52,6 @@ def $throw_scalar(S, text, n_message*, z) = S[.COMPLETION = UNSUPPORTED "missing
 def $throw_scalar(S, text, n_message*, z) = S -- if S.COMPLETION =/= NORMAL
 
 ;; zend_binop_error formats each raw type name with %s.
-dec $c_string(nat*) : nat*
 dec $type_failure(pstate, pbin, pvalue, pvalue, int) : pstate
 def $type_failure(S, pbin, pvalue_1, pvalue_2, z) = S[.COMPLETION = UNSUPPORTED "raw undefined arithmetic"]
   -- if pvalue_1 = PUNDEFINED \/ pvalue_2 = PUNDEFINED

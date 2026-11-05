@@ -37,6 +37,58 @@ release and notifies on final retirement. The ordinary pin, saved Fiber and
 Generator RETURN-child checks are recorded in the
 [property lifetime review](../../coverage/semantics/duplicate-property-reference-review.json).
 
+At the GC30 cut, module444 added quiet inactive `zend_weakref_free` and standard
+weak notification. MARKED observers had completed unregister;
+only the WeakReference association scan excluded them. The association view never
+filters the owning graph; ordinary field releases and C guards still update the
+local heap, while fast-skipped fields remain retained. Final S keeps its
+ownership-valid snapshot. During the store sweep, active observers force
+a guarded standard hook even in fast mode; after unregister, fast standard
+headers retain their fields without an extra guard. An uncalled public destructor
+still fails before the already-MARKED exemption.
+
+WeakReference chains, singleton aliases and retired referents add no referent
+owner. Callable validation uses the full state, including retained MARKED
+receivers. WeakMap associations remained visible and fenced at that cut because
+notification can release owning values; weak Closure/custom hooks remain partial. The engine
+basis is `zend_weakref_free`, `zend_weakref_unregister`, `zend_weakrefs_notify`,
+`zend_object_std_dtor` and `zend_objects_store_free_object_storage` in the pinned
+Zend sources. See the [inactive hook review](../../coverage/semantics/gc-inactive-weak-free-review.json).
+
+GC31 adds ordinary inactive WeakMap free outside active storage pins and active
+incoming Map-key associations. `zend_weakmap_free_obj` calls
+`zend_weakrefs_hash_clean_ex`: every key unregisters first, then `zend_hash_clean`
+releases values in entry order. MARKED Maps therefore leave the association view
+while their owning value edges remain leased until each ordered release.
+Repeated values keep every owner; a shared ALIAS cell loses its Map owner without
+duplicating or prematurely releasing its payload. Later leases survive an earlier
+inactive public-destructor fatal. Final S still keeps its ownership-valid snapshot.
+
+Seven exact source/request contexts and 599 new/affected strict conditions pass.
+The independent fatal C-before-later-B original observes whole-key unregister
+before nested value retirement. At that cut, active key-triggered entry removal
+remained fenced; the two corresponding Unsupported originals retain zero
+agreement there. Existing insertion/reference producer policies and wider custom
+hooks remain partial. See the [inactive Map review](../../coverage/semantics/gc-inactive-weakmap-free-review.json).
+
+GC32 adds inactive notification for standard object keys. The store-force guard
+precedes notification, and marking the Key prevents recursive value retirement
+from entering its body twice. Maps are visited by their stored per-Key registration
+rank. Each selected bucket becomes a DETACHED(Map,Key) pair before its owning
+value decrements. Other keys stay registered; nonadjacent equal values keep their
+separate positions in the remaining Map. Direct scalar and previously detached slots add
+no owning-edge offset. A later Map free releases only its remaining edges.
+
+Nested value retirement can notify another standard Key through the same rule.
+Key fields remain owned until all notifications succeed; an earlier fatal retains
+later Map entries and fields. Callable authentication still uses full S, and final
+S remains the last ownership-valid snapshot. Nine exact source/request contexts
+(eight programs) and 951 new/affected reported conditions pass at their recorded
+cuts, including fast/nonfast reference-cell cleanup. Internal Map/WeakReference
+keys, weak custom Closure hooks, active storage pins and inactive nonpublic
+destructor diagnostics remain fenced. No collector/count or nogc rule changes.
+See the [Key notification review](../../coverage/semantics/gc-key-notify-review.json).
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

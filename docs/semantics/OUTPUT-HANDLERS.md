@@ -208,8 +208,25 @@ RSHUTDOWN and owning autoload cleanup after the shutdown list remain explicit
 dependencies. Reentrant list registration, post-deactivation buffer starts, exit,
 abrupt handler/visibility-warning cleanup and wider Throwable rendering during list
 retirement remain partial, as do late bound-tick publication, uncovered table owners,
-weak/internal hooks and inactive nonpublic-destructor diagnostics. Earlier failed
+WeakMap/custom hooks and inactive nonpublic-destructor diagnostics. Earlier failed
 cuts retain zero credit.
+
+GC30 added quiet inactive WeakReference unregister and standard weak notification.
+Reverse handle order determines whether a live standard object runs its guarded
+hook or keeps fast-skipped fields after its observer unregisters. The local
+association view never filters the owning graph; field releases and C guards
+still update the local heap. Bound Closure validation sees MARKED receivers in
+the full state. WeakMap value releases were still fenced at that cut;
+weak Closure/custom notification remains partial. See the
+[inactive weak-hook review](../../coverage/semantics/gc-inactive-weak-free-review.json).
+
+GC31 extends the same terminal projection to WeakMap free: all keys unregister
+before values release in insertion order. Association filtering leaves the owning
+heap intact; ordinary value decrements and C guards update it, preserving later
+leases after a fatal and reference-cell multiplicity. Active key-triggered Map
+notification and incoming Map-key associations remain fenced. The
+[inactive Map review](../../coverage/semantics/gc-inactive-weakmap-free-review.json)
+records seven exact contexts and 599 new/affected conditions at their own cuts.
 
 OB06 admits only a no-argument `ob_start()` during normal executor queue release
 after output deactivation. The failed start leaves the buffer stack empty and
@@ -290,8 +307,8 @@ active handler-body reentry,
 Warning/deprecation-handler returned-object starts and wider executor completion remain
 partial. Handler initialization also allocates the aligned chunk buffer before
 the inactive-output check; allocation failure and PHP memory limits remain
-pending effects, as in the active buffer model. Original weak-observer GC
-controls stop at the inactive custom free-hook frontier and retain zero full
+pending effects, as in the active buffer model. At their OB10 cut, the original
+weak-observer GC controls stopped at the inactive custom free-hook frontier and retained zero full
 agreement credit; separate explicit-cleanup controls cover the creation protocol.
 [OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json),
 [OB09 evidence](../../coverage/semantics/output-executor-reception-review.json),

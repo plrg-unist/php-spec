@@ -21,6 +21,8 @@ test: build
 	python3 tests/wire_negative.py
 	python3 tests/eval_source_service.py
 	python3 tests/include_source_service.py
+	python3 tests/rejected_header_service_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-headers.XXXXXXXX)/service"
+	python3 tests/lexical_header_service_review.py --output "$$(mktemp -d /tmp/php-spec-lexical-headers.XXXXXXXX)/service"
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
@@ -860,6 +862,15 @@ test-semantics: build
 	python3 tests/semantics/generator_call_cancellation_sources.py
 	python3 tests/semantics/generator_call_cancellation_state.py
 	python3 tests/semantics/generator_call_cancellation_review_state.py
+	python3 tests/semantics/generator_call_mapping_sources.py
+	python3 tests/semantics/generator_call_mapping_state.py
+	python3 tests/semantics/generator_call_mapping_review_state.py
+	python3 tests/semantics/generator_call_receive_sources.py
+	python3 tests/semantics/generator_call_receive_state.py
+	python3 tests/semantics/generator_call_receive_review_state.py
+	python3 tests/semantics/generator_call_exit_sources.py
+	python3 tests/semantics/generator_call_exit_state.py
+	python3 tests/semantics/generator_call_exit_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -978,6 +989,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_retained_protocol.py
 	python3 tests/semantics/enum_is_callable_output_unique_protocol.py
 	python3 tests/semantics/enum_is_callable_output_exit_protocol.py
+	python3 tests/semantics/enum_is_callable_output_cleanup_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
@@ -1713,6 +1725,13 @@ test-semantics: build
 	python3 tests/semantics/trait_real_constructor_interaction_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
+	python3 tests/semantics/rejected_encoding_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/sources"
+	python3 tests/semantics/lexical_header_sources.py --output "$$(mktemp -d /tmp/php-spec-lexical-headers.XXXXXXXX)/sources"
+	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
+	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
+	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"
+	python3 tests/semantics/rejected_encoding_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/state"
+	python3 tests/semantics/rejected_header_review_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/review-state"
 	python3 tests/semantics/eval_class_scope_protocol.py
 	python3 tests/semantics/eval_saved_protocol.py
 	python3 tests/semantics/eval_finally_protocol.py

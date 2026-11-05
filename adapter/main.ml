@@ -478,7 +478,8 @@ let check_chdir request =
   if List.exists (fun (key,value) -> field key response <> value) expected then
     fail "chdir response differs from finite snapshot";
   `Assoc (("ok", `Bool true) :: expected)
-let execute value request =
+type main_input = Main_program of V.t | Main_rejected of V.t
+let execute input request =
   if !active_eval <> None then fail "eval parser response still pending";
   let budget = field "steps" request |> J.to_int in
   if budget < 0 then fail "negative transition budget";
@@ -558,6 +559,21 @@ let execute value request =
            | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg)) in
     if field "include_path" facts <> include_path then
       fail "file snapshot include_path differs from startup INI") snapshot;
+  let name, arguments = match input with
+  | Main_rejected response ->
+      let q = match List.filter (fun (key,_) -> key = "request") (assoc request) with
+        | [] -> None | [(_,json)] -> Some (import_request (module Runner) json)
+        | _ -> fail "duplicate request field" in
+      let cwd = Option.map (fun facts -> decode_bytes (field "cwd" facts)) snapshot in
+      "php_rejected_main_run", [decode_bytes (field "source" request); response;
+        decode_bytes filename_json; V.Make.opt (T.opt (typ "pstartup")) startup;
+        V.Make.bool (display <> None);
+        Option.value display ~default:(V.Make.opt (T.opt (typ "preqbytes")) None);
+        Option.value precision ~default:(decode_bytes (`String "MTQ="));
+        Option.value assertions ~default:(decode_bytes (`String "MQ=="));
+        V.Make.opt (T.opt (typ "prequest")) q;
+        V.Make.opt (T.opt (typ "preqbytes")) cwd]
+  | Main_program value ->
   let arguments = [value; V.Make.nat (Bigint.of_int budget); filename] in
   let file_arguments = [value; V.Make.nat (Bigint.of_int budget); decode_bytes filename_json] in
   let name, arguments = match List.filter (fun (key,_) -> key = "request") (assoc request) with
@@ -596,7 +612,7 @@ let execute value request =
          | "php_file_run" -> "php_file_startup_run"
          | "php_request_file_run" -> "php_request_file_startup_run"
          | _ -> assert false), arguments @ [value] in
-  let name, arguments = match assertions with
+  match assertions with
     | None -> name, arguments
     | Some raw ->
         let q = match List.filter (fun (key,_) -> key = "request") (assoc request) with
@@ -609,7 +625,8 @@ let execute value request =
           Option.value display ~default:(V.Make.opt (T.opt (typ "preqbytes")) None);
           Option.value precision ~default:(decode_bytes (`String "MTQ=")); raw;
           V.Make.opt (T.opt (typ "prequest")) q;
-          V.Make.opt (T.opt (typ "preqbytes")) cwd] in
+          V.Make.opt (T.opt (typ "preqbytes")) cwd]
+  in
   match Runner.Interp.eval_func name [] arguments with
   | Run.Pass state -> check (typ "pstate") state;
       let pending = pending_from_state state in
@@ -626,13 +643,26 @@ let source_pending json =
   let mode = string (field "mode" json) and profile = string (field "profile" json) in
   if mode <> "eval" || profile <> "cli-raw-85" then fail "unsupported source service mode/profile";
   { id = source_id (field "id" json); mode; profile; source = source_bytes (field "source" json) }
+let has_parse_headers response = List.mem_assoc "headers" (assoc response)
+let parse_header_keys = ["beginLine"; "beginTokenPos"; "closeLine"; "closeTokenPos"]
+let checked_parse_headers response =
+  if not (has_parse_headers response) then [] else
+  let headers = list (field "headers" response) |> List.map (fun header ->
+    exact (parse_header_keys @ ["items"]) header;
+    let positions = List.map (fun key ->
+      let value = field key header in ignore (J.to_int value); key, value) parse_header_keys in
+    let items = list (field "items" header) |> List.map (fun item ->
+      let value = import "phpType49" item in check (typ "phpType49") value; export value) in
+    `Assoc (positions @ ["items", `List items])) in
+  ["headers", `List headers]
 let check_source_service request =
   exact ["op"; "pending"; "response"] request;
   let pending = source_pending (field "pending" request) in
   let response = field "response" request in
   let accepted = match field "accepted" response with `Bool b -> b | _ -> fail "invalid parser acceptance flag" in
   exact (if accepted then ["id"; "mode"; "profile"; "source"; "accepted"; "ast"]
-         else ["id"; "mode"; "profile"; "source"; "accepted"; "category"; "message"; "line"]) response;
+         else ["id"; "mode"; "profile"; "source"; "accepted"; "category"; "message"; "line"]
+              @ if has_parse_headers response then ["headers"] else []) response;
   if source_id (field "id" response) <> pending.id
      || string (field "mode" response) <> pending.mode
      || string (field "profile" response) <> pending.profile
@@ -651,7 +681,7 @@ let check_source_service request =
     if line < 1 then fail "invalid parser rejection line";
     let message = source_bytes (field "message" response) in
     `Assoc (["ok", `Bool true; "accepted", `Bool false; "category", `String category;
-             "message", `String message; "line", `Int line] @ identity))
+             "message", `String message; "line", `Int line] @ identity @ checked_parse_headers response))
 let check_file_source_service request =
   exact ["op"; "pending"; "response"] request;
   let pending = field "pending" request in
@@ -671,7 +701,8 @@ let check_file_source_service request =
   let accepted = match field "accepted" response with
     | `Bool value -> value | _ -> fail "invalid file parser acceptance flag" in
   exact (keys @ if accepted then ["accepted"; "ast"]
-         else ["accepted"; "category"; "message"; "line"]) response;
+         else ["accepted"; "category"; "message"; "line"]
+              @ if has_parse_headers response then ["headers"] else []) response;
   if List.exists (fun key -> field key response <> field key pending) keys then
     fail "file parser response identity mismatch";
   let identity = List.map (fun key -> key, field key pending) keys in
@@ -689,7 +720,40 @@ let check_file_source_service request =
     let message = nonempty_bytes (field "message" response) in
     `Assoc (["ok", `Bool true; "accepted", `Bool false;
              "category", `String category; "message", `String message;
-             "line", `Int line] @ identity))
+             "line", `Int line] @ identity @ checked_parse_headers response))
+let rejected_source_response unit source checked decode_bytes =
+  let parse = string (field "category" checked) = "parser_rejection" in
+  let message = decode_bytes (field "message" checked) in
+  let line = V.Make.int (Bigint.of_int (J.to_int (field "line" checked))) in
+  if has_parse_headers checked then (
+    let headers = list (field "headers" checked) |> List.map (fun header ->
+      let positions = List.map (fun key -> V.Make.int (Bigint.of_int (J.to_int (field key header)))) parse_header_keys in
+      let items = List.map (import "phpType49") (list (field "items" header)) in
+      mk "pparseheader" "PARSE_HEADER" (positions @ [V.Make.list (T.list (typ "phpType49")) items])) in
+    mk "psourceresponse" "SOURCE_REJECT_HEADERS"
+      [unit; source; mk "pfailedkind" (if parse then "FAILED_PARSE" else "FAILED_COMPILE") [];
+       message; line; V.Make.list (T.list (typ "pparseheader")) headers])
+  else mk "psourceresponse" (if parse then "SOURCE_PARSE_REJECT" else "SOURCE_COMPILE_REJECT")
+    [unit; source; message; line]
+let execute_rejected_main request =
+  let optional = List.filter (fun key -> List.mem_assoc key (assoc request))
+      ["startup_ini"; "request"; "file_snapshot"] in
+  exact (["op"; "source"; "filename"; "steps"; "response"] @ optional) request;
+  let filename = field "filename" request in
+  let pending = `Assoc ["id", `String "0"; "mode", `String "file";
+    "profile", `String "cli-raw-85"; "requested", filename;
+    "resolved", filename; "opened", filename; "source", field "source" request] in
+  let checked = check_file_source_service (`Assoc ["op", `String "check_file_source_service";
+    "pending", pending; "response", field "response" request]) in
+  if field "accepted" checked <> `Bool false then fail "main rejection requires a rejected source";
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  let decode_bytes json = match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let response = rejected_source_response (V.Make.nat (Bigint.of_int 0))
+      (decode_bytes (field "source" request)) checked decode_bytes in
+  check (typ "psourceresponse") response;
+  execute (Main_rejected response) request
 let resume_file_resolve request =
   exact ["op"; "response"] request;
   let state, pending = match !active_eval with
@@ -835,14 +899,7 @@ let resume_file_parse request =
   let response = if J.to_bool (field "accepted" checked) then
       mk "psourceresponse" "SOURCE_ACCEPT"
         [unit; source; import_program (field "ast" checked)]
-    else (
-      let constructor = match string (field "category" checked) with
-        | "parser_rejection" -> "SOURCE_PARSE_REJECT"
-        | "parser_static_rejection" -> "SOURCE_COMPILE_REJECT"
-        | _ -> fail "invalid file parser rejection" in
-      mk "psourceresponse" constructor
-        [unit; source; decode_bytes (field "message" checked);
-         V.Make.int (Bigint.of_int (J.to_int (field "line" checked)))]) in
+    else rejected_source_response unit source checked decode_bytes in
   check (typ "psourceresponse") response;
   match Runner.Interp.eval_func "file_parse_continue" [] [state; response] with
   | Run.Pass next -> check (typ "pstate") next;
@@ -869,14 +926,7 @@ let resume_eval request =
   let source = decode_bytes (field "source" pending) in
   let response = if J.to_bool (field "accepted" checked) then
       mk "psourceresponse" "SOURCE_ACCEPT" [id; source; import_program (field "ast" checked)]
-    else (
-      let constructor = match string (field "category" checked) with
-        | "parser_rejection" -> "SOURCE_PARSE_REJECT"
-        | "parser_static_rejection" -> "SOURCE_COMPILE_REJECT"
-        | _ -> fail "invalid checked parser rejection" in
-      mk "psourceresponse" constructor
-        [id; source; decode_bytes (field "message" checked);
-         V.Make.int (Bigint.of_int (J.to_int (field "line" checked)))]) in
+    else rejected_source_response id source checked decode_bytes in
   check (typ "psourceresponse") response;
   match Runner.Interp.eval_func "eval_continue" [] [state; response] with
   | Run.Pass next -> check (typ "pstate") next;
@@ -905,11 +955,12 @@ let () =
       else if op = "resume_shell" then resume_shell request
       else if op = "resume_file_parse" then resume_file_parse request
       else if op = "resume_eval" then resume_eval request
+      else if op = "execute_rejected_main" then execute_rejected_main request
       else (
         if op <> "check" && op <> "elaborate" && op <> "execute" then fail "unknown operation";
         let value = import_program (field "ast" request) in
         check (typ "program") value;
-        if op = "execute" then (try execute value request with exn ->
+        if op = "execute" then (try execute (Main_program value) request with exn ->
           `Assoc ["ok", `Bool false; "category", `String "runner_failure"; "message", `String (Printexc.to_string exn)]) else (
         let expression = if op = "elaborate" || List.mem_assoc "fixture" (assoc request) then Some (fixture value) else None in
         if op = "elaborate" then ignore (elab (source_schema ^ "\ndec $fixture() : program\ndef $fixture() = " ^ Option.get expression ^ "\n"));
