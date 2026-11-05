@@ -45,6 +45,7 @@ def prepare(out):
         'new-closure-before-unpack', 'array-value-before-key', 'array-value-invalid-before-key',
         'array-value-constant-before-key-closure', 'array-value-closure-before-key-constant',
         'folded-dead-closure', 'cursor-before-nonstatic-closure')
+    selected += tuple(name for name in cases if name.startswith('qualified-'))
     try:
         for name in (*selected, 'ordinary-control', 'single-unsupported'):
             case = cases[name]; path = SOURCE / case['source']

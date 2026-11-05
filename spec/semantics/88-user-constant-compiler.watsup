@@ -26,6 +26,23 @@ dec $ppconstant_class(ppstate, pcpath, phpType19) : ppstate
 dec $ppconstant_list(ppstate, pcpath, nat, phpType46*) : ppstate
 dec $ppconstant_name(ppstate, pcpath, phpType11) : ppstate
 dec $ppconstant_error(ppstate, ptbytes, nat) : ppstate
+dec $ppconstant_qualified_keyword(phpType19) : ptbytes?
+def $ppconstant_qualified_keyword(name) = ($ptinvalidname(ptqual, ptbytes))
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if ptqual =/= PTPLAIN
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $ppconstant_qualified_keyword(phpType19) = eps -- otherwise
+dec $ppconstant_qualified_class(ppstate, phpType19) : ppstate
+def $ppconstant_qualified_class(P, phpType19) = $ppconstant_error(P, $ptascii("'") ++ ptbytes ++ $ptascii("' is an invalid class name"), $nabs(P.LOCATION.LINE))
+  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if $ppconstant_qualified_keyword(phpType19) = (ptbytes)
+def $ppconstant_qualified_class(P, phpType19) = P -- otherwise
+dec $ppconstant_method_target(ppstate, phpType19, phpType20, metadata) : ppstate
+def $ppconstant_method_target(P, phpType19, phpType20, metadata) = P_class
+  -- if P_class = $ppconstant_qualified_class(P, phpType19)
+  -- if P_class.COMPLETION =/= PPCNORMAL
+def $ppconstant_method_target(P, phpType19, phpType20, metadata) = $ppconstant_method_callable(P, phpType19, phpType20, metadata)
+  -- if $ppconstant_qualified_class(P, phpType19).COMPLETION = PPCNORMAL
 def $ppconstant_error(P, ptbytes, n) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes P.LOCATION.LINE)]
   -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
 def $ppconstant_error(P, ptbytes, n) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes n)]
@@ -121,7 +138,7 @@ def $ppconstant_node(P, pcpath, NExprNew phpType28 phpType6 metadata) = $ppparam
   -- if ~$ppclass_constant_initializer(P) /\ ($ppparameter_new_site(P, pcpath) \/ $ppglobal_constant_initializer(P[.LOCATION.PATH = pcpath]))
 def $ppconstant_node(P, pcpath, NExprPropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
 def $ppconstant_node(P, pcpath, NExprNullsafePropertyFetch expression phpType20 metadata) = $ppunsupported(P, "property constant initializer")
-def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_method_callable(P[.LOCATION.PATH = pcpath], phpType19, phpType20, metadata)
+def $ppconstant_node(P, pcpath, NExprStaticCall phpType19 phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = $ppconstant_method_target(P[.LOCATION.PATH = pcpath], phpType19, phpType20, metadata)
 def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_member_validate($ppconstant_class(P, pcpath ++ [PCFIELD 0], phpType19), pcpath ++ [PCFIELD 1], phpType20)
   -- if ~$pfclassname_member(phpType20)
 def $ppconstant_node(P, pcpath, NExprClassConstFetch phpType19 phpType20 metadata) = $ppconstant_classname(P, phpType19, metadata)

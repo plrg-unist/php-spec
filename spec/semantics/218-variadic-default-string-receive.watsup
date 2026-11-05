@@ -87,7 +87,7 @@ def $ppparameter_new_class(P, phpType28, metadata) = $ppconstant_error(P, $ptasc
   -- if phpType28 = name
   -- if $ptast(name) = PTNAME PTPLAIN ptbytes
   -- if $ptlc(ptbytes) = $ptascii("static")
-def $ppparameter_new_class(P, phpType28, metadata) = P
+def $ppparameter_new_class(P, phpType28, metadata) = $ppconstant_qualified_class(P, name)
   -- if phpType28 = name
   -- if $ptast(name) = PTNAME ptqual ptbytes
   -- if ptqual =/= PTPLAIN \/ $ptlc(ptbytes) =/= $ptascii("static")
