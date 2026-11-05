@@ -33,6 +33,16 @@ def $eit_frame_seek(S, n) = S
   -- if $(n > 0) /\ $enum_is_callable_exit_frame_capture(S) =/= eps
 def $eit_frame_seek(S, n) = $eit_frame_seek($drive_steps($eix_resume(S), 1), $nabs($(n - 1)))
   -- if $(n > 0) /\ $enum_is_callable_exit_frame_capture(S) = eps
+dec $eit_second_exit(pstate) : bool
+def $eit_second_exit(S) = true
+  -- if S.TODO = (EXIT_INVOKE pexitcall) :: ptask_tail*
+  -- if $enum_is_callable_exit_restore_pending(S)
+def $eit_second_exit(S) = false -- otherwise
+dec $eit_exit_seek(pstate, nat) : pstate
+def $eit_exit_seek(S, 0) = S
+def $eit_exit_seek(S, n) = S -- if $(n > 0) /\ $eit_second_exit(S)
+def $eit_exit_seek(S, n) = $eit_exit_seek($drive_steps($eix_resume(S), 1), $nabs($(n - 1)))
+  -- if $(n > 0) /\ ~$eit_second_exit(S)
 '''
 
 
@@ -160,6 +170,32 @@ if __name__ == '__main__':
     checks = reached('string', 'integer-exit-cleanup-throw-later-string', 'local', 'EXITED 23', 23)
     checks += reached('ordered', 'two-locals-both-throw', 'second', 'NORMAL', 23, two_locals=True)
     checks += reached('alias', 'two-locals-shared-reference', 'first', 'NORMAL', 23, shared_reference=True)
+    row_exit, cleanup_exit = exitcase.source('exit', 'two-locals-throw-then-exit')
+    checks += cleanup_exit + exitcase.capture('exit', 'S_exit_initial', 'FirstCheck::from')
+    checks += [
+        'S_exit_pending = $eit_exit_seek(S_exit_clear, 9000)',
+        '$eit_second_exit(S_exit_pending)',
+        'S_exit_pending.ACTIVEFIBER = eps /\\ S_exit_pending.FIBERCALLERS = eps',
+        'S_exit_pending.DESTRUCTION.CALLS = pdestructorcall_exit_local :: pdestructorcall_exit_tail*',
+        'pdestructorcall_exit_local.PENDING = (n_exit_exception)',
+        '$string_bytes($throwable_field(S_exit_pending, n_exit_exception, "message")) = ($ptascii("first"))',
+        'S_exit_pending.STORE[penumqueryoutput_exit.CELL] = DEFINED PNULL',
+        '$heap_owners($heap_graph(S_exit_pending), HOBJECT penumqueryoutput_exit.OLD) = 1',
+        'S_exit_early = $exit_ready(S_exit_pending, 23)',
+        'S_exit_early.COMPLETION = UNSUPPORTED "is_callable output exit local cleanup exit"',
+        'S_exit_early.TODO = S_exit_pending.TODO',
+        'S_exit_early.DESTRUCTION = S_exit_pending.DESTRUCTION',
+        'S_exit_early.STORE = S_exit_pending.STORE',
+        'S_exit_early.ALLOCATIONS = S_exit_pending.ALLOCATIONS',
+        'S_exit_refused = $drive_steps(S_exit_pending[.COMPLETION = NORMAL], 1)',
+        'S_exit_refused.COMPLETION = UNSUPPORTED "is_callable output exit local cleanup exit"',
+        'S_exit_refused.STORE[penumqueryoutput_exit.CELL] = DEFINED PNULL',
+        'S_exit_refused.DESTRUCTION = S_exit_pending.DESTRUCTION',
+        '$enum_is_callable_exit_restore_pending(S_exit_refused)',
+        '$heap_owners($heap_graph(S_exit_refused), HOBJECT penumqueryoutput_exit.OLD) = 1',
+        '$heap_owners($heap_graph(S_exit_refused), HOBJECT n_exit_exception) = 1',
+        '$eic_output(S_exit_refused.EVENTS) = $ptascii("D-null|FIRST-null|SECOND-null|SECOND-STOP|")',
+    ]
     checks += [
         'S_missing = S_string_throw[.TODO = (THROW_SEARCH n_string) :: (DESTRUCTOR_RESULT pdestructorcall_string) :: ptask_string_restore_tail*]',
         '~$enum_is_callable_exit_restore_valid(S_missing, penumqueryoutput_string, 23)',

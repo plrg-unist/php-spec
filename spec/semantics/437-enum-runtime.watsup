@@ -1952,6 +1952,13 @@ def $enum_is_callable_exit_restores(ptask :: ptask_tail*) = $enum_is_callable_ex
 def $enum_is_callable_exit_restore_frames(eps) = false
 def $enum_is_callable_exit_restore_frames(pframe :: pframe_tail*) = ($enum_is_callable_exit_restores(pframe.TODO) \/ $enum_is_callable_exit_restore_frames(pframe_tail*))
 def $enum_is_callable_exit_restore_pending(S) = ($enum_is_callable_exit_restores(S.TODO) \/ $enum_is_callable_exit_restore_frames(S.FRAMES))
+def $exit_ready(S, z) = S[.COMPLETION = UNSUPPORTED "is_callable output exit local cleanup exit"]
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps
+  -- if ~$fiber_closing(S, S.ACTIVEFIBER)
+  -- if ~$property_dynamic_exit_pending(S) /\ ~$foreach_bind_exit_pending(S)
+  -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
+  -- if ~$eval_compile_exit_pending(S) /\ $source_static_exit_tail(S, S.TODO) = eps
+  -- if $enum_is_callable_exit_restore_pending(S)
 def $enum_is_callable_output_exit_unwind(S) = (S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ ~$enum_is_callable_output_tasks_pending(S.TODO) /\ $enum_is_callable_output_frames_pending(S.FRAMES) /\ ~$enum_is_callable_exit_restore_pending(S) /\ $source_static_exit_tail(S, S.TODO) = eps)
 
 def $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z) = true
