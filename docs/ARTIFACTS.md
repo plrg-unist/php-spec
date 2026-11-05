@@ -751,3 +751,13 @@ root at its original path with the retained Git cut and pinned local tools to
 reproduce source identities. The [feature record](../coverage/semantics/anonymous-trait-adaptations-review.json)
 separates exact agreements, reached checks, compatibility bridges and failures;
 raw files stay outside Git.
+
+CLASS170 inferred anonymous Stringable views retain eight frozen originals under
+`.tools/class170-review-artifacts/` and supervised runs under
+`.tools/class170-artifacts/`. Its `recovered-private-raw/locations.json` maps 16
+reaped source/contract roots; the review artifact root's `recovered-state/locations.json`
+maps the accepted four-group fixture. The [feature record](../coverage/semantics/anonymous-trait-stringable-review.json)
+binds exact source agreements, scope/forgery and contract checks, and the original
+interpreter/Unsupported/fixture failures. Raw files stay outside Git; restore a
+mapped root at its original path with the retained Git cut and pinned local tools
+for its original source context.
