@@ -124,6 +124,15 @@ gate load current434, covering changed weak-free cleanup. Baseline and fixture
 parser failures retain zero credit; wider producers, collection and bailout
 contexts remain partial. [I101 review](coverage/semantics/generator-call-receive-review.json).
 
+I102 admits exit during copied reference warnings and named default construction
+before Generator creation. Handler restoration, failed-constructor suppression
+and ordered prepared/API cleanup keep the hidden copy through shutdown. Two
+native/CLI originals, strict434 and304 custom/314 reported reached checks pass.
+The joined peer loads435 and covers shared destructor return and adapter changes.
+Original semantic/fixture failures retain zero credit; wider cleanup, owning
+retval, Fiber and bailout paths remain partial.
+[I102 review](coverage/semantics/generator-call-exit-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory

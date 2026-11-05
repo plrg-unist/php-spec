@@ -7299,6 +7299,13 @@ while the hidden copy keeps its receiver/captures. Native/source and joined
 ownership gates pass; wider producers, collection and bailout remain partial.
 [Receive-failure review](coverage/semantics/generator-call-receive-review.json).
 
+Ordinary exit during copied reference warnings or named-default construction now
+preserves that same late copy, restores the handler and retires API owners in
+order. Failed construction suppresses its destructor, and catch/finally are
+skipped. Two exact exit comparisons and reached ownership gates pass; wider
+cleanup replacements and bailout contexts remain partial.
+[Exit review](coverage/semantics/generator-call-exit-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
