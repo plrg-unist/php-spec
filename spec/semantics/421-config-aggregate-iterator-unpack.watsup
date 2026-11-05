@@ -28,8 +28,9 @@ def $config_aggregate_method(S, n) = (pmethoddesc)
   -- if $fiber_traversal_method_selected(S, n, pmethoddesc.FUNCTION.ORIGIN, "getIterator")
   -- if pmethoddesc.FUNCTION.SIGNATURE = $useriter_signature($ptascii("getIterator"))
 def $config_aggregate_method(S, n) = eps -- otherwise
+;; Unary consumers use the fresh Iterator return; Generator returns stay SET-only.
 def $config_aggregate_source(S, pconfigaggregate) = true
-  -- if pconfigaggregate.CALL.KIND = INTRINSIC_INI_SET
+  -- if pconfigaggregate.CALL.KIND = INTRINSIC_INI_SET \/ pconfigaggregate.CALL.KIND = INTRINSIC_INI_GET \/ pconfigaggregate.CALL.KIND = INTRINSIC_INI_RESTORE
   -- if pconfigaggregate.CALL.INDEX = 0 /\ pconfigaggregate.CALL.SENT = eps
   -- if ~pconfigaggregate.CALL.NAMED /\ pconfigaggregate.CALL.PACKS = eps
   -- if ~$pipe_site(S, pconfigaggregate.CALL.SITE)
@@ -89,6 +90,7 @@ rule PhpStep/config-aggregate-start: S ~> $config_aggregate_call(S, {CALL pconfi
 ;; The receipt owns nothing. Immutable instance/class/source metadata remains
 ;; available after both receiver and Generator allocations have retired.
 def $config_aggregate_generator_producer_valid(S, pconfiggeneratorproducer) = true
+  -- if pconfiggeneratorproducer.AGGREGATE.CALL.KIND = INTRINSIC_INI_SET
   -- if $config_aggregate_source(S, pconfiggeneratorproducer.AGGREGATE)
   -- if $(pconfiggeneratorproducer.AGGREGATE.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pconfiggeneratorproducer.AGGREGATE.OBJECT] = INSTANCE porigin_class
@@ -245,6 +247,7 @@ def $config_aggregate_return_allowed(S, pconfigaggregate) = false -- otherwise
 ;; The owned return temporary becomes Generator DATA after native get_iterator
 ;; copies it and retires that temporary. INPUT remains the historical Aggregate CV.
 def $config_aggregate_generator_return_allowed(S, pconfigaggregate) = true
+  -- if pconfigaggregate.CALL.KIND = INTRINSIC_INI_SET
   -- if $config_aggregate_valid(S, pconfigaggregate)
   -- if $config_aggregate_owners(S, pconfigaggregate, 1)
   -- if S.RESULT = KNOWN (POBJECT n)
@@ -254,6 +257,7 @@ def $config_aggregate_generator_return_allowed(S, pconfigaggregate) = true
   -- if pgenerator.PHASE = GENERATOR_FRESH /\ pgenerator.DELEGATE = eps
 def $config_aggregate_generator_return_allowed(S, pconfigaggregate) = false -- otherwise
 def $config_aggregate_method_generator_return_allowed(S, pconfigaggregate) = true
+  -- if pconfigaggregate.CALL.KIND = INTRINSIC_INI_SET
   -- if $config_aggregate_valid(S, pconfigaggregate)
   -- if $config_aggregate_owners(S, pconfigaggregate, 1)
   -- if $config_aggregate_method(S, pconfigaggregate.OBJECT) = (pmethoddesc)
