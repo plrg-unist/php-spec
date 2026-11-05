@@ -1402,6 +1402,17 @@ Accepted parsing, native helper, schema, adapter and P4 rules are unchanged;
 wider compiler and attribute behavior remains partial.
 [Review](coverage/semantics/rejected-constant-attribute-review.json).
 
+COMP180 stops rejected abstract/final anonymous classes before constructor
+arguments and bodies, preserving earlier attributes and encoding headers.
+The actual NEW terminal's value and span distinguish named classes whose
+preceding statement list begins with NEW; the empty-list sentinel is excluded.
+Sixteen dynamic and four main originals agree; 27 service controls, 101 affected
+controls and 52 independent challenges pass at their recorded cuts. The initial
+direct-parser negative-index warnings remain preserved with zero gate credit.
+Accepted parsing, native helper, schema, adapter and P4 rules are unchanged;
+wider rejected-source/compiler behavior remains partial.
+[Review](coverage/semantics/rejected-anonymous-class-modifier-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
@@ -1409,7 +1420,7 @@ wider compiler and attribute behavior remains partial.
 | CLASS182 | Anonymous child factories inside method-owned Closures and arrows; private implementation/review. |
 | I109 | Native Generator method named/ARRAY-packed argument reception; private implementation/review. |
 | GC41 | Finite-entry WeakMap release generalization; private implementation/review. |
-| COMP180 | Rejected anonymous-class modifier cutoff; native/foreign investigation. |
+| COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
 | ATTR28 | Source-derived switch tick plans, fallthrough and final-value cleanup; private implementation/review. |
 | Enum callable arrays | Temporary/literal reference-array inputs; private implementation/review. |

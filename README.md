@@ -3218,6 +3218,10 @@ Rejected attributed global constant lists also retain later completed headers;
 their multi-constant restriction belongs to compilation. Sixteen dynamic and four
 main originals agree, with namespace, initializer and error-priority controls.
 [Constant-attribute review](coverage/semantics/rejected-constant-attribute-review.json).
+Rejected abstract/final anonymous classes now stop before constructor/body
+headers. Earlier attributes survive, while named and readonly class controls
+retain their headers. Sixteen dynamic and four main originals agree.
+[Anonymous-modifier review](coverage/semantics/rejected-anonymous-class-modifier-review.json).
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
