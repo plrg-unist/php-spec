@@ -857,7 +857,7 @@ caller CV, the third positional argument retains a reference to that cell
 through CONFIG, then receives the canonical name before the boolean result. The
 [output-CV review](../../coverage/semantics/enum-is-callable-output-review.json)
 records one exact source and 45 reached guards. Array inputs and old-object
-destructor/input-output alias effects remain explicit Unsupported.
+destructor/input-output alias effects remained explicit Unsupported at that cut.
 The same literal route writes the name for an absent method on both runtime
 false and syntax-only true; the
 [false-output review](../../coverage/semantics/enum-is-callable-output-false-review.json)
@@ -870,9 +870,10 @@ records two exact outcomes and 68 reached guards. Literal class-string arrays
 also retain lowercase and leading backslash source spelling, whereas case
 arrays use the canonical enum name. The
 [spelling review](../../coverage/semantics/enum-is-callable-output-spelling-review.json)
-records three exact outcomes and 64 reached guards. Other array sources remain
-partial. Initialized int, bool and null output CVs also receive the name
-before the boolean through the same source-certified path. The
+records three exact outcomes and 64 reached guards. Wider array sources remain
+partial beyond the live two-entry route below. Initialized int, bool and null
+output CVs also receive the name before the boolean through the same
+source-certified path. The
 [scalar-output review](../../coverage/semantics/enum-is-callable-output-scalar-review.json)
 records three exact outcomes and 79 reached guards; old-object replacement uses
 the lifetime rules below.
@@ -891,6 +892,20 @@ records seven exact sources, 200 independent guards and affected variable46/
 alias43 checks. Named/unpacked forms remain partial. Engine routes are
 `zend_compile_args`, VM `ZEND_SEND_VAR`/`ZEND_SEND_VAR_EX` and
 `ext/standard/type.c:PHP_FUNCTION(is_callable)`.
+For a live two-entry variable array, the first SEND records its actual array ID
+and selected name without owning a second copy. Direct class-string members
+retain raw spelling; a case receiver uses its enum's canonical class name.
+The sent array stays owned while later arguments or the old output destructor
+rebind the source CV. A shared input/output cell receives the name after its
+reference is captured, and a throwing destructor commits that name before
+exception transfer while leaving the boolean assignment untouched. The
+[variable-array review](../../coverage/semantics/enum-is-callable-variable-array-review.json)
+records seven exact agreements, two explicit Unsupported controls, strict435
+and separate reached groups of 60, 53, 33 and 70 checks. Key-2 input arrays,
+embedded reference members, and an output alias whose source is rebound to a
+new array remain outside this receipt route. Engine routes are
+`ext/standard/type.c:PHP_FUNCTION(is_callable)` and
+`Zend/zend_API.c:zend_is_callable_ex`.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
@@ -943,4 +958,4 @@ core observer boundary and is a control rather than an agreement.
 Owning rebound values and newly attached type sources remain partial.
 Native raw overwrite can retain an abandoned count for a destructor-created
 object until the store sweep; it cannot be modeled as a second checked write.
-Variable array inputs remain outside third-output name authentication.
+Wider variable arrays remain outside third-output name authentication.

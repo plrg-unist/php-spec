@@ -64,9 +64,17 @@ nested queries commit their separate names without assigning abandoned booleans.
 Nine source agreements, three explicit Unsupported controls, strict433 and five
 separate reached groups (90+62+35+43+78 checks) pass at recorded cuts.
 [Reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json).
+Two-entry live enum callable arrays now carry a first-SEND receipt through
+positional name output. Class strings preserve spelling, case receivers use the
+canonical class, and the sent array survives source rebinding and same-cell
+output. Old-output destruction can rebind or throw before the saved name commits.
+Seven exact agreements, two explicit Unsupported controls, strict435 and four
+separate reached groups (60+53+33+70 checks) pass at recorded cuts.
+[Variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, owning rebound values, late attached type sources,
-variable-array query inputs, named/unpacked output, loading and wider enum
+wider variable arrays, embedded reference members, alias plus source rebinding,
+named/unpacked output, loading and wider enum
 member/lifetime contexts remain partial.
 
 I92 gives real user Generator Closure::call entry its actual copied Closure and

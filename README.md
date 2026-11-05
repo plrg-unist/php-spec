@@ -6955,9 +6955,16 @@ while the name still commits; nested queries keep separate output cells. The
 [reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json)
 records nine agreements, three Unsupported controls and five separately run
 reached groups (308 clauses) at their actual cuts.
+Two-entry live enum callable arrays now keep their first-SEND value and selected
+name through source rebinding, same-cell output and output-destructor cleanup.
+Class strings retain their spelling; case receivers use the canonical enum
+name. The [variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json)
+records seven exact agreements, two Unsupported controls and four separate
+reached groups (216 checks) at their actual cuts.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 owning rebound values, late type
-sources, other array sources and autoload,
+sources, wider array sources (including embedded references and alias plus
+source rebinding) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
