@@ -1,0 +1,108 @@
+{
+  "milestone": "ATTR22: ignored owning destructor-body values before C receiver release",
+  "status": "Validated normal ignored destructor-body value cleanup before inner C release; wider lifecycle remains partial.",
+  "target": "PHP8.5.10 CLI NTS64; pinned local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-22",
+  "scope": "Nonthrowing ignored object/array/static-Closure body return cleanup after entered null-C destructor frames, with normal or stable main exit. Ordinary value/child releases run before the inner receiver decrement. Retained shared values survive until their real later owner retires. Selected-handler owning retval cleanup is separate.",
+  "production": {
+    "revision": "961a00b0bc57b545a0331e7c985881aa987db26c",
+    "implementation": [
+      "spec/semantics/257-request-destructors.watsup"
+    ],
+    "rule": "Transfer owning RESULT roots into ordinary VALUE release jobs while leaving the same authenticated C_RETURN/DR pair and original CALLS record live; clear RESULT/BASE. Only the empty-root arm decrements the inner receiver. Existing job/array/reference/Closure traversal and GC semantics are reused; no new task, snapshot or source-operation record."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "sources": [
+      "Zend/zend_compile.c:zend_compile_return permits ordinary expression returns when no return type is declared.",
+      "Zend/zend_execute_API.c:zend_call_known_function selects a local dummy retval for NULL retval_ptr, then zval_ptr_dtor after zend_call_function returns.",
+      "Zend/zend_objects.c:zend_objects_destroy_object adds the inner C protection before the known-instance call and OBJ_RELEASE only after it returns.",
+      "Zend/zend_closures.c:zend_closure_free_storage releases captured/static values before its bound receiver."
+    ]
+  },
+  "tests": {
+    "sources": [
+      "tests/semantics/deprecated_late_tick_body_return_object.php",
+      "tests/semantics/deprecated_late_tick_body_return_array.php",
+      "tests/semantics/deprecated_late_tick_body_return_review_closure.php",
+      "tests/semantics/deprecated_late_tick_body_return_review_retained.php"
+    ],
+    "affected_controls": [
+      "tests/semantics/deprecated_late_tick_handler_raw.php",
+      "tests/semantics/destructor_cases.json:destructor-return-is-unused"
+    ],
+    "protocol": "tests/semantics/deprecated_late_tick_body_return_review_protocol.py",
+    "protocol_revision": "b07395d1873670dff2150ea9f5d249ec03b5854e"
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "b8c36ec2aa1478e3c5ffe3d094d27b791174aa46b3a7ea2fe1063885eeea9c11",
+      "revision": "9dc1fad15d47cffc4b1c9f0b765fec4c62d98a56",
+      "new_originals": 4,
+      "affected_controls": 2,
+      "observation": "Object/array/static-Closure B;F;A;R;K;L;C; (array main263/CLI7, others0); retained value B;F;A;K;R;C;/0. Both controls match and all stderr is empty."
+    },
+    "unchanged_model": {
+      "report": "source-baseline-9dc/report.json",
+      "report_sha256": "0a4431a99691aabeacfb92bcbbc461bfcfb7f5b142ceae816d996ffafeaffd90",
+      "revision": "9dc1fad15d47cffc4b1c9f0b765fec4c62d98a56",
+      "passed": true,
+      "observation": "Fresh-object final outputs already match; this alone missed premature inner C decrement and removal of original CALLS."
+    },
+    "old_diagnostic": {
+      "report": "debug-returned-object-9dc/report.json",
+      "report_sha256": "67c0e37a1da1c8e3534f508606ecfa131f9975cb7cd42c8392ef458b687eef4d",
+      "revision": "9dc1fad15d47cffc4b1c9f0b765fec4c62d98a56",
+      "observation": "Genuine returned-R ENTER has Arg1/R2 and only R in CALLS; scope, task, descriptor and heap predicates all true. Native C requires Arg2. Diagnostic only, zero native agreement credit."
+    },
+    "activation_diagnostic": {
+      "report": "debug-returned-object-961/report.json",
+      "report_sha256": "8e0d6c50742587dd683acd7876d6cc89fb23a249f1ab9f4db0347f581b2222a9",
+      "revision": "961a00b0bc57b545a0331e7c985881aa987db26c",
+      "observation": "Exact same checked fixture now has Arg2/R2, CALLS[R,Arg], same live C_RETURN/DR pair and all scope/task/descriptor/heap booleans true. Diagnostic only; do not add to later reached counts."
+    },
+    "strict": {
+      "report": "strict-body-value-first/report.json",
+      "report_sha256": "78759d37de05960df81ea66283c36b0c993d7e4b97125b5b5631ca43a494bb74",
+      "revision": "961a00b0bc57b545a0331e7c985881aa987db26c",
+      "passed": true,
+      "modules": 434
+    },
+    "source": {
+      "first": {
+        "report": "source-body-value-first/report.json",
+        "report_sha256": "b7dd60a1beb8119db02d3c4cd04df83c97a490ff6fe093f9a7c8d6753d47ae76",
+        "revision": "961a00b0bc57b545a0331e7c985881aa987db26c",
+        "passed": true
+      },
+      "status": "passed",
+      "remaining": {
+        "report": "source-body-value-rest/report.json",
+        "report_sha256": "ca254363c32958e8d73a9141f07f953548234deb2c41921e3501688f1fc43a86",
+        "revision": "961a00b0bc57b545a0331e7c985881aa987db26c",
+        "new_agreements": 3,
+        "affected_controls": 2
+      },
+      "new_agreements": 4,
+      "affected_controls": 2
+    },
+    "reached": {
+      "status": "passed",
+      "revision": "b07395d1873670dff2150ea9f5d249ec03b5854e",
+      "report": "reached-first/run/report.json",
+      "report_sha256": "17ce917f2cd74a7422b3553bf32595fca29802919c16abf33e03c2cf6a8229d8",
+      "process_report": "reached-first/process.json",
+      "process_report_sha256": "28c8dffc47364d653424834c99cd15ec8baa8783535730cfcaa6e0519c0feb0b",
+      "groups": 8,
+      "conditions": 438,
+      "source_reached": 438,
+      "derived": 0,
+      "elapsed_seconds": 412.54,
+      "scope": "Real RESULT-to-VALUE transfer preserves pair/Arg2 with budget/resume. Nested returned object keeps original live CALLS and Arg2; alias-array graph/retired wrapper and explicit owner edge keep Arg3. Static-Closure capture keeps Arg2 before original child. Shared returned value3-to-2 does not destroy early. Existing root body keeps originalP2 through localL before returnedR, with pending returnedR1."
+    }
+  },
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; tests/semantics/profile.json; CPU5 single serial actor. Raw reports retain commands, original bytes/path/cwd, source/runtime/profile identity and stable before/after hashes; fully reaped boundaries are recorded. Copied local tools are not a rebuild/portability claim.",
+  "remaining": "Abrupt/reentrant ignored-body-value cleanup, direct by-reference destructor bodies, wider context/callable/GC interactions and selected-handler owning retval cleanup remain partial. Assertion roots and full lifecycle/core remain partial; ATTR07 unsafe lifetime observation is not rerun and has no renewed credit.",
+  "recovery": "Raw reports and original source bytes are external under raw_root; Git refs retain tested fixture/rule cuts. Preserve original hidden-lifetime diagnostic and matching old source output observation."
+}

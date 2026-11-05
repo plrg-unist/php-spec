@@ -172,6 +172,15 @@ exception need not own any API argument. Earlier warning/mapping prefix cleanup
 is unchanged. Wider producers, collection and bailout contexts remain partial.
 [Receive-failure review](../../coverage/semantics/generator-call-receive-review.json).
 
+I102 handles ordinary exit from a copied reference warning or named-default
+constructor before Gen creation. It authenticates the emitting cursor before
+exit clears its scope, restores the warning handler and releases prepared/API
+owners in order while retaining only the hidden copy. Failed construction is
+marked before its object is released; caller catch/finally and Gen body never
+run. Integer status survives cleanup and shutdown. Owning warning-retval/CLEAN,
+cleanup replacements and wider bailout contexts remain partial.
+[Exit review](../../coverage/semantics/generator-call-exit-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

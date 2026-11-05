@@ -65,8 +65,9 @@ entries and the later queue then retire. Stable main exit 263 remains current de
 return 23; captured children and bound receivers still run active destructors.
 The [tick-handler review](../../coverage/semantics/callback-late-tick-handler-review.json)
 records this bounded coverage extension; abrupt handlers, owning retval cleanup
-and wider late handler forms remain partial. Owning destructor-body returns
-have a separate ignored-retval cleanup obligation.
+and wider late handler forms remain partial. Normal owning destructor-body returns follow the separate
+[ignored-body-value cleanup](SOURCE-DESTRUCTORS.md); abrupt body-value cleanup
+remains partial.
 The shared FINAL extension in modules 441/442 preserves that null caller and original
 argument through output-handler failure. Normal handling resumes the original
 undefined return; body, ignored-return/original-cleanup and pre-entry warning

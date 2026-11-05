@@ -262,7 +262,7 @@ required at that cut. The [constructor review](../../coverage/semantics/anonymou
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Anonymous classes accept finite sequences of direct positional/named `new`
-arguments, including array unpack, and unpromoted value or reference parameters
+arguments, including array unpack, and ordinary value or reference parameters
 with an optional final variadic tail.
 The ordinary signature compiler validates their types, defaults, requiredness and
 final-only variadic placement; the ordinary binder
@@ -574,8 +574,29 @@ global initialization, then ordinary readonly checks reject another write.
 Setter authorization remains lexical; diagnostic caller display uses called scope.
 The [modifier review](../../coverage/semantics/anonymous-property-modifiers-review.json)
 checks stored flags/cells, actual permitted and denied stores, scope/descriptor
-forgeries and compile/link boundaries. Attributes, hooks, promotion and wider
+forgeries and compile/link boundaries. Attributes, hooks and wider
 member/type/default/lifetime combinations remain partial.
+
+Public/default-public anonymous constructors also admit attribute-free, hook-free
+promoted formals using the shared nonstatic property modifier predicate. The
+ordinary signature compiler retains parameter types/defaults and rejects promotion
+outside constructors; the method compiler owns promoted declarations, duplicate,
+variadic and property-type checks. Each declaration keeps the actual NParam origin
+and full private key. Parameter defaults remain parameter defaults, while the
+promoted property starts in its ordinary uninitialized/null state.
+
+Source-authenticated PROMOTE_PARAMETER tasks run after reception and before the
+body. Value stores separate later local writes and array COW; reference stores
+attach the declared property constraint to the sent cell. Readonly reference
+acquisition fails before the body. Separate eval compilations keep distinct
+promoted declarations and self scopes. The pinned engine accepts final/private
+promotion because that route bypasses ordinary property-group validation; the
+ordinary declaration error remains in place. Only the exercised duplicate,
+forbidden-property-type and complete optional-warning callable display operands
+truncate at NUL. The [promotion review](../../coverage/semantics/anonymous-promotion-review.json)
+retains source/prologue/reference and compile/link evidence. Attributes, hooks,
+nonpublic constructor admission and wider signature/default/lifetime contexts
+remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

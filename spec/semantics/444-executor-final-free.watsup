@@ -3,14 +3,26 @@
 ;; sweep real handles backwards; nonfast also runs standard free_obj hooks.
 ;; A local graph computes these terminal effects; the final machine keeps its
 ;; last ownership-valid snapshot, not a claim about process-freed memory.
-syntax pexecutorfree = {HEAP hgraph, MARKED pnode*, FAILED nat?, UNKNOWN bool}
+syntax pexecutorassociation = (nat, nat)
+syntax pexecutorfree = {HEAP hgraph, MARKED pnode*, DETACHED pexecutorassociation*, FAILED nat?, UNKNOWN bool}
 dec $executor_free_weak(pstate, pnode*, nat) : bool
 dec $executor_free_key_maps(pstate, pnode*, nat) : nat*
+dec $executor_free_live_maps(pstate, pnode*, pexecutorassociation*, nat) : nat*
+dec $executor_free_maps_remaining(nat*, pexecutorassociation*, nat) : nat*
 dec $executor_free_standard(pobject) : bool
 dec $executor_free_kind(pstate, pnode*, nat) : nat
+dec $executor_free_hook(pstate, pnode*, pexecutorassociation*, nat) : nat
 dec $executor_free_edges(hedge*, pnode) : hedge*
+dec $executor_free_edge(hedge*, pnode, pnode, nat) : hedge*
+dec $executor_free_entry_edges(hedge*, pnode, nat, pnode*) : hedge*
+dec $executor_free_entry_before(pweakmapentry*, nat, nat, pexecutorassociation*) : nat
 dec $executor_free_mark(pnode, pnode*) : pnode*
 dec $executor_free_body(pstate, pexecutorfree, pnode) : pexecutorfree
+dec $executor_free_fields(pstate, pexecutorfree, pnode) : pexecutorfree
+dec $executor_free_map_insert(pstate, nat, nat, nat*) : nat*
+dec $executor_free_map_order(pstate, nat, nat*) : nat*
+dec $executor_free_notify(pstate, pexecutorfree, nat) : pexecutorfree
+dec $executor_free_notify_maps(pstate, pexecutorfree, nat, nat*) : pexecutorfree
 dec $executor_free_release(pstate, pexecutorfree, pnode*) : pexecutorfree
 dec $executor_free_zero(pstate, pexecutorfree, pnode) : pexecutorfree
 dec $executor_free_force(pstate, pexecutorfree, nat) : pexecutorfree
@@ -47,41 +59,107 @@ def $executor_allocator_fast((Q)) = (n_value =/= 0)
 
 ;; Marked WeakReferences have completed unregister. Map free unregisters all
 ;; keys before ordered value release; standard bodies notify before fields.
-;; This association view never filters the owning heap or its value edges.
-;; Key-triggered Map entry removal still requires its own release protocol.
+;; Detached (Map,Key) pairs record individual notification progress, including
+;; scalar entries with no owning edge. Neither association view filters H.
 def $executor_free_key_maps(S, pnode_marked*, n) = $weakmap_key_maps(S, $destruction_nodes_delete(S.ALLOCATIONS, pnode_marked*), n)
+def $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) = $executor_free_maps_remaining($executor_free_key_maps(S, pnode_marked*, n), pexecutorassociation*, n)
+def $executor_free_maps_remaining(eps, pexecutorassociation*, n) = eps
+def $executor_free_maps_remaining(n_map :: nat_tail*, pexecutorassociation*, n) = $executor_free_maps_remaining(nat_tail*, pexecutorassociation*, n)
+  -- if (n_map, n) <- pexecutorassociation*
+def $executor_free_maps_remaining(n_map :: nat_tail*, pexecutorassociation*, n) = n_map :: $executor_free_maps_remaining(nat_tail*, pexecutorassociation*, n)
+  -- if ~((n_map, n) <- pexecutorassociation*)
 def $executor_free_weak(S, pnode_marked*, n) = ($weakref_find(S, $destruction_nodes_delete(S.ALLOCATIONS, pnode_marked*), n) =/= eps \/ $executor_free_key_maps(S, pnode_marked*, n) =/= eps)
 def $executor_free_standard(INSTANCE porigin) = true
 def $executor_free_standard(STDINSTANCE) = true
 def $executor_free_standard(THROWABLE pthrowable) = true
 def $executor_free_standard(pobject) = false -- otherwise
-def $executor_free_kind(S, pnode_marked*, n) = 0
-  -- if $executor_free_standard(S.OBJECTS[n]) /\ ~$executor_free_weak(S, pnode_marked*, n)
-def $executor_free_kind(S, pnode_marked*, n) = 1
-  -- if $executor_free_standard(S.OBJECTS[n]) /\ $executor_free_weak(S, pnode_marked*, n)
-  -- if $executor_free_key_maps(S, pnode_marked*, n) = eps
-def $executor_free_kind(S, pnode_marked*, n) = 1
+def $executor_free_kind(S, pnode_marked*, n) = $executor_free_hook(S, pnode_marked*, eps, n)
+def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 0
+  -- if $executor_free_standard(S.OBJECTS[n])
+  -- if $weakref_find(S, $destruction_nodes_delete(S.ALLOCATIONS, pnode_marked*), n) = eps
+  -- if $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) = eps
+def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
+  -- if $executor_free_standard(S.OBJECTS[n])
+  -- if $weakref_find(S, $destruction_nodes_delete(S.ALLOCATIONS, pnode_marked*), n) =/= eps \/ $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) =/= eps
+def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
   -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
-  -- if $executor_free_key_maps(S, pnode_marked*, n) = eps
-def $executor_free_kind(S, pnode_marked*, n) = 1
+  -- if $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) = eps
+def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
   -- if $weakmap_object(S.OBJECTS[n]) /\ ~$instance_storage_freeing(S, n)
-  -- if $executor_free_key_maps(S, pnode_marked*, n) = eps
-def $executor_free_kind(S, pnode_marked*, n) = 1
+  -- if $executor_free_live_maps(S, pnode_marked*, pexecutorassociation*, n) = eps
+def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 1
   -- if $closure_callable(S, n) /\ ~$executor_free_weak(S, pnode_marked*, n)
-def $executor_free_kind(S, pnode_marked*, n) = 2 -- otherwise
+def $executor_free_hook(S, pnode_marked*, pexecutorassociation*, n) = 2 -- otherwise
 
 def $executor_free_edges(eps, pnode) = eps
 def $executor_free_edges((HEDGE pnode pnode_child) :: hedge_tail*, pnode) = $executor_free_edges(hedge_tail*, pnode)
 def $executor_free_edges((HEDGE pnode_other pnode_child) :: hedge_tail*, pnode) = (HEDGE pnode_other pnode_child) :: $executor_free_edges(hedge_tail*, pnode)
   -- if pnode_other =/= pnode
+;; A bucket's position counts surviving owning slots, including repeated
+;; values. Removing the first equal edge would reorder a later Map free.
+def $executor_free_entry_before(eps, n_map, n_key, pexecutorassociation*) = 0
+def $executor_free_entry_before(pweakmapentry :: pweakmapentry_tail*, n_map, n_key, pexecutorassociation*) = 0
+  -- if pweakmapentry.KEY = n_key
+def $executor_free_entry_before(pweakmapentry :: pweakmapentry_tail*, n_map, n_key, pexecutorassociation*) = $executor_free_entry_before(pweakmapentry_tail*, n_map, n_key, pexecutorassociation*)
+  -- if pweakmapentry.KEY =/= n_key /\ (n_map, pweakmapentry.KEY) <- pexecutorassociation*
+def $executor_free_entry_before(pweakmapentry :: pweakmapentry_tail*, n_map, n_key, pexecutorassociation*) = $(|$weakmap_value_nodes(pweakmapentry.VALUE)| + $executor_free_entry_before(pweakmapentry_tail*, n_map, n_key, pexecutorassociation*))
+  -- if pweakmapentry.KEY =/= n_key /\ ~((n_map, pweakmapentry.KEY) <- pexecutorassociation*)
+def $executor_free_edge(eps, pnode, pnode_child, n) = eps
+def $executor_free_edge((HEDGE pnode pnode_child) :: hedge_tail*, pnode, pnode_child, 0) = hedge_tail*
+def $executor_free_edge((HEDGE pnode pnode_other) :: hedge_tail*, pnode, pnode_child, n) = (HEDGE pnode pnode_other) :: $executor_free_edge(hedge_tail*, pnode, pnode_child, n_before)
+  -- if $(n > 0)
+  -- if n_before = $(n - 1)
+def $executor_free_edge((HEDGE pnode_other pnode_to) :: hedge_tail*, pnode, pnode_child, n) = (HEDGE pnode_other pnode_to) :: $executor_free_edge(hedge_tail*, pnode, pnode_child, n)
+  -- if pnode_other =/= pnode
+def $executor_free_entry_edges(hedge*, pnode, n, eps) = hedge*
+def $executor_free_entry_edges(hedge*, pnode, n, pnode_child :: pnode_tail*) = $executor_free_entry_edges($executor_free_edge(hedge*, pnode, pnode_child, n), pnode, n, pnode_tail*)
 def $executor_free_mark(HOBJECT n, pnode_marked*) = (HOBJECT n) :: pnode_marked*
 def $executor_free_mark(pnode, pnode_marked*) = pnode_marked* -- otherwise
 
+;; A standard free_obj notifies in per-Key registration order before fields.
+;; The physical force guard is already installed. Marking the Key prevents
+;; recursive value retirement from entering its free_obj twice.
+def $executor_free_body(S, pexecutorfree, HOBJECT n) = $executor_free_fields(S, $executor_free_notify(S, pexecutorfree[.MARKED = $executor_free_mark(HOBJECT n, pexecutorfree.MARKED)], n), HOBJECT n)
+  -- if $executor_free_standard(S.OBJECTS[n])
+def $executor_free_body(S, pexecutorfree, HOBJECT n) = $executor_free_fields(S, pexecutorfree[.MARKED = $executor_free_mark(HOBJECT n, pexecutorfree.MARKED)], HOBJECT n)
+  -- if ~$executor_free_standard(S.OBJECTS[n])
+def $executor_free_body(S, pexecutorfree, HCELL n) = $executor_free_fields(S, pexecutorfree, HCELL n)
+def $executor_free_body(S, pexecutorfree, HARRAY n) = $executor_free_fields(S, pexecutorfree, HARRAY n)
 ;; All remaining fields stay owned while earlier fields decrement. Marked std
 ;; headers retain their skipped fields even if a later decrement frees a header.
-def $executor_free_body(S, pexecutorfree, pnode) = $executor_free_release(S, pexecutorfree[.HEAP = H[.EDGES = $executor_free_edges(H.EDGES, pnode)][.ROOTS = H.ROOTS ++ pnode_child*]][.MARKED = $executor_free_mark(pnode, pexecutorfree.MARKED)], pnode_child*)
+def $executor_free_fields(S, pexecutorfree, pnode) = pexecutorfree
+  -- if pexecutorfree.FAILED =/= eps \/ pexecutorfree.UNKNOWN
+def $executor_free_fields(S, pexecutorfree, pnode) = $executor_free_release(S, pexecutorfree[.HEAP = H[.EDGES = $executor_free_edges(H.EDGES, pnode)][.ROOTS = H.ROOTS ++ pnode_child*]], pnode_child*)
+  -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
   -- if H = pexecutorfree.HEAP
   -- if pnode_child* = $heap_children(pnode, H.EDGES)
+
+def $executor_free_map_insert(S, n_key, n, eps) = [n]
+def $executor_free_map_insert(S, n_key, n, n_head :: nat_tail*) = n :: n_head :: nat_tail*
+  -- if $gc_ephemeron_before(S, n, n_head, n_key)
+def $executor_free_map_insert(S, n_key, n, n_head :: nat_tail*) = n_head :: $executor_free_map_insert(S, n_key, n, nat_tail*)
+  -- if ~$gc_ephemeron_before(S, n, n_head, n_key)
+def $executor_free_map_order(S, n_key, eps) = eps
+def $executor_free_map_order(S, n_key, n_map :: nat_tail*) = $executor_free_map_insert(S, n_key, n_map, $executor_free_map_order(S, n_key, nat_tail*))
+def $executor_free_notify(S, pexecutorfree, n_key) = $executor_free_notify_maps(S, pexecutorfree, n_key, $executor_free_map_order(S, n_key, $executor_free_live_maps(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n_key)))
+  -- if $gc_ephemeron_key_order_safe(S, n_key)
+def $executor_free_notify(S, pexecutorfree, n_key) = pexecutorfree[.UNKNOWN = true]
+  -- if ~$gc_ephemeron_key_order_safe(S, n_key)
+def $executor_free_notify_maps(S, pexecutorfree, n_key, nat*) = pexecutorfree
+  -- if pexecutorfree.FAILED =/= eps \/ pexecutorfree.UNKNOWN
+def $executor_free_notify_maps(S, pexecutorfree, n_key, eps) = pexecutorfree
+  -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
+def $executor_free_notify_maps(S, pexecutorfree, n_key, n_map :: nat_tail*) = $executor_free_notify_maps(S, pexecutorfree, n_key, nat_tail*)
+  -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
+  -- if ~(n_map <- $executor_free_live_maps(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n_key))
+def $executor_free_notify_maps(S, pexecutorfree, n_key, n_map :: nat_tail*) = $executor_free_notify_maps(S, $executor_free_release(S, pexecutorfree[.HEAP = H[.EDGES = $executor_free_entry_edges(H.EDGES, HOBJECT n_map, n_before, pnode_value*)][.ROOTS = H.ROOTS ++ pnode_value*]][.DETACHED = pexecutorfree.DETACHED ++ [(n_map, n_key)]], pnode_value*), n_key, nat_tail*)
+  -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
+  -- if n_map <- $executor_free_live_maps(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n_key)
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
+  -- if pnode_value* = $weakmap_value_nodes(pweakmapentry.VALUE)
+  -- if n_before = $executor_free_entry_before($weakmap_entries_contents(S, n_map), n_map, n_key, pexecutorfree.DETACHED)
+  -- if H = pexecutorfree.HEAP
+  -- if $eager_removed(pnode_value*, $heap_children(HOBJECT n_map, H.EDGES)) = eps
 def $executor_free_release(S, pexecutorfree, pnode*) = pexecutorfree
   -- if pexecutorfree.FAILED =/= eps \/ pexecutorfree.UNKNOWN
 def $executor_free_release(S, pexecutorfree, eps) = pexecutorfree
@@ -112,11 +190,11 @@ def $executor_free_zero(S, pexecutorfree, HOBJECT n) = pexecutorfree
 def $executor_free_zero(S, pexecutorfree, HOBJECT n) = $executor_free_body(S, pexecutorfree, HOBJECT n)
   -- if n <- S.DESTRUCTION.CALLED \/ $destructor_method(S, n) = eps
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
-  -- if $executor_free_kind(S, pexecutorfree.MARKED, n) =/= 2
+  -- if $executor_free_hook(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n) =/= 2
 def $executor_free_zero(S, pexecutorfree, HOBJECT n) = pexecutorfree[.UNKNOWN = true]
   -- if n <- S.DESTRUCTION.CALLED \/ $destructor_method(S, n) = eps
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
-  -- if $executor_free_kind(S, pexecutorfree.MARKED, n) = 2
+  -- if $executor_free_hook(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n) = 2
 def $executor_free_zero(S, pexecutorfree, HCELL n) = $executor_free_body(S, pexecutorfree, HCELL n)
 def $executor_free_zero(S, pexecutorfree, HARRAY n) = $executor_free_body(S, pexecutorfree, HARRAY n)
 
@@ -124,13 +202,13 @@ def $executor_free_force(S, pexecutorfree, n) = pexecutorfree
   -- if (HOBJECT n) <- pexecutorfree.MARKED
 def $executor_free_force(S, pexecutorfree, n) = pexecutorfree[.MARKED = (HOBJECT n) :: pexecutorfree.MARKED]
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
-  -- if $executor_free_kind(S, pexecutorfree.MARKED, n) = 0 /\ $executor_allocator_fast(S.REQUEST)
+  -- if $executor_free_hook(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n) = 0 /\ $executor_allocator_fast(S.REQUEST)
 def $executor_free_force(S, pexecutorfree, n) = $executor_free_body(S, pexecutorfree[.HEAP.ROOTS = pexecutorfree.HEAP.ROOTS ++ [HOBJECT n]], HOBJECT n)
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
-  -- if $executor_free_kind(S, pexecutorfree.MARKED, n) = 1 \/ ($executor_free_kind(S, pexecutorfree.MARKED, n) = 0 /\ ~$executor_allocator_fast(S.REQUEST))
+  -- if $executor_free_hook(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n) = 1 \/ ($executor_free_hook(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n) = 0 /\ ~$executor_allocator_fast(S.REQUEST))
 def $executor_free_force(S, pexecutorfree, n) = pexecutorfree[.UNKNOWN = true]
   -- if ~((HOBJECT n) <- pexecutorfree.MARKED)
-  -- if $executor_free_kind(S, pexecutorfree.MARKED, n) = 2
+  -- if $executor_free_hook(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n) = 2
 def $executor_free_walk(S, pexecutorfree, n) = pexecutorfree
   -- if pexecutorfree.FAILED =/= eps \/ pexecutorfree.UNKNOWN \/ n = 0
 def $executor_free_walk(S, pexecutorfree, n) = $executor_free_walk(S, $executor_free_force(S, pexecutorfree, n_object), n_index)
@@ -226,7 +304,7 @@ def $executor_free_tables(S, pexecutorfree) = $executor_free_release(S, pexecuto
   -- if pnode_root* = $executor_table_roots(S)
   -- if $eager_removed(pnode_plan*, pnode_root*) = eps /\ $eager_removed(pnode_root*, pnode_plan*) = eps
 def $executor_free_tables(S, pexecutorfree) = pexecutorfree[.UNKNOWN = true] -- otherwise
-def $executor_free_finish(S) = $executor_free_result(S, $executor_free_walk(S, $executor_free_tables(S, {HEAP $heap_graph(S), MARKED eps, FAILED eps, UNKNOWN false}), S.DESTRUCTION.NEXT))
+def $executor_free_finish(S) = $executor_free_result(S, $executor_free_walk(S, $executor_free_tables(S, {HEAP $heap_graph(S), MARKED eps, DETACHED eps, FAILED eps, UNKNOWN false}), S.DESTRUCTION.NEXT))
   -- if $executor_free_endpoint(S)
   -- if $autoload_roots(S.AUTOLOAD.ENTRIES) = eps
 def $executor_free_finish(S) = S[.COMPLETION = UNSUPPORTED "post-output autoload registry release"]
@@ -283,6 +361,19 @@ dec $executor_retval_notice_start(pstate) : bool
 dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
 dec $ob_creation_ready(pstate, pconfigcall, pvalue*) : bool
+dec $ob_failure_ready(pstate, pconfigcall, pvalue*) : bool
+dec $ob_failure_history(pstate, pobcreation) : pstate
+dec $ob_failure_valid(pstate, pobcreation) : bool
+dec $ob_failure_task(ptask, pobcreation) : bool
+dec $ob_failure_tasks(pstate, pobcreation) : bool
+dec $ob_failure_value_destructor(pstate, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, ptask*) : bool
+dec $ob_failure_task_valid(pstate, pobcreation) : bool
+dec $ob_failure_message(pobcreation) : preqbytes
+dec $ob_failure_warning(pstate, pobcreation) : pstate
+dec $ob_failure_pending_notice(pstate, pobcreation) : pstate
+dec $ob_failure_continuation(ptask) : pobcreation?
+dec $ob_failure_discarded(pstate, nat) : pobcreation?
+dec $ob_failure_discard_valid(pstate, pdestructionoperation) : bool
 dec $ob_creation_target(phandlerresolution) : pcalltarget?
 dec $ob_creation_producer(pstate, pvalue) : pshutdownproducer?
 dec $ob_creation_history(pstate, pobcreation) : pstate
@@ -675,6 +766,14 @@ def $ob_creation_ready(S, pconfigcall, pvalue_values*) = true
   -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
   -- if $error_handler_callable(S, pvalue) = (true)
 def $ob_creation_ready(S, pconfigcall, pvalue_values*) = false -- otherwise
+def $ob_failure_ready(S, pconfigcall, pvalue_values*) = true
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID ptbytes
+def $ob_failure_ready(S, pconfigcall, pvalue_values*) = false -- otherwise
 def $ob_creation_target(HANDLERRESOLVED pcalltarget) = (pcalltarget)
 def $ob_creation_target(phandlerresolution) = eps -- otherwise
 def $ob_creation_producer(S, POBJECT n) = ($eager_cleanup_target(S, CLOSURE_TARGET n))
@@ -721,6 +820,7 @@ def $ob_creation_selected(S, pobcreation) = true
 def $ob_creation_selected(S, pobcreation) = false -- otherwise
 def $ob_creation_valid(S, pobcreation) = true
   -- if pobcreation.CALL.KIND = INTRINSIC_OB_START
+  -- if pobcreation.PREFIX = eps
   -- if pobcreation.VALUE =/= PNULL
   -- if (pobcreation.RAW = eps /\ ~$is_array_value(pobcreation.VALUE)) \/ (pobcreation.RAW =/= eps /\ $is_array_value(pobcreation.VALUE))
   -- if S_history = $ob_creation_history(S, pobcreation)
@@ -729,6 +829,150 @@ def $ob_creation_valid(S, pobcreation) = true
   -- if ~$exception_deprecated_raw(S_history, pobcreation.VALUE) /\ ~$api_special(S_history, pobcreation.VALUE)
   -- if $ob_creation_selected(S_history, pobcreation)
 def $ob_creation_valid(S, pobcreation) = false -- otherwise
+;; Failure is selected once. A Warning callback may publish the missing function
+;; or repair referenced array members; authenticate the old lookup, not a retry.
+def $ob_failure_history(S, pobcreation) = S_history[.ALLOCATIONS = S_history.ALLOCATIONS ++ $entries_nodes(parray.ITEMS)][.CALLABLES = $constant_callable_functions(S_history, S_history.DECLARATIONS[0:n_prefix])]
+  -- if pobcreation.PREFIX = (n_prefix)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if pobcreation.RAW = (parray)
+  -- if S_history = $ob_creation_history(S, pobcreation)
+def $ob_failure_history(S, pobcreation) = S_history[.CALLABLES = $constant_callable_functions(S_history, S_history.DECLARATIONS[0:n_prefix])]
+  -- if pobcreation.PREFIX = (n_prefix)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if pobcreation.RAW = eps
+  -- if S_history = $ob_creation_history(S, pobcreation)
+def $ob_failure_history(S, pobcreation) = S -- otherwise
+def $ob_failure_valid(S, pobcreation) = true
+  -- if pobcreation.CALL.KIND = INTRINSIC_OB_START
+  -- if pobcreation.PREFIX = (n_prefix)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if pobcreation.RESOLUTION = HANDLERINVALID ptbytes
+  -- if pobcreation.VALUE =/= PNULL /\ pobcreation.PRODUCER = eps /\ pobcreation.CAPTURE = eps
+  -- if (pobcreation.RAW = eps /\ ~$is_array_value(pobcreation.VALUE)) \/ (pobcreation.RAW =/= eps /\ $is_array_value(pobcreation.VALUE))
+  -- if S_history = $ob_failure_history(S, pobcreation)
+  -- if pobcreation.RAW = $shutdown_snapshot(S_history, pobcreation.VALUE)
+  -- if $ob_parse_valid(S_history, pobcreation.CALL, 3, [pobcreation.VALUE, PINT pobcreation.CHUNK, PINT pobcreation.FLAGS])
+  -- if ~$exception_deprecated_raw(S_history, pobcreation.VALUE) /\ ~$api_special(S_history, pobcreation.VALUE)
+  -- if $error_handler_resolution(S_history, pobcreation.VALUE) = pobcreation.RESOLUTION
+def $ob_failure_valid(S, pobcreation) = false -- otherwise
+def $ob_start_receipt_valid(S, pobcreation) = ($ob_creation_valid(S, pobcreation) \/ $ob_failure_valid(S, pobcreation))
+def $ob_failure_task(OB_START_INVALID_NOTICE pobcreation, pobcreation) = true
+def $ob_failure_task(ERROR_HANDLER_INVOKE perrorcall, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+def $ob_failure_task(ERROR_HANDLER_RESULT perrorcall, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+def $ob_failure_task(ERROR_HANDLER_CLEAN perrorcall, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+def $ob_failure_task(API_CALLBACK_SEND papiargcursor, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_task(API_CALLBACK_REF papiargcursor, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_task(ptask, pobcreation) = false -- otherwise
+def $ob_failure_tasks(S, pobcreation) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ob_failure_task(ptask, pobcreation)
+def $ob_failure_tasks(S, pobcreation) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = pdestructionoperation.CALLER
+  -- if pdestructioncleanup.ORIGIN = pdestructionoperation.ORIGIN
+  -- if pdestructioncleanup.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+def $ob_failure_tasks(S, pobcreation) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_CLEAN perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructioncleanup.RELEASED
+  -- if $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = pdestructionoperation.CALLER
+  -- if pdestructioncleanup.ORIGIN = pdestructionoperation.ORIGIN
+  -- if pdestructioncleanup.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = false -- otherwise
+def $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, ptask_suffix*) = $ob_failure_tasks(S[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_suffix*], pobcreation)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_saved)
+  -- if pdestructionrelease_saved.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]
+  -- if pdestructionrelease.JOBS = eps
+  -- if pdestructionrelease.CALLER = pdestructionrelease_saved.CALLER
+  -- if pdestructionrelease.ORIGIN = pdestructionrelease_saved.ORIGIN
+  -- if pdestructionrelease.CONSTCONTEXT = pdestructionrelease_saved.CONSTCONTEXT
+  -- if pdestructionrelease.USER = pdestructionrelease_saved.USER
+  -- if pdestructionrelease_saved.CALLER = pdestructorcall.CALLER
+  -- if pdestructionrelease_saved.ORIGIN = pdestructorcall.ORIGIN
+  -- if pdestructionrelease_saved.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+  -- if pdestructionrelease_saved.USER = pdestructorcall.USER
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED
+  -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.USER
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.PENDING = eps
+  -- if pdestructorcall.CALLER = S.CURRENT
+  -- if pdestructorcall.ORIGIN = S.ORIGIN
+  -- if pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+def $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, ptask_suffix*) = false -- otherwise
+def $ob_failure_task_valid(S, pobcreation) = true
+  -- if $ob_failure_valid(S, pobcreation)
+  -- if S.ORIGIN = (pobcreation.CALL.SITE)
+  -- if $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $ob_failure_tasks(S, pobcreation)
+def $ob_failure_task_valid(S, pobcreation) = false -- otherwise
+def $call_task_valid(S, OB_START_INVALID_NOTICE pobcreation) = $ob_failure_task_valid(S, pobcreation)
+def $task_nodes(OB_START_INVALID_NOTICE pobcreation) = $config_nodes(pobcreation.CALL)
+def $selected_task_nonce(OB_START_INVALID_NOTICE pobcreation) = pobcreation.CALL.SELECTION
+def $ob_failure_message(pobcreation) = $ptascii("ob_start(): ") ++ ptbytes
+  -- if pobcreation.RESOLUTION = HANDLERINVALID ptbytes
+def $ob_failure_warning(S, pobcreation) = $error_dispatch(S, 2, n_message*, pobcreation.CALL.LINE, DIAGNOSTIC "Warning" n_message* pobcreation.CALL.LINE, OB_START_INVALID_NOTICE pobcreation)
+  -- if n_message* = $ob_failure_message(pobcreation)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+  -- if $ob_failure_task_valid(S, pobcreation)
+  -- if perrorcall.SITE = pobcreation.CALL.SITE /\ perrorcall.LINE = pobcreation.CALL.LINE
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.MESSAGE = $ob_failure_message(pobcreation)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pobcreation.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pobcreation.CALL, $trace_extra(S_history, $getclass_trace_operands(pobcreation.CALL.SENT)))
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+;; A pending Throwable prevents an eligible handler call, but not default output.
+def $ob_failure_pending_notice(S, pobcreation) = S[.ERRORFATALTRACE = eps]
+  -- if $eval_compile_recorded_error(S, 8) \/ $error_handler_eligible(S, 8)
+def $ob_failure_pending_notice(S, pobcreation) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Notice" ($ptascii("ob_start(): Failed to create buffer")) pobcreation.CALL.LINE, 8)
+  -- if ~$eval_compile_recorded_error(S, 8) /\ ~$error_handler_eligible(S, 8)
+def $error_read_discard(S, OB_START_INVALID_NOTICE pobcreation) = $ob_failure_pending_notice(S, pobcreation)
+  -- if $eager_operation_pending(S) = (n)
+  -- if $throwable_live(S, n)
+  -- if $ob_failure_valid(S, pobcreation)
+  -- if $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+def $return_discard(S, OB_START_INVALID_NOTICE pobcreation) = $error_read_discard(S, OB_START_INVALID_NOTICE pobcreation)
 def $ob_creation_task_valid(S, pobcreation) = true
   -- if S.TODO = ptask :: ptask_tail*
   -- if ptask = OB_START_CREATED pobcreation \/ ptask = OB_START_FAILED pobcreation
@@ -749,7 +993,17 @@ def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.TOD
   -- if ~$ob_user_running(S)
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
   -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
-  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER $ob_creation_producer(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE)}
+  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER $ob_creation_producer(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE), PREFIX eps}
+def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = $ob_failure_warning(S, pobcreation)
+  -- if $ob_failure_ready(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags])
+  -- if ~$ob_user_running(S)
+  -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
+  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER eps, CAPTURE eps, PREFIX (|S.DECLARATIONS|)}
+rule PhpStep/ob-start-invalid-notice: S ~> $ob_notice_with_creation(S, pobcreation.CALL, PBOOL false, false, false, eps, (pobcreation))
+  -- if S.TODO = (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+  -- if $call_task_valid(S, OB_START_INVALID_NOTICE pobcreation)
+  -- if S.COMPLETION = NORMAL
 rule PhpStep/ob-start-created-free: S ~> S[.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*]
   -- if S.TODO = (OB_START_CREATED pobcreation) :: ptask_tail*
   -- if $call_task_valid(S, OB_START_CREATED pobcreation)
@@ -757,6 +1011,55 @@ rule PhpStep/ob-start-failed-notice: S ~> $ob_notice_with_creation(S, pobcreatio
   -- if S.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*
   -- if $call_task_valid(S, OB_START_FAILED pobcreation)
 ;; zend_vm_stack_free_args uses zval_ptr_dtor_nogc, unlike the zoh destructor.
+;; Abrupt handler cleanup consumes the same builtin argument. Its saved source
+;; authenticates that decrement after THROW_SEARCH has removed the continuation.
+def $ob_failure_continuation(OB_START_INVALID_NOTICE pobcreation) = (pobcreation)
+def $ob_failure_continuation(ERROR_HANDLER_INVOKE perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(ERROR_HANDLER_RESULT perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(ERROR_HANDLER_CLEAN perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(API_CALLBACK_SEND papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_continuation(API_CALLBACK_REF papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_continuation(ptask) = eps -- otherwise
+def $ob_failure_discarded(S, n) = (pobcreation)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $ob_failure_continuation(ptask) = (pobcreation)
+  -- if $ob_failure_task_valid(S[.TODO = ptask :: ptask_tail*], pobcreation)
+  -- if $call_task_valid(S[.TODO = ptask :: ptask_tail*], ptask)
+  -- if $gc_temporary_node(KNOWN pobcreation.VALUE) =/= eps
+def $ob_failure_discarded(S, n) = eps -- otherwise
+def $eager_operation_source(S, THROW_SEARCH n) = OB_START_INVALID_DISCARD pobcreation n
+  -- if $ob_failure_discarded(S, n) = (pobcreation)
+def $task_nodes(OB_START_INVALID_DISCARD pobcreation n) = eps
+def $call_task_valid(S, OB_START_INVALID_DISCARD pobcreation n) = false
+def $ob_failure_discard_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.VALUE = KNOWN PNULL
+  -- if $throwable_live(S, n)
+  -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $ob_failure_valid(S_history, pobcreation)
+def $ob_failure_discard_valid(S, pdestructionoperation) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $ob_failure_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+def $gc_operation_temporary_extra(S, S_next, THROW_SEARCH n, pnode_slots*) = pgctemporary*
+  -- if $ob_failure_discarded(S, n) = (pobcreation)
+  -- if pgctemporary* = $gc_binary_temp_receipt(KNOWN pobcreation.VALUE)
+  -- if $gc_binary_temp_slots(pgctemporary*, pnode_slots*)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if $ob_failure_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_temporary_bounded(S, pnode)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
 def $gc_operation_temporary_extra(S, S_next, OB_NOTICE_RESULT pobnotice, pnode_slots*) = pgctemporary*
   -- if pobnotice.CREATION = (pobcreation)
   -- if $ob_notice_valid(S, pobnotice)
@@ -773,7 +1076,7 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps
   -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
   -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
-  -- if $ob_creation_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
+  -- if $ob_start_receipt_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
   -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
   -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
   -- if $gc_temporary_bounded(S, pnode)
@@ -817,7 +1120,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
   -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
-  -- if pvalue =/= PNULL /\ ~$ob_creation_ready(S, pconfigcall, pvalue_values*)
+  -- if pvalue =/= PNULL /\ ~$ob_creation_ready(S, pconfigcall, pvalue_values*) /\ ~$ob_failure_ready(S, pconfigcall, pvalue_values*)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

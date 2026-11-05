@@ -19,7 +19,7 @@ COMMON = [
     'H = $heap_graph(S)', '$heap_valid(H)',
     'S_endpoint = S[.TODO = eps][.COMPLETION = pexecutorqueue.COMPLETION][.ORIGIN = pexecutorqueue.ORIGIN]',
     '$executor_free_endpoint(S_endpoint)',
-    'pexecutorfree_start = {HEAP H, MARKED eps, FAILED eps, UNKNOWN false}',
+    'pexecutorfree_start = {HEAP H, MARKED eps, DETACHED eps, FAILED eps, UNKNOWN false}',
 ]
 MAP_COMMON = [
     '$executor_free_kind(S_endpoint, eps, n_map) = 1',
@@ -57,7 +57,7 @@ HELD = [*COMMON,
     '$heap_owners(H, HOBJECT n_key) = 1',
     '$heap_edge_owners(HOBJECT n_key, H.EDGES, [HOBJECT n_map]) = 0',
     '$executor_free_key_maps(S_endpoint, eps, n_key) = [n_map]',
-    '$executor_free_kind(S_endpoint, eps, n_key) = 2',
+    '$executor_free_kind(S_endpoint, eps, n_key) = 1',
     '$(S.DESTRUCTION.HANDLES[n_key] < S.DESTRUCTION.HANDLES[n_map])',
     '$(S.DESTRUCTION.HANDLES[n_map] < S.DESTRUCTION.HANDLES[n_a])',
     '$(S.DESTRUCTION.HANDLES[n_a] < S.DESTRUCTION.HANDLES[n_b])',

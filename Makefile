@@ -101,6 +101,10 @@ test-semantics: build
 	python3 tests/semantics/output_executor_creation_state.py
 	python3 tests/semantics/output_executor_creation_review_sources.py
 	python3 tests/semantics/output_executor_creation_review_state.py
+	python3 tests/semantics/output_executor_invalid_sources.py
+	python3 tests/semantics/output_executor_invalid_state.py
+	python3 tests/semantics/output_executor_invalid_review_sources.py
+	python3 tests/semantics/output_executor_invalid_review_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -865,6 +869,9 @@ test-semantics: build
 	python3 tests/semantics/generator_call_receive_sources.py
 	python3 tests/semantics/generator_call_receive_state.py
 	python3 tests/semantics/generator_call_receive_review_state.py
+	python3 tests/semantics/generator_call_exit_sources.py
+	python3 tests/semantics/generator_call_exit_state.py
+	python3 tests/semantics/generator_call_exit_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

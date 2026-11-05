@@ -50,7 +50,7 @@ CHECKS = [
     '$heap_edge_owners(HOBJECT n_weak, H_chain.EDGES, [HOBJECT n_chain]) = 0',
     'S_endpoint = S[.TODO = eps][.COMPLETION = pexecutorqueue.COMPLETION][.ORIGIN = pexecutorqueue.ORIGIN]',
     '$executor_free_endpoint(S_endpoint)',
-    'pexecutorfree_start = {HEAP H_chain, MARKED eps, FAILED eps, UNKNOWN false}',
+    'pexecutorfree_start = {HEAP H_chain, MARKED eps, DETACHED eps, FAILED eps, UNKNOWN false}',
     '$executor_free_weak(S_endpoint, eps, n_parent)',
     '$executor_free_weak(S_endpoint, eps, n_weak)',
     '$executor_free_kind(S_endpoint, eps, n_parent) = 1',
