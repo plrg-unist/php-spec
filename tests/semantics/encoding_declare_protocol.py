@@ -120,7 +120,7 @@ def eval_assertions(main, unit, code, case, stdout):
         checks += ['P_' + name + ' = P_reset[.FOLD.SOURCE.AST = ' + program + '][.FOLD.SOURCE.OCCURRENCES = eps]',
             '$ppparser_begin(P_' + name + ').COMPLETION = PPCABRUPT (UNSUPPORTED "encoding parser warning source shape")']
     checks += ['P_nop = P_reset[.FOLD.SOURCE.AST = PROGRAM ([NStmtNop metadata_statement,statement_encoding])]',
-        '$ppstrict_item(P_nop,[PCINDEX 1],ABSENT,NDeclareItem phpType11_name expression_value metadata_item).COMPLETION = PPCABRUPT (UNSUPPORTED "other declare directive compilation")']
+        '$ppstrict_item(P_nop,[PCINDEX 1],ABSENT,NDeclareItem phpType11_name expression_value metadata_item).COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Encoding declaration pragma must be the very first statement in the script")) P_nop.LOCATION.LINE)']
     return checks
 
 

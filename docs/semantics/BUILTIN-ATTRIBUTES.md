@@ -269,3 +269,11 @@ copied slots retires it once after its second owner drops. Six reached states
 check the shared callback's 4→3→2→1→0 FCC owners and argument order. The
 [ATTR14 review](../../coverage/semantics/callback-late-tick-arguments-review.json)
 records the native/model cuts and remaining payload boundaries.
+
+The callback object may itself occur among those copied object arguments.
+That occurrence adds one root before FCC.object and FCC.closure. In the
+self-only source the callback owns three roots and retires after the last
+slot; with one other object argument, that object's destructor prints `A;`
+before the callback prints `C;`. The [ATTR15 review](../../coverage/semantics/callback-late-tick-self-argument-review.json)
+records two exact native/model sources, seven reached owner stages and the
+joined strict check.

@@ -146,3 +146,20 @@ file-mode AST offsets and rejects altered encoding metadata. The
 the original file-mode refusal and later unrelated builtin refusal. Converted
 encodings, BOM metadata and other HALT/preamble combinations remain outside
 this bounded offset rule.
+
+## Encoding declaration placement
+
+With Zend multibyte disabled, a sole string `declare(encoding=...)` produces a
+parser warning before compilation. When it follows a non-declare statement or
+appears inside a namespace or block, compilation then raises the
+first-statement fatal at the declaration line before body execution. A first
+declaration in an included or eval unit still compiles; its warning names that
+unit's source.
+
+Five [source cases](../../tests/semantics/encoding_placement_sources.py) compare
+exact pinned-native diagnostics, exits and source identities. The
+[checked-AST fixture](../../tests/semantics/encoding_placement_state.py)
+authenticates late and nested occurrence paths and rejects a missing parent
+occurrence. The [review ledger](../../coverage/semantics/encoding-placement-review.json)
+preserves earlier failed checks. Other declaration shapes, parser failures and
+multibyte-enabled source conversion remain partial.

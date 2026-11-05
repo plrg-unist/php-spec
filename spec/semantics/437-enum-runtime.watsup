@@ -1514,8 +1514,8 @@ def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL b_syntax))]
 def $enum_is_callable_input(pconfigcall) = eps -- otherwise
 
-;; The third argument is a writable CV, captured before invocation. Its old
-;; value has no heap root, so replacing it cannot run user code.
+;; The third argument is a writable CV, captured before invocation. Replacing
+;; its old value must leave any old object owned, so the write cannot run user code.
 dec $enum_is_callable_ref_array_receiver(pstate, pvalue, porigin, ptbytes, ptbytes, bool) : ptbytes?
 def $enum_is_callable_ref_array_receiver(S, pvalue_class, porigin_class, ptbytes_class, ptbytes_member, false) = (ptbytes_class)
   -- if ptbytes_member = $ptascii("class")
@@ -1578,6 +1578,18 @@ def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiv
   -- if $enum_is_callable_target(S, PARRAY n_array) = ((porigin_class, ptbytes_method, false))
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = eps -- otherwise
 
+dec $enum_is_callable_ref_old(pstate, nat, pvalue, ptbytes, int) : bool
+def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = true
+  -- if $value_nodes(pvalue_old) = eps /\ pvalue_old =/= PUNDEFINED
+def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
+  -- if $getclass_live_object(S, n_old)
+  -- if S.OBJECTS[n_old] = INSTANCE porigin_old
+  -- if $node_children(S, HOBJECT n_old) = eps
+  -- if S_write = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PSTRING ptbytes_name, z)
+  -- if S_write.COMPLETION = NORMAL
+  -- if $($heap_owners($heap_graph(S_write), HOBJECT n_old) > 0)
+def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = false -- otherwise
+
 dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
 def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
@@ -1589,9 +1601,9 @@ def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = (n_cell)
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED pvalue_old
-  -- if $value_nodes(pvalue_old) = eps /\ pvalue_old =/= PUNDEFINED
   -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
   -- if ~$foreach_released_cell(S, n_cell)
+  -- if $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, pconfigcall.LINE)
 def $enum_is_callable_ref_cell(S, pconfigcall, pvalue_input) = eps -- otherwise
 
 def $enum_is_callable_ref_argument(S, pconfigcall) = true
