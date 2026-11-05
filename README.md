@@ -3214,6 +3214,10 @@ Rejected comma-separated properties now stop before a hook body, retaining only
 earlier attribute, initializer and completed-hook headers. Twelve dynamic and
 four main originals agree; 76 service controls and 40 independent challenges
 pass. [Multi-property review](coverage/semantics/rejected-multiproperty-hook-review.json).
+Rejected attributed global constant lists also retain later completed headers;
+their multi-constant restriction belongs to compilation. Sixteen dynamic and four
+main originals agree, with namespace, initializer and error-priority controls.
+[Constant-attribute review](coverage/semantics/rejected-constant-attribute-review.json).
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),

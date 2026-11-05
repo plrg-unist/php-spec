@@ -1384,6 +1384,16 @@ Accepted parsing, native helper, schema, adapter and P4 rules are unchanged;
 wider rejected-source prefixes remain partial.
 [Review](coverage/semantics/rejected-multiproperty-hook-review.json).
 
+COMP179 defers rejected-only attributed global constant-list validation to
+compilation, preserving later headers across namespaces and initializer closures.
+Later parser-time modifiers and nonliteral encoding declarations keep their
+priority; class, single and unattributed constants retain their behavior.
+Sixteen dynamic and four main originals agree; 25 service controls, 76 affected
+hook controls and 32 independent challenges pass at their recorded cuts.
+Accepted parsing, native helper, schema, adapter and P4 rules are unchanged;
+wider compiler and attribute behavior remains partial.
+[Review](coverage/semantics/rejected-constant-attribute-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
@@ -1391,7 +1401,7 @@ wider rejected-source prefixes remain partial.
 | CLASS182 | Anonymous child factories inside method-owned Closures and arrows; private implementation/review. |
 | I109 | Native Generator method named/ARRAY-packed argument reception; private implementation/review. |
 | GC41 | Finite-entry WeakMap release generalization; private implementation/review. |
-| COMP179 | Rejected-only constant-attribute validation; private source/service checks and independent review. |
+| COMP180 | Rejected anonymous-class modifier cutoff; native/foreign investigation. |
 | OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
 | ATTR28 | Source-derived switch tick plans, fallthrough and final-value cleanup; private implementation/review. |
 | Enum callable arrays | Embedded reference members and stable first-SEND selection; private implementation/review. |

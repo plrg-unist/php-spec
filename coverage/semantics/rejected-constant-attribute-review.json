@@ -1,0 +1,84 @@
+{
+  "milestone": "COMP179",
+  "status": "Private implementation validated; final independent acceptance pending.",
+  "base": "cd7c69889ca0351d4517dc7360e43cfce528b031",
+  "branch": "semantics/rejected-constant-attributes-179",
+  "production_and_tests": "cc1ad18e8831aad1840b5f89188d7bc77b85d794",
+  "raw_root": "../php-spec-evidence-archive/comp179",
+  "behavior": "Rejected eval, opened-file and main units retain completed headers after attributed global multi-constant declarations. Their attribute restriction belongs to compilation, after all parsing. Namespace and initializer/attribute closures retain headers; later parser-time modifiers and nonliteral encoding declarations preserve their own priority. Single/class/unattributed constants and illegal function-local const grammar keep their prior behavior.",
+  "implementation": "RejectedHeaderParser alone makes checkConstantAttributes a no-op, alongside its existing compiler-phase deferrals. Native parser category/message/line stay trusted reply fields. Ordinary accepted parsing, native helper, worker/adapter/schema and authored P4 rules are unchanged.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_language_parser.y::top_statement/const_list",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_const_decl",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php::checkConstantAttributes",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php::rule124",
+    "frontend/RejectedHeaderParser.php"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; include_path=.:; main reporting30719/display_errors=stderr",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "validation": {
+    "service": {
+      "report": "service-v1/report.json",
+      "sha256": "cb6f6c32a340d59c2dc92ea68d2ae337327f4ee5476bc3c0e6a3caf3dd280512",
+      "scope": "25 controls:16 fixture worker replies and9 ordinary/rejected direct parser controls. Includes exact native category/message/line, native stderr custody, late/nonliteral header cutoff and unchanged ordinary parser validation. Source-model agreement credit0.",
+      "controls": 25,
+      "head": "cd7c69889ca0351d4517dc7360e43cfce528b031",
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "affected_service": {
+      "report": "affected-hooks-v1/report.json",
+      "sha256": "6aa40f3a7f34c6e92382ef241e92dcd85a65107757f464ac940c85c4045fe42d",
+      "scope": "76 existing property-hook/multi-property service controls remain exact. This repeats only the directly affected RejectedHeaderParser service gate.",
+      "controls": 76,
+      "head": "cd7c69889ca0351d4517dc7360e43cfce528b031",
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "dynamic_sources": {
+      "report": "sources-v1/report.json",
+      "sha256": "0501c66f9d4c473910c4034d981e5762111565179d52b8ffa4cd3061eb8b4742",
+      "scope": "16 exact original eval/opened-file comparisons across2/3 constants,attribute/default closure headers,namespaces/bracketed namespaces,later readonly method target errors,nonliteral encoding priority,single/class/unattributed controls and illegal function const. Raw streams,normal result and exit0 agree.",
+      "controls": 16,
+      "head": "cc1ad18e8831aad1840b5f89188d7bc77b85d794",
+      "agreements": 16,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "main_sources": {
+      "report": "main-v1/report.json",
+      "sha256": "d483b6801856f676f4817bebbbce399f81996945e44df1ee6fc2063f328c2797",
+      "scope": "Four rejected main originals: multiple constants,attribute/default closures,namespaced triple and later readonly method. Native and modeled warning/fatal prefixes and exit255 agree before VM execution.",
+      "controls": 4,
+      "head": "cc1ad18e8831aad1840b5f89188d7bc77b85d794",
+      "agreements": 4,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "independent_service": {
+      "report": "reviewer-matrix-v1/report.json",
+      "sha256": "24265caff4172e89d47b3ae34cf86f97580d0e821c055455c33f1b3bea73d39e",
+      "scope": "32 independent native/worker eval/file challenges across attributes/defaults,named/unnamed namespaces,class/single/unattributed controls,illegal function/block const grammar,earlier/later nonliteral declarations and later method/multi-property stops. Source-model agreement credit0.",
+      "controls": 32,
+      "head": "25f8da55de92e3fa9d319d5a1c59ba394f825d6a",
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "identity": "Dynamic/main reports bind clean cc1ad18e8 and stable watched inputs before/after execution. Earlier service/affected/challenge reports bind the COMP178 parent plus the one-line candidate; their production and maintained test/fixture bytes were committed unchanged in cc1ad18e8. Raw originals,hashes,commands/cwd,streams and process records remain outside Git."
+  },
+  "zero_credit": [
+    "discovery-v1/report.json: exploratory script used request() without accounting parser stderr, so the close-custody assertion failed. Original sources/worker streams remain preserved; zero semantic or source agreement credit.",
+    "discovery-v2/report.json: confirms the original native/foreign prefix discrepancy and unaffected controls as service discovery only, with zero source-model agreement credit."
+  ],
+  "review": {
+    "status": "Independent source trace, production/tests and32-row native/service challenge found no defect; final report acceptance pending."
+  },
+  "limits": "Trusted native parser replies remain foreign facts. Complete accepted-source attribute compilation, ordinary frontend compiler-phase gaps, broader rejected prefixes, multibyte conversion, portability and full core coverage remain partial. P4/state contracts are unchanged and their existing evidence is not renewed. No paused boundary including COMP88 was approached."
+}
