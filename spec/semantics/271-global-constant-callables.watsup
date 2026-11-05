@@ -27,10 +27,37 @@ def $global_constant_initializer_root(pcunit, pcpath) = $global_constant_initial
   -- if ~$global_constant_declaration_source([pcunit], PORIGIN pcunit.ID pcpath_parent)
   -- if ~$global_constant_closure_parent(pcunit, pcpath_parent)
 def $global_constant_initializer_root(pcunit, pcpath) = eps -- otherwise
+;; Attributed lists that must fail compilation can still contain ordinary
+;; constant initializers. This does not admit runtime declaration receipts.
+dec $ppattributed_constant_declaration_source(pcunit, porigin) : bool
+def $ppattributed_constant_declaration_source(pcunit, PORIGIN n_unit pcpath_decl) = true
+  -- if $(|pcpath_decl| >= 2)
+  -- if pcpath_decl[$nabs($(|pcpath_decl| - 1))] = PCINDEX n_const
+  -- if pcpath_decl[$nabs($(|pcpath_decl| - 2))] = PCFIELD 1
+  -- if pcpath_statement = pcpath_decl[0:$nabs($(|pcpath_decl| - 2))]
+  -- if $origin_node([pcunit], PORIGIN n_unit pcpath_statement) = (NStmtConst (SEQUENCE phpType15*) (SEQUENCE phpType46*) metadata_statement)
+  -- if phpType15* =/= eps /\ $(|phpType46*| >= 2)
+  -- if $origin_node([pcunit], PORIGIN n_unit pcpath_decl) = (NConst phpType11 expression metadata)
+def $ppattributed_constant_declaration_source(pcunit, porigin_decl) = false -- otherwise
+def $ppattributed_constant_initializer(pcunit, pcpath) = true
+  -- if $(|pcpath| > 0)
+  -- if pcpath[$nabs($(|pcpath| - 1))] = PCFIELD 1
+  -- if pcpath_decl = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if $ppattributed_constant_declaration_source(pcunit, PORIGIN pcunit.ID pcpath_decl)
+def $ppattributed_constant_initializer(pcunit, pcpath) = $ppattributed_constant_initializer(pcunit, pcpath_parent)
+  -- if $(|pcpath| > 0)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 1))]
+  -- if ~$ppattributed_constant_declaration_source(pcunit, PORIGIN pcunit.ID pcpath_parent)
+  -- if ~$global_constant_closure_parent(pcunit, pcpath_parent)
+def $ppattributed_constant_initializer(pcunit, pcpath) = false -- otherwise
 def $ppglobal_constant_initializer(P) = true
   -- if P.CLASSCONTEXT = eps
   -- if P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
   -- if $global_constant_initializer_root(P.FOLD.SOURCE, P.LOCATION.PATH) =/= eps
+def $ppglobal_constant_initializer(P) = true
+  -- if P.CLASSCONTEXT = eps
+  -- if P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
+  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
 def $ppglobal_constant_initializer(P) = false -- otherwise
 def $ppconstant_callable_initializer(P) = true
   -- if $ppglobal_constant_initializer(P)

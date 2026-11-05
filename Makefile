@@ -1832,6 +1832,8 @@ test-semantics: build
 	python3 tests/semantics/constant_attribute_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-constant-attributes.XXXXXXXX)/main"
 	python3 tests/semantics/anonymous_class_modifier_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-anonymous-class-modifiers.XXXXXXXX)/sources"
 	python3 tests/semantics/anonymous_class_modifier_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-anonymous-class-modifiers.XXXXXXXX)/main"
+	python3 tests/semantics/attributed_constant_compile_sources.py --output "$$(mktemp -d /tmp/php-spec-attributed-constant-compile.XXXXXXXX)/sources"
+	python3 tests/semantics/attributed_constant_compile_protocol.py --output "$$(mktemp -d /tmp/php-spec-attributed-constant-compile.XXXXXXXX)/protocol"
 	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
 	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
 	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"
