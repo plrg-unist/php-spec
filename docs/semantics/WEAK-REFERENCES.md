@@ -99,15 +99,34 @@ before its incoming Map notification. Marking a WeakMap unregisters every outgoi
 key; its own values then release before incoming notification. A failed/unknown
 phase returns before later rank lookups or detachment. GC32's per-entry slot/rank
 protocol preserves shared owners, including self-keys and two incoming Maps.
-Ordinary internal-Key retirement with incoming Maps stops explicitly while its
-pending release still owns the Key, before allocation or value-edge mutation.
+At the GC33 cut, ordinary internal-Key retirement with incoming Maps stopped
+before allocation/value-edge mutation, retaining its pending Key owner.
 
 Nine positive source/request contexts (eight programs) and 866 new/affected
 reported conditions pass at their recorded cuts, including fast/nonfast cleanup.
-Three ordinary unset controls earn zero agreement; their native callbacks remain
-required. Weak Closure/custom hooks, active free pins, wider producer/consumer
-forms and inactive nonpublic-destructor diagnostics remain partial. No collector,
-count or nogc rule changes. See the [compound key review](../../coverage/semantics/gc-compound-key-review.json).
+Three ordinary unset controls earned zero agreement at that cut. Weak
+Closure/custom hooks, active free pins and wider producer/consumer forms remained
+partial. No collector, count or nogc rule changed.
+See the [compound key review](../../coverage/semantics/gc-compound-key-review.json).
+
+GC34 gives ordinary internal Keys the existing physical storage pin and actual
+caller/source continuation. WeakReference unregisters its referent before incoming
+values execute: its own get is NULL, while create(live referent) can allocate the
+new singleton. WeakMap unregisters outgoing keys and transfers ordered own values
+before incoming notification. Incoming singleton Maps follow per-Key registration
+rank; each entry transfers one value owner before a callback. Ordinary throws
+resume the remaining own/incoming cleanup with the pending Throwable intact.
+Quiet internal registrations activate this protocol even without user destructors.
+
+An observer registered after an entry remains readable through that earlier
+callback. Existing NOTIFY/unique-pin authority permits observer reuse or recreation
+for a freeing WR or retired multi-entry Map, updating real task/frame notification
+identity. Missing authority retains the existing359 refusal. Fourteen exact normal
+programs and 464 reported conditions pass, including the unchanged GC33 unset3.
+Original mismatch/timeout and fixture failures retain zero credit. Producer/read/
+reference policies, escaping or mutating freeing objects, custom Closure Keys,
+collection with active pins and wider diagnostics remain partial. No collector,
+count or nogc change. See the [ordinary key review](../../coverage/semantics/gc-ordinary-key-review.json).
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

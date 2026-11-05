@@ -3587,10 +3587,19 @@ GC33 admits allocated WeakReference/WeakMap identities at first Map insertion.
 Terminal WeakReference cleanup unregisters its referent before incoming entries;
 Map cleanup unregisters outgoing keys and releases its own values first. Earlier
 fatals retain the untouched phase's owners. Nine exact contexts and 866 reported
-conditions cover shared/self/cross-linked keys and both allocator modes. Ordinary
-internal-Key callbacks remain explicitly Unsupported; later producer policies,
-weak Closure keys and active free pins remain partial.
+conditions cover shared/self/cross-linked keys and both allocator modes. At that
+cut, ordinary internal-Key callbacks remained Unsupported; later producers,
+weak Closure keys and collection with active free pins remained partial.
 [Compound key review](coverage/semantics/gc-compound-key-review.json).
+
+GC34 continues ordinary internal-Key free through actual storage pins and
+callbacks. Quiet singleton registrations activate cleanup; Map own values drain
+before incoming entries, preserving rank, separate owners and pending exceptions.
+Authenticated callbacks can reuse or recreate the pending weak observer. Fourteen
+exact programs and 464 reported conditions pass at recorded cuts, promoting the
+three GC33 unset controls. Original failures retain zero credit; wider producers,
+freeing-object escape/mutation and active-pin GC remain partial.
+[Ordinary key review](coverage/semantics/gc-ordinary-key-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry

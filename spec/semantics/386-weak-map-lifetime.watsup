@@ -632,9 +632,15 @@ def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
 def $weakmap_free_allowed(S, n_map, pdestructionrelease) = false -- otherwise
 
+dec $weakmap_internal_key(pstate, nat) : bool
+def $weakmap_internal_key(S, n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $weakref_object(S.OBJECTS[n]) \/ $weakmap_object(S.OBJECTS[n])
+def $weakmap_internal_key(S, n) = false -- otherwise
+
 def $instance_storage_basic(S, pinstancestorage) = true
-  -- if $weakmap_at(S, pinstancestorage.OBJECT)
-  -- if S.OBJECTS[pinstancestorage.OBJECT] = WEAKMAP eps
+  -- if $weakmap_internal_key(S, pinstancestorage.OBJECT)
+  -- if S.OBJECTS[pinstancestorage.OBJECT] = WEAKMAP eps \/ $weakref_object(S.OBJECTS[pinstancestorage.OBJECT])
   -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
   -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = eps
   -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
@@ -645,19 +651,18 @@ def $instance_storage_basic(S, pinstancestorage) = true
   -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
   -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
 
-;; Ordinary internal-key hooks need callback continuations. Stop before
-;; generic retirement can silently leave their incoming Map values owned.
-def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "ordinary internal weak-key notification"]
-  -- if $weakref_object(S.OBJECTS[n]) \/ $weakmap_object(S.OBJECTS[n])
+;; The physical free_obj pin unregisters a wrapper's referent before incoming
+;; values can call PHP. An empty Map has no own values before the same phase.
+def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $weakmap_key_notice($gc_store_retire($instance_storage_called(S[.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS eps, NEXT 0, NOTIFY eps, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n), n)
+  -- if $weakmap_internal_key(S, n)
+  -- if $weakref_object(S.OBJECTS[n]) \/ S.OBJECTS[n] = WEAKMAP eps
   -- if $weakmap_key_waiting(S, n)
 def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_map, HANDLE S.DESTRUCTION.HANDLES[n_map], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_map), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_map), HOBJECT n_map), $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_free_allowed(S, n_map, pdestructionrelease)
-  -- if ~$weakmap_key_waiting(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "nonempty WeakMap storage destruction"]
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
   -- if ~$weakmap_free_allowed(S, n, pdestructionrelease)
-  -- if ~$weakmap_key_waiting(S, n)
 dec $weakmap_nonempty_node(pstate, pnode) : bool
 def $weakmap_nonempty(S, eps) = false
 def $weakmap_nonempty(S, pnode :: pnode_tail*) = true -- if $weakmap_nonempty_node(S, pnode)
@@ -1131,12 +1136,26 @@ def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = true
   -- if $weakmap_reference_key_retiring(S, pnode)
 def $weakmap_reference_keys_retiring(S, pnode :: pnode_tail*) = $weakmap_reference_keys_retiring(S, pnode_tail*)
   -- if ~$weakmap_reference_key_retiring(S, pnode)
-;; A registered Many table or pending cleanup already proves activation;
+;; Internal Keys need free_obj notification even with quiet singleton values.
+;; This witness scans registrations, without repeatedly computing their reach.
+dec $weakmap_internal_registration(pstate, pnode) : bool
+def $weakmap_internal_registration(S, HOBJECT n_map) = true
+  -- if $(n_map < |S.OBJECTS|) /\ (HOBJECT n_map) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if $weakmap_internal_key(S, pweakmapentry.KEY)
+def $weakmap_internal_registration(S, pnode) = false -- otherwise
+dec $weakmap_internal_registrations(pstate, pnode*) : bool
+def $weakmap_internal_registrations(S, eps) = false
+def $weakmap_internal_registrations(S, pnode :: pnode_tail*) = true
+  -- if $weakmap_internal_registration(S, pnode)
+def $weakmap_internal_registrations(S, pnode :: pnode_tail*) = $weakmap_internal_registrations(S, pnode_tail*)
+  -- if ~$weakmap_internal_registration(S, pnode)
+;; A registered Many table/internal Key or pending cleanup proves activation;
 ;; scan RC candidates only when none of those witnesses is present.
 dec $weakmap_reference_active(pstate, bool) : bool
 def $weakmap_reference_active(S, true) = true
 def $weakmap_reference_active(S, false) = $weakmap_reference_keys_retiring(S, S.ALLOCATIONS)
-def $weakmap_reference_operational(S) = $weakmap_reference_active(S, S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ S.DESTRUCTION.FRAMES =/= eps \/ $weakmap_entries_present(S, S.ALLOCATIONS))
+def $weakmap_reference_operational(S) = $weakmap_reference_active(S, S.DESTRUCTION.RELEASES =/= eps \/ S.DESTRUCTION.OPERATIONS =/= eps \/ S.DESTRUCTION.FRAMES =/= eps \/ $weakmap_entries_present(S, S.ALLOCATIONS) \/ $weakmap_internal_registrations(S, S.ALLOCATIONS))
 dec $weakmap_foreach_cursor_valid(pstate, nat, nat, nat) : bool
 def $weakmap_foreach_cursor_valid(S, n, n_map, n_position) = true
   -- if $(n < S.NEXTITER) /\ $(n_position <= 1)
@@ -1293,7 +1312,7 @@ def $weakmap_storage_notice_valid(S, pinstancestorage) = true
 def $weakmap_storage_notice_valid(S, pinstancestorage) = true
   -- if n_key = pinstancestorage.OBJECT
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_key] = STDINSTANCE \/ S.OBJECTS[n_key] = WEAKMAP eps
+  -- if S.OBJECTS[n_key] = STDINSTANCE \/ S.OBJECTS[n_key] = WEAKMAP eps \/ $weakref_object(S.OBJECTS[n_key])
   -- if pinstancestorage.SLOTS = eps /\ pinstancestorage.NEXT = 0
   -- if pinstancestorage.NOTIFY = (n_wrapper)
   -- if $(n_wrapper < |S.OBJECTS|) /\ $(n_key < n_wrapper)
@@ -1310,6 +1329,16 @@ rule PhpStep/weakmap-key-notify: S ~> S[.TODO = (INSTANCE_STORAGE_STEP pinstance
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if pinstancestorage.NOTIFY =/= eps
+  -- if ~($weakmap_internal_key(S, pinstancestorage.OBJECT) /\ $weakmap_key_waiting(S, pinstancestorage.OBJECT))
+
+;; Map own-value jobs finish before this continuation reaches the front.
+;; Incoming entries then retire individually under the same physical Key pin.
+rule PhpStep/weakmap-internal-key-next: S ~> $weakmap_key_notice(S, pinstancestorage.OBJECT)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $weakmap_internal_key(S, pinstancestorage.OBJECT)
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps
+  -- if $weakmap_key_waiting(S, pinstancestorage.OBJECT)
 
 ;; Continuation must preserve the already-cleared wrapper notification.
 ;; A historical retired wrapper is allowed, but a different current one is not.
@@ -1336,11 +1365,10 @@ rule PhpStep/weakmap-key-next: S ~> $weakmap_key_continue(S, pinstancestorage.OB
   -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
   -- if $weakmap_key_waiting(S, pinstancestorage.OBJECT)
 
-;; A live own-free callback may reuse or recreate its weak wrapper. Only the
-;; borrowed notification identity changes; the physical pin still owns the map.
+;; An internal free_obj callback may reuse or recreate its weak wrapper while
+;; notification is pending. Only the borrowed identity changes; the pin remains.
 def $weakmap_storage_create(S, n_map) = true
-  -- if $weakmap_at(S, n_map)
-  -- if S.OBJECTS[n_map] = WEAKMAP eps
+  -- if $weakmap_internal_key(S, n_map)
   -- if $instance_storage_for(S, n_map) = (pinstancestorage)
   -- if pinstancestorage.NOTIFY = (n_wrapper)
   -- if $instance_storage_basic(S, pinstancestorage)
