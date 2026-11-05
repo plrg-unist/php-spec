@@ -10,6 +10,7 @@ FILES = {
     'child-preinsert': 'gc36_key_child_preinsert.php',
     'child-postinsert': 'gc36_key_child_postinsert.php',
     'observer-first': 'gc36_key_child_observer_first.php',
+    'value-throws': 'gc36_key_child_value_throw.php',
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, filename in FILES.items()}
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}
