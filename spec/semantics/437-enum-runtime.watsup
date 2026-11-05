@@ -1511,6 +1511,7 @@ def $enum_is_callable_target(S, pvalue) = eps -- otherwise
 ;; snapshot fixes DIRECT slots, while a genuine ALIAS may change its payload.
 dec $enum_is_callable_member_snapshot(pstate, pitem, pvalue) : bool
 def $enum_is_callable_member_snapshot(S, DIRECT pvalue, pvalue) = true
+  -- if pvalue =/= PUNDEFINED
 def $enum_is_callable_member_snapshot(S, ALIAS n_cell, pvalue_saved) = true
   -- if $call_reference_operand_valid(S, REFERENCE n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue_current
@@ -1522,6 +1523,7 @@ def $enum_is_callable_member_snapshot(S, ALIAS n_cell, pvalue_saved) = true
 def $enum_is_callable_member_snapshot(S, pitem, pvalue) = false -- otherwise
 dec $enum_is_callable_member_live(pstate, pitem) : bool
 def $enum_is_callable_member_live(S, DIRECT pvalue) = true
+  -- if pvalue =/= PUNDEFINED
 def $enum_is_callable_member_live(S, ALIAS n_cell) = $enum_is_callable_member_snapshot(S, ALIAS n_cell, PNULL)
 def $enum_is_callable_member_live(S, pitem) = false -- otherwise
 dec $enum_is_callable_array_snapshot(pstate, nat, pvalue*) : bool
@@ -1545,6 +1547,26 @@ def $enum_is_callable_array_values(S, n) = ([pvalue_receiver, pvalue_method])
   -- if pvalue_method = $entry_value(S, pitem_method)
   -- if $enum_is_callable_array_snapshot(S, n, [pvalue_receiver, pvalue_method])
 def $enum_is_callable_array_values(S, n) = eps -- otherwise
+;; A receipt label describes only the saved bytes or cached case identity. It
+;; performs no class lookup and never decides whether the eventual query is
+;; callable. Other saved payloads may already be retired when it is checked.
+dec $enum_is_callable_input_label(pstate, pvalue*) : ptbytes
+def $enum_is_callable_input_label(S, [pvalue_receiver, pvalue_method]) = ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method
+  -- if $enum_array_string_valid(S, pvalue_receiver) /\ $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+def $enum_is_callable_input_label(S, [POBJECT n_case, pvalue_method]) = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
+  -- if $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $enum_case_object(S, n_case) = (pclassconstantdesc)
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "enum"
+def $enum_is_callable_input_label(S, pvalue*) = eps -- otherwise
+
+dec $enum_is_callable_pair_invalid(pvalue*) : bool
+def $enum_is_callable_pair_invalid([pvalue_receiver, pvalue_method]) = (~$typed_callback_receiver(pvalue_receiver) \/ ~$typed_string_value(pvalue_method))
+def $enum_is_callable_pair_invalid(pvalue*) = false -- otherwise
+
 dec $enum_is_callable_pair_name(pstate, pvalue*) : ptbytes?
 def $enum_is_callable_pair_name(S, [pvalue_receiver, pvalue_method]) = (ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method)
   -- if $enum_is_callable_receiver(S, pvalue_receiver) = ((porigin_class, false))
@@ -1557,6 +1579,8 @@ def $enum_is_callable_pair_name(S, [POBJECT n_case, pvalue_method]) = (pclassdes
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $enum_array_string_valid(S, pvalue_method)
   -- if $string_bytes(pvalue_method) = (ptbytes_method)
+def $enum_is_callable_pair_name(S, pvalue*) = ($ptascii("Array"))
+  -- if $enum_is_callable_pair_invalid(pvalue*)
 def $enum_is_callable_pair_name(S, pvalue*) = eps -- otherwise
 
 ;; The first SEND fixes the array identity, not the payloads of its references.
@@ -1595,7 +1619,7 @@ def $enum_is_callable_input_source(S, penumqueryinput) = true
   -- if penumqueryinput.ARRAY = (n_array)
   -- if $enum_is_callable_array_snapshot(S, n_array, penumqueryinput.VALUES)
   -- if S.ARRAYS[n_array].ITEMS = penumqueryinput.ITEMS
-  -- if $enum_is_callable_pair_name(S, penumqueryinput.VALUES) = (penumqueryinput.VALUE)
+  -- if $enum_is_callable_input_label(S, penumqueryinput.VALUES) = penumqueryinput.VALUE
 def $enum_is_callable_input_source(S, penumqueryinput) = false -- otherwise
 
 ;; SEND_VAL transfers a temporary array, SEND_VAR transfers a returned value,
@@ -1637,7 +1661,7 @@ def $enum_is_callable_capture(S, pconfigcall) = (penumqueryinput)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, false, eps, porigin_target, z_target))
   -- if $enum_is_callable_array_operand(S, S.RESULT) = (n_array)
   -- if $enum_is_callable_array_values(S, n_array) = (pvalue_members*)
-  -- if $enum_is_callable_pair_name(S, pvalue_members*) = (ptbytes_name)
+  -- if ptbytes_name = $enum_is_callable_input_label(S, pvalue_members*)
   -- if n_depth = |S.FRAMES|
   -- if penumqueryinput = {CALL pconfigcall, ARGUMENT porigin_target, LINE z_target, DEPTH n_depth, VALUE ptbytes_name, ARRAY (n_array), ITEMS S.ARRAYS[n_array].ITEMS, VALUES pvalue_members*}
   -- if $enum_is_callable_input_source(S, penumqueryinput)
@@ -1940,7 +1964,10 @@ def $enum_is_callable_result(S, pvalue, b_syntax) = eps -- otherwise
 ;; destructor changes their live reference cells. No callable body is entered.
 dec $enum_is_callable_pair_result(pstate, pvalue*, bool) : bool?
 def $enum_is_callable_pair_result(S, pvalue*, true) = (true)
+  -- if ~$enum_is_callable_pair_invalid(pvalue*)
   -- if $enum_is_callable_pair_name(S, pvalue*) = (ptbytes_name)
+def $enum_is_callable_pair_result(S, pvalue*, b_syntax) = (false)
+  -- if $enum_is_callable_pair_invalid(pvalue*)
 def $enum_is_callable_pair_result(S, [pvalue_receiver, pvalue_method], false) = (true)
   -- if $enum_is_callable_receiver(S, pvalue_receiver) = ((porigin_class, b_case))
   -- if $enum_array_string_valid(S, pvalue_method)

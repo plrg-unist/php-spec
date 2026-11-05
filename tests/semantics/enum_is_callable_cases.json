@@ -955,8 +955,80 @@
     "id": "enum-is-callable-third-output-temporary-initial-invalid-control",
     "source": "<?php\nenum TempCheck { case A; }\n$method = 17; $name = 'OLD';\nfunction make_valid(): bool { global $method; $method = 'cases'; return false; }\n$ok = is_callable([TempCheck::class, &$method], make_valid(), $name);\necho 'late:', (int)$ok, ':', $name, ':', $method, '|';\n",
     "source_sha256": "8690e72e2b568b43c15f5fe4ab0cbb5276c1a0c2390c5574e75e46c90edfd409",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "expected_normal_stdout": "late:1:TempCheck::cases:cases|",
-    "purpose": "The receipt still requires an initially valid published enum receiver and string method; a nonstring method changed to valid by a later argument remains explicit Unsupported."
+    "purpose": "An initially nonstring referenced method becomes valid in the later argument; capture authenticates slots and invocation alone admits the current enum method."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-receiver-null-cv",
+    "source": "<?php\nenum InitialCheck { case A; }\n$receiver = null; $method = 'cases'; $call = [&$receiver, &$method]; $name = 'OLD';\nfunction repair(): bool { global $receiver; $receiver = InitialCheck::A; echo 'REPAIR|'; return false; }\n$ok = is_callable($call, repair(), $name);\necho 'cv:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "41ba4c17dc49cb2322edad660612ff57c14e1c14e46b1bd43bd11f82f71f29e5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "REPAIR|cv:1:InitialCheck::cases|",
+    "purpose": "A variable array captures a null receiver reference, then invokes the query with its repaired cached enum case."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-undefined-method-temporary",
+    "source": "<?php\nenum InitialCheck { case A; }\nfunction repair(): bool { global $method; $method = 'cases'; return false; }\n$name = 'OLD';\n$ok = is_callable([InitialCheck::class, &$method], repair(), $name);\necho 'undefined:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "d0bcc66e6d03a3129e8083cb07024e61accdca8056d273b58dd6c4b71c1c5a7b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "undefined:1:InitialCheck::cases:cases|",
+    "purpose": "A literal array creates a reference to an undefined variable as NULL, then a later argument writes its valid method."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-late-published-enum",
+    "source": "<?php\nfunction publish(): bool { enum PublishedLater { case A; } echo 'PUBLISH|'; return false; }\n$name = 'OLD';\n$ok = is_callable(['PublishedLater', 'cases'], publish(), $name);\necho 'late:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "de2aa2442fe58b9edd795ec6f4e32300fff245671a9cd079db494b464d558646",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "PUBLISH|late:1:PublishedLater::cases|",
+    "purpose": "A direct literal string array now takes a receipt before the enum is published; argument-time publication must not change its raw history label."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-remaining-invalid",
+    "source": "<?php\nenum InitialCheck { case A; }\n$receiver = 17; $method = 'cases'; $call = [&$receiver, &$method]; $name = 'OLD';\n$ok = is_callable($call, false, $name);\necho 'receiver:', (int)$ok, ':', $name, '|';\n$receiver = InitialCheck::class; $method = 17;\n$ok = is_callable([&$receiver, &$method], true, $name);\necho 'method:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "18de8f5dfba96f0c80764d227afcc838967756cacc90d2b1bde54fa1da90c57f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "receiver:0:Array|method:0:Array|",
+    "purpose": "Type-invalid current CV and temporary arrays return false and the literal name Array, including syntax-only true."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-invalid-output-repair",
+    "source": "<?php\nenum InitialCheck { case A; }\nclass OutputDrop { public function __destruct() { global $name, $method; echo $name === null ? 'null|' : 'BAD|'; $method = 'cases'; } }\n$method = 17; $call = [InitialCheck::class, &$method]; $name = new OutputDrop;\n$ok = is_callable($call, true, $name);\necho 'saved:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "86662726d8bf7ea085713827ea398b1c1a210199afc4d1e98ce6a3a9bf833c70",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|saved:0:Array:cases|",
+    "purpose": "A false syntax-only result and name Array stay frozen when output destruction repairs the current method reference."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-invalid-owning-argument",
+    "source": "<?php\nenum InitialCheck { case A; }\nclass ArgumentDrop { public function __destruct() { global $name, $ok; echo 'DROP:', $name, ':', $ok, '|'; } }\n$name = 'OLD'; $ok = 'UNCHANGED';\n$ok = is_callable([InitialCheck::class, [new ArgumentDrop]], false, $name);\necho 'after:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "9eacaaf1235f9ed0735282a942420a7880587f45a559615e8ebdc40d9c66360b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "DROP:Array:UNCHANGED|after:0:Array|",
+    "purpose": "A DIRECT invalid method array owns a child until C handler return; cleanup sees name Array and an unassigned result before normal assignment."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-invalid-owning-argument-throw",
+    "source": "<?php\nenum InitialCheck { case A; }\nclass ArgumentDrop { public function __destruct() { global $name, $ok; echo 'DROP:', $name, ':', $ok, '|'; throw new Exception('argument-free'); } }\n$name = 'OLD'; $ok = 'UNCHANGED';\ntry { $ok = is_callable([InitialCheck::class, [new ArgumentDrop]], false, $name); }\ncatch (Throwable $e) { echo 'caught:', $e->getMessage(), ':', $name, ':', $ok, '|'; }\n",
+    "source_sha256": "0e2986e7128bb8a6d90b6fd1d5955bca62e6f23dcc67869de437b1a6d3428dfa",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "DROP:Array:UNCHANGED|caught:argument-free:Array:UNCHANGED|",
+    "purpose": "A throwing DIRECT argument child runs after name Array commits and before result assignment, then propagates to catch."
+  },
+  {
+    "id": "enum-is-callable-third-output-initial-unknown-class-repair",
+    "source": "<?php\nenum LabelCheck { case A; }\nfunction loader($name) { echo 'AUTO:', $name, '|'; }\nspl_autoload_register('loader');\nfunction produce() { global $receiver, $method; return [&$receiver, &$method]; }\nfunction change() { global $receiver; $receiver = 'labelcheck'; return false; }\n$receiver = 'GhostCheck'; $method = 'cases'; $name = 'OLD';\n$ok = is_callable(produce(), change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, '|';\n",
+    "source_sha256": "6c28f426b0dc1e3faf4c172a82da1a051478b19001a7c10e7bcd2fbb7d370267",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "true|labelcheck::cases|",
+    "purpose": "An initially unknown class string in a shared receiver cell changes to a published enum spelling without an early class lookup."
   }
 ]
