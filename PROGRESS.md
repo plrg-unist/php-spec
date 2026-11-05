@@ -1001,7 +1001,15 @@ also exposes the shared output-intrinsic trace frame. Seven exact originals
 agree, and three reached groups pass 165 reported conditions (author 54,
 independent 76, off-kind 35). Private strict435 passes; earlier failed packets
 retain zero credit. [Returned-Notice throw review](coverage/semantics/output-executor-notice-retval-throw-review.json).
-Unresolved/effectful creation, active handler-body reentry, Warning/deprecation-handler returned-object
+OB14 admits the normal Warning handler's returned-object destructor to a nested
+post-deactivation `ob_start`. Its saved Warning receipt and unreleased RESULT
+cleanup authenticate the start while the handler is disabled. Three exact
+originals agree with native PHP; the genuine reached state passes 42 reported
+conditions, and private strict435 passes. The selected handler resumes for the
+original failed-start Notice after nested default Notice reporting. Throwing
+paths through this new Warning-retval bridge remain outside this milestone.
+[Normal Warning retval review](coverage/semantics/output-executor-warning-retval-nested-review.json).
+Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),

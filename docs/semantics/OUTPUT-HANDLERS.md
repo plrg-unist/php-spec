@@ -311,12 +311,21 @@ raw sent arguments in its trace. Exact `ob_start` and `ob_end_clean` originals
 and reached states check this shared Notice path, while precreated-Throwable
 controls distinguish root-only NOGC from ordinary array-child cleanup. Seven
 originals and 165 reported reached conditions pass at their separate cuts.
+OB14 admits a normal Warning handler's returned object when its destructor
+attempts a nested `ob_start` after output deactivation. The handler is disabled
+during that destructor; the nested failed start emits the default Notice, then
+the original Warning cleanup restores the selected handler for its failed-start
+Notice. The saved Warning receipt and actual RESULT cleanup authenticate the
+new branch. Three exact originals check noarg, named/unpacked NULL and a pure
+temporary callable; the reached state checks the disabled handler, normal
+operation, unreleased cleanup and coherent authority negatives. This scope does
+not include a throwing handler or destructor.
 
 Whole declaration-history validation remains open for late handler function
 publication; a default-NULL Notice baseline reproduces the same frontier.
 Unresolved/effectful callback creation, other abrupt VM argument-release paths,
 active handler-body reentry,
-Warning/deprecation-handler returned-object starts, other output Notice return
+other Warning/deprecation-handler returned-object starts, other output Notice return
 destructors and wider executor completion remain
 partial. Handler initialization also allocates the aligned chunk buffer before
 the inactive-output check; allocation failure and PHP memory limits remain
@@ -328,4 +337,5 @@ agreement credit; separate explicit-cleanup controls cover the creation protocol
 [OB10 evidence](../../coverage/semantics/output-executor-creation-review.json),
 [OB11 evidence](../../coverage/semantics/output-executor-invalid-review.json),
 [OB12 evidence](../../coverage/semantics/output-executor-notice-discard-review.json),
-[OB13 evidence](../../coverage/semantics/output-executor-notice-retval-throw-review.json).
+[OB13 evidence](../../coverage/semantics/output-executor-notice-retval-throw-review.json),
+[OB14 evidence](../../coverage/semantics/output-executor-warning-retval-nested-review.json).

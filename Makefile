@@ -119,6 +119,9 @@ test-semantics: build
 	python3 tests/semantics/output_executor_notice_retval_throw_review_state.py
 	python3 tests/semantics/output_executor_notice_retval_throw_offkind.py
 	python3 tests/semantics/output_executor_notice_retval_throw_offkind_state.py
+	python3 tests/semantics/output_executor_warning_retval_nested_sources.py
+	python3 tests/semantics/output_executor_warning_retval_nested_state.py
+	python3 tests/semantics/output_executor_warning_retval_nested_review_sources.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py

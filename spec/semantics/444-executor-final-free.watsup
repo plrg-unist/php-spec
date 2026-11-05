@@ -366,6 +366,7 @@ dec $executor_error_handler_task(ptask) : bool
 dec $executor_error_handler_tasks(ptask*) : bool
 dec $executor_error_handler_frames(pframe*) : bool
 dec $executor_error_handler_active(pstate) : bool
+dec $executor_retval_start_resume_valid(pstate, perrorcall, ptask*) : bool
 dec $executor_retval_notice_start(pstate) : bool
 dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
@@ -722,7 +723,23 @@ def $executor_error_handler_frames(eps) = false
 def $executor_error_handler_frames(pframe :: pframe_tail*) = ($executor_error_handler_tasks(pframe.TODO) \/ $executor_error_handler_frames(pframe_tail*))
 def $executor_error_handler_active(S) = ($executor_error_handler_tasks(S.TODO) \/ $executor_error_handler_frames(S.FRAMES))
 ;; zend_error drops a selected handler's returned object with the handler disabled.
-;; A direct destructor call may therefore emit a built-in failed-start Notice.
+;; The saved diagnostic still owns the original failed-start receipt.
+def $executor_retval_start_resume_valid(S_view, perrorcall, ptask_saved*) = true
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+  -- if ptask_saved* = pobnotice.TAIL
+  -- if perrorcall.TARGET =/= eps
+  -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
+  -- if pobnotice.CALL.SITE = perrorcall.SITE
+  -- if $ob_notice_valid(S_view, pobnotice)
+  -- if ~$executor_error_handler_tasks(pobnotice.TAIL)
+def $executor_retval_start_resume_valid(S_view, perrorcall, ptask_saved*) = true
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+  -- if perrorcall.TARGET =/= eps
+  -- if pobcreation.CALL.KIND = INTRINSIC_OB_START
+  -- if pobcreation.CALL.SITE = perrorcall.SITE
+  -- if $error_call_valid(S_view, perrorcall)
+  -- if ~$executor_error_handler_tasks(ptask_saved*)
+def $executor_retval_start_resume_valid(S_view, perrorcall, ptask_saved*) = false -- otherwise
 def $executor_retval_notice_start(S) = true
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
@@ -776,15 +793,9 @@ def $executor_retval_notice_start(S) = true
   -- if pdestructioncleanup.CALLER = pframe.CONTEXT
   -- if pdestructioncleanup.ORIGIN = pframe.ORIGIN
   -- if pdestructioncleanup.CONSTCONTEXT = pframe.CONSTCONTEXT
-  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
-  -- if ptask_saved* = pobnotice.TAIL
-  -- if perrorcall.TARGET =/= eps
-  -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
-  -- if pobnotice.CALL.SITE = perrorcall.SITE
   -- if S_view = S[.TODO = pframe.TODO][.CURRENT = pframe.CONTEXT][.ORIGIN = pframe.ORIGIN][.CONSTCONTEXT = pframe.CONSTCONTEXT][.FRAMES = [pframe_executor]]
-  -- if $ob_notice_valid(S_view, pobnotice)
+  -- if $executor_retval_start_resume_valid(S_view, perrorcall, ptask_saved*)
   -- if ~$executor_error_handler_tasks(S.TODO)
-  -- if ~$executor_error_handler_tasks(pobnotice.TAIL)
   -- if ~$executor_error_handler_tasks(pframe_executor.TODO)
 def $executor_retval_notice_start(S) = $executor_retval_notice_start(S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*])
   -- if S.TODO = (OB_PARSE pconfigcall 3 pvalue_values*) :: ptask_tail*

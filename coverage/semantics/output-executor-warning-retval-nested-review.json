@@ -1,0 +1,65 @@
+{
+  "milestone": "OB14",
+  "status": "Private normal-return source, reached-state and strict435 gates pass; actual-parent composition pending.",
+  "scope": "A selected Warning handler returns normally with an object whose destructor attempts a nested ob_start after output deactivation. The handler stays disabled for that nested failed-start Notice, then is restored for the original failed-start Notice.",
+  "base": "921881d18d94e389a5da8e115f3e8bf6a58c0cee",
+  "implementation": {
+    "spec/semantics/444-executor-final-free.watsup": "78d70ce561c6bc6478939d9687c3ba07569cb9d7a4fc21e7679b802f322570d9"
+  },
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit, pinned php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "request_clock_sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+    "adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL",
+    "request": "Fixed LC_ALL=C, TZ=UTC, FIRST=one, request time and file context; project-local pinned PHP and regular extension copies."
+  },
+  "behavior": [
+    "The new saved-resume branch admits only OB_START_INVALID_NOTICE with one full source-authenticated error_call_valid on the restored Warning cleanup view. The existing normal returned-object call/release/operation/queue certificate, disabled handler, pending=eps and no active handler-body tasks remain required.",
+    "The old OB_NOTICE_RESULT branch retains its exact predicates and public helper name; the two branches are disjoint by RESUME constructor.",
+    "A nested noarg or named/unpacked NULL start fails with the built-in Notice while the handler is disabled. A temporary invokable callback is created and destroyed without invocation; the original selected handler then receives the failed-start Notice."
+  ],
+  "validation": {
+    "native_first": "Author normal-return control native report SHA256 6f36c10dbd1c7ba0390bd86cc3b8d1a5cdb3ced9128cf9d4222b6c7d66b77da0; independent normal-only native pair report SHA256 e24a06e132fd12bcf90d9a94417d5350ef3c0b46ed1f679c6ab798e61737933d. All native exits 0, one default nested Notice, no handler/destructor throw.",
+    "author_source": "Exact native/model stdout and stderr, exit0, normal completion; report SHA256 bc03e6692ed2133a261edea29de2fab8f0936ddb4c60532e5a0762ca98cc3203.",
+    "independent_sources": "Named/unpacked NULL and pure temporary callable exact native/model stdout and stderr, exit0, normal completion; separate report SHA256 6e75e6127b635f5543c56a7fe1ffb24d23a6759dbfc019a44bafadafd79c5695 and c0574e2fd1fcad74b21fc9e36ea2fa3e5e521774ba744ce93433107429a3eec0.",
+    "author_state": "One genuine nested CONFIG_INVOKE front passes 42 reported conditions: authentic Warning receipt and unreleased RESULT cleanup, normal pending-free destructor, handler-disabled scope, coherent authority negatives, budget resume and final validity. Report SHA256 7a4f0aa51b4b37900f180e14ba4647df67be5c65da30c21c07f51c39af611757.",
+    "strict435": "435 ordered modules, true, empty stderr, exit0 in 23.318s at final private 444 SHA256 78d70ce561c6bc6478939d9687c3ba07569cb9d7a4fc21e7679b802f322570d9; report SHA256 8526c2fdfa7f4510e7289a5e9f3d0f23a62f5c433277f54e6c8247e704b678db."
+  },
+  "tested_cuts": {
+    "author_source": "Author source passed with 444 SHA256 12cc3b0284361ece4073d5b8e74b2990eff1fa324b386d6a9f6b1a9a682c9c06. The subsequent source-only restoration of the preexisting helper name preserves the tested rule body; no source replay was justified.",
+    "independent_sources_and_state": "Two independent sources and 42 reached conditions passed with final private 444 SHA256 78d70ce561c6bc6478939d9687c3ba07569cb9d7a4fc21e7679b802f322570d9.",
+    "strict": "Final private 444 and ordered435 modules passed; old Notice groups were not replayed because their branch predicates and shared certificate are unchanged."
+  },
+  "composition": {
+    "parent": null,
+    "candidate": null,
+    "result": "Pending stable canonical parent and reviewer selected-union check."
+  },
+  "original_sha256": {
+    "author_noarg": "4eb243cc2ce242d8a40f46a74bba82f55360c3b23e2b515e81e327ac3525be7d",
+    "independent_named_unpacked_null": "f4d9a58487efc45699fdf06d06a7b08ac7b0e601f51388c160171d53f7a48485",
+    "independent_temporary_pure_callable": "377b8e203d1292aca8f6c48b20ab7650b1d03d003b663a684775d21ea034011d"
+  },
+  "preserved_failures": [
+    "At the base, the exact author control stopped with Unsupported output-handler start after output deactivation after stdout FX|D1|H:2|R1|; its baseline report SHA256 5878acfc09e86282d7c64d49aef4b25c7a7930885e796ee47e01cf09649b37ac retains zero agreement credit.",
+    "Bounded preboundary budget snapshots established the actual saved Warning cleanup and later unsupported unwind, but are not source agreement or reached-state validation credit."
+  ],
+  "raw_archive": "/home/user/workspace/php-spec-evidence-archive/ob14-warning-retval-nested",
+  "review": {
+    "reviewer": "/root/output_review_current",
+    "decision": "Production saved-resume certificate, three normal-only source originals and author reached fixture statically CLEAR; private record/docs and actual-parent union pending review."
+  },
+  "remaining": [
+    "Other Warning/deprecation returned-object nested starts, active handler-body reentry, throwing paths through this new Warning-retval nested-start bridge, other output Notice return destructors and wider abrupt queues need separate source and reached coverage.",
+    "Unresolved/effectful/deprecated/autoload callback lookup, allocation/memory limits and wider executor completion remain partial.",
+    "The inherited folded-TODO and late-publication declaration-history validator frontiers retain their earlier OB09/OB11 scope; this change does not close a whole-stack invariant."
+  ],
+  "reproduce": [
+    "taskset -c 3 python3 tests/semantics/output_executor_warning_retval_nested_sources.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_warning_retval_nested_state.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_warning_retval_nested_review_sources.py"
+  ]
+}
