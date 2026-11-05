@@ -277,6 +277,9 @@ Notice; current handler selection and real argument/Throwable owners preserve
 cleanup order. A pending Throwable skips an eligible Notice handler, while the
 default Notice still follows reporting and suppression rules. Unresolved or
 effectful lookup and wider reentry remain partial.
+Throws from the selected Notice handler also preserve the VM's distinct cleanup
+of the callback argument and its children. Consumed Closure checking borrows
+capture metadata after the real owners retire.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -5079,8 +5082,19 @@ automatic destruction. Related lexical scope can call a protected constructor
 through an admitted bound static Closure factory. Invalid parameter defaults/body
 compilation precede the static-constructor error. Full method/captured scopes remain
 authoritative; only exercised diagnostic class operands use C strings. Abstract
-anonymous methods, method-body factories and wider magic/byref/generator forms
+anonymous methods, wider method-body factories and magic/byref/generator forms
 remain partial. [Method modifier review](coverage/semantics/anonymous-method-modifiers-review.json).
+
+Ordinary named-class methods now also contain admitted anonymous-class factories.
+Static/instance calls, typed/default and reference formals, inherited receivers,
+namespace imports and related protected constructors preserve the parsed owner
+and method scope. Child templates compile before their containing named-class key;
+reversed/repeated calls keep the source counters and allocate fresh instances.
+Complete containing-unit images remain required. Lazy link failures precede
+arguments, while compile errors in uncalled factory bodies still reject the unit.
+Trait/anonymous source owners, method-owned Closures, generators, byref returns
+and attributes remain partial.
+[Method factory review](coverage/semantics/anonymous-method-factories-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -7017,9 +7031,16 @@ while the name still commits; nested queries keep separate output cells. The
 [reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json)
 records nine agreements, three Unsupported controls and five separately run
 reached groups (308 clauses) at their actual cuts.
+Two-entry live enum callable arrays now keep their first-SEND value and selected
+name through source rebinding, same-cell output and output-destructor cleanup.
+Class strings retain their spelling; case receivers use the canonical enum
+name. The [variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json)
+records seven exact agreements, two Unsupported controls and four separate
+reached groups (216 checks) at their actual cuts.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 owning rebound values, late type
-sources, other array sources and autoload,
+sources, wider array sources (including embedded references and alias plus
+source rebinding) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -7397,9 +7418,15 @@ cleanup replacements and bailout contexts remain partial.
 Exit from an owning warning-handler retval now follows its destructor and Child
 cleanup before restoring the handler and releasing prepared/API owners. The
 hidden copied Closure remains through shutdown. Two exact exit comparisons and
-independent reached-state gates pass; a cleanup throw replacing this pending
-exit and wider bailout contexts remain partial.
+independent reached-state gates pass. At this cut, a cleanup throw replacing
+the pending exit and wider bailout contexts remained partial.
 [Owning retval exit review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
+A supplied plain exception thrown by the Child destructor now has pinned source
+and reached-state validation through the same copied warning cleanup. Catch and
+finally run after the exception replaces exit; a final string exit retains
+status 41. The existing rules suffice for this selected case.
+[Cleanup throw review](coverage/semantics/generator-call-cleanup-throw-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
