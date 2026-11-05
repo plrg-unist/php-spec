@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Inactive standard-Key notification precedes fields and releases one entry."""
 from pathlib import Path
-import hashlib
 
 import global_constant_sources as family
 

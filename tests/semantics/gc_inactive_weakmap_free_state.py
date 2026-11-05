@@ -19,7 +19,7 @@ COMMON = [
     'H = $heap_graph(S)', '$heap_valid(H)',
     'S_endpoint = S[.TODO = eps][.COMPLETION = pexecutorqueue.COMPLETION][.ORIGIN = pexecutorqueue.ORIGIN]',
     '$executor_free_endpoint(S_endpoint)',
-    'pexecutorfree_start = {HEAP H, MARKED eps, FAILED eps, UNKNOWN false}',
+    'pexecutorfree_start = {HEAP H, MARKED eps, DETACHED eps, FAILED eps, UNKNOWN false}',
 ]
 MAP_COMMON = [
     '$executor_free_kind(S_endpoint, eps, n_map) = 1',
