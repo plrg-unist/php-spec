@@ -409,7 +409,7 @@ def $config_iterator_copied_slots(S, (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*)
 def $config_iterator_copied_slots(S, pnamedslot*) = false -- otherwise
 dec $config_iterator_copied_header(pstate, pconfigcall) : bool
 def $config_iterator_copied_header(S, pconfigcall) = true
-  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET \/ pconfigcall.KIND = INTRINSIC_INI_GET
   -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps
   -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if $config_call_valid(S, pconfigcall)
@@ -481,6 +481,19 @@ def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+;; A unary getter reads its live value after a sole copied option retires.
+def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name) = true
+  -- if pconfigcall.KIND = INTRINSIC_INI_GET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $config_iterator_copied_header(S, pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name)]])
+  -- if ~$config_strict(S, pconfigcall)
+  -- if $config_iterator_string(S, pvalue_name)
+  -- if $string_bytes(pvalue_name) = ($ptascii("precision"))
+  -- if $(n_object < |S.OBJECTS|)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
 def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue) = false -- otherwise
 def $config_ini_string_finish(S, pconfigcall, pvalue_name, pvalue) = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
@@ -491,10 +504,41 @@ def $config_ini_string_finish(S, pconfigcall, pvalue_name, pvalue) = S[.COMPLETI
   -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
   -- if ~$config_iterator_string_receive_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall, n_object, pvalue_name)
+;; With an outside owner the option destructor is later; that shape is outside
+;; this receipt until its separate lifetime order is validated.
+rule PhpStep/config-iterator-get-string-result: S ~> S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_GET
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if S.RESULT = KNOWN pvalue_name
+  -- if $config_iterator_string_receive_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall, n_object, pvalue_name)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 1
+rule PhpStep/config-iterator-get-string-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator getter Stringable option outside precision"]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_GET
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if S.RESULT = KNOWN pvalue_name
+  -- if ~$config_iterator_string_receive_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall, n_object, pvalue_name) \/ $heap_owners($heap_graph(S), HOBJECT n_object) =/= 1
 def $task_nodes(CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) = $config_nodes(pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name), pnamedslot_value]])
   -- if pconfigcall.SENT = [pnamedslot_name, pnamedslot_value]
+def $task_nodes(CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) = $config_nodes(pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name)]])
+  -- if pconfigcall.SENT = [pnamedslot_name]
 def $selected_task_nonce(CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) = pconfigcall.SELECTION
 def $call_task_valid(S, CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue) = $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue)
+rule PhpStep/config-iterator-get-string-receive: S ~> $config_ini_get_finish(S, pconfigcall, n_option*)
+  -- if S.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*
+  -- if $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
+  -- if pconfigcall.KIND = INTRINSIC_INI_GET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $string_bytes(pvalue_name) = (n_option*)
+  -- if n_option* = $ptascii("precision")
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
 ;; Keep the genuine receipt as nonowning assertion-record source evidence after
 ;; the converted call has no object or array argument root left.
 rule PhpStep/config-iterator-string-assertions-receive: S ~> $config_ini_finish(S, pconfigcall_received, preqbytes, pvalue)
@@ -550,6 +594,15 @@ def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, 
   -- if pdestructionoperation.SOURCE = CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call
   -- if pdestructorcall.OBJECT = n_object
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if S_history = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
+  -- if $config_iterator_string_release_tail(S_history.TODO, pdestructionoperation) = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name)
+  -- if $config_iterator_string_release_valid(S_history, pdestructionoperation, pconfigcall, n_object, pvalue_name)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, [POBJECT n_object])
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call
+  -- if pdestructorcall.OBJECT = n_object
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
   -- if S_history = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
   -- if $config_iterator_string_release_tail(S_history.TODO, pdestructionoperation) = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name)
   -- if $config_iterator_string_release_valid(S_history, pdestructionoperation, pconfigcall, n_object, pvalue_name)
@@ -613,7 +666,7 @@ def $config_ini_null_finish(S, pconfigcall) = $config_ini_finish(S, pconfigcall,
   -- if ~$config_ini_quiet_value(S, pvalue)
 
 def $config_iterator_history(S, pconfigiterator) = true
-  -- if pconfigiterator.CALL.KIND = INTRINSIC_INI_SET
+  -- if pconfigiterator.CALL.KIND = INTRINSIC_INI_SET \/ pconfigiterator.CALL.KIND = INTRINSIC_INI_GET
   -- if pconfigiterator.CALL.INDEX = 0 /\ pconfigiterator.CALL.SENT = eps
   -- if ~pconfigiterator.CALL.NAMED /\ pconfigiterator.CALL.PACKS = eps
   -- if ~$pipe_site(S, pconfigiterator.CALL.SITE)
@@ -957,16 +1010,31 @@ def $config_iterator_release_input(S, pconfigiterator, ptask_tail*) = S[.COMPLET
 rule PhpStep/config-iterator-input-release: S ~> $config_iterator_release_input(S, pconfigiterator, ptask_tail*)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "input-release") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "input-release")
+dec $config_iterator_get_option(pstate, pconfigcall) : bool
+def $config_iterator_get_option(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_INI_GET
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if $stringable_instance(S, n_object)
+  -- if ~$config_strict(S, pconfigcall)
+def $config_iterator_get_option(S, pconfigcall) = false -- otherwise
 rule PhpStep/config-iterator-ready: S ~> $config_receive(S, pconfigcall[.INDEX = 1])
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "ready")
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if $config_iterator_argument_nodes(pconfigiterator) = eps
+  -- if pconfigcall.KIND =/= INTRINSIC_INI_GET
 rule PhpStep/config-iterator-ready-owned: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "ready")
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
+  -- if pconfigcall.KIND =/= INTRINSIC_INI_GET \/ $config_iterator_get_option(S, pconfigcall)
+rule PhpStep/config-iterator-get-ready-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator getter outside copied Stringable option"]
+  -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
+  -- if $config_iterator_valid(S, pconfigiterator, "ready")
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_INI_GET
+  -- if ~$config_iterator_get_option(S, pconfigcall)
 
 ;; Callback failure tears down cache/DATA before caller catch search resumes.
 def $config_iterator_discard_scope(S, pconfigiterator) = S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: S.TODO]
