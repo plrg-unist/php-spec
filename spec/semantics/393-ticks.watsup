@@ -40,6 +40,8 @@ dec $tick_switch_conditions(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) :
 dec $tick_switch_bodies(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) : pticksummary
 dec $tick_switch_body(pticksummary, pcodeexpr*, pcpath, statement*, metadata) : pticksummary
 dec $tick_switch_finish(pticksummary, bool) : pticksummary
+dec $tick_match_conditions(pticksummary, pcodeexpr*, pcpath, nat, phpType27*) : pticksummary
+dec $tick_match_bodies(pticksummary, pcodeexpr*, pcpath, nat, phpType27*) : pticksummary
 dec $tick_catches(pticksummary, pcodeexpr*, pcpath, nat, phpType66*) : pticksummary
 dec $tick_finally(pticksummary, pcodeexpr*, pcpath, phpType67) : pticksummary
 dec $tick_effect(pcodeexpr*, pcpath) : bool
@@ -183,6 +185,17 @@ def $tick_new_named(phpType28) = false -- otherwise
 ;; bodies contribute their own plans and file declarables in that same order.
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprYield phpType5_key phpType5_value metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYield phpType5_key phpType5_value metadata, pcpath))
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprYieldFrom expression metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYieldFrom expression metadata, pcpath))
+;; Match compiles every condition before any result. Dispatch and each result's
+;; assignment/jump emit real operations, regardless of the subject operand kind.
+def $tick_expression_body(T, pcodeexpr*, pcpath, NExprMatch expression (SEQUENCE phpType27*) metadata) = $tick_match_bodies(T_conditions[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType27*)[.LAST = false]
+  -- if T_subject = $tick_node(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
+  -- if T_conditions = $tick_match_conditions(T_subject, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType27*)
+def $tick_match_conditions(T, pcodeexpr*, pcpath, n, eps) = T
+def $tick_match_conditions(T, pcodeexpr*, pcpath, n, (NMatchArm phpType36 expression metadata) :: phpType27*) = $tick_match_conditions(T_conditions, pcodeexpr*, pcpath, $(n + 1), phpType27*)
+  -- if T_conditions = $tick_nodes(T, pcodeexpr*, $pcfield_phpType36(phpType36, pcpath ++ [PCINDEX n, PCFIELD 0]))
+def $tick_match_bodies(T, pcodeexpr*, pcpath, n, eps) = T
+def $tick_match_bodies(T, pcodeexpr*, pcpath, n, (NMatchArm phpType36 expression metadata) :: phpType27*) = $tick_match_bodies(T_body[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType27*)
+  -- if T_body = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
   -- if ~$tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata, 6)
 def $tick_expression_body(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
@@ -244,6 +257,7 @@ def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = $tick_switch
 def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = eps -- otherwise
 def $tick_switch_result(pcodename*, pcpath, NExprPrint expression metadata) = (false)
 def $tick_switch_result(pcodename*, pcpath, NExprThrow expression metadata) = (false)
+def $tick_switch_result(pcodename*, pcpath, NExprMatch expression (SEQUENCE eps) metadata) = (false)
 def $tick_switch_result(pcodename*, pcpath, NExprErrorSuppress expression metadata) = eps
 def $tick_switch_result(pcodename*, pcpath, NExprAssign expression_pattern expression_rhs metadata) = eps
   -- if $list_pattern(expression_pattern) = (phpType13*)
@@ -832,6 +846,7 @@ def $tick_function_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick
 def $tick_expression_children_safe(NExprAssign (NExprVariable (BYTES text) metadata_var) expression metadata) = true
 def $tick_expression_children_safe(NExprFuncCall phpType19 phpType6 metadata) = true
 def $tick_expression_children_safe(NExprNew phpType28 phpType6 metadata) = false
+def $tick_expression_children_safe(NExprMatch expression phpType26 metadata) = false
 def $tick_expression_children_safe(NExprYield phpType5_key phpType5_value metadata) = false
 def $tick_expression_children_safe(NExprYieldFrom expression metadata) = false
 def $tick_expression_children_safe(expression) = ~$tick_functions(expression) -- otherwise
@@ -889,6 +904,7 @@ def $tick_expression_opcode(NExprExit phpType5 metadata) = true
 def $tick_expression_opcode(NExprFuncCall phpType19 phpType6 metadata) = true
 def $tick_expression_opcode(NExprInclude expression phpType24 metadata) = true
 def $tick_expression_opcode(NExprMethodCall expression phpType20 phpType6 metadata) = true
+def $tick_expression_opcode(NExprMatch expression phpType26 metadata) = true
 def $tick_expression_opcode(NExprNew phpType28 phpType6 metadata) = true
 def $tick_expression_opcode(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = true
 def $tick_expression_opcode(NExprPostDec expression metadata) = true
