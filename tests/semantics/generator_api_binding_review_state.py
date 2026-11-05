@@ -18,7 +18,7 @@ CHECKS = [line.strip() for line in r'''
 S.COMPLETION = NORMAL
 S.CURRENT = eps
 S.FRAMES = eps
-S.GLOBAL
+S.GLOBALTABLE = eps
 S.ACTIVEFIBER = eps
 S.SOURCEPENDING = eps
 pconfigcall.OWNER = eps
