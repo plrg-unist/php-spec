@@ -98,8 +98,8 @@ def refusal(label, mutation, captures):
         f'$closure_callable(S_{label}, n_closure)',
         f'$gc_materialized_caller_target(S_{label}, CLOSURE_TARGET n_closure, pcallcontext.CALLSITE)',
         f'H_{label} = $heap_graph(S_{label})',
-        f'pnode_{label}* = $heap_reach($closure_items_nodes({captures}), eps, H_{label}.EDGES)',
-        f'~$gc_direct_graph_nodes(S_{label}, pnode_{label}*, H_{label}.EDGES, $heap_reach($pools_nodes(S_{label}.POOLS), eps, H_{label}.EDGES))',
+        f'pnode_bad_{label}* = $heap_reach($closure_items_nodes({captures}), eps, H_{label}.EDGES)',
+        f'~$gc_direct_graph_nodes(S_{label}, pnode_bad_{label}*, H_{label}.EDGES, $heap_reach($pools_nodes(S_{label}.POOLS), eps, H_{label}.EDGES))',
         f'~$gc_ordinary_node(S_{label}, HOBJECT n_closure)',
     ]
 
