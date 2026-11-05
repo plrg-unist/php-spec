@@ -105,8 +105,8 @@ class ReferenceReviewIterator98 implements Iterator {
     }
     public function key():mixed {
         echo "K",$this->pos,";";
-        if ($this->pos===0) {$GLOBALS["name"]=$GLOBALS["selected"];unset($GLOBALS["selected"]);}
-        else {$GLOBALS["value"]=9;$GLOBALS["it"]=null;}
+        if ($this->pos===0) {$GLOBALS["name"]=$GLOBALS["selected"];unset($GLOBALS["selected"]);$GLOBALS["producer"]=null;}
+        else {$GLOBALS["value"]=9;}
         return $this->pos;
     }
     public function next():void {
@@ -117,11 +117,17 @@ class ReferenceReviewIterator98 implements Iterator {
     }
     public function __destruct() {echo "D:",$GLOBALS["casts"],";";ini_set("precision","21");}
 }
-$name="initial";$selected=new ReferenceReviewOption98;$value=5;$casts=0;$it=new ReferenceReviewIterator98;
-$iteratorWatch=WeakReference::create($it);$optionWatch=WeakReference::create($selected);
-echo "B;";$result=ini_set(...$it);
+class ReferenceReviewAggregate98 implements IteratorAggregate {
+    public function getIterator():Traversable {
+        echo "G;";$it=new ReferenceReviewIterator98;
+        $GLOBALS["iteratorWatch"]=WeakReference::create($it);return $it;
+    }
+}
+$name="initial";$selected=new ReferenceReviewOption98;$value=5;$casts=0;$producer=new ReferenceReviewAggregate98;
+$iteratorWatch=null;$optionWatch=WeakReference::create($selected);
+echo "B;";$result=ini_set(...$producer);
 echo "A:",$result,":",ini_get("precision"),":",$casts,":",$value,":",$name==="later",":",$optionWatch->get()===null,":",$iteratorWatch->get()===null,";";
-unset($name,$value,$casts,$it,$result,$iteratorWatch,$optionWatch);echo "U:",isset($selected),":",isset($it),";";
+unset($name,$value,$casts,$producer,$result,$iteratorWatch,$optionWatch);echo "U:",isset($selected),":",isset($producer),";";
 '''
 
 CASES = {
@@ -133,5 +139,5 @@ WALK = b'W;V0;C0;K0;N0;V1;C1;K1;N1;V2;'
 EXPECTED = {
     'config-stringable-name-review-data-release': b'B;G;'+WALK+b'D:0:14:1;S:1:19;O:19:1;A:23:7:1:31:1:1;U::;',
     'config-stringable-name-review-retained-named': b'B;'+WALK+b'S:1:14;A:17:13:1:47:1:1:1;O:13:1;R:1;D:13;U::;',
-    'config-stringable-name-review-reference-key': b'B;'+WALK+b'D:0;S:1:21;O:21;A:27:9:1:33:1:1:1;U::;',
+    'config-stringable-name-review-reference-key': b'B;G;'+WALK+b'D:0;S:1:21;O:21;A:27:9:1:33:1:1:1;U::;',
 }
