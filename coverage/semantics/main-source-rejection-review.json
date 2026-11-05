@@ -1,0 +1,71 @@
+{
+  "milestone": "COMP170",
+  "status": "Complete: independently reviewed private behavior and actual-parent composition; ready for guarded integration.",
+  "base": "c927735dc2b0fa811ac894e3eb90d46f3aa09971",
+  "branch": "semantics/dynamic-source-next-170",
+  "raw_root": "../php-spec-evidence-archive/comp170",
+  "behavior": "Rejected main files emit completed-header encoding warnings and the terminal ParseError/CompileError before any user work. Warning 128, Parse 4 and Compile 64 report independently. Startup display selects stderr, separate leading newlines for each stdout event, or no display. Parsing precedes the VM budget; every new source comparison uses zero steps and still exits 255.",
+  "implementation": "The accepted main parser, generated syntax, native helpers, worker and existing parser-service contract are unchanged. Only after an existing main parse refusal does the CLI request the existing native-rejected file receipt. New adapter execute_rejected_main compares id 0, source bytes and requested/resolved/opened filename through the existing file checker, reconstructs/checks typed header items, then calls authored module 446. It reuses 445 header validation and literal-prefix rules plus ordinary report/display machinery; stderr is custody evidence, never the semantic event answer.",
+  "terminal_boundary": "The result precedes PROGRAM installation. FILES names unit 0; SOURCES, CODE, declaration history, user objects, handlers, bindings and tasks are empty. REQUESTFATAL contains the error class/message/line and exit 255. Applicable startup/display/precision/exit/file/destruction/source-pending/heap predicates pass. Installed-VM history/descriptors remain false and drive refuses reentry without changing events or installing code. This is a terminal observation, not a resumable VM state, and no placeholder PROGRAM or PDENTER is invented.",
+  "engine_evidence": "Pinned zend_handle_encoding_declaration and parser declare-list midrule supply warning chronology. php_execute_script_ex handles an uncaught parsing exception before user work; zend_exception_error uses E_PARSE or E_COMPILE_ERROR and no Throwable class-name prefix/stack. Independent review-main-native-v1 preserves 35 observations from 14 originals; review-main-repeated-v1 adds stderr/stdout observations for nested/repeated warnings [3,4,4] before ParseError line 5. Exact sources, commands, streams, profiles and process identities are external.",
+  "oracle": {
+    "target": "PHP 8.5.10 CLI NTS, 64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; source comparisons add include_path=.: and explicit reporting/display variants",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "baseline": "main-baseline-v1 preserves three actual pre-change CLI frontend failures at base c927 (completed-header ParseError, literal-prefix CompileError and lexical-comment error). No adapter semantics ran there and no execution credit is assigned.",
+  "build_and_strict": {
+    "head": "6e0042427f2b573194545dc00f1d75804b770721",
+    "reports": [
+      "campaign-v1/build.exit.json",
+      "campaign-v1/strict.exit.json"
+    ],
+    "commands": [
+      "scripts/opam-exec.sh dune build --root . -j 1 adapter/main.exe",
+      "tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json> <external strict fixture>"
+    ],
+    "result": "Private adapter build passes. Strict SL compilation loads 435 modules, returns true/exit 0/empty stderr; head and production inputs stable."
+  },
+  "source_validation": {
+    "head": "6e0042427f2b573194545dc00f1d75804b770721",
+    "originals": 15,
+    "agreements": 37,
+    "report": "sources-v1/report.json",
+    "command": "python3 tests/semantics/main_rejected_sources.py --output <external sources-v1>",
+    "scope": "Exact native/model stdout, stderr, exit and structured class/message/line. Completed/no-body/incomplete headers, nested and literal/nonliteral prefixes, lexical boundaries, syntax-before-header, inert echo/unknown/strict compiler prefixes, reporting 0/4/64/128, display 0/1/stderr, BOM/CRLF and spaced main filenames. All CLI runs use steps 0; no refusal counted as agreement. Head/inputs stable and child groups empty."
+  },
+  "independent_service": {
+    "head": "6e0042427f2b573194545dc00f1d75804b770721",
+    "controls": 28,
+    "report": "service-v1/report.json",
+    "command": "python3 tests/main_rejected_source_review.py --output <external service-v1>",
+    "scope": "Genuine nested/repeated file response at a Unicode/spaced filename, startup forwarding, exact request/response identity, unexpected/missing fields, accepted-response refusal, typed malformed receipt ranges and legacy header omission. Frontend stderr custody 411 bytes; frontend/adapter close exit 0. Stable head/inputs; no source-agreement credit."
+  },
+  "independent_terminal_state": {
+    "head": "499027f00bc146d67223311aaeae241dd720e4b2",
+    "premises": 240,
+    "report": "state-v2/report.json",
+    "command": "python3 tests/semantics/main_rejected_review_state.py --output <external state-v2>",
+    "scope": "Genuine checked ParseError/CompileError receipts, exact warning/terminal order, empty compilation/user footprint, positive terminal boundary predicates, startup reporting/display, legacy constructors, file CWD, malformed spans/order/first-nonliteral completion, source/unit mismatch and explicit VM reentry refusal. Strict SL 435 returns true/exit 0/empty stderr. Head/inputs stable, frontend stderr custody 548 bytes, both workers close 0 and groups empty."
+  },
+  "accepted_compatibility": {
+    "head": "499027f00bc146d67223311aaeae241dd720e4b2",
+    "agreements": 2,
+    "report": "compat-v2/report.json",
+    "command": "python3 tests/semantics/encoding_placement_sources.py --select include-main,eval --output <external compat-v2>",
+    "scope": "The accepted Main_program dispatch, explicit startup/file snapshot, included warning/body return and ordinary eval continue to match original native streams. Stable inputs/head, exit 0 and empty model stderr."
+  },
+  "preserved_failure": "state-v1/report.json retains the original 204-condition packet failure at call_descriptors_valid(S_parse), protocol line 39. Earlier footprint/event checks reached the correct terminal state, but this fixture incorrectly demanded installed VM source history for FILES-only pre-program output. Module 195 deliberately requires a PDENTER for every FILES entry. Only the independent helper changed at 499027f: positive applicable predicates and explicit negative VM-history/reentry checks replace that mistaken expectation. The failed packet has zero gate credit; compat was unrun in campaign-v1. No production rule or history guard was weakened, and source/service/strict results retain exact 6e004 identity.",
+  "reap": "campaign-v1/reap.json and campaign-v2/reap.json record empty full-private cmdline/cwd/exe/fd scans. All top-level/parser/adapter/model processes and child groups reaped; both CPU5 loans returned directly to ATTR.",
+  "limits": "The fixed raw multibyte-disabled parser profile and trusted worker remain required. Checked/native disagreement or unexplained stderr does not become a terminal answer. Wider source conversion/profiles and other core obligations remain partial. Source/metadata facts remain explicit foreign inputs, not authentication of edited packets against bytes. Existing held cases, including owned-NUL release and COMP123, are untouched; no engine bug or deliberate divergence is claimed.",
+  "review": "Independent private production/test CLEAR through 499027f, accepting source/service/build/strict at 6e004 and terminal/accepted-compatibility checks at 499027f with the original failed state packet preserved. Private documentation/inventory CLEAR at cf9bdb27d1322397150b94747f67dd723548b552; exact actual-parent static composition CLEAR at 3d8cd18d426b70f01134cf47634e2e9de89f267f on aec5a632d65d8687b7258b6ce6705f92a7b7858d. This final completion edit changes only the existing ledger.",
+  "composition": {
+    "head": "3d8cd18d426b70f01134cf47634e2e9de89f267f",
+    "parent": "aec5a632d65d8687b7258b6ce6705f92a7b7858d",
+    "review": "Independent static CLEAR of all 14 incoming semantic deltas. Property/class projections/defaults, Iterator/Stringable INI_SET and null-C destructor/task paths are unselected by the terminal roots and plain accepted include/eval controls. The task domain adds DESTRUCTOR_C_RETURN without changing pstate or initial fields. Modules 40/84/195 and 445/446, adapter/frontend/CLI and the new fixtures remain private-exact. The manifest is the actual parent plus 446, count 435. Accepted executions retain their original 6e004/499 identities; no joined run or historical campaign renewal is required or claimed."
+  }
+}

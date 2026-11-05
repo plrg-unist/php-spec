@@ -292,6 +292,16 @@ cleanup; its ordinary VALUE decrement occurs after handler restoration and befor
 the outer destructor/store result. Unhandled bailout retains the same two roots.
 This does not settle pre-body callback or wider destructor lifetimes.
 
+Ignored owning values returned by the destructor body retire after its PHP locals
+and before the inner C receiver protection. Ordinary VALUE jobs preserve the same
+C-return/result pair through returned-object and captured-child destructors;
+shared returned objects stay alive under other roots. This normal cleanup is
+separate from a selected handler's ignored retval. The
+[body-return review](../../coverage/semantics/callback-late-tick-body-return-review.json)
+records four new exact originals, two affected controls, eight genuine reached
+groups/438 checks and strict434. The original hidden early decrement remains
+recorded; abrupt body-value cleanup and direct reference-return bodies stay partial.
+
 Four new handled originals and two affected controls agree; strict433 passes.
 Nine independent groups pass 508 conditions (497 reached, 11 derived). The
 [handler review](../../coverage/semantics/callback-late-tick-handler-review.json)
@@ -303,5 +313,5 @@ Earlier [exit/throw](../../coverage/semantics/callback-late-tick-exit-throw-revi
 and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
 evidence keeps its original cuts. Wider callable producers, assertion roots,
 changed phase completions, other throws, abrupt/owning-result handlers, pre-body
-callbacks, owning destructor-body returns and reentrant module shutdown remain
+callbacks, abrupt destructor-body returns and reentrant module shutdown remain
 partial; this is no full lifecycle or core closure.

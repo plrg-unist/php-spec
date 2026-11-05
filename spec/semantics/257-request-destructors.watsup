@@ -590,10 +590,19 @@ rule PhpStep/destructor-result: S ~> $destructor_finish(S, pdestructorcall)
 ;; zend_call_function dispatches a null-C exception before its caller's
 ;; OBJ_RELEASE. Keep that inner protection through the handler, then decrement
 ;; it as an ordinary VALUE while the store/result marker still owns the object.
+;; The known-function wrapper first destroys its ignored retval, after PHP CV
+;; cleanup and before that receiver decrement. The same pair stays live while
+;; ordinary value/child decrements run.
+rule PhpStep/destructor-c-return-value: S ~> $destructor_release_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($operand_nodes(S.RESULT)))
+  -- if S.TODO = (DESTRUCTOR_C_RETURN pdestructorcall) :: ptask_tail*
+  -- if $destructor_c_return_valid(S, pdestructorcall)
+  -- if $exception_return_operand(S.RESULT)
+  -- if $operand_nodes(S.RESULT) =/= eps
 rule PhpStep/destructor-c-return: S ~> $destructor_release_begin(S[.TODO = ptask_tail*], [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)])
   -- if S.TODO = (DESTRUCTOR_C_RETURN pdestructorcall) :: ptask_tail*
   -- if $destructor_c_return_valid(S, pdestructorcall)
   -- if $exception_return_operand(S.RESULT)
+  -- if $operand_nodes(S.RESULT) = eps
 def $destructor_finish(S, pdestructorcall) = S_done
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*

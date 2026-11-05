@@ -66,10 +66,28 @@ inactive public-destructor fatal. Final S still keeps its ownership-valid snapsh
 
 Seven exact source/request contexts and 599 new/affected strict conditions pass.
 The independent fatal C-before-later-B original observes whole-key unregister
-before nested value retirement. Active key-triggered entry removal still needs
-its own owning-edge protocol; the two corresponding Unsupported originals keep
-zero agreement. Existing insertion/reference producer policies and wider custom
+before nested value retirement. At that cut, active key-triggered entry removal
+remained fenced; the two corresponding Unsupported originals retain zero
+agreement there. Existing insertion/reference producer policies and wider custom
 hooks remain partial. See the [inactive Map review](../../coverage/semantics/gc-inactive-weakmap-free-review.json).
+
+GC32 adds inactive notification for standard object keys. The store-force guard
+precedes notification, and marking the Key prevents recursive value retirement
+from entering its body twice. Maps are visited by their stored per-Key registration
+rank. Each selected bucket becomes a DETACHED(Map,Key) pair before its owning
+value decrements. Other keys stay registered; nonadjacent equal values keep their
+separate positions in the remaining Map. Direct scalar and previously detached slots add
+no owning-edge offset. A later Map free releases only its remaining edges.
+
+Nested value retirement can notify another standard Key through the same rule.
+Key fields remain owned until all notifications succeed; an earlier fatal retains
+later Map entries and fields. Callable authentication still uses full S, and final
+S remains the last ownership-valid snapshot. Nine exact source/request contexts
+(eight programs) and 951 new/affected reported conditions pass at their recorded
+cuts, including fast/nonfast reference-cell cleanup. Internal Map/WeakReference
+keys, weak custom Closure hooks, active storage pins and inactive nonpublic
+destructor diagnostics remain fenced. No collector/count or nogc rule changes.
+See the [Key notification review](../../coverage/semantics/gc-key-notify-review.json).
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

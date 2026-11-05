@@ -191,7 +191,9 @@ def $closure_call_copy_retain(S, n_copy) = S[.CLOSURECALLRETAINED = S.CLOSURECAL
   -- if ~$closure_call_copy_created(S.OBJECTS, n_copy)
   -- if ~((HOBJECT n_copy) <- $closure_call_retained_nodes(S.CLOSURECALLRETAINED))
 dec $closure_call_copy_cancel_release(pstate, pclosurecall, pnamedargs) : pstate
-def $closure_call_copy_cancel_release(S, pclosurecall, pnamedargs) = $destructor_release_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED) ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW) ++ [HOBJECT pclosurecall.SOURCE]))
+dec $closure_call_copy_release(pstate, pclosurecall, pnamedargs) : pstate
+def $closure_call_copy_release(S, pclosurecall, pnamedargs) = $destructor_release_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED) ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW) ++ [HOBJECT pclosurecall.SOURCE]))
+def $closure_call_copy_cancel_release(S, pclosurecall, pnamedargs) = $closure_call_copy_release(S, pclosurecall, pnamedargs)
   -- if S.TODO = (THROW_SEARCH n_throw) :: ptask_tail*
   -- if $throwable_member(S, n_throw)
 def $error_read_discard(S, CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = $closure_call_copy_cancel_release($closure_call_copy_retain(S, n_copy), pclosurecall, pnamedargs)
@@ -209,6 +211,41 @@ def $return_discard(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_
   -- if S.TODO = (THROW_SEARCH n_throw) :: ptask_tail*
   -- if $throwable_member(S, n_throw)
   -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
+
+;; UnwindExit returns through the same C cleanup without a PHP Throwable trace.
+;; Authenticate the emitting cursor before generic exit clears its scope.
+dec $closure_call_copy_exit_head(pstate) : bool
+def $closure_call_copy_exit_head(S) = ($closure_call_copy_cancel_pending(S, ptask) /\ $call_task_valid(S, ptask))
+  -- if S.TODO = ptask :: ptask_tail*
+def $closure_call_copy_exit_head(S) = false -- otherwise
+dec $closure_call_copy_exit_frames(pstate, pframe*) : bool
+def $closure_call_copy_exit_frames(S, eps) = false
+def $closure_call_copy_exit_frames(S, pframe :: pframe_tail*) = ($closure_call_copy_exit_head($constant_frame_scope(S, pframe, pframe_tail*)) \/ $closure_call_copy_exit_frames(S, pframe_tail*))
+def $closure_call_copy_exit_pending(S) = ($closure_call_copy_exit_head(S) \/ $closure_call_copy_exit_frames(S, S.FRAMES))
+dec $closure_call_copy_exit_task(pstate, pstate, ptask) : pstate
+dec $closure_call_copy_exit_supported(ptask) : bool
+def $closure_call_copy_exit_supported(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = true
+def $closure_call_copy_exit_supported(ERROR_HANDLER_RESULT perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+def $closure_call_copy_exit_supported(ptask) = false -- otherwise
+def $closure_call_copy_exit_task(S, S_exit, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_release($closure_call_copy_retain(S_exit, n_copy), pclosurecall, {SLOTS eps, NAMED eps})
+  -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
+def $closure_call_copy_exit_task(S, S_exit, ERROR_HANDLER_RESULT perrorcall) = $closure_call_copy_release($closure_call_copy_retain($error_handler_restore(S_exit, perrorcall.CALLBACK), n_copy), pclosurecall, pnamedargs)
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
+  -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
+def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit[.COMPLETION = UNSUPPORTED "Generator Closure::call exit continuation"]
+  -- if $closure_call_copy_cancel_pending(S, ptask)
+  -- if $call_task_valid(S, ptask)
+  -- if ~$closure_call_copy_exit_supported(ptask)
+def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit -- otherwise
+def $closure_call_copy_exit_scope(S, S_exit) = $closure_call_copy_exit_task(S, $constructor_failed(S_exit), ptask)
+  -- if $closure_call_copy_exit_pending(S)
+  -- if S.TODO = ptask :: ptask_tail*
+def $closure_call_copy_exit_scope(S, S_exit) = $constructor_failed(S_exit)
+  -- if $closure_call_copy_exit_pending(S)
+  -- if S.TODO = eps
+def $closure_call_copy_exit_scope(S, S_exit) = S_exit -- otherwise
 
 def $temporary_call_task_valid(S, ptask) = false -- otherwise
 
