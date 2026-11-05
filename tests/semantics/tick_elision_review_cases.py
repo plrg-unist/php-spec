@@ -67,3 +67,29 @@ declare(ticks=1) {
 }
 ''', b'ATZTW'),
 }
+
+CONTROLS = {
+    'review-fixed-builtin-left-has-hidden-constant-kind': (b'''<?php
+function t() { echo 'T'; }
+register_tick_function('t');
+declare(ticks=0) {
+    $value = defined('PHP_VERSION') || (static function () { declare(ticks=2); return 0; })();
+    echo 'A';
+    echo 'Z';
+}
+''', b''),
+    'review-fixed-builtin-right-has-hidden-constant-kind': (b'''<?php
+function t() { echo 'T'; }
+register_tick_function('t');
+declare(ticks=1) {
+    echo 'P';
+    true && defined('PHP_VERSION');
+    echo 'Z';
+}
+''', b''),
+}
+
+CONTROL_NATIVE_EXPECTED = {
+    'review-fixed-builtin-left-has-hidden-constant-kind': b'AZ',
+    'review-fixed-builtin-right-has-hidden-constant-kind': b'PTZT',
+}
