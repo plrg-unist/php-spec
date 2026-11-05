@@ -6812,8 +6812,12 @@ objects now clear the original output cell before destruction, then commit its
 chosen name before returning or propagating a destructor throw. The
 [unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json)
 records twelve normal originals, five explicit controls and 345 independent
-guards. Destructor exit, owning rebound values, late type sources, other array
-sources and autoload,
+guards. Root VM destructor exits now finish local cleanup before committing the
+name; nested queries preserve exit status and skip result assignment. The
+[exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
+records seven exact exits, seven explicit controls and 247 independent guards.
+Switched Fiber exits, replacement cleanup, owning rebound values, late type
+sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
