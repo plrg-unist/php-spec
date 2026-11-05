@@ -12031,9 +12031,15 @@
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/92-strict-compiler.watsup",
         "spec/semantics/93-strict-declarations.watsup",
-        "spec/semantics/194-compiler-preflight.watsup"
+        "spec/semantics/194-compiler-preflight.watsup",
+        "frontend/worker.php",
+        "scripts/generate-schema.py",
+        "spec/php.watsup",
+        "spec/schema.json"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/declare_header_metadata_review.py"
+      ],
       "source_tests": [
         "tests/semantics/encoding_declare_protocol.py",
         "coverage/semantics/encoding-declare-review.json",
@@ -12043,15 +12049,21 @@
         "tests/semantics/encoding_list_sources.py",
         "tests/semantics/encoding_list_state.py",
         "tests/semantics/encoding_list_dynamic_state.py",
-        "coverage/semantics/encoding-list-review.json"
+        "coverage/semantics/encoding-list-review.json",
+        "tests/semantics/encoding_header_sources.py",
+        "tests/semantics/encoding_header_state.py",
+        "tests/semantics/encoding_header_review_state.py",
+        "coverage/semantics/encoding-header-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/encoding-declare-review.json",
         "coverage/semantics/encoding-placement-review.json",
-        "coverage/semantics/encoding-list-review.json"
+        "coverage/semantics/encoding-list-review.json",
+        "coverage/semantics/encoding-header-review.json",
+        "vendor/php-src/Zend/zend_language_parser.y"
       ],
-      "review": "COMP165 adds late/nested encoding placement fatals after the parser Warning128 prefix. COMP166 admits arbitrary mixed/repeated parser-literal encoding items and ordinary bodies in checked single-line declarations, ordering recursive parser warnings by original token positions and admitting Zend-folded literal concatenation. Ten exact original agreements, two multiline Unsupported controls, authored256 plus CLI6, independent dynamic93 and affected legacy179 premises retain separate recorded cuts in encoding-list-review.json. Multiline declarations, rejected sources with warnings, multibyte-enabled conversion and wider source behavior remain partial."
+      "review": "COMP165/166 cover encoding placement and recursive literal lists/bodies. COMP167 supplies checked header-close line/token facts for multiline declarations, sorts completed-header reductions before enclosing headers and preserves first-item compiler lines. Genuine synthetic Nop empty spans have a specific admission; ordinary inverted spans refuse. Independent metadata 17 and fresh classified syntax 30,980 retain their producer cuts; strict compilation of 433 modules/inventories, 21 new source agreements, 237 compiler premises, 158 independent conditions and affected source 2/state 270 plus CLI 8 pass at 781. Original failures and retained legacy 179 keep their actual identities in encoding-header-review.json. Parser-rejected dynamic warnings, multibyte-enabled semantic conversion and wider source behavior remain partial."
     },
     {
       "id": "source.preamble",

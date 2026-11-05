@@ -3153,13 +3153,14 @@ registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
 Disabled-multibyte encoding declarations emit source-derived parser warnings
-before compiler diagnostics. Single-line declarations accept literal values,
-mixed/repeated items and ordinary bodies; token positions preserve recursive
-parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
-return premises extend the earlier eval/once checks. Multiline declarations and
-rejected sources with warnings remain explicit boundaries.
+before compiler diagnostics. Checked header-close positions support multiline
+headers and ordinary bodies, preserving nested parser reductions and separate
+first-item compiler lines. Twenty-one new originals and independent compiler/state
+checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
+sources with warnings and multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
-[list/body review](coverage/semantics/encoding-list-review.json).
+[list/body review](coverage/semantics/encoding-list-review.json),
+[header review](coverage/semantics/encoding-header-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
