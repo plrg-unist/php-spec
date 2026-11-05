@@ -1051,6 +1051,9 @@ Runtime target callbacks stay lazy per iteration, and later failure preserves
 completed writes while skipping pending targets/body and releasing the iterator.
 Plain global constant groups compile initializers in order and tick after all
 bindings, preserving the final emitter line and installed values on callback abort.
+Class-like plans consume completed early-binding facts to preserve or break prior
+adjacency. Method declarables compile even when uncalled; conditional declarations
+activate before their header-line Tick, while top declarations have no outer Tick.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -1070,7 +1073,8 @@ Exact source, strict and reached-state cuts remain in the
 [grouped emitters](coverage/semantics/tick-grouped-review.json),
 [Foreach targets](coverage/semantics/tick-foreach-review.json),
 [destructuring](coverage/semantics/tick-list-review.json),
-[global constants](coverage/semantics/tick-constant-review.json) and
+[global constants](coverage/semantics/tick-constant-review.json),
+[class-like declarations](coverage/semantics/tick-classlike-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -1824,11 +1828,13 @@ pipe controls pass; parser inputs stay fixed.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CLASS190 | Byvalue nongenerator __set/__isset/__unset anonymous factories; private implementation/review. |
 | I115 | Temporary Closure::call on captured native Generator APIs; private implementation/review. |
 | GC49 | Shared scalar/finite-object payload policy for mixed WeakMap storage; private implementation/review. |
 | COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
-| ATTR39 | Class-like declaration tick plans and compiler traversal; private implementation/review. |
+| ATTR40 | EnumCase ticks before DECLARE_CLASS, class availability and abort/resume; private implementation/review. |
+| Enum callable arrays | Raw ordinary named/inherited method cache owners; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

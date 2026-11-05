@@ -55,6 +55,19 @@ declarations while the installed constants remain available to the exception
 handler. Callable-bearing constant arrays and deferred construction retain
 explicit dependencies, as do unproved attributed initializer contexts.
 
+Class, Interface, Trait and Enum plans use completed current-unit `KIND`/`EARLY`
+compiler facts. Early binding emits no main opcode and preserves prior Tick
+adjacency; `DECLARE_CLASS` breaks it. Top-level declarations have no outer Tick
+and restore the declaration end line. Conditional declarations tick after real
+activation at the certified header line. Method bodies have separate op arrays
+but contribute their file declarables even when never invoked.
+
+Compiler entry uses completed `P.CLASSES`; runtime lookup borrows `S.CLASSES`
+after public descriptor/declaration-history validation. These facts live only in
+the transient summary, with no new machine field or per-statement recompilation.
+Old no-fact plan helpers retain their quiet Class route. Missing facts and
+unproved class/member/header emission remain dependencies.
+
 Switch plans visit the subject, every case condition, then every body in compiler
 order. Case bodies share adjacency across selected and unselected branches;
 fallthrough and jumps retain the ordinary switch runtime. A final temporary
@@ -146,7 +159,8 @@ are destroyed after callee restoration while the entry remains running. Genuine
 unwinding clears that state before shutdown callbacks. Fiber switching remains
 blocked during the callback and its returned-value cleanup.
 
-The source summary is deliberately bounded. Wider class/linking placement,
+The source summary is deliberately bounded. Wider decorated headers, class
+constants, positive-frequency properties/hooks and enum-case emission,
 other unmodeled statement/expression emission, callable defaults or
 attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
 and anonymous construction summaries. Foreach targets retain the existing
@@ -192,6 +206,9 @@ writes before abrupt cleanup.
 The [global constant tick review](../../coverage/semantics/tick-constant-review.json)
 records whole-group placement, initializer declarables/lines and installed
 bindings surviving callback abort.
+The [class-like tick review](../../coverage/semantics/tick-classlike-review.json)
+records early/non-early adjacency, uncalled method declarables, real method ticks
+and conditional activation before header-line callback abort.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

@@ -324,6 +324,8 @@ By-value destructuring compiles the RHS before nested keys and targets, retainin
 completed writes when a later target throws.
 Plain global constant groups receive one tick after all bindings, with initializer
 declarables and final compiler lines preserved.
+Class-like plans distinguish early binding from emitted declarations, preserving
+method declarables and activation before conditional declaration callbacks.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.

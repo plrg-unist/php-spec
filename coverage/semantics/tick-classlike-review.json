@@ -1,0 +1,85 @@
+{
+  "milestone": "ATTR39: class-like declaration tick compilation",
+  "status": "Independently accepted bounded implementation; wider header/member/lifecycle and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revisions": ["0c86cccf1", "c779d4c55"],
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "b2b62ff1aabadb90c06911fa926b97b11e02bc3c2ca551c83a8cba92c923c0ec",
+    "scope": "A full-plan entry passes completed current-unit class descriptors into one transient CLASSES summary field. Class/Interface/Trait/Enum bodies use KIND/EARLY facts: early binding preserves main-oparray adjacency, DECLARE_CLASS breaks it, top declarations omit an outer Tick and restore their end line, and conditional declarations tick after activation at the certified header line. Method op arrays retain file declarables. Existing no-fact helpers and quiet Class route remain available; unproved headers/members retain dependencies. No persistent machine/source schema, linking, runtime or ownership change."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_top_stmt bypasses compile_stmt's Tick for AST_CLASS and restores end_lineno. zend_compile_class_decl compiles headers/members, resets the header line and returns without a main opcode when early-bound; otherwise it emits DECLARE_CLASS. Enum implicit interfaces prevent early binding.",
+    "facts": "Completed P.CLASSES supplies compiler entry; runtime borrows the current-unit slice of S.CLASSES after public descriptor validation. class_state_valid includes declaration_history_valid, whose final replay requires exact class records (195). Trait projection preserves KIND/EARLY (383). No repeated compilation_projection call or second persistent registry is introduced."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-classlike-39/strict-report-v2.json",
+      "sha256": "6eabc68b8a85035a3c2e813ed36b6686eb220c2951ecafc73e53322c6919130e",
+      "revision": "c779d4c55d0b557befff48543f7abc47f1e9e932",
+      "passed": true,
+      "modules": 443
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-classlike-39/source-author-v1/report.json",
+      "sha256": "0a78422f1418a845619a0eac246a9c25af88dea3df70bfa185848ee758300226",
+      "revision": "c779d4c55d0b557befff48543f7abc47f1e9e932",
+      "passed": true,
+      "normal_agreements": 2,
+      "expected_unsupported": 1,
+      "observations": {
+        "early-class-keeps-prior-marker-and-compiles-method-declarables": "TZMTWT",
+        "conditional-class-tick-sees-activation-before-callback-abort": "TT[18]7CTZT"
+      },
+      "scope": "Early Class preserves the prior marker across a constant statement, compiles an uncalled method's frequency and executes a balanced method's real Tick. A conditional Class is activated before its header 18 callback, which instantiates it, calls get()->7 and throws before later body output. EnumCase stays Unsupported with empty prefix and zero agreement credit."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-classlike-39/source-review-v1/report.json",
+      "sha256": "fb3796870af238d9b975b45b4ef0da924d064ed1d76961e4f8e5ed8a567e64ef",
+      "revision": "c779d4c55d0b557befff48543f7abc47f1e9e932",
+      "passed": true,
+      "normal_agreements": 3,
+      "observations": {
+        "review-early-interface-keeps-adjacent-declare-tick-suppressed": "TZ",
+        "review-trait-uncalled-method-declarables-affect-following-markers": "TZWT",
+        "review-empty-enum-emitter-breaks-adjacency-without-outer-tick": "TPZT"
+      }
+    },
+    "independent_reached": {
+      "fronts": 4,
+      "reported_conditions": 198,
+      "group_conditions": [51, 47, 54, 46],
+      "derived_guards": 2,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions. The two labeled derived predicates cover missing class facts and a forged EARLY full-descriptor refusal.",
+      "first_packet": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/tick-classlike-39/review-protocol-v1/run/report.json",
+        "sha256": "1dccb0c05dec04acab5530b649323a66b517147c0f041523718fa2c3207fbf65",
+        "process_sha256": "b60bf8c5e4c1e5415abd3cb21a346fd6c6942c709ece1300370bbc171743d9f3",
+        "revision": "3708dd07c792f5ce1a647bba251d9fd85e9d1fc7",
+        "report_passed": false,
+        "retained_conditions": 144,
+        "scope": "Completed Interface 51, Trait 47 and conditional-Class 46 fronts pass. Enum's selector stopped at an earlier Echo-P Tick and failed its intended path check; that row keeps zero credit. The whole packet remains false."
+      },
+      "affected_enum": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/tick-classlike-39/review-protocol-v2/run/report.json",
+        "sha256": "cd148c3db544533b226918185d68e71e442d9060d185ff7e7829839024975dac",
+        "process_sha256": "514d71b4987b32289d7d56a66b7af3fd2f7570fbc78a8c9f31e4414d519b365d",
+        "revision": "0cc899cceee138bd09ec8ec7d1752825989367d9",
+        "passed": true,
+        "conditions": 54,
+        "scope": "Only the Enum stage selector changes to frequency 3; its actual following-declare path remains independently checked. The EARLY false Enum is installed without an enum-statement marker, and the real subsequent Tick advances the shared counter before echo Z."
+      },
+      "behavior": "Actual class/name bindings, method frequency leakage, absent top-level markers, canonical source/line, heap/descriptor validity and budget/full-finish equivalence pass. The conditional Class is already bound at its header Tick; callback abort preserves activation while skipping later body output. Both packets have stable inputs, reaped processes and empty driver stderr."
+    }
+  },
+  "independent_review": "/root/attributes_review independently traced the early/emitted opcode distinction, reviewed completed-fact borrowing and explicit source-origin/fallback branches, and accepted all four reached fronts at unchanged final 393. Class/enum owners confirmed disjoint source flags and no shared implementation edit.",
+  "remaining": "Positive-frequency properties/hooks, class constants, enum-case main-oparray emission and wider decorated/callable headers retain explicit dependencies. Conditional Interface/Trait/Enum and broader linking/lifecycle interactions remain unvalidated. No family or full-core closure is claimed.",
+  "environment": "Original bytes, paths/cwd, commands, raw streams/exits, profiles and tool/module identities remain external in tick-classlike-39. Source processes use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached fixtures use checked SL on CPU 5, caches disabled and encountered determinism checks. Regular copied tools are not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "source-baseline/report.json at b41fec557 remains false (SHA ffe72e418b4ab0acfbe9f2260756e43148ec60f0ed7b4cfb4885bf309094bd15): old model Unsupported with empty prefix/tick opcode placement dependency, native TZMTWT. It adds no agreement credit.",
+    "strict-report-v1.json failed SL preparation because otherwise could not complement structured-binding premises. Explicit equal/unequal and missing/wrong-kind branches repaired only that implementation form; no source execution or semantic credit belongs to the failed packet.",
+    "The original Enum state selector failure remains zero, while only the three completed v1 rows and corrected v2 Enum row have the scoped credit above. No source/production change or unrelated replay followed that fixture repair.",
+    "No 38, output, Generator, linking-consumer or paused-boundary campaign was repeated. No PHP engine bug or intentional divergence is claimed."
+  ]
+}
