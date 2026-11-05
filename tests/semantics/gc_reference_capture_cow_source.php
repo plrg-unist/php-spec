@@ -21,10 +21,12 @@ $token[1] = $inner;
 $other = $token;
 $same = $token;
 $alias =& $same;
-$collector = static function () use (&$token, &$other, &$same, &$alias) {
+$before = true;
+$after = 7;
+$collector = static function () use ($before, &$token, &$other, &$same, &$alias, $after) {
     $token[0]['a'] = 17;
     $same[0]['x'] = 23;
-    echo $token[0]['leaf'] === $other[1]['leaf']
+    echo $before && $after === 7 && $token[0]['leaf'] === $other[1]['leaf']
         && $same[0]['leaf'] === $alias[1]['leaf']
         && $token[0]['a'] === 17 && $token[0]['x'] === 0
         && $other[0]['a'] === 0 && $other[0]['x'] === 0
@@ -79,7 +81,7 @@ $collector = static function () use (&$token, &$other, &$same, &$alias) {
         && $alias[0]['x'] === 23 ? 'live|' : 'BAD|');
     echo 'END';
 };
-unset($leaf, $inner, $token, $other, $same, $alias);
+unset($leaf, $inner, $token, $other, $same, $alias, $before, $after);
 $collector();
 echo $weakLeaf->get() !== null ? '|leaf-live' : '|BAD';
 unset($collector);

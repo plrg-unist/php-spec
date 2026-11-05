@@ -8,7 +8,7 @@ import global_constant_sources as family
 
 ROOT = family.ROOT
 SOURCE = ROOT / 'tests/semantics/gc_reference_capture_cow_source.php'
-assert hashlib.sha256(SOURCE.read_bytes()).hexdigest() == 'fd0da9345b478d0a48e69ef3eecda9325270bc0c9c111f85de7e0916f2c6fbd1'
+assert hashlib.sha256(SOURCE.read_bytes()).hexdigest() == 'a1f654392691b1f8b4cd46cde77dd2c0f158488d16cc1d4958bea49a7a5e4e22'
 family.CASES = {'reference-payload-cow': SOURCE.read_bytes()}
 family.UNSUPPORTED = {}
 family.MODEL_TIMEOUTS = {'reference-payload-cow': 240}

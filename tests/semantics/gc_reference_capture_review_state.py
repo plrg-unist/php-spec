@@ -7,7 +7,7 @@ import gc_reference_capture_review_sources as sources
 import shutdown_state_review as runner
 
 
-CAPTURES = '[ALIAS n_token_cell, ALIAS n_other_cell, ALIAS n_same_cell, ALIAS n_same_cell]'
+CAPTURES = '[DIRECT (PBOOL true), ALIAS n_token_cell, ALIAS n_other_cell, ALIAS n_same_cell, ALIAS n_same_cell, DIRECT (PINT 7)]'
 CHECKS = [
     *ordinary.COMMON,
     'pcallcontext.TARGET = CLOSURE_TARGET n_closure',
