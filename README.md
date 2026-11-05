@@ -7250,7 +7250,11 @@ Raw ordinary named/inherited methods now retain `is_callable` namespace fallback
 actual shared function cache, including argument and output throws; receiver
 changes preserve that function identity. See the
 [method-cache review](coverage/semantics/enum-is-callable-method-cache-review.json).
-Unknown first births, copied/captured methods and wider owners retain their bounds.
+Runtime named-function and direct method first-class captures and plain-function
+`Closure::fromCallable` now retain their INIT/lookup-proven shared cache through
+clones and original retirement. Existing-Closure aliases preserve identity; see
+the [shared-capture review](coverage/semantics/enum-is-callable-shared-capture-cache-review.json).
+Cold method API/constant captures and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

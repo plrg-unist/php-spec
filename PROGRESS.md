@@ -159,7 +159,14 @@ from the exact descriptor, actual target/function and lexical owner. `is_callabl
 stays before arguments and survives argument/output throws and receiver retirement;
 a fresh method can choose the newly published local function. The
 [method-cache review](coverage/semantics/enum-is-callable-method-cache-review.json)
-records this slice; copied/captured, Generator and Fiber owners remain partial.
+records this slice. Runtime named-function and direct method FCC and plain-function
+`Closure::fromCallable` now stamp actual INIT/lookup-proven shared cache policy.
+Clones preserve that policy after original retirement; existing-Closure FCC/API
+conversions retain the same object and add no birth. The
+[shared-capture review](coverage/semantics/enum-is-callable-shared-capture-cache-review.json)
+records ownership, aliases and the promoted runtime-method control. Cold method
+API/constant/default captures, transformed bound/private copies and Generator/Fiber
+owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1912,7 +1919,7 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 | COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR43 | Existing property-hook body Tick plans in lexical get/set order; private implementation/review. |
-| Enum callable arrays | User function/method capture cache identity: cold/private versus initialized shared; private implementation/review. |
+| Enum callable arrays | Method fromCallable cache identity from proven cold and actual INIT history; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

@@ -1453,5 +1453,22 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "capture:1:FunctionFcc\\Target::cases|raw:1:FunctionFcc\\Target::cases|clone:1:FunctionFcc\\Target::cases|capture:1:FunctionApi\\Target::cases|raw:1:FunctionApi\\Target::cases|clone:1:FunctionApi\\Target::cases|",
     "purpose": "Runtime user-function FCC and plain-function fromCallable lookup initialize/share actual source cache; raw calls and clones retain builtin selection after namespace publication and source capture retirement."
+  },
+  {
+    "id": "enum-is-callable-third-output-capture-shared-inherited-runtime-fcc-aliases-clone-and-receiver-retirement",
+    "source": "<?php\nnamespace CaptureInstance;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass Base {\n    public $label;\n    public function __construct($label) { $this->label = $label; }\n    public function __destruct() { echo 'drop:', $this->label, '|'; }\n    public function query($install) {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\nclass Child extends Base {}\n$owner = new Child('original');\n$capture = $owner->query(...);\n$copy = clone $capture;\nunset($owner, $capture);\necho 'held|';\n$copy(true);\n$alias = $copy(...);\necho 'alias:', (int)($alias === $copy), '|';\n$api = \\Closure::fromCallable($copy);\necho 'api:', (int)($api === $copy), '|';\nunset($copy);\n$alias(false);\n$receiver = new Child('raw');\n$receiver->query(false);\n$fresh = $receiver->query(...);\nunset($receiver);\n$fresh(false);\nunset($fresh, $alias);\n$api(false);\nunset($api);\necho 'end|';\n",
+    "source_sha256": "1d8448df6d4ebc7307ffc5d30f35e950a90e774fa74b0f1d68d95ef1984ac79f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "purpose": "Runtime inherited method FCC shares actual INIT-primed cache through real clone and same-object FCC/API aliases; source retirement and receiver destructor timing follow actual owners.",
+    "expected_normal_stdout": "held|query:1:CaptureInstance\\Target::cases|alias:1|api:1|query:1:CaptureInstance\\Target::cases|query:1:CaptureInstance\\Target::cases|query:1:CaptureInstance\\Target::cases|drop:raw|query:1:CaptureInstance\\Target::cases|drop:original|end|"
+  },
+  {
+    "id": "enum-is-callable-third-output-capture-shared-cold-method-from-callable-private-versus-source-and-clones",
+    "source": "<?php\nnamespace ColdMethodAPI;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nfunction failarg() { throw new \\Exception('arguments'); }\nclass Owner {\n    public static function query($install, $run) {\n        if (!$run) { return; }\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\n\n$first = \\Closure::fromCallable([Owner::class, 'query']);\n$second = \\Closure::fromCallable([Owner::class, 'query']);\n$clone = clone $first;\n$first(true, true);\nOwner::query(false, true);\n$second(false, true);\n$clone(false, true);\n$first(false, true);\n$after = \\Closure::fromCallable([Owner::class, 'query']);\n$after(false, true);\n$lateclone = clone $first;\nunset($first);\n$lateclone(false, true);\n",
+    "source_sha256": "0a8af3da2b081d631bfb26ef647c2976d6af3cebe5cb268469f742efb14fa296",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 150,
+    "purpose": "Cold method fromCallable bypasses raw INIT and can allocate a private cache; persistent source initialization authority remains unfinished core, with explicit Unsupported rather than source-shared inference."
   }
 ]

@@ -1201,9 +1201,19 @@ Receiver/CALLED identity never chooses this cache. Before-argument selection
 survives publication, argument throw, output destruction and receiver retirement;
 a fresh second method can select USER. The
 [method-cache review](../../coverage/semantics/enum-is-callable-method-cache-review.json)
-records this cut. Captured/fake and resumed Generator method owners remain
-explicit authority Unsupported; unknown births, computed/packed variants,
-internal/Trait/anonymous/Fiber and inherited include/eval contexts remain partial.
+records this cut. Genuine runtime named-function and direct method FCC and plain-function
+`Closure::fromCallable` lookup now stamp Shared on the created capture. Those
+routes initialize the source runtime cache; method table API lookup and constant
+method FCC do not imply that event. Captured functions/scopes remain immutable
+history after retirement; parent-stamped clone copies preserve policy, while
+unstamped constant/API parents stay unstamped. Converting an existing Closure
+through FCC or fromCallable preserves identity and creates no stamp. The
+[shared-capture review](../../coverage/semantics/enum-is-callable-shared-capture-cache-review.json)
+records this bounded slice. Cold/initialized method-fromCallable policy needs
+persistent actual INIT facts, including attempted calls that throw before the
+body. Constant/default/static/property method captures, bound/dummy-scope/private
+copies, resumed Generator, internal/Trait/anonymous/Fiber and wider transformed
+contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
