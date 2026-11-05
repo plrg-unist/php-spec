@@ -99,12 +99,29 @@ def $property_public_nan_plan(S) = (ppropertypublicnan)
 def $property_public_nan_plan(S) = eps -- otherwise
 def $property_public_nan_prepare(S) = ($property_public_nan_plan(S) =/= eps)
 
+;; Error callback argument delivery transparently wraps this same receipt.
+;; Keep this projection pure: cursor validation calls our validity check again.
+dec $property_public_nan_marker(ptask) : ptask
+def $property_public_nan_marker(API_CALLBACK_SEND papiargcursor) = PROPERTY_PUBLIC_NAN ppropertypublicnan
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if perrorcall.RESUME = PROPERTY_PUBLIC_NAN ppropertypublicnan
+def $property_public_nan_marker(API_CALLBACK_REF papiargcursor) = PROPERTY_PUBLIC_NAN ppropertypublicnan
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if perrorcall.RESUME = PROPERTY_PUBLIC_NAN ppropertypublicnan
+def $property_public_nan_marker(ptask) = $source_operand_marker(ptask) -- otherwise
+dec $property_public_nan_suffix(ptask*, ptask, ptask*) : bool
+def $property_public_nan_suffix(eps, ptask_expected, ptask_expected_tail*) = false
+def $property_public_nan_suffix(ptask :: ptask_tail*, ptask_expected, ptask_expected_tail*) = (ptask_tail* = ptask_expected_tail*)
+  -- if $property_public_nan_marker(ptask) = ptask_expected
+def $property_public_nan_suffix(ptask :: ptask_tail*, ptask_expected, ptask_expected_tail*) = $property_public_nan_suffix(ptask_tail*, ptask_expected, ptask_expected_tail*)
+  -- if $property_public_nan_marker(ptask) =/= ptask_expected
+
 dec $property_public_nan_valid(pstate, ppropertypublicnan) : bool
 def $property_public_nan_valid(S, ppropertypublicnan) = true
   -- if S.ORIGIN = (ppropertypublicnan.READ.SITE)
   -- if ppropertypublicnan.OWNER = |S.FRAMES| /\ ppropertypublicnan.CALLER = S.CURRENT
   -- if $property_lookup_scope(S) = $closure_source_class(S, ppropertypublicnan.READ.SITE)
-  -- if $source_operand_suffix(S.TODO, PROPERTY_PUBLIC_NAN ppropertypublicnan, ppropertypublicnan.TAIL)
+  -- if $property_public_nan_suffix(S.TODO, PROPERTY_PUBLIC_NAN ppropertypublicnan, ppropertypublicnan.TAIL)
   -- if $(ppropertypublicnan.FLOAT < 18446744073709551616)
   -- if $float_decode(ppropertypublicnan.FLOAT) = NOTNUMBER ppropertypublicnan.FLOAT
   -- if $property_public_nan_descriptor(S, ppropertypublicnan)
