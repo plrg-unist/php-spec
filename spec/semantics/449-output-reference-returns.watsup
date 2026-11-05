@@ -14,6 +14,7 @@ dec $ob_ref_commit(pstate, pobrefreturn, poboutput) : pstate
 dec $ob_ref_pending(pstate, pobinvoke, nat, nat) : pstate
 dec $ob_ref_bytes(pvalue, int) : preqbytes
 dec $ob_ref_notice_restore(pstate, pstate, pobinvoke, nat, nat, ptask*) : pstate
+dec $ob_ref_unwrap_successor(pstate, ptask*, pdestructionoperation, pobrefreturn) : bool
 
 ;; Zend always requests the callback retval, even when the source print's own
 ;; result is discarded by its surrounding statement or for clause.
@@ -116,6 +117,15 @@ rule PhpStep/ob-reference-commit: S ~> $ob_ref_commit(S, pobrefreturn, poboutput
   -- if $call_task_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput) /\ $ob_ref_current(S, pobrefreturn)
 def $ob_ref_commit(S, pobrefreturn, poboutput) = $ob_user_commit(S, pobrefreturn.INVOKE[.SENT = eps], poboutput) -- if pobrefreturn.PENDING = eps
 def $ob_ref_commit(S, pobrefreturn, poboutput) = $ob_deprecation_commit(S, pobrefreturn.INVOKE[.SENT = eps], poboutput, n) -- if pobrefreturn.PENDING = (n)
+
+;; A destructor-capable request can stage even a scalar cell's decrement. The
+;; real COMMIT keeps F, while this release operation owns only its actual jobs.
+;; CELL is historical after that decrement and must not be revived to check it.
+def $ob_ref_unwrap_successor(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobrefreturn) = $ob_ref_unwrap_successor(S, ptask_tail*, pdestructionoperation, pobrefreturn)
+def $ob_ref_unwrap_successor(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (OB_USER_REF_COMMIT pobrefreturn_actual poboutput) :: ptask_tail*, pdestructionoperation, pobrefreturn) = (pdestructionoperation_actual = pdestructionoperation /\ pobrefreturn_actual = pobrefreturn /\ ptask_tail* = pobrefreturn.TAIL /\ $call_task_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput))
+def $ob_ref_unwrap_successor(S, ptask*, pdestructionoperation, pobrefreturn) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_ref_current(S, pobrefreturn) /\ pdestructionoperation.CALLER = pobrefreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobrefreturn.INVOKE.CALL)) /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps /\ $ob_ref_unwrap_successor(S, S.TODO, pdestructionoperation, pobrefreturn))
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_UNWRAP pobrefreturn
 
 def $error_read_discard(S, OB_USER_REF_DEPRECATED pobrefreturn) = $ob_ref_discard(S, pobrefreturn)
 def $return_discard(S, OB_USER_REF_DEPRECATED pobrefreturn) = $ob_ref_discard(S, pobrefreturn)
