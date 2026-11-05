@@ -5170,62 +5170,36 @@ automatic destruction. Related lexical scope can call a protected constructor
 through an admitted bound static Closure factory. Invalid parameter defaults/body
 compilation precede the static-constructor error. Full method/captured scopes remain
 authoritative; only exercised diagnostic class operands use C strings. Abstract
-anonymous methods, wider method-body factories and magic/byref/generator forms
-remain partial. [Method modifier review](coverage/semantics/anonymous-method-modifiers-review.json).
+anonymous methods, attributes and wider magic contexts remain partial. [Method modifier review](coverage/semantics/anonymous-method-modifiers-review.json).
 
-Ordinary named-class methods now also contain admitted anonymous-class factories.
-Static/instance calls, typed/default and reference formals, inherited receivers,
-namespace imports and related protected constructors preserve the parsed owner
-and method scope. Child templates compile before their containing named-class key;
-reversed/repeated calls keep the source counters and allocate fresh instances.
-Complete containing-unit images remain required. Lazy link failures precede
-arguments, while compile errors in uncalled factory bodies still reject the unit.
-Byref returns, attributes and wider factory contexts remain partial.
-[Method factory review](coverage/semantics/anonymous-method-factories-review.json).
+Anonymous child factories compile in ordinary named-class methods and
+nongenerator byvalue constructors, and in the corresponding unit0 anonymous/Trait
+owners and method-owned Closure/arrow bodies. Nongenerator methods and deferred
+declarations may return by reference; byvalue generator bodies are also admitted.
+Each compiler return mode must match its own parsed header independently of the
+containing method. Named-owner keys follow their children; anonymous owners
+reserve their key first and complete it in place. Ordinary interface, trait,
+constant and Stringable siblings preserve raw name prefixes and diagnostic order.
+[Method](coverage/semantics/anonymous-method-factories-review.json),
+[constructor](coverage/semantics/anonymous-constructor-factories-review.json),
+[owner](coverage/semantics/anonymous-owner-factories-review.json),
+[method Closure](coverage/semantics/anonymous-method-closure-factories-review.json)
+and [mixed-owner](coverage/semantics/anonymous-owner-declarations-review.json) reviews.
 
-Unit0 anonymous owner methods and constructors reserve their key before compiling
-child factories. Admitted method-owned Closures and arrows also preserve nested
-lexical names, captures and actual receiver lifetime; folded `__METHOD__` uses the
-complete Closure name. These owners also share ordinary interface, trait and
-constant compilation, preserving declared interface prefixes, composed Stringable
-scope and diagnostic order before arguments. Wider deferred and dynamic contexts
-remain partial. [Owner factories](coverage/semantics/anonymous-owner-factories-review.json),
-[method Closure factories](coverage/semantics/anonymous-method-closure-factories-review.json),
-[mixed owner declarations](coverage/semantics/anonymous-owner-declarations-review.json).
-
-Unit0 trait methods and their captured Closures/arrows also compile anonymous
-factories. Consumers and aliases share the compiled child template; ordinary
-trait copying supplies lexical and called scope for private, self/parent and
-late-static access. Compiled `__METHOD__`/`__FUNCTION__` values and nested Closure
-names retain their definition identity.
-Aborted compilation leaves unpublished trait children uninstalled, preserving
-warning/fatal order.
-Wider signatures, attributes and dynamic contexts remain partial.
-[Trait source factories](coverage/semantics/trait-source-factories-review.json).
-
-Ordinary generator-bodied class and trait methods also compile anonymous
-factories, including admitted nested nongenerator Closures/arrows. Resumption
-restores the actual saved method receiver and lexical/called scope; template
-identity and compiler order remain independent of resume order. Existing
-Generator ownership controls receiver retirement and escaped Closure lifetime.
-Generator constructors and byref factories remain partial.
-[Generator method factories](coverage/semantics/generator-method-factories-review.json).
-
-Unit0 method-owned generator Closures and arrows also create anonymous classes,
-including nested deferred factories. The saved Generator keeps the actual Closure
-and its lexical/called scope, captures and receiver after creator variables leave.
-Closing the execution frame retains that Closure until the Generator is released;
-static Closures without captures preserve source identity after their creator retires.
-[Generator Closure factories](coverage/semantics/anonymous-generator-closure-factories-review.json).
-
-Ordinary nongenerator methods declared to return by reference also create
-anonymous classes. Named/anonymous/Trait owners preserve their parsed return mode,
-including existing byvalue Closure factories nested in those methods. Returned
-cells keep real aliases after the callee leaves. Temporary returns retain PHP's
-notice, and throwing notice handlers preserve the distinct used/unused result
-cleanup order. Reference-return constructors, generators and Closure/arrow
-declarations remain partial.
-[Reference method factories](coverage/semantics/anonymous-reference-method-factories-review.json).
+Trait consumers and aliases share child templates while retaining actual lexical,
+called and private scopes. Generator resumption restores the saved method/Closure
+source and receiver after creator variables leave. Closed Closure-Generators keep
+the real Closure until release. Returned cells preserve caller aliases; temporary
+reference returns retain notices and callback cleanup, including Arrow expression
+returns at their authenticated compiled boundary. Lazy child-link failures precede
+arguments, and uncalled compile errors still reject the unit. Reference/generator
+constructors, reference generators, attributes, other magic bodies and wider
+binding/dynamic deferred contexts remain partial.
+[Trait](coverage/semantics/trait-source-factories-review.json),
+[generator method](coverage/semantics/generator-method-factories-review.json),
+[generator Closure](coverage/semantics/anonymous-generator-closure-factories-review.json),
+[reference method](coverage/semantics/anonymous-reference-method-factories-review.json)
+and [reference Closure](coverage/semantics/anonymous-reference-closure-factories-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

@@ -1526,7 +1526,19 @@ handling preserve aliases, receiver/child retirement and used/unused temporary
 return cancellation. The [review](coverage/semantics/anonymous-reference-method-factories-review.json)
 separates source agreements, actual cell/budget checks and derived mode refusals.
 Reference constructors/generators/Closure declarations, attributes and wider
-binding/dynamic contexts remain partial.
+binding/dynamic contexts remained partial at that cut.
+
+CLASS188 admits unit0 method-owned nongenerator reference-return Closure/arrow
+factories in named/anonymous/Trait owners. The deferred header authenticates its
+own return mode independently of the checked parent method. Existing cells and
+notice materialization preserve aliases and callback cleanup. Narrow shared
+return-source checks authenticate the actual Arrow template/body line and exclude
+Arrow expression returns from ordinary implicit-null fallthrough. The
+[review](coverage/semantics/anonymous-reference-closure-factories-review.json)
+separates exact originals, real cell/notice ownership and budget checks from
+derived mode/refusal queries and preserved implementation failures. Reference
+generators, reference/generator constructors, attributes and wider binding/dynamic
+contexts remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -1746,7 +1758,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS188 | Method-owned nongenerator reference-return Closure/arrow factories; native/source preparation. |
+| CLASS189 | Byvalue nongenerator __invoke/__get/__toString anonymous factories; native/source preparation. |
 | I114 | Captured Generator API bind/bindTo receiver retargeting; private implementation/review. |
 | GC48 | Occupied WeakMap replacement with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |

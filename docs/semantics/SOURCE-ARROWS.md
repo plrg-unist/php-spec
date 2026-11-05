@@ -10,6 +10,14 @@ UNINITIALIZED is interpreted using the authenticated capture mode and current ta
 
 Invocation uses the existing owning selected-instance carrier, parameter/default/variadic receives and active/saved contexts. Arguments may unset the original global callee owner without destroying the selected instance. The actual expression is evaluated at its checked source origin, followed by a source-authenticated value or reference return. Reference-returning arrows preserve the distinction between direct variable fetch and value/call results, including native notices and fresh invocation-local reference lifetimes. No synthetic checked return statement is inserted into the source tree.
 
+Reference Arrow unwind/notice authority uses the actual current Closure template,
+its checked Arrow source and compiled body line; generator Arrows retain their
+separate value-return route. The Arrow expression boundary cannot be mistaken for
+ordinary implicit-null fallthrough. Method-owned nongenerator reference Arrows
+also admit anonymous factories under independently checked parent and own return
+modes; the [factory review](../../coverage/semantics/anonymous-reference-closure-factories-review.json)
+records exact notice/cancellation and reached-state controls.
+
 A never arrow evaluates its expression as discarded, then reaches the shared typed fallthrough error if evaluation completes. It has a CODEARROW marker but no implicit RETURN task. A retained paused reference-returning call showed that the earlier generic demand helper incorrectly marked this expression as used despite matching full native output. The narrow source-kind/signature repair makes never-body calls unused, including through suppression, while ordinary arrow reference-call results remain used.
 
 A second retained paused-state failure exposed a shared suppression guard that searched only named functions. The repair authenticates current and saved suppression owners against named functions and closure templates and excludes their nested scopes from MAIN ownership. Arrow, explicit-closure and named/MAIN controls cover the correction; saved-frame validation does not inspect an unrelated active result. Earlier explicit-closure acceptance evidence remains historical rather than being relabeled with this repair.

@@ -20,6 +20,14 @@ at their own instruction/end line after applicable static/fallthrough checks.
 Whole `$GLOBALS` is a variable-designated copied value, not an alias to the global
 table; its reference return does not emit that Notice.
 
+An Arrow expression return uses the checked current Closure template and compiled
+body line as its source boundary, rather than an ordinary statement-body path.
+Only nongenerator reference Arrows use this unwind/notice route, and their
+expression return cannot satisfy implicit-null fallthrough. Method-owned
+reference Closure/arrow factories preserve real returned cells and temporary
+notice cleanup under independently authenticated own/parent modes; see the
+[factory review](../../coverage/semantics/anonymous-reference-closure-factories-review.json).
+
 An emitted type verifier reads an ordinary CV before the quiet return write fetch.
 Missing untyped or mixed CVs stay quiet; a nullable typed missing CV warns and can
 succeed, while an int CV warns before TypeError. Computed variables and dimensions

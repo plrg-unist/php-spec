@@ -634,186 +634,95 @@ compiler before the magic-method rejection, preserving default/body error priori
 Inherited-final conflicts still occur before constructor arguments/allocation.
 Duplicate/static diagnostic class operands truncate at NUL; stored names and scope
 authority stay complete. The [method modifier review](../../coverage/semantics/anonymous-method-modifiers-review.json)
-retains the exact sources and reached fronts. Anonymous abstract-method diagnostics
-and wider method-body factory contexts remain explicit boundaries, alongside attributes,
-byref returns and wider magic/generator forms. The historical177 boundary originals
+retains the exact sources and reached fronts. At that historical cut, anonymous
+abstract methods, wider method-body factories, attributes and byref/magic/generator
+forms retained explicit boundaries. The historical177 boundary originals
 retain zero credit there; the named-owner witness has a separate fresh178 agreement.
 
-Ordinary factory methods in admitted named source classes may now compile their
-anonymous child templates. The unit check permits class-containing method bodies
-while preserving class-free headers, other member positions and the old anonymous,
-trait/interface/enum owner fences. At each child compilation, the concrete method
-GOTOROOT must belong to its parsed named owner. Source-derived namespace/imports,
-the complete current/folded class contexts, full owner::method name and body prefix
-must agree. Constant/default and generator/byref-return/attribute fences remain;
-the old global function/static-Closure producers keep their empty class contexts.
+Ordinary methods and nongenerator byvalue constructors in admitted named source
+classes compile anonymous child factories. Unit0 anonymous classes and traits
+share these contexts, including method-owned Closures and arrows nested through
+admitted deferred bodies. Ordinary methods and deferred Closure/arrow declarations
+may return by reference when nongenerator; byvalue generator bodies are also
+admitted. Method-owned deferred contexts, anonymous owners and traits retain their
+unit0 restriction; the existing direct named-method dynamic-unit policy is unchanged.
 
-The compiler records child publication checkpoints but saves their images only
-after restoring the complete containing-unit scope. It never reserves a deferred
-named-owner key before compiling the owner's methods: root/child/root ordinals
-are 0/1/2 for an early owner and 0/1/3 for the exercised conditional owner. Reversed
-or repeated calls reuse those templates while creating fresh instances. Inherited
-instance calls retain the declaring lexical owner across different called classes;
-ordinary typed/default/reference reception and promoted constraints remain intact.
-Related protected access, imported names and readonly headers use the existing
-rules. Lazy final conflicts fail before argument effects, and compile errors in
-uncalled factory bodies still reject the unit.
+The concrete method GOTOROOT must belong to its parsed owner. Source-derived
+namespace/imports, complete current/folded class contexts, lexical function name
+and every body prefix must agree. Folded `__METHOD__` preserves the full nested
+Closure name. A Closure/arrow's own compiler `RETURNREF` equals
+its checked header flag. Authentication of its containing method restores that
+method's independently checked flag only in a temporary compiler-context query.
+Thus a reference Closure may occur in a byvalue or reference method without
+confusing their return modes. Actual captures, receivers and return cells use the
+ordinary runtime protocols.
 
-The [method factory review](../../coverage/semantics/anonymous-method-factories-review.json)
-separates genuine runtime/source counters from explicitly pure source-derived
-compiler-context queries. At that cut, trait and anonymous source owners,
-method-owned Closures, generators, byref returns, attributes and wider
-source/lifetime contexts remained partial.
+Named owners receive deferred keys after their children compile; an anonymous
+owner reserves its key before compiling members and replaces that compiler-local
+descriptor in place on success. Recursive children therefore retain source order
+through reversed or repeated calls, which reuse templates but allocate fresh
+instances. The provisional owner retains its raw parent/interface prefix and early
+marker. Ordinary interface, trait and constant siblings use existing composition
+rules, including implicit Stringable from a public class-free `__toString` sibling.
+The linked Stringable view does not overwrite the raw header or generated name.
+Trait composition precedes interface validation and constructor arguments;
+constant and child compilation retain member order.
 
-Named constructors may now contain anonymous child factories under the same parsed
-owner, method-body and class-context checks. The child template is compiled before
-a deferred named owner receives its key; repeated constructor calls reuse the child
-class while allocating fresh objects. Inherited protected constructors, promotion,
-parent calls, private access and failed-owner child cleanup follow the ordinary
-runtime rules. A child compile error precedes a static or return-typed constructor
-rejection; private-final child warnings remain visible. Reached final-method link
-errors capture the constructor call stack before eager failed-owner cleanup.
-The [constructor factory review](../../coverage/semantics/anonymous-constructor-factories-review.json)
-records exact sources and reached states.
+A source trait's actual body field and header establish its `PTTRAIT` context.
+Consumers, aliases and inherited calls share one child template per source
+occurrence. Ordinary trait copying supplies the importing lexical class, while
+late-static access follows the actual called class. Inherited calls retain their
+declaring importer for private/self/parent access. Compiled `__METHOD__` and
+`__FUNCTION__` values and nested Closure names retain definition identity;
+invocation aliases still use the ordinary renamed method descriptors.
 
-Anonymous owner methods and constructors can compile direct anonymous child
-factories. The compiler reserves the owner's generated key before its members,
-keeps that descriptor out of the installed class table during compilation, and
-replaces it in place when the body succeeds. Child and recursive grandchild keys
-therefore follow source order even when methods are called in reverse or more
-than once. A named factory with a forward parent still receives its deferred
-key after the anonymous owner and child. Parentless and inherited owner lexical
-scope, protected constructor access, failed constructor cleanup and reached
-lazy final-link errors use the ordinary runtime rules. An abrupt unit drains
-child warnings before its fatal and skips only authenticated child checkpoints
-whose class images were never installed. The [owner factory review](../../coverage/semantics/anonymous-owner-factories-review.json)
-separates native source comparisons, reached compiler/runtime steps and source
-boundary checks. At that cut, method-owned Closures, arrows and nested functions,
-owner traits/constants and later dynamic units remained outside the source slice.
+The Generator owns its suspended frame, and resumption installs that frame's real
+source, locals and call context. Child `new` uses the saved method or Closure's
+receiver and lexical/called classes after yields, injected throws or creator-CV
+cleanup. Method-Generator completion releases its execution receiver. A closed
+Closure-Generator instead retains its actual Closure after the frame retires;
+that Closure continues to own its receiver/captured cells until release. Static
+Closures without captures preserve source identity after their creator retires.
+Native API resumptions mark the body trace internal and retain the API call's
+source location; user/`foreach` resumptions retain their source location.
 
-An anonymous owner may also declare an ordinary public, class-free
-`__toString` sibling beside its child factory. The provisional descriptor
-remains compiler-local with empty methods and its declared interfaces; successful
-member compilation replaces it in place with the implicit `Stringable` interface and
-clears its early status. Owner, child and later root keys retain source order
-whether `__toString` appears before or after the factory, in a parented owner,
-or in nested Stringable owners. The ordinary method compiler keeps invalid
-return-type and child-default priority, and an abrupt owner leaves earlier
-child checkpoints unpublished. A child created *inside* `__toString` remains
-outside the admitted factory context. The [owner Stringable review](../../coverage/semantics/anonymous-owner-stringable-review.json)
-records source, reached-state and boundary evidence.
+Reference returns transfer real cells, preserving caller aliases and copies
+independently of the method/Closure receiver. Temporary returns emit the ordinary
+notice and remain owned through callbacks. A throwing handler still completes
+return-value handling before callable cleanup, preserving distinct used/unused
+receiver/child retirement order. An Arrow's implicit expression return is
+source-authenticated through its actual current callee, checked Arrow template and
+compiled body line. Nongenerator reference Arrows may unwind at that boundary;
+finalized statement returns keep their existing body-scope authority. An Arrow
+expression return is never classified as ordinary implicit-null fallthrough.
 
-Eligible unit0 named and anonymous methods/constructors may create anonymous
-classes through by-value, nongenerator Closures and arrows, including nested
-deferred bodies. Source ancestry reconstructs the complete Closure name and
-checks every body boundary before reusing the authenticated containing method's
-owner, namespace/imports and current/folded class context. Ordinary capture,
-receiver, constructor and class-link rules retain their actual owners and
-diagnostic ordering. A rejected static or return-typed constructor suppresses
-its deferred children's publication checkpoints. Anonymous keys keep compiler
-order even after the source owner is unset or failed construction retires it.
-Compiler-folded `__METHOD__` preserves the complete Closure name, including
-nested scopes; lexical `__CLASS__` retains the declaring owner. Ordinary method
-`__METHOD__` retains its class and method name.
-Named nested functions, factories with attributes or by-reference returns and
-later dynamic units remain partial. The
-[method Closure factory review](../../coverage/semantics/anonymous-method-closure-factories-review.json)
-separates exact originals, runtime states and source-derived context queries.
+Compilation still rejects errors in uncalled bodies. Child errors precede rejected
+static/return-typed constructors, and earlier private-final warnings remain visible.
+On abrupt unit compilation, diagnostic replay skips only authenticated child
+checkpoints whose owner/child images were never installed; normal and installed
+histories retain their usual publication handling. Lazy child-link failures precede
+argument effects and preserve the actual call/resumption trace. Protected access,
+promotion, failed constructors, imported names and readonly rules remain ordinary.
 
-Anonymous owners with child factories also admit ordinary explicit-interface
-headers and class-free trait/constant siblings. Their provisional descriptor
-retains the declared interface list and compiler early marker; the generated
-prefix uses the parent or first interface reference. Member completion replaces
-the owner in place without changing source-order child keys. Own constants,
-constant callables, trait data and deferred factories use the existing rules.
-Trait-inferred `Stringable` appears in the linked view without replacing the raw
-header or generated name. Trait composition precedes interface validation and
-constructor arguments, while constant and child compilation retain member order.
-The [mixed-owner review](../../coverage/semantics/anonymous-owner-declarations-review.json)
-distinguishes original execution, genuine reached states and source-derived
-reservation refusals. Attributes, generator constructors,
-by-reference factories and wider
-dynamic/member/lifetime contexts remain partial.
+Reference/generator constructors, reference generators, attributed factories,
+other magic bodies (including factories inside `__toString`), named nested
+functions and wider binding/dynamic deferred contexts remain partial. Constant
+and default positions retain their separate source fences.
 
-Unit0 source traits may declare the admitted ordinary method/constructor and
-Closure/arrow factories. The actual Trait body field and source header establish
-the `PTTRAIT` compiler context; importers do not mint new child identities.
-Consumers, aliases and inherited calls reuse one template per source occurrence.
-Ordinary trait copying supplies the importing lexical class and called class:
-inherited calls retain the declaring importer for private/self/parent access,
-while late-static access follows the actual called class. Compiled
-`__METHOD__`/`__FUNCTION__` values and nested Closure names preserve their
-definition identity.
-
-A later trait compile error may occur before its descriptor exists. Diagnostic
-replay then skips only source-owned child checkpoints whose trait and child
-images were never installed, preserving earlier warnings and the actual fatal.
-Normal and installed histories retain ordinary checkpoint handling. The
-[trait factory review](../../coverage/semantics/trait-source-factories-review.json)
-separates original source agreement, actual consumer/cleanup states and derived
-context/refusal queries. Attributes, generator constructors,
-by-reference-return factories,
-other magic bodies, dynamic units and wider lifecycle contexts remain partial.
-
-Ordinary nonmagic generator methods in named/anonymous classes and unit0 traits
-may contain anonymous factories, including the admitted nongenerator nested
-Closures and arrows. The ordinary method body compiler keeps its parsed owner,
-GOTOROOT and folded class context while preparing generator code. Children retain
-their compile-order keys; trait copies and aliases reuse their source template.
-
-At execution the Generator owns its suspended function frame. Resume installs
-that frame's actual source origin, locals and call context, including the selected
-method, receiver and lexical/called classes. Anonymous `new` therefore uses the
-method's saved scope after yields or injected throws, rather than the resumer's
-scope. Natural completion releases the execution receiver; an escaped bound
-Closure keeps its own receiver until ordinary release. Static anonymous methods
-use the same receiverless Generator path.
-Native API resumptions mark the body trace frame internal and retain the API
-call's source location; user/`foreach` resumptions keep their source location.
-Lazy child-link failures preserve this trace before arguments. The
-[generator method review](../../coverage/semantics/generator-method-factories-review.json)
-separates exact originals, actual paused/resumed ownership and budget checks, and
-derived forged-frame refusals. Generator constructors, attributes,
-by-reference factories and wider dynamic/lifetime contexts
-remain partial.
-
-Unit0 method-owned generator Closures and arrows may also compile anonymous
-factories, including nested deferred scopes in the admitted named/anonymous/Trait
-owners. Their parsed body field, nearest method ancestry, generated function name
-and current/folded class context establish source authority. Generator body
-preparation keeps that context while applying ordinary yield/return-type checks.
-Child templates retain compile order and shared Trait identity.
-
-Creation saves the actual Closure instance and deferred lexical loads. Resumption
-restores its real source, captures, receiver and lexical/called classes after
-creator variables are cleared. A closed Generator retains its Closure even after
-the execution frame retires; that Closure continues to own its receiver/captured
-cells until actual release. A static Closure without captures keeps source scope
-after its creator retires. The
-[generator Closure review](../../coverage/semantics/anonymous-generator-closure-factories-review.json)
-separates original execution, paused/resumed/closed ownership, derived refusals
-and native-only preparation. Generator constructors, reference-return Closure/arrow factories,
-attributes, wider binding/call forms and dynamic deferred contexts remain partial.
-
-Ordinary nongenerator methods declared with `&` may also contain anonymous
-factories in admitted named/anonymous/Trait owners. Direct compiler `RETURNREF`
-must equal the parsed method header. A nested byvalue Closure keeps its own
-return mode; the existing ancestry proof restores the checked containing method's
-mode only in its temporary compiler-context query. Reference constructors,
-reference generators, other magic bodies and attributed methods retain their
-separate source boundaries.
-
-The runtime uses ordinary returned cells and aliases. Variable returns transfer
-their real cell; caller copies and aliases retain the child independently of the
-method receiver. A temporary return emits the ordinary reference notice. Its
-value remains owned through callbacks, and a throwing handler still completes
-the native return-value handling before callable cleanup. Used and unused results
-therefore preserve their different receiver/child retirement order. The
-[reference method review](../../coverage/semantics/anonymous-reference-method-factories-review.json)
-separates original source observations, actual cell ownership/resumption and
-source-derived mode/refusal checks. Wider signatures, reference Closure/arrow
-declarations, reference generators, constructors and dynamic/binding contexts
-remain partial.
+The [method](../../coverage/semantics/anonymous-method-factories-review.json),
+[constructor](../../coverage/semantics/anonymous-constructor-factories-review.json),
+[anonymous owner](../../coverage/semantics/anonymous-owner-factories-review.json),
+[Stringable sibling](../../coverage/semantics/anonymous-owner-stringable-review.json),
+[method Closure](../../coverage/semantics/anonymous-method-closure-factories-review.json)
+and [mixed-owner](../../coverage/semantics/anonymous-owner-declarations-review.json)
+ledgers preserve their historical scopes and source/state evidence. The
+[Trait](../../coverage/semantics/trait-source-factories-review.json),
+[generator method](../../coverage/semantics/generator-method-factories-review.json),
+[generator Closure](../../coverage/semantics/anonymous-generator-closure-factories-review.json),
+[reference method](../../coverage/semantics/anonymous-reference-method-factories-review.json)
+and [reference Closure](../../coverage/semantics/anonymous-reference-closure-factories-review.json)
+reviews distinguish exact originals, genuine reached ownership/resumption,
+explicitly derived context refusals and native-only preparations.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
