@@ -64,11 +64,12 @@
     "purpose": "A distinct live variable supplies the published generated method string while a separate direct output CV receives its raw name."
   },
   {
-    "id": "enum-is-callable-third-output-variable-alias-unsupported",
+    "id": "enum-is-callable-third-output-variable-alias",
     "source": "<?php\nenum DynamicCheck: int { case A = 1; }\n$target = 'DynamicCheck::from';\n$name =& $target;\n$ok = is_callable($target, false, $name);\necho 'alias:', (int)$ok, ':', $target, ':', $name, '|';\n",
     "source_sha256": "680f2b2f7826d814260522dc433ab88e823242a2ad8e6b3e129f345e4af4795e",
-    "expected_model": "unsupported",
-    "purpose": "Input and output CVs sharing one reference cell remain outside the distinct-cell variable route."
+    "expected_model": "normal",
+    "purpose": "Two direct input/output variables sharing the same no-root string CV preserve the saved generated method name through reference promotion and result write.",
+    "expected_normal_stdout": "alias:1:DynamicCheck::from:DynamicCheck::from|"
   },
   {
     "id": "enum-is-callable-third-output-variable-rebind-unsupported",

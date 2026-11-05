@@ -261,6 +261,11 @@ Suppression and selected error handlers retain their native output order.
 returned-object destructor during normal post-deactivation cleanup. It runs
 while the selected handler is disabled; a nested no-argument `ob_start()`
 emits the built-in Notice and returns false before the outer handler resumes.
+[OB08](coverage/semantics/output-executor-explicit-null-review.json) admits a
+positional `ob_start(null)` during normal post-deactivation queue release. It
+uses the same default-handler Notice and false result without creating a buffer.
+Named-null, unpacked-null, callable and invalid-integer starts remain outside
+this cut.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3887,6 +3892,10 @@ GC25 also admits repeated direct edges to the same childless stdClass in
 that array. A pinned weak-lifetime source and 127 new plus three affected
 reached groups check two edges, one buffer slot and release after Closure
 death. See the [duplicate-edge review](coverage/semantics/gc-duplicate-edge-review.json).
+GC26 admits a direct childless stdClass capture that also occurs in the
+captured array. Both capture orders agree with pinned PHP; two reached D-state
+groups verify the separate edges, one leaf buffer slot and weak lifetime.
+See the [shared-capture review](coverage/semantics/gc-shared-capture-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -6784,9 +6793,11 @@ third output; the [string-spelling review](coverage/semantics/enum-is-callable-o
 records three exact outcomes and 88 reached guards. A separate variable holding
 the enum method string also writes its saved name through a distinct output
 CV; the [variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact source and 46 reached guards. Old-object destructor and
-input/output alias effects, other array sources, autoload, case attributes,
-enum collection policy and wider acquisition remain partial;
+records one exact source and 46 reached guards. Shared scalar input/output
+reference cells add one exact source and 43 reached guards in the
+[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
+Old-object destructor and wider alias effects, other array sources, autoload,
+case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

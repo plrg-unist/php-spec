@@ -262,6 +262,7 @@ dec $executor_error_handler_tasks(ptask*) : bool
 dec $executor_error_handler_frames(pframe*) : bool
 dec $executor_error_handler_active(pstate) : bool
 dec $executor_retval_notice_start(pstate) : bool
+dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
 dec $executor_operation_row(pdestructioncleanup, pdestructionoperation) : bool
@@ -575,11 +576,17 @@ def $executor_retval_notice_start(S) = $executor_retval_notice_start(S[.TODO = (
   -- if i_flags = 112
   -- if $ob_parse_valid(S, pconfigcall, 3, [PNULL, PINT i_chunk, PINT i_flags])
 def $executor_retval_notice_start(S) = false -- otherwise
+def $executor_default_start_sent(pconfigcall) = true -- if pconfigcall.SENT = eps
+def $executor_default_start_sent(pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if ~pconfigcall.NAMED
+  -- if pconfigcall.PACKS = eps
+def $executor_default_start_sent(pconfigcall) = false -- otherwise
 def $executor_ob_start_allowed(S) = true -- if ~$executor_error_handler_active(S)
 def $executor_ob_start_allowed(S) = true -- if $executor_retval_notice_start(S)
 def $executor_ob_start_allowed(S) = false -- otherwise
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
-  -- if pconfigcall.KIND = INTRINSIC_OB_START /\ pconfigcall.SENT = eps
+  -- if pconfigcall.KIND = INTRINSIC_OB_START /\ $executor_default_start_sent(pconfigcall)
   -- if i_chunk = 0 /\ i_flags = 112
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
   -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
@@ -610,7 +617,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $config_invoke_valid(S, pconfigcall)
-  -- if pconfigcall.SENT =/= eps \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ ~$executor_ob_start_allowed(S)
+  -- if ~$executor_default_start_sent(pconfigcall) \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ ~$executor_ob_start_allowed(S)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

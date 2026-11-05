@@ -125,8 +125,10 @@ outcomes and 88 reached guards pass.
 A separate live variable can now supply the enum method string to a direct
 three-argument `is_callable` call with literal `false`. Its saved and current
 bytes agree, and a distinct initialized output CV receives the name before the
-boolean. One exact original and 46 reached guards pass; same-cell aliases and
-argument-time target rebinding remain explicit Unsupported.
+boolean. One exact original and 46 reached guards pass. A shared scalar
+input/output reference cell also retains the saved name through its write;
+one exact original and 43 reached guards pass. Argument-time target rebinding
+remains explicit Unsupported.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -142,7 +144,8 @@ argument-time target rebinding remain explicit Unsupported.
 [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
 [scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
 [string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json),
-[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json).
+[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json),
+[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -395,7 +398,8 @@ Reversed capture order, three mixed-key leaves and post-capture COW give
 three exact source pairs. Strict reached checks pass 113+146 assertions,
 and the corrected GC23 group passes 110. Its original duplicate-identity
 refusal is superseded by GC25; shared separate captures, aliases, nested
-arrays and user-destructor children remain refused. Earlier Unsupported,
+arrays and user-destructor children remained refused at the GC24 cut; GC26
+admits the bounded shared-capture case. Earlier Unsupported,
 overlap and fixture failures retain
 zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
 
@@ -407,6 +411,16 @@ pass 127 new and affected GC21/22/24 groups 137+140+147, proving two
 physical edges, one leaf buffer slot, owners 2/2, black D protection and
 nested-array refusal. The source-only Unsupported and first fixture error
 retain zero credit. [GC25 review](coverage/semantics/gc-duplicate-edge-review.json).
+
+GC26 admits one finite captured array together with direct captures of
+childless stdClass leaves already present in that array. Forward and reversed
+capture orders match pinned PHP exactly, including weak liveness after the
+call and death after Closure release. Two strict D-state groups pass 146
+assertions each, proving separate Closure and array edges to the leaf, one
+buffer slot, owners 2/2/3 and black protection. Pre-edit Unsupported and a
+corrected P4 helper compile failure retain zero credit. Other captured
+object layouts and nested or destructor-bearing graphs remain partial.
+[GC26 review](coverage/semantics/gc-shared-capture-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -865,6 +879,15 @@ pass; joined nested fast/slow sources and the three refusals pass with the
 executor tick-owner branch present. The retained OB06 native original is now
 promoted with exact model agreement.
 [Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
+
+OB08 admits one positional `ob_start(null)` after output deactivation during
+normal executor queue release. The default handler creation fails before any
+buffer push, emits E_NOTICE and returns false. Fast and slow allocator sources
+and a selected-handler source agree exactly with pinned PHP. Two source-reached
+checkpoints validate call/Notice authority, empty buffers and unchanged output
+sequence; named-null, callable, invalid-integer and handler-body reentrant
+forms remain checked Unsupported. The previous noarg Notice state still passes.
+[Explicit-null executor review](coverage/semantics/output-executor-explicit-null-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).

@@ -764,5 +764,8 @@ guards.
 A live variable holding the enum method string can also feed a direct query
 with literal `false`, provided its saved bytes still match and the output CV is
 distinct. The [variable-output review](../../coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact original and 46 reached guards; same-cell aliasing and
-argument-time target rebinding remain Unsupported.
+records one exact original and 46 reached guards. A shared scalar
+reference cell now preserves the saved name through the result write; the
+[alias-output review](../../coverage/semantics/enum-is-callable-output-alias-review.json)
+records one exact original and 43 reached guards. Argument-time rebinding
+remains Unsupported.
