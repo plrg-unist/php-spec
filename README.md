@@ -6811,8 +6811,13 @@ state checks; the earlier [variable](coverage/semantics/enum-is-callable-output-
 and [alias](coverage/semantics/enum-is-callable-output-alias-review.json) cuts retain their identities.
 Retained childless ordinary output objects also receive the name before their
 last owner is later released; the [retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json)
-records one exact source and 77 reached guards. Last-owner destructor and wider
-alias effects, other array sources, autoload,
+records one exact source and 77 reached guards. Last-owner childless ordinary
+objects now clear the original output cell before destruction, then commit its
+chosen name before returning or propagating a destructor throw. The
+[unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json)
+records twelve normal originals, five explicit controls and 345 independent
+guards. Destructor exit, owning rebound values, late type sources, other array
+sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
