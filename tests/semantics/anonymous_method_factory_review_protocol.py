@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Independent named-method factories: lexical receivers, imports and lazy linking."""
 import base64
+import argparse
 import hashlib
 import json
 import os
@@ -144,7 +145,7 @@ def namespaces(row, fixture, filename):
         '$class_link_at(S_pre.LINKEDPARENTS,porigin_owner) = (SOURCE_PARENT porigin_ancestor)',
         '$class_link_at(S_pre.LINKEDPARENTS,pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_owner)',
         'S_pre.CURRENT = (pcallcontext)',
-        'pcallcontext.TARGET = STATIC_METHOD_TARGET porigin_owner pmethoddesc_make.FUNCTION.ORIGIN',
+        'pcallcontext.TARGET = SCOPED_TARGET porigin_owner pmethoddesc_make.FUNCTION.ORIGIN porigin_owner eps (KNOWN (PSTRING pclassdesc_owner.NAME))',
         'pcallcontext.LEXICAL_CLASS = (porigin_owner) /\\ pcallcontext.CALLED_CLASS = (porigin_owner)',
         '$call_current_valid(S_pre) /\\ S_pre.EVENTS = eps',
         'S_bad_import = S_pre[.CLASSES = $class178_review_replace(S_pre.CLASSES,pclassdesc_owner[.METHODS = [pmethoddesc_make[.FUNCTION = pmethoddesc_make.FUNCTION[.ENV = pmethoddesc_make.FUNCTION.ENV[.CLASSES = eps]]]]])]',
@@ -261,6 +262,9 @@ def denial_compile(rows, fixtures, filenames):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--start-group', type=int, choices=range(5), default=0)
+    args = parser.parse_args()
     os.environ.update(LC_ALL='C', TZ='UTC', GIT_OPTIONAL_LOCKS='0')
     rows = {r['id']: r for r in json.loads(CATALOGUE.read_text())['cases']}
     selected = ['method-factory-instance-inherited-lexical-owner',
@@ -304,6 +308,8 @@ def main():
                   ('unrelated_constructor_scope_compile_order', grouped(denial_compile, selected[5:]))]
         code, calls, counts = PREFIX, [], {}
         for index, (name, checks) in enumerate(groups):
+            if index < args.start_group:
+                continue
             function = '$class178_review_group' + str(index)
             code += 'dec ' + function + '() : bool\ndef ' + function + '() = true\n' + ''.join('  -- if ' + c + '\n' for c in checks)
             calls.append(function + '()')
