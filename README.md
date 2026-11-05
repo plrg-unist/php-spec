@@ -3146,12 +3146,14 @@ Unknown literal `declare` names now emit ordered E_COMPILE_WARNING (128), bypass
 registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
-Disabled-multibyte encoding declarations now emit source-derived parser warnings
-before compiler warnings, bypass handlers and execute as no-ops. Two originals and
-177 SL premises cover eval, once skip/reparse, raw helper stderr and budget resume.
-Admission is bounded to root single-line declarations with one string literal, no
-body and valid placement; wider shapes/rejected-with-warning inputs remain explicit boundaries.
-[Encoding review](coverage/semantics/encoding-declare-review.json).
+Disabled-multibyte encoding declarations emit source-derived parser warnings
+before compiler diagnostics. Single-line declarations accept literal values,
+mixed/repeated items and ordinary bodies; token positions preserve recursive
+parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
+return premises extend the earlier eval/once checks. Multiline declarations and
+rejected sources with warnings remain explicit boundaries.
+[Original review](coverage/semantics/encoding-declare-review.json),
+[list/body review](coverage/semantics/encoding-list-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)

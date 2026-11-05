@@ -12026,7 +12026,8 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/92-strict-compiler.watsup",
-        "spec/semantics/93-strict-declarations.watsup"
+        "spec/semantics/93-strict-declarations.watsup",
+        "spec/semantics/194-compiler-preflight.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -12034,14 +12035,19 @@
         "coverage/semantics/encoding-declare-review.json",
         "tests/semantics/encoding_placement_sources.py",
         "tests/semantics/encoding_placement_state.py",
-        "coverage/semantics/encoding-placement-review.json"
+        "coverage/semantics/encoding-placement-review.json",
+        "tests/semantics/encoding_list_sources.py",
+        "tests/semantics/encoding_list_state.py",
+        "tests/semantics/encoding_list_dynamic_state.py",
+        "coverage/semantics/encoding-list-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "coverage/semantics/encoding-declare-review.json",
-        "coverage/semantics/encoding-placement-review.json"
+        "coverage/semantics/encoding-placement-review.json",
+        "coverage/semantics/encoding-list-review.json"
       ],
-      "review": "Disabled-multibyte closed single-line encoding declarations derive a source-wide parser Warning128 prefix before compiler diagnostics and execute as source-authenticated no-ops. COMP165 adds the first-statement fatal after a late root or nested sole-string encoding declaration, with warning first and declaration-line location. Five exact source cases cover static fatal and include/eval controls; checked-AST premises authenticate occurrence paths. Other values, parser failures and multibyte-enabled conversion remain partial. encoding-declare-review.json and encoding-placement-review.json preserve earlier failed cuts as zero credit."
+      "review": "COMP165 adds late/nested encoding placement fatals after the parser Warning128 prefix. COMP166 admits arbitrary mixed/repeated parser-literal encoding items and ordinary bodies in checked single-line declarations, ordering recursive parser warnings by original token positions and admitting Zend-folded literal concatenation. Ten exact original agreements, two multiline Unsupported controls, authored256 plus CLI6, independent dynamic93 and affected legacy179 premises retain separate recorded cuts in encoding-list-review.json. Multiline declarations, rejected sources with warnings, multibyte-enabled conversion and wider source behavior remain partial."
     },
     {
       "id": "source.preamble",

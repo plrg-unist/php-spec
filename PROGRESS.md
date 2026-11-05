@@ -876,6 +876,17 @@ authenticate declaration and item paths, warning location, and malformed
 occurrence refusal. Other declaration shapes and multibyte source conversion
 remain partial. [Review](coverage/semantics/encoding-placement-review.json).
 
+COMP166 admits arbitrary mixed/repeated encoding items with parser-literal values
+and ordinary bodies in checked single-line declarations. Source token positions
+order the complete recursive parser-warning prefix before compiler diagnostics;
+literal concatenation passes the matching parser-form check. Ten original
+sources agree, including strict/tick interactions and include/eval body returns.
+Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
+pass, alongside six CLI guards and two explicit multiline Unsupported controls.
+Actual cuts and preserved failures are in the
+[review](coverage/semantics/encoding-list-review.json). Multiline declarations,
+rejected sources with warnings and multibyte conversion remain partial.
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
