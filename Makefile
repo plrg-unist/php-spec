@@ -104,6 +104,10 @@ test-semantics: build
 	python3 tests/semantics/output_executor_invalid_state.py
 	python3 tests/semantics/output_executor_invalid_review_sources.py
 	python3 tests/semantics/output_executor_invalid_review_state.py
+	python3 tests/semantics/output_executor_notice_discard_sources.py
+	python3 tests/semantics/output_executor_notice_discard_state.py
+	python3 tests/semantics/output_executor_notice_discard_review_sources.py
+	python3 tests/semantics/output_executor_notice_discard_review_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
