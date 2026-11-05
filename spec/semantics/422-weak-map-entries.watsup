@@ -202,6 +202,7 @@ def $weakmap_entries_write_allowed(S, paccess) = true
   -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN paccess.VALUE
   -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
   -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps \/ ~$weakmap_nan_guard(S, n_map)
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
@@ -230,6 +231,7 @@ def $weakmap_entries_write_allowed(S, paccess) = true
   -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
   -- if paccess.OFFSET = POBJECT n_key
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
   -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
@@ -323,8 +325,10 @@ def $weakmap_entries_callbacks(S, pweakmapentry :: pweakmapentry_tail*) = ($weak
 ;; Callback tables use direct-payload authority and cannot invalidate a cursor.
 dec $weakmap_entries_notice_storage(pstate, nat, nat*, bool) : bool
 def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = true
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if $weakmap_entries_storage_valid(S, n_map, n_freeing*)
 def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = true
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if ~$weakmap_entries_storage_valid(S, n_map, n_freeing*)
   -- if n_freeing* = [n_key]
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
@@ -333,7 +337,7 @@ def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = true
   -- if $instance_storage_valid(S, pinstancestorage)
   -- if $weakmap_entries_child_storage_policy(S, n_map, (n_key))
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps
-def $weakmap_entries_notice_storage(S, n_map, n_freeing*, true) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, n_freeing*, true))
+def $weakmap_entries_notice_storage(S, n_map, n_freeing*, true) = (~$weakmap_nan_guard(S, n_map) /\ ~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, n_freeing*, true))
 def $weakmap_entries_notice_storage(S, n_map, n_freeing*, b_callbacks) = false -- otherwise
 def $instance_storage_basic(S, pinstancestorage) = true
   -- if n_map = pinstancestorage.OBJECT
@@ -433,13 +437,12 @@ def $access_call(S, paccess, ptbytes) = $key_read_done(S, PNULL)
   -- if paccess.OFFSET = POBJECT n_key
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
 ;; has_dimension borrows the stored zval: isset checks NULL, empty its truth.
-def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, (~b /\ pvalue =/= PNULL) \/ (b /\ ~$truth(S, pvalue)))
+def $access_call(S, paccess, ptbytes) = $weakmap_presence_result(S, paccess, pweakmapentry.VALUE)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
-  -- if pvalue = $weakmap_value(S, pweakmapentry.VALUE)
 def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, b)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
@@ -486,8 +489,6 @@ dec $weakmap_entries_free_allowed(pstate, nat, pdestructionrelease) : bool
 dec $weakmap_entries_property_value_free(pstate, pvalue) : bool
 def $weakmap_entries_property_value_free(S, pvalue) = true
   -- if $weakmap_scalar_value(S, pvalue)
-def $weakmap_entries_property_value_free(S, PFLOAT n) = true
-  -- if $(n < 18446744073709551616)
 def $weakmap_entries_property_value_free(S, POBJECT n_child) = true
   -- if $weakmap_entries_callback_class(S, n_child)
   -- if $weakmap_entries_direct_payload(S, POBJECT n_child)
@@ -564,6 +565,7 @@ dec $weakmap_entries_child_table_free(pstate, nat) : bool
 def $weakmap_entries_child_table_free(S, n_map) = ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_child_storage(S, n_map))
 def $weakmap_entries_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $weakmap_entries_at(S, n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if $heap_owners($heap_graph(S), HOBJECT n_map) = 0
@@ -587,6 +589,103 @@ def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destruct
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "multiple-entry WeakMap storage destruction"]
   -- if $weakmap_entries_at(S, n)
   -- if ~$weakmap_entries_free_allowed(S, n, pdestructionrelease)
+
+;; has_dimension passes a borrowed table zval to i_zend_is_true. NaN warns
+;; before the DVAL word is reread; a callback may replace that same row.
+syntax pweakmapnan = { ACCESS paccess, ENTRY pweakmapentry, OWNER nat, CALLER pcallcontext?, TAIL ptask* }
+dec $weakmap_nan_receipt(pstate, pweakmapnan) : bool
+def $weakmap_nan_receipt(S, pweakmapnan) = true
+  -- if paccess = pweakmapnan.ACCESS
+  -- if S.ORIGIN = (paccess.SITE)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetExists")
+  -- if ~paccess.LATCH /\ ~paccess.KEYHOLE /\ ~paccess.OUTER
+  -- if paccess.VALUE = PNULL
+  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT pweakmapnan.ENTRY.KEY
+  -- if pweakmapnan.ENTRY.VALUE = PFLOAT n_float
+  -- if $(n_float < 18446744073709551616) /\ $access_truth_warning(PFLOAT n_float)
+  -- if $access_source(S[.TODO = paccess.TASK :: pweakmapnan.TAIL], paccess)
+  -- if $access_phase(paccess) /\ $access_capture_valid(paccess) /\ $access_selected_valid(paccess)
+  -- if pweakmapnan.OWNER = |S.FRAMES| /\ pweakmapnan.CALLER = S.CURRENT
+  -- if $source_operand_suffix(S.TODO, WEAKMAP_NAN pweakmapnan, pweakmapnan.TAIL)
+def $weakmap_nan_receipt(S, pweakmapnan) = false -- otherwise
+
+;; Guard lookup is immutable receipt validation only. In particular it must
+;; survive CV rebinding/last-owner removal, without recursively tracing heap.
+dec $weakmap_nan_task(pstate, ptask, nat) : bool
+def $weakmap_nan_task(S, ptask, n_map) = true
+  -- if $source_operand_marker(ptask) = WEAKMAP_NAN pweakmapnan
+  -- if pweakmapnan.ACCESS.OBJECT = (n_map)
+  -- if $weakmap_nan_receipt(S, pweakmapnan)
+def $weakmap_nan_task(S, ptask, n_map) = false -- otherwise
+dec $weakmap_nan_tasks(pstate, ptask*, nat) : bool
+def $weakmap_nan_tasks(S, eps, n_map) = false
+def $weakmap_nan_tasks(S, ptask :: ptask_tail*, n_map) = ($weakmap_nan_task(S, ptask, n_map) \/ $weakmap_nan_tasks(S, ptask_tail*, n_map))
+dec $weakmap_nan_frames(pstate, pframe*, nat) : bool
+def $weakmap_nan_frames(S, eps, n_map) = false
+def $weakmap_nan_frames(S, pframe :: pframe_tail*, n_map) = ($weakmap_nan_tasks($constant_frame_view(S, pframe, pframe_tail*), pframe.TODO, n_map) \/ $weakmap_nan_frames(S, pframe_tail*, n_map))
+def $weakmap_nan_guard(S, n_map) = ($weakmap_nan_tasks(S, S.TODO, n_map) \/ $weakmap_nan_frames(S, S.FRAMES, n_map))
+
+dec $weakmap_nan_begin(pstate, paccess) : pstate
+def $weakmap_nan_begin(S, paccess) = $error_dispatch(S[.TODO = (WEAKMAP_NAN pweakmapnan) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $ptascii("unexpected NAN value was coerced to bool"), paccess.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) paccess.LINE, WEAKMAP_NAN pweakmapnan)
+  -- if $weakmap_presence_allowed(S, paccess)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
+  -- if paccess.OBJECT = (n_map) /\ paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
+  -- if pweakmapentry.VALUE = PFLOAT n_float
+  -- if $(n_float < 18446744073709551616) /\ $access_truth_warning(PFLOAT n_float)
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if pweakmapnan = {ACCESS paccess, ENTRY pweakmapentry, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
+def $weakmap_nan_begin(S, paccess) = S[.COMPLETION = UNSUPPORTED "WeakMap NaN empty warning source"] -- otherwise
+
+def $weakmap_presence_result(S, paccess, pweakmapvalue) = $weakmap_nan_begin(S, paccess)
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
+  -- if pvalue = $weakmap_value(S, pweakmapvalue)
+  -- if $access_truth_warning(pvalue)
+def $weakmap_presence_result(S, paccess, pweakmapvalue) = $access_predicate(S, paccess, (~b /\ pvalue =/= PNULL) \/ (b /\ ~$truth(S, pvalue)))
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
+  -- if pvalue = $weakmap_value(S, pweakmapvalue)
+  -- if ~(b /\ $access_truth_warning(pvalue))
+
+;; Only represented 64-bit numeric words can be read after the callback.
+;; Other zval tags have unused union bytes which this machine does not model.
+dec $weakmap_nan_word(pweakmapvalue) : nat?
+def $weakmap_nan_word(PFLOAT n) = (n) -- if $(n < 18446744073709551616)
+def $weakmap_nan_word(PINT i) = ($long_unsigned(i))
+  -- if $(-9223372036854775808 <= i) /\ $(i < 9223372036854775808)
+def $weakmap_nan_word(pweakmapvalue) = eps -- otherwise
+dec $weakmap_nan_live(pstate, pweakmapnan) : nat?
+def $weakmap_nan_live(S, pweakmapnan) = (n_word)
+  -- if $weakmap_nan_receipt(S, pweakmapnan)
+  -- if pweakmapnan.ACCESS.OBJECT = (n_map)
+  -- if $weakmap_entries_child_storage(S, n_map)
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), pweakmapnan.ENTRY.KEY) = (pweakmapentry)
+  -- if pweakmapentry = pweakmapnan.ENTRY[.VALUE = pweakmapentry.VALUE]
+  -- if $weakmap_nan_word(pweakmapentry.VALUE) = (n_word)
+def $weakmap_nan_live(S, pweakmapnan) = eps -- otherwise
+rule PhpStep/weakmap-nan-resume: S ~> $access_predicate(S, pweakmapnan.ACCESS, ~$truth(S, PFLOAT n_word))
+  -- if S.TODO = (WEAKMAP_NAN pweakmapnan) :: ptask_tail*
+  -- if $weakmap_nan_live(S, pweakmapnan) = (n_word)
+rule PhpStep/weakmap-nan-boundary: S ~> S[.COMPLETION = UNSUPPORTED "WeakMap NaN empty row or raw numeric word"]
+  -- if S.TODO = (WEAKMAP_NAN pweakmapnan) :: ptask_tail*
+  -- if $weakmap_nan_live(S, pweakmapnan) = eps
+def $task_nodes(WEAKMAP_NAN pweakmapnan) = $access_operand_roots(pweakmapnan.ACCESS)
+def $call_task_valid(S, WEAKMAP_NAN pweakmapnan) = $weakmap_nan_receipt(S, pweakmapnan)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = WEAKMAP_NAN pweakmapnan
+  -- if $weakmap_nan_receipt(S, pweakmapnan)
+  -- if perrorcall.SITE = pweakmapnan.ACCESS.SITE /\ perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pweakmapnan.ACCESS.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+dec $weakmap_nan_discard(pstate, pweakmapnan) : pstate
+def $weakmap_nan_discard(S, pweakmapnan) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: pweakmapnan.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $weakmap_nan_receipt(S[.TODO = (WEAKMAP_NAN pweakmapnan) :: pweakmapnan.TAIL], pweakmapnan)
+def $weakmap_nan_discard(S, pweakmapnan) = S[.COMPLETION = UNSUPPORTED "WeakMap NaN empty warning cleanup"] -- otherwise
+def $error_read_discard(S, WEAKMAP_NAN pweakmapnan) = $weakmap_nan_discard(S, pweakmapnan)
+def $return_discard(S, WEAKMAP_NAN pweakmapnan) = $weakmap_nan_discard(S, pweakmapnan)
 
 ;; A finite weak Key snapshot survives implicit entry deletion and singleton
 ;; normalization. Only FOREACH_NEXT owns Map DATA; cursor IDs own no Keys.

@@ -170,6 +170,7 @@ syntax pprintownedarraywarning
 syntax pcastownedarraywarning
 syntax pechoarraywarning
 syntax pboolnotnanwarning
+syntax pweakmapnan
 syntax pconcatreturned
 syntax pconcatownedarraywarning
 syntax pconcatrightarraywarning
@@ -428,7 +429,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | STRING_READ_RESULT pstringread
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | CONTAINER_WRITE_RESULT pcontainerwrite
-  | CONTAINER_READ_RESULT pcontainerread | ACCESS_RESULT paccess | ACCESS_RESUME paccess
+  | CONTAINER_READ_RESULT pcontainerread | ACCESS_RESULT paccess | ACCESS_RESUME paccess | WEAKMAP_NAN pweakmapnan
   | KEY_COALESCE_RESULT pbase bool int | KEY_UNSET_RESULT pkeyread | KEY_UNSET_FINISH porigin pbase
   | KEY_UNSET_BASE pbase bool | KEY_UNSET_DIM poperand int bool | KEY_UNSET_FETCH_RESULT pkeyread | KEY_UNSET_NULL_RESULT pkeyread | KEY_APPEND_RESULT pappendread
   | KEY_COALESCE_RHS_RESULT pcoalesceread

@@ -9,6 +9,8 @@ def $weakmap_at(S, n) = true
 def $weakmap_at(S, n) = false -- otherwise
 dec $weakmap_entries_at(pstate, nat) : bool
 dec $weakmap_entries_write_allowed(pstate, paccess) : bool
+dec $weakmap_nan_guard(pstate, nat) : bool
+dec $weakmap_presence_result(pstate, paccess, pweakmapvalue) : pstate
 dec $weakmap_entries_present(pstate, pnode*) : bool
 ;; Cursor rows are metadata; the saved FOREACH_NEXT task alone owns DATA.
 dec $weakmap_foreach_cursor_map(piterator, nat) : bool
@@ -83,6 +85,7 @@ dec $weakmap_scalar_value(pstate, pvalue) : bool
 def $weakmap_scalar_value(S, PNULL) = true
 def $weakmap_scalar_value(S, PBOOL b) = true
 def $weakmap_scalar_value(S, PINT i) = true
+def $weakmap_scalar_value(S, PFLOAT n) = true -- if $(n < 18446744073709551616)
 def $weakmap_scalar_value(S, pvalue) = true
   -- if $string_bytes(pvalue) = (n_bytes*)
   -- if pvalue = PSTRING n_bytes* \/ $string_carrier_valid(S, pvalue)
@@ -224,6 +227,7 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.BASE = BASE_VALUE poperand
   -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
   -- if paccess.OBJECT = (n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if $weakmap_at(S, n_map)
   -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
@@ -442,14 +446,14 @@ def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, b)
   -- if paccess.OFFSET = POBJECT n_key
   -- if ~$weakmap_entries_at(S, n_map)
   -- if ~$weakmap_has_key(S, n_map, n_key)
-def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, pweakmapentry.VALUE =/= PNULL)
+def $access_call(S, paccess, ptbytes) = $weakmap_presence_result(S, paccess, pweakmapentry.VALUE)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST false)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if pweakmapentry.KEY = n_key
-def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, ~$truth(S, $weakmap_value(S, pweakmapentry.VALUE)))
+def $access_call(S, paccess, ptbytes) = $weakmap_presence_result(S, paccess, pweakmapentry.VALUE)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_presence_allowed(S, paccess)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST true)
   -- if paccess.OBJECT = (n_map)
@@ -467,6 +471,7 @@ def $weakmap_unset_allowed(S, paccess) = true
   -- if paccess.BASE = BASE_VALUE poperand
   -- if paccess.SELECTED = $rcontainer_selected(S, poperand)
   -- if paccess.OBJECT = (n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if $weakmap_at(S, n_map)
   -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
@@ -541,6 +546,7 @@ def $weakmap_second_write_allowed(S, paccess) = true
   -- if paccess.RHS = S.RESULT
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
   -- if paccess.OBJECT = (n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if $weakmap_at(S, n_map)
   -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if ~$instance_storage_freeing(S, n_map)
@@ -638,6 +644,7 @@ def $weakmap_key_waiting(S, n_key) = ($weakmap_key_maps(S, S.ALLOCATIONS, n_key)
 def $weakmap_key_notice(S, n_key) = S -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
 def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if $weakmap_before_valid(S, pweakmapentry)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
@@ -650,6 +657,7 @@ def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] 
   -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
 def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_interleaved_first(S, n_key) = (n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
   -- if pinstancestorage.OBJECT = n_key
@@ -683,6 +691,7 @@ def $weakmap_map_free_slot_allowed(S, n_map, pweakmapvalue) = $weakmap_free_slot
 dec $weakmap_free_allowed(pstate, nat, pdestructionrelease) : bool
 def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $weakmap_at(S, n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
   -- if ~$instance_storage_freeing(S, n_map)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
