@@ -277,6 +277,9 @@ dec $ob_failure_task_valid(pstate, pobcreation) : bool
 dec $ob_failure_message(pobcreation) : preqbytes
 dec $ob_failure_warning(pstate, pobcreation) : pstate
 dec $ob_failure_pending_notice(pstate, pobcreation) : pstate
+dec $ob_failure_continuation(ptask) : pobcreation?
+dec $ob_failure_discarded(pstate, nat) : pobcreation?
+dec $ob_failure_discard_valid(pstate, pdestructionoperation) : bool
 dec $ob_creation_target(phandlerresolution) : pcalltarget?
 dec $ob_creation_producer(pstate, pvalue) : pshutdownproducer?
 dec $ob_creation_history(pstate, pobcreation) : pstate
@@ -910,6 +913,55 @@ rule PhpStep/ob-start-failed-notice: S ~> $ob_notice_with_creation(S, pobcreatio
   -- if S.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*
   -- if $call_task_valid(S, OB_START_FAILED pobcreation)
 ;; zend_vm_stack_free_args uses zval_ptr_dtor_nogc, unlike the zoh destructor.
+;; Abrupt handler cleanup consumes the same builtin argument. Its saved source
+;; authenticates that decrement after THROW_SEARCH has removed the continuation.
+def $ob_failure_continuation(OB_START_INVALID_NOTICE pobcreation) = (pobcreation)
+def $ob_failure_continuation(ERROR_HANDLER_INVOKE perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(ERROR_HANDLER_RESULT perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(ERROR_HANDLER_CLEAN perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(API_CALLBACK_SEND papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_continuation(API_CALLBACK_REF papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_continuation(ptask) = eps -- otherwise
+def $ob_failure_discarded(S, n) = (pobcreation)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $ob_failure_continuation(ptask) = (pobcreation)
+  -- if $ob_failure_task_valid(S[.TODO = ptask :: ptask_tail*], pobcreation)
+  -- if $call_task_valid(S[.TODO = ptask :: ptask_tail*], ptask)
+  -- if $gc_temporary_node(KNOWN pobcreation.VALUE) =/= eps
+def $ob_failure_discarded(S, n) = eps -- otherwise
+def $eager_operation_source(S, THROW_SEARCH n) = OB_START_INVALID_DISCARD pobcreation n
+  -- if $ob_failure_discarded(S, n) = (pobcreation)
+def $task_nodes(OB_START_INVALID_DISCARD pobcreation n) = eps
+def $call_task_valid(S, OB_START_INVALID_DISCARD pobcreation n) = false
+def $ob_failure_discard_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.VALUE = KNOWN PNULL
+  -- if $throwable_live(S, n)
+  -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $ob_failure_valid(S_history, pobcreation)
+def $ob_failure_discard_valid(S, pdestructionoperation) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $ob_failure_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+def $gc_operation_temporary_extra(S, S_next, THROW_SEARCH n, pnode_slots*) = pgctemporary*
+  -- if $ob_failure_discarded(S, n) = (pobcreation)
+  -- if pgctemporary* = $gc_binary_temp_receipt(KNOWN pobcreation.VALUE)
+  -- if $gc_binary_temp_slots(pgctemporary*, pnode_slots*)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if $ob_failure_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_temporary_bounded(S, pnode)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
 def $gc_operation_temporary_extra(S, S_next, OB_NOTICE_RESULT pobnotice, pnode_slots*) = pgctemporary*
   -- if pobnotice.CREATION = (pobcreation)
   -- if $ob_notice_valid(S, pobnotice)
