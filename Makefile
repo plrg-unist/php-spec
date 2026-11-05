@@ -25,6 +25,8 @@ test: build
 	python3 tests/lexical_header_service_review.py --output "$$(mktemp -d /tmp/php-spec-lexical-headers.XXXXXXXX)/service"
 	python3 tests/rejected_eval_lexer_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-lexer.XXXXXXXX)/service"
 	python3 tests/rejected_namespace_service_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-namespace.XXXXXXXX)/service"
+	python3 tests/rejected_static_service_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/service"
+	python3 tests/rejected_method_modifier_service_review.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/service"
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
@@ -106,6 +108,10 @@ test-semantics: build
 	python3 tests/semantics/output_executor_invalid_state.py
 	python3 tests/semantics/output_executor_invalid_review_sources.py
 	python3 tests/semantics/output_executor_invalid_review_state.py
+	python3 tests/semantics/output_executor_notice_discard_sources.py
+	python3 tests/semantics/output_executor_notice_discard_state.py
+	python3 tests/semantics/output_executor_notice_discard_review_sources.py
+	python3 tests/semantics/output_executor_notice_discard_review_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -873,6 +879,11 @@ test-semantics: build
 	python3 tests/semantics/generator_call_exit_sources.py
 	python3 tests/semantics/generator_call_exit_state.py
 	python3 tests/semantics/generator_call_exit_review_state.py
+	python3 tests/semantics/generator_call_cleanup_exit_sources.py
+	python3 tests/semantics/generator_call_cleanup_exit_state.py
+	python3 tests/semantics/generator_call_cleanup_exit_review_state.py
+	python3 tests/semantics/generator_call_cleanup_throw_sources.py
+	python3 tests/semantics/generator_call_cleanup_throw_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -997,6 +1008,10 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group alias
 	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group thrown
 	python3 tests/semantics/enum_is_callable_output_reexit_protocol.py --group roots
+	python3 tests/semantics/enum_is_callable_variable_array_protocol.py --group direct
+	python3 tests/semantics/enum_is_callable_variable_array_protocol.py --group rebind
+	python3 tests/semantics/enum_is_callable_variable_array_protocol.py --group alias
+	python3 tests/semantics/enum_is_callable_variable_array_cleanup_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
@@ -1739,6 +1754,12 @@ test-semantics: build
 	python3 tests/semantics/namespace_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-namespace.XXXXXXXX)/sources"
 	python3 tests/semantics/namespace_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-namespace.XXXXXXXX)/main"
 	python3 tests/semantics/rejected_namespace_review_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-namespace.XXXXXXXX)/state"
+	python3 tests/semantics/static_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/sources"
+	python3 tests/semantics/static_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/main"
+	python3 tests/semantics/rejected_static_review_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/state"
+	python3 tests/semantics/method_modifier_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/sources"
+	python3 tests/semantics/method_modifier_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/main"
+	python3 tests/semantics/rejected_method_modifier_review_state.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/state"
 	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
 	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
 	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"

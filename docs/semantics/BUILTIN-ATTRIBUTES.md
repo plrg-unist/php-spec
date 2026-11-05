@@ -326,7 +326,7 @@ the module-local fatal report. Parent C-return records precede the selected resu
 record; shared operation/frame/pending roots belong to that selected record once.
 The original call must still be live, so an externally retained returned object
 that throws later adds no phantom parent. Later active queue cleanup runs while
-the stopped tick tail stays rooted. Distinct pending-owner contexts remain an
+the stopped tick tail stays rooted. Unshared owning pending contexts remain an
 explicit boundary. Four new originals and two affected controls agree; strict435
 and seven independent groups/612 conditions (603 reached, nine derived) pass.
 See the [body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json);

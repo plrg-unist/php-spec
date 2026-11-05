@@ -277,6 +277,9 @@ Notice; current handler selection and real argument/Throwable owners preserve
 cleanup order. A pending Throwable skips an eligible Notice handler, while the
 default Notice still follows reporting and suppression rules. Unresolved or
 effectful lookup and wider reentry remain partial.
+Throws from the selected Notice handler also preserve the VM's distinct cleanup
+of the callback argument and its children. Consumed Closure checking borrows
+capture metadata after the real owners retire.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3192,6 +3195,14 @@ accepted lexers, the receipt schema and authored runtime rules are unchanged.
 Rejected sources also retain later headers after completed nested namespaces,
 whose static validation belongs to compilation. Sixteen dynamic and four main
 comparisons plus 100 reached conditions pass.
+Compiler-only class/interface/enum checks, static magic-method restrictions and
+try statements likewise preserve later parser warnings. Thirty-eight dynamic and
+four main comparisons and 110 reached conditions pass; parser-time modifier
+errors remain distinct.
+Early method-target validation now stops readonly and asymmetric-set modifiers
+before parameters/body while retaining earlier attribute headers. Valid readonly
+properties and ordinary method flags keep their headers. Twenty-two dynamic and
+four main comparisons plus 108 reached conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
@@ -3199,7 +3210,9 @@ comparisons plus 100 reached conditions pass.
 [lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
 [main-rejection review](coverage/semantics/main-source-rejection-review.json),
 [rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
-[namespace-phase review](coverage/semantics/rejected-namespace-review.json).
+[namespace-phase review](coverage/semantics/rejected-namespace-review.json),
+[compiler-phase review](coverage/semantics/rejected-static-validation-review.json),
+[method-target review](coverage/semantics/rejected-method-modifier-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3587,10 +3600,19 @@ GC33 admits allocated WeakReference/WeakMap identities at first Map insertion.
 Terminal WeakReference cleanup unregisters its referent before incoming entries;
 Map cleanup unregisters outgoing keys and releases its own values first. Earlier
 fatals retain the untouched phase's owners. Nine exact contexts and 866 reported
-conditions cover shared/self/cross-linked keys and both allocator modes. Ordinary
-internal-Key callbacks remain explicitly Unsupported; later producer policies,
-weak Closure keys and active free pins remain partial.
+conditions cover shared/self/cross-linked keys and both allocator modes. At that
+cut, ordinary internal-Key callbacks remained Unsupported; later producers,
+weak Closure keys and collection with active free pins remained partial.
 [Compound key review](coverage/semantics/gc-compound-key-review.json).
+
+GC34 continues ordinary internal-Key free through actual storage pins and
+callbacks. Quiet singleton registrations activate cleanup; Map own values drain
+before incoming entries, preserving rank, separate owners and pending exceptions.
+Authenticated callbacks can reuse or recreate the pending weak observer. Fourteen
+exact programs and 464 reported conditions pass at recorded cuts, promoting the
+three GC33 unset controls. Original failures retain zero credit; wider producers,
+freeing-object escape/mutation and active-pin GC remain partial.
+[Ordinary key review](coverage/semantics/gc-ordinary-key-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
@@ -5066,8 +5088,19 @@ automatic destruction. Related lexical scope can call a protected constructor
 through an admitted bound static Closure factory. Invalid parameter defaults/body
 compilation precede the static-constructor error. Full method/captured scopes remain
 authoritative; only exercised diagnostic class operands use C strings. Abstract
-anonymous methods, method-body factories and wider magic/byref/generator forms
+anonymous methods, wider method-body factories and magic/byref/generator forms
 remain partial. [Method modifier review](coverage/semantics/anonymous-method-modifiers-review.json).
+
+Ordinary named-class methods now also contain admitted anonymous-class factories.
+Static/instance calls, typed/default and reference formals, inherited receivers,
+namespace imports and related protected constructors preserve the parsed owner
+and method scope. Child templates compile before their containing named-class key;
+reversed/repeated calls keep the source counters and allocate fresh instances.
+Complete containing-unit images remain required. Lazy link failures precede
+arguments, while compile errors in uncalled factory bodies still reject the unit.
+Trait/anonymous source owners, method-owned Closures, generators, byref returns
+and attributes remain partial.
+[Method factory review](coverage/semantics/anonymous-method-factories-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -7004,9 +7037,16 @@ while the name still commits; nested queries keep separate output cells. The
 [reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json)
 records nine agreements, three Unsupported controls and five separately run
 reached groups (308 clauses) at their actual cuts.
+Two-entry live enum callable arrays now keep their first-SEND value and selected
+name through source rebinding, same-cell output and output-destructor cleanup.
+Class strings retain their spelling; case receivers use the canonical enum
+name. The [variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json)
+records seven exact agreements, two Unsupported controls and four separate
+reached groups (216 checks) at their actual cuts.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 owning rebound values, late type
-sources, other array sources and autoload,
+sources, wider array sources (including embedded references and alias plus
+source rebinding) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -7380,6 +7420,19 @@ order. Failed construction suppresses its destructor, and catch/finally are
 skipped. Two exact exit comparisons and reached ownership gates pass; wider
 cleanup replacements and bailout contexts remain partial.
 [Exit review](coverage/semantics/generator-call-exit-review.json).
+
+Exit from an owning warning-handler retval now follows its destructor and Child
+cleanup before restoring the handler and releasing prepared/API owners. The
+hidden copied Closure remains through shutdown. Two exact exit comparisons and
+independent reached-state gates pass. At this cut, a cleanup throw replacing
+the pending exit and wider bailout contexts remained partial.
+[Owning retval exit review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
+A supplied plain exception thrown by the Child destructor now has pinned source
+and reached-state validation through the same copied warning cleanup. Catch and
+finally run after the exception replaces exit; a final string exit retains
+status 41. The existing rules suffice for this selected case.
+[Cleanup throw review](coverage/semantics/generator-call-cleanup-throw-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

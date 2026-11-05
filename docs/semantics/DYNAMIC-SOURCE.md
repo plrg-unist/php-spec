@@ -224,6 +224,41 @@ check real source identity, warning order, suppression, handle reuse, zero-budge
 publication and catch/finally continuation. The [review](../../coverage/semantics/rejected-namespace-review.json)
 retains their actual cuts and the corrected service fixture failure.
 
+The same phase distinction applies to class/interface/enum names and parents,
+static magic methods and `try` without catch/finally. Their rejected-only callbacks
+defer compiler checks so later headers survive a subsequent ParseError. Ordinary
+parsing keeps its validation. Duplicate modifiers and readonly methods still stop
+the foreign parser: native method-modifier validation precedes the method body,
+so a readonly body's extra foreign header remained an explicit refusal at COMP173.
+
+The [static-phase originals](../../tests/semantics/static_rejected_sources.py)
+pass 38 eval/include comparisons; [four main files](../../tests/semantics/static_main_rejected_sources.py)
+also agree. The [independent service](../../tests/rejected_static_service_review.py)
+checks 49 controls, including two readonly-body refusals and unchanged ordinary
+validation. All 110 [reached conditions](../../tests/semantics/rejected_static_review_state.py)
+pass: no child class/function/constant installation, exactly the required
+`PDEXIT` rejection-history append, valid handles/budget states and source identity
+through catch/finally. The [review](../../coverage/semantics/rejected-static-validation-review.json)
+keeps the first fixture's mistaken history equality as a zero-credit failure.
+
+Rejected method modifiers now reduce before parameters/body at checked foreign
+rule 384, with its actual `T_FUNCTION` lookahead. Only public/protected/private,
+static, abstract and final flags pass that target check. Earlier attribute closure
+headers remain available, but readonly/asymmetric-set parameter/body headers do
+not appear. The default flags value and existing duplicate-modifier checks are
+preserved; property and constant contexts retain their own behavior. A generic
+foreign stop supplies no native diagnostic text or line.
+
+The [method originals](../../tests/semantics/method_modifier_rejected_sources.py)
+pass 22 eval/include comparisons and [four main comparisons](../../tests/semantics/method_modifier_main_rejected_sources.py).
+The [independent service](../../tests/rejected_method_modifier_service_review.py)
+passes 37 controls, including four separate remaining constant-target refusals.
+All 108 [reached conditions](../../tests/semantics/rejected_method_modifier_review_state.py)
+preserve an earlier attribute warning, catchable CompileError, exact exit history,
+no partial installation, valid handles/zero-budget states and source identity.
+The affected static/namespace service controls also pass. Actual cuts and limits
+are in the [review](../../coverage/semantics/rejected-method-modifier-review.json).
+
 Warning128 uses the current reporting/display state and bypasses error handlers.
 The subsequent catchable ParseError/CompileError retains a failed-source record
 and file entry without an accepted source/code/binding. Its lifecycle handle is

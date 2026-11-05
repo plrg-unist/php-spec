@@ -1,0 +1,35 @@
+{
+  "milestone": "I104 supplied Child throw replacing copied Generator call exit",
+  "status": "Selected pre-Generator cleanup throw passes; wider aliases and lifecycle remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64; pinned vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; LC_ALL=C, TZ=UTC, CPU4",
+  "scope": "In a real copied Closure::call Generator warning, the owning retval destructor exits41. Its Child destructor throws a pre-created unaliased plain Stop. The same Throwable reaches catch, which releases it before weak observations; finally runs and a final literal string exit leaves request status41. No Generator is created.",
+  "semantics": "This milestone validates existing rules without a production edit. The I103 saved destructor operation retains EXITED41, then the ordinary destructor pending path transfers Stop through the remaining storage/CLEAN/API cleanup. The throw replaces exit without an exit Previous; the handler restores, the hidden copied Closure survives through shutdown, and retained request status remains41.",
+  "engine": "zend_objects_destroy_object protects the earlier exception during Child destruction; zend_object_std_dtor/zend_objects_store_del retire Child and retval, and zend_exception_set_previous discards UnwindExit as Previous. zend_error releases its retval before restoring the handler. See vendor/php-src/Zend/{zend_objects.c,zend_objects_API.c,zend_exceptions.c,zend.c,zend_closures.c,zend_builtin_functions.c}.",
+  "validation": {
+    "native_first": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-throw-104/native-first-5fb/report.json",
+      "sha256": "772ebfe2032fdb6bf3770dc60f67fa56808f1edd0a6ff825d6ced9b61446f83a",
+      "revision": "5fb4ad7f58ca13ced6841568aa1cd9674a151f96",
+      "result": "first forecast source22a4c6b4; exact native exit41, quiet"
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-throw-104/source-9bc/report.json",
+      "sha256": "ce49b113aea06c9a3059e40a5cac65bc35f9a8a5dca265fc0406379f984e1eb7",
+      "revision": "9bc46ffc74031e47e3b04d6e5abb7eebe253ee10",
+      "result": "same native/model explicit_exit41 stdout and stderr; 600-second model bound"
+    },
+    "reached_state": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-throw-104/state-dccea/report.json",
+      "sha256": "97b59352c0aee150add8c9bff3d281ffc03074283dc5039ad49479348eb86058",
+      "revision": "dccea322894c088eca9bcaae2e2eb5cfb44a418a",
+      "result": "153 custom/158 reported true clauses, 4000 seek/finish, cap600; pending transfer, owners, catch and shutdown"
+    }
+  },
+  "evidence_contract": "Reports retain exact source bytes/hash, commands, raw streams, exits and stable HEAD/inputs. Native/source pin the PHP profile; the joined state gate pins SL and four matching tool identities, exiting0, true, quiet, without timeout. Top-level and numeric process groups were fully reaped. The source gate ran before the disjoint weak/enum/CONFIG join and was not replayed for it.",
+  "composition": "The reached check ran on dccea322, joining I104 fixture08313f8 with current core4c6d318. The module list and four tool binaries matched the source cut; reviewed weak-reference, enum, CONFIG, anonymous and rejected-source changes do not enter this accepted source.",
+  "remaining": "Aliased supplied exceptions, other throw producers, repeated cleanup exit (explicit Unsupported), and wider Fiber, GC and hard-bailout interactions remain open. No BOLA property is claimed.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_call_cleanup_throw_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_cleanup_throw_review_state.py"
+  ]
+}

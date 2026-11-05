@@ -1,0 +1,108 @@
+{
+  "scope": "CLASS179: named __construct source bodies compile anonymous child templates through the authenticated named-owner method context. Constructor reception, access, promotion, parent scope, cleanup and compiler diagnostic order retain their ordinary rules. Anonymous-owner method factories remain outside admission.",
+  "base": "f579117514fe05f55e1f6683fafb4f5520f3bac2",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "implementation": [
+    "spec/semantics/383-anonymous-classes.watsup: allow source-authenticated __construct method bodies; suppress only child publication checkpoints when static/return-typed constructor rejects after its body",
+    "spec/semantics/134-inheritance-runtime.watsup: snapshot final-method link trace at METHOD_ISSUE before eager failed-owner cleanup"
+  ],
+  "evidence": {
+    "source": {
+      "cases": 17,
+      "statuses": {
+        "normal": 7,
+        "php_error": 3,
+        "static_rejection": 7
+      },
+      "all_native_exact": true,
+      "all_model_exact": true,
+      "report": ".tools/class179-artifacts/class179-source-9a84614i/report.json",
+      "sha256": "48096d2923b1ce6e69ec7137825627602e85dce633c51ede5781469b85ee6452"
+    },
+    "reached": {
+      "conditions": {
+        "ctor-early-counters-defaults-reuse": 30,
+        "pure_source_derived_context_queries": 21,
+        "ctor-conditional-owner-deferred-counter": 31,
+        "ctor-lazy-final-before-argument_reached_link": 14
+      },
+      "report": ".tools/class179-artifacts/class179-protocol-lpey2r8l/report.json",
+      "sha256": "fd3133aae60f01fffde95ae75dac713cc38fc8a630e1d2d1a837a35c328817c9",
+      "result": "true newline; exit0; empty stderr; stable inputs"
+    },
+    "strict": {
+      "modules": 435,
+      "report": ".tools/class179-artifacts/class179-strict-va1fz29i/report.json",
+      "sha256": "380b4c4ef3da321a7c88840660087f854cad20d6d876c26f0e28c43e6029f1ab",
+      "result": "true newline; exit0; empty stderr; stable inputs"
+    },
+    "affected": {
+      "class178_reached": {
+        "report": ".tools/class179-artifacts/class178-review-state-b18jwhws/report.json",
+        "sha256": "e03c3aa537b70b44ccbef18741fa9c2216f247c413f9aa79225a280d56a919df",
+        "groups": [
+          "called_skipped_lazy_link_order",
+          "unrelated_constructor_scope_compile_order"
+        ]
+      },
+      "class178_source": {
+        "report": ".tools/class179-artifacts/method-runtime-nqp3gjo9/report.json",
+        "sha256": "cd5e501bb34699031685d52ff8f09cd695a3650e11bcd043a32e30f9575c9d02"
+      },
+      "main_scope_link": {
+        "report": ".tools/class179-artifacts/class179-main-link-wo513ylj/comparison.json",
+        "sha256": "d14880b70feb36c15346b0ab5de1fdeafd609664567fc99c907e424e21a475b7"
+      },
+      "sensitive_caller": {
+        "report": ".tools/class179-artifacts/class179-sensitive-rgcobza4/comparison.json",
+        "sha256": "29ded4fcca1e863be0ce7413393f5a2cceaade289162a3996e02df54dd3a4da4"
+      }
+    },
+    "failed_attempts": {
+      "initial_source_mismatches": "static child publication checkpoint and lazy final-link trace; both fixed, no initial sweep agreement counted",
+      "initial_reached_fixture": "NExprNew pattern elaboration failure and relation-as-expression elaboration failure; no credit; raw copied under .tools/class179-artifacts/"
+    }
+  },
+  "remaining": [
+    "Anonymous owner method factories need provisional anonymous owner-key reservation before compiling their bodies; current compiler appends owner descriptor afterward.",
+    "Trait/interface/enum owner methods, method-owned Closures, generators, byref returns, attributes and wider dynamic unit/source histories remain partial."
+  ],
+  "review": {
+    "reviewer": "classes_review_daybreak",
+    "decision": "accepted",
+    "private_cut": "5b8e65cc9",
+    "joined_semantic_cut": "d2ad66f25",
+    "basis": "Independent source/context/native counterexample review and exact private gates; actual-parent patch-id identical, strict435, source6, reached75+pure21 and affected CLASS178 source/state pass. Parent 30/420/437/444 have no direct class rule overlap; child-throw and lazy-link sources exercise relevant joined ownership routes."
+  },
+  "joined": {
+    "parent": "ef779e0cc1fdd08e90b3dd68c8af46d09ebbb085",
+    "candidate": "d2ad66f25",
+    "scope": "Actual-parent focused interaction validation. Semantic parent changes since private base are 30/420/437/444; adapter/frontend/schema/modules manifest are unchanged. Private 17-case evidence retains its own cut.",
+    "strict435": [
+      ".tools/class179-artifacts/class179-joined-strict-b8xnupbj/report.json",
+      "f962a133e07b380ac9454fe08138d0d2dc96b2fcb5d5fb54ebd8eb25ae1162f8"
+    ],
+    "source6": [
+      ".tools/class179-artifacts/class179-source-q4joeo30/report.json",
+      "15c2a6be7d2841f96873e04b8bd8d07dfc60784c88108af18b48971840cff22f"
+    ],
+    "reached75_pure21": [
+      ".tools/class179-artifacts/class179-protocol-oyerw3w6/report.json",
+      "2fb0a41e64bc229f6f4e9185dc4c891b498d67db478929738de92d8022f81bd6"
+    ],
+    "affected_class178_reached": [
+      ".tools/class179-artifacts/class178-review-state-q8gqydze/report.json",
+      "f6e2806f5eb12703015f5bbabb4c4ea08b8be0616d824688687aa0c7b07e298a"
+    ],
+    "affected_class178_source": [
+      ".tools/class179-artifacts/method-runtime-rxqado5r/report.json",
+      "c7b08db21ef193fcabbaae4106796d911af1b5f96980116b4c10be69cca08788"
+    ],
+    "status": "all true or exact; exit0/empty stderr/stable inputs"
+  }
+}

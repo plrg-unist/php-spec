@@ -32,6 +32,13 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
         // never reach that phase; later grammar reductions still count.
     }
 
+    // These restrictions also belong to compilation, after the full parse.
+    protected function checkClass(PhpParser\Node\Stmt\Class_ $node, int $namePos): void {}
+    protected function checkInterface(PhpParser\Node\Stmt\Interface_ $node, int $namePos): void {}
+    protected function checkEnum(PhpParser\Node\Stmt\Enum_ $node, int $namePos): void {}
+    protected function checkTryCatch(PhpParser\Node\Stmt\TryCatch $node): void {}
+    protected function checkClassMethod(PhpParser\Node\Stmt\ClassMethod $node, int $modifierPos): void {}
+
     protected function doParse(): ?array {
         // Lexing inspects the complete source before grammar reductions start.
         // Retain only tokens before its first error, then let the real parser
@@ -80,6 +87,21 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
             $self->headers[] = ['beginLine' => $self->tokens[$begin]->line,
                 'beginTokenPos' => $begin, 'closeLine' => $close->line,
                 'closeTokenPos' => $self->tokenPos, 'items' => $self->semValue];
+        };
+        // Nonempty method modifiers reduce before parameters/body. Constants
+        // share this rule, so distinguish the actual function lookahead.
+        if ($this->ruleToLength[384] !== 1 || $this->reduceCallbacks[384] !== null) {
+            throw new RuntimeException('Member modifier reduction contract changed');
+        }
+        $this->reduceCallbacks[384] = static function (self $self, int $stackPos): void {
+            $self->semValue = $self->semStack[$stackPos];
+            $allowed = PhpParser\Modifiers::PUBLIC | PhpParser\Modifiers::PROTECTED
+                | PhpParser\Modifiers::PRIVATE | PhpParser\Modifiers::STATIC
+                | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL;
+            if ($self->tokens[$self->tokenPos]->id === T_FUNCTION && ($self->semValue & ~$allowed)) {
+                // Only a foreign parse stop; the reply retains native diagnostics.
+                throw new PhpParser\Error('Invalid modifier for method');
+            }
         };
     }
 }

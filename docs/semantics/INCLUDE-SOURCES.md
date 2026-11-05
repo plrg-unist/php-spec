@@ -1789,14 +1789,14 @@ temporary Iterator retires before a 1-to-0 write returns the old 1; a retained
 setter survives key-time callable rebinding, performs a 1-to-1 call, then writes
 0 before restore returns the setting to 1. The pending assertion record keeps a
 nonowning certificate of the original receipt after the converted call loses
-its last argument root. A bare rootless record fails validation, and integer 2
-remains outside this receipt.
+its last argument root. A bare rootless record fails validation. At that cut,
+integer 2 remained outside this receipt.
 
 The [Boolean assertion setting increment](../../coverage/semantics/config-iterator-assertions-bool-review.json)
 uses the same saved receipt for copied `false` and `true`. `false` stores a
 present empty raw INI string with assertion quantity 0; `true` stores `"1"`.
 Old return, selected setter identity and restore follow the ordinary assertion
-record. Copied integer 2 and null still fail this receipt's admission.
+record. At that cut, copied integer 2 and null still failed this receipt's admission.
 
 The [warning-free string assertion setting increment](../../coverage/semantics/config-iterator-assertions-string-review.json)
 admits a copied valid string carrier when the quantity parser returns a
@@ -1812,6 +1812,13 @@ An option destructor changing precision from 14 to 1 makes copied `1.4` store
 raw `"1"` and `1.6` store raw `"2"`. The assertion certificate rechecks the
 entry's frozen precision through later state changes. Unsupported late
 conversions and nonfinite float inputs receive no agreement credit.
+
+The [nonnegative integer and null assertion setting increment](../../coverage/semantics/config-iterator-assertions-scalar-review.json)
+extends the same copied Iterator receipt to every nonnegative signed integer and
+to null. Null becomes a present empty raw INI string with parsed quantity 0;
+copied integer 2 keeps raw `"2"` and quantity 2. Both retain the old return,
+selected setter where used, and restore through the saved receipt certificate.
+Negative integers remain outside this admission.
 
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
