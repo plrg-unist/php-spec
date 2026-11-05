@@ -1118,8 +1118,9 @@ remain unticked; property-group Ticks preserve main adjacency, type/name lines
 and callback abort before pending class activation. Conditional declarations
 activate before their header-line Tick, while top declarations have
 no outer Tick.
-Plain trait use adds no Tick or repeated method compilation; imported method
-callbacks retain their physical source and receiver through abort and retry.
+Trait use and admitted alias/precedence metadata add no Tick or repeated method
+compilation; callbacks retain physical source, alias trace name and receiver
+through abort and retry.
 Certified EnumCase markers run before the existing enum activation task, retaining
 member order, prior-marker frequency, backed-value lines and abort/resume behavior.
 
@@ -1147,7 +1148,8 @@ Exact source, strict and reached-state cuts remain in the
 [member constants](coverage/semantics/tick-class-const-review.json),
 [plain property defaults](coverage/semantics/tick-property-review.json),
 [property hooks](coverage/semantics/tick-hook-review.json),
-[plain trait use](coverage/semantics/tick-trait-use-review.json) and
+[plain trait use](coverage/semantics/tick-trait-use-review.json),
+[trait adaptations](coverage/semantics/tick-trait-adaptation-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -1939,7 +1941,7 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 | GC52 | Finite DIRECT-array WeakMap payload layer with existing COW/release; private implementation/review. |
 | COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
-| ATTR45 | Existing trait alias/precedence Tick metadata and selected-method callbacks; private implementation/review. |
+| ATTR46 | Authenticated bracketed/unbracketed Namespace Tick placement; native/compiler calibration and private review. |
 | Enum callable arrays | Method fromCallable cache identity from proven cold and actual INIT history; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

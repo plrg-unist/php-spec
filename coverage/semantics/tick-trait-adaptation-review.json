@@ -1,0 +1,66 @@
+{
+  "milestone": "ATTR45: existing trait adaptation metadata under positive ticks",
+  "status": "Independently accepted bounded implementation; wider producer/linking/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "ca8c86b09",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "9c8e6e2c28f37921c04989c1447ca01f2632b50851be78f852023fc7986b11fa",
+    "scope": "The existing TraitUse summary accepts admitted alias/precedence metadata, preserving first-name line, LAST and FREQUENCY without an opcode, Tick or repeated body compilation. Existing parser/compiler/linker facts still validate all producer, visibility and linking forms. No runtime consumer, task, state or schema changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_use_trait loops adaptation records; zend_compile_trait_alias, zend_compile_trait_precedence and zend_compile_method_ref record resolved names/modifiers without emitting main opcodes or compiling bodies. USE_TRAIT remains unticked.",
+    "runtime": "Existing linking selects and aliases methods. Ordinary dispatch and trace rules preserve the alias name while retaining physical trait source, receiver and class context."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-adaptation-45/strict-report-v1.json",
+      "sha256": "e640db2e9eabdc2b9dc531643e806017aa2d7ee1c16eca721401081f0742e013",
+      "revision": "7876f77270685f26f65ba61042c4f457b6a7d920",
+      "passed": true,
+      "modules": 445
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-adaptation-45/source-author-v1/report.json",
+      "sha256": "ea749dba519303f52334d02b1b8d73749f772418721b7e0e28c6fe005b30e462",
+      "revision": "7876f77270685f26f65ba61042c4f457b6a7d920",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "promoted exact alias control": "TZT",
+        "precedence-selected and aliased physical methods": "TTA1TB2ZT"
+      },
+      "scope": "The exact earlier control completes normal class linking. A second original calls both the precedence-selected method and an alias of the excluded method, retaining their frequencies, physical bodies and request counter."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-adaptation-45/source-review-v1/report.json",
+      "sha256": "0dfccf39a003aaaf319b83c94c2d52ab7086ab35a155f70332f6862d9e17c86c",
+      "revision": "3042bb5ae218206b6acbfba67ed5ec62935be678",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TTMTaliased9CTMT7TZT",
+      "scope": "At the alias call's body Tick, callback 3 prints actual trace function aliased, reads sibling 9 and throws before return 7. The later alias retry returns 7 normally."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-adaptation-45/review-protocol-v1/run/report.json",
+      "sha256": "2bc19c1d0097baa868169108ee316f5038b56f027272105e2598d1b3186f839d",
+      "process_sha256": "bb6db433c641ee8cd3c709eaa661f2654cfc1e65e95bbc96918a9fc3a526e6ae",
+      "revision": "2dc51a49bb997213fe83d161c978b0a9a5182b82",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 67,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "The real alias-method body Tick maps TRAIT_ORIGIN/name TickUse45::aliased to physical run() source with the actual receiver/class context. Callback trace/read/throw then retry retain slots/object, exact counter/output, heap/descriptors/Tick validity and full-state zero-budget/full-resume equality."
+    }
+  },
+  "migration_and_bridge": "The exact ATTR44 alias-control bytes (SHA ab3c1de866eda7eb468baeff1cb51ed64bf7aed99854d59c656af22a7d3b91d4) are promoted after actual supported linking succeeds. Its stale current negative assertion is removed; the old refusal stays zero credit and is qualified in tick-trait-use-review.json. Empty-adaptation plans are pointwise unchanged, so no ATTR44 campaign was replayed.",
+  "independent_review": "/root/attributes_review checked metadata-only compiler effects and existing producer/linker boundaries, then passed the actual alias/physical-source callback front on first execution.",
+  "remaining": "Unsupported producer, visibility, adaptation/linking and wider source/lifetime contexts retain their existing dependencies. No new trait producer, visibility rule, linking behavior or whole-family closure is claimed.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-trait-adaptation-45. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs stayed stable, exits 0 and driver stderr empty; all campaign executables were reaped. Regular local tools were preserved from the idle ATTR44 tree; this is not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "The earlier ATTR44 source-author-v1 adaptation refusal remains a historical dependency with zero agreement credit. Its exact bytes receive their own new normal comparison here; no new before replay was needed.",
+    "No ATTR44, earlier compiler family, output, Generator or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed."
+  ]
+}

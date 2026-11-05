@@ -61,10 +61,12 @@ adjacency; `DECLARE_CLASS` breaks it. Top-level declarations have no outer Tick
 and restore the declaration end line. Conditional declarations tick after real
 activation at the certified header line. Method bodies have separate op arrays
 but contribute their file declarables even when never invoked.
-Plain trait use stays unticked and adds no main opcode or repeated method-body
-compilation. The first trait name supplies its line; completed class facts still
+Trait use and existing admitted alias/precedence metadata stay unticked and add
+no main opcode or repeated method-body compilation. The first trait name supplies
+its line; completed class facts still
 control the enclosing `DECLARE_CLASS`. Imported method Tick callbacks retain
-their physical trait source and ordinary receiver through abort and retry.
+their physical trait source, observable alias trace name and ordinary receiver
+through abort and retry. Producer, visibility and linking restrictions are unchanged.
 Plain class-member constant groups use the same constant-context visitor in
 declaration order. They emit no main opcode or outer Tick, preserving prior
 adjacency while static Closure initializers contribute their own lexical plans.
@@ -192,7 +194,6 @@ blocked during the callback and its returned-value cleanup.
 The source summary is deliberately bounded. Wider decorated headers/cases/member
 constants, decorated properties and positive-frequency short/byref/decorated
 hook plans,
-positive-frequency trait adaptations,
 other unmodeled statement/expression emission, callable defaults or
 attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
 and anonymous construction summaries. Foreach targets retain the existing
@@ -258,6 +259,9 @@ plain-property review's unticked-group assumption while retaining its bounded cu
 The [plain-trait-use tick review](../../coverage/semantics/tick-trait-use-review.json)
 records use/class emitter order and imported-method callback abort/retry with
 physical source, receiver, retained slots and budget equivalence.
+The [trait-adaptation tick review](../../coverage/semantics/tick-trait-adaptation-review.json)
+records selected and aliased methods, exact earlier-control promotion and alias
+trace identity through callback abort/retry with physical-source state checks.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
