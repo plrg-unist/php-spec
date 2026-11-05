@@ -1,0 +1,127 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-static-closure-reuse",
+      "source": "<?php\n$before = new class {};\nclass R182Named { public static function make() { return static function() { return new class {}; }; } }\n$f = R182Named::make(); $a = $f(); $b = $f(); $after = new class {};\necho $before::class, ';', $a::class, ';', $after::class, ';', ($a !== $b), ';', ($a::class === $b::class), ';';\n",
+      "source_sha256": "4d5d705bc3ea46f150a4e22c9da541451c1899e307c7d2a73924c890e50b5e90",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDI7MTsxOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-arrow-capture",
+      "source": "<?php\n$owner = new class { public function make($value) { return fn() => new class($value) { public function __construct(public int $value) {} }; } };\n$f = $owner->make(7); unset($owner); $child = $f(); echo $child->value, ';', $child::class, ';';\n",
+      "source_sha256": "160146daf956b7ba28d32ab36c0c8d450a35fc568b5ed198c6f8d0e92548457b",
+      "stdout_template_base64": "NztjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "named-closure-reference-capture",
+      "source": "<?php\nclass R182Ref { public function make(&$value) { return function() use (&$value) { return new class(++$value) { public function __construct(public int $value) {} }; }; } }\n$owner = new R182Ref; $value = 3; $f = $owner->make($value); $a = $f(); $b = $f(); echo $value, ';', $a->value, ';', $b->value, ';';\n",
+      "source_sha256": "e28bdbafe1e1defa77c46d882247e8293d1d2aaf5c9c7e78ec09e13638408d7f",
+      "stdout_template_base64": "NTs0OzU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-nested-closure-arrow",
+      "source": "<?php\n$owner = new class { public function make() { return static function() { return static fn() => new class {}; }; } };\n$outer = $owner->make(); $inner = $outer(); $a = $inner(); $after = new class {}; echo $owner::class, ';', $a::class, ';', $after::class, ';';\n",
+      "source_sha256": "3a9ff891f9e1bfd6745c717f00740a38ed0962a351ec2b55d6c504565bbefe86",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "named-instance-closure-self-default",
+      "source": "<?php\nclass R182Default { private int $value = 9; public function make() { return function(int $n = 3): object { echo $this->value, ';', self::class, ';', $n, ';'; return new class {}; }; } }\n$owner = new R182Default; $f = $owner->make(); unset($owner); $a = $f(); echo $a::class, ';';\n",
+      "source_sha256": "251916684dddea0a1e9231ec31a5e13b420eecdf1676ddfbfc14695c691cdeec",
+      "stdout_template_base64": "OTtSMTgyRGVmYXVsdDszO2NsYXNzQGFub255bW91cwB7RklMRX06MiQwOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-parented-arrow",
+      "source": "<?php\nclass R182Parent { protected function __construct(public int $value) {} }\n$owner = new class extends R182Parent { public function __construct() {} public function make() { return fn($value = 4) => new class($value) extends R182Parent {}; } };\n$f = $owner->make(); $a = $f(); echo $a->value, ';', $owner::class, ';', $a::class, ';';\n",
+      "source_sha256": "bc9bd90095d08409f7dcb8cf15d3be33009c4b1805c49a9e0106e69b958b2a2c",
+      "stdout_template_base64": "NDtSMTgyUGFyZW50QGFub255bW91cwB7RklMRX06MyQwO1IxODJQYXJlbnRAYW5vbnltb3VzAHtGSUxFfTozJDE7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-ctor-closure-escape",
+      "source": "<?php\n$saved = null;\ntry { $owner = new class($saved) { public function __construct(&$saved) { $saved = static function() { return new class {}; }; throw new Exception('fail'); } public function __destruct() { echo 'BAD;'; } }; } catch (Exception $e) { echo 'caught;'; }\n$child = $saved(); echo $child::class, ';';\n",
+      "source_sha256": "5202cc4a1bf0cf7b011a9ba82d62c36d7535bc6f3fc99c4681743836d8df537e",
+      "stdout_template_base64": "Y2F1Z2h0O2NsYXNzQGFub255bW91cwB7RklMRX06MyQxOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "named-closure-child-default-error",
+      "source": "<?php\nclass R182Bad { public static function make() { return static function() { return new class { public function child(int $value = 'bad') {} }; }; } }\necho 'BAD;';\n",
+      "source_sha256": "bb02b89d54f0d727f010e02826324ff686fce4567943a74c249a4a15af31cdb0",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "anonymous-closure-warning-before-static",
+      "source": "<?php\n$owner = new class { public static function __construct() { $f = static function() { return new class { final private function f() {} }; }; } };\n",
+      "source_sha256": "1eb23f641527930250d5d164cdd9434fbc6cc37007f1b3bac112a97b50a06f50",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogTWV0aG9kIGNsYXNzQGFub255bW91czo6X19jb25zdHJ1Y3QoKSBjYW5ub3QgYmUgc3RhdGljIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "named-arrow-child-link-before-args",
+      "source": "<?php\nclass R182Final { final public function f() {} }\nclass R182Link { public static function make() { return static fn() => new class(echo_bad()) extends R182Final { public function f() {} }; } }\nfunction echo_bad() { echo 'BAD;'; return 1; }\n$f = R182Link::make(); try { $f(); } catch (Error $e) { echo $e->getMessage(), ';'; }\n",
+      "source_sha256": "de3863790a1c8d51483c35799530ccf1c499465cbee86ac4b6ca97b74552d682",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBvdmVycmlkZSBmaW5hbCBtZXRob2QgUjE4MkZpbmFsOjpmKCkgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBSMTgyTGluazo6e2Nsb3N1cmU6UjE4Mkxpbms6Om1ha2UoKTozfSgpCiMxIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "named-closure-return-type-priority",
+      "source": "<?php\nclass R182Void { public static function make() { return static function(): void { return new class { public function f(int $x = 'bad') {} }; }; } }\n",
+      "source_sha256": "4a8e8895a06eab76ee76527bd7de9a7f332045869ee522ea84c51503114e37d3",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkeCBvZiB0eXBlIGludCBpbiB7RklMRX0gb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "anonymous-constructor-arrow",
+      "source": "<?php\n$saved = null; $owner = new class($saved) { public function __construct(&$saved) { $saved = fn() => new class {}; } };\n$a = $saved(); $b = $saved(); echo $owner::class, ';', $a::class, ';', ($a !== $b), ';';\n",
+      "source_sha256": "6c3133bc8b75ab3f57d66c5ac69f079bc59c4e1b565082eb20aec8c448e97301",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7MTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

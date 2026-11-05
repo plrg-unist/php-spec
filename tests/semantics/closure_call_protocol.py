@@ -312,7 +312,7 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def run(cases=None, extra_inputs=(), fixture_renderer=None):
+def run(cases=None, extra_inputs=(), fixture_renderer=None, runner_flags=()):
     cases = CASES if cases is None else cases
     output = Path(tempfile.mkdtemp(prefix='closure-call-protocol-', dir=ROOT / '.tools'))
     inputs = [*MODULES, ROOT / 'spec/semantics/modules.json', ROOT / 'spec/php.watsup',
@@ -371,7 +371,7 @@ def run(cases=None, extra_inputs=(), fixture_renderer=None):
             assert checked['ast'] == parsed['ast'], name
             fixture_text, assertions = rendered
         fixture.write_text(fixture_text)
-        result = subprocess.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
+        result = subprocess.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), *runner_flags,
                                  *map(str, MODULES), str(fixture)], capture_output=True,
                                 text=True, timeout=300)
         (directory / 'stdout').write_text(result.stdout)

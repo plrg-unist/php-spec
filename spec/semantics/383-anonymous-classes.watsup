@@ -189,10 +189,16 @@ def $anonymous_method_factory_members(statement*) = false -- otherwise
 ;; An anonymous owner's methods may compile child templates. Other member
 ;; positions retain their class-free fence while its key is reserved.
 dec $anonymous_only_anonymous_classes(pcoccurrence*) : bool
+dec $anonymous_method_closure_body(pcnode) : nat?
+def $anonymous_method_closure_body(NExprClosure (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN false) phpType16 (SEQUENCE phpType22*) phpType18 (SEQUENCE statement*) metadata) = (6)
+  -- if $anonymous_constructor_parameters(phpType16) /\ ~$generator_statements(statement*)
+def $anonymous_method_closure_body(NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN false) phpType16 phpType18 expression metadata) = (5)
+  -- if $anonymous_constructor_parameters(phpType16) /\ ~$generator_syntax(expression)
+def $anonymous_method_closure_body(pcnode) = eps -- otherwise
 dec $anonymous_owner_deferred_scope(pcnode) : bool
 def $anonymous_owner_deferred_scope(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
-def $anonymous_owner_deferred_scope(NExprClosure phpType14 phpType4_static phpType4_byref phpType16 phpType21 phpType18 phpType23 metadata) = true
-def $anonymous_owner_deferred_scope(NExprArrowFunction phpType14 phpType4_static phpType4_byref phpType16 phpType18 expression metadata) = true
+def $anonymous_owner_deferred_scope(NExprClosure phpType14 phpType4_static phpType4_byref phpType16 phpType21 phpType18 phpType23 metadata) = ($anonymous_method_closure_body(NExprClosure phpType14 phpType4_static phpType4_byref phpType16 phpType21 phpType18 phpType23 metadata) = eps)
+def $anonymous_owner_deferred_scope(NExprArrowFunction phpType14 phpType4_static phpType4_byref phpType16 phpType18 expression metadata) = ($anonymous_method_closure_body(NExprArrowFunction phpType14 phpType4_static phpType4_byref phpType16 phpType18 expression metadata) = eps)
 def $anonymous_owner_deferred_scope(pcnode) = false -- otherwise
 def $anonymous_only_anonymous_classes(eps) = true
 def $anonymous_only_anonymous_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))) /\ $anonymous_only_anonymous_classes(pcoccurrence*))
@@ -520,6 +526,46 @@ def $anonymous_failed_owner_child_checkpoint(P, PORIGIN 0 pcpath_child) = true
 def $anonymous_failed_owner_child_checkpoint(P, porigin) = false -- otherwise
 
 dec $anonymous_factory_context(ppstate, pcpath) : bool
+;; Walk source parents, stopping at the nearest lexical method or Closure.
+;; Each deferred scope must be inside the previous scope's body, not a default.
+dec $anonymous_method_scope_boundary(pcnode?) : bool
+def $anonymous_method_scope_boundary((NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata)) = true
+def $anonymous_method_scope_boundary((NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)) = true
+def $anonymous_method_scope_boundary((NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)) = true
+def $anonymous_method_scope_boundary((NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)) = true
+def $anonymous_method_scope_boundary((pcnode)) = true -- if $anonymous_class_like(pcnode)
+def $anonymous_method_scope_boundary(pcnode?) = false -- otherwise
+dec $anonymous_method_scope(pcunit, pcpath, ptbytes) : (pcpath, pcpath, ptbytes, nat)?
+def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = ((pcpath, pcpath, ptbytes_owner ++ $ptascii("::") ++ $base64(text) ++ $ptascii("()"), 6))
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = ((pcpath, pcpath_method, $ptascii("{closure:") ++ ptbytes_parent ++ [58] ++ $ntunsigned($ppclosure_line($pcmetadata(pcnode))) ++ [125], n_body))
+  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath) = (pcnode)
+  -- if $anonymous_method_closure_body(pcnode) = (n_body)
+  -- if $(|pcpath| > 0)
+  -- if $anonymous_method_scope(pcunit, pcpath[0:$nabs($(|pcpath| - 1))], ptbytes_owner) = ((pcpath_parent, pcpath_method, ptbytes_parent, n_parent_body))
+  -- if pcpath_body = pcpath_parent ++ [PCFIELD n_parent_body]
+  -- if $(|pcpath_body| <= |pcpath|)
+  -- if pcpath[0:|pcpath_body|] = pcpath_body
+def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = $anonymous_method_scope(pcunit, pcpath[0:$nabs($(|pcpath| - 1))], ptbytes_owner)
+  -- if $(|pcpath| > 0)
+  -- if ~$anonymous_method_scope_boundary($origin_node([pcunit], PORIGIN pcunit.ID pcpath))
+def $anonymous_method_scope(pcunit, pcpath, ptbytes_owner) = eps -- otherwise
+
+def $anonymous_factory_context(P, pcpath) = true
+  -- if P.FOLD.SOURCE.ID = 0 /\ P.CLOSURE /\ P.FOLD.CLOSURE /\ ~P.RETURNREF
+  -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if P.FOLD.CLASSCONTEXT = P.CLASSCONTEXT
+  -- if $anonymous_method_scope(P.FOLD.SOURCE, P.GOTOROOT, ptcontext.OWNER) = ((P.GOTOROOT, pcpath_method, ptbytes_function, n_body))
+  -- if P.FOLD.FUNCTION = ptbytes_function
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (P.GOTOROOT)) = (pcnode)
+  -- if $anonymous_method_closure_body(pcnode) = (n_body)
+  -- if pcpath_body = P.GOTOROOT ++ [PCFIELD n_body]
+  -- if $(|pcpath_body| <= |pcpath|)
+  -- if pcpath[0:|pcpath_body|] = pcpath_body
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_method) = (NStmtClassMethod phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata)
+  -- if $anonymous_factory_context(P[.CLOSURE = false][.GOTOROOT = pcpath_method][.FOLD = P.FOLD[.CLOSURE = false][.FUNCTION = ptcontext.OWNER ++ $ptascii("::") ++ $base64(text)]], pcpath)
 def $anonymous_factory_context(P, pcpath) = true
   -- if $anonymous_compilation_unit(P.FOLD.SOURCE)
   -- if P.CLASSCONTEXT = eps /\ P.FOLD.CLASSCONTEXT = eps
@@ -584,6 +630,11 @@ def $anonymous_factory_context(P, pcpath) = false -- otherwise
 ;; Static and return-typed constructors fail after their bodies compile. Their
 ;; children have no completed unit image to publish before that compile error.
 dec $anonymous_rejected_constructor_factory(ppstate) : bool
+def $anonymous_rejected_constructor_factory(P) = $anonymous_rejected_constructor_factory(P[.GOTOROOT = pcpath_method])
+  -- if P.FOLD.SOURCE.ID = 0 /\ P.CLOSURE
+  -- if P.CLASSCONTEXT = (ptcontext)
+  -- if $anonymous_method_scope(P.FOLD.SOURCE, P.GOTOROOT, ptcontext.OWNER) = ((P.GOTOROOT, pcpath_method, ptbytes_function, n_body))
+  -- if P.GOTOROOT =/= pcpath_method
 def $anonymous_rejected_constructor_factory(P) = true
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (P.GOTOROOT)) = (NStmtClassMethod phpType14 (INTEGER flags) phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata)
   -- if $ptlc($base64(text)) = $ptascii("__construct")

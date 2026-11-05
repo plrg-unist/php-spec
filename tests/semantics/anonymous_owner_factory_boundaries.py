@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native-positive sources kept outside anonymous-owner factory admission."""
+"""Native-positive anonymous-owner source boundaries and promoted closures."""
 import base64
 import hashlib
 import json
@@ -59,9 +59,10 @@ def main():
             code += '  -- if $source_unit([P.FOLD.SOURCE],0) = (pcunit)\n'
             code += '  -- if $origin_node([pcunit],PORIGIN 0 ([PCINDEX 0,PCFIELD 0,PCFIELD 1,PCFIELD 0])) = (pcnode_owner)\n'
             code += '  -- if $anonymous_class_node(pcnode_owner)\n'
-            code += '  -- if ~$anonymous_owner_factory_node(pcnode_owner)\n'
+            promoted = name in ('method-owned-closure', 'method-owned-arrow')
+            code += '  -- if ' + ('' if promoted else '~') + '$anonymous_owner_factory_node(pcnode_owner)\n'
             code += '  -- if ~$anonymous_no_classes($pcwalk($pcchildren(pcnode_owner,eps)))\n'
-            code += '  -- if ~$anonymous_unit(pcunit)\n'
+            code += '  -- if ' + ('' if promoted else '~') + '$anonymous_unit(pcunit)\n'
             calls.append(group + '()')
         fixture = raw / 'protocol.watsup'
         fixture.write_text(code + 'dec $main() : bool\ndef $main() = ' + r' /\ '.join(calls) + '\n')
