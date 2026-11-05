@@ -69,8 +69,22 @@ dec $generator_api_operands(poperand*) : bool
 def $generator_api_operands(eps) = true
 def $generator_api_operands((KNOWN pvalue) :: poperand*) = $generator_api_operands(poperand*)
 def $generator_api_operands(poperand*) = false -- otherwise
-def $generator_collected_arguments_valid(S, pgeneratorop, eps, poperand*, 0) = $generator_api_operands(poperand*)
+;; Dynamic packs determine their extent at collection time. A static named list
+;; must still have its source-derived labels and exact normalized extent.
+dec $generator_api_extent(text, phpType7*, nat) : bool
+def $generator_api_extent(text_method, phpType7*, n) = true
+  -- if $call_unpack_present(phpType7*)
+def $generator_api_extent(text_method, phpType7*, n) = true
+  -- if ~$call_unpack_present(phpType7*)
+  -- if $config_source_prefix(INTRINSIC_GENERATOR_METHOD text_method, phpType7*, eps, false) = ((pnamedslot*, b_named))
+  -- if $config_missing(pnamedslot*, 0) = eps
+  -- if |pnamedslot*| = n
+def $generator_api_extent(text_method, phpType7*, n) = false -- otherwise
+def $generator_collected_arguments_valid(S, pgeneratorop, eps, poperand*, 0) = true
   -- if $generator_api_site(S, pgeneratorop.SITE)
+  -- if $generator_api_operands(poperand*)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if $generator_api_extent(pgeneratorop.NAME, phpType7*, |poperand*|)
 def $generator_collected_arguments_valid(S, pgeneratorop, phpType7*, poperand*, n_sent) = false -- otherwise
 def $generator_resumption_arguments_valid(S, pgeneratorop) = true
   -- if ~$generator_api_site(S, pgeneratorop.SITE)
@@ -81,4 +95,6 @@ def $generator_resumption_arguments_valid(S, pgeneratorop) = true
 def $generator_resumption_arguments_valid(S, pgeneratorop) = true
   -- if $generator_api_site(S, pgeneratorop.SITE)
   -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if $generator_api_extent(pgeneratorop.NAME, phpType7*, |pgeneratorop.ARGUMENTS|)
 def $generator_resumption_arguments_valid(S, pgeneratorop) = false -- otherwise
