@@ -1,0 +1,60 @@
+{
+  "milestone": "A96 captured live Generator reference-cell delivery after Warning callbacks",
+  "status": "Bounded behavior validated; complete PHP core remains unfinished",
+  "independent_reviewer": "config_review_current",
+  "scope": {
+    "producer_consumer": "Existing named BYREF Generator and direct named BYVAL-returning function, fixed untyped BYREF destination in argument position 1 or 2 within the first two sends.",
+    "behavior": "Before Warning, save the dereferenced CELL designation and checked argument key. After normal callback return, read that live cell even when the current cache CELL/key/largest-key INDEX or Generator phase changed. Copy it into a fresh private parameter cell, then perform ordinary native NEXT; RUNNING raises its ordinary Error.",
+    "ownership": "CELL is nonowning metadata. Cache replacement keeps old and new cells distinct. Normal closure releases FRAME but retains cached value/key until storage retirement; actual aliases/cache owners keep the selected cell alive. KNOWN input, caught producer exceptions, scalar carrier restrictions and earlier SENT owners keep their existing policies.",
+    "limits": "ordinary_reference_value plus the existing REFERENCE scalar/interned-string predicate still apply. Unavailable/typed/backed/debt cells, runtime-string reference carriers, owning payloads, dynamic-string sinks and pending Warning-handler exception advancement remain outside this rule. BYVAL cache/key/index/phase and DELEGATE/PARKED restrictions are preserved. PHP prohibits yield-from inside a BYREF Generator."
+  },
+  "implementation": {
+    "semantic_cut": "2b81ccc2f517b09eee6624cb33b31f63b2dc199d",
+    "initial_source_cut": "74f919cf8ebeb1de322bb7cd96ed3846bd7388e9",
+    "first_state_cut": "4854ded344be04e540e7f365dd20f51eeb199e25",
+    "corrected_fixture_cut": "b32d7e94e375ce2890b73d9e739d64ab44b4fb5c",
+    "tested_base": "76434e984986411a21f65aca5a581644b7a0857b",
+    "composed_code_cut": "157efc01ac49ea0fcd816a7522005005dd27b7b5",
+    "master_parent": "1cede02d3918c64a26dfcc074db7d7123a836876",
+    "composed_source_hashes": {
+      "spec/semantics/30-storage.watsup": "f20c8f0f35265c1f4465dfb450f41d6dc86da4b6d4852646d6378caf28b241aa",
+      "spec/semantics/405-call-generator-unpack.watsup": "d5dc93ac78d9c3a16b8327008a4cbd9c2923554e7b8f28a69f0c324aa52a9046",
+      "spec/semantics/439-call-aggregate-unpack.watsup": "8bdedf1b2a2948a6a6cbe2ce0075e46bb59a29077de261e3dae07596e41d3f95"
+    },
+    "rule": "405 separates immutable named source authority from dynamic initial capture eligibility. reference_delivery has disjoint BYVAL frozen-cache and BYREF saved-CELL arms; the former keeps original DELEGATE/PARKED guards. Semantic405 equals the tested cut after composition."
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK dereferences and selects top before Warning, then creates the private reference from that saved pointer and calls move_forward.",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_close/free_storage retain cached value/key until storage retirement; native iterator move_forward uses the actual current Generator phase. Zend/zend_compile.c rejects yield-from in BYREF Generators."
+  ],
+  "validation_identity": {
+    "target": "PHP8.5.10 CLI NTS64, source34308a6666b2d489c509541ea9befea9e2b42348; oracle sha256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398.",
+    "compiler": "P4-SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, strict SL/cache-off/encountered determinism checks, all433 modules; strict-74f9 passes exit0/true/empty stderr.",
+    "environment": "tests/semantics/profile.json; PHP -n, LC_ALL=C/TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset; serial borrowed CPU2, all processes reaped before return.",
+    "provenance": "Raw reports preserve exact sources, inputs, commands, caps, exits and stable original cuts. Parent interactions are independently reviewed before integration without renewing unchanged evidence."
+  },
+  "evidence_roots": {
+    "author_native": "/home/user/workspace/php-spec-evidence-archive/config-generator-captured-cell-sink-native-96",
+    "independent_native": "/home/user/workspace/php-spec-evidence-archive/config-generator-captured-cell-sink-review-native-96",
+    "used_yield_native": "/home/user/workspace/php-spec-evidence-archive/config-generator-captured-cell-sink-review-native-96-used-yield",
+    "review": "/home/user/workspace/php-spec-evidence-archive/config-generator-captured-cell-sink-review-96",
+    "recovery": "Paths below are relative to review; relocations.json preserves original raw locations. The promoted case reuses the unchanged A95 native original. Raw evidence stays outside Git."
+  },
+  "sources": {
+    "source-review-promoted-74f9/report.json": "1 exact normal: unchanged A95 same-key/index/value replacement original now delivers old22, not current cache11. Its earlier Unsupported evidence retains zero credit.",
+    "source-review-four-74f9/report.json": "4 exact normals: changed key/index, CLOSED/live cell, RUNNING inside suspended Fiber with caught ordinary NEXT Error, and used-yield NULL continuation.",
+    "source-author-three-plus-used-yield-expectation-failure-74f9/report.json": "Accept only3 exact normals: replacement string key preserves original positional target/default/argc, KNOWN input survives normal closure, callback catches producer-body throw before normal return. The fourth fixture prediction fails and earns0.",
+    "source-author-corrected-used-and-delegation-4854/report.json": "1 exact normal after ordinary-used BYVAL expectation-only correction; unchanged native bytes are reused. Genuine callback-to-yield-from is exact rooted Unsupported0.",
+    "source-old-frozen-byval-b32d/report.json": "1 exact legacy normal preserving cached11 despite source22; total10 unique normals =8 new originals plus2 legacy (promoted A95 and frozen A94).",
+    "source-old-pending-warning-throw-b32d/report.json": "Existing pending Warning-handler exception retains its exact Unsupported reason/prefix;0 agreement. Together with genuine BYVAL delegation,2 explicit Unsupported controls."
+  },
+  "reached_states": {
+    "state-review-three-plus-closed-and-used-fixture-failures-4854/report.json": "Accept only3 passing groups225 checks: replacement83, changed key/index67, RUNNING75. Failed CLOSED/used fixtures earn0.",
+    "state-review-closed-used-corrected-b32d/report.json": "Only affected CLOSED/used groups rerun,69+69 checks. Independent total5 unique groups363 checks: saved-cell authority, authentic owners, carrier/liveness rejection, fresh private cells, ordinary NEXT/Error and finish/budget consistency.",
+    "state-author-five-b32d/report.json": "5 groups328 checks (87/78/78/57/28): frozen positional target after replacement, KNOWN input/CLOSED cache, caught producer throw, ordinary-used BYVAL, genuine delegation refusal. Final28 are Unsupported ownership/freeze checks,0 agreement.",
+    "state-old-promoted-replacement-b32d/report.json": "Corrected old A95 replacement group67 checks passes normal saved-CELL delivery; original A95 refusal report stays unchanged.",
+    "state-old-frozen-byval-b32d/report.json": "Existing frozen-BYVAL group57 checks passes; no source-cell alias or extra CELL owner is introduced."
+  },
+  "preserved_fixture_failures": "Original independent native RUNNING echo-prefix prediction and author ordinary-used Unsupported prediction remain unchanged; only expectation metadata was corrected. Ordinary used yield has PARKEDeps. CLOSED cached REFcell/key persist until storage; premature empty-cache predictions and an unreached eager-clean stage were corrected only in affected state groups. Original author catalog SHA0bdaed042e1e58882656fba7e06e4a9466fb10007265a34c353102ec855bea1c is externally retained. No semantic patch or broad replay followed these fixture corrections.",
+  "engine_disposition": "No engine bug or intentional divergence is claimed. Pending Warning-handler exception advancement and wider reference/value/producer/consumer behavior remain explicit unfinished core obligations."
+}

@@ -456,12 +456,18 @@ two sends. By-value caches keep their Warning snapshot; ordinary reference
 caches reread a nonowning source-cell designation after the handler. Alias writes
 change delivery, while actual global-name rebinding preserves the old cell.
 Distinct private cells retain earlier sends across the second Warning.
-A95 adds ten new and two affected legacy source agreements; independent
-source-derived ownership, authority, retirement and budget gates pass. Two
-Unsupported controls retain zero agreement credit. Cache replacement, ineligible
-reference carriers and pending warning exceptions remain partial.
+A96 extends delivery from the selected live reference cell through cache
+replacement, changed keys/index, normal closure and a running Generator in a
+suspended Fiber. The next iterator advance retains its ordinary phase behavior.
+Closed Generators keep their cache until storage retirement; CELL adds no owner.
+By-value delivery retains its existing restrictions. Ineligible reference
+carriers and pending warning exceptions remain partial. Eight new and two legacy
+source agreements, strict433 and source-derived ownership/continuation gates pass
+at their recorded cuts; two Unsupported controls retain zero agreement credit.
+Original fixture failures remain preserved separately.
 [Snapshot review](coverage/semantics/generator-byref-sink-review.json),
-[reference-cell review](coverage/semantics/generator-reference-sink-review.json).
+[reference-cell review](coverage/semantics/generator-reference-sink-review.json),
+[captured-cell review](coverage/semantics/generator-captured-cell-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
 ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes

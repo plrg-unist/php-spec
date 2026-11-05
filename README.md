@@ -2168,11 +2168,16 @@ Direct named functions returning by value receive scalar Generator sends in
 fixed untyped reference parameters at positions 1 or 2, within the first two
 sends. By-value yields keep snapshots; ordinary reference yields reread saved
 cells after normal Warning handlers. Private callee cells stay distinct from
-source aliases and each other through global-name rebinding. Changed by-value
-payloads, keys or producer phase, replacement reference cells, unsupported
-carriers, dynamic-string sinks and pending warning exceptions remain Unsupported.
+source aliases and each other through global-name rebinding. A live selected
+reference cell still supplies delivery after cache replacement, changed keys or
+normal Generator closure; the subsequent iterator advance observes its actual
+phase, including the ordinary running-Generator Error. By-value delivery keeps
+its existing cache/key/index/phase restrictions. Ineligible reference carriers,
+dynamic-string sinks and pending warning exceptions remain Unsupported.
 See the [snapshot review](coverage/semantics/generator-byref-sink-review.json)
-and [reference-cell review](coverage/semantics/generator-reference-sink-review.json).
+and [reference-cell review](coverage/semantics/generator-reference-sink-review.json);
+the [captured-cell extension](coverage/semantics/generator-captured-cell-sink-review.json)
+records the later delivery rule.
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
