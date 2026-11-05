@@ -1,0 +1,109 @@
+{
+  "milestone": "I114 captured native Generator API binding copies",
+  "status": "Independently accepted: six unique exact original normal agreements, one explicit Unsupported assertion with zero agreement, and one 132/137 source-reached ownership/resumption front. Wider core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64, php-src 34308a6666b2d489c509541ea9befea9e2b42348; baseline profile, LC_ALL=C, TZ=UTC; one heavy runner per pair",
+  "scope": "Closure::bind and bindTo retarget native Generator method captures. Original and copied captures retain their actual receiver separately; copies and chained copies remain callable after source retirement. Existing I109 argument reception and I113 explicit __invoke apply to the normalized copied target. Temporary Closure::call stays visibly Unsupported.",
+  "rules": "Existing BOUNDFAKECLOSURE and its sole receiver child edge provide storage and ownership. Native capture saved validation authenticates complete binding SOURCE/scope chains before recursive getter lookup using lookup-only history views; active liveness requires real capture/receiver allocations.Module 450 normalizes the target for ordinary operations and 453 explicit wrappers. Module 253 excludes the tag from old Getter construction, while 158 rejects malformed old Getter cursors. A Gen-only GENERATOR_BIND_RESULT task pins original This after argv release for ignored instance bindTo results; it discards the actual copied return before releasing This, with a dedicated abrupt pop. Used results/static bind/other tags retain from_done. No persistent record fields or new module are added.",
+  "validation": {
+    "promoted_original": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-promoted-9dd/report.json",
+      "sha256": "148e235531f4a0b8518cbbcae62bc268a7a5001d20f7f88f02ec175a08c4afc4",
+      "revision": "ee6051dcc4e97fd00d734bd658d5c2be17fa9bca",
+      "result": "The exact earlier I112 bindTo Unsupported original now exactly agrees normally, selecting replacement Generator value 41. Model 300 s/process 320 s, exit0/quiet/no timeout/stable."
+    },
+    "matrix": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-matrix-9dd/report.json",
+      "sha256": "6a9a96421c2781257fd0e97607836a97c66b2347f88d246c558a04bd3bbf7f9b",
+      "revision": "4b8cf326f14d3f80df5ab525d9c7f766a81b35a5",
+      "result": "One exact normal original: null/incompatible receiver and changed/missing scope warning priority, native count/receiver/scope type errors with Closure::bindTo trace, named binding, explicit bound __invoke, original receiver preservation and chained copy after source copy/Gen retirement. Model 500 s/process 520 s, exit0/quiet/no timeout/stable."
+    },
+    "warning_throw": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-warning-boundary-first/report.json",
+      "sha256": "c1817bd24917a383a078fa54ed888a4c7b0b689ebd0fa775f30f4e39a9a5d682",
+      "revision": "4b8cf326f14d3f80df5ab525d9c7f766a81b35a5",
+      "result": "The supplied-warning-throw row alone exactly agrees normally: callback-cleared old/new/capture CVs stay held; replacement argument finally sees oldGen/originalcapture live, then original finally sees capture dead. Supplied Stop identity, original empty trace, Previous null and all weak deaths match. Stable/quiet/exit0/no timeout. This two-row report is overall false only because its separate Unsupported control had wrong fixture output metadata; the normal row is passed and normal_agreements=1."
+    },
+    "boundary": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-boundary-final/report.json",
+      "sha256": "127b551dad76837e5afabbb63ee7dc3c259214b725512e414807448f9c32b1cd",
+      "revision": "22cab31c96e963bf3b97d8ab94976d644210199c",
+      "result": "Selected bound-copy Closure::call control passes exact Unsupported reason and BIND|CALL| events, native normal output continuing END|. Zero agreements. Only fixture output keys/events changed; source/runtime/native bytes unchanged, no positive replay. Stable/quiet/exit1/no timeout."
+    },
+    "independent_source": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/peer-source-b9/report.json",
+      "sha256": "ad338c2297b5134d4382d2b907fbc8c7b48da4cd36b8162b5ac58ef8cde18ef4",
+      "revision": "b4ca8be2389878e0bf8525e421628464284f7dac",
+      "result": "One exact normal independent original: static Closure::bind freezes original capture/replacement before scope callback clears both CVs. HELD flags prove both and oldGen remain alive inside callback; original capture/Gen retire before replacement body entry. Escaped copy receives value 41 and releases replacement after capture weak notification. Exit0/quiet/no timeout, HEAD/inputs stable, runtime 17f + d4 + 9dd + b9."
+    },
+    "unused_copy": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-unused-e1/report.json",
+      "sha256": "777043d2dc7d6401573dd4e6ef0898264d58def6462876b80e4b9598b6c292aa",
+      "revision": "e1a4fff3914761bb46f24db7d60053abf1d2faa1",
+      "result": "The unchanged failed ordinary unused bindTo original now agrees exactly: copy release closes replacement while originalcap/oldGen are still live, then original receiver releases and old finally sees capture dead. All weak targets are dead after call. Exit0/quiet/no timeout, HEAD/inputs stable, runtime e1."
+    },
+    "unused_nullsafe_abrupt": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-unused-nullsafe-throw-e1/report.json",
+      "sha256": "dad37a74f1eabadc7044072a56d4593c1888db94daf1c60add5f8611b0bc8e81",
+      "revision": "5a98cccdb2a2c8171cec3a5bd47ddf53048b3b9e",
+      "result": "One exact normal literal-nullsafe original: replacement finally throws precreated Stop during ignored-copy release; new marker keeps old This live until abrupt pop runs old finally. Identity, original empty trace/Previous null and all weak deaths match. Exit0/quiet/no timeout, HEAD/inputs stable, runtime e1."
+    },
+    "independent_reached": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/peer-state-e1/report.json",
+      "sha256": "90c9f15d332a648e48e5ff44333dcafb2e1cae19d93c20db666e1855983cf068",
+      "revision": "4c762127bf11b43bf6f3630f708a829c6e477489",
+      "result": "132 custom/137 reported premises pass true LF, exit0/quiet/no timeout, clean stable HEAD. Full 441-module SL manifest plus one fixture. Sole accepted front is the ordinary unused bindTo original: real CONFIG snapshots, copy allocation, original This marker pin, exact old/new receiver edges without SOURCE ownership, copy-result drop while oldcap stays owned, raw one-handle deficit versus globally valid one-step public BUDGET state. Resuming that budget reaches normal terminal cleanup with all four objects retired; real retired-copy saved history remains valid while active liveness fails. Malformed binding/source/scope/cycle and marker refusals pass. Four synthetic request classifier views are helper controls, not extra reached fronts. Earlier failed static-bind fronts retain zero credit."
+    }
+  },
+  "preserved_zero": {
+    "independent_baseline": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/peer-baseline-3727-unsupported0/report.json",
+      "sha256": "1ce4d3551ef832c2f04d5726aca4d1c1b870a0ce89804ed10308c64db5714668",
+      "revision": "3727187b326b6847111f69a91c18fd898cfa2a3f",
+      "result": "Earlier independent static-bind source reached checked Unsupported with public reason Generator last-owner release during terminal cleanup, only OLD-INIT|BIND|SCOPE|, exit1/quiet/stable/no timeout. Final source adds HELD observations inside its scope callback; no second baseline run or relabeled agreement."
+    },
+    "first_candidate": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-first-17f-failure0/report.json",
+      "sha256": "9c92bef7398d148db6ecac516f25dad7465ed8234e3f151bcedde77e7df7249d",
+      "revision": "17f13128435bc4beeb76d2273016ef4557c18ab2",
+      "result": "Full evaluation failed with nondeterministic terminal request admission when fresh original and paused replacement Generators coexisted. No normal agreement. 9dd makes 349 fresh-only terminal arm disjoint from 340 started arm without changing the OR truth table."
+    },
+    "control_fixture": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-warning-boundary-first/report.json",
+      "result": "The separate Unsupported row had the correct actual public reason/stdout but fixture used model_stdout rather than established unsupported_stdout/events. Failed assertion has zero agreement.22cab corrects only those keys and removes obsolete Unsupported fields from the promoted normal row; only control is retried."
+    },
+    "unused_copy_mismatch": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/author-unused-b9-mismatch0/report.json",
+      "sha256": "7cab723de833a5ee5bc037a799ffb24b92bc8c6009f0422aaf1c7a1a81fe2d8c",
+      "revision": "7e88658d0d30393e5705ef9604b53fb70482ff02",
+      "result": "Both outcomes were normal/quiet/stable but old from_done released original This before the unused copy. Native NEW-FIN saw originalcap/oldGen live before OLD-FIN; model reversed and saw both dead in NEW-FIN. Zero agreement; e1 adds only the ignored-instance owner continuation and the exact original is rerun unchanged."
+    },
+    "state_field": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/peer-state-global-field-failure0/report.json",
+      "sha256": "6b9d1337f3f716c11fe587ed0fe22b7ab70a647980340e9455f68ea6fdf74127",
+      "revision": "9315b91675fa9222e5218cf021572a47c8cde74f",
+      "result": "First static-bind fixture referenced nonexistent pstate.GLOBAL; compiler rejected it before execution. Corrected to GLOBALTABLE=eps; zero credit."
+    },
+    "state_window": {
+      "report": "../php-spec-evidence-archive/generator-api-binding-114/peer-state-poststep-descriptors-failure0/report.json",
+      "sha256": "43f2e100087a82249ca349f64d6fe6f5dbf3d14cda8a5ce94bd9cbed43436c25",
+      "revision": "8fc0f6bc746897263722dec720356c36958dcd88",
+      "result": "Second static-bind fixture executed its allocation/edge assertions, then checked global descriptors on raw PhpStep output before the driver installs the new destruction handle. HANDLES was exactly one shorter than OBJECTS. Raw-copy assertions are retained and global validity moves to actual one-step driver budget state; no invariant is weakened. This failed earlier front remains zero credit and is replaced by the sole final unused-copy front."
+    },
+    "promoted_boundary": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-boundaries-c2ecd/report.json",
+      "sha256": "0307485697b9b5f48183d645bbde22881002b6f7ce04a469a9b67d9a5e858352",
+      "revision": "4d87816cf8504def04073de31a451f276a5663b9",
+      "result": "Earlier I112 bindTo original was native-normal with checked Unsupported, zero agreement (same source bytes as current promoted row). This two-control report also retains its separate old Closure::call boundary. No baseline model rerun is used to relabel earlier credit."
+    }
+  },
+  "composition": "Final 158 guard only excludes native Gen tags from old Getter cursors; real constructors already use Gen operations/CONFIG, and other Getter tags keep their paths. e1 finish hook is selected only for ignored instance bindTo on native Gen captures: assigned/used instance results and static bind retain from_done; warning/type failures allocate no copy. Thus prior full-source cuts bypass the added path; normal and abrupt ignored-copy originals run at e1.9dd generic request guard is independently integrated as 07273fd7d and omitted from final binding picks. No 264/cache/state-record/new-module edits; 30 adds only the dedicated task, disjoint from enum call-context metadata. No I113 replay.",
+  "remaining": "Temporary Closure::call copies, Traversable packs, wider C callable forwarding, collection and further lifecycle/abrupt combinations remain partial. No core obligation closes.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_api_binding_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_api_capture_sources.py --case i114-promoted-bindto-generator-capture",
+    "taskset -c CPU python3 tests/semantics/generator_api_binding_review_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_api_binding_review_state.py"
+  ],
+  "compiler": "Public comparisons load the full private 441-module SL manifest with pinned local tools and determinism checks; the final state fixture adds one module. Local tool reuse is not a fresh offline build or portability claim.",
+  "independent_review": "The Generator/Fiber reviewer independently accepted 17f131284 + d4eaed917 + 9dd3adfeb + b9e98d932 + e1a4fff39 after engine/source/target/owner review, one independent escaped static-bind original, inspection of five complementary author originals and Unsupported control, the actual unused-copy mismatch and unchanged corrected source, and the final sole 132/137 unused-copy front. The generic349 guard is already independently integrated; final binding picks omit it. Earlier failed fixture/Unsupported/mismatch attempts are not relabeled as agreements."
+}

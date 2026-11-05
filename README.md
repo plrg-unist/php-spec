@@ -7641,7 +7641,7 @@ First-class native Generator API captures and `fromCallable` retain their
 Generator after its source variable clears. Invocation keeps the capture alive
 through the body; unused owning results retire before capture storage releases
 the Generator. The [API capture review](coverage/semantics/generator-api-capture-review.json)
-checks reception, escaped captures and weak/finally order. Rebinding these captures,
+checks reception, escaped captures and weak/finally order. `Closure::call`,
 Traversable packs and wider call/lifetime combinations remain partial.
 
 Explicit captured API `__invoke` calls now retain outer arguments separately from
@@ -7649,6 +7649,13 @@ the inner call and keep both native and Closure trace frames. Saved returns
 survive argument destructors; source demand controls their release order when a
 destructor throws. The [wrapper review](coverage/semantics/generator-explicit-invoke-review.json)
 records the mapping, ownership and abrupt-cleanup checks.
+
+Binding copies of these captures own their replacement Generator while the
+original capture keeps its receiver. Source history adds no owner of the original
+capture, so it can retire before the copy is invoked. Ignored instance `bindTo`
+copies release before the original receiver, including through a supplied throw.
+Native binding warnings, type errors and cleanup order are recorded in the
+[binding review](coverage/semantics/generator-api-binding-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

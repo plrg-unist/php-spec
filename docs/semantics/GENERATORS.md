@@ -104,8 +104,8 @@ Checked arguments transfer into the ordinary operation without another receiver
 owner. An ignored owning return retires before the capture, then capture storage
 releases the Generator; its finally observes the capture already weak-dead.
 Creation/source receipts remain historical, while active calls require the live
-capture and real result continuation. `bind`/`bindTo` and `Closure::call` on these
-captures remain explicit Unsupported protocols.
+capture and real result continuation. `Closure::call` remains a separate
+Unsupported protocol.
 [API capture review](../../coverage/semantics/generator-api-capture-review.json).
 
 Explicit `__invoke` receives the copied native signature before its handler, then
@@ -115,6 +115,16 @@ the last capture, including on an argument throw; used uncommitted returns relea
 after capture/Gen retirement on that throw. Both native and Closure trace frames
 remain present inside the body; cleanup destructors use caller context.
 [Explicit wrapper review](../../coverage/semantics/generator-explicit-invoke-review.json).
+
+`bind`/`bindTo` use the existing bound-copy descriptor and its receiver edge.
+Original and copied captures retain their own Generators; the SOURCE chain is
+lookup-only history. Copies remain callable after their source capture and its
+Generator retire, including chained copies and explicit `__invoke`. Warning/type
+checks precede allocation; a throwing warning handler preserves native argument
+then receiver cleanup. An ignored instance `bindTo` result uses a small owner
+continuation so the copied return releases before original `This`, including
+nullsafe calls and exceptions from the replacement Generator finally.
+[Binding review](../../coverage/semantics/generator-api-binding-review.json).
 
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
 inside an already running Fiber. Its actual resume operation and parameter cells

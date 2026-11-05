@@ -971,6 +971,9 @@ test-semantics: build
 	python3 tests/semantics/generator_explicit_invoke_sources.py
 	python3 tests/semantics/generator_explicit_invoke_review_sources.py
 	python3 tests/semantics/generator_explicit_invoke_review_state.py
+	python3 tests/semantics/generator_api_binding_sources.py
+	python3 tests/semantics/generator_api_binding_review_sources.py
+	python3 tests/semantics/generator_api_binding_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
