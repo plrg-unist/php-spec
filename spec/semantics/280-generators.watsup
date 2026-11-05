@@ -1660,8 +1660,16 @@ def $generator_trace_scope(S, pcallcontext?, pframe*) = S[.CURRENT = pcallcontex
 def $generator_trace_scope(S, pcallcontext?, pframe*) = S
   -- if ~$generator_function_context(S, pcallcontext?)
 def $generator_context_trace_kind(S, pcallcontext) = ($generator_context_operation(S, pcallcontext) =/= eps) -- otherwise
-def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, pgeneratorop.SITE), LINE pgeneratorop.LINE, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ $generator_operation_trace(S, pgeneratorop)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}] ++ ptraceframe_operation*
   -- if $generator_context_operation(S, pcallcontext) = (pgeneratorop)
+  -- if ptraceframe_operation* = $generator_operation_trace(S, pgeneratorop)
+  -- if ptraceframe_operation* =/= eps
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FILES, pgeneratorop.SITE), LINE pgeneratorop.LINE, FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}]
+  -- if $generator_context_operation(S, pcallcontext) = (pgeneratorop)
+  -- if $generator_operation_trace(S, pgeneratorop) = eps
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)

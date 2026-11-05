@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "generator-lazy-final-link-before-arguments",
+      "source": "<?php\nfinal class Final185 {}\nclass Lazy185 { public function make() { echo 'BODY;'; yield 'ready'; yield new class(print 'ARG;') extends Final185 {}; } }\necho 'PRE;'; $g = (new Lazy185)->make(); echo 'MADE;', $g->current(), ';PAUSED;'; $g->next(); echo 'BAD;';\n",
+      "source_sha256": "39b0f028dc01c7ef22efe34b9ef764ff50d54fc1b17f3281b3799043237c9474",
+      "stdout_template_base64": "UFJFO01BREU7Qk9EWTtyZWFkeTtQQVVTRUQ7",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEZpbmFsMTg1QGFub255bW91cyBjYW5ub3QgZXh0ZW5kIGZpbmFsIGNsYXNzIEZpbmFsMTg1IGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IExhenkxODUtPm1ha2UoKQojMSB7RklMRX0oNCk6IEdlbmVyYXRvci0+bmV4dCgpCiMyIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "generator-native-api-exception-trace",
+      "source": "<?php\nfunction trace185Api($value) { yield 'P'; throw new Exception('stop'); }\n$g = trace185Api(7); $g->current(); try { $g->next(); } catch (Exception $e) { echo $e->getTraceAsString(); }\n",
+      "source_sha256": "b562a08733baf5bbb369b9f4f5a2b106e42b4399fa44951055744d5e8b345895",
+      "stdout_template_base64": "IzAgW2ludGVybmFsIGZ1bmN0aW9uXTogdHJhY2UxODVBcGkoNykKIzEge0ZJTEV9KDMpOiBHZW5lcmF0b3ItPm5leHQoKQojMiB7bWFpbn0=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "generator-foreach-exception-trace",
+      "source": "<?php\nfunction trace185Loop($value) { yield 'P'; throw new Exception('stop'); }\ntry { foreach (trace185Loop(8) as $value) { echo $value, ';'; } } catch (Exception $e) { echo $e->getTraceAsString(); }\n",
+      "source_sha256": "344f569dd37e09f82a032589343ced1db9000ccd4ee12c983e0a2fff0afc85a6",
+      "stdout_template_base64": "UDsjMCB7RklMRX0oMyk6IHRyYWNlMTg1TG9vcCg4KQojMSB7bWFpbn0=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
