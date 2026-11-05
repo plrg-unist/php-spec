@@ -141,6 +141,15 @@ Original semantic/fixture failures retain zero credit; wider cleanup, owning
 retval, Fiber and bailout paths remain partial.
 [I102 review](coverage/semantics/generator-call-exit-review.json).
 
+I103 carries ordinary exit through an owning copied-warning retval destructor,
+its Child and the real C cleanup before handler/API release. The hidden copy
+survives through shutdown; fake and real originals agree at exit29/41. Strict435,
+author151/156 and independent joined peer192/197 pass at their recorded cuts.
+Earlier interpreter, compiler, descriptor, timeout and peer fixture
+elaboration failures retain zero credit. Cleanup throws replacing this pending
+exit and wider bailout stay partial.
+[I103 review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -413,12 +422,22 @@ GC33 composes inactive internal-Key hooks: WeakReference unregisters its referen
 before incoming Map values; WeakMap unregisters outgoing keys and releases own
 values before incoming notification. Shared values, self-keys and two incoming
 Maps preserve separate owners and registration order. Nine exact positive
-contexts/eight programs include nonfast table retirement; three ordinary unset
-controls stop explicitly before generic retirement and keep zero agreement.
+contexts/eight programs include nonfast table retirement; at that cut, three
+ordinary unset controls stopped before generic retirement with zero agreement.
 Author495, independent51 and affected320 conditions pass (866 reported), with
 strict435 at recorded cuts. Original source/fixture failures remain zero credit.
 Later producer policies, ordinary callback continuations, weak Closure keys and
 active free pins remain partial. [GC33 review](coverage/semantics/gc-compound-key-review.json).
+
+GC34 adds ordinary internal-Key callback continuations. Quiet registrations
+activate cleanup; per-entry leases and parent/Key pins survive nested throws.
+Wrapper unregister precedes incoming callbacks, while Map own values run first;
+authenticated callbacks preserve or replace their weak observer. Fourteen exact
+normal programs and 464 reported conditions (author233, independent86, affected145)
+pass at recorded cuts. The three GC33 ordinary controls are promoted; earlier
+mismatch/timeout/fixture stops retain zero credit. Wider producers, freeing-object
+escape/mutation and active-pin collection remain partial.
+[GC34 review](coverage/semantics/gc-ordinary-key-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
