@@ -7206,6 +7206,12 @@ catch. Four native originals, three CLI comparisons and two ownership fronts
 mapping and bailout contexts remain partial.
 [Cancellation review](coverage/semantics/generator-call-cancellation-review.json).
 
+Ordinary named mapping failures and required named holes now preserve the same
+hidden copies while generated Error traces keep their own argument values.
+Three new originals, two ownership fronts and one affected successful call pass;
+later receive/default errors and bailout paths remain partial.
+[Named-failure review](coverage/semantics/generator-call-mapping-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

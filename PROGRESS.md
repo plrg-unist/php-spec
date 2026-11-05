@@ -189,6 +189,15 @@ The affected 59/64 trace checks and joined strict433 pass at recorded cuts.
 Receive/mapping and bailout paths remain partial.
 [I99 review](coverage/semantics/generator-call-cancellation-review.json).
 
+I100 extends hidden-copy cleanup to ordinary unknown/overwritten named arguments
+and required named holes. Generated Error traces retain raw arguments until the
+Error is released; prepared argv and original source owners still retire in order.
+Three native/source originals, one affected successful call and strict433 pass.
+Two joined reached fronts pass 243 custom/253 reported checks. Original baseline,
+compile and fixture failures retain zero credit. Later receives, default throws
+and bailout paths remain partial.
+[I100 review](coverage/semantics/generator-call-mapping-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
