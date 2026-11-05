@@ -7443,6 +7443,12 @@ finally run after the exception replaces exit; a final string exit retains
 status 41. The existing rules suffice for this selected case.
 [Cleanup throw review](coverage/semantics/generator-call-cleanup-throw-review.json).
 
+A second exit in that owning retval's Child destructor now keeps the copied
+warning cleanup and later property release. A literal string exit retains
+status 29 and frees an After sibling; an integer exit replaces status 41 with
+53. Both exact native/model outputs and independent reached ownership gates
+pass. [Repeated cleanup exit review](coverage/semantics/generator-call-repeated-exit-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

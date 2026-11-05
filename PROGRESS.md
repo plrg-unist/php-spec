@@ -169,9 +169,17 @@ I104 validates the existing cleanup-throw path: a supplied plain Child exception
 replaces the pending exit before Generator creation. Catch/finally run, cleanup
 frees retval/Child and prepared owners, and a final string exit retains status41.
 The pinned native and unchanged-model source agree; joined reached153/158 checks
-cover the pending transfer, owner counts and shutdown. Aliased throws, repeated
-cleanup exit and wider lifecycle remain open.
+cover the pending transfer, owner counts and shutdown. At that cut, aliased
+throws, repeated cleanup exit and wider lifecycle remained open.
 [I104 review](coverage/semantics/generator-call-cleanup-throw-review.json).
+
+I105 carries a second exit through the owning warning retval's Child and
+remaining fields before copied-call CLEAN and API release. A literal string
+exit keeps status29; an independent integer exit changes41 to53. Native/source
+pairs, strict435 and two reached fronts (349 custom/359 reported) pass at their
+recorded cuts. The unchanged-model mismatch and first author fixture failure
+retain zero credit; wider nested exit, pending-Throwable, Fiber and GC paths
+remain partial. [I105 review](coverage/semantics/generator-call-repeated-exit-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
