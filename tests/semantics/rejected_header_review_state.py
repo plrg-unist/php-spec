@@ -32,7 +32,7 @@ def prepare(out):
         headers = []
         for index, header in enumerate(value['headers']):
             suffix = tag + '_' + str(index)
-            ast = {'program': [{'node': 'Stmt_Declare', 'fields': [header['items'], None], 'meta': {}}]}
+            ast = {'version': 1, 'program': [{'node': 'Stmt_Declare', 'fields': [header['items'], None], 'meta': {}}]}
             fixture = adapter.request({'op': 'check', 'ast': ast, 'fixture': True})['fixture']
             checks.extend(['U_' + suffix + ' = ' + fixture,
                 'U_' + suffix + ' = PROGRAM ([NStmtDeclare (SEQUENCE phpType49_' + suffix + '*) ABSENT eps])'])
