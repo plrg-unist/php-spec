@@ -32,6 +32,12 @@ These are explicit foreign input facts, not proof that edited positions/items
 were derived from the supplied bytes. The trusted worker and exact response
 identity remain required for source-agreement claims.
 
+Rejected-only extraction defers `checkNamespace`: Zend checks namespace nesting
+during compilation, so a completed nested namespace cannot suppress later parser
+header reductions before a rejection. Genuine grammar errors and other foreign
+validation still stop collection. Accepted parsing retains its existing namespace
+checks, and no partial namespace AST is submitted to the compiler.
+
 Only rejected-unit header extraction uses `RejectedEvalLexer` and
 `RejectedFileLexer`. Their native APIs expose raw token tuples from the actual
 eval/file scanner state, with its parser-mode lexical checks enabled. A token

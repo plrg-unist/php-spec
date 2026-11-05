@@ -296,6 +296,19 @@ while (($line = fgets(STDIN)) !== false) {
                         if ($classLine === null) throw new RuntimeException('Named class keyword token is missing');
                         $node->setAttribute('classKeywordLine', $classLine);
                     }
+                    if ($node instanceof PhpParser\Node\Stmt\Class_ && $node->name === null && $node->isReadonly()) {
+                        $index = $node->getStartTokenPos();
+                        foreach ($node->attrGroups as $group) $index = max($index, $group->getEndTokenPos() + 1);
+                        $classLine = null;
+                        for (; $index <= $node->getEndTokenPos(); ++$index) {
+                            if ($tokens[$index]->id === T_CLASS) {
+                                $classLine = $tokens[$index]->line;
+                                break;
+                            }
+                        }
+                        if ($classLine === null) throw new RuntimeException('Readonly anonymous class keyword token is missing');
+                        $node->setAttribute('classKeywordLine', $classLine);
+                    }
                     if ($node instanceof PhpParser\Node\Stmt\ClassMethod
                         || ($node instanceof PhpParser\Node\Stmt\Function_ && $node->attrGroups !== [])) {
                         $methodLine = null;

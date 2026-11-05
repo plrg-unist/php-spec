@@ -577,7 +577,7 @@ checks stored flags/cells, actual permitted and denied stores, scope/descriptor
 forgeries and compile/link boundaries. Attributes, hooks and wider
 member/type/default/lifetime combinations remain partial.
 
-Public/default-public anonymous constructors also admit attribute-free, hook-free
+Anonymous constructors also admit attribute-free, hook-free
 promoted formals using the shared nonstatic property modifier predicate. The
 ordinary signature compiler retains parameter types/defaults and rejects promotion
 outside constructors; the method compiler owns promoted declarations, duplicate,
@@ -594,9 +594,49 @@ promotion because that route bypasses ordinary property-group validation; the
 ordinary declaration error remains in place. Only the exercised duplicate,
 forbidden-property-type and complete optional-warning callable display operands
 truncate at NUL. The [promotion review](../../coverage/semantics/anonymous-promotion-review.json)
-retains source/prologue/reference and compile/link evidence. Attributes, hooks,
-nonpublic constructor admission and wider signature/default/lifetime contexts
-remain partial.
+retains source/prologue/reference and compile/link evidence. Attributes, hooks
+and wider signature/default/lifetime contexts remain partial.
+
+Readonly anonymous headers use the same finite ordinary member grammar. The
+header's readonly bit reaches declared and promoted properties, parent/trait
+checks and both compiler-counter receipt routes. Readonly headers require one
+in-range `classKeywordLine` fact from the actual class token; the frontend skips
+attribute token ranges before scanning. Missing, duplicate and out-of-range
+facts are refused. Ordinary headers retain their prior line behavior. Stored
+class names, private keys and source origins remain complete.
+
+Initialization and later writes use the existing readonly runtime. Clone callbacks
+may reinitialize each copied field once; a second or manual callback write fails.
+Explicit public(set) permits first global initialization, while reference promotion
+fails before the body without attaching a property type source or changing the
+donor. Compatible readonly parents, imported readonly trait fields/Stringable and
+separate eval/self scopes retain their ordinary identities. Incompatible parents
+and trait fields fail before constructor arguments/allocation; untyped fields,
+declared defaults and static fields fail during compilation. Only the exercised
+readonly trait/dynamic-property diagnostic class operands are clipped at NUL.
+The [readonly review](../../coverage/semantics/anonymous-readonly-review.json)
+records the scoped source, metadata and reached-state checks. Attributes, hooks
+and wider member/type/lifetime combinations remain partial.
+
+Concrete ordinary anonymous methods and constructors now share the finite named
+method modifier predicate. Final instance/static methods retain their dispatch,
+source flags and cloned callable scopes. Private-final ordinary methods emit the
+native warnings before main execution, while private-final constructors do not.
+Final constructors keep ordinary promotion without making the promoted field final.
+Protected/private constructor access precedes argument effects, reception and body
+execution; failed automatic construction marks the object ineligible for automatic
+destruction. A bound static Closure in related parent lexical scope can construct
+the protected child through the existing factory grammar.
+
+Static constructors reach the shared signature, parameter validation and body
+compiler before the magic-method rejection, preserving default/body error priority.
+Inherited-final conflicts still occur before constructor arguments/allocation.
+Duplicate/static diagnostic class operands truncate at NUL; stored names and scope
+authority stay complete. The [method modifier review](../../coverage/semantics/anonymous-method-modifiers-review.json)
+retains the exact sources and reached fronts. Anonymous abstract-method diagnostics
+and factories inside method bodies remain explicit boundaries, alongside attributes,
+byref returns and wider magic/generator forms. Their native-only originals retain
+zero model agreement credit.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

@@ -423,10 +423,12 @@ def $weakmap_entries_retired_image(S, pweakmapentry*) = WEAKMAP eps
 ;; allocation/notification. Without callbacks the old empty image is exact.
 def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.OBJECTS[n_map] = $weakmap_entries_retired_image(S, pweakmapentry_all*)][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_map, HANDLE S.DESTRUCTION.HANDLES[n_map], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_map), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_map), HOBJECT n_map), $destruction_values($weakmap_entries_nodes(pweakmapentry_all*)))
   -- if $weakmap_entries_free_allowed(S, n_map, pdestructionrelease)
+  -- if ~$weakmap_key_waiting(S, n_map)
   -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "multiple-entry WeakMap storage destruction"]
   -- if $weakmap_entries_at(S, n)
   -- if ~$weakmap_entries_free_allowed(S, n, pdestructionrelease)
+  -- if ~$weakmap_key_waiting(S, n)
 
 ;; A finite weak Key snapshot survives implicit entry deletion and singleton
 ;; normalization. Only FOREACH_NEXT owns Map DATA; cursor IDs own no Keys.
