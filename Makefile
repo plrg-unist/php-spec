@@ -21,6 +21,7 @@ test: build
 	python3 tests/wire_negative.py
 	python3 tests/eval_source_service.py
 	python3 tests/include_source_service.py
+	python3 tests/rejected_header_service_review.py
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py

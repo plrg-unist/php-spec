@@ -1,0 +1,85 @@
+;; Foreign parser reductions survive a later rejection without a complete AST.
+;; Positions are explicit checked input facts, not a parser or source-byte proof.
+dec $rejected_line_entry(metadataEntry, bool) : int?
+def $rejected_line_entry(MstartLine z, true) = (z)
+def $rejected_line_entry(MendLine z, false) = (z)
+def $rejected_line_entry(metadataEntry, bool) = eps -- otherwise
+dec $rejected_lines(metadata, bool) : int*
+def $rejected_lines(eps, b) = eps
+def $rejected_lines(metadataEntry :: metadata, b) = z :: $rejected_lines(metadata, b)
+  -- if $rejected_line_entry(metadataEntry, b) = (z)
+def $rejected_lines(metadataEntry :: metadata, b) = $rejected_lines(metadata, b)
+  -- if $rejected_line_entry(metadataEntry, b) = eps
+dec $rejected_span(metadata) : (int, int, int, int)?
+def $rejected_span(metadata) = ((z_begin, z_end, z_start, z_last))
+  -- if $rejected_lines(metadata, true) = [z_begin]
+  -- if $rejected_lines(metadata, false) = [z_end]
+  -- if $declaration_parser_tokens(metadata, true) = [z_start]
+  -- if $declaration_parser_tokens(metadata, false) = [z_last]
+  -- if $(0 < z_begin /\ z_begin <= z_end /\ 0 <= z_start /\ z_start <= z_last)
+def $rejected_span(metadata) = eps -- otherwise
+dec $rejected_span_inside(metadata, int, int, int, int) : bool
+def $rejected_span_inside(metadata, z_begin, z_end, z_start, z_last) = true
+  -- if $rejected_span(metadata) = ((z_begin_child, z_end_child, z_start_child, z_last_child))
+  -- if $(z_begin <= z_begin_child /\ z_end_child <= z_end /\ z_start <= z_start_child /\ z_last_child <= z_last)
+def $rejected_span_inside(metadata, z_begin, z_end, z_start, z_last) = false -- otherwise
+dec $rejected_header_items(phpType49*, int, int, int, int) : bool
+def $rejected_header_items(eps, z_begin, z_line, z_previous, z_close) = true
+def $rejected_header_items((NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) :: phpType49*, z_begin, z_line, z_previous, z_close) = true
+  -- if $rejected_span(metadata) = ((z_begin_item, z_end_item, z_start_item, z_last_item))
+  -- if $(z_begin <= z_begin_item /\ z_end_item <= z_line /\ z_previous < z_start_item /\ z_last_item < z_close)
+  -- if $rejected_span_inside(metadata_name, z_begin_item, z_end_item, z_start_item, z_last_item)
+  -- if $rejected_span_inside($pcmetadata(expression), z_begin_item, z_end_item, z_start_item, z_last_item)
+  -- if $rejected_header_items(phpType49*, z_end_item, z_line, z_last_item, z_close)
+def $rejected_header_items(phpType49*, z_begin, z_line, z_previous, z_close) = false -- otherwise
+dec $rejected_headers_valid(pparseheader*, int, int) : bool
+def $rejected_headers_valid(eps, z_previous, z_previous_line) = true
+def $rejected_headers_valid((PARSE_HEADER z_begin z_start z_line z_close phpType49*) :: pparseheader*, z_previous, z_previous_line) = true
+  -- if $(0 < z_begin /\ z_begin <= z_line /\ 0 <= z_start /\ z_start < z_close /\ z_previous < z_close /\ z_previous_line <= z_line)
+  -- if phpType49* =/= eps
+  -- if $rejected_header_items(phpType49*, z_begin, z_line, z_start, z_close)
+  -- if $rejected_headers_valid(pparseheader*, z_close, z_line)
+def $rejected_headers_valid(pparseheader*, z_previous, z_previous_line) = false -- otherwise
+
+;; The complete header parses before Zend visits its items. A nonliteral stops
+;; this header's item prefix and every later reduction, after nested reductions.
+dec $rejected_items_prefix(phpType49*, int) : (int*, int?)
+def $rejected_items_prefix(eps, z_line) = (eps, eps)
+def $rejected_items_prefix(phpType49 :: phpType49_tail*, z_line) = $rejected_items_prefix(phpType49_tail*, z_line)
+  -- if ~$encoding_declare_item(phpType49)
+def $rejected_items_prefix((NDeclareItem phpType11 expression metadata) :: phpType49*, z_line) = (z_line :: z*, z_stop?)
+  -- if $encoding_declare_item(NDeclareItem phpType11 expression metadata)
+  -- if $declaration_encoding_literal(expression)
+  -- if $rejected_items_prefix(phpType49*, z_line) = (z*, z_stop?)
+def $rejected_items_prefix((NDeclareItem phpType11 expression metadata) :: phpType49*, z_line) = (eps, (z_line))
+  -- if $encoding_declare_item(NDeclareItem phpType11 expression metadata)
+  -- if ~$declaration_encoding_literal(expression)
+dec $rejected_header_prefix(pparseheader*) : (int*, int?)
+def $rejected_header_prefix(eps) = (eps, eps)
+def $rejected_header_prefix((PARSE_HEADER z_begin z_start z_line z_close phpType49*) :: pparseheader*) = (z* ++ z_tail*, z_stop?)
+  -- if $rejected_items_prefix(phpType49*, z_line) = (z*, eps)
+  -- if $rejected_header_prefix(pparseheader*) = (z_tail*, z_stop?)
+def $rejected_header_prefix((PARSE_HEADER z_begin z_start z_line z_close phpType49*) :: pparseheader*) = (z*, (z_stop))
+  -- if $rejected_items_prefix(phpType49*, z_line) = (z*, (z_stop))
+dec $rejected_prefix_completion(int?, pfailedkind, nat*, int) : bool
+def $rejected_prefix_completion(eps, pfailedkind, n_message*, z_line) = true
+def $rejected_prefix_completion((z_line), FAILED_COMPILE, n_message*, z_line) = (n_message* = $ptascii("Encoding must be a literal"))
+def $rejected_prefix_completion(z_stop?, pfailedkind, n_message*, z_line) = false -- otherwise
+def $eval_response_id(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = n
+def $eval_response_bytes(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = n_bytes*
+def $eval_response_shape(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = true
+  -- if $(z > 0) /\ n_message* =/= eps
+  -- if $rejected_headers_valid(pparseheader*, -1, 1)
+  -- if $rejected_header_prefix(pparseheader*) = (z_lines*, z_stop?)
+  -- if $rejected_prefix_completion(z_stop?, pfailedkind, n_message*, z)
+def $eval_response_shape(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = false -- otherwise
+
+dec $rejected_source_warnings(pstate, nat, int*) : pstate
+def $rejected_source_warnings(S, n, eps) = S
+def $rejected_source_warnings(S, n, z :: z*) = $rejected_source_warnings($report_event(S, DIAGNOSTIC_SOURCE n "Warning" ($ptascii("declare(encoding=...) ignored because Zend multibyte feature is turned off by settings")) z, 128), n, z*)
+def $eval_resume_valid(S, SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = $eval_resume_rejected($rejected_source_warnings(S[.COMPLETION = NORMAL], n, z_lines*), pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z)
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if $rejected_header_prefix(pparseheader*) = (z_lines*, z_stop?)
+def $file_parse_resume_valid(S, SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = $file_parse_resume_rejected($rejected_source_warnings(S[.COMPLETION = NORMAL], n, z_lines*), pfilecontext, pfilecontext_tail*, pfailedkind, n_message*, z)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if $rejected_header_prefix(pparseheader*) = (z_lines*, z_stop?)
