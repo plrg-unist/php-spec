@@ -1,6 +1,7 @@
 ;; Genuine finite internal methods: no source function, body or origin is made up.
 ;; Zend/zend_exceptions.c and zend_exceptions_arginfo.h define the zero-argument
 ;; public final getters. Error owns its aliases even when their C body is Exception's.
+dec $generator_api_getter(pgettermethod) : bool
 dec $getter_named(ptbytes) : pgettermethod?
 def $getter_named(ptbytes) = (GET_MESSAGE) -- if $ptlc(ptbytes) = $ptascii("getmessage")
 def $getter_named(ptbytes) = (GET_CODE) -- if $ptlc(ptbytes) = $ptascii("getcode")
@@ -27,7 +28,7 @@ def $getter_owner(text, pgettermethod) = $throwable_base(text) -- otherwise
 dec $getter_available(text, pgettermethod) : bool
 def $getter_available("ErrorException", GET_SEVERITY) = true
 def $getter_available(text, GET_SEVERITY) = false -- if text =/= "ErrorException"
-def $getter_available(text, pgettermethod) = true -- if pgettermethod =/= GET_SEVERITY /\ pgettermethod =/= GET_SENSITIVE_VALUE
+def $getter_available(text, pgettermethod) = true -- if pgettermethod =/= GET_SEVERITY /\ pgettermethod =/= GET_SENSITIVE_VALUE /\ ~$generator_api_getter(pgettermethod)
 def $getter_available(text, GET_SENSITIVE_VALUE) = false -- if text =/= "SensitiveParameterValue"
 dec $ctor_selected_name(text, ptbytes) : bool
 def $ctor_selected_name(text_kind, ptbytes) = true

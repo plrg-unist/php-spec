@@ -1,0 +1,194 @@
+;; Native fake Closures own their Generator. Invocation retains the Closure,
+;; while This remains borrowed from that real child edge.
+def $generator_api_getter(GENERATOR_API_METHOD text) = true
+def $generator_api_getter(pgettermethod) = false -- otherwise
+def $getter_name(GENERATOR_API_METHOD text) = $generator_method_display(text)
+def $getter_owner(text, GENERATOR_API_METHOD text_method) = "Generator"
+def $getter_available(text, GENERATOR_API_METHOD text_method) = false
+
+dec $generator_capture_site(pstate, porigin, ptbytes, int) : bool
+def $generator_capture_site(S, porigin, ptbytes, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, ptbytes)
+  -- if $call_line_valid(S, (porigin), z)
+def $generator_capture_site(S, porigin, ptbytes, z) = false -- otherwise
+
+dec $generator_capture_selection(pstate, poperand, ptbytes, phpType7*, int) : pgeneratormethodselection?
+def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps})
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (METHOD_PREP (NIdentifier (BYTES text) metadata_name) phpType7* b_nullsafe b_base z) :: ptask_tail*
+  -- if $call_task_valid(S, METHOD_PREP (NIdentifier (BYTES text) metadata_name) phpType7* b_nullsafe b_base z)
+  -- if $ptlc($base64(text)) = $ptlc(ptbytes)
+  -- if $generator_capture_site(S, porigin, ptbytes, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_object(S_read, n)
+def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps})
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
+  -- if $method_name_task(S, poperand, phpType7*, z)
+  -- if $generator_capture_site(S, porigin, ptbytes, z)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_object(S_read, n)
+def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = eps -- otherwise
+
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = ptask_tail*][.OBJECTS = S_read.OBJECTS ++ [GETTERCLOSURE n (GENERATOR_API_METHOD text_method) "Generator" (GENERATOR_CAPTURE pgeneratormethodselection)]][.ALLOCATIONS = S_read.ALLOCATIONS ++ [HOBJECT n_capture]][.RESULT = KNOWN (POBJECT n_capture)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ppfirstclass(phpType7*)
+  -- if text_method = $generator_method(ptbytes)
+  -- if text_method =/= ""
+  -- if $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = (pgeneratormethodselection)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_object(S_read, n)
+  -- if n_capture = |S_read.OBJECTS|
+
+dec $generator_getter_source(pstate, pgettersource, nat, nat, text) : bool
+def $generator_getter_source(S, GENERATOR_CAPTURE pgeneratormethodselection, n, n_receiver, text_method) = true
+  -- if pgeneratormethodselection.OBJECT = n_receiver
+  -- if pgeneratormethodselection.CAPTURE = eps
+  -- if $generator_method(pgeneratormethodselection.NAME) = text_method
+  -- if $generator_capture_site(S, pgeneratormethodselection.SITE, pgeneratormethodselection.NAME, pgeneratormethodselection.LINE)
+def $generator_getter_source(S, porigin, n, n_receiver, text_method) = $from_getter_source(S, porigin, n)
+def $generator_getter_source(S, GETTER_FACTORY n_factory porigin, n, n_receiver, text_method) = $from_getter_source(S, GETTER_FACTORY n_factory porigin, n)
+def $generator_getter_source(S, pgettersource, n, n_receiver, text_method) = false -- otherwise
+
+dec $generator_capture_saved(pstate, nat) : bool
+def $generator_capture_saved(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $(n_receiver < n)
+  -- if $generator_object(S, n_receiver)
+  -- if $generator_api_kind(INTRINSIC_GENERATOR_METHOD text_method eps)
+  -- if $generator_getter_source(S, pgettersource, n, n_receiver, text_method)
+def $generator_capture_saved(S, n) = false -- otherwise
+
+def $getter_capture_live(S, n) = true
+  -- if $generator_capture_saved(S, n)
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+
+;; Factory acquisition uses the same getter-capture representation and edge.
+def $from_getter(S, n_array) = ((n_receiver, GENERATOR_API_METHOD text_method, "Generator"))
+  -- if $typed_callback_array(S, n_array)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KINT 1) = (pitem_method)
+  -- if $entry_value(S, pitem_receiver) = POBJECT n_receiver
+  -- if $generator_object(S, n_receiver)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes)
+  -- if text_method = $generator_method(ptbytes)
+  -- if text_method =/= ""
+
+dec $generator_capture_invocation_site(pstate, porigin) : bool
+def $generator_capture_invocation_site(S, porigin) = true
+  -- if $dynamic_site(S, (porigin))
+def $generator_capture_invocation_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $generator_capture_invocation_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+def $generator_capture_invocation_site(S, porigin) = false -- otherwise
+
+def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
+  -- if pgeneratormethodselection.CAPTURE = (n_capture)
+  -- if $generator_capture_saved(S, n_capture)
+  -- if S.OBJECTS[n_capture] = GETTERCLOSURE n (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $generator_capture_invocation_site(S, porigin)
+  -- if pgeneratormethodselection.SITE = porigin
+  -- if pgeneratormethodselection.OBJECT = n
+  -- if pgeneratormethodselection.LINE = z
+  -- if $ptlc(pgeneratormethodselection.NAME) = $ptlc(ptbytes)
+  -- if $generator_method(ptbytes) = text_method
+  -- if $call_line_valid(S, (porigin), z)
+
+dec $generator_capture_marker(ptask*, nat, porigin) : bool
+dec $generator_capture_marker_frames(pframe*, nat, porigin) : bool
+def $generator_capture_marker(eps, n, porigin) = false
+def $generator_capture_marker((GETTER_CAPTURE_RESULT n porigin) :: ptask*, n, porigin) = true
+def $generator_capture_marker(ptask :: ptask_tail*, n, porigin) = $generator_capture_marker(ptask_tail*, n, porigin) -- otherwise
+def $generator_capture_marker_frames(eps, n, porigin) = false
+def $generator_capture_marker_frames(pframe :: pframe_tail*, n, porigin) = ($generator_capture_marker(pframe.TODO, n, porigin) \/ $generator_capture_marker_frames(pframe_tail*, n, porigin))
+def $generator_selection_live(S, eps) = true
+def $generator_selection_live(S, (pgeneratormethodselection)) = true
+  -- if pgeneratormethodselection.CAPTURE = eps
+def $generator_selection_live(S, (pgeneratormethodselection)) = true
+  -- if pgeneratormethodselection.CAPTURE = (n)
+  -- if $getter_capture_live(S, n)
+  -- if $generator_capture_marker(S.TODO, n, pgeneratormethodselection.SITE) \/ $generator_capture_marker_frames(S.FRAMES, n, pgeneratormethodselection.SITE)
+def $generator_selection_live(S, pgeneratormethodselection?) = false -- otherwise
+
+dec $generator_capture_selection_tag(pgeneratormethodselection?) : bool
+def $generator_capture_selection_tag((pgeneratormethodselection)) = (pgeneratormethodselection.CAPTURE =/= eps)
+def $generator_capture_selection_tag(eps) = false
+def $generator_capture_config_tag(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text pgeneratormethodselection?
+  -- if $generator_capture_selection_tag(pgeneratormethodselection?)
+def $generator_capture_config_tag(pconfigcall) = false -- otherwise
+def $generator_capture_operation(pgeneratorop) = $generator_capture_selection_tag(pgeneratorop.SELECTION)
+
+dec $generator_capture_enter(pstate, nat, porigin, int) : pstate
+def $generator_capture_enter(S, n_capture, porigin, z) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method (pgeneratormethodselection), INDEX 0, SENT eps, NAMED false, OWNER (n_receiver), SELECTION eps, LINE z, PACKS eps}) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: $generator_method_return_tasks(S, porigin, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[n_capture] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $getter_capture_live(S, n_capture)
+  -- if $generator_capture_invocation_site(S, porigin)
+  -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
+  -- if $generator_api_arguments(phpType7*)
+  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture)}
+def $generator_capture_enter(S, n_capture, porigin, z) = S[.TODO = (GENERATOR_ARGS {OBJECT n_receiver, NAME text_method, SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION (pgeneratormethodselection)} phpType7* eps) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: $generator_method_return_tasks(S, porigin, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[n_capture] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $getter_capture_live(S, n_capture)
+  -- if $generator_capture_invocation_site(S, porigin)
+  -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
+  -- if $generator_arguments_supported(phpType7*)
+  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture)}
+
+def $dynamic_value(S, porigin, z_init, z_call) = $generator_capture_enter(S, n, porigin, z_call)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $generator_capture_saved(S, n)
+  -- if $closure_callable(S, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $generator_capture_enter(S_read[.TODO = ptask_tail*], n, porigin, z)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_capture_saved(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $closure_callable(S_read, n)
+
+def $getter_capture_result_valid(S, n, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if ~$dynamic_site(S, (porigin))
+  -- if $generator_capture_invocation_site(S, porigin)
+  -- if $generator_capture_saved(S, n)
+  -- if $getter_capture_live(S, n)
+
+;; Arguments are already retired. Drop an ignored owning return alone before
+;; releasing the capture, so its destructor still sees the native call roots.
+dec $generator_capture_unused_result(pstate, nat, porigin) : bool
+def $generator_capture_unused_result(S, n, porigin) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $generator_capture_saved(S, n)
+  -- if $getter_capture_result_valid(S, n, porigin)
+  -- if ~$reference_call_used(S, porigin)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $value_nodes(pvalue) =/= eps
+def $generator_capture_unused_result(S, n, porigin) = false -- otherwise
+def $getter_capture_finish(S, n, porigin, ptask*) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_capture_unused_result(S, n, porigin)
+def $getter_capture_finish(S, n, porigin, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE S.RESULT]
+  -- if ~$generator_capture_unused_result(S, n, porigin)

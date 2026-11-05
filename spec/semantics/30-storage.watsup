@@ -18,7 +18,7 @@ syntax pstringselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin,
 syntax pobjectselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin, METHOD porigin }
 syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
 ;; Computed native Generator selection is history, not another receiver root.
-syntax pgeneratormethodselection = { SITE porigin, OBJECT nat, NAME ptbytes, LINE int }
+syntax pgeneratormethodselection = { SITE porigin, OBJECT nat, NAME ptbytes, LINE int, CAPTURE nat? }
 syntax pcallableaccess = { SITE porigin?, SCOPE porigin?, OBJECT bool, CREATION pmethodcapture? }
 syntax papiquery
 syntax pfibercallable
@@ -323,9 +323,9 @@ syntax pdeclnoticekind = NOTICE_RUNTIME | NOTICE_FILE nat | NOTICE_EVAL nat nat
 syntax pdeclnoticebatch = { KIND pdeclnoticekind, SITE porigin, LINE int, CLASSES (porigin, nat)*, NOTICES pdeclnoticeitem*, INDEX nat }
 syntax pdeprecatedconstant = { SITE porigin, LINE int, PREFIX nat }
 syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, OWNER nat?, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
-syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING | GET_SEVERITY | GET_SENSITIVE_VALUE
+syntax pgettermethod = GENERATOR_API_METHOD text | GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING | GET_SEVERITY | GET_SENSITIVE_VALUE
 ;; A captured factory supplies nonowning creation and invocation authority.
-syntax pgettersource = porigin | GETTER_FACTORY nat porigin
+syntax pgettersource = porigin | GETTER_FACTORY nat porigin | GENERATOR_CAPTURE pgeneratormethodselection
 syntax pgettercall = {SITE porigin, RECEIVER nat, BASE text, METHOD pgettermethod, CAPTURE nat?, INDEX nat, SENT poperand*, LINE int}
 syntax pbindkind = INSTANCE_BIND | STATIC_BIND
 syntax pbindcall = {SITE porigin, SOURCE nat?, KIND pbindkind, INDEX nat, SENT poperand*, LINE int}

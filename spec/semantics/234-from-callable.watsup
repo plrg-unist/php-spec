@@ -718,6 +718,7 @@ def $from_getter(S, n_array) = eps -- otherwise
 
 def $from_getter_source(S, porigin, n) = $from_site(S, porigin)
 def $from_getter_source(S, GETTER_FACTORY n_factory porigin, n) = ($(n_factory < n) /\ $from_factory_saved(S, n_factory) /\ $from_factory_call_site(S, porigin))
+def $from_getter_source(S, pgettersource, n) = false -- otherwise
 
 def $getter_capture_live(S, n) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS

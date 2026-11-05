@@ -22,7 +22,7 @@ def $generator_api_argument_list((NArg (NIdentifier (BYTES text) metadata_name) 
 def $generator_api_argument_list(phpType7*, b_pack, b_named) = false -- otherwise
 def $generator_api_arguments(phpType7*) = (($named_present(phpType7*) \/ $call_unpack_present(phpType7*)) /\ $generator_api_argument_list(phpType7*, false, false))
 def $generator_api_site(S, porigin) = true
-  -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_api_arguments(phpType7*)
 def $generator_api_site(S, porigin) = false -- otherwise
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
@@ -57,6 +57,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.SELECTION = eps
   -- if $generator_object(S, n) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $generator_selected_method(S, pconfigcall.SITE, n, $generator_method_display(text_method), pconfigcall.LINE, pgeneratormethodselection?)
+  -- if $generator_selection_live(S, pgeneratormethodselection?)
   -- if $generator_api_site(S, pconfigcall.SITE)
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $generator_method_display(text_method), CLASS ($ptascii("Generator")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
@@ -90,18 +91,18 @@ def $generator_api_extent(text_method, phpType7*, n) = false -- otherwise
 def $generator_collected_arguments_valid(S, pgeneratorop, eps, poperand*, 0) = true
   -- if $generator_api_site(S, pgeneratorop.SITE)
   -- if $generator_api_operands(poperand*)
-  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_api_extent(pgeneratorop.NAME, phpType7*, |poperand*|)
 def $generator_collected_arguments_valid(S, pgeneratorop, phpType7*, poperand*, n_sent) = false -- otherwise
 def $generator_resumption_arguments_valid(S, pgeneratorop) = true
   -- if ~$generator_api_site(S, pgeneratorop.SITE)
-  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_arguments_supported(phpType7*)
   -- if |phpType7*| = $generator_argument_count(pgeneratorop.NAME)
   -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
 def $generator_resumption_arguments_valid(S, pgeneratorop) = true
   -- if $generator_api_site(S, pgeneratorop.SITE)
   -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
-  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_api_extent(pgeneratorop.NAME, phpType7*, |pgeneratorop.ARGUMENTS|)
 def $generator_resumption_arguments_valid(S, pgeneratorop) = false -- otherwise

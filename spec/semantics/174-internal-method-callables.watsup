@@ -90,6 +90,7 @@ def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = (GETTER_ARGS {SITE po
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
   -- if $closure_callable(S, n)
+  -- if ~$generator_api_getter(pgettermethod)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_ARGS {SITE porigin_call, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin_call)
@@ -100,6 +101,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
+  -- if ~$generator_api_getter(pgettermethod)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read, n, S.ORIGIN)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -116,6 +118,7 @@ def $getter_capture_result_valid(S, n, porigin) = true
   -- if $getter_capture_live(S, n)
 def $getter_capture_result_valid(S, n, porigin) = false -- otherwise
 def $call_task_valid(S, GETTER_CAPTURE_RESULT n porigin) = $getter_capture_result_valid(S, n, porigin)
-rule PhpStep/getter-capture-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+dec $getter_capture_finish(pstate, nat, porigin, ptask*) : pstate
+rule PhpStep/getter-capture-result: S ~> $getter_capture_finish(S, n, porigin, ptask_tail*)
   -- if S.TODO = (GETTER_CAPTURE_RESULT n porigin) :: ptask_tail*
   -- if $call_task_valid(S, GETTER_CAPTURE_RESULT n porigin)

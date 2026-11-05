@@ -151,6 +151,8 @@ dec $generator_invoke_effect(pstate, pgeneratorop, pvalue) : pstate
 dec $generator_effect(pstate, pgeneratorop) : pstate
 dec $generator_send_target(ptask*) : bool
 dec $generator_operation_nodes(pgeneratorop) : pnode*
+dec $generator_capture_operation(pgeneratorop) : bool
+dec $generator_selection_live(pstate, pgeneratormethodselection?) : bool
 dec $generator_pending_exception_nodes(pgeneratorop) : pnode*
 dec $generator_arguments_nodes(pvalue*) : pnode*
 dec $generator_arguments_valid(pstate, pgeneratorop) : bool
@@ -1431,7 +1433,8 @@ def $generator_pending_exception_nodes(pgeneratorop) = [HOBJECT n]
   -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK
   -- if pgeneratorop.ARGUMENTS = [POBJECT n]
 def $generator_pending_exception_nodes(pgeneratorop) = eps -- otherwise
-def $generator_operation_nodes(pgeneratorop) = [HOBJECT pgeneratorop.OBJECT] ++ $generator_arguments_nodes(pgeneratorop.ARGUMENTS) ++ $generator_pending_exception_nodes(pgeneratorop) -- if ~pgeneratorop.BORROWED
+def $generator_operation_nodes(pgeneratorop) = [HOBJECT pgeneratorop.OBJECT] ++ $generator_arguments_nodes(pgeneratorop.ARGUMENTS) ++ $generator_pending_exception_nodes(pgeneratorop) -- if ~pgeneratorop.BORROWED /\ ~$generator_capture_operation(pgeneratorop)
+def $generator_operation_nodes(pgeneratorop) = $generator_arguments_nodes(pgeneratorop.ARGUMENTS) ++ $generator_pending_exception_nodes(pgeneratorop) -- if ~pgeneratorop.BORROWED /\ $generator_capture_operation(pgeneratorop)
 def $generator_operation_nodes(pgeneratorop) = $generator_arguments_nodes(pgeneratorop.ARGUMENTS) -- if pgeneratorop.BORROWED
 def $task_nodes(GENERATOR_RESUME pgeneratorop) = $generator_operation_nodes(pgeneratorop)
 def $task_nodes(GENERATOR_ARGS pgeneratorop phpType7* poperand*) = $generator_operation_nodes(pgeneratorop) ++ $operands_roots(poperand*)
@@ -1476,6 +1479,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $generator_object(S_read, n)
   -- if $generator_method(ptbytes) =/= ""
   -- if ~$generator_selected_method(S, porigin, n, ptbytes, z, $generator_method_selection(S, poperand, ptbytes, phpType7*, z))
+  -- if ~$ppfirstclass(phpType7*)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "generator named or unpacked arguments"]
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -1688,7 +1692,7 @@ def $generator_computed_method_node((NExprNullsafeMethodCall expression phpType2
 def $generator_computed_method_node(pcnode?) = false -- otherwise
 ;; Freeze the actual resolved name and receiver before argument callbacks. The
 ;; later receipt is nonowning and never reads the source CVs again.
-def $generator_method_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z})
+def $generator_method_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps})
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
   -- if $method_name_task(S, poperand, phpType7*, z)
@@ -1705,6 +1709,7 @@ def $generator_selected_method(S, porigin, n, ptbytes, z, eps) = true
   -- if $generator_source_method(S, porigin, ptbytes)
   -- if $call_line_valid(S, (porigin), z)
 def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
+  -- if pgeneratormethodselection.CAPTURE = eps
   -- if $generator_computed_method_node($origin_node(S.SOURCES, porigin))
   -- if pgeneratormethodselection.SITE = porigin
   -- if pgeneratormethodselection.OBJECT = n
@@ -1739,7 +1744,7 @@ def $generator_arguments_valid(S, pgeneratorop) = true
   -- if pgeneratorop.ARGUMENTS = [pvalue]
   -- if $generator_input_valid(S, pvalue)
 def $generator_arguments_valid(S, pgeneratorop) = false -- otherwise
-def $generator_operation_valid(S, pgeneratorop) = ($generator_object(S, pgeneratorop.OBJECT) /\ (HOBJECT pgeneratorop.OBJECT <- S.ALLOCATIONS) /\ $generator_operation_site(S, pgeneratorop) /\ (pgeneratorop.NAME <- ["rewind", "valid", "current", "key", "next", "getreturn", "send", "throw"]) /\ $generator_arguments_valid(S, pgeneratorop) /\ (pgeneratorop.SELECTION = eps \/ (pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED /\ ~$generator_from_site(S, pgeneratorop.SITE))) /\ (~pgeneratorop.ADVANCE \/ ((pgeneratorop.NAME <- ["next", "send", "throw"]) /\ pgeneratorop.LOOP = eps)))
+def $generator_operation_valid(S, pgeneratorop) = ($generator_object(S, pgeneratorop.OBJECT) /\ (HOBJECT pgeneratorop.OBJECT <- S.ALLOCATIONS) /\ $generator_operation_site(S, pgeneratorop) /\ (pgeneratorop.NAME <- ["rewind", "valid", "current", "key", "next", "getreturn", "send", "throw"]) /\ $generator_arguments_valid(S, pgeneratorop) /\ $generator_selection_live(S, pgeneratorop.SELECTION) /\ (pgeneratorop.SELECTION = eps \/ (pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED /\ ~$generator_from_site(S, pgeneratorop.SITE))) /\ (~pgeneratorop.ADVANCE \/ ((pgeneratorop.NAME <- ["next", "send", "throw"]) /\ pgeneratorop.LOOP = eps)))
 def $generator_resumption_valid(S, pgeneratorop) = true
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if $generator_resumption_stage(S, pgeneratorop)
