@@ -401,18 +401,49 @@ dec $weakmap_entries_keys_held(pstate, pweakmapentry*) : bool
 def $weakmap_entries_keys_held(S, eps) = true
 def $weakmap_entries_keys_held(S, pweakmapentry :: pweakmapentry_tail*) = ($($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0) /\ $weakmap_entries_keys_held(S, pweakmapentry_tail*))
 dec $weakmap_entries_free_allowed(pstate, nat, pdestructionrelease) : bool
-;; Direct methodless Values may own a single declared destructor Child.
-;; Per-slot jobs preserve repeated Values and shared/outside Child owners.
+;; Declared storage follows its physical order, independently of write order.
+;; Primitive leaves and fieldless Children add no deeper property protocol.
+dec $weakmap_entries_property_value_free(pstate, pvalue) : bool
+def $weakmap_entries_property_value_free(S, pvalue) = true
+  -- if $weakmap_scalar_value(S, pvalue)
+def $weakmap_entries_property_value_free(S, PFLOAT n) = true
+  -- if $(n < 18446744073709551616)
+def $weakmap_entries_property_value_free(S, POBJECT n_child) = true
+  -- if $weakmap_entries_callback_class(S, n_child)
+  -- if $weakmap_entries_direct_payload(S, POBJECT n_child)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n_child) > 0)
+def $weakmap_entries_property_value_free(S, pvalue) = false -- otherwise
+dec $weakmap_entries_property_state_free(pstate, ppropstate) : bool
+def $weakmap_entries_property_state_free(S, PROP_UNSET) = true
+def $weakmap_entries_property_state_free(S, PROP_VALUE (DIRECT pvalue)) = $weakmap_entries_property_value_free(S, pvalue)
+def $weakmap_entries_property_state_free(S, ppropstate) = false -- otherwise
+dec $weakmap_entries_declared_properties_free(pstate, nat, ppropertydesc*, ppropertyslot*) : bool
+def $weakmap_entries_declared_properties_free(S, n_value, eps, eps) = true
+def $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc :: ppropertydesc_tail*, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN) /\ ppropertyslot.NAME = ppropertydesc.KEY
+  -- if ~$property_hook_declared(S, n_value, ppropertydesc.NAME)
+  -- if $weakmap_entries_property_state_free(S, ppropertyslot.STATE)
+  -- if $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc_tail*, ppropertyslot_tail*)
+def $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc*, ppropertyslot*) = false -- otherwise
+
+;; Per-entry and per-property jobs preserve repeated Values and Children.
 dec $weakmap_entries_child_value_free(pstate, pweakmapvalue) : bool
 def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
   -- if $weakmap_entries_value_allowed(S, POBJECT n_value)
 def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
   -- if ~$weakmap_entries_value_allowed(S, POBJECT n_value)
-  -- if $objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])
-  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
-  -- if n_owners = $heap_owners($heap_graph(S), HOBJECT n_child)
-  -- if $(n_owners > 0)
-  -- if $weakmap_declared_value_child_owners(S, n_value, n_owners)
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n_value) = (ppropertyslot*)
+  -- if $object_table_at(S.OBJECTTABLES, n_value) = eps
+  -- if $node_children(S, HOBJECT n_value) = $property_slot_nodes(ppropertyslot*)
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if $weakmap_entries_declared_properties_free(S, n_value, pclassdesc.PROPERTIES, ppropertyslot*)
 def $weakmap_entries_child_value_free(S, pweakmapvalue) = false -- otherwise
 dec $weakmap_entries_child_entries_free(pstate, nat, pweakmapentry*) : bool
 def $weakmap_entries_child_entries_free(S, n_map, eps) = true
