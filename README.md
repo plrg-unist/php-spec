@@ -4724,13 +4724,17 @@ After output FINAL, source-certified tick entries retire in registration order,
 releasing copied values before their independent FCC object/Closure owners.
 Normal completion and stable pending exits use agreeing saved phase completions;
 the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
-Cacheless entries still drain before queue/executor fallbacks. Four new exit
-originals and one affected normal control agree exactly; six reached groups pass
-176 conditions (12 derived), and private strict433 passes.
-Wider producers, assertion roots, changed phase completions and abrupt/reentrant
-late release remain partial. See the
-[exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json)
-and retained [cache-shape evidence](coverage/semantics/callback-late-tick-callables-review.json).
+An uncaught builtin Exception from a normal-origin argument destructor now stops
+that tick-list cleanup, retaining unfinished arguments, FCC owners and tail
+entries. Its Throwable retires before later active shutdown-queue cleanup and
+inactive executor free. An owning Closure capture can produce the separate
+inactive-child fatal with native exit 0. Five new originals agree exactly;
+five independent groups pass 254 conditions (11 derived), and private strict433
+passes. See the [bailout review](coverage/semantics/callback-late-tick-throw-review.json);
+earlier [exit](coverage/semantics/callback-late-tick-exit-review.json) and
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
+Wider producers, assertion roots, changed phase completions, exception handlers,
+other throws and exits/reentry during late release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

@@ -638,19 +638,21 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR18 retains stable pending main-body exits through post-FINAL tick cleanup.
-Saved shutdown/destructor completions authenticate NORMAL or the same EXITED
-code; an exit also matches the full stored status. Copied values and separate
-FCC owners retire under temporary NORMAL execution, then the saved completion
-returns before later entries/queues. Four new exit originals agree exactly,
-including status 263→CLI 7 and string exit at 0; one affected normal cacheless
-control, six reached groups/176 conditions (164 reached, 12 derived) and
-private strict433 also pass. Wider producers, assertion roots,
-changed phase completions and abrupt/reentrant cleanup remain partial.
-[Exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json).
-The earlier [cache-shape](coverage/semantics/callback-late-tick-callables-review.json)
-and [copied-value](coverage/semantics/callback-late-tick-values-review.json)
-ledgers retain their original cuts and zero-credit failures.
+ATTR19 handles selected uncaught builtin Exceptions from normal-origin tick
+argument destructors after FINAL. The module-local bailout leaves two argument
+protections and unfinished argument/FCC/tail owners intact. Live report
+authentication precedes Throwable release; later active shutdown-list cleanup
+and inactive executor free preserve native order. Five new originals agree,
+including a later queue argument and an owning Closure capture's separate
+inactive-child fatal/CLI 0. Five independent groups pass 254 conditions
+(243 reached, 11 derived), and private strict433 passes; the original late-event
+fixture error keeps zero credit.
+[Bailout review](coverage/semantics/callback-late-tick-throw-review.json).
+Wider Throwable/handler, changed-phase and exit/reentry contexts remain partial.
+The earlier [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
+[copied-value](coverage/semantics/callback-late-tick-values-review.json) ledgers
+retain their original cuts and zero-credit failures.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

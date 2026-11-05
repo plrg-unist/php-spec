@@ -38303,7 +38303,8 @@
         "tests/semantics/callback_closure_invoke_review_protocol.py",
         "tests/semantics/deprecated_late_tick_values_review_protocol.py",
         "tests/semantics/deprecated_late_tick_callables_review_protocol.py",
-        "tests/semantics/deprecated_late_tick_exit_review_protocol.py"
+        "tests/semantics/deprecated_late_tick_exit_review_protocol.py",
+        "tests/semantics/deprecated_late_tick_throw_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/tick_sources.py",
@@ -38327,7 +38328,12 @@
         "tests/semantics/deprecated_late_tick_exit_raw.php",
         "tests/semantics/deprecated_late_tick_exit_cacheless.php",
         "tests/semantics/deprecated_late_tick_exit_review_integer_closure.php",
-        "tests/semantics/deprecated_late_tick_exit_review_string_bound.php"
+        "tests/semantics/deprecated_late_tick_exit_review_string_bound.php",
+        "tests/semantics/deprecated_late_tick_throw_raw.php",
+        "tests/semantics/deprecated_late_tick_throw_owning_capture.php",
+        "tests/semantics/deprecated_late_tick_throw_review_tail.php",
+        "tests/semantics/deprecated_late_tick_throw_review_closure.php",
+        "tests/semantics/deprecated_late_tick_throw_review_shutdown.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -38341,9 +38347,10 @@
         "coverage/semantics/builtin-deprecated-closure-trace-head-review.json",
         "coverage/semantics/callback-late-tick-values-review.json",
         "coverage/semantics/callback-late-tick-callables-review.json",
-        "coverage/semantics/callback-late-tick-exit-review.json"
+        "coverage/semantics/callback-late-tick-exit-review.json",
+        "coverage/semantics/callback-late-tick-throw-review.json"
       ],
-      "review": "Module393 derives source-certified compiler marker plans, lexical frequency/counters and captured callback dispatch. Persistent FCC owners, Closure warning/reception phases and source-wrapper trace locations retain their linked reviews. Post-FINAL ordered entries use existing certificates and copied-value/cache roots for named functions, method arrays, real Closures and raw invokable objects; cacheless entries drain before queue/executor fallbacks. Stable pending exits now require agreeing saved shutdown/destructor completions and full stored status. Temporary NORMAL cleanup restores the saved completion before later entries/queues; changed phase completions and abrupt/reentrant cleanup remain partial. Four new exit originals, one affected normal control, six reached groups/176 conditions (12 derived) and private strict433 retain current cuts in callback-late-tick-exit-review.json. Prior finite-value/cache-shape ledgers retain their separate source/state evidence. Wider marker/class/linking placement, callable producers and assertion roots remain partial; no tick, lifecycle or full-core closure."
+      "review": "Module393 derives source-certified compiler marker plans, lexical frequency/counters and captured callback dispatch. Persistent FCC owners, Closure warning/reception phases and wrapper trace locations retain their linked reviews. Post-FINAL entries release copied values before independent named/method/Closure/raw caches; cacheless entries drain before queue/executor fallbacks. Stable pending exits use agreeing saved phases and full stored status. Selected normal-origin uncaught builtin Throwable bailouts now preserve two abandoned argument protections, unfinished argument/FCC jobs and registry tail. Live report authentication precedes Throwable retirement, later active shutdown-list cleanup and default-fast inactive free; an owning Closure capture can produce the separate inactive-child fatal/CLI0. Five new exact originals, five independent reached groups/254 conditions (11 derived) and private strict433 pass at the current bailout ledger; the original owning-event fixture failure retains zero credit. Earlier value/cache/exit ledgers retain their separate cuts. Wider marker/class/linking, producers, assertion roots, changed-phase/handler/other-Throwable and exit/reentry contexts remain partial; no tick, lifecycle or full-core closure."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",
