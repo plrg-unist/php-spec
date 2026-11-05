@@ -20,29 +20,13 @@
     "expected_model": "normal"
   },
   {
-    "id": "i110-dynamic-generator-name-stays-visible-unsupported",
-    "purpose": "Boundary only, zero agreement: dynamic method-name selection remains separate from literal nullsafe admission.",
+    "id": "i111-computed-generator-named-send",
+    "purpose": "The previously explicit computed-name Unsupported boundary now selects named send before initialization, preserving the exact original source.",
     "source": "<?php\nfunction Flow110U() { echo 'BODY|'; $value = yield 'head'; echo 'VALUE|', $value, '|'; yield 'tail'; }\n$generator = Flow110U(); $method = 'send';\necho 'CALL|', $generator->$method(value: 41), '|';\n",
     "source_sha256": "ceba3076aeb0413a7a04a2dd568bca3eddb24970a5e9ceaf87dda5f99cc6d2a7",
     "native_exit": 0,
     "native_stdout": "CALL|BODY|VALUE|41|tail|",
     "native_stderr": "",
-    "expected_model": "unsupported",
-    "unsupported_reason": "generator dynamic or nullsafe method call",
-    "unsupported_stdout": "CALL|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "65",
-            "76",
-            "76",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "expected_model": "normal"
   }
 ]

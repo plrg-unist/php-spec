@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i111-computed-generator-type-and-lookup-priority",
+    "purpose": "Computed names must be strings without Stringable conversion; invalid types and unknown names stop before arguments or initialization. A mixed-case computed CURRENT then initializes normally and a computed nullsafe NEXT empty pack completes.",
+    "source": "<?php\nclass Name111A { function __toString() { echo 'BAD-STRING|'; return 'send'; } }\nfunction argument111A() { echo 'BAD-ARG|'; return 41; }\nfunction stream111A() { echo 'INIT|'; yield 'head'; return 111; }\n$generator = stream111A();\nforeach ([17, null, [], new Name111A()] as $method) {\n    try { $generator->{$method}(argument111A()); }\n    catch (Error $error) {\n        echo 'TYPE|', $error->getMessage() === 'Method name must be a string', '|', $error->getTrace() === [], '|';\n    }\n}\n$method = 'Absent111';\ntry { $generator->{$method}(argument111A()); }\ncatch (Error $error) {\n    echo 'NAME|', $error->getMessage() === 'Call to undefined method Generator::Absent111()', '|', $error->getTrace() === [], '|';\n}\n$method = 'CuRrEnT'; echo 'READ|', $generator->{$method}(), '|';\n$method = 'NeXt'; $generator?->{$method}(...[]);\necho 'RETURN|', $generator->getReturn(), '|';\n",
+    "source_sha256": "baa18cd0e4f8e40fb9d3df67cef4db9f8158039fc426bfb2dce76b72c9f7770d",
+    "native_exit": 0,
+    "native_stdout": "TYPE|1|1|TYPE|1|1|TYPE|1|1|TYPE|1|1|NAME|1|1|READ|INIT|head|RETURN|111|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 240,
+    "process_seconds": 260
+  }
+]
