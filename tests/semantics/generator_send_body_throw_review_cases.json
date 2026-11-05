@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i117-peer-paused-send-argv-replacement",
+    "purpose": "A paused named Generator throws supplied body Stop after the producer clears the sole receiver CV. Its finally and API argv destructor both see the selected Generator alive. The destructor has only caller trace frames and throws supplied replacement Stop; catch preserves replacement identity, Previous body identity, both original traces and final weak deaths.",
+    "source": "<?php\nclass Stop117R extends Exception {}\nclass Argument117R {\n    function __construct() { global $weakArgument; $weakArgument = WeakReference::create($this); }\n    function __destruct() {\n        global $weakTarget, $replacementStop;\n        echo 'ARG|', $weakTarget->get() instanceof Generator, '|';\n        $probe = new Exception('probe'); $trace = $probe->getTrace();\n        echo 'TRACE|', $trace[0]['function'] === '__destruct', '|', $trace[0]['class'] === 'Argument117R', '|', $trace[1]['function'] === 'run117R', '|', !isset($trace[2]), '|';\n        unset($trace, $probe); throw $replacementStop;\n    }\n}\nfunction flow117R() {\n    global $bodyStop;\n    try { $received = yield 'head'; unset($received); echo 'BODY|'; throw $bodyStop; }\n    finally { global $weakTarget; echo 'FIN|', $weakTarget->get() instanceof Generator, '|'; }\n}\nfunction argument117R() { global $target, $weakTarget; $target = null; echo 'HELD|', $weakTarget->get() instanceof Generator, '|'; return new Argument117R; }\nfunction run117R() {\n    global $target, $weakTarget, $weakArgument, $bodyStop, $replacementStop;\n    $target = flow117R(); $target->current(); $weakTarget = WeakReference::create($target);\n    try { $target->send(argument117R()); echo 'BAD-RETURN|'; }\n    catch (Stop117R $caught) { echo 'CATCH|', $caught === $replacementStop, '|', $caught->getPrevious() === $bodyStop, '|', $bodyStop->getPrevious() === null, '|', $caught->getTrace() === [], '|', $bodyStop->getTrace() === [], '|', $weakTarget->get() === null, '|', $weakArgument->get() === null, '|'; }\n}\n$bodyStop = new Stop117R('body'); $replacementStop = new Stop117R('argv'); run117R(); echo 'DONE|';\n",
+    "source_sha256": "ad8c685514225876aa731929a6a8bc6be8665c8f74cfca781476e4c2eaf30d4a",
+    "native_exit": 0,
+    "native_stdout": "HELD|1|BODY|FIN|1|ARG|1|TRACE|1|1|1|1|CATCH|1|1|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
