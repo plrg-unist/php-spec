@@ -880,6 +880,12 @@ first-class restorer keeps its original Closure through key-time rebinding;
 held/named options stop before the unvalidated restore.
 [A108 review](coverage/semantics/config-iterator-restore-stringable-review.json).
 
+A borrowed direct-CV `IteratorAggregate` may now return a fresh initialized
+user Iterator for positional `ini_get` or `ini_restore` with the copied
+Stringable `precision` option. The existing unary receipt runs after Iterator
+and option cleanup; selected restore retains its original callee. Generator
+returns remain SET-only. [A109 review](coverage/semantics/config-aggregate-unary-stringable-review.json).
+
 ## Decisions that constrain further work
 
 - Implement PHP behavior in authored semantics, including pure arithmetic; the
