@@ -458,7 +458,8 @@ def $output_drive_finalize(S, n) = $drive_steps($executor_caught_finish(S, pexec
   -- if $executor_caught(S) = ((pexecutorqueue, pcompletion))
 def $executor_pending_cause(S, pexecutorqueue, n) = ($throwable_live(S, n) /\ $executor_report_cause(S, pexecutorqueue.COMPLETION, n))
 def $executor_report_cause(S, pcompletion, n) = true
-  -- if $(n < |S.OBJECTS|) /\ $throwable_member(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if $throwable_member(S, n)
   -- if $throwable_field(S, n, "previous") = PNULL
   -- if $throwable_field(S, n, "line") = PINT z
   -- if pcompletion = REQUESTFATAL $object_name(S, n) $echo_value($throwable_field(S, n, "message")) z
@@ -483,7 +484,8 @@ def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
   -- if $(|S.DESTRUCTION.ABANDONED| > 0)
   -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
   -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortick)
-  -- if S.COMPLETION = UNCAUGHT n /\ S.EXCEPTIONHANDLER = eps
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if S.EXCEPTIONHANDLER = eps
   -- if $executor_renderable(S, n)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
