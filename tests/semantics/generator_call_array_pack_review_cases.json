@@ -22,5 +22,17 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i108-peer-packed-named-default-holes",
+    "purpose": "A named third parameter supplied only by unpack requires the copied Generator named-entry path and fills two default holes before body execution.",
+    "source": "<?php\nclass Maker108H {}\n$source = function ($first = 11, $second = 22, $third = 33) {\n    echo 'BODY|', $first === 11, '|', $second === 22, '|', $third === 77, '|';\n    yield $this;\n    return 108;\n};\n$maker = new Maker108H();\n$generator = $source->call(...['newThis' => $maker, 'third' => 77]);\necho 'CREATED|', $generator instanceof Generator, '|';\necho 'CURRENT|', $generator->current() === $maker, '|';\n$generator->next(); echo 'RETURN|', $generator->getReturn() === 108, '|';\n",
+    "source_sha256": "0ec15ee1a5ccfbccfbb6d7809825ec38d9286c2ec3754ccd48344a3b2184e859",
+    "native_exit": 0,
+    "native_stdout": "CREATED|1|CURRENT|BODY|1|1|1|1|RETURN|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 180,
+    "process_seconds": 200
   }
 ]
