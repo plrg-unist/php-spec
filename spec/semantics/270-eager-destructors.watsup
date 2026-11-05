@@ -1031,7 +1031,7 @@ def $eager_bailout_parents(S, pdestructorcall, pdestructorcall_parent :: pdestru
 def $eager_bailout_parents(S, pdestructorcall, pdestructorcall_parent :: pdestructorcall_tail*) = $eager_bailout_parents(S, pdestructorcall, pdestructorcall_tail*)
   -- if pdestructorcall_parent =/= pdestructorcall
   -- if ~$eager_bailout_parent_pair(S, pdestructorcall_parent)
-def $eager_bailout_parents(S, pdestructorcall, pdestructorcall*) = eps -- otherwise
+def $eager_bailout_parents(S, pdestructorcall, pdestructorcall_pending*) = eps -- otherwise
 def $eager_bailout_records(S, ptask) = (pdestructioncleanup_parent* ++ [$eager_cleanup_record(S, ptask)])
   -- if $eager_bailout_call(ptask) = (pdestructorcall)
   -- if $eager_bailout_parents(S, pdestructorcall, S.DESTRUCTION.CALLS) = (pdestructioncleanup_parent*)
