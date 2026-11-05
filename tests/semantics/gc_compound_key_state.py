@@ -229,6 +229,7 @@ for name in ['ordinary-weak-key', 'ordinary-map-key', 'ordinary-nonempty-map-key
     if name == 'ordinary-weak-key':
         checks += ['S.OBJECTS[n_key] = WEAKREFERENCE (n_target)', '$node_children(S, HOBJECT n_key) = eps']
     elif name == 'ordinary-map-key':
+        checks = [check.replace('$ptascii("map")', '$ptascii("outer")') for check in checks]
         checks += ['S.OBJECTS[n_key] = WEAKMAP eps', '$node_children(S, HOBJECT n_key) = eps']
     else:
         checks += ['S.OBJECTS[n_key] = WEAKMAPENTRIES ([pweakmapentry_first, pweakmapentry_second])',
