@@ -3579,9 +3579,18 @@ in registration order before its value releases; surviving slot positions preser
 nonadjacent equal values and later Map release order. Key fields wait until
 notifications finish, and an earlier fatal retains pending owners. Nine exact
 source/request contexts and 951 reported checks cover selective/nested cleanup
-and reference cells in both allocator modes. Internal Map/WeakReference and custom
-Closure key hooks, active free pins and wider diagnostics remain partial.
+and reference cells in both allocator modes. At that cut, internal Map/WeakReference
+and custom Closure key hooks, active free pins and wider diagnostics remained partial.
 [Key notification review](coverage/semantics/gc-key-notify-review.json).
+
+GC33 admits allocated WeakReference/WeakMap identities at first Map insertion.
+Terminal WeakReference cleanup unregisters its referent before incoming entries;
+Map cleanup unregisters outgoing keys and releases its own values first. Earlier
+fatals retain the untouched phase's owners. Nine exact contexts and 866 reported
+conditions cover shared/self/cross-linked keys and both allocator modes. Ordinary
+internal-Key callbacks remain explicitly Unsupported; later producer policies,
+weak Closure keys and active free pins remain partial.
+[Compound key review](coverage/semantics/gc-compound-key-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
@@ -5029,6 +5038,16 @@ native warning/error order and C-string display. The pinned engine accepts
 final/private promotion through its separate parameter route; ordinary property
 groups retain their rejection. Attributes, hooks and wider constructor/signature
 contexts remain partial. [Promotion review](coverage/semantics/anonymous-promotion-review.json).
+
+Readonly anonymous classes share the admitted ordinary member, parent and trait
+rules. Their header makes declared and promoted fields readonly; clone callbacks
+retain the existing one-write reinitialization window. Source metadata records
+the physical `class` token line, even when `new`, `readonly` and `class` span
+different lines, and compiler counters authenticate the readonly bit and name.
+Private keys and eval identities retain full names. Dynamic writes, references,
+invalid declarations and incompatible parents/trait fields retain native errors.
+Attributes, hooks and wider contexts remain partial.
+[Readonly review](coverage/semantics/anonymous-readonly-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
