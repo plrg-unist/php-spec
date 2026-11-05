@@ -173,6 +173,24 @@ collection with active pins retain their boundaries. The
 records three new exact sources, two affected exact sources, 97 reached
 conditions, and two explicit Unsupported controls with zero agreement.
 
+GC39 admits the same ordinary Map-first free when the declared Child has a
+second strong owner. The Map must be the Value's sole owner and have no incoming
+Map-key registration. Freeing the Map removes its Key entry and releases Value;
+Value's declared slot drops one Child owner without calling the Child destructor.
+In the tested outside-CV sources, Map and Value weak gets are null after
+teardown, while the live Key and retained Child remain observable. The later
+release of Child's last owner runs its destructor, including an ordinary caught
+throw.
+
+The admission requires exactly two Child owners at the Map free checkpoint;
+it does not constrain where the second owner resides. The tested sources keep
+it in an outside CV. GC37 first insertion, the GC38 owner-one free arm, and
+replacement/foreach remain unchanged. Three Child owners and other retained
+graphs remain outside this slice. The
+[retained Child review](../../coverage/semantics/gc-map-first-retained-child-review.json)
+records two fresh exact sources, two affected exact sources, 96 reached
+conditions, and the owner-three Unsupported control with zero agreement.
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

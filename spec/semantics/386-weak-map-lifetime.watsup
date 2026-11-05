@@ -124,8 +124,8 @@ def $weakmap_release_slot_allowed(S, ALIAS n_cell) = $weakmap_reference_cell_val
 dec $weakmap_free_slot_allowed(pstate, pweakmapvalue) : bool
 dec $weakmap_entries_callback_class(pstate, nat) : bool
 ;; A direct Value may already own one declared child at first insertion.
-dec $weakmap_declared_value_child(pstate, nat) : bool
-def $weakmap_declared_value_child(S, n_value) = true
+dec $weakmap_declared_value_child_owners(pstate, nat, nat) : bool
+def $weakmap_declared_value_child_owners(S, n_value, n_owners) = true
   -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_value] = INSTANCE porigin
   -- if ~$instance_storage_freeing(S, n_value)
@@ -146,8 +146,10 @@ def $weakmap_declared_value_child(S, n_value) = true
   -- if $object_table_at(S.OBJECTTABLES, n_child) = eps
   -- if $node_children(S, HOBJECT n_child) = eps
   -- if $objectprops_valid(S, S.OBJECTPROPS)
-  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 1
-def $weakmap_declared_value_child(S, n_value) = false -- otherwise
+  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = n_owners
+def $weakmap_declared_value_child_owners(S, n_value, n_owners) = false -- otherwise
+dec $weakmap_declared_value_child(pstate, nat) : bool
+def $weakmap_declared_value_child(S, n_value) = $weakmap_declared_value_child_owners(S, n_value, 1)
 dec $weakmap_write_value_allowed(pstate, paccess) : bool
 def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.VALUE = POBJECT n_value
@@ -671,6 +673,11 @@ dec $weakmap_map_free_slot_allowed(pstate, nat, pweakmapvalue) : bool
 def $weakmap_map_free_slot_allowed(S, n_map, POBJECT n_value) = true
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
   -- if $weakmap_declared_value_child(S, n_value)
+;; A second Child owner keeps it live through the Value-slot release.
+def $weakmap_map_free_slot_allowed(S, n_map, POBJECT n_value) = true
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
+  -- if $heap_owners($heap_graph(S), HOBJECT n_value) = 1
+  -- if $weakmap_declared_value_child_owners(S, n_value, 2)
 def $weakmap_map_free_slot_allowed(S, n_map, pweakmapvalue) = $weakmap_free_slot_allowed(S, pweakmapvalue) -- otherwise
 dec $weakmap_free_allowed(pstate, nat, pdestructionrelease) : bool
 def $weakmap_free_allowed(S, n_map, pdestructionrelease) = true
