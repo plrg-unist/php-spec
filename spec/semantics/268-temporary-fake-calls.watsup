@@ -227,6 +227,8 @@ dec $closure_call_copy_exit_supported(ptask) : bool
 def $closure_call_copy_exit_supported(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = true
 def $closure_call_copy_exit_supported(ERROR_HANDLER_RESULT perrorcall) = true
   -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+def $closure_call_copy_exit_supported(ERROR_HANDLER_CLEAN perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
 def $closure_call_copy_exit_supported(ptask) = false -- otherwise
 def $closure_call_copy_exit_task(S, S_exit, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_release($closure_call_copy_retain(S_exit, n_copy), pclosurecall, {SLOTS eps, NAMED eps})
   -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
@@ -234,18 +236,76 @@ def $closure_call_copy_exit_task(S, S_exit, ERROR_HANDLER_RESULT perrorcall) = $
   -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
   -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
+def $closure_call_copy_exit_task(S, S_exit, ERROR_HANDLER_CLEAN perrorcall) = $closure_call_copy_release($closure_call_copy_retain($error_handler_restore(S_exit[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*], perrorcall.CALLBACK), n_copy), pclosurecall, pnamedargs)
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
 def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit[.COMPLETION = UNSUPPORTED "Generator Closure::call exit continuation"]
   -- if $closure_call_copy_cancel_pending(S, ptask)
   -- if $call_task_valid(S, ptask)
   -- if ~$closure_call_copy_exit_supported(ptask)
 def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit -- otherwise
+dec $closure_call_copy_cleanup_exit(pstate) : (pdestructorcall, pdestructionoperation)?
+dec $closure_call_copy_cleanup_exit_rebase(pstate, int) : pstate
+def $closure_call_copy_exit_scope(S, S_exit) = $closure_call_copy_cleanup_exit_rebase(S, z)
+  -- if S_exit.TODO = (EXIT_UNWIND z) :: ptask_tail*
+  -- if $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))
 def $closure_call_copy_exit_scope(S, S_exit) = $closure_call_copy_exit_task(S, $constructor_failed(S_exit), ptask)
   -- if $closure_call_copy_exit_pending(S)
+  -- if $closure_call_copy_cleanup_exit(S) = eps
   -- if S.TODO = ptask :: ptask_tail*
 def $closure_call_copy_exit_scope(S, S_exit) = $constructor_failed(S_exit)
   -- if $closure_call_copy_exit_pending(S)
+  -- if $closure_call_copy_cleanup_exit(S) = eps
   -- if S.TODO = eps
 def $closure_call_copy_exit_scope(S, S_exit) = S_exit -- otherwise
+
+;; A warning retval's destructor returns through its real C protection and
+;; remaining field/selection releases before zend_error restores the handler.
+;; Carry UnwindExit in that existing operation; neither retval nor children leak.
+dec $closure_call_copy_cleanup_exit_tail(pstate, ptask*, pdestructionoperation, perrorcall) : bool
+def $closure_call_copy_cleanup_exit_tail(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*, pdestructionoperation, perrorcall) = true
+def $closure_call_copy_cleanup_exit_tail(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, perrorcall) = $closure_call_copy_cleanup_exit_tail(S, ptask_tail*, pdestructionoperation, perrorcall)
+  -- if $destructor_release_live(S, pdestructionrelease)
+  -- if pdestructionrelease.CALLER = pdestructionoperation.CALLER /\ pdestructionrelease.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+def $closure_call_copy_cleanup_exit_tail(S, ptask*, pdestructionoperation, perrorcall) = false -- otherwise
+def $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.USER /\ pdestructorcall.PENDING = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL \/ $exit_completion(pdestructionoperation.COMPLETION)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ ~pdestructioncleanup.RELEASED
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if $destructor_result_valid(S, pdestructorcall) /\ $destructor_operation_valid(S, pdestructionoperation)
+  -- if S_emit = $eager_cleanup_history(S, pdestructioncleanup)
+  -- if $call_task_valid(S_emit, ERROR_HANDLER_CLEAN perrorcall)
+  -- if $closure_call_copy_cancel_pending(S_emit, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
+  -- if $closure_call_copy_cleanup_exit_tail(S, ptask_tail*, pdestructionoperation, perrorcall)
+def $closure_call_copy_cleanup_exit(S) = eps -- otherwise
+def $closure_call_copy_cleanup_exit_rebase(S, z) = S[.TODO = (DESTRUCTOR_RESULT pdestructorcall_new) :: $destructor_operation_tasks(ptask_tail*, pdestructionoperation, pdestructionoperation_new)][.DESTRUCTION.CALLS = pdestructorcall_new :: pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation_new = pdestructionoperation[.COMPLETION = EXITED z]
+  -- if pdestructorcall_new = pdestructorcall[.OPERATION = (pdestructionoperation_new)]
+def $closure_call_copy_cleanup_exit_rebase(S, z) = S[.COMPLETION = UNSUPPORTED "Generator Closure::call repeated cleanup exit"] -- otherwise
+def $destructor_operation_postfinish(S, pdestructionoperation) = $exit_start_unwind(S, z)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if pdestructionoperation.COMPLETION = EXITED z /\ pdestructionoperation.PENDING = eps
+  -- if S.COMPLETION = EXITED z
+  -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall)
+  -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
 
 def $temporary_call_task_valid(S, ptask) = false -- otherwise
 
