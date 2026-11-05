@@ -6801,7 +6801,10 @@ CV; the [variable-output review](coverage/semantics/enum-is-callable-output-vari
 records one exact source and 46 reached guards. Shared scalar input/output
 reference cells add one exact source and 43 reached guards in the
 [alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
-Old-object destructor and wider alias effects, other array sources, autoload,
+Retained childless ordinary output objects also receive the name before their
+last owner is later released; the [retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json)
+records one exact source and 77 reached guards. Last-owner destructor and wider
+alias effects, other array sources, autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

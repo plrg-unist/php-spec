@@ -105,6 +105,11 @@ boolean. One exact original and 46 reached guards pass. A shared scalar
 input/output reference cell also retains the saved name through its write;
 one exact original and 43 reached guards pass. Argument-time target rebinding
 remains explicit Unsupported.
+Retained childless ordinary old output objects now receive the callable name
+while another owner survives; their destructor runs only after the last owner
+is released. The postwrite ownership guard rejects a unique or dead old object.
+One exact original, strict433 and 77 independent reached guards pass.
+[Retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json).
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),

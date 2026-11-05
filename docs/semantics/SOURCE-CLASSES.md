@@ -769,3 +769,11 @@ reference cell now preserves the saved name through the result write; the
 [alias-output review](../../coverage/semantics/enum-is-callable-output-alias-review.json)
 records one exact original and 43 reached guards. Argument-time rebinding
 remains Unsupported.
+An initialized childless ordinary old output object can also be replaced when
+the actual postwrite ownership graph still owns it. The captured CV is written
+before returning the boolean, and another owner delays destruction. The
+[retained-output review](../../coverage/semantics/enum-is-callable-output-retained-review.json)
+records source/reached checks and unique/dead-owner refusals. Last-owner output
+destruction still requires a clear-before-destructor continuation: Zend's
+`ZEND_TRY_ASSIGN_REF_STR` calls `zval_ptr_safe_dtor`, which sets the last-owner
+cell to null before user code and writes the name after it returns.
