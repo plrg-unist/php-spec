@@ -1129,5 +1129,50 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "typed:0:Array:cases|",
     "purpose": "Structural rejection ignores a genuine typed-reference payload; no class/method read or coercion is needed."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-output-missing-key-repair-throws",
+    "source": "<?php\nenum ShapeCheck { case A; }\nclass OutputDrop { public function __destruct() { global $name, $target, $receiver; echo $name === null ? 'null|' : 'BAD|'; $target[0] =& $receiver; unset($target[2]); $receiver = ShapeCheck::A; throw new Exception('drop'); } }\n$receiver = ShapeCheck::class; $method = 'cases'; $target = [1 => &$method, 2 => &$receiver]; $name = new OutputDrop; $ok = 'UNCHANGED';\ntry { $ok = is_callable($target, true, $name); echo 'BAD|'; }\ncatch (Exception $e) { $trace = $e->getTrace(); echo $trace[1]['function'], '|'; echo isset($trace[1]['args'][0][0]) ? 'BAD|' : 'saved-shape|'; echo $trace[1]['args'][0][2] === ShapeCheck::A ? 'refcase|' : 'BAD|'; }\necho $name, ':', $ok, '|live:', (int)is_callable($target), '|';\n",
+    "source_sha256": "7cbe47d9dad2690977e09091643c24d7c0215a54611800efaf39bfa9bcb3ffba",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|is_callable|saved-shape|refcase|Array:UNCHANGED|live:1|",
+    "purpose": "Output destruction repairs the source but retains the sent missing-key shape and false/Array selection through an API-frame throw; trace aliases remain live."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-same-cv-owning-throws",
+    "source": "<?php\nenum ShapeCheck { case A; }\nclass ArgDrop { public function __destruct() { global $target, $ok; echo 'drop:', $target, ':', $ok, '|'; throw new Exception('argdrop'); } }\n$target = [ShapeCheck::class, 'cases', new ArgDrop]; $alias =& $target; $ok = 'UNCHANGED';\ntry { $ok = is_callable($target, true, $alias); echo 'BAD|'; }\ncatch (Exception $e) { $trace = $e->getTrace(); echo $trace[0]['function'], ':'; echo isset($trace[1]) ? $trace[1]['function'] : 'NOAPI'; echo '|'; }\necho $target, ':', $alias, ':', $ok, '|';\n",
+    "source_sha256": "8e1a9668454431b24d1038005c6d1571a52d041f77c063c801ac4d0bdbd0c6c9",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "drop:Array:UNCHANGED|__destruct:NOAPI|Array:Array:UNCHANGED|",
+    "purpose": "Same-cell output commits Array while SENT retains the old owning bad-shape array; post-handler child throw observes Array, no API frame and an unassigned result."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-held-bad-array",
+    "source": "<?php\nenum ShapeCheck { case A; }\nclass HeldDrop { public function __destruct() { global $target, $ok; echo 'drop:', $target, '|'; echo $ok === false ? 'assigned|' : 'UNCHANGED|'; } }\n$target = [ShapeCheck::class, 'cases', new HeldDrop]; $hold = $target; $ok = 'UNCHANGED';\n$ok = is_callable($target, false, $target);\necho 'chosen:', (int)$ok, ':', $target, '|'; unset($hold);\n",
+    "source_sha256": "cb7e6178af9d858a251f4506829aaf722aecb0b6701dea6882ecce1d3300eeaf",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "chosen:0:Array|drop:Array|assigned|",
+    "purpose": "A separate holder retains the bad-shape child beyond false/Array output and boolean assignment, then destroys it exactly when released."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-duplicate-reference-entries-cow",
+    "source": "<?php\nenum ShapeCheck { case A; }\nfunction repair() { global $target, $receiver; $target[0] =& $receiver; unset($target[2]); return true; }\n$receiver = ShapeCheck::class; $method = 'cases'; $target = [1 => &$method, 1 => &$method, 2 => &$method]; $name = 'OLD';\n$ok = is_callable($target, repair(), $name);\necho 'chosen:', (int)$ok, ':', $name, '|live:', (int)is_callable($target), '|';\n",
+    "source_sha256": "e4aba26e1b449af73f4d410ae657aea6ed4a477202d4575403b0e664168b900e",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "chosen:0:Array|live:1|",
+    "purpose": "Two physical malformed-array entries share a method reference; second-argument COW repairs the source while the sent bad shape remains false/Array."
+  },
+  {
+    "id": "enum-is-callable-third-output-structural-missing-key-nested-argument-throws",
+    "source": "<?php\nenum ShapeCheck { case A; }\nclass ArgDrop { public function __destruct() { global $name, $ok; echo 'drop:', $name, ':', $ok, '|'; throw new Exception('argdrop'); } }\n$name = 'OLD'; $ok = 'UNCHANGED';\ntry { $ok = is_callable([0 => ShapeCheck::class, 2 => [new ArgDrop]], false, $name); echo 'BAD|'; }\ncatch (Exception $e) { $trace = $e->getTrace(); echo $trace[0]['function'], ':'; echo isset($trace[1]) ? $trace[1]['function'] : 'NOAPI'; echo '|'; }\necho $name, ':', $ok, '|';\n",
+    "source_sha256": "3a233290e2f533625ae3a70c8d5a92f97a8253d07d9981c509cbe5a1f0cc7a76",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "drop:Array:UNCHANGED|__destruct:NOAPI|Array:UNCHANGED|",
+    "purpose": "A nested owning argument entry is destroyed after Array commits and the C handler returns; its throw prevents result assignment without an API trace frame."
   }
 ]

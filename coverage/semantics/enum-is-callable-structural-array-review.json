@@ -1,0 +1,42 @@
+{
+  "scope": "is_callable third positional initialized-CV output with wrong-length or missing-key arrays, including owning entries and genuine typed-reference payloads",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_revision": "00b644b3b5d7ad58bf3b792e93c035232c7c2e9c",
+  "base_revision": "580d58252f888bae0800e09629b8f8fe13b30d50",
+  "semantic_inputs": {
+    "spec/semantics/437-enum-runtime.watsup": "76f63f5b526d229caf9406675e27f79d7bbb8208acda8898fb5ca07e04e81b6b"
+  },
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "behavior": "One bad-shape predicate rejects length other than two or absent keys 0/1. Some(empty VALUES) distinguishes an authenticated bad-shape array from no receipt; ARRAY and immutable ITEMS retain its identity. Only shallow genuine entry/cell validity is required, with no callable payload admission or metadata owners. Existing output handling freezes false/Array through source COW repair, same-cell output replacement and destructor throw. Real SENT/holder owners determine whether argument children retire after the C handler and before result assignment, or after a retained holder is released.",
+  "source_results": "10 distinct exact native/model stdout, stderr and exit-status agreements: five author originals (including the promoted old malformed-array control) and five independent originals copied byte-exact into the maintained catalogue. They cover empty/one/three/missing-key shapes, later source repair, typed reference payloads, duplicate physical reference entries with COW, output repair/throw and original API trace shape, same-CV owning cleanup, retained holders and nested owning-entry post-handler throw. The original Unsupported artifact for the promoted malformed source remains historical and earns no current agreement credit.",
+  "strict_results": "All 437 modules compile in strict SL mode with true/exit0/empty stderr in strict-v1. That precommit report names base580d while compiling the final runtime bytes; author source and independent shape208 inputs bind the same runtime hash at candidate00b644. No production changes followed.",
+  "reached_results": "Independent shape208 passes true/exit0/empty stderr/stable/no timeout on 00b644 across all 437 modules. Duplicate-reference CELL counts are 3 before/after SEND, 4 after source COW, and 2 after old-table retirement; no receipt root is added. Same-CV wrapper owners grow 2 to 3 with one array payload edge, Array commits before a post-handler owning-child throw, old array/object retire and the result stays UNCHANGED. Empty-VALUES output selection remains valid after source repair while preserving false/Array and the old trace shape; budget0/1 agrees. Forged coherent wrong-table receipts, internal sentinels, unmarked and out-of-bounds aliases are refused.",
+  "affected_results": "Updated rebind56 passes true/exit0/empty stderr/stable. Its old malformed-table name now correctly expects Array while the original good-pair receipt remains invalid. One proper typed-reference pair remains explicitly Unsupported, contrasting with the admitted bad-shape typed source; it is not native-agreement credit. No broader initial-member or historical replay is claimed.",
+  "failure_disposition": "All current strict, source, reached and focused checks pass. No source or model failure occurred in this milestone; prior promoted-source Unsupported remains preserved externally.",
+  "engine_routes": [
+    "Zend/zend_API.c:zend_is_callable_at_frame array length/key checks before payload dereference",
+    "Zend/zend_API.c:zend_get_callable_name_ex bad array name",
+    "ext/standard/type.c:PHP_FUNCTION(is_callable) output assignment before boolean return",
+    "Zend/zend_vm_def.h:ZEND_DO_ICALL argument cleanup after caller-frame restoration"
+  ],
+  "remaining": "Proper typed/coerced/backed/debt callable pairs, newly attached type sources, valid-shape ordinary-object/unknown-class lookup contexts, uninitialized or wider output places, named/unpacked output and wider lifetime contexts remain partial. Full core remains unfinished.",
+  "author_reports": {
+    "native-v1/report.json": "aaa0db34f00539abf40ee5edcc8721a4c841ad7900f584994ef3c18408a9f390",
+    "strict-v1/report.json": "9e754601f84de701a50ce315cd16182bab09894258d179e7d30af52a596cd835",
+    "raw/user-string-3xssqhj9/report.json": "2baecabb13e0e1cedc19b0c96831850d58c797c5d38d4fdf15438a3c3b44f047",
+    "raw/enum-is-callable-protocol-hmmm5__y/report.json": "73111992e241fa69c0eb790f727971e82f7d9b0461fbefb5bd924d5deae39c51",
+    "raw/user-string-ez5fxqxf/report.json": "8bd4cb66b830a4be5aaf98df9556761af2020f2cb867740c4e60ed76e81b3839"
+  },
+  "independent_reports": {
+    "native-report.json": "f4dd23de29c42c5b2533b99d05335e40d290cd60b4efaca9c18844cf3ab4fefa",
+    "compare-v1/report.json": "70537a8b0a3c468ad9f7ac5297ad6f7fd486aa8c51cd9811db5d296580b23844",
+    "shape-v1/report.json": "5751a2ca6ff5577e05ebf2386cd43e6b8207b319b44aec4e785d721262f61950"
+  },
+  "recovery": "Author raw/ and manifest.json: ../php-spec-evidence-archive/enum-array-structural-shape-123/. Independent originals, compare.py, shape.py and reports: ../php-spec-evidence-archive/enum-structural-array-review-123/. Historical argv uses the active private .tools/enum-array-reference-member-current path. Maintained sources: enum_is_callable.py --match third-output-structural-, plus third-output-variable-array-malformed. Focused states: enum_is_callable_variable_array_protocol.py --group rebind. Boundary: enum_is_callable.py --match third-output-reference-typed-cell-control. Private shared-tool links make no fresh rebuild or portability claim.",
+  "review": "Independent semantic, source, fixture and final docs/result review CLEAR by /root/enum_review at 00b644. Later source copies and documentation leave runtime bytes unchanged."
+}

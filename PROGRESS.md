@@ -113,9 +113,16 @@ repair/throw preserves that selection, and argument cleanup runs after the
 handler with the result still unassigned. Sixteen originals agree at recorded
 cuts, with independent history178 and focused55/37 checks in the
 [initial-member review](coverage/semantics/enum-is-callable-initial-members-review.json).
+Wrong-length and missing-key arrays now receive false/`Array` through the same
+receipt, using one structural check and their real SENT owner. Source repair,
+same-cell output, retained holders and owning-entry cleanup preserve the saved
+shape and assignment order. Typed payload references are ignored when only the
+bad shape matters; typed valid pairs remain partial. The
+[structural-array review](coverage/semantics/enum-is-callable-structural-array-review.json)
+records the exact source and ownership cuts.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
-wider variable arrays, typed/backed/debt member cells, named/unpacked output,
+wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
 loading and wider enum
 member/lifetime contexts remain partial.
 
@@ -1625,7 +1632,7 @@ records the pointwise bridge to final semantic bytes.
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
 | ATTR32 | Coalesce and coalescing assignment tick order and quiet reads; private implementation/review. |
-| Enum callable arrays | Wrong-length and missing-key third-output arrays; private implementation/review. |
+| Enum callable arrays | Reference acquisition for an uninitialized third output variable; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

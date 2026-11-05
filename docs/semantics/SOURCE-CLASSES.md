@@ -1106,8 +1106,18 @@ output destruction may repair those cells without changing that saved result.
 After the C handler returns, argument-child destruction sees the committed name
 and an unassigned result, with no `is_callable` trace frame. The
 [initial-member review](../../coverage/semantics/enum-is-callable-initial-members-review.json)
-records these source and ownership cuts. Wrong length or missing keys, typed
-member cells and wider non-enum lookup/lifetime contexts remain partial.
+records these source and ownership cuts. Typed member cells in otherwise valid
+pairs and wider non-enum lookup/lifetime contexts remain partial.
+Wrong length or missing key 0/1 now uses one structural check and an empty
+member snapshot, distinguished from a string receipt by the saved array ID.
+Only shallow entry/cell validity is required; typed reference payloads need no
+read or coercion to answer false/`Array`. The actual SENT owner fixes the old
+shape through source COW and same-CV output replacement. Output destruction
+can repair the source while the saved result and API trace retain the original
+shape. A separate array holder delays child destruction; otherwise argument
+cleanup runs after the handler and before boolean assignment, without an API
+frame. The [structural-array review](../../coverage/semantics/enum-is-callable-structural-array-review.json)
+records the bounded source and reached checks.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

@@ -7133,9 +7133,13 @@ does not resolve class names or retain retired old payloads. Invalid current
 types return false/`Array`, preserving that result through repair and cleanup;
 the [initial-member review](coverage/semantics/enum-is-callable-initial-members-review.json)
 records the bounded source and owner checks.
+Arrays with the wrong length or missing keys now return false and write `Array`,
+with no member class/method lookup. Real owners preserve source COW, same-cell
+output and the timing of output and argument destructors; see the
+[structural-array review](coverage/semantics/enum-is-callable-structural-array-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
-sources, typed/backed/debt reference members, wider arrays and autoload,
+sources, typed/backed/debt valid-pair members, wider arrays and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
