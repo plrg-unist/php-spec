@@ -5029,7 +5029,7 @@ Public zero-argument nongenerator anonymous `__clone` now uses ordinary copy-bef
 cloning, including shared references after array separation, parent callbacks and
 failed-copy destructor cleanup. An explicit method call can return a value;
 keyword `clone` returns the fresh copy. [Clone review](coverage/semantics/anonymous-clone-review.json).
-Ordinary nongenerator anonymous static methods use the existing receiverless
+Ordinary anonymous static methods use the existing receiverless
 call path; missing-arity and ordinary return errors format the declaring class
 and method separately, while `never` fallthrough identifies the method kind.
 [Static-method review](coverage/semantics/anonymous-static-method-review.json).
@@ -5158,7 +5158,7 @@ and method scope. Child templates compile before their containing named-class ke
 reversed/repeated calls keep the source counters and allocate fresh instances.
 Complete containing-unit images remain required. Lazy link failures precede
 arguments, while compile errors in uncalled factory bodies still reject the unit.
-Generators, byref returns and attributes remain partial.
+Byref returns, attributes and wider factory contexts remain partial.
 [Method factory review](coverage/semantics/anonymous-method-factories-review.json).
 
 Unit0 anonymous owner methods and constructors reserve their key before compiling
@@ -5180,6 +5180,14 @@ Aborted compilation leaves unpublished trait children uninstalled, preserving
 warning/fatal order.
 Wider signatures, attributes and dynamic contexts remain partial.
 [Trait source factories](coverage/semantics/trait-source-factories-review.json).
+
+Ordinary generator-bodied class and trait methods also compile anonymous
+factories, including admitted nested nongenerator Closures/arrows. Resumption
+restores the actual saved method receiver and lexical/called scope; template
+identity and compiler order remain independent of resume order. Existing
+Generator ownership controls receiver retirement and escaped Closure lifetime.
+Generator constructors, generator Closure/arrow bodies and byref factories
+remain partial. [Generator method factories](coverage/semantics/generator-method-factories-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

@@ -24,6 +24,20 @@ The frame, received arguments, receiver and Closure captures are outgoing heap
 edges of the Generator, not permanent roots. Natural completion releases the
 execution frame but retains the last yield cache, return value and Closure owner.
 
+Admitted ordinary class/Trait method bodies may also create anonymous classes,
+directly or through nongenerator nested Closures/arrows. Their source templates
+compile once; actual saved method scope and receiver survive suspension and
+injected throws. Trait consumers share the source child identity while retaining
+their own lexical/called classes and receiver. Generator constructors and
+generator Closure/arrow factory bodies remain partial.
+[Class factory scope](SOURCE-CLASSES.md),
+[review](../../coverage/semantics/generator-method-factories-review.json).
+
+Trace locations follow the actual resumer. A native Generator API frame makes
+the resumed body frame internal; the API frame keeps its source call location.
+Resumptions without that API trace retain their existing user location, including
+`foreach`. Lazy anonymous child-link errors preserve these frames before arguments.
+
 By-value yields retain raw keys, copied array containers and embedded reference
 cells. Key expressions precede value expressions; a simple key CV is fetched
 after value effects. Implicit integer keys wrap at the pinned signed64 boundary.

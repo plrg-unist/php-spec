@@ -1407,7 +1407,20 @@ diagnostics and skips only source-owned uninstalled trait children. The
 consumer/cleanup state and source-derived refusal evidence, retaining the
 original missing-checkpoint Unsupported and fixture correction. Attributes,
 generator/by-reference-return factories and wider dynamic/lifetime contexts
-remain partial.
+remained partial at that cut.
+
+CLASS185 admits anonymous factories in ordinary nonmagic generator methods of
+named/anonymous classes and unit0 traits, including admitted nongenerator nested
+Closures/arrows and static anonymous methods. Source templates keep compiler key
+order while actual saved frames restore method source, receiver and lexical/called
+classes across yields and injected throws. Existing ownership handles completion
+and escaped Closure lifetime. Shared Generator traces distinguish native API
+resumptions from user/`foreach` callers, including lazy child-link errors before
+arguments. The [review](coverage/semantics/generator-method-factories-review.json)
+separates original source agreements, actual paused/resumed frame and retirement
+checks, derived forged-frame refusals and retained explicit source boundaries.
+Generator constructors, generator Closure/arrow bodies, attributes, by-reference
+factories and wider dynamic/lifetime contexts remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -1614,7 +1627,7 @@ records the pointwise bridge to final semantic bytes.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS185 | Class and Trait factories with Generator bodies; private implementation/review. |
+| CLASS186 | Method-owned generator Closure/arrow factories; native/source preparation. |
 | I112 | Owning native Generator API captures and invocation; private implementation/review. |
 | GC46 | WeakMap offsetGet and offsetExists with finite payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |

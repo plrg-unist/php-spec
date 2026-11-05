@@ -715,8 +715,8 @@ order even after the source owner is unset or failed construction retires it.
 Compiler-folded `__METHOD__` preserves the complete Closure name, including
 nested scopes; lexical `__CLASS__` retains the declaring owner. Ordinary method
 `__METHOD__` retains its class and method name.
-Named nested functions, factories with attributes, generator bodies or
-by-reference returns and later dynamic units remain partial. The
+Named nested functions, factories with attributes, generator Closure/arrow bodies
+or by-reference returns and later dynamic units remain partial. The
 [method Closure factory review](../../coverage/semantics/anonymous-method-closure-factories-review.json)
 separates exact originals, runtime states and source-derived context queries.
 
@@ -731,7 +731,8 @@ header or generated name. Trait composition precedes interface validation and
 constructor arguments, while constant and child compilation retain member order.
 The [mixed-owner review](../../coverage/semantics/anonymous-owner-declarations-review.json)
 distinguishes original execution, genuine reached states and source-derived
-reservation refusals. Attributes, generator/by-reference factories and wider
+reservation refusals. Attributes, generator constructors/Closure bodies,
+by-reference factories and wider
 dynamic/member/lifetime contexts remain partial.
 
 Unit0 source traits may declare the admitted ordinary method/constructor and
@@ -750,8 +751,31 @@ images were never installed, preserving earlier warnings and the actual fatal.
 Normal and installed histories retain ordinary checkpoint handling. The
 [trait factory review](../../coverage/semantics/trait-source-factories-review.json)
 separates original source agreement, actual consumer/cleanup states and derived
-context/refusal queries. Attributes, generator/by-reference-return factories,
+context/refusal queries. Attributes, generator constructors/Closure bodies,
+by-reference-return factories,
 other magic bodies, dynamic units and wider lifecycle contexts remain partial.
+
+Ordinary nonmagic generator methods in named/anonymous classes and unit0 traits
+may contain anonymous factories, including the admitted nongenerator nested
+Closures and arrows. The ordinary method body compiler keeps its parsed owner,
+GOTOROOT and folded class context while preparing generator code. Children retain
+their compile-order keys; trait copies and aliases reuse their source template.
+
+At execution the Generator owns its suspended function frame. Resume installs
+that frame's actual source origin, locals and call context, including the selected
+method, receiver and lexical/called classes. Anonymous `new` therefore uses the
+method's saved scope after yields or injected throws, rather than the resumer's
+scope. Natural completion releases the execution receiver; an escaped bound
+Closure keeps its own receiver until ordinary release. Static anonymous methods
+use the same receiverless Generator path.
+Native API resumptions mark the body trace frame internal and retain the API
+call's source location; user/`foreach` resumptions keep their source location.
+Lazy child-link failures preserve this trace before arguments. The
+[generator method review](../../coverage/semantics/generator-method-factories-review.json)
+separates exact originals, actual paused/resumed ownership and budget checks, and
+derived forged-frame refusals. Generator constructors, generator Closure/arrow
+bodies, attributes, by-reference factories and wider dynamic/lifetime contexts
+remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

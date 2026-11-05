@@ -1,0 +1,104 @@
+{
+  "scope": "CLASS185: anonymous factories in ordinary nonmagic generator methods of named/anonymous classes and unit0 Traits, including existing nongenerator nested Closure/arrow factories and ordinary static anonymous methods.",
+  "base": "7b91b41cec3f24ca6bc1ee371b5aa3d6c102a114",
+  "implementation_commit": "71976886abfee326db25e49d02eb7835d6b889ed",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c zend_compile_func_decl and zend_mark_function_as_generator validate generator return compatibility before compiling body children; zend_generate_anon_class_name consumes compiler-order keys once per source occurrence",
+    "Zend/zend_vm_def.h ZEND_GENERATOR_CREATE copies the actual execute_data/function and retains its This; Zend/zend_generators.c zend_generator_resume resumes that saved execute_data while the actual caller supplies the resumer chain",
+    "Zend/zend_inheritance.c zend_add_trait_method shallow-copies op_array and zend_fixup_trait_method sets consumer scope; compiled child constants remain source-shared",
+    "Zend/zend_generators.c zend_generator_resume links the saved body execute_data to the actual native API or user resumer; Zend/zend_builtin_functions.c zend_fetch_debug_backtrace includes a frame file/line only when the previous execution frame is user code"
+  ],
+  "mechanism": "Two383 eligibility changes admit ordinary generator factory methods and ordinary static anonymous generator members, with an explicit generator-constructor refusal independent of the compiler magic-method list. Existing compiler/frame install preserves GOTOROOT, locals, source and actual call context. Saved-context/function/target and ownership validators remain unchanged. A separate narrow280 trace correction uses the existing nonempty native operation trace to mark the body frame internal; empty user/foreach/delegated/startpack traces retain their prior source location. No frame/operation schema change.",
+  "author": {
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/author/baseline-class180-source-79nqr0xb/report.json",
+      "sha256": "a2147a0acc82a25580b4b6a33d5d3f9f8089dd850cc6cffdb4263db0b9e0767a",
+      "result": "Actual pre185 code b7fc516a7 with docs at42adca8b9: native normal, model explicit Unsupported anonymous class RTD/body/publication context; zero agreement. Provenance is beside the report."
+    },
+    "source3": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/author/class180-source-dmrc_zmt/report.json",
+      "sha256": "3f113c83eec93aa4286d2cdd76b309bc4c621af8f09bff89bf0f36b24934c870",
+      "result": "Exact/stable: saved named receiver/self/parent/static and natural retirement; static Trait injected throw; anonymous owner/returned child/root-after keys0/1/2."
+    },
+    "source4": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/author/class180-source-bnha3gk7/report.json",
+      "sha256": "74b8a43087d48b4bc76dcc301afd858df5b223345041888c27b44398753c3805",
+      "result": "Exact/stable: escaped nested arrow retains receiver after Gen release; generator return-type error precedes child warning; uncalled child default is eager; static anonymous owner preserves0/1/2 keys."
+    },
+    "distinct_source_agreements": 7,
+    "source_model_limit": "Both selected batches use explicit --model-timeout180 (outer190); original defaults remain identical without the new option. Commands/raw streams/statuses/input and binary fingerprints retained.",
+    "fixture_failures": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/author/closure-call-protocol-mcx5dg_0/report.json",
+        "sha256": "b708a03b4dad4f48a9cd14f7afa842f7ac58fcbbb91c5b9832dc7f5a61f89fe1",
+        "result": "Observer bundled an incorrect plain-PSTRING cache assumption and failed to locate pause; no frame/runtime assertions completed. Aggregate false; zero native/model agreement credit."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/author/closure-call-protocol-07fl3hdt/report.json",
+        "sha256": "76ed128e7905ea6b3cd0487e32d2a4e956e4a4e4aa394b649dafcb0b6f2d09e7",
+        "result": "Narrowed actual GENERATOR_RESUME/PAUSED marker was reached, then the explicit plain-PSTRING assertion failed: source literals use an interned string carrier. Fixture corrected to inspect bytes without altering actual state. Aggregate false; zero native/model agreement credit."
+      }
+    ],
+    "checked_SL437": {
+      "recipe_commit": "98d1b759f14a322eb1b4fc9f765db68a0f7b3edf",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/author/closure-call-protocol-4sarz4eu/report.json",
+      "sha256": "389d830068b4c3473c7ecdca3ddd3829d8be402bb67fd975986dde0995720052",
+      "compiler_setup": 7,
+      "genuine_paused_resumed_runtime_ownership_budget_retirement": 58,
+      "derived_forged_frame_refusals": 4,
+      "result": "True newline/exit0/empty stderr/stable. Actual paused Generator owns method receiver after owner CV unset; resumed NEW restores exact saved method context, running Gen has no duplicate frame, full/split7+8192=8199 states agree and receiver/Generator retire. Refusals alter receiver, lexical/called class or function source in explicitly derived query inputs only."
+    },
+    "commands": [
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/generator_method_factory_cases.json --case named-generator-resumed-receiver --case trait-static-generator-throw --case anonymous-owner-generator-return --model-timeout 180",
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/generator_method_factory_cases.json --case generator-nested-arrow-retains-receiver --case generator-return-type-before-child-warning --case uncalled-generator-child-default --case anonymous-owner-static-generator-return --model-timeout 180",
+      "python3 tests/semantics/generator_method_factory_protocol.py"
+    ],
+    "source_revision_binding": "The seven source packets were run from the WIP bytes committed unchanged as71976886a; before/after implementation/catalogue/harness and executed-binary fingerprints bind that cut. Passing SL completed on719 with the recipe bytes committed unchanged as98d1b759f. Documentation/inventory do not alter these inputs.",
+    "compatibility": "The trace-only d3 correction is not reached by seven author sources: normal originals create no body Throwable/fatal trace; static rejections have no active Generator. Author SL69 and independent normal mixed-frame state exercise unchanged frame/ownership/budget rules and normal execution; derived refusal queries do not allocate errors. Their original cuts remain explicit. Only the independently failing lazy-final original and two discriminating API/foreach trace sources are renewed on d3. The509 guard correction changes only methods named __construct with lexical yields. All agreement/state sources have other method names or nongenerator constructors; the affected constructor refusal is renewed independently, while the unchanged GenClosure refusal remains at its original cut."
+  },
+  "remaining": [
+    "Generator constructors and generator Closure/arrow factory bodies",
+    "Attributed/by-reference factories, other magic bodies and wider signatures",
+    "Wider dynamic Trait units, callbacks, delegation and lifetime combinations"
+  ],
+  "preservation": {
+    "author_raw_root": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/author",
+    "notes": "Restore recorded raw source/file/cwd paths for path-identical replay. Original failures retain zero credit; native-only preparation is not model agreement. External artifacts are not build inputs."
+  },
+  "review": {
+    "reviewer": "classes_review",
+    "decision": "accepted_private",
+    "semantic_cut": "509634e57a9e9848931e07e427c15923fb468569",
+    "independent_record": "coverage/semantics/generator-method-factories-independent.json",
+    "basis": "Independent5 originals exact across qualified cuts; corrected lazy original plus2 API/foreach controls exact on d3+509; mixed Trait source/frame/ownership SL76; corrected constructor refusal10 plus unchanged generator-Closure refusal11. Original trace mismatch, failed constructor-boundary aggregate and author observer failures remain separate zero-credit records."
+  },
+  "trace_correction_commit": "d3f174944c37767a51b141fb0a3809a0398bcbb1",
+  "finding": "Independent source5 at719 had four exact agreements and one genuine lazy-final-link trace mismatch: both sides php_error/exit255 and same prefix with ARG skipped, but model body frame used FILE(line4) instead of [internal function]. Original failure retains zero aggregate credit; the corrected original and two focused native API/foreach observers are separately recorded by the reviewer. A focused source-boundary control also found that the first method gate accidentally admitted generator constructors because `_ppmethod_magic` excludes __construct. The explicit independent constructor guard now refuses that intended out-of-scope source. The original failed boundary retains zero aggregate credit; only its affected constructor component is renewed.",
+  "constructor_guard_correction_commit": "509634e57a9e9848931e07e427c15923fb468569",
+  "summary": {
+    "distinct_author_source_originals": 7,
+    "distinct_independent_source_originals": 5,
+    "independently_executed_additional_trace_controls": 2,
+    "author_checked_SL437": {
+      "compiler_setup": 7,
+      "genuine_paused_resumed_runtime_ownership_budget_retirement": 58,
+      "derived_forged_frame_refusals": 4
+    },
+    "independent_checked_SL437": {
+      "compiler_setup": 8,
+      "genuine_source_runtime_resumption_retirement": 64,
+      "derived_refusals": 4
+    },
+    "explicit_unsupported_source_boundary_conditions": {
+      "constructor": 10,
+      "generator_Closure": 11
+    },
+    "notes": "Four independent agreements remain on719+98; corrected original and two new controls are recorded on final trace/constructor cut. Native-positive excluded boundary sources carry zero model/native observational agreement credit. No historical source or normal-state replay for trace-only and constructor-only corrections."
+  }
+}
