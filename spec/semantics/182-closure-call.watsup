@@ -874,8 +874,8 @@ rule PhpStep/closure-call-copy-discarded: S ~> $destructor_release_begin(S[.TODO
   -- if $(n_generator < |S.OBJECTS|)
   -- if S.OBJECTS[n_generator] = GENERATOR pgenerator
   -- if pgenerator.CLOSURE = (n_copy)
-;; The pinned no-Generator receive-error branch retains a zero-ref copy until
-;; shutdown. Stop before that decrement rather than invent ordinary release.
+;; Wider no-Generator receive/mapping cleanup remains unsupported.
+;; Warning cancellations use the authenticated retained-copy path above.
 dec $closure_call_copy_warning_pending(ptask) : bool
 def $closure_call_copy_warning_pending(CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = true
 def $closure_call_copy_warning_pending(ERROR_HANDLER_RESULT perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)

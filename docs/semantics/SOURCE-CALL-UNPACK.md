@@ -632,10 +632,48 @@ check syntax and input mode without rereading retired payload storage. This foll
 carrier when ordinary destructor execution is inactive, following
 `zend_generator_free_storage` and `zend_objects_store_del`.
 At that cut active yield-from producers stopped at the authenticated `Unsupported` boundary.
-By-reference targets, wider call targets and broader
-Generator/delegation/Fiber lifecycle interactions remain required. The
+At that cut, by-reference targets, wider call targets and broader
+Generator/delegation/Fiber lifecycle interactions remained required. The
 [Generator unpack review](../../coverage/semantics/generator-call-unpack-review.json)
 keeps the new source/state evidence separate from prior Iterator campaigns.
+
+The [bounded reference-sink rule](../../coverage/semantics/generator-byref-sink-review.json)
+also admits scalar caches from ordinary named BYVAL Generators without delegation,
+Closure or method access history. The selected sink is a direct named BYVAL user
+function whose actual named call node and compiled name select that function;
+its destination must be fixed, untyped and BYREF, with both send count
+and destination index below two. Integer-normalized keys and ordinary binding
+Errors are checked first. SEND_UNPACK captures HOLD, KEY and Generator INDEX
+before Warning dispatch. A normally returning handler may change source globals;
+if the actual cache, key and index remain unchanged, the captured value enters a
+fresh reference cell before the next native resume. The call cursor remains
+authenticated through the real API callback send/reference stages.
+
+The [reference-cell extension](../../coverage/semantics/generator-reference-sink-review.json)
+also admits ordinary cells yielded by named BYREF Generators. Zend dereferences
+the iterator's current-data pointer before Warning; CELL records that selected
+cell without adding an HCELL owner. A normal handler's write through an outside
+alias changes the delivered scalar, while rebinding the actual GLOBALS name
+leaves delivery attached to the original cell. The existing REFERENCE operand
+policy admits NULL, bool, int, float and interned strings; typed/backed/debt cells,
+runtime-string carriers and owning values remain outside this rule. The same
+ordinary-cell and carrier checks apply after the handler, before creating a
+fresh private callee cell. Earlier private cells survive the second Warning.
+
+Delivery requires the same physical reference cache cell, key and INDEX with
+the Generator still PAUSED. INDEX is the largest used integer key, not a
+resumption counter: repeated explicit keys can leave it unchanged. Reference-cell
+replacement is therefore detected independently even when key/index/value are
+equal. By-value delivery keeps its previous cached-value equality check.
+
+By-value payload changes, key/index or producer-phase changes, replacement
+reference cells, dynamic-string sinks and ineligible reference kinds stop with
+a rooted, source-valid Unsupported cursor. A throwing handler also stays explicit
+Unsupported: Zend still calls the native iterator's `move_forward` with its
+exception pending before propagating it. The pending Throwable, Generator,
+INPUT, sent prefix and held scalar remain rooted at this unmodeled frontier;
+terminal cleanup cannot replace its reason. This is an unfinished core behavior,
+with no engine-agreement credit for these controls.
 
 
 ## Delegated array producers

@@ -175,7 +175,7 @@ rule PhpStep/call-aggregate-return: S ~> $call_aggregate_acquire(S, pcallaggrega
 def $call_aggregate_ready(S, pcallaggregate, ptask_tail*) = $fiber_start_unpack_release(S[.TODO = (UNPACK_AGGREGATE pcallaggregate "ready") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $fiber_traversal_acquisition_nodes(pcallaggregate.ACQUIRED))
 def $call_aggregate_promote(S, pcallaggregate, ptask_tail*) = S[.ITERATORS = S.ITERATORS ++ [OBJECTITER S.NEXTITER pcallaggregate.OBJECT 0 false]][.NEXTITER = $(S.NEXTITER + 1)][.TODO = (ITERATOR_UNPACK {CALL pcallaggregate.CALL, ITERATOR S.NEXTITER, OBJECT pcallaggregate.OBJECT, INPUT pcallaggregate.INPUT, CURRENT (KNOWN PNULL), KEY (KNOWN PNULL), HOLD (KNOWN PNULL), SNAPSHOT eps, NAMED false, CLOSUREORIGIN $iterator_unpack_closure_source(S, pcallaggregate.CALL)} "rewind-start") :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*]
   -- if $useriter_instance(S, pcallaggregate.OBJECT)
-def $call_aggregate_promote(S, pcallaggregate, ptask_tail*) = S[.TODO = (GENERATOR_UNPACK {CALL pcallaggregate.CALL, OBJECT pcallaggregate.OBJECT, INPUT pcallaggregate.INPUT, COUNT 0, NAMED false} "rewind") :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*]
+def $call_aggregate_promote(S, pcallaggregate, ptask_tail*) = S[.TODO = (GENERATOR_UNPACK {CALL pcallaggregate.CALL, OBJECT pcallaggregate.OBJECT, INPUT pcallaggregate.INPUT, COUNT 0, NAMED false, HOLD (KNOWN PNULL), KEY eps, INDEX eps, CELL eps} "rewind") :: (UNPACK_AGGREGATE pcallaggregate "leaf") :: ptask_tail*]
   -- if $generator_object(S, pcallaggregate.OBJECT)
 rule PhpStep/call-aggregate-promote: S ~> $call_aggregate_promote(S, pcallaggregate, ptask_tail*)
   -- if S.TODO = (UNPACK_AGGREGATE pcallaggregate "ready") :: ptask_tail*

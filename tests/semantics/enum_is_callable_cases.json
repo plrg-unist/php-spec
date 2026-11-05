@@ -88,11 +88,12 @@
     "purpose": "Initialized int, bool and null output CVs are overwritten with the literal generated enum callable name."
   },
   {
-    "id": "enum-is-callable-third-output-old-object-unsupported",
+    "id": "enum-is-callable-third-output-old-object-last",
     "source": "<?php\nclass OldDrop { public function __destruct() { echo 'DROP|'; } }\nenum OldCheck: int { case A = 1; }\n$name = new OldDrop;\necho 'before|';\n$ok = is_callable('OldCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, '|';\n",
     "source_sha256": "0b6a405a9e53537e2ac3cb67905037b03fbdf743d3aaf1107a69e73357b22b08",
-    "expected_model": "unsupported",
-    "purpose": "Old output object destructor ordering remains outside the scalar no-heap-root route."
+    "expected_model": "normal",
+    "purpose": "Last-owner old output object is cleared before its destructor and receives the callable name after cleanup.",
+    "expected_normal_stdout": "before|DROP|after:1:OldCheck::from|"
   },
   {
     "id": "enum-is-callable-third-output-rebinding-unsupported",
@@ -172,5 +173,128 @@
     "expected_model": "normal",
     "expected_normal_stdout": "syntax:1:DynamicCheck::missing|runtime:0:DynamicCheck::missing|",
     "purpose": "A saved variable method string writes its name on both syntax-only true and runtime false queries."
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-null-then-assignment",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-not-null|';\n        $name = 'REBOUND';\n        echo 'D-rebound:', $name, '|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'final:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "d1a67fe968f5cc7cc11b78c51ba43c47c6002df099a43859c12128a5874a5837",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-null-then-assignment.",
+    "expected_normal_stdout": "D-null|D-rebound:REBOUND|final:1:FirstCheck::from|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-throw-after-assignment",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-not-null|';\n        $name = 'REBOUND';\n        throw new Exception('drop');\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable('FirstCheck::from', false, $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $name, ':', $ok, '|';\n}\n",
+    "source_sha256": "d674e58ca0c0b6ad0dfcf4c1521057207a6ca62d2e37dcd052531704a2b34b8e",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-throw-after-assignment.",
+    "expected_normal_stdout": "D-null|caught:FirstCheck::from:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-unset-output",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        unset($GLOBALS['name']);\n        echo isset($GLOBALS['name']) ? 'D-present|' : 'D-absent|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'final:', (int)$ok, ':', isset($name) ? $name : 'ABSENT', '|';\n",
+    "source_sha256": "80b857a3d524ac2a4ab748c07518fe25dbcc9b727cafcd6e60c0bf6bf89c2209",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-unset-output.",
+    "expected_normal_stdout": "D-absent|final:1:ABSENT|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-global-ref-rebind",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        $GLOBALS['name'] =& $GLOBALS['other'];\n        echo 'D-rebound:', $GLOBALS['name'], '|';\n    }\n}\n$other = 'OTHER';\n$name = new OldDrop;\n$alias =& $name;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'final:', (int)$ok, ':', $name, ':', $alias, ':', $other, '|';\n",
+    "source_sha256": "28c2daf94885001ed260130ba6f7c5835c35d91f05f3a5721209660c5faab757",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-global-ref-rebind.",
+    "expected_normal_stdout": "D-rebound:OTHER|final:1:OTHER:FirstCheck::from:OTHER|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-unset-recreate",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        unset($GLOBALS['name']);\n        $GLOBALS['name'] = 'REBOUND';\n        echo 'D-new:', $GLOBALS['name'], '|';\n    }\n}\n$name = new OldDrop;\n$alias =& $name;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'final:', (int)$ok, ':', $name, ':', $alias, '|';\n",
+    "source_sha256": "75a67459e0d1a2e4bc1c3d25e4ae9f7ad80869df82593d149f9f054301bbe101",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-unset-recreate.",
+    "expected_normal_stdout": "D-new:REBOUND|final:1:REBOUND:FirstCheck::from|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-local-ref-rebind",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name, $other;\n        echo $name === null ? 'D-null|' : 'D-not-null|';\n        $name =& $other;\n        echo 'D-local:', $name, '|';\n    }\n}\n$other = 'OTHER';\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'final:', (int)$ok, ':', $name, ':', $other, '|';\n",
+    "source_sha256": "7c0b25cd3ae1e0ffa59de215cd2bb8106c9d2019d9a5f842c938c4c74a795768",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-local-ref-rebind.",
+    "expected_normal_stdout": "D-null|D-local:OTHER|final:1:FirstCheck::from:OTHER|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-nested-query",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-not-null|';\n        $inner = is_callable('OtherCheck::from', false, $name);\n        echo 'inner:', (int)$inner, ':', $name, '|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'final:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "f094d6b36e59d14d93d49753338b3b026c2a5028a382d4d498e2ff59be26d99f",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-nested-query.",
+    "expected_normal_stdout": "D-null|inner:1:OtherCheck::from|final:1:FirstCheck::from|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-throw-after-ref-rebind",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        $GLOBALS['name'] =& $GLOBALS['other'];\n        echo 'D-rebound:', $GLOBALS['name'], '|';\n        throw new Exception('drop');\n    }\n}\n$other = 'OTHER';\n$name = new OldDrop;\n$alias =& $name;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable('FirstCheck::from', false, $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $name, ':', $alias, ':', $other, ':', $ok, '|';\n}\n",
+    "source_sha256": "4bf29260e4613e728c34b6dde638833b90de75db3f546ed44fa7d02ad393126d",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-throw-after-ref-rebind.",
+    "expected_normal_stdout": "D-rebound:OTHER|caught:OTHER:FirstCheck::from:OTHER:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-exit-exact-name",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-not-null|';\n        exit('STOP|');\n    }\n}\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "73410ae6728c65b3418c55fd6e1e7e46141ff939488005cd1a59d4b47cb45eb1",
+    "expected_model": "unsupported",
+    "purpose": "Explicit boundary for exit, owning rebound values or late type sources in the pending raw output commit."
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-rebound-child",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ReboundChild { public function __destruct() { echo \"CHILD|\"; } }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo 'OLD|';\n        $name = new ReboundChild;\n        echo 'REBOUND|';\n    }\n}\n$name = new OldDrop;\n$alias =& $name;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, ':', $alias, '|';\nunset($name, $alias);\necho 'UNSET|';\n",
+    "source_sha256": "1007fbfe3fc524afe7bfe7f3d6a8d1ebcff961d834ef87f3283e4883c9715d46",
+    "expected_model": "unsupported",
+    "purpose": "Explicit boundary for exit, owning rebound values or late type sources in the pending raw output commit."
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-rebound-child-retained",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ReboundChild { public function __destruct() { echo \"CHILD|\"; } }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name, $hold;\n        echo 'OLD|';\n        $name = new ReboundChild;\n        $hold = $name;\n        echo 'REBOUND|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, '|';\nunset($hold);\necho 'RELEASE-HOLD|';\nunset($name);\necho 'UNSET|';\n",
+    "source_sha256": "e1c4a925268279dfb44aef424b47a60cfa6dd5a148f0ba2196e16003d508b56d",
+    "expected_model": "unsupported",
+    "purpose": "Explicit boundary for exit, owning rebound values or late type sources in the pending raw output commit."
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-late-typed-alias",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass Holder { public int $p; }\nclass OldDrop {\n    public function __destruct() {\n        global $name, $holder;\n        echo $name === null ? 'D-null|' : 'D-not-null|';\n        $name = 1;\n        $holder->p =& $name;\n        echo $holder->p === 1 ? 'D-bound-int|' : 'D-other|';\n    }\n}\n$holder = new Holder;\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, ':', $holder->p, '|';\n",
+    "source_sha256": "62cf42e065e81aab75dfa942964b06df14e4518ea959dc4c7b86741321737659",
+    "expected_model": "unsupported",
+    "purpose": "Explicit boundary for exit, owning rebound values or late type sources in the pending raw output commit."
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-throw-trace",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass OldDrop { public function __destruct() { throw new Exception('drop'); } }\n$name = new OldDrop;\ntry {\n    $ok = is_callable('FirstCheck::from', false, $name);\n} catch (Exception $e) {\n    foreach ($e->getTrace() as $frame) {\n        echo isset($frame['class']) ? $frame['class'] : '-', ':', $frame['function'];\n        echo isset($frame['line']) ? ':line:' : ':internal:';\n        foreach ($frame['args'] as $argument) {\n            echo $argument === 'FirstCheck::from' ? 'NAME,' : ($argument === false ? 'FALSE,' : ($argument === null ? 'NULL,' : 'OTHER,'));\n        }\n        echo '|';\n    }\n    echo 'name:', $name, '|';\n}\n",
+    "source_sha256": "0eab8038af5487591791c6cf690fb4c039844823c0ecb108be049bffcdb2f484",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-throw-trace.",
+    "expected_normal_stdout": "OldDrop:__destruct:internal:|-:is_callable:line:NAME,FALSE,NULL,|name:FirstCheck::from|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-resurrect-old",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass OldDrop {\n    public function __destruct() {\n        global $hold;\n        $hold = $this;\n        echo 'DROP|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, '|';\nunset($hold);\necho 'end|';\n",
+    "source_sha256": "6d287c1372fa06944ae5c927d8849ed0ec8d8afe2e600dfd062b15f567de8a45",
+    "expected_model": "normal",
+    "purpose": "Native-pinned last-owner output clear/destructor/commit control: unique-resurrect-old.",
+    "expected_normal_stdout": "DROP|after:1:FirstCheck::from|end|"
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-array-target-rebind",
+    "source": "<?php\nclass TargetDrop {\n    public function __destruct() {\n        global $target;\n        $target = [OtherCheck::class, 'from'];\n        echo 'TARGET-DROP|';\n    }\n}\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n$target = [FirstCheck::class, 'from'];\n$name = new TargetDrop;\n$ok = is_callable($target, false, $name);\necho 'final:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "8feb6d6407a713148eaf43a7c7361276fd5cc918cebf098fd8eb71a13d80dd17",
+    "expected_model": "unsupported",
+    "purpose": "The preserved array-variable target source remains outside third-output source-name authentication before any old-object destructor."
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-string-target-rebind",
+    "source": "<?php\nclass TargetDrop {\n    public function __destruct() {\n        global $target;\n        $target = 'OtherCheck::from';\n        echo 'TARGET-DROP|';\n    }\n}\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n$target = 'FirstCheck::from';\n$name = new TargetDrop;\n$ok = is_callable($target, false, $name);\necho 'final:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "1289c0166dfa78cf2e639a278c49fc75bf448888c48edad9fae78cc54e486832",
+    "expected_model": "normal",
+    "expected_normal_stdout": "TARGET-DROP|final:1:FirstCheck::from|",
+    "purpose": "A saved string target remains authenticated after the output old-object destructor rebinds the current target CV."
   }
 ]

@@ -1,0 +1,135 @@
+{
+  "milestone": "OB09",
+  "status": "Independent semantic CLEAR; actual2257a5db4 composition review and strict433 pass. Fast-forward candidate prepared.",
+  "scope": "Normal post-output executor queue ob_start argument receipt; NULL/default callback inactive failure, including authenticated destruction of a Notice handler return value. Non-NULL creation remains Unsupported after successful parsing.",
+  "base": "07fbd35eacc2bea4c75f663100b2b089af2981a8",
+  "implementation_commit": "51542deaaccc9e7c62b75b228557c01843e8ee3c",
+  "fixture_fix_commit": "4766b4813b2225c1ea5ebf54afbfc5d1c2270867",
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "main/output.c::zif_ob_start parses |zll before creation/start",
+      "main/output.c::php_output_handler_create_user and php_output_handler_init create/allocate before php_output_handler_start checks PHP_OUTPUT_ACTIVATED",
+      "main/php_output.h::PHP_OUTPUT_HANDLER_INITBUF_SIZE aligns the initial byte buffer"
+    ]
+  },
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "identities_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "compiler": {
+      "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+      "ocaml_switch": "5.1.0",
+      "semantic_mode": "SL"
+    },
+    "profile": "tests/semantics/profile.json; fixed clock; LC_ALL=C,TZ=UTC,FIRST=one; selected slow cases add USE_ZEND_ALLOC=0"
+  },
+  "validation": {
+    "strict433": "Final kind-guard cut: true, empty stderr, exit0, 12.078s.",
+    "author_source15": "15 exact native/model request contexts at pre-kind-guard cut; normal completion and exit0. Native-first v1/v2 retained.",
+    "final_source2": "4766 fixture-only correction leaves production code identical to 51542; retained formerly refused named-null original and returned-object non-NULL/bad-chunk TypeError each agree exactly on final semantics.",
+    "author_states": "Four unchanged per-case pass rows retain 89 checked conditions at the initially failed campaign; corrected returned-object front separately passes 27, including final whole-state validity. The initial campaign remains failed and earns no whole-campaign credit.",
+    "independent": "Source4 exact native/model tuples, all normal/exit0 at4766b4813. Retained first2 state groups pass35+32 conditions there; corrected genuine PhpStep/guard group separately passes23 (90 reported/63 custom across actual cuts). Initial failed campaigns retain no whole-campaign credit. Native resource control has zero model agreement credit.",
+    "regressions": "Final checked Unsupported controls: callable, active-handler reentry and invalid integer. Affected explicit-null invoke/Notice48, old noarg Notice30 and old returned-handler cleanup40 conditions pass. Active nonstart Notice source agrees exactly. Final source2 agrees exactly."
+  },
+  "compatibility": "The only production change after author source15 was an explicit KIND=INTRINSIC_OB_START premise in the default-start helper. Every tested call to that helper already has that kind at its caller; the premise only makes nonstart direct helper calls total. Independent review confirms unchanged source15 paths; final strict, nonstart Notice and independent source/state checks use the final code.",
+  "known_validator_gap": {
+    "scope": "Inherited live saved-frame call_descriptors_local_valid frontier; not OB09 runtime divergence.",
+    "cause": "call_tasks_valid folds DESTRUCTOR_RESULT/RELEASE metadata while preserving the original TODO prefix. Later OPERATION_EXIT/CLEAN original-Notice authentication then demands the already-folded live C certificates.",
+    "evidence": "Original returned-object assertion fails; same parsed-stage noarg control also yields local=false with exact base OB08 391/444 modules (41.917s, true diagnostic, empty stderr, exit0). All other global validator components pass.",
+    "disposition": "No whole live-frame invariant credit. Keep local parse/output/ownership/negative/budget assertions and final call_descriptors_valid(S_done); no generic validator broadening."
+  },
+  "preserved_failures": [
+    "Initial strict compilation used a helper declaration after its first call; declaration moved before use, failed stage earns zero credit.",
+    "Initial returned-object whole live-frame invariant failure and exact OB08 noarg countercontrol retained.",
+    "A terminal-public-state refusal assertion indexed TODO after the public runner had cleared it; fixture-only fix restores published boundary checks. Internal reached-state review verifies the parsed refusal.",
+    "The first active-Notice regression used a relative --output path and its native subprocess could not open the compounded input path; corrected absolute-directory invocation passes. No source or semantics changed.",
+    "Independent refusal fixtures first used an unparenthesized task payload, then assumed drive_steps preserved a guarded task, then lacked writer support for a PhpStep relational premise. Syntax/elaboration/fixture attempts remain zero credit; the direct reached PhpStep\u2192guard group passes after the minimal emitter extension."
+  ],
+  "tracked_inputs_sha256": {
+    "spec/semantics/391-output-buffers.watsup": "b19cfff9c353c1cc688c4d78e436ee5cb2cdd9de601ef12e7af459644175c52b",
+    "spec/semantics/444-executor-final-free.watsup": "8135dce684e76069b95ea7ad1975962d8912be9186fd007b10fe7a07a250c52f",
+    "tests/semantics/output_executor_reception_sources.py": "3f3428f269c5ca44a188eb9623ed57efab83b8b5dc8460ca509c59794834099d",
+    "tests/semantics/output_executor_reception_state.py": "ee587acc10fc1548a17e3a91c0a4f6f28d9397d24d7a45a35fdb63188a43818e",
+    "tests/semantics/output_executor_reception_review_sources.py": "fae46100121cd035b04a98c081bde9158a333017a2ef5594b2b94976c1559e04",
+    "tests/semantics/output_executor_reception_review_state.py": "2b389b421178c2c28758fe57c2d4c785ae7c5508853e1e52e733b2cbb96930f6",
+    "tests/semantics/output_executor_explicit_state.py": "5ded64dbd687cea1848f2645969925853e4e7cb03106391424be9efc6980da35",
+    "tests/semantics/output_executor_post_deactivate_boundaries.py": "c87eea0f7aa5dd5ee0fd607affd21cd8269b25c466e38d74e51f57a7eb761678",
+    "tests/semantics/fiber_state_review.py": "8e96eff26aa34dd84ed083030671fda85911a1498c6b8bdb632b4e4e4dc198dd"
+  },
+  "raw_archive": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/ob09-default-reception",
+    "native_first": [
+      "/home/user/workspace/php-spec-evidence-archive/ob09-default-reception-native-v1",
+      "/home/user/workspace/php-spec-evidence-archive/ob09-default-reception-native-v2",
+      "/home/user/workspace/php-spec-evidence-archive/ob09-default-reception-native-v3"
+    ],
+    "independent_native": "/home/user/workspace/php-spec-evidence-archive/ob09-review-native-20261105",
+    "reports_sha256": {
+      "fiber-state-review-apt2zvkb/report.json": "d644d970de4d121628c312821424615729180133872d45e4b5fa520f7c52bf90",
+      "fiber-state-review-bpf6nwy_/report.json": "1e5f24561546ec480d0e93652d79d4fe1fd7f7e82631a752ac6ed30a0ec0b949",
+      "fiber-state-review-feuycmw2/report.json": "dbee2271c727fab1403bbe715c2c1b92cf50100b44cf37ebc8ae54301ebf482b",
+      "fiber-state-review-fp71u6ri/report.json": "59dca1054c296eee3b192d3ed6f63b764d54b23378b5f7b5b4f736732f15f239",
+      "fiber-state-review-wz4z2uzv/report.json": "f2e81fe64657df1e11f3f69ab5abe8c9c6f5490d0be7665146fadc73d3cad693",
+      "fiber-state-review-xolqfbdi/report.json": "1e0e4bc25ef40a54639927ca7aceaf2ec863e9e6b44cc767179ede412d4d7937",
+      "ob09-active-notice-final/report.json": "c2687a4d6a5788da48e1fd80c6ae014e518cd56819181248adfe69245741bfe5",
+      "ob09-author-affected/report.json": "70c5b632b08a152b8ddf2cda12282af66b0625944b45201c69c3227589cf66ab",
+      "ob09-author-final/report.json": "c8d0c0d3a2d19ed0fe060ae1ff65d75c6f6785ba8c31f8b369afa22a9e0c7055",
+      "ob09-ob08-noarg-invariant-baseline/report.json": "92ee2704dba71f6d0066ff95a5fe072a4fca6b9f733ecc813a5110a226ad1c72",
+      "ob09-retval-invariant-diag1/report.json": "6a8c02f03c55994504d8a09915c201b4e689b0a0f4da58c3ad519355278082c4",
+      "ob09-retval-invariant-diag2/report.json": "51f48407fbf07ae3e13f6fb4ac1a5f238e6f7775ed968a5452ddf1629a3ae8c1",
+      "ob09-retval-invariant-diag3/report.json": "1d3eff32de0bfa82850143b4d412b0bf5ca16a452392cd8ed775b5cc990d028f",
+      "ob09-retval-invariant-diag4/report.json": "5cfc7d35b9e92b3627657f7d03bb5813b03a970318f7548590e3fb1862f75e68",
+      "ob09-strict-draft1/report.json": "038f6b76cae3adb6525153b3bd68e18a95ed153c201e43d9a9095d3cd61bb300",
+      "ob09-strict-draft2/report.json": "43a7fcc6324ee5ee4962c97142c32a3ba17a2bf684f0dc47fd31ec166449c496",
+      "ob09-strict-final/report.json": "d2933db0433be8efdd40d83eeba61cbe482852db2137f604491a6a7b08bfe56b",
+      "output-executor-reception-6zgxqlym/report.json": "a57090eba199eae4e7a953bb297e9fc5ab9a934610ff03199ac21e16770972ac",
+      "output-executor-reception-r5umudwv/report.json": "31c1568f71235c0b735c354e005bedd33cb05c7b34859f966fbbd59fa53f6a2a",
+      "output-post-deactivate-boundaries-prpdhu_v/report.json": "f7b92510d96347d56ab7bec3b23345ba6a0402291f9c6f7ef3094034167a1938",
+      "output-executor-reception-review-rd7w_gbk/report.json": "3a445c9b39a70c4c6f2ee3f2f3cd846e9dc4bde0fac7d4a37730b76d12852d2b",
+      "fiber-state-review-ulzpuv4e/report.json": "0b7d44d5db29484cf8e59dfd7f1126d238a733412cbd72de117707fa02dae41a",
+      "fiber-state-review-_z30oesz/report.json": "b32feb78045fd4198f3e4ba1d69ee12ea7c4c968f087267f6c26e247130a275d",
+      "ob09-composed-strict/report.json": "b9b59d23d2c4f764a93192772c92a5a9bdb621dc7c222fe988f1f062926c3656",
+      "fiber-state-review-mtzkwwnv/report.json": "5418d4c6b298df1ebec92ebea0f179e7a62e9d81b2b34ba01b0ee2d621810ea1",
+      "fiber-state-review-nl11tbmb/report.json": "fb78c5d31759ed15f1eb74f74abe7348f9cc705a06d41d347ea6a990a49c196b"
+    }
+  },
+  "remaining": [
+    "Pure/effectful callable creation and invalid-callback Warning\u2192Notice lifetime protocol.",
+    "Active handler-body reentry, deprecation-handler returned-object starts, wider abnormal completion and output-deactivation cleanup.",
+    "Pre-inactive allocation failure and PHP memory-limit effects; no arbitrary-size allocation closure.",
+    "Inherited folded-frame validator frontier recorded above."
+  ],
+  "resource_control": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/ob09-review-native-20261105/resource-frontier/report.json",
+    "report_sha256": "e7e20721eef736233eb785f9812b05eb1369ffd5613e4a3d48501120260c6e91",
+    "profile": "Pinned native only; memory_limit=16M, chunk_size=33554432 after output deactivation.",
+    "result": "exit255, stdout FX|D1|; allocation Fatal before any failed-start Notice; zero model agreement credit."
+  },
+  "ready_head": "6dcd9a6988b16b7bcaac5abd68e80de9a7ffa16c",
+  "review": {
+    "reviewer": "/root/output_review_current",
+    "decision": "CLEAR for public normal receipt/default failure; qualified boundaries retained.",
+    "harness_review": "/root/output_dev_current independently reviewed the two-line PhpStep premise emitter extension: every other Boolean clause renders byte-identically.",
+    "compatibility": "Final helper kind guard is redundant on the15 already-start-kind Notice paths. Later corrections touch fixtures/emitter only; production rules and source4 bytes remain unchanged."
+  },
+  "composition": {
+    "master": "2257a5db4aca6a4db26bbfe363739bbf925825be",
+    "review": "Actual391/444/30 union CLEAR: no OB09 delta to30; pconfigcall/pconfigpack unchanged. Parent Generator/enum/Closure call consumers are unselected or KIND-guarded. TICKENTRIES=eps excludes ATTR17 readiness; live tick cleanup still fails OB09 normal-queue scope. No unchanged source/native/state replay.",
+    "strict433": {
+      "result": "true; empty stderr; exit0",
+      "seconds": 12.103,
+      "command": "tests/semantics/_build/default/numeric_runner.exe --sl <modules.json433 entries> strict.watsup",
+      "report": "ob09-composed-strict/report.json"
+    },
+    "inputs_sha256": {
+      "spec/semantics/391-output-buffers.watsup": "b19cfff9c353c1cc688c4d78e436ee5cb2cdd9de601ef12e7af459644175c52b",
+      "spec/semantics/444-executor-final-free.watsup": "38cc42fa1a8d7bc3eafdf1b0f7d2f89bfacfc5e99e409974342fcaf8ca7ab485",
+      "spec/semantics/30-storage.watsup": "5df78f643880210dffe69e085e589a6f35d423f33b81f81fbe5eb6105967716b"
+    }
+  }
+}

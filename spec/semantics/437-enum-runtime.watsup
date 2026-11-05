@@ -1581,8 +1581,8 @@ def $enum_is_callable_input(pconfigcall) = ((pvalue, b_syntax))
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (PBOOL b_syntax))]
 def $enum_is_callable_input(pconfigcall) = eps -- otherwise
 
-;; The third argument is a writable CV, captured before invocation. Replacing
-;; its old value must leave any old object owned, so the write cannot run user code.
+;; The third argument captures a writable CV. Retained values write directly;
+;; a last ordinary object uses the clear/destructor/commit continuation below.
 dec $enum_is_callable_ref_array_receiver(pstate, pvalue, porigin, ptbytes, ptbytes, bool) : ptbytes?
 def $enum_is_callable_ref_array_receiver(S, pvalue_class, porigin_class, ptbytes_class, ptbytes_member, false) = (ptbytes_class)
   -- if ptbytes_member = $ptascii("class")
@@ -1631,6 +1631,18 @@ def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiv
   -- if $enum_is_callable_target(S, PARRAY n_array) = ((porigin_class, ptbytes_method, false))
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = eps -- otherwise
 
+dec $enum_is_callable_ref_last(pstate, nat, int) : bool
+def $enum_is_callable_ref_last(S, n_cell, z) = true
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_old)
+  -- if $getclass_live_object(S, n_old)
+  -- if S.OBJECTS[n_old] = INSTANCE porigin_old
+  -- if $node_children(S, HOBJECT n_old) = eps
+  -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
+  -- if S_clear.COMPLETION = NORMAL
+  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_old) = 0
+def $enum_is_callable_ref_last(S, n_cell, z) = false -- otherwise
+
 dec $enum_is_callable_ref_old(pstate, nat, pvalue, ptbytes, int) : bool
 def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = true
   -- if $value_nodes(pvalue_old) = eps /\ pvalue_old =/= PUNDEFINED
@@ -1641,6 +1653,9 @@ def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
   -- if S_write = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PSTRING ptbytes_name, z)
   -- if S_write.COMPLETION = NORMAL
   -- if $($heap_owners($heap_graph(S_write), HOBJECT n_old) > 0)
+def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_old)
+  -- if $enum_is_callable_ref_last(S, n_cell, z)
 def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = false -- otherwise
 
 dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
@@ -1749,11 +1764,158 @@ def $enum_is_callable_result(S, pvalue, false) = (b_magic)
   -- if $enum_is_callable_magic(S, porigin_class, b_case) = (b_magic)
 def $enum_is_callable_result(S, pvalue, b_syntax) = eps -- otherwise
 
+;; ZEND_TRY_ASSIGN_REF_STR clears the last old zval before its destructor, then
+;; writes the selected name even if that callback leaves a pending exception.
+dec $enum_is_callable_output_input(penumqueryinput?) : ptask*
+def $enum_is_callable_output_input(eps) = eps
+def $enum_is_callable_output_input((penumqueryinput)) = [ENUM_IS_CALLABLE_INPUT penumqueryinput]
+
+dec $enum_is_callable_output_valid(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_valid(S, penumqueryoutput) = true
+  -- if pconfigcall = penumqueryoutput.CALL
+  -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE /\ pconfigcall.INDEX = 3
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE penumqueryoutput.CELL)]
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if penumqueryoutput.DEPTH = |S.FRAMES| /\ penumqueryoutput.CALLER = S.CURRENT
+  -- if $config_selected_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (3)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((NExprVariable (BYTES text_output) metadata_output, false, eps, porigin_output, z_output))
+  -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_output*)
+  -- if $call_reference_operand_valid(S, REFERENCE penumqueryoutput.CELL)
+  -- if $(penumqueryoutput.OLD < |S.OBJECTS|)
+  -- if S.OBJECTS[penumqueryoutput.OLD] = INSTANCE porigin_old
+  -- if $class_at(S.CLASSES, porigin_old) = (pclassdesc_old)
+  -- if S_history = S[.TODO = (CONFIG_INVOKE pconfigcall) :: $enum_is_callable_output_input(penumqueryoutput.INPUT)]
+  -- if $enum_is_callable_ref_name(S_history, pconfigcall, pvalue_input) = (penumqueryoutput.NAME)
+  -- if $enum_is_callable_result(S_history, pvalue_input, b_syntax) = (penumqueryoutput.RESULT)
+def $enum_is_callable_output_valid(S, penumqueryoutput) = false -- otherwise
+def $call_task_valid(S, ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) = $enum_is_callable_output_valid(S, penumqueryoutput)
+def $call_task_valid(S, ENUM_IS_CALLABLE_CLEAR penumqueryoutput) = false
+def $task_nodes(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) = $config_nodes(penumqueryoutput.CALL)
+
+dec $enum_is_callable_output_capture(pstate, pconfigcall) : penumqueryoutput?
+def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
+  -- if $enum_is_callable_ref_slots_valid(S, pconfigcall)
+  -- if $enum_is_callable_ref_last(S, n_cell, pconfigcall.LINE)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_old)
+  -- if $enum_is_callable_result(S, pvalue_input, b_syntax) = (b_callable)
+  -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
+  -- if n_depth = |S.FRAMES|
+  -- if penumqueryoutput = {CALL pconfigcall, INPUT $enum_is_callable_saved(S, pconfigcall, pvalue_input), CELL n_cell, OLD n_old, NAME ptbytes_name, RESULT b_callable, DEPTH n_depth, CALLER S.CURRENT}
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+def $enum_is_callable_output_capture(S, pconfigcall) = eps -- otherwise
+def $eager_operation_source(S, CONFIG_INVOKE pconfigcall) = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
+  -- if $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
+
+dec $enum_is_callable_output_ready(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_ready(S, penumqueryoutput) = true
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+  -- if S.STORE[penumqueryoutput.CELL] = DEFINED pvalue
+  -- if $value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED
+  -- if $propref_at(S.PROPREFS, penumqueryoutput.CELL) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, penumqueryoutput.CELL) = eps
+def $enum_is_callable_output_ready(S, penumqueryoutput) = false -- otherwise
+dec $enum_is_callable_output_commit(pstate, penumqueryoutput) : pstate
+def $enum_is_callable_output_commit(S, penumqueryoutput) = $reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME))[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL penumqueryoutput.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if $enum_is_callable_output_ready(S, penumqueryoutput)
+def $enum_is_callable_output_commit(S, penumqueryoutput) = $reference_coercion_store(S, penumqueryoutput.CELL, DEFINED (PSTRING penumqueryoutput.NAME))[.TODO = (THROW_SEARCH n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if $enum_is_callable_output_ready(S, penumqueryoutput)
+def $enum_is_callable_output_commit(S, penumqueryoutput) = S[.COMPLETION = UNSUPPORTED "is_callable output rebound to owning value or new type source"] -- otherwise
+rule PhpStep/enum-is-callable-output-commit: S ~> $enum_is_callable_output_commit(S, penumqueryoutput)
+  -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+
+;; The required commit sits after the genuine eager-operation exit, including
+;; while the destructor executes in a saved caller frame. It is not a new owner
+;; of OLD; resurrection and once-only destructor marks use the ordinary rules.
+dec $enum_is_callable_output_front(ptask*, pdestructionoperation) : bool
+def $enum_is_callable_output_front((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*, pdestructionoperation) = true
+def $enum_is_callable_output_front(ptask*, pdestructionoperation) = false -- otherwise
+dec $enum_is_callable_output_at(ptask*, pdestructionoperation) : penumqueryoutput?
+def $enum_is_callable_output_at((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*, pdestructionoperation) = (penumqueryoutput)
+def $enum_is_callable_output_at(ptask :: ptask_tail*, pdestructionoperation) = $enum_is_callable_output_at(ptask_tail*, pdestructionoperation)
+  -- if ~$enum_is_callable_output_front(ptask :: ptask_tail*, pdestructionoperation)
+def $enum_is_callable_output_at(eps, pdestructionoperation) = eps
+dec $enum_is_callable_output_frames(pstate, pframe*, pdestructionoperation) : (pstate, penumqueryoutput)?
+def $enum_is_callable_output_frames(S, eps, pdestructionoperation) = eps
+def $enum_is_callable_output_frames(S, pframe :: pframe_tail*, pdestructionoperation) = ((S_scope, penumqueryoutput))
+  -- if $enum_is_callable_output_at(pframe.TODO, pdestructionoperation) = (penumqueryoutput)
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $enum_is_callable_output_valid(S_scope, penumqueryoutput)
+def $enum_is_callable_output_frames(S, pframe :: pframe_tail*, pdestructionoperation) = eps
+  -- if $enum_is_callable_output_at(pframe.TODO, pdestructionoperation) = (penumqueryoutput)
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if ~$enum_is_callable_output_valid(S_scope, penumqueryoutput)
+def $enum_is_callable_output_frames(S, pframe :: pframe_tail*, pdestructionoperation) = $enum_is_callable_output_frames(S, pframe_tail*, pdestructionoperation)
+  -- if $enum_is_callable_output_at(pframe.TODO, pdestructionoperation) = eps
+dec $enum_is_callable_output_scope(pstate, pdestructionoperation) : (pstate, penumqueryoutput)?
+def $enum_is_callable_output_scope(S, pdestructionoperation) = ((S, penumqueryoutput))
+  -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = (penumqueryoutput)
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+def $enum_is_callable_output_scope(S, pdestructionoperation) = eps
+  -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = (penumqueryoutput)
+  -- if ~$enum_is_callable_output_valid(S, penumqueryoutput)
+def $enum_is_callable_output_scope(S, pdestructionoperation) = $enum_is_callable_output_frames(S, S.FRAMES, pdestructionoperation)
+  -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = eps
+def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput = penumqueryoutput_source /\ pdestructionoperation.VALUE = KNOWN (PBOOL penumqueryoutput.RESULT) /\ pdestructionoperation.CELL = penumqueryoutput.CELL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE))
+  -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
+  -- if $enum_is_callable_output_scope(S, pdestructionoperation) = ((S_scope, penumqueryoutput))
+def $eager_operation_source_guard(S, pdestructionoperation) = false
+  -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
+  -- if $enum_is_callable_output_scope(S, pdestructionoperation) = eps
+def $destructor_operation_postfinish(S, pdestructionoperation) = $enum_is_callable_output_commit(S, penumqueryoutput)
+  -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+def $destructor_operation_postfinish(S, pdestructionoperation) = $enum_is_callable_output_commit(S, penumqueryoutput)
+  -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+def $destructor_internal_site_source(ENUM_IS_CALLABLE_CLEAR penumqueryoutput) = true
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, penumqueryoutput.CALL, $trace_extra(S_history, $getclass_trace_operands(penumqueryoutput.CALL.SENT)))
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
+  -- if $enum_is_callable_output_scope(S, pdestructionoperation) = ((S_history, penumqueryoutput))
+  -- if penumqueryoutput = penumqueryoutput_source
+
+dec $enum_is_callable_output_task(ptask) : bool
+def $enum_is_callable_output_task(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) = true
+def $enum_is_callable_output_task(ptask) = false -- otherwise
+dec $enum_is_callable_output_tasks_pending(ptask*) : bool
+def $enum_is_callable_output_tasks_pending(eps) = false
+def $enum_is_callable_output_tasks_pending((ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*) = true
+def $enum_is_callable_output_tasks_pending(ptask :: ptask_tail*) = $enum_is_callable_output_tasks_pending(ptask_tail*)
+  -- if ~$enum_is_callable_output_task(ptask)
+dec $enum_is_callable_output_frames_pending(pframe*) : bool
+def $enum_is_callable_output_frames_pending(eps) = false
+def $enum_is_callable_output_frames_pending(pframe :: pframe_tail*) = ($enum_is_callable_output_tasks_pending(pframe.TODO) \/ $enum_is_callable_output_frames_pending(pframe_tail*))
+def $enum_is_callable_output_exit_pending(S) = ($enum_is_callable_output_tasks_pending(S.TODO) \/ $enum_is_callable_output_frames_pending(S.FRAMES))
+def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "is_callable output destructor exit continuation"]
+  -- if ~$fiber_closing(S, S.ACTIVEFIBER)
+  -- if ~$property_dynamic_exit_pending(S)
+  -- if ~$foreach_bind_exit_pending(S)
+  -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
+  -- if $enum_is_callable_output_exit_pending(S)
+
 dec $enum_is_callable_receive(pstate, pconfigcall) : pstate
+def $enum_is_callable_receive(S, pconfigcall) = S_clear[.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: $enum_is_callable_ref_tail(S, pconfigcall, ptask_tail*)][.RESULT = KNOWN (PBOOL penumqueryoutput.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)][.CELL = penumqueryoutput.CELL][.LOCATION = ROOT penumqueryoutput.CELL]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
+  -- if S_clear = $write_cell_checked(S, penumqueryoutput.CELL, PNULL, pconfigcall.LINE)
+  -- if S_clear.COMPLETION = NORMAL
 def $enum_is_callable_receive(S, pconfigcall) = S_write[.TODO = $enum_is_callable_ref_tail(S, pconfigcall, ptask_tail*)][.RESULT = KNOWN (PBOOL b_callable)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
   -- if $enum_is_callable_ref_slots_valid(S, pconfigcall)
+  -- if ~$enum_is_callable_ref_last(S, n_cell, pconfigcall.LINE)
   -- if $enum_is_callable_result(S, pvalue_input, b_syntax) = (b_callable)
   -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
   -- if S_write = $write_cell_checked(S, n_cell, PSTRING ptbytes_name, pconfigcall.LINE)

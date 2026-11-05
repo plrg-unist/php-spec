@@ -1,0 +1,43 @@
+{
+  "scope": "GC28: finite nested DIRECT-array capture DAGs under an authenticated active real Closure root; arrays may share children and direct captures.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "base": "eae16b69146dbde52c7a953a37b547cf5d033faa",
+    "author_source_only": "83f7598ccc7509e561c4baed5639d80152621280",
+    "semantic": "fafb9e6b49434fa60c6c13dd26d16778585731bc",
+    "author_state": "b2dacd18e2b1dc9925ea4d904e2e54f796f4b42f",
+    "independent_source": "0388c01c353f23fbb5c28c5d21ae672beb3939d3",
+    "independent_state": "0388c01c353f23fbb5c28c5d21ae672beb3939d3"
+  },
+  "rule": "Capture and entry lists must be DIRECT and defined. Existing heap_reach computes the component with visited identities, preserving all edge occurrences. Every reached array is allocated, mutable, nonproxy, outside pooled reach and has equal ordinary/physical children; every reached object is an allocated childless stdClass. Self-reach from each array child list rejects direct cycles. An array-to-array edge restricted to capture reach makes this clause disjoint from flat admissions. Actual source/caller/root, capture arity, static-cell and hidden-table fences remain. Collector owner, trial-root, buffer and count algorithms are unchanged.",
+  "engine_basis": "Pinned Zend get_gc/array iteration exposes every repeated zval edge, while mark/scan visits identities by color. Pure direct array nesting from ordinary by-value PHP operations is a DAG: zend_compile_expr_with_potential_assign_to_self preserves RHS snapshots and SEPARATE_ARRAY duplicates shared tables. The Closure hidden capture table remains black under the genuine caller root; no arbitrary Closure-cycle or hidden-table count is granted.",
+  "validation": {
+    "source": "Both original author source pairs agree exactly at fafb9e6b4: shared depth-three nesting and local parent/inner COW print T|P|0|D|3|split|0|H|3|dead|0|live|END|leaf-live|leaf-dead, exit 0/empty stderr, stable HEAD/inputs, no timeout and empty child groups.",
+    "native_controls": "Independent diamond and self-copy snapshot controls pass with roots 0→1→2→3→4→5 and 0→1→2, collect 0, and final weak death. These controls have native-only credit.",
+    "author_reached": "Strict SL source-reached D fronts pass 246+191 assertions at b2dacd18e. The DAG binds outer/parent/inner/leaf owners 2/1/4/4 plus Closure 2, separate repeated edges and one slot per identity. COW binds four distinct arrays: captured/local outer owners 1/1, original/copied inner 3/1, leaf 2 and unrelated object 2. Only the local graph and old inner rebuffer; every malformed/cyclic/proxy/pool/immutable counterstate recomputes graph/reach and proves same-arity caller authority before refusal. Budget resumption passes.",
+    "affected_gc27": "Only the changed source-reached GC27 distinct/shared front is replayed: 207 strict SL assertions pass at b2dacd18e. The same-arity B→A mutation retains a positive callable/selected-caller proof; the flat helper remains false and ordinary admission is now true for its finite nested DAG. Original GC27 204 and other historical cuts/counts remain unchanged; self-cycle and wrong-arity controls are not weakened.",
+    "independent": "Independent strict SL fronts pass 63+85 assertions at 0388c01c3. The COW front proves genuine same-arity caller authority and a valid flat capture graph while unrelated nested tables exist elsewhere, then rejects ordinary admission because no nested edge belongs to that component. The actual self-copy front proves Closure/outer/old-child/leaf owners 2/2/1/2, edge multiplicity, buffer identity and fresh graph refusals for direct cycles. The separate full self-copy original agrees exactly. All gates exit 0/no timeout/empty stderr with stable HEAD/script/runtime/test inputs; all actors are reaped. Constructed mutants have no source-agreement credit.",
+    "failures": "Source-only DAG reaches Unsupported cached ordinary property-table collection after T|P|0| with zero agreement. The initial author state reaches a pool counterstate but reuses pnode_pool* for capture reach; the renamed mutant reach corrects only the fixture. Both originals remain preserved with zero validation credit.",
+    "stability": "Across accepted author/affected gates, HEAD b2dacd18e and all 458 relevant runtime/test hashes are stable. Only draft nonoperational docs/inventory changed. All frontend/adapter/numeric and top-level actors completed and were reaped before the independent lane handoff.",
+    "independent_source": "The independent full self-copy source agrees exactly at 0388c01c353f23fbb5c28c5d21ae672beb3939d3: $token[\"self\"]=$token creates a finite old-child snapshot before capture, then preserves the normal D/H counts and final weak death. This is a third original source pair, separate from the two author pairs at fafb9e6b4; the constructed cycle controls do not receive source credit.",
+    "compiler": "Three complete source executions and five strict SL reached fronts compile/run the same 433-module specification with encountered determinism checks; this is not an equivalence proof."
+  },
+  "limits": "Direct finite array DAGs with mutable nonpool/nonproxy descendants and defined scalars/childless stdClass only. ALIAS/INDIRECT/UNINITIALIZED entries, user-finalizer children, property-table proxies, compiled-pool descendants, static cells, explicit Closure __invoke captures and arbitrary Closure/weak-map cycles remain outside this lane. Passing originals do not establish complete collection semantics.",
+  "review": "Independent semantic/source/test and draft scope review CLEAR from gc_review_current; final docs and actual-tail composition review follow without renewing the original tested cuts.",
+  "recovery": "Raw native originals, pre-edit Unsupported, fixture failure and accepted source records are outside Git under ../php-spec-evidence-archive/gc-nested-array-28-dev; independent native/source records are under gc-nested-array-28-review. Run gc_nested_array_sources.py native then model with a fresh output directory, and gc_nested_array_state.py for reached checks; replay only the changed gc_multi_array_state.py distinct-shared group for the affected GC27 fixture. Use one fully reaped CPU1 actor per pair.",
+  "reports_sha256": {
+    "gc-nested-array-28-dev/source/native-report.json": "c2ad55fe63a52f9ba09ae092d993c71d771d1a056b8162c287da9c8ba8f07561",
+    "gc-nested-array-28-dev/source/baseline-report.json": "1ff0cc47ad0d1b7c9b7d91e50f0ff2088ca1b97acf1abed9c4f263e97bfe230d",
+    "gc-nested-array-28-dev/source/model-report.json": "05e28bded4274085d2978319616370fcc95b8318dc7f7a8a2e96962396588269",
+    "gc-nested-array-28-dev/state-pool-binding-failure/report.json": "39df5febee95a8812c57fd28cf69201c1e050041236fc7ad4d6bd9a6f394513a",
+    "gc-nested-array-28-dev/author-states/report.json": "3e11c311fad07f2153be31b4abf35ef60b801d4973513f20a172023a8d19973f",
+    "gc-nested-array-28-dev/state-inputs-corrected-before.json": "1a73046d8abf570e6570e05fd6099eddd24ee229005ad41a3e5e189fafd977d1",
+    "gc-nested-array-28-review/native-independent/report.json": "176a37a9207fe1367cc14000f6080deafbb6cdf92485088c2d45dfebdde6a48f",
+    "gc-nested-array-28-review/self-copy-source/native-report.json": "fe86b9305fb86a138c48f7969fbe5da95cece0d76ff7e3f94bcebcafa8487666",
+    "gc-nested-array-28-dev/affected-gc27/report.json": "92873351d9cb2207c59744014021c0d6bfebd251b50524a26352781b17ba7503",
+    "gc-nested-array-28-dev/state-gate-stability.json": "b38f78dc569b4bf22966ea6ff12833857624913d0ffd5e60f7bb50cd4e827c53",
+    "gc-nested-array-28-review/self-copy-source/model-report.json": "8437c21bc14f0efb20a9528a2acf612e307d760b68daaf584e79917cb4c3b29e",
+    "gc-nested-array-28-review/strict-independent/independent-report.json": "3e1f02ae2f6e7d9718f595ad1ebb45273ed3e94e77f7d1e20be395f2b4ed1b6c"
+  }
+}
