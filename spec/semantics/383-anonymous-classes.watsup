@@ -55,16 +55,11 @@ def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SE
 def $anonymous_member(NStmtClassConst (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType46 :: phpType46_tail*)) metadata) = true
   -- if flags <- [0,1,2,4,32,33,34,36]
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
-  -- if flags <- [0,1,2,4]
+  -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
+  -- if ~$ppproperty_flag(flags, 8) \/ ~$generator_statements(statement*)
   -- if $ptvalidname($base64(text), false)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct")
   -- if ~$ppmethod_magic($base64(text))
-def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
-  -- if flags <- [8,9,10,12]
-  -- if $ptvalidname($base64(text), false)
-  -- if $ptlc($base64(text)) =/= $ptascii("__construct")
-  -- if ~$ppmethod_magic($base64(text))
-  -- if ~$generator_statements(statement*)
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__invoke")
@@ -80,7 +75,7 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__tostring")
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 ABSENT (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
-  -- if flags <- [0,1]
+  -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
   -- if $ptlc($base64(text)) = $ptascii("__construct")
 ;; Names and supported adaptations enter the ordinary trait compiler and linker.
 def $anonymous_member(NStmtTraitUse (SEQUENCE (name :: name_tail*)) (SEQUENCE phpType63*) metadata) = ($anonymous_interface_references(name :: name_tail*) /\ $anonymous_trait_adaptations(phpType63*))
