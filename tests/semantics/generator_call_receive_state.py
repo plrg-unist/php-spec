@@ -65,7 +65,7 @@ $call_descriptors_valid(S)
 $heap_valid($heap_graph(S))
 pclosurecall_bad_source = pclosurecall[.SOURCE = n_copy]
 ~$closure_call_copy_forward_valid(S, pclosurecall_bad_source, n_copy, n_done, pnamedargs, n_base)
-pnamedargs_bad = {SLOTS [NAMED_SENT (KNOWN (POBJECT n_old))], NAMED eps}
+pnamedargs_bad = pnamedargs[.SLOTS = [NAMED_SENT (KNOWN (POBJECT n_old))]]
 ~$closure_call_copy_forward_valid(S, pclosurecall, n_copy, n_done, pnamedargs_bad, n_base)
 PhpStep: S ~> S_raw
 S_raw.COMPLETION = THROWN "ArgumentCountError" ptbytes_error z_error
