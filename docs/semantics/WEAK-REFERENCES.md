@@ -191,6 +191,23 @@ graphs remain outside this slice. The
 records two fresh exact sources, two affected exact sources, 96 reached
 conditions, and the owner-three Unsupported control with zero agreement.
 
+GC40 admits ordinary Map-first free of exactly two entries: one methodless
+Value with the sole-owned declared Child above, and one methodless leaf Value.
+Both Values have one physical owner, both leaf `stdClass` Keys remain held
+and registered only in this Map, and the Map has no incoming key registration
+or active cursor. Either entry order uses the existing ordered release jobs.
+During Child's destructor, the other Value is still weakly live when its entry
+follows the declared-child Value; it is weakly dead when its entry precedes it.
+The declared-child Value is already weakly dead and the Map's physical pin
+still makes its weak get live, including through a caught Child throw.
+
+Map dimension access during this nested callback remains Unsupported; the
+temporary empty storage image gives no authority to observe native hash
+occupancy. Two declared-child Values and wider tables or ownership graphs remain
+outside this increment. The [two-entry Map review](../../coverage/semantics/gc-two-entry-map-first-review.json)
+records original-source comparisons, reached owner transfers and budget replay,
+and explicit Unsupported controls separately.
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

@@ -1,0 +1,61 @@
+{
+  "scope": "GC40: ordinary Map-first free of exactly two direct entries: one methodless Value with one direct public untyped declared Child and one methodless leaf Value, each Value/Child owner1; held leaf stdClass Keys registered only in this Map, no incoming Map-key registration and no active cursor. Both entry orders are admitted.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "cuts": {
+    "base": "d49b4aad4a9bee459562a0fc6df42ae206ce8bd1",
+    "runtime": "861b1f900ca8cbb586d3df0404dcd3f012072d10",
+    "author_reached": "afe0823c8003d5baba08e87cce1d01dd07aac37c",
+    "independent_source_three": "6ac971ea2ab19f2972847039639c1a4acf7b4478",
+    "independent_first_throw_and_reached": "8f9da17bf07153f4c4e8c8e9fad409f910fcfd9f"
+  },
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "a932c604b4e0ba2ea16ba806ea5274e351e683fb820b15166805a409aad591c3"
+  },
+  "rule_basis": "The new disjunct only extends multiple-entry Map-free admission. It reuses the exact GC37 declared-Child layout, authenticates the other methodless leaf and both Keys, and requires both Value owners and Child owner1. Existing all-key unregister, ordered per-slot Value jobs and nested Map/Value physical pins are unchanged. The first-field callback sees the later leaf weakly live; reverse order sees the earlier leaf weakly dead. Declared Value weak get is null while Map weak get stays live. Pending later Values finish cleanup before a Child throw reaches catch.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakrefs_hash_clean_ex,zend_weakmap_free_obj",
+    "vendor/php-src/Zend/zend_hash.c:zend_hash_clean",
+    "vendor/php-src/Zend/zend_objects.c:zend_object_std_dtor",
+    "vendor/php-src/Zend/zend_objects_API.c:zend_objects_store_del"
+  ],
+  "counts": {
+    "new_exact_sources": 3,
+    "author_exact_sources": 1,
+    "independent_exact_sources": 2,
+    "unsupported_controls_zero_agreement": 2,
+    "reported_reached_conditions": 112,
+    "author_reached": 72,
+    "independent_reached": 40
+  },
+  "validation": {
+    "sources": "Forward normal and both first/reverse Child-throw originals agree exactly with pinned PHP, including later-leaf cleanup before catch. Native/model process outcomes, profiles and original bytes are retained in reports.",
+    "reached": "Author strict-SL front72 checks physical owners, exact admission/missing-Child refusal, both Key detachments, Value owner transfer, Map pin visibility, zero-step/nonzero-step replay and completion. Independent strict-SL callback40 checks earlier leaf/declared Value weak death, Map weak life, both Keys, nested pins, heap/destruction/call validity and budget replay through caught throw.",
+    "unsupported": "Two declared-child Values stop at multiple-entry storage destruction after B|. A producer-reachable nested Child isset of the freeing Map stops before its result after B|P|; native presence is1. Both controls have zero agreement."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc40_first_field_second_leaf.php": "8a87249de00ef99448239b97eab0fb8b7dd2eb5849739d6111a68518d6adda3d",
+    "tests/semantics/gc40_peer_reverse_throw.php": "8d724f43aad0976c4ea2b741887def1afe4be2fe6ee96deddfddde0bed287b6b",
+    "tests/semantics/gc40_peer_first_throw.php": "9fa7152a30ff947a7aaa8443f5546152403c905ea8d476d2dabb7d2882f597ee",
+    "tests/semantics/gc40_peer_two_fields_boundary.php": "dd735a5a19e407fd81feeb7b2452515f133320ece3498e6d60134d56171b16ce",
+    "tests/semantics/gc40_peer_presence_boundary.php": "73d17a82823ae432fd5eaed692cc687b022410401afdc23c3941f8bc2b8b3d26"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-two-entry-map-first-author-40/harness-861b-v1/native-report.json": "b4ffefcbf3bf46d3d41d1117db4884f43b2f590ffe2f87aedb0bdaf1dc5d0305",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-author-40/harness-861b-v1/model-field-first-leaf-second-report.json": "8c0b04ef34bf7c579a37013aa947d7bb9e5e9ef4a02b60dac8afca0013fc4583",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-author-40/reached-front-afe0-v1/report.json": "a1fdc58bebdfb407db23c084dd7063c6acd73bdee508ab6d1015ede0c0cedb76",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-peer-40/recovered-native-v2/native-report.json": "61f2c2aba1406cfcf6d97ff9e8fc5e34d75af4abb6d70e61e5bb3fecbfb82949",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-peer-40/recovered-native-v2/model-report.json": "c5933cd416ef9556a89a4e04d30976a0a7cae1bd97dd12ffa435e93d8978acd8",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-peer-40/first-throw-v1/native-report.json": "64c7aef45d22721e6ebb765c7cc5173b4f9e3239c2aef6bc3745a5c685ceccfd",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-peer-40/first-throw-v1/model-field-first-leaf-second-throw-report.json": "54bba2766dea324dd56399bd7bad66deea609c67b659338ecd8817b9fd7e1f52",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-peer-40/reached-reverse-8f9-v1/report.json": "8a06d9cd72d01bc060ec25854166651ecdec8fb39cce625f0bc5daa9a8fe8c07"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-two-entry-map-first-author-40/manifest.json": "fd4fdd31c5f94f39047b8b247c9d8ed3653c200a49b101e7128c86314d038207",
+    "../php-spec-evidence-archive/gc-two-entry-map-first-peer-40/independent-summary.json": "36a7d505142690c2048f38888805c1d6bcf643d9aa5909d7949ec48575fbea24"
+  },
+  "zero_credit": "The preimplementation d49b baseline is explicit Unsupported after B|. The fa999 source attempt failed DSL parsing before execution. The author1405 reached attempt passed earlier checks but failed its one-step NORMAL-versus-BUDGET fixture expectation; corrected afe0 passes with unchanged runtime/source bytes. These original runs are preserved and have zero agreement/acceptance credit.",
+  "limits": "Exactly two entries, direct methodless Value layouts, sole-owned Values/Child, held leaf stdClass Keys registered only here, no incoming Map-key registration/cursor. Nested freeing-Map dimension access, two declared-child Values, wider tables/owners/property graphs, mutation and active-pin GC remain partial. GC35 and other held work are untouched.",
+  "recovery": "Run gc40_two_entry_map_first_sources.py or gc40_peer_two_entry_sources.py native then model for selected cases into a fresh external output; run gc40_two_entry_map_first_state.py and gc40_peer_reverse_state.py for strict SL. Reports retain exact commands/cuts and source bytes. The peer source runner later added only the first-throw case; prior three-case sources and harness behavior are unchanged. Test/doc-only joins retain runtime861b bytes and do not renew source evidence.",
+  "review": "Independent semantic review of runtime861b is CLEAR with source/reached evidence above; final documentation/ledger review is requested on the completed private candidate."
+}

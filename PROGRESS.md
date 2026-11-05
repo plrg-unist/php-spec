@@ -544,6 +544,19 @@ ownership graphs and active-pin collection remain partial; the baseline and
 early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
 
+GC40 admits Map-first retirement of exactly two entries containing one
+sole-owned declared-Child Value and one sole-owned methodless leaf Value.
+Both Keys remain live and registered only in that Map; no incoming Map-key
+registration or active cursor is admitted. Ordered release keeps the leaf
+weakly live during Child's destructor only when its entry follows Value.
+Nested Map/Value pins preserve weak visibility through a caught Child throw.
+Three fresh originals agree, including Child throws in both positions, and
+112 reached conditions (author72, independent40) pass at their recorded cuts.
+Map dimension access during the nested callback and two declared-child Values
+remain explicit Unsupported with zero agreement. Original-source, ownership
+transfer and budget evidence is recorded in the
+[GC40 review](coverage/semantics/gc-two-entry-map-first-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
