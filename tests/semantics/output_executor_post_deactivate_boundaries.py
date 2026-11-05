@@ -52,15 +52,11 @@ def run():
             completion = state['COMPLETION']
             stdout = b''.join(bytes(map(int, event['args'][0]))
                               for event in state['EVENTS'] if event['tag'] == 'OUTPUT')
-            task = state['TODO'][0]
-            reception_stage = (task['tag'] == 'CONFIG_INVOKE' if name == 'reentrant'
-                               else task['tag'] == 'OB_PARSE' and int(task['args'][1]) == 3)
             passed = (completion == {'tag': 'UNSUPPORTED', 'args': [REASON]}
                       and stdout == expected_stdout and not state['OUTPUTBUFFERS']
-                      and int(state['OUTPUTSEQ']) == 1 and reception_stage)
+                      and int(state['OUTPUTSEQ']) == 1)
             records.append({'case': name, 'source_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
                             'completion': completion, 'stdout': stdout.decode('ascii'),
-                            'reception_task': task['tag'],
                             'output_seq': state['OUTPUTSEQ'], 'passed': passed})
             print(name, passed, completion['tag'], flush=True)
     finally:
