@@ -658,6 +658,9 @@ rule PhpStep/anonymous-dependency-stage: S ~> S[.TODO = (AT pclassdesc.ORIGIN (S
   -- if ~$anonymous_dependencies_ready(S, pclassdesc)
 
 ;; Constructor selection and its result marker reuse the ordinary call receipt.
+;; Anonymous class NEW is not the suspended named-class parameter-default form.
+def $parameter_default_constructor(S, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class, phpType7*, metadata) = false
+
 ;; No-constructor NEW completes pending property defaults before allocation.
 def $new_source_name(S, porigin) = (ptbytes_name)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
