@@ -82,7 +82,7 @@ CASES = {
             '$config_iterator_string_receive_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall, n_name, pvalue_name)',
             'pconfigcall_named = pconfigcall[.NAMED = true]',
             '~$config_iterator_copied_header(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall_named)',
-            '~$config_iterator_get_option(S, pconfigcall_named)',
+            '~$config_iterator_unary_option(S, pconfigcall_named)',
             '$heap_owners($heap_graph(S), HOBJECT n_name) = 2',
             'S.PRECISIONINI = $ptascii("14")',
             'S_held = S[.HELD = S.HELD ++ [HOBJECT n_name]]',
