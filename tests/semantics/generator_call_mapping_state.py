@@ -87,7 +87,7 @@ pnamedargs_bad = pnamedargs[.SLOTS = [NAMED_SENT (REFERENCE n_source_cell)]]
 PhpStep: S ~> S_error
 S_error.COMPLETION = THROWING n_error
 S_error.TODO = S.TODO
-S_thrown = $source_exception_transition(S, $throwable_transition(S, S_error))
+S_thrown = $literal_reference_debt_step(S, $sensitive_trace_freeze($source_exception_transition(S, $throwable_transition(S, S_error))))
 S_thrown.COMPLETION = THROWING n_error
 S_thrown.TODO = S.TODO
 S_thrown.CLOSURECALLRETAINED = eps
