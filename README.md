@@ -302,7 +302,11 @@ Match plans preserve all-condition compilation before arm results, lexical
 effects from unselected arms and assignment/discard marker lines. Conditional
 plans use published compiler redirects and retained effects to distinguish
 elided bodies from runtime-unselected bodies, preserving real BOOL operations
-and static-diagnostic omission.
+and static-diagnostic omission. Coalescing plans preserve quiet reads and lazy
+fallback execution while compiling fallback bodies and memoizing assignment target
+children in Zend order. Between-operand ticks for multi-operand `echo` remain a
+known gap. Registered-handler callable-key assignment also retains an open quiet-reader
+composition/performance obligation.
 
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;

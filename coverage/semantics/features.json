@@ -1209,7 +1209,8 @@
         "spec/semantics/329-arrayaccess-reference-value-notices.watsup",
         "spec/semantics/353-source-cv-dimension-emission.watsup",
         "spec/semantics/357-source-call-key-emission.watsup",
-        "spec/semantics/425-string-offset-read-continuations.watsup"
+        "spec/semantics/425-string-offset-read-continuations.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -1253,7 +1254,10 @@
         "tests/semantics/string_offset_read_warning_cases.py",
         "tests/semantics/string_offset_read_warning_sources.py",
         "tests/semantics/string_offset_read_warning_review_cases.py",
-        "tests/semantics/string_offset_read_warning_review_sources.py"
+        "tests/semantics/string_offset_read_warning_review_sources.py",
+        "tests/semantics/tick_coalesce_sources.py",
+        "tests/semantics/tick_coalesce_review_sources.py",
+        "tests/semantics/tick_coalesce_review_cases.py"
       ],
       "review": "Historical storage review: Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required. Module276 adds bounded undefined/null/false W/RW initialization and array-reference ingress, genuine callback/source owners and typed DIM_OP backing transport/clear; container-warning-review.json keeps30 unique/517 and current851 separate. Wider producers remain required. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Module304 adds bounded intermediate append through returned arrays and final compound child append, with real temporary/reference owners and pending-error conversion/operator priority. Its49 sources,8 strict-SL recipes/723 premises and one fresh275 parent interaction retain separate cuts. By-reference Get and wider producers remain required; no family closure or old-gate renewal. Module309 adds final simple returned-child Set(null), transferring genuine writer roots and preserving latched-null RHS, selected child and old result-cell readback. Eight normal sources and two strict-SL recipes/160 premises pass at a095/276; actual-parent composition is accepted at863. By-reference Get and wider producers remain required. Current-parent718b/287 additionally accepts one Fiber Set/paused-Generator finalizer original and64 strict-SL premises; earlier cuts remain separate. Module319 accepts untyped/mixed by-reference Get demand, shared/sole writable wrappers, raw DIM_OP CELL ownership and authenticated nested-reference/borrowed-Unset carriers. Fourteen exact normal originals and six strict-SL recipes/375 premises retain separate cuts in arrayaccess-reference-get-review.json. Actual298 passes full compiler/init and one new exact Fiber-core warning/Get suspension original; earlier14/375 cuts remain separate. Final302 overb135 preserves accepted default fields and passes full algorithmic/structuring compilation. Module326 adds named sends/nested captured-row updates below. VALUE-return warning handlers, Stringable/wider producers and complete core remain required. Typed non-mixed return verification stays user-paused. Integrated326 adds authenticated live captured-row certificates for named reference sends and nested pre/post updates, preserving named checks and finishing dispatch. Six new exact normal originals and three strict-SL groups/246 premises retain their private303 cut in arrayaccess-reference-consumers-review.json. Final306 over40e3c4fcc passes full algorithmic/structuring compilation at46c624e89; current ECHO/collector/pruning seams are independently accepted without source/state renewal. VALUE-return Notice-handler and wider producers remain open; typed non-mixed return verification stays user-paused. Module329 adds genuine untyped/mixed implicit Get VALUE-return Notice callbacks with raw carrier identity and local/receiver/RV throw ordering. Nine exact normal originals and four strict-SL groups/401 premises retain their13e29/307 cut. Final314 over2a2f69a71 passes full algorithmic/structuring compilation, preserving current trait/constructor/pruning fields without source/state renewal. Finally-sensitive Notice ingress, bare/fall-through NULL, handler exit, Stringable/wider producers and non-mixed typed verification remain open. Module353 authenticates first ordinary CV-base DIM lines and adds bounded writable array-property separation plus fixed-null literal-property warning resume. Seven source agreements retain separate private336 cuts; source-dimension-emission-review.json records the focused validation and remaining receiver/emission obligations. Module357 authenticates first INIT for ordinary CV-base DIM named noarg nonbuiltin key calls without fallback. Existing runtime preserves borrowed base/live lookup and fixed returned key; six exact originals and128 independent premises retain private341, with reviewed actual343 strict composition in source-call-key-emission-review.json. Wider calls/emissions remain required. Module425 stages bounded ordinary string R-offset cast/bounds callbacks: selected carrier identity and live primitive key conversion, fixed empty bounds result after source/key unset, and pending-throw default/suppression. Borrowed REQUEST carriers require the same live ordinary cell after CAST; changed carriers remain explicit Unsupported with zero agreement credit. Wider keys/owner histories remain partial; string-offset-read-warning-review.json retains the original cuts and independent review.",
       "helper_tests": [
@@ -1282,7 +1286,8 @@
         "tests/semantics/arrayaccess_reference_value_reached_prepare.py",
         "tests/semantics/arrayaccess_reference_value_reached_run.py",
         "tests/semantics/string_offset_read_warning_protocol.py",
-        "tests/semantics/string_offset_read_warning_state_review.py"
+        "tests/semantics/string_offset_read_warning_state_review.py",
+        "tests/semantics/tick_coalesce_review_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/dimension-tail-review.json",
@@ -1303,7 +1308,8 @@
         "coverage/semantics/source-dimension-emission-review.json",
         "coverage/semantics/source-call-key-emission-review.json",
         "coverage/semantics/string-offset-read-warning-review.json",
-        "docs/semantics/DIMENSIONS.md"
+        "docs/semantics/DIMENSIONS.md",
+        "coverage/semantics/tick-coalesce-review.json"
       ]
     },
     {
@@ -1965,7 +1971,8 @@
         "spec/semantics/262-nested-coalesce-key-continuations.watsup",
         "spec/semantics/382-backed-get-hooks.watsup",
         "spec/semantics/412-magic-property-set.watsup",
-        "spec/semantics/416-magic-property-coalesce.watsup"
+        "spec/semantics/416-magic-property-coalesce.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/coalesce_assignment.py",
@@ -1994,7 +2001,10 @@
         "tests/semantics/magic-coalesce-assignment-zero.php",
         "tests/semantics/magic-coalesce-assignment-null-write.php",
         "tests/semantics/magic-coalesce-assignment-set-throw.php",
-        "tests/semantics/magic_coalesce_assignment_cases.json"
+        "tests/semantics/magic_coalesce_assignment_cases.json",
+        "tests/semantics/tick_coalesce_sources.py",
+        "tests/semantics/tick_coalesce_review_sources.py",
+        "tests/semantics/tick_coalesce_review_cases.py"
       ],
       "review": "Variable/dimension coalescing assignment uses memoized operands and explicit write occurrence lines (coalesce-assignment-review.json); GLOBALS/environment paths retain their explicit-request evidence in request-environment-review.json. Public/protected/private property targets now reuse evaluated receiver/name operands, preserve quiet denial and RHS/write-error ordering, and cover nested targets and multiline descriptors (property-visibility-review.json). Static/readonly/hooks/magic dependencies remain open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Nested unset, wider memoized containers, append and wider producers remain required; dimension-edit-review.json preserves the separate cuts. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required. Literal CV/This public by-value get-hook ??= now retains returned false/zero and object values, evaluates the original RHS only for null and refetches the current CV receiver at write. Separate hook3/strict375 at cc6ed080 and SL308 (264 reached,44 derived) at 8e03445e check pending-target ownership, null fallback store and RHS-rebind cleanup; the ordinary control and prior hook cuts remain separate. coalesce-assignment-get-hooks-review.json retains failures/diagnostics0; wider hook families remain partial. Four selected magic-property ??= sources now release the quiet receiver hold before a named int RHS, then re-fetch the CV for Set or current-null Error. Get0 skips the RHS; returned temporary7 survives unrelated global99; supplied Set throw preserves catch/destination42. Source4 at1c963 and focused746 at ef3caae keep both earlier declaration and genuine consumer baseline cuts. Wider sources remain partial.",
       "helper_tests": [
@@ -2003,7 +2013,8 @@
         "tests/semantics/dimension_coalesce_protocol.py",
         "tests/semantics/dimension_coalesce_prepare.py",
         "tests/semantics/coalesce_assignment_get_hook_protocol.py",
-        "tests/semantics/magic_coalesce_assignment_protocol.py"
+        "tests/semantics/magic_coalesce_assignment_protocol.py",
+        "tests/semantics/tick_coalesce_review_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/dimension-edit-review.json",
@@ -2012,7 +2023,8 @@
         "docs/semantics/SOURCE-NESTED-COALESCE.md",
         "coverage/semantics/coalesce-assignment-get-hooks-review.json",
         "docs/semantics/SOURCE-PROPERTIES.md",
-        "coverage/semantics/magic-coalesce-assignment-review.json"
+        "coverage/semantics/magic-coalesce-assignment-review.json",
+        "coverage/semantics/tick-coalesce-review.json"
       ]
     },
     {
@@ -3066,7 +3078,8 @@
         "spec/semantics/382-backed-get-hooks.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/136-property-runtime.watsup",
-        "spec/semantics/416-magic-property-coalesce.watsup"
+        "spec/semantics/416-magic-property-coalesce.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -3095,7 +3108,10 @@
         "tests/semantics/magic-coalesce-no-get-false.php",
         "tests/semantics/magic-coalesce-no-get-normal.php",
         "tests/semantics/magic-coalesce-no-get-held.php",
-        "tests/semantics/magic-coalesce-no-get-throwing.php"
+        "tests/semantics/magic-coalesce-no-get-throwing.php",
+        "tests/semantics/tick_coalesce_sources.py",
+        "tests/semantics/tick_coalesce_review_sources.py",
+        "tests/semantics/tick_coalesce_review_cases.py"
       ],
       "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Literal CV/This public by-value hook coalescing now retains actual getter values0/false/objects and evaluates only the null RHS at its authentic parent/right-child line. Separate source2 at0023 and SL249 (224 reached,25 derived) at6be8 retain coalesce-get-hooks-review.json; ordinary retained-result ownership survives the real extra-copy decrement and receiver cleanup, then kept unset releases the leaf. Wider hook/coalescing families remain partial. Selected CV/literal private-property ?? now pairs existing typed-bool Isset and absent-return BYVAL Get signatures using module416. Isset/Get guards include their actual compiled-local cleanup and end before receiver D; receiver release precedes null fallback, zero skips RHS, and a sole returned payload survives receiver release and main output. Supplied Get throw preserves same catch/destination42. Five source agreements (4@67aac +1@251067) and604 focused (293@22d98 +311@6d7;585+19) retain original failures0 and magic-coalesce-review.json. Wider values/lifetimes/no-Get/reentry remain partial; ClassMethod evidence consumes existing signatures and inheritance uses existing Parent-to-Child selection. Selected no-Get private-property ?? now executes existing inherited typed-bool or absent-return Isset. Ordinary INSTANCE RV disposal retains the receiver with both guards inactive; held RVs later see an expired weak target, and supplied RV-D throws preserve catch/destination42. Source4 at2ad0660c1 and640 focused (615+25) at7218b430e pass; booltrue and Some-GET compatibility are derived/static only. Existing declaration/inheritance and weak APIs are consumed, not expanded. Wider results/reentry remain partial. See magic-coalesce-no-get-review.json.",
       "helper_tests": [
@@ -3106,7 +3122,8 @@
         "tests/semantics/coalesce_get_hook_protocol.py",
         "tests/semantics/magic_coalesce_protocol.py",
         "tests/semantics/magic_coalesce_no_get_protocol.py",
-        "tests/semantics/magic_coalesce_no_get_cases.json"
+        "tests/semantics/magic_coalesce_no_get_cases.json",
+        "tests/semantics/tick_coalesce_review_protocol.py"
       ],
       "evidence": [
         "docs/semantics/SOURCE-CONTAINER-READS.md",
@@ -3115,7 +3132,8 @@
         "coverage/semantics/arrayaccess-review.json",
         "coverage/semantics/coalesce-get-hooks-review.json",
         "coverage/semantics/magic-coalesce-review.json",
-        "coverage/semantics/magic-coalesce-no-get-review.json"
+        "coverage/semantics/magic-coalesce-no-get-review.json",
+        "coverage/semantics/tick-coalesce-review.json"
       ]
     },
     {
@@ -8391,7 +8409,8 @@
         "spec/semantics/339-missing-computed-cv-name.watsup",
         "spec/semantics/343-stringable-computed-cv-name.watsup",
         "spec/semantics/350-array-computed-cv-name.watsup",
-        "spec/semantics/403-backed-set-hooks.watsup"
+        "spec/semantics/403-backed-set-hooks.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -8405,12 +8424,16 @@
         "tests/semantics/suspended_precision_sources.py",
         "tests/semantics/source_stringable_retirement_sources.py",
         "tests/semantics/active-virtual-set-alias.php",
-        "tests/semantics/active_virtual_set_alias_cases.json"
+        "tests/semantics/active_virtual_set_alias_cases.json",
+        "tests/semantics/tick_coalesce_sources.py",
+        "tests/semantics/tick_coalesce_review_sources.py",
+        "tests/semantics/tick_coalesce_review_cases.py"
       ],
       "review": "Historical storage review: Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required. Module327 selects computed noarg named-user-call INIT6 before FETCH6/property8; private304 source3/affected1 and independent188 premises retain separate cuts. Its missing-name warning continuation resumes fixed null after handler writes. Actual307 passes strict compilation with independently reviewed collector/Generator/ArrayAccess compatibility, without renewing source/state credit. Wider computed producers remain required; see source-computed-emission-review.json. Module330 selects the outer CV-computed FETCH6 before property8; private308 source4 and174 genuine entry/warning/identity/control premises retain their inputs. Reused327 fixed-null resume preserves handler name/target writes. Actual310 passes strict compilation with reviewed Fiber/collector/constructor compatibility, without renewed source/state credit. Wider names remain required; see source-cv-name-emission-review.json. Module333 authenticates INIT6 before one ordinary positional CV argument, then computed FETCH7/property10; private311 passes five exact originals and275 independent entry/target-warning/argument-identity/admission premises. Existing fixed-null continuations retain handler writes; noarg/CV line fallbacks stay unchanged. The parser stop and initial wrong-CODEARG origin mismatch retain zero affected credit. Actual316 passes strict compilation with reviewed trait/ArrayAccess/collector compatibility; earlier source/state cuts gain no renewed credit. See source-call-argument-emission-review.json. Module336 adds one named ordinary CV call: INIT6 precedes known FETCH8/property11, while unknown Sent binds Error7 before CV demand. Six exact originals and325 independent premises retain private317; actual320 passes strict compilation with reviewed331/324/335 compatibility. The corrected deferred-operand fixture false and diagnostic earn zero affected credit; source/state cuts are not renewed. See source-named-argument-emission-review.json. Module339 warns before converting a missing ordinary name CV, then rereads the live caller CV quietly; later missing-target warnings retain fixed null. Seven exact originals and171 premises retain private321; actual324 passes strict compilation with reviewed parent compatibility. See source-missing-name-cv-review.json. Stringable ordinary computed-name CVs retain captured bytes through cast-owner retirement before live target lookup; pending destructor exceptions preserve default warnings while suppressing eligible handlers. Eight exact originals and134 premises retain private325; actual329 passes strict compilation with reviewed compatibility. See source-stringable-name-review.json. Module350 adds borrowed ordinary array name-CVs: handled warnings fix Array before live target lookup; throws abort FETCH. Private331 source7/independent117 and actual335 strict compilation retain separate cuts. See source-array-name-review.json. Selected active virtual SET same-object alias writes with actual defined CV input now resolve RHS then raise receiver-class Error before another setter call/conversion, retaining tail, outer result7 and stored10/no slot. Source1 at292bd and one state116=92 reached+24 derived at15982 are in active-virtual-set-alias-review.json; other RHS/warning and wider forms remain partial.",
       "helper_tests": [
         "tests/semantics/suspended_precision_protocol.py",
-        "tests/semantics/active_virtual_set_alias_protocol.py"
+        "tests/semantics/active_virtual_set_alias_protocol.py",
+        "tests/semantics/tick_coalesce_review_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/precision-review.json",
@@ -8421,7 +8444,8 @@
         "coverage/semantics/source-missing-name-cv-review.json",
         "coverage/semantics/source-stringable-name-review.json",
         "coverage/semantics/source-array-name-review.json",
-        "coverage/semantics/active-virtual-set-alias-review.json"
+        "coverage/semantics/active-virtual-set-alias-review.json",
+        "coverage/semantics/tick-coalesce-review.json"
       ]
     },
     {
@@ -21740,7 +21764,8 @@
         "spec/semantics/382-backed-get-hooks.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/136-property-runtime.watsup",
-        "spec/semantics/416-magic-property-coalesce.watsup"
+        "spec/semantics/416-magic-property-coalesce.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/container_read_protocol.py",
@@ -21750,7 +21775,8 @@
         "tests/semantics/coalesce_get_hook_protocol.py",
         "tests/semantics/magic_coalesce_protocol.py",
         "tests/semantics/magic_coalesce_no_get_protocol.py",
-        "tests/semantics/magic_coalesce_no_get_cases.json"
+        "tests/semantics/magic_coalesce_no_get_cases.json",
+        "tests/semantics/tick_coalesce_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -21779,7 +21805,10 @@
         "tests/semantics/magic-coalesce-no-get-false.php",
         "tests/semantics/magic-coalesce-no-get-normal.php",
         "tests/semantics/magic-coalesce-no-get-held.php",
-        "tests/semantics/magic-coalesce-no-get-throwing.php"
+        "tests/semantics/magic-coalesce-no-get-throwing.php",
+        "tests/semantics/tick_coalesce_sources.py",
+        "tests/semantics/tick_coalesce_review_sources.py",
+        "tests/semantics/tick_coalesce_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -21790,9 +21819,10 @@
         "coverage/semantics/arrayaccess-review.json",
         "coverage/semantics/coalesce-get-hooks-review.json",
         "coverage/semantics/magic-coalesce-review.json",
-        "coverage/semantics/magic-coalesce-no-get-review.json"
+        "coverage/semantics/magic-coalesce-no-get-review.json",
+        "coverage/semantics/tick-coalesce-review.json"
       ],
-      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Literal CV/This public by-value hook coalescing now retains actual getter values0/false/objects and evaluates only the null RHS at its authentic parent/right-child line. Separate source2 at0023 and SL249 (224 reached,25 derived) at6be8 retain coalesce-get-hooks-review.json; ordinary retained-result ownership survives the real extra-copy decrement and receiver cleanup, then kept unset releases the leaf. Wider hook/coalescing families remain partial. Selected CV/literal private-property ?? now pairs existing typed-bool Isset and absent-return BYVAL Get signatures using module416. Isset/Get guards include their actual compiled-local cleanup and end before receiver D; receiver release precedes null fallback, zero skips RHS, and a sole returned payload survives receiver release and main output. Supplied Get throw preserves same catch/destination42. Five source agreements (4@67aac +1@251067) and604 focused (293@22d98 +311@6d7;585+19) retain original failures0 and magic-coalesce-review.json. Wider values/lifetimes/no-Get/reentry remain partial; ClassMethod evidence consumes existing signatures and inheritance uses existing Parent-to-Child selection. Selected no-Get private-property ?? now executes existing inherited typed-bool or absent-return Isset. Ordinary INSTANCE RV disposal retains the receiver with both guards inactive; held RVs later see an expired weak target, and supplied RV-D throws preserve catch/destination42. Source4 at2ad0660c1 and640 focused (615+25) at7218b430e pass; booltrue and Some-GET compatibility are derived/static only. Existing declaration/inheritance and weak APIs are consumed, not expanded. Wider results/reentry remain partial. See magic-coalesce-no-get-review.json.",
+      "review": "Quiet variable/DIM coalesce and header/name conversion accepted at a42fddfe; coverage/semantics/quiet-access-review.json binds295 exact sources, author8/3760 and independent6/2277 state assertions. Object/property/nullsafe/static-property protocols, request environment remain pending; variable/DIM coalescing assignment is now reviewed separately at f073c750; no family closure. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Literal CV/This public by-value hook coalescing now retains actual getter values0/false/objects and evaluates only the null RHS at its authentic parent/right-child line. Separate source2 at0023 and SL249 (224 reached,25 derived) at6be8 retain coalesce-get-hooks-review.json; ordinary retained-result ownership survives the real extra-copy decrement and receiver cleanup, then kept unset releases the leaf. Wider hook/coalescing families remain partial. Selected CV/literal private-property ?? now pairs existing typed-bool Isset and absent-return BYVAL Get signatures using module416. Isset/Get guards include their actual compiled-local cleanup and end before receiver D; receiver release precedes null fallback, zero skips RHS, and a sole returned payload survives receiver release and main output. Supplied Get throw preserves same catch/destination42. Five source agreements (4@67aac +1@251067) and604 focused (293@22d98 +311@6d7;585+19) retain original failures0 and magic-coalesce-review.json. Wider values/lifetimes/no-Get/reentry remain partial; ClassMethod evidence consumes existing signatures and inheritance uses existing Parent-to-Child selection. Selected no-Get private-property ?? now executes existing inherited typed-bool or absent-return Isset. Ordinary INSTANCE RV disposal retains the receiver with both guards inactive; held RVs later see an expired weak target, and supplied RV-D throws preserve catch/destination42. Source4 at2ad0660c1 and640 focused (615+25) at7218b430e pass; booltrue and Some-GET compatibility are derived/static only. Existing declaration/inheritance and weak APIs are consumed, not expanded. Wider results/reentry remain partial. See magic-coalesce-no-get-review.json. ATTR32 compiles coalesce operands and assignment target children before RHS once, reusing actual compiler redirects/effects for prior prepass elision and memoized write refetch. Quiet reads, runtime lazy RHS and enclosing markers use the existing runtime. Validated callable-key assignments have no registered error handler; the handler-bearing quiet-reader path remains an open composition/performance obligation, with timeouts establishing neither completion nor Unsupported. Seven exact normal originals, strict437 and three actual-continuation fronts/144 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts in tick-coalesce-review.json. Multi-operand echo still has a known between-operand tick gap; wider result/access/lifecycle contexts remain partial.",
       "planned_source_tests": [
         "tests/semantics/conformance/short-circuit.php",
         "tests/semantics/conformance/missing-null-access.php"
@@ -21816,7 +21846,8 @@
         "spec/semantics/262-nested-coalesce-key-continuations.watsup",
         "spec/semantics/382-backed-get-hooks.watsup",
         "spec/semantics/412-magic-property-set.watsup",
-        "spec/semantics/416-magic-property-coalesce.watsup"
+        "spec/semantics/416-magic-property-coalesce.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_edit_protocol.py",
@@ -21824,7 +21855,8 @@
         "tests/semantics/dimension_coalesce_protocol.py",
         "tests/semantics/dimension_coalesce_prepare.py",
         "tests/semantics/coalesce_assignment_get_hook_protocol.py",
-        "tests/semantics/magic_coalesce_assignment_protocol.py"
+        "tests/semantics/magic_coalesce_assignment_protocol.py",
+        "tests/semantics/tick_coalesce_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/coalesce_assignment.py",
@@ -21845,7 +21877,10 @@
         "tests/semantics/magic-coalesce-assignment-zero.php",
         "tests/semantics/magic-coalesce-assignment-null-write.php",
         "tests/semantics/magic-coalesce-assignment-set-throw.php",
-        "tests/semantics/magic_coalesce_assignment_cases.json"
+        "tests/semantics/magic_coalesce_assignment_cases.json",
+        "tests/semantics/tick_coalesce_sources.py",
+        "tests/semantics/tick_coalesce_review_sources.py",
+        "tests/semantics/tick_coalesce_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -21856,9 +21891,10 @@
         "docs/semantics/SOURCE-NESTED-COALESCE.md",
         "coverage/semantics/coalesce-assignment-get-hooks-review.json",
         "docs/semantics/SOURCE-PROPERTIES.md",
-        "coverage/semantics/magic-coalesce-assignment-review.json"
+        "coverage/semantics/magic-coalesce-assignment-review.json",
+        "coverage/semantics/tick-coalesce-review.json"
       ],
-      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment paths now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Nested unset, wider memoized containers, append and wider producers remain required; dimension-edit-review.json preserves the separate cuts. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required. Literal CV/This public by-value get-hook ??= now retains returned false/zero and object values, evaluates the original RHS only for null and refetches the current CV receiver at write. Separate hook3/strict375 at cc6ed080 and SL308 (264 reached,44 derived) at 8e03445e check pending-target ownership, null fallback store and RHS-rebind cleanup; the ordinary control and prior hook cuts remain separate. coalesce-assignment-get-hooks-review.json retains failures/diagnostics0; wider hook families remain partial. Magic private-property ??= now transfers the read value through a node-free continuation, releases its receiver hold before RHS, and re-fetches the CV at write. Source4/focused746 cover Get0 skip, old-to-new Set7, current-null Error after RHS, cached temporary7 despite unrelated99 and supplied Set throw/noncommit. Named nonref zeroarg int RHS only; broader forms remain partial. See magic-coalesce-assignment-review.json.",
+      "review": "Variable/DIM coalescing assignment accepted at f073c750/coalesce-assignment-review.json:137 exact sources,18 separate controls, author8/3760 and independent7/3024 state assertions,9 edited descriptors/74 assertions. Reference-valued memoized operands retain cells; write occurrence lines are explicit. GLOBALS/environment paths now have explicit-request witnesses at652d10b7; object protocols and full family closure remain pending. Explicit-request GLOBALS and source-context paths additionally accepted at652d10b7; broader frame/object/dynamic-source obligations remain open. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Nested unset, wider memoized containers, append and wider producers remain required; dimension-edit-review.json preserves the separate cuts. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required. Literal CV/This public by-value get-hook ??= now retains returned false/zero and object values, evaluates the original RHS only for null and refetches the current CV receiver at write. Separate hook3/strict375 at cc6ed080 and SL308 (264 reached,44 derived) at 8e03445e check pending-target ownership, null fallback store and RHS-rebind cleanup; the ordinary control and prior hook cuts remain separate. coalesce-assignment-get-hooks-review.json retains failures/diagnostics0; wider hook families remain partial. Magic private-property ??= now transfers the read value through a node-free continuation, releases its receiver hold before RHS, and re-fetches the CV at write. Source4/focused746 cover Get0 skip, old-to-new Set7, current-null Error after RHS, cached temporary7 despite unrelated99 and supplied Set throw/noncommit. Named nonref zeroarg int RHS only; broader forms remain partial. See magic-coalesce-assignment-review.json. ATTR32 compiles coalesce operands and assignment target children before RHS once, reusing actual compiler redirects/effects for prior prepass elision and memoized write refetch. Quiet reads, runtime lazy RHS and enclosing markers use the existing runtime. Validated callable-key assignments have no registered error handler; the handler-bearing quiet-reader path remains an open composition/performance obligation, with timeouts establishing neither completion nor Unsupported. Seven exact normal originals, strict437 and three actual-continuation fronts/144 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts in tick-coalesce-review.json. Multi-operand echo still has a known between-operand tick gap; wider result/access/lifecycle contexts remain partial.",
       "planned_source_tests": [
         "tests/semantics/conformance/coalesce-write.php"
       ]
@@ -40005,7 +40041,8 @@
         "tests/semantics/tick_switch_review_protocol.py",
         "tests/semantics/tick_generator_review_protocol.py",
         "tests/semantics/tick_match_review_protocol.py",
-        "tests/semantics/tick_elision_review_protocol.py"
+        "tests/semantics/tick_elision_review_protocol.py",
+        "tests/semantics/tick_coalesce_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/tick_sources.py",
@@ -40085,7 +40122,10 @@
         "tests/semantics/tick_match_review_cases.py",
         "tests/semantics/tick_elision_sources.py",
         "tests/semantics/tick_elision_review_sources.py",
-        "tests/semantics/tick_elision_review_cases.py"
+        "tests/semantics/tick_elision_review_cases.py",
+        "tests/semantics/tick_coalesce_sources.py",
+        "tests/semantics/tick_coalesce_review_sources.py",
+        "tests/semantics/tick_coalesce_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -40117,9 +40157,10 @@
         "coverage/semantics/tick-switch-review.json",
         "coverage/semantics/tick-generator-review.json",
         "coverage/semantics/tick-match-review.json",
-        "coverage/semantics/tick-elision-review.json"
+        "coverage/semantics/tick-elision-review.json",
+        "coverage/semantics/tick-coalesce-review.json"
       ],
-      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial. ATTR31 derives conditional tick plans from published compiled operands, redirects and retained effects. It distinguishes compiler-elided bodies from runtime-unselected callable compilation, keeps boolean conversion operations and selected Switch result kinds, and visits effect roots once. Nine exact normal originals, two explicit compiler-special builtin/fallback refusals and strict437 pass; three reached fronts/130 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts and fixture failures in tick-elision-review.json. Wider child-order, result and lifecycle contexts remain partial."
+      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial. ATTR31 derives conditional tick plans from published compiled operands, redirects and retained effects. It distinguishes compiler-elided bodies from runtime-unselected callable compilation, keeps boolean conversion operations and selected Switch result kinds, and visits effect roots once. Nine exact normal originals, two explicit compiler-special builtin/fallback refusals and strict437 pass; three reached fronts/130 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts and fixture failures in tick-elision-review.json. Wider child-order, result and lifecycle contexts remain partial. ATTR32 compiles coalesce operands and assignment target children before RHS once, reusing actual compiler redirects/effects for prior prepass elision and memoized write refetch. Quiet reads, runtime lazy RHS and enclosing markers use the existing runtime. Validated callable-key assignments have no registered error handler; the handler-bearing quiet-reader path remains an open composition/performance obligation, with timeouts establishing neither completion nor Unsupported. Seven exact normal originals, strict437 and three actual-continuation fronts/144 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts in tick-coalesce-review.json. Multi-operand echo still has a known between-operand tick gap; wider result/access/lifecycle contexts remain partial."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",

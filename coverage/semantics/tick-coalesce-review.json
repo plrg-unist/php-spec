@@ -1,0 +1,123 @@
+{
+  "milestone": "ATTR32: coalesce tick compilation and memoized target order",
+  "status": "Independently accepted bounded implementation; coalesce/tick and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "71e7a28f3",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "5ebee6ecbcc525d3e7ad76c192d570162b7219ea0587a3e4fbe7565b9aefc8a8",
+    "scope": "Reuse the compiler-fact visitor for ?? and ??=. Ordinary emitters visit target/left children then RHS, while published constant/redirect/effect facts retain earlier real prepass elision. Variable/dimension source children have dedicated traversal and generic exclusions. Writable refetch reuses memoized expressions rather than recompiling callable bodies. No runtime, machine state or compiler schema edits."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_compile.c",
+    "symbols": [
+      "zend_compile_coalesce",
+      "zend_compile_assign_coalesce",
+      "zend_delayed_compile_dim",
+      "zend_compile_simple_var_no_cv",
+      "zend_emit_tick"
+    ],
+    "existing_contracts": [
+      "spec/semantics/65-coalesce-compiler.watsup",
+      "spec/semantics/71-coalesce-assignment-compiler.watsup",
+      "spec/semantics/66-nonvariable-coalesce.watsup",
+      "spec/semantics/70-quiet-coalesce.watsup",
+      "spec/semantics/72-coalesce-assignment-control.watsup"
+    ]
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/strict-report-v1.json",
+      "sha256": "b776b87bd34c0c2ec6b3897d28f21b3c7977092a662ec0f4fb2f9185dbab3be8",
+      "revision": "71e7a28f3264ef61a7e4a7a50aee9605c5bf5f34",
+      "packet_passed": true,
+      "modules": 437
+    },
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/source-author-v1/report.json",
+      "sha256": "df8cb613da53489f9f2c4c6f3dd5482444a9a90d23afb6b3db70bb08a93838f9",
+      "revision": "41176c7212d42d7f1d9cbb416e693799a063e24c",
+      "packet_passed": true,
+      "agreements": 3,
+      "scope": "Direct constant-left ?? emits a real operation/TMP Switch subject; unexecuted direct RHS callable contributes declarables; callable-RHS ??= enclosing Tick observes committed assignment before throwing."
+    },
+    "independent_source_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/source-review-v1/report.json",
+        "sha256": "26191fcfebca9326d321169d6ffda99ebc2a25c635b66fea1a6b389dc6456752",
+        "revision": "41176c7212d42d7f1d9cbb416e693799a063e24c",
+        "packet_passed": false,
+        "agreements": 2,
+        "accepted_cases": [
+          "review-prepass-coalesce-erases-fallback-and-preserves-adjacency",
+          "review-quiet-cv-read-and-runtime-unselected-fallback-declarables"
+        ],
+        "disposition": "Whole packet remains false. Only the two completed normal rows are credited. The original handler-bearing missing-key case timed out; present-key was unrun."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/source-review-handlerless-v3/report.json",
+        "sha256": "809ca97eb1dc9a563f56710d222d9209f3e4f58e81b98e2c8014ea70f0e8bf47",
+        "revision": "31f9ab44af5730cdc245701878a58a4ebe9b4acc",
+        "packet_passed": true,
+        "agreements": 2,
+        "scope": "Corrected handlerless missing-key assignment and previously unrun present-key assignment. Both keys execute once; compiled RHS declarables remain even when runtime skips it."
+      }
+    ],
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/review-protocol-v1/run/report.json",
+      "sha256": "5596a1fb198ecaffd65d90b120d137f898a949ac298beaf086ad2ed14f1bbda0",
+      "passed": true,
+      "revision": "d225cf06b616061626126f8410189adc7e8ee424",
+      "process": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/review-protocol-v1/process.json",
+      "process_sha256": "f8124e46113b8fb29fce6d604c5bb074c8322a81eecd2b5a48fccb4df021e385",
+      "groups": 3,
+      "reported_conditions": 144,
+      "group_conditions": [
+        48,
+        48,
+        48
+      ],
+      "labeled_malformed_marker_guards": 1,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "One real COALESCE_QUIET step returns the present CV without RHS/events. A genuine handlerless COALESCE_ASSIGN_WRITE holds the evaluated key and RHS9 before the array write, with its canonical pending frequency3 marker. A present-key outer Tick follows one K and no RHS execution, yet retains the compiled RHS frequency3. Full descriptors/heap and budget/unpause equivalence pass."
+    }
+  },
+  "behavior": "Runtime quiet reads omit missing-value warnings and evaluate only selected RHS expressions. Ordinary compilation still visits RHS callable bodies for direct constant-looking or runtime-unselected operands, unlike actual earlier prepass elision. Callable key bodies contribute declarables once before RHS; assignment refetch does not recompile them. Real COALESCE/QM_ASSIGN/write emission breaks adjacency and produces a temporary. The enclosing assignment Tick follows the real write.",
+  "open_registered_handler_composition": {
+    "status": "Open composition/performance obligation, not completion or Unsupported",
+    "source": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/source-review-v1/review-missing-dimension-coalesce-assignment-memoizes-key/source.php",
+    "timeouts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/source-review-v1/report.json",
+        "model_seconds": 60
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/source-review-dimensions-v2/report.json",
+        "model_seconds": 180
+      }
+    ],
+    "diagnostics": {
+      "bounded": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/steps-diagnostic-v1/report.json",
+      "compiled_steps0_seconds": 12.761,
+      "steps100_seconds": 15.133,
+      "steps100_stdout": "KT",
+      "actual_state": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/state-diagnostic-v2",
+      "pending_task": "AT at target-base CV occurrence wrapping KEY_READ_BASE (BASE_VALUE (VARIABLE values, line7)) KEY_IS; current origin is target DIM and FRAMES is empty.",
+      "minimized_pair": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-32/minimize-key-v1/report.json",
+      "minimized_observation": "Scalar-RHS callable-key/tick program completes KTT9T without a handler; the same source with registered handler times out. Native observation is KTT9T for both."
+    },
+    "disposition": "The key body and Tick have completed before the pending quiet-reader task. Handlerless callable-key execution is validated; registered-handler completion is not established. No blanket handler prohibition or249 change. Return to this dependency after priority Echo33."
+  },
+  "remaining": "Multi-operand Echo still lacks between-operand tick placement and is priority ATTR33. Compiler-special result fences and broader access/result/control/lifetime contexts remain partial. The callback/quiet-CV originals retain their own registered-handler scope; the open key-reader composition does not invalidate them.",
+  "environment": "Original source bytes, paths/cwd, raw streams/exits, exact commands and relevant module/tool identities remain external. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile; heavy processes use CPU5. Regular copied tools are not an offline rebuild or portability proof.",
+  "zero_credit": [
+    "The original baseline at6c2cf3527 returns Unsupported with empty output and no agreement credit.",
+    "Both original handler-bearing dimension timeout packets remain false and retain zero completion/agreement credit for that source. Only the first packet's two completed normal rows are credited.",
+    "Native preparation initially predicted the grouped-echo result incorrectly. That source was changed to two explicit echo statements; only the affected source was queried again and three other original bytes remained unchanged.",
+    "An initial diagnostic preparation omitted the native helper extension and failed before checked fixture execution. Its raw failure remains zero credit.",
+    "The experimental180s source allowance did not establish completion and was reverted; the shared tick source harness is unchanged in the final tree. No prior31 replay or unrelated249 expansion was run.",
+    "No engine bug, intentional semantic divergence or full-core closure is claimed."
+  ],
+  "independent_review": "/root/attributes_review accepted production71e7a28f3 and all three actual-continuation fronts; final393 hash matches its executed tree."
+}

@@ -49,6 +49,24 @@ remain Unsupported, including known outer constants retaining those effects.
 The source routes are `zend_compile_short_circuiting`, `zend_compile_conditional`,
 `zend_compile_shorthand_conditional` and `zend_compile_array`.
 
+Coalesce plans reuse those receipts. Ordinary `??` compiles its quiet left
+operand and RHS even when the left value looks constant; an earlier actual
+constant prepass may instead erase the fallback. Runtime quiet reads still omit
+undefined-value warnings and evaluate only a selected RHS. Coalesce assignment
+visits target children before RHS, then reuses their memoized expressions for
+its writable refetch. Callable keys therefore contribute lexical declarables once,
+while an unexecuted RHS body still contributes its own compilation. Real
+COALESCE/QM_ASSIGN/write operations break adjacency and produce temporaries;
+the enclosing tick runs after assignment commits. Source authority includes
+`zend_compile_coalesce`, `zend_compile_assign_coalesce`, `zend_compile_dim` and
+`zend_compile_simple_var_no_cv`. Existing runtime access/write admission stays
+bounded. Witnessed callable-key assignments have no registered error handler.
+The registered-handler quiet key-reader path has an open composition/performance
+obligation: bounded progress completes after the key's tick, but full execution
+times out. This establishes neither completion nor Unsupported. Multi-operand
+`echo` still lacks Zend's between-operand tick placement; these witnesses use
+explicit individual echo statements.
+
 Admitted Generator sources preserve statement markers across suspension. A bare
 yield keeps its discard before the pending tick; a direct assignment keeps its
 write before that marker. The marker runs when the Generator resumes. Flat-array
@@ -110,6 +128,9 @@ arm-order, line, result-kind, abrupt-callback and suspension witnesses.
 The [conditional tick review](../../coverage/semantics/tick-elision-review.json)
 records compiled versus elided bodies, retained effects and canonical marker
 validation with budget/unpause equivalence.
+The [coalesce tick review](../../coverage/semantics/tick-coalesce-review.json)
+records quiet reads, lazy RHS execution, memoized target children and committed
+assignment before callback throw.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
