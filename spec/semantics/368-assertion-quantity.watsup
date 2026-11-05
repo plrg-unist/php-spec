@@ -144,13 +144,13 @@ def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = tr
   -- if S_history = $assertion_ini_conversion_history(S, n)
   -- if $config_string_site_valid(S_history, pconfigcall_original, n, porigin_child, z_child, z_call)
 ;; The copied Iterator option has retired, so its saved receipt authenticates
-;; the rootless converted integer call without claiming a live option owner.
+;; the rootless converted scalar call without claiming a live option owner.
 def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = true
   -- if passertiniconversion.SOURCE = CONFIG_ITERATOR_STRING_RECEIVE pconfigcall_original n_object pvalue_option
   -- if passertiniconversion.VALUE = pvalue_option
-  -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN (PINT z))]
-  -- if z = 0 \/ z = 1
-  -- if pconfigcall = pconfigcall_original[.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN (PINT z))]]
+  -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_iterator_assertion_scalar(pvalue)
+  -- if pconfigcall = pconfigcall_original[.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]]
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if $string_carrier_valid(S, pvalue_option)
   -- if $string_bytes(pvalue_option) = ($ptascii("zend.assertions"))
@@ -173,9 +173,9 @@ def $assertion_ini_conversion(S, pconfigcall) = (passertiniconversion)
 def $assertion_ini_conversion(S, pconfigcall) = (passertiniconversion)
   -- if S.TODO = ptask_source :: ptask_tail*
   -- if ptask_source = CONFIG_ITERATOR_STRING_RECEIVE pconfigcall_original n_object pvalue_option
-  -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN (PINT z))]
-  -- if z = 0 \/ z = 1
-  -- if pconfigcall = pconfigcall_original[.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN (PINT z))]]
+  -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
+  -- if $config_iterator_assertion_scalar(pvalue)
+  -- if pconfigcall = pconfigcall_original[.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]]
   -- if passertiniconversion = {SOURCE ptask_source, VALUE pvalue_option}
   -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall)
 def $assertion_ini_conversion(S, pconfigcall) = eps -- otherwise
