@@ -485,7 +485,7 @@ and [alias-capture](../../coverage/semantics/anonymous-trait-alias-capture-revie
 reviews.
 
 Imported `__toString` and ordinary methods aliased to it also retain inferred
-Stringable interfaces in unit0 anonymous classes. Before stripping imported
+Stringable interfaces in admitted anonymous classes. Before stripping imported
 members, the live interface list must equal the shared trait importer's derived
 list. Only the own-member comparison restores the raw interface field; full
 declaration replay remains mandatory. Inference does not change the compiler's
@@ -500,9 +500,29 @@ empty-interface path and saved-snapshot branches are unchanged. Return,
 visibility and static Stringable contract conflicts retain the physical trait
 method line and short class display, without publication or allocation.
 [Stringable trait review](../../coverage/semantics/anonymous-trait-stringable-review.json)
-records these sources and reached guards. Dynamic-source trait combinations,
-wider explicit-interface/unpublished/collision scope histories and other
-member/type/lifetime contexts remain partial.
+records its original main-unit sources and reached guards.
+
+Successfully compiled include/eval units use the same own-member and derived
+interface projection. Their completed source-unit receipt, exact NEW occurrence,
+frozen compilation-entry view, history seed and compiler-derived counter remain
+mandatory. The composed view additionally requires the published name, runtime
+publication receipt and full declaration replay; duplicate imported methods or
+interfaces cannot gain authority by surviving the own-member projection.
+Skipped conflicts keep their compiler key without linking; reached interface
+conflicts precede constructor argument effects. Repeated allocation uses one
+compiled class, while recompilation creates a fresh name. A copied trait
+constant's retained callable target still follows its first selected binding,
+even across distinct eval-created class identities.
+
+Ordinary cached-method history and scope checks finish before the extra trait
+view requests full replay. This breaks the dynamic compiler/cache validation
+cycle without changing source-entry authority or weakening the parameter view's
+interface checks. Resolved expected argument types and object trace names use
+the engine's C-string display boundary; stored names and type atoms remain full.
+[Dynamic trait review](../../coverage/semantics/dynamic-anonymous-traits-review.json)
+records native originals, source-entry/counter/capture checks and preserved
+failures. Wider dynamic source, explicit-interface/unpublished/collision scope
+histories and other member/type/lifetime contexts remain partial.
 
 Engine routes: `Zend/zend_compile.c::zend_compile_use_trait`,
 `zend_compile_trait_alias`, `zend_compile_trait_precedence`;

@@ -4918,14 +4918,15 @@ redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
 
-Unit0 anonymous classes admit finite trait uses and ordinary adaptations with or
-without a parent and explicit interfaces. Qualified and unqualified aliases,
+Anonymous classes in the main unit and admitted successful include/eval units
+admit finite trait uses and ordinary adaptations with or without a parent and
+explicit interfaces. Qualified and unqualified aliases,
 visibility changes, final aliases and `insteadof` share named-class resolution;
 an excluded method can still supply a qualified alias. Linking occurs at the
 first reached `new`, before constructor arguments. Copied constant method
-captures keep the generated NUL name and the importing lexical/parent scope;
+captures keep the generated NUL name and their selected lexical/parent scope;
 failed links publish no class. Trait-link diagnostics truncate each class-name
-argument while keeping stored identities complete. Dynamic-source trait combinations and wider member/lifetime contexts
+argument while keeping stored identities complete. Wider member/lifetime contexts
 remain partial. [Adaptation review](coverage/semantics/anonymous-trait-adaptations-review.json).
 
 Imported and aliased `__toString` methods now retain inferred Stringable
@@ -4935,6 +4936,16 @@ history authenticate the inferred list. Ordinary parentless copied captures
 also retain the missing-parent receive error with inferred interfaces. Stringable
 return, visibility and static conflicts fail before allocation at the trait
 method source. [Stringable trait review](coverage/semantics/anonymous-trait-stringable-review.json).
+
+Closed dynamic units authenticate composed trait members and inferred interfaces
+against their compiler image, frozen source-entry bindings and request counter.
+Publication and full declaration replay remain required. Recompiling an eval
+creates fresh class identities while a copied trait constant's callable retains
+its native selected target. Argument type errors and object trace text truncate
+display names without changing stored names or types. Ordinary cached scopes
+validate before requesting the extra trait parameter view, avoiding a recursive
+dynamic replay dependency.
+[Dynamic trait review](coverage/semantics/dynamic-anonymous-traits-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

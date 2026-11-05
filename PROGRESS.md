@@ -855,9 +855,19 @@ fail at the trait method before publication or allocation. Eight exact originals
 parentless `parent` receive view requires published interface targets and full
 history; old empty-interface and snapshot paths stay unchanged. Original source
 failures and three fixture corrections retain zero agreement credit.
-Dynamic-source combinations, wider explicit/unpublished/collision scope histories,
-illegal-modifier diagnostics and other member/lifetime contexts remain partial.
+Wider source and explicit/unpublished/collision scope histories, illegal-modifier
+diagnostics and other member/lifetime contexts remain partial.
 [Review](coverage/semantics/anonymous-trait-stringable-review.json).
+CLASS171 shares composed trait views with closed successful include/eval units,
+retaining source-entry bindings, request counters, publication and full replay.
+Ordinary cached scopes validate before extra trait parameter views, breaking the
+dynamic replay/cache cycle while retaining interface forgery refusals. Nine exact
+originals, strict433, 82 author, 263 independent and 79 retained saved-view
+conditions pass. Argument type and object trace displays use native C strings;
+fresh eval classes preserve copied constants' selected callable targets. Original
+display/timeout failures and the own-constant author control retain zero credit.
+Own anonymous constants and wider source/member/scope histories remain partial.
+[Review](coverage/semantics/dynamic-anonymous-traits-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
