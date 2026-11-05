@@ -649,8 +649,26 @@ if the actual cache, key and index remain unchanged, the captured value enters a
 fresh reference cell before the next native resume. The call cursor remains
 authenticated through the real API callback send/reference stages.
 
-Warning-time advancement, dynamic-string sinks and other producer/target forms
-stop with a rooted, source-valid Unsupported cursor. A throwing handler also stays explicit
+The [reference-cell extension](../../coverage/semantics/generator-reference-sink-review.json)
+also admits ordinary cells yielded by named BYREF Generators. Zend dereferences
+the iterator's current-data pointer before Warning; CELL records that selected
+cell without adding an HCELL owner. A normal handler's write through an outside
+alias changes the delivered scalar, while rebinding the actual GLOBALS name
+leaves delivery attached to the original cell. The existing REFERENCE operand
+policy admits NULL, bool, int, float and interned strings; typed/backed/debt cells,
+runtime-string carriers and owning values remain outside this rule. The same
+ordinary-cell and carrier checks apply after the handler, before creating a
+fresh private callee cell. Earlier private cells survive the second Warning.
+
+Delivery requires the same physical reference cache cell, key and INDEX with
+the Generator still PAUSED. INDEX is the largest used integer key, not a
+resumption counter: repeated explicit keys can leave it unchanged. Reference-cell
+replacement is therefore detected independently even when key/index/value are
+equal. By-value delivery keeps its previous cached-value equality check.
+
+By-value payload changes, key/index or producer-phase changes, replacement
+reference cells, dynamic-string sinks and ineligible reference kinds stop with
+a rooted, source-valid Unsupported cursor. A throwing handler also stays explicit
 Unsupported: Zend still calls the native iterator's `move_forward` with its
 exception pending before propagating it. The pending Throwable, Generator,
 INPUT, sent prefix and held scalar remain rooted at this unmodeled frontier;

@@ -424,14 +424,18 @@ Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
 
-Ordinary scalar BYVAL Generator unpack now warns within the first two sends to
-fixed untyped BYREF parameters in argument positions 1 or 2 of direct named
-functions returning by value. Distinct private cells preserve earlier sends
-through the second Warning. Six new and two affected legacy sources agree;
-source-derived ownership, authority and budget gates pass at their recorded cuts.
-Five Unsupported controls and pending-throw stop checks retain zero agreement
-credit. Dynamic-string sinks, pending warning exceptions and wider forms remain partial.
-[Reference-sink review](coverage/semantics/generator-byref-sink-review.json).
+Scalar Generator unpack reaches fixed untyped reference parameters in argument
+positions 1 or 2 of direct named functions returning by value, within the first
+two sends. By-value caches keep their Warning snapshot; ordinary reference
+caches reread a nonowning source-cell designation after the handler. Alias writes
+change delivery, while actual global-name rebinding preserves the old cell.
+Distinct private cells retain earlier sends across the second Warning.
+A95 adds ten new and two affected legacy source agreements; independent
+source-derived ownership, authority, retirement and budget gates pass. Two
+Unsupported controls retain zero agreement credit. Cache replacement, ineligible
+reference carriers and pending warning exceptions remain partial.
+[Snapshot review](coverage/semantics/generator-byref-sink-review.json),
+[reference-cell review](coverage/semantics/generator-reference-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
 ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
