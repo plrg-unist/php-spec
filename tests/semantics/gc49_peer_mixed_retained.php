@@ -50,6 +50,10 @@ echo 'H|', (int) ($oldWatch->get() === $held), '|';
 unset($held);
 echo 'V|', (int) ($oldWatch->get() === null), '|',
      (int) ($otherWatch->get() !== null), '|';
+unset($map[$key]);
+echo 'U|', (int) !isset($map[$key]), '|';
+$map[$key] = 0;
+echo 'I|', (int) isset($map[$key]), '|';
 unset($otherKey);
 echo 'N|', (int) ($otherWatch->get() === null), '|',
      (int) isset($map[$key]), '|', (int) empty($map[$key]), '|';
