@@ -484,7 +484,8 @@ the live Closure keeps them black, and all three leave the count plan.
 Owners remain Closure 2, array 3 and each child 2. One source matches PHP
 on the full stream. Only the key-1 buffer-absence premise is removed;
 the exact two-entry/trace shape, distinct child IDs, childlessness and
-real direct Closure root remain required. See the
+real direct Closure root remain required by that clause. GC25 admits
+duplicate child IDs through the finite array clause. See the
 [buffered second child review](../../coverage/semantics/gc-buffered-second-array-child-caller-review.json).
 
 GC23 admits one node-free by-value capture before a childless mutable array
@@ -499,7 +500,7 @@ the [scalar-array caller review](../../coverage/semantics/gc-scalar-array-caller
 
 GC24 accepts one mutable array anywhere in a finite list of direct defined
 node-free scalar Closure captures. The array's finite entries are direct
-node-free scalars or distinct allocated childless stdClass objects; the
+node-free scalars or allocated childless stdClass objects; the
 ordinary and physical child lists must agree. The real selected direct
 Closure and machine root still protect the entire array component during
 the D count pass. The new clause excludes compiled-pool descendants and
@@ -507,10 +508,36 @@ materialized object property tables, and remains disjoint from older exact
 array clauses. Reversed captures, three mixed-key leaves and a post-capture
 COW variant agree with PHP. Reached states prove array/key-0 buffer order,
 all three live leaves black, owners 2/3/2/2/2 and refusal of duplicate or
-separately captured leaves, aliases, indirect entries, nested arrays,
+separately captured leaves at that cut, aliases, indirect entries, nested arrays,
 undefined sentinels, destructor-bearing children, a direct pool root and a
-proxy table. General duplicate-edge, nested, reference and user-finalizer
+proxy table. GC25 supersedes the duplicate-entry refusal and GC26 admits a
+bounded separately captured leaf. General nested, reference and user-finalizer
 graphs remain open. See the [finite capture review](../../coverage/semantics/gc-finite-capture-review.json).
+
+GC25 admits repeated direct entries to one childless stdClass under the
+same rooted Closure. The two array buckets remain separate physical and
+ownership edges, while the leaf has one identity and one GC buffer slot.
+After the source unsets its original leaf names and global array, the
+captured array owns the leaf twice; the live Closure protects both during
+the D count pass. Native and model agree through weak liveness after the
+call and weak death after Closure release. Reached checks prove two array
+edges, one leaf slot, array/leaf owners 2/2, black removal and continued
+refusal of nested or separately captured heap children. Distinct two-entry
+shapes still use their earlier exact clause; GC26 supersedes the shared-leaf
+refusal for its bounded direct capture shape. See the
+[duplicate-edge review](../../coverage/semantics/gc-duplicate-edge-review.json).
+
+GC26 admits finite direct captures containing exactly one mutable array and
+at least one childless stdClass object whose identity also appears among the
+array's direct entries. Every direct object capture must be such an entry;
+other captures are defined node-free scalars. Closure ordinary and GC trace
+edges match capture order, with the GC24 pool and proxy fences retained.
+Forward and reversed capture sources agree with PHP through weak leaf death
+after Closure release. Two source-reached D states prove separate Closure and
+array edges to the leaf, one physical leaf slot, owners 2/2/3 and black plan
+removal. A synthetic two-object state checks recursive helper acceptance only;
+source behavior for that wider case remains unvalidated. See the
+[shared-capture review](../../coverage/semantics/gc-shared-capture-review.json).
 
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;

@@ -1,0 +1,54 @@
+{
+  "milestone": "CLASS167",
+  "status": "private and actual-tail validation complete; integration pending",
+  "base": "0ed9ac41f35824259bcebbb8e357f8a46f193d47",
+  "semantic_commit": "58ca287c6",
+  "test_commit": "c3602786c1cbd9869df2a89d0fe31b9b1f3efbea",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, opcache CLI disabled, LC_ALL=C, TZ=UTC",
+  "behavior": "A parentless unit0 anonymous class with one unadapted named trait use defers publication until new. Its trait constant can retain a first-class method capture under the generated NUL class name. A copied parent parameter has no parent class and raises Error at TYPE_RECEIVE before the body. The ordinary constant-callable receipt authenticates this published capture; rendered fatal trace class text stops at NUL while the stored class name stays full.",
+  "inputs": {
+    "spec/semantics/207-error-handler-runtime.watsup": "ae318f31050ca7e22f713e4ff599b938b66d0e75b327119c49505a904299d634",
+    "spec/semantics/307-trait-callable-target-fixups.watsup": "598a71abe8b7b044091fec4aee14531b747bbeb04c7717570d7902181d4096ca",
+    "spec/semantics/383-anonymous-classes.watsup": "d105b9762ac3231fee6e0b984953ab1cf9d32559cffb0678d72c23e6c3703d01",
+    "tests/semantics/anonymous_parentless_trait_capture_cases.json": "362a3944540e68682fcf9811d5a73866c53fea6c59c547d907d704c79a71139f",
+    "tests/semantics/anonymous_parentless_trait_capture_protocol.py": "adccb07aa9e31a8c58b2ced96da8c27e85b55c0564602f54d66a379b12b1ae46",
+    "spec/semantics/modules.json": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "_build/default/adapter/main.exe": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "validation": {
+    "native_positive": "The retained CLASS166 original supplies the parentless normal source; its old model Unsupported cut remains zero credit until CLASS167.",
+    "native_parent_type": [".tools/class167-artifacts/parentless-parent-type.native.json", "77aa4df578e86b3760cb96d7fc03b3774b53413f220796b1f2b9a36dabf6c737"],
+    "native_timing_only": [".tools/class167-artifacts/parentless-timing.native.json", "bfa3ed9f93d9fd10c399def4b6f02673193558fa5201c0f459eb2786d94e2d57"],
+    "timing_result": "class_exists(expected NUL name, false) is 0 before new and 1 after; native-only, no model agreement credit.",
+    "private_source_supervisor": [".tools/class167-artifacts/class167-two-source-private.json", "94eaa3052bbbf9cd779f5c26ff1c875e8857a0f2b6c23c072e15e96f5be092e7"],
+    "private_source_raw": [".tools/class167-artifacts/recovered-private-raw/method-runtime-n2twccai/report.json", "baeb472acf6ebd5e899ae70bfe2f8596dfd4efb99f1621268832724a966c0c08"],
+    "private_source_result": "Selected/completed/pass 2/2/2 at c3602786c: normal/exit0 and php_error/exit255; exact stdout/stderr templates, stable inputs, CPU2, no timeout or surviving child.",
+    "state_supervisor": [".tools/class167-artifacts/parentless-state-edit6.json", "f122994447ca6fb75306551e7bec980189fe064aa3734ce3d603620f34e63f5f"],
+    "state_positive": [".tools/class167-artifacts/recovered-private-raw/anonymous-parentless-trait-cplw8a2i/report.json", "8c42b8609b77c4f3b3db9d31bc5c736225b2c344ff852fec68ac60333e60f608"],
+    "state_parent_receive": [".tools/class167-artifacts/recovered-private-raw/anonymous-parentless-trait-ysro93ny/report.json", "561d9360053df4a5de6c4f98f95ec0bf4d205127162c44979c72cde7dedfc476"],
+    "state_result": "45 and 43 source-reached conditions returned true newline/empty stderr/exit0. The positive cut pins pre/post PDRCLASS timing, raw/live trait composition, forged import rejection and allocation. The negative cut pins authenticated ordinary receipt, no parent, TYPE_RECEIVE, forged parent-link rejection, full stored NUL class versus short rendered frame, and exact fatal event without body output. State supervisor ran before commits; all watched semantic/test input hashes equal the committed bytes.",
+    "strict_supervisor": [".tools/class167-artifacts/class167-strict-private.json", "f19f1b3bc088de716258b4f441ea2a4a4c9a7195368feda5f18af4f49cb5e1b9"],
+    "strict_result": "All 433 ordered semantic modules compile under strict SL at c3602786c: true newline/empty stderr/exit0, CPU2, stable inputs and full reap.",
+    "non_nul_trace_control": [".tools/class167-artifacts/class167-nonnul-trace-control.json", "19f6d949751fd0fb9f16f3c2179d0a358a6b56070b3dabbba3dfa6370ec607de"],
+    "non_nul_result": "Existing trait-parent-before-alt-fatal source remains exact php_error/255 on changed 207/307 bytes."
+  },
+  "recovery": {
+    "raw_locations": [".tools/class167-artifacts/recovered-private-raw/locations.json", "d388aa0f32cd98bce1cc5ad46e9e0896750e884dfb56ac52a8875c046b388b44"],
+    "note": "Archived raw reports contain their original class167-dev worktree paths. Use raw_locations to find the retained files after worktree cleanup.",
+    "zero_credit": "Original parentless Unsupported baselines, the parent-only call-entry Unsupported, one forward-declaration runner failure, one full-NUL trace mismatch, and two state-fixture elaboration failures remain distinct archived cuts. Premise and step probes are diagnostics, not additional agreement."
+  },
+  "limits": "The exact positive sources contain only the trait use, while admission permits one such use with other already admitted members. Two trait uses, interface combinations and adaptations remain excluded. Dynamic units, rebinding, inherited parent types and wider anonymous trait combinations remain unvalidated.",
+  "actual_tail": {
+    "base": "3a0c29c7bf854185c96e61dc3aa98cf6fe63f9e6",
+    "tested_candidate": "ef2db24222ab0cb174abc1d70443b6788d3a4182",
+    "joined_semantic_commit": "5aaa72e95",
+    "strict_supervisor": [".tools/class167-artifacts/class167-strict-joined.json", "9d5cb2ae1d06717a5a7a3768c634e8cf2b1d9d340939c51c8d97ef5a3a7f6697"],
+    "strict_raw": [".tools/class167-artifacts/strict-joined-numeric.json", "964599a3e4abde7500632709b838b5cdbed1ccf9d740ecc1b8843b5888c738c6"],
+    "source_supervisor": [".tools/class167-artifacts/class167-two-source-joined.json", "e49ecd597bbdfc209263052a83a56a12db546a2774f9a95d7f3290165f108aa6"],
+    "source_raw": [".tools/class167-artifacts/recovered-join-raw/method-runtime-ay20zfwy/report.json", "654d9fce2502bb7f65ef1aa23323ce0c92c89a37e4be103703f5094487b07c60"],
+    "result": "Joined strict433 is true newline/empty stderr/exit0. Both selected source originals pass, normal/0 and php_error/255, with exact templates, stable inputs, CPU2 and full reap. The I92 Generator Closure::call copy route and other intervening guarded runtime changes are not entered by these nongenerator direct METHODCLOSURE sources."
+  }
+}

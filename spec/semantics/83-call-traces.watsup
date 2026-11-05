@@ -124,6 +124,7 @@ dec $destructor_context_kind(pstate, pcallcontext) : bool
 dec $generator_context_trace_kind(pstate, pcallcontext) : bool
 dec $generator_trace_scope(pstate, pcallcontext?, pframe*) : pstate
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
+dec $closure_call_copy_target(pstate, pcalltarget, porigin?) : bool
 dec $sensitive_trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
 dec $sensitive_trace_arguments(pstate, pfunction, (pkey, ptracearg)*) : (pkey, ptracearg)*
 dec $sensitive_trace_frames(pstate, ptraceframe*) : (pstate, ptraceframe*)
@@ -147,6 +148,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
   -- if pcallcontext_identity = $closure_invoke_trace_identity(pcallcontext)
   -- if ~$terminal_string_context(S, pcallcontext)
   -- if ~$closure_call_target($context_target(pcallcontext))
+  -- if ~$closure_call_copy_target(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if ~$config_string_trace_context(S, pcallcontext)
   -- if ~$generator_context_trace_kind(S, pcallcontext)
   -- if ~$default_internal_callback_context(S, pcallcontext) /\ ~$ordinary_internal_callback_context(S, pcallcontext)

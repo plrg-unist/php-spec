@@ -1,0 +1,78 @@
+{
+  "milestone": "ATTR14: finite copied object arguments in ordered post-FINAL raw invokable ticks",
+  "status": "selected normal source and ownership behavior validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-14",
+  "scope": "Any nonempty ordered list of raw invokable tick entries, each with any finite copied POBJECT argument list whose elements differ from that entry's callback object, no assertion callback and normal completion. Repeated argument IDs and shared callback IDs across entries are admitted. Each task releases argument occurrences in order before its two FCC slots.",
+  "authority": [
+    "ext/standard/basic_functions.c:PHP_RSHUTDOWN_FUNCTION(basic) and user_tick_function_dtor — copied params before zend_fcc_dtor",
+    "Zend/zend_API.h:zend_fcc_addref and zend_fcc_dtor — separate FCC.object and FCC.closure owners",
+    "Zend/zend_llist.c:zend_llist_destroy — registered tick entries retire head to tail"
+  ],
+  "production": "2003721bc38778d189e98db1b2e574e057ac8547 adds recursive object-only argument readiness to 444 and keeps existing task release/list order; 956ea85cdec9372eafbd0b7af411b5468b328341 adds source-reached owner checks.",
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "semantic_mode": "SL; P4-SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; CPU5"
+  },
+  "evidence": {
+    "native_zero_one": {
+      "source_sha256": "be53ff802b89d5705577b3e5712d9d036b20ab30ce215d01c879d4fb2157fc42",
+      "report": "native-zero-one/report.json",
+      "report_sha256": "2df8b8ef99918e68ceac14de357578f1304fd2262f1020c0247dd018bfe0733d",
+      "exit": 0,
+      "stdout": "B;F;C1;A2;C2;"
+    },
+    "native_zero_two_shared": {
+      "source_sha256": "d179576a28e07e257b371683441e5d6c5596959dc2486df85dc8e0ff47ccd0e8",
+      "report": "native-zero-two-shared/report.json",
+      "report_sha256": "0c68354bea882dd290db2c512538745a2821a258831123bcf35f0f0d02ba1c14",
+      "exit": 0,
+      "stdout": "B;F;A1;A2;C;"
+    },
+    "main_models": {
+      "revision": "2003721bc38778d189e98db1b2e574e057ac8547",
+      "report": "source-200/report.json",
+      "report_sha256": "77da457b40fdbe91bcd0e06a645fdcfc2ba53b87a1d2c52cf2de4997b0f70549",
+      "normal_exact_rows": 2,
+      "elapsed_seconds": [61.64, 57.09]
+    },
+    "reached": {
+      "revision": "956ea85cdec9372eafbd0b7af411b5468b328341",
+      "report": "reached-956/report.json",
+      "report_sha256": "faff2c29e3f9bdeff11997f16f6756916e220785ca0f71bcd7e90fdc5280ae34",
+      "selected_assertions": [23, 20, 20, 15, 18, 26],
+      "observation": "Zero-arg head leaves a one-arg tail rooted; shared callback FCC owners go 4→3→2→1→0 across two entries; copied args retire before the final callback owner."
+    },
+    "same_argument_control": {
+      "source_sha256": "06163ad01607a8a7158ebce3230c99a06e86c966289923c853337acb9e4d457f",
+      "native_report": "native-zero-two-same-arg/report.json",
+      "native_report_sha256": "05e28168225a324cc4f6ff21d937255e7f632a71ad986ade66fd1b31f5d5926d",
+      "model_revision": "956ea85cdec9372eafbd0b7af411b5468b328341",
+      "model_report": "same-arg-model-956/report.json",
+      "model_report_sha256": "1935fab2fa04e82ab7553ce873e91bf808fc170d6aac4cc75679400c62be63f0",
+      "normal_exact": true,
+      "stdout": "B;F;A;C;"
+    },
+    "strict_private": {
+      "revision": "2003721bc38778d189e98db1b2e574e057ac8547",
+      "report": "strict-200/report.json",
+      "report_sha256": "2bd091720b820b99512951d406908dbf8a9569386422ad44f763e9414a12c250",
+      "modules": 433,
+      "exit": 0
+    }
+  },
+  "zero_credit": [
+    "baseline-model/report.json: integrated de39 model Unsupported after B;F; for zero/one source",
+    "strict-draft-v1/report.json: initial combined equality/inequality failed SpecTec binding-position elaboration; corrected sequential guards pass",
+    "ATTR07 unsafe assert WeakReference observation remains suspected and zero agreement credit"
+  ],
+  "remaining": "Scalar, array/reference and callback-as-argument payloads, assertion callback roots, abrupt/reentrant module shutdown and other late-free routes remain partial. The selected normal sources witness zero, one and two copied object arguments; the recursive rule admits further finite lists without claiming exhaustive source validation.",
+  "composition": {
+    "head": "59c6f9fe3c35aac90595ad7f45b8399294993d01",
+    "parents": ["956ea85cdec9372eafbd0b7af411b5468b328341", "23defa7af6e01eba609b5b1ae1138fb759d62af7"],
+    "compatibility": "Intervening Generator/Fiber/Closure::call, explicit GC, enum query and anonymous trait/class paths are absent from the selected direct raw-invokable tick sources. Production diff from master is only the reviewed 444 argument certificate; private strict433 and focused native/model/reached cuts are retained without replay.",
+    "review": "Independent semantic/test CLEAR for 956ea85cd and current-parent semantic bridge CLEAR for 59c6f9fe3 by /root/attr_review_recovery."
+  }
+}

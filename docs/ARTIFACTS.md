@@ -345,6 +345,14 @@ strict, three exact sources and parked/closed states, including the GC09 marker.
 The [string Closure ledger](../coverage/semantics/generator-string-method-closure-review.json)
 keeps original nominal and binding failures separate.
 
+I92 real Generator Closure::call copy evidence is retained under
+`../php-spec-evidence-archive/generator-call-copy-92/` and
+`../php-spec-evidence-archive/generator-call-copy-92-review/`.
+The first archive's `actual-tail-a84b/` retains joined strict, four exact
+sources and API-entry, unused-result and sibling closed states.
+The [call-copy ledger](../coverage/semantics/generator-call-copy-review.json)
+keeps original Unsupported, native receive error and two fixture failures separate.
+
 I77 receiver-bearing scoped Generator evidence retains authored native,
 unchanged baseline, private/joined strict, source and reached-state cuts under
 `../php-spec-evidence-archive/generator-keyword-receiver-77/`. The independent

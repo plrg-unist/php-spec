@@ -585,6 +585,38 @@ reviewed. Wider
 callable consumers remain partial.
 [String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
 
+I92 follows Closure::call's separate Generator branch: a real user Closure is
+copied with the selected ordinary-class receiver and effective scope. An actual
+API continuation owns its local copy, original source, first argument and raw
+values until creation returns; the saved Gen context has no API wrapper. Existing
+clone rules copy captures/statics. Ordered retirement drops API arguments, then
+an ignored fresh Gen, then the original receiver; a retained Gen keeps its copy
+and This through CLOSED and frees the Closure before a stored cache. Native5,
+source5/private433 pass at distinct cuts; six reached fronts pass 744 custom/774
+reported checks, preserving both original fixture failures with zero credit.
+Joined strict433, four exact sources, API-entry99, unused-result81 and independent
+closed143 checks pass at a84bf6c0; 3486d56c composition is reviewed.
+A native-only missing-argument control retains the new receiver until
+shutdown after trace/source roots disappear; that no-Gen receive-error path
+stays explicitly Unsupported. Reference-parameter callbacks require earlier
+copying, while computed/packed and other producer contexts remain partial.
+[Call-copy review](../../coverage/semantics/generator-call-copy-review.json).
+
+I93 extends the real-copy path to admitted reference formals. API roots exist
+before capture/static duplication; the fresh-cell frontier follows those clones.
+Normal warning callbacks may reenter the original: a singleton static cell stays
+isolated in the copy, while an active seed frame keeps a shared cell shared.
+A top-level reference CV is still passed by value through the API; each reference formal
+gets a detached cell only after its warning returns. A used fresh Generator moves
+into one real retval continuation while API/source finalizers run, then returns
+to the caller without losing its Closure or parameters. Source history owns
+nothing after retirement. Native5/source5/private433 keep separate cuts; six
+reached fronts pass 625 custom/655 reported checks. Original failures and the
+result-demand
+projection retain zero credit; no-Gen receive/callback errors, mapping errors
+and wider contexts remain partial.
+[Reference-call review](../../coverage/semantics/generator-call-reference-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

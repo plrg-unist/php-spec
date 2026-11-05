@@ -259,3 +259,21 @@ the model; six reached states check first, middle and last task roots and
 2→1→0 callback ownership. A repeated callback object survives both entries
 in a separate exact alias control. The [ATTR13 review](../../coverage/semantics/callback-late-tick-list-review.json)
 records report hashes, retained failures and the joined strict check.
+
+Within an eligible raw invokable entry, copied arguments may be any finite
+list of objects distinct from that callback. The ordered release task already
+owns every argument occurrence before its two FCC slots. A zero-argument head
+followed by one argument prints `B;F;C1;A2;C2;`; a shared callback followed
+by two arguments prints `B;F;A1;A2;C;`. Repeating the same argument in both
+copied slots retires it once after its second owner drops. Six reached states
+check the shared callback's 4→3→2→1→0 FCC owners and argument order. The
+[ATTR14 review](../../coverage/semantics/callback-late-tick-arguments-review.json)
+records the native/model cuts and remaining payload boundaries.
+
+The callback object may itself occur among those copied object arguments.
+That occurrence adds one root before FCC.object and FCC.closure. In the
+self-only source the callback owns three roots and retires after the last
+slot; with one other object argument, that object's destructor prints `A;`
+before the callback prints `C;`. The [ATTR15 review](../../coverage/semantics/callback-late-tick-self-argument-review.json)
+records two exact native/model sources, seven reached owner stages and the
+joined strict check.

@@ -1177,6 +1177,28 @@ marker. The 4544a539 composition is reviewed. Wider callable/API/lifecycle
 combinations stay partial.
 [String Closure review](../../coverage/semantics/generator-string-method-closure-review.json).
 
+I92 reuses actual resumer/current/scope evidence for real bound Closure bodies
+with a live borrowed This. Reference-cache and warm/fresh THROW filters remain
+unchanged; the API copy/source/raw owners disappear before later suspension.
+Native5 and source5/private433 retain their cuts; six reached fronts pass
+744 custom/774 reported checks. The copied Closure/receiver survives
+CLOSED, separately from cached values and pending inputs. Receive errors,
+reference-parameter callbacks and wider call spellings remain partial. Joined
+strict433, four exact sources, API-entry99, unused-result81 and independent
+closed143 checks pass at a84bf6c0; 3486d56c composition is reviewed.
+[Call-copy review](../../coverage/semantics/generator-call-copy-review.json).
+
+I93 reuses the real Closure body/resumer proof after detached reference-formal
+reception. Root alias replacement cannot retarget the copied payload; retiring
+the formal/local leaves the real cached cell and delivered SEND input distinct.
+The copy and its receiver survive CLOSED. Warning handlers run before Gen body
+entry and retain only the genuine API frame; used retval cleanup adds no API
+trace to later body or destructor execution. Native5/source5/private433 preserve
+their cuts; six reached fronts pass 625 custom/655 reported checks. Wider
+producer/cleanup and
+abrupt reception contexts remain partial.
+[Reference-call review](../../coverage/semantics/generator-call-reference-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

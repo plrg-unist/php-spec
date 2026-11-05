@@ -243,6 +243,7 @@ dec $executor_normal_tasks(pstate, ptask*) : bool
 dec $executor_normal_task(pstate, ptask) : bool
 dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
+dec $executor_tick_args_ready(pvalue*) : bool
 dec $executor_tick_entry_ready(pstate, ptickentry) : bool
 dec $executor_tick_entries_ready(pstate, ptickentry*) : bool
 dec $executor_tick_ready(pstate) : bool
@@ -261,6 +262,7 @@ dec $executor_error_handler_tasks(ptask*) : bool
 dec $executor_error_handler_frames(pframe*) : bool
 dec $executor_error_handler_active(pstate) : bool
 dec $executor_retval_notice_start(pstate) : bool
+dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
 dec $executor_operation_row(pdestructioncleanup, pdestructionoperation) : bool
@@ -326,13 +328,18 @@ def $executor_queue_begin(S) = S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUT
 ;; The same raw invokable object occupies both FCC slots. Keep the registered
 ;; source as a nonowning snapshot after transferring its roots into the task.
 def $executor_tick_nodes(ptickentry) = $operands_roots($shutdown_known(ptickentry.ENTRY.ARGS)) ++ $callback_cache_nodes(ptickentry.ENTRY)
+def $executor_tick_args_ready(eps) = true
+def $executor_tick_args_ready(pvalue :: pvalue_tail*) = $executor_tick_args_ready(pvalue_tail*)
+  -- if pvalue = POBJECT n_argument
+def $executor_tick_args_ready(pvalue*) = false -- otherwise
 def $executor_tick_entry_ready(S, ptickentry) = true
-  -- if ptickentry.ENTRY.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_callback)), NAMED_SENT (KNOWN (POBJECT n_argument))]
-  -- if ptickentry.ENTRY.ARGS = [POBJECT n_argument]
+  -- if ptickentry.ENTRY.CALL.SENT = (NAMED_SENT (KNOWN (POBJECT n_callback))) :: pnamedslot*
+  -- if ptickentry.ENTRY.ARGS = $shutdown_values(pnamedslot*)
   -- if ptickentry.ENTRY.CACHEOBJECT = (n_callback)
   -- if $callback_cache_nodes(ptickentry.ENTRY) = [HOBJECT n_callback, HOBJECT n_callback]
   -- if $target_receiver(S, ptickentry.ENTRY.TARGET) = (n_callback)
-  -- if ~$closure_callable(S, n_callback) /\ n_callback =/= n_argument
+  -- if ~$closure_callable(S, n_callback)
+  -- if $executor_tick_args_ready(ptickentry.ENTRY.ARGS)
   -- if $tick_entry_valid(S, ptickentry)
 def $executor_tick_entry_ready(S, ptickentry) = false -- otherwise
 def $executor_tick_entries_ready(S, eps) = true
@@ -569,11 +576,17 @@ def $executor_retval_notice_start(S) = $executor_retval_notice_start(S[.TODO = (
   -- if i_flags = 112
   -- if $ob_parse_valid(S, pconfigcall, 3, [PNULL, PINT i_chunk, PINT i_flags])
 def $executor_retval_notice_start(S) = false -- otherwise
+def $executor_default_start_sent(pconfigcall) = true -- if pconfigcall.SENT = eps
+def $executor_default_start_sent(pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
+  -- if ~pconfigcall.NAMED
+  -- if pconfigcall.PACKS = eps
+def $executor_default_start_sent(pconfigcall) = false -- otherwise
 def $executor_ob_start_allowed(S) = true -- if ~$executor_error_handler_active(S)
 def $executor_ob_start_allowed(S) = true -- if $executor_retval_notice_start(S)
 def $executor_ob_start_allowed(S) = false -- otherwise
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
-  -- if pconfigcall.KIND = INTRINSIC_OB_START /\ pconfigcall.SENT = eps
+  -- if pconfigcall.KIND = INTRINSIC_OB_START /\ $executor_default_start_sent(pconfigcall)
   -- if i_chunk = 0 /\ i_flags = 112
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
   -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
@@ -604,7 +617,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $config_invoke_valid(S, pconfigcall)
-  -- if pconfigcall.SENT =/= eps \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ ~$executor_ob_start_allowed(S)
+  -- if ~$executor_default_start_sent(pconfigcall) \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ ~$executor_ob_start_allowed(S)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

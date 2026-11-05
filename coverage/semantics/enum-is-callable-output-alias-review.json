@@ -1,0 +1,20 @@
+{
+  "scope": "is_callable third direct CV output when variable input and output names share one scalar reference cell",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_ancestor": "23defa7af6e01eba609b5b1ae1138fb759d62af7",
+  "semantic_revision": "b5ca645966c26623228178eb5a603592401cdd5d",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-native-review/native.json: output-variable-string-alias SHA 680f2b2f7826d814260522dc433ab88e823242a2ad8e6b3e129f345e4af4795e, exact stdout, exit 0, empty stderr"
+  },
+  "passed": {
+    "strict": ".tools/enum-is-callable-alias-output-evidence/strict-v1/report.json: SL433 true, exit 0, empty stderr, 11.95 s, stable inputs",
+    "source": ".tools/enum-is-callable-alias-output-evidence/source-v1/report.json: alias:1:DynamicCheck::from:DynamicCheck::from| exact native/model normal",
+    "state": ".tools/enum-is-callable-alias-output-evidence/reached-v1/report.json: 43 checked source-reached SL guards true, exit 0, empty stderr, stable inputs",
+    "affected_prior": ".tools/enum-is-callable-alias-output-evidence/prior-separate-v1/report.json: distinct input/output CV source exact normal",
+    "boundary": ".tools/enum-is-callable-alias-output-evidence/rebind-control-v1/report.json: argument-time target rebinding still emits REBIND| then explicit Unsupported"
+  },
+  "superseded_zero_credit": ".tools/enum-is-callable-variable-output-evidence/alias-control-v1/report.json: same native source was explicit Unsupported at the prior distinct-cell cut; it provides no agreement credit for this new behavior",
+  "behavior": "Two direct source variable names resolve to one live unforwarded HCELL containing the saved generated enum method string. Literal false has no argument effect, reference promotion leaves the scalar value intact, and CONFIG invoke writes the same raw name into the shared cell before returning the boolean. The reached gate rejects a forged change of shared store and observes no event or class-cache change.",
+  "remaining": "Argument-time target rebinding, old array/object output values, destructor ordering, nonliteral array inputs, named/unpacked output and autoload remain partial."
+}
