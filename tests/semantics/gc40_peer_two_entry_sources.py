@@ -8,6 +8,7 @@ import global_constant_sources as family
 ROOT = family.ROOT
 SOURCES = {
     'leaf-first-field-second-throw': ROOT / 'tests/semantics/gc40_peer_reverse_throw.php',
+    'field-first-leaf-second-throw': ROOT / 'tests/semantics/gc40_peer_first_throw.php',
     'two-declared-values-boundary': ROOT / 'tests/semantics/gc40_peer_two_fields_boundary.php',
     'nested-callback-presence-boundary': ROOT / 'tests/semantics/gc40_peer_presence_boundary.php',
 }
