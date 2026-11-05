@@ -3,22 +3,24 @@
   "status": "Independently accepted bounded implementation; attributed/deferred initializer and wider core obligations remain partial",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
   "production": {
-    "revisions": ["620636cdf", "db4504466"],
+    "revisions": ["620636cdf", "db4504466", "5cffe3d42"],
     "module": "spec/semantics/393-ticks.watsup",
-    "sha256": "ac5e53ae7c8c445054a0d936ff2d552e23623a7c0a93a7b9554cb583722c16dc",
-    "scope": "Plain global CONST_DECL lists compile each initializer and real binding in order, with one trailing statement marker after the whole group. Existing NConst receipts certify declarations. A constant-context visitor follows published constants/redirects and threads the emitted line independently of diagnostic receipts: literals carry it, direct Closure compilation leaves its end line, unfolded constant names set their source line, and array values precede keys. Callable-bearing constant arrays, deferred construction and unproved attributed contexts retain dependencies. No module 88, runtime, task/state/schema or ownership protocol edits."
+    "sha256": "9cbba9dad16ba57f838ec5813d52d91a221f72b0d945d84f83ab2ed4b67bcef7",
+    "scope": "Plain global CONST_DECL lists compile each initializer and real binding in order, with one trailing statement marker after the whole group. Existing NConst receipts certify declarations. The group starts at its first declaration name rather than the const keyword. A constant-context visitor follows published constants/redirects and threads the emitted line independently of diagnostic receipts: literals carry it, direct Closure compilation leaves its end line, unfolded constant names set their source line, and array values precede keys. Callable-bearing constant arrays, deferred construction and unproved attributed contexts retain dependencies. No module 88, runtime, task/state/schema or ownership protocol edits.",
+    "retained_cut_bridge": "The only db4504466-to-5cffe3d42 change seeds LINE from first NConst metadata. Every declaration group in the earlier five normal originals, refusal control and two reached fronts has keyword line equal to first-name line, so their plans and executions are pointwise identical. Their original hashes/revisions remain below; no old source/state replay was run. The new split-header original alone takes the changed branch. Earlier strict-v2 acceptance remains at bda81b2ce, SHA 7765e73e73233f1761ae9f916da17f3bd7f08a78bbf22dc6bc8296788c9bf015."
   },
   "authority": {
     "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
-    "parser": "vendor/php-src/Zend/zend_language_parser.y: const_list builds one CONST_DECL list, unlike the statement-splitting unset/global/static lists.",
+    "parser": "vendor/php-src/Zend/zend_language_parser.y: const_list builds one CONST_DECL list, unlike the statement-splitting unset/global/static lists. Its first CONST_ELEM uses the name child line; zend_ast_create_3 and zend_ast_create_list_1 in Zend/zend_ast.c preserve that line. The top_statement action does not reset it to the T_CONST keyword line.",
     "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_const_decl emits every binding before zend_compile_stmt's single Tick. zend_const_expr_to_zval and zend_compile_const_expr traverse the retained constant AST. zend_compile_const_expr_const changes CG(zend_lineno); zend_compile_const_expr_closure calls zend_compile_func_decl_ex, which leaves decl->end_lineno. Pure zvals leave the line unchanged; constant NArrayItem order is value before key.",
     "receipt_distinction": "Module 88 ppconstant_emit/ppcall_done restores the diagnostic context before ppconstant_record. Its NConst receipt is therefore not an emitter-line certificate. This distinction is preserved rather than changing existing constant diagnostics/runtime consumers."
   },
   "evidence": {
+    "unique_normal_agreements": 6,
     "strict": {
-      "report": "/home/user/workspace/php-spec-evidence-archive/tick-constant-38/strict-report-v2.json",
-      "sha256": "7765e73e73233f1761ae9f916da17f3bd7f08a78bbf22dc6bc8296788c9bf015",
-      "revision": "bda81b2ce9df3878b1c2b8b5fc568caa0ff34eb6",
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-constant-38/strict-report-v3.json",
+      "sha256": "a70fb5259bb4a919e45993097815271a6546edd1db2e0d99641f852033efb299",
+      "revision": "5cffe3d42d705b544b3db80ac1dcd8db90bbd2db",
       "passed": true,
       "modules": 441
     },
@@ -46,6 +48,16 @@
       },
       "disposition": "All four normal rows completed exact native/model comparisons with stable inputs. The later control alone failed because its fixture expected native TZT rather than the empty model prefix. These four completed rows retain credit; the whole packet stays false."
     },
+    "header_seed_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-constant-38/source-header-after-v6/report.json",
+      "sha256": "d00ba9ae31a541521299985cafcd45f94db051faa3bdba758af307addfda7987",
+      "revision": "5cffe3d42d705b544b3db80ac1dcd8db90bbd2db",
+      "passed": true,
+      "agreements": 1,
+      "source_sha256": "17e726e8348225db841b6cf6b3ef65958de01aa424d01358767172661ed2aa93",
+      "observation": "[4][6]Z[7]",
+      "scope": "The const keyword is on line 5 and the first name on line 6. The group's initial emitter line follows the name, matching Zend's CONST_DECL AST provenance. Only this affected original reran after the seed repair."
+    },
     "corrected_refusal": {
       "report": "/home/user/workspace/php-spec-evidence-archive/tick-constant-38/source-review-control-v4/report.json",
       "sha256": "8e77060ffd9e9848499b781c04323eea5511ca46fa8de44880db3f03315e5208",
@@ -72,13 +84,14 @@
     }
   },
   "behavior": "Ordinary global constant groups now execute their certified trailing Tick after all bindings. Initializer declarables affect file frequency in compiler order, emitted lines preserve Closure/literal carry and constant-array order, and callback abort leaves installed constants available while later declarations stay unexecuted.",
-  "independent_review": "/root/attributes_review independently traced the constant compiler's line effects, identified the receipt/line distinction and carry discriminator, reviewed final db4504466, and accepted both actual group-state fronts.",
+  "independent_review": "/root/attributes_review independently traced the constant compiler's line effects and first-name AST provenance, identified both line discrepancies and the carry discriminator, reviewed the constant-context fold/seed repair, and accepted both actual group-state fronts with the explicit retained-cut bridge.",
   "remaining": "Callable-bearing constant arrays, deferred construction, attributed summaries and wider initializer/header/lifetime contexts remain explicit dependencies. Existing ordinary constant runtime and Deprecated/attribute consumers are not broadened. Full core and the Tick family remain partial.",
   "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-constant-38 and tick-const-declarations-38. Source processes use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached fixtures use checked SL on CPU 5 with caches disabled and encountered determinism checks. Before/after identities remained stable; accepted executions exited 0 with empty stderr. Regular copied tools are not a fresh offline rebuild or portability proof.",
   "zero_credit": [
     "source-baseline/report.json at 6d9b22fd2 remains false (SHA fa4b75100b7e274cbb16dbc69d630d3d53b0321fe0fe752e2a093f4baf3cfa26): the old model returned Unsupported with empty prefix and reason tick opcode placement for this statement, while native completed TT12T3ZT.",
     "source-review-v1/report.json remains false (SHA d8cc409da0bbd80c90d347b62908940de5bdc606f393bd7bf7fdc5cf7aa4f825): debug_backtrace was outside the admitted builtin route. Only that observer changed to the established Throwable getTrace path; no builtin/runtime expansion or extra agreement was claimed.",
     "source-review-v2/report.json remains false (SHA 24a7563f4ecc1bc42ed4773f25cb9adbbbced6cc50c194e059ed0cd4c786ced1): initial candidate 620636cdf produced normal [4][5]Z[11] instead of native [4][10]Z[11]. Final db4504466 fixes this formal-model line error without changing constant diagnostic receipts.",
+    "source-header-before-v5/report.json remains false (SHA 7b0d20f20a9afbf43e37e7159900fdad7beb2e951baccee3ade8a2781399cdce): db4504466 produced normal [4][5]Z[7] instead of native [4][6]Z[7]. The new first-name seed fixes this separate parser/list-provenance error; the baseline adds no agreement credit.",
     "The v3 control expectation failure retains zero credit. Only its completed normal rows and corrected v4 control have the scoped dispositions above. Earlier strict/author reports keep their original 620 identity and add no final agreements.",
     "No older 37, output, Generator, attribute-consumer or paused-boundary campaign was repeated. No PHP engine bug, intentional divergence or full-core closure is claimed."
   ]

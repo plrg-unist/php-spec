@@ -1766,7 +1766,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | GC48 | Occupied WeakMap replacement with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
-| ATTR38 | Ordinary global constant tick traversal; private implementation/review. |
+| ATTR39 | Class-like declaration tick plans and compiler traversal; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

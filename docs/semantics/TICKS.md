@@ -43,8 +43,10 @@ iterator. Callable-bearing reference patterns retain an explicit dependency.
 
 An ordinary global `const A=..., B=...` group is one statement. Plans compile
 initializers in declaration order and reset adjacency after each real binding,
-then emit one marker after the complete group. Declaration receipts certify the
-items but keep diagnostic lines. The constant-AST walk threads the emitted line:
+then emit one marker after the complete group. The group starts on its first
+constant name's line, which can differ from the `const` keyword line. Declaration
+receipts certify items but keep diagnostic contexts. The constant-AST walk threads
+the emitted line:
 pure literals preserve it, static Closure compilation leaves its end line, and
 unfolded constant names set their own source line. Constant arrays visit values
 before keys; published folds and redirects omit erased children.
