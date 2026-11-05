@@ -661,8 +661,9 @@ uncalled factory bodies still reject the unit.
 
 The [method factory review](../../coverage/semantics/anonymous-method-factories-review.json)
 separates genuine runtime/source counters from explicitly pure source-derived
-compiler-context queries. Trait and anonymous source owners, method-owned Closures,
-generators, byref returns, attributes and wider source/lifetime contexts remain partial.
+compiler-context queries. At that cut, trait and anonymous source owners,
+method-owned Closures, generators, byref returns, attributes and wider
+source/lifetime contexts remained partial.
 
 Named constructors may now contain anonymous child factories under the same parsed
 owner, method-body and class-context checks. The child template is compiled before
@@ -730,8 +731,27 @@ header or generated name. Trait composition precedes interface validation and
 constructor arguments, while constant and child compilation retain member order.
 The [mixed-owner review](../../coverage/semantics/anonymous-owner-declarations-review.json)
 distinguishes original execution, genuine reached states and source-derived
-reservation refusals. Trait source owners, attributes, generator/by-reference
-factories and wider dynamic/member/lifetime contexts remain partial.
+reservation refusals. Attributes, generator/by-reference factories and wider
+dynamic/member/lifetime contexts remain partial.
+
+Unit0 source traits may declare the admitted ordinary method/constructor and
+Closure/arrow factories. The actual Trait body field and source header establish
+the `PTTRAIT` compiler context; importers do not mint new child identities.
+Consumers, aliases and inherited calls reuse one template per source occurrence.
+Ordinary trait copying supplies the importing lexical class and called class:
+inherited calls retain the declaring importer for private/self/parent access,
+while late-static access follows the actual called class. Compiled
+`__METHOD__`/`__FUNCTION__` values and nested Closure names preserve their
+definition identity.
+
+A later trait compile error may occur before its descriptor exists. Diagnostic
+replay then skips only source-owned child checkpoints whose trait and child
+images were never installed, preserving earlier warnings and the actual fatal.
+Normal and installed histories retain ordinary checkpoint handling. The
+[trait factory review](../../coverage/semantics/trait-source-factories-review.json)
+separates original source agreement, actual consumer/cleanup states and derived
+context/refusal queries. Attributes, generator/by-reference-return factories,
+other magic bodies, dynamic units and wider lifecycle contexts remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

@@ -5145,7 +5145,7 @@ and method scope. Child templates compile before their containing named-class ke
 reversed/repeated calls keep the source counters and allocate fresh instances.
 Complete containing-unit images remain required. Lazy link failures precede
 arguments, while compile errors in uncalled factory bodies still reject the unit.
-Trait source owners, generators, byref returns and attributes remain partial.
+Generators, byref returns and attributes remain partial.
 [Method factory review](coverage/semantics/anonymous-method-factories-review.json).
 
 Unit0 anonymous owner methods and constructors reserve their key before compiling
@@ -5157,6 +5157,16 @@ scope and diagnostic order before arguments. Wider deferred and dynamic contexts
 remain partial. [Owner factories](coverage/semantics/anonymous-owner-factories-review.json),
 [method Closure factories](coverage/semantics/anonymous-method-closure-factories-review.json),
 [mixed owner declarations](coverage/semantics/anonymous-owner-declarations-review.json).
+
+Unit0 trait methods and their captured Closures/arrows also compile anonymous
+factories. Consumers and aliases share the compiled child template; ordinary
+trait copying supplies lexical and called scope for private, self/parent and
+late-static access. Compiled `__METHOD__`/`__FUNCTION__` values and nested Closure
+names retain their definition identity.
+Aborted compilation leaves unpublished trait children uninstalled, preserving
+warning/fatal order.
+Wider signatures, attributes and dynamic contexts remain partial.
+[Trait source factories](coverage/semantics/trait-source-factories-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

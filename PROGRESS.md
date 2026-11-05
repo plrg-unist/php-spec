@@ -1419,7 +1419,19 @@ programs and distinct source/runtime state groups cover composition, owner scope
 forgery refusal and compile/link order. The
 [mixed-owner review](coverage/semantics/anonymous-owner-declarations-review.json)
 records actual cuts and native-only preparation separately. Trait-owned source
-factories, attributes and wider dynamic/member/lifetime contexts remain partial.
+factories, attributes and wider dynamic/member/lifetime contexts remained partial
+at that cut.
+
+CLASS184 admits unit0 trait-source method/constructor and Closure/arrow anonymous
+factories through the real Trait body and PTTRAIT compiler context. Ordinary
+copying preserves consumer lexical/called scope while repeated consumers and
+aliases reuse compiled child identity. Abrupt compilation replays earlier
+diagnostics and skips only source-owned uninstalled trait children. The
+[review](coverage/semantics/trait-source-factories-review.json) separates source,
+consumer/cleanup state and source-derived refusal evidence, retaining the
+original missing-checkpoint Unsupported and fixture correction. Attributes,
+generator/by-reference-return factories and wider dynamic/lifetime contexts
+remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -1626,7 +1638,7 @@ records the pointwise bridge to final semantic bytes.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS184 | Trait source methods and Closures with anonymous factories; private implementation/review. |
+| CLASS185 | Class and Trait factories with Generator bodies; private implementation/review. |
 | I112 | Owning native Generator API captures and invocation; private implementation/review. |
 | GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
