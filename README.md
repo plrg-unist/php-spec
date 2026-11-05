@@ -277,6 +277,9 @@ Notice; current handler selection and real argument/Throwable owners preserve
 cleanup order. A pending Throwable skips an eligible Notice handler, while the
 default Notice still follows reporting and suppression rules. Unresolved or
 effectful lookup and wider reentry remain partial.
+Throws from the selected Notice handler also preserve the VM's distinct cleanup
+of the callback argument and its children. Consumed Closure checking borrows
+capture metadata after the real owners retire.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
