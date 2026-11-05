@@ -283,13 +283,19 @@ def $magic_method_array(pvalue :: pvalue_tail*, n) = $magic_method_array_insert(
 def $magic_method_array_insert(parray, eps, n) = parray
 def $magic_method_array_insert(parray, pvalue :: pvalue_tail*, n) = $magic_method_array_insert($array_insert(parray, KINT n, DIRECT pvalue), pvalue_tail*, $(n + 1))
 
+;; ZEND_CALL_TRAMPOLINE uses the immutable empty value when no sends exist.
+;; It remains a logical array owner, but contributes no collector candidate.
+dec $magic_method_allocate_array(pstate, pvalue*) : pstate
+def $magic_method_allocate_array(S, eps) = $allocate_immutable_empty(S)
+def $magic_method_allocate_array(S, pvalue :: pvalue_tail*) = $allocate_array(S, $magic_method_array(pvalue :: pvalue_tail*, 0))
+
 dec $magic_method_pack(pstate, pmagicmethodcall, nat, poperand*, porigin?, int, ptask*) : pstate
 def $magic_method_pack(S, pmagicmethodcall, n, poperand*, porigin?, z, ptask_tail*) = S_array[.TODO = (CALL_ARGS (MAGIC_METHOD_TARGET pmagicmethodcall n_array pvalue*) eps 2 ([KNOWN (PSTRING pmagicmethodcall.NAME), KNOWN (PARRAY n_array)]) porigin? z) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $magic_method_raw_valid(S, pmagicmethodcall)
   -- if porigin? = (pmagicmethodcall.SITE) /\ z = pmagicmethodcall.LINE
   -- if n = |pmagicmethodcall.ARGUMENTS| /\ n = |poperand*|
   -- if $magic_method_values(S, poperand*) = (pvalue*)
-  -- if S_array = $allocate_array(S, $magic_method_array(pvalue*, 0))
+  -- if S_array = $magic_method_allocate_array(S, pvalue*)
   -- if S_array.RESULT = KNOWN (PARRAY n_array)
 def $magic_method_pack(S, pmagicmethodcall, n, poperand*, porigin?, z, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "magic method send continuation"] -- otherwise
 rule PhpStep/magic-method-pack: S ~> $magic_method_pack(S, pmagicmethodcall, n, poperand*, porigin?, z, ptask_tail*)
