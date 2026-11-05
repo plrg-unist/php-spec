@@ -95,12 +95,18 @@ def $tick_full_plan(program, pcodeexpr*, pcodename*, pcoderedirect*, pclassdesc*
   -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(program), eps))
 def $tick_unit_classes(eps, n) = eps
 def $tick_unit_classes(pclassdesc :: pclassdesc_tail*, n) = pclassdesc :: $tick_unit_classes(pclassdesc_tail*, n)
-  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-def $tick_unit_classes(pclassdesc :: pclassdesc_tail*, n) = $tick_unit_classes(pclassdesc_tail*, n) -- otherwise
+  -- if PORIGIN n_source pcpath = $origin_source(pclassdesc.ORIGIN)
+  -- if n_source = n
+def $tick_unit_classes(pclassdesc :: pclassdesc_tail*, n) = $tick_unit_classes(pclassdesc_tail*, n)
+  -- if PORIGIN n_source pcpath = $origin_source(pclassdesc.ORIGIN)
+  -- if n_source =/= n
 def $tick_class_at(eps, pcpath) = eps
 def $tick_class_at(pclassdesc :: pclassdesc_tail*, pcpath) = (pclassdesc)
-  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
-def $tick_class_at(pclassdesc :: pclassdesc_tail*, pcpath) = $tick_class_at(pclassdesc_tail*, pcpath) -- otherwise
+  -- if PORIGIN n pcpath_source = $origin_source(pclassdesc.ORIGIN)
+  -- if pcpath_source = pcpath
+def $tick_class_at(pclassdesc :: pclassdesc_tail*, pcpath) = $tick_class_at(pclassdesc_tail*, pcpath)
+  -- if PORIGIN n pcpath_source = $origin_source(pclassdesc.ORIGIN)
+  -- if pcpath_source =/= pcpath
 
 def $tick_statements(T, pcodeexpr*, pcpath, n, eps, b_top) = T
 def $tick_statements(T, pcodeexpr*, pcpath, n, statement :: statement_tail*, b_top) = $tick_statements($tick_statement(T, pcodeexpr*, pcpath ++ [PCINDEX n], statement, b_top), pcodeexpr*, pcpath, $(n + 1), statement_tail*, b_top)
@@ -535,7 +541,11 @@ def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, 
   -- if $tick_class_at(T.CLASSES, pcpath) = (pclassdesc)
   -- if pclassdesc.KIND = text
   -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD n_body], 0, statement*, false)
-def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, b_top) = T[.DEPENDENCY = ("tick class declaration compiler facts")] -- otherwise
+def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, b_top) = T[.DEPENDENCY = ("tick class declaration compiler facts")]
+  -- if $tick_class_at(T.CLASSES, pcpath) = eps
+def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, b_top) = T[.DEPENDENCY = ("tick class declaration compiler facts")]
+  -- if $tick_class_at(T.CLASSES, pcpath) = (pclassdesc)
+  -- if pclassdesc.KIND =/= text
 def $tick_class_finish(T, T_body, pclassdesc, metadata, true) = T_body[.LAST = (T.LAST /\ pclassdesc.EARLY)][.LINE = $source_end_line(metadata)]
 def $tick_class_finish(T, T_body, pclassdesc, metadata, false) = T_body[.LAST = false][.LINE = pclassdesc.LINE]
 ;; Preserve the old no-fact helper and quiet literal-header class route.
