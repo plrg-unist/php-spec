@@ -181,7 +181,7 @@ class ParserWorker(Worker):
             if delta:
                 assert not CLI['dynamic_parser_stderr'](result,value['mode'],b'')
                 assert not CLI['dynamic_parser_stderr'](result,value['mode'],delta+delta)
-                assert not CLI['dynamic_parser_stderr'](result,value['mode'],delta.replace(b'line 2',b'line 3'))
+                assert not CLI['dynamic_parser_stderr'](result,value['mode'],delta.replace(b' on line ',b' on line 0'))
         self.recorded_stderr.extend(delta)
         return result
 
@@ -244,7 +244,8 @@ def prepare(out,sources):
             target=out/stage;target.mkdir()
             (target/'assertions.json').write_text(json.dumps(checks,indent=2)+'\n')
             (target/'protocol.watsup').write_text(PREFIX+'\ndec $main() : bool\ndef $main() = true\n'+''.join('  -- if '+item+'\n' for item in checks))
-        frontend.parse({'op':'parse-eval','id':'1','mode':'eval','profile':'cli-raw-85','source':b64(b'declare(encoding="UTF-8"); echo ;')},refusal=True)
+        rejected=frontend.parse({'op':'parse-eval','id':'1','mode':'eval','profile':'cli-raw-85','source':b64(b'declare(encoding="UTF-8"); echo ;')})
+        assert not rejected['accepted'] and rejected['category']=='parser_rejection' and rejected['headers']
     finally:
         try:
             if adapter: adapter.close()
