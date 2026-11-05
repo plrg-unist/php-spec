@@ -373,6 +373,15 @@ contexts include all three unchanged OB10 originals on their actual canonical
 composition. Author206 and independent341 strict conditions pass. WeakMap/custom
 notifications remain partial. [GC30 review](coverage/semantics/gc-inactive-weak-free-review.json).
 
+GC31 adds inactive WeakMap free with all-key unregister before ordered value
+release. Later value leases and shared ALIAS payload ownership survive correctly;
+retired Maps no longer force unrelated key-field cleanup. Seven exact source/request
+contexts cover empty/singleton/multi-entry Maps, AB/BA fatal order, fast/slow alias
+cells and an independent all-unregister-before-value discriminator. Author292,
+peer172 and affected GC30 HIGHER135 pass (599 total); two key-notification
+Unsupported controls keep zero agreement. Active key/incoming-Map notification
+and active free pins remain partial. [GC31 review](coverage/semantics/gc-inactive-weakmap-free-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator

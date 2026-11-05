@@ -3543,8 +3543,15 @@ their referent retires; diagnostics retain the actual internal class name.
 GC30 adds quiet inactive WeakReference unregister and standard-object notification.
 Observer retirement changes the terminal weak-association view without adding a
 referent owner. Real handle order preserves fast-shutdown field shielding and the
-existing inactive public-destructor fatal. WeakMap notification and weak custom
+existing inactive public-destructor fatal. Active key-triggered Map notification and weak custom
 hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
+
+GC31 adds inactive empty/singleton/multi-entry WeakMap free. Every key unregisters
+before ordered value release; later values stay leased when an earlier release
+fails, and shared reference cells retain their payload once. Seven source/request
+contexts and 599 new/affected reached conditions pass. Active key notification,
+incoming Map associations and active free pins remain fenced. See the
+[inactive Map review](coverage/semantics/gc-inactive-weakmap-free-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
