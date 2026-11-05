@@ -1,0 +1,65 @@
+{
+  "milestone": "ATTR44: plain trait use under positive ticks",
+  "status": "Independently accepted bounded implementation; wider trait/adaptation/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "0fcb9ee78",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "ec8082e9ca51ea308575b7f054f03bb008c853291c5f7820f73143c9c355e6b5",
+    "scope": "One plain-use clause preserves LAST/FREQUENCY, records the first trait-name line and compiles no callable body at the use statement. Existing unticked behavior and completed class/linking facts remain authoritative. No trait producer, linking/runtime consumer, task, state or schema changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_use_trait resolves/records names and optional metadata without a main opcode or repeated method compilation; zend_is_unticked_stmt includes USE_TRAIT. The parser/AST constructor inherits the first trait-name line. Enclosing DECLARE_CLASS still breaks main adjacency according to the completed class descriptor.",
+    "runtime": "Existing trait linking and ordinary method dispatch retain the physical trait source, receiver and lexical/called class. The new plan permits ordinary body Tick callbacks through that existing route."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-use-44/strict-report-v1.json",
+      "sha256": "0b448644993bb3edb2b3a5e14aee5fe90b083bdb41bcaadcf2639be4b1730413",
+      "revision": "d1a904fff2a12305d821e1e29579b8d717b2cf0f",
+      "passed": true,
+      "modules": 445
+    },
+    "author_source_and_control": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-use-44/source-author-v1/report.json",
+      "sha256": "87045e4b751c140076f8ba1ef3c2771a2c8317a00fad3e2283001da99d17b063",
+      "revision": "d1a904fff2a12305d821e1e29579b8d717b2cf0f",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TPZT",
+      "unsupported_controls": 1,
+      "control_agreement_credit": 0,
+      "scope": "An uncalled trait method declares ticks 2 after a prior main Tick. Plain use adds no Tick/recompilation, while enclosing DECLARE_CLASS permits a new frequency 3 marker before P/Z. A valid alias adaptation remains Unsupported at tick opcode placement with an empty modeled prefix."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-use-44/source-review-v1/report.json",
+      "sha256": "b9e6f685ce8418d16ff51db9012cdc6dd0291130adcc874244d01f0e18ba43d1",
+      "revision": "d1a904fff2a12305d821e1e29579b8d717b2cf0f",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TTMT9CTMT7TZT",
+      "scope": "Imported run() body Tick invokes callback 3, which reads sibling 9 and throws before return 7. Catch C is followed by a successful method retry returning 7."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-use-44/review-protocol-v1/run/report.json",
+      "sha256": "eeb1234a43df6ab26025a7a9b4b36780ad0a64f472be723590b5baacf3b3532e",
+      "process_sha256": "65f24cab7d4b6b655a4d8fb02a438da3ca54613c405e6ba3fd12c4efe2d60aea",
+      "revision": "aec905621e19bbd1272cda472cf9099d602f208e",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 66,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At the real imported-method body Tick, physical Trait source/TRAIT_ORIGIN mapping, receiver/lexical/called class and completed activation validate. Callback 3 reads 9 and throws; successful retry 7 retains slots/object with exact counter 7/output. Full-state zero-budget/full-resume equality and heap/descriptors/Tick validity pass."
+    }
+  },
+  "independent_review": "/root/attributes_review traced name-only/unticked compilation, checked the one-clause source boundary and passed the genuine physical-trait/current-method callback front on first execution. Class source work remains disjoint.",
+  "remaining": "Positive-frequency adaptations, unproved headers and wider trait/source/lifetime contexts retain existing dependencies. This adds no trait producer, linking behavior, visibility rule or whole-family closure.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-trait-use-44. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs stayed stable, exits 0 and driver stderr empty; all campaign executables were reaped. Four regular local tools were preserved while reusing the idle ATTR43 worktree; this is not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "source-baseline/report.json at 97ac7fd95 remains false (SHA 3381854a6b037705cffebb907c32c59d1f19fd114c8d1f9c9586975a3f99931c): native TPZT versus old Unsupported/empty prefix at tick opcode placement.",
+    "The adaptation control is a separately recorded dependency with zero normal agreement credit. No PHP engine bug or intentional divergence is claimed.",
+    "No ATTR43, earlier compiler family, linking, output, Generator or paused-boundary campaign was replayed."
+  ]
+}

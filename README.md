@@ -334,6 +334,8 @@ Ordinary block property hooks keep separate body Tick plans in source order,
 including callback reads, abrupt cleanup and a later successful getter retry.
 Property groups can emit a main Tick before pending class activation; plans
 preserve its adjacency and type/name/default/hook line provenance.
+Plain trait use stays unticked while imported method callbacks retain their
+physical source and receiver through abort and retry.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.
