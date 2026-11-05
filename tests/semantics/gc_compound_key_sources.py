@@ -15,12 +15,14 @@ FILES = {
     'map-key-self': 'gc_compound_map_key_self_source.php',
     'ordinary-weak-key': 'gc_compound_weak_key_unset_control.php',
     'ordinary-map-key': 'gc_compound_map_key_unset_control.php',
+    'ordinary-nonempty-map-key': 'gc_compound_map_nonempty_unset_control.php',
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, filename in FILES.items()}
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}
 family.BASELINE = ('WeakMap dimension protocol outside first insertion', b'FX|D1|')
 family.UNSUPPORTED = {name: ('ordinary internal weak-key notification', b'B|')
-                      for name in ['ordinary-weak-key', 'ordinary-map-key']}
+                      for name in ['ordinary-weak-key', 'ordinary-map-key',
+                                   'ordinary-nonempty-map-key']}
 family.MODEL_STATUSES = {name: 'php_error' for name in [
     'weak-key-incoming', 'map-key-own-before-incoming', 'map-key-held-own']}
 family.MODEL_TIMEOUTS = {name: 240 for name in FILES}
