@@ -530,6 +530,24 @@ Engine routes: `Zend/zend_compile.c::zend_compile_use_trait`,
 `zend_traits_copy_functions`, `zend_add_trait_method`,
 `do_inherit_method`; and `Zend/zend_execute.c::zend_verify_recv_arg_type`.
 
+Own anonymous class constants reuse the ordinary class-constant compiler for
+types, values, declaration lines and public/protected/private/final modifiers.
+Nonempty groups may contain multiple declarators. Types and initializers follow
+the ordinary compiler's admission. Private-final and wrong typed values
+fail during compilation before body effects. Parent-final and incompatible trait
+constants fail at first-new linking before constructor argument effects; matching
+trait/own definitions compose normally.
+
+Own callable constants retain their class's method and source identity. Separate
+eval compilations therefore accept their respective self types and reject a
+cross-class argument. Full class/constant names remain in descriptors and the
+successful value path. Initializer, access, final-override and trait-conflict
+diagnostics truncate only class-name operands as the engine's C-string calls do.
+The [own constant review](../../coverage/semantics/anonymous-own-constants-review.json)
+records exact originals, table/source forgery refusals, actual own-FCC receives
+and compile-versus-link ordering. Attribute-bearing constants and wider
+member/type/initializer contexts remain partial.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the

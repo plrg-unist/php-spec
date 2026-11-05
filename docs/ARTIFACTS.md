@@ -771,3 +771,14 @@ binds nine exact originals, strict433, author82, independent263 and affected79.
 The original own-constant example remains native-only; its failed state, the
 display mismatch and source timeout retain zero credit. Restore original mapped
 paths at the retained cuts and pinned local tools for replay. Raw stays outside Git.
+
+CLASS172 own anonymous constants retain eleven native pins under
+`.tools/class172-review-artifacts/` and the reused author original under
+`.tools/class171-artifacts/`. Supervised runs are in `.tools/class172-artifacts/`;
+its `recovered-private-raw/locations.json` maps thirteen source/state roots,
+including the failed author sort-prefix fixture. The review root's
+`recovered-state/locations.json` maps its five-group fixture.
+The [feature record](../coverage/semantics/anonymous-own-constants-review.json)
+binds eleven exact originals, strict433, author75 and independent192. Earlier171
+native-only/failure credit remains unchanged. Restore original mapped paths and
+retained cuts with the pinned local tools for replay; raw remains outside Git.

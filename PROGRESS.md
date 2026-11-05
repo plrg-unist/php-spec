@@ -115,6 +115,15 @@ compile and fixture failures retain zero credit. Later receives, default throws
 and bailout paths remain partial.
 [I100 review](coverage/semantics/generator-call-mapping-review.json).
 
+I101 replaces required-hole-specific retention with one authenticated restored
+API cursor for admitted pre-Generator receive failures. Arity, type and default
+throws preserve the copy while callee cells retire before API arguments/source.
+Three native/source originals, strict433, new259 custom/269 reported checks and
+the affected129/134 hole recipe pass. A matching adapter and joined default134/139
+gate load current434, covering changed weak-free cleanup. Baseline and fixture
+parser failures retain zero credit; wider producers, collection and bailout
+contexts remain partial. [I101 review](coverage/semantics/generator-call-receive-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -866,8 +875,17 @@ originals, strict433, 82 author, 263 independent and 79 retained saved-view
 conditions pass. Argument type and object trace displays use native C strings;
 fresh eval classes preserve copied constants' selected callable targets. Original
 display/timeout failures and the own-constant author control retain zero credit.
-Own anonymous constants and wider source/member/scope histories remain partial.
+Wider source/member/scope histories remain partial.
 [Review](coverage/semantics/dynamic-anonymous-traits-review.json).
+CLASS172 admits nonempty own constant groups through the ordinary class compiler,
+including multiple declarators, types, visibility and final checks. Own FCCs keep
+separate source/function scopes across eval compilations; trait compatibility and
+parent-final failures retain first-new ordering. Eleven exact originals,
+strict433, 75 author and 192 independent reached conditions pass. Full stored
+names remain authoritative; diagnostic operands use native C strings. The author
+sort-prefix elaboration failure retains zero credit. Attributes and wider
+member/type/initializer contexts remain partial.
+[Review](coverage/semantics/anonymous-own-constants-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

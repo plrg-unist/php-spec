@@ -1,0 +1,152 @@
+{
+  "milestone": "I101 general copied-call pre-Generator receive cancellation",
+  "status": "Private and joined gates pass; wider core boundaries remain partial.",
+  "target": {
+    "php": "8.5.10 CLI NTS64",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": "LC_ALL=C; TZ=UTC; one actor pinned to CPU4"
+  },
+  "scope": "Admitted arity/type errors and named-default constructor throws before Generator creation, including a fake receiver/raw-argument alias and a precreated supplied exception. Callee cleanup precedes API FIRST/RAW/SOURCE release; the hidden copied Closure and its descendants stay request-late.",
+  "representation": "Reuses unique authenticated CLOSURECALLRETAINED rows, directly rooting only OBJECT. No implicit SOURCE or API argument roots are added; ordinary descendant and trace aliases retain their own owners. All-object Gen history excludes copies that already created a Generator. This is an abstract lifetime root, not raw Zend refcount equality.",
+  "simplification": "16 production insertions/27 deletions in182/268, no new fields/tags. One authentic restored COPY_RESULT/no-Gen/unretained predicate replaces the required-hole-only predecessor hook. Actual pending-throw discard retains once and releases only API owners; callee cells are already gone. Exact completed-FWD to copy_invoke state equality authenticates the extra saved RESULT owner for immediate entry errors.",
+  "changed_modules": [
+    "spec/semantics/182-closure-call.watsup",
+    "spec/semantics/268-temporary-fake-calls.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_closures.c",
+      "vendor/php-src/Zend/zend_execute_API.c",
+      "vendor/php-src/Zend/zend_vm_def.h",
+      "vendor/php-src/Zend/zend_compile.c"
+    ],
+    "symbols": [
+      "ZEND_METHOD(Closure, call)",
+      "zend_call_function",
+      "zend_handle_undef_args",
+      "zend_missing_arg_helper",
+      "zend_verify_recv_arg_type_helper",
+      "zend_leave_helper",
+      "zend_compile_func_decl"
+    ],
+    "rule": "Parameters compile before GENERATOR_CREATE. Named undef/default failure precedes the call-frame Closure addref; ordinary RECV type/arity failure follows it. VM leave frees CVs/extra named arguments then releases that frame ref; Closure::call raw-decrements its local copy afterward. Both paths preserve the pinned hidden copy without free_obj. No externally confirmed engine bug is claimed."
+  },
+  "review": "Independent primary-source, counterexample, body-kind exclusion, fixture reliability and actual merged-delta review. Normalized rows authenticate Generator bodies; ordinary non-Generator dispatch stays pointwise unchanged. Finite task tails keep the inserted-RESULT entry bridge disjoint from the generic frame-push clause.",
+  "validation": {
+    "native_originals": [
+      {
+        "report": "../php-spec-evidence-archive/generator-call-receive-101/source-packet/native-first/report.json",
+        "sha256": "96e5d1069b9206fa300c8d76a07ab6ec4dc873bd4bf9c0e0daeb059e99db4b6c",
+        "revision": "f8d1bb18d33aaab1057673c42870584db1815e3b",
+        "passed": true,
+        "result": "1 new real type-receive original; first forecast exact."
+      },
+      {
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-101-review/prepared/native-report.json",
+        "sha256": "e9d4d40b2ad7a8d5d7a3456cc1317938daf44320052176d9b1c4d12292feb732",
+        "revision": "f8d1bb18d33aaab1057673c42870584db1815e3b",
+        "passed": true,
+        "result": "2 independent fake-arity alias/default supplied-throw originals; first forecasts exact."
+      }
+    ],
+    "source_comparisons": [
+      {
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-101-review/validated/peer-source-dc5/report.json",
+        "sha256": "61a14e79daefb4da5121efdc037c4e7108981ebf07c7f98732971bba6146080a",
+        "revision": "dc5abe0c55565526949435c6213a4c3da8f5a282",
+        "passed": true,
+        "result": "2 new exact NORMAL CLI agreements; native reused."
+      },
+      {
+        "report": "../php-spec-evidence-archive/generator-call-receive-101/validated/author-source-5460/report.json",
+        "sha256": "2d776e1b2fbf53684f4f74a24ac13bb1f5237b2b9f1ed5dba2a8919c34b5756e",
+        "revision": "5460efb7f6a81dcb66f20f3ec5fb3743b01c821f",
+        "passed": true,
+        "result": "1 new exact NORMAL CLI agreement; native reused."
+      }
+    ],
+    "private_compile": {
+      "report": "../php-spec-evidence-archive/generator-call-receive-101/strict-dc5/report.json",
+      "sha256": "df63602fdedcc77c108483464c61ff73d62d3f6d0a47496b3b3a2389c599e0da",
+      "revision": "dc5abe0c55565526949435c6213a4c3da8f5a282",
+      "passed": true,
+      "result": "Actual433-module strict SL load passes, cache off/encountered determinism on; cap180s."
+    },
+    "new_reached": [
+      {
+        "report": "../php-spec-evidence-archive/generator-call-receive-101/validated/author-state-1ce/report.json",
+        "sha256": "f58d9a7a1d9b7ca31cb461e5a61038bb13debe67fe533719d07f30db06c7ba97",
+        "revision": "1ce0c319e02151584a73a4f0d0d81098c8437fc4",
+        "passed": true,
+        "result": "125 custom/130 reported: genuine immediate arity frame push, inserted owner provenance, wrong RESULT/caller refusals, prepared alias owners4/trace owners3, driver bookkeeping, nonzero budget/full shutdown."
+      },
+      {
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-101-review/validated/default-state-1ce/report.json",
+        "sha256": "8059872db77f823d6c45ed68e2bfdf359be389b49552ea5ebc66ac68121b5d0e",
+        "revision": "1ce0c319e02151584a73a4f0d0d81098c8437fc4",
+        "passed": true,
+        "result": "134 custom/139 reported: supplied default-ctor throw at genuine restored cursor, failed-constructor weak release, no implicit trace owners, API-only jobs, no-prior-Gen/unretained guards and split/full shutdown."
+      }
+    ],
+    "affected_reached": {
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-101-review/validated/affected-hole-state-1ce/report.json",
+      "sha256": "a589fe0b9bfb2812e3a852adf501a403a4eb44d99c7a19566db10d85fc2776f8",
+      "revision": "1ce0c319e02151584a73a4f0d0d81098c8437fc4",
+      "passed": true,
+      "result": "Current100 required-hole recipe129 custom/134 reported at late restored cursor. Originalf106 source unchanged; oldd023109/114 cut preserved. No100 native/source replay."
+    },
+    "joined_build": {
+      "report": "../php-spec-evidence-archive/generator-call-receive-101/joined-build-4f6a/report.json",
+      "sha256": "ba2085c54e1678f30c324777b548ae7c03caaca861c723696a7f4fea84e1e9c4",
+      "revision": "4f6a537df20fbf52c213bfe98301fde0ae43a3bc",
+      "passed": true,
+      "result": "Matching new adapter built with explicit private Dune root/-j1 and local installed toolchain; binary58108446eb5cc68533a0cc786beb09795eb32b6842b29d54d6efa07a8de10a21. Local reuse, not a new offline rebuild."
+    },
+    "joined_reached": {
+      "report": "../php-spec-evidence-archive/generator-call-receive-101/joined-default-4f6a/report.json",
+      "sha256": "4d188bd8a9d736fe291a3b19ab2814c58138d6c6ddd4aaeef108228bcab65790",
+      "revision": "4f6a537df20fbf52c213bfe98301fde0ae43a3bc",
+      "passed": true,
+      "result": "Same default134/139 passes actual434-module SL manifest/new adapter after current-master weak-free/header/CFG/class composition; no extra original/CLI/check-total credit."
+    },
+    "totals": "Native3/CLI3; new259 custom/269 reported plus affected129/134. Joined default repeats134/139 for the actual shared weak-free/backend change. Semantic exits0/empty stderr/no timeout, stable relevant inputs/HEAD; state caps600s and new source caps600/620s with100000 steps. Recorders waited; observed workers are absent and exact private scans were empty at each handoff."
+  },
+  "composition": "4f6a cleanly composes actual f508 current master;182/268 and fixtures match accepted private cuts. Changed444 marked-WeakReference association/standard-body traversal justified one joineddefault seam gate. The visible copy descendants have public already-called destructors and no WeakMap/extra owning fields. Rejected-header445/adapter paths, copied-INI420, enum-exit and anonymous-class changes are absent these originals;95/83 C-string formatting is pointwise for ASCII names/int. No blanket source/native renewal.",
+  "preserved_failures": [
+    {
+      "report": "../php-spec-evidence-archive/generator-call-receive-101/baseline-150b/report.json",
+      "sha256": "c7ff683090ba408b279c180f65e46333cad61470edcced65a64ffab2a20be0d0",
+      "revision": "150b9374c0a3b8da59314e56b2f7d95eaa2b5a43",
+      "passed": false,
+      "result": "Unchanged type source stops at explicit Generator Closure::call receive failure Unsupported; zero agreement credit."
+    },
+    {
+      "report": "../php-spec-evidence-archive/generator-call-receive-101/validated/author-state-parser-5460/report.json",
+      "sha256": "788f2ec4b246452243921334bf750141ed0f6fce5a874a5fe897502b795a47c9",
+      "revision": "5460efb7f6a81dcb66f20f3ec5fb3743b01c821f",
+      "passed": false,
+      "result": "Fixture parser0 before semantics: nested NAMED_SENT list in a record literal. Only replaced with the existing field-update syntax; source/count/cap and production unchanged, next run passes."
+    }
+  ],
+  "tests": [
+    "tests/semantics/generator_call_receive_cases.json",
+    "tests/semantics/generator_call_receive_sources.py",
+    "tests/semantics/generator_call_receive_state.py",
+    "tests/semantics/generator_call_receive_review_state.py",
+    "tests/semantics/generator_call_mapping_review_state.py"
+  ],
+  "remaining": [
+    "Wider unadmitted producer, receiver/signature, callback/collection and bailout contexts remain partial.",
+    "The older92 native-only arity observer retains its original evidence/zeroCLI credit; its unrelated ini_get directive read is still outside this increment."
+  ],
+  "reproduction": [
+    "taskset -c CPU python3 tests/semantics/generator_call_receive_sources.py",
+    "Native reuse: pass --native-report ../php-spec-evidence-archive/generator-call-receive-101/source-packet/native-first/report.json and --native-report ../php-spec-evidence-archive/generator-call-cancellation-101-review/prepared/native-report.json.",
+    "taskset -c CPU python3 tests/semantics/generator_call_receive_state.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_receive_review_state.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_mapping_review_state.py",
+    "Linked external reports retain exact commands, compiler/runtime identities, relevant inputs, profiles, budgets and raw outputs. Recover tested cuts through preserved semantics/generator-call-receive-101 history."
+  ]
+}

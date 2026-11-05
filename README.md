@@ -4950,6 +4950,16 @@ validate before requesting the extra trait parameter view, avoiding a recursive
 dynamic replay dependency.
 [Dynamic trait review](coverage/semantics/dynamic-anonymous-traits-review.json).
 
+Anonymous classes also admit own constant groups through the ordinary constant
+compiler: typed and nullable values, multiple declarators, visibility, final
+rules and trait compatibility retain their source locations and error order.
+Own callable constants preserve separate targets across eval compilations.
+Initializer-type and private-final errors precede execution; parent/trait link
+conflicts precede constructor arguments. Stored names remain complete through
+successful lookups, while diagnostic class-name arguments use native C strings.
+Attributes and wider member/type/initializer contexts remain partial.
+[Own constant review](coverage/semantics/anonymous-own-constants-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
@@ -7241,6 +7251,12 @@ hidden copies while generated Error traces keep their own argument values.
 Three new originals, two ownership fronts and one affected successful call pass;
 later receive/default errors and bailout paths remain partial.
 [Named-failure review](coverage/semantics/generator-call-mapping-review.json).
+
+Admitted arity, type and default throws before Generator creation now share one
+restored API cleanup protocol. Callee values retire before API arguments/source,
+while the hidden copy keeps its receiver/captures. Native/source and joined
+ownership gates pass; wider producers, collection and bailout remain partial.
+[Receive-failure review](coverage/semantics/generator-call-receive-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

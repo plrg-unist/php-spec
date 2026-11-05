@@ -1,0 +1,52 @@
+[
+  {
+    "id": "retained-iterator-copies-name-before-global-rebinding",
+    "source": "<?php\nclass Option98 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"precision\"),\";\";}\n}\nclass Values98 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:7;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";if($this->pos===0){$GLOBALS[\"name\"]=new Option98(\"B\",\"display_errors\");}return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n}\n$stage=\"walk\";$name=new Option98(\"A\",\"precision\");$it=new Values98;echo \"B;\";\n$result=ini_set(...$it);echo \"R:\",$result,\":\",ini_get(\"precision\"),\":\",$name->id,\";\";\nunset($it,$name);ini_restore(\"precision\");echo \"E;\";\n",
+    "source_sha256": "7bbba1b11c6b288c1e0837d811a39705795c67dee175e9f2cf2c9dd6ad8e3192",
+    "purpose": "Only the copied original OptionA converts after complete traversal, while the source global points atB; option disposal precedes the INI body.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:A:done;D:A:14;R:14:7:B;D:B:7;E;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "temporary-iterator-retires-before-name-conversion",
+    "source": "<?php\nclass Option98 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"precision\"),\";\";}\n}\nclass Temporary98 implements Iterator {\n    public int $pos=0; public Option98 $name;\n    public function __construct() {$this->name=new Option98(\"A\",\"precision\");}\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$this->name:7;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n    public function __destruct() {echo \"I:\",ini_get(\"precision\"),\";\";}\n}\nfunction make98() {$it=new Temporary98;$GLOBALS[\"watch\"]=WeakReference::create($it);return $it;}\n$stage=\"walk\";$watch=null;echo \"B;\";\n$result=ini_set(...make98());echo \"R:\",$result,\":\",ini_get(\"precision\"),\":\",($watch->get()===null?1:0),\";\";\nunset($watch);ini_restore(\"precision\");echo \"E;\";\n",
+    "source_sha256": "a7be5c4bbb5ea8c22ba63dc0513748729b8470040c75d22e6cebbb7e9ff773de",
+    "purpose": "Copied Stringable name survives temporary INPUT/DATA and owning Iterator field retirement, converts after Iterator teardown, then dies during reception before the INI body.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:14;T:A:done;D:A:14;R:14:7:1;E;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "self-name-formats-float-into-precision-after-disposal",
+    "source": "<?php\nclass SelfOption98 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$this:1.2345678901234567;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";if($this->pos===0){$GLOBALS[\"it\"]=null;}return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n    public function __toString():string {echo \"T:\",$GLOBALS[\"stage\"],\":\",ini_get(\"precision\"),\";\";return \"precision\";}\n    public function __destruct() {echo \"D:\",ini_get(\"precision\"),\";\";ini_set(\"precision\",3);echo \"P:\",ini_get(\"precision\"),\";\";}\n}\n$stage=\"walk\";$it=new SelfOption98;echo \"B;\";\n$result=ini_set(...$it);echo \"R:\",$result,\":\",ini_get(\"precision\"),\";\";\nini_restore(\"precision\");echo \"E;\";\n",
+    "source_sha256": "144d6f06d3ce0be6f37e6257c6a20110f101cf2e8abda9d43d884a35bfe08447",
+    "purpose": "The copied first name is Iterator DATA itself; it survives input CV removal, then normal prebody disposal changes precision before the copied float formats into the precision setting.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:done:14;D:14;P:3;R:3:1.23;E;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "selected-callee-keeps-original-owner-after-rebinding",
+    "source": "<?php\nclass Option98 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"precision\"),\";\";}\n}\nclass Values98 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:7;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";if($this->pos===0){$GLOBALS[\"name\"]=new Option98(\"B\",\"display_errors\");$GLOBALS[\"call\"]=ini_get(...);}return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n}\n$stage=\"walk\";$name=new Option98(\"A\",\"precision\");$it=new Values98;$call=ini_set(...);$keep=$call;echo \"B;\";\n$result=$call(...$it);echo \"R:\",$result,\":\",ini_get(\"precision\"),\":\",$name->id,\":\",$call(\"precision\"),\":\",$keep(\"precision\",9),\":\",ini_get(\"precision\"),\";\";\nunset($it,$name,$call,$keep);ini_restore(\"precision\");echo \"E;\";\n",
+    "source_sha256": "ca3ad4424c8030aeb175c5ee973f00d0e18378613885e2f736c054daefc288e7",
+    "purpose": "A selected first-class ini_set Closure remains owned through Iterator key() rebinding, option conversion and the API call; the replacement getter and retained setter remain distinct.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:A:done;D:A:14;R:14:7:B:7:7:9;D:B:9;E;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "unknown-option-rejects-copied-stringable-value-after-option-disposal",
+    "source": "<?php\nclass OptionValue98 {\n    public function __toString():string {echo \"T:\",ini_get(\"precision\"),\";\";return \"missing_a98_option\";}\n    public function __destruct() {echo \"O:\",ini_get(\"precision\"),\";\";ini_set(\"precision\",21);}\n}\nclass ValueValue98 {\n    public function __toString():string {echo \"BAD;\";return \"8\";}\n    public function __destruct() {echo \"V:\",ini_get(\"precision\"),\";\";}\n}\nclass IteratorValue98 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:$GLOBALS[\"value\"];}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";if($this->pos===0){unset($GLOBALS[\"name\"]);}else{unset($GLOBALS[\"value\"]);}++$this->pos;}\n    public function __destruct() {echo \"I:\",ini_get(\"precision\"),\";\";}\n}\nfunction makeValue98() {$it=new IteratorValue98;$GLOBALS[\"iterWatch\"]=WeakReference::create($it);return $it;}\n$name=new OptionValue98;$value=new ValueValue98;\n$optionWatch=WeakReference::create($name);$valueWatch=WeakReference::create($value);$iterWatch=null;$result=99;\necho \"B;\";\ntry {$result=ini_set(...makeValue98());echo \"BAD-RETURN;\";}\ncatch(TypeError $e) {\n    echo \"E:\",$e->getMessage()==='ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null',\":\",$result,\":\",ini_get(\"precision\"),\":\",$optionWatch->get()===null,\":\",$valueWatch->get()!==null,\":\",$iterWatch->get()===null,\";\";\n    $trace=$e->getTrace();$arg=$trace[0][\"args\"][1];\n    echo \"A:\",$trace[0][\"args\"][0],\":\",$arg===$valueWatch->get(),\";\";\n    unset($arg,$trace,$e);\n    echo \"R:\",$valueWatch->get()===null,\";\";\n}\nini_restore(\"precision\");echo \"Z;\";\n",
+    "source_sha256": "9a1100f1cfc6acd6849c5653d41782f206d7e2bdcee9ec1dff5742fa07d7995d",
+    "purpose": "The temporary Iterator retires first; a copied Stringable option converts then dies and changes precision before an unknown directive name reaches the value TypeError. The copied Stringable value is never cast and remains in TraceArgs through catch.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:14;T:14;O:14;E:1:99:21:1:1:1;A:missing_a98_option:1;V:21;R:1;Z;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

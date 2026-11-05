@@ -1,0 +1,29 @@
+{
+  "scope": "A99 ordinary INI_SET unpack from an admitted initialized user Iterator: copied Stringable option followed by a live finite ARRAY graph already accepted at send. The option converts after traversal and DATA/INPUT cleanup; array value reception rejects with TypeError.",
+  "behavior": "Option __toString and final raw-option destructor run before the value TypeError. The copied array remains a real argument and TraceArgs root: its COW table slot keeps 3 after the source table changes to 31, while their shared ordinary reference cell follows 17 to 42 in the option destructor and 66 in catch. INI_SET never converts the array to a string or changes the selected directive.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_set"]
+  },
+  "tested_cut": {
+    "revision": "d29bee29aa2f83a054380831228c3c7be41969a9",
+    "semantic_module_sha256": "35f7a8172e0ad62acfca1c023f908f2ac9bf9c02dfaf122dc313a2f8e312e4e5",
+    "case_catalog_sha256": "27f1f9c037193aa638ac58cb76768ffd191159defacefcdb2ab2805cdc88f6a2",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, sole CPU4 actor",
+    "source": "option-disposal-mutates-copied-array-alias-before-value-type-error",
+    "source_sha256": "050778e08ae657812540f3e0b1637ec58127a6ca8d2c1c4619f2ee5bbdc9c372",
+    "source_result": "Pinned-native/model exact normal comparison passed: exit 0, empty stderr, identical stdout, stable watched inputs and tested HEAD.",
+    "reached": "copied-array-and-live-alias-enter-type-error-trace passed 54 conditions from the source. It checks live copied/source tables, shared reference cell, retired option/Iterator, converted option and array TraceArgs, final release, budget 0 and cyclic-table refusal.",
+    "strict_sl": "Ordered 434-module manifest, exit 0, stdout true, empty stderr; 12.298 seconds.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-stringable-array-value-99/author-d29bee29a",
+    "commands": [
+      "taskset -c 4 python3 tests/semantics/config_iterator_stringable_array_value_sources.py --case option-disposal-mutates-copied-array-alias-before-value-type-error",
+      "taskset -c 4 python3 tests/semantics/config_iterator_stringable_array_value_state.py --case copied-array-and-live-alias-enter-type-error-trace",
+      "taskset -c 4 tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json entries> .tools/a99-strict.watsup"
+    ]
+  },
+  "prior_boundary": "A98's Stringable-option receive predicate returned false for every ARRAY value, then explicit Unsupported. This original source was not run against the old rule; no baseline native/model agreement is claimed. Its first A99 source and reached-state runs passed at the tested cut.",
+  "limits": "The rule accepts finite admitted array graphs, but this source validates only a flat table with one scalar and one ordinary reference cell. A cycle is a checked refusal, not native agreement. Object descendants, other aliases, callback failures, assertion directive names, same-object option/value aliases, other CONFIG consumers and A97 warning-handler exception work remain outside this result. No full-core, equivalence or BOLA claim.",
+  "review": "pending independent review"
+}
