@@ -22,5 +22,17 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i116-peer-retained-owner-axes",
+    "purpose": "Independent two-axis native witness: selected Generator loses its CV while Iterator stays externally owned, or Iterator loses its CV while a separate selected-Gen owner stays. Unknown named mapping preserves native cleanup before catch, and explicit later drops retire only the retained owner.",
+    "source": "<?php\nclass HeldArgs116R implements Iterator {\n    function rewind(): void { global $target, $args, $keepInput; echo 'REWIND|'; $target = null; if (!$keepInput) { $args = null; } }\n    function valid(): bool { return true; }\n    function current(): mixed { echo 'CURRENT|'; return 17; }\n    function key(): mixed { echo 'KEY|'; return 'extra'; }\n    function next(): void { echo 'BAD-NEXT|'; }\n    function __destruct() { global $weakTarget; echo 'ITER|', $weakTarget->get() instanceof Generator, '|'; }\n}\nfunction heldTarget116R() { try { echo 'INIT|'; yield 1; echo 'BAD-BODY|'; } finally { global $weakArgs; echo 'FIN|', $weakArgs->get() instanceof HeldArgs116R, '|'; } }\nfunction heldRun116R($keepIterator, $keepTarget) {\n    global $target, $args, $weakTarget, $weakArgs, $keepInput;\n    echo $keepIterator ? 'ITER-HELD|' : 'GEN-HELD|'; $keepInput = $keepIterator;\n    $target = heldTarget116R(); $target->current(); $args = new HeldArgs116R;\n    $weakTarget = WeakReference::create($target); $weakArgs = WeakReference::create($args); $held = $keepTarget ? $target : null;\n    try { $target->send(...$args); }\n    catch (Error $e) { echo 'CATCH|', $e->getMessage(), '|', $weakTarget->get() instanceof Generator, '|', $weakArgs->get() instanceof HeldArgs116R, '|'; }\n    echo 'DROP|'; $args = null; $held = null; echo 'DONE|', $weakTarget->get() === null, '|', $weakArgs->get() === null, '|';\n}\nheldRun116R(true, false); heldRun116R(false, true);\n",
+    "source_sha256": "477bc0cf9e9e6f4a1bba2024274ebb957168040f1dded9ba2e042326beee969f",
+    "native_exit": 0,
+    "native_stdout": "ITER-HELD|INIT|REWIND|CURRENT|KEY|FIN|1|CATCH|Unknown named parameter $extra||1|DROP|ITER||DONE|1|1|GEN-HELD|INIT|REWIND|CURRENT|KEY|ITER|1|CATCH|Unknown named parameter $extra|1||DROP|FIN||DONE|1|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
   }
 ]
