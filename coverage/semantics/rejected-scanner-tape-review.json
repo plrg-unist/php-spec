@@ -1,0 +1,72 @@
+{
+  "milestone": "COMP171",
+  "status": "Private production/tests independently clear; documentation and actual-parent composition pending.",
+  "base": "27a6d3bd9a473a85cbd4c4b5b55a2de5e08591a1",
+  "branch": "semantics/dynamic-source-next-171",
+  "raw_root": "../php-spec-evidence-archive/comp171",
+  "behavior": "Rejected file/eval sources retain completed encoding headers before malformed Unicode or deferred heredoc segments. Declarations already parsed inside interpolation survive a later segment error; a heredoc indentation pre-scan failure can prevent them. Harmless escaped, single-quoted/nowdoc, maximum-codepoint and admitted surrogate controls do not create false cutoffs.",
+  "implementation": "New native php_spec_lex_eval(bytes) and php_spec_lex_file_rejected(path) share a parser-mode lexical loop, never zendparse or compilation/evaluation. ON_TOKEN retains skipped trivia and original bytes/positions, normalizes close/short-echo tags and omits END/T_ERROR. The first token compensates for discarded file shebang lines. Value-token AST_ZVAL leaves are destroyed once, a private arena is freed and saved lexical/compiler flags are restored; decoded values and diagnostic answers are not exported. RejectedEvalLexer/RejectedFileLexer feed only rejectedHeaderFacts. The accepted FileLexer/EvalLexer and original scan_file body, worker/adapter/schema and every authored P4 rule remain unchanged.",
+  "oracle": {
+    "target": "PHP 8.5.10 CLI NTS, 64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json plus include_path=.: for source runs; native profile-refusal controls explicitly set zend.multibyte=1",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "native_evidence": "Independent review-native-v2 preserves 26 originals in both eval/file modes (52 observations); review-embedded-v1 adds six interpolation originals; review-indent-v1 adds two indentation observations. Native v1 stopped after 22 malformed observations on a mistaken harmless-control expectation: a later closed encoding reached the known placement fatal before execution. v2 appends a later syntax error so controls exercise parsing only; v1 remains preserved with zero gate credit. No user literal/backtick body executes and no NUL source/codepoint is used. review-main-prefix-v1 separately disproves a suspected main-acceptance gap with four native/frontend checks; no speculative scope change was made.",
+  "baseline": "COMP169 lexical-service raw-tokenizer eval control preserved an explicit admission refusal for an invalid Unicode escape followed by a later encoding header. The corresponding control now admits the scanner-derived prefix; accepted-tokenizer output remains an independent unchanged control. Historical evidence keeps its original revision and no old semantic/syntax campaign is renewed.",
+  "native_boundary_validation": {
+    "head": "1e512b7aec15165311d01bfbe2dc47537ea4159d",
+    "build_report": "native-gate-v3/report.json",
+    "command": "scripts/build-file-helper.sh; python3 tests/rejected_eval_lexer_review.py --output <external service-v3>; python3 tests/lexical_header_service_review.py --output <external affected-service-v3>",
+    "helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "independent_controls": 53,
+    "independent_report": "service-v3/report.json",
+    "affected_controls": 30,
+    "affected_report": "affected-service-v3/report.json",
+    "scope": "Both-mode rejected replies including embedded/indent chronology; raw EOF/tape bytes, tag normalization, file shebang/BOM/HALT positions, exact valid legacy file tuples, native file/eval parse success/error and accepted lexer equality before/after scans, and five multibyte refusals. Native build and all controls pass with stable head/inputs, workers/subprocesses exit 0 and empty probe stderr. Frontend stderr custody 3900/2340 bytes; no semantic execution credit."
+  },
+  "wrapper_preparation": {
+    "head": "49a4bbdfbe648a72c90b5f413612135ed42e94bc",
+    "report": "semantic-campaign-v1/wrapper-check/report.json",
+    "scope": "All 35 main wrappers parse; each of the 29 eval literal values equals its retained unit.php bytes exactly. File bytes are fixed by the source manifests/finite snapshots. This is preparation only."
+  },
+  "source_validation": {
+    "head": "49a4bbdfbe648a72c90b5f413612135ed42e94bc",
+    "agreements": 35,
+    "report": "sources-v1/report.json",
+    "command": "python3 tests/semantics/unicode_rejected_sources.py --output <external sources-v1>",
+    "scope": "29 eval originals and six file counterparts: empty/nonhex/unclosed/large/extreme escapes, double/heredoc/backtick segments, embedded declarations, harmless controls, earlier syntax/nonliteral precedence, inner/outer/incomplete headers, first/multiple faults and CRLF. Original native/model stdout/stderr/exit and source identities match; no refusal counts as agreement. Stable head/inputs and all groups reaped."
+  },
+  "independent_reached": {
+    "head": "49a4bbdfbe648a72c90b5f413612135ed42e94bc",
+    "premises": 200,
+    "module_count": 435,
+    "report": "state-v1/report.json",
+    "command": "python3 tests/semantics/rejected_eval_unicode_review_state.py --output <external state-v1>",
+    "scope": "Two exact retained embedded double/heredoc units under genuine default/startup-0 reporting. Handler and freed stdClass supply real public pending states/free handles. Receipt resume keeps unit/file/failed-source identity, exact warning prefix, no child AST/CODE/binding, handle reuse, public heaps, zero-budget publication, catch/finally output and replay/wrong-unit/bytes refusal. Strict SL returns true/exit 0/empty stderr with stable inputs/head; frontend/adapter close 0, custody 492 bytes and groups empty."
+  },
+  "affected_main": {
+    "head": "49a4bbdfbe648a72c90b5f413612135ed42e94bc",
+    "agreements": 4,
+    "report": "affected-main-v1/report.json",
+    "command": "python3 tests/semantics/main_rejected_sources.py --select bom-crlf-default,repeated-headers-default,lexical-comment-default,incomplete-header-default --output <external affected-main-v1>",
+    "scope": "Main id-0 terminal route retains exact BOM/CRLF, nested/repeated warnings, lexical comment and incomplete-header behavior under the new rejected file provider. Stable head/inputs, exit 0/empty model stderr; no historical main37/240 renewal."
+  },
+  "preserved_producer_failures": [
+    {
+      "report": "native-gate-v1/report.json",
+      "detail": "The initial NULL-element eval scanner did not validate a deferred heredoc segment. Foreign headers [1,4,7] disagreed with native warning lines [1,4]; service-v1 captures the original response/streams and secondary custody cleanup assertion. Whole packet false/zero credit, affected30 unrun; worker exited and full reap recorded."
+    },
+    {
+      "report": "native-gate-v2/report.json",
+      "detail": "Parser-mode eval scanning corrected that failure, then the ordinary NULL-element file scanner exposed the same existing heredoc gap: headers [2,5,8] versus native [2,5]. Whole packet false/zero credit, affected30 unrun. The final fix shares parser-mode tapes across rejected modes while preserving accepted lexers; no expectation was weakened."
+    }
+  ],
+  "reap": "native-gate-v1/v2/v3 and semantic-campaign-v1 reap.json retain empty full-private cmdline/cwd/exe/fd scans. All top-level/frontend/probe/adapter/model groups were reaped. Tiny native loans and sustained CPU5 source/state loan returned directly.",
+  "deployment": "The new helper remains a real private .so copy during validation; canonical .tools/php-file.so has not been changed. Before canonical rollout, active canonical symlink users must pin old bytes or confirm full reap: CONFIG104 has pinned SHA256 386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f in its ignored private file; OUTPUT11 confirms no live/frozen source/helper use. Root confirms old calls/returns/user-string tracks inactive, subject to normal process/cwd/fd-use checks. No old worktree is mutated or historical evidence rerun for rollout.",
+  "limits": "The trusted worker and raw multibyte-disabled profile remain required. Header receipts are explicit foreign facts, not proof that edited metadata came from original bytes; native/foreign disagreements still refuse. Multibyte conversion, wider source configurations and unfinished core behavior remain partial. Held owned-NUL source release, COMP123 and other held paths are untouched; no engine bug or intentional divergence is claimed.",
+  "review": "Independent private production/test CLEAR through 49a4, accepting native53/affected30 at exact 1e512 and source35/reached200/main4 at exact 49a4 after the Makefile-only tail. Documentation and actual-parent review pending."
+}

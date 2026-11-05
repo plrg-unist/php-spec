@@ -1003,6 +1003,16 @@ fixture's misplaced VM-history check remains a failed gate with zero credit.
 Parser/schema contracts are unchanged; wider source profiles remain partial.
 [Review](coverage/semantics/main-source-rejection-review.json).
 
+COMP171 supplies rejected file/eval units with parser-mode lexical token tapes,
+without calling the Zend grammar. Trivia and original positions survive; malformed
+Unicode/heredoc segments stop later headers while retaining earlier interpolation
+declarations. Accepted lexers, schema, adapter and authored P4 rules are unchanged.
+Private native build, 53 independent scanner/service controls, 30 affected controls,
+35 exact source cases, 200 reached conditions and four main-file regressions pass.
+The initial null-scanner eval/file heredoc failures remain zero-credit packets.
+Multibyte conversion and wider core remain partial.
+[Review](coverage/semantics/rejected-scanner-tape-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |

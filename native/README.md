@@ -14,8 +14,8 @@ and original attribution are retained in the C header and adjacent `LICENSE`
   after-opening-tag state and calls `zendparse` only. Empty bytes are accepted
   directly. The helper restores scanner/compiler state after each call, never
   installs declarations, and never compiles or evaluates the bytes. Its
-  `ParseError` message and line are parser evidence; non-ParseError failures
-  remain unsupported. The checked eval AST still comes from PHP-Parser, and
+  `ParseError` or base `CompileError` message and line are parser evidence;
+  other failures remain unsupported. The checked eval AST still comes from PHP-Parser, and
   disagreement with native acceptance is explicit `helper_unsupported`.
 - `php_spec_lex_file(path, events = [])` returns raw tokens, their stitched bytes,
   initial/final buffers, original filter input, initial/final encodings and skipped
@@ -24,6 +24,15 @@ and original attribution are retained in the C header and adjacent `LICENSE`
   by the independent frontend. It changes the filter immediately after that token,
   exactly as the Zend grammar does. Raw lexing never calls the parser or uses its
   feedback; emitted event records also contain the scanner byte offset.
+- `php_spec_lex_eval(bytes)` and `php_spec_lex_file_rejected(path)` return only
+  raw `[id, text, line, byte_offset]` token tapes under the fixed multibyte-disabled
+  profile. They enable the scanner's parser-mode lexical checks, including
+  deferred heredoc escape/indentation validation, without calling `zendparse`.
+  The token callback retains trivia and normalizes close/short-echo tags; failure
+  markers stop the tape. Value-token AST leaves are destroyed once, their private
+  arena is freed, and saved scanner/compiler state is restored. Decoded values,
+  diagnostic text and provisional programs are not exported. These APIs are used
+  only by rejected-source header extraction; accepted file/eval lexers are unchanged.
 - `php_spec_encoding_name(name)` reads the pinned Zend/libmbfl registry and
   returns its canonical name or null. It preserves canonical/MIME/alias priority,
   case matching and C-string NUL termination without parsing or evaluating source.

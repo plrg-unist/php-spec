@@ -242,6 +242,32 @@ cuts and earlier fixture failure. Errors not reported by that foreign lexer
 still use exact prefix admission; differing native/foreign prefixes refuse.
 Multibyte conversion and wider source behavior remain partial.
 
+Rejected file/eval units now use the native scanner's parser-mode lexical flag
+and token callback. This enables deferred string/heredoc escape and indentation
+checks while retaining skipped trivia, original bytes, token ordinals and lines.
+The helper calls no Zend grammar and exports no decoded values or diagnostics.
+Transient value-token AST leaves are destroyed once in a private arena; lexical
+and compiler state is restored before returning. Accepted lexers remain unchanged.
+
+The PHP-Parser grammar still determines completed headers. A bad segment after
+an interpolation expression preserves declarations already parsed inside that
+expression, while a heredoc indentation pre-scan error can stop before them.
+Single-quoted/nowdoc text, escaped backslashes, maximum codepoints and admitted
+surrogates do not invent a cutoff. New rejected-only file/eval lexer classes use
+the same checked header receipt and authored warning/runtime rules.
+
+The [scanner originals](../../tests/semantics/unicode_rejected_sources.py) compare
+35 exact streams, including six file counterparts. Independent
+[raw/service controls](../../tests/rejected_eval_lexer_review.py) cover both modes,
+EOF, tag normalization, shebang/BOM positions, saved-state restoration and profile
+refusal; 53 controls and 30 affected controls pass. The
+[reached fixture](../../tests/semantics/rejected_eval_unicode_review_state.py)
+checks genuine pending eval sources, embedded double/heredoc headers, startup
+suppression, failed-source identity, handle reuse, valid zero-budget publication
+and catch/finally continuation. All 200 SL conditions and four selected main-file
+regressions pass. The [review](../../coverage/semantics/rejected-scanner-tape-review.json)
+preserves both earlier producer failures; no historical syntax gate is renewed.
+
 When the existing main parser rejects a file, the semantic CLI can obtain its
 rejection from the same checked file service. Accepted main parsing is unchanged.
 Authored module 446 validates unit 0, source bytes and the existing header receipt,
