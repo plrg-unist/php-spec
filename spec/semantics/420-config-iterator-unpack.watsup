@@ -432,8 +432,8 @@ def $config_string_source(S, pconfigcall) = ((porigin, z))
   -- if $config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
   -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression, true, eps, porigin, z))
 dec $config_iterator_string_value(pstate, pvalue) : bool
-def $config_iterator_assertion_scalar(PINT 0) = true
-def $config_iterator_assertion_scalar(PINT 1) = true
+def $config_iterator_assertion_scalar(PINT z) = true -- if $(z >= 0)
+def $config_iterator_assertion_scalar(PNULL) = true
 def $config_iterator_assertion_scalar(PBOOL false) = true
 def $config_iterator_assertion_scalar(PBOOL true) = true
 def $config_iterator_assertion_scalar(PSTRING_CARRIER pstringidentity n*) = true

@@ -174,8 +174,8 @@ def $anonymous_no_named_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) =
 dec $anonymous_method_factory_node(pcnode) : bool
 def $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = true
   -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
-  -- if $ptvalidname($base64(text), false) /\ $ptlc($base64(text)) =/= $ptascii("__construct")
-  -- if ~$ppmethod_magic($base64(text)) /\ ~$generator_statements(statement*)
+  -- if $ptvalidname($base64(text), false)
+  -- if (~$ppmethod_magic($base64(text)) \/ $ptlc($base64(text)) = $ptascii("__construct")) /\ ~$generator_statements(statement*)
   -- if $anonymous_constructor_parameters(phpType16)
 def $anonymous_method_factory_node(pcnode) = false -- otherwise
 dec $anonymous_method_factory_members(statement*) : bool
@@ -443,9 +443,18 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if pcpath[0:|pcpath_body|] = pcpath_body
 def $anonymous_factory_context(P, pcpath) = false -- otherwise
 
+;; Static and return-typed constructors fail after their bodies compile. Their
+;; children have no completed unit image to publish before that compile error.
+dec $anonymous_rejected_constructor_factory(ppstate) : bool
+def $anonymous_rejected_constructor_factory(P) = true
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (P.GOTOROOT)) = (NStmtClassMethod phpType14 (INTEGER flags) phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("__construct")
+  -- if $ppproperty_flag(flags, 8) \/ phpType18 =/= ABSENT
+def $anonymous_rejected_constructor_factory(P) = false -- otherwise
+
 def $ppimage_publication_ready(P, PORIGIN n_unit pcpath, PPCLASS) = true
   -- if n_unit = P.FOLD.SOURCE.ID
-  -- if ~$ppimage_unit(P) /\ $anonymous_factory_context(P, pcpath)
+  -- if ~$ppimage_unit(P) /\ $anonymous_factory_context(P, pcpath) /\ ~$anonymous_rejected_constructor_factory(P)
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN n_unit pcpath) = (pcnode)
   -- if $anonymous_class_node(pcnode)
   -- if $anonymous_compiler_seed(P) = (n_seed)

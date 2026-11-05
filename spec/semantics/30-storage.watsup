@@ -364,7 +364,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | OB_USER_REFERENCE_RELEASE pobinvoke nat nat
   | OUTPUT_STRING_RELEASE pobstringrelease
   | OB_START_CREATED pobcreation | OB_START_FAILED pobcreation | OB_START_INVALID_NOTICE pobcreation
-  | OB_START_INVALID_DISCARD pobcreation nat
+  | OB_START_ARGUMENT_DISCARD pobcreation nat
   | OB_USER_SEND pobinvoke nat | OB_USER_REFERENCE pobinvoke nat | OB_USER_ENTER pobinvoke | OB_USER_RESULT pobinvoke | OB_USER_DEPRECATED pobinvoke pvalue | OB_USER_COMMIT pobinvoke poboutput | OB_USER_RELEASE pobrelease
   | PROPERTY_COALESCE_RESULT ppropertycoalesce bool | PROPERTY_COALESCE_RV ppropertycoalesce
   | PROPERTY_COALESCE_ASSIGN_VALUE porigin pbase nat pcallcontext?
@@ -395,6 +395,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | CALLABLE_SCALAR_RESULT ptask poperand pvalue int
   | CALLABLE_STRING_RESULT ptask poperand nat nat int
   | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_C_RETURN pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
+  | DESTRUCTOR_C_ABANDONED pdestructorcall pdestructorcall
   | GENERATOR_REQUEST_RESUME pgenclose
   | GENERATOR_REQUEST_REPORT pgenfatal | GENERATOR_REQUEST_BAILOUT pgenfatal
   | GENERATOR_REQUEST_RENDER_RETURN pgenfatal nat bool

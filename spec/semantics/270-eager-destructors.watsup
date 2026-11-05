@@ -85,12 +85,19 @@ dec $eager_bailout_source(pstate) : ptask?
 dec $eager_bailout_parent_frames(pframe*, pdestructorcall) : bool
 dec $eager_bailout_parent_pair(pstate, pdestructorcall) : bool
 dec $eager_bailout_parent_shared(pdestructorcall, pdestructorcall) : bool
+dec $eager_bailout_frame_empty(pdestructionframe?) : bool
+dec $eager_bailout_operation_empty(pdestructionoperation?) : bool
+dec $eager_bailout_parent_omittable(pdestructorcall, pdestructorcall) : bool
+dec $eager_bailout_selected_covered(pdestructorcall) : bool
 dec $eager_bailout_parent_ready(pstate, pdestructorcall) : bool
 dec $eager_bailout_parents(pstate, pdestructorcall, pdestructorcall*) : pdestructioncleanup*?
 dec $eager_bailout_records(pstate, ptask) : pdestructioncleanup*?
 dec $eager_bailout_parent_anchor_row(pstate, pdestructorcall, pdestructioncleanup) : bool
 dec $eager_bailout_parent_anchor(pstate, pdestructorcall, pdestructioncleanup*) : bool
+dec $eager_bailout_selected_anchor_row(pstate, pdestructorcall, pdestructioncleanup) : bool
+dec $eager_bailout_selected_anchor(pstate, pdestructorcall, pdestructioncleanup*) : bool
 dec $eager_bailout_parent_source_valid(pstate, ptask) : bool
+dec $eager_bailout_public_source(ptask) : bool
 dec $eager_bailout_unwind(pstate) : bool
 dec $eager_bailout_error(pstate) : perrorcall?
 dec $eager_bailout_error_scope(pstate) : pstate
@@ -732,6 +739,7 @@ def $eager_cleanup_source_target(EXCEPTION_HANDLER_RESULT pexceptioncall) = pexc
 def $eager_cleanup_source_target(ERROR_HANDLER_RESULT perrorcall) = perrorcall.TARGET
 def $eager_cleanup_source_target(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall.TARGET)
 def $eager_cleanup_source_target(DESTRUCTOR_C_RETURN pdestructorcall) = (pdestructorcall.TARGET)
+def $eager_cleanup_source_target(DESTRUCTOR_C_ABANDONED pdestructorcall pdestructorcall_selected) = (pdestructorcall.TARGET)
 def $eager_cleanup_source_target(DESTRUCTOR_WARNING pdestructorcall) = (pdestructorcall.TARGET)
 def $eager_cleanup_source_target(ptask) = eps -- otherwise
 def $eager_cleanup_record(S, ptask) = {SOURCE ptask, TARGET $eager_cleanup_target(S, pcalltarget), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, RELEASED false}
@@ -894,7 +902,7 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
   -- if $destructor_call_live($eager_bailout_history(S, pdestructorcall), pdestructorcall)
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
-  -- if ($method_accessible(S, pmethoddesc, eps) /\ (pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall \/ pdestructioncleanup.SOURCE = DESTRUCTOR_C_RETURN pdestructorcall)) \/ (~$method_accessible(S, pmethoddesc, eps) /\ pdestructioncleanup.SOURCE = DESTRUCTOR_WARNING pdestructorcall)
+  -- if ($method_accessible(S, pmethoddesc, eps) /\ $eager_bailout_public_source(pdestructioncleanup.SOURCE)) \/ (~$method_accessible(S, pmethoddesc, eps) /\ pdestructioncleanup.SOURCE = DESTRUCTOR_WARNING pdestructorcall)
 def $eager_cleanup_valid(S, pdestructioncleanup) = false -- otherwise
 def $eager_cleanups_valid(S, eps) = true
 def $eager_cleanups_valid(S, pdestructioncleanup :: pdestructioncleanup_tail*) = ($eager_cleanup_valid(S, pdestructioncleanup) /\ $eager_cleanups_valid(S, pdestructioncleanup_tail*))
@@ -1008,6 +1016,7 @@ def $eager_abandoned_owner(DESTRUCTOR_RESULT pdestructorcall) = [HOBJECT pdestru
 ;; A suspended outer wrapper has its own receiver pair and release loop. Its
 ;; shared frame/operation/pending owners remain in the selected call's record.
 def $eager_abandoned_owner(DESTRUCTOR_C_RETURN pdestructorcall) = [HOBJECT pdestructorcall.OBJECT, HOBJECT pdestructorcall.OBJECT] ++ $eager_bailout_release_nodes(pdestructorcall.RELEASE)
+def $eager_abandoned_owner(DESTRUCTOR_C_ABANDONED pdestructorcall pdestructorcall_selected) = [HOBJECT pdestructorcall.OBJECT, HOBJECT pdestructorcall.OBJECT] ++ $eager_bailout_release_nodes(pdestructorcall.RELEASE)
 def $eager_abandoned_owner(DESTRUCTOR_WARNING pdestructorcall) = [HOBJECT pdestructorcall.OBJECT] ++ $eager_bailout_extra(pdestructorcall)
 def $eager_abandoned_owner(DESTRUCTOR_FATAL pdestructionfatal) = $eager_fatal_nodes(pdestructionfatal)
 def $eager_abandoned_owner(ptask) = eps -- otherwise
@@ -1020,6 +1029,7 @@ def $destruction_abort(S, S_clean) = S_clean[.DESTRUCTION.ABANDONED = S_clean.DE
 ;; before the inner ADDREF and retain only the store wrapper's one count.
 def $eager_bailout_call(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall)
 def $eager_bailout_call(DESTRUCTOR_C_RETURN pdestructorcall) = (pdestructorcall)
+def $eager_bailout_call(DESTRUCTOR_C_ABANDONED pdestructorcall pdestructorcall_selected) = (pdestructorcall)
 def $eager_bailout_call(DESTRUCTOR_WARNING pdestructorcall) = (pdestructorcall)
 def $eager_bailout_call(ptask) = eps -- otherwise
 def $eager_bailout_unwind(S) = true
@@ -1082,6 +1092,17 @@ def $eager_bailout_parent_frames(eps, pdestructorcall) = false
 def $eager_bailout_parent_frames(pframe :: pframe_tail*, pdestructorcall) = ($destructor_c_return_source(pframe.TODO, pdestructorcall) \/ $eager_bailout_parent_frames(pframe_tail*, pdestructorcall))
 def $eager_bailout_parent_pair(S, pdestructorcall) = ($destructor_c_return_source(S.TODO, pdestructorcall) \/ $eager_bailout_parent_frames(S.FRAMES, pdestructorcall))
 def $eager_bailout_parent_shared(pdestructorcall_parent, pdestructorcall) = (pdestructorcall_parent.OPERATION = pdestructorcall.OPERATION /\ pdestructorcall_parent.FRAME = pdestructorcall.FRAME /\ pdestructorcall_parent.PENDING = pdestructorcall.PENDING)
+def $eager_bailout_frame_empty(eps) = true
+def $eager_bailout_frame_empty((pdestructionframe)) = ($task_nodes(DESTRUCTOR_FRAME_EXIT pdestructionframe) = eps)
+def $eager_bailout_operation_empty(eps) = true
+def $eager_bailout_operation_empty((pdestructionoperation)) = ($task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps)
+;; The selected record owns shared channels. A differing omitted channel must
+;; be rootless; the associated call identifies this actual C bailout.
+def $eager_bailout_parent_omittable(pdestructorcall_parent, pdestructorcall) = ((pdestructorcall_parent.FRAME = pdestructorcall.FRAME \/ $eager_bailout_frame_empty(pdestructorcall_parent.FRAME)) /\ (pdestructorcall_parent.OPERATION = pdestructorcall.OPERATION \/ $eager_bailout_operation_empty(pdestructorcall_parent.OPERATION)) /\ (pdestructorcall_parent.PENDING = pdestructorcall.PENDING \/ $instance_roots(pdestructorcall_parent.PENDING) = eps))
+def $eager_bailout_selected_covered(pdestructorcall) = true
+  -- if pdestructorcall.OPERATION = eps
+def $eager_bailout_selected_covered(pdestructorcall) = ($eager_operation_completion_roots(pdestructionoperation) = $instance_roots(pdestructorcall.PENDING))
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
 def $eager_bailout_parent_ready(S, pdestructorcall) = (~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps /\ pdestructorcall <- S.DESTRUCTION.CALLS /\ $destructor_call_live(S, pdestructorcall) /\ $eager_bailout_parent_pair(S, pdestructorcall))
 def $eager_bailout_parents(S, pdestructorcall, eps) = (eps)
 def $eager_bailout_parents(S, pdestructorcall, pdestructorcall :: pdestructorcall_tail*) = $eager_bailout_parents(S, pdestructorcall, pdestructorcall_tail*)
@@ -1092,6 +1113,15 @@ def $eager_bailout_parents(S, pdestructorcall, pdestructorcall_parent :: pdestru
   -- if $eager_bailout_parent_shared(pdestructorcall_parent, pdestructorcall)
   -- if $eager_bailout_parents(S, pdestructorcall, pdestructorcall_tail*) = (pdestructioncleanup_tail*)
   -- if pdestructioncleanup = $eager_cleanup_record(S, DESTRUCTOR_C_RETURN pdestructorcall_parent)
+def $eager_bailout_parents(S, pdestructorcall, pdestructorcall_parent :: pdestructorcall_tail*) = (pdestructioncleanup :: pdestructioncleanup_tail*)
+  -- if pdestructorcall_parent =/= pdestructorcall
+  -- if pdestructorcall_parent.OBJECT =/= pdestructorcall.OBJECT
+  -- if $eager_bailout_parent_ready(S, pdestructorcall_parent)
+  -- if ~$eager_bailout_parent_shared(pdestructorcall_parent, pdestructorcall)
+  -- if $eager_bailout_parent_omittable(pdestructorcall_parent, pdestructorcall)
+  -- if $eager_bailout_selected_covered(pdestructorcall)
+  -- if $eager_bailout_parents(S, pdestructorcall, pdestructorcall_tail*) = (pdestructioncleanup_tail*)
+  -- if pdestructioncleanup = $eager_cleanup_record(S, DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall)
 def $eager_bailout_parents(S, pdestructorcall, pdestructorcall_parent :: pdestructorcall_tail*) = $eager_bailout_parents(S, pdestructorcall, pdestructorcall_tail*)
   -- if pdestructorcall_parent =/= pdestructorcall
   -- if ~$eager_bailout_parent_pair(S, pdestructorcall_parent)
@@ -1110,8 +1140,23 @@ def $eager_bailout_parent_anchor_row(S, pdestructorcall_parent, pdestructionclea
 def $eager_bailout_parent_anchor_row(S, pdestructorcall_parent, pdestructioncleanup) = false -- otherwise
 def $eager_bailout_parent_anchor(S, pdestructorcall_parent, eps) = false
 def $eager_bailout_parent_anchor(S, pdestructorcall_parent, pdestructioncleanup :: pdestructioncleanup_tail*) = ($eager_bailout_parent_anchor_row(S, pdestructorcall_parent, pdestructioncleanup) \/ $eager_bailout_parent_anchor(S, pdestructorcall_parent, pdestructioncleanup_tail*))
+def $eager_bailout_selected_anchor_row(S, pdestructorcall, pdestructioncleanup) = true
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall \/ pdestructioncleanup.SOURCE = DESTRUCTOR_WARNING pdestructorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+def $eager_bailout_selected_anchor_row(S, pdestructorcall, pdestructioncleanup) = false -- otherwise
+def $eager_bailout_selected_anchor(S, pdestructorcall, eps) = false
+def $eager_bailout_selected_anchor(S, pdestructorcall, pdestructioncleanup :: pdestructioncleanup_tail*) = ($eager_bailout_selected_anchor_row(S, pdestructorcall, pdestructioncleanup) \/ $eager_bailout_selected_anchor(S, pdestructorcall, pdestructioncleanup_tail*))
 def $eager_bailout_parent_source_valid(S, DESTRUCTOR_C_RETURN pdestructorcall) = $eager_bailout_parent_anchor(S, pdestructorcall, S.DESTRUCTION.ABANDONED)
+def $eager_bailout_parent_source_valid(S, DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall) = (pdestructorcall_parent.OBJECT =/= pdestructorcall.OBJECT /\ ~$eager_bailout_parent_shared(pdestructorcall_parent, pdestructorcall) /\ $eager_bailout_parent_omittable(pdestructorcall_parent, pdestructorcall) /\ $eager_bailout_selected_covered(pdestructorcall) /\ $eager_bailout_selected_anchor(S, pdestructorcall, S.DESTRUCTION.ABANDONED))
 def $eager_bailout_parent_source_valid(S, ptask) = true -- otherwise
+def $eager_bailout_public_source(DESTRUCTOR_RESULT pdestructorcall) = true
+def $eager_bailout_public_source(DESTRUCTOR_C_RETURN pdestructorcall) = true
+def $eager_bailout_public_source(DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall) = true
+def $eager_bailout_public_source(ptask) = false -- otherwise
+;; This is an abandoned source token, never a runnable continuation or root.
+def $call_task_valid(S, DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall) = false
+def $task_nodes(DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall) = eps
 def $eager_bailout_transfer(S, S_next, ptask) = S_clean[.DESTRUCTION.ABANDONED = S_clean.DESTRUCTION.ABANDONED ++ pdestructioncleanup_records* ++ [$eager_cleanup_record($eager_bailout_error_scope(S), ERROR_HANDLER_RESULT perrorcall)]]
   -- if $eager_bailout_error(S) = (perrorcall)
   -- if $eager_bailout_records(S, ptask) = (pdestructioncleanup_records*)

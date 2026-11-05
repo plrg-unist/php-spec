@@ -1,0 +1,172 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "ctor-early-counters-defaults-reuse",
+      "source": "<?php\n$before = new class {};\nclass Ctor179Early {\n    public function __construct(int $value = 3) {\n        $child = new class($value) {\n            public function __construct(public int $value) {}\n            public function read(): int { return $this->value; }\n        };\n        echo $child::class, ';', $child->read(), ';';\n    }\n}\n$after = new class {};\nnew Ctor179Early;\nnew Ctor179Early(8);\necho $before::class, ';', $after::class, ';';\n",
+      "source_sha256": "fae64816177cccbd31b6318e9219adbae2c6a91d82a2b4f9fc256593288c9c79",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo1JDE7MztjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjUkMTs4O2NsYXNzQGFub255bW91cwB7RklMRX06MiQwO2NsYXNzQGFub255bW91cwB7RklMRX06MTIkMjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ctor-conditional-owner-deferred-counter",
+      "source": "<?php\n$before = new class {};\nif (true) {\n    class Ctor179Conditional {\n        public function __construct() {\n            $child = new class {};\n            echo $child::class, ';';\n        }\n    }\n}\n$after = new class {};\nnew Ctor179Conditional;\necho $before::class, ';', $after::class, ';';\n",
+      "source_sha256": "4795142abc79bd8e1c3c85df12578cbb4f401d4e7292dcda9dd260f8920b3d67",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo2JDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToxMSQzOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ctor-inherited-protected-child",
+      "source": "<?php\nclass Ctor179Base {\n    protected function __construct(int $value) { echo 'BASE;', $value, ';'; }\n}\nclass Ctor179Derived extends Ctor179Base {\n    public function __construct() {\n        echo 'OWNER;';\n        $child = new class(4) extends Ctor179Base {};\n        echo $child::class, ';';\n    }\n}\nnew Ctor179Derived;\n",
+      "source_sha256": "b1c7bdddea5617bce9b8de676bf9e7694d297326d6cc645d591ce34fe650cdc1",
+      "stdout_template_base64": "T1dORVI7QkFTRTs0O0N0b3IxNzlCYXNlQGFub255bW91cwB7RklMRX06OCQwOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ctor-promoted-value-before-parent-call",
+      "source": "<?php\nclass Ctor179Parent {\n    public function __construct() { echo 'PARENT;'; }\n}\nclass Ctor179Promoted extends Ctor179Parent {\n    public function __construct(public int $value) {\n        echo 'OWNER;', $this->value, ';';\n        $child = new class($this->value) {\n            public function __construct(public int $value) { echo 'CHILD;', $this->value, ';'; }\n        };\n        parent::__construct();\n        echo $child->value, ';';\n    }\n}\nnew Ctor179Promoted(7);\n",
+      "source_sha256": "6aabc17196f6e02c812654742b1ff9ac8ba20ff4c2c60b679ccad25adf177683",
+      "stdout_template_base64": "T1dORVI7NztDSElMRDs3O1BBUkVOVDs3Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ctor-private-child-denied-before-argument",
+      "source": "<?php\nclass Ctor179PrivateChild {\n    public function __construct() {\n        echo 'OWNER;';\n        $child = new class((print 'ARG;')) {\n            private function __construct(int $value) { echo 'CHILD;'; }\n            public function __destruct() { echo 'CHILD-DTOR;'; }\n        };\n        echo 'BAD;';\n    }\n    public function __destruct() { echo 'OWNER-DTOR;'; }\n}\nnew Ctor179PrivateChild;\n",
+      "source_sha256": "b02149d7455de76d32ed90aacc792f088e8725a7e16ba760cbe89e0873f46a27",
+      "stdout_template_base64": "T1dORVI7",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IEVycm9yOiBDYWxsIHRvIHByaXZhdGUgY2xhc3NAYW5vbnltb3VzOjpfX2NvbnN0cnVjdCgpIGZyb20gc2NvcGUgQ3RvcjE3OVByaXZhdGVDaGlsZCBpbiB7RklMRX06NQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDEzKTogQ3RvcjE3OVByaXZhdGVDaGlsZC0+X19jb25zdHJ1Y3QoKQojMSB7bWFpbn0KICB0aHJvd24gaW4ge0ZJTEV9IG9uIGxpbmUgNQo=",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "ctor-lazy-final-before-argument",
+      "source": "<?php\nclass Ctor179FinalBase { final public function value(): int { return 1; } }\nclass Ctor179FinalOwner {\n    public function __construct() {\n        echo 'OWNER;';\n        $child = new class((print 'ARG;')) extends Ctor179FinalBase {\n            public function __construct(int $value) { echo 'CHILD;'; }\n            public function value(): int { return 2; }\n        };\n    }\n}\necho 'BEFORE;';\nnew Ctor179FinalOwner;\necho 'BAD;';\n",
+      "source_sha256": "199c81c8bead2c1df3709f0ce069f364202a23180866120853544c814f5bcde7",
+      "stdout_template_base64": "QkVGT1JFO09XTkVSOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBvdmVycmlkZSBmaW5hbCBtZXRob2QgQ3RvcjE3OUZpbmFsQmFzZTo6dmFsdWUoKSBpbiB7RklMRX0gb24gbGluZSA4ClN0YWNrIHRyYWNlOgojMCB7RklMRX0oMTMpOiBDdG9yMTc5RmluYWxPd25lci0+X19jb25zdHJ1Y3QoKQojMSB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "ctor-skipped-lazy-final",
+      "source": "<?php\nclass Ctor179SkippedBase { final public function value(): int { return 1; } }\nclass Ctor179SkippedOwner {\n    public function __construct() {\n        if (false) {\n            $child = new class extends Ctor179SkippedBase {\n                public function value(): int { return 2; }\n            };\n        }\n        echo 'DONE;';\n    }\n}\nnew Ctor179SkippedOwner;\n",
+      "source_sha256": "2e6b1107f6eea323e9479a6a93e2dd51ef11206fdf108e04a084658260b757aa",
+      "stdout_template_base64": "RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ctor-lazy-final-sensitive-caller",
+      "source": "<?php\nclass R179SensitiveBase { final public function value(): int { return 1; } }\nclass R179SensitiveOwner {\n public function __construct() {\n  $child = new class extends R179SensitiveBase { public function value(): int { return 2; } };\n }\n}\nfunction r179SensitiveCaller(#[SensitiveParameter] string $secret): void { new R179SensitiveOwner; }\nr179SensitiveCaller('hidden');\n",
+      "source_sha256": "7d6d246729c7f0b1e678217ca97590dee99c8fc4257f611da0a9723cc05579e5",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBvdmVycmlkZSBmaW5hbCBtZXRob2QgUjE3OVNlbnNpdGl2ZUJhc2U6OnZhbHVlKCkgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDgpOiBSMTc5U2Vuc2l0aXZlT3duZXItPl9fY29uc3RydWN0KCkKIzEge0ZJTEV9KDkpOiByMTc5U2Vuc2l0aXZlQ2FsbGVyKE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMyIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "ctor-uncalled-invalid-child-default",
+      "source": "<?php\nclass Ctor179BadDefault {\n    public function __construct() {\n        $child = new class {\n            public function bad(int $value = 'bad') {}\n        };\n    }\n}\necho 'BAD;';\n",
+      "source_sha256": "3ebccb8c6a724db2651f8938971fb70518980744c20a7b7b7c6b2cd141ba7947",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "ctor-static-valid-child-rejection",
+      "source": "<?php\nclass Ctor179Static {\n    public static function __construct() {\n        $child = new class {};\n    }\n}\necho 'BAD;';\n",
+      "source_sha256": "32b38d90541a6a3d13f43072b5c528dd3d6fbf849483a33b7ae09b6fee1d6b0f",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE1ldGhvZCBDdG9yMTc5U3RhdGljOjpfX2NvbnN0cnVjdCgpIGNhbm5vdCBiZSBzdGF0aWMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "ctor-static-bad-child-priority",
+      "source": "<?php\nclass Ctor179StaticPriority {\n    public static function __construct() {\n        $child = new class {\n            public function bad(int $value = 'bad') {}\n        };\n    }\n}\necho 'BAD;';\n",
+      "source_sha256": "e23dfee2a1686359bf8f55d143b4a94530a056d6e5c4454592bc1c24b266e20a",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "ctor-private-owner-factory",
+      "source": "<?php\nclass Ctor179PrivateOwner {\n    private function __construct() {\n        $child = new class {\n            public function read(): int { return 12; }\n        };\n        echo 'PRIVATE;', $child->read(), ';';\n    }\n    public static function make(): self { return new self; }\n}\nCtor179PrivateOwner::make();\n",
+      "source_sha256": "771048bc3b14c155b3d1a6076919ae10485addf3c4fcec367010587083032980",
+      "stdout_template_base64": "UFJJVkFURTsxMjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ctor-owned-child-throw-release",
+      "source": "<?php\nclass Ctor179ThrowOwner {\n    public object $child;\n    public function __construct() {\n        $this->child = new class {\n            public function __destruct() { echo 'CHILD-DTOR;'; }\n        };\n        echo 'MADE;';\n        throw new Exception('stop');\n    }\n    public function __destruct() { echo 'OWNER-DTOR;'; }\n}\ntry { new Ctor179ThrowOwner; } catch (Exception $error) { echo 'CAUGHT;'; }\necho 'END;';\n",
+      "source_sha256": "7652428105f123584ac37b23359801e52ff6c38b7fa6f912baf7199eb2db8994",
+      "stdout_template_base64": "TUFERTtDSElMRC1EVE9SO0NBVUdIVDtFTkQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "ctor-static-child-warning-before-rejection",
+      "source": "<?php\nclass R179StaticWarn {\n static function __construct() {\n   $child = new class { private final function f() {} };\n }\n}\necho 'BAD;';\n",
+      "source_sha256": "3bf87a880831d3afe2586b9e005fe3f18c5ad4251d0c29155d794f62401ad301",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgNApGYXRhbCBlcnJvcjogTWV0aG9kIFIxNzlTdGF0aWNXYXJuOjpfX2NvbnN0cnVjdCgpIGNhbm5vdCBiZSBzdGF0aWMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "ctor-return-valid-child",
+      "source": "<?php\nclass R179Ret {\n public function __construct(): int {\n  $child = new class {};\n }\n}\necho 'BAD;';\n",
+      "source_sha256": "fd73a707ea346e46cfee8b2daae80284dbc5eb4e77686817835fe59ee29f3c82",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE1ldGhvZCBSMTc5UmV0OjpfX2NvbnN0cnVjdCgpIGNhbm5vdCBkZWNsYXJlIGEgcmV0dXJuIHR5cGUgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "ctor-return-invalid-child",
+      "source": "<?php\nclass R179RetBad {\n public function __construct(): int {\n  $child = new class { public function f(int $x = 'bad') {} };\n }\n}\necho 'BAD;';\n",
+      "source_sha256": "78a8ffac95dc32326259f645c0bea4b0f02c214e998a19b2fdca96f04d6fb390",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkeCBvZiB0eXBlIGludCBpbiB7RklMRX0gb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "ctor-return-warning-child",
+      "source": "<?php\nclass R179RetWarn {\n public function __construct(): int {\n  $child = new class { private final function f() {} };\n }\n}\necho 'BAD;';\n",
+      "source_sha256": "db1bf761e458b533a4fcca823a255bce242429db824c0ccf44b9e148db7ea8d3",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgNApGYXRhbCBlcnJvcjogTWV0aG9kIFIxNzlSZXRXYXJuOjpfX2NvbnN0cnVjdCgpIGNhbm5vdCBkZWNsYXJlIGEgcmV0dXJuIHR5cGUgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    }
+  ]
+}

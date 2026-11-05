@@ -356,6 +356,9 @@ dec $executor_tick_scope_frames(pstate, pframe*) : bool
 dec $executor_tick_scope(pstate) : bool
 dec $executor_tick_begin(pstate) : pstate
 dec $executor_tick_abandoned(pstate, pdestructioncleanup) : pexecutortick?
+dec $executor_tick_parent_row(pstate, pdestructioncleanup, pdestructioncleanup) : pexecutortick?
+dec $executor_tick_parent(pstate, pdestructioncleanup, pdestructioncleanup*) : pexecutortick?
+dec $executor_tick_bailout(pstate) : pexecutortick?
 dec $executor_tick_fatal_valid(pstate, pexecutortickfatal) : bool
 dec $executor_tick_fatal_begin(pstate, pexecutortick, pcompletion) : pstate
 dec $executor_report_cause(pstate, pcompletion, nat) : bool
@@ -377,9 +380,10 @@ dec $ob_failure_task_valid(pstate, pobcreation) : bool
 dec $ob_failure_message(pobcreation) : preqbytes
 dec $ob_failure_warning(pstate, pobcreation) : pstate
 dec $ob_failure_pending_notice(pstate, pobcreation) : pstate
-dec $ob_failure_continuation(ptask) : pobcreation?
-dec $ob_failure_discarded(pstate, nat) : pobcreation?
-dec $ob_failure_discard_valid(pstate, pdestructionoperation) : bool
+dec $ob_start_continuation(ptask) : ptask?
+dec $ob_start_discard_phase(ptask) : pobcreation?
+dec $ob_start_discarded(pstate, nat) : pobcreation?
+dec $ob_start_discard_valid(pstate, pdestructionoperation) : bool
 dec $ob_creation_target(phandlerresolution) : pcalltarget?
 dec $ob_creation_producer(pstate, pvalue) : pshutdownproducer?
 dec $ob_creation_history(pstate, pobcreation) : pstate
@@ -604,11 +608,36 @@ def $executor_tick_abandoned(S, pdestructioncleanup) = (pexecutortick)
   -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if $eager_cleanup_valid(S, pdestructioncleanup)
 def $executor_tick_abandoned(S, pdestructioncleanup) = eps -- otherwise
-def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
-  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+;; A distinct operation may throw while a genuine outer tick C call waits.
+;; The documentary parent must identify this actual last selected call.
+def $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup_parent) = (pexecutortick)
+  -- if pdestructioncleanup_selected.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if pdestructioncleanup_parent.SOURCE = DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall
+  -- if ~pdestructioncleanup_selected.RELEASED /\ ~pdestructioncleanup_parent.RELEASED
+  -- if ~pdestructorcall_parent.USER /\ pdestructorcall_parent.CALLER = eps
+  -- if pdestructorcall_parent.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
+  -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup_selected)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup_parent)
+def $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup_parent) = eps -- otherwise
+def $executor_tick_parent(S, pdestructioncleanup_selected, eps) = eps
+def $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup :: pdestructioncleanup_tail*) = (pexecutortick)
+  -- if $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup) = (pexecutortick)
+def $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup :: pdestructioncleanup_tail*) = $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup_tail*)
+  -- if $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup) = eps
+def $executor_tick_bailout(S) = (pexecutortick)
   -- if $(|S.DESTRUCTION.ABANDONED| > 0)
   -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
   -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortick)
+def $executor_tick_bailout(S) = $executor_tick_parent(S, S.DESTRUCTION.ABANDONED[n_last], S.DESTRUCTION.ABANDONED)
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = eps
+def $executor_tick_bailout(S) = eps -- otherwise
+def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
+  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_tick_bailout(S) = (pexecutortick)
   -- if $executor_tick_valid(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if S.COMPLETION = UNCAUGHT n
   -- if S.EXCEPTIONHANDLER = eps
@@ -617,9 +646,7 @@ def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.OUTPUTBUFFERS = eps /\ S.EXITSTATUS = 255
-  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
-  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
-  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortickfatal.TICK)
+  -- if $executor_tick_bailout(S) = (pexecutortickfatal.TICK)
   -- if $(pexecutortickfatal.OBJECT < |S.OBJECTS|)
   -- if $shutdown_frozen(pexecutortickfatal.COMPLETION)
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = false -- otherwise
@@ -1017,49 +1044,56 @@ rule PhpStep/ob-start-failed-notice: S ~> $ob_notice_with_creation(S, pobcreatio
   -- if S.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*
   -- if $call_task_valid(S, OB_START_FAILED pobcreation)
 ;; zend_vm_stack_free_args uses zval_ptr_dtor_nogc, unlike the zoh destructor.
-;; Abrupt handler cleanup consumes the same builtin argument. Its saved source
+;; Abrupt Warning/Notice cleanup consumes the same builtin argument. Its saved source
 ;; authenticates that decrement after THROW_SEARCH has removed the continuation.
-def $ob_failure_continuation(OB_START_INVALID_NOTICE pobcreation) = (pobcreation)
-def $ob_failure_continuation(ERROR_HANDLER_INVOKE perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
-def $ob_failure_continuation(ERROR_HANDLER_RESULT perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
-def $ob_failure_continuation(ERROR_HANDLER_CLEAN perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
-def $ob_failure_continuation(API_CALLBACK_SEND papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_start_continuation(OB_START_INVALID_NOTICE pobcreation) = (OB_START_INVALID_NOTICE pobcreation)
+def $ob_start_continuation(OB_NOTICE_RESULT pobnotice) = (OB_NOTICE_RESULT pobnotice)
+def $ob_start_continuation(ERROR_HANDLER_INVOKE perrorcall) = $ob_start_continuation(perrorcall.RESUME)
+def $ob_start_continuation(ERROR_HANDLER_RESULT perrorcall) = $ob_start_continuation(perrorcall.RESUME)
+def $ob_start_continuation(ERROR_HANDLER_CLEAN perrorcall) = $ob_start_continuation(perrorcall.RESUME)
+def $ob_start_continuation(API_CALLBACK_SEND papiargcursor) = $ob_start_continuation(perrorcall.RESUME)
   -- if papiargcursor.CALL = API_ERROR perrorcall
-def $ob_failure_continuation(API_CALLBACK_REF papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_start_continuation(API_CALLBACK_REF papiargcursor) = $ob_start_continuation(perrorcall.RESUME)
   -- if papiargcursor.CALL = API_ERROR perrorcall
-def $ob_failure_continuation(ptask) = eps -- otherwise
-def $ob_failure_discarded(S, n) = (pobcreation)
+def $ob_start_continuation(ptask) = eps -- otherwise
+def $ob_start_discard_phase(ptask) = (pobcreation)
+  -- if $ob_start_continuation(ptask) = (OB_START_INVALID_NOTICE pobcreation)
+def $ob_start_discard_phase(ptask) = (pobcreation)
+  -- if $ob_start_continuation(ptask) = (OB_NOTICE_RESULT pobnotice)
+  -- if pobnotice.CREATION = (pobcreation)
+  -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
+def $ob_start_discard_phase(ptask) = eps -- otherwise
+def $ob_start_discarded(S, n) = (pobcreation)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
   -- if $throwable_live(S, n)
-  -- if $ob_failure_continuation(ptask) = (pobcreation)
-  -- if $ob_failure_task_valid(S[.TODO = ptask :: ptask_tail*], pobcreation)
+  -- if $ob_start_discard_phase(ptask) = (pobcreation)
   -- if $call_task_valid(S[.TODO = ptask :: ptask_tail*], ptask)
   -- if $gc_temporary_node(KNOWN pobcreation.VALUE) =/= eps
-def $ob_failure_discarded(S, n) = eps -- otherwise
-def $eager_operation_source(S, THROW_SEARCH n) = OB_START_INVALID_DISCARD pobcreation n
-  -- if $ob_failure_discarded(S, n) = (pobcreation)
-def $task_nodes(OB_START_INVALID_DISCARD pobcreation n) = eps
-def $call_task_valid(S, OB_START_INVALID_DISCARD pobcreation n) = false
-def $ob_failure_discard_valid(S, pdestructionoperation) = true
-  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+def $ob_start_discarded(S, n) = eps -- otherwise
+def $eager_operation_source(S, THROW_SEARCH n) = OB_START_ARGUMENT_DISCARD pobcreation n
+  -- if $ob_start_discarded(S, n) = (pobcreation)
+def $task_nodes(OB_START_ARGUMENT_DISCARD pobcreation n) = eps
+def $call_task_valid(S, OB_START_ARGUMENT_DISCARD pobcreation n) = false
+def $ob_start_discard_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = OB_START_ARGUMENT_DISCARD pobcreation n
   -- if pdestructionoperation.CLEANUP = eps
   -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = (n)
   -- if pdestructionoperation.VALUE = KNOWN PNULL
   -- if $throwable_live(S, n)
   -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
   -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
-  -- if $ob_failure_valid(S_history, pobcreation)
-def $ob_failure_discard_valid(S, pdestructionoperation) = false -- otherwise
-def $eager_operation_source_guard(S, pdestructionoperation) = $ob_failure_discard_valid(S, pdestructionoperation)
-  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if $ob_start_receipt_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
+def $ob_start_discard_valid(S, pdestructionoperation) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $ob_start_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_ARGUMENT_DISCARD pobcreation n
 def $gc_operation_temporary_extra(S, S_next, THROW_SEARCH n, pnode_slots*) = pgctemporary*
-  -- if $ob_failure_discarded(S, n) = (pobcreation)
+  -- if $ob_start_discarded(S, n) = (pobcreation)
   -- if pgctemporary* = $gc_binary_temp_receipt(KNOWN pobcreation.VALUE)
   -- if $gc_binary_temp_slots(pgctemporary*, pnode_slots*)
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
-  -- if $ob_failure_discard_valid(S, pdestructionoperation)
-  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if $ob_start_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_ARGUMENT_DISCARD pobcreation n
   -- if pdestructionoperation.NOGC = eps
   -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
   -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE

@@ -187,9 +187,17 @@ cleanup. The saved operation authenticates the destructor's original site even
 when an outer exit operation is newly prepended. Fake prefix and independent
 real Child originals exit29/41; author and joined peer reached checks validate
 owners, weak observations, handler restoration and split/full shutdown. Repeated
-cleanup exit is Unsupported; a cleanup throw replacing this exit and hard
-bailout remain partial.
+cleanup exit is Unsupported; at this cut, a cleanup throw replacing this exit
+and hard bailout remained partial.
 [Owning retval exit review](../../coverage/semantics/generator-call-cleanup-exit-review.json).
+
+I104 validates the existing pending-throw path for a supplied plain Child
+exception after that retval exit. The saved operation transfers Stop without
+chaining the exit as Previous, then retires Child, retval and API owners before
+catch. The handler restores; catch/finally run and a final string exit keeps
+status 41. The real source agrees and reached checks preserve the owner counts
+and hidden copied Closure. Aliased throws and wider lifecycle remain open.
+[Cleanup throw review](../../coverage/semantics/generator-call-cleanup-throw-review.json).
 
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,

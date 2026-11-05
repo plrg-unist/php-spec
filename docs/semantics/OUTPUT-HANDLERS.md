@@ -295,10 +295,15 @@ operation; a throwing return destructor contributes the genuine `ob_start` frame
 and current arguments to its Throwable trace. An eligible Notice handler is
 skipped while that Throwable is pending; otherwise the default Notice follows
 reporting/display and silence, before propagation to the caller's catch.
-Abrupt Warning continuation cleanup also uses the VM's root-only NOGC decrement.
-A borrowed source record authenticates the consumed continuation, pending Throwable
-and exact temporary release; it adds no owner or executable task. Array children
-still use ordinary cleanup.
+OB11–12 share one root-only NOGC argument-discard rule for admitted Warning and
+Notice-handler throws. Full validation of the actual task authenticates its
+terminal phase before erasure. The borrowed source record binds the pending
+Throwable and temporary release without adding an owner or executable task.
+Array children retain ordinary cleanup. Precreated-Throwable controls distinguish direct cycles from
+array children; a newly constructed Throwable retains the callback in its trace.
+Consumed Closure metadata reuses borrowed capture history after real retirement.
+Seven exact originals, 279 reported reached conditions and 90 affected Warning
+conditions pass at their recorded cuts.
 
 Whole declaration-history validation remains open for late handler function
 publication; a default-NULL Notice baseline reproduces the same frontier.
@@ -313,4 +318,5 @@ agreement credit; separate explicit-cleanup controls cover the creation protocol
 [OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json),
 [OB09 evidence](../../coverage/semantics/output-executor-reception-review.json),
 [OB10 evidence](../../coverage/semantics/output-executor-creation-review.json),
-[OB11 evidence](../../coverage/semantics/output-executor-invalid-review.json).
+[OB11 evidence](../../coverage/semantics/output-executor-invalid-review.json),
+[OB12 evidence](../../coverage/semantics/output-executor-notice-discard-review.json).
