@@ -180,6 +180,15 @@ partial. Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I97](coverage/semantics/generator-call-warning-fiber-review.json) and
 [I98](coverage/semantics/generator-call-warning-retval-review.json).
 
+I99 handles PHP throws during copied reference warnings, including a Fiber throw
+in an owning handler-return destructor. Only the hidden copy stays request-owned;
+prepared prefix and API owners release before catch. Four native originals,
+three CLI comparisons and two reached fronts (237 custom/247 reported checks)
+pass; one front also matches repeated native output without extra CLI credit.
+The affected 59/64 trace checks and joined strict433 pass at recorded cuts.
+Receive/mapping and bailout paths remain partial.
+[I99 review](coverage/semantics/generator-call-cancellation-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory

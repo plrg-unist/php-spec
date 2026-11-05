@@ -7166,6 +7166,13 @@ Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I97](coverage/semantics/generator-call-warning-fiber-review.json) and
 [I98](coverage/semantics/generator-call-warning-retval-review.json).
 
+I99 also handles throws during copied reference warnings: the hidden copy keeps
+its receiver/captures until shutdown while prepared and API owners release before
+catch. Four native originals, three CLI comparisons and two ownership fronts
+(including repeated native output) validate this bounded path; wider receive,
+mapping and bailout contexts remain partial.
+[Cancellation review](coverage/semantics/generator-call-cancellation-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
