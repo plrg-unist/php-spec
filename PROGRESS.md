@@ -484,8 +484,8 @@ multiple Maps, freeing-object mutation and active-pin collection remain partial.
 
 GC37 admits a methodless user WeakMap Value with one public untyped declared
 property owning a child before first insertion into an empty Map. The leaf
-`stdClass` Key's retirement removes the Map edge, clears the Value's weak
-observer, then releases its sole child through the ordinary storage pin.
+`stdClass` Key's retirement removes the Map edge, makes the Value observer's get
+null, then releases its sole child through the ordinary storage pin.
 Three new exact programs include a caught Child destructor throw; three affected
 post-insertion/GC36 sources and 90 source-reached conditions (author46,
 independent44) pass at recorded cuts. Occupied replacement remains explicitly
