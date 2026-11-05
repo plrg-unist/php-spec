@@ -107,7 +107,8 @@ def main():
     assert {name: sha(SOURCE / name) for name in HASHES} == HASHES
     assert sha(ROOT / '.tools/php/bin/php') == ORACLE
     paths = [Path(__file__), *(ROOT / name for name in ('bin/php-semantics', 'spec/semantics/92-strict-compiler.watsup',
-        'spec/semantics/93-strict-declarations.watsup', 'spec/semantics/modules.json', 'frontend/worker.php',
+        'spec/semantics/93-strict-declarations.watsup', 'spec/semantics/194-compiler-preflight.watsup',
+        'spec/semantics/modules.json', 'frontend/worker.php',
         '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe', 'tests/semantics/profile.json',
         'tests/semantics/encoding_declare_protocol.py', 'tests/semantics/encoding_list_sources.py',
         'tests/semantics/recorded_worker.py', 'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py',
