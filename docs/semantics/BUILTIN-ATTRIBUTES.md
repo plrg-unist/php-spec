@@ -292,6 +292,15 @@ cleanup; its ordinary VALUE decrement occurs after handler restoration and befor
 the outer destructor/store result. Unhandled bailout retains the same two roots.
 This does not settle pre-body callback or wider destructor lifetimes.
 
+Normal owning results from a named selected handler use the same ordinary VALUE
+jobs before the original Throwable retires and the registry is restored. Returned
+objects and static-Closure captures retire while both outer C protections remain;
+alias arrays preserve repeated owners, and genuinely shared values survive until
+the later tick argument. This is existing generic behavior, with native and
+source-reached witnesses in the
+[handler-value review](../../coverage/semantics/callback-late-tick-handler-value-review.json).
+Abrupt handler-value cleanup remains a separate boundary.
+
 Ignored owning values returned by the destructor body retire after its PHP locals
 and before the inner C receiver protection. Ordinary VALUE jobs preserve the same
 C-return/result pair through returned-object and captured-child destructors;
@@ -300,7 +309,17 @@ separate from a selected handler's ignored retval. The
 [body-return review](../../coverage/semantics/callback-late-tick-body-return-review.json)
 records four new exact originals, two affected controls, eight genuine reached
 groups/438 checks and strict434. The original hidden early decrement remains
-recorded; abrupt body-value cleanup and direct reference-return bodies stay partial.
+recorded at that cut. An unhandled literal Exception from the ignored value now
+retains pending outer C wrappers and unfinished copied arguments/FCC slots before
+the module-local fatal report. Parent C-return records precede the selected result
+record; shared operation/frame/pending roots belong to that selected record once.
+The original call must still be live, so an externally retained returned object
+that throws later adds no phantom parent. Later active queue cleanup runs while
+the stopped tick tail stays rooted. Distinct pending-owner contexts remain an
+explicit boundary. Four new originals and two affected controls agree; strict435
+and seven independent groups/612 conditions (603 reached, nine derived) pass.
+See the [body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json);
+direct reference-return bodies and abrupt selected-handler retval disposal remain partial.
 
 Four new handled originals and two affected controls agree; strict433 passes.
 Nine independent groups pass 508 conditions (497 reached, 11 derived). The
@@ -312,6 +331,6 @@ Earlier [exit/throw](../../coverage/semantics/callback-late-tick-exit-throw-revi
 [cache-shape](../../coverage/semantics/callback-late-tick-callables-review.json)
 and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
 evidence keeps its original cuts. Wider callable producers, assertion roots,
-changed phase completions, other throws, abrupt/owning-result handlers, pre-body
-callbacks, abrupt destructor-body returns and reentrant module shutdown remain
+changed phase completions, other throws, abrupt handlers/returned values, owning
+handler callables, pre-body callbacks, wider abrupt body returns and reentrant shutdown remain
 partial; this is no full lifecycle or core closure.

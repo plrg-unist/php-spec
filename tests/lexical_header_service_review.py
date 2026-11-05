@@ -113,18 +113,18 @@ def run(out):
                 if name == 'outer-nonliteral': assert result['headers'][0]['beginTokenPos'] > 0
                 records.append({'id': name, 'mode': mode, 'warning_lines': lines,
                     'header_count': count, 'source_sha256': hashlib.sha256(code).hexdigest()})
-            # Neither lexer collects this error. The file scanner already ends
-            # its tape here; eval's raw tokenizer keeps the later header.
+            # Neither old tokenizer collects this error. Rejected eval now
+            # uses the real scanner tape, like the file path.
             code = b'declare(encoding=1);$x="\\u{}";declare(encoding=2);'
             if mode == 'file': code = b'<?php\n' + code
             result = frontend.request({'op': 'parse-' + mode, **dict(request, source=b64(code))})
             raw = (frontend.output / 'stderr').read_bytes()[len(frontend.recorded_stderr):]
             frontend.recorded_stderr.extend(raw)
             admitted = CLI['dynamic_parser_stderr'](result, mode, raw)
-            assert not result['accepted'] and raw and admitted is (mode == 'file')
-            assert len(result['headers']) == (1 if mode == 'file' else 2)
+            assert not result['accepted'] and raw and admitted
+            assert len(result['headers']) == 1
             records.append({'id': 'raw-tokenizer-boundary', 'mode': mode,
-                'expected': 'existing file-scanner prefix' if admitted else 'explicit eval CLI refusal'})
+                'expected': 'real scanner prefix'})
     finally:
         frontend.close()
     probe = out / 'boundary.php'; probe.write_text(PROBE.replace('@ROOT@', str(ROOT)))

@@ -1,0 +1,125 @@
+{
+  "milestone": "ATTR23: outer C owners across abrupt ignored-body-value cleanup",
+  "status": "Bounded private validation accepted; original tested source, strict and reached cuts retained",
+  "target": "PHP8.5.10 CLI NTS64; pinned local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-23",
+  "scope": "An unhandled literal builtin Exception thrown by an ignored destructor-body value during post-FINAL tick retirement; normal or stable main exit, later active queue and stopped tick tail. Selected-handler owning retval remains separate.",
+  "production": {
+    "revision": "28c1acea5906e9ca1d671f5e1cb59fdc4f4747c2",
+    "implementation": [
+      "spec/semantics/270-eager-destructors.watsup"
+    ],
+    "behavior": "Before abort clears live C calls, capture authenticated pending outer C_RETURN/result pairs. A parent record owns its two receiver protections and unfinished RELEASE tail; the selected result record owns shared OPERATION/FRAME/PENDING once. Parent records precede selected record, preserving existing terminal catch order. Matching descriptors are required; distinct pending ownership contexts stop explicitly. Later validation requires a genuine selected result/warning anchor, without rebuilding roots from arbitrary tasks."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_execute_API.c:zend_call_known_function local ignored retval destruction precedes caller return",
+      "Zend/zend_objects.c:zend_objects_destroy_object GC_ADDREF/known-instance call/OBJ_RELEASE order",
+      "Zend/zend_objects_API.c:zend_objects_store_del wrapper protection",
+      "Zend/zend_exceptions.c:zend_throw_exception_internal null-C report/release/bailout",
+      "main/main.c:php_request_shutdown module-local bailout and later shutdown-function storage cleanup"
+    ]
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "ff51c94f65f97a1ad581afcab4e6792f972b26752fb53018fb7785bb177461db",
+      "revision": "2d62129f834942a7aba81da00357ec802d95109d",
+      "new_originals": 4,
+      "affected_controls": 2,
+      "observation": "Fresh object/alias-array/static-Closure throw B;F;A;R;Q;/255, retained returned R throws later B;F;A;K;R;Q;/255. One ordinary fatal each, no additional inactive-Closure diagnostic. Normal-body and direct-unhandled controls retain their streams/status."
+    },
+    "unchanged_source": {
+      "report": "source-baseline-2d6/report.json",
+      "report_sha256": "ec2b904aa75f0ac093eca1e9e30353d1a841c2fc82e3c6d35fcb1a504666b96b",
+      "revision": "2d62129f834942a7aba81da00357ec802d95109d",
+      "result": "Unsupported ordinary destructor release before request stage after B;F;A;R;, without fatal/Q; not timeout and zero agreement credit."
+    },
+    "diagnostic": {
+      "report": "debug-bailout-2d6/report.json",
+      "report_sha256": "68f4b7d1ff9e06fb7ac78af02fb88fcfb989a85e0cabb4801596bafcdf5dcd63",
+      "revision": "2d62129f834942a7aba81da00357ec802d95109d",
+      "observation": "Genuine pre-bailout owners Arg/R/K/L/C=2/2/1/1/2; exact step+driver wrappers retained only R record and produced 0/2/1/0/0. Original tick source/heap/descriptor predicates held, but tick catch and output destructor scope failed. Diagnostic-only zero agreement credit."
+    },
+    "strict": {
+      "report": "strict-parent-second/report.json",
+      "report_sha256": "510d4e0ea37000a1905748a6f402d488181f5bc94da9909171548ec0eb401aaa",
+      "revision": "28c1acea5906e9ca1d671f5e1cb59fdc4f4747c2",
+      "passed": true,
+      "modules": 435
+    },
+    "source": {
+      "revision": "28c1acea5906e9ca1d671f5e1cb59fdc4f4747c2",
+      "passed": true,
+      "new_originals": 4,
+      "affected_controls": 2,
+      "reports": [
+        {
+          "report": "source-parent-second/report.json",
+          "report_sha256": "5791ad9bc0f2d1c9692b49e0a635d4d11192a67df6d13816f46caa91029089f0",
+          "selected": [
+            "object"
+          ]
+        },
+        {
+          "report": "source-parent-rest/report.json",
+          "report_sha256": "68d176f04908c1b3cbb53d0d977e7581173b71f8455d60e32d7b54b16309788a",
+          "selected": [
+            "array",
+            "closure",
+            "retained",
+            "normal-body-control",
+            "direct-unhandled-control"
+          ]
+        }
+      ],
+      "result": "All six compare exact stdout, stderr and CLI status to the frozen native originals; source inputs stayed stable and all process groups reaped."
+    },
+    "reached": {
+      "report": "reached-first/run/report.json",
+      "report_sha256": "382ab686da82379630b75c58595a5474340e81b326cf78e0e6430c03cb09b759",
+      "outer_report": "reached-first/process.json",
+      "outer_report_sha256": "0db155a28b1c6bb9ae2694db34d1fe6039026ab7b1aac0b4dd052239fcbfb322",
+      "revision": "28c1acea5906e9ca1d671f5e1cb59fdc4f4747c2",
+      "protocol_revision": "9a0c162c6",
+      "passed": true,
+      "groups": 7,
+      "conditions": 612,
+      "source_reached": 603,
+      "derived": 9,
+      "group_conditions": [
+        101,
+        113,
+        110,
+        82,
+        60,
+        63,
+        83
+      ],
+      "derived_scope": "Three orphan-anchor refusals, two saved-exit/catch forgeries and four shared owning-operation clauses. The owning-operation projection is derived, not a native execution witness.",
+      "result": "All planned fronts pass unchanged; source/spec/test inputs stayed stable, stderr empty and all processes reaped. No reached fixture failure or correction at this production cut."
+    }
+  },
+  "tests": {
+    "new_sources": [
+      "tests/semantics/deprecated_late_tick_body_throw_object.php",
+      "tests/semantics/deprecated_late_tick_body_throw_array.php",
+      "tests/semantics/deprecated_late_tick_body_throw_review_closure.php",
+      "tests/semantics/deprecated_late_tick_body_throw_review_retained.php"
+    ],
+    "controls": [
+      "tests/semantics/deprecated_late_tick_body_return_object.php",
+      "tests/semantics/deprecated_late_tick_exit_throw_cacheless.php"
+    ],
+    "protocol": "tests/semantics/deprecated_late_tick_body_throw_review_protocol.py",
+    "protocol_revision": "9a0c162c6"
+  },
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; tests/semantics/profile.json; source/runtime/profile hashes, commands, exits and full reap retained outside Git. Copied local tools make no rebuild/portability claim.",
+  "remaining": "Execution credit is the TODO-paired post-FINAL prefix. Distinct OPERATION/FRAME/PENDING descriptors, broader frame/reentry contexts, wider rendering/previous chains, private-warning callbacks, selected-handler owning retval, direct reference-return bodies, new exits during value cleanup and wider free/GC contexts remain partial. ATTR07 unsafe observation is not rerun and has no renewed credit; no lifecycle/core closure.",
+  "zero_credit": [
+    "Original source baseline Unsupported and pre/post loss diagnostic remain zero agreement credit.",
+    "Strict-parent-first empty-iteration DSL failure is retained; no source ran at that cut.",
+    "ATTR07 unsafe observation is not rerun and has no renewed credit."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "scope": "A104 initialized user Iterator copies a valid string carrier as INI_SET value while its Stringable option converts to exact zend.assertions after DATA/INPUT cleanup. The new receipt admits warning-free nonnegative quantity strings.",
+  "behavior": "The assertion setter stores the string's exact raw INI bytes while the existing quantity parser determines assertion state. A temporary prefixed value with whitespace parses to 2 but retains its raw text; a selected setter writes decimal 0 after key-time rebinding and a retained setter later writes 2. Both return the old raw value and restore startup 1.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_set", "Zend/zend_ini.c zend_ini_parse_quantity_internal", "Zend/zend.c OnUpdateAssertions"]
+  },
+  "tested_cut": {
+    "revision": "dd62e148ad981708f9e038eb13e48af285340417 plus private semantic/test commit fe002becdd456a1e44c189c6ee53198cd344fec4",
+    "semantic_module_sha256": {"420-config-iterator-unpack.watsup": "e72e82615a9caa94ff200878f336e05820bf0776a1ced12495fb1986ceb58d99"},
+    "manifest_sha256": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "case_catalog_sha256": "7a844a5b4a0fd5fe320129b10c15388d3530d6986088fc2ffb281698720bab3e",
+    "state_fixture_sha256": "13c5fc4e3a34c0da58d5eb6cdf6b2434da88c1c4c8e278227ad0eb4b3c3dd26a",
+    "frontend_helper_sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC; reviewer had the CPU4 lane loan and ran plain Python commands, then author used taskset CPU2; each packet fully reaped",
+    "sources": [
+      {"id": "temporary-prefixed-string-preserves-raw-and-quantity", "sha256": "8f051757f7b3e1b03520a60e9238fbab355fe4301a8766ee59d8826015a592a2", "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:1;T:A:done;D:A:1;R:1: 0x2 :1;E:1;"},
+      {"id": "selected-decimal-string-keeps-setter-after-rebinding", "sha256": "a03ece440e5483912c0d8a21fcaf6e5c863cfb3634c292ad60903025be289950", "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:A:done;D:A:1;R:1:0:B:0:0:2;D:B:2;E:1;"}
+    ],
+    "source_result": "The reviewer ran the prefixed source and the author ran the selected source; each exact pinned-native/model normal comparison passed with byte-equal decoded stdout, exit 0, empty stderr, stable watched inputs and tested HEAD.",
+    "reached": "The author passed 85 conditions for temporary-prefixed-string-keeps-raw-and-quantity; the reviewer independently passed 92 for selected-decimal-string-keeps-owner-after-rebinding. These check exact raw bytes versus parsed quantity, receipt certificate, option retirement, selected owner, old return, completed write and restore. Warning-producing and negative string controls, PINT 2, PNULL, and a forged bare rootless assertion record are refused.",
+    "strict_sl": "Ordered 435-module manifest, exit 0, stdout true, empty stderr; 12.069 seconds.",
+    "joined_parent": "Rebased onto clean 90364344cd33ab983a3bde1d2c848d44322abef7 with byte-identical tested 420/catalog/state/manifest. The selected source passed again with canonical frontend helper SHA256 d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7: native/model exit 0, decoded stdout equal, empty stderr, stable inputs/head. Joined strict435 exited 0 with stdout true and empty stderr in 12.437 seconds. That parent adds rejected-source helper tapes, anonymous/readonly class handling, enum/OB failure paths and moves c_string without changing its clauses; these accepted named-class sources use none of those new paths.",
+    "external_raw": ["/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-string-104/author-fe002becd", "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-string-104/reviewer-fe002becd", "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-string-104/joined-90364344"],
+    "commands": [
+      "python3 tests/semantics/config_iterator_assertions_string_sources.py --case temporary-prefixed-string-preserves-raw-and-quantity",
+      "taskset -c 2 python3 tests/semantics/config_iterator_assertions_string_sources.py --case selected-decimal-string-keeps-setter-after-rebinding",
+      "taskset -c 2 python3 tests/semantics/config_iterator_assertions_string_state.py --case temporary-prefixed-string-keeps-raw-and-quantity",
+      "python3 tests/semantics/config_iterator_assertions_string_state.py --case selected-decimal-string-keeps-owner-after-rebinding",
+      "taskset -c 2 tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json entries> .tools/a104-strict.watsup"
+    ]
+  },
+  "prior_boundary": "At integrated A103, the direct exact native source completed while the model returned CONFIG Iterator Stringable option outside normal scalar reception. Raw is at /home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-string-104/baseline-unsupported-dd62e148a and receives zero agreement credit.",
+  "limits": "The new receipt covers valid copied string carriers whose quantity parse has no warning and a nonnegative result. Warning-producing or negative strings, PINT 2, null, wider option/value graphs and other CONFIG consumers remain outside it. Held A97 warning-handler exception work is untouched. No full-core, equivalence or BOLA claim.",
+  "review": "independent exact-head CLEAR at 46d85f2f01768b761f9eab9717ee0ac05b4c49d4"
+}

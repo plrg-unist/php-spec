@@ -14,8 +14,8 @@
    +----------------------------------------------------------------------+
 */
 
-/* File-mode adaptation of PHP 8.5.10 tokenizer lifecycle/lex loop.
- * Local modifications: file input, raw lexer metadata, and parse-only oracle.
+/* File/eval adaptation of PHP 8.5.10 tokenizer lifecycle/lex loop.
+ * Local modifications: input modes, raw lexer metadata, and parse-only oracle.
  * No compilation, opcode generation, or evaluation entrypoint is called. */
 #include "php.h"
 #include "Zend/zend_smart_str.h"
@@ -221,8 +221,110 @@ static void scan_file(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
 PHP_FUNCTION(php_spec_parse_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, true); }
 PHP_FUNCTION(php_spec_lex_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, false); }
 
-/* Parse eval bytes after an opening tag, without compiling or executing them. */
-PHP_FUNCTION(php_spec_parse_eval) {
+/* Parser-mode scanning validates heredoc segments. Its event hook also keeps
+ * trivia skipped by lex_scan; no Zend grammar or decoded value is exported. */
+struct rejected_tape { zval *tokens; bool first; };
+static void rejected_token_event(zend_php_scanner_event event, int id, int line,
+                                 const char *text, size_t length, void *context) {
+    if (event != ON_TOKEN || id == END || id == T_ERROR) return;
+    struct rejected_tape *tape = context;
+    size_t pos = (const unsigned char *)text - LANG_SCNG(yy_start);
+    if (tape->first) {
+        /* File-mode shebang skipping restarts without updating start_line. */
+        line = 1;
+        for (size_t i = 0; i < pos; ++i) {
+            if (LANG_SCNG(yy_start)[i] == '\n'
+                || (LANG_SCNG(yy_start)[i] == '\r'
+                    && (i + 1 == pos || LANG_SCNG(yy_start)[i + 1] != '\n'))) ++line;
+        }
+        tape->first = false;
+    }
+    if (id == ';' && length > 1) id = T_CLOSE_TAG;
+    else if (id == T_ECHO && length == sizeof("<?=") - 1) id = T_OPEN_TAG_WITH_ECHO;
+    append_token(tape->tokens, id, (const unsigned char *)text, length, line, pos);
+}
+
+static void scan_rejected_tokens(zval *tokens) {
+    zval token;
+    array_init(tokens);
+    CG(ast) = NULL;
+    CG(ast_arena) = zend_arena_create(1024 * 32);
+    struct rejected_tape tape = { tokens, true };
+    LANG_SCNG(on_event) = rejected_token_event;
+    LANG_SCNG(on_event_context) = &tape;
+    int id, remaining = -1;
+    for (;;) {
+        zend_parser_stack_elem element = {0};
+        ZVAL_UNDEF(&token);
+        if (CG(increment_lineno)) {
+            CG(zend_lineno)++;
+            CG(increment_lineno) = 0;
+        }
+        id = lex_scan(&token, &element);
+        if (Z_TYPE(token) != IS_UNDEF) {
+            /* emit_token_with_val transfers the zval to AST_ZVAL.
+             * An error token never performs that ownership transfer. */
+            if (id != END && id != T_ERROR) zend_ast_destroy(element.ast);
+            else zval_ptr_dtor_nogc(&token);
+        }
+        if (id == END || id == T_ERROR || EG(exception)) break;
+        if (remaining != -1) {
+            if (id != T_WHITESPACE && id != T_OPEN_TAG && id != T_COMMENT
+                && id != T_DOC_COMMENT && --remaining == 0) {
+                if (LANG_SCNG(yy_cursor) < LANG_SCNG(yy_limit)) {
+                    append_token(tokens, T_INLINE_HTML, LANG_SCNG(yy_cursor),
+                        LANG_SCNG(yy_limit) - LANG_SCNG(yy_cursor),
+                        CG(zend_lineno) + CG(increment_lineno),
+                        LANG_SCNG(yy_cursor) - LANG_SCNG(yy_start));
+                }
+                break;
+            }
+        } else if (id == T_HALT_COMPILER) {
+            remaining = 3;
+        }
+    }
+    zend_arena_destroy(CG(ast_arena));
+}
+
+/* Rejected file units retain the same parser-mode lexical stopping point. */
+PHP_FUNCTION(php_spec_lex_file_rejected) {
+    zend_string *path;
+    ZEND_PARSE_PARAMETERS_START(1, 1)
+        Z_PARAM_PATH_STR(path)
+    ZEND_PARSE_PARAMETERS_END();
+    if (CG(multibyte)) {
+        zend_value_error("Rejected file scanner requires the raw source profile");
+        RETURN_THROWS();
+    }
+    bool compiling = CG(in_compilation), shebang = CG(skip_shebang);
+    bool encoding_declared = CG(encoding_declared);
+    bool increment_lineno = CG(increment_lineno);
+    zend_lex_state saved;
+    zend_file_handle file;
+    zend_save_lexical_state(&saved);
+    CG(skip_shebang) = 1;
+    zend_stream_init_filename(&file, ZSTR_VAL(path));
+    if (open_file_for_scanning(&file) == FAILURE) {
+        zend_restore_lexical_state(&saved);
+        CG(skip_shebang) = shebang;
+        CG(increment_lineno) = increment_lineno;
+        zend_destroy_file_handle(&file);
+        if (!EG(exception)) zend_throw_error(NULL, "Cannot open syntax input");
+        RETURN_THROWS();
+    }
+    CG(in_compilation) = 1;
+    scan_rejected_tokens(return_value);
+    zend_restore_lexical_state(&saved);
+    CG(in_compilation) = compiling;
+    CG(skip_shebang) = shebang;
+    CG(encoding_declared) = encoding_declared;
+    CG(increment_lineno) = increment_lineno;
+    zend_destroy_file_handle(&file);
+    zend_clear_exception();
+}
+
+/* Scan original eval bytes after an opening tag, without synthetic offsets. */
+static void scan_eval(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
     zend_string *source;
     ZEND_PARSE_PARAMETERS_START(1, 1)
         Z_PARAM_STR(source)
@@ -233,7 +335,11 @@ PHP_FUNCTION(php_spec_parse_eval) {
         RETURN_THROWS();
     }
     /* compile_string() returns before scanning empty eval source. */
-    if (ZSTR_LEN(source) == 0) RETURN_TRUE;
+    if (ZSTR_LEN(source) == 0) {
+        if (parse) RETURN_TRUE;
+        array_init(return_value);
+        return;
+    }
 
     bool compiling = CG(in_compilation), shebang = CG(skip_shebang);
     bool encoding_declared = CG(encoding_declared);
@@ -246,21 +352,30 @@ PHP_FUNCTION(php_spec_parse_eval) {
     zend_prepare_string_for_scanning(&code, filename);
     zend_string_release(filename);
     CG(in_compilation) = 1;
-    CG(ast) = NULL;
-    CG(ast_arena) = zend_arena_create(1024 * 32);
     LANG_SCNG(yy_state) = yycST_IN_SCRIPTING;
-    bool accepted = zendparse() == SUCCESS;
-    zend_ast_destroy(CG(ast));
-    zend_arena_destroy(CG(ast_arena));
+    if (parse) {
+        CG(ast) = NULL;
+        CG(ast_arena) = zend_arena_create(1024 * 32);
+        bool accepted = zendparse() == SUCCESS;
+        zend_ast_destroy(CG(ast));
+        zend_arena_destroy(CG(ast_arena));
+        RETVAL_BOOL(accepted);
+    } else {
+        scan_rejected_tokens(return_value);
+    }
     zend_restore_lexical_state(&saved);
     CG(in_compilation) = compiling;
     CG(skip_shebang) = shebang;
     CG(encoding_declared) = encoding_declared;
     CG(increment_lineno) = increment_lineno;
     zval_ptr_dtor(&code);
+    /* Raw scanner failures delimit the token tape, not a semantic answer. */
+    if (!parse) zend_clear_exception();
     if (EG(exception)) RETURN_THROWS();
-    RETURN_BOOL(accepted);
 }
+
+PHP_FUNCTION(php_spec_parse_eval) { scan_eval(INTERNAL_FUNCTION_PARAM_PASSTHRU, true); }
+PHP_FUNCTION(php_spec_lex_eval) { scan_eval(INTERNAL_FUNCTION_PARAM_PASSTHRU, false); }
 
 /* Use the exact pinned registry (canonical, MIME, then aliases), including
  * its C-string declaration semantics. This reads metadata, never source code. */
@@ -287,10 +402,18 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_parse_eval, 0, 1, _IS_BOOL, 0)
     ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
 ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_lex_file_rejected, 0, 1, IS_ARRAY, 0)
+    ZEND_ARG_TYPE_INFO(0, path, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_lex_eval, 0, 1, IS_ARRAY, 0)
+    ZEND_ARG_TYPE_INFO(0, source, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 static const zend_function_entry functions[] = {
     PHP_FE(php_spec_parse_file, arginfo_parse_file)
     PHP_FE(php_spec_lex_file, arginfo_lex_file)
     PHP_FE(php_spec_parse_eval, arginfo_parse_eval)
+    PHP_FE(php_spec_lex_eval, arginfo_lex_eval)
+    PHP_FE(php_spec_lex_file_rejected, arginfo_lex_file_rejected)
     PHP_FE(php_spec_encoding_name, arginfo_encoding_name)
     PHP_FE_END
 };

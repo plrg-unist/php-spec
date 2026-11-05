@@ -1,10 +1,50 @@
 <?php declare(strict_types=1);
 
+// Rejected eval units need the real string scanner's stopping point. The raw
+// tokenizer can retain later tokens after a malformed Unicode escape.
+final class RejectedEvalLexer extends PhpParser\Lexer {
+    public function tokenize(string $code, ?PhpParser\ErrorHandler $errorHandler = null): array {
+        $tokens = array_map(static fn(array $token): PhpParser\Token =>
+            new PhpParser\Token(...$token), php_spec_lex_eval($code));
+        $this->postprocessTokens($tokens, $errorHandler ?? new PhpParser\ErrorHandler\Throwing());
+        return $tokens;
+    }
+}
+
+final class RejectedFileLexer extends PhpParser\Lexer {
+    public function tokenize(string $code, ?PhpParser\ErrorHandler $errorHandler = null): array {
+        $raw = withPhpSourceFile($code, static fn(string $path): array => php_spec_lex_file_rejected($path));
+        $tokens = array_map(static fn(array $token): PhpParser\Token =>
+            new PhpParser\Token(...$token), $raw);
+        $this->postprocessTokens($tokens, $errorHandler ?? new PhpParser\ErrorHandler\Throwing());
+        return $tokens;
+    }
+}
+
 // Rejected sources have no complete AST. Preserve foreign grammar reductions,
 // rather than scanning later tokens or constructing a provisional statement.
 final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
     public array $headers = [];
     public bool $parsingStarted = false;
+
+    protected function checkNamespace(PhpParser\Node\Stmt\Namespace_ $node): void {
+        // Zend checks namespace nesting during compilation. Rejected units
+        // never reach that phase; later grammar reductions still count.
+    }
+
+    // These restrictions also belong to compilation, after the full parse.
+    protected function checkClass(PhpParser\Node\Stmt\Class_ $node, int $namePos): void {}
+    protected function checkInterface(PhpParser\Node\Stmt\Interface_ $node, int $namePos): void {}
+    protected function checkEnum(PhpParser\Node\Stmt\Enum_ $node, int $namePos): void {}
+    protected function checkTryCatch(PhpParser\Node\Stmt\TryCatch $node): void {}
+
+    protected function checkClassMethod(PhpParser\Node\Stmt\ClassMethod $node, int $modifierPos): void {
+        // Static magic-method restrictions are compiler checks; readonly is
+        // already rejected during native method-modifier parsing.
+        if ($node->flags & PhpParser\Modifiers::READONLY) {
+            parent::checkClassMethod($node, $modifierPos);
+        }
+    }
 
     protected function doParse(): ?array {
         // Lexing inspects the complete source before grammar reductions start.
@@ -59,7 +99,7 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
 }
 
 function rejectedHeaderFacts(string $source, bool $evalMode, PhpParser\PhpVersion $version): array {
-    $parser = new RejectedHeaderParser($evalMode ? new EvalLexer() : new FileLexer(), $version);
+    $parser = new RejectedHeaderParser($evalMode ? new RejectedEvalLexer() : new RejectedFileLexer(), $version);
     try {
         $parser->parse($source, new PhpParser\ErrorHandler\Collecting());
     } catch (PhpParser\Error $error) {

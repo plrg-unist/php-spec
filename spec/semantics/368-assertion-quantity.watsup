@@ -119,9 +119,9 @@ def $assertion_ini_conversion_history(S, n) = S
   -- if (HOBJECT n) <- S.ALLOCATIONS
 def $assertion_ini_conversion_history(S, n) = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]]
   -- if ~((HOBJECT n) <- S.ALLOCATIONS)
-dec $assertion_ini_conversion_valid(pstate, passertiniconversion?, pconfigcall) : bool
-def $assertion_ini_conversion_valid(S, eps, pconfigcall) = $assertion_ini_option_valid(S, pconfigcall)
-def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = true
+dec $assertion_ini_conversion_valid(pstate, passertiniconversion?, pconfigcall, int) : bool
+def $assertion_ini_conversion_valid(S, eps, pconfigcall, z_precision) = $assertion_ini_option_valid(S, pconfigcall)
+def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall, z_precision) = true
   -- if passertiniconversion.SOURCE = CONFIG_STRING_RESULT pconfigcall_original n porigin_child z_child z_call
   -- if pconfigcall_original.KIND = INTRINSIC_INI_SET
   -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN pvalue)]
@@ -132,7 +132,7 @@ def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = tr
   -- if $ordinary_internal_string_evidence(S, n)
   -- if S_history = $assertion_ini_conversion_history(S, n)
   -- if $config_string_site_valid(S_history, pconfigcall_original, n, porigin_child, z_child, z_call)
-def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = true
+def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall, z_precision) = true
   -- if passertiniconversion.SOURCE = CONFIG_STRING_RESULT pconfigcall_original n porigin_child z_child z_call
   -- if pconfigcall_original.KIND = INTRINSIC_INI_RESTORE
   -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
@@ -145,39 +145,39 @@ def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = tr
   -- if $config_string_site_valid(S_history, pconfigcall_original, n, porigin_child, z_child, z_call)
 ;; The copied Iterator option has retired, so its saved receipt authenticates
 ;; the rootless converted scalar call without claiming a live option owner.
-def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = true
+def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall, z_precision) = true
   -- if passertiniconversion.SOURCE = CONFIG_ITERATOR_STRING_RECEIVE pconfigcall_original n_object pvalue_option
   -- if passertiniconversion.VALUE = pvalue_option
   -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
-  -- if $config_iterator_assertion_scalar(pvalue)
+  -- if $config_iterator_assertion_scalar(pvalue) \/ $config_iterator_assertion_float_at(z_precision, pvalue)
   -- if pconfigcall = pconfigcall_original[.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]]
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if $string_carrier_valid(S, pvalue_option)
   -- if $string_bytes(pvalue_option) = ($ptascii("zend.assertions"))
   -- if ~((HOBJECT n_object) <- S.ALLOCATIONS)
   -- if $config_iterator_string_receive_valid(S, pconfigcall_original, n_object, pvalue_option)
-def $assertion_ini_conversion_valid(S, passertiniconversion?, pconfigcall) = false -- otherwise
+def $assertion_ini_conversion_valid(S, passertiniconversion?, pconfigcall, z_precision) = false -- otherwise
 dec $assertion_ini_conversion(pstate, pconfigcall) : passertiniconversion?
 def $assertion_ini_conversion(S, pconfigcall) = (passertiniconversion)
   -- if S.TODO = ptask_source :: ptask_tail*
   -- if ptask_source = CONFIG_STRING_RESULT pconfigcall_original n porigin_child z_child z_call
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
   -- if passertiniconversion = {SOURCE ptask_source, VALUE pvalue_option}
-  -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall)
+  -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall, $precision_value(S))
 def $assertion_ini_conversion(S, pconfigcall) = (passertiniconversion)
   -- if S.TODO = ptask_source :: ptask_tail*
   -- if ptask_source = CONFIG_STRING_RESULT pconfigcall_original n porigin_child z_child z_call
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option)]
   -- if passertiniconversion = {SOURCE ptask_source, VALUE pvalue_option}
-  -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall)
+  -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall, $precision_value(S))
 def $assertion_ini_conversion(S, pconfigcall) = (passertiniconversion)
   -- if S.TODO = ptask_source :: ptask_tail*
   -- if ptask_source = CONFIG_ITERATOR_STRING_RECEIVE pconfigcall_original n_object pvalue_option
   -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
-  -- if $config_iterator_assertion_scalar(pvalue)
+  -- if $config_iterator_assertion_scalar(pvalue) \/ $config_iterator_assertion_float_at($precision_value(S), pvalue)
   -- if pconfigcall = pconfigcall_original[.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]]
   -- if passertiniconversion = {SOURCE ptask_source, VALUE pvalue_option}
-  -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall)
+  -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall, $precision_value(S))
 def $assertion_ini_conversion(S, pconfigcall) = eps -- otherwise
 dec $assertion_ini_converted_retained(pstate, pconfigcall, nat) : bool
 def $assertion_ini_converted_retained(S, pconfigcall, n) = true
@@ -263,7 +263,7 @@ dec $assertion_ini_record_shape(pstate, passertini) : bool
 def $assertion_ini_record_shape(S, passertini) = true
   -- if $(passertini.ID < S.ASSERTIONININEXT)
   -- if $assertion_ini_action_valid(S, passertini)
-  -- if $assertion_ini_conversion_valid(S, passertini.CONVERSION, passertini.CALL)
+  -- if $assertion_ini_conversion_valid(S, passertini.CONVERSION, passertini.CALL, passertini.PRECISION)
   -- if $string_carrier_valid(S, passertini.INPUT) /\ $string_carrier_valid(S, passertini.OLDRAW) /\ $string_carrier_valid(S, passertini.RETURNRAW) /\ $string_carrier_valid(S, passertini.ORIGINAL)
   -- if $assertion_ini_quantity_valid(S, passertini)
   -- if $precision_ini_valid($decimal_integer(passertini.PRECISION))
@@ -288,7 +288,7 @@ dec $assertion_ini_valid(pstate, passertini) : bool
 dec $assertion_ini_call_valid(pstate, passertini) : bool
 def $assertion_ini_call_valid(S, passertini) = $config_invoke_valid(S, passertini.CALL)
   -- if passertini.CONVERSION = eps
-def $assertion_ini_call_valid(S, passertini) = $assertion_ini_conversion_valid(S, passertini.CONVERSION, passertini.CALL)
+def $assertion_ini_call_valid(S, passertini) = $assertion_ini_conversion_valid(S, passertini.CONVERSION, passertini.CALL, passertini.PRECISION)
   -- if passertini.CONVERSION =/= eps
   -- if S.ORIGIN = (passertini.CALL.SITE)
 def $assertion_ini_valid(S, passertini) = true

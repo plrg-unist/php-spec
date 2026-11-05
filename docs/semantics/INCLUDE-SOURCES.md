@@ -1798,6 +1798,21 @@ present empty raw INI string with assertion quantity 0; `true` stores `"1"`.
 Old return, selected setter identity and restore follow the ordinary assertion
 record. Copied integer 2 and null still fail this receipt's admission.
 
+The [warning-free string assertion setting increment](../../coverage/semantics/config-iterator-assertions-string-review.json)
+admits a copied valid string carrier when the quantity parser returns a
+nonnegative value without a warning. Its exact raw bytes, including whitespace
+and base prefixes, remain the INI value while the parsed quantity drives the
+assertion state. The old return, selected setter and restore use the same saved
+receipt; warning-producing and negative strings remain outside this admission.
+
+The [finite-float assertion setting increment](../../coverage/semantics/config-iterator-assertions-float-review.json)
+admits a copied float before the Stringable option retires, then checks its
+warning-free nonnegative quantity using the precision live after that retirement.
+An option destructor changing precision from 14 to 1 makes copied `1.4` store
+raw `"1"` and `1.6` store raw `"2"`. The assertion certificate rechecks the
+entry's frozen precision through later state changes. Unsupported late
+conversions and nonfinite float inputs receive no agreement credit.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root

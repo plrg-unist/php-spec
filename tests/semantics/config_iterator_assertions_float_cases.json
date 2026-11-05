@@ -1,0 +1,22 @@
+[
+  {
+    "id": "temporary-float-after-option-precision-change",
+    "source": "<?php\nclass AssertionsFloatOption105 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {ini_set(\"precision\",1);echo \"D:\",$this->id,\":\",ini_get(\"zend.assertions\"),\":\",ini_get(\"precision\"),\";\";}\n}\nclass AssertionsFloatTemporary105 implements Iterator {\n    public int $pos=0; public AssertionsFloatOption105 $name;\n    public function __construct() {$this->name=new AssertionsFloatOption105(\"A\",\"zend.assertions\");}\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$this->name:1.4;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n    public function __destruct() {echo \"I:\",ini_get(\"zend.assertions\"),\";\";}\n}\nfunction makeFloat105() {$it=new AssertionsFloatTemporary105;$GLOBALS[\"watch\"]=WeakReference::create($it);return $it;}\n$stage=\"walk\";$watch=null;echo \"B;\";\n$result=ini_set(...makeFloat105());echo \"R:\",$result,\":\",ini_get(\"zend.assertions\"),\":\",ini_get(\"precision\"),\":\",($watch->get()===null?1:0),\";\";\nunset($watch);ini_restore(\"zend.assertions\");ini_restore(\"precision\");echo \"E:\",ini_get(\"zend.assertions\"),\":\",ini_get(\"precision\"),\";\";\n",
+    "source_sha256": "581e354cf893e0e24cb6964a6dc14dda75c810ad0979f8bafda20db3422ee24a",
+    "purpose": "Stringable option destruction changes precision from 14 to 1 before copied float 1.4 is stringified for zend.assertions; temporary owners retire first, old return and restore stay correct.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:1;T:A:done;D:A:1:1;R:1:1:1:1;E:1:14;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "selected-float-after-option-precision-change",
+    "source": "<?php\nclass AssertionsFloatSelectedOption105 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {ini_set(\"precision\",1);echo \"D:\",$this->id,\":\",ini_get(\"zend.assertions\"),\":\",ini_get(\"precision\"),\";\";}\n}\nclass AssertionsFloatValues105 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:1.6;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";if($this->pos===0){$GLOBALS[\"name\"]=new AssertionsFloatSelectedOption105(\"B\",\"display_errors\");$GLOBALS[\"call\"]=ini_get(...);}return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n}\n$stage=\"walk\";$name=new AssertionsFloatSelectedOption105(\"A\",\"zend.assertions\");$it=new AssertionsFloatValues105;$call=ini_set(...);$keep=$call;echo \"B;\";\n$result=$call(...$it);echo \"R:\",$result,\":\",ini_get(\"zend.assertions\"),\":\",ini_get(\"precision\"),\":\",$name->id,\":\",$call(\"zend.assertions\"),\":\",$keep(\"zend.assertions\",0),\":\",ini_get(\"zend.assertions\"),\";\";\nunset($it,$name,$call,$keep);ini_restore(\"zend.assertions\");ini_restore(\"precision\");echo \"E:\",ini_get(\"zend.assertions\"),\":\",ini_get(\"precision\"),\";\";\n",
+    "source_sha256": "1a02ae76ca068c87e7ed757b5aefe6fccb9136c9c07cd00a78e2f90877172f33",
+    "purpose": "Selected setter and copied float 1.6 survive key-time callable/option rebinding; option retirement changes precision before float conversion, then retained setter writes 0 and restore returns startup settings.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:A:done;D:A:1:1;R:1:2:1:B:2:2:0;D:B:0:1;E:1:14;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

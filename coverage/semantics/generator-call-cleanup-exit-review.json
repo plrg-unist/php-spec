@@ -1,0 +1,61 @@
+{
+  "milestone": "I103 copied Generator Closure::call warning retval exit",
+  "status": "Private and joined gates pass; wider cleanup and bailout contexts remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64; pinned vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; LC_ALL=C, TZ=UTC, CPU4",
+  "scope": "Ordinary exit inside the owning warning-handler retval destructor before Generator creation. The retval and its Child release through the actual C operation before the handler restores and prepared/API values retire; the hidden copied Closure retains its receiver and captures through shutdown. Both fake reference-prefix exit29 and independent real Child exit41 are covered.",
+  "semantics": "Authenticate the live copied-warning C prefix without losing later roots; rebase EXITED onto the existing destructor operation, then run its release, CLEAN and prepared/API cleanup. Validate a destructor's recorded site against its saved operation suffix so a newer outer operation cannot rewrite its history. Entered error-handler validation checks the known target shape before costly warning authenticity; every guard is retained. No new state field or task tag.",
+  "implementation": [
+    "spec/semantics/207-error-handler-runtime.watsup",
+    "spec/semantics/268-temporary-fake-calls.watsup",
+    "spec/semantics/270-eager-destructors.watsup",
+    "spec/semantics/84-call-integrity.watsup"
+  ],
+  "engine": "ZEND_FUNCTION(exit)/zend_throw_unwind_exit, ZEND_METHOD(Closure, call), zend_error callback retval handling, zend_objects_destroy_object/zend_object_std_dtor, zend_objects_store_del, zend_execute.c cleanup_live_vars and authored zend_vm_def.h handlers; see vendor/php-src/Zend/{zend_builtin_functions.c,zend_exceptions.c,zend_closures.c,zend.c,zend_objects.c,zend_objects_API.c,zend_execute.c,zend_vm_def.h}.",
+  "validation": {
+    "native_fake": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-103/source-packet/native-first/report.json",
+      "sha256": "a54d1c17bdcb928caed61fe2d06be02b671922086b59407b9b5ef145f36687fe",
+      "revision": "7f3140d16dad6d1ae56cd35af9f62e2120cff56d",
+      "result": "first forecast exit29"
+    },
+    "native_real": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-exit-103-review/prepared/native-report.json",
+      "sha256": "855dd55b24370fabbfe4e78f883494410c4b872dd211aa8c683bae6f2cc36beb",
+      "revision": "7f3140d16dad6d1ae56cd35af9f62e2120cff56d",
+      "result": "independent first forecast exit41"
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-exit-103-review/validated/source-a9a/report.json",
+      "sha256": "e0572debc492c5bc49a3c2dc579a5fcf2deaa7073f5fea26623243528b2c01b8",
+      "revision": "a9a32080eb78908bff25a263899f17f12d4c3478",
+      "result": "two exact CLI explicit_exit agreements 29/41"
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-103/strict-a9a/report.json",
+      "sha256": "f6090ce3869202a1242bf511052c8a3af51bb2b8dcfed91c62eae99d43d49a96",
+      "revision": "a9a32080eb78908bff25a263899f17f12d4c3478",
+      "result": "435-module SL true, cache off, encountered determinism checks on"
+    },
+    "author_state": {
+      "report": "../php-spec-evidence-archive/generator-call-exit-103/author-state-b708/report.json",
+      "sha256": "6c318715a286bab0e3cf8ad1b7362b6eb76fef7ff12d9834c09d1306b409a6f8",
+      "revision": "b708ae2efafebed20eb88d3218401268478aa6c1",
+      "result": "151 custom/156 reported, source reached, full and split shutdown, cap1800"
+    },
+    "peer_state": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-exit-103-review/validated/peer-state-387d/report.json",
+      "sha256": "cf6080ef7efc99b95abe6311b8e9cfac4f9ce8852d69f0ad6c56aba3209db67d",
+      "revision": "387df9f40ee816327bc8d1cfeed9adf9f5f08f0e",
+      "result": "192 custom/197 reported, independent Child/weak/API cut and full shutdown, cap600"
+    }
+  },
+  "evidence_contract": "Reports retain exact commands, original source bytes/hash, environment/profile, compiler and four binary identities, budgets, process exits and raw output. The joined peer uses the current d2b2837f native scanner helper from COMP171; accepted file scanning is unchanged. State/strict use SL with caches off and encountered determinism checks on. Passing model/strict/state actors exited 0, quiet, stable HEAD/inputs and fully reaped; native exits29/41 are expected.",
+  "composition": "Reviewed automatic merge of author b708ae2 onto clean e38bd14 as acc0e914; peer fixture's property-state constructor was corrected before its passing gate at 387df9. Current master a10f0d9 adds documentation only to this executable boundary; private merge 89e07ed retains both histories without another semantic run.",
+  "preserved_failures": "Zero credit: interpreter baseline ../php-spec-evidence-archive/generator-call-exit-103/baseline-3362/report.json (b737c5583c0dcc7f); compiler forward-declaration/binder failures strict-f7e and strict-eafb; descriptor failures author-state-descriptor-failure-d666 and author-state-failures/descriptor-7dce; pre-optimization 600/300-second timeouts under author-state-failures; peer fixture elaboration/type failure ../php-spec-evidence-archive/generator-call-cleanup-exit-103-review/validated/peer-parser-acc0/report.json (1a346201ddd4136a), before semantic execution. The exact 0a857 boundary bytes, later 1462 premise-order fix and cut reports are in author-state-failures; no failed run counts as agreement.",
+  "remaining": "Repeated cleanup exit remains explicit Unsupported. Replacement of this pending exit by a cleanup throw is unvalidated; wider Fiber, collection, post-creation and hard-bailout combinations are partial. No BOLA property is claimed.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_call_cleanup_exit_state.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_cleanup_exit_review_state.py",
+    "Use the archived native reports for generator_call_cleanup_exit_sources.py; source/strict were not replayed for the reviewed metadata-only and premise-order changes."
+  ]
+}
