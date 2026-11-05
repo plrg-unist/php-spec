@@ -58,6 +58,14 @@ Redeclared classes have an eval frame in their fatal stack; function
 redeclaration and a final-parent link fatal do not. Each retains the dynamic
 source filename.
 
+Completed encoding-header warnings can precede rejected-unit exceptions. Their
+foreign reduction facts remain separate from accepted programs; authored rules
+derive the warning prefix before allocating the failed-source Throwable. Rejected
+eval/file ingress installs its lifecycle handle using the ordinary free/next
+policy, so zero-budget states already satisfy public invariants. See
+[encoding declarations](DYNAMIC-SOURCE.md#encoding-declarations) and the
+[review](../../coverage/semantics/encoding-rejection-review.json).
+
 Current source controls cover nested eval, eval return in typed and by-reference
 callers, parser and static errors, namespaces, class scope, inline HTML,
 variable sharing, and eval inside pending finally return/throw.

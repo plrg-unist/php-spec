@@ -198,5 +198,28 @@ tested cuts and earlier failures. The
 [independent reached fixture](../../tests/semantics/encoding_header_review_state.py)
 extend these checks to multiline headers, nested reductions and dynamic source
 identity. The [header ledger](../../coverage/semantics/encoding-header-review.json)
-binds those results and the fresh syntax/metadata gates. Parser-rejected dynamic
-sources with warnings and multibyte-enabled source conversion remain partial.
+binds those results and the fresh syntax/metadata gates.
+
+Rejected eval/file replies can separately carry completed header reductions:
+declaration start/close positions and checked `DeclareItem` lists. The foreign
+PHP-Parser hook records a complete header before its body; it can therefore retain
+an inner reduction even when an outer header or body never completes. Authored
+rules check ordered close positions, item/name/value spans and source identity,
+then emit the encoding-literal prefix. A nonliteral encoding stops that header's
+remaining items and all later reductions, after already completed nested headers.
+The compiler never receives a partial program; earlier unknown/strict directives
+contribute no compiler diagnostics when parsing fails.
+
+Warning128 uses the current reporting/display state and bypasses error handlers.
+The subsequent catchable ParseError/CompileError retains a failed-source record
+and file entry without an accepted source/code/binding. Its lifecycle handle is
+installed before a zero-budget continuation can expose the new Throwable.
+Failed once parses remain once hits; ordinary reinclusion parses a fresh unit.
+The [originals](../../tests/semantics/rejected_encoding_sources.py),
+[prefix/once fixture](../../tests/semantics/rejected_encoding_state.py) and
+[independent fixture](../../tests/semantics/rejected_header_review_state.py)
+pass 22 exact comparisons, one separate refusal and 214/375 SL conditions.
+The [review](../../coverage/semantics/encoding-rejection-review.json) retains their
+actual cuts and failures. A lexer error that preempts foreign parser reductions
+still refuses an unexplained warning prefix; multibyte-enabled conversion and
+wider dynamic-source behavior remain partial.

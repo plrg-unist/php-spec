@@ -956,8 +956,8 @@ sources agree, including strict/tick interactions and include/eval body returns.
 Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
 pass, alongside six CLI guards and two explicit multiline Unsupported controls.
 Actual cuts and preserved failures are in the
-[review](coverage/semantics/encoding-list-review.json). COMP167 below extends its
-multiline boundary; rejected sources with warnings and multibyte conversion remain partial.
+[review](coverage/semantics/encoding-list-review.json). COMP167/168 below extend its multiline and rejected-source boundaries;
+multibyte conversion remains partial.
 
 COMP167 retains checked declaration header-close line/token facts. Multiline
 headers use their closing line for parser warnings while compiler diagnostics
@@ -967,7 +967,16 @@ comparisons, independent compiler/state gates and affected regressions pass;
 strict compilation covers 433 modules. Fresh classified syntax covers 30,980
 profiles and independent metadata checks cover 17 profiles. Original failures
 and exact cuts remain in the [review](coverage/semantics/encoding-header-review.json).
-Rejected sources with warnings and multibyte conversion remain partial.
+COMP168 below extends rejected dynamic sources; multibyte conversion remains partial.
+
+COMP168 preserves encoding warnings from completed foreign header reductions
+when eval/include parsing later fails, without compiling a partial AST. Literal
+items warn in reduction order until the first nonliteral encoding item raises
+CompileError. Rejected-source Throwable handles are installed before publishing
+zero-budget continuations. Twenty-two exact sources plus one explicit lexical
+refusal, 214 authored and 375 independent reached conditions pass; accepted
+eval/file service controls also pass. Actual cuts, prior failures and the remaining
+lexer/multibyte limits are in the [review](coverage/semantics/encoding-rejection-review.json).
 
 ## Active and unintegrated work
 

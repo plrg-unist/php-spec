@@ -13,6 +13,19 @@ parser evidence, not modeled PHP exception objects or terminal outcomes.
 Malformed requests produce a frontend error. A source profile outside this
 helper's fixed boundary produces `helper_unsupported`, never parser rejection.
 
+Rejected eval/file replies may also contain `headers`: ordered foreign grammar
+reductions with integer `beginLine`, `beginTokenPos`, `closeLine`,
+`closeTokenPos` and typed `items`. `RejectedHeaderParser` wraps the pinned
+PHP-Parser `declare_list` reduction before its body. It supplies syntax facts,
+never warning text or a provisional accepted AST. The adapter reconstructs/checks
+each `DeclareItem`; authored rules validate ranges/order and derive the literal
+encoding prefix, stopping at the first nonliteral encoding. An absent field
+retains the old empty-prefix rejection contract. A lexer error may prevent any
+receipt; the CLI refuses unexplained native stderr rather than inventing events.
+These are explicit foreign input facts, not proof that edited positions/items
+were derived from the supplied bytes. The trusted worker and exact response
+identity remain required for source-agreement claims.
+
 The fixed profile requires `zend.multibyte=0`, `precision=14` and
 `short_open_tag=1` under the pinned PHP 8.5.10 `-n` worker. It admits raw byte
 sources, including non-UTF8 comments, and performs no source transcoding.
@@ -52,12 +65,11 @@ record with those four fields and a disjoint accepted/rejected `response`,
 compares their identity and original bytes, validates base64 and the two exact
 rejection categories, and imports/checks/exports accepted syntax as a formal `program`. This is a
 single pending-response **fixture seam**. It neither authenticates a type-correct
-edited AST against source bytes nor remembers consumed request IDs. The future
-orchestrator must call the trusted pinned worker for the pending request, check
-its `ok`/`diagnostics` envelope, and forward its exact service payload fields.
-There is no machine pause, public resume API,
-dynamic source registry or eval/include execution in this increment; reached
-eval/include remains explicitly Unsupported.
+edited AST against source bytes nor remembers consumed request IDs. The reached
+CLI calls the trusted pinned worker for the pending request, checks its
+`ok`/`diagnostics` envelope and forwards the exact payload. The original transport
+increment below did not include execution; current pauses, source registration
+and public continuations are described in [DYNAMIC-EVAL](DYNAMIC-EVAL.md).
 
 The [provenance ledger](../../coverage/dynamic-eval-helper-review.json) keeps
 the focused eval-mode checks distinct from the full classified **file-mode**
@@ -71,10 +83,9 @@ eval in the same worker, the three profile guards, malformed pending/response
 controls and checked-AST shape rejection. `make test` includes this gate.
 Existing file syntax integration must also pass, because the worker's file-mode
 `parse` shares its dispatch switch.
-The next runtime increment must add an actual pending service state and retain
-prior `S.SOURCES`, `S.FILES`, `S.CODE`, pools, tasks and events when compiling a
-fresh source unit. `33-runtime-compiler.watsup` currently replaces source units
-on abnormal compilation; that code is outside this transport increment.
+Those original tests establish transport only. Current reached-source/compiler
+behavior and its separate execution evidence are recorded in
+[DYNAMIC-SOURCE](DYNAMIC-SOURCE.md).
 
 ## Original transport validation
 
