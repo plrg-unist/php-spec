@@ -1820,6 +1820,15 @@ copied integer 2 keeps raw `"2"` and quantity 2. Both retain the old return,
 selected setter where used, and restore through the saved receipt certificate.
 Negative integers remain outside this admission.
 
+The [copied getter increment](../../coverage/semantics/config-iterator-get-stringable-review.json)
+receives a single positional Stringable `precision` option from an initialized
+user Iterator after traversal and DATA/INPUT cleanup. The copied argument and
+cast pin are the option's last two roots; releasing them runs its destructor
+before `ini_get` reads the live precision. A selected first-class getter keeps
+its original Closure when `key()` rebinds both option and callable variables.
+Held option owners, named keys, other directives and wider getter inputs stop
+explicitly outside this receipt.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root

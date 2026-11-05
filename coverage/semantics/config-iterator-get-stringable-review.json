@@ -1,0 +1,35 @@
+{
+  "scope": "A107 unary INI_GET after one positional initialized Iterator send copies a Stringable precision option and retires DATA/INPUT before reception.",
+  "behavior": "The copied raw argument and conversion pin are the option's last two model roots. Releasing them runs __destruct before INI_GET reads live precision. A selected first-class getter retains its original Closure when key() rebinds both source option and callable variables. Named, held-owner, other-option and wider getter receipts stop explicitly.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_get"]
+  },
+  "tested_cuts": {
+    "source_revision": "9e016dd9c21ac210b501a38a599dbd2f370ae33b",
+    "reached_revision": "e7192f36f99400a83bd4168f496c3fe35923bdfc",
+    "affected_strict_revision": "f06bfdee700cbbd2efb9f9891c4daaea66043094",
+    "module_172_sha256": "736493f0121c06d4db7eee3526b98165c00ea652efa3b623521c054c53dfce09",
+    "module_420_sha256": "69c306d5c110a97e66be25cdadb4b33531a08ccc59e0b307c513e8871a6878cc",
+    "manifest_sha256": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "case_catalog_sha256": "36e6c107a9f5f870bbd618a1858ff5f0774317f0619be5958489f744de7fbc71",
+    "source_wrapper_sha256": "4abb03a6487f5f53addf5f969033767437336f88a29a657bd6d34603e065a261",
+    "state_fixture_sha256": "306381cd005c215799f241348af6b751e6b86cc619cfc0c1c2901d9181c28bc7",
+    "affected_fixture_sha256": "76e98b6dd61b7e6188433fe922675628b35d294e47b88ca0678cf5a9c0821eb7",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC; serial direct CPU4/1/3/5 loans, each fully reaped",
+    "sources": [
+      {"id": "temporary-get-observes-option-disposal", "source_sha256": "087d9425a51dfc67b3f5d3c9b4f8830c607f250782d647ae1a785020abca8fdf", "native_process_sha256": "c2ce982cc51ed1fc5058f9e644522273e35b9549f1208f0e331f29435a8f3170", "report_sha256": "e443a155f8ef61a33a49e498078a6738ba5a1b42e92d75fd0779e3e50228f9f8"},
+      {"id": "selected-get-keeps-original-callee", "source_sha256": "c14dd23e0b7ef90f9aa69ba734f5b2f65b23a4787e21222e26ccf7157f77d17b", "native_process_sha256": "5f8a29fa2ea8e7bd2dd76a4f2dfd6efe5ff8fd8039dfb32700f18cad5cd6a264", "report_sha256": "81ecebd93b923907302006687fdcdf7133df9512adb032577297f5299b16cfd5"}
+    ],
+    "source_result": "Both frozen pinned-native/model cases completed normally with byte-equal stdout, exit 0, empty stderr and stable head/inputs. The temporary trace has I:14;T:A:done;D:A:1;R:1:1; the selected trace keeps original getter result 1 despite rebinding, then setter/getter results 1:2 before restore.",
+    "reached": "Temporary receipt 40/40, selected owner 49/49, and constructed HELD-root/named refusal 25/25 passed with SL runner true, exit 0, empty stderr and stable head/author inputs. Report SHA256s a907cb3b4161a31dc97b49c68df5d5585f4f1146f0e06d710ef2ddc3f452a806, c15c9764777fec9f24926f9342d255005e4793a1e65647c12f3fb7a956667855, 8f5f4d7c7aca3712e772332402ec92da49c7780133dd3eca5fb0d79cc9d3fda9.",
+    "affected": "The ordinary named non-Iterator Stringable getter passed 59/59 source-derived predicates after replacing a stale PSTRING-only premise with an exact string-byte check; report SHA256 950555a76007153657bce490fbbc4be6abd549c66f24bf02f3a593144690b7cc. The prior copied INI_SET receipt passed 50/50, report SHA256 a4b5a97d39fd51c9d447c02bf92ed5c036c4ba6a8d3e5d5c6113c1a87282cbb0.",
+    "strict_sl": "Ordered 435-module manifest, true, exit 0, empty stderr, 13.221 seconds; external process JSON SHA256 62a84a4b9cda13b7450f6df633777d7bf397ed6673ae490ca122ca79a3e28e71.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-get-stringable-107",
+    "commands": "Source: taskset -c 4 python3 tests/semantics/config_iterator_get_stringable_sources.py --case ID (one ID per run). Reached: taskset -c N python3 tests/semantics/config_iterator_get_stringable_state.py --case ID (N=1,3,5). Affected setter uses config_iterator_stringable_name_state.py --case retired-option-history-does-not-delay-normal-ini-write. The ordinary getter used include_mutable_protocol.main(cases=[ini-option-get-callback-raw-result]); strict process JSON records its complete ordered argv."
+  },
+  "prior_boundary": "The old INI_SET-only copied header and Iterator history did not admit this getter receipt; no old-model public outcome or agreement was asserted. An initial one-root gate incorrectly stopped after option conversion, then a retired-header fixture and a legacy PSTRING-only affected fixture failed. Their archived raw has zero agreement/reached credit; only corrected exact cuts above pass.",
+  "limits": "Native agreements cover two positional integer-key Iterator sources with exact precision and last-owner option disposal. The HELD/named refusals are constructed reached controls, not native agreements. Other names, held owners, named or scalar getter spreads, strict callers, wider Stringable effects and lifecycle combinations remain outside this receipt. Held A97 is untouched; no full-core or BOLA claim.",
+  "review": "independent semantic/test and actual-parent interaction CLEAR on 9fe587ff32247c8135e6fa75e4207d81b85fe5aa"
+}
