@@ -10,5 +10,17 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i110-peer-ignored-current-cache-order",
+    "purpose": "An ignored nullsafe current call on a temporary receiver releases its returned cache copy before Generator storage. The cached Token destructor sees the real Generator weak-live, then the caller sees it dead.",
+    "source": "<?php\nclass Token110D {\n    function __destruct() { global $weakGenerator; echo 'TOKEN|', $weakGenerator->get() === null, '|'; }\n}\nfunction stream110D() { try { yield new Token110D(); } finally { echo 'FIN|'; } }\nfunction make110D() { global $weakGenerator; $generator = stream110D(); $weakGenerator = WeakReference::create($generator); return $generator; }\necho 'CURRENT|'; make110D()?->current(); echo 'AFTER|', $weakGenerator->get() === null, '|';\n",
+    "source_sha256": "3114d98f63daac08735d58fdc104f2c130f3d8d02a16b489f27019a4362a117b",
+    "native_exit": 0,
+    "native_stdout": "CURRENT|FIN|TOKEN||AFTER|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
