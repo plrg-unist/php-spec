@@ -1231,8 +1231,16 @@ records distinguish cache identity from the call's real heap owners. Stamps
 check immutable function identity and known scope while the object is live;
 retired parent IDs remain borrowed history. The
 [Closure cache review](../../coverage/semantics/enum-is-callable-closure-cache-review.json)
-records this first shared slice. Private bind/call lineage and other unproved
-owners remain explicit Unsupported.
+records this first shared slice. Real bind copies now stamp their completed
+scope metadata. Same-scope copies share a known template cache; a scope change
+or a private source gives the new object its own fresh cache. Clones retain this
+policy even after old binding records retire. Generator `Closure::call` stamps
+its actual allocated Closure copy after binding/captures/statics; its Generator
+keeps that object through ordinary ownership. The
+[private-cache review](../../coverage/semantics/enum-is-callable-private-cache-review.json)
+records these copies. Ordinary `Closure::call` uses a temporary function context
+without that allocated-copy identity and remains an unproved cache owner. Unknown
+births, internal scope wrappers and wider method/fake/Fiber owners remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

@@ -1327,5 +1327,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "query:1:PrivateGeneratorCall\\Target::cases|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|query:1:PrivateGeneratorCall\\Target::cases|",
     "purpose": "A scoped private Generator Closure preserves its warmed cache, while its clone and actual Closure::call copy each receive a fresh private cache and select the current local function."
+  },
+  {
+    "id": "enum-is-callable-third-output-private-cache-private-copy-after-source-retirement",
+    "source": "<?php\nnamespace RetiredCopy;\nenum Target { case A; }\nclass Scope {}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\n$query = function($install) {\n    $name = 'OLD';\n    $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n};\n$private = \\Closure::bind($query, null, Scope::class);\n$private(true);\n$copy = clone $private;\n$same = \\Closure::bind($private, null, Scope::class);\nunset($private); unset($query);\n$copy(false); $same(false);\n",
+    "source_sha256": "3c7293c59a622c8c4318b2647a7fde0a136428459c21549c736fa6f64c0e6a70",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:RetiredCopy\\Target::cases|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|",
+    "purpose": "Private clone and same-scope bind each get a fresh cache and select the current user function after both source Closure and its original retire."
+  },
+  {
+    "id": "enum-is-callable-third-output-private-cache-heap-unscoped-after-source-retirement",
+    "source": "<?php\nnamespace HeapUnscoped;\nenum Target { case A; }\nclass Scope {}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\n$query = function($install) {\n    $name = 'OLD';\n    $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n};\n$private = \\Closure::bind($query, null, Scope::class);\n$unscoped = \\Closure::bind($private, null, null);\n$one = clone $unscoped;\nunset($private); unset($query);\n$unscoped(true);\n$two = clone $unscoped;\n$one(false); $two(false); $unscoped(false);\n",
+    "source_sha256": "3ef8e196f620aaa38856662fa32da7be76f3df7b8e9df329506db54587a64a5b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:HeapUnscoped\\Target::cases|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|query:1:HeapUnscoped\\Target::cases|",
+    "purpose": "A private Closure rebound to null scope remains private; clones made before and after warming get fresh caches after its parent objects retire."
   }
 ]

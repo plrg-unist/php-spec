@@ -1,0 +1,54 @@
+{
+  "scope": "Known real bind/bindTo and allocated Generator Closure::call cache-copy policy for namespace-fallback is_callable",
+  "target": "PHP8.5.10 CLI NTS64-bit; pinned project-local oracle/profile",
+  "semantic_revision": "f29cd90db73061b8f3113f1cb13edbc698eea5fe",
+  "base_revision": "d2b69b277e5c86d550eed578cdcaa88d4f34f0f3",
+  "semantic_inputs": {
+    "spec/semantics/181-closure-binding.watsup": "73efdac1c230c71eeaa24203400f76c7a892208ee1c8af73424ea8936a4f9062",
+    "spec/semantics/182-closure-call.watsup": "c1feb44f40db2f0f66ede961ac0166660bf308f6c467994b64b1cc199fa69da1"
+  },
+  "implementation": "Two result hooks call existing closure_cache_copy after actual allocation, scope metadata, captures and statics. Same-scope copies of a known shared cache keep CACHE_SHARED. Changed scope or a known private source gives CACHE_PRIVATE(new object), including null/same-scope private copies. No new schema or cache-policy helper. Non-REAL branches are untouched.",
+  "ownership": "Stamp SOURCE/FUNCTION/SCOPE/cache keys remain borrowed history, outside roots. A retired parent needs neither allocation nor binding metadata. Generator Closure::call uses its real copied Closure and the existing Generator.CLOSURE owner; ordinary Closure::call has no such allocated copy. Selected target/signature still freeze before arguments.",
+  "sources": "Four distinct exact CLI comparisons at f29 production bytes: author shared-null-scope bind/clone versus changed scope, private Generator clone/call freshness versus warmed original; peer private clone/same-scope bind after parent retirement and private→null copies/clones after parent retirement. All normal; stdout/stderr/status match the pinned oracle. No shared4, fallback3 or acquisition7 replay.",
+  "strict": "strict-v1 all443 modules passes true/exit0/empty stderr/stable12.48s. Its precommit d2+diff identity is retained and production bytes equal committed runtime. Joined d2 SL443/inventory is recorded in the shared-cache ledger.",
+  "independent": "Fresh d2 review tree imported f29. Peer2 source comparisons pass exact/stable. private-v1 passes99 checks/all443 modules,true/exit0/empty stderr/stable/no timeout62.57s on its first attempt. It proves distinct PRIVATE object keys, proven fresh-key USER lookup, valid retired keys and no stamp/source roots. The actual182 copy has PRIVATE n_copy distinct from parent, genuine binding SOURCE/OBJECT and Generator.CLOSURE linkage; budget0/1 agrees. No further semantic gate requested.",
+  "author_reports": {
+    "strict-v1/report.json": "88f1c2363163a5d244cc6c779682f6b1f3b416abac23edc1f79c1b49cc6595e5",
+    "author-command.json": "7b90f59983cfed69bacd231567ad52d8cb60276743e7eb10d26f6aa4442bd46d",
+    "raw/user-string-9uvpu94a/report.json": "cdfc538ca12de1558cd36608558054c1ad1a409cbf40b9f98a1466c5d960a8ae",
+    "shared-same-scope-binding/native.json": "68ee784387dc4b39d65c3ad2d5a28a304f80cfe5f13700fe111f33b2f5443901",
+    "generator-call-fresh-owner/native.json": "4f114358c7b18ba6a2e2b4651208aa302fb08a24e82572eab63df12c1bed0493"
+  },
+  "remaining": "Ordinary nongenerator Closure::call temporary-function cache identity, unknown first-template scope/births, internal scope wrappers, captured named-function/fake/method/Trait/Fiber and inherited constant/include/eval cache owners remain partial. Unknown CACHE never proves sharing.",
+  "recovery": "Author: ../php-spec-evidence-archive/enum-private-cache-copy-127/, author-command.json and strict-v1/command.json. Peer: ../php-spec-evidence-archive/enum-private-cache-review-127/, compare.py/private.py, native-report.json, compare-v1/ and private-v1/. Native127 prep references exact126 retirement sources; current comparator reruns native/model. Maintained sources: tests/semantics/enum_is_callable.py --match third-output-private-cache-. Shared-tool links reuse local binaries; no rebuild or portability claim.",
+  "failure_disposition": "Private strict/source/state checks passed first attempt with no recorder corrections. Joined d2 recorder path failure occurred before execution and retains zero credit in the shared ledger. Earlier shared/cache failures keep their original ledgers and cuts.",
+  "review": "Independent runtime/source/state and final metadata/docs/source-copy review CLEAR by /root/enum_review at f29. Later source-copy/docs edits leave production bytes unchanged.",
+  "source_records": [
+    {
+      "id": "enum-is-callable-third-output-private-cache-shared-same-scope-binding",
+      "source_sha256": "88418dad77dfb436dd5022cacb0a12980231d76ff49a1b17392bf7e5aefedbd7",
+      "expected_model": "normal"
+    },
+    {
+      "id": "enum-is-callable-third-output-private-cache-generator-call-fresh-owner",
+      "source_sha256": "fa353bde8059b7e77f37c76f87aba89dbbbdfddbd215a59927b22dc07646221d",
+      "expected_model": "normal"
+    },
+    {
+      "id": "private-copy-after-source-retirement",
+      "source_sha256": "3c7293c59a622c8c4318b2647a7fde0a136428459c21549c736fa6f64c0e6a70",
+      "expected_model": "normal"
+    },
+    {
+      "id": "heap-unscoped-after-source-retirement",
+      "source_sha256": "3ef8e196f620aaa38856662fa32da7be76f3df7b8e9df329506db54587a64a5b",
+      "expected_model": "normal"
+    }
+  ],
+  "independent_reports": {
+    "native-report.json": "f78b75af39f3128ca25ca2f94ab386c731ea9b43ef52d922b44060df2ea2e1de",
+    "compare-v1/report.json": "688bb63fb7a387a70e109c36427ff6e18df8a348a081b67c3c3dc35dedc868a2",
+    "private-v1/report.json": "1d62daefeeca7e672e6ce97da07f14eb93217687dcd8e48a9ed9eb3ca03f8b64"
+  },
+  "source_authority": "vendor/php-src/Zend/zend_closures.c:zend_create_closure_ex (795–819) refreshes cache on scope change or HEAP source; zend_closure_clone delegates with the same scope; do_closure_bind delegates with the selected scope; Closure::call creates an actual Closure for a Generator (161–171) but a temporary function context otherwise (173–216)."
+}

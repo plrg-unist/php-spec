@@ -7222,7 +7222,11 @@ their actual template cache policy. New factory instances and normal clones
 share that cache after the original Closure retires. Nonowning birth stamps
 preserve unknown first births and validate live function/scope identity; see the
 [Closure cache review](coverage/semantics/enum-is-callable-closure-cache-review.json).
-Private bind/call caches and wider owners retain their explicit bounds.
+Real scope-changing binds now stamp private cache identity; cloning or rebinding a
+private Closure creates a fresh private cache, including after its source retires.
+Generator `Closure::call` uses its actual allocated copy and the same policy; see
+the [private-cache review](coverage/semantics/enum-is-callable-private-cache-review.json).
+Ordinary `Closure::call`, unknown births and wider owners retain their explicit bounds.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

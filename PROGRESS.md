@@ -138,7 +138,11 @@ without adding owners. Authenticated unscoped root/named-function factories and
 their normal clones share the template cache, including after original retirement.
 Unknown first births remain unknown; live stamps must match the actual function
 and scope. The [Closure cache review](coverage/semantics/enum-is-callable-closure-cache-review.json)
-records the shared slice; private bind/call and wider owners remain separate.
+records the shared slice. Real bind copies and Generator `Closure::call` copies
+now preserve known cache policy: shared same-scope copies share, while changed
+scope and every private copy receive a fresh private key. Retired source stamps
+add no owners. The [private-cache review](coverage/semantics/enum-is-callable-private-cache-review.json)
+records the copy hooks; ordinary `Closure::call` and unknown births remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1748,7 +1752,6 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR38 | Ordinary global constant tick traversal; private implementation/review. |
-| Enum callable arrays | Private Closure cache identity for authenticated bind/call copies; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
