@@ -6,16 +6,22 @@ import global_constant_sources as family
 
 
 ROOT = family.ROOT
-SOURCE = ROOT / 'tests/semantics/gc42_peer_declared_shared_throw.php'
-family.CASES = {'declared-order-shared-child-throw': SOURCE.read_bytes()}
-family.MODEL_TIMEOUTS = {'declared-order-shared-child-throw': 240}
+SOURCES = {
+    'declared-order-shared-child-throw': ROOT / 'tests/semantics/gc42_peer_declared_shared_throw.php',
+    'deeper-object-boundary': ROOT / 'tests/semantics/gc42_peer_deeper_object_boundary.php',
+}
+family.CASES = {name: path.read_bytes() for name, path in SOURCES.items()}
+family.MODEL_TIMEOUTS = {name: 240 for name in SOURCES}
+family.UNSUPPORTED = {
+    'deeper-object-boundary': ('multiple-entry WeakMap storage destruction', b'B|'),
+}
 family_fingerprint = family.fingerprint
 
 
 def fingerprint():
     return dict(family_fingerprint(), **{
         str(path.relative_to(ROOT)): family.sha(path)
-        for path in [SOURCE, Path(__file__)]})
+        for path in [*SOURCES.values(), Path(__file__)]})
 
 
 family.fingerprint = fingerprint
