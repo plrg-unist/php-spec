@@ -625,5 +625,50 @@
     "expected_model": "unsupported",
     "purpose": "Embedded reference member observes late class mutation natively; explicit Unsupported boundary until modeled.",
     "expected_normal_stdout": "CHANGE|reference:0:PureCheck::from:PureCheck|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-rebound-raw-class-rebind",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction rebind_call(): bool {\n    global $call;\n    $call = [OtherCheck::class, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = ['\\firstcheck', 'FROM'];\n$name =& $call;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_call(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\n",
+    "source_sha256": "6ebb59e94e64c7f40821af42598eecea4cf70e4bee5fa2e80de8021096d1324f",
+    "expected_model": "normal",
+    "purpose": "First sent raw class and method spelling wins after the shared input/output cell rebounds to a new direct-string array.",
+    "model_timeout_seconds": 60,
+    "expected_normal_stdout": "REBIND|chosen:1:\\firstcheck::FROM:\\firstcheck::FROM|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-rebound-case-rebind",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction rebind_call(): bool {\n    global $call;\n    $call = [OtherCheck::class, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::A, 'TRYFROM'];\n$name =& $call;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_call(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\n",
+    "source_sha256": "a27a8883ada1460f3234924e0e635a1b881ecd0e4eb30a942fe781d4139bfb9c",
+    "expected_model": "normal",
+    "purpose": "First sent enum-case receiver keeps its canonical class name after the shared cell rebounds.",
+    "model_timeout_seconds": 60,
+    "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::TRYFROM:FirstCheck::TRYFROM|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-rebound-throw-before-output",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction abort_call(): bool {\n    global $call;\n    $call = [OtherCheck::class, 'tryFrom'];\n    echo 'REBIND|';\n    throw new Exception('stop');\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($call, abort_call(), $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':', $call[0], ':', $name[1], ':', $ok, '|';\n}\n",
+    "source_sha256": "b406c79072ebfa8bcdc54106fc09a6df0f2c89d4e8a6bb29204eb8d1e88367fc",
+    "expected_model": "normal",
+    "purpose": "Second-argument throw after rebinding leaves the shared array and result sentinel unchanged before third output.",
+    "model_timeout_seconds": 60,
+    "expected_normal_stdout": "REBIND|caught:stop:OtherCheck:tryFrom:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-rebound-owning-rebound-control",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildDrop {\n    public function __destruct() {\n        global $call;\n        echo $call === null ? 'D-null|' : 'D-other|';\n    }\n}\nfunction rebind_owner(): bool {\n    global $call;\n    $call = [new ChildDrop, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_owner(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\n",
+    "source_sha256": "61fe849f629d547f2ffd6778456578f33dcd08cabf3792e6568fe1ed46467880",
+    "expected_model": "unsupported",
+    "purpose": "Rebound array with a destructor child is an explicit Unsupported lifetime boundary; native output observes clear-before-destruction.",
+    "model_timeout_seconds": 45,
+    "expected_normal_stdout": "REBIND|D-null|chosen:1:FirstCheck::from:FirstCheck::from|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-rebound-retained-rebound",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction rebind_retained(): bool {\n    global $call, $hold;\n    $call = [OtherCheck::class, 'tryFrom'];\n    $hold = $call;\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$hold = null;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_retained(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, ':', $hold[0], '::', $hold[1], '|';\n",
+    "source_sha256": "54359abc721689a8bd0611c360bffb01cc1ca077d0c9ef304ec3ac2051b8ea8c",
+    "expected_model": "normal",
+    "purpose": "A separate owner retains the rebound direct-string array after the shared input/output cell receives the original name.",
+    "model_timeout_seconds": 60,
+    "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from:OtherCheck::tryFrom|"
   }
 ]

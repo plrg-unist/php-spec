@@ -71,10 +71,17 @@ output. Old-output destruction can rebind or throw before the saved name commits
 Seven exact agreements, two explicit Unsupported controls, strict435 and four
 separate reached groups (60+53+33+70 checks) pass at recorded cuts.
 [Variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json).
+An aliased source/output cell can now rebound to a new two-entry direct-string
+array after the first SEND. The old selected name overwrites that cell, while a
+separate holder keeps the rebound array live; a pre-output throw leaves the
+rebound array and result assignment target untouched. Four exact agreements, one explicit
+Unsupported owning-object control, strict435 and five separate reached groups
+(64+50+53+29+33 checks) pass at recorded cuts.
+[Array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
-completion/force-close, owning rebound values, late attached type sources,
-wider variable arrays, embedded reference members, alias plus source rebinding,
-named/unpacked output, loading and wider enum
+completion/force-close, rebound arrays with owning children, late attached type sources,
+wider variable arrays, embedded reference members, named/unpacked output,
+loading and wider enum
 member/lifetime contexts remain partial.
 
 I92 gives real user Generator Closure::call entry its actual copied Closure and
@@ -455,6 +462,18 @@ mismatch/timeout/fixture stops retain zero credit. Wider producers, freeing-obje
 escape/mutation and active-pin collection remain partial.
 [GC34 review](coverage/semantics/gc-ordinary-key-review.json).
 
+GC36 admits one direct destructor-child property on an ordinary `stdClass`
+WeakMap Key, attached before or after first insertion. The physical Key pin keeps
+the field owner through Map value cleanup; wrapper registration order changes
+Value callback visibility, and Key child release follows weak notification.
+Six fresh normal source programs agree (author2, independent4), including a
+throwing Value caught after Child cleanup. Author102 and independent70 reached
+conditions plus an affected GC32 exact source and 71 reached conditions pass at
+their recorded cuts. A two-field producer remains Unsupported with zero agreement;
+the original baseline and fixture failures retain zero credit. Wider layouts,
+multiple Maps, freeing-object mutation and active-pin collection remain partial.
+[GC36 review](coverage/semantics/gc-standard-key-field-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -708,17 +727,20 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR24 validates existing ignored owning-result cleanup from named selected
-exception handlers during post-FINAL tick retirement. Ordinary VALUE jobs retire
-fresh object/alias-array/static-Closure results before the old Throwable and
-registry restoration, keeping both original C protections. Shared results drop
-2→1 and survive until the later tick argument; saved main263 remains explicit
-exit/CLI7. Four new originals agree; six independent fronts pass 432 genuine
-source-reached checks. Production is unchanged and retains its accepted strict435
-gate. Original timing and recorder failures retain zero
-credit; the corrected array comparison uses the same raw execution.
-[Handler-value review](coverage/semantics/callback-late-tick-handler-value-review.json).
-Earlier [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
+ATTR25 extends ignored named-handler value cleanup to a literal Exception while
+H is disabled. The existing EH cleanup retains oldE once; typed documentary
+parent/selected-call sources preserve pending C receiver pairs and unfinished
+release tails. Omitted frame/operation/pending channels must be shared or have
+no canonical roots, and selected completion owners must already be covered.
+Tick fatal admission follows the associated parent rather than assuming the last
+selected operation is a tick. A shared value throwing later calls restored H2
+and completes normally, with no phantom parent. Four new originals and two
+affected controls agree; strict435 and seven independent groups/723 conditions
+(690 genuine, 33 derived) pass. The original Unsupported, preservation diagnostic
+and two corrected event-binding failures retain zero agreement credit.
+[Handler-value throw review](coverage/semantics/callback-late-tick-handler-throw-review.json).
+Earlier [normal handler-value](coverage/semantics/callback-late-tick-handler-value-review.json),
+[body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
 [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
 [handler](coverage/semantics/callback-late-tick-handler-review.json),
 [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
@@ -726,9 +748,9 @@ Earlier [body-value bailout](coverage/semantics/callback-late-tick-body-throw-re
 [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
 [copied-value](coverage/semantics/callback-late-tick-values-review.json) evidence
-keeps its original cuts. Abrupt handler-value disposal, owning handler callables,
-distinct pending ownership contexts, direct reference-return bodies and wider
-lifecycle contexts remain partial.
+keeps its original cuts. Unshared owning channels, uncovered selected completion
+owners, wider handler/callable/previous-chain/frame contexts and reentry remain
+partial.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -807,6 +829,11 @@ not repeat historical receipt counts or renew their execution credit.
 | Generators and Fibers | Supported named/method/Closure producers retain actual resumer and callee owners, by-value or reference caches, supplied Throwables and catch/finally continuations across Fiber suspension. Receiver-free static and same-`$this` nonstatic Generator bodies called through finite scoped chains retain real scope after return; supported real Closure, captured/bound user-method, implicit invokable and admitted magic-handler factories also authenticate scoped method-created bodies when the original source scope differs. Direct Generator-bodied __invoke uses its runtime-selected method; admitted direct magic handlers retain their actual target/owner receipt through close and Fiber transfer. Delegation and SEND preserve their selected chains and copied/delivered owners. Wider producers, binding/delegation combinations and teardown remain partial. [Generators](docs/semantics/GENERATORS.md), [Fibers](docs/semantics/FIBERS.md), [delegation](docs/semantics/GENERATOR-DELEGATION.md), [reference yields](docs/semantics/GENERATOR-REFERENCE-YIELDS.md). |
 | Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles admitted ordinary/materialized graphs; quiet same-Key entries and no-Map ordinary siblings use claimed first-visit counts. Canonical materialized destructor callbacks retain claimed count and nested-buffer authority across retrace, including ordinary caller locals and receivers. Source-authenticated temporary cleanup, borrowed result caches and unused WeakReference result transfer preserve potential-root order. Enum cases and original receiverless fake Closures skip GC candidate buffering while retaining their owners and graph edges; clone and bind copies remain collectable. WeakMap callbacks, skipped prior histories, residual and other active collector contexts remain open. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
 | Diagnostics, output and environment | Supported handlers retain registration, callback and emitting-frame identity through warnings, throws and cleanup. Echo/print preserve left-to-right effects and flat-array diagnostics; bounded default output buffers retain native callback/output order. Request, clock, stream and startup profiles have explicit contracts rather than ambient host answers. Wider buffering/shutdown/tick behavior remains open. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [output buffers](docs/semantics/OUTPUT-BUFFERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
+
+Copied positional Iterator `ini_get` now waits for a sole Stringable `precision`
+option to retire before reading the live value; selected first-class getters
+keep their original Closure through key-time rebinding. Held/named inputs stop
+outside this receipt. [A107 review](coverage/semantics/config-iterator-get-stringable-review.json).
 
 ## Decisions that constrain further work
 
@@ -1179,6 +1206,7 @@ separate; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
+| GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
 
 The active table is an owner-confirmed handoff snapshot, not validation credit

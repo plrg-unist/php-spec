@@ -4846,13 +4846,19 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Normal owning results from named selected handlers also retire before the
-original Throwable and registry restoration, retaining both outer C protections.
-Fresh objects, alias arrays and static Closure captures retire in that interval;
-a genuinely shared result survives its ignored drop until the later tick argument.
-Four new originals agree, and six independent fronts pass 432 genuine
-source-reached checks. This validates the existing VALUE-release rules.
-See the [handler-value review](coverage/semantics/callback-late-tick-handler-value-review.json).
+Normal owning results from named handlers retire before the original Throwable
+and registry restoration. A literal Exception from a fresh ignored value while
+H is disabled instead retains that old Throwable and pending outer C protections,
+then reports the new fatal and continues later queue cleanup. A documentary
+parent/selected-call association authenticates the actual outer tick source.
+Omitted owner channels must be shared or rootless; selected completion owners must
+already be covered. A shared value that throws later invokes the restored handler
+again and finishes normally. Four new originals and two affected controls agree;
+strict435 and seven independent groups/723 conditions (690 genuine, 33 derived)
+pass. See the
+[handler-value throw review](coverage/semantics/callback-late-tick-handler-throw-review.json).
+Earlier [normal handler-value coverage](coverage/semantics/callback-late-tick-handler-value-review.json)
+retains its four source agreements and 432 genuine checks.
 Ignored destructor-body values retire before the inner C decrement. An unhandled
 literal Exception during their disposal preserves authenticated pending outer C
 wrappers and unfinished arguments/FCC slots, with shared operation/frame/pending
@@ -7041,10 +7047,15 @@ Class strings retain their spelling; case receivers use the canonical enum
 name. The [variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json)
 records seven exact agreements, two Unsupported controls and four separate
 reached groups (216 checks) at their actual cuts.
+When the same input/output cell rebounds to a new direct-string array after
+the first SEND, the selected original name overwrites that cell. A retained
+owner keeps the rebound array live; a pre-output throw leaves it and the
+result assignment target untouched. The [array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
+records four exact agreements, one Unsupported owning-object control and five
+separately run reached groups (229 checks).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
-owning rebound values, late type
-sources, wider array sources (including embedded references and alias plus
-source rebinding) and autoload,
+rebound arrays with owning children, late type
+sources, wider array sources (including embedded references) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

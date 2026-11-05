@@ -981,10 +981,19 @@ exception transfer while leaving the boolean assignment untouched. The
 [variable-array review](../../coverage/semantics/enum-is-callable-variable-array-review.json)
 records seven exact agreements, two explicit Unsupported controls, strict435
 and separate reached groups of 60, 53, 33 and 70 checks. Key-2 input arrays,
-embedded reference members, and an output alias whose source is rebound to a
-new array remain outside this receipt route. Engine routes are
+embedded reference members, and rebound arrays with owning children remain
+outside this receipt route. Engine routes are
 `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
 `Zend/zend_API.c:zend_is_callable_ex`.
+For a shared input/output CV rebound to a new two-entry DIRECT string array,
+the original first-SEND array and name remain authenticated through the later
+third-argument reference. Writing the selected name releases only the shared
+cell's new-array owner; a separate holder retains that array. A throw in the
+second argument never reaches the output write. The
+[array-alias rebound review](../../coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
+records four exact agreements, one explicit Unsupported owning-object control,
+strict435 and five separate reached groups (229 checks). Rebound arrays with
+object or reference members and wider shapes remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

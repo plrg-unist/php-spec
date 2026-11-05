@@ -356,6 +356,9 @@ dec $executor_tick_scope_frames(pstate, pframe*) : bool
 dec $executor_tick_scope(pstate) : bool
 dec $executor_tick_begin(pstate) : pstate
 dec $executor_tick_abandoned(pstate, pdestructioncleanup) : pexecutortick?
+dec $executor_tick_parent_row(pstate, pdestructioncleanup, pdestructioncleanup) : pexecutortick?
+dec $executor_tick_parent(pstate, pdestructioncleanup, pdestructioncleanup*) : pexecutortick?
+dec $executor_tick_bailout(pstate) : pexecutortick?
 dec $executor_tick_fatal_valid(pstate, pexecutortickfatal) : bool
 dec $executor_tick_fatal_begin(pstate, pexecutortick, pcompletion) : pstate
 dec $executor_report_cause(pstate, pcompletion, nat) : bool
@@ -605,11 +608,36 @@ def $executor_tick_abandoned(S, pdestructioncleanup) = (pexecutortick)
   -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if $eager_cleanup_valid(S, pdestructioncleanup)
 def $executor_tick_abandoned(S, pdestructioncleanup) = eps -- otherwise
-def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
-  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+;; A distinct operation may throw while a genuine outer tick C call waits.
+;; The documentary parent must identify this actual last selected call.
+def $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup_parent) = (pexecutortick)
+  -- if pdestructioncleanup_selected.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if pdestructioncleanup_parent.SOURCE = DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall
+  -- if ~pdestructioncleanup_selected.RELEASED /\ ~pdestructioncleanup_parent.RELEASED
+  -- if ~pdestructorcall_parent.USER /\ pdestructorcall_parent.CALLER = eps
+  -- if pdestructorcall_parent.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
+  -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup_selected)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup_parent)
+def $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup_parent) = eps -- otherwise
+def $executor_tick_parent(S, pdestructioncleanup_selected, eps) = eps
+def $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup :: pdestructioncleanup_tail*) = (pexecutortick)
+  -- if $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup) = (pexecutortick)
+def $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup :: pdestructioncleanup_tail*) = $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup_tail*)
+  -- if $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup) = eps
+def $executor_tick_bailout(S) = (pexecutortick)
   -- if $(|S.DESTRUCTION.ABANDONED| > 0)
   -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
   -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortick)
+def $executor_tick_bailout(S) = $executor_tick_parent(S, S.DESTRUCTION.ABANDONED[n_last], S.DESTRUCTION.ABANDONED)
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = eps
+def $executor_tick_bailout(S) = eps -- otherwise
+def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
+  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_tick_bailout(S) = (pexecutortick)
   -- if $executor_tick_valid(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if S.COMPLETION = UNCAUGHT n
   -- if S.EXCEPTIONHANDLER = eps
@@ -618,9 +646,7 @@ def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.OUTPUTBUFFERS = eps /\ S.EXITSTATUS = 255
-  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
-  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
-  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortickfatal.TICK)
+  -- if $executor_tick_bailout(S) = (pexecutortickfatal.TICK)
   -- if $(pexecutortickfatal.OBJECT < |S.OBJECTS|)
   -- if $shutdown_frozen(pexecutortickfatal.COMPLETION)
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = false -- otherwise

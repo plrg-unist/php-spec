@@ -69,8 +69,15 @@ retire normal owning results from named handlers before the original Throwable
 and registry restoration, preserving both C protections during returned-object
 or captured-child destruction. A shared result survives until its later real
 owner. The [handler-value review](../../coverage/semantics/callback-late-tick-handler-value-review.json)
-tracks the new witnesses. Abrupt handler-value disposal, owning handler callables
-and wider late forms remain partial. Destructor-body results have the separate
+tracks normal witnesses. A literal Exception from a fresh ignored value while H
+is disabled takes the module-local fatal path before old-Throwable disposal or
+registry restoration. An associated abandoned-C source retains the actual parent
+receiver pair/release tail; the existing EH cleanup keeps the old Throwable once.
+Omitted unshared owner channels must be rootless. A value retained until a later
+tick argument instead throws after restoration and calls H again. The
+[handler-value throw review](../../coverage/semantics/callback-late-tick-handler-throw-review.json)
+records these separate paths. Wider abrupt values, owning handler callables,
+previous chains and reentry remain partial. Destructor-body results have the separate
 [ignored-body-value cleanup](SOURCE-DESTRUCTORS.md) and bounded
 [body-value bailout](../../coverage/semantics/callback-late-tick-body-throw-review.json).
 The shared FINAL extension in modules 441/442 preserves that null caller and original
