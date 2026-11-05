@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i116-peer-unknown-iterator-key-and-owner-retirement",
+    "purpose": "One initialized Iterator CV spread on literal native send. Rewind clears selected target/Iterator CVs; current returns an owning Token before key yields an unknown native parameter. Token, Iterator and selected paused Generator retire in that order before caller-only mapping Error; next and target body stay unexecuted.",
+    "source": "<?php\nclass Token116R {\n    function __destruct() {\n        global $weakTarget, $weakArgs, $weakToken;\n        echo 'TOKEN|', $weakTarget->get() instanceof Generator, '|', $weakArgs->get() instanceof Args116R, '|', $weakToken->get() === $this, '|';\n    }\n}\nclass Args116R implements Iterator {\n    function rewind(): void {\n        global $target, $args, $weakTarget, $weakArgs;\n        echo 'REWIND|'; $target = null; $args = null;\n        echo 'HELD|', $weakTarget->get() instanceof Generator, '|', $weakArgs->get() === $this, '|';\n    }\n    function valid(): bool { echo 'VALID|'; return true; }\n    function current(): mixed {\n        global $weakToken;\n        echo 'CURRENT|'; $token = new Token116R(); $weakToken = WeakReference::create($token); return $token;\n    }\n    function key(): mixed { echo 'KEY|'; return 'extra'; }\n    function next(): void { echo 'BAD-NEXT|'; }\n    function __destruct() {\n        global $weakTarget, $weakArgs, $weakToken;\n        echo 'ITER|', $weakTarget->get() instanceof Generator, '|', $weakArgs->get() === $this, '|', $weakToken->get() === null, '|';\n    }\n}\nfunction target116R() {\n    try { echo 'INIT|'; yield 'head'; echo 'BAD-BODY|'; }\n    finally { global $weakTarget, $weakArgs, $weakToken; echo 'FIN|', $weakTarget->get() !== null, '|', $weakArgs->get() === null, '|', $weakToken->get() === null, '|'; }\n}\nfunction run116R() {\n    global $target, $args, $weakTarget, $weakArgs, $weakToken;\n    echo 'CALL|';\n    try { $target->send(...$args); }\n    catch (Error $error) {\n        echo 'CATCH|', $error->getMessage(), '|', $weakTarget->get() === null, '|', $weakArgs->get() === null, '|', $weakToken->get() === null, '|';\n        $trace = $error->getTrace();\n        echo 'TRACE|', $trace[0]['function'] === 'run116R', '|', !isset($trace[1]), '|';\n    }\n}\n$target = target116R(); $target->current(); $args = new Args116R();\n$weakTarget = WeakReference::create($target); $weakArgs = WeakReference::create($args);\nrun116R(); echo 'DONE|';\n",
+    "source_sha256": "7c9b09f21b755b7dd282324eaa75b9a7a0ab3ded458b925585699ca78604f59c",
+    "native_exit": 0,
+    "native_stdout": "INIT|CALL|REWIND|HELD|1|1|VALID|CURRENT|KEY|TOKEN|1|1|1|ITER|1|1|1|FIN|1|1|1|CATCH|Unknown named parameter $extra|1|1|1|TRACE|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
