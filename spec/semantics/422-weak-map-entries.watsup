@@ -637,7 +637,7 @@ def $weakmap_nan_begin(S, paccess) = $error_dispatch(S[.TODO = (WEAKMAP_NAN pwea
   -- if pweakmapentry.VALUE = PFLOAT n_float
   -- if $(n_float < 18446744073709551616) /\ $access_truth_warning(PFLOAT n_float)
   -- if S.TODO = paccess.TASK :: ptask_tail*
-  -- if pweakmapnan = {ACCESS paccess, ENTRY pweakmapentry, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
+  -- if pweakmapnan = {ACCESS paccess[.PHASE = ACCESS_CALL $ptascii("offsetExists")], ENTRY pweakmapentry, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
 def $weakmap_nan_begin(S, paccess) = S[.COMPLETION = UNSUPPORTED "WeakMap NaN empty warning source"] -- otherwise
 
 def $weakmap_presence_result(S, paccess, pweakmapvalue) = $weakmap_nan_begin(S, paccess)
