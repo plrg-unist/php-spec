@@ -315,6 +315,8 @@ initializer order, callback aborts and compiler lines/frequencies. Static bindin
 retain their ticks on warm calls, and unset cleanup finishes before its callback.
 Foreach targets compile value before key, including for an empty input, while
 execution retains per-iteration target callbacks and abrupt cleanup.
+By-value destructuring compiles the RHS before nested keys and targets, retaining
+completed writes when a later target throws.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.

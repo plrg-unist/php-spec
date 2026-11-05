@@ -1,0 +1,73 @@
+{
+  "milestone": "ATTR37: by-value list and nested target tick traversal",
+  "status": "Independently accepted bounded implementation; wider source/target/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "5442de890",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "eb8bc18a28292fd3a5919919b572c3bb3f5868079c3e8be8261a3d0f476db5e4",
+    "scope": "A shared by-value list fold visits each key before its recursive writable target, clearing adjacency after real FETCH_LIST and store operations. A dedicated assignment route visits the RHS before that fold; Foreach list targets use the same visitor. Published operand/redirect/effect facts remain authoritative. Generic traversal is excluded from the new routes; reference patterns retain the old clean route and callable-bearing refusal. No 64, runtime, task/state/schema or ownership protocol edits.",
+    "result_kind_boundary": "The existing Switch-subject list-assignment result-kind dependency remains explicit; this milestone supplies traversal, not a guessed result kind."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_compile.c",
+    "symbols": ["zend_compile_assign", "zend_compile_list_assign", "zend_compile_foreach"],
+    "order": "Compile assignment RHS first. For each nonempty list item compile its key, emit the fetch, then compile its nested list or writable target/store. Foreach supplies its fetched value before the same list lowering.",
+    "existing_rules": "Module 64 already provides RHS/key/target compilation. Existing list stores and Foreach 69 retain partial writes, pending targets and ordinary iterator cleanup."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-list-37/strict-report-v1.json",
+      "sha256": "b6a7e3a799fbb5d63a118d35ebb02650906a74bedebdc9b6584786693976d969",
+      "revision": "b4823e1e28daa0cb5ddae3b801a5cebca64459e7",
+      "passed": true,
+      "modules": 441
+    },
+    "author_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-list-37/source-author-v1/report.json",
+      "sha256": "b0b174de04d92e3070da00e4f58403b59d3a9285352a3e4d8050ecd15fd69b0b",
+      "revision": "b4823e1e28daa0cb5ddae3b801a5cebca64459e7",
+      "passed": true,
+      "agreements": 1,
+      "source_sha256": "245121cbaa957c8c5f2b03a47db0d5d8b4991e85c664808f45915f37a2003529",
+      "observation": "RTKJTTVTTZT9",
+      "scope": "Nested list assignment compiles an RHS Closure with frequency 4, outer key 2, inner key 3 and writable dimension target 1. Actual callbacks follow RHS/key/key/target order; the enclosing marker inherits the final target frequency and the completed value 9 is observed."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-list-37/source-review-v1/report.json",
+      "sha256": "ed2361b3b3d64d980ccdce1cee03c3e69f8745f3359ad5b73f17a8fe4bfc3cbb",
+      "revision": "b4823e1e28daa0cb5ddae3b801a5cebca64459e7",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "review-empty-foreach-list-compiles-key-before-nested-target": "PTZT",
+        "review-defined-list-target-throw-preserves-earlier-write": "VTC10SLZ"
+      },
+      "scope": "Empty Foreach compiles outer key frequency 3 before nested target 2 without executing target/body effects. A defined a/b/c row commits first 10 before the next target's balanced frequency 1 V callback and throw; later target/body stay skipped. All normal witnesses use value copying, defined keys and nonlossy conversions."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-list-targets-37/review-protocol-v1/run/report.json",
+      "sha256": "1d8f63b2fe04dc0bce59a124d1e27f9f1877e7a04ddc108dbcfe421eedc6e5ac",
+      "revision": "b38a22b4448bfba15cabad2feb5af8ae0d18677f",
+      "passed": true,
+      "groups": 2,
+      "reported_conditions": 135,
+      "group_conditions": [66, 69],
+      "derived_guards": 1,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions. Exactly one final dependency predicate is the labeled derived guard.",
+      "process": "/home/user/workspace/php-spec-evidence-archive/tick-list-targets-37/review-protocol-v1/process.json",
+      "process_sha256": "d097e5d55913a663c311ae6417928152eedf3464f62bbadae6eb768bac66e732",
+      "scope": "The real empty-input outer marker has compiled key/target frequencies with untouched arrays and no iterator. At the actual V Tick, first 10 is already written while LIST_NEXT, the last target and body remain pending and the iterator owner stays live. Throw preserves the earlier write and releases the iterator. Canonical source/line, descriptor/heap validity, budget-resumption and complete native streams agree.",
+      "derived_guard": "Change only the inner item reference bit in the actual empty-source program, run ppstart on that derived AST and authenticate its freshly compiled target operand, names and redirects. Its real tick_code_plan then returns the existing unmodeled expression-order dependency. No reference-pattern runtime/native campaign is claimed."
+    }
+  },
+  "behavior": "By-value list assignments and Foreach list targets now contribute nested callable Tick plans in actual compiler order. Empty input still compiles those declarables but skips runtime evaluation. Actual key/target callbacks preserve completed writes and pending iterator ownership until normal or abrupt cleanup.",
+  "independent_review": "/root/attributes_review independently checked the shared fold against Zend and module 64, generic-route disjointness and reference/result-kind fences, then accepted both reached fronts on exact 5442de890 production.",
+  "remaining": "Callable-bearing reference patterns and wider writable/source/compiler/lifetime contexts remain explicit dependencies. The paused undefined-by-reference LIST lane was not resumed or broadened. No general result-kind, warning/conversion, Generator transport or family closure is implied.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-list-37 and tick-list-targets-37. Source processes use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached fixtures use checked SL on CPU 5 with caches disabled and encountered determinism checks. Before/after identities remained stable, accepted exits were 0 and stderr empty. Regular copied tools are not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "The original source-baseline/report.json at 1025392e4 remains false (SHA a9ade71c9d6231403cf32c463e38e6cc9c3495c6fdfb38e56c3e3e3ac2515d06): the old model returned Unsupported with empty prefix and reason tick declaration or callable in an unmodeled expression compilation order. Native completed RTKJTTVTTZT9; baseline refusal has zero agreement credit.",
+    "All new strict, source and reached campaigns passed their first executions. No 36, output, Generator or paused-boundary campaign was repeated. No engine bug, intentional divergence or full-core closure is claimed."
+  ]
+}

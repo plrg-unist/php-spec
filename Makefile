@@ -100,6 +100,9 @@ test-semantics: build
 	python3 tests/semantics/tick_foreach_sources.py
 	python3 tests/semantics/tick_foreach_review_sources.py
 	python3 tests/semantics/tick_foreach_review_protocol.py
+	python3 tests/semantics/tick_list_sources.py
+	python3 tests/semantics/tick_list_review_sources.py
+	python3 tests/semantics/tick_list_review_protocol.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/output_reference_warning_sources.py

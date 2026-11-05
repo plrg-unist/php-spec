@@ -33,6 +33,14 @@ iterator through ordinary cleanup. The final marker retains the foreach header
 line after the real jump/free operations. Module67 and69 already supply the
 matching compilation and runtime assignment order.
 
+By-value destructuring plans visit the RHS before the pattern, then each key
+before its writable target, recursively through nested lists. The same target
+fold supplies Foreach list patterns. Real fetches and stores separate callable
+op arrays, and the compiler-fact visitor retains only actual redirects/effects.
+At runtime each completed write remains visible if a later target throws; later
+targets and the body stay unevaluated while ordinary cleanup releases the
+iterator. Callable-bearing reference patterns retain an explicit dependency.
+
 Switch plans visit the subject, every case condition, then every body in compiler
 order. Case bodies share adjacency across selected and unselected branches;
 fallthrough and jumps retain the ordinary switch runtime. A final temporary
@@ -164,6 +172,9 @@ and destructor completion before an intermediate callback abort.
 The [Foreach target review](../../coverage/semantics/tick-foreach-review.json)
 records value-before-key declarables, repeated target callbacks, empty-input
 target skipping and abrupt target cleanup.
+The [destructuring tick review](../../coverage/semantics/tick-list-review.json)
+records nested RHS/key/target ordering, lazy Foreach list targets and partial
+writes before abrupt cleanup.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
