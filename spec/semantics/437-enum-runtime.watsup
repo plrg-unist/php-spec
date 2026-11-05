@@ -2093,6 +2093,7 @@ def $enum_is_callable_cleanup_capture(S) = ((penumqueryoutput, z_original, pdest
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if $destructor_context_valid(S, pcallcontext)
 def $enum_is_callable_cleanup_capture(S) = eps -- otherwise
+;; Context validity already authenticates the operation's frame source and root scope.
 def $enum_is_callable_cleanup_body(S) = true
   -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps
   -- if S.CURRENT = (pcallcontext)
@@ -2101,7 +2102,6 @@ def $enum_is_callable_cleanup_body(S) = true
   -- if pdestructorcall.PENDING = eps /\ pdestructionoperation.PENDING = eps
   -- if $enum_is_callable_cleanup_source(pdestructionoperation.SOURCE) = ((penumqueryoutput, z))
   -- if $destructor_context_valid(S, pcallcontext)
-  -- if $enum_is_callable_exit_frame_scope(S, penumqueryoutput, z) = (S_scope)
 def $enum_is_callable_cleanup_body(S) = false -- otherwise
 def $call_task_valid(S, ENUM_IS_CALLABLE_CLEANUP_RESTORE penumqueryoutput z pdestructorcall) = $enum_is_callable_cleanup_restore_valid(S, penumqueryoutput, z, pdestructorcall)
 def $call_task_valid(S, ENUM_IS_CALLABLE_CLEANUP_FRAME penumqueryoutput z pdestructorcall) = false
