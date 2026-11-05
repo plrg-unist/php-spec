@@ -19,10 +19,10 @@ sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 b64 = lambda data: base64.b64encode(data).decode()
 
 
-def expected(name):
-    case = CASES[name]
-    path = SOURCE / name / 'main.php'
-    filename = (bytes(SOURCE / name / 'unit.php') if case['mode'] == 'file' else
+def expected(name, source=SOURCE, cases=CASES):
+    case = cases[name]
+    path = source / name / 'main.php'
+    filename = (bytes(source / name / 'unit.php') if case['mode'] == 'file' else
                 bytes(path) + b"(4) : eval()'d code")
     caught = (case['kind'].encode() + b'|' + str(case['line']).encode() + b'|'
               + case['message'].encode() + b'|' + filename + b'|F|')
@@ -32,19 +32,21 @@ def expected(name):
     return stdout, stderr
 
 
-def main():
+def main(source=SOURCE, extra_inputs=()):
+    cases = json.loads((source / 'cases.json').read_text())
+    hashes = json.loads((source / 'hashes.json').read_text())
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--select', help='comma-separated case names')
-    args = parser.parse_args(); names = args.select.split(',') if args.select else list(CASES)
-    assert names and len(set(names)) == len(names) and set(names) <= set(CASES)
+    args = parser.parse_args(); names = args.select.split(',') if args.select else list(cases)
+    assert names and len(set(names)) == len(names) and set(names) <= set(cases)
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
-    assert {name: sha(SOURCE / name) for name in HASHES} == HASHES
+    assert {name: sha(source / name) for name in hashes} == hashes
     assert sha(ROOT / '.tools/php/bin/php') == ORACLE
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_text()); profile['include_path'] = '.:'
     flags = [flag for key, value in profile.items() for flag in ('-d', key + '=' + value)]
     modules = [ROOT / path for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    watched = [Path(__file__), SOURCE / 'hashes.json', *(SOURCE / name for name in HASHES), *modules,
+    watched = [Path(__file__), *extra_inputs, source / 'hashes.json', *(source / name for name in hashes), *modules,
         *(ROOT / path for path in ('spec/semantics/modules.json', 'spec/schema.json', 'adapter/main.ml',
           'bin/php-semantics', 'frontend/worker.php', 'frontend/RejectedHeaderParser.php', 'frontend/FileLexer.php',
           'frontend/EvalLexer.php', '.tools/php-file.so', '_build/default/adapter/main.exe', '.tools/php/bin/php',
@@ -56,8 +58,8 @@ def main():
         'agreements': 0, 'refusal_controls': 0, 'passed': False}
     try:
         for name in names:
-            case = CASES[name]; path = SOURCE / name / 'main.php'
-            target = out / name; target.mkdir(); stdout, stderr = expected(name)
+            case = cases[name]; path = source / name / 'main.php'
+            target = out / name; target.mkdir(); stdout, stderr = expected(name, source, cases)
             row = {'id': name, 'source_sha256': sha(path)}; report['records'].append(row)
             row['native'] = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(path)], target / 'native', 15)
             assert row['native']['exit'] == 0 and not row['native']['timeout'] and not row['native']['group_after']
@@ -65,7 +67,7 @@ def main():
             (target / 'startup.json').write_text(json.dumps({'error_reporting': b64(b'30719'), 'include_path': b64(b'.:')}) + '\n')
             extra = []
             if case['mode'] == 'file':
-                child = SOURCE / name / 'unit.php'
+                child = source / name / 'unit.php'
                 snapshot = {'version': 2, 'main': b64(bytes(path)), 'cwd': b64(bytes(ROOT)),
                     'include_path': b64(b'.:'), 'chdir_entries': [], 'entries': [
                     {'caller': b64(bytes(path)), 'requested': b64(bytes(child)), 'cwd': b64(bytes(ROOT)),

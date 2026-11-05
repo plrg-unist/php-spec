@@ -1,0 +1,63 @@
+{
+  "scope": "GC31: inactive WeakMap free unregisters all keys before ordered owning-value release, using the existing terminal local heap.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json; explicit USE_ZEND_ALLOC=0 alias context",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "base": "dc72b15b618333b61f68a59aef62896e9c6fbf2d",
+    "source_only": "3e74856116dffb0632c7f4c0b07b0531a220ff76",
+    "semantic_and_first_three_sources": "e89766c56cd06e1400196a0a7e60f5cdaeecbee0",
+    "corrected_alias_source": "e888fd25298e0c4a6df47a948f2e4d4c5f9d7828",
+    "negative_controls": "eb3318ce263e192ad0b796b21cf0d4fb06ffaf59",
+    "slow_context": "8909c9a298e6c74a776d96ebe1e0d81958702340",
+    "independent_sources": "4420eb515b1cf2073a951cce292fd05c44f6202d",
+    "independent_reached": "246605101a6f6a2f08daffb71ad0ae011debfeeb",
+    "author_reached": "8909c9a298e6c74a776d96ebe1e0d81958702340",
+    "affected_gc30": "8909c9a298e6c74a776d96ebe1e0d81958702340"
+  },
+  "implementation": [
+    "spec/semantics/444-executor-final-free.watsup"
+  ],
+  "rule": "Marked Maps have unregistered all their keys before the first value decrement. The association scan excludes marked Maps/WeakReferences without filtering the owning graph. Existing field release leases every value edge, preserves multiplicity and releases in entry order; later values stay owned after an earlier failure. Empty/singleton/multi-entry Map hooks are admitted only outside active storage freeing and without active incoming Map-key associations. Standard/callable authentication still uses full S. Final S remains its last ownership-valid snapshot.",
+  "engine_basis": "Pinned Zend/zend_weakrefs.c zend_weakmap_free_obj calls zend_weakrefs_hash_clean_ex: its first loop unregisters every key with weakref_free=false, then zend_hash_clean destroys values sequentially. Own standard notification follows value cleanup. Zend/zend_objects_API.c sweeps real handles backwards and runs custom Map hooks in both allocator modes. Active key-triggered notification instead deletes owning Map entries before ordinary fields and remains fenced.",
+  "validation": {
+    "source": "Seven exact source/request contexts (six programs): held-value Map retirement preserves a key's fast-skipped field; identical allocation order with AB/BA insertion gives exact inactive fatal A/B; by-reference foreach produces a shared ALIAS value plus an empty Map and finishes normally in fast/nonfast modes; independent normal and fatal C-before-later-B originals discriminate unregister-all before first-value retirement. All native CLI0, four normal and three php_error contexts, with exact stdout/stderr/exit, stable relevant inputs and reaped actors at their recorded cuts.",
+    "selected_prefix": "At e897, held/AB/BA each pass exact comparisons before a fourth producer stops early; only these three successful rows are accepted, not the incomplete six-case campaign. Corrected ALIAS passes at e888. First producer's direct dimension reference and second producer's omitted foreach key target remain Unsupported before cleanup with zero agreement. Source policy was not widened.",
+    "negative_sources": "Both key-before-Map originals retain expected Unsupported inactive executor storage hook or destructor visibility at eb331, after full FX|D1|D2|. Their native fatal behavior has zero full-agreement credit; no key-notification support is claimed.",
+    "author_reached": "All four strict source-reached groups pass at8909c9a29: held71, ordered-fatal67, fast-ALIAS73 and slow-ALIAS81, total292. They prove field shielding after key unregister, the already-marked public-dtor priority, later value leases retained after an earlier fatal, wrapper owners2 to1 without a payload decrement, empty-Map guards, actual nonfast table retirement and exact0/1-step resumption. HEAD/runtime/test/script inputs stable and all actors fully reaped.",
+    "affected_gc30": "The sole affected HIGHER group passes135 conditions at8909c9a29. Active Map refusals stay negative; forcing a real Map hook makes its associations disappear from the view without filtering owning edges, marked-Map kind1 WR/kind0 standard and empty-Map kind1 are positive. Historical GC30 counts/cuts remain unchanged; LOWER/BOUND are not replayed.",
+    "independent_reached": "Strict172 passes at246605101 on the normal independent source plus explicit graph mutants. It proves Holder unmarked before Map, keyB owner1 to0 after all-key unregister, later spare lease retained, repeated value multiplicity, incoming/remaining Map fences, quiet Map admission with an own WR observer, active free-pin refusal, final snapshot and resumption. This is not a reached fatal-source front.",
+    "compiler": "Strict SL433 initialization passes at e897; all source/reached gates compile433 modules at their own cuts with encountered determinism checks.",
+    "failures": "Pre-edit AB terminal Unsupported retains zero agreement. Two author ALIAS producer stops and two peer fixture parser stops remain raw/zero-credit; parser fixes only parenthesize constructor/record sequences and do not change semantics. The first peer scalar-second-entry draft remains native-only with zero source agreement; corrected source inserts a methodless spare Holder before linking keyB."
+  },
+  "limits": "Active key-triggered entry notification and active incoming Map-key associations remain fenced, as do active free pins, wider custom/Closure hooks and inactive nonpublic-destructor diagnostics. Existing Map insertion/reference producer policies are unchanged. No collector/count/nogc change, Zend evaluation fallback or full-core claim.",
+  "review": "Independent semantic/source/test and draft-scope review CLEAR. All author/affected executions now pass; final docs/actual-parent acceptance follows by focused review messages without renewing earlier cuts.",
+  "recovery": "Raw/failed/accepted evidence stays outside Git in ../php-spec-evidence-archive/gc-inactive-weakmap-free-31, gc-inactive-weakmap-free-31-review and inactive-weakmap-native-study. Maintained gc_inactive_weakmap_free_sources.py runs native then model phases with fresh --output directories; it separates key-notification Unsupported controls. Run gc_inactive_weakmap_free_slow_sources.py for the request context and gc_inactive_weakmap_free_state.py for reached checks. The sole affected prior group is gc_inactive_weak_free_review_state.py --case unregister-before-parent-skip. Peer checks are gc_inactive_weakmap_free_review_sources.py and gc_inactive_weakmap_free_review_state.py. Refs and original source bytes remain preserved.",
+  "reports_sha256": {
+    "gc-inactive-weakmap-free-31/source/native-report.json": "d71cbee057db3de22d9d966c6b284262503689834138cd5ddcaa4297078cc355",
+    "gc-inactive-weakmap-free-31/source/baseline-report.json": "e095cca2c34a05441c63a3d43c0f25835cc0d2289917ea83809c65616484f38a",
+    "gc-inactive-weakmap-free-31/source/model-report.json": "3502fdce589be9728d8be9a842064ae0a4804c61d78ba61a3898276ec41a248b",
+    "gc-inactive-weakmap-free-31/source-alias-v2/model-map-alias-empty-report.json": "0e2f505b9fcefbb8ebf575023c6825f9d54354896a1b7a2e9540e77f38148a4a",
+    "gc-inactive-weakmap-free-31/source-alias-v3/native-report.json": "fcdf481b465e8202ddd3d7f9612b359bafb6c674899d1ad7b84af3777cc8634b",
+    "gc-inactive-weakmap-free-31/source-alias-v3/model-map-alias-empty-report.json": "b3697cd14b4b56fae193bc0cc8608a5a9e3e29233d034210c82fa0be8033a236",
+    "gc-inactive-weakmap-free-31/source/model-key-notify-before-fields-key-before-map-field-report.json": "3916e015f256463253558ff7b6faba075347db69779bd897064c4f76753cff83",
+    "gc-inactive-weakmap-free-31/strict-compile/report.json": "8e8561da215ea1cc4768c49009f1f4dce09ea30851bb3be3aa0b14b58b546ba6",
+    "gc-inactive-weakmap-free-31/slow-source/report.json": "095b238e87486834885efbb6eeab74464212f821541674689cda2e121807198d",
+    "gc-inactive-weakmap-free-31/slow-source/gate-report.json": "b4a4bdb19c3cfdcde14afaf9a069a9d640b4b80b38f9244cbba7e9acfd8d647e",
+    "gc-inactive-weakmap-free-31-review/strict-independent-corrected-v2/independent-report.json": "2698ccd3417563b9b923bf0bba11fca97802ec4e2be66db384e8a222df60c4be",
+    "gc-inactive-weakmap-free-31-review/source-corrected/model-unregister-all-before-values-report.json": "b54b85781a1209d8384cf1af1f557615abb1d03091368b85c434dfffdf6fbb5c",
+    "gc-inactive-weakmap-free-31-review/source-fatal-order/model-unregister-before-nested-fatal-report.json": "0641a3a3e90571636e9dba20437fcf26f026538ae8c362c923d9c1d24dd9263e",
+    "gc-inactive-weakmap-free-31/author-states/gate-report.json": "5d0f7b5a199419af90726fb65ea424f852bb2e938989723e2b28a5a0f5cfff1a",
+    "gc-inactive-weakmap-free-31/affected-gc30/gate-report.json": "0ad9b4819fd8441809c2674598e00924146908fbd9010f6be343bbce13371996"
+  },
+  "counts": {
+    "exact_source_contexts": 7,
+    "validated_programs": 6,
+    "normal_contexts": 4,
+    "php_error_contexts": 3,
+    "unsupported_controls": 2,
+    "strict_reached_conditions": 599,
+    "author_conditions": 292,
+    "independent_conditions": 172,
+    "affected_conditions": 135
+  }
+}

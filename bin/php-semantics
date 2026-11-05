@@ -577,10 +577,28 @@ def main():
     flags = [flag for key, value in profile.items() for flag in ('-d', key + '=' + value)]
     parsed = request([php, '-n', *flags, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
                       str(ROOT / 'frontend/worker.php')], {'op': 'parse', 'source': b64(source)}, args.timeout)
-    if not parsed.get('ok') or not parsed.get('accepted'):
+    if not parsed.get('ok'):
         return {'status': 'frontend_failure', 'frontend': parsed}
-    execution = {'op': 'execute', 'ast': parsed['ast'], 'steps': args.steps,
-                 'filename': b64(os.fsencode(filename))}
+    identity = b64(os.fsencode(filename))
+    if not parsed.get('accepted'):
+        rejected, parser_stderr = request([php, '-n', *flags, '-d',
+            'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')],
+            {'op': 'parse-file', 'id': '0', 'mode': 'file', 'profile': 'cli-raw-85',
+             'requested': identity, 'resolved': identity, 'opened': identity,
+             'source': b64(source)}, args.timeout, with_stderr=True)
+        if not rejected.get('ok') or rejected.get('accepted'):
+            return {'status': 'frontend_failure', 'frontend': parsed}
+        if not dynamic_parser_stderr(rejected, 'file', parser_stderr):
+            return {'status': 'unsupported', 'reason': 'main parser service stderr outside supported encoding declarations'}
+        if rejected.get('diagnostics'):
+            return {'status': 'unsupported', 'reason': 'main parser service diagnostics'}
+        execution = {'op': 'execute_rejected_main', 'source': b64(source),
+                     'response': {key: value for key, value in rejected.items()
+                                  if key not in {'ok', 'diagnostics'}},
+                     'steps': args.steps, 'filename': identity}
+    else:
+        execution = {'op': 'execute', 'ast': parsed['ast'], 'steps': args.steps,
+                     'filename': identity}
     if args.startup_ini is not None:
         execution['startup_ini'] = json.loads(args.startup_ini.read_text())
     if args.request_context is not None:
@@ -661,8 +679,8 @@ def main():
     if not result.get('ok'):
         return {'status': result.get('category', 'runner_failure'), 'detail': result}
     outcome = observe(result['state'], filename, result['display_mode'])
-    outcome['frontend'] = 'accepted'
-    outcome['checked'] = 'program'
+    outcome['frontend'] = 'rejected' if execution['op'] == 'execute_rejected_main' else 'accepted'
+    outcome['checked'] = 'source_rejection' if execution['op'] == 'execute_rejected_main' else 'program'
     return outcome
 
 

@@ -191,9 +191,10 @@ identity and lookup/failure responses. Includes share the proper scope and once
 state. Eval uses checked parsing in eval mode, then independent static/dynamic
 semantics. Neither source service compiles/evaluates PHP through Zend.
 With the pinned multibyte-disabled profile, closed encoding declarations receive
-an independently derived parser-warning prefix. Dynamic parser admission validates
-its complete helper stderr against the accepted source shape; rejected inputs with
-stderr remain Unsupported. [Encoding contract](SOURCE-STRICT-DECLARATIONS.md).
+an independently derived parser-warning prefix. Admission validates complete helper
+stderr against accepted syntax or checked rejected-header receipts; unexplained
+prefixes remain Unsupported. Rejected main files report before program installation
+through a terminal-only entry. [Encoding contract](DYNAMIC-SOURCE.md#encoding-declarations).
 The [registered startup increment](../../coverage/semantics/startup-ini-review.json)
 supplies original reporting/include-path bytes before compilation; those facts
 remain distinct from live INI values, the reporting mask and CWD.
