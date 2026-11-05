@@ -26,7 +26,6 @@ declare(ticks=0) {
     'review-missing-dimension-coalesce-assignment-memoizes-key': (b'''<?php
 function t() { echo 'T'; }
 register_tick_function('t');
-set_error_handler(static function ($n, $m) { echo 'H'; return true; });
 $values = [];
 declare(ticks=0) {
     $values[(static function () { declare(ticks=2); echo 'K'; return 'k'; })()] ??= (static function () { declare(ticks=3); echo 'R'; return 9; })();

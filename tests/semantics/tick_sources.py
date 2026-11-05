@@ -12,7 +12,6 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 PROFILE = json.loads((ROOT / 'tests/semantics/profile.json').read_text())
 FLAGS = [arg for key, value in PROFILE.items() for arg in ('-d', key + '=' + value)]
-MODEL_TIMEOUT = 60
 CASES = {
     'straight': (b'<?php function tick(){echo "T";} register_tick_function("tick"); declare(ticks=1);echo "A";echo "B";', b'TATBT'),
     'frequency2': (b'<?php function tick(){echo "T";} register_tick_function("tick"); declare(ticks=2);echo "A";echo "B";echo "C";', b'ATBCT'),
@@ -162,7 +161,7 @@ def main():
             if name in CASES:
                 assert native.stdout == CASES[name][1], (name, native.stdout, CASES[name][1])
                 assert native.returncode == EXITS[name], (name, native.returncode, native.stderr)
-            modeled = run([str(ROOT / 'bin/php-semantics'), str(path), '--timeout', str(MODEL_TIMEOUT)], directory, 'model', MODEL_TIMEOUT + 30)
+            modeled = run([str(ROOT / 'bin/php-semantics'), str(path), '--timeout', '60'], directory, 'model', 90)
             assert not modeled.stderr, (name, modeled.stdout, modeled.stderr)
             outcome = json.loads(modeled.stdout)
             if name in CASES:
