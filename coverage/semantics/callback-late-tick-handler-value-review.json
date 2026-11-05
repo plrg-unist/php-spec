@@ -1,0 +1,201 @@
+{
+  "milestone": "ATTR24: ignored owning values from normal selected exception handlers",
+  "status": "Bounded coverage accepted: four new source agreements and six fronts/432 genuine checks; no production change",
+  "target": "PHP8.5.10 CLI NTS64; pinned local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-24",
+  "scope": "Named selected handlers return ordinary owning objects, alias arrays, static Closures or shared values during post-FINAL tick argument cleanup. Returned-value destructors complete normally; stable main exit263 is preserved. Abrupt handler-value cleanup remains separate.",
+  "production": {
+    "revision": "8a4c5e97b450fc2133f222cb601c1b1dc75b83bd",
+    "changes": false,
+    "implementation": [
+      "spec/semantics/222-exception-handlers.watsup",
+      "spec/semantics/247-handler-callable-consumers.watsup",
+      "spec/semantics/270-eager-destructors.watsup"
+    ],
+    "behavior": "Existing exception_handler_finish stages ordinary owning RESULT jobs before old-Throwable disposal and handler restoration, while the outer null-C destructor continuation remains pending. Output agreement alone does not establish the required receiver/cause ownership."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend.c:zend_user_exception_handler retval2, replacement exception, old_exception, registry restoration order",
+      "Zend/zend_execute_API.c:zend_call_function null-C selected handler tail",
+      "Zend/zend_objects.c:zend_objects_destroy_object inner protection persists across the complete API call"
+    ]
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "8e084aee9e0c7e8b782c3326be4f227cffcc4a09d72f0dd0df73aef455f028c0",
+      "revision": "44cc1822a1b32fabb96cb958ec6c599e0dc08232",
+      "new_originals": 4,
+      "observational_controls": 2,
+      "result": "Fresh object/array/Closure: B;F;A;H;R;K;L;C;, with array CLI7/main263 and others CLI0. Shared-return: B;F;A;H;K;R;C;/0. Scalar-handler and unhandled-body controls retain their native streams/status."
+    },
+    "source": {
+      "report": "source-baseline-44cc/report.json",
+      "report_sha256": "9cf5ac9406039bbdb719d29e1fc02ac6cdc8e5df122e70939b5f1e693958e7e0",
+      "revision": "44cc1822a1b32fabb96cb958ec6c599e0dc08232",
+      "passed": true,
+      "selected": [
+        "object"
+      ]
+    },
+    "reached": {
+      "accepted_fresh": {
+        "report": "reached-fresh/run/report.json",
+        "report_sha256": "9b0b8961d34c416ea436f85a5e00890e86cfaa189e7f933d8edc0dbe66e0ae20",
+        "outer_report": "reached-fresh/process.json",
+        "outer_report_sha256": "0c2073737c9892af6532c91c60b850f86bf4b41cb69af9c2801dc9b3bd3a45eb",
+        "revision": "e6d34ebf92da127eb09bda84e608b71cd579bd4a",
+        "passed": true,
+        "groups": 1,
+        "conditions": 65,
+        "source_reached": 65,
+        "derived": 0,
+        "result": "Genuine returned-R entry preserves Arg2/R2/original E1, disabled+stacked handler, original live C pair, separate handler/tick source operations and valid heap/GC/descriptors."
+      },
+      "accepted_array_prefix": {
+        "report": "reached-array-prefix-long/report.json",
+        "report_sha256": "3cd49a268cda1c1acdf65356ab8507ec7d7e23bd9366cf8e8b1be9e0f39fa645",
+        "revision": "b5ea56e86deedadef0bfcc2532c730e052b19a74",
+        "fixture_sha256": "cdf092402d0febe7158f909097746c4069024a16fd8b276e232c98292a6c1e4c",
+        "passed": true,
+        "groups": 1,
+        "conditions": 62,
+        "source_reached": 62,
+        "derived": 0,
+        "cap_seconds": 480,
+        "elapsed_seconds": 221.63,
+        "result": "Exact original fixture/assertions pass with no parser replay or semantic edit: genuine alias/direct/direct RESULT graph, Arg3/E1, exact pending C pair and one actual VALUE transfer. Stage adjacency was correct; no fixture correction."
+      },
+      "accepted_remaining": {
+        "reports": [
+          {
+            "report": "reached-rest/array-closure-run/report.json",
+            "report_sha256": "7af44e527def31b739c905c9dc0a92d1568c6aaa40bfb2313ab52f79cc1b96da",
+            "selected_conditions": [
+              65,
+              89
+            ]
+          },
+          {
+            "report": "reached-rest/retained-restore-run/report.json",
+            "report_sha256": "555a579fed1907369992158b11c0cabdac87ce117c0c88bf46ff593146bc4317",
+            "selected_conditions": [
+              75,
+              76
+            ]
+          }
+        ],
+        "outer_report": "reached-rest/process.json",
+        "outer_report_sha256": "672d1eedcb1a79445ebd72d16ed0d247c73adea733f5052960c0e466147abb0a",
+        "revision": "b5ea56e86deedadef0bfcc2532c730e052b19a74",
+        "passed": true,
+        "groups": 4,
+        "conditions": 305,
+        "source_reached": 305,
+        "derived": 0,
+        "result": "Four new fronts pass unchanged; accepted first65 and prefix62 are excluded. Arg3/Closure capture, shared R2\u21921, E0 before handler restoration and actual C2\u21921 with pause/resume all hold. Stable inputs/empty stderr/full process reap."
+      },
+      "accepted_total": {
+        "groups": 6,
+        "conditions": 432,
+        "source_reached": 432,
+        "derived": 0,
+        "selection": "65 at e6d + exact62-long at b5 + new4/305 at b5; no duplicate front or overlapping rerun credited."
+      }
+    },
+    "controls": {
+      "native_only_here": [
+        "scalar-handler-control",
+        "body-throw-control"
+      ],
+      "prior_reviews": [
+        "coverage/semantics/callback-late-tick-handler-review.json",
+        "coverage/semantics/callback-late-tick-body-throw-review.json"
+      ],
+      "credit": "Two new native observations retain their identity; prior21 scalar-handler and23 body-throw model/state cuts keep their original credit. Production is unchanged, so those model controls are not replayed or recounted."
+    },
+    "specification_gate": {
+      "status": "Retained unchanged production gate",
+      "revision": "8a4c5e97b450fc2133f222cb601c1b1dc75b83bd",
+      "modules": 435,
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-23/strict-strict-joined-05e/report.json",
+      "report_sha256": "b69f569ffd8624e180e8c08b576c26beda39be8a8679d10f1ce32106568b5439",
+      "credit": "No semantics file changed in ATTR24; this is the existing435 gate, not a new run."
+    },
+    "source_attempt": {
+      "report": "source-remaining-new/report.json",
+      "report_sha256": "f7f036a6eb477b4f9ba08377885ac898eb8c85ed5df4bfda2b4d2db821963fa6",
+      "revision": "b5ea56e86deedadef0bfcc2532c730e052b19a74",
+      "selected": [
+        "array"
+      ],
+      "result": "Inner source timeout180 at185.52s, model status timeout/no streams, no agreement credit; closure and retained were unrun after stop-on-failure. Inputs stable and all processes reaped. No semantic counterexample inferred from the timeout."
+    },
+    "array_prefix_attempt": {
+      "report": "reached-array-prefix/run/report.json",
+      "report_sha256": "5e45044365b766f18da212e67ed29dacf7bb80862b859e8fa0836e32f3a467d9",
+      "outer_report_sha256": "bacd29baa1c48d3b099d8a9c03e3a1d151cad61397294a5f8fb56242965c4be4",
+      "result": "Inner240 timeout with no boolean result; no accepted array prefix and no semantic counterexample. Preserved at zero credit with stable inputs/full reap."
+    },
+    "array_progress_diagnostic": {
+      "report": "debug-array-check256/report.json",
+      "report_sha256": "b31eb74f935053f4ee5736063f02ced3eb1c8118e42d203d1867ebd41b1eca98",
+      "result": "Exactly256 real steps take116.65s and produce BUDGET with CURRENT HandlerArray24Arg::__destruct, events B;F;A;, five objects, one live C call and one operation. This is finite progress before H, not a disposal discrepancy. Diagnostic has zero agreement credit; it justifies an increased bounded cap for the unchanged fixture."
+    },
+    "source_array": {
+      "revision": "b5ea56e86deedadef0bfcc2532c730e052b19a74",
+      "report": "source-array-long/report.json",
+      "report_sha256": "601ad0fd6e53625c14f7b37e1df5f9924e574fc7c8455001748672e37eb317df",
+      "assessment": "source-array-long/assessment-explicit-exit.json",
+      "assessment_sha256": "c890e860a5810ec42868b39e6e81a66d615d60e63d6c828bd641ad7a278be9fd",
+      "passed": true,
+      "same_execution_reassessed": true,
+      "source_replayed": false,
+      "cap_seconds": 480,
+      "elapsed_seconds": 308.78,
+      "result": "Raw explicit_exit/CLI7 and complete streams exactly match native; worker exit0, stable inputs and full reap. Original false classifier expected normal incorrectly; its report remains0. Independent review accepted corrected comparison of the same raw execution."
+    },
+    "source_closure": {
+      "report": "source-closure-long/report.json",
+      "report_sha256": "99806633d58f665cb1cdf6b316b3f068f43797b2e9a5872c377a0472fc272fd1",
+      "revision": "b5ea56e86deedadef0bfcc2532c730e052b19a74",
+      "passed": true,
+      "cap_seconds": 480,
+      "elapsed_seconds": 107.96,
+      "result": "Exact normal/0 and full streams; stable inputs/full reap. Original source-other-new180 timeout remains0; retry changed only the bounded budget."
+    },
+    "source_retained": {
+      "report": "source-retained-new/report.json",
+      "report_sha256": "1c1fc74d78b675a0dded2fffcb1a7641e511ac9e48a8f518ba1e47cefebab160",
+      "revision": "b5ea56e86deedadef0bfcc2532c730e052b19a74",
+      "passed": true,
+      "cap_seconds": 180,
+      "elapsed_seconds": 95.84,
+      "result": "First retained-source execution exact normal/0 and B;F;A;H;K;R;C;, stable/full reap."
+    },
+    "closure_attempt": {
+      "report": "source-other-new/report.json",
+      "report_sha256": "0156165cdff031b4d45e09305a8a9e322c9696a8b22055709be48d4702dd4a92",
+      "result": "Closure inner180 timeout185.58s; retained was unrun. Stable/full reap, zero agreement credit."
+    }
+  },
+  "tests": {
+    "new_sources": [
+      "tests/semantics/deprecated_late_tick_handler_value_object.php",
+      "tests/semantics/deprecated_late_tick_handler_value_array.php",
+      "tests/semantics/deprecated_late_tick_handler_value_review_closure.php",
+      "tests/semantics/deprecated_late_tick_handler_value_review_retained.php"
+    ],
+    "protocol": "tests/semantics/deprecated_late_tick_handler_value_review_protocol.py"
+  },
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; tests/semantics/profile.json. Exact sources, binary/helper/profile hashes, commands, exits and process reaping remain outside Git. Copied tools do not establish a rebuild or portability.",
+  "remaining": "Returned-handler-value throws/new exits, owning handler callables, reentry, direct reference-return forms, wider warning/rendering/frame contexts and distinct pending-owner bailout contexts remain partial. ATTR07 unsafe observation is not rerun and has no renewed credit; no lifecycle/core closure.",
+  "zero_credit": [
+    "Original array source180/prefix240 and Closure source180 timeouts remain0 with their original reports.",
+    "The bounded256-step progress diagnostic is timing/stage evidence only, zero agreement credit.",
+    "Original source-array-long false classifier report remains0; corrected explicit_exit assessment accepts the same unchanged execution without replay.",
+    "ATTR07 unsafe observation is not rerun and receives no renewed credit."
+  ]
+}

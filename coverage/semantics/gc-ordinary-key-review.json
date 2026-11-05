@@ -1,0 +1,128 @@
+{
+  "scope": "GC34: ordinary WeakReference/WeakMap key free_obj continuations, quiet internal registration activation, and authenticated wrapper reuse/recreation.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "cuts": {
+    "base": "46d85f2f01768b761f9eab9717ee0ac05b4c49d4",
+    "source_only": "dc7f2fd3a341b8b4df73fb79b0e825d21cdc7482",
+    "initial_semantics": "d200425a0be79253d94d14749c6cf5d79d1cf78d",
+    "original3": "b8a7649e3cbe6693a0710d644d5d518f2a8e1178",
+    "author_shared_and_throw2": "332382d752cc8e7c75c9eb5120a42cebad128070",
+    "quiet_activation_and_rank65": "96506b259d889441a2bf3f87f91ab4b0f4046c0e",
+    "final_runtime": "43015081f8e4af85696fb7d31b3809dc0e179309",
+    "author_cross58_child55": "43015081f8e4af85696fb7d31b3809dc0e179309",
+    "corrected_author_own55_and_affected145": "36327d6767df7bf594636f0bab88d7da14b9e4fa",
+    "peer_live_target_recreate1": "a60094085049f8b19d8e7f576cdec771b65e263b",
+    "peer_corrected_callbacks4": "c6bd7cd158fe98254373d79dd5d9bfe839fcb592",
+    "peer_creation3_and_early_late58": "592fe959f4312716e6b260f7aa5dcbc6242aabd6",
+    "peer_map_phase28": "1f96ce0bd9919cc73866639d28662e201bf000fd",
+    "portable_peer_fixture": "d146931b17620319df4440926439d3ace0da1b51"
+  },
+  "rule_basis": "Pinned zend_weakref_free unregisters its referent before std_dtor; zend_weakmap_free_obj unregisters all outgoing keys and releases ordered values before incoming notification. Existing INSTANCE_STORAGE_STEP supplies the physical pin and caller/source authority. Each incoming singleton Map entry transfers one owner to release before PHP executes; per-Key registration ranks select the next entry. A cheap occupied-internal-Key witness activates ordinary cleanup even when no user destructor class exists. Existing NOTIFY/unique-pin authority admits wrapper reuse/recreation for WR or retired multi-Map images; original359 refuses unauthenticated creation.",
+  "validation": {
+    "source": "Fourteen exact NORMAL programs: unchanged GC33 ordinary WR/empty-Map/multi-Map unset3; author four-shared-owner and two-incoming Holder-child throw2; independent live-target wrapper recreation, early/late observer behavior, own/incoming throw suffixes and quiet two-Map weak death6; freeing-WR self-wrapper reuse, retired multi-Map reuse and fresh-wrapper notification3. All raw stdout/stderr/CLI0 comparisons pass at recorded stable cuts. Three GC33 original stops retain zero credit at their old cuts.",
+    "source_subsets": "a600 accepts only wr-recreate-global before an unrelated count() observer stop. c6 accepts only corrected map-own-phase-global, map-own-throw-suffix, wr-single-throw and wr-old-get-before-observer; the quiet two-Map mismatch remains0 there and passes unchanged at965. Parent/metadata composition does not renew those cuts.",
+    "compiler": "Strict SL435 initialization passes atb8 and965. Accepted source/state runs load435 modules at their recorded cuts; final runtime430 removes a redundant private refusal and retains the existing359 fence.",
+    "author_reached": "233 reported conditions: rank65 at965; cross-four-owner58 and nested incoming child throw55 at430; corrected own-throw suffix55 at363. They prove activation, selective rank/lease order, physical parent/Key pins, own value edges and pending Throwable through later own/incoming cleanup. The first own-suffix fixture failed because it advanced a BUDGET state without resuming; one expression changed and that row reran. An accidental duplicate child55 retry is supplementary and counted once.",
+    "independent_reached": "86 reported conditions: early/late WR observer29+29 at592, corrected Map-own phase28 at1f96. They check old/new wrapper identity, null/live visibility, incoming edge retention, physical pin, creation authority and budget resumption. First Map-phase pattern conjunction could not bind its fresh Value; split premises fix only that fixture, whose first attempt remains0.",
+    "affected": "Three changed GC33 ordinary fronts pass145 (48+46+51) at363: one actual PhpStep establishes a WR/Map storage pin, preserves ownership during value transfer and completes with Key/value retirement. Historical GC33 counts/cuts remain unchanged.",
+    "failures": "The initial strengthened quiet two-Map source completed normally but retained both Values; its model output disagrees with native and earns0. Before repair the rank64 fixture timed out240 before reaching the missing release stage, also0. The scoped activation repair passes the exact unchanged source and rank65. count()-observer stop, invalid-binding peer fixture and paused-state author fixture all remain externally preserved0."
+  },
+  "counts": {
+    "exact_positive_contexts": 14,
+    "validated_programs": 14,
+    "normal_contexts": 14,
+    "php_error_contexts": 0,
+    "reported_conditions": 464,
+    "author_conditions": 233,
+    "independent_conditions": 86,
+    "affected_conditions": 145
+  },
+  "sources_sha256": {
+    "weak-key-unset": {
+      "path": "tests/semantics/gc_compound_weak_key_unset_control.php",
+      "sha256": "0359bccaeba7da7d66a8adbf6aa36c1d416b37ffb49ab941af3c0ca36f2ab3b3"
+    },
+    "empty-map-key-unset": {
+      "path": "tests/semantics/gc_compound_map_key_unset_control.php",
+      "sha256": "ee66f3e245c46a233772fd8579313b6a1fcd42b4fd21fced4f20be1ac569e500"
+    },
+    "nonempty-map-key-unset": {
+      "path": "tests/semantics/gc_compound_map_nonempty_unset_control.php",
+      "sha256": "4700be3cf3979db8b8de0b0a5d7478f510722bb48470511d99f96ca6dbd04863"
+    },
+    "map-key-cross-shared-unset": {
+      "path": "tests/semantics/gc_ordinary_map_cross_shared_source.php",
+      "sha256": "4cb57b2f48cd626e747efde7656761998dfc747337936f55b958ec677418f5b9"
+    },
+    "incoming-child-throw": {
+      "path": "tests/semantics/gc_ordinary_incoming_child_throw_source.php",
+      "sha256": "ffc44a43946d4728d1c3688ff6fac0490878e71dbea1e2b10d30a24d136bbf75"
+    },
+    "wr-recreate-global": {
+      "path": "tests/semantics/gc_ordinary_review_wr_recreate_global.php",
+      "sha256": "405e6c24a37a95694f2629272c5159be7912a3d079e98e069744729dce78708a"
+    },
+    "wr-old-get-before-observer": {
+      "path": "tests/semantics/gc_ordinary_review_wr_old_get_before_observer.php",
+      "sha256": "1e4aac9ff1a0258e276752d72367e78d6f62814dec3dca53ad6de74b9674e779"
+    },
+    "wr-two-incoming-leaves": {
+      "path": "tests/semantics/gc_ordinary_review_wr_two_incoming_leaves.php",
+      "sha256": "66050b0cf1a4bcab9c09d95406fe7ec85e31ef3d75e73e58b3528d0b14dfc076"
+    },
+    "map-own-phase-global": {
+      "path": "tests/semantics/gc_ordinary_review_map_own_phase_global.php",
+      "sha256": "ce6db0a565e8d6152bbab6e26c4d717c26d3590fa106f74d0d6bf1833e15c878"
+    },
+    "map-own-throw-suffix": {
+      "path": "tests/semantics/gc_ordinary_review_map_own_throw_suffix.php",
+      "sha256": "475afb31d5e1bea4b74c21414c51c0b6aa1e2663f8dc436dad6b88e5f25d90dd"
+    },
+    "wr-single-throw": {
+      "path": "tests/semantics/gc_ordinary_review_wr_single_throw.php",
+      "sha256": "9e426eee0540aa5e9662da898f944c9e3b3e95f97589caab0b5b028003cf7b6a"
+    },
+    "wr-self-create": {
+      "path": "tests/semantics/gc_ordinary_review_wr_self_create.php",
+      "sha256": "e20fa899d7f252d89ec88b537cead04b2963cff95fb04bc29ce44535eebd2abe"
+    },
+    "map-multi-own-reuse": {
+      "path": "tests/semantics/gc_ordinary_review_map_multi_own_reuse.php",
+      "sha256": "762731662d4c0cca398982ba7d44176f4ae3fd98042f4a117b3aa5e09ad7ccd3"
+    },
+    "map-multi-own-recreate": {
+      "path": "tests/semantics/gc_ordinary_review_map_multi_own_recreate.php",
+      "sha256": "126bc6111ad602827720d375ec0d5f2ea65c3aa37db5b7649c906f2bb69fbddb"
+    }
+  },
+  "limits": "Producer/read/reference policies are unchanged: incoming internal Keys currently use singleton receivers; own multiple-entry teardown keeps existing plain-Key/payload authority. Broad field-bearing Value insertions and two direct-dtor shared registrations remain native-only0 candidates, preserved as PHP files outside the active model catalogue. Escaping/mutating freeing objects, creation without selected notification authority, custom Closure Keys, collection with active storage pins and wider diagnostics remain partial. No collector/count/nogc change or native evaluation fallback; complete core remains unfinished.",
+  "recovery": "Raw originals, failed/accepted reports and exact external gate scripts remain in ../php-spec-evidence-archive/gc-ordinary-internal-key-34 and gc-ordinary-key-review-34. Maintained source runners are gc_ordinary_key_sources.py and gc_ordinary_key_review_sources.py; states are gc_ordinary_key_state.py, gc_ordinary_key_review_state.py and the affected gc_compound_key_state.py ordinary cases. Select native/model phases and keep source/request identities and recorded cuts.",
+  "review": "Independent pinned engine/rule/source/reached review and draft scope CLEAR; final private docs and actual-parent/exact-head review are supplied separately by review messages.",
+  "reports_sha256": {
+    "gc-ordinary-internal-key-34/original-unset/native-report.json": "75e5bfdd7c6937b875adb32267131ad527d1bb1ef15628924323fea1cc7dee61",
+    "gc-ordinary-internal-key-34/original-unset/baseline-report.json": "296eb28d37723abc975c04fc2b42e6e8c2ff3ac94e6abf0c8e5f866ae4c0cc1e",
+    "gc-ordinary-internal-key-34/original-unset/model-report.json": "c0e6da3669bd27a95793b5e6f51dbef03a077a9e77f9de39446eacde5d29d0b1",
+    "gc-ordinary-internal-key-34/shared-and-throw/native-report.json": "36ca1d1ee189255ed5d4c4f756ceb0746bced3b3cd1bf8d7e4b6cde3cb784fc0",
+    "gc-ordinary-internal-key-34/shared-and-throw/model-map-key-cross-shared-unset-incoming-child-throw-report.json": "8653169c8ddf0875d9ce36831be7088cd3dae5519258b9001b945c667f47bacd",
+    "gc-ordinary-internal-key-34/strict-compile/report.json": "98db643be044ffe7b2416d36b69830096b281c3200c0e6a75af76e9e277a2e75",
+    "gc-ordinary-internal-key-34/strict-activation/report.json": "5318ea03036e4f8bbbc07fca2bde53e55183154ea985f933b9acc33856e24176",
+    "gc-ordinary-internal-key-34/ranked-pre-fix-timeout/report.json": "49b44576751cd531ad3178c492a67d14501ec303199c846ee3207812cd92174d",
+    "gc-ordinary-internal-key-34/ranked-activation/report.json": "9ae565477d2470e7736eaa75ac8029f0eb1af42fe2ec1a74c3b13e439098a1ba",
+    "gc-ordinary-internal-key-34/author-pre-resume-fix/report.json": "3dc63e89ac2b9f2131ac7c4fdb2a7f174e6edee29b1d6933322b4639f3ca3d9d",
+    "gc-ordinary-internal-key-34/author-resumed/report.json": "ad5a826bbdae755408aa0e6f98e7d045539b48ba072d53b93334c3a985202ccb",
+    "gc-ordinary-internal-key-34/affected-ordinary/report.json": "d6d216c3a6fda2b937d42582ef13514997713534b11304dd2c9c2ad2fca36a6c",
+    "gc-ordinary-key-review-34/model-review-wt/report.json": "70ed23542f4dc3a496703620393f8ed88f23c73ab314333a45c17f3364af761e",
+    "gc-ordinary-key-review-34/native-corrected-wt/native-report.json": "ac29940e223e04a71a20b47c7c6231564c6016146bd49a9b20912c5b9d9fb25b",
+    "gc-ordinary-key-review-34/model-review-wt-v2/report.json": "04edf7363d86a19acc579e19c085e2f0c12218b5de740f49c775ce6e0ebb12ae",
+    "gc-ordinary-key-review-34/native-corrected-wt/model-wr-two-incoming-leaves-report.json": "539be51c282b19f36751d83d8b45302d3632cfb168c4ff6e7a00bef5e0fd257f",
+    "gc-ordinary-key-review-34/native-freeing-create/report.json": "01e8cb13261b3f21758d2423714a011bb81c8270c19fa626d507351c57838d50",
+    "gc-ordinary-key-review-34/native-fresh-map-recreate/report.json": "d8709d859fce4140cb133eb2f8e4bc9e9e91444392d83bfd8bbadc79e130bb88",
+    "gc-ordinary-key-review-34/model-final-create/report.json": "6525baeca52bb80562ad0e9f0138af855f1f314ca8f9b3e1166e3585364aa434",
+    "gc-ordinary-key-review-34/reached-final-phases/fiber-state-review-dj3l87kl/report.json": "ee428ee6f7e01cabbd0323030068192d709ec642c6fb9e9113747126757256c8",
+    "gc-ordinary-key-review-34/reached-final-phases/fiber-state-review-n5djpdis/report.json": "9b264bf72f96e3894673e53ebe0033e11ea3bd73003e1bb6c1e0f16d1c410c41",
+    "gc-ordinary-key-review-34/reached-final-phases/fiber-state-review-h3bm5fdn/report.json": "2bd273d876e2dd455e2d6819022950565cbdd9000ef0176c19e1b66d756e30de",
+    "gc-ordinary-key-review-34/reached-final-map-corrected/fiber-state-review-m3dek3qy/report.json": "d0215e4bb3ea4346dc8b82028bb45a317dd8f1e56c42f1ff975081cdedbc4daa"
+  }
+}

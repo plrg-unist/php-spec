@@ -3192,6 +3192,10 @@ accepted lexers, the receipt schema and authored runtime rules are unchanged.
 Rejected sources also retain later headers after completed nested namespaces,
 whose static validation belongs to compilation. Sixteen dynamic and four main
 comparisons plus 100 reached conditions pass.
+Compiler-only class/interface/enum checks, static magic-method restrictions and
+try statements likewise preserve later parser warnings. Thirty-eight dynamic and
+four main comparisons and 110 reached conditions pass; parser-time modifier
+errors remain distinct.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
@@ -3199,7 +3203,8 @@ comparisons plus 100 reached conditions pass.
 [lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
 [main-rejection review](coverage/semantics/main-source-rejection-review.json),
 [rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
-[namespace-phase review](coverage/semantics/rejected-namespace-review.json).
+[namespace-phase review](coverage/semantics/rejected-namespace-review.json),
+[compiler-phase review](coverage/semantics/rejected-static-validation-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3587,10 +3592,19 @@ GC33 admits allocated WeakReference/WeakMap identities at first Map insertion.
 Terminal WeakReference cleanup unregisters its referent before incoming entries;
 Map cleanup unregisters outgoing keys and releases its own values first. Earlier
 fatals retain the untouched phase's owners. Nine exact contexts and 866 reported
-conditions cover shared/self/cross-linked keys and both allocator modes. Ordinary
-internal-Key callbacks remain explicitly Unsupported; later producer policies,
-weak Closure keys and active free pins remain partial.
+conditions cover shared/self/cross-linked keys and both allocator modes. At that
+cut, ordinary internal-Key callbacks remained Unsupported; later producers,
+weak Closure keys and collection with active free pins remained partial.
 [Compound key review](coverage/semantics/gc-compound-key-review.json).
+
+GC34 continues ordinary internal-Key free through actual storage pins and
+callbacks. Quiet singleton registrations activate cleanup; Map own values drain
+before incoming entries, preserving rank, separate owners and pending exceptions.
+Authenticated callbacks can reuse or recreate the pending weak observer. Fourteen
+exact programs and 464 reported conditions pass at recorded cuts, promoting the
+three GC33 unset controls. Original failures retain zero credit; wider producers,
+freeing-object escape/mutation and active-pin GC remain partial.
+[Ordinary key review](coverage/semantics/gc-ordinary-key-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
@@ -4820,22 +4834,25 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Ignored owning destructor-body results retire after PHP local cleanup and before
-the inner C decrement, retaining both protections and the original C call. An
-unhandled literal Exception during that disposal now preserves authenticated
-pending outer C wrappers and unfinished arguments/FCC slots. Shared
-operation/frame/pending owners count once. Later active queue cleanup runs while
-the stopped tick tail stays rooted; a returned value that throws after its
-original call finishes adds no parent. Four new originals and two affected
-controls agree, and private strict435 passes. Seven independent groups pass 612
-conditions (603 reached, nine derived). See the [body-value bailout review](coverage/semantics/callback-late-tick-body-throw-review.json);
-earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+Normal owning results from named selected handlers also retire before the
+original Throwable and registry restoration, retaining both outer C protections.
+Fresh objects, alias arrays and static Closure captures retire in that interval;
+a genuinely shared result survives its ignored drop until the later tick argument.
+Four new originals agree, and six independent fronts pass 432 genuine
+source-reached checks. This validates the existing VALUE-release rules.
+See the [handler-value review](coverage/semantics/callback-late-tick-handler-value-review.json).
+Ignored destructor-body values retire before the inner C decrement. An unhandled
+literal Exception during their disposal preserves authenticated pending outer C
+wrappers and unfinished arguments/FCC slots, with shared operation/frame/pending
+owners counted once. Later active queue cleanup runs while the stopped tick tail
+stays rooted. Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+[body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
 [handler](coverage/semantics/callback-late-tick-handler-review.json),
 [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) and
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence
-retains its original cuts. Distinct pending-owner contexts, wider producers,
-assertion roots, changed phases, direct reference-return bodies, owning-result
-handlers and reentrant release remain partial.
+retains its original cuts. Distinct pending-owner contexts, abrupt handler-value
+disposal, owning handler callables, wider producers, assertion roots, changed
+phases, direct reference-return bodies and reentrant release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -7382,6 +7399,13 @@ order. Failed construction suppresses its destructor, and catch/finally are
 skipped. Two exact exit comparisons and reached ownership gates pass; wider
 cleanup replacements and bailout contexts remain partial.
 [Exit review](coverage/semantics/generator-call-exit-review.json).
+
+Exit from an owning warning-handler retval now follows its destructor and Child
+cleanup before restoring the handler and releasing prepared/API owners. The
+hidden copied Closure remains through shutdown. Two exact exit comparisons and
+independent reached-state gates pass; a cleanup throw replacing this pending
+exit and wider bailout contexts remain partial.
+[Owning retval exit review](coverage/semantics/generator-call-cleanup-exit-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

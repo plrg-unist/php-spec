@@ -29,8 +29,9 @@ dec $weakref_find(pstate, pnode*, nat) : nat?
 def $weakref_find(S, eps, n_target) = eps
 def $weakref_find(S, (HOBJECT n) :: pnode_tail*, n_target) = (n)
   -- if S.OBJECTS[n] = WEAKREFERENCE (n_target)
+  -- if ~$instance_storage_freeing(S, n)
 def $weakref_find(S, (HOBJECT n) :: pnode_tail*, n_target) = $weakref_find(S, pnode_tail*, n_target)
-  -- if S.OBJECTS[n] =/= WEAKREFERENCE (n_target)
+  -- if S.OBJECTS[n] =/= WEAKREFERENCE (n_target) \/ $instance_storage_freeing(S, n)
 def $weakref_find(S, (HCELL n) :: pnode_tail*, n_target) = $weakref_find(S, pnode_tail*, n_target)
 def $weakref_find(S, (HARRAY n) :: pnode_tail*, n_target) = $weakref_find(S, pnode_tail*, n_target)
 dec $weakref_done(pstate, pvalue) : pstate
@@ -46,10 +47,12 @@ dec $weakmap_storage_read(pstate, nat, nat) : bool
 dec $weakref_get(pstate, nat) : pvalue
 def $weakref_get(S, n) = POBJECT n_target
   -- if $weakref_at(S, n) = (WEAKREFERENCE (n_target))
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$instance_storage_freeing(S, n_target)
   -- if (HOBJECT n_target) <- S.ALLOCATIONS
 def $weakref_get(S, n) = POBJECT n_target
   -- if $weakref_at(S, n) = (WEAKREFERENCE (n_target))
+  -- if ~$instance_storage_freeing(S, n)
   -- if $weakmap_storage_read(S, n, n_target)
 def $weakref_get(S, n) = PNULL -- otherwise
 def $weakref_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -341,8 +344,15 @@ dec $weakref_records_valid(pstate, pnode*, nat*) : bool
 def $weakref_records_valid(S, eps, n_seen*) = true
 def $weakref_records_valid(S, (HOBJECT n) :: pnode_tail*, n_seen*) = true
   -- if S.OBJECTS[n] = WEAKREFERENCE (n_target)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $(n_target < n) /\ ~(n_target <- n_seen*)
   -- if $weakref_records_valid(S, pnode_tail*, n_target :: n_seen*)
+;; A freeing wrapper has already unregistered its referent. Its borrowed
+;; history may coexist with the new singleton created by a value callback.
+def $weakref_records_valid(S, (HOBJECT n) :: pnode_tail*, n_seen*) = true
+  -- if S.OBJECTS[n] = WEAKREFERENCE (n_target)
+  -- if $instance_storage_freeing(S, n) /\ $(n_target < n)
+  -- if $weakref_records_valid(S, pnode_tail*, n_seen*)
 def $weakref_records_valid(S, (HOBJECT n) :: pnode_tail*, n_seen*) = true
   -- if S.OBJECTS[n] = WEAKREFERENCE eps
   -- if $weakref_init_pending(S, n)

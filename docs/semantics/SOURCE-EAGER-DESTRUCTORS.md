@@ -312,6 +312,12 @@ initialization on `13bc4e931`; it adds no lifecycle/source renewal.
 Exception-handler return values release before the original Throwable and before
 the old handler is restored. Error-handler return values release before restoring
 the old error handler. A replacement installed by either body remains active.
+Normal owning results from named post-FINAL tick exception handlers use this
+same pipeline. The original Throwable and both outer C protections remain while
+fresh returned values run nonthrowing destructors; a shared result survives its
+ignored-return drop under a genuine later owner. The
+[handler-value review](../../coverage/semantics/callback-late-tick-handler-value-review.json)
+records the source and ownership cuts; abrupt value cleanup remains separate.
 An error-handler retval destructor has an internal API trace but retains the
 actual USER caller's permission and catch continuation. Retired selected Closure,
 method and raw-array identities remain borrowed lookup evidence.
@@ -343,8 +349,8 @@ selected result/warning record owns shared operation, frame and pending-exceptio
 values once; parent records require the same descriptors and a selected anchor.
 Distinct pending ownership contexts remain an explicit boundary. The
 [body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json)
-records current checks; selected-handler owning retval and wider reentry are
-separate limits. This phase does not claim their later request freeing.
+records current checks; abrupt selected-handler retval disposal and wider
+reentry are separate limits. This phase does not claim their later request freeing.
 
 An engine fatal bailout also skips live VM frame cleanup. The snapshot retains
 current and saved local, receiver and temporary owners before structural cleanup;
