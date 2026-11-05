@@ -88,6 +88,7 @@ def prepare(out):
             'S_throw.COMPLETION = NORMAL', 'S_throw.ERRORHANDLER = S_parse.ERRORHANDLER',
             'S_throw.SOURCES = S_parse.SOURCES', 'S_throw.CODE = S_parse.CODE',
             'S_throw.FAILEDSOURCES = [pfailedsource_first]', 'pfailedsource_first.UNIT = 1',
+            '|S_throw.DESTRUCTION.HANDLES| = |S_throw.OBJECTS|', '$destruction_store_new(S_throw) = S_throw',
             '$test_rejected_warnings(S_throw.EVENTS) = [1]', *public('S_throw'),
             'S_second = $drive_steps(S_throw,3000)', 'S_second.COMPLETION = SOURCE_PENDING',
             'S_second.FILECONTEXTS = [pfilecontext_second]', 'pfilecontext_second.PHASE = FILE_RESOLVE_WAIT',

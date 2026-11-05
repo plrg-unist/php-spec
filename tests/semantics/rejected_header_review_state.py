@@ -43,49 +43,65 @@ def prepare(out):
                 + ' ' + term(base64.b64decode(value['message'])) + ' ' + str(value['line']) + ' ([' + ','.join(headers) + ']))')
 
     try:
-        code = b'declare(\n encoding=1\n);\necho ;'
-        for mode in ('eval', 'file'):
+        parse_code = b'declare(\n encoding=1\n);\necho ;'
+        variants = [('eval', 'eval', parse_code), ('file', 'file', parse_code),
+            ('legacy_compile_eval', 'eval', b'declare(encoding=true);'),
+            ('legacy_compile_file', 'file', b'declare(encoding=true);')]
+        for tag, mode, code in variants:
             unit = code if mode == 'eval' else b'<?php\n' + code
-            child = out / 'unit.php'
+            child = out / (tag + '-unit.php')
             if mode == 'file': child.write_bytes(unit)
-            operation = b'eval(' + literal(code) + b')' if mode == 'eval' else b'include "unit.php"'
-            main = b'<?php echo "M|";try{' + operation + b';}catch(ParseError $e){echo "C|";}finally{echo "F|";}echo "A|";'
-            path = out / (mode + '.php'); path.write_bytes(main)
+            operation = b'eval(' + literal(code) + b')' if mode == 'eval' else b'include ' + literal(os.fsencode(child.name))
+            main = b'<?php $trash=new stdClass;unset($trash);echo "M|";try{' + operation + b';}catch(Throwable $e){echo "C|";}finally{echo "F|";}echo "A|";'
+            path = out / (tag + '.php'); path.write_bytes(main)
             ast = frontend.request({'op': 'parse', 'source': b64(main)})['ast']
-            checks.append('U_' + mode + ' = ' + adapter.request({'op': 'check', 'ast': ast, 'fixture': True})['fixture'])
+            checks.append('U_' + tag + ' = ' + adapter.request({'op': 'check', 'ast': ast, 'fixture': True})['fixture'])
             request = {'op': 'parse-' + mode, 'id': '1', 'mode': mode, 'profile': 'cli-raw-85', 'source': b64(unit)}
-            if mode == 'file': request.update(requested=b64(b'unit.php'), resolved=b64(os.fsencode(child)), opened=b64(os.fsencode(child)))
+            if mode == 'file': request.update(requested=b64(os.fsencode(child.name)), resolved=b64(os.fsencode(child)), opened=b64(os.fsencode(child)))
             parsed = frontend.request(request)
             raw = (frontend.output / 'stderr').read_bytes()[len(frontend.recorded_stderr):]
             frontend.recorded_stderr.extend(raw)
             assert not parsed['accepted'] and CLI['dynamic_parser_stderr'](parsed, mode, raw)
-            warning_line = 3 if mode == 'eval' else 4
-            assert parsed['line'] == warning_line + 1 and parsed['headers'][0]['closeLine'] == warning_line
-            value = response(parsed, mode); responses[mode] = parsed
-            state = 'S_' + mode
+            legacy = tag.startswith('legacy_'); kind = 'FAILED_COMPILE' if legacy else 'FAILED_PARSE'
+            warning_line = None if legacy else (3 if mode == 'eval' else 4)
+            assert parsed['category'] == ('parser_static_rejection' if legacy else 'parser_rejection')
+            if not legacy:
+                assert parsed['line'] == warning_line + 1 and parsed['headers'][0]['closeLine'] == warning_line
+                responses[mode] = parsed
+            value = response(parsed, tag)
+            if legacy:
+                checks.append('$eval_response_shape(' + value + ')')
+                value = '(SOURCE_COMPILE_REJECT 1 ' + term(unit) + ' ' + term(base64.b64decode(parsed['message'])) + ' ' + str(parsed['line']) + ')'
+            state = 'S_' + tag
+            context = ('pevalcontext_' if mode == 'eval' else 'pfilecontext_') + tag
             if mode == 'eval':
-                checks += [state + ' = $php_run(U_eval,1500,' + json.dumps(b64(os.fsencode(path))) + ')',
-                    state + '.EVALCONTEXTS = [pevalcontext]', 'pevalcontext.UNIT = 1']
+                checks += [state + ' = $php_run(U_' + tag + ',1500,' + json.dumps(b64(os.fsencode(path))) + ')',
+                    state + '.EVALCONTEXTS = [' + context + ']', context + '.UNIT = 1']
                 resume, valid, continuation = '$eval_resume', '$eval_response_valid', '$eval_continue'
             else:
-                checks += ['S_file_open = $php_file_run(U_file,1500,' + term(os.fsencode(path)) + ',' + term(os.fsencode(out)) + ')',
-                    'S_file_open.COMPLETION = SOURCE_PENDING', 'S_file_open.FILECONTEXTS = [pfilecontext_open]',
-                    state + ' = $file_open_resume(S_file_open,FILE_OPENED pfilecontext_open.NONCE pfilecontext_open.CALLER pfilecontext_open.REQUESTED '
+                checks += [state + '_open = $php_file_run(U_' + tag + ',1500,' + term(os.fsencode(path)) + ',' + term(os.fsencode(out)) + ')',
+                    state + '_open.COMPLETION = SOURCE_PENDING', state + '_open.FILECONTEXTS = [' + context + '_open]',
+                    state + ' = $file_open_resume(' + state + '_open,FILE_OPENED ' + context + '_open.NONCE ' + context + '_open.CALLER ' + context + '_open.REQUESTED '
                     + term(os.fsencode(child)) + ' ' + term(os.fsencode(child)) + ' ' + term(unit) + ')',
-                    state + '.FILECONTEXTS = [pfilecontext]', 'pfilecontext.UNIT = (1)']
+                    state + '.FILECONTEXTS = [' + context + ']', context + '.UNIT = (1)']
                 resume, valid, continuation = '$file_parse_resume', '$file_parse_response_valid', '$file_parse_continue'
             checks += [state + '.COMPLETION = SOURCE_PENDING', *public(state), valid + '(' + state + ',' + value + ')',
+                state + '.DESTRUCTION.FREE = n_free_' + tag + ' :: n_free_tail_' + tag + '*',
                 state + '_resumed = ' + resume + '(' + state + ',' + value + ')',
                 state + '_resumed.COMPLETION = NORMAL', state + '_resumed.COMPILESTOP = false',
                 state + '_resumed.SOURCES = ' + state + '.SOURCES', state + '_resumed.CODE = ' + state + '.CODE',
                 state + '_resumed.EVALBINDINGS = ' + state + '.EVALBINDINGS', state + '_resumed.FILEBINDINGS = ' + state + '.FILEBINDINGS',
                 state + '_resumed.EVALCONTEXTS = eps', state + '_resumed.FILECONTEXTS = eps',
-                state + '_resumed.SERVICELEFT = eps', state + '_resumed.FAILEDSOURCES = [pfailedsource_' + mode + ']',
-                'pfailedsource_' + mode + '.UNIT = 1', 'pfailedsource_' + mode + '.ISFILE = ' + str(mode == 'file').lower(),
-                'pfailedsource_' + mode + '.BYTES = ' + term(unit), 'pfailedsource_' + mode + '.KIND = FAILED_PARSE',
-                'pfailedsource_' + mode + '.LINE = ' + str(warning_line + 1),
-                'pfailedsource_' + mode + '.FILE = $call_sourcefile(' + state + '.FILES,PORIGIN 1 eps)',
-                state + '_resumed.EVENTS = ' + state + '.EVENTS ++ [DIAGNOSTIC_SOURCE 1 "Warning" ($ptascii(' + json.dumps(MESSAGE) + ')) ' + str(warning_line) + ']',
+                state + '_resumed.SERVICELEFT = eps', state + '_resumed.FAILEDSOURCES = [pfailedsource_' + tag + ']',
+                'pfailedsource_' + tag + '.UNIT = 1', 'pfailedsource_' + tag + '.ISFILE = ' + str(mode == 'file').lower(),
+                'pfailedsource_' + tag + '.BYTES = ' + term(unit), 'pfailedsource_' + tag + '.KIND = ' + kind,
+                'pfailedsource_' + tag + '.LINE = ' + str(parsed['line']),
+                'pfailedsource_' + tag + '.FILE = $call_sourcefile(' + state + '.FILES,PORIGIN 1 eps)',
+                state + '_resumed.EVENTS = ' + state + '.EVENTS' + ('' if legacy else ' ++ [DIAGNOSTIC_SOURCE 1 "Warning" ($ptascii(' + json.dumps(MESSAGE) + ')) ' + str(warning_line) + ']'),
+                '|' + state + '_resumed.DESTRUCTION.HANDLES| = |' + state + '_resumed.OBJECTS|',
+                state + '_resumed.DESTRUCTION.HANDLES = ' + state + '.DESTRUCTION.HANDLES ++ [n_free_' + tag + ']',
+                state + '_resumed.DESTRUCTION.FREE = n_free_tail_' + tag + '*',
+                state + '_resumed.DESTRUCTION.NEXT = ' + state + '.DESTRUCTION.NEXT',
                 *public(state + '_resumed'), '~' + valid + '(' + state + '_resumed,' + value + ')',
                 state + '_replay = ' + resume + '(' + state + '_resumed,' + value + ')',
                 state + '_replay = ' + state + '_resumed[.COMPLETION = UNSUPPORTED "invalid ' + ('eval' if mode == 'eval' else 'file') + ' parser response"]',
@@ -93,10 +109,18 @@ def prepare(out):
                 state + '_masked.EVENTS = ' + state + '.EVENTS', state + '_masked.FAILEDSOURCES = ' + state + '_resumed.FAILEDSOURCES',
                 state + '_zero = ' + continuation + '(' + state + '[.SERVICELEFT = (0)],' + value + ')',
                 state + '_zero.COMPLETION = BUDGET', state + '_zero.EVENTS = ' + state + '_resumed.EVENTS',
+                state + '_zero.DESTRUCTION = ' + state + '_resumed.DESTRUCTION',
                 state + '_zero.FAILEDSOURCES = ' + state + '_resumed.FAILEDSOURCES', *public(state + '_zero'),
                 state + '_done = $drive_steps(' + state + '_zero[.COMPLETION = NORMAL],1500)',
                 state + '_done.COMPLETION = NORMAL', state + '_done.TODO = eps',
+                state + '_done.DESTRUCTION.HANDLES = ' + state + '_resumed.DESTRUCTION.HANDLES',
                 '$test_outputs(' + state + '_done.EVENTS) = $ptascii("M|C|F|A|")', *public(state + '_done')]
+            if not legacy:
+                old = '(SOURCE_PARSE_REJECT 1 ' + term(unit) + ' ' + term(base64.b64decode(parsed['message'])) + ' ' + str(parsed['line']) + ')'
+                checks += [state + '_legacy = ' + resume + '(' + state + ',' + old + ')',
+                    state + '_legacy = ' + state + '_resumed[.EVENTS = ' + state + '.EVENTS]', *public(state + '_legacy'),
+                    state + '_legacy_zero = ' + continuation + '(' + state + '[.SERVICELEFT = (0)],' + old + ')',
+                    state + '_legacy_zero = ' + state + '_legacy[.COMPLETION = BUDGET]', *public(state + '_legacy_zero')]
 
         original = responses['eval']; mutations = []
         for key, value in [('beginLine', 0), ('beginTokenPos', -1), ('closeLine', 1), ('closeTokenPos', 0)]:
