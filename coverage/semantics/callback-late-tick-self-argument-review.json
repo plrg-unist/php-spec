@@ -66,9 +66,9 @@
   ],
   "remaining": "Scalar, array/reference and other callback payloads, assertion callback roots, abrupt/reentrant module shutdown and other late-free routes remain partial. The selected normal sources witness one copied self and self plus another object; this is not exhaustive source validation of all finite lists.",
   "composition": {
-    "head": "2c7f56d09849b67116e371e981b2e992c1cc5d43",
-    "parents": ["f2c938eaa8e6220e28de12eeff5878fdc842506c", "84113f0f95d591a8ed8b51b474588814831f48ea"],
-    "compatibility": "OB08 adds an explicit-null default ob_start route in 391/444 for an EXECUTOR_RELEASE shutdown queue. Selected ATTR15 sources use named output handlers before FINAL and only EXECUTOR_TICK_RELEASE later. GC26 adds explicit GC real Closure caller behavior in 301; selected sources do not call GC or create Closures. Joined strict433 at 2c7 passes; production diff from 841 master is only the reviewed 444 self-argument rule.",
-    "review": "Independent semantic/test CLEAR for f2c and post-OB08/GC26 bridge CLEAR for 2c7 by /root/attr_review_recovery."
+    "head": "a489a23221e8b770dd754ee6c5cebf56f7b7b53c",
+    "parents": ["751a08f4f110d4265ba5152c69533066126fafd8", "deef01afc687aaebc8d98ca3d104872c1ffb85f0"],
+    "compatibility": "OB08 adds an explicit-null default ob_start route in 391/444 for an EXECUTOR_RELEASE shutdown queue. Selected ATTR15 sources use named output handlers before FINAL and only EXECUTOR_TICK_RELEASE later. GC26 adds explicit GC real Closure caller behavior in 301; selected sources do not call GC or create Closures. I93 changes Generator Closure::call reference timing and return cleanup in 30/182/268, absent from the selected raw-invokable tick sources. Joined strict433 at 2c7 passes; production diff from deef master is only the reviewed 444 self-argument rule.",
+    "review": "Independent semantic/test CLEAR for f2c, post-OB08/GC26 bridge CLEAR for 2c7 and I93 source disjointness review by /root/attr_review_recovery."
   }
 }
