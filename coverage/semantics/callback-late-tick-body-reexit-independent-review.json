@@ -1,0 +1,32 @@
+{
+  "milestone": "ATTR27 independent recovery review",
+  "candidate": "6a887178a13a696925983d69d078493ebadd199d",
+  "base": "6138ab61d8004bc7f50133fd486bf26b1afd4c7b",
+  "accepted_commits": [
+    "29eabd272",
+    "5d3567c7a",
+    "f72d2f0ed",
+    "aab4fcc93",
+    "6a887178a"
+  ],
+  "disposition": "Accept the bounded changed-status tick unwind. No blocking finding.",
+  "review": [
+    "Pinned Zend exit writes the full integer status before creating UnwindExit. Main script error disposal precedes request shutdown, so its earlier exit is documentary phase state during this later C call.",
+    "The new lookup requires the actual canonical singleton EXIT_UNWIND, matching actual full EXITSTATUS, a current destructor with its sole null-C frame, an original Tick release operation, and strict source/context validation under the saved status.",
+    "Changing only EXITSTATUS in the validation view leaves actual owner roots and saved phase completions intact. On that view the actual unwind status fails the new gate, so recursive source-history validation terminates.",
+    "Frame validation obtains the witness before switching to the saved caller scope. Its ordinary fallback is unchanged; no source entry, delivery, heap ownership or terminal cleanup rule is relaxed.",
+    "Protocol witnesses discriminate fresh return, aliased array, static Closure capture, retained-later release and cacheless terminal routes; owner counts, abandoned records, later queue cleanup, full statuses 9/515/519, Budget and idempotence are checked. Ordinary and mismatched-status controls refuse the new lookup."
+  ],
+  "retained_evidence": {
+    "ledger": "coverage/semantics/callback-late-tick-body-reexit-review.json",
+    "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-27",
+    "strict": "strict-unwind-f72/report.json: revision f72d2f0ed, SL435, true, exit0, no timeout, reaped group",
+    "sources": "source-unwind-f72/report.json and source-unwind-f72-rest/report.json: seven exact comparisons at f72d2f0ed/aab4fcc93, including two affected controls",
+    "reached": "reached-first/run/report.json and process.json: revision aab4fcc93, five passed groups, 775 conditions (765 genuine, ten derived), exit0, no timeout, reaped groups",
+    "recovery_checks": "Seven concise report hashes match the existing ledger. All five reached records pass with their exact asserted counts. No semantic production diff exists after f72d2f0ed through candidate 6a887178a.",
+    "new_execution": "None. This recovery retains recorded revisions and does not renew historical test credit.",
+    "failures": "Original Unsupported baseline and owner-loss diagnostic remain zero agreement credit."
+  },
+  "current_parent_interaction": "From the candidate base to master 8f1365ed8, module84 is unchanged. Module444 changes only OB_NOTICE/OB_START_INVALID_NOTICE handler-retval nested-start validation and trace suffixes; the selected handler-free current null-C Tick unwind contains neither source. CLASS181 module383 and I107 test-only changes are disjoint. Integration may retain the accepted cuts without replay.",
+  "remaining": "Multiple or USER/non-Tick frames, handlers, unshared owning channels, wider cleanup/reference-return/GC/Fiber/reentry histories remain partial. This acceptance closes neither lifecycle nor PHP core."
+}
