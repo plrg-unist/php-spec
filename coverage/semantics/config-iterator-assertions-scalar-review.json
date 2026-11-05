@@ -1,0 +1,36 @@
+{
+  "scope": "A106 initialized Iterator copies a null or nonnegative integer INI_SET value while its Stringable option converts to exact zend.assertions after traversal and DATA/INPUT cleanup.",
+  "behavior": "The shared copied receipt admits PNULL and every nonnegative signed PINT. INI_SET converts the value after option retirement: null becomes a present empty raw INI string with quantity 0, and copied integer 2 stores raw 2 with quantity 2. The saved authentic receipt certifies the rootless converted call, old return, selected setter and restore. Negative integers remain outside this receipt.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_set", "Zend/zend_operators.c __zval_get_string_func", "Zend/zend_ini.c zend_ini_parse_quantity_internal", "Zend/zend.c OnUpdateAssertions"]
+  },
+  "tested_cut": {
+    "revision": "ffe147b60766348271bd7d0a8432f9334be1e505 on integrated A105 e38bd14e5b1f16e5e297df907aacda01e694a344",
+    "module_420_sha256": "c6382862d1db5a0939b049d622b0bf6a66be7880a2c53cb1036f51bc8a9234fb",
+    "manifest_sha256": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "case_catalog_sha256": "0eff8caf27b87fb72d41a8d72988e4076c2d4349ec9d8cd4b651ec49d5d6396c",
+    "source_wrapper_sha256": "82047c73c2ac207ef6070a26ad08b46a81566fdf0605283c4d47834770d1eb3a",
+    "state_fixture_sha256": "47b4de3c92c7495bf4ffe4bb4978b939f9e4151c00a886b0a380915a21c7f746",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC; serial direct CPU4 native pin and CPU1 source/reached/affected/strict loans, each fully reaped",
+    "sources": [
+      {"id": "temporary-null-installs-present-empty-raw", "sha256": "cdf3f55fa415fa83a2e8998f9783e7d28195d52e937851d884cb84f841f39db5", "report_sha256": "faaa04dcecca4d89fe0e0bfd5750f997e86d09b5303c253260308e3c522d4a4a"},
+      {"id": "selected-positive-integer-keeps-owner", "sha256": "c6493954e68a22718c8b77963c96fa1b5dfd4f159d2c51b94b04699d8963083f", "report_sha256": "5d483f55f58d8cf7b7cc8ab4db64fef8693705e36dc6d5a65173b04312eed214"}
+    ],
+    "source_result": "Both exact pinned-native/model sources completed normally with byte-equal decoded stdout, exit 0, empty stderr, stable head and inputs. Null prints R:1::1 after Iterator and option retirement; selected integer 2 prints R:1:2:B:2:2:0 before restore.",
+    "reached": "Temporary null 79/79 and selected integer 2 86/86 passed, exit 0, no timeout, stable head and author inputs. Reports SHA256 178314df5fb0664a7ab3cef65f694481cb1883a077fecce9aadc8299afffef42 and d25221cf721266f61decc2c01083cf8f4fcf27a704fd634f033d06949aa464c0. Checks cover exact receipt, present empty raw versus PNULL, quantity 0/2, old return, selected owner, genuine versus bare certificate, write and restore; a pure upper-bound check decodes PINT_MAX without warning and a negative PINT is refused.",
+    "affected": "A102 integer 73/73, A103 Boolean 76/76 and A104 string 85/85 reached checks passed after replacing obsolete PINT2/PNULL refusal controls. Reports SHA256 8cda2f9121969b1e2bd0d35d5dc53caeb9cd650e90a713b75023a76097e52e8f, 0d6369075d9984a6d95f664e8082c9aafba5b18c453ad0929c05d89e96e9c340 and d52bf369bea49386468329efd11cb475a9678e4c074cc41dfe6e8827e28ed622.",
+    "strict_sl": "Ordered 435-module manifest, exit 0, stdout true, empty stderr, 12.917 seconds; process JSON SHA256 ba248a86360f40e0ed2ca96205c4fc685d1063a1170157043d53fffc3771d049.",
+    "external_raw": [
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-scalar-106/native-e38bd14e5",
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-scalar-106/source-ffe147b60",
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-scalar-106/reached-ffe147b60",
+      "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-scalar-106/affected-strict-ffe147b60"
+    ],
+    "commands": "taskset -c 1 python3 tests/semantics/config_iterator_assertions_scalar_sources.py --case ID and taskset -c 1 python3 tests/semantics/config_iterator_assertions_scalar_state.py --case ID, one ID per run; affected prior *_state.py cases used the same form. The strict process JSON records full ordered argv. Native-only process JSON records taskset -c 4, PHP flags and original source paths."
+  },
+  "prior_boundary": "Integrated A102/A103 reached controls rejected copied PINT 2 and PNULL at the same receipt; their archived reports retain that historical scope. No new old-model run or agreement credit was assigned to those controls.",
+  "limits": "The new reception is exact zend.assertions with copied PNULL or nonnegative signed PINT after a Stringable Iterator option. Native source agreement covers null and integer 2; the PINT_MAX check is constructed reached evidence, not separate native agreement. Negative integer receipt, wider option/value effects and other CONFIG consumers remain Unsupported. Held A97 is untouched. No full-core, equivalence or BOLA claim.",
+  "review": "independent semantic/evidence and joined parent interaction CLEAR on 3890b7da22d2bd8e50f2510918a1f0205ced9cb9"
+}
