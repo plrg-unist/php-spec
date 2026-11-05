@@ -1444,9 +1444,10 @@ mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
 
 Canonical singleton and multiple-entry tables accept occupied writes when
 stored Values and the incoming Value satisfy the common policy for safe scalars
-and finite methodless objects. The scalar domain includes null/bool/int,
-validated startup strings and binary64 bit patterns below 2^64. References and
-arrays receive no new admission. Object properties retain their existing
+and finite methodless objects, or one direct array layer of those values. The
+scalar domain includes null/bool/int, validated startup strings and binary64 bit
+patterns below 2^64. Reference payloads, aliased array elements and nested arrays
+receive no new admission. Object properties retain their existing
 primitive/direct fieldless-Child policy. The former separate property-float arm
 is removed: its identical bit bound now delegates to the shared scalar helper,
 keeping successful validation disjoint.
@@ -1518,6 +1519,27 @@ updates from the nested writer's real receiver pin, and retains compiler,
 record-normalization and wrapper-dispatch failures at zero credit. Broader
 posttypes, structural mutation during the borrow and active-pin collection
 remain partial; paused generic NaN conversion work is unchanged.
+
+The direct-array layer validates each actual table element as a direct safe
+scalar or an existing finite methodless object. Aliases, nested arrays and
+duplicate keys reject; actual allocation/range and nonproxy checks precede
+tracing. First insertion authenticates its evaluated RHS/selected source and
+requires an empty Map with a private leaf `stdClass` Key and no incoming Map-key
+association. The older reference-array Key-backedge arm stays disjoint and
+unchanged. Other consumers reuse the common payload/storage policy.
+
+An array copy adds a real HARRAY owner without duplicating element edges. COW
+creates another backing table and its own edges. Existing release jobs retire
+the table before releasing its ordered elements, preserving repeated Values,
+Child owners and later cleanup after a throw. Array-valued object properties
+and indirect/by-reference WeakMap dimension writes retain their earlier limits.
+The [array-payload review](../../coverage/semantics/gc-direct-array-payload-review.json)
+binds two originals and one COW retirement front. It numerically checks A3/B2
+through table-to-job transfer, then B2-to1; later A3-to2 follows the unchanged
+release rule and original ending. Its GC check concerns the actual retired
+copy, with no new candidate-buffer claim for the earlier separation.
+The held Key is live during callbacks/catch, then retires during complete request
+cleanup. The original front's final Key-lifetime assertion retains zero credit.
 
 The singleton module386 admits same-key replacement with a leaf `stdClass` key and
 ordinary leaf old/new INSTANCE values. Only VALUE changes: KEY and BEFORE preserve

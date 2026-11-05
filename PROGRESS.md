@@ -727,7 +727,8 @@ ownership graphs and active-pin collection remain partial; the baseline and
 early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
 
-Safe scalar and finite methodless WeakMap payloads share validation across insertion,
+Safe scalars, finite methodless objects and one direct array layer share
+WeakMap payload validation across insertion,
 private-Key append, occupied replacement, reads/explicit entry removal from
 multiple-entry tables,
 singleton/multiple-entry Map retirement and selective Key notification. Safe
@@ -802,6 +803,15 @@ front pass. The old interpreter failure keeps zero credit; WeakMap rules and
 their evidence remain unchanged.
 [Property cursor repair](coverage/semantics/gc-property-nan-cursor-review.json).
 
+Top-level array elements use the existing scalar/object policy; nested arrays
+and aliased elements remain excluded. A fetched array retains its real table
+owner across Key death, while COW creates a separate table with its own repeated
+Value edges. Retirement transfers those edges to ordered jobs without copying
+Child edges. Two originals and one 99-condition COW retirement/ownership front
+pass; the original first-insertion refusal and final-Key fixture mistake retain
+zero credit.
+[Array-payload review](coverage/semantics/gc-direct-array-payload-review.json).
+
 Finite-payload notification admits only the actual retiring leaf `stdClass` Key
 under its validated storage pin. The other Keys remain nonfreeing and registered
 only in this Map; no active cursor or incoming Map-key association is admitted.
@@ -810,7 +820,7 @@ are weak-null during Child cleanup; later wrappers remain weak-live until that
 cleanup finishes, including a caught throw. Existing leaf/reference, callback,
 ordinary singleton and cursor policies retain their prior domains.
 
-Typed/alias/virtual/inherited/deeper and owning-array layouts,
+Typed/alias/virtual/inherited/deeper and owning-array property layouts,
 shared-Key finite payloads, wider mutation/caller contexts,
 freeing-Map dimension access and active-pin collection remain partial. Paused
 work is untouched. Three new originals agree exactly and one 91-condition
@@ -1961,7 +1971,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | --- | --- |
 | CLASS193 | Nonreference ordinary-object first CV in existing magic argument protocols; private implementation/review. |
 | I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
-| GC52 | Finite DIRECT-array WeakMap payload layer with existing COW/release; private implementation/review. |
+| GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR46 | Authenticated bracketed/unbracketed Namespace Tick placement; native/compiler calibration and private review. |

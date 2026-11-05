@@ -1,0 +1,73 @@
+{
+  "scope": "GC52: one top-level finite DIRECT-array payload layer of existing safe scalars/finite methodless objects, shared across normal WeakMap producers and consumers with real HARRAY/COW/ordered-release ownership.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "fde06222d1f421e8b8c1db3b65ab1e08437f44ce",
+  "semantic_revision": "eab77e5075e4d9c0b23eba1a17f16fa71f8a21cd",
+  "semantic_sha256": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "4a02d4e97c22d2980c37a77cf31baea783e2821d74043280856af8c83a02cc98",
+    "spec/semantics/422-weak-map-entries.watsup": "883d399d2b37722303b6a3b22011cb6b76f822f31011b1c4498512dea1e38b50"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/front-f02-key-shutdown-failure-v1/report.json": "f02ecd60f5115c70f33d08c187766a727c979274",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/front-f76-v1/report.json": "f76b15ef336b3a29ef5b47eff8a3cd40caeb4dcd",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/native-v1/baseline-report.json": "9855f09faa288f26af8a833619586e680725f111",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/native-v1/model-report.json": "eab77e5075e4d9c0b23eba1a17f16fa71f8a21cd",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/native-v1/native-report.json": "9855f09faa288f26af8a833619586e680725f111",
+    "../php-spec-evidence-archive/gc-direct-array-payload-peer-52/native-v1/model-report.json": "2ed46b030eb9b6b59b04085120669ce398f6b569",
+    "../php-spec-evidence-archive/gc-direct-array-payload-peer-52/native-v1/native-report.json": "cc125ff3d743a1f86cc3baa11566909ba57429e1"
+  },
+  "rule_basis": "A disjoint DIRECT-item predicate accepts the existing safe scalar domain or an existing common finite POBJECT. Its object delegation cannot recurse into arrays. A finite ordered entry fold rejects aliases, nested arrays and duplicate keys. The common PARRAY arm validates range/allocation/nonproxy and actual heap before the item fold. A386 first-write PARRAY arm authenticates actual TODO/RHS/SELECTED, empty/noincoming Map and private held leaf stdClass Key, with explicit old reference-array backedge exclusion. The old arm is byte-unchanged. Existing common write/read/unset/notice/free guards and old-domain exclusions inherit the same array policy. No new array schema, COW, eager-release, GC hook or global leaf/reference policy.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_read_dimension,write_dimension,has_dimension,unset_dimension,free_obj",
+    "vendor/php-src/Zend/zend_types.h:SEPARATE_ARRAY (zend_array_dup then GC_TRY_DELREF)",
+    "vendor/php-src/Zend/zend_hash.c:zend_array_dup,zend_array_destroy",
+    "spec/semantics/39-ownership.watsup:HARRAY physical entries and per-root owner counts (unchanged)",
+    "spec/semantics/257-request-destructors.watsup:ordered child-job transfer and shared-release rules (unchanged)"
+  ],
+  "counts": {
+    "new_exact_originals": 2,
+    "author_exact_originals": 1,
+    "independent_exact_originals": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 99,
+    "new_unsupported_php_controls": 0,
+    "old_runtime_baseline_agreements": 0,
+    "initial_final_key_fixture_agreements": 0,
+    "constructed_control_php_agreements": 0
+  },
+  "validation": {
+    "author_original": "A prebuilt direct[A,B,A,0] payload owns two methodless Values; A has two declared edges to shared ChildX and B owns ChildY. After insertion beside scalar0, an actual direct fetch keeps the array across selective Key death. Borrowed isset/empty and repeated Value identity agree, all Values stay live until the held array is dropped, then Y followed byX sees Keyweak-null and scalar sibling0. Final mixed/scalar Map retirement is normal. This covers a borrowed variable RHS and a strong array result with no manufactured element copies.",
+    "independent_original": "A temporary literal[A,B,A] RHS is inserted, fetched, then copy[0] deletion performs COW. Copy[B,A] identities agree; dropping copy causes no Child callback while Map retains original[A,B,A]. Final Map free releases Ythrow thenX, both observe live Map/heldKey under the Map pin and correct Value weak lifetimes. Catch preserves supplied Exception creation trace/after0, then Map/Values are dead and heldKey is still live at the source observation. Exact normal output/exit0/empty stderr agrees.",
+    "front": "One strict-SL99 group uses exact peer source bytes and reaches the genuine copied-array VALUE release. Two actual backing tables have original[A,B,A]/copy[B,A], each with one HARRAY owner; physical Value owners are A3/B2 and Child owners1each. The copy array retires and its [B,A] edges become real ordered jobs, preserving those counts while its retained array record owns nothing. A following actual shared B job drops B2to1 with A3/Child1 unchanged and no callback. Later A3to2 is source/unchanged-rule reasoning, not an extra numeric checkpoint. Zero/one-step pauses and full driver-resumed caught-throw completion agree; complete request cleanup retires Map/arrays/Values/Children/heldKey.",
+    "counterstates": "Nested array, duplicate key, missing/dangling allocation and array-valued-property controls reject. A valid constructed HCELL Key-backedge array satisfies the old backedge helper and fails the new common array/item policy. These heap/helper counterstates add no original PHP agreement.",
+    "gc_and_identity": "The only GC assertion concerns the actual later retired copy buffer drop, without an earlier separation candidate claim. Credited source reports retain stable inputs/head, normal exit0/empty stderr and empty process groups. Final front pins four executed binaries, directly postchecked and independently matched unchanged. Complete raw source/fixtures/commands/profiles/process records stay external."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc52_fetched_array_key_death.php": "de349f8750f00966bc5629b32cebbddac5ce2b7870dd6075d1e2f2c6fc185cb6",
+    "tests/semantics/gc52_peer_array_cow_throw.php": "64fe94b5f9275f440430da9d22f1269168a0aa8169cd51019339a5056715aa8b"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc52_array_payload_sources.py": "14249433292c2207a09cb99f99e424cf8533f91fba7e8525232b4c79de62b976",
+    "tests/semantics/gc52_peer_array_sources.py": "4ff0920898b88af163be372f395a7243c0b6a96ce8dd5e25abf357f2ab03cb19",
+    "tests/semantics/gc52_array_payload_state.py": "de5f5bdebd02fb6ae002284282ca02d0a4f5ca991c9d6fd074d1ddfb7bc245aa"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/front-f02-key-shutdown-failure-v1/report.json": "8a3868e76ec1e6299651cf8ce599105cb9d4025e422ed0a69d12c142b968ad1b",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/front-f76-v1/report.json": "948c1b5ebd82be02cfb6d3831493b1851da7a2f604e66c4dac9d2423e3caad59",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/native-v1/baseline-report.json": "2bb8148ab6776f48f415d337d0ce29cdc3ce8b5e65e1394048f47966fdd5c607",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/native-v1/model-report.json": "1947a9a77a3cd97ea4412e60697e61c0d3c13c65905d907e732c1129a1548b24",
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/native-v1/native-report.json": "4d05a875ccdd0801f77a98acf9294983d24f85ad961e0d9c724a18e6b13c7c33",
+    "../php-spec-evidence-archive/gc-direct-array-payload-peer-52/native-v1/model-report.json": "6924dd4a2e67ebcf4fe98b23c8edd19580ca4a5669dc5a8653b4144c7c93eede",
+    "../php-spec-evidence-archive/gc-direct-array-payload-peer-52/native-v1/native-report.json": "873c61c9c8f1f05866885aaaa97d9f93993179087eaf5683c45ae591a45f46c3"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-direct-array-payload-author-52/manifest.json": "0d72852561275e061c124e3b45f6c6d490473bb32320976cbc69b451a9701286",
+    "../php-spec-evidence-archive/gc-direct-array-payload-peer-52/independent-summary.json": "2eaa7dd6abe61d6dad0e8b8eed58bbe10216d6e849ab404f6ddd230b73119144"
+  },
+  "preserved_zero_credit": "Old9855 source baseline stops Unsupported afterB at first array insertion; zero agreement. Initial f02 front completed its earlier ownership/transfer/replay checks but failed the final assertion that held Key remained allocated in S_done. S_done includes complete request-close global cleanup; callback/catch Key-live bits belong to the earlier source execution. The full failed report/raw remains0. f76 changes only final membership to postrequest absence; the same99 group passes. No source/runtime/peer rerun or cap change was needed.",
+  "compatibility": "New first-write PARRAY is disjoint from object/scalar arms and explicitly excludes the old reference-backedge arm; common item alternatives have unique success and existing old/new storage/writer exclusions remain. Stored ALIAS entries, nested arrays, object property policy and generic ownership executors are unchanged. No schema/COW/eager/GC helper or50/51 code/evidence renewal; no intentional engine divergence.",
+  "limits": "Only one top-level direct array layer of current safe scalars/finite methodless objects. Array-valued object properties, nested/aliased elements, direct callback-element expansion, reference payload extension, indirect/by-reference WeakMap dimension writes, shared-Key finite graphs, active cursors/incoming associations, freeing access/mutation, active-pin collection and wider layouts/callers remain partial. Held GC35, Source47/COMP88 and paused lanes are untouched.",
+  "recovery": "Run gc52_array_payload_sources.py native then model with pinned profile/cap240;9855 retains old first-insertion Unsupported baseline. Run gc52_peer_array_sources.py native then model cap360. Run gc52_array_payload_state.py once for the strict-SL99 actual COW-copy retirement front cap360. Preserve f02 failed final-Key fixture; final f76 includes full request cleanup. No50/51 replay.",
+  "review": "Independent frozen production/source and final-front99 static/result review are CLEAR. Final clean documentation/ledger acceptance is supplied by the paired reviewer handoff."
+}
