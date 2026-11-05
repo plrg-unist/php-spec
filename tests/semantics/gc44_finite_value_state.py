@@ -105,6 +105,7 @@ FIRST_WRITE_STAGE = (
     '-- if $lookup(S.ENV, $ptascii("map")) = (n_map_cell) '
     '-- if S.STORE[n_map_cell] = DEFINED (POBJECT n_map) '
     '-- if S.OBJECTS[n_map] = WEAKMAP eps '
+    '-- if $access_set_plan(S) = (paccess_plan) '
     '-- if $lookup(S.ENV, $ptascii("value")) = (n_value_cell) '
     '-- if S.STORE[n_value_cell] = DEFINED (POBJECT n_value) '
     '-- if $object_name(S, n_value) = $ptascii("GC44Value")')
