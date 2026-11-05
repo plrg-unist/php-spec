@@ -60,6 +60,8 @@ set_error_handler(static function ($level, $message) { global $receiver; echo "H
     b'ob_start(null)', b'ob_start([&$receiver, "missing"])')
 ORIGINALS['type-error-before-lookup'] = RECEIVED['nonnull-type-error']
 ORIGINALS['successful-byref-closure'] = CREATED['closure-lifetime-byref']
+ORIGINALS['notice-return-invalid'] = (HERE / 'output_executor_post_deactivate_retval.php').read_bytes().replace(
+    b'echo ob_start() ? "RT|"', b'echo ob_start(42) ? "RT|"')
 
 if __name__ == '__main__':
     raise SystemExit(0 if scope.main(ORIGINALS, 'output-executor-invalid',

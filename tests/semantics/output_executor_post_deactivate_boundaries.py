@@ -15,7 +15,7 @@ HERE = Path(__file__).resolve().parent
 REASON = 'output-handler start after output deactivation'
 CASES = {
     'reentrant': b'FX|D1|H1|',
-    'invalid_ob08': b'FX|D1|',
+    'unknown_ob11': b'FX|D1|',
 }
 
 
