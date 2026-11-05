@@ -1,0 +1,22 @@
+[
+  {
+    "id": "temporary-restore-runs-after-option-disposal",
+    "source": "<?php\nclass RestoreOption108 {\n    public function __toString(): string {\n        echo \"T:A:\", $GLOBALS['stage'], \";\";\n        return 'precision';\n    }\n    public function __destruct() {\n        ini_set('precision', 1);\n        echo \"D:A:\", ini_get('precision'), \";\";\n    }\n}\nclass RestoreTemporary108 implements Iterator {\n    public int $pos = 0;\n    public RestoreOption108 $name;\n    public function __construct() { $this->name = new RestoreOption108; }\n    public function rewind(): void { echo \"W;\"; $this->pos = 0; }\n    public function valid(): bool { echo \"V\", $this->pos, \";\"; return $this->pos < 1; }\n    public function current(): mixed { echo \"C\", $this->pos, \";\"; return $this->name; }\n    public function key(): mixed { echo \"K\", $this->pos, \";\"; return $this->pos; }\n    public function next(): void {\n        echo \"N\", $this->pos, \";\";\n        ++$this->pos;\n        if ($this->pos === 1) $GLOBALS['stage'] = 'done';\n    }\n    public function __destruct() { echo \"I:\", ini_get('precision'), \";\"; }\n}\nfunction makeRestore108() {\n    $it = new RestoreTemporary108;\n    $GLOBALS['watch'] = WeakReference::create($it);\n    return $it;\n}\n$stage = 'walk'; $watch = null;\nini_set('precision', 7);\necho \"B;\";\n$result = ini_restore(...makeRestore108());\necho \"R:\", $result === null ? 1 : 0, \":\", ini_get('precision'), \":\", $watch->get() === null ? 1 : 0, \";\";\nunset($watch);\necho \"E:\", ini_get('precision'), \";\";\n",
+    "purpose": "A temporary Iterator and sole copied Stringable option retire before ini_restore writes startup precision after the destructor sets 1.",
+    "source_sha256": "419434615ead2caddd830a0a597b8634711cd117fa74786b6c9c4f75cf486f78",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;I:7;T:A:done;D:A:1;R:1:14:1;E:14;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "selected-restore-keeps-original-callee",
+    "source": "<?php\nclass RestoreSelectedOption108 {\n    public string $id;\n    public string $option;\n    public function __construct($id, $option) { $this->id = $id; $this->option = $option; }\n    public function __toString(): string {\n        echo \"T:\", $this->id, \":\", $GLOBALS['stage'], \";\";\n        return $this->option;\n    }\n    public function __destruct() {\n        ini_set('precision', 1);\n        echo \"D:\", $this->id, \":\", ini_get('precision'), \";\";\n    }\n}\nclass RestoreSelectedValues108 implements Iterator {\n    public int $pos = 0;\n    public function rewind(): void { echo \"W;\"; $this->pos = 0; }\n    public function valid(): bool { echo \"V\", $this->pos, \";\"; return $this->pos < 1; }\n    public function current(): mixed { echo \"C\", $this->pos, \";\"; return $GLOBALS['name']; }\n    public function key(): mixed {\n        echo \"K\", $this->pos, \";\";\n        if ($this->pos === 0) {\n            $GLOBALS['name'] = new RestoreSelectedOption108('B', 'display_errors');\n            $GLOBALS['call'] = ini_get(...);\n        }\n        return $this->pos;\n    }\n    public function next(): void {\n        echo \"N\", $this->pos, \";\";\n        ++$this->pos;\n        if ($this->pos === 1) $GLOBALS['stage'] = 'done';\n    }\n}\n$stage = 'walk';\nini_set('precision', 7);\n$name = new RestoreSelectedOption108('A', 'precision');\n$it = new RestoreSelectedValues108;\n$call = ini_restore(...);\n$keep = $call;\necho \"B;\";\n$result = $call(...$it);\necho \"R:\", $result === null ? 1 : 0, \":\", ini_get('precision'), \":\", $name->id,\n    \":\", $call('precision'), \":\", $keep('precision') === null ? 1 : 0,\n    \":\", ini_get('precision'), \";\";\nunset($it, $name, $call, $keep);\nini_restore('precision');\necho \"E:\", ini_get('precision'), \";\";\n",
+    "purpose": "A selected first-class ini_restore survives key-time option/callee rebinding to a getter and restores precision after the original option destructor.",
+    "source_sha256": "7786974a7bcc91c9ef169ee25ee0d9f245af9f504a9400f58c03ddbb143a56c1",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;T:A:done;D:A:1;R:1:14:B:14:1:14;D:B:1;E:14;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

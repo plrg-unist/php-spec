@@ -673,9 +673,23 @@ runtime rules. A child compile error precedes a static or return-typed construct
 rejection; private-final child warnings remain visible. Reached final-method link
 errors capture the constructor call stack before eager failed-owner cleanup.
 The [constructor factory review](../../coverage/semantics/anonymous-constructor-factories-review.json)
-records exact sources and reached states. Anonymous owner methods still need an
-earlier owner-key reservation during body compilation; their nested factories
-remain outside this source cut.
+records exact sources and reached states.
+
+Anonymous owner methods and constructors can compile direct anonymous child
+factories. The compiler reserves the owner's generated key before its members,
+keeps that descriptor out of the installed class table during compilation, and
+replaces it in place when the body succeeds. Child and recursive grandchild keys
+therefore follow source order even when methods are called in reverse or more
+than once. A named factory with a forward parent still receives its deferred
+key after the anonymous owner and child. Parentless and inherited owner lexical
+scope, protected constructor access, failed constructor cleanup and reached
+lazy final-link errors use the ordinary runtime rules. An abrupt unit drains
+child warnings before its fatal and skips only authenticated child checkpoints
+whose class images were never installed. The [owner factory review](../../coverage/semantics/anonymous-owner-factories-review.json)
+separates native source comparisons, reached compiler/runtime steps and source
+boundary checks. Method-owned Closures, arrows and nested functions, owner
+traits/constants/implicit Stringable siblings and later dynamic units remain
+outside this admitted source slice.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
@@ -992,8 +1006,16 @@ cell's new-array owner; a separate holder retains that array. A throw in the
 second argument never reaches the output write. The
 [array-alias rebound review](../../coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
 records four exact agreements, one explicit Unsupported owning-object control,
-strict435 and five separate reached groups (229 checks). Rebound arrays with
-object or reference members and wider shapes remain partial.
+strict435 and five separate reached groups (229 checks) at that historical cut.
+An exact rebound array with one ordinary childless object now authenticates
+its historical array and child through a clear-to-null destructor continuation.
+The last owner sees null before destruction; a separate array holder delays
+the destructor until after the selected name commits. A throwing child commits
+the name before exception transfer, leaving the interrupted result target
+unchanged. The [owning-array review](../../coverage/semantics/enum-is-callable-array-alias-owning-review.json)
+records three exact agreements, one excluded-builtin control, strict435 and
+three separate reached groups (200 checks). ALIAS/reference entries, extra
+object children and wider owning shapes remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

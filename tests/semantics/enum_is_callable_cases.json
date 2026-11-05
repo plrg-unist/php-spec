@@ -657,9 +657,9 @@
     "id": "enum-is-callable-third-output-variable-array-alias-rebound-owning-rebound-control",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildDrop {\n    public function __destruct() {\n        global $call;\n        echo $call === null ? 'D-null|' : 'D-other|';\n    }\n}\nfunction rebind_owner(): bool {\n    global $call;\n    $call = [new ChildDrop, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_owner(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\n",
     "source_sha256": "61fe849f629d547f2ffd6778456578f33dcd08cabf3792e6568fe1ed46467880",
-    "expected_model": "unsupported",
-    "purpose": "Rebound array with a destructor child is an explicit Unsupported lifetime boundary; native output observes clear-before-destruction.",
-    "model_timeout_seconds": 45,
+    "expected_model": "normal",
+    "purpose": "Promoted last-owner rebound array: its ordinary child destructor sees the shared cell cleared before the captured name commits; the prior fb074 control remains zero credit at that cut.",
+    "model_timeout_seconds": 90,
     "expected_normal_stdout": "REBIND|D-null|chosen:1:FirstCheck::from:FirstCheck::from|"
   },
   {
@@ -670,5 +670,32 @@
     "purpose": "A separate owner retains the rebound direct-string array after the shared input/output cell receives the original name.",
     "model_timeout_seconds": 60,
     "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from:OtherCheck::tryFrom|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-owning-retained-owner",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildDrop {\n    public function __destruct() {\n        global $call;\n        echo $call === 'FirstCheck::from' ? 'D-name|' : 'D-other|';\n    }\n}\nfunction rebind_owner(): bool {\n    global $call, $hold;\n    $call = [new ChildDrop, 'tryFrom'];\n    $hold = $call;\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$hold = null;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_owner(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\nunset($hold);\necho 'done|';\n",
+    "source_sha256": "e630ae16a427d313fcb746e2d9f6977e7e13e032ef9395355ab8108b6af6a38f",
+    "expected_model": "normal",
+    "purpose": "A separate holder retains the rebound array through the name write; its ordinary child destructor runs when that holder is later released.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from|D-name|done|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-owning-throwing-child",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildThrow {\n    public function __destruct() {\n        global $call;\n        echo $call === null ? 'D-null|' : 'D-other|';\n        throw new Exception('drop');\n    }\n}\nfunction rebind_owner(): bool {\n    global $call;\n    $call = [new ChildThrow, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($call, rebind_owner(), $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':',\n         $call === null ? 'NULL' : (is_string($call) ? $call : 'ARRAY'), ':',\n         $name === null ? 'NULL' : (is_string($name) ? $name : 'ARRAY'), ':',\n         $ok, '|';\n}\n",
+    "source_sha256": "0d2c5b9ada24154a17db728550072e4b8dc2e89563ad8ab9e5d0c56d3bca1bb0",
+    "expected_model": "unsupported",
+    "purpose": "Throwing rebound-array child is a native exception-order control whose catch uses the excluded is_string builtin; the modeled core prefix has a separate reached check.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "REBIND|D-null|caught:drop:FirstCheck::from:FirstCheck::from:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-owning-throw-catch-direct",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildThrow {\n    public function __destruct() {\n        global $call;\n        echo $call === null ? 'D-null|' : 'D-other|';\n        throw new Exception('drop');\n    }\n}\nfunction rebind_owner(): bool {\n    global $call;\n    $call = [new ChildThrow, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($call, rebind_owner(), $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':', $call, ':', $name, ':', $ok, '|';\n}\n",
+    "source_sha256": "c661326bae3357163742b9540a9c6410aaaf19ff6c498e8dc4ab19cdc9bf6c70",
+    "expected_model": "normal",
+    "purpose": "Throwing rebound-array child commits the saved callable name before the pending exception reaches catch; direct catch output stays within modeled core operations.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "REBIND|D-null|caught:drop:FirstCheck::from:FirstCheck::from:UNCHANGED|"
   }
 ]

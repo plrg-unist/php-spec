@@ -78,8 +78,15 @@ rebound array and result assignment target untouched. Four exact agreements, one
 Unsupported owning-object control, strict435 and five separate reached groups
 (64+50+53+29+33 checks) pass at recorded cuts.
 [Array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json).
+An exact rebound array with one ordinary childless object follows two owner
+paths: last-owner output clears the shared cell before destruction, while a
+separate holder delays destruction until after the saved name commits. A
+throwing child commits the name before exception transfer without assigning
+the interrupted result target. Three exact agreements, one excluded-builtin
+control, strict435 and three separate reached groups (53+60+87 checks) pass
+at recorded cuts. [Owning-array review](coverage/semantics/enum-is-callable-array-alias-owning-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
-completion/force-close, rebound arrays with owning children, late attached type sources,
+completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, embedded reference members, named/unpacked output,
 loading and wider enum
 member/lifetime contexts remain partial.
@@ -759,18 +766,18 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR25 extends ignored named-handler value cleanup to a literal Exception while
-H is disabled. The existing EH cleanup retains oldE once; typed documentary
-parent/selected-call sources preserve pending C receiver pairs and unfinished
-release tails. Omitted frame/operation/pending channels must be shared or have
-no canonical roots, and selected completion owners must already be covered.
-Tick fatal admission follows the associated parent rather than assuming the last
-selected operation is a tick. A shared value throwing later calls restored H2
-and completes normally, with no phantom parent. Four new originals and two
-affected controls agree; strict435 and seven independent groups/723 conditions
-(690 genuine, 33 derived) pass. The original Unsupported, preservation diagnostic
-and two corrected event-binding failures retain zero agreement credit.
-[Handler-value throw review](coverage/semantics/callback-late-tick-handler-throw-review.json).
+ATTR26 continues handler-free integer/string exit during ignored destructor-body
+value cleanup. Existing abandoned sources retain both C protections, unfinished
+arguments/FCC slots and the stopped tick tail; the actual full exit status passes
+to later active queue cleanup without fatal reporting. Cacheless/noqueue finish
+returns the read-only terminal result directly. Fresh object/alias-array/static
+Closure and later-retained values have native witnesses. Five new originals and
+two affected controls agree; strict435 and five independent groups/739 conditions
+(734 genuine, five derived) pass, covering ownership, queue, full-status and
+resumption. The original model's missing-Q baseline retains zero credit.
+[Body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json).
+Earlier [handler-value throw](coverage/semantics/callback-late-tick-handler-throw-review.json)
+retains its separate disabled-handler/old-Throwable cut.
 Earlier [normal handler-value](coverage/semantics/callback-late-tick-handler-value-review.json),
 [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
 [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
@@ -866,6 +873,12 @@ Copied positional Iterator `ini_get` now waits for a sole Stringable `precision`
 option to retire before reading the live value; selected first-class getters
 keep their original Closure through key-time rebinding. Held/named inputs stop
 outside this receipt. [A107 review](coverage/semantics/config-iterator-get-stringable-review.json).
+
+Copied positional Iterator `ini_restore` now waits for the same sole Stringable
+`precision` option to retire before restoring startup precision. A selected
+first-class restorer keeps its original Closure through key-time rebinding;
+held/named options stop before the unvalidated restore.
+[A108 review](coverage/semantics/config-iterator-restore-stringable-review.json).
 
 ## Decisions that constrain further work
 
@@ -1000,8 +1013,17 @@ Consumed Closure checks borrow retired capture facts without adding owners.
 Seven exact originals, 279 reported reached conditions and 90 affected Warning
 conditions pass at the recorded private cuts.
 [Notice-discard review](coverage/semantics/output-executor-notice-discard-review.json).
+OB13 admits a live Throwable thrown by a selected Notice handler's returned-object
+destructor before the saved cleanup resumes. The genuine `ob_start` trace keeps
+its temporary callback through catch; precreated-Throwable controls separate
+VM root NOGC from ordinary array-child cleanup. An `ob_end_clean` countercontrol
+also exposes the shared output-intrinsic trace frame. Seven exact originals
+agree, and three reached groups pass 165 reported conditions (author 54,
+independent 76, off-kind 35). Private strict435 passes; earlier failed packets
+retain zero credit. [Returned-Notice throw review](coverage/semantics/output-executor-notice-retval-throw-review.json).
 Unresolved/effectful creation, active handler-body reentry, Warning/deprecation-handler returned-object
-starts, allocation failure/memory limits and wider executor completion remain partial.
+starts, other output Notice returned-object cases, allocation failure/memory limits
+and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
 [general reception review](coverage/semantics/output-executor-reception-review.json).
 
@@ -1089,17 +1111,29 @@ static/instance/default/byref/inherited/namespace/readonly behavior. Twelve exac
 originals, final435 plus five member-fence checks, 155 author reached +31 pure
 context queries and 212 independent conditions pass at scoped cuts. Initial
 elaboration stops and failed whole state batches retain separate zero-credit
-identities, with completed components qualified. Trait/anonymous source owners,
-method-owned Closures, generators/byref returns/attributes and wider contexts
-remain partial. [Review](coverage/semantics/anonymous-method-factories-review.json).
+identities, with completed components qualified. At that cut, trait/anonymous
+source owners, method-owned Closures, generators/byref returns/attributes and
+wider contexts remain partial. [Review](coverage/semantics/anonymous-method-factories-review.json).
 
 CLASS179 admits anonymous child factories in named `__construct` bodies with
 authenticated owner and compiler context. Child-before-deferred-owner keys,
 repeated construction, inherited access, promotion, failure cleanup and compile
 diagnostic priority match PHP 8.5.10. Reached lazy final-link errors retain their
-constructor trace through eager cleanup. Anonymous-owner methods require
-provisional key reservation before their body compilation and remain partial.
+constructor trace through eager cleanup. At that cut, anonymous-owner methods
+still required provisional key reservation before body compilation.
 [Review](coverage/semantics/anonymous-constructor-factories-review.json).
+
+CLASS180 reserves an anonymous owner's compiler-local descriptor before its
+method bodies and replaces it in place after successful compilation. This
+preserves source-order owner/child/grandchild keys, including reverse and
+repeated calls, named factories with forward parents and anonymous constructors.
+The ordinary runtime handles inherited scope, protected constructors, failed
+owner cleanup and lazy links. Abrupt unit compilation drains child diagnostics
+and skips only authenticated child checkpoints without installed images.
+Twenty-two exact PHP 8.5.10 sources, 106 reached plus 20 pure conditions and
+35 source-boundary checks cover this slice. Method-owned deferred scopes,
+owner traits/constants/implicit Stringable siblings and dynamic units remain
+partial. [Review](coverage/semantics/anonymous-owner-factories-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -1232,6 +1266,20 @@ comparisons, 42 service controls, 108 reached conditions/SL435 and 37 affected
 controls pass at one cut. The mistaken native control missing `const` remains
 separate; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
 [Review](coverage/semantics/rejected-constant-modifier-review.json).
+
+COMP176 checks rejected trait-use alias modifiers at the named and unnamed
+foreign reductions, retaining earlier encoding headers but cutting off later
+ones for readonly and asymmetric-set flags. Six method-target flags still allow
+later parsing; a missing semicolon stops in the foreign grammar with the same
+empty later prefix. Native diagnostics retain their own message and alias-end
+line. Thirty-eight dynamic and four main originals, 73 service controls, 108
+reached conditions/SL435 and affected constant42/method37 controls pass at
+their recorded cuts. The preliminary relative-path and multiline-line fixture
+failures and an interrupted unwatchable-`cases.json` run have zero credit;
+corrected authoritative campaigns hash their expectations. Accepted parser,
+native helper, schema, adapter and P4 interfaces are unchanged. Broader
+rejected-source prefixes remain partial.
+[Review](coverage/semantics/rejected-trait-alias-modifier-review.json).
 
 ## Active and unintegrated work
 

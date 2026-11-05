@@ -304,12 +304,20 @@ array children; a newly constructed Throwable retains the callback in its trace.
 Consumed Closure metadata reuses borrowed capture history after real retirement.
 Seven exact originals, 279 reported reached conditions and 90 affected Warning
 conditions pass at their recorded cuts.
+OB13 admits the selected Notice handler's returned-object destructor when it
+throws before the saved cleanup resumes. The pending Throwable remains a live
+operation root; a new Throwable stores the authentic output builtin frame and
+raw sent arguments in its trace. Exact `ob_start` and `ob_end_clean` originals
+and reached states check this shared Notice path, while precreated-Throwable
+controls distinguish root-only NOGC from ordinary array-child cleanup. Seven
+originals and 165 reported reached conditions pass at their separate cuts.
 
 Whole declaration-history validation remains open for late handler function
 publication; a default-NULL Notice baseline reproduces the same frontier.
 Unresolved/effectful callback creation, other abrupt VM argument-release paths,
 active handler-body reentry,
-Warning/deprecation-handler returned-object starts and wider executor completion remain
+Warning/deprecation-handler returned-object starts, other output Notice return
+destructors and wider executor completion remain
 partial. Handler initialization also allocates the aligned chunk buffer before
 the inactive-output check; allocation failure and PHP memory limits remain
 pending effects, as in the active buffer model. At their OB10 cut, the original
@@ -319,4 +327,5 @@ agreement credit; separate explicit-cleanup controls cover the creation protocol
 [OB09 evidence](../../coverage/semantics/output-executor-reception-review.json),
 [OB10 evidence](../../coverage/semantics/output-executor-creation-review.json),
 [OB11 evidence](../../coverage/semantics/output-executor-invalid-review.json),
-[OB12 evidence](../../coverage/semantics/output-executor-notice-discard-review.json).
+[OB12 evidence](../../coverage/semantics/output-executor-notice-discard-review.json),
+[OB13 evidence](../../coverage/semantics/output-executor-notice-retval-throw-review.json).

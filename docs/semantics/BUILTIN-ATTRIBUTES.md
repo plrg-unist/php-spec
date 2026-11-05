@@ -332,6 +332,18 @@ and seven independent groups/612 conditions (603 reached, nine derived) pass.
 See the [body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json);
 direct reference-return bodies and wider selected-handler retval disposal remain partial.
 
+A handler-free integer or string exit during ignored body-value cleanup instead
+retains the pending C pairs/jobs without a fatal diagnostic. The actual full
+status passes to later queue cleanup while the remaining ticks stay stopped;
+noqueue completion returns the existing read-only free result directly. String
+exit preserves a stable main exit 263; `exit(263)` has CLI status 7. A retained
+value exiting later adds no phantom original receiver. Five new originals and
+two affected controls agree; strict435 and five independent groups/739 conditions
+(734 genuine, five derived) pass.
+[Body-value exit review](../../coverage/semantics/callback-late-tick-body-exit-review.json).
+Replacing a saved main integer with a different integer during the nested body,
+wider active frames and handlers remain partial.
+
 Four new handled originals and two affected controls agree; strict433 passes.
 Nine independent groups pass 508 conditions (497 reached, 11 derived). The
 [handler review](../../coverage/semantics/callback-late-tick-handler-review.json)

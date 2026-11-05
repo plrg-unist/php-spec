@@ -363,6 +363,18 @@ channels and wider reentry remain partial. The
 and [handler-value throw](../../coverage/semantics/callback-late-tick-handler-throw-review.json)
 reviews retain their separate cuts. This phase does not claim their later request freeing.
 
+For handler-free ignored body-value exit, authenticated abandoned tick sources
+admit EXITED only with its matching canonical full EXITSTATUS and no active
+PHP frame or destructor job. Later queue arguments retire before the bounded
+inactive-free scan, while unfinished tick jobs remain rooted and stopped. The
+noqueue arm returns the read-only result directly; a successful terminal scan
+is identity, so repeated terminal driving changes no events or owners. Five
+new source witnesses distinguish fresh, shared, alias, capture and cacheless
+cases; five independent groups pass 739 conditions (734 genuine, five derived).
+The [body-value exit review](../../coverage/semantics/callback-late-tick-body-exit-review.json)
+records the source/state cuts. Saved integer replacement and wider frame/handler
+contexts remain partial.
+
 An engine fatal bailout also skips live VM frame cleanup. The snapshot retains
 current and saved local, receiver and temporary owners before structural cleanup;
 MAIN's global table remains borrowed. Source/handler/eval lookup rows and the

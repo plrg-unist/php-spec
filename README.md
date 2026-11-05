@@ -280,6 +280,10 @@ effectful lookup and wider reentry remain partial.
 Throws from the selected Notice handler also preserve the VM's distinct cleanup
 of the callback argument and its children. Consumed Closure checking borrows
 capture metadata after the real owners retire.
+When that handler returns an object whose destructor throws, the saved Notice
+cleanup retains the pending Throwable. A newly constructed Throwable records the
+authentic output builtin in its trace; `ob_start` and `ob_end_clean` have exact
+source and reached-state checks. [Returned-Notice evidence](coverage/semantics/output-executor-notice-retval-throw-review.json).
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -4846,31 +4850,25 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Normal owning results from named handlers retire before the original Throwable
-and registry restoration. A literal Exception from a fresh ignored value while
-H is disabled instead retains that old Throwable and pending outer C protections,
-then reports the new fatal and continues later queue cleanup. A documentary
-parent/selected-call association authenticates the actual outer tick source.
-Omitted owner channels must be shared or rootless; selected completion owners must
-already be covered. A shared value that throws later invokes the restored handler
-again and finishes normally. Four new originals and two affected controls agree;
-strict435 and seven independent groups/723 conditions (690 genuine, 33 derived)
-pass. See the
-[handler-value throw review](coverage/semantics/callback-late-tick-handler-throw-review.json).
-Earlier [normal handler-value coverage](coverage/semantics/callback-late-tick-handler-value-review.json)
-retains its four source agreements and 432 genuine checks.
-Ignored destructor-body values retire before the inner C decrement. An unhandled
-literal Exception during their disposal preserves authenticated pending outer C
-wrappers and unfinished arguments/FCC slots, with shared operation/frame/pending
-owners counted once. Later active queue cleanup runs while the stopped tick tail
-stays rooted. Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+Normal and abrupt ignored named-handler values keep their original
+[handler-value](coverage/semantics/callback-late-tick-handler-value-review.json)
+and [handler-value throw](coverage/semantics/callback-late-tick-handler-throw-review.json) cuts.
+Ignored destructor-body values retire before the inner C decrement. A handler-free
+integer or string exit during their disposal now preserves the pending C pairs
+and unfinished argument/FCC jobs, continues later active queue cleanup, and stops
+the remaining tick list. Full status 263 remains distinct from CLI status 7; string
+exit preserves a stable earlier status. A later-retained value exits after its
+original receiver has retired. Cacheless/noqueue finalization is idempotent.
+Five new originals and two affected controls agree; strict435 and five independent
+groups/739 conditions (734 genuine, five derived) pass.
+[Body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json).
+Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
 [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
-[handler](coverage/semantics/callback-late-tick-handler-review.json),
-[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) and
-[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence
-retains its original cuts. Distinct pending-owner contexts, abrupt handler-value
-disposal, owning handler callables, wider producers, assertion roots, changed
-phases, direct reference-return bodies and reentrant release remain partial.
+[handler](coverage/semantics/callback-late-tick-handler-review.json) and
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) evidence
+retains its original cuts. Replacing an earlier integer exit during nested cleanup,
+unshared owning contexts, handlers, direct reference-return bodies, wider frame
+cleanup and reentry remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -7052,9 +7050,16 @@ the first SEND, the selected original name overwrites that cell. A retained
 owner keeps the rebound array live; a pre-output throw leaves it and the
 result assignment target untouched. The [array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
 records four exact agreements, one Unsupported owning-object control and five
-separately run reached groups (229 checks).
+separately run reached groups (229 checks) at that historical cut.
+For a rebound array with one ordinary object child, last-owner replacement
+clears the shared cell before destruction, while a separate holder delays the
+destructor until after the selected name is written. A throwing child still
+commits that name before exception transfer. The
+[owning-array review](coverage/semantics/enum-is-callable-array-alias-owning-review.json)
+records three exact agreements, one excluded-builtin control and three separate
+reached groups (200 checks).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
-rebound arrays with owning children, late type
+other owning rebound arrays, late type
 sources, wider array sources (including embedded references) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
