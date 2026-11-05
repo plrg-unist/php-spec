@@ -71,6 +71,18 @@ declare(ticks=1) {
     echo 'Z';
 }
 ''',
+    'review-temporary-adjacency': b'''<?php
+function t() { echo 'T'; }
+function value() { return 1; }
+register_tick_function('t');
+declare(ticks=1) {
+    switch (value()) {
+        case 1:
+            echo 'A';
+    }
+    echo 'Z';
+}
+''',
     'review-false-boolean-conditions': b'''<?php
 function t() { echo 'T'; }
 register_tick_function('t');
@@ -114,6 +126,7 @@ EXPECTED = {
     'review-unselected-body-declarables': b'ATZWYTX',
     'review-empty-tmp-switch-line': b'T6;ZT7;',
     'review-false-boolean-conditions': b'ATZT',
+    'review-temporary-adjacency': b'ATTZT',
     'review-effectful-constant-result': b'PATZT',
     'review-empty-multiline-case-line': b'T6;ZT9;',
 }
