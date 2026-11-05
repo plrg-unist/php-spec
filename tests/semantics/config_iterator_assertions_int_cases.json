@@ -1,0 +1,22 @@
+[
+  {
+    "id": "temporary-option-sets-assertions-zero-after-retirement",
+    "source": "<?php\nclass AssertionsIntOption102 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"zend.assertions\"),\";\";}\n}\nclass AssertionsIntTemporary102 implements Iterator {\n    public int $pos=0; public AssertionsIntOption102 $name;\n    public function __construct() {$this->name=new AssertionsIntOption102(\"A\",\"zend.assertions\");}\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$this->name:0;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n    public function __destruct() {echo \"I:\",ini_get(\"zend.assertions\"),\";\";}\n}\nfunction makeInt102() {$it=new AssertionsIntTemporary102;$GLOBALS[\"watch\"]=WeakReference::create($it);return $it;}\n$stage=\"walk\";$watch=null;echo \"B;\";\n$result=ini_set(...makeInt102());echo \"R:\",$result,\":\",ini_get(\"zend.assertions\"),\":\",($watch->get()===null?1:0),\";\";\nunset($watch);ini_restore(\"zend.assertions\");echo \"E:\",ini_get(\"zend.assertions\"),\";\";\n",
+    "source_sha256": "518aacc6be34e0e90380af4e674491a7a8106cd81f3a1c85aaba58265eab04dd",
+    "purpose": "A copied Stringable option converts after temporary Iterator cleanup and option disposal; INI_SET changes zend.assertions from 1 to 0, returns old 1, then restore returns to 1.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:1;T:A:done;D:A:1;R:1:0:1;E:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "selected-setter-uses-assertions-one-after-rebinding",
+    "source": "<?php\nclass AssertionsIntSelectedOption102 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"zend.assertions\"),\";\";}\n}\nclass AssertionsIntValues102 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:1;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";if($this->pos===0){$GLOBALS[\"name\"]=new AssertionsIntSelectedOption102(\"B\",\"display_errors\");$GLOBALS[\"call\"]=ini_get(...);}return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n}\n$stage=\"walk\";$name=new AssertionsIntSelectedOption102(\"A\",\"zend.assertions\");$it=new AssertionsIntValues102;$call=ini_set(...);$keep=$call;echo \"B;\";\n$result=$call(...$it);echo \"R:\",$result,\":\",ini_get(\"zend.assertions\"),\":\",$name->id,\":\",$call(\"zend.assertions\"),\":\",$keep(\"zend.assertions\",0),\":\",ini_get(\"zend.assertions\"),\";\";\nunset($it,$name,$call,$keep);ini_restore(\"zend.assertions\");echo \"E:\",ini_get(\"zend.assertions\"),\";\";\n",
+    "source_sha256": "2a2e65692c9a37e27c0854ed6dc3035ab44df6674897a8136bd40be0cfd288e4",
+    "purpose": "An original selected setter survives key-time source CV rebinding to getter; copied option sets zend.assertions to 1, then retained setter changes it to 0 before restore.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;T:A:done;D:A:1;R:1:1:B:1:1:0;D:B:0;E:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
