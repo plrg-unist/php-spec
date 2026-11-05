@@ -1,0 +1,26 @@
+[
+  {
+    "id": "i109-peer-pre-api-priority-and-recovery",
+    "purpose": "Unknown-name reception wins over bad Throwable type before API entry; named/positional packets distinguish count from duplicate errors, stop later producers, and preserve fresh-body recovery through named throw and empty packs.",
+    "source": "<?php\nfunction stream109P() {\n    global $body, $stop;\n    $body = $body + 1; echo 'INIT|';\n    try { $received = yield 'head'; echo 'BAD-SEND|'; }\n    catch (Throwable $caught) { echo 'CAUGHT|', $caught === $stop, '|'; yield 'caught'; }\n    return 109;\n}\nfunction value109P($label, $value) { echo $label, '|'; return $value; }\nfunction late109P() { echo 'BAD-LATE|'; return []; }\n$body = 0; $answer = 97; $stop = new Exception('stop109P'); $generator = stream109P();\necho 'UNKNOWN|';\ntry { $answer = $generator->throw(exception: value109P('TYPE', 17), extra: value109P('NAME', 29)); }\ncatch (Throwable $caught) {\n    $trace = $caught->getTrace();\n    echo $caught instanceof Error, '|', $caught->getMessage() === 'Unknown named parameter $extra', '|', !isset($trace[0]), '|', $body === 0, '|', $answer === 97, '|';\n}\necho 'COUNT|';\ntry { $answer = $generator->send(...['value' => 41], ...[42]); }\ncatch (Throwable $caught) {\n    $trace = $caught->getTrace();\n    echo $caught instanceof ArgumentCountError, '|', $caught->getMessage() === 'Generator::send() expects exactly 1 argument, 2 given', '|', $body === 0, '|', $answer === 97, '|';\n    echo 'TRACE|', $trace[0]['function'] === 'send', '|', $trace[0]['class'] === 'Generator', '|', $trace[0]['type'] === '->', '|', $trace[0]['args'][0] === 41, '|', $trace[0]['args'][1] === 42, '|', !isset($trace[1]), '|';\n}\necho 'DUPLICATE|';\ntry { $answer = $generator->send(...[41], ...['value' => 42]); }\ncatch (Throwable $caught) {\n    $trace = $caught->getTrace();\n    echo $caught instanceof Error, '|', $caught->getMessage() === 'Named parameter $value overwrites previous argument', '|', !isset($trace[0]), '|', $body === 0, '|', $answer === 97, '|';\n}\necho 'EARLY|';\ntry { $answer = $generator->current(...['extra' => 17], ...late109P()); }\ncatch (Throwable $caught) {\n    $trace = $caught->getTrace();\n    echo $caught instanceof Error, '|', $caught->getMessage() === 'Unknown named parameter $extra', '|', !isset($trace[0]), '|', $body === 0, '|', $answer === 97, '|';\n}\necho 'START|', $generator->throw(...['exception' => $stop]) === 'caught', '|', $body === 1, '|';\n$generator->next(...[]);\necho 'RETURN|', $generator->getReturn(...[]) === 109, '|';\n",
+    "source_sha256": "45c82928b87427f7be0dd4a3c6359be0cfad9da1f65418e54f08ffdb0b74f2e6",
+    "native_exit": 0,
+    "native_stdout": "UNKNOWN|TYPE|NAME|1|1|1|1|1|COUNT|1|1|1|1|TRACE|1|1|1|1|1|1|DUPLICATE|1|1|1|1|1|EARLY|1|1|1|1|1|START|INIT|CAUGHT|1|1|1|RETURN|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  },
+  {
+    "id": "i109-peer-packed-alias-sole-receiver",
+    "purpose": "The selected Generator receiver survives spread-producer CV retirement. A by-value alias snapshot stays distinct from caller writes; last API receiver release closes finally and retires the Token before caller return.",
+    "source": "<?php\nclass Token109L { function __destruct() { echo 'TOKEN|'; } }\nfunction stream109L() {\n    global $cell, $weakToken, $weakGenerator;\n    try {\n        echo 'INIT|', $weakGenerator->get() instanceof Generator, '|';\n        $received = yield 'head';\n        $cell = 41;\n        echo 'GOT|', $received === $weakToken->get(), '|', $cell === 41, '|', $weakGenerator->get() instanceof Generator, '|';\n        yield 'tail';\n        echo 'BAD-RESUME|';\n    } finally {\n        echo 'FIN|', $weakGenerator->get() instanceof Generator, '|', $weakToken->get() instanceof Token109L, '|', $cell === 41, '|';\n    }\n}\nfunction pack109L() {\n    global $generator, $pack;\n    echo 'PACK|'; $saved = $pack; $generator = null; $pack = null; return $saved;\n}\n$cell = new Token109L(); $weakToken = WeakReference::create($cell);\n$pack = ['value' => &$cell];\n$generator = stream109L(); $weakGenerator = WeakReference::create($generator);\necho 'CALL|'; $result = $generator->send(...pack109L());\necho 'RETURN|', $result === 'tail', '|', $generator === null, '|', $pack === null, '|', $weakGenerator->get() === null, '|', $weakToken->get() === null, '|', $cell === 41, '|';\n",
+    "source_sha256": "88153c425da13909460eba9ce53b93e9084031c2d69cc31c14cd033254f2d435",
+    "native_exit": 0,
+    "native_stdout": "CALL|PACK|INIT|1|GOT|1|1|1|FIN|1|1|1|TOKEN|RETURN|1|1|1|1|1|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
