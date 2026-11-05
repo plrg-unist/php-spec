@@ -4889,6 +4889,14 @@ fatal stack frame renders the short anonymous name while `get_class` retains
 the full name. Two exact sources and 88 reached conditions cover this cut.
 [Parentless trait-capture review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
 
+A parented unit0 anonymous class without interfaces can use one named trait
+with a single unqualified `m as q` alias. The trait constant `Y=self::q(...)`
+captures the copied `q`: captured and direct calls retain the anonymous
+`self`/`static` name and accept its Base parent type. An unrelated object
+raises TypeError before the body; the error uses the trait method's source
+location and a short rendered class name while `get_class` keeps the full NUL
+name. [Alias capture review](coverage/semantics/anonymous-trait-alias-capture-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method

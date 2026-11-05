@@ -479,6 +479,22 @@ is 0 before `new` and 1 after. Interface combinations, multiple uses and
 adaptations remain excluded; dynamic units and rebound views are unvalidated.
 [Parentless trait-capture review](../../coverage/semantics/anonymous-parentless-trait-capture-review.json).
 
+CLASS168 admits one unqualified `m as q` adaptation without a visibility
+modifier in the sole named trait use of a parented, no-interface unit0
+anonymous class. The parentless and interface routes still reject adapted
+uses. The ordinary trait plan imports `q` with the generated NUL owner name
+and resolves its `parent` parameter to the declared Base parent (Base168 in
+the pinned source). The trait constant's `self::q(...)` captures that method.
+A wrong-class argument fails at TYPE_RECEIVE before the body. Nested trait
+error origins select the source trait method's file. CLI trace rendering cuts
+only the class text at NUL; the stored class name stays complete.
+[Alias-capture review](../../coverage/semantics/anonymous-trait-alias-capture-review.json).
+Engine routes: `Zend/zend_inheritance.c::zend_traits_copy_functions`,
+`Zend/zend_execute.c::zend_verify_recv_arg_type`, and
+`Zend/zend_exceptions.c::_build_trace_string`. Qualified or visibility
+adaptations, precedence, multiple uses, interface combinations and parentless
+adaptations remain outside this cut.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
