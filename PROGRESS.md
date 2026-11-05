@@ -71,10 +71,17 @@ output. Old-output destruction can rebind or throw before the saved name commits
 Seven exact agreements, two explicit Unsupported controls, strict435 and four
 separate reached groups (60+53+33+70 checks) pass at recorded cuts.
 [Variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json).
+An aliased source/output cell can now rebound to a new two-entry direct-string
+array after the first SEND. The old selected name overwrites that cell, while a
+separate holder keeps the rebound array live; a pre-output throw leaves the
+rebound array and result assignment target untouched. Four exact agreements, one explicit
+Unsupported owning-object control, strict435 and five separate reached groups
+(64+50+53+29+33 checks) pass at recorded cuts.
+[Array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
-completion/force-close, owning rebound values, late attached type sources,
-wider variable arrays, embedded reference members, alias plus source rebinding,
-named/unpacked output, loading and wider enum
+completion/force-close, rebound arrays with owning children, late attached type sources,
+wider variable arrays, embedded reference members, named/unpacked output,
+loading and wider enum
 member/lifetime contexts remain partial.
 
 I92 gives real user Generator Closure::call entry its actual copied Closure and
@@ -162,9 +169,17 @@ I104 validates the existing cleanup-throw path: a supplied plain Child exception
 replaces the pending exit before Generator creation. Catch/finally run, cleanup
 frees retval/Child and prepared owners, and a final string exit retains status41.
 The pinned native and unchanged-model source agree; joined reached153/158 checks
-cover the pending transfer, owner counts and shutdown. Aliased throws, repeated
-cleanup exit and wider lifecycle remain open.
+cover the pending transfer, owner counts and shutdown. At that cut, aliased
+throws, repeated cleanup exit and wider lifecycle remained open.
 [I104 review](coverage/semantics/generator-call-cleanup-throw-review.json).
+
+I105 carries a second exit through the owning warning retval's Child and
+remaining fields before copied-call CLEAN and API release. A literal string
+exit keeps status29; an independent integer exit changes41 to53. Native/source
+pairs, strict435 and two reached fronts (349 custom/359 reported) pass at their
+recorded cuts. The unchanged-model mismatch and first author fixture failure
+retain zero credit; wider nested exit, pending-Throwable, Fiber and GC paths
+remain partial. [I105 review](coverage/semantics/generator-call-repeated-exit-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -454,6 +469,29 @@ pass at recorded cuts. The three GC33 ordinary controls are promoted; earlier
 mismatch/timeout/fixture stops retain zero credit. Wider producers, freeing-object
 escape/mutation and active-pin collection remain partial.
 [GC34 review](coverage/semantics/gc-ordinary-key-review.json).
+
+GC36 admits one direct destructor-child property on an ordinary `stdClass`
+WeakMap Key, attached before or after first insertion. The physical Key pin keeps
+the field owner through Map value cleanup; wrapper registration order changes
+Value callback visibility, and Key child release follows weak notification.
+Six fresh normal source programs agree (author2, independent4), including a
+throwing Value caught after Child cleanup. Author102 and independent70 reached
+conditions plus an affected GC32 exact source and 71 reached conditions pass at
+their recorded cuts. A two-field producer remains Unsupported with zero agreement;
+the original baseline and fixture failures retain zero credit. Wider layouts,
+multiple Maps, freeing-object mutation and active-pin collection remain partial.
+[GC36 review](coverage/semantics/gc-standard-key-field-review.json).
+
+GC37 admits a methodless user WeakMap Value with one public untyped declared
+property owning a child before first insertion into an empty Map. The leaf
+`stdClass` Key's retirement removes the Map edge, makes the Value observer's get
+null, then releases its sole child through the ordinary storage pin.
+Three new exact programs include a caught Child destructor throw; three affected
+post-insertion/GC36 sources and 90 source-reached conditions (author46,
+independent44) pass at recorded cuts. Occupied replacement remains explicitly
+Unsupported with zero agreement. Wider Value layouts, extra child owners,
+Map-first teardown and active-pin collection remain partial.
+[GC37 review](coverage/semantics/gc-declared-value-child-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -811,6 +849,11 @@ not repeat historical receipt counts or renew their execution credit.
 | Lifetime, weak references and collection | Eager release tracks real ownership, pending results/Throwables, destructor frames and protected storage. WeakMap protocols preserve weak-Key visibility, ordinary Value owners, aliases, selective notification and conditional collection. Physical tracing handles admitted ordinary/materialized graphs; quiet same-Key entries and no-Map ordinary siblings use claimed first-visit counts. Canonical materialized destructor callbacks retain claimed count and nested-buffer authority across retrace, including ordinary caller locals and receivers. Source-authenticated temporary cleanup, borrowed result caches and unused WeakReference result transfer preserve potential-root order. Enum cases and original receiverless fake Closures skip GC candidate buffering while retaining their owners and graph edges; clone and bind copies remain collectable. WeakMap callbacks, skipped prior histories, residual and other active collector contexts remain open. Stable retired cell metadata owns nothing; pooled literal arrays remain rooted by compiled constants. [Eager cleanup](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md), [reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md), [weak references](docs/semantics/WEAK-REFERENCES.md), [cycle collection](docs/semantics/CYCLE-COLLECTION.md). |
 | Diagnostics, output and environment | Supported handlers retain registration, callback and emitting-frame identity through warnings, throws and cleanup. Echo/print preserve left-to-right effects and flat-array diagnostics; bounded default output buffers retain native callback/output order. Request, clock, stream and startup profiles have explicit contracts rather than ambient host answers. Wider buffering/shutdown/tick behavior remains open. [Handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md), [exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md), [output buffers](docs/semantics/OUTPUT-BUFFERS.md), [request inputs](docs/semantics/REQUEST-INPUTS.md). |
 
+Copied positional Iterator `ini_get` now waits for a sole Stringable `precision`
+option to retire before reading the live value; selected first-class getters
+keep their original Closure through key-time rebinding. Held/named inputs stop
+outside this receipt. [A107 review](coverage/semantics/config-iterator-get-stringable-review.json).
+
 ## Decisions that constrain further work
 
 - Implement PHP behavior in authored semantics, including pure arithmetic; the
@@ -1151,7 +1194,8 @@ accepted parsing and the receipt/runtime contracts are unchanged.
 COMP173 defers rejected-only class/interface/enum, static magic-method and try
 validation to its native compiler phase, retaining later completed parser headers.
 Readonly and duplicate-modifier parser stops remain active. Readonly body-prefix
-differences were explicit refusals at that cut; COMP174 below extends them. Thirty-eight dynamic and four rejected-main
+differences were explicit refusals at that cut; COMP174 below extends them.
+Thirty-eight dynamic and four rejected-main
 comparisons, 49 service controls, 24 affected controls and 110 reached conditions
 with SL435 pass at their recorded cuts. The original history fixture failure
 remains zero credit; its correction requires exactly the rejection-exit record
@@ -1163,15 +1207,25 @@ actual function lookahead, before parameters/body. Earlier attribute headers
 survive; forbidden readonly/asymmetric-set bodies supply none. Valid readonly
 properties and ordinary method flags keep their headers. All 22 dynamic and four
 main comparisons, 37 service controls, 108 reached conditions/SL435 and affected
-49/24 controls pass at one cut. Constant-target prefix differences remain explicit
-refusals; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
+49/24 controls pass at one cut. Constant-target prefix differences were explicit
+refusals at that cut; COMP175 below extends them.
 [Review](coverage/semantics/rejected-method-modifier-review.json).
+
+COMP175 extends the checked foreign lookahead rule to constant modifiers before
+initializers. Earlier attribute headers remain; forbidden static/abstract/readonly
+and asymmetric-set initializers supply none. Visibility/final typed constants and
+method/property contexts retain their behavior. All 22 dynamic and four main
+comparisons, 42 service controls, 108 reached conditions/SL435 and 37 affected
+controls pass at one cut. The mistaken native control missing `const` remains
+separate; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
+[Review](coverage/semantics/rejected-constant-modifier-review.json).
 
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
+| GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
 
 The active table is an owner-confirmed handoff snapshot, not validation credit

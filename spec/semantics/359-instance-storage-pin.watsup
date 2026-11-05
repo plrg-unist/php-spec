@@ -24,7 +24,6 @@ dec $instance_storage_basics(pstate, pinstancestorage*) : bool
 dec $instance_storage_ids(pinstancestorage*) : nat*
 dec $instance_storage_tail(ptask*, pinstancestorage) : ptask*?
 dec $instance_storage_parent(pstate, pinstancestorage, ptask*) : bool
-dec $instance_storage_valid(pstate, pinstancestorage) : bool
 dec $instance_storage_node(pstate, nat) : bool
 dec $instance_storage_called(pstate, nat) : pstate
 dec $instance_storage_begin(pstate, nat) : pstate
@@ -186,6 +185,7 @@ rule PhpStep/instance-storage-table: S ~> $destructor_release_begin(S[.OBJECTTAB
 rule PhpStep/instance-storage-slot: S ~> $instance_storage_transfer(S, pinstancestorage, ptask*)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
   -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NOTIFY = eps
   -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if $(pinstancestorage.NEXT < |pinstancestorage.SLOTS|)
 rule PhpStep/instance-storage-finish: S ~> $destructor_release_begin(S[.TODO = ptask*][.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT pinstancestorage.OBJECT)], [DESTRUCTION_HANDLE pinstancestorage.OBJECT])

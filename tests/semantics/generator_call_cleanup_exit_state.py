@@ -142,7 +142,9 @@ pdestructorcall_repeat = pdestructorcall[.OPERATION = (pdestructionoperation_rep
 S_repeat = S_scope[.TODO = (DESTRUCTOR_RESULT pdestructorcall_repeat) :: $destructor_operation_tasks(ptask_cleanup_tail*, pdestructionoperation, pdestructionoperation_repeat)][.DESTRUCTION.CALLS = pdestructorcall_repeat :: pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_repeat :: pdestructionoperation_tail*]
 $closure_call_copy_cleanup_exit(S_repeat) = ((pdestructorcall_repeat, pdestructionoperation_repeat))
 S_repeat_result = $closure_call_copy_cleanup_exit_rebase(S_repeat, 29)
-S_repeat_result.COMPLETION = UNSUPPORTED "Generator Closure::call repeated cleanup exit"
+S_repeat_result.COMPLETION = NORMAL
+S_repeat_result.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*
+S_repeat_result.DESTRUCTION.CALLS = pdestructorcall_new :: pdestructorcall_tail*
 S_done = $drive(S, 4000)
 S_pause = $drive(S, 0)
 S_pause.COMPLETION = BUDGET

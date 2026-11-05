@@ -1,0 +1,75 @@
+{
+  "milestone": "COMP175",
+  "status": "Independently reviewed behavior and actual-parent composition; ready for guarded integration.",
+  "base": "027f1952773c729e08af4bd9d20de3cb518e5d78",
+  "branch": "semantics/dynamic-source-next-175",
+  "raw_root": "../php-spec-evidence-archive/comp175",
+  "behavior": "Rejected constant-target modifiers stop before initializers, retaining only earlier attribute headers. Static/abstract/readonly and all asymmetric-set flags reject; visibility/final typed constants preserve initializer and later headers. Earlier syntax/nonliteral encoding failures retain priority. Native CompileError is catchable dynamically or terminal for main files, without partial installation.",
+  "implementation": "The existing checked rule384 wrapper now selects a visibility/final mask for actual T_CONST lookahead and adds static/abstract only for T_FUNCTION, preserving its prior method mask/internal diagnostic. Default semValue, duplicate accumulation and property path are unchanged. Internal foreign stops never supply native message/line. Native helper, accepted parser, worker/adapter/schema and all P4 rules stay unchanged; the affected method-service constant refusals become admissions.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_language_parser.y::class_const_modifiers",
+    "vendor/php-src/Zend/zend_compile.c::zend_modifier_list_to_flags/zend_modifier_token_to_flag",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php::rule384",
+    "frontend/RejectedHeaderParser.php"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; source include_path=.:; reached genuine startup reporting30719/0",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "native_baseline": {
+    "heads": {
+      "provisional-constant-v1": "ef779e0cc1fdd08e90b3dd68c8af46d09ebbb085",
+      "provisional-final-constant-v1": "ef779e0cc1fdd08e90b3dd68c8af46d09ebbb085"
+    },
+    "reports": [
+      "provisional-constant-v1/report.json",
+      "provisional-final-constant-v1/report.json"
+    ],
+    "scope": "Eligible22 observations: prior COMP174 readonly/staticconstant rows4,16 new eligible eval/file rows and corrected final/public typedconstant rows2. Covers all rejected target bits, attribute prefix, private/final valid contexts and earlier syntax/nonliteral priority. The first final/public control omitted CONST and only demonstrated an early grammar stop: both original observations remain raw and excluded, with zero corpus/gate credit. Only the corrected pair was newly run; no unchanged observation was replayed. Native preparation gives no model agreement credit."
+  },
+  "validation": {
+    "head": "32d41687e785ee7835cdb46952e2f8f6d5b96cc0",
+    "wrapper_report": "short-v1/wrapper-check/report.json",
+    "wrapper_scope": "22 caller wrappers parse; all11 eval literal values exactly preserve retained unit bytes. Preparation only.",
+    "service": {
+      "controls": 42,
+      "report": "service-v1/report.json",
+      "scope": "30 worker cases include eligible22 and eight unchanged method/property contexts, plus12 ordinary-parser/real-stop controls. Responses preserve native identity/message/line and header order; worker/probe exit0, stableinputs/head."
+    },
+    "affected": {
+      "controls": 37,
+      "report": "affected-service-v1/report.json",
+      "scope": "Former readonly/staticconstant prefix refusals now admit zero initializer headers; the dead refusal branch was removed. Ordinary parser and method/property controls remain active; no historic source/state/ABI/syntax gate renewed."
+    },
+    "independent_reached": {
+      "premises": 108,
+      "module_count": 435,
+      "report": "state-v1/report.json",
+      "scope": "Genuine attribute-before-abstract-constant FAILED_COMPILE receipt under default/startup0. Exactly one earlier warning or mask0 silence, native message/line/failure identity, exact PDEXIT PCSREJECT and no source/code/class/function/constant/binding installation; free-handle reuse, public zero-budget/catch/finally and wrong-unit/bytes/replay refusal. SL true/exit0/empty stderr,18.00s; workers/adapter exit0."
+    },
+    "dynamic_sources": {
+      "agreements": 22,
+      "report": "sources-v1/report.json",
+      "command": "python3 tests/semantics/constant_modifier_rejected_sources.py --output <external sources-v1>"
+    },
+    "main_sources": {
+      "agreements": 4,
+      "report": "main-v1/report.json",
+      "command": "python3 tests/semantics/constant_modifier_main_rejected_sources.py --output <external main-v1>"
+    },
+    "stability": "Every new/affected gate passes at one actual cut, head/inputs stable, native/model raw streams/status exact. short-v1 and source-campaign-v1 reap.json retain empty full-private cmdline/cwd/exe/fd scans; all actor/worker groups reaped and direct CPU1/5 loans returned. No failures or fixture corrections occurred in these175 execution packets."
+  },
+  "limits": "Trusted raw-profile receipts are explicit foreign facts rather than proof from source bytes. Broader compiler/parser prefix disagreements, modifier combinations, multibyte conversion and unfinished core remain partial. Accepted-source interface and ordinary validation stay intact; held routes untouched. No engine bug, intentional divergence or new portability/full-core claim.",
+  "review": "Independent private production/test CLEAR exact32d after source22/main4, service42/affected37 and reached108. Documentation/inventory CLEAR at3b8510e2d4c25a476d2d3cf61067151b929b0426. Actual-parent pointwise compatibility CLEAR at1ec94a859b6a0b998ae9f9ea972940d1cba42f9f ona18e02033ad4a31f6627264b4eb42eae47d3333b. This final completion changes only the existing ledger.",
+  "composition": {
+    "head": "1ec94a859b6a0b998ae9f9ea972940d1cba42f9f",
+    "parent": "a18e02033ad4a31f6627264b4eb42eae47d3333b",
+    "review": "All nine incoming production paths independently inspected.359 NOTIFY=eps slot guard remains true without WeakReference/WeakMap associations;386 standard-key-child admission and422 declaration move are unselected.270/444 abandoned-C/tick cleanup requires absent user destructors or tick/error-handler bailout; parser128 bypasses handler calls.30 adds an unused documentary task, no state/initial change.172/420 getter/Iterator/Stringable and437 enum array aliases are absent. Existing source/declaration/global task integrity and own parser/frontend/native/adapter/schema/tests remain exact. Accepted32d execution retains its identity; no joined actor or new execution claim."
+  }
+}

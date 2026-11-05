@@ -128,6 +128,35 @@ reference policies, escaping or mutating freeing objects, custom Closure Keys,
 collection with active pins and wider diagnostics remain partial. No collector,
 count or nogc change. See the [ordinary key review](../../coverage/semantics/gc-ordinary-key-review.json).
 
+GC36 admits a `stdClass` Key with one direct dynamic property owning a childless
+instance whose only method is a public no-argument destructor. The child may be
+attached before or after the Key's first insertion into a single WeakMap. The
+ordinary storage pin keeps the original property slot and its owner while Map
+value cleanup runs. WeakReference registration order decides whether a Value
+destructor sees the Key through its observer; the observer is cleared before
+the Key child destructor runs. A pending notification blocks slot transfer, so
+the child releases only after that notification completes.
+
+The one-slot physical image, child allocation/class and sole property owner are
+checked before admission. Other Key fields, table-backed storage, multiple Maps,
+freeing-object mutation and collection with active pins retain their explicit
+boundaries. No collector or count rule changes. The [standard Key field review](../../coverage/semantics/gc-standard-key-field-review.json)
+records the original-source, reached-state and affected checks.
+
+GC37 admits first insertion of a methodless user Value already owning one
+direct declared Child through a public untyped property. The Map is empty and
+the `stdClass` Key is a leaf. The Child has no fields and only a public
+no-argument destructor; its sole owner is the Value property. When the Key
+retires, the Map transfers its Value owner to a release job. The Value becomes
+weakly dead before its storage pin transfers the declared Child slot, including
+when the Child destructor throws into the surrounding catch.
+
+The admission checks the real property layout, direct edge, Child class and
+sole owner. Occupied replacement remains Unsupported. Extra Value fields or
+Child owners, Map-first teardown, and active-pin collection retain their
+existing boundaries. The [declared Value child review](../../coverage/semantics/gc-declared-value-child-review.json)
+records source, reached-state and affected evidence.
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

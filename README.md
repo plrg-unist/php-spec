@@ -3203,6 +3203,9 @@ Early method-target validation now stops readonly and asymmetric-set modifiers
 before parameters/body while retaining earlier attribute headers. Valid readonly
 properties and ordinary method flags keep their headers. Twenty-two dynamic and
 four main comparisons plus 108 reached conditions pass.
+Constant modifiers now receive the same early target check before initializers:
+earlier attribute headers survive, while forbidden initializer headers do not.
+Twenty-two dynamic and four main comparisons plus 108 reached conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
@@ -3212,7 +3215,8 @@ four main comparisons plus 108 reached conditions pass.
 [rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
 [namespace-phase review](coverage/semantics/rejected-namespace-review.json),
 [compiler-phase review](coverage/semantics/rejected-static-validation-review.json),
-[method-target review](coverage/semantics/rejected-method-modifier-review.json).
+[method-target review](coverage/semantics/rejected-method-modifier-review.json),
+[constant-target review](coverage/semantics/rejected-constant-modifier-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -7037,10 +7041,15 @@ Class strings retain their spelling; case receivers use the canonical enum
 name. The [variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json)
 records seven exact agreements, two Unsupported controls and four separate
 reached groups (216 checks) at their actual cuts.
+When the same input/output cell rebounds to a new direct-string array after
+the first SEND, the selected original name overwrites that cell. A retained
+owner keeps the rebound array live; a pre-output throw leaves it and the
+result assignment target untouched. The [array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
+records four exact agreements, one Unsupported owning-object control and five
+separately run reached groups (229 checks).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
-owning rebound values, late type
-sources, wider array sources (including embedded references and alias plus
-source rebinding) and autoload,
+rebound arrays with owning children, late type
+sources, wider array sources (including embedded references) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -7427,6 +7436,12 @@ and reached-state validation through the same copied warning cleanup. Catch and
 finally run after the exception replaces exit; a final string exit retains
 status 41. The existing rules suffice for this selected case.
 [Cleanup throw review](coverage/semantics/generator-call-cleanup-throw-review.json).
+
+A second exit in that owning retval's Child destructor now keeps the copied
+warning cleanup and later property release. A literal string exit retains
+status 29 and frees an After sibling; an integer exit replaces status 41 with
+53. Both exact native/model outputs and independent reached ownership gates
+pass. [Repeated cleanup exit review](coverage/semantics/generator-call-repeated-exit-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
