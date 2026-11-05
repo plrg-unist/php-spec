@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the real direct SEND receiver pin after argv and cache retirement."""
+"""Check direct SEND's saved return beside its retained closed cache."""
 import hashlib
 import json
 from pathlib import Path
@@ -38,7 +38,8 @@ pgeneratorop.LOOP = eps
 S.ORIGIN = (pgeneratorop.SITE)
 S.OBJECTS[n_target] = GENERATOR pgenerator
 pgenerator.PHASE = GENERATOR_CLOSED
-$node_children(S, HOBJECT n_target) = eps
+pgenerator.VALUE = (POBJECT n_return)
+$node_children(S, HOBJECT n_target) = [HOBJECT n_return]
 $object_name(S, n_argument) = $ptascii("Argument116D")
 $object_name(S, n_return) = $ptascii("Return116D")
 $node_children(S, HOBJECT n_return) = eps
@@ -58,7 +59,7 @@ $task_nodes(GENERATOR_API_RESULT pgeneratorop (POBJECT n_return)) = [HOBJECT n_t
 $task_nodes(GENERATOR_API_RETURN pgeneratorop (POBJECT n_return)) = [HOBJECT n_return]
 $heap_owners($heap_graph(S), HOBJECT n_target) = 1
 $heap_owners($heap_graph(S), HOBJECT n_argument) = 0
-$heap_owners($heap_graph(S), HOBJECT n_return) = 1
+$heap_owners($heap_graph(S), HOBJECT n_return) = 2
 $generator_api_result_saved(S, pgeneratorop)
 $call_task_valid(S, GENERATOR_API_RESULT pgeneratorop (POBJECT n_return))
 ~$call_task_valid(S, GENERATOR_API_RESULT pgeneratorop (POBJECT n_argument))
@@ -93,15 +94,29 @@ S_drop.STORE = S.STORE
 S_drop.EVENTS = S.EVENTS
 $heap_owners($heap_graph(S_drop), HOBJECT n_target) = 1
 $heap_owners($heap_graph(S_drop), HOBJECT n_argument) = 0
-$heap_owners($heap_graph(S_drop), HOBJECT n_return) = 0
+$heap_owners($heap_graph(S_drop), HOBJECT n_return) = 1
 $call_task_valid(S_drop, GENERATOR_API_RESULT pgeneratorop PNULL)
 S_budget = $drive(S, 1)
 S_budget.COMPLETION = BUDGET
+S_budget.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_API_RESULT pgeneratorop PNULL) :: ptask_tail*
+pdestructionrelease.JOBS = [pdestructionjob]
+$destruction_job_node(pdestructionjob) = (HOBJECT n_return)
+$task_nodes(DESTRUCTOR_RELEASE pdestructionrelease) = [HOBJECT n_return]
+pdestructionoperation.SOURCE = GENERATOR_API_RESULT pgeneratorop (POBJECT n_return)
+$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps
 $heap_owners($heap_graph(S_budget), HOBJECT n_target) = 1
+$heap_owners($heap_graph(S_budget), HOBJECT n_return) = 2
 ~((HOBJECT n_argument) <- S_budget.ALLOCATIONS)
 $call_descriptors_valid(S_budget)
 $heap_valid($heap_graph(S_budget))
 $drive(S_pause[.COMPLETION = NORMAL], 1) = S_budget
+S_decrement = $drive(S_budget[.COMPLETION = NORMAL], 1)
+S_decrement.COMPLETION = BUDGET
+$heap_owners($heap_graph(S_decrement), HOBJECT n_target) = 1
+$heap_owners($heap_graph(S_decrement), HOBJECT n_return) = 1
+~((HOBJECT n_argument) <- S_decrement.ALLOCATIONS)
+$call_descriptors_valid(S_decrement)
+$heap_valid($heap_graph(S_decrement))
 '''.splitlines() if line.strip()]
 
 review.CASES = {'i116-peer-direct-send-retired-argv-return-pin': {
