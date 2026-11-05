@@ -25,29 +25,29 @@
   },
   "validation": {
     "service": {
-      "report": "service-v3/report.json",
-      "sha256": "77c2277dbc542449b44822a88f01860118e906aaf3460c567adcbef7a938d382",
-      "scope": "27 controls:16 fixture worker replies,4 unchanged ordinary parser controls and7 rejected direct parser cutoffs. Exact native category/message/line and stderr custody are checked, including simple first-attribute sentinel cases. Source-model agreement credit0.",
+      "report": "service-v4/report.json",
+      "sha256": "56d6e50fe89ef2d19c863ee787a01dcd2047250cc1242d233abda53b76025b29",
+      "scope": "27 controls:16 fixture worker replies,4 unchanged ordinary parser controls and7 rejected direct parser cutoffs. Exact native category/message/line and stderr custody are checked, including simple first-attribute sentinel cases. Source-model agreement credit0. Every worker reply now explicitly requires empty captured diagnostics.",
       "controls": 27,
-      "head": "c708d5c81f6d36378ab4cd9b4384d68bd6c82cbd",
+      "head": "7034d96218c0058db5292095ff7dc8e6e25a46af",
       "head_stable": true,
       "inputs_stable": true
     },
     "affected_constants": {
-      "report": "affected-constant-attributes-v2/report.json",
-      "sha256": "2ec419e3d9c0e549e8b3926d8d10813a502f020c726435eaf58e535a2557ffdf",
-      "scope": "25 maintained COMP179 service controls on final production bytes.",
+      "report": "affected-constant-attributes-v3/report.json",
+      "sha256": "058dcdff6a148a00bc93da45a4b981146a07428fccd5fff2ba835d225cb46632",
+      "scope": "25 maintained COMP179 service controls on final production bytes. Every worker reply now explicitly requires empty captured diagnostics.",
       "controls": 25,
-      "head": "c708d5c81f6d36378ab4cd9b4384d68bd6c82cbd",
+      "head": "7034d96218c0058db5292095ff7dc8e6e25a46af",
       "head_stable": true,
       "inputs_stable": true
     },
     "affected_hooks": {
-      "report": "affected-hooks-v2/report.json",
-      "sha256": "6372fe08d3cbae1fc0aee1342a63e1ef75f4ac3335f34a980d7b0d47bbcdb0e1",
-      "scope": "76 maintained COMP177/178 hook and multi-property service controls on final production bytes.",
+      "report": "affected-hooks-v3/report.json",
+      "sha256": "f72432646d7d7f7155fc99092f27357d33aee137670e9844dd6104d502e92c5c",
+      "scope": "76 maintained COMP177/178 hook and multi-property service controls on final production bytes. Every worker reply now explicitly requires empty captured diagnostics.",
       "controls": 76,
-      "head": "c708d5c81f6d36378ab4cd9b4384d68bd6c82cbd",
+      "head": "7034d96218c0058db5292095ff7dc8e6e25a46af",
       "head_stable": true,
       "inputs_stable": true
     },
@@ -72,20 +72,21 @@
       "inputs_stable": true
     },
     "independent_service": {
-      "report": "reviewer-matrix-v2/report.json",
-      "sha256": "4db9e096d7ef1a766b4c51a9ffb3cef3449f324349d3295f0fb184dc8049f243",
-      "scope": "52 independent post-fix native/worker eval/file challenges cover2 invalid flags,readonly/order/duplicate controls,attrs/ctor priority,extends/implements,nesting,mixed-case NEW,named/readonly first and preceding-new carriers,exact simple-attribute sentinels,earlier nonliteral/grammar and later lexical priority. Source-model agreement credit0.",
+      "report": "reviewer-matrix-v3/report.json",
+      "sha256": "4170ee3b5e38c59b38b2d3cc7b321d16d0fc06d2052f083c48196690eb9d3dc0",
+      "scope": "52 independent post-fix native/worker eval/file challenges cover2 invalid flags,readonly/order/duplicate controls,attrs/ctor priority,extends/implements,nesting,mixed-case NEW,named/readonly first and preceding-new carriers,exact simple-attribute sentinels,earlier nonliteral/grammar and later lexical priority. Source-model agreement credit0. Every worker reply now explicitly requires empty captured diagnostics.",
       "controls": 52,
-      "head": "b627d1a6f8590acbd6c6df46145a6caafc83c4f7",
+      "head": "7034d96218c0058db5292095ff7dc8e6e25a46af",
       "head_stable": true,
       "inputs_stable": true
     },
-    "identity": "Original dynamic/main comparisons and independent52 challenge bind clean b627d1a6f with stable watched inputs/head. Maintained service27 and affected25/76 reports bind c708d5c81 plus final production/test bytes, committed unchanged in b627d1a6f. Raw sources,hashes,commands/cwd,streams,requests/replies and process outcomes remain outside Git."
+    "identity": "Original dynamic/main comparisons bind clean b627d1a6f with stable watched inputs/head. Final maintained service27,affected25/76 and independent52 reports bind the unchanged b627 production bytes after the documentation commit; only cheap service assertions changed to require empty captured diagnostics. No source/fixture/CLI/runtime byte changed after the original comparisons. Raw sources,hashes,commands/cwd,streams,requests/replies and process outcomes remain outside Git."
   },
   "zero_credit": [
     "service-v2/report.json: direct first attributed named self/parent cases emitted undefined token[-1] infrastructure warnings. Raw probe stdout/stderr and the failing report are preserved; nonnegative position check and exact simple-attribute regressions correct this before all source comparisons.",
-    "service-v1 and reviewer-matrix-v1:23 and48 service controls passed at earlier pre-fix production bytes but did not expose the direct-parser sentinel. Their original cuts remain; neither establishes final post-fix gate credit.",
-    "reviewer-entry-trace v1 prototype emitted instrumentation warnings; corrected v2 traces are stack-shape evidence only, with no semantic/source-model agreement credit. Discovery probes for already-correct legacy new-reference and CPP modifiers are not source agreement."
+    "Pre-fix reviewer-matrix-v1/48 captured eight warning-bearing replies in diagnostics (two warnings each) while stderr stayed empty. Its old passed flag has zero clean-service gate credit. The initial service-v1/23 and post-fix service-v3/matrix-v2 cuts lacked explicit empty-diagnostics checks and are superseded only by focused cheap service runs; original source comparisons stay valid.",
+    "reviewer-entry-trace v1 prototype emitted instrumentation warnings; corrected v2 traces are stack-shape evidence only, with no semantic/source-model agreement credit. Discovery probes for already-correct legacy new-reference and CPP modifiers are not source agreement.",
+    "Final review found the worker warning-capture custody gap in the new service loops. Three empty-diagnostics assertions and the independent matrix correction close it; this changes tests only and requires no unchanged production/source rerun."
   ],
   "review": {
     "status": "Independent code/test/source trace and52-row post-fix challenge are clear; final report acceptance pending."

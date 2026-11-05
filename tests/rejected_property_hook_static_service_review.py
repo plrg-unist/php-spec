@@ -90,6 +90,7 @@ def run(out):
                 packet.update(requested=b64(b'multi.php'), resolved=b64(b'/review/multi.php'),
                     opened=b64(b'/review/multi.php'))
             result = frontend.parse(packet)
+            assert not result['diagnostics']
             assert not result['accepted'] and result['category'] == 'parser_rejection'
             assert result['line'] == case['line']
             assert base64.b64decode(result['message']) == case['message'].encode()

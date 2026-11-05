@@ -66,6 +66,7 @@ def run(out):
                 packet.update(requested=b64(b'constants.php'), resolved=b64(b'/review/constants.php'),
                     opened=b64(b'/review/constants.php'))
             result = frontend.parse(packet)
+            assert not result['diagnostics']
             assert not result['accepted'] and result['line'] == case['line']
             assert result['category'] == ('parser_static_rejection' if case['kind'] == 'CompileError' else 'parser_rejection')
             assert base64.b64decode(result['message']) == case['message'].encode()
