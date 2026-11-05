@@ -425,7 +425,7 @@ def $weakmap_entries_field_leaf_free(S, n_map, pweakmapentry_field, pweakmapentr
 dec $weakmap_entries_two_value_child_free(pstate, nat) : bool
 def $weakmap_entries_two_value_child_free(S, n_map) = true
   -- if $weakmap_entries_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
-  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES [pweakmapentry_first, pweakmapentry_second]
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES ([pweakmapentry_first, pweakmapentry_second])
   -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
   -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
