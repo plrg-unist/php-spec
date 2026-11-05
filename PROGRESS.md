@@ -105,6 +105,11 @@ boolean. One exact original and 46 reached guards pass. A shared scalar
 input/output reference cell also retains the saved name through its write;
 one exact original and 43 reached guards pass. Argument-time target rebinding
 remains explicit Unsupported.
+Retained childless ordinary old output objects now receive the callable name
+while another owner survives; their destructor runs only after the last owner
+is released. The postwrite ownership guard rejects a unique or dead old object.
+One exact original, strict433 and 77 independent reached guards pass.
+[Retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json).
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -794,7 +799,8 @@ CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
 CLASS166 is integrated at `0ed9ac41f`: one parented anonymous trait capture source and 48 reached conditions pass with private and joined strict433. [Review](coverage/semantics/anonymous-trait-capture-review.json).
-CLASS167 admits bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
+CLASS167 is integrated at `303883b83`: bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
+CLASS168 admits one unqualified, unmodified trait alias in a parented no-interface unit0 anonymous class. Captured `Y=self::q(...)` and direct `q` agree with PHP for Base168; a wrong class raises TypeError before the body. Two exact sources, 52+42 reached conditions and private strict433 pass. [Review](coverage/semantics/anonymous-trait-alias-capture-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -820,6 +826,14 @@ and filename-local registration; ten checked-AST premises cover source offsets
 and nonraw/BOM refusal. Joined strict433 passes. Plain and BOM files retain
 their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 [Review](coverage/semantics/halt-preamble-review.json).
+
+COMP165 admits the disabled-multibyte parser warning followed by a static
+first-statement fatal for late or nested sole-string encoding declarations.
+Five pinned-native source cases cover root, namespace and block fatals plus
+included and eval first-declaration controls. Forty-four checked-AST premises
+authenticate declaration and item paths, warning location, and malformed
+occurrence refusal. Other declaration shapes and multibyte source conversion
+remain partial. [Review](coverage/semantics/encoding-placement-review.json).
 
 ## Active and unintegrated work
 

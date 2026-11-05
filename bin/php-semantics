@@ -142,6 +142,13 @@ def observe(state, filename, display_mode=2):
                 return bytes(map(int, sourcefile['args'][1]))
         raise ValueError(f'unknown source unit {unit}')
 
+    def origin_unit(origin):
+        if origin['tag'] == 'PORIGIN':
+            return origin['args'][0]
+        if origin['tag'] in {'TRAIT_ORIGIN', 'TRAIT_MEMBER_ORIGIN'}:
+            return origin_unit(origin['args'][1])
+        raise ValueError(f'unknown source origin {origin["tag"]}')
+
     events = state['EVENTS']
     stdout = b''
     completion = state['COMPLETION']
@@ -294,7 +301,7 @@ def observe(state, filename, display_mode=2):
         raise ValueError(f'unsupported trace argument kind {kind}')
 
     def trace_frame(index, file, line, function, classname, call_type, args):
-        call = (classname + call_type if classname is not None else b'') + function
+        call = (classname.split(b'\0', 1)[0] + call_type if classname is not None else b'') + function
         rendered = []
         for key, value in args:
             prefix = bytes(map(int, key['args'][0])) + b': ' if key['tag'] == 'KSTRING' else b''
@@ -334,7 +341,7 @@ def observe(state, filename, display_mode=2):
     location = os.fsencode(filename)
     origin = state.get('ERRORORIGIN')
     if origin is not None:
-        location = source_filename(origin['args'][0])
+        location = source_filename(origin_unit(origin))
     if uncaught_chain:
         location = bytes(map(int, field(uncaught_chain[0], 'file')['args'][-1]))
     diagnostic = None

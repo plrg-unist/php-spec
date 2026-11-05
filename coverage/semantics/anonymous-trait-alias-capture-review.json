@@ -1,0 +1,157 @@
+{
+  "scope": "CLASS168: one named trait use with one unqualified, unmodified m as q alias in a parented, no-interface unit0 anonymous class. A trait constant captures q; parent receive and CLI diagnostics follow the copied method.",
+  "pin": {
+    "oracle": "project-local PHP 8.5.10 CLI/NTS/64-bit, -n plus tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+    "private_base": "23defa7af",
+    "semantic_commit": "cafd916b0",
+    "catalogue_commit": "dffca6a7a",
+    "state_commit": "f5e63677d",
+    "artifact_root": "/home/user/workspace/php-spec"
+  },
+  "inputs": {
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "profile": [
+      "tests/semantics/profile.json",
+      "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    ],
+    "manifest": [
+      "spec/semantics/modules.json",
+      "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3"
+    ],
+    "anonymous_rule": [
+      "spec/semantics/383-anonymous-classes.watsup",
+      "ff6782cf484ea888627022190bf5f77b5347d22af1d5bfbbc35c78dad188559a"
+    ],
+    "cli_observer": [
+      "bin/php-semantics",
+      "0b1507d1b0ff123ded6d807b72de869b7ca9fbfce0ab147f459b47872b8539ab"
+    ],
+    "catalogue": [
+      "tests/semantics/anonymous_trait_alias_capture_cases.json",
+      "061e626989fc23b17243f03f673cd7fb888e8f57812e698e36384a599160597d"
+    ],
+    "state_script": [
+      "tests/semantics/anonymous_trait_alias_capture_protocol.py",
+      "4fefca3b96d9c3a3edf5418713503478c8b2192479862d02580de3d0cd04c9a5"
+    ]
+  },
+  "native": [
+    {
+      "id": "parented-anonymous-trait-alias-positive",
+      "status": "normal",
+      "exit": 0,
+      "source_sha256": "c207d714dcbc6e33ab09518a8821cbe7d57aaa35c626c683da1533f0f8ed5a85",
+      "raw": [
+        ".tools/class168-artifacts/parented-alias-positive.native.json",
+        "2de1542eb67765527ae1bad448ad80307fce629ab2c04aa6c172b9357b2f1aed"
+      ]
+    },
+    {
+      "id": "parented-anonymous-trait-alias-wrong-type",
+      "status": "php_error",
+      "exit": 255,
+      "source_sha256": "31882d50a59d279b28df2bc5cc982498aea110d15e3125b6159e928f601098a4",
+      "raw": [
+        ".tools/class168-artifacts/parented-alias-wrong-type.native.json",
+        "d31cbc2e99f7a5cd84ec98cbf2bc730e67a2cf5855830f095c20f6e82c7b7f3a"
+      ]
+    }
+  ],
+  "validation": {
+    "private_strict": "All 433 ordered semantic modules compile with true newline, empty stderr and exit0 on CPU2. The run preceded its commit and final CLI edit; its watched semantic module bytes match cafd916b0. Stable inputs and full reap.",
+    "strict_supervisor": [
+      ".tools/class168-artifacts/strict-draft4.json",
+      "ce56aff96c4aaa805e6554a8fd4f02c4e9597c5ad4a1d7a7d982513b37947d86"
+    ],
+    "strict_numeric": [
+      ".tools/class168-artifacts/strict-draft-numeric.json",
+      "964599a3e4abde7500632709b838b5cdbed1ccf9d740ecc1b8843b5888c738c6"
+    ],
+    "private_sources": "Both frozen originals pass exact native/model stdout, stderr, status and exit: positive normal/0 and wrong-type php_error/255. Positive was run before CLI error-render edits, which its normal path cannot reach; wrong-type was run on final CLI bytes. CPU2, stable inputs, full reap.",
+    "positive_supervisor": [
+      ".tools/class168-artifacts/source-positive-draft.json",
+      "3d182a794f006263b657eb6cafbdeeac4e902a25aa63285ec1246f0dabf67324"
+    ],
+    "positive_raw": [
+      ".tools/class168-artifacts/recovered-private-raw/method-runtime-npszmd8j/report.json",
+      "d8335a7b60aa206873af1d3c13981fed3335206ae6eb0caf6ae8cf9a3da05239"
+    ],
+    "wrong_type_supervisor": [
+      ".tools/class168-artifacts/source-wrong-type-render.json",
+      "af3ec5526f2da6717a74f566309528d24824c95afc9f7e38c1b04cfc1603cdb4"
+    ],
+    "wrong_type_raw": [
+      ".tools/class168-artifacts/recovered-private-raw/method-runtime-cu9j9yzx/report.json",
+      "47bf210d1711713babfca11aa0e7025371bb90e0edeaa28530b43cae8940d2e4"
+    ],
+    "reached_state": "Two actual-source groups pass 52 and 42 conditions, true newline, empty stderr, exit0; positive pins alias admission/publication/replay, negative pins cached q target, Base parent view, Other argument, TypeError before body and nested trait error origin. CPU2, stable inputs, full reap.",
+    "state_supervisor": [
+      ".tools/class168-artifacts/state-two-groups.json",
+      "58f28d1d50b96b6536c71c50808316f5f95695af63e5fb4b81c67e35e5af005c"
+    ],
+    "positive_state_raw": [
+      ".tools/class168-artifacts/recovered-private-raw/anonymous-trait-alias-eblmdyaj/report.json",
+      "e9e819a357508ac0f7176806050250e6163f786197adf9417a5d4b6bf12daba1"
+    ],
+    "wrong_type_state_raw": [
+      ".tools/class168-artifacts/recovered-private-raw/anonymous-trait-alias-sn9fytva/report.json",
+      "16acdaa4863e1a099e08c31e726804000173f57a1df2a81f2e55f93cb6053420"
+    ]
+  },
+  "zero_credit": {
+    "summary": "Two baseline Unsupported cuts, three strict elaboration failures, the wrong-type observer crash and full-NUL trace mismatch, and one state fixture variable-collision failure remain zero agreement credit. Probes are diagnostic only. The draft strict helper reused its numeric stderr path, so failed strict supervisors and their input hashes are retained but the individual first two numeric stderr files were overwritten; no passing credit is assigned.",
+    "baseline_positive": [
+      ".tools/class168-artifacts/recovered-private-raw/method-runtime-in5zqzcy/report.json",
+      "33171b26b66154cf9820286dbd64e39d1cb771e30f96284718f63ec8a3a77190"
+    ],
+    "baseline_wrong_type": [
+      ".tools/class168-artifacts/recovered-private-raw/method-runtime-3i836if7/report.json",
+      "2bfaa812901747a99cd1d6634ca7847083cc16d554f57fd8ceb0edf611e1854f"
+    ],
+    "observer_crash": [
+      ".tools/class168-artifacts/recovered-private-raw/method-runtime-5rcmzx7j/report.json",
+      "86ca8c36c461a599c723d86091d85f9681aec1b8d6494acfbd55ba844bdaf5de"
+    ],
+    "trace_mismatch": [
+      ".tools/class168-artifacts/recovered-private-raw/method-runtime-pxw227to/report.json",
+      "81d8b638d74e7a74b6b4960f0b73d41705a2f9b319d29440db8cc29a736a71ce"
+    ],
+    "state_fixture_failure": [
+      ".tools/class168-artifacts/recovered-private-raw/anonymous-trait-alias-3lpkzb1m/report.json",
+      "2985973aea31ed5fafee597b94be278676f8addd515b5eac2e4fdd73fb0b327f"
+    ],
+    "raw_map": [
+      ".tools/class168-artifacts/recovered-private-raw/locations.json",
+      "2d25d28feb4379e4159056decea683c6e662ea987b329baf371bb1771e05a700"
+    ],
+    "strict_failed_supervisors": [
+      [
+        ".tools/class168-artifacts/strict-draft.json",
+        "63afd4a8968dd47d98f4c5b19afff18c1a5ad1048f28a5066c4089edb707fa19"
+      ],
+      [
+        ".tools/class168-artifacts/strict-draft2.json",
+        "007b162378040fc0453250d592e97c240768ad41253cdfc92bdd80164e676cb2"
+      ],
+      [
+        ".tools/class168-artifacts/strict-draft3.json",
+        "a08df48818116c24a2195465b02f2bfdd5eeb8240d7ecb277449c17ed156ed37"
+      ]
+    ],
+    "observer_debug": [
+      ".tools/class168-artifacts/observer-debug.json",
+      "f17ae517745e8ba0d199f959369cc6507aa2c751de7726b624372a5766cd2c81"
+    ]
+  },
+  "limits": "Parentless and interface trait adaptations remain excluded. Qualified aliases, visibility changes, precedence adaptations, multiple aliases, multiple trait uses and dynamic-source anonymous classes are unvalidated by this cut.",
+  "actual_tail": {
+    "base": "9f3a4c2326590b6a95a2a32682c40e15c2194d21",
+    "pre_metadata_head": "8d6907543e379c16d7cd103abfef89a7de13ff9a",
+    "carried_inputs": "The 383 rule, CLI observer, catalogue, state script, profile and 433-module manifest bytes match the accepted private cuts at this composition.",
+    "bridge": "Since private base 23defa7af, only modules 182/268/30 (Generator Closure::call copy/reference tasks), 301 (GC-active REALCLOSURE), 391 (OB_START Notice), 437 (enum callable-name output), 444 (tick entries) and 92 (encoding declare) changed. The two originals use direct nongenerator static copied METHODCLOSURE with no Closure::call, GC, output buffer, enum, tick or encoding declare route; their reached states stop at anonymous publication and q TYPE_RECEIVE. Independent review may reuse the accepted private strict/source/state evidence without a redundant joined campaign.",
+    "status": "Exact composition review pending; final metadata changes no semantic/test input."
+  }
+}

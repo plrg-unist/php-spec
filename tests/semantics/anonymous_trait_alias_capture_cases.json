@@ -1,0 +1,45 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "parented-anonymous-trait-alias-positive",
+      "source": "<?php\nclass Base168 {}\ntrait T168 {\n    public static function m(parent $value) {\n        echo 'body:', self::class, ':', static::class, ':', get_class($value), ';';\n    }\n    public const Y = self::q(...);\n}\n$object = new class extends Base168 { use T168 { m as q; } };\n$capture = $object::Y;\necho 'class:', get_class($object), ';';\n$capture(new Base168);\n$object::q(new Base168);\necho 'done;';\n",
+      "source_sha256": "c207d714dcbc6e33ab09518a8821cbe7d57aaa35c626c683da1533f0f8ed5a85",
+      "stdout_base64": "Y2xhc3M6QmFzZTE2OEBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY4LWFydGlmYWN0cy9wYXJlbnRlZC1hbGlhcy1wb3NpdGl2ZS5waHA6OSQwO2JvZHk6QmFzZTE2OEBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY4LWFydGlmYWN0cy9wYXJlbnRlZC1hbGlhcy1wb3NpdGl2ZS5waHA6OSQwOkJhc2UxNjhAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2OC1hcnRpZmFjdHMvcGFyZW50ZWQtYWxpYXMtcG9zaXRpdmUucGhwOjkkMDpCYXNlMTY4O2JvZHk6QmFzZTE2OEBhbm9ueW1vdXMAL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NsYXNzMTY4LWFydGlmYWN0cy9wYXJlbnRlZC1hbGlhcy1wb3NpdGl2ZS5waHA6OSQwOkJhc2UxNjhAYW5vbnltb3VzAC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jbGFzczE2OC1hcnRpZmFjdHMvcGFyZW50ZWQtYWxpYXMtcG9zaXRpdmUucGhwOjkkMDpCYXNlMTY4O2RvbmU7",
+      "stdout_template_base64": "Y2xhc3M6QmFzZTE2OEBhbm9ueW1vdXMAe0ZJTEV9OjkkMDtib2R5OkJhc2UxNjhAYW5vbnltb3VzAHtGSUxFfTo5JDA6QmFzZTE2OEBhbm9ueW1vdXMAe0ZJTEV9OjkkMDpCYXNlMTY4O2JvZHk6QmFzZTE2OEBhbm9ueW1vdXMAe0ZJTEV9OjkkMDpCYXNlMTY4QGFub255bW91cwB7RklMRX06OSQwOkJhc2UxNjg7ZG9uZTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/class168-artifacts/parented-alias-positive.native.json",
+      "native_raw_sha256": "2de1542eb67765527ae1bad448ad80307fce629ab2c04aa6c172b9357b2f1aed",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "parented-anonymous-trait-alias-wrong-type",
+      "source": "<?php\nclass Base168 {}\nclass Other168 {}\ntrait T168 {\n    public static function m(parent $value) { echo 'body;'; }\n    public const Y = self::q(...);\n}\necho 'pre;';\n$object = new class extends Base168 { use T168 { m as q; } };\n$capture = $object::Y;\necho 'cap:', get_class($object), ';';\n$capture(new Other168);\necho 'done;';\n",
+      "source_sha256": "31882d50a59d279b28df2bc5cc982498aea110d15e3125b6159e928f601098a4",
+      "stdout_base64": "cHJlO2NhcDpCYXNlMTY4QGFub255bW91cwAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY2xhc3MxNjgtYXJ0aWZhY3RzL3BhcmVudGVkLWFsaWFzLXdyb25nLXR5cGUucGhwOjkkMDs=",
+      "stdout_template_base64": "cHJlO2NhcDpCYXNlMTY4QGFub255bW91cwB7RklMRX06OSQwOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQmFzZTE2OEBhbm9ueW1vdXMoKTogQXJndW1lbnQgIzEgKCR2YWx1ZSkgbXVzdCBiZSBvZiB0eXBlIEJhc2UxNjgsIE90aGVyMTY4IGdpdmVuLCBjYWxsZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTIgYW5kIGRlZmluZWQgaW4ge0ZJTEV9OjUKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxMik6IEJhc2UxNjhAYW5vbnltb3VzOjpxKE9iamVjdChPdGhlcjE2OCkpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA1Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": ".tools/class168-artifacts/parented-alias-wrong-type.native.json",
+      "native_raw_sha256": "d31cbc2e99f7a5cd84ec98cbf2bc730e67a2cf5855830f095c20f6e82c7b7f3a",
+      "model_timeout_seconds": 240
+    }
+  ]
+}
