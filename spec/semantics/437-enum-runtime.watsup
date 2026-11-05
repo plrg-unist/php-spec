@@ -1988,6 +1988,12 @@ def $enum_is_callable_exit_frame_capture(S) = (penumqueryoutput)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if $destructor_context_valid(S, pcallcontext)
 def $enum_is_callable_exit_frame_capture(S) = eps -- otherwise
+def $enum_exit_owner_reordered(S) = ($enum_is_callable_exit_frame_capture(S) =/= eps)
+def $eager_owner_order(S) = pnode_cells* ++ $destruction_nodes_delete(pnode_owners*, pnode_cells*)
+  -- if $enum_exit_owner_reordered(S)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pnode_cells* = $destructor_local_cells(S.ENV, S.SYMBOLS)
+  -- if pnode_owners* = $eager_edge_nodes($heap_graph(S).EDGES) ++ $eager_task_inputs(S, ptask) ++ $operand_nodes(S.RESULT) ++ $eager_base_inputs(S, ptask) ++ $machine_roots(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
 def $eager_operation_source(S, EXIT_UNWIND z) = ENUM_IS_CALLABLE_EXIT_FRAME penumqueryoutput z
   -- if $enum_is_callable_exit_frame_capture(S) = (penumqueryoutput)
 def $eager_operation_source_guard(S, pdestructionoperation) = (pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE) /\ z = $ntprecision32(z))

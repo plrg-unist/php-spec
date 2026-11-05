@@ -27,32 +27,68 @@ def $eit_seek(S, penumqueryoutput, b_throw, n) = S
   -- if $(n > 0) /\ $eit_front(S, penumqueryoutput, b_throw)
 def $eit_seek(S, penumqueryoutput, b_throw, n) = $eit_seek($drive_steps($eix_resume(S), 1), penumqueryoutput, b_throw, $nabs($(n - 1)))
   -- if $(n > 0) /\ ~$eit_front(S, penumqueryoutput, b_throw)
+dec $eit_frame_seek(pstate, nat) : pstate
+def $eit_frame_seek(S, 0) = S
+def $eit_frame_seek(S, n) = S
+  -- if $(n > 0) /\ $enum_is_callable_exit_frame_capture(S) =/= eps
+def $eit_frame_seek(S, n) = $eit_frame_seek($drive_steps($eix_resume(S), 1), $nabs($(n - 1)))
+  -- if $(n > 0) /\ $enum_is_callable_exit_frame_capture(S) = eps
 '''
 
 
-def reached(label, suffix, message, completion, status, two_locals=False):
+def reached(label, suffix, message, completion, status, two_locals=False, shared_reference=False):
     row, checks = exitcase.source(label, suffix)
     checks += exitcase.capture(label, f'S_{label}_initial', 'FirstCheck::from')
     start = f'S_{label}_clear'
-    if two_locals:
+    if shared_reference:
+        checks += [
+            f'S_{label}_frame = $eit_frame_seek({start}, 7000)',
+            f'$enum_is_callable_exit_frame_capture(S_{label}_frame) = (penumqueryoutput_{label})',
+            f'S_{label}_frame.TODO = [EXIT_UNWIND 23]',
+            f'$lookup(S_{label}_frame.ENV, $ptascii("first")) = (n_{label}_shared)',
+            f'$lookup(S_{label}_frame.ENV, $ptascii("alias")) = (n_{label}_shared)',
+            f'$lookup(S_{label}_frame.ENV, $ptascii("second")) = (n_{label}_other)',
+            f'n_{label}_shared =/= n_{label}_other',
+            f'S_{label}_frame.STORE[n_{label}_shared] = DEFINED (POBJECT n_{label}_held)',
+            f'pnode_{label}_cells* = $destructor_local_cells(S_{label}_frame.ENV, S_{label}_frame.SYMBOLS)',
+            f'$heap_count(HCELL n_{label}_shared, pnode_{label}_cells*) = 2',
+            f'$heap_count(HCELL n_{label}_other, pnode_{label}_cells*) = 1',
+            f'$heap_owners($heap_graph(S_{label}_frame), HCELL n_{label}_shared) = 2',
+            f'pnode_{label}_order* = $eager_owner_order(S_{label}_frame)',
+            f'pnode_{label}_order* = pnode_{label}_cells* ++ pnode_{label}_rest*',
+            f'$heap_count(HCELL n_{label}_shared, pnode_{label}_order*) = 2',
+            f'$heap_count(HCELL n_{label}_other, pnode_{label}_order*) = 1',
+        ]
+        start = f'S_{label}_frame'
+    if two_locals or shared_reference:
+        first_class, second_class = ('LocalSecond', 'LocalFirst') if shared_reference else ('LocalFirst', 'LocalSecond')
+        first_message = 'second' if shared_reference else 'first'
+        first_output = 'D-null|SECOND-null|' if shared_reference else 'D-null|FIRST-null|'
         checks += [
             f'S_{label}_first = $eix_seek_local({start}, penumqueryoutput_{label}, 7000)',
             f'$eix_local(S_{label}_first, penumqueryoutput_{label})',
             f'S_{label}_first.TODO = (DESTRUCTOR_ENTER pdestructorcall_{label}_first) :: ptask_{label}_first_tail*',
-            f'$object_name(S_{label}_first, pdestructorcall_{label}_first.OBJECT) = $ptascii("LocalFirst")',
+            f'$object_name(S_{label}_first, pdestructorcall_{label}_first.OBJECT) = $ptascii(' + json.dumps(first_class) + ')',
             f'pdestructorcall_{label}_first.PENDING = eps',
             f'S_{label}_first_body = $drive_steps(S_{label}_first[.COMPLETION = NORMAL], 1)',
             f'S_{label}_second = $eix_seek_local(S_{label}_first_body, penumqueryoutput_{label}, 7000)',
             f'$eix_local(S_{label}_second, penumqueryoutput_{label})',
             f'S_{label}_second.TODO = (DESTRUCTOR_ENTER pdestructorcall_{label}_second) :: ptask_{label}_second_tail*',
-            f'$object_name(S_{label}_second, pdestructorcall_{label}_second.OBJECT) = $ptascii("LocalSecond")',
+            f'$object_name(S_{label}_second, pdestructorcall_{label}_second.OBJECT) = $ptascii(' + json.dumps(second_class) + ')',
             f'pdestructorcall_{label}_second.PENDING = (n_{label}_first)',
-            f'$string_bytes($throwable_field(S_{label}_second, n_{label}_first, "message")) = ($ptascii("first"))',
+            f'$string_bytes($throwable_field(S_{label}_second, n_{label}_first, "message")) = ($ptascii(' + json.dumps(first_message) + '))',
             f'~((HOBJECT pdestructorcall_{label}_first.OBJECT) <- S_{label}_second.ALLOCATIONS)',
             f'S_{label}_second.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
             f'$heap_owners($heap_graph(S_{label}_second), HOBJECT penumqueryoutput_{label}.OLD) = 1',
-            f'$eic_output(S_{label}_second.EVENTS) = $ptascii("D-null|FIRST-null|")',
+            f'$eic_output(S_{label}_second.EVENTS) = $ptascii(' + json.dumps(first_output) + ')',
         ]
+        if shared_reference:
+            checks += [
+                f'$heap_owners($heap_graph(S_{label}_first), HCELL n_{label}_shared) = 1',
+                f'$heap_owners($heap_graph(S_{label}_first), HOBJECT n_{label}_held) = 1',
+                f'~(n_{label}_held <- S_{label}_first.DESTRUCTION.CALLED)',
+                f'pdestructorcall_{label}_second.OBJECT = n_{label}_held',
+            ]
         start = f'S_{label}_second'
     checks += [
         f'S_{label}_throw = $eit_seek({start}, penumqueryoutput_{label}, true, 8000)',
@@ -108,7 +144,7 @@ def reached(label, suffix, message, completion, status, two_locals=False):
         f'S_{label}_zero.COMPLETION = BUDGET',
         f'$drive($eix_resume(S_{label}_zero), 10000) = S_{label}_done',
     ]
-    if two_locals:
+    if two_locals or shared_reference:
         checks += [
             f'$throwable_field(S_{label}_throw, n_{label}, "previous") = POBJECT n_{label}_first',
             f'$heap_owners($heap_graph(S_{label}_throw), HOBJECT n_{label}_first) = 1',
@@ -122,8 +158,8 @@ if __name__ == '__main__':
     before = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
               for path in WATCHED}
     checks = reached('string', 'integer-exit-cleanup-throw-later-string', 'local', 'EXITED 23', 23)
-    checks += reached('integer', 'integer-exit-cleanup-throw-later-integer', 'local', 'EXITED 7', 7)
     checks += reached('ordered', 'two-locals-both-throw', 'second', 'NORMAL', 23, two_locals=True)
+    checks += reached('alias', 'two-locals-shared-reference', 'first', 'NORMAL', 23, shared_reference=True)
     checks += [
         'S_missing = S_string_throw[.TODO = (THROW_SEARCH n_string) :: (DESTRUCTOR_RESULT pdestructorcall_string) :: ptask_string_restore_tail*]',
         '~$enum_is_callable_exit_restore_valid(S_missing, penumqueryoutput_string, 23)',

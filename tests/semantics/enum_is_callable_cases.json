@@ -456,5 +456,21 @@
     "source_sha256": "d8771b506ef21b1b7bdd60b29c03c5c10eaecbaf6fa367f848253bfed7a22d16",
     "expected_model": "unsupported",
     "purpose": "Explicit unfinished repeated-exit cleanup control."
+  },
+  {
+    "id": "enum-is-callable-third-output-nested-output-cleanup-throw-caught",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nclass LocalDrop {\n    public function __destruct() {\n        global $name, $inner_name;\n        echo $name === null && $inner_name === null ? 'LOCAL-both-null|' : 'LOCAL-other|';\n        throw new Exception('local');\n    }\n}\nclass InnerDrop {\n    public function __destruct() {\n        global $inner_name;\n        echo $inner_name === null ? 'INNER-null|' : 'INNER-other|';\n        $local = new LocalDrop;\n        exit(23);\n    }\n}\nclass OldDrop {\n    public function __destruct() {\n        global $name, $inner_name, $inner_ok;\n        echo $name === null ? 'OUTER-null|' : 'OUTER-other|';\n        try { $inner_ok = is_callable('OtherCheck::from', false, $inner_name); }\n        catch (Exception $e) {\n            echo 'CAUGHT:', $inner_name, ':', $name === null ? 'OUTER-null|' : 'OUTER-other|';\n        }\n    }\n}\n$name = new OldDrop;\n$inner_name = new InnerDrop;\n$inner_ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, ':', $inner_name, ':', $inner_ok, '|';\n",
+    "source_sha256": "4ee0517f246b712dce1291f5a50ea6e4ba422edb608a3698dfae42183568decf",
+    "expected_model": "normal",
+    "purpose": "Compiled CV alias multiplicity and nested C caller identity preserve real cleanup order, pending exception and name commit.",
+    "expected_normal_stdout": "OUTER-null|INNER-null|LOCAL-both-null|CAUGHT:OtherCheck::from:OUTER-null|after:1:FirstCheck::from:OtherCheck::from:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-two-locals-shared-reference",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass LocalFirst { public function __destruct() { global $name; echo $name === null ? 'FIRST-null|' : 'FIRST-other|'; throw new Exception('first'); } }\nclass LocalSecond { public function __destruct() { global $name; echo $name === null ? 'SECOND-null|' : 'SECOND-other|'; throw new Exception('second'); } }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $first = new LocalFirst; $second = new LocalSecond; $alias =& $first;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\ntry { $ok = is_callable('FirstCheck::from', false, $name); echo 'UNEXPECTED|'; }\ncatch (Exception $e) { echo 'CAUGHT:', $e->getMessage(), ':', $name, '|'; $prev = $e->getPrevious(); echo 'PREVIOUS:', $prev === null ? 'NONE' : $prev->getMessage(), '|'; }\necho 'CONTINUE|';\n",
+    "source_sha256": "566ff6238f77271ef4f1dd7560a35287d4f7ea7e2f861141234fb8b9c8a827f0",
+    "expected_model": "normal",
+    "purpose": "Compiled CV alias multiplicity and nested C caller identity preserve real cleanup order, pending exception and name commit.",
+    "expected_normal_stdout": "D-null|SECOND-null|FIRST-null|CAUGHT:first:FirstCheck::from|PREVIOUS:second|CONTINUE|shutdown-committed|result:UNCHANGED|"
   }
 ]
