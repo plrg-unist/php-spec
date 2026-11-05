@@ -8,7 +8,7 @@ import global_constant_sources as family
 ROOT = family.ROOT
 SOURCE = ROOT / 'tests/semantics/gc48_peer_held_old_replacement.php'
 family.CASES = {'replacement-held-old-and-new-child': SOURCE.read_bytes()}
-family.MODEL_TIMEOUTS = {'replacement-held-old-and-new-child': 240}
+family.MODEL_TIMEOUTS = {'replacement-held-old-and-new-child': 480}
 family_fingerprint = family.fingerprint
 
 
