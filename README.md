@@ -242,6 +242,8 @@ retain their ordinary output order.
 Scalar reference returns keep their actual cell through cleanup and warnings,
 then convert its current value: referenced false suppresses and referenced true
 emits `1`. Discarded print results still request the callback return.
+[Independent reference-return checks](coverage/semantics/output-reference-return-review.json)
+cover late alias changes, destructor traces and real cell-release ownership.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

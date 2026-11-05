@@ -399,7 +399,12 @@ unchanged. A warning can mutate the selected cell or rebind its global name;
 rebinding does not replace the already returned cell. Normal cleanup seals borrow
 the real frame's return owner and require its restored RESULT before transfer.
 Defined reference returns also survive a throwing return-by-reference Notice or
-callee destructor. Pending exceptions retain caller assignment and getter-copy
+callee destructor. Pending exceptions preserve interrupted assignment and getter-copy
 ordering. Callback return demand stays true even when source print is unused.
 Normal FINAL scalar references share the existing drain; pending FINAL reference
 cleanup remains explicitly Unsupported with its returned value retained.
+The real scalar-cell decrement authenticates its operation against the actual
+COMMIT record and native suffix; its consumed cell metadata adds no owner.
+[Independent review](../../coverage/semantics/output-reference-return-review.json)
+records eight exact originals, both diagnostic-return destructor traces and one
+SL438 front with two groups/183 conditions through real release and resumption.

@@ -1287,8 +1287,11 @@ then converts their live scalar payload without changing aliases. Referenced
 FALSE suppresses, referenced TRUE emits1, and unused print/for output still
 requests the callback result. Defined Notice/cleanup throws keep the return;
 normal FINAL uses the existing drain, while pending FINAL and nonscalar payloads
-remain Unsupported. [Author evidence](coverage/semantics/output-reference-return-author.json)
-records source and reached ownership/resumption checks; independent review is active.
+remain Unsupported. Eight exact independent originals and one SL438 front with
+two groups/183 conditions pass. The real HCELL release authenticates its COMMIT
+continuation even after cell retirement. [Independent review](coverage/semantics/output-reference-return-review.json)
+records the return-demand regression, release guard and affected checks;
+[author evidence](coverage/semantics/output-reference-return-author.json) retains its separate cuts.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -1659,7 +1662,7 @@ records the pointwise bridge to final semantic bytes.
 | I112 | Owning native Generator API captures and invocation; private implementation/review. |
 | GC45 | Notification when ordinary WeakMap keys die, with finite payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
-| OB17 | Scalar reference-return output conversion; private investigation/review. |
+| OB18 | Array output return reception and conversion; private implementation/review. |
 | ATTR33 | Echo tick placement between operands, with late reads and aborts; private implementation/review. |
 | Enum callable arrays | Namespace fallback preserving a saved builtin through local publication; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

@@ -102,6 +102,8 @@ test-semantics: build
 	python3 tests/semantics/output_deprecation_warning_state.py
 	python3 tests/semantics/output_reference_return_sources.py
 	python3 tests/semantics/output_reference_return_state.py
+	python3 tests/semantics/output_reference_return_review_sources.py
+	python3 tests/semantics/output_reference_return_review_state.py
 	python3 tests/semantics/output_deprecation_warning_review_sources.py
 	python3 tests/semantics/output_deprecation_warning_review_state.py
 	python3 tests/semantics/output_request_end_sources.py

@@ -1,0 +1,36 @@
+{
+  "milestone": "OB17: actual reference output returns, cleanup and late scalar conversion",
+  "status": "independently accepted",
+  "tested_revision": "2bb4db61dd126bdf186dc637178dbb7348780e45",
+  "implementation": "b6105974b then 0abca0d54; review equivalents 26dab7988 then 2bb4db61d on composed d114299c9",
+  "identity": "Pinned PHP8.5.10 CLI NTS64 and profile; SpecTec da36ac3c434cd291940293a63da64544307730a3 SL438, caches disabled and encountered determinism. Copied existing binaries, no new portability claim. Reports retain exact commands, environment, original bytes and stable before/after runtime/binary fingerprints.",
+  "authority": "Pinned main/output.c::php_output_handler_op; Zend/zend_operators.c::_convert_to_string; Zend/zend_operators.h::zend_unwrap_reference; zend_vm_def.h RETURN_BY_REF; zend_call_function return demand and CV cleanup.",
+  "semantic_review": "Raw false/true sentinel tests precede reference unwrapping. The actual returned cell survives cleanup and diagnostics; conversion reads its current payload without modifying aliases. Rebinding a global leaves the already returned cell intact. Readonly normal-result certificates borrow the actual FRAME_EXIT owner, then require the actual restored RESULT. Output callbacks always request a return even when print is discarded. Defined Notice/cleanup returns survive pending throws; body throws keep the undefined-result route.",
+  "findings": [
+    "An immutable OB16 normal0 regression lost the callback return for unused print: PHP P1|20593:T versus model P|20593:T. The complete one-shot original now agrees; the earlier masking Unsupported probe is not passing credit.",
+    "Destructor-capable originals expose real HCELL release and operation EXIT between UNWRAP and COMMIT. Its SOURCE had inherited270 default true. The repair binds real EXIT/COMMIT metadata and suffix, caller/source context and normal/null operation state while allowing the consumed cell to remain retired. Pending F belongs to COMMIT."
+  ],
+  "sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-17-review/sources-01/report.json",
+    "sha256": "8574e375c443eeb5eb25e105346823420f98d68600c5276e097279ac776109b5",
+    "scope": "Eight exact normal0 originals: unused print, by-value reference-backed false, API/VM ignored-warning-return destructors with late false mutation and fresh traces, warning/callee global rebinds with pending throws, implicit-null reference and literal-false Notice throw."
+  },
+  "affected_sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-17-review/affected-sources-01/report.json",
+    "sha256": "c0b5c87fe756d8c15130b5ff9e61ced87e03b0930e894cb06ebffdaa94a4bc98",
+    "scope": "Three destructor originals renew the new UNWRAP release guard at the final cut. The five originals without a destructor-capable eager UNWRAP SOURCE are unchanged by that predicate-only repair. These are renewals, not additional originals."
+  },
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-17-review/state-04/report.json",
+    "sha256": "2035f78f7bbf8561ae92031e6285dda238528ed24c41d981ecc1a5919f277b86",
+    "scope": "One SL438 front, two groups/183 conditions. Genuine nested diagnostic/callee destructors preserve public validity; FRAME_EXIT owns the returned cell and its normal certificate owns none. Shared/sole cells, fresh pending F, real release/EXIT and retired-cell authority, coherent VALUE/PENDING/ORIGIN/tail refusals, fuel0 and exact resumed output all pass."
+  },
+  "refusal": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-17-review/final-notice-01/report.json",
+    "sha256": "59b88404ff7a669d467ed5f57acbd38b98caeb88c52b4906069a9726e16837f0",
+    "scope": "Zero-CV FINAL literal-reference Notice throw reaches its explicit pending-FINAL refusal, stdout P, zero agreement credit. It is disjoint from the later UNWRAP-only repair."
+  },
+  "preservation": "External root also retains unused-print-complete-baseline, failed state01-03 fixtures and diagnostic attempts, all with zero passing credit. Fixture corrections cover recursive exclusion syntax, the real release boundary and distinct cleanup-operation variables; no observation was relaxed. Author source/state cuts remain separate in output-reference-return-author.json.",
+  "checks": "Inventory169/306, Python compile and git diff --check pass; no broad replay or metadata-only semantic rerun.",
+  "limits": "Nonscalar conversion and pending FINAL reference cleanup remain explicit Unsupported; wider control/callable/return/mutation/Fiber/stdout and lifecycle paths remain partial. No intentional engine divergence or full-core completion claim."
+}
