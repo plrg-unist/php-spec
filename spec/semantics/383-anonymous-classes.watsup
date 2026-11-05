@@ -179,7 +179,8 @@ dec $anonymous_method_factory_node(pcnode) : bool
 def $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = true
   -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
   -- if $ptvalidname($base64(text), false)
-  -- if ~$ppmethod_magic($base64(text)) \/ ($ptlc($base64(text)) = $ptascii("__construct") /\ ~$generator_statements(statement*))
+  -- if ~$ppmethod_magic($base64(text)) \/ $ptlc($base64(text)) = $ptascii("__construct")
+  -- if $ptlc($base64(text)) =/= $ptascii("__construct") \/ ~$generator_statements(statement*)
   -- if $anonymous_constructor_parameters(phpType16)
 def $anonymous_method_factory_node(pcnode) = false -- otherwise
 dec $anonymous_method_factory_members(statement*) : bool
