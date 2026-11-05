@@ -3,7 +3,10 @@
   "status": "Independently accepted bounded implementation; wider property/header/default and full-core obligations remain partial",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
   "production": {
-    "revisions": ["943fbc65f", "8c6c54c9d"],
+    "revisions": [
+      "943fbc65f",
+      "8c6c54c9d"
+    ],
     "module": "spec/semantics/393-ticks.watsup",
     "sha256": "46a89efd8a44231712532148d5c05508515d084ef8520012f01e3af1c69efac5",
     "scope": "Undecorated property groups without hooks visit defaults through the existing constant-context visitor in member order. Their unticked rule and main-oparray adjacency remain intact. The old frequency-zero route explicitly excludes these groups, preventing two different compiler-line summaries. No property producer/consumer, linking, task, state or schema changes."
@@ -69,5 +72,6 @@
     "source-overlap-before/report.json at 173e35bfa remains false (SHA 57cebc4f21174b9d936c8e17f5b5f5a4d17b9a8d895fe5e4b0bda0f7667646d7): native TZT versus modeled interpreter_failure/nondeterministic instruction evaluation in the two overlapping property summaries. This is an implementation defect, not Unsupported or a PHP engine divergence.",
     "An initial selection command used --case instead of the source wrapper's --select; argparse rejected it before execution (exit 2), with no semantic credit. The corrected selected command supplied the preserved before packet.",
     "No ATTR41, earlier compiler family, output, Generator, linking or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed."
-  ]
+  ],
+  "qualification_from_ATTR43": "The original unticked-property generalization is superseded: Zend excludes AST_PROP_DECL, while the executed AST_PROP_GROUP can emit a main Tick. All three recorded originals and the54 front had property frequency zero or a prior adjacent Tick, so their exact cuts remain valid. ATTR43 corrects group emission, immediate class-member prefixes, early-class adjacency and emitter-line authority; see tick-hook-review.json. Original report hashes and counts are unchanged."
 }

@@ -1105,16 +1105,13 @@ Plain global constant groups compile initializers in order and tick after all
 bindings, preserving the final emitter line and installed values on callback abort.
 Class-like plans consume completed early-binding facts to preserve or break prior
 adjacency. Methods, ordinary block hooks, class-constant and plain property
-initializers contribute lexical declarations even when uncalled; unticked member
-groups preserve main adjacency. Conditional declarations activate before their
-header-line Tick, while top declarations have
+initializers contribute lexical declarations even when uncalled. Constant groups
+remain unticked; property-group Ticks preserve main adjacency, type/name lines
+and callback abort before pending class activation. Conditional declarations
+activate before their header-line Tick, while top declarations have
 no outer Tick.
 Certified EnumCase markers run before the existing enum activation task, retaining
 member order, prior-marker frequency, backed-value lines and abort/resume behavior.
-
-A confirmed ATTR42 gap remains: a property group whose default enables ticks from
-zero misses its marker before declaration. ATTR43 is repairing this path; earlier
-ATTR42 sources had adjacent-Tick suppression and retain their scoped credit.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -1920,7 +1917,7 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 | GC51 | Authenticated property-public NaN API cursor continuation; private implementation/review. |
 | COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
-| ATTR43 | Existing property-hook body Tick plans in lexical get/set order; private implementation/review. |
+| ATTR44 | Plain existing TraitUse Tick traversal and imported-method callbacks; private implementation/review. |
 | Enum callable arrays | Method fromCallable cache identity from proven cold and actual INIT history; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

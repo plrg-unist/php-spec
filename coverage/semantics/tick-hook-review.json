@@ -1,23 +1,28 @@
 {
   "milestone": "ATTR43: ordinary block property-hook Tick plans",
-  "status": "Independently accepted bounded implementation; wider hook/header/lifetime and full-core obligations remain partial",
+  "status": "Independently accepted corrected bounded implementation; wider hook/header/lifetime and full-core obligations remain partial",
   "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
   "production": {
-    "revision": "e70c7efbd",
+    "revisions": [
+      "e70c7efbd",
+      "35612f389",
+      "8fabff80a",
+      "2f0b6b1e1"
+    ],
     "module": "spec/semantics/393-ticks.watsup",
-    "sha256": "a3055369222a3cf8a6ddfefe63cccb8357b759e7a8eb7662bdd1375c8825d9a2",
-    "scope": "Undecorated ordinary by-value block hooks with clean headers compile after property defaults in source order. Each body delegates to the existing function visitor, preserving enclosing main adjacency and restoring its hook end line. A shared pure gate keeps the new property route disjoint from the legacy quiet route. No hook producer, linking, runtime consumer, task, state or schema changes."
+    "sha256": "9ecd5673c3585885ef87ef2fd30b8fd00b00221f9f37af4206bfdf008eb9d8bd",
+    "scope": "Ordinary by-value block hooks compile after property defaults in source order with separate body plans. Actual PROP_GROUP can emit a main Tick when no prior adjacent marker suppresses it. Certified immediate Property/EnumCase markers reuse the existing AT/TICK prefix before the raw classlike declaration task. Early classes retain body-LAST; emitted DECLARE_CLASS breaks it. Group seeds follow type/first name, then default/hook line effects. No hook producer, linking consumer, task, state or schema change."
   },
   "authority": {
     "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
-    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_prop_decl processes the default before zend_compile_property_hooks; the latter loops the source list and calls zend_compile_func_decl_ex for separate hook op arrays. These operations add no main opcode. PROP_GROUP is unticked. Short bodies are rewritten to synthetic return/assignment statements and need a separate summary.",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_prop_decl processes the default before source-ordered zend_compile_property_hooks/separate function arrays. They add no main opcode, but compile_stmt dispatches PROP_GROUP and emit_tick includes it: zend_is_unticked_stmt excludes PROP_DECL, not PROP_GROUP. ClassConst groups remain genuinely unticked. zend_language_parser.y and zend_ast_create_3 seed the group from its type or first property name; function/constant compilation can change the final line. Short hook bodies are rewritten to synthetic return/assignment statements and need a separate summary.",
     "existing_admission": "Module382 admits the existing backed get-then-set pair and getter-only producer forms; module403 retains its setter/header restrictions. Completed source compiler facts remain authoritative. Reversed pairs and other producer dependencies were not widened."
   },
   "evidence": {
     "strict": {
-      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/strict-report-v1.json",
-      "sha256": "2dce19e229a044ae230af576da35c43bf664e583e6a8daf5cc91c2b44dfa3394",
-      "revision": "363c18ab5d93b7322687148c504a988e730fdba8",
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/strict-report-v4.json",
+      "sha256": "f3535b88922b50a3c71f8dcc1432511621d8d45ca39a45451aa89b4db3c20953",
+      "revision": "2f0b6b1e1ed6806afec0c28b8d4672f464b198ae",
       "passed": true,
       "modules": 445
     },
@@ -52,15 +57,62 @@
       "derived_negatives": 0,
       "count_note": "Reported conditions include helper bindings, not only independent assertions.",
       "scope": "At the genuine getter-body Tick the current hook target/source/receiver and pending caller read validate. Backing 7 and sibling 9 remain through callback 3 reading 9 then throwing. The second getter returns 7; exact counter 7/output, retained object/slots, heap/descriptors/Tick validity and full-state zero-budget/full-resume equality pass."
+    },
+    "header_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/source-header-v2/report.json",
+      "sha256": "8f0e7d29272a6a73a566b13676f5c8d41b5137f524a04cfa72a6f2810baa3a5e",
+      "revision": "2f0b6b1e1ed6806afec0c28b8d4672f464b198ae",
+      "passed": true,
+      "agreements": 1,
+      "observation": "8;13;Z15;",
+      "scope": "Two existing non-early Classes expose split modifier/type/name seeds, actual group markers and normal completion through DECLARE_CLASS."
+    },
+    "property_group_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/source-group-repair-v2/report.json",
+      "sha256": "0a15241be8ef2a362b76bd2fa433f41888f46b0d3752d4d9bebe03dbcde9d9e9",
+      "revision": "2f0b6b1e1ed6806afec0c28b8d4672f464b198ae",
+      "passed": true,
+      "agreements": 4,
+      "observations": {
+        "Closure default enables group Tick": "TZT",
+        "Block getter enables group Tick": "TZT",
+        "Early group marker suppresses following bare directive": "TZT",
+        "Non-early group callback aborts pending activation": "T[25]NCN"
+      },
+      "scope": "Exact two missing-marker originals now agree; an early-class tail proves body-LAST carry, and callback read/throw proves absence before non-early activation."
+    },
+    "property_group_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/review-protocol-v2/run/report.json",
+      "sha256": "79a9a73e5493b643b783756940deb43a6ffe4f830f200d00145841ecd6363a70",
+      "process_sha256": "434cd56c97407e5462c238f67de5689885e91be846e760416dec6d404a315ae5",
+      "revision": "83b24e7e3749d78acd66e5278825ac3d42f9160f",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 47,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "The real property-group Tick at line25 has the interface bound, Class absent and raw Class STMT pending. Callback reads/throws and leaves activation absent with T[25]NCN; full-state budget/resume equality and heap/descriptors/Tick validity pass."
     }
   },
-  "bridge": "For property groups with no hooks, the hook-node fold is identity and the shared gate is true, preserving both ATTR42's constant visitor and its quiet exclusion pointwise. Legacy quiet short hooks still have a false block gate and retain the prior quiet route. No earlier source campaign was replayed.",
-  "independent_review": "/root/attributes_review traced source order and separate function arrays, checked the shared gate/default ordering and passed the genuine hook-current callback/abort front on first execution. Class and enum owners confirmed disjoint source/runtime work.",
+  "bridge": "The earlier source-author-v1 normal/control, source-review-v1 normal and62-condition getter front retain their exact a3055369 module cut. All their immediate Property entries have a prior adjacent main Tick, so newly enabled group markers stay absent and the member prefix adds no tasks. Empty-hook visiting remains identity; legacy quiet short-hook routing is unchanged. Earlier ATTR42 positive/read cases likewise have suppressed markers and its quiet case stays at frequency0. Their historical hashes/cuts are preserved, with the old unticked-property generalization qualified in tick-property-review.json; no earlier source campaign was replayed.",
+  "independent_review": "Reviewer traced source-order arrays, found the actual PROP_GROUP/PROP_DECL emission gap with two native/model counterexamples and required early-body adjacency retention. Both retained body62 and new prefix47 fronts pass with explicit suppressed-marker bridge. Class/enum owners confirmed disjoint source/runtime work.",
   "remaining": "Positive-frequency short, byref, decorated/final and header-callable hook plans remain outside the new block gate. Existing hook producer/type/visibility/inheritance and deferred-default restrictions remain visible. No new hook consumer or whole-family closure is claimed.",
   "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-property-hooks-43. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs stayed stable, exits 0 and driver stderr empty; all campaign executables were reaped. Four regular local tool files were preserved while reusing the idle ATTR42 worktree; this is not a fresh offline rebuild or portability proof.",
   "zero_credit": [
     "source-baseline/report.json at 3e55d5e8b remains false (SHA 5f2561920c5f13724290282779e9cf7881d91d1253cdb8771af23fe05f47c954): native TZTWT versus old Unsupported/empty prefix with tick opcode placement dependency.",
     "The short-hook control is a separately recorded Unsupported observation, never a normal agreement. No PHP engine bug or intentional divergence is claimed.",
-    "No ATTR42, prior compiler family, output, Generator, linking or paused-boundary campaign was replayed."
-  ]
+    "No ATTR42, prior compiler family, output, Generator, linking or paused-boundary campaign was replayed.",
+    "property-group-native-discovery/model-before/report.json at 240430a3f remains false (SHA 4c2468c2beecb6bb1087b8807e99fc0a0a8e1c168f6632dfbdd62523bd21ce88): two current models completed normal ZT while native produced TZT. Native discovery report SHA ecbcaac76afec1c7e67246e0fe210fd10308743fd5e68514c34a4f7fd30c38ae is retained beside it. These are real missing-group-marker defects, with zero agreement credit.",
+    "strict-report-v2/v3 failed before execution on an optional-type cast and a head/tail iteration-binding ambiguity. Existing checked type occurrences and distinct tail aliases repair the formal preparation; failed packets retain zero semantic credit."
+  ],
+  "totals": {
+    "unique_normal_originals": 7,
+    "unsupported_controls": 1,
+    "control_agreement_credit": 0,
+    "reached_fronts": 2,
+    "reported_conditions": 109,
+    "retained_conditions": 62,
+    "new_conditions": 47,
+    "derived_negatives": 0
+  }
 }

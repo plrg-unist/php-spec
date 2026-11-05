@@ -67,7 +67,14 @@ adjacency while static Closure initializers contribute their own lexical plans.
 Invoked constant Closures retain ordinary callback reads and abrupt cleanup.
 Undecorated property groups use the same ordered default visitor. Ordinary by-value
 block hooks compile afterward in source order with separate body Tick plans;
-neither operation breaks main adjacency. Existing object initialization commits
+neither compilation adds a main opcode. The enclosing `PROP_GROUP` can emit a
+Tick when no adjacent Tick suppresses it (`PROP_DECL`, rather than `PROP_GROUP`,
+is in Zend's unticked list). Its seed line comes from the type's first component
+or the first property name; defaults and hooks can change the final line.
+Certified property-group markers run before the original raw class declaration.
+Early-bound declarations retain the body's final adjacency; emitted
+`DECLARE_CLASS` breaks it. A throwing group callback can prevent pending activation.
+Existing object initialization commits
 defaults before the assignment's Tick, whose callback can read them and abort
 later caller work.
 An invoked getter's Tick can read a sibling property, throw before the pending
@@ -83,7 +90,7 @@ Plain EnumCase statements emit no main opcode, but can add a Tick before the
 enum's `DECLARE_CLASS`. Plans preserve member order and prior adjacency: a later
 method's declarables do not retime an existing case marker. Case names seed the
 line; backed values use the existing constant-expression line walk. Entry prepends
-only certified case `AT/TICK` tasks before the original raw Enum statement and
+only certified immediate-member `AT/TICK` tasks before the original raw Enum statement and
 its suffix. A callback can therefore observe the class still absent or abort
 before activation. Resumption retains that exact pending declaration.
 
@@ -239,8 +246,10 @@ The [plain-property tick review](../../coverage/semantics/tick-property-review.j
 records default order/adjacency, a unique quiet compiler-line summary and
 initialized object reads through callback abort.
 The [property-hook tick review](../../coverage/semantics/tick-hook-review.json)
-records lexical block-hook plans, main adjacency, a short-hook refusal and actual
-getter callback abort/retry with receiver/backing state and budget equivalence.
+records lexical block-hook plans, actual property-group emission/header lines,
+pre-activation abort, a short-hook refusal and getter callback abort/retry with
+receiver/backing state and budget equivalence. It qualifies the earlier
+plain-property review's unticked-group assumption while retaining its bounded cuts.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
