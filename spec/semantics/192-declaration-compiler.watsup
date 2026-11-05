@@ -21,10 +21,14 @@ def $declaration_class_checkpoint(S, pclassdesc, DECLDEFER) = S
 def $declaration_class_checkpoint(S, pclassdesc, DECLUNSUPPORTED text) = S[.COMPLETION = UNSUPPORTED text]
 
 dec $declaration_checkpoint(pstate, ppstate, pppublication) : pstate
+dec $anonymous_failed_owner_child_checkpoint(ppstate, porigin) : bool
 def $declaration_checkpoint(S, P, PPCP porigin n PPFUNCTION) = $activate_function(S, pfunction)
   -- if $function_at(P.INSTALLED.FUNCTIONS, porigin) = (pfunction)
 def $declaration_checkpoint(S, P, PPCP porigin n PPCLASS) = $declaration_class_checkpoint(S, pclassdesc, $declaration_class_probe(S, pclassdesc))
   -- if $class_at(P.INSTALLED.CLASSES, porigin) = (pclassdesc)
+def $declaration_checkpoint(S, P, PPCP porigin n PPCLASS) = S
+  -- if $class_at(P.INSTALLED.CLASSES, porigin) = eps
+  -- if $anonymous_failed_owner_child_checkpoint(P, porigin)
 def $declaration_checkpoint(S, P, pppublication) = S[.COMPLETION = UNSUPPORTED "missing completed declaration checkpoint"] -- otherwise
 
 dec $declaration_finish(pstate, ppstate) : pstate

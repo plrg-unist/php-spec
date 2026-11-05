@@ -1,0 +1,83 @@
+{
+  "milestone": "COMP174",
+  "status": "Independently reviewed behavior and actual-parent composition; ready for guarded integration.",
+  "base": "89bf5d03b74591b0e2a3877daa754ba55ac1b52c",
+  "branch": "semantics/dynamic-source-next-174",
+  "raw_root": "../php-spec-evidence-archive/comp174",
+  "behavior": "Rejected eval/file units stop invalid readonly/asymmetric-set method modifiers before parameters/body, retaining only already parsed attribute headers. Valid readonly properties and ordinary static/final/abstract method flags preserve later headers. Native parser-time CompileError remains catchable dynamically or terminal for main files; no partial declarations are installed.",
+  "implementation": "RejectedHeaderParser wraps the pinned method_modifiers rule384 only after checking length1/null callback, preserves default semValue, and checks flags only with actual T_FUNCTION lookahead. Allowed flags are public/protected/private/static/abstract/final; duplicate accumulation remains unchanged. Constants use different lookahead, properties separate variable_modifiers. Generic PhpParserError is only an internal parse stop; native message/line remain the reply. Late rejected checkClassMethod is compiler-only now. No accepted parser/native/worker/adapter/schema/P4 change.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_language_parser.y::method_modifiers",
+    "vendor/php-src/Zend/zend_compile.c::zend_modifier_list_to_flags/zend_modifier_token_to_flag",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php::rules383-386",
+    "frontend/RejectedHeaderParser.php"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; source include_path=.:; reached genuine startup reporting30719/0",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "native_baseline": {
+    "heads": {
+      "provisional-modifier-v1": "ab9bf5bf6e4e41012a67fab1fce63afe5c9a3852",
+      "provisional-method-v1": "ab9bf5bf6e4e41012a67fab1fce63afe5c9a3852",
+      "provisional-trace-v1": "ab9bf5bf6e4e41012a67fab1fce63afe5c9a3852"
+    },
+    "reports": [
+      "provisional-modifier-v1/report.json",
+      "provisional-method-v1/report.json",
+      "provisional-trace-v1/report.json"
+    ],
+    "scope": "24 native eval/file observations distinguish early readonly and all three asymmetric-set method failures from valid property/method flags, attribute-prefix/nonliteral priority and incomplete parameters. Four constant-target observations are outside this method milestone. Trace24 verifies actual384/T_FUNCTION before forbidden bodies, while readonly property uses no384. Two exact original readonly-body cases from COMP173 review-parse-stop-v1 are also promoted. Native/foreign preparation only, no semantic credit."
+  },
+  "validation": {
+    "head": "a41c04a911e6ba302d8ffa07ef5e47c71c36db64",
+    "wrapper_report": "short-v1/wrapper-check/report.json",
+    "wrapper_scope": "22 caller wrappers parse and all11 eval literal values exactly equal retained unit bytes; preparation only.",
+    "service": {
+      "controls": 37,
+      "report": "service-v1/report.json",
+      "scope": "26 worker rows include four separate constant-target refusal controls, plus11 ordinary/parser-stop/property probes. Native stderr custody2600 bytes; worker/probe exit0, stableinputs/head."
+    },
+    "affected": {
+      "controls": [
+        49,
+        24
+      ],
+      "reports": [
+        "affected-static-v1/report.json",
+        "affected-namespace-v1/report.json"
+      ],
+      "scope": "Former readonly-body refusal is now an agreement; ordinary parser stays unchanged, internal stop controls use the new generic error. These narrow updated controls execute; old source/state/ABI/syntax evidence is not renewed."
+    },
+    "independent_reached": {
+      "premises": 108,
+      "module_count": 435,
+      "report": "state-v1/report.json",
+      "scope": "Genuine attribute-before-readonly FAILED_COMPILE receipt under default/startup0. Exactly one earlier attribute warning (or none under mask0), native message/line and failure identity, exact PDEXIT PCSREJECT, no child source/code/class/function/constant/binding, free-handle reuse, public zero-budget/catch/finally continuation and wrong-unit/bytes/replay refusal. SL true/exit0/empty stderr,19.94s; workers/adapter exit0."
+    },
+    "dynamic_sources": {
+      "agreements": 22,
+      "report": "sources-v1/report.json",
+      "command": "python3 tests/semantics/method_modifier_rejected_sources.py --output <external sources-v1>"
+    },
+    "main_sources": {
+      "agreements": 4,
+      "report": "main-v1/report.json",
+      "command": "python3 tests/semantics/method_modifier_main_rejected_sources.py --output <external main-v1>"
+    },
+    "stability": "All new and affected gates pass at one actual cut with stable head/inputs. Raw native/model streams/status agree; no refused row counts as source agreement. short-v1 and source-campaign-v1 reap.json retain empty full-private cmdline/cwd/exe/fd scans; both direct CPU3 loans returned. No failures or fixture corrections occurred in these174 packets."
+  },
+  "limits": "Four readonly/static constant-initializer prefix differences remain explicit service refusals; T_CONST expansion is deferred. Trusted raw-profile worker receipts are foreign facts rather than proof from source bytes. Wider modifier contexts, multibyte conversion and unfinished core remain partial. Accepted-source interface/ordinary validation is intact; held routes untouched, no engine bug or intentional divergence claimed.",
+  "review": "Independent private production/test CLEAR exacta41c after source22/main4 raw comparisons, service37/affected49+24 and reached108. Documentation/inventory CLEAR atcfceb6739a317755cb6c8dcb53052316620c2a52. Actual-parent pointwise compatibility CLEAR atab0cd9075d5b32d8b3059100dcf93564d76b4fcf ond6bac9ec37b2995e15fe8ee83472d00343753665; final completion changes this ledger and historical COMP173 PROGRESS wording only.",
+  "composition": {
+    "head": "ab0cd9075d5b32d8b3059100dcf93564d76b4fcf",
+    "parent": "d6bac9ec37b2995e15fe8ee83472d00343753665",
+    "review": "All six incoming production paths independently inspected.134/383 parented/factory class routes never receive rejected child ASTs; accepted callers contain no class nodes.420 Iterator scalar/368 record consumers are absent with ASSERTIONINI=eps.30/437 add an enum-only ARRAY receipt field and rename an OB task, neither instantiated here; state/initial/source-service stay exact.444 shared THROW_SEARCH hook returns no OB discard without ob_start or Notice/Warning-handler resumption; parser128 bypasses handlers. Plain StdClass/Throwable/Closure physical free remains exact. Own parser/frontend/native/adapter/schema/tests are private-exact, and accepted a41c execution keeps its identity. No joined actor or new execution claim."
+  }
+}

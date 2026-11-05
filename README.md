@@ -3203,6 +3203,13 @@ Compiler-only class/interface/enum checks, static magic-method restrictions and
 try statements likewise preserve later parser warnings. Thirty-eight dynamic and
 four main comparisons and 110 reached conditions pass; parser-time modifier
 errors remain distinct.
+Early method-target validation now stops readonly and asymmetric-set modifiers
+before parameters/body while retaining earlier attribute headers. Valid readonly
+properties and ordinary method flags keep their headers. Twenty-two dynamic and
+four main comparisons plus 108 reached conditions pass.
+Constant modifiers now receive the same early target check before initializers:
+earlier attribute headers survive, while forbidden initializer headers do not.
+Twenty-two dynamic and four main comparisons plus 108 reached conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
@@ -3211,7 +3218,9 @@ errors remain distinct.
 [main-rejection review](coverage/semantics/main-source-rejection-review.json),
 [rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
 [namespace-phase review](coverage/semantics/rejected-namespace-review.json),
-[compiler-phase review](coverage/semantics/rejected-static-validation-review.json).
+[compiler-phase review](coverage/semantics/rejected-static-validation-review.json),
+[method-target review](coverage/semantics/rejected-method-modifier-review.json),
+[constant-target review](coverage/semantics/rejected-constant-modifier-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -4841,25 +4850,25 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Normal owning results from named selected handlers also retire before the
-original Throwable and registry restoration, retaining both outer C protections.
-Fresh objects, alias arrays and static Closure captures retire in that interval;
-a genuinely shared result survives its ignored drop until the later tick argument.
-Four new originals agree, and six independent fronts pass 432 genuine
-source-reached checks. This validates the existing VALUE-release rules.
-See the [handler-value review](coverage/semantics/callback-late-tick-handler-value-review.json).
-Ignored destructor-body values retire before the inner C decrement. An unhandled
-literal Exception during their disposal preserves authenticated pending outer C
-wrappers and unfinished arguments/FCC slots, with shared operation/frame/pending
-owners counted once. Later active queue cleanup runs while the stopped tick tail
-stays rooted. Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+Normal and abrupt ignored named-handler values keep their original
+[handler-value](coverage/semantics/callback-late-tick-handler-value-review.json)
+and [handler-value throw](coverage/semantics/callback-late-tick-handler-throw-review.json) cuts.
+Ignored destructor-body values retire before the inner C decrement. A handler-free
+integer or string exit during their disposal now preserves the pending C pairs
+and unfinished argument/FCC jobs, continues later active queue cleanup, and stops
+the remaining tick list. Full status 263 remains distinct from CLI status 7; string
+exit preserves a stable earlier status. A later-retained value exits after its
+original receiver has retired. Cacheless/noqueue finalization is idempotent.
+Five new originals and two affected controls agree; strict435 and five independent
+groups/739 conditions (734 genuine, five derived) pass.
+[Body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json).
+Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
 [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
-[handler](coverage/semantics/callback-late-tick-handler-review.json),
-[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) and
-[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence
-retains its original cuts. Distinct pending-owner contexts, abrupt handler-value
-disposal, owning handler callables, wider producers, assertion roots, changed
-phases, direct reference-return bodies and reentrant release remain partial.
+[handler](coverage/semantics/callback-late-tick-handler-review.json) and
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) evidence
+retains its original cuts. Replacing an earlier integer exit during nested cleanup,
+unshared owning contexts, handlers, direct reference-return bodies, wider frame
+cleanup and reentry remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -7036,10 +7045,15 @@ Class strings retain their spelling; case receivers use the canonical enum
 name. The [variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json)
 records seven exact agreements, two Unsupported controls and four separate
 reached groups (216 checks) at their actual cuts.
+When the same input/output cell rebounds to a new direct-string array after
+the first SEND, the selected original name overwrites that cell. A retained
+owner keeps the rebound array live; a pre-output throw leaves it and the
+result assignment target untouched. The [array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
+records four exact agreements, one Unsupported owning-object control and five
+separately run reached groups (229 checks).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
-owning rebound values, late type
-sources, wider array sources (including embedded references and alias plus
-source rebinding) and autoload,
+rebound arrays with owning children, late type
+sources, wider array sources (including embedded references) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -7417,9 +7431,21 @@ cleanup replacements and bailout contexts remain partial.
 Exit from an owning warning-handler retval now follows its destructor and Child
 cleanup before restoring the handler and releasing prepared/API owners. The
 hidden copied Closure remains through shutdown. Two exact exit comparisons and
-independent reached-state gates pass; a cleanup throw replacing this pending
-exit and wider bailout contexts remain partial.
+independent reached-state gates pass. At this cut, a cleanup throw replacing
+the pending exit and wider bailout contexts remained partial.
 [Owning retval exit review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
+A supplied plain exception thrown by the Child destructor now has pinned source
+and reached-state validation through the same copied warning cleanup. Catch and
+finally run after the exception replaces exit; a final string exit retains
+status 41. The existing rules suffice for this selected case.
+[Cleanup throw review](coverage/semantics/generator-call-cleanup-throw-review.json).
+
+A second exit in that owning retval's Child destructor now keeps the copied
+warning cleanup and later property release. A literal string exit retains
+status 29 and frees an After sibling; an integer exit replaces status 41 with
+53. Both exact native/model outputs and independent reached ownership gates
+pass. [Repeated cleanup exit review](coverage/semantics/generator-call-repeated-exit-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

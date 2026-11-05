@@ -1,0 +1,120 @@
+{
+  "milestone": "ATTR26: handler-free exit during ignored destructor-body value cleanup",
+  "status": "Bounded private validation accepted: strict435, seven source agreements and independent5/739",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-26",
+  "scope": "Integer or string exit in a returned-value destructor during post-FINAL tick retirement, with no exception handler installed. Fresh object, alias array, static Closure capture, later-retained value and cacheless/noqueue witnesses. Normal main completion or stable saved main263/string exit.",
+  "production": {
+    "revision": "ddd0c3158cc41bc8151ad13858d09a0c1d01f673",
+    "implementation": [
+      "spec/semantics/444-executor-final-free.watsup"
+    ],
+    "behavior": "An existing authenticated abandoned tick bailout may complete EXITED with the same canonical full EXITSTATUS and no active PHP frame or destructor job. Existing queue/free helpers then finish later cleanup without fatal rendering or restarting the retained tick tail. The old UNCAUGHT route remains explicit. The noqueue arm returns the read-only successful inactive-free result directly, keeping terminal drive idempotent. No new state fields, tasks or owner representation."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit) integer status versus string write",
+      "Zend/zend_execute_API.c:zend_call_function null-current tail and zend_call_known_function dummy retval cleanup",
+      "Zend/zend_exceptions.c:zend_throw_exception_internal UnwindExit report/release/bailout; zend_exception_error suppresses its diagnostic",
+      "Zend/zend_objects.c:zend_objects_destroy_object inner protection",
+      "Zend/zend_objects_API.c:zend_objects_store_del outer protection",
+      "main/main.c:module-local bailout precedes php_free_shutdown_functions and inactive executor freeing"
+    ]
+  },
+  "evidence": {
+    "native_first": {
+      "report": "review-native/report.json",
+      "report_sha256": "d026cbcdc90d1f54cc974a1a0c78ad4bd010b2e780c28cc3f2375282ab0845cc",
+      "revision": "aede60d845262565d69f0485f9b42c1bacdd14f9",
+      "new_originals": 4,
+      "affected_controls": 2,
+      "result": "Fresh object/Closure B;F;A;R;Q;/CLI7; alias/string B;F;A;R;E;Q;/CLI7; retained B;F;A;K;R;Q;/9. Empty stderr; normal-body and literal body-throw controls preserve their observations."
+    },
+    "native_noqueue": {
+      "report": "review-native-noqueue/report.json",
+      "report_sha256": "c2f6b875d7c3a28937f58acbc293df92a4aeabf807468497a29057f0f9403573",
+      "revision": "ddd0c3158cc41bc8151ad13858d09a0c1d01f673",
+      "new_originals": 1,
+      "result": "Cacheless/noqueue B;F;A;R;/CLI7 from full exit263, empty stderr. Original native6 report unchanged."
+    },
+    "baseline": {
+      "report": "source-baseline-aede/report.json",
+      "report_sha256": "686f16f327b14c6068217fd1dcc64fa6b0559420c86d8e48dc5be18c1971135d",
+      "revision": "aede60d845262565d69f0485f9b42c1bacdd14f9",
+      "result": "Model explicit_exit7 with B;F;A;R; omits native later Q.103.01s, no timeout, stable/full reap. Zero agreement credit."
+    },
+    "strict": {
+      "report": "strict-exit-ddd0/report.json",
+      "report_sha256": "a37d3c6d9fb5d7d0b87788dfabb327afd0561247cebb5a4a934fd1394c2b7a65",
+      "revision": "ddd0c3158cc41bc8151ad13858d09a0c1d01f673",
+      "passed": true,
+      "modules": 435
+    },
+    "source_first": {
+      "report": "source-exit-ddd0/report.json",
+      "report_sha256": "853140b2b1cc71c43aa8b854d8f5d99019a2c99bfd3a21f0c22d3c01e84a99ca",
+      "revision": "ddd0c3158cc41bc8151ad13858d09a0c1d01f673",
+      "passed": true,
+      "selected": [
+        "object"
+      ],
+      "result": "Exact new object source including Q,102.58s, stable/full reap."
+    },
+    "source_remaining": {
+      "report": "source-exit-ddd0-rest/report.json",
+      "report_sha256": "856059671bf4944c6e860623c93d4283c8b356e604d14495a4789997276ee2d8",
+      "revision": "ddd0c3158cc41bc8151ad13858d09a0c1d01f673",
+      "passed": true,
+      "selected": [
+        "array",
+        "closure",
+        "retained",
+        "noqueue",
+        "normal-body-control",
+        "body-throw-control"
+      ],
+      "result": "All six exact. Combined with first object, five new originals and two affected controls pass. Stable inputs/empty worker stderr/full process reap."
+    },
+    "reached": {
+      "report": "reached-first/run/report.json",
+      "report_sha256": "05cc390f96cf340fb736e6c196bc9656a948d00ecd859cc4c9c21fdad37eec83",
+      "outer_report": "reached-first/process.json",
+      "outer_report_sha256": "e7506e0b67eb7c6c927abdf5e2ab242766a0ce9d51f986d564c11bb5cdfe831c",
+      "revision": "20fd3a2612b2325c3f6d17135da9cdf766d7a6c9",
+      "passed": true,
+      "groups": 5,
+      "conditions": 739,
+      "genuine": 734,
+      "derived": 5,
+      "group_conditions": [
+        159,
+        153,
+        156,
+        140,
+        131
+      ],
+      "result": "All five genuine EXIT_UNWIND fronts pass: frame-unwind captures CPP2 and unfinished jobs, alias owner raises Arg to3, retained Arg/K are already0, full263 differs from7, real lateQ/noqueue cleanup preserves stopped tails, and terminal drive0/37 is identity. No correction/failure; stable inputs/empty stderr/full reap."
+    }
+  },
+  "tests": {
+    "new_sources": [
+      "tests/semantics/deprecated_late_tick_body_exit_object.php",
+      "tests/semantics/deprecated_late_tick_body_exit_array.php",
+      "tests/semantics/deprecated_late_tick_body_exit_review_closure.php",
+      "tests/semantics/deprecated_late_tick_body_exit_review_retained.php",
+      "tests/semantics/deprecated_late_tick_body_exit_no_queue.php"
+    ],
+    "controls": [
+      "tests/semantics/deprecated_late_tick_body_return_object.php",
+      "tests/semantics/deprecated_late_tick_body_throw_object.php"
+    ],
+    "protocol": "tests/semantics/deprecated_late_tick_body_exit_review_protocol.py"
+  },
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; tests/semantics/profile.json. Commands, caps, source/runtime/helper hashes, exits and full reaping are external. Copied tools establish no rebuild or portability claim.",
+  "remaining": "Replacing an earlier main integer exit with a different integer during the nested destructor, unshared owning channels, uncovered selected completions, wider active-frame/local cleanup, reference-return bodies, handlers and reentry remain partial. No engine-bug or lifecycle/core closure claim.",
+  "zero_credit": [
+    "Original missing-Q baseline retains zero agreement credit.",
+    "ATTR07 unsafe observation is not rerun and has no renewed credit."
+  ]
+}

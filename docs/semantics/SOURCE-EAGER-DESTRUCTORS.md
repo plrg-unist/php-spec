@@ -317,7 +317,11 @@ same pipeline. The original Throwable and both outer C protections remain while
 fresh returned values run nonthrowing destructors; a shared result survives its
 ignored-return drop under a genuine later owner. The
 [handler-value review](../../coverage/semantics/callback-late-tick-handler-value-review.json)
-records the source and ownership cuts; abrupt value cleanup remains separate.
+records normal source and ownership cuts. A literal Exception from a fresh
+ignored handler value instead bails out before old-Throwable disposal and handler
+restoration; the later-retained value throws after restoration and invokes H again.
+The [handler-value throw review](../../coverage/semantics/callback-late-tick-handler-throw-review.json)
+keeps those distinct outcomes and their pending C owners.
 An error-handler retval destructor has an internal API trace but retains the
 actual USER caller's permission and catch continuation. Retired selected Closure,
 method and raw-array identities remain borrowed lookup evidence.
@@ -346,11 +350,30 @@ call markers retire. A throw during an ignored destructor-body value also retain
 still-pending outer C wrappers. Their literal C-return/result pairs and live call
 records authenticate the two receiver counts and unfinished release jobs. The
 selected result/warning record owns shared operation, frame and pending-exception
-values once; parent records require the same descriptors and a selected anchor.
-Distinct pending ownership contexts remain an explicit boundary. The
-[body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json)
-records current checks; abrupt selected-handler retval disposal and wider
-reentry are separate limits. This phase does not claim their later request freeing.
+values once. Exact-shared parents retain their original representation. A distinct
+parent is admissible when every omitted unshared frame/operation/pending channel
+has no canonical task roots and selected completion roots are covered by pending
+ownership. Its documentary source contains both the parent and actual selected
+call, keeping receiver counts and unfinished release slots without adding roots
+from the association. Existing EH cleanup retains the old Exception once.
+Tick fatal admission checks that association against the last selected call, so
+an older tick row cannot authorize a later queue destructor. Unshared owning
+channels and wider reentry remain partial. The
+[body-value bailout](../../coverage/semantics/callback-late-tick-body-throw-review.json)
+and [handler-value throw](../../coverage/semantics/callback-late-tick-handler-throw-review.json)
+reviews retain their separate cuts. This phase does not claim their later request freeing.
+
+For handler-free ignored body-value exit, authenticated abandoned tick sources
+admit EXITED only with its matching canonical full EXITSTATUS and no active
+PHP frame or destructor job. Later queue arguments retire before the bounded
+inactive-free scan, while unfinished tick jobs remain rooted and stopped. The
+noqueue arm returns the read-only result directly; a successful terminal scan
+is identity, so repeated terminal driving changes no events or owners. Five
+new source witnesses distinguish fresh, shared, alias, capture and cacheless
+cases; five independent groups pass 739 conditions (734 genuine, five derived).
+The [body-value exit review](../../coverage/semantics/callback-late-tick-body-exit-review.json)
+records the source/state cuts. Saved integer replacement and wider frame/handler
+contexts remain partial.
 
 An engine fatal bailout also skips live VM frame cleanup. The snapshot retains
 current and saved local, receiver and temporary owners before structural cleanup;

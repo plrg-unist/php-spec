@@ -1,0 +1,26 @@
+{
+  "scope": "published-enum is_callable third output when an aliased source/output CV rebounds to a new direct-string array",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "bb26aab33ee8aea249bc9b1ea064facf9199a974",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "native_selections_sha256": ["0db686f673c9c972cfb6d130790357c8ed64670b3b006fbf057f7ab9fa77318c", "8dc394113379d29debe04b163f976c88d86055674222810da9a2e368f0245cc9"]
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "behavior": "The first SENT array ID and selected name remain authenticated after the shared source/output cell receives a different two-entry array. Only DIRECT string members of that new array are admitted. The third output writes the original selected name through the shared cell; a separate holder keeps the rebound array alive. A second-argument throw before the third SEND leaves the rebound array and result assignment target unchanged.",
+  "source_results": {
+    "agreements": "Four exact native/model stdout, stderr and exit-status agreements: raw-class, case and retained at 9072740f657484c3a9587d79c379c11d999b0701; throw-before-output at tested_revision. Source SHA256 values in that order: 6ebb59e94e64c7f40821af42598eecea4cf70e4bee5fa2e80de8021096d1324f, a27a8883ada1460f3234924e0e635a1b881ecd0e4eb30a942fe781d4139bfb9c, 54359abc721689a8bd0611c360bffb01cc1ca077d0c9ef304ec3ac2051b8ea8c, b406c79072ebfa8bcdc54106fc09a6df0f2c89d4e8a6bb29204eb8d1e88367fc. Raw wrappers raw-class-source-v1, case-source-v1, retained-source-v1, throw-source-v1; harness raw under raw/user-string-{ovjsgwuk,iea2rnna,fxys_10k,6k_tgnlk}.",
+    "control": "The owning ChildDrop rebound array is explicit Unsupported at tested_revision, zero agreement credit; native output includes D-null while model emits REBIND| before refusal. Source SHA256 61fe849f629d547f2ffd6778456578f33dcd08cabf3792e6568fe1ed46467880; raw owning-control-source-v1 and raw/user-string-paae2h_o.",
+    "catalogue": "tests/semantics/enum_is_callable_cases.json pins five exact source bytes, SHA256 values, expected outcomes and model caps. Each row was selected with python3 tests/semantics/enum_is_callable.py --match variable-array-alias-rebound-<exact suffix>; no whole-catalogue run is claimed."
+  },
+  "reached_results": "Five separate numeric runs at tested_revision: raw64, case50, retained53, throw29 and control33, all true/exit0/empty stderr with stable inputs and no timeout. Raw wrappers {raw-reached-v2,case-reached-v1,retained-reached-v1,throw-reached-v1,control-reached-v1}; numeric raw under raw/enum-is-callable-protocol-{r3svrmau,yabknpsr,4yqxcl_r,wyas1k6a,2tluc81n}. These are 229 physical clauses across five runs, not one combined run. Control clauses prove refusal rather than native/model agreement.",
+  "strict": "At 9072740f657484c3a9587d79c379c11d999b0701, strict-v1.json records 435 modules, true/exit0/empty stderr in 13.03s. Later commits add only the reached fixture/correction; no semantic rule changed after this gate.",
+  "joined_gate": "Composed revision 7041f2771e8ccfc96a9fbd5b36c8fe5e78500334 has exact master parent 07b0b24cf0c520fff0f41b8ae86bca725f54a6b2. joined-strict435.json records 435 modules, true/exit0/empty stderr in 12.33s; joined-raw-reached.json and raw/enum-is-callable-protocol-sbmfn_1l/report.json record raw64 true/exit0/empty stderr with stable inputs (numeric 26.20s, host 26.33s). This focused check covers the current-parent ATTR25 interaction; unrelated source and reached cuts were not replayed.",
+  "retained_failure": "Original raw reached run at 3944ca92189dd6d88585499290e47a07e5ef3d97 failed the representation-specific UNCHANGED assertion after earlier receipt and identity checks passed. raw-reached-v1 and raw/enum-is-callable-protocol-y8nxbb23 retain zero success credit; the corrected string-carrier check passed as raw64 without source/strict replay.",
+  "remaining": "Rebound arrays with owning object children, ALIAS/reference members or wider shapes, plus named/unpacked output, remain outside this route.",
+  "engine_routes": ["ext/standard/type.c:PHP_FUNCTION(is_callable)", "Zend/zend_API.c:zend_is_callable_ex", "Zend/zend_API.c:zend_get_callable_name_ex", "Zend/zend_vm_def.h:ZEND_SEND_VAR"],
+  "recovery": "Ignored raw lives outside Git under main checkout .tools/enum-array-alias-rebound-evidence/. Native manifests are native-v1/ and retained-native-v1/; wrapper files are at the evidence root, and raw/ holds the original harness directories. Command files preserve old private worktree paths. Reproduce with five exact --match source selections and five separate --group raw|case|retained|throw|control commands from a current checkout; do not infer a default-all run.",
+  "review": "Independent semantic, fixture and raw-result review CLEAR by /root/enum_review_next at the recorded cuts."
+}

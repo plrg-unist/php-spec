@@ -356,6 +356,9 @@ dec $executor_tick_scope_frames(pstate, pframe*) : bool
 dec $executor_tick_scope(pstate) : bool
 dec $executor_tick_begin(pstate) : pstate
 dec $executor_tick_abandoned(pstate, pdestructioncleanup) : pexecutortick?
+dec $executor_tick_parent_row(pstate, pdestructioncleanup, pdestructioncleanup) : pexecutortick?
+dec $executor_tick_parent(pstate, pdestructioncleanup, pdestructioncleanup*) : pexecutortick?
+dec $executor_tick_bailout(pstate) : pexecutortick?
 dec $executor_tick_fatal_valid(pstate, pexecutortickfatal) : bool
 dec $executor_tick_fatal_begin(pstate, pexecutortick, pcompletion) : pstate
 dec $executor_report_cause(pstate, pcompletion, nat) : bool
@@ -605,22 +608,53 @@ def $executor_tick_abandoned(S, pdestructioncleanup) = (pexecutortick)
   -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if $eager_cleanup_valid(S, pdestructioncleanup)
 def $executor_tick_abandoned(S, pdestructioncleanup) = eps -- otherwise
-def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
-  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+;; A distinct operation may throw while a genuine outer tick C call waits.
+;; The documentary parent must identify this actual last selected call.
+def $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup_parent) = (pexecutortick)
+  -- if pdestructioncleanup_selected.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if pdestructioncleanup_parent.SOURCE = DESTRUCTOR_C_ABANDONED pdestructorcall_parent pdestructorcall
+  -- if ~pdestructioncleanup_selected.RELEASED /\ ~pdestructioncleanup_parent.RELEASED
+  -- if ~pdestructorcall_parent.USER /\ pdestructorcall_parent.CALLER = eps
+  -- if pdestructorcall_parent.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
+  -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup_selected)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup_parent)
+def $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup_parent) = eps -- otherwise
+def $executor_tick_parent(S, pdestructioncleanup_selected, eps) = eps
+def $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup :: pdestructioncleanup_tail*) = (pexecutortick)
+  -- if $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup) = (pexecutortick)
+def $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup :: pdestructioncleanup_tail*) = $executor_tick_parent(S, pdestructioncleanup_selected, pdestructioncleanup_tail*)
+  -- if $executor_tick_parent_row(S, pdestructioncleanup_selected, pdestructioncleanup) = eps
+def $executor_tick_bailout(S) = (pexecutortick)
   -- if $(|S.DESTRUCTION.ABANDONED| > 0)
   -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
   -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortick)
+def $executor_tick_bailout(S) = $executor_tick_parent(S, S.DESTRUCTION.ABANDONED[n_last], S.DESTRUCTION.ABANDONED)
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = eps
+def $executor_tick_bailout(S) = eps -- otherwise
+def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
+  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_tick_bailout(S) = (pexecutortick)
   -- if $executor_tick_valid(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if S.COMPLETION = UNCAUGHT n
   -- if S.EXCEPTIONHANDLER = eps
   -- if $executor_renderable(S, n)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+;; UnwindExit bails out of the module with no report, preserving its full status.
+;; The abandoned source still carries the original phase completion.
+def $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.COMPLETION = EXITED z
+  -- if S.EXITSTATUS = z /\ $exit_status_valid(S)
+  -- if $executor_free_endpoint(S)
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if $executor_tick_bailout(S) = (pexecutortick)
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.OUTPUTBUFFERS = eps /\ S.EXITSTATUS = 255
-  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
-  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
-  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortickfatal.TICK)
+  -- if $executor_tick_bailout(S) = (pexecutortickfatal.TICK)
   -- if $(pexecutortickfatal.OBJECT < |S.OBJECTS|)
   -- if $shutdown_frozen(pexecutortickfatal.COMPLETION)
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = false -- otherwise
@@ -629,8 +663,14 @@ def $executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n) = S_report[.TODO = 
   -- if S_report = $shutdown_freeze_marked(S_cached)
   -- if $shutdown_frozen(S_report.COMPLETION)
   -- if pexecutortickfatal = {TICK pexecutortick, COMPLETION S_report.COMPLETION, OBJECT n}
-def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, pcompletion), n)
-  -- if $executor_tick_caught(S) = ((pexecutortick, pcompletion))
+def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n_throwable), n)
+  -- if $executor_tick_caught(S) = ((pexecutortick, UNCAUGHT n_throwable))
+def $output_drive_finalize(S, n) = $drive_steps($executor_queue_begin(S), n)
+  -- if $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.SHUTDOWN.ENTRIES =/= eps
+def $output_drive_finalize(S, n) = $executor_free_finish(S)
+  -- if $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.SHUTDOWN.ENTRIES = eps
 def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active($executor_tick_history(S, pexecutortickfatal.TICK.COMPLETION), pexecutortickfatal.TICK)
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT pexecutortickfatal.OBJECT]
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal false) = eps

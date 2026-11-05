@@ -251,6 +251,7 @@ def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit[.COMPLETION = UNSUPP
 def $closure_call_copy_exit_task(S, S_exit, ptask) = S_exit -- otherwise
 dec $closure_call_copy_cleanup_exit(pstate) : (pdestructorcall, pdestructionoperation)?
 dec $closure_call_copy_cleanup_exit_rebase(pstate, int) : pstate
+dec $instance_storage_valid(pstate, pinstancestorage) : bool
 dec $destructor_operation_valid(pstate, pdestructionoperation) : bool
 dec $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation) : ptask*
 dec $destructor_operation_postfinish(pstate, pdestructionoperation) : pstate
@@ -276,6 +277,9 @@ def $closure_call_copy_cleanup_exit_tail(S, (DESTRUCTOR_OPERATION_EXIT pdestruct
 def $closure_call_copy_cleanup_exit_tail(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, perrorcall) = $closure_call_copy_cleanup_exit_tail(S, ptask_tail*, pdestructionoperation, perrorcall)
   -- if $destructor_release_live(S, pdestructionrelease)
   -- if pdestructionrelease.CALLER = pdestructionoperation.CALLER /\ pdestructionrelease.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+def $closure_call_copy_cleanup_exit_tail(S, (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pdestructionoperation, perrorcall) = $closure_call_copy_cleanup_exit_tail(S, ptask_tail*, pdestructionoperation, perrorcall)
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.CALLER = pdestructionoperation.CALLER /\ pinstancestorage.ORIGIN = pdestructionoperation.ORIGIN /\ pinstancestorage.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
 def $closure_call_copy_cleanup_exit_tail(S, ptask*, pdestructionoperation, perrorcall) = false -- otherwise
 def $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))
   -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
@@ -300,7 +304,7 @@ def $closure_call_copy_cleanup_exit_rebase(S, z) = S[.TODO = (DESTRUCTOR_RESULT 
   -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
-  -- if pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.COMPLETION = NORMAL \/ $exit_completion(pdestructionoperation.COMPLETION)
   -- if pdestructionoperation_new = pdestructionoperation[.COMPLETION = EXITED z]
   -- if pdestructorcall_new = pdestructorcall[.OPERATION = (pdestructionoperation_new)]
 def $closure_call_copy_cleanup_exit_rebase(S, z) = S[.COMPLETION = UNSUPPORTED "Generator Closure::call repeated cleanup exit"] -- otherwise

@@ -1,0 +1,55 @@
+{
+  "milestone": "I105 repeated exit during copied Generator call retval cleanup",
+  "status": "Selected fake and real pre-Generator cleanup reexits agree with PHP; wider nested cleanup remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; LC_ALL=C, TZ=UTC, CPU4",
+  "scope": "A copied Closure::call reference warning owns its handler retval. That retval exits from its destructor, then its Child exits again while the parent storage pin still owns later fields. A literal string exit retains status29 and frees an After sibling first; an independent real Child integer exit replaces status41 with53. Both continue through CLEAN, prepared/API release and shutdown without creating a Generator or entering caller catch/finally.",
+  "semantics": "Module268 authenticates the live INSTANCE_STORAGE_STEP in the copied-warning cleanup tail and rebases either a NORMAL or already EXITED saved destructor operation. Module359's existing operation-task rewrite carries the storage marker and updates the downstream operation; no new ownership field or exit tag is introduced. The I103 synthetic repeated-operation expectation is promoted at this new cut, without renewing its historical source or full-state credit.",
+  "engine": "ZEND_FUNCTION(exit) writes a string without changing EG(exit_status), while an integer replaces it. zend_objects_destroy_object protects the old UnwindExit during Child destruction; zend_exception_set_previous releases that old UnwindExit instead of chaining it when the Child exits again. zend_object_std_dtor and zend_objects_store_del continue later fields and retire the parent C pin. zend_error then restores the warning handler. See vendor/php-src/Zend/{zend_builtin_functions.c,zend_objects.c,zend_objects_API.c,zend_exceptions.c,zend.c,zend_closures.c}.",
+  "validation": {
+    "native_first": {
+      "report": "../php-spec-evidence-archive/generator-call-repeated-exit-105/native-first-ef7/report.json",
+      "sha256": "a703f5db503514b815fffd8137f06682b98a912dbbe4243a4d510d72b9ff536c",
+      "revision": "ef779e0cc1fdd08e90b3dd68c8af46d09ebbb085",
+      "result": "Two frozen originals, native exit29/53, exact output, quiet; model credit zero"
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/generator-call-repeated-exit-105/strict-b1a/report.json",
+      "sha256": "f49b39f0c5285e53218ac53988d8b22713f7d9f4af454d1be1f614bcac1cd6b0",
+      "revision": "b1a89f8d6cfc6b89b855d729bb55a98dfbab6e3a",
+      "result": "SL435 true, empty stderr, exit0, no timeout"
+    },
+    "fake_source": {
+      "report": "../php-spec-evidence-archive/generator-call-repeated-exit-105/source-fake-b1a/report.json",
+      "sha256": "810d9898400f26e40d56f55d2d8def9a17155a16450c2c0e0a96641357224383",
+      "revision": "b1a89f8d6cfc6b89b855d729bb55a98dfbab6e3a",
+      "result": "Native/model explicit exit29, byte-equal TAIL, After, prepared/API and shutdown output; cap600"
+    },
+    "real_source": {
+      "report": "../php-spec-evidence-archive/generator-call-repeated-exit-105/source-real-b1a/report.json",
+      "sha256": "71535e12e9b66cef66ebbb8ee69f10e2b27ec2b2a80ed62bb93ba27c65fd6ad0",
+      "revision": "b1a89f8d6cfc6b89b855d729bb55a98dfbab6e3a",
+      "result": "Native/model explicit exit53, byte-equal cleanup and late Capture/Maker output; cap600"
+    },
+    "author_state": {
+      "report": "../php-spec-evidence-archive/generator-call-repeated-exit-105/author-fake-state-49e/report.json",
+      "sha256": "c4e51d183aad7078c6f1528d605e19bec04caddc8f6ea0090cbc16b7c593a855",
+      "revision": "49e6a23e246831e79335055a1e9e502ae79d0c22",
+      "result": "178 custom/183 reported true clauses; Child/After storage, malformed pins, receiver release, API and shutdown; cap600"
+    },
+    "peer_state": {
+      "report": "../php-spec-evidence-archive/generator-call-repeated-exit-105-review/validated/peer-state-cce/report.json",
+      "sha256": "40da150ec12810681dbb9894b5a5f3662c578fcab43fcbdf68dfd440836bdce2",
+      "revision": "cce1ec9a9b352f7858aae5e0dbcb477866b6aef0",
+      "result": "171 custom/176 reported true clauses on joined SL435; status53, storage/CLEAN/API owners and split/full shutdown; cap600"
+    }
+  },
+  "evidence_contract": "Two source comparisons and 349 custom/359 reported new reached clauses pass at their recorded cuts. Reports and reap sidecars retain exact commands, source bytes/hash, original streams, budgets, PHP profile, compiler and four tool identities, stable HEAD/inputs and full process-group reap. Native reuse changes only a source filename; these originals observe no path. No source/native/strict replay was made for the reviewed joined head.",
+  "composition": "The peer ran at cce1ec9, joining I105 with clean COMP175 parent ac50423. GC36's NOTIFYeps slot guard remains present and holds because these sources allocate no WeakMap; the peer checks that pin. CONFIG, enum, anonymous/rejected-source and bailout additions do not enter these accepted USER destructor sources.",
+  "preserved_failures": "Zero credit: unchanged-model fake stdout mismatch ../php-spec-evidence-archive/generator-call-repeated-exit-105/baseline-fake-b459/report.json (73860846); first author Child-owner fixture failure ../php-spec-evidence-archive/generator-call-repeated-exit-105/author-fake-owner-failure-07a/report.json (6f90f111). A narrow external owner cut measured the queued receiver root ../php-spec-evidence-archive/generator-call-repeated-exit-105/author-fake-owner-cut-07a/report.json (c5a0a347); the corrected fixture alone was rerun.",
+  "remaining": "Ordinary Throwable already pending during a repeated exit, longer nested exit chains, aliased cleanup throws and wider Fiber, WeakMap/GC, post-creation and hard-bailout interactions remain partial. No BOLA property is claimed.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_call_repeated_cleanup_exit_sources.py --case CASE --native-report ../php-spec-evidence-archive/generator-call-repeated-exit-105/native-first-ef7/native-reuse.json",
+    "taskset -c CPU python3 tests/semantics/generator_call_repeated_cleanup_exit_state.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_repeated_cleanup_exit_review_state.py"
+  ]
+}

@@ -40,10 +40,16 @@ checks, and no partial namespace AST is submitted to the compiler.
 
 Compiler-only class/interface/enum checks, static magic-method restrictions and
 try-without-catch validation are also deferred in this rejected-only parser.
-Readonly method and duplicate-modifier validation remains active. Native readonly
-validation occurs before a method body, while the foreign callback runs after it;
-an extra body header therefore remains a checked-prefix refusal. The ordinary
-parser, native helper and receipt/adapter/runtime contracts are unchanged.
+Duplicate-modifier validation remains active. A checked wrapper around foreign
+modifier reduction 384 now uses actual `T_FUNCTION` or `T_CONST` lookahead to enforce
+the respective native target flag set before parameters/body or initializers.
+Methods admit visibility/static/abstract/final; constants admit visibility/final.
+Earlier attribute headers survive, but forbidden target headers are excluded
+without a token-text scan. The default flags value and duplicate accumulation are
+unchanged; properties use their separate grammar path. The late compiler-only
+method callback no longer checks readonly. The internal foreign stop is never
+exported as a native diagnostic. Ordinary parsing, the native helper and
+receipt/adapter/runtime contracts are unchanged.
 
 Only rejected-unit header extraction uses `RejectedEvalLexer` and
 `RejectedFileLexer`. Their native APIs expose raw token tuples from the actual
