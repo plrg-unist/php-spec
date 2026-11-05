@@ -133,7 +133,7 @@ THROW = [
     'S_middle.OBJECTS[n_outer] = S.OBJECTS[n_outer]',
     '$heap_owners($heap_graph(S_middle), HOBJECT n_key) = 1',
     '$heap_owners($heap_graph(S_middle), HOBJECT n_incoming) = 1',
-    'S_incoming = $seek($drive_steps(S_middle, 1), 2000)',
+    'S_incoming = $seek($drive_steps(S_middle[.COMPLETION = NORMAL], 1), 2000)',
     'S_incoming.TODO = (DESTRUCTOR_ENTER pdestructorcall_incoming) :: ptask_incoming_tail*',
     'pdestructorcall_incoming.OBJECT = n_incoming',
     'pdestructorcall_incoming.PENDING = (n_error)',
