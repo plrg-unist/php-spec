@@ -841,8 +841,17 @@ integer exit replaces it. The
 [cleanup review](../../coverage/semantics/enum-is-callable-output-cleanup-review.json)
 records eight new/promoted agreements, one affected enum exit-status source,
 three explicit controls, strict433 and independent 256+47 guards at separate cuts.
-Repeated
-cleanup exits refuse before generic unwinding can discard the C return.
+This model slice refuses an exit attempted while an ordinary cleanup Throwable
+is pending before generic unwinding can discard the C return.
+Nested local cleanup exits now return through each genuine destructor C pin,
+preserving the parent query's borrowed receipt and output cell. The latest
+integer exit supplies status; a string exit preserves it. An ordinary Child
+throw cancels exit while the name still commits, and nested queries keep their
+own names and untouched result assignments. The
+[reexit review](../../coverage/semantics/enum-is-callable-output-reexit-review.json)
+records nine agreements, three explicit Unsupported controls and five separate
+reached groups at their actual cuts. `debug_backtrace()` remains outside the
+core observer boundary and is a control rather than an agreement.
 Owning rebound values and newly attached type sources remain partial.
 Native raw overwrite can retain an abandoned count for a destructor-created
 object until the store sweep; it cannot be modeled as a second checked write.

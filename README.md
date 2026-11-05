@@ -6860,7 +6860,14 @@ with compiled CV/alias release order and preserved exit status. The
 [cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json)
 records eight new/promoted agreements, one affected enum exit-status source,
 three explicit controls and 256+47 independent guards at separate cuts.
-Switched Fiber exits, repeated cleanup exits, owning rebound values, late type
+Nested cleanup exits now return through their own C pins, preserving the
+original output receipt and latest integer status. A Child throw cancels exit
+while the name still commits; nested queries keep separate output cells. The
+[reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json)
+records nine agreements, three Unsupported controls and five separately run
+reached groups (308 clauses) at their actual cuts.
+Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
+owning rebound values, late type
 sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
