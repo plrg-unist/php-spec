@@ -1849,12 +1849,19 @@ def $enum_is_callable_output_frames(S, pframe :: pframe_tail*, pdestructionopera
   -- if $enum_is_callable_output_at(pframe.TODO, pdestructionoperation) = (penumqueryoutput)
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $enum_is_callable_output_valid(S_scope, penumqueryoutput)
+def $enum_is_callable_output_frames(S, pframe :: pframe_tail*, pdestructionoperation) = eps
+  -- if $enum_is_callable_output_at(pframe.TODO, pdestructionoperation) = (penumqueryoutput)
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if ~$enum_is_callable_output_valid(S_scope, penumqueryoutput)
 def $enum_is_callable_output_frames(S, pframe :: pframe_tail*, pdestructionoperation) = $enum_is_callable_output_frames(S, pframe_tail*, pdestructionoperation)
   -- if $enum_is_callable_output_at(pframe.TODO, pdestructionoperation) = eps
 dec $enum_is_callable_output_scope(pstate, pdestructionoperation) : (pstate, penumqueryoutput)?
 def $enum_is_callable_output_scope(S, pdestructionoperation) = ((S, penumqueryoutput))
   -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = (penumqueryoutput)
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+def $enum_is_callable_output_scope(S, pdestructionoperation) = eps
+  -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = (penumqueryoutput)
+  -- if ~$enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_scope(S, pdestructionoperation) = $enum_is_callable_output_frames(S, S.FRAMES, pdestructionoperation)
   -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = eps
 def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput = penumqueryoutput_source /\ pdestructionoperation.VALUE = KNOWN (PBOOL penumqueryoutput.RESULT) /\ pdestructionoperation.CELL = penumqueryoutput.CELL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE))
