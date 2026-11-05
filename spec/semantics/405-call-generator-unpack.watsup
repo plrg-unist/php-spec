@@ -301,6 +301,11 @@ def $generator_unpack_reference_target(S, pgeneratorunpack, NAMED_POSITION n) = 
   -- if pgeneratorunpack.CALL.FUNCTION = pfunction.ORIGIN
   -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
+  -- if pgeneratorunpack.CALL.CALLSITE = (PORIGIN n_source pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_source pcpath) = (NExprFuncCall name (SEQUENCE phpType7*) metadata_call)
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if ~pfunction.SIGNATURE.BYREF
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
   -- if psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.TYPE = eps
