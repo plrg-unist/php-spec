@@ -30,6 +30,9 @@ def $rejected_header_items((NDeclareItem (NIdentifier (BYTES text) metadata_name
   -- if $(z_begin <= z_begin_item /\ z_end_item <= z_line /\ z_previous < z_start_item /\ z_last_item < z_close)
   -- if $rejected_span_inside(metadata_name, z_begin_item, z_end_item, z_start_item, z_last_item)
   -- if $rejected_span_inside($pcmetadata(expression), z_begin_item, z_end_item, z_start_item, z_last_item)
+  -- if $source_token_end(metadata_name) = (z_name_last)
+  -- if $source_token_start($pcmetadata(expression)) = (z_value_start)
+  -- if $(z_name_last < z_value_start)
   -- if $rejected_header_items(phpType49*, z_end_item, z_line, z_last_item, z_close)
 def $rejected_header_items(phpType49*, z_begin, z_line, z_previous, z_close) = false -- otherwise
 dec $rejected_headers_valid(pparseheader*, int, int) : bool
@@ -76,7 +79,7 @@ def $eval_response_shape(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message*
 
 dec $rejected_source_warnings(pstate, nat, int*) : pstate
 def $rejected_source_warnings(S, n, eps) = S
-def $rejected_source_warnings(S, n, z :: z*) = $rejected_source_warnings($report_event(S, DIAGNOSTIC_SOURCE n "Warning" ($ptascii("declare(encoding=...) ignored because Zend multibyte feature is turned off by settings")) z, 128), n, z*)
+def $rejected_source_warnings(S, n, z :: z_tail*) = $rejected_source_warnings($report_event(S, DIAGNOSTIC_SOURCE n "Warning" ($ptascii("declare(encoding=...) ignored because Zend multibyte feature is turned off by settings")) z, 128), n, z_tail*)
 def $eval_resume_valid(S, SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = $eval_resume_rejected($rejected_source_warnings(S[.COMPLETION = NORMAL], n, z_lines*), pevalcontext, pevalcontext_tail*, pfailedkind, n_message*, z)
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
   -- if $rejected_header_prefix(pparseheader*) = (z_lines*, z_stop?)

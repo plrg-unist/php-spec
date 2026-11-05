@@ -169,7 +169,8 @@ def rejected_encoding_warning_lines(parsed):
                         or not first < bounds[2] <= bounds[3] < close):
                     return None
                 name, expression = item['fields']
-                if name['node'] != 'Identifier' or not inside(name, bounds) or not inside(expression, bounds):
+                if (name['node'] != 'Identifier' or not inside(name, bounds) or not inside(expression, bounds)
+                        or not span(name)[3] < span(expression)[2]):
                     return None
                 begin, first = bounds[1], bounds[3]
         lines = []
