@@ -432,12 +432,14 @@ def $access_call(S, paccess, ptbytes) = $key_read_done(S, PNULL)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
-def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, ~b)
+;; has_dimension borrows the stored zval: isset checks NULL, empty its truth.
+def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, (~b /\ pvalue =/= PNULL) \/ (b /\ ~$truth(S, pvalue)))
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if paccess.OBJECT = (n_map)
   -- if paccess.OFFSET = POBJECT n_key
-  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
+  -- if pvalue = $weakmap_value(S, pweakmapentry.VALUE)
 def $access_call(S, paccess, ptbytes) = $access_predicate(S, paccess, b)
   -- if ptbytes = $ptascii("offsetExists") /\ $weakmap_entries_access_allowed(S, paccess, ptbytes)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
