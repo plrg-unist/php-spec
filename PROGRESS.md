@@ -1113,6 +1113,15 @@ remains zero credit; its correction requires exactly the rejection-exit record
 and no partial declaration installation.
 [Review](coverage/semantics/rejected-static-validation-review.json).
 
+COMP174 validates rejected method-target modifiers at the foreign grammar's
+actual function lookahead, before parameters/body. Earlier attribute headers
+survive; forbidden readonly/asymmetric-set bodies supply none. Valid readonly
+properties and ordinary method flags keep their headers. All 22 dynamic and four
+main comparisons, 37 service controls, 108 reached conditions/SL435 and affected
+49/24 controls pass at one cut. Constant-target prefix differences remain explicit
+refusals; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
+[Review](coverage/semantics/rejected-method-modifier-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
