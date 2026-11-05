@@ -24,6 +24,7 @@ CONTROLS = {
     'folded-builtin-subject': (Path(__file__).with_name('tick_switch_review_defined.php').read_bytes(), b''),
     'imported-builtin-subject': (b'<?php namespace N;use function defined as d;function t(){echo "T";}register_tick_function("N\\\\t");declare(ticks=1){switch(d("PHP_VERSION")){case true:echo "A";}}echo "Z";', b''),
     'qualified-builtin-subject': (HEAD + b'declare(ticks=1){switch(\\defined("PHP_VERSION")){case true:echo "A";}}echo "Z";', b''),
+    'nested-builtin-subject': (HEAD + b'declare(ticks=1){switch(defined("PHP_VERSION")+1){case 2:echo "A";}switch(!defined("PHP_VERSION")){case false:echo "B";}}echo "Z";', b''),
 }
 
 

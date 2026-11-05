@@ -33,6 +33,8 @@ dec $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_switch_result(pcodename*, pcpath, expression) : bool?
 dec $tick_switch_builtin(pcodename*, pcpath) : bool
 dec $tick_switch_call_free(pcodename*, pcpath, phpType19) : bool?
+dec $tick_switch_unknown(pcodename*, pcpath, pcnode) : bool
+dec $tick_switch_unknown_nodes(pcodename*, pcoccurrence*) : bool
 dec $tick_switch_conditions(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) : pticksummary
 dec $tick_switch_bodies(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) : pticksummary
 dec $tick_switch_body(pticksummary, pcodeexpr*, pcpath, statement*, metadata) : pticksummary
@@ -229,9 +231,11 @@ def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = (false)
 def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = (false)
   -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
   -- if $tick_expression_zero(pcodeexpr*, pcpath, expression)
+  -- if ~$tick_switch_unknown(pcodename*, pcpath, expression)
 def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = $tick_switch_result(pcodename*, pcpath, expression)
   -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
   -- if ~$tick_expression_zero(pcodeexpr*, pcpath, expression)
+  -- if ~$tick_switch_unknown(pcodename*, pcpath, expression)
 def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = eps -- otherwise
 def $tick_switch_result(pcodename*, pcpath, NExprPrint expression metadata) = (false)
 def $tick_switch_result(pcodename*, pcpath, NExprThrow expression metadata) = (false)
@@ -260,6 +264,14 @@ def $tick_switch_call_free(pcodename*, pcpath, phpType19) = (true)
 def $tick_switch_call_free(pcodename*, pcpath, expression) = (true)
   -- if $code_name(pcodename*, pcpath) = eps
 def $tick_switch_call_free(pcodename*, pcpath, phpType19) = eps -- otherwise
+;; Compiler-special children can make their parent constant too. CODEEXPR true
+;; already certifies a constant; an unproved subject must not infer TMP merely
+;; from its outer binary/unary/array syntax while such a call is underneath it.
+def $tick_switch_unknown(pcodename*, pcpath, NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = true
+  -- if ~$ppfirstclass(phpType7*) /\ $tick_switch_builtin(pcodename*, pcpath)
+def $tick_switch_unknown(pcodename*, pcpath, pcnode) = $tick_switch_unknown_nodes(pcodename*, $pcchildren(pcnode, pcpath)) -- otherwise
+def $tick_switch_unknown_nodes(pcodename*, eps) = false
+def $tick_switch_unknown_nodes(pcodename*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_switch_unknown(pcodename*, pcpath, pcnode) \/ $tick_switch_unknown_nodes(pcodename*, pcoccurrence*))
 def $tick_switch_finish(T, true) = T[.LAST = false]
 def $tick_switch_finish(T, false) = T
 def $tick_switch_conditions(T, pcodeexpr*, pcpath, n, eps) = T
