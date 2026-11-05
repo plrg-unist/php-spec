@@ -1498,5 +1498,14 @@
     "expected_normal_stdout": "query:1:NoQueryEntry\\Target::cases|query:1:NoQueryEntry\\Target::cases|query:1:NoQueryEntry\\Target::cases|query:1:NoQueryEntry\\Target::cases|",
     "model_timeout_seconds": 150,
     "purpose": "Actual raw method INIT initializes its source cache before arguments/body independently of query execution; later method API captures/clones share after a throwing argument or a body path that never queried."
+  },
+  {
+    "id": "enum-is-callable-third-output-runtime-capture-cache-string-inherited-clone-output-throw-retirement",
+    "source": "<?php\nnamespace StringCapture133;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($v,$s,$n) { echo 'USER:', $n, '|'; return false; }\n    }\n    return false;\n}\nclass Drop {\n    public function __destruct() {\n        unset($GLOBALS['copy']);\n        echo $GLOBALS['name'] === null ? 'null|' : 'wrong|';\n        throw new \\Exception('output');\n    }\n}\nclass BaseOwner {\n    public static function query($install) {\n        global $name, $ok;\n        $ok=is_callable([Target::class,'cases'],publish($install),$name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\nclass FirstChild extends BaseOwner {}\nclass LaterChild extends BaseOwner {}\n$method=FirstChild::class . '::query';\n$first=$method(...); $copy=clone $first; unset($first,$method);\n$name=new Drop; $ok='UNCHANGED';\ntry { $copy(true); }\ncatch (\\Exception $e) {\n    $trace=$e->getTrace();\n    echo $trace[1]['function'], ':', $name, ':', $ok, '|';\n}\necho isset($copy) ? 'wrong|' : 'retired|';\n$method=LaterChild::class . '::query'; $later=$method(...); unset($method);\n$name='OLD'; $later(false); unset($later); echo 'done|';\n",
+    "source_sha256": "f3028eedb959a2e8c495a026329192ed70d9ad39b631c306d23c46ffd569f487",
+    "expected_model": "normal",
+    "expected_normal_stdout": "null|is_callable:StringCapture133\\Target::cases:UNCHANGED|retired|query:1:StringCapture133\\Target::cases|done|",
+    "model_timeout_seconds": 150,
+    "purpose": "Runtime inherited string FCC and clone share actual Base function cache; output destruction removes active capture source and throws, then a fresh Child string capture reuses the cached builtin after original captures retire."
   }
 ]

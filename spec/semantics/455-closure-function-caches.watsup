@@ -11,6 +11,23 @@ def $closure_cache_first(pclosurecache :: pclosurecache_tail*, porigin) = (pclos
   -- if pclosurecache.FUNCTION = porigin /\ pclosurecache.SOURCE = eps
 def $closure_cache_first(pclosurecache :: pclosurecache_tail*, porigin) = $closure_cache_first(pclosurecache_tail*, porigin)
   -- if pclosurecache.FUNCTION =/= porigin \/ pclosurecache.SOURCE =/= eps
+;; Saved raw targets identify code after receiver/selected-array retirement.
+dec $closure_cache_target_origin(pcalltarget) : porigin?
+def $closure_cache_target_origin(METHOD_TARGET n porigin) = (porigin)
+def $closure_cache_target_origin(STATIC_METHOD_TARGET porigin_class porigin) = (porigin)
+def $closure_cache_target_origin(SCOPED_TARGET porigin_class porigin porigin_called n_receiver? poperand) = (porigin)
+def $closure_cache_target_origin(SCOPE_METHOD_TARGET pcalltarget pcallableaccess) = $closure_cache_target_origin(pcalltarget)
+def $closure_cache_target_origin(pcalltarget) = eps -- otherwise
+dec $closure_cache_resolved_body(pobject) : bool
+def $closure_cache_resolved_body(pobject) = true -- if $object_body(pobject) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
+def $closure_cache_resolved_body(pobject) = true -- if $object_body(pobject) = STRINGMETHODCLOSURE pcalltarget pstringselection
+def $closure_cache_resolved_body(pobject) = false -- otherwise
+dec $function_cache_policy(pstate, porigin, nat) : pfncacheowner?
+dec $function_cache_source(pstate, porigin) : pmethoddesc?
+dec $closure_cache_capture_initialized(pstate, nat, porigin) : bool
+def $closure_cache_capture_initialized(S, n, porigin) = (~$closure_cache_resolved_body(S.OBJECTS[n]) \/ $function_cache_policy(S, porigin, n) = (CACHE_SHARED))
+  -- if $(n < |S.OBJECTS|)
+def $closure_cache_capture_initialized(S, n, porigin) = false -- otherwise
 dec $closure_cache_function(pobject) : porigin?
 def $closure_cache_function(pobject) = (porigin)
   -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
@@ -20,6 +37,10 @@ def $closure_cache_function(pobject) = (porigin)
   -- if $object_body(pobject) = METHODCLOSURE porigin porigin_site porigin_requested pmethodcapture?
 def $closure_cache_function(pobject) = (pfrommethod.FUNCTION)
   -- if $object_body(pobject) = FROMCALLABLECLOSURE pfrommethod
+def $closure_cache_function(pobject) = $closure_cache_target_origin(pcalltarget)
+  -- if $object_body(pobject) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
+def $closure_cache_function(pobject) = $closure_cache_target_origin(pcalltarget)
+  -- if $object_body(pobject) = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $closure_cache_function(pobject) = eps -- otherwise
 dec $closure_cache_prior(pobject*, porigin) : bool
 def $closure_cache_prior(eps, porigin) = false
@@ -150,6 +171,11 @@ def $closure_cache_object_scope(S, n) = (BIND_CLASS pclosurescope.LEXICAL)
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $closure_cache_object_scope(S, n) = (BIND_CLASS pclosurescope.LEXICAL)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $closure_cache_resolved_body(S.OBJECTS[n])
+  -- if ~$internal_closure_object(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $closure_cache_object_scope(S, n) = eps -- otherwise
 def $closure_cache_copy(S, n_source, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [pclosurecache]]
   -- if $(n_source < n) /\ $(n < |S.OBJECTS|)
@@ -212,6 +238,7 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if $closure_cache_query_source(S, pfunction.ORIGIN)
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.FUNCTION = pfunction.ORIGIN
+  -- if $closure_cache_capture_initialized(S, n, pfunction.ORIGIN)
   -- if pclosurecache.CACHE = (pfncacheowner)
   -- if pclosurecache.SCOPE = $closure_cache_object_scope(S, n)
   -- if pclosurecache.SCOPE =/= eps
@@ -225,6 +252,7 @@ def $closure_cache_shared_history(S, eps, porigin) = false
 def $closure_cache_shared_history(S, pclosurecache :: pclosurecache_tail*, porigin) = ($closure_cache_shared_birth(S, pclosurecache, porigin) \/ $closure_cache_shared_history(S, pclosurecache_tail*, porigin))
 def $closure_cache_shared_birth(S, pclosurecache, porigin) = true
   -- if pclosurecache.FUNCTION = porigin /\ pclosurecache.SOURCE = eps /\ pclosurecache.CACHE = (CACHE_SHARED)
+  -- if $closure_cache_capture_initialized(S, pclosurecache.OBJECT, porigin)
   -- if pclosurecache.SCOPE = (pbindscope)
   -- if $closure_cache_capture_scope(S, pclosurecache.OBJECT, porigin) = (pbindscope) \/ $closure_cache_method_api_scope(S, pclosurecache.OBJECT, porigin) = (pbindscope)
 def $closure_cache_shared_birth(S, pclosurecache, porigin) = false -- otherwise
@@ -238,6 +266,7 @@ def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = tr
   -- if $closure_cache_first(S.CLOSURECACHES, pfunction.ORIGIN) = (pclosurecache)
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $closure_cache_capture_initialized(S, pclosurecache.OBJECT, pfunction.ORIGIN)
   -- if $closure_cache_literal_scope(S, pfunction.ORIGIN, pbindscope) \/ $closure_cache_capture_scope(S, pclosurecache.OBJECT, pfunction.ORIGIN) = (pbindscope)
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_PRIVATE n) = true
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
@@ -377,6 +406,31 @@ def $closure_cache_capture_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
   -- if $closure_cache_declared_method(S, porigin) = (pmethoddesc)
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
   -- if $closure_cache_runtime_method_site(S, porigin_site, pmethoddesc)
+dec $closure_cache_array_descriptor(pstate, pcalltarget, parrayselection) : pmethoddesc?
+def $closure_cache_array_descriptor(S, SCOPE_METHOD_TARGET pcalltarget pcallableaccess, parrayselection) = $scope_method(S, parrayselection.REQUESTED, parrayselection.NAME, pcallableaccess.OBJECT, pcallableaccess.SCOPE)
+def $closure_cache_array_descriptor(S, pcalltarget, parrayselection) = $effective_method(S, parrayselection.REQUESTED, parrayselection.NAME, |S.CLASSES|) -- otherwise
+dec $closure_cache_runtime_capture_site(pstate, porigin) : bool
+def $closure_cache_runtime_capture_site(S, PORIGIN n_unit pcpath) = true
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if ~$constant_class_origin_allowed(pcunit, pcpath)
+def $closure_cache_runtime_capture_site(S, porigin) = false -- otherwise
+
+def $closure_cache_capture_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
+  -- if $closure_cache_target_origin(pcalltarget) = (porigin)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if $closure_cache_array_descriptor(S, pcalltarget, parrayselection) = (pmethoddesc)
+  -- if $closure_cache_runtime_capture_site(S, parrayselection.SITE)
+  -- if $array_site_valid(S, parrayselection, true)
+def $closure_cache_capture_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STRINGMETHODCLOSURE pcalltarget pstringselection
+  -- if $closure_cache_target_origin(pcalltarget) = (porigin)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if $string_target_descriptor(S, pstringselection) = (pmethoddesc)
+  -- if $closure_cache_runtime_capture_site(S, pstringselection.SITE)
+  -- if $string_site_valid(S, pstringselection, true)
 def $closure_cache_capture_scope(S, n, porigin) = eps -- otherwise
 
 def $closure_cache_shared_capture(S, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [{OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (pbindscope), CACHE (CACHE_SHARED)}]]
@@ -385,6 +439,7 @@ def $closure_cache_shared_capture(S, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ 
   -- if $closure_cache_at(S.CLOSURECACHES, n) = eps
   -- if $closure_cache_capture_scope(S, n, porigin) = (pbindscope)
   -- if $closure_cache_object_scope(S, n) = (pbindscope)
+  -- if $closure_cache_capture_initialized(S, n, porigin)
 def $closure_cache_shared_capture(S, n) = S -- otherwise
 
 def $closure_cache_capture_copy(S, n_source, n) = $closure_cache_copy(S, n_source, n)
@@ -398,6 +453,7 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope)
   -- if $closure_cache_capture_scope(S, pclosurecache.OBJECT, pclosurecache.FUNCTION) = (pbindscope)
+  -- if $closure_cache_capture_initialized(S, pclosurecache.OBJECT, pclosurecache.FUNCTION)
 
 ;; Raw method op_arrays start cold at registration. Object-count boundaries keep
 ;; capture policy stable after later INIT or uncertain events, without owners.
@@ -409,7 +465,6 @@ dec $function_cache_set(pfunctioncache*, pfunctioncache) : pfunctioncache*
 def $function_cache_set(eps, pfunctioncache) = [pfunctioncache]
 def $function_cache_set(pfunctioncache_old :: pfunctioncache_tail*, pfunctioncache) = pfunctioncache :: pfunctioncache_tail* -- if pfunctioncache_old.FUNCTION = pfunctioncache.FUNCTION
 def $function_cache_set(pfunctioncache_old :: pfunctioncache_tail*, pfunctioncache) = pfunctioncache_old :: $function_cache_set(pfunctioncache_tail*, pfunctioncache) -- if pfunctioncache_old.FUNCTION =/= pfunctioncache.FUNCTION
-dec $function_cache_source(pstate, porigin) : pmethoddesc?
 def $function_cache_source(S, porigin) = (pmethoddesc)
   -- if $closure_cache_declared_method(S, porigin) = (pmethoddesc)
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
@@ -497,10 +552,7 @@ def $function_cache_fcc(S, pcalltarget, porigin) = $function_cache_observe(S, pc
 ;; Existing Closure bodies are copied functions; magic trampoline bodies forward
 ;; to a raw handler. Unknown wrappers taint a source instead of inventing cold.
 dec $function_cache_copy_body(pobject) : bool
-def $function_cache_copy_body(pobject) = true -- if $closure_cache_function(pobject) =/= eps
-def $function_cache_copy_body(pobject) = true -- if $object_body(pobject) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
-def $function_cache_copy_body(pobject) = true -- if $object_body(pobject) = STRINGMETHODCLOSURE pcalltarget pstringselection
-def $function_cache_copy_body(pobject) = false -- otherwise
+def $function_cache_copy_body(pobject) = ($closure_cache_function(pobject) =/= eps \/ $closure_cache_resolved_body(pobject))
 dec $function_cache_closure_kind(pstate, nat) : pfunctioncacheevent
 def $function_cache_closure_kind(S, n) = SOURCE_CACHE_COPY
   -- if $(n < |S.OBJECTS|)
@@ -542,7 +594,6 @@ def $function_cache_enter(S, pcalltarget) = $function_cache_observe(S, pcalltarg
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
 def $function_cache_enter(S, pcalltarget) = S -- otherwise
 
-dec $function_cache_policy(pstate, porigin, nat) : pfncacheowner?
 dec $function_cache_after(nat?, nat) : bool
 def $function_cache_after(eps, n) = true
 def $function_cache_after((n_before), n) = $(n_before > n)
