@@ -81,33 +81,11 @@
     "id": "byref-producer-with-outside-alias",
     "source": "<?php\nfunction &values94() { global $v; echo \"Y;\"; yield 0 => $v; echo \"N;\"; }\nfunction sink94(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\n$v=11; $outside=&$v; echo \"B;\"; $g=values94(); sink94(...$g); echo \"V:\",$v,\";O:\",$outside,\";\"; unset($g);\n",
     "source_sha256": "a56c9a70cbdc39daee69e2a16b9de12ca633ef1fc3fd84bb8398d8a0d97d2bc1",
-    "purpose": "Native-first boundary control; expected Unsupported is zero semantic agreement.",
-    "expected_model": "unsupported",
+    "purpose": "A95 promotes the ordinary scalar BYREF Generator cell while outside aliases remain separate from the fresh delivered sink cell; original A94 Unsupported evidence keeps zero agreement credit.",
+    "expected_model": "normal",
     "native_stdout": "B;Y;N;S:11;R:33;V:11;O:11;",
     "native_stderr": "Warning: Cannot pass by-reference argument 1 of sink94() by unpacking a Traversable, passing by-value instead in {source} on line 4\n",
-    "native_exit": 0,
-    "unsupported_reason": "Generator unpack by-reference target",
-    "unsupported_stdout": "B;Y;",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "66",
-            "59"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "89",
-            "59"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   },
   {
     "id": "closure-sink",
