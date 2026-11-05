@@ -164,7 +164,7 @@ review.CASES = {
             'S.TICKENTRIES = eps', *VALID, *DONE,
             'S_done.COMPLETION = REQUESTFATAL $ptascii("Error") $ptascii("Couldn\'t execute method ThrowCapture19Child::__destruct") 0',
             'S_done.EXITSTATUS = 0',
-            'S_done.EVENTS = S.EVENTS ++ [STDERR ptbytes_late]',
+            'S_done.EVENTS = [OUTPUT $ptascii("B;F;"), OUTPUT $ptascii("A;"), STDERR ptbytes_fatal, STDERR ptbytes_late]',
             'n_child <- S_done.DESTRUCTION.CALLED',
         ],
     },
