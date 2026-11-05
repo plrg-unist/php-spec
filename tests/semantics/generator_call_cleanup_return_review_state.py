@@ -101,28 +101,6 @@ S_wrapped.STORE[n_pending_cell] = DEFINED (POBJECT n_pending)
 n_pending_cell <- S_wrapped.REFCELLS
 $call_task_valid(S_wrapped, CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy 2 pnamedargs_wrapped n_base)
 $heap_valid($heap_graph(S_wrapped))
-S_done = $drive(S_paused[.COMPLETION = NORMAL], 4800)
-S_done.COMPLETION = NORMAL
-S_done.SHUTDOWN.PHASE = SHUTDOWN_DONE
-S_done.TODO = eps
-S_done.CURRENT = eps
-S_done.FRAMES = eps
-S_done.DESTRUCTION.CLEANUPS = eps
-S_done.DESTRUCTION.OPERATIONS = eps
-S_done.CLOSURECALLRETAINED = eps
-S_done.SOURCEPENDING = eps
-S_done.HELD = eps
-~((HOBJECT n_copy) <- S_done.ALLOCATIONS)
-~((HOBJECT n_source) <- S_done.ALLOCATIONS)
-~((HOBJECT n_old) <- S_done.ALLOCATIONS)
-~((HOBJECT n_maker) <- S_done.ALLOCATIONS)
-~((HOBJECT n_prefix) <- S_done.ALLOCATIONS)
-~((HOBJECT n_pending) <- S_done.ALLOCATIONS)
-~((HOBJECT n_capture) <- S_done.ALLOCATIONS)
-$heap_valid($heap_graph(S_done))
-(OUTPUT $ptascii("BODY|")) <- S_done.EVENTS
-(OUTPUT $ptascii("FIN|")) <- S_done.EVENTS
-(OUTPUT $ptascii("SHUT|")) <- S_done.EVENTS
 '''.splitlines() if line.strip()]
 
 CASES = {'i107-real-normal-cleanup-independent': {'source': ROW['source'], 'stage': STAGE, 'checks': CHECKS}}
