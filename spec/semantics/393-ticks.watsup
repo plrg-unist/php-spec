@@ -32,6 +32,7 @@ dec $tick_if_tail(pticksummary, pcodeexpr*, pcpath, nat, phpType54*, phpType55) 
 dec $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_switch_result(pcodename*, pcpath, expression) : bool?
 dec $tick_switch_builtin(pcodename*, pcpath) : bool
+dec $tick_switch_fallback(ptbytes?) : bool
 dec $tick_switch_call_free(pcodename*, pcpath, phpType19) : bool?
 dec $tick_switch_unknown(pcodename*, pcpath, pcnode) : bool
 dec $tick_switch_unknown_nodes(pcodename*, pcoccurrence*) : bool
@@ -255,10 +256,11 @@ def $tick_switch_builtin(pcodename*, pcpath) = true
   -- if $code_name(pcodename*, pcpath) = ((ptbytes, ptbytes_fallback?))
   -- if $pfunction_builtin(ptbytes)
 def $tick_switch_builtin(pcodename*, pcpath) = true
-  -- if $code_name(pcodename*, pcpath) = ((n_name*, n_fallback*?))
-  -- if n_fallback*? = (n_fallback*)
-  -- if $pfunction_builtin(n_fallback*)
+  -- if $code_name(pcodename*, pcpath) = ((ptbytes, ptbytes_fallback?))
+  -- if $tick_switch_fallback(ptbytes_fallback?)
 def $tick_switch_builtin(pcodename*, pcpath) = false -- otherwise
+def $tick_switch_fallback(eps) = false
+def $tick_switch_fallback((ptbytes)) = $pfunction_builtin(ptbytes)
 def $tick_switch_call_free(pcodename*, pcpath, phpType19) = (true)
   -- if $code_name(pcodename*, pcpath) = ((ptbytes, ptbytes_fallback?))
   -- if ~$tick_switch_builtin(pcodename*, pcpath)
