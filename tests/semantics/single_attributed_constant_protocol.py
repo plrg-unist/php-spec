@@ -35,7 +35,7 @@ def prepare(out):
     frontend=Worker([str(types.PHP),'-n',*types.FLAGS,'-d','extension='+str(ROOT/'.tools/php-file.so'),str(ROOT/'frontend/worker.php')],out/'frontend')
     adapter=Worker([str(ROOT/'_build/default/adapter/main.exe'),str(ROOT)],out/'adapter')
     checks=[];asts={}
-    selected=('quiet','quiet-duplicate','unknown-argument','closure-argument','initializer-closure','initializer-closure-array',
+    selected=('quiet','quiet-duplicate','unknown-argument','closure-argument','array-named-arguments','initializer-closure','initializer-closure-array',
         'initializer-body-first','initializer-invalid-first','argument-before-unpack','argument-duplicate',
         'later-group-before-target','target','repeat-deprecated','cursor-initializer','cursor-argument',
         'cursor-attribute-closure','deprecated-pending','deprecated-alias-pending','namespace-deprecated')
@@ -62,7 +62,6 @@ def prepare(out):
         checks+=['P_zero = $ppstart(0,U_quiet,'+types.byte_expr(str(SOURCE/cases['quiet']['source']))+')',
             'S_initial = $php_run(U_quiet,0,'+json.dumps(b64(bytes(SOURCE/cases['quiet']['source'])))+')',
             'S_initial.COMPLETION = BUDGET','$call_descriptors_valid(S_initial)',
-            '$constant_attribute_unit_names_valid(P_zero,S_initial.CODE[0])',
             'S_initial.CODE[0].NAMES[1] = CODENAME '+metadata+' $ptascii("A") eps',
             '$code_expression(S_initial.CODE[0].EXPRESSIONS,'+metadata+') = eps',
             '$global_constant_declaration_source(S_initial.SOURCES,PORIGIN 0 '+decl+')',
@@ -80,7 +79,6 @@ def prepare(out):
         for tag,change in variants.items():
             state='S_bad_'+tag
             checks+=[state+' = S_initial[.CODE[0]'+change+']',
-                '~$constant_attribute_unit_names_valid(P_zero,'+state+'.CODE[0])',
                 '~$call_descriptors_valid('+state+')']
         checks+=['S_done = $drive_steps(S_initial[.COMPLETION = NORMAL],10000)','S_done.COMPLETION = NORMAL',
             '|S_done.USERCONSTANTS| = 1','S_done.USERCONSTANTS[0].ORIGIN = PORIGIN 0 '+decl,
@@ -94,6 +92,14 @@ def prepare(out):
             'S_duplicate.USERCONSTANTS[0].VALUE = PINT 1',
             '$constant_attribute_entry_valid(S_duplicate,PORIGIN 0 '+duplicate_site+')',
             '$call_descriptors_valid(S_duplicate)']
+        array_path=next(path for node,path in nodes(asts['array-named-arguments']['program']) if node['node']=='Expr_Array')
+        array_site=bind_path('pcpath_metadata_array',array_path)
+        checks+=['$ppconstant_metadata_argument(P_array_named_arguments.FOLD.SOURCE,'+array_site+')',
+            '$constant_class_origin_allowed(P_array_named_arguments.FOLD.SOURCE,'+array_site+')',
+            '$global_constant_initializer_root(P_array_named_arguments.FOLD.SOURCE,'+array_site+') = eps',
+            '~$constant_class_origin_allowed(P_array_named_arguments.FOLD.SOURCE,'+metadata+')',
+            'S_metadata_array = $php_run(U_array_named_arguments,10000,'+json.dumps(b64(bytes(SOURCE/cases['array-named-arguments']['source'])))+')',
+            'S_metadata_array.COMPLETION = NORMAL','$call_descriptors_valid(S_metadata_array)']
         for name in ('initializer-closure','closure-argument'):
             node,path=next((node,path) for node,path in nodes(asts[name]['program']) if node['node']=='Expr_Closure')
             tag=name.replace('-','_');site=bind_path('pcpath_'+tag,path);state='P_'+tag
@@ -114,6 +120,7 @@ def prepare(out):
                     '$ppconstant_metadata_argument('+state+'.FOLD.SOURCE,'+site+')',
                     '~$ppsingle_attributed_initializer('+state+'.FOLD.SOURCE,'+site+')',
                     '~$ppconstant_metadata_argument('+state+'.FOLD.SOURCE,'+site+' ++ [PCFIELD 6,PCINDEX 0])',
+                    '~$constant_class_origin_allowed('+state+'.FOLD.SOURCE,'+site+' ++ [PCFIELD 6,PCINDEX 0])',
                     '$global_constant_initializer_root('+state+'.FOLD.SOURCE,'+site+') = eps']
     finally:
         try:adapter.close()

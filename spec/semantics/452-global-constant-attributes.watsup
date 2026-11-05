@@ -18,8 +18,6 @@ dec $constant_attribute_error(pbuiltinattribute*, pbuiltinattribute*, bool) : pt
 dec $ppconstant_attribute_finish(ppstate, pcpath, phpType15*) : ppstate
 dec $ppconstant_attribute_checked(ppstate, pbuiltinattributes) : ppstate
 dec $constant_attribute_present(pcunit*, porigin) : bool
-dec $constant_attribute_name_path(pcunit, pcpath) : bool
-dec $constant_attribute_name_entries_valid(pcunit, pcode, pcodename*, pcodename*) : bool
 
 def $ppsingle_attributed_declaration(pcunit, PORIGIN n pcpath) = true
   -- if $(|pcpath| >= 2)
@@ -179,30 +177,6 @@ def $constant_attribute_present(pcunit*, PORIGIN n pcpath) = true
 def $constant_attribute_present(pcunit*, porigin) = false -- otherwise
 def $constant_attribute_entry_valid(S, porigin) = ~$constant_attribute_present(S.SOURCES, porigin) -- otherwise
 
-;; Metadata name entries have no CODEEXPR. Authenticate exactly these entries
-;; against canonical compilation without changing ordinary call-node policy.
-def $constant_attribute_name_path(pcunit, pcpath) = true
-  -- if $(|pcpath| >= 5)
-  -- if pcpath[$nabs($(|pcpath| - 1))] = PCFIELD 0
-  -- if pcpath[$nabs($(|pcpath| - 2))] = PCINDEX n_attribute
-  -- if pcpath[$nabs($(|pcpath| - 3))] = PCFIELD 0
-  -- if pcpath[$nabs($(|pcpath| - 4))] = PCINDEX n_group
-  -- if pcpath[$nabs($(|pcpath| - 5))] = PCFIELD 0
-  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 5))]
-  -- if $ppsingle_attributed_declaration(pcunit, PORIGIN pcunit.ID (pcpath_statement ++ [PCFIELD 1, PCINDEX 0]))
-  -- if $origin_node([pcunit], PORIGIN pcunit.ID pcpath[0:$nabs($(|pcpath| - 1))]) = (NAttribute name phpType6 metadata)
-def $constant_attribute_name_path(pcunit, pcpath) = false -- otherwise
-def $constant_attribute_unit_names_valid(P, pcode) = $constant_attribute_name_entries_valid(P.FOLD.SOURCE, pcode, $compiled_names(P.NAMES), pcode.NAMES ++ $compiled_names(P.NAMES))
-def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, eps) = true
-def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, (CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*) = $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, pcodename*)
-  -- if ~$constant_attribute_name_path(pcunit, pcpath)
-def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, (CODENAME pcpath preqbytes preqbytes_fallback?) :: pcodename*) = $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, pcodename*)
-  -- if $constant_attribute_name_path(pcunit, pcpath)
-  -- if pcode.UNIT = pcunit.ID
-  -- if $call_name_count(pcode.NAMES, pcpath) = 1
-  -- if $call_name_count(pcodename_compiled*, pcpath) = 1
-  -- if $code_name(pcode.NAMES, pcpath) = $code_name(pcodename_compiled*, pcpath)
-def $constant_attribute_name_entries_valid(pcunit, pcode, pcodename_compiled*, pcodename*) = false -- otherwise
 rule PhpStep/attributed-constant-statement: S ~> S[.TODO = $constant_statement_tasks([NConst phpType11 expression metadata_first], S.ORIGIN, 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtConst (SEQUENCE phpType15*) (SEQUENCE ([NConst phpType11 expression metadata_first])) metadata)) :: ptask_tail*
   -- if phpType15* =/= eps

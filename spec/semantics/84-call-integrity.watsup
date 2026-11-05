@@ -123,12 +123,10 @@ dec $exit_unit_code_valid(ppstate, pcode) : bool
 dec $switch_unit_code_valid(ppstate, pcode) : bool
 dec $goto_unit_code_valid(ppstate, pcode) : bool
 dec $call_unit_names_valid(pstate, ppstate) : bool
-dec $constant_attribute_unit_names_valid(ppstate, pcode) : bool
 def $call_unit_names_valid(S, P) = true
   -- if $code_at(S.CODE, P.FOLD.SOURCE.ID) = (pcode)
   -- if pcode.STRICT = P.ENV.STRICT
   -- if $call_name_entries_valid(S, P, pcode, pcode.NAMES ++ $compiled_names(P.NAMES))
-  -- if $constant_attribute_unit_names_valid(P, pcode)
   -- if $call_argument_paths(pcode.EXPRESSIONS) = $call_argument_paths($compiled_operands(P, P.EXPRESSIONS))
   -- if $constant_unit_code_valid(S, P, pcode)
   -- if $typed_unit_code_valid(P, pcode)
