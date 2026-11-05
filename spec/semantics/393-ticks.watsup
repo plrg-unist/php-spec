@@ -40,14 +40,16 @@ dec $tick_constant_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_constant_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_group_site(pstate, porigin, int) : bool
 dec $tick_statement_prefix(pstate, porigin, ptask) : pstate
-dec $tick_case_tasks(pstate, porigin, nat, statement*) : ptask*
-dec $tick_is_case(statement) : bool
+dec $tick_member_tasks(pstate, porigin, nat, nat, statement*) : ptask*
+dec $tick_main_member(statement) : bool
 dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
 dec $tick_block_hook(pcnode) : bool
 dec $tick_hook_bodies(pcoccurrence*) : bool
+dec $tick_property_line(phpType18, phpType56) : int?
+dec $tick_type_line(pcnode) : int
 dec $tick_early(statement, bool) : bool
 dec $tick_unticked(statement) : bool
 dec $tick_emit(pticksummary, pcpath, int) : pticksummary
@@ -132,7 +134,6 @@ def $tick_unticked(NStmtBlock phpType23 metadata) = true
 def $tick_unticked(NStmtNop metadata) = true
 def $tick_unticked(NStmtLabel phpType11 metadata) = true
 def $tick_unticked(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) = true
-def $tick_unticked(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) = true
 def $tick_unticked(NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata) = true
 def $tick_unticked(NStmtTraitUse phpType42 phpType62 metadata) = true
 def $tick_unticked(statement) = false -- otherwise
@@ -531,9 +532,18 @@ def $tick_finally(T, pcodeexpr*, pcpath, phpType67) = T[.DEPENDENCY = ("tick com
 ;; Class constants compile their values without a main opcode or trailing Tick.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassConst (SEQUENCE eps) phpType24 phpType18 phpType45 metadata, b) = $tick_constant_nodes(T, pcodeexpr*, $pcfield_phpType45(phpType45, pcpath ++ [PCFIELD 3]))
 ;; Defaults precede source-order block hooks, each with a separate op array.
-;; Neither default nor hook compilation breaks the enclosing main adjacency.
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata, b) = $tick_nodes($tick_constant_nodes(T, pcodeexpr*, $pcfield_phpType56(phpType56, pcpath ++ [PCFIELD 3])), pcodeexpr*, $pcfield_phpType37(phpType37, pcpath ++ [PCFIELD 4]))
+;; They add no main opcode; the enclosing PROP_GROUP can still emit its Tick.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata, b) = $tick_nodes($tick_constant_nodes(T[.LINE = z_group], pcodeexpr*, $pcfield_phpType56(phpType56, pcpath ++ [PCFIELD 3])), pcodeexpr*, $pcfield_phpType37(phpType37, pcpath ++ [PCFIELD 4]))
+  -- if $tick_property_line(phpType18, phpType56) = (z_group)
   -- if $tick_hook_bodies($pcfield_phpType37(phpType37, pcpath ++ [PCFIELD 4]))
+;; Zend's group AST inherits the type line, or the first property name's line.
+def $tick_property_line(ABSENT, SEQUENCE eps) = eps
+def $tick_property_line(ABSENT, SEQUENCE ((NPropertyItem phpType40 phpType5 metadata) :: phpType57*)) = ($source_line($pcmetadata(phpType40)))
+def $tick_property_line(phpType18, phpType56) = ($tick_type_line(phpType18)) -- if phpType18 =/= ABSENT
+def $tick_type_line(NNullableType phpType35 metadata) = $source_line($pcmetadata(phpType35))
+def $tick_type_line(NIntersectionType (SEQUENCE (phpType35 :: phpType35*)) metadata) = $source_line($pcmetadata(phpType35))
+def $tick_type_line(NUnionType (SEQUENCE (phpType69 :: phpType69*)) metadata) = $tick_type_line(phpType69)
+def $tick_type_line(pcnode) = $source_line($pcmetadata(pcnode)) -- otherwise
 def $tick_block_hook(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata) = $tick_inputs_clean(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata, 5)
 def $tick_block_hook(pcnode) = false -- otherwise
 def $tick_hook_bodies(eps) = true
@@ -566,7 +576,7 @@ def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, 
 def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, b_top) = T[.DEPENDENCY = ("tick class declaration compiler facts")]
   -- if $tick_class_at(T.CLASSES, pcpath) = (pclassdesc)
   -- if pclassdesc.KIND =/= text
-def $tick_class_finish(T, T_body, pclassdesc, metadata, true) = T_body[.LAST = (T.LAST /\ pclassdesc.EARLY)][.LINE = $source_end_line(metadata)]
+def $tick_class_finish(T, T_body, pclassdesc, metadata, true) = T_body[.LAST = (T_body.LAST /\ pclassdesc.EARLY)][.LINE = $source_end_line(metadata)]
 def $tick_class_finish(T, T_body, pclassdesc, metadata, false) = T_body[.LAST = false][.LINE = pclassdesc.LINE]
 ;; Preserve the old no-fact helper and quiet literal-header class route.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = T.LAST][.LINE = $source_end_line(metadata)]
@@ -635,17 +645,21 @@ def $group_tick_tasks(S, porigin?) = eps -- otherwise
 def $tick_enter(S, porigin, STMT statement, ptask_tail*) = $tick_statement_prefix(S[.TODO = [STMT statement, TICK porigin ptickmarker, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)], porigin, STMT statement)
   -- if $tick_marker(S, porigin) = (ptickmarker)
 def $tick_enter(S, porigin, ptask, ptask_tail*) = $tick_statement_prefix($enter_constant_task(S, porigin, ptask, ptask_tail*), porigin, ptask) -- otherwise
-;; Reuse the existing source wrapper before the raw Enum activation task. This
+;; Reuse the existing source wrapper before the raw classlike activation task. This
 ;; runs only from AT entry, so the pending STMT cannot recreate its own prefix.
-def $tick_statement_prefix(S, porigin, STMT (NStmtEnum phpType14 phpType3 phpType50 phpType42 (SEQUENCE statement*) metadata)) = S[.TODO = $tick_case_tasks(S, porigin, 0, statement*) ++ S.TODO]
+def $tick_statement_prefix(S, porigin, STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata)) = S[.TODO = $tick_member_tasks(S, porigin, 5, 0, statement*) ++ S.TODO]
+def $tick_statement_prefix(S, porigin, STMT (NStmtInterface phpType14 phpType3 phpType42 (SEQUENCE statement*) metadata)) = S[.TODO = $tick_member_tasks(S, porigin, 3, 0, statement*) ++ S.TODO]
+def $tick_statement_prefix(S, porigin, STMT (NStmtTrait phpType14 phpType3 (SEQUENCE statement*) metadata)) = S[.TODO = $tick_member_tasks(S, porigin, 2, 0, statement*) ++ S.TODO]
+def $tick_statement_prefix(S, porigin, STMT (NStmtEnum phpType14 phpType3 phpType50 phpType42 (SEQUENCE statement*) metadata)) = S[.TODO = $tick_member_tasks(S, porigin, 4, 0, statement*) ++ S.TODO]
 def $tick_statement_prefix(S, porigin, ptask) = S -- otherwise
-def $tick_is_case(NStmtEnumCase phpType14 phpType11 phpType5 metadata) = true
-def $tick_is_case(statement) = false -- otherwise
-def $tick_case_tasks(S, porigin, n, eps) = eps
-def $tick_case_tasks(S, porigin, n, statement_head :: statement*) = $group_tick_tasks(S, $origin_child((porigin), [PCFIELD 4, PCINDEX n])) ++ $tick_case_tasks(S, porigin, $(n + 1), statement*)
-  -- if $tick_is_case(statement_head)
-def $tick_case_tasks(S, porigin, n, statement_head :: statement*) = $tick_case_tasks(S, porigin, $(n + 1), statement*)
-  -- if ~$tick_is_case(statement_head)
+def $tick_main_member(NStmtEnumCase phpType14 phpType11 phpType5 metadata) = true
+def $tick_main_member(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata) = true
+def $tick_main_member(statement) = false -- otherwise
+def $tick_member_tasks(S, porigin, n_body, n, eps) = eps
+def $tick_member_tasks(S, porigin, n_body, n, statement_head :: statement*) = $group_tick_tasks(S, $origin_child((porigin), [PCFIELD n_body, PCINDEX n])) ++ $tick_member_tasks(S, porigin, n_body, $(n + 1), statement*)
+  -- if $tick_main_member(statement_head)
+def $tick_member_tasks(S, porigin, n_body, n, statement_head :: statement*) = $tick_member_tasks(S, porigin, n_body, $(n + 1), statement*)
+  -- if ~$tick_main_member(statement_head)
 
 dec $tick_kind(pintrinsic) : bool
 dec $tick_registration_valid(pstate, pconfigcall) : bool
