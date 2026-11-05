@@ -224,6 +224,7 @@ def $clone_scope(S, n_source, n_new) = S
   -- if ~$internal_closure_object(S, n_source)
 
 dec $clone_object(pstate, nat) : pstate
+dec $closure_cache_copy(pstate, nat, nat) : pstate
 def $clone_object(S, n_source) = $stdclass_clone(S, n_source)
   -- if ~$instance_storage_freeing(S, n_source)
   -- if S.OBJECTS[n_source] = STDINSTANCE
@@ -235,7 +236,7 @@ def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE porigin
   -- if ~$instance_storage_freeing(S, n_source)
   -- if $object_body(S.OBJECTS[n_source]) = NAMEDCLOSURE porigin
   -- if n = |S.OBJECTS|
-def $clone_object(S, n_source) = $clone_statics($clone_captures($clone_scope(S_new, n_source, n), n, pitem*), n, pstaticcell*)
+def $clone_object(S, n_source) = $closure_cache_copy($clone_statics($clone_captures($clone_scope(S_new, n_source, n), n, pitem*), n, pstaticcell*), n_source, n)
   -- if ~$instance_storage_freeing(S, n_source)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if n = |S.OBJECTS|

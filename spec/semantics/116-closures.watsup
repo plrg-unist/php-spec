@@ -81,15 +81,16 @@ dec $parameter_callable_real_unscoped(pstate, nat) : bool
 dec $closure_scope_receiver_free(pstate, porigin, pclosurescope) : bool
 dec $closure_creator_valid(pstate, porigin, pclosurescope, pclosurecreation, pclosurecreator) : bool
 dec $closure_scope_append(pstate, pfunction, nat) : pstate
+dec $closure_cache_birth(pstate, pstate, pfunction) : pstate
 def $closure_scope_append(S, pfunction, n) = S[.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL porigin_lexical, CALLED porigin_called, RECEIVER $closure_bound_receiver(S, pfunction), CREATION $closure_creation_stamp(S, pfunction)}]]
   -- if S.CURRENT = (pcallcontext)
   -- if $internal_closure_current(S) = eps
   -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
   -- if pcallcontext.CALLED_CLASS = (porigin_called)
 def $closure_scope_append(S, pfunction, n) = S -- otherwise
-def $closure_create(S, pfunction) = $constant_closure_create(S, pfunction)
+def $closure_create(S, pfunction) = $closure_cache_birth(S, $constant_closure_create(S, pfunction), pfunction)
   -- if $constant_callable_active(S, pfunction.ORIGIN)
-def $closure_create(S, pfunction) = $closure_scope_append(S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE pfunction.ORIGIN $closure_items_empty($closure_lexicals(pfunction.CODE.EXPRESSIONS)) eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN PNULL][.TODO = (CLOSURE_CAPTURE n 0) :: S.TODO], pfunction, n)
+def $closure_create(S, pfunction) = $closure_cache_birth(S, $closure_scope_append(S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE pfunction.ORIGIN $closure_items_empty($closure_lexicals(pfunction.CODE.EXPRESSIONS)) eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN PNULL][.TODO = (CLOSURE_CAPTURE n 0) :: S.TODO], pfunction, n), pfunction)
   -- if n = |S.OBJECTS|
   -- if ~$constant_callable_active(S, pfunction.ORIGIN)
 rule PhpStep/closure-create: S ~> $closure_create(S[.TODO = ptask_tail*], pfunction)

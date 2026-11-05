@@ -1273,5 +1273,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "null|is_callable:FallbackDrop\\Target::cases:UNCHANGED|",
     "purpose": "A late local function cannot replace the selected builtin during output destruction: the real API trace retains is_callable, name commits before throw and result assignment is skipped."
+  },
+  {
+    "id": "enum-is-callable-third-output-closure-cache-shared-factory-clone",
+    "source": "<?php\nnamespace SharedCache;\nenum Target { case A; }\nfunction publish() { function is_callable($v, $s, $out) { echo 'USER:', $out, '|'; return false; } return false; }\nfunction factory() { return function($change) { $ok = is_callable([Target::class, 'cases'], $change ? publish() : false, $name); echo 'query:', (int)$ok, ':', $name, '|'; }; }\n$original = factory(); $clone = clone $original;\n$original(true); unset($original);\n$fresh = factory(); $clone(false); $fresh(false);\n$name = 'FRESH'; $ok = is_callable([Target::class, 'cases'], false, $name); echo 'fresh:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "62d899ddc2f670c215c46e409e4f02a4a987715f84ed8d1a911d5a47fc4b8421",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:SharedCache\\Target::cases|query:1:SharedCache\\Target::cases|query:1:SharedCache\\Target::cases|USER:FRESH|fresh:0:FRESH|",
+    "purpose": "A known unscoped named-function factory and clone share the warmed template cache after the original Closure retires; a fresh root site still chooses the local by-value function."
+  },
+  {
+    "id": "enum-is-callable-third-output-closure-cache-root-warm-affected",
+    "source": "<?php\nnamespace CacheRepeat;\nenum Target { case A; }\n$published = false;\nfunction publishOnce() {\n    global $published;\n    if (!$published) {\n        $published = true;\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nfunction query() {\n    $name = 'OLD';\n    $ok = is_callable([Target::class, 'cases'], publishOnce(), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n}\nquery(); query();\n$fresh = 'FRESH';\n$ok = is_callable([Target::class, 'cases'], false, $fresh);\necho 'fresh:', (int)$ok, ':', $fresh, '|';\n",
+    "source_sha256": "fe4dc0e08e85866c652830fa217b699da0fd1e89fe3f218eca0ee3ba1b5189de",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:CacheRepeat\\Target::cases|query:1:CacheRepeat\\Target::cases|USER:FRESH|fresh:0:FRESH|",
+    "purpose": "The explicit CACHE_SHARED schema preserves the accepted ordinary named-function warm-site authority and fresh local-site dispatch."
   }
 ]

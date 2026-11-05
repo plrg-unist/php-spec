@@ -627,14 +627,14 @@ dec $enum_selected_prepare(pstate, pintrinsic, ptbytes, ptbytes, porigin, int) :
 def $enum_selected_prepare(S, pintrinsic, ptbytes_original, ptbytes_lookup, porigin_site, z) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin_site, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n_nonce = S.SELECTSEQ
   -- if n_depth = |S.FRAMES|
-  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z}
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, CACHE eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z}
   -- if $selected_entry_source_valid(S, pselectedcall)
 def $enum_pipe_selected(S, pintrinsic, ptbytes_original, ptbytes_lookup, pvalue_left, porigin_site, z_send, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_INVOKE {SITE porigin_site, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue_left)]), NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin_site)
   -- if $pipe_lines_valid(S, porigin_site, z_send, z_call)
   -- if n_nonce = S.SELECTSEQ
   -- if n_depth = |S.FRAMES|
-  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z_call}
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND pintrinsic, OWNER eps, CACHE eps, ORIGINAL ptbytes_original, LOOKUP ptbytes_lookup, DEPTH n_depth, LINE z_call}
   -- if $selected_entry_source_valid(S, pselectedcall)
 def $enum_array_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z) = $enum_selected_prepare(S, pintrinsic, ptbytes_class, ptbytes_method, porigin_site, z)
   -- if S.ORIGIN = (porigin_site)
@@ -836,6 +836,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if pselectedcall.OWNER = (n) /\ pselectedcall.LINE = pconfigcall.LINE
   -- if $selected_entry_valid(S, pselectedcall)
 def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.CACHE = eps
   -- if pselectedcall.OWNER = eps
   -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(pselectedcall.ORIGINAL))) = (porigin)
@@ -843,6 +844,7 @@ def $selected_entry_source_valid(S, pselectedcall) = true
   -- if $dynamic_site(S, (pselectedcall.SITE)) /\ $dynamic_fixed_name(S, pselectedcall.SITE) = eps
   -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
 def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.CACHE = eps
   -- if pselectedcall.OWNER = eps
   -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
   -- if $method_string_parts(pselectedcall.ORIGINAL) = ((ptbytes_class, pselectedcall.LOOKUP))
@@ -852,6 +854,7 @@ def $selected_entry_source_valid(S, pselectedcall) = true
   -- if $string_name_site(S, pselectedcall.SITE, pselectedcall.ORIGINAL)
   -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
 def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.CACHE = eps
   -- if pselectedcall.OWNER = eps
   -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(pselectedcall.ORIGINAL))) = (porigin)
@@ -859,12 +862,14 @@ def $selected_entry_source_valid(S, pselectedcall) = true
   -- if $pipe_fixed_name(S, pselectedcall.SITE) = eps
   -- if $array_site_valid(S, {SITE pselectedcall.SITE, INIT $pipe_lookup_line(S, pselectedcall.SITE), LINE pselectedcall.LINE, REQUESTED porigin, NAME pselectedcall.LOOKUP}, false)
 def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.CACHE = eps
   -- if pselectedcall.OWNER = eps
   -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
   -- if $method_string_parts(pselectedcall.ORIGINAL) = ((ptbytes_class, pselectedcall.LOOKUP))
   -- if $string_enum_candidate(S, pselectedcall.ORIGINAL) = (pselectedcall.KIND)
   -- if $string_site_valid(S, {SITE pselectedcall.SITE, INIT $pipe_lookup_line(S, pselectedcall.SITE), LINE pselectedcall.LINE, REQUESTED porigin, ORIGINAL pselectedcall.ORIGINAL}, false)
 def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if pselectedcall.CACHE = eps
   -- if pselectedcall.OWNER = (n_owner)
   -- if pselectedcall.KIND = INTRINSIC_ENUM porigin ptbytes text_method
   -- if pselectedcall.ORIGINAL = eps /\ pselectedcall.LOOKUP = $intrinsic_name(pselectedcall.KIND)
@@ -1509,10 +1514,23 @@ def $enum_is_callable_fixed_scope(S, PORIGIN n pcpath) = true
 def $enum_is_callable_fixed_scope(S, porigin_site) = false -- otherwise
 
 dec $enum_is_callable_fixed_entry(pstate, pselectedcall) : bool
+dec $closure_function_cache_owner(pstate, porigin) : pfncacheowner?
+dec $closure_function_cache_history(pstate, porigin, pfncacheowner) : bool
+dec $enum_is_callable_fixed_cache_owner(pstate, porigin) : pfncacheowner?
+def $enum_is_callable_fixed_cache_owner(S, porigin) = (CACHE_SHARED)
+  -- if $enum_is_callable_fixed_scope(S, porigin)
+def $enum_is_callable_fixed_cache_owner(S, porigin) = $closure_function_cache_owner(S, porigin)
+  -- if ~$enum_is_callable_fixed_scope(S, porigin)
+dec $enum_is_callable_fixed_cache_source(pstate, porigin, pfncacheowner) : bool
+def $enum_is_callable_fixed_cache_source(S, porigin, CACHE_SHARED) = true
+  -- if $enum_is_callable_fixed_lexical(S, porigin)
+def $enum_is_callable_fixed_cache_source(S, porigin, pfncacheowner) = $closure_function_cache_history(S, porigin, pfncacheowner)
+  -- if ~$enum_is_callable_fixed_lexical(S, porigin) \/ pfncacheowner =/= CACHE_SHARED
 def $enum_is_callable_fixed_entry(S, pselectedcall) = true
   -- if pselectedcall.KIND = INTRINSIC_IS_CALLABLE /\ pselectedcall.OWNER = eps
   -- if $enum_is_callable_fixed_source(S, pselectedcall.SITE) = ((pselectedcall.ORIGINAL, preqbytes_fallback))
-  -- if $enum_is_callable_fixed_lexical(S, pselectedcall.SITE)
+  -- if pselectedcall.CACHE = (pfncacheowner)
+  -- if $enum_is_callable_fixed_cache_source(S, pselectedcall.SITE, pfncacheowner)
   -- if pselectedcall.LOOKUP = $intrinsic_name(INTRINSIC_IS_CALLABLE)
   -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
   -- if $(pselectedcall.NONCE < |S.SELECTEDCALLS|)
@@ -1525,10 +1543,23 @@ def $enum_is_callable_fixed_history(S, pselectedcall :: pselectedcall_tail*, por
   -- if $enum_is_callable_fixed_entry(S, pselectedcall)
 def $enum_is_callable_fixed_history(S, pselectedcall :: pselectedcall_tail*, porigin_site) = $enum_is_callable_fixed_history(S, pselectedcall_tail*, porigin_site)
   -- if pselectedcall.SITE =/= porigin_site \/ ~$enum_is_callable_fixed_entry(S, pselectedcall)
+dec $enum_is_callable_fixed_owner_history(pstate, pselectedcall*, porigin, pfncacheowner) : bool
+def $enum_is_callable_fixed_owner_history(S, eps, porigin, pfncacheowner) = false
+def $enum_is_callable_fixed_owner_history(S, pselectedcall :: pselectedcall_tail*, porigin, pfncacheowner) = true
+  -- if pselectedcall.SITE = porigin /\ pselectedcall.CACHE = (pfncacheowner)
+  -- if $enum_is_callable_fixed_entry(S, pselectedcall)
+def $enum_is_callable_fixed_owner_history(S, pselectedcall :: pselectedcall_tail*, porigin, pfncacheowner) = $enum_is_callable_fixed_owner_history(S, pselectedcall_tail*, porigin, pfncacheowner)
+  -- if pselectedcall.SITE =/= porigin \/ pselectedcall.CACHE =/= (pfncacheowner) \/ ~$enum_is_callable_fixed_entry(S, pselectedcall)
 
 def $enum_is_callable_fixed_cached_call(S, preqbytes, (preqbytes_fallback)) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
+  -- if $enum_is_callable_fixed_cache_owner(S, porigin_site) = (pfncacheowner)
+  -- if $enum_is_callable_fixed_owner_history(S, S.SELECTEDCALLS, porigin_site, pfncacheowner)
+def $enum_is_callable_fixed_cached_call(S, preqbytes, (preqbytes_fallback)) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
+  -- if $enum_is_callable_fixed_cache_owner(S, porigin_site) = eps
   -- if $enum_is_callable_fixed_history(S, S.SELECTEDCALLS, porigin_site)
 def $enum_is_callable_fixed_cached_call(S, preqbytes, preqbytes_fallback?) = false -- otherwise
 def $call_prepare(S, preqbytes, (preqbytes_fallback), phpType7*, z) = $intrinsic_prepare(S, INTRINSIC_IS_CALLABLE, z, eps)
@@ -1537,15 +1568,20 @@ def $call_prepare(S, preqbytes, (preqbytes_fallback), phpType7*, z) = $intrinsic
 
 def $config_prepare(S, INTRINSIC_IS_CALLABLE, z, eps, porigin_site) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin_site, KIND INTRINSIC_IS_CALLABLE, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
-  -- if $call_target(S, preqbytes, (preqbytes_fallback)) = eps \/ $enum_is_callable_fixed_history(S, S.SELECTEDCALLS, porigin_site)
-  -- if $enum_is_callable_fixed_scope(S, porigin_site)
+  -- if $enum_is_callable_fixed_cache_owner(S, porigin_site) = (pfncacheowner)
+  -- if $call_target(S, preqbytes, (preqbytes_fallback)) = eps \/ $enum_is_callable_fixed_owner_history(S, S.SELECTEDCALLS, porigin_site, pfncacheowner)
   -- if $call_line_valid(S, (porigin_site), z)
   -- if n_nonce = S.SELECTSEQ
   -- if n_depth = |S.FRAMES|
-  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND INTRINSIC_IS_CALLABLE, OWNER eps, ORIGINAL preqbytes, LOOKUP $intrinsic_name(INTRINSIC_IS_CALLABLE), DEPTH n_depth, LINE z}
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND INTRINSIC_IS_CALLABLE, OWNER eps, CACHE (pfncacheowner), ORIGINAL preqbytes, LOOKUP $intrinsic_name(INTRINSIC_IS_CALLABLE), DEPTH n_depth, LINE z}
 def $config_prepare(S, INTRINSIC_IS_CALLABLE, z, eps, porigin_site) = S[.COMPLETION = UNSUPPORTED "namespace fallback runtime cache authority"]
   -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
-  -- if ~$enum_is_callable_fixed_scope(S, porigin_site) \/ ($call_target(S, preqbytes, (preqbytes_fallback)) =/= eps /\ ~$enum_is_callable_fixed_history(S, S.SELECTEDCALLS, porigin_site))
+  -- if $enum_is_callable_fixed_cache_owner(S, porigin_site) = eps
+def $config_prepare(S, INTRINSIC_IS_CALLABLE, z, eps, porigin_site) = S[.COMPLETION = UNSUPPORTED "namespace fallback runtime cache authority"]
+  -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
+  -- if $enum_is_callable_fixed_cache_owner(S, porigin_site) = (pfncacheowner)
+  -- if $call_target(S, preqbytes, (preqbytes_fallback)) =/= eps
+  -- if ~$enum_is_callable_fixed_owner_history(S, S.SELECTEDCALLS, porigin_site, pfncacheowner)
 def $selected_entry_source_valid(S, pselectedcall) = true
   -- if $enum_is_callable_fixed_entry(S, pselectedcall)
 

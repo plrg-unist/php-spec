@@ -1,0 +1,144 @@
+;; These stamps retain cache policy, never captured values or heap owners.
+dec $closure_cache_at(pclosurecache*, nat) : pclosurecache?
+def $closure_cache_at(eps, n) = eps
+def $closure_cache_at(pclosurecache :: pclosurecache_tail*, n) = (pclosurecache)
+  -- if pclosurecache.OBJECT = n
+def $closure_cache_at(pclosurecache :: pclosurecache_tail*, n) = $closure_cache_at(pclosurecache_tail*, n)
+  -- if pclosurecache.OBJECT =/= n
+dec $closure_cache_first(pclosurecache*, porigin) : pclosurecache?
+def $closure_cache_first(eps, porigin) = eps
+def $closure_cache_first(pclosurecache :: pclosurecache_tail*, porigin) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = porigin /\ pclosurecache.SOURCE = eps
+def $closure_cache_first(pclosurecache :: pclosurecache_tail*, porigin) = $closure_cache_first(pclosurecache_tail*, porigin)
+  -- if pclosurecache.FUNCTION =/= porigin \/ pclosurecache.SOURCE =/= eps
+dec $closure_cache_function(pobject) : porigin?
+def $closure_cache_function(pobject) = (porigin)
+  -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
+def $closure_cache_function(pobject) = eps -- otherwise
+dec $closure_cache_prior(pobject*, porigin) : bool
+def $closure_cache_prior(eps, porigin) = false
+def $closure_cache_prior(pobject :: pobject_tail*, porigin) = ($closure_cache_function(pobject) = (porigin) \/ $closure_cache_prior(pobject_tail*, porigin))
+
+dec $closure_cache_literal_policy(pstate, porigin, pbindscope?) : pfncacheowner?
+def $closure_cache_literal_policy(S, porigin, (BIND_UNSCOPED)) = (CACHE_SHARED)
+  -- if $enum_is_callable_fixed_lexical(S, porigin)
+  -- if $closure_source_class(S, porigin) = eps
+  -- if $closure_cache_first(S.CLOSURECACHES, porigin) = eps
+  -- if ~$closure_cache_prior(S.OBJECTS, porigin)
+def $closure_cache_literal_policy(S, porigin, (BIND_UNSCOPED)) = (CACHE_SHARED)
+  -- if $enum_is_callable_fixed_lexical(S, porigin)
+  -- if $closure_source_class(S, porigin) = eps
+  -- if $closure_cache_first(S.CLOSURECACHES, porigin) = (pclosurecache)
+  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (BIND_UNSCOPED)
+def $closure_cache_literal_policy(S, porigin, pbindscope?) = eps -- otherwise
+
+dec $closure_cache_birth_scope(pstate, pstate, pfunction, nat) : pbindscope?
+def $closure_cache_birth_scope(S, S_created, pfunction, n) = (BIND_UNSCOPED)
+  -- if $enum_is_callable_fixed_scope(S, pfunction.ORIGIN)
+  -- if ~$constant_callable_active(S, pfunction.ORIGIN)
+  -- if S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.CONSTCONTEXT = eps /\ S.CLASSCONSTANTINIT = eps
+  -- if $internal_closure_current(S) = eps
+  -- if S_created.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
+  -- if $closure_scope_at(S_created.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S_created.CLOSUREBINDINGS, n) = eps
+def $closure_cache_birth_scope(S, S_created, pfunction, n) = eps -- otherwise
+def $closure_cache_birth(S, S_created, pfunction) = S_created[.CLOSURECACHES = S_created.CLOSURECACHES ++ [pclosurecache]]
+  -- if n = |S.OBJECTS|
+  -- if $(n < |S_created.OBJECTS|)
+  -- if $closure_cache_function(S_created.OBJECTS[n]) = (pfunction.ORIGIN)
+  -- if $closure_cache_at(S_created.CLOSURECACHES, n) = eps
+  -- if pbindscope? = $closure_cache_birth_scope(S, S_created, pfunction, n)
+  -- if pfncacheowner? = $closure_cache_literal_policy(S, pfunction.ORIGIN, pbindscope?)
+  -- if pclosurecache = {OBJECT n, FUNCTION pfunction.ORIGIN, SOURCE eps, SCOPE pbindscope?, CACHE pfncacheowner?}
+def $closure_cache_birth(S, S_created, pfunction) = S_created -- otherwise
+
+dec $closure_cache_copy_policy(pclosurecache?, pbindscope?, nat) : pfncacheowner?
+def $closure_cache_copy_policy((pclosurecache), pbindscope?, n) = (CACHE_PRIVATE n)
+  -- if pclosurecache.CACHE = (CACHE_PRIVATE n_source)
+def $closure_cache_copy_policy((pclosurecache), (pbindscope), n) = (CACHE_SHARED)
+  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (pbindscope)
+def $closure_cache_copy_policy((pclosurecache), (pbindscope), n) = (CACHE_PRIVATE n)
+  -- if pclosurecache.CACHE = (CACHE_SHARED)
+  -- if pclosurecache.SCOPE = (pbindscope_source)
+  -- if pbindscope =/= pbindscope_source
+def $closure_cache_copy_policy(pclosurecache?, pbindscope?, n) = eps -- otherwise
+dec $closure_cache_object_scope(pstate, nat) : pbindscope?
+def $closure_cache_object_scope(S, n) = ($fake_bind_scope(S, n))
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $closure_cache_object_scope(S, n) = eps -- otherwise
+def $closure_cache_copy(S, n_source, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [pclosurecache]]
+  -- if $(n_source < n) /\ $(n < |S.OBJECTS|)
+  -- if $closure_cache_function(S.OBJECTS[n]) = (porigin)
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (porigin)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = eps
+  -- if pbindscope? = $closure_cache_object_scope(S, n)
+  -- if pfncacheowner? = $closure_cache_copy_policy($closure_cache_at(S.CLOSURECACHES, n_source), pbindscope?, n)
+  -- if pclosurecache = {OBJECT n, FUNCTION porigin, SOURCE (n_source), SCOPE pbindscope?, CACHE pfncacheowner?}
+def $closure_cache_copy(S, n_source, n) = S -- otherwise
+
+;; A retired source's immutable stamp suffices; never fetch its captured cells.
+dec $closure_cache_record_object(pstate, pclosurecache) : bool
+def $closure_cache_record_object(S, pclosurecache) = true
+  -- if $(pclosurecache.OBJECT < |S.OBJECTS|)
+  -- if $closure_cache_function(S.OBJECTS[pclosurecache.OBJECT]) = (pclosurecache.FUNCTION)
+  -- if pclosurecache.SCOPE = eps \/ ~((HOBJECT pclosurecache.OBJECT) <- S.ALLOCATIONS) \/ pclosurecache.SCOPE = $closure_cache_object_scope(S, pclosurecache.OBJECT)
+def $closure_cache_record_object(S, pclosurecache) = false -- otherwise
+dec $closure_cache_record_valid(pstate, pclosurecache*, pclosurecache) : bool
+def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
+  -- if $closure_cache_record_object(S, pclosurecache)
+  -- if $function_at(S.CLOSURETEMPLATES, pclosurecache.FUNCTION) = (pfunction)
+  -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
+  -- if pclosurecache.SOURCE = eps
+  -- if S_prefix = S[.OBJECTS = S.OBJECTS[0:pclosurecache.OBJECT]][.CLOSURECACHES = pclosurecache_prefix*]
+  -- if $closure_cache_literal_policy(S_prefix, pclosurecache.FUNCTION, pclosurecache.SCOPE) = pclosurecache.CACHE
+def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
+  -- if $closure_cache_record_object(S, pclosurecache)
+  -- if $function_at(S.CLOSURETEMPLATES, pclosurecache.FUNCTION) = (pfunction)
+  -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
+  -- if pclosurecache.SOURCE = (n_source)
+  -- if $(n_source < pclosurecache.OBJECT)
+  -- if $closure_cache_at(pclosurecache_prefix*, n_source) = (pclosurecache_source)
+  -- if pclosurecache_source.FUNCTION = pclosurecache.FUNCTION
+  -- if $closure_cache_copy_policy((pclosurecache_source), pclosurecache.SCOPE, pclosurecache.OBJECT) = pclosurecache.CACHE
+def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
+  -- if $closure_cache_record_object(S, pclosurecache)
+  -- if $function_at(S.CLOSURETEMPLATES, pclosurecache.FUNCTION) = (pfunction)
+  -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
+  -- if pclosurecache.SOURCE = (n_source)
+  -- if $(n_source < pclosurecache.OBJECT)
+  -- if $closure_cache_at(pclosurecache_prefix*, n_source) = eps
+  -- if pclosurecache.CACHE = eps
+def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = false -- otherwise
+dec $closure_cache_records(pstate, pclosurecache*, pclosurecache*) : bool
+def $closure_cache_records(S, pclosurecache_prefix*, eps) = true
+def $closure_cache_records(S, pclosurecache_prefix*, pclosurecache :: pclosurecache_tail*) = ($closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) /\ $closure_cache_records(S, pclosurecache_prefix* ++ [pclosurecache], pclosurecache_tail*))
+def $closure_cache_records_valid(S) = $closure_cache_records(S, eps, S.CLOSURECACHES)
+
+def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $closure_cache_function(S.OBJECTS[n]) = (pcallcontext.FUNCTION)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if pfunction.ORIGIN = pcallcontext.FUNCTION
+  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = pfunction.ORIGIN
+  -- if pclosurecache.CACHE = (pfncacheowner)
+  -- if pclosurecache.SCOPE = $closure_cache_object_scope(S, n)
+  -- if pclosurecache.SCOPE =/= eps
+def $closure_function_cache_owner(S, porigin) = eps -- otherwise
+
+def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = true
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_first(S.CLOSURECACHES, pfunction.ORIGIN) = (pclosurecache)
+  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (BIND_UNSCOPED)
+def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_PRIVATE n) = true
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = pfunction.ORIGIN /\ pclosurecache.CACHE = (CACHE_PRIVATE n)
+def $closure_function_cache_history(S, porigin, pfncacheowner) = false -- otherwise
