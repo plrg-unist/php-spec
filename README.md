@@ -7058,6 +7058,12 @@ commits that name before exception transfer. The
 [owning-array review](coverage/semantics/enum-is-callable-array-alias-owning-review.json)
 records three exact agreements, one excluded-builtin control and three separate
 reached groups (200 checks).
+When only a separate variable owns the rebound array's object child, writing
+the selected name starts the array's eager release and leaves the child alive
+until that variable is cleared. Clearing it before output takes the last-owner
+null-before-destructor path; a later throwing destructor sees the committed
+name. The [retained-child review](coverage/semantics/enum-is-callable-array-alias-retained-child-review.json)
+records three exact agreements and separate held75/released55 reached checks.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, wider array sources (including embedded references) and autoload,

@@ -1,0 +1,22 @@
+{
+  "scope": "published-enum is_callable third output after a shared input/output cell rebounds to an exact two-entry array whose one ordinary object child has a separate owner",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "d918a5ead99680cb2aba52a97ac526de4ab4e82e",
+  "semantic_revision": "a69f7911454fdd7823d32b22b2aa86152587d443",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "native_selection_sha256": "0fc1222087f681ec8528e203da4fb80555842b486632a02b48bce2ce17cedb50"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "behavior": "The first-SEND array and selected name remain authenticated while the shared input/output cell rebounds to an exact array with one ordinary object child. A separate child holder lets the array's eager release finish after the name write; the child destructor runs when that holder is cleared. Releasing the holder before output takes the existing clear-to-null last-owner path. A later throwing child destructor sees the committed name and result.",
+  "source_results": "Three exact native/model stdout, stderr and exit-status agreements, each at its own cut: held-child SHA cb758e7511e482394a8c5a53afe59c567a5c9d323d6034b34485a346ff2df770 at 288263e7f377a14e9ab2d2e6aad62a94a270f6f0 (held-source-v2); preoutput-release SHA 12faab59ebd7b8cb2020f5f7f0e0b741629c707c15baeb11f54add09b61a34f2 at the same cut (preoutput-source-v1); throw-release SHA e6903c227a8fab09d16d1ff5494042ea0fddd361bc6721d405c1bb639c775cef at 391c398f29904fa1ba85f34d378edff20d930e2c (throw-source-v2). Each source row has a 90-second model cap. No whole-catalogue run is claimed.",
+  "strict": "At semantic_revision, strict-v1.json reports 435 modules, true/exit0/empty stderr, no timeout (12.66s). Later changes adjust only catalogue expectations or the reached fixture.",
+  "reached_results": "Two separate runs at tested_revision: held75 true/exit0/empty/stable/no timeout in 23.07s host (held-reached-v3), and released55 true/exit0/empty/stable/no timeout in 28.33s host (released-reached-v1). These are 130 physical checks across two runs. Held authenticates the real holder, bare-rooted child survival and refusal of a forged unowned second array; an eager DESTRUCTOR_RELEASE job temporarily roots the old array after invoke. Released authenticates holder null, OLDARRAY/OLD capture, clear-to-null and destructor source before the exact D-null output.",
+  "retained_failures": "Held-source-v1 and throw-source-v1 failed only stale expected-Unsupported classifications while the model already matched native; both were corrected and rerun individually. Held-reached-v1/v2 falsely demanded immediate array retirement after an eager release task had rooted it; the post-step and release-shape diagnostics identified the valid transient job before held-reached-v3 passed. Third-send-probe-v1 failed before numeric because its private adapter symlink was missing; the same-byte corrected probe v2 ran. All original failures have zero success credit.",
+  "remaining": "Additional object children, ALIAS/reference array entries, independently retained objects with wider effects, and other owning graphs remain outside this route. The separate is_string catch control from the prior owning-array review remains Unsupported.",
+  "engine_routes": ["ext/standard/type.c:PHP_FUNCTION(is_callable)", "Zend/zend_API.c:zend_is_callable_ex", "Zend/zend_API.c:zend_get_callable_name_ex", "Zend/zend_vm_def.h:ZEND_SEND_VAR"],
+  "recovery": "Ignored raw lives outside Git under the main checkout .tools/enum-array-alias-retained-child-evidence/. The native manifest is native-v1/; wrappers are at the evidence root, original numeric/harness basenames in raw/, and three ignored diagnostic scripts in diagnostics/. Recorded command files retain private worktree paths. Reproduce only the three exact source IDs with python3 tests/semantics/enum_is_callable.py --match <ID> and the two separate enum_is_callable_array_alias_retained_child_protocol.py --group held/released commands from a current checkout.",
+  "review": "Independent semantic, source, fixture and raw-result review CLEAR by /root/enum_review_next at the recorded cuts."
+}

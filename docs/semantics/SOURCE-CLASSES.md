@@ -1016,6 +1016,13 @@ unchanged. The [owning-array review](../../coverage/semantics/enum-is-callable-a
 records three exact agreements, one excluded-builtin control, strict435 and
 three separate reached groups (200 checks). ALIAS/reference entries, extra
 object children and wider owning shapes remain partial.
+When a separate variable owns the one ordinary child object but not its
+rebound array, overwriting the shared cell starts an authenticated eager array
+release. The child remains live until the separate holder is cleared; releasing
+that holder before output instead uses the existing last-owner continuation.
+The [retained-child review](../../coverage/semantics/enum-is-callable-array-alias-retained-child-review.json)
+records three exact agreements, strict435 and separate held75/released55 checks.
+Additional children, ALIAS entries and wider ownership graphs remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

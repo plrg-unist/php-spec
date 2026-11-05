@@ -85,6 +85,12 @@ throwing child commits the name before exception transfer without assigning
 the interrupted result target. Three exact agreements, one excluded-builtin
 control, strict435 and three separate reached groups (53+60+87 checks) pass
 at recorded cuts. [Owning-array review](coverage/semantics/enum-is-callable-array-alias-owning-review.json).
+A rebound array may lose its shared-cell owner while a distinct variable still
+owns its ordinary child object. The array's eager release completes before
+that variable is cleared, so its destructor sees the committed name; clearing
+the variable before output gives the existing null-before-destructor path.
+Three exact agreements, strict435 and separate held75/released55 reached
+checks pass at recorded cuts. [Retained-child review](coverage/semantics/enum-is-callable-array-alias-retained-child-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, embedded reference members, named/unpacked output,
