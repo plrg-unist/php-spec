@@ -1,0 +1,22 @@
+[
+  {
+    "id": "i109-named-send-and-supplied-throw",
+    "purpose": "Correct named native method arguments initialize, deliver and inject the supplied Throwable through the ordinary Generator protocol.",
+    "source": "<?php\nclass Stop109A extends Exception {}\nfunction Flow109A() {\n    global $stop;\n    echo 'INIT|'; $value = yield 'head'; echo 'GOT|', $value, '|';\n    try { yield 'tail'; }\n    catch (Stop109A $caught) { echo 'CATCH|', $caught === $stop, '|'; yield 'caught'; }\n    return 109;\n}\n$stop = new Stop109A(); $generator = Flow109A();\necho 'SEND|', $generator->send(value: 41), '|';\necho 'THROW|', $generator->throw(exception: $stop), '|';\n$generator->next(); echo 'RETURN|', $generator->getReturn(), '|', $generator->valid() === false, '|';\n",
+    "source_sha256": "cf358ceac8be8ee1335fb0796bbc5baf17f4d025000c85e387e155cca261ec1d",
+    "native_exit": 0,
+    "native_stdout": "SEND|INIT|GOT|41|tail|THROW|CATCH|1|caught|RETURN|109|1|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "i109-array-pack-captured-cow-before-later-producer",
+    "purpose": "The first ARRAY pack snapshots a mutable nested ARRAY before a later pack producer clears the source pack and mutates the caller ARRAY; empty packs also admit zero-argument methods.",
+    "source": "<?php\nfunction Later109B() {\n    global $pack, $payload;\n    echo 'LATER|'; $pack = null; $payload[0] = 99; return [];\n}\nfunction Flow109B() {\n    global $payload;\n    try {\n        echo 'INIT|'; $value = yield 'head';\n        echo 'GOT|', $value[0] === 21, '|', $payload[0] === 99, '|';\n        yield 'tail';\n    } finally { echo 'FIN|'; }\n}\n$payload = []; $payload[] = 21; $pack = ['value' => $payload];\n$generator = Flow109B();\necho 'CURRENT|', $generator->current(...[]), '|';\necho 'SEND|', $generator->send(...$pack, ...Later109B()), '|', $pack === null, '|';\nunset($generator); echo 'DONE|';\n",
+    "source_sha256": "93ee53327a841abb84464d4179441b9018283a7b976978d53cbc0c7b01e69561",
+    "native_exit": 0,
+    "native_stdout": "CURRENT|INIT|head|SEND|LATER|GOT|1|1|tail|1|FIN|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  }
+]
