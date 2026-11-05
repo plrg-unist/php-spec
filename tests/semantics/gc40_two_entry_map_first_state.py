@@ -71,7 +71,7 @@ CHECKS = [
     '$heap_valid($heap_graph(S_started))',
     'S_zero = $drive_steps(S, 0)',
     'S_zero.COMPLETION = BUDGET /\\ S_zero.TODO = S.TODO',
-    '$drive_steps(S_zero[.COMPLETION = NORMAL], 1) = S_started',
+    '$drive_steps(S_zero[.COMPLETION = NORMAL], 1) = S_started[.COMPLETION = BUDGET]',
     'S_done = $drive_steps(S, 4000)',
     '$drive_steps(S_zero[.COMPLETION = NORMAL], 4000) = S_done',
     'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps',
