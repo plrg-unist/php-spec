@@ -1,0 +1,91 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "trait-shared-template-alias",
+      "source": "<?php\ntrait T184Shared { public function make() { return new class {}; } }\nclass A184Shared { use T184Shared { make as alias; } } class B184Shared { use T184Shared; }\n$a = (new A184Shared)->make(); $b = (new B184Shared)->make(); $alias = (new A184Shared)->alias(); $after = new class {};\necho ($a::class === $b::class), ';', ($a::class === $alias::class), ';', ($a !== $b), ';', $a::class, ';', $after::class, ';';\n",
+      "source_sha256": "80cbc974a01334e282eef12350d594454c4ef0c471a534437a2a1330908dc64c",
+      "stdout_template_base64": "MTsxOzE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "trait-lexical-parent-self-static",
+      "source": "<?php\ntrait T184Scope { public function make() { return new class(parent::VALUE, self::VALUE, static::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $parent, public int $self, public int $called, public string $owner, public string $method) {} }; } }\nclass Base184Scope { public const VALUE = 10; } class A184Scope extends Base184Scope { use T184Scope; public const VALUE = 11; } class C184Scope extends A184Scope { public const VALUE = 12; }\n$child = (new C184Scope)->make(); echo $child->parent, ';', $child->self, ';', $child->called, ';', $child->owner, ';', $child->method, ';', $child::class, ';';\n",
+      "source_sha256": "eaa46f77aa6a5a1cd98d608629788fabdaa614ed878f3f3dbe2fa5f0a61c7af8",
+      "stdout_template_base64": "MTA7MTE7MTI7QTE4NFNjb3BlO1QxODRTY29wZTo6bWFrZTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "trait-captured-consumer-scopes",
+      "source": "<?php\ntrait T184Capture { public function capture() { return fn() => new class(self::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $value, public string $owner, public string $method) {} }; } }\nclass A184Capture { use T184Capture; public const VALUE = 1; } class B184Capture { use T184Capture; public const VALUE = 2; }\n$ao = new A184Capture; $bo = new B184Capture; $a = $ao->capture(); $b = $bo->capture(); unset($ao, $bo); $x = $a(); $y = $b();\necho $x->value, ':', $x->owner, ':', $x->method, ';', $y->value, ':', $y->owner, ':', $y->method, ';', ($x::class === $y::class), ';', $x::class, ';';\n",
+      "source_sha256": "8dd731dd2dfecc809628bc314de9472f640c51813864e1a747bfc2422d9fcac8",
+      "stdout_template_base64": "MTpBMTg0Q2FwdHVyZTp7Y2xvc3VyZTpUMTg0Q2FwdHVyZTo6Y2FwdHVyZSgpOjJ9OzI6QjE4NENhcHR1cmU6e2Nsb3N1cmU6VDE4NENhcHR1cmU6OmNhcHR1cmUoKToyfTsxO2NsYXNzQGFub255bW91cwB7RklMRX06MiQwOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "trait-constructor-child-unwind",
+      "source": "<?php\ntrait T184Ctor { public function __construct() { $child = new class { public function __destruct() { echo 'CHILD;'; } }; throw new Exception('stop'); } }\nclass Owner184Ctor { use T184Ctor; public function __destruct() { echo 'BAD;'; } }\ntry { new Owner184Ctor; } catch (Exception $e) { echo 'CAUGHT;'; }\n",
+      "source_sha256": "d356925f20c0de899e796a1091b0296eb0f3531d25bf5d46a362c80f42298bcd",
+      "stdout_template_base64": "Q0hJTEQ7Q0FVR0hUOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "trait-static-ctor-child-warning",
+      "source": "<?php\ntrait T184Static { public static function __construct() { $child = new class { final private function hidden() {} }; } }\necho 'BAD;';\n",
+      "source_sha256": "fd54eec0bc4852032fa50819e604c3f8c76edda20149c9e3f27cfcf2971054e6",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogTWV0aG9kIFQxODRTdGF0aWM6Ol9fY29uc3RydWN0KCkgY2Fubm90IGJlIHN0YXRpYyBpbiB7RklMRX0gb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "trait-uncalled-child-default",
+      "source": "<?php\ntrait T184Invalid { public function make() { return new class { public function bad(int $value = 'wrong') {} }; } }\necho 'BAD;';\n",
+      "source_sha256": "34261cdd84c77bf8bc97312bbef8da82f4213a43bb0b86ecd1be7f5e7d3e7314",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "trait-closure-child",
+      "source": "<?php\ntrait T184Closure { public function capture() { return function() { return new class(self::VALUE, __CLASS__, __METHOD__) { public function __construct(public int $value, public string $owner, public string $method) {} }; }; } }\nclass A184Closure { use T184Closure; public const VALUE = 23; }\n$owner = new A184Closure; $f = $owner->capture(); unset($owner); $child = $f(); echo $child->value, ';', $child->owner, ';', $child->method, ';', $child::class, ';';\n",
+      "source_sha256": "150233217e2d10dbb7f63a90eadde19bd50038f57c2e5429874f14a93731d195",
+      "stdout_template_base64": "MjM7QTE4NENsb3N1cmU7e2Nsb3N1cmU6VDE4NENsb3N1cmU6OmNhcHR1cmUoKToyfTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "trait-child-warning-before-constant-fatal",
+      "source": "<?php\ntrait T184Constant { public function make() { return new class { final private function hidden() {} }; } public const int BAD = 'wrong'; }\necho 'BAD;';\n",
+      "source_sha256": "adee99736dfbb534d389d3ce8ce83b4ff032d27c5ed7e161fcae4ae17a291be9",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMgpGYXRhbCBlcnJvcjogQ2Fubm90IHVzZSBzdHJpbmcgYXMgdmFsdWUgZm9yIGNsYXNzIGNvbnN0YW50IFQxODRDb25zdGFudDo6QkFEIG9mIHR5cGUgaW50IGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    }
+  ]
+}
