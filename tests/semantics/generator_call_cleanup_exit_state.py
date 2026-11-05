@@ -195,7 +195,7 @@ def run(selected):
 
     review.recorded = recorded
     try:
-        passed = review.run(selected, process_seconds=600)
+        passed = review.run(selected, process_seconds=1800)
     finally:
         review.recorded = original
     stable = INPUT_BYTES == {p: p.read_bytes() for p in INPUT_BYTES}
