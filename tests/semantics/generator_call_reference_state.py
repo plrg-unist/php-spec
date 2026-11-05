@@ -307,7 +307,7 @@ $closure_call_copy_pending(ERROR_HANDLER_INVOKE perrorcall)
 ~$closure_call_copy_pending(CLOSURE_CALL_REFERENCE pclosurecall n_done pnamedargs n_base)
 S_throw = S_emit[.TODO = (THROW_SEARCH n_error) :: pframe_emit.TODO]
 S_stop = $source_exception_transition(S_emit, S_throw)
-S_stop.COMPLETION = UNSUPPORTED "Generator Closure::call receive failure"
+S_stop.COMPLETION = NORMAL
 S_stop.TODO = S_throw.TODO
 S_stop.ALLOCATIONS = S_throw.ALLOCATIONS
 perrorcall_bad = perrorcall[.TARGET = (CLOSURE_TARGET pclosurecall.SOURCE)]
