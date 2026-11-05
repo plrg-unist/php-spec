@@ -1,10 +1,11 @@
 ;; Zend compile_stmt/emit_tick: lexical frequency belongs to the file context;
 ;; adjacency belongs to the current op array. Plans are derived, never supplied.
-syntax pticksummary = { FREQUENCY int, LAST bool, LINE int, MARKERS ptickmarker*, DEPENDENCY text?, NAMES pcodename* }
+syntax pticksummary = { FREQUENCY int, LAST bool, LINE int, MARKERS ptickmarker*, DEPENDENCY text?, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES pcoccurrence* }
 var T : pticksummary
 
 dec $tick_plan(program, pcodeexpr*) : pticksummary
 dec $tick_named_plan(program, pcodeexpr*, pcodename*) : pticksummary
+dec $tick_code_plan(program, pcodeexpr*, pcodename*, pcoderedirect*) : pticksummary
 dec $tick_contains(pcnode) : bool
 dec $tick_contains_nodes(pcoccurrence*) : bool
 dec $tick_statements(pticksummary, pcodeexpr*, pcpath, nat, statement*, bool) : pticksummary
@@ -15,6 +16,13 @@ dec $tick_control_body(pticksummary, pcodeexpr*, pcpath, statement*, metadata) :
 dec $tick_statement_body(pticksummary, pcodeexpr*, pcpath, statement, bool) : pticksummary
 dec $tick_expression(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
 dec $tick_expression_body(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
+dec $tick_expression_raw(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
+dec $tick_expression_effects(pticksummary, pcodeexpr*, pcodeexpr*) : pticksummary
+dec $tick_redirect_node(pticksummary, pcpath) : expression?
+dec $tick_compiled_constant(pcodeexpr*, pcpath) : bool
+dec $tick_conditional(expression) : bool
+dec $tick_logical(expression) : bool
+dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_new_named(phpType28) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
@@ -63,14 +71,11 @@ def $tick_contains(pcnode) = $tick_contains_nodes($pcchildren(pcnode, eps)) -- o
 def $tick_contains_nodes(eps) = false
 def $tick_contains_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_contains(pcnode) \/ $tick_contains_nodes(pcoccurrence*))
 def $tick_plan(program, pcodeexpr*) = $tick_named_plan(program, pcodeexpr*, eps)
-def $tick_named_plan(PROGRAM statement*, pcodeexpr*, pcodename*) = {FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*}
-  -- if ~$tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
-def $tick_named_plan(PROGRAM statement*, pcodeexpr*, pcodename*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*}, pcodeexpr*, eps, 0, statement*, true)
-  -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
-def $tick_named_plan(ENCODEDPROGRAM text_1 text_2 text_3 text_4 text? statement*, pcodeexpr*, pcodename*) = {FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*}
-  -- if ~$tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
-def $tick_named_plan(ENCODEDPROGRAM text_1 text_2 text_3 text_4 text? statement*, pcodeexpr*, pcodename*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*}, pcodeexpr*, eps, 0, statement*, true)
-  -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE statement*, eps))
+def $tick_named_plan(program, pcodeexpr*, pcodename*) = $tick_code_plan(program, pcodeexpr*, pcodename*, eps)
+def $tick_code_plan(program, pcodeexpr*, pcodename*, pcoderedirect*) = {FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES eps}
+  -- if ~$tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(program), eps))
+def $tick_code_plan(program, pcodeexpr*, pcodename*, pcoderedirect*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES $pcwalk($pclist_phpType23($pcprogram(program), eps, 0))}, pcodeexpr*, eps, 0, $pcprogram(program), true)
+  -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(program), eps))
 
 def $tick_statements(T, pcodeexpr*, pcpath, n, eps, b_top) = T
 def $tick_statements(T, pcodeexpr*, pcpath, n, statement :: statement_tail*, b_top) = $tick_statements($tick_statement(T, pcodeexpr*, pcpath ++ [PCINDEX n], statement, b_top), pcodeexpr*, pcpath, $(n + 1), statement_tail*, b_top)
@@ -154,28 +159,77 @@ def $tick_expression_zero(pcodeexpr*, pcpath, expression) = true
   -- if ~$tick_effect(pcodeexpr*, pcpath)
 def $tick_expression_zero(pcodeexpr*, pcpath, expression) = false -- otherwise
 
+def $tick_expression(T, pcodeexpr*, pcpath, expression) = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
+  -- if $tick_conditional(expression)
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body
   -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
-  -- if $tick_expression_opcode(expression)
+  -- if ~$tick_conditional(expression) /\ $tick_expression_opcode(expression)
   -- if $tick_expression_zero(pcodeexpr*, pcpath, expression)
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body[.LAST = false]
   -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
-  -- if $tick_expression_opcode(expression)
+  -- if ~$tick_conditional(expression) /\ $tick_expression_opcode(expression)
   -- if ~$tick_expression_zero(pcodeexpr*, pcpath, expression)
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body
   -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
-  -- if ~$tick_expression_opcode(expression) /\ ~T_body.LAST
+  -- if ~$tick_conditional(expression) /\ ~$tick_expression_opcode(expression) /\ ~T_body.LAST
 def $tick_expression(T, pcodeexpr*, pcpath, expression) = T_body[.DEPENDENCY = ("tick adjacency for this expression opcode summary")]
   -- if T_body = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
-  -- if ~$tick_expression_opcode(expression) /\ T_body.LAST
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
+  -- if ~$tick_conditional(expression) /\ ~$tick_expression_opcode(expression) /\ T_body.LAST
+
+def $tick_compiled_constant(pcodeexpr*, pcpath) = true
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, true))
+def $tick_compiled_constant(pcodeexpr*, pcpath) = false -- otherwise
+
+;; Consult only receipts published by actual compilation, never pending FOLD
+;; rewrites. CONST operands retain selected effects; redirects retain effects
+;; outside their selected child. Effect roots bypass this dispatch once, just as
+;; EVAL_EFFECT does, so a self CODEEFFECT cannot recursively select itself.
+def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = T[.DEPENDENCY = ("tick conditional compiler-special operand result kind")]
+  -- if $tick_logical(expression) /\ $tick_switch_unknown(T.NAMES, pcpath, expression)
+def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = $tick_expression_effects(T, pcodeexpr*, $effect_unique($effect_select(pcodeexpr*, pcodeexpr*, pcpath), eps))
+  -- if ~($tick_logical(expression) /\ $tick_switch_unknown(T.NAMES, pcpath, expression))
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, true))
+def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = $tick_switch_finish(T_target, b)
+  -- if ~($tick_logical(expression) /\ $tick_switch_unknown(T.NAMES, pcpath, expression))
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = ((pcpath_target, b))
+  -- if $effect_below(pcpath, pcpath_target) /\ pcpath =/= pcpath_target
+  -- if $tick_redirect_node(T, pcpath_target) = (expression_target)
+  -- if T_effects = $tick_expression_effects(T, pcodeexpr*, $effect_outside($effect_unique($effect_select(pcodeexpr*, pcodeexpr*, pcpath), eps), pcpath_target))
+  -- if T_target = $tick_expression(T_effects, pcodeexpr*, pcpath_target, expression_target)
+def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = T[.DEPENDENCY = ("tick compiled redirect target")]
+  -- if ~($tick_logical(expression) /\ $tick_switch_unknown(T.NAMES, pcpath, expression))
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = ((pcpath_target, b))
+  -- if ~($effect_below(pcpath, pcpath_target) /\ pcpath =/= pcpath_target) \/ $tick_redirect_node(T, pcpath_target) = eps
+def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = $tick_expression_raw(T, pcodeexpr*, pcpath, expression)
+  -- if ~($tick_logical(expression) /\ $tick_switch_unknown(T.NAMES, pcpath, expression))
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = eps
+def $tick_redirect_node(T, pcpath) = (expression)
+  -- if $occurrence_node(T.NODES, pcpath) = (expression)
+def $tick_redirect_node(T, pcpath) = eps -- otherwise
+def $tick_expression_effects(T, pcodeexpr*, eps) = T
+def $tick_expression_effects(T, pcodeexpr*, (CODEEFFECT pcpath) :: pcodeexpr_effects*) = $tick_expression_effects(T_effect, pcodeexpr*, pcodeexpr_effects*)
+  -- if $tick_redirect_node(T, pcpath) = (expression)
+  -- if T_effect = $tick_expression_line($tick_expression_raw(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)[.LAST = false]
+def $tick_expression_effects(T, pcodeexpr*, pcodeexpr_effects*) = T[.DEPENDENCY = ("tick retained effect source")] -- otherwise
+
+;; Without a published rewrite the compiler visits all ternary arms, and both
+;; dynamic short-circuit operands. Jumps/BOOL/QM_ASSIGN then break tick adjacency.
+def $tick_expression_raw(T, pcodeexpr*, pcpath, expression) = $tick_nodes(T, pcodeexpr*, $pcchildren(expression, pcpath))[.LAST = false]
+  -- if $tick_conditional(expression)
+;; Array prepasses may publish redirects in values. The emitter compiles each
+;; key before its value; the shared visitor follows only actual child receipts.
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArray phpType12 metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprArray phpType12 metadata, pcpath))
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
   -- if $tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata, 6)
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T_body[.LAST = T.LAST]
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T_body[.LAST = T.LAST]
   -- if $tick_inputs_clean(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata, 5)
   -- if T_body = $tick_expression(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 5], expression)
 ;; Named construction emits NEW before source-ordered arguments and a retained
 ;; constructor call after them. Nested closure bodies still have their own LAST.
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprNew phpType28 phpType6 metadata) = $tick_nodes(T[.LAST = false], pcodeexpr*, $pcchildren(NExprNew phpType28 phpType6 metadata, pcpath))
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprNew phpType28 phpType6 metadata) = $tick_nodes(T[.LAST = false], pcodeexpr*, $pcchildren(NExprNew phpType28 phpType6 metadata, pcpath))
   -- if $tick_new_named(phpType28)
 def $tick_new_named(NName phpType33 metadata) = true
 def $tick_new_named(NNameFullyQualified phpType33 metadata) = true
@@ -183,11 +237,11 @@ def $tick_new_named(NNameRelative phpType33 metadata) = true
 def $tick_new_named(phpType28) = false -- otherwise
 ;; YIELD compiles key before value; YIELD_FROM has one operand. Nested callable
 ;; bodies contribute their own plans and file declarables in that same order.
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprYield phpType5_key phpType5_value metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYield phpType5_key phpType5_value metadata, pcpath))
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprYieldFrom expression metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYieldFrom expression metadata, pcpath))
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprYield phpType5_key phpType5_value metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYield phpType5_key phpType5_value metadata, pcpath))
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprYieldFrom expression metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprYieldFrom expression metadata, pcpath))
 ;; Match compiles every condition before any result. Dispatch and each result's
 ;; assignment/jump emit real operations, regardless of the subject operand kind.
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprMatch expression (SEQUENCE phpType27*) metadata) = $tick_match_bodies(T_conditions[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType27*)[.LAST = false]
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprMatch expression (SEQUENCE phpType27*) metadata) = $tick_match_bodies(T_conditions[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType27*)[.LAST = false]
   -- if T_subject = $tick_node(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
   -- if T_conditions = $tick_match_conditions(T_subject, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType27*)
 def $tick_match_conditions(T, pcodeexpr*, pcpath, n, eps) = T
@@ -196,13 +250,13 @@ def $tick_match_conditions(T, pcodeexpr*, pcpath, n, (NMatchArm phpType36 expres
 def $tick_match_bodies(T, pcodeexpr*, pcpath, n, eps) = T
 def $tick_match_bodies(T, pcodeexpr*, pcpath, n, (NMatchArm phpType36 expression metadata) :: phpType27*) = $tick_match_bodies(T_body[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType27*)
   -- if T_body = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
   -- if ~$tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata, 6)
-def $tick_expression_body(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
   -- if ~$tick_inputs_clean(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata, 5)
-def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = $tick_nodes(T, pcodeexpr*, $pcchildren(expression, pcpath))
+def $tick_expression_raw(T, pcodeexpr*, pcpath, expression) = $tick_nodes(T, pcodeexpr*, $pcchildren(expression, pcpath))
   -- if $tick_expression_children_safe(expression)
-def $tick_expression_body(T, pcodeexpr*, pcpath, expression) = T[.DEPENDENCY = ("tick declaration or callable in an unmodeled expression compilation order")] -- otherwise
+def $tick_expression_raw(T, pcodeexpr*, pcpath, expression) = T[.DEPENDENCY = ("tick declaration or callable in an unmodeled expression compilation order")] -- otherwise
 
 def $tick_nodes(T, pcodeexpr*, eps) = T
 def $tick_nodes(T, pcodeexpr*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $tick_nodes($tick_node(T, pcodeexpr*, pcpath, pcnode), pcodeexpr*, pcoccurrence*)
@@ -238,12 +292,35 @@ def $tick_if_tail(T, pcodeexpr*, pcpath, n, (NStmtElseIf expression (SEQUENCE st
 ;; Bodies share adjacency even across unselected cases. Only a VAR/TMP subject
 ;; adds a final FREE; constants and CVs leave the final body opcode unchanged.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtSwitch expression (SEQUENCE phpType61*) metadata, b) = $tick_switch_finish(T_bodies, b_free)
-  -- if $tick_switch_free(T.NAMES, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = (b_free)
+  -- if $tick_subject_free(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = (b_free)
   -- if T_subject = $tick_expression(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
   -- if T_conditions = $tick_switch_conditions(T_subject, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType61*)
   -- if T_bodies = $tick_switch_bodies(T_conditions[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType61*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtSwitch expression phpType60 metadata, b) = T[.DEPENDENCY = ("tick switch subject result kind")]
-  -- if $tick_switch_free(T.NAMES, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = eps
+  -- if $tick_subject_free(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = eps
+def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = (false)
+  -- if $tick_compiled_constant(pcodeexpr*, pcpath)
+def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = eps
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath)
+  -- if $tick_switch_unknown(T.NAMES, pcpath, expression)
+def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = (true)
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath) /\ ~$tick_switch_unknown(T.NAMES, pcpath, expression)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = ((pcpath_target, true))
+  -- if $effect_below(pcpath, pcpath_target) /\ pcpath =/= pcpath_target
+  -- if $tick_redirect_node(T, pcpath_target) = (expression_target)
+def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = $tick_subject_free(T, pcodeexpr*, pcpath_target, expression_target)
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath) /\ ~$tick_switch_unknown(T.NAMES, pcpath, expression)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = ((pcpath_target, false))
+  -- if $effect_below(pcpath, pcpath_target) /\ pcpath =/= pcpath_target
+  -- if $tick_redirect_node(T, pcpath_target) = (expression_target)
+def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = (true)
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath) /\ ~$tick_switch_unknown(T.NAMES, pcpath, expression)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = eps /\ $tick_conditional(expression)
+def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = $tick_switch_free(T.NAMES, pcodeexpr*, pcpath, expression)
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath) /\ ~$tick_switch_unknown(T.NAMES, pcpath, expression)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = eps /\ ~$tick_conditional(expression)
+def $tick_subject_free(T, pcodeexpr*, pcpath, expression) = eps -- otherwise
+
 def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = (false)
   -- if $code_expression(pcodeexpr*, pcpath) = ((z, true))
 def $tick_switch_free(pcodename*, pcodeexpr*, pcpath, expression) = (false)
@@ -353,11 +430,11 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, statement, b) = T[.DEPENDENCY = 
 def $pptick_complete(P) = P -- if P.COMPLETION =/= PPCNORMAL
 def $pptick_complete(P) = P
   -- if P.COMPLETION = PPCNORMAL
-  -- if T = $tick_named_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES))
+  -- if T = $tick_code_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES), $compiled_redirects(P.REDIRECTS))
   -- if T.DEPENDENCY = eps
 def $pptick_complete(P) = $ppunsupported(P, text)
   -- if P.COMPLETION = PPCNORMAL
-  -- if T = $tick_named_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES))
+  -- if T = $tick_code_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES), $compiled_redirects(P.REDIRECTS))
   -- if T.DEPENDENCY = (text)
 
 ;; Each source instance keeps its own canonical marker plan. Dynamic file/eval
@@ -368,7 +445,7 @@ def $tick_marker_at(ptickmarker :: ptickmarker_tail*, pcpath) = $tick_marker_at(
 def $tick_source_plan(S, n) = (T)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if T = $tick_named_plan(pcunit.AST, pcode.EXPRESSIONS, pcode.NAMES)
+  -- if T = $tick_code_plan(pcunit.AST, pcode.EXPRESSIONS, pcode.NAMES, pcode.REDIRECTS)
   -- if T.DEPENDENCY = eps
 def $tick_source_plan(S, n) = eps -- otherwise
 def $tick_marker(S, porigin) = $tick_marker_at(T.MARKERS, pcpath)
@@ -843,6 +920,24 @@ def $tick_functions(pcnode) = $tick_function_nodes($pcchildren(pcnode, eps)) -- 
 def $tick_function_nodes(eps) = false
 def $tick_function_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_functions(pcnode) \/ $tick_function_nodes(pcoccurrence*))
 
+def $tick_conditional(NExprTernary expression_cond phpType5 expression_false metadata) = true
+def $tick_conditional(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata) = true
+def $tick_conditional(NExprBinaryOpBooleanOr expression_1 expression_2 metadata) = true
+def $tick_conditional(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = true
+def $tick_conditional(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) = true
+def $tick_conditional(expression) = false -- otherwise
+def $tick_logical(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata) = true
+def $tick_logical(NExprBinaryOpBooleanOr expression_1 expression_2 metadata) = true
+def $tick_logical(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = true
+def $tick_logical(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) = true
+def $tick_logical(expression) = false -- otherwise
+
+def $tick_expression_children_safe(NExprArray phpType12 metadata) = false
+def $tick_expression_children_safe(NExprTernary expression_cond phpType5 expression_false metadata) = false
+def $tick_expression_children_safe(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata) = false
+def $tick_expression_children_safe(NExprBinaryOpBooleanOr expression_1 expression_2 metadata) = false
+def $tick_expression_children_safe(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = false
+def $tick_expression_children_safe(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) = false
 def $tick_expression_children_safe(NExprAssign (NExprVariable (BYTES text) metadata_var) expression metadata) = true
 def $tick_expression_children_safe(NExprFuncCall phpType19 phpType6 metadata) = true
 def $tick_expression_children_safe(NExprNew phpType28 phpType6 metadata) = false
@@ -852,8 +947,8 @@ def $tick_expression_children_safe(NExprYieldFrom expression metadata) = false
 def $tick_expression_children_safe(expression) = ~$tick_functions(expression) -- otherwise
 
 ;; These constructors have a direct emitter or the ordinary compiler's exact
-;; constant operand plus retained-effect projection. Conditional elision, void,
-;; pipe, match and wider opcode combinations require separate placement summaries.
+;; constant operand plus retained-effect projection. Conditional placement uses
+;; its compiler receipts above; void/pipe and wider combinations remain partial.
 def $tick_expression_opcode(NExprArray phpType12 metadata) = true
 def $tick_expression_opcode(NExprArrayDimFetch expression phpType5 metadata) = true
 def $tick_expression_opcode(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = true
