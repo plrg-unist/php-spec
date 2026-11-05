@@ -1,0 +1,302 @@
+{
+  "scope": "CLASS175: attribute/hook-free ordinary anonymous formals share named signature/promotion compilation and source-owned constructor prologues. Values/defaults, reference type sources, readonly refusal, private keys, eval/self identities and compile/link order are covered; wider contexts remain partial.",
+  "implementation": {
+    "base": "aec5a632d65d8687b7258b6ce6705f92a7b7858d",
+    "admission_cut": "9f17a02f2f5df1b1733091c57ba328ae5ed07ae6",
+    "semantic_cut": "93c14774d22d60c3c28823be02c23ad190b91670",
+    "engine_routes": [
+      "Zend/zend_compile.c::zend_compile_params (parameter checks, promoted declarations and prologue assignments)",
+      "Zend/zend_compile.c::zend_compile_prop_decl (distinct ordinary final/private group check)",
+      "Zend/zend_execute.c and zend_object_handlers.c (property/reference type constraints and readonly reference acquisition)",
+      "Zend/zend_compile.c::zend_get_function_declaration and optional-before-required deprecation formatting"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "adapter_sha256": "58108446eb5cc68533a0cc786beb09795eb32b6842b29d54d6efa07a8de10a21",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "mode": "Strict SL elaboration, algorithmic checks and structuring; serial CPU2 actors with stable inputs and full child reap"
+  },
+  "inputs": {
+    "spec/semantics/10-bytes.watsup": "dd0c5593680189da93b640d6f69319249c73775a4b34fa8f2be2a4e53e540f42",
+    "spec/semantics/16-static-types.watsup": "1a073a078c289e0f7031668680822a9126820e3ecb10e9e164f44d8b0666cdf3",
+    "spec/semantics/17-signatures.watsup": "63c875ea5339f66e20ab5fcee6650e25c3ac84505b1c27d9a5881af197a2cd4e",
+    "spec/semantics/35-scalar-operations.watsup": "81ff18c6286ff077bb11a61fa86c57e25b4e617f7c0bf6b6954dab046526af2e",
+    "spec/semantics/36-arrays.watsup": "7f9a95289eece753683495250f812cb9e46092e75ada93b61d2b45255ec63f7c",
+    "spec/semantics/141-method-compiler.watsup": "c11a8c0c309f6ed5cf1255eee5a05d92479c3aab51f618e5532f78cb49127f9e",
+    "spec/semantics/383-anonymous-classes.watsup": "e989cf764b58100f6d628f5cffa2330b2c39a79c2508f133f769d3dcd7a07f64",
+    "spec/semantics/modules.json": "743339812651b2c1317ae062abe926ea0ff797f611d9b516a385f627edf2f255",
+    "tests/semantics/anonymous_promotion_cases.json": "1539bad0bcde19a27b959eca7c803fe0598c3403560c86e13ce13f4eda61550c",
+    "tests/semantics/anonymous_promotion_protocol.py": "5f4ff65ccf744ec1793640f232c707b25c039e3a247214a2baf887e387b240e2",
+    "tests/semantics/anonymous_promotion_review_protocol.py": "87462de8c0792212ce566530dc51f7bf47532bb5142c3c65d91d69c58d67aad0",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "decisions": [
+    "Replace the formal FLAGS0 restriction with the shared supported nonstatic property predicate, retaining attribute/hook fences. Ordinary signatures own promotion-outside-constructor errors; the method/property compiler owns variadic, duplicate and forbidden-property-type errors. No new promotion engine or flag list is introduced.",
+    "Parameter defaults remain parameter defaults. Promoted descriptors retain actual NParam origins and full private keys; source-authenticated prologue tasks store received values before the body and attach reference constraints to the actual sent cell. Readonly reference acquisition fails before the body.",
+    "Pinned PHP8.5.10 accepts final/private promotion through its parameter route, which bypasses the ordinary property-group check. Preserve that native-normal behavior and the ordinary declaration rejection; this is not an intentional divergence or an asserted engine bug.",
+    "Clip only forbidden-property-type OWNER, duplicate promoted-property class and the complete optional-warning callable operand. Stored names/types/keys and psfunctionname remain full. Relocate the existing pure c_string helper from35/36 to10, alpha-renaming its local nat binder to10's octet for independent type-prefix use; its equations are unchanged."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 434,
+      "revision": "93c14774d22d60c3c28823be02c23ad190b91670",
+      "numeric": [
+        ".tools/class175-artifacts/strict1.numeric.json",
+        "4404c0483f43438adf7b27899cea0d88258002a4d5cb033bf55059983bb5270e"
+      ],
+      "supervisor": [
+        ".tools/class175-artifacts/strict-standalone-source-rest1.json",
+        "a88f6979069a38d62d9d804a47f4518f37a08dbfac114209c578d7a898a90190"
+      ],
+      "qualification": "The strict numeric prefix completed true newline/empty stderr/exit0 with stable inputs; the enclosing batch later failed in standalone fixture parsing, before running any remaining source. The batch remains failed."
+    },
+    "sources": {
+      "exact_agreements": 15,
+      "normal": 8,
+      "php_error": 1,
+      "static_rejection": 6,
+      "first_revision": "822ca3b66e853fa4b438d5a15778dd941d6cc67e",
+      "remaining_revision": "93c14774d22d60c3c28823be02c23ad190b91670",
+      "compatibility": "The first values/default/COW source precedes only the local c_string binder alpha-renaming; all equations/diagnostic/admission behavior are identical. The other14 originals and all reached-state fixtures use the final self-contained helper.",
+      "supervisors": [
+        [
+          ".tools/class175-artifacts/source-values1.json",
+          "4abd02b205ba1f927b10014200f2138c5cfa65a63f47abaf8caecce1ac3817db"
+        ],
+        [
+          ".tools/class175-artifacts/source-rest1.json",
+          "46856180acc92976d1aff68dc644e886a3a28e518232658ca1105bda3b637311"
+        ]
+      ],
+      "reports": {
+        "promotion-values-defaults-and-local-array-cow": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-ujltneb5/report.json",
+          "b6108ff9b13317a124383cb50deb5e897654fa7e2957317eb2d3d3928cfe2580"
+        ],
+        "promotion-reference-alias-and-type-source": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-1gbgx98e/report.json",
+          "bf2c3155158bf6625c89e70433f0d73f567aaccddc68c5d105fad7a05601a3a1"
+        ],
+        "promotion-readonly-default-and-constructor-reentry": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-sdtwwqd3/report.json",
+          "e7c8d100db42566a9066b688749193fe0c1d3996a463584cad9a0efbfa78d932"
+        ],
+        "promotion-private-set-and-writable-final": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-ruwfpukp/report.json",
+          "57bd9ffc185f308fcbf4c1f0476774e91b090fe25ff3ccffc8eecd00762d27dd"
+        ],
+        "promotion-private-parent-slot-identity": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-219ifrr2/report.json",
+          "2eb0385bdf4f0caed66339b77e74b82732f26985cdc05ef9145ca8d3dfedf885"
+        ],
+        "promotion-eval-recompiled-values-and-self-scopes": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-ocswigzq/report.json",
+          "9cdb398c06c9af9a6c94d9e7a568566034f6df1f93d8d71316b372adbf314e3c"
+        ],
+        "promotion-readonly-reference-stops-before-body": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-tevqhfcl/report.json",
+          "ff2a09ba6ce38ac23c22eb95c5695a294116ed8e7fc812f9f5177ddcdcce1b3b"
+        ],
+        "promotion-outside-constructor-warning-before-fatal": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-q584bg41/report.json",
+          "39846af91abbeba765575c511a2dbdd668f3c2ccc0a4320d67644bf95741ccdd"
+        ],
+        "promotion-variadic-compile-error": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-3zcno_nl/report.json",
+          "086b1c68c9be7c759b1ceaa293ca17adfe2f8d358371036e2890d309f25a4951"
+        ],
+        "promotion-duplicate-own-property-compile-error": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-uv393zna/report.json",
+          "59b5aa00f8f1c76ef2d804029fad0b0437421b83722b00fb455a133d524b33d8"
+        ],
+        "promotion-callable-property-type-compile-error": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-su8enrh0/report.json",
+          "cd3e4a1d8e6c6850851b025e43e8998e0713e806ae009c949b7ac548abc9e3cc"
+        ],
+        "promotion-wrong-parameter-default-type-compile-error": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-tyeanm8f/report.json",
+          "1442167135963c0822981810309c7ff63cce77160cf8e0b340b1e5e9b962e319"
+        ],
+        "promotion-final-private-native-order": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-74ef2md9/report.json",
+          "327150cbbc150481e82a7255be186daacdd2fb8e24773489ba35f31fdcd1d7da"
+        ],
+        "promotion-untyped-readonly-compile-error": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-z8zbh8zc/report.json",
+          "cf788077e4ef30b0f3387c5631443ebd1189a43f00f5545530c4fd313f6a57f2"
+        ],
+        "promotion-parent-final-conflict-before-argument": [
+          ".tools/class175-artifacts/recovered-private-raw/method-runtime-moscz2d1/report.json",
+          "9a259f3a01b5e84e8c42623e3c15f7a314ac48d5b925bdfc87363d92dde82235"
+        ]
+      }
+    },
+    "author": {
+      "revision": "9ed1b810b60cbd296022ce514b50f50e7efed122",
+      "conditions": 178,
+      "groups": {
+        "value_default_prologue_private_key_and_cow": 71,
+        "reference_alias_constraint_and_source_forgery": 55,
+        "readonly_reference_refusal_before_body": 52
+      },
+      "result": "true newline/empty stderr/exit0; stable inputs and fully reaped",
+      "supervisor": [
+        ".tools/class175-artifacts/author-three-state1.json",
+        "36b22a7c6a13df052430bad6a414cd6c5cb7161b8b159924b1d7968311af3ab5"
+      ],
+      "report": [
+        ".tools/class175-artifacts/recovered-private-raw/anonymous-promotion-t9fvbxbh/report.json",
+        "99bb041c1dba62d08dbc27c8f2876aeb77e6a23a3b2f2c2d4444308f796ae772"
+      ]
+    },
+    "independent": {
+      "revision": "1ee0632ca9fe878932833d57998ace3008a4f838",
+      "production_equivalent": "93c14774d22d60c3c28823be02c23ad190b91670",
+      "conditions": 203,
+      "groups": {
+        "parent_private_param_origins_slots_and_keys": 54,
+        "two_eval_promotions_and_self_receives": 76,
+        "native_final_private_promotion": 46,
+        "deprecation_before_compile_fatal": 5,
+        "parent_final_before_argument_and_allocation": 22
+      },
+      "result": "true newline/empty stderr/exit0; stable inputs and fully reaped",
+      "supervisor": [
+        ".tools/class175-artifacts/review-five-state3.json",
+        "bd5a01bcb1d180f4303c5382e6dc616824b2160b90ba553e5a5f4a918d33e77d"
+      ],
+      "report": [
+        ".tools/class175-review-artifacts/recovered-state/class175-review-state-jbpp85md/report.json",
+        "9d3a0c050d931b9f013f7c4cc44b9b550a73b07e84b5fee0bb462e83f789b748"
+      ]
+    },
+    "standalone_diagnostics": {
+      "conditions": 10,
+      "scope": "Focused message/helper availability only: type prefix has php+10+16; signature prefix additionally includes actual00-numeric before10 for17's existing nat binder, and17. No runtime/storage modules or function stubs.",
+      "types": {
+        "conditions": 5,
+        "revision": "25ac277a6a3702b66abf754caf718c0b36fa104d",
+        "report": [
+          ".tools/class175-artifacts/standalone6.json",
+          "e33d4572f552315fa45826efcd0f38bf759a30e44deba980664a838498286aea"
+        ],
+        "record": "types",
+        "observed": "exit0/true newline/stable; exact two unused-declaration warnings",
+        "original_component_passed": true,
+        "enclosing_batch_passed": false
+      },
+      "signatures": {
+        "conditions": 5,
+        "revision": "9ed1b810b60cbd296022ce514b50f50e7efed122",
+        "report": [
+          ".tools/class175-artifacts/standalone8.json",
+          "bb6dcc6de609680a20bb4c143c0923eaaec2ac4562629ea6234d9e4a1e1edb89"
+        ],
+        "record": "signatures",
+        "observed": "exit0/true newline/stable; exact six unused-declaration warnings",
+        "original_component_passed": false,
+        "enclosing_batch_passed": false,
+        "adjudication": "Accepted existing successful numeric component after independent exact warning-policy review. Original recorder rejected an incomplete two-warning allowlist; its false result/exit1 and stderr remain unchanged. No semantic rerun or originally-passing/empty-stderr claim."
+      },
+      "warning_allowlist": [
+        "16-static-types.watsup:14 ptrait_scope",
+        "16-static-types.watsup:15 ptrait_context",
+        "17-signatures.watsup:28 builtin_attributes",
+        "17-signatures.watsup:29 builtin_callable_groups",
+        "17-signatures.watsup:30 nodiscard_name",
+        "17-signatures.watsup:31 nodiscard_attribute"
+      ],
+      "warning_policy": "Only the exact path-anchored no-clauses-defined warnings in the consumed prefix are allowed. These PTKNOWN/message fixtures never invoke those forward declarations. Retain stderr verbatim; reject every other warning/error."
+    }
+  },
+  "failures_preserved": [
+    {
+      "cause": "Reviewer1 propertyid-union value was used where origin_node requires porigin; reviewer2 first bound the receiver under a conjunction. Both failed during fixture elaboration before state execution, receive zero agreement credit and were narrowly corrected without production changes.",
+      "supervisors": [
+        [
+          ".tools/class175-artifacts/review-five-state1.json",
+          "a12e8dbcd0c63c4a99bc2ebca980480a247a42fc4a598fa78a1ff60d64622c42"
+        ],
+        [
+          ".tools/class175-artifacts/review-five-state2.json",
+          "5bcbcb1fc9654e302c823571d677d3f7284266b55842709d9b5a326c359907fa"
+        ]
+      ],
+      "recovery": [
+        ".tools/class175-review-artifacts/recovered-state/locations.json",
+        "4042fb4d9eddb44ad0a887cbd4f80423f15af6b52561ad3d1022f082904e7372"
+      ]
+    },
+    {
+      "cause": "Auxiliary standalone attempts retain fixture-construction/parser, recorder-name collision, incomplete unused-warning allowlist and legacy four-file signature nat-dependency failures. Failed batches remain failed and confer no source agreement. Only the explicitly adjudicated completed strict/types6/signatures8 components above receive their scoped credit; no raw report was edited.",
+      "reports": [
+        [
+          ".tools/class175-artifacts/standalone1.json",
+          "492a87fa497fbb95ecf2c7c0b7bfa1c500bd8c24a55fde6ef6b5d2ef7115f9e5"
+        ],
+        [
+          ".tools/class175-artifacts/standalone2.json",
+          "afdc6b9af1e6dfe22683fea7cf1987b46a07df61a22cfc11eff06a996d483731"
+        ],
+        [
+          ".tools/class175-artifacts/standalone3.json",
+          "0ab43afc19bb84a39e0c641016eea86ae9a51d5c6ab264a40d617001328465be"
+        ],
+        [
+          ".tools/class175-artifacts/standalone4.json",
+          "e686ea7e87e2d610c676275e305a1e07a5fb8ea6de67290c7a801c2743f07a8d"
+        ],
+        [
+          ".tools/class175-artifacts/standalone5.json",
+          "aa8b4043c4ed72d45ab935a8ab9324f3501b6b800c38d91e5d7fbf007a8eaa0c"
+        ],
+        [
+          ".tools/class175-artifacts/standalone6.json",
+          "e33d4572f552315fa45826efcd0f38bf759a30e44deba980664a838498286aea"
+        ],
+        [
+          ".tools/class175-artifacts/standalone7.json",
+          "3d497f4717413582ec7319c692b0280ab73fec6bb9b838449a6acaa1663f8f4e"
+        ],
+        [
+          ".tools/class175-artifacts/standalone8.json",
+          "bb6dcc6de609680a20bb4c143c0923eaaec2ac4562629ea6234d9e4a1e1edb89"
+        ]
+      ],
+      "recovery": "All standalone_selected*.py, standalone-*.watsup, stdout/stderr and supervisor files remain under .tools/class175-artifacts. In v2 the inner report occupied the outer supervisor filename; that original inner report and child stderr remain retained, and the outer collision was reported in the tool execution."
+    }
+  ],
+  "recovery": {
+    "private_raw": [
+      ".tools/class175-artifacts/recovered-private-raw/locations.json",
+      "3967068a39cfa773ebeca188663385575c83996b9eb6413ffce1a85dd8e98ac8"
+    ],
+    "reviewer_raw": [
+      ".tools/class175-review-artifacts/recovered-state/locations.json",
+      "4042fb4d9eddb44ad0a887cbd4f80423f15af6b52561ad3d1022f082904e7372"
+    ],
+    "native_manifest": [
+      ".tools/class175-review-artifacts/native-manifest.json",
+      "e84478db1ec3bff71ce5c2d2b4ff079adc6efc215e2aed41385decae6805b4de"
+    ],
+    "commands": "Supervisors and component reports bind exact commands, cwd/revision, consumed hashes, exits/streams and stability. Recovery indices map original paths to moved unchanged raw roots. Standalone component reports retain their precise prefix lists and original warning bytes."
+  },
+  "review": {
+    "reviewer": "classes_review_current",
+    "decision": "accepted",
+    "current_tail": "dd62e148ad981708f9e038eb13e48af285340417",
+    "compatibility": "Actual aec5-to-dd62 parent delta reviewed once. Accepted Main_program/CLI paths preserve their earlier behavior; new446 handles rejected-main only, while these static errors are semantic compilation failures. Modules148/268 require Closure::call-copy exit markers and257 requires DESTRUCTOR_C_RETURN, all absent. With no WeakReference/WeakMap associations,444 DETACHED/notify paths reduce to prior field release. Modules368/420, including A103 Boolean guard, require copied INI/iterator receipts absent here. No shared constructor/property/signature/source-admission edits. Retain original tested adapter and434-module identities; current435/rejection compatibility is actual-delta review, without replay or a bridge receipt."
+  },
+  "remaining": [
+    "Attributes/hooks and nonpublic anonymous constructor admission.",
+    "Wider signature/default/member/lifetime combinations and diagnostic consumers not exercised by these15 originals."
+  ]
+}

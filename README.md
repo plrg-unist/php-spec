@@ -4983,10 +4983,20 @@ eval compilations keep separate static cells. Equivalent read/set visibility
 normalizes away; private(set) is implicitly final, while final properties remain
 writable. Setter permission uses lexical scope and error display uses called
 scope. Link conflicts precede arguments; declaration errors precede execution.
-Only exercised diagnostic class operands use C-string display. Attributes, hooks,
-promotion and wider contexts remain partial.
+Only exercised diagnostic class operands use C-string display. Attributes, hooks
+and wider contexts remain partial.
 [Property review](coverage/semantics/anonymous-properties-review.json),
 [modifier review](coverage/semantics/anonymous-property-modifiers-review.json).
+
+Public anonymous constructors also share ordinary parameter promotion. Values and
+defaults initialize fields before the body; later value-parameter writes stay
+local, while reference promotion attaches the property's type source to the real
+cell. Readonly reference acquisition fails before the body. Recompiled eval units
+keep separate promoted values and self scopes. Compiler diagnostics preserve
+native warning/error order and C-string display. The pinned engine accepts
+final/private promotion through its separate parameter route; ordinary property
+groups retain their rejection. Attributes, hooks and wider constructor/signature
+contexts remain partial. [Promotion review](coverage/semantics/anonymous-promotion-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

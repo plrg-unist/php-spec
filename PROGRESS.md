@@ -919,6 +919,16 @@ two author fixture corrections retain zero credit. Attributes/hooks/promotion
 and wider contexts remain partial.
 [Review](coverage/semantics/anonymous-property-modifiers-review.json).
 
+CLASS175 shares ordinary parameter promotion with anonymous methods/constructors.
+Promoted values/defaults precede the body; references attach their property type
+source to the actual cell. Full NParam/private-key and eval/self identities,
+readonly reference refusal and native final/private acceptance are preserved.
+Fifteen exact originals, strict434, 178 author and 203 independent reached
+conditions pass; ten focused diagnostic checks retain qualified unused-forward
+warnings. Original fixture/recorder failures remain separate, with completed
+components explicitly adjudicated. Attributes/hooks/nonpublic constructors and
+wider contexts remain partial. [Review](coverage/semantics/anonymous-promotion-review.json).
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
