@@ -73,12 +73,28 @@ review.CASES = {
             'S_done.EVENTS = [OUTPUT $ptascii("I"), OUTPUT $ptascii("V"), OUTPUT $ptascii("|"), OUTPUT $ptascii("T"), OUTPUT $ptascii("G"), OUTPUT $ptascii("T"), OUTPUT $ptascii("Z")]',
         ],
     },
+    'empty-match-source-plan-has-no-phantom-switch-free-marker': {
+        'source': Path(__file__).with_name('tick_match_empty.php').read_text(),
+        'stage': 'S.CODE = [pcode] -- if S.EVENTS = eps',
+        'checks': [
+            'pcpath_switch = [PCINDEX 2, PCFIELD 0, PCINDEX 0, PCFIELD 1, PCINDEX 0]',
+            '$origin_node(S.SOURCES, PORIGIN pcode.UNIT pcpath_switch) = (NStmtSwitch expression_match phpType60 metadata_switch)',
+            'expression_match = NExprMatch expression_subject (SEQUENCE eps) metadata_match',
+            '$code_expression(pcode.EXPRESSIONS, pcpath_switch ++ [PCFIELD 0]) = ((z, false))',
+            '$tick_switch_free(pcode.NAMES, pcode.EXPRESSIONS, pcpath_switch ++ [PCFIELD 0], expression_match) = (false)',
+            '$tick_source_plan(S, pcode.UNIT) = (T)', 'T.DEPENDENCY = eps',
+            '$tick_marker(S, PORIGIN pcode.UNIT pcpath_switch) = eps',
+            *valid('S'), *PAUSE,
+            'S_done.EVENTS = [OUTPUT $ptascii("U"), OUTPUT $ptascii("Z")]',
+        ],
+    },
 }
 
 DERIVED_GUARDS = {
     'selected-callable-inherits-later-condition-frequency': 1,
     'table-result-assignment-restores-marker-line-after-last-arm': 1,
     'unselected-arm-declarables-survive-generator-pause': 0,
+    'empty-match-source-plan-has-no-phantom-switch-free-marker': 0,
 }
 
 
