@@ -15,7 +15,7 @@ COMMON = [
     'S.CURRENT = eps /\\ S.FRAMES = eps /\\ S.ITERATORS = eps',
     'S_global = $global_table_view(S)', 'H = $heap_graph(S)', '$heap_valid(H)',
     'S_endpoint = S[.TODO = eps][.COMPLETION = pexecutorqueue.COMPLETION][.ORIGIN = pexecutorqueue.ORIGIN]',
-    '$executor_free_endpoint(S_endpoint)', '$executor_allocator_fast(S.REQUEST)',
+    '$executor_free_endpoint(S_endpoint)',
     'pexecutorfree_start = {HEAP H, MARKED eps, DETACHED eps, FAILED eps, UNKNOWN false}',
 ]
 FINISH = [
@@ -39,7 +39,7 @@ def fatal(classname):
         'preqbytes_fatal = $ptascii("Fatal error: ") ++ ptbytes_fatal ++ $ptascii(" in Unknown on line 0") ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $ptascii("#0 {main}") ++ [10]',
         'S_done.EVENTS = S.EVENTS ++ [STDERR preqbytes_fatal]']
 
-SINGLE = [*COMMON,
+SINGLE = [*COMMON, '$executor_allocator_fast(S.REQUEST)',
     *binding('studyMap', 'n_map_cell', 'n_map'),
     *binding('studyKey', 'n_key_cell', 'n_key'),
     'S.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE (POBJECT n_a), BEFORE eps, ORDER 1})',
@@ -89,7 +89,7 @@ FIELD = [*SINGLE,
     '$heap_children(HOBJECT n_key, pexecutorfree_key.HEAP.EDGES) = eps',
     *FINISH, *fatal('StudyMapValueB'),
 ]
-ORDER = [*COMMON,
+ORDER = [*COMMON, '$executor_allocator_fast(S.REQUEST)',
     *binding('notifyFirst32', 'n_first_cell', 'n_first'),
     *binding('notifySecond32', 'n_second_cell', 'n_second'),
     *binding('notifyKey32', 'n_key_cell', 'n_key'),
@@ -150,7 +150,7 @@ ORDER = [*COMMON,
     '$heap_owners(pexecutorfree_bad.HEAP, HOBJECT n_key) = 2',
     *FINISH, *fatal('GcNotifySecond32'),
 ]
-ALIAS = [*COMMON,
+ALIAS_BINDINGS = [*COMMON,
     *binding('notifyAliasMap32', 'n_map_cell', 'n_map'),
     *binding('notifyAliasKey32', 'n_key_cell', 'n_key'),
     '$lookup(S_global.ENV, $ptascii("notifyAlias32")) = (n_alias)',
@@ -165,6 +165,8 @@ ALIAS = [*COMMON,
     '$heap_owners(H, HOBJECT n_map) = 1 /\\ $heap_owners(H, HOBJECT n_key) = 1',
     '$(S.DESTRUCTION.HANDLES[n_map] < S.DESTRUCTION.HANDLES[n_key])',
     '$(S.DESTRUCTION.HANDLES[n_key] < S.DESTRUCTION.HANDLES[n_value])',
+]
+ALIAS = [*ALIAS_BINDINGS, '$executor_allocator_fast(S.REQUEST)',
     'pexecutorfree_value = $executor_free_force(S_endpoint, pexecutorfree_start, n_value)',
     'pexecutorfree_value.HEAP = H',
     'pexecutorfree_key = $executor_free_force(S_endpoint, pexecutorfree_value, n_key)',
@@ -187,9 +189,32 @@ ALIAS = [*COMMON,
     '$heap_owners(pexecutorfree_done.HEAP, HOBJECT n_value) = 1',
     *FINISH, 'S_done = S_endpoint', 'S_done.COMPLETION = NORMAL',
 ]
+SLOW = [*ALIAS_BINDINGS,
+    '~$executor_allocator_fast(S.REQUEST)',
+    'pexecutorfree_tables = $executor_free_tables(S_endpoint, pexecutorfree_start)',
+    '~pexecutorfree_tables.UNKNOWN /\\ pexecutorfree_tables.FAILED = eps',
+    'pexecutorfree_tables.DETACHED = [(n_map, n_key)]',
+    '(HOBJECT n_map) <- pexecutorfree_tables.MARKED',
+    '(HOBJECT n_key) <- pexecutorfree_tables.MARKED',
+    '(HOBJECT n_value) <- pexecutorfree_tables.MARKED',
+    '$heap_children(HOBJECT n_map, pexecutorfree_tables.HEAP.EDGES) = eps',
+    '$heap_children(HCELL n_alias, pexecutorfree_tables.HEAP.EDGES) = eps',
+    '$heap_owners(pexecutorfree_tables.HEAP, HCELL n_alias) = 0',
+    '$heap_owners(pexecutorfree_tables.HEAP, HOBJECT n_value) = 0',
+    '$heap_owners(pexecutorfree_tables.HEAP, HOBJECT n_key) = 0',
+    '$heap_owners(pexecutorfree_tables.HEAP, HOBJECT n_map) = 0',
+    'pexecutorfree_done = $executor_free_walk(S_endpoint, pexecutorfree_tables, S.DESTRUCTION.NEXT)',
+    '~pexecutorfree_done.UNKNOWN /\\ pexecutorfree_done.FAILED = eps',
+    *FINISH, 'S_done = S_endpoint', 'S_done.COMPLETION = NORMAL',
+]
 review.CASES = {name: {'source': sources.family.CASES[name].decode(), 'stage': STAGE, 'checks': checks}
     for name, checks in [('notify-before-fields', NOTIFY), ('retained-value-before-field', FIELD),
                          ('registration-order', ORDER), ('shared-reference-value', ALIAS)]}
+review.CASES['shared-reference-value-slow'] = {
+    'source': sources.family.CASES['shared-reference-value'].decode(), 'stage': STAGE,
+    'request_env': [(b'LC_ALL', b'C'), (b'TZ', b'UTC'), (b'FIRST', b'one'), (b'USE_ZEND_ALLOC', b'0')],
+    'checks': SLOW}
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case', action='append', default=[])
