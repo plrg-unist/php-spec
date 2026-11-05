@@ -318,6 +318,7 @@ def $getter_prefix(phpType7*) = false -- otherwise
 
 dec $getter_call_valid(pstate, pgettercall) : bool
 def $getter_call_valid(S, pgettercall) = true
+  -- if ~$generator_api_getter(pgettercall.METHOD)
   -- if S.ORIGIN = (pgettercall.SITE)
   -- if $getter_selected(S, pgettercall)
   -- if pgettercall.SITE = PORIGIN n pcpath
