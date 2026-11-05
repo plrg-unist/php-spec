@@ -150,6 +150,18 @@ lifetime model, not raw refcount equality; wider receive/mapping and bailout
 paths remain partial.
 [Cancellation review](../../coverage/semantics/generator-call-cancellation-review.json).
 
+I100 uses the same raw forwarding cursor for copied value and reference arguments.
+An unknown or overwritten ordinary named target throws after the successfully
+prepared prefix, retaining the hidden copy before ordered argv/API cleanup.
+The generated Error's trace owns raw argument values until the Error is released;
+it adds no implicit SOURCE or old-receiver owner beyond those arguments.
+Required named holes retain the copy
+at the authentic existing fake-receive failure, preserving default priority and
+callee/API traces. Frame cleanup drops its prepared values before the API cursor
+releases FIRST, RAW and SOURCE. Later receives, default throws and bailout paths
+remain partial; the ordinary non-Generator dispatch is unchanged.
+[Named-failure review](../../coverage/semantics/generator-call-mapping-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

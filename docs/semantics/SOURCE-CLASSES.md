@@ -850,8 +850,20 @@ assignment. Cleanup destructors have an internal site followed by the actual
 records seven exact exits, seven explicit controls, strict433 and 247 independent
 guards. Pending output in an active Fiber caller chain refuses explicitly;
 unrelated dormant Fibers do not trigger an early commit. Their force-close
-protocol, cleanup throws or repeated exits, owning rebound values and newly
-attached type sources remain partial.
+protocol remains partial.
+Local cleanup throws replace pending exit; the name commits before a caller
+receives the exception.
+Compiled CV order preserves each shared-wrapper decrement; the remaining
+receiver release and real C pin stay distinct owners until their respective
+stages finish. Further local throws retain the ordinary previous-exception
+chain. Integer exit status survives a catch and later string exit; another
+integer exit replaces it. The
+[cleanup review](../../coverage/semantics/enum-is-callable-output-cleanup-review.json)
+records eight new/promoted agreements, one affected enum exit-status source,
+three explicit controls, strict433 and independent 256+47 guards at separate cuts.
+Repeated
+cleanup exits refuse before generic unwinding can discard the C return.
+Owning rebound values and newly attached type sources remain partial.
 Native raw overwrite can retain an abandoned count for a destructor-created
 object until the store sweep; it cannot be modeled as a second checked write.
 Variable array inputs remain outside third-output name authentication.

@@ -3535,6 +3535,12 @@ source; earlier cuts retain their inputs.
 Wrappers also satisfy nominal `WeakReference` argument and property types after
 their referent retires; diagnostics retain the actual internal class name.
 
+GC30 adds quiet inactive WeakReference unregister and standard-object notification.
+Observer retirement changes the terminal weak-association view without adding a
+referent owner. Real handle order preserves fast-shutdown field shielding and the
+existing inactive public-destructor fatal. WeakMap notification and weak custom
+hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
+
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
 lane uses a `stdClass` leaf key and ordinary leaf value. The map owns
@@ -6860,7 +6866,12 @@ guards. Root VM destructor exits now finish local cleanup before committing the
 name; nested queries preserve exit status and skip result assignment. The
 [exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
 records seven exact exits, seven explicit controls and 247 independent guards.
-Switched Fiber exits, replacement cleanup, owning rebound values, late type
+Local cleanup throws now cancel exit and commit the name before propagation,
+with compiled CV/alias release order and preserved exit status. The
+[cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json)
+records eight new/promoted agreements, one affected enum exit-status source,
+three explicit controls and 256+47 independent guards at separate cuts.
+Switched Fiber exits, repeated cleanup exits, owning rebound values, late type
 sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
@@ -7216,6 +7227,12 @@ catch. Four native originals, three CLI comparisons and two ownership fronts
 (including repeated native output) validate this bounded path; wider receive,
 mapping and bailout contexts remain partial.
 [Cancellation review](coverage/semantics/generator-call-cancellation-review.json).
+
+Ordinary named mapping failures and required named holes now preserve the same
+hidden copies while generated Error traces keep their own argument values.
+Three new originals, two ownership fronts and one affected successful call pass;
+later receive/default errors and bailout paths remain partial.
+[Named-failure review](coverage/semantics/generator-call-mapping-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
