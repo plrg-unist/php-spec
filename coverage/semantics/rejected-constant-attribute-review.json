@@ -1,6 +1,6 @@
 {
   "milestone": "COMP179",
-  "status": "Private implementation validated; final independent acceptance pending.",
+  "status": "Independently reviewed implementation and original-source evidence; ready for guarded integration.",
   "base": "cd7c69889ca0351d4517dc7360e43cfce528b031",
   "branch": "semantics/rejected-constant-attributes-179",
   "production_and_tests": "cc1ad18e8831aad1840b5f89188d7bc77b85d794",
@@ -78,7 +78,9 @@
     "discovery-v2/report.json: confirms the original native/foreign prefix discrepancy and unaffected controls as service discovery only, with zero source-model agreement credit."
   ],
   "review": {
-    "status": "Independent source trace, production/tests and32-row native/service challenge found no defect; final report acceptance pending."
+    "status": "Independent exact CLEAR on production/tests cc1ad18e8 and documentation 474cb6dc9.",
+    "findings": "No production defect found. Zend accepts attributed const_list syntax and checks the multiple-constant restriction in zend_compile_const_decl after parsing. The one-line rejected-only deferral preserves that phase boundary; ordinary parser validation and forbidden function/block const grammar remain active. Maintained fixtures distinguish class/single/unattributed constants, later parser-time modifiers and nonliteral encoding priority.",
+    "evidence": "Reviewer authored and ran the32-row native/worker challenge, then independently decoded and compared every preserved model/native stdout and stderr in sources-v1 and main-v1. All16 dynamic comparisons have normal exit0; all4 main comparisons have native exit255 and modeled source_rejection/php_error exit255. Heads and watched inputs are stable; no process timed out or survived. Production bytes match the earlier independent challenge. Native/helper/schema/adapter/P4 and accepted-source behavior are unchanged."
   },
   "limits": "Trusted native parser replies remain foreign facts. Complete accepted-source attribute compilation, ordinary frontend compiler-phase gaps, broader rejected prefixes, multibyte conversion, portability and full core coverage remain partial. P4/state contracts are unchanged and their existing evidence is not renewed. No paused boundary including COMP88 was approached."
 }
