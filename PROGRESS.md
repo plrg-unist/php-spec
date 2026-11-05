@@ -154,9 +154,17 @@ its Child and the real C cleanup before handler/API release. The hidden copy
 survives through shutdown; fake and real originals agree at exit29/41. Strict435,
 author151/156 and independent joined peer192/197 pass at their recorded cuts.
 Earlier interpreter, compiler, descriptor, timeout and peer fixture
-elaboration failures retain zero credit. Cleanup throws replacing this pending
-exit and wider bailout stay partial.
+elaboration failures retain zero credit. At this cut, a cleanup throw replacing
+the pending exit and wider bailout remained partial.
 [I103 review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
+I104 validates the existing cleanup-throw path: a supplied plain Child exception
+replaces the pending exit before Generator creation. Catch/finally run, cleanup
+frees retval/Child and prepared owners, and a final string exit retains status41.
+The pinned native and unchanged-model source agree; joined reached153/158 checks
+cover the pending transfer, owner counts and shutdown. Aliased throws, repeated
+cleanup exit and wider lifecycle remain open.
+[I104 review](coverage/semantics/generator-call-cleanup-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry

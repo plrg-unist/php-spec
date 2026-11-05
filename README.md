@@ -7410,9 +7410,15 @@ cleanup replacements and bailout contexts remain partial.
 Exit from an owning warning-handler retval now follows its destructor and Child
 cleanup before restoring the handler and releasing prepared/API owners. The
 hidden copied Closure remains through shutdown. Two exact exit comparisons and
-independent reached-state gates pass; a cleanup throw replacing this pending
-exit and wider bailout contexts remain partial.
+independent reached-state gates pass. At this cut, a cleanup throw replacing
+the pending exit and wider bailout contexts remained partial.
 [Owning retval exit review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
+A supplied plain exception thrown by the Child destructor now has pinned source
+and reached-state validation through the same copied warning cleanup. Catch and
+finally run after the exception replaces exit; a final string exit retains
+status 41. The existing rules suffice for this selected case.
+[Cleanup throw review](coverage/semantics/generator-call-cleanup-throw-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
