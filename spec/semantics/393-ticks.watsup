@@ -1,11 +1,16 @@
 ;; Zend compile_stmt/emit_tick: lexical frequency belongs to the file context;
 ;; adjacency belongs to the current op array. Plans are derived, never supplied.
-syntax pticksummary = { FREQUENCY int, LAST bool, LINE int, MARKERS ptickmarker*, DEPENDENCY text?, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES pcoccurrence* }
+syntax pticksummary = { FREQUENCY int, LAST bool, LINE int, MARKERS ptickmarker*, DEPENDENCY text?, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES pcoccurrence*, CLASSES pclassdesc* }
 var T : pticksummary
 
 dec $tick_plan(program, pcodeexpr*) : pticksummary
 dec $tick_named_plan(program, pcodeexpr*, pcodename*) : pticksummary
 dec $tick_code_plan(program, pcodeexpr*, pcodename*, pcoderedirect*) : pticksummary
+dec $tick_full_plan(program, pcodeexpr*, pcodename*, pcoderedirect*, pclassdesc*) : pticksummary
+dec $tick_unit_classes(pclassdesc*, nat) : pclassdesc*
+dec $tick_class_at(pclassdesc*, pcpath) : pclassdesc?
+dec $tick_class_body(pticksummary, pcodeexpr*, pcpath, text, nat, statement*, metadata, bool) : pticksummary
+dec $tick_class_finish(pticksummary, pticksummary, pclassdesc, metadata, bool) : pticksummary
 dec $tick_contains(pcnode) : bool
 dec $tick_contains_nodes(pcoccurrence*) : bool
 dec $tick_statements(pticksummary, pcodeexpr*, pcpath, nat, statement*, bool) : pticksummary
@@ -83,10 +88,19 @@ def $tick_contains_nodes(eps) = false
 def $tick_contains_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_contains(pcnode) \/ $tick_contains_nodes(pcoccurrence*))
 def $tick_plan(program, pcodeexpr*) = $tick_named_plan(program, pcodeexpr*, eps)
 def $tick_named_plan(program, pcodeexpr*, pcodename*) = $tick_code_plan(program, pcodeexpr*, pcodename*, eps)
-def $tick_code_plan(program, pcodeexpr*, pcodename*, pcoderedirect*) = {FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES eps}
+def $tick_code_plan(program, pcodeexpr*, pcodename*, pcoderedirect*) = $tick_full_plan(program, pcodeexpr*, pcodename*, pcoderedirect*, eps)
+def $tick_full_plan(program, pcodeexpr*, pcodename*, pcoderedirect*, pclassdesc*) = {FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES eps, CLASSES pclassdesc*}
   -- if ~$tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(program), eps))
-def $tick_code_plan(program, pcodeexpr*, pcodename*, pcoderedirect*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES $pcwalk($pclist_phpType23($pcprogram(program), eps, 0))}, pcodeexpr*, eps, 0, $pcprogram(program), true)
+def $tick_full_plan(program, pcodeexpr*, pcodename*, pcoderedirect*, pclassdesc*) = $tick_statements({FREQUENCY 0, LAST false, LINE 1, MARKERS eps, DEPENDENCY eps, NAMES pcodename*, REDIRECTS pcoderedirect*, NODES $pcwalk($pclist_phpType23($pcprogram(program), eps, 0)), CLASSES pclassdesc*}, pcodeexpr*, eps, 0, $pcprogram(program), true)
   -- if $tick_contains_nodes($pcfield_phpType23(SEQUENCE $pcprogram(program), eps))
+def $tick_unit_classes(eps, n) = eps
+def $tick_unit_classes(pclassdesc :: pclassdesc_tail*, n) = pclassdesc :: $tick_unit_classes(pclassdesc_tail*, n)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+def $tick_unit_classes(pclassdesc :: pclassdesc_tail*, n) = $tick_unit_classes(pclassdesc_tail*, n) -- otherwise
+def $tick_class_at(eps, pcpath) = eps
+def $tick_class_at(pclassdesc :: pclassdesc_tail*, pcpath) = (pclassdesc)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+def $tick_class_at(pclassdesc :: pclassdesc_tail*, pcpath) = $tick_class_at(pclassdesc_tail*, pcpath) -- otherwise
 
 def $tick_statements(T, pcodeexpr*, pcpath, n, eps, b_top) = T
 def $tick_statements(T, pcodeexpr*, pcpath, n, statement :: statement_tail*, b_top) = $tick_statements($tick_statement(T, pcodeexpr*, pcpath ++ [PCINDEX n], statement, b_top), pcodeexpr*, pcpath, $(n + 1), statement_tail*, b_top)
@@ -99,6 +113,9 @@ def $tick_statement(T, pcodeexpr*, pcpath, statement, b_top) = $tick_emit(T_body
 
 def $tick_early(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata, true) = true
 def $tick_early(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata, true) = true
+def $tick_early(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, true) = true
+def $tick_early(NStmtTrait phpType14 phpType3 phpType23 metadata, true) = true
+def $tick_early(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata, true) = true
 def $tick_early(statement, b) = false -- otherwise
 def $tick_unticked(NStmtBlock phpType23 metadata) = true
 def $tick_unticked(NStmtNop metadata) = true
@@ -505,11 +522,27 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty phpType14 phpType2
   -- if ~$tick_contains(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
   -- if ~$tick_functions(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
 
-;; Class member op arrays share file declarables, but their statement-list does
-;; not execute in the surrounding op array. Wider class/linking placement stays
-;; explicit until its actual emitted-op summaries are supplied.
+;; Completed compiler descriptors distinguish early binding (no main opcode)
+;; from DECLARE_CLASS. Members share file declarables but have their own arrays.
+;; Top declarations bypass compile_stmt's Tick and restore their end line;
+;; conditional declarations emit their real Tick at the header line.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClass (SEQUENCE eps) phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata, b_top) = $tick_class_body(T, pcodeexpr*, pcpath, "class", 5, statement*, metadata, b_top)
+  -- if $tick_class_at(T.CLASSES, pcpath) =/= eps
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtInterface (SEQUENCE eps) phpType3 phpType42 (SEQUENCE statement*) metadata, b_top) = $tick_class_body(T, pcodeexpr*, pcpath, "interface", 3, statement*, metadata, b_top)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtTrait (SEQUENCE eps) phpType3 (SEQUENCE statement*) metadata, b_top) = $tick_class_body(T, pcodeexpr*, pcpath, "trait", 2, statement*, metadata, b_top)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtEnum (SEQUENCE eps) phpType3 phpType50 phpType42 (SEQUENCE statement*) metadata, b_top) = $tick_class_body(T, pcodeexpr*, pcpath, "enum", 4, statement*, metadata, b_top)
+def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, b_top) = $tick_class_finish(T, T_body, pclassdesc, metadata, b_top)
+  -- if $tick_class_at(T.CLASSES, pcpath) = (pclassdesc)
+  -- if pclassdesc.KIND = text
+  -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD n_body], 0, statement*, false)
+def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, b_top) = T[.DEPENDENCY = ("tick class declaration compiler facts")] -- otherwise
+def $tick_class_finish(T, T_body, pclassdesc, metadata, true) = T_body[.LAST = (T.LAST /\ pclassdesc.EARLY)][.LINE = $source_end_line(metadata)]
+def $tick_class_finish(T, T_body, pclassdesc, metadata, false) = T_body[.LAST = false][.LINE = pclassdesc.LINE]
+;; Preserve the old no-fact helper and quiet literal-header class route.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = T.LAST][.LINE = $source_end_line(metadata)]
   -- if T.FREQUENCY = 0 /\ b_top /\ ~T.LAST
+  -- if $tick_class_at(T.CLASSES, pcpath) = eps \/ phpType14 =/= (SEQUENCE eps)
+  -- if $tick_inputs_clean(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 (SEQUENCE statement*) metadata, 5)
   -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 5], 0, statement*, false)
 def $tick_statement_body(T, pcodeexpr*, pcpath, statement, b) = T[.DEPENDENCY = ("tick opcode placement for this statement")]
   -- otherwise
@@ -517,11 +550,11 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, statement, b) = T[.DEPENDENCY = 
 def $pptick_complete(P) = P -- if P.COMPLETION =/= PPCNORMAL
 def $pptick_complete(P) = P
   -- if P.COMPLETION = PPCNORMAL
-  -- if T = $tick_code_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES), $compiled_redirects(P.REDIRECTS))
+  -- if T = $tick_full_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES), $compiled_redirects(P.REDIRECTS), $tick_unit_classes(P.CLASSES, P.FOLD.SOURCE.ID))
   -- if T.DEPENDENCY = eps
 def $pptick_complete(P) = $ppunsupported(P, text)
   -- if P.COMPLETION = PPCNORMAL
-  -- if T = $tick_code_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES), $compiled_redirects(P.REDIRECTS))
+  -- if T = $tick_full_plan(P.FOLD.SOURCE.AST, $compiled_operands(P, P.EXPRESSIONS), $compiled_names(P.NAMES), $compiled_redirects(P.REDIRECTS), $tick_unit_classes(P.CLASSES, P.FOLD.SOURCE.ID))
   -- if T.DEPENDENCY = (text)
 
 ;; Each source instance keeps its own canonical marker plan. Dynamic file/eval
@@ -532,7 +565,7 @@ def $tick_marker_at(ptickmarker :: ptickmarker_tail*, pcpath) = $tick_marker_at(
 def $tick_source_plan(S, n) = (T)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $code_at(S.CODE, n) = (pcode)
-  -- if T = $tick_code_plan(pcunit.AST, pcode.EXPRESSIONS, pcode.NAMES, pcode.REDIRECTS)
+  -- if T = $tick_full_plan(pcunit.AST, pcode.EXPRESSIONS, pcode.NAMES, pcode.REDIRECTS, $tick_unit_classes(S.CLASSES, n))
   -- if T.DEPENDENCY = eps
 def $tick_source_plan(S, n) = eps -- otherwise
 def $tick_marker(S, porigin) = $tick_marker_at(T.MARKERS, pcpath)
