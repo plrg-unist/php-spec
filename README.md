@@ -3203,6 +3203,9 @@ Early method-target validation now stops readonly and asymmetric-set modifiers
 before parameters/body while retaining earlier attribute headers. Valid readonly
 properties and ordinary method flags keep their headers. Twenty-two dynamic and
 four main comparisons plus 108 reached conditions pass.
+Constant modifiers now receive the same early target check before initializers:
+earlier attribute headers survive, while forbidden initializer headers do not.
+Twenty-two dynamic and four main comparisons plus 108 reached conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
@@ -3212,7 +3215,8 @@ four main comparisons plus 108 reached conditions pass.
 [rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
 [namespace-phase review](coverage/semantics/rejected-namespace-review.json),
 [compiler-phase review](coverage/semantics/rejected-static-validation-review.json),
-[method-target review](coverage/semantics/rejected-method-modifier-review.json).
+[method-target review](coverage/semantics/rejected-method-modifier-review.json),
+[constant-target review](coverage/semantics/rejected-constant-modifier-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)

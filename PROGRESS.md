@@ -1148,7 +1148,8 @@ accepted parsing and the receipt/runtime contracts are unchanged.
 COMP173 defers rejected-only class/interface/enum, static magic-method and try
 validation to its native compiler phase, retaining later completed parser headers.
 Readonly and duplicate-modifier parser stops remain active. Readonly body-prefix
-differences were explicit refusals at that cut; COMP174 below extends them. Thirty-eight dynamic and four rejected-main
+differences were explicit refusals at that cut; COMP174 below extends them.
+Thirty-eight dynamic and four rejected-main
 comparisons, 49 service controls, 24 affected controls and 110 reached conditions
 with SL435 pass at their recorded cuts. The original history fixture failure
 remains zero credit; its correction requires exactly the rejection-exit record
@@ -1160,9 +1161,18 @@ actual function lookahead, before parameters/body. Earlier attribute headers
 survive; forbidden readonly/asymmetric-set bodies supply none. Valid readonly
 properties and ordinary method flags keep their headers. All 22 dynamic and four
 main comparisons, 37 service controls, 108 reached conditions/SL435 and affected
-49/24 controls pass at one cut. Constant-target prefix differences remain explicit
-refusals; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
+49/24 controls pass at one cut. Constant-target prefix differences were explicit
+refusals at that cut; COMP175 below extends them.
 [Review](coverage/semantics/rejected-method-modifier-review.json).
+
+COMP175 extends the checked foreign lookahead rule to constant modifiers before
+initializers. Earlier attribute headers remain; forbidden static/abstract/readonly
+and asymmetric-set initializers supply none. Visibility/final typed constants and
+method/property contexts retain their behavior. All 22 dynamic and four main
+comparisons, 42 service controls, 108 reached conditions/SL435 and 37 affected
+controls pass at one cut. The mistaken native control missing `const` remains
+separate; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
+[Review](coverage/semantics/rejected-constant-modifier-review.json).
 
 ## Active and unintegrated work
 
