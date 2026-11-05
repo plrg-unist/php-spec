@@ -203,7 +203,7 @@ def $class_constant_fetch(S, KNOWN (PSTRING ptbytes_class), ptbytes, z) = $autol
 def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Undefined constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes, z)
   -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = eps
-def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ $class_constant_message_class(S, pclassdesc, ptbytes_class) ++ $ptascii("::") ++ ptbytes, z)
+def $class_constant_fetch_class(S, pclassdesc, ptbytes_class, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(pclassconstantdesc.VISIBILITY) ++ $ptascii(" constant ") ++ $c_string($class_constant_message_class(S, pclassdesc, ptbytes_class)) ++ $ptascii("::") ++ ptbytes, z)
   -- if pclassdesc.KIND =/= "trait"
   -- if $class_constant_lookup(S, pclassdesc.ORIGIN, ptbytes, |S.CLASSES|) = (pclassconstantdesc)
   -- if ~$class_constant_visible(S, pclassconstantdesc)
@@ -1040,7 +1040,7 @@ def $class_constant_visibility_suffix(PROPERTY_PUBLIC) = eps
 def $class_constant_visibility_suffix(ppropertyvisibility) = $ptascii(" or weaker") -- otherwise
 
 dec $class_constant_override_issue(pstate, pclassdesc, pclassconstantdesc, pclassconstantdesc) : pmethodissue
-def $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = METHOD_COMPILEISSUE (pclassconstantdesc_child.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_child.NAME ++ $ptascii(" cannot override final constant ") ++ pclassconstantdesc_parent.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_parent.NAME) pclassdesc.LINE
+def $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = METHOD_COMPILEISSUE ($c_string(pclassconstantdesc_child.OWNERNAME) ++ $ptascii("::") ++ pclassconstantdesc_child.NAME ++ $ptascii(" cannot override final constant ") ++ $c_string(pclassconstantdesc_parent.OWNERNAME) ++ $ptascii("::") ++ pclassconstantdesc_parent.NAME) pclassdesc.LINE
   -- if pclassconstantdesc_parent.OWNER =/= pclassconstantdesc_child.OWNER /\ pclassconstantdesc_parent.FINAL
 def $class_constant_override_issue(S, pclassdesc, pclassconstantdesc_parent, pclassconstantdesc_child) = METHOD_COMPILEISSUE ($class_constant_kind(pclassdesc) ++ [32] ++ pclassdesc.NAME ++ $ptascii(" inherits both ") ++ pclassconstantdesc_child.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_child.NAME ++ $ptascii(" and ") ++ pclassconstantdesc_parent.OWNERNAME ++ $ptascii("::") ++ pclassconstantdesc_parent.NAME ++ $ptascii(", which is ambiguous")) pclassdesc.LINE
   -- if ~(pclassconstantdesc_parent.OWNER =/= pclassconstantdesc_child.OWNER /\ pclassconstantdesc_parent.FINAL)
