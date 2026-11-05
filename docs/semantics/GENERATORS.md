@@ -28,10 +28,18 @@ Admitted ordinary class/Trait method bodies may also create anonymous classes,
 directly or through nongenerator nested Closures/arrows. Their source templates
 compile once; actual saved method scope and receiver survive suspension and
 injected throws. Trait consumers share the source child identity while retaining
-their own lexical/called classes and receiver. Generator constructors and
-generator Closure/arrow factory bodies remain partial.
+their own lexical/called classes and receiver. Generator constructors remain partial.
 [Class factory scope](SOURCE-CLASSES.md),
 [review](../../coverage/semantics/generator-method-factories-review.json).
+
+Unit0 method-owned generator Closures/arrows also compile anonymous children.
+Their actual Closure, captures and bound scope survive creator-variable release,
+deferred initialization and resume. Natural completion releases the execution
+frame while the closed Generator still owns its real Closure; releasing that
+Generator then retires any last Closure-owned receiver/captures. Static Closures
+keep source scope, and explicit captures retain ordinary ownership. Wider binding/call and
+dynamic deferred contexts remain partial.
+[Closure factory review](../../coverage/semantics/anonymous-generator-closure-factories-review.json).
 
 Trace locations follow the actual resumer. A native Generator API frame makes
 the resumed body frame internal; the API frame keeps its source call location.

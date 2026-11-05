@@ -1449,7 +1449,18 @@ arguments. The [review](coverage/semantics/generator-method-factories-review.jso
 separates original source agreements, actual paused/resumed frame and retirement
 checks, derived forged-frame refusals and retained explicit source boundaries.
 Generator constructors, generator Closure/arrow bodies, attributes, by-reference
-factories and wider dynamic/lifetime contexts remain partial.
+factories and wider dynamic/lifetime contexts remained partial at that cut.
+
+CLASS186 admits unit0 method-owned generator Closure/arrow anonymous factories
+through the existing source ancestry and lexical-name checks. Actual saved
+Closures retain captures, receiver and lexical/called scope across deferred
+initialization and resume; closed Generators keep those Closures after execution
+frames retire. Static Closures keep source identity after creator retirement.
+The [review](coverage/semantics/anonymous-generator-closure-factories-review.json)
+separates selected originals, actual paused/resumed/closed ownership and budget
+checks, derived refusals and native-only preparation. Generator constructors,
+by-reference-return factories, attributes and wider binding/dynamic contexts remain
+partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -1669,7 +1680,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS186 | Method-owned generator Closure/arrow factories; native/source preparation. |
+| CLASS187 | Ordinary by-reference-return method anonymous factories; native/source preparation. |
 | I113 | Explicit Closure::__invoke wrapper for captured Generator APIs; private implementation/review. |
 | GC47 | Explicit WeakMap offsetUnset with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |

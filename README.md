@@ -5196,8 +5196,15 @@ factories, including admitted nested nongenerator Closures/arrows. Resumption
 restores the actual saved method receiver and lexical/called scope; template
 identity and compiler order remain independent of resume order. Existing
 Generator ownership controls receiver retirement and escaped Closure lifetime.
-Generator constructors, generator Closure/arrow bodies and byref factories
-remain partial. [Generator method factories](coverage/semantics/generator-method-factories-review.json).
+Generator constructors and byref factories remain partial.
+[Generator method factories](coverage/semantics/generator-method-factories-review.json).
+
+Unit0 method-owned generator Closures and arrows also create anonymous classes,
+including nested deferred factories. The saved Generator keeps the actual Closure
+and its lexical/called scope, captures and receiver after creator variables leave.
+Closing the execution frame retains that Closure until the Generator is released;
+static Closures without captures preserve source identity after their creator retires.
+[Generator Closure factories](coverage/semantics/anonymous-generator-closure-factories-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

@@ -715,8 +715,8 @@ order even after the source owner is unset or failed construction retires it.
 Compiler-folded `__METHOD__` preserves the complete Closure name, including
 nested scopes; lexical `__CLASS__` retains the declaring owner. Ordinary method
 `__METHOD__` retains its class and method name.
-Named nested functions, factories with attributes, generator Closure/arrow bodies
-or by-reference returns and later dynamic units remain partial. The
+Named nested functions, factories with attributes or by-reference returns and
+later dynamic units remain partial. The
 [method Closure factory review](../../coverage/semantics/anonymous-method-closure-factories-review.json)
 separates exact originals, runtime states and source-derived context queries.
 
@@ -731,7 +731,7 @@ header or generated name. Trait composition precedes interface validation and
 constructor arguments, while constant and child compilation retain member order.
 The [mixed-owner review](../../coverage/semantics/anonymous-owner-declarations-review.json)
 distinguishes original execution, genuine reached states and source-derived
-reservation refusals. Attributes, generator constructors/Closure bodies,
+reservation refusals. Attributes, generator constructors,
 by-reference factories and wider
 dynamic/member/lifetime contexts remain partial.
 
@@ -751,7 +751,7 @@ images were never installed, preserving earlier warnings and the actual fatal.
 Normal and installed histories retain ordinary checkpoint handling. The
 [trait factory review](../../coverage/semantics/trait-source-factories-review.json)
 separates original source agreement, actual consumer/cleanup states and derived
-context/refusal queries. Attributes, generator constructors/Closure bodies,
+context/refusal queries. Attributes, generator constructors,
 by-reference-return factories,
 other magic bodies, dynamic units and wider lifecycle contexts remain partial.
 
@@ -773,9 +773,27 @@ call's source location; user/`foreach` resumptions keep their source location.
 Lazy child-link failures preserve this trace before arguments. The
 [generator method review](../../coverage/semantics/generator-method-factories-review.json)
 separates exact originals, actual paused/resumed ownership and budget checks, and
-derived forged-frame refusals. Generator constructors, generator Closure/arrow
-bodies, attributes, by-reference factories and wider dynamic/lifetime contexts
+derived forged-frame refusals. Generator constructors, attributes,
+by-reference factories and wider dynamic/lifetime contexts
 remain partial.
+
+Unit0 method-owned generator Closures and arrows may also compile anonymous
+factories, including nested deferred scopes in the admitted named/anonymous/Trait
+owners. Their parsed body field, nearest method ancestry, generated function name
+and current/folded class context establish source authority. Generator body
+preparation keeps that context while applying ordinary yield/return-type checks.
+Child templates retain compile order and shared Trait identity.
+
+Creation saves the actual Closure instance and deferred lexical loads. Resumption
+restores its real source, captures, receiver and lexical/called classes after
+creator variables are cleared. A closed Generator retains its Closure even after
+the execution frame retires; that Closure continues to own its receiver/captured
+cells until actual release. A static Closure without captures keeps source scope
+after its creator retires. The
+[generator Closure review](../../coverage/semantics/anonymous-generator-closure-factories-review.json)
+separates original execution, paused/resumed/closed ownership, derived refusals
+and native-only preparation. Generator constructors, by-reference-return factories,
+attributes, wider binding/call forms and dynamic deferred contexts remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
