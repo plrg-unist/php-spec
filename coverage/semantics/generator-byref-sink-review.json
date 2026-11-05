@@ -1,0 +1,106 @@
+{
+  "milestone": "A94 scalar BYVAL Generator unpack into bounded BYREF destinations",
+  "status": "Private implementation; current-parent source/state and final independent review pending",
+  "independent_reviewer": "config_review_current",
+  "scope": {
+    "producer": "Ordinary named BYVAL Generator without delegation, Closure or method access history; existing retained CV and temporary input ownership policies apply.",
+    "consumer": "Direct ordinary named function returning by value, with a fixed untyped BYREF destination; both unpack send count and destination index are below two.",
+    "behavior": "Check key/binding Errors first; capture scalar HOLD, KEY and Generator INDEX before Warning; after normal callback return require unchanged cache/key/index and deliver a fresh private reference cell before next resume.",
+    "limits": "Warning-time Generator advancement, pending warning exceptions, BYREF producers, Closure/method sinks, reference-returning sinks, typed/variadic destinations, owning caches and wider lifecycle contexts remain outside this rule."
+  },
+  "implementation": {
+    "base": "de39ca1bed3e5bd09aea0a9571f9ff63edbd1a52",
+    "initial_rule": "8aa2c63f4c53664ec1aa2643ee2cc4dbd3782819",
+    "tests_cut": "f3f6541edf530792f395dc77068d484e7a6fb69a",
+    "source_hashes": {
+      "spec/semantics/30-storage.watsup": "1fa58a61b43b66eccfdaa66522eba60e842b143506daa2bd79d1857d2dd536f9",
+      "spec/semantics/405-call-generator-unpack.watsup": "d3b16bffe4c4337035c541a4e07fab345e061fbfb0f25a91310b7f769dc2f7a7",
+      "spec/semantics/439-call-aggregate-unpack.watsup": "e8e99db5e07cbe0291ea592b61689c060c92a35c516e7de7e5db15140c8a41f0"
+    },
+    "design": "A record-or-eps warning capture keeps Warning and explicit BYREF refusal disjoint. Marker accounting follows ERROR_HANDLER and real API_ERROR send/reference cursors. Source-valid refusals retain their cursor roots and reason; pending warning Throwable stays under THROW_SEARCH without inventing native advancement. Direct sink authority additionally requires the actual named call node, compiled code_name and selected-function candidate linkage; a selected PORIGIN alone is insufficient.",
+    "last_validated_semantic_cut": "1b42a3751e726e827571b106e10166915b2027f0",
+    "direct_source_guard": "307e33739007c7dabdf41e54235c46a44250d21e"
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK (key/binding, ZVAL_DEREF/Z_TRY_ADDREF, zend_error, ZVAL_NEW_REF, unconditional move_forward)",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_resume and native Generator iterator callbacks"
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64; source34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "P4-SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL, caches off, encountered determinism checks; 433 project modules",
+    "environment": "tests/semantics/profile.json, PHP -n, LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset; one serial leased CPU2 actor, fully reaped",
+    "commands": "Each raw report records exact commands, budgets, exits, source/binary/compiler inputs and stable revisions."
+  },
+  "evidence": {
+    "author_native_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-byref-consumer-native-94",
+    "review_root": "/home/user/workspace/php-spec-evidence-archive/config-generator-byref-consumer-review-94",
+    "new_sources": [
+      {
+        "report": "source-handler-failure-5da/report.json",
+        "cut": "5da4a4429cdda888521dc114178258c1a22214a8",
+        "normal_agreements": 2,
+        "selection": "Only retained/default and temporary/default passing rows; handler failure gives zero credit."
+      },
+      {
+        "report": "source-handler-second-501a/report.json",
+        "cut": "501a99a614eeba7c2ac33923029a330d7a898777",
+        "normal_agreements": 2,
+        "selection": "Handler global mutation/snapshot and second-position BYREF destination."
+      },
+      {
+        "report": "source-scalar-matrix-1b42/report.json",
+        "cut": "1b42a3751e726e827571b106e10166915b2027f0",
+        "normal_agreements": 1,
+        "selection": "Core === distinguishes NULL/true/binary64 1.5/runtime string; private sink mutation preserves source bytes. String identity is nonowning metadata; no string-deallocation claim."
+      }
+    ],
+    "normal_reached": {
+      "report": "state-six-501a/report.json",
+      "cut": "501a99a614eeba7c2ac33923029a330d7a898777",
+      "groups": 6,
+      "reported_checks": 323,
+      "scope": "Real source cuts, frozen warning authority, fresh cell/Generator owners, actual API_CALLBACK_SEND, malformed controls and budget/finish consistency."
+    },
+    "unsupported_controls": {
+      "report": "negative-four-1b42/report.json",
+      "cut": "1b42a3751e726e827571b106e10166915b2027f0",
+      "cases": 4,
+      "normal_agreements": 0,
+      "selection": [
+        "handler-advances-generator",
+        "byref-producer-with-outside-alias",
+        "closure-sink",
+        "warning-handler-throw"
+      ]
+    },
+    "pending_throw_state": {
+      "report": "state-throw-stop-1b42/report.json",
+      "groups": 1,
+      "reported_checks": 44,
+      "normal_agreements": 0,
+      "scope": "Genuine THROW_SEARCH/ERROR_HANDLER_RESULT cut; exact pending Throwable, saved cursor/roots, unchanged store/heap/events, malformed-stop rejects and frozen drive."
+    },
+    "compatibility": "The 501a API cursor counting addition affects only the handler route, preserving two 5da default-warning agreements. The 1b42 source-valid stop affects only explicit Unsupported frontiers and live warning exceptions; normal501a source/reached evidence retains its original cut. Fixture/docs changes do not renew semantic evidence. The307 direct-site guard preserves actual named source nodes and compiled names in all five positive originals and their reached recipes; current-parent authority and dynamic-string refusal checks remain pending.",
+    "recovery": "Reports/raw source and process files remain outside Git. review_root/relocations.json maps original private paths to retained directories; external evidence is not a build dependency."
+  },
+  "preserved_zero_credit": {
+    "review_failures": [
+      "source-overlap-362979be/report.json",
+      "failure-api-cursor-5da/report.json"
+    ],
+    "other_front": "handler-invoke-front-5da/report.json validates that reached front only; it is not a whole-source agreement.",
+    "author_baselines": [
+      "baseline-retained/report.json",
+      "baseline-scalar/report.json"
+    ],
+    "interpretation": "The early temporary last-owner reason was ERROR_UNWIND masking the initial module405 send refusal; it establishes no independent cleanup prerequisite. The strict433 draft pass did not expose the runtime branch overlap. Original failed/Unsupported runs retain their original identities and zero extra agreement credit."
+  },
+  "pending_current_parent": [
+    "Corrected legacy valid-key BYREF source and selected ordinary acquired-method Generator source.",
+    "Reference-yield snapshot, named-key error priority and acquired-method Generator source-reached state controls.",
+    "Private current-master composition, focused compiler/source/state gates and independent final review.",
+    "Exact dynamic-string sink Unsupported control and genuine source-authority group."
+  ],
+  "engine_disposition": "No engine bug or deliberate engine divergence is claimed. Pending-exception native advancement remains an explicit unfinished core obligation."
+}

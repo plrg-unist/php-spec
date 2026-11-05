@@ -2159,6 +2159,11 @@ parameters. Reference yields become snapshots before resume; named keys use the
 ordinary binder. Native iteration adds no method trace frames, and temporary
 versus retained Generators preserve their distinct finally/cache lifetimes.
 See the [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
+Scalar by-value Generator caches now also warn before the first two fixed,
+untyped reference destinations of a direct named user function returning by value.
+A fresh private cell keeps callee writes separate from the captured value and source aliases.
+Handlers that advance the Generator or leave a pending exception remain explicit
+Unsupported. See the [reference-sink review](coverage/semantics/generator-byref-sink-review.json).
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.

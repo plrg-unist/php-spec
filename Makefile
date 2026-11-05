@@ -535,6 +535,10 @@ test-semantics: build
 	python3 tests/semantics/generator_call_unpack_state.py
 	python3 tests/semantics/generator_call_unpack_review_sources.py
 	python3 tests/semantics/generator_call_unpack_review_state.py
+	python3 tests/semantics/generator_byref_sink_sources.py
+	python3 tests/semantics/generator_byref_sink_scalar_sources.py
+	python3 tests/semantics/generator_byref_sink_negative_sources.py
+	python3 tests/semantics/generator_byref_sink_review_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_sources.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_review_sources.py
