@@ -1694,6 +1694,17 @@ def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_receiv
   -- if $enum_is_callable_target(S, PARRAY n_array) = ((porigin_class, ptbytes_method, false))
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = eps -- otherwise
 
+dec $enum_is_callable_rebound_array_child(pstate, nat) : (nat, nat)?
+def $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_child)), ENTRY (KINT 1) (DIRECT pvalue_method)]
+  -- if $enum_array_string_valid(S, pvalue_method)
+  -- if $getclass_live_object(S, n_child)
+  -- if S.OBJECTS[n_child] = INSTANCE porigin_child
+  -- if $node_children(S, HOBJECT n_child) = eps
+def $enum_is_callable_rebound_array_child(S, n_cell) = eps -- otherwise
+
 dec $enum_is_callable_ref_last(pstate, nat, int) : bool
 def $enum_is_callable_ref_last(S, n_cell, z) = true
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
@@ -1704,6 +1715,12 @@ def $enum_is_callable_ref_last(S, n_cell, z) = true
   -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
   -- if S_clear.COMPLETION = NORMAL
   -- if $heap_owners($heap_graph(S_clear), HOBJECT n_old) = 0
+def $enum_is_callable_ref_last(S, n_cell, z) = true
+  -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
+  -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
+  -- if S_clear.COMPLETION = NORMAL /\ S_clear.STORE[n_cell] = DEFINED PNULL
+  -- if $heap_owners($heap_graph(S_clear), HARRAY n_array) = 0
+  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_child) = 0
 def $enum_is_callable_ref_last(S, n_cell, z) = false -- otherwise
 
 dec $enum_is_callable_ref_old(pstate, nat, pvalue, ptbytes, int) : bool
@@ -1721,6 +1738,16 @@ def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
   -- if $enum_is_callable_ref_last(S, n_cell, z)
 def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = false -- otherwise
 
+dec $enum_is_callable_rebound_array_old_valid(pstate, pstate, nat, nat, int) : bool
+def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = true
+  -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
+  -- if $enum_is_callable_ref_last(S, n_cell, z)
+def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = true
+  -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
+  -- if $($heap_owners($heap_graph(S_write), HARRAY n_array) > 0)
+  -- if $($heap_owners($heap_graph(S_write), HOBJECT n_child) > 0)
+def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = false -- otherwise
+
 dec $enum_is_callable_ref_array_alias_old(pstate, pconfigcall, nat, pvalue, ptbytes, int) : bool
 def $enum_is_callable_ref_array_alias_old(S, pconfigcall, n_cell, PARRAY n_old, ptbytes_name, z) = true
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN (PARRAY n_sent))) :: (NAMED_SENT (KNOWN (PBOOL b_syntax))) :: pnamedslot_tail*
@@ -1733,9 +1760,9 @@ def $enum_is_callable_ref_array_alias_old(S, pconfigcall, n_cell, PARRAY n_old, 
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_old)
   -- if $(n_old < |S.ARRAYS|) /\ (HARRAY n_old) <- S.ALLOCATIONS
   -- if S.ARRAYS[n_old].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_receiver_old), ENTRY (KINT 1) (DIRECT pvalue_method_old)]
-  -- if n_old = n_sent \/ ($enum_array_string_valid(S, pvalue_receiver_old) /\ $enum_array_string_valid(S, pvalue_method_old))
   -- if S_write = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PSTRING ptbytes_name, z)
   -- if S_write.COMPLETION = NORMAL
+  -- if n_old = n_sent \/ ($enum_array_string_valid(S, pvalue_receiver_old) /\ $enum_array_string_valid(S, pvalue_method_old)) \/ (n_old =/= n_sent /\ $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_old, z))
 def $enum_is_callable_ref_array_alias_old(S, pconfigcall, n_cell, pvalue_old, ptbytes_name, z) = false -- otherwise
 
 dec $enum_is_callable_ref_cell(pstate, pconfigcall, pvalue) : nat?
@@ -1851,6 +1878,26 @@ def $enum_is_callable_output_input(eps) = eps
 def $enum_is_callable_output_input((penumqueryinput)) = [ENUM_IS_CALLABLE_INPUT penumqueryinput]
 
 dec $enum_is_callable_output_valid(pstate, penumqueryoutput) : bool
+dec $enum_is_callable_output_old_valid(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_old_valid(S, penumqueryoutput) = true
+  -- if penumqueryoutput.OLDARRAY = eps
+  -- if $(penumqueryoutput.OLD < |S.OBJECTS|)
+  -- if S.OBJECTS[penumqueryoutput.OLD] = INSTANCE porigin_old
+  -- if $class_at(S.CLASSES, porigin_old) = (pclassdesc_old)
+def $enum_is_callable_output_old_valid(S, penumqueryoutput) = true
+  -- if penumqueryoutput.OLDARRAY = (n_array)
+  -- if penumqueryoutput.INPUT = (penumqueryinput)
+  -- if penumqueryoutput.CALL.SENT = [NAMED_SENT (KNOWN (PARRAY n_sent)), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE penumqueryoutput.CELL)]
+  -- if penumqueryinput.ARRAY = (n_sent) /\ n_array =/= n_sent
+  -- if $(n_array < |S.ARRAYS|)
+  -- if n_child = penumqueryoutput.OLD
+  -- if S.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_child)), ENTRY (KINT 1) (DIRECT pvalue_method)]
+  -- if $enum_array_string_valid(S, pvalue_method)
+  -- if $(penumqueryoutput.OLD < |S.OBJECTS|)
+  -- if S.OBJECTS[penumqueryoutput.OLD] = INSTANCE porigin_old
+  -- if $class_at(S.CLASSES, porigin_old) = (pclassdesc_old)
+  -- if $node_children(S, HOBJECT n_child) = eps
+def $enum_is_callable_output_old_valid(S, penumqueryoutput) = false -- otherwise
 def $enum_is_callable_output_valid(S, penumqueryoutput) = true
   -- if pconfigcall = penumqueryoutput.CALL
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE /\ pconfigcall.INDEX = 3
@@ -1865,9 +1912,7 @@ def $enum_is_callable_output_valid(S, penumqueryoutput) = true
   -- if $intrinsic_argument(S, pconfigcall.SITE, 2) = ((NExprVariable (BYTES text_output) metadata_output, false, eps, porigin_output, z_output))
   -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_output*)
   -- if $call_reference_operand_valid(S, REFERENCE penumqueryoutput.CELL)
-  -- if $(penumqueryoutput.OLD < |S.OBJECTS|)
-  -- if S.OBJECTS[penumqueryoutput.OLD] = INSTANCE porigin_old
-  -- if $class_at(S.CLASSES, porigin_old) = (pclassdesc_old)
+  -- if $enum_is_callable_output_old_valid(S, penumqueryoutput)
   -- if S_history = S[.TODO = (CONFIG_INVOKE pconfigcall) :: $enum_is_callable_output_input(penumqueryoutput.INPUT)]
   -- if $enum_is_callable_ref_name(S_history, pconfigcall, pvalue_input) = (penumqueryoutput.NAME)
   -- if $enum_is_callable_result(S_history, pvalue_input, b_syntax) = (penumqueryoutput.RESULT)
@@ -1886,7 +1931,19 @@ def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
   -- if $enum_is_callable_result(S, pvalue_input, b_syntax) = (b_callable)
   -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
   -- if n_depth = |S.FRAMES|
-  -- if penumqueryoutput = {CALL pconfigcall, INPUT $enum_is_callable_saved(S, pconfigcall, pvalue_input), CELL n_cell, OLD n_old, NAME ptbytes_name, RESULT b_callable, DEPTH n_depth, CALLER S.CURRENT}
+  -- if penumqueryoutput = {CALL pconfigcall, INPUT $enum_is_callable_saved(S, pconfigcall, pvalue_input), CELL n_cell, OLD n_old, OLDARRAY eps, NAME ptbytes_name, RESULT b_callable, DEPTH n_depth, CALLER S.CURRENT}
+  -- if $enum_is_callable_output_valid(S, penumqueryoutput)
+def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_sent)), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE n_cell)]
+  -- if $enum_is_callable_ref_slots_valid(S, pconfigcall)
+  -- if $enum_is_callable_ref_last(S, n_cell, pconfigcall.LINE)
+  -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
+  -- if n_array =/= n_sent
+  -- if $enum_is_callable_result(S, PARRAY n_sent, b_syntax) = (b_callable)
+  -- if $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_sent) = (ptbytes_name)
+  -- if n_depth = |S.FRAMES|
+  -- if penumqueryoutput = {CALL pconfigcall, INPUT $enum_is_callable_saved(S, pconfigcall, PARRAY n_sent), CELL n_cell, OLD n_child, OLDARRAY (n_array), NAME ptbytes_name, RESULT b_callable, DEPTH n_depth, CALLER S.CURRENT}
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_capture(S, pconfigcall) = eps -- otherwise
 def $eager_operation_source(S, CONFIG_INVOKE pconfigcall) = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
