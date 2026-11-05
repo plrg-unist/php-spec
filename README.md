@@ -5066,7 +5066,7 @@ namespace imports and related protected constructors preserve the parsed owner
 and method scope. Child templates compile before their containing named-class key;
 reversed/repeated calls keep the source counters and allocate fresh instances.
 Complete containing-unit images remain required. Lazy link failures precede
-arguments, while errors in uncalled factory bodies still fail compilation.
+arguments, while compile errors in uncalled factory bodies still reject the unit.
 Trait/anonymous source owners, method-owned Closures, generators, byref returns
 and attributes remain partial.
 [Method factory review](coverage/semantics/anonymous-method-factories-review.json).

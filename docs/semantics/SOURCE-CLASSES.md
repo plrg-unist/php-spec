@@ -636,8 +636,8 @@ Duplicate/static diagnostic class operands truncate at NUL; stored names and sco
 authority stay complete. The [method modifier review](../../coverage/semantics/anonymous-method-modifiers-review.json)
 retains the exact sources and reached fronts. Anonymous abstract-method diagnostics
 and wider method-body factory contexts remain explicit boundaries, alongside attributes,
-byref returns and wider magic/generator forms. Their native-only originals retain
-zero model agreement credit.
+byref returns and wider magic/generator forms. The historical177 boundary originals
+retain zero credit there; the named-owner witness has a separate fresh178 agreement.
 
 Ordinary factory methods in admitted named source classes may now compile their
 anonymous child templates. The unit check permits class-containing method bodies
@@ -656,8 +656,8 @@ or repeated calls reuse those templates while creating fresh instances. Inherite
 instance calls retain the declaring lexical owner across different called classes;
 ordinary typed/default/reference reception and promoted constraints remain intact.
 Related protected access, imported names and readonly headers use the existing
-rules. Lazy final conflicts fail before argument effects, and uncalled factory
-body errors still reject compilation.
+rules. Lazy final conflicts fail before argument effects, and compile errors in
+uncalled factory bodies still reject the unit.
 
 The [method factory review](../../coverage/semantics/anonymous-method-factories-review.json)
 separates genuine runtime/source counters from explicitly pure source-derived
