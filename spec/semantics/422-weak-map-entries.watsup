@@ -114,7 +114,6 @@ def $weakmap_entries_cell_valid(S, n_cell) = true
 def $weakmap_entries_cell_valid(S, n_cell) = false -- otherwise
 ;; Construction and storage retirement admit direct fieldless public
 ;; destructors. Ordinary read/traversal/reference/GC policies remain methodless.
-dec $weakmap_entries_callback_class(pstate, nat) : bool
 def $weakmap_entries_callback_class(S, n_value) = true
   -- if $(n_value < |S.OBJECTS|)
   -- if S.OBJECTS[n_value] = INSTANCE porigin
