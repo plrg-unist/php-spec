@@ -1273,6 +1273,18 @@ timeout retains zero credit. Child factories inside `__toString`, private/static
 magic variants, traits/constants, deferred scopes and dynamic units remain
 partial. [Review](coverage/semantics/anonymous-owner-stringable-review.json).
 
+CLASS182 admits anonymous factories through method-owned Closures and arrows,
+including nested deferred bodies, with source-derived lexical names and actual
+named/anonymous method-owner authority. Ordinary capture, retained receivers,
+failed construction and class-link ordering use the existing runtime. Rejected
+constructors suppress deferred child checkpoints. Closure `__METHOD__` now keeps
+its complete generated name; ordinary methods and copied/fake Generator Closures
+have separate affected controls. The [review](coverage/semantics/anonymous-method-closure-factories-review.json)
+retains scoped source/state cuts, the initial name mismatches, fixture correction,
+short-path guard failure and timeouts. Attributed/generator/by-reference-return
+factories, anonymous owner explicit-interface headers/traits/constants and
+dynamic units remain partial.
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
@@ -1466,12 +1478,13 @@ wider rejected-source/compiler behavior remains partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS182 | Anonymous child factories inside method-owned Closures and arrows; private implementation/review. |
+| CLASS183 | Anonymous owner interfaces and trait/constant siblings; private implementation/review. |
 | I109 | Native Generator method named/ARRAY-packed argument reception; private implementation/review. |
 | GC42 | Finite declared-property WeakMap value cleanup; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB16 | Deprecation-handler throws during produced output; private implementation/review. |
 | ATTR29 | Yield/yield-from tick compilation and counter/resumption behavior; private implementation/review. |
+| Enum callable arrays | First-SEND capture of initially invalid reference members; private investigation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

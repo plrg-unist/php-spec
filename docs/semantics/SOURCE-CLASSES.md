@@ -702,6 +702,24 @@ child checkpoints unpublished. A child created *inside* `__toString` remains
 outside the admitted factory context. The [owner Stringable review](../../coverage/semantics/anonymous-owner-stringable-review.json)
 records source, reached-state and boundary evidence.
 
+Eligible unit0 named and anonymous methods/constructors may create anonymous
+classes through by-value, nongenerator Closures and arrows, including nested
+deferred bodies. Source ancestry reconstructs the complete Closure name and
+checks every body boundary before reusing the authenticated containing method's
+owner, namespace/imports and current/folded class context. Ordinary capture,
+receiver, constructor and class-link rules retain their actual owners and
+diagnostic ordering. A rejected static or return-typed constructor suppresses
+its deferred children's publication checkpoints. Anonymous keys keep compiler
+order even after the source owner is unset or failed construction retires it.
+Compiler-folded `__METHOD__` preserves the complete Closure name, including
+nested scopes; lexical `__CLASS__` retains the declaring owner. Ordinary method
+`__METHOD__` retains its class and method name.
+Named nested functions, factories with attributes, generator bodies or
+by-reference returns, anonymous owner explicit-interface headers, trait/constant
+siblings and later dynamic units remain partial. The
+[method Closure factory review](../../coverage/semantics/anonymous-method-closure-factories-review.json)
+separates exact originals, runtime states and source-derived context queries.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the

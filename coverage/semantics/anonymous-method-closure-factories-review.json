@@ -1,0 +1,110 @@
+{
+  "scope": "CLASS182: unit0 named/anonymous method-owned by-value nongenerator Closure and arrow anonymous factories, including nested lexical names, real capture/receiver scope and invalid-constructor publication suppression. Closure __METHOD__ preserves the complete function name under any lexical class context.",
+  "implementation_commits": [
+    "32bc9a707421082ad6d3e4c162fccd051f946d21",
+    "431a27059daa01aa3e58e36faafcf3c08060a95e",
+    "14f23fdd1fcb381d3a5927ee1a29a95cfb13a8bf"
+  ],
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c zend_begin_func_decl: nested Closure names already contain their owner and parent Closure",
+    "Zend/zend_compile.c zend_compile_func_decl_ex: lexical class entry is preserved for Closures but cleared for nested named functions",
+    "Zend/zend_compile.c zend_generate_anon_class_name and zend_compile_class_decl: compiler-order RTD identity",
+    "Zend/zend_compile.c zend_try_ct_eval_magic_const T_METHOD_C: a Closure has null op-array scope, so __METHOD__ uses function_name without another owner prefix"
+  ],
+  "commands": [
+    "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_method_closure_factory_cases.json",
+    "python3 tests/semantics/anonymous_method_closure_factory_protocol.py",
+    "python3 tests/semantics/anonymous_owner_factory_boundaries.py",
+    "python3 tests/semantics/method_compiler.py --match scope-",
+    "python3 scripts/check-semantic-inventory.py"
+  ],
+  "author": {
+    "source_full12": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class182-method-closure-factories/author/class180-source-gr5ljo1j/report.json",
+        "sha256": "a6e74d1fa60a1157ef344ac5d75e63fa9f1afc5954220d743e5037fb354356b3"
+      },
+      "exact_rows": 11,
+      "aggregate_passed": false,
+      "failure": "Lazy final-link raw tuple was exact but expected CLI status was mislabeled runtime_fatal rather than php_error. The failed aggregate retains zero credit."
+    },
+    "corrected_affected_source1": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class182-method-closure-factories/author/class180-source-litn_yin/report.json",
+        "sha256": "7690013b6e295a4fd618737910bf78fae2d77b696ae9be517408c54741c79ab6"
+      },
+      "result": "exact raw stdout/stderr, status and exit; stable inputs"
+    },
+    "final_source_guard_affected2": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class182-method-closure-factories/author/class180-source-dz_9r3kr/report.json",
+        "sha256": "c95b845fdf11084dd6b6f2cc38e2283c6c36117732f03ebfc7911bcab1bf7f0c"
+      },
+      "result": "named static reuse and nested anonymous Closure-arrow exact; stable inputs"
+    },
+    "final_source_guard_pure28": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class182-method-closure-factories/author/closure-call-protocol-3zrgjy53/report.json",
+        "sha256": "7373727957243d8db1eb9c66a9cc1251ac25c8d28d25f95ed8a8a6db7543a364"
+      },
+      "result": "SL435; true newline, exit0, empty stderr, stable inputs; explicitly source-derived compiler context queries"
+    },
+    "failed_al_batch": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class182-method-closure-factories/author/closure-call-protocol-0bsypfho/failed-attempt.json",
+        "sha256": "ff23254cd211791f857ba84aebb98214b1b22bdaab3fe911cd11eb290abe9d65"
+      },
+      "result": "Forged short path exposed eager slice guard; retained-receiver component completed true; failed-owner component timed out at300s. No final whole-batch report or aggregate credit."
+    },
+    "guard_compatibility": "Two combined bounds/slice premises became sequential. Successful existing body paths take the same branch; short forged paths now refuse. Final affected source2 and independent negative queries bind the correction.",
+    "magic_compatibility": "The earlier twelve authored sources contain no __METHOD__ expression; their original cuts remain unchanged by the shared77 correction. New magic and copied/fake Generator originals, affected compiler constants and independent mismatches require separate checks.",
+    "inventory": "169 constructors and306 runtime obligations consistent; statuses stay partial",
+    "final_shared77_and_ownership": {
+      "independent_record": "coverage/semantics/anonymous-method-closure-factories-independent.json",
+      "result": "Three authored shared77 originals are exact (ordinary method, nested anonymous Closure/arrow, copied/fake Generator); the maintained failed-owner protocol passes SL34, resolving the earlier AL timeout."
+    }
+  },
+  "remaining": [
+    "Attributed, byref-return and generator deferred factories; nested named functions and trait source owners",
+    "Anonymous owner explicit-interface headers, trait/constant siblings and later dynamic source units",
+    "Wider declaration, capture, callback and lifetime contexts"
+  ],
+  "preservation": {
+    "author_raw_root": "/home/user/workspace/php-spec-evidence-archive/class182-method-closure-factories/author",
+    "notes": "Raw originals retain their recorded source/file/cwd identities and commands. Restore a raw directory at its recorded original private path before attempting a path-identical replay. No raw archives are Git inputs."
+  },
+  "review": {
+    "reviewer": "classes_review",
+    "decision": "accepted",
+    "semantic_cut": "14f23fdd1",
+    "independent_record": "coverage/semantics/anonymous-method-closure-factories-independent.json",
+    "independent_record_commit": "59263c9b5",
+    "basis": "Independent exact originals, SL435 source/context/runtime protocol, failed-owner resumption, explicit source refusals and ordinary/Closure/Generator magic-name controls pass at their scoped cuts.",
+    "integration": "One actual-current-parent copied/fake Generator source interaction remains coordinated with the integrator; accepted private evidence is not renewed by metadata edits."
+  },
+  "summary": {
+    "distinct_authored_source_agreements": 15,
+    "distinct_independent_source_agreements": 9,
+    "independent_checked_SL435": {
+      "compiled_source": 21,
+      "pure_context": 18,
+      "runtime": 20
+    },
+    "source_boundaries": {
+      "maintained": 35,
+      "independent": 14,
+      "agreement_credit": "zero for excluded by-reference-return/generator sources"
+    },
+    "affected_compiler_scope": {
+      "sources": 9,
+      "premises": 55
+    },
+    "notes": "Counts retain their original tested cuts and compatibility explanations. They are scoped tests, not full-core closure or a proof."
+  }
+}
