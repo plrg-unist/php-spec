@@ -493,7 +493,8 @@ def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc_live)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_live)
   -- if pclassdesc_live =/= pclassdesc
-  -- if pclassdesc_live[.PROPERTIES = $trait_notice_own_properties(pclassdesc_live.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc_live.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc_live.METHODS, pclassdesc_live.ORIGIN)] = pclassdesc
+  -- if pclassdesc_live.INTERFACES = $trait_import_interfaces(pclassdesc, pclassdesc_live.METHODS)
+  -- if pclassdesc_live[.PROPERTIES = $trait_notice_own_properties(pclassdesc_live.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc_live.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc_live.METHODS, pclassdesc_live.ORIGIN)][.INTERFACES = pclassdesc.INTERFACES] = pclassdesc
   -- if $anonymous_class_prefix(pcunit, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), ppinstalled.CLASSES, 0)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_live.NAME)) = (pclassdesc_live.ORIGIN)
   -- if $anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc_live.ORIGIN)
@@ -522,7 +523,6 @@ dec $anonymous_interface_dependencies_ready(pstate, pclassdesc) : bool
 def $anonymous_interface_dependencies_ready(S, pclassdesc) = true
   -- if $pil_fetch(S, pclassdesc.INTERFACES, eps) = PILFETCHED pilref*
 def $anonymous_interface_dependencies_ready(S, pclassdesc) = false -- otherwise
-dec $anonymous_interface_targets_valid(pstate, pclassdesc) : bool
 def $anonymous_interface_targets_valid(S, pclassdesc) = ($pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps)
   -- if pclassdesc.INTERFACES = eps
 def $anonymous_interface_targets_valid(S, pclassdesc) = true

@@ -68,11 +68,11 @@ def $pil_internal_proto_owner(ptbytes) = $ptascii("Throwable") -- otherwise
 
 def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_OK
   -- if $pil_internal_signature(pmethoddesc.NAME) = eps
-def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method ") ++ ptbytes_owner ++ $ptascii("::") ++ $pil_internal_name(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method ") ++ ptbytes_owner ++ $ptascii("::") ++ $pil_internal_name(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ $c_string(pclassdesc.NAME)) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if $pil_internal_signature(pmethoddesc.NAME) = (pssignature)
   -- if pmethoddesc.STATIC
   -- if $pil_internal_proto_owner(pmethoddesc.NAME) = (ptbytes_owner)
-def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ") ++ ptbytes_owner ++ [41]) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
+def $pil_internal_source_one(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ $c_string(pclassdesc.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ") ++ ptbytes_owner ++ [41]) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if $pil_internal_signature(pmethoddesc.NAME) = (pssignature)
   -- if ~pmethoddesc.STATIC
   -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
