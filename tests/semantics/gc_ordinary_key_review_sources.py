@@ -9,6 +9,7 @@ ROOT = family.ROOT
 FILES = {
     'wr-recreate-in-incoming': 'gc_ordinary_review_wr_recreate_in_incoming.php',
     'wr-recreate-global': 'gc_ordinary_review_wr_recreate_global.php',
+    'wr-old-get-before-observer': 'gc_ordinary_review_wr_old_get_before_observer.php',
     'map-own-phase-weak-visibility': 'gc_ordinary_review_map_own_phase_weak_visibility.php',
     'map-own-phase-global': 'gc_ordinary_review_map_own_phase_global.php',
     'map-own-throw-suffix': 'gc_ordinary_review_map_own_throw_suffix.php',
