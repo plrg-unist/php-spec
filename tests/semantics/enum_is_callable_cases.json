@@ -697,5 +697,32 @@
     "purpose": "Throwing rebound-array child commits the saved callable name before the pending exception reaches catch; direct catch output stays within modeled core operations.",
     "model_timeout_seconds": 90,
     "expected_normal_stdout": "REBIND|D-null|caught:drop:FirstCheck::from:FirstCheck::from:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-retained-child-held",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildDrop {\n    public function __destruct() {\n        global $call;\n        echo $call === 'FirstCheck::from' ? 'D-name|' : ($call === null ? 'D-null|' : 'D-other|');\n    }\n}\nfunction rebind_child(): bool {\n    global $call, $holdChild;\n    $child = new ChildDrop;\n    $call = [$child, 'tryFrom'];\n    $holdChild = $child;\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$holdChild = null;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_child(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\nunset($holdChild);\necho 'done|';\n",
+    "source_sha256": "cb758e7511e482394a8c5a53afe59c567a5c9d323d6034b34485a346ff2df770",
+    "expected_model": "unsupported",
+    "purpose": "Separate child holder survives rebound array death at the shared-cell name write; pending authenticated ownership route.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from|D-name|done|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-retained-child-preoutput-release",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildDrop {\n    public function __destruct() {\n        global $call;\n        echo $call === 'FirstCheck::from' ? 'D-name|' : ($call === null ? 'D-null|' : 'D-other|');\n    }\n}\nfunction rebind_child(): bool {\n    global $call, $holdChild;\n    $child = new ChildDrop;\n    $call = [$child, 'tryFrom'];\n    $holdChild = $child;\n    $holdChild = null;\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$holdChild = null;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_child(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\necho 'done|';\n",
+    "source_sha256": "12faab59ebd7b8cb2020f5f7f0e0b741629c707c15baeb11f54add09b61a34f2",
+    "expected_model": "normal",
+    "purpose": "Releasing the child holder before third output leaves the rebound array as the last owner and restores clear-to-null destruction.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "REBIND|D-null|chosen:1:FirstCheck::from:FirstCheck::from|done|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias-retained-child-throw-release",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildThrow {\n    public function __destruct() {\n        global $call;\n        echo $call === 'FirstCheck::from' ? 'D-name|' : ($call === null ? 'D-null|' : 'D-other|');\n        throw new Exception('drop');\n    }\n}\nfunction rebind_child(): bool {\n    global $call, $holdChild;\n    $child = new ChildThrow;\n    $call = [$child, 'tryFrom'];\n    $holdChild = $child;\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$holdChild = null;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_child(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\ntry {\n    unset($holdChild);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':', $call, ':', $name, ':', (int)$ok, '|';\n}\n",
+    "source_sha256": "e6903c227a8fab09d16d1ff5494042ea0fddd361bc6721d405c1bb639c775cef",
+    "expected_model": "unsupported",
+    "purpose": "Throwing child released after the selected name and boolean result commit; pending separate-owner exception route.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from|D-name|caught:drop:FirstCheck::from:FirstCheck::from:1|"
   }
 ]
