@@ -424,7 +424,7 @@ def $ob_notice_tasks(S, pobnotice) = true
   -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if ~pdestructioncleanup.RELEASED
-  -- if pdestructionoperation.PENDING = eps
+  -- if $destructor_pending_valid(S, pdestructionoperation.PENDING)
   -- if pdestructionoperation.COMPLETION = NORMAL
   -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
   -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS

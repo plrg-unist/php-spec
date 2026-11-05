@@ -252,12 +252,29 @@ foreign stop supplies no native diagnostic text or line.
 The [method originals](../../tests/semantics/method_modifier_rejected_sources.py)
 pass 22 eval/include comparisons and [four main comparisons](../../tests/semantics/method_modifier_main_rejected_sources.py).
 The [independent service](../../tests/rejected_method_modifier_service_review.py)
-passes 37 controls, including four separate remaining constant-target refusals.
+passes 37 controls, including four constant-target refusals at that cut.
 All 108 [reached conditions](../../tests/semantics/rejected_method_modifier_review_state.py)
 preserve an earlier attribute warning, catchable CompileError, exact exit history,
 no partial installation, valid handles/zero-budget states and source identity.
 The affected static/namespace service controls also pass. Actual cuts and limits
 are in the [review](../../coverage/semantics/rejected-method-modifier-review.json).
+
+The same checked reduction now selects the constant target with actual `T_CONST`
+lookahead. Public/protected/private/final flags pass before initializer parsing;
+static/abstract/readonly and asymmetric-set flags stop before any initializer
+header. Earlier attribute headers remain, including an earlier nonliteral
+encoding rejection. Function lookahead preserves the method mask and diagnostics;
+properties retain their separate grammar path. No source bytes are rescanned.
+
+The [constant originals](../../tests/semantics/constant_modifier_rejected_sources.py)
+pass 22 eval/include and [four main comparisons](../../tests/semantics/constant_modifier_main_rejected_sources.py).
+The [independent service](../../tests/rejected_constant_modifier_service_review.py)
+passes 42 controls and the affected method service passes 37. All 108
+[reached conditions](../../tests/semantics/rejected_constant_modifier_review_state.py)
+preserve earlier warnings, exact native CompileError/history, no partial
+installation, source identity and valid handles/budget continuation. The
+[review](../../coverage/semantics/rejected-constant-modifier-review.json) preserves
+the mistaken provisional control that omitted `const`, outside the eligible corpus.
 
 Warning128 uses the current reporting/display state and bypasses error handlers.
 The subsequent catchable ParseError/CompileError retains a failed-source record

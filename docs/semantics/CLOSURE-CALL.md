@@ -186,9 +186,9 @@ its actual C operation, Child and field releases, then CLEAN and copied API
 cleanup. The saved operation authenticates the destructor's original site even
 when an outer exit operation is newly prepended. Fake prefix and independent
 real Child originals exit29/41; author and joined peer reached checks validate
-owners, weak observations, handler restoration and split/full shutdown. Repeated
-cleanup exit is Unsupported; at this cut, a cleanup throw replacing this exit
-and hard bailout remained partial.
+owners, weak observations, handler restoration and split/full shutdown. At this
+cut, repeated cleanup exit was Unsupported; cleanup throw replacement and hard
+bailout remained partial.
 [Owning retval exit review](../../coverage/semantics/generator-call-cleanup-exit-review.json).
 
 I104 validates the existing pending-throw path for a supplied plain Child
@@ -198,6 +198,16 @@ catch. The handler restores; catch/finally run and a final string exit keeps
 status 41. The real source agrees and reached checks preserve the owner counts
 and hidden copied Closure. Aliased throws and wider lifecycle remain open.
 [Cleanup throw review](../../coverage/semantics/generator-call-cleanup-throw-review.json).
+
+I105 carries a second exit from the Child destructor through the owning
+warning-retval's live parent storage step, later fields, CLEAN and prepared/API
+release. The existing storage-task rewrite keeps the marker while an already
+EXITED saved operation takes the latest status. A literal string exit retains
+29 and frees an After sibling; an independent integer exit changes41 to53.
+Two source comparisons and fake/real reached checks validate weak owners,
+handler restoration and shutdown; wider nested exits and exit with an ordinary
+Throwable already pending remain partial.
+[Repeated cleanup exit review](../../coverage/semantics/generator-call-repeated-exit-review.json).
 
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,

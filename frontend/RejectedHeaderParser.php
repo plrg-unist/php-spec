@@ -88,19 +88,21 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
                 'beginTokenPos' => $begin, 'closeLine' => $close->line,
                 'closeTokenPos' => $self->tokenPos, 'items' => $self->semValue];
         };
-        // Nonempty method modifiers reduce before parameters/body. Constants
-        // share this rule, so distinguish the actual function lookahead.
+        // Methods/constants share this reduction before parameters/initializers.
+        // Their actual lookahead selects the target-specific flag set.
         if ($this->ruleToLength[384] !== 1 || $this->reduceCallbacks[384] !== null) {
             throw new RuntimeException('Member modifier reduction contract changed');
         }
         $this->reduceCallbacks[384] = static function (self $self, int $stackPos): void {
             $self->semValue = $self->semStack[$stackPos];
             $allowed = PhpParser\Modifiers::PUBLIC | PhpParser\Modifiers::PROTECTED
-                | PhpParser\Modifiers::PRIVATE | PhpParser\Modifiers::STATIC
-                | PhpParser\Modifiers::ABSTRACT | PhpParser\Modifiers::FINAL;
-            if ($self->tokens[$self->tokenPos]->id === T_FUNCTION && ($self->semValue & ~$allowed)) {
+                | PhpParser\Modifiers::PRIVATE | PhpParser\Modifiers::FINAL;
+            $target = $self->tokens[$self->tokenPos]->id;
+            if ($target === T_FUNCTION) $allowed |= PhpParser\Modifiers::STATIC | PhpParser\Modifiers::ABSTRACT;
+            if (($target === T_FUNCTION || $target === T_CONST) && ($self->semValue & ~$allowed)) {
                 // Only a foreign parse stop; the reply retains native diagnostics.
-                throw new PhpParser\Error('Invalid modifier for method');
+                throw new PhpParser\Error($target === T_FUNCTION
+                    ? 'Invalid modifier for method' : 'Invalid modifier for class constant');
             }
         };
     }

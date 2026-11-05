@@ -280,6 +280,10 @@ effectful lookup and wider reentry remain partial.
 Throws from the selected Notice handler also preserve the VM's distinct cleanup
 of the callback argument and its children. Consumed Closure checking borrows
 capture metadata after the real owners retire.
+When that handler returns an object whose destructor throws, the saved Notice
+cleanup retains the pending Throwable. A newly constructed Throwable records the
+authentic output builtin in its trace; `ob_start` and `ob_end_clean` have exact
+source and reached-state checks. [Returned-Notice evidence](coverage/semantics/output-executor-notice-retval-throw-review.json).
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3203,6 +3207,9 @@ Early method-target validation now stops readonly and asymmetric-set modifiers
 before parameters/body while retaining earlier attribute headers. Valid readonly
 properties and ordinary method flags keep their headers. Twenty-two dynamic and
 four main comparisons plus 108 reached conditions pass.
+Constant modifiers now receive the same early target check before initializers:
+earlier attribute headers survive, while forbidden initializer headers do not.
+Twenty-two dynamic and four main comparisons plus 108 reached conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
@@ -3212,7 +3219,8 @@ four main comparisons plus 108 reached conditions pass.
 [rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
 [namespace-phase review](coverage/semantics/rejected-namespace-review.json),
 [compiler-phase review](coverage/semantics/rejected-static-validation-review.json),
-[method-target review](coverage/semantics/rejected-method-modifier-review.json).
+[method-target review](coverage/semantics/rejected-method-modifier-review.json),
+[constant-target review](coverage/semantics/rejected-constant-modifier-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -4842,31 +4850,25 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Normal owning results from named handlers retire before the original Throwable
-and registry restoration. A literal Exception from a fresh ignored value while
-H is disabled instead retains that old Throwable and pending outer C protections,
-then reports the new fatal and continues later queue cleanup. A documentary
-parent/selected-call association authenticates the actual outer tick source.
-Omitted owner channels must be shared or rootless; selected completion owners must
-already be covered. A shared value that throws later invokes the restored handler
-again and finishes normally. Four new originals and two affected controls agree;
-strict435 and seven independent groups/723 conditions (690 genuine, 33 derived)
-pass. See the
-[handler-value throw review](coverage/semantics/callback-late-tick-handler-throw-review.json).
-Earlier [normal handler-value coverage](coverage/semantics/callback-late-tick-handler-value-review.json)
-retains its four source agreements and 432 genuine checks.
-Ignored destructor-body values retire before the inner C decrement. An unhandled
-literal Exception during their disposal preserves authenticated pending outer C
-wrappers and unfinished arguments/FCC slots, with shared operation/frame/pending
-owners counted once. Later active queue cleanup runs while the stopped tick tail
-stays rooted. Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+Normal and abrupt ignored named-handler values keep their original
+[handler-value](coverage/semantics/callback-late-tick-handler-value-review.json)
+and [handler-value throw](coverage/semantics/callback-late-tick-handler-throw-review.json) cuts.
+Ignored destructor-body values retire before the inner C decrement. A handler-free
+integer or string exit during their disposal now preserves the pending C pairs
+and unfinished argument/FCC jobs, continues later active queue cleanup, and stops
+the remaining tick list. Full status 263 remains distinct from CLI status 7; string
+exit preserves a stable earlier status. A later-retained value exits after its
+original receiver has retired. Cacheless/noqueue finalization is idempotent.
+Five new originals and two affected controls agree; strict435 and five independent
+groups/739 conditions (734 genuine, five derived) pass.
+[Body-value exit review](coverage/semantics/callback-late-tick-body-exit-review.json).
+Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
 [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
-[handler](coverage/semantics/callback-late-tick-handler-review.json),
-[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) and
-[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence
-retains its original cuts. Distinct pending-owner contexts, abrupt handler-value
-disposal, owning handler callables, wider producers, assertion roots, changed
-phases, direct reference-return bodies and reentrant release remain partial.
+[handler](coverage/semantics/callback-late-tick-handler-review.json) and
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) evidence
+retains its original cuts. Replacing an earlier integer exit during nested cleanup,
+unshared owning contexts, handlers, direct reference-return bodies, wider frame
+cleanup and reentry remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -7445,6 +7447,12 @@ and reached-state validation through the same copied warning cleanup. Catch and
 finally run after the exception replaces exit; a final string exit retains
 status 41. The existing rules suffice for this selected case.
 [Cleanup throw review](coverage/semantics/generator-call-cleanup-throw-review.json).
+
+A second exit in that owning retval's Child destructor now keeps the copied
+warning cleanup and later property release. A literal string exit retains
+status 29 and frees an After sibling; an integer exit replaces status 41 with
+53. Both exact native/model outputs and independent reached ownership gates
+pass. [Repeated cleanup exit review](coverage/semantics/generator-call-repeated-exit-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

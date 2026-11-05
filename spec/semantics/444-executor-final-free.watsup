@@ -643,6 +643,14 @@ def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
   -- if S.EXCEPTIONHANDLER = eps
   -- if $executor_renderable(S, n)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
+;; UnwindExit bails out of the module with no report, preserving its full status.
+;; The abandoned source still carries the original phase completion.
+def $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.COMPLETION = EXITED z
+  -- if S.EXITSTATUS = z /\ $exit_status_valid(S)
+  -- if $executor_free_endpoint(S)
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if $executor_tick_bailout(S) = (pexecutortick)
 def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
   -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
   -- if S.OUTPUTBUFFERS = eps /\ S.EXITSTATUS = 255
@@ -655,8 +663,14 @@ def $executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n) = S_report[.TODO = 
   -- if S_report = $shutdown_freeze_marked(S_cached)
   -- if $shutdown_frozen(S_report.COMPLETION)
   -- if pexecutortickfatal = {TICK pexecutortick, COMPLETION S_report.COMPLETION, OBJECT n}
-def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, pcompletion), n)
-  -- if $executor_tick_caught(S) = ((pexecutortick, pcompletion))
+def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n_throwable), n)
+  -- if $executor_tick_caught(S) = ((pexecutortick, UNCAUGHT n_throwable))
+def $output_drive_finalize(S, n) = $drive_steps($executor_queue_begin(S), n)
+  -- if $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.SHUTDOWN.ENTRIES =/= eps
+def $output_drive_finalize(S, n) = $executor_free_finish(S)
+  -- if $executor_tick_caught(S) = ((pexecutortick, EXITED z))
+  -- if S.SHUTDOWN.ENTRIES = eps
 def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active($executor_tick_history(S, pexecutortickfatal.TICK.COMPLETION), pexecutortickfatal.TICK)
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT pexecutortickfatal.OBJECT]
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal false) = eps
@@ -994,6 +1008,14 @@ def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, 
   -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pobnotice.CALL, $trace_extra(S_history, $getclass_trace_operands(pobnotice.CALL.SENT)))
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
   -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
 ;; A pending Throwable prevents an eligible handler call, but not default output.
 def $ob_failure_pending_notice(S, pobcreation) = S[.ERRORFATALTRACE = eps]
