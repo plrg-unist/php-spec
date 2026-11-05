@@ -1,0 +1,2 @@
+declare(encoding=true);
+/* unfinished

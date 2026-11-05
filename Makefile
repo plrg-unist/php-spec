@@ -22,6 +22,7 @@ test: build
 	python3 tests/eval_source_service.py
 	python3 tests/include_source_service.py
 	python3 tests/rejected_header_service_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-headers.XXXXXXXX)/service"
+	python3 tests/lexical_header_service_review.py --output "$$(mktemp -d /tmp/php-spec-lexical-headers.XXXXXXXX)/service"
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
@@ -1715,6 +1716,7 @@ test-semantics: build
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/rejected_encoding_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/sources"
+	python3 tests/semantics/lexical_header_sources.py --output "$$(mktemp -d /tmp/php-spec-lexical-headers.XXXXXXXX)/sources"
 	python3 tests/semantics/rejected_encoding_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/state"
 	python3 tests/semantics/rejected_header_review_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/review-state"
 	python3 tests/semantics/eval_class_scope_protocol.py

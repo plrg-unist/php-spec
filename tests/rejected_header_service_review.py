@@ -114,10 +114,10 @@ def run(out):
         lexical = frontend.request({'op': 'parse-eval', **dict(pending, source=b64(code))})
         raw = (frontend.output / 'stderr').read_bytes()[len(frontend.recorded_stderr):]
         frontend.recorded_stderr.extend(raw)
-        assert not lexical['accepted'] and 'headers' not in lexical and raw
-        assert not CLI.dynamic_parser_stderr(lexical, 'eval', raw)
+        assert not lexical['accepted'] and lexical['headers'] and raw
+        assert CLI.dynamic_parser_stderr(lexical, 'eval', raw)
         records += [{'id': 'typed-range-deferred', 'expected': 'checked_fact'},
-                    {'id': 'lexer-preemption', 'expected': 'CLI refusal'}]
+                    {'id': 'lexer-prefix', 'expected': 'checked header prefix'}]
     finally:
         try: adapter.close()
         finally: frontend.close()
