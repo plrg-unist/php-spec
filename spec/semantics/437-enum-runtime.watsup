@@ -1521,11 +1521,12 @@ def $enum_is_callable_fixed_cache_owner(S, porigin) = (CACHE_SHARED)
   -- if $enum_is_callable_fixed_scope(S, porigin)
 def $enum_is_callable_fixed_cache_owner(S, porigin) = $closure_function_cache_owner(S, porigin)
   -- if ~$enum_is_callable_fixed_scope(S, porigin)
+dec $enum_is_callable_method_cache_source(pstate, porigin) : pmethoddesc?
 dec $enum_is_callable_fixed_cache_source(pstate, porigin, pfncacheowner) : bool
 def $enum_is_callable_fixed_cache_source(S, porigin, CACHE_SHARED) = true
-  -- if $enum_is_callable_fixed_lexical(S, porigin)
+  -- if $enum_is_callable_fixed_lexical(S, porigin) \/ $enum_is_callable_method_cache_source(S, porigin) =/= eps
 def $enum_is_callable_fixed_cache_source(S, porigin, pfncacheowner) = $closure_function_cache_history(S, porigin, pfncacheowner)
-  -- if ~$enum_is_callable_fixed_lexical(S, porigin) \/ pfncacheowner =/= CACHE_SHARED
+  -- if pfncacheowner =/= CACHE_SHARED \/ (~$enum_is_callable_fixed_lexical(S, porigin) /\ $enum_is_callable_method_cache_source(S, porigin) = eps)
 def $enum_is_callable_fixed_entry(S, pselectedcall) = true
   -- if pselectedcall.KIND = INTRINSIC_IS_CALLABLE /\ pselectedcall.OWNER = eps
   -- if $enum_is_callable_fixed_source(S, pselectedcall.SITE) = ((pselectedcall.ORIGINAL, preqbytes_fallback))

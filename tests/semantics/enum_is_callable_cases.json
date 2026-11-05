@@ -1408,5 +1408,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "query:1:UnknownScopedFirst\\Target::cases|query:1:UnknownScopedFirst\\Target::cases|end|",
     "purpose": "An earlier unproved Fiber birth blocks later sharing inference; explicit Unsupported, no engine agreement credit."
+  },
+  {
+    "id": "enum-is-callable-third-output-raw-method-cache-static-inherited-selection",
+    "source": "<?php\nnamespace RawStatic;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass BaseQuery {\n    public static function query($install) {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n    public static function fresh() {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], false, $name);\n        echo 'fresh:', (int)$ok, ':', $name, '|';\n    }\n}\nclass ChildQuery extends BaseQuery {}\nBaseQuery::query(true); ChildQuery::query(false);\nBaseQuery::fresh(); BaseQuery::query(false);\n",
+    "source_sha256": "ccb1b21da793ff4f80563e4f0e2dc57060c8cc39a37e5f8a55baba046858a85c",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:RawStatic\\Target::cases|query:1:RawStatic\\Target::cases|USER:OLD|fresh:0:OLD|query:1:RawStatic\\Target::cases|",
+    "purpose": "Actual ordinary named/inherited static method op_array cache selects builtin before argument publication, retains it after output throw and across inherited calls, while a fresh method uses current USER."
+  },
+  {
+    "id": "enum-is-callable-third-output-raw-method-cache-static-output-throw-warm",
+    "source": "<?php\nnamespace RawMethodDrop;\nenum Target { case A; }\nclass Drop {\n    function __destruct() {\n        echo $GLOBALS['name'] === null ? 'null|' : 'wrong|';\n        throw new \\Exception('drop');\n    }\n}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass BaseQuery {\n    public static function query($install) {\n        global $name, $ok;\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\nclass ChildQuery extends BaseQuery {}\n$name = new Drop; $ok = 'UNCHANGED';\ntry { ChildQuery::query(true); }\ncatch (\\Exception $e) {\n    $trace = $e->getTrace();\n    echo $trace[1]['function'], ':', $name, ':', $ok, '|';\n}\n$name = 'OLD'; BaseQuery::query(false);\n",
+    "source_sha256": "b8818747ee9bf690c54c25051923eb31970357b2699881278b7565f4847f4a16",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|is_callable:RawMethodDrop\\Target::cases:UNCHANGED|query:1:RawMethodDrop\\Target::cases|",
+    "purpose": "Actual ordinary named/inherited static method op_array cache selects builtin before argument publication, retains it after output throw and across inherited calls, while a fresh method uses current USER."
   }
 ]

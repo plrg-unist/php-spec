@@ -283,3 +283,21 @@ def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_CALL n) = tr
   -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
   -- if S.CLOSURECALLCACHES[n].FUNCTION = pfunction.ORIGIN
   -- if $closure_call_cache_record_valid(S, n, S.CLOSURECALLCACHES[n])
+
+;; Raw method op_arrays share their actual compiled function cache across calls.
+;; A source site is admitted only through its owning named-Class descriptor.
+def $enum_is_callable_method_cache_source(S, porigin) = (pmethoddesc)
+  -- if $closure_cache_method_source(S, porigin) = (pmethoddesc)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $enum_is_callable_method_cache_source(S, porigin) = eps -- otherwise
+
+def $closure_function_cache_owner(S, porigin) = (CACHE_SHARED)
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if $enum_is_callable_method_cache_source(S, porigin) = (pmethoddesc)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CACHE = eps
+  -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if $closure_cache_method_target(pcallcontext.TARGET, pcallcontext.FUNCTION)
+  -- if $target_function(S, pcallcontext.TARGET) = (pmethoddesc.FUNCTION)
+  -- if $call_current_valid(S)
