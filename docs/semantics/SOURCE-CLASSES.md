@@ -242,8 +242,9 @@ functions and static no-capture Closures can contain these anonymous classes.
 The compiler records only the authentic class checkpoint while inside the factory, then saves
 the image after restoring the containing unit scope. This publishes the class
 before any call and preserves compilation order independently of call order.
-Ordinary function/Closure declarations do not consume the RTD counter. Wider
-factory contexts and incomplete containing-scope images remain Unsupported;
+Ordinary function/Closure declarations do not consume the RTD counter. Named-class
+method factories are described below. Other factory contexts and incomplete
+containing-scope images remain Unsupported;
 wider include/eval contexts, inheritance, attributes, wider members/defaults
 and wider RTD ordering remain required. The
 [mixed-class review](../../coverage/semantics/anonymous-mixed-rtd-review.json)
@@ -634,9 +635,34 @@ Inherited-final conflicts still occur before constructor arguments/allocation.
 Duplicate/static diagnostic class operands truncate at NUL; stored names and scope
 authority stay complete. The [method modifier review](../../coverage/semantics/anonymous-method-modifiers-review.json)
 retains the exact sources and reached fronts. Anonymous abstract-method diagnostics
-and factories inside method bodies remain explicit boundaries, alongside attributes,
-byref returns and wider magic/generator forms. Their native-only originals retain
-zero model agreement credit.
+and wider method-body factory contexts remain explicit boundaries, alongside attributes,
+byref returns and wider magic/generator forms. The historical177 boundary originals
+retain zero credit there; the named-owner witness has a separate fresh178 agreement.
+
+Ordinary factory methods in admitted named source classes may now compile their
+anonymous child templates. The unit check permits class-containing method bodies
+while preserving class-free headers, other member positions and the old anonymous,
+trait/interface/enum owner fences. At each child compilation, the concrete method
+GOTOROOT must belong to its parsed named owner. Source-derived namespace/imports,
+the complete current/folded class contexts, full owner::method name and body prefix
+must agree. Constant/default and generator/byref-return/attribute fences remain;
+the old global function/static-Closure producers keep their empty class contexts.
+
+The compiler records child publication checkpoints but saves their images only
+after restoring the complete containing-unit scope. It never reserves a deferred
+named-owner key before compiling the owner's methods: root/child/root ordinals
+are 0/1/2 for an early owner and 0/1/3 for the exercised conditional owner. Reversed
+or repeated calls reuse those templates while creating fresh instances. Inherited
+instance calls retain the declaring lexical owner across different called classes;
+ordinary typed/default/reference reception and promoted constraints remain intact.
+Related protected access, imported names and readonly headers use the existing
+rules. Lazy final conflicts fail before argument effects, and compile errors in
+uncalled factory bodies still reject the unit.
+
+The [method factory review](../../coverage/semantics/anonymous-method-factories-review.json)
+separates genuine runtime/source counters from explicitly pure source-derived
+compiler-context queries. Trait and anonymous source owners, method-owned Closures,
+generators, byref returns, attributes and wider source/lifetime contexts remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
@@ -897,7 +923,7 @@ caller CV, the third positional argument retains a reference to that cell
 through CONFIG, then receives the canonical name before the boolean result. The
 [output-CV review](../../coverage/semantics/enum-is-callable-output-review.json)
 records one exact source and 45 reached guards. Array inputs and old-object
-destructor/input-output alias effects remain explicit Unsupported.
+destructor/input-output alias effects remained explicit Unsupported at that cut.
 The same literal route writes the name for an absent method on both runtime
 false and syntax-only true; the
 [false-output review](../../coverage/semantics/enum-is-callable-output-false-review.json)
@@ -910,9 +936,10 @@ records two exact outcomes and 68 reached guards. Literal class-string arrays
 also retain lowercase and leading backslash source spelling, whereas case
 arrays use the canonical enum name. The
 [spelling review](../../coverage/semantics/enum-is-callable-output-spelling-review.json)
-records three exact outcomes and 64 reached guards. Other array sources remain
-partial. Initialized int, bool and null output CVs also receive the name
-before the boolean through the same source-certified path. The
+records three exact outcomes and 64 reached guards. Wider array sources remain
+partial beyond the live two-entry route below. Initialized int, bool and null
+output CVs also receive the name before the boolean through the same
+source-certified path. The
 [scalar-output review](../../coverage/semantics/enum-is-callable-output-scalar-review.json)
 records three exact outcomes and 79 reached guards; old-object replacement uses
 the lifetime rules below.
@@ -931,6 +958,20 @@ records seven exact sources, 200 independent guards and affected variable46/
 alias43 checks. Named/unpacked forms remain partial. Engine routes are
 `zend_compile_args`, VM `ZEND_SEND_VAR`/`ZEND_SEND_VAR_EX` and
 `ext/standard/type.c:PHP_FUNCTION(is_callable)`.
+For a live two-entry variable array, the first SEND records its actual array ID
+and selected name without owning a second copy. Direct class-string members
+retain raw spelling; a case receiver uses its enum's canonical class name.
+The sent array stays owned while later arguments or the old output destructor
+rebind the source CV. A shared input/output cell receives the name after its
+reference is captured, and a throwing destructor commits that name before
+exception transfer while leaving the boolean assignment untouched. The
+[variable-array review](../../coverage/semantics/enum-is-callable-variable-array-review.json)
+records seven exact agreements, two explicit Unsupported controls, strict435
+and separate reached groups of 60, 53, 33 and 70 checks. Key-2 input arrays,
+embedded reference members, and an output alias whose source is rebound to a
+new array remain outside this receipt route. Engine routes are
+`ext/standard/type.c:PHP_FUNCTION(is_callable)` and
+`Zend/zend_API.c:zend_is_callable_ex`.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
@@ -983,4 +1024,4 @@ core observer boundary and is a control rather than an agreement.
 Owning rebound values and newly attached type sources remain partial.
 Native raw overwrite can retain an abandoned count for a destructor-created
 object until the store sweep; it cannot be modeled as a second checked write.
-Variable array inputs remain outside third-output name authentication.
+Wider variable arrays remain outside third-output name authentication.

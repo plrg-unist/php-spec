@@ -47,7 +47,7 @@ assert($thrown); $records[] = ['id'=>'ordinary-parser-validation-preserved'];
 foreach ([
     'recursive'=>'namespace A{namespace B{namespace C{}}}declare(encoding=1);echo ;declare(encoding=2);',
     'grammar-stop'=>'namespace A{namespace B{}}echo ;declare(encoding=2);',
-    'other-validation'=>'namespace A{namespace B{}}class self{}declare(encoding=2);echo ;'
+    'other-validation'=>'namespace A{namespace B{}}class C{readonly function f(){}}declare(encoding=2);echo ;'
 ] as $name=>$source) {
     $parser = new RejectedHeaderParser(new RejectedEvalLexer(),$version); $caught = null;
     try { $parser->parse($source,new PhpParser\ErrorHandler\Collecting()); }
@@ -55,7 +55,7 @@ foreach ([
     assert($parser->parsingStarted && $caught !== null);
     assert($caught !== 'Namespace declarations cannot be nested');
     assert(count($parser->headers) === ($name==='recursive' ? 1 : 0));
-    if ($name==='other-validation') assert(str_contains($caught,'Cannot use'));
+    if ($name==='other-validation') assert(str_contains($caught,'cannot be readonly'));
     else assert(str_contains($caught,'Syntax error'));
     $records[] = ['id'=>$name,'headers'=>count($parser->headers),'error'=>$caught];
 }

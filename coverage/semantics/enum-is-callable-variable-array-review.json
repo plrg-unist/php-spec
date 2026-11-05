@@ -1,0 +1,25 @@
+{
+  "scope": "published-enum is_callable third output for live two-entry direct-member arrays",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "a7a3fad98e7ec74ab9d8cf52d388721bf80c31e3",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "native": "Main checkout ignored .tools/enum-variable-array-output-evidence/native-v1/report.json records all nine exact source hashes and raw outcomes."
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "behavior": "A nonowning first-SEND receipt authenticates the sent array ID and selected name. Direct class-string members preserve raw spelling; enum-case receivers use their canonical class. SENT retains the array when the source CV changes or aliases the output cell. An old output destructor may rebind that CV or throw; the selected name commits before exception transfer, leaving the interrupted boolean assignment unchanged.",
+  "source_results": {
+    "agreements": "Seven exact native/model stdout, stderr and exit-status agreements: direct and rebind-second at 83ced9ef2dac74f9d4ac1456234eea333c6dc6a8; alias, rebind-destructor, throw-destructor, syntax-only and throw-second at 768f3d8c7f52bc81110da6bf55314486ea5c64f8. Raw under raw/user-string-{p0liuqbe,e1o77npw,av8epacq,ek_4coy2,7lh8yp7x,esye_2uh,mhm7t74f}.",
+    "controls": "Malformed key-2 and embedded-reference arrays return expected explicit Unsupported at 22bd557b12ab82febf922b5a81202cd23c912ef3, with zero agreement credit. Raw under raw/user-string-{kxv60b8v,52zoamca}; the embedded-reference callback emits CHANGE| before refusal.",
+    "catalogue": "tests/semantics/enum_is_callable_cases.json pins all nine source bytes, SHA256 values, expected outcomes and per-row model caps. Each row was selected with python3 tests/semantics/enum_is_callable.py --match variable-array-<exact suffix>; no whole-catalogue run is claimed."
+  },
+  "reached_results": "Four separate numeric runs: direct60 at 83ced9ef2dac74f9d4ac1456234eea333c6dc6a8, rebind53 at 45cf57f3988b27f2c7e41c51792dc500b1a7bae6, alias33 at 768f3d8c7f52bc81110da6bf55314486ea5c64f8, and cleanup/throw70 at tested_revision. All returned true/exit0/empty stderr with stable inputs. Raw under raw/enum-is-callable-protocol-{ab2nwjth,3ca6jo5g,j_nf0tff,alm18uld}; 216 physical clauses across four runs, not a single combined run.",
+  "strict": "At 22bd557b12ab82febf922b5a81202cd23c912ef3, raw/enum-variable-array-evidence/strict-v5.json records 435 modules, true/exit0/empty stderr in 12.21s. The later tested_revision adds only the cleanup reached fixture.",
+  "joined_gate": "Composed revision 4935191594b2d5325cfff34c5d263dd806b02ef4 has exact master parent f579117514fe05f55e1f6683fafb4f5520f3bac2. raw/merged/strict435.json records true/exit0/empty stderr in 12.52s; raw/enum-is-callable-protocol-arqfrrka/report.json records cleanup70 true/exit0/empty stderr with stable inputs. This focused replay checks the intervening destructor-boundary rule; unrelated source and reached cuts were not rerun.",
+  "retained_failures": "Original strict binder failure (strict-v1), direct-source nondeterminism (user-string-5m0rejk6), rebind fixture syntax error (enum-is-callable-protocol-_gav824v), alias source45 timeout (user-string-n1bynxx1), and alias invoke refusal (enum-is-callable-protocol-ttn6z0q2; alias completion probe) retain zero success credit. Their focused fixes passed without raising source caps.",
+  "remaining": "Malformed live-array keys, embedded reference members, alias output after source rebinding to a new array, named/unpacked output and wider callable arrays remain outside this receipt route.",
+  "engine_routes": ["ext/standard/type.c:PHP_FUNCTION(is_callable)", "Zend/zend_API.c:zend_is_callable_ex", "Zend/zend_execute.c:ZEND_SEND_VAR"],
+  "recovery": "Raw is outside Git under main checkout .tools/enum-variable-array-output-evidence/. Paths beginning native-v1/ or raw/ above are relative to it. Raw command files retain the original private worktree paths; run the tracked exact --match source selections and four separate Makefile reached commands from a current checkout to reproduce. No source or reached replay was done solely for documentation.",
+  "review": "Independent semantic, fixture and raw-result review CLEAR by /root/enum_review_next at the recorded cuts."
+}

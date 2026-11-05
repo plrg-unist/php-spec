@@ -224,6 +224,23 @@ check real source identity, warning order, suppression, handle reuse, zero-budge
 publication and catch/finally continuation. The [review](../../coverage/semantics/rejected-namespace-review.json)
 retains their actual cuts and the corrected service fixture failure.
 
+The same phase distinction applies to class/interface/enum names and parents,
+static magic methods and `try` without catch/finally. Their rejected-only callbacks
+defer compiler checks so later headers survive a subsequent ParseError. Ordinary
+parsing keeps its validation. Duplicate modifiers and readonly methods still stop
+the foreign parser: native method-modifier validation precedes the method body,
+so a readonly body's extra foreign header remains an explicit admission refusal.
+
+The [static-phase originals](../../tests/semantics/static_rejected_sources.py)
+pass 38 eval/include comparisons; [four main files](../../tests/semantics/static_main_rejected_sources.py)
+also agree. The [independent service](../../tests/rejected_static_service_review.py)
+checks 49 controls, including two readonly-body refusals and unchanged ordinary
+validation. All 110 [reached conditions](../../tests/semantics/rejected_static_review_state.py)
+pass: no child class/function/constant installation, exactly the required
+`PDEXIT` rejection-history append, valid handles/budget states and source identity
+through catch/finally. The [review](../../coverage/semantics/rejected-static-validation-review.json)
+keeps the first fixture's mistaken history equality as a zero-credit failure.
+
 Warning128 uses the current reporting/display state and bypasses error handlers.
 The subsequent catchable ParseError/CompileError retains a failed-source record
 and file entry without an accepted source/code/binding. Its lifecycle handle is

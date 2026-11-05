@@ -550,5 +550,80 @@
     "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
     "model_timeout_seconds": 300,
     "expected_normal_stdout": "OUTER-null|INNER-null|LOCAL-null|CHILD-both-null|outer-committed|inner-committed|results:UNCHANGED:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-direct",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$call = [FirstCheck::class, 'from'];\n$name = 'old';\n$ok = is_callable($call, false, $name);\necho 'class:', (int)$ok, ':', $name, '|';\n$call = ['firstcheck', 'FROM'];\n$name = 'old';\n$ok = is_callable($call, false, $name);\necho 'spelling:', (int)$ok, ':', $name, '|';\n$call = ['\\FirstCheck', 'FROM'];\n$name = 'old';\n$ok = is_callable($call, false, $name);\necho 'slash:', (int)$ok, ':', $name, '|';\n$call = [FirstCheck::A, 'TRYFROM'];\n$name = 'old';\n$ok = is_callable($call, false, $name);\necho 'case:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "6ddae919fa8e72c004de6bd2746bbee2f5c8ce0ec5ec9f9ea1dd82760a674301",
+    "expected_model": "normal",
+    "purpose": "Live class/case callable arrays preserve raw class spelling and canonical case class in third output.",
+    "expected_normal_stdout": "class:1:FirstCheck::from|spelling:1:firstcheck::FROM|slash:1:\\FirstCheck::FROM|case:1:FirstCheck::TRYFROM|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-rebind-second",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction choose(): bool {\n    global $call;\n    $call = [OtherCheck::class, 'tryFrom'];\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name = 'old';\n$ok = is_callable($call, choose(), $name);\necho 'chosen:', (int)$ok, ':', $name, ':', $call[0], ':', $call[1], '|';\n",
+    "source_sha256": "da04705dbf4c80ada49afa8255e30b7b0d8519cd53411bd3c7687b6bada741d2",
+    "expected_model": "normal",
+    "purpose": "First SEND retains the original array while the second argument rebinds its source CV.",
+    "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:OtherCheck:tryFrom|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-alias",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$ok = is_callable($call, false, $name);\necho 'alias:', (int)$ok, ':', $call, ':', $name, '|';\n",
+    "source_sha256": "8dcc52c28e62fe364786259cf15c47b9816b61e279e0e3554d25fddd1d2c62db",
+    "expected_model": "normal",
+    "purpose": "Third-output alias overwrites the input CV after the sent array retains the selected name.",
+    "expected_normal_stdout": "alias:1:FirstCheck::from:FirstCheck::from|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-rebind-destructor",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nclass OldDrop {\n    public function __destruct() {\n        global $call, $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $call = [OtherCheck::class, 'tryFrom'];\n        echo 'REBIND|';\n    }\n}\n$call = [FirstCheck::class, 'from'];\n$name = new OldDrop;\n$ok = is_callable($call, false, $name);\necho 'chosen:', (int)$ok, ':', $name, ':', $call[0], ':', $call[1], '|';\n",
+    "source_sha256": "c088a74fffb88d89a8cff9a188cc008977ec4472a3d5f75923c1991b6bb2a12b",
+    "expected_model": "normal",
+    "purpose": "Output destructor clears its cell and rebinds the source array before the original name commits.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|REBIND|chosen:1:FirstCheck::from:OtherCheck:tryFrom|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-throw-destructor",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nclass OldDrop {\n    public function __destruct() {\n        global $call, $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $call = [OtherCheck::class, 'tryFrom'];\n        echo 'REBIND|';\n        throw new Exception('drop');\n    }\n}\n$call = [FirstCheck::class, 'from'];\n$name = new OldDrop;\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($call, false, $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':', $name, ':', $call[0], ':', $ok, '|';\n}\n",
+    "source_sha256": "4a3f32439abbc3942ec6d2173a869d607b04b343e15ce6966997fb27c0d76179",
+    "expected_model": "normal",
+    "purpose": "Throwing output destructor still commits the original array name; catch sees untouched boolean result.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|REBIND|caught:drop:FirstCheck::from:OtherCheck:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-syntax-only",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$call = [FirstCheck::class, 'missing'];\n$name = 'old';\n$ok = is_callable($call, true, $name);\necho 'syntax:', (int)$ok, ':', $name, '|';\n$name = 'old';\n$ok = is_callable($call, false, $name);\necho 'runtime:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "111764bc3a70ad24e41ad219e93e02fb5c431cd9ebf7cd3c0a471e42a3224c92",
+    "expected_model": "normal",
+    "purpose": "A live absent enum method array keeps its name for syntax-only true and runtime false.",
+    "expected_normal_stdout": "syntax:1:FirstCheck::missing|runtime:0:FirstCheck::missing|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-malformed",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$call = [0 => FirstCheck::class, 2 => 'from'];\n$name = 'old';\n$ok = is_callable($call, false, $name);\necho 'malformed:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "57567358189f1c6bf7bde1c0f7d5a7e49b5fd53cc9ef96f2157222b3c2152694",
+    "expected_model": "unsupported",
+    "purpose": "Malformed live key-2 array returns false/Array natively; explicit Unsupported boundary for bounded array receipt.",
+    "expected_normal_stdout": "malformed:0:Array|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-throw-second",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction abort_query(): bool {\n    global $call;\n    $call = [OtherCheck::class, 'tryFrom'];\n    echo 'REBIND|';\n    throw new Exception('stop');\n}\n$call = [FirstCheck::class, 'from'];\n$name = 'old';\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($call, abort_query(), $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $name, ':', $call[0], ':', $ok, '|';\n}\n",
+    "source_sha256": "4380690f7f7f5c2e0d836ce8e0cbe4b250f425775bba52342b6ce41de2b25e8e",
+    "expected_model": "normal",
+    "purpose": "Second-argument throw skips output assignment and boolean result after first array SEND.",
+    "model_timeout_seconds": 60,
+    "expected_normal_stdout": "REBIND|caught:old:OtherCheck:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-array-embedded-reference",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum PureCheck { case A; }\n$class = FirstCheck::class;\n$call = [&$class, 'from'];\nfunction change_class(): bool {\n    global $class;\n    $class = PureCheck::class;\n    echo 'CHANGE|';\n    return false;\n}\n$name = 'old';\n$ok = is_callable($call, change_class(), $name);\necho 'reference:', (int)$ok, ':', $name, ':', $class, '|';\n",
+    "source_sha256": "15f764e297f61b2db2aa0ecaa1566b01abc751f4e9261207810d3c118f54b86e",
+    "expected_model": "unsupported",
+    "purpose": "Embedded reference member observes late class mutation natively; explicit Unsupported boundary until modeled.",
+    "expected_normal_stdout": "CHANGE|reference:0:PureCheck::from:PureCheck|"
   }
 ]
