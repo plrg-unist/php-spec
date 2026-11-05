@@ -24,6 +24,7 @@ CASES = {
     'double-embedded': (b'declare(encoding=1);\n$x="' + EMBEDDED + b'\\u{}";declare(encoding=3);', [1, 3], 2),
     'heredoc-embedded': (b'declare(encoding=1);\n$x=<<<TXT\n' + EMBEDDED + b'\\u{}\nTXT;declare(encoding=3);', [1, 4], 2),
     'backtick-embedded': (b'declare(encoding=1);\n$x=`' + EMBEDDED + b'\\u{}`;declare(encoding=3);', [1, 3], 2),
+    'indent': (b'declare(encoding=1);\n$x=<<<TXT\n{$a[(function(){\n declare(encoding=2);return 0;\n})()]}\n  TXT;\ndeclare(encoding=3);\necho ;', [1], 1),
     'earlier-syntax': (b'echo ;declare(encoding=1);$x="\\u{}";', [], 0),
     'earlier-nonliteral': (b'declare(encoding=1,encoding=true);$x="\\u{}";', [1], 1),
     'single-control': (b'declare(encoding=1);$x=\'\\u{}\';declare(encoding=2);echo ;', [1, 1], 2),
@@ -128,7 +129,7 @@ def run(out):
         ('surrogate', b'$x="\\u{D800}";')]
     payload = [{'id': name, 'source': b64(source), 'complete': True} for name, source in raw]
     payload += [{'id': name, 'source': b64(CASES[name][0]), 'complete': False}
-                for name in ('plain', 'large', 'double-embedded', 'heredoc-embedded', 'backtick-embedded')]
+                for name in ('plain', 'large', 'double-embedded', 'heredoc-embedded', 'backtick-embedded', 'indent')]
     (out / 'tapes.json').write_text(json.dumps(payload) + '\n')
     processes = []
     for name, source, extra in [('tapes', PROBE.replace('@ROOT@', str(ROOT)), [str(out / 'tapes.json')]),

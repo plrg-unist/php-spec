@@ -221,6 +221,17 @@ static void scan_file(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
 PHP_FUNCTION(php_spec_parse_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, true); }
 PHP_FUNCTION(php_spec_lex_file) { scan_file(INTERNAL_FUNCTION_PARAM_PASSTHRU, false); }
 
+/* Parser-mode scanning validates heredoc segments. Its event hook also keeps
+ * trivia skipped by lex_scan; no Zend grammar or decoded value is exported. */
+static void eval_token_event(zend_php_scanner_event event, int id, int line,
+                             const char *text, size_t length, void *context) {
+    if (event != ON_TOKEN || id == END || id == T_ERROR) return;
+    if (id == ';' && length > 1) id = T_CLOSE_TAG;
+    else if (id == T_ECHO && length == sizeof("<?=") - 1) id = T_OPEN_TAG_WITH_ECHO;
+    append_token((zval *)context, id, (const unsigned char *)text, length,
+        line, (const unsigned char *)text - LANG_SCNG(yy_start));
+}
+
 /* Scan original eval bytes after an opening tag, without synthetic offsets. */
 static void scan_eval(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
     zend_string *source;
@@ -260,23 +271,34 @@ static void scan_eval(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
         RETVAL_BOOL(accepted);
     } else {
         zval token;
-        ZVAL_UNDEF(&token);
         array_init(return_value);
-        int id, line = 1, remaining = -1;
-        while ((id = lex_scan(&token, NULL))) {
-            append_token(return_value, id, LANG_SCNG(yy_text), LANG_SCNG(yy_leng),
-                line, LANG_SCNG(yy_text) - LANG_SCNG(yy_start));
-            if (Z_TYPE(token) != IS_UNDEF) {
-                zval_ptr_dtor_nogc(&token);
-                ZVAL_UNDEF(&token);
+        CG(ast) = NULL;
+        CG(ast_arena) = zend_arena_create(1024 * 32);
+        LANG_SCNG(on_event) = eval_token_event;
+        LANG_SCNG(on_event_context) = return_value;
+        int id, remaining = -1;
+        for (;;) {
+            zend_parser_stack_elem element = {0};
+            ZVAL_UNDEF(&token);
+            if (CG(increment_lineno)) {
+                CG(zend_lineno)++;
+                CG(increment_lineno) = 0;
             }
-            if (EG(exception)) break;
+            id = lex_scan(&token, &element);
+            if (Z_TYPE(token) != IS_UNDEF) {
+                /* emit_token_with_val transfers the zval to AST_ZVAL.
+                 * An error token never performs that ownership transfer. */
+                if (id != END && id != T_ERROR) zend_ast_destroy(element.ast);
+                else zval_ptr_dtor_nogc(&token);
+            }
+            if (id == END || id == T_ERROR || EG(exception)) break;
             if (remaining != -1) {
                 if (id != T_WHITESPACE && id != T_OPEN_TAG && id != T_COMMENT
                     && id != T_DOC_COMMENT && --remaining == 0) {
                     if (LANG_SCNG(yy_cursor) < LANG_SCNG(yy_limit)) {
                         append_token(return_value, T_INLINE_HTML, LANG_SCNG(yy_cursor),
-                            LANG_SCNG(yy_limit) - LANG_SCNG(yy_cursor), line,
+                            LANG_SCNG(yy_limit) - LANG_SCNG(yy_cursor),
+                            CG(zend_lineno) + CG(increment_lineno),
                             LANG_SCNG(yy_cursor) - LANG_SCNG(yy_start));
                     }
                     break;
@@ -284,12 +306,8 @@ static void scan_eval(INTERNAL_FUNCTION_PARAMETERS, bool parse) {
             } else if (id == T_HALT_COMPILER) {
                 remaining = 3;
             }
-            if (CG(increment_lineno)) {
-                CG(zend_lineno)++;
-                CG(increment_lineno) = 0;
-            }
-            line = CG(zend_lineno);
         }
+        zend_arena_destroy(CG(ast_arena));
     }
     zend_restore_lexical_state(&saved);
     CG(in_compilation) = compiling;
