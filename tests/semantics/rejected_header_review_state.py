@@ -74,10 +74,13 @@ def prepare(out):
                 value = '(SOURCE_COMPILE_REJECT 1 ' + term(unit) + ' ' + term(base64.b64decode(parsed['message'])) + ' ' + str(parsed['line']) + ')'
             state = 'S_' + tag
             context = ('pevalcontext_' if mode == 'eval' else 'pfilecontext_') + tag
+            startup = '{REPORTING ($ptascii("0")),INCLUDEPATH ($ptascii(".:"))}'
             if mode == 'eval':
                 checks += [state + ' = $php_run(U_' + tag + ',1500,' + json.dumps(b64(os.fsencode(path))) + ')',
                     state + '.EVALCONTEXTS = [' + context + ']', context + '.UNIT = 1']
                 resume, valid, continuation = '$eval_resume', '$eval_response_valid', '$eval_continue'
+                masked_setup = [state + '_mask = $php_startup_run(U_' + tag + ',1500,'
+                    + json.dumps(b64(os.fsencode(path))) + ',' + startup + ')']
             else:
                 checks += [state + '_open = $php_file_run(U_' + tag + ',1500,' + term(os.fsencode(path)) + ',' + term(os.fsencode(out)) + ')',
                     state + '_open.COMPLETION = SOURCE_PENDING', state + '_open.FILECONTEXTS = [' + context + '_open]',
@@ -85,6 +88,12 @@ def prepare(out):
                     + term(os.fsencode(child)) + ' ' + term(os.fsencode(child)) + ' ' + term(unit) + ')',
                     state + '.FILECONTEXTS = [' + context + ']', context + '.UNIT = (1)']
                 resume, valid, continuation = '$file_parse_resume', '$file_parse_response_valid', '$file_parse_continue'
+                masked_setup = [state + '_mask_open = $php_file_startup_run(U_' + tag + ',1500,'
+                    + term(os.fsencode(path)) + ',' + term(os.fsencode(out)) + ',' + startup + ')',
+                    state + '_mask_open.COMPLETION = SOURCE_PENDING', state + '_mask_open.FILECONTEXTS = [' + context + '_mask_open]',
+                    state + '_mask = $file_open_resume(' + state + '_mask_open,FILE_OPENED '
+                    + context + '_mask_open.NONCE ' + context + '_mask_open.CALLER ' + context + '_mask_open.REQUESTED '
+                    + term(os.fsencode(child)) + ' ' + term(os.fsencode(child)) + ' ' + term(unit) + ')']
             checks += [state + '.COMPLETION = SOURCE_PENDING', *public(state), valid + '(' + state + ',' + value + ')',
                 state + '.DESTRUCTION.FREE = n_free_' + tag + ' :: n_free_tail_' + tag + '*',
                 state + '_resumed = ' + resume + '(' + state + ',' + value + ')',
@@ -105,7 +114,7 @@ def prepare(out):
                 *public(state + '_resumed'), '~' + valid + '(' + state + '_resumed,' + value + ')',
                 state + '_replay = ' + resume + '(' + state + '_resumed,' + value + ')',
                 state + '_replay = ' + state + '_resumed[.COMPLETION = UNSUPPORTED "invalid ' + ('eval' if mode == 'eval' else 'file') + ' parser response"]',
-                state + '_mask = ' + state + '[.REPORTING = 0][.REPORTINGINI = $ptascii("0")][.REPORTINGMODIFIED = true]',
+                *masked_setup, state + '_mask.COMPLETION = SOURCE_PENDING', *public(state + '_mask'),
                 valid + '(' + state + '_mask,' + value + ')',
                 state + '_masked = ' + resume + '(' + state + '_mask,' + value + ')',
                 state + '_masked.COMPLETION = NORMAL',
@@ -181,6 +190,7 @@ def main():
     assert before[str(ROOT / '.tools/php/bin/php')] == 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     report = {'head': head, 'inputs': before, 'profile': types.PROFILE, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
+        'startup_reporting_masks': [30719, 0], 'startup_include_path': '.:',
         'module_count': len(modules), 'source_agreement_credit': 0, 'passed': False}
     try:
         report['premises'] = prepare(out)
