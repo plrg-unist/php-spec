@@ -107,6 +107,10 @@ def main():
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args(); out = args.output.resolve()
     if args.phase == 'fixtures': out.mkdir(parents=True, exist_ok=False)
+    if args.phase == 'check':
+        prepared = json.loads((out / 'fixtures-report.json').read_text())
+        assert prepared['passed']
+        assert all(sha(Path(path)) == digest for path, digest in prepared['inputs'].items())
     assert {name: sha(SOURCE / name) for name in HASHES} == HASHES
     assert sha(ROOT / '.tools/php/bin/php') == ORACLE
     paths = [Path(__file__), *(ROOT / name for name in ('bin/php-semantics', 'spec/semantics/92-strict-compiler.watsup',
@@ -123,6 +127,7 @@ def main():
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_text()); profile['include_path'] = '.:'
     report = {'head': head, 'phase': args.phase, 'inputs': inputs, 'profile': profile,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC'}, 'records': [], 'passed': False}
+    if args.phase == 'check': report['fixture_head'] = prepared['head']
     try:
         if args.phase == 'fixtures':
             prepare(out)
