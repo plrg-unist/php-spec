@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i110-peer-null-short-circuit-and-sole-receiver",
+    "purpose": "A NULL receiver skips unknown-name CV reception and a spread producer. A nonnull selected Generator survives producer retirement; its copied ALIAS value and sole receiver cleanup preserve ordinary finally/weak lifetime order.",
+    "source": "<?php\nclass Token110P { function __destruct() { echo 'TOKEN|'; } }\nfunction warning110P($severity, $message) { echo 'BAD-WARN|'; return true; }\nfunction noise110P() { echo 'BAD-PRODUCER|'; return []; }\nfunction stream110P() {\n    global $cell, $weakToken, $weakGenerator;\n    try {\n        echo 'INIT|', $weakGenerator->get() instanceof Generator, '|';\n        $received = yield 'head';\n        $cell = 41;\n        echo 'GOT|', $received === $weakToken->get(), '|', $cell === 41, '|', $weakGenerator->get() instanceof Generator, '|';\n        yield 'tail';\n        echo 'BAD-RESUME|';\n    } finally {\n        echo 'FIN|', $weakGenerator->get() instanceof Generator, '|', $weakToken->get() instanceof Token110P, '|', $cell === 41, '|';\n    }\n}\nfunction pack110P() {\n    global $generator, $pack;\n    echo 'PACK|'; $saved = $pack; $generator = null; $pack = null; return $saved;\n}\n$generator = null; set_error_handler('warning110P');\n$nullResult = $generator?->send(unknown: $missing);\necho 'NULL-NAME|', $nullResult === null, '|';\n$nullResult = $generator?->throw(...noise110P());\necho 'NULL-PACK|', $nullResult === null, '|';\nrestore_error_handler();\n$cell = new Token110P(); $weakToken = WeakReference::create($cell);\n$pack = ['value' => &$cell];\n$generator = stream110P(); $weakGenerator = WeakReference::create($generator);\necho 'CALL|'; $result = $generator?->send(...pack110P());\necho 'RETURN|', $result === 'tail', '|', $generator === null, '|', $pack === null, '|', $weakGenerator->get() === null, '|', $weakToken->get() === null, '|', $cell === 41, '|';\n",
+    "source_sha256": "9ad2e6190cf650609ffb47be920159c4ae0b4bfddcfeee787096e2b962a5234e",
+    "native_exit": 0,
+    "native_stdout": "NULL-NAME|1|NULL-PACK|1|CALL|PACK|INIT|1|GOT|1|1|1|FIN|1|1|1|TOKEN|RETURN|1|1|1|1|1|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  }
+]
