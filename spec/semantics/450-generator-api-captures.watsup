@@ -70,12 +70,12 @@ def $generator_capture_saved(S, n) = true
 def $generator_capture_saved(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $fake_bind_history_nodes(S, n, eps)]
+  -- if $bound_fake_valid(S_history, n)
   -- if $bound_fake_getter(S, n) = ((n_receiver, GENERATOR_API_METHOD text_method, "Generator"))
   -- if $(n_receiver < n)
   -- if $generator_object(S, n_receiver)
   -- if $generator_api_kind(INTRINSIC_GENERATOR_METHOD text_method eps)
-  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $fake_bind_history_nodes(S, n, eps)]
-  -- if $bound_fake_valid(S_history, n)
 def $generator_capture_saved(S, n) = false -- otherwise
 
 ;; Target normalization reads immutable capture/binding storage. A bound copy
@@ -83,7 +83,11 @@ def $generator_capture_saved(S, n) = false -- otherwise
 dec $generator_capture_target(pstate, nat) : (nat, text)?
 def $generator_capture_target(S, n) = ((n_receiver, text_method))
   -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $generator_capture_saved(S, n)
 def $generator_capture_target(S, n) = ((n_receiver, text_method))
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $generator_capture_saved(S, n)
   -- if $bound_fake_getter(S, n) = ((n_receiver, GENERATOR_API_METHOD text_method, "Generator"))
 def $generator_capture_target(S, n) = eps -- otherwise
 
