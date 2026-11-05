@@ -120,7 +120,7 @@ def checks(row, fixture, filename):
                 'ppropertydesc.READONLY /\\ ~ppropertydesc.FINAL',
                 'ppropertydesc.SETVISIBILITY = eps /\\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC',
                 *global_object('S_first'),
-                *slots('S_first', 'n_object', {'value': 'PROP_UNINITIALIZED'}),
+                *slots('S_first', 'n_object', {'value': 'PROP_INITIAL'}),
                 '$class_static_set_allowed(S_first,ppropertydesc)',
                 '~$property_set_denied(S_first,n_object,$ptascii("value"))',
                 'S_second = $prop174_seek(S_first,1,1000)',
