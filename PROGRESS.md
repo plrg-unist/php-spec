@@ -822,14 +822,16 @@ executor tick-owner branch present. The retained OB06 native original is now
 promoted with exact model agreement.
 [Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
-OB08 admits one positional `ob_start(null)` after output deactivation during
-normal executor queue release. The default handler creation fails before any
-buffer push, emits E_NOTICE and returns false. Fast and slow allocator sources
-and a selected-handler source agree exactly with pinned PHP. Two source-reached
-checkpoints validate call/Notice authority, empty buffers and unchanged output
-sequence; named-null, callable, invalid-integer and handler-body reentrant
-forms remain checked Unsupported. The previous noarg Notice state still passes.
-[Explicit-null executor review](coverage/semantics/output-executor-explicit-null-review.json).
+OB08–09 use ordinary `ob_start` argument reception during normal post-output
+executor queue release. Named/unpacked defaults, converted chunk/flag cases,
+deprecations and type/count errors precede callback creation. NULL/default
+callbacks then emit E_NOTICE and return false without pushing a buffer,
+including in the authenticated destructor of a Notice handler's returned object.
+Private and actual2257 composition strict433, author17 and independent4
+source/request contexts and scoped reached checks pass at the recorded cuts. Non-NULL creation, active handler-body reentry, deprecation-handler returned-object
+starts, allocation failure/memory limits and wider executor completion remain partial.
+[Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
+[general reception review](coverage/semantics/output-executor-reception-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).

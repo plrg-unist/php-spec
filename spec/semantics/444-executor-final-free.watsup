@@ -490,7 +490,6 @@ def $executor_error_handler_active(S) = ($executor_error_handler_tasks(S.TODO) \
 def $executor_retval_notice_start(S) = true
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
-  -- if pconfigcall.SENT = eps
   -- if $config_invoke_valid(S, pconfigcall)
   -- if S.ERRORHANDLER.CALLBACK = eps
   -- if S.FRAMES = [pframe, pframe_executor]
@@ -554,22 +553,22 @@ def $executor_retval_notice_start(S) = true
 def $executor_retval_notice_start(S) = $executor_retval_notice_start(S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*])
   -- if S.TODO = (OB_PARSE pconfigcall 3 pvalue_values*) :: ptask_tail*
   -- if pvalue_values* = [PNULL, PINT i_chunk, PINT i_flags]
-  -- if i_chunk = 0
-  -- if i_flags = 112
   -- if $ob_parse_valid(S, pconfigcall, 3, [PNULL, PINT i_chunk, PINT i_flags])
 def $executor_retval_notice_start(S) = false -- otherwise
-def $executor_default_start_sent(pconfigcall) = true -- if pconfigcall.SENT = eps
-def $executor_default_start_sent(pconfigcall) = true
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN PNULL)]
-  -- if ~pconfigcall.NAMED
-  -- if pconfigcall.PACKS = eps
-def $executor_default_start_sent(pconfigcall) = false -- otherwise
+def $executor_default_start_sent(pconfigcall) = ($error_api_value(pconfigcall, 0, PNULL) = PNULL)
+def $executor_default_start_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $(|pconfigcall.SENT| <= 3)
+  -- if $executor_default_start_sent(pconfigcall)
+  -- if $ob_converted($ob_conversion(S, pconfigcall, 1)) = (PINT i_chunk)
+  -- if $ob_converted($ob_conversion(S, pconfigcall, 2)) = (PINT i_flags)
+def $executor_default_start_valid(S, pconfigcall) = false -- otherwise
 def $executor_ob_start_allowed(S) = true -- if ~$executor_error_handler_active(S)
 def $executor_ob_start_allowed(S) = true -- if $executor_retval_notice_start(S)
 def $executor_ob_start_allowed(S) = false -- otherwise
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
   -- if pconfigcall.KIND = INTRINSIC_OB_START /\ $executor_default_start_sent(pconfigcall)
-  -- if i_chunk = 0 /\ i_flags = 112
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
   -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
 def $executor_handler_task(EXCEPTION_HANDLER_RESULT pexceptioncall) = true
@@ -599,7 +598,15 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $config_invoke_valid(S, pconfigcall)
-  -- if ~$executor_default_start_sent(pconfigcall) \/ S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ ~$executor_ob_start_allowed(S)
+  -- if S.COMPLETION =/= NORMAL \/ S.OUTPUTBLOCKED \/ ~$executor_normal_scope(S) \/ ~$executor_ob_start_allowed(S)
+;; ZPP receives every argument before callback creation, including failures.
+def $executor_boundary(S) = ("output-handler start after output deactivation")
+  -- if $executor_scope(S) \/ $executor_tick_scope(S)
+  -- if S.TODO = (OB_PARSE pconfigcall 3 pvalue_values*) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if pvalue =/= PNULL
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

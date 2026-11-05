@@ -236,14 +236,21 @@ and the three refusals pass with the executor tick-owner branch present.
 Wider callback nesting, abnormal queue completion and argument forms remain open.
 [OB07 evidence](../../coverage/semantics/output-executor-retval-review.json).
 
-OB08 admits a direct positional `ob_start(null)` during the same normal
-post-deactivation executor queue release. PHP creates the internal default
-handler for an explicit NULL, then the inactive output check fails. The call
-emits the same E_NOTICE and false result as noarg, with no buffer or sequence
-change. The admission requires one known NULL slot, positional argument form
-and no unpack record. Fast/slow and selected-handler sources agree; source
-checkpoints validate the call and Notice with malformed slot/name/pack refusals.
-Named NULL, callable, invalid-integer and active handler-body reentry remain
-checked Unsupported. Argument-bearing starts during returned-object cleanup
-and wider executor completion remain open.
-[OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json).
+OB08 first admitted positional `ob_start(null)` after output deactivation.
+OB09 generalizes the same normal executor queue path through authenticated
+CONFIG argument binding and the ordinary `|zll` conversion protocol. Named and
+unpacked arguments, omitted callbacks, chunk/flag coercions, deprecations and
+type/count failures retain their native order. Successful NULL/default callback
+creation reaches the inactive-output check before any buffer push, emitting
+E_NOTICE and returning false without changing the buffer stack or sequence.
+The same receipt applies in the authenticated destructor of a Notice handler's
+returned object while that handler is disabled. Malformed binder/pack
+descriptors stay invalid.
+Non-NULL callbacks may fail argument reception normally; successful parsing
+stops at checked Unsupported before unresolved callback creation. Active
+handler-body reentry, deprecation-handler returned-object starts and wider
+executor completion remain partial. Handler initialization also allocates the
+aligned chunk buffer before the inactive-output check; allocation failure and
+PHP memory limits remain pending effects, as in the active buffer model.
+[OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json),
+[OB09 evidence](../../coverage/semantics/output-executor-reception-review.json).

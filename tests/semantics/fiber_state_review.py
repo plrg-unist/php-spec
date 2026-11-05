@@ -819,7 +819,8 @@ def run(selected, *, process_seconds=120):
             '  -- if S_reached.COMPLETION = NORMAL \\/ S_reached.COMPLETION = BUDGET\n'
             '  -- if S = S_reached[.COMPLETION = NORMAL]\n'
             '  -- if ' + case['stage'] + '\n'
-            + ''.join('  -- if ' + clause + '\n' for clause in case['checks']))
+            + ''.join('  -- ' + (clause if clause.startswith('PhpStep:') else 'if ' + clause)
+                      + '\n' for clause in case['checks']))
         process = recorded([ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
                             '--sl', *modules, fixture], directory, 'model', environment, process_seconds)
         passed = (not process['timeout'] and process['exit'] == 0 and
