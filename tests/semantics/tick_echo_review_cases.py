@@ -30,4 +30,13 @@ declare(ticks=1) {
     echo 'Z';
 }
 ''', b'A1TBTZ'),
+    'review-empty-constant-operands-break-prior-tick-adjacency': (b'''<?php
+$x = 0;
+function t() { global $x; $x = $x + 1; echo 'T'; }
+register_tick_function('t');
+declare(ticks=1) {
+    echo 'P';
+    echo '', null, false, $x;
+}
+''', b'PTTTT4T'),
 }
