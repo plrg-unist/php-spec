@@ -3173,12 +3173,15 @@ checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
 eval/include units also preserve completed-header warnings before catchable
 ParseError or CompileError, including nested reductions and literal-item prefixes.
 Twenty-two originals agree; reached checks cover once skip/reparse, source identity,
-suppression and valid zero-budget Throwable handles. Lexer-preempted prefixes and
-multibyte-enabled conversion remain partial.
+suppression and valid zero-budget Throwable handles. A foreign lexical boundary
+also preserves earlier headers before bad-character or unterminated-comment
+faults; 32 new originals agree. Unexplained native/foreign prefix differences
+and multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
-[rejected-unit review](coverage/semantics/encoding-rejection-review.json).
+[rejected-unit review](coverage/semantics/encoding-rejection-review.json),
+[lexical-boundary review](coverage/semantics/encoding-lexical-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3543,8 +3546,15 @@ their referent retires; diagnostics retain the actual internal class name.
 GC30 adds quiet inactive WeakReference unregister and standard-object notification.
 Observer retirement changes the terminal weak-association view without adding a
 referent owner. Real handle order preserves fast-shutdown field shielding and the
-existing inactive public-destructor fatal. WeakMap notification and weak custom
+existing inactive public-destructor fatal. Active key-triggered Map notification and weak custom
 hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
+
+GC31 adds inactive empty/singleton/multi-entry WeakMap free. Every key unregisters
+before ordered value release; later values stay leased when an earlier release
+fails, and shared reference cells retain their payload once. Seven source/request
+contexts and 599 new/affected reached conditions pass. Active key notification,
+incoming Map associations and active free pins remain fenced. See the
+[inactive Map review](coverage/semantics/gc-inactive-weakmap-free-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
@@ -7258,6 +7268,12 @@ hidden copies while generated Error traces keep their own argument values.
 Three new originals, two ownership fronts and one affected successful call pass;
 later receive/default errors and bailout paths remain partial.
 [Named-failure review](coverage/semantics/generator-call-mapping-review.json).
+
+Admitted arity, type and default throws before Generator creation now share one
+restored API cleanup protocol. Callee values retire before API arguments/source,
+while the hidden copy keeps its receiver/captures. Native/source and joined
+ownership gates pass; wider producers, collection and bailout remain partial.
+[Receive-failure review](coverage/semantics/generator-call-receive-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

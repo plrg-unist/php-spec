@@ -20,8 +20,14 @@ PHP-Parser `declare_list` reduction before its body. It supplies syntax facts,
 never warning text or a provisional accepted AST. The adapter reconstructs/checks
 each `DeclareItem`; authored rules validate ranges/order and derive the literal
 encoding prefix, stopping at the first nonliteral encoding. An absent field
-retains the old empty-prefix rejection contract. A lexer error may prevent any
-receipt; the CLI refuses unexplained native stderr rather than inventing events.
+retains the old empty-prefix rejection contract. Rejected-source lexing collects
+its errors before parsing, validates the earliest error against an actual token
+boundary and parses only the preceding tokens with a throwing handler. EOF keeps
+the original token ordinal, preserving earlier completed reductions while an
+earlier grammar error still stops them. This path handles collected bad-character
+and unterminated-comment errors; it does not infer a boundary from native error
+text or line. The CLI refuses unexplained native stderr rather than inventing
+events when the two frontends disagree.
 These are explicit foreign input facts, not proof that edited positions/items
 were derived from the supplied bytes. The trusted worker and exact response
 identity remain required for source-agreement claims.

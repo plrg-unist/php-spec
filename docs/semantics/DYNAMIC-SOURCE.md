@@ -218,8 +218,27 @@ Failed once parses remain once hits; ordinary reinclusion parses a fresh unit.
 The [originals](../../tests/semantics/rejected_encoding_sources.py),
 [prefix/once fixture](../../tests/semantics/rejected_encoding_state.py) and
 [independent fixture](../../tests/semantics/rejected_header_review_state.py)
-pass 22 exact comparisons, one separate refusal and 214/375 SL conditions.
+passed 22 exact comparisons, one separate refusal and 214/375 SL conditions at
+the COMP168 cut.
 The [review](../../coverage/semantics/encoding-rejection-review.json) retains their
-actual cuts and failures. A lexer error that preempts foreign parser reductions
-still refuses an unexplained warning prefix; multibyte-enabled conversion and
-wider dynamic-source behavior remain partial.
+actual cuts and failures.
+
+For rejected sources, foreign lexing now collects bad-character/comment errors
+before grammar reduction. The earliest reported byte position must equal a real
+token boundary. The parser receives the preceding tokens and an EOF marker at
+that same ordinal, then uses its throwing handler: an earlier syntax error still
+prevents all later reductions. This retains completed and nested headers without
+certifying incomplete headers, scanning raw bytes or recovering beyond a fault.
+Control bytes inside strings/comments remain ordinary tokens. Accepted parsing,
+the header receipt schema and authored runtime rules are unchanged.
+
+The [lexical originals](../../tests/semantics/lexical_header_sources.py) pass
+32 exact eval/file comparisons; [independent controls](../../tests/lexical_header_service_review.py)
+cover EOF/lookahead, malformed/reversed boundaries and mode-specific scanner
+behavior. The former comment-preemption control is now an agreement; three
+selected legacy sources and 220 reached conditions pass. Their
+[review](../../coverage/semantics/encoding-lexical-review.json) keeps the actual
+cuts and earlier fixture failure. Errors not reported by that foreign lexer
+still use exact prefix admission; differing native/foreign prefixes refuse.
+Rejected-main warning delivery, multibyte conversion and wider source behavior
+remain partial.

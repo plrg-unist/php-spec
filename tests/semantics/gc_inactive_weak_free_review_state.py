@@ -126,9 +126,9 @@ def normal(owners):
 
 
 HIGHER = normal(2)
-for label, key, observer_kind, parent_kind in [
-        ('map_observer', 'n_weak', 2, 1),
-        ('map_referent', 'n_parent', 1, 2)]:
+for label, key, observer_kind, parent_kind, retired_kind in [
+        ('map_observer', 'n_weak', 2, 1, 1),
+        ('map_referent', 'n_parent', 1, 2, 0)]:
     HIGHER += [
         f'S_{label} = S_endpoint[.OBJECTS[n_child] = WEAKMAP ({{KEY {key}, VALUE (PINT 17), BEFORE eps, ORDER 0}})]',
         f'H_{label} = $heap_graph(S_{label})',
@@ -136,7 +136,14 @@ for label, key, observer_kind, parent_kind in [
         f'$weakmap_key_maps(S_{label}, S_{label}.ALLOCATIONS, {key}) = [n_child]',
         f'$executor_free_kind(S_{label}, eps, n_weak) = {observer_kind}',
         f'$executor_free_kind(S_{label}, eps, n_parent) = {parent_kind}',
-        f'$executor_free_kind(S_{label}, [HOBJECT n_weak, HOBJECT n_child], {key}) = 2',
+        f'$executor_free_key_maps(S_{label}, eps, {key}) = [n_child]',
+        f'$executor_free_kind(S_{label}, eps, n_child) = 1',
+        f'pexecutorfree_map_{label} = $executor_free_force(S_{label}, {{HEAP H_{label}, MARKED eps, FAILED eps, UNKNOWN false}}, n_child)',
+        f'~pexecutorfree_map_{label}.UNKNOWN /\\ pexecutorfree_map_{label}.FAILED = eps',
+        f'pexecutorfree_map_{label}.MARKED = [HOBJECT n_child]',
+        f'pexecutorfree_map_{label}.HEAP.EDGES = H_{label}.EDGES',
+        f'$executor_free_key_maps(S_{label}, pexecutorfree_map_{label}.MARKED, {key}) = eps',
+        f'$executor_free_kind(S_{label}, [HOBJECT n_weak, HOBJECT n_child], {key}) = {retired_kind}',
         f'pexecutorfree_{label} = $executor_free_force(S_{label}, {{HEAP H_{label}, MARKED eps, FAILED eps, UNKNOWN false}}, {key})',
         f'pexecutorfree_{label}.UNKNOWN',
         f'pexecutorfree_{label}.MARKED = eps',
@@ -144,8 +151,8 @@ for label, key, observer_kind, parent_kind in [
     ]
 HIGHER += [
     'S_custom = S_endpoint[.OBJECTS[n_child] = WEAKMAP eps]',
-    '$executor_free_kind(S_custom, eps, n_child) = 2',
-    '$executor_free_kind(S_custom, [HOBJECT n_weak], n_child) = 2',
+    '$executor_free_kind(S_custom, eps, n_child) = 1',
+    '$executor_free_kind(S_custom, [HOBJECT n_weak], n_child) = 1',
 ]
 
 BOUND = normal(3) + [

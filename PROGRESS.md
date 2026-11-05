@@ -115,6 +115,15 @@ compile and fixture failures retain zero credit. Later receives, default throws
 and bailout paths remain partial.
 [I100 review](coverage/semantics/generator-call-mapping-review.json).
 
+I101 replaces required-hole-specific retention with one authenticated restored
+API cursor for admitted pre-Generator receive failures. Arity, type and default
+throws preserve the copy while callee cells retire before API arguments/source.
+Three native/source originals, strict433, new259 custom/269 reported checks and
+the affected129/134 hole recipe pass. A matching adapter and joined default134/139
+gate load current434, covering changed weak-free cleanup. Baseline and fixture
+parser failures retain zero credit; wider producers, collection and bailout
+contexts remain partial. [I101 review](coverage/semantics/generator-call-receive-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -363,6 +372,15 @@ field shielding and inactive-destructor failure. Eight exact source/request
 contexts include all three unchanged OB10 originals on their actual canonical
 composition. Author206 and independent341 strict conditions pass. WeakMap/custom
 notifications remain partial. [GC30 review](coverage/semantics/gc-inactive-weak-free-review.json).
+
+GC31 adds inactive WeakMap free with all-key unregister before ordered value
+release. Later value leases and shared ALIAS payload ownership survive correctly;
+retired Maps no longer force unrelated key-field cleanup. Seven exact source/request
+contexts cover empty/singleton/multi-entry Maps, AB/BA fatal order, fast/slow alias
+cells and an independent all-unregister-before-value discriminator. Author292,
+peer172 and affected GC30 HIGHER135 pass (599 total); two key-notification
+Unsupported controls keep zero agreement. Active key/incoming-Map notification
+and active free pins remain partial. [GC31 review](coverage/semantics/gc-inactive-weakmap-free-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -950,6 +968,15 @@ zero-budget continuations. Twenty-two exact sources plus one explicit lexical
 refusal, 214 authored and 375 independent reached conditions pass; accepted
 eval/file service controls also pass. Actual cuts, prior failures and the remaining
 lexer/multibyte limits are in the [review](coverage/semantics/encoding-rejection-review.json).
+
+COMP169 preserves completed headers before the first foreign lexer error by
+validating its token boundary and parsing the preceding token prefix. Earlier
+grammar errors still stop parsing; harmless control bytes inside strings/comments
+do not truncate it. All 32 new eval/file originals agree, with 30 independent
+boundary controls, 40 affected service checks, three selected legacy originals
+and 220 reached conditions. Accepted syntax and authored P4 rules are unchanged;
+unreported prefix differences, rejected-main warnings and multibyte conversion
+remain partial. [Review](coverage/semantics/encoding-lexical-review.json).
 
 ## Active and unintegrated work
 

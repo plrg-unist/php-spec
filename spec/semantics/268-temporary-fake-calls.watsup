@@ -205,11 +205,10 @@ def $return_discard(S, CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedarg
   -- if ~$named_can_store(pnamedargs, pnamedtarget)
   -- if pclosurecall.ERROR = (preqbytes)
 ;; The fake receive frame already released its prepared arguments.
-def $return_discard(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_cancel_release(S, pclosurecall, {SLOTS eps, NAMED eps})
-  -- if $closure_call_copy_result_valid(S, pclosurecall, n_copy)
-  -- if $closure_call_copy_row(S, n_copy) = (pclosurebinding)
-  -- if pclosurebinding <- S.CLOSURECALLRETAINED
-  -- if ~$closure_call_copy_created(S.OBJECTS, n_copy)
+def $return_discard(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_cancel_release($closure_call_copy_retain(S, n_copy), pclosurecall, {SLOTS eps, NAMED eps})
+  -- if S.TODO = (THROW_SEARCH n_throw) :: ptask_tail*
+  -- if $throwable_member(S, n_throw)
+  -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
 
 def $temporary_call_task_valid(S, ptask) = false -- otherwise
 

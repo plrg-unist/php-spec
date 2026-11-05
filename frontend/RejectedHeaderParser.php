@@ -7,6 +7,30 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
     public bool $parsingStarted = false;
 
     protected function doParse(): ?array {
+        // Lexing inspects the complete source before grammar reductions start.
+        // Retain only tokens before its first error, then let the real parser
+        // stop at any earlier syntax error without recovery past either fault.
+        if ($this->errorHandler instanceof PhpParser\ErrorHandler\Collecting
+            && $this->errorHandler->hasErrors()) {
+            $positions = [];
+            foreach ($this->errorHandler->getErrors() as $error) {
+                $position = $error->getAttributes()['startFilePos'] ?? null;
+                if (!is_int($position) || $position < 0) {
+                    throw new RuntimeException('Lexical error has no checked source position');
+                }
+                $positions[] = $position;
+            }
+            $boundary = min($positions);
+            $index = 0;
+            while (isset($this->tokens[$index]) && $this->tokens[$index]->pos < $boundary) ++$index;
+            $token = $this->tokens[$index] ?? null;
+            if ($token === null || $token->pos !== $boundary) {
+                throw new RuntimeException('Lexical error lost its token boundary');
+            }
+            $this->tokens = array_slice($this->tokens, 0, $index);
+            $this->tokens[] = new PhpParser\Token(0, "\0", $token->line, $token->pos);
+        }
+        $this->errorHandler = new PhpParser\ErrorHandler\Throwing();
         $this->parsingStarted = true;
         return parent::doParse();
     }
@@ -37,10 +61,10 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
 function rejectedHeaderFacts(string $source, bool $evalMode, PhpParser\PhpVersion $version): array {
     $parser = new RejectedHeaderParser($evalMode ? new EvalLexer() : new FileLexer(), $version);
     try {
-        $parser->parse($source);
+        $parser->parse($source, new PhpParser\ErrorHandler\Collecting());
     } catch (PhpParser\Error $error) {
         // A later syntax error leaves earlier completed reductions available.
-        // Lexer errors may preempt the parser; no receipt is claimed then.
+        // Lexical errors bound the token prefix before these reductions.
     }
     if (!$parser->parsingStarted || $parser->headers === []) return [];
     return ['headers' => array_map(static function (array $header): array {
