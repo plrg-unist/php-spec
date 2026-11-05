@@ -55,6 +55,39 @@ def encoding_warning_lines(ast):
                 return False
         return True
 
+    def integer(node, key):
+        value = node.get('meta', {}).get(key, {}).get('int')
+        return None if value is None else int(value)
+
+    def header(statement):
+        line = integer(statement, 'declareHeaderCloseLine')
+        token = integer(statement, 'declareHeaderCloseTokenPos')
+        begin = integer(statement, 'startLine'); end = integer(statement, 'endLine')
+        if line is None and token is None:
+            return (begin, None) if begin is not None and begin > 0 and end == begin else None
+        if line is None or token is None:
+            return None
+        start = integer(statement, 'startTokenPos'); last = integer(statement, 'endTokenPos')
+        if (None in (begin, end, start, last) or not 0 < begin <= line <= end
+                or not 0 <= start < token <= last):
+            return None
+        items, body = statement['fields']
+        for item in items:
+            first_line = integer(item, 'startLine'); last_line = integer(item, 'endLine')
+            first_token = integer(item, 'startTokenPos'); last_token = integer(item, 'endTokenPos')
+            if (None in (first_line, last_line, first_token, last_token)
+                    or not begin <= first_line <= last_line <= line
+                    or not start < first_token <= last_token < token):
+                return None
+        for child in body or []:
+            first_line = integer(child, 'startLine'); last_line = integer(child, 'endLine')
+            first_token = integer(child, 'startTokenPos'); last_token = integer(child, 'endTokenPos')
+            if (None in (first_line, last_line, first_token, last_token)
+                    or not line <= first_line <= last_line <= end
+                    or not token < first_token <= last_token <= last):
+                return None
+        return line, token
+
     warnings, admitted = [], set()
     pending = [ast]
     while pending:
@@ -66,17 +99,17 @@ def encoding_warning_lines(ast):
                     if not encoding(item):
                         continue
                     name, expression = item['fields']
-                    line = int(value['meta']['startLine']['int'])
-                    token = item.get('meta', {}).get('startTokenPos', {}).get('int')
-                    if token is None:
+                    receipt = header(value)
+                    token = integer(item, 'startTokenPos')
+                    if receipt is None or token is None or token < 0 or not literal(expression):
                         return None
-                    token = int(token)
-                    if (line <= 0 or token < 0 or not literal(expression)
-                            or any(int(node['meta'][key]['int']) != line
-                                   for node in (value, item, name, expression)
-                                   for key in ('startLine', 'endLine'))):
+                    line, close = receipt
+                    begin = integer(value, 'startLine')
+                    if any(integer(node, 'startLine') is None or integer(node, 'endLine') is None
+                           or not begin <= integer(node, 'startLine') <= integer(node, 'endLine') <= line
+                           for node in (item, name, expression)):
                         return None
-                    warnings.append((token, line))
+                    warnings.append((token if close is None else close, token, line))
                     admitted.add(id(item))
             if encoding(value) and id(value) not in admitted:
                 return None
@@ -84,9 +117,9 @@ def encoding_warning_lines(ast):
         elif isinstance(value, list):
             pending.extend(reversed(value))
     warnings.sort()
-    if len({token for token, line in warnings}) != len(warnings):
+    if len({(close, token) for close, token, line in warnings}) != len(warnings):
         return None
-    return [line for token, line in warnings]
+    return [line for close, token, line in warnings]
 
 
 def dynamic_parser_stderr(parsed, mode, stderr):
