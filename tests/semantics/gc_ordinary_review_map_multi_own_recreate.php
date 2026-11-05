@@ -3,9 +3,11 @@ class GC34OwnRecreate {
     public function __destruct() {
         global $mapWatch;
         $old = $mapWatch->get();
-        unset($GLOBALS['mapWatch']);
+        $oldWatch = WeakReference::create($mapWatch);
+        $mapWatch = null;
         $GLOBALS['newMapWatch'] = WeakReference::create($old);
-        echo 'OWN1|', (int) ($GLOBALS['newMapWatch']->get() === $old), '|';
+        echo 'OWN1|', (int) ($oldWatch->get() === null), '|',
+            (int) ($GLOBALS['newMapWatch']->get() === $old), '|';
     }
 }
 class GC34OwnRecreateLater {
