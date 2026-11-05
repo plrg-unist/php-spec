@@ -177,6 +177,24 @@ def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
 def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.VALUE = PARRAY n_array
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
+  -- if $weakmap_entries_child_value_free(S, paccess.VALUE)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
+  -- if S.OBJECTS[n_map] = WEAKMAP eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if ~$weakmap_array_backedge(S, n_array, n_key)
+def $weakmap_write_value_allowed(S, paccess) = true
+  -- if paccess.VALUE = PARRAY n_array
   -- if paccess.OFFSET = POBJECT n_key
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
