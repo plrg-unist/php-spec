@@ -8,7 +8,9 @@
     "runtime_final": "bb21b6e8782f6df2134abf5de0199793faa0a212",
     "author_reached": "35df99defafa0a5764f4802d13b5b214a02fa5aa",
     "independent_sources": "476b3f32c58a05420ec3e8a926db6c7fd0454fbc",
-    "independent_reached": "ce707283d7e32c4545a9b53d894d269c6a33956e"
+    "independent_reached": "ce707283d7e32c4545a9b53d894d269c6a33956e",
+    "actual_parent": "d659b89138373a2d21b52125220155c13d85d464",
+    "joined_read_only_review": "4aa0c054f481a7bb4bc95bbf8f5834b1156d1cd8"
   },
   "rule_basis": "Only the singleton Map-free helper admits the GC37 exact declared-child layout with Child owner2 and Value owner1, and still requires no incoming Map-key registration. The existing GC37 owner1 first-insertion wrapper, GC38 owner1 Map-free branch, leaf fallback, replacement and foreach remain unchanged. During Value slot release, the shared Child release drops one owner without invoking its destructor; the tested outside-CV owner later causes Child destructor after Map/Value weak gets are null. The guard counts owners but does not authenticate the second owner location.",
   "counts": {
@@ -59,6 +61,6 @@
   "zero_credit": "At base a57 the new author source stops explicitly after B|; that baseline is zero agreement. The first two peer reached attempts failed SpecTec fixture elaboration before semantic checks and retain zero credit; the corrected third cut passed34 with unchanged runtime/source bytes.",
   "limits": "One singleton Map, no incoming Map-key registration, live leaf stdClass Key, one GC37 methodless Value with one direct public untyped declared Child property, Value owner1 and Child owner2 at Map free. The rule does not constrain provenance of the second Child owner; accepted sources use an outside CV. Child owner3, other Value layouts/owners, occupied replacement, multi-entry/shared-key writes, reference cells, freeing-object mutation and active-pin collection remain outside this slice.",
   "recovery": "Run gc39_map_first_retained_sources.py, gc39_map_first_retained_state.py, gc39_peer_retained_sources.py and gc39_peer_retained_state.py with the pinned profile and external outputs. Original raw and receipts remain outside Git under ../php-spec-evidence-archive/gc-map-first-retained-child-author-39/ and ../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/.",
-  "review": "Independent private semantic/source review pending final exact cut.",
-  "compatibility_bridge": "Actual-parent composition pending; frozen bb21 source/reached and affected reports retain their recorded inputs."
+  "review": "Independent full private scope review CLEAR at clean965817d; exact-parent joined read-only interaction review CLEAR at clean4aa0c05 on d659b89. Expected12-file delta, only386 semantic change byte-identical to reviewed private rules, valid source/report/archive hashes, inventory and diffcheck; no concrete replay seam.",
+  "compatibility_bridge": "Since basea57, the sole parent semantic edit is 421 CONFIG Aggregate Iterator unpack for INI calls and Generator SET guards. GC39 uses ordinary named Value/Child/WeakMap creation, unset and weak gets, without INI, Aggregate, Generator or unpack. The reviewed 386 blob is unchanged across the join; frozen source/reached and affected reports retain their original cuts without replay."
 }
