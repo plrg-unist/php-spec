@@ -171,9 +171,24 @@ dec $anonymous_no_named_classes(pcoccurrence*) : bool
 def $anonymous_no_named_classes(eps) = true
 def $anonymous_no_named_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode) \/ $anonymous_co_resident_node(pcnode)) /\ $anonymous_no_named_classes(pcoccurrence*))
 
+dec $anonymous_method_factory_node(pcnode) : bool
+def $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = true
+  -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
+  -- if $ptvalidname($base64(text), false) /\ $ptlc($base64(text)) =/= $ptascii("__construct")
+  -- if ~$ppmethod_magic($base64(text)) /\ ~$generator_statements(statement*)
+  -- if $anonymous_constructor_parameters(phpType16)
+def $anonymous_method_factory_node(pcnode) = false -- otherwise
+dec $anonymous_method_factory_members(statement*) : bool
+def $anonymous_method_factory_members(eps) = true
+def $anonymous_method_factory_members(statement :: statement_tail*) = true
+  -- if $anonymous_no_classes($pcwalk($pcchildren(statement, eps))) \/ ($anonymous_method_factory_node(statement) /\ $anonymous_no_named_classes($pcwalk($pcchildren(statement, eps))))
+  -- if $anonymous_method_factory_members(statement_tail*)
+def $anonymous_method_factory_members(statement*) = false -- otherwise
+
 dec $anonymous_unit_node(pcnode) : bool
-def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_named_class_node(pcnode) \/ $anonymous_interface_node(pcnode) \/ $anonymous_co_resident_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
-  -- if $anonymous_class_like(pcnode)
+def $anonymous_unit_node(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 (SEQUENCE statement*) metadata) = ($ptvalidname($base64(text), false) /\ $anonymous_no_classes($pcwalk($pcchildren(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 (SEQUENCE eps) metadata, eps))) /\ $anonymous_method_factory_members(statement*))
+def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_interface_node(pcnode) \/ $anonymous_co_resident_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
+  -- if $anonymous_class_like(pcnode) /\ ~$anonymous_named_class_node(pcnode)
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
 def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode) /\ ~$anonymous_named_scope(pcnode)
@@ -401,6 +416,28 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if $anonymous_factory_source(P, pcnode) = ((ptbytes_name, n_body))
   -- if P.FOLD.FUNCTION = ptbytes_name
   -- if pcpath_body = P.GOTOROOT ++ [PCFIELD n_body]
+  -- if $(|pcpath_body| < |pcpath|)
+  -- if pcpath[0:|pcpath_body|] = pcpath_body
+def $anonymous_factory_context(P, pcpath) = true
+  -- if $anonymous_compilation_unit(P.FOLD.SOURCE)
+  -- if ~P.CLOSURE /\ ~P.FOLD.CLOSURE /\ ~P.RETURNREF
+  -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID (P.GOTOROOT)) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $(|P.GOTOROOT| >= 2)
+  -- if pcpath_owner = P.GOTOROOT[0:$nabs($(|P.GOTOROOT| - 2))]
+  -- if P.GOTOROOT = pcpath_owner ++ [PCFIELD 5, PCINDEX n_method]
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath_owner) = (pcnode_owner)
+  -- if $anonymous_named_class_node(pcnode_owner)
+  -- if $plclasscontext(P.FOLD.SOURCE, pcpath_owner, P.LOCATION.FILE, $source_line($pcmetadata(pcnode_owner))) = (ptcontext_owner)
+  -- if $anonymous_named_header(pcnode_owner, ptcontext_owner) = ((pchheader, z_owner))
+  -- if P.ENV.NAMESPACE = ptcontext_owner.NAMESPACE /\ P.ENV.CLASSES = ptcontext_owner.IMPORTS
+  -- if z_method = $declaration_method_keyword_line(metadata, metadata_name)
+  -- if $(z_method > 0)
+  -- if P.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $base64(text), z_method))
+  -- if P.FOLD.CLASSCONTEXT = P.CLASSCONTEXT
+  -- if P.FOLD.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $base64(text)
+  -- if pcpath_body = P.GOTOROOT ++ [PCFIELD 6]
   -- if $(|pcpath_body| < |pcpath|)
   -- if pcpath[0:|pcpath_body|] = pcpath_body
 def $anonymous_factory_context(P, pcpath) = false -- otherwise
