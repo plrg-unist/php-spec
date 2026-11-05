@@ -122,7 +122,7 @@ def main():
             row['model'] = model
             outcome = json.loads((case / 'model.stdout').read_bytes())
             row['status'] = outcome.get('status'); row['reason'] = outcome.get('reason')
-            valid = (model['exit'] == 0 and not model['timeout'] and not model['group_after']
+            valid = (model['exit'] == (1 if name in CONTROLS else 0) and not model['timeout'] and not model['group_after']
                 and (case / 'model.stderr').read_bytes() == b'' and outcome['frontend'] == 'accepted'
                 and outcome['checked'] == 'program' and outcome['status'] == status)
             if name in CONTROLS:
