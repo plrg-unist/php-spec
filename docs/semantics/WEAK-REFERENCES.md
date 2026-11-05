@@ -219,13 +219,35 @@ when an earlier Child throws and cleanup continues through the later entries.
 
 Keys enter free as held leaf `stdClass` objects registered only in this Map; no
 incoming Map-key registration or active cursor is admitted. The fold changes Map-free
-admission only; empty and singleton Maps keep their earlier guards. It retains
-the exact one-property check even when a second null property would add no heap
-edge. Freeing-Map dimension access/mutation, wider
+admission only; empty and singleton Maps keep their earlier guards. At the GC41
+cut, it retained the exact one-property check even when a second null property
+would add no heap edge. Freeing-Map dimension access/mutation, wider
 property layouts, active-pin collection and wider caller contexts remain partial.
 The [finite Map review](../../coverage/semantics/gc-finite-map-first-review.json)
 separates newly authored sources, the freshly promoted two-Child control and
 source-reached multiplicity/budget checks from historical evidence.
+
+GC42 replaces that one-property check with a finite descriptor/slot fold. A
+Child-bearing Value has public, untyped, nonstatic, nonreadonly declared slots
+without hooks. Each slot matches its declaration identity and key in physical
+declaration order. Direct primitive leaves and fieldless public-destructor
+Children are admitted; an unset slot owns nothing. Existing ordered property
+jobs clear and transfer each real edge, while the stored original slot snapshot
+remains borrowed metadata. Repeated Child identities retain one owner per
+unvisited slot or pending release job.
+
+The reverse-written `[X,Y,X,Z]` source drops the first X edge without a callback,
+then runs Y, X and Z in declaration order. A throw from Y preserves later Child
+roots and cleanup under the separate Value and Map pins; the Value's weak get
+is null while the Map and later leaf Value remain weakly live. The
+[declared-property review](../../coverage/semantics/gc-finite-declared-properties-review.json)
+records source order, primitive and shared-owner checks, budget replay and the
+freshly promoted null-field source separately from its earlier refusal.
+
+Typed/alias/hooked/inherited or deeper object layouts, owning array properties,
+freeing-Map dimension access/mutation and active-pin collection remain partial.
+The entry/Key restrictions, empty/singleton guards, ordinary consumers and
+property executors/type-source handling are unchanged.
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

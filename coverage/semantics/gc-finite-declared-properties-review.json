@@ -1,0 +1,64 @@
+{
+  "scope": "GC42: finite declared-property cleanup of direct methodless Values during ordinary multi-entry Map-first free. Public untyped nonstatic/nonreadonly slots without hooks hold DIRECT primitive leaves or fieldless public no-argument destructor Children; unset slots own nothing. Repeated Child identities and positive physical ownership use the existing property jobs.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "6eabe617f",
+  "semantic_revision": "eb513bfc6",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "14f0ce4b8436de0d478e80dd10b95cd5143966bcbab4574004c1d5ed51e3a5ff"
+  },
+  "tested_revisions": {
+    "author_native_and_baseline": "761dd3f667847c74783ad58fde53f5ca30a21dd2",
+    "author_model": "9740d8c6c62101dfd08704ebfe9e86c2e304fafc",
+    "source_reached": "abdee2147e8e021014ed0d0f4a6a3d94790112b2",
+    "independent_models": "68ac994af716e12d75eb1af16af080944989e631"
+  },
+  "rule_basis": "A finite descriptor/slot zip replaces the one-property Child-bearing Value check. It authenticates matching declaration identities/keys, declaration order, public/untyped/nonstatic/nonreadonly flags and source-backed hook absence. Payloads use existing primitive validity plus bounded binary64 or allocated fieldless destructor Children; ALIAS/undefined/deeper payloads reject. The Value class/allocation/nonfree/table/physical-edge/global-property guards remain. Existing instance-storage ordering, one-slot clear/transfer, shared release, borrowed snapshots, physical pins and pending-throw cleanup are unchanged. No property executor or type-source update rule changes.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_objects.c:zend_object_dtor_property,zend_object_std_dtor",
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakrefs_hash_clean_ex,zend_weakmap_free_obj",
+    "vendor/php-src/Zend/zend_hash.c:zend_hash_clean",
+    "vendor/php-src/Zend/zend_objects_API.c:zend_objects_store_del"
+  ],
+  "counts": {
+    "exact_sources": 3,
+    "newly_authored_exact_programs": 2,
+    "promoted_prior_control": 1,
+    "author_exact_sources": 2,
+    "independent_exact_sources": 1,
+    "unsupported_controls_zero_agreement": 2,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 96
+  },
+  "validation": {
+    "source": "Three-slot [FirstChild,1.25,LastChild] releases F then L despite reverse Child writes. The prior GC41 extra-null-field source now freshly agrees. Reverse-written four-slot [X,Y,X,Z] first drops a shared X edge, then calls Y, X and Z in declaration order; Y throws, later roots survive and all cleanup precedes catch. Value weak get is null while Map/later leaf weak gets remain live. All three normal originals agree exactly.",
+    "reached": "One strict-SL source-reached group captures the real first a:X release at Value.NEXT1. Original borrowed slots are [X,Y,X,Z], live slots [UNSET,Y,X,Z]; the storage task owns only the Value pin. Real Xowner2 comes from its pending a job and c slot, Y/Z each1. The shared job drops X2-to1 without callback/events, retains b/c/d roots and separate Map/Value/leaf owners. Alias/undefined/oversized-float/descriptor controls refuse. Zero/nonzero driver budget projections and full resumed completion equality through Y throw and X/Z cleanup pass.",
+    "unsupported": "A producer-reachable typed Child property and a deeper methodless Holder-with-Child each stop explicitly at multiple-entry storage destruction after B|. Their native programs complete; each model control has zero agreement.",
+    "identities": "Source campaigns bind stable inputs/head; four executed binary identities from the reached report were directly rechecked after completion and remained unchanged."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc42_declared_child_order.php": "ec9836c83078a6f4b0e66029558eb7a2cab584d4a45ffe816ddbdc9b171eac1f",
+    "tests/semantics/gc41_peer_extra_slot_boundary.php": "aeb4b4f11804c9864e8e86e8ea2edd3ef32e4462f82d6cd19d3365387c046fdd",
+    "tests/semantics/gc42_typed_property_boundary.php": "6ec795aa4133bb5b88dd3b55f59b6e33c5f828ccc8b25aac376fff9ab9e0a67d",
+    "tests/semantics/gc42_peer_declared_shared_throw.php": "97d67892c8cf82e93d745d6f269c413b4ddbfe4416adf33c925516f1030bd203",
+    "tests/semantics/gc42_peer_deeper_object_boundary.php": "765a3ca70ac222c799abf04300809e0712c0becd91d6528044e26fe548579517"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-finite-declared-properties-author-42/native-v1/native-report.json": "8718c3a8cf4ad577a36582049f1500a466727faba522c8f12502397f1d542e87",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-author-42/native-v1/baseline-report.json": "63e0126bd87c8471ed63d63887854f72493016a3134bbd4066a1462b8c4d0a9b",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-author-42/native-v1/model-report.json": "5ece5f5c6981baf9ff36113897d9bfad75814bd308cf992c67c2aed9a4c8af00",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-author-42/reached-abdee-v1/report.json": "1c7486ad1e511e0ace56ff69b8d70e8fd686e69dad3531db51ec106558ad0a8b",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-peer-42/native-v1/native-report.json": "7a6e0c237dff6e01c0c3e7a51f67816094542d27ece6ae09738c6f9201fde811",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-peer-42/native-v1/model-declared-order-shared-child-throw-report.json": "90b3eb9e4ecd2e74129a5be477cb2f9b65b41ac99f665c4417f9ae644de8704a",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-peer-42/deeper-v1/native-report.json": "cc78205a2566114d4695eb2ff691fef009a440d74648f6248e7d4fb37fbfe098",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-peer-42/deeper-v1/model-deeper-object-boundary-report.json": "316a7f4268f3b54a030c710f1107fdf0915df51cc0cbae6c95b76bec3727dc25"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-finite-declared-properties-author-42/manifest.json": "6c56f7ea0243318b1292864ae52984672cdc53e00d67c5269edc9429e3ef72d7",
+    "../php-spec-evidence-archive/gc-finite-declared-properties-peer-42/independent-summary.json": "f9294fc2c2baa21e8102826770c8ddefd74984747ec6a90846febc86fa02d45a"
+  },
+  "zero_credit": "The author761dd baseline stops explicitly after B|1.25| and retains zero agreement. The GC41 extra-null-field refusal keeps its historical zero credit; its fresh GC42 native/model comparison is separate. No new fixture/runtime failure or interrupted run occurred in this milestone; helper-only negatives add no PHP agreement.",
+  "limits": "New Child-bearing Value property policy only: public untyped nonstatic/nonreadonly declared DIRECT primitive/fieldless-destructor-Child slots and no-owner unset slots. Typed/reference/inherited/hooked/deeper object/array layouts remain partial. Existing methodless leaf policy, empty/singleton guards, held leaf stdClass Keys registered only here, no incoming Map-key registration/cursor, ordinary writes/reads/foreach/key notification, and property/type-source executors remain unchanged. Freeing-Map dimension access/mutation, active-pin GC and wider caller contexts remain partial. Held GC35 work is untouched.",
+  "recovery": "Run gc42_declared_properties_sources.py native then model into a fresh external output; recover baseline declared-child-order-and-float at761dd if required. Run gc42_peer_declared_sources.py for independent normal and deeper-boundary selections. Run gc42_declared_properties_state.py for strict SL. Reports retain exact commands, original bytes, contexts/profiles, process outcomes and cuts. The current GC41 source runner hands its promoted extra-slot case to GC42 without renewing old evidence.",
+  "review": "Independent static review of the payload/descriptor fold, source models and abdee reached assertions is CLEAR; final documentation/ledger read-only acceptance is requested on the completed private candidate."
+}

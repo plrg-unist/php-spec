@@ -605,9 +605,24 @@ and no active cursor remain required. The old two-Child control receives fresh
 agreement in this milestone; its GC40 refusal keeps zero historical credit.
 Four exact sources (three newly authored, one promoted) and one 85-condition
 reached multiplicity/budget group pass at their recorded cuts.
-Extra declared fields and freeing-Map dimension access remain Unsupported;
-wider layouts, mutation, active-pin collection and caller contexts remain partial.
+Extra declared fields were Unsupported at the GC41 cut; freeing-Map dimension
+access remains Unsupported.
+Wider layouts, mutation, active-pin collection and caller contexts remain partial.
 [GC41 review](coverage/semantics/gc-finite-map-first-review.json).
+
+GC42 admits a finite declared-slot layout for direct methodless Map Values:
+public untyped nonstatic/nonreadonly fields without hooks, holding primitive
+leaves or fieldless public-destructor Children. Descriptor identities and keys
+authenticate physical declaration order; existing jobs preserve repeated Child
+edges and borrowed snapshots add no owners. Reverse writes of `[X,Y,X,Z]` drop
+one X owner, then run Y, X and Z while a Y throw preserves pending cleanup.
+The previous extra-null-field refusal receives a fresh comparison here.
+Three exact sources (two new, one promoted), two Unsupported controls with zero
+agreement and one 96-condition reached ownership/budget group pass at their cuts.
+Typed and deeper layouts, property aliases/hooks, freeing-Map dimension access/mutation,
+active-pin collection and wider contexts remain partial; singleton and ordinary
+consumer/type-source rules are unchanged.
+[GC42 review](coverage/semantics/gc-finite-declared-properties-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -1502,7 +1517,7 @@ wider rejected-source/compiler behavior remains partial.
 | --- | --- |
 | CLASS183 | Anonymous owner interfaces and trait/constant siblings; private implementation/review. |
 | I110 | Literal nullsafe native Generator API selection; private implementation/review. |
-| GC42 | Finite declared-property WeakMap value cleanup; private implementation/review. |
+| GC43 | Singleton WeakMap value cleanup through finite payload validation; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB16 | Deprecation-handler throws during produced output; private implementation/review. |
 | ATTR30 | Match-expression tick compilation and selected-arm effects; private implementation/review. |
