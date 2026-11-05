@@ -7375,6 +7375,13 @@ skipped. Two exact exit comparisons and reached ownership gates pass; wider
 cleanup replacements and bailout contexts remain partial.
 [Exit review](coverage/semantics/generator-call-exit-review.json).
 
+Exit from an owning warning-handler retval now follows its destructor and Child
+cleanup before restoring the handler and releasing prepared/API owners. The
+hidden copied Closure remains through shutdown. Two exact exit comparisons and
+independent reached-state gates pass; a cleanup throw replacing this pending
+exit and wider bailout contexts remain partial.
+[Owning retval exit review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

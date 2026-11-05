@@ -141,6 +141,15 @@ Original semantic/fixture failures retain zero credit; wider cleanup, owning
 retval, Fiber and bailout paths remain partial.
 [I102 review](coverage/semantics/generator-call-exit-review.json).
 
+I103 carries ordinary exit through an owning copied-warning retval destructor,
+its Child and the real C cleanup before handler/API release. The hidden copy
+survives through shutdown; fake and real originals agree at exit29/41. Strict435,
+author151/156 and independent joined peer192/197 pass at their recorded cuts.
+Earlier interpreter, compiler, descriptor, timeout and peer fixture
+elaboration failures retain zero credit. Cleanup throws replacing this pending
+exit and wider bailout stay partial.
+[I103 review](coverage/semantics/generator-call-cleanup-exit-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
