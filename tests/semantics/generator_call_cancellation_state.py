@@ -70,13 +70,14 @@ $heap_owners($heap_graph(S), HOBJECT n_capture) = 2
 $heap_owners($heap_graph(S), HOBJECT n_prefix) = 2
 $heap_owners($heap_graph(S), HOBJECT n_pending) = 1
 $heap_owners($heap_graph(S), HCELL n_prefix_cell) = 1
-$closure_call_copy_reference_valid(S, pclosurecall, n_copy, n_done, pnamedargs, n_base)
+S_emit = S[.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*]
+$closure_call_copy_reference_valid(S_emit, pclosurecall, n_copy, n_done, pnamedargs, n_base)
 $closure_call_copy_warning_pending(ERROR_HANDLER_RESULT perrorcall)
 $closure_call_copy_warning_pending(ERROR_HANDLER_INVOKE perrorcall)
 $closure_call_copy_warning_pending(ERROR_HANDLER_CLEAN perrorcall)
 ~$closure_call_copy_warning_pending(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
 $source_exception_transition(S, S) = S
-$call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
+$call_task_valid(S_emit, ERROR_HANDLER_RESULT perrorcall)
 $call_current_valid(S)
 $call_frames_valid(S, S.FRAMES)
 $call_descriptors_valid(S)
