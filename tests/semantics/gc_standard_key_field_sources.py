@@ -9,9 +9,11 @@ ROOT = family.ROOT
 FILES = {
     'child-before-insertion': 'gc_standard_key_field_preinsert.php',
     'child-after-insertion': 'gc_standard_key_field_postinsert.php',
+    'two-fields-unsupported': 'gc_standard_key_field_two_fields.php',
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, filename in FILES.items()}
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}
+family.UNSUPPORTED = {'two-fields-unsupported': ('WeakMap dimension protocol outside first insertion', b'B|')}
 family.MODEL_TIMEOUTS = {name: 120 for name in FILES}
 family_fingerprint = family.fingerprint
 

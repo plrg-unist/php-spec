@@ -63,7 +63,7 @@ CHECKS = [
 ]
 review.CASES = {
     name: {'source': path.read_text(), 'stage': STAGE, 'checks': CHECKS}
-    for name, path in sources.PATHS.items()
+    for name, path in sources.PATHS.items() if name != 'two-fields-unsupported'
 }
 
 
