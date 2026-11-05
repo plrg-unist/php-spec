@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """Check handled null-C tick throws, real owners and resumed module cleanup."""
 from pathlib import Path
+import json
 
 import fiber_state_review as review
 
 
 HERE = Path(__file__).parent
+ROOT_CV_SOURCE = next(row['source'] for row in
+                      json.loads((HERE / 'destructor_review_cases.json').read_text())
+                      if row['id'] == 'destructor-throw-handled-continues')
 
 
 def source(name):
@@ -27,7 +31,22 @@ DONE = ['S_done = $drive_steps(S, 4000)', 'S_done.TODO = eps',
         '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
         '$exit_status_valid(S_done)']
 DERIVED = {'handler-dispatch-keeps-original-module-owners': 7,
-           'handler-frame-borrows-no-destructor-receiver': 2}
+           'handler-frame-borrows-no-destructor-receiver': 2,
+           'root-cv-handler-dispatch-retains-pending-c-source': 2}
+ROOT_CV = ['~pdestructorcall.USER', 'pdestructorcall.CALLER = eps',
+           'pdestructorcall.ORIGIN = eps', 'pdestructorcall.CONSTCONTEXT = eps',
+           'pdestructorcall.FRAME = eps', 'pdestructorcall.OPERATION = eps',
+           'pdestructorcall.PENDING = eps', 'pdestructorcall.OBJECT = n_arg',
+           'S.CURRENT = eps', 'S.FRAMES = eps', 'S.COMPLETION = NORMAL',
+           'S.EXITSTATUS = 0', 'S.DESTRUCTION.ABANDONED = eps',
+           '$destructor_call_tail(S.TODO, pdestructorcall) = eps',
+           '$destructor_c_pending_tail(S.TODO, pdestructorcall) = (ptask_tail*)',
+           '$destructor_call_pending_tail(S, pdestructorcall) = (ptask_tail*)',
+           '$destructor_call_pending_valid(S, pdestructorcall)',
+           '$destructor_result_valid(S, pdestructorcall)',
+           '$destructor_c_return_valid(S, pdestructorcall)',
+           '$destruction_state_valid(S)', '$call_descriptors_valid(S)',
+           '$heap_valid($heap_graph(S))', '$exit_status_valid(S)']
 
 
 def phase(completion, status):
@@ -270,6 +289,61 @@ review.CASES = {
             '$call_descriptors_valid(S_abandoned)',
             '$heap_valid($heap_graph(S_abandoned))', '$exit_status_valid(S_abandoned)',
             'S_abandoned.EVENTS = S.EVENTS',
+        ],
+    },
+    'root-cv-handler-dispatch-retains-pending-c-source': {
+        'source': ROOT_CV_SOURCE,
+        'stage': 'S.TODO = (EXCEPTION_HANDLER_INVOKE pexceptioncall) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*',
+        'checks': [
+            *ROOT_CV,
+            'n_exception = pexceptioncall.OBJECT',
+            'S.EXCEPTIONHANDLER = eps',
+            'S.EXCEPTIONHANDLERS = (pexceptioncall.CALLBACK) :: (pvalue_rest?)*',
+            'pexceptioncall.TARGET = eps', 'pexceptioncall.SENT = eps',
+            'pexceptioncall.RECEIVED = eps',
+            '$heap_owners($heap_graph(S), HOBJECT n_arg) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_exception) = 1',
+            '$exception_invoke_valid(S, pexceptioncall)',
+            '$call_task_valid(S, DESTRUCTOR_C_RETURN pdestructorcall)',
+            '$destructor_c_pending_tail([DESTRUCTOR_C_RETURN (pdestructorcall[.USER = true]), DESTRUCTOR_RESULT (pdestructorcall[.USER = true])], pdestructorcall[.USER = true]) = eps',
+            'pdestructorcall.TARGET = METHOD_TARGET n_arg porigin_method',
+            '$destructor_c_pending_tail([DESTRUCTOR_C_RETURN (pdestructorcall[.ORIGIN = (porigin_method)]), DESTRUCTOR_RESULT (pdestructorcall[.ORIGIN = (porigin_method)])], pdestructorcall[.ORIGIN = (porigin_method)]) = eps',
+        ],
+    },
+    'root-cv-handler-cleanup-returns-through-original-c-frame': {
+        'source': ROOT_CV_SOURCE,
+        'stage': 'S.TODO = (EXCEPTION_HANDLER_CLEAN pexceptioncall true) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*',
+        'checks': [
+            *ROOT_CV,
+            'n_exception = pexceptioncall.OBJECT',
+            'S.EXCEPTIONHANDLER = eps',
+            'S.EXCEPTIONHANDLERS = (pexceptioncall.CALLBACK) :: (pvalue_rest?)*',
+            '~((HOBJECT n_exception) <- S.ALLOCATIONS)',
+            '$objectprops_at(S.OBJECTPROPS, n_exception) = eps',
+            '$heap_owners($heap_graph(S), HOBJECT n_exception) = 0',
+            '$heap_owners($heap_graph(S), HOBJECT n_arg) = 2',
+            '$call_task_valid(S, EXCEPTION_HANDLER_CLEAN pexceptioncall true)',
+            'PhpStep: S ~> S_restored',
+            'S_restored.TODO = (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*',
+            'S_restored.EXCEPTIONHANDLER = (pexceptioncall.CALLBACK)',
+            'S_restored.EXCEPTIONHANDLERS = (pvalue_rest?)*',
+            '$heap_owners($heap_graph(S_restored), HOBJECT n_arg) = 2',
+            '$destructor_c_return_valid(S_restored, pdestructorcall)',
+            'PhpStep: S_restored ~> S_release',
+            'S_release.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_inner) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*',
+            'pdestructionrelease_inner.JOBS = [DESTRUCTION_VALUE (HOBJECT n_arg)]',
+            '$heap_owners($heap_graph(S_release), HOBJECT n_arg) = 2',
+            '$destructor_release_valid(S_release, pdestructionrelease_inner)',
+            'PhpStep: S_release ~> S_raw',
+            'S_inner = $literal_reference_debt_step(S_release, $sensitive_trace_freeze($source_exception_transition(S_release, $throwable_transition(S_release, S_raw))))',
+            '$heap_owners($heap_graph(S_inner), HOBJECT n_arg) = 1',
+            '(HOBJECT n_arg) <- S_inner.ALLOCATIONS',
+            'S_inner.EVENTS = S.EVENTS', 'S_inner.DESTRUCTION.ABANDONED = eps',
+            '$call_descriptors_valid(S_inner)', '$heap_valid($heap_graph(S_inner))',
+            '$gc_state_valid(S_inner)',
+            *DONE, 'S_done.COMPLETION = NORMAL', 'S_done.EXITSTATUS = 0',
+            '~((HOBJECT n_arg) <- S_done.ALLOCATIONS)',
+            '$destruction_state_valid(S_done)',
         ],
     },
 }
