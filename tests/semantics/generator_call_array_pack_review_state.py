@@ -70,6 +70,7 @@ $heap_owners(H, HOBJECT n_capture) = 2
 $heap_owners(H, HOBJECT n_token) = 1
 $closure_call_copy_raw_arguments_valid(S, pclosurecall)
 $closure_call_copy_named(S, pclosurecall)
+~$closure_call_copy_raw_arguments_valid(S, pclosurecall[.ERROR = ($ptascii("forged"))])
 ~$closure_call_copy_raw_arguments_valid(S, pclosurecall[.PACKS = eps])
 ~$closure_call_copy_raw_arguments_valid(S, pclosurecall[.PACKS = [pconfigpack_first]])
 ~$closure_call_copy_raw_arguments_valid(S, pclosurecall[.PACKS = [pconfigpack_last, pconfigpack_first]])
