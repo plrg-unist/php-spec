@@ -92,6 +92,26 @@ def $generator_internal_task(GENERATOR_INVOKE_RETURN pconfigcall pvalue) = true
 def $fiber_marker(GENERATOR_INVOKE_RESULT pconfigcall b pvalue) = true
 def $fiber_marker(GENERATOR_INVOKE_RETURN pconfigcall pvalue) = true
 
+;; A running inner operation still needs its own outer argv/capture owner.
+;; Saved caller frames carry that owner while the Generator body is active.
+dec $generator_invoke_outer_task(ptask, pgeneratorop) : bool
+def $generator_invoke_outer_task(GENERATOR_INVOKE_RESULT pconfigcall true PNULL, pgeneratorop) = true
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD pgeneratorop.NAME pgeneratorop.SELECTION
+  -- if pconfigcall.OWNER = (pgeneratorop.OBJECT)
+  -- if pconfigcall.SITE = pgeneratorop.SITE
+  -- if pconfigcall.LINE = pgeneratorop.LINE
+def $generator_invoke_outer_task(ptask, pgeneratorop) = false -- otherwise
+dec $generator_invoke_outer_tasks(ptask*, pgeneratorop) : bool
+def $generator_invoke_outer_tasks(eps, pgeneratorop) = false
+def $generator_invoke_outer_tasks(ptask :: ptask_tail*, pgeneratorop) = ($generator_invoke_outer_task(ptask, pgeneratorop) \/ $generator_invoke_outer_tasks(ptask_tail*, pgeneratorop))
+dec $generator_invoke_outer_frames(pframe*, pgeneratorop) : bool
+def $generator_invoke_outer_frames(eps, pgeneratorop) = false
+def $generator_invoke_outer_frames(pframe :: pframe_tail*, pgeneratorop) = ($generator_invoke_outer_tasks(pframe.TODO, pgeneratorop) \/ $generator_invoke_outer_frames(pframe_tail*, pgeneratorop))
+def $generator_invoke_operation_live(S, pgeneratorop) = true
+  -- if ~$generator_capture_operation(pgeneratorop) \/ ~$generator_capture_wrapper_site(S, pgeneratorop.SITE)
+def $generator_invoke_operation_live(S, pgeneratorop) = ($generator_invoke_outer_tasks(S.TODO, pgeneratorop) \/ $generator_invoke_outer_frames(S.FRAMES, pgeneratorop))
+  -- if $generator_capture_operation(pgeneratorop) /\ $generator_capture_wrapper_site(S, pgeneratorop.SITE)
+
 ;; Save the inner return independently of RESULT before argv destructors run.
 ;; An unused return drops before the capture, including on an argv throw.
 ;; A used but uncommitted return outlives capture retirement on that throw.
