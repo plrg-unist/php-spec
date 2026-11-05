@@ -15,15 +15,6 @@ def $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, z_line, n_counter
   -- if ptbytes_parent =/= eps /\ ptbytes_file =/= eps /\ $(z_line > 0 /\ n_counter < 4294967296)
 def $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, z_line, n_counter) = eps -- otherwise
 
-dec $anonymous_property_items(phpType57*) : bool
-def $anonymous_property_items(eps) = true
-def $anonymous_property_items((NPropertyItem phpType40 ABSENT metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
-def $anonymous_property_items((NPropertyItem phpType40 expression metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
-  -- if $parser_literal(expression) =/= eps
-def $anonymous_property_items((NPropertyItem phpType40 (NExprConstFetch (NName (BYTES text) metadata_name) metadata_constant) metadata) :: phpType57*) = $anonymous_property_items(phpType57*)
-  -- if $ptlc($base64(text)) <- [$ptascii("null"), $ptascii("true"), $ptascii("false")]
-def $anonymous_property_items(phpType57*) = false -- otherwise
-
 dec $anonymous_constructor_parameter(phpType17) : bool
 ;; Ordinary signature compilation owns types, defaults and final-only variadics.
 def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN b) (BOOLEAN b_var) (NExprVariable (BYTES text) metadata_name) phpType5 (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
@@ -51,8 +42,8 @@ def $anonymous_trait_adaptations((NStmtTraitUseAdaptationPrecedence name (NIdent
   -- if $anonymous_interface_references(name_excluded :: name_tail*)
 def $anonymous_trait_adaptations(phpType63*) = false -- otherwise
 dec $anonymous_member(statement) : bool
-def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
-  -- if flags <- [0,1]
+def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType57 :: phpType57_tail*)) (SEQUENCE eps) metadata) = true
+  -- if flags <- [0,1,2,4,8,9,10,12,64,65,66,68,72,73,74,76]
 def $anonymous_member(NStmtClassConst (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType46 :: phpType46_tail*)) metadata) = true
   -- if flags <- [0,1,2,4,32,33,34,36]
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
