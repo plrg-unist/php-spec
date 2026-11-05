@@ -29,7 +29,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if $generator_capture_wrapper_site(S, porigin)
   -- if $generator_api_arguments(phpType7*) \/ $generator_arguments_supported(phpType7*)
-  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture)}
+  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture), TEMPORARY false}
 
 def $getter_capture_result_valid(S, n, porigin) = true
   -- if S.ORIGIN = (porigin)
@@ -109,9 +109,9 @@ dec $generator_invoke_outer_frames(pframe*, pgeneratorop) : bool
 def $generator_invoke_outer_frames(eps, pgeneratorop) = false
 def $generator_invoke_outer_frames(pframe :: pframe_tail*, pgeneratorop) = ($generator_invoke_outer_tasks(pframe.TODO, pgeneratorop) \/ $generator_invoke_outer_frames(pframe_tail*, pgeneratorop))
 def $generator_invoke_operation_live(S, pgeneratorop) = true
-  -- if ~$generator_capture_operation(pgeneratorop) \/ ~$generator_capture_wrapper_site(S, pgeneratorop.SITE)
+  -- if ~$generator_wrapper_operation(S, pgeneratorop)
 def $generator_invoke_operation_live(S, pgeneratorop) = ($generator_invoke_outer_tasks(S.TODO, pgeneratorop) \/ $generator_invoke_outer_frames(S.FRAMES, pgeneratorop))
-  -- if $generator_capture_operation(pgeneratorop) /\ $generator_capture_wrapper_site(S, pgeneratorop.SITE)
+  -- if $generator_wrapper_operation(S, pgeneratorop)
 
 ;; Save the inner return independently of RESULT before argv destructors run.
 ;; An unused return drops before the capture, including on an argv throw.
@@ -151,7 +151,7 @@ rule PhpStep/generator-invoke-throw-return-release: S ~> S[.TODO = (THROW_SEARCH
   -- if $throwable_live(S, n)
 
 def $generator_operation_trace(S, pgeneratorop) = [ptraceframe, ptraceframe_outer]
-  -- if $generator_capture_wrapper_site(S, pgeneratorop.SITE)
+  -- if $generator_wrapper_operation(S, pgeneratorop)
   -- if pgeneratorop.SELECTION = (pgeneratormethodselection)
   -- if pgeneratormethodselection.CAPTURE = (n_capture)
   -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
@@ -159,4 +159,5 @@ def $generator_operation_trace(S, pgeneratorop) = [ptraceframe, ptraceframe_oute
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pgeneratorop.SITE), LINE pgeneratorop.LINE, FUNCTION $generator_method_display(pgeneratorop.NAME), CLASS ($ptascii("Generator")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pgeneratorop.ARGUMENTS, 0), HASARGS true}
   -- if ptraceframe_outer = {FILE $call_sourcefile(S.FILES, pgeneratorop.SITE), LINE pgeneratorop.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pgeneratorop.ARGUMENTS, 0), HASARGS true}
 def $generator_argument_error(S, pgeneratorop, poperand*) = $throwable_allocate(S, "ArgumentCountError", $ptascii("Generator::") ++ $generator_method_display(pgeneratorop.NAME) ++ $ptascii("() expects exactly ") ++ $ntunsigned($generator_argument_count(pgeneratorop.NAME)) ++ $ptascii(" argument") ++ $config_plural($generator_argument_count(pgeneratorop.NAME)) ++ $ptascii(", ") ++ $ntunsigned(|poperand*|) ++ $ptascii(" given"), pgeneratorop.LINE, $source_trace_prefixed(S, [ptraceframe[.ARGS = $trace_indexed_args($trace_extra(S, poperand*), 0)], ptraceframe_outer[.ARGS = $trace_indexed_args($trace_extra(S, poperand*), 0)]]))
+  -- if $generator_wrapper_operation(S, pgeneratorop)
   -- if $generator_operation_trace(S, pgeneratorop) = [ptraceframe, ptraceframe_outer]

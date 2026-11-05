@@ -141,6 +141,9 @@ dec $generator_arguments_supported(phpType7*) : bool
 dec $generator_method_return_tasks(pstate, porigin, ptask*) : ptask*
 dec $generator_method_unused_result(pstate, pgeneratorop) : bool
 dec $generator_capture_wrapper_site(pstate, porigin) : bool
+dec $generator_temporary_selection(pgeneratormethodselection?) : bool
+dec $generator_temporary_operation(pgeneratorop) : bool
+dec $generator_wrapper_operation(pstate, pgeneratorop) : bool
 dec $generator_invoke_operation_live(pstate, pgeneratorop) : bool
 dec $generator_api_arguments(phpType7*) : bool
 dec $generator_api_site(pstate, porigin) : bool
@@ -1268,7 +1271,7 @@ def $generator_method_unused_result(S, pgeneratorop) = true
   -- if pgeneratorop.ARGUMENTS = eps
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if ~$reference_call_used(S, pgeneratorop.SITE)
-  -- if ~($generator_capture_operation(pgeneratorop) /\ $generator_capture_wrapper_site(S, pgeneratorop.SITE))
+  -- if ~$generator_wrapper_operation(S, pgeneratorop) /\ ~$generator_temporary_operation(pgeneratorop)
   -- if S.RESULT = KNOWN pvalue
   -- if $value_nodes(pvalue) =/= eps
 def $generator_method_unused_result(S, pgeneratorop) = false -- otherwise
@@ -1630,7 +1633,7 @@ def $generator_operation_trace(S, pgeneratorop) = [{FILE $call_sourcefile(S.FILE
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
   -- if ~pgeneratorop.STARTPACK
   -- if ~pgeneratorop.BORROWED
-  -- if ~($generator_capture_operation(pgeneratorop) /\ $generator_capture_wrapper_site(S, pgeneratorop.SITE))
+  -- if ~$generator_wrapper_operation(S, pgeneratorop) /\ ~$generator_temporary_operation(pgeneratorop)
 def $generator_operation_trace(S, pgeneratorop) = eps -- if pgeneratorop.LOOP =/= eps
 def $generator_error(S, pgeneratorop, text, ptbytes) = $throwable_allocate(S, text, ptbytes, pgeneratorop.LINE, $source_trace_prefixed(S, $generator_operation_trace(S, pgeneratorop)))
 ;; NEXT first ensures an undefined cache is initialized, then resumes again.
@@ -1696,7 +1699,7 @@ def $generator_computed_method_node((NExprNullsafeMethodCall expression phpType2
 def $generator_computed_method_node(pcnode?) = false -- otherwise
 ;; Freeze the actual resolved name and receiver before argument callbacks. The
 ;; later receipt is nonowning and never reads the source CVs again.
-def $generator_method_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps})
+def $generator_method_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps, TEMPORARY false})
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
   -- if $method_name_task(S, poperand, phpType7*, z)
@@ -1714,6 +1717,7 @@ def $generator_selected_method(S, porigin, n, ptbytes, z, eps) = true
   -- if $call_line_valid(S, (porigin), z)
 def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
   -- if pgeneratormethodselection.CAPTURE = eps
+  -- if ~pgeneratormethodselection.TEMPORARY
   -- if $generator_computed_method_node($origin_node(S.SOURCES, porigin))
   -- if pgeneratormethodselection.SITE = porigin
   -- if pgeneratormethodselection.OBJECT = n

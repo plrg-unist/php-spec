@@ -4,6 +4,7 @@ dec $closure_call_args_at(pstate, porigin) : phpType7*
 dec $closure_call_array_pack_site(pstate, porigin) : bool
 dec $closure_call_source_expression(pstate, porigin) : expression
 dec $closure_call_source(pstate, nat) : bool
+dec $closure_call_native(pstate, nat) : text?
 dec $closure_call_real(pstate, nat) : bool
 dec $closure_call_parameters(pstate, nat) : psparam*
 dec $closure_call_warning(pstate, nat, nat) : ptbytes?
@@ -48,7 +49,7 @@ def $closure_call_source_expression(S, porigin) = expression
 def $closure_call_source_expression(S, porigin) = expression
   -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
 
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [CLOSURE_CALL_ARGS {SITE porigin_site, SOURCE n, FIRST eps, RECEIVER eps, INDEX 0, SENT {SLOTS eps, NAMED eps}, RAW eps, ERROR eps, LINE z, PACKS eps}, CLOSURE_CALL_RESULT porigin_site z, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [CLOSURE_CALL_ARGS {SITE porigin_site, SOURCE n, NATIVE $closure_call_native(S_read, n), FIRST eps, RECEIVER eps, INDEX 0, SENT {SLOTS eps, NAMED eps}, RAW eps, ERROR eps, LINE z, PACKS eps}, CLOSURE_CALL_RESULT porigin_site z, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -230,7 +231,7 @@ def $closure_call_named_receiver_auth(S, pclosurecall) = false -- otherwise
 
 dec $closure_call_task_valid(pstate, pclosurecall) : bool
 dec $closure_call_progress_valid(pstate, pclosurecall) : bool
-def $closure_call_task_valid(S, pclosurecall) = ($call_line_valid(S, (pclosurecall.SITE), pclosurecall.LINE) /\ $closure_call_raw_evaluated(pclosurecall.RAW) /\ $closure_call_progress_valid(S, pclosurecall))
+def $closure_call_task_valid(S, pclosurecall) = (pclosurecall.NATIVE = $closure_call_native(S, pclosurecall.SOURCE) /\ $call_line_valid(S, (pclosurecall.SITE), pclosurecall.LINE) /\ $closure_call_raw_evaluated(pclosurecall.RAW) /\ $closure_call_progress_valid(S, pclosurecall))
 dec $closure_call_invalid_sent_valid(pstate, psparam*, pclosurecall, phpType7*) : bool
 def $closure_call_invalid_sent_valid(S, psparam*, pclosurecall, phpType7_tail*) = true
   -- if pclosurecall.ERROR = eps

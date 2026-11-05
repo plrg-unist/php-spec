@@ -15,7 +15,7 @@ def $generator_capture_site(S, porigin, ptbytes, z) = true
 def $generator_capture_site(S, porigin, ptbytes, z) = false -- otherwise
 
 dec $generator_capture_selection(pstate, poperand, ptbytes, phpType7*, int) : pgeneratormethodselection?
-def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps})
+def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps, TEMPORARY false})
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = (METHOD_PREP (NIdentifier (BYTES text) metadata_name) phpType7* b_nullsafe b_base z) :: ptask_tail*
   -- if $call_task_valid(S, METHOD_PREP (NIdentifier (BYTES text) metadata_name) phpType7* b_nullsafe b_base z)
@@ -25,7 +25,7 @@ def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE po
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_read, n)
-def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps})
+def $generator_capture_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z, CAPTURE eps, TEMPORARY false})
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
   -- if $method_name_task(S, poperand, phpType7*, z)
@@ -54,6 +54,7 @@ dec $generator_getter_source(pstate, pgettersource, nat, nat, text) : bool
 def $generator_getter_source(S, GENERATOR_CAPTURE pgeneratormethodselection, n, n_receiver, text_method) = true
   -- if pgeneratormethodselection.OBJECT = n_receiver
   -- if pgeneratormethodselection.CAPTURE = eps
+  -- if ~pgeneratormethodselection.TEMPORARY
   -- if $generator_method(pgeneratormethodselection.NAME) = text_method
   -- if $generator_capture_site(S, pgeneratormethodselection.SITE, pgeneratormethodselection.NAME, pgeneratormethodselection.LINE)
 def $generator_getter_source(S, porigin, n, n_receiver, text_method) = $from_getter_source(S, porigin, n)
@@ -118,6 +119,7 @@ def $generator_capture_invocation_site(S, porigin) = true
 def $generator_capture_invocation_site(S, porigin) = false -- otherwise
 
 def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
+  -- if ~pgeneratormethodselection.TEMPORARY
   -- if pgeneratormethodselection.CAPTURE = (n_capture)
   -- if $generator_capture_saved(S, n_capture)
   -- if $generator_capture_target(S, n_capture) = ((n, text_method))
@@ -138,6 +140,7 @@ def $generator_capture_marker_frames(pframe :: pframe_tail*, n, porigin) = ($gen
 def $generator_selection_live(S, eps) = true
 def $generator_selection_live(S, (pgeneratormethodselection)) = true
   -- if pgeneratormethodselection.CAPTURE = eps
+  -- if ~pgeneratormethodselection.TEMPORARY
 def $generator_selection_live(S, (pgeneratormethodselection)) = true
   -- if pgeneratormethodselection.CAPTURE = (n)
   -- if $getter_capture_live(S, n)
@@ -152,6 +155,14 @@ def $generator_capture_config_tag(pconfigcall) = true
   -- if $generator_capture_selection_tag(pgeneratormethodselection?)
 def $generator_capture_config_tag(pconfigcall) = false -- otherwise
 def $generator_capture_operation(pgeneratorop) = $generator_capture_selection_tag(pgeneratorop.SELECTION)
+def $generator_temporary_selection(eps) = false
+def $generator_temporary_selection((pgeneratormethodselection)) = pgeneratormethodselection.TEMPORARY
+def $generator_temporary_operation(pgeneratorop) = $generator_temporary_selection(pgeneratorop.SELECTION)
+def $generator_wrapper_operation(S, pgeneratorop) = ($generator_capture_operation(pgeneratorop) /\ ~$generator_temporary_operation(pgeneratorop) /\ $generator_capture_wrapper_site(S, pgeneratorop.SITE))
+def $closure_call_native(S, n) = (text_method)
+  -- if $generator_capture_saved(S, n)
+  -- if $generator_capture_target(S, n) = ((n_receiver, text_method))
+def $closure_call_native(S, n) = eps -- otherwise
 
 dec $generator_capture_enter(pstate, nat, porigin, int) : pstate
 def $generator_capture_enter(S, n_capture, porigin, z) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method (pgeneratormethodselection), INDEX 0, SENT eps, NAMED false, OWNER (n_receiver), SELECTION eps, LINE z, PACKS eps}) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: $generator_method_return_tasks(S, porigin, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -160,14 +171,14 @@ def $generator_capture_enter(S, n_capture, porigin, z) = S[.TODO = (CONFIG_ARGS 
   -- if $dynamic_site(S, (porigin))
   -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_api_arguments(phpType7*)
-  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture)}
+  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture), TEMPORARY false}
 def $generator_capture_enter(S, n_capture, porigin, z) = S[.TODO = (GENERATOR_ARGS {OBJECT n_receiver, NAME text_method, SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION (pgeneratormethodselection)} phpType7* eps) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: $generator_method_return_tasks(S, porigin, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $generator_capture_target(S, n_capture) = ((n_receiver, text_method))
   -- if $getter_capture_live(S, n_capture)
   -- if $dynamic_site(S, (porigin))
   -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_arguments_supported(phpType7*)
-  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture)}
+  -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture), TEMPORARY false}
 
 def $dynamic_value(S, porigin, z_init, z_call) = $generator_capture_enter(S, n, porigin, z_call)
   -- if S.COMPLETION = NORMAL
