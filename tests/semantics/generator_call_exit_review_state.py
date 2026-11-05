@@ -11,6 +11,15 @@ INPUT_BYTES = {p: p.read_bytes() for p in (Path(__file__), CATALOG, Path(review.
 ROW = next(r for r in json.loads(INPUT_BYTES[CATALOG]) if r['id'] == 'i102-real-named-default-exit-independent')
 assert hashlib.sha256(ROW['source'].encode()).hexdigest() == ROW['source_sha256']
 STAGE = "S.TODO = (EXIT_INVOKE pexitcall) :: ptask_tail* -- if S.CURRENT = (pcallcontext_ctor) -- if pcallcontext_ctor.TARGET = METHOD_TARGET n_default porigin_ctor -- if $object_name(S, n_default) = $ptascii(\"ExitDefault102D\") -- if S.FRAMES = [pframe_receive, pframe_api]"
+API_STAGE = r'''def $stage(S) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.DESTRUCTION.OPERATIONS = eps
+  -- if S.CLOSURECALLRETAINED = [pclosurebinding]
+  -- if pclosurebinding.RECEIVER = (n_maker)
+  -- if n_source = pclosurebinding.SOURCE
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: [EXIT_UNWIND 31]
+  -- if pdestructionrelease.JOBS = [(DESTRUCTION_VALUE (HOBJECT n_maker)), (DESTRUCTION_VALUE (HOBJECT n_pending)), (DESTRUCTION_VALUE (HOBJECT n_source))]
+'''
 CHECKS = [line.strip() for line in r'''
 S.COMPLETION = NORMAL
 S.ACTIVEFIBER = eps
@@ -125,18 +134,20 @@ S_after_ctor.EXITSTATUS = 31
 S_after_ctor.CURRENT = (pcallcontext_after_ctor)
 pcallcontext_after_ctor.TARGET = CLOSURE_TARGET n_copy
 S_after_ctor.FRAMES = [pframe_api]
-S_after_ctor.TODO = [EXIT_UNWIND 31]
+$exit_unwind_valid(S_after_ctor, 31)
 S_after_ctor.CLOSURECALLRETAINED = eps
-$weakref_get(S_after_ctor, n_weak_default) = PNULL
-~((HOBJECT n_default) <- S_after_ctor.ALLOCATIONS)
 $call_descriptors_valid(S_after_ctor)
 $heap_valid($heap_graph(S_after_ctor))
-S_api = $drive(S_after_ctor[.COMPLETION = NORMAL], 1)
-S_api.COMPLETION = BUDGET
+S_api_reached = $seek(S_after_ctor[.COMPLETION = NORMAL], 128)
+S_api_reached.COMPLETION = NORMAL \/ S_api_reached.COMPLETION = BUDGET
+S_api = S_api_reached[.COMPLETION = NORMAL]
 S_api.EXITSTATUS = 31
 S_api.CURRENT = eps
 S_api.FRAMES = eps
 S_api.CLOSURECALLRETAINED = [pclosurebinding]
+$weakref_get(S_api, n_weak_default) = PNULL
+~((HOBJECT n_default) <- S_api.ALLOCATIONS)
+S_api.EVENTS = S_one.EVENTS
 S_api.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (EXIT_UNWIND 31) :: eps
 pdestructionrelease.JOBS = $destruction_values([HOBJECT n_maker, HOBJECT n_pending, HOBJECT n_source])
 $closure_call_retained_nodes(S_api.CLOSURECALLRETAINED) = [HOBJECT n_copy]
@@ -188,6 +199,12 @@ if __name__ == '__main__':
     def recorded(command, directory, stem, environment, cap):
         global raw
         raw = directory.parent
+        if stem == 'model':
+            fixture = Path(command[-1])
+            text = fixture.read_text()
+            anchor = 'def $stage(S) = false -- otherwise\n'
+            assert text.count(anchor) == 1
+            fixture.write_text(text.replace(anchor, API_STAGE + anchor))
         return original(command, directory, stem, environment, cap)
     review.recorded = recorded
     try:
