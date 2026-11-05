@@ -826,15 +826,14 @@ def $destructor_c_frame(S) = (pdestructorcall)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if $destructor_context_valid(S, pcallcontext)
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
-  -- if pcallcontext.INSTANCE = (pdestructorcall.OBJECT)
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (pdestructorcall.OBJECT)
 def $destructor_c_frame(S) = eps -- otherwise
 def $destructor_c_frame_restore(S, S_restored) = S_restored[.TODO = (DESTRUCTOR_C_RETURN pdestructorcall) :: S_restored.TODO]
   -- if $destructor_c_frame(S) = (pdestructorcall)
   -- if S_restored.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
 def $destructor_c_frame_restore(S, S_restored) = S_restored -- if $destructor_c_frame(S) = eps
-def $destructor_frame_nodes(S) = $destructor_local_cells(S.ENV, S.SYMBOLS) ++ $destructor_context_nodes((pcallcontext[.INSTANCE = eps]))
+def $destructor_frame_nodes(S) = $destructor_local_cells(S.ENV, S.SYMBOLS) ++ $destruction_node_delete($destructor_context_nodes(S.CURRENT), HOBJECT pdestructorcall.OBJECT)
   -- if $destructor_c_frame(S) = (pdestructorcall)
-  -- if S.CURRENT = (pcallcontext)
 def $destructor_frame_nodes(S) = $destructor_local_cells(S.ENV, S.SYMBOLS) ++ $destructor_context_nodes(S.CURRENT)
   -- if $destructor_c_frame(S) = eps
 def $destructor_leaving_exception((THROW_SEARCH n) :: ptask*) = (n)
