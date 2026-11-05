@@ -72,5 +72,17 @@
     "expected_model": "normal",
     "model_seconds": 500,
     "process_seconds": 520
+  },
+  {
+    "id": "i114-unused-nullsafe-copy-finally-supplied-throw",
+    "purpose": "Discarding an ignored literal nullsafe bindTo copy runs replacement finally while original This stays live. A supplied Stop then traverses the new finish continuation; original finally still runs after capture weak death and all weak targets are gone at catch.",
+    "source": "<?php\nclass Stop114U extends Exception {}\nfunction old114U() {\n    try { echo 'OLD-INIT|'; yield 'old'; }\n    finally { global $weakOld, $weakCapture; echo 'OLD-FIN|', $weakOld->get() !== null, '|', $weakCapture->get() === null, '|'; }\n}\nfunction replacement114U() {\n    try { echo 'NEW-INIT|'; yield 'new'; }\n    finally { global $weakNew, $weakOld, $weakCapture, $stop; echo 'NEW-FIN|', $weakNew->get() !== null, '|', $weakOld->get() !== null, '|', $weakCapture->get() !== null, '|'; throw $stop; }\n}\nfunction scope114U() {\n    global $capture, $replacement, $weakOld, $weakNew, $weakCapture;\n    echo 'SCOPE|'; $capture = null; $replacement = null;\n    echo 'HELD|', $weakOld->get() !== null, '|', $weakNew->get() !== null, '|', $weakCapture->get() !== null, '|';\n    return 'static';\n}\n$stop = new Stop114U('given');\n$old = old114U(); $old->current(); $replacement = replacement114U(); $replacement->current();\n$capture = $old->send(...); $weakOld = WeakReference::create($old); $weakNew = WeakReference::create($replacement); $weakCapture = WeakReference::create($capture); $old = null;\ntry { echo 'BIND|'; $capture?->bindTo($replacement, scope114U()); echo 'BAD|'; }\ncatch (Stop114U $caught) { echo 'CATCH|', $caught === $stop, '|', $caught->getPrevious() === null, '|', $caught->getTrace() === [], '|'; }\necho 'AFTER|', $weakOld->get() === null, '|', $weakNew->get() === null, '|', $weakCapture->get() === null, '|DONE|';\n",
+    "source_sha256": "eecaa2e38dd04adec7b5dd01ed46a43450f37d5cbe0306d06e4672009e64ca51",
+    "native_exit": 0,
+    "native_stdout": "OLD-INIT|NEW-INIT|BIND|SCOPE|HELD|1|1|1|NEW-FIN|1|1|1|OLD-FIN|1|1|CATCH|1|1|1|AFTER|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
   }
 ]
