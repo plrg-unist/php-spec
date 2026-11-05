@@ -199,13 +199,14 @@ def $generator_api_result_saved(S, pgeneratorop) = false -- otherwise
 
 ;; A body throw returns to the real native SEND before its argv is freed.
 ;; Keep the original search ahead of the receiver pin for destructor Previous.
+;; Operation validation keeps computed selection frozen after source CV rebinding.
 dec $generator_api_body_throw(pstate, pgeneratorop) : bool
 def $generator_api_body_throw(S, pgeneratorop) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
   -- if $generator_api_result_saved(S, pgeneratorop)
-  -- if pgeneratorop.SELECTION = eps
+  -- if ~$generator_temporary_operation(pgeneratorop)
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if $generator_resumption_arguments_valid(S, pgeneratorop)
   -- if $origin_node(S.SOURCES, pgeneratorop.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
