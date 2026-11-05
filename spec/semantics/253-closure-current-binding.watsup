@@ -736,6 +736,7 @@ def $fake_bind_receive(S, pconfigcall) = $fake_bind_select_scope(S, pconfigcall,
   -- if $fake_bind_source(pconfigcall) = (n_source)
   -- if $closure_callable(S, n_source)
   -- if ~$ctor_capture_live(S, n_source)
+  -- if ~$generator_capture_saved(S, n_source)
   -- if n_offset = $fake_bind_offset(pconfigcall)
   -- if pvalue_receiver = $error_api_value(pconfigcall, n_offset, PNULL)
   -- if pvalue_receiver = PNULL \/ $config_object(pvalue_receiver)

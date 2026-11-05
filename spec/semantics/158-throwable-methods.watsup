@@ -2,6 +2,7 @@
 ;; Zend/zend_exceptions.c and zend_exceptions_arginfo.h define the zero-argument
 ;; public final getters. Error owns its aliases even when their C body is Exception's.
 dec $generator_api_getter(pgettermethod) : bool
+dec $generator_capture_saved(pstate, nat) : bool
 dec $getter_named(ptbytes) : pgettermethod?
 def $getter_named(ptbytes) = (GET_MESSAGE) -- if $ptlc(ptbytes) = $ptascii("getmessage")
 def $getter_named(ptbytes) = (GET_CODE) -- if $ptlc(ptbytes) = $ptascii("getcode")

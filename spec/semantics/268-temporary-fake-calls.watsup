@@ -15,6 +15,7 @@ def $closure_call_source(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $closure_call_real(S, n) \/ $fake_bind_object(S, n)
   -- if $closure_callable(S, n)
+  -- if ~$generator_capture_saved(S, n)
 def $closure_call_source(S, n) = false -- otherwise
 def $closure_call_parameters(S, n) = pfunction.SIGNATURE.PARAMETERS
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
