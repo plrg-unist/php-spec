@@ -34,7 +34,9 @@ rule PhpStep/closure-call-binding-warning: S ~> $error_dispatch(S[.ORIGIN = (pcl
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = (ptbytes)
-def $task_nodes(CLOSURE_CALL_WARNING pclosurecall ptbytes) = $task_nodes(CLOSURE_CALL_INVOKE pclosurecall)
+;; Binding fails before the inner call copies argv. Prepared receiver/SENT
+;; fields borrow the API's first/raw arguments at this boundary.
+def $task_nodes(CLOSURE_CALL_WARNING pclosurecall ptbytes) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)
 def $call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes) = $temporary_call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes)
 def $temporary_call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes) = true
   -- if $closure_call_task_valid(S, pclosurecall)
@@ -51,9 +53,12 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LINE = pclosurecall.LINE
   -- if perrorcall.MESSAGE = ptbytes
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ptbytes pclosurecall.LINE
-rule PhpStep/closure-call-binding-warning-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $closure_call_warning_release(pstate, pclosurecall) : pstate
+def $closure_call_warning_release(S, pclosurecall) = $destructor_release_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW) ++ [HOBJECT pclosurecall.SOURCE]))
+rule PhpStep/closure-call-binding-warning-result: S ~> $closure_call_warning_release(S[.TODO = ptask_tail*], pclosurecall)
   -- if S.TODO = (CLOSURE_CALL_WARNING pclosurecall ptbytes) :: ptask_tail*
   -- if $call_task_valid(S, CLOSURE_CALL_WARNING pclosurecall ptbytes)
+def $error_read_discard(S, CLOSURE_CALL_WARNING pclosurecall ptbytes) = $closure_call_warning_release(S, pclosurecall)
 
 ;; Finite internal getters have no compiled user function. They consume the
 ;; same captured values only after exact-scope binding and outer evaluation.

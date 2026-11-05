@@ -617,6 +617,68 @@ projection retain zero credit; no-Gen receive/callback errors, mapping errors
 and wider contexts remain partial.
 [Reference-call review](../../coverage/semantics/generator-call-reference-review.json).
 
+I94 preserves the fake flag when a user-method Generator Closure is copied by
+an admitted literal Closure::call. The new receiver has the exact declaring
+class; stored selection authenticates the private method even after the source
+and old receiver retire. Fake method statics stay in the shared function table,
+and getCurrent keeps its ordinary fake-function Error. Existing API/result tasks
+own the copy and arguments until creation returns; the Gen then retains its copy
+and This through CLOSED, releasing the copy before the cache.
+Native4/source4/private433 retain distinct cuts; five reached fronts pass
+633 custom/658 reported checks.
+Computed/packed calls, other binding/receiver forms and abrupt receive paths
+remain partial.
+[Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
+
+I95 keeps live function lookup separate from consumed method-Closure history in
+both storage and Closure validity. A globally retained bound source can remain
+callable after one Gen consumes its own reference; the historical fallback is
+used only when that lookup is unavailable. Genuine METHOD and API string sources
+pass through finite bound-fake chains with shared method statics, retired original
+receivers and actual copied This. Variable/dynamic string first-class conversion
+rejects nonstatic methods before later call arguments; fromCallable(string) uses
+the caller-aware API route. Three current native/source controls agree; four reached fronts pass
+609 custom/629 reported checks. The wrong original forecast and storage ambiguity keep
+zero credit. Literal/constant-folded string captures and wider receive/transfer
+contexts remain separate.
+[Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
+
+I96 follows the literal full-name compiler route: a compatible current This can
+form a private nonstatic capture even where variable-string conversion rejects
+the same method. Ordinary call dispatch then reuses the existing fake copy proof
+without widening STRING selection or scope. Static binding warnings enter no
+Generator and own SOURCE/FIRST/RAW once; prepared receiver/SENT borrow those
+arguments. Existing release jobs retire newThis, raw arguments and source on
+normal return or a warning-handler throw, preserving the real pending exception.
+Four current native/source controls agree; five reached fronts pass
+516 custom/541 reported checks. Variable-string rejection, wider binding/receive
+contexts retain their own limits.
+[Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
+
+I97 validates a warning handler suspending before copied Gen creation. The API's
+selected source, copy, newThis and raw values survive changes to their root CVs.
+A real static cell owned only by its source Closure is copied before suspension;
+the fake method keeps shared static storage. Normal resumption wraps the saved
+value into a fresh reference formal before creating the Gen. Reached checks also
+validate the existing frame-cleanup carrier for that created result.
+Native3/source3 and four reached fronts pass 553 custom/573 reported checks at
+distinct cuts on unchanged semantics. Aborts during copied reference warnings,
+no-Gen receive errors and wider call forms remain partial.
+[Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
+
+I98 validates owning warning-return cleanup before copied Gen creation. The
+handler has returned, and its result's destructor suspends normally while the
+saved ERROR_HANDLER_CLEAN cursor retains source/copy/FIRST/RAW. Reference wrapping
+continues after retval retirement and handler restoration. A property on the
+returned object supplies a separate Token edge from the raw API snapshot.
+Native2/source2 and three reached fronts pass 459 custom/474 reported checks at
+distinct cuts on unchanged semantics, with no state failures or retries. Wider
+trace, handler/destructor-throw and no-Gen receive contexts remain partial.
+[Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+The [joined review](../../coverage/semantics/generator-call-series-current-review.json)
+records strict433, four source comparisons and 187 custom/192 reported ownership
+checks while preserving every original cut and zero-credit failure.
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter
