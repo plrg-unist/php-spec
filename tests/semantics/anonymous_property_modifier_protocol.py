@@ -87,7 +87,7 @@ def checks(row, fixture, filename):
                 'ppropertydesc_value.VISIBILITY = PROPERTY_PUBLIC /\\ ppropertydesc_secret.VISIBILITY = PROPERTY_PUBLIC',
                 'ppropertydesc_value.KEY = $ptascii("value") /\\ ppropertydesc_secret.KEY = $ptascii("secret")',
                 'S_local.CURRENT = (pcallcontext)',
-                'pcallcontext.INSTANCE = (n_object)',
+                'pcallcontext.TARGET = METHOD_TARGET n_object porigin_method',
                 'pcallcontext.LEXICAL_CLASS = (pclassdesc.ORIGIN)',
                 '$class_static_set_allowed(S_local,ppropertydesc_secret)',
                 '~$property_set_denied(S_local,n_object,$ptascii("secret"))',
