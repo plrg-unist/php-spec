@@ -132,13 +132,14 @@ def $task_nodes(GENERATOR_CALL_RESULT pclosurecall false pvalue) = [HOBJECT pclo
 def $task_nodes(GENERATOR_CALL_RETURN pclosurecall pvalue) = $value_nodes(pvalue)
 dec $generator_call_result_valid(pstate, pclosurecall, bool, pvalue) : bool
 def $generator_call_result_valid(S, pclosurecall, b_live, pvalue) = true
+  -- if S.ORIGIN = (pclosurecall.SITE)
   -- if $generator_call_saved_valid(S, pclosurecall)
   -- if $getter_capture_live(S, pclosurecall.SOURCE)
   -- if ~b_live \/ (pvalue = PNULL /\ $heap_subset($closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW), S.ALLOCATIONS))
   -- if $destructor_return_operand_valid(S, KNOWN pvalue)
 def $generator_call_result_valid(S, pclosurecall, b_live, pvalue) = false -- otherwise
 def $call_task_valid(S, GENERATOR_CALL_RESULT pclosurecall b pvalue) = $generator_call_result_valid(S, pclosurecall, b, pvalue)
-def $call_task_valid(S, GENERATOR_CALL_RETURN pclosurecall pvalue) = ($generator_call_saved_valid(S, pclosurecall) /\ $destructor_return_operand_valid(S, KNOWN pvalue))
+def $call_task_valid(S, GENERATOR_CALL_RETURN pclosurecall pvalue) = (S.ORIGIN = (pclosurecall.SITE) /\ $generator_call_saved_valid(S, pclosurecall) /\ $destructor_return_operand_valid(S, KNOWN pvalue))
 def $generator_internal_task(GENERATOR_CALL_RESULT pclosurecall b pvalue) = true
 def $generator_internal_task(GENERATOR_CALL_RETURN pclosurecall pvalue) = true
 def $fiber_marker(GENERATOR_CALL_RESULT pclosurecall b pvalue) = true
