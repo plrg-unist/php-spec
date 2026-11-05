@@ -1756,8 +1756,18 @@ original Closure owner when a callback rebinds the source variable. Reception
 accepts a quiet scalar/null value or a live finite ordinary object value; the
 latter raises the value TypeError without casting a Stringable value, even for
 an unknown ordinary option name. The TypeError trace owns the copied value until
-the catch releases it. ARRAY values, `zend.assertions` options and wider object
-graphs still stop explicitly on this receipt.
+the catch releases it. `zend.assertions` options and wider object graphs still
+stop explicitly on this receipt.
+
+The [copied array value increment](../../coverage/semantics/config-iterator-stringable-array-value-review.json)
+lets the same ordinary option receive a live finite ARRAY graph already admitted
+at Iterator send. INI_SET rejects that raw value before directive lookup, while
+the TypeError trace retains its copied table and embedded aliases. One source
+checks a temporary Iterator's retirement, option-destructor writes, COW table
+slot 3 versus source slot 31, and a shared alias changing from 17 to 42 and 66.
+A reached-state control refuses a cyclic copied table. Object descendants in
+otherwise admitted finite graphs, other alias shapes and callback failures
+remain unvalidated on this receipt.
 
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
