@@ -135,6 +135,24 @@ CASES['second-position-keeps-earlier-byvalue-send'] = {
                '(KNOWN (PINT 5)), NAMED_SENT (REFERENCE n_fresh)]), NAMED eps}',
                *DONE, '$heap_owners($heap_graph(S_done), HCELL n_fresh) = 0'],
 }
+CASES['second-reference-warning-retains-first-private-cell'] = {
+    'source': SOURCES['temporary-two-reference-destinations'],
+    'stage': 'S.TODO = (GENERATOR_UNPACK pgeneratorunpack "byref") :: ptask_tail* '
+             '-- if pgeneratorunpack.COUNT = 1',
+    'checks': [*CAPTURE,
+               'pgeneratorunpack.INPUT = KNOWN (POBJECT n_data)',
+               'pgeneratorunpack.CALL.SENT = {SLOTS ([NAMED_SENT '
+               '(REFERENCE n_first)]), NAMED eps}',
+               'n_first <- S.REFCELLS', 'S.STORE[n_first] = DEFINED (PINT 5)',
+               '$heap_owners($heap_graph(S), HCELL n_first) = 1',
+               *VALID, *ZERO, *ONE, *FRESH, 'n_fresh =/= n_first',
+               'S_one.STORE[n_first] = DEFINED (PINT 5)',
+               '$heap_owners($heap_graph(S_one), HCELL n_first) = 1',
+               'pgeneratorunpack_next.CALL.SENT = {SLOTS ([NAMED_SENT '
+               '(REFERENCE n_first), NAMED_SENT (REFERENCE n_fresh)]), NAMED eps}',
+               *DONE, '$heap_owners($heap_graph(S_done), HCELL n_first) = 0',
+               '$heap_owners($heap_graph(S_done), HCELL n_fresh) = 0'],
+}
 CASES['throwing-warning-keeps-real-cursor-and-throwable-at-explicit-stop'] = {
     'source': next(row['source'] for row in json.loads(NEGATIVES.read_bytes())
                    if row['id'] == 'warning-handler-throw'),
