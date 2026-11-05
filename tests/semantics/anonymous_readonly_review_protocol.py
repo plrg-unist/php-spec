@@ -294,7 +294,7 @@ def main():
                ROOT / '.tools/php/bin/php',ROOT / 'tests/semantics/profile.json',
                ROOT / '_build/default/adapter/main.exe',ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
                ROOT / 'frontend/worker.php',ROOT / 'spec/semantics/383-anonymous-classes.watsup',
-               ROOT / 'spec/semantics/238-trait-data.watsup']
+               ROOT / 'spec/semantics/238-trait-data.watsup',ROOT / 'spec/semantics/136-property-runtime.watsup']
     before = {str(path):sha(path) for path in watched}
     report = {'passed':False,'raw':str(raw),'inputs_before':before,
               'revision':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
