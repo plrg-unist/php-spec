@@ -323,7 +323,9 @@ remain unchanged.
 Multiple-entry direct and quiet reads reuse the common finite payload policy.
 A separate `offsetGet`/`offsetExists` arm first authenticates the existing source
 read/presence/quiet task, then requires a ranged allocated nonfreeing input Key
-and canonical private finite storage. The previous access arm stays unchanged;
+and canonical private finite storage. It explicitly excludes the old storage
+selector so successful leaf-table derivations remain disjoint. The previous
+access arm stays unchanged;
 `offsetUnset`, replacement and mutation receive no new admission. Stored Keys
 remain leaf `stdClass` objects. An absent direct `KEY_R` input keeps the existing
 ordinary allocated object domain; quiet/presence input retains its existing

@@ -662,6 +662,11 @@ bool/coalescing/Error behavior uses the existing consumer executors.
 Two new originals and one 73-condition spare-Key reached group pass at their
 separate cuts; the native-checked variant adds no original agreement.
 [Read review](coverage/semantics/gc-finite-value-reads-review.json).
+The finite fallback now explicitly excludes the old storage selector, fixing
+an overlapping-success regression on leaf-many access. A fresh comparison of
+the exact legacy M141 separate-leaf original passes; its repair entry in that
+review retains the separate tested cut and reports.
+
 
 Finite-payload notification admits only the actual retiring leaf `stdClass` Key
 under its validated storage pin. The other Keys remain nonfreeing and registered
