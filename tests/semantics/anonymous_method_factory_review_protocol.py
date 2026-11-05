@@ -175,8 +175,8 @@ def reference(row, fixture, filename):
         '~$propref_source_present(S_pre.PROPREFS,n_value,OBJECT_PROP_SOURCE n_object ppropertydesc.KEY ppropertydesc.ORIGIN)',
         'S_written = $drive_steps(S_pre,1)',
         'S_written.COMPLETION = BUDGET /\\ S_written.EVENTS = eps',
-        '$objectprops_at(S_written.OBJECTPROPS,n_object) = (ppropertyslot_written*)',
-        '$property_slot_at(ppropertyslot_written*,ppropertydesc.KEY) = (ppropertyslot_written)',
+        '$objectprops_at(S_written.OBJECTPROPS,n_object) = (ppropertyslot_written_slots*)',
+        '$property_slot_at(ppropertyslot_written_slots*,ppropertydesc.KEY) = (ppropertyslot_written)',
         'ppropertyslot_written.STATE = PROP_VALUE (ALIAS n_value)',
         '$propref_source_present(S_written.PROPREFS,n_value,OBJECT_PROP_SOURCE n_object ppropertydesc.KEY ppropertydesc.ORIGIN)',
         '$proprefs_valid(S_written)',
@@ -186,8 +186,8 @@ def reference(row, fixture, filename):
         'S_done = $drive_steps(S_written[.COMPLETION = NORMAL],5000)',
         *final(row, 'S_done', filename),
         'S_done.STORE[n_value] = DEFINED (PINT 8)',
-        '$objectprops_at(S_done.OBJECTPROPS,n_object) = (ppropertyslot_done*)',
-        '$property_slot_at(ppropertyslot_done*,ppropertydesc.KEY) = (ppropertyslot_done)',
+        '$objectprops_at(S_done.OBJECTPROPS,n_object) = (ppropertyslot_done_slots*)',
+        '$property_slot_at(ppropertyslot_done_slots*,ppropertydesc.KEY) = (ppropertyslot_done)',
         'ppropertyslot_done.STATE = PROP_VALUE (ALIAS n_value)',
     ]
 
