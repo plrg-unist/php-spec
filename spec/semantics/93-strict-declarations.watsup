@@ -37,9 +37,19 @@ rule PhpStep/unknown-declare-body: S ~> S[.TODO = $statement_tasks(statement*, $
   -- if $unknown_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)
 
 ;; A successful compiler already emitted the parser warning. Execution is a
-;; no-op only for that same closed, source-authenticated root declaration.
+;; directive changes no runtime value; its optional body uses ordinary work.
+dec $encoding_work_items(phpType49*, bool) : bool
+def $encoding_work_items(eps, b_strict) = true
+def $encoding_work_items((NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) :: phpType49*, b_strict) = $encoding_work_items(phpType49*, b_strict)
+  -- if $ptlc($base64(text)) = $ptascii("encoding")
+  -- if $parser_literal(expression) = (pvalue)
+def $encoding_work_items(phpType49 :: phpType49*, b_strict) = $encoding_work_items(phpType49*, b_strict)
+  -- if $declare_work_items([phpType49], b_strict)
+def $encoding_work_items(phpType49*, b_strict) = false -- otherwise
 dec $encoding_declare_valid(pstate, statement) : bool
-def $encoding_declare_valid(S, statement) = true
+def $encoding_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = true
+  -- if statement = NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata
+  -- if $encoding_work_items(phpType49*, (phpType47 = ABSENT))
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if $origin_accepts(S.SOURCES, PORIGIN n pcpath, STMT statement)
@@ -48,5 +58,8 @@ def $encoding_declare_valid(S, statement) = true
   -- if $encoding_declare_first($pcprogram(pcunit.AST), pcpath)
 def $encoding_declare_valid(S, statement) = false -- otherwise
 rule PhpStep/encoding-declare: S ~> S[.TODO = ptask_tail*]
-  -- if S.TODO = (STMT statement) :: ptask_tail*
-  -- if $encoding_declare_valid(S, statement)
+  -- if S.TODO = (STMT (NStmtDeclare (SEQUENCE phpType49*) ABSENT metadata)) :: ptask_tail*
+  -- if $encoding_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) ABSENT metadata)
+rule PhpStep/encoding-declare-body: S ~> S[.TODO = $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 1]), 0) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)) :: ptask_tail*
+  -- if $encoding_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)

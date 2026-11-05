@@ -132,6 +132,7 @@ def main():
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     watched = [Path(__file__), ROOT / 'spec/semantics/92-strict-compiler.watsup',
         ROOT / 'spec/semantics/93-strict-declarations.watsup', ROOT / 'spec/semantics/modules.json',
+        ROOT / 'spec/semantics/194-compiler-preflight.watsup',
         ROOT / 'bin/php-semantics', ROOT / 'frontend/worker.php', ROOT / '.tools/php-file.so',
         ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
         ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/encoding_declare_protocol.py',

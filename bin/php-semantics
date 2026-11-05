@@ -39,39 +39,51 @@ def request(command, value, timeout, with_stderr=False):
 
 
 def encoding_warning_lines(ast):
-    """Closed raw-profile declarations whose parser lines the AST authenticates."""
+    """Source-ordered raw-profile declarations with authenticated parser lines."""
     def encoding(item):
         return (item.get('node') == 'DeclareItem'
                 and item['fields'][0].get('node') == 'Identifier'
                 and base64.b64decode(item['fields'][0]['fields'][0]['bytes']).lower() == b'encoding')
 
-    lines, admitted = [], set()
-    for statement in ast['program']:
-        if statement['node'] != 'Stmt_Declare':
-            continue
-        items, body = statement['fields']
-        if len(items) != 1 or body is not None or not encoding(items[0]):
-            continue
-        item = items[0]
-        name, value = item['fields']
-        if value['node'] != 'Scalar_String':
-            continue
-        line = int(statement['meta']['startLine']['int'])
-        if line > 0 and all(int(node['meta'][key]['int']) == line
-                            for node in (statement, item, name, value)
-                            for key in ('startLine', 'endLine')):
-            lines.append(line)
-            admitted.add(id(item))
+    def literal(value):
+        pending = [value]
+        while pending:
+            node = pending.pop()
+            if node['node'] == 'Expr_BinaryOp_Concat':
+                pending.extend(node['fields'])
+            elif node['node'] not in {'Scalar_String', 'Scalar_Int', 'Scalar_Float'}:
+                return False
+        return True
+
+    warnings, admitted = [], set()
     pending = [ast]
     while pending:
         value = pending.pop()
         if isinstance(value, dict):
+            if value.get('node') == 'Stmt_Declare':
+                items, body = value['fields']
+                for item in items:
+                    if not encoding(item):
+                        continue
+                    name, expression = item['fields']
+                    line = int(value['meta']['startLine']['int'])
+                    token = int(item['meta']['startTokenPos']['int'])
+                    if (line <= 0 or token < 0 or not literal(expression)
+                            or any(int(node['meta'][key]['int']) != line
+                                   for node in (value, item, name, expression)
+                                   for key in ('startLine', 'endLine'))):
+                        return None
+                    warnings.append((token, line))
+                    admitted.add(id(item))
             if encoding(value) and id(value) not in admitted:
                 return None
-            pending.extend(value.values())
+            pending.extend(reversed(list(value.values())))
         elif isinstance(value, list):
-            pending.extend(value)
-    return lines
+            pending.extend(reversed(value))
+    warnings.sort()
+    if len({token for token, line in warnings}) != len(warnings):
+        return None
+    return [line for token, line in warnings]
 
 
 def dynamic_parser_stderr(parsed, mode, stderr):

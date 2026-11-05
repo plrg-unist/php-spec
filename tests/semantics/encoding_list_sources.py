@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(__file__).with_name('encoding_lists')
 ORACLE = 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
 HASHES = {
+    'order.php': '66c11809eec4f53cc0b99caadc5bc0daed67333ddc83b734bded1322ac329d2c',
     'ticks.php': '7407fdbb918412e5586a85b7f4579f7a3b55a44cdeee06da210a197847a2468e',
     'nonliteral.php': '67fa248bb61da45b7229478e9a13b745f28b683ed80c1efae0f5d20a5866ef45',
     'body.php': '7ec0f2a2181a699b66a5a44ca25668fe7efad00b34fc321eadc0fc032b602822',
@@ -26,7 +27,7 @@ HASHES = {
     'nested.php': '45d2851dba45f7ea0c52fae40e54052f24921cc9c67cd08cc1b9f4d7a1b351f6',
     'strict.php': 'da119b9d35402c2874395d38540ad4d1c0420071ca834d04b69e2720fcbb3985',
 }
-CASES = ['lists', 'body', 'nested', 'late-prefix', 'strict', 'nonliteral', 'ticks', 'include-main', 'eval',
+CASES = ['lists', 'body', 'nested', 'late-prefix', 'strict', 'nonliteral', 'ticks', 'order', 'include-main', 'eval',
          'multiline-header', 'multiline-body']
 CONTROLS = {'multiline-header', 'multiline-body'}
 MESSAGE = b'declare(encoding=...) ignored because Zend multibyte feature is turned off by settings'
@@ -57,6 +58,8 @@ def expected(name):
         return 255, b'', encoding(2) + fatal(b'declare(Foo) value must be a literal', 2), 'static_rejection'
     if name == 'ticks':
         return 0, b'T|A|T|Z|', encoding(2), 'normal'
+    if name == 'order':
+        return 255, b'', encoding(3) + encoding(5) + fatal(FATAL, 5), 'static_rejection'
     if name == 'include-main':
         child = bytes(SOURCE / 'child.php')
         return 0, b'M|C|7|A|', encoding(2, child) * 2 + warning(b"Unsupported declare 'Foo'", 2, child), 'normal'
@@ -84,6 +87,7 @@ def main():
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     watched = [Path(__file__), ROOT / 'spec/semantics/92-strict-compiler.watsup',
                ROOT / 'spec/semantics/93-strict-declarations.watsup', ROOT / 'spec/semantics/modules.json',
+               ROOT / 'spec/semantics/194-compiler-preflight.watsup',
                ROOT / 'bin/php-semantics', ROOT / 'frontend/worker.php', ROOT / '.tools/php-file.so',
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
                ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py',
