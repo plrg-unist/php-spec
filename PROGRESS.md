@@ -258,8 +258,22 @@ liveness, supplied cache-destructor throws and actual empty-pack normalization.
 Seven unique originals agree, one
 Unsupported assertion earns zero agreement, and the 83/88 ownership gate passes
 with the full 436-module SL manifest. Earlier mismatches retain zero credit.
-Dynamic names, Traversable inputs, wider delegation and lifetimes remain partial.
+Native API callable creation, Traversable inputs, wider delegation and lifetimes
+remain partial.
 [I110 review](coverage/semantics/generator-nullsafe-method-review.json).
+
+I111 freezes computed native Generator method selection before arguments in a
+nonowning receipt. Receiver/name CV rebinding cannot change the target or named
+parameter mapping; exact CONFIG-to-operation transfer preserves all owners.
+NULL skips both producers; invalid method-name types avoid Stringable conversion
+and unknown methods fail before arguments/initialization. The prior computed
+named-send Unsupported original is promoted to normal. Shared binding/__invoke
+site classification keeps its truth table with disjoint clauses. Three unique
+originals agree; the 97/102 ownership/authority gate, including eight pure site
+views, passes with the full 437-module SL manifest. Earlier runtime and fixture
+failures retain zero credit. Wider callable, Traversable, delegation and lifecycle
+combinations remain partial.
+[I111 review](coverage/semantics/generator-computed-method-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -1594,7 +1608,7 @@ records the pointwise bridge to final semantic bytes.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS184 | Trait source methods and Closures with anonymous factories; private implementation/review. |
-| I111 | Computed native Generator method selection; private implementation/review. |
+| I112 | Owning native Generator API captures and invocation; private implementation/review. |
 | GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |

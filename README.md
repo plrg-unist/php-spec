@@ -7554,7 +7554,12 @@ Used owning getter results survive receiver retirement; ignored zero-argument
 getter copies release first, preserving cache-destructor weak liveness. The
 [nullsafe review](coverage/semantics/generator-nullsafe-method-review.json)
 includes an ordinary empty-pack control through the shared argument collector.
-Dynamic method names and wider call/lifetime combinations remain partial.
+Computed names now freeze the actual method and receiver before argument effects,
+preserving selection after either source variable changes. NULL nullsafe calls
+skip computed-name producers too; non-string names and unknown methods fail
+before arguments. The [computed selection review](coverage/semantics/generator-computed-method-review.json)
+records the receipt, ownership and binding-site checks. Traversable packs, native
+API callable creation and wider call/lifetime combinations remain partial.
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

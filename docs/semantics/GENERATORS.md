@@ -48,8 +48,8 @@ duplicates and pack-local order errors precede API entry and initialization;
 count/type errors retain the native Generator frame. Checked slots transfer into
 the existing argument/resumption cursor with the same roots. Source arrays may
 retire and caller aliases may change while the selected Generator and snapshot
-remain live. Dynamic method names, Traversable packs, specialized delegated
-input histories and wider lifetime combinations remain partial.
+remain live. Traversable packs, specialized delegated input histories and wider
+lifetime combinations remain partial.
 [Native argument review](../../coverage/semantics/generator-method-arguments-review.json).
 
 Literal nullsafe API calls share the same selected receiver and argument protocol.
@@ -63,6 +63,16 @@ orders, including an ordinary empty-pack call through Module447. A supplied
 cache-destructor exception keeps its identity and caller trace, and receiver
 retirement completes before catch.
 [Nullsafe review](../../coverage/semantics/generator-nullsafe-method-review.json).
+
+Computed native method names use the same argument protocol. The actual
+`METHOD_NAME` string and resolved receiver are frozen before argument producers
+in a nonowning source/line/name/receiver receipt. Rebinding either source CV
+cannot change selection or parameter mapping; the receipt moves from CONFIG
+into the ordinary Generator operation. Literal and non-API operations keep empty
+selection. NULL nullsafe receivers skip computed-name and argument producers;
+invalid name types fail without Stringable conversion, and unknown names fail
+before arguments or initialization.
+[Computed selection review](../../coverage/semantics/generator-computed-method-review.json).
 
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
 inside an already running Fiber. Its actual resume operation and parameter cells
@@ -1094,8 +1104,8 @@ Notice/cleanup readback. Aggregate acquisition has separate START and
 null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
-producers, dynamic API names and wider named/unpacked API contexts remain
-required. Module447 covers the admitted native method reception above.
+producers, native API callable creation and wider named/unpacked API contexts
+remain required. Module447 covers the admitted native method reception above.
 Other callable factory kinds, wider receiver bindings, implicit
 callback creation and remaining changed/imported caller-scope combinations
 remain required.
