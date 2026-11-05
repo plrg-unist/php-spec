@@ -32,6 +32,17 @@ These are explicit foreign input facts, not proof that edited positions/items
 were derived from the supplied bytes. The trusted worker and exact response
 identity remain required for source-agreement claims.
 
+Rejected main files reuse this file-mode receipt without changing the parser
+contract. Only after the existing main parser rejects does the semantic CLI call
+`parse-file` with id 0 and requested/resolved/opened equal to the main filename.
+The adapter's `execute_rejected_main` takes exact `source`, `filename`, `steps`
+and `response` fields plus the existing optional startup/request/file facts;
+the ordinary file checker verifies response identity and typed items. Authored
+rules then produce a terminal observation before program installation. No partial
+AST, dynamic-source binding, catchable user continuation or main resume endpoint
+is created. Existing VM history guards still refuse this pre-program result.
+See the [main-source review](../../coverage/semantics/main-source-rejection-review.json).
+
 The fixed profile requires `zend.multibyte=0`, `precision=14` and
 `short_open_tag=1` under the pinned PHP 8.5.10 `-n` worker. It admits raw byte
 sources, including non-UTF8 comments, and performs no source transcoding.

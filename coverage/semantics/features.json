@@ -12149,14 +12149,17 @@
         "spec/semantics/160-eval-runtime.watsup",
         "spec/semantics/171-include-runtime.watsup",
         "spec/semantics/257-request-destructors.watsup",
-        "spec/semantics/445-rejected-source-headers.watsup"
+        "spec/semantics/445-rejected-source-headers.watsup",
+        "spec/semantics/446-rejected-main-source.watsup"
       ],
       "helper_tests": [
         "tests/declare_header_metadata_review.py",
         "tests/rejected_header_service_review.py",
         "tests/semantics/rejected_encoding_state.py",
         "tests/semantics/rejected_header_review_state.py",
-        "tests/lexical_header_service_review.py"
+        "tests/lexical_header_service_review.py",
+        "tests/main_rejected_source_review.py",
+        "tests/semantics/main_rejected_review_state.py"
       ],
       "source_tests": [
         "tests/semantics/encoding_declare_protocol.py",
@@ -12175,7 +12178,9 @@
         "tests/semantics/rejected_encoding_sources.py",
         "coverage/semantics/encoding-rejection-review.json",
         "tests/semantics/lexical_header_sources.py",
-        "coverage/semantics/encoding-lexical-review.json"
+        "coverage/semantics/encoding-lexical-review.json",
+        "tests/semantics/main_rejected_sources.py",
+        "coverage/semantics/main-source-rejection-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -12185,9 +12190,12 @@
         "coverage/semantics/encoding-header-review.json",
         "vendor/php-src/Zend/zend_language_parser.y",
         "coverage/semantics/encoding-rejection-review.json",
-        "coverage/semantics/encoding-lexical-review.json"
+        "coverage/semantics/encoding-lexical-review.json",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/main-source-rejection-review.json"
       ],
-      "review": "COMP165-167 retain placement, literal-list/body and multiline-header coverage in their linked reviews. COMP168 preserves completed encoding-header warning prefixes before rejected eval/file exceptions, without compiling a partial AST. Rejected-source Throwable handles are installed before zero-budget publication, using the existing free/next policy. The 22 source agreements plus one lexical refusal and 214 authored conditions pass at 63a; 375 independent conditions and accepted eval/file service controls pass at a77. encoding-rejection-review.json retains those actual cuts and failures. COMP169 validates a foreign lexer-error token boundary and parses its prefix without recovery: 32 new sources, 30 independent boundary controls, 40 affected service checks, three legacy originals and 220 reached conditions pass at d8bb. Accepted syntax/schema/adapter and authored P4 rules are unchanged. Unreported prefix differences, rejected-main warnings and multibyte conversion remain partial; see encoding-lexical-review.json."
+      "review": "COMP165-167 retain placement, literal-list/body and multiline-header coverage in their linked reviews. COMP168 preserves completed encoding-header warning prefixes before rejected eval/file exceptions, without compiling a partial AST. Rejected-source Throwable handles are installed before zero-budget publication, using the existing free/next policy. The 22 source agreements plus one lexical refusal and 214 authored conditions pass at 63a; 375 independent conditions and accepted eval/file service controls pass at a77. encoding-rejection-review.json retains those actual cuts and failures. COMP169 validates a foreign lexer-error token boundary and parses its prefix without recovery: 32 new sources, 30 independent boundary controls, 40 affected service checks, three legacy originals and 220 reached conditions pass at d8bb. Accepted syntax/schema/adapter and authored P4 rules are unchanged. Unreported prefix differences and multibyte conversion remain partial; see encoding-lexical-review.json. COMP170 reuses checked file receipts for terminal main-parser rejection before PROGRAM/history installation: 37 exact profiles from 15 originals and 28 service controls pass at 6e004; 240 independent terminal conditions and 2 accepted include/eval controls pass at 499027f. Separate Warning 128/Parse 4/Compile 64 masks and per-event stdout newlines retain source identity. Generic VM reentry remains refused; the first fixture/history-boundary failure has zero gate credit. main-source-rejection-review.json preserves actual cuts; this obligation remains partial."
     },
     {
       "id": "source.preamble",
@@ -31412,24 +31420,34 @@
         "spec/semantics/33-runtime-compiler.watsup",
         "spec/semantics/46-source-compiler.watsup",
         "spec/semantics/224-user-iterator.watsup",
-        "spec/semantics/378-foreach-aggregate.watsup"
+        "spec/semantics/378-foreach-aggregate.watsup",
+        "spec/semantics/446-rejected-main-source.watsup",
+        "adapter/main.ml",
+        "bin/php-semantics"
       ],
       "helper_tests": [
         "tests/semantics/runtime_compiler.py",
-        "coverage/semantics/runtime-compiler.json"
+        "coverage/semantics/runtime-compiler.json",
+        "tests/main_rejected_source_review.py",
+        "tests/semantics/main_rejected_review_state.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "coverage/semantics/source.json",
         "coverage/semantics/runtime-compiler-review.json",
         "tests/semantics/foreach_valid_nan_sources.py",
-        "tests/semantics/foreach_valid_nan_cases.json"
+        "tests/semantics/foreach_valid_nan_cases.json",
+        "tests/semantics/main_rejected_sources.py",
+        "coverage/semantics/main-source-rejection-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
-        "coverage/semantics/foreach-valid-nan-review.json"
+        "coverage/semantics/foreach-valid-nan-review.json",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "vendor/php-src/main/main.c",
+        "coverage/semantics/main-source-rejection-review.json"
       ],
-      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution. Initial Aggregate and later ordinary Iterator foreach valid NaN warnings retain raw retval through generic handlers, reread live numeric reference payloads once and clear raw owners before current/input retirement. Eight exact native-grounded originals agree on reference/copy, park/throw and default-warning behavior at6ce4; eighteen independent genuine-source groups/495 physical premises pass at retained cuts. Foreign raw payload changes remain explicit Unsupported; prior cuts receive no renewed credit. See foreach-valid-nan-review.json."
+      "review": "Independent source compiler/pool bridge 537d13de with guard ff941f17: 546 exact source cases +28 outcome negatives; 582 compiler lint +15 emission lines and 10 Unsupported boundaries; 16 alternate source observations and 16 constructed states/138 assertions passed. Actual filename is bound before full compilation; failed compilation schedules no runtime work. Unit/path constants are remapped once, permanently rooted, and consumed only through compiled PPR operands with retained effective lines. See runtime-compiler-review.json for raw independent evidence. Namespace/import scalar work and diagnostics are active; full name lookup, declarations/defaults, generic dimensions, loops/functions and dynamic source instances remain pending. Four imported compound constant disagreements now have an explicit temporary Unsupported boundary, not a resolution. Initial Aggregate and later ordinary Iterator foreach valid NaN warnings retain raw retval through generic handlers, reread live numeric reference payloads once and clear raw owners before current/input retirement. Eight exact native-grounded originals agree on reference/copy, park/throw and default-warning behavior at6ce4; eighteen independent genuine-source groups/495 physical premises pass at retained cuts. Foreign raw payload changes remain explicit Unsupported; prior cuts receive no renewed credit. See foreach-valid-nan-review.json. COMP170 reuses checked file receipts for terminal main-parser rejection before PROGRAM/history installation: 37 exact profiles from 15 originals and 28 service controls pass at 6e004; 240 independent terminal conditions and 2 accepted include/eval controls pass at 499027f. Separate Warning 128/Parse 4/Compile 64 masks and per-event stdout newlines retain source identity. Generic VM reentry remains refused; the first fixture/history-boundary failure has zero gate credit. main-source-rejection-review.json preserves actual cuts; this obligation remains partial."
     },
     {
       "id": "diagnostics.suppression",
@@ -32688,7 +32706,10 @@
         "spec/semantics/207-error-handler-runtime.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/127-class-runtime.watsup",
-        "spec/semantics/30-storage.watsup"
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/446-rejected-main-source.watsup",
+        "adapter/main.ml",
+        "bin/php-semantics"
       ],
       "helper_tests": [
         "tests/semantics/source_redeclare_fatal_protocol.py",
@@ -32697,12 +32718,16 @@
         "tests/semantics/recorded_runtime_fatal_protocol.py",
         "tests/semantics/recorded_function_fatal_protocol.py",
         "tests/semantics/recorded_class_fatal_protocol.py",
-        "tests/semantics/recorded_dynamic_fatal_protocol.py"
+        "tests/semantics/recorded_dynamic_fatal_protocol.py",
+        "tests/main_rejected_source_review.py",
+        "tests/semantics/main_rejected_review_state.py"
       ],
       "source_tests": [
         "coverage/semantics/source-redeclare-fatal-review.json",
         "coverage/semantics/source-recorded-fatal-review.json",
-        "coverage/semantics/source-recorded-dynamic-fatal-review.json"
+        "coverage/semantics/source-recorded-dynamic-fatal-review.json",
+        "tests/semantics/main_rejected_sources.py",
+        "coverage/semantics/main-source-rejection-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -32712,9 +32737,11 @@
         "coverage/semantics/source-recorded-runtime-fatal-review.json",
         "coverage/semantics/source-recorded-function-fatal-review.json",
         "coverage/semantics/source-recorded-class-fatal-review.json",
-        "coverage/semantics/source-recorded-dynamic-fatal-review.json"
+        "coverage/semantics/source-recorded-dynamic-fatal-review.json",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "coverage/semantics/main-source-rejection-review.json"
       ],
-      "review": "Nested eval/file function redeclaration retains an authenticated compiler-fatal cutoff while shutdown callbacks enter fresh eval/file units. Full history uses current waiting contexts, completion and reporting; captured prefix/raw tuple/FROZEN and interrupted source-owner checks remain separate. Four exact native/checked source tuples and two genuine public groups218 are recorded in source-redeclare-fatal-review.json. Existing static retention, destructor flags/rendering/status policy are reused. Dynamic file compiler FATAL now retains its recorded tuple across bailout; later file/eval fatal delivery drains it with the current trace. Exact own-cutoff receipts authenticate multiple abandoned records and reject a stale extra certificate alongside genuine authorities. source-recorded-fatal-review.json records four exact sources and109 genuine public premises without changing lifetime or opened membership. With a retained file-compiler receipt, nonfatal runtime diagnostics now skip handler/default delivery while trigger_error returns true and an undefined-variable read yields null. source-recorded-warning-review.json records three exact sources and two genuine public fronts. Fixed-name trigger_error/user_error E_USER_ERROR now drains the retained file fatal before handler selection, delivering its cached message/location with the actual current trace. An own runtime receipt authenticates the consumed index and saved producer; source-recorded-runtime-fatal-review.json records two exact sources and117 genuine public premises. Deferred runtime function redeclaration now delivers the retained fatal with the current binding trace. Its existing receipt records site/call cause/index; historical bindings reconstruct the raw failure. Exact captured-prefix index and replayed-journal equality reject omitted-entry clones while genuine no-record failure remains valid. source-recorded-function-fatal-review.json keeps two exact source tuples at302a separate from two public fronts157 at69fc. Deferred named user-class duplicates now deliver a retained file fatal with the current binding trace. The real STMT receipt and prefix replay reject omitted-entry clones while no-record binding stays valid; source-recorded-class-fatal-review.json records two exact sources and165 public premises at3258. Dynamic trigger selection is explicitly Unsupported; owning forms, other fatal producers, E_DONT_BAIL and wider queues remain required. Selected nonowning trigger_error fatal drain now retains exact CONFIG/nonce/source arguments before consuming the file record. One retained original and 182 public premises at runtime diff fb33 cover captured-prefix replay, omitted/retargeted snapshots and budget resumption; the earlier dynamic-selection refusal remains historical. Named/unpacked/coercing/owning and broader fatal domains remain partial; see source-recorded-dynamic-fatal-review.json."
+      "review": "Nested eval/file function redeclaration retains an authenticated compiler-fatal cutoff while shutdown callbacks enter fresh eval/file units. Full history uses current waiting contexts, completion and reporting; captured prefix/raw tuple/FROZEN and interrupted source-owner checks remain separate. Four exact native/checked source tuples and two genuine public groups218 are recorded in source-redeclare-fatal-review.json. Existing static retention, destructor flags/rendering/status policy are reused. Dynamic file compiler FATAL now retains its recorded tuple across bailout; later file/eval fatal delivery drains it with the current trace. Exact own-cutoff receipts authenticate multiple abandoned records and reject a stale extra certificate alongside genuine authorities. source-recorded-fatal-review.json records four exact sources and109 genuine public premises without changing lifetime or opened membership. With a retained file-compiler receipt, nonfatal runtime diagnostics now skip handler/default delivery while trigger_error returns true and an undefined-variable read yields null. source-recorded-warning-review.json records three exact sources and two genuine public fronts. Fixed-name trigger_error/user_error E_USER_ERROR now drains the retained file fatal before handler selection, delivering its cached message/location with the actual current trace. An own runtime receipt authenticates the consumed index and saved producer; source-recorded-runtime-fatal-review.json records two exact sources and117 genuine public premises. Deferred runtime function redeclaration now delivers the retained fatal with the current binding trace. Its existing receipt records site/call cause/index; historical bindings reconstruct the raw failure. Exact captured-prefix index and replayed-journal equality reject omitted-entry clones while genuine no-record failure remains valid. source-recorded-function-fatal-review.json keeps two exact source tuples at302a separate from two public fronts157 at69fc. Deferred named user-class duplicates now deliver a retained file fatal with the current binding trace. The real STMT receipt and prefix replay reject omitted-entry clones while no-record binding stays valid; source-recorded-class-fatal-review.json records two exact sources and165 public premises at3258. Dynamic trigger selection is explicitly Unsupported; owning forms, other fatal producers, E_DONT_BAIL and wider queues remain required. Selected nonowning trigger_error fatal drain now retains exact CONFIG/nonce/source arguments before consuming the file record. One retained original and 182 public premises at runtime diff fb33 cover captured-prefix replay, omitted/retargeted snapshots and budget resumption; the earlier dynamic-selection refusal remains historical. Named/unpacked/coercing/owning and broader fatal domains remain partial; see source-recorded-dynamic-fatal-review.json. COMP170 reuses checked file receipts for terminal main-parser rejection before PROGRAM/history installation: 37 exact profiles from 15 originals and 28 service controls pass at 6e004; 240 independent terminal conditions and 2 accepted include/eval controls pass at 499027f. Separate Warning 128/Parse 4/Compile 64 masks and per-event stdout newlines retain source identity. Generic VM reentry remains refused; the first fixture/history-boundary failure has zero gate credit. main-source-rejection-review.json preserves actual cuts; this obligation remains partial."
     },
     {
       "id": "dynamic.eval-mode",

@@ -3176,12 +3176,16 @@ Twenty-two originals agree; reached checks cover once skip/reparse, source ident
 suppression and valid zero-budget Throwable handles. A foreign lexical boundary
 also preserves earlier headers before bad-character or unterminated-comment
 faults; 32 new originals agree. Unexplained native/foreign prefix differences
-and multibyte-enabled conversion remain partial.
+and multibyte-enabled conversion remain partial. Rejected main files now emit
+their warning prefix and final parser error before any program work, honoring
+separate reporting bits and startup display. Thirty-seven source profiles and
+240 independent terminal-state conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
 [rejected-unit review](coverage/semantics/encoding-rejection-review.json),
-[lexical-boundary review](coverage/semantics/encoding-lexical-review.json).
+[lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
+[main-rejection review](coverage/semantics/main-source-rejection-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)

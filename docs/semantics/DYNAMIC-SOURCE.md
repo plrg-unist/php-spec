@@ -240,5 +240,31 @@ selected legacy sources and 220 reached conditions pass. Their
 [review](../../coverage/semantics/encoding-lexical-review.json) keeps the actual
 cuts and earlier fixture failure. Errors not reported by that foreign lexer
 still use exact prefix admission; differing native/foreign prefixes refuse.
-Rejected-main warning delivery, multibyte conversion and wider source behavior
-remain partial.
+Multibyte conversion and wider source behavior remain partial.
+
+When the existing main parser rejects a file, the semantic CLI can obtain its
+rejection from the same checked file service. Accepted main parsing is unchanged.
+Authored module 446 validates unit 0, source bytes and the existing header receipt,
+emits its literal warning prefix, then reports the main ParseError or CompileError.
+Warning 128, Parse 4 and Compile 64 have independent startup masks. Display 0 suppresses
+events; stdout display prepends a newline to each event. The exit status is 255,
+even with zero VM steps. Earlier echo, unknown-declare and strict-type statements
+neither execute nor contribute compiler diagnostics after parsing fails.
+
+This result is terminal before `PROGRAM` installation: `FILES` names unit 0, while
+sources, code, declaration history, user objects and tasks remain empty. It is
+checked against startup/display/precision, file, destruction and heap predicates.
+It is not a resumable installed VM state: existing publication-history guards
+continue to reject entry through `$drive`. No placeholder program or `PDENTER`
+record is invented. The original fixture's positive VM-history expectation failed
+and remains preserved; its correction explicitly checks refusal instead.
+
+The [main originals](../../tests/semantics/main_rejected_sources.py) pass 37 exact
+profiles from 15 byte-identical native sources, including repeated/nested headers,
+lexical faults, masks, stdout display and BOM/CRLF positions. Independent
+[service](../../tests/main_rejected_source_review.py) and
+[terminal-state](../../tests/semantics/main_rejected_review_state.py) checks cover
+filename/source identity, typed malformed receipts, empty compilation state and
+VM reentry refusal. Their 28 controls and 240 SL conditions pass, as do two retained
+accepted include/eval sources. The [review](../../coverage/semantics/main-source-rejection-review.json)
+retains actual cuts, the original failure and remaining profile limits.

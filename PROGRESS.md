@@ -965,8 +965,20 @@ grammar errors still stop parsing; harmless control bytes inside strings/comment
 do not truncate it. All 32 new eval/file originals agree, with 30 independent
 boundary controls, 40 affected service checks, three selected legacy originals
 and 220 reached conditions. Accepted syntax and authored P4 rules are unchanged;
-unreported prefix differences, rejected-main warnings and multibyte conversion
-remain partial. [Review](coverage/semantics/encoding-lexical-review.json).
+unreported prefix differences and multibyte conversion remain partial.
+COMP170 extends main-file failures below.
+[Review](coverage/semantics/encoding-lexical-review.json).
+
+COMP170 delivers completed-header warnings before rejected main-file parser
+errors through existing checked file receipts. Warning 128, Parse 4 and Compile 64
+report independently, including separate stdout newlines and exit 255 at zero
+VM steps. The terminal result installs no program/history or Throwable and
+explicitly refuses VM reentry. Thirty-seven exact profiles from 15 originals,
+28 independent service controls, 240 terminal-state conditions and two accepted
+include/eval controls pass; strict compilation covers 435 modules. The original
+fixture's misplaced VM-history check remains a failed gate with zero credit.
+Parser/schema contracts are unchanged; wider source profiles remain partial.
+[Review](coverage/semantics/main-source-rejection-review.json).
 
 ## Active and unintegrated work
 
