@@ -526,6 +526,8 @@ def $tick_finally(T, pcodeexpr*, pcpath, phpType67) = T[.DEPENDENCY = ("tick com
 
 ;; At frequency zero a property group emits no surrounding tick. Nested
 ;; executable declarations still require their own emitted-op summary.
+;; Class constants compile their values without a main opcode or trailing Tick.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassConst (SEQUENCE eps) phpType24 phpType18 phpType45 metadata, b) = $tick_constant_nodes(T, pcodeexpr*, $pcfield_phpType45(phpType45, pcpath ++ [PCFIELD 3]))
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata, b) = T
   -- if T.FREQUENCY = 0
   -- if ~$tick_contains(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
