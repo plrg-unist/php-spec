@@ -1005,6 +1005,11 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_variable_array_protocol.py --group rebind
 	python3 tests/semantics/enum_is_callable_variable_array_protocol.py --group alias
 	python3 tests/semantics/enum_is_callable_variable_array_cleanup_protocol.py
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group raw
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group case
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group retained
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group throw
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group control
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

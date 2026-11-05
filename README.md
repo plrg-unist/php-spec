@@ -7029,10 +7029,15 @@ Class strings retain their spelling; case receivers use the canonical enum
 name. The [variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json)
 records seven exact agreements, two Unsupported controls and four separate
 reached groups (216 checks) at their actual cuts.
+When the same input/output cell rebounds to a new direct-string array after
+the first SEND, the selected original name overwrites that cell. A retained
+owner keeps the rebound array live; a pre-output throw leaves it and the
+result assignment target untouched. The [array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
+records four exact agreements, one Unsupported owning-object control and five
+separately run reached groups (229 checks).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
-owning rebound values, late type
-sources, wider array sources (including embedded references and alias plus
-source rebinding) and autoload,
+rebound arrays with owning children, late type
+sources, wider array sources (including embedded references) and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

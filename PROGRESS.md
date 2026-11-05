@@ -71,10 +71,17 @@ output. Old-output destruction can rebind or throw before the saved name commits
 Seven exact agreements, two explicit Unsupported controls, strict435 and four
 separate reached groups (60+53+33+70 checks) pass at recorded cuts.
 [Variable-array review](coverage/semantics/enum-is-callable-variable-array-review.json).
+An aliased source/output cell can now rebound to a new two-entry direct-string
+array after the first SEND. The old selected name overwrites that cell, while a
+separate holder keeps the rebound array live; a pre-output throw leaves the
+rebound array and result assignment target untouched. Four exact agreements, one explicit
+Unsupported owning-object control, strict435 and five separate reached groups
+(64+50+53+29+33 checks) pass at recorded cuts.
+[Array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
-completion/force-close, owning rebound values, late attached type sources,
-wider variable arrays, embedded reference members, alias plus source rebinding,
-named/unpacked output, loading and wider enum
+completion/force-close, rebound arrays with owning children, late attached type sources,
+wider variable arrays, embedded reference members, named/unpacked output,
+loading and wider enum
 member/lifetime contexts remain partial.
 
 I92 gives real user Generator Closure::call entry its actual copied Closure and
