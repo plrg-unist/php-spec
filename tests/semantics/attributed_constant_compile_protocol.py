@@ -45,7 +45,8 @@ def prepare(out):
         'new-closure-before-unpack', 'array-value-before-key', 'array-value-invalid-before-key',
         'array-value-constant-before-key-closure', 'array-value-closure-before-key-constant',
         'folded-dead-closure', 'cursor-before-nonstatic-closure')
-    selected += tuple(name for name in cases if name.startswith('qualified-'))
+    selected += tuple(name for name, case in cases.items()
+        if name.startswith(('qualified-', 'visitor-')) and case['mode'] == 'main')
     try:
         for name in (*selected, 'ordinary-control', 'single-unsupported'):
             case = cases[name]; path = SOURCE / case['source']
@@ -56,8 +57,13 @@ def prepare(out):
             checks += ['U_' + tag + ' = ' + fixture, state + ' = $ppstart(91,U_' + tag + ','
                 + types.byte_expr(str(path)) + ')']
             if name in selected:
-                checks += ['$pptrace(' + state + ') = [("fatal",$ptascii(' + json.dumps(case['message'])
-                    + '),' + types.byte_expr(str(path)) + ',' + str(case['line']) + ')]', state + '.WORK = eps']
+                if case.get('diagnostic_class') == 'Error':
+                    checks += [state + '.COMPLETION = PPCABRUPT (FATAL $ptascii('
+                        + json.dumps(case['message']) + ') ' + str(case['line']) + ')', state + '.DIAGNOSTICS = eps']
+                else:
+                    checks += ['$pptrace(' + state + ') = [("fatal",$ptascii(' + json.dumps(case['message'])
+                        + '),' + types.byte_expr(str(path)) + ',' + str(case['line']) + ')]']
+                checks += [state + '.WORK = eps']
             elif name == 'ordinary-control':
                 checks += [state + '.COMPLETION = PPCNORMAL']
             else:
@@ -83,6 +89,14 @@ def prepare(out):
                 '~$ppattributed_constant_initializer(' + unit + ',' + initializer + ')']
         checks += ['$global_constant_declaration_source([P_ordinary_control.FOLD.SOURCE],PORIGIN 91 ' + declaration + ')',
             '~$global_constant_declaration_source([P_single_unsupported.FOLD.SOURCE],PORIGIN 91 ' + declaration + ')']
+        checks += ['$origin_node([P_visitor_fcc_class_concat.FOLD.SOURCE],PORIGIN 91 '
+            + initializer + ') = (NExprStaticCall phpType19_class phpType20_class (SEQUENCE phpType7_class*) metadata_class)',
+            '$ppconstant_literal_class(P_ordinary_control,phpType19_class) = $constant_callable_literal_class(phpType19_class)',
+            '$ppconstant_callable_class(P_ordinary_control,phpType19_class) = $constant_callable_class_form(phpType19_class)',
+            '$ppconstant_callable_invalid_class(P_ordinary_control,phpType19_class) = $constant_callable_invalid_class(phpType19_class)',
+            '$origin_node([P_visitor_fcc_method_concat.FOLD.SOURCE],PORIGIN 91 '
+            + initializer + ') = (NExprStaticCall phpType19_method phpType20_method (SEQUENCE phpType7_method*) metadata_method)',
+            '$ppconstant_method_name(P_ordinary_control,phpType20_method) = $constant_callable_method_name(phpType20_method)']
         for name in ('static-closure', 'attribute-closure-ignored'):
             closure, closure_path = next((node, path) for node, path in nodes(asts[name]['program'])
                 if node['node'] == 'Expr_Closure')

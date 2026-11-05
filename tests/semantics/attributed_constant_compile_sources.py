@@ -92,7 +92,7 @@ def main():
                     and outcome['stdout'] == b64(stdout) and outcome['stderr'] == b64(stderr))
                 if 'message' in case:
                     row['passed'] = row['passed'] and outcome['diagnostic'] == {
-                        'class': 'CompileError', 'message': b64(case['message'].encode()), 'line': case['line']}
+                        'class': case.get('diagnostic_class', 'CompileError'), 'message': b64(case['message'].encode()), 'line': case['line']}
                 report['agreements'] += int(row['passed'])
             print(name, 'pass' if row['passed'] else 'fail', flush=True)
             assert row['passed'], outcome

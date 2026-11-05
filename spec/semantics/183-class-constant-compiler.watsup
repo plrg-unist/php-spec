@@ -323,6 +323,11 @@ def $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_mem
 
 def $pfclass_constant_checked(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = F
   -- if F.MEMORY.COMPLETION =/= NORMAL
+def $pfclass_constant_checked(F, pcpath, expression, (pvalue_class), phpType20, pvalue_member?, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES $ptascii("Illegal class name") z]][.VALUE = eps]
+  -- if F.MEMORY.COMPLETION = NORMAL
+  -- if F.CONSTANT /\ $ppattributed_constant_initializer(F.SOURCE, pcpath)
+  -- if $pfmember_known(phpType20, pvalue_member?)
+  -- if $ppconstant_nonstring_value(pvalue_class)
 def $pfclass_constant_checked(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ($ptascii("'") ++ ptbytes ++ $ptascii("' is an invalid class name")) z]][.VALUE = eps]
   -- if F.MEMORY.COMPLETION = NORMAL
   -- if F.CONSTANT /\ $ppattributed_constant_initializer(F.SOURCE, pcpath)
@@ -330,6 +335,7 @@ def $pfclass_constant_checked(F, pcpath, phpType19, pvalue_class?, phpType20, pv
   -- if $ppconstant_qualified_keyword(phpType19) = (ptbytes)
 def $pfclass_constant_checked(F, pcpath, expression, (PSTRING ptbytes_raw), phpType20, pvalue_member?, z) = F[.MEMORY = F.MEMORY[.COMPLETION = STATICBYTES ($ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name")) z]][.VALUE = eps]
   -- if F.MEMORY.COMPLETION = NORMAL
+  -- if ~(F.CONSTANT /\ $ppattributed_constant_initializer(F.SOURCE, pcpath)) \/ $pfmember_known(phpType20, pvalue_member?)
   -- if ptbytes = $pfclassname_strip(ptbytes_raw)
   -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
 def $pfclass_constant_checked(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) = $pfclass_constant(F, pcpath, phpType19, pvalue_class?, phpType20, pvalue_member?, z) -- otherwise

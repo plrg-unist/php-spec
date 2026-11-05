@@ -98,31 +98,50 @@ def $constant_callable_invalid_class(phpType19) = (ptbytes)
   -- if $constant_callable_literal_class(phpType19) = (ptbytes)
   -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
 def $constant_callable_invalid_class(phpType19) = eps -- otherwise
+;; The attributed compile-only route needs parser-created strings, including
+;; concatenations, while CALL/STATIC_CALL operands are not compiler-folded.
+dec $ppconstant_literal_class(ppstate, phpType19) : ptbytes?
+def $ppconstant_literal_class(P, expression) = ($ppcall_literal_name(ptbytes))
+  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if $parser_literal_at(expression, P.FOLD.PARSEPRECISION) = (PSTRING ptbytes)
+def $ppconstant_literal_class(P, phpType19) = $constant_callable_literal_class(phpType19) -- otherwise
+dec $ppconstant_callable_class(ppstate, phpType19) : bool
+def $ppconstant_callable_class(P, phpType19) = ($ppscoped_named(phpType19) \/ $ppconstant_literal_class(P, phpType19) =/= eps)
+dec $ppconstant_callable_invalid_class(ppstate, phpType19) : ptbytes?
+def $ppconstant_callable_invalid_class(P, phpType19) = (ptbytes)
+  -- if $ppconstant_literal_class(P, phpType19) = (ptbytes)
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $ppconstant_callable_invalid_class(P, phpType19) = eps -- otherwise
+dec $ppconstant_method_name(ppstate, phpType20) : ptbytes?
+def $ppconstant_method_name(P, expression) = (ptbytes)
+  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, P.LOCATION.PATH)
+  -- if $parser_literal_at(expression, P.FOLD.PARSEPRECISION) = (PSTRING ptbytes)
+def $ppconstant_method_name(P, phpType20) = $constant_callable_method_name(phpType20) -- otherwise
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppconstant_error(P, $ptascii("Illegal class name"), $psline(metadata))
   -- if $constant_callable_nonstring(phpType19)
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppconstant_error(P, $ptascii("Cannot use dynamic class name in constant expression"), $psline(metadata))
-  -- if ~$constant_callable_class_form(phpType19)
+  -- if ~$ppconstant_callable_class(P, phpType19)
   -- if ~$constant_callable_nonstring(phpType19)
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppconstant_error(P, $ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name"), $psline(metadata))
-  -- if $constant_callable_invalid_class(phpType19) = (ptbytes)
+  -- if $ppconstant_callable_invalid_class(P, phpType19) = (ptbytes)
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppconstant_error(P, $ptascii("\"static\" is not allowed in compile-time constants"), $psline(metadata))
   -- if $constant_callable_static(phpType19)
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppconstant_error(P, $ptascii("Illegal method name"), $psline(metadata))
-  -- if $constant_callable_class_form(phpType19)
-  -- if $constant_callable_invalid_class(phpType19) = eps
+  -- if $ppconstant_callable_class(P, phpType19)
+  -- if $ppconstant_callable_invalid_class(P, phpType19) = eps
   -- if ~$constant_callable_static(phpType19)
   -- if $constant_callable_nonstring(phpType20)
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppconstant_error(P, $ptascii("Cannot use dynamic method name in constant expression"), $psline(metadata))
-  -- if $constant_callable_class_form(phpType19)
-  -- if $constant_callable_invalid_class(phpType19) = eps
+  -- if $ppconstant_callable_class(P, phpType19)
+  -- if $ppconstant_callable_invalid_class(P, phpType19) = eps
   -- if ~$constant_callable_static(phpType19)
-  -- if $constant_callable_method_name(phpType20) = eps
+  -- if $ppconstant_method_name(P, phpType20) = eps
   -- if ~$constant_callable_nonstring(phpType20)
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = P
-  -- if $constant_callable_class_form(phpType19)
-  -- if $constant_callable_invalid_class(phpType19) = eps
+  -- if $ppconstant_callable_class(P, phpType19)
+  -- if $ppconstant_callable_invalid_class(P, phpType19) = eps
   -- if ~$constant_callable_static(phpType19)
-  -- if $constant_callable_method_name(phpType20) =/= eps
+  -- if $ppconstant_method_name(P, phpType20) =/= eps
   -- if $ppconstant_callable_initializer(P)
 def $ppconstant_method_callable(P, phpType19, phpType20, metadata) = $ppunsupported(P, "first-class callable constant initializer outside class constants")
   -- otherwise

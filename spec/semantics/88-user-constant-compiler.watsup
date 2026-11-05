@@ -23,6 +23,10 @@ dec $ppconstant_expr(ppstate, pcpath, expression) : ppstate
 dec $ppconstant_emit(ppstate, pcpath, expression) : ppstate
 dec $ppconstant_location(ppstate, pcnode) : ppstate
 dec $ppconstant_class(ppstate, pcpath, phpType19) : ppstate
+dec $ppattributed_constant_class(ppstate, phpType19, pvalue?) : ppstate
+dec $ppconstant_nonstring_value(pvalue) : bool
+def $ppconstant_nonstring_value(PSTRING ptbytes) = false
+def $ppconstant_nonstring_value(pvalue) = true -- otherwise
 dec $ppconstant_list(ppstate, pcpath, nat, phpType46*) : ppstate
 dec $ppconstant_name(ppstate, pcpath, phpType11) : ppstate
 dec $ppconstant_error(ppstate, ptbytes, nat) : ppstate
@@ -195,15 +199,32 @@ def $ppconstant_location(P, pcnode) = P
 
 ;; Source static restrictions apply
 ;; after folded branch selection and before any runtime class lookup.
+def $ppconstant_class(P, pcpath, phpType19) = $ppattributed_constant_class(P, phpType19, $pffact(P.FOLD.FACTS, pcpath))
+  -- if $ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
 def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("\"static::\" is not allowed in compile-time constants"), P.LOCATION.LINE)
+  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
   -- if phpType19 = name
   -- if $ptast(name) = PTNAME PTPLAIN ptbytes
   -- if $ptlc(ptbytes) = [115,116,97,116,105,99]
 def $ppconstant_class(P, pcpath, phpType19) = $ppconstant_error(P, $ptascii("Dynamic class names are not allowed in compile-time class constant references"), P.LOCATION.LINE)
+  -- if ~$ppattributed_constant_initializer(P.FOLD.SOURCE, pcpath)
   -- if phpType19 = expression
   -- if $pffact(P.FOLD.FACTS, pcpath) = eps
 def $ppconstant_class(P, pcpath, phpType19) = P
   -- otherwise
+
+def $ppattributed_constant_class(P, name, pvalue?) = $ppconstant_error(P, $ptascii("\"static::\" is not allowed in compile-time constants"), P.LOCATION.LINE)
+  -- if $pfclassname_keyword(name) = $ptascii("static")
+def $ppattributed_constant_class(P, name, pvalue?) = P
+  -- if $pfclassname_keyword(name) =/= $ptascii("static")
+def $ppattributed_constant_class(P, expression, eps) = $ppconstant_error(P, $ptascii("Dynamic class names are not allowed in compile-time class constant references"), P.LOCATION.LINE)
+def $ppattributed_constant_class(P, expression, (pvalue)) = P[.COMPLETION = PPCABRUPT (FATAL $ptascii("Class name must be a valid object or a string") P.LOCATION.LINE)]
+  -- if $ppconstant_nonstring_value(pvalue)
+def $ppattributed_constant_class(P, expression, (PSTRING ptbytes)) = $ppconstant_error(P, $ptascii("\"static::\" is not allowed in compile-time constants"), P.LOCATION.LINE)
+  -- if $ptlc(ptbytes) = $ptascii("static")
+def $ppattributed_constant_class(P, expression, (PSTRING (92 :: ptbytes))) = $ppconstant_error(P, $ptascii("'\\") ++ ptbytes ++ $ptascii("' is an invalid class name"), P.LOCATION.LINE)
+  -- if $ptlc(ptbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")]
+def $ppattributed_constant_class(P, phpType19, pvalue?) = P -- otherwise
 
 def $ppclass_constant_initializer(P) = (ptcontext.POSITION = PTCONSTANT) -- if P.CLASSCONTEXT = (ptcontext)
 def $ppclass_constant_initializer(P) = false -- otherwise
