@@ -120,6 +120,13 @@ shape and assignment order. Typed payload references are ignored when only the
 bad shape matters; typed valid pairs remain partial. The
 [structural-array review](coverage/semantics/enum-is-callable-structural-array-review.json)
 records the exact source and ownership cuts.
+The selected `is_callable` signature now acquires a simple third-output CV by
+reference at SEND3 independently of query admission. Missing CVs become null
+without an undefined-variable read; real owners preserve retained old aliases,
+callback-created outputs and dynamic saved targets. Earlier argument throws
+skip acquisition. The [output-acquisition review](coverage/semantics/enum-is-callable-output-acquisition-review.json)
+records the bounded source/state cuts and the separate native-only fixed
+namespace-fallback target obligation.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1647,7 +1654,7 @@ records the pointwise bridge to final semantic bytes.
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
 | ATTR33 | Echo tick placement between operands, with late reads and aborts; private implementation/review. |
-| Enum callable arrays | Reference acquisition for an uninitialized third output variable; private implementation/review. |
+| Enum callable arrays | Namespace fallback preserving a saved builtin through local publication; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

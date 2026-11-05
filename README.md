@@ -7153,6 +7153,13 @@ Arrays with the wrong length or missing keys now return false and write `Array`,
 with no member class/method lookup. Real owners preserve source COW, same-cell
 output and the timing of output and argument destructors; see the
 [structural-array review](coverage/semantics/enum-is-callable-structural-array-review.json).
+The selected builtin signature now acquires a simple third-output variable by
+reference at SEND3, before query admission. An unset variable quietly becomes
+`null`; callback rebinding, retained old aliases and earlier argument throws keep
+their normal cell identities and order. See the
+[output-acquisition review](coverage/semantics/enum-is-callable-output-acquisition-review.json).
+Fixed namespace fallback followed by a callback publishing a same-name function
+remains a native-only selected-target obligation.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

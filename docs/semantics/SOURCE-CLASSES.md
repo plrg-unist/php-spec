@@ -1138,6 +1138,20 @@ shape. A separate array holder delays child destruction; otherwise argument
 cleanup runs after the handler and before boolean assignment, without an API
 frame. The [structural-array review](../../coverage/semantics/enum-is-callable-structural-array-review.json)
 records the bounded source and reached checks.
+Third positional simple output CVs now follow the selected builtin's reference
+signature at SEND3, independently of query/name admission. Generic writable-name
+acquisition initializes an absent CV to null and promotes its real CELL without
+an undefined-variable read. The reference slot is validated separately from the
+handler's existing value/lifetime fences. A callback may unset the output name
+while a retained alias keeps its old cell, or create an output object before
+SEND3. Dynamic `SELECTEDCALLS` keeps the chosen builtin when its source callee
+variable is rebound; an earlier argument throw never acquires the output.
+The [output-acquisition review](../../coverage/semantics/enum-is-callable-output-acquisition-review.json)
+records these source and ownership cuts. A fixed namespaced
+`is_callable(..., publish(), $name)` must also keep the fallback builtin when
+`publish()` declares a local `is_callable`; that distinct selection route has
+only native observations and remains open. Named/unpacked and wider output
+places retain their existing bounds.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

@@ -1201,5 +1201,50 @@
     "purpose": "Builtin signature demands a reference before scalar query/name admission; the unfinished scalar name path stays explicit Unsupported with no native fallback.",
     "source_sha256": "d622ba33afe92730de300244e4bfe0dcf5949ac6474106fa6b758942137d638f",
     "model_timeout_seconds": 150
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-unset-retained-owning-alias",
+    "source": "<?php\nenum AcqCheck { case A; }\nclass OldDrop {\n    function __destruct() { echo 'drop:', $GLOBALS['name'], ':', $GLOBALS['ok'], '|'; }\n}\n$name = new OldDrop;\n$held =& $name;\nunset($name);\n$ok = is_callable([AcqCheck::class, 'cases'], false, $name);\necho 'chosen:', (int)$ok, ':', $name, '|';\nunset($held);\necho 'after|';\n",
+    "source_sha256": "adab72ba7399522ce9fa2141cf15b80e510307f562af5551e6766c0ea4f43897",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "chosen:1:AcqCheck::cases|drop:AcqCheck::cases:1|after|",
+    "purpose": "Unset output CV gets a fresh reference while a held old alias retains its object; its eventual destructor observes the completed query and fresh output name."
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-callback-unsets-output-alias",
+    "source": "<?php\nenum AcqCheck { case A; }\nfunction clearOutput() { unset($GLOBALS['name']); return false; }\n$name = 'OLD';\n$held =& $name;\n$ok = is_callable([AcqCheck::class, 'cases'], clearOutput(), $name);\necho 'chosen:', (int)$ok, ':', $name, ':', $held, '|';\n$name = 'NEW';\necho $name, ':', $held, '|';\n",
+    "source_sha256": "c99fe7003baf785f4cfb401d9565fa8b6ba231d08685d47e0ff752ce75eadab1",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "chosen:1:AcqCheck::cases:OLD|NEW:OLD|",
+    "purpose": "SEND3 acquires the output after a second-argument callback unsets its old binding; retained scalar alias stays OLD and later fresh-output mutation is independent."
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-callback-creates-throwing-output",
+    "source": "<?php\nenum AcqCheck { case A; }\nclass NewDrop {\n    function __destruct() {\n        echo $GLOBALS['name'] === null ? 'null|' : 'wrong|';\n        throw new Exception('drop');\n    }\n}\nfunction createOutput() { $GLOBALS['name'] = new NewDrop; return false; }\n$ok = 'UNCHANGED';\ntry { $ok = is_callable([AcqCheck::class, 'cases'], createOutput(), $name); }\ncatch (Exception $e) {\n    $trace = $e->getTrace();\n    echo $trace[1]['function'], ':', $name, ':', $ok, '|';\n}\n",
+    "source_sha256": "a98d92766160e3b0acdb50df8b4a47a245be0b57589aa83155966f2adddfb731",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|is_callable:AcqCheck::cases:UNCHANGED|",
+    "purpose": "SEND3 acquires the object created by the second-argument callback; output destruction sees null and its throw retains the chosen API name without assigning the result."
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-dynamic-selected-builtin-rebound",
+    "source": "<?php\nenum AcqCheck { case A; }\nfunction decoy($value, $syntax, $output) { echo 'USER|'; return false; }\nfunction changeTarget() { $GLOBALS['fn'] = 'decoy'; return false; }\n$fn = 'is_callable';\n$ok = $fn([AcqCheck::class, 'cases'], changeTarget(), $name);\necho 'chosen:', (int)$ok, ':', $name, ':', $fn, '|';\n",
+    "source_sha256": "9dc3c4c87bc0937fe35fc0f9efb4333e82d3d08256346df5e0692447ca067b4b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "chosen:1:AcqCheck::cases:decoy|",
+    "purpose": "An actual dynamic selected is_callable builtin keeps its third-argument reference demand when a callback rebinds the callee CV to a user decoy."
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-earlier-second-throw-no-output",
+    "source": "<?php\nenum AcqCheck { case A; }\nfunction failSecond() { echo 'second|'; throw new Exception('second'); }\n$ok = 'UNCHANGED';\ntry { $ok = is_callable([AcqCheck::class, 'cases'], failSecond(), $name); }\ncatch (Exception $e) { echo 'caught:', $ok, ':', isset($name) ? 'set' : 'absent', '|'; }\n",
+    "source_sha256": "7ef3770fee42112a74aaa130366cb545d5d725ba8386ad1b7cfcc20432f866a1",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "second|caught:UNCHANGED:absent|",
+    "purpose": "A second-argument throw skips missing output acquisition and leaves the result unchanged."
   }
 ]

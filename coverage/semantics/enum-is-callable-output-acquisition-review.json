@@ -1,0 +1,52 @@
+{
+  "scope": "Selected is_callable builtin third positional simple-CV reference acquisition, including absent/unset outputs, independent of query/name admission",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_revision": "61f36fec6d498c3e3b85abc5c003f2fe42668583",
+  "base_revision": "919e3b87282e9553e0385f0ba2e203827c29f32e",
+  "semantic_inputs": {
+    "spec/semantics/437-enum-runtime.watsup": "2295703a64bc276d71089208512301018220f85ac4e889dac542dc26d371b814"
+  },
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "behavior": "The actual selected builtin, argument source/line and positional CV shape determine SEND3 reference demand without inspecting either earlier argument value. Generic location_name_at/call_location_reference quietly acquires absent CVs as NULL and promotes the real CELL. Signature/reference-slot integrity is separate from query/name and old-output lifetime admission, whose existing ref_cell fences remain explicit at both output-capture routes and receive. No new storage fields, roots or owners are introduced. Dynamic SELECTEDCALLS retains the builtin across callee-variable rebinding; earlier argument throws skip output acquisition.",
+  "source_results": "Seven distinct exact native/model stdout, stderr and exit-status agreements at the unchanged candidate runtime: two author originals covering fresh top-level/function-local outputs and current invalid-pair false/Array, plus five independent originals covering retained owning aliases, second-argument output unset/create, throwing output cleanup, dynamic selected builtin rebinding and earlier-throw skipping. Five peer sources are copied byte-exact into the maintained catalogue. The scalar int17 source remains expected Unsupported and is not native-agreement credit.",
+  "strict_results": "Strict-v3 compiles all 437 modules and returns true/exit0/empty stderr/stable. Its precommit base revision is retained; author source and peer fingerprints bind the same final runtime bytes at 61f36.",
+  "reached_results": "Independent acquisition-v4 passes 259 checks across all 437 modules, true/exit0/empty stderr/stable/no timeout at 61f36. Missing outputs become fresh NULL wrappers with owner2; detached held scalar/object cells remain distinct, and actual formal release leaves output owner1 through both staged and immediate cleanup. Dynamic selected builtin demand survives callee CV rebinding with no input receipt. Every stepped state of the earlier-throw source leaves the output ENV binding absent. The int17 source has genuine signature slots and a valid invocation, then explicit handler Unsupported with NULL unchanged. Wrong selected kind/line, named-argument mode, missing selection records and unmarked/wrong CELL references are refused; SEND budget0/1 agrees.",
+  "affected_results": "Affected saved-input202 passes true/exit0/empty stderr/stable at 61f36. Its genuine signature/CELL with forged first argument bytes now validates the reference slots while ref_name/ref_cell still refuse query admission. Real saved-input rebinding, output alias, nested query and earlier-throw states remain valid. No structural-array or broader historical source replay is claimed.",
+  "failure_disposition": "Strict-v1/v2 failed before model execution on DSL binding positions (prefix concatenation, then binding combined with comparison); explicit cons and sequential guards fix those checker errors. Independent acquisition-v1/v2 overgeneralized immediate/staged generic cleanup RESULT timing; the pending boolean is carried by DESTRUCTOR_OPERATION_EXIT in destructor-enabled sources. Acquisition-v3 used an input-receipt seeker for the dynamic literal-array source, which intentionally has no such receipt. V4 observes actual cleanup branches and generic SEND3 selection. All original failures, recorders and narrow projections remain external with zero validation credit; no production change was needed for the peer fixture corrections.",
+  "engine_routes": [
+    "ext/standard/basic_functions.stub.php:is_callable callable_name by-reference parameter",
+    "Zend/zend_vm_def.h:ZEND_SEND_REF BP_VAR_W acquisition and reference count",
+    "Zend/zend_vm_def.h:ZEND_SEND_VAR_EX selected callee argument reference flags",
+    "ext/standard/type.c:PHP_FUNCTION(is_callable) handler query/output order"
+  ],
+  "next_selected_target_obligation": {
+    "source_id": "late-published-namespace-callee",
+    "source_sha256": "e59283a13713029fe3a0b19b1d505c238cc4c18db13d098a35b847b180466d88",
+    "native_stdout": "chosen:1:AcqLate\\AcqCheck::cases|",
+    "obligation": "A fixed namespaced is_callable fallback must retain the initially selected builtin when an argument callback publishes a same-name local function. The current fixed CONFIG route rechecks target lookup; this distinct route is native-only preparation with zero model-agreement credit. No current-name relookup is used to infer dynamic signature demand."
+  },
+  "remaining": "Scalar/ordinary-object/wider query-name admission, valid-pair typed/coerced/backed/debt cells, fixed namespace fallback publication, named/unpacked or wider output places, extra-argument callbacks detaching an already sent output and wider lifetime contexts remain partial. Full core remains unfinished.",
+  "author_reports": {
+    "native-v1/report.json": "0c420e6a78c8203239caf85df961e990932d768819b8f58aef46fe65890b40fa",
+    "strict-v1/report.json": "ae514b6f5081a1ec670f035655b2178db5a7a311cbe969df27ce6abed8e157b5",
+    "strict-v2/report.json": "4cee4f21cd0779f23f900314f265fd5b4a70319a5cb47ac11f42c9ff832a6cbd",
+    "strict-v3/report.json": "7b8ac175d1f2b1553a1f303ac4d4964d763a19a60077ce77f8151c9ee29435b3",
+    "raw/user-string-ajis2gek/report.json": "0729f4af5856e5d790517c99b80f2027e60a90d6581cc1ea3c0c3c96d61857c8",
+    "raw/enum-is-callable-protocol-fjejx69n/report.json": "dc7af22f15418f9c94f58070eb5b0b1c80950e8313956ace50f0ce37f0c37be2"
+  },
+  "independent_reports": {
+    "native-report.json": "8105d3d1d4a350daa1593da7c0abb38facb1168e44a99b0f1a8c373a9e5b7754",
+    "compare-v1/report.json": "148be5d1f0597a7c4db638f59305ca505b4186bc2e5763dcd18a9791ab277c5f",
+    "acquisition-v1/report.json": "895e7ffdbdc7207c80a30cec01183ce7da27bc81ac3c92e0ae6cb18857913ff3",
+    "acquisition-v2/report.json": "7f7452e63091e6c022b204eab5dfc84899dc1b65c8d3b09e221c81bd9620bc27",
+    "acquisition-v3/report.json": "c213fd131fe26b5454efdbca3e46cc4d2af1b99b415212d7d01883dc36a99f89",
+    "acquisition-v4/report.json": "7ecaea36451bed4b0374df979cd82be8ededbf4354b7b236c52f3f7884b5246b"
+  },
+  "recovery": "Author raw/ and manifest.json: ../php-spec-evidence-archive/enum-output-cv-acquisition-124/. Independent originals, compare.py, acquisition.py and reports: ../php-spec-evidence-archive/enum-output-acquisition-review-124/. Maintained sources: enum_is_callable.py --match third-output-new-cv-. Affected fixture: enum_is_callable_saved_input_protocol.py. Historical argv retains active private .tools/enum-array-reference-member-current paths; shared-tool links make no fresh rebuild or portability claim.",
+  "review": "Independent semantic, source, fixture, final docs and affected-result review CLEAR by /root/enum_review at 61f36. Later metadata/source-copy edits leave runtime bytes unchanged."
+}
