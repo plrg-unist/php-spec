@@ -1,0 +1,72 @@
+{
+  "milestone": "ATTR40: EnumCase ticks before enum activation",
+  "status": "Independently accepted bounded implementation; wider member/header/lifecycle and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revisions": ["4d4fad5c2", "ac961139a", "d67a8e6af"],
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "3ac72a69efa306b7ee4d95dc446c62412e71d3e7abac705b7d071328a189fc9e",
+    "scope": "Plain EnumCase summaries retain adjacency and use the constant visitor for optional backed values. AT entry prepends only certified immediate case AT/TICK tasks before the original raw Enum STMT and suffix. The pending raw statement cannot recreate its prefix. No 127/437, new task/state/schema, enum/linking consumer or ownership changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_enum_case adds no main opcode; zend_compile_stmt may emit its Tick because ENUM_CASE is not unticked. Adjacent cases retain the earlier marker/frequency. zend_compile_class_decl emits DECLARE_CLASS after the complete member list. Case names seed the statement line; backed constant values may change it through zend_const_expr_to_zval.",
+    "runtime": "Existing source AT/TICK wrappers restore the Enum origin before the unchanged module437 recorded_class_step activates it. Case callbacks therefore run before installation and can prevent that pending activation."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-enum-cases-40/strict-report-v2.json",
+      "sha256": "7d52ef79f00b3712acc194e3e4148b787dade4977928562b326f311e0ef05730",
+      "revision": "d67a8e6afe9f87c4d32cefb4bd8938ed0891cd62",
+      "passed": true,
+      "modules": 444
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-enum-cases-40/source-author-v1/report.json",
+      "sha256": "0bdcaf6171909f589156ade3d62d755e172e31c3f0f0699d0a9cd8a02b76ba7f",
+      "revision": "d67a8e6afe9f87c4d32cefb4bd8938ed0891cd62",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "case-adjacency-retains-first-marker-frequency-before-enum-activation": "ZTW",
+        "prior-main-tick-suppresses-case-marker-without-suppressing-enum-emitter": "TZT"
+      },
+      "scope": "Uncalled method declarations set frequencies 2 then 1 around adjacent cases, but only the original frequency 2 case marker survives. DECLARE_CLASS breaks adjacency before the later frequency 3 directive. The second original has a prior main Tick, so no case prefix runs."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-enum-cases-40/source-review-v1/report.json",
+      "sha256": "eedc584904cc462eb20bd72a86a6133b66c29675b417e750b6cb5a00711f7780",
+      "revision": "d67a8e6afe9f87c4d32cefb4bd8938ed0891cd62",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "review-backed-case-tick-precedes-installation-and-uses-value-line": "T[19]N7TZT",
+        "review-case-callback-abort-prevents-enum-installation": "TCN"
+      },
+      "scope": "A backed-value ConstFetch supplies line 19; its real case callback sees the class absent, then normal completion installs/reads 7. A unit case callback throws and the exception handler confirms that activation and later output never occurred."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-enum-cases-40/review-protocol-v1/run/report.json",
+      "sha256": "b9b42304973d7bf6666abe311e5d76db29c7e7824a0de711c119888fcbe611d7",
+      "process_sha256": "f181dfb3d28ad0f1b3935d54febda6b35cf072124e6f31723b4a63264e27e2ea",
+      "revision": "725971d49cd7d3bf462fa745e691544833176ef1",
+      "passed": true,
+      "groups": 2,
+      "reported_conditions": 122,
+      "group_conditions": [60, 62],
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At the genuine first-case Tick the compiled descriptor is present, name binding/cache are absent and the original raw Enum declaration remains pending behind ORIGIN_RETURN. Consecutive-case markers are absent. Canonical source/line, descriptor/heap/Tick validity and zero-budget/full-resume equality pass. Normal completion installs/reads 7; callback abort leaves the class absent and finishes TCN."
+    }
+  },
+  "test_migration": "The exact prior 39 EnumCase refusal bytes (SHA 0770ca6e3bc7571c002cf0f5ef7d6660b4e30976b72f81fa46476b52f40430ac) are promoted into the second normal original with their own new comparison. The stale current 39 assertion and older base class-placement control are removed; historical Unsupported evidence remains zero. Earlier 39 normal sources have no case nodes, so their summary/prefix paths stay pointwise unchanged and were not replayed.",
+  "independent_review": "/root/attributes_review traced actual case adjacency and pre-declaration timing, reviewed one-time AT entry and preserved raw suffix, and accepted both genuine pre-activation/abort fronts. Enum owner confirmed no shared compiler/header/runtime edit.",
+  "remaining": "Decorated cases, unproved deferred values, class constants/properties/hooks and broader linking/lifecycle contexts remain partial. No new enum consumer, registry or full-core closure is claimed.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-enum-cases-40. Source processes use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached processes use checked SL on CPU 5 with caches disabled and encountered determinism checks. All accepted inputs stayed stable, exits were 0 and driver stderr empty. Regular copied tools are not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "source-baseline/report.json at ecddb9da3 remains false (SHA 4b126a1e5e2d33738408b1339192e24a7bac944a3a8a197c9198a256b0b20add): the old model returned Unsupported with empty prefix/tick opcode placement dependency, while native completed ZTW.",
+    "strict-report-v1.json failed SL preparation on an otherwise/list-pattern restriction. A pure case-kind predicate with explicit positive/negative branches repairs the implementation form; no source execution or credit belongs to that failed packet.",
+    "Reviewer native-preparation v1 incorrectly expected a case Tick after an outside Echo's adjacent Tick. That failed preparation remains zero; corrected v2 begins at file frequency 0 and uses an uncalled method's declaration to enable the actual case prefix. Only corrected original bytes have agreements.",
+    "No 39, linking-consumer, output, Generator or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed."
+  ]
+}

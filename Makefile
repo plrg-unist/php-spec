@@ -109,6 +109,9 @@ test-semantics: build
 	python3 tests/semantics/tick_classlike_sources.py
 	python3 tests/semantics/tick_classlike_review_sources.py
 	python3 tests/semantics/tick_classlike_review_protocol.py
+	python3 tests/semantics/tick_enum_case_sources.py
+	python3 tests/semantics/tick_enum_case_review_sources.py
+	python3 tests/semantics/tick_enum_case_review_protocol.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/output_reference_warning_sources.py

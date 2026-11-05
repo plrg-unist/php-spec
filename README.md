@@ -326,6 +326,8 @@ Plain global constant groups receive one tick after all bindings, with initializ
 declarables and final compiler lines preserved.
 Class-like plans distinguish early binding from emitted declarations, preserving
 method declarables and activation before conditional declaration callbacks.
+EnumCase ticks run before enum activation, preserving adjacency, backed-value
+lines and callback abort without changing the declaration consumer.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.

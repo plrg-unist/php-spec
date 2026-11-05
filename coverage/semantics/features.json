@@ -10796,14 +10796,19 @@
       "source_tests": [
         "tests/semantics/tick_classlike_sources.py",
         "tests/semantics/tick_classlike_review_sources.py",
-        "tests/semantics/tick_classlike_review_cases.py"
+        "tests/semantics/tick_classlike_review_cases.py",
+        "tests/semantics/tick_enum_case_sources.py",
+        "tests/semantics/tick_enum_case_review_sources.py",
+        "tests/semantics/tick_enum_case_review_cases.py"
       ],
       "review": null,
       "helper_tests": [
-        "tests/semantics/tick_classlike_review_protocol.py"
+        "tests/semantics/tick_classlike_review_protocol.py",
+        "tests/semantics/tick_enum_case_review_protocol.py"
       ],
       "evidence": [
-        "coverage/semantics/tick-classlike-review.json"
+        "coverage/semantics/tick-classlike-review.json",
+        "coverage/semantics/tick-enum-case-review.json"
       ]
     },
     {
@@ -10813,9 +10818,21 @@
         "declarations.cases"
       ],
       "status": "pending",
-      "implementation": [],
-      "source_tests": [],
-      "review": null
+      "implementation": [
+        "spec/semantics/393-ticks.watsup"
+      ],
+      "source_tests": [
+        "tests/semantics/tick_enum_case_sources.py",
+        "tests/semantics/tick_enum_case_review_sources.py",
+        "tests/semantics/tick_enum_case_review_cases.py"
+      ],
+      "review": null,
+      "helper_tests": [
+        "tests/semantics/tick_enum_case_review_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/tick-enum-case-review.json"
+      ]
     },
     {
       "node": "Stmt_Expression",
@@ -26298,7 +26315,8 @@
         "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/tick_classlike_review_protocol.py"
+        "tests/semantics/tick_classlike_review_protocol.py",
+        "tests/semantics/tick_enum_case_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/inheritance.py",
@@ -26306,14 +26324,18 @@
         "tests/semantics/inheritance_compiler.py",
         "tests/semantics/tick_classlike_sources.py",
         "tests/semantics/tick_classlike_review_sources.py",
-        "tests/semantics/tick_classlike_review_cases.py"
+        "tests/semantics/tick_classlike_review_cases.py",
+        "tests/semantics/tick_enum_case_sources.py",
+        "tests/semantics/tick_enum_case_review_sources.py",
+        "tests/semantics/tick_enum_case_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
         "coverage/semantics/inheritance-review.json",
-        "coverage/semantics/tick-classlike-review.json"
+        "coverage/semantics/tick-classlike-review.json",
+        "coverage/semantics/tick-enum-case-review.json"
       ],
-      "review": "Authored prior/forward/conditional parent availability and declaration-time resolution are partial; autoload and dynamic names remain open. See inheritance-review.json. ATTR39 derives Class/Interface/Trait/Enum Tick summaries from completed per-unit KIND/EARLY facts. Early binding preserves main-oparray adjacency; emitted DECLARE_CLASS breaks it. Top declarations have no outer Tick; conditional declarations use their certified header line after real activation. Uncalled method declarables and invoked body ticks retain existing runtime/linking behavior. Facts are transient borrowed metadata after descriptor/history validation, not new machine fields or repeated compilation. Sources and reached checkpoints are in tick-classlike-review.json; enum-case, class-constant, positive property/hook and wider header/lifecycle contexts remain partial."
+      "review": "Authored prior/forward/conditional parent availability and declaration-time resolution are partial; autoload and dynamic names remain open. See inheritance-review.json. ATTR39 derives Class/Interface/Trait/Enum Tick summaries from completed per-unit KIND/EARLY facts. Early binding preserves main-oparray adjacency; emitted DECLARE_CLASS breaks it. Top declarations have no outer Tick; conditional declarations use their certified header line after real activation. Uncalled method declarables and invoked body ticks retain existing runtime/linking behavior. Facts are transient borrowed metadata after descriptor/history validation, not new machine fields or repeated compilation. Sources and reached checkpoints are in tick-classlike-review.json; enum-case, class-constant, positive property/hook and wider header/lifecycle contexts remain partial. ATTR40 executes certified EnumCase main-oparray Tick prefixes before the existing raw Enum declaration. Member order and adjacency preserve the first marker frequency across later method declarables; backed values use the constant line visitor. AT/TICK wrappers retain the pending declaration and original suffix, exposing pre-activation class absence and callback abort. Existing enum/linking consumers and machine fields are unchanged; exact source and reached evidence is in tick-enum-case-review.json. Wider decorated cases, deferred values and lifecycle contexts remain partial."
     },
     {
       "id": "classes.inheritance",
@@ -30878,22 +30900,27 @@
       "helper_tests": [
         "tests/semantics/enum_core_review_protocol.py",
         "tests/semantics/enum_magic_review_protocol.py",
-        "tests/semantics/tick_classlike_review_protocol.py"
+        "tests/semantics/tick_classlike_review_protocol.py",
+        "tests/semantics/tick_enum_case_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/enum_review_protocol.py",
         "tests/semantics/tick_classlike_sources.py",
         "tests/semantics/tick_classlike_review_sources.py",
-        "tests/semantics/tick_classlike_review_cases.py"
+        "tests/semantics/tick_classlike_review_cases.py",
+        "tests/semantics/tick_enum_case_sources.py",
+        "tests/semantics/tick_enum_case_review_sources.py",
+        "tests/semantics/tick_enum_case_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_enum.c",
         "vendor/php-src/Zend/zend_inheritance.c",
         "coverage/semantics/anonymous-trait-enum-review.json",
-        "coverage/semantics/tick-classlike-review.json"
+        "coverage/semantics/tick-classlike-review.json",
+        "coverage/semantics/tick-enum-case-review.json"
       ],
-      "review": "Integrated unit/backed enum compiler and link slice with genuine implicit interfaces and dependency replay; independent reached checks are summarized in PROGRESS.md. Case attributes and wider link interactions remain open. CLASS150 admits ordinary trait/enum co-residence within existing successful closed source histories, using normal headers, implicit interfaces and compiler-derived early/deferred key costs. Source-entry trait collisions retain deferred eligibility; body/factory, failed/open/reentry and owned-NUL limits remain. See anonymous-trait-enum-review.json. ATTR39 derives Class/Interface/Trait/Enum Tick summaries from completed per-unit KIND/EARLY facts. Early binding preserves main-oparray adjacency; emitted DECLARE_CLASS breaks it. Top declarations have no outer Tick; conditional declarations use their certified header line after real activation. Uncalled method declarables and invoked body ticks retain existing runtime/linking behavior. Facts are transient borrowed metadata after descriptor/history validation, not new machine fields or repeated compilation. Sources and reached checkpoints are in tick-classlike-review.json; enum-case, class-constant, positive property/hook and wider header/lifecycle contexts remain partial.",
+      "review": "Integrated unit/backed enum compiler and link slice with genuine implicit interfaces and dependency replay; independent reached checks are summarized in PROGRESS.md. Case attributes and wider link interactions remain open. CLASS150 admits ordinary trait/enum co-residence within existing successful closed source histories, using normal headers, implicit interfaces and compiler-derived early/deferred key costs. Source-entry trait collisions retain deferred eligibility; body/factory, failed/open/reentry and owned-NUL limits remain. See anonymous-trait-enum-review.json. ATTR39 derives Class/Interface/Trait/Enum Tick summaries from completed per-unit KIND/EARLY facts. Early binding preserves main-oparray adjacency; emitted DECLARE_CLASS breaks it. Top declarations have no outer Tick; conditional declarations use their certified header line after real activation. Uncalled method declarables and invoked body ticks retain existing runtime/linking behavior. Facts are transient borrowed metadata after descriptor/history validation, not new machine fields or repeated compilation. Sources and reached checkpoints are in tick-classlike-review.json; enum-case, class-constant, positive property/hook and wider header/lifecycle contexts remain partial. ATTR40 executes certified EnumCase main-oparray Tick prefixes before the existing raw Enum declaration. Member order and adjacency preserve the first marker frequency across later method declarables; backed values use the constant line visitor. AT/TICK wrappers retain the pending declaration and original suffix, exposing pre-activation class absence and callback abort. Existing enum/linking consumers and machine fields are unchanged; exact source and reached evidence is in tick-enum-case-review.json. Wider decorated cases, deferred values and lifecycle contexts remain partial.",
       "tests": [
         "tests/semantics/anonymous_trait_enum_cases.json",
         "tests/semantics/anonymous_trait_enum_counter_protocol.py",
@@ -30932,20 +30959,26 @@
         "spec/semantics/436-enum-compiler.watsup",
         "spec/semantics/437-enum-runtime.watsup",
         "spec/semantics/383-anonymous-classes.watsup",
-        "spec/semantics/228-trait-methods.watsup"
+        "spec/semantics/228-trait-methods.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/enum_core_review_protocol.py",
-        "tests/semantics/enum_generated_review_protocol.py"
+        "tests/semantics/enum_generated_review_protocol.py",
+        "tests/semantics/tick_enum_case_review_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/enum_review_protocol.py"
+        "tests/semantics/enum_review_protocol.py",
+        "tests/semantics/tick_enum_case_sources.py",
+        "tests/semantics/tick_enum_case_review_sources.py",
+        "tests/semantics/tick_enum_case_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_enum.c",
-        "coverage/semantics/anonymous-trait-enum-review.json"
+        "coverage/semantics/anonymous-trait-enum-review.json",
+        "coverage/semantics/tick-enum-case-review.json"
       ],
-      "review": "Direct and captured scalar from/tryFrom preserve cold backing-table checks, singleton lookup and caller strictness at reviewed source/state cuts in PROGRESS.md; BackedEnum typed parameters remain bounded. Captured Stringable arguments preserve source-bound callback, temporary retirement and case identity at separate reviewed cuts; broader type contexts remain open. CLASS150 admits ordinary trait/enum co-residence within existing successful closed source histories, using normal headers, implicit interfaces and compiler-derived early/deferred key costs. Source-entry trait collisions retain deferred eligibility; body/factory, failed/open/reentry and owned-NUL limits remain. See anonymous-trait-enum-review.json.",
+      "review": "Direct and captured scalar from/tryFrom preserve cold backing-table checks, singleton lookup and caller strictness at reviewed source/state cuts in PROGRESS.md; BackedEnum typed parameters remain bounded. Captured Stringable arguments preserve source-bound callback, temporary retirement and case identity at separate reviewed cuts; broader type contexts remain open. CLASS150 admits ordinary trait/enum co-residence within existing successful closed source histories, using normal headers, implicit interfaces and compiler-derived early/deferred key costs. Source-entry trait collisions retain deferred eligibility; body/factory, failed/open/reentry and owned-NUL limits remain. See anonymous-trait-enum-review.json. ATTR40 executes certified EnumCase main-oparray Tick prefixes before the existing raw Enum declaration. Member order and adjacency preserve the first marker frequency across later method declarables; backed values use the constant line visitor. AT/TICK wrappers retain the pending declaration and original suffix, exposing pre-activation class absence and callback abort. Existing enum/linking consumers and machine fields are unchanged; exact source and reached evidence is in tick-enum-case-review.json. Wider decorated cases, deferred values and lifecycle contexts remain partial.",
       "tests": [
         "tests/semantics/anonymous_trait_enum_cases.json",
         "tests/semantics/anonymous_trait_enum_counter_protocol.py",
@@ -40768,7 +40801,8 @@
         "tests/semantics/tick_foreach_review_protocol.py",
         "tests/semantics/tick_list_review_protocol.py",
         "tests/semantics/tick_const_review_protocol.py",
-        "tests/semantics/tick_classlike_review_protocol.py"
+        "tests/semantics/tick_classlike_review_protocol.py",
+        "tests/semantics/tick_enum_case_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/tick_sources.py",
@@ -40873,7 +40907,10 @@
         "tests/semantics/tick_const_review_cases.py",
         "tests/semantics/tick_classlike_sources.py",
         "tests/semantics/tick_classlike_review_sources.py",
-        "tests/semantics/tick_classlike_review_cases.py"
+        "tests/semantics/tick_classlike_review_cases.py",
+        "tests/semantics/tick_enum_case_sources.py",
+        "tests/semantics/tick_enum_case_review_sources.py",
+        "tests/semantics/tick_enum_case_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -40913,9 +40950,10 @@
         "coverage/semantics/tick-foreach-review.json",
         "coverage/semantics/tick-list-review.json",
         "coverage/semantics/tick-constant-review.json",
-        "coverage/semantics/tick-classlike-review.json"
+        "coverage/semantics/tick-classlike-review.json",
+        "coverage/semantics/tick-enum-case-review.json"
       ],
-      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial. ATTR31 derives conditional tick plans from published compiled operands, redirects and retained effects. It distinguishes compiler-elided bodies from runtime-unselected callable compilation, keeps boolean conversion operations and selected Switch result kinds, and visits effect roots once. Nine exact normal originals, two explicit compiler-special builtin/fallback refusals and strict437 pass; three reached fronts/130 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts and fixture failures in tick-elision-review.json. Wider child-order, result and lifecycle contexts remain partial. ATTR32 compiles coalesce operands and assignment target children before RHS once, reusing actual compiler redirects/effects for prior prepass elision and memoized write refetch. Quiet reads, runtime lazy RHS and enclosing markers use the existing runtime. Validated callable-key assignments have no registered error handler; the handler-bearing quiet-reader path remains an open composition/performance obligation, with timeouts establishing neither completion nor Unsupported. Seven exact normal originals, strict437 and three actual-continuation fronts/144 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts in tick-coalesce-review.json. Multi-operand echo still has a known between-operand tick gap; wider result/access/lifecycle contexts remain partial. ATTR33 interleaves canonical markers with grouped Echo operand compilation and actual emission. Intermediate wrapped Tick tasks run before evaluating later operands, preserving late CV reads, callback aborts, compiler lines/frequencies and empty-operand operations. The final operand keeps its enclosing statement marker. Canonical source/line checks and wrapped-marker uniqueness reject derived corruption; the ordinary positive-chunk output suffix is exercised directly. Six exact normal originals, strict437 and three reached fronts/138 reported conditions (including bindings and four derived refusals) retain their cuts in tick-echo-review.json. Existing conversion/callable/lifecycle bounds and the separate registered-handler coalesce-reader obligation remain partial. ATTR34 projects string-carrier bytes through the existing key selector, preserving saved identity and numeric/padded string rules. This fixes the registered-handler callable-key coalesce write's proven KEY_WRITE_DIM fixed point; its original now completes at the default60s limit. Three exact originals, strict438 and three progress/identity fronts/140 reported conditions including bindings pass; no derived negatives or schema/owner changes. The original timeout/diagnostic cuts stay zero credit in tick-key-carrier-review.json. Broader producer, conversion and lifetime contexts remain partial. ATTR35 shares canonical intermediate Tick emission across grouped Echo/unset/global/static items. Operation scopes finish before callbacks; later targets/names/initializers remain delayed, and cached static bindings retain their markers. Item expression receipts and CODESTATIC bind lines authenticate child sites while final items keep the parent statement marker. Exact source and committed-binding/owner checkpoints are in tick-grouped-review.json. Existing wider source/lifetime bounds remain partial. ATTR36 derives Foreach target Tick plans in iterable/value-target/key-target/body compiler order using existing operand/redirect/effect facts. Empty inputs retain compiled callable declarables but skip target execution; actual iterations preserve target callbacks and abrupt value-target cleanup. Existing67/69 assignment and iterator protocols are unchanged; bounded source and reached checks are in tick-foreach-review.json. Wider writable/callable/source/lifetime contexts remain partial. ATTR37 shares by-value destructuring Tick traversal across list assignment and Foreach list targets: RHS before pattern, then each key before its recursive writable target, with real fetch/store adjacency. Defined-key original and reached evidence covers nested callable frequencies, empty-input compile-only targets and partial writes before a later target throws. Existing64/runtime protocols are unchanged; callable-bearing reference patterns retain their existing dependency. See tick-list-review.json; broader source/writable/lifetime contexts remain partial. ATTR38 derives plain global constant Tick summaries in initializer order with one trailing marker for the whole CONST_DECL group. NConst receipts certify declarations but retain diagnostic contexts; the group starts at its first declaration name, and a constant-AST line fold preserves literal carry, Closure end lines and unfolded constant-name lines, visiting array values before keys and following published folds/redirects. Actual callbacks observe installed bindings and abort before a later declaration. Existing88/runtime consumers are unchanged; callable-bearing constant arrays, deferred construction and unproved attributed contexts retain explicit dependencies. Bounded source and reached evidence is in tick-constant-review.json; wider source/initializer/lifetime contexts remain partial. ATTR39 derives Class/Interface/Trait/Enum Tick summaries from completed per-unit KIND/EARLY facts. Early binding preserves main-oparray adjacency; emitted DECLARE_CLASS breaks it. Top declarations have no outer Tick; conditional declarations use their certified header line after real activation. Uncalled method declarables and invoked body ticks retain existing runtime/linking behavior. Facts are transient borrowed metadata after descriptor/history validation, not new machine fields or repeated compilation. Sources and reached checkpoints are in tick-classlike-review.json; enum-case, class-constant, positive property/hook and wider header/lifecycle contexts remain partial."
+      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial. ATTR31 derives conditional tick plans from published compiled operands, redirects and retained effects. It distinguishes compiler-elided bodies from runtime-unselected callable compilation, keeps boolean conversion operations and selected Switch result kinds, and visits effect roots once. Nine exact normal originals, two explicit compiler-special builtin/fallback refusals and strict437 pass; three reached fronts/130 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts and fixture failures in tick-elision-review.json. Wider child-order, result and lifecycle contexts remain partial. ATTR32 compiles coalesce operands and assignment target children before RHS once, reusing actual compiler redirects/effects for prior prepass elision and memoized write refetch. Quiet reads, runtime lazy RHS and enclosing markers use the existing runtime. Validated callable-key assignments have no registered error handler; the handler-bearing quiet-reader path remains an open composition/performance obligation, with timeouts establishing neither completion nor Unsupported. Seven exact normal originals, strict437 and three actual-continuation fronts/144 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts in tick-coalesce-review.json. Multi-operand echo still has a known between-operand tick gap; wider result/access/lifecycle contexts remain partial. ATTR33 interleaves canonical markers with grouped Echo operand compilation and actual emission. Intermediate wrapped Tick tasks run before evaluating later operands, preserving late CV reads, callback aborts, compiler lines/frequencies and empty-operand operations. The final operand keeps its enclosing statement marker. Canonical source/line checks and wrapped-marker uniqueness reject derived corruption; the ordinary positive-chunk output suffix is exercised directly. Six exact normal originals, strict437 and three reached fronts/138 reported conditions (including bindings and four derived refusals) retain their cuts in tick-echo-review.json. Existing conversion/callable/lifecycle bounds and the separate registered-handler coalesce-reader obligation remain partial. ATTR34 projects string-carrier bytes through the existing key selector, preserving saved identity and numeric/padded string rules. This fixes the registered-handler callable-key coalesce write's proven KEY_WRITE_DIM fixed point; its original now completes at the default60s limit. Three exact originals, strict438 and three progress/identity fronts/140 reported conditions including bindings pass; no derived negatives or schema/owner changes. The original timeout/diagnostic cuts stay zero credit in tick-key-carrier-review.json. Broader producer, conversion and lifetime contexts remain partial. ATTR35 shares canonical intermediate Tick emission across grouped Echo/unset/global/static items. Operation scopes finish before callbacks; later targets/names/initializers remain delayed, and cached static bindings retain their markers. Item expression receipts and CODESTATIC bind lines authenticate child sites while final items keep the parent statement marker. Exact source and committed-binding/owner checkpoints are in tick-grouped-review.json. Existing wider source/lifetime bounds remain partial. ATTR36 derives Foreach target Tick plans in iterable/value-target/key-target/body compiler order using existing operand/redirect/effect facts. Empty inputs retain compiled callable declarables but skip target execution; actual iterations preserve target callbacks and abrupt value-target cleanup. Existing67/69 assignment and iterator protocols are unchanged; bounded source and reached checks are in tick-foreach-review.json. Wider writable/callable/source/lifetime contexts remain partial. ATTR37 shares by-value destructuring Tick traversal across list assignment and Foreach list targets: RHS before pattern, then each key before its recursive writable target, with real fetch/store adjacency. Defined-key original and reached evidence covers nested callable frequencies, empty-input compile-only targets and partial writes before a later target throws. Existing64/runtime protocols are unchanged; callable-bearing reference patterns retain their existing dependency. See tick-list-review.json; broader source/writable/lifetime contexts remain partial. ATTR38 derives plain global constant Tick summaries in initializer order with one trailing marker for the whole CONST_DECL group. NConst receipts certify declarations but retain diagnostic contexts; the group starts at its first declaration name, and a constant-AST line fold preserves literal carry, Closure end lines and unfolded constant-name lines, visiting array values before keys and following published folds/redirects. Actual callbacks observe installed bindings and abort before a later declaration. Existing88/runtime consumers are unchanged; callable-bearing constant arrays, deferred construction and unproved attributed contexts retain explicit dependencies. Bounded source and reached evidence is in tick-constant-review.json; wider source/initializer/lifetime contexts remain partial. ATTR39 derives Class/Interface/Trait/Enum Tick summaries from completed per-unit KIND/EARLY facts. Early binding preserves main-oparray adjacency; emitted DECLARE_CLASS breaks it. Top declarations have no outer Tick; conditional declarations use their certified header line after real activation. Uncalled method declarables and invoked body ticks retain existing runtime/linking behavior. Facts are transient borrowed metadata after descriptor/history validation, not new machine fields or repeated compilation. Sources and reached checkpoints are in tick-classlike-review.json; enum-case, class-constant, positive property/hook and wider header/lifecycle contexts remain partial. ATTR40 executes certified EnumCase main-oparray Tick prefixes before the existing raw Enum declaration. Member order and adjacency preserve the first marker frequency across later method declarables; backed values use the constant line visitor. AT/TICK wrappers retain the pending declaration and original suffix, exposing pre-activation class absence and callback abort. Existing enum/linking consumers and machine fields are unchanged; exact source and reached evidence is in tick-enum-case-review.json. Wider decorated cases, deferred values and lifecycle contexts remain partial."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",

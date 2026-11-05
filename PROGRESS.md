@@ -1072,6 +1072,8 @@ bindings, preserving the final emitter line and installed values on callback abo
 Class-like plans consume completed early-binding facts to preserve or break prior
 adjacency. Method declarables compile even when uncalled; conditional declarations
 activate before their header-line Tick, while top declarations have no outer Tick.
+Certified EnumCase markers run before the existing enum activation task, retaining
+member order, prior-marker frequency, backed-value lines and abort/resume behavior.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -1092,7 +1094,8 @@ Exact source, strict and reached-state cuts remain in the
 [Foreach targets](coverage/semantics/tick-foreach-review.json),
 [destructuring](coverage/semantics/tick-list-review.json),
 [global constants](coverage/semantics/tick-constant-review.json),
-[class-like declarations](coverage/semantics/tick-classlike-review.json) and
+[class-like declarations](coverage/semantics/tick-classlike-review.json),
+[enum cases](coverage/semantics/tick-enum-case-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -1851,7 +1854,7 @@ pipe controls pass; parser inputs stay fixed.
 | GC50 | Validated PFLOAT WeakMap payloads with disjoint property-float handling; private implementation/review. |
 | COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
-| ATTR40 | EnumCase ticks before DECLARE_CLASS, class availability and abort/resume; private implementation/review. |
+| ATTR41 | Unticked class-member constant initializer traversal under positive ticks; private implementation/review. |
 | Enum callable arrays | User function/method capture cache identity: cold/private versus initialized shared; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

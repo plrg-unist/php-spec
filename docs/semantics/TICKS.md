@@ -68,6 +68,14 @@ the transient summary, with no new machine field or per-statement recompilation.
 Old no-fact plan helpers retain their quiet Class route. Missing facts and
 unproved class/member/header emission remain dependencies.
 
+Plain EnumCase statements emit no main opcode, but can add a Tick before the
+enum's `DECLARE_CLASS`. Plans preserve member order and prior adjacency: a later
+method's declarables do not retime an existing case marker. Case names seed the
+line; backed values use the existing constant-expression line walk. Entry prepends
+only certified case `AT/TICK` tasks before the original raw Enum statement and
+its suffix. A callback can therefore observe the class still absent or abort
+before activation. Resumption retains that exact pending declaration.
+
 Switch plans visit the subject, every case condition, then every body in compiler
 order. Case bodies share adjacency across selected and unselected branches;
 fallthrough and jumps retain the ordinary switch runtime. A final temporary
@@ -159,8 +167,8 @@ are destroyed after callee restoration while the entry remains running. Genuine
 unwinding clears that state before shutdown callbacks. Fiber switching remains
 blocked during the callback and its returned-value cleanup.
 
-The source summary is deliberately bounded. Wider decorated headers, class
-constants, positive-frequency properties/hooks and enum-case emission,
+The source summary is deliberately bounded. Wider decorated headers/cases, class
+constants, positive-frequency properties/hooks,
 other unmodeled statement/expression emission, callable defaults or
 attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
 and anonymous construction summaries. Foreach targets retain the existing
@@ -209,6 +217,9 @@ bindings surviving callback abort.
 The [class-like tick review](../../coverage/semantics/tick-classlike-review.json)
 records early/non-early adjacency, uncalled method declarables, real method ticks
 and conditional activation before header-line callback abort.
+The [enum-case tick review](../../coverage/semantics/tick-enum-case-review.json)
+records actual pre-activation markers, consecutive-case suppression, backed value
+lines, class availability and callback abort/resumption.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
