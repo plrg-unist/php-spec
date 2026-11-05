@@ -28,6 +28,7 @@ dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_new_named(phpType28) : bool
 dec $tick_group_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_group_emitter(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
+dec $tick_constant_list(pticksummary, pcodeexpr*, pcpath, nat, phpType46*) : pticksummary
 dec $tick_group_site(pstate, porigin, int) : bool
 dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
@@ -310,6 +311,16 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtInlineHTML phpType33 metada
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUnset phpType25 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtUnset phpType25 metadata, pcpath))
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGlobal phpType25 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtGlobal phpType25 metadata, pcpath))
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtStatic phpType58 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtStatic phpType58 metadata, pcpath))
+;; A global CONST_DECL list is one statement. Each initializer compiles before
+;; its DECLARE_CONST, but only the completed group receives a trailing Tick.
+;; The existing declaration receipt retains the final emitter's compiler line.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtConst (SEQUENCE eps) (SEQUENCE phpType46*) metadata, b) = $tick_constant_list(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType46*)
+def $tick_constant_list(T, pcodeexpr*, pcpath, n, eps) = T
+def $tick_constant_list(T, pcodeexpr*, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $tick_constant_list(T_value[.LAST = false][.LINE = z], pcodeexpr*, pcpath, $(n + 1), phpType46*)
+  -- if $code_expression(pcodeexpr*, pcpath ++ [PCINDEX n]) = ((z, b))
+  -- if T_value = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
+def $tick_constant_list(T, pcodeexpr*, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = T[.DEPENDENCY = ("tick global constant declaration descriptor")]
+  -- if $code_expression(pcodeexpr*, pcpath ++ [PCINDEX n]) = eps
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtReturn phpType5 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtReturn phpType5 metadata, pcpath))[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtBreak phpType5 metadata, b) = T[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtContinue phpType5 metadata, b) = T[.LAST = false]
