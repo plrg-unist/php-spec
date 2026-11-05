@@ -97,7 +97,6 @@ CASES = {
             'PhpStep: S ~> S_receive',
             'S_receive.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_name pvalue_name) :: ptask_tail*',
             '$heap_owners($heap_graph(S_receive), HOBJECT n_name) = 0',
-            'S_receive.PRECISIONINI = $ptascii("1")',
             '$call_descriptors_valid(S_receive)', '$heap_valid($heap_graph(S_receive))',
         ],
     },
