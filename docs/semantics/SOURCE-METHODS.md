@@ -20,6 +20,18 @@ ordinary parameter reception. Original method spelling, lexical declaring class
 and runtime called class remain distinct. A saved raw target survives argument
 callbacks that clear the receiver CV and change the live RHS.
 
+The admitted byvalue nongenerator `__call`/`__callStatic` bodies may also compile
+source-owned anonymous child factories. Plain headers and the current argument
+producer/value bounds remain intact. Captured integer sends survive later CV
+mutation; the real packed array owns leaf payloads through entry and may survive
+through a returned child's field or an escaped Closure. Instance receiver and
+static lexical/called scope remain actual saved context. The
+[factory review](../../coverage/semantics/anonymous-magic-argument-factories-review.json)
+keeps exact original observations and actual frame/array/return retirement checks
+separate from out-of-domain design attempts and retained boundaries. Zero sends
+and owning first-CV capture remain unfinished consumer work; this source slice
+adds no generic dispatch, schema or producer rule.
+
 For the sole argument-array cases, compiled-local cleanup retires the array and
 payload before releasing the selected receiver, then delivers the cached scalar
 result or the same supplied Throwable. Four original-source agreements and

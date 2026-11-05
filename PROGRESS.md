@@ -1668,6 +1668,17 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
+CLASS191 admits anonymous factories in ordinary byvalue nongenerator `__call`
+and `__callStatic` bodies under their existing plain headers and argument
+consumers. Captured scalar sends remain fixed through later CV/receiver mutation;
+real packed arrays and actual lexical/called scope preserve child/payload ownership
+after return and receiver cleanup. The
+[review](coverage/semantics/anonymous-magic-argument-factories-review.json)
+separates exact admitted originals, one real frame/array ownership front and
+retained producer/mode boundaries. Initial object-CV/zero-send preparations retain
+zero credit; those consumer shapes remain unfinished. Trait, reference/generator,
+attribute and wider producer/dispatch scope remains partial.
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
@@ -1912,7 +1923,7 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS191 | __call/__callStatic factories through existing magic argument protocols; native/source preparation. |
+| CLASS192 | Zero-argument __call/__callStatic dispatch and real empty-array ownership; private implementation/review. |
 | I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
 | GC51 | Authenticated property-public NaN API cursor continuation; private implementation/review. |
 | COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |

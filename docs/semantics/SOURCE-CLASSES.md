@@ -657,9 +657,9 @@ Thus a reference Closure may occur in a byvalue or reference method without
 confusing their return modes. Actual captures, receivers and return cells use the
 ordinary runtime protocols.
 
-Byvalue nongenerator `__invoke`, `__get`, `__toString`, `__set`, `__isset` and
-`__unset` factory bodies share this method ancestry, including admitted nested
-deferred factories. Getter headers
+Byvalue nongenerator `__invoke`, `__get`, `__toString`, `__set`, `__isset`,
+`__unset`, `__call` and `__callStatic` factory bodies share this method ancestry,
+including admitted nested deferred factories. Getter headers
 retain untyped required byvalue nonvariadic parameters without defaults and no
 declared return type; successful reception has one parameter. Wider getter
 headers remain a source boundary. Existing callable, property-get and Stringable
@@ -679,6 +679,23 @@ reads the original RHS cell after receiver destruction. A created child may outl
 that receiver through its ordinary global/caller owner. Trait declarations, wider
 receivers/RHSs and signatures remain partial under the existing
 [property consumers](SOURCE-PROPERTIES.md).
+
+Argument-magic factory bodies retain plain `__call(string,array)` and static
+`__callStatic(string,array)` headers without a return declaration. Direct
+positional originals use the existing one/two-send family: integer literals,
+an initially nonreference integer first CV, nullary named producers and no-ctor
+named `new`, with supported int/leaf-instance values. Leafhood is the actual
+node-children predicate, not an inference from a property's presence. A later
+argument may change the caller's CV and receiver binding while the earlier send
+stays fixed. The trampoline then creates the real name/packed-array pair.
+
+The parameter CV owns that array; its historical target metadata adds no payload
+owner. Instance magic retains its actual receiver and lexical/called classes;
+static magic invents no receiver. A returned child may retain a payload or the
+actual array after magic-local/receiver cleanup. These source/ownership extensions
+reuse the existing [magic-call consumers](SOURCE-METHODS.md); zero sends, owning
+first-CV capture and other unproved producer/layout combinations remain visible
+unfinished core boundaries rather than new dispatch rules.
 
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
@@ -748,7 +765,8 @@ ledgers preserve their historical scopes and source/state evidence. The
 [reference method](../../coverage/semantics/anonymous-reference-method-factories-review.json)
 [reference Closure](../../coverage/semantics/anonymous-reference-closure-factories-review.json)
 [magic method](../../coverage/semantics/anonymous-magic-factories-review.json)
-and [property magic](../../coverage/semantics/anonymous-property-magic-factories-review.json)
+[property magic](../../coverage/semantics/anonymous-property-magic-factories-review.json)
+and [argument magic](../../coverage/semantics/anonymous-magic-argument-factories-review.json)
 reviews distinguish exact originals, genuine reached ownership/resumption,
 explicitly derived context refusals and native-only preparations.
 
