@@ -68,14 +68,12 @@ dec $rejected_prefix_completion(int?, pfailedkind, nat*, int) : bool
 def $rejected_prefix_completion(eps, pfailedkind, n_message*, z_line) = true
 def $rejected_prefix_completion((z_line), FAILED_COMPILE, n_message*, z_line) = (n_message* = $ptascii("Encoding must be a literal"))
 def $rejected_prefix_completion(z_stop?, pfailedkind, n_message*, z_line) = false -- otherwise
+dec $rejected_headers_completion(pparseheader*, pfailedkind, nat*, int) : bool
+def $rejected_headers_completion(pparseheader*, pfailedkind, n_message*, z) = $rejected_prefix_completion(z_stop?, pfailedkind, n_message*, z)
+  -- if $rejected_header_prefix(pparseheader*) = (z_lines*, z_stop?)
 def $eval_response_id(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = n
 def $eval_response_bytes(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = n_bytes*
-def $eval_response_shape(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = true
-  -- if $(z > 0) /\ n_message* =/= eps
-  -- if $rejected_headers_valid(pparseheader*, -1, 1)
-  -- if $rejected_header_prefix(pparseheader*) = (z_lines*, z_stop?)
-  -- if $rejected_prefix_completion(z_stop?, pfailedkind, n_message*, z)
-def $eval_response_shape(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = false -- otherwise
+def $eval_response_shape(SOURCE_REJECT_HEADERS n n_bytes* pfailedkind n_message* z pparseheader*) = ($(z > 0) /\ n_message* =/= eps /\ $rejected_headers_valid(pparseheader*, -1, 1) /\ $rejected_headers_completion(pparseheader*, pfailedkind, n_message*, z))
 
 dec $rejected_source_warnings(pstate, nat, int*) : pstate
 def $rejected_source_warnings(S, n, eps) = S
