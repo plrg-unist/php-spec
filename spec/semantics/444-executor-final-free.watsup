@@ -361,6 +361,19 @@ dec $executor_retval_notice_start(pstate) : bool
 dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
 dec $ob_creation_ready(pstate, pconfigcall, pvalue*) : bool
+dec $ob_failure_ready(pstate, pconfigcall, pvalue*) : bool
+dec $ob_failure_history(pstate, pobcreation) : pstate
+dec $ob_failure_valid(pstate, pobcreation) : bool
+dec $ob_failure_task(ptask, pobcreation) : bool
+dec $ob_failure_tasks(pstate, pobcreation) : bool
+dec $ob_failure_value_destructor(pstate, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, ptask*) : bool
+dec $ob_failure_task_valid(pstate, pobcreation) : bool
+dec $ob_failure_message(pobcreation) : preqbytes
+dec $ob_failure_warning(pstate, pobcreation) : pstate
+dec $ob_failure_pending_notice(pstate, pobcreation) : pstate
+dec $ob_failure_continuation(ptask) : pobcreation?
+dec $ob_failure_discarded(pstate, nat) : pobcreation?
+dec $ob_failure_discard_valid(pstate, pdestructionoperation) : bool
 dec $ob_creation_target(phandlerresolution) : pcalltarget?
 dec $ob_creation_producer(pstate, pvalue) : pshutdownproducer?
 dec $ob_creation_history(pstate, pobcreation) : pstate
@@ -753,6 +766,14 @@ def $ob_creation_ready(S, pconfigcall, pvalue_values*) = true
   -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
   -- if $error_handler_callable(S, pvalue) = (true)
 def $ob_creation_ready(S, pconfigcall, pvalue_values*) = false -- otherwise
+def $ob_failure_ready(S, pconfigcall, pvalue_values*) = true
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
+  -- if $error_handler_resolution(S, pvalue) = HANDLERINVALID ptbytes
+def $ob_failure_ready(S, pconfigcall, pvalue_values*) = false -- otherwise
 def $ob_creation_target(HANDLERRESOLVED pcalltarget) = (pcalltarget)
 def $ob_creation_target(phandlerresolution) = eps -- otherwise
 def $ob_creation_producer(S, POBJECT n) = ($eager_cleanup_target(S, CLOSURE_TARGET n))
@@ -799,6 +820,7 @@ def $ob_creation_selected(S, pobcreation) = true
 def $ob_creation_selected(S, pobcreation) = false -- otherwise
 def $ob_creation_valid(S, pobcreation) = true
   -- if pobcreation.CALL.KIND = INTRINSIC_OB_START
+  -- if pobcreation.PREFIX = eps
   -- if pobcreation.VALUE =/= PNULL
   -- if (pobcreation.RAW = eps /\ ~$is_array_value(pobcreation.VALUE)) \/ (pobcreation.RAW =/= eps /\ $is_array_value(pobcreation.VALUE))
   -- if S_history = $ob_creation_history(S, pobcreation)
@@ -807,6 +829,150 @@ def $ob_creation_valid(S, pobcreation) = true
   -- if ~$exception_deprecated_raw(S_history, pobcreation.VALUE) /\ ~$api_special(S_history, pobcreation.VALUE)
   -- if $ob_creation_selected(S_history, pobcreation)
 def $ob_creation_valid(S, pobcreation) = false -- otherwise
+;; Failure is selected once. A Warning callback may publish the missing function
+;; or repair referenced array members; authenticate the old lookup, not a retry.
+def $ob_failure_history(S, pobcreation) = S_history[.ALLOCATIONS = S_history.ALLOCATIONS ++ $entries_nodes(parray.ITEMS)][.CALLABLES = $constant_callable_functions(S_history, S_history.DECLARATIONS[0:n_prefix])]
+  -- if pobcreation.PREFIX = (n_prefix)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if pobcreation.RAW = (parray)
+  -- if S_history = $ob_creation_history(S, pobcreation)
+def $ob_failure_history(S, pobcreation) = S_history[.CALLABLES = $constant_callable_functions(S_history, S_history.DECLARATIONS[0:n_prefix])]
+  -- if pobcreation.PREFIX = (n_prefix)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if pobcreation.RAW = eps
+  -- if S_history = $ob_creation_history(S, pobcreation)
+def $ob_failure_history(S, pobcreation) = S -- otherwise
+def $ob_failure_valid(S, pobcreation) = true
+  -- if pobcreation.CALL.KIND = INTRINSIC_OB_START
+  -- if pobcreation.PREFIX = (n_prefix)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if pobcreation.RESOLUTION = HANDLERINVALID ptbytes
+  -- if pobcreation.VALUE =/= PNULL /\ pobcreation.PRODUCER = eps /\ pobcreation.CAPTURE = eps
+  -- if (pobcreation.RAW = eps /\ ~$is_array_value(pobcreation.VALUE)) \/ (pobcreation.RAW =/= eps /\ $is_array_value(pobcreation.VALUE))
+  -- if S_history = $ob_failure_history(S, pobcreation)
+  -- if pobcreation.RAW = $shutdown_snapshot(S_history, pobcreation.VALUE)
+  -- if $ob_parse_valid(S_history, pobcreation.CALL, 3, [pobcreation.VALUE, PINT pobcreation.CHUNK, PINT pobcreation.FLAGS])
+  -- if ~$exception_deprecated_raw(S_history, pobcreation.VALUE) /\ ~$api_special(S_history, pobcreation.VALUE)
+  -- if $error_handler_resolution(S_history, pobcreation.VALUE) = pobcreation.RESOLUTION
+def $ob_failure_valid(S, pobcreation) = false -- otherwise
+def $ob_start_receipt_valid(S, pobcreation) = ($ob_creation_valid(S, pobcreation) \/ $ob_failure_valid(S, pobcreation))
+def $ob_failure_task(OB_START_INVALID_NOTICE pobcreation, pobcreation) = true
+def $ob_failure_task(ERROR_HANDLER_INVOKE perrorcall, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+def $ob_failure_task(ERROR_HANDLER_RESULT perrorcall, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+def $ob_failure_task(ERROR_HANDLER_CLEAN perrorcall, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+def $ob_failure_task(API_CALLBACK_SEND papiargcursor, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_task(API_CALLBACK_REF papiargcursor, pobcreation) = (perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_task(ptask, pobcreation) = false -- otherwise
+def $ob_failure_tasks(S, pobcreation) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ob_failure_task(ptask, pobcreation)
+def $ob_failure_tasks(S, pobcreation) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = pdestructionoperation.CALLER
+  -- if pdestructioncleanup.ORIGIN = pdestructionoperation.ORIGIN
+  -- if pdestructioncleanup.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+def $ob_failure_tasks(S, pobcreation) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_CLEAN perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructioncleanup.RELEASED
+  -- if $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructioncleanup <- S.DESTRUCTION.CLEANUPS
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.ORIGIN = S.ORIGIN
+  -- if pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = pdestructionoperation.CALLER
+  -- if pdestructioncleanup.ORIGIN = pdestructionoperation.ORIGIN
+  -- if pdestructioncleanup.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*)
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+def $ob_failure_tasks(S, pobcreation) = false -- otherwise
+def $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, ptask_suffix*) = $ob_failure_tasks(S[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_suffix*], pobcreation)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_saved)
+  -- if pdestructionrelease_saved.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]
+  -- if pdestructionrelease.JOBS = eps
+  -- if pdestructionrelease.CALLER = pdestructionrelease_saved.CALLER
+  -- if pdestructionrelease.ORIGIN = pdestructionrelease_saved.ORIGIN
+  -- if pdestructionrelease.CONSTCONTEXT = pdestructionrelease_saved.CONSTCONTEXT
+  -- if pdestructionrelease.USER = pdestructionrelease_saved.USER
+  -- if pdestructionrelease_saved.CALLER = pdestructorcall.CALLER
+  -- if pdestructionrelease_saved.ORIGIN = pdestructorcall.ORIGIN
+  -- if pdestructionrelease_saved.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+  -- if pdestructionrelease_saved.USER = pdestructorcall.USER
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED
+  -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.USER
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.PENDING = eps
+  -- if pdestructorcall.CALLER = S.CURRENT
+  -- if pdestructorcall.ORIGIN = S.ORIGIN
+  -- if pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+def $ob_failure_value_destructor(S, pdestructorcall, pdestructionrelease, pdestructionoperation, pobcreation, ptask_suffix*) = false -- otherwise
+def $ob_failure_task_valid(S, pobcreation) = true
+  -- if $ob_failure_valid(S, pobcreation)
+  -- if S.ORIGIN = (pobcreation.CALL.SITE)
+  -- if $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $ob_failure_tasks(S, pobcreation)
+def $ob_failure_task_valid(S, pobcreation) = false -- otherwise
+def $call_task_valid(S, OB_START_INVALID_NOTICE pobcreation) = $ob_failure_task_valid(S, pobcreation)
+def $task_nodes(OB_START_INVALID_NOTICE pobcreation) = $config_nodes(pobcreation.CALL)
+def $selected_task_nonce(OB_START_INVALID_NOTICE pobcreation) = pobcreation.CALL.SELECTION
+def $ob_failure_message(pobcreation) = $ptascii("ob_start(): ") ++ ptbytes
+  -- if pobcreation.RESOLUTION = HANDLERINVALID ptbytes
+def $ob_failure_warning(S, pobcreation) = $error_dispatch(S, 2, n_message*, pobcreation.CALL.LINE, DIAGNOSTIC "Warning" n_message* pobcreation.CALL.LINE, OB_START_INVALID_NOTICE pobcreation)
+  -- if n_message* = $ob_failure_message(pobcreation)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+  -- if $ob_failure_task_valid(S, pobcreation)
+  -- if perrorcall.SITE = pobcreation.CALL.SITE /\ perrorcall.LINE = pobcreation.CALL.LINE
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.MESSAGE = $ob_failure_message(pobcreation)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pobcreation.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pobcreation.CALL, $trace_extra(S_history, $getclass_trace_operands(pobcreation.CALL.SENT)))
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+;; A pending Throwable prevents an eligible handler call, but not default output.
+def $ob_failure_pending_notice(S, pobcreation) = S[.ERRORFATALTRACE = eps]
+  -- if $eval_compile_recorded_error(S, 8) \/ $error_handler_eligible(S, 8)
+def $ob_failure_pending_notice(S, pobcreation) = $error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Notice" ($ptascii("ob_start(): Failed to create buffer")) pobcreation.CALL.LINE, 8)
+  -- if ~$eval_compile_recorded_error(S, 8) /\ ~$error_handler_eligible(S, 8)
+def $error_read_discard(S, OB_START_INVALID_NOTICE pobcreation) = $ob_failure_pending_notice(S, pobcreation)
+  -- if $eager_operation_pending(S) = (n)
+  -- if $throwable_live(S, n)
+  -- if $ob_failure_valid(S, pobcreation)
+  -- if $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+def $return_discard(S, OB_START_INVALID_NOTICE pobcreation) = $error_read_discard(S, OB_START_INVALID_NOTICE pobcreation)
 def $ob_creation_task_valid(S, pobcreation) = true
   -- if S.TODO = ptask :: ptask_tail*
   -- if ptask = OB_START_CREATED pobcreation \/ ptask = OB_START_FAILED pobcreation
@@ -827,7 +993,17 @@ def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.TOD
   -- if ~$ob_user_running(S)
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
   -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
-  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER $ob_creation_producer(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE)}
+  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER $ob_creation_producer(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE), PREFIX eps}
+def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = $ob_failure_warning(S, pobcreation)
+  -- if $ob_failure_ready(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags])
+  -- if ~$ob_user_running(S)
+  -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
+  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER eps, CAPTURE eps, PREFIX (|S.DECLARATIONS|)}
+rule PhpStep/ob-start-invalid-notice: S ~> $ob_notice_with_creation(S, pobcreation.CALL, PBOOL false, false, false, eps, (pobcreation))
+  -- if S.TODO = (OB_START_INVALID_NOTICE pobcreation) :: ptask_tail*
+  -- if $call_task_valid(S, OB_START_INVALID_NOTICE pobcreation)
+  -- if S.COMPLETION = NORMAL
 rule PhpStep/ob-start-created-free: S ~> S[.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*]
   -- if S.TODO = (OB_START_CREATED pobcreation) :: ptask_tail*
   -- if $call_task_valid(S, OB_START_CREATED pobcreation)
@@ -835,6 +1011,55 @@ rule PhpStep/ob-start-failed-notice: S ~> $ob_notice_with_creation(S, pobcreatio
   -- if S.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*
   -- if $call_task_valid(S, OB_START_FAILED pobcreation)
 ;; zend_vm_stack_free_args uses zval_ptr_dtor_nogc, unlike the zoh destructor.
+;; Abrupt handler cleanup consumes the same builtin argument. Its saved source
+;; authenticates that decrement after THROW_SEARCH has removed the continuation.
+def $ob_failure_continuation(OB_START_INVALID_NOTICE pobcreation) = (pobcreation)
+def $ob_failure_continuation(ERROR_HANDLER_INVOKE perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(ERROR_HANDLER_RESULT perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(ERROR_HANDLER_CLEAN perrorcall) = $ob_failure_continuation(perrorcall.RESUME)
+def $ob_failure_continuation(API_CALLBACK_SEND papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_continuation(API_CALLBACK_REF papiargcursor) = $ob_failure_continuation(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_failure_continuation(ptask) = eps -- otherwise
+def $ob_failure_discarded(S, n) = (pobcreation)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $ob_failure_continuation(ptask) = (pobcreation)
+  -- if $ob_failure_task_valid(S[.TODO = ptask :: ptask_tail*], pobcreation)
+  -- if $call_task_valid(S[.TODO = ptask :: ptask_tail*], ptask)
+  -- if $gc_temporary_node(KNOWN pobcreation.VALUE) =/= eps
+def $ob_failure_discarded(S, n) = eps -- otherwise
+def $eager_operation_source(S, THROW_SEARCH n) = OB_START_INVALID_DISCARD pobcreation n
+  -- if $ob_failure_discarded(S, n) = (pobcreation)
+def $task_nodes(OB_START_INVALID_DISCARD pobcreation n) = eps
+def $call_task_valid(S, OB_START_INVALID_DISCARD pobcreation n) = false
+def $ob_failure_discard_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = (n)
+  -- if pdestructionoperation.VALUE = KNOWN PNULL
+  -- if $throwable_live(S, n)
+  -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $ob_failure_valid(S_history, pobcreation)
+def $ob_failure_discard_valid(S, pdestructionoperation) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = $ob_failure_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+def $gc_operation_temporary_extra(S, S_next, THROW_SEARCH n, pnode_slots*) = pgctemporary*
+  -- if $ob_failure_discarded(S, n) = (pobcreation)
+  -- if pgctemporary* = $gc_binary_temp_receipt(KNOWN pobcreation.VALUE)
+  -- if $gc_binary_temp_slots(pgctemporary*, pnode_slots*)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if $ob_failure_discard_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_START_INVALID_DISCARD pobcreation n
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_temporary_bounded(S, pnode)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
 def $gc_operation_temporary_extra(S, S_next, OB_NOTICE_RESULT pobnotice, pnode_slots*) = pgctemporary*
   -- if pobnotice.CREATION = (pobcreation)
   -- if $ob_notice_valid(S, pobnotice)
@@ -851,7 +1076,7 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps
   -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
   -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
-  -- if $ob_creation_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
+  -- if $ob_start_receipt_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
   -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
   -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
   -- if $gc_temporary_bounded(S, pnode)
@@ -895,7 +1120,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
   -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
-  -- if pvalue =/= PNULL /\ ~$ob_creation_ready(S, pconfigcall, pvalue_values*)
+  -- if pvalue =/= PNULL /\ ~$ob_creation_ready(S, pconfigcall, pvalue_values*) /\ ~$ob_failure_ready(S, pconfigcall, pvalue_values*)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)

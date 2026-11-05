@@ -270,7 +270,13 @@ now resolves admitted pure callbacks after conversion without invoking them.
 Its transient handler owner releases before the Notice; normal argument cleanup
 then preserves callback, captured-cell and receiver destructor timing before the
 caller observes false. A Notice handler changing a referenced selector does not
-repeat lookup. Invalid/effectful creation and active handler-body reentry remain partial.
+repeat lookup. [Failed callable lookup](coverage/semantics/output-executor-invalid-review.json)
+now preserves its original failure across Warning callbacks that publish a
+missing function or repair array members. Warning precedes the failed-start
+Notice; current handler selection and real argument/Throwable owners preserve
+cleanup order. A pending Throwable skips an eligible Notice handler, while the
+default Notice still follows reporting and suppression rules. Unresolved or
+effectful lookup and wider reentry remain partial.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
