@@ -1769,6 +1769,13 @@ A reached-state control refuses a cyclic copied table. Object descendants in
 otherwise admitted finite graphs, other alias shapes and callback failures
 remain unvalidated on this receipt.
 
+The [strict Iterator option checks](../../coverage/semantics/config-iterator-stringable-strict-review.json)
+validate the existing strict-caller path for a copied Stringable option. Direct
+and retained first-class INI_SET calls reject argument 1 after Iterator cleanup,
+without calling `__toString`. The raw option and copied COW array remain in
+TypeError TraceArgs until catch release; a selected setter still works after
+its source variable is rebound to a getter. No new semantic rule was needed.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root
