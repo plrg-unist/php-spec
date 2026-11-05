@@ -980,6 +980,18 @@ fronts/157 reported conditions pass, including two malformed-marker guards.
 Compiler-special descendants and wider child/result/control contexts stay partial.
 [Match tick review](coverage/semantics/tick-match-review.json).
 
+ATTR31 uses published compiler operands, redirects and retained effects for
+conditional tick plans. Compiler-elided callable bodies and static errors stay
+absent; runtime-unselected bodies still contribute lexical declarables. Retained
+effects run once, boolean redirects keep their real operation, and Switch cleanup
+uses the selected result kind. Nine normal originals, two explicit hidden-builtin
+refusals and strict compilation of 437 modules pass. Three reached fronts contribute
+130 reported conditions,
+including helper bindings and one malformed-marker guard, at their separate cuts.
+Two initial fixture syntax failures retain zero credit; only affected fronts were
+rerun. Wider child/result/control contexts remain partial.
+[Conditional tick review](coverage/semantics/tick-elision-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -1612,7 +1624,7 @@ records the pointwise bridge to final semantic bytes.
 | GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
-| ATTR31 | Conditional and short-circuit branch elision in tick plans; private implementation/review. |
+| ATTR32 | Coalesce and coalescing assignment tick order and quiet reads; private implementation/review. |
 | Enum callable arrays | Wrong-length and missing-key third-output arrays; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

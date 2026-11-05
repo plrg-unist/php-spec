@@ -31,8 +31,23 @@ are temporaries. The empty-arm case has a CONST-null compiler result and raises
 discarded Match keeps the last compiled arm's line. Completed Match values also
 retain their pending Generator statement marker across suspension. Existing
 switch-subject guards still refuse compiler-special builtin descendants through
-Match, and unproved child-order/elision contexts remain explicit dependencies.
+Match. Wider child-order and elision contexts remain explicit dependencies.
 The source authority is `zend_compile_match` in `Zend/zend_compile.c`.
+
+Conditional plans use the ordinary compiler's published operand, redirect and
+retained-effect receipts. A constant result visits its real effects once; a
+redirect visits effects outside its selected child and then that child. The
+boolean conversion flag keeps its real BOOL operation and temporary result.
+Unpublished prepass rewrites never make an uncompiled branch executable.
+Direct full and shorthand ternaries compile their unselected callable bodies;
+array-element prepasses may instead erase them, including static diagnostics.
+Constant-left logical forms can omit the right body, while a runtime-unselected
+right body still contributes lexical declarables for all four logical aliases.
+Array keys compile before values. Switch subject cleanup uses the same selected
+result receipts. Unproved fixed builtin/fallback descendants in logical operands
+remain Unsupported, including known outer constants retaining those effects.
+The source routes are `zend_compile_short_circuiting`, `zend_compile_conditional`,
+`zend_compile_shorthand_conditional` and `zend_compile_array`.
 
 Admitted Generator sources preserve statement markers across suspension. A bare
 yield keeps its discard before the pending tick; a direct assignment keeps its
@@ -92,6 +107,9 @@ The [Generator tick review](../../coverage/semantics/tick-generator-review.json)
 records the focused source and parked-continuation witnesses.
 The [Match tick review](../../coverage/semantics/tick-match-review.json) records
 arm-order, line, result-kind, abrupt-callback and suspension witnesses.
+The [conditional tick review](../../coverage/semantics/tick-elision-review.json)
+records compiled versus elided bodies, retained effects and canonical marker
+validation with budget/unpause equivalence.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

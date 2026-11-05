@@ -1,0 +1,118 @@
+{
+  "milestone": "ATTR31: compiler-directed conditional tick plans",
+  "status": "Independently accepted bounded implementation; conditional tick compilation and full core remain partial",
+  "target": "PHP8.5.10 CLI NTS64; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "3594d1e99",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "f6493e81869d8e6a788a10fa6788d7286efdbd413df5884c91975a35e712fca2",
+    "scope": "Use actual CODEEXPR/CODEREDIRECT/CODEEFFECT receipts for constant results, selected children and effects. Direct full/shorthand ternaries and four logical forms compile their ordinary children; array keys precede values. Boolean conversion retains its operation and temporary result. Switch subject cleanup uses the same redirects. REDIRECTS/NODES are transient tick-summary context; no machine state, runtime task or compiler receipt schema changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_compile.c",
+    "symbols": [
+      "zend_compile_short_circuiting",
+      "zend_compile_conditional",
+      "zend_compile_shorthand_conditional",
+      "zend_compile_array",
+      "zend_compile_const_expr",
+      "zend_emit_tick"
+    ],
+    "existing_contracts": [
+      "spec/semantics/46-source-compiler.watsup: ppexprbody, ppshort, ppshortfold",
+      "spec/semantics/33-runtime-compiler.watsup: code_redirect, effect_select, effect_outside, EVAL_EFFECT"
+    ]
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/strict-report-v1.json",
+      "sha256": "f0463fa26ca73e8a0a39c1ae685caedd0deb7757876dd3deaea4a7d3ce4d61a0",
+      "passed": true,
+      "revision": "3594d1e9931ed12dd1d8e77b37d4fc286f6fd61e",
+      "modules": 437
+    },
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/source-author-v1/report.json",
+      "sha256": "5a79cb2c11d677cf06fd2eafe35d9b2f2c28a11a7ca10426e8ffe610ff68472b",
+      "passed": true,
+      "revision": "3594d1e9931ed12dd1d8e77b37d4fc286f6fd61e",
+      "agreements": 2,
+      "scope": "Boolean=true redirect retains BOOL after a CV and supplies the real Switch temporary-release marker; direct shorthand compiles an unselected callable body."
+    },
+    "author_outside_effect": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/source-author-effect-v1/report.json",
+      "sha256": "423593c5b2bdfaae94366d3e00a2e57252c5d182fd5a40f03cc5bf86047fa04f",
+      "passed": true,
+      "revision": "a6bf29ee804af59d2a32957cc648bb84e6f60adb",
+      "agreements": 1,
+      "scope": "Retained left-print effect outside a selected CV redirect runs once before BOOL and the statement marker."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/source-review-v1/report.json",
+      "sha256": "9cca437aa3ba19fe12733ef4700f398105323054d492907511dbc2b54511606d",
+      "passed": true,
+      "revision": "a6bf29ee804af59d2a32957cc648bb84e6f60adb",
+      "agreements": 6,
+      "unsupported_controls": 2,
+      "scope": "Direct versus array-prepass ternary callable/diagnostic compilation; four constant and four runtime-unselected logical aliases; retained print and selected dynamic redirects. Fixed builtin hidden result kinds remain explicit refusals with zero agreement credit."
+    },
+    "independent_reached": {
+      "disposition": "Three accepted fronts across their actual cuts; the first whole packet remains false and contributes only its completed42-condition row.",
+      "groups": 3,
+      "reported_conditions": 130,
+      "group_conditions": [
+        42,
+        44,
+        44
+      ],
+      "labeled_malformed_marker_guards": 1,
+      "count_note": "Reported conditions include helper bindings; counts are not independent semantic assertion counts.",
+      "packets": [
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/review-protocol-v1/run/report.json",
+          "sha256": "b55806b18d815495a4d5b606f3926e766a856689b5a29b09b18c8bbddf9aa79b",
+          "packet_passed": false,
+          "revision": "3594d1e9931ed12dd1d8e77b37d4fc286f6fd61e",
+          "accepted_groups": [
+            {
+              "id": "prepass-selected-arm-omits-unselected-diagnostic-and-markers",
+              "reported_conditions": 42
+            }
+          ],
+          "process": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/review-protocol-v1/process.json",
+          "process_sha256": "49537cb236ec9b103d8ae82f983cc7dab1e747c73b45d755d42abcd51bcdcc0d"
+        },
+        {
+          "report": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/review-protocol-v2/run/report.json",
+          "sha256": "d4aae3ac2559492ff19a2b1689ba8b68f12c2e7567076ee1468b781e43ab9628",
+          "packet_passed": true,
+          "revision": "8442a97b22680ee2303e3c38f1165152b589eab3",
+          "accepted_groups": [
+            {
+              "id": "constant-logical-aliases-preserve-real-opcode-adjacency",
+              "reported_conditions": 44
+            },
+            {
+              "id": "retained-print-survives-constant-result-without-skipped-redirect",
+              "reported_conditions": 44
+            }
+          ],
+          "process": "/home/user/workspace/php-spec-evidence-archive/tick-elision-31/review-protocol-v2/process.json",
+          "process_sha256": "a7a0e3ff164b31ccdc122148de2db81f84bc5346c171b820c2e474e3fdaf6d24"
+        }
+      ],
+      "scope": "Genuine compiled prepass code authenticates the selected redirect/effect and absent bad-Closure compiler/marker facts. A real final TICK proves only two outer markers after four constant logical aliases; a forged line refuses. Retained print EVAL_EFFECT proves CONST plus its real effect and no published redirect for the skipped RHS. All three fronts finish to native-observed bytes with budget/unpause equivalence."
+    }
+  },
+  "behavior": "A constant operand visits only its actually retained effects. A published redirect visits effects outside the selected child and then the child; its boolean flag preserves BOOL emission. Self-effect roots use raw traversal once before children consult normal compiler facts. Unvisited prepass redirects cannot expose uncompiled callable declarations or static errors. Runtime-unselected compiled bodies still change file-local frequency. Pure rewrites preserve adjacency; real effects, jumps and conversions break it.",
+  "remaining": "Resolved fixed builtin/fallback descendants in logical operands are conservatively Unsupported even before the CONST fast path; known outer constants retaining uncertain builtin effects may therefore refuse. Existing Switch subtree guards stay in place. Coalesce, wider child orders, compiler-special result receipts, callback and lifecycle combinations remain partial.",
+  "environment": "Exact source bytes, file paths/cwd, commands, raw streams/exits and runtime/helper/module identities remain external. Controlled sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached runs use CPU5. Provisioned regular copied tools establish no rebuild or portability claim.",
+  "zero_credit": [
+    "Initial native-only controls preparation accidentally inserted a controls mapping inside a PHP triplequoted fixture and failed before records. The false preparation remains zero credit; the corrected controls retained the six normal originals byte-for-byte.",
+    "The first reached packet preserves two pre-execution fixture syntax failures from missing parentheses around concrete PORIGIN path lists. Only its completed42-condition front is credited; fixture correction8442a97b2 reran only the two affected44-condition fronts at unchanged production. No semantic failure or source repetition occurred.",
+    "The two explicit Unsupported controls have zero source agreement credit. No prior ATTR30 or disjoint Generator API replay was run.",
+    "No engine bug or intentional semantic divergence is claimed; full core remains partial."
+  ],
+  "independent_review": "/root/attributes_review accepted production3594d1e99 and the three scoped fronts; final393 hash matches its independently executed tree."
+}

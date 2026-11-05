@@ -299,7 +299,10 @@ adjacency; unproved compiler-special subjects and wider placement/callable forms
 remain explicit dependencies. Witnessed Generator markers survive yield/SEND
 pauses and flat-array delegation while sharing the caller's request counter.
 Match plans preserve all-condition compilation before arm results, lexical
-effects from unselected arms and assignment/discard marker lines.
+effects from unselected arms and assignment/discard marker lines. Conditional
+plans use published compiler redirects and retained effects to distinguish
+elided bodies from runtime-unselected bodies, preserving real BOOL operations
+and static-diagnostic omission.
 
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;
