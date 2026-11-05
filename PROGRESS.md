@@ -1364,7 +1364,18 @@ have separate affected controls. The [review](coverage/semantics/anonymous-metho
 retains scoped source/state cuts, the initial name mismatches, fixture correction,
 short-path guard failure and timeouts. Attributed/generator/by-reference-return
 factories, anonymous owner explicit-interface headers/traits/constants and
-dynamic units remain partial.
+dynamic units remained partial at that cut.
+
+CLASS183 shares ordinary explicit-interface headers and trait/constant members
+with unit0 anonymous factory owners. Provisional raw interfaces and the compiler
+early marker preserve parent/first-interface prefixes and source-order child
+keys; member completion stays in place. Constant callables, trait-inferred
+Stringable and deferred scopes reuse the existing runtime. Selected original
+programs and distinct source/runtime state groups cover composition, owner scope,
+forgery refusal and compile/link order. The
+[mixed-owner review](coverage/semantics/anonymous-owner-declarations-review.json)
+records actual cuts and native-only preparation separately. Trait-owned source
+factories, attributes and wider dynamic/member/lifetime contexts remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -1559,7 +1570,7 @@ wider rejected-source/compiler behavior remains partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS183 | Anonymous owner interfaces and trait/constant siblings; private implementation/review. |
+| CLASS184 | Trait source methods and Closures with anonymous factories; private implementation/review. |
 | I110 | Literal nullsafe native Generator API selection; private implementation/review. |
 | GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |

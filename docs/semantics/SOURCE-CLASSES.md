@@ -687,13 +687,13 @@ lazy final-link errors use the ordinary runtime rules. An abrupt unit drains
 child warnings before its fatal and skips only authenticated child checkpoints
 whose class images were never installed. The [owner factory review](../../coverage/semantics/anonymous-owner-factories-review.json)
 separates native source comparisons, reached compiler/runtime steps and source
-boundary checks. Method-owned Closures, arrows and nested functions, owner
-traits/constants and later dynamic units remain outside this admitted source slice.
+boundary checks. At that cut, method-owned Closures, arrows and nested functions,
+owner traits/constants and later dynamic units remained outside the source slice.
 
 An anonymous owner may also declare an ordinary public, class-free
 `__toString` sibling beside its child factory. The provisional descriptor
-remains compiler-local with empty methods and interfaces; successful member
-compilation replaces it in place with the implicit `Stringable` interface and
+remains compiler-local with empty methods and its declared interfaces; successful
+member compilation replaces it in place with the implicit `Stringable` interface and
 clears its early status. Owner, child and later root keys retain source order
 whether `__toString` appears before or after the factory, in a parented owner,
 or in nested Stringable owners. The ordinary method compiler keeps invalid
@@ -715,10 +715,23 @@ Compiler-folded `__METHOD__` preserves the complete Closure name, including
 nested scopes; lexical `__CLASS__` retains the declaring owner. Ordinary method
 `__METHOD__` retains its class and method name.
 Named nested functions, factories with attributes, generator bodies or
-by-reference returns, anonymous owner explicit-interface headers, trait/constant
-siblings and later dynamic units remain partial. The
+by-reference returns and later dynamic units remain partial. The
 [method Closure factory review](../../coverage/semantics/anonymous-method-closure-factories-review.json)
 separates exact originals, runtime states and source-derived context queries.
+
+Anonymous owners with child factories also admit ordinary explicit-interface
+headers and class-free trait/constant siblings. Their provisional descriptor
+retains the declared interface list and compiler early marker; the generated
+prefix uses the parent or first interface reference. Member completion replaces
+the owner in place without changing source-order child keys. Own constants,
+constant callables, trait data and deferred factories use the existing rules.
+Trait-inferred `Stringable` appears in the linked view without replacing the raw
+header or generated name. Trait composition precedes interface validation and
+constructor arguments, while constant and child compilation retain member order.
+The [mixed-owner review](../../coverage/semantics/anonymous-owner-declarations-review.json)
+distinguishes original execution, genuine reached states and source-derived
+reservation refusals. Trait source owners, attributes, generator/by-reference
+factories and wider dynamic/member/lifetime contexts remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

@@ -5142,10 +5142,12 @@ Trait source owners, generators, byref returns and attributes remain partial.
 Unit0 anonymous owner methods and constructors reserve their key before compiling
 child factories. Admitted method-owned Closures and arrows also preserve nested
 lexical names, captures and actual receiver lifetime; folded `__METHOD__` uses the
-complete Closure name. Anonymous owners with factories still exclude explicit
-interface headers and trait/constant siblings; wider deferred and dynamic contexts
+complete Closure name. These owners also share ordinary interface, trait and
+constant compilation, preserving declared interface prefixes, composed Stringable
+scope and diagnostic order before arguments. Wider deferred and dynamic contexts
 remain partial. [Owner factories](coverage/semantics/anonymous-owner-factories-review.json),
-[method Closure factories](coverage/semantics/anonymous-method-closure-factories-review.json).
+[method Closure factories](coverage/semantics/anonymous-method-closure-factories-review.json),
+[mixed owner declarations](coverage/semantics/anonymous-owner-declarations-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

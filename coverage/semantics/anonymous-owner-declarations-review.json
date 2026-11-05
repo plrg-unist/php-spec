@@ -1,0 +1,94 @@
+{
+  "scope": "CLASS183: unit0 anonymous owners retain existing ordinary explicit-interface headers and class-free trait/constant siblings beside direct or method-owned Closure/arrow child factories. Provisional raw interfaces, compiler EARLY and generated prefixes are authenticated before ordinary in-place member completion.",
+  "base": "415ead6079a23e96c746969e46d1be6140411d94",
+  "implementation_commit": "7286c10387feb5deb67d61feb0003352b7278594",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c zend_generate_anon_class_name and zend_compile_class_decl reserve the generated identity before members; parent/first-interface references determine the prefix",
+    "Zend/zend_inheritance.c zend_do_link_class composes trait constants/properties before zend_do_implement_interfaces; duplicate interfaces are checked inside the latter",
+    "Existing ordinary constant/member compilation and trait/interface linking preserve their diagnostic stages and source order"
+  ],
+  "author": {
+    "native_preparation": {
+      "catalogue_cases": 16,
+      "model_selection": [
+        "owner-own-constants",
+        "owner-interface-prefix",
+        "owner-trait-data",
+        "owner-trait-stringable",
+        "owner-composed-closure-factory",
+        "owner-constant-callable",
+        "owner-trait-constant-conflict",
+        "owner-child-warning-before-constant-fatal"
+      ],
+      "unselected_native_only": 8,
+      "agreement_credit": "Only the eight explicitly selected model/native originals are claimed. Other pinned-native probes are design inputs, not semantic agreement."
+    },
+    "source_smoke2": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class183-owner-declarations/author/class180-source-h1z6h6iz/report.json",
+        "sha256": "c5dbafdafddd29b968a0daa990b19cefe02e040d645bb68f49c49e0856fc5dbe"
+      },
+      "result": "2 exact raw stdout/stderr, status and process exits; stable inputs"
+    },
+    "source_distinct6": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class183-owner-declarations/author/class180-source-_9z9urau/report.json",
+        "sha256": "aba083cec7a5a2426b502e28b625348aa7ba6c6f6ef08d83b42af2c4a5d3f817"
+      },
+      "result": "6 exact raw stdout/stderr, status and process exits; stable inputs"
+    },
+    "checked_SL435": {
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class183-owner-declarations/author/closure-call-protocol-u8aob_as/report.json",
+        "sha256": "9d49497f43cd67ef0e9890d1db97d229256c9715133df18f5aa61cd3c6445010"
+      },
+      "pure_reservation_and_refusal_queries": 27,
+      "source_compiler_setup": 7,
+      "genuine_runtime_and_resumption": 35,
+      "result": "Both selected groups true newline/exit0/empty stderr, stable inputs; runtime distinguishes raw versus linked Stringable views and split/full execution"
+    },
+    "commands": [
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_owner_declaration_cases.json --case owner-own-constants --case owner-interface-prefix",
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_owner_declaration_cases.json --case owner-trait-data --case owner-trait-stringable --case owner-composed-closure-factory --case owner-constant-callable --case owner-trait-constant-conflict --case owner-child-warning-before-constant-fatal",
+      "python3 tests/semantics/anonymous_owner_declaration_protocol.py"
+    ],
+    "failures": "No author semantic/fixture failures in these selected first-attempt cuts."
+  },
+  "remaining": [
+    "Trait-source-owned factories, attributes/hooks and generator/by-reference-return factory contexts",
+    "Factories inside other magic methods, wider declaration/initializer/type combinations and dynamic source units",
+    "Wider callbacks, source acquisition and ownership/lifetime contexts"
+  ],
+  "preservation": {
+    "author_raw_root": "/home/user/workspace/php-spec-evidence-archive/class183-owner-declarations/author",
+    "notes": "Raw source/file/cwd identities, argv, profiles, binary/module fingerprints, streams and exits are in the referenced reports. Native preparation is separate. External artifacts are not operational or Git inputs."
+  },
+  "review": {
+    "reviewer": "classes_review",
+    "decision": "accepted",
+    "semantic_cut": "7286c10387feb5deb67d61feb0003352b7278594",
+    "independent_record": "coverage/semantics/anonymous-owner-declarations-independent.json",
+    "basis": "Independent5 exact source originals, combined raw/live header ownership/resumption52, updated source boundary35 and lightweight scope/documentation review are clear. The initial180s timeout and compile-only diagnostic retain zero native agreement."
+  },
+  "summary": {
+    "distinct_authored_source_agreements": 8,
+    "distinct_independent_source_agreements": 5,
+    "author_checked_SL435": {
+      "pure_reservation": 27,
+      "compiler_setup": 7,
+      "runtime_resumption": 35
+    },
+    "independent_checked_SL435": {
+      "compiler_setup": 7,
+      "runtime_resumption_retirement": 45
+    },
+    "notes": "Independent exact-source300s retry resolves an earlier180s runtime timeout; compile-only diagnostic and timeout retain zero native agreement. Per-cut details and independent decision are in the separate independent record.",
+    "maintained_source_boundary_conditions": 35
+  }
+}
