@@ -203,10 +203,29 @@ still makes its weak get live, including through a caught Child throw.
 
 Map dimension access during this nested callback remains Unsupported; the
 temporary empty storage image gives no authority to observe native hash
-occupancy. Two declared-child Values and wider tables or ownership graphs remain
-outside this increment. The [two-entry Map review](../../coverage/semantics/gc-two-entry-map-first-review.json)
+occupancy. At the GC40 cut, two declared-child Values and wider tables or
+ownership graphs remained outside that increment. The [two-entry Map review](../../coverage/semantics/gc-two-entry-map-first-review.json)
 records original-source comparisons, reached owner transfers and budget replay,
 and explicit Unsupported controls separately.
+
+GC41 replaces the two-entry pairing with one finite entry fold for ordinary
+multi-entry Map-first free. Each direct Value is a methodless leaf or has the
+same exact one-property declared Child layout. Values may repeat across entries
+or retain outside strong owners; Child ownership is any positive physical count. Every
+slot still contributes its own release job, so shared Values and Children
+destruct only when their last real owner releases. Entry order determines which
+later Values remain weakly live inside an earlier Child callback, including
+when an earlier Child throws and cleanup continues through the later entries.
+
+Keys enter free as held leaf `stdClass` objects registered only in this Map; no
+incoming Map-key registration or active cursor is admitted. The fold changes Map-free
+admission only; empty and singleton Maps keep their earlier guards. It retains
+the exact one-property check even when a second null property would add no heap
+edge. Freeing-Map dimension access/mutation, wider
+property layouts, active-pin collection and wider caller contexts remain partial.
+The [finite Map review](../../coverage/semantics/gc-finite-map-first-review.json)
+separates newly authored sources, the freshly promoted two-Child control and
+source-reached multiplicity/budget checks from historical evidence.
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

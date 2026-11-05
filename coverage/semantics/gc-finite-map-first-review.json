@@ -1,0 +1,63 @@
+{
+  "scope": "GC41: ordinary finite multi-entry Map-first free of direct methodless leaf Values or exact one-public-untyped-declared-Child Values. Repeated Value slots, outside Value owners and any positive physical Child ownership use the existing per-slot release jobs. Keys are held leaf stdClass objects registered only here; no incoming Map-key registration or active cursor.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "37e95f7fd",
+  "semantic_revision": "0449fafbb",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "c12546422712f12f8efcfcdc22448065e94b7dc33b6523c28645d62118bc3697"
+  },
+  "tested_revisions": {
+    "author_native_and_baseline": "20643f47e73a88d1cb89a508b2ebea9f1b94878a",
+    "author_model": "0f56704ea0fb6d63b0735da8e33293f0f1055a05",
+    "source_reached": "2a5bb984a06fb54302a1bca39cb0fcd267f34d6e",
+    "independent_models": "c1c574aa2705b7d97fa519739fd13e3ebf60db6a"
+  },
+  "rule_basis": "One recursive direct-entry fold replaces the exacttwo pairing. Each unique leaf Key keeps its allocation/property/BEFORE/sole-Map-registration checks; the Value guard reuses the methodless leaf policy or exact one-property declared-Child layout at its actual positive physical Child-owner count. Entry count and Value/Child owner1 caps are removed from this multi-entry free arm. Existing all-key unregister, ordered jobs, shared release, storage pins, weak notification and pending-throw cleanup are unchanged. Every duplicate Value slot transfers a separate physical owner; later Values drain after an earlier Child throws.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakrefs_hash_clean_ex,zend_weakmap_free_obj",
+    "vendor/php-src/Zend/zend_hash.c:zend_hash_clean",
+    "vendor/php-src/Zend/zend_objects.c:zend_object_std_dtor",
+    "vendor/php-src/Zend/zend_objects_API.c:zend_objects_store_del"
+  ],
+  "counts": {
+    "exact_sources": 4,
+    "newly_authored_exact_programs": 3,
+    "promoted_prior_control": 1,
+    "author_exact_sources": 2,
+    "independent_exact_sources": 2,
+    "unsupported_controls_zero_agreement": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 85
+  },
+  "validation": {
+    "source": "Four-entry first/third distinct Children preserve remaining-Value weak order. A four-entry first-Child throw drains the later leaf and two further Child callbacks before catch. Repeated Va slots with outside Va ownership and Vb sharing its Child retain Va/Child past Map death and defer the Child destructor until later unset Va. The prior GC40 two-Child control is freshly native/model compared here. All four agree exactly.",
+    "reached": "One strict-SL source-reached group checks Vaowner3, Vb/leafowner1 and sharedChildowner2; all4 Key detachments; exact4-job transfer with duplicate Va preserved; and the first direct shared job Va3-to2 with Childowner2 unchanged. Paused driver TODO/allocations, Va2/Child2 and validity plus zero/nonzero budget replay through full completion pass. Remaining Va2-to1 and Child2-to1 are supported by original-source weak/destructor observations and unchanged shared-release reasoning, not separate numeric checkpoints.",
+    "unsupported": "A producer-reachable Value with child plus a second null declared property still refuses at multiple-entry storage destruction after B|, even though that extra field adds no child edge. This control has zero agreement."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc41_four_entry_child_order.php": "9d3dae3621e8d06d5df1aaf9c13acbb1d9ff8b5128b804601d01bb7c25bb62cf",
+    "tests/semantics/gc40_peer_two_fields_boundary.php": "dd735a5a19e407fd81feeb7b2452515f133320ece3498e6d60134d56171b16ce",
+    "tests/semantics/gc41_peer_many_children_throw.php": "ece60cf720e93c853123df75db13369977c3aa0b3b656a8f4ae78b7ee2436733",
+    "tests/semantics/gc41_peer_shared_retained_value.php": "e533db5d7ac6e3c3ca386aaa1cd10b74f49c79259b61152c8312df9acdd3ab8d",
+    "tests/semantics/gc41_peer_extra_slot_boundary.php": "aeb4b4f11804c9864e8e86e8ea2edd3ef32e4462f82d6cd19d3365387c046fdd"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-finite-map-first-author-41/native-v1/native-report.json": "c8e69d555b96e6e3098f9448f0a4fa02a6b23174b28a8da73c142331c2eb988a",
+    "../php-spec-evidence-archive/gc-finite-map-first-author-41/native-v1/baseline-report.json": "881d9de9b79300f3db5910abf8016ea69d8fc954f00196badca5bf0380a92378",
+    "../php-spec-evidence-archive/gc-finite-map-first-author-41/native-v1/model-report.json": "593e5327bc6af8866ccb6dbeb29ced1dc80dcfba7d27018b7c423b8b5c8235a0",
+    "../php-spec-evidence-archive/gc-finite-map-first-author-41/reached-final-2a5-v1/report.json": "ddbb633c46a6a45f7ceacd2424b883a49e4bd43786ba16306dbba05e85445675",
+    "../php-spec-evidence-archive/gc-finite-map-first-peer-41/native-v1/native-report.json": "9b8fdbc7cba5edc5e94aca35b07880b2823926b4ac1d5cbc8018b3faefd3ba4d",
+    "../php-spec-evidence-archive/gc-finite-map-first-peer-41/native-v1/model-four-entry-first-child-throw-duplicate-value-shared-retained-child-report.json": "f08abae0bbf2f26cd04d58a962506bee02413a7db33b93f4d2ca5357787472d7",
+    "../php-spec-evidence-archive/gc-finite-map-first-peer-41/extra-slot-v1/native-report.json": "4f7c1b9ffe54c77d401111603d66473b52934955d0059f82269f07eae9be4c71",
+    "../php-spec-evidence-archive/gc-finite-map-first-peer-41/extra-slot-v1/model-extra-declared-slot-boundary-report.json": "fdd2d64a262afc87b9be43a35a488843baa3cf6bbc7d14c2f26da33600dc96e2"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-finite-map-first-author-41/manifest.json": "a14b320304ab7ef11d944a309c4bcdd43b6e1036ff60926dfa88766f892a7d12",
+    "../php-spec-evidence-archive/gc-finite-map-first-peer-41/independent-summary.json": "b8ac4d83336259c74d4049e859d888c3f706dcc7f7de3a82b47cb0becef129a4"
+  },
+  "zero_credit": "The author20643 four-entry baseline is explicit Unsupported after B| and retains zero agreement. The original4255 reached fixture overclaimed full equality between two bare PhpSteps and the driver state, which also performs ownership/GC bookkeeping; its failed raw run is preserved with zero acceptance credit. Corrected2a5 projects the paused owner state and compares full driver completion after resume, with unchanged runtime/source bytes. The GC40 two-Child refusal retains its historical zero credit; the fresh GC41 comparison is separate.",
+  "limits": "Finite multi-entry free only: methodless leaf or exact one-public-untyped-declared-Child Value layouts; fieldless public no-argument destructor Child; no incoming Map-key registration/cursor, held leaf stdClass Keys registered only here. Empty/singleton Map guards, writes/reads/key notification/foreach and graph/owner/count algorithms are unchanged. Wider declared/dynamic/typed/reference/inherited property layouts, freeing-Map dimension access/mutation, active-pin GC and wider caller contexts remain partial. Shared/outside owner provenance is not constrained by the guard; accepted sources use repeated Map slots, two Value properties and an outside Value CV. Held GC35 work is untouched.",
+  "recovery": "Run gc41_finite_map_first_sources.py native then model into a fresh external output; select baseline four-entry-child-order at20643 if recovering the old refusal. Run gc41_peer_finite_sources.py native then model for normal2 and extra-declared-slot-boundary selections. Run gc41_finite_map_first_state.py for strict SL. Reports preserve exact commands, original bytes, profiles, process outcomes and cuts. GC40 helper-state fixture names are updated and its prior two-Child case moves to GC41; historical source/reached evidence is not renewed.",
+  "review": "Independent static review of the finite fold, source models and corrected reached assertions is CLEAR; final documentation/ledger read-only review is requested on the completed private candidate."
+}

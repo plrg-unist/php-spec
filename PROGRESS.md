@@ -571,9 +571,23 @@ Nested Map/Value pins preserve weak visibility through a caught Child throw.
 Three fresh originals agree, including Child throws in both positions, and
 112 reached conditions (author72, independent40) pass at their recorded cuts.
 Map dimension access during the nested callback and two declared-child Values
-remain explicit Unsupported with zero agreement. Original-source, ownership
+were explicit Unsupported with zero agreement at that cut. Original-source, ownership
 transfer and budget evidence is recorded in the
 [GC40 review](coverage/semantics/gc-two-entry-map-first-review.json).
+
+GC41 replaces the two-entry Map-free pairing with a finite fold over direct
+methodless leaves and exact one-declared-Child Values. Physical Value and Child
+ownership may be shared or retained outside the Map; each slot keeps its own
+ordered release job. Repeated Values, shared Children and pending later Child
+cleanup compose with the existing physical pins and caught-throw protocol.
+Held leaf Keys registered only in this Map, no incoming Map-key registration
+and no active cursor remain required. The old two-Child control receives fresh
+agreement in this milestone; its GC40 refusal keeps zero historical credit.
+Four exact sources (three newly authored, one promoted) and one 85-condition
+reached multiplicity/budget group pass at their recorded cuts.
+Extra declared fields and freeing-Map dimension access remain Unsupported;
+wider layouts, mutation, active-pin collection and caller contexts remain partial.
+[GC41 review](coverage/semantics/gc-finite-map-first-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -1430,7 +1444,7 @@ wider rejected-source/compiler behavior remains partial.
 | --- | --- |
 | CLASS182 | Anonymous child factories inside method-owned Closures and arrows; private implementation/review. |
 | I109 | Native Generator method named/ARRAY-packed argument reception; private implementation/review. |
-| GC41 | Finite-entry WeakMap release generalization; private implementation/review. |
+| GC42 | Finite declared-property WeakMap value cleanup; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
 | ATTR29 | Yield/yield-from tick compilation and counter/resumption behavior; private implementation/review. |
