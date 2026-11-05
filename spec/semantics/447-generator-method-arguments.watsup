@@ -24,6 +24,10 @@ def $generator_api_arguments(phpType7*) = (($named_present(phpType7*) \/ $call_u
 def $generator_api_site(S, porigin) = true
   -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_api_arguments(phpType7*)
+def $generator_api_site(S, porigin) = true
+  -- if $generator_capture_wrapper_site(S, porigin)
+  -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
+  -- if $generator_arguments_supported(phpType7*)
 def $generator_api_site(S, porigin) = false -- otherwise
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
@@ -68,6 +72,7 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FI
 rule PhpStep/generator-api-collected: S ~> S[.TODO = (GENERATOR_ARGS pgeneratorop eps $getclass_trace_operands(pconfigcall.SENT)) :: ptask_tail*][.ORIGIN = (pconfigcall.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$generator_capture_wrapper_site(S, pconfigcall.SITE)
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
   -- if $generator_api_kind(pconfigcall.KIND)
   -- if pconfigcall.OWNER = (n)
