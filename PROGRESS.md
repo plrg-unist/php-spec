@@ -919,34 +919,26 @@ sort-prefix elaboration failure retains zero credit. Attributes and wider
 member/type/initializer contexts remain partial.
 [Review](coverage/semantics/anonymous-own-constants-review.json).
 
-CLASS173 shares finite ordinary anonymous property groups with the named-class
-compiler/runtime: multiple and nonliteral defaults, visibility, static cells and
-readonly checks preserve full private keys and source identity. Deferred defaults
-finish before no-argument constructorless allocation; a missing anonymous-class
-constructor-task classifier case is now explicit. Fifteen exact originals,
-strict434, 87 author and 124 independent reached conditions pass at scoped cuts.
-The original default-allocation and classifier failures remain zero credit.
-Attributes/hooks/promotion/asymmetric setters/final properties and wider contexts
-remain partial. [Review](coverage/semantics/anonymous-properties-review.json).
+CLASS173–175 share ordinary anonymous property compilation, final/asymmetric
+modifiers and parameter promotion with the existing named-class rules. Deferred
+defaults finish before allocation; private keys, lexical setter permission,
+reference constraints, eval/self identities and native compile/link ordering are
+preserved. The pinned engine's final/private promotion acceptance remains distinct
+from ordinary property declarations. Original failures and qualified standalone
+warning evidence retain their actual cuts in the
+[property](coverage/semantics/anonymous-properties-review.json),
+[modifier](coverage/semantics/anonymous-property-modifiers-review.json) and
+[promotion](coverage/semantics/anonymous-promotion-review.json) reviews.
 
-CLASS174 shares the finite named-property modifier predicate with ordinary
-anonymous groups, including final and asymmetric setters. Setter normalization,
-lexical permission/called-scope display, writable final fields and explicit
-public(set) readonly initialization retain source authority. Twelve exact
-originals, strict434, 120 author and 136 independent reached conditions pass;
-two author fixture corrections retain zero credit. Attributes/hooks/promotion
-and wider contexts remain partial.
-[Review](coverage/semantics/anonymous-property-modifiers-review.json).
-
-CLASS175 shares ordinary parameter promotion with anonymous methods/constructors.
-Promoted values/defaults precede the body; references attach their property type
-source to the actual cell. Full NParam/private-key and eval/self identities,
-readonly reference refusal and native final/private acceptance are preserved.
-Fifteen exact originals, strict434, 178 author and 203 independent reached
-conditions pass; ten focused diagnostic checks retain qualified unused-forward
-warnings. Original fixture/recorder failures remain separate, with completed
-components explicitly adjudicated. Attributes/hooks/nonpublic constructors and
-wider contexts remain partial. [Review](coverage/semantics/anonymous-promotion-review.json).
+CLASS176 admits readonly anonymous headers through those same member/runtime
+rules. Physical class-token metadata and compiler counters authenticate names
+and readonly bits; implicit fields, clone reinitialization, private keys and
+recompiled self scopes retain source authority. Fifteen exact originals,
+strict435, 144 metadata checks, 157 author and 220 independent reached conditions
+pass at scoped cuts. The original dynamic-property display mismatch and author
+metadata-sequence elaboration failure remain zero credit. Attributes/hooks,
+nonpublic constructors and wider contexts remain partial.
+[Review](coverage/semantics/anonymous-readonly-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

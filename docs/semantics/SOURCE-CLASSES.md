@@ -598,6 +598,27 @@ retains source/prologue/reference and compile/link evidence. Attributes, hooks,
 nonpublic constructor admission and wider signature/default/lifetime contexts
 remain partial.
 
+Readonly anonymous headers use the same finite ordinary member grammar. The
+header's readonly bit reaches declared and promoted properties, parent/trait
+checks and both compiler-counter receipt routes. Readonly headers require one
+in-range `classKeywordLine` fact from the actual class token; the frontend skips
+attribute token ranges before scanning. Missing, duplicate and out-of-range
+facts are refused. Ordinary headers retain their prior line behavior. Stored
+class names, private keys and source origins remain complete.
+
+Initialization and later writes use the existing readonly runtime. Clone callbacks
+may reinitialize each copied field once; a second or manual callback write fails.
+Explicit public(set) permits first global initialization, while reference promotion
+fails before the body without attaching a property type source or changing the
+donor. Compatible readonly parents, imported readonly trait fields/Stringable and
+separate eval/self scopes retain their ordinary identities. Incompatible parents
+and trait fields fail before constructor arguments/allocation; invalid typed,
+default and static declarations fail during compilation. Only the exercised
+readonly trait/dynamic-property diagnostic class operands are clipped at NUL.
+The [readonly review](../../coverage/semantics/anonymous-readonly-review.json)
+records the scoped source, metadata and reached-state checks. Attributes, hooks
+and wider member/type/lifetime combinations remain partial.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the

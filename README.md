@@ -5014,6 +5014,16 @@ final/private promotion through its separate parameter route; ordinary property
 groups retain their rejection. Attributes, hooks and wider constructor/signature
 contexts remain partial. [Promotion review](coverage/semantics/anonymous-promotion-review.json).
 
+Readonly anonymous classes share the admitted ordinary member, parent and trait
+rules. Their header makes declared and promoted fields readonly; clone callbacks
+retain the existing one-write reinitialization window. Source metadata records
+the physical `class` token line, even when `new`, `readonly` and `class` span
+different lines, and compiler counters authenticate the readonly bit and name.
+Private keys and eval identities retain full names. Dynamic writes, references,
+invalid declarations and incompatible parents/trait fields retain native errors.
+Attributes, hooks and wider contexts remain partial.
+[Readonly review](coverage/semantics/anonymous-readonly-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
