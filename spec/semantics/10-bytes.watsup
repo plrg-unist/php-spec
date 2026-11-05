@@ -70,6 +70,6 @@ def $ptlc(octet*) = ($ptlower(octet))*
 ;; C string arguments stop at the first NUL.
 dec $c_string(nat*) : nat*
 def $c_string(eps) = eps
-def $c_string(0 :: n_tail*) = eps
-def $c_string(n :: n_tail*) = n :: $c_string(n_tail*)
-  -- if n =/= 0
+def $c_string(0 :: octet_tail*) = eps
+def $c_string(octet :: octet_tail*) = octet :: $c_string(octet_tail*)
+  -- if octet =/= 0
