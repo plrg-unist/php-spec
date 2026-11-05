@@ -973,14 +973,14 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "send") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "send")
-  -- if $config_iterator_owning_release(S, pconfigiterator)
+  -- if $config_iterator_owning_release(S, pconfigiterator) \/ $generator_iterator_site(S, pconfigiterator.CALL)
   -- if S_next.COMPLETION = THROWN "Error" preqbytes z
   -- if S_next = $config_iterator_send(S, pconfigiterator, ptask_tail*)
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
-  -- if $config_iterator_owning_release(S, pconfigiterator)
+  -- if $config_iterator_owning_release(S, pconfigiterator) \/ $generator_iterator_site(S, pconfigiterator.CALL)
   -- if $config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, S.RESULT)
   -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
   -- if S_next.COMPLETION = THROWN "Error" ($ptascii("Keys must be of type int|string during argument unpacking")) z
@@ -1181,7 +1181,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if $config_iterator_retired_scope(S_scope, pconfigiterator)
   -- if $useriter_cursor_count(S_scope.ITERATORS, pconfigiterator.ITERATOR) = 0
   -- if ~(text <- ["ready", "input-release"])
-  -- if text = "key" \/ text = "send" \/ $config_iterator_argument_nodes(pconfigiterator) =/= eps
+  -- if text = "key" \/ text = "send" \/ $config_iterator_argument_nodes(pconfigiterator) =/= eps \/ $generator_iterator_site(S_scope, pconfigiterator.CALL)
   -- if $config_iterator_stage(S_scope, pconfigiterator, text)
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = CONFIG_ITERATOR pconfigiterator "input-release"
