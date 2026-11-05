@@ -14,6 +14,8 @@ dec $encoding_declare_item(pcnode) : bool
 dec $encoding_declare_count(phpType49*, int, int) : nat?
 dec $declare_header_lines(metadata) : int*
 dec $declare_header_tokens(metadata) : int*
+dec $declare_header_line_entry(metadataEntry) : int?
+dec $declare_header_token_entry(metadataEntry) : int?
 dec $declare_header_absent(metadata) : bool
 dec $declare_header_items(phpType49*, int, int, int, int) : bool
 dec $declare_header_body(phpType47, int, int, int, int) : bool
@@ -114,12 +116,20 @@ def $ppstrict_line(eps) = 0
 
 def $encoding_declare_item(NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = ($ptlc($base64(text)) = $ptascii("encoding"))
 def $encoding_declare_item(pcnode) = false -- otherwise
+def $declare_header_line_entry(MdeclareHeaderCloseLine z) = (z)
+def $declare_header_line_entry(metadataEntry) = eps -- otherwise
+def $declare_header_token_entry(MdeclareHeaderCloseTokenPos z) = (z)
+def $declare_header_token_entry(metadataEntry) = eps -- otherwise
 def $declare_header_lines(eps) = eps
-def $declare_header_lines((MdeclareHeaderCloseLine z) :: metadata) = z :: $declare_header_lines(metadata)
-def $declare_header_lines(metadataEntry :: metadata) = $declare_header_lines(metadata) -- otherwise
+def $declare_header_lines(metadataEntry :: metadata) = z :: $declare_header_lines(metadata)
+  -- if $declare_header_line_entry(metadataEntry) = (z)
+def $declare_header_lines(metadataEntry :: metadata) = $declare_header_lines(metadata)
+  -- if $declare_header_line_entry(metadataEntry) = eps
 def $declare_header_tokens(eps) = eps
-def $declare_header_tokens((MdeclareHeaderCloseTokenPos z) :: metadata) = z :: $declare_header_tokens(metadata)
-def $declare_header_tokens(metadataEntry :: metadata) = $declare_header_tokens(metadata) -- otherwise
+def $declare_header_tokens(metadataEntry :: metadata) = z :: $declare_header_tokens(metadata)
+  -- if $declare_header_token_entry(metadataEntry) = (z)
+def $declare_header_tokens(metadataEntry :: metadata) = $declare_header_tokens(metadata)
+  -- if $declare_header_token_entry(metadataEntry) = eps
 def $declare_header_absent(metadata) = ($declare_header_lines(metadata) = eps /\ $declare_header_tokens(metadata) = eps)
 
 def $declare_header_items(eps, z_begin, z_line, z_start, z_token) = true
