@@ -1381,5 +1381,14 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "outer0:1:OuterCache\\Target::cases|helper:1:HelperCache\\Target::cases|outer1:1:OuterCache\\Target::cases|helper:1:HelperCache\\Target::cases|OUTERUSER:OLD|outer0:0:OLD|helper:1:HelperCache\\Target::cases|OUTERUSER:OLD|outer1:0:OLD|helper:1:HelperCache\\Target::cases|",
     "purpose": "An exact single-API-site native control distinguishes per-invocation cache freshness from same-invocation warmth and saved ordinary function cache contexts."
+  },
+  {
+    "id": "enum-is-callable-third-output-scoped-birth-static-inherited-factory-scope",
+    "source": "<?php\nnamespace ScopedStatic;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass ScopeBase {\n    public static function make() {\n        return function($install) {\n            $name = 'OLD';\n            $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n            echo 'query:', (int)$ok, ':', $name, '|';\n        };\n    }\n}\nclass ScopeChild extends ScopeBase {}\n$first = ScopeBase::make(); $inherited = ScopeChild::make();\n$first(true); unset($first);\n$clone = clone $inherited;\n$inherited(false); $clone(false);\n$inherited->call(new ScopeBase, false);\n$inherited->call(new ScopeChild, false);\n$same = \\Closure::bind($inherited, null, ScopeBase::class); $same(false);\n$changed = \\Closure::bind($inherited, null, ScopeChild::class); $changed(false);\n",
+    "source_sha256": "5a728d558f15f89088459d895e5235ba397d850b131c76b4af90969752c4e669",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:ScopedStatic\\Target::cases|query:1:ScopedStatic\\Target::cases|query:1:ScopedStatic\\Target::cases|query:1:ScopedStatic\\Target::cases|USER:OLD|query:0:OLD|query:1:ScopedStatic\\Target::cases|USER:OLD|query:0:OLD|",
+    "purpose": "First named static/inherited method-factory births share the Base lexical template cache across original retirement, clone, same-scope bind and ordinary Closure::call; Child scope changes get fresh caches and select USER."
   }
 ]

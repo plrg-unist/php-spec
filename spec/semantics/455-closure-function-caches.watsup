@@ -19,17 +19,39 @@ dec $closure_cache_prior(pobject*, porigin) : bool
 def $closure_cache_prior(eps, porigin) = false
 def $closure_cache_prior(pobject :: pobject_tail*, porigin) = ($closure_cache_function(pobject) = (porigin) \/ $closure_cache_prior(pobject_tail*, porigin))
 
-dec $closure_cache_literal_policy(pstate, porigin, pbindscope?) : pfncacheowner?
-def $closure_cache_literal_policy(S, porigin, (BIND_UNSCOPED)) = (CACHE_SHARED)
+;; Method factories use the compiled lexical owner, never the receiver class.
+dec $closure_cache_method_source(pstate, porigin) : pmethoddesc?
+def $closure_cache_method_source(S, PORIGIN n_unit pcpath) = (pmethoddesc)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_creator)
+  -- if $class_method_origin(S.CLASSES, pfunction_creator.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction_creator
+  -- if pfunction_creator.ORIGIN = PORIGIN n_unit pcpath_method
+  -- if pmethoddesc.OWNER = PORIGIN n_unit pcpath_class
+  -- if $effect_below(pcpath_class, pcpath_method)
+  -- if $origin_node(S.SOURCES, pfunction_creator.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata_method)
+  -- if $origin_node(S.SOURCES, pmethoddesc.OWNER) = (NStmtClass phpType14_class phpType24_class (NIdentifier (BYTES text_name) metadata_name) phpType44 phpType42 phpType23 metadata_class)
+def $closure_cache_method_source(S, porigin) = eps -- otherwise
+
+dec $closure_cache_literal_scope(pstate, porigin, pbindscope) : bool
+def $closure_cache_literal_scope(S, porigin, BIND_UNSCOPED) = true
   -- if $enum_is_callable_fixed_lexical(S, porigin)
   -- if $closure_source_class(S, porigin) = eps
+def $closure_cache_literal_scope(S, porigin, BIND_CLASS porigin_class) = true
+  -- if $closure_cache_method_source(S, porigin) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_class
+def $closure_cache_literal_scope(S, porigin, pbindscope) = false -- otherwise
+dec $closure_cache_literal_source(pstate, porigin) : bool
+def $closure_cache_literal_source(S, porigin) = ($closure_cache_literal_scope(S, porigin, BIND_UNSCOPED) \/ $closure_cache_method_source(S, porigin) =/= eps)
+
+dec $closure_cache_literal_policy(pstate, porigin, pbindscope?) : pfncacheowner?
+def $closure_cache_literal_policy(S, porigin, (pbindscope)) = (CACHE_SHARED)
+  -- if $closure_cache_literal_scope(S, porigin, pbindscope)
   -- if $closure_cache_first(S.CLOSURECACHES, porigin) = eps
   -- if ~$closure_cache_prior(S.OBJECTS, porigin)
-def $closure_cache_literal_policy(S, porigin, (BIND_UNSCOPED)) = (CACHE_SHARED)
-  -- if $enum_is_callable_fixed_lexical(S, porigin)
-  -- if $closure_source_class(S, porigin) = eps
+def $closure_cache_literal_policy(S, porigin, (pbindscope)) = (CACHE_SHARED)
+  -- if $closure_cache_literal_scope(S, porigin, pbindscope)
   -- if $closure_cache_first(S.CLOSURECACHES, porigin) = (pclosurecache)
-  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (BIND_UNSCOPED)
+  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (pbindscope)
 def $closure_cache_literal_policy(S, porigin, pbindscope?) = eps -- otherwise
 
 dec $closure_cache_birth_scope(pstate, pstate, pfunction, nat) : pbindscope?
@@ -41,6 +63,27 @@ def $closure_cache_birth_scope(S, S_created, pfunction, n) = (BIND_UNSCOPED)
   -- if S_created.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
   -- if $closure_scope_at(S_created.CLOSURESCOPES, n) = eps
   -- if $closure_binding_at(S_created.CLOSUREBINDINGS, n) = eps
+dec $closure_cache_method_target(pcalltarget, porigin) : bool
+def $closure_cache_method_target(METHOD_TARGET n porigin, porigin) = true
+def $closure_cache_method_target(STATIC_METHOD_TARGET porigin_class porigin, porigin) = true
+def $closure_cache_method_target(SCOPED_TARGET porigin_class porigin porigin_called n_receiver? poperand_selector, porigin) = true
+def $closure_cache_method_target(pcalltarget, porigin) = false -- otherwise
+def $closure_cache_birth_scope(S, S_created, pfunction, n) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if ~$constant_callable_active(S, pfunction.ORIGIN)
+  -- if S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ S.CONSTCONTEXT = eps /\ S.CLASSCONSTANTINIT = eps
+  -- if $internal_closure_current(S) = eps
+  -- if $closure_cache_method_source(S, pfunction.ORIGIN) = (pmethoddesc)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if $closure_cache_method_target(pcallcontext.TARGET, pcallcontext.FUNCTION)
+  -- if $call_current_valid(S)
+  -- if S_created.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
+  -- if $closure_binding_at(S_created.CLOSUREBINDINGS, n) = eps
+  -- if $closure_scope_at(S_created.CLOSURESCOPES, n) = (pclosurescope)
+  -- if pclosurescope.LEXICAL = pmethoddesc.OWNER
+  -- if $closure_scope_row_valid(S_created, pclosurescope)
 def $closure_cache_birth_scope(S, S_created, pfunction, n) = eps -- otherwise
 def $closure_cache_birth(S, S_created, pfunction) = S_created[.CLOSURECACHES = S_created.CLOSURECACHES ++ [pclosurecache]]
   -- if n = |S.OBJECTS|
@@ -125,7 +168,7 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if $closure_cache_function(S.OBJECTS[n]) = (pcallcontext.FUNCTION)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
   -- if pfunction.ORIGIN = pcallcontext.FUNCTION
-  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.FUNCTION = pfunction.ORIGIN
   -- if pclosurecache.CACHE = (pfncacheowner)
@@ -135,12 +178,14 @@ def $closure_function_cache_owner(S, porigin) = eps -- otherwise
 
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = true
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
-  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
   -- if $closure_cache_first(S.CLOSURECACHES, pfunction.ORIGIN) = (pclosurecache)
-  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (BIND_UNSCOPED)
+  -- if pclosurecache.CACHE = (CACHE_SHARED)
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $closure_cache_literal_scope(S, pfunction.ORIGIN, pbindscope)
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_PRIVATE n) = true
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
-  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.FUNCTION = pfunction.ORIGIN /\ pclosurecache.CACHE = (CACHE_PRIVATE n)
 def $closure_function_cache_history(S, porigin, pfncacheowner) = false -- otherwise
@@ -231,10 +276,10 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if $closure_call_context_cache_valid(S, pcallcontext)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
   -- if pfunction.ORIGIN = pcallcontext.FUNCTION
-  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_CALL n) = true
   -- if $(n < |S.CLOSURECALLCACHES|)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
-  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
   -- if S.CLOSURECALLCACHES[n].FUNCTION = pfunction.ORIGIN
   -- if $closure_call_cache_record_valid(S, n, S.CLOSURECALLCACHES[n])
