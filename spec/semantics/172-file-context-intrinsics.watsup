@@ -42,6 +42,7 @@ def $config_kind(pintrinsic) = false -- otherwise
 dec $config_invoke_valid(pstate, pconfigcall) : bool
 dec $enum_is_callable_ref_argument(pstate, pconfigcall) : bool
 dec $enum_is_callable_ref_slots_valid(pstate, pconfigcall) : bool
+dec $enum_is_callable_capture_argument(pstate, pconfigcall) : bool
 dec $config_iterator_copied_call(pstate, pconfigcall) : bool
 dec $config_strict(pstate, pconfigcall) : bool
 dec $config_destination(pintrinsic, preqbytes?, nat) : nat?
@@ -240,6 +241,7 @@ rule PhpStep/config-send: S ~> S_value[.TODO = (CONFIG_ARGS ($config_sent(pconfi
   -- if S.TODO = (CONFIG_SEND pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, false, preqbytes?, porigin, z))
   -- if ~$enum_is_callable_ref_argument(S, pconfigcall)
+  -- if ~$enum_is_callable_capture_argument(S, pconfigcall)
   -- if S_checked = $config_send_check(S, pconfigcall, preqbytes?, z)
   -- if S_checked.COMPLETION = NORMAL
   -- if S_value = $resolve_at(S_checked, S.RESULT, z)
@@ -248,12 +250,14 @@ rule PhpStep/config-send-error: S ~> S_checked
   -- if S.TODO = (CONFIG_SEND pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, false, preqbytes?, porigin, z))
   -- if ~$enum_is_callable_ref_argument(S, pconfigcall)
+  -- if ~$enum_is_callable_capture_argument(S, pconfigcall)
   -- if S_checked = $config_send_check(S, pconfigcall, preqbytes?, z)
   -- if S_checked.COMPLETION =/= NORMAL
 rule PhpStep/config-send-abrupt: S ~> S_value
   -- if S.TODO = (CONFIG_SEND pconfigcall) :: ptask_tail*
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, false, preqbytes?, porigin, z))
   -- if ~$enum_is_callable_ref_argument(S, pconfigcall)
+  -- if ~$enum_is_callable_capture_argument(S, pconfigcall)
   -- if S_checked = $config_send_check(S, pconfigcall, preqbytes?, z)
   -- if S_checked.COMPLETION = NORMAL
   -- if S_value = $resolve_at(S_checked, S.RESULT, z)

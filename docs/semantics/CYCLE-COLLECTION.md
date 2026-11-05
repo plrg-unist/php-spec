@@ -510,7 +510,8 @@ COW variant agree with PHP. Reached states prove array/key-0 buffer order,
 all three live leaves black, owners 2/3/2/2/2 and refusal of duplicate or
 separately captured leaves at that cut, aliases, indirect entries, nested arrays,
 undefined sentinels, destructor-bearing children, a direct pool root and a
-proxy table. GC25 supersedes the duplicate-entry refusal. General nested, reference and user-finalizer
+proxy table. GC25 supersedes the duplicate-entry refusal and GC26 admits a
+bounded separately captured leaf. General nested, reference and user-finalizer
 graphs remain open. See the [finite capture review](../../coverage/semantics/gc-finite-capture-review.json).
 
 GC25 admits repeated direct entries to one childless stdClass under the
@@ -522,8 +523,43 @@ the D count pass. Native and model agree through weak liveness after the
 call and weak death after Closure release. Reached checks prove two array
 edges, one leaf slot, array/leaf owners 2/2, black removal and continued
 refusal of nested or separately captured heap children. Distinct two-entry
-shapes still use their earlier exact clause. See the
+shapes still use their earlier exact clause; GC26 supersedes the shared-leaf
+refusal for its bounded direct capture shape. See the
 [duplicate-edge review](../../coverage/semantics/gc-duplicate-edge-review.json).
+
+GC26 admits finite direct captures containing exactly one mutable array and
+at least one childless stdClass object whose identity also appears among the
+array's direct entries. Every direct object capture must be such an entry;
+other captures are defined node-free scalars. Closure ordinary and GC trace
+edges match capture order, with the GC24 pool and proxy fences retained.
+Forward and reversed capture sources agree with PHP through weak leaf death
+after Closure release. Two source-reached D states prove separate Closure and
+array edges to the leaf, one physical leaf slot, owners 2/2/3 and black plan
+removal. A synthetic two-object state checks recursive helper acceptance only;
+source behavior for that wider case remains unvalidated. See the
+[shared-capture review](../../coverage/semantics/gc-shared-capture-review.json).
+
+GC27 admits a finite flat graph of direct captures with at least two array
+occurrences. Each captured array is mutable, nonproxy, outside compiled-pool
+reach, and holds only direct defined node-free scalars or childless stdClass
+leaves. Direct object captures may share those leaves or retain an unrelated
+childless stdClass. Every capture and array-entry edge occurrence contributes
+separately to tracing and ownership; repeated arrays have multiple capture/local
+owners and at most one candidate slot per identity. Three originals cover
+distinct shared arrays, one array captured twice, and three reordered arrays with an unrelated leaf; all agree through final
+weak death. Three strict D-state groups pass 204+146+193 conditions, including
+edge multiplicity, candidate identity, black removal and budget resumption.
+Independent review passes 73 further conditions, including a later pooled
+descendant and a source-authenticated one-array refusal. Both affected GC26 groups pass 148 assertions while retaining the forged-arity
+refusal; graph-helper admission alone grants no source authority.
+
+The genuine active direct caller and exact source capture arity remain required.
+Zend exposes a hidden Closure static-variable table; flattening it to capture
+edges is confined to this rooted black component and grants no Closure-cycle
+collection or hidden-table count. Nested arrays, aliases, indirect entries,
+property-table proxies, user finalizers, static cells and explicit `__invoke`
+captures remain outside this lane. See the
+[multi-array review](../../coverage/semantics/gc-multi-array-review.json).
 
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;

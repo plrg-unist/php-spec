@@ -8,45 +8,21 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-I87 authenticates direct raw array and string method Generator creation and
-scoped factories from the immutable selected method. Archived receiver history
-adds no owner; direct producer and Fiber entry require the real live receiver.
-Six originals agree and seven reached fronts pass 561 custom/596 reported
-checks at private cuts. Joined strict433, three exact sources and a strengthened
-93-assertion closed-history state pass; e0e3ce7f composition is reviewed.
-Wider binding, callback and lifecycle contexts remain partial.
-[I87 review](coverage/semantics/generator-raw-method-factory-review.json).
-
-I86 authenticates captured ordinary method Generator bodies during Fiber
-transfer and reference-cache reads using the actual resumer, Closure and
-selected method. After Closure storage retirement, the recorded selection
-reconstructs a nonowning scope without a new owner. Four originals agree;
-five reached fronts pass 501 custom/526 reported checks at their private cuts.
-Joined strict433, two exact sources and 111 independent reached checks pass at
-4462bc6d; the 779569a8 composition is reviewed. Original compiler,
-refusal and storage failures retain zero credit. Wider bound/API and lifecycle
-contexts remain partial.
-[I86 review](coverage/semantics/generator-captured-method-body-review.json).
-
-I85 admits direct Generator-bodied `__call` and `__callStatic` through the
-existing typed source policy. Actual entered context retains the selected
-target through close and Fiber transfer, while live bodies require their real
-receiver. Five current originals agree; five reached fronts pass 444 custom/469
-reported checks at their private cuts. Joined strict433, three exact sources
-and 166 independent reached checks pass at bd274e79f; b1adc40c composition is
-reviewed. The original compiler, COUNT, Fiber-consumer and
-fixture-prefix failures retain zero credit. BYREF magic signatures and wider
-source/API/lifecycle forms remain partial.
-[I85 review](coverage/semantics/generator-direct-magic-review.json).
-
-I84 carries admitted `__call`/`__callStatic` factory authority into scoped
-method Generators after the maker or packed argument array retires. Five
-originals agree; five reached fronts pass 442 custom/467 reported checks at
-their recorded private cuts. Joined strict433 and the protected-close OB05
-interaction source pass at 5e33a7f88. Both original fixture failures retain
-zero credit. Direct magic
-Generator bodies and wider ancestry/API/lifecycle contexts remain partial.
-[I84 review](coverage/semantics/generator-magic-factory-review.json).
+I84–I91 cover selected typed magic, captured and raw method Generator
+factories; Fiber SEND/THROW and reference caches; and array/string method
+Closure binding and identity. Joined source and reached-state gates validate
+these bounded routes. Original failures retain zero credit in the linked
+ledgers. Wider signatures, callback/API entry, delegation and lifecycle
+combinations remain partial. [Generators](docs/semantics/GENERATORS.md),
+[Fibers](docs/semantics/FIBERS.md), [Closure calls](docs/semantics/CLOSURE-CALL.md);
+reviews [I84](coverage/semantics/generator-magic-factory-review.json),
+[I85](coverage/semantics/generator-direct-magic-review.json),
+[I86](coverage/semantics/generator-captured-method-body-review.json),
+[I87](coverage/semantics/generator-raw-method-factory-review.json),
+[I88](coverage/semantics/generator-raw-method-cache-review.json),
+[I89](coverage/semantics/generator-captured-method-throw-review.json),
+[I90](coverage/semantics/generator-direct-magic-throw-review.json), and
+[I91](coverage/semantics/generator-string-method-closure-review.json).
 
 Published generated enum array captures now create internal Closures without
 retaining the input array or receiver, preserving selection through COW and
@@ -122,13 +98,19 @@ explicit Unsupported because its destructor runs during replacement.
 Literal enum method strings now also retain their raw class and method spelling
 in the third output, including lowercase and a leading backslash. Three exact
 outcomes and 88 reached guards pass.
-A separate live variable can now supply the enum method string to a direct
-three-argument `is_callable` call with literal `false`. Its saved and current
-bytes agree, and a distinct initialized output CV receives the name before the
-boolean. One exact original and 46 reached guards pass. A shared scalar
-input/output reference cell also retains the saved name through its write;
-one exact original and 43 reached guards pass. Argument-time target rebinding
-remains explicit Unsupported.
+A source-authenticated receipt now saves a direct variable's enum method string
+at its first SEND. Later argument callbacks can rebind its current CV, including
+a shared input/output cell, without changing the query. Nested queries consume
+their own receipts; a later argument throw skips the query's output and result
+assignment.
+Seven exact originals, strict433, 200 independent guards and the affected
+46/43 variable/alias guards pass.
+[Saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json).
+Retained childless ordinary old output objects now receive the callable name
+while another owner survives; their destructor runs only after the last owner
+is released. The postwrite ownership guard rejects a unique or dead old object.
+One exact original, strict433 and 77 independent reached guards pass.
+[Retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json).
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -147,59 +129,6 @@ remains explicit Unsupported.
 [variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json),
 [alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
 
-I88 carries raw method Generator reference caches and warm/fresh THROW across
-Fibers using the actual resumer/Gen/current proof. Fresh initialization now
-retains Zend's extra pending exception reference until injection; calibrated
-native controls distinguish pending input2 from warm input1 after CV unset.
-Nonstatic object-array calls from fixed ordinary method sources preserve lexical private
-selection over a public child override. Four native/model originals agree;
-four reached fronts pass 439 custom/459 reported checks at distinct cuts.
-Private433 keeps its original cut; later reached checks compile both corrections.
-Original refusal and reached failures plus the native diagnostic keep zero extra
-agreement credit. Eight legacy expectations are maintained without execution
-renewal or historical rewrite. Joined strict433, three exact sources, two affected
-old THROW states (143+105 checks) and an independent 153-check state pass at
-1ecc939d; 5096cbb1 current composition is reviewed. Wider captured-Closure,
-API/binding/delegation/collection/lifecycle combinations remain pending.
-[I88 review](coverage/semantics/generator-raw-method-cache-review.json).
-
-I89 carries authenticated nonstatic captured/bound method-Closure Generators
-through warm by-value/reference THROW and fresh initialization across Fibers.
-The actual resumer/Gen/current proof keeps Closure and This through CLOSED;
-Gen drop releases Closure/receiver before the cache. Four native/model originals
-agree at distinct cuts; five reached fronts pass 632 custom/657 reported checks.
-Private433 keeps its initial cut; later source/front checks compile the ARRAY
-nominal Closure identity and admitted bindTo dispatch corrections. Original
-Unsupported, stdout mismatch and interpreter failure keep zero agreement credit.
-Joined strict433, three exact sources, a fresh 117-check state and independent
-closed-body 118-check state pass at c81b8c5e; 26cf6684 composition is reviewed.
-Wider producer/API/binding/lifecycle combinations remain pending.
-[I89 review](coverage/semantics/generator-captured-method-throw-review.json).
-
-I90 carries direct typed BYVAL magic Generator warm/fresh THROW across Fibers
-through a shared actual resumer/Gen/current and entered-handler receipt proof.
-Native fresh abort releases payload before This, then throws the original API
-Throwable with the supplied abort as Previous; the existing initialization rule
-supplies that order unchanged. Four native/model originals agree at distinct
-cuts; five reached fronts pass 623 custom/648 reported checks. Private433 keeps
-its original cut and the unchanged Unsupported keeps zero agreement credit.
-Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
-and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
-reviewed. Source/signature and wider producer/API/lifecycle limits remain partial.
-[I90 review](coverage/semantics/generator-direct-magic-throw-review.json).
-
-I91 restores nominal Closure identity for static user-method string captures and
-routes admitted non-first-class bindTo calls through existing binding authority.
-Source retargeting, called-scope reset, a retained Gen Closure and a retired
-factory's nonowning history retain distinct controls. Three native/model
-originals and five reached fronts 614 custom/639 reported pass at their recorded
-cuts; private433 keeps its original cut. Both original failures remain zero credit.
-Joined strict433, three exact sources and parked127 pass at ee4b3cdb; the
-strengthened closed-cache126 state at 5610e476 checks GC09's receiverless
-marker. The 4544a539 composition is reviewed. Wider callable/API/lifecycle
-contexts remain partial.
-[I91 review](coverage/semantics/generator-string-method-closure-review.json).
-
 I92 gives real user Generator Closure::call entry its actual copied Closure and
 new receiver, with separate API owners and ordered used/ignored-result cleanup.
 The saved Gen keeps its copy through CLOSED without an API wrapper or later
@@ -210,6 +139,31 @@ receive-error retention and reference formals remain partial. Joined strict433,
 four exact sources, API-entry99, unused-result81 and independent closed143 checks
 pass at a84bf6c0; 3486d56c composition is reviewed. Wider calls remain partial.
 [I92 review](coverage/semantics/generator-call-copy-review.json).
+
+I93 extends real Generator Closure::call copies to admitted reference
+formals. Copy/static ownership precedes warning callbacks; fresh formal cells
+wrap frozen values afterward. Used Generator results survive API cleanup, and
+warning traces retain the real handler and call frames. Five private native/model
+sources and six reached fronts pass at their recorded cuts; joined strict433,
+three exact I93 sources, one affected I92 value SEND source, temporary return92
+and independent parked-cache169 states pass at f34d1214a. Original failures
+retain zero credit. Receive/callback/mapping errors and wider calls remain
+partial. [I93 review](coverage/semantics/generator-call-reference-review.json).
+
+I94–I98 cover fake user-method Generator Closure::call copies, finite bound
+source histories and distinct dynamic/folded string policies. Fake copies keep
+shared method statics and exact declaring-class receivers; normal/abrupt binding
+warnings release actual API owners in native order. Existing reference-warning
+cursors also survive Fiber suspension in handlers and owning retval destructors.
+Each milestone retains its original native/source/reached cuts and failures.
+Joined strict433, four source comparisons and 187 custom/192 reported ownership
+checks pass at their recorded cuts; see the [joined review](coverage/semantics/generator-call-series-current-review.json). Wider
+call/receiver/signature, mapping, no-Gen receive and abrupt warning contexts remain
+partial. Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
+[I95](coverage/semantics/generator-fake-string-call-review.json),
+[I96](coverage/semantics/generator-folded-string-call-review.json),
+[I97](coverage/semantics/generator-call-warning-fiber-review.json) and
+[I98](coverage/semantics/generator-call-warning-retval-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -398,7 +352,8 @@ Reversed capture order, three mixed-key leaves and post-capture COW give
 three exact source pairs. Strict reached checks pass 113+146 assertions,
 and the corrected GC23 group passes 110. Its original duplicate-identity
 refusal is superseded by GC25; shared separate captures, aliases, nested
-arrays and user-destructor children remain refused. Earlier Unsupported,
+arrays and user-destructor children remained refused at the GC24 cut; GC26
+admits the bounded shared-capture case. Earlier Unsupported,
 overlap and fixture failures retain
 zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
 
@@ -410,6 +365,26 @@ pass 127 new and affected GC21/22/24 groups 137+140+147, proving two
 physical edges, one leaf buffer slot, owners 2/2, black D protection and
 nested-array refusal. The source-only Unsupported and first fixture error
 retain zero credit. [GC25 review](coverage/semantics/gc-duplicate-edge-review.json).
+
+GC26 admits one finite captured array together with direct captures of
+childless stdClass leaves already present in that array. Forward and reversed
+capture orders match pinned PHP exactly, including weak liveness after the
+call and death after Closure release. Two strict D-state groups pass 146
+assertions each, proving separate Closure and array edges to the leaf, one
+buffer slot, owners 2/2/3 and black protection. Pre-edit Unsupported and a
+corrected P4 helper compile failure retain zero credit. Other captured
+object layouts and nested or destructor-bearing graphs remain partial.
+[GC26 review](coverage/semantics/gc-shared-capture-review.json).
+
+GC27 admits finite direct capture graphs with at least two mutable array
+occurrences under the same authenticated active Closure root. Distinct arrays
+may share childless stdClass leaves; repeated array captures retain each owner
+with at most one candidate slot per identity. Three originals agree exactly,
+including a reordered three-array graph with an unrelated direct leaf and final weak death.
+Three strict D-state groups pass 204+146+193 assertions, independent review
+passes 73, and both affected GC26 groups pass 148. Nested, reference, proxy and finalizer graphs
+remain partial; the hidden Closure capture table remains black under the real
+caller root. [GC27 review](coverage/semantics/gc-multi-array-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -430,6 +405,15 @@ Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I78](coverage/semantics/generator-closure-factory-review.json) and
 [I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
+
+Ordinary scalar BYVAL Generator unpack now warns within the first two sends to
+fixed untyped BYREF parameters in argument positions 1 or 2 of direct named
+functions returning by value. Distinct private cells preserve earlier sends
+through the second Warning. Six new and two affected legacy sources agree;
+source-derived ownership, authority and budget gates pass at their recorded cuts.
+Five Unsupported controls and pending-throw stop checks retain zero agreement
+credit. Dynamic-string sinks, pending warning exceptions and wider forms remain partial.
+[Reference-sink review](coverage/semantics/generator-byref-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
 ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
@@ -645,50 +629,19 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR11 retires a single raw invokable tick callback and one copied object
-argument after output FINAL, with no assertion callback and normal completion.
-The tick task owns the argument and both equal FCC object/closure slots while
-the registry empties; it releases the argument first, then the two FCC slots,
-before the existing shutdown-list queue. Two native-first originals agree
-exactly, including a retained shutdown entry. Three reached states pass 88
-assertions and show callback owners 2→1→0; private and joined strict433 pass.
-The earlier Unsupported baseline, two compiler attempts, recorder failure and
-exploratory output-buffer restart controls retain zero agreement credit. Wider
-tick entries, assertion callback, abrupt reentry and late-free paths remain
-partial. [Late tick review](coverage/semantics/callback-late-tick-final-review.json).
-
-ATTR12 extends normal post-FINAL tick retirement to two raw invokable entries,
-each with one copied object argument. The first task owns only its argument and
-two FCC slots while the second stays rooted in the tick list; after the first
-callback retires, the second follows in registration order. One native-first
-source agrees exactly (`B;F;A1;C1;A2;C2;`). Four reached states pass 120
-assertions, including both callbacks' 2→1→0 owner transitions; the ATTR11
-singleton source and reached state still pass. Strict433 passes. The original
-two-entry Unsupported baseline and an unanchored stage selector have zero
-agreement credit. More than two entries, mixed callbacks, assertion callbacks
-and abrupt reentry remain partial. [Tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
-
-ATTR13 removes that length cap for a nonempty ordered tick list whose entries
-have the same normal raw-invokable/one-object-argument shape. Its task still
-transfers one head at a time and leaves the tail rooted. A three-entry
-native-first source agrees exactly in registration order; six reached states
-pass 143 selected checks across first, middle and last entries, including each
-callback's 2→1→0 owners. One shared-callback alias source also agrees, and the
-ATTR11/12 source regressions and private/joined strict433 pass. The prior
-Unsupported baseline and three fixture elaboration failures retain zero
-credit. Mixed callback shapes, assertion roots and abrupt reentry remain
-partial. [Tick-list review](coverage/semantics/callback-late-tick-list-review.json).
-
-ATTR14 admits any finite number of copied object arguments, including zero,
-per raw invokable entry in that ordered post-FINAL list. Each copied argument
-must differ from its callback object. Two native-first mixed-arity sources
-agree exactly, including a shared callback across zero- and two-argument
-entries; a repeated-argument control also agrees. Six source-reached states
-pass 122 checks and show the shared callback's FCC owners 4→3→2→1→0, with both
-arguments retiring before the callback. Private strict433 passes. The earlier
-Unsupported baseline and a draft binding error retain zero credit. Scalar,
-array/reference and callback-as-argument payloads, assertion roots and abrupt
-reentry remain partial. [Tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
+ATTR17 generalizes normal post-FINAL tick retirement to existing certified
+named-function, method-array and real Closure caches. Each entry releases its
+copied values before its optional FCC object/Closure roots; capture and bound
+receiver children keep their own owners. Cacheless scalar/zero-argument entries
+now drain before the shutdown-queue and executor fallbacks without changing the
+shared module-owner predicate or abrupt boundary. Five native-first originals
+agree exactly; seven reached groups pass 187 conditions (180 reached, seven
+derived), and private strict433 passes. Wider producers, assertion roots
+and abrupt/reentrant module shutdown remain partial.
+[Callable-cache review](coverage/semantics/callback-late-tick-callables-review.json).
+ATTR16's copied-container/reference/self evidence keeps its own accepted cuts
+and original zero-credit scalar fixture failure in the
+[copied-value ledger](coverage/semantics/callback-late-tick-values-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -707,7 +660,7 @@ implicit Stringable linking and conversion. Raw-header names/counters remain
 stable through deferred publication; saved conversion owners release before
 emission, destroying the receiver when no other owner remains. Nine originals agree (seven normal, two static rejections), and
 285 conditions pass (278 reached, seven controls). Return, never-kind and compile
-diagnostics retain their distinct formats. Three changed private strict433 cuts,
+diagnostics retain their distinct formats. Three changed private and joined strict433 cuts,
 native6+2+1, old2 and source/state cuts stay separate; the never-kind mismatch
 and fixture elaboration failure retain zero credit. Wider magic, reference,
 attribute, callable and lifecycle contexts remain partial.
@@ -717,7 +670,7 @@ CLASS156 admits public zero-argument anonymous destructors through the ordinary
 method compiler and lifecycle. Alias and temporary release, eval callbacks,
 reverse global cleanup, escaped failed constructors and pending-exception
 replacement have five exact source agreements. Two reached groups pass 240
-conditions (228 reached, 12 derived across six controls); private strict433 passes.
+conditions (228 reached, 12 derived across six controls); private and joined strict433 passes.
 Native5/old2, source and state cuts stay distinct. Nonpublic/reference-return/
 attributed destructors, other magic methods and wider lifecycle contexts remain
 partial. [Destructor review](coverage/semantics/anonymous-destructors-review.json).
@@ -869,20 +822,23 @@ executor tick-owner branch present. The retained OB06 native original is now
 promoted with exact model agreement.
 [Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
-OB08 admits one positional `ob_start(null)` after output deactivation during
-normal executor queue release. The default handler creation fails before any
-buffer push, emits E_NOTICE and returns false. Fast and slow allocator sources
-and a selected-handler source agree exactly with pinned PHP. Two source-reached
-checkpoints validate call/Notice authority, empty buffers and unchanged output
-sequence; named-null, callable, invalid-integer and handler-body reentrant
-forms remain checked Unsupported. The previous noarg Notice state still passes.
-[Explicit-null executor review](coverage/semantics/output-executor-explicit-null-review.json).
+OB08–09 use ordinary `ob_start` argument reception during normal post-output
+executor queue release. Named/unpacked defaults, converted chunk/flag cases,
+deprecations and type/count errors precede callback creation. NULL/default
+callbacks then emit E_NOTICE and return false without pushing a buffer,
+including in the authenticated destructor of a Notice handler's returned object.
+Private and actual2257 composition strict433, author17 and independent4
+source/request contexts and scoped reached checks pass at the recorded cuts. Non-NULL creation, active handler-body reentry, deprecation-handler returned-object
+starts, allocation failure/memory limits and wider executor completion remain partial.
+[Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
+[general reception review](coverage/semantics/output-executor-reception-review.json).
 
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
 CLASS166 is integrated at `0ed9ac41f`: one parented anonymous trait capture source and 48 reached conditions pass with private and joined strict433. [Review](coverage/semantics/anonymous-trait-capture-review.json).
-CLASS167 admits bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
+CLASS167 is integrated at `303883b83`: bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
+CLASS168 admits one unqualified, unmodified trait alias in a parented no-interface unit0 anonymous class. Captured `Y=self::q(...)` and direct `q` agree with PHP for Base168; a wrong class raises TypeError before the body. Two exact sources, 52+42 reached conditions and private and joined strict433 pass. [Review](coverage/semantics/anonymous-trait-alias-capture-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -908,6 +864,25 @@ and filename-local registration; ten checked-AST premises cover source offsets
 and nonraw/BOM refusal. Joined strict433 passes. Plain and BOM files retain
 their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 [Review](coverage/semantics/halt-preamble-review.json).
+
+COMP165 admits the disabled-multibyte parser warning followed by a static
+first-statement fatal for late or nested sole-string encoding declarations.
+Five pinned-native source cases cover root, namespace and block fatals plus
+included and eval first-declaration controls. Forty-four checked-AST premises
+authenticate declaration and item paths, warning location, and malformed
+occurrence refusal. Other declaration shapes and multibyte source conversion
+remain partial. [Review](coverage/semantics/encoding-placement-review.json).
+
+COMP166 admits arbitrary mixed/repeated encoding items with parser-literal values
+and ordinary bodies in checked single-line declarations. Source token positions
+order the complete recursive parser-warning prefix before compiler diagnostics;
+literal concatenation passes the matching parser-form check. Ten original
+sources agree, including strict/tick interactions and include/eval body returns.
+Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
+pass, alongside six CLI guards and two explicit multiline Unsupported controls.
+Actual cuts and preserved failures are in the
+[review](coverage/semantics/encoding-list-review.json). Multiline declarations,
+rejected sources with warnings and multibyte conversion remain partial.
 
 ## Active and unintegrated work
 

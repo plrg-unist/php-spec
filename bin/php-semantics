@@ -39,39 +39,54 @@ def request(command, value, timeout, with_stderr=False):
 
 
 def encoding_warning_lines(ast):
-    """Closed raw-profile declarations whose parser lines the AST authenticates."""
+    """Source-ordered raw-profile declarations with authenticated parser lines."""
     def encoding(item):
         return (item.get('node') == 'DeclareItem'
                 and item['fields'][0].get('node') == 'Identifier'
                 and base64.b64decode(item['fields'][0]['fields'][0]['bytes']).lower() == b'encoding')
 
-    lines, admitted = [], set()
-    for statement in ast['program']:
-        if statement['node'] != 'Stmt_Declare':
-            continue
-        items, body = statement['fields']
-        if len(items) != 1 or body is not None or not encoding(items[0]):
-            continue
-        item = items[0]
-        name, value = item['fields']
-        if value['node'] != 'Scalar_String':
-            continue
-        line = int(statement['meta']['startLine']['int'])
-        if line > 0 and all(int(node['meta'][key]['int']) == line
-                            for node in (statement, item, name, value)
-                            for key in ('startLine', 'endLine')):
-            lines.append(line)
-            admitted.add(id(item))
+    def literal(value):
+        pending = [value]
+        while pending:
+            node = pending.pop()
+            if node['node'] == 'Expr_BinaryOp_Concat':
+                pending.extend(node['fields'])
+            elif node['node'] not in {'Scalar_String', 'Scalar_Int', 'Scalar_Float'}:
+                return False
+        return True
+
+    warnings, admitted = [], set()
     pending = [ast]
     while pending:
         value = pending.pop()
         if isinstance(value, dict):
+            if value.get('node') == 'Stmt_Declare':
+                items, body = value['fields']
+                for item in items:
+                    if not encoding(item):
+                        continue
+                    name, expression = item['fields']
+                    line = int(value['meta']['startLine']['int'])
+                    token = item.get('meta', {}).get('startTokenPos', {}).get('int')
+                    if token is None:
+                        return None
+                    token = int(token)
+                    if (line <= 0 or token < 0 or not literal(expression)
+                            or any(int(node['meta'][key]['int']) != line
+                                   for node in (value, item, name, expression)
+                                   for key in ('startLine', 'endLine'))):
+                        return None
+                    warnings.append((token, line))
+                    admitted.add(id(item))
             if encoding(value) and id(value) not in admitted:
                 return None
-            pending.extend(value.values())
+            pending.extend(reversed(list(value.values())))
         elif isinstance(value, list):
-            pending.extend(value)
-    return lines
+            pending.extend(reversed(value))
+    warnings.sort()
+    if len({token for token, line in warnings}) != len(warnings):
+        return None
+    return [line for token, line in warnings]
 
 
 def dynamic_parser_stderr(parsed, mode, stderr):
@@ -141,6 +156,13 @@ def observe(state, filename, display_mode=2):
             if int(sourcefile['args'][0]) == int(unit):
                 return bytes(map(int, sourcefile['args'][1]))
         raise ValueError(f'unknown source unit {unit}')
+
+    def origin_unit(origin):
+        if origin['tag'] == 'PORIGIN':
+            return origin['args'][0]
+        if origin['tag'] in {'TRAIT_ORIGIN', 'TRAIT_MEMBER_ORIGIN'}:
+            return origin_unit(origin['args'][1])
+        raise ValueError(f'unknown source origin {origin["tag"]}')
 
     events = state['EVENTS']
     stdout = b''
@@ -294,7 +316,7 @@ def observe(state, filename, display_mode=2):
         raise ValueError(f'unsupported trace argument kind {kind}')
 
     def trace_frame(index, file, line, function, classname, call_type, args):
-        call = (classname + call_type if classname is not None else b'') + function
+        call = (classname.split(b'\0', 1)[0] + call_type if classname is not None else b'') + function
         rendered = []
         for key, value in args:
             prefix = bytes(map(int, key['args'][0])) + b': ' if key['tag'] == 'KSTRING' else b''
@@ -334,7 +356,7 @@ def observe(state, filename, display_mode=2):
     location = os.fsencode(filename)
     origin = state.get('ERRORORIGIN')
     if origin is not None:
-        location = source_filename(origin['args'][0])
+        location = source_filename(origin_unit(origin))
     if uncaught_chain:
         location = bytes(map(int, field(uncaught_chain[0], 'file')['args'][-1]))
     diagnostic = None

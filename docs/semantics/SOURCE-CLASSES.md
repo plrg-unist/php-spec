@@ -479,6 +479,22 @@ is 0 before `new` and 1 after. Interface combinations, multiple uses and
 adaptations remain excluded; dynamic units and rebound views are unvalidated.
 [Parentless trait-capture review](../../coverage/semantics/anonymous-parentless-trait-capture-review.json).
 
+CLASS168 admits one unqualified `m as q` adaptation without a visibility
+modifier in the sole named trait use of a parented, no-interface unit0
+anonymous class. The parentless and interface routes still reject adapted
+uses. The ordinary trait plan imports `q` with the generated NUL owner name
+and resolves its `parent` parameter to the declared Base parent (Base168 in
+the pinned source). The trait constant's `self::q(...)` captures that method.
+A wrong-class argument fails at TYPE_RECEIVE before the body. Nested trait
+error origins select the source trait method's file. CLI trace rendering cuts
+only the class text at NUL; the stored class name stays complete.
+[Alias-capture review](../../coverage/semantics/anonymous-trait-alias-capture-review.json).
+Engine routes: `Zend/zend_inheritance.c::zend_traits_copy_functions`,
+`Zend/zend_execute.c::zend_verify_recv_arg_type`, and
+`Zend/zend_exceptions.c::_build_trace_string`. Qualified or visibility
+adaptations, precedence, multiple uses, interface combinations and parentless
+adaptations remain outside this cut.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
@@ -761,11 +777,22 @@ Literal enum method strings also retain raw class and method spelling in the
 third output. The [string-spelling review](../../coverage/semantics/enum-is-callable-output-string-spelling-review.json)
 records canonical, lowercase and leading-backslash outcomes with 88 reached
 guards.
-A live variable holding the enum method string can also feed a direct query
-with literal `false`, provided its saved bytes still match and the output CV is
-distinct. The [variable-output review](../../coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact original and 46 reached guards. A shared scalar
-reference cell now preserves the saved name through the result write; the
-[alias-output review](../../coverage/semantics/enum-is-callable-output-alias-review.json)
-records one exact original and 43 reached guards. Argument-time rebinding
-remains Unsupported.
+A direct variable input now captures its string at the first SEND. A nonowning
+receipt binds that copy to its call site, argument origin/line and caller depth;
+SENT owns the actual argument. The adjacent receipt authenticates the saved
+bytes after later arguments rebind the source CV. Normal invocation
+consumes it atomically, nested calls keep separate receipts and exception
+unwinding discards it before output capture. The
+[saved-input review](../../coverage/semantics/enum-is-callable-saved-input-review.json)
+records seven exact sources, 200 independent guards and affected variable46/
+alias43 checks. Named/unpacked forms remain partial. Engine routes are
+`zend_compile_args`, VM `ZEND_SEND_VAR`/`ZEND_SEND_VAR_EX` and
+`ext/standard/type.c:PHP_FUNCTION(is_callable)`.
+An initialized childless ordinary old output object can also be replaced when
+the actual postwrite ownership graph still owns it. The captured CV is written
+before returning the boolean, and another owner delays destruction. The
+[retained-output review](../../coverage/semantics/enum-is-callable-output-retained-review.json)
+records source/reached checks and unique/dead-owner refusals. Last-owner output
+destruction still requires a clear-before-destructor continuation: Zend's
+`ZEND_TRY_ASSIGN_REF_STR` calls `zval_ptr_safe_dtor`, which sets the last-owner
+cell to null before user code and writes the name after it returns.

@@ -1,7 +1,7 @@
 # `Closure::call`
 
-Modules 182/268 invoke a selected core Closure with a temporary receiver and
-scope, without allocating a bound copy. Supported sources include ordinary
+Modules 182/268 retain the selected core Closure and its arguments. Nongenerator
+bodies use a temporary receiver/scope without a bound copy. Their sources include ordinary
 Closures, named/function/method/`__invoke` captures, `Closure::fromCallable`
 results, transformed fake bindings and finite Throwable getters. The pinned
 routes are `zend_closures.c::ZEND_METHOD(Closure, call)`,
@@ -46,7 +46,7 @@ requested class. An unscoped fake function cannot acquire a user-class scope.
 Exact internal scopes admit supported getters and dummy Closure-scope functions;
 free-intrinsic internal scope changes remain warnings.
 
-User bodies enter through the ordinary call machinery with temporary
+User nongenerator bodies enter through the ordinary call machinery with temporary
 lexical/called scope and receiver. Source captures retain their original binding
 and share source static cells; a later ordinary invocation restores that binding.
 The internal wrapper owns the original positional values and named labels/order,
@@ -66,6 +66,79 @@ cells, without assuming contiguous allocation. The wrapper retains raw values.
 Normal array copies preserve embedded references. The result task resolves a
 returned reference without exposing its alias; the inner value remains demanded
 when the outer result is unused.
+
+Real user Generator Closures use a separate copied-object branch for admitted
+compiled literal calls and ordinary user-class receivers. Actual API roots hold
+source/copy/first/raw values before clone rules duplicate captures/statics.
+Reference-formal warnings run after that copy and before fresh-cell allocation,
+so callback writes to the original cannot change an isolated copied static cell.
+Shared wrappers remain shared. The Gen frame owns its copy with no API wrapper;
+a used retval stays in one explicit continuation through source finalizers.
+Warning traces have an internal handler header followed by the raw Closure::call
+frame; that API frame disappears before later Gen body execution. Native5/source5
+and private433 retain their distinct cuts; six reached fronts pass 625 custom/655
+reported checks.
+Computed/packed calls, other producer/receiver forms and no-Gen receive/callback
+or mapping errors remain partial. [Copy review](../../coverage/semantics/generator-call-copy-review.json),
+[reference review](../../coverage/semantics/generator-call-reference-review.json).
+
+Admitted fake user-method Generator calls also allocate a distinct copy, keeping
+the original method selection as nonowning history. Their new receiver must have
+the exact declaring class, and their method static table stays shared. The copy
+uses the existing API argument, fresh-reference and used/ignored result tasks;
+its This survives through CLOSED and retires before the Gen cache. getCurrent
+continues to reject the fake function. Ordinary ARRAY-capture calls select the
+existing call handler. Native4/source4/private433 retain distinct cuts;
+five reached fronts pass 633 custom/658 reported checks. Other receiver/binding/call forms and
+abrupt receive paths remain partial.
+[Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
+
+Variable/dynamic string first-class conversion rejects a nonstatic method before
+evaluating later Closure::call arguments. The caller-aware fromCallable(string)
+API can instead retain compatible This and authentic private selection; this is
+a FROMCALLABLE source, not a STRING capture. I95 validates finite bound-source
+chains and makes consumed Gen history a fallback to unavailable live lookup.
+Three current native/source controls agree; four reached fronts pass
+609 custom/629 reported checks.
+At the I95 cut, literal/constant-folded capture had no new positive validation;
+I96 below covers its separate compiler route. Wider binding/receive contexts remain partial.
+[Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
+
+Literal full-name first-class capture can take the compiler's static-method-init
+route and retain compatible This; variable-string rejection is unchanged. I96
+routes admitted non-first-class STRING call consumers through the existing API.
+A failed static binding has not copied arguments into a callee: SOURCE/FIRST/RAW
+are the real owners and receiver/SENT are borrowed preparation. On normal return
+or a handler throw, ordered jobs release newThis then raw arguments before the
+selected Closure; real pending THROW_SEARCH remains protected during destructors.
+Four current native/source controls agree; five reached fronts pass
+516 custom/541 reported checks. Wider binding, callback and receive contexts
+remain partial.
+[Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
+
+I97 checks normal Fiber suspension during copied reference forwarding. The copy
+already exists while the warning handler runs, but its Gen frame does not.
+The saved API cursor owns source/copy/newThis/raw values independently of root
+CVs. With the seed retired, a static cell owned only by the real Closure is
+copied; fake method statics remain shared. Continuation wraps the original raw snapshot,
+not a later root alias value. Native3/source3 and four reached fronts pass
+553 custom/573 reported checks at distinct cuts on unchanged semantics. Aborts
+during copied reference warnings and no-Gen receive/mapping errors retain their
+limits.
+[Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
+
+I98 follows an owning handler retval into its normal destructor before reference
+wrapping. Existing cleanup records and the actual emitting caller retain the
+already allocated copy and raw values during a Fiber park. Root reentry preserves
+the independent real static copy; the fake-method control keeps Token in both a
+retval property and the API snapshot until normal cleanup. Native2/source2 and
+three reached fronts pass 459 custom/474 reported checks at distinct cuts on
+unchanged semantics, with no state failures or retries. Trace expansion,
+handler/destructor throws and no-Gen receive errors remain partial.
+[Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+The [joined review](../../coverage/semantics/generator-call-series-current-review.json)
+records strict433, four source comparisons and 187 custom/192 reported ownership
+checks while preserving every original cut and zero-credit failure.
 
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,

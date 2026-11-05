@@ -72,11 +72,12 @@
     "expected_normal_stdout": "alias:1:DynamicCheck::from:DynamicCheck::from|"
   },
   {
-    "id": "enum-is-callable-third-output-variable-rebind-unsupported",
+    "id": "enum-is-callable-third-output-variable-rebind",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction rebind_target(): bool {\n    global $target;\n    $target = 'OtherCheck::from';\n    echo 'REBIND|';\n    return false;\n}\n$target = 'FirstCheck::from';\n$name = 'old';\n$ok = is_callable($target, rebind_target(), $name);\necho 'selected:', (int)$ok, ':', $name, '|target:', $target, '|';\n",
     "source_sha256": "c14d7f9272ecd562cd60b97b09c9d012f0d5e0c7bedf8679a0694437fe19e707",
-    "expected_model": "unsupported",
-    "purpose": "A second-argument callback that rebinds the input target remains outside the literal-false variable route."
+    "expected_model": "normal",
+    "purpose": "The first SEND saves the enum method string before a second-argument callback rebinds the current source CV.",
+    "expected_normal_stdout": "REBIND|selected:1:FirstCheck::from|target:OtherCheck::from|"
   },
   {
     "id": "enum-is-callable-third-output-old-scalars",
@@ -131,5 +132,45 @@
     "expected_model": "normal",
     "expected_normal_stdout": "missing-syntax-no|missing-runtime-no|nonclass-syntax-no|nonclass-runtime-no|reordered-syntax|reordered-runtime|case-valid|",
     "purpose": "Array shape rejects missing key 0 and nonclass receiver before syntax-only or runtime lookup; reordered valid keys remain callable."
+  },
+  {
+    "id": "enum-is-callable-third-output-old-object-retained",
+    "source": "<?php\nenum HoldCheck: int { case A = 1; }\nclass OldHold { public function __destruct() { echo 'DROP|'; } }\n$name = new OldHold;\n$hold = $name;\n$ok = is_callable('HoldCheck::from', false, $name);\necho 'after:', (int)$ok, ':', $name, '|';\nunset($hold);\necho 'end|';\n",
+    "source_sha256": "199b5c410733a526a235c232e3a2a444260f8b8c99d972639c74199827ba0547",
+    "expected_model": "normal",
+    "expected_normal_stdout": "after:1:HoldCheck::from|DROP|end|",
+    "purpose": "Replacing a childless ordinary old output object with a real surviving owner writes the name before the last owner is later unset and destroyed."
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-alias-after-rebind",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nfunction choose(): bool {\n    global $target;\n    $target = 'OtherCheck::from';\n    echo 'REBIND|';\n    return false;\n}\n$target = 'FirstCheck::from';\n$name =& $target;\n$ok = is_callable($target, choose(), $name);\necho 'final:', (int)$ok, ':', $name, ':', $target, '|';\n",
+    "source_sha256": "7c681d669d949d9e7fce4b16f243bc2a2c56ba9552a017938ae1bac56f84326c",
+    "expected_model": "normal",
+    "expected_normal_stdout": "REBIND|final:1:FirstCheck::from:FirstCheck::from|",
+    "purpose": "Saved input name survives a callback rebinding the shared input/output reference cell."
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-nested-saved-query",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nfunction choose(): bool {\n    global $target;\n    $target = 'OtherCheck::from';\n    $inner_target = 'OtherCheck::missing';\n    $inner_name = 'old';\n    $inner = is_callable($inner_target, false, $inner_name);\n    echo 'inner:', (int)$inner, ':', $inner_name, '|';\n    return false;\n}\n$target = 'FirstCheck::from';\n$name = 'old';\n$ok = is_callable($target, choose(), $name);\necho 'final:', (int)$ok, ':', $name, ':', $target, '|';\n",
+    "source_sha256": "675814ef86e27ea415888843be634412f619e64dec8b33e03bd3d8c27378347c",
+    "expected_model": "normal",
+    "expected_normal_stdout": "inner:0:OtherCheck::missing|final:1:FirstCheck::from:OtherCheck::from|",
+    "purpose": "An inner variable-input query consumes only its own source/depth receipt before the outer saved target is invoked."
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-second-argument-throw",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nfunction choose(): bool {\n    global $target;\n    $target = 'OtherCheck::from';\n    echo 'REBIND|';\n    throw new Exception('stop');\n}\n$target = 'FirstCheck::from';\n$name = 'old';\n$ok = 'UNCHANGED';\ntry {\n    $ok = is_callable($target, choose(), $name);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $name, ':', $target, ':', $ok, '|';\n}\n",
+    "source_sha256": "f32ee46e46b29610f89dc0af66a143dd24b2e6bd01a17387e6a186359217e204",
+    "expected_model": "normal",
+    "expected_normal_stdout": "REBIND|caught:old:OtherCheck::from:UNCHANGED|",
+    "purpose": "Throw before the third SEND discards the input receipt without writing the output or assigning the result."
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-syntax-only",
+    "source": "<?php\nenum DynamicCheck: int { case A = 1; }\n$target = 'DynamicCheck::missing';\n$name = 'old';\n$syntax = is_callable($target, true, $name);\necho 'syntax:', (int)$syntax, ':', $name, '|';\n$name = 'old';\n$runtime = is_callable($target, false, $name);\necho 'runtime:', (int)$runtime, ':', $name, '|';\n",
+    "source_sha256": "b3dd0a75700b2ee37ec9d35a9dc0dc55125e22d3ecf2f34806cb178b6a8f3a24",
+    "expected_model": "normal",
+    "expected_normal_stdout": "syntax:1:DynamicCheck::missing|runtime:0:DynamicCheck::missing|",
+    "purpose": "A saved variable method string writes its name on both syntax-only true and runtime false queries."
   }
 ]

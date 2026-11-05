@@ -11,12 +11,19 @@ dec $ppstrict_prefix(statement*, nat) : bool
 dec $ppstrict_preceding(statement) : bool
 
 dec $encoding_declare_item(pcnode) : bool
+dec $encoding_declare_count(phpType49*, int) : nat?
 dec $encoding_declare_line(statement) : int?
 dec $encoding_declare_site(program, pcpath) : int?
 dec $encoding_declare_first(statement*, pcpath) : bool
 dec $encoding_declare_prefix(statement*, nat) : bool
+dec $encoding_declare_late(ppstate, pcpath) : bool
 dec $ppencoding_nodes(ppstate, pcoccurrence*) : ppstate
 dec $ppencoding_node(ppstate, pcpath, pcnode) : ppstate
+dec $ppencoding_collect(ppstate, pcoccurrence*, (int, pcoccurrence)*) : ppstate
+dec $encoding_token_present((int, pcoccurrence)*, int) : bool
+dec $encoding_token_insert((int, pcoccurrence)*, int, pcoccurrence) : (int, pcoccurrence)*
+dec $encoding_token_nodes((int, pcoccurrence)*) : pcoccurrence*
+var encodingpositions : (int, pcoccurrence)*
 
 def $ppstatement(P, pcpath, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = $ppdeclare_body($ppstrict_items($pplocate(P, pcpath, $ppstrict_line(phpType49*)), pcpath, phpType47, phpType49*), pcpath, phpType47)
   -- if P.COMPLETION = PPCNORMAL
@@ -33,10 +40,15 @@ def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) 
 def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppstrict_place(P, pcpath, phpType47, pvalue)
   -- if $parser_literal(expression) = (pvalue)
   -- if $ptlc($base64(text)) = $ptascii("strict_types")
+def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppconstant_error(P, $ptascii("Encoding declaration pragma must be the very first statement in the script"), P.LOCATION.LINE)
+  -- if $parser_literal(expression) = (pvalue)
+  -- if $ptlc($base64(text)) = $ptascii("encoding")
+  -- if $encoding_declare_late(P, pcpath)
 def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppunsupported(P, "other declare directive compilation")
   -- if $parser_literal(expression) = (pvalue)
   -- if $ptlc($base64(text)) = $ptascii("encoding")
   -- if $encoding_declare_site(P.FOLD.SOURCE.AST, pcpath) = eps \/ ~$encoding_declare_first($pcprogram(P.FOLD.SOURCE.AST), pcpath)
+  -- if ~$encoding_declare_late(P, pcpath)
 def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "unknown-declare" ([$base64(text)]) P.LOCATION]]
   -- if $parser_literal(expression) = (pvalue)
   -- if $ppunknown_declare($base64(text))
@@ -93,14 +105,23 @@ def $ppstrict_line(eps) = 0
 
 def $encoding_declare_item(NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = ($ptlc($base64(text)) = $ptascii("encoding"))
 def $encoding_declare_item(pcnode) = false -- otherwise
-def $encoding_declare_line(NStmtDeclare (SEQUENCE ([(NDeclareItem (NIdentifier (BYTES text_name) metadata_name) (NScalarString phpType33 metadata_value) metadata_item)])) ABSENT metadata) = (z)
+def $encoding_declare_count(eps, z) = (0)
+def $encoding_declare_count(phpType49 :: phpType49_tail*, z) = $encoding_declare_count(phpType49_tail*, z)
+  -- if ~$encoding_declare_item(phpType49)
+def $encoding_declare_count((NDeclareItem (NIdentifier (BYTES text_name) metadata_name) expression metadata_item) :: phpType49*, z) = ($(n + 1))
   -- if $ptlc($base64(text_name)) = $ptascii("encoding")
+  -- if $parser_literal(expression) = (pvalue)
+  -- if $source_line(metadata_item) = z /\ $source_end_line(metadata_item) = z
+  -- if $source_line(metadata_name) = z /\ $source_end_line(metadata_name) = z
+  -- if $source_line($pcmetadata(expression)) = z /\ $source_end_line($pcmetadata(expression)) = z
+  -- if $encoding_declare_count(phpType49*, z) = (n)
+def $encoding_declare_count(phpType49*, z) = eps -- otherwise
+def $encoding_declare_line(NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = (z)
   -- if z = $source_line(metadata)
   -- if $(z > 0)
   -- if $source_end_line(metadata) = z
-  -- if $source_line(metadata_item) = z /\ $source_end_line(metadata_item) = z
-  -- if $source_line(metadata_name) = z /\ $source_end_line(metadata_name) = z
-  -- if $source_line(metadata_value) = z /\ $source_end_line(metadata_value) = z
+  -- if $encoding_declare_count(phpType49*, z) = (n)
+  -- if $(n > 0)
 def $encoding_declare_line(statement) = eps -- otherwise
 def $encoding_declare_site(program, [PCINDEX n]) = $encoding_declare_line(statement)
   -- if pcunit = $pcsource(0, program)
@@ -113,23 +134,58 @@ def $encoding_declare_prefix(statement*, 0) = true
 def $encoding_declare_prefix((NStmtDeclare phpType48 phpType47 metadata) :: statement*, n) = $encoding_declare_prefix(statement*, $nabs($(n - 1)))
   -- if $(n > 0)
 def $encoding_declare_prefix(statement*, n) = false -- otherwise
+def $encoding_declare_late(P, pcpath) = true
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath) = (statement)
+  -- if $encoding_declare_line(statement) = (z)
+  -- if ~$encoding_declare_first($pcprogram(P.FOLD.SOURCE.AST), pcpath)
+def $encoding_declare_late(P, pcpath) = false -- otherwise
 
-def $ppparser_begin(P) = $ppencoding_nodes(P, pcunit.OCCURRENCES)
+;; Structural AST field order can differ from parser chronology (anonymous-class
+;; arguments precede its method bodies). Encoding-item token positions order the
+;; complete parser prefix before the separate source compiler traversal.
+def $ppparser_begin(P) = $ppencoding_collect(P[.FOLD.SOURCE = pcunit], pcunit.OCCURRENCES, eps)
   -- if pcunit = $pcsource(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST)
+def $ppencoding_collect(P, pcoccurrence*, encodingpositions) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppencoding_collect(P, eps, encodingpositions) = $ppencoding_nodes(P, $encoding_token_nodes(encodingpositions))
+  -- if P.COMPLETION = PPCNORMAL
+def $ppencoding_collect(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, encodingpositions) = $ppencoding_collect(P, pcoccurrence*, encodingpositions)
+  -- if P.COMPLETION = PPCNORMAL /\ ~$encoding_declare_item(pcnode)
+def $ppencoding_collect(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, encodingpositions) = $ppencoding_collect(P, pcoccurrence*, $encoding_token_insert(encodingpositions, z, PCOCCURRENCE pcpath pcnode))
+  -- if P.COMPLETION = PPCNORMAL /\ $encoding_declare_item(pcnode)
+  -- if $source_token_start($pcmetadata(pcnode)) = (z)
+  -- if $(z >= 0)
+  -- if ~$encoding_token_present(encodingpositions, z)
+def $ppencoding_collect(P, pcoccurrence*, encodingpositions) = $ppunsupported(P, "encoding parser warning source position")
+  -- otherwise
+def $encoding_token_present(eps, z) = false
+def $encoding_token_present((z_first, pcoccurrence) :: encodingpositions, z) = (z_first = z \/ $encoding_token_present(encodingpositions, z))
+def $encoding_token_insert(eps, z, pcoccurrence) = [(z, pcoccurrence)]
+def $encoding_token_insert((z_first, pcoccurrence_first) :: encodingpositions, z, pcoccurrence) = (z, pcoccurrence) :: (z_first, pcoccurrence_first) :: encodingpositions
+  -- if $(z < z_first)
+def $encoding_token_insert((z_first, pcoccurrence_first) :: encodingpositions, z, pcoccurrence) = (z_first, pcoccurrence_first) :: $encoding_token_insert(encodingpositions, z, pcoccurrence)
+  -- if $(z >= z_first)
+def $encoding_token_nodes(eps) = eps
+def $encoding_token_nodes((z, pcoccurrence) :: encodingpositions) = pcoccurrence :: $encoding_token_nodes(encodingpositions)
 def $ppencoding_nodes(P, eps) = P
 def $ppencoding_nodes(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $ppencoding_nodes($ppencoding_node(P, pcpath, pcnode), pcoccurrence*)
 def $ppencoding_node(P, pcpath, pcnode) = P
   -- if P.COMPLETION =/= PPCNORMAL \/ ~$encoding_declare_item(pcnode)
-def $ppencoding_node(P, [PCINDEX n, PCFIELD 0, PCINDEX 0], pcnode) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "encoding-disabled" eps { UNIT P.FOLD.SOURCE.ID, PATH pcpath_root, FILE P.LOCATION.FILE, LINE n_line }]]
+def $ppencoding_node(P, pcpath_item, pcnode) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "encoding-disabled" eps { UNIT P.FOLD.SOURCE.ID, PATH pcpath_statement, FILE P.LOCATION.FILE, LINE n_line }]]
   -- if P.COMPLETION = PPCNORMAL /\ $encoding_declare_item(pcnode)
-  -- if $encoding_declare_site(P.FOLD.SOURCE.AST, [PCINDEX n]) = (z)
-  -- if z = n_line
-  -- if pcpath_root = [PCINDEX n]
+  -- if $(|pcpath_item| >= 2)
+  -- if pcpath_statement = pcpath_item[0:$nabs($(|pcpath_item| - 2))]
+  -- if pcpath_item[$nabs($(|pcpath_item| - 1))] = PCINDEX n_item
+  -- if pcpath_item = pcpath_statement ++ [PCFIELD 0, PCINDEX n_item]
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_statement) = (statement)
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_item) = (pcnode)
+  -- if $encoding_declare_line(statement) = (n_line)
 def $ppencoding_node(P, pcpath, pcnode) = $ppunsupported(P, "encoding parser warning source shape")
   -- otherwise
 
-def $ppstrict_item(P, pcpath, ABSENT, NDeclareItem (NIdentifier (BYTES text) metadata_name) (NScalarString phpType33 metadata_value) metadata) = P
+def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = P
   -- if $ptlc($base64(text)) = $ptascii("encoding")
+  -- if $parser_literal(expression) = (pvalue)
   -- if $encoding_declare_site(P.FOLD.SOURCE.AST, pcpath) = (z)
   -- if $encoding_declare_first($pcprogram(P.FOLD.SOURCE.AST), pcpath)
 def $plmessage(PLDIAGNOSTIC "warning" "encoding-disabled" eps pllocation) = $ptascii("declare(encoding=...) ignored because Zend multibyte feature is turned off by settings")

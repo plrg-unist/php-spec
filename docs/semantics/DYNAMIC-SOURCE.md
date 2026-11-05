@@ -146,3 +146,39 @@ file-mode AST offsets and rejects altered encoding metadata. The
 the original file-mode refusal and later unrelated builtin refusal. Converted
 encodings, BOM metadata and other HALT/preamble combinations remain outside
 this bounded offset rule.
+
+## Encoding declarations
+
+With Zend multibyte disabled, each parser-literal `encoding` item produces a
+Warning128 before compilation. Checked single-line declarations may contain
+mixed or repeated directives, integer/float/string literals or literal
+concatenation, and ordinary bodies. Their encoding items are sorted by original
+token positions: anonymous-class arguments can parse before method bodies even
+when structural AST fields visit the bodies first. Missing or duplicate encoding
+positions are explicit Unsupported.
+
+Compilation processes the directives and body in order. An encoding declaration
+after a non-declare statement, or inside a namespace or block, raises the
+first-statement fatal after the complete parser-warning prefix. A preceding
+declare body does not prevent another root encoding declaration. A successful
+encoding directive has no runtime effect; its body executes through ordinary
+source work, including returns from included and eval units. Mixed strict/tick
+directives retain their existing rules and are disjoint from encoding-free
+runtime declarations.
+
+Five [source cases](../../tests/semantics/encoding_placement_sources.py) compare
+exact pinned-native diagnostics, exits and source identities. The
+[checked-AST fixture](../../tests/semantics/encoding_placement_state.py)
+authenticates late and nested occurrence paths and rejects a missing parent
+occurrence. The [review ledger](../../coverage/semantics/encoding-placement-review.json)
+preserves earlier failed checks. The
+[list/body sources](../../tests/semantics/encoding_list_sources.py),
+[compiler/body fixture](../../tests/semantics/encoding_list_state.py) and
+[independent dynamic fixture](../../tests/semantics/encoding_list_dynamic_state.py)
+cover recursive warning order, compiler precedence, body scheduling, origin
+guards, budget resume and dynamic return values. Their
+[review ledger](../../coverage/semantics/encoding-list-review.json) retains exact
+tested cuts and earlier failures. Multiline headers and bodies lack an
+authenticated closing-parenthesis line and remain explicit Unsupported, as do
+parser-rejected dynamic sources with warnings. Multibyte-enabled source
+conversion remains partial.
