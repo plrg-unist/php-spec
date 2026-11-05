@@ -28,9 +28,20 @@ through a returned child's field or an escaped Closure. Instance receiver and
 static lexical/called scope remain actual saved context. The
 [factory review](../../coverage/semantics/anonymous-magic-argument-factories-review.json)
 keeps exact original observations and actual frame/array/return retirement checks
-separate from out-of-domain design attempts and retained boundaries. Zero sends
-and owning first-CV capture remain unfinished consumer work; this source slice
-adds no generic dispatch, schema or producer rule.
+separate from out-of-domain design attempts and retained boundaries.
+
+Zero-send instance/static calls now authenticate the same source, selected target
+and plain header without reading a first argument. Their raw zero-argument task
+forms the actual `(name, empty array)` pair, then enters the ordinary two-parameter
+method frame. Zend uses `ZVAL_EMPTY_ARRAY`; the model uses an immutable abstract
+array node owned first by the packed operand and then by the parameter CV or
+returned child, while existing collector rules exclude it from candidates and
+the collector graph. A write retains the ordinary COW separation rule.
+Instance receiver cleanup and static lexical/called scope keep their existing
+rules. The [zero-send review](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
+binds actual packing, empty-array ownership and budget-resumption checks. Owning
+first-CV capture and wider producers remain unfinished consumer work; no generic
+dispatch, schema or header rule changes.
 
 For the sole argument-array cases, compiled-local cleanup retires the array and
 payload before releasing the selected receiver, then delivers the cached scalar

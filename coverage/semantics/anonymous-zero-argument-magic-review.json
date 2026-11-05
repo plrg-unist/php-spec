@@ -1,0 +1,98 @@
+{
+  "scope": "CLASS192: zero-send literal missing instance/static calls through existing authenticated ordinary magic consumers, including named/anonymous source-owned child factories. Existing plain string-name/array-arguments headers, nonempty producer rules and source alternatives stay exact; validation covers named/inherited and anonymous ordinary classes, not new enum/scoped observational credit.",
+  "base": "5772f790823d4347297c9f17b777919eb9c292c9",
+  "implementation_commit": "6d3c3a08f6cc4239136c3ad27d77f301d2551128",
+  "module_count": 445,
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_object_handlers.c zend_std_get_method/get_static_method selects the magic fallback with actual requested spelling, receiver or called class.",
+    "Zend/zend_vm_def.h ZEND_CALL_TRAMPOLINE8957 supplies the actual name/array pair and sets NUM_ARGS=2. Zero original sends take ZVAL_EMPTY_ARRAY rather than zend_new_array. Abstract model array identity/ownership does not claim a native allocation.",
+    "Zend/zend_hash.c zend_empty_array has GC_IMMUTABLE; existing301 gc_immutable_array/possible_root/gc_graph_node distinguish its logical owners from the collector graph."
+  ],
+  "mechanism": "414/415 admit zero original sends and use explicit empty capture branches. Nonempty branches bind a source-list head/tail instead of indexing argument0. Empty packing uses existing allocate_immutable_empty; nonempty packing is identical to the prior allocation. Direct receiver reads, source/header/caller proof, selected frame and heap ownership remain exact; no schema, factory/header eligibility or collector-rule expansion.",
+  "author": {
+    "source2": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/author/class180-source-h6p2_k20/report.json",
+      "sha256": "a66d54be186bb7f4554d5cf09394b2bb473d1e1fa7f7c73295f29caa621bf11b",
+      "result": "Both exact/native/model/stable at explicit240s/outer250. Inherited instance body clears root receiver before child NEW; inherited static has no receiver. Empty real argument values, raw mixed-case name, private/self/static/method scope, held child and cleanup agree.",
+      "qualified_cut": "f0c8ba88011747707cbcf0a13c76da1042436205",
+      "bridge": "Later immutable-empty allocator refinement changes only GC flags/candidate/trace classification. These exact source bytes contain no collector observation or array write; final affected SL fixture separately checks output/lifetime and actual immutable state. No source rerun."
+    },
+    "commands": [
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_zero_argument_magic_cases.json --model-timeout 240",
+      "python3 tests/semantics/anonymous_zero_argument_magic_protocol.py"
+    ],
+    "pre_immutable_SL445": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/author/closure-call-protocol-5p41wfac/report.json",
+      "sha256": "770b66adaa51f37a2dc3cef9a573389aa2456bfa40c0f9c7d58542245190a669",
+      "result": "TRUE/exit0/empty stderr/stable; actual zero raw CALL_ARGS becomes a two-parameter selected task with one fresh abstract empty-array node. The same node reaches the method parameter and has one owner after root receiverNULL; receiver also has one actual frame owner. Full/split2+4096=4098 exact; receiver and array retire.",
+      "counts": {
+        "compiler_setup": 5,
+        "genuine_raw_packing_frame_ownership_budget_retirement": 67,
+        "derived_wrong_cursor_and_called_class_refusals": 2
+      },
+      "qualification": "Historical ordinary packing/frame/ownership success only; lacked immutable/noncandidate/collector-node assertions and supplies zero final GC-state credit."
+    },
+    "SL445": {
+      "counts": {
+        "compiler_setup": 5,
+        "genuine_raw_packing_immutable_graph_frame_ownership_budget_retirement": 72,
+        "derived_wrong_cursor_and_called_class_refusals": 2
+      },
+      "report": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/author/closure-call-protocol-_500pwae/report.json",
+      "sha256": "39eeefc35ebbb484e2955eb4a8ceae6ca965c52e1613bc75196d4f6668fe91c4",
+      "result": "Final79 TRUE/exit0/empty stderr/stable at6d; actual raw0\u2192two-real-parameter pack creates one immutable abstract array, excluded from possible roots/collector nodes while logically owned. Same immutable array reaches method parameter after receiverCVNULL. Exact full/split2+4096=4098 native output/state and receiver/array retirement."
+    }
+  },
+  "preserved_zero_credit": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/author/closure-call-protocol-8sv44vgn/report.json",
+    "reason": "First fixture reused raw-task tail metavariable at later NEW; only raw tail name corrected, no production/state repair. Original fixture/streams/report retained zero aggregate credit. CLASS191 zero-send Unsupported design attempt stays at its original historical cut; no191 replay.",
+    "immutable_state_defect": "Primary/source review found f0 plain empty allocation lacked GC.IMMUTABLE, incorrectly making its abstract node a possible collector root/node. It was not an observed source-output mismatch. Correct only empty allocation via existing helper; preserve earlier reports without final GC credit."
+  },
+  "independent_review": {
+    "decision": "accepted_private",
+    "semantic_cut": "6d3c3a08f6cc4239136c3ad27d77f301d2551128",
+    "record": "coverage/semantics/anonymous-zero-argument-magic-independent.json",
+    "source2": "Exact/native/model/stable atf0, noGC/noarraywrites; qualified across empty-only immutable allocation refinement. Anonymous owner/child/rootafter0/1/2 and retained empty array; inherited static escaped Closure with actual Base/Late/rawname.",
+    "final_SL445": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/reviewer/closure-call-protocol-hltokp7k/report.json",
+      "sha256": "9d8a26c2812d73f2e3167aef3c9276c1b2c9e4fac6e79e0f243414a9e0f25dcd",
+      "result": "Final86 TRUE/exit0/empty stderr/stable,2compiler setup82actual2derived. Args and child.saved immutable/noncandidate/excludedGCgraph at RETURN/HELD; GCstatevalid through full/split2+8192=8194 and final retirement. Final86 supersedes earlier nonGC76 without double-counting."
+    },
+    "notes": "Peer source/return proof has no fixture failure or semantic defect beyond the identified shared empty-flag refinement; compact record owns final external archive paths."
+  },
+  "remaining": [
+    "Owning first-CV capture and more than two direct positional original sends",
+    "Trait/ref/generator/attributed magic factories and wider headers/producers/dispatch combinations beyond separately reviewed source consumers"
+  ],
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/author/",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/author/reports.json",
+    "provenance": "/home/user/workspace/php-spec-evidence-archive/class192-zero-argument-magic/author/provenance.json",
+    "recovery": "Use committed catalogue/renderer and recorded source/protocol commands in a provisioned private root. Raw inputs/commands/exits/fixture/binary fingerprints remain external; current runtime/maintained fixture are exact validated bytes committed6d. Earlier output/noGC source cut and pre-refinement74 are qualified separately."
+  },
+  "engine_divergence": "None identified.",
+  "semantic_commits": [
+    "f0c8ba88011747707cbcf0a13c76da1042436205",
+    "6d3c3a08f6cc4239136c3ad27d77f301d2551128"
+  ],
+  "summary": {
+    "source_agreements": "Author2 +independent2 at qualified f0 cuts; noGC/noarraywrites, bridged narrowly to6d.",
+    "author_final_SL445": {
+      "compiler_setup": 5,
+      "genuine_runtime": 72,
+      "derived_refusals": 2
+    },
+    "independent_final_SL445": {
+      "compiler_setup": 2,
+      "genuine_runtime": 82,
+      "derived_refusals": 2
+    },
+    "not_counted": "Initial raw-tail fixture failure0, pre-refinement74/76 as no final GC-state credit, historical191 zero-send Unsupported0; no unrelated replay."
+  }
+}

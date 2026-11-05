@@ -5239,9 +5239,11 @@ headers, parentless declaring classes and external private-property consumers;
 setter RHSs remain initially nonreference integer CVs/literals, with delivery after
 receiver destruction. Argument-magic factories preserve the captured sends, real
 packed array and lexical/called scope after later arguments change caller bindings.
-Returned children may retain payloads/arrays after receiver cleanup. Existing
-one/two-send and plain-header limits remain; zero sends, owning first-CV and
-wider producer forms stay unfinished. Trait magic declarations remain partial.
+Returned children may retain payloads/arrays after receiver cleanup. Zero-send
+calls use the same selected source and ordinary method frame, with the real
+name and immutable empty array parameters, with no first-argument read.
+Nonempty producer and plain header limits remain; owning first-CV and wider producer forms stay unfinished.
+Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
 [generator Closure](coverage/semantics/anonymous-generator-closure-factories-review.json),
@@ -5249,7 +5251,8 @@ wider producer forms stay unfinished. Trait magic declarations remain partial.
 [reference Closure](coverage/semantics/anonymous-reference-closure-factories-review.json)
 [magic method](coverage/semantics/anonymous-magic-factories-review.json)
 [property magic](coverage/semantics/anonymous-property-magic-factories-review.json)
-and [argument magic](coverage/semantics/anonymous-magic-argument-factories-review.json) reviews.
+[argument magic](coverage/semantics/anonymous-magic-argument-factories-review.json)
+and [zero-send magic](coverage/semantics/anonymous-zero-argument-magic-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
