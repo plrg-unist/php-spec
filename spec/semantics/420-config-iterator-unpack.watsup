@@ -411,6 +411,7 @@ dec $config_iterator_copied_header(pstate, pconfigcall) : bool
 def $config_iterator_copied_header(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_INI_SET \/ pconfigcall.KIND = INTRINSIC_INI_GET
   -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps
+  -- if pconfigcall.KIND =/= INTRINSIC_INI_GET \/ ~pconfigcall.NAMED
   -- if ~$pipe_site(S, pconfigcall.SITE)
   -- if $config_call_valid(S, pconfigcall)
   -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
@@ -1014,6 +1015,7 @@ dec $config_iterator_get_option(pstate, pconfigcall) : bool
 def $config_iterator_get_option(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_INI_GET
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
+  -- if ~pconfigcall.NAMED
   -- if $stringable_instance(S, n_object)
   -- if ~$config_strict(S, pconfigcall)
 def $config_iterator_get_option(S, pconfigcall) = false -- otherwise
