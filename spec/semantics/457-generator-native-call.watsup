@@ -179,9 +179,16 @@ rule PhpStep/generator-call-throw-return-release: S ~> S[.TODO = (THROW_SEARCH n
   -- if $destructor_return_operand_valid(S, KNOWN pvalue)
   -- if $throwable_live(S, n)
 
+;; Unknown native signatures use the compiler's SEND_VAR location, which may
+;; differ from both the call instruction and the variable's AST start line.
+def $closure_call_read_line(S, pclosurecall) = z
+  -- if pclosurecall.NATIVE = (text_method)
+  -- if $code_expression_at_source(S, pclosurecall.SITE, [PCFIELD 2, PCINDEX pclosurecall.INDEX, PCFIELD 1]) = (z)
+def $closure_call_read_line(S, pclosurecall) = pclosurecall.LINE -- otherwise
+
 ;; Outer SEND_VAR resolves an undefined CV before native inner-name mapping.
 ;; Freeze NULL across the Warning callback without evaluating the CV again.
-def $error_read_state_shape(S, CLOSURE_CALL_SEND pclosurecall, VARIABLE n* z, pbase) = ({ORIGINAL CLOSURE_CALL_SEND pclosurecall, INPUT VARIABLE n* z, BASE pbase, NAME n*, LINE pclosurecall.LINE, TASK CLOSURE_CALL_SEND pclosurecall, RESULT KNOWN PNULL})
+def $error_read_state_shape(S, CLOSURE_CALL_SEND pclosurecall, VARIABLE n* z, pbase) = ({ORIGINAL CLOSURE_CALL_SEND pclosurecall, INPUT VARIABLE n* z, BASE pbase, NAME n*, LINE $closure_call_read_line(S, pclosurecall), TASK CLOSURE_CALL_SEND pclosurecall, RESULT KNOWN PNULL})
   -- if pclosurecall.NATIVE = (text_method)
   -- if $closure_call_task_valid(S, pclosurecall)
 def $error_read_source(S, perrorread) = true
@@ -193,7 +200,7 @@ def $error_read_source(S, perrorread) = true
   -- if $(pclosurecall.INDEX < |phpType7*|)
   -- if phpType7*[pclosurecall.INDEX] = NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata
   -- if $error_variable_source(S, (pclosurecall.SITE), [PCFIELD 2, PCINDEX pclosurecall.INDEX, PCFIELD 1], perrorread.NAME)
-  -- if perrorread.LINE = pclosurecall.LINE
+  -- if perrorread.LINE = $closure_call_read_line(S, pclosurecall)
 def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $closure_call_warning_release(S, pclosurecall)
   -- if perrorread.ORIGINAL = CLOSURE_CALL_SEND pclosurecall
   -- if pclosurecall.NATIVE = (text_method)

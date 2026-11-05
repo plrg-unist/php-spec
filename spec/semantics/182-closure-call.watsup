@@ -5,6 +5,7 @@ dec $closure_call_array_pack_site(pstate, porigin) : bool
 dec $closure_call_source_expression(pstate, porigin) : expression
 dec $closure_call_source(pstate, nat) : bool
 dec $closure_call_native(pstate, nat) : text?
+dec $closure_call_read_line(pstate, pclosurecall) : int
 dec $closure_call_real(pstate, nat) : bool
 dec $closure_call_parameters(pstate, nat) : psparam*
 dec $closure_call_warning(pstate, nat, nat) : ptbytes?
@@ -347,7 +348,7 @@ rule PhpStep/closure-call-send-this: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclo
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.INDEX = 0
   -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
   -- if $closure_call_receiver_object(S_read, POBJECT n_receiver)
@@ -358,7 +359,7 @@ rule PhpStep/closure-call-send-this-invalid: S ~> S_read[.TODO = (CLOSURE_CALL_A
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.INDEX = 0
   -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $closure_call_nonobject(pvalue)
@@ -366,7 +367,7 @@ rule PhpStep/closure-call-send-this-unsupported: S ~> S_read[.TODO = eps][.COMPL
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
   -- if pclosurecall.INDEX = 0
   -- if $closure_call_args_at(S, pclosurecall.SITE) = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
   -- if ~$closure_call_receiver_object(S_read, POBJECT n_receiver)
@@ -377,7 +378,7 @@ rule PhpStep/closure-call-send-named-this: S ~> S_read[.TODO = (CLOSURE_CALL_ARG
   -- if $closure_call_named_form(phpType7*) \/ $closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $base64(text) = $ptascii("newThis")
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
   -- if $closure_call_receiver_object(S_read, POBJECT n_receiver)
@@ -388,7 +389,7 @@ rule PhpStep/closure-call-send-named-this-invalid: S ~> S_read[.TODO = (CLOSURE_
   -- if $closure_call_named_form(phpType7*) \/ $closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $base64(text) = $ptascii("newThis")
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $closure_call_nonobject(pvalue)
@@ -399,7 +400,7 @@ rule PhpStep/closure-call-send-named-this-unsupported: S ~> S_read[.TODO = eps][
   -- if $closure_call_named_form(phpType7*) \/ $closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $base64(text) = $ptascii("newThis")
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_receiver)
   -- if ~$closure_call_receiver_object(S_read, POBJECT n_receiver)
@@ -413,13 +414,13 @@ rule PhpStep/closure-call-send-forward: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS p
   -- if ~$closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, phpType3)
   -- if n_forward = $closure_call_forward_index(phpType7*, pclosurecall.INDEX)
   -- if psparam* = $closure_call_parameters(S, pclosurecall.SOURCE)
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $named_check(S_read, pclosurecall.SENT, $named_target(psparam*, phpType3, n_forward), NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata_arg, pclosurecall.LINE) = S_read
 rule PhpStep/closure-call-send-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION =/= NORMAL
 def $closure_call_outer_duplicate(eps, (pkey, poperand)*, NIdentifier (BYTES text) metadata_name) = false
   -- if $base64(text) = $ptascii("newThis")
@@ -433,7 +434,7 @@ rule PhpStep/closure-call-send-duplicate-outer: S ~> $throwable_allocate(S_read[
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if phpType7*[pclosurecall.INDEX] = NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, NIdentifier (BYTES text_name) metadata_name)
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
 rule PhpStep/closure-call-send-named-abrupt: S ~> S_read[.TODO = (CLOSURE_CALL_ARGS pclosurecall[.INDEX = $(pclosurecall.INDEX + 1)][.SENT = {SLOTS eps, NAMED eps}][.RAW = pclosurecall.RAW ++ [(KSTRING $base64(text_name), KNOWN pvalue)]][.ERROR = (n_message*)]) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (CLOSURE_CALL_SEND pclosurecall) :: ptask_tail*
@@ -445,7 +446,7 @@ rule PhpStep/closure-call-send-named-abrupt: S ~> S_read[.TODO = (CLOSURE_CALL_A
   -- if ~$closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, NIdentifier (BYTES text_name) metadata_name)
   -- if n_forward = $closure_call_forward_index(phpType7*, pclosurecall.INDEX)
   -- if psparam* = $closure_call_parameters(S, pclosurecall.SOURCE)
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if S_checked = $named_check(S_read, pclosurecall.SENT, $named_target(psparam*, NIdentifier (BYTES text_name) metadata_name, n_forward), NArg (NIdentifier (BYTES text_name) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata_arg, pclosurecall.LINE)
@@ -459,7 +460,7 @@ rule PhpStep/closure-call-send-after-error: S ~> S_read[.TODO = (CLOSURE_CALL_AR
   -- if ~$closure_call_newthis_name(phpType3)
   -- if ~$closure_call_outer_duplicate(pclosurecall.FIRST, pclosurecall.RAW, phpType3)
   -- if n_forward = $closure_call_forward_index(phpType7*, pclosurecall.INDEX)
-  -- if S_read = $resolve_at(S, S.RESULT, pclosurecall.LINE)
+  -- if S_read = $resolve_at(S, S.RESULT, $closure_call_read_line(S, pclosurecall))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 rule PhpStep/closure-call-arguments-done: S ~> S[.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*]
