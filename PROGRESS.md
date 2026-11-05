@@ -82,8 +82,8 @@ member and show that the query enters neither user method body.
 The third output now captures an initialized string-valued CV for a literal
 generated enum method string and writes its canonical name before returning
 the boolean.
-One exact original, strict433 and 45 source-reached guards pass; array input,
-old-object destructor and input/output aliasing remain explicit Unsupported.
+One exact original, strict433 and 45 source-reached guards pass; the later cuts
+below extend array input, old-object replacement and aliases.
 Absent literal methods now also write the name on runtime false and syntax-only
 true results. A second exact original and 42 reached guards pass.
 Canonical class-name and live case-object literal arrays now write their
@@ -93,8 +93,8 @@ and leading backslash receiver spelling, while case arrays use the canonical
 enum name. Three exact outcomes and 64 reached guards pass; other array
 sources remain partial. The same direct output path now accepts initialized
 int, bool and null CV values, writing the name before returning the boolean.
-Three exact outcomes and 79 reached guards pass; an old output object remains
-explicit Unsupported because its destructor runs during replacement.
+Three exact outcomes and 79 reached guards pass; old-object replacement follows
+the lifetime rules below.
 Literal enum method strings now also retain their raw class and method spelling
 in the third output, including lowercase and a leading backslash. Three exact
 outcomes and 88 reached guards pass.
@@ -108,9 +108,18 @@ Seven exact originals, strict433, 200 independent guards and the affected
 [Saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json).
 Retained childless ordinary old output objects now receive the callable name
 while another owner survives; their destructor runs only after the last owner
-is released. The postwrite ownership guard rejects a unique or dead old object.
+is released. The postwrite ownership guard separates this direct write from
+last-owner cleanup and rejects dead objects.
 One exact original, strict433 and 77 independent reached guards pass.
 [Retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json).
+Last-owner childless ordinary output objects now clear the captured cell before
+the destructor, then commit the chosen name before returning or propagating its
+throw. Output unset/rebinding, saved input, API trace snapshots and resurrection
+retain their actual cells and owners. Twelve normal originals, five explicit
+boundary controls, strict433, 345 independent guards and affected retained77
+checks pass at their recorded cuts. Exit, owning rebound values, late attached
+type sources and variable array inputs remain partial.
+[Unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json).
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
