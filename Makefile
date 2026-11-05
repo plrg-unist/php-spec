@@ -30,6 +30,7 @@ test: build
 	python3 tests/rejected_constant_modifier_service_review.py --output "$$(mktemp -d /tmp/php-spec-constant-modifiers.XXXXXXXX)/service"
 	python3 tests/rejected_trait_alias_modifier_service_review.py --output "$$(mktemp -d /tmp/php-spec-trait-alias-modifiers.XXXXXXXX)/service"
 	python3 tests/rejected_property_hook_static_service_review.py --output "$$(mktemp -d /tmp/php-spec-property-hook-static.XXXXXXXX)/service"
+	python3 tests/rejected_constant_attribute_service_review.py --output "$$(mktemp -d /tmp/php-spec-constant-attributes.XXXXXXXX)/service"
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
@@ -1801,6 +1802,8 @@ test-semantics: build
 	python3 tests/semantics/rejected_property_hook_static_review_state.py --output "$$(mktemp -d /tmp/php-spec-property-hook-static.XXXXXXXX)/state"
 	python3 tests/semantics/multiproperty_hook_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-multiproperty-hook.XXXXXXXX)/sources"
 	python3 tests/semantics/multiproperty_hook_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-multiproperty-hook.XXXXXXXX)/main"
+	python3 tests/semantics/constant_attribute_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-constant-attributes.XXXXXXXX)/sources"
+	python3 tests/semantics/constant_attribute_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-constant-attributes.XXXXXXXX)/main"
 	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
 	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
 	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"
