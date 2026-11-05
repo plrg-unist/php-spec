@@ -97,7 +97,7 @@ $heap_owners($heap_graph(S_cancel), HOBJECT n_capture) = 2
 $heap_owners($heap_graph(S_cancel), HOBJECT n_prefix) = 2
 $heap_owners($heap_graph(S_cancel), HCELL n_prefix_cell) = 1
 $heap_valid($heap_graph(S_cancel))
-pclosurebinding_bad_site = pclosurebinding[.SITE = PORIGIN |S.SOURCES| eps]
+pclosurebinding_bad_site = pclosurebinding[.SITE = PORIGIN 999 eps]
 ~$closure_call_retained_valid(S_cancel[.CLOSURECALLRETAINED = [pclosurebinding_bad_site]])
 pclosurebinding_bad_source = pclosurebinding[.SOURCE = n_copy]
 ~$closure_call_retained_valid(S_cancel[.CLOSURECALLRETAINED = [pclosurebinding_bad_source]])
