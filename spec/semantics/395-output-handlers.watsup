@@ -66,6 +66,7 @@ dec $ob_user_release_valid(pstate, pobrelease) : bool
 dec $ob_user_present(poutputbuffer*, nat) : bool
 dec $ob_user_result_discard(pstate, pobinvoke) : pstate
 dec $ob_user_deprecation_discard(pstate, pobinvoke, pvalue) : pstate
+dec $ob_user_reference_return(pstate, pobinvoke, nat) : pstate
 
 ;; Source selection happens after ordinary ZPP conversion. Invalid/effectful
 ;; callback creation has its own Warning+Notice protocol, not a tick TypeError.
@@ -415,10 +416,11 @@ rule PhpStep/ob-user-nonscalar: S ~> S[.COMPLETION = UNSUPPORTED "non-scalar use
   -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
   -- if S.RESULT = KNOWN pvalue
   -- if ~$ob_user_scalar(pvalue)
-rule PhpStep/ob-user-reference-return: S ~> S[.COMPLETION = UNSUPPORTED "reference user output-handler return conversion"]
+rule PhpStep/ob-user-reference-return: S ~> $ob_user_reference_return(S, pobinvoke, n)
   -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_RESULT pobinvoke)
   -- if S.RESULT = REFERENCE n
+def $ob_user_reference_return(S, pobinvoke, n) = S[.COMPLETION = UNSUPPORTED "reference user output-handler return conversion"] -- otherwise
 rule PhpStep/ob-user-deprecated: S ~> S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])][.TODO = (OB_USER_COMMIT pobinvoke[.SENT = eps] $ob_user_output(S, pvalue)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (OB_USER_DEPRECATED pobinvoke pvalue) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_DEPRECATED pobinvoke pvalue)

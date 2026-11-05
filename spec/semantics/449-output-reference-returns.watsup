@@ -1,0 +1,189 @@
+;; output.c tests raw FALSE/TRUE before convert_to_string unwraps a reference.
+;; Keep the real returned cell through CV cleanup and produced-output warnings;
+;; only scalar conversion reads its current payload and drops the retval owner.
+dec $ob_ref_task(ptask) : pobrefreturn?
+dec $ob_ref_tasks(ptask*, pobrefreturn) : bool
+dec $ob_ref_frames(pframe*, pobrefreturn) : bool
+dec $ob_ref_context(pstate, pobrefreturn) : bool
+dec $ob_ref_current(pstate, pobrefreturn) : bool
+dec $ob_ref_valid(pstate, pobrefreturn, bool) : bool
+dec $ob_ref_nodes(pobrefreturn) : pnode*
+dec $ob_ref_begin(pstate, pobrefreturn) : pstate
+dec $ob_ref_discard(pstate, pobrefreturn) : pstate
+dec $ob_ref_commit(pstate, pobrefreturn, poboutput) : pstate
+dec $ob_ref_pending(pstate, pobinvoke, nat, nat) : pstate
+dec $ob_ref_bytes(pvalue, int) : preqbytes
+dec $ob_ref_notice_restore(pstate, pstate, pobinvoke, nat, nat, ptask*) : pstate
+
+;; Zend always requests the callback retval, even when the source print's own
+;; result is discarded by its surrounding statement or for clause.
+def $reference_callback_used(S, pcallcontext) = (true) -- if $ob_user_context_valid(S, pcallcontext)
+
+def $ob_ref_task(OB_USER_REF_DEPRECATED pobrefreturn) = (pobrefreturn)
+def $ob_ref_task(OB_USER_REF_UNWRAP pobrefreturn) = (pobrefreturn)
+def $ob_ref_task(OB_USER_REF_COMMIT pobrefreturn poboutput) = (pobrefreturn)
+def $ob_ref_task(OB_USER_REF_NOTICE pobrefreturn n) = (pobrefreturn)
+def $ob_ref_task(ERROR_HANDLER_INVOKE perrorcall) = $ob_ref_task(perrorcall.RESUME)
+def $ob_ref_task(ERROR_HANDLER_RESULT perrorcall) = $ob_ref_task(perrorcall.RESUME)
+def $ob_ref_task(ERROR_HANDLER_CLEAN perrorcall) = $ob_ref_task(perrorcall.RESUME)
+def $ob_ref_task(API_CALLBACK_SEND papiargcursor) = $ob_ref_task(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_ref_task(API_CALLBACK_REF papiargcursor) = $ob_ref_task(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
+def $ob_ref_task(ptask) = eps -- otherwise
+def $ob_ref_tasks(ptask :: ptask_tail*, pobrefreturn) = (ptask_tail* = pobrefreturn.TAIL) -- if $ob_ref_task(ptask) = (pobrefreturn)
+def $ob_ref_tasks(ptask :: ptask_tail*, pobrefreturn) = $ob_ref_tasks(ptask_tail*, pobrefreturn) -- if $ob_ref_task(ptask) =/= (pobrefreturn)
+def $ob_ref_tasks(eps, pobrefreturn) = false
+def $ob_ref_frames(eps, pobrefreturn) = false
+def $ob_ref_frames(pframe :: pframe_tail*, pobrefreturn) = ((pframe.CONTEXT = pobrefreturn.CALLER /\ pframe.ORIGIN = ($ob_call_site(pobrefreturn.INVOKE.CALL)) /\ $ob_ref_tasks(pframe.TODO, pobrefreturn)) \/ $ob_ref_frames(pframe_tail*, pobrefreturn))
+def $ob_ref_current(S, pobrefreturn) = (S.CURRENT = pobrefreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobrefreturn.INVOKE.CALL)))
+def $ob_ref_context(S, pobrefreturn) = (($ob_ref_current(S, pobrefreturn) /\ $ob_ref_tasks(S.TODO, pobrefreturn)) \/ $ob_ref_frames(S.FRAMES, pobrefreturn))
+def $ob_ref_valid(S, pobrefreturn, b_cell) = true
+  -- if $ob_ref_context(S, pobrefreturn)
+  -- if pobinvoke = pobrefreturn.INVOKE
+  -- if S_scope = S[.CURRENT = pobrefreturn.CALLER][.ORIGIN = ($ob_call_site(pobinvoke.CALL))][.TODO = (OB_USER_RESULT pobinvoke) :: pobrefreturn.TAIL]
+  -- if $call_task_valid(S_scope, OB_USER_RESULT pobinvoke)
+  -- if ~b_cell \/ $call_reference_operand_valid(S, REFERENCE pobrefreturn.CELL)
+  -- if $destructor_pending_valid(S, pobrefreturn.PENDING)
+def $ob_ref_valid(S, pobrefreturn, b_cell) = false -- otherwise
+def $ob_ref_nodes(pobrefreturn) = $ob_user_nodes(pobrefreturn.INVOKE) ++ [HCELL pobrefreturn.CELL] ++ $instance_roots(pobrefreturn.PENDING)
+def $task_nodes(OB_USER_REF_DEPRECATED pobrefreturn) = $ob_ref_nodes(pobrefreturn)
+def $task_nodes(OB_USER_REF_UNWRAP pobrefreturn) = $ob_ref_nodes(pobrefreturn)
+def $task_nodes(OB_USER_REF_NOTICE pobrefreturn n) = $ob_ref_nodes(pobrefreturn)
+;; CELL/CALLER/TAIL now witness the consumed retval; they add no roots.
+def $task_nodes(OB_USER_REF_COMMIT pobrefreturn poboutput) = $ob_user_nodes(pobrefreturn.INVOKE) ++ $value_nodes(poboutput.VALUE) ++ $instance_roots(pobrefreturn.PENDING)
+def $ob_user_active_task(OB_USER_REF_DEPRECATED pobrefreturn) = (pobrefreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_REF_UNWRAP pobrefreturn) = (pobrefreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_REF_COMMIT pobrefreturn poboutput) = (pobrefreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_REF_NOTICE pobrefreturn n) = (pobrefreturn.INVOKE.BUFFER.ID)
+def $ob_user_disabled_task(OB_USER_REF_DEPRECATED pobrefreturn, n) = (pobrefreturn.INVOKE.BUFFER.ID = n)
+def $output_task_write(OB_USER_REF_DEPRECATED pobrefreturn) = $output_call_write(pobrefreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_REF_UNWRAP pobrefreturn) = $output_call_write(pobrefreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_REF_COMMIT pobrefreturn poboutput) = $output_call_write(pobrefreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_REF_NOTICE pobrefreturn n) = $output_call_write(pobrefreturn.INVOKE.CALL)
+def $ob_user_resume_api(OB_USER_REF_DEPRECATED pobrefreturn) = $ob_call_api(pobrefreturn.INVOKE.CALL)
+def $output_drain_warning_resume(OB_USER_REF_DEPRECATED pobrefreturn) = $output_drain_final_call(pobrefreturn.INVOKE.CALL)
+def $output_drain_task(S, OB_USER_REF_DEPRECATED pobrefreturn) = $output_drain_active(S, pobdrain) -- if pobrefreturn.INVOKE.CALL = OB_FINAL pobdrain
+def $output_drain_task(S, OB_USER_REF_UNWRAP pobrefreturn) = $output_drain_active(S, pobdrain) -- if pobrefreturn.INVOKE.CALL = OB_FINAL pobdrain
+def $output_drain_task(S, OB_USER_REF_COMMIT pobrefreturn poboutput) = $output_drain_active(S, pobdrain) -- if pobrefreturn.INVOKE.CALL = OB_FINAL pobdrain
+
+def $call_task_valid(S, OB_USER_REF_DEPRECATED pobrefreturn) = ($ob_ref_valid(S, pobrefreturn, true) /\ pobrefreturn.PENDING = eps /\ $ob_user_temporary(S, pobrefreturn.INVOKE.BUFFER.ID) /\ $long_and(poutputbuffer.FLAGS, 40960) = 8192)
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_REF_UNWRAP pobrefreturn) = ($ob_ref_valid(S, pobrefreturn, true) /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput) = ($ob_ref_valid(S, pobrefreturn, false) /\ $ob_user_output_valid(S, poboutput) /\ $string_bytes(poboutput.VALUE) = (poboutput.BYTES) /\ ~poboutput.FAILED /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_REF_NOTICE pobrefreturn n) = ($ob_ref_valid(S, pobrefreturn, true) /\ pobrefreturn.PENDING = eps /\ $throwable_live(S, n))
+
+def $ob_user_reference_return(S, pobinvoke, n) = $ob_ref_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {INVOKE pobinvoke, CELL n, PENDING eps, CALLER S.CURRENT, TAIL ptask_tail*})
+  -- if S.TODO = (OB_USER_RESULT pobinvoke) :: ptask_tail*
+  -- if S.RESULT = REFERENCE n
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+def $ob_ref_begin(S, pobrefreturn) = S[.TODO = (OB_USER_REF_UNWRAP pobrefreturn) :: pobrefreturn.TAIL]
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
+def $ob_ref_begin(S, pobrefreturn) = $error_dispatch(S[.TODO = (OB_USER_REF_DEPRECATED pobrefreturn) :: pobrefreturn.TAIL][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], 8192, $ob_user_deprecation(pobrefreturn.INVOKE), $ob_call_line(pobrefreturn.INVOKE.CALL), $ob_call_event(pobrefreturn.INVOKE.CALL, "Deprecated", $ob_user_deprecation(pobrefreturn.INVOKE), $ob_call_line(pobrefreturn.INVOKE.CALL)), OB_USER_REF_DEPRECATED pobrefreturn)
+  -- if pobrefreturn.PENDING = eps
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+def $ob_ref_begin(S, pobrefreturn) = $ob_normal_deprecation(S[.TODO = (OB_USER_REF_UNWRAP pobrefreturn) :: pobrefreturn.TAIL], pobrefreturn.INVOKE)
+  -- if pobrefreturn.PENDING =/= eps
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_USER_REF_DEPRECATED pobrefreturn
+  -- if $call_task_valid(S, OB_USER_REF_DEPRECATED pobrefreturn)
+  -- if perrorcall.SITE = $ob_call_site(pobrefreturn.INVOKE.CALL) /\ perrorcall.LINE = $ob_call_line(pobrefreturn.INVOKE.CALL)
+  -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = $ob_user_deprecation(pobrefreturn.INVOKE)
+  -- if perrorcall.EVENT = $ob_call_event(pobrefreturn.INVOKE.CALL, "Deprecated", perrorcall.MESSAGE, perrorcall.LINE)
+rule PhpStep/ob-reference-deprecated: S ~> S[.TODO = (OB_USER_REF_UNWRAP pobrefreturn) :: ptask_tail*][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])]
+  -- if S.TODO = (OB_USER_REF_DEPRECATED pobrefreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_DEPRECATED pobrefreturn) /\ $ob_ref_current(S, pobrefreturn)
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+
+def $ob_ref_bytes(PBOOL true, z) = [49]
+def $ob_ref_bytes(pvalue, z) = $ob_user_bytes(pvalue, z) -- if pvalue =/= PBOOL true
+rule PhpStep/ob-reference-unwrap: S ~> S[.TODO = (OB_USER_REF_COMMIT pobrefreturn $ob_user_output(S, PSTRING $ob_ref_bytes(pvalue, $precision_value(S)))) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_REF_UNWRAP pobrefreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_UNWRAP pobrefreturn) /\ $ob_ref_current(S, pobrefreturn)
+  -- if S.STORE[pobrefreturn.CELL] = DEFINED pvalue
+  -- if $ob_user_scalar(pvalue)
+rule PhpStep/ob-reference-nonscalar: S ~> S[.COMPLETION = UNSUPPORTED "non-scalar reference user output-handler return conversion"]
+  -- if S.TODO = (OB_USER_REF_UNWRAP pobrefreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_UNWRAP pobrefreturn) /\ $ob_ref_current(S, pobrefreturn)
+  -- if S.STORE[pobrefreturn.CELL] = DEFINED pvalue
+  -- if ~$ob_user_scalar(pvalue)
+rule PhpStep/ob-reference-commit: S ~> $ob_ref_commit(S, pobrefreturn, poboutput)
+  -- if S.TODO = (OB_USER_REF_COMMIT pobrefreturn poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_COMMIT pobrefreturn poboutput) /\ $ob_ref_current(S, pobrefreturn)
+def $ob_ref_commit(S, pobrefreturn, poboutput) = $ob_user_commit(S, pobrefreturn.INVOKE[.SENT = eps], poboutput) -- if pobrefreturn.PENDING = eps
+def $ob_ref_commit(S, pobrefreturn, poboutput) = $ob_deprecation_commit(S, pobrefreturn.INVOKE[.SENT = eps], poboutput, n) -- if pobrefreturn.PENDING = (n)
+
+def $error_read_discard(S, OB_USER_REF_DEPRECATED pobrefreturn) = $ob_ref_discard(S, pobrefreturn)
+def $return_discard(S, OB_USER_REF_DEPRECATED pobrefreturn) = $ob_ref_discard(S, pobrefreturn)
+def $ob_ref_discard(S, pobrefreturn) = S[.TODO = (OB_USER_REF_UNWRAP pobrefreturn[.PENDING = (n)]) :: pobrefreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])]
+  -- if S.TODO = (THROW_SEARCH n) :: pobrefreturn.TAIL
+  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL)
+  -- if S_proof = S[.TODO = (OB_USER_REF_DEPRECATED pobrefreturn) :: pobrefreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_REF_DEPRECATED pobrefreturn) /\ $ob_ref_current(S, pobrefreturn)
+  -- if $throwable_live(S, n)
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+def $ob_ref_discard(S, pobrefreturn) = S[.TODO = (OB_USER_REF_DEPRECATED pobrefreturn) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt FINAL reference output-handler deprecation cleanup"] -- otherwise
+def $return_discard(S, OB_USER_REF_UNWRAP pobrefreturn) = S[.TODO = (OB_USER_REF_UNWRAP pobrefreturn) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt reference output-handler return cleanup"]
+def $return_discard(S, OB_USER_REF_COMMIT pobrefreturn poboutput) = S[.TODO = (OB_USER_REF_COMMIT pobrefreturn poboutput) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt reference output-handler return cleanup"]
+
+;; A defined reference survives a destructor exception after RETURN_BY_REF.
+rule PhpStep/ob-reference-normal-pending: S ~> $ob_ref_pending(S, pobinvoke, n_cell, n)
+  -- if S.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe)
+  -- if pdestructionframe.VALUE = REFERENCE n_cell
+  -- if pdestructionframe.PENDING = (n)
+def $ob_ref_pending(S, pobinvoke, n_cell, n) = $ob_ref_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {INVOKE pobinvoke, CELL n_cell, PENDING (n), CALLER S.CURRENT, TAIL ptask_tail*})
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$output_drain_final_call(pobinvoke.CALL)
+def $ob_ref_pending(S, pobinvoke, n_cell, n) = S[.COMPLETION = UNSUPPORTED "pending FINAL reference output-handler return cleanup"] -- if $output_drain_final_call(pobinvoke.CALL)
+
+;; RETURN_BY_REF still materializes its RV when its Only-variable Notice
+;; throws. Intercept the genuine callable exit before throw_frame_resume clears
+;; RESULT; a body throw has no such defined reference and cannot use this route.
+def $generator_frame_release(S_before, S_after) = $ob_ref_notice_restore(S_before, S_after, pobinvoke, n_cell, n, ptask_native*)
+  -- if S_before.COMPLETION = NORMAL
+  -- if S_before.TODO = [THROW_SEARCH n]
+  -- if S_before.RESULT = REFERENCE n_cell
+  -- if $call_reference_operand_valid(S_before, REFERENCE n_cell) /\ $throwable_live(S_before, n)
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_user_context_valid(S_before, pcallcontext)
+  -- if S_before.ORIGIN = (pcallcontext.FUNCTION)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
+  -- if S_after.CURRENT = pframe.CONTEXT /\ S_after.ORIGIN = pframe.ORIGIN
+def $ob_ref_notice_restore(S_before, S_after, pobinvoke, n_cell, n, ptask_native*) = S_after[.TODO = $ob_normal_seal(S_after.TODO, pdestructionframe, pobinvoke, ptask_native*)]
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if S_after.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe.VALUE = REFERENCE n_cell /\ pdestructionframe.PENDING = (n)
+  -- if pdestructionframe.FUNCTION = pcallcontext.FUNCTION
+  -- if pdestructionframe.CALLER = S_after.CURRENT /\ pdestructionframe.ORIGIN = S_after.ORIGIN /\ pdestructionframe.CONSTCONTEXT = S_after.CONSTCONTEXT
+  -- if $ob_normal_prefix(S_after.TODO, pdestructionframe, pobinvoke, ptask_native*)
+def $ob_ref_notice_restore(S_before, S_after, pobinvoke, n_cell, n, ptask_native*) = S_after[.TODO = (OB_USER_REF_NOTICE {INVOKE pobinvoke, CELL n_cell, PENDING eps, CALLER S_after.CURRENT, TAIL ptask_native*} n) :: ptask_native*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_after.TODO = (OB_USER_RESULT pobinvoke) :: ptask_native*
+  -- if S_after.RESULT = REFERENCE n_cell
+def $return_discard(S, OB_USER_REF_NOTICE pobrefreturn n) = $ob_ref_pending(S, pobrefreturn.INVOKE, pobrefreturn.CELL, n)
+  -- if S.TODO = (THROW_SEARCH n) :: pobrefreturn.TAIL
+  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL)
+  -- if S_proof = S[.TODO = (OB_USER_REF_NOTICE pobrefreturn n) :: pobrefreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_REF_NOTICE pobrefreturn n) /\ $ob_ref_current(S, pobrefreturn)
+def $return_discard(S, OB_USER_REF_NOTICE pobrefreturn n) = S[.TODO = (OB_USER_REF_NOTICE pobrefreturn n) :: S.TODO][.COMPLETION = UNSUPPORTED "pending FINAL reference output-handler return Notice cleanup"] -- if $output_drain_final_call(pobrefreturn.INVOKE.CALL)
+
+;; Diagnostic-return destructors have the same source/API sites as the scalar
+;; counterpart. These clauses add metadata, never another retval/caller owner.
+def $destructor_internal_site_source(ERROR_HANDLER_RESULT perrorcall) = false
+  -- if perrorcall.RESUME = OB_USER_REF_DEPRECATED pobrefreturn
+  -- if pobrefreturn.INVOKE.CALL = OB_WRITE pobwrite
+  -- if $output_vm_source(pobwrite.CALLER)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = OB_USER_REF_DEPRECATED pobrefreturn
+  -- if $ob_call_api(pobrefreturn.INVOKE.CALL) = (pconfigcall)
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)

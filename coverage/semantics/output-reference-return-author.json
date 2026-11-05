@@ -1,0 +1,60 @@
+{
+  "milestone": "OB17: raw reference output returns and late scalar conversion",
+  "status": "author validation complete; independent review active",
+  "tested_parent": "d114299c9d165485507c2a8a51105dd8bf8c0d44",
+  "identity": "Reports bind the parent plus stable before/after worktree fingerprints. Later CASE additions do not change earlier selected source bytes or the common runner; runtime hashes below are unchanged across all three source gates and the combined owner front.",
+  "runtime": {
+    "target": "PHP 8.5.10 CLI NTS64; sole project-local oracle and pinned profile",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL, caches disabled and encountered determinism",
+    "modules": 438,
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "a6f13a034c225ed80f57e1304f5afeb0adb3df78a8b658a35ae3927a6618354c",
+      "spec/semantics/395-output-handlers.watsup": "4357246d8b69816d53af2a283ec2d34278196642834ff139324d61be3de732ae",
+      "spec/semantics/399-output-result-cleanup.watsup": "4aecf2e5d8caf94e012645172dbceff3f791cda8b895032ef504a522cef88506",
+      "spec/semantics/449-output-reference-returns.watsup": "56a2ddd1ee251c18f4096107a37c78b16705f190b4605a8ab1788d43e7ff5b29",
+      "spec/semantics/modules.json": "e17ee45d8f8a5ec7b5142e39637c19f71fea8a7611fc425e9c3cac8c69f39186"
+    }
+  },
+  "authority": [
+    "main/output.c::php_output_handler_op raw retval sentinel tests, produced-output diagnostic and convert_to_string",
+    "Zend/zend_operators.c::_convert_to_string and Zend/zend_types.h::zend_unwrap_reference",
+    "Zend/zend_vm_def.h RETURN_BY_REF and zend_call_function return demand/CV cleanup"
+  ],
+  "scope": [
+    "The actual returned HCELL remains an owner through callee cleanup and produced-output warnings. Conversion reads its current scalar payload, releases only the retval owner and commits a normal string result: referenced false suppresses, referenced true emits1, aliases are unchanged.",
+    "Readonly normal-return seals borrow the actual FRAME_EXIT owner and require the actual restored RESULT before transfer. A defined reference survives a return-by-reference Notice handler exception or callee destructor exception; body throws retain the existing undefined-result route.",
+    "Source VM, direct APIs, normal FINAL and the tested explicit lower-API cascade retain existing normal/pending routing, getter copies and interrupted assignment. Genuine output contexts always demand the callback retval, even for unused print/for-clause results."
+  ],
+  "sources": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-reference-return-17/sources-01/report.json",
+      "sha256": "292f46968ebb61130ab1585e527d14277e28acef72616d19d6761c711d05cf9d",
+      "scope": "Five exact normal originals: referenced false/true, direct false, local returned cell and the complete minimized unused-print regression."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-reference-return-17/sources-02/report.json",
+      "sha256": "a992fd43d9a5905ffce439b73ef42ff2bbf9534ed46b284cc242b881525b7d7e",
+      "scope": "Eleven exact normal originals: null/int/float/NUL-string, literal Notice, Notice/cleanup/produced-warning throws, global rebind, normal FINAL and discarded for result. Reference-array and pending-FINAL controls are explicit Unsupported with zero agreement credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-reference-return-17/sources-03/report.json",
+      "sha256": "74ef0351499f917e676ec302f525b02be6a79027107b31fa7b27720cea2b2bd3",
+      "scope": "One exact lower-API cascade original: normally processed lower reftrue and restored upper default headers before pending throw. A warning changing the returned cell to an array is Unsupported only at actual conversion, zero agreement credit."
+    }
+  ],
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-reference-return-17/state-01/report.json",
+    "sha256": "4c62b7fabf82ac28d2a52b13636a1d1e6627f88a7d82bcd0b75069d50df04d48",
+    "scope": "One SL438 front, four groups/245 premises: sole local/rebound returned-cell roots, readonly FRAME_EXIT seals, live pending Notice/cleanup returns, scalar unwrap/retirement, coherent tail/phase/cell/result negatives, fuel0 and completed resume with exact output."
+  },
+  "provenance": "Notice-throw, cleanup-throw, alias-rebind and unused-print source witnesses reuse independent native preparation; these runs are author validation, not independent credit. The minimized old16 normal-output mismatch remains in /home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-17-review/unused-print-complete-baseline (zero passing credit).",
+  "integration": "Clean integrated d114299c9 SL437 compile-only gate is recorded in output-deprecation-warning-review.json joined_compile. The new manifest appends449 after448; Generator450 is a disjoint later append. No accepted OB15/16 source campaign was replayed.",
+  "limits": "Nonscalar direct/reference conversion, pending FINAL reference cleanup, wider deprecation/return/control/mutation/Fiber/stdout and remaining lifecycle paths stay partial or explicitly Unsupported. No deliberate engine divergence or full-core completion claim.",
+  "affected_regression": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-reference-return-17/affected-scalar-01/report.json",
+    "sha256": "b5e7f6b2341fe8fa6926204007430b4ece9065e2d2e3df15b39fad6144c12a8e",
+    "scope": "One existing Module399 original api-normal-result-argv-throw remains exact normal0 at the new seal/helper cut. This is an affected check, not replay or renewal of an old campaign."
+  },
+  "checks": "SL438 compile-only true (compile-06), inventory169/306 consistent, Python compile and git diff --check pass."
+}

@@ -107,8 +107,8 @@ Callback exit,
 throwing produced-output warnings from FINAL or lower API cascades, wider owning
 warning-handler abrupt cleanup,
 automatic dispatch from other byte
-producers, wider request-end/fatal callback paths, non-scalar or
-reference-return conversion, typed variadic reception and by-reference variadic
+producers, wider request-end/fatal callback paths, non-scalar
+return conversion, typed variadic reception and by-reference variadic
 extra arguments, mutating buffer APIs
 during a handler, capability
 failure notices for user handlers, and invalid/effectful callable creation stay
@@ -119,8 +119,9 @@ cannot be invoked again by this slice. Buffered stdout diagnostics keep the
 existing Module391 boundary. Access through a retired callback receiver,
 computed-name reads and nonstatic closure creation in that context are explicitly
 refused; its metadata does not revive the object.
-Non-scalar/reference returns are refused before callee cleanup can erase the
-defined value. Full core remains partial.
+Direct non-scalar returns are refused before callee cleanup can erase the
+defined value. Referenced values retain their actual cell until conversion;
+non-scalar payloads remain Unsupported there. Full core remains partial.
 
 Primary authority is `main/output.c` handler creation/op/stack-pop/destruction and
 `Zend/zend_API.c` callable names/selection and
@@ -389,3 +390,16 @@ conversion remain partial.
 records seven exact originals and one SL436 front with two groups/110 conditions,
 including both fresh destructor traces, frozen getter identity and sole pending
 and post-route raw owners.
+
+Module449 retains the raw returned reference through callee cleanup and the
+produced-output diagnostic, then converts its live scalar payload. A referenced
+FALSE becomes an empty string and keeps the handler enabled; referenced TRUE
+emits `1`. Unwrapping releases only the retval's cell owner and leaves aliases
+unchanged. A warning can mutate the selected cell or rebind its global name;
+rebinding does not replace the already returned cell. Normal cleanup seals borrow
+the real frame's return owner and require its restored RESULT before transfer.
+Defined reference returns also survive a throwing return-by-reference Notice or
+callee destructor. Pending exceptions retain caller assignment and getter-copy
+ordering. Callback return demand stays true even when source print is unused.
+Normal FINAL scalar references share the existing drain; pending FINAL reference
+cleanup remains explicitly Unsupported with its returned value retained.

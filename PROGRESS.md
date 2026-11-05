@@ -1282,6 +1282,13 @@ and one SL436 front with two reached groups/110 conditions pass at the repaired
 cut. [Independent review](coverage/semantics/output-deprecation-warning-review.json)
 records the trace findings, real owners and exact evidence. FINAL/lower API
 cascades and wider return/control dependencies remain partial.
+OB17 retains actual returned reference cells through warnings and callee cleanup,
+then converts their live scalar payload without changing aliases. Referenced
+FALSE suppresses, referenced TRUE emits1, and unused print/for output still
+requests the callback result. Defined Notice/cleanup throws keep the return;
+normal FINAL uses the existing drain, while pending FINAL and nonscalar payloads
+remain Unsupported. [Author evidence](coverage/semantics/output-reference-return-author.json)
+records source and reached ownership/resumption checks; independent review is active.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
