@@ -122,6 +122,24 @@
       "stderr_template_base64": "",
       "exit_status": 0,
       "status": "normal"
+    },
+    {
+      "id": "method-closure-arrow-magic-constants",
+      "source": "<?php\nclass R182Magic { public function make() { echo __FUNCTION__, '|', __METHOD__, '|', __CLASS__, ';'; return function() { echo __FUNCTION__, '|', __METHOD__, '|', __CLASS__, ';'; return fn() => __METHOD__; }; } }\n$f = (new R182Magic)->make(); $g = $f(); echo $g(), ';';\n",
+      "source_sha256": "077e815488fa069e6de89d6e69cf927e0af7ab49213933e6f0495f7087374254",
+      "stdout_template_base64": "bWFrZXxSMTgyTWFnaWM6Om1ha2V8UjE4Mk1hZ2ljO3tjbG9zdXJlOlIxODJNYWdpYzo6bWFrZSgpOjJ9fHtjbG9zdXJlOlIxODJNYWdpYzo6bWFrZSgpOjJ9fFIxODJNYWdpYzt7Y2xvc3VyZTp7Y2xvc3VyZTpSMTgyTWFnaWM6Om1ha2UoKToyfToyfTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-nested-factory-magic-method",
+      "source": "<?php\n$owner = new class {\n public function make() {\n  return function() {\n   echo __METHOD__, ';';\n   return fn() => new class(__METHOD__) { public function __construct(string $name) { echo $name, ';'; } };\n  };\n }\n};\n$f = $owner->make(); $g = $f(); $child = $g(); echo $child::class, ';';\n",
+      "source_sha256": "2752df15787be5400d6176aae1212c39c6c252da7506a0c825b8910168409095",
+      "stdout_template_base64": "e2Nsb3N1cmU6Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA6Om1ha2UoKTo0fTt7Y2xvc3VyZTp7Y2xvc3VyZTpjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDo6bWFrZSgpOjR9OjZ9O2NsYXNzQGFub255bW91cwB7RklMRX06NiQxOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
     }
   ]
 }
