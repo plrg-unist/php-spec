@@ -1,4 +1,5 @@
 <?php
 echo "M|";
-include __DIR__ . '/child.php';
+echo include __DIR__ . '/child.php';
+echo "|";
 echo "A|";

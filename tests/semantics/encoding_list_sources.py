@@ -14,9 +14,9 @@ SOURCE = Path(__file__).with_name('encoding_lists')
 ORACLE = 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
 HASHES = {
     'body.php': '7ec0f2a2181a699b66a5a44ca25668fe7efad00b34fc321eadc0fc032b602822',
-    'child.php': 'f4c2a1ec57dae7f1f3327b38e452224492aaa7bb1c23371be2b983ea6f5106ed',
-    'eval.php': 'e0e32e10a88942548013052da02306badb2b897bd4d152fe67dd8d174ab5706f',
-    'include-main.php': '9c57d6bdab010e9d2a74ac7024b9af20f349da1a68b18e0bd2083a61e3448734',
+    'child.php': 'fb6c061e61a65eac1a262a7065a4f5fd9b013e311b9614574f0adc4421ad425a',
+    'eval.php': '3894b543bb947b6d18bbe248a8d4809a9f64dcdd86c2d52e450ecb1d190b3572',
+    'include-main.php': 'a6f842d93c9cb77d8227f3af22b8a980b9cdd8f22e832ef4b02ac4ddb9c8bdcb',
     'late-prefix.php': '396217fd2ea012eb98f1c68d7f19d96de16e1b479a2e0b3563f3c6cffc975808',
     'lists.php': 'c0468a872fd830c6b98670cd8d255237667f3fc553c912d07172956af4f36105',
     'multiline-body.php': '5740f34a463588a355ffa08ade49c169262a4a387844fdbf5f7e0d9a5b2f98df',
@@ -53,10 +53,10 @@ def expected(name):
         return 255, b'', encoding(2) + fatal(b'strict_types declaration must not use block mode', 2), 'static_rejection'
     if name == 'include-main':
         child = bytes(SOURCE / 'child.php')
-        return 0, b'M|C|A|', encoding(2, child) * 2 + warning(b"Unsupported declare 'Foo'", 2, child), 'normal'
+        return 0, b'M|C|7|A|', encoding(2, child) * 2 + warning(b"Unsupported declare 'Foo'", 2, child), 'normal'
     if name == 'eval':
         child = path + b"(3) : eval()'d code"
-        return 0, b'M|E|A|', encoding(1, child) * 2 + warning(b"Unsupported declare 'Foo'", 1, child), 'normal'
+        return 0, b'M|E|8|A|', encoding(1, child) * 2 + warning(b"Unsupported declare 'Foo'", 1, child), 'normal'
     if name == 'multiline-header':
         return 0, b'H|', encoding(3), 'unsupported'
     assert name == 'multiline-body'
