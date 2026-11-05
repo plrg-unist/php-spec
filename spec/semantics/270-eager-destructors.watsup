@@ -155,6 +155,7 @@ def $eager_explicit_task(AT porigin ptask) = $eager_explicit_task(ptask)
 def $eager_explicit_task(DESTRUCTOR_RELEASE pdestructionrelease) = true
 def $eager_explicit_task(DESTRUCTOR_ENTER pdestructorcall) = true
 def $eager_explicit_task(DESTRUCTOR_RESULT pdestructorcall) = true
+def $eager_explicit_task(DESTRUCTOR_C_RETURN pdestructorcall) = true
 def $eager_explicit_task(DESTRUCTOR_WARNING pdestructorcall) = true
 def $eager_explicit_task(DESTRUCTOR_FRAME_EXIT pdestructionframe) = true
 def $eager_explicit_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
@@ -944,6 +945,10 @@ def $eager_bailout_unwind(S) = true
   -- if ptask_tail* = eps
   -- if $exit_unwind_valid(S, z)
 def $eager_bailout_unwind(S) = false -- otherwise
+def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if $destructor_c_return_valid(S, pdestructorcall)
+  -- if $eager_bailout_source(S[.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*]) = (DESTRUCTOR_RESULT pdestructorcall)
 def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ ~pdestructorcall.USER

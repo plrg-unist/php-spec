@@ -821,6 +821,14 @@ def $executor_boundary(S) = ("abrupt destructor visibility warning during shutdo
 def $executor_boundary(S) = ("shutdown-list Throwable rendering and release")
   -- if $executor_scope(S)
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_RELEASE pexecutorqueue pexecutorstage
+  -- if $destructor_c_return_valid(S, pdestructorcall)
+  -- if ~$executor_renderable(S, n)
+def $executor_boundary(S) = ("shutdown-list Throwable rendering and release")
+  -- if $executor_scope(S)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER = eps
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = EXECUTOR_RELEASE pexecutorqueue pexecutorstage
