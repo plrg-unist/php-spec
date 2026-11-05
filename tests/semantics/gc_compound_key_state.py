@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source-reached compound free phases and honest ordinary-Key refusals."""
+"""Source-reached compound free phases and ordinary-Key storage pins."""
 import argparse
 import fiber_state_review as review
 import gc_compound_key_sources as sources
@@ -206,17 +206,27 @@ ORDINARY = [
     'H = $heap_graph(S)', '$heap_valid(H)',
     '$heap_owners(H, HOBJECT n_value) = 1', '$heap_owners(H, HOBJECT n_key) = 1',
     '(HOBJECT n_key) <- S.ALLOCATIONS',
-    'S_block = $destructor_free(S_unheld, HOBJECT n_key, pdestructionrelease[.JOBS = pdestructionjob*])',
-    'S_block.COMPLETION = UNSUPPORTED "ordinary internal weak-key notification"',
-    'S_block.OBJECTS = S.OBJECTS /\\ S_block.ALLOCATIONS = S.ALLOCATIONS',
-    'S_block.EVENTS = S.EVENTS',
-    '$heap_children(HOBJECT n_map, $heap_graph(S_block).EDGES) = [HOBJECT n_value]',
-    '$heap_owners($heap_graph(S_block), HOBJECT n_value) = 1',
-    '$heap_owners($heap_graph(S_block), HOBJECT n_key) = 1',
+    'S_start = $destructor_free(S_unheld, HOBJECT n_key, pdestructionrelease[.JOBS = pdestructionjob*])',
+    'S_start.COMPLETION = NORMAL /\\ S_start.ALLOCATIONS = S.ALLOCATIONS',
+    'S_start.EVENTS = S.EVENTS',
+    '$instance_storage_for(S_start, n_key) = (pinstancestorage)',
+    '$instance_storage_basic(S_start, pinstancestorage)',
+    'pinstancestorage.OBJECT = n_key /\\ pinstancestorage.SLOTS = eps',
+    'pinstancestorage.NEXT = 0 /\\ pinstancestorage.NOTIFY = eps',
+    '$instance_storage_freeing(S_start, n_key)',
+    '$heap_owners($heap_graph(S_start), HOBJECT n_value) = 1',
+    '$heap_owners($heap_graph(S_start), HOBJECT n_key) = 1',
+    '$heap_valid($heap_graph(S_start))',
     'S_zero = $drive_steps(S, 0)', 'S_zero.COMPLETION = BUDGET',
-    'PhpStep: S ~> S_done', 'S_done = S_block',
+    'PhpStep: S ~> S_started', 'S_started = S_start',
     'S_resume = S_zero[.COMPLETION = NORMAL]',
-    'PhpStep: S_resume ~> S_resumed', 'S_resumed = S_done',
+    'PhpStep: S_resume ~> S_resumed', 'S_resumed = S_started',
+    'S_done = $drive_steps(S, 2000)',
+    'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.FRAMES = eps',
+    'S_done.OBJECTS[n_map] = WEAKMAP eps',
+    '~((HOBJECT n_key) <- S_done.ALLOCATIONS)',
+    '~((HOBJECT n_value) <- S_done.ALLOCATIONS)',
+    '$call_descriptors_valid(S_done) /\\ $heap_valid($heap_graph(S_done))',
 ]
 review.CASES = {name: {'source': sources.family.CASES[source].decode(), 'stage': STAGE, 'checks': checks}
     for name, source, checks in [
@@ -227,15 +237,22 @@ review.CASES = {name: {'source': sources.family.CASES[source].decode(), 'stage':
 for name in ['ordinary-weak-key', 'ordinary-map-key', 'ordinary-nonempty-map-key']:
     checks = [*ORDINARY]
     if name == 'ordinary-weak-key':
-        checks += ['S.OBJECTS[n_key] = WEAKREFERENCE (n_target)', '$node_children(S, HOBJECT n_key) = eps']
+        checks += ['S.OBJECTS[n_key] = WEAKREFERENCE (n_target)', '$node_children(S, HOBJECT n_key) = eps',
+                   'S_start.OBJECTS[n_map] = WEAKMAP eps',
+                   '$weakref_find(S_start, S_start.ALLOCATIONS, n_target) = eps',
+                   '$weakref_get(S_start, n_key) = PNULL']
     elif name == 'ordinary-map-key':
         checks = [check.replace('$ptascii("map")', '$ptascii("outer")') for check in checks]
-        checks += ['S.OBJECTS[n_key] = WEAKMAP eps', '$node_children(S, HOBJECT n_key) = eps']
+        checks += ['S.OBJECTS[n_key] = WEAKMAP eps', '$node_children(S, HOBJECT n_key) = eps',
+                   'S_start.OBJECTS[n_map] = WEAKMAP eps']
     else:
         checks += ['S.OBJECTS[n_key] = WEAKMAPENTRIES ([pweakmapentry_first, pweakmapentry_second])',
                    'pweakmapentry_first.VALUE = POBJECT n_leaf', 'pweakmapentry_second.VALUE = POBJECT n_leaf',
                    '$node_children(S, HOBJECT n_key) = [HOBJECT n_leaf, HOBJECT n_leaf]',
-                   '$heap_children(HOBJECT n_key, $heap_graph(S_block).EDGES) = [HOBJECT n_leaf, HOBJECT n_leaf]']
+                   'S_start.OBJECTS[n_key] = WEAKMAP eps',
+                   '$heap_children(HOBJECT n_key, $heap_graph(S_start).EDGES) = eps',
+                   'S_start.OBJECTS[n_map] = S.OBJECTS[n_map]',
+                   '$heap_owners($heap_graph(S_start), HOBJECT n_leaf) = 3']
     review.CASES[name] = {'source': sources.family.CASES[name].decode(), 'stage': ORDINARY_STAGE, 'checks': checks}
 review.CASES['cross-shared-registration-order'] = {
     'source': sources.family.CASES['map-key-cross-shared'].decode(), 'stage': STAGE, 'checks': CROSS}
