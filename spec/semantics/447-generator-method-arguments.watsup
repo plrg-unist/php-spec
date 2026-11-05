@@ -38,7 +38,7 @@ def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if ~$fiber_any_method_site(S, porigin)
   -- if ~$weakref_any_method_site(S, porigin)
 
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION eps, LINE z, PACKS eps}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION eps, LINE z, PACKS eps}) :: $generator_method_return_tasks(S, porigin, ptask_tail*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, poperand, z)

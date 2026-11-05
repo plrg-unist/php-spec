@@ -135,6 +135,7 @@ dec $generator_source_method(pstate, porigin, ptbytes) : bool
 dec $generator_method_node(pcnode?, ptbytes) : bool
 dec $generator_loop_site(pstate, pgeneratorop, pgeneratorloop) : bool
 dec $generator_arguments_supported(phpType7*) : bool
+dec $generator_method_return_tasks(pstate, porigin, ptask*) : ptask*
 dec $generator_api_arguments(phpType7*) : bool
 dec $generator_api_site(pstate, porigin) : bool
 dec $generator_collected_arguments_valid(pstate, pgeneratorop, phpType7*, poperand*, nat) : bool
@@ -1430,7 +1431,7 @@ def $generator_method(ptbytes) = "getreturn" -- if $ptlc(ptbytes) = $ptascii("ge
 def $generator_method(ptbytes) = "send" -- if $ptlc(ptbytes) = $ptascii("send")
 def $generator_method(ptbytes) = "throw" -- if $ptlc(ptbytes) = $ptascii("throw")
 def $generator_method(ptbytes) = "" -- otherwise
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (GENERATOR_ARGS {OBJECT n, NAME $generator_method(ptbytes), SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false} phpType7* eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (GENERATOR_ARGS {OBJECT n, NAME $generator_method(ptbytes), SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false} phpType7* eps) :: $generator_method_return_tasks(S, porigin, ptask_tail*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -1647,6 +1648,9 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
 ;; Public admission checks the real source method/foreach site and moving
 ;; frame pair. Suspension metadata owns values, but does not grant call scope.
 def $generator_source_method(S, porigin, ptbytes) = $generator_method_node($origin_node(S.SOURCES, porigin), ptbytes)
+def $generator_method_return_tasks(S, porigin, ptask*) = METHOD_RESULT :: ptask*
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 phpType6 metadata)
+def $generator_method_return_tasks(S, porigin, ptask*) = ptask* -- otherwise
 def $generator_method_node((NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata), ptbytes) = ($ptlc($method_source_spelling(phpType20)) = $ptlc(ptbytes) /\ ~$ppfirstclass(phpType7*))
 def $generator_method_node((NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata), ptbytes) = ($ptlc($method_source_spelling(phpType20)) = $ptlc(ptbytes) /\ ~$ppfirstclass(phpType7*))
 def $generator_method_node(pcnode?, ptbytes) = false -- otherwise
