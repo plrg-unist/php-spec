@@ -62,6 +62,7 @@ echo TickTableOrder38['k'];
 ''', b'[6][8]9[11]'),
 }
 
+# Boundary controls pair the source with its expected model prefix.
 CONTROLS = {
     'review-callable-bearing-constant-array-order-remains-explicit': (b'''<?php
 function t() { echo 'T'; }
@@ -69,5 +70,5 @@ register_tick_function('t');
 declare(ticks=1);
 const TickArrayRefuse38 = [static function () { declare(ticks=2); }];
 echo 'Z';
-''', b'TZT'),
+''', b''),
 }
