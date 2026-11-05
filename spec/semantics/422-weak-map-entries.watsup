@@ -401,45 +401,54 @@ dec $weakmap_entries_keys_held(pstate, pweakmapentry*) : bool
 def $weakmap_entries_keys_held(S, eps) = true
 def $weakmap_entries_keys_held(S, pweakmapentry :: pweakmapentry_tail*) = ($($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0) /\ $weakmap_entries_keys_held(S, pweakmapentry_tail*))
 dec $weakmap_entries_free_allowed(pstate, nat, pdestructionrelease) : bool
-;; Map free may release one declared-child Value beside one methodless leaf.
-;; Keep table writes, reads, key notices and foreach on their existing policy.
-dec $weakmap_entries_field_leaf_free(pstate, nat, pweakmapentry, pweakmapentry) : bool
-def $weakmap_entries_field_leaf_free(S, n_map, pweakmapentry_field, pweakmapentry_leaf) = true
-  -- if pweakmapentry_field.VALUE = POBJECT n_field
-  -- if pweakmapentry_leaf.VALUE = POBJECT n_leaf
-  -- if $weakmap_declared_value_child(S, n_field)
-  -- if $weakmap_entries_valid_policy(S, [pweakmapentry_leaf], n_map, eps, false)
-  -- if n_field_key = pweakmapentry_field.KEY
-  -- if n_field_key =/= pweakmapentry_leaf.KEY
-  -- if $(n_field_key < |S.OBJECTS|) /\ (HOBJECT n_field_key) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_field_key] = STDINSTANCE
-  -- if ~$instance_storage_freeing(S, n_field_key)
-  -- if $objectprops_at(S.OBJECTPROPS, n_field_key) = (eps)
-  -- if $object_table_at(S.OBJECTTABLES, n_field_key) = eps
-  -- if $node_children(S, HOBJECT n_field_key) = eps
-  -- if $weakmap_before_valid(S, pweakmapentry_field)
-  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_field_key) = [n_map]
-  -- if $heap_owners($heap_graph(S), HOBJECT n_field) = 1
-  -- if $heap_owners($heap_graph(S), HOBJECT n_leaf) = 1
-def $weakmap_entries_field_leaf_free(S, n_map, pweakmapentry_field, pweakmapentry_leaf) = false -- otherwise
-dec $weakmap_entries_two_value_child_free(pstate, nat) : bool
-def $weakmap_entries_two_value_child_free(S, n_map) = true
+;; Direct methodless Values may own a single declared destructor Child.
+;; Per-slot jobs preserve repeated Values and shared/outside Child owners.
+dec $weakmap_entries_child_value_free(pstate, pweakmapvalue) : bool
+def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
+  -- if $weakmap_entries_value_allowed(S, POBJECT n_value)
+def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
+  -- if ~$weakmap_entries_value_allowed(S, POBJECT n_value)
+  -- if $objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if n_owners = $heap_owners($heap_graph(S), HOBJECT n_child)
+  -- if $(n_owners > 0)
+  -- if $weakmap_declared_value_child_owners(S, n_value, n_owners)
+def $weakmap_entries_child_value_free(S, pweakmapvalue) = false -- otherwise
+dec $weakmap_entries_child_entries_free(pstate, nat, pweakmapentry*) : bool
+def $weakmap_entries_child_entries_free(S, n_map, eps) = true
+def $weakmap_entries_child_entries_free(S, n_map, pweakmapentry :: pweakmapentry_tail*) = true
+  -- if n_key = pweakmapentry.KEY
+  -- if $weakmap_entries_find(pweakmapentry_tail*, n_key) = eps
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if ~$instance_storage_freeing(S, n_key)
+  -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_before_valid(S, pweakmapentry)
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if $weakmap_entries_child_value_free(S, pweakmapentry.VALUE)
+  -- if $weakmap_entries_child_entries_free(S, n_map, pweakmapentry_tail*)
+def $weakmap_entries_child_entries_free(S, n_map, pweakmapentry*) = false -- otherwise
+dec $weakmap_entries_child_table_free(pstate, nat) : bool
+def $weakmap_entries_child_table_free(S, n_map) = true
   -- if $weakmap_entries_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
-  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES ([pweakmapentry_first, pweakmapentry_second])
+  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
+  -- if $(|pweakmapentry*| >= 2)
   -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
   -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
   -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
   -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $heap_valid($heap_graph(S))
-  -- if ~$weakmap_entries_callbacks(S, [pweakmapentry_first, pweakmapentry_second])
-  -- if $weakmap_entries_field_leaf_free(S, n_map, pweakmapentry_first, pweakmapentry_second) \/ $weakmap_entries_field_leaf_free(S, n_map, pweakmapentry_second, pweakmapentry_first)
-def $weakmap_entries_two_value_child_free(S, n_map) = false -- otherwise
+  -- if ~$weakmap_entries_callbacks(S, pweakmapentry*)
+  -- if $weakmap_entries_child_entries_free(S, n_map, pweakmapentry*)
+def $weakmap_entries_child_table_free(S, n_map) = false -- otherwise
 def $weakmap_entries_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $weakmap_entries_at(S, n_map)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if $heap_owners($heap_graph(S), HOBJECT n_map) = 0
-  -- if $weakmap_entries_teardown_table(S, n_map) \/ $weakmap_entries_two_value_child_free(S, n_map)
+  -- if $weakmap_entries_teardown_table(S, n_map) \/ $weakmap_entries_child_table_free(S, n_map)
   -- if pweakmapentry_all* = $weakmap_entries_contents(S, n_map)
   -- if $weakmap_entries_keys_held(S, pweakmapentry_all*)
   -- if $destructor_jobs_valid(S, $destruction_values($weakmap_entries_nodes(pweakmapentry_all*)))

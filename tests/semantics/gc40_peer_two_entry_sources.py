@@ -9,13 +9,11 @@ ROOT = family.ROOT
 SOURCES = {
     'leaf-first-field-second-throw': ROOT / 'tests/semantics/gc40_peer_reverse_throw.php',
     'field-first-leaf-second-throw': ROOT / 'tests/semantics/gc40_peer_first_throw.php',
-    'two-declared-values-boundary': ROOT / 'tests/semantics/gc40_peer_two_fields_boundary.php',
     'nested-callback-presence-boundary': ROOT / 'tests/semantics/gc40_peer_presence_boundary.php',
 }
 family.CASES = {name: path.read_bytes() for name, path in SOURCES.items()}
 family.MODEL_TIMEOUTS = {name: 150 for name in SOURCES}
 family.UNSUPPORTED = {
-    'two-declared-values-boundary': ('multiple-entry WeakMap storage destruction', b'B|'),
     'nested-callback-presence-boundary': ('WeakMap dimension protocol outside first insertion', b'B|P|'),
 }
 family_fingerprint = family.fingerprint
