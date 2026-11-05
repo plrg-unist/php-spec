@@ -845,6 +845,16 @@ claim. Two original source failures, the first focused failure and two diagnosti
 retain zero credit. Other setter signatures, owning/initial-reference RHSs,
 indirect or recursive writes and wider receiver/lifetime forms remain open;
 generic ownership, destruction and GC rules are unchanged.
+
+These admitted setter, terminal-isset and unset bodies may create source-owned
+anonymous classes, including anonymous declaring owners and admitted deferred
+factory bodies. Method headers, actual saved result markers and receiver scopes
+retain their existing authority. Child ownership remains independent of the
+receiver; scalar setter delivery still reads the captured RHS cell after receiver
+release. The [factory review](../../coverage/semantics/anonymous-property-magic-factories-review.json)
+separates original execution and genuine callback/delivery/budget checks from
+explicit source/runtime boundaries. No consumer dispatch or ownership layout is
+widened; Trait declaration, wider header/receiver and owning-RHS limits remain.
 [Magic setter review](../../coverage/semantics/magic-setter-review.json).
 
 Selected CV/literal inherited-private `??=` composes the existing typed-bool

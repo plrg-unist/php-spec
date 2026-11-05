@@ -5218,18 +5218,22 @@ returns at their authenticated compiled boundary. Lazy child-link failures prece
 arguments, and uncalled compile errors still reject the unit. Reference/generator
 constructors, reference generators, attributes, remaining magic bodies and wider
 binding/dynamic deferred contexts remain partial.
-Byvalue nongenerator `__invoke`, `__get` and `__toString` bodies also admit these
-factories through existing callable, property and string consumers. Getter headers
+Byvalue nongenerator `__invoke`, `__get`, `__toString`, `__set`, `__isset` and
+`__unset` bodies also admit these factories through existing consumers. Getter headers
 keep plain untyped required byvalue parameters and no declared return type.
 Borrowed receiver roots survive caller-variable cleanup, and child warnings
 precede a rejected magic signature. Reference/generator magic forms and wider
-getter headers remain partial.
+getter headers remain partial. Property magic keeps its existing typed plain
+headers, parentless declaring classes and external private-property consumers;
+setter RHSs remain initially nonreference integer CVs/literals, with delivery after
+receiver destruction. Trait property-magic declarations and wider forms stay partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
 [generator Closure](coverage/semantics/anonymous-generator-closure-factories-review.json),
 [reference method](coverage/semantics/anonymous-reference-method-factories-review.json)
 [reference Closure](coverage/semantics/anonymous-reference-closure-factories-review.json)
-and [magic method](coverage/semantics/anonymous-magic-factories-review.json) reviews.
+[magic method](coverage/semantics/anonymous-magic-factories-review.json)
+and [property magic](coverage/semantics/anonymous-property-magic-factories-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

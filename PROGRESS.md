@@ -1632,6 +1632,17 @@ original observations, source-derived mode bounds and real getter ownership/budg
 checks. Reference/generator magic forms, wider getter headers, other magic bodies,
 attributes and wider dynamic/binding contexts remain partial.
 
+CLASS190 admits anonymous factories in byvalue nongenerator `__set`, `__isset`
+and `__unset` methods using their existing plain-header and actual consumer
+contracts. Parentless named/anonymous declaring owners and inherited receivers
+keep their source scopes and saved-marker receiver roots. Setter inputs remain
+integer CV/literal RHSs: the body receives the captured value while delivery reads
+the original cell after receiver destruction. The
+[review](coverage/semantics/anonymous-property-magic-factories-review.json)
+separates original execution, actual NEW/delivery ownership and budget checks,
+with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
+signatures/receivers, attributes and generic dispatch remain partial.
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
@@ -1876,9 +1887,9 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS190 | Byvalue nongenerator __set/__isset/__unset anonymous factories; private implementation/review. |
+| CLASS191 | __call/__callStatic factories through existing magic argument protocols; native/source preparation. |
 | I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
-| GC50 | PFLOAT work preserved unintegrated; status-only recovery after a generic possible-cybersecurity-risk service stop. |
+| GC50 | Validated PFLOAT WeakMap payloads and scoped NaN access continuation; private implementation/review. |
 | COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR42 | Undecorated no-hook property/default tick traversal; private implementation/review. |

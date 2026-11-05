@@ -657,14 +657,28 @@ Thus a reference Closure may occur in a byvalue or reference method without
 confusing their return modes. Actual captures, receivers and return cells use the
 ordinary runtime protocols.
 
-Byvalue nongenerator `__invoke`, `__get` and `__toString` factory bodies share this
-method ancestry, including admitted nested deferred factories. Getter headers
+Byvalue nongenerator `__invoke`, `__get`, `__toString`, `__set`, `__isset` and
+`__unset` factory bodies share this method ancestry, including admitted nested
+deferred factories. Getter headers
 retain untyped required byvalue nonvariadic parameters without defaults and no
 declared return type; successful reception has one parameter. Wider getter
 headers remain a source boundary. Existing callable, property-get and Stringable
 consumers supply the actual receiver/frame; no conversion or dispatch rule is
 widened. A getter frame borrows its receiver from the saved property-result task,
 so clearing the caller's receiver variable does not destroy it during child `new`.
+
+Property magic factories retain the existing consumer contracts: public ordinary
+methods in parentless nonreadonly declaring classes (including anonymous owners), inherited
+receivers, external CV receivers with literal private-property names and supported
+plain signatures.
+Setter/unsetter names are required `string` parameters with `void` returns; setters
+also take an untyped value. Terminal isset retains its existing string-name and
+bool/absent-return routes. Setter RHSs remain initially nonreference integer CVs
+or integer literals. Its captured argument remains fixed while a nonowning delivery
+reads the original RHS cell after receiver destruction. A created child may outlive
+that receiver through its ordinary global/caller owner. Trait declarations, wider
+receivers/RHSs and signatures remain partial under the existing
+[property consumers](SOURCE-PROPERTIES.md).
 
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
@@ -733,7 +747,8 @@ ledgers preserve their historical scopes and source/state evidence. The
 [generator Closure](../../coverage/semantics/anonymous-generator-closure-factories-review.json),
 [reference method](../../coverage/semantics/anonymous-reference-method-factories-review.json)
 [reference Closure](../../coverage/semantics/anonymous-reference-closure-factories-review.json)
-and [magic method](../../coverage/semantics/anonymous-magic-factories-review.json)
+[magic method](../../coverage/semantics/anonymous-magic-factories-review.json)
+and [property magic](../../coverage/semantics/anonymous-property-magic-factories-review.json)
 reviews distinguish exact originals, genuine reached ownership/resumption,
 explicitly derived context refusals and native-only preparations.
 
