@@ -314,12 +314,14 @@ def $generator_unpack_reference_target(S, pgeneratorunpack, pnamedtarget) = fals
 def $generator_unpack_reference_value(S, pgeneratorunpack) = (pvalue)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if ~$generator_reference_producer(S, pgenerator)
-  -- if pgenerator.REFCELL = eps /\ pgenerator.VALUE = (pvalue)
+  -- if pgenerator.REFCELL = eps
+  -- if pgenerator.VALUE = (pvalue)
   -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
 def $generator_unpack_reference_value(S, pgeneratorunpack) = (pvalue)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if $generator_reference_producer(S, pgenerator)
-  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = (n_cell)
+  -- if pgenerator.VALUE = eps
+  -- if pgenerator.REFCELL = (n_cell)
   -- if $ordinary_reference_value(S, n_cell) = (pvalue)
   -- if $iterator_unpack_scalar_operand(S, REFERENCE n_cell)
 def $generator_unpack_reference_value(S, pgeneratorunpack) = eps -- otherwise
