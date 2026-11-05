@@ -1,0 +1,69 @@
+{
+  "scope": "GC37: a live single-entry WeakMap first inserts a methodless user Value with one sole owned declared destructor Child; leaf stdClass Key retirement releases Value then Child.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "cuts": {
+    "base": "9fe587ff32247c8135e6fa75e4207d81b85fe5aa",
+    "runtime_initial": "c039f7ee00ca034e13b6779aa0d79fcdf4225afd",
+    "runtime_final": "6d2f2b8fc6d938996039784c89c0a19400d75463",
+    "author_source": "90b0dfac11fe0a38e2e57a69c1e4688c0422313c",
+    "author_reached_correction": "01b7f493d4a200e884af5d012fd9b63a4207f994",
+    "author_boundary": "7a367678909ec1ba70a637240a1dfb035de5f873",
+    "independent_sources_reached": "6aff7b137616d546cb966d70f2ff9d5fa96028e2",
+    "independent_throw": "236756b1bb43a363082844405558b797a3bbc6ba"
+  },
+  "rule_basis": "The empty-Map first-insertion producer authenticates one direct public untyped declared Value slot, one childless destructor-only Child and its sole property owner. On Key retirement, the existing Map release job transfers its Value owner; ordinary Value storage clears its weak observer before transferring the declared Child slot. The added producer arm requires WEAKMAP eps, so occupied replacement does not inherit it.",
+  "counts": {
+    "new_normal_exact_sources": 3,
+    "author_new": 1,
+    "independent_new": 2,
+    "affected_exact_sources": 3,
+    "author_postinsert": 1,
+    "independent_postinsert": 1,
+    "prior_gc36": 1,
+    "source_unsupported_controls": 1,
+    "reported_reached_conditions": 90,
+    "author_reached": 46,
+    "independent_reached": 44
+  },
+  "validation": {
+    "author": "One new pre-insertion and one affected post-insertion source agree exactly; 46 source-reached producer/ownership/budget checks pass.",
+    "independent": "One new pre-insertion and one affected post-insertion source agree exactly, plus one new caught Child throw suffix. The Value storage/release checkpoint passes 44 conditions.",
+    "affected": "Prior GC36 post-insertion standard-Key source agrees at the final runtime cut.",
+    "unsupported": "Occupied replacement with the same field-bearing new Value stops explicitly before replacement after B|; native behavior is retained separately with zero source agreement."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc37_value_child_preinsert.php": "f8f23710c740a7acfab562d06568d6f50b995322dc69974ef29a19e477184f1f",
+    "tests/semantics/gc37_value_child_postinsert.php": "fb87186ea302134fa4f2d12278a030265fcdb286c06e00bc0988a4a28271e26d",
+    "tests/semantics/gc37_value_child_occupied_replacement.php": "fefb8f3a053c74a150bd92a183d25bf3e2760888e378c7610b29c1dac29e663b",
+    "tests/semantics/gc37_peer_value_preinsert.php": "0433a69524f62c5b17ea6dbeffc76ec2856805ebefd8022a45aae4f5e1bc48a5",
+    "tests/semantics/gc37_peer_value_postinsert.php": "a3af308c3549ec6beea387c176732d785d6bf0f8f1f14fdc0a8dd28beadebe7b",
+    "tests/semantics/gc37_peer_value_throw.php": "9025510c1d7fbd06aaa2c9b1d6a94362922edb4fa0b6b0aa2525ed6b6e9ae232",
+    "tests/semantics/gc_standard_key_field_postinsert.php": "86fd33f71664d50bec5c72d7455ceb8c38039754004f2457f44fd2507f526e69"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-value-child-author-37/harness-v1/native-report.json": "697772196c7d436b3984fd4005cd708bc8f6077dd76204479402a453de8d2a2a",
+    "../php-spec-evidence-archive/gc-value-child-author-37/harness-v1/model-report.json": "de8a88148b6baa747f02819d4775c8f310c13ff6a2d3ef1f2471067e172f12b2",
+    "../php-spec-evidence-archive/gc-value-child-author-37/reached-v3/raw/report.json": "db378eec3630c835b0d002a9d0efc416b1c56db6e4d888774d45807f071bfd8f",
+    "../php-spec-evidence-archive/gc-value-child-author-37/boundary-harness-v1/native-report.json": "68e6f28f7f6e39b97449302b44aaf053b7ad90fa8975e3ebc38b832c3d114c4d",
+    "../php-spec-evidence-archive/gc-value-child-author-37/boundary-harness-v1/model-report.json": "8452152b3cddd73d929b0ed13486b6d1a7ba558937b24eaed81d0ab792914687",
+    "../php-spec-evidence-archive/gc-value-child-author-37/affected-gc36-v1/native-report.json": "a84e4b07481bce4cb9a425977a00c4d0707f8089b8865ba0ced3743acf652a2e",
+    "../php-spec-evidence-archive/gc-value-child-author-37/affected-gc36-v1/model-child-after-insertion-report.json": "e8443c8d156fa7153c394c61ccf218bb96a93daab4a6bf0bd9abe518e789cfd0",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/baseline-native-v1/report.json": "3761361365d7f977c7b3bc92b753439f216713d6a5cf12c5ae0fdfbe0bbd0057",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/baseline-model-v1/report.json": "f8cd578735a3fd4b4470edad8481f51e576b60fdd78379228c1986cb14add3c0",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/final6d2-preinsert-model-v1/report.json": "16069e09d8a214615e0a9abf7068f45b86d222d3ca46484dc48b092d6b50a007",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/final6d2-postinsert-native-v1/report.json": "9258b339cbaa7fc91ccebdfbb2e9ff8e1a30a2a3116140ab82afcfaf02a0c326",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/final6d2-postinsert-model-v1/report.json": "bce17b9ef483ae754590073baec6be130c203fe404c13b1dab1452e89a566555",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/reached-value-v1/report.json": "12c0bd296139dc31553411b4da6a15ee5f54d957dd8f3b6698be3faeeb6533d8",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/throw-preinsert-native-v1/report.json": "b540f1a2cc1aa2377bfaebf25b1c1b90ac526f2cc9dd3b3886834430010ea46d",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/throw-preinsert-model-v1/report.json": "931954dd02088e9c534a0c844304cadd2554204ac5bff91b558e47dd8adc907e"
+  },
+  "archive_manifest_sha256": {
+    "../php-spec-evidence-archive/gc-value-child-author-37/manifest.json": "f221ef5acadbb8fe447d083d85129693eace8bf6eb36e1b14dc97e3309252eca",
+    "../php-spec-evidence-archive/gc-declared-value-peer-37/manifest.json": "2596ce619730f49509be464ece2b9f3bb40a8ede9cfa3848ec432de9a67a938b"
+  },
+  "zero_credit": "Independent master9fe pre-insertion Unsupported is baseline0; initial private missing-tool runner failure, initial undefined-helper compile failure, and three author fixture binding/search failures retain0. Peer c039 exact source is superseded by final6d2 replay. An earlier unrun peer throw draft and retained-owner draft have no validation credit.",
+  "limits": "One empty Map, one leaf stdClass Key, one methodless Value with exactly one direct public untyped declared property, one sole-owned childless public noarg destructor Child, Key-first retirement. Occupied replacement, extra fields/owners, Map-first teardown, multi-entry/shared-key writes, reference cells, freeing-object mutation and active-pin collection remain outside this slice.",
+  "recovery": "Run gc37_value_child_sources.py, gc37_value_child_state.py, gc37_value_child_boundary.py, gc37_peer_value_sources.py and gc37_peer_value_state.py with the pinned profile and private outputs. Original raw and receipts stay outside Git under ../php-spec-evidence-archive/gc-value-child-author-37/ and ../php-spec-evidence-archive/gc-declared-value-peer-37/.",
+  "review": "Independent source/reached-state review accepted frozen runtime6d2; final private diff and actual-parent bridge review pending."
+}

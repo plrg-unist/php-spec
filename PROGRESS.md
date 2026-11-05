@@ -482,6 +482,17 @@ the original baseline and fixture failures retain zero credit. Wider layouts,
 multiple Maps, freeing-object mutation and active-pin collection remain partial.
 [GC36 review](coverage/semantics/gc-standard-key-field-review.json).
 
+GC37 admits a methodless user WeakMap Value with one public untyped declared
+property owning a child before first insertion into an empty Map. The leaf
+`stdClass` Key's retirement removes the Map edge, clears the Value's weak
+observer, then releases its sole child through the ordinary storage pin.
+Three new exact programs include a caught Child destructor throw; three affected
+post-insertion/GC36 sources and 90 source-reached conditions (author46,
+independent44) pass at recorded cuts. Occupied replacement remains explicitly
+Unsupported with zero agreement. Wider Value layouts, extra child owners,
+Map-first teardown and active-pin collection remain partial.
+[GC37 review](coverage/semantics/gc-declared-value-child-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
