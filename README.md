@@ -3896,6 +3896,12 @@ GC26 admits a direct childless stdClass capture that also occurs in the
 captured array. Both capture orders agree with pinned PHP; two reached D-state
 groups verify the separate edges, one leaf buffer slot and weak lifetime.
 See the [shared-capture review](coverage/semantics/gc-shared-capture-review.json).
+GC27 extends the same rooted caller to finite direct captures with two or
+more array occurrences, preserving shared leaves and repeated array identities.
+Three originals agree with PHP through final weak death. The arrays remain
+one-level, mutable and outside pooled or materialized property tables; this
+rooted lane does not collect Closure cycles. See the
+[multi-array review](coverage/semantics/gc-multi-array-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
