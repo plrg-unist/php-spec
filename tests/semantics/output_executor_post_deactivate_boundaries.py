@@ -14,7 +14,6 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 REASON = 'output-handler start after output deactivation'
 CASES = {
-    'callable': b'FX|D1|',
     'reentrant': b'FX|D1|H1|',
     'invalid_ob08': b'FX|D1|',
 }

@@ -262,23 +262,31 @@ and `zend_closures.c:zend_closure_free_storage` (owned captured/static values
 before `this_ptr`), with the existing source-authenticated entry and executor-task
 guards.
 
-For a normally completed request, a builtin literal-message Exception thrown
-by an argument destructor can bail out of tick-list destruction. The consumed
-argument retains the two abandoned destructor/store protections; later argument
-jobs, independent FCC slots and later tick entries stay owned. The report is
+For normal completion or a stable pending main-body exit, a builtin Exception
+with a literal message thrown by an argument destructor can bail out of tick-list
+destruction. The consumed argument retains the two abandoned destructor/store
+protections; later argument jobs, independent FCC slots and later tick entries
+stay owned. The report is
 authenticated while the Exception is live, then only its frozen completion
 survives its ordinary release. No released property row is read or retained.
 Remaining shutdown-function arguments still retire while PHP entry is active.
 Inactive executor free follows: an owning Closure capture can then cause the
 separate inactive-method fatal, preserving its native CLI status 0.
 
-Five native-first bailout originals agree exactly. Four have one fatal and
-CLI 255; the owning capture has the additional inactive-child fatal and CLI 0.
-The [ATTR19 review](../../coverage/semantics/callback-late-tick-throw-review.json)
-records five reached groups/254 conditions (11 derived), including the actual
-pending release, budget resume and untouched owners. The original late-event
-fixture error keeps zero credit; only its corrected group is rerun.
-Earlier [stable-exit](../../coverage/semantics/callback-late-tick-exit-review.json),
+Before reporting, the current status still matches the full saved exit code.
+After reporting replaces it with 255, abandoned-source validation restores only
+the saved status in a lookup view; both actual saved phase completions must still
+agree. Entry readiness remains tied to the current full status. Fatal-task scope
+uses the same lookup view without adding owners or changing the actual status,
+which can later become 0 in the separate inactive-child fatal.
+
+Four new native-first exit/throw originals and one affected normal control agree
+exactly. The [ATTR20 review](../../coverage/semantics/callback-late-tick-exit-throw-review.json)
+records five reached groups/265 conditions (9 derived), covering actual versus
+saved status authority, the genuine pending release, budget resume and retained
+owners through later queue/inactive cleanup. No correction was needed.
+Earlier [bailout](../../coverage/semantics/callback-late-tick-throw-review.json),
+[stable-exit](../../coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](../../coverage/semantics/callback-late-tick-callables-review.json)
 and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
 evidence keeps its original cuts. Wider callable producers, assertion roots,

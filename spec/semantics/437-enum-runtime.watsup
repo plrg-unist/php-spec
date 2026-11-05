@@ -1952,6 +1952,13 @@ def $enum_is_callable_exit_restores(ptask :: ptask_tail*) = $enum_is_callable_ex
 def $enum_is_callable_exit_restore_frames(eps) = false
 def $enum_is_callable_exit_restore_frames(pframe :: pframe_tail*) = ($enum_is_callable_exit_restores(pframe.TODO) \/ $enum_is_callable_exit_restore_frames(pframe_tail*))
 def $enum_is_callable_exit_restore_pending(S) = ($enum_is_callable_exit_restores(S.TODO) \/ $enum_is_callable_exit_restore_frames(S.FRAMES))
+def $exit_ready(S, z) = S[.COMPLETION = UNSUPPORTED "is_callable output exit local cleanup exit"]
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps
+  -- if ~$fiber_closing(S, S.ACTIVEFIBER)
+  -- if ~$property_dynamic_exit_pending(S) /\ ~$foreach_bind_exit_pending(S)
+  -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
+  -- if ~$eval_compile_exit_pending(S) /\ $source_static_exit_tail(S, S.TODO) = eps
+  -- if $enum_is_callable_exit_restore_pending(S)
 def $enum_is_callable_output_exit_unwind(S) = (S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ ~$enum_is_callable_output_tasks_pending(S.TODO) /\ $enum_is_callable_output_frames_pending(S.FRAMES) /\ ~$enum_is_callable_exit_restore_pending(S) /\ $source_static_exit_tail(S, S.TODO) = eps)
 
 def $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z) = true
@@ -1988,6 +1995,12 @@ def $enum_is_callable_exit_frame_capture(S) = (penumqueryoutput)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if $destructor_context_valid(S, pcallcontext)
 def $enum_is_callable_exit_frame_capture(S) = eps -- otherwise
+def $enum_exit_owner_reordered(S) = ($enum_is_callable_exit_frame_capture(S) =/= eps)
+def $eager_owner_order(S) = pnode_cells* ++ $destruction_nodes_delete(pnode_owners*, pnode_cells*)
+  -- if $enum_exit_owner_reordered(S)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pnode_cells* = $destructor_local_cells(S.ENV, S.SYMBOLS)
+  -- if pnode_owners* = $eager_edge_nodes($heap_graph(S).EDGES) ++ $eager_task_inputs(S, ptask) ++ $operand_nodes(S.RESULT) ++ $eager_base_inputs(S, ptask) ++ $machine_roots(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
 def $eager_operation_source(S, EXIT_UNWIND z) = ENUM_IS_CALLABLE_EXIT_FRAME penumqueryoutput z
   -- if $enum_is_callable_exit_frame_capture(S) = (penumqueryoutput)
 def $eager_operation_source_guard(S, pdestructionoperation) = (pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE) /\ z = $ntprecision32(z))
@@ -2018,16 +2031,22 @@ def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "is_callable output d
   -- if ~$enum_is_callable_output_exit_unwind(S)
   -- if $enum_is_callable_exit_return(S) = eps \/ $enum_is_callable_exit_restore_pending(S)
 
-rule PhpStep/enum-is-callable-exit-restore: S ~> $destructor_finish(S_rebased, pdestructorcall_new)
+dec $enum_is_callable_exit_finish(pstate, penumqueryoutput, pcompletion, nat?) : pstate
+def $enum_is_callable_exit_finish(S, penumqueryoutput, pcompletion, n_pending?) = $destructor_finish(S_rebased, pdestructorcall_new)
   -- if S.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z)
+  -- if (pcompletion = EXITED z /\ n_pending? = eps) \/ (pcompletion = NORMAL /\ n_pending? =/= eps)
+  -- if $destructor_pending_valid(S, n_pending?)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
-  -- if pdestructionoperation_new = pdestructionoperation[.COMPLETION = EXITED z]
-  -- if pdestructorcall_new = pdestructorcall[.OPERATION = (pdestructionoperation_new)]
+  -- if pdestructionoperation_new = pdestructionoperation[.COMPLETION = pcompletion][.PENDING = n_pending?]
+  -- if pdestructorcall_new = pdestructorcall[.OPERATION = (pdestructionoperation_new)][.PENDING = n_pending?]
   -- if S_rebased = S[.TODO = (DESTRUCTOR_RESULT pdestructorcall_new) :: $destructor_operation_tasks(ptask_tail*, pdestructionoperation, pdestructionoperation_new)][.DESTRUCTION.CALLS = pdestructorcall_new :: pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*]
-rule PhpStep/enum-is-callable-exit-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED "is_callable output exit local cleanup throw"]
+rule PhpStep/enum-is-callable-exit-restore: S ~> $enum_is_callable_exit_finish(S, penumqueryoutput, EXITED z, eps)
+  -- if S.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: ptask_tail*
+  -- if $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z)
+rule PhpStep/enum-is-callable-exit-cleanup-throw: S ~> $enum_is_callable_exit_finish(S[.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: ptask_tail*], penumqueryoutput, NORMAL, (n))
   -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: ptask_tail*
   -- if $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z)
   -- if $throwable_live(S, n)

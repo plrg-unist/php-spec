@@ -208,8 +208,17 @@ RSHUTDOWN and owning autoload cleanup after the shutdown list remain explicit
 dependencies. Reentrant list registration, post-deactivation buffer starts, exit,
 abrupt handler/visibility-warning cleanup and wider Throwable rendering during list
 retirement remain partial, as do late bound-tick publication, uncovered table owners,
-weak/internal hooks and inactive nonpublic-destructor diagnostics. Earlier failed
+WeakMap/custom hooks and inactive nonpublic-destructor diagnostics. Earlier failed
 cuts retain zero credit.
+
+GC30 adds quiet inactive WeakReference unregister and standard weak notification.
+Reverse handle order determines whether a live standard object runs its guarded
+hook or keeps fast-skipped fields after its observer unregisters. The local
+association view never filters the owning graph; field releases and C guards
+still update the local heap. Bound Closure validation sees MARKED receivers in
+the full state. WeakMap value releases
+and weak Closure/custom notification stay fenced. See the
+[inactive weak-hook review](../../coverage/semantics/gc-inactive-weak-free-review.json).
 
 OB06 admits only a no-argument `ob_start()` during normal executor queue release
 after output deactivation. The failed start leaves the buffer stack empty and
@@ -246,11 +255,30 @@ E_NOTICE and returning false without changing the buffer stack or sequence.
 The same receipt applies in the authenticated destructor of a Notice handler's
 returned object while that handler is disabled. Malformed binder/pack
 descriptors stay invalid.
-Non-NULL callbacks may fail argument reception normally; successful parsing
-stops at checked Unsupported before unresolved callback creation. Active
-handler-body reentry, deprecation-handler returned-object starts and wider
-executor completion remain partial. Handler initialization also allocates the
-aligned chunk buffer before the inactive-output check; allocation failure and
-PHP memory limits remain pending effects, as in the active buffer model.
+OB10 also resolves admitted pure non-NULL callbacks after complete conversion.
+It creates and releases the transient `user->zoh` owner before the inactive
+failure Notice, without invoking the callback or inspecting its required arity.
+Raw argument owners retain temporary invokables and array receivers through the
+diagnostic. Lookup observes conversion-handler changes but is not repeated after
+a Notice handler mutates referenced array selectors or retires a receiver.
+This applies in the authenticated returned-Notice-object destructor as well.
+
+Normal argument consumption uses the VM's root-only `zval_ptr_dtor_nogc` rule;
+array child cleanup still uses ordinary decrements. Explicit GC controls distinguish
+a direct cyclic argument from an array-wrapped child. Consumed Closure operation
+metadata reuses borrowed producer scope/binding certificates and retained capture
+cells solely for checking; it adds no actual owner or invocation authority.
+Factory-local byref captures and bound method receivers retain their native
+destructor timing. Selected-handler throws and callback-destructor throws follow
+the existing Throwable trace and cleanup protocol.
+
+Invalid/effectful callback creation, active handler-body reentry,
+deprecation-handler returned-object starts and wider executor completion remain
+partial. Handler initialization also allocates the aligned chunk buffer before
+the inactive-output check; allocation failure and PHP memory limits remain
+pending effects, as in the active buffer model. Original weak-observer GC
+controls stop at the inactive custom free-hook frontier and retain zero full
+agreement credit; separate explicit-cleanup controls cover the creation protocol.
 [OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json),
-[OB09 evidence](../../coverage/semantics/output-executor-reception-review.json).
+[OB09 evidence](../../coverage/semantics/output-executor-reception-review.json),
+[OB10 evidence](../../coverage/semantics/output-executor-creation-review.json).

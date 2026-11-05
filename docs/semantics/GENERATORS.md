@@ -687,6 +687,13 @@ is unchanged. Repeated cancellation validates two distinct copies and shared
 capture owner2. Receive/mapping and bailout cleanup remain partial.
 [Cancellation review](../../coverage/semantics/generator-call-cancellation-review.json).
 
+I100 also handles ordinary named mapping failures and required named holes before
+Generator creation. Existing fake-receive cleanup and Error traces preserve their
+own argument owners; only the copied Closure stays request-retained. Three new
+originals and two joined reached fronts validate these paths, with an affected
+successful value call. Later receives/default errors and bailout remain partial.
+[Named-failure review](../../coverage/semantics/generator-call-mapping-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+"""Check genuine pending-exit tick bailouts before and after fatal reporting."""
+from pathlib import Path
+
+import fiber_state_review as review
+
+
+HERE = Path(__file__).parent
+
+
+def source(name):
+    return (HERE / f'deprecated_late_tick_exit_throw_{name}.php').read_text()
+
+
+ABANDONED = [
+    'S.DESTRUCTION.ABANDONED = [pdestructioncleanup]',
+    'pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall',
+    'pdestructorcall.OPERATION = (pdestructionoperation)',
+    'pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true',
+    'pdestructorcall.OBJECT = n_arg', '~pdestructioncleanup.RELEASED',
+    '~pdestructorcall.USER', 'pdestructorcall.CALLER = eps',
+    'pexecutortick.COMPLETION = EXITED z_saved',
+    'S.SHUTDOWN.COMPLETION = EXITED z_saved',
+    'S.DESTRUCTION.COMPLETION = EXITED z_saved',
+]
+VALID = ['$executor_tick_abandoned(S, pdestructioncleanup) = (pexecutortick)',
+         '$eager_cleanup_valid(S, pdestructioncleanup)',
+         '$eager_operation_source_valid(S, pdestructionoperation)',
+         '$call_descriptors_valid(S)', '$heap_valid($heap_graph(S))',
+         '$exit_status_valid(S)']
+FATAL = ['pexecutortickfatal.TICK = pexecutortick',
+         'n_cause = pexecutortickfatal.OBJECT',
+         '$executor_tick_fatal_valid(S, pexecutortickfatal)',
+         'S.EXITSTATUS = 255', 'S.COMPLETION = NORMAL',
+         '~$executor_tick_valid(S, pexecutortick)',
+         '$executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION), pexecutortick)',
+         '$executor_tick_scope(S)', '$output_final_destructors(S)']
+DONE = ['S_done = $drive_steps(S, 4000)', 'S_done.TODO = eps',
+        'S_done.CURRENT = eps', 'S_done.FRAMES = eps',
+        '$call_descriptors_valid(S_done)', '$heap_valid($heap_graph(S_done))',
+        '$exit_status_valid(S_done)']
+DERIVED = {'pre-report-catch-keeps-full-263-status-authority': 5,
+           'fatal-report-projects-only-documentary-status': 4}
+
+review.CASES = {
+    'pre-report-catch-keeps-full-263-status-authority': {
+        'source': source('cacheless'),
+        'stage': 'S.TODO = (THROW_SEARCH n_cause) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail* -- if S.CURRENT = eps -- if S.FRAMES = eps -- if pdestructorcall.OPERATION = (pdestructionoperation) -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true',
+        'checks': [
+            'pexecutortick.COMPLETION = EXITED 263', 'S.EXITSTATUS = 263',
+            'S.SHUTDOWN.COMPLETION = EXITED 263',
+            'S.DESTRUCTION.COMPLETION = EXITED 263',
+            'PhpStep: S ~> S_raw',
+            'S_pre = $literal_reference_debt_step(S, $sensitive_trace_freeze($source_exception_transition(S, $throwable_transition(S, S_raw))))',
+            'S_pre.COMPLETION = UNCAUGHT n_cause', 'S_pre.EXITSTATUS = 263',
+            'S_pre.TODO = eps', 'S_pre.CURRENT = eps', 'S_pre.FRAMES = eps',
+            'S_pre.DESTRUCTION.ABANDONED = [pdestructioncleanup]',
+            'pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall',
+            'pdestructorcall.OBJECT = n_arg',
+            '$executor_tick_abandoned(S_pre, pdestructioncleanup) = (pexecutortick)',
+            '$executor_tick_valid(S_pre, pexecutortick)',
+            '$executor_tick_caught(S_pre) = ((pexecutortick, UNCAUGHT n_cause))',
+            '$throwable_live(S_pre, n_cause)',
+            '$heap_owners($heap_graph(S_pre), HOBJECT n_arg) = 2',
+            '$heap_owners($heap_graph(S_pre), HOBJECT n_cause) = 1',
+            '$callback_cache_nodes(pexecutortick.ENTRY.ENTRY) = eps',
+            'S_pre.EVENTS = [OUTPUT $ptascii("B;F;"), OUTPUT $ptascii("A;")]',
+            '$eager_cleanup_valid(S_pre, pdestructioncleanup)',
+            '$eager_operation_source_valid(S_pre, pdestructionoperation)',
+            '$call_descriptors_valid(S_pre)', '$heap_valid($heap_graph(S_pre))',
+            '$exit_status_valid(S_pre)',
+            '$executor_tick_abandoned(S_pre[.EXITSTATUS = 7], pdestructioncleanup) = (pexecutortick)',
+            '$executor_tick_caught(S_pre[.EXITSTATUS = 7]) = eps',
+            '$executor_tick_caught(S_pre[.SHUTDOWN.COMPLETION = NORMAL]) = eps',
+            '$executor_tick_caught(S_pre[.DESTRUCTION.COMPLETION = EXITED 7]) = eps',
+            '~$executor_tick_valid(S_pre, pexecutortick[.COMPLETION = NORMAL])',
+        ],
+    },
+    'fatal-report-projects-only-documentary-status': {
+        'source': source('cacheless'),
+        'stage': 'S.TODO = [EXECUTOR_TICK_FATAL pexecutortickfatal true]',
+        'checks': [
+            *ABANDONED, *FATAL, 'z_saved = 263',
+            '$callback_cache_nodes(pexecutortick.ENTRY.ENTRY) = eps',
+            '$eager_abandoned_owner(pdestructioncleanup.SOURCE) = [HOBJECT n_arg, HOBJECT n_arg]',
+            'S.TICKENTRIES = eps',
+            '$task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT n_cause]',
+            '$heap_owners($heap_graph(S), HOBJECT n_cause) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_arg) = 2',
+            '$executor_report_cause(S, pexecutortickfatal.COMPLETION, n_cause)',
+            'S_history = $executor_tick_history(S, pexecutortick.COMPLETION)',
+            'S_history.EXITSTATUS = 263', 'S_history.SHUTDOWN = S.SHUTDOWN',
+            'S_history.DESTRUCTION = S.DESTRUCTION',
+            '$machine_roots(S_history) = $machine_roots(S)',
+            '~$executor_tick_valid($executor_tick_history(S, EXITED 7), pexecutortick[.COMPLETION = EXITED 7])',
+            '~$executor_tick_fatal_valid(S[.SHUTDOWN.COMPLETION = EXITED 7], pexecutortickfatal)',
+            '~$executor_tick_fatal_valid(S[.DESTRUCTION.COMPLETION = NORMAL], pexecutortickfatal)',
+            '~$executor_tick_valid(S_history, pexecutortick[.COMPLETION = NORMAL])',
+            'S.EVENTS = [OUTPUT $ptascii("B;F;"), OUTPUT $ptascii("A;"), STDERR ptbytes_fatal]',
+            *VALID,
+            'PhpStep: S ~> S_pending', '$output_final_destructors(S_pending)',
+            '$destructor_operational(S_pending)',
+            '$call_descriptors_valid(S_pending)', '$heap_valid($heap_graph(S_pending))',
+        ],
+    },
+    'string-exit-zero-keeps-bound-fcc-owners-after-report': {
+        'source': source('review_string_bound'),
+        'stage': 'S.TODO = [EXECUTOR_TICK_FATAL pexecutortickfatal false]',
+        'checks': [
+            *ABANDONED, *FATAL, 'z_saved = 0',
+            'pexecutortick.ENTRY.ENTRY.TARGET = CLOSURE_TARGET n_callback',
+            '$callback_cache_nodes(pexecutortick.ENTRY.ENTRY) = [HOBJECT n_receiver, HOBJECT n_callback]',
+            'pexecutortick.RECEIVER = (n_receiver)', 'n_receiver =/= n_callback',
+            '$node_children(S, HOBJECT n_callback) = [HOBJECT n_receiver]',
+            '$eager_abandoned_owner(pdestructioncleanup.SOURCE) = [HOBJECT n_arg, HOBJECT n_arg, HOBJECT n_receiver, HOBJECT n_callback]',
+            '$heap_owners($heap_graph(S), HOBJECT n_arg) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_receiver) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_callback) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_cause) = 0',
+            '$objectprops_at(S.OBJECTPROPS, n_cause) = eps', 'S.TICKENTRIES = eps',
+            'S.EVENTS = [OUTPUT $ptascii("B;E;F;"), OUTPUT $ptascii("A;"), STDERR ptbytes_fatal]',
+            *VALID,
+            'S_paused = $drive(S, 0)', 'S_paused.COMPLETION = BUDGET',
+            'S_paused.TODO = S.TODO', 'S_paused.EXITSTATUS = 255',
+            *DONE,
+            'S_done.COMPLETION = pexecutortickfatal.COMPLETION', 'S_done.EXITSTATUS = 255',
+            'S_done.SHUTDOWN.COMPLETION = EXITED 0',
+            'S_done.DESTRUCTION.COMPLETION = EXITED 0',
+            'S_done.EVENTS = S.EVENTS',
+            '$drive_steps(S_paused[.COMPLETION = NORMAL], 4000) = S_done',
+        ],
+    },
+    'exit-seven-tail-and-later-queue-keep-original-owners': {
+        'source': source('review_exit7_tail_queue'),
+        'stage': 'S.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_QUEUE] -- if pexecutorqueue.ENTRIES = [pshutdownentry]',
+        'checks': [
+            *ABANDONED, 'z_saved = 7',
+            'pexecutorqueue.COMPLETION = REQUESTFATAL $ptascii("Exception") $ptascii("exit7-tick-failure") 3',
+            'pexecutortick.ENTRY.ENTRY.ARGS = [POBJECT n_arg, POBJECT n_later]',
+            '$callback_cache_nodes(pexecutortick.ENTRY.ENTRY) = [HOBJECT n_callback, HOBJECT n_callback]',
+            'S.TICKENTRIES = [ptickentry_tail]',
+            'ptickentry_tail.ENTRY.ARGS = [POBJECT n_tail_arg]',
+            '$callback_cache_nodes(ptickentry_tail.ENTRY) = [HOBJECT n_tail, HOBJECT n_tail]',
+            '$eager_abandoned_owner(pdestructioncleanup.SOURCE) = [HOBJECT n_arg, HOBJECT n_arg, HOBJECT n_later, HOBJECT n_callback, HOBJECT n_callback]',
+            '$tick_roots(S.TICKENTRIES) = [HOBJECT n_tail, HOBJECT n_tail, HOBJECT n_tail_arg]',
+            'pshutdownentry.ARGS = [POBJECT n_queue_arg]',
+            '$callback_cache_nodes(pshutdownentry) = eps', 'S.SHUTDOWN.ENTRIES = eps',
+            '$heap_owners($heap_graph(S), HOBJECT n_arg) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_later) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_callback) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_tail) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_tail_arg) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_queue_arg) = 1',
+            '$executor_scope(S)', '~$executor_tick_scope(S)',
+            '$executor_queue_valid(S, pexecutorqueue)',
+            'S.EXITSTATUS = 255', 'S.COMPLETION = NORMAL',
+            'S.EVENTS = [OUTPUT $ptascii("B;F;"), OUTPUT $ptascii("A;"), STDERR ptbytes_fatal]',
+            *VALID, *DONE,
+            'S_done.COMPLETION = pexecutorqueue.COMPLETION', 'S_done.EXITSTATUS = 255',
+            'S_done.TICKENTRIES = [ptickentry_tail]',
+            'S_done.EVENTS = S.EVENTS ++ [OUTPUT $ptascii("Q;")]',
+        ],
+    },
+    'saved-263-survives-later-inactive-child-status-zero': {
+        'source': source('owning_capture'),
+        'stage': 'S.TODO = [EXECUTOR_TICK_FATAL pexecutortickfatal false]',
+        'checks': [
+            *ABANDONED, *FATAL, 'z_saved = 263',
+            '$callback_cache_nodes(pexecutortick.ENTRY.ENTRY) = [HOBJECT n_callback]',
+            '$node_children(S, HOBJECT n_callback) = [HOBJECT n_child]',
+            '$object_name(S, n_child) = $ptascii("ExitThrowCapture20Child")',
+            '$heap_owners($heap_graph(S), HOBJECT n_arg) = 2',
+            '$heap_owners($heap_graph(S), HOBJECT n_callback) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_child) = 1',
+            '$heap_owners($heap_graph(S), HOBJECT n_cause) = 0',
+            '$objectprops_at(S.OBJECTPROPS, n_cause) = eps', 'S.TICKENTRIES = eps',
+            'S.EVENTS = [OUTPUT $ptascii("B;F;"), OUTPUT $ptascii("A;"), STDERR ptbytes_fatal]',
+            *VALID, *DONE,
+            'S_done.COMPLETION = REQUESTFATAL $ptascii("Error") $ptascii("Couldn\'t execute method ExitThrowCapture20Child::__destruct") 0',
+            'S_done.EXITSTATUS = 0', 'S_done.SHUTDOWN.COMPLETION = EXITED 263',
+            'S_done.DESTRUCTION.COMPLETION = EXITED 263',
+            'S_done.EVENTS = [OUTPUT $ptascii("B;F;"), OUTPUT $ptascii("A;"), STDERR ptbytes_fatal, STDERR ptbytes_late]',
+            'n_child <- S_done.DESTRUCTION.CALLED',
+        ],
+    },
+}
+
+
+if __name__ == '__main__':
+    raise SystemExit(0 if review.run(None, process_seconds=240) else 1)

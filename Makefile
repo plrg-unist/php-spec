@@ -95,6 +95,10 @@ test-semantics: build
 	python3 tests/semantics/output_executor_reception_state.py
 	python3 tests/semantics/output_executor_reception_review_sources.py
 	python3 tests/semantics/output_executor_reception_review_state.py
+	python3 tests/semantics/output_executor_creation_sources.py
+	python3 tests/semantics/output_executor_creation_state.py
+	python3 tests/semantics/output_executor_creation_review_sources.py
+	python3 tests/semantics/output_executor_creation_review_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -853,6 +857,9 @@ test-semantics: build
 	python3 tests/semantics/generator_call_cancellation_sources.py
 	python3 tests/semantics/generator_call_cancellation_state.py
 	python3 tests/semantics/generator_call_cancellation_review_state.py
+	python3 tests/semantics/generator_call_mapping_sources.py
+	python3 tests/semantics/generator_call_mapping_state.py
+	python3 tests/semantics/generator_call_mapping_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -971,6 +978,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_retained_protocol.py
 	python3 tests/semantics/enum_is_callable_output_unique_protocol.py
 	python3 tests/semantics/enum_is_callable_output_exit_protocol.py
+	python3 tests/semantics/enum_is_callable_output_cleanup_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

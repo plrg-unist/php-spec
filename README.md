@@ -255,7 +255,7 @@ module/autoload cleanup, uncovered table owners, wider hooks/rendering, reentran
 deactivation, other byte producers and buffered stdout diagnostics remain dependencies.
 [OB06](coverage/semantics/output-executor-post-deactivate-review.json) covers a
 no-argument `ob_start()` from a shutdown-argument destructor after output
-deactivation: the Notice precedes a false result, and no buffer is created.
+deactivation: the Notice precedes a false result, and no buffer is pushed.
 Suppression and selected error handlers retain their native output order.
 [OB07](coverage/semantics/output-executor-retval-review.json) covers a direct
 returned-object destructor during normal post-deactivation cleanup. It runs
@@ -265,7 +265,12 @@ emits the built-in Notice and returns false before the outer handler resumes.
 now uses ordinary named/unpacked argument binding and scalar conversion before
 the inactive-output failure. Default/NULL callbacks emit the Notice and return
 false without pushing a buffer, including during cleanup of a Notice handler's
-returned object. Callback creation and active handler-body reentry remain partial.
+returned object. [Late callable creation](coverage/semantics/output-executor-creation-review.json)
+now resolves admitted pure callbacks after conversion without invoking them.
+Its transient handler owner releases before the Notice; normal argument cleanup
+then preserves callback, captured-cell and receiver destructor timing before the
+caller observes false. A Notice handler changing a referenced selector does not
+repeat lookup. Invalid/effectful creation and active handler-body reentry remain partial.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3535,6 +3540,12 @@ source; earlier cuts retain their inputs.
 Wrappers also satisfy nominal `WeakReference` argument and property types after
 their referent retires; diagnostics retain the actual internal class name.
 
+GC30 adds quiet inactive WeakReference unregister and standard-object notification.
+Observer retirement changes the terminal weak-association view without adding a
+referent owner. Real handle order preserves fast-shutdown field shielding and the
+existing inactive public-destructor fatal. WeakMap notification and weak custom
+hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
+
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
 lane uses a `stdClass` leaf key and ordinary leaf value. The map owns
@@ -4752,14 +4763,17 @@ After output FINAL, source-certified tick entries retire in registration order,
 releasing copied values before their independent FCC object/Closure owners.
 Normal completion and stable pending exits use agreeing saved phase completions;
 the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
-An uncaught builtin Exception from a normal-origin argument destructor now stops
-that tick-list cleanup, retaining unfinished arguments, FCC owners and tail
-entries. Its Throwable retires before later active shutdown-queue cleanup and
-inactive executor free. An owning Closure capture can produce the separate
-inactive-child fatal with native exit 0. Five new originals agree exactly;
-five independent groups pass 254 conditions (11 derived), and private strict433
-passes. See the [bailout review](coverage/semantics/callback-late-tick-throw-review.json);
-earlier [exit](coverage/semantics/callback-late-tick-exit-review.json) and
+An uncaught builtin Exception from an argument destructor stops tick-list cleanup
+after normal completion or a stable main exit, retaining unfinished arguments,
+FCC owners and tail entries. Saved full exit codes authenticate abandoned source
+history after the report sets actual status 255; both saved phases stay intact.
+The Throwable retires before later active queue cleanup and inactive executor
+free, whose separate captured-child fatal can end with native status 0.
+Four new exit/throw originals and one affected normal control agree exactly;
+five independent groups pass 265 conditions (9 derived), and private strict433
+passes. See the [exit/throw review](coverage/semantics/callback-late-tick-exit-throw-review.json);
+the earlier [bailout](coverage/semantics/callback-late-tick-throw-review.json),
+[exit](coverage/semantics/callback-late-tick-exit-review.json) and
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
 Wider producers, assertion roots, changed phase completions, exception handlers,
 other throws and exits/reentry during late release remain partial.
@@ -6846,7 +6860,12 @@ guards. Root VM destructor exits now finish local cleanup before committing the
 name; nested queries preserve exit status and skip result assignment. The
 [exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
 records seven exact exits, seven explicit controls and 247 independent guards.
-Switched Fiber exits, replacement cleanup, owning rebound values, late type
+Local cleanup throws now cancel exit and commit the name before propagation,
+with compiled CV/alias release order and preserved exit status. The
+[cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json)
+records eight new/promoted agreements, one affected enum exit-status source,
+three explicit controls and 256+47 independent guards at separate cuts.
+Switched Fiber exits, repeated cleanup exits, owning rebound values, late type
 sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
@@ -7202,6 +7221,12 @@ catch. Four native originals, three CLI comparisons and two ownership fronts
 (including repeated native output) validate this bounded path; wider receive,
 mapping and bailout contexts remain partial.
 [Cancellation review](coverage/semantics/generator-call-cancellation-review.json).
+
+Ordinary named mapping failures and required named holes now preserve the same
+hidden copies while generated Error traces keep their own argument values.
+Three new originals, two ownership fronts and one affected successful call pass;
+later receive/default errors and bailout paths remain partial.
+[Named-failure review](coverage/semantics/generator-call-mapping-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
