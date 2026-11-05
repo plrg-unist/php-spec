@@ -26,8 +26,9 @@ for name, (_, expected) in FILES.items():
     assert hashlib.sha256(PATHS[name].read_bytes()).hexdigest() == expected
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}
 family.BASELINE = ('inactive executor storage hook or destructor visibility', b'FX|D1|D2|')
-family.UNSUPPORTED = {name: family.BASELINE for name in ['key-notify-before-fields', 'key-before-map-field']}
-family.MODEL_STATUSES = {'map-values-ab': 'php_error', 'map-values-ba': 'php_error'}
+family.UNSUPPORTED = {}
+family.MODEL_STATUSES = {name: 'php_error' for name in ['map-values-ab', 'map-values-ba',
+    'key-notify-before-fields', 'key-before-map-field']}
 family.MODEL_TIMEOUTS = {name: 240 for name in FILES}
 family_fingerprint = family.fingerprint
 

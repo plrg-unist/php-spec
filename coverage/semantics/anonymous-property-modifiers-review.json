@@ -1,0 +1,211 @@
+{
+  "scope": "CLASS174: attrs/hooks-free ordinary anonymous property groups delegate final, asymmetric-set and readonly combinations to the existing finite named-property modifier predicate. Compiler/linker/runtime behavior and full source/key/scope identities are shared; attributes, hooks, promotion and wider contexts remain partial.",
+  "implementation": {
+    "base": "5c825b8cf87987b82ddb56e636b54020a53d0458",
+    "semantic_cut": "870fece1d6aaf168c7e4e7c99e2da665ec8992ec",
+    "source_cut": "fd4dd28f40fea7e9ceae246bd0b7eae90f7f25e6",
+    "engine_routes": [
+      "Zend/zend_compile.c::zend_compile_prop_decl (explicit private/final rejection before property compilation)",
+      "Zend/zend_API.c::zend_declare_typed_property (setter type/visibility checks, equivalent normalization and implicit private(set) finality)",
+      "Zend/zend_inheritance.c::do_inherit_property (finality, static/readonly and setter narrowing order)",
+      "Zend/zend_execute.c::zend_asymmetric_visibility_property_modification_error (declaring class and called-scope C-string display)"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "adapter_sha256": "58108446eb5cc68533a0cc786beb09795eb32b6842b29d54d6efa07a8de10a21",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "mode": "Strict SL elaboration, algorithmic checks and structuring; serial CPU2 actors with stable inputs and full child reap"
+  },
+  "inputs": {
+    "spec/semantics/200-static-set-compiler.watsup": "12436ce6e558f5d971ae20bbb0ff21689b7a121087046315342f6c287624f41d",
+    "spec/semantics/201-static-set-runtime.watsup": "8171caafc9c3811b70c26b26427a6f1d544eb1ec715932e1810c79be5d719395",
+    "spec/semantics/383-anonymous-classes.watsup": "00b0a4824a6dd74c285c9b9cf1851adede49f65adee4cbff4a6e912786ed9547",
+    "spec/semantics/modules.json": "743339812651b2c1317ae062abe926ea0ff797f611d9b516a385f627edf2f255",
+    "tests/semantics/anonymous_property_modifier_cases.json": "b6d9dff7036dc5874dafa6ae230e9f506bc42f8bfae209c279d43c6a2711b472",
+    "tests/semantics/anonymous_property_modifier_protocol.py": "e8b3c133ebb622fb26df2e23f1d196361fe97ba747e324d1608dcd0e5ca383d0",
+    "tests/semantics/anonymous_property_modifier_review_protocol.py": "882498604003aead1443bbdece778cdfc2d553be5adc462ecf2b4d328b50babf",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "decisions": [
+    "Use ppproperty_supported for each nonempty attrs/hooks-free anonymous group. This shares the existing finite visibility/static/final/readonly/setter domain and invalid-declaration errors instead of maintaining a second flag list. Type/default preparation and publication/source authority are unchanged.",
+    "Keep equivalent read/set visibility normalization, implicit private(set) finality, final-before-private independence and setter narrowing order in the shared compiler/linker. Final properties remain writable; explicit public(set) readonly allows its first global initialization then rejects another write.",
+    "Setter authorization stays lexical. Clip only five compiler/linker class-name operands and the diagnostic called-scope class operand. Stored class names, property keys and normalized flags remain complete; ordinary non-NUL named-class diagnostic bytes are unchanged."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 434,
+      "revision": "fd4dd28f40fea7e9ceae246bd0b7eae90f7f25e6",
+      "supervisor": [
+        ".tools/class174-artifacts/strict-source-rest1.json",
+        "1662b90d4a8b375a1b4288254f448056289e808c2d06df58905bd7de9200c6d7"
+      ],
+      "numeric": [
+        ".tools/class174-artifacts/strict1.numeric.json",
+        "1c2ad624c6f1d83922cf9fbb55b0deea8433a19d647bbc9e1a75af49a4e1ec3f"
+      ]
+    },
+    "sources": {
+      "exact_agreements": 12,
+      "normal": 6,
+      "php_error": 3,
+      "static_rejection": 3,
+      "revision": "fd4dd28f40fea7e9ceae246bd0b7eae90f7f25e6",
+      "supervisors": [
+        [
+          ".tools/class174-artifacts/source-caller1.json",
+          "72068e4f3789d54d4ca19341a5987e15d1b42e8656816b65baadec76671a3577"
+        ],
+        [
+          ".tools/class174-artifacts/strict-source-rest1.json",
+          "1662b90d4a8b375a1b4288254f448056289e808c2d06df58905bd7de9200c6d7"
+        ]
+      ],
+      "reports": {
+        "asymmetric-instance-setter-storage-and-denials": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-mt0erour/report.json",
+          "80bbf9f105e8a1ad6b85be1c4a132b1d4aa7a6a063ea452e54f6c2780398f472"
+        ],
+        "asymmetric-inherited-weaker-setter-success": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-xxq9af4z/report.json",
+          "b656c7dad8393aa958310c04f39428039a31da47b33154b7b91740d8f1a224de"
+        ],
+        "asymmetric-static-setter-storage-and-denials": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-pcw2nd17/report.json",
+          "4d604103f6ade4242b465a537fd7c7e3801432ecbb596b5cc397ec77a9ded833"
+        ],
+        "final-instance-and-static-properties-remain-writable": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-m11687bu/report.json",
+          "b039efad4cf277bb0a0886cb33c495445e0ec8335e448cd87d726d0f56d86096"
+        ],
+        "asymmetric-anonymous-caller-and-declaring-display": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-3b7knx2n/report.json",
+          "a717153890bde718b97f068aa1fd8ac15e4bcc7317fd77f4f04e7a82916029fc"
+        ],
+        "final-parent-property-conflict-before-argument": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-i8rgoh9d/report.json",
+          "a8312c378c0cc15d3ea93b74d7058eb9ce61920c9fbae7b1b243d609969d8c10"
+        ],
+        "private-set-parent-implicit-final-before-argument": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-9l_xxar5/report.json",
+          "43245b515b0379ad5c14200156d78569fc7a6d661dabdbe8f7da24e8890716a2"
+        ],
+        "asymmetric-parent-setter-narrowing-before-argument": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-4fn7oabj/report.json",
+          "5efbb64687bf3daa51316685469831f895236f912f40652efef0d00d67db106b"
+        ],
+        "asymmetric-untyped-property-compile-error": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-t9_vcegv/report.json",
+          "32d1ff51bda88b690bc731b67f287b8902ff817a73837372ff4bc8d6864a0025"
+        ],
+        "asymmetric-setter-weaker-than-getter-compile-error": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-giiieqoo/report.json",
+          "029360b2735d1d36ade5a71bb2f6c895337f609e19c1f765e46e026dbd35f0f1"
+        ],
+        "final-private-property-compile-error": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-45o3or7h/report.json",
+          "5f9db7d65f563d6dbd036c6bbe564fe5aea1841ae419de90cc796c96cde14f1d"
+        ],
+        "asymmetric-explicit-public-set-readonly-initialization": [
+          ".tools/class174-artifacts/recovered-private-raw/method-runtime-swf095j5/report.json",
+          "b51b4437f3ba8a8755696d9d71c866be1121aab4903953c65aad7cc64c31e31b"
+        ]
+      }
+    },
+    "author": {
+      "revision": "cabffb299ef85603fc9c988e26b819c6a1fbb668",
+      "conditions": 120,
+      "groups": {
+        "instance_lexical_permission_denial_and_flag_forgery": 56,
+        "explicit_public_set_readonly_first_and_second_write": 38,
+        "writable_final_instance_and_static_storage": 26
+      },
+      "result": "true newline, empty stderr, exit0; stable inputs and fully reaped",
+      "supervisor": [
+        ".tools/class174-artifacts/author-three-state3.json",
+        "85d57b2614e015d799aa64a63908ef18bda70a1a75feebbf8b8937c57abc2010"
+      ],
+      "report": [
+        ".tools/class174-artifacts/recovered-private-raw/anonymous-property-modifier-n4lxn806/report.json",
+        "5a7c32d6a81322af6670a1df4cc831c43d95d4fb070a0132279ac74b4de23b27"
+      ]
+    },
+    "independent": {
+      "revision": "5cc02c85072d7ce5c55309d5c543adc4fa923d02",
+      "production_equivalent": "fd4dd28f40fea7e9ceae246bd0b7eae90f7f25e6",
+      "conditions": 136,
+      "groups": {
+        "actual_anonymous_caller_scope_and_forgery": 39,
+        "static_setter_cells_and_public_keys": 28,
+        "weaker_inherited_setter_normalization": 37,
+        "narrowing_before_argument_and_allocation": 27,
+        "missing_type_compile_before_output": 5
+      },
+      "result": "true newline, empty stderr, exit0; stable inputs and fully reaped",
+      "supervisor": [
+        ".tools/class174-artifacts/review-five-state1.json",
+        "a9d34ae6643e90f0a1441e05024929132598b6efeb502a38c971a1d1540d14e0"
+      ],
+      "report": [
+        ".tools/class174-review-artifacts/recovered-state/class174-review-state-pey3fvo8/report.json",
+        "75561207d232e2229c9d1f28ee3e31a5a06119489fb1569f197b46659bf5a31b"
+      ]
+    }
+  },
+  "failures_preserved_zero_credit": [
+    {
+      "cause": "Author1 used default-domain PROP_UNINITIALIZED instead of slot-domain PROP_INITIAL. Elaboration failed before executing any group; corrected only the fixture constructor.",
+      "supervisor": [
+        ".tools/class174-artifacts/author-three-state1.json",
+        "7cf2dfdf657ad5d9716b966729db583cfbd5bda0ab81c713804bb1564f8c60cd"
+      ],
+      "report": [
+        ".tools/class174-artifacts/recovered-private-raw/anonymous-property-modifier-1vp5o0pm/report.json",
+        "680196cc25ef9632849a7d4c2d5483f31b894ed02145177ca8601cb47bc5a6e6"
+      ]
+    },
+    {
+      "cause": "Author2 assumed a method receiver lived in CURRENT.INSTANCE. The actual receiver is bound by CURRENT.TARGET = METHOD_TARGET; corrected only that reached-state binding, retaining permission/slot/throw assertions.",
+      "supervisor": [
+        ".tools/class174-artifacts/author-three-state2.json",
+        "6494f1247ebe05321368e4b8ec28625a9f05fb60a9132ebb2272471c361b21c5"
+      ],
+      "report": [
+        ".tools/class174-artifacts/recovered-private-raw/anonymous-property-modifier-ar73j54x/report.json",
+        "1f8de8c6cab9e8e6a9ac27251b0b3801212a4416feab719698c13ece80c4bbb4"
+      ]
+    }
+  ],
+  "recovery": {
+    "private_raw": [
+      ".tools/class174-artifacts/recovered-private-raw/locations.json",
+      "b2970614095ded73bba4266d63ada581e9dfe8712619261a875fd81ca832d032"
+    ],
+    "reviewer_raw": [
+      ".tools/class174-review-artifacts/recovered-state/locations.json",
+      "78a613abc99e5b1e3bd0188846e58dce2b3af4e7d1e0f69e483d3554d3a42f6c"
+    ],
+    "native_manifest": [
+      ".tools/class174-review-artifacts/native-manifest.json",
+      "d5fe3d4149746bb71110442b1c16e80ccc96e17eb997354b720d87c2163762e3"
+    ],
+    "commands": "Supervisors store exact command/cwd/revision/watched hashes/affinity/exit/reap. Source reports bind catalogue/profile bytes and exact streams. Recovery indices map original paths to moved unchanged raw roots."
+  },
+  "review": {
+    "reviewer": "classes_review_current",
+    "decision": "accepted",
+    "current_tail": "f55224d28f0787549685fcd4729dc841255ce1da",
+    "compatibility": "Actual 5c-to-f552 parent delta reviewed once. New DESTRUCTOR_C_RETURN/domain paths require destructor call/frame markers absent from all12 sources and reached states; destructor_c_frame is eps so ordinary frame/restore/staging equations preserve their prior result. There are no Generators, user destructors or exception handlers; the related444 guard is unreachable. A101 module420 guards only iterator INI_SET rejected values; no174 source invokes config/iterator APIs. Class/property/admission, frontend and adapter bytes are unchanged. Retain tested cuts without replay or a bridge receipt."
+  },
+  "remaining": [
+    "Attributes, property hooks and promoted anonymous constructor formals.",
+    "Wider member/type/default/lifetime combinations and runtime diagnostics outside these12 originals."
+  ]
+}

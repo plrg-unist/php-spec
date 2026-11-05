@@ -1,0 +1,340 @@
+[
+  {
+    "id": "assertions-option-rejects-copied-array-before-lookup",
+    "source": "<?php\nclass AssertionsOption101 {\n    public function __toString():string {echo \"T:\",ini_get(\"precision\"),\";\";return \"zend.assertions\";}\n    public function __destruct() {\n        echo \"O:\",ini_get(\"precision\"),\":\",$GLOBALS[\"row\"][0],\":\",$GLOBALS[\"leaf\"],\";\";\n        $GLOBALS[\"leaf\"]=42;ini_set(\"precision\",21);\n    }\n}\nclass AssertionsArray101 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:$GLOBALS[\"row\"];}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {\n        echo \"N\",$this->pos,\";\";\n        if($this->pos===0){unset($GLOBALS[\"name\"]);}else{$GLOBALS[\"row\"][0]=31;$GLOBALS[\"leaf\"]=17;}\n        ++$this->pos;\n    }\n    public function __destruct() {echo \"I:\",ini_get(\"precision\"),\";\";}\n}\nfunction makeArray101() {$it=new AssertionsArray101;$GLOBALS[\"iterWatch\"]=WeakReference::create($it);return $it;}\n$name=new AssertionsOption101;$leaf=7;$row=[3,&$leaf];\n$optionWatch=WeakReference::create($name);$iterWatch=null;$result=99;\necho \"B;\";\ntry {$result=ini_set(...makeArray101());echo \"BAD;\";}\ncatch(TypeError $e) {\n    echo \"E:\",$e->getMessage()==='ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null',\":\",$result,\":\",ini_get(\"precision\"),\":\",$optionWatch->get()===null,\":\",$iterWatch->get()===null,\":\",$row[0],\":\",$leaf,\";\";\n    $trace=$e->getTrace();$arg=$trace[0][\"args\"][1];\n    echo \"A:\",$trace[0][\"args\"][0],\":\",$arg[0],\":\",$arg[1],\":\",$row[0],\":\",$row[1],\";\";\n    $leaf=66;$row[0]=55;\n    echo \"F:\",$arg[0],\":\",$arg[1],\":\",$row[0],\":\",$row[1],\";\";\n    unset($arg,$trace,$e);\n}\nini_restore(\"precision\");echo \"Z;\";\n",
+    "source_sha256": "22cadc4474488476ed76ac5b9ec3111cd5372283065da851ad0ab373e58cf5b7",
+    "purpose": "After temporary Iterator cleanup, Stringable option converts to zend.assertions and retires; copied COW array is rejected before directive lookup, retaining table and alias in TypeError TraceArgs.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:14;T:14;O:14:31:17;E:1:99:21:1:1:31:42;A:zend.assertions:3:42:31:42;F:3:66:55:66;Z;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "assertions-option-rejects-copied-object-without-value-cast",
+    "source": "<?php\nclass AssertionsOptionObject101 {\n    public function __toString():string {echo \"T:\",ini_get(\"precision\"),\";\";return \"zend.assertions\";}\n    public function __destruct() {echo \"O:\",ini_get(\"precision\"),\";\";ini_set(\"precision\",21);}\n}\nclass AssertionsValueObject101 {\n    public function __toString():string {echo \"BAD;\";return \"8\";}\n    public function __destruct() {echo \"V:\",ini_get(\"precision\"),\";\";}\n}\nclass AssertionsIteratorObject101 implements Iterator {\n    public int $pos=0;\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$GLOBALS[\"name\"]:$GLOBALS[\"value\"];}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";if($this->pos===0){unset($GLOBALS[\"name\"]);}else{unset($GLOBALS[\"value\"]);}++$this->pos;}\n    public function __destruct() {echo \"I:\",ini_get(\"precision\"),\";\";}\n}\nfunction makeObject101() {$it=new AssertionsIteratorObject101;$GLOBALS[\"iterWatch\"]=WeakReference::create($it);return $it;}\n$name=new AssertionsOptionObject101;$value=new AssertionsValueObject101;\n$optionWatch=WeakReference::create($name);$valueWatch=WeakReference::create($value);$iterWatch=null;$result=99;\necho \"B;\";\ntry {$result=ini_set(...makeObject101());echo \"BAD-RETURN;\";}\ncatch(TypeError $e) {\n    echo \"E:\",$e->getMessage()==='ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null',\":\",$result,\":\",ini_get(\"precision\"),\":\",$optionWatch->get()===null,\":\",$valueWatch->get()!==null,\":\",$iterWatch->get()===null,\";\";\n    $trace=$e->getTrace();$arg=$trace[0][\"args\"][1];\n    echo \"A:\",$trace[0][\"args\"][0],\":\",$arg===$valueWatch->get(),\";\";\n    unset($arg,$trace,$e);\n    echo \"R:\",$valueWatch->get()===null,\";\";\n}\nini_restore(\"precision\");echo \"Z;\";\n",
+    "source_sha256": "270c9f4c38eb9b1c2a61d6082e17dfc7241aa1c61ff5f877fd60b05dd7c83bbd",
+    "purpose": "After option conversion and disposal, zend.assertions rejects the copied Stringable object value without casting it; TraceArgs retains the object until catch releases it.",
+    "expected_model": "normal",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:14;T:14;O:14;E:1:99:21:1:1:1;A:zend.assertions:1;V:21;R:1;Z;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "assertions-option-accepted-value-remains-unsupported",
+    "source": "<?php\nclass AssertionsControlOption101 {\n    public string $id; public string $option;\n    public function __construct($id,$option) {$this->id=$id;$this->option=$option;}\n    public function __toString():string {echo \"T:\",$this->id,\":\",$GLOBALS[\"stage\"],\";\";return $this->option;}\n    public function __destruct() {echo \"D:\",$this->id,\":\",ini_get(\"precision\"),\";\";}\n}\nclass AssertionsControlIterator101 implements Iterator {\n    public int $pos=0; public AssertionsControlOption101 $name;\n    public function __construct() {$this->name=new AssertionsControlOption101(\"A\",\"zend.assertions\");}\n    public function rewind():void {echo \"W;\";$this->pos=0;}\n    public function valid():bool {echo \"V\",$this->pos,\";\";return $this->pos<2;}\n    public function current():mixed {echo \"C\",$this->pos,\";\";return $this->pos===0?$this->name:7;}\n    public function key():mixed {echo \"K\",$this->pos,\";\";return $this->pos;}\n    public function next():void {echo \"N\",$this->pos,\";\";$this->pos++;if($this->pos===2){$GLOBALS[\"stage\"]=\"done\";}}\n    public function __destruct() {echo \"I:\",ini_get(\"precision\"),\";\";}\n}\nfunction makeControl101() {$it=new AssertionsControlIterator101;$GLOBALS[\"watch\"]=WeakReference::create($it);return $it;}\n$stage=\"walk\";$watch=null;echo \"B;\";\n$result=ini_set(...makeControl101());echo \"R:\",$result,\":\",ini_get(\"precision\"),\":\",($watch->get()===null?1:0),\";\";\nunset($watch);ini_restore(\"precision\");echo \"E;\";\n",
+    "source_sha256": "4c270d1b3a30230010016a58698f49985b845ca811ac395986f2041c4d95b796",
+    "purpose": "Explicit boundary: a copied scalar value with converted zend.assertions option is outside the new type-rejection priority and remains Unsupported.",
+    "expected_model": "unsupported",
+    "native_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:14;T:A:done;D:A:14;R:1:14:1;E;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "CONFIG Iterator Stringable option outside normal scalar reception",
+    "unsupported_stdout": "B;W;V0;C0;K0;N0;V1;C1;K1;N1;V2;I:14;T:A:done;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "66",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "87",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "48"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "48"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "48"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "78"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "48"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "78"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "50"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "73",
+            "58"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49",
+            "52"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "84",
+            "58"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "65"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "58"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "100",
+            "111",
+            "110",
+            "101"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]

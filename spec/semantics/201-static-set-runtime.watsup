@@ -12,7 +12,7 @@ def $class_static_set_allowed(S, ppropertydesc) = true
 def $class_static_set_allowed(S, ppropertydesc) = false -- otherwise
 
 dec $class_static_set_scope(pstate) : ptbytes
-def $class_static_set_scope(S) = $ptascii("scope ") ++ pclassdesc.NAME
+def $class_static_set_scope(S) = $ptascii("scope ") ++ $c_string(pclassdesc.NAME)
   -- if $method_called_scope(S) = (porigin_scope)
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
 def $class_static_set_scope(S) = $ptascii("global scope") -- otherwise

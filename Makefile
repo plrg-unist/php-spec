@@ -864,6 +864,9 @@ test-semantics: build
 	python3 tests/semantics/generator_call_receive_sources.py
 	python3 tests/semantics/generator_call_receive_state.py
 	python3 tests/semantics/generator_call_receive_review_state.py
+	python3 tests/semantics/generator_call_exit_sources.py
+	python3 tests/semantics/generator_call_exit_state.py
+	python3 tests/semantics/generator_call_exit_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -1720,6 +1723,9 @@ test-semantics: build
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/rejected_encoding_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/sources"
 	python3 tests/semantics/lexical_header_sources.py --output "$$(mktemp -d /tmp/php-spec-lexical-headers.XXXXXXXX)/sources"
+	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
+	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
+	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"
 	python3 tests/semantics/rejected_encoding_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/state"
 	python3 tests/semantics/rejected_header_review_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-encoding.XXXXXXXX)/review-state"
 	python3 tests/semantics/eval_class_scope_protocol.py

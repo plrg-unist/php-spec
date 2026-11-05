@@ -3176,12 +3176,16 @@ Twenty-two originals agree; reached checks cover once skip/reparse, source ident
 suppression and valid zero-budget Throwable handles. A foreign lexical boundary
 also preserves earlier headers before bad-character or unterminated-comment
 faults; 32 new originals agree. Unexplained native/foreign prefix differences
-and multibyte-enabled conversion remain partial.
+and multibyte-enabled conversion remain partial. Rejected main files now emit
+their warning prefix and final parser error before any program work, honoring
+separate reporting bits and startup display. Thirty-seven source profiles and
+240 independent terminal-state conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
 [rejected-unit review](coverage/semantics/encoding-rejection-review.json),
-[lexical-boundary review](coverage/semantics/encoding-lexical-review.json).
+[lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
+[main-rejection review](coverage/semantics/main-source-rejection-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3546,15 +3550,24 @@ their referent retires; diagnostics retain the actual internal class name.
 GC30 adds quiet inactive WeakReference unregister and standard-object notification.
 Observer retirement changes the terminal weak-association view without adding a
 referent owner. Real handle order preserves fast-shutdown field shielding and the
-existing inactive public-destructor fatal. Active key-triggered Map notification and weak custom
-hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
+existing inactive public-destructor fatal. At the GC30 cut, key-triggered Map
+notification and weak custom hooks remained partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
 
 GC31 adds inactive empty/singleton/multi-entry WeakMap free. Every key unregisters
 before ordered value release; later values stay leased when an earlier release
 fails, and shared reference cells retain their payload once. Seven source/request
-contexts and 599 new/affected reached conditions pass. Active key notification,
-incoming Map associations and active free pins remain fenced. See the
+contexts and 599 new/affected reached conditions pass. At that cut, key
+notification, incoming Map associations and active free pins remained fenced. See the
 [inactive Map review](coverage/semantics/gc-inactive-weakmap-free-review.json).
+
+GC32 adds inactive standard-Key notifications. Each selected Map entry detaches
+in registration order before its value releases; surviving slot positions preserve
+nonadjacent equal values and later Map release order. Key fields wait until
+notifications finish, and an earlier fatal retains pending owners. Nine exact
+source/request contexts and 951 reported checks cover selective/nested cleanup
+and reference cells in both allocator modes. Internal Map/WeakReference and custom
+Closure key hooks, active free pins and wider diagnostics remain partial.
+[Key notification review](coverage/semantics/gc-key-notify-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
@@ -4978,15 +4991,18 @@ successful lookups, while diagnostic class-name arguments use native C strings.
 Attributes and wider member/type/initializer contexts remain partial.
 [Own constant review](coverage/semantics/anonymous-own-constants-review.json).
 
-Ordinary anonymous property groups now share named-class type/default preparation,
-visibility, static storage and readonly checks. Nonliteral instance and static
-defaults finish before constructorless allocation; cloned arrays separate on
-write, private parent/child keys retain full NUL-bearing class names, and repeated
-eval compilations keep separate static cells. Link conflicts precede arguments;
-readonly declaration errors precede execution. Only diagnostic class operands
-use C-string display. Attributes, hooks, promotion, asymmetric setters and final
-properties remain outside this admission.
-[Property review](coverage/semantics/anonymous-properties-review.json).
+Ordinary anonymous property groups share named-class type/default preparation,
+visibility, static storage, readonly, final and asymmetric-set checks. Nonliteral
+instance and static defaults finish before constructorless allocation; cloned
+arrays separate on write, private keys retain full NUL-bearing names, and fresh
+eval compilations keep separate static cells. Equivalent read/set visibility
+normalizes away; private(set) is implicitly final, while final properties remain
+writable. Setter permission uses lexical scope and error display uses called
+scope. Link conflicts precede arguments; declaration errors precede execution.
+Only exercised diagnostic class operands use C-string display. Attributes, hooks,
+promotion and wider contexts remain partial.
+[Property review](coverage/semantics/anonymous-properties-review.json),
+[modifier review](coverage/semantics/anonymous-property-modifiers-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -7285,6 +7301,13 @@ restored API cleanup protocol. Callee values retire before API arguments/source,
 while the hidden copy keeps its receiver/captures. Native/source and joined
 ownership gates pass; wider producers, collection and bailout remain partial.
 [Receive-failure review](coverage/semantics/generator-call-receive-review.json).
+
+Ordinary exit during copied reference warnings or named-default construction now
+preserves that same late copy, restores the handler and retires API owners in
+order. Failed construction suppresses its destructor, and catch/finally are
+skipped. Two exact exit comparisons and reached ownership gates pass; wider
+cleanup replacements and bailout contexts remain partial.
+[Exit review](coverage/semantics/generator-call-exit-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

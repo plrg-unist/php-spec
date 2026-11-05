@@ -43,7 +43,7 @@ def $anonymous_trait_adaptations((NStmtTraitUseAdaptationPrecedence name (NIdent
 def $anonymous_trait_adaptations(phpType63*) = false -- otherwise
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType57 :: phpType57_tail*)) (SEQUENCE eps) metadata) = true
-  -- if flags <- [0,1,2,4,8,9,10,12,64,65,66,68,72,73,74,76]
+  -- if $ppproperty_supported(flags)
 def $anonymous_member(NStmtClassConst (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType46 :: phpType46_tail*)) metadata) = true
   -- if flags <- [0,1,2,4,32,33,34,36]
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
