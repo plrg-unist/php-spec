@@ -106,8 +106,9 @@ def $executor_free_entry_before(pweakmapentry :: pweakmapentry_tail*, n_map, n_k
   -- if pweakmapentry.KEY =/= n_key /\ ~((n_map, pweakmapentry.KEY) <- pexecutorassociation*)
 def $executor_free_edge(eps, pnode, pnode_child, n) = eps
 def $executor_free_edge((HEDGE pnode pnode_child) :: hedge_tail*, pnode, pnode_child, 0) = hedge_tail*
-def $executor_free_edge((HEDGE pnode pnode_other) :: hedge_tail*, pnode, pnode_child, n) = (HEDGE pnode pnode_other) :: $executor_free_edge(hedge_tail*, pnode, pnode_child, $(n - 1))
+def $executor_free_edge((HEDGE pnode pnode_other) :: hedge_tail*, pnode, pnode_child, n) = (HEDGE pnode pnode_other) :: $executor_free_edge(hedge_tail*, pnode, pnode_child, n_before)
   -- if $(n > 0)
+  -- if n_before = $(n - 1)
 def $executor_free_edge((HEDGE pnode_other pnode_to) :: hedge_tail*, pnode, pnode_child, n) = (HEDGE pnode_other pnode_to) :: $executor_free_edge(hedge_tail*, pnode, pnode_child, n)
   -- if pnode_other =/= pnode
 def $executor_free_entry_edges(hedge*, pnode, n, eps) = hedge*
