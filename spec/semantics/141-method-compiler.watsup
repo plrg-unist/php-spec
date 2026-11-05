@@ -293,7 +293,7 @@ def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) =
   -- if psraw.FLAGS =/= 0
   -- if ~$ppproperty_flag(flags, 16) /\ pchheader.KIND =/= "interface"
   -- if psraw.VARIADIC
-def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) = PPROPERTIES ($ppconstant_error(P, $ptascii("Cannot redeclare ") ++ pchheader.NAME ++ $ptascii("::$") ++ psraw.NAME, psraw.LINE)) ppropertydesc*
+def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) = PPROPERTIES ($ppconstant_error(P, $ptascii("Cannot redeclare ") ++ $c_string(pchheader.NAME) ++ $ptascii("::$") ++ psraw.NAME, psraw.LINE)) ppropertydesc*
   -- if psraw.FLAGS =/= 0
   -- if ~$ppproperty_flag(flags, 16) /\ pchheader.KIND =/= "interface" /\ ~psraw.VARIADIC
   -- if $ppproperty_at(ppropertydesc*, psraw.NAME)

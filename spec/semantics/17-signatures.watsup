@@ -406,7 +406,7 @@ def $psmessage(PSDIAGNOSTIC text "attribute-target" ([ptbytes]) ptcontext) = $ps
 def $psmessage(PSDIAGNOSTIC text "promotion-outside-constructor" ptbytes* ptcontext) = $ptascii("Cannot declare promoted property outside a constructor")
 def $psmessage(PSDIAGNOSTIC text "invalid-default" ([ptbytes_kind, ptbytes_name, ptbytes_type]) ptcontext) = $ptascii("Cannot use ") ++ ptbytes_kind ++ $ptascii(" as default value for parameter $") ++ ptbytes_name ++ $ptascii(" of type ") ++ ptbytes_type
 def $psmessage(PSDIAGNOSTIC text "implicit-nullable" ([ptbytes]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Implicitly marking parameter $") ++ ptbytes ++ $ptascii(" as nullable is deprecated, the explicit nullable type must be used instead")
-def $psmessage(PSDIAGNOSTIC text "optional-before-required" ([ptbytes_optional, ptbytes_required]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Optional parameter $") ++ ptbytes_optional ++ $ptascii(" declared before required parameter $") ++ ptbytes_required ++ $ptascii(" is implicitly treated as a required parameter")
+def $psmessage(PSDIAGNOSTIC text "optional-before-required" ([ptbytes_optional, ptbytes_required]) ptcontext) = $c_string($psfunctionname(ptcontext)) ++ $ptascii("(): Optional parameter $") ++ ptbytes_optional ++ $ptascii(" declared before required parameter $") ++ ptbytes_required ++ $ptascii(" is implicitly treated as a required parameter")
 def $psmessage(PSDIAGNOSTIC text "void-return-reference" ptbytes* ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Returning by reference from a void function is deprecated")
 
 def $psguard(ptcontext, psraw, psinput*, ptbytes*, bool) = PSGUARDED (PSONEUNSUPPORTED "edited invalid parameter name")

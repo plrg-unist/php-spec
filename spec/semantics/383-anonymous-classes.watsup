@@ -16,8 +16,8 @@ def $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, z_line, n_counter
 def $anonymous_parent_class_name(ptbytes_parent, ptbytes_file, z_line, n_counter) = eps -- otherwise
 
 dec $anonymous_constructor_parameter(phpType17) : bool
-;; Ordinary signature compilation owns types, defaults and final-only variadics.
-def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN b) (BOOLEAN b_var) (NExprVariable (BYTES text) metadata_name) phpType5 (SEQUENCE eps) metadata) = $ptvalidname($base64(text), false)
+;; Ordinary signature/promotion compilation owns types, defaults and errors.
+def $anonymous_constructor_parameter(NParam (SEQUENCE eps) (INTEGER flags) phpType18 (BOOLEAN b) (BOOLEAN b_var) (NExprVariable (BYTES text) metadata_name) phpType5 (SEQUENCE eps) metadata) = ($ptvalidname($base64(text), false) /\ $ppproperty_supported(flags) /\ ~$ppproperty_flag(flags, 8))
 def $anonymous_constructor_parameter(phpType17) = false -- otherwise
 dec $anonymous_constructor_parameters(phpType16) : bool
 def $anonymous_constructor_parameters(SEQUENCE eps) = true

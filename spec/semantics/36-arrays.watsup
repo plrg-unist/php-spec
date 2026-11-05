@@ -126,11 +126,6 @@ dec $missing_key_bytes(pkey) : nat*
 def $missing_key_bytes(KINT i) = $decimal_integer(i)
 def $missing_key_bytes(KSTRING n*) = [34] ++ $c_string(n*) ++ [34]
 
-def $c_string(eps) = eps
-def $c_string(0 :: n_tail*) = eps
-def $c_string(n :: n_tail*) = n :: $c_string(n_tail*)
-  -- if n =/= 0
-
 dec $dimension_key(pstate, poperand, int) : pstate
 dec $array_read(pstate, pvalue, poperand, int) : pstate
 def $array_read(S, PARRAY n, poperand, z) = S_key
