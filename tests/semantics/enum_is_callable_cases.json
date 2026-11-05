@@ -1246,5 +1246,14 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "second|caught:UNCHANGED:absent|",
     "purpose": "A second-argument throw skips missing output acquisition and leaves the result unchanged."
+  },
+  {
+    "id": "enum-is-callable-third-output-fixed-fallback-late-publication",
+    "source": "<?php\nnamespace AcqLate;\nenum AcqCheck { case A; }\nfunction publish() {\n    function is_callable($value, $syntax, $output) { echo 'USER|'; return false; }\n    return false;\n}\n$ok = is_callable([AcqCheck::class, 'cases'], publish(), $name);\necho 'chosen:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "e59283a13713029fe3a0b19b1d505c238cc4c18db13d098a35b847b180466d88",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "chosen:1:AcqLate\\AcqCheck::cases|",
+    "purpose": "Fixed namespace fallback saves the selected builtin before a second argument declares a same-name local function; SEND3 still acquires a fresh output reference."
   }
 ]

@@ -79,7 +79,9 @@ dec $call_builtin(preqbytes, preqbytes?) : bool
 def $call_builtin(preqbytes, eps) = $pfunction_builtin(preqbytes)
 def $call_builtin(preqbytes, (preqbytes_fallback)) = ($pfunction_builtin(preqbytes) \/ $pfunction_builtin(preqbytes_fallback))
 dec $call_prepare(pstate, preqbytes, preqbytes?, phpType7*, int) : pstate
+dec $enum_is_callable_fixed_cached_call(pstate, preqbytes, preqbytes?) : bool
 def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = S[.TODO = $named_start(pfunction, phpType7*, S.ORIGIN, z) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$enum_is_callable_fixed_cached_call(S, preqbytes, preqbytes_fallback?)
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
 def $call_prepare(S, preqbytes, preqbytes_fallback?, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined function ") ++ preqbytes ++ $ptascii("()"), z)
   -- if $call_target(S, preqbytes, preqbytes_fallback?) = eps

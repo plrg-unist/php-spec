@@ -1474,6 +1474,81 @@ def $config_parameter_name(INTRINSIC_IS_CALLABLE, 0) = $ptascii("value")
 def $config_parameter_name(INTRINSIC_IS_CALLABLE, 1) = $ptascii("syntax_only")
 def $config_parameter_name(INTRINSIC_IS_CALLABLE, 2) = $ptascii("callable_name")
 
+;; INIT_NS_FCALL_BY_NAME chooses and caches the actual function before SEND.
+;; Fixed records borrow this authority even after a callback publishes a local
+;; function. Root and ordinary named functions have authenticated cache owners;
+;; closure/method copies can have a different runtime cache at the same site.
+dec $enum_is_callable_fixed_source(pstate, porigin) : (preqbytes, preqbytes)?
+def $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_short))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $exit_fixed(S, porigin_site) = ((preqbytes, preqbytes_fallback?))
+  -- if preqbytes_fallback? = (preqbytes_short)
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_IS_CALLABLE)
+def $enum_is_callable_fixed_source(S, porigin_site) = eps -- otherwise
+
+dec $enum_is_callable_fixed_lexical(pstate, porigin) : bool
+def $enum_is_callable_fixed_lexical(S, PORIGIN n pcpath) = true
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = eps
+def $enum_is_callable_fixed_lexical(S, PORIGIN n pcpath) = true
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
+def $enum_is_callable_fixed_lexical(S, porigin_site) = false -- otherwise
+
+dec $enum_is_callable_fixed_scope(pstate, porigin) : bool
+def $enum_is_callable_fixed_scope(S, PORIGIN n pcpath) = true
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.CURRENT = eps
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = eps
+def $enum_is_callable_fixed_scope(S, PORIGIN n pcpath) = true
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if $enum_is_callable_fixed_lexical(S, PORIGIN n pcpath)
+  -- if $goto_source_owner($all_functions(S), n, pcpath) = (pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pfunction.ORIGIN /\ pcallcontext.FUNCTION = pfunction.ORIGIN
+def $enum_is_callable_fixed_scope(S, porigin_site) = false -- otherwise
+
+dec $enum_is_callable_fixed_entry(pstate, pselectedcall) : bool
+def $enum_is_callable_fixed_entry(S, pselectedcall) = true
+  -- if pselectedcall.KIND = INTRINSIC_IS_CALLABLE /\ pselectedcall.OWNER = eps
+  -- if $enum_is_callable_fixed_source(S, pselectedcall.SITE) = ((pselectedcall.ORIGINAL, preqbytes_fallback))
+  -- if $enum_is_callable_fixed_lexical(S, pselectedcall.SITE)
+  -- if pselectedcall.LOOKUP = $intrinsic_name(INTRINSIC_IS_CALLABLE)
+  -- if $call_line_valid(S, (pselectedcall.SITE), pselectedcall.LINE)
+  -- if $(pselectedcall.NONCE < |S.SELECTEDCALLS|)
+  -- if S.SELECTEDCALLS[pselectedcall.NONCE] = pselectedcall
+def $enum_is_callable_fixed_entry(S, pselectedcall) = false -- otherwise
+dec $enum_is_callable_fixed_history(pstate, pselectedcall*, porigin) : bool
+def $enum_is_callable_fixed_history(S, eps, porigin_site) = false
+def $enum_is_callable_fixed_history(S, pselectedcall :: pselectedcall_tail*, porigin_site) = true
+  -- if pselectedcall.SITE = porigin_site
+  -- if $enum_is_callable_fixed_entry(S, pselectedcall)
+def $enum_is_callable_fixed_history(S, pselectedcall :: pselectedcall_tail*, porigin_site) = $enum_is_callable_fixed_history(S, pselectedcall_tail*, porigin_site)
+  -- if pselectedcall.SITE =/= porigin_site \/ ~$enum_is_callable_fixed_entry(S, pselectedcall)
+
+def $enum_is_callable_fixed_cached_call(S, preqbytes, (preqbytes_fallback)) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
+  -- if $enum_is_callable_fixed_history(S, S.SELECTEDCALLS, porigin_site)
+def $enum_is_callable_fixed_cached_call(S, preqbytes, preqbytes_fallback?) = false -- otherwise
+def $call_prepare(S, preqbytes, (preqbytes_fallback), phpType7*, z) = $intrinsic_prepare(S, INTRINSIC_IS_CALLABLE, z, eps)
+  -- if $enum_is_callable_fixed_cached_call(S, preqbytes, (preqbytes_fallback))
+  -- if $call_target(S, preqbytes, (preqbytes_fallback)) = (pfunction)
+
+def $config_prepare(S, INTRINSIC_IS_CALLABLE, z, eps, porigin_site) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin_site, KIND INTRINSIC_IS_CALLABLE, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
+  -- if $call_target(S, preqbytes, (preqbytes_fallback)) = eps \/ $enum_is_callable_fixed_history(S, S.SELECTEDCALLS, porigin_site)
+  -- if $enum_is_callable_fixed_scope(S, porigin_site)
+  -- if $call_line_valid(S, (porigin_site), z)
+  -- if n_nonce = S.SELECTSEQ
+  -- if n_depth = |S.FRAMES|
+  -- if pselectedcall = {NONCE n_nonce, SITE porigin_site, KIND INTRINSIC_IS_CALLABLE, OWNER eps, ORIGINAL preqbytes, LOOKUP $intrinsic_name(INTRINSIC_IS_CALLABLE), DEPTH n_depth, LINE z}
+def $config_prepare(S, INTRINSIC_IS_CALLABLE, z, eps, porigin_site) = S[.COMPLETION = UNSUPPORTED "namespace fallback runtime cache authority"]
+  -- if $enum_is_callable_fixed_source(S, porigin_site) = ((preqbytes, preqbytes_fallback))
+  -- if ~$enum_is_callable_fixed_scope(S, porigin_site) \/ ($call_target(S, preqbytes, (preqbytes_fallback)) =/= eps /\ ~$enum_is_callable_fixed_history(S, S.SELECTEDCALLS, porigin_site))
+def $selected_entry_source_valid(S, pselectedcall) = true
+  -- if $enum_is_callable_fixed_entry(S, pselectedcall)
+
 dec $enum_is_callable_receiver(pstate, pvalue) : (porigin, bool)?
 def $enum_is_callable_receiver(S, pvalue_class) = ((porigin_class, false))
   -- if $enum_array_string_valid(S, pvalue_class)
@@ -1623,7 +1698,8 @@ def $enum_is_callable_input_source(S, penumqueryinput) = true
   -- if pconfigcall = penumqueryinput.CALL
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE /\ pconfigcall.INDEX = 0
   -- if pconfigcall.SENT = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
-  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = eps \/ $enum_is_callable_fixed_source(S, pconfigcall.SITE) =/= eps
   -- if $config_selected_valid(S, pconfigcall)
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
   -- if $intrinsic_count(S, pconfigcall.SITE) = (3)
@@ -1637,7 +1713,8 @@ def $enum_is_callable_input_source(S, penumqueryinput) = true
   -- if pconfigcall = penumqueryinput.CALL
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE /\ pconfigcall.INDEX = 0
   -- if pconfigcall.SENT = eps /\ pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
-  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = eps \/ $enum_is_callable_fixed_source(S, pconfigcall.SITE) =/= eps
   -- if $config_selected_valid(S, pconfigcall)
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
   -- if $intrinsic_count(S, pconfigcall.SITE) = (3)
@@ -2110,7 +2187,8 @@ def $enum_is_callable_output_old_valid(S, penumqueryoutput) = false -- otherwise
 def $enum_is_callable_output_valid(S, penumqueryoutput) = true
   -- if pconfigcall = penumqueryoutput.CALL
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE /\ pconfigcall.INDEX = 3
-  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = eps \/ $enum_is_callable_fixed_source(S, pconfigcall.SITE) =/= eps
   -- if pconfigcall.PACKS = eps /\ ~pconfigcall.NAMED
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN (PBOOL b_syntax)), NAMED_SENT (REFERENCE penumqueryoutput.CELL)]
   -- if S.ORIGIN = (pconfigcall.SITE)
