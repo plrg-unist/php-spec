@@ -181,12 +181,12 @@ def prepare(out):
                 term = '[' + ','.join('(' + kind + ' ' + str(index) + ')' for kind, index in path_fetch) + ']'
                 checks += ['P_' + tag + '.COMPLETION = PPCNORMAL',
                     'S_array = $php_run(U_' + tag + ',10000,' + json.dumps(b64(bytes(path))) + ')',
-                    'S_array.COMPLETION = UNSUPPORTED "Deprecated constant owning value"',
+                    'S_array.COMPLETION = NORMAL',
                     'S_array.USERCONSTANTS = [puserconstant_array]', 'puserconstant_array.VALUE = PARRAY n_array',
                     '$global_constant_user_valid(S_array,puserconstant_array)',
                     'pcpath_array_fetch = ' + term, 'porigin_array_fetch = PORIGIN 0 pcpath_array_fetch',
                     '$deprecated_constant_source(S_array,porigin_array_fetch,1) = (z_array)',
-                    'pdeprecatedconstant_array = {SITE porigin_array_fetch, LINE z_array, PREFIX 1}',
+                    'pdeprecatedconstant_array = {SITE porigin_array_fetch, LINE z_array, PREFIX 1, COPIED eps}',
                     'S_array_bad = S_array[.COMPLETION = NORMAL][.ORIGIN = (porigin_array_fetch)][.TODO = [DEPRECATED_CONSTANT_RESULT pdeprecatedconstant_array]]',
                     '~$deprecated_constant_valid(S_array_bad,pdeprecatedconstant_array)',
                     '~$call_task_valid(S_array_bad,DEPRECATED_CONSTANT_RESULT pdeprecatedconstant_array)']

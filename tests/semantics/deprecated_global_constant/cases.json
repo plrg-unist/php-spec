@@ -206,16 +206,14 @@
   "array-source-pending": {
     "source": "array-source-pending.php",
     "mode": "main",
-    "status": "unsupported",
-    "stdout": "1",
-    "unsupported_reason": "Deprecated constant owning value"
+    "status": "normal",
+    "stdout": "1"
   },
   "array-api-pending": {
     "source": "array-api-pending.php",
     "mode": "main",
-    "status": "unsupported",
-    "stdout": "1",
-    "unsupported_reason": "Deprecated constant owning value"
+    "status": "normal",
+    "stdout": "1"
   },
   "metadata-expression-pending": {
     "source": "metadata-expression-pending.php",
@@ -373,5 +371,92 @@
     "mode": "main",
     "status": "normal",
     "stdout": "H|D|C|Y|99|cleared|A|9|"
+  },
+  "owned-stdclass-shadow": {
+    "source": "owned-stdclass-shadow.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|same|9|"
+  },
+  "owned-closure-shadow": {
+    "source": "owned-closure-shadow.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|7|9|"
+  },
+  "owned-array-source-cow": {
+    "source": "owned-array-source-cow.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|8|7|H|8|1|"
+  },
+  "owned-api-throw-rebind": {
+    "source": "owned-api-throw-rebind.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|C|Y|99|A|5|9|"
+  },
+  "owned-retval-protected-mutation": {
+    "source": "owned-retval-protected-mutation.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|R|2|H|R|3|same|"
+  },
+  "owned-parameter-default-pending": {
+    "source": "owned-parameter-default-pending.php",
+    "mode": "main",
+    "status": "unsupported",
+    "stdout": "1",
+    "unsupported_reason": "Deprecated constant owning value"
+  },
+  "owned-class-default-pending": {
+    "source": "owned-class-default-pending.php",
+    "mode": "main",
+    "status": "unsupported",
+    "stdout": "1",
+    "unsupported_reason": "Deprecated constant owning value"
+  },
+  "owned-static-default-pending": {
+    "source": "owned-static-default-pending.php",
+    "mode": "main",
+    "status": "unsupported",
+    "stdout": "1",
+    "unsupported_reason": "Deprecated constant owning value"
+  },
+  "owned-source-throw": {
+    "source": "owned-source-throw.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|C|99|A|"
+  },
+  "owned-source-exit-cancel": {
+    "source": "owned-source-exit-cancel.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|D|C|99|A|"
+  },
+  "owned-static-runtime": {
+    "source": "owned-static-runtime.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "1"
+  },
+  "owned-instance-identity": {
+    "source": "owned-instance-identity.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|3|H|same|7|"
+  },
+  "owned-global-ast-exit": {
+    "source": "owned-global-ast-exit.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|S|missing|"
+  },
+  "owned-global-ast-exit-cancel": {
+    "source": "owned-global-ast-exit-cancel.php",
+    "mode": "main",
+    "status": "normal",
+    "stdout": "H|D|C|missing|"
   }
 }

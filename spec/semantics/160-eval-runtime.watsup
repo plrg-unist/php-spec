@@ -327,7 +327,10 @@ def $eval_static_completion(FATAL n_message* z) = true
 def $eval_static_completion(pcompletion) = false -- otherwise
 dec $file_bindings_valid(pstate, pfilebinding*) : bool
 dec $file_state_valid(pstate) : bool
-def $eval_state_valid(S) = ($eval_tasks_markers_valid(S, S.TODO) /\ $eval_requests_owned(S.TODO) /\ $eval_frames_markers_valid(S, S.FRAMES) /\ $eval_contexts_valid(S, S.EVALCONTEXTS) /\ $eval_stack_ordered(S, S.EVALCONTEXTS) /\ $eval_bindings_valid(S, S.EVALBINDINGS) /\ $file_bindings_valid(S, S.FILEBINDINGS) /\ $file_state_valid(S) /\ $eval_units_bound(S, S.SOURCES) /\ $failed_sources_valid(S, S.FAILEDSOURCES) /\ $eval_pending_state_valid(S) /\ (~S.COMPILESTOP \/ $eval_static_completion(S.COMPLETION)))
+dec $eval_control_state(pstate) : pstate
+def $eval_control_state(S) = S -- otherwise
+def $eval_state_valid(S) = ($eval_tasks_markers_valid(S_control, S_control.TODO) /\ $eval_requests_owned(S_control.TODO) /\ $eval_frames_markers_valid(S_control, S_control.FRAMES) /\ $eval_contexts_valid(S_control, S_control.EVALCONTEXTS) /\ $eval_stack_ordered(S_control, S_control.EVALCONTEXTS) /\ $eval_bindings_valid(S, S.EVALBINDINGS) /\ $file_bindings_valid(S, S.FILEBINDINGS) /\ $file_state_valid(S) /\ $eval_units_bound(S, S.SOURCES) /\ $failed_sources_valid(S, S.FAILEDSOURCES) /\ $eval_pending_state_valid(S) /\ (~S.COMPILESTOP \/ $eval_static_completion(S.COMPLETION)))
+  -- if S_control = $eval_control_state(S)
 def $call_task_valid(S, EVAL_AWAIT n) = $eval_marker_valid(S, EVAL_AWAIT n)
 def $call_task_valid(S, EVAL_END n) = $eval_marker_valid(S, EVAL_END n)
 

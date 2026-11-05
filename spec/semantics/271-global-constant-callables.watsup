@@ -355,7 +355,22 @@ def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = true
   -- if $compiled_redirect(S, pconstantfact.ORIGIN) = eps
   -- if $origin_node(S.SOURCES, pconstantfact.ORIGIN) = (NExprConstFetch name metadata)
 def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = false -- otherwise
+dec $global_constant_lookup_valid(pstate, porigin, pconstantfact, puserconstant*) : bool
+dec $global_constant_observation_prior(pstate, porigin, pvalue, pvalueclass) : pconstantlookup?
+def $global_constant_observation_prior(S, porigin_site, pvalue, pvalueclass) = pconstantfact.LOOKUP
+  -- if S.TODO = (CONSTANT_OBSERVE porigin_site) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_site) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass
+  -- if pconstantfact.LOOKUP =/= eps
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $global_constant_lookup_valid(S, pconstantcontext.ORIGIN, pconstantfact, S.USERCONSTANTS)
+def $global_constant_observation_prior(S, porigin_site, pvalue, pvalueclass) = eps -- otherwise
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = (pconstantlookup)
+  -- if $global_constant_observation_prior(S, porigin_site, pvalue, pvalueclass) = (pconstantlookup)
 def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN porigin_decl, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX n_constants})
+  -- if $global_constant_observation_prior(S, porigin_site, pvalue, pvalueclass) = eps
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if porigin_decl = pconstantcontext.ORIGIN
   -- if porigin_decl = PORIGIN n_unit pcpath_decl
@@ -375,7 +390,6 @@ def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = 
   -- if $constant_value_class_valid(S, pvalue, pvalueclass)
   -- if n_constants = |S.USERCONSTANTS|
 def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = eps -- otherwise
-dec $global_constant_lookup_valid(pstate, porigin, pconstantfact, puserconstant*) : bool
 def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = true
   -- if porigin_decl = PORIGIN n_unit pcpath_decl
   -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)

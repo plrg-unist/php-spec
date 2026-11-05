@@ -123,18 +123,11 @@ def $deprecated_coerced_query_value(S, pconfigcall, pvalue) = true
   -- if $deprecated_api_flag(S, $dynamic_constant_query(preqbytes))
 def $deprecated_coerced_query_value(S, pconfigcall, pvalue) = false -- otherwise
 
-def $deprecated_global_constant_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "Deprecated constant owning value"]
-  -- if $dynamic_global_constant_valid(S, pconfigcall)
-  -- if $deprecated_api_query(pconfigcall) = (preqbytes)
-  -- if $deprecated_api_flag(S, preqbytes)
-  -- if $deprecated_api_value(S, preqbytes) = (pvalue)
-  -- if ~$deprecated_global_nonowning(pvalue)
 def $deprecated_global_constant_begin(S, pconfigcall) = $deprecated_api_finish(S, pconfigcall, |S.USERCONSTANTS|, ptask_tail*)
   -- if $dynamic_global_constant_valid(S, pconfigcall)
   -- if $deprecated_api_query(pconfigcall) = (preqbytes)
   -- if $deprecated_api_flag(S, preqbytes)
   -- if $deprecated_api_value(S, preqbytes) = (pvalue)
-  -- if $deprecated_global_nonowning(pvalue)
   -- if $deprecated_global_protected(S, $deprecated_api_identity(S, preqbytes))
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
 def $deprecated_global_constant_begin(S, pconfigcall) = $error_dispatch(S_pending, $deprecated_api_level(S, preqbytes), $deprecated_api_message(S, preqbytes), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $deprecated_api_message(S, preqbytes) pconfigcall.LINE, DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix)
@@ -142,7 +135,6 @@ def $deprecated_global_constant_begin(S, pconfigcall) = $error_dispatch(S_pendin
   -- if $deprecated_api_query(pconfigcall) = (preqbytes)
   -- if $deprecated_api_flag(S, preqbytes)
   -- if $deprecated_api_value(S, preqbytes) = (pvalue)
-  -- if $deprecated_global_nonowning(pvalue)
   -- if ~$deprecated_global_protected(S, $deprecated_api_identity(S, preqbytes))
   -- if n_prefix = |S.USERCONSTANTS|
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
@@ -152,7 +144,6 @@ def $deprecated_api_finish(S, pconfigcall, n_prefix, ptask*) = S[.TODO = ptask*]
   -- if $(n_prefix <= |S.USERCONSTANTS|)
   -- if $deprecated_api_query(pconfigcall) = (preqbytes)
   -- if $deprecated_api_value(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes) = (pvalue)
-  -- if $deprecated_global_nonowning(pvalue)
 def $deprecated_api_finish(S, pconfigcall, n_prefix, ptask*) = S[.COMPLETION = UNSUPPORTED "Deprecated constant API result"] -- otherwise
 def $deprecated_constant_protected_task(S, DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix, preqbytes_identity) = true
   -- if $(n_prefix <= |S.USERCONSTANTS|)
@@ -186,7 +177,6 @@ def $deprecated_api_valid(S, pconfigcall, n_prefix) = true
   -- if $deprecated_api_query(pconfigcall) = (preqbytes)
   -- if $deprecated_api_flag(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes)
   -- if $deprecated_api_value(S[.USERCONSTANTS = S.USERCONSTANTS[0:n_prefix]], preqbytes) = (pvalue)
-  -- if $deprecated_global_nonowning(pvalue)
 def $deprecated_api_valid(S, pconfigcall, n_prefix) = false -- otherwise
 rule PhpStep/deprecated-global-constant-done: S ~> $deprecated_api_finish(S, pconfigcall, n_prefix, ptask_tail*)
   -- if S.TODO = (DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix) :: ptask_tail*
@@ -391,3 +381,83 @@ def $return_discard(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved
   -- if $deprecated_handler_exit_valid(S_before, pdestructioncleanup, z, ptask_saved*)
   -- if pdestructioncleanup.RELEASED
   -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_caller*
+
+;; Only the live opcode receipt owns a pre-warning zval copy. Global constant
+;; AST evaluation and constant() keep selection until warning delivery succeeds.
+def $deprecated_constant_class(S, porigin) = puserconstant.CLASS
+  -- if $deprecated_source_row(S, porigin) = (puserconstant)
+dec $deprecated_constant_global_ast(pstate, porigin) : bool
+def $deprecated_constant_global_ast(S, porigin) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $global_constant_declaration_source(S.SOURCES, pconstantcontext.ORIGIN)
+  -- if $constant_context_valid(S)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+def $deprecated_constant_global_ast(S, porigin) = false -- otherwise
+def $deprecated_constant_readable(S, porigin, pvalue, pvalueclass) = $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $deprecated_global_nonowning(pvalue)
+def $deprecated_constant_readable(S, porigin, pvalue, pvalueclass) = true
+  -- if ~$deprecated_global_nonowning(pvalue)
+  -- if S.CONSTCONTEXT = eps \/ $deprecated_constant_global_ast(S, porigin)
+  -- if $global_constant_class_supported(pvalueclass)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+def $deprecated_constant_readable(S, porigin, pvalue, pvalueclass) = false -- otherwise
+def $deprecated_constant_copied(S, pvalue, pvalueclass) = ((pvalue, pvalueclass))
+  -- if S.CONSTCONTEXT = eps
+  -- if ~$deprecated_global_nonowning(pvalue)
+def $deprecated_constant_copied(S, pvalue, pvalueclass) = eps -- otherwise
+def $deprecated_constant_payload_valid(S, pdeprecatedconstant) = true
+  -- if $(pdeprecatedconstant.PREFIX <= |S.USERCONSTANTS|)
+  -- if S_prefix = S[.USERCONSTANTS = S.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]]
+  -- if pvalue = $deprecated_constant_value(S_prefix, pdeprecatedconstant.SITE)
+  -- if pvalueclass = $deprecated_constant_class(S_prefix, pdeprecatedconstant.SITE)
+  -- if $deprecated_constant_readable(S, pdeprecatedconstant.SITE, pvalue, pvalueclass)
+  -- if pdeprecatedconstant.COPIED = $deprecated_constant_copied(S, pvalue, pvalueclass)
+def $deprecated_constant_payload_valid(S, pdeprecatedconstant) = false -- otherwise
+
+;; These are the two actual observer tails supplied by enter_constant_task and
+;; the diagnostic's single saved-origin return. The real binder tail is kept.
+def $deprecated_constant_observation(S, pdeprecatedconstant, pvalue, pvalueclass, (CONSTANT_OBSERVE porigin) :: ptask_tail*) = $global_constant_observation_lookup(S_observe, porigin, pvalue, pvalueclass)
+  -- if porigin = pdeprecatedconstant.SITE
+  -- if S_observe = S[.USERCONSTANTS = S.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]][.TODO = (CONSTANT_OBSERVE porigin) :: ptask_tail*][.RESULT = KNOWN pvalue]
+def $deprecated_constant_observation(S, pdeprecatedconstant, pvalue, pvalueclass, (ORIGIN_RETURN porigin_saved?) :: (CONSTANT_OBSERVE porigin) :: ptask_tail*) = $global_constant_observation_lookup(S_observe, porigin, pvalue, pvalueclass)
+  -- if porigin = pdeprecatedconstant.SITE
+  -- if S_observe = S[.USERCONSTANTS = S.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]][.ORIGIN = porigin_saved?][.TODO = (CONSTANT_OBSERVE porigin) :: ptask_tail*][.RESULT = KNOWN pvalue]
+def $deprecated_constant_observation(S, pdeprecatedconstant, pvalue, pvalueclass, ptask*) = eps -- otherwise
+
+;; The marker retains the real global-constant binder during callback cleanup.
+;; This structural view never invokes validators which themselves need it.
+def $constant_binding(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = [pconstantcontext.ORIGIN]
+  -- if $source_operand_suffix(S.TODO, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*, eps)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pdestructioncleanup.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = S.CURRENT /\ pdestructioncleanup.ORIGIN = S.ORIGIN
+  -- if $global_constant_declaration_source(S.SOURCES, pconstantcontext.ORIGIN)
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if pdeprecatedconstant.COPIED = eps
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, pdeprecatedconstant.SITE)
+  -- if $constant_bindings(S[.TODO = ptask_saved*], ptask_saved*) = [pconstantcontext.ORIGIN]
+
+;; Eval control ownership sees the actual saved continuation, including a parked
+;; caller. Source/compiled-image and runtime owner checks still use the live state.
+dec $deprecated_handler_eval_tail(ptask) : ptask*?
+def $deprecated_handler_eval_tail(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = (ptask_saved*)
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $deprecated_handler_call(perrorcall)
+def $deprecated_handler_eval_tail(ptask) = eps -- otherwise
+dec $deprecated_handler_eval_tasks(ptask*) : ptask*
+def $deprecated_handler_eval_tasks(eps) = eps
+def $deprecated_handler_eval_tasks(ptask :: ptask_tail*) = $deprecated_handler_eval_tasks(ptask_saved*)
+  -- if ptask_tail* = eps
+  -- if $deprecated_handler_eval_tail(ptask) = (ptask_saved*)
+def $deprecated_handler_eval_tasks(ptask :: ptask_tail*) = ptask :: $deprecated_handler_eval_tasks(ptask_tail*)
+  -- if ptask_tail* =/= eps \/ $deprecated_handler_eval_tail(ptask) = eps
+dec $deprecated_handler_eval_frames(pframe*) : pframe*
+def $deprecated_handler_eval_frames(eps) = eps
+def $deprecated_handler_eval_frames(pframe :: pframe_tail*) = pframe[.TODO = $deprecated_handler_eval_tasks(pframe.TODO)] :: $deprecated_handler_eval_frames(pframe_tail*)
+def $eval_control_state(S) = S[.TODO = ptask*][.FRAMES = pframe*]
+  -- if ptask* = $deprecated_handler_eval_tasks(S.TODO)
+  -- if pframe* = $deprecated_handler_eval_frames(S.FRAMES)
+  -- if ptask* =/= S.TODO \/ pframe* =/= S.FRAMES
