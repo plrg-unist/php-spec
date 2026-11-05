@@ -14,6 +14,7 @@ def $generator_request_fresh_any(S, pnode :: pnode_tail*) = ($generator_request_
 def $generator_request_operational(S) = true
   -- if $generator_request_terminal(S)
   -- if $generator_request_fresh_any(S, S.ALLOCATIONS)
+  -- if ~$generator_close_any_started(S, S.ALLOCATIONS)
 def $generator_request_frame_valid(S, pgenerator) = true
   -- if pgenerator.PHASE = GENERATOR_FRESH
   -- if $generator_record_valid(S, pgenerator)
