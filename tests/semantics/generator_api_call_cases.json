@@ -34,5 +34,17 @@
     "expected_model": "normal",
     "model_seconds": 500,
     "process_seconds": 520
+  },
+  {
+    "id": "i115-compiled-outer-cv-warning-lines",
+    "purpose": "Compiled SEND_VAR line7/14 differs from call6/13 and variable AST8/15. Both callback argument and default warning reporting use the compiled send location before inner name mapping.",
+    "source": "<?php\nfunction line115R() { yield 1; }\n$gen = line115R(); $cap = $gen->send(...);\nset_error_handler(function ($level, $message, $file, $line) { echo 'WARN|', $line, '|'; return true; });\ntry {\n    $cap->call(\n        $gen,\n        extra: $undefined115R\n    );\n} catch (Error $e) { echo 'ERROR|', $e->getMessage(), '|'; }\nrestore_error_handler();\ntry {\n    $cap->call(\n        $gen,\n        extra: $undefined115Default\n    );\n} catch (Error $e) { echo 'DEFAULT|', $e->getMessage(), '|'; }\n",
+    "source_sha256": "b5dcbbe6ac5ae7ee3ea3363de12e4003a1bea57561119301fd659be64416caaf",
+    "native_exit": 0,
+    "native_stdout": "WARN|7|ERROR|Unknown named parameter $extra|DEFAULT|Unknown named parameter $extra|",
+    "native_stderr": "Warning: Undefined variable $undefined115Default in {source} on line 14\n",
+    "expected_model": "normal",
+    "model_seconds": 300,
+    "process_seconds": 320
   }
 ]
