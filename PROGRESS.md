@@ -840,9 +840,20 @@ forms remain checked Unsupported. The previous noarg Notice state still passes.
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
-CLASS166 is integrated at `0ed9ac41f`: one parented anonymous trait capture source and 48 reached conditions pass with private and joined strict433. [Review](coverage/semantics/anonymous-trait-capture-review.json).
-CLASS167 is integrated at `303883b83`: bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
-CLASS168 admits one unqualified, unmodified trait alias in a parented no-interface unit0 anonymous class. Captured `Y=self::q(...)` and direct `q` agree with PHP for Base168; a wrong class raises TypeError before the body. Two exact sources, 52+42 reached conditions and private strict433 pass. [Review](coverage/semantics/anonymous-trait-alias-capture-review.json).
+CLASS166–168 establish deferred parented/parentless anonymous trait captures,
+parent receive checks and one alias; their original cuts remain linked from
+[SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md).
+CLASS169 shares ordinary finite trait plans across parentless, parented and
+explicit-interface contexts. Qualified/visibility/final aliases, precedence,
+multiple uses and distinct static cells preserve first-`new` publication and
+copied FCC scope. Sixteen exact originals, 190 author and 135 independent reached
+conditions, 229 affected conditions and private strict433 pass. The repaired
+private-final warning retains class-site authority until `new` resumes before
+allocation. Original Unsupported/interpreter and fixture failures retain zero
+agreement credit. Implicit imported Stringable, dynamic-source combinations,
+illegal-modifier diagnostics and wider member/lifetime contexts remain partial.
+[Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

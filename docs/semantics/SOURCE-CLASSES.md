@@ -452,48 +452,44 @@ records the corrected first-NEW publication phase and typed extension.
 Wider inheritance remains partial or explicit Unsupported; later-unit dependency
 sites retain the placement and argument limits described below.
 
-One unadapted named trait use is admitted in a parented unit0 anonymous class
-without interfaces. At the reached `new`, PDRCLASS already records publication
-of the class with a trait constant holding `self::name(...)`; its live descriptor
-contains copied trait methods and constants. The compiler projection keeps
-their raw source forms. The anonymous `new` selects that live descriptor only when
-its own-member projection matches the compiled descriptor and declaration
-history replays the entire class table. A duplicate forged imported method
-fails that replay. One native/model source and 48 source-reached conditions
-cover the NUL generated name, `self`/`static` capture body and allocation.
-[Trait-capture review](../../coverage/semantics/anonymous-trait-capture-review.json).
-CLASS166 leaves parentless trait use, interface combinations, multiple uses
-and adaptations outside its cut.
+Unit0 anonymous classes admit finite trait-name lists, multiple use statements
+and ordinary alias/precedence adaptations within the existing member grammar,
+with or without a parent and explicit interfaces. The source gate validates
+names, nonempty uses, qualified precedence targets and exclusions, and the
+single allowed alias modifier (public/protected/private/final). The ordinary
+trait compiler and linker own name resolution, deduplication, ambiguity,
+precedence, excluded-method aliases, visibility, signatures and interface
+requirements. `insteadof` does not resolve an unqualified alias ambiguity.
 
-CLASS167 admits one unadapted named trait use in a parentless unit0 anonymous
-class within the existing bounded member grammar. The compiled descriptor is
-late, and the generated NUL class name enters lookup with PDRCLASS at the first
-`new`; the imported live descriptor still requires full declaration replay.
-The trait constant's copied method capture uses the ordinary published
-constant-callable receipt. With a `parent` parameter and no linked parent,
-TYPE_RECEIVE raises Error before the method body. The stored trace class keeps
-the full NUL name; the fatal text truncates it for rendering. Two exact sources
-and 45+43 reached conditions cover publication, receipt, forged-import/parent
-guards and the fatal event. A pinned native-only `class_exists` timing control
-is 0 before `new` and 1 after. Interface combinations, multiple uses and
-adaptations remain excluded; dynamic units and rebound views are unvalidated.
-[Parentless trait-capture review](../../coverage/semantics/anonymous-parentless-trait-capture-review.json).
+Every trait-using anonymous descriptor remains deferred. The first reached
+`new` composes and publishes it before allocation or constructor arguments;
+skipped conflicts remain inert, and failed links leave the class unpublished.
+Link warnings keep the class-site source until the original `new` resumes;
+private-final alias E_COMPILE_WARNING (128) bypasses user handlers and precedes allocation.
+The live descriptor must retain the compiler-derived own-member projection and
+full declaration replay. Duplicate forged imported methods fail that replay.
+Copied trait constants and first-class method captures keep distinct source and
+import identities, the full generated NUL class name, saved lexical/called scope
+and the using class's parent type at receive. A parentless `parent` parameter
+raises Error before the body. Distinct imported method names have independent
+static-variable cells; duplicate or case-only aliases share the selected name.
 
-CLASS168 admits one unqualified `m as q` adaptation without a visibility
-modifier in the sole named trait use of a parented, no-interface unit0
-anonymous class. The parentless and interface routes still reject adapted
-uses. The ordinary trait plan imports `q` with the generated NUL owner name
-and resolves its `parent` parameter to the declared Base parent (Base168 in
-the pinned source). The trait constant's `self::q(...)` captures that method.
-A wrong-class argument fails at TYPE_RECEIVE before the body. Nested trait
-error origins select the source trait method's file. CLI trace rendering cuts
-only the class text at NUL; the stored class name stays complete.
-[Alias-capture review](../../coverage/semantics/anonymous-trait-alias-capture-review.json).
-Engine routes: `Zend/zend_inheritance.c::zend_traits_copy_functions`,
-`Zend/zend_execute.c::zend_verify_recv_arg_type`, and
-`Zend/zend_exceptions.c::_build_trace_string`. Qualified or visibility
-adaptations, precedence, multiple uses, interface combinations and parentless
-adaptations remain outside this cut.
+Trait collision, unimported-trait selection and method visibility/static
+conflict diagnostics truncate class-name arguments as the engine's `%s` sites
+do, retaining suffixes and physical source lines; stored identities stay complete.
+[Adaptation review](../../coverage/semantics/anonymous-trait-adaptations-review.json)
+records native/model sources, reached-state guards and original failures.
+Earlier bounded cuts remain in the [trait-capture](../../coverage/semantics/anonymous-trait-capture-review.json),
+[parentless](../../coverage/semantics/anonymous-parentless-trait-capture-review.json)
+and [alias-capture](../../coverage/semantics/anonymous-trait-alias-capture-review.json)
+reviews. Imported implicit Stringable interface inference, dynamic-source trait
+combinations and wider member/type/lifetime contexts remain partial.
+
+Engine routes: `Zend/zend_compile.c::zend_compile_use_trait`,
+`zend_compile_trait_alias`, `zend_compile_trait_precedence`;
+`Zend/zend_inheritance.c::zend_traits_init_trait_structures`,
+`zend_traits_copy_functions`, `zend_add_trait_method`,
+`do_inherit_method`; and `Zend/zend_execute.c::zend_verify_recv_arg_type`.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

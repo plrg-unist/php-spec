@@ -4873,29 +4873,16 @@ redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
 
-One unadapted named trait use in a parented unit0 anonymous class without
-interfaces can supply a constant holding a first-class method capture. The
-captured invocation prints the generated NUL name for both `self::class` and
-`static::class` in this source. Source-authenticated declaration replay selects
-the composed class at `new`.
-One exact source and 48 reached checks cover this bounded form.
-[Anonymous trait-capture review](coverage/semantics/anonymous-trait-capture-review.json).
-
-A parentless unit0 anonymous class can also defer publication for one unadapted
-named trait use within the existing bounded member grammar. Its trait constant
-captures the copied method under the generated NUL name. A captured `parent`
-parameter fails at receive before the body when the class has no parent; the
-fatal stack frame renders the short anonymous name while `get_class` retains
-the full name. Two exact sources and 88 reached conditions cover this cut.
-[Parentless trait-capture review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
-
-A parented unit0 anonymous class without interfaces can use one named trait
-with a single unqualified `m as q` alias. The trait constant `Y=self::q(...)`
-captures the copied `q`: captured and direct calls retain the anonymous
-`self`/`static` name and accept its Base parent type. An unrelated object
-raises TypeError before the body; the error uses the trait method's source
-location and a short rendered class name while `get_class` keeps the full NUL
-name. [Alias capture review](coverage/semantics/anonymous-trait-alias-capture-review.json).
+Unit0 anonymous classes admit finite trait uses and ordinary adaptations with or
+without a parent and explicit interfaces. Qualified and unqualified aliases,
+visibility changes, final aliases and `insteadof` share named-class resolution;
+an excluded method can still supply a qualified alias. Linking occurs at the
+first reached `new`, before constructor arguments. Copied constant method
+captures keep the generated NUL name and the importing lexical/parent scope;
+failed links publish no class. Trait-link diagnostics truncate each class-name
+argument while keeping stored identities complete. Imported implicit Stringable
+interfaces, dynamic-source trait combinations and wider member/lifetime contexts
+remain partial. [Adaptation review](coverage/semantics/anonymous-trait-adaptations-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
