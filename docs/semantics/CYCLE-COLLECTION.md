@@ -561,6 +561,54 @@ property-table proxies, user finalizers, static cells and explicit `__invoke`
 captures remain outside this lane. See the
 [multi-array review](../../coverage/semantics/gc-multi-array-review.json).
 
+GC28 extends the rooted direct caller to finite nested DIRECT-array DAGs.
+Every capture and array entry is direct and defined; every reached array is
+mutable, nonproxy and outside compiled-pool reach, and every object is an
+allocated childless stdClass. Ordinary and physical children agree. Existing
+heap reach deduplicates traversal identities while retaining every edge occurrence;
+rejecting each array's self-reach from its children excludes forged DIRECT cycles.
+An actual array-to-array edge inside this capture component keeps the new clause
+disjoint from flat lanes; unrelated nested tables grant no admission.
+
+Three original source pairs agree: a three-array shared DAG with duplicate leaf
+buckets, local COW separating parent and inner tables from captured originals,
+and an actual self-copy assignment that creates a finite old-child snapshot. Final weak death occurs after Closure retirement. Strict
+D-state fronts pass 246+191 assertions and the changed GC27 group passes 207;
+its same-arity nested-DAG admission supersedes the earlier refusal. Independent
+fronts pass 63+85 conditions, including the component-local guard and actual
+self-copy owners 2/2/1/2. The genuine source/caller
+root, exact capture arity, empty static cells and black hidden capture-table
+boundary remain. ALIAS/INDIRECT entries, user finalizers, proxies, pooled graphs
+and arbitrary Closure cycles remain outside this lane. See the
+[nested-array review](../../coverage/semantics/gc-nested-array-review.json).
+
+GC29 admits finite mixed DIRECT/ALIAS captures with at least one ordinary
+untyped reference cell under the same genuine real-Closure caller root.
+`ordinary_reference_value` authenticates the live cell and excludes constrained,
+coercion/backing/debt and released forms. Each wrapper has one payload edge even
+when multiple capture and entered-local names own it; a surviving wrapper
+decrement buffers the collectable referent rather than the wrapper. Captured
+cell identities remain fixed when current variable names rebind.
+
+Capture/cell-payload string carriers are authenticated without a string getter
+or new heap owner. The existing DIRECT array-entry policy is unchanged; nested
+bucket carriers are not separately authenticated by this admission. Noncell
+nodes reuse GC28's mutable nonpool/nonproxy array DAG and childless stdClass
+checks. Closure ordinary/physical children retain exact capture multiplicity,
+with source/mode/arity, machine-root and empty-static-cell fences preserved.
+
+Three author originals distinguish shared versus separate wrappers and request
+string/global-name rebinding. A fourth original on the reviewed A95 composition
+runs named Generator/handler alias writes, retires those owners and then collects
+under the real Closure while its old cell still holds 22 and the new global holds
+44. All four agree exactly. Author strict fronts pass 177+197+154 assertions;
+independent mixed COW gives a fifth exact source and 214 further conditions,
+including per-current-payload buffering and captured-cell retention after local
+name rebinding. ALIAS array entries, constrained/backed
+cells, proxies, pooled descendants, user-finalizer children, explicit `__invoke`
+captures and arbitrary Closure/reference cycles remain outside this lane. See the
+[reference-capture review](../../coverage/semantics/gc-reference-capture-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

@@ -1,0 +1,58 @@
+{
+  "scope": "published-enum is_callable last-owner output, root VM destructor exit and ordinary local cleanup",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_routes": [
+    "ext/standard/type.c:PHP_FUNCTION(is_callable)",
+    "Zend/zend_API.h:_ZEND_TRY_ASSIGN_STR",
+    "Zend/zend_variables.c:zval_ptr_safe_dtor",
+    "Zend/zend_objects.c:zend_objects_destroy_object"
+  ],
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_first": ".tools/enum-is-callable-output-exit-native-review/native.json:13 exact originals; prior unique-exit-exact-name original is pinned in the unique native manifest",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "accepted_cuts": {
+    "40243868e122b87b6390b534511c6a399f16acac": "strict-v1 SL433 true/exit0/empty stderr; source code unchanged at the fixture-only source/state cut",
+    "f9075395f8f5d017e07a70b7095ba9b3c29099d0": "source-v1 all14 pass with stable fingerprint/direct inputs; reached-v1 independent247 true/exit0/empty/stable",
+    "source_report_sha256": "820ce092761c8f40876c71304ab89921a40d2b4fe7fd817cea50d6c66bdd71e5",
+    "state_report_sha256": "968ad2318f37b83e25edfe0f0b8ed29988cde6ada70ee46362526973be4718a8",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "totals": {
+    "exact_explicit_exit_source_agreements": 7,
+    "explicit_unsupported_controls": 7,
+    "independent_reached_and_derived_guards": 247,
+    "strict_modules": 433
+  },
+  "source_selection": [
+    "enum-is-callable-third-output-unique-exit-exact-name",
+    "enum-is-callable-third-output-exit-status",
+    "enum-is-callable-third-output-exit-local-cleanup",
+    "enum-is-callable-third-output-fiber-start-exit",
+    "enum-is-callable-third-output-fiber-resume-exit",
+    "enum-is-callable-third-output-query-in-fiber-exit",
+    "enum-is-callable-third-output-nested-fiber-output-exit",
+    "enum-is-callable-third-output-exit-local-null-rebound",
+    "enum-is-callable-third-output-parked-query-main-exit",
+    "enum-is-callable-third-output-exit-result-unassigned",
+    "enum-is-callable-third-output-nested-live-output-exit",
+    "enum-is-callable-third-output-exit-local-trace",
+    "enum-is-callable-third-output-exit-local-throw",
+    "enum-is-callable-third-output-exit-local-second-exit"
+  ],
+  "review": {
+    "reviewer": "/root/enum_review_current",
+    "status": "CLEAR for f9075395f source/state and unchanged semantic40243868e",
+    "focus": "Real restored destructor/C boundary; nonowning RESTORE and live C pin during local cleanup; internal/API cleanup trace; atomic raw commit before EXITED; nested LIFO status and unassigned results; invalid/missing records; active caller-chain refusal and dormant pending-output distinction; budgets."
+  },
+  "behavior": "Ordinary PHP frame unwind first releases locals while the captured output cell is still NULL and the real C destructor pin/argv remain owned. A nonowning return task then finishes that pin and rebases the authenticated C operation to the saved exit status. Its existing raw postfinish commits the chosen name before exit propagates; nested live continuations follow the same order without executing caller result assignments.",
+  "controls": {
+    "switched_fiber_exits": 4,
+    "parked_main_exit": "Real parked query reaches main exit with no global pending-output flag; full source remains Unsupported at force-closing a suspended Fiber, not a name-commit agreement.",
+    "local_cleanup_throw": "Explicit refusal at THROW_SEARCH/RESTORE; native replacement Throwable cancels exit and commits the name.",
+    "local_cleanup_second_exit": "Explicit refusal before generic exit can discard the C continuation."
+  },
+  "remaining": "Switched-VM exit return, force-closing dormant queries, cleanup throw/repeated exit, eval/static exit tails, owning rebound payloads, late attached type sources, variable array input and wider enum callable/loading contexts remain partial.",
+  "recovery": "Raw outside Git: canonical .tools/enum-is-callable-output-exit-evidence/{strict-v1,source-v1,reached-v1} and raw/{user-string-mdw1wqsa,enum-is-callable-protocol-rtqg52ln}. Original command JSON preserves exact argv; source-selection-v1 is the14 listed catalogue rows, run through unchanged user_string.CASES/run. State command is tests/semantics/enum_is_callable_output_exit_protocol.py. No failures occurred in this milestone. Prior normal/throw345 and retained77 retain their actual cuts; the new clauses require exit-only task/source tags and do not renew that evidence."
+}

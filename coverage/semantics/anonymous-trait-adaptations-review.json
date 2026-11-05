@@ -1,0 +1,347 @@
+{
+  "scope": "CLASS169: finite ordinary trait-use/adaptation plans in unit 0 anonymous classes, across parentless, parented and explicit-interface contexts. First-new publication and copied captures share the ordinary named-trait resolver. No family closure.",
+  "implementation": {
+    "base": "b0650c4c0c6869e4a79eb771b4a0cc5d661a8bd5",
+    "admission_and_diagnostics": "ce1230eac2300ccb1808ded64b11be6034ce3c2c",
+    "warning_continuation": "82380a78b040780c893640ebe98f001e16b5bdff",
+    "engine_routes": [
+      "Zend/zend_compile.c::zend_compile_use_trait, zend_compile_trait_alias, zend_compile_trait_precedence",
+      "Zend/zend_inheritance.c::zend_traits_init_trait_structures, zend_traits_copy_functions, zend_add_trait_method, do_inherit_method",
+      "Zend/zend_execute.c::zend_verify_recv_arg_type"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "profile": "tests/semantics/profile.json; -n plus exact listed INI; LC_ALL=C, TZ=UTC",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "mode": "SL elaboration, algorithmic check and structuring; caches disabled, encountered determinism checks",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "inputs": {
+    "spec/semantics/modules.json": "ba54e963a7605c3643a2686fcb0eb4da1feffe1eeaff3f8fc5672d8d8673fea3",
+    "spec/semantics/141-method-compiler.watsup": "d955fcdb5cddd108d646d6af791cc8a5fc537612bfdcad23a818ec9170e5e126",
+    "spec/semantics/228-trait-methods.watsup": "a8d4922e1a81c170a87001bace92f4309b0da345301c39eedd7f4f68173d2561",
+    "spec/semantics/383-anonymous-classes.watsup": "755768df52ad328a1a9e3c3cfc70cefcc4d9b0ab2121183aa9276df5d06408fe",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tests/semantics/anonymous_trait_adaptations_cases.json": "0defffa30ba382d2f43ef5146456700c36fb551f1abdf27c0d22d70ee981320c",
+    "tests/semantics/anonymous_trait_adaptations_protocol.py": "f27db7abed93b2d1a3e97ec62883c2975e392f6f424553e0e5ba39e18b51802b",
+    "tests/semantics/anonymous_trait_adaptations_review_protocol.py": "cf1bc10614bc5b8b2055fafc776f3138349118133aca2a68b89d55135d2e2e42"
+  },
+  "decisions": [
+    "The source gate validates finite names, qualified precedence/exclusion lists and ordinary alias modifiers 0/1/2/4/32; resolution, case folding, duplicate uses, visibility, signatures and conflicts remain in the shared trait machinery.",
+    "Any positive trait-use count keeps parentless anonymous publication deferred. Live imported descriptors retain their own-member projection and full declaration replay; malformed scopes/imports remain refused.",
+    "Trait-link diagnostics use C-string display per class-name argument, preserving suffixes and complete stored NUL names.",
+    "A successful linking notice retains its genuine class-child origin. Only after notice delivery does AT restore the original NEW, before allocation/arguments; no-notice and abrupt link transitions retain the prior restoration."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 433,
+      "result": "true newline, empty stderr, exit0; final 383 bytes match 82380a78b although the strict/source run preceded its commit",
+      "supervisor": [
+        ".tools/class169-artifacts/strict-warning1.json",
+        "df5af913d1439e9cc98cb6b7c69fa1dcd6b33f4f2e64a00f7ef5451eb25191ab"
+      ]
+    },
+    "sources": {
+      "exact_agreements": 16,
+      "observation": "Original source bytes, exact normalized FILE identity, raw stdout/stderr, PHP status and exit. Catalogue binds each frozen native raw tuple/hash.",
+      "reports": [
+        {
+          "id": "parentless-multiple-aliases",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-muvbporv/report.json",
+            "6bf526497e09a93b093acdfc05961777ccb9ec48b2ffb78f6c20c343c291e340"
+          ]
+        },
+        {
+          "id": "parented-precedence-excluded-alias-multiple-use",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-mpz04ksg/report.json",
+            "fd8f939c96281b894f1f11a4f43da68e7a3ffa8c8e90da49ab8542fab33ac1f6"
+          ]
+        },
+        {
+          "id": "interface-qualified-alias",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-bvf01i4j/report.json",
+            "7e730ed9be00f0a09a8dd31c9ea4627e6574d4243024970cb358cd196317d4a7"
+          ]
+        },
+        {
+          "id": "parentless-alias-static-cells",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-y_9eeqym/report.json",
+            "4ad1cb28eb82e5c7eeb3d449b68f3e12270a3070d5ac25d1f06b38762d77038b"
+          ]
+        },
+        {
+          "id": "ambiguous-alias-after-precedence",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-a9_c6uue/report.json",
+            "fd571dd7440fc3340e5161a379e4e0d809d1aa184893ed09de64655674dca71f"
+          ]
+        },
+        {
+          "id": "skipped-conflict",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-_0axxlxu/report.json",
+            "b74bbdc23e747791e39b6ddb94488a5b241a67fd8b778b961a38489efb24ccfe"
+          ]
+        },
+        {
+          "id": "interface-protected-alias-conflict",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-fztuogn9/report.json",
+            "91321b71f70ed04ad071f5c8a6394b36aba0f30e555ccb02a8b32edd2f825c07"
+          ]
+        },
+        {
+          "id": "reached-concrete-conflict",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-dk_6r2dc/report.json",
+            "24d9c9dc5da57ca78c165871d8e5f98ce0b94a91b8087020693d54a9f700c0c0"
+          ]
+        },
+        {
+          "id": "private-final-qualified-alias-warning",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-bu4ty_ab/report.json",
+            "437858a0757798e444d75549d3f4e2e66d5b98abd2b4db5a34624b91cc50a4e4"
+          ]
+        },
+        {
+          "id": "case-same-duplicate-use-alias",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-apvkubaj/report.json",
+            "7cc3164990c7d64ee6e3b5bdecb4ac7f96f12232cfb76d58b1a0db7d8711e4e0"
+          ]
+        },
+        {
+          "id": "namespaced-alias-precedence",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-phmh4xdr/report.json",
+            "26207242316d1407fda51ce56deb6af219483d6099acc8bf80c20e143ad974f3"
+          ]
+        },
+        {
+          "id": "interface-and-parent-multiple-adaptation",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-0jzcukw_/report.json",
+            "02c8f7c246c45e99124b3e0c68d0301b7859d55f8d79619797a75d91ab193427"
+          ]
+        },
+        {
+          "id": "conflict-before-constructor-argument",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-w__9tpp_/report.json",
+            "b95416de7c32d2ba51dc1833a00ad4eecd0435ded716e61cc6464d289636b845"
+          ]
+        },
+        {
+          "id": "interface-static-alias-conflict",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-v_8s4wdm/report.json",
+            "d9c1ecfc684e6cab479669e6e2866c3e10a89697ccc0a94871ba4e34f493689f"
+          ]
+        },
+        {
+          "id": "interface-signature-alias-conflict",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-daez0pdo/report.json",
+            "0fa17ea979a681b10b8292d172d5856e4c1a27f8597e40201cfc13fdcb20fa91"
+          ]
+        },
+        {
+          "id": "qualified-alias-unimported-trait",
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/method-runtime-xai9zflh/report.json",
+            "162a84aec4c7c218cf99c2c82921eeff59304b8a4f02b6fd43839bd8c3138243"
+          ]
+        }
+      ],
+      "cuts": "First alias source ran before final static/unimported-trait formatter changes, on their unselected branches; first 12-row catalogue versus final 16 differs only by added cases. Final formatter/private branches are covered by later sources. Eight pre-warning-fix cases use no link notices, so 82380a78b retains exactly their prior fallback transition. No record is relabelled as a newer execution.",
+      "packets": [
+        [
+          ".tools/class169-artifacts/source-parentless-draft1.json",
+          "f75bfdfc75e2fca75084eafd6267405398f72bd8c8a854f0b61570970d0f25f4"
+        ],
+        [
+          ".tools/class169-artifacts/source-parented-final1.json",
+          "925d34be4928aee2741a50b6090cf0ff029fd0a6ceeaa598bcc34257cc132171"
+        ],
+        [
+          ".tools/class169-artifacts/source-remaining-final1.json",
+          "3ff034a71ad6f3b51d072f91b0426238f429b8b15d7ba7ddb391f16a7c3cdb1b"
+        ],
+        [
+          ".tools/class169-artifacts/source-warning-repaired1.json",
+          "8ed4700fe38a1b70cc8fa4c38f3603cd31078aa4845a14bc496213a6fe5d5d92"
+        ],
+        [
+          ".tools/class169-artifacts/source-last7-final1.json",
+          "c43edaee821477341d5f5e60b900da26bcbc6d36c65966a43e2fd62f36d24f20"
+        ]
+      ],
+      "failed_packet_accounting": "source-remaining-final1 remains a failed batch: credit only its six completed stable per-case passes; the original warning interpreter_failure earns zero agreement. Later warning and final 7 packets pass independently."
+    },
+    "author_state": {
+      "conditions": 190,
+      "groups": [
+        {
+          "case": "private-final-qualified-alias-warning",
+          "conditions": 57,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-trait-adaptations-3t_qlvbo/report.json",
+            "6b25b11ab6499041563272dd8c44ba87724e845717a9b13fa3b8f4c4e52859b8"
+          ]
+        },
+        {
+          "case": "interface-and-parent-multiple-adaptation",
+          "conditions": 65,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-trait-adaptations-ggocrkkp/report.json",
+            "94b4905c581caf468b6cfcbc8c588817d5609f66f5cb8c353e0aebbec1a12f94"
+          ]
+        },
+        {
+          "case": "parentless-multiple-aliases",
+          "conditions": 68,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-trait-adaptations-uc9oev31/report.json",
+            "cb93395f8b43e6d11627a805c5c5ed7f624244baf573f53f3cb05b6738b75525"
+          ]
+        }
+      ],
+      "cuts": "68 parentless and 65 parent/interface conditions retain author-state-v1. Refined 57 warning conditions alone rerun with NORMAL link completion; no source/native or unrelated state replay.",
+      "supervisors": [
+        [
+          ".tools/class169-artifacts/author-state-v1.json",
+          "46f3a46ac79bf9b5e16fb55e47ed2b2fb619e75bd90372e033bcec79bd9ad708"
+        ],
+        [
+          ".tools/class169-artifacts/warning-state-normal1.json",
+          "56d594ed21b95dde12d8161c61ccc922763804fc963126d2eb1d5d77662974d0"
+        ]
+      ]
+    },
+    "independent_state": {
+      "tested_head": "26c812388ffbb8279d92dd1a0837f0917367c319",
+      "semantic_inputs": "Exactly ce1230eac. The later 383 warning-only branch leaves all 135 no-notice transitions identical; current NORMAL fallback query confirms that bridge.",
+      "conditions": 135,
+      "groups": [
+        42,
+        56,
+        37
+      ],
+      "coverage": "Actual raw-to-published-to-allocation fronts, selected excluded-method q and Base parameter, cloned FCC lexical/called scope, explicit interface links and replay/scope/target forgeries.",
+      "supervisor": [
+        ".tools/class169-artifacts/review-three-state-v3.json",
+        "bc5a8505daf94de4c4b3a56e2a03fa3f96498e93e63989fb6f70fb7a0f4fc10d"
+      ],
+      "report": [
+        ".tools/class169-review-artifacts/recovered-state/class169-review-state-x0whcv4x/report.json",
+        "cd0f2c5ee9c5737f33ea95b3aaf68770e63371252d0c79a9da30ee48fa9b29aa"
+      ]
+    },
+    "affected_state": {
+      "conditions": 229,
+      "groups": [
+        {
+          "case": "parentless-trait-first-capture",
+          "conditions": 45,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-parentless-trait-0aiamvir/report.json",
+            "7362b7c3bed6cc8bb383927e626d4aa2fa6a9cb3cc4016724bb06e822fb5505a"
+          ]
+        },
+        {
+          "case": "parentless-trait-parent-receive",
+          "conditions": 43,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-parentless-trait-sfum8ehp/report.json",
+            "de0a7c063385136cead623780ade206db695b7f25fbee1fff80883dba8c55c71"
+          ]
+        },
+        {
+          "case": "parented-anonymous-trait-alias-positive",
+          "conditions": 51,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-trait-alias-4992n_g1/report.json",
+            "db2f361ee657cf15f5d76f16449a31a99e1a5a05dd1b325da7ce17c6bcf7a6ec"
+          ]
+        },
+        {
+          "case": "parented-anonymous-trait-alias-wrong-type",
+          "conditions": 42,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-trait-alias-q_3j1d7_/report.json",
+            "0668b0c84d646065c4220ece1ca5843341a96d824ded051779d2f2f084a6da31"
+          ]
+        },
+        {
+          "case": "parented-anonymous-trait-first-capture",
+          "conditions": 48,
+          "report": [
+            ".tools/class169-artifacts/recovered-private-raw/anonymous-trait-capture-7rhhspdk/report.json",
+            "37939e61c9179016aad72008f48c89fcae97ad8f5053eb76191e0584109b4cbd"
+          ]
+        }
+      ],
+      "supervisor": [
+        ".tools/class169-artifacts/affected-states-final1.json",
+        "e67447395584f022535294e424a8ac92c003c2caa63a62842dc01a9b34670a5c"
+      ],
+      "scope": "Only affected CLASS166/167/168 admission predicates and source-reached regression groups; original native/source agreement credit is unchanged."
+    },
+    "resources": "All owned authoritative actors used CPU2 serially with stable watched inputs, empty bad-affinity lists and full reap; supervisor records retain commands, tested revisions, executable hashes and relevant environment."
+  },
+  "review": {
+    "reviewer": "/root/classes_review_current",
+    "decision": "accepted",
+    "current_tail": "a92449ce9eea2099340ea32e741da382d2c9132d",
+    "compatibility": "Since b0650c4c0 the joined tail changes encoding/preamble parsing, enum is_callable tasks/retirement, Generator unpack/Closure::call/warning paths, REAL Closure GC admission and tick/output-buffer teardown. These originals/states have no such sources/tasks/representations; genuine checked units rederive the same canonical source. No class-rule/frontend/adapter conflict. Review messages establish the disjoint bridge without another receipt commit or source replay. The additional stable-exit tick completion guards in444 are also inactive on these sources/states, which have no tick registrations or tasks. Independent final review requests no joined gate or replay. GC28 adds a direct nested-array REALCLOSURE admission only under a genuine active materialized collector caller; these sources/states have no active GC or REAL capture DAG, so its new guard is false. The private composition retains the reviewed CLASS169 implementation and current parent exactly, resolving only the superseded CLASS166\u2013168 progress prose."
+  },
+  "zero_credit": {
+    "baseline_unsupported": [
+      ".tools/method-runtime-7my8zrmd/report.json",
+      "759e29e794aa6ed0ec840ee31a1a0035d41a306b83b3997121bcec9d071e7a6d"
+    ],
+    "original_warning_failure": [
+      ".tools/class169-artifacts/recovered-private-raw/method-runtime-3fccx8uv/report.json",
+      "b0c2f195f29b8c01175591927ab2930f41f04d0628d4784879826cb99f19a43a"
+    ],
+    "review_fixture_failures": [
+      [
+        ".tools/class169-artifacts/review-three-state-v1.json",
+        "6913ab0e78e28d069d99ad85cf9744f65982e41b73953c390732141789ff3590"
+      ],
+      [
+        ".tools/class169-artifacts/review-three-state-v2.json",
+        "4181c0f0046bc608fdfbd79e84d72192859b6f3a602d38a7e94d6c6755c9511a"
+      ]
+    ],
+    "invalid_combined_modifier_native": [
+      ".tools/class169-review-artifacts/private-final-alias-warning.native.json",
+      "52d2efd8b9365676f7f8da7b70d24b833469cf9eb8a2ba306259d0d28ec95135"
+    ],
+    "budget_probe": "warning-probe1 is diagnostic only; its step 18 interpreter failure is retained and earns no agreement credit."
+  },
+  "limits": "Imported implicit Stringable interfaces, dynamic-source trait combinations and wider member/type/lifetime contexts remain partial. Illegal static/abstract alias modifiers and malformed plans remain structural Unsupported controls, not native compile-error agreements. Distinct imported method names have independent statics; duplicate/case-only aliases share the selected name.",
+  "recovery": {
+    "private_raw_map": [
+      ".tools/class169-artifacts/recovered-private-raw/locations.json",
+      "feff05559eec63f69a2f7953c5315680095e428e9a5024d0ba6c762aedeb495a"
+    ],
+    "review_raw_map": [
+      ".tools/class169-review-artifacts/recovered-state/locations.json",
+      "06bb6901cd8b738470e5aa637f4bdf630b878c45f2a59626012d69ac0460e055"
+    ],
+    "instructions": "Raw files are ignored outside Git. Maps preserve original paths and unchanged report hashes. Restore a recorded raw root at its original source path and use the retained private/review Git cuts and pinned local tools to reproduce its exact context; preserve its tested-cut/compatibility distinctions. Finished review worktree was removed after full reap; refs remain."
+  }
+}

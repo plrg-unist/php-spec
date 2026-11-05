@@ -117,9 +117,15 @@ the destructor, then commit the chosen name before returning or propagating its
 throw. Output unset/rebinding, saved input, API trace snapshots and resurrection
 retain their actual cells and owners. Twelve normal originals, five explicit
 boundary controls, strict433, 345 independent guards and affected retained77
-checks pass at their recorded cuts. Exit, owning rebound values, late attached
-type sources and variable array inputs remain partial.
+checks pass at their recorded cuts.
 [Unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json).
+Root VM destructor exits now drain local cleanup before committing the saved
+name. Nested live queries commit in order while preserving exit status and
+leaving result assignments untouched. Seven exact exit originals, seven explicit
+controls, strict433 and 247 independent guards pass. Switched Fiber exits,
+replacement cleanup, owning rebound values, late attached type sources and
+variable array inputs remain partial.
+[Exit review](coverage/semantics/enum-is-callable-output-exit-review.json).
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -173,6 +179,15 @@ partial. Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I96](coverage/semantics/generator-folded-string-call-review.json),
 [I97](coverage/semantics/generator-call-warning-fiber-review.json) and
 [I98](coverage/semantics/generator-call-warning-retval-review.json).
+
+I99 handles PHP throws during copied reference warnings, including a Fiber throw
+in an owning handler-return destructor. Only the hidden copy stays request-owned;
+prepared prefix and API owners release before catch. Four native originals,
+three CLI comparisons and two reached fronts (237 custom/247 reported checks)
+pass; one front also matches repeated native output without extra CLI credit.
+The affected 59/64 trace checks and joined strict433 pass at recorded cuts.
+Receive/mapping and bailout paths remain partial.
+[I99 review](coverage/semantics/generator-call-cancellation-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -395,6 +410,26 @@ passes 73, and both affected GC26 groups pass 148. Nested, reference, proxy and 
 remain partial; the hidden Closure capture table remains black under the real
 caller root. [GC27 review](coverage/semantics/gc-multi-array-review.json).
 
+GC28 admits finite nested DIRECT-array capture DAGs under the same real Closure
+root. Unique traversal preserves repeated owner/trace edges; per-array self-reach
+rejects forged DIRECT cycles, and the nested-edge guard is component-local.
+Shared depth-three nesting, local parent/child COW and an independent self-copy
+snapshot give three exact source pairs through final weak death. Strict reached fronts pass 246+191 assertions and the
+changed GC27 group passes 207. Independent graph/self-copy fronts pass 63+85.
+Reference, proxy, pooled and finalizer graphs remain partial.
+[GC28 review](coverage/semantics/gc-nested-array-review.json).
+
+GC29 admits mixed value/reference captures through ordinary untyped HCELLs.
+Capture/local aliases own wrappers separately while each wrapper owns its payload
+once; surviving reference decrements buffer only a collectable payload. Three
+originals preserve shared/separate wrapper lifetime and request-string rebinding,
+and one combined A95 original preserves old-cell 22/global 44 through Generator
+retirement and actual GC. All four agree; strict reached fronts pass 177+197+154.
+Independent mixed COW gives a fifth exact source and 214 further assertions.
+Constrained/backed cells, ALIAS array entries
+and arbitrary reference/Closure cycles remain partial.
+[GC29 review](coverage/semantics/gc-reference-capture-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -415,14 +450,18 @@ Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
 
-Ordinary scalar BYVAL Generator unpack now warns within the first two sends to
-fixed untyped BYREF parameters in argument positions 1 or 2 of direct named
-functions returning by value. Distinct private cells preserve earlier sends
-through the second Warning. Six new and two affected legacy sources agree;
-source-derived ownership, authority and budget gates pass at their recorded cuts.
-Five Unsupported controls and pending-throw stop checks retain zero agreement
-credit. Dynamic-string sinks, pending warning exceptions and wider forms remain partial.
-[Reference-sink review](coverage/semantics/generator-byref-sink-review.json).
+Scalar Generator unpack reaches fixed untyped reference parameters in argument
+positions 1 or 2 of direct named functions returning by value, within the first
+two sends. By-value caches keep their Warning snapshot; ordinary reference
+caches reread a nonowning source-cell designation after the handler. Alias writes
+change delivery, while actual global-name rebinding preserves the old cell.
+Distinct private cells retain earlier sends across the second Warning.
+A95 adds ten new and two affected legacy source agreements; independent
+source-derived ownership, authority, retirement and budget gates pass. Two
+Unsupported controls retain zero agreement credit. Cache replacement, ineligible
+reference carriers and pending warning exceptions remain partial.
+[Snapshot review](coverage/semantics/generator-byref-sink-review.json),
+[reference-cell review](coverage/semantics/generator-reference-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
 ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
@@ -847,9 +886,28 @@ starts, allocation failure/memory limits and wider executor completion remain pa
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
-CLASS166 is integrated at `0ed9ac41f`: one parented anonymous trait capture source and 48 reached conditions pass with private and joined strict433. [Review](coverage/semantics/anonymous-trait-capture-review.json).
-CLASS167 is integrated at `303883b83`: bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
-CLASS168 admits one unqualified, unmodified trait alias in a parented no-interface unit0 anonymous class. Captured `Y=self::q(...)` and direct `q` agree with PHP for Base168; a wrong class raises TypeError before the body. Two exact sources, 52+42 reached conditions and private and joined strict433 pass. [Review](coverage/semantics/anonymous-trait-alias-capture-review.json).
+CLASS166–168 establish deferred parented/parentless anonymous trait captures,
+parent receive checks and one alias; their original cuts remain linked from
+[SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md).
+CLASS169 shares ordinary finite trait plans across parentless, parented and
+explicit-interface contexts. Qualified/visibility/final aliases, precedence,
+multiple uses and distinct static cells preserve first-`new` publication and
+copied FCC scope. Sixteen exact originals, 190 author and 135 independent reached
+conditions, 229 affected conditions and private strict433 pass. The repaired
+private-final warning retains class-site authority until `new` resumes before
+allocation. Original Unsupported/interpreter and fixture failures retain zero
+agreement credit. [Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+CLASS170 authenticates inferred Stringable interfaces before restoring the raw
+anonymous header view. Direct imports and aliases preserve original name prefixes,
+interface spelling and copied parameter scope; return/private/static conflicts
+fail at the trait method before publication or allocation. Eight exact originals,
+277 independent and 121 author reached conditions and strict433 pass. The ordinary
+parentless `parent` receive view requires published interface targets and full
+history; old empty-interface and snapshot paths stay unchanged. Original source
+failures and three fixture corrections retain zero agreement credit.
+Dynamic-source combinations, wider explicit/unpublished/collision scope histories,
+illegal-modifier diagnostics and other member/lifetime contexts remain partial.
+[Review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

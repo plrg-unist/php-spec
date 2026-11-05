@@ -445,7 +445,7 @@ def $trait_fetch(S, ptbytes :: ptbytes_tail*, pclassdesc_seen*) = TRAITMISSING p
 
 def $trait_select(S, pclassdesc_owner, pclassdesc_items*, ptbytes) = TRAITSELECTED pclassdesc
   -- if $trait_used(pclassdesc_items*, ptbytes) = (pclassdesc)
-def $trait_select(S, pclassdesc_owner, pclassdesc_items*, ptbytes) = TRAITSELECTERROR ($ptascii("Required Trait ") ++ pclassdesc.NAME ++ $ptascii(" wasn't added to ") ++ pclassdesc_owner.NAME)
+def $trait_select(S, pclassdesc_owner, pclassdesc_items*, ptbytes) = TRAITSELECTERROR ($ptascii("Required Trait ") ++ pclassdesc.NAME ++ $ptascii(" wasn't added to ") ++ $c_string(pclassdesc_owner.NAME))
   -- if $trait_used(pclassdesc_items*, ptbytes) = eps
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
@@ -548,7 +548,7 @@ def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_ori
   -- if $trait_composed_named(ptraitmethod*, pmethoddesc.NAME) = (TRAITMETHOD pclassdesc_prior pmethoddesc_prior)
   -- if $origin_source(pmethoddesc_prior.FUNCTION.ORIGIN) = $origin_source(pmethoddesc.FUNCTION.ORIGIN)
   -- if pmethoddesc_prior.VISIBILITY = pmethoddesc.VISIBILITY
-def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_original, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE ($pil_method_fatal(S, pclassdesc_owner.ORIGIN, $ptascii("Trait method ") ++ pclassdesc_trait.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(" has not been applied as ") ++ pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(", because of collision with ") ++ pclassdesc_prior.NAME ++ $ptascii("::") ++ pmethoddesc_prior.NAME, pclassdesc_owner.LINE)) ptraitmethod* ptraitmethod_required*
+def $trait_copy(pclassdesc_owner, pclassdesc_trait, pmethoddesc, pmethoddesc_original, TRAITCOMPOSE S ptraitmethod* ptraitmethod_required*) = TRAITCOMPOSE ($pil_method_fatal(S, pclassdesc_owner.ORIGIN, $ptascii("Trait method ") ++ pclassdesc_trait.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(" has not been applied as ") ++ $c_string(pclassdesc_owner.NAME) ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(", because of collision with ") ++ pclassdesc_prior.NAME ++ $ptascii("::") ++ pmethoddesc_prior.NAME, pclassdesc_owner.LINE)) ptraitmethod* ptraitmethod_required*
   -- if S.COMPLETION = NORMAL
   -- if ~pmethoddesc.ABSTRACT
   -- if $method_named(pclassdesc_owner.METHODS, pmethoddesc.NAME) = eps

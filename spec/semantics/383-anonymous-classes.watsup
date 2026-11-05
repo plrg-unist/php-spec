@@ -34,6 +34,22 @@ def $anonymous_constructor_parameters(SEQUENCE (phpType17 :: phpType17_tail*)) =
 def $anonymous_constructor_parameters(phpType16) = false -- otherwise
 
 dec $anonymous_reference(name) : bool
+dec $anonymous_interface_references(name*) : bool
+dec $anonymous_interface_parent_node(phpType44) : bool
+dec $anonymous_trait_alias_name(phpType3) : bool
+def $anonymous_trait_alias_name(ABSENT) = true
+def $anonymous_trait_alias_name(NIdentifier (BYTES text) metadata) = $ptvalidname($base64(text), false)
+dec $anonymous_trait_adaptations(phpType63*) : bool
+def $anonymous_trait_adaptations(eps) = true
+def $anonymous_trait_adaptations((NStmtTraitUseAdaptationAlias phpType44 (NIdentifier (BYTES text_method) metadata_method) phpType64 phpType3 metadata) :: phpType63*) = $anonymous_trait_adaptations(phpType63*)
+  -- if $anonymous_interface_parent_node(phpType44)
+  -- if $ptvalidname($base64(text_method), false) /\ $anonymous_trait_alias_name(phpType3)
+  -- if $trait_alias_flags(phpType64) <- [0,1,2,4,32]
+  -- if phpType3 =/= ABSENT \/ $trait_alias_flags(phpType64) =/= 0
+def $anonymous_trait_adaptations((NStmtTraitUseAdaptationPrecedence name (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE (name_excluded :: name_tail*)) metadata) :: phpType63*) = $anonymous_trait_adaptations(phpType63*)
+  -- if $anonymous_reference(name) /\ $ptvalidname($base64(text_method), false)
+  -- if $anonymous_interface_references(name_excluded :: name_tail*)
+def $anonymous_trait_adaptations(phpType63*) = false -- otherwise
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) = $anonymous_property_items(phpType57*)
   -- if flags <- [0,1]
@@ -65,35 +81,17 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 ABSENT (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
   -- if flags <- [0,1]
   -- if $ptlc($base64(text)) = $ptascii("__construct")
-def $anonymous_member(NStmtTraitUse (SEQUENCE (name :: name_tail*)) (SEQUENCE eps) metadata) = $anonymous_reference(name)
-  -- if name_tail* = eps
+;; Names and supported adaptations enter the ordinary trait compiler and linker.
+def $anonymous_member(NStmtTraitUse (SEQUENCE (name :: name_tail*)) (SEQUENCE phpType63*) metadata) = ($anonymous_interface_references(name :: name_tail*) /\ $anonymous_trait_adaptations(phpType63*))
 def $anonymous_member(statement) = false -- otherwise
 dec $anonymous_members(statement*) : bool
 def $anonymous_members(eps) = true
 def $anonymous_members(statement :: statement_tail*) = ($anonymous_member(statement) /\ $anonymous_members(statement_tail*))
 
-dec $anonymous_single_alias_adaptations(phpType63*) : bool
-def $anonymous_single_alias_adaptations((NStmtTraitUseAdaptationAlias ABSENT (NIdentifier (BYTES text_method) metadata_method) ABSENT (NIdentifier (BYTES text_alias) metadata_alias) metadata_adaptation) :: phpType63*) = true
-  -- if phpType63* = eps
-  -- if $ptvalidname($base64(text_method), false) /\ $ptvalidname($base64(text_alias), false)
-  -- if $ptlc($base64(text_method)) =/= $ptlc($base64(text_alias))
-def $anonymous_single_alias_adaptations(phpType63*) = false -- otherwise
-dec $anonymous_simple_alias_member(statement) : bool
-def $anonymous_simple_alias_member(NStmtTraitUse (SEQUENCE (name :: name_tail*)) (SEQUENCE phpType63*) metadata_use) = true
-  -- if name_tail* = eps
-  -- if $anonymous_reference(name)
-  -- if $anonymous_single_alias_adaptations(phpType63*)
-def $anonymous_simple_alias_member(statement) = false -- otherwise
-dec $anonymous_parented_members(statement*) : bool
-def $anonymous_parented_members(eps) = true
-def $anonymous_parented_members(statement :: statement_tail*) = (($anonymous_member(statement) \/ $anonymous_simple_alias_member(statement)) /\ $anonymous_parented_members(statement_tail*))
-
 def $anonymous_reference(name) = $ptvalidname(ptbytes, true)
   -- if $ptast(name) = PTNAME ptqual ptbytes
-dec $anonymous_interface_references(name*) : bool
 def $anonymous_interface_references(eps) = true
 def $anonymous_interface_references(name :: name_tail*) = ($anonymous_reference(name) /\ $anonymous_interface_references(name_tail*))
-dec $anonymous_interface_parent_node(phpType44) : bool
 def $anonymous_interface_parent_node(ABSENT) = true
 def $anonymous_interface_parent_node(name) = $anonymous_reference(name)
 dec $anonymous_interface_class_node(pcnode) : bool
@@ -101,7 +99,6 @@ def $anonymous_interface_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT
   -- if $anonymous_interface_parent_node(phpType44)
   -- if $anonymous_interface_references(name :: name_tail*)
   -- if $anonymous_members(statement*)
-  -- if ~$pptrait_body_uses(SEQUENCE statement*)
   -- if $($source_line(metadata) > 0 /\ $source_end_line(metadata) >= $source_line(metadata))
 def $anonymous_interface_class_node(pcnode) = false -- otherwise
 dec $anonymous_interface_node(pcnode) : bool
@@ -118,14 +115,12 @@ def $anonymous_trait_use_count(statement :: statement_tail*) = $anonymous_trait_
 dec $anonymous_class_node(pcnode) : bool
 def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
   -- if $anonymous_members(statement*)
-  -- if $($anonymous_trait_use_count(statement*) <= 1)
   -- if z_line = $source_line(metadata)
   -- if z_end = $source_end_line(metadata)
   -- if $(z_line > 0 /\ z_end >= z_line)
 def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT name (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
   -- if $anonymous_reference(name)
-  -- if $anonymous_parented_members(statement*)
-  -- if $($anonymous_trait_use_count(statement*) <= 1)
+  -- if $anonymous_members(statement*)
   -- if z_line = $source_line(metadata)
   -- if z_end = $source_end_line(metadata)
   -- if $(z_line > 0 /\ z_end >= z_line)
@@ -134,7 +129,7 @@ def $anonymous_class_node(pcnode) = false -- otherwise
 dec $anonymous_parentless_class_node(pcnode) : bool
 def $anonymous_parentless_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata)
 def $anonymous_parentless_class_node(pcnode) = false -- otherwise
-def $anonymous_parentless_trait_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = ($anonymous_parentless_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) /\ $anonymous_trait_use_count(statement*) = 1)
+def $anonymous_parentless_trait_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) = ($anonymous_parentless_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata) /\ $($anonymous_trait_use_count(statement*) > 0))
 def $anonymous_parentless_trait_node(pcnode) = false -- otherwise
 
 dec $anonymous_named_class_node(pcnode) : bool
@@ -498,7 +493,8 @@ def $anonymous_new_descriptor(S, PORIGIN 0 pcpath) = (pclassdesc_live)
   -- if $class_at(ppinstalled.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (pclassdesc)
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_live)
   -- if pclassdesc_live =/= pclassdesc
-  -- if pclassdesc_live[.PROPERTIES = $trait_notice_own_properties(pclassdesc_live.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc_live.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc_live.METHODS, pclassdesc_live.ORIGIN)] = pclassdesc
+  -- if pclassdesc_live.INTERFACES = $trait_import_interfaces(pclassdesc, pclassdesc_live.METHODS)
+  -- if pclassdesc_live[.PROPERTIES = $trait_notice_own_properties(pclassdesc_live.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc_live.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc_live.METHODS, pclassdesc_live.ORIGIN)][.INTERFACES = pclassdesc.INTERFACES] = pclassdesc
   -- if $anonymous_class_prefix(pcunit, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), ppinstalled.CLASSES, 0)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_live.NAME)) = (pclassdesc_live.ORIGIN)
   -- if $anonymous_runtime_declaration(S.DECLARATIONS, pclassdesc_live.ORIGIN)
@@ -527,7 +523,6 @@ dec $anonymous_interface_dependencies_ready(pstate, pclassdesc) : bool
 def $anonymous_interface_dependencies_ready(S, pclassdesc) = true
   -- if $pil_fetch(S, pclassdesc.INTERFACES, eps) = PILFETCHED pilref*
 def $anonymous_interface_dependencies_ready(S, pclassdesc) = false -- otherwise
-dec $anonymous_interface_targets_valid(pstate, pclassdesc) : bool
 def $anonymous_interface_targets_valid(S, pclassdesc) = ($pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps)
   -- if pclassdesc.INTERFACES = eps
 def $anonymous_interface_targets_valid(S, pclassdesc) = true
@@ -622,7 +617,17 @@ def $declaration_new_selection(S, PORIGIN n_unit pcpath, NStmtClass phpType14 ph
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_called)
 
-rule PhpStep/anonymous-parent-link: S ~> S_linked[.ORIGIN = S.ORIGIN]
+;; Link notices run at the class child before the original NEW is resumed.
+dec $anonymous_link_resume(pstate, porigin) : pstate
+def $anonymous_link_resume(S, porigin) = S[.TODO = (DECL_NOTICES pdeclnoticebatch) :: (AT porigin (EVAL expression)) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (DECL_NOTICES pdeclnoticebatch) :: (EVAL expression) :: ptask_tail*
+  -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
+  -- if S.ORIGIN = (pdeclnoticebatch.SITE)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+def $anonymous_link_resume(S, porigin) = S[.ORIGIN = (porigin)] -- otherwise
+
+rule PhpStep/anonymous-parent-link: S ~> $anonymous_link_resume(S_linked, porigin)
   -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)

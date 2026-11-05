@@ -741,3 +741,23 @@ Earlier stage/timing probes are diagnostic-only;
 the late full-source timeout retains zero credit alongside its later justified
 75-second exact comparison. Maintained sources/protocols regenerate the behavior;
 external archives are evidence, not build inputs.
+
+CLASS169 finite anonymous trait adaptations retain their native originals in
+`.tools/class169-review-artifacts/` and supervised runs in
+`.tools/class169-artifacts/`. Its `recovered-private-raw/locations.json` maps the
+26 reaped private raw roots; the review artifact root has a separate
+`recovered-state/locations.json` for the three review attempts. Restore a mapped
+root at its original path with the retained Git cut and pinned local tools to
+reproduce source identities. The [feature record](../coverage/semantics/anonymous-trait-adaptations-review.json)
+separates exact agreements, reached checks, compatibility bridges and failures;
+raw files stay outside Git.
+
+CLASS170 inferred anonymous Stringable views retain eight frozen originals under
+`.tools/class170-review-artifacts/` and supervised runs under
+`.tools/class170-artifacts/`. Its `recovered-private-raw/locations.json` maps 16
+reaped source/contract roots; the review artifact root's `recovered-state/locations.json`
+maps the accepted four-group fixture. The [feature record](../coverage/semantics/anonymous-trait-stringable-review.json)
+binds exact source agreements, scope/forgery and contract checks, and the original
+interpreter/Unsupported/fixture failures. Raw files stay outside Git; restore a
+mapped root at its original path with the retained Git cut and pinned local tools
+for its original source context.

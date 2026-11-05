@@ -1,0 +1,63 @@
+{
+  "milestone": "A95 ordinary Generator reference-cell delivery to bounded BYREF sinks",
+  "status": "Bounded behavior independently validated; complete PHP core remains unfinished",
+  "independent_reviewer": "config_review_current",
+  "scope": {
+    "producer": "Ordinary named BYREF Generator with a real reference cache cell; existing retained/temporary input and cleanup policies apply.",
+    "consumer": "Existing A94 direct named function returning by value, fixed untyped BYREF argument position 1 or 2 within the first two unpacked sends.",
+    "behavior": "Capture the original dereferenced CELL before Warning without adding an HCELL owner. On normal return, require the same physical cache cell/key/largest-key INDEX and PAUSED phase, then reread that cell into a fresh private parameter cell. Alias writes affect delivery; real GLOBALS rebinding preserves the old cell. Earlier private cells survive the second Warning.",
+    "reference_policy": "Reuse ordinary_reference_value plus iterator_unpack_scalar_operand(S, REFERENCE cell) before and after Warning: NULL/bool/int/float/interned strings only. No promotion through KNOWN bypass; typed/backed/debt cells, runtime-string carriers and owning payloads remain Unsupported."
+  },
+  "implementation": {
+    "semantic_cut": "81969b3ec4eaa39a8b59186ee9c6dc52b0dae417",
+    "final_fixture_cut": "37fe7e0d9aba3d5520bb890bd1a7992667abc4b5",
+    "tested_base": "50a7f2ae59bb3b5b010da16866db8224fc3c5147",
+    "composed_code_cut": "90fd1246eec1c016315c2b0fca874a9fafd0ecc1",
+    "master_parent": "afa7e24505189f903bf1f05671f3e172b621e022",
+    "composed_source_hashes": {
+      "spec/semantics/30-storage.watsup": "59039fbf978b25043bb4ae682522e3742d8c6f4796d7f74c3cf04d1b5dccabfa",
+      "spec/semantics/405-call-generator-unpack.watsup": "dbd983db80c99fead44888a6e4ddb9f2d848cd99642f4c41c2f935acb43abaee",
+      "spec/semantics/439-call-aggregate-unpack.watsup": "8bdedf1b2a2948a6a6cbe2ce0075e46bb59a29077de261e3dae07596e41d3f95"
+    },
+    "representation": "CELL is optional nat metadata and contributes no task/heap root. HOLD remains a scalar snapshot; BYVAL delivery still checks cached-value equality. INDEX tracks the largest used integer key, not every resumption. Equal key/index/value cannot hide a changed reference cache CELL."
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK: ZVAL_DEREF and Z_TRY_ADDREF before zend_error, then ZVAL_NEW_REF from the saved zval designation.",
+    "vendor/php-src/Zend/zend_types.h::ZVAL_DEREF/ZVAL_NEW_REF; Zend/zend_generators.c native iterator current-data callbacks and largest_used_integer_key."
+  ],
+  "validation_identity": {
+    "target": "PHP 8.5.10 CLI NTS64, source 34308a6666b2d489c509541ea9befea9e2b42348; oracle sha256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398.",
+    "compiler": "P4-SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml 5.1.0, all 433 modules through strict SL/cache-off/encountered determinism checks.",
+    "profile": "tests/semantics/profile.json, PHP -n, LC_ALL=C/TZ=UTC, PHP_SPEC_SCRIPT_ENCODING unset; one serial leased CPU3 then CPU2 actor, fully reaped.",
+    "records": "Raw reports preserve exact source/runtime/compiler inputs, commands, caps, exits and stable tested cuts; current-parent compatibility is independently reviewed without renewing unchanged evidence."
+  },
+  "evidence_roots": {
+    "author_native": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-sink-native-95/native-first",
+    "independent_native": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-sink-review-native-95",
+    "corrected_native_matrix": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-sink-review-native-95-corrected-matrix",
+    "review": "/home/user/workspace/php-spec-evidence-archive/config-generator-reference-sink-review-95",
+    "recovery": "Reports below are relative to review; relocations.json maps original private paths to retained raw source/process files. Evidence is outside Git and is not a build dependency."
+  },
+  "new_source_agreements": {
+    "source-retained-8196/report.json": "81969b3ec: 1 exact normal, live outside-alias write changes delivery to 22.",
+    "source-review-rest-8196/report.json": "81969b3ec: 4 exact normals, temporary/retained cells, real global rebinding, handler-local rebinding and scalar type observations; its 2 Unsupported controls earn 0 agreement.",
+    "source-author-five-8196/report.json": "81969b3ec: 5 exact normals, retained/default, temporary local-cell retirement, live alias write, actual GLOBALS unset/rebind old 22/new 44, and two sends from one cell into distinct private 11/31 then 91/92 cells."
+  },
+  "reached_states": {
+    "state-review-five-plus-fixture-failure-8196/report.json": "81969b3ec: only 5 passing groups/294 checks accepted, including one equal-key replacement-cell Unsupported stop; its failed global-name fixture earns 0.",
+    "state-review-global-corrected-8196/report.json": "81969b3ec: 1 group/75 checks after the LOCALS.ENV fixture correction; total independent 6 groups/369 checks, with the refusal stop separate from supported behavior.",
+    "state-author-four-37fe/report.json": "37fe7e0d9: 4 groups/290 checks, no borrowed CELL owner, actual source owners 2/4/3/4, fresh distinct cells, global old 22/new 44, earlier private-cell retention, retirement and zero/one-step budget splits."
+  },
+  "affected_legacy": {
+    "source-promoted-old-byref-37fe/report.json": "37fe7e0d9: 1 exact normal; only the old byref-producer-with-outside-alias row is promoted, with original A94 Unsupported evidence retained unchanged.",
+    "source-old-frozen-byval-37fe/report.json": "37fe7e0d9: 1 exact normal preserving A94 frozen BYVAL snapshot across handler writes.",
+    "state-old-frozen-byval-37fe/report.json": "37fe7e0d9: 1 group/57 checks preserving BYVAL CELL=eps, copied value, owners and delivery."
+  },
+  "unsupported_zero_agreement": "Same explicit key/index/value with replacement cache CELL and an initial runtime-string reference carrier retain exact Unsupported prefixes. A95 does not model native pending-warning-exception advancement, changed producer phase/key/index, wider value/reference kinds or other producer/consumer forms.",
+  "preserved_failures": {
+    "source-binding-failure-da00/report.json": "Runner/compiler failure from binding pvalue/n_cell inside a conjunction; fixed by separate premises before checks. No semantic credit.",
+    "native_matrix": "Original independent native report retains the helper-local alias-rebinding fixture mistake. Only the affected matrix original was corrected/reobserved.",
+    "global_state": "Original failed pframe.ENV assertion stays in the five-pass mixed report with 0 credit; only the global-name group reran using pframe.LOCALS table.ENV."
+  },
+  "engine_disposition": "No engine bug or deliberate divergence is claimed. The A94 advancement wording is narrowed to actual cache/key/index checks; original raw cuts and hashes remain unchanged."
+}

@@ -32,7 +32,7 @@ def positive(fixture, filename):
         'statement* = [statement_use]',
         '$anonymous_parentless_trait_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata_class)',
         '$anonymous_trait_use_count(statement*) = 1',
-        '~$anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE eps) (SEQUENCE (statement_use :: statement_use :: eps)) metadata_class)',
+        '$anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE eps) (SEQUENCE (statement_use :: statement_use :: eps)) metadata_class)',
         'S_pre.ORIGIN = (PORIGIN 0 pcpath)',
         '$source_unit(S_pre.SOURCES,0) = (pcunit)',
         '$compilation_projection(S_pre,pcunit) = (ppinstalled)',
