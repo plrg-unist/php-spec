@@ -261,11 +261,11 @@ Suppression and selected error handlers retain their native output order.
 returned-object destructor during normal post-deactivation cleanup. It runs
 while the selected handler is disabled; a nested no-argument `ob_start()`
 emits the built-in Notice and returns false before the outer handler resumes.
-[OB08](coverage/semantics/output-executor-explicit-null-review.json) admits a
-positional `ob_start(null)` during normal post-deactivation queue release. It
-uses the same default-handler Notice and false result without creating a buffer.
-Named-null, unpacked-null, callable and invalid-integer starts remain outside
-this cut.
+[Late `ob_start` reception](coverage/semantics/output-executor-reception-review.json)
+now uses ordinary named/unpacked argument binding and scalar conversion before
+the inactive-output failure. Default/NULL callbacks emit the Notice and return
+false without pushing a buffer, including during cleanup of a Notice handler's
+returned object. Callback creation and active handler-body reentry remain partial.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -2164,6 +2164,12 @@ parameters. Reference yields become snapshots before resume; named keys use the
 ordinary binder. Native iteration adds no method trace frames, and temporary
 versus retained Generators preserve their distinct finally/cache lifetimes.
 See the [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
+Scalar by-value Generator caches now warn within the first two unpacked sends
+to a fixed untyped reference parameter in argument position 1 or 2 of a direct
+named user function returning by value. Distinct private cells preserve both
+values across warnings and callee writes. Dynamic-string sinks, warning-time
+Generator advancement and pending warning exceptions remain explicit Unsupported.
+See the [reference-sink review](coverage/semantics/generator-byref-sink-review.json).
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
@@ -3146,12 +3152,14 @@ Unknown literal `declare` names now emit ordered E_COMPILE_WARNING (128), bypass
 registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
-Disabled-multibyte encoding declarations now emit source-derived parser warnings
-before compiler warnings, bypass handlers and execute as no-ops. Two originals and
-177 SL premises cover eval, once skip/reparse, raw helper stderr and budget resume.
-Admission is bounded to root single-line declarations with one string literal, no
-body and valid placement; wider shapes/rejected-with-warning inputs remain explicit boundaries.
-[Encoding review](coverage/semantics/encoding-declare-review.json).
+Disabled-multibyte encoding declarations emit source-derived parser warnings
+before compiler diagnostics. Single-line declarations accept literal values,
+mixed/repeated items and ordinary bodies; token positions preserve recursive
+parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
+return premises extend the earlier eval/once checks. Multiline declarations and
+rejected sources with warnings remain explicit boundaries.
+[Original review](coverage/semantics/encoding-declare-review.json),
+[list/body review](coverage/semantics/encoding-list-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3896,6 +3904,18 @@ GC26 admits a direct childless stdClass capture that also occurs in the
 captured array. Both capture orders agree with pinned PHP; two reached D-state
 groups verify the separate edges, one leaf buffer slot and weak lifetime.
 See the [shared-capture review](coverage/semantics/gc-shared-capture-review.json).
+GC27 extends the same rooted caller to finite direct captures with two or
+more array occurrences, preserving shared leaves and repeated array identities.
+Three originals agree with PHP through final weak death. The arrays remain
+one-level, mutable and outside pooled or materialized property tables; this
+rooted lane does not collect Closure cycles. See the
+[multi-array review](coverage/semantics/gc-multi-array-review.json).
+GC28 also admits finite nested DIRECT-array DAGs under that real caller root.
+Component discovery visits each identity once; tracing and ownership keep repeated
+edges, and per-array self-reach rejects forged DIRECT cycles. Shared nesting, local nested
+COW and self-copy snapshots agree with PHP through weak death. References, proxies, pooled descendants
+and user-finalizer children stay outside this lane. See the
+[nested-array review](coverage/semantics/gc-nested-array-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4706,32 +4726,17 @@ The source `Closure->__invoke` inner-warning handler trace now inherits the real
 call file/line for both its head and wrapper frame. One native-first original,
 a reached trace state and strict433 pass; broader wrapper/reentry paths remain
 partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
-After output FINAL, one raw invokable tick callback with a copied object
-argument now releases the argument before its two equal FCC owners, then
-continues to the shutdown-list queue. Two native-first sources agree; three
-reached states check 88 conditions, including callback ownership 2→1→0, and
-joined strict433 passes. Other late-free routes remain partial. See the
-[late tick review](coverage/semantics/callback-late-tick-final-review.json).
-Two retained raw invokable tick entries now retire oldest first after output
-FINAL. Each copied argument retires before its callback's separate FCC object
-and closure slots. One native-first source agrees exactly; four reached states
-check 120 conditions, including each callback's 2→1→0 owners. The singleton
-regression and strict433 pass. See the [tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
-The same normal raw-invokable tick shape now supports any nonempty ordered
-list: each head retires while its tail stays rooted. A three-entry original
-agrees exactly, six reached states check 143 conditions, and a shared-callback
-alias control agrees. One/two-entry source regressions and joined strict433
-pass. See the [tick-list review](coverage/semantics/callback-late-tick-list-review.json).
-Each retained raw invokable tick entry can now copy zero or more object
-arguments distinct from its callback. Mixed zero/one and shared zero/two
-sources agree exactly, as does a duplicate-argument control. Six reached
-states check 122 conditions, including argument order and shared FCC owners;
-strict433 passes. See the [tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
-A raw invokable callback can also be copied as one of its own tick arguments.
-Two native-first sources agree exactly; seven reached states check 120
-conditions, including its 3→2→1→0 owners and an unrelated argument's earlier
-destruction. Private and joined strict433 pass. See the
-[self-argument review](coverage/semantics/callback-late-tick-self-argument-review.json).
+After output FINAL, source-certified tick entries retire in registration order,
+releasing copied values before their independent FCC object/Closure owners.
+Normal completion and stable pending exits use agreeing saved phase completions;
+the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
+Cacheless entries still drain before queue/executor fallbacks. Four new exit
+originals and one affected normal control agree exactly; six reached groups pass
+176 conditions (12 derived), and private strict433 passes.
+Wider producers, assertion roots, changed phase completions and abrupt/reentrant
+late release remain partial. See the
+[exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json)
+and retained [cache-shape evidence](coverage/semantics/callback-late-tick-callables-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -6790,16 +6795,22 @@ null output CVs now receive names before the boolean result; the
 records three exact outcomes and 79 reached guards. Literal enum method strings
 also preserve raw lowercase, leading backslash and method spelling in the
 third output; the [string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json)
-records three exact outcomes and 88 reached guards. A separate variable holding
-the enum method string also writes its saved name through a distinct output
-CV; the [variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact source and 46 reached guards. Shared scalar input/output
-reference cells add one exact source and 43 reached guards in the
-[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
+records three exact outcomes and 88 reached guards. A variable's first SEND now
+saves its enum method string before later argument callbacks can rebind the
+current CV or shared output cell. Nested queries and pre-output throws preserve
+their own continuations. The [saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json)
+records seven exact originals, 200 independent guards and affected variable/alias
+state checks; the earlier [variable](coverage/semantics/enum-is-callable-output-variable-review.json)
+and [alias](coverage/semantics/enum-is-callable-output-alias-review.json) cuts retain their identities.
 Retained childless ordinary output objects also receive the name before their
 last owner is later released; the [retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json)
-records one exact source and 77 reached guards. Last-owner destructor and wider
-alias effects, other array sources, autoload,
+records one exact source and 77 reached guards. Last-owner childless ordinary
+objects now clear the original output cell before destruction, then commit its
+chosen name before returning or propagating a destructor throw. The
+[unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json)
+records twelve normal originals, five explicit controls and 345 independent
+guards. Destructor exit, owning rebound values, late type sources, other array
+sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -7043,7 +7054,7 @@ I85 admits direct Generator-bodied magic handlers through the same selected
 source target. A real entry receipt follows fresh, resumed and closing frames;
 actual operation ownership prevents a same-function sibling from supplying it.
 The receipt owns no receiver or packed value. Five current originals agree with
-PHP; native observations and private strict433 retain their distinct cuts.
+PHP; native observations and private and joined strict433 retain their distinct cuts.
 Five reached fronts pass 444 custom/469 reported checks. Joined strict433,
 three exact sources and 166 independent reached checks pass at bd274e79f;
 current-tail composition is reviewed at b1adc40c.
@@ -7129,6 +7140,24 @@ one affected I92 value SEND source, temporary return92 and independent parked
 cache169 states pass at f34d1214a. Receive/mapping errors, callback throws and
 wider calls remain partial.
 [Reference-call review](coverage/semantics/generator-call-reference-review.json).
+
+I94–I98 extend admitted Generator Closure::call behavior to fake user methods
+with exact declaring-class receivers, shared method statics and finite retired
+source histories. Dynamic nonstatic method strings keep their conversion Error;
+folded literal and caller-aware API captures retain their distinct permissions.
+Binding-warning cleanup releases actual API owners in native order. Existing
+copied-reference warning cursors retain argument snapshots and copy ownership
+through Fiber suspension in handlers and owning retval destructors. Each review
+keeps its original native/source/reached cuts and zero-credit failures. The
+[joined review](coverage/semantics/generator-call-series-current-review.json) records
+strict433, four source comparisons and 187 custom ownership checks. Wider
+call/receiver/signature and abrupt warning or no-Generator receive contexts remain
+partial.
+Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
+[I95](coverage/semantics/generator-fake-string-call-review.json),
+[I96](coverage/semantics/generator-folded-string-call-review.json),
+[I97](coverage/semantics/generator-call-warning-fiber-review.json) and
+[I98](coverage/semantics/generator-call-warning-retval-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

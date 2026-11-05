@@ -767,25 +767,41 @@ records three exact outcomes and 64 reached guards. Other array sources remain
 partial. Initialized int, bool and null output CVs also receive the name
 before the boolean through the same source-certified path. The
 [scalar-output review](../../coverage/semantics/enum-is-callable-output-scalar-review.json)
-records three exact outcomes and 79 reached guards; old-object destructor
-effects remain Unsupported.
+records three exact outcomes and 79 reached guards; old-object replacement uses
+the lifetime rules below.
 Literal enum method strings also retain raw class and method spelling in the
 third output. The [string-spelling review](../../coverage/semantics/enum-is-callable-output-string-spelling-review.json)
 records canonical, lowercase and leading-backslash outcomes with 88 reached
 guards.
-A live variable holding the enum method string can also feed a direct query
-with literal `false`, provided its saved bytes still match and the output CV is
-distinct. The [variable-output review](../../coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact original and 46 reached guards. A shared scalar
-reference cell now preserves the saved name through the result write; the
-[alias-output review](../../coverage/semantics/enum-is-callable-output-alias-review.json)
-records one exact original and 43 reached guards. Argument-time rebinding
-remains Unsupported.
+A direct variable input now captures its string at the first SEND. A nonowning
+receipt binds that copy to its call site, argument origin/line and caller depth;
+SENT owns the actual argument. The adjacent receipt authenticates the saved
+bytes after later arguments rebind the source CV. Normal invocation
+consumes it atomically, nested calls keep separate receipts and exception
+unwinding discards it before output capture. The
+[saved-input review](../../coverage/semantics/enum-is-callable-saved-input-review.json)
+records seven exact sources, 200 independent guards and affected variable46/
+alias43 checks. Named/unpacked forms remain partial. Engine routes are
+`zend_compile_args`, VM `ZEND_SEND_VAR`/`ZEND_SEND_VAR_EX` and
+`ext/standard/type.c:PHP_FUNCTION(is_callable)`.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
 [retained-output review](../../coverage/semantics/enum-is-callable-output-retained-review.json)
-records source/reached checks and unique/dead-owner refusals. Last-owner output
-destruction still requires a clear-before-destructor continuation: Zend's
-`ZEND_TRY_ASSIGN_REF_STR` calls `zval_ptr_safe_dtor`, which sets the last-owner
-cell to null before user code and writes the name after it returns.
+records its original source/reached cut and owner guards.
+For last-owner childless ordinary objects, `ZEND_TRY_ASSIGN_REF_STR` calls
+`zval_ptr_safe_dtor`, which sets the captured cell to null before user code.
+The output continuation owns that cell and the real call arguments; its old
+object metadata owns nothing. Generic eager cleanup runs the destructor before
+a raw commit writes the chosen name, including before a pending throw resumes.
+The current output variable may have been unset or rebound; the captured cell
+still receives the name. Resurrection uses the ordinary once-only destructor
+mark. The destructor has an internal call site followed by the `is_callable`
+API frame, whose arguments snapshot the captured cell at trace creation. The
+[unique-output review](../../coverage/semantics/enum-is-callable-output-unique-review.json)
+records twelve normal originals, five explicit controls, strict433,
+345 independent guards and affected retained77 checks at separate cuts.
+Exit, owning rebound values and newly attached type sources remain Unsupported.
+Native raw overwrite can retain an abandoned count for a destructor-created
+object until the store sweep; it cannot be modeled as a second checked write.
+Variable array inputs remain outside third-output name authentication.

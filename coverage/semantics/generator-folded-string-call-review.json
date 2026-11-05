@@ -1,0 +1,174 @@
+{
+  "milestone": "I96 literal-folded captures and static STRING call binding cleanup",
+  "status": "Current native4/source4 and five reached fronts 516 custom/541 reported pass at distinct cuts; joined current-tail validation passed; original cuts retained",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "31771b2594733175a7e75db58b04ef4624f6cb21",
+  "scope": "Literal full-name private nonstatic capture can follow compiler static-method-init with compatible This, unlike variable/dynamic string conversion. Admitted non-FCC STRING call dispatch now excludes its overlapping known-method fallback. Before inner call, binding-warning SOURCE/FIRST/RAW are single real API owners and prepared receiver/SENT borrow them. Existing release jobs retire FIRST then RAW then selected SOURCE on normal result and scoped warning-handler abrupt discard, retaining the actual pending THROW_SEARCH. No new producer/source/scope/signature policy, task/schema, generic invoke or destructor rule.",
+  "changed_modules": [
+    "spec/semantics/210-class-method-strings.watsup",
+    "spec/semantics/268-temporary-fake-calls.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_compile.c",
+      "vendor/php-src/Zend/zend_vm_def.h",
+      "vendor/php-src/Zend/zend_closures.c",
+      "vendor/php-src/Zend/zend_execute.h"
+    ],
+    "symbols": [
+      "zend_compile_dynamic_call",
+      "ZEND_INIT_STATIC_METHOD_CALL",
+      "ZEND_CALLABLE_CONVERT",
+      "ZEND_METHOD(Closure, call)",
+      "zend_valid_closure_binding",
+      "ZEND_PARSE_PARAMETERS_START",
+      "zend_vm_stack_free_args"
+    ],
+    "rule": "Constant full-name callables may use the compiler static-method-init path and compatible current This. Closure::call parses pointers into argv and returns on failed binding before inner-call copies; warning includes the PHP9 suffix. VM cleanup frees argument zvals in order before releasing the selected Closure, including when the callback throws a precreated Throwable."
+  },
+  "review": "Independent semantic and fixture review CLEAR; joined current-tail review is linked below. Original evidence retains its tested revisions.",
+  "validation": {
+    "native_packets": [
+      {
+        "revision": "1597be82c6e3422ac93c557431b8550fd19759ba",
+        "count": 1,
+        "selected_id": "i96-folded-private-string-call-value-send",
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96/source-packet/native-first/report.json",
+        "sha256": "5e1468aaeec79fcaabe05b385ffe4f60f6aff813f8069cd216006af39fa596c3",
+        "note": "Only A133 passed row is current credit; aggregatefalse/original B warning-message forecast0 retained unchanged, no A replay."
+      },
+      {
+        "revision": "c56447caed92fb09f67de7d8a101ef41900c1aa8",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96/static-warning-message/native-first/report.json",
+        "sha256": "44f39baa86b466aad76844ed366bc0095a2968400ae03915caf5576b21083ce0"
+      },
+      {
+        "revision": "c56447caed92fb09f67de7d8a101ef41900c1aa8",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/independent/native-first/report.json",
+        "sha256": "effed8409d72567e051a5d28e18182dc7877f4aa6f857533111980c2e9ac1a1a"
+      },
+      {
+        "revision": "8842a5f62664712de6bbba17e2b70fa9acb77c69",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96/static-warning-abrupt/native-first/report.json",
+        "sha256": "f6cf2425aaeebb477fc8e3b3d4e6922328b64f4d1a8bb9dfaa9bac1a345f2359"
+      }
+    ],
+    "native_forecast_failure": {
+      "revision": "1597be82c6e3422ac93c557431b8550fd19759ba",
+      "id": "i96-dynamic-static-string-call-binding-warning",
+      "credit": 0,
+      "result": "Original B58 forecast omitted PHP9 suffix from message equality; native printed that single predicate false while all lifecycle/order observations matched. Original source/prediction/aggregatefalse remain. A distinct exact-message observer/native case replaces active B; no source weakening.",
+      "report": "../php-spec-evidence-archive/generator-folded-string-call-96/source-packet/native-first/report.json",
+      "sha256": "5e1468aaeec79fcaabe05b385ffe4f60f6aff813f8069cd216006af39fa596c3"
+    },
+    "dispatch_failure": {
+      "revision": "de610d301d7f4100cdf1c42112d030b8bbed02f6",
+      "credit": 0,
+      "result": "Unchanged A interpreter failure: STRING known-method fallback and182 ordinary call handler both matched. Only210 non-FCC call exclusion added ataf1; FCC Unsupported and producer/scope rules unchanged.",
+      "report": "../php-spec-evidence-archive/generator-folded-string-call-96/validated/generator-folded-string-call-source-76nyeb_3/report.json",
+      "sha256": "168bfbbc5d242811a41b2175930b8769270ad95483efb0dde9d680d9c021d82c"
+    },
+    "warning_lifetime_failure": {
+      "revision": "af1a2522a4b90845928a48b00775816da0ca1726",
+      "credit": 0,
+      "result": "New B NORMAL stdout mismatch: model selected source died before Maker/Token destructors, while native retains it. Only268 binding-warning roots/ordered normal and scoped abrupt release repaired at5da8; affected B retried, A original cut retained.",
+      "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/generator-folded-string-call-source-fx9wtgri/report.json",
+      "sha256": "cad89a4130012e8e376620b8b13daf796b0f5e236411a158fc32c0388fe36a97"
+    },
+    "source_agreements": [
+      {
+        "id": "i96-folded-private-string-call-value-send",
+        "revision": "af1a2522a4b90845928a48b00775816da0ca1726",
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96/validated/generator-folded-string-call-source-bmw8p987/report.json",
+        "sha256": "9502047d3642af8a0b9a639d40d496c0c143827ee469c843ff7ced30c85e7f44"
+      },
+      {
+        "id": "i96-static-string-call-binding-warning-php9",
+        "revision": "5da8e2df56fede0701d9bd891689c6c16a514fcf",
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96/validated/generator-folded-string-call-source-wukrgna0/report.json",
+        "sha256": "777511602e70f09d2bbac566e956b15968954764e39234f5faf3e0c7809f916a"
+      },
+      {
+        "id": "i96-static-string-binding-warning-supplied-throw",
+        "revision": "5da8e2df56fede0701d9bd891689c6c16a514fcf",
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/generator-folded-string-call-source-qrnjrefl/report.json",
+        "sha256": "35018ffbc82dddee568d82a6042b9b17ef9a5e57379e6f61d900443c89fe701a"
+      },
+      {
+        "id": "i96-folded-private-call-fresh-reference-throw-independent",
+        "revision": "5da8e2df56fede0701d9bd891689c6c16a514fcf",
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/generator-folded-string-call-source-xicikmou/report.json",
+        "sha256": "71cc1e30240abfd1e8a0f5c505ce1dedd43a76edc28227b1a5f4e1e4351c8319"
+      }
+    ],
+    "source_result": "Four current exact retained-native NORMAL agreements. Exit0/empty stderr/no timeout/stable HEAD+inputs, sampled CPU4 descendants absent/full reap. A originalcutaf1 retained after268 repair; B affectedretry/C and peer first-runs5da8; no native/I95 renewal.",
+    "compilation": "New source/reached tests compile their actual private433-module manifest in SL/cache-off/determinism-on. No separate unchanged standalone strict replay; inherited I94 standalone433 remains at its original cut without I96 credit.",
+    "state_fronts": [
+      {
+        "id": "i96-folded-copy-api-entry",
+        "revision": "41ce9b6b56ea86fd2cce7c377ac2993e13acd64c",
+        "custom": 115,
+        "reported": 120,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/fiber-state-review-xoihukzu/report.json",
+        "sha256": "7c637690f0d07454e43e5203b0be37832ea3348806fb01f4c6085cc63dfef547"
+      },
+      {
+        "id": "i96-static-string-warning-owners",
+        "revision": "41ce9b6b56ea86fd2cce7c377ac2993e13acd64c",
+        "custom": 34,
+        "reported": 39,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/fiber-state-review-s65zw657/report.json",
+        "sha256": "c5ab829727744a98c4120664c9310c71ebfa8322aed9a88b5e1e86bf9e065e54"
+      },
+      {
+        "id": "i96-static-string-warning-abrupt-cleanup",
+        "revision": "41ce9b6b56ea86fd2cce7c377ac2993e13acd64c",
+        "custom": 51,
+        "reported": 56,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/fiber-state-review-yaxyl780/report.json",
+        "sha256": "d2b93fb3800902c1c397e4a1f0a869555687f6e9a0b76ad2df7285059d8c6467"
+      },
+      {
+        "id": "i96-folded-private-fresh-throw-parked-independent",
+        "revision": "41ce9b6b56ea86fd2cce7c377ac2993e13acd64c",
+        "custom": 198,
+        "reported": 203,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/fiber-state-review-31a2wpx2/report.json",
+        "sha256": "0f4562b16a9a3d6f25c26fd744d36dd99eb38c9318f633fc0ceee37181b82eb2"
+      },
+      {
+        "id": "i96-folded-private-fresh-throw-closed-independent",
+        "revision": "41ce9b6b56ea86fd2cce7c377ac2993e13acd64c",
+        "custom": 118,
+        "reported": 123,
+        "report": "../php-spec-evidence-archive/generator-folded-string-call-96-review/validated/fiber-state-review-eazvszl_/report.json",
+        "sha256": "2c8cd755d00253f7a5d9cf84187827909cd03c5433d1127841f3223d47376d90"
+      }
+    ],
+    "state_counts": {
+      "custom": 516,
+      "reported": 541,
+      "fronts": 5
+    },
+    "actual_tail": {
+      "review": "coverage/semantics/generator-call-series-current-review.json",
+      "tested_revision": "10e99f71acadd330a331cdc015489930b5355b42",
+      "result": "Planned combined strict, selected source and independent owner/cache gates pass; see shared record. Original private cuts/counts are not renewed."
+    },
+    "state_result": "All five first-run fronts true/exit0/empty diagnostics/no timeout/stable HEAD+inputs at41ce9b6; sampled CPU4 descendants absent and exact actor scan empty/full reap. Authored200custom215reported plus peer316custom326reported; no state failures/retries. Initial authored300/peer600 caps unchanged."
+  },
+  "remaining": [
+    "Variable/dynamic nonstatic string rejection remains unchanged; compiler-folded literals and caller-aware API strings keep distinct source policies.",
+    "Broader producer/receiver/signature, packed/computed call and receive/cleanup contexts remain partial.",
+    "This milestone does not close PHP core, feature statuses or paused return verification."
+  ],
+  "reproduction": [
+    "taskset -c 4 python3 tests/semantics/generator_folded_string_call_sources.py --case CASE --native-report RETAINED_NATIVE_REPORT",
+    "taskset -c 4 python3 tests/semantics/generator_folded_string_call_state.py --case CASE",
+    "taskset -c 4 python3 tests/semantics/generator_folded_string_call_review_state.py --case CASE",
+    "External packets preserve source/forecasts/commands/raw streams/full-reap sidecars. Initial source caps600/620; state caps are recorded by the new wrappers before execution."
+  ]
+}

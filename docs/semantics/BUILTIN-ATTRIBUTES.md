@@ -225,55 +225,54 @@ accepted cuts are retained without replay.
 
 ## Post-FINAL tick callback retirement
 
-At the normal post-output endpoint, one cached raw invokable tick entry with
-one copied object argument moves into an executor task. The task owns the
-argument and both FCC slots, even when `FCC.object` and `FCC.closure` name the
-same object. Basic module shutdown frees the argument first, then those two
-slots. The retained shutdown-function list is released by the existing later
-queue. The registration source and selected target remain certified through a
-readonly snapshot after the tick registry is emptied.
+At the post-output endpoint, a nonempty ordered list of source-certified tick
+entries retires one head at a time. Normal completion and a pending exit require
+agreeing saved shutdown/destructor completions; an exit also retains its exact
+stored status. Cleanup runs temporarily NORMAL, then restores the saved
+completion between entries and before later queue/executor cleanup. The task
+owns every copied argument occurrence followed by the independent FCC.object
+and FCC.closure slots.
+Named functions have no cache-object roots; method arrays retain their selected
+receiver; real Closures retain the Closure and any separate bound receiver.
+Raw invokable objects may occupy both FCC slots. The remaining registry entries
+stay rooted until their turn; the shutdown-function queue follows.
 
-Two pinned native sources agree exactly with the model: a FINAL handler creates
-the entry and prints `B;F;A;C;`; a named shutdown function adds `S;` before
-FINAL. Three source-reached states check the three queued release jobs, live
-shutdown entry and callback owner counts 2→1→0. The
-[ATTR11 review](../../coverage/semantics/callback-late-tick-final-review.json)
-records exact cuts and the joined strict check. Other tick-list shapes,
-assertion callbacks, abrupt reentry and later inactive-executor hooks remain
-outside this cut. Output-buffer restart during late destruction is retained as
-an Unsupported control, not a source agreement.
+Cacheless entries with scalar or zero arguments still drain through a real task.
+Tick readiness excludes both the shutdown-queue and final-executor fallbacks,
+even when the tick list has no heap roots. The shared module-owner predicate
+is unchanged. Changed phase completions and abrupt/reentrant cleanup remain
+outside this increment.
 
-With exactly two eligible entries, the first tick task holds only its copied
-argument and two FCC slots; the second entry stays in the tick registry until
-that task finishes. The next task retires the second entry in registration
-order. A pinned native source and the model both print `B;F;A1;C1;A2;C2;`.
-Four source-reached states check the separate roots and each callback's
-2→1→0 owner transition. The [ATTR12 review](../../coverage/semantics/callback-late-tick-pair-review.json)
-records the focused gates and zero-credit failed selector. Other list shapes
-and abrupt module-shutdown paths remain partial.
+Arguments use the existing value-root and recursive release rules. Scalars add
+no heap roots. A copied array contributes one container owner per argument
+occurrence, preserving nested object identities and embedded reference cells.
+Later ordinary writes separate copied containers; writes through an embedded
+alias change the value eventually released. The callback may itself appear as
+an argument or nested array child. Shared containers retain their children until
+the last container owner drops. With the same array in two entries, the first
+callback may retire while the later entry still holds those children; that
+entry then releases the children before its own final FCC slots. A Closure's
+captured values and bound receiver remain child owners until Closure retirement.
 
-The head transfer also applies recursively to any nonempty ordered list of
-the same eligible entries. The saved tail remains rooted until its own turn.
-A three-entry native source prints `B;F;A1;C1;A2;C2;A3;C3;` in both PHP and
-the model; six reached states check first, middle and last task roots and
-2→1→0 callback ownership. A repeated callback object survives both entries
-in a separate exact alias control. The [ATTR13 review](../../coverage/semantics/callback-late-tick-list-review.json)
-records report hashes, retained failures and the joined strict check.
+Registration source and selected-target snapshots remain documentary after
+transfer. Validation reconstructs their retired top-level roots and Closure
+scope/binding metadata without adding real owners or resurrecting released
+children. The source authority is `basic_functions.c:register_tick_function`
+(`ZVAL_COPY`) and `user_tick_function_dtor` (arguments before `zend_fcc_dtor`),
+and `zend_closures.c:zend_closure_free_storage` (owned captured/static values
+before `this_ptr`), with the existing source-authenticated entry and executor-task
+guards.
 
-Within an eligible raw invokable entry, copied arguments may be any finite
-list of objects distinct from that callback. The ordered release task already
-owns every argument occurrence before its two FCC slots. A zero-argument head
-followed by one argument prints `B;F;C1;A2;C2;`; a shared callback followed
-by two arguments prints `B;F;A1;A2;C;`. Repeating the same argument in both
-copied slots retires it once after its second owner drops. Six reached states
-check the shared callback's 4→3→2→1→0 FCC owners and argument order. The
-[ATTR14 review](../../coverage/semantics/callback-late-tick-arguments-review.json)
-records the native/model cuts and remaining payload boundaries.
-
-The callback object may itself occur among those copied object arguments.
-That occurrence adds one root before FCC.object and FCC.closure. In the
-self-only source the callback owns three roots and retires after the last
-slot; with one other object argument, that object's destructor prints `A;`
-before the callback prints `C;`. The [ATTR15 review](../../coverage/semantics/callback-late-tick-self-argument-review.json)
-records two exact native/model sources, seven reached owner stages and the
-joined strict check.
+Four new native-first exit sources agree exactly, including raw invokable,
+captured and bound Closure owners, repeated referenced array arguments and a
+cacheless callback. Saved status 263 remains 263 while the shell observes 7;
+string exit preserves explicit-exit completion even at status 0. One affected
+normal cacheless source also agrees. The
+[ATTR18 review](../../coverage/semantics/callback-late-tick-exit-review.json)
+records six reached groups/176 conditions (12 derived), phase/status guards,
+zero-budget resume and the original source/private compiler cuts.
+The earlier [cache-shape](../../coverage/semantics/callback-late-tick-callables-review.json)
+and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
+evidence keeps its original cuts. Wider callable producers, assertion roots,
+changed phase completions and abrupt/reentrant module shutdown remain partial;
+this is no full lifecycle or core closure.

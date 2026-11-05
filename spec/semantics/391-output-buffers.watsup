@@ -117,6 +117,7 @@ dec $output_final_exception_abort(pstate) : pstate
 dec $executor_boundary(pstate) : text?
 dec $executor_scope(pstate) : bool
 dec $executor_normal_scope(pstate) : bool
+dec $executor_default_start_valid(pstate, pconfigcall) : bool
 def $executor_boundary(S) = eps -- otherwise
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED $ob_user_boundary_reason(S)] -- if ~S.OUTPUTBLOCKED /\ $ob_user_boundary(S)
 def $output_guard(S) = S[.COMPLETION = UNSUPPORTED "reentrant or abrupt output deactivation cleanup"] -- if ~S.OUTPUTBLOCKED /\ ~$ob_user_boundary(S) /\ ~$api_borrowed_receiver_retired(S) /\ $output_deactivate_boundary(S)
@@ -396,7 +397,7 @@ def $ob_notice_valid(S, pobnotice) = true
   -- if $config_invoke_valid(S, pobnotice.CALL)
   -- if S.ORIGIN = (pobnotice.CALL.SITE)
   -- if pobnotice.OWNER = $dir_warning_owner(S, S.FRAMES)
-  -- if pobnotice.CALL.SENT = eps \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ pobnotice.CALL.SENT = [NAMED_SENT (KNOWN PNULL)] /\ ~pobnotice.CALL.NAMED /\ pobnotice.CALL.PACKS = eps)
+  -- if (pobnotice.CALL.KIND =/= INTRINSIC_OB_START /\ pobnotice.CALL.SENT = eps) \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ $executor_default_start_valid(S, pobnotice.CALL))
   -- if $config_slots_valid(S, [NAMED_SENT (KNOWN pobnotice.VALUE)])
   -- if $ob_pop_kind(pobnotice.CALL.KIND) \/ $ob_active_operation(pobnotice.CALL.KIND) \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps /\ pobnotice.VALUE = PBOOL false /\ ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps)
   -- if pobnotice.WRAPPER = false \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.SECOND /\ pobnotice.LEVEL =/= eps)

@@ -1199,6 +1199,54 @@ producer/cleanup and
 abrupt reception contexts remain partial.
 [Reference-call review](../../coverage/semantics/generator-call-reference-review.json).
 
+I94 fake method call copies reuse the existing captured-method Gen/resumer proof.
+Only the copied Closure owns the new This; retired original selection and old
+receiver add no owner. Cache-only reference yields and delivered SEND arguments
+remain separate from that binding, and the copy/This survives CLOSED.
+Native4/source4/private433 retain distinct cuts; five reached fronts pass
+633 custom/658 reported checks.
+Wider producer and abrupt receive contexts remain partial.
+[Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
+
+I95 carries the private fromCallable(string) selection through a bound source and
+the actual Gen call copy. Original and intermediate callables/receivers retire;
+the copied This, cached reference and warm THROW input retain their own owners.
+Live lookup and consumed storage history have disjoint validation paths.
+Three current native/source controls agree at distinct cuts; four reached fronts
+pass 609 custom/629 reported checks. Wider source, binding and abrupt receive contexts remain partial.
+[Bound-source review](../../coverage/semantics/generator-fake-string-call-review.json).
+
+I96 literal private captures reuse the existing copied-method Gen/resumer proof.
+Native fresh-THROW abort releases the unyielded Token at close, retains the copied
+This through CLOSED, and keeps original-Throwable/Previous priority distinct from
+warm input handling. Static binding failure enters no Gen or Fiber transfer;
+its API owners and ordered normal/abrupt cleanup remain separate. Four current
+native/source controls agree; five reached fronts pass 516 custom/541 reported
+checks. Wider source and transfer contexts remain partial.
+[Folded-call review](../../coverage/semantics/generator-folded-string-call-review.json).
+
+I97 parks a reference warning before any Generator resumer exists. The actual
+saved handler and emitting caller retain the pending API cursor for the copy;
+root reentry and CV mutation preserve its selected source and raw snapshot.
+Normal resume continues reference wrapping and Gen creation. Native3/source3 and
+four reached fronts pass 553 custom/573 reported checks at distinct cuts on
+unchanged semantics. Aborts during copied reference warnings, no-Gen receive
+errors and wider contexts remain partial.
+[Warning Fiber review](../../coverage/semantics/generator-call-warning-fiber-review.json).
+
+I98 validates suspension in a warning-return destructor before Gen creation.
+The real destructor context and caller frames move with the five destruction
+lists; the cleanup cursor keeps its copied-call arguments despite root mutation.
+The handler frame has returned, so its active-handler marker supplies no new
+permission. Native2/source2 and three reached fronts pass 459 custom/474 reported
+checks at distinct cuts on unchanged semantics, with no state failures or retries.
+Trace expansion, handler/destructor throws and no-Gen receive contexts remain
+partial.
+[Warning retval review](../../coverage/semantics/generator-call-warning-retval-review.json).
+The [joined review](../../coverage/semantics/generator-call-series-current-review.json)
+records strict433, four source comparisons and 187 custom/192 reported ownership
+checks while preserving every original cut and zero-credit failure.
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
