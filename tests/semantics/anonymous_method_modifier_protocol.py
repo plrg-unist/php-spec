@@ -30,6 +30,11 @@ def $method177_front(S, 2) = true
   -- if S.STORE[n_copy] = DEFINED (POBJECT n)
 def $method177_front(S, 3) = true
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $method177_front(S, 4) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = METHOD_TARGET n porigin
+  -- if $lookup(S.ENV,$ptascii("value")) = (n_value)
+  -- if S.STORE[n_value] = DEFINED (PINT 3)
 def $method177_front(S, n) = false -- otherwise
 dec $method177_seek(pstate, nat, nat) : pstate
 def $method177_seek(S, n_front, 0) = S
@@ -97,12 +102,17 @@ def checks(row, fixture, filename):
                 'pcallcontext.TARGET = METHOD_TARGET n_object pmethoddesc_value.FUNCTION.ORIGIN',
                 'pcallcontext.RECEIVER = (n_object)',
                 r'pcallcontext.LEXICAL_CLASS = (pclassdesc.ORIGIN) /\ pcallcontext.CALLED_CLASS = (pclassdesc.ORIGIN)',
-                '$lookup(S_receive.ENV,$ptascii("value")) = (n_value)',
-                'S_receive.STORE[n_value] = DEFINED (PINT 3)',
+                '$lookup(S_receive.ENV,$ptascii("value")) = eps',
                 '$call_current_valid(S_receive)',
                 '$call_task_valid(S_receive,TYPE_RECEIVE pmethoddesc_value.FUNCTION.ORIGIN 0)',
                 '~$call_task_valid(S_receive,TYPE_RECEIVE pmethoddesc_hidden.FUNCTION.ORIGIN 0)',
-                'S_done = $drive_steps(S_receive[.COMPLETION = NORMAL],8192)',
+                'S_received = $method177_seek(S_receive,4,1000)',
+                r'$method177_front(S_received,4) /\ S_received.COMPLETION = BUDGET',
+                '$lookup(S_received.ENV,$ptascii("value")) = (n_value)',
+                'S_received.STORE[n_value] = DEFINED (PINT 3)',
+                '$call_current_valid(S_received)',
+                'S_received.EVENTS = eps',
+                'S_done = $drive_steps(S_received[.COMPLETION = NORMAL],8192)',
                 *final_checks(row,filename)]
     elif row['id'] == 'method-final-firstclass-clone-self-scope':
         out += ['$method_named(pclassdesc.METHODS,$ptascii("accepts")) = (pmethoddesc)',
