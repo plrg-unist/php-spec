@@ -371,11 +371,23 @@ def $destructor_operation_postfinish(S, pdestructionoperation) = S[.TODO = [DEPR
   -- if $deprecated_handler_exit_operation_source(pdestructionoperation.SOURCE, pdestructioncleanup, z_old, ptask_saved*)
   -- if $deprecated_handler_exit_valid(S[.DESTRUCTION.OPERATIONS = pdestructionoperation :: S.DESTRUCTION.OPERATIONS], pdestructioncleanup, z_old, ptask_saved*)
 
-;; A local destructor can cancel UnwindExit with a fresh throw. Keep the real
-;; caller roots until that cancellation/rethrow protocol is paired.
-def $return_discard(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = S_before[.COMPLETION = UNSUPPORTED "Deprecated constant handler exit cleanup throw"]
+
+;; A fresh local throw cancels UnwindExit. Restore the raw callback while the
+;; actual THROW_SEARCH and released marker protect its pending read, then expose
+;; the genuine caller tail after eager callback destruction finishes.
+def $return_discard(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = $return_discard(S_before[.TODO = (THROW_SEARCH n) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup[.RELEASED = true] z ptask_saved*) :: ptask_tail*], ERROR_HANDLER_RESULT perrorcall)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
   -- if S_before = S[.TODO = (THROW_SEARCH n) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_tail*]
   -- if $deprecated_handler_exit_valid(S_before, pdestructioncleanup, z, ptask_saved*)
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $return_discard(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = S[.TODO = (THROW_SEARCH n) :: ptask_caller*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if S_before = S[.TODO = (THROW_SEARCH n) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_tail*]
+  -- if $deprecated_handler_exit_valid(S_before, pdestructioncleanup, z, ptask_saved*)
+  -- if pdestructioncleanup.RELEASED
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_caller*

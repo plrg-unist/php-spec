@@ -76,10 +76,12 @@ def prepare(out):
         str(ROOT / 'frontend/worker.php')], out / 'frontend')
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter')
     checks = []
+    cancellations = ('local-throw-pending', 'cancel-source-exit3', 'cancel-api-rebind',
+        'cancel-saved-handler-read', 'cancel-saved-handler-fresh-throw', 'cancel-captured-intrinsic')
     selected = ('handler-true', 'handler-false', 'interned-string', 'namespace-identity',
         'source-reference-handler', 'api-reference-handler', 'captured-intrinsic', 'array-source-pending',
         'parameter-cache', 'class-cache', 'relative-null-pending', 'metadata-expression-pending',
-        'exit-shutdown', 'api-exit-shutdown', 'local-throw-pending')
+        'exit-shutdown', 'api-exit-shutdown', *cancellations)
     try:
         for name in selected:
             path = SOURCE / cases[name]['source']; tag = name.replace('-', '_')
@@ -91,22 +93,83 @@ def prepare(out):
                 'P_' + tag + ' = $ppstart(0,U_' + tag + ',' + types.byte_expr(str(path)) + ')']
             if name in ('relative-null-pending', 'metadata-expression-pending'):
                 checks += ['P_' + tag + '.COMPLETION = PPCABRUPT (UNSUPPORTED "Deprecated global constant metadata")']
-            elif name == 'local-throw-pending':
+            elif name in cancellations:
+                state = 'S_frontier_' + tag
+                cleanup = 'pdestructioncleanup_cancel_' + tag
+                saved = 'ptask_cancel_' + tag + '_saved*'
+                tail = 'ptask_cancel_' + tag + '_tail*'
+                error = 'perrorcall_cancel_' + tag
+                initial = 'n_cancel_' + tag
+                current = 'n_cancel_after_' + tag
+                status = 'z_cancel_' + tag
+                marker = 'DEPRECATED_HANDLER_EXIT ' + cleanup + ' ' + status + ' ' + saved
+                released = 'DEPRECATED_HANDLER_EXIT ' + cleanup + '[.RELEASED = true] ' + status + ' ' + saved
+                release = 'S_cancel_released_' + tag
+                resume = 'S_cancel_resume_' + tag
                 checks += ['P_' + tag + '.COMPLETION = PPCNORMAL',
                     'S_' + tag + ' = $php_run(U_' + tag + ',0,' + json.dumps(b64(bytes(path))) + ')',
                     'S_' + tag + '.COMPLETION = BUDGET',
-                    'S_frontier_' + tag + ' = $dep_throw_pause(S_' + tag + '[.COMPLETION = NORMAL],10000)',
-                    'S_frontier_' + tag + '.TODO = (THROW_SEARCH n_cleanup_throw) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw z_cleanup_throw ptask_cleanup_throw*) :: eps',
-                    '$call_descriptors_valid(S_frontier_' + tag + ')',
-                    '$deprecated_global_protected(S_frontier_' + tag + ',$ptascii("X"))',
-                    'PhpStep: S_frontier_' + tag + ' ~> S_cleanup_throw_refusal',
-                    'S_cleanup_throw_refusal.COMPLETION = UNSUPPORTED "Deprecated constant handler exit cleanup throw"',
-                    'S_cleanup_throw_refusal.TODO = S_frontier_' + tag + '.TODO',
-                    '$call_descriptors_valid(S_cleanup_throw_refusal)',
-                    '$task_nodes(DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw z_cleanup_throw ptask_cleanup_throw*) = $tasks_nodes(ptask_cleanup_throw*)',
-                    'S_cleanup_throw_drop = S_frontier_' + tag + '[.TODO = [THROW_SEARCH n_cleanup_throw]]',
-                    '$return_discard(S_cleanup_throw_drop,DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw[.SOURCE = DISCARD] z_cleanup_throw ptask_cleanup_throw*) = S_cleanup_throw_drop',
-                    '~$call_descriptors_valid(S_frontier_' + tag + '[.TODO = [(THROW_SEARCH $(n_cleanup_throw + 100)),(DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw z_cleanup_throw ptask_cleanup_throw*)]])']
+                    state + ' = $dep_throw_pause(S_' + tag + '[.COMPLETION = NORMAL],10000)',
+                    state + '.TODO = (THROW_SEARCH ' + initial + ') :: (' + marker + ') :: eps',
+                    cleanup + '.SOURCE = ERROR_HANDLER_RESULT ' + error,
+                    '~' + cleanup + '.RELEASED',
+                    saved + ' = (ERROR_HANDLER_RESULT ' + error + ') :: ' + tail,
+                    '$call_descriptors_valid(' + state + ')',
+                    '(HOBJECT ' + initial + ') <- $machine_roots(' + state + ')',
+                    '$deprecated_global_protected(' + state + ',$ptascii("X"))',
+                    'S_cancel_step_' + tag + ' = $drive_steps(' + state + ',1)',
+                    'S_cancel_step_' + tag + '.COMPLETION = BUDGET',
+                    release + ' = $dep_throw_pause(S_cancel_step_' + tag + '[.COMPLETION = NORMAL],10000)',
+                    release + '.TODO = (THROW_SEARCH ' + current + ') :: (' + released + ') :: eps',
+                    '$call_descriptors_valid(' + release + ')',
+                    release + '.EXITSTATUS = ' + state + '.EXITSTATUS',
+                    '$deprecated_global_protected(' + release + ',$ptascii("X"))',
+                    '(HOBJECT ' + current + ') <- $machine_roots(' + release + ')',
+                    '$task_nodes(' + released + ') = $task_nodes(' + error + '.RESUME) ++ $tasks_nodes(' + tail + ')',
+                    'PhpStep: ' + release + ' ~> ' + resume,
+                    resume + '.TODO = (THROW_SEARCH ' + current + ') :: ' + tail,
+                    resume + '.EXITSTATUS = ' + state + '.EXITSTATUS',
+                    resume + '.CURRENT = ' + state + '.CURRENT',
+                    resume + '.CONSTCONTEXT = ' + state + '.CONSTCONTEXT',
+                    '~$deprecated_global_protected(' + resume + ',$ptascii("X"))',
+                    '$call_descriptors_valid(' + resume + ')',
+                    'S_cancel_done_' + tag + ' = $drive(' + resume + ',10000)',
+                    'S_cancel_done_' + tag + '.COMPLETION = NORMAL',
+                    'S_cancel_done_' + tag + '.EXITSTATUS = ' + str(cases[name].get('exit_status', 0)),
+                    '$call_descriptors_valid(S_cancel_done_' + tag + ')']
+                if name == 'cancel-saved-handler-fresh-throw':
+                    checks += [current + ' =/= ' + initial,
+                        '$throwable_field(' + release + ',' + current + ',"previous") = POBJECT ' + initial]
+                else:
+                    checks += [current + ' = ' + initial]
+                if name.startswith('cancel-saved-handler'):
+                    checks += [error + '.CALLBACK = POBJECT n_saved_callback_' + tag,
+                        '~((HOBJECT n_saved_callback_' + tag + ') <- ' + release + '.ALLOCATIONS)']
+                if name in ('cancel-api-rebind', 'cancel-captured-intrinsic'):
+                    config = 'pconfigcall_cancel_' + tag
+                    prefix = 'n_cancel_prefix_' + tag
+                    checks += [error + '.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT ' + config + ' ' + prefix,
+                        '$deprecated_api_query(' + config + ') = ($ptascii("X"))']
+                    if name == 'cancel-captured-intrinsic':
+                        bad_error = 'perrorcall_cancel_bad_owner'
+                        bad_cleanup = cleanup + '[.SOURCE = ERROR_HANDLER_RESULT ' + bad_error + ']'
+                        bad_saved = '((ERROR_HANDLER_RESULT ' + bad_error + ') :: ' + tail + ')'
+                        bad_marker = 'DEPRECATED_HANDLER_EXIT ' + bad_cleanup + ' ' + status + ' ' + bad_saved
+                        checks += [config + '.OWNER = (n_cancel_intrinsic_owner)',
+                            '(HOBJECT n_cancel_intrinsic_owner) <- $task_nodes(' + marker + ')',
+                            '(HOBJECT n_cancel_intrinsic_owner) <- $task_nodes(' + released + ')',
+                            '(HOBJECT n_cancel_intrinsic_owner) <- $machine_roots(' + release + ')',
+                            '~((HOBJECT n_cancel_intrinsic_owner) <- $machine_roots(' + resume + '))',
+                            '~((HOBJECT n_cancel_intrinsic_owner) <- S_cancel_done_' + tag + '.ALLOCATIONS)',
+                            bad_error + ' = ' + error + '[.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT ' + config + '[.OWNER = (100000)] ' + prefix + ']',
+                            'S_cancel_bad_owner = ' + state + '[.TODO = [(THROW_SEARCH ' + initial + '),(' + bad_marker + ')]]',
+                            '~$call_descriptors_valid(S_cancel_bad_owner)']
+                if name == 'local-throw-pending':
+                    drop = 'S_cancel_drop_' + tag
+                    checks += [drop + ' = ' + state + '[.TODO = [THROW_SEARCH ' + initial + ']]',
+                        '$return_discard(' + drop + ',DEPRECATED_HANDLER_EXIT ' + cleanup + '[.SOURCE = DISCARD] ' + status + ' ' + saved + ') = ' + drop,
+                        '$return_discard(' + drop + ',DEPRECATED_HANDLER_EXIT ' + cleanup + ' $(' + status + ' + 1) ' + saved + ') = ' + drop,
+                        '~$call_descriptors_valid(' + state + '[.TODO = [(THROW_SEARCH $(' + initial + ' + 100)),(' + marker + ')]])']
             elif name in ('exit-shutdown', 'api-exit-shutdown'):
                 checks += ['P_' + tag + '.COMPLETION = PPCNORMAL',
                     'S_' + tag + ' = $php_run(U_' + tag + ',0,' + json.dumps(b64(bytes(path))) + ')',
