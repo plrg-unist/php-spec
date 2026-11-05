@@ -416,9 +416,13 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFor phpType25_init phpType2
   -- if T_init = $tick_nodes(T, pcodeexpr*, $pcfield_phpType25(phpType25_init, pcpath ++ [PCFIELD 0]))
   -- if T_body = $tick_control_body(T_init[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], statement*, metadata)
   -- if T_loop = $tick_nodes(T_body, pcodeexpr*, $pcfield_phpType25(phpType25_loop, pcpath ++ [PCFIELD 2]))
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtForeach expression phpType5 phpType4 expression_value (SEQUENCE statement*) phpType4_ref metadata, b) = $tick_control_body(T_input[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 4], statement*, metadata)[.LAST = false][.LINE = $source_line(metadata)]
-  -- if ~$tick_contains_nodes($pcfield_phpType5(phpType5, eps)) /\ ~$tick_function_nodes($pcfield_phpType5(phpType5, eps)) /\ ~$tick_functions(expression_value)
+;; FE_RESET/FETCH precede target compilation. Zend assigns the value target,
+;; then the key target, before compiling the body, including for an empty input.
+;; Real assignments separate each target's nested callable op arrays.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtForeach expression phpType5 phpType4 expression_value (SEQUENCE statement*) phpType4_ref metadata, b) = $tick_control_body(T_key[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 4], statement*, metadata)[.LAST = false][.LINE = $source_line(metadata)]
   -- if T_input = $tick_expression(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
+  -- if T_value = $tick_node(T_input[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], expression_value)
+  -- if T_key = $tick_nodes(T_value[.LAST = false], pcodeexpr*, $pcfield_phpType5(phpType5, pcpath ++ [PCFIELD 1]))
 
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtTryCatch (SEQUENCE statement*) (SEQUENCE phpType66*) phpType67 metadata, b) = $tick_finally($tick_catches(T_body, pcodeexpr*, pcpath, 0, phpType66*), pcodeexpr*, pcpath, phpType67)
   -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, statement*, false)
