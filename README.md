@@ -3892,6 +3892,10 @@ GC25 also admits repeated direct edges to the same childless stdClass in
 that array. A pinned weak-lifetime source and 127 new plus three affected
 reached groups check two edges, one buffer slot and release after Closure
 death. See the [duplicate-edge review](coverage/semantics/gc-duplicate-edge-review.json).
+GC26 admits a direct childless stdClass capture that also occurs in the
+captured array. Both capture orders agree with pinned PHP; two reached D-state
+groups verify the separate edges, one leaf buffer slot and weak lifetime.
+See the [shared-capture review](coverage/semantics/gc-shared-capture-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit

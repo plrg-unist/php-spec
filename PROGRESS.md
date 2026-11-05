@@ -398,7 +398,8 @@ Reversed capture order, three mixed-key leaves and post-capture COW give
 three exact source pairs. Strict reached checks pass 113+146 assertions,
 and the corrected GC23 group passes 110. Its original duplicate-identity
 refusal is superseded by GC25; shared separate captures, aliases, nested
-arrays and user-destructor children remain refused. Earlier Unsupported,
+arrays and user-destructor children remained refused at the GC24 cut; GC26
+admits the bounded shared-capture case. Earlier Unsupported,
 overlap and fixture failures retain
 zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
 
@@ -410,6 +411,16 @@ pass 127 new and affected GC21/22/24 groups 137+140+147, proving two
 physical edges, one leaf buffer slot, owners 2/2, black D protection and
 nested-array refusal. The source-only Unsupported and first fixture error
 retain zero credit. [GC25 review](coverage/semantics/gc-duplicate-edge-review.json).
+
+GC26 admits one finite captured array together with direct captures of
+childless stdClass leaves already present in that array. Forward and reversed
+capture orders match pinned PHP exactly, including weak liveness after the
+call and death after Closure release. Two strict D-state groups pass 146
+assertions each, proving separate Closure and array edges to the leaf, one
+buffer slot, owners 2/2/3 and black protection. Pre-edit Unsupported and a
+corrected P4 helper compile failure retain zero credit. Other captured
+object layouts and nested or destructor-bearing graphs remain partial.
+[GC26 review](coverage/semantics/gc-shared-capture-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
