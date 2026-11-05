@@ -28,6 +28,8 @@ $call_task_valid(S, EXIT_INVOKE pexitcall)
 $default_ctor_context_valid(S, pcallcontext_ctor)
 pframe_receive.CONTEXT = (pcallcontext_receive)
 pcallcontext_receive.TARGET = CLOSURE_TARGET n_copy
+pcallcontext_receive.RECEIVER = (n_maker)
+$call_receiver_roots(pcallcontext_receive) = eps
 pframe_receive.TODO = (DEFAULT_CTOR_RESULT pdefaultctor) :: ptask_default_tail*
 pdefaultctor.NEW.OBJECT = n_default
 pframe_api.CONTEXT = eps
@@ -86,7 +88,7 @@ $heap_owners($heap_graph(S), HOBJECT n_copy) = 2
 $heap_owners($heap_graph(S), HOBJECT n_source) = 1
 $heap_owners($heap_graph(S), HOBJECT n_old) = 1
 $heap_owners($heap_graph(S), HOBJECT n_capture) = 2
-$heap_owners($heap_graph(S), HOBJECT n_maker) = 3
+$heap_owners($heap_graph(S), HOBJECT n_maker) = 2
 $heap_owners($heap_graph(S), HOBJECT n_pending) = 2
 $heap_owners($heap_graph(S), HOBJECT n_default) = 2
 pclosurecall_bad_site = pclosurecall[.SITE = PORIGIN 999 eps]
