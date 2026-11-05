@@ -1538,7 +1538,8 @@ def $enum_is_callable_capture(S, pconfigcall) = (penumqueryinput)
   -- if ~$foreach_released_cell(S, n_cell)
   -- if $enum_array_string_valid(S, pvalue_input)
   -- if $string_bytes(pvalue_input) = (ptbytes_input)
-  -- if penumqueryinput = {CALL pconfigcall, ARGUMENT porigin_target, LINE z_target, DEPTH |S.FRAMES|, VALUE ptbytes_input}
+  -- if n_depth = |S.FRAMES|
+  -- if penumqueryinput = {CALL pconfigcall, ARGUMENT porigin_target, LINE z_target, DEPTH n_depth, VALUE ptbytes_input}
   -- if $enum_is_callable_input_source(S, penumqueryinput)
 def $enum_is_callable_capture(S, pconfigcall) = eps -- otherwise
 def $enum_is_callable_capture_argument(S, pconfigcall) = ($enum_is_callable_capture(S, pconfigcall) =/= eps)
