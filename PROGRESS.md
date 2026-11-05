@@ -376,6 +376,16 @@ corrected P4 helper compile failure retain zero credit. Other captured
 object layouts and nested or destructor-bearing graphs remain partial.
 [GC26 review](coverage/semantics/gc-shared-capture-review.json).
 
+GC27 admits finite direct capture graphs with at least two mutable array
+occurrences under the same authenticated active Closure root. Distinct arrays
+may share childless stdClass leaves; repeated array captures retain each owner
+with at most one candidate slot per identity. Three originals agree exactly,
+including a reordered three-array graph with an unrelated direct leaf and final weak death.
+Three strict D-state groups pass 204+146+193 assertions, independent review
+passes 73, and both affected GC26 groups pass 148. Nested, reference, proxy and finalizer graphs
+remain partial; the hidden Closure capture table remains black under the real
+caller root. [GC27 review](coverage/semantics/gc-multi-array-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
