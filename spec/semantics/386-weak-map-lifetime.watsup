@@ -147,6 +147,18 @@ def $weakmap_write_value_allowed(S, paccess) = true
 def $weakmap_write_value_allowed(S, paccess) = false -- otherwise
 dec $weakmap_shared_registration(pstate, nat, nat, pweakmapvalue) : bool
 dec $weakmap_shared_replacement(pstate, nat, nat, pweakmapvalue) : bool
+;; Weak keys are object identities. Preserve the ordinary leaf producer and
+;; admit known internal handlers without copying their outgoing ownership.
+dec $weakmap_insert_key(pstate, nat) : bool
+def $weakmap_insert_key(S, n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE /\ ~$instance_storage_freeing(S, n)
+  -- if $node_children(S, HOBJECT n) = eps
+def $weakmap_insert_key(S, n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $weakref_object(S.OBJECTS[n]) \/ $weakmap_object(S.OBJECTS[n])
+  -- if ~$instance_storage_freeing(S, n)
+def $weakmap_insert_key(S, n) = false -- otherwise
 dec $weakmap_write_allowed(pstate, paccess) : bool
 def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
@@ -168,9 +180,7 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
   -- if S.OBJECTS[n_map] = WEAKMAP eps
   -- if paccess.OFFSET = POBJECT n_key
-  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
-  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_insert_key(S, n_key)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps \/ $weakmap_shared_registration(S, n_map, n_key, paccess.VALUE)
   -- if $weakmap_write_value_allowed(S, paccess)
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
@@ -635,12 +645,19 @@ def $instance_storage_basic(S, pinstancestorage) = true
   -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
   -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
 
+;; Ordinary internal-key hooks need callback continuations. Stop before
+;; generic retirement can silently leave their incoming Map values owned.
+def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "ordinary internal weak-key notification"]
+  -- if $weakref_object(S.OBJECTS[n]) \/ $weakmap_object(S.OBJECTS[n])
+  -- if $weakmap_key_waiting(S, n)
 def $destruction_storage_free(S, HOBJECT n_map, pdestructionrelease) = $destructor_release_begin($gc_store_retire($instance_storage_called(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n_map, HANDLE S.DESTRUCTION.HANDLES[n_map], SLOTS eps, NEXT 0, NOTIFY $weakref_find(S, S.ALLOCATIONS, n_map), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n_map), HOBJECT n_map), $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
   -- if $weakmap_free_allowed(S, n_map, pdestructionrelease)
+  -- if ~$weakmap_key_waiting(S, n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "nonempty WeakMap storage destruction"]
   -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
   -- if ~$weakmap_free_allowed(S, n, pdestructionrelease)
+  -- if ~$weakmap_key_waiting(S, n)
 dec $weakmap_nonempty_node(pstate, pnode) : bool
 def $weakmap_nonempty(S, eps) = false
 def $weakmap_nonempty(S, pnode :: pnode_tail*) = true -- if $weakmap_nonempty_node(S, pnode)

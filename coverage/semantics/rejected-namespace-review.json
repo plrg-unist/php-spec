@@ -1,0 +1,77 @@
+{
+  "milestone": "COMP172",
+  "status": "Independently reviewed behavior and actual-parent composition; ready for guarded integration.",
+  "base": "8a4c5e97b450fc2133f222cb601c1b1dc75b83bd",
+  "branch": "semantics/dynamic-source-next-172",
+  "raw_root": "../php-spec-evidence-archive/comp172",
+  "behavior": "Rejected eval/file units preserve completed encoding headers after nested namespace reductions. A later parser rejection precedes namespace compilation, so no namespace compiler fatal or user work occurs. Real grammar errors stop collection; authored rules still stop warnings at the first nonliteral encoding.",
+  "implementation": "Five lines override checkNamespace only in RejectedHeaderParser. Zend zend_compile_namespace checks nesting during compilation; PHP-Parser ParserAbstract::checkNamespace checks it during grammar reduction. Ordinary parsing and other validations remain active; accepted lexers/native helper/worker/adapter/schema/P4 rules are unchanged. The existing main-source test runner accepts an explicit suite folder and watched wrapper while retaining its old defaults.",
+  "oracle": {
+    "target": "PHP 8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; include_path=.: in source runs; reached startup reporting30719/0",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "native_baseline": {
+    "head": "05e07b4bd659d56ebc6c960308ea431200bf55d8",
+    "report": "review-namespace-v1/report.json",
+    "scope": "Twenty native/frontend observations: eight rejected and two complete namespace shapes in eval/file modes. Six real prefix-admission refusals after nested namespaces; mixed/code-before, earlier syntax, inner nonliteral and incomplete outer-body controls distinguish phases. Complete controls retain accepted frontend syntax and native compile fatal255. Original bytes/streams/status are preserved; no model credit."
+  },
+  "wrapper_preparation": {
+    "head": "5f4487d85873168004bcce41f6a2e42a84d75686",
+    "report": "campaign-v1/wrapper-check/report.json",
+    "scope": "Sixteen wrappers parse; each of eight eval scalar values exactly equals its retained original unit bytes. Preparation only; unchanged by the later one-line service correction."
+  },
+  "validation": {
+    "head": "e660b42aad946af98dac0c997b49e4d2976a240a",
+    "service": {
+      "controls": 24,
+      "report": "service-v2/report.json",
+      "scope": "Twenty actual eval/file replies plus ordinary-parser validation, recursive nesting, real grammar-stop and other-validation probes. Native stderr custody3120 bytes; worker/probe exit0."
+    },
+    "dynamic_sources": {
+      "agreements": 16,
+      "report": "sources-v2/report.json",
+      "command": "python3 tests/semantics/namespace_rejected_sources.py --output <external sources-v2>"
+    },
+    "main_sources": {
+      "agreements": 4,
+      "report": "main-v2/report.json",
+      "command": "python3 tests/semantics/namespace_main_rejected_sources.py --output <external main-v2>"
+    },
+    "independent_reached": {
+      "premises": 100,
+      "module_count": 435,
+      "report": "state-v2/report.json",
+      "scope": "Exact nested-repeat eval unit under genuine default/startup0 reporting; handler, free stdClass handle, pending source/unit identity, warning order, failed record/no child AST/CODE/bindings, handle reuse, public zero-budget continuation, catch/finally output and wrong-unit/bytes/replay refusals. SL true/exit0/empty stderr; adapter/frontend exit0."
+    },
+    "affected_main": {
+      "agreements": 2,
+      "report": "affected-main-v2/report.json",
+      "selection": [
+        "repeated-headers-default",
+        "lexical-comment-default"
+      ]
+    },
+    "stability": "All actual heads/inputs stable; raw native/model streams/status agree. Full packet and private cmdline/cwd/exe/fd reap empty in campaign-v2/reap.json; CPU5 directly returned."
+  },
+  "preserved_failure": {
+    "head": "5f4487d85873168004bcce41f6a2e42a84d75686",
+    "reports": [
+      "campaign-v1/report.json",
+      "service-v1/report.json"
+    ],
+    "detail": "Ordinary-parser probe expected one diagnostic while its root encoding statement also caused code-outside-braced-namespace validation. Whole service gate false/zero credit; source/state groups unrun. One-line fixture-only correction isolates nested namespaces; production expectations were not weakened."
+  },
+  "scope_limits": "Trusted raw-profile worker receipts remain explicit foreign facts, not proof from source bytes. No partial AST is compiled, and unexplained native/foreign prefixes still refuse. Multibyte conversion and wider core behavior remain partial. No old syntax,once/runtime or other historical gate is renewed; held paths are untouched. No engine bug or intentional divergence claimed.",
+  "review": "Independent private production/test CLEAR exact e660 after inspecting all20 new and two affected raw source pairs, service24 and reached100. Documentation/inventory CLEAR at1f6a692c7cd2be6d7835166bd37115817ac7e591; actual-parent pointwise compatibility CLEAR at96139ea954433ddc2820bc5621408dd972185d07. This final completion changes only the existing ledger.",
+  "composition": {
+    "head": "96139ea954433ddc2820bc5621408dd972185d07",
+    "parent": "46d85f2f01768b761f9eab9717ee0ac05b4c49d4",
+    "review": "Independent review of all eight incoming production paths: worker readonly anonymous-Class metadata and136/238/383 class/property/trait branches are unselected, as are420 Iterator CONFIG and386/422 WeakReference/WeakMap write/free paths. The444 standard StdClass/Throwable branch remains exact; empty weak associations make notification/maps identity, with failed/unknown short-circuit preserving that result. No state/initial/manifest/service-domain change; own rejected parser, native, adapter/schema,445/446 and tests remain private-exact. Accepted e660 executions and5f4 preparation keep their original identities; no joined run is warranted or claimed."
+  }
+}

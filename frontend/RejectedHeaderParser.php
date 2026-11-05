@@ -27,6 +27,11 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
     public array $headers = [];
     public bool $parsingStarted = false;
 
+    protected function checkNamespace(PhpParser\Node\Stmt\Namespace_ $node): void {
+        // Zend checks namespace nesting during compilation. Rejected units
+        // never reach that phase; later grammar reductions still count.
+    }
+
     protected function doParse(): ?array {
         // Lexing inspects the complete source before grammar reductions start.
         // Retain only tokens before its first error, then let the real parser

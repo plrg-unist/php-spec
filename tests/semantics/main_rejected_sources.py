@@ -17,8 +17,8 @@ b64 = lambda data: base64.b64encode(data).decode()
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def expected(case):
-    path = SOURCE / case['source']; records = []
+def expected(case, source=SOURCE):
+    path = source / case['source']; records = []
     reporting = int(case['reporting'])
     if reporting & 128:
         records += [b'Warning: ' + MESSAGE + b' in ' + bytes(path) + b' on line '
@@ -35,20 +35,20 @@ def expected(case):
     return b'', b''
 
 
-def main():
+def main(source=SOURCE, extra_inputs=()):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--select', help='comma-separated profile IDs')
     args = parser.parse_args(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
-    cases = json.loads((SOURCE / 'cases.json').read_text())
+    cases = json.loads((source / 'cases.json').read_text())
     if args.select:
         names = args.select.split(',')
         assert len(names) == len(set(names)) and set(names) <= {case['id'] for case in cases}
         cases = [case for case in cases if case['id'] in names]
     assert cases and sha(ROOT / '.tools/php/bin/php') == ORACLE
-    hashes = json.loads((SOURCE / 'hashes.json').read_text())
-    assert hashes == {name: sha(SOURCE / name) for name in hashes}
-    watched = [Path(__file__), *(ROOT / name for name in (
+    hashes = json.loads((source / 'hashes.json').read_text())
+    assert hashes == {name: sha(source / name) for name in hashes}
+    watched = [Path(__file__), *extra_inputs, *(ROOT / name for name in (
         'adapter/main.ml', 'bin/php-semantics', 'spec/php.watsup', 'spec/schema.json',
         'spec/semantics/modules.json', 'spec/semantics/446-rejected-main-source.watsup',
         'spec/semantics/445-rejected-source-headers.watsup', 'spec/semantics/101-error-suppression.watsup',
@@ -57,7 +57,7 @@ def main():
         'frontend/worker.php', 'frontend/RejectedHeaderParser.php', 'frontend/FileLexer.php',
         '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe',
         'tests/semantics/profile.json', 'tests/semantics/error_handler_run.py')),
-        SOURCE / 'hashes.json', *(SOURCE / name for name in hashes)]
+        source / 'hashes.json', *(source / name for name in hashes)]
     inputs = {str(path): sha(path) for path in watched}
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_text()); profile['include_path'] = '.:'
@@ -66,10 +66,10 @@ def main():
               'records': [], 'agreements': 0, 'passed': False}
     try:
         for case in cases:
-            dest = out / case['id']; dest.mkdir(); path = SOURCE / case['source']
+            dest = out / case['id']; dest.mkdir(); path = source / case['source']
             flags = {**profile, 'error_reporting': case['reporting'], 'display_errors': case['display']}
             argv = [flag for key, value in flags.items() for flag in ('-d', key + '=' + value)]
-            stdout, stderr = expected(case)
+            stdout, stderr = expected(case, source)
             row = {'id': case['id'], 'profile': flags, 'source_sha256': sha(path)}
             report['records'].append(row)
             native = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *argv, str(path)], dest / 'native', 10)

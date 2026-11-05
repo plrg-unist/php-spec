@@ -3189,13 +3189,17 @@ separate reporting bits and startup display. Thirty-seven source profiles and
 retains declarations inside interpolation before a later bad Unicode segment,
 including heredocs. Thirty-five source cases and 200 reached conditions pass;
 accepted lexers, the receipt schema and authored runtime rules are unchanged.
+Rejected sources also retain later headers after completed nested namespaces,
+whose static validation belongs to compilation. Sixteen dynamic and four main
+comparisons plus 100 reached conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
 [rejected-unit review](coverage/semantics/encoding-rejection-review.json),
 [lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
 [main-rejection review](coverage/semantics/main-source-rejection-review.json),
-[rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json).
+[rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
+[namespace-phase review](coverage/semantics/rejected-namespace-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3575,9 +3579,18 @@ in registration order before its value releases; surviving slot positions preser
 nonadjacent equal values and later Map release order. Key fields wait until
 notifications finish, and an earlier fatal retains pending owners. Nine exact
 source/request contexts and 951 reported checks cover selective/nested cleanup
-and reference cells in both allocator modes. Internal Map/WeakReference and custom
-Closure key hooks, active free pins and wider diagnostics remain partial.
+and reference cells in both allocator modes. At that cut, internal Map/WeakReference
+and custom Closure key hooks, active free pins and wider diagnostics remained partial.
 [Key notification review](coverage/semantics/gc-key-notify-review.json).
+
+GC33 admits allocated WeakReference/WeakMap identities at first Map insertion.
+Terminal WeakReference cleanup unregisters its referent before incoming entries;
+Map cleanup unregisters outgoing keys and releases its own values first. Earlier
+fatals retain the untouched phase's owners. Nine exact contexts and 866 reported
+conditions cover shared/self/cross-linked keys and both allocator modes. Ordinary
+internal-Key callbacks remain explicitly Unsupported; later producer policies,
+weak Closure keys and active free pins remain partial.
+[Compound key review](coverage/semantics/gc-compound-key-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
