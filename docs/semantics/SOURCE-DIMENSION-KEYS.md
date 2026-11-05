@@ -13,6 +13,17 @@ and rebinding. NaN emits the ordered range and precision notices. Handler false
 fallback keeps that sequence; a throw skips the read and subsequent assignment,
 preserving the original exception and typed destination.
 
+Captured key consumers project string-carrier bytes through the ordinary
+string-key classification. Saved operands keep their original
+identity; `'7'` selects an integer key while `'07'` remains a string key, and
+separate runtime carriers with equal bytes address the same entry. This also
+lets captured writes and unset consume their real task after successful key
+conversion. Previously the conversion kernel accepted carriers while the selector
+returned no key, leaving the write task pending after successful conversion. The
+[carrier review](../../coverage/semantics/tick-key-carrier-review.json) records
+the genuine fixed point, completed registered-handler/coalesce original and
+independent numeric, identity and write/unset checks.
+
 Table ownership follows the source operands. Direct CV arrays remain borrowed;
 computed/nested results retain their genuine temporary owner. The native
 conversion protection can cause COW but does not become a permanent owner.

@@ -311,9 +311,9 @@ and static-diagnostic omission. Coalescing plans preserve quiet reads and lazy
 fallback execution while compiling fallback bodies and memoizing assignment target
 children in Zend order. Grouped Echo operands run their own ticks before the
 next operand is evaluated, preserving late CV reads, callback aborts and each
-operand's compiler line/frequency through output callbacks. Registered-handler
-callable-key assignment retains an open quiet-reader composition/performance
-obligation.
+operand's compiler line/frequency through output callbacks. Captured string-carrier
+keys preserve saved identities while using byte/numeric-string classification,
+so registered-handler callable-key writes and equal-byte unset operations progress.
 
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;

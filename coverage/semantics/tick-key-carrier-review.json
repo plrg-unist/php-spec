@@ -1,0 +1,89 @@
+{
+  "milestone": "ATTR34: captured string-carrier key progress",
+  "status": "Independently accepted bounded implementation; broader key/lifecycle and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "b9aa979c7",
+    "module": "spec/semantics/233-dimension-key-continuations.watsup",
+    "sha256": "8b3d6e2165fea366332aa44be61881e497113b0276991535284808c22781ec39",
+    "scope": "One shared key_selected_key arm delegates PSTRING_CARRIER identity/bytes to the existing plain-string key classifier. It projects only a pkey; saved input identities, ownership and string arena stay intact. No state/task/schema or242/249 write-protocol edits."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_execute.c",
+    "symbols": [
+      "zend_fetch_dimension_address_inner",
+      "ZEND_HANDLE_NUMERIC"
+    ],
+    "existing_kernel": "spec/semantics/36-arrays.watsup:key_value already classifies string-carrier bytes through the plain-string kernel."
+  },
+  "diagnosis": {
+    "kind": "Proven semantic fixed point, not slow execution or Unsupported",
+    "actual_original": "tests/semantics/tick_coalesce_reader.php",
+    "fixed_point_report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-reader-34/fixed-point-v1/process.json",
+    "fixed_point_sha256": "223498ef2157f718b1f7a3511c3c6f22cc571c98abb1836fcc2acba944cedc4c",
+    "fixed_point_stdout_sha256": "f2e81bc2ec917d12b0671e2fe928745ff84a04db8b6d1db2e2cbce05c64f57af",
+    "observation": "At genuine step160, KEY_WRITE_DIM holds an interned string carrier k. key_selected_key returns eps. dimension_key_value converts it successfully to KSTRING k but leaves the task pending; two consecutive actual steps return identical full states after that conversion.",
+    "localization": [
+      "steps0/100 and the scalar-RHS handler/no-handler split remain in tick-coalesce-32",
+      "next-steps-accepted33 verifies AT unwrap and borrowed base fetch at101/102",
+      "dimension-steps-v1 verifies quiet lookup already returns NULL by104 and RHS capture at110",
+      "rhs-write-steps-v1 reaches RETURN_VALUE9 at130 and KEY_WRITE_DIM at160"
+    ],
+    "cause": "233 omitted carriers while36 accepted them.242 key_write_value therefore took its converter-only eps fallback and returned a NORMAL state without lookup/key_write_done, creating nonprogress. The shared projection selects the correct ordinary lookup path."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-reader-34/strict-report-v1.json",
+      "sha256": "43a766c8d043139148a4b3946860e6255aa70c43a33f305f0fcdd26a31643208",
+      "revision": "2e243901a0466c4c7e3118692827a4f3263f3312",
+      "passed": true,
+      "modules": 438
+    },
+    "promoted_original": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-reader-34/source-original-v1/report.json",
+      "sha256": "27e4f4046c76cac1fc8791190583fa092088071649f91244964c63c23b6f20e7",
+      "revision": "2e243901a0466c4c7e3118692827a4f3263f3312",
+      "passed": true,
+      "agreements": 1,
+      "source_sha256": "00578f3d9c41340709339343c99f4493c455fba70ad102152bf1c5cfb02dd2d0",
+      "scope": "The exact registered-handler/callable-key/coalesce program previously timing out now completes KTRT9ZWT at the default60s allowance."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-coalesce-reader-34/source-review-v1/report.json",
+      "sha256": "7fcba7fec53fc89e5043ef37699bdb22b9f58f3d406e0b4fc7979edb61f49488",
+      "revision": "2e243901a0466c4c7e3118692827a4f3263f3312",
+      "passed": true,
+      "agreements": 2,
+      "scope": "Interned user-call keys7/07 retain integer/string distinction; separate runtime-concat carriers with equal bytes address one entry through captured assignment/unset."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-key-carrier-34/review-protocol-v1/run/report.json",
+      "sha256": "23c75fcb066ab03d77aa708ac038f12ae1671638bb1a8f6b2ac6e07d531718fa",
+      "revision": "d1a110848910a5011a9729f852b02962725fd7cc",
+      "passed": true,
+      "groups": 3,
+      "reported_conditions": 140,
+      "group_conditions": [
+        46,
+        45,
+        49
+      ],
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "process": "/home/user/workspace/php-spec-evidence-archive/tick-key-carrier-34/review-protocol-v1/process.json",
+      "process_sha256": "2ce5fd2fbebf4ec692f8922b3d34d0c1c2a75073c3a1ae65987ffd51ea85f591",
+      "scope": "Genuine original/padded KEY_WRITE_DIM consumes in one step and reaches the selected element while retaining the writer input and string arena. KINT7 remains separate from padded string07. Actual UNSET_ARRAY uses a request carrier to delete the existing equal-byte value5; the arena and saved identity remain unchanged. Full descriptor/heap and budget/unpause checks finish to the native observations."
+    }
+  },
+  "behavior": "Captured key writes/unset now progress for string carriers from user returns and runtime concatenation. Canonical numeric strings select integer keys while padded strings retain byte keys. Equal bytes from distinct runtime carriers address one entry. The original registered-handler Tick/callable-key/coalesce stream completes without warnings or extra callbacks.",
+  "independent_review": "/root/attributes_review independently confirmed the exact missing projection and accepted all three actual progress/identity fronts at unchanged233 hash.",
+  "remaining": "Existing unproved key producer/conversion, source/lifetime and paused-release contexts remain partial. Earlier ATTR32 timeout cuts remain preserved with zero completion credit and are superseded only for the now-executed original source and these bounded consumers.",
+  "environment": "Exact original bytes, paths/cwd, commands, raw channels/exits and runtime/helper/module identities remain external in tick-coalesce-reader-34 and tick-key-carrier-34. Source processes use controlled LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Numeric strict/diagnostic/reached processes use CPU5 and checked SL fixtures. Regular copied tools are not a clean offline rebuild or portability proof.",
+  "zero_credit": [
+    "The old60/180s original timeouts and minimized handler-bearing timeout remain zero-credit false packets, preserved by tick-coalesce-review.json. No timeout was reclassified as Unsupported or as a pass.",
+    "Bounded diagnostic results identify the actual fixed point; they are not full original-source completion credit. The promoted original has its own new completed observation.",
+    "The prior diagnostic preparation failure that omitted the native helper remains zero credit in the original archive.",
+    "No broad32/33 or paused-boundary replay was run. No engine bug, intentional divergence or full-core closure is claimed."
+  ]
+}

@@ -976,24 +976,23 @@ Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
 bodies skipped at runtime still compile. Retained effects run once and real conversions,
 jumps and writes break adjacency. Quiet coalesce reads retain lazy RHS execution;
-handlerless assignment target children compile once before RHS and memoized
-writable refetch. The coalesce slice has seven original agreements, strict
-compilation of 437 modules and three runtime fronts/144 reported conditions,
-including bindings and one malformed-marker guard, at scoped cuts.
+assignment target children compile once before RHS and memoized writable refetch.
+Captured key consumers preserve string-carrier identities and classify their bytes
+with the ordinary numeric-string rules. Registered-handler callable-key coalesce
+writes and equal-byte runtime write/unset now consume their tasks and complete.
 Exact source, strict and reached-state cuts remain in the
 [Switch](coverage/semantics/tick-switch-review.json),
 [Generator](coverage/semantics/tick-generator-review.json),
 [Match](coverage/semantics/tick-match-review.json),
-[conditional](coverage/semantics/tick-elision-review.json) and
-[coalesce](coverage/semantics/tick-coalesce-review.json) and
-[Echo](coverage/semantics/tick-echo-review.json) reviews.
+[conditional](coverage/semantics/tick-elision-review.json),
+[coalesce](coverage/semantics/tick-coalesce-review.json),
+[Echo](coverage/semantics/tick-echo-review.json) and
+[carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
-lines and wider child/result/lifetime contexts remain partial. Registered-handler
-callable-key coalesce
-assignment has an open quiet-reader composition/performance obligation: compilation
-and 100-step progress complete, but full execution times out; those runs have zero
-agreement credit. That narrow dependency is the next investigation after Echo.
+lines and wider child/result/lifetime contexts remain partial. The earlier
+registered-handler timeouts retain zero agreement credit; the carrier-key review
+records their exact successful-conversion fixed point and the completed fix.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -1675,7 +1674,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | GC47 | Explicit WeakMap offsetUnset with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
-| ATTR34 | Coalesce reader with a callable key and registered handlers; bounded diagnosis. |
+| ATTR35 | Grouped unset, global and static tick emission; private implementation/review. |
 | Enum callable arrays | Closure cache ownership and bound-scope identity; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

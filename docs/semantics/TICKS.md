@@ -72,11 +72,11 @@ COALESCE/QM_ASSIGN/write operations break adjacency and produce temporaries;
 the enclosing tick runs after assignment commits. Source authority includes
 `zend_compile_coalesce`, `zend_compile_assign_coalesce`, `zend_compile_dim` and
 `zend_compile_simple_var_no_cv`. Existing runtime access/write admission stays
-bounded. Witnessed callable-key assignments have no registered error handler.
-The registered-handler quiet key-reader path has an open composition/performance
-obligation: bounded progress completes after the key's tick, but full execution
-times out. This establishes neither completion nor Unsupported. That narrow dependency
-remains open after the grouped-Echo fix.
+bounded. Captured string-carrier keys now share the ordinary byte/numeric-string
+selector, allowing the registered-handler callable-key assignment to consume its
+write task and finish. Saved carrier identities and the existing owner protocol
+remain intact; the [carrier review](../../coverage/semantics/tick-key-carrier-review.json)
+retains the original fixed-point diagnosis and actual progress checks.
 
 Admitted Generator sources preserve statement markers across suspension. A bare
 yield keeps its discard before the pending tick; a direct assignment keeps its
