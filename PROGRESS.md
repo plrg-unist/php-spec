@@ -380,13 +380,13 @@ Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
 
-Ordinary scalar BYVAL Generator unpack now warns before the first two fixed,
-untyped BYREF destinations of direct named BYVAL user functions, then creates
-a private callee cell. Normal handler writes preserve the captured value.
-Five original sources and six normal reached groups (323 reported checks) pass
-at their private cuts. Four Unsupported controls and 44 pending-throw stop checks
-retain zero agreement credit. Warning-time advancement, pending warning exceptions
-and wider producer/target forms remain partial.
+Ordinary scalar BYVAL Generator unpack now warns within the first two sends to
+fixed untyped BYREF parameters in argument positions 1 or 2 of direct named
+functions returning by value. Distinct private cells preserve earlier sends
+through the second Warning. Six new and two affected legacy sources agree;
+source-derived ownership, authority and budget gates pass at their recorded cuts.
+Five Unsupported controls and pending-throw stop checks retain zero agreement
+credit. Dynamic-string sinks, pending warning exceptions and wider forms remain partial.
 [Reference-sink review](coverage/semantics/generator-byref-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or

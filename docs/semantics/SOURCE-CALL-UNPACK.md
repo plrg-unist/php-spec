@@ -649,8 +649,8 @@ if the actual cache, key and index remain unchanged, the captured value enters a
 fresh reference cell before the next native resume. The call cursor remains
 authenticated through the real API callback send/reference stages.
 
-Warning-time advancement and other producer/target forms stop with a rooted,
-source-valid Unsupported cursor. A throwing handler also stays explicit
+Warning-time advancement, dynamic-string sinks and other producer/target forms
+stop with a rooted, source-valid Unsupported cursor. A throwing handler also stays explicit
 Unsupported: Zend still calls the native iterator's `move_forward` with its
 exception pending before propagating it. The pending Throwable, Generator,
 INPUT, sent prefix and held scalar remain rooted at this unmodeled frontier;
