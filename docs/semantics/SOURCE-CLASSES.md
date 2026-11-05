@@ -242,8 +242,9 @@ functions and static no-capture Closures can contain these anonymous classes.
 The compiler records only the authentic class checkpoint while inside the factory, then saves
 the image after restoring the containing unit scope. This publishes the class
 before any call and preserves compilation order independently of call order.
-Ordinary function/Closure declarations do not consume the RTD counter. Wider
-factory contexts and incomplete containing-scope images remain Unsupported;
+Ordinary function/Closure declarations do not consume the RTD counter. Named-class
+method factories are described below. Other factory contexts and incomplete
+containing-scope images remain Unsupported;
 wider include/eval contexts, inheritance, attributes, wider members/defaults
 and wider RTD ordering remain required. The
 [mixed-class review](../../coverage/semantics/anonymous-mixed-rtd-review.json)
@@ -634,9 +635,34 @@ Inherited-final conflicts still occur before constructor arguments/allocation.
 Duplicate/static diagnostic class operands truncate at NUL; stored names and scope
 authority stay complete. The [method modifier review](../../coverage/semantics/anonymous-method-modifiers-review.json)
 retains the exact sources and reached fronts. Anonymous abstract-method diagnostics
-and factories inside method bodies remain explicit boundaries, alongside attributes,
+and wider method-body factory contexts remain explicit boundaries, alongside attributes,
 byref returns and wider magic/generator forms. Their native-only originals retain
 zero model agreement credit.
+
+Ordinary factory methods in admitted named source classes may now compile their
+anonymous child templates. The unit check permits class-containing method bodies
+while preserving class-free headers, other member positions and the old anonymous,
+trait/interface/enum owner fences. At each child compilation, the concrete method
+GOTOROOT must belong to its parsed named owner. Source-derived namespace/imports,
+the complete current/folded class contexts, full owner::method name and body prefix
+must agree. Constant/default and generator/byref-return/attribute fences remain;
+the old global function/static-Closure producers keep their empty class contexts.
+
+The compiler records child publication checkpoints but saves their images only
+after restoring the complete containing-unit scope. It never reserves a deferred
+named-owner key before compiling the owner's methods: root/child/root ordinals
+are 0/1/2 for an early owner and 0/1/3 for the exercised conditional owner. Reversed
+or repeated calls reuse those templates while creating fresh instances. Inherited
+instance calls retain the declaring lexical owner across different called classes;
+ordinary typed/default/reference reception and promoted constraints remain intact.
+Related protected access, imported names and readonly headers use the existing
+rules. Lazy final conflicts fail before argument effects, and uncalled factory
+body errors still reject compilation.
+
+The [method factory review](../../coverage/semantics/anonymous-method-factories-review.json)
+separates genuine runtime/source counters from explicitly pure source-derived
+compiler-context queries. Trait and anonymous source owners, method-owned Closures,
+generators, byref returns, attributes and wider source/lifetime contexts remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

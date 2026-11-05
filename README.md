@@ -5057,8 +5057,19 @@ automatic destruction. Related lexical scope can call a protected constructor
 through an admitted bound static Closure factory. Invalid parameter defaults/body
 compilation precede the static-constructor error. Full method/captured scopes remain
 authoritative; only exercised diagnostic class operands use C strings. Abstract
-anonymous methods, method-body factories and wider magic/byref/generator forms
+anonymous methods, wider method-body factories and magic/byref/generator forms
 remain partial. [Method modifier review](coverage/semantics/anonymous-method-modifiers-review.json).
+
+Ordinary named-class methods now also contain admitted anonymous-class factories.
+Static/instance calls, typed/default and reference formals, inherited receivers,
+namespace imports and related protected constructors preserve the parsed owner
+and method scope. Child templates compile before their containing named-class key;
+reversed/repeated calls keep the source counters and allocate fresh instances.
+Complete containing-unit images remain required. Lazy link failures precede
+arguments, while errors in uncalled factory bodies still fail compilation.
+Trait/anonymous source owners, method-owned Closures, generators, byref returns
+and attributes remain partial.
+[Method factory review](coverage/semantics/anonymous-method-factories-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

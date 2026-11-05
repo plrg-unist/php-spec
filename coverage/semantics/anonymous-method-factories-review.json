@@ -1,0 +1,293 @@
+{
+  "scope": "CLASS178: ordinary named-source method factories compile anonymous child templates with actual owner/method/body context and complete containing-unit authority. Static/instance, defaults/references, inherited/namespace/readonly scopes and native counter/link/compile order are covered; wider producers remain partial.",
+  "implementation": {
+    "base": "ab9bf5bf6e4e41012a67fab1fce63afe5c9a3852",
+    "first_draft": "e77fced89946e3ade78ebb01c04ae1c1f6e04820",
+    "source_semantic_cut": "9ce74aaa20874874f8335f9abcfbeca71db72734",
+    "final_semantic_cut": "1be3e3aae109f59534bd7e0a65ca0d6bcf01a24f",
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_compile.c::zend_compile_class_decl and zend_compile_func_decl (inner class compilation, anonymous names and deferred named RTD key order)",
+      "vendor/php-src/Zend/zend_compile.c::zend_compile_params and zend_compile_stmt (ordinary formals and uncalled body compilation)",
+      "vendor/php-src/Zend/zend_vm_def.h ZEND_NEW/DECLARE_CLASS; zend_object_handlers.c::zend_std_get_constructor and zend_inheritance.c method checks (actual lexical access and lazy link failure)"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "native_helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "mode": "Strict SL; serial CPU2 actors with stable inputs and complete process-tree reap"
+  },
+  "inputs": {
+    "spec/semantics/383-anonymous-classes.watsup": "460802bc9393609f9431f11eb795192c8dc9ccccd0b5eaadfdc4434f286fdaa6",
+    "spec/semantics/modules.json": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tests/semantics/anonymous_method_factory_cases.json": "f2e6f07924fdfcb4d70cb7adeb2eac9c20edf083ef785b8288b67947e01e18c9",
+    "tests/semantics/anonymous_method_factory_protocol.py": "6a800bf1d293763fab6036f5f364fce44bc174f40216d5c16e185a602ebcb46a",
+    "tests/semantics/anonymous_method_factory_review_protocol.py": "bf647db6765a41ca939a460c3196971449754730111cfeb7b8b637ae85e94f18"
+  },
+  "decisions": [
+    "Separate the named-class unit branch. Its header and nonfactory member positions retain classlike exclusions; class-containing method bodies require an ordinary concrete/by-value/non-generator/attribute-free source method. Ordinary formals/returns stay with named compilation. Anonymous/trait/interface/enum source-owner branches retain their old exclusions.",
+    "Authenticate concrete method GOTOROOT directly under the parsed named owner, source namespace/imports and header, current plus folded class-context records, exact owner::method function name and body prefix. Constant/default fences remain. Existing global function/static-Closure empty-context producers and complete-unit image saving are unchanged.",
+    "Compile child templates before reserving the containing deferred named key. Reversed/repeated calls reuse classes but create fresh instances; conditional owner source produces root0/child1/root3, with its deferred named key occupying2. No early key reservation or publication rewrite was introduced.",
+    "Runtime state checks are reached from checked original programs. Local compiler P_query values are explicitly source-derived query contexts, not reached transient compiler states; their pure scope/refusal checks receive separate credit."
+  ],
+  "validation": {
+    "strict_and_member_fences": {
+      "modules": 435,
+      "revision": "1be3e3aae109f59534bd7e0a65ca0d6bcf01a24f",
+      "conditions": 5,
+      "numeric": [
+        ".tools/class178-artifacts/final-guard-numeric.json",
+        "037a2c20858863b28504cb83724df02da3ebe759766c56f71b9c1395aba60a56"
+      ],
+      "supervisor": [
+        ".tools/class178-artifacts/final-member-guard1.json",
+        "16c13817e52cb435c22da4800b590a31efe37563b8dab731e6a0f4615233f1d7"
+      ],
+      "result": "true newline/empty stderr/exit0; stable/full reap. Final one-premise guard restores old direct classlike-member refusal; all original/state direct members are methods/properties and their behavior is unchanged."
+    },
+    "sources": {
+      "exact_agreements": 12,
+      "normal": 10,
+      "php_error": 1,
+      "static_rejection": 1,
+      "revision": "9ce74aaa20874874f8335f9abcfbeca71db72734",
+      "supervisors": [
+        [
+          ".tools/class178-artifacts/source-parent-strict3.json",
+          "4db13d56533533b866988ef981196f6cc76df7ebb42c44bc4aa51755375df392"
+        ],
+        [
+          ".tools/class178-artifacts/source-rest1.json",
+          "8f0dd2da31d539925420059c612f75e8d80acce18a3d54ce0523a4bd5e10b571"
+        ]
+      ],
+      "reports": {
+        "method-factory-reversed-template-calls-and-counters": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-04dxzar9/report.json",
+          "4da2322f321da4c2365175be91c96c0c3163a97ae5aa2ddcad387c5d5b574dce"
+        ],
+        "method-factory-unrelated-lexical-constructor-denial": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-1qzjrme_/report.json",
+          "e411896c8e4cfb6b13e5524a866cc9c9be21a88a423a82afcc07f65496996a03"
+        ],
+        "method-factory-static-defaults-root-counters-and-reuse": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-arl_mwmk/report.json",
+          "9d4d62a039d17302fb3a827a2f2431d907e05966dcf55f1938f5156dd1d93144"
+        ],
+        "method-factory-readonly-owner-and-child": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-b9viv8gu/report.json",
+          "3bdbd92d855739fef71d89aef427a8129f10ddaf241f7840271506043302d114"
+        ],
+        "method-factory-instance-inherited-lexical-owner": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-ccarf32j/report.json",
+          "4189ca4302fc3cfc8cd6a62563e8d2686e2fe1d4df694a1bae93cdb11265eccf"
+        ],
+        "method-factory-uncalled-body-property-compile-error": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-dh3fzf3i/report.json",
+          "36421aed5ff04c20cf0b9443f3ae6b23ce35d05cc03d910535d6fe5832df1e89"
+        ],
+        "method-factory-skipped-lazy-final-conflict": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-eab2ayjw/report.json",
+          "d5af81730174ffb77f6e8f14c0c76f63b6751a4301fec41e14c01954f1771176"
+        ],
+        "method-factory-reference-formal-and-promoted-source": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-hfcc069l/report.json",
+          "7a4a6f6143a77eaf82db45c3f821db36df25e2ed905e54f4004c6387805f1252"
+        ],
+        "method-factory-conditional-owner-and-root-counters": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-ph43hgqs/report.json",
+          "c5ab1bf4b49b6c34175cbf0d74b795296ab261da6241637de1375c2ddd051221"
+        ],
+        "method-factory-lazy-final-conflict-before-argument": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-qiml45hv/report.json",
+          "5c10e0bd1fc0d3dc573c0fd1bf36011e4e2312ce801d6e1dfffbb22cf97dde15"
+        ],
+        "method-factory-namespaces-imports-and-related-parent": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-rjhsvgil/report.json",
+          "cb4f3e8378e73becfaa91bf7672d7d9daa6e74b6351a6179690a0256407d1f17"
+        ],
+        "method-factory-original-protected-parent": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-ydxx7cis/report.json",
+          "e1bc79d3c3659b9804b925028bfd01b85fd89625b92a81200bafec9e1b1bdb96"
+        ]
+      },
+      "earlier_refusal": "The first original is byte-identical to CLASS177 held native source. Its actual checked-AST anonymous_unit refusal at177 remains earlier boundary evidence; fresh178 source/native agreement has its own path/record and receives no retrocredit.",
+      "compatibility": "Final direct-member guard only excludes classlike statements as direct class members; no parsed original has one. Preserve all12 real source cut identities, with final435/fence gate on the final semantic bytes."
+    },
+    "author": {
+      "revision": "5721f3ab1329bff668983108c829e7b81ab7ff9c",
+      "reached_conditions": 155,
+      "pure_conditions": 31,
+      "groups": {
+        "static_default_root_counters_and_reuse": 58,
+        "reversed_calls_and_postorder_templates": 56,
+        "conditional_owner_key_order": 41,
+        "pure_source_derived_context_queries": 31
+      },
+      "supervisor": [
+        ".tools/class178-artifacts/author-counters-context1.json",
+        "6527961f8e49cf7de7ddb455bb99b80ded43854ee5b8ec20e4ddc5cd2c11cb76"
+      ],
+      "report": [
+        ".tools/class178-artifacts/recovered-private-raw/anonymous-method-factories-7li4ne1f/report.json",
+        "c51158449fe35b2c44634f74af461e969af4d5c5e444595c40cefc2c52aeacb7"
+      ],
+      "result": "true newline/empty stderr/exit0; stable/full reap. First three groups are genuine runtime fronts; the fourth constructs source-derived local P/context query values and is explicitly pure."
+    },
+    "independent": {
+      "conditions": 212,
+      "production_equivalent": "9ce74aaa20874874f8335f9abcfbeca71db72734",
+      "components": [
+        {
+          "revision": "521d6517a0f37fe1ac3c6805b58949a25c3a37d2",
+          "conditions": 65,
+          "groups": [
+            "inherited instance/default/explicit/anonymous receiver and lexical/called scope forgeries"
+          ],
+          "supervisor": [
+            ".tools/class178-artifacts/review-five-state3.json",
+            "b414d979652ed7249343f6c9322bac8e721afa0dda851c6e7b243ba755ad9be2"
+          ],
+          "report": [
+            ".tools/class178-review-artifacts/recovered-state/class178-review-state-mvcq2qnm/report.json",
+            "63a3eff9715fda6e557be12a3fb38e1e63120b2b81b6744aac3c5a5d6e5a0e6c"
+          ],
+          "qualification": "Completed group0 before later namespace target-constructor assertion failed; enclosing whole batch remains false."
+        },
+        {
+          "revision": "b0400e18994a1429e8612b09b9e4d8e281759690",
+          "conditions": 73,
+          "groups": {
+            "namespace_import_source_identity": 31,
+            "reference_formal_promoted_source": 42
+          },
+          "supervisor": [
+            ".tools/class178-artifacts/review-tail-state4.json",
+            "6276a297db7905b12f68f149c9d43f50bf0270d2a2662f3c27565bd49117b036"
+          ],
+          "report": [
+            ".tools/class178-review-artifacts/recovered-state/class178-review-state-05qg7iy8/report.json",
+            "f6e7bdab8e87626a8ccf928da7efcf7d7aa2f6b188dce1b5d673274dbe2a58ae"
+          ],
+          "qualification": "Completed groups1/2 before later lazy-fatal boundary assertion failed; enclosing whole batch remains false."
+        },
+        {
+          "revision": "a8ec8f65c980150796b202fee03c6a43ece9ab6f",
+          "conditions": 74,
+          "groups": {
+            "called_skipped_lazy_link_order": 40,
+            "unrelated_constructor_scope_and_uncalled_compile": 34
+          },
+          "supervisor": [
+            ".tools/class178-artifacts/review-tail-state5.json",
+            "b74a3d6ff87eab0cf7e15420c0ae6a7d4f949e304881d98e2668260a4132cbc7"
+          ],
+          "report": [
+            ".tools/class178-review-artifacts/recovered-state/class178-review-state-gb4kyxwz/report.json",
+            "f806d09caded9d1ed5f681966ebc1bc8f44fe5baca72c5ce8c92479cb28b0271"
+          ],
+          "result": "true newline/empty stderr/exit0; stable/full reap."
+        }
+      ],
+      "compatibility": "Final one-premise direct-member fence leaves every tested method/property member predicate and transition unchanged; original component cuts/reports remain explicit."
+    }
+  },
+  "failures_preserved": [
+    {
+      "cause": "Initial production elaboration failures occurred before execution: source_line int was passed to a nat context parameter; then a fresh method index was first bound under noninvertible concatenation. Corrected only nabs conversion and concrete GOTOROOT suffix extraction. Both source batches remain failed/zero and strict was unrun in them.",
+      "supervisors": [
+        [
+          ".tools/class178-artifacts/source-parent-strict1.json",
+          "7cc4eb9f48a6370038406650dea52cbf88e0d3695337604ce59c23362871c75c"
+        ],
+        [
+          ".tools/class178-artifacts/source-parent-strict2.json",
+          "91a095f664083c72cc3951559ee14d4ae8e55e5f439689a19ad9b4876b11b3eb"
+        ]
+      ],
+      "reports": {
+        "method-runtime-6op2q_9d": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-6op2q_9d/report.json",
+          "dd4b5d38cd45de50024740feaf42f08aee102ccd699b96115b31d614b6879aef"
+        ],
+        "method-runtime-fakt9380": [
+          ".tools/class178-artifacts/recovered-private-raw/method-runtime-fakt9380/report.json",
+          "538ceefbc92c51a90acc5cb57934f3b09d0d4d80cb4f9ae0222160052c5f4260"
+        ]
+      }
+    },
+    {
+      "cause": "Independent1/2 stopped during fixture elaboration (sequence/selected slot binder collision; first receiver binding under a conjunction). No group execution credit.",
+      "supervisors": [
+        [
+          ".tools/class178-artifacts/review-five-state1.json",
+          "8314cd6b8150961632e7c857ce2962b58020ea7e25ebf699831b1ba0b71fc9a5"
+        ],
+        [
+          ".tools/class178-artifacts/review-five-state2.json",
+          "7db0cb295ccac2992b90b3c621a41f5f93b3467f9335ccb9a93a7ad71c057ea0"
+        ]
+      ],
+      "reports": [
+        [
+          ".tools/class178-review-artifacts/recovered-state/class178-review-state-w7kll3f5/report.json",
+          "434000ac0d5a1df2db72cdf5cf30201ad66a3d8b428ef4d1c98707f8ddd6b340"
+        ],
+        [
+          ".tools/class178-review-artifacts/recovered-state/class178-review-state-3h2xzxus/report.json",
+          "6f70951c90ce94a3f9e86cb7d4271fca4ad0a71535773c301be41ceda8cd133c"
+        ]
+      ]
+    },
+    {
+      "cause": "Independent3 used STATIC_METHOD_TARGET for a literal scoped source call; independent4 expected a terminal fatal instead of the actual framed pending ERROR_UNWIND task. Whole batches stay false; only their completed components above retain credit. Corrected only affected/unvalidated tail groups. A separate bounded query pins actual BUDGET and pending unwind; it is diagnostic, not a source agreement.",
+      "supervisors": [
+        [
+          ".tools/class178-artifacts/review-five-state3.json",
+          "b414d979652ed7249343f6c9322bac8e721afa0dda851c6e7b243ba755ad9be2"
+        ],
+        [
+          ".tools/class178-artifacts/review-tail-state4.json",
+          "6276a297db7905b12f68f149c9d43f50bf0270d2a2662f3c27565bd49117b036"
+        ]
+      ],
+      "diagnostic_query": [
+        ".tools/class178-artifacts/review-lazy-query1.json",
+        "28f5c33898079b51603a5dd26475f0b7c442bd2b3cbfd1be245b5717e9a8338c"
+      ]
+    }
+  ],
+  "recovery": {
+    "private_raw": [
+      ".tools/class178-artifacts/recovered-private-raw/locations.json",
+      "b8a8a13ef8850f4fe03a06e65dbfd7d7c0beb68e9617ffc834e3992d524f4066"
+    ],
+    "reviewer_raw": [
+      ".tools/class178-review-artifacts/recovered-state/locations.json",
+      "2e8d879a6fe0f149b7f75e271f39af5df1ad05ed947f18e9a8bf68b007d923fd"
+    ],
+    "native_manifest": [
+      ".tools/class178-review-artifacts/native-manifest.json",
+      "a2a81d5b6781a0100e559e473a1949240b374d376fa2a52c440854c8bec53cf3"
+    ],
+    "commands": "All supervisors/component reports retain commands, cwd/revisions, consumed hashes, exits/streams, stability and reap. Recovery indices map original paths to unchanged moved roots. Source/runtime/pure/diagnostic components and failed enclosing batches are kept distinct."
+  },
+  "review": {
+    "reviewer": "classes_review_current",
+    "decision": "pending final record and actual-parent review",
+    "current_tail": "ab9bf5bf6e4e41012a67fab1fce63afe5c9a3852"
+  },
+  "remaining": [
+    "Trait/anonymous source-owner factories and method-owned Closures.",
+    "Generator/byref-return/attribute and wider dynamic source, declaration, member/default and lifetime contexts."
+  ]
+}

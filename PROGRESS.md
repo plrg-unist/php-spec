@@ -977,9 +977,20 @@ access retain source authority. Static-constructor rejection follows parameter
 and body compilation. Fourteen exact originals, strict435, one affected named
 source, 139 author and 151 independent reached conditions pass at scoped cuts.
 Two author front corrections retain their failed batches; completed components
-keep explicit credit. Anonymous abstract diagnostics and method-body factories
-remain native-only boundaries; wider contexts remain partial.
+keep explicit credit. Anonymous abstract diagnostics and wider method-body factory
+contexts remain partial; the next review admits named source owners.
 [Review](coverage/semantics/anonymous-method-modifiers-review.json).
+
+CLASS178 admits anonymous factories in ordinary named-class methods with actual
+owner/method/GOTOROOT, namespace/import and current/folded class-context authority.
+Complete-unit images and child-before-deferred-owner counter order preserve
+static/instance/default/byref/inherited/namespace/readonly behavior. Twelve exact
+originals, final435 plus five member-fence checks, 155 author reached +31 pure
+context queries and 212 independent conditions pass at scoped cuts. Initial
+elaboration stops and failed whole state batches retain separate zero-credit
+identities, with completed components qualified. Trait/anonymous source owners,
+method-owned Closures, generators/byref returns/attributes and wider contexts
+remain partial. [Review](coverage/semantics/anonymous-method-factories-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
