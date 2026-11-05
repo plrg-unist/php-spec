@@ -1,0 +1,137 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "eval-parentless-trait-self-capture",
+      "source": "<?php\ntrait Probe171Plain {\n    public static function m(self $value): string { return self::class === $value::class ? 'scope;' : 'BAD;'; }\n    public const CAPTURE = self::m(...);\n}\n$object = eval('return new class { use Probe171Plain; };');\n$capture = $object::CAPTURE;\necho $object::class, ';', $capture($object);\n",
+      "source_sha256": "719b1714a825efee2c10089c16b03c37d187734eb649c2c74108aaed159d16d5",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg2KSA6IGV2YWwoKSdkIGNvZGU6MSQwO3Njb3BlOw==",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg2KSA6IGV2YWwoKSdkIGNvZGU6MSQwO3Njb3BlOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/eval-parentless-trait-self-capture/native.json",
+      "native_raw_sha256": "c319558bf60bc06009a43b6a05875fbb234d638675e22278ebb55670558b928a",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "eval-imported-stringable-self-capture",
+      "source": "<?php\ntrait Probe171String {\n    public function __toString(): string { return 'string;'; }\n    public static function m(self $value): string { return self::class === $value::class ? 'scope;' : 'BAD;'; }\n    public const CAPTURE = self::m(...);\n}\n$object = eval('return new class { use Probe171String; };');\n$capture = $object::CAPTURE;\necho $object::class, ';';\necho $object instanceof Stringable ? 'interface;' : 'BAD;';\necho $object, $capture($object);\n",
+      "source_sha256": "a2178894aa6ebbea7e68f3cca05872c0bae21a6834bbd0fe769466136fd3cf6f",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg3KSA6IGV2YWwoKSdkIGNvZGU6MSQwO2ludGVyZmFjZTtzdHJpbmc7c2NvcGU7",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg3KSA6IGV2YWwoKSdkIGNvZGU6MSQwO2ludGVyZmFjZTtzdHJpbmc7c2NvcGU7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/eval-imported-stringable-self-capture/native.json",
+      "native_raw_sha256": "dec16b279f137f418656e876cdaf9d817fa17a3306f39b741e1df702afcea2f8",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "include-parent-interface-excluded-alias-capture",
+      "source": "<?php\nclass Probe171Base {}\ninterface Probe171I { public function label(): string; }\ntrait Probe171Chosen {\n    public function __toString(): string { return 'string;'; }\n    public function label(): string { return 'iface;'; }\n    public static function m(parent $value): string { return 'chosen;'; }\n}\ntrait Probe171Excluded {\n    public static function m(parent $value): string { return 'excluded;'; }\n    public const CAPTURE = self::q(...);\n}\n$object = include __DIR__ . '/child.php';\n$capture = $object::CAPTURE;\necho $object::class, ';';\necho $object instanceof Stringable && $object instanceof Probe171I ? 'interfaces;' : 'BAD;';\necho $capture(new Probe171Base), $object, $object->label();\n",
+      "source_sha256": "5ec05965d062055af18f99dbedfbafd7586f10ee41459fda1c6e1c80b5b3c6a0",
+      "stdout_base64": "UHJvYmUxNzFCYXNlQGFub255bW91cwB7RklMRTpjaGlsZC5waHB9OjIkMDtpbnRlcmZhY2VzO2V4Y2x1ZGVkO3N0cmluZztpZmFjZTs=",
+      "stdout_template_base64": "UHJvYmUxNzFCYXNlQGFub255bW91cwB7RklMRTpjaGlsZC5waHB9OjIkMDtpbnRlcmZhY2VzO2V4Y2x1ZGVkO3N0cmluZztpZmFjZTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/include-parent-interface-excluded-alias-capture/native.json",
+      "native_raw_sha256": "9b55f6cfa5fecb413b5966c1a96d82546f0249a85a9407cee6ce796611f5a8c9",
+      "model_timeout_seconds": 240,
+      "files": [
+        {
+          "name": "child.php",
+          "source": "<?php\nreturn new class extends Probe171Base implements Probe171I {\n    use Probe171Chosen, Probe171Excluded {\n        Probe171Chosen::m insteadof Probe171Excluded;\n        Probe171Excluded::m as q;\n    }\n};\n",
+          "source_sha256": "d3c46c77195e4df0f55ad02b57284198a41e6e2b31dd7af3b593f3ac6766dec5"
+        }
+      ]
+    },
+    {
+      "id": "eval-recompile-distinct-capture-scopes",
+      "source": "<?php\ntrait Probe171Repeat {\n    public static function m(self $value): string { return self::class === $value::class ? 'scope;' : 'BAD;'; }\n    public const CAPTURE = self::m(...);\n}\n$code = 'return new class { use Probe171Repeat; };';\n$first = eval($code);\n$second = eval($code);\n$one = $first::CAPTURE;\n$two = $second::CAPTURE;\necho $first::class, ';', $second::class, ';';\necho $one($first), $two($second);\ntry { $one($second); echo 'BAD;'; } catch (TypeError $error) { echo 'cross;'; }\n",
+      "source_sha256": "f06fc006a7fdda9bf6777c5a1f40ad2b68d92d3c0f596cdd53732365a63c5db9",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg3KSA6IGV2YWwoKSdkIGNvZGU6MSQwO2NsYXNzQGFub255bW91cwB7RklMRX0oOCkgOiBldmFsKCknZCBjb2RlOjEkMTtzY29wZTs=",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg3KSA6IGV2YWwoKSdkIGNvZGU6MSQwO2NsYXNzQGFub255bW91cwB7RklMRX0oOCkgOiBldmFsKCknZCBjb2RlOjEkMTtzY29wZTs=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFVuY2F1Z2h0IFR5cGVFcnJvcjogY2xhc3NAYW5vbnltb3VzKCk6IEFyZ3VtZW50ICMxICgkdmFsdWUpIG11c3QgYmUgb2YgdHlwZSBjbGFzc0Bhbm9ueW1vdXMsIGNsYXNzQGFub255bW91cyBnaXZlbiwgY2FsbGVkIGluIHtGSUxFfSBvbiBsaW5lIDEyIGFuZCBkZWZpbmVkIGluIHtGSUxFfTozClN0YWNrIHRyYWNlOgojMCB7RklMRX0oMTIpOiBjbGFzc0Bhbm9ueW1vdXM6Om0oT2JqZWN0KGNsYXNzQGFub255bW91cykpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSAzCg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/eval-recompile-distinct-capture-scopes/native.json",
+      "native_raw_sha256": "41182944e79aa927905e025ede16266cdfcfa2a45a51a84e06a349f70330ff34",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "eval-stringable-missing-parent-receive",
+      "source": "<?php\ntrait Probe171NoParent {\n    public function __toString(): string { return 'string;'; }\n    public static function m(parent $value) { echo 'body;'; }\n    public const CAPTURE = self::m(...);\n}\necho 'before;';\n$object = eval('return new class { use Probe171NoParent; };');\n$capture = $object::CAPTURE;\necho 'captured;';\n$capture(new stdClass);\necho 'BAD;';\n",
+      "source_sha256": "5e5fe1144384237f6d5dc5de1c02a9fbfdeca0e9c224f2c153c12b0ed4279274",
+      "stdout_base64": "YmVmb3JlO2NhcHR1cmVkOw==",
+      "stdout_template_base64": "YmVmb3JlO2NhcHR1cmVkOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhY2Nlc3MgInBhcmVudCIgd2hlbiBjdXJyZW50IGNsYXNzIHNjb3BlIGhhcyBubyBwYXJlbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge0ZJTEV9KDExKTogY2xhc3NAYW5vbnltb3VzOjptKE9iamVjdChzdGRDbGFzcykpCiMxIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/eval-stringable-missing-parent-receive/native.json",
+      "native_raw_sha256": "4533f4c6598358023ef2b040570bb935954f60b41a942726cb83927546b24789",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "include-stringable-conflict-before-argument",
+      "source": "<?php\ntrait Probe171Private { public function render(): string { return 'BAD;'; } }\nfunction probe171Argument() { echo 'ARG;'; return 1; }\necho 'before;';\n$object = include __DIR__ . '/child.php';\necho 'BAD;';\n",
+      "source_sha256": "8c8aa7eb5781c38ca927e29c47af66d03f6da7f990c24af03d85ae174a114365",
+      "stdout_base64": "YmVmb3JlOw==",
+      "stdout_template_base64": "YmVmb3JlOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEFjY2VzcyBsZXZlbCB0byBjbGFzc0Bhbm9ueW1vdXM6Ol9fdG9TdHJpbmcoKSBtdXN0IGJlIHB1YmxpYyAoYXMgaW4gY2xhc3MgU3RyaW5nYWJsZSkgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge0ZJTEV9KDUpOiBpbmNsdWRlKCkKIzEge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/include-stringable-conflict-before-argument/native.json",
+      "native_raw_sha256": "0fcfa7d248d4aa0e2e09b8b14624d41e192a1ad8b56ead16f9b16c924dffacff",
+      "model_timeout_seconds": 240,
+      "files": [
+        {
+          "name": "child.php",
+          "source": "<?php\nreturn new class (probe171Argument()) {\n    use Probe171Private { render as private __toString; }\n};\n",
+          "source_sha256": "212cea5b71420a9ab7b3ba57e305d5cda0f9e4f1ff118e41defb99594aac3399"
+        }
+      ]
+    },
+    {
+      "id": "eval-skipped-trait-conflict-counter",
+      "source": "<?php\ntrait Probe171BadA { public function clash() { echo 'BAD;'; } }\ntrait Probe171BadB { public function clash() { echo 'BAD;'; } }\ntrait Probe171After {\n    public static function m(self $value): string { return self::class === $value::class ? 'scope;' : 'BAD;'; }\n    public const CAPTURE = self::m(...);\n}\n$code = 'if (false) { new class { use Probe171BadA, Probe171BadB; }; }\nreturn new class { use Probe171After; };';\n$object = eval($code);\n$capture = $object::CAPTURE;\necho $object::class, ';', $capture($object);\n",
+      "source_sha256": "3a5d2565506791fcf9744a05f0022af80420d65b3271ebc6f829ecd83730e738",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSgxMCkgOiBldmFsKCknZCBjb2RlOjIkMTtzY29wZTs=",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSgxMCkgOiBldmFsKCknZCBjb2RlOjIkMTtzY29wZTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/eval-skipped-trait-conflict-counter/native.json",
+      "native_raw_sha256": "8c277ed58af609e1f3b6ed86a872e896de4ffb53232fecceb1147347c85929b1",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "author-eval-seeded-adapted-capture",
+      "source": "<?php\n$before = new class {};\necho $before::class, ';';\neval(<<<'CODE'\nnamespace Author171;\ntrait LeftSource {\n public function value(): string { return 'left'; }\n public static function take(self $value): string { return 'scope'; }\n}\ntrait RightSource { public function value(): string { return 'right'; } }\nfunction make() {\n return new class implements \\Stringable {\n  use LeftSource, RightSource {\n   LeftSource::value insteadof RightSource;\n   RightSource::value as q;\n   LeftSource::value as __toString;\n  }\n  public const CAPTURE = self::take(...);\n };\n}\n$one = make();\n$captured = $one::CAPTURE;\necho $one::class, ';', $one, ';', $one->q(), ';', $captured($one), ';';\n$two = make();\necho $one !== $two ? 'fresh;' : 'bad;';\nCODE);\n$after = new class {};\necho $after::class;\n",
+      "source_sha256": "331ddc1c97009d089fb96b8d72373aded371c1d18526acadc6da0824cd2d7947",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7U3RyaW5nYWJsZUBhbm9ueW1vdXMAe0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZTo4JDI7bGVmdDtyaWdodDtzY29wZTtmcmVzaDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjI3JDE=",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7U3RyaW5nYWJsZUBhbm9ueW1vdXMAe0ZJTEV9KDUpIDogZXZhbCgpJ2QgY29kZTo4JDI7bGVmdDtyaWdodDtzY29wZTtmcmVzaDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjI3JDE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-artifacts/author-eval-seeded-adapted-capture.native.json",
+      "native_raw_sha256": "325c1acc856165c1bd373f4c08b419ef8fc20b54796e9c31fb7eb57eec134e34",
+      "model_timeout_seconds": 240
+    }
+  ]
+}
