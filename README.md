@@ -3919,6 +3919,14 @@ edges, and per-array self-reach rejects forged DIRECT cycles. Shared nesting, lo
 COW and self-copy snapshots agree with PHP through weak death. References, proxies, pooled descendants
 and user-finalizer children stay outside this lane. See the
 [nested-array review](coverage/semantics/gc-nested-array-review.json).
+
+GC29 admits mixed value/reference captures through ordinary untyped cells.
+Captured aliases retain cell identity across global-name rebinding; each wrapper
+owns its payload once, and reference decrements buffer the collectable payload.
+Shared/distinct wrappers, request strings, nested reference-payload COW and an
+A95 Generator/handler interaction agree with PHP. Typed/backed cells and reference cycles remain outside this lane.
+See the [reference-capture review](coverage/semantics/gc-reference-capture-review.json).
+
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
