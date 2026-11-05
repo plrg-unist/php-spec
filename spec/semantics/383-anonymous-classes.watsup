@@ -617,7 +617,17 @@ def $declaration_new_selection(S, PORIGIN n_unit pcpath, NStmtClass phpType14 ph
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_called)
 
-rule PhpStep/anonymous-parent-link: S ~> S_linked[.ORIGIN = S.ORIGIN]
+;; Link notices run at the class child before the original NEW is resumed.
+dec $anonymous_link_resume(pstate, porigin) : pstate
+def $anonymous_link_resume(S, porigin) = S[.TODO = (DECL_NOTICES pdeclnoticebatch) :: (AT porigin (EVAL expression)) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (DECL_NOTICES pdeclnoticebatch) :: (EVAL expression) :: ptask_tail*
+  -- if pdeclnoticebatch.KIND = NOTICE_RUNTIME
+  -- if S.ORIGIN = (pdeclnoticebatch.SITE)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+def $anonymous_link_resume(S, porigin) = S[.ORIGIN = (porigin)] -- otherwise
+
+rule PhpStep/anonymous-parent-link: S ~> $anonymous_link_resume(S_linked, porigin)
   -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
