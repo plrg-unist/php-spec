@@ -300,6 +300,32 @@ continuation under strict compilation of 435 modules. The
 [review](../../coverage/semantics/rejected-trait-alias-modifier-review.json)
 retains the initial fixture failures and interrupted run with zero gate credit.
 
+Rejected property-hook units now defer PHP-Parser's unknown-hook,
+`get(...)`-parameter and empty-hook-list checks to Zend's compiler phase.
+This applies to ordinary properties, promoted and ordinary parameters, and
+interface declarations. Completed encoding headers inside hook bodies or
+parameter defaults, as well as later headers, remain available before a later
+ParseError. An earlier nonliteral encoding item still stops the emitted warning
+prefix. The rejected parser continues to enforce invalid hook modifiers during
+grammar reduction: a later modifier error can preempt an earlier hook's deferred
+static error. Ordinary PHP-Parser validation and native diagnostic fields are
+unchanged.
+
+The [property-hook originals](../../tests/semantics/property_hook_static_rejected_sources.py)
+pass 36 eval/include comparisons and [four main comparisons](../../tests/semantics/property_hook_static_main_rejected_sources.py).
+The [service controls](../../tests/rejected_property_hook_static_service_review.py)
+pass 62 checks, including two zero-agreement refusals for multi-property hook
+grammar. A foreign parser can record a nested header before its late
+multi-property stop, while Zend rejects the earlier `{`; the CLI's parser-stderr
+check returns Unsupported. Affected method, constant and trait-alias service
+controls pass 37/42/73. All 110
+[reached conditions](../../tests/semantics/rejected_property_hook_static_review_state.py)
+preserve two earlier warnings, exact failed-source history, no partial
+installation, valid handles and zero-budget catch/finally continuation under
+strict compilation of 435 modules. The
+[review](../../coverage/semantics/rejected-property-hook-static-review.json)
+binds the cuts, fixture failures and remaining grammar boundary.
+
 Warning128 uses the current reporting/display state and bypasses error handlers.
 The subsequent catchable ParseError/CompileError retains a failed-source record
 and file entry without an accepted source/code/binding. Its lifecycle handle is

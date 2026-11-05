@@ -1309,6 +1309,18 @@ native helper, schema, adapter and P4 interfaces are unchanged. Broader
 rejected-source prefixes remain partial.
 [Review](coverage/semantics/rejected-trait-alias-modifier-review.json).
 
+COMP177 defers rejected-only property-hook name, `get(...)` parameter-list and
+empty-list checks until compilation, retaining completed encoding headers before
+later parser failure. Property, promoted and ordinary parameter, and interface
+contexts agree; parser-time invalid modifiers keep their earlier cutoff and can
+preempt deferred checks. Thirty-six dynamic and four main originals, 62 service
+controls, 110 reached conditions/SL435 and affected method37/constant42/trait
+alias73 controls pass at their recorded cuts. Two multi-property grammar controls
+are explicit Unsupported refusals with zero agreement, and the initial service
+fixture failures have zero credit. Accepted parsing, native helper, schema,
+adapter and P4 interfaces are unchanged; wider rejected-source prefixes remain
+partial. [Review](coverage/semantics/rejected-property-hook-static-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |

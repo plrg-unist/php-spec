@@ -1,0 +1,49 @@
+{
+  "milestone": "COMP177",
+  "status": "Focused private gates pass; independent exact review and joined-parent composition pending.",
+  "base": "a44e735b0974c90edd47e5506be8c6ff717e767c",
+  "branch": "semantics/rejected-property-hook-static-177",
+  "commits": {
+    "production": "a2c54477c",
+    "tests": "faf57a46b904ef22d7986dd98bf0811a41ff5475"
+  },
+  "raw_root": "../php-spec-evidence-archive/comp177",
+  "behavior": "Rejected eval, opened-file and main units retain completed encoding headers past compiler-phase unknown-hook names, get(...) parameter lists and empty hook lists, including property, ordinary/promoted parameter and interface contexts. Earlier nonliteral encoding and syntax errors retain priority. Parser-time invalid hook modifiers still cut off later headers and can preempt an earlier deferred static error. Native diagnostic message and line remain trusted native reply fields.",
+  "implementation": "RejectedHeaderParser alone defers checkPropertyHook and checkEmptyPropertyHookList; the latter is called from property and promoted-parameter reductions. The inherited checkPropertyHookModifiers remains active. Accepted parsing, native helper, worker/adapter/schema and authored P4 rules are unchanged.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_language_parser.y::property_hook/property_hook_modifiers",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_property_hooks",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php::checkPropertyHook/checkEmptyPropertyHookList/checkPropertyHookModifiers",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php::rules406/407/408/413",
+    "frontend/RejectedHeaderParser.php"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; source include_path=.:; reached startup reporting30719/0",
+    "environment": {"LC_ALL": "C", "TZ": "UTC"}
+  },
+  "validation": {
+    "run_head": "a44e735b0974c90edd47e5506be8c6ff717e767c",
+    "identity": "Passing reports fingerprint watched inputs before and after execution. Source/main wrappers watch cases.json plus fixture hashes and files. Production, test and fixture bytes were committed afterward without edits; commit-bridge-v1/report.json (e288beb58f6f2013197eb6d9dd56cf83be170f1b99e7bea1aae97c143a736fce) verifies the seven focused reports and 85 committed authored paths.",
+    "native_preparation": {"matches": 36, "report": "native-v1/report.json", "sha256": "453588fa6a9b6d27454a63a282cc8e1280cea16d38a72bd56c6638dffa74b73c", "credit": "Fixture preparation only; the authoritative source report repeats native comparisons."},
+    "service": {"controls": 62, "report": "service-v3/report.json", "sha256": "c42bb5e936e92a037b90b6be5dafede1591fdaafc3d186cedca0a5b7cdc42bcf", "scope": "36 exact worker replies; 14 modifier targets; two explicit zero-agreement multi-property refusals; ten direct parser controls. Native warning cutoff, diagnostic, CLI stderr validation and ordinary parser behavior are checked separately."},
+    "source_smoke": {"agreements": 4, "report": "source-smoke-v1/report.json", "sha256": "da2be56d81d5cb72ea6d6c97949123716685aebbced7e9ba46d926c4b69368b4", "credit": "Subset of the authoritative 36."},
+    "dynamic_sources": {"agreements": 36, "report": "sources-v1/report.json", "sha256": "b51ae59e9c02693d00d4b7f62e403cdb51c20f3d5579f682c6441295055d0983", "scope": "18 eval and 18 opened-file originals; native/model raw stdout and stderr, normal result and exit0 agree. Earlier attribute/header, nonliteral, syntax, hook modifier, promoted/ordinary parameter, interface and deferred-static-versus-later-modifier priorities are included."},
+    "main_sources": {"agreements": 4, "report": "main-v1/report.json", "sha256": "599bd7964c0de5e42e0ef86a6e050658b1090fca365f1fbc87207a47cb2c1608", "scope": "Default-profile rejected main-file warning/fatal prefixes, native exit255 and modeled php_error exit255 agree before VM execution."},
+    "reached": {"premises": 110, "modules": 435, "report": "reached-v1/report.json", "sha256": "e2aede79589d10c452734e27c9abbc037feaa91228e526f8b30889f232147222", "scope": "Genuine earlier-header eval receipt; native message/line/source identity, exact failed-source record and rejection exit, no source/code/declaration/binding installation, free-handle reuse, reporting masks, catch/finally, zero-budget continuation and wrong-unit/bytes/replay refusal. Strict SL returns true with empty stderr."},
+    "affected": [
+      {"controls": 37, "report": "affected-method-v1/report.json", "sha256": "bae99594c1d36ddf554b28970e30a927bf6f6335e81c084ed864d4816725b514"},
+      {"controls": 42, "report": "affected-constant-v1/report.json", "sha256": "746521a50fec253324ecb7387b2459ea9f219a81ee322877642fffe45bf3c422"},
+      {"controls": 73, "report": "affected-trait-alias-v1/report.json", "sha256": "f7a66660edac688d62f38a3781d6a85639b4fe956a651a53bc2735394ca38c97"}
+    ],
+    "independent_hook_names": {"controls": 30, "report": "reviewer-name-matrix-v1/report.json", "sha256": "5c15b3863eef61391a64573c99b2e63d2d8633240e3bcfc006ea7041698c31f3", "scope": "Independent reserved/identifier hook-name grammar challenge, exact native diagnostic/line, warning cutoff, worker headers and CLI stderr validation."}
+  },
+  "zero_credit": [
+    "service-v1/report.json: passed=false, no records. The fixture incorrectly equated foreign header count with emitted warnings after an earlier nonliteral encoding item; source service correctly emits only the prefix before that item.",
+    "service-v2/report.json: passed=false, no records. The multi-property grammar control expected the wrong foreign stop; PHP-Parser stops at checkPropertyHooksForMultiProperty after building a nested header. Corrected in service-v3.",
+    "Two service-v3 multi-property controls have zero source agreement: Zend rejects at the first `{` before a nested encoding header, whereas PHP-Parser's later stop records that header. CLI dynamic_parser_stderr rejects the mismatched reply as Unsupported."
+  ],
+  "limits": "Trusted native parser receipts are explicit foreign facts, not derivations from source bytes. The multi-property grammar boundary remains an explicit Unsupported refusal. Wider rejected-source prefixes, multibyte conversion, portability and full core coverage remain partial. No held route was approached."
+}
