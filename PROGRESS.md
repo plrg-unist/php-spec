@@ -1104,9 +1104,10 @@ completed writes while skipping pending targets/body and releasing the iterator.
 Plain global constant groups compile initializers in order and tick after all
 bindings, preserving the final emitter line and installed values on callback abort.
 Class-like plans consume completed early-binding facts to preserve or break prior
-adjacency. Method, class-constant and plain property initializer declarables compile
-even when uncalled; constant member groups remain unticked. Conditional
-declarations activate before their header-line Tick, while top declarations have
+adjacency. Methods, ordinary block hooks, class-constant and plain property
+initializers contribute lexical declarations even when uncalled; unticked member
+groups preserve main adjacency. Conditional declarations activate before their
+header-line Tick, while top declarations have
 no outer Tick.
 Certified EnumCase markers run before the existing enum activation task, retaining
 member order, prior-marker frequency, backed-value lines and abort/resume behavior.
@@ -1137,7 +1138,8 @@ Exact source, strict and reached-state cuts remain in the
 [class-like declarations](coverage/semantics/tick-classlike-review.json),
 [enum cases](coverage/semantics/tick-enum-case-review.json),
 [member constants](coverage/semantics/tick-class-const-review.json),
-[plain property defaults](coverage/semantics/tick-property-review.json) and
+[plain property defaults](coverage/semantics/tick-property-review.json),
+[property hooks](coverage/semantics/tick-hook-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body

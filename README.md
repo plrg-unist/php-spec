@@ -331,6 +331,8 @@ lines and callback abort without changing the declaration consumer.
 Unticked class-constant and plain property groups preserve adjacency while their
 Closure initializers contribute lexical tick plans and ordinary callback/read
 behavior.
+Ordinary block property hooks keep separate body Tick plans in source order,
+including callback reads, abrupt cleanup and a later successful getter retry.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.

@@ -65,9 +65,13 @@ Plain class-member constant groups use the same constant-context visitor in
 declaration order. They emit no main opcode or outer Tick, preserving prior
 adjacency while static Closure initializers contribute their own lexical plans.
 Invoked constant Closures retain ordinary callback reads and abrupt cleanup.
-Undecorated property groups without hooks use the same ordered default visitor
-and preserve main adjacency. Existing object initialization commits defaults before
-the assignment's Tick, whose callback can read them and abort later caller work.
+Undecorated property groups use the same ordered default visitor. Ordinary by-value
+block hooks compile afterward in source order with separate body Tick plans;
+neither operation breaks main adjacency. Existing object initialization commits
+defaults before the assignment's Tick, whose callback can read them and abort
+later caller work.
+An invoked getter's Tick can read a sibling property, throw before the pending
+backing return, then leave the object available for a later successful read.
 
 Compiler entry uses completed `P.CLASSES`; runtime lookup borrows `S.CLASSES`
 after public descriptor/declaration-history validation. These facts live only in
@@ -175,7 +179,8 @@ unwinding clears that state before shutdown callbacks. Fiber switching remains
 blocked during the callback and its returned-value cleanup.
 
 The source summary is deliberately bounded. Wider decorated headers/cases/member
-constants, decorated properties and property hooks,
+constants, decorated properties and positive-frequency short/byref/decorated
+hook plans,
 other unmodeled statement/expression emission, callable defaults or
 attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
 and anonymous construction summaries. Foreach targets retain the existing
@@ -233,6 +238,9 @@ Closure read/return versus callback abort.
 The [plain-property tick review](../../coverage/semantics/tick-property-review.json)
 records default order/adjacency, a unique quiet compiler-line summary and
 initialized object reads through callback abort.
+The [property-hook tick review](../../coverage/semantics/tick-hook-review.json)
+records lexical block-hook plans, main adjacency, a short-hook refusal and actual
+getter callback abort/retry with receiver/backing state and budget equivalence.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

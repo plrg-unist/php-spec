@@ -1,0 +1,66 @@
+{
+  "milestone": "ATTR43: ordinary block property-hook Tick plans",
+  "status": "Independently accepted bounded implementation; wider hook/header/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "e70c7efbd",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "a3055369222a3cf8a6ddfefe63cccb8357b759e7a8eb7662bdd1375c8825d9a2",
+    "scope": "Undecorated ordinary by-value block hooks with clean headers compile after property defaults in source order. Each body delegates to the existing function visitor, preserving enclosing main adjacency and restoring its hook end line. A shared pure gate keeps the new property route disjoint from the legacy quiet route. No hook producer, linking, runtime consumer, task, state or schema changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_prop_decl processes the default before zend_compile_property_hooks; the latter loops the source list and calls zend_compile_func_decl_ex for separate hook op arrays. These operations add no main opcode. PROP_GROUP is unticked. Short bodies are rewritten to synthetic return/assignment statements and need a separate summary.",
+    "existing_admission": "Module382 admits the existing backed get-then-set pair and getter-only producer forms; module403 retains its setter/header restrictions. Completed source compiler facts remain authoritative. Reversed pairs and other producer dependencies were not widened."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/strict-report-v1.json",
+      "sha256": "2dce19e229a044ae230af576da35c43bf664e583e6a8daf5cc91c2b44dfa3394",
+      "revision": "363c18ab5d93b7322687148c504a988e730fdba8",
+      "passed": true,
+      "modules": 445
+    },
+    "author_source_and_control": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/source-author-v1/report.json",
+      "sha256": "9b26963484331bef4f8bed171c49d631a8abeff847176872290eadaa463e3683",
+      "revision": "363c18ab5d93b7322687148c504a988e730fdba8",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TZTWT",
+      "unsupported_controls": 1,
+      "control_agreement_credit": 0,
+      "scope": "Uncalled backed get/set bodies declare frequencies 2 then 1. A balanced directive with a no-op preserves that final frequency and discriminates main adjacency before later Z/W callbacks. BAD never executes. A positive-frequency short getter retains Unsupported with an empty modeled prefix."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/source-review-v1/report.json",
+      "sha256": "0822b1c0d3c3475f72e60224f0deeb1de9496049f813c89efaddf5d67880bcec",
+      "revision": "363c18ab5d93b7322687148c504a988e730fdba8",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TTGT9CTGT7TZT",
+      "scope": "The first getter body Tick invokes callback 3, which reads sibling 9 and throws before the backing return 7. Catch C is followed by a second getter read returning 7 normally."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-property-hooks-43/review-protocol-v1/run/report.json",
+      "sha256": "3b4a232005114cc226137a6d1f6959de4d1d31474a0c3621c028eff903cd2163",
+      "process_sha256": "9157740454bb17fd203ce238027da1123d11048abb721d3b9282ca4f8744ef8e",
+      "revision": "240430a3fb322eba6a8327e31a85adcd5250a4bb",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 62,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At the genuine getter-body Tick the current hook target/source/receiver and pending caller read validate. Backing 7 and sibling 9 remain through callback 3 reading 9 then throwing. The second getter returns 7; exact counter 7/output, retained object/slots, heap/descriptors/Tick validity and full-state zero-budget/full-resume equality pass."
+    }
+  },
+  "bridge": "For property groups with no hooks, the hook-node fold is identity and the shared gate is true, preserving both ATTR42's constant visitor and its quiet exclusion pointwise. Legacy quiet short hooks still have a false block gate and retain the prior quiet route. No earlier source campaign was replayed.",
+  "independent_review": "/root/attributes_review traced source order and separate function arrays, checked the shared gate/default ordering and passed the genuine hook-current callback/abort front on first execution. Class and enum owners confirmed disjoint source/runtime work.",
+  "remaining": "Positive-frequency short, byref, decorated/final and header-callable hook plans remain outside the new block gate. Existing hook producer/type/visibility/inheritance and deferred-default restrictions remain visible. No new hook consumer or whole-family closure is claimed.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-property-hooks-43. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs stayed stable, exits 0 and driver stderr empty; all campaign executables were reaped. Four regular local tool files were preserved while reusing the idle ATTR42 worktree; this is not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "source-baseline/report.json at 3e55d5e8b remains false (SHA 5f2561920c5f13724290282779e9cf7881d91d1253cdb8771af23fe05f47c954): native TZTWT versus old Unsupported/empty prefix with tick opcode placement dependency.",
+    "The short-hook control is a separately recorded Unsupported observation, never a normal agreement. No PHP engine bug or intentional divergence is claimed.",
+    "No ATTR42, prior compiler family, output, Generator, linking or paused-boundary campaign was replayed."
+  ]
+}
