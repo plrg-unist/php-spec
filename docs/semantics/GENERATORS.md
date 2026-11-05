@@ -602,6 +602,21 @@ stays explicitly Unsupported. Reference-parameter callbacks require earlier
 copying, while computed/packed and other producer contexts remain partial.
 [Call-copy review](../../coverage/semantics/generator-call-copy-review.json).
 
+I93 extends the real-copy path to admitted reference formals. API roots exist
+before capture/static duplication; the fresh-cell frontier follows those clones.
+Normal warning callbacks may reenter the original: a singleton static cell stays
+isolated in the copy, while an active seed frame keeps a shared cell shared.
+A top-level reference CV is still passed by value through the API; each reference formal
+gets a detached cell only after its warning returns. A used fresh Generator moves
+into one real retval continuation while API/source finalizers run, then returns
+to the caller without losing its Closure or parameters. Source history owns
+nothing after retirement. Native5/source5/private433 keep separate cuts; six
+reached fronts pass 625 custom/655 reported checks. Original failures and the
+result-demand
+projection retain zero credit; no-Gen receive/callback errors, mapping errors
+and wider contexts remain partial.
+[Reference-call review](../../coverage/semantics/generator-call-reference-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

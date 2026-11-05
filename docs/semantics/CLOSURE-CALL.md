@@ -1,7 +1,7 @@
 # `Closure::call`
 
-Modules 182/268 invoke a selected core Closure with a temporary receiver and
-scope, without allocating a bound copy. Supported sources include ordinary
+Modules 182/268 retain the selected core Closure and its arguments. Nongenerator
+bodies use a temporary receiver/scope without a bound copy. Their sources include ordinary
 Closures, named/function/method/`__invoke` captures, `Closure::fromCallable`
 results, transformed fake bindings and finite Throwable getters. The pinned
 routes are `zend_closures.c::ZEND_METHOD(Closure, call)`,
@@ -46,7 +46,7 @@ requested class. An unscoped fake function cannot acquire a user-class scope.
 Exact internal scopes admit supported getters and dummy Closure-scope functions;
 free-intrinsic internal scope changes remain warnings.
 
-User bodies enter through the ordinary call machinery with temporary
+User nongenerator bodies enter through the ordinary call machinery with temporary
 lexical/called scope and receiver. Source captures retain their original binding
 and share source static cells; a later ordinary invocation restores that binding.
 The internal wrapper owns the original positional values and named labels/order,
@@ -66,6 +66,21 @@ cells, without assuming contiguous allocation. The wrapper retains raw values.
 Normal array copies preserve embedded references. The result task resolves a
 returned reference without exposing its alias; the inner value remains demanded
 when the outer result is unused.
+
+Real user Generator Closures use a separate copied-object branch for admitted
+compiled literal calls and ordinary user-class receivers. Actual API roots hold
+source/copy/first/raw values before clone rules duplicate captures/statics.
+Reference-formal warnings run after that copy and before fresh-cell allocation,
+so callback writes to the original cannot change an isolated copied static cell.
+Shared wrappers remain shared. The Gen frame owns its copy with no API wrapper;
+a used retval stays in one explicit continuation through source finalizers.
+Warning traces have an internal handler header followed by the raw Closure::call
+frame; that API frame disappears before later Gen body execution. Native5/source5
+and private433 retain their distinct cuts; six reached fronts pass 625 custom/655
+reported checks.
+Computed/packed calls, other producer/receiver forms and no-Gen receive/callback
+or mapping errors remain partial. [Copy review](../../coverage/semantics/generator-call-copy-review.json),
+[reference review](../../coverage/semantics/generator-call-reference-review.json).
 
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,

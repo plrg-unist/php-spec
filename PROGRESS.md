@@ -8,45 +8,21 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
-I87 authenticates direct raw array and string method Generator creation and
-scoped factories from the immutable selected method. Archived receiver history
-adds no owner; direct producer and Fiber entry require the real live receiver.
-Six originals agree and seven reached fronts pass 561 custom/596 reported
-checks at private cuts. Joined strict433, three exact sources and a strengthened
-93-assertion closed-history state pass; e0e3ce7f composition is reviewed.
-Wider binding, callback and lifecycle contexts remain partial.
-[I87 review](coverage/semantics/generator-raw-method-factory-review.json).
-
-I86 authenticates captured ordinary method Generator bodies during Fiber
-transfer and reference-cache reads using the actual resumer, Closure and
-selected method. After Closure storage retirement, the recorded selection
-reconstructs a nonowning scope without a new owner. Four originals agree;
-five reached fronts pass 501 custom/526 reported checks at their private cuts.
-Joined strict433, two exact sources and 111 independent reached checks pass at
-4462bc6d; the 779569a8 composition is reviewed. Original compiler,
-refusal and storage failures retain zero credit. Wider bound/API and lifecycle
-contexts remain partial.
-[I86 review](coverage/semantics/generator-captured-method-body-review.json).
-
-I85 admits direct Generator-bodied `__call` and `__callStatic` through the
-existing typed source policy. Actual entered context retains the selected
-target through close and Fiber transfer, while live bodies require their real
-receiver. Five current originals agree; five reached fronts pass 444 custom/469
-reported checks at their private cuts. Joined strict433, three exact sources
-and 166 independent reached checks pass at bd274e79f; b1adc40c composition is
-reviewed. The original compiler, COUNT, Fiber-consumer and
-fixture-prefix failures retain zero credit. BYREF magic signatures and wider
-source/API/lifecycle forms remain partial.
-[I85 review](coverage/semantics/generator-direct-magic-review.json).
-
-I84 carries admitted `__call`/`__callStatic` factory authority into scoped
-method Generators after the maker or packed argument array retires. Five
-originals agree; five reached fronts pass 442 custom/467 reported checks at
-their recorded private cuts. Joined strict433 and the protected-close OB05
-interaction source pass at 5e33a7f88. Both original fixture failures retain
-zero credit. Direct magic
-Generator bodies and wider ancestry/API/lifecycle contexts remain partial.
-[I84 review](coverage/semantics/generator-magic-factory-review.json).
+I84–I91 cover selected typed magic, captured and raw method Generator
+factories; Fiber SEND/THROW and reference caches; and array/string method
+Closure binding and identity. Joined source and reached-state gates validate
+these bounded routes. Original failures retain zero credit in the linked
+ledgers. Wider signatures, callback/API entry, delegation and lifecycle
+combinations remain partial. [Generators](docs/semantics/GENERATORS.md),
+[Fibers](docs/semantics/FIBERS.md), [Closure calls](docs/semantics/CLOSURE-CALL.md);
+reviews [I84](coverage/semantics/generator-magic-factory-review.json),
+[I85](coverage/semantics/generator-direct-magic-review.json),
+[I86](coverage/semantics/generator-captured-method-body-review.json),
+[I87](coverage/semantics/generator-raw-method-factory-review.json),
+[I88](coverage/semantics/generator-raw-method-cache-review.json),
+[I89](coverage/semantics/generator-captured-method-throw-review.json),
+[I90](coverage/semantics/generator-direct-magic-throw-review.json), and
+[I91](coverage/semantics/generator-string-method-closure-review.json).
 
 Published generated enum array captures now create internal Closures without
 retaining the input array or receiver, preserving selection through COW and
@@ -147,59 +123,6 @@ remains explicit Unsupported.
 [variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json),
 [alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
 
-I88 carries raw method Generator reference caches and warm/fresh THROW across
-Fibers using the actual resumer/Gen/current proof. Fresh initialization now
-retains Zend's extra pending exception reference until injection; calibrated
-native controls distinguish pending input2 from warm input1 after CV unset.
-Nonstatic object-array calls from fixed ordinary method sources preserve lexical private
-selection over a public child override. Four native/model originals agree;
-four reached fronts pass 439 custom/459 reported checks at distinct cuts.
-Private433 keeps its original cut; later reached checks compile both corrections.
-Original refusal and reached failures plus the native diagnostic keep zero extra
-agreement credit. Eight legacy expectations are maintained without execution
-renewal or historical rewrite. Joined strict433, three exact sources, two affected
-old THROW states (143+105 checks) and an independent 153-check state pass at
-1ecc939d; 5096cbb1 current composition is reviewed. Wider captured-Closure,
-API/binding/delegation/collection/lifecycle combinations remain pending.
-[I88 review](coverage/semantics/generator-raw-method-cache-review.json).
-
-I89 carries authenticated nonstatic captured/bound method-Closure Generators
-through warm by-value/reference THROW and fresh initialization across Fibers.
-The actual resumer/Gen/current proof keeps Closure and This through CLOSED;
-Gen drop releases Closure/receiver before the cache. Four native/model originals
-agree at distinct cuts; five reached fronts pass 632 custom/657 reported checks.
-Private433 keeps its initial cut; later source/front checks compile the ARRAY
-nominal Closure identity and admitted bindTo dispatch corrections. Original
-Unsupported, stdout mismatch and interpreter failure keep zero agreement credit.
-Joined strict433, three exact sources, a fresh 117-check state and independent
-closed-body 118-check state pass at c81b8c5e; 26cf6684 composition is reviewed.
-Wider producer/API/binding/lifecycle combinations remain pending.
-[I89 review](coverage/semantics/generator-captured-method-throw-review.json).
-
-I90 carries direct typed BYVAL magic Generator warm/fresh THROW across Fibers
-through a shared actual resumer/Gen/current and entered-handler receipt proof.
-Native fresh abort releases payload before This, then throws the original API
-Throwable with the supplied abort as Previous; the existing initialization rule
-supplies that order unchanged. Four native/model originals agree at distinct
-cuts; five reached fronts pass 623 custom/648 reported checks. Private433 keeps
-its original cut and the unchanged Unsupported keeps zero agreement credit.
-Joined strict433, three exact sources, fresh parked125, affected I85 SEND166
-and independent closed102 checks pass at dfa4386d; d1f314c0 composition is
-reviewed. Source/signature and wider producer/API/lifecycle limits remain partial.
-[I90 review](coverage/semantics/generator-direct-magic-throw-review.json).
-
-I91 restores nominal Closure identity for static user-method string captures and
-routes admitted non-first-class bindTo calls through existing binding authority.
-Source retargeting, called-scope reset, a retained Gen Closure and a retired
-factory's nonowning history retain distinct controls. Three native/model
-originals and five reached fronts 614 custom/639 reported pass at their recorded
-cuts; private433 keeps its original cut. Both original failures remain zero credit.
-Joined strict433, three exact sources and parked127 pass at ee4b3cdb; the
-strengthened closed-cache126 state at 5610e476 checks GC09's receiverless
-marker. The 4544a539 composition is reviewed. Wider callable/API/lifecycle
-contexts remain partial.
-[I91 review](coverage/semantics/generator-string-method-closure-review.json).
-
 I92 gives real user Generator Closure::call entry its actual copied Closure and
 new receiver, with separate API owners and ordered used/ignored-result cleanup.
 The saved Gen keeps its copy through CLOSED without an API wrapper or later
@@ -210,6 +133,16 @@ receive-error retention and reference formals remain partial. Joined strict433,
 four exact sources, API-entry99, unused-result81 and independent closed143 checks
 pass at a84bf6c0; 3486d56c composition is reviewed. Wider calls remain partial.
 [I92 review](coverage/semantics/generator-call-copy-review.json).
+
+I93 extends real Generator Closure::call copies to admitted reference
+formals. Copy/static ownership precedes warning callbacks; fresh formal cells
+wrap frozen values afterward. Used Generator results survive API cleanup, and
+warning traces retain the real handler and call frames. Five private native/model
+sources and six reached fronts pass at their recorded cuts; joined strict433,
+three exact I93 sources, one affected I92 value SEND source, temporary return92
+and independent parked-cache169 states pass at f34d1214a. Original failures
+retain zero credit. Receive/callback/mapping errors and wider calls remain
+partial. [I93 review](coverage/semantics/generator-call-reference-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry

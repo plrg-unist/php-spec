@@ -145,11 +145,65 @@ rule PhpStep/closure-call-reference-resume: S ~> S_reference[.TODO = (CLOSURE_CA
   -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
   -- if S_reference = $call_fresh_reference(S, pvalue)
 
+;; Generator reference warnings keep their already allocated real API copy.
+dec $closure_call_copy_reference_valid(pstate, pclosurecall, nat, nat, pnamedargs, nat) : bool
+def $closure_call_copy_reference_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base) = true
+  -- if $closure_call_copy_forward_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base)
+  -- if $(n < |pclosurecall.RAW|)
+  -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
+  -- if $target_function(S, CLOSURE_TARGET n_copy) = (pfunction)
+  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if $named_can_store(pnamedargs, pnamedtarget)
+  -- if $named_reference(pfunction, pnamedtarget)
+def $closure_call_copy_reference_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base) = false -- otherwise
+def $call_task_valid(S, CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = $closure_call_copy_reference_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base)
+def $task_nodes(CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = $task_nodes(CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base)
+rule PhpStep/closure-call-copy-reference-warning: S ~> $error_dispatch(S[.ORIGIN = (pclosurecall.SITE)], 2, ptbytes, pclosurecall.LINE, DIAGNOSTIC "Warning" ptbytes pclosurecall.LINE, CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base)
+  -- if S.TODO = (CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) :: ptask_tail*
+  -- if $closure_call_copy_reference_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base)
+  -- if ptbytes = $closure_call_reference_message(S, pclosurecall, n)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.SITE = pclosurecall.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pclosurecall.LINE
+  -- if perrorcall.MESSAGE = $closure_call_reference_message(S, pclosurecall, n)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE pclosurecall.LINE
+rule PhpStep/closure-call-copy-reference-resume: S ~> S_reference[.TODO = (CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy $(n + 1) $named_store(pnamedargs, pnamedtarget, S_reference.RESULT) n_base) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) :: ptask_tail*
+  -- if $call_task_valid(S, CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base)
+  -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
+  -- if $target_function(S, CLOSURE_TARGET n_copy) = (pfunction)
+  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if S_reference = $call_fresh_reference(S, pvalue)
+
 def $temporary_call_task_valid(S, ptask) = false -- otherwise
 
 ;; Saved warning continuations validate in the real emitting caller's table.
 def $api_pending_task(CLOSURE_CALL_WARNING pclosurecall ptbytes) = true
 def $api_pending_task(CLOSURE_CALL_REFERENCE pclosurecall n pnamedargs n_base) = true
+def $api_pending_task(CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = true
+
+;; Reference warnings run inside the API, before a copied callee frame exists.
+dec $closure_call_copy_warning_context(pstate, pcallcontext) : bool
+def $closure_call_copy_warning_context(S, pcallcontext) = true
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+def $closure_call_copy_warning_context(S, pcallcontext) = false -- otherwise
+def $ordinary_internal_callback_context(S, pcallcontext) = true
+  -- if $closure_call_copy_warning_context(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}, {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}]
+  -- if $closure_call_copy_warning_context(S, pcallcontext)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if pclosurecall.FIRST = (POBJECT n_receiver)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
 
 ;; An exact internal dummy scope is observable but grants no user-class access.
 dec $closure_call_internal_current(pstate) : nat?
