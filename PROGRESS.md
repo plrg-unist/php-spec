@@ -1577,6 +1577,18 @@ Accepted parsing, native helper, schema, adapter and P4 rules are unchanged;
 wider rejected-source/compiler behavior remains partial.
 [Review](coverage/semantics/rejected-anonymous-class-modifier-review.json).
 
+COMP181 admits parsed attributed global multi-constant declarations to authored
+compilation. Ordered initializers, reached closure bodies, qualified class checks
+and retained compiler lines precede the final attribute fatal; ignored attribute
+arguments retain parser warnings. Eval/file compilation terminates before
+catch/finally. Single attributed constants and wider attribute behavior remain
+partial. Across preserved cuts and reviewed guard bridges,93 distinct original
+source comparisons agree; one single-attribute control remains Unsupported.
+Strict412 conditions/435 modules and the final pipe controls pass. The full
+classified syntax/inventory gate passes30,981 profiles with zero unresolved
+failures at its frozen syntax cut; the [review](coverage/semantics/attributed-constant-compile-review.json)
+records the pointwise bridge to final semantic bytes.
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
@@ -1584,7 +1596,7 @@ wider rejected-source/compiler behavior remains partial.
 | CLASS184 | Trait source methods and Closures with anonymous factories; private implementation/review. |
 | I111 | Computed native Generator method selection; private implementation/review. |
 | GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
-| COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
+| COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
 | ATTR31 | Conditional and short-circuit branch elision in tick plans; private implementation/review. |
 | Enum callable arrays | Wrong-length and missing-key third-output arrays; private implementation/review. |

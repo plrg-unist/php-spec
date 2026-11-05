@@ -1,0 +1,136 @@
+{
+  "milestone": "COMP181",
+  "status": "Implementation,focused evidence and syntax gate complete; ready for independent final acceptance.",
+  "base": "e50b80c92462e7e0bad2b78e4c2ae4e34c4abcfc",
+  "branch": "semantics/attributed-constant-compile-181",
+  "syntax_freeze": "b28879fb8db23e676721564aadf883f53e2d87d9",
+  "production_and_tests": "7b72e76ea3228d8e7c43ae7f2fc743f30d4f973e",
+  "raw_root": "../php-spec-evidence-archive/comp181",
+  "behavior": "Attributed global declarations with at least two constants compile initializers and names in order before the final multi-constant attribute fatal. Folded branches, reached closure bodies, array value-before-key order, constructor argument-prefix checks and compiler cursor changes retain native priority. Attribute arguments are ignored before this fatal but completed parser encoding warnings survive. Compile-time E_ERROR and E_COMPILE_ERROR terminate main/eval/file units before handler/catch/finally. Single attributed constants remain explicit Unsupported.",
+  "implementation": "ParserAbstract defers checkConstantAttributes globally; its redundant rejected-only override is removed. Module88 starts at first NConst metadata, follows existing fold facts/redirects, compiles reached closures in place and skips redundant operand emission only for doomed attributed lists. Modules183/212/218 preserve the distinct class-reference folding/visitor and parser-string callable rules. Module271 admits compiler-only initializer contexts; shared runtime declaration-source/initializer-root authority is unchanged. No schema, generated parser-table, native-helper, worker/adapter or SourcePrinter change.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_language_parser.y::top_statement/const_list",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_const_decl/zend_eval_const_expr/zend_compile_const_expr/zend_resolve_class_name",
+    "vendor/php-src/Zend/zend.c::zend_throw_error",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php::rule124",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php::checkConstantAttributes"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; include_path=.:; reporting30719/display_errors=stderr",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "validation": {
+    "patch_reproduction": {
+      "report": "patch-reproduction-v1/report.json",
+      "sha256": "71260924eb02f47ae6d0cca2079d8a71e54f92d725752312d52013e655963a45",
+      "scope": "Hand patch reproduces all five declared corrected parser/printer files exactly; generated Php8 tables remain unchanged. Upstream source manifest does not cover corrected runtime ParserAbstract and is unchanged.",
+      "passed": true
+    },
+    "sources": {
+      "report": "sources-v1/report.json",
+      "sha256": "d450664a02235b92fc7d22fbd125679bf07a19e02be147aa443173c654e11a4f",
+      "scope": "41 originals:40 exact raw stdout/stderr/exit agreements plus single attributed constant Unsupported. Covers initializer/name/import priority,multiline cursors,reached/ignored closures,folded branches,constructor/array traversal,warning prefix and eval/file fatal routing.",
+      "head": "b270cdbb39ba2ba29071533d7342cdae879bb5a0",
+      "passed": true,
+      "agreements": 40,
+      "refusal_controls": 1,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "qualified_sources": {
+      "report": "qualified-sources-v1/report.json",
+      "sha256": "7ba36a6e903c75fba47f3f932fdf40f672ecea3d75fe3a65e196a955d6b8870a",
+      "scope": "29 originals:26 new qualified-reference cases plus3 affected controls. Checks NEW/FCC/::X/::class distinctions,mixed case,plain and component controls,fold/body and argument priority.",
+      "head": "9410fa322671ab39410386c1f46cd8b263db5fcb",
+      "passed": true,
+      "agreements": 29,
+      "refusal_controls": 0,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "visitor_sources": {
+      "report": "visitor-sources-v1/report.json",
+      "sha256": "093fdc6b66017153f2f7378e25461b1086ecc3a3d1a68afd1dd2c119dca9b759",
+      "scope": "32 originals:27 new class-reference/callable cases,4 affected controls and single Unsupported. Includes parser concat versus dynamic FCC operands,fold/nonfold nonstring classes,literal self/static/slash distinctions and E_ERROR eval/file bypass.",
+      "head": "7b72e76ea3228d8e7c43ae7f2fc743f30d4f973e",
+      "passed": true,
+      "agreements": 31,
+      "refusal_controls": 1,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "strict_protocol": {
+      "report": "protocol-visitor-v2/report.json",
+      "sha256": "f29c2336174089a8f0cdb832657d5851b6991368af4accba45df902610fce4b2",
+      "scope": "412 checked-AST/strict conditions over435 modules:ordered names,cursors,folded visitation,metadata refusal,real source/path/unit/closure barriers,unchanged runtime authority and nonattributed callable-wrapper equivalence. Precommit9410 head field; all final production/test hashes equal committed7b72 bytes.",
+      "head": "9410fa322671ab39410386c1f46cd8b263db5fcb",
+      "passed": true,
+      "module_count": 435,
+      "premises": 412,
+      "head_stable": true,
+      "inputs_stable": true
+    },
+    "pipe": {
+      "report": "pipe-final-v1/report.json",
+      "sha256": "0b62affbf731396ac704721554af514ef62a314e631826336f025d204aeca446",
+      "scope": "Eight original/roundtrip/lint pipe arrow profiles plus missing-fact compiler control on final semantic bytes; source-agreement credit0.",
+      "head": "7b72e76ea3228d8e7c43ae7f2fc743f30d4f973e",
+      "passed": true,
+      "head_stable": true,
+      "inputs_stable": true
+    }
+  },
+  "syntax_gate": {
+    "raw_root": "../php-spec-evidence-archive/comp181-syntax-gate-20261106",
+    "snapshot": "b28879fb8db23e676721564aadf883f53e2d87d9",
+    "summary_sha256": "b9d0ed26c288cde11037b6db32f7963da7b4d96382f94d7e5a578ca7250f2beb",
+    "manifest_sha256": "793334bcc91eb6d73a647b93b207f4f813b08255534cb97d6c3fe28835ed5872",
+    "commands": [
+      "make test",
+      "python3 tests/validate.py --match constant-attributes-multiple --elaborate --lint-all",
+      "make validate (4 shards)",
+      "make inventory"
+    ],
+    "exits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "classified_original_rows": 30981,
+    "counts": {
+      "pass": 30691,
+      "parser_rejection": 249,
+      "reviewed_compile_phase_difference": 27,
+      "redirect": 6,
+      "non_source": 8
+    },
+    "failures": 0,
+    "additional": "Targeted98,generated4103 and deep1 classifications pass; malformed24/deep-wire33 and PHPT extraction21744 pass. Retired multiple_constants_error.phpt exemption; new accepted fixture roundtrips and native grammar accepts while lint rejects at compilation.",
+    "inventory_patch_sha256": "f29548ade963e49749b8dd97db81d88fac1f5d695f3b4cfcfa1cb549677e2ebd",
+    "inventory": "Reviewed four-file patch only updates capped witnesses and grammar last_run98/84/14. Productions635,mapped constructors169,scanner191/264 and encoding79/214/685 remain unchanged."
+  },
+  "bridge": {
+    "report": "bridge-v1/report.json",
+    "sha256": "a4bc1262c20b24718f4e327c466d4dd667b278d34de926f2fecd2186cf528e9a",
+    "basis": "Eight syntax/provenance files remain byte-exact b288. Later committed delta is five semantic modules,semantic-only tests and two test-semantics Makefile selectors. Corpus discovery excludes tests/semantics; syntax/schema/native/adapter/generator/corpus inputs remain fixed. Whole8005-file fingerprints differ and are not claimed equal. Four execution binaries equal the syntax gate manifest.",
+    "source_cuts": "Original41 and qualified67 source/expectation bytes remain exact. b270->9410 adds guarded qualified-name checks absent from original41. 9410->7b72 adds only attributed previously-uncovered nonstring/literal-member/FCC-concat branches; prior qualified static string-member errors already stop in folding. New affected controls and strict412 discriminate the bridge. Optional diagnostic_class defaults old CompileError assertions unchanged.",
+    "unique_source_scope": "93 distinct exact source comparisons plus one distinct Unsupported control across the preserved cuts; overlap between packets is not summed as new coverage."
+  },
+  "zero_credit": [
+    "Reviewer baseline/native discovery and classref audit batches are source/phase authority only,not model agreement. The qualified-new baseline preserves a real native/model mismatch before the guarded correction.",
+    "Initial smoke failures preserve the undefined-helper setup,regex/status recorder errors and real closure-cursor/order discrepancy; final corrected source packets alone receive agreement credit.",
+    "Protocol preparation failures preserve invalid edited wire metadata,inline-origin parsing and duplicate typed_tag declaration. All precede the final strict412 pass; no syntax/source replay is assigned to their corrections.",
+    "Syntax gate pre-DUNE_ROOT preparation failed before tests; corrected isolated environment reran the gate. Raw setup failure remains outside Git with zero credit."
+  ],
+  "review": {
+    "status": "Production/tests,all source packets,strict412,syntax gate and pointwise bridge independently clear; final pipe and documentation submitted for acceptance.",
+    "findings": "Native cursor and reached-closure ordering corrections,qualified-name phase checks and nonstring/parser-string classref distinctions were resolved before final freeze. Runtime declaration authority remains exact; no paused boundary including COMP88 was approached."
+  },
+  "limits": "Single attributed global constants,NEW expression targets,wider attribute compilation/metadata/lifetimes,broader compiler contexts,portability and full PHP core remain partial. Trusted native parser facts retain their existing boundary; no runtime attribute instantiation is delegated to PHP."
+}

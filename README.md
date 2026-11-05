@@ -2613,6 +2613,12 @@ preserve alias cells, COW, diagnostic phases and checked continuation ownership.
 ordered activation, namespace/import lookup, initializer diagnostics and array
 ownership. [Their independent review](coverage/semantics/user-constant-review.json)
 binds source, allocation-class, state/resume and shared quiet/call checks.
+Attributed global lists with two or more constants now compile their initializers
+and names in native order before the final attribute error. Reached closure
+bodies, folded branches and the retained diagnostic line keep their priority;
+parser warnings survive ignored attribute arguments. Eval and included units
+terminate before catch/finally. Single attributed constants remain Unsupported.
+[Attributed constant review](coverage/semantics/attributed-constant-compile-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional

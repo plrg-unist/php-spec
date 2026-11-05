@@ -20,6 +20,23 @@ line. Runtime registration normalizes namespace prefixes and preserves terminal
 case; this is not uniform lowercasing. The existing source environment's SEEN
 and import rules retain their pinned compile-order case distinction.
 
+Attributed global declarations with at least two constants enter this compiler
+at the first constant-name line. Their initializers and name checks run in order
+before the final multi-constant attribute error. Remaining constant reads and
+compiled closure ends advance the diagnostic cursor; literals retain it. The
+constant walk follows folded facts and redirects, visits array values before keys,
+and checks constructor argument structure before values. It compiles reached
+closure bodies once, preserving their earlier errors without emitting runtime
+operands for a declaration that cannot execute. Qualified class keywords retain
+their distinct folding, NEW/callable and `::class` checks.
+
+Attribute arguments are not compiled before this error; completed parser encoding
+warnings inside them still precede it. The error terminates eval/included units
+before catch/finally. Compiler-only source predicates admit initializer contexts
+without extending runtime constant declaration authority. Single attributed
+constants, attribute compilation and the full constant family remain partial.
+[COMP181 evidence](../../coverage/semantics/attributed-constant-compile-review.json).
+
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
 parent fold makes their execution unnecessary. Non-owning `PCCLASS` companions
