@@ -215,13 +215,17 @@ def $tick_expression_effects(T, pcodeexpr*, (CODEEFFECT pcpath) :: pcodeexpr_eff
   -- if T_effect = $tick_expression_line($tick_expression_raw(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)[.LAST = false]
 def $tick_expression_effects(T, pcodeexpr*, pcodeexpr_effects*) = T[.DEPENDENCY = ("tick retained effect source")] -- otherwise
 
-;; Without a published rewrite the compiler visits all ternary arms, and both
-;; dynamic short-circuit operands. Jumps/BOOL/QM_ASSIGN then break tick adjacency.
+;; Without a published rewrite the compiler visits all ternary arms and the
+;; operands of dynamic logical/coalesce forms. Jumps/BOOL/QM_ASSIGN break adjacency.
+;; Coalesce assignment visits quiet target children before RHS; its writable
+;; refetch reuses memoized expressions and does not compile their bodies again.
 def $tick_expression_raw(T, pcodeexpr*, pcpath, expression) = $tick_nodes(T, pcodeexpr*, $pcchildren(expression, pcpath))[.LAST = false]
   -- if $tick_conditional(expression)
 ;; Array prepasses may publish redirects in values. The emitter compiles each
 ;; key before its value; the shared visitor follows only actual child receipts.
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArray phpType12 metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprArray phpType12 metadata, pcpath))
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrayDimFetch expression phpType5 metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprArrayDimFetch expression phpType5 metadata, pcpath))
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprVariable phpType32 metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprVariable phpType32 metadata, pcpath))
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
   -- if $tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata, 6)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T_body[.LAST = T.LAST]
@@ -925,6 +929,8 @@ def $tick_conditional(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata
 def $tick_conditional(NExprBinaryOpBooleanOr expression_1 expression_2 metadata) = true
 def $tick_conditional(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = true
 def $tick_conditional(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) = true
+def $tick_conditional(NExprBinaryOpCoalesce expression_1 expression_2 metadata) = true
+def $tick_conditional(NExprAssignOpCoalesce expression_1 expression_2 metadata) = true
 def $tick_conditional(expression) = false -- otherwise
 def $tick_logical(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata) = true
 def $tick_logical(NExprBinaryOpBooleanOr expression_1 expression_2 metadata) = true
@@ -932,6 +938,10 @@ def $tick_logical(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = 
 def $tick_logical(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) = true
 def $tick_logical(expression) = false -- otherwise
 
+def $tick_expression_children_safe(NExprArrayDimFetch expression phpType5 metadata) = false
+def $tick_expression_children_safe(NExprVariable phpType32 metadata) = false
+def $tick_expression_children_safe(NExprBinaryOpCoalesce expression_1 expression_2 metadata) = false
+def $tick_expression_children_safe(NExprAssignOpCoalesce expression_1 expression_2 metadata) = false
 def $tick_expression_children_safe(NExprArray phpType12 metadata) = false
 def $tick_expression_children_safe(NExprTernary expression_cond phpType5 expression_false metadata) = false
 def $tick_expression_children_safe(NExprBinaryOpBooleanAnd expression_1 expression_2 metadata) = false
