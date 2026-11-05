@@ -67,7 +67,25 @@ def $generator_capture_saved(S, n) = true
   -- if $generator_object(S, n_receiver)
   -- if $generator_api_kind(INTRINSIC_GENERATOR_METHOD text_method eps)
   -- if $generator_getter_source(S, pgettersource, n, n_receiver, text_method)
+def $generator_capture_saved(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $bound_fake_getter(S, n) = ((n_receiver, GENERATOR_API_METHOD text_method, "Generator"))
+  -- if $(n_receiver < n)
+  -- if $generator_object(S, n_receiver)
+  -- if $generator_api_kind(INTRINSIC_GENERATOR_METHOD text_method eps)
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $fake_bind_history_nodes(S, n, eps)]
+  -- if $bound_fake_valid(S_history, n)
 def $generator_capture_saved(S, n) = false -- otherwise
+
+;; Target normalization reads immutable capture/binding storage. A bound copy
+;; owns its replacement receiver; the SOURCE chain is lookup-only history.
+dec $generator_capture_target(pstate, nat) : (nat, text)?
+def $generator_capture_target(S, n) = ((n_receiver, text_method))
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+def $generator_capture_target(S, n) = ((n_receiver, text_method))
+  -- if $bound_fake_getter(S, n) = ((n_receiver, GENERATOR_API_METHOD text_method, "Generator"))
+def $generator_capture_target(S, n) = eps -- otherwise
 
 def $getter_capture_live(S, n) = true
   -- if $generator_capture_saved(S, n)
@@ -98,7 +116,7 @@ def $generator_capture_invocation_site(S, porigin) = false -- otherwise
 def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
   -- if pgeneratormethodselection.CAPTURE = (n_capture)
   -- if $generator_capture_saved(S, n_capture)
-  -- if S.OBJECTS[n_capture] = GETTERCLOSURE n (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $generator_capture_target(S, n_capture) = ((n, text_method))
   -- if $generator_capture_invocation_site(S, porigin)
   -- if pgeneratormethodselection.SITE = porigin
   -- if pgeneratormethodselection.OBJECT = n
@@ -133,14 +151,14 @@ def $generator_capture_operation(pgeneratorop) = $generator_capture_selection_ta
 
 dec $generator_capture_enter(pstate, nat, porigin, int) : pstate
 def $generator_capture_enter(S, n_capture, porigin, z) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method (pgeneratormethodselection), INDEX 0, SENT eps, NAMED false, OWNER (n_receiver), SELECTION eps, LINE z, PACKS eps}) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: $generator_method_return_tasks(S, porigin, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.OBJECTS[n_capture] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $generator_capture_target(S, n_capture) = ((n_receiver, text_method))
   -- if $getter_capture_live(S, n_capture)
   -- if $dynamic_site(S, (porigin))
   -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_api_arguments(phpType7*)
   -- if pgeneratormethodselection = {SITE porigin, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE z, CAPTURE (n_capture)}
 def $generator_capture_enter(S, n_capture, porigin, z) = S[.TODO = (GENERATOR_ARGS {OBJECT n_receiver, NAME text_method, SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION (pgeneratormethodselection)} phpType7* eps) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: $generator_method_return_tasks(S, porigin, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.OBJECTS[n_capture] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $generator_capture_target(S, n_capture) = ((n_receiver, text_method))
   -- if $getter_capture_live(S, n_capture)
   -- if $dynamic_site(S, (porigin))
   -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* n_field
@@ -169,14 +187,7 @@ def $getter_capture_finish(S, n, porigin, ptask*) = S[.RESULT = KNOWN PNULL][.BA
 def $getter_capture_finish(S, n, porigin, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE S.RESULT]
   -- if ~$generator_capture_unused_result(S, n, porigin)
 
-;; Rebinding requires another selected-receiver protocol. Keep the new tag out
-;; of the existing zero-argument Throwable getter forwarding paths.
-def $fake_bind_receive(S, pconfigcall) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "captured Generator API Closure rebinding"]
-  -- if $fake_bind_arity(S, pconfigcall).COMPLETION = NORMAL
-  -- if $fake_bind_source(pconfigcall) = (n_source)
-  -- if $generator_capture_saved(S, n_source)
-  -- if pvalue_receiver = $error_api_value(pconfigcall, $fake_bind_offset(pconfigcall), PNULL)
-  -- if pvalue_receiver = PNULL \/ $config_object(pvalue_receiver)
+;; Temporary Closure::call copies keep their separate receiver protocol.
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "captured Generator API Closure::call"]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL

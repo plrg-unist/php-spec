@@ -23,7 +23,8 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n_capture)
-  -- if S_read.OBJECTS[n_capture] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD text_method) "Generator" pgettersource
+  -- if $generator_capture_saved(S_read, n_capture)
+  -- if $generator_capture_target(S_read, n_capture) = ((n_receiver, text_method))
   -- if $getter_capture_live(S_read, n_capture)
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if $generator_capture_wrapper_site(S, porigin)

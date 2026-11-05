@@ -736,7 +736,6 @@ def $fake_bind_receive(S, pconfigcall) = $fake_bind_select_scope(S, pconfigcall,
   -- if $fake_bind_source(pconfigcall) = (n_source)
   -- if $closure_callable(S, n_source)
   -- if ~$ctor_capture_live(S, n_source)
-  -- if ~$generator_capture_saved(S, n_source)
   -- if n_offset = $fake_bind_offset(pconfigcall)
   -- if pvalue_receiver = $error_api_value(pconfigcall, n_offset, PNULL)
   -- if pvalue_receiver = PNULL \/ $config_object(pvalue_receiver)
@@ -1099,6 +1098,7 @@ def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = (GETTER_ARGS {SITE po
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $bound_fake_valid(S, n)
   -- if $bound_fake_getter(S, n) = ((n_receiver, pgettermethod, text_base))
+  -- if ~$generator_api_getter(pgettermethod)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
@@ -1107,6 +1107,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $bound_fake_valid(S_read, n)
   -- if $bound_fake_getter(S_read, n) = ((n_receiver, pgettermethod, text_base))
+  -- if ~$generator_api_getter(pgettermethod)
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if ~$ppfirstclass(phpType7*)
 def $dynamic_value(S, porigin, z_init, z_call) = $intrinsic_prepare(S, pintrinsic, z_call, (n))
