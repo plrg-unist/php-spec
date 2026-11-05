@@ -4727,6 +4727,11 @@ arguments distinct from its callback. Mixed zero/one and shared zero/two
 sources agree exactly, as does a duplicate-argument control. Six reached
 states check 122 conditions, including argument order and shared FCC owners;
 strict433 passes. See the [tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
+A raw invokable callback can also be copied as one of its own tick arguments.
+Two native-first sources agree exactly; seven reached states check 120
+conditions, including its 3→2→1→0 owners and an unrelated argument's earlier
+destruction. Private and joined strict433 pass. See the
+[self-argument review](coverage/semantics/callback-late-tick-self-argument-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

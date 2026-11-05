@@ -1,0 +1,74 @@
+{
+  "milestone": "ATTR15: callback object copied as its own post-FINAL tick argument",
+  "status": "selected normal source and ownership behavior validated; broader core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-15",
+  "scope": "A raw invokable tick callback may occur among its own copied POBJECT arguments in the admitted normal post-FINAL ordered list. Each occurrence is an argument root before the separate FCC.object and FCC.closure roots; assertion callback remains empty.",
+  "authority": [
+    "ext/standard/basic_functions.c:user_tick_function_dtor — copied parameters retire before zend_fcc_dtor",
+    "Zend/zend_API.h:zend_fcc_addref and zend_fcc_dtor — independent FCC.object and FCC.closure owners",
+    "ext/standard/basic_functions.c:PHP_RSHUTDOWN_FUNCTION(basic) — tick list destruction after output FINAL"
+  ],
+  "production": "18e01fd27bd53f2b80a211d8605397ef2aeb1770 removes the callback-distinct guard and unused callback parameter from 444 object-argument readiness; source authentication, ordered list transfer and task roots stay unchanged. f2c938eaa8e6220e28de12eeff5878fdc842506c adds the reached owner checks.",
+  "identities": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+    "semantic_mode": "SL; P4-SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; CPU5"
+  },
+  "evidence": {
+    "native_self": {
+      "source_sha256": "dfc6d25808c20874d091e80890583d5c3aa04312785b2132150e771bb692bf3f",
+      "report": "native-self/report.json",
+      "report_sha256": "2e0cf3f916d9f788278609f9245c89d03d962347a4b02b54925656c7e82835fb",
+      "exit": 0,
+      "stdout": "B;F;C;"
+    },
+    "native_self_other": {
+      "source_sha256": "79007cac85128cd180040d252d2391c23ce1a555cc1c998c53fdc9b59d73651e",
+      "report": "native-self-other/report.json",
+      "report_sha256": "1a8a5528ef90ba7ceccb610de83a3858cb50aebc5bcf252bb065382d1f3782bb",
+      "exit": 0,
+      "stdout": "B;F;A;C;"
+    },
+    "model_sources": {
+      "revision": "18e01fd27bd53f2b80a211d8605397ef2aeb1770",
+      "report": "source-18e/report.json",
+      "report_sha256": "931ccd11aca69848247ba5669e7ee418dac98d723e8cedc8a55734b36c03c043",
+      "normal_exact_rows": 2,
+      "elapsed_seconds": [29.75, 40.82]
+    },
+    "reached": {
+      "revision": "f2c938eaa8e6220e28de12eeff5878fdc842506c",
+      "report": "reached-f2c/report.json",
+      "report_sha256": "12ec083bd69fe0616487253fa45f5a272a2fc60f490b4f0485c1435c294cc3bb",
+      "selected_assertions": [18, 15, 19, 16, 15, 16, 21],
+      "observation": "Self-only callback roots drop 3→2→1→0. With a copied self plus other object, the self root drops first, the other argument retires and prints A before FCC release, then callback prints C after its final owner."
+    },
+    "strict_private": {
+      "revision": "18e01fd27bd53f2b80a211d8605397ef2aeb1770",
+      "report": "strict-18e/report.json",
+      "report_sha256": "ad655bc6d1fcbb165312f60876aa1c8a658c643293f09c58108969c5df7f7778",
+      "modules": 433,
+      "exit": 0
+    },
+    "strict_joined": {
+      "revision": "2c7f56d09849b67116e371e981b2e992c1cc5d43",
+      "report": "strict-2c7/report.json",
+      "report_sha256": "13ebc023aab19f20c27b1f38dbd666265df8e1a4b1d12c1911cce17d6900ce35",
+      "modules": 433,
+      "exit": 0
+    }
+  },
+  "zero_credit": [
+    "baseline-model/report.json: original integrated 4c10675 model Unsupported after B;F; for the self-only source",
+    "ATTR07 unsafe assert WeakReference observation remains suspected and zero agreement credit"
+  ],
+  "remaining": "Scalar, array/reference and other callback payloads, assertion callback roots, abrupt/reentrant module shutdown and other late-free routes remain partial. The selected normal sources witness one copied self and self plus another object; this is not exhaustive source validation of all finite lists.",
+  "composition": {
+    "head": "2c7f56d09849b67116e371e981b2e992c1cc5d43",
+    "parents": ["f2c938eaa8e6220e28de12eeff5878fdc842506c", "84113f0f95d591a8ed8b51b474588814831f48ea"],
+    "compatibility": "OB08 adds an explicit-null default ob_start route in 391/444 for an EXECUTOR_RELEASE shutdown queue. Selected ATTR15 sources use named output handlers before FINAL and only EXECUTOR_TICK_RELEASE later. GC26 adds explicit GC real Closure caller behavior in 301; selected sources do not call GC or create Closures. Joined strict433 at 2c7 passes; production diff from 841 master is only the reviewed 444 self-argument rule.",
+    "review": "Independent semantic/test CLEAR for f2c and post-OB08/GC26 bridge CLEAR for 2c7 by /root/attr_review_recovery."
+  }
+}

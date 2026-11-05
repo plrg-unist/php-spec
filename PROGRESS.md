@@ -701,6 +701,16 @@ Unsupported baseline and a draft binding error retain zero credit. Scalar,
 array/reference and callback-as-argument payloads, assertion roots and abrupt
 reentry remain partial. [Tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
 
+ATTR15 also admits a raw invokable callback copied as its own tick argument
+after output FINAL. The copied argument retires before the callback's two FCC
+slots. Two native-first sources agree exactly: self-only prints `B;F;C;`, and
+self plus another object prints `B;F;A;C;`. Seven reached states pass 120
+checks, showing callback owners 3→2→1→0 and the other argument retiring before
+the final callback release. Private and joined strict433 pass. The prior
+Unsupported baseline retains zero credit. Scalar, array/reference payloads,
+assertion roots and abrupt reentry remain partial.
+[Tick self-argument review](coverage/semantics/callback-late-tick-self-argument-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
