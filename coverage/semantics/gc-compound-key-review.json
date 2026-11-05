@@ -1,0 +1,69 @@
+{
+  "scope": "GC33: compound inactive WeakReference/WeakMap key hooks, initial internal-key insertion, and explicit ordinary-retirement fences.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json; explicit USE_ZEND_ALLOC=0 cross-shared context",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "base": "cb8ed764a977b150286b9fb728a70bd3cee1b388",
+    "first_source_only": "c1c0bb7c2ea62a8de7ef1f4184290be0bd21d304",
+    "semantic_and_two_fatal_sources": "fd4e86c42d589b301d9730c4f00361a9c9f9479a",
+    "remaining_source_selection": "f53abc265dcb1a5885a623c6c99fd7fd3a6e8181",
+    "cross_source": "42ecd54f31115310011d848acfbfed854f882813",
+    "nonfast_context": "1442b6e508b07258bbfc3073c0746192d5606e32",
+    "independent_multi_reached": "f53abc265dcb1a5885a623c6c99fd7fd3a6e8181",
+    "author_eight_reached": "1442b6e508b07258bbfc3073c0746192d5606e32",
+    "author_empty_map_corrected": "5b8c750b9a92d013825f4774c73e5347e70377af",
+    "affected_gc31_peer": "5b8c750b9a92d013825f4774c73e5347e70377af",
+    "affected_gc30_higher": "5b8c750b9a92d013825f4774c73e5347e70377af"
+  },
+  "implementation": [
+    "spec/semantics/386-weak-map-lifetime.watsup",
+    "spec/semantics/422-weak-map-entries.watsup",
+    "spec/semantics/444-executor-final-free.watsup"
+  ],
+  "rule": "First insertion preserves the existing ordinary stdClass leaf-key policy and admits allocated nonfreeing WeakReference/WeakMap identities without copying their outgoing ownership. In terminal cleanup, marking a WeakReference unregisters its referent before incoming Map notification and fields; marking a Map unregisters every outgoing key, then releases own values before incoming notification. FAILED/UNKNOWN short-circuits before any later rank lookup or notification. GC32 selective entry/slot/rank logic is reused unchanged. Ordinary internal-key retirement with incoming Maps explicitly stops with its pending release owner restored, before generic retirement or owning-edge mutation.",
+  "engine_basis": "Pinned Zend/zend_weakrefs.c zend_weakref_free unregisters the referent before zend_object_std_dtor; zend_weakmap_free_obj unregisters all outgoing keys and cleans values before its std_dtor. Incoming Map notification deletes one entry before its value decrement. Existing MARKED and DETACHED views never filter owning H; final S remains its last ownership-valid snapshot.",
+  "validation": {
+    "source": "Nine positive contexts/eight programs: WeakReference-key referent-field shielding and incoming-value fatal; Map-own fatal before incoming, held-own continuation to incoming fatal, shared singleton values, self-key, multi-entry owner3, cross-shared owner4/reversed incoming registration order, and the same cross-shared program under nonfast table release. Full stdout/stderr/CLI0 outcomes match at recorded stable cuts.",
+    "ordinary_controls": "WeakReference, empty Map and multi-entry Map ordinary unset controls stop at ordinary internal weak-key notification after B|; native instead runs VALUE|AFTER|. These three explicit Unsupported controls earn zero agreement and preserve incoming values/allocations until the protocol is modeled.",
+    "compiler": "Strict SL435 initialization passes at fd4; all source/reached executions load435 modules at recorded cuts.",
+    "author_reached": "Nine fronts pass495 reported conditions: eight successful rows460 at144, then corrected empty-Map35 at5b8. They prove own-fatal phase retains incoming edge/owner, held-own reaches incoming fatal, WR referent-unregister shields target fields, self-key unregisters once, raw PhpStep ordinary fences preserve pending Key owner/values/allocations, and cross-shared fast/nonfast rank/owner4 cleanup. The empty-Map row originally looked up map instead of its actual receiver outer; original failed row retains0, only that lookup changes and only35 reruns. All accepted cuts have stable inputs/HEAD/scripts and reaped actors.",
+    "independent_reached": "Independent strict51 passes on the real multi-entry inner Key and Value owner3. It proves outgoing all-key unregister, later incoming detachment, no duplicate owner, normal snapshot and 0/1-step completion. Actual runtime/source cut is f53 with external script SHAc943adefc1d95da5f246fcbb58f3e82ef990300104b1e38f40307fbb14b4485e; portable tracked fixture3d645c253 changes only root resolution.",
+    "affected": "Only the GC31 independent lease180 and GC30 HIGHER140 constructed-state fronts rerun and pass320 at5b8. The former now retires nested incoming-Map ownership successfully; the latter performs quiet WR-key notification while retaining referent/field owners. Active free-pin/custom Closure refusals remain. Historical GC30/31/32 cuts/counts stay unchanged; no extra source agreement is claimed from these mutants.",
+    "failures": "Original fatal-source baselines stop at generic ordinary destructor prune refusal; unchanged originals later pass atfd4. The methodless self-key baseline proves the original insertion fence. One fresh-directory recorder stop had no native context and no semantic execution. Four independent fixture syntax/elaboration stops have zero credit; source/rules were unchanged while fixing the fixture."
+  },
+  "limits": "Ordinary incoming internal-key callback continuations remain explicitly Unsupported. Later multi-entry/read/replace producer policies are unchanged; custom Closure keys, active storage pins and inactive nonpublic-destructor diagnostics remain fenced. No GC/count/nogc change or native evaluation fallback; complete core remains unfinished.",
+  "recovery": "Raw originals, accepted/failed reports and external gate scripts remain in ../php-spec-evidence-archive/gc-compound-key-33 and gc-compound-key-review-33. Maintained gc_compound_key_sources.py selects native/model cases; gc_compound_key_slow_sources.py provides the nonfast context; state scripts are gc_compound_key_state.py and gc_compound_key_review_state.py. Preserve actual cuts and original unsupported evidence.",
+  "counts": {
+    "exact_positive_contexts": 9,
+    "validated_programs": 8,
+    "normal_contexts": 6,
+    "php_error_contexts": 3,
+    "unsupported_controls": 3,
+    "strict_reported_conditions": 866,
+    "author_conditions": 495,
+    "independent_conditions": 51,
+    "affected_conditions": 320
+  },
+  "review": "Independent engine/rule/source/state and draft-scope review CLEAR. Accepted source/reached cuts retain their identities; final actual-parent/exact-head acceptance is supplied by focused review messages.",
+  "reports_sha256": {
+    "gc-compound-key-33/source/baseline-report.json": "d823e19e4db628af2d2768885c8ac08c4dd2fdfeadb6ae3acbd933ca8956d81e",
+    "gc-compound-key-33/source/native-report.json": "0142104290e1ded9977e2f64458192722ace3b677c492aebe7fb36689fdb7428",
+    "gc-compound-key-33/source/model-map-key-own-before-incoming-weak-key-incoming-report.json": "7ffe9cdf780abb31d6b08bd4c194d6bb6bef1a5e0fded8cf2c1d314baaf59a58",
+    "gc-compound-key-33/source-v2/native-report.json": "864ce72f231953bb3c1851f93846560e330b135820d209413f10028bbb33e7f3",
+    "gc-compound-key-33/source-v2/model-weak-key-field-shield-map-key-held-own-map-key-shared-value-map-key-self-map-key-multi-shared-ordinary-weak-key-ordinary-map-key-ordinary-nonempty-map-key-report.json": "e89ff1d5124643d2e52f05a78cd31af6166f591a5f4f534f0b8aab128d9554d5",
+    "gc-compound-key-33/cross-source/native-report.json": "3657969a6d433a4acd713d213b289a1de386ca1b29b912bd7e76fe72036c07ee",
+    "gc-compound-key-33/cross-source/model-map-key-cross-shared-report.json": "10c9450b9c4c7239bf238b88d49996ebeeb5b72f83200958c8d2f2ca9d70cbe9",
+    "gc-compound-key-33/slow-source/gate-report.json": "9e75552d0d1e7bf5ce214d0ffb9da28767f7c1fa7ae1f5f87c7a8875ba7e217d",
+    "gc-compound-key-33/strict-compile/report.json": "3801fc6ba889a304e4499fe383cddf62f20e1e1ed3cf6bd4a36d4995770a2361",
+    "gc-compound-key-33/baseline-self/baseline-report.json": "7a75a90d1604d02612682b7469f48afe7c8114877c4b4059999a1d013798f19a",
+    "gc-compound-key-33/baseline-self/native-report.json": "100bcd3d38f331ea951a9c62cffd002a9294a4c8cb7295d7bb84f66db0829696",
+    "gc-compound-key-33/baseline-map-v2/baseline-report.json": "c4ce466b2f96e338eb98592d82f1f8babd307dcf39858d79df0687ab581fde60",
+    "gc-compound-key-33/baseline-map-v2/native-report.json": "3e55987b6ec22a64f9c764e25b213cdf4c065e329337189588c578fbdf8d25c5",
+    "gc-compound-key-33/slow-source/raw/report.json": "344401b98c6ab0ae3904d9f406415441d166d276ac6478e0b5bf83d326edd8dc",
+    "gc-compound-key-review-33/reached-multi/report.json": "85fdc72c766e8a1f69af20e598a86a2ca6219d164bd4af4c0129671735da0c4c",
+    "gc-compound-key-33/author-states/gate-report.json": "38732aa9de8147ffd7894b3c036980fd71fe5ea054445e756752e08874eeaa08",
+    "gc-compound-key-33/author-empty-map-corrected/gate-report.json": "2a6081ab2ad79ba6760de26b1a4ee9af4ce6af8b82aa024c4fdd02a488334d82",
+    "gc-compound-key-33/affected-peer/gate-report.json": "21499f7d94cd57aa94251c4915f2309677b0640c83471060685bae75dcce301d",
+    "gc-compound-key-33/affected-gc30/gate-report.json": "82be5e3e42958b9347a91d1e3745cb61239d581873c39241b11632756501fb3d"
+  }
+}

@@ -3575,9 +3575,18 @@ in registration order before its value releases; surviving slot positions preser
 nonadjacent equal values and later Map release order. Key fields wait until
 notifications finish, and an earlier fatal retains pending owners. Nine exact
 source/request contexts and 951 reported checks cover selective/nested cleanup
-and reference cells in both allocator modes. Internal Map/WeakReference and custom
-Closure key hooks, active free pins and wider diagnostics remain partial.
+and reference cells in both allocator modes. At that cut, internal Map/WeakReference
+and custom Closure key hooks, active free pins and wider diagnostics remained partial.
 [Key notification review](coverage/semantics/gc-key-notify-review.json).
+
+GC33 admits allocated WeakReference/WeakMap identities at first Map insertion.
+Terminal WeakReference cleanup unregisters its referent before incoming entries;
+Map cleanup unregisters outgoing keys and releases its own values first. Earlier
+fatals retain the untouched phase's owners. Nine exact contexts and 866 reported
+conditions cover shared/self/cross-linked keys and both allocator modes. Ordinary
+internal-Key callbacks remain explicitly Unsupported; later producer policies,
+weak Closure keys and active free pins remain partial.
+[Compound key review](coverage/semantics/gc-compound-key-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry

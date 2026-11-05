@@ -407,7 +407,18 @@ fast/nonfast reference cells and an independent nonadjacent-duplicate discrimina
 Author359, independent208 and affected384 conditions pass (951 reported), with
 strict434 at recorded cuts. Original Unsupported, binding/elaboration failures and
 the wrong-W first draft retain zero credit. Internal/custom key hooks and active
-free pins remain partial. [GC32 review](coverage/semantics/gc-key-notify-review.json).
+free pins remained partial at that cut. [GC32 review](coverage/semantics/gc-key-notify-review.json).
+
+GC33 composes inactive internal-Key hooks: WeakReference unregisters its referent
+before incoming Map values; WeakMap unregisters outgoing keys and releases own
+values before incoming notification. Shared values, self-keys and two incoming
+Maps preserve separate owners and registration order. Nine exact positive
+contexts/eight programs include nonfast table retirement; three ordinary unset
+controls stop explicitly before generic retirement and keep zero agreement.
+Author495, independent51 and affected320 conditions pass (866 reported), with
+strict435 at recorded cuts. Original source/fixture failures remain zero credit.
+Later producer policies, ordinary callback continuations, weak Closure keys and
+active free pins remain partial. [GC33 review](coverage/semantics/gc-compound-key-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
