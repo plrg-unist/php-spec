@@ -3535,6 +3535,12 @@ source; earlier cuts retain their inputs.
 Wrappers also satisfy nominal `WeakReference` argument and property types after
 their referent retires; diagnostics retain the actual internal class name.
 
+GC30 adds quiet inactive WeakReference unregister and standard-object notification.
+Observer retirement changes the terminal weak-association view without adding a
+referent owner. Real handle order preserves fast-shutdown field shielding and the
+existing inactive public-destructor fatal. WeakMap notification and weak custom
+hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
+
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry
 lane uses a `stdClass` leaf key and ordinary leaf value. The map owns

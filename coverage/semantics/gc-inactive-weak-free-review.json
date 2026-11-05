@@ -1,0 +1,61 @@
+{
+  "scope": "GC30: quiet inactive WeakReference unregister and standard-object weak notification in the existing terminal executor local graph.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json; explicit USE_ZEND_ALLOC=0 request for the nonfast context",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "cuts": {
+    "base": "1cede02d3918c64a26dfcc074db7d7123a836876",
+    "observer_order_source_only": "9e2c93f311ac9f8aeb16c05da8fe7d8f08b16246",
+    "chain_native": "fa61e83e91ae816096fbe0387550f741e4a8eed2",
+    "semantic_and_order_sources": "28ce231d8d1b054079e9e6d9f7e8dcc9d7e6a2d1",
+    "author_chain_sources_and_states": "db985a35690f9974e3ff1a92a70631dfd440a475",
+    "independent_native": "2d79189a0f70ca9f09e365dcd1479e73b25c2903",
+    "reviewed_output_production": "efb7a3205c87fd33ff49138a4032f5e22d3e3137",
+    "output_union_parent": "d839e80db6bdcbd3c328738aa7251ceffaaa3b36",
+    "independent_source": "7cf3abda6a99c4e4d43d53b49b8e0a67841bd96e",
+    "independent_reached": "bbe4f9af27525eebdd22a389fe7a40a37a226940",
+    "output_originals": "9bf76f8098e9d3f32ef634d31c9b21f9188c9f09"
+  },
+  "implementation": [
+    "spec/semantics/444-executor-final-free.watsup"
+  ],
+  "rule": "Current MARKED nodes are excluded only from WeakReference association discovery. The association view never filters the owning graph; ordinary field releases and C guards update local H, while fast-skipped fields remain retained. WeakMap scans and closure_callable use full original S. Quiet WeakReference hooks unregister without a referent owner; a standard object with an active observer and no keyed map runs the guarded hook during the store sweep. Once its observer is MARKED, fast standard storage keeps its fields without an added guard. Existing free_zero public-destructor checks precede the MARKED exemption. Final S keeps its last ownership-valid snapshot.",
+  "engine_basis": "Pinned Zend/zend_objects_API.c zend_objects_store_free_object_storage sweeps real handles backwards and invokes free_obj for custom/weak objects in fast mode. Zend/zend_weakrefs.c zend_weakref_free unregisters the referent before zend_object_std_dtor; zend_weakref_unregister clears the last association, and zend_weakrefs_notify clears quiet observers before standard fields release. WeakMap notification may delete owning values and remains fenced. WeakReference::create memoizes one observer per referent. Zend/zend_execute_API.c zval_call_destructor removes only sole-owned object globals, so shared original parent/observer globals survive into the reached terminal fronts.",
+  "validation": {
+    "strict": "Strict SL initialization of all433 modules passes at28ce231d8, true newline/exit0/empty stderr, stable inputs/HEAD/script and empty final process group.",
+    "order_sources": "Two independent native-first originals agree exactly at28ce231d8. A higher observer unregisters before the parent fast-skips its child fields: normal0/empty stderr. A reused lower observer remains registered at parent sweep: the already-MARKED child's last decrement yields the exact inactive public-destructor fatal with native CLI0. Both emit FX|D1|L|D2| and preserve complete normal output before terminal effects.",
+    "chain_sources": "One original agrees in fast and explicit nonfast allocator contexts atdb985a356. Repeated create calls alias one observer; a second observer targets that wrapper; a separately observed target retires before terminal cleanup. Both normal0/empty stderr and exact FX|D1|same|chain|dead|D2|. Slow native execution supplies the same primitive request facts as php_request_run.",
+    "author_reached": "Strict source-reached fast101/slow105 pass atdb985a356. Parent/wrapper/chain/dead-wrapper owners1/2/1/1, two distinct alias cells, no weak referent edges, guard-only hook owners, empty/dead-target hook equivalence, unchanged terminal objects/allocations/GC, and exact0/1-step budget resumption all pass. Every worker/top-level actor is fully reaped with stable HEAD/runtime/test inputs.",
+    "independent_source": "Bound-receiver original agrees exactly at7cf3abda6 using native2d79189a0. A real method Closure remains callable after its receiver header is MARKED; later receiver-edge release retains the fast-shielded child. Normal0/empty stderr and exact FX|D1|L|D2|.",
+    "independent_reached": "Corrected strict99+121+121 conditions pass atbbe4f9af2, all true newline/exit0/empty stderr, stable HEAD/input/script and fully reaped. Original shared parent/weak globals survive beside late savedParent/savedWeak, giving parent2 (bound3), wrapper2 and child1 owners; each root/edge is named. Exact handle order, marked-child fatal priority, retained Parent field edges, observer guard3, full-live-map fences and genuine marked-receiver/weak-Closure controls pass. Initial87 owner assumption and the narrow diagnostic remain zero-credit raw.",
+    "output_originals": "All three unchanged retained OB10 originals agree exactly and finish normal0/empty stderr at9bf76f809, a clean descendant of canonical d839e80db containing reviewed OUTPUT and GC30. The live self-cycle/handler-GC original preserves its exact zero counts and liveness; ordinary and array-callback no-handler-GC originals preserve count1 and prior referent death. Fresh parsing reuses the exact original file/cwd/request identities and retained pinned native stdout/stderr/exit, without native replay or source cleanup edits. All HEAD/input/script/native facts are stable; actor39476 and all workers fully reaped. Earlier Unsupported cuts remain zero credit.",
+    "failures": "The source-only lower-order baseline at9e2c93f31 preserves the terminal inactive executor storage-hook Unsupported after complete output, with zero agreement. The reviewer's initial native order setup atff51772ab hit property-on-null before the intended hook; its raw and correction note remain zero credit. No semantic/source discrepancy occurred in the accepted cuts above. The first independent87 front assumed sole globals; its owner assertion failed because original shared globals survive beside late globals. Named root/edge diagnostics and the corrected341 front retain their own cuts; failed87/diagnostic get no acceptance credit.",
+    "compiler": "Strict SL433 initialization at28 and all complete source/reached executions compile433 modules at their recorded cuts with encountered determinism checks; no equivalence or full-core proof is claimed."
+  },
+  "limits": "Only quiet WeakReference associations are newly admitted. WeakMap notification/value release, weak Closure/custom hooks, inactive nonpublic-destructor diagnostics and other terminal cleanup dependencies remain partial. No referent root, collector/count/nogc change or full-core claim.",
+  "review": "Independent semantic/source/state and scope review CLEAR. Earlier cuts have focused compatibility through exact9bf76f809, including A96, ATTR finalization and OB10. The real OB10/GC30 interaction is validated by all three preserved originals at9bf; final actual-head compatibility is established by review messages without renewing earlier cuts.",
+  "recovery": "External raw lives under ../php-spec-evidence-archive/gc-inactive-weak-free-30 and gc-inactive-weak-free-30-review. Maintained gc_inactive_weak_free_sources.py and gc_inactive_weak_free_review_sources.py use native then model phases with fresh --output directories. Run gc_inactive_weak_free_slow_sources.py, gc_inactive_weak_free_state.py and gc_inactive_weak_free_review_state.py for request/reached checks. gc_inactive_weak_output_sources.py selects exact original bytes from OUTPUT's retained LATE_STORAGE_CONTROLS. The acceptance gate reuses archived native output plus exact original file/cwd/request identities under ob10-creation/output-executor-creation-review-m_hjm3br, freshly parsing source on the tested union. Original failed states and refs remain intact.",
+  "reports_sha256": {
+    "gc-inactive-weak-free-30/observer-order-source/native-report.json": "fb29b8d6c20159d3bd124f6297768511d72a1286a49f89ef221a6e26ecce92cd",
+    "gc-inactive-weak-free-30/observer-order-source/baseline-report.json": "2f96fbdf18999925721ba77d14cf989c189300fa9955bfa641e309b721e0366a",
+    "gc-inactive-weak-free-30/observer-order-source/model-report.json": "f934f5a5fd28b06d92323ad0a8885abcc4a6e8b0ba91f3eb535b6b715da2b758",
+    "gc-inactive-weak-free-30/strict-compile/report.json": "1e08a8cdbe48438529ed917978a52a7dae85d0aa242e459ef739ff25384c81a8",
+    "gc-inactive-weak-free-30/chain-source/native-report.json": "e5a6cbcb3ee49085fd6485c0a6c71d8600339fb85950bba6eafab8362cea21b8",
+    "gc-inactive-weak-free-30/chain-source/model-report.json": "0388e0e4e2b336b148f2c22cf922769e84113ad073fef0afb6739867facaf7ed",
+    "gc-inactive-weak-free-30/slow-chain-source/report.json": "07e3510db5134c1f5dd5c549a914dbafec8326879af868bd85fb2ac28b1ece32",
+    "gc-inactive-weak-free-30/slow-chain-source/gate-report.json": "afd22acd50c97341bac39a653426342643bc14005c014ff09ae2f4e0df9195b1",
+    "gc-inactive-weak-free-30/author-states/gate-report.json": "d2830839cca497a3717950d78317ce73d3c32e1a42ab6619caae81ca0742a733",
+    "gc-inactive-weak-free-30-review/bound-receiver-source/native-report.json": "993cb0e1ea6220a21774d08a00b01802641c2ab6c97b5a813b500db5a3502648",
+    "gc-inactive-weak-free-30-review/bound-receiver-source/model-bound-receiver-report.json": "26c5fa51656d1e4f9fe3252a91d88903dcea1306866570ec1dc14bc9a427bc3e",
+    "gc-inactive-weak-free-30-review/strict-independent-corrected/independent-report.json": "8d0a47c5000383c738a03aebd42f0b6bbefb73ed2671ac2c24af1a5d81c57c97",
+    "gc-inactive-weak-free-30/output-originals/report.json": "57300aeaec79ed8707b4c74e08648311608c3809cde8137400383d7fa035e107"
+  },
+  "counts": {
+    "exact_source_contexts": 8,
+    "original_programs": 7,
+    "normal_contexts": 7,
+    "php_error_contexts": 1,
+    "strict_reached_conditions": 547,
+    "author_conditions": 206,
+    "independent_conditions": 341
+  }
+}

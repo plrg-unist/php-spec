@@ -430,6 +430,14 @@ Constrained/backed cells, ALIAS array entries
 and arbitrary reference/Closure cycles remain partial.
 [GC29 review](coverage/semantics/gc-reference-capture-review.json).
 
+GC30 adds quiet inactive WeakReference unregister and standard notification in
+terminal cleanup. The association view preserves owning edges while ordinary
+field releases/C guards update the local heap; real handle order preserves fast
+field shielding and inactive-destructor failure. Eight exact source/request
+contexts include all three unchanged OB10 originals on their actual canonical
+composition. Author206 and independent341 strict conditions pass. WeakMap/custom
+notifications remain partial. [GC30 review](coverage/semantics/gc-inactive-weak-free-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator

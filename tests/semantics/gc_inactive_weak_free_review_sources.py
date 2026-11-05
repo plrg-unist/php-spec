@@ -12,6 +12,8 @@ FILES = {
         '1ba585483a058a116636a773a1587f35eecace6826b5efa034a0b4a779a86fe1'),
     'observer-higher': ('gc_inactive_weak_observer_higher_source.php',
         '5bfe37ea5cc4be915e57b509304293e382d560e358d59327bde6f2119a080aef'),
+    'bound-receiver': ('gc_inactive_weak_bound_receiver_source.php',
+        '2abbd6c66c4b17fae3647addde08e568df41510a4e1706fdcf46e5d5ebf9e4bd'),
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, (filename, _) in FILES.items()}
 for name, (_, expected) in FILES.items():
