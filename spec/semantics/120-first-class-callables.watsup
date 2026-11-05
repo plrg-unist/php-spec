@@ -31,7 +31,8 @@ rule PhpStep/firstclass-evaluate: S ~> S[.TODO = [$at_task($origin_child((porigi
   -- if $firstclass_evaluated(S, porigin)
 
 dec $firstclass_allocate(pstate, pfunction) : pstate
-def $firstclass_allocate(S, pfunction) = S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $closure_cache_shared_capture(pstate, nat) : pstate
+def $firstclass_allocate(S, pfunction) = $closure_cache_shared_capture(S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)], n)
   -- if n = |S.OBJECTS|
 
 dec $string_firstclass(pstate, ptbytes, int) : pstate

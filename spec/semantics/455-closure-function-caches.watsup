@@ -14,23 +14,49 @@ def $closure_cache_first(pclosurecache :: pclosurecache_tail*, porigin) = $closu
 dec $closure_cache_function(pobject) : porigin?
 def $closure_cache_function(pobject) = (porigin)
   -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
+def $closure_cache_function(pobject) = (porigin)
+  -- if $object_body(pobject) = NAMEDCLOSURE porigin
+def $closure_cache_function(pobject) = (porigin)
+  -- if $object_body(pobject) = METHODCLOSURE porigin porigin_site porigin_requested pmethodcapture?
 def $closure_cache_function(pobject) = eps -- otherwise
 dec $closure_cache_prior(pobject*, porigin) : bool
 def $closure_cache_prior(eps, porigin) = false
 def $closure_cache_prior(pobject :: pobject_tail*, porigin) = ($closure_cache_function(pobject) = (porigin) \/ $closure_cache_prior(pobject_tail*, porigin))
 
 ;; Method factories use the compiled lexical owner, never the receiver class.
+dec $closure_cache_literal_source(pstate, porigin) : bool
+dec $closure_cache_declared_method(pstate, porigin) : pmethoddesc?
+def $closure_cache_declared_method(S, PORIGIN n_unit pcpath_method) = (pmethoddesc)
+  -- if $class_method_origin(S.CLASSES, PORIGIN n_unit pcpath_method) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = PORIGIN n_unit pcpath_class
+  -- if $effect_below(pcpath_class, pcpath_method)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath_method) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata_method)
+  -- if $origin_node(S.SOURCES, pmethoddesc.OWNER) = (NStmtClass phpType14_class phpType24_class (NIdentifier (BYTES text_name) metadata_name) phpType44 phpType42 phpType23 metadata_class)
+def $closure_cache_declared_method(S, porigin) = eps -- otherwise
 dec $closure_cache_method_source(pstate, porigin) : pmethoddesc?
 def $closure_cache_method_source(S, PORIGIN n_unit pcpath) = (pmethoddesc)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_creator)
-  -- if $class_method_origin(S.CLASSES, pfunction_creator.ORIGIN) = (pmethoddesc)
+  -- if $closure_cache_declared_method(S, pfunction_creator.ORIGIN) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION = pfunction_creator
-  -- if pfunction_creator.ORIGIN = PORIGIN n_unit pcpath_method
-  -- if pmethoddesc.OWNER = PORIGIN n_unit pcpath_class
-  -- if $effect_below(pcpath_class, pcpath_method)
-  -- if $origin_node(S.SOURCES, pfunction_creator.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata_method)
-  -- if $origin_node(S.SOURCES, pmethoddesc.OWNER) = (NStmtClass phpType14_class phpType24_class (NIdentifier (BYTES text_name) metadata_name) phpType44 phpType42 phpType23 metadata_class)
 def $closure_cache_method_source(S, porigin) = eps -- otherwise
+
+dec $closure_cache_named_source(pstate, porigin) : pfunction?
+def $closure_cache_named_source(S, porigin) = (pfunction)
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if ~$function_generator(S, pfunction)
+def $closure_cache_named_source(S, porigin) = eps -- otherwise
+
+dec $closure_cache_query_source(pstate, porigin) : bool
+def $closure_cache_query_source(S, porigin) = true
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $closure_cache_literal_source(S, porigin)
+def $closure_cache_query_source(S, porigin) = true
+  -- if $closure_cache_named_source(S, porigin) =/= eps
+def $closure_cache_query_source(S, porigin) = true
+  -- if $closure_cache_declared_method(S, porigin) = (pmethoddesc)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $closure_cache_query_source(S, porigin) = false -- otherwise
 
 dec $closure_cache_literal_scope(pstate, porigin, pbindscope) : bool
 def $closure_cache_literal_scope(S, porigin, BIND_UNSCOPED) = true
@@ -40,7 +66,6 @@ def $closure_cache_literal_scope(S, porigin, BIND_CLASS porigin_class) = true
   -- if $closure_cache_method_source(S, porigin) = (pmethoddesc)
   -- if pmethoddesc.OWNER = porigin_class
 def $closure_cache_literal_scope(S, porigin, pbindscope) = false -- otherwise
-dec $closure_cache_literal_source(pstate, porigin) : bool
 def $closure_cache_literal_source(S, porigin) = ($closure_cache_literal_scope(S, porigin, BIND_UNSCOPED) \/ $closure_cache_method_source(S, porigin) =/= eps)
 
 dec $closure_cache_literal_policy(pstate, porigin, pbindscope?) : pfncacheowner?
@@ -110,6 +135,15 @@ dec $closure_cache_object_scope(pstate, nat) : pbindscope?
 def $closure_cache_object_scope(S, n) = ($fake_bind_scope(S, n))
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+def $closure_cache_object_scope(S, n) = (BIND_UNSCOPED)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
+  -- if ~$internal_closure_object(S, n)
+def $closure_cache_object_scope(S, n) = (BIND_CLASS pclosurescope.LEXICAL)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin porigin_site porigin_requested pmethodcapture?
+  -- if ~$internal_closure_object(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $closure_cache_object_scope(S, n) = eps -- otherwise
 def $closure_cache_copy(S, n_source, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [pclosurecache]]
   -- if $(n_source < n) /\ $(n < |S.OBJECTS|)
@@ -138,7 +172,7 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if $closure_cache_literal_policy(S_prefix, pclosurecache.FUNCTION, pclosurecache.SCOPE) = pclosurecache.CACHE
 def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if $closure_cache_record_object(S, pclosurecache)
-  -- if $function_at(S.CLOSURETEMPLATES, pclosurecache.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pclosurecache.FUNCTION) = (pfunction)
   -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
   -- if pclosurecache.SOURCE = (n_source)
   -- if $(n_source < pclosurecache.OBJECT)
@@ -147,7 +181,7 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if $closure_cache_copy_policy((pclosurecache_source), pclosurecache.SCOPE, pclosurecache.OBJECT) = pclosurecache.CACHE
 def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if $closure_cache_record_object(S, pclosurecache)
-  -- if $function_at(S.CLOSURETEMPLATES, pclosurecache.FUNCTION) = (pfunction)
+  -- if $function_at($all_functions(S), pclosurecache.FUNCTION) = (pfunction)
   -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
   -- if pclosurecache.SOURCE = (n_source)
   -- if $(n_source < pclosurecache.OBJECT)
@@ -168,7 +202,7 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if $closure_cache_function(S.OBJECTS[n]) = (pcallcontext.FUNCTION)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
   -- if pfunction.ORIGIN = pcallcontext.FUNCTION
-  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
+  -- if $closure_cache_query_source(S, pfunction.ORIGIN)
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.FUNCTION = pfunction.ORIGIN
   -- if pclosurecache.CACHE = (pfncacheowner)
@@ -176,16 +210,17 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if pclosurecache.SCOPE =/= eps
 def $closure_function_cache_owner(S, porigin) = eps -- otherwise
 
+dec $closure_cache_capture_scope(pstate, nat, porigin) : pbindscope?
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = true
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
-  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
+  -- if $closure_cache_query_source(S, pfunction.ORIGIN)
   -- if $closure_cache_first(S.CLOSURECACHES, pfunction.ORIGIN) = (pclosurecache)
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope)
-  -- if $closure_cache_literal_scope(S, pfunction.ORIGIN, pbindscope)
+  -- if $closure_cache_literal_scope(S, pfunction.ORIGIN, pbindscope) \/ $closure_cache_capture_scope(S, pclosurecache.OBJECT, pfunction.ORIGIN) = (pbindscope)
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_PRIVATE n) = true
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
-  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
+  -- if $closure_cache_query_source(S, pfunction.ORIGIN)
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.FUNCTION = pfunction.ORIGIN /\ pclosurecache.CACHE = (CACHE_PRIVATE n)
 def $closure_function_cache_history(S, porigin, pfncacheowner) = false -- otherwise
@@ -276,11 +311,11 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if $closure_call_context_cache_valid(S, pcallcontext)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
   -- if pfunction.ORIGIN = pcallcontext.FUNCTION
-  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
+  -- if $closure_cache_query_source(S, pfunction.ORIGIN)
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_CALL n) = true
   -- if $(n < |S.CLOSURECALLCACHES|)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
-  -- if $closure_cache_literal_source(S, pfunction.ORIGIN)
+  -- if $closure_cache_query_source(S, pfunction.ORIGIN)
   -- if S.CLOSURECALLCACHES[n].FUNCTION = pfunction.ORIGIN
   -- if $closure_call_cache_record_valid(S, n, S.CLOSURECALLCACHES[n])
 
@@ -301,3 +336,44 @@ def $closure_function_cache_owner(S, porigin) = (CACHE_SHARED)
   -- if $closure_cache_method_target(pcallcontext.TARGET, pcallcontext.FUNCTION)
   -- if $target_function(S, pcallcontext.TARGET) = (pmethoddesc.FUNCTION)
   -- if $call_current_valid(S)
+
+;; Runtime INIT and plain-function zend_fetch_function prime the source cache.
+;; Constant/default method captures bypass INIT and remain unproved here.
+dec $closure_cache_runtime_method_site(pstate, porigin, pmethoddesc) : bool
+def $closure_cache_runtime_method_site(S, PORIGIN n_unit pcpath, pmethoddesc) = true
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if ~$constant_class_origin_allowed(pcunit, pcpath)
+  -- if $method_capture_site(S, PORIGIN n_unit pcpath, pmethoddesc)
+def $closure_cache_runtime_method_site(S, porigin, pmethoddesc) = false -- otherwise
+
+def $closure_cache_capture_scope(S, n, porigin) = (BIND_UNSCOPED)
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
+  -- if $closure_cache_named_source(S, porigin) =/= eps
+def $closure_cache_capture_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin porigin_site porigin_requested pmethodcapture?
+  -- if $closure_cache_declared_method(S, porigin) = (pmethoddesc)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if $closure_cache_runtime_method_site(S, porigin_site, pmethoddesc)
+def $closure_cache_capture_scope(S, n, porigin) = eps -- otherwise
+
+def $closure_cache_shared_capture(S, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [{OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (pbindscope), CACHE (CACHE_SHARED)}]]
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $closure_cache_function(S.OBJECTS[n]) = (porigin)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = eps
+  -- if $closure_cache_capture_scope(S, n, porigin) = (pbindscope)
+  -- if $closure_cache_object_scope(S, n) = (pbindscope)
+def $closure_cache_shared_capture(S, n) = S -- otherwise
+
+def $closure_cache_capture_copy(S, n_source, n) = $closure_cache_copy(S, n_source, n)
+  -- if $closure_cache_at(S.CLOSURECACHES, n_source) =/= eps
+def $closure_cache_capture_copy(S, n_source, n) = S -- otherwise
+
+def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
+  -- if $closure_cache_record_object(S, pclosurecache)
+  -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
+  -- if pclosurecache.SOURCE = eps
+  -- if pclosurecache.CACHE = (CACHE_SHARED)
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if $closure_cache_capture_scope(S, pclosurecache.OBJECT, pclosurecache.FUNCTION) = (pbindscope)

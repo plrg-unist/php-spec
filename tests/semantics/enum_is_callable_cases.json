@@ -1440,9 +1440,18 @@
     "id": "enum-is-callable-third-output-raw-method-cache-captured-method-after-raw-warm-remains-unproved",
     "source": "<?php\nnamespace RawCaptured;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass Owner {\n    public function query($install) {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n}\n$owner = new Owner;\n$owner->query(true);\n$captured = $owner->query(...);\nunset($owner);\n$captured(false);\nunset($captured);\necho 'end|';\n",
     "source_sha256": "7af674f3acb8fcd36ef75d38501455e869ec865660cf41b3899ac1681499dce7",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "query:1:RawCaptured\\Target::cases|query:1:RawCaptured\\Target::cases|end|",
-    "purpose": "A captured method after raw warming remains explicit cache-authority Unsupported until copy policy is proved; zero engine-agreement credit."
+    "purpose": "Genuine runtime first-class method capture shares the actual INIT-primed source cache after raw warming; old873 Unsupported control evidence remains at its original cut."
+  },
+  {
+    "id": "enum-is-callable-third-output-capture-shared-function-fcc-and-api",
+    "source": "<?php\nnamespace FunctionFcc {\n    enum Target { case A; }\n    function publish() { function is_callable($v,$s,$n) { echo 'USER:', $n, '|'; return false; } return false; }\n    function query($install,$tag) {\n        $name='OLD'; $ok=is_callable([Target::class,'cases'],$install ? publish() : false,$name);\n        echo $tag, ':', (int)$ok, ':', $name, '|';\n    }\n    $capture=query(...); $capture(true,'capture'); query(false,'raw');\n    $copy=clone $capture; unset($capture); $copy(false,'clone');\n}\nnamespace FunctionApi {\n    enum Target { case A; }\n    function publish() { function is_callable($v,$s,$n) { echo 'USER:', $n, '|'; return false; } return false; }\n    function query($install,$tag) {\n        $name='OLD'; $ok=is_callable([Target::class,'cases'],$install ? publish() : false,$name);\n        echo $tag, ':', (int)$ok, ':', $name, '|';\n    }\n    $capture=\\Closure::fromCallable(__NAMESPACE__ . '\\\\query');\n    $capture(true,'capture'); query(false,'raw');\n    $copy=clone $capture; unset($capture); $copy(false,'clone');\n}\n",
+    "source_sha256": "bb1c92c85dbce2905e242942723f016560654f5fe52dc2820b26fa973c76e8d9",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "capture:1:FunctionFcc\\Target::cases|raw:1:FunctionFcc\\Target::cases|clone:1:FunctionFcc\\Target::cases|capture:1:FunctionApi\\Target::cases|raw:1:FunctionApi\\Target::cases|clone:1:FunctionApi\\Target::cases|",
+    "purpose": "Runtime user-function FCC and plain-function fromCallable lookup initialize/share actual source cache; raw calls and clones retain builtin selection after namespace publication and source capture retirement."
   }
 ]

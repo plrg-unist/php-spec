@@ -268,7 +268,7 @@ def $from_receive(S, pconfigcall, pvalue_string) = $api_begin(S, CONFIG_INVOKE p
   -- if ~$fiber_factory_candidate(S, pvalue_string)
   -- if ~$typed_registered(S, ptbytes)
   -- if $method_string_parts(ptbytes) =/= eps
-def $from_receive(S, pconfigcall, pvalue_string) = $from_done(S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+def $from_receive(S, pconfigcall, pvalue_string) = $from_done($closure_cache_shared_capture(S[.GC = $fake_gc_birth(S.GC, n, true)][.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n), n)
   -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $call_target(S, $typed_callable_name(ptbytes), eps) = (pfunction)
   -- if n = |S.OBJECTS|
