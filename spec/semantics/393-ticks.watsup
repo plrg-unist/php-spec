@@ -28,6 +28,12 @@ dec $tick_empty_multiline_declare(phpType47, metadata) : bool
 dec $tick_declare_body(pticksummary, pcodeexpr*, pcpath, phpType47, int) : pticksummary
 dec $tick_if_jump(pticksummary, bool, metadata) : pticksummary
 dec $tick_if_tail(pticksummary, pcodeexpr*, pcpath, nat, phpType54*, phpType55) : pticksummary
+dec $tick_switch_free(pcodeexpr*, pcpath, expression) : bool?
+dec $tick_switch_result(expression) : bool?
+dec $tick_switch_conditions(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) : pticksummary
+dec $tick_switch_bodies(pticksummary, pcodeexpr*, pcpath, nat, phpType61*) : pticksummary
+dec $tick_switch_body(pticksummary, pcodeexpr*, pcpath, statement*, metadata) : pticksummary
+dec $tick_switch_finish(pticksummary, bool) : pticksummary
 dec $tick_catches(pticksummary, pcodeexpr*, pcpath, nat, phpType66*) : pticksummary
 dec $tick_finally(pticksummary, pcodeexpr*, pcpath, phpType67) : pticksummary
 dec $tick_effect(pcodeexpr*, pcpath) : bool
@@ -203,6 +209,48 @@ def $tick_if_tail(T, pcodeexpr*, pcpath, n, eps, NStmtElse (SEQUENCE statement*)
 def $tick_if_tail(T, pcodeexpr*, pcpath, n, (NStmtElseIf expression (SEQUENCE statement*) metadata) :: phpType54*, phpType55) = $tick_if_tail($tick_if_jump(T_body, phpType54* =/= eps \/ phpType55 =/= ABSENT, metadata), pcodeexpr*, pcpath, $(n + 1), phpType54*, phpType55)
   -- if T_condition = $tick_expression(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 2, PCINDEX n, PCFIELD 0], expression)
   -- if T_body = $tick_control_body(T_condition[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 2, PCINDEX n, PCFIELD 1], statement*, metadata)
+
+;; Switch compiles all comparisons before any body, then emits the default jump.
+;; Bodies share adjacency even across unselected cases. Only a VAR/TMP subject
+;; adds a final FREE; constants and CVs leave the final body opcode unchanged.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtSwitch expression (SEQUENCE phpType61*) metadata, b) = $tick_switch_finish(T_bodies, b_free)
+  -- if $tick_switch_free(pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = (b_free)
+  -- if T_subject = $tick_expression(T, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)
+  -- if T_conditions = $tick_switch_conditions(T_subject, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType61*)
+  -- if T_bodies = $tick_switch_bodies(T_conditions[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType61*)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtSwitch expression phpType60 metadata, b) = T[.DEPENDENCY = ("tick switch subject result kind")]
+  -- if $tick_switch_free(pcodeexpr*, pcpath ++ [PCFIELD 0], expression) = eps
+def $tick_switch_free(pcodeexpr*, pcpath, expression) = (false)
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, true))
+def $tick_switch_free(pcodeexpr*, pcpath, expression) = (false)
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
+  -- if $tick_expression_zero(pcodeexpr*, pcpath, expression)
+def $tick_switch_free(pcodeexpr*, pcpath, expression) = $tick_switch_result(expression)
+  -- if $code_expression(pcodeexpr*, pcpath) = ((z, false))
+  -- if ~$tick_expression_zero(pcodeexpr*, pcpath, expression)
+def $tick_switch_free(pcodeexpr*, pcpath, expression) = eps -- otherwise
+def $tick_switch_result(NExprPrint expression metadata) = (false)
+def $tick_switch_result(NExprThrow expression metadata) = (false)
+def $tick_switch_result(NExprErrorSuppress expression metadata) = eps
+def $tick_switch_result(NExprAssign expression_pattern expression_rhs metadata) = eps
+  -- if $list_pattern(expression_pattern) = (phpType13*)
+def $tick_switch_result(expression) = eps -- if ~$tick_expression_opcode(expression)
+def $tick_switch_result(expression) = (true) -- otherwise
+def $tick_switch_finish(T, true) = T[.LAST = false]
+def $tick_switch_finish(T, false) = T
+def $tick_switch_conditions(T, pcodeexpr*, pcpath, n, eps) = T
+def $tick_switch_conditions(T, pcodeexpr*, pcpath, n, (NStmtCase ABSENT phpType23 metadata) :: phpType61*) = $tick_switch_conditions(T, pcodeexpr*, pcpath, $(n + 1), phpType61*)
+def $tick_switch_conditions(T, pcodeexpr*, pcpath, n, (NStmtCase expression phpType23 metadata) :: phpType61*) = $tick_switch_conditions(T_condition[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType61*)
+  -- if T_condition = $tick_expression(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 0], expression)
+def $tick_switch_bodies(T, pcodeexpr*, pcpath, n, eps) = T
+def $tick_switch_bodies(T, pcodeexpr*, pcpath, n, (NStmtCase phpType5 (SEQUENCE statement*) metadata) :: phpType61*) = $tick_switch_bodies(T_body, pcodeexpr*, pcpath, $(n + 1), phpType61*)
+  -- if T_body = $tick_switch_body(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], statement*, metadata)
+def $tick_switch_body(T, pcodeexpr*, pcpath, statement*, metadata) = $tick_statements(T, pcodeexpr*, pcpath, 0, statement*, false)
+  -- if ~$ppnullbody(statement*)
+def $tick_switch_body(T, pcodeexpr*, pcpath, statement*, metadata) = T[.LINE = $source_line(metadata)]
+  -- if $ppnullbody(statement*) /\ $source_line(metadata) = $source_end_line(metadata)
+def $tick_switch_body(T, pcodeexpr*, pcpath, statement*, metadata) = T[.DEPENDENCY = ("tick compiler line for empty multiline switch case")]
+  -- if $ppnullbody(statement*) /\ $source_line(metadata) =/= $source_end_line(metadata)
 
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtWhile expression (SEQUENCE statement*) metadata, b) = $tick_expression(T_body, pcodeexpr*, pcpath ++ [PCFIELD 0], expression)[.LAST = false]
   -- if T_body = $tick_control_body(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 1], statement*, metadata)
