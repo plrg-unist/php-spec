@@ -1396,10 +1396,6 @@ def $weakref_create(S, n_map) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAKREF
   -- if $weakmap_storage_create(S, n_map)
   -- if $weakref_find(S, S.ALLOCATIONS, n_map) = eps
   -- if n_wrapper = |S.OBJECTS|
-def $weakref_create(S, n_target) = S[.COMPLETION = UNSUPPORTED "WeakReference creation on freeing internal object without notification authority"]
-  -- if $weakmap_internal_key(S, n_target)
-  -- if $instance_storage_freeing(S, n_target)
-  -- if ~$weakmap_storage_create(S, n_target)
 
 ;; A callback may leave the admitted singleton shape. Refuse its real retrace
 ;; rather than silently restoring a strong map-value edge and a zero count.
