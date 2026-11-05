@@ -31,6 +31,7 @@ dec $generator_unpack_warning_hold(pstate, pgeneratorunpack) : pgeneratorunpack?
 dec $generator_unpack_warning_message(pstate, pgeneratorunpack) : ptbytes
 dec $generator_unpack_warning_same(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_byref(pstate, pgeneratorunpack, ptask*) : pstate
+dec $generator_unpack_reference_blocked(pstate) : bool
 
 def $generator_unpack_input(S, pgeneratorunpack) = $iterator_unpack_input(S, pgeneratorunpack.CALL, pgeneratorunpack.INPUT)
   -- if pgeneratorunpack.INPUT = VARIABLE ptbytes z
@@ -415,6 +416,29 @@ def $call_after_origin(S, ERROR_HANDLER_INVOKE perrorcall) = S[.ORIGIN = pgenera
 def $call_after_origin(S, ERROR_HANDLER_RESULT perrorcall) = S[.ORIGIN = pgeneratorunpack.CALL.CALLSITE]
   -- if perrorcall.RESUME = GENERATOR_UNPACK pgeneratorunpack "byref"
 def $iterator_unpack_warning_tail_origin(S, GENERATOR_UNPACK pgeneratorunpack "byref") = pgeneratorunpack.CALL.CALLSITE
+;; Native move_forward still runs with the warning's exception pending. Keep
+;; that unmodeled effect explicit, with the real cursor and Throwable rooted.
+def $error_read_discard(S, GENERATOR_UNPACK pgeneratorunpack "byref") = S_stop[.COMPLETION = UNSUPPORTED "Generator unpack pending reference warning exception"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if S_stop = S[.TODO = (THROW_SEARCH n) :: (GENERATOR_UNPACK pgeneratorunpack "byref") :: ptask_tail*]
+  -- if $generator_unpack_valid(S_stop, pgeneratorunpack, "byref")
+def $generator_unpack_reference_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED text_reason
+  -- if text_reason <- ["Generator unpack by-reference target", "Generator unpack reference payload changed during warning"]
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask_tail*
+  -- if text <- ["ready", "byref"]
+  -- if $generator_unpack_valid(S, pgeneratorunpack, text)
+def $generator_unpack_reference_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "Generator unpack pending reference warning exception"
+  -- if ~S.COMPILESTOP
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_UNPACK pgeneratorunpack "byref") :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $generator_unpack_valid(S, pgeneratorunpack, "byref")
+def $generator_unpack_reference_blocked(S) = false -- otherwise
+def $generator_close_terminal_pending(S) = true -- if $generator_unpack_reference_blocked(S)
+def $drive_steps(S, n) = S -- if $generator_unpack_reference_blocked(S)
 def $generator_internal_task(GENERATOR_UNPACK pgeneratorunpack text) = true
 def $eager_explicit_task(GENERATOR_UNPACK pgeneratorunpack text) = true
 def $return_discard(S, GENERATOR_RESUME pgeneratorop) = S[.ORIGIN = (pgeneratorop.SITE)]
