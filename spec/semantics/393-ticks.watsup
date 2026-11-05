@@ -179,6 +179,8 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNop metadata, b) = T
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtLabel phpType11 metadata, b) = T
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUse phpType24 phpType51 metadata, b) = T
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGroupUse phpType24 name phpType51 metadata, b) = T
+;; Plain trait use records names, without a main opcode or callable compilation.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtTraitUse (SEQUENCE (name :: name_tail*)) (SEQUENCE eps) metadata, b) = T[.LINE = $source_line($pcmetadata(name))]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUENCE statement*) metadata, b) = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, true)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)][.LINE = $source_end_line(metadata)]
   -- if $tick_inputs_clean(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, 5)
