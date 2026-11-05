@@ -10,6 +10,13 @@ def $generator_capture_wrapper_site(S, porigin) = true
   -- if $method_source_name(phpType20, $ptascii("__invoke"))
 def $generator_capture_wrapper_site(S, porigin) = false -- otherwise
 
+def $generator_invoke_positional_config(S, pconfigcall) = true
+  -- if $generator_capture_config_tag(pconfigcall)
+  -- if $generator_capture_wrapper_site(S, pconfigcall.SITE)
+  -- if $getter_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS phpType7* n_field
+  -- if $generator_arguments_supported(phpType7*)
+def $generator_invoke_positional_config(S, pconfigcall) = false -- otherwise
+
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method (pgeneratormethodselection), INDEX 0, SENT eps, NAMED false, OWNER (n_receiver), SELECTION eps, LINE z, PACKS eps}) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: $generator_method_return_tasks(S, porigin, ptask_tail*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)

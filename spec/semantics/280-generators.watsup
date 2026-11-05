@@ -1267,7 +1267,7 @@ def $generator_method_unused_result(S, pgeneratorop) = true
   -- if pgeneratorop.ARGUMENTS = eps
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if ~$reference_call_used(S, pgeneratorop.SITE)
-  -- if ~$generator_capture_wrapper_site(S, pgeneratorop.SITE)
+  -- if ~($generator_capture_operation(pgeneratorop) /\ $generator_capture_wrapper_site(S, pgeneratorop.SITE))
   -- if S.RESULT = KNOWN pvalue
   -- if $value_nodes(pvalue) =/= eps
 def $generator_method_unused_result(S, pgeneratorop) = false -- otherwise
@@ -1629,7 +1629,7 @@ def $generator_operation_trace(S, pgeneratorop) = [{FILE $call_sourcefile(S.FILE
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
   -- if ~pgeneratorop.STARTPACK
   -- if ~pgeneratorop.BORROWED
-  -- if ~$generator_capture_wrapper_site(S, pgeneratorop.SITE)
+  -- if ~($generator_capture_operation(pgeneratorop) /\ $generator_capture_wrapper_site(S, pgeneratorop.SITE))
 def $generator_operation_trace(S, pgeneratorop) = eps -- if pgeneratorop.LOOP =/= eps
 def $generator_error(S, pgeneratorop, text, ptbytes) = $throwable_allocate(S, text, ptbytes, pgeneratorop.LINE, $source_trace_prefixed(S, $generator_operation_trace(S, pgeneratorop)))
 ;; NEXT first ensures an undefined cache is initialized, then resumes again.
