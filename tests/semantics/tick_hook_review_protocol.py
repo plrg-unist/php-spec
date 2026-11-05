@@ -70,6 +70,41 @@ review.CASES = {
     },
 }
 
+review.CASES['property-group-tick-abort-skips-the-pending-class-activation'] = {
+    'source': sources.CASES['review-property-tick-abort-prevents-non-early-class-activation'][0].decode(),
+    'stage': 'S.TODO = (TICK porigin ptickmarker) :: ptask_tail* -- if S.CURRENT = eps -- if S.EVENTS = eps',
+    'checks': [
+        'porigin = PORIGIN n pcpath',
+        'pcpath = [PCINDEX 6, PCFIELD 5, PCINDEX 1]',
+        'porigin_class = PORIGIN n ([PCINDEX 6])',
+        'porigin_interface = PORIGIN n ([PCINDEX 5])',
+        '$origin_node(S.SOURCES, porigin_class) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)',
+        'ptask_tail* = (ORIGIN_RETURN (porigin_class)) :: (STMT (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)) :: ptask_after*',
+        'S.ORIGIN = (porigin)',
+        '$class_at(S.CLASSES, porigin_class) = (pclassdesc)',
+        'pclassdesc.KIND = "class"', '~pclassdesc.EARLY',
+        '$class_named(S.CLASSNAMES, $ptascii("tickpendinggroup43")) = eps',
+        '$class_named(S.CLASSNAMES, $ptascii("tickgroupready43")) = (porigin_interface)',
+        '$tick_marker(S, porigin_class) = eps',
+        '$origin_child((porigin_class), [PCFIELD 5, PCINDEX 0]) = (porigin_constant)',
+        '$tick_marker(S, porigin_constant) = eps',
+        'ptickmarker.FREQUENCY = 1', 'ptickmarker.LINE = 25',
+        '$tick_marker_valid(S, porigin, ptickmarker)', 'S.TICKCOUNT = 0',
+        '$lookup(S.ENV, $ptascii("n")) = (n_count)',
+        'S.STORE[n_count] = DEFINED (PINT 0)', *valid('S'),
+        'S_paused = $drive_steps(S, 0)',
+        'S_paused = S[.COMPLETION = BUDGET]', *valid('S_paused'),
+        'S_done = $drive(S, 4000)',
+        '$drive(S_paused[.COMPLETION = NORMAL], 4000) = S_done',
+        'S_done.COMPLETION = NORMAL', 'S_done.TODO = eps',
+        'S_done.CURRENT = eps', 'S_done.FRAMES = eps', *valid('S_done'),
+        '$class_named(S_done.CLASSNAMES, $ptascii("tickpendinggroup43")) = eps',
+        '$class_named(S_done.CLASSNAMES, $ptascii("tickgroupready43")) = (porigin_interface)',
+        'S_done.STORE[n_count] = DEFINED (PINT 1)',
+        'S_done.EVENTS = ' + output('T', '[25]', 'N', 'C', 'N'),
+    ],
+}
+
 DERIVED_GUARDS = {name: 0 for name in review.CASES}
 
 
