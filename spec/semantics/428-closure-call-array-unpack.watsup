@@ -156,6 +156,17 @@ def $closure_call_progress_valid(S, pclosurecall) = true
   -- if $closure_call_source_replay(S, pclosurecall, $closure_call_pack_seed(pclosurecall), pclosurecall.PACKS) = ((pclosurecall_prefix, eps))
   -- if pclosurecall_prefix = pclosurecall[.PACKS = eps]
 
+;; The copied API replaces SENT with detached formal cells after warnings.
+;; Reconstruct only the frozen collection view when authenticating its history;
+;; completed PACKS own neither their old ARRAYs nor the values in those rows.
+def $closure_call_copy_raw_arguments_valid(S, pclosurecall) = true
+  -- if pclosurecall.PACKS =/= eps
+  -- if $closure_call_array_pack_site(S, pclosurecall.SITE)
+  -- if $closure_call_source_replay(S, pclosurecall, $closure_call_pack_seed(pclosurecall), pclosurecall.PACKS) = ((pclosurecall_prefix, eps))
+  -- if $closure_call_list_bind($closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall[.SENT = {SLOTS eps, NAMED eps}][.ERROR = eps][.PACKS = eps], pclosurecall.RAW, 0) = pclosurecall_prefix
+def $closure_call_copy_named(S, pclosurecall) = $closure_call_pack_named(pclosurecall.RAW)
+  -- if pclosurecall.PACKS =/= eps
+
 dec $closure_call_unpack_valid(pstate, pclosurecall, poperand, nat) : bool
 def $closure_call_unpack_valid(S, pclosurecall, KNOWN (PARRAY n_array), n_cursor) = true
   -- if $call_line_valid(S, (pclosurecall.SITE), pclosurecall.LINE)

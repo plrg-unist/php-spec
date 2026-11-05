@@ -634,14 +634,12 @@ def $closure_call_copy_site(S, PORIGIN n_unit pcpath) = true
   -- if ~$ppfirstclass(phpType7*)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $firstclass_evaluated(S, PORIGIN n_unit pcpath)
-  -- if ~$closure_call_array_pack_site(S, PORIGIN n_unit pcpath)
 def $closure_call_copy_site(S, PORIGIN n_unit pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNullsafeMethodCall expression (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if $ptlc($base64(text_name)) = $ptascii("call")
   -- if ~$ppfirstclass(phpType7*)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $firstclass_evaluated(S, PORIGIN n_unit pcpath)
-  -- if ~$closure_call_array_pack_site(S, PORIGIN n_unit pcpath)
 def $closure_call_copy_site(S, porigin) = false -- otherwise
 def $closure_call_copy_binding(S, pclosurebinding) = true
   -- if $(pclosurebinding.SOURCE < pclosurebinding.OBJECT) /\ $(pclosurebinding.OBJECT < |S.OBJECTS|)
@@ -714,7 +712,6 @@ def $closure_call_copy_receiver(S, pfunction, n_source, n_receiver) = false -- o
 def $closure_call_copy_kind(S, pfunction, pclosurecall, n_receiver) = true
   -- if $closure_call_copy_required(S, pfunction, pclosurecall)
   -- if (HOBJECT pclosurecall.SOURCE) <- S.ALLOCATIONS
-  -- if pclosurecall.PACKS = eps
   -- if pclosurecall.FIRST = (POBJECT n_receiver)
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $(n_receiver < |S.OBJECTS|)
@@ -744,36 +741,44 @@ def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = S_copy[.TODO =
   -- if n_copy = |S.OBJECTS|
   -- if S_copy = $closure_call_copy_begin(S, pfunction, pclosurecall, n_receiver)
   -- if n_base = |S_copy.STORE|
+dec $closure_call_copy_named(pstate, pclosurecall) : bool
+def $closure_call_copy_named(S, pclosurecall) = $named_present(phpType7_tail*)
+  -- if pclosurecall.PACKS = eps
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
 def $closure_call_copy_invoke(S, pfunction, pclosurecall, n_copy) = $target_after_enter($named_enter(S, pfunction, pclosurecall.SENT, (pclosurecall.SITE), pclosurecall.LINE), CLOSURE_TARGET n_copy)
-  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
-  -- if $named_present(phpType7_tail*)
+  -- if $closure_call_copy_named(S, pclosurecall)
 def $closure_call_copy_invoke(S, pfunction, pclosurecall, n_copy) = $call_arity($target_after_enter($call_enter(S, pfunction, $named_operands(pclosurecall.SENT.SLOTS), (pclosurecall.SITE), pclosurecall.LINE), CLOSURE_TARGET n_copy), pfunction, |$named_operands(pclosurecall.SENT.SLOTS)|, (pclosurecall.SITE), pclosurecall.LINE)
-  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
-  -- if ~$named_present(phpType7_tail*)
+  -- if ~$closure_call_copy_named(S, pclosurecall)
 def $call_selected_valid(S, CLOSURE_TARGET n, (porigin_site)) = $closure_call_copy_target(S, CLOSURE_TARGET n, (porigin_site))
   -- if $closure_call_copy_site(S, porigin_site)
 def $named_call_shape(S, CLOSURE_TARGET n, (porigin_site)) = $named_shape(pfunction.SIGNATURE.PARAMETERS, $closure_call_forward_args_at(S, porigin_site), 0, {SLOTS eps, NAMED eps})
   -- if $closure_call_copy_target(S, CLOSURE_TARGET n, (porigin_site))
+  -- if ~$closure_call_array_pack_site(S, porigin_site)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
 def $named_call_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
   -- if $closure_call_copy_target(S, CLOSURE_TARGET n, (porigin_site))
+  -- if ~$closure_call_array_pack_site(S, porigin_site)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
   -- if $named_source_valid(pfunction.SIGNATURE.PARAMETERS, $closure_call_forward_args_at(S, porigin_site), 0, false, {SLOTS eps, NAMED eps})
 dec $closure_call_copy_argument_nodes(pclosurecall, nat) : pnode*
 def $closure_call_copy_argument_nodes(pclosurecall, n_copy) = [HOBJECT n_copy] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)
 def $task_nodes(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_argument_nodes(pclosurecall, n_copy) ++ [HOBJECT pclosurecall.SOURCE]
 dec $closure_call_copy_raw_valid(pstate, pclosurecall, nat) : bool
+dec $closure_call_copy_raw_arguments_valid(pstate, pclosurecall) : bool
+def $closure_call_copy_raw_arguments_valid(S, pclosurecall) = true
+  -- if pclosurecall.PACKS = eps
+  -- if $closure_call_raw_keys(pclosurecall.RAW) = $closure_call_source_keys($closure_call_forward_args_at(S, pclosurecall.SITE), 0)
+def $closure_call_copy_raw_arguments_valid(S, pclosurecall) = false -- otherwise
 def $closure_call_copy_raw_valid(S, pclosurecall, n_copy) = true
   -- if $closure_call_copy_row(S, n_copy) = (pclosurebinding)
   -- if pclosurebinding.SITE = pclosurecall.SITE /\ pclosurebinding.SOURCE = pclosurecall.SOURCE
   -- if pclosurebinding.RECEIVER = pclosurecall.RECEIVER
   -- if pclosurecall.FIRST = (POBJECT n_receiver)
   -- if pclosurecall.RECEIVER = (n_receiver)
-  -- if pclosurecall.PACKS = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if pclosurecall.INDEX = |phpType7*|
   -- if $closure_call_raw_evaluated(pclosurecall.RAW) /\ $closure_call_raw_unique_names(pclosurecall.RAW)
-  -- if $closure_call_raw_keys(pclosurecall.RAW) = $closure_call_source_keys($closure_call_forward_args_at(S, pclosurecall.SITE), 0)
+  -- if $closure_call_copy_raw_arguments_valid(S, pclosurecall)
   -- if $call_line_valid(S, (pclosurecall.SITE), pclosurecall.LINE)
 def $closure_call_copy_raw_valid(S, pclosurecall, n_copy) = false -- otherwise
 dec $closure_call_copy_result_valid(pstate, pclosurecall, nat) : bool
