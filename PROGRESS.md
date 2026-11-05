@@ -125,8 +125,14 @@ reference at SEND3 independently of query admission. Missing CVs become null
 without an undefined-variable read; real owners preserve retained old aliases,
 callback-created outputs and dynamic saved targets. Earlier argument throws
 skip acquisition. The [output-acquisition review](coverage/semantics/enum-is-callable-output-acquisition-review.json)
-records the bounded source/state cuts and the separate native-only fixed
-namespace-fallback target obligation.
+records its bounded source/state cuts.
+Fixed namespace fallback now records the actual selected builtin before
+arguments. Callback publication cannot replace its target/signature; root and
+ordinary named-function cache owners reuse that choice on later invocations,
+including after an argument throw. Fresh sites select the newly published local
+function. The [fixed-fallback review](coverage/semantics/enum-is-callable-fixed-fallback-review.json)
+records source/authority/timing checks; closure, method and other unproved cache
+owners remain explicit Unsupported.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1670,7 +1676,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
 | ATTR34 | Coalesce reader with a callable key and registered handlers; bounded diagnosis. |
-| Enum callable arrays | Namespace fallback preserving a saved builtin through local publication; private implementation/review. |
+| Enum callable arrays | Closure cache ownership and bound-scope identity; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

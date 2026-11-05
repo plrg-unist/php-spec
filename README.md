@@ -7183,8 +7183,12 @@ reference at SEND3, before query admission. An unset variable quietly becomes
 `null`; callback rebinding, retained old aliases and earlier argument throws keep
 their normal cell identities and order. See the
 [output-acquisition review](coverage/semantics/enum-is-callable-output-acquisition-review.json).
-Fixed namespace fallback followed by a callback publishing a same-name function
-remains a native-only selected-target obligation.
+Fixed namespace fallback now keeps the selected builtin through callbacks that
+publish a same-name function. Root and ordinary named-function sites retain the
+cached choice even after an argument throw; fresh sites can select the local
+function. Closure, method and other unproved cache owners remain explicit
+`Unsupported`; see the
+[fixed-fallback review](coverage/semantics/enum-is-callable-fixed-fallback-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

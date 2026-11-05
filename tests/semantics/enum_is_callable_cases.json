@@ -1255,5 +1255,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "chosen:1:AcqLate\\AcqCheck::cases|",
     "purpose": "Fixed namespace fallback saves the selected builtin before a second argument declares a same-name local function; SEND3 still acquires a fresh output reference."
+  },
+  {
+    "id": "enum-is-callable-third-output-fixed-fallback-nested-fresh-site-local-target",
+    "source": "<?php\nnamespace FallbackNested;\nenum Target { case A; }\nfunction publishAndQuery() {\n    function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    $inside = 'INNER';\n    $ok = is_callable([Target::class, 'cases'], false, $inside);\n    echo 'inner:', (int)$ok, ':', $inside, '|';\n    return false;\n}\n$ok = is_callable([Target::class, 'cases'], publishAndQuery(), $name);\necho 'outer:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "2b7f2af314ec29a343192eb5c24b6662c9965e9d98b93e4792353f242e780d84",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "USER:INNER|inner:0:INNER|outer:1:FallbackNested\\Target::cases|",
+    "purpose": "The outer fixed fallback keeps its selected builtin and reference signature while a fresh nested site selects the newly published local function and its by-value output parameter."
+  },
+  {
+    "id": "enum-is-callable-third-output-fixed-fallback-output-throw-builtin-api-authority",
+    "source": "<?php\nnamespace FallbackDrop;\nenum Target { case A; }\nclass Drop {\n    function __destruct() {\n        echo $GLOBALS['name'] === null ? 'null|' : 'wrong|';\n        throw new \\Exception('drop');\n    }\n}\nfunction publish() {\n    function is_callable($value, $syntax, $output) { echo 'USER|'; return false; }\n    return false;\n}\n$name = new Drop;\n$ok = 'UNCHANGED';\ntry { $ok = is_callable([Target::class, 'cases'], publish(), $name); }\ncatch (\\Exception $e) {\n    $trace = $e->getTrace();\n    echo $trace[1]['function'], ':', $name, ':', $ok, '|';\n}\n",
+    "source_sha256": "41c543fbbf5c0cdeed1930f3d56bd013e874d7ba4b47ba194b4ab77cac7ea3af",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|is_callable:FallbackDrop\\Target::cases:UNCHANGED|",
+    "purpose": "A late local function cannot replace the selected builtin during output destruction: the real API trace retains is_callable, name commits before throw and result assignment is skipped."
   }
 ]

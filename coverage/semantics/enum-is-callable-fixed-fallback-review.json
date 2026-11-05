@@ -1,0 +1,51 @@
+{
+  "scope": "Fixed namespace-fallback is_callable selection before arguments and persistent root/ordinary named-function cache authority",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_revision": "d420792eb4dc41fd78214464f32a8f451be1b895",
+  "base_revision": "a0c5b0a632b86bd4308e4471aa5bb5d0d4162a0c",
+  "semantic_inputs": {
+    "spec/semantics/80-call-control.watsup": "b4a1828f69092c0a9c66180bc8adc664d417a5681a836885ca8fe8530230bb37",
+    "spec/semantics/437-enum-runtime.watsup": "33ddc7d2eb276343beb88a68e88a11dd6978e59ada3d9b802a7508ea78064385"
+  },
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "behavior": "Existing SELECTEDCALLS records the actual fixed fallback builtin before arguments. Capture requires a cold no-user lookup or genuine prior fixed authority. Pure source/original/global-lookup/line/nonce and lexical-owner validation survives callback publication without relooking up the active target. A narrow80 user-call guard respects cached builtin authority first; generic intrinsic dispatch handles a current miss. Root and actual raw named-function targets authenticate the runtime cache owner; unsupported closure/method/Fiber/captured/bound contexts refuse explicitly. No new storage fields, cache pins or heap owners are introduced. Input/output receipts accept authenticated fixed selections while preserving their prior dynamic-selection boundary.",
+  "source_results": "Three distinct exact CLI native/model stdout, stderr and exit-status agreements: the promoted late-publication baseline plus two independent originals. They prove saved builtin/reference signature despite a callback publishing a local function, a fresh nested site selecting that local by-value callee, and throwing output cleanup retaining the real is_callable API frame, committed name and unassigned result. The two independent source bytes/hashes are copied unchanged into the maintained catalogue. Prior native-only baseline observation is not counted again.",
+  "strict_results": "Final strict-v3 compiles all437 modules and returns true/exit0/empty stderr/stable. Its precommit base revision is retained; the author source report and fresh-tree peer reports bind the same final80/437 runtime bytes at d420. Intermediate strict-v2 pass does not renew the final cut.",
+  "reached_results": "Independent selection-v3 passes237 checks/all437 modules,true/exit0/empty stderr/stable/no timeout at d420. It covers cold before-argument authority, a current local USER target versus the saved builtin SEND3 NULL wrapper with two owners then one, fresh local-site capture refusal, throwing output continuation, and an ordinary-function argument-throw warming its site for a later retry. Source/original/lookup/line/kind/depth forgeries fail. A real closure front refuses forged lexical history and direct preparation; actual frame unwind passes through BUDGET to final Unsupported with no record/events. Budget0/1 agrees. Warm retry is source-reached evidence, not an additional CLI source agreement; the closure case is an explicit Unsupported control.",
+  "failure_disposition": "Strict-v1 rejected a recursive otherwise clause; an explicit complementary guard fixes it. The first baseline source attempt remained Unsupported with an undefined-output warning: the nested optional tuple pattern silently imposed the wrong runtime tuple type and missed the actual fixed source. Capture projection-v1 exposed SOURCE None with a valid fixed name/scope; projection-v2 recorded the tuple type-filter failure. Sequential optional-field binds fix that miss. Peer selection-v1 failed on fixture binding/conjunction positions and selection-v2 expected immediate Unsupported instead of real BUDGET frame-unwind staging; selection-v3 corrects only those observations. All original failures, recorders and projections remain external with zero validation credit; no production edit followed peer freeze.",
+  "engine_routes": [
+    "Zend/zend_vm_def.h:ZEND_INIT_NS_FCALL_BY_NAME caches fbc and pushes the selected frame before arguments",
+    "Zend/zend_vm_def.h:ZEND_SEND_VAR_EX reads actual EX(call)->func argument flags",
+    "Zend/zend_closures.c:zend_create_closure_ex runtime cache sharing versus scope-change/HEAP_RT_CACHE private copies"
+  ],
+  "native_only_boundaries": "Other repeat/recursion/closure/clone cache probes remain native-only except the warm-retry reached witness. The separate scope-changed-closure-cache source proves bound/call copies can choose a local function while the original closure retains its warmed builtin; SITE-only reuse across those owners would be wrong. These probes supply no additional CLI agreement credit.",
+  "remaining": "Closure/template/private/heap runtime-cache owner identities, methods/traits, Fibers, captured named-function/fake/bound contexts and inherited include/eval contexts outside the authenticated root/raw named-function owner remain partial. Scalar/ordinary-object/wider query-name admission, valid-pair typed/coerced/backed/debt cells, named/unpacked or wider output places and broader lifetime contexts remain partial. Full core remains unfinished.",
+  "author_reports": {
+    "strict-v1/report.json": "bbd6be6627aeb3f71269e81544071ccecfc7958b42e34d3e7cb7cd0f74f6b594",
+    "strict-v2/report.json": "1d5b902215ee5f86cf9a63963db817c287d335e713051b5ca4dd1f2b7eb11517",
+    "strict-v3/report.json": "f919f96d1da721b05837d7090fcc164dffe30dfef21b5122e7c5f26c662fb0d0",
+    "raw/user-string-d4e39zxg/report.json": "aa1d48f70079438dab93010e2ddfe19d9daf17e79d794a4ba519348484bc72ee",
+    "raw/user-string-3hll122p/report.json": "8de1e43d20099a4bfee3224d39ca08ec813c7dbeb9f6b4c78f0e9f27d5571024"
+  },
+  "author_projections": {
+    "capture-projection-v1/stdout": "d73bd9ca64f9e6b131f36f58c687723143df1fd6b1d3a8dff5a263d52c334214",
+    "capture-projection-v1/stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "capture-projection-v2/stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "capture-projection-v2/stderr": "b3ef25c2547f7b178afeefffe0c9dea439c5f1f539f901228733a812699625bf"
+  },
+  "independent_reports": {
+    "native-report.json": "f37c6f2efc0f144383a501b0540c400455a7a541773e5ef791343539a911a010",
+    "compare-v1/report.json": "9277347ef6dda007963275a6abbe7e039d3ea09a8b7375fcceecea3896d4eb33",
+    "selection-v1/report.json": "bb08d1827898b6beb8e916255b606eea2b7144628497672fa3de1e3464557e7e",
+    "selection-v2/report.json": "acd089ca6287ee1f6f2bf73c797e9f5d36c2fa0ba088d0116655cf6fa3a8ad0f",
+    "selection-v3/report.json": "9f3745ba000b5cac377563b9e898ac93db4de5ecd25b9981db120ae802f0feb3",
+    "scope-changed-closure-cache/result.json": "3475fc391d9fecdf23bdbc5b3aadc6fc2636191a4a3ff9412243f0538d10d7bb"
+  },
+  "recovery": "Author raw/ and manifest.json: ../php-spec-evidence-archive/enum-fixed-namespace-selection-125/. Independent native.py, compare.py, selection.py, scope-change probe and report/recorder directories: ../php-spec-evidence-archive/enum-fixed-fallback-review-125/. Maintained CLI sources: enum_is_callable.py --match third-output-fixed-fallback-. Original baseline SHA e59283a13713029fe3a0b19b1d505c238cc4c18db13d098a35b847b180466d88 also remains in prior acquisition-review124. Fresh peer tree imported d420 onto accepted a0c with explicit shared-tool links; no fresh build or portability claim. No prior acquisition7 or broad source replay is claimed.",
+  "review": "Independent runtime, source, fixture, final docs and result review CLEAR by /root/enum_review at d420. Later metadata/source-copy edits leave80/437 runtime bytes unchanged."
+}

@@ -1171,11 +1171,19 @@ while a retained alias keeps its old cell, or create an output object before
 SEND3. Dynamic `SELECTEDCALLS` keeps the chosen builtin when its source callee
 variable is rebound; an earlier argument throw never acquires the output.
 The [output-acquisition review](../../coverage/semantics/enum-is-callable-output-acquisition-review.json)
-records these source and ownership cuts. A fixed namespaced
-`is_callable(..., publish(), $name)` must also keep the fallback builtin when
-`publish()` declares a local `is_callable`; that distinct selection route has
-only native observations and remains open. Named/unpacked and wider output
-places retain their existing bounds.
+records these source and ownership cuts. Fixed namespaced
+`is_callable(..., publish(), $name)` now records the actual fallback builtin
+before arguments, so `publish()` can declare a local function without changing
+the chosen target or reference signature. Root and ordinary named-function
+sites reuse this cache authority on later calls, even if the first call threw
+during argument evaluation. A distinct cold site selects the local function.
+Selection history borrows source/line/function identity and adds no roots;
+capture requires a cold builtin lookup or genuine prior authority. The
+[fixed-fallback review](../../coverage/semantics/enum-is-callable-fixed-fallback-review.json)
+records these source, owner and pending-throw checks. Closure scope changes can
+create a private Zend runtime cache, so closure/method/fake/bound and other
+unproved owners refuse explicitly. Named/unpacked and wider output places
+retain their existing bounds.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
