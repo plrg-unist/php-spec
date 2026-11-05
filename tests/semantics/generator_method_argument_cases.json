@@ -18,5 +18,15 @@
     "native_stdout": "CURRENT|INIT|head|SEND|LATER|GOT|1|1|tail|1|FIN|DONE|",
     "native_stderr": "",
     "expected_model": "normal"
+  },
+  {
+    "id": "i109-ordinary-positional-send-throw-control",
+    "purpose": "Affected legacy control: ordinary positional send/throw retain the original source and resumption validators while named/ARRAY collection gains a separate route.",
+    "source": "<?php\nclass Stop109A extends Exception {}\nfunction Flow109A() {\n    global $stop;\n    echo 'INIT|'; $value = yield 'head'; echo 'GOT|', $value, '|';\n    try { yield 'tail'; }\n    catch (Stop109A $caught) { echo 'CATCH|', $caught === $stop, '|'; yield 'caught'; }\n    return 109;\n}\n$stop = new Stop109A(); $generator = Flow109A();\necho 'SEND|', $generator->send(41), '|';\necho 'THROW|', $generator->throw($stop), '|';\n$generator->next(); echo 'RETURN|', $generator->getReturn(), '|', $generator->valid() === false, '|';\n",
+    "source_sha256": "43d2e631c9ea2a165231d10c5ff2e527556fb429bb325f999b50c5ed4d69ab4a",
+    "native_exit": 0,
+    "native_stdout": "SEND|INIT|GOT|41|tail|THROW|CATCH|1|caught|RETURN|109|1|",
+    "native_stderr": "",
+    "expected_model": "normal"
   }
 ]
