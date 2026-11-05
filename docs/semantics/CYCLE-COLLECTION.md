@@ -582,6 +582,33 @@ boundary remain. ALIAS/INDIRECT entries, user finalizers, proxies, pooled graphs
 and arbitrary Closure cycles remain outside this lane. See the
 [nested-array review](../../coverage/semantics/gc-nested-array-review.json).
 
+GC29 admits finite mixed DIRECT/ALIAS captures with at least one ordinary
+untyped reference cell under the same genuine real-Closure caller root.
+`ordinary_reference_value` authenticates the live cell and excludes constrained,
+coercion/backing/debt and released forms. Each wrapper has one payload edge even
+when multiple capture and entered-local names own it; a surviving wrapper
+decrement buffers the collectable referent rather than the wrapper. Captured
+cell identities remain fixed when current variable names rebind.
+
+Capture/cell-payload string carriers are authenticated without a string getter
+or new heap owner. The existing DIRECT array-entry policy is unchanged; nested
+bucket carriers are not separately authenticated by this admission. Noncell
+nodes reuse GC28's mutable nonpool/nonproxy array DAG and childless stdClass
+checks. Closure ordinary/physical children retain exact capture multiplicity,
+with source/mode/arity, machine-root and empty-static-cell fences preserved.
+
+Three author originals distinguish shared versus separate wrappers and request
+string/global-name rebinding. A fourth original on the reviewed A95 composition
+runs named Generator/handler alias writes, retires those owners and then collects
+under the real Closure while its old cell still holds 22 and the new global holds
+44. All four agree exactly. Author strict fronts pass 177+197+154 assertions;
+independent mixed COW gives a fifth exact source and 214 further conditions,
+including per-current-payload buffering and captured-cell retention after local
+name rebinding. ALIAS array entries, constrained/backed
+cells, proxies, pooled descendants, user-finalizer children, explicit `__invoke`
+captures and arbitrary Closure/reference cycles remain outside this lane. See the
+[reference-capture review](../../coverage/semantics/gc-reference-capture-review.json).
+
 Plans, candidate lists and saved graphs add no owners. Each current destructor
 has its real collector guard in addition to ordinary destructor protection;
 pending exceptions remain owned once. After a destructor returns, its bare guard

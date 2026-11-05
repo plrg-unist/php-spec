@@ -242,8 +242,9 @@
     "id": "enum-is-callable-third-output-unique-exit-exact-name",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-not-null|';\n        exit('STOP|');\n    }\n}\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
     "source_sha256": "73410ae6728c65b3418c55fd6e1e7e46141ff939488005cd1a59d4b47cb45eb1",
-    "expected_model": "unsupported",
-    "purpose": "Explicit boundary for exit, owning rebound values or late type sources in the pending raw output commit."
+    "expected_model": "explicit_exit",
+    "purpose": "A root destructor exit resumes the C output commit before request shutdown.",
+    "expected_normal_stdout": "D-null|STOP|shutdown-committed|"
   },
   {
     "id": "enum-is-callable-third-output-unique-rebound-child",
@@ -296,5 +297,102 @@
     "expected_model": "normal",
     "expected_normal_stdout": "TARGET-DROP|final:1:FirstCheck::from|",
     "purpose": "A saved string target remains authenticated after the output old-object destructor rebinds the current target CV."
+  },
+  {
+    "id": "enum-is-callable-third-output-exit-status",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "5f439dedda10471ebac18430e3e605c045f150e3d0ff8acb82131d4246f50493",
+    "expected_model": "explicit_exit",
+    "purpose": "Root C output completion preserves local cleanup, exit status and skipped result assignment.",
+    "expected_normal_stdout": "D-null|shutdown-committed|"
+  },
+  {
+    "id": "enum-is-callable-third-output-exit-local-cleanup",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass LocalDrop { public function __destruct() { echo 'LOCAL|'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit('STOP|');\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "ece8762405195f6187da192e49ac6c911367443d471c754b796eed40eb03bfed",
+    "expected_model": "explicit_exit",
+    "purpose": "Root C output completion preserves local cleanup, exit status and skipped result assignment.",
+    "expected_normal_stdout": "D-null|STOP|LOCAL|shutdown-committed|"
+  },
+  {
+    "id": "enum-is-callable-third-output-fiber-start-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $fiber = new Fiber(function () { echo 'FIBER|'; exit('STOP|'); });\n        $fiber->start();\n        echo 'D-UNEXPECTED|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "c0bf2776a1c87f03eddb2e0fd057cf48f73f942d99c0624540e1b469aaa2735d",
+    "expected_model": "unsupported",
+    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
+  },
+  {
+    "id": "enum-is-callable-third-output-fiber-resume-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $fiber = new Fiber(function () { echo 'FIBER|'; Fiber::suspend(); exit('STOP|'); });\n        $fiber->start();\n        echo 'RESUME|';\n        $fiber->resume();\n        echo 'D-UNEXPECTED|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "337259542aec30a7624b14a38208553e6c0c785227b4926d8f64058f44102218",
+    "expected_model": "unsupported",
+    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
+  },
+  {
+    "id": "enum-is-callable-third-output-query-in-fiber-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        exit('STOP|');\n    }\n}\n$fiber = new Fiber(function () {\n    global $name;\n    $name = new OldDrop;\n    $ok = is_callable('FirstCheck::from', false, $name);\n    echo 'F-UNEXPECTED|';\n});\n$fiber->start();\necho 'UNEXPECTED|';\n",
+    "source_sha256": "e76b8156c97fafdd5970dc5199a89d70f418ae361a4d3626e3416e609bb92335",
+    "expected_model": "unsupported",
+    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
+  },
+  {
+    "id": "enum-is-callable-third-output-nested-fiber-output-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name, $inner_name;\n    echo $name === 'FirstCheck::from' ? 'outer-committed|' : ($name === null ? 'outer-null|' : 'outer-other|');\n    echo $inner_name === 'OtherCheck::from' ? 'inner-committed|' : ($inner_name === null ? 'inner-null|' : 'inner-other|');\n}\nregister_shutdown_function('observe');\nclass InnerDrop {\n    public function __destruct() {\n        global $inner_name;\n        echo $inner_name === null ? 'I-null|' : 'I-other|';\n        exit('STOP|');\n    }\n}\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $fiber = new Fiber(function () {\n            global $inner_name;\n            $inner_name = new InnerDrop;\n            $ok = is_callable('OtherCheck::from', false, $inner_name);\n            echo 'I-UNEXPECTED|';\n        });\n        $fiber->start();\n        echo 'D-UNEXPECTED|';\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "f1efcb95ab6bc4e4bb77b9124c50545936ac5f6cb6801e28f06e790aea2cec63",
+    "expected_model": "unsupported",
+    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
+  },
+  {
+    "id": "enum-is-callable-third-output-exit-local-null-rebound",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass LocalDrop { public function __destruct() { global $name; echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|'; $name = 'LOCAL-REBOUND'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit('STOP|');\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "643da110f399a99eab1ddd8388408e639dd70c6ac4a4952b129e8ea007794ce3",
+    "expected_model": "explicit_exit",
+    "purpose": "Root C output completion preserves local cleanup, exit status and skipped result assignment.",
+    "expected_normal_stdout": "D-null|STOP|LOCAL-null|shutdown-committed|"
+  },
+  {
+    "id": "enum-is-callable-third-output-parked-query-main-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        Fiber::suspend();\n        echo 'D-UNEXPECTED|';\n    }\n}\n$fiber = new Fiber(function () {\n    global $name;\n    $name = new OldDrop;\n    $ok = is_callable('FirstCheck::from', false, $name);\n    echo 'F-UNEXPECTED|';\n});\n$fiber->start();\necho 'PARKED|';\nexit('STOP|');\n",
+    "source_sha256": "5aa4f6737ac464df03fbd255145a24050f733e25298fe99a3879454d268f8219",
+    "expected_model": "unsupported",
+    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
+  },
+  {
+    "id": "enum-is-callable-third-output-exit-result-unassigned",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        exit(23);\n    }\n}\n$ok = 'UNCHANGED';\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "eef14993a0eada5933d38405d21f295bc5b93ee2335ce40ee348cdeecf3ca208",
+    "expected_model": "explicit_exit",
+    "purpose": "Root C output completion preserves local cleanup, exit status and skipped result assignment.",
+    "expected_normal_stdout": "D-null|shutdown-committed|result:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-nested-live-output-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name, $inner_name, $ok, $inner_ok;\n    echo $name === 'FirstCheck::from' ? 'outer-committed|' : 'outer-other|';\n    echo $inner_name === 'OtherCheck::from' ? 'inner-committed|' : 'inner-other|';\n    echo 'results:', $ok, ':', $inner_ok, '|';\n}\nregister_shutdown_function('observe');\nclass InnerDrop {\n    public function __destruct() {\n        global $inner_name;\n        echo $inner_name === null ? 'I-null|' : 'I-other|';\n        exit(23);\n    }\n}\nclass OldDrop {\n    public function __destruct() {\n        global $name, $inner_name, $inner_ok;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $inner_name = new InnerDrop;\n        $inner_ok = 'UNCHANGED';\n        $inner_ok = is_callable('OtherCheck::from', false, $inner_name);\n        echo 'D-UNEXPECTED|';\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "c4efeaee7dc6a065d8651ca30c5fb7e66bbf45f675bf601bc23662c04fa73a49",
+    "expected_model": "explicit_exit",
+    "purpose": "Root C output completion preserves local cleanup, exit status and skipped result assignment.",
+    "expected_normal_stdout": "D-null|I-null|outer-committed|inner-committed|results:UNCHANGED:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-exit-local-trace",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $e = new Exception('probe');\n        foreach ($e->getTrace() as $frame) {\n            echo isset($frame['class']) ? $frame['class'] : '-', ':', $frame['function'];\n            echo isset($frame['line']) ? ':line:' : ':internal:';\n            foreach ($frame['args'] as $argument) {\n                echo $argument === 'FirstCheck::from' ? 'NAME,' : ($argument === false ? 'FALSE,' : ($argument === null ? 'NULL,' : 'OTHER,'));\n            }\n            echo '|';\n        }\n    }\n}\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit('STOP|');\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "9184b12bf9563fc1b8a7d57b8ca818ec9d5cfd22d98731c6cf84c5ba037d4ffb",
+    "expected_model": "explicit_exit",
+    "purpose": "Root C output completion preserves local cleanup, exit status and skipped result assignment.",
+    "expected_normal_stdout": "D-null|STOP|LOCAL-null|LocalDrop:__destruct:internal:|-:is_callable:line:NAME,FALSE,NULL,|shutdown-committed|"
+  },
+  {
+    "id": "enum-is-callable-third-output-exit-local-throw",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass LocalDrop { public function __destruct() { echo 'LOCAL-THROW|'; throw new Exception('local'); } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit('STOP|');\n    }\n}\n$name = new OldDrop;\ntry { $ok = is_callable('FirstCheck::from', false, $name); echo 'UNEXPECTED|'; }\ncatch (Exception $e) { echo 'CAUGHT:', $name, '|'; }\necho 'CONTINUE|';\n",
+    "source_sha256": "244965e0210dd4c89ca3cc85290af8d81e4a5571b94d48359d1d1e47c40c40c1",
+    "expected_model": "unsupported",
+    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
+  },
+  {
+    "id": "enum-is-callable-third-output-exit-local-second-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass LocalDrop { public function __destruct() { exit('LOCAL-STOP|'); } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit('STOP|');\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "edcd002d86e3a226f2db282c046bf926403037ac29317b59dbdc9cc2e1f811cd",
+    "expected_model": "unsupported",
+    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
   }
 ]

@@ -117,9 +117,15 @@ the destructor, then commit the chosen name before returning or propagating its
 throw. Output unset/rebinding, saved input, API trace snapshots and resurrection
 retain their actual cells and owners. Twelve normal originals, five explicit
 boundary controls, strict433, 345 independent guards and affected retained77
-checks pass at their recorded cuts. Exit, owning rebound values, late attached
-type sources and variable array inputs remain partial.
+checks pass at their recorded cuts.
 [Unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json).
+Root VM destructor exits now drain local cleanup before committing the saved
+name. Nested live queries commit in order while preserving exit status and
+leaving result assignments untouched. Seven exact exit originals, seven explicit
+controls, strict433 and 247 independent guards pass. Switched Fiber exits,
+replacement cleanup, owning rebound values, late attached type sources and
+variable array inputs remain partial.
+[Exit review](coverage/semantics/enum-is-callable-output-exit-review.json).
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -173,6 +179,15 @@ partial. Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I96](coverage/semantics/generator-folded-string-call-review.json),
 [I97](coverage/semantics/generator-call-warning-fiber-review.json) and
 [I98](coverage/semantics/generator-call-warning-retval-review.json).
+
+I99 handles PHP throws during copied reference warnings, including a Fiber throw
+in an owning handler-return destructor. Only the hidden copy stays request-owned;
+prepared prefix and API owners release before catch. Four native originals,
+three CLI comparisons and two reached fronts (237 custom/247 reported checks)
+pass; one front also matches repeated native output without extra CLI credit.
+The affected 59/64 trace checks and joined strict433 pass at recorded cuts.
+Receive/mapping and bailout paths remain partial.
+[I99 review](coverage/semantics/generator-call-cancellation-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -403,6 +418,17 @@ snapshot give three exact source pairs through final weak death. Strict reached 
 changed GC27 group passes 207. Independent graph/self-copy fronts pass 63+85.
 Reference, proxy, pooled and finalizer graphs remain partial.
 [GC28 review](coverage/semantics/gc-nested-array-review.json).
+
+GC29 admits mixed value/reference captures through ordinary untyped HCELLs.
+Capture/local aliases own wrappers separately while each wrapper owns its payload
+once; surviving reference decrements buffer only a collectable payload. Three
+originals preserve shared/separate wrapper lifetime and request-string rebinding,
+and one combined A95 original preserves old-cell 22/global 44 through Generator
+retirement and actual GC. All four agree; strict reached fronts pass 177+197+154.
+Independent mixed COW gives a fifth exact source and 214 further assertions.
+Constrained/backed cells, ALIAS array entries
+and arbitrary reference/Closure cycles remain partial.
+[GC29 review](coverage/semantics/gc-reference-capture-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -868,9 +894,18 @@ copied FCC scope. Sixteen exact originals, 190 author and 135 independent reache
 conditions, 229 affected conditions and private strict433 pass. The repaired
 private-final warning retains class-site authority until `new` resumes before
 allocation. Original Unsupported/interpreter and fixture failures retain zero
-agreement credit. Implicit imported Stringable, dynamic-source combinations,
-illegal-modifier diagnostics and wider member/lifetime contexts remain partial.
-[Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+agreement credit. [Review](coverage/semantics/anonymous-trait-adaptations-review.json).
+CLASS170 authenticates inferred Stringable interfaces before restoring the raw
+anonymous header view. Direct imports and aliases preserve original name prefixes,
+interface spelling and copied parameter scope; return/private/static conflicts
+fail at the trait method before publication or allocation. Eight exact originals,
+277 independent and 121 author reached conditions and strict433 pass. The ordinary
+parentless `parent` receive view requires published interface targets and full
+history; old empty-interface and snapshot paths stay unchanged. Original source
+failures and three fixture corrections retain zero agreement credit.
+Dynamic-source combinations, wider explicit/unpublished/collision scope histories,
+illegal-modifier diagnostics and other member/lifetime contexts remain partial.
+[Review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -913,8 +948,18 @@ sources agree, including strict/tick interactions and include/eval body returns.
 Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
 pass, alongside six CLI guards and two explicit multiline Unsupported controls.
 Actual cuts and preserved failures are in the
-[review](coverage/semantics/encoding-list-review.json). Multiline declarations,
-rejected sources with warnings and multibyte conversion remain partial.
+[review](coverage/semantics/encoding-list-review.json). COMP167 below extends its
+multiline boundary; rejected sources with warnings and multibyte conversion remain partial.
+
+COMP167 retains checked declaration header-close line/token facts. Multiline
+headers use their closing line for parser warnings while compiler diagnostics
+keep the first item's line. Nested header reductions precede enclosing headers;
+comment-only Nops retain their genuine empty token spans. Twenty-one new original
+comparisons, independent compiler/state gates and affected regressions pass;
+strict compilation covers 433 modules. Fresh classified syntax covers 30,980
+profiles and independent metadata checks cover 17 profiles. Original failures
+and exact cuts remain in the [review](coverage/semantics/encoding-header-review.json).
+Rejected sources with warnings and multibyte conversion remain partial.
 
 ## Active and unintegrated work
 

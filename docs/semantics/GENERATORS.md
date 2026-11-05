@@ -679,6 +679,14 @@ The [joined review](../../coverage/semantics/generator-call-series-current-revie
 records strict433, four source comparisons and 187 custom/192 reported ownership
 checks while preserving every original cut and zero-credit failure.
 
+I99 covers warning exceptions before any Gen exists. Request-global retained
+copy rows keep the engine's hidden real/fake copy and its descendants through
+shutdown; prepared argv, API arguments and source still retire before catch.
+All-object Gen history rejects already-created copies, and ordinary Gen ownership
+is unchanged. Repeated cancellation validates two distinct copies and shared
+capture owner2. Receive/mapping and bailout cleanup remain partial.
+[Cancellation review](../../coverage/semantics/generator-call-cancellation-review.json).
+
 Shared Generator delegation records pending initialization separately from the
 first-yield flag. Synthetic shared-child operations preserve this nonowning bit;
 an actual API or iterator root resume clears its own bit. Cache-only getter

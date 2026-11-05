@@ -1,0 +1,155 @@
+{
+  "milestone": "I99 pre-Generator copied-call warning cancellation",
+  "status": "Private and joined validation pass; wider core boundaries remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "scope": "PHP throws during copied reference warnings, including supplied exceptions and Fiber::throw in an owning handler-retval destructor. No Gen/body is invented; prepared prefix, FIRST, RAW and SOURCE owners release before catch while the hidden copy retains This/captures through shutdown.",
+  "representation": "Request-global CLOSURECALLRETAINED stores unique authenticated normalized copy rows and roots only OBJECT. All-object Gen history prevents retaining an already-created Gen copy. This abstracts hidden retention; its logical copy owner is not a claim of raw Zend refcount equality. Existing terminal free uses its local graph and preserves the last valid state snapshot.",
+  "changed_modules": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/39-ownership.watsup",
+    "spec/semantics/40-control.watsup",
+    "spec/semantics/182-closure-call.watsup",
+    "spec/semantics/268-temporary-fake-calls.watsup",
+    "spec/semantics/280-generators.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_closures.c",
+      "vendor/php-src/Zend/zend_execute_API.c",
+      "vendor/php-src/Zend/zend.c",
+      "vendor/php-src/Zend/zend_objects_API.c"
+    ],
+    "symbols": [
+      "ZEND_METHOD(Closure, call)",
+      "zend_call_function cleanup_args",
+      "zend_error_zstr_at",
+      "zend_objects_store_call_destructors",
+      "zend_objects_store_free_object_storage"
+    ],
+    "rule": "Warning throws leave before the call-frame Closure addref; Closure::call then raw-decrements its local copy without free_obj. Handler retval destruction precedes handler restoration. The still-valid copied descendants receive ordinary request-store destructor ordering. This is followed pinned behavior, not an externally confirmed engine bug."
+  },
+  "review": "Independent semantic, counterexample, state-fixture, test-reliability and current-composition review; exact final clearance is supplied for the integration head.",
+  "validation": {
+    "native_packets": [
+      {
+        "revision": "87f588bd81604e1e053c71728929fc9fce974ea0",
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-99/source-packet/native-first/report.json",
+        "sha256": "af6bb29dd818a771559e2a53a9ab6e9bc562218336eeda1f56e7c72a4a74ab6b",
+        "result": "Author1 first forecast passes."
+      },
+      {
+        "revision": "87f588bd81604e1e053c71728929fc9fce974ea0",
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-99-review/prepared/native-report.json",
+        "sha256": "19a4f325d5f4b1a4c37179919c821ab43c817ad149635bad91b22b43f4a38e59",
+        "result": "Independent2 first forecasts pass."
+      },
+      {
+        "revision": "7a6b87164e8eaa2145d81d2689e1e61147008c22",
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-99-review/repeated-prepared/native-report.json",
+        "sha256": "2a7df35f505d7c84b1094eb17b958160631e6d851075bbc5bafa1831448c7cf9",
+        "result": "Repeated1 first forecast passes; same source reused twice with distinct copies/receivers."
+      }
+    ],
+    "baseline": {
+      "revision": "756437a49beeb870fd2e1dc9ecb8e27780857deb",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/baseline-756437/report.json",
+      "sha256": "1894d636ee323667e8e0f803105792913991f8d9291e58d035f2d2fd6501c2f1",
+      "result": "Checked Unsupported after CALL|WARN|1|WARN|2|; zero agreement, preserved."
+    },
+    "private_compiler": {
+      "revision": "7a6b87164e8eaa2145d81d2689e1e61147008c22",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/strict-private/report.json",
+      "sha256": "4ff3115685d8cd4550449641245238c10dab926f1b343f7e25c09bcbd778a97c",
+      "result": "SL433/cache-off/determinism-on; true newline, exit0, empty stderr, no timeout, stable HEAD+inputs."
+    },
+    "cli_agreements": [
+      {
+        "revision": "7a6b87164e8eaa2145d81d2689e1e61147008c22",
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-99/validated/author-source-7a6b/report.json",
+        "sha256": "adbf83e95be81cf11df8f3eb397a1dd4ca6cb33a6801ff1caf709a7cee26833c",
+        "result": "Exact NORMAL1 with retained original native bytes/path."
+      },
+      {
+        "revision": "7a6b87164e8eaa2145d81d2689e1e61147008c22",
+        "report": "../php-spec-evidence-archive/generator-call-cancellation-99-review/validated/peer-source-7a6b/report.json",
+        "sha256": "5239781795dcff37e54d782e97cc6e7f87a06bbdff42185bb57046e96e47be98",
+        "result": "Exact NORMAL2 with retained original native bytes/path."
+      }
+    ],
+    "author_state": {
+      "revision": "130d27024fff9de449aaa38828c176d7f04b79cd",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/validated/author-state-130d/report.json",
+      "sha256": "e6d4040639886446d36cdb69c20a450907393a9de55b11da9e98b99152960bce",
+      "result": "115 custom/120 reported: actual second-warning prefix, ordered cleanup, authentic retention, malformed rows/cursors, retired-Gen history and split/full shutdown."
+    },
+    "repeated_state_output": {
+      "revision": "130d27024fff9de449aaa38828c176d7f04b79cd",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99-review/validated/repeated-state-output-130d/report.json",
+      "sha256": "8c308b48c6dd1d9acecc718458145c5be8191db4edee0f7ccfeb72daac5cb5c6",
+      "result": "122 custom/127 reported: distinct copy/This roots, shared capture owner2, reversed row order, malformed guards and split/full shutdown; exact OUTPUT-only native projection, exit0/SHUTDOWN_DONE. First-run cap1800."
+    },
+    "affected_i93_trace": {
+      "revision": "130d27024fff9de449aaa38828c176d7f04b79cd",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/validated/affected-i93-trace-130d/report.json",
+      "sha256": "09d98aa1342648a5894142edaa5e953978365c5dede8f76085e16f1e5fb3ee94",
+      "result": "Only affected old warning-trace recipe rerun: 59 custom/64 reported; its warning-throw hook projection is now NORMAL."
+    },
+    "joined_compiler": {
+      "revision": "3dbe25e0d125089bdff4e388946ba6cb238a0f79",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/joined-strict-068/report.json",
+      "sha256": "4cc33e038f72268bc9fb6ac1e7615dde5a87be23b833504e69d7f427aeb15f2a",
+      "result": "Actual joined433 manifest; SL/cache-off/determinism-on, true newline, exit0, empty stderr, no timeout, stable inputs+HEAD. CPU1 strict-only loan sampled/full reap."
+    },
+    "counts": {
+      "native_originals": 4,
+      "cli_normal_agreements": 3,
+      "additional_source_reached_native_output_projection": 1,
+      "new_state_custom": 237,
+      "new_state_reported": 247,
+      "affected_i93_custom": 59,
+      "affected_i93_reported": 64
+    },
+    "projection_context": "Repeated state uses generated fixture filename/cwd. Source bytes/profile/line positions are exact; this named-class source has no file/cwd/trace displays, handled warning file/line arguments are unused, and Stop trace paths are never projected. Claim OUTPUT-only agreement under that limited context compatibility, not same-file identity or a fourth CLI agreement.",
+    "result": "Successful gates keep their recorded HEAD/inputs and exit0 without stderr or timeout. Model actors run serially with explicit lane handoffs and full reap. No native replay or broad historical renewal.",
+    "compatibility": "Source3/standalone compiler retain7a6b. Later pending-throw guards narrow already-entered throws; the130d descriptor projection authenticates the warning cursor after its throw prefix. Both reached fronts and the affected trace compile/exercise130d. Joined current-master changes and the qualified182 comment were independently reviewed; original evidence keeps its cuts."
+  },
+  "preserved_failures": [
+    {
+      "revision": "48d79cc4e57f6f2187e1312204dbaa8348432ff3",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/validated/author-state-parser-48d7/report.json",
+      "sha256": "2506e4bf10e50ff8db6aadca63ccf7a71f6e2b096fec39fccd040d4e543b2812",
+      "result": "Fixture parser0 before semantic execution: bare length expression in PORIGIN argument. Only changed to known absent unit999; source/count/cap unchanged."
+    },
+    {
+      "revision": "acdf58a698347eb4f616d8889fe27831a99ede79",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/validated/author-state-phase-acdf/report.json",
+      "sha256": "8f9832b55a57bf16cc89e70489b9db23281d10c4c98388d5a31ac461485a6ae8",
+      "result": "Fixture phase0: direct cursor validation still saw the leading THROW_SEARCH and prefix owner. Positive and malformed-cursor projections now use the same genuine emitting scope."
+    },
+    {
+      "revision": "90de21bf99d88cca2dbfa55753ce541eb55f006a",
+      "report": "../php-spec-evidence-archive/generator-call-cancellation-99/validated/author-state-descriptor-90de/report.json",
+      "sha256": "c81c7d05bd948bbf2ab49df07645084b941422dcdef7c176dd088596310d77b0",
+      "result": "Reached descriptor failure0 exposed missing metadata TODO advance past the pending warning throw. Narrow call_after_origin projection fixed it; next author run passes."
+    }
+  ],
+  "tests": [
+    "tests/semantics/generator_call_cancellation_sources.py",
+    "tests/semantics/generator_call_cancellation_cases.json",
+    "tests/semantics/generator_call_cancellation_state.py",
+    "tests/semantics/generator_call_cancellation_review_cases.json",
+    "tests/semantics/generator_call_cancellation_review_state.py"
+  ],
+  "remaining": [
+    "Wider no-Generator receive/mapping cleanup and bailout paths remain explicit boundaries.",
+    "Other producers, receiver/signature policies and broader lifecycle combinations remain partial.",
+    "No complete PHP core or BOLA verification claim."
+  ],
+  "reproduction": [
+    "taskset -c CPU python3 tests/semantics/generator_call_cancellation_sources.py --case CASE --native-report RETAINED_NATIVE_REPORT",
+    "taskset -c CPU python3 tests/semantics/generator_call_cancellation_state.py --case i99-second-warning-prepared-prefix-cancel",
+    "taskset -c CPU python3 tests/semantics/generator_call_cancellation_review_state.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_reference_state.py --case i93-copy-warning-trace",
+    "External reports retain exact commands, inputs, profiles, raw bytes, budgets and process receipts; recreate tested revisions with the preserved semantics/generator-call-cancellation-99 branch/history."
+  ]
+}

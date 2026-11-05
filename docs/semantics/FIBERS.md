@@ -1247,6 +1247,14 @@ The [joined review](../../coverage/semantics/generator-call-series-current-revie
 records strict433, four source comparisons and 187 custom/192 reported ownership
 checks while preserving every original cut and zero-credit failure.
 
+I99 also admits a supplied Fiber throw during copied-warning handler/owning
+retval cleanup. The request-global retained-copy rows stay outside moved VMs;
+actual caller/cleanup records preserve exception identity and restore the handler.
+The repeated source-reached/native-output check distinguishes two retained copies,
+distinct receivers and a shared capture through complete shutdown. It carries
+no additional CLI agreement claim; wider bailout and receive paths remain partial.
+[Cancellation review](../../coverage/semantics/generator-call-cancellation-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not

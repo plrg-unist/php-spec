@@ -3156,13 +3156,14 @@ registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
 Disabled-multibyte encoding declarations emit source-derived parser warnings
-before compiler diagnostics. Single-line declarations accept literal values,
-mixed/repeated items and ordinary bodies; token positions preserve recursive
-parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
-return premises extend the earlier eval/once checks. Multiline declarations and
-rejected sources with warnings remain explicit boundaries.
+before compiler diagnostics. Checked header-close positions support multiline
+headers and ordinary bodies, preserving nested parser reductions and separate
+first-item compiler lines. Twenty-one new originals and independent compiler/state
+checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
+sources with warnings and multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
-[list/body review](coverage/semantics/encoding-list-review.json).
+[list/body review](coverage/semantics/encoding-list-review.json),
+[header review](coverage/semantics/encoding-header-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3919,6 +3920,14 @@ edges, and per-array self-reach rejects forged DIRECT cycles. Shared nesting, lo
 COW and self-copy snapshots agree with PHP through weak death. References, proxies, pooled descendants
 and user-finalizer children stay outside this lane. See the
 [nested-array review](coverage/semantics/gc-nested-array-review.json).
+
+GC29 admits mixed value/reference captures through ordinary untyped cells.
+Captured aliases retain cell identity across global-name rebinding; each wrapper
+owns its payload once, and reference decrements buffer the collectable payload.
+Shared/distinct wrappers, request strings, nested reference-payload COW and an
+A95 Generator/handler interaction agree with PHP. Typed/backed cells and reference cycles remain outside this lane.
+See the [reference-capture review](coverage/semantics/gc-reference-capture-review.json).
+
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4888,9 +4897,16 @@ an excluded method can still supply a qualified alias. Linking occurs at the
 first reached `new`, before constructor arguments. Copied constant method
 captures keep the generated NUL name and the importing lexical/parent scope;
 failed links publish no class. Trait-link diagnostics truncate each class-name
-argument while keeping stored identities complete. Imported implicit Stringable
-interfaces, dynamic-source trait combinations and wider member/lifetime contexts
+argument while keeping stored identities complete. Dynamic-source trait combinations and wider member/lifetime contexts
 remain partial. [Adaptation review](coverage/semantics/anonymous-trait-adaptations-review.json).
+
+Imported and aliased `__toString` methods now retain inferred Stringable
+interfaces through the anonymous descriptor check. The raw header keeps name
+prefixes and interface spelling authoritative; live targets and declaration
+history authenticate the inferred list. Ordinary parentless copied captures
+also retain the missing-parent receive error with inferred interfaces. Stringable
+return, visibility and static conflicts fail before allocation at the trait
+method source. [Stringable trait review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -6812,8 +6828,12 @@ objects now clear the original output cell before destruction, then commit its
 chosen name before returning or propagating a destructor throw. The
 [unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json)
 records twelve normal originals, five explicit controls and 345 independent
-guards. Destructor exit, owning rebound values, late type sources, other array
-sources and autoload,
+guards. Root VM destructor exits now finish local cleanup before committing the
+name; nested queries preserve exit status and skip result assignment. The
+[exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
+records seven exact exits, seven explicit controls and 247 independent guards.
+Switched Fiber exits, replacement cleanup, owning rebound values, late type
+sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -7161,6 +7181,13 @@ Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I96](coverage/semantics/generator-folded-string-call-review.json),
 [I97](coverage/semantics/generator-call-warning-fiber-review.json) and
 [I98](coverage/semantics/generator-call-warning-retval-review.json).
+
+I99 also handles throws during copied reference warnings: the hidden copy keeps
+its receiver/captures until shutdown while prepared and API owners release before
+catch. Four native originals, three CLI comparisons and two ownership fronts
+(including repeated native output) validate this bounded path; wider receive,
+mapping and bailout contexts remain partial.
+[Cancellation review](coverage/semantics/generator-call-cancellation-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
