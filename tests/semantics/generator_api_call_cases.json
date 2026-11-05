@@ -10,5 +10,29 @@
     "expected_model": "normal",
     "model_seconds": 500,
     "process_seconds": 520
+  },
+  {
+    "id": "i115-used-and-unused-owning-current-return",
+    "purpose": "Used and ignored native current results both retain the inner copy through newThis argv retirement. Unused payload frees before original capture, while used payload escapes after both Generators and capture retire.",
+    "source": "<?php\nclass Payload115D {\n    function __destruct() { global $wc, $wo, $wn; echo 'PAYLOAD|', $wn->get() === null, '|', $wc->get() === null, '|', $wo->get() === null, '|'; }\n}\nfunction old115D() { try { echo 'OLD-INIT|'; yield 'old'; } finally { global $wc, $wo; echo 'OLD-FIN|', $wc->get() === null, '|', $wo->get() !== null, '|'; } }\nfunction fresh115D() { try { echo 'NEW-INIT|'; yield new Payload115D; } finally { global $wc, $wo, $wn; echo 'NEW-FIN|', $wc->get() !== null, '|', $wo->get() !== null, '|', $wn->get() !== null, '|'; } }\nfunction receiver115D() { global $cap, $new, $wc, $wo, $wn; $result = $new; $cap = null; $new = null; echo 'HELD|', $wc->get() !== null, '|', $wo->get() !== null, '|', $wn->get() !== null, '|'; return $result; }\nfunction run115D($used) {\n    global $cap, $new, $wc, $wo, $wn;\n    $old = old115D(); $old->current(); $cap = $old->current(...); $new = fresh115D();\n    $wc = WeakReference::create($cap); $wo = WeakReference::create($old); $wn = WeakReference::create($new); $old = null;\n    echo $used ? 'USED|' : 'UNUSED|';\n    if ($used) { $held = $cap->call(receiver115D()); echo 'RETURN|', $held instanceof Payload115D, '|', $wc->get() === null, '|', $wo->get() === null, '|', $wn->get() === null, '|'; unset($held); }\n    else { $cap->call(receiver115D()); echo 'RETURN|', $wc->get() === null, '|', $wo->get() === null, '|', $wn->get() === null, '|'; }\n}\nrun115D(false); run115D(true); echo 'DONE|';\n",
+    "source_sha256": "3b21d6f1b447bdcde139c1fecbd32ec68e519f962974fe9c2695b9f8825ec1b3",
+    "native_exit": 0,
+    "native_stdout": "OLD-INIT|UNUSED|HELD|1|1|1|NEW-INIT|NEW-FIN|1|1|1|PAYLOAD|1|||OLD-FIN|1|1|RETURN|1|1|1|OLD-INIT|USED|HELD|1|1|1|NEW-INIT|NEW-FIN|1|1|1|OLD-FIN|1|1|RETURN|1|1|1|1|PAYLOAD|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
+  },
+  {
+    "id": "i115-outer-argv-throw-used-owning-return",
+    "purpose": "Outer argument destructor runs after replacement Generator retirement while original capture/oldGen remain live, throws supplied Stop with caller-only trace, and used uncommitted owning return outlives original capture/oldGen before catch.",
+    "source": "<?php\nclass Stop115T extends Exception {}\nclass Return115T { function __destruct() { global $wc, $wo, $wn; echo 'RET|', $wn->get() === null, '|', $wc->get() === null, '|', $wo->get() === null, '|'; } }\nclass Argument115T {\n    function __construct() { global $wa; $wa = WeakReference::create($this); }\n    function __destruct() {\n        global $wc, $wo, $wn, $stop;\n        echo 'ARG|', $wn->get() === null, '|', $wc->get() !== null, '|', $wo->get() !== null, '|';\n        $probe = new Exception('arg'); $trace = $probe->getTrace();\n        echo 'TRACE|', $trace[0]['class'] === 'Argument115T', '|', $trace[0]['function'] === '__destruct', '|', $trace[1]['function'] === 'run115T', '|', !isset($trace[2]), '|';\n        unset($trace, $probe); throw $stop;\n    }\n}\nfunction old115T() { try { echo 'OLD-INIT|'; yield 'old'; } finally { global $wc, $wo; echo 'OLD-FIN|', $wc->get() === null, '|', $wo->get() !== null, '|'; } }\nfunction fresh115T() {\n    try { echo 'INIT|'; $received = yield 'head'; global $wa; echo 'VALUE|', $received === $wa->get(), '|'; unset($received); yield new Return115T; }\n    finally { global $wc, $wo, $wn, $wa; echo 'NEW-FIN|', $wc->get() !== null, '|', $wo->get() !== null, '|', $wn->get() !== null, '|', $wa->get() !== null, '|'; }\n}\nfunction argument115T() { global $cap, $new, $wc, $wo, $wn; $cap = null; $new = null; echo 'HELD|', $wc->get() !== null, '|', $wo->get() !== null, '|', $wn->get() !== null, '|'; return new Argument115T; }\nfunction run115T() { global $cap, $new; echo 'CALL|'; $result = $cap->call($new, argument115T()); echo 'BAD-RETURN|'; }\n$stop = new Stop115T('given'); $old = old115T(); $old->current(); $cap = $old->send(...); $new = fresh115T();\n$wc = WeakReference::create($cap); $wo = WeakReference::create($old); $wn = WeakReference::create($new); $old = null;\ntry { run115T(); echo 'BAD-CALLER|'; }\ncatch (Stop115T $caught) { echo 'CATCH|', $caught === $stop, '|', $caught->getPrevious() === null, '|', $caught->getTrace() === [], '|', $wc->get() === null, '|', $wo->get() === null, '|', $wn->get() === null, '|', $wa->get() === null, '|'; }\necho 'DONE|';\n",
+    "source_sha256": "e9de35023bc4c89d7768a258743a99df6c2757720b8fcfc6d2be9dd8430cca52",
+    "native_exit": 0,
+    "native_stdout": "OLD-INIT|CALL|HELD|1|1|1|INIT|VALUE|1|NEW-FIN|1|1|1|1|ARG|1|1|1|TRACE|1|1|1|1|OLD-FIN|1|1|RET|1|1|1|CATCH|1|1|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
   }
 ]
