@@ -521,6 +521,10 @@ def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
   -- if $node_children(S, HOBJECT n_value) = $property_slot_nodes(ppropertyslot*)
   -- if $objectprops_valid(S, S.OBJECTPROPS)
   -- if $weakmap_entries_declared_properties_free(S, n_value, pclassdesc.PROPERTIES, ppropertyslot*)
+;; Safe scalar zvals add no owner edge; all callers keep their storage/source
+;; guards and old-domain exclusions while sharing this mixed payload policy.
+def $weakmap_entries_child_value_free(S, pvalue) = true
+  -- if $weakmap_scalar_value(S, pvalue)
 def $weakmap_entries_child_value_free(S, pweakmapvalue) = false -- otherwise
 dec $weakmap_entries_child_entries_free(pstate, nat, pweakmapentry*) : bool
 dec $weakmap_entries_child_entries_policy(pstate, nat, nat?, pweakmapentry*) : bool
