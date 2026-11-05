@@ -2018,16 +2018,22 @@ def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "is_callable output d
   -- if ~$enum_is_callable_output_exit_unwind(S)
   -- if $enum_is_callable_exit_return(S) = eps \/ $enum_is_callable_exit_restore_pending(S)
 
-rule PhpStep/enum-is-callable-exit-restore: S ~> $destructor_finish(S_rebased, pdestructorcall_new)
+dec $enum_is_callable_exit_finish(pstate, penumqueryoutput, pcompletion, nat?) : pstate
+def $enum_is_callable_exit_finish(S, penumqueryoutput, pcompletion, n_pending?) = $destructor_finish(S_rebased, pdestructorcall_new)
   -- if S.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z)
+  -- if (pcompletion = EXITED z /\ n_pending? = eps) \/ (pcompletion = NORMAL /\ n_pending? =/= eps)
+  -- if $destructor_pending_valid(S, n_pending?)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
-  -- if pdestructionoperation_new = pdestructionoperation[.COMPLETION = EXITED z]
-  -- if pdestructorcall_new = pdestructorcall[.OPERATION = (pdestructionoperation_new)]
+  -- if pdestructionoperation_new = pdestructionoperation[.COMPLETION = pcompletion][.PENDING = n_pending?]
+  -- if pdestructorcall_new = pdestructorcall[.OPERATION = (pdestructionoperation_new)][.PENDING = n_pending?]
   -- if S_rebased = S[.TODO = (DESTRUCTOR_RESULT pdestructorcall_new) :: $destructor_operation_tasks(ptask_tail*, pdestructionoperation, pdestructionoperation_new)][.DESTRUCTION.CALLS = pdestructorcall_new :: pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*]
-rule PhpStep/enum-is-callable-exit-cleanup-throw: S ~> S[.COMPLETION = UNSUPPORTED "is_callable output exit local cleanup throw"]
+rule PhpStep/enum-is-callable-exit-restore: S ~> $enum_is_callable_exit_finish(S, penumqueryoutput, EXITED z, eps)
+  -- if S.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: ptask_tail*
+  -- if $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z)
+rule PhpStep/enum-is-callable-exit-cleanup-throw: S ~> $enum_is_callable_exit_finish(S[.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: ptask_tail*], penumqueryoutput, NORMAL, (n))
   -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: ptask_tail*
   -- if $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z)
   -- if $throwable_live(S, n)
