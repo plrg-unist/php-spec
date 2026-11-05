@@ -23,6 +23,16 @@ from binary/unary syntax around a compiler-special call.
 The matching source routes are `zend_compile_switch`, `zend_emit_tick`,
 `zend_compile_print` and `zend_compile_func_defined` in `Zend/zend_compile.c`.
 
+Admitted Generator sources preserve statement markers across suspension. A bare
+yield keeps its discard before the pending tick; a direct assignment keeps its
+write before that marker. The marker runs when the Generator resumes. Flat-array
+`yield from` reaches its statement marker after delegation finishes, without a
+marker per yielded item. Caller and Generator ticks share the request counter.
+Key expressions compile before values, including nested callable bodies and their
+lexical declarables, following `zend_compile_yield` and `zend_compile_yield_from`.
+These summaries reuse existing Generator transport and SEND admission; wider
+yield-result contexts and delegation/lifecycle combinations remain partial.
+
 Block `declare(ticks=...)` restores the enclosing frequency. Unbalanced
 declarations compiled inside functions or closures can affect later statements
 in the same file context. Eval/file units begin with frequency zero. Execution
@@ -67,6 +77,8 @@ static elaboration; expected dependencies receive no agreement credit.
 The [switch review](../../coverage/semantics/tick-switch-review.json) records
 the compiler-order, marker-line, cleanup and resumption witnesses at their
 individual cuts, including scoped passing rows from preserved failed packets.
+The [Generator tick review](../../coverage/semantics/tick-generator-review.json)
+records the focused source and parked-continuation witnesses.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

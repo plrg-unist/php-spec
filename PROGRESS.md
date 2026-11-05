@@ -899,6 +899,15 @@ ten labeled derived guards. Failed aggregate packets retain zero pass credit; co
 and affected corrections are scoped separately in the
 [switch tick review](coverage/semantics/tick-switch-review.json).
 
+ATTR29 adds Yield key-before-value and YieldFrom operand tick summaries,
+including nested callable declarables. Bare/direct-assignment SEND prefixes stay
+intact; markers wait for resumption or completed flat-array delegation, sharing
+the caller's request counter. Six exact originals, strict435 and three independent
+parked fronts/124 reported conditions pass, including two labeled malformed-marker
+guards. No Generator transport or280/289 change is needed. Earlier Unsupported,
+overlapping-summary and fixture-binding failures remain zero credit.
+[Generator tick review](coverage/semantics/tick-generator-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -1496,7 +1505,7 @@ wider rejected-source/compiler behavior remains partial.
 | GC42 | Finite declared-property WeakMap value cleanup; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB16 | Deprecation-handler throws during produced output; private implementation/review. |
-| ATTR29 | Yield/yield-from tick compilation and counter/resumption behavior; private implementation/review. |
+| ATTR30 | Match-expression tick compilation and selected-arm effects; private implementation/review. |
 | Enum callable arrays | First-SEND capture of initially invalid reference members; private investigation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

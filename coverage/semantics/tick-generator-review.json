@@ -1,0 +1,70 @@
+{
+  "milestone": "ATTR29: Generator tick compilation and delayed markers",
+  "status": "Independently accepted bounded implementation; ticks and Generator obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS64; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "975830f80",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "b21244b9d221786cfbf5d915075e194b6fcfdb3ce65ad0f37133bd9986404bf4",
+    "scope": "Compile Yield key before value and YieldFrom single operand, including nested callable declarables; both emit real operations before the statement marker. Generic child traversal excludes these dedicated summaries. No Generator state, owner, task or280/289 change."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_compile.c",
+    "symbols": [
+      "zend_compile_yield",
+      "zend_compile_yield_from",
+      "zend_emit_tick"
+    ]
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-generator-29/strict-v2-report.json",
+      "sha256": "13dac416d7838e472f52525b019140442c2d80f232c5c4c9ba7b648cc8b929a8",
+      "passed": true,
+      "modules": 435,
+      "revision": "975830f80"
+    },
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-generator-29/source-author-v2/report.json",
+      "sha256": "567f0fd5f2a7a4cce1ed0730e8e906bfc28eae8e17b6c001edd86fb6306763d0",
+      "passed": true,
+      "agreements": 1,
+      "revision": "975830f80"
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-generator-29/source-review-v1/report.json",
+      "sha256": "ed483a28291b43b7b78d12a27cccb1a7fd093c2967536ee91f0ad3fd9691c3a1",
+      "passed": true,
+      "agreements": 5,
+      "revision": "1ac59fa1c: unchanged production975 plus protocol fixture"
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-generator-29/review-protocol-v2/run/report.json",
+      "sha256": "bcb1028ed315b9671cd794340cd8b16894a42715981639a52ad48a1be4bc5685",
+      "passed": true,
+      "groups": 3,
+      "reported_conditions": 124,
+      "group_conditions": [
+        43,
+        38,
+        43
+      ],
+      "labeled_derived_guards": 2,
+      "process_sha256": "5155047b234d213755e7f927ff2c25bcd13cc978e79e550ae02296a4a9ed6eb4",
+      "revision": "fcd31a9ed: production975 and corrected source-root binding"
+    }
+  },
+  "behavior": "Scalar and nullary yields delay their marker until resumption; direct-assignment WRITE_NAME and bare DISCARD prefixes stay ahead of it. Flat-array YieldFrom has one later statement marker rather than per-item markers. Caller/Generator tick frequencies share one request counter; key/value callable declarations preserve compiler order. Source foreach and ordinary positional current/next/send methods execute these witnesses.",
+  "state_scope": "Genuine parked frames retain the pending marker and ordinary SEND classification. A DELEGATING frame keeps FROM_NEXT before its one later marker. Zero-budget/unpause equivalence preserves objects, events and counter; changed marker line/frequency is refused. Reported condition totals include helper bindings, not124 independent semantic assertions.",
+  "independent_review": "/root/attributes_review accepted production975830f80 and all three corrected reached fronts. Current module hash equals the independently executed private join.",
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC/PHP_SPEC_SCRIPT_ENCODING unset by controlled source profile; CPU5 for strict/reached. Exact commands, source/path/cwd identity, profile, runtime/helper fingerprints, raw channels, exits and group reaping are external. Provision records copied local tools only; no rebuild/portability claim.",
+  "runtime_identity_bridge": "Copied binary hashes in provision.json/source records match the previously recorded project-local PHP8.5.10 oracle; no external oracle or Zend evaluation answers enter the specification.",
+  "remaining": "Wider yielded-result/SEND targets, by-reference Generator combinations, other delegation producers and callback/destruction/Fiber/lifecycle combinations retain existing partial boundaries. Opcode summaries also identify VAR/TMP for a used yield expression; arbitrary result consumers are not thereby claimed supported.",
+  "zero_credit": [
+    "Source-baseline remains Unsupported with empty output at00d446961; it is not an agreement.",
+    "The initial source-author-v1 interpreter nondeterminism from overlapping summary rules is preserved with zero semantic credit; children_safe exclusions resolve it.",
+    "The first reached packet failed before execution on an uninvertible index binding. Only the corrected v2 fronts pass; no implementation change or source replay was required for that fixture correction.",
+    "No engine bug, intentional engine divergence, portability or complete-core claim is added."
+  ]
+}
