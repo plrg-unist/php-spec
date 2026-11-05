@@ -1006,8 +1006,16 @@ cell's new-array owner; a separate holder retains that array. A throw in the
 second argument never reaches the output write. The
 [array-alias rebound review](../../coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
 records four exact agreements, one explicit Unsupported owning-object control,
-strict435 and five separate reached groups (229 checks). Rebound arrays with
-object or reference members and wider shapes remain partial.
+strict435 and five separate reached groups (229 checks) at that historical cut.
+An exact rebound array with one ordinary childless object now authenticates
+its historical array and child through a clear-to-null destructor continuation.
+The last owner sees null before destruction; a separate array holder delays
+the destructor until after the selected name commits. A throwing child commits
+the name before exception transfer, leaving the interrupted result target
+unchanged. The [owning-array review](../../coverage/semantics/enum-is-callable-array-alias-owning-review.json)
+records three exact agreements, one excluded-builtin control, strict435 and
+three separate reached groups (200 checks). ALIAS/reference entries, extra
+object children and wider owning shapes remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

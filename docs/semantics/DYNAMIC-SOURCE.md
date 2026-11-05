@@ -276,6 +276,30 @@ installation, source identity and valid handles/budget continuation. The
 [review](../../coverage/semantics/rejected-constant-modifier-review.json) preserves
 the mistaken provisional control that omitted `const`, outside the eligible corpus.
 
+Rejected trait-use aliases now check their single modifier at the foreign
+grammar's named and unnamed alias reductions (PHP-Parser rules 372/373).
+Zend's method-target conversion accepts public/protected/private, static,
+abstract and final; readonly and asymmetric-set flags stop before later
+encoding headers. Earlier method or attribute headers survive, and an earlier
+nonliteral encoding or grammar failure still takes priority. The native reply
+supplies the CompileError message and line, including the end line of a
+multiline alias; the foreign stop supplies only the completed-header cutoff.
+Missing-semicolon forms stop in the foreign grammar before either callback but
+also contribute no later header. Ordinary, reserved-name and precedence aliases
+retain their separate reductions. This is parser-phase behavior for rejected
+units, not a claim about full trait composition.
+
+The [trait-alias originals](../../tests/semantics/trait_alias_modifier_rejected_sources.py)
+pass 38 eval/include comparisons and [four main comparisons](../../tests/semantics/trait_alias_modifier_main_rejected_sources.py).
+The [service controls](../../tests/rejected_trait_alias_modifier_service_review.py)
+pass 73 checks; affected constant and method service controls pass 42/37.
+All 108 [reached conditions](../../tests/semantics/rejected_trait_alias_modifier_review_state.py)
+preserve the earlier warning, exact failed-source record and rejection exit,
+no partial installation, source identity, valid handles and zero-budget
+continuation under strict compilation of 435 modules. The
+[review](../../coverage/semantics/rejected-trait-alias-modifier-review.json)
+retains the initial fixture failures and interrupted run with zero gate credit.
+
 Warning128 uses the current reporting/display state and bypasses error handlers.
 The subsequent catchable ParseError/CompileError retains a failed-source record
 and file entry without an accepted source/code/binding. Its lifecycle handle is

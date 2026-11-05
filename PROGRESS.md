@@ -78,8 +78,15 @@ rebound array and result assignment target untouched. Four exact agreements, one
 Unsupported owning-object control, strict435 and five separate reached groups
 (64+50+53+29+33 checks) pass at recorded cuts.
 [Array-alias rebound review](coverage/semantics/enum-is-callable-array-alias-rebound-review.json).
+An exact rebound array with one ordinary childless object follows two owner
+paths: last-owner output clears the shared cell before destruction, while a
+separate holder delays destruction until after the saved name commits. A
+throwing child commits the name before exception transfer without assigning
+the interrupted result target. Three exact agreements, one excluded-builtin
+control, strict435 and three separate reached groups (53+60+87 checks) pass
+at recorded cuts. [Owning-array review](coverage/semantics/enum-is-callable-array-alias-owning-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
-completion/force-close, rebound arrays with owning children, late attached type sources,
+completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, embedded reference members, named/unpacked output,
 loading and wider enum
 member/lifetime contexts remain partial.
@@ -493,6 +500,19 @@ Unsupported with zero agreement. Wider Value layouts, extra child owners,
 Map-first teardown and active-pin collection remain partial.
 [GC37 review](coverage/semantics/gc-declared-value-child-review.json).
 
+GC38 admits ordinary Map-first retirement of the GC37 one-declared-Child
+Value while its leaf `stdClass` Key remains live. The Map unregisters its Key
+and transfers its Value owner before the Value releases Child. During Child's
+destructor, the Value observer's get is null while the Map observer's get is
+still live under the Map storage pin. The new free arm requires no incoming
+Map-key registrations; the existing leaf-Value free path remains available.
+Three new exact sources (including caught Child throw), two affected exact
+sources and 97 reached conditions (author57, independent40) pass at recorded
+cuts. Retained Child owners and incoming Map-key registration stop explicitly
+with zero agreement. Wider Value layouts and active-pin collection remain
+partial; earlier fixture/source drafts retain zero credit.
+[GC38 review](coverage/semantics/gc-map-first-value-child-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -859,6 +879,12 @@ Copied positional Iterator `ini_restore` now waits for the same sole Stringable
 first-class restorer keeps its original Closure through key-time rebinding;
 held/named options stop before the unvalidated restore.
 [A108 review](coverage/semantics/config-iterator-restore-stringable-review.json).
+
+A borrowed direct-CV `IteratorAggregate` may now return a fresh initialized
+user Iterator for positional `ini_get` or `ini_restore` with the copied
+Stringable `precision` option. The existing unary receipt runs after Iterator
+and option cleanup; selected restore retains its original callee. Generator
+returns remain SET-only. [A109 review](coverage/semantics/config-aggregate-unary-stringable-review.json).
 
 ## Decisions that constrain further work
 
@@ -1254,6 +1280,20 @@ comparisons, 42 service controls, 108 reached conditions/SL435 and 37 affected
 controls pass at one cut. The mistaken native control missing `const` remains
 separate; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
 [Review](coverage/semantics/rejected-constant-modifier-review.json).
+
+COMP176 checks rejected trait-use alias modifiers at the named and unnamed
+foreign reductions, retaining earlier encoding headers but cutting off later
+ones for readonly and asymmetric-set flags. Six method-target flags still allow
+later parsing; a missing semicolon stops in the foreign grammar with the same
+empty later prefix. Native diagnostics retain their own message and alias-end
+line. Thirty-eight dynamic and four main originals, 73 service controls, 108
+reached conditions/SL435 and affected constant42/method37 controls pass at
+their recorded cuts. The preliminary relative-path and multiline-line fixture
+failures and an interrupted unwatchable-`cases.json` run have zero credit;
+corrected authoritative campaigns hash their expectations. Accepted parser,
+native helper, schema, adapter and P4 interfaces are unchanged. Broader
+rejected-source prefixes remain partial.
+[Review](coverage/semantics/rejected-trait-alias-modifier-review.json).
 
 ## Active and unintegrated work
 
