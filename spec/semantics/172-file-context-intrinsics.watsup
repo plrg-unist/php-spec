@@ -1,4 +1,5 @@
 ;; Source-callable include_path APIs share one authenticated argument task.
+dec $generator_api_kind(pintrinsic) : bool
 def $intrinsic_name(INTRINSIC_GET_INCLUDE_PATH) = $ptascii("get_include_path")
 def $intrinsic_name(INTRINSIC_INI_GET) = $ptascii("ini_get")
 def $intrinsic_name(INTRINSIC_SET_INCLUDE_PATH) = $ptascii("set_include_path")
@@ -392,6 +393,7 @@ dec $config_object(pvalue) : bool
 def $config_object(POBJECT n) = true
 def $config_object(pvalue) = false -- otherwise
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
+  -- if ~$generator_api_kind(pconfigcall.KIND)
   -- if $config_method_receiver(S, pconfigcall)
   -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$from_kind(pconfigcall.KIND) /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND)
@@ -399,6 +401,7 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_in
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue_original*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
+  -- if ~$generator_api_kind(pconfigcall.KIND)
   -- if ~$config_method_receiver(S, pconfigcall)
   -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$fiber_core_config(S, pconfigcall)
@@ -1147,6 +1150,7 @@ def $error_trigger_trace_values(S, pconfigcall) = [PNULL]
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$generator_api_kind(pconfigcall.KIND)
   -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$enum_is_callable_kind(pconfigcall.KIND)
   -- if ~$error_api_kind(pconfigcall.KIND) /\ ~$assertion_kind(pconfigcall.KIND) /\ ~$output_buffer_kind(pconfigcall.KIND) /\ ~$dynamic_constant_kind(pconfigcall.KIND)
@@ -1156,6 +1160,7 @@ rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
 rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$generator_api_kind(pconfigcall.KIND)
   -- if ~$enum_kind(pconfigcall.KIND)
   -- if ~$enum_is_callable_kind(pconfigcall.KIND)
   -- if ~$error_api_kind(pconfigcall.KIND) /\ ~$assertion_kind(pconfigcall.KIND) /\ ~$output_buffer_kind(pconfigcall.KIND) /\ ~$dynamic_constant_kind(pconfigcall.KIND)

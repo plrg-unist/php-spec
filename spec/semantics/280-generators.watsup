@@ -135,6 +135,10 @@ dec $generator_source_method(pstate, porigin, ptbytes) : bool
 dec $generator_method_node(pcnode?, ptbytes) : bool
 dec $generator_loop_site(pstate, pgeneratorop, pgeneratorloop) : bool
 dec $generator_arguments_supported(phpType7*) : bool
+dec $generator_api_arguments(phpType7*) : bool
+dec $generator_api_site(pstate, porigin) : bool
+dec $generator_collected_arguments_valid(pstate, pgeneratorop, phpType7*, poperand*, nat) : bool
+dec $generator_resumption_arguments_valid(pstate, pgeneratorop) : bool
 dec $generator_argument_error(pstate, pgeneratorop, poperand*) : pstate
 dec $generator_argument_count(text) : nat
 dec $generator_input_valid(pstate, pvalue) : bool
@@ -1459,6 +1463,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if $generator_method(ptbytes) =/= ""
   -- if $generator_source_method(S, porigin, ptbytes)
   -- if ~$generator_arguments_supported(phpType7*)
+  -- if ~$generator_api_arguments(phpType7*)
 def $generator_arguments_supported(eps) = true
 def $generator_arguments_supported(phpType7 :: phpType7_tail*) = ($generator_positional_argument(phpType7) /\ $generator_arguments_supported(phpType7_tail*))
 rule PhpStep/generator-argument: S ~> S[.TODO = [$at_task($call_argument_origin(S, (pgeneratorop.SITE), |poperand*|), EVAL expression), GENERATOR_SEND pgeneratorop phpType7* poperand*] ++ ptask_tail*]
@@ -1678,10 +1683,7 @@ def $generator_resumption_valid(S, pgeneratorop) = true
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
   -- if ~pgeneratorop.STARTPACK
   -- if ~pgeneratorop.BORROWED
-  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
-  -- if $generator_arguments_supported(phpType7*)
-  -- if |phpType7*| = $generator_argument_count(pgeneratorop.NAME)
-  -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
+  -- if $generator_resumption_arguments_valid(S, pgeneratorop)
 def $generator_resumption_valid(S, pgeneratorop) = true
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if $generator_resumption_stage(S, pgeneratorop)
@@ -1716,8 +1718,10 @@ def $generator_create_valid(S, porigin) = false -- otherwise
 def $call_task_valid(S, GENERATOR_CREATE porigin) = $generator_create_valid(S, porigin)
 def $call_task_valid(S, GENERATOR_NEXT pgeneratorop) = ($generator_resumption_valid(S, pgeneratorop) /\ pgeneratorop.LOOP =/= eps /\ pgeneratorop.NAME = "next" /\ ~pgeneratorop.ADVANCE)
 def $call_task_valid(S, GENERATOR_RESUME pgeneratorop) = $generator_resumption_valid(S, pgeneratorop)
-def $call_task_valid(S, GENERATOR_ARGS pgeneratorop phpType7* poperand*) = ($generator_operation_valid(S, pgeneratorop) /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ $call_arguments_valid(S, (pgeneratorop.SITE), |poperand*|, phpType7*, poperand*, 0))
-def $call_task_valid(S, GENERATOR_SEND pgeneratorop phpType7* poperand*) = ($generator_operation_valid(S, pgeneratorop) /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ $call_arguments_valid(S, (pgeneratorop.SITE), |poperand*|, phpType7*, poperand*, 1))
+def $generator_collected_arguments_valid(S, pgeneratorop, phpType7*, poperand*, n_sent) = $call_arguments_valid(S, (pgeneratorop.SITE), |poperand*|, phpType7*, poperand*, n_sent)
+  -- if ~$generator_api_site(S, pgeneratorop.SITE)
+def $call_task_valid(S, GENERATOR_ARGS pgeneratorop phpType7* poperand*) = ($generator_operation_valid(S, pgeneratorop) /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ $generator_collected_arguments_valid(S, pgeneratorop, phpType7*, poperand*, 0))
+def $call_task_valid(S, GENERATOR_SEND pgeneratorop phpType7* poperand*) = ($generator_operation_valid(S, pgeneratorop) /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ $generator_collected_arguments_valid(S, pgeneratorop, phpType7*, poperand*, 1))
 def $call_task_valid(S, GENERATOR_YIELD_VALUE porigin poperand?) = ($generator_yield_site(S, porigin) /\ poperand? = eps)
 def $call_task_valid(S, GENERATOR_YIELD_DONE porigin poperand?) = ($generator_yield_site(S, porigin) /\ $call_reference_operand_valid(S, $generator_optional_operand(poperand?)))
 def $call_task_valid(S, GENERATOR_YIELD_STORE porigin poperand?) = ($generator_yield_site(S, porigin) /\ $call_reference_operand_valid(S, $generator_optional_operand(poperand?)))

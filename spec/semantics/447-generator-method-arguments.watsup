@@ -1,0 +1,78 @@
+;; Native Generator methods collect names and ARRAY packs before ZPP/body entry.
+;; The existing CONFIG cursor owns the selected receiver and frozen sent values.
+def $generator_api_kind(INTRINSIC_GENERATOR_METHOD text) = (text <- ["rewind", "valid", "current", "key", "next", "getreturn", "send", "throw"])
+def $generator_api_kind(pintrinsic) = false -- otherwise
+def $config_kind(INTRINSIC_GENERATOR_METHOD text) = $generator_api_kind(INTRINSIC_GENERATOR_METHOD text)
+def $intrinsic_name(INTRINSIC_GENERATOR_METHOD text) = $ptascii("Generator::") ++ $generator_method_display(text)
+def $config_required(INTRINSIC_GENERATOR_METHOD text) = $generator_argument_count(text)
+dec $generator_api_parameter(text) : ptbytes
+def $generator_api_parameter("send") = $ptascii("value")
+def $generator_api_parameter("throw") = $ptascii("exception")
+def $generator_api_parameter(text) = eps -- otherwise
+def $config_parameter(INTRINSIC_GENERATOR_METHOD text, ptbytes) = (0)
+  -- if $generator_argument_count(text) = 1
+  -- if ptbytes = $generator_api_parameter(text)
+def $config_parameter_name(INTRINSIC_GENERATOR_METHOD text, 0) = $generator_api_parameter(text)
+
+dec $generator_api_argument_list(phpType7*, bool, bool) : bool
+def $generator_api_argument_list(eps, b_pack, b_named) = true
+def $generator_api_argument_list((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, false, false) = $generator_api_argument_list(phpType7*, false, false)
+def $generator_api_argument_list((NArg ABSENT expression (BOOLEAN false) (BOOLEAN true) metadata) :: phpType7*, b_pack, false) = $generator_api_argument_list(phpType7*, true, false)
+def $generator_api_argument_list((NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7*, b_pack, b_named) = $generator_api_argument_list(phpType7*, b_pack, true)
+def $generator_api_argument_list(phpType7*, b_pack, b_named) = false -- otherwise
+def $generator_api_arguments(phpType7*) = (($named_present(phpType7*) \/ $call_unpack_present(phpType7*)) /\ $generator_api_argument_list(phpType7*, false, false))
+def $generator_api_site(S, porigin) = true
+  -- if $getter_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $generator_api_arguments(phpType7*)
+def $generator_api_site(S, porigin) = false -- otherwise
+
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION eps, LINE z, PACKS eps}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_object(S_read, n)
+  -- if text_method = $generator_method(ptbytes)
+  -- if text_method =/= ""
+  -- if $generator_source_method(S, porigin, ptbytes)
+  -- if $generator_api_arguments(phpType7*)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method
+  -- if $generator_api_kind(pconfigcall.KIND)
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
+  -- if $generator_object(S, n) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $generator_source_method(S, pconfigcall.SITE, $generator_method_display(text_method))
+  -- if $generator_api_site(S, pconfigcall.SITE)
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $generator_method_display(text_method), CLASS ($ptascii("Generator")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method
+  -- if $generator_api_kind(pconfigcall.KIND)
+
+;; This transfer changes no roots: CONFIG's receiver/slots become the ordinary
+;; Generator argument cursor. Type/count checks and pending-throw copies follow.
+rule PhpStep/generator-api-collected: S ~> S[.TODO = (GENERATOR_ARGS pgeneratorop eps $getclass_trace_operands(pconfigcall.SENT)) :: ptask_tail*][.ORIGIN = (pconfigcall.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method
+  -- if $generator_api_kind(pconfigcall.KIND)
+  -- if pconfigcall.OWNER = (n)
+  -- if $config_missing(pconfigcall.SENT, 0) = eps
+  -- if pgeneratorop = {OBJECT n, NAME text_method, SITE pconfigcall.SITE, LINE pconfigcall.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false}
+dec $generator_api_operands(poperand*) : bool
+def $generator_api_operands(eps) = true
+def $generator_api_operands((KNOWN pvalue) :: poperand*) = $generator_api_operands(poperand*)
+def $generator_api_operands(poperand*) = false -- otherwise
+def $generator_collected_arguments_valid(S, pgeneratorop, eps, poperand*, 0) = $generator_api_operands(poperand*)
+  -- if $generator_api_site(S, pgeneratorop.SITE)
+def $generator_collected_arguments_valid(S, pgeneratorop, phpType7*, poperand*, n_sent) = false -- otherwise
+def $generator_resumption_arguments_valid(S, pgeneratorop) = true
+  -- if ~$generator_api_site(S, pgeneratorop.SITE)
+  -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if $generator_arguments_supported(phpType7*)
+  -- if |phpType7*| = $generator_argument_count(pgeneratorop.NAME)
+  -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
+def $generator_resumption_arguments_valid(S, pgeneratorop) = true
+  -- if $generator_api_site(S, pgeneratorop.SITE)
+  -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
+def $generator_resumption_arguments_valid(S, pgeneratorop) = false -- otherwise
