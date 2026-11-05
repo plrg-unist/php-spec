@@ -26,7 +26,7 @@ CHECKS = [
     'S_key = $quiet_operand(S, paccess_plan.INPUT)',
     'S_key.RESULT = KNOWN (POBJECT n_key)',
     'n_key = pweakmapentry.KEY',
-    'pweakmapentry.VALUE = PSTRING $ptascii("seed-49")',
+    '$string_bytes(pvalue_old) = ($ptascii("seed-49"))',
     '$weakmap_value_nodes(pweakmapentry.VALUE) = eps',
     'paccess = paccess_plan[.SELECTED = $rcontainer_selected(S, paccess_plan.RHS)][.VALUE = POBJECT n_value][.OFFSET = POBJECT n_key]',
     'paccess.RHS = S.RESULT',
