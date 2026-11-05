@@ -14,6 +14,8 @@ FILES = {
         'b70a195dc57ef4f43e55bf465e314dca6f76be03ef76d29a193c9dc403d7982e'),
     'nested': ('gc_key_notify_nested_source.php',
         'd88cb2b8a995c7d92afd2443291da7a0d2b6e447705f63c1eb3dcd15fa4c0390'),
+    'late-slot': ('gc_key_notify_late_slot_source.php',
+        '83529b08a5ff1f4ea8cd48019becf5fd3346d3f8a98534beef57bb49ee663b9f'),
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, (filename, _) in FILES.items()}
 for name, (_, expected) in FILES.items():
