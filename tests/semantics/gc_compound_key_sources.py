@@ -13,6 +13,7 @@ FILES = {
     'map-key-held-own': 'gc_compound_map_key_held_source.php',
     'map-key-shared-value': 'gc_compound_map_key_shared_source.php',
     'map-key-self': 'gc_compound_map_key_self_source.php',
+    'map-key-multi-shared': 'gc_compound_map_key_multi_source.php',
     'ordinary-weak-key': 'gc_compound_weak_key_unset_control.php',
     'ordinary-map-key': 'gc_compound_map_key_unset_control.php',
     'ordinary-nonempty-map-key': 'gc_compound_map_nonempty_unset_control.php',
