@@ -22,5 +22,29 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i110-peer-ordinary-ignored-current-control",
+    "purpose": "An affected ordinary ignored owning CURRENT control checks the shared getter category releases the returned copy before Generator storage.",
+    "source": "<?php\nclass Token110O { function __destruct() { global $weakGenerator; echo 'TOKEN|', $weakGenerator->get() === null, '|'; } }\nfunction stream110O() { try { yield new Token110O(); } finally { echo 'FIN|'; } }\nfunction make110O() { global $weakGenerator; $generator = stream110O(); $weakGenerator = WeakReference::create($generator); return $generator; }\necho 'CURRENT|'; make110O()->current(); echo 'AFTER|', $weakGenerator->get() === null, '|';\n",
+    "source_sha256": "0aaa5aea2c47d65688346ded5c20e4150bcf867f56881f92e08d899f702a3ce5",
+    "native_exit": 0,
+    "native_stdout": "CURRENT|FIN|TOKEN||AFTER|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
+  },
+  {
+    "id": "i110-peer-used-nullsafe-current-control",
+    "purpose": "A used owning nullsafe CURRENT result survives Generator retirement and dies only when the caller unsets it; its destructor weak-sees the Generator already dead.",
+    "source": "<?php\nclass Token110U { function __destruct() { global $weakGenerator; echo 'TOKEN|', $weakGenerator->get() === null, '|'; } }\nfunction stream110U() { try { yield new Token110U(); } finally { echo 'FIN|'; } }\nfunction make110U() { global $weakGenerator; $generator = stream110U(); $weakGenerator = WeakReference::create($generator); return $generator; }\necho 'CURRENT|'; $kept = make110U()?->current();\necho 'HELD|', $kept instanceof Token110U, '|', $weakGenerator->get() === null, '|';\nunset($kept); echo 'AFTER|', $weakGenerator->get() === null, '|';\n",
+    "source_sha256": "9630fa5a6b26ce27901b8d9dff28420790cfa4679f7e9f57f987a8e66360f0c8",
+    "native_exit": 0,
+    "native_stdout": "CURRENT|FIN|HELD|1|1|TOKEN|1|AFTER|1|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
