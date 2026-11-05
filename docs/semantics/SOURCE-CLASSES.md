@@ -262,7 +262,7 @@ required at that cut. The [constructor review](../../coverage/semantics/anonymou
 separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Anonymous classes accept finite sequences of direct positional/named `new`
-arguments, including array unpack, and unpromoted value or reference parameters
+arguments, including array unpack, and ordinary value or reference parameters
 with an optional final variadic tail.
 The ordinary signature compiler validates their types, defaults, requiredness and
 final-only variadic placement; the ordinary binder
@@ -574,8 +574,29 @@ global initialization, then ordinary readonly checks reject another write.
 Setter authorization remains lexical; diagnostic caller display uses called scope.
 The [modifier review](../../coverage/semantics/anonymous-property-modifiers-review.json)
 checks stored flags/cells, actual permitted and denied stores, scope/descriptor
-forgeries and compile/link boundaries. Attributes, hooks, promotion and wider
+forgeries and compile/link boundaries. Attributes, hooks and wider
 member/type/default/lifetime combinations remain partial.
+
+Public/default-public anonymous constructors also admit attribute-free, hook-free
+promoted formals using the shared nonstatic property modifier predicate. The
+ordinary signature compiler retains parameter types/defaults and rejects promotion
+outside constructors; the method compiler owns promoted declarations, duplicate,
+variadic and property-type checks. Each declaration keeps the actual NParam origin
+and full private key. Parameter defaults remain parameter defaults, while the
+promoted property starts in its ordinary uninitialized/null state.
+
+Source-authenticated PROMOTE_PARAMETER tasks run after reception and before the
+body. Value stores separate later local writes and array COW; reference stores
+attach the declared property constraint to the sent cell. Readonly reference
+acquisition fails before the body. Separate eval compilations keep distinct
+promoted declarations and self scopes. The pinned engine accepts final/private
+promotion because that route bypasses ordinary property-group validation; the
+ordinary declaration error remains in place. Only the exercised duplicate,
+forbidden-property-type and complete optional-warning callable display operands
+truncate at NUL. The [promotion review](../../coverage/semantics/anonymous-promotion-review.json)
+retains source/prologue/reference and compile/link evidence. Attributes, hooks,
+nonpublic constructor admission and wider signature/default/lifetime contexts
+remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
@@ -908,8 +929,17 @@ integer exit replaces it. The
 [cleanup review](../../coverage/semantics/enum-is-callable-output-cleanup-review.json)
 records eight new/promoted agreements, one affected enum exit-status source,
 three explicit controls, strict433 and independent 256+47 guards at separate cuts.
-Repeated
-cleanup exits refuse before generic unwinding can discard the C return.
+This model slice refuses an exit attempted while an ordinary cleanup Throwable
+is pending before generic unwinding can discard the C return.
+Nested local cleanup exits now return through each genuine destructor C pin,
+preserving the parent query's borrowed receipt and output cell. The latest
+integer exit supplies status; a string exit preserves it. An ordinary Child
+throw cancels exit while the name still commits, and nested queries keep their
+own names and untouched result assignments. The
+[reexit review](../../coverage/semantics/enum-is-callable-output-reexit-review.json)
+records nine agreements, three explicit Unsupported controls and five separate
+reached groups at their actual cuts. `debug_backtrace()` remains outside the
+core observer boundary and is a control rather than an agreement.
 Owning rebound values and newly attached type sources remain partial.
 Native raw overwrite can retain an abandoned count for a destructor-created
 object until the store sweep; it cannot be modeled as a second checked write.

@@ -32,6 +32,16 @@ These are explicit foreign input facts, not proof that edited positions/items
 were derived from the supplied bytes. The trusted worker and exact response
 identity remain required for source-agreement claims.
 
+Only rejected-unit header extraction uses `RejectedEvalLexer` and
+`RejectedFileLexer`. Their native APIs expose raw token tuples from the actual
+eval/file scanner state, with its parser-mode lexical checks enabled. A token
+callback retains skipped trivia and normalizes close/short-echo tag identities;
+no Zend grammar runs. Failure markers are omitted and PHP-Parser receives EOF at
+the remaining tape's end. This handles malformed Unicode and deferred heredoc
+segments without discarding earlier interpolation declarations. Native value-token
+AST leaves are temporary and never exported. Accepted `EvalLexer`/`FileLexer`,
+the wire schema and authored semantics remain unchanged.
+
 Rejected main files reuse this file-mode receipt without changing the parser
 contract. Only after the existing main parser rejects does the semantic CLI call
 `parse-file` with id 0 and requested/resolved/opened equal to the main filename.

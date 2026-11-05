@@ -1792,6 +1792,12 @@ nonowning certificate of the original receipt after the converted call loses
 its last argument root. A bare rootless record fails validation, and integer 2
 remains outside this receipt.
 
+The [Boolean assertion setting increment](../../coverage/semantics/config-iterator-assertions-bool-review.json)
+uses the same saved receipt for copied `false` and `true`. `false` stores a
+present empty raw INI string with assertion quantity 0; `true` stores `"1"`.
+Old return, selected setter identity and restore follow the ordinary assertion
+record. Copied integer 2 and null still fail this receipt's admission.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root

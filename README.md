@@ -270,7 +270,13 @@ now resolves admitted pure callbacks after conversion without invoking them.
 Its transient handler owner releases before the Notice; normal argument cleanup
 then preserves callback, captured-cell and receiver destructor timing before the
 caller observes false. A Notice handler changing a referenced selector does not
-repeat lookup. Invalid/effectful creation and active handler-body reentry remain partial.
+repeat lookup. [Failed callable lookup](coverage/semantics/output-executor-invalid-review.json)
+now preserves its original failure across Warning callbacks that publish a
+missing function or repair array members. Warning precedes the failed-start
+Notice; current handler selection and real argument/Throwable owners preserve
+cleanup order. A pending Throwable skips an eligible Notice handler, while the
+default Notice still follows reporting and suppression rules. Unresolved or
+effectful lookup and wider reentry remain partial.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3179,13 +3185,17 @@ faults; 32 new originals agree. Unexplained native/foreign prefix differences
 and multibyte-enabled conversion remain partial. Rejected main files now emit
 their warning prefix and final parser error before any program work, honoring
 separate reporting bits and startup display. Thirty-seven source profiles and
-240 independent terminal-state conditions pass.
+240 independent terminal-state conditions pass. Rejected file/eval lexing also
+retains declarations inside interpolation before a later bad Unicode segment,
+including heredocs. Thirty-five source cases and 200 reached conditions pass;
+accepted lexers, the receipt schema and authored runtime rules are unchanged.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
 [rejected-unit review](coverage/semantics/encoding-rejection-review.json),
 [lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
-[main-rejection review](coverage/semantics/main-source-rejection-review.json).
+[main-rejection review](coverage/semantics/main-source-rejection-review.json),
+[rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -5001,10 +5011,20 @@ eval compilations keep separate static cells. Equivalent read/set visibility
 normalizes away; private(set) is implicitly final, while final properties remain
 writable. Setter permission uses lexical scope and error display uses called
 scope. Link conflicts precede arguments; declaration errors precede execution.
-Only exercised diagnostic class operands use C-string display. Attributes, hooks,
-promotion and wider contexts remain partial.
+Only exercised diagnostic class operands use C-string display. Attributes, hooks
+and wider contexts remain partial.
 [Property review](coverage/semantics/anonymous-properties-review.json),
 [modifier review](coverage/semantics/anonymous-property-modifiers-review.json).
+
+Public anonymous constructors also share ordinary parameter promotion. Values and
+defaults initialize fields before the body; later value-parameter writes stay
+local, while reference promotion attaches the property's type source to the real
+cell. Readonly reference acquisition fails before the body. Recompiled eval units
+keep separate promoted values and self scopes. Compiler diagnostics preserve
+native warning/error order and C-string display. The pinned engine accepts
+final/private promotion through its separate parameter route; ordinary property
+groups retain their rejection. Attributes, hooks and wider constructor/signature
+contexts remain partial. [Promotion review](coverage/semantics/anonymous-promotion-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -6935,7 +6955,14 @@ with compiled CV/alias release order and preserved exit status. The
 [cleanup review](coverage/semantics/enum-is-callable-output-cleanup-review.json)
 records eight new/promoted agreements, one affected enum exit-status source,
 three explicit controls and 256+47 independent guards at separate cuts.
-Switched Fiber exits, repeated cleanup exits, owning rebound values, late type
+Nested cleanup exits now return through their own C pins, preserving the
+original output receipt and latest integer status. A Child throw cancels exit
+while the name still commits; nested queries keep separate output cells. The
+[reexit review](coverage/semantics/enum-is-callable-output-reexit-review.json)
+records nine agreements, three Unsupported controls and five separately run
+reached groups (308 clauses) at their actual cuts.
+Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
+owning rebound values, late type
 sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).

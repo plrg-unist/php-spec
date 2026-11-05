@@ -1,0 +1,37 @@
+{
+  "scope": "published-enum is_callable third-output completion across nested local destructor exits and ordinary throws",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "0118e4330ef27c1b5e393b8659fbb428fa5e6bdc",
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "native_evidence": "Main checkout ignored .tools/enum-is-callable-output-reexit-native-review/native.json preserves eight exact source hashes and raw outcomes."
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "joined_gate": "Merged revision 3e5b503ee01678bde2fd8985812f8efe8b0322ef has exact parent 0b4cef21d5a261ca9610228d8192e2faa7ab7fa7. Main checkout ignored .tools/enum-is-callable-output-reexit-evidence/merged-strict-435.json records all 435 modules true/exit0/empty stderr in 11.80s, with unchanged enum runtime and numeric runner hashes. Reviewer cleared all intervening semantic/bin interactions; no source or reached test was replayed for this disjoint composition.",
+  "behavior": "Each cleanup exit returns through its own authenticated destructor C pin before the parent local loop resumes. Borrowed cleanup-frame anchors and nonowning restore markers preserve the original query, output cell, caller context and live pin. The latest integer exit supplies process status; a string exit preserves it. Parent and nested queries commit their names in order while interrupted boolean assignments remain untouched. A new ordinary cleanup throw cancels exit, commits the name and resumes the existing Throwable transfer. This slice explicitly refuses a later cleanup exit while that Throwable is pending.",
+  "source_results": {
+    "total": "Nine exact native/model agreements and three explicit Unsupported controls across separate cuts; no whole-catalogue run is claimed.",
+    "earlier": "Integer-exit cleanup integer-exit agreed at status29 (ffd01123848ee4c3a4553c76b71580e19a3995f2, raw/user-string-ky_r0scc); cleanup-exit third-integer agreed at status31 after one justified 240s model cap (8eb6d04f2cbfbeda38fcf7ee3e163915b764c8f1, raw/user-string-8sf4mytl). Simple local-second-exit and cleanup-string-exit agreed at statuses0 and23 (ef9bd7d0a82083951959af2b34d257fb8231019f, raw/user-string-{5sgsai86,5ecte34o}). The same cut's raw/user-string-{g7bgkqbp,9qhne6d_} are two pending-Throwable/reexit Unsupported controls with native UnwindExit::$previous deprecations.",
+    "current": "At tested_revision, exact --match selections own-local-and-tail, third-string, own-local-alias, own-local-throw and nested-output-cleanup-reexit all pass native/model stdout, stderr and exit-status comparison. The own-local-trace row returns the expected Unsupported at excluded debug_backtrace().",
+    "raw": "raw/user-string-{qqn0f9so,3qq1ek9v,a9ossnf0,a18j5wfz,qmr7e4p9,gi7_sa42}; each report.json records its one exact source SHA, selection and direct inputs. The six-row run took 546.12s from first source creation to last report, a filesystem timing proxy that includes setup, native and harness time."
+  },
+  "reached_results": {
+    "commands": "Run tests/semantics/enum_is_callable_output_reexit_protocol.py separately with --group own, nested, alias, thrown and roots; each command has a 480s numeric cap.",
+    "separate_groups": "At tested_revision: own90, nested62, alias35, thrown43 and roots78 all return true, exit0, empty stderr and stable direct-input hashes. These are 308 physical clauses in five separate runs, not one all308 run.",
+    "raw": "raw/enum-is-callable-protocol-{b325lsfb,5xgv9b_2,4lrjmbep,a4olnadh,fuao_dfv}; each report.json records elapsed time, direct-input hashes and command.",
+    "earlier_cuts": "Strict433 true/exit0/empty at 74b4a6e6c (prep/strict-current.json); root-loss27 (raw/enum-is-callable-protocol-x7uogwt0) and child-unwind-start38 (raw/enum-is-callable-protocol-5huuo8v0) pass at their affected cuts. These diagnostic prefixes overlap the five complete groups and add no distinct coverage count."
+  },
+  "retained_failures": "The original third-integer 90s timeouts (raw/user-string-{ky_r0scc,gmw7065e}) have zero agreement credit; its single 240s success keeps the same source SHA. The first own() group used excluded debug_backtrace() as executable source and failed at Unsupported (raw/enum-is-callable-protocol-vuhx0bnq), with zero reached-group credit. The corrected trace-free own() group passed without a semantic change. An earlier child-invoke fixture name collision (raw/enum-is-callable-protocol-qxsdecpq) also has zero credit; the corrected diagnostic is preserved separately.",
+  "auth_review": "The reviewer checked exact first parent restore/source markers, source-bound root receipt, distinct nested borrowed anchors, release order and shared wrapper counts, pending Throwable transfer, status and root-cell commits, missing-root rejection, and absence of same-anchor recursion. Three narrow validator simplifications reuse guards already established by live operation/context evidence; no forged marker admission was added.",
+  "engine_routes": [
+    "ext/standard/type.c:PHP_FUNCTION(is_callable)",
+    "Zend/zend_execute.c:zend_free_compiled_variables",
+    "Zend/zend_objects_API.c:zend_objects_store_del",
+    "Zend/zend_builtin_functions.c:ZEND_FUNCTION(exit), EG(exit_status)",
+    "Zend/zend_exceptions.c:zend_throw_unwind_exit and zend_exception_set_previous"
+  ],
+  "remaining": "Cleanup exit with an ordinary Throwable already pending, switched Fiber completion/force-close, owning rebound output values, late attached type sources, variable-array query inputs, eval/static tails and wider enum callable/loading contexts remain partial. The debug_backtrace observer is outside the agreed core/intrinsic boundary and remains an explicit Unsupported control.",
+  "recovery": "Raw is outside Git under main checkout .tools/enum-is-callable-output-reexit-evidence/. Paths beginning raw/ or prep/ above are relative to that directory. prep/ retains original strict and bounded diagnostic scripts; raw/ retains accepted and failed runs under their original basenames. Source rows are selected with python3 tests/semantics/enum_is_callable.py --match <exact suffix>; the tracked catalogue pins source bytes, SHA and each row's model cap. Keep the five reached --group commands separate; default --group all was not run.",
+  "review": "Independent semantic, fixture and raw-result review CLEAR by /root/enum_review_current; each successful source and group retains its tested cut. No source or reached test was replayed for documentation."
+}

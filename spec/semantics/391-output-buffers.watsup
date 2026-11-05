@@ -42,6 +42,7 @@ dec $ob_notice_message(pobnotice) : preqbytes
 dec $ob_notice(pstate, pconfigcall, pvalue, bool, bool, nat?) : pstate
 dec $ob_notice_with_creation(pstate, pconfigcall, pvalue, bool, bool, nat?, pobcreation?) : pstate
 dec $ob_creation_valid(pstate, pobcreation) : bool
+dec $ob_start_receipt_valid(pstate, pobcreation) : bool
 dec $ob_start_notice_valid(pstate, pobnotice) : bool
 dec $ob_notice_valid(pstate, pobnotice) : bool
 dec $ob_notice_task(ptask, pobnotice) : bool
@@ -398,7 +399,7 @@ def $ob_notice_with_creation(S, pconfigcall, pvalue, b_second, b_wrapper, n_leve
   -- if n_message* = $ob_notice_message(pobnotice)
 def $ob_start_notice_valid(S, pobnotice) = $executor_default_start_valid(S, pobnotice.CALL)
   -- if pobnotice.CREATION = eps
-def $ob_start_notice_valid(S, pobnotice) = ($ob_creation_valid(S, pobcreation) /\ pobcreation.CALL = pobnotice.CALL)
+def $ob_start_notice_valid(S, pobnotice) = ($ob_start_receipt_valid(S, pobcreation) /\ pobcreation.CALL = pobnotice.CALL)
   -- if pobnotice.CREATION = (pobcreation)
 def $ob_notice_valid(S, pobnotice) = true
   -- if $output_buffer_kind(pobnotice.CALL.KIND)
