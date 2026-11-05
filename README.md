@@ -2649,9 +2649,17 @@ terminate before catch/finally.
 Quiet single attributed constants now compile metadata arguments in order and
 activate through their genuine declaration origin. Arguments stay deferred;
 builtin target/repetition errors follow all argument compilation. Resolved
-metadata names use the existing compiled-image integrity check. Successful
-`Deprecated` constants remain Unsupported pending their fetch consumer.
+metadata names use the existing compiled-image integrity check.
 [Single-attribute review](coverage/semantics/single-attributed-constant-review.json).
+Literal/null `Deprecated` metadata now warns on source fetch and `constant()`,
+using the installed declaration's name and metadata. Handler recursion protects
+that entry, while captured API queries and lookup prefixes survive rebinding and
+namespace shadowing. `defined()` stays quiet. Primitive and interned-string
+values are paired. Exit restores the raw handler after local and retval cleanup;
+a local-destructor throw cancelling exit remains explicitly Unsupported (COMP184).
+Owning values, converted queries, trait collision folding and wider metadata
+expressions remain partial.
+[Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional

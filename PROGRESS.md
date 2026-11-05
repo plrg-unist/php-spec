@@ -1780,12 +1780,27 @@ stay deferred; structural argument errors retain their per-value order and built
 target/repetition errors follow every group. Existing compiled-image authentication
 and exact closure-template reuse preserve source/code authority and initializer
 behavior. The former COMP181 quiet singleton refusal is promoted. Successful
-Deprecated metadata remains Unsupported for the next fetch-consumer milestone;
+Deprecated metadata remained Unsupported at the COMP182 cut;
 wider attributes and full core remain partial. Thirty-seven new source agreements,
 two explicit Deprecated refusals, six affected originals and132 strict conditions
 across438 modules pass at the recorded cuts. Final pipe controls pass. The failed metadata-array pool case
 is preserved; its source-domain fix admits no runtime metadata root.
 [Review](coverage/semantics/single-attributed-constant-review.json).
+
+COMP183 pairs literal/null Deprecated metadata with actual source and
+`constant()` reads. Installed name/metadata, user versus startup severity,
+captured query/prefix selection and recursive-handler protection preserve
+warning order across rebinding, namespace shadows and direct handler throws.
+Body/retval exits retain the disabled handler through local cleanup and protect
+the constant while the saved callback releases; repeated destructor exit keeps
+the latest status. A fresh local-destructor throw cancelling exit stays named
+Unsupported for COMP184. `defined()` remains quiet. Nonowning primitive/interned
+strings are paired; owning values, converted queries, trait collision folding
+and wider metadata remain partial. The56-original family has49 exact agreements
+and seven separate refusals across preserved disjoint cuts;341 strict conditions
+across441 modules,132 affected conditions and six older originals pass. Final
+pipe controls pass; parser inputs stay fixed.
+[Review](coverage/semantics/deprecated-global-constant-review.json).
 
 ## Active and unintegrated work
 
@@ -1794,7 +1809,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | CLASS189 | Byvalue nongenerator __invoke/__get/__toString anonymous factories; native/source preparation. |
 | I115 | Temporary Closure::call on captured native Generator APIs; private implementation/review. |
 | GC49 | Shared scalar/finite-object payload policy for mixed WeakMap storage; private implementation/review. |
-| COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
+| COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR39 | Class-like declaration tick plans and compiler traversal; private implementation/review. |
 | Enum callable arrays | First scoped literal cache births in named/inherited method factories; private investigation/review. |

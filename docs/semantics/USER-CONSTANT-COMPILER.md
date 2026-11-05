@@ -49,9 +49,27 @@ The existing source-image projection authenticates the complete compiled code
 and pool, including metadata names. Runtime activation and constant receipts admit only the genuine
 single declaration and quiet validated metadata; attribute fields stay outside
 initializer roots. Duplicate registration retains the original constant origin.
-Successful builtin Deprecated metadata remains explicitly Unsupported until
-fetch/constant() warnings and recursive-handler behavior are paired with it.
 [COMP182 evidence](../../coverage/semantics/single-attributed-constant-review.json).
+
+Literal/null Deprecated message and since fields now activate without evaluating
+attribute arguments. Actual source fetches and `constant()` warn using the
+installed declaration's spelling and metadata; duplicate candidates cannot
+replace them. User constants deliver level16384, while startup E_STRICT keeps
+level8192. The captured lookup prefix and API query survive handler rebinding
+and later namespace shadows. Protection lasts through callback argument sends,
+body and return cleanup. Direct handler throws and admitted body/retval exits
+restore the handler and release protection; locals release while the raw handler
+is still disabled, and a saved callback releases while the constant is protected.
+A local-destructor fresh throw cancelling exit remains named Unsupported for
+COMP184. `defined()` stays quiet; parameter and class initializer caches retain
+their ordinary first-use behavior. Declaration namespace controls literal/null
+admission.
+
+This consumer covers nonowning primitive and interned-string values. Owning
+values, converted queries, trait collision folding, wider metadata expressions
+and reflection remain explicit boundaries. Attribute argument paths acquire no
+runtime initializer authority.
+[COMP183 evidence](../../coverage/semantics/deprecated-global-constant-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
