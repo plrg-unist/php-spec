@@ -255,7 +255,7 @@ module/autoload cleanup, uncovered table owners, wider hooks/rendering, reentran
 deactivation, other byte producers and buffered stdout diagnostics remain dependencies.
 [OB06](coverage/semantics/output-executor-post-deactivate-review.json) covers a
 no-argument `ob_start()` from a shutdown-argument destructor after output
-deactivation: the Notice precedes a false result, and no buffer is created.
+deactivation: the Notice precedes a false result, and no buffer is pushed.
 Suppression and selected error handlers retain their native output order.
 [OB07](coverage/semantics/output-executor-retval-review.json) covers a direct
 returned-object destructor during normal post-deactivation cleanup. It runs
@@ -265,7 +265,12 @@ emits the built-in Notice and returns false before the outer handler resumes.
 now uses ordinary named/unpacked argument binding and scalar conversion before
 the inactive-output failure. Default/NULL callbacks emit the Notice and return
 false without pushing a buffer, including during cleanup of a Notice handler's
-returned object. Callback creation and active handler-body reentry remain partial.
+returned object. [Late callable creation](coverage/semantics/output-executor-creation-review.json)
+now resolves admitted pure callbacks after conversion without invoking them.
+Its transient handler owner releases before the Notice; normal argument cleanup
+then preserves callback, captured-cell and receiver destructor timing before the
+caller observes false. A Notice handler changing a referenced selector does not
+repeat lookup. Invalid/effectful creation and active handler-body reentry remain partial.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -2168,11 +2173,16 @@ Direct named functions returning by value receive scalar Generator sends in
 fixed untyped reference parameters at positions 1 or 2, within the first two
 sends. By-value yields keep snapshots; ordinary reference yields reread saved
 cells after normal Warning handlers. Private callee cells stay distinct from
-source aliases and each other through global-name rebinding. Changed by-value
-payloads, keys or producer phase, replacement reference cells, unsupported
-carriers, dynamic-string sinks and pending warning exceptions remain Unsupported.
+source aliases and each other through global-name rebinding. A live selected
+reference cell still supplies delivery after cache replacement, changed keys or
+normal Generator closure; the subsequent iterator advance observes its actual
+phase, including the ordinary running-Generator Error. By-value delivery keeps
+its existing cache/key/index/phase restrictions. Ineligible reference carriers,
+dynamic-string sinks and pending warning exceptions remain Unsupported.
 See the [snapshot review](coverage/semantics/generator-byref-sink-review.json)
-and [reference-cell review](coverage/semantics/generator-reference-sink-review.json).
+and [reference-cell review](coverage/semantics/generator-reference-sink-review.json);
+the [captured-cell extension](coverage/semantics/generator-captured-cell-sink-review.json)
+records the later delivery rule.
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
@@ -3156,13 +3166,14 @@ registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
 Disabled-multibyte encoding declarations emit source-derived parser warnings
-before compiler diagnostics. Single-line declarations accept literal values,
-mixed/repeated items and ordinary bodies; token positions preserve recursive
-parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
-return premises extend the earlier eval/once checks. Multiline declarations and
-rejected sources with warnings remain explicit boundaries.
+before compiler diagnostics. Checked header-close positions support multiline
+headers and ordinary bodies, preserving nested parser reductions and separate
+first-item compiler lines. Twenty-one new originals and independent compiler/state
+checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
+sources with warnings and multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
-[list/body review](coverage/semantics/encoding-list-review.json).
+[list/body review](coverage/semantics/encoding-list-review.json),
+[header review](coverage/semantics/encoding-header-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -4741,13 +4752,20 @@ After output FINAL, source-certified tick entries retire in registration order,
 releasing copied values before their independent FCC object/Closure owners.
 Normal completion and stable pending exits use agreeing saved phase completions;
 the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
-Cacheless entries still drain before queue/executor fallbacks. Four new exit
-originals and one affected normal control agree exactly; six reached groups pass
-176 conditions (12 derived), and private strict433 passes.
-Wider producers, assertion roots, changed phase completions and abrupt/reentrant
-late release remain partial. See the
-[exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json)
-and retained [cache-shape evidence](coverage/semantics/callback-late-tick-callables-review.json).
+An uncaught builtin Exception from an argument destructor stops tick-list cleanup
+after normal completion or a stable main exit, retaining unfinished arguments,
+FCC owners and tail entries. Saved full exit codes authenticate abandoned source
+history after the report sets actual status 255; both saved phases stay intact.
+The Throwable retires before later active queue cleanup and inactive executor
+free, whose separate captured-child fatal can end with native status 0.
+Four new exit/throw originals and one affected normal control agree exactly;
+five independent groups pass 265 conditions (9 derived), and private strict433
+passes. See the [exit/throw review](coverage/semantics/callback-late-tick-exit-throw-review.json);
+the earlier [bailout](coverage/semantics/callback-late-tick-throw-review.json),
+[exit](coverage/semantics/callback-late-tick-exit-review.json) and
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
+Wider producers, assertion roots, changed phase completions, exception handlers,
+other throws and exits/reentry during late release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

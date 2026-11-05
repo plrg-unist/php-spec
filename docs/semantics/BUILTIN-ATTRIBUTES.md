@@ -240,8 +240,7 @@ stay rooted until their turn; the shutdown-function queue follows.
 Cacheless entries with scalar or zero arguments still drain through a real task.
 Tick readiness excludes both the shutdown-queue and final-executor fallbacks,
 even when the tick list has no heap roots. The shared module-owner predicate
-is unchanged. Changed phase completions and abrupt/reentrant cleanup remain
-outside this increment.
+is unchanged. Changed phase completions remain partial.
 
 Arguments use the existing value-root and recursive release rules. Scalars add
 no heap roots. A copied array contributes one container owner per argument
@@ -263,16 +262,34 @@ and `zend_closures.c:zend_closure_free_storage` (owned captured/static values
 before `this_ptr`), with the existing source-authenticated entry and executor-task
 guards.
 
-Four new native-first exit sources agree exactly, including raw invokable,
-captured and bound Closure owners, repeated referenced array arguments and a
-cacheless callback. Saved status 263 remains 263 while the shell observes 7;
-string exit preserves explicit-exit completion even at status 0. One affected
-normal cacheless source also agrees. The
-[ATTR18 review](../../coverage/semantics/callback-late-tick-exit-review.json)
-records six reached groups/176 conditions (12 derived), phase/status guards,
-zero-budget resume and the original source/private compiler cuts.
-The earlier [cache-shape](../../coverage/semantics/callback-late-tick-callables-review.json)
+For normal completion or a stable pending main-body exit, a builtin Exception
+with a literal message thrown by an argument destructor can bail out of tick-list
+destruction. The consumed argument retains the two abandoned destructor/store
+protections; later argument jobs, independent FCC slots and later tick entries
+stay owned. The report is
+authenticated while the Exception is live, then only its frozen completion
+survives its ordinary release. No released property row is read or retained.
+Remaining shutdown-function arguments still retire while PHP entry is active.
+Inactive executor free follows: an owning Closure capture can then cause the
+separate inactive-method fatal, preserving its native CLI status 0.
+
+Before reporting, the current status still matches the full saved exit code.
+After reporting replaces it with 255, abandoned-source validation restores only
+the saved status in a lookup view; both actual saved phase completions must still
+agree. Entry readiness remains tied to the current full status. Fatal-task scope
+uses the same lookup view without adding owners or changing the actual status,
+which can later become 0 in the separate inactive-child fatal.
+
+Four new native-first exit/throw originals and one affected normal control agree
+exactly. The [ATTR20 review](../../coverage/semantics/callback-late-tick-exit-throw-review.json)
+records five reached groups/265 conditions (9 derived), covering actual versus
+saved status authority, the genuine pending release, budget resume and retained
+owners through later queue/inactive cleanup. No correction was needed.
+Earlier [bailout](../../coverage/semantics/callback-late-tick-throw-review.json),
+[stable-exit](../../coverage/semantics/callback-late-tick-exit-review.json),
+[cache-shape](../../coverage/semantics/callback-late-tick-callables-review.json)
 and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
 evidence keeps its original cuts. Wider callable producers, assertion roots,
-changed phase completions and abrupt/reentrant module shutdown remain partial;
-this is no full lifecycle or core closure.
+changed phase completions, other throws, exits during cleanup, exception handlers
+and reentrant module shutdown remain partial; this is no full lifecycle or core
+closure.

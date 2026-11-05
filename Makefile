@@ -24,6 +24,7 @@ test: build
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
+	python3 tests/declare_header_metadata_review.py
 	python3 tests/namespace_placement.py
 	python3 tests/ternary_metadata.py
 	python3 tests/destructuring_metadata.py
@@ -93,6 +94,10 @@ test-semantics: build
 	python3 tests/semantics/output_executor_reception_state.py
 	python3 tests/semantics/output_executor_reception_review_sources.py
 	python3 tests/semantics/output_executor_reception_review_state.py
+	python3 tests/semantics/output_executor_creation_sources.py
+	python3 tests/semantics/output_executor_creation_state.py
+	python3 tests/semantics/output_executor_creation_review_sources.py
+	python3 tests/semantics/output_executor_creation_review_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -549,6 +554,10 @@ test-semantics: build
 	python3 tests/semantics/generator_reference_sink_review_sources.py
 	python3 tests/semantics/generator_reference_sink_state.py
 	python3 tests/semantics/generator_reference_sink_review_state.py
+	python3 tests/semantics/generator_captured_cell_sink_sources.py
+	python3 tests/semantics/generator_captured_cell_sink_review_sources.py
+	python3 tests/semantics/generator_captured_cell_sink_state.py
+	python3 tests/semantics/generator_captured_cell_sink_review_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_sources.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_review_sources.py

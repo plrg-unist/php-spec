@@ -131,7 +131,7 @@ CASES['handler-null-write-replaces-initial-integer-at-delivery'] = {
                'S_one.STORE[n_fresh] = DEFINED PNULL',
                'S_one.STORE[n_raw] = DEFINED PNULL', *DONE],
 }
-CASES['replacement-cache-cell-refuses-with-equal-key-index-and-initial-value'] = {
+CASES['replacement-cache-cell-delivers-old-value-with-equal-key-index'] = {
     'source': SOURCES['same-key-index-value-replacement-cell'],
     'stage': 'S.TODO = (GENERATOR_UNPACK pgeneratorunpack "byref") :: ptask_tail*',
     'checks': ['n_data = pgeneratorunpack.OBJECT',
@@ -147,18 +147,15 @@ CASES['replacement-cache-cell-refuses-with-equal-key-index-and-initial-value'] =
                '~$generator_unpack_warning_same(S, pgeneratorunpack)',
                '$heap_owners($heap_graph(S), HCELL n_raw) = 3',
                '$heap_owners($heap_graph(S), HCELL n_cache) = 3',
-               *VALID, *ZERO,
-               'S_one = $drive_steps(S, 1)',
-               'S_one = S[.COMPLETION = UNSUPPORTED '
-               '"Generator unpack reference payload changed during warning"]',
-               '$generator_unpack_reference_blocked(S_one)',
-               '~$generator_unpack_reference_blocked(S_one[.TODO = '
-               '(GENERATOR_UNPACK pgeneratorunpack[.CELL = eps] "byref") :: ptask_tail*])',
-               '~$generator_unpack_reference_blocked(S_one[.TODO = '
-               '(GENERATOR_UNPACK pgeneratorunpack[.CELL = (|S.STORE|)] "byref") '
-               ':: ptask_tail*])',
-               '$call_descriptors_valid(S_one)', '$heap_valid($heap_graph(S_one))',
-               '$drive_steps(S_one, 1) = S_one', '$drive(S_one, 10) = S_one'],
+               '$generator_unpack_reference_delivery(S, pgeneratorunpack) = (PINT 22)',
+               *VALID, *ZERO, *ONE, *FRESH,
+               'n_fresh =/= n_cache',
+               'S_one.STORE[n_fresh] = DEFINED (PINT 22)',
+               '$heap_owners($heap_graph(S_one), HCELL n_raw) = 3',
+               '$heap_owners($heap_graph(S_one), HCELL n_cache) = 3',
+               *DONE, 'S_done.STORE[n_cache] = DEFINED (PINT 11)',
+               '$heap_owners($heap_graph(S_done), HCELL n_raw) = 2',
+               '$heap_owners($heap_graph(S_done), HCELL n_cache) = 1'],
 }
 
 

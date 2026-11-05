@@ -244,6 +244,7 @@ dec $executor_normal_task(pstate, ptask) : bool
 dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
 dec $executor_tick_completion(pstate, pcompletion) : bool
+dec $executor_tick_history(pstate, pcompletion) : pstate
 dec $executor_tick_ready(pstate) : bool
 dec $executor_tick_valid(pstate, pexecutortick) : bool
 dec $executor_tick_nodes(ptickentry) : pnode*
@@ -255,6 +256,10 @@ dec $executor_tick_scope_tasks(pstate, ptask*) : bool
 dec $executor_tick_scope_frames(pstate, pframe*) : bool
 dec $executor_tick_scope(pstate) : bool
 dec $executor_tick_begin(pstate) : pstate
+dec $executor_tick_abandoned(pstate, pdestructioncleanup) : pexecutortick?
+dec $executor_tick_fatal_valid(pstate, pexecutortickfatal) : bool
+dec $executor_tick_fatal_begin(pstate, pexecutortick, pcompletion) : pstate
+dec $executor_report_cause(pstate, pcompletion, nat) : bool
 dec $executor_error_handler_task(ptask) : bool
 dec $executor_error_handler_tasks(ptask*) : bool
 dec $executor_error_handler_frames(pframe*) : bool
@@ -262,6 +267,15 @@ dec $executor_error_handler_active(pstate) : bool
 dec $executor_retval_notice_start(pstate) : bool
 dec $executor_default_start_sent(pconfigcall) : bool
 dec $executor_ob_start_allowed(pstate) : bool
+dec $ob_creation_ready(pstate, pconfigcall, pvalue*) : bool
+dec $ob_creation_target(phandlerresolution) : pcalltarget?
+dec $ob_creation_producer(pstate, pvalue) : pshutdownproducer?
+dec $ob_creation_history(pstate, pobcreation) : pstate
+dec $ob_creation_missing_scope(pstate, pshutdownproducer) : pclosurescope?
+dec $ob_creation_missing_binding(pstate, pshutdownproducer) : pclosurebinding?
+dec $ob_creation_consumed_history(pstate, pobcreation) : pstate
+dec $ob_creation_selected(pstate, pobcreation) : bool
+dec $ob_creation_task_valid(pstate, pobcreation) : bool
 dec $executor_operation_abandoned(pdestructioncleanup*, pdestructionoperation) : bool
 dec $executor_operation_row(pdestructioncleanup, pdestructionoperation) : bool
 dec $executor_handler_task(ptask) : bool
@@ -329,6 +343,10 @@ def $executor_tick_nodes(ptickentry) = $operands_roots($shutdown_known(ptickentr
 def $executor_tick_completion(S, NORMAL) = (S.SHUTDOWN.COMPLETION = NORMAL /\ S.DESTRUCTION.COMPLETION = NORMAL)
 def $executor_tick_completion(S, EXITED z) = (S.SHUTDOWN.COMPLETION = EXITED z /\ S.DESTRUCTION.COMPLETION = EXITED z /\ S.EXITSTATUS = z)
 def $executor_tick_completion(S, pcompletion) = false -- otherwise
+;; Reporting replaces the actual exit status. A documentary source lookup may
+;; restore its saved code; both real phase completions still authenticate it.
+def $executor_tick_history(S, EXITED z) = S[.EXITSTATUS = z]
+def $executor_tick_history(S, pcompletion) = S -- otherwise
 def $executor_tick_ready(S) = true
   -- if S.TICKENTRIES = ptickentry :: ptickentry_tail*
   -- if $executor_tick_completion(S, S.COMPLETION) /\ S.ASSERTCALLBACK = eps
@@ -348,6 +366,7 @@ def $executor_tick_valid(S, pexecutortick) = true
   -- if $executor_tick_ready(S_history[.TICKENTRIES = [ptickentry] ++ pexecutortick.TAIL][.COMPLETION = pexecutortick.COMPLETION])
 def $executor_tick_valid(S, pexecutortick) = false -- otherwise
 def $executor_tick_task(EXECUTOR_TICK_RELEASE pexecutortick b) = (pexecutortick)
+def $executor_tick_task(EXECUTOR_TICK_FATAL pexecutortickfatal b) = (pexecutortickfatal.TICK)
 def $executor_tick_task(ptask) = eps -- otherwise
 def $executor_tick_tasks(eps, pexecutortick) = false
 def $executor_tick_tasks(ptask :: ptask_tail*, pexecutortick) = (($executor_tick_task(ptask) = (pexecutortick) /\ ptask_tail* = eps) \/ $executor_tick_tasks(ptask_tail*, pexecutortick))
@@ -355,8 +374,8 @@ def $executor_tick_frames(eps, pexecutortick) = false
 def $executor_tick_frames(pframe :: pframe_tail*, pexecutortick) = ((pframe.CONTEXT = eps /\ $executor_tick_tasks(pframe.TODO, pexecutortick)) \/ $executor_tick_frames(pframe_tail*, pexecutortick))
 def $executor_tick_active(S, pexecutortick) = ($executor_tick_valid(S, pexecutortick) /\ ((S.CURRENT = eps /\ $executor_tick_tasks(S.TODO, pexecutortick)) \/ $executor_tick_frames(S.FRAMES, pexecutortick)))
 def $executor_tick_scope_tasks(S, eps) = false
-def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = ($executor_tick_active(S, pexecutortick) \/ $executor_tick_scope_tasks(S, ptask_tail*))
-  -- if $executor_tick_task(ptask) = (pexecutortick)
+def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = ($output_drain_task(S, ptask) \/ $executor_tick_scope_tasks(S, ptask_tail*))
+  -- if $executor_tick_task(ptask) =/= eps
 def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = $executor_tick_scope_tasks(S, ptask_tail*)
   -- if $executor_tick_task(ptask) = eps
 def $executor_tick_scope_frames(S, eps) = false
@@ -388,7 +407,7 @@ rule PhpStep/executor-tick-done: S ~> $output_executor_finish(S[.TODO = eps][.CO
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, EXECUTOR_TICK_RELEASE pexecutortick false)
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
-def $eager_operation_source_guard(S, pdestructionoperation) = ($executor_tick_active(S, pexecutortick) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = pexecutortick.VALUE /\ pdestructionoperation.BASE = pexecutortick.BASE)
+def $eager_operation_source_guard(S, pdestructionoperation) = (($executor_tick_active(S, pexecutortick) \/ ($executor_operation_abandoned(S.DESTRUCTION.ABANDONED, pdestructionoperation) /\ $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick))) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = pexecutortick.VALUE /\ pdestructionoperation.BASE = pexecutortick.BASE)
   -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
 def $executor_queue_release(S, pexecutorqueue, pexecutorstage, pnode*) = $eager_operation_begin(S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE]], S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage, pnode*)
 rule PhpStep/executor-queue-release: S ~> $executor_queue_release(S, pexecutorqueue, EXECUTOR_QUEUE, $executor_queue_nodes(pexecutorqueue.ENTRIES))
@@ -451,13 +470,77 @@ def $executor_caught_finish(S, pexecutorqueue, UNCAUGHT n) = S_report[.TODO = [E
   -- if pexecutorqueue_new = pexecutorqueue[.COMPLETION = S_report.COMPLETION][.VALUE = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps]
 def $output_drive_finalize(S, n) = $drive_steps($executor_caught_finish(S, pexecutorqueue, pcompletion), n)
   -- if $executor_caught(S) = ((pexecutorqueue, pcompletion))
-def $executor_pending_cause(S, pexecutorqueue, n) = true
-  -- if $throwable_live(S, n)
+def $executor_pending_cause(S, pexecutorqueue, n) = ($throwable_live(S, n) /\ $executor_report_cause(S, pexecutorqueue.COMPLETION, n))
+def $executor_report_cause(S, pcompletion, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $throwable_member(S, n)
   -- if $throwable_field(S, n, "previous") = PNULL
   -- if $throwable_field(S, n, "line") = PINT z
-  -- if pexecutorqueue.COMPLETION = REQUESTFATAL $object_name(S, n) $echo_value($throwable_field(S, n, "message")) z
+  -- if pcompletion = REQUESTFATAL $object_name(S, n) $echo_value($throwable_field(S, n, "message")) z
   -- if $throwable_field(S, n, "string") = PSTRING $throwable_chain_string(S, n, [n])
-def $executor_pending_cause(S, pexecutorqueue, n) = false -- otherwise
+def $executor_report_cause(S, pcompletion, n) = false -- otherwise
+
+;; A module-local bailout leaves the two destructor/store protections and the
+;; untouched argument/FCC jobs in ABANDONED. Only the reported Throwable retires
+;; here; the tick tail stays rooted through later queue and inactive free stages.
+def $executor_tick_abandoned(S, pdestructioncleanup) = (pexecutortick)
+  -- if ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
+  -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+def $executor_tick_abandoned(S, pdestructioncleanup) = eps -- otherwise
+def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
+  -- if S.TODO = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.OUTPUTBUFFERS = eps
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortick)
+  -- if $executor_tick_valid(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
+  -- if S.COMPLETION = UNCAUGHT n
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if $executor_renderable(S, n)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $executor_tick_fatal_valid(S, pexecutortickfatal) = true
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_DONE /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE
+  -- if S.OUTPUTBUFFERS = eps /\ S.EXITSTATUS = 255
+  -- if $(|S.DESTRUCTION.ABANDONED| > 0)
+  -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
+  -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortickfatal.TICK)
+  -- if $(pexecutortickfatal.OBJECT < |S.OBJECTS|)
+  -- if $shutdown_frozen(pexecutortickfatal.COMPLETION)
+def $executor_tick_fatal_valid(S, pexecutortickfatal) = false -- otherwise
+def $executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n) = S_report[.TODO = [EXECUTOR_TICK_FATAL pexecutortickfatal true]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = eps][.RETIREDOWNERS = eps][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if S_cached = $throwable_string_cache(S, n, $throwable_chain_string(S, n, [n]))
+  -- if S_report = $shutdown_freeze_marked(S_cached)
+  -- if $shutdown_frozen(S_report.COMPLETION)
+  -- if pexecutortickfatal = {TICK pexecutortick, COMPLETION S_report.COMPLETION, OBJECT n}
+def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, pcompletion), n)
+  -- if $executor_tick_caught(S) = ((pexecutortick, pcompletion))
+def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active($executor_tick_history(S, pexecutortickfatal.TICK.COMPLETION), pexecutortickfatal.TICK)
+def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT pexecutortickfatal.OBJECT]
+def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal false) = eps
+def $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal true) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $throwable_live(S, pexecutortickfatal.OBJECT) /\ $executor_report_cause(S, pexecutortickfatal.COMPLETION, pexecutortickfatal.OBJECT) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_FATAL pexecutortickfatal true, eps))
+def $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal false) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_FATAL pexecutortickfatal false, eps))
+rule PhpStep/executor-tick-fatal-release: S ~> $eager_operation_begin(S[.TODO = [EXECUTOR_TICK_FATAL pexecutortickfatal false]], S, EXECUTOR_TICK_FATAL pexecutortickfatal true, [HOBJECT pexecutortickfatal.OBJECT])
+  -- if S.TODO = (EXECUTOR_TICK_FATAL pexecutortickfatal true) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal true)
+def $eager_operation_source_guard(S, pdestructionoperation) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $executor_tick_active($executor_tick_history(S, pexecutortickfatal.TICK.COMPLETION), pexecutortickfatal.TICK) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_FATAL pexecutortickfatal true
+rule PhpStep/executor-tick-fatal-queue: S ~> $executor_queue_begin(S[.TODO = eps][.COMPLETION = pexecutortickfatal.COMPLETION])
+  -- if S.TODO = (EXECUTOR_TICK_FATAL pexecutortickfatal false) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal false)
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+  -- if S.SHUTDOWN.ENTRIES =/= eps
+rule PhpStep/executor-tick-fatal-done: S ~> $executor_free_finish(S[.TODO = eps][.COMPLETION = pexecutortickfatal.COMPLETION])
+  -- if S.TODO = (EXECUTOR_TICK_FATAL pexecutortickfatal false) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal false)
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+  -- if S.SHUTDOWN.ENTRIES = eps
 
 ;; These are earlier, distinct C phases. Never reinterpret a module callback
 ;; list as an inactive storage hook, or mutate the table being destroyed.
@@ -552,8 +635,8 @@ def $executor_retval_notice_start(S) = true
   -- if ~$executor_error_handler_tasks(pframe_executor.TODO)
 def $executor_retval_notice_start(S) = $executor_retval_notice_start(S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*])
   -- if S.TODO = (OB_PARSE pconfigcall 3 pvalue_values*) :: ptask_tail*
-  -- if pvalue_values* = [PNULL, PINT i_chunk, PINT i_flags]
-  -- if $ob_parse_valid(S, pconfigcall, 3, [PNULL, PINT i_chunk, PINT i_flags])
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
 def $executor_retval_notice_start(S) = false -- otherwise
 def $executor_default_start_sent(pconfigcall) = ($error_api_value(pconfigcall, 0, PNULL) = PNULL)
 def $executor_default_start_valid(S, pconfigcall) = true
@@ -567,6 +650,119 @@ def $executor_default_start_valid(S, pconfigcall) = false -- otherwise
 def $executor_ob_start_allowed(S) = true -- if ~$executor_error_handler_active(S)
 def $executor_ob_start_allowed(S) = true -- if $executor_retval_notice_start(S)
 def $executor_ob_start_allowed(S) = false -- otherwise
+;; Creation observes the fully parsed arguments, not their earlier SEND values.
+;; Signature/body/name restrictions belong to an invocation, which never occurs.
+def $ob_creation_ready(S, pconfigcall, pvalue_values*) = true
+  -- if pconfigcall.KIND = INTRINSIC_OB_START
+  -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
+  -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
+  -- if pvalue =/= PNULL
+  -- if ~$exception_deprecated_raw(S, pvalue) /\ ~$api_special(S, pvalue)
+  -- if $error_handler_callable(S, pvalue) = (true)
+def $ob_creation_ready(S, pconfigcall, pvalue_values*) = false -- otherwise
+def $ob_creation_target(HANDLERRESOLVED pcalltarget) = (pcalltarget)
+def $ob_creation_target(phandlerresolution) = eps -- otherwise
+def $ob_creation_producer(S, POBJECT n) = ($eager_cleanup_target(S, CLOSURE_TARGET n))
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_name(S, n) = $ptascii("Closure")
+def $ob_creation_producer(S, pvalue) = eps -- otherwise
+;; A borrowed lookup certificate may name a receiver retired during the Notice.
+;; Restore only the saved array selectors for checking; never root that snapshot.
+def $ob_creation_history(S, pobcreation) = S[.ORIGIN = (pobcreation.CALL.SITE)][.ALLOCATIONS = S.ALLOCATIONS ++ $config_nodes(pobcreation.CALL) ++ $error_selected_roots($ob_creation_target(pobcreation.RESOLUTION))][.ARRAYS[n] = parray]
+  -- if pobcreation.VALUE = PARRAY n
+  -- if pobcreation.RAW = (parray)
+  -- if $(n < |S.ARRAYS|)
+def $ob_creation_history(S, pobcreation) = S[.ORIGIN = (pobcreation.CALL.SITE)][.ALLOCATIONS = S.ALLOCATIONS ++ $config_nodes(pobcreation.CALL) ++ $error_selected_roots($ob_creation_target(pobcreation.RESOLUTION))] -- otherwise
+;; Consumed Closure arguments may already have retired their cells and receiver.
+;; Reuse the borrowed producer tables only for operation-metadata checking.
+def $ob_creation_missing_scope(S, pshutdownproducer) = pshutdownproducer.SCOPE
+  -- if $consumer_producer_scope(S, pshutdownproducer.TARGET) = eps
+def $ob_creation_missing_scope(S, pshutdownproducer) = eps -- otherwise
+def $ob_creation_missing_binding(S, pshutdownproducer) = pshutdownproducer.BINDING
+  -- if $consumer_producer_binding(S, pshutdownproducer.TARGET) = eps
+def $ob_creation_missing_binding(S, pshutdownproducer) = eps -- otherwise
+def $ob_creation_consumed_history(S, pobcreation) = S_borrowed
+  -- if pobcreation.VALUE = POBJECT n
+  -- if $(n < |S.OBJECTS|)
+  -- if pobcreation.PRODUCER = (pshutdownproducer)
+  -- if pshutdownproducer.TARGET = CLOSURE_TARGET n
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if $consumer_producer_scope(S, pshutdownproducer.TARGET) = eps \/ $consumer_producer_scope(S, pshutdownproducer.TARGET) = pshutdownproducer.SCOPE
+  -- if $consumer_producer_binding(S, pshutdownproducer.TARGET) = eps \/ $consumer_producer_binding(S, pshutdownproducer.TARGET) = pshutdownproducer.BINDING
+  -- if pshutdownproducer_missing = pshutdownproducer[.SCOPE = $ob_creation_missing_scope(S, pshutdownproducer)][.BINDING = $ob_creation_missing_binding(S, pshutdownproducer)]
+  -- if S_tables = $consumer_producer_history(S, pshutdownproducer_missing)
+  -- if S_borrowed = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $node_children(S_tables, HOBJECT n)]
+  -- if $closure_scope_rows_valid(S_borrowed, $consumer_producer_scopes(pshutdownproducer.SCOPE))
+  -- if $closure_bindings_valid(S_borrowed, $consumer_producer_bindings(pshutdownproducer.BINDING))
+def $ob_creation_consumed_history(S, pobcreation) = S -- otherwise
+def $ob_creation_selected(S, pobcreation) = true
+  -- if pobcreation.RESOLUTION = HANDLERRESOLVED pcalltarget
+  -- if $exception_raw_selected(S, pobcreation.VALUE, pobcreation.RAW, pcalltarget)
+  -- if pshutdownentry = {CALL pobcreation.CALL, BIRTH eps, CAPTURE pobcreation.CAPTURE, PRODUCER eps, RAW pobcreation.RAW, TARGET pcalltarget, CACHEOBJECT eps, ARGS eps}
+  -- if $shutdown_selection_scope(S, pshutdownentry)
+def $ob_creation_selected(S, pobcreation) = true
+  -- if pobcreation.RESOLUTION = HANDLERUNKNOWN text
+  -- if $typed_callable(S, pobcreation.VALUE) = (true)
+def $ob_creation_selected(S, pobcreation) = false -- otherwise
+def $ob_creation_valid(S, pobcreation) = true
+  -- if pobcreation.CALL.KIND = INTRINSIC_OB_START
+  -- if pobcreation.VALUE =/= PNULL
+  -- if (pobcreation.RAW = eps /\ ~$is_array_value(pobcreation.VALUE)) \/ (pobcreation.RAW =/= eps /\ $is_array_value(pobcreation.VALUE))
+  -- if S_history = $ob_creation_history(S, pobcreation)
+  -- if $ob_parse_valid(S_history, pobcreation.CALL, 3, [pobcreation.VALUE, PINT pobcreation.CHUNK, PINT pobcreation.FLAGS])
+  -- if pobcreation.PRODUCER = $ob_creation_producer(S_history, pobcreation.VALUE)
+  -- if ~$exception_deprecated_raw(S_history, pobcreation.VALUE) /\ ~$api_special(S_history, pobcreation.VALUE)
+  -- if $ob_creation_selected(S_history, pobcreation)
+def $ob_creation_valid(S, pobcreation) = false -- otherwise
+def $ob_creation_task_valid(S, pobcreation) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ptask = OB_START_CREATED pobcreation \/ ptask = OB_START_FAILED pobcreation
+  -- if $ob_creation_valid(S, pobcreation)
+  -- if S.ORIGIN = (pobcreation.CALL.SITE)
+  -- if $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_ob_start_allowed(S[.TODO = (CONFIG_INVOKE pobcreation.CALL) :: ptask_tail*])
+def $ob_creation_task_valid(S, pobcreation) = false -- otherwise
+def $call_task_valid(S, OB_START_CREATED pobcreation) = $ob_creation_task_valid(S, pobcreation)
+def $call_task_valid(S, OB_START_FAILED pobcreation) = $ob_creation_task_valid(S, pobcreation)
+def $task_nodes(OB_START_CREATED pobcreation) = $config_nodes(pobcreation.CALL) ++ $value_nodes(pobcreation.VALUE)
+def $task_nodes(OB_START_FAILED pobcreation) = $config_nodes(pobcreation.CALL)
+def $selected_task_nonce(OB_START_CREATED pobcreation) = pobcreation.CALL.SELECTION
+def $selected_task_nonce(OB_START_FAILED pobcreation) = pobcreation.CALL.SELECTION
+def $ob_operation(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags]) = S[.TODO = (OB_START_CREATED pobcreation) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ob_creation_ready(S, pconfigcall, [pvalue, PINT i_chunk, PINT i_flags])
+  -- if ~$ob_user_running(S)
+  -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
+  -- if $executor_normal_scope(S) /\ $executor_ob_start_allowed(S)
+  -- if pobcreation = {CALL pconfigcall, VALUE pvalue, CHUNK i_chunk, FLAGS i_flags, RAW $shutdown_snapshot(S, pvalue), RESOLUTION $error_handler_resolution(S, pvalue), PRODUCER $ob_creation_producer(S, pvalue), CAPTURE $method_capture_current(S, pconfigcall.SITE)}
+rule PhpStep/ob-start-created-free: S ~> S[.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*]
+  -- if S.TODO = (OB_START_CREATED pobcreation) :: ptask_tail*
+  -- if $call_task_valid(S, OB_START_CREATED pobcreation)
+rule PhpStep/ob-start-failed-notice: S ~> $ob_notice_with_creation(S, pobcreation.CALL, PBOOL false, false, false, eps, (pobcreation))
+  -- if S.TODO = (OB_START_FAILED pobcreation) :: ptask_tail*
+  -- if $call_task_valid(S, OB_START_FAILED pobcreation)
+;; zend_vm_stack_free_args uses zval_ptr_dtor_nogc, unlike the zoh destructor.
+def $gc_operation_temporary_extra(S, S_next, OB_NOTICE_RESULT pobnotice, pnode_slots*) = pgctemporary*
+  -- if pobnotice.CREATION = (pobcreation)
+  -- if $ob_notice_valid(S, pobnotice)
+  -- if pgctemporary* = $gc_binary_temp_receipt(KNOWN pobcreation.VALUE)
+  -- if $gc_binary_temp_slots(pgctemporary*, pnode_slots*)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if pdestructionoperation.SOURCE = OB_NOTICE_RESULT pobnotice
+  -- if pdestructionoperation.VALUE = KNOWN (PBOOL false)
+  -- if pobnotice.CREATION = (pobcreation)
+  -- if pobnotice.CALL = pobcreation.CALL /\ pobnotice.VALUE = PBOOL false
+  -- if ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps
+  -- if pdestructionoperation.ORIGIN = (pobcreation.CALL.SITE)
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $ob_creation_valid($ob_creation_consumed_history(S_history, pobcreation), pobcreation)
+  -- if pgctemporary.OPERAND = KNOWN pobcreation.VALUE
+  -- if $gc_temporary_node(pgctemporary.OPERAND) = (pnode)
+  -- if $gc_temporary_bounded(S, pnode)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
 def $ob_operation(S, pconfigcall, [PNULL, PINT i_chunk, PINT i_flags]) = $ob_notice(S, pconfigcall, PBOOL false, false, false, eps)
   -- if pconfigcall.KIND = INTRINSIC_OB_START /\ $executor_default_start_sent(pconfigcall)
   -- if S.COMPLETION = NORMAL /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps
@@ -606,7 +802,7 @@ def $executor_boundary(S) = ("output-handler start after output deactivation")
   -- if pconfigcall.KIND = INTRINSIC_OB_START
   -- if $ob_parse_valid(S, pconfigcall, 3, pvalue_values*)
   -- if pvalue_values* = [pvalue, PINT i_chunk, PINT i_flags]
-  -- if pvalue =/= PNULL
+  -- if pvalue =/= PNULL /\ ~$ob_creation_ready(S, pconfigcall, pvalue_values*)
 def $executor_boundary(S) = ("exit during shutdown-list retirement")
   -- if $executor_scope(S)
   -- if $exit_completion(S.COMPLETION)
