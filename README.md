@@ -4784,17 +4784,20 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Four new handled originals and two affected controls agree; private strict433
-passes. Nine independent groups pass 508 conditions (497 reached, 11 derived).
-See the
-[handler review](coverage/semantics/callback-late-tick-handler-review.json); earlier
+Ignored owning destructor-body results now retire after PHP local cleanup and
+before the inner C decrement, using ordinary VALUE jobs while both protections
+and the original C call remain live. Fresh objects, alias arrays and static
+Closure captures retire before the original child; externally shared returns
+survive until their later real owner. Four new body-return originals and two
+affected controls agree, and private strict434 passes. Eight independent groups pass 438 genuine source-reached checks. See the [body-return review](coverage/semantics/callback-late-tick-body-return-review.json);
+earlier [handler](coverage/semantics/callback-late-tick-handler-review.json),
 [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
 [bailout](coverage/semantics/callback-late-tick-throw-review.json),
 [exit](coverage/semantics/callback-late-tick-exit-review.json) and
-[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
-Wider producers, assertion roots, changed phases, abrupt/owning-result handlers,
-pre-body callbacks, owning destructor-body returns and other destructor/exit/reentry
-contexts remain partial.
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence
+retains its original cuts. Wider producers, assertion roots, changed phases,
+abrupt body-value cleanup, direct reference-return bodies, owning-result handlers
+and reentrant release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

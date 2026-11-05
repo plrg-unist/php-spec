@@ -635,25 +635,25 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR21 resumes post-FINAL tick retirement after named NULL/scalar-return
-exception handlers. The entered null-C destructor frame transfers its receiver
-protection before local cleanup; both C protections remain through handling and
-original Throwable retirement. Ordinary VALUE/GC release drops the inner
-protection after registry restoration, then arguments, FCC owners, later entries
-and the queue retire. Handler return 23 preserves full main263/CLI7; bound
-receivers and captured children run active destructors. A paired pending suffix
-also preserves the existing root-CV destructor handler's source authority.
-Four new originals and two affected controls agree; nine independent groups pass
-508 conditions (497 reached, 11 derived), and private strict433 passes. Original
-ownership and dormant-field failures retain zero credit.
-[Handler review](coverage/semantics/callback-late-tick-handler-review.json).
-Wider late handlers, pre-body callbacks, owning destructor-body returns and other
-destructor/reentry contexts remain partial. Earlier [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
+ATTR22 retires ignored owning destructor-body values after PHP local cleanup and
+before the inner C protection. RESULT transfers into ordinary VALUE jobs while
+the same C-return/result pair and both protections remain live. Fresh objects,
+alias arrays and static Closure captures retire before the original child;
+externally retained returns survive until their actual later owner. Four new
+originals and two affected controls agree, and strict434 passes. Eight independent
+groups pass 438 genuine source-reached checks. Earlier exact output concealed a
+one-reference error; reached checks now preserve both C protections and the
+original call through returned-value cleanup.
+[Body-return review](coverage/semantics/callback-late-tick-body-return-review.json).
+The [handler review](coverage/semantics/callback-late-tick-handler-review.json)
+retains ATTR21's normal named-handler/Arg2/source-authority coverage and original
+failures. Earlier [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
 [bailout](coverage/semantics/callback-late-tick-throw-review.json),
 [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
-[copied-value](coverage/semantics/callback-late-tick-values-review.json) ledgers
-retain their original evidence.
+[copied-value](coverage/semantics/callback-late-tick-values-review.json) evidence
+keeps its original cuts. Abrupt body-value cleanup, direct reference-return bodies,
+selected-handler owning retval cleanup and wider lifecycle contexts remain partial.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

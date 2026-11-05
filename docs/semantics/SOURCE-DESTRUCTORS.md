@@ -32,7 +32,15 @@ replacement throws chain and become the pending object for each remaining slot.
 An ignored by-value ordinary return releases its temporary before restoring that callee,
 so private destructor permission remains in the live callee scope. An ordinary
 automatic constructor has the same unused return destination. The C destructor
-helper instead retains its returned value until after local cleanup.
+helper instead retains its returned value until after local cleanup. The known-
+function wrapper releases that ignored value before dropping the inner C receiver
+protection. An owning RESULT moves into ordinary VALUE jobs while the same
+authenticated C-return/result pair and both receiver protections stay live; the
+inner decrement follows that release. Arrays, embedded references and static
+Closure captures use the existing ordered child traversal; other owners can keep
+a returned object alive. This is separate from an exception handler's ignored
+retval. [Body-return review](../../coverage/semantics/callback-late-tick-body-return-review.json).
+Abrupt body-value cleanup and wider contexts remain partial.
 
 Explicit request bootstrap installs CLI `argv` and `argc` before compiled CVs.
 Replacing `argc` therefore preserves its earlier global position. Without request
