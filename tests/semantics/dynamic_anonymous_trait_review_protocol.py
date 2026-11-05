@@ -162,6 +162,9 @@ def assertions(row, main, response, code, case):
         '$closure_scope_at(S_receive.CLOSURESCOPES,n_capture) = (pclosurescope)',
         'pclosurescope.LEXICAL = pclassdesc_live.ORIGIN /\\ pclosurescope.CALLED = pclassdesc_live.ORIGIN',
         '$class_constant_callable_method_history_ordinary(S_receive,pmethoddesc_capture,porigin_site,pclassdesc_live.ORIGIN,pclosurescope) = (pclassdesc_live.ORIGIN)',
+        '$class_constant_callable_method_history_owner(S_receive,pmethoddesc_capture,porigin_site,pclassdesc_live.ORIGIN,pclosurescope) = (pclassdesc_live.ORIGIN)',
+        '$method_closure_scope_ordinary(S_receive,pclosurescope)',
+        '$method_closure_scope_valid(S_receive,pclosurescope)',
         '$call_current_valid(S_receive)',
     ]
     if include:
