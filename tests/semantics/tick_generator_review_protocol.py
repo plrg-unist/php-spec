@@ -30,6 +30,11 @@ PAUSE = [
     'S_done.TICKCOUNT = 0', *valid('S_done'),
 ]
 
+ROOT_GENERATOR = ('S.CURRENT = eps '
+                  '-- if $lookup(S.ENV, $ptascii("g")) = (n_cell) '
+                  '-- if S.STORE[n_cell] = DEFINED (POBJECT n) '
+                  '-- if S.OBJECTS[n] = GENERATOR pgenerator ')
+
 
 def send_case(name, used):
     raw, expected = sources.CASES[name]
@@ -50,7 +55,7 @@ def send_case(name, used):
     ]
     return {
         'source': raw.decode(),
-        'stage': 'S.CURRENT = eps -- if S.OBJECTS[n] = GENERATOR pgenerator -- if pgenerator.PHASE = GENERATOR_PAUSED -- if pgenerator.VALUE = (PINT 1) -- if pgenerator.FRAME = (pframe) -- if S.EVENTS = [OUTPUT $ptascii("A"), OUTPUT $ptascii("T")]',
+        'stage': ROOT_GENERATOR + '-- if pgenerator.PHASE = GENERATOR_PAUSED -- if pgenerator.VALUE = (PINT 1) -- if pgenerator.FRAME = (pframe) -- if S.EVENTS = [OUTPUT $ptascii("A"), OUTPUT $ptascii("T")]',
         'checks': [
             'S.TICKCOUNT = 0', 'pframe.ORIGIN = (porigin_yield)',
             '$generator_record_valid(S, pgenerator)', *prefix,
@@ -68,7 +73,7 @@ review.CASES = {
         'review-assigned-yield-send-preserves-target', True),
     'array-delegation-keeps-one-later-marker-and-shared-counter': {
         'source': raw.decode(),
-        'stage': 'S.CURRENT = eps -- if S.OBJECTS[n] = GENERATOR pgenerator -- if pgenerator.PHASE = GENERATOR_DELEGATING -- if pgenerator.FRAME = (pframe) -- if pgenerator.DELEGATE = (pgeneratorfrom) -- if pgeneratorfrom.CURRENT = (KNOWN (PINT 2)) -- if S.EVENTS = ' + output(b'IA1OTBT'),
+        'stage': ROOT_GENERATOR + '-- if pgenerator.PHASE = GENERATOR_DELEGATING -- if pgenerator.FRAME = (pframe) -- if pgenerator.DELEGATE = (pgeneratorfrom) -- if pgeneratorfrom.CURRENT = (KNOWN (PINT 2)) -- if S.EVENTS = ' + output(b'IA1OTBT'),
         'checks': [
             'S.TICKCOUNT = 0', 'pgeneratorfrom.POSITION = 1',
             'pgeneratorfrom.INPUT = (PARRAY n_array)',
