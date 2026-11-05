@@ -1034,6 +1034,14 @@ identities, with completed components qualified. Trait/anonymous source owners,
 method-owned Closures, generators/byref returns/attributes and wider contexts
 remain partial. [Review](coverage/semantics/anonymous-method-factories-review.json).
 
+CLASS179 admits anonymous child factories in named `__construct` bodies with
+authenticated owner and compiler context. Child-before-deferred-owner keys,
+repeated construction, inherited access, promotion, failure cleanup and compile
+diagnostic priority match PHP 8.5.10. Reached lazy final-link errors retain their
+constructor trace through eager cleanup. Anonymous-owner methods require
+provisional key reservation before their body compilation and remain partial.
+[Review](coverage/semantics/anonymous-constructor-factories-review.json).
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in

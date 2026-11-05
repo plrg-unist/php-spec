@@ -664,6 +664,19 @@ separates genuine runtime/source counters from explicitly pure source-derived
 compiler-context queries. Trait and anonymous source owners, method-owned Closures,
 generators, byref returns, attributes and wider source/lifetime contexts remain partial.
 
+Named constructors may now contain anonymous child factories under the same parsed
+owner, method-body and class-context checks. The child template is compiled before
+a deferred named owner receives its key; repeated constructor calls reuse the child
+class while allocating fresh objects. Inherited protected constructors, promotion,
+parent calls, private access and failed-owner child cleanup follow the ordinary
+runtime rules. A child compile error precedes a static or return-typed constructor
+rejection; private-final child warnings remain visible. Reached final-method link
+errors capture the constructor call stack before eager failed-owner cleanup.
+The [constructor factory review](../../coverage/semantics/anonymous-constructor-factories-review.json)
+records exact sources and reached states. Anonymous owner methods still need an
+earlier owner-key reservation during body compilation; their nested factories
+remain outside this source cut.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
