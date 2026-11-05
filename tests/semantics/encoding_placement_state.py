@@ -89,6 +89,12 @@ def main():
     watched = [Path(__file__), ROOT / 'spec/semantics/92-strict-compiler.watsup',
                ROOT / 'spec/semantics/modules.json', ROOT / 'frontend/worker.php',
                ROOT / '.tools/php-file.so', ROOT / '_build/default/adapter/main.exe',
+               ROOT / '.tools/php/bin/php', ROOT / 'tests/semantics/profile.json',
+               ROOT / 'tests/semantics/encoding_declare_protocol.py',
+               ROOT / 'tests/semantics/encoding_placement_sources.py',
+               ROOT / 'tests/semantics/recorded_worker.py',
+               ROOT / 'tests/semantics/error_handler_run.py',
+               ROOT / 'tests/semantics/static_types.py',
                ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
                out / 'protocol.watsup', out / 'assertions.json', *(SOURCE / name for name in HASHES)]
     inputs = {str(path): sha(path) for path in watched}

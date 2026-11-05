@@ -15,6 +15,7 @@ ORACLE = 'b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398'
 HASHES = {
     'late.php': '86b170d1b2737035d6595b12ec93d807271a7c5ce7bbd583439eab50fe8c09e9',
     'namespace.php': '36b91de0c8fbfc72a618a67d2084cba9772c0c23576f334f22805abd0214c7f2',
+    'block.php': 'ec650bdd30bca4fac25ece012e2aaba1f8580a3548a64a3ce34a5c63a2159c89',
     'include-main.php': '1ac4d59061a7e87065a25c8aaa2dad7d5ef89ec11a2e90c936033a6a957fa529',
     'child.php': '98b6c3055857e9dd80cb22e9f4c4a426659b2e5d0000f26f26f920872c2e14aa',
     'eval.php': '1d594c8b42b074c85da6d5490b3fd9ffa4ea44af49bc3430d89d7b96f7b6e39c',
@@ -27,8 +28,8 @@ b64 = lambda data: base64.b64encode(data).decode()
 
 def expected(name):
     path = SOURCE / (name + '.php')
-    if name in ('late', 'namespace'):
-        line = b'3'; filename = bytes(path)
+    if name in ('late', 'namespace', 'block'):
+        line = b'2' if name == 'block' else b'3'; filename = bytes(path)
         warning = b'Warning: ' + MESSAGE + b' in ' + filename + b' on line ' + line + b'\n'
         fatal = b'Fatal error: ' + FATAL + b' in ' + filename + b' on line ' + line + b'\nStack trace:\n#0 {main}\n'
         return 255, b'', warning + fatal, 'static_rejection'
@@ -44,8 +45,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--select', help='comma-separated case names')
     args = parser.parse_args()
-    names = args.select.split(',') if args.select else ['late', 'namespace', 'include-main', 'eval']
-    assert names and len(set(names)) == len(names) and set(names) <= {'late', 'namespace', 'include-main', 'eval'}
+    names = args.select.split(',') if args.select else ['late', 'namespace', 'block', 'include-main', 'eval']
+    assert names and len(set(names)) == len(names) and set(names) <= {'late', 'namespace', 'block', 'include-main', 'eval'}
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     assert {name: sha(SOURCE / name) for name in HASHES} == HASHES
     assert sha(ROOT / '.tools/php/bin/php') == ORACLE
