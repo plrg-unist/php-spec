@@ -57,7 +57,7 @@ def checks(captures, children):
         f'{captures}, n_array, false)',
         '~$gc_ordinary_node(S[.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 7))]], HOBJECT n_closure)',
         f'$gc_capture_array_nodes({extra_array}) = [HARRAY n_array, HARRAY n_array]',
-        f'~$gc_ordinary_node(S[.OBJECTS[n_closure] = REALCLOSURE porigin_template '
+        f'$gc_ordinary_node(S[.OBJECTS[n_closure] = REALCLOSURE porigin_template '
         f'({extra_array}) eps], HOBJECT n_closure)',
         'n_other = |S.OBJECTS|',
         'S_extra = S[.OBJECTS = S.OBJECTS ++ [STDINSTANCE]]'
