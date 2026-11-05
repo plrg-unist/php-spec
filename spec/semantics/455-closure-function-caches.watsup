@@ -56,7 +56,8 @@ dec $closure_cache_copy_policy(pclosurecache?, pbindscope?, nat) : pfncacheowner
 def $closure_cache_copy_policy((pclosurecache), pbindscope?, n) = (CACHE_PRIVATE n)
   -- if pclosurecache.CACHE = (CACHE_PRIVATE n_source)
 def $closure_cache_copy_policy((pclosurecache), (pbindscope), n) = (CACHE_SHARED)
-  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (pbindscope)
+  -- if pclosurecache.CACHE = (CACHE_SHARED)
+  -- if pclosurecache.SCOPE = (pbindscope)
 def $closure_cache_copy_policy((pclosurecache), (pbindscope), n) = (CACHE_PRIVATE n)
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope_source)
@@ -113,7 +114,8 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = false
 dec $closure_cache_records(pstate, pclosurecache*, pclosurecache*) : bool
 def $closure_cache_records(S, pclosurecache_prefix*, eps) = true
 def $closure_cache_records(S, pclosurecache_prefix*, pclosurecache :: pclosurecache_tail*) = ($closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) /\ $closure_cache_records(S, pclosurecache_prefix* ++ [pclosurecache], pclosurecache_tail*))
-def $closure_cache_records_valid(S) = $closure_cache_records(S, eps, S.CLOSURECACHES)
+dec $closure_call_cache_records(pstate, pclosurecallcache*, nat) : bool
+def $closure_cache_records_valid(S) = ($closure_cache_records(S, eps, S.CLOSURECACHES) /\ $closure_call_cache_records(S, S.CLOSURECALLCACHES, 0))
 
 def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
@@ -142,3 +144,94 @@ def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_PRIVATE n) =
   -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
   -- if pclosurecache.FUNCTION = pfunction.ORIGIN /\ pclosurecache.CACHE = (CACHE_PRIVATE n)
 def $closure_function_cache_history(S, porigin, pfncacheowner) = false -- otherwise
+
+;; Ordinary Closure::call owns a temporary function, not a copied Closure object.
+;; The birth index names that function cache and retains no source/receiver root.
+dec $closure_call_cache_policy(pstate, nat, nat, nat) : pfncacheowner?
+def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_CALL n)
+  -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin
+  -- if $closure_cache_at(S.CLOSURECACHES, n_source) = (pclosurecache)
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pclosurecache.FUNCTION)
+  -- if pclosurecache.CACHE = (CACHE_PRIVATE n_private)
+def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_SHARED)
+  -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin
+  -- if $closure_cache_at(S.CLOSURECACHES, n_source) = (pclosurecache)
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pclosurecache.FUNCTION)
+  -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (BIND_CLASS porigin)
+def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_CALL n)
+  -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin
+  -- if $closure_cache_at(S.CLOSURECACHES, n_source) = (pclosurecache)
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pclosurecache.FUNCTION)
+  -- if pclosurecache.CACHE = (CACHE_SHARED)
+  -- if pclosurecache.SCOPE = (pbindscope)
+  -- if pbindscope =/= BIND_CLASS porigin
+def $closure_call_cache_policy(S, n_source, n_receiver, n) = eps -- otherwise
+
+dec $closure_call_cache_record_valid(pstate, nat, pclosurecallcache) : bool
+def $closure_call_cache_record_valid(S, n, pclosurecallcache) = true
+  -- if $closure_call_copy_site(S, pclosurecallcache.SITE)
+  -- if $function_at(S.CLOSURETEMPLATES, pclosurecallcache.FUNCTION) = (pfunction)
+  -- if ~$function_generator(S, pfunction)
+  -- if ~$closure_static(S, pfunction)
+  -- if $(pclosurecallcache.SOURCE < |S.OBJECTS|)
+  -- if $closure_cache_function(S.OBJECTS[pclosurecallcache.SOURCE]) = (pclosurecallcache.FUNCTION)
+  -- if $closure_call_cache_policy(S, pclosurecallcache.SOURCE, pclosurecallcache.RECEIVER, n) = (CACHE_CALL n)
+def $closure_call_cache_record_valid(S, n, pclosurecallcache) = false -- otherwise
+def $closure_call_cache_records(S, eps, n) = true
+def $closure_call_cache_records(S, pclosurecallcache :: pclosurecallcache_tail*, n) = ($closure_call_cache_record_valid(S, n, pclosurecallcache) /\ $closure_call_cache_records(S, pclosurecallcache_tail*, $(n + 1)))
+
+def $closure_call_cache_enter(S) = S[.CURRENT = (pcallcontext[.CACHE = (CACHE_CALL n)])][.CLOSURECALLCACHES = S.CLOSURECALLCACHES ++ [pclosurecallcache]]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CACHE = eps
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if HOBJECT n_source <- S.ALLOCATIONS /\ HOBJECT n_receiver <- S.ALLOCATIONS
+  -- if n = |S.CLOSURECALLCACHES|
+  -- if pclosurecallcache = {FUNCTION pcallcontext.FUNCTION, SOURCE n_source, RECEIVER n_receiver, SITE porigin_site}
+  -- if $closure_call_cache_record_valid(S, n, pclosurecallcache)
+def $closure_call_cache_enter(S) = S[.CURRENT = (pcallcontext[.CACHE = (CACHE_SHARED)])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CACHE = eps
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $closure_call_copy_site(S, porigin_site)
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
+  -- if $closure_call_cache_policy(S, n_source, n_receiver, 0) = (CACHE_SHARED)
+def $closure_call_cache_enter(S) = S -- otherwise
+
+def $closure_call_context_cache_valid(S, pcallcontext) = true
+  -- if pcallcontext.CACHE = eps
+def $closure_call_context_cache_valid(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CACHE = (CACHE_CALL n)
+  -- if $(n < |S.CLOSURECALLCACHES|)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if S.CLOSURECALLCACHES[n] = {FUNCTION pcallcontext.FUNCTION, SOURCE n_source, RECEIVER n_receiver, SITE porigin_site}
+  -- if $closure_call_cache_record_valid(S, n, S.CLOSURECALLCACHES[n])
+def $closure_call_context_cache_valid(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CACHE = (CACHE_SHARED)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $closure_call_copy_site(S, porigin_site)
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
+  -- if $closure_call_cache_policy(S, n_source, n_receiver, 0) = (CACHE_SHARED)
+def $closure_call_context_cache_valid(S, pcallcontext) = false -- otherwise
+
+def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
+  -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps /\ S.FIBERCLOSERS = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CACHE = (pfncacheowner)
+  -- if $closure_call_context_cache_valid(S, pcallcontext)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if pfunction.ORIGIN = pcallcontext.FUNCTION
+  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_CALL n) = true
+  -- if $(n < |S.CLOSURECALLCACHES|)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $enum_is_callable_fixed_lexical(S, pfunction.ORIGIN)
+  -- if S.CLOSURECALLCACHES[n].FUNCTION = pfunction.ORIGIN
+  -- if $closure_call_cache_record_valid(S, n, S.CLOSURECALLCACHES[n])

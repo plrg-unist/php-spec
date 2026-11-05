@@ -1345,5 +1345,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "query:1:HeapUnscoped\\Target::cases|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|query:1:HeapUnscoped\\Target::cases|",
     "purpose": "A private Closure rebound to null scope remains private; clones made before and after warming get fresh caches after its parent objects retire."
+  },
+  {
+    "id": "enum-is-callable-third-output-ordinary-call-cache-private-heap-copies-and-cold-shared",
+    "source": "<?php\nnamespace PrivateCopies;\nenum Target { case A; }\nclass Scope {}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\n$query = function($install) {\n    $name = 'OLD';\n    $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n};\n$private = \\Closure::bind($query, null, Scope::class);\n$private(true);\n$copy = clone $private;\n$same = \\Closure::bind($private, null, Scope::class);\n$copy(false); $same(false);\n$private->call(new Scope, false);\n$query(false); $private(false);\n",
+    "source_sha256": "967ac7dff776aba3e45884734a350d5fac820899063b9b3c13bdcf5bab8219a8",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:PrivateCopies\\Target::cases|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|query:1:PrivateCopies\\Target::cases|",
+    "purpose": "Each ordinary Closure::call temporary function has a fresh cache even for the same private source scope; original private Closure stays warm while its clone/bind/call and cold shared original choose current USER."
+  },
+  {
+    "id": "enum-is-callable-third-output-ordinary-call-cache-output-throw-fresh-invocation",
+    "source": "<?php\nnamespace CallOutput;\nenum Target { case A; }\nclass Scope {}\nclass Drop {\n    function __destruct() {\n        echo $GLOBALS['name'] === null ? 'null|' : 'wrong|';\n        throw new \\Exception('drop');\n    }\n}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\n$query = function($install) {\n    global $name, $ok;\n    $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n};\n$scope = new Scope;\n$name = new Drop; $ok = 'UNCHANGED';\ntry { $query->call($scope, true); }\ncatch (\\Exception $e) {\n    $trace = $e->getTrace();\n    echo $trace[1]['function'], ':', $name, ':', $ok, '|';\n}\n$name = 'OLD';\n$query->call($scope, false);\n",
+    "source_sha256": "d27a559f059f18edf171720201ccbcac1abcf0c9ca72c69146642d985607dd41",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|is_callable:CallOutput\\Target::cases:UNCHANGED|USER:OLD|query:0:OLD|",
+    "purpose": "A temporary function cache preserves saved builtin target/name/API trace through output throw, while a later API invocation with the same source and receiver gets a fresh cache and selects USER."
   }
 ]

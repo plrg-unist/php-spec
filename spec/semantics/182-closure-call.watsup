@@ -478,6 +478,7 @@ rule PhpStep/closure-call-named-error: S ~> $throwable_allocate(S[.TODO = ptask_
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
 
 dec $closure_call_enter(pstate, pfunction, pclosurecall, nat) : pstate
+dec $closure_call_cache_enter(pstate) : pstate
 dec $closure_call_wrapper((pkey, poperand)*) : pnamedargs
 def $closure_call_wrapper(eps) = {SLOTS eps, NAMED eps}
 def $closure_call_wrapper((KINT z, poperand) :: (pkey_tail, poperand_tail)*) = pnamedargs[.SLOTS = (NAMED_SENT poperand) :: pnamedargs.SLOTS]
@@ -609,14 +610,14 @@ rule PhpStep/closure-call-forward-enter: S ~> $closure_call_enter(S[.TODO = ptas
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
 
-def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])]
+def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = $closure_call_cache_enter(S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])])
   -- if ~$closure_call_copy_required(S, pfunction, pclosurecall)
   -- if pclosurecall.PACKS = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
   -- if $named_present(phpType7_tail*)
   -- if S_entered = $target_after_enter($named_enter(S, pfunction, pclosurecall.SENT, (pclosurecall.SITE), pclosurecall.LINE), CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver)
   -- if S_entered.CURRENT = (pcallcontext)
-def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = $call_arity(S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])], pfunction, |$named_operands(pclosurecall.SENT.SLOTS)|, (pclosurecall.SITE), pclosurecall.LINE)
+def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = $call_arity($closure_call_cache_enter(S_entered[.CURRENT = (pcallcontext[.WRAPPER = ($closure_call_wrapper(pclosurecall.RAW))])]), pfunction, |$named_operands(pclosurecall.SENT.SLOTS)|, (pclosurecall.SITE), pclosurecall.LINE)
   -- if ~$closure_call_copy_required(S, pfunction, pclosurecall)
   -- if pclosurecall.PACKS = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7_first :: phpType7_tail*
