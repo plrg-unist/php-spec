@@ -136,6 +136,7 @@ dec $generator_method_node(pcnode?, ptbytes) : bool
 dec $generator_loop_site(pstate, pgeneratorop, pgeneratorloop) : bool
 dec $generator_arguments_supported(phpType7*) : bool
 dec $generator_method_return_tasks(pstate, porigin, ptask*) : ptask*
+dec $generator_method_unused_result(pstate, pgeneratorop) : bool
 dec $generator_api_arguments(phpType7*) : bool
 dec $generator_api_site(pstate, porigin) : bool
 dec $generator_collected_arguments_valid(pstate, pgeneratorop, phpType7*, poperand*, nat) : bool
@@ -1251,7 +1252,23 @@ def $generator_operate_plain(S, pgeneratorop) = $generator_complete($generator_r
   -- if ~(pgeneratorop.NAME <- ["send", "throw"])
   -- if pgeneratorop.NAME =/= "rewind" \/ pgenerator.FIRST
   -- if ~(pgeneratorop.NAME <- ["current", "key"]) \/ $generator_borrowed_readable(S, pgeneratorop.OBJECT, pgeneratorop.NAME = "key")
-def $generator_complete(S, pgeneratorop) = S -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK
+;; A zero-argument native getter drops an ignored return before releasing This.
+;; The Generator cache/return still owns the value through storage retirement.
+def $generator_method_unused_result(S, pgeneratorop) = true
+  -- if S.COMPLETION = NORMAL
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+  -- if pgeneratorop.NAME <- ["current", "key", "getreturn"]
+  -- if pgeneratorop.ARGUMENTS = eps
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if ~$reference_call_used(S, pgeneratorop.SITE)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $value_nodes(pvalue) =/= eps
+def $generator_method_unused_result(S, pgeneratorop) = false -- otherwise
+def $generator_complete(S, pgeneratorop) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_method_unused_result(S, pgeneratorop)
+def $generator_complete(S, pgeneratorop) = S
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK
+  -- if ~$generator_method_unused_result(S, pgeneratorop)
 def $generator_complete(S, pgeneratorop) = $fiber_traversal_complete(S, pgeneratorop) -- if pgeneratorop.STARTPACK
 def $generator_complete(S, pgeneratorop) = $generator_loop_ready(S, pgeneratorop)
   -- if pgeneratorop.LOOP =/= eps
