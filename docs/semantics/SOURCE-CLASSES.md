@@ -777,14 +777,17 @@ Literal enum method strings also retain raw class and method spelling in the
 third output. The [string-spelling review](../../coverage/semantics/enum-is-callable-output-string-spelling-review.json)
 records canonical, lowercase and leading-backslash outcomes with 88 reached
 guards.
-A live variable holding the enum method string can also feed a direct query
-with literal `false`, provided its saved bytes still match and the output CV is
-distinct. The [variable-output review](../../coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact original and 46 reached guards. A shared scalar
-reference cell now preserves the saved name through the result write; the
-[alias-output review](../../coverage/semantics/enum-is-callable-output-alias-review.json)
-records one exact original and 43 reached guards. Argument-time rebinding
-remains Unsupported.
+A direct variable input now captures its string at the first SEND. A nonowning
+receipt binds that copy to its call site, argument origin/line and caller depth;
+SENT owns the actual argument. The adjacent receipt authenticates the saved
+bytes after later arguments rebind the source CV. Normal invocation
+consumes it atomically, nested calls keep separate receipts and exception
+unwinding discards it before output capture. The
+[saved-input review](../../coverage/semantics/enum-is-callable-saved-input-review.json)
+records seven exact sources, 200 independent guards and affected variable46/
+alias43 checks. Named/unpacked forms remain partial. Engine routes are
+`zend_compile_args`, VM `ZEND_SEND_VAR`/`ZEND_SEND_VAR_EX` and
+`ext/standard/type.c:PHP_FUNCTION(is_callable)`.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
