@@ -116,8 +116,7 @@ def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselec
 dec $generator_capture_marker(ptask*, nat, porigin) : bool
 dec $generator_capture_marker_frames(pframe*, nat, porigin) : bool
 def $generator_capture_marker(eps, n, porigin) = false
-def $generator_capture_marker((GETTER_CAPTURE_RESULT n porigin) :: ptask*, n, porigin) = true
-def $generator_capture_marker(ptask :: ptask_tail*, n, porigin) = $generator_capture_marker(ptask_tail*, n, porigin) -- otherwise
+def $generator_capture_marker(ptask :: ptask_tail*, n, porigin) = ((ptask = GETTER_CAPTURE_RESULT n porigin) \/ $generator_capture_marker(ptask_tail*, n, porigin))
 def $generator_capture_marker_frames(eps, n, porigin) = false
 def $generator_capture_marker_frames(pframe :: pframe_tail*, n, porigin) = ($generator_capture_marker(pframe.TODO, n, porigin) \/ $generator_capture_marker_frames(pframe_tail*, n, porigin))
 def $generator_selection_live(S, eps) = true
