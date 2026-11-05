@@ -1,0 +1,225 @@
+{
+  "milestone": "ATTR21: normal-return exception handling during post-FINAL tick retirement",
+  "status": "Validated bounded receiver-lifetime repair and normal-return late tick exception handling; full lifecycle/core remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; pinned local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-21",
+  "scope": "Named handlers returning NULL or a scalar after a builtin literal Exception from a tick argument destructor, for NORMAL and stable main EXITED completion. Remaining arguments, FCC owners, later tick entries and queue retire normally; abrupt handlers and owning retval cleanup remain partial. One existing root-CV destructor control checks the introduced shared caller view; this is not exhaustive other-context coverage.",
+  "production": {
+    "revision": "4c2dba940637318a94ece09361ad29b9d867eeb7",
+    "unchanged": false,
+    "rules": [
+      "30-storage:DESTRUCTOR_C_RETURN",
+      "257-request-destructors:null-C entered-frame protection transfer, paired innermost continuation and ordinary VALUE decrement",
+      "270-eager-destructors:marker-aware unhandled bailout into existing abandoned two protections",
+      "444-executor-final-free:marker-aware nonrenderable queue refusal",
+      "349-generator-request-fresh:paired root destructor result after handler frame"
+    ],
+    "observation": "The PHP frame lends its receiver root to an authenticated C-return continuation before local cleanup. Selected-handler dispatch, execution and retval/cause cleanup retain both C protections. Normal C return uses ordinary release/GC handling before the original result marker; unhandled bailout transfers the same two roots without duplication. Pre-body callbacks, owning destructor-body returns and wider destructor contexts are not closed. The paired root-C pending suffix preserves source authority across handler reception/cleanup; earlier successful ordinary tail and frame lookups stay first."
+  },
+  "authority": [
+    "Zend/zend_exceptions.c:zend_throw_exception_internal calls the selected handler at a null C caller and returns after success, preserving the C destructor continuation instead of the unhandled bailout.",
+    "Zend/zend_objects.c:GC_ADDREF precedes zend_call_known_instance_method_with_0_params; OBJ_RELEASE follows its return. Zend/zend_execute_API.c frees the PHP frame then dispatches the null-C exception handler before that return, so both store and inner C protections remain during the handler.",
+    "Zend/zend_exceptions.c:zend_user_exception_handler discards the retval, releases the original Throwable, then restores the raw handler.",
+    "Zend/zend_objects.c:zend_objects_destroy_object and Zend/zend_objects_API.c:zend_objects_store_del complete their receiver decrements after handler success; basic_functions.c:user_tick_function_dtor then resumes params/FCC/list retirement."
+  ],
+  "tests": {
+    "protocol": "tests/semantics/deprecated_late_tick_handler_review_protocol.py",
+    "draft_revision": "c3c964205733ae2bfb0c96ef0e19ac905fbb75f6",
+    "first_run_revision": "3685976a0b101350d536a8b698c263599082359c",
+    "corrected_revision": "beb2670523e89346a7e1414f4d8c83da280758a4",
+    "affected_root_source": "tests/semantics/destructor_review_cases.json:destructor-throw-handled-continues"
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "19694020b8499dffafb70af1f22c296855b4f3b0f31617e40417868a96d3456c",
+      "new_originals": 4,
+      "affected_unhandled_controls": 1,
+      "affected_root_destructor_control": {
+        "report": "source-root-control/report.json",
+        "report_sha256": "394d3b9ec082b572316eff7f99bd8054697b005d2626ffaed02759a5b2de87ee",
+        "revision": "beb2670523e89346a7e1414f4d8c83da280758a4",
+        "new_native_control": 1,
+        "original_case": "tests/semantics/destructor_review_cases.json:destructor-throw-handled-continues",
+        "source_sha256": "cefa5a33fcef5219f05f5812896591f7439870fee0c1b12c2b49537e0e5bc12d"
+      }
+    },
+    "reached": {
+      "status": "passed",
+      "original_failure": {
+        "revision": "3685976a0b101350d536a8b698c263599082359c",
+        "report": "reached-first/run/report.json",
+        "report_sha256": "cea001e9d160aa5a17b9bb14e52920c2554c6c88f8c757c8e68c21e79fe1036a",
+        "failed_groups": 4,
+        "reason": "Arg2 assertion detects premature modeled inner C protection decrement; numeric diagnostic confirms Arg1/E1.",
+        "passing_groups": 2,
+        "passing_conditions": 91,
+        "acceptance": "Original whole gate failed. Failed groups receive zero credit; the two passing observations retain their original cut, with no final milestone acceptance."
+      },
+      "dormant_fix_failure": {
+        "revision": "3acfbab6e012beba303c2e56f3ee88d29275047f",
+        "process_report": "reached-c-return/process.json",
+        "process_report_sha256": "59d46770031ec8c468e296202347b687d8b893ef4ec0d773b308858fe9028413",
+        "status": "interrupted narrowly after unreachable-stage diagnosis, fully reaped; first two seek failures, third interrupted, rest unrun; all zero credit",
+        "reason": "METHOD_TARGET INSTANCE is eps; guard was dormant, so no C-return marker was created."
+      },
+      "revision": "beb2670523e89346a7e1414f4d8c83da280758a4",
+      "report": "reached-active/run/report.json",
+      "report_sha256": "606a39c0c45989fe28a28d43bf20e94962859ce4909897cdfd237f3b0989df8f",
+      "process_report": "reached-active/process.json",
+      "process_report_sha256": "585029811ef03d52dc37340564f7ac59641d6e515c769e7d4c9ac3dee7d60437",
+      "groups": 9,
+      "conditions": 508,
+      "source_reached": 497,
+      "derived": 11,
+      "elapsed_seconds": 579.58,
+      "scope": "Arg2 through genuine H dispatch/frame/retval/cause cleanup; matching innermost C-return source; real registry restoration then ordinary VALUE2\u21921 and outer result; full263/pause/resume/tail/queue; active bound/captured teardown; genuine pre-report2\u2192ABANDONED2 without duplication; introduced root-CV handler source across dispatch and cleanup.",
+      "selection": "All9 records pass; focused55 and older passing91 are not added again."
+    },
+    "prior_output_observations": {
+      "reports": [
+        {
+          "report": "source-baseline-a855/report.json",
+          "report_sha256": "164783244ea87407b272002dc3eae31b43431bf401b9c3ee2febfcffc3b5f2a8",
+          "revision": "a855c927d082fa4527ae8307b9cef46f3e6a8bb4",
+          "new_agreements": 1
+        },
+        {
+          "report": "source-rest-c3c/report.json",
+          "report_sha256": "c00faf844f8875eb7c0bf7d693118bb70c79baf9af554ac1247f2c7b9006e402",
+          "revision": "c3c964205733ae2bfb0c96ef0e19ac905fbb75f6",
+          "new_agreements": 3,
+          "affected_unhandled_controls": 1
+        }
+      ],
+      "observation": "Handled sources have no stderr; actual main263 still projects CLI7 despite handler retval23. Bound receiver/captured child destructors run active with R/K output. The unhandled control remains one fatal/CLI255.",
+      "limitation": "Four new and one affected original matched final outputs under old8a7d rules, but these observations did not detect the independent Arg1-versus-required2 ownership defect. They retain original identities and do not validate the corrected rules."
+    },
+    "dormant_fix_output_observations": {
+      "production": "aba294cff",
+      "strict": {
+        "report": "strict-c-return-third/report.json",
+        "revision": "aba294cff",
+        "modules": 433,
+        "passed": true
+      },
+      "source": {
+        "status": "Five old-cut output comparisons pass; dormant receiver transfer has no ownership validation.",
+        "reports": [
+          {
+            "report": "source-c-return-third/report.json",
+            "revision": "aba294cff",
+            "new_agreements": 1
+          }
+        ],
+        "new_agreements": 4,
+        "affected_controls": 1
+      },
+      "rest_report": "source-c-return-rest/report.json",
+      "rest_report_sha256": "a94474f788519c84e4f3e9fc3d24f3c680d66193bca0044241f454b1bf19de44",
+      "limitation": "INSTANCE guard never fired for METHOD_TARGET (actual protection is RECEIVER). Exact output matches do not validate receiver ownership."
+    },
+    "strict": {
+      "report": "strict-receiver-current/report.json",
+      "report_sha256": "1c831d8c76a4558199417ad3a99d916cc75b9cea155afaed93ecbb2820a009aa",
+      "revision": "4c2dba940637318a94ece09361ad29b9d867eeb7",
+      "modules": 433,
+      "passed": true
+    },
+    "focused_activation": {
+      "revision": "b3995a5ff3948ec29009934aff1ded967125e938",
+      "report": "dispatch-receiver-b399/report.json",
+      "conditions": 55,
+      "passed": true,
+      "scope": "Preserved first generated checked-AST fixture at actual RECEIVER transfer; marker genuinely reached and Arg2 holds. This subset is not added to later complete-packet counts.",
+      "report_sha256": "8ee423e82565b201a6f4daed7809d15de94099d726f173eb94708310a1722316"
+    },
+    "source": {
+      "reports": [
+        {
+          "report": "source-receiver-current/report.json",
+          "report_sha256": "e925cfa30471ed488f2233aac493ce2bc5ab9893ab849c6d0e57141348c0ec16",
+          "revision": "4c2dba940637318a94ece09361ad29b9d867eeb7",
+          "new_agreements": 1
+        },
+        {
+          "report": "source-receiver-rest/report.json",
+          "report_sha256": "bb4f88ecd84024f35cbcbb0d82cf7d5a9f8606d5d9520295afc1d529ac0bd9f2",
+          "revision": "4c2dba940637318a94ece09361ad29b9d867eeb7",
+          "new_agreements": 3,
+          "affected_unhandled_control": 1
+        },
+        {
+          "report": "source-root-control/report.json",
+          "report_sha256": "394d3b9ec082b572316eff7f99bd8054697b005d2626ffaed02759a5b2de87ee",
+          "revision": "beb2670523e89346a7e1414f4d8c83da280758a4",
+          "affected_root_destructor_control": 1
+        }
+      ],
+      "new_agreements": 4,
+      "affected_controls": 2,
+      "rows": [
+        {
+          "id": "normal-raw",
+          "source_sha256": "6a5b75f78aa4e206fcc56511531248587756cb1bf8370b5a780c53684c721f82",
+          "status": "normal",
+          "exit_status": 0,
+          "stdout": "B;F;A;H;L;C;",
+          "regression_control": false
+        },
+        {
+          "id": "exit7-owning",
+          "source_sha256": "c76f1a76f04f20bb8cd6fc70f9a73d208cbc085c16268d42cc9167b44a297440",
+          "status": "explicit_exit",
+          "exit_status": 7,
+          "stdout": "B;F;A;H;K;",
+          "regression_control": false
+        },
+        {
+          "id": "exit263-tail-queue",
+          "source_sha256": "288bd3a4f1d8e1a44c4127a6c3a4df60bb8b87ee6fbf6453ed6fe1c40c627a04",
+          "status": "explicit_exit",
+          "exit_status": 7,
+          "stdout": "B;F;A;H;L;C;U;T;Q;",
+          "regression_control": false
+        },
+        {
+          "id": "normal-bound",
+          "source_sha256": "6d3e9def637724f16b3c7b7ea208d38680713b8e2c72bd38a3d10f0ebab1d651",
+          "status": "normal",
+          "exit_status": 0,
+          "stdout": "B;F;A;H;R;",
+          "regression_control": false
+        },
+        {
+          "id": "unhandled-control",
+          "source_sha256": "7d020e0f6b76c5840a55b8d9f0c80a2dc5f96add011a786c4eff8dd3dfaa119f",
+          "status": "php_error",
+          "exit_status": 255,
+          "stdout": "B;F;A;",
+          "regression_control": true
+        },
+        {
+          "id": "destructor-throw-handled-continues",
+          "source_sha256": "cefa5a33fcef5219f05f5812896591f7439870fee0c1b12c2b49537e0e5bc12d",
+          "status": "normal",
+          "exit_status": 0,
+          "stdout": "D:b;H:dt;D:a;",
+          "regression_control": true
+        }
+      ],
+      "observation": "All corrected sources match native stdout/stderr and projected completion/status. Reached states confirm full main263 survives handling, while handler23 is discarded; bound/captured children run active. The existing root-CV destructor control additionally matches D:b;H:dt;D:a; with no stderr/CLI0."
+    }
+  },
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; tests/semantics/profile.json. Original native+baseline CPU3, corrected source/strict/state CPU5; raw reports pin commands, full identities, relevant input stability and reaping. Protocol-only commits during author source actors are unconsumed test changes; source/spec inputs stay frozen.",
+  "preserved_earlier_evidence": "The preceding linked ledgers retain original tested cuts/failures. This increment reruns four new handled originals and the unhandled263 control after activating receiver transfer, plus one fresh native/model existing root-CV destructor control for introduced shared source authority; original new native bytes are unchanged.",
+  "zero_credit": [
+    "The initial scalar-return7 source draft and empty-stack protocol draft were corrected before execution and retained outsideGit/in Git; neither has execution credit.",
+    "Original first four reached301 groups failed the real Arg2 owner invariant; debug-arg-count-368 reports Arg1/E1 with otherwise valid heap/descriptors. Both remain preserved; diagnostic has no native agreement credit.",
+    "Strict c-return-first8c6 and c-return-second2042 failed DSL checks before any source run; original diagnostics retained. Corrected explicit local paired scan is tested ataba294.",
+    "Dormant aba/3ac marker-stage seek failures and interrupted remainder remain preserved0; earlier source matches under that cut do not establish the C protection transfer.",
+    "ATTR07 unsafe assert WeakReference observation remains unresolved and is not rerun here."
+  ],
+  "remaining": "Owning destructor-body return cleanup is separate from selected-handler owning retval cleanup; both, abrupt/reentrant handlers, handler replacement, broader callable/signature/Throwable producers, pre-body callbacks and other destructor/GC/free contexts, assertion roots and full lifecycle/core remain partial.",
+  "recovery": "Raw reports retain original bytes, exact commands/cwd/profile/env, executed hashes, outcomes and full reap records. Restore source bytes at the recorded private path for exact fatal filenames; reused tool copies make no rebuild/portability claim."
+}

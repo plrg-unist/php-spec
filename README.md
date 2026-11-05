@@ -4758,14 +4758,22 @@ FCC owners and tail entries. Saved full exit codes authenticate abandoned source
 history after the report sets actual status 255; both saved phases stay intact.
 The Throwable retires before later active queue cleanup and inactive executor
 free, whose separate captured-child fatal can end with native status 0.
-Four new exit/throw originals and one affected normal control agree exactly;
-five independent groups pass 265 conditions (9 derived), and private strict433
-passes. See the [exit/throw review](coverage/semantics/callback-late-tick-exit-throw-review.json);
-the earlier [bailout](coverage/semantics/callback-late-tick-throw-review.json),
+Selected named NULL/scalar-return handlers instead resume ordinary cleanup.
+The entered null-C destructor frame transfers its receiver protection to an
+authenticated C-return continuation before local cleanup; both C protections
+survive handling, and ordinary release drops the inner protection after registry
+restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
+Four new handled originals and two affected controls agree; private strict433
+passes. Nine independent groups pass 508 conditions (497 reached, 11 derived).
+See the
+[handler review](coverage/semantics/callback-late-tick-handler-review.json); earlier
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
+[bailout](coverage/semantics/callback-late-tick-throw-review.json),
 [exit](coverage/semantics/callback-late-tick-exit-review.json) and
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
-Wider producers, assertion roots, changed phase completions, exception handlers,
-other throws and exits/reentry during late release remain partial.
+Wider producers, assertion roots, changed phases, abrupt/owning-result handlers,
+pre-body callbacks, owning destructor-body returns and other destructor/exit/reentry
+contexts remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
