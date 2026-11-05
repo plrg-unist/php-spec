@@ -210,6 +210,20 @@ remaining items and all later reductions, after already completed nested headers
 The compiler never receives a partial program; earlier unknown/strict directives
 contribute no compiler diagnostics when parsing fails.
 
+Nested namespace validation also belongs to compilation. The rejected-only
+parser therefore defers PHP-Parser's `checkNamespace` callback, retaining later
+completed headers after any nesting depth. Its throwing handler still stops at
+real grammar errors and other validations; the ordinary parser keeps its namespace
+checks. A later ParseError takes priority over the namespace compiler fatal, while
+the first nonliteral encoding still stops the authored warning prefix.
+The [dynamic originals](../../tests/semantics/namespace_rejected_sources.py) and
+[main originals](../../tests/semantics/namespace_main_rejected_sources.py) pass
+16 and four exact comparisons. Independent service controls cover recursive
+nesting and unchanged parser stops; 100 [reached conditions](../../tests/semantics/rejected_namespace_review_state.py)
+check real source identity, warning order, suppression, handle reuse, zero-budget
+publication and catch/finally continuation. The [review](../../coverage/semantics/rejected-namespace-review.json)
+retains their actual cuts and the corrected service fixture failure.
+
 Warning128 uses the current reporting/display state and bypasses error handlers.
 The subsequent catchable ParseError/CompileError retains a failed-source record
 and file entry without an accepted source/code/binding. Its lifecycle handle is

@@ -3189,13 +3189,17 @@ separate reporting bits and startup display. Thirty-seven source profiles and
 retains declarations inside interpolation before a later bad Unicode segment,
 including heredocs. Thirty-five source cases and 200 reached conditions pass;
 accepted lexers, the receipt schema and authored runtime rules are unchanged.
+Rejected sources also retain later headers after completed nested namespaces,
+whose static validation belongs to compilation. Sixteen dynamic and four main
+comparisons plus 100 reached conditions pass.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
 [rejected-unit review](coverage/semantics/encoding-rejection-review.json),
 [lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
 [main-rejection review](coverage/semantics/main-source-rejection-review.json),
-[rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json).
+[rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
+[namespace-phase review](coverage/semantics/rejected-namespace-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)

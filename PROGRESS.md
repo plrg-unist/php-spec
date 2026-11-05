@@ -1061,6 +1061,15 @@ The initial null-scanner eval/file heredoc failures remain zero-credit packets.
 Multibyte conversion and wider core remain partial.
 [Review](coverage/semantics/rejected-scanner-tape-review.json).
 
+COMP172 preserves completed encoding headers after nested namespace reductions
+when a later parser error rejects the unit. Namespace nesting remains a compiler
+check; genuine grammar errors and other parser validation still stop collection.
+Sixteen eval/include and four rejected-main comparisons, 24 independent service
+controls, 100 reached conditions with SL435 and two affected main regressions pass.
+The original service fixture's extra namespace diagnostic remains zero credit;
+accepted parsing and the receipt/runtime contracts are unchanged.
+[Review](coverage/semantics/rejected-namespace-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
