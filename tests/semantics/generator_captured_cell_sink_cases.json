@@ -13,7 +13,7 @@
     "id": "temporary-input-closed-generator-live-cell",
     "source": "<?php\nfunction &values96() { global $a; echo \"Y;\"; yield 0 => $a; echo \"N:\",$a,\";\"; }\nfunction sink96(&$first,$second=99) { echo \"S:\",func_num_args(),\":\",$first,\":\",$second,\";\"; $first=33; echo \"R:\",$first,\";\"; }\nfunction warning96($level,$message) { global $g,$old; $g->next(); $old=22; echo \"H:\",$old,\";\"; return true; }\n$a=11; $old=&$a; set_error_handler('warning96'); echo \"B;\"; sink96(...($g=values96())); echo \"V:\",$a,\":\",$old,\";\"; unset($g);\n",
     "source_sha256": "efb43e3aeae450532f029aab4f75a62763bc66573c2e318180dc4c76481899d1",
-    "purpose": "A materialized temporary unpack operand survives normal callback closure; the old CELL has outside owners and supplies22 after FRAME/cache release.",
+    "purpose": "A materialized temporary unpack operand survives normal callback closure; FRAME release leaves the cached CELL and outside aliases live for delivery22.",
     "expected_model": "normal",
     "native_stdout": "B;Y;N:11;H:22;S:1:22:99;R:33;V:22:22;",
     "native_stderr": "",

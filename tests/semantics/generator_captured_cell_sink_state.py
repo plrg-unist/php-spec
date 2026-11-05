@@ -78,8 +78,8 @@ def normal(source, owners, data_owners, before, after=(), done=()):
 
 
 CLOSED = ['pgenerator.PHASE = GENERATOR_CLOSED', 'pgenerator.FRAME = eps',
-          'pgenerator.REFCELL = eps', 'pgenerator.KEY = eps',
-          '$generator_unpack_reference_value(S, pgeneratorunpack) = eps']
+          'pgenerator.REFCELL = (n_raw)', 'pgenerator.KEY = (PINT 0)',
+          '$generator_unpack_reference_value(S, pgeneratorunpack) = (PINT 22)']
 CASES = {
     'replacement-string-key-keeps-captured-cell-and-positional-target': normal(
         'replacement-string-key-keeps-original-positional-target', 3, 2,
@@ -98,10 +98,10 @@ CASES = {
         done=['$heap_owners($heap_graph(S_done), HCELL n_cache) = 1',
               '$ordinary_reference_value(S_done, n_cache) = (PINT 11)']),
     'temporary-input-closed-generator-keeps-live-outside-cell': normal(
-        'temporary-input-closed-generator-live-cell', 2, 3,
+        'temporary-input-closed-generator-live-cell', 3, 3,
         [*CLOSED, 'pgeneratorunpack.INPUT = KNOWN (POBJECT n_data)']),
     'caught-producer-exception-leaves-normal-warning-and-old-cell': normal(
-        'handler-catches-producer-throw-before-cell-delivery', 2, 2,
+        'handler-catches-producer-throw-before-cell-delivery', 3, 2,
         [*CLOSED, 'S.COMPLETION = NORMAL']),
     'byval-equal-cache-ordinary-used-yield-still-delivers': {
         'source': SOURCES['byval-equal-cache-used-yield-continues-normally'],
