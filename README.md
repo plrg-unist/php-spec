@@ -249,6 +249,12 @@ before committing `Array`, and preserve replacement exceptions and interrupted
 getter assignment. Reference unwrapping transfers that owner before the Warning.
 [Independent array-return checks](coverage/semantics/output-array-return-review.json)
 cover callback traces, late flags and real release/collector dispatch.
+Ordinary Stringable returns keep the real receiver and method return through
+cleanup, then release the original object before committing converted bytes.
+Fresh conversion exceptions retain normal buffer processing and interrupt caller
+assignment; returned reference cells are read after method cleanup.
+[Object-return evidence](coverage/semantics/output-object-return-author.json)
+records defined return-Notice throws, receiver release and actual GC ownership.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

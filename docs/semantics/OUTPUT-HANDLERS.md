@@ -107,7 +107,7 @@ Callback exit,
 throwing produced-output warnings from FINAL or lower API cascades, wider owning
 warning-handler abrupt cleanup,
 automatic dispatch from other byte
-producers, wider request-end/fatal callback paths, object/resource
+producers, wider request-end/fatal callback paths, internal/custom-object/resource
 return conversion, typed variadic reception and by-reference variadic
 extra arguments, mutating buffer APIs
 during a handler, capability
@@ -119,9 +119,10 @@ cannot be invoked again by this slice. Buffered stdout diagnostics keep the
 existing Module391 boundary. Access through a retired callback receiver,
 computed-name reads and nonstatic closure creation in that context are explicitly
 refused; its metadata does not revive the object.
-Object/resource returns are refused before callee cleanup can erase the defined
-value. Referenced values retain their actual cell until conversion; admitted
-scalar and Array payloads transfer their actual owner. FINAL Array conversion
+Internal/custom-object and resource returns are refused before callee cleanup can
+erase the defined value. Referenced values retain their actual cell until
+conversion; admitted scalar, Array and standard-object payloads transfer their
+actual owner. FINAL Array and object conversion
 remains explicitly Unsupported. Full core remains partial.
 
 Primary authority is `main/output.c` handler creation/op/stack-pop/destruction and
@@ -429,5 +430,29 @@ records 20 exact originals, two checked refusal controls and two reached groups
 with 234 conditions. [Independent review](../../coverage/semantics/output-array-return-review.json)
 adds four exact originals and one SL439 front with three groups/162 conditions:
 real CELL/Array owners, pending replacement, readonly metadata, global collector
-dispatch and the affected scalar marker checks. FINAL Array and object/resource
-conversion remain Unsupported.
+dispatch and the affected scalar marker checks. That cut kept object conversion
+Unsupported; FINAL Array conversion remains outside the current slice.
+
+Module456 adds standard user-object and stdClass return conversion, using the
+existing Stringable call protocol when a method exists. The real retval and cast
+guard have separate owners. After the method returns, its actual operand survives
+ordered cleanup; referenced strings are read late. A throwing return-by-reference Notice also
+preserves the defined cell through its real frame or an unstaged owner marker.
+Conversion freezes the resulting bytes before releasing the original object.
+Missing-method Errors, fresh method exceptions and destructor replacements keep
+normal buffer processing, frozen getters and interrupted assignment.
+
+An already pending exception skips the method body but still adds and releases
+the native cast guard when the method exists. That guard decrement and actual
+retval destruction retain ordinary GC candidacy. Only authenticated reference
+wrapper handoff visits use the existing no-check hook. Retired cell witnesses
+own nothing; the release successor retains the exact raw method operand identity.
+API/VM trace sites and late PRODUCED flags follow their original output context.
+FINAL object, internal/custom casts, resources and the paused COMP88 supplied
+Throwable/comparison contracts remain separate dependencies.
+[Author evidence](../../coverage/semantics/output-object-return-author.json)
+records 18 exact normal originals, two refusal controls and four reached
+groups/420 conditions; independent acceptance is pending.
+The two Notice originals have public60 timeout cuts with zero source agreement.
+Their full-resumption owner fronts establish state evidence; source performance
+remains an unfinished validation obligation.

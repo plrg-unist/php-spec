@@ -23,6 +23,8 @@ dec $ob_array_release_scope(pstate, pdestructionoperation, pobarrayreturn) : boo
 dec $ob_array_ref_successor(pstate, ptask*, pdestructionoperation, pobrefreturn, nat) : bool
 dec $ob_array_ref_transferred(pstate, pobrefreturn, nat) : bool
 dec $ob_array_diagnostic(ptask) : pobarrayreturn?
+;; Output object conversion defines this exact successor predicate in456.
+dec $ob_object_ref_transferred(pstate, pobrefreturn, nat) : bool
 
 def $ob_normal_value(S, PARRAY n) = $config_slots_valid(S, [NAMED_SENT (KNOWN (PARRAY n))])
 def $ob_array_current(S, pobarrayreturn) = (S.CURRENT = pobarrayreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobarrayreturn.INVOKE.CALL)))
@@ -256,6 +258,36 @@ def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delet
   -- if pdestructionoperation <- S_next.DESTRUCTION.OPERATIONS
   -- if S_next.CONSTCONTEXT = S.CONSTCONTEXT
   -- if $ob_array_ref_transferred(S_next, pobrefreturn, n)
+def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HCELL pobrefreturn.CELL)
+  -- if S.TODO = (OB_USER_REF_OBJECT pobrefreturn n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_OBJECT pobrefreturn n) /\ $ob_ref_current(S, pobrefreturn)
+  -- if S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $ob_object_ref_transferred(S_next, pobrefreturn, n)
+def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HCELL pobrefreturn.CELL)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HCELL n_cell)]
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_OBJECT pobrefreturn n
+  -- if n_cell = pobrefreturn.CELL
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation <- S_next.DESTRUCTION.OPERATIONS
+  -- if S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $ob_object_ref_transferred(S_next, pobrefreturn, n)
+;; Freeing a unique modeled wrapper exposes its one payload edge as a VALUE
+;; job. That edge is the transfer already owned by CAST, not another native
+;; Object decrement. The later OBJECT_RELEASE source cannot match this clause.
+def $gc_consumed_handoff(S, S_next, pnode_decrements*) = $destruction_node_delete(pnode_decrements*, HOBJECT n)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n)]
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_OBJECT pobrefreturn n
+  -- if ~((HCELL pobrefreturn.CELL) <- S.ALLOCATIONS)
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation <- S_next.DESTRUCTION.OPERATIONS
+  -- if S_next.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if $ob_object_ref_transferred(S_next, pobrefreturn, n)
 def $gc_consumed_handoff(S, S_next, pnode*) = pnode* -- otherwise
 
 ;; Array-child release executes in the originating API/VM conversion site.

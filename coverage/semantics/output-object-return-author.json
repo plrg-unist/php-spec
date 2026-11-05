@@ -1,0 +1,69 @@
+{
+  "milestone": "OB19: Standard-object and Stringable output callback return conversion",
+  "status": "Author validation complete; independent acceptance pending",
+  "tested_parent": "d2b69b277e5c86d550eed578cdcaa88d4f34f0f3",
+  "identity": "Reports retain exact parent, checked-source bytes, fixture/raw channels/exits, full ini profile and stable before/after fingerprints. Runtime hashes below identify this candidate; metadata-only edits do not renew semantic credit.",
+  "runtime": {
+    "target": "PHP 8.5.10 CLI NTS64; project-local oracle only",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; SL, caches disabled and encountered determinism",
+    "modules": 444,
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "c3e0e77bb7e3b940ca163e812739acb109d326bdaa0b958fba7a183f704dd335",
+      "spec/semantics/301-cycle-collection.watsup": "7ff2cfd903cb8eb1f48ad8e1e2251ed840c828be2e59aa0cc65740fec94d5d3d",
+      "spec/semantics/395-output-handlers.watsup": "a7d6aa7b34138d78956bdf3e5d7352b8ffc5bf28c1292be2593eabb778f1b6cc",
+      "spec/semantics/399-output-result-cleanup.watsup": "93075429cf7a74f021a5b346cb30528ced7a7068ffa444c37e64ee8f801e0bed",
+      "spec/semantics/449-output-reference-returns.watsup": "84b0a16e543422013ab134774456ebdda816c7ae3e5c24639eb61c7571d6ec10",
+      "spec/semantics/451-output-array-returns.watsup": "10d54937319dadebab98d372bc778ffbfe20d0ef08e505adef2b325062b0e46e",
+      "spec/semantics/456-output-object-returns.watsup": "d013308be1060fe0407a611b10ec6622e15a8b6f8caac0c67fb2ec8302b39bea",
+      "spec/semantics/modules.json": "6fff168d4946a1206ba1e290ac74e7688241758ae6fa8eefcbbd31ed8924db17"
+    }
+  },
+  "authority": [
+    "main/output.c::php_output_handler_op: raw sentinel check, produced-output diagnostic, conversion and retval cleanup before result routing",
+    "Zend/zend_operators.c::_convert_to_string IS_OBJECT and zend_object_handlers.c::zend_std_cast_object_tostring: actual cast guard, used method retval, original-object release then converted result",
+    "Zend/zend_execute_API.c::zend_call_known_function and Zend/zend_objects_API.c::zend_objects_store_del: pending-call skip, ordinary guard decrement and user destructor before GC buffer removal",
+    "Zend/zend_vm_def.h RETURN_BY_REF, zend_operators.h::zend_unwrap_reference and zend_objects.c: materialized Notice result, wrapper handoff, pending replacement and trace timing"
+  ],
+  "behavior": [
+    "The actual output retval, cast guard and method return have separate owners. Normal frame seals borrow FRAME_EXIT/RESULT; unstaged returns retain the raw operand. Returned strings are read after ordered cleanup, then their cell owner retires before the original object. Readonly CELL/RETURNED identities bind real successors without adding roots.",
+    "Standard missing-method Errors, fresh method throws, weak/strict return checking and callee/destructor replacement keep normal buffer processing, frozen getters, authentic VM/API traces and interrupted caller assignment. A defined return-by-reference Notice throw preserves the real cell and Throwable through framed or unstaged cleanup.",
+    "An existing exception skips __toString body entry but still acquires/releases its native cast guard. That real decrement and original-object retirement remain ordinary GC visits. Only actual reference-wrapper transfer visits use451 no-check handoff; late PRODUCED survives for later diagnostics."
+  ],
+  "public_sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-object-conversion-19/sources-18/report.json",
+    "sha256": "6cb83e13a65f0e705daf7ca68870f2ae538ed13dfe5b200c075089a2e4b172f8",
+    "scope": "18 exact normal originals, raw stdout/stderr and exit0;2 explicit Unsupported controls retain zero native agreement. Both Notice originals are excluded from default source agreement. Final source bytes include distinct quiet-callee and one-collector cases.",
+    "passed": true,
+    "stable_fingerprints": true
+  },
+  "reached": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-object-conversion-19/state-02/report.json",
+      "sha256": "40c8e1cbe5e967a88437d651132836c1b4cb5c7f94d42103b07b3cf3c2178c76",
+      "scope": "SL444, two genuine source-reached groups/235 conditions: unique CELL/Object transfer and global no-check dispatch; exact SOURCE/CELL/current/successor/CONST negatives; real castguard and pendingSKIP2-to-1 ordinary candidate; destructor sees candidate; missing carrier refusal; retirement, fuel0 and full native-output resume.",
+      "passed": true,
+      "stable_fingerprints": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-object-conversion-19/notice-state-03/report.json",
+      "sha256": "b28aad953eccf2e15c3eee01bc519fd3007667d5fe379137cd21af89b0677178",
+      "scope": "SL444, two genuine Notice groups/185 conditions: actual framed/unstaged returned-cell and pending owners; exact PENDING/query refusals; real HCELL release and readonly consumed RETURNED identity after retirement; fuel0 and completed PH|99:N:0 resumption. State evidence only, no public source agreement.",
+      "passed": true,
+      "stable_fingerprints": true
+    }
+  ],
+  "gc_review": "gc_impl and gc_review independently clear exact3017ff2cfd9...,45110d54937... and456d013308b... plus235 report40c8e1cb....301 is unchanged. All six ARRAY/OBJECT handoff cases and identity default remain co-located451. Real SKIP/RETURN/RELEASE cannot match REF_OBJECT filters. Scope is GC source/default authority and targeted lifetime observations, not full output acceptance.",
+  "preserved": {
+    "performance": "Exact framed/unframed method-return Notice originals retain public60 timeout cuts and zero public source agreement. Their full-resumption ownership fronts are state evidence only. The original emitting known-string callee-D/T cleanup source also retains a public timeout; bounded32 reaches local D throw and bounded96 reaches OUTPUT_FAIL_WRITE carrying H/pendingE. No wrong-output claim or cap increase. Source performance remains unfinished.",
+    "source_identity": "Earlier is_bool/is_string observer originals hit unmodeled builtins; strict-identity observer replacements are distinct originals. A two-collector reference-object source retains its timeout; the distinct one-collector original removes only redundant collection and has no synthetic observer. The emitting known-return source is distinct from quiet-callee cleanup. All old bytes/native/raw cuts remain external.",
+    "repairs": "Initial parse/elaboration and stringify-site/result/trace-provider overlap failures remain zero credit. Existing168/250/391 extension points now compose through disjoint output-specific hooks. The235 front isolated only malformed REQUEST_STRING storage acceptance; output-local string_carrier_valid fixes it without172/global GC changes.",
+    "retired_boundary_manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-object-conversion-19/retired-boundaries/manifest.json",
+    "retired_control": "The retired uncaught stdClass original retains its native255/raw identity. The caught stdclass-cast-error is a distinct normal original. The array-suite replacement internal-object-result has byte-identical source to this packet's checked internal-object control, using the unchanged common runner/profile; no duplicate source agreement is claimed."
+  },
+  "reproduce": "Run python3 tests/semantics/output_object_return_sources.py --output <external>; default selects18 normal originals and2 refusal controls. Exact Notice public diagnostics remain available with --select and are not agreement gates. Run output_object_return_state.py with each of the two explicit selections in Makefile; all original source/fixture/raw commands remain in the reports.",
+  "limits": "FINAL object, internal/custom casts, resources and nonstring reference payloads after cleanup remain explicit dependencies. The COMP88 supplied-Throwable identity/constant-query/comparison crash lane is untouched; fresh new Exceptions in this output consumer are separately authorized. Public Notice performance is unfinished. No native fallback, deliberate divergence or full-core completion claim.",
+  "integration": "Module456 follows455 in this444-module cut.30 output records/tasks and451 hook cases must travel with456;301 remains unchanged. CALLER contexts stay opaque, preserving independent cache fields.",
+  "checks": "Inventory169 constructors/306 runtime obligations consistent; Python compile and git diff --check pass. Current source/state gates compile all444 modules.",
+  "cut_bridge": "The235-condition front precedes only source-table quiet-callee/default-selection edits; its two group source bytes and all runtime bytes are unchanged. The final185 Notice renewal binds the tightened string-storage guard. Final public18 and both reached fronts share the runtime hashes above; no metadata-only renewal of earlier cuts."
+}

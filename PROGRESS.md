@@ -1484,9 +1484,23 @@ decrement ordinary. Twenty author originals and two reached groups/234 condition
 pass at recorded cuts. Four independent originals and one SL439 front with three
 groups/162 conditions pass at the final cut. [Independent review](coverage/semantics/output-array-return-review.json)
 records real transfer/retirement owners, forged-source fallback and affected scalar
-marker authority. FINAL Array and object/resource conversion remain Unsupported.
+marker authority. That cut leaves FINAL Array and object/resource conversion Unsupported.
 [Author evidence](coverage/semantics/output-array-return-author.json) retains the
 failed dispatch diagnosis, scoped GC reviews and affected renewals.
+OB19 adds ordinary standard-object/Stringable output returns, retaining the
+original retval, cast receiver and actual method result through their ordered
+cleanup. Returned string cells are read late; defined return-by-reference Notice
+throws keep their cell and pending Throwable through genuine frame or unstaged
+owners. Pending exceptions skip the method body while preserving the native cast
+guard decrement and destructor-visible GC candidate. Conversion Errors, fresh
+method throws and destructor replacements preserve normal buffer processing,
+frozen getter copies and API/VM traces. Eighteen exact normal originals, two
+refusal controls and four reached groups/420 conditions pass at their recorded
+cuts. Checks and remaining FINAL/internal/custom/resource boundaries are recorded in
+[author evidence](coverage/semantics/output-object-return-author.json); independent
+acceptance is pending. The two Notice originals retain public60 timeout cuts
+with zero source agreement; their completed ownership fronts are state evidence.
+That source-performance limitation remains unfinished.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

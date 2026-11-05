@@ -155,7 +155,7 @@ syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_CONVERT | ASSERTION_PARSE | ASSERTION_REFUSE int
 syntax ptask
 syntax pshellcontext
-syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobcreation, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode, pobrefreturn, pobarrayreturn
+syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobcreation, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode, pobrefreturn, pobarrayreturn, pobobjectreturn
 syntax ptickmarker, ptickentry, ptickdispatch
 syntax pexecutorqueue, pexecutorstage, pexecutortick, pexecutortickfatal
 syntax pintegeroperation
@@ -375,6 +375,11 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | OB_USER_REF_DEPRECATED pobrefreturn | OB_USER_REF_UNWRAP pobrefreturn | OB_USER_REF_COMMIT pobrefreturn poboutput | OB_USER_REF_NOTICE pobrefreturn nat
   | OB_USER_REF_ARRAY pobrefreturn nat
   | OB_USER_ARRAY_DEPRECATED pobarrayreturn | OB_USER_ARRAY_WARN pobarrayreturn | OB_USER_ARRAY_RESULT pobarrayreturn | OB_USER_ARRAY_DONE pobarrayreturn | OB_USER_ARRAY_COMMIT pobarrayreturn poboutput
+  | OB_USER_REF_OBJECT pobrefreturn nat
+  | OB_USER_OBJECT_DEPRECATED pobobjectreturn | OB_USER_OBJECT_CAST pobobjectreturn | OB_USER_OBJECT_SKIP pobobjectreturn | OB_USER_OBJECT_STRING pobobjectreturn
+  | OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe | OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe | OB_USER_OBJECT_RETURN pobobjectreturn poperand
+  | OB_USER_OBJECT_NOTICE pobobjectreturn nat nat
+  | OB_USER_OBJECT_RELEASE pobobjectreturn poboutput | OB_USER_OBJECT_DONE pobobjectreturn poboutput | OB_USER_OBJECT_COMMIT pobobjectreturn poboutput
   | PROPERTY_COALESCE_RESULT ppropertycoalesce bool | PROPERTY_COALESCE_RV ppropertycoalesce
   | PROPERTY_COALESCE_ASSIGN_VALUE porigin pbase nat pcallcontext?
   | MAGIC_UNPACK_RESULT pcalltarget
@@ -746,6 +751,7 @@ syntax pobapimode = OB_API_RETAIN | OB_API_RESTORE | OB_API_RELEASE
 syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
 syntax pobrefreturn = { INVOKE pobinvoke, CELL nat, PENDING nat?, CALLER pcallcontext?, TAIL ptask* }
 syntax pobarrayreturn = { INVOKE pobinvoke, ARRAY nat, CELL nat?, PENDING nat?, CALLER pcallcontext?, TAIL ptask* }
+syntax pobobjectreturn = { INVOKE pobinvoke, OBJECT nat, CELL nat?, RETURNED poperand?, PENDING nat?, CALLER pcallcontext?, TAIL ptask* }
 syntax pobdeactivate = { CALL pobinvoke, BUFFERS poutputbuffer*, INDEX nat, COMPLETION pcompletion }
 syntax pexecutorqueue = { COMPLETION pcompletion, VALUE poperand, BASE pbase, ORIGIN porigin?, ENTRIES pshutdownentry*, TARGETS pshutdownproducer*, RECEIVERS nat?* }
 syntax pexecutortick = { COMPLETION pcompletion, VALUE poperand, BASE pbase, ORIGIN porigin?, ENTRY ptickentry, TAIL ptickentry*, TARGET pshutdownproducer, RECEIVER nat? }

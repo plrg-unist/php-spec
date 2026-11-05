@@ -1,0 +1,598 @@
+;; _convert_to_string retains the original object while the standard cast
+;; borrows it through __toString, then destroys that RV before installing tmp.
+dec $ob_object_current(pstate, pobobjectreturn) : bool
+dec $ob_object_metadata(pstate, ptask, pobobjectreturn) : bool
+dec $ob_object_live(pstate, ptask, pobobjectreturn) : bool
+dec $ob_object_nodes(pobobjectreturn) : pnode*
+dec $ob_object_from_ref(pobrefreturn, nat) : pobobjectreturn
+dec $ob_object_capture(pstate, pobinvoke, nat, nat?) : pstate
+dec $ob_object_begin(pstate, pobobjectreturn) : pstate
+dec $ob_object_deprecation_discard(pstate, pobobjectreturn) : pstate
+dec $ob_object_error(pstate, pobobjectreturn) : pstate
+dec $ob_object_error_return(pstate, pobobjectreturn) : pstate
+dec $ob_object_string(pstate, nat, porigin, int) : pobobjectreturn?
+dec $ob_object_site_tasks(ptask*) : pobobjectreturn?
+dec $ob_object_site_frames(pstate, pframe*) : pobobjectreturn?
+dec $ob_object_site(pstate) : pobobjectreturn?
+dec $ob_object_context(pstate, pcallcontext) : pobobjectreturn?
+dec $ob_object_context_scan(pstate, pcallcontext, pcallcontext?, pframe*) : pobobjectreturn?
+dec $ob_object_finish_string(pstate, pobobjectreturn, pvalue, nat?) : pstate
+dec $ob_object_normal_operand(pstate, poperand) : bool
+dec $ob_object_string_value(pstate, pvalue) : bool
+dec $ob_object_normal_prefix(ptask*, pdestructionframe, pobobjectreturn) : bool
+dec $ob_object_normal_seal(ptask*, pdestructionframe, pobobjectreturn) : ptask*
+dec $ob_object_notice_restore(pstate, pstate, pobobjectreturn, nat, nat) : pstate
+dec $ob_object_normal_certificate(pstate, pobobjectreturn, pdestructionframe) : bool
+dec $ob_object_normal_owner(pstate, pobobjectreturn, pdestructionframe) : bool
+dec $ob_object_normal_boundary(ptask) : bool
+dec $ob_object_commit(pstate, pobobjectreturn, poboutput) : pstate
+dec $ob_object_release_pending(pstate, pobobjectreturn, poboutput) : nat?
+dec $ob_object_pending_operations(pstate, pdestructionoperation*, pobobjectreturn, poboutput) : nat?
+dec $ob_object_pending_tasks(ptask*, pobobjectreturn, poboutput) : nat?
+dec $ob_object_pending_boundary(ptask) : bool
+dec $ob_object_release_completion(pdestructionoperation, nat?) : bool
+dec $ob_object_release_successor(ptask*, pdestructionoperation, pobobjectreturn, poboutput) : bool
+dec $ob_object_release_frames(pframe*, pdestructionoperation, pobobjectreturn, poboutput) : bool
+dec $ob_object_release_scope(pstate, pdestructionoperation, pobobjectreturn, poboutput) : bool
+dec $ob_object_ref_successor(pstate, ptask*, pdestructionoperation, pobrefreturn, nat) : bool
+dec $ob_object_skip_successor(pstate, ptask*, pdestructionoperation, pobobjectreturn) : bool
+dec $ob_object_return_successor(pstate, ptask*, pdestructionoperation, pobobjectreturn) : bool
+dec $ob_object_string_owner(pstate, pobobjectreturn) : bool
+dec $ob_object_string_owner_frames(pframe*, pobobjectreturn) : bool
+dec $ob_object_callee_cleanup_call(pstate, pdestructionframe, ptask*) : pconfigcall?
+
+def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
+def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
+def $ob_object_metadata(S, ptask, pobobjectreturn) = true
+  -- if $ob_return_context(S, ptask, pobobjectreturn.CALLER, $ob_call_site(pobobjectreturn.INVOKE.CALL), pobobjectreturn.TAIL)
+  -- if S_scope = S[.CURRENT = pobobjectreturn.CALLER][.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))][.TODO = (OB_USER_RESULT pobobjectreturn.INVOKE) :: pobobjectreturn.TAIL]
+  -- if $call_task_valid(S_scope, OB_USER_RESULT pobobjectreturn.INVOKE)
+def $ob_object_metadata(S, ptask, pobobjectreturn) = false -- otherwise
+def $ob_object_live(S, ptask, pobobjectreturn) = ($ob_object_metadata(S, ptask, pobobjectreturn) /\ $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT) /\ $destructor_pending_valid(S, pobobjectreturn.PENDING))
+def $ob_object_nodes(pobobjectreturn) = $ob_user_nodes(pobobjectreturn.INVOKE) ++ [HOBJECT pobobjectreturn.OBJECT] ++ $instance_roots(pobobjectreturn.PENDING)
+def $ob_object_from_ref(pobrefreturn, n) = {INVOKE pobrefreturn.INVOKE, OBJECT n, CELL (pobrefreturn.CELL), RETURNED eps, PENDING pobrefreturn.PENDING, CALLER pobrefreturn.CALLER, TAIL pobrefreturn.TAIL}
+
+def $task_nodes(OB_USER_REF_OBJECT pobrefreturn n) = $ob_ref_nodes(pobrefreturn)
+def $task_nodes(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = $ob_object_nodes(pobobjectreturn)
+def $task_nodes(OB_USER_OBJECT_CAST pobobjectreturn) = $ob_object_nodes(pobobjectreturn)
+def $task_nodes(OB_USER_OBJECT_SKIP pobobjectreturn) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
+;; STRINGIFY_RESULT owns the actual RV; CALL_ARGS/current receiver represents
+;; the additional native cast guard. This consumer only owns the saved FCI.
+def $task_nodes(OB_USER_OBJECT_STRING pobobjectreturn) = $ob_user_nodes(pobobjectreturn.INVOKE)
+def $task_nodes(OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) = eps
+def $task_nodes(OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) = $operand_nodes(pdestructionframe.VALUE) ++ $instance_roots(pdestructionframe.PENDING)
+def $task_nodes(OB_USER_OBJECT_RETURN pobobjectreturn poperand) = $ob_object_nodes(pobobjectreturn) ++ $operand_nodes(poperand)
+def $task_nodes(OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending) = $ob_object_nodes(pobobjectreturn) ++ [HCELL n_cell]
+def $task_nodes(OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = $ob_object_nodes(pobobjectreturn) ++ $value_nodes(poboutput.VALUE)
+def $task_nodes(OB_USER_OBJECT_DONE pobobjectreturn poboutput) = $ob_user_nodes(pobobjectreturn.INVOKE) ++ $value_nodes(poboutput.VALUE)
+def $task_nodes(OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) = $ob_user_nodes(pobobjectreturn.INVOKE) ++ $value_nodes(poboutput.VALUE) ++ $instance_roots(pobobjectreturn.PENDING)
+def $ob_user_active_task(OB_USER_REF_OBJECT pobrefreturn n) = (pobrefreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_CAST pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_SKIP pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_STRING pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_RETURN pobobjectreturn poperand) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_DONE pobobjectreturn poboutput) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_active_task(OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) = (pobobjectreturn.INVOKE.BUFFER.ID)
+def $ob_user_disabled_task(OB_USER_OBJECT_DEPRECATED pobobjectreturn, n) = (pobobjectreturn.INVOKE.BUFFER.ID = n)
+def $output_task_write(OB_USER_REF_OBJECT pobrefreturn n) = $output_call_write(pobrefreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_CAST pobobjectreturn) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_SKIP pobobjectreturn) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_STRING pobobjectreturn) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_RETURN pobobjectreturn poperand) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_DONE pobobjectreturn poboutput) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $output_task_write(OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) = $output_call_write(pobobjectreturn.INVOKE.CALL)
+def $ob_user_resume_api(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = $ob_call_api(pobobjectreturn.INVOKE.CALL)
+
+def $call_task_valid(S, OB_USER_REF_OBJECT pobrefreturn n) = ($ob_ref_valid(S, OB_USER_REF_OBJECT pobrefreturn n, pobrefreturn, true) /\ S.STORE[pobrefreturn.CELL] = DEFINED (POBJECT n) /\ $integer_standard_object_handlers(S, POBJECT n) /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+  -- if $output_selected(S, pobrefreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_DEPRECATED pobobjectreturn) = ($ob_object_live(S, OB_USER_OBJECT_DEPRECATED pobobjectreturn, pobobjectreturn) /\ pobobjectreturn.PENDING = eps /\ $ob_user_temporary(S, poutputbuffer.ID) /\ $long_and(poutputbuffer.FLAGS, 40960) = 8192)
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn) = ($ob_object_live(S, OB_USER_OBJECT_CAST pobobjectreturn, pobobjectreturn) /\ $long_and(poutputbuffer.FLAGS, 40960) = 0)
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn) = ($ob_object_live(S, OB_USER_OBJECT_STRING pobobjectreturn, pobobjectreturn) /\ $ob_object_string_owner(S, pobobjectreturn) /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_SKIP pobobjectreturn) = ($ob_object_live(S, OB_USER_OBJECT_SKIP pobobjectreturn, pobobjectreturn) /\ pobobjectreturn.PENDING =/= eps /\ pobobjectreturn.RETURNED = eps /\ $stringable_instance(S, pobobjectreturn.OBJECT) /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_RETURN pobobjectreturn poperand) = ($ob_object_live(S, OB_USER_OBJECT_RETURN pobobjectreturn poperand, pobobjectreturn) /\ pobobjectreturn.RETURNED = (poperand) /\ $ob_object_normal_operand(S, poperand) /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending) = ($ob_object_live(S, OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending, pobobjectreturn) /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = (REFERENCE n_cell) /\ $call_reference_operand_valid(S, REFERENCE n_cell) /\ $throwable_live(S, n_pending))
+def $call_task_valid(S, OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = ($ob_object_live(S, OB_USER_OBJECT_RELEASE pobobjectreturn poboutput, pobobjectreturn) /\ $ob_user_output_valid(S, poboutput) /\ $ob_object_string_value(S, poboutput.VALUE) /\ $string_bytes(poboutput.VALUE) = (poboutput.BYTES) /\ ~poboutput.FAILED /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_DONE pobobjectreturn poboutput) = ($ob_object_metadata(S, OB_USER_OBJECT_DONE pobobjectreturn poboutput, pobobjectreturn) /\ (pobobjectreturn.PENDING = eps \/ $ob_object_release_pending(S, pobobjectreturn, poboutput) =/= eps) /\ $ob_user_output_valid(S, poboutput) /\ $ob_object_string_value(S, poboutput.VALUE) /\ $string_bytes(poboutput.VALUE) = (poboutput.BYTES) /\ ~poboutput.FAILED /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $call_task_valid(S, OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) = ($ob_object_metadata(S, OB_USER_OBJECT_COMMIT pobobjectreturn poboutput, pobobjectreturn) /\ $destructor_pending_valid(S, pobobjectreturn.PENDING) /\ $ob_user_output_valid(S, poboutput) /\ $ob_object_string_value(S, poboutput.VALUE) /\ $string_bytes(poboutput.VALUE) = (poboutput.BYTES) /\ ~poboutput.FAILED /\ ~$ob_user_disabled(poutputbuffer))
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+
+def $ob_user_nonscalar_return(S, pobinvoke, POBJECT n) = $ob_object_capture(S, pobinvoke, n, eps) -- if $integer_standard_object_handlers(S, POBJECT n)
+def $ob_ref_nonscalar_return(S, pobrefreturn, POBJECT n) = S[.TODO = (OB_USER_REF_OBJECT pobrefreturn n) :: pobrefreturn.TAIL]
+  -- if $integer_standard_object_handlers(S, POBJECT n)
+  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL)
+def $ob_ref_nonscalar_return(S, pobrefreturn, POBJECT n) = S[.COMPLETION = UNSUPPORTED "FINAL object output-handler return conversion"]
+  -- if $integer_standard_object_handlers(S, POBJECT n)
+  -- if $output_drain_final_call(pobrefreturn.INVOKE.CALL)
+rule PhpStep/ob-reference-object-transfer: S ~> S[.TODO = (OB_USER_OBJECT_CAST $ob_object_from_ref(pobrefreturn, n)) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_REF_OBJECT pobrefreturn n) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_REF_OBJECT pobrefreturn n)
+  -- if $ob_ref_current(S, pobrefreturn)
+rule PhpStep/ob-object-normal-pending: S ~> $ob_object_capture(S, pobinvoke, n, pdestructionframe.PENDING)
+  -- if S.TODO = (OB_USER_NORMAL_PENDING pobinvoke pdestructionframe) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_NORMAL_PENDING pobinvoke pdestructionframe)
+  -- if pdestructionframe.VALUE = KNOWN (POBJECT n)
+def $ob_object_capture(S, pobinvoke, n, n_pending?) = $ob_object_begin(S[.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pobobjectreturn)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if pobobjectreturn = {INVOKE pobinvoke, OBJECT n, CELL eps, RETURNED eps, PENDING n_pending?, CALLER S.CURRENT, TAIL ptask_tail*}
+def $ob_object_begin(S, pobobjectreturn) = S[.COMPLETION = UNSUPPORTED "FINAL object output-handler return conversion"] -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+def $ob_object_begin(S, pobobjectreturn) = S
+  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
+def $ob_object_begin(S, pobobjectreturn) = $error_dispatch(S[.TODO = (OB_USER_OBJECT_DEPRECATED pobobjectreturn) :: pobobjectreturn.TAIL][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], 8192, $ob_user_deprecation(pobobjectreturn.INVOKE), $ob_call_line(pobobjectreturn.INVOKE.CALL), $ob_call_event(pobobjectreturn.INVOKE.CALL, "Deprecated", $ob_user_deprecation(pobobjectreturn.INVOKE), $ob_call_line(pobobjectreturn.INVOKE.CALL)), OB_USER_OBJECT_DEPRECATED pobobjectreturn)
+  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if pobobjectreturn.PENDING = eps
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+def $ob_object_begin(S, pobobjectreturn) = $ob_normal_deprecation(S, pobobjectreturn.INVOKE)
+  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if pobobjectreturn.PENDING =/= eps
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
+rule PhpStep/ob-object-deprecated: S ~> S[.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])]
+  -- if S.TODO = (OB_USER_OBJECT_DEPRECATED pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_DEPRECATED pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = OB_USER_OBJECT_DEPRECATED pobobjectreturn
+  -- if $call_task_valid(S, OB_USER_OBJECT_DEPRECATED pobobjectreturn)
+  -- if perrorcall.SITE = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if perrorcall.LINE = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.MESSAGE = $ob_user_deprecation(pobobjectreturn.INVOKE)
+  -- if perrorcall.EVENT = $ob_call_event(pobobjectreturn.INVOKE.CALL, "Deprecated", perrorcall.MESSAGE, perrorcall.LINE)
+def $error_read_discard(S, OB_USER_OBJECT_DEPRECATED pobobjectreturn) = $ob_object_deprecation_discard(S, pobobjectreturn)
+def $return_discard(S, OB_USER_OBJECT_DEPRECATED pobobjectreturn) = $ob_object_deprecation_discard(S, pobobjectreturn)
+def $ob_object_deprecation_discard(S, pobobjectreturn) = S[.TODO = (OB_USER_OBJECT_CAST pobobjectreturn[.PENDING = (n)]) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])]
+  -- if S.TODO = (THROW_SEARCH n) :: pobobjectreturn.TAIL
+  -- if S_proof = S[.TODO = (OB_USER_OBJECT_DEPRECATED pobobjectreturn) :: pobobjectreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_OBJECT_DEPRECATED pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if $throwable_live(S, n)
+  -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
+
+rule PhpStep/ob-object-cast-call: S ~> $user_string_begin(S, pobobjectreturn.OBJECT, $ob_call_site(pobobjectreturn.INVOKE.CALL), $ob_call_line(pobobjectreturn.INVOKE.CALL), OB_USER_OBJECT_STRING pobobjectreturn, ptask_tail*)
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING = eps
+  -- if $stringable_instance(S, pobobjectreturn.OBJECT)
+rule PhpStep/ob-object-cast-pending: S ~> S[.TODO = (OB_USER_OBJECT_SKIP pobobjectreturn) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING =/= eps
+  -- if $stringable_instance(S, pobobjectreturn.OBJECT)
+rule PhpStep/ob-object-cast-pending-no-method: S ~> S[.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn $ob_user_output(S, PSTRING eps)) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING =/= eps
+  -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
+rule PhpStep/ob-object-cast-skip: S ~> S[.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn $ob_user_output(S, PSTRING eps)) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_OBJECT_SKIP pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_SKIP pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+rule PhpStep/ob-object-cast-error: S ~> $ob_object_error_return($ob_object_error(S, pobobjectreturn), pobobjectreturn)
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING = eps
+  -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
+def $ob_object_error(S, pobobjectreturn) = $config_error(S, pconfigcall, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"))
+  -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
+def $ob_object_error(S, pobobjectreturn) = $throwable_allocate(S, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"), $ob_call_line(pobobjectreturn.INVOKE.CALL), $eval_exception_trace(S))
+  -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = eps
+def $ob_object_error_return(S, pobobjectreturn) = S[.COMPLETION = NORMAL][.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn[.PENDING = (n)] $ob_user_output(S, PSTRING eps)) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = THROWING n
+def $ob_object_error_return(S, pobobjectreturn) = S -- otherwise
+
+def $stringify_source(S, porigin, z, OB_USER_OBJECT_STRING pobobjectreturn) = ($ob_object_current(S, pobobjectreturn) /\ porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL) /\ z = $ob_call_line(pobobjectreturn.INVOKE.CALL) /\ $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn))
+def $stringify_consumer_receiver_valid(S, n, OB_USER_OBJECT_STRING pobobjectreturn) = (n = pobobjectreturn.OBJECT /\ $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn))
+def $ob_object_string(S, n, porigin, z) = (pobobjectreturn)
+  -- if $ob_object_site_tasks(S.TODO) = (pobobjectreturn)
+  -- if n = pobobjectreturn.OBJECT
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+def $ob_object_string(S, n, porigin, z) = eps -- otherwise
+def $stringify_result_valid(S, n, porigin, z) = true -- if $ob_object_string(S, n, porigin, z) =/= eps
+def $ordinary_internal_generic_result_valid(S, n, porigin, z) = false
+  -- if $ob_object_site_tasks(S.TODO) = (pobobjectreturn)
+  -- if $ordinary_internal_result_source(S, n, porigin, z, S.TODO)
+def $ob_object_site_tasks((STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*) = (pobobjectreturn)
+  -- if n = pobobjectreturn.OBJECT
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if ptask_tail* = pobobjectreturn.TAIL
+def $ob_object_site_tasks(ptask :: ptask_tail*) = $ob_object_site_tasks(ptask_tail*) -- if ~$stringify_task_marker(ptask)
+def $ob_object_site_tasks(ptask*) = eps -- otherwise
+def $ob_object_string_owner_frames(pframe :: pframe_tail*, pobobjectreturn) = ((pframe.CONTEXT = pobobjectreturn.CALLER /\ pframe.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)) /\ $ob_object_site_tasks(pframe.TODO) = (pobobjectreturn)) \/ $ob_object_string_owner_frames(pframe_tail*, pobobjectreturn))
+def $ob_object_string_owner_frames(eps, pobobjectreturn) = false
+def $ob_object_string_owner(S, pobobjectreturn) = (($ob_object_current(S, pobobjectreturn) /\ $ob_object_site_tasks(S.TODO) = (pobobjectreturn)) \/ $ob_object_string_owner_frames(S.FRAMES, pobobjectreturn))
+def $ob_object_site_frames(S, pframe :: pframe_tail*) = (pobobjectreturn)
+  -- if $ob_object_site_tasks(pframe.TODO) = (pobobjectreturn)
+  -- if pframe.CONTEXT = pobobjectreturn.CALLER
+  -- if pframe.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))
+  -- if $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn)
+def $ob_object_site_frames(S, pframe :: pframe_tail*) = $ob_object_site_frames(S, pframe_tail*) -- if $ob_object_site_tasks(pframe.TODO) = eps
+def $ob_object_site_frames(S, pframe*) = eps -- otherwise
+def $ob_object_site(S) = (pobobjectreturn) -- if $ob_object_site_tasks(S.TODO) = (pobobjectreturn) -- if $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn)
+def $ob_object_site(S) = $ob_object_site_frames(S, S.FRAMES) -- if $ob_object_site_tasks(S.TODO) = eps
+def $ob_object_site(S) = eps -- otherwise
+def $ordinary_internal_string_site_valid(S, porigin, z) = true
+  -- if $ob_object_site(S) = (pobobjectreturn)
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $ob_object_site_tasks(pframe.TODO) =/= eps
+def $ob_object_finish_string(S, pobobjectreturn, pvalue_text, n?) = S[.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn[.PENDING = n?] $ob_user_output(S, pvalue_text)) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ob_object_string_value(S, pvalue_text)
+def $return_discard(S, STRINGIFY_RESULT n porigin z) = $ob_object_finish_string(S, pobobjectreturn, PSTRING eps, (n_pending))
+  -- if S.TODO = (THROW_SEARCH n_pending) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if S_proof = S[.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL]
+  -- if $ob_object_string(S_proof, n, porigin, z) = (pobobjectreturn)
+  -- if $throwable_live(S, n_pending)
+
+;; Method contexts authenticate the actual immediately following consumer.
+def $ob_object_context(S, pcallcontext) = $ob_object_context_scan(S, pcallcontext, S.CURRENT, S.FRAMES)
+def $ob_object_context_scan(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = (pobobjectreturn)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if pcallcontext.TARGET = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if pcallcontext.LINE = z
+  -- if pcallcontext.ARGC = 0
+  -- if pcallcontext.EXTRA = eps
+  -- if pcallcontext.NAMED = eps
+  -- if pcallcontext.WRAPPER = eps
+  -- if pcallcontext.HOLES = eps
+  -- if $stringify_method_selected(S, n, porigin_method, porigin)
+  -- if S_scope = $parameter_string_frame_scope(S, pframe, pframe_tail*)
+  -- if $ob_object_string(S_scope, n, porigin, z) = (pobobjectreturn)
+def $ob_object_context_scan(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $ob_object_context_scan(S, pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
+def $ob_object_context_scan(S, pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
+def $reference_callback_used(S, pcallcontext) = (true) -- if $ob_object_context(S, pcallcontext) =/= eps
+def $error_context_trigger(S, pcallcontext) = (pconfigcall) -- if $ob_object_context(S, pcallcontext) = (pobobjectreturn) -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
+
+;; Seal only an actually defined method return before ordered CV/receiver
+;; cleanup. The seal is readonly; FRAME_EXIT still owns the returned operand.
+def $ob_object_string_value(S, PSTRING n*) = $startup_bytes(n*)
+def $ob_object_string_value(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
+def $ob_object_string_value(S, pvalue) = false -- otherwise
+def $ob_object_normal_operand(S, KNOWN pvalue) = $ob_object_string_value(S, pvalue)
+def $ob_object_normal_operand(S, REFERENCE n) = $call_reference_operand_valid(S, REFERENCE n)
+def $ob_object_normal_operand(S, poperand) = false -- otherwise
+def $ob_object_normal_prefix((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionframe, pobobjectreturn) = $ob_object_normal_prefix(ptask_tail*, pdestructionframe, pobobjectreturn)
+def $ob_object_normal_prefix((DESTRUCTOR_FRAME_EXIT pdestructionframe_actual) :: (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*, pdestructionframe, pobobjectreturn) = (pdestructionframe_actual = pdestructionframe /\ n = pobobjectreturn.OBJECT /\ porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL) /\ z = $ob_call_line(pobobjectreturn.INVOKE.CALL) /\ ptask_tail* = pobobjectreturn.TAIL)
+def $ob_object_normal_prefix(ptask*, pdestructionframe, pobobjectreturn) = false -- otherwise
+def $ob_object_normal_seal((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionframe, pobobjectreturn) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $ob_object_normal_seal(ptask_tail*, pdestructionframe, pobobjectreturn)
+def $ob_object_normal_seal((DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*, pdestructionframe, pobobjectreturn) = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe[.PENDING = eps]) :: ptask_tail*
+def $generator_frame_release(S_before, S_after) = S_after[.TODO = $ob_object_normal_seal(S_after.TODO, pdestructionframe, pobobjectreturn)]
+  -- if S_before.COMPLETION = NORMAL
+  -- if S_before.TODO = eps
+  -- if $ob_object_normal_operand(S_before, S_before.RESULT)
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_object_context(S_before, pcallcontext) = (pobobjectreturn)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if S_after.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe.PENDING = eps
+  -- if pdestructionframe.VALUE = S_before.RESULT
+  -- if pdestructionframe.FUNCTION = pcallcontext.FUNCTION
+  -- if pdestructionframe.CALLER = pframe.CONTEXT
+  -- if pdestructionframe.ORIGIN = pframe.ORIGIN
+  -- if pdestructionframe.CONSTCONTEXT = pframe.CONSTCONTEXT
+  -- if S_after.CURRENT = pframe.CONTEXT
+  -- if S_after.ORIGIN = pframe.ORIGIN
+  -- if $ob_object_normal_prefix(S_after.TODO, pdestructionframe, pobobjectreturn)
+def $generator_frame_release(S_before, S_after) = S_after[.TODO = (OB_USER_OBJECT_RETURN pobobjectreturn[.RETURNED = (S_before.RESULT)] S_before.RESULT) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_before.COMPLETION = NORMAL
+  -- if S_before.TODO = eps
+  -- if $ob_object_normal_operand(S_before, S_before.RESULT)
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_object_context(S_before, pcallcontext) = (pobobjectreturn)
+  -- if S_after.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
+  -- if S_after.RESULT = S_before.RESULT
+  -- if $ob_object_current(S_after, pobobjectreturn)
+
+;; RETURN_BY_REF materializes its defined RV even if the Only-variable Notice
+;; handler throws. Capture the genuine exit before throw_frame_resume clears it.
+def $generator_frame_release(S_before, S_after) = $ob_object_notice_restore(S_before, S_after, pobobjectreturn, n_cell, n_pending)
+  -- if S_before.COMPLETION = NORMAL
+  -- if S_before.TODO = [THROW_SEARCH n_pending]
+  -- if S_before.RESULT = REFERENCE n_cell
+  -- if $call_reference_operand_valid(S_before, REFERENCE n_cell)
+  -- if $throwable_live(S_before, n_pending)
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if $ob_object_context(S_before, pcallcontext) = (pobobjectreturn)
+  -- if S_before.ORIGIN = (pcallcontext.FUNCTION)
+  -- if S_before.FRAMES = pframe :: pframe_tail*
+  -- if S_after.CURRENT = pframe.CONTEXT
+  -- if S_after.ORIGIN = pframe.ORIGIN
+def $ob_object_notice_restore(S_before, S_after, pobobjectreturn, n_cell, n_pending) = S_after[.TODO = $ob_object_normal_seal(S_after.TODO, pdestructionframe, pobobjectreturn)]
+  -- if S_before.CURRENT = (pcallcontext)
+  -- if S_after.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe.VALUE = REFERENCE n_cell
+  -- if pdestructionframe.PENDING = (n_pending)
+  -- if pdestructionframe.FUNCTION = pcallcontext.FUNCTION
+  -- if pdestructionframe.CALLER = S_after.CURRENT
+  -- if pdestructionframe.ORIGIN = S_after.ORIGIN
+  -- if pdestructionframe.CONSTCONTEXT = S_after.CONSTCONTEXT
+  -- if $ob_object_normal_prefix(S_after.TODO, pdestructionframe, pobobjectreturn)
+def $ob_object_notice_restore(S_before, S_after, pobobjectreturn, n_cell, n_pending) = S_after[.TODO = (OB_USER_OBJECT_NOTICE pobobjectreturn[.RETURNED = (REFERENCE n_cell)] n_cell n_pending) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_after.TODO = (STRINGIFY_RESULT n_object porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if n_object = pobobjectreturn.OBJECT
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if S_after.RESULT = REFERENCE n_cell
+def $return_discard(S, OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending) = S[.TODO = (OB_USER_OBJECT_RETURN pobobjectreturn[.PENDING = (n_pending)] (REFERENCE n_cell)) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_pending) :: pobobjectreturn.TAIL
+  -- if S_proof = S[.TODO = (THROW_SEARCH n_pending) :: (OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending) :: pobobjectreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending)
+  -- if $ob_object_current(S, pobobjectreturn)
+def $ob_object_normal_boundary(DESTRUCTOR_FRAME_EXIT pdestructionframe) = true
+def $ob_object_normal_boundary(OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) = true
+def $ob_object_normal_boundary(ptask) = false -- otherwise
+def $ob_object_normal_owner(S, pobobjectreturn, pdestructionframe) = true -- if S.RESULT = pdestructionframe.VALUE
+def $ob_object_normal_owner(S, pobobjectreturn, pdestructionframe) = true
+  -- if S.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe_actual) :: (OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) :: ptask_tail*
+  -- if pdestructionframe_actual[.PENDING = eps] = pdestructionframe
+def $ob_object_normal_owner(S, pobobjectreturn, pdestructionframe) = $ob_object_normal_owner(S[.TODO = ptask_tail*], pobobjectreturn, pdestructionframe)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$ob_object_normal_boundary(ptask)
+def $ob_object_normal_owner(S, pobobjectreturn, pdestructionframe) = false -- otherwise
+def $ob_object_normal_certificate(S, pobobjectreturn, pdestructionframe) = true
+  -- if $ob_object_live(S, OB_USER_OBJECT_STRING pobobjectreturn, pobobjectreturn)
+  -- if pobobjectreturn.PENDING = eps
+  -- if pdestructionframe.PENDING = eps
+  -- if pdestructionframe.CALLER = pobobjectreturn.CALLER
+  -- if pdestructionframe.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))
+  -- if pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pdestructionframe.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if $ob_object_normal_operand(S, pdestructionframe.VALUE)
+def $ob_object_normal_certificate(S, pobobjectreturn, pdestructionframe) = false -- otherwise
+def $call_task_valid(S, OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) = ($ob_object_normal_certificate(S, pobobjectreturn, pdestructionframe) /\ $ob_object_normal_owner(S, pobobjectreturn, pdestructionframe))
+def $call_task_valid(S, OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) = ($ob_object_normal_certificate(S, pobobjectreturn, pdestructionframe[.PENDING = eps]) /\ $throwable_live(S, n) /\ $ob_return_context(S, OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe, pobobjectreturn.CALLER, $ob_call_site(pobobjectreturn.INVOKE.CALL), (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) $ob_call_line(pobobjectreturn.INVOKE.CALL)) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL))
+  -- if pdestructionframe.PENDING = (n)
+def $call_task_valid(S, OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) = false -- if pdestructionframe.PENDING = eps
+rule PhpStep/ob-object-normal-result: S ~> S[.TODO = (OB_USER_OBJECT_RETURN pobobjectreturn[.RETURNED = (pdestructionframe.VALUE)] pdestructionframe.VALUE) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) :: (STRINGIFY_RESULT n_object porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if n_object = pobobjectreturn.OBJECT
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if $call_task_valid(S, OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe)
+  -- if S.RESULT = pdestructionframe.VALUE
+def $destructor_frame_throw_finish(S, pdestructionframe, n, (OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe_success) :: ptask_native*) = S[.TODO = (OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) :: ptask_native*][.DESTRUCTION.FRAMES = pdestructionframe_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe_success.PENDING = eps
+  -- if pdestructionframe = pdestructionframe_success[.PENDING = (n)]
+  -- if $call_task_valid(S, OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe_success)
+rule PhpStep/ob-object-pending-return: S ~> S[.TODO = (OB_USER_OBJECT_RETURN pobobjectreturn[.RETURNED = (pdestructionframe.VALUE)][.PENDING = pdestructionframe.PENDING] pdestructionframe.VALUE) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) :: (STRINGIFY_RESULT n_object porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if n_object = pobobjectreturn.OBJECT
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if $call_task_valid(S, OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe)
+  -- if $ob_object_current(S, pobobjectreturn)
+rule PhpStep/ob-object-return-string: S ~> $ob_object_finish_string(S_read, pobobjectreturn, pvalue_text, pobobjectreturn.PENDING)
+  -- if S.TODO = (OB_USER_OBJECT_RETURN pobobjectreturn poperand) :: ptask_native*
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if $call_task_valid(S, OB_USER_OBJECT_RETURN pobobjectreturn poperand)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if S_read = $resolve_at(S, poperand, $ob_call_line(pobobjectreturn.INVOKE.CALL))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_text
+  -- if $ob_object_string_value(S_read, pvalue_text)
+rule PhpStep/ob-object-return-nonstring: S ~> S[.COMPLETION = UNSUPPORTED "non-string or invalid reference __toString result after output cast cleanup"]
+  -- if S.TODO = (OB_USER_OBJECT_RETURN pobobjectreturn poperand) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_RETURN pobobjectreturn poperand)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if S_read = $resolve(S, poperand)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_text
+  -- if ~$ob_object_string_value(S_read, pvalue_text)
+
+rule PhpStep/ob-object-release: S ~> S[.TODO = (OB_USER_OBJECT_DONE pobobjectreturn poboutput) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_RELEASE pobobjectreturn poboutput)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING = eps
+rule PhpStep/ob-object-release-pending: S ~> S[.TODO = (OB_USER_OBJECT_DONE pobobjectreturn poboutput) :: ptask_tail*][.COMPLETION = THROWING n][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_RELEASE pobobjectreturn poboutput)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING = (n)
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_RELEASE pobobjectreturn poboutput)
+  -- if pobobjectreturn.PENDING = (n)
+  -- if S_next.TODO = (OB_USER_OBJECT_DONE pobobjectreturn poboutput) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n
+  -- if S_next.RESULT = KNOWN PNULL
+  -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
+rule PhpStep/ob-object-done: S ~> S[.TODO = (OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) :: ptask_tail*]
+  -- if S.TODO = (OB_USER_OBJECT_DONE pobobjectreturn poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_DONE pobobjectreturn poboutput)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING = eps
+def $return_discard(S, OB_USER_OBJECT_DONE pobobjectreturn poboutput) = S[.TODO = (OB_USER_OBJECT_COMMIT pobobjectreturn[.PENDING = (n)] poboutput) :: pobobjectreturn.TAIL]
+  -- if S.TODO = (THROW_SEARCH n) :: pobobjectreturn.TAIL
+  -- if S_proof = S[.TODO = (THROW_SEARCH n) :: (OB_USER_OBJECT_DONE pobobjectreturn poboutput) :: pobobjectreturn.TAIL]
+  -- if $call_task_valid(S_proof, OB_USER_OBJECT_DONE pobobjectreturn poboutput)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if $throwable_live(S, n)
+rule PhpStep/ob-object-commit: S ~> $ob_object_commit(S, pobobjectreturn, poboutput)
+  -- if S.TODO = (OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_COMMIT pobobjectreturn poboutput)
+  -- if $ob_object_current(S, pobobjectreturn)
+def $ob_object_commit(S, pobobjectreturn, poboutput) = $ob_user_commit(S, pobobjectreturn.INVOKE[.SENT = eps], poboutput) -- if pobobjectreturn.PENDING = eps
+def $ob_object_commit(S, pobobjectreturn, poboutput) = $ob_deprecation_commit(S, pobobjectreturn.INVOKE[.SENT = eps], poboutput, n) -- if pobobjectreturn.PENDING = (n)
+
+;; DONE borrows the old object/exception; the real operation or THROW owns the
+;; resumed Throwable until COMMIT receives it, including the no-destructor path.
+def $ob_object_release_pending(S, pobobjectreturn, poboutput) = $eager_operation_pending(S) -- if $eager_operation_pending(S) =/= eps
+def $ob_object_release_pending(S, pobobjectreturn, poboutput) = n? -- if $eager_operation_pending(S) = eps -- if n? = $ob_object_pending_operations(S, S.DESTRUCTION.OPERATIONS, pobobjectreturn, poboutput) -- if n? =/= eps
+def $ob_object_release_pending(S, pobobjectreturn, poboutput) = $ob_object_pending_tasks(S.TODO, pobobjectreturn, poboutput) -- if $eager_operation_pending(S) = eps -- if $ob_object_pending_operations(S, S.DESTRUCTION.OPERATIONS, pobobjectreturn, poboutput) = eps
+def $ob_object_pending_operations(S, pdestructionoperation :: pdestructionoperation_tail*, pobobjectreturn, poboutput) = pdestructionoperation.PENDING
+  -- if pdestructionoperation.SOURCE = OB_USER_OBJECT_RELEASE pobobjectreturn poboutput
+  -- if $ob_object_release_scope(S, pdestructionoperation, pobobjectreturn, poboutput)
+def $ob_object_pending_operations(S, pdestructionoperation :: pdestructionoperation_tail*, pobobjectreturn, poboutput) = $ob_object_pending_operations(S, pdestructionoperation_tail*, pobobjectreturn, poboutput)
+  -- if pdestructionoperation.SOURCE =/= OB_USER_OBJECT_RELEASE pobobjectreturn poboutput \/ ~$ob_object_release_scope(S, pdestructionoperation, pobobjectreturn, poboutput)
+def $ob_object_pending_operations(S, eps, pobobjectreturn, poboutput) = eps
+def $ob_object_pending_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (OB_USER_OBJECT_DONE pobobjectreturn poboutput) :: ptask_tail*, pobobjectreturn, poboutput) = pdestructionoperation.PENDING
+  -- if pdestructionoperation.SOURCE = OB_USER_OBJECT_RELEASE pobobjectreturn poboutput
+  -- if ptask_tail* = pobobjectreturn.TAIL
+def $ob_object_pending_boundary(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $ob_object_pending_boundary(ptask) = false -- otherwise
+def $ob_object_pending_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*, pobobjectreturn, poboutput) = $ob_object_pending_tasks(ptask_tail*, pobobjectreturn, poboutput) -- if pdestructionoperation.SOURCE =/= OB_USER_OBJECT_RELEASE pobobjectreturn poboutput
+def $ob_object_pending_tasks(ptask :: ptask_tail*, pobobjectreturn, poboutput) = $ob_object_pending_tasks(ptask_tail*, pobobjectreturn, poboutput) -- if ~$ob_object_pending_boundary(ptask)
+def $ob_object_pending_tasks(ptask*, pobobjectreturn, poboutput) = eps -- otherwise
+def $ob_object_release_completion(pdestructionoperation, eps) = (pdestructionoperation.COMPLETION = NORMAL)
+def $ob_object_release_completion(pdestructionoperation, (n)) = (pdestructionoperation.COMPLETION = THROWING n)
+def $ob_object_release_successor((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) = $ob_object_release_successor(ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput)
+def $ob_object_release_successor((DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) = $ob_object_release_successor(ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $ob_object_release_successor((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) = $ob_object_release_successor(ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $ob_object_release_successor((DESTRUCTOR_WARNING pdestructorcall) :: ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) = $ob_object_release_successor(ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) -- if pdestructorcall.OPERATION = (pdestructionoperation)
+def $ob_object_release_successor((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (OB_USER_OBJECT_DONE pobobjectreturn_actual poboutput_actual) :: ptask_tail*, pdestructionoperation, pobobjectreturn, poboutput) = (pdestructionoperation_actual = pdestructionoperation /\ pobobjectreturn_actual = pobobjectreturn /\ poboutput_actual = poboutput /\ ptask_tail* = pobobjectreturn.TAIL)
+def $ob_object_release_successor(ptask*, pdestructionoperation, pobobjectreturn, poboutput) = false -- otherwise
+def $ob_object_release_frames(eps, pdestructionoperation, pobobjectreturn, poboutput) = false
+def $ob_object_release_frames(pframe :: pframe_tail*, pdestructionoperation, pobobjectreturn, poboutput) = ((pframe.CONTEXT = pobobjectreturn.CALLER /\ pframe.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)) /\ pframe.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT /\ $ob_object_release_successor(pframe.TODO, pdestructionoperation, pobobjectreturn, poboutput)) \/ $ob_object_release_frames(pframe_tail*, pdestructionoperation, pobobjectreturn, poboutput))
+def $ob_object_release_scope(S, pdestructionoperation, pobobjectreturn, poboutput) = (($ob_object_current(S, pobobjectreturn) /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT /\ $ob_object_release_successor(S.TODO, pdestructionoperation, pobobjectreturn, poboutput)) \/ $ob_object_release_frames(S.FRAMES, pdestructionoperation, pobobjectreturn, poboutput))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_object_metadata(S, OB_USER_OBJECT_DONE pobobjectreturn poboutput, pobobjectreturn) /\ pdestructionoperation.CALLER = pobobjectreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)) /\ $ob_object_release_scope(S, pdestructionoperation, pobobjectreturn, poboutput) /\ $ob_object_release_completion(pdestructionoperation, pobobjectreturn.PENDING) /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps /\ $ob_user_output_valid(S, poboutput) /\ $ob_object_string_value(S, poboutput.VALUE) /\ $string_bytes(poboutput.VALUE) = (poboutput.BYTES) /\ ~poboutput.FAILED)
+  -- if pdestructionoperation.SOURCE = OB_USER_OBJECT_RELEASE pobobjectreturn poboutput
+
+def $ob_object_ref_successor(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobrefreturn, n) = $ob_object_ref_successor(S, ptask_tail*, pdestructionoperation, pobrefreturn, n)
+def $ob_object_ref_successor(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*, pdestructionoperation, pobrefreturn, n) = (pdestructionoperation_actual = pdestructionoperation /\ pobobjectreturn = $ob_object_from_ref(pobrefreturn, n) /\ ptask_tail* = pobrefreturn.TAIL /\ $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn))
+def $ob_object_ref_successor(S, ptask*, pdestructionoperation, pobrefreturn, n) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_ref_current(S, pobrefreturn) /\ pdestructionoperation.CALLER = pobrefreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobrefreturn.INVOKE.CALL)) /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps /\ $ob_object_ref_successor(S, S.TODO, pdestructionoperation, pobrefreturn, n))
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_OBJECT pobrefreturn n
+def $ob_object_ref_transferred(S, pobrefreturn, n) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $ob_ref_current(S, pobrefreturn)
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: pobrefreturn.TAIL
+  -- if pobobjectreturn = $ob_object_from_ref(pobrefreturn, n)
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+def $ob_object_ref_transferred(S, pobrefreturn, n) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $ob_ref_current(S, pobrefreturn)
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = OB_USER_REF_OBJECT pobrefreturn n
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+def $ob_object_ref_transferred(S, pobrefreturn, n) = false -- otherwise
+def $ob_object_skip_successor(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobobjectreturn) = $ob_object_skip_successor(S, ptask_tail*, pdestructionoperation, pobobjectreturn)
+def $ob_object_skip_successor(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (OB_USER_OBJECT_RELEASE pobobjectreturn_actual poboutput) :: ptask_tail*, pdestructionoperation, pobobjectreturn) = (pdestructionoperation_actual = pdestructionoperation /\ pobobjectreturn_actual = pobobjectreturn /\ ptask_tail* = pobobjectreturn.TAIL /\ $call_task_valid(S, OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) /\ poboutput.VALUE = PSTRING eps)
+def $ob_object_skip_successor(S, ptask*, pdestructionoperation, pobobjectreturn) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_object_current(S, pobobjectreturn) /\ pdestructionoperation.CALLER = pobobjectreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)) /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps /\ pobobjectreturn.PENDING =/= eps /\ pobobjectreturn.RETURNED = eps /\ $stringable_instance(S, pobobjectreturn.OBJECT) /\ $ob_object_skip_successor(S, S.TODO, pdestructionoperation, pobobjectreturn))
+  -- if pdestructionoperation.SOURCE = OB_USER_OBJECT_SKIP pobobjectreturn
+def $ob_object_return_successor(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pobobjectreturn) = $ob_object_return_successor(S, ptask_tail*, pdestructionoperation, pobobjectreturn)
+def $ob_object_return_successor(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_actual) :: (OB_USER_OBJECT_RELEASE pobobjectreturn_actual poboutput) :: ptask_tail*, pdestructionoperation, pobobjectreturn) = (pdestructionoperation_actual = pdestructionoperation /\ pobobjectreturn_actual = pobobjectreturn /\ ptask_tail* = pobobjectreturn.TAIL /\ $call_task_valid(S, OB_USER_OBJECT_RELEASE pobobjectreturn poboutput))
+def $ob_object_return_successor(S, ptask*, pdestructionoperation, pobobjectreturn) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_object_current(S, pobobjectreturn) /\ pdestructionoperation.CALLER = pobobjectreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)) /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps /\ pobobjectreturn.RETURNED = (poperand) /\ $ob_object_return_successor(S, S.TODO, pdestructionoperation, pobobjectreturn))
+  -- if pdestructionoperation.SOURCE = OB_USER_OBJECT_RETURN pobobjectreturn poperand
+
+def $destructor_internal_site_source(OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = ($ob_call_api(pobobjectreturn.INVOKE.CALL) =/= eps)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = OB_USER_OBJECT_RELEASE pobobjectreturn poboutput
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
+  -- if S_history = S[.CURRENT = pobobjectreturn.CALLER][.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+def $destructor_internal_site_source(ERROR_HANDLER_RESULT perrorcall) = false
+  -- if perrorcall.RESUME = OB_USER_OBJECT_DEPRECATED pobobjectreturn
+  -- if pobobjectreturn.INVOKE.CALL = OB_WRITE pobwrite
+  -- if $output_vm_source(pobwrite.CALLER)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = OB_USER_OBJECT_DEPRECATED pobobjectreturn
+  -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+
+;; The __toString frame has already returned when its ordered CV cleanup runs.
+;; API cleanup destructors retain only the genuine originating builtin suffix.
+def $ob_object_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = $ob_object_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+def $ob_object_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*) = $ob_object_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER
+  -- if pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_object_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*) = $ob_object_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER
+  -- if pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_object_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_WARNING pdestructorcall) :: ptask_tail*) = $ob_object_callee_cleanup_call(S, pdestructionframe, ptask_tail*)
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER
+  -- if pdestructorcall.ORIGIN = pdestructionframe.ORIGIN
+def $ob_object_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_FRAME_EXIT pdestructionframe_actual) :: (OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe_success) :: (STRINGIFY_RESULT n_object porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*) = (pconfigcall)
+  -- if pdestructionframe_actual = pdestructionframe
+  -- if pdestructionframe_success.PENDING = eps
+  -- if pdestructionframe = pdestructionframe_success[.PENDING = pdestructionframe.PENDING]
+  -- if $destructor_frame_valid(S, pdestructionframe)
+  -- if $ob_object_normal_certificate(S, pobobjectreturn, pdestructionframe_success)
+  -- if n_object = pobobjectreturn.OBJECT
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
+def $ob_object_callee_cleanup_call(S, pdestructionframe, (DESTRUCTOR_FRAME_EXIT pdestructionframe_actual) :: (STRINGIFY_RESULT n_object porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*) = (pconfigcall)
+  -- if pdestructionframe_actual = pdestructionframe
+  -- if pdestructionframe.VALUE = KNOWN PNULL
+  -- if pdestructionframe.PENDING = (n_pending)
+  -- if $destructor_frame_valid(S, pdestructionframe)
+  -- if $throwable_live(S, n_pending)
+  -- if $ob_object_live(S, OB_USER_OBJECT_STRING pobobjectreturn, pobobjectreturn)
+  -- if S.OBJECTS[n_object] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pdestructionframe.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if n_object = pobobjectreturn.OBJECT
+  -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
+def $ob_object_callee_cleanup_call(S, pdestructionframe, ptask*) = eps -- otherwise
+def $destructor_frame_internal_site(S) = true
+  -- if $destructor_operation_for(S) = eps
+  -- if $destructor_frame_for(S.CURRENT, S.DESTRUCTION.FRAMES) = (pdestructionframe)
+  -- if $ob_object_callee_cleanup_call(S, pdestructionframe, S.TODO) =/= eps
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_caller, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if S_caller = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
+  -- if $ob_object_callee_cleanup_call(S_caller, pdestructionframe, S_caller.TODO) = (pconfigcall)
+
+def $return_discard(S, OB_USER_REF_OBJECT pobrefreturn n) = S[.TODO = (OB_USER_REF_OBJECT pobrefreturn n) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt reference object output-handler transfer"]
+def $return_discard(S, OB_USER_OBJECT_CAST pobobjectreturn) = S[.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt object output-handler conversion entry"]
+def $return_discard(S, OB_USER_OBJECT_SKIP pobobjectreturn) = S[.TODO = (OB_USER_OBJECT_SKIP pobobjectreturn) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt object output-handler skipped cast"]
+def $return_discard(S, OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) = S[.TODO = (OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt object output-handler conversion commit"]
