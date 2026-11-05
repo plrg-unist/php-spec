@@ -198,3 +198,43 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $generator_capture_saved(S_read, n)
   -- if $ptlc(ptbytes) = $ptascii("call")
+
+;; bindTo releases argv, then an unused copied return, then its original This.
+;; Static bind has no This; used results keep the ordinary binding completion.
+def $generator_bind_unused(S, pconfigcall, n_source) = true
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_BINDTO
+  -- if pconfigcall.OWNER = (n_source)
+  -- if $generator_capture_saved(S, n_source)
+  -- if ~$reference_call_used(S, pconfigcall.SITE)
+def $generator_bind_unused(S, pconfigcall, n_source) = false -- otherwise
+def $fake_bind_result(S, pconfigcall, n_source, n) = S[.TODO = (GENERATOR_BIND_RESULT n_source pconfigcall.SITE) :: ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_bind_unused(S, pconfigcall, n_source)
+  -- if S.TODO = ptask :: ptask_tail*
+def $task_nodes(GENERATOR_BIND_RESULT n porigin) = [HOBJECT n]
+dec $generator_bind_result_valid(pstate, nat, porigin) : bool
+def $generator_bind_result_valid(S, n, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO)
+  -- if $generator_capture_saved(S, n)
+  -- if $getter_capture_live(S, n)
+  -- if ~$reference_call_used(S, porigin)
+def $generator_bind_result_valid(S, n, porigin) = false -- otherwise
+def $call_task_valid(S, GENERATOR_BIND_RESULT n porigin) = $generator_bind_result_valid(S, n, porigin)
+def $generator_internal_task(GENERATOR_BIND_RESULT n porigin) = true
+def $fiber_marker(GENERATOR_BIND_RESULT n porigin) = true
+rule PhpStep/generator-bind-unused-result: S ~> S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GENERATOR_BIND_RESULT n_source porigin) :: ptask_tail*
+  -- if $generator_bind_result_valid(S, n_source, porigin)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SOURCE = n_source /\ pboundfake.SITE = porigin
+  -- if $generator_capture_saved(S, n)
+  -- if $getter_capture_live(S, n)
+rule PhpStep/generator-bind-receiver-release: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GENERATOR_BIND_RESULT n porigin) :: ptask_tail*
+  -- if $generator_bind_result_valid(S, n, porigin)
+  -- if S.RESULT = KNOWN PNULL
+rule PhpStep/generator-bind-throw-receiver-release: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (GENERATOR_BIND_RESULT n porigin) :: ptask_tail*
+  -- if $generator_bind_result_valid(S, n, porigin)
+  -- if $throwable_live(S, n_throwable)

@@ -878,7 +878,11 @@ def $fake_bind_slots(eps) = eps
 def $fake_bind_slots((NAMED_SENT poperand) :: pnamedslot*) = poperand :: $fake_bind_slots(pnamedslot*)
 def $fake_bind_slots(NAMED_HOLE :: pnamedslot*) = (KNOWN PNULL) :: $fake_bind_slots(pnamedslot*)
 
-def $fake_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = $from_done(S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+dec $generator_bind_unused(pstate, pconfigcall, nat) : bool
+dec $fake_bind_result(pstate, pconfigcall, nat, nat) : pstate
+def $fake_bind_result(S, pconfigcall, n_source, n) = $from_done(S, n)
+  -- if ~$generator_bind_unused(S, pconfigcall, n_source)
+def $fake_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake_bind_result(S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], pconfigcall, n_source, n)
   -- if n = |S.OBJECTS|
   -- if pboundfake = {SITE pconfigcall.SITE, SOURCE n_source, ORIGINAL $closure_scope_at(S.CLOSURESCOPES, n_source), SCOPE $fake_bind_new_scope(S, n_source, n_receiver?, pbindscope), CALLED $fake_bind_new_called(S, n_receiver?, pbindscope), RECEIVER $fake_bind_new_receiver(S, n_source, n_receiver?)}
 def $fake_bind_new_scope(S, n_source, (n_receiver), BIND_UNSCOPED) = BIND_INTERNAL ($ptascii("Closure"))
