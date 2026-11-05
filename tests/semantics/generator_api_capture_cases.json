@@ -48,30 +48,14 @@
     "process_seconds": 320
   },
   {
-    "id": "i112-call-protocol-remains-unsupported",
-    "purpose": "Native normal call uses a replacement Generator; separate protocol remains visible Unsupported at the new-tag boundary.",
+    "id": "i115-promoted-direct-native-call",
+    "purpose": "The exact earlier native-normal Closure::call Unsupported original is promoted through the native temporary-function protocol.",
     "source": "<?php\nfunction old112U() { $value = yield 'head'; echo 'BAD-OLD|'; yield $value; }\nfunction new112U() { echo 'NEW|'; $value = yield 'head'; echo 'VALUE|', $value, '|'; yield 'tail'; }\n$generator = old112U(); $other = new112U(); $capture = $generator->send(...);\necho 'CALL|'; $result = $capture->call($other, 41); echo 'RESULT|', $result, '|';\n",
     "source_sha256": "648eab22510d07f9cd2c60f44cb31d6b8812355259dde0a0332f13a301c1f02e",
     "native_exit": 0,
     "native_stdout": "CALL|NEW|VALUE|41|RESULT|tail|",
     "native_stderr": "",
-    "expected_model": "unsupported",
-    "unsupported_reason": "captured Generator API Closure::call",
-    "unsupported_stdout": "CALL|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "65",
-            "76",
-            "76",
-            "124"
-          ]
-        ]
-      }
-    ],
+    "expected_model": "normal",
     "model_seconds": 300,
     "process_seconds": 320
   },

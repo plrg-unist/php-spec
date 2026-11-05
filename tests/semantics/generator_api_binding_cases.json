@@ -24,42 +24,14 @@
     "process_seconds": 520
   },
   {
-    "id": "i114-bound-call-remains-unsupported",
-    "purpose": "Retargeted native captures still expose an explicit boundary for the separate temporary Closure::call protocol. Native is normal; checked Unsupported carries zero agreement.",
+    "id": "i115-promoted-bound-native-call",
+    "purpose": "The exact earlier native-normal Closure::call Unsupported original is promoted through the native temporary-function protocol.",
     "source": "<?php\nfunction flow114U() { yield 'head'; yield 'tail'; }\n$first = flow114U(); $second = flow114U(); $third = flow114U(); $capture = $first->send(...);\necho 'BIND|'; $bound = $capture->bindTo($second);\necho 'CALL|'; $bound->call($third, 41); echo 'END|';\n",
     "source_sha256": "530a7f77e6fa5f4fe489115f38aa2657b122b4b89ffdea6349b054119509ea38",
     "native_exit": 0,
     "native_stdout": "BIND|CALL|END|",
     "native_stderr": "",
-    "expected_model": "unsupported",
-    "unsupported_reason": "captured Generator API Closure::call",
-    "unsupported_stdout": "BIND|CALL|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "66",
-            "73",
-            "78",
-            "68",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "65",
-            "76",
-            "76",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "expected_model": "normal"
   },
   {
     "id": "i114-unused-bindto-copy-before-original-receiver",
