@@ -1,0 +1,261 @@
+{
+  "scope": "CLASS177: concrete ordinary anonymous method/constructor modifiers share named compilation and access. Final dispatch/callable scopes, nonpublic constructor access, failed-construction suppression and static-constructor error order are validated; abstract anonymous diagnostics and method-body factories remain native-only boundaries.",
+  "implementation": {
+    "base": "90364344cd33ab983a3bde1d2c848d44322abef7",
+    "semantic_cut": "87298231870ca9514fa68b2c9e7968be2dff3c40",
+    "source_cut": "adab86bea5fab8f2d607cfee665d74b5188c803a",
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_compile.c::zend_compile_func_decl (params8551, body8600, magic8604) and zend_begin_method_decl (anonymous abstract restriction8263\u20138275)",
+      "vendor/php-src/Zend/zend_API.c::zend_check_magic_method_implementation (static constructor diagnostic after signature/body compilation)",
+      "vendor/php-src/Zend/zend_compile.c method registration/private-final warning and vendor/php-src/Zend/zend_inheritance.c::do_inheritance_check_on_method (final overrides)",
+      "vendor/php-src/Zend/zend_vm_def.h ZEND_NEW; zend_object_handlers.c::zend_std_get_constructor; zend_objects.c clone and constructor-failure destructor handling"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "native_helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "mode": "Strict SL elaboration/algorithmic/structuring; serial CPU2 actors, stable inputs and full process-tree reap"
+  },
+  "inputs": {
+    "spec/semantics/141-method-compiler.watsup": "fcb6c6dac417929f592eac8d9dc8365b4bb6eeb43e3f49caeff9cde1f4aae757",
+    "spec/semantics/383-anonymous-classes.watsup": "89795d775e4b26bc982a8da74b227a01530f7f7deb8b4237d2f4a65ad804df05",
+    "spec/semantics/modules.json": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "tests/semantics/anonymous_method_modifier_cases.json": "ca2a4889eb26118b03a7e0f2ba65f5812ee9ed0c2dec70867655a3a62d2f1601",
+    "tests/semantics/anonymous_method_modifier_protocol.py": "343b48b56d654bd8da6eed660c5fdc1199e9932c74772c9eb18a17b6aafbbd4a",
+    "tests/semantics/anonymous_method_modifier_review_protocol.py": "f3d185bebd859eeb8066cf5034f677a2888e07b75fafb123ed5c583ffd1f262c",
+    "tests/semantics/static_method_cases.json": "805583430c692aec9852919dca805f43b449f4f8e911ebeba84f56f40a509139"
+  },
+  "decisions": [
+    "Use the shared finite named-method flag predicate with an explicit concrete bit16 fence. Preserve attribute/byref/return/body and static-generator constraints; leave magic-family admission unchanged. Constructors use the same concrete flag gate and existing access/promotion machinery.",
+    "Compile signature/defaults, per-parameter promotion and body before static-constructor rejection, preserving abrupt earlier errors. Move the existing rejection to finish_raw, disjoint from success/constructor-return branches; leave the NoDiscard wrapper unchanged. Only duplicate/static diagnostic class operands gain C-string rendering; source identities remain full.",
+    "Runtime access precedes argument evaluation. The failed constructor receiver is marked ineligible for automatic destruction, then ordinary post-step ownership cleanup may retire it. Check stored INSTANCE identity plus the CALLED suppression marker and missing allocation at that actual front, rather than inventing a live receiver root.",
+    "Keep the unchanged normal parent-method factory and anonymous abstract-method native originals outside the admitted prefix. The independent fixture parses/checks both originals and proves source admission refusal; no semantic agreement or substitute-source claim is made. The distinct bound static-Closure original positively exercises related lexical constructor access through existing factory grammar."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 435,
+      "revision": "adab86bea5fab8f2d607cfee665d74b5188c803a",
+      "numeric": [
+        ".tools/class177-artifacts/strict1.numeric.json",
+        "1457eb468066c8e4a2b4ca2474f26f24569ff9e8fa76bde7e28fc692e615fd4b"
+      ],
+      "supervisor": [
+        ".tools/class177-artifacts/source-protected-strict1.json",
+        "70109fa37bb1774330c1b54f20b848a7f024af6551046aab6b8ede37fe4e9fec"
+      ],
+      "result": "true newline/empty stderr/exit0; stable, fully reaped"
+    },
+    "sources": {
+      "exact_agreements": 14,
+      "normal": 9,
+      "php_error": 2,
+      "static_rejection": 3,
+      "revision": "adab86bea5fab8f2d607cfee665d74b5188c803a",
+      "supervisors": [
+        [
+          ".tools/class177-artifacts/source-protected-strict1.json",
+          "70109fa37bb1774330c1b54f20b848a7f024af6551046aab6b8ede37fe4e9fec"
+        ],
+        [
+          ".tools/class177-artifacts/source-order-and-rest1.json",
+          "7ea35fbe3cddf13333008848925d2f271fda4e800e59cf24c156023f05b03fea"
+        ]
+      ],
+      "reports": {
+        "constructor-final-default-public-normal-promotion": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-08nlzec5/report.json",
+          "595628d8336098eb79d7ecb0dfe1301baa8cdc4710f216796bb7a5b55812254e"
+        ],
+        "constructor-final-private-denial-before-argument-and-destructor": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-0d10lu6n/report.json",
+          "4d36432811900b4868c3611e7e8b25191df3fdb6573d522415efbf2db4d61adf"
+        ],
+        "method-parent-final-conflict-before-argument": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-0gjlqktx/report.json",
+          "2af2c80be0e789a22a0e594bddfbea80fb2d917a7515d072f16fdc6cf3e06a2a"
+        ],
+        "method-final-protected-static-scope-and-denial": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-2js_xebj/report.json",
+          "7c7cae1d0e78b8dc754cfdc7842625935e7e490662f36426c532211663507772"
+        ],
+        "method-final-firstclass-clone-self-scope": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-3i_t6r5s/report.json",
+          "3c64d36bdd57782e24d4e9e207403d109bbe472845ba13310491c5463285be06"
+        ],
+        "method-final-instance-protected-and-default-static": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-bdf1du0y/report.json",
+          "1c78b224823c1132890c5e3a193be61701746ff58b976d4d059dbecc16705e2d"
+        ],
+        "method-private-final-instance-and-static-warnings": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-keus0lgi/report.json",
+          "af1b7995ada967806409209d1b312003e486607b4e7c0ca5b9e9a7101e5bc0e2"
+        ],
+        "constructor-static-before-bad-parameter-default": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-n9h3s1zu/report.json",
+          "2beca3b0bf20e734f1ef9aecb82a24dca0e0a1b25bfda183a70f4a80cb12cc4f"
+        ],
+        "constructor-final-protected-external-denial-before-argument": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-nn0d9ga0/report.json",
+          "6fa942850d9732f03b828f549491a97b095664d932ac971716e59ef36f846ce6"
+        ],
+        "method-final-eval-self-identities": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-ns8huc91/report.json",
+          "c03f575bca776e2cf7abe2efdf684072f507efc989c5caca3b6b491d3ca6b4ae"
+        ],
+        "constructor-static-valid-default-compile-error": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-shgx5c6y/report.json",
+          "7bf9c9ad60c6e501fc14a1c12fa8f05aa8a5ace9786eae544deae41530bc7a87"
+        ],
+        "constructor-protected-related-bound-static-factory": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-suap_dc7/report.json",
+          "ac90caf4d3fa1a0dbb1c884145030b1879ff23b700f941cf39134a0e24ebbe49"
+        ],
+        "constructor-parent-final-conflict-before-argument": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-sw456gz_/report.json",
+          "e4b977bec2cbe4fa2a41dbe3abf02a2a62e91b952a8f0ceafa2598e565bdaf80"
+        ],
+        "method-duplicate-final-instance-static-error": [
+          ".tools/class177-artifacts/recovered-private-raw/method-runtime-t_rnoxrv/report.json",
+          "581dbd82ce2fb248f81d6e2c40a684e8a9edc8a3d2a6587688b91eca7275130f"
+        ]
+      },
+      "qualification": "Original id constructor-static-before-bad-parameter-default retains its historical hypothesis name; its immutable observed/expected result is the bad parameter-default error before static rejection. The distinct valid-default original reaches the static error."
+    },
+    "author": {
+      "conditions": 139,
+      "retained_first_two": {
+        "revision": "e27e7ba5689fc241dcd9482117fb0097197cf3d8",
+        "conditions": 107,
+        "groups": {
+          "final_method_flags_and_default_receive": 63,
+          "actual_cloned_fcc_self_receiver_scope": 44
+        },
+        "supervisor": [
+          ".tools/class177-artifacts/author-three-named2.json",
+          "142c5536870c9f49ba13a8763dd3939f5aef643d555c12cf4e115a87736dac58"
+        ],
+        "report": [
+          ".tools/class177-artifacts/recovered-private-raw/anonymous-method-modifiers-yud7davk/report.json",
+          "f474ceb1adef12a25a14d099e7ac33f6adfa279001dc36074db799a684238d69"
+        ],
+        "qualification": "Both left conjunct groups completed before the final lifecycle group failed, as retained in the failure trace. The whole batch/report remains false. These source-fixed groups are unchanged by the later private-branch/selector correction and were not replayed."
+      },
+      "affected_final_group": {
+        "revision": "fed732218f422903f7eb2f951ad438ec4ca732d6",
+        "conditions": 32,
+        "group": "private_final_constructor_retirement_before_arguments_body_or_destructor",
+        "supervisor": [
+          ".tools/class177-artifacts/author-retired-named3.json",
+          "65c5ca4da82f3ccfae8258f03d2b4478107092772555ff657151cb5933bfcb07"
+        ],
+        "report": [
+          ".tools/class177-artifacts/recovered-private-raw/anonymous-method-modifiers-1ngcs_m7/report.json",
+          "e74e488b282bb340cf0f2c9e8c12ca2e4123e54728eb96f59fe9b7657b61bd41"
+        ],
+        "result": "true newline/empty stderr/exit0; stable and fully reaped"
+      }
+    },
+    "affected_named_source": {
+      "id": "constructor-static",
+      "catalogue": "tests/semantics/static_method_cases.json",
+      "revision": "fed732218f422903f7eb2f951ad438ec4ca732d6",
+      "agreements": 1,
+      "supervisor": [
+        ".tools/class177-artifacts/author-retired-named3.json",
+        "65c5ca4da82f3ccfae8258f03d2b4478107092772555ff657151cb5933bfcb07"
+      ],
+      "report": [
+        ".tools/class177-artifacts/recovered-private-raw/method-runtime-5jw8wsh2/report.json",
+        "20dfe22acdd488dd8c3a5caef0dd447d3af90d633dde4409e6efa13d748537c1"
+      ],
+      "qualification": "Existing pinned named valid-static constructor original exercises the shared moved141 rejection. No broader named suite or native-history re-audit."
+    },
+    "independent": {
+      "revision": "7d3685e7a09abd84b40d7b63ec7d1b28152c66d4",
+      "production_equivalent": "adab86bea5fab8f2d607cfee665d74b5188c803a",
+      "conditions": 151,
+      "groups": {
+        "protected_bound_closure_scope": 45,
+        "private_final_compile_warnings": 23,
+        "final_public_constructor_promotion": 35,
+        "inherited_final_method_and_constructor": 32,
+        "static_default_priority_duplicate_and_boundaries": 16
+      },
+      "supervisor": [
+        ".tools/class177-artifacts/review-five-state1.json",
+        "cf0b8f19f5a04838ca190451de6ef84a28ae4d141fddeae93b44c9dc96d99bf8"
+      ],
+      "report": [
+        ".tools/class177-review-artifacts/recovered-state/class177-review-state-zwmlnopc/report.json",
+        "1beb23eba67c257877f6e1942782a19045dbb006de56b66d86bfed71eee9c62c"
+      ],
+      "result": "true newline/empty stderr/exit0; stable and fully reaped"
+    }
+  },
+  "failures_preserved": [
+    {
+      "cause": "Author1 expected the omitted default already bound at initial TYPE_RECEIVE. The real parameter was absent. Corrected fixture first proves absence, then reaches actual receivedCV3/no output before body. No production/source change; whole author1 has zero credit and the following named source remained unrun.",
+      "supervisor": [
+        ".tools/class177-artifacts/author-three-named1.json",
+        "e7f70afb0dc58216ca7c7fc1a33e0c6bfa2be8711b42d5c260888be8c2ade215"
+      ],
+      "report": [
+        ".tools/class177-artifacts/recovered-private-raw/anonymous-method-modifiers-xwq02q62/report.json",
+        "4861c537953fbf22a6e7becf850615455a0b52a391ffa630348b1fa2ef59910f"
+      ]
+    },
+    {
+      "cause": "Author2 final group expected a failed-constructor HOBJECT allocation to remain after post-step cleanup. It was already retired. Corrected only that lifecycle assertion to require actual stored INSTANCE identity, absent allocation and preserved suppression marker, then ran that group and the still-unrun named source. Whole author2 remains failed; only its explicitly completed first107 conditions above retain scoped credit.",
+      "supervisor": [
+        ".tools/class177-artifacts/author-three-named2.json",
+        "142c5536870c9f49ba13a8763dd3939f5aef643d555c12cf4e115a87736dac58"
+      ],
+      "report": [
+        ".tools/class177-artifacts/recovered-private-raw/anonymous-method-modifiers-yud7davk/report.json",
+        "f474ceb1adef12a25a14d099e7ac33f6adfa279001dc36074db799a684238d69"
+      ]
+    }
+  ],
+  "recovery": {
+    "private_raw": [
+      ".tools/class177-artifacts/recovered-private-raw/locations.json",
+      "8805a50f2f4df1176b2f4ade0e2a67676064357d5d35a85bf9278f5c6f39d222"
+    ],
+    "reviewer_raw": [
+      ".tools/class177-review-artifacts/recovered-state/locations.json",
+      "532cf8f48b04e0102b796495ca1a2c8d334d6fbaa6f7fa70c06987045e61b9f8"
+    ],
+    "native_final_manifest": [
+      ".tools/class177-review-artifacts/native-final-manifest.json",
+      "bce86476fc9c95fc92f6870425c08eb1afcedac7379ca5fbbe1e28ff2e4e2f76"
+    ],
+    "original_fifteen_manifest": [
+      ".tools/class177-review-artifacts/native-manifest.json",
+      "86187939d6294700f9d34806368e50cad7f49e07461b2c883b1ecf1cc502d563"
+    ],
+    "boundary_frontend_preparation": [
+      ".tools/class177-review-artifacts/boundary-frontend-preparation.json",
+      "16205f113f767fa54bd74bd317ba0d3d340e409567855225c83234768021a7e4"
+    ],
+    "commands": "Supervisors/component reports retain exact commands, cwd/revisions, consumed hashes, exits/streams/stability and reap. Recovery indices map original paths to unchanged moved raw roots. All16 native originals remain immutable; the14 admitted originals are tracked in the source catalogue and the two boundary originals are embedded in the independent fixture."
+  },
+  "review": {
+    "reviewer": "classes_review_current",
+    "decision": "pending final record and actual-parent review",
+    "current_tail": "90364344cd33ab983a3bde1d2c848d44322abef7"
+  },
+  "remaining": [
+    "Anonymous abstract-method compiler diagnostics; authentic anonymous classes inside method-body factories.",
+    "Attributes, byref returns, wider magic/generator/signature/default/lifetime combinations."
+  ]
+}

@@ -955,9 +955,20 @@ and readonly bits; implicit fields, clone reinitialization, private keys and
 recompiled self scopes retain source authority. Fifteen exact originals,
 strict435, 144 metadata checks, 157 author and 220 independent reached conditions
 pass at scoped cuts. The original dynamic-property display mismatch and author
-metadata-sequence elaboration failure remain zero credit. Attributes/hooks,
-nonpublic constructors and wider contexts remain partial.
+metadata-sequence elaboration failure remain zero credit. Attributes/hooks
+and wider contexts remain partial.
 [Review](coverage/semantics/anonymous-readonly-review.json).
+
+CLASS177 shares concrete named-method modifiers with anonymous methods and
+constructors. Final flags/callable scopes, nonpublic access before arguments,
+failed-construction destructor suppression and related bound-Closure lexical
+access retain source authority. Static-constructor rejection follows parameter
+and body compilation. Fourteen exact originals, strict435, one affected named
+source, 139 author and 151 independent reached conditions pass at scoped cuts.
+Two author front corrections retain their failed batches; completed components
+keep explicit credit. Anonymous abstract diagnostics and method-body factories
+remain native-only boundaries; wider contexts remain partial.
+[Review](coverage/semantics/anonymous-method-modifiers-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

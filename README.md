@@ -5016,7 +5016,7 @@ and wider contexts remain partial.
 [Property review](coverage/semantics/anonymous-properties-review.json),
 [modifier review](coverage/semantics/anonymous-property-modifiers-review.json).
 
-Public anonymous constructors also share ordinary parameter promotion. Values and
+Anonymous constructors also share ordinary parameter promotion. Values and
 defaults initialize fields before the body; later value-parameter writes stay
 local, while reference promotion attaches the property's type source to the real
 cell. Readonly reference acquisition fails before the body. Recompiled eval units
@@ -5035,6 +5035,17 @@ Private keys and eval identities retain full names. Dynamic writes, references,
 invalid declarations and incompatible parents/trait fields retain native errors.
 Attributes, hooks and wider contexts remain partial.
 [Readonly review](coverage/semantics/anonymous-readonly-review.json).
+
+Concrete anonymous methods share the ordinary finite modifier predicate,
+including final instance/static methods and nonpublic constructors. Private-final
+ordinary methods warn before execution; private-final constructors stay silent.
+Constructor access is checked before arguments, and failed construction suppresses
+automatic destruction. Related lexical scope can call a protected constructor
+through an admitted bound static Closure factory. Invalid parameter defaults/body
+compilation precede the static-constructor error. Full method/captured scopes remain
+authoritative; only exercised diagnostic class operands use C strings. Abstract
+anonymous methods, method-body factories and wider magic/byref/generator forms
+remain partial. [Method modifier review](coverage/semantics/anonymous-method-modifiers-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
