@@ -10,7 +10,9 @@
     "author_reached": "60fb0e000",
     "boundary": "020aac207",
     "independent_maintained": "4da5e82af",
-    "throw_maintained": "f33822d0a"
+    "throw_maintained": "f33822d0a",
+    "actual_parent": "fb074f3227b0f27874a78d12c80b286691bed560",
+    "joined_read_only_review": "d7e5ec0875e7a3dcc6eda7eaeb154571d198d789"
   },
   "rule_basis": "Zend/zend_objects.c::zend_object_std_dtor calls zend_weakrefs_notify before dynamic property destruction. Zend/zend_weakrefs.c::zend_weakref_unref visits registrations in order and removes Map entries or clears the wrapper; entry value destruction may execute PHP. Modules386/359 retain the original one-slot Key image and its child owner under the physical storage pin; NOTIFY must clear before instance-storage-slot transfers the child owner.",
   "validation": {
@@ -61,10 +63,10 @@
   },
   "limits": "Admitted Key is stdClass with exactly one direct dynamic property owning a sole childless instance whose only method is a public no-argument destructor; one Map entry. Other fields, table-backed layouts, multiple Maps, freeing-object mutation, active-pin collection and wider callbacks retain Unsupported boundaries. No collector/count/nogc rule changed.",
   "recovery": "Run the maintained gc_standard_key_field_sources.py, gc_standard_key_field_state.py, gc_standard_key_fields_review_sources.py and gc_standard_key_fields_review_state.py with the pinned profile and private outputs. Raw accepted and failed cuts are outside Git under ../php-spec-evidence-archive/gc-field-key-{author,review}-36/; each report hash above identifies its exact cut.",
-  "review": "Independent source and reached-state review accepted the frozen runtime 721641ded; current-parent composition remains a separate gate.",
+  "review": "Independent pinned source/reached-state review accepted frozen runtime 721641ded. Exact-parent composition on fb074f322 was independently read-only CLEAR at d7e5ec087: clean tree, inventory and diffcheck passed, changed rule bytes unchanged, and no concrete interaction seam required replay. Canonical integration remains pending.",
   "archive_manifest_sha256": {
     "../php-spec-evidence-archive/gc-field-key-author-36/manifest.json": "7065ec66939d6966f33ce54b517e88f3bb18d8fb6dc619a8d80d82d20145d6d2",
     "../php-spec-evidence-archive/gc-field-key-review-36/manifest.json": "ba72f194c09377ed86047f50019daa23c320d7b08f56624ad1e8560ece65c2f0"
   },
-  "compatibility_bridge": "Every accepted tracked source has the recorded SHA-256 at this private head. Commits after runtime 721641ded add tests and documentation only; git diff 721641ded..f33822d0a -- spec/semantics is empty. Author and independent reports retain their original revision IDs, and no prior failed cut is promoted by this bridge. Actual-parent composition is pending."
+  "compatibility_bridge": "Every accepted tracked source has the recorded SHA-256 at this composed head. The three changed semantic files are byte-identical to frozen runtime 721641ded, and commits after it add tests/docs only. Parent fb074f322 changes in modules270/30/444 concern uncaught tick C-bailout and abandoned destructor records; compiler/enum changes are disjoint from the ordinary standard-Key sources. Independent exact-parent review found no concrete replay seam. Reports retain their original revision IDs; failed cuts keep zero credit."
 }
