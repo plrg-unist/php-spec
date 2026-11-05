@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep argument and nested-handler starts explicit during executor cleanup."""
+"""Keep unmodeled argument and nested-handler starts explicit during cleanup."""
 import hashlib
 import json
 import os
@@ -14,9 +14,10 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 REASON = 'output-handler start after output deactivation'
 CASES = {
-    'explicit': b'FX|D1|',
     'callable': b'FX|D1|',
     'reentrant': b'FX|D1|H1|',
+    'named_ob08': b'FX|D1|',
+    'invalid_ob08': b'FX|D1|',
 }
 
 

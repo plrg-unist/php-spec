@@ -29,6 +29,7 @@ dec $trait_fcc_snapshot_ordinary(pstate, pconstantclosure) : pmethoddesc?
 dec $trait_fcc_scope_receipt(pstate, pconstantclosure, pmethoddesc, pclosurescope) : porigin?
 dec $trait_fcc_clone_scope(pstate, pconstantclosure*, pmethoddesc, pclosurescope) : porigin?
 dec $trait_fcc_scope_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
+dec $anonymous_parentless_trait_node(pcnode) : bool
 dec $trait_fcc_target_name(pstate, pcalltarget) : preqbytes?
 dec $trait_fcc_receipt_composition(pstate, ptraitcachecause) : (pstate, ptraitmethod*, ptraitmethod*)?
 dec $trait_fcc_receipt_methods(pstate, ptraitcachecause) : (pstate, ptraitmethod*)?
@@ -451,6 +452,16 @@ def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclo
   -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pclosurescope.OBJECT] = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps
   -- if $trait_fcc_clone_scope(S, S.CONSTANTCLOSURES, pmethoddesc, pclosurescope) = (porigin_requested)
+def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
+  -- if pmethoddesc.OWNER = porigin_requested
+  -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_requested porigin_source ptbytes
+  -- if $origin_node(S.SOURCES, porigin_requested) = (pcnode)
+  -- if $anonymous_parentless_trait_node(pcnode)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_requested) = eps
+  -- if $pil_at(S.LINKEDINTERFACES, porigin_requested) = eps
+  -- if $class_constant_callable_method_history_ordinary(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
 def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps -- otherwise
 def $class_constant_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
   -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)

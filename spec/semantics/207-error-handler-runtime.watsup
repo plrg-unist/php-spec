@@ -115,7 +115,7 @@ def $error_trace_location(ptraceframe) = $ptascii("[internal function]")
   -- if ptraceframe.LINE = $(-1)
 def $error_trace_location(ptraceframe) = ptraceframe.FILE ++ [40] ++ $decimal_integer(ptraceframe.LINE) ++ [41] -- otherwise
 def $error_trace_call(ptraceframe) = ptraceframe.FUNCTION -- if ptraceframe.CLASS = eps
-def $error_trace_call(ptraceframe) = n_class* ++ n_type* ++ ptraceframe.FUNCTION
+def $error_trace_call(ptraceframe) = $c_string(n_class*) ++ n_type* ++ ptraceframe.FUNCTION
   -- if ptraceframe.CLASS = (n_class*)
   -- if ptraceframe.TYPE = (n_type*)
 def $error_trace_lines(S, eps, n) = $ptascii("#") ++ $ntunsigned(n) ++ $ptascii(" {main}")

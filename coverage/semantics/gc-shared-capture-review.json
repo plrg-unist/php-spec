@@ -1,0 +1,34 @@
+{
+  "scope": "GC26: one finite direct array capture and direct childless stdClass captures whose identities also occur in that array, under an authenticated active real Closure caller.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; LC_ALL=C; TZ=UTC; tests/semantics/profile.json",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "private_cuts": {
+    "base": "0bcfee4afff4a6d3c3d64e9e28cfc2a991add59c",
+    "source_only": "b8a65d9ee6e9072c8b2b88671c63f282d80ab372",
+    "semantic": "b1905287dbe3aa2f2e2d45ca6ebd96268ce3341e",
+    "reached": "b42c7bda664102777e6dcea9d76afb374fd63e42",
+    "joined_base": "4efb6b6f48f0b0a673f7860a81866e61098479bf"
+  },
+  "rule": "The new disjoint ordinary-node clause binds exactly one DIRECT array from the ordered Closure capture list, requires at least one direct captured childless STDINSTANCE, and requires every such object in the array's direct-entry edges. Closure ordinary and trace edges must equal the capture list. The GC24 nonimmutable, nonproxy, compiled-pool, direct scalar/childless-entry and authentic caller/machine-root fences remain; graph, owner, buffer and count algorithms are unchanged.",
+  "validation": {
+    "native": "Pinned forward use ($token,$leaf) and reversed use ($leaf,$token) sources both print T|P|0|D|3|split|0|H|3|dead|0|live|END|leaf-live|leaf-dead, exit 0 and empty stderr. The status control prints R|0|1|2|C|0|0|live|dead. All native processes are stable, untimed-out and reaped.",
+    "preedit": "The source-only model exits 1 Unsupported cached ordinary property-table collection after T|P|0|; source agreement is zero. The first semantic attempt failed P4 compilation because a recursive extractor branch used otherwise with a non-pure result; it also earns zero credit. Both raw failures remain outside Git.",
+    "source": "At the corrected semantic cut, both original source orders match pinned PHP stdout, stderr and exit exactly, normal exit 0, stable inputs/HEAD, no timeout and empty child groups.",
+    "reached": "Strict SL source-reached D states at collection nonce NEXT=2 pass 146 assertions for each capture order. They prove separate Closure-to-leaf and array-to-leaf edges, one buffered leaf identity after array-before-leaf insertion, owners 2/2/3, black removal from the D plan, source/caller authentication, and one-array, nonshared, alias and destructor-bearing refusals. A synthetic two-object array variant checks the recursive helper only; it does not claim a third source agreement."
+  },
+  "reports_sha256": {
+    "gc-shared-capture-review-probes/array-and-leaf-native-report.json": "0d68e7111a931084b48c920077e2b4651aefce18cdee7d50342ddc2858e280d8",
+    "gc-shared-capture-review-probes/array-and-leaf-status-native-report.json": "d1d13d0e950b446027cb4578b4e3ec3808d33449b031416898506ecc49b4aa76",
+    "gc-shared-capture-review-probes/leaf-and-array-reversed-native-report.json": "74956e6dcf16be2c4907e8eaa7b2181996592d4ac8f683326a299ba7bbe38914",
+    "gc-shared-capture-26-dev/preedit/model-shared-array-leaf-report.json": "7d123f086e540309ffa137701b7cade255abbd5ef8b6afe4ea56479f82a8d199",
+    "gc-shared-capture-26-dev/semantic/model-shared-array-leaf-shared-leaf-array-reversed-report.json": "fdafb93049b866fff07d66d9ddbbc73d58b3c4b1218b195e1608977945989b39",
+    "gc-shared-capture-26-dev/semantic-helper-fix/model-shared-array-leaf-shared-leaf-array-reversed-report.json": "6e075917bc206c6e5a3771e1b22fbceb835a3f9166953f9eedea27c8c57edaec",
+    "gc-shared-capture-26-dev/strict/forward-final/report.json": "000bc7a20b1905051e95d99ca81e9aea05dbf5a7a55a1957e48736fea9245704",
+    "gc-shared-capture-26-dev/strict/reversed-final/report.json": "3ff176cf8e86d42e0f87c39144b8a9dd401b230f3c749ce0a281b1ae84ce5ebc"
+  },
+  "current_tail": "Composed on master 4efb6b6f4 with byte-identical 301 and five source/status/harness/state files. New Closure::call Generator/binding paths in 105/181/182/83/428 and unrelated Fiber, enum query, tick and trace paths require source forms absent from the direct static $collector() GC_COLLECT witnesses; module 301 is unchanged on the base. Frozen two-source and two-state gates bridge these disjoint additions.",
+  "post_ob08_tail": "Recomposed on master 07fbd35ea. OB08 changes only modules 391/444 for the positional-null default INTRINSIC_OB_START and its Notice result. GC26 calls direct $collector() and INTRINSIC_GC_COLLECT, with no ob_start or OB_NOTICE_RESULT; 301 and all tested GC26 source/state bytes are unchanged. Frozen gates bridge without replay.",
+  "limits": "This clause covers one captured mutable one-level array with direct node-free scalar or childless stdClass entries; every separately captured object must occur in that array. Multiple captured objects are checked at the predicate level, with source-level behavior beyond the two one-object orders still unvalidated. ALIAS/INDIRECT entries, second or nested arrays, compiled-pool descendants, property-table proxies, user destructors, explicit Closure __invoke and arbitrary weak-map/finalizer graphs remain outside this path.",
+  "review": "Independent private semantic/test CLEAR at b42c7bda6 and joined docs/inventory CLEAR at 367a23f9f from gc_review_recovery; post-OB08 exact joined head is pending review.",
+  "recovery": "Raw pinned native controls, pre-edit Unsupported, first P4 compiler failure, exact source pairs and strict D-state reports are outside Git under ../php-spec-evidence-archive/gc-shared-capture-review-probes and gc-shared-capture-26-dev. Run gc_shared_capture_sources.py native then model and gc_shared_capture_state.py per case; use one fully reaped CPU1 actor at a time."
+}

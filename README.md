@@ -261,6 +261,11 @@ Suppression and selected error handlers retain their native output order.
 returned-object destructor during normal post-deactivation cleanup. It runs
 while the selected handler is disabled; a nested no-argument `ob_start()`
 emits the built-in Notice and returns false before the outer handler resumes.
+[OB08](coverage/semantics/output-executor-explicit-null-review.json) admits a
+positional `ob_start(null)` during normal post-deactivation queue release. It
+uses the same default-handler Notice and false result without creating a buffer.
+Named-null, unpacked-null, callable and invalid-integer starts remain outside
+this cut.
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
@@ -3887,6 +3892,10 @@ GC25 also admits repeated direct edges to the same childless stdClass in
 that array. A pinned weak-lifetime source and 127 new plus three affected
 reached groups check two edges, one buffer slot and release after Closure
 death. See the [duplicate-edge review](coverage/semantics/gc-duplicate-edge-review.json).
+GC26 admits a direct childless stdClass capture that also occurs in the
+captured array. Both capture orders agree with pinned PHP; two reached D-state
+groups verify the separate edges, one leaf buffer slot and weak lifetime.
+See the [shared-capture review](coverage/semantics/gc-shared-capture-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4713,6 +4722,11 @@ list: each head retires while its tail stays rooted. A three-entry original
 agrees exactly, six reached states check 143 conditions, and a shared-callback
 alias control agrees. One/two-entry source regressions and joined strict433
 pass. See the [tick-list review](coverage/semantics/callback-late-tick-list-review.json).
+Each retained raw invokable tick entry can now copy zero or more object
+arguments distinct from its callback. Mixed zero/one and shared zero/two
+sources agree exactly, as does a duplicate-argument control. Six reached
+states check 122 conditions, including argument order and shared FCC owners;
+strict433 passes. See the [tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -4861,6 +4875,14 @@ captured invocation prints the generated NUL name for both `self::class` and
 the composed class at `new`.
 One exact source and 48 reached checks cover this bounded form.
 [Anonymous trait-capture review](coverage/semantics/anonymous-trait-capture-review.json).
+
+A parentless unit0 anonymous class can also defer publication for one unadapted
+named trait use within the existing bounded member grammar. Its trait constant
+captures the copied method under the generated NUL name. A captured `parent`
+parameter fails at receive before the body when the class has no parent; the
+fatal stack frame renders the short anonymous name while `get_class` retains
+the full name. Two exact sources and 88 reached conditions cover this cut.
+[Parentless trait-capture review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -6768,9 +6790,14 @@ null output CVs now receive names before the boolean result; the
 records three exact outcomes and 79 reached guards. Literal enum method strings
 also preserve raw lowercase, leading backslash and method spelling in the
 third output; the [string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json)
-records three exact outcomes and 88 reached guards. Old-object destructor and
-input/output alias effects, other array sources, autoload, case attributes,
-enum collection policy and wider acquisition remain partial;
+records three exact outcomes and 88 reached guards. A separate variable holding
+the enum method string also writes its saved name through a distinct output
+CV; the [variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json)
+records one exact source and 46 reached guards. Shared scalar input/output
+reference cells add one exact source and 43 reached guards in the
+[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
+Old-object destructor and wider alias effects, other array sources, autoload,
+case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
 [Declaration-interface autoload](coverage/semantics/interface-dependency-autoload-review.json)

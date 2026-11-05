@@ -122,6 +122,13 @@ explicit Unsupported because its destructor runs during replacement.
 Literal enum method strings now also retain their raw class and method spelling
 in the third output, including lowercase and a leading backslash. Three exact
 outcomes and 88 reached guards pass.
+A separate live variable can now supply the enum method string to a direct
+three-argument `is_callable` call with literal `false`. Its saved and current
+bytes agree, and a distinct initialized output CV receives the name before the
+boolean. One exact original and 46 reached guards pass. A shared scalar
+input/output reference cell also retains the saved name through its write;
+one exact original and 43 reached guards pass. Argument-time target rebinding
+remains explicit Unsupported.
 [Reception](coverage/semantics/enum-string-admission-review.json),
 [conversion](coverage/semantics/enum-from-callable-review.json),
 [current-tail gate](coverage/semantics/enum-callable-current-tail-review.json),
@@ -136,7 +143,9 @@ outcomes and 88 reached guards pass.
 [array-output review](coverage/semantics/enum-is-callable-output-array-review.json),
 [spelling review](coverage/semantics/enum-is-callable-output-spelling-review.json),
 [scalar-output review](coverage/semantics/enum-is-callable-output-scalar-review.json),
-[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json).
+[string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json),
+[variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json),
+[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
 
 I88 carries raw method Generator reference caches and warm/fresh THROW across
 Fibers using the actual resumer/Gen/current proof. Fresh initialization now
@@ -400,7 +409,8 @@ Reversed capture order, three mixed-key leaves and post-capture COW give
 three exact source pairs. Strict reached checks pass 113+146 assertions,
 and the corrected GC23 group passes 110. Its original duplicate-identity
 refusal is superseded by GC25; shared separate captures, aliases, nested
-arrays and user-destructor children remain refused. Earlier Unsupported,
+arrays and user-destructor children remained refused at the GC24 cut; GC26
+admits the bounded shared-capture case. Earlier Unsupported,
 overlap and fixture failures retain
 zero credit. [GC24 review](coverage/semantics/gc-finite-capture-review.json).
 
@@ -412,6 +422,16 @@ pass 127 new and affected GC21/22/24 groups 137+140+147, proving two
 physical edges, one leaf buffer slot, owners 2/2, black D protection and
 nested-array refusal. The source-only Unsupported and first fixture error
 retain zero credit. [GC25 review](coverage/semantics/gc-duplicate-edge-review.json).
+
+GC26 admits one finite captured array together with direct captures of
+childless stdClass leaves already present in that array. Forward and reversed
+capture orders match pinned PHP exactly, including weak liveness after the
+call and death after Closure release. Two strict D-state groups pass 146
+assertions each, proving separate Closure and array edges to the leaf, one
+buffer slot, owners 2/2/3 and black protection. Pre-edit Unsupported and a
+corrected P4 helper compile failure retain zero credit. Other captured
+object layouts and nested or destructor-bearing graphs remain partial.
+[GC26 review](coverage/semantics/gc-shared-capture-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -681,6 +701,17 @@ Unsupported baseline and three fixture elaboration failures retain zero
 credit. Mixed callback shapes, assertion roots and abrupt reentry remain
 partial. [Tick-list review](coverage/semantics/callback-late-tick-list-review.json).
 
+ATTR14 admits any finite number of copied object arguments, including zero,
+per raw invokable entry in that ordered post-FINAL list. Each copied argument
+must differ from its callback object. Two native-first mixed-arity sources
+agree exactly, including a shared callback across zero- and two-argument
+entries; a repeated-argument control also agrees. Six source-reached states
+pass 122 checks and show the shared callback's FCC owners 4→3→2→1→0, with both
+arguments retiring before the callback. Private strict433 passes. The earlier
+Unsupported baseline and a draft binding error retain zero credit. Scalar,
+array/reference and callback-as-argument payloads, assertion roots and abrupt
+reentry remain partial. [Tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -860,9 +891,20 @@ executor tick-owner branch present. The retained OB06 native original is now
 promoted with exact model agreement.
 [Returned-handler cleanup review](coverage/semantics/output-executor-retval-review.json).
 
+OB08 admits one positional `ob_start(null)` after output deactivation during
+normal executor queue release. The default handler creation fails before any
+buffer push, emits E_NOTICE and returns false. Fast and slow allocator sources
+and a selected-handler source agree exactly with pinned PHP. Two source-reached
+checkpoints validate call/Notice authority, empty buffers and unchanged output
+sequence; named-null, callable, invalid-integer and handler-body reentrant
+forms remain checked Unsupported. The previous noarg Notice state still passes.
+[Explicit-null executor review](coverage/semantics/output-executor-explicit-null-review.json).
+
 CLASS156–163 are integrated at `0d756bb0e` after independent cumulative review and a joined 433-module SL gate. Their scoped evidence and remaining limits are in [SOURCE-CLASSES](docs/semantics/SOURCE-CLASSES.md) and the linked reviews.
 CLASS164 is integrated at `4f3d1a90a`: four exact copied trait `parent` source originals and three reached state groups validate existing rules. [Review](coverage/semantics/trait-captured-parent-view-review.json).
 CLASS165 is integrated at `fde2099b3`: four exact copied-alias trace originals and two reached groups pass; three tick-wrapper probes remain zero credit. [Review](coverage/semantics/trait-captured-alias-parent-trace-review.json).
+CLASS166 is integrated at `0ed9ac41f`: one parented anonymous trait capture source and 48 reached conditions pass with private and joined strict433. [Review](coverage/semantics/anonymous-trait-capture-review.json).
+CLASS167 admits bounded parentless anonymous trait capture at first `new`; two exact sources, 45+43 reached conditions, private and joined strict433, and a non-NUL trace control pass. Native-only name lookup changes from 0 to 1 across `new`. Interface combinations, multiple uses and adaptations remain excluded. [Review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -893,7 +935,6 @@ their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS166 | One unadapted named trait use in a parented anonymous class without interfaces: native/model source, 48 reached checks, private and joined strict433 pass. Generated NUL name, trait first-class capture and replay-authenticated live descriptor are covered; parentless, interfaces, multiple uses and adaptations remain excluded. Integration review pending. [Review](coverage/semantics/anonymous-trait-capture-review.json). |
 | I93 | Reviewed private Generator Closure::call reference forwarding: native5/private433 and six reached fronts625 custom/655 reported at distinct cuts. Actual-tail gate pending; original failures retain zero credit. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |

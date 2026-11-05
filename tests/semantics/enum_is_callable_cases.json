@@ -56,6 +56,29 @@
     "purpose": "Literal generated enum method strings preserve raw class and method spelling in the third output CV."
   },
   {
+    "id": "enum-is-callable-third-output-variable-separate",
+    "source": "<?php\nenum DynamicCheck: int { case A = 1; }\n$target = 'DynamicCheck::from';\n$name = 'old';\n$ok = is_callable($target, false, $name);\necho 'separate:', (int)$ok, ':', $target, ':', $name, '|';\n",
+    "source_sha256": "708c3064f4f5c858d8c8c07eb692b9a365be397ba7a5c31177c7fc9dd43f364a",
+    "expected_model": "normal",
+    "expected_normal_stdout": "separate:1:DynamicCheck::from:DynamicCheck::from|",
+    "purpose": "A distinct live variable supplies the published generated method string while a separate direct output CV receives its raw name."
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-alias",
+    "source": "<?php\nenum DynamicCheck: int { case A = 1; }\n$target = 'DynamicCheck::from';\n$name =& $target;\n$ok = is_callable($target, false, $name);\necho 'alias:', (int)$ok, ':', $target, ':', $name, '|';\n",
+    "source_sha256": "680f2b2f7826d814260522dc433ab88e823242a2ad8e6b3e129f345e4af4795e",
+    "expected_model": "normal",
+    "purpose": "Two direct input/output variables sharing the same no-root string CV preserve the saved generated method name through reference promotion and result write.",
+    "expected_normal_stdout": "alias:1:DynamicCheck::from:DynamicCheck::from|"
+  },
+  {
+    "id": "enum-is-callable-third-output-variable-rebind-unsupported",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction rebind_target(): bool {\n    global $target;\n    $target = 'OtherCheck::from';\n    echo 'REBIND|';\n    return false;\n}\n$target = 'FirstCheck::from';\n$name = 'old';\n$ok = is_callable($target, rebind_target(), $name);\necho 'selected:', (int)$ok, ':', $name, '|target:', $target, '|';\n",
+    "source_sha256": "c14d7f9272ecd562cd60b97b09c9d012f0d5e0c7bedf8679a0694437fe19e707",
+    "expected_model": "unsupported",
+    "purpose": "A second-argument callback that rebinds the input target remains outside the literal-false variable route."
+  },
+  {
     "id": "enum-is-callable-third-output-old-scalars",
     "source": "<?php\nenum ScalarCheck: int { case A = 1; }\n$name = 42;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'int:', (int)$ok, ':', $name, '|';\n$name = false;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'bool:', (int)$ok, ':', $name, '|';\n$name = null;\n$ok = is_callable('ScalarCheck::from', false, $name);\necho 'null:', (int)$ok, ':', $name, '|';\n",
     "source_sha256": "1854a358c2ab016fcc5ccb9204e26a2dd25c26f1ead92bc1f583344f05989f24",
