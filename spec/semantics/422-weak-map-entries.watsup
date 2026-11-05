@@ -371,6 +371,14 @@ def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
   -- if $weakmap_entries_at(S, n_map)
   -- if $weakmap_entries_access_storage(S, n_map, ptbytes = $ptascii("offsetGet") /\ paccess.MODE = ACCESS_READ KEY_R /\ $weakmap_entries_callbacks(S, $weakmap_entries_contents(S, n_map)))
   -- if (ptbytes = $ptascii("offsetGet") /\ $weakmap_read_allowed(S, paccess)) \/ (ptbytes = $ptascii("offsetExists") /\ ($weakmap_presence_allowed(S, paccess) \/ $weakmap_quiet_read_allowed(S, paccess))) \/ (ptbytes = $ptascii("offsetUnset") /\ $weakmap_unset_allowed(S, paccess))
+def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
+  -- if (ptbytes = $ptascii("offsetGet") /\ $weakmap_read_allowed(S, paccess)) \/ (ptbytes = $ptascii("offsetExists") /\ ($weakmap_presence_allowed(S, paccess) \/ $weakmap_quiet_read_allowed(S, paccess)))
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_entries_at(S, n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n_key)
+  -- if $weakmap_entries_child_storage(S, n_map)
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = false -- otherwise
 ;; Explicit unset drops exactly this slot; an absent object Key is unchanged.
 ;; Existing ownership cleanup retires the removed Value or reference-cell edge.
