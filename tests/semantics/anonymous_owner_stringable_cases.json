@@ -1,0 +1,163 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "owner-stringable-before-method",
+      "source": "<?php\n$owner = new class {\n    public function __toString(): string { return 'OWNER;'; }\n    public function make() { return new class {}; }\n};\n$child = $owner->make(); $after = new class {};\necho (string)$owner, $owner::class, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "f242b9fce68ed18154c9b3f715cec3c0b127c089e760e51f9964a33c7e10836d",
+      "stdout_template_base64": "T1dORVI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo2JDI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-stringable-after-method",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class {}; }\n    public function __toString(): string { return 'OWNER;'; }\n};\n$child = $owner->make(); $after = new class {};\necho (string)$owner, $owner::class, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "404512ae5ae3f6d8041ce6d24d855f3eec170376f9cb8f9b6978ea51e88df4cb",
+      "stdout_template_base64": "T1dORVI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo2JDI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "parented-owner-stringable",
+      "source": "<?php\nclass R181Base {}\n$owner = new class extends R181Base {\n    public function make() { return new class {}; }\n    public function __toString(): string { return 'OWNER;'; }\n};\n$child = $owner->make(); $after = new class {};\necho (string)$owner, $owner::class, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "0e0b12a5f7d97a45a5041c64e0f4b22e5429fae9c4e578db76c9f98890190e19",
+      "stdout_template_base64": "T1dORVI7UjE4MUJhc2VAYW5vbnltb3VzAHtGSUxFfTozJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo3JDI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-stringable-nested-depth",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class { public function inner() { return new class {}; } }; }\n    public function __toString(): string { return 'OWNER;'; }\n};\n$child = $owner->make(); $grand = $child->inner(); $after = new class {};\necho (string)$owner, $owner::class, ';', $child::class, ';', $grand::class, ';', $after::class, ';';\n",
+      "source_sha256": "2d5b1023629ca6545226a078127dfac772e0c266e2b2064d9c0b59d6f6241b8f",
+      "stdout_template_base64": "T1dORVI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo2JDM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-stringable-constructor-child",
+      "source": "<?php\n$owner = new class {\n    public object $child;\n    public function __construct() { $this->child = new class {}; echo 'CTOR;'; }\n    public function __toString(): string { return 'OWNER;'; }\n};\n$after = new class {};\necho (string)$owner, $owner::class, ';', get_class($owner->child), ';', $after::class, ';';\n",
+      "source_sha256": "c9828d1f18c2fdf98c151475fc1f133ba48bbe943adc68acf11def09cbb2c199",
+      "stdout_template_base64": "Q1RPUjtPV05FUjtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjQkMTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjckMjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-stringable-invalid-return-after-child",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class {}; }\n    public function __toString(): int { return 1; }\n};\necho 'BAD;';\n",
+      "source_sha256": "33bd188a078db60e61d3eac9cd3ac15d370cb5a9d6a719356170f9d200434ad9",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IGNsYXNzQGFub255bW91czo6X190b1N0cmluZygpOiBSZXR1cm4gdHlwZSBtdXN0IGJlIHN0cmluZyB3aGVuIGRlY2xhcmVkIGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "owner-stringable-child-invalid-before-bad-return",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class { public function bad(int $x = 'bad') {} }; }\n    public function __toString(): int { return 1; }\n};\necho 'BAD;';\n",
+      "source_sha256": "b2c7c8c8ab40fa4a36da0dbe3e278235714e1a8fc76e13b9a83738ba7a8fae20",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkeCBvZiB0eXBlIGludCBpbiB7RklMRX0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "owner-stringable-bad-return-before-child-invalid",
+      "source": "<?php\n$owner = new class {\n    public function __toString(): int { return 1; }\n    public function make() { return new class { public function bad(int $x = 'bad') {} }; }\n};\necho 'BAD;';\n",
+      "source_sha256": "9d14fc2557ad7b4a2fb9357f8f18196fe0bc4ec8328a022c56ba648f70cd207c",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IGNsYXNzQGFub255bW91czo6X190b1N0cmluZygpOiBSZXR1cm4gdHlwZSBtdXN0IGJlIHN0cmluZyB3aGVuIGRlY2xhcmVkIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "owner-stringable-uncalled-child-invalid",
+      "source": "<?php\n$owner = new class {\n    public function uncalled() { return new class { public function bad(int $x = 'bad') {} }; }\n    public function __toString(): string { return 'OWNER;'; }\n};\necho 'BAD;';\n",
+      "source_sha256": "5ec450c046265f97dc9bc8d26fbde92688414c1f3acfb85cfbb1a3a1cc163206",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkeCBvZiB0eXBlIGludCBpbiB7RklMRX0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "parented-owner-own-tostring-base-stringable",
+      "source": "<?php\nclass R181StringableBase implements Stringable { public function __toString(): string { return 'BASE;'; } }\n$owner = new class extends R181StringableBase {\n    public function make() { return new class {}; }\n    public function __toString(): string { return 'OWNER;'; }\n};\n$child = $owner->make(); $after = new class {};\necho (string)$owner, $owner::class, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "132d8d5afd42b1df39eda73b4caf41e3065f4f4d03d2548179aec47498a2c728",
+      "stdout_template_base64": "T1dORVI7UjE4MVN0cmluZ2FibGVCYXNlQGFub255bW91cwB7RklMRX06MyQxO2NsYXNzQGFub255bW91cwB7RklMRX06NCQyO2NsYXNzQGFub255bW91cwB7RklMRX06NyQzOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-stringable-no-return-annotation",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class {}; }\n    public function __toString() { return 'OWNER;'; }\n};\n$child = $owner->make(); $after = new class {};\necho (string)$owner, $owner instanceof Stringable ? 1 : 0, ';', $child instanceof Stringable ? 1 : 0, ';', $owner::class, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "eccf42850a79e283c8de3e00598dc3f83ef781a5c5a7c6c7a9f40f9fdf3a65cd",
+      "stdout_template_base64": "T1dORVI7MTswO2NsYXNzQGFub255bW91cwB7RklMRX06MiQwO2NsYXNzQGFub255bW91cwB7RklMRX06MyQxO2NsYXNzQGFub255bW91cwB7RklMRX06NiQyOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-stringable-complete-before-later-static",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class {}; }\n    public function __toString(): string { return 'OWNER;'; }\n};\nclass R181LaterBad { public static function __construct() {} }\necho 'BAD;';\n",
+      "source_sha256": "89aa90788c3c3f1fe03cedd8a94ad99ea63031d86540bdfc20df6ad358c5b026",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE1ldGhvZCBSMTgxTGF0ZXJCYWQ6Ol9fY29uc3RydWN0KCkgY2Fubm90IGJlIHN0YXRpYyBpbiB7RklMRX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "owner-stringable-child-warning-before-later-static",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class { final private function alone() {} }; }\n    public function __toString(): string { return 'OWNER;'; }\n};\nclass R181LaterBadWarning { public static function __construct() {} }\necho 'BAD;';\n",
+      "source_sha256": "b82ccb6eaa898546a6a29aff7565e75a297999b18eb5d747234451fbe441b625",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogTWV0aG9kIFIxODFMYXRlckJhZFdhcm5pbmc6Ol9fY29uc3RydWN0KCkgY2Fubm90IGJlIHN0YXRpYyBpbiB7RklMRX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "parented-owner-inherited-tostring-only",
+      "source": "<?php\nclass R181InheritedStringableBase implements Stringable { public function __toString(): string { return 'BASE;'; } }\n$owner = new class extends R181InheritedStringableBase {\n    public function make() { return new class {}; }\n};\n$child = $owner->make(); $after = new class {};\necho (string)$owner, $owner::class, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "c0bd103e01f5674500eb3f4e46e9c2870ab22af93064329a01c6d57d02106b05",
+      "stdout_template_base64": "QkFTRTtSMTgxSW5oZXJpdGVkU3RyaW5nYWJsZUJhc2VAYW5vbnltb3VzAHtGSUxFfTozJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo2JDM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "nested-stringable-owners",
+      "source": "<?php\n$outer = new class {\n    public function make() { return new class {\n        public function inner() { return new class {}; }\n        public function __toString(): string { return 'INNER;'; }\n    }; }\n    public function __toString(): string { return 'OUTER;'; }\n};\n$inner = $outer->make(); $grand = $inner->inner(); $after = new class {};\necho (string)$outer, (string)$inner, $outer::class, ';', $inner::class, ';', $grand::class, ';', $after::class, ';';\n",
+      "source_sha256": "1272a424445408bbed4b5404f0530452f4220cc32943fe7d575d270934b2ad7c",
+      "stdout_template_base64": "T1VURVI7SU5ORVI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo5JDM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "mixed-case-tostring-owner",
+      "source": "<?php\n$owner = new class {\n    public function make() { return new class {}; }\n    public function __ToStRiNg(): string { return 'CASE;'; }\n};\n$child = $owner->make(); $after = new class {};\necho (string)$owner, $owner instanceof Stringable ? 1 : 0, ';', $owner::class, ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "2192910f03bb7d11882a3fe0d612fb703228d9a71f1cec3452ae23c6e7a5f2e7",
+      "stdout_template_base64": "Q0FTRTsxO2NsYXNzQGFub255bW91cwB7RklMRX06MiQwO2NsYXNzQGFub255bW91cwB7RklMRX06MyQxO2NsYXNzQGFub255bW91cwB7RklMRX06NiQyOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

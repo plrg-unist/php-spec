@@ -15,7 +15,7 @@ SOURCES = {
     'method-owned-closure': ('<?php\n$owner = new class { public function make() { $f = function() { return new class {}; }; return $f(); } };\n$owner->make(); echo "OK;";\n', b'OK;'),
     'method-owned-named-function': ('<?php\n$owner = new class { public function make() { function nested180() { return new class {}; } return nested180(); } };\n$owner->make(); echo "OK;";\n', b'OK;'),
     'method-owned-arrow': ('<?php\n$owner = new class { public function make() { $f = fn() => new class {}; return $f(); } };\n$owner->make(); echo "OK;";\n', b'OK;'),
-    'implicit-stringable-owner': ('<?php\n$owner = new class { public function make() { return new class {}; } public function __toString(): string { return "OWNER;"; } };\n$owner->make(); echo (string)$owner;\n', b'OWNER;'),
+    'tostring-body-child': ('<?php\n$owner = new class { public function __toString(): string { $child = new class { public function value(): string { return "MAGIC;"; } }; return $child->value(); } };\necho (string)$owner;\n', b'MAGIC;'),
     'class-constant-sibling': ('<?php\n$owner = new class { public const VALUE = 7; public function make() { return new class {}; } };\n$owner->make(); echo $owner::VALUE, ";";\n', b'7;'),
 }
 

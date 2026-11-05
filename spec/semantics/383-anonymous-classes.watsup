@@ -202,8 +202,6 @@ def $anonymous_only_anonymous_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurren
 dec $anonymous_owner_factory_blocked_member(statement) : bool
 def $anonymous_owner_factory_blocked_member(NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata) = true
 def $anonymous_owner_factory_blocked_member(NStmtTraitUse phpType42 phpType62 metadata) = true
-def $anonymous_owner_factory_blocked_member(NStmtClassMethod phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata) = true
-  -- if $ptlc($base64(text)) = $ptascii("__tostring")
 def $anonymous_owner_factory_blocked_member(statement) = false -- otherwise
 dec $anonymous_owner_factory_members(statement*) : bool
 def $anonymous_owner_factory_members(eps) = true

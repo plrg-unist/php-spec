@@ -39,8 +39,10 @@ def run(command, cwd, timeout):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case', action='append', help='Run only this case ID; repeat as needed')
+    parser.add_argument('--catalogue', type=Path, default=CATALOGUE)
     args = parser.parse_args()
-    catalogue = json.loads(CATALOGUE.read_text())
+    catalogue_path = args.catalogue.resolve()
+    catalogue = json.loads(catalogue_path.read_text())
     rows = catalogue['cases']
     if args.case:
         assert set(args.case) <= {row['id'] for row in rows}
@@ -51,7 +53,7 @@ def main():
     php = ROOT / '.tools/php/bin/php'
     adapter = ROOT / '_build/default/adapter/main.exe'
     watched = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    watched += [ROOT / 'spec/semantics/modules.json', CATALOGUE, PROFILE,
+    watched += [ROOT / 'spec/semantics/modules.json', catalogue_path, PROFILE,
                 Path(__file__), php, adapter, ROOT / '.tools/php-file.so']
     before = {str(path): digest(path) for path in watched}
     raw = Path(tempfile.mkdtemp(prefix='class180-source-', dir=ROOT / '.tools'))
@@ -62,7 +64,8 @@ def main():
         filename = raw / (row['id'] + '.php')
         filename.write_bytes(source)
         native = run([str(php), '-n', *flags, str(filename)], raw, 30)
-        model_timeout = 120 if row['id'] == 'owner-nested-depth' else 60
+        model_timeout = (240 if row['id'] == 'nested-stringable-owners' else 120
+                         if row['id'] in ('owner-nested-depth', 'owner-stringable-nested-depth') else 60)
         model = run([str(ROOT / 'bin/php-semantics'), str(filename),
                      '--steps', '100000', '--timeout', str(model_timeout)], raw, model_timeout + 10)
         expected_out = base64.b64decode(row['stdout_template_base64']).replace(b'{FILE}', os.fsencode(filename))
