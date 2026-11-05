@@ -9,6 +9,18 @@ execution creates the certified tasks; callers cannot supply a marker table.
 Named construction visits its class and source-ordered arguments, allowing
 argument Closures to contribute their own lexical plans.
 
+Comma-separated Echo operands compile and execute as Zend's individual Echo
+statements. Each nonfinal operand has a canonical marker at its checked operand
+occurrence; the final operand keeps the enclosing statement marker. Plans emit
+those markers between operand compilations, preserving each operand's line and
+lexical frequency. Runtime markers follow the completed emission before the next
+operand is evaluated, so callbacks can change later CV reads or abort later side
+effects. Empty, null and false operands still emit real operations and tick.
+Wrapped markers retain source authentication and duplicate refusal. Ordinary
+output-chunk callbacks preserve the exact suffix and its saved Tick. The source
+routes are `echo_expr_list`/`echo_expr` in `Zend/zend_language_parser.y` and
+`zend_compile_echo`/`zend_compile_stmt` in `Zend/zend_compile.c`.
+
 Switch plans visit the subject, every case condition, then every body in compiler
 order. Case bodies share adjacency across selected and unselected branches;
 fallthrough and jumps retain the ordinary switch runtime. A final temporary
@@ -63,9 +75,8 @@ the enclosing tick runs after assignment commits. Source authority includes
 bounded. Witnessed callable-key assignments have no registered error handler.
 The registered-handler quiet key-reader path has an open composition/performance
 obligation: bounded progress completes after the key's tick, but full execution
-times out. This establishes neither completion nor Unsupported. Multi-operand
-`echo` still lacks Zend's between-operand tick placement; these witnesses use
-explicit individual echo statements.
+times out. This establishes neither completion nor Unsupported. That narrow dependency
+remains open after the grouped-Echo fix.
 
 Admitted Generator sources preserve statement markers across suspension. A bare
 yield keeps its discard before the pending tick; a direct assignment keeps its
@@ -131,6 +142,9 @@ validation with budget/unpause equivalence.
 The [coalesce tick review](../../coverage/semantics/tick-coalesce-review.json)
 records quiet reads, lazy RHS execution, memoized target children and committed
 assignment before callback throw.
+The [Echo tick review](../../coverage/semantics/tick-echo-review.json) records
+per-operand late reads, callback aborts, empty operands, marker lines/frequencies
+and the actual output-chunk suffix interaction.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

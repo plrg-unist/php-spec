@@ -309,9 +309,11 @@ plans use published compiler redirects and retained effects to distinguish
 elided bodies from runtime-unselected bodies, preserving real BOOL operations
 and static-diagnostic omission. Coalescing plans preserve quiet reads and lazy
 fallback execution while compiling fallback bodies and memoizing assignment target
-children in Zend order. Between-operand ticks for multi-operand `echo` remain a
-known gap. Registered-handler callable-key assignment also retains an open quiet-reader
-composition/performance obligation.
+children in Zend order. Grouped Echo operands run their own ticks before the
+next operand is evaluated, preserving late CV reads, callback aborts and each
+operand's compiler line/frequency through output callbacks. Registered-handler
+callable-key assignment retains an open quiet-reader composition/performance
+obligation.
 
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;

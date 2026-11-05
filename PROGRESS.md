@@ -941,7 +941,10 @@ Tick plans follow Zend compiler order across Switch conditions/bodies, Match
 conditions/results, Yield key/value and YieldFrom operands. Compiled unselected
 callables contribute lexical declarables. Constant/CV versus temporary cleanup,
 assignment/discard lines and ordinary Generator suspension preserve canonical
-statement markers and the shared request counter.
+statement markers and the shared request counter. Grouped Echo operands now
+interleave canonical ticks with emission and later operand evaluation, preserving
+late reads, callback aborts, empty-operand operations and per-operand lines and
+frequencies through ordinary output-chunk callbacks.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -956,14 +959,15 @@ Exact source, strict and reached-state cuts remain in the
 [Generator](coverage/semantics/tick-generator-review.json),
 [Match](coverage/semantics/tick-match-review.json),
 [conditional](coverage/semantics/tick-elision-review.json) and
-[coalesce](coverage/semantics/tick-coalesce-review.json) reviews.
+[coalesce](coverage/semantics/tick-coalesce-review.json) and
+[Echo](coverage/semantics/tick-echo-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
-lines and wider child/result/lifetime contexts remain partial. Multi-operand echo
-still lacks between-operand ticks. Registered-handler callable-key coalesce
+lines and wider child/result/lifetime contexts remain partial. Registered-handler
+callable-key coalesce
 assignment has an open quiet-reader composition/performance obligation: compilation
 and 100-step progress complete, but full execution times out; those runs have zero
-agreement credit. Return to that narrow dependency after the priority echo fix.
+agreement credit. That narrow dependency is the next investigation after Echo.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -1632,7 +1636,7 @@ records the pointwise bridge to final semantic bytes.
 | GC46 | WeakMap offsetGet and offsetExists with finite payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
-| ATTR33 | Echo tick placement between operands, with late reads and aborts; private implementation/review. |
+| ATTR34 | Coalesce reader with a callable key and registered handlers; bounded diagnosis. |
 | Enum callable arrays | Namespace fallback preserving a saved builtin through local publication; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

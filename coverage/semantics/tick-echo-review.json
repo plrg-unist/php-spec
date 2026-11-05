@@ -1,0 +1,96 @@
+{
+  "milestone": "ATTR33: grouped Echo ticks between operand emissions",
+  "status": "Independently accepted bounded implementation; Echo/ticks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "02a019e1b",
+    "modules": {
+      "spec/semantics/31-source-origins.watsup": "fae063544cf9593fb013e3d0a8c36143ffd0dc9cad1f8616a135621660382a16",
+      "spec/semantics/393-ticks.watsup": "6700288aeb4485ef55eec9976728bd92974bbd3b1dd9cf493618b5e1c3b0f41e"
+    },
+    "scope": "Interleave operand compilation with canonical intermediate markers. Append wrapped source-origin TICK tasks after completed nonfinal EMIT scopes and before the next operand evaluation. Keep the final enclosing statement Tick. Authenticate intermediate sites through canonical plan lookup and the real Echo emitter source/line. Marker uniqueness unwraps AT tasks. No task/state/schema fields or output production edits."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "files": {
+      "vendor/php-src/Zend/zend_language_parser.y": "f108f2c2ff4c98c68b6478e7fbdebc16d8afb8bbbc3ae6079e5b285b448dac0c",
+      "vendor/php-src/Zend/zend_compile.c": "25190ee20f2660aa66577f5da71b43be63268e90fa7c0ecb2e3cf8f1e621b225"
+    },
+    "symbols": [
+      "echo_expr_list",
+      "echo_expr",
+      "zend_compile_echo",
+      "zend_compile_stmt",
+      "zend_emit_tick"
+    ]
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-echo-33/strict-report-v1.json",
+      "sha256": "0df600dbe47a0046e9f8e324c1b361d425f9e80453f16d0f8f847025c06094db",
+      "revision": "d72fcdd0983d98ac8f9f6ec0867facdf6234378c",
+      "passed": true,
+      "modules": 437
+    },
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-echo-33/source-author-v1/report.json",
+      "sha256": "fae068cb823a2e74aed53d0c9b86d13ae1b0aa2add1755d08374019874f52ffa",
+      "revision": "d72fcdd0983d98ac8f9f6ec0867facdf6234378c",
+      "passed": true,
+      "agreements": 2,
+      "scope": "Later CV reads observe the first Tick mutation; the actual positive-chunk output callback preserves the intermediate marker and yields five observable handler invocations."
+    },
+    "independent": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-echo-33/source-review-v1/report.json",
+      "sha256": "af1f8cc12dedf6c2991cb3730af6a67bb3662e234dafb48a47cc637eb61acf4c",
+      "revision": "d72fcdd0983d98ac8f9f6ec0867facdf6234378c",
+      "passed": true,
+      "agreements": 3,
+      "scope": "First callback throw prevents later print effects; each multiline operand keeps its own marker line; a later callable declaration does not retime an earlier operand."
+    },
+    "empty_constant_control": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-echo-33/source-review-empty-v1/report.json",
+      "sha256": "8ec6772ebaf201d049945030e40833650f383572264887c7f925065073016bae",
+      "revision": "b8f316cbbf35d40d63eb7dda1de2e4fec5075bf4",
+      "passed": true,
+      "agreements": 1,
+      "scope": "After a prior Tick, empty/null/false operands each retain ECHO emission and a Tick; the final CV reads after four callbacks."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-echo-33/review-protocol-v1/run/report.json",
+      "sha256": "cc16d647e9c117d3f30537a9a3b14c60e0928ff24cded24db0a456e2237bc23e",
+      "revision": "5c28b75e74071e117cd2a418f598adfe97ae0c45",
+      "passed": true,
+      "groups": 3,
+      "reported_conditions": 138,
+      "group_conditions": [
+        49,
+        46,
+        43
+      ],
+      "labeled_derived_refusals": 4,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "process": "/home/user/workspace/php-spec-evidence-archive/tick-echo-33/review-protocol-v1/process.json",
+      "process_sha256": "e32c0bdee64daa69ac51f2d7f86d0a4db965c829935e7c728314bedf3510bc54",
+      "scope": "Actual first intermediate Tick retains delayed later EVAL/EMIT plus the final bare parent Tick. First frequency1 differs from the future callable marker2; the multiline second Tick follows an actual [6] chunk and authenticates line7. Wrong frequency/line and duplicate wrapped marker refuse local/global guards. Full descriptor/heap and budget/unpause checks finish to native-observed bytes."
+    }
+  },
+  "behavior": "Each nonfinal Echo operand now runs its canonical Tick after emission and before evaluation of a later operand. Callback mutation changes later CV reads; callback throw suppresses later side effects. Empty-valued operands still emit an operation and advance the counter. Per-operand compiled lines and lexical frequencies survive later callable declarations. Output callbacks preserve the actual opaque suffix and owner prefix.",
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/tick-echo-33/source-baseline/report.json",
+    "sha256": "86565f40fcf9258ef9e8550e765b960f9567e0e9962675b407307b6451b9bda0",
+    "revision": "05a0f7223",
+    "native_stdout": "AT2T",
+    "modeled_status": "normal",
+    "modeled_stdout": "A1T",
+    "disposition": "Preserved real model discrepancy, fixed by actual intermediate execution; zero agreement credit."
+  },
+  "independent_review": "/root/attributes_review accepted02a019e1b and all three actual marker fronts. Output pair confirmed opaque EMIT suffix/source-auth compatibility, and the positive-chunk source executes that join.",
+  "remaining": "The separately diagnosed registered-handler callable-key coalesce quiet-reader composition/performance obligation remains open and is the next investigation; see tick-coalesce-review.json. Wider unproved child/result/control/lifetime and conversion contexts remain partial.",
+  "environment": "Original source bytes, paths/cwd, exact commands, raw streams/exits and tool/module identities remain external. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile; heavy processes use CPU5. Regular copied tools are not a clean offline rebuild or portability proof.",
+  "zero_credit": [
+    "The original normal A1T baseline mismatch remains preserved with zero agreement credit.",
+    "All production strict/source/reached checks pass at their actual recorded cuts. The later empty-operand source was run once after catalog addition; earlier three sources were not repeated.",
+    "No broader32/31 or output/reference-return replay was run. No engine bug, intentional divergence or full-core closure is claimed."
+  ]
+}
