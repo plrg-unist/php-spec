@@ -1,0 +1,38 @@
+{
+  "scope": "CLASS185 independent review: anonymous factories in ordinary generator methods of named/anonymous classes and unit0 Traits, including ordinary static anonymous methods and admitted nongenerator nested Closures/arrows.",
+  "decision": "accepted_private",
+  "parent": "7b91b41cec3f24ca6bc1ee371b5aa3d6c102a114",
+  "accepted_commits": ["71976886abfee326db25e49d02eb7835d6b889ed", "98d1b759f14a322eb1b4fc9f765db68a0f7b3edf", "d3f174944c37767a51b141fb0a3809a0398bcbb1", "509634e57a9e9848931e07e427c15923fb468569"],
+  "tested_cuts": "Initial private a06f625c7 contains719+98d1; fixed private b470ff87e contains d3+509 and has the same complete tree as509:6cfea0c0ca044a9fc1c106d8385f5e026c061ea1. Earlier successful components retain their original cuts.",
+  "target": "PHP 8.5.10 CLI/NTS/64-bit, source 34308a6666b2d489c509541ea9befea9e2b42348, oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; SpecTec da36ac3c434cd291940293a63da64544307730a3; tests/semantics/profile.json, -n, LC_ALL=C, TZ=UTC.",
+  "source_review": "Two383 predicate sites admit ordinary generator factory methods and remove the obsolete static anonymous-member fence. Constructor generators now have an explicit name/body guard independent of141's magic list. Existing280 save/install/frame validators retain actual method source, receiver, lexical/called scope and physical owners. Zend ZEND_GENERATOR_CREATE saves execute_data/This; zend_generator_resume restores it and chains the actual resumer. Zend backtrace2068/2092 distinguishes a previous user frame from a native API frame. The coordinated280 correction preserves ordinary trace arguments/suffix and changes only the body location when an actual native operation trace exists; its empty-trace branch retains previous behavior.",
+  "findings": [
+    "The independent lazy-final-link source found a real API-resumed Generator trace mismatch: php_error/exit255, error bytes and PRE;MADE;BODY;ready;PAUSED; prefix agreed, with ARG skipped, but model#0 used FILE(4) where PHP used [internal function]. d3 corrects it; original failure remains preserved with zero aggregate agreement credit.",
+    "The focused constructor boundary found the ordinary arm bypassed the intended fence because $ppmethod_magic excludes __construct. The executable control corrected both implementer and reviewer static assumptions.509 adds the explicit constructor/body premise. This is an admission-boundary finding, not a claim of native observational disagreement for the excluded source."
+  ],
+  "archive_root": "/home/user/workspace/php-spec-evidence-archive/class185-generator-method-factories/reviewer",
+  "commands": {"artifact": "commands.json", "sha256": "b1cc97ce5eaf925531456fae4125a701d2d22c7705639702b60427c550c5084e", "identity": "Exact argv/cwd/cuts/exits and recovery paths recorded; raw packets preserve bytes, source identities, profiles, module/binary fingerprints and runner snapshots. Local renderers/catalogue/native preparation are copied under inputs/."},
+  "checks": {
+    "source5_initial": {
+      "report": "class180-source-k4pku0dx/report.json", "sha256": "8c57bad0811da9d0c9f79e3574462496272f474e9f2e3bf83c6258f0d3ff6d9e",
+      "result": "Stable: four exact agreements at719+98 and the genuine lazy-link trace failure. Passing originals cover two Trait consumers with alias/inherited private/self/static/magic scope and common child0/root-after4; failed-owner Generator retains nested arrow and suppresses destruction; injected Throwable creates child and retires receiver after finally; child warning precedes later Trait typed-constant fatal. Explicit model bound300/outer310; no timeout. Failed aggregate is not promoted."
+    },
+    "trace3_fixed": {
+      "report": "class180-source-03ivmthd/report.json", "sha256": "167c556f605affb37c01afcc65ed8b96335f7fbfa91e8609fc3243fdf44d4eb4",
+      "result": "All three exact/stable at d3+509: byte-identical preserved lazy original, newly created Exception under native API resume with argument7/internal body frame/API location, and foreach Exception with argument8/user location/no API frame. Thus the five independent originals agree across explicit cuts, plus two additional trace controls."
+    },
+    "mixed_consumers_SL437": {
+      "report": "closure-call-protocol-gt2oj2g3/report.json", "sha256": "fbfde4d9a8ebd86ea5afc6bf5a67e6b230574012c61d2b4523a4f09ce4bc6657",
+      "result": "First attempt true newline/exit0/empty stderr/stable at719+98.76 recorded entries comprise compiler setup8, genuine source/runtime/resumption/retirement64 and explicitly derived refusals4. Actual A-alias/called-C Generator runs child NEW while B is paused; imports share raw Trait source but retain distinct functions/scopes/receivers. Saved B owns its receiver; running A has no duplicate stored frame. Full/split7+16384=16391 states and native output agree; both receivers/Generators retire. Forged Trait lexical scope, saved receiver/source and missing real resumer refuse."
+    },
+    "source_boundaries": {
+      "initial_report": "closure-call-protocol-6sz9aoqr/report.json", "initial_sha256": "01fb04935c43d9b3810db68e963dfe8182bdee1b0b546a5aa3fa3db541e2759d",
+      "corrected_constructor_report": "closure-call-protocol-xot8oarh/report.json", "corrected_sha256": "2fc861dd1134eed1adc2a09aefa5612d1fc81a08d3e7e01396115509684fb1ac",
+      "result": "Initial aggregate false/stable: generator-constructor guard fails0; unchanged method-owned generator Closure component11 is true. Only affected constructor component is renewed after509:10 true/exit0/empty/stable, including explicit Unsupported source completion. Native-positive excluded sources have zero model/native observational agreement credit.",
+      "native2": "class185-native-boundaries-xss0gclx/report.json sha55991bbe5ef6ac304e85aa3dcc68d11feb2c17b01ffbca47e20e12fc71b7190e; constructor-only repetition class185-native-boundaries-ae2ag5qu/report.json sha44040cf1b617d447a7335b2bbdabab4e37492c05d5ec7563b15f8a7803e30ed2. Exact baseline profile, normal native CTOR/GEN, stable binary."
+    }
+  },
+  "documentation": "README, SOURCE-CLASSES, GENERATORS, PROGRESS, relevant inventory additions and final author ledger reviewed. Author source7 and SL69 (setup7/genuine58/derived4), two original observer/carrier fixture failures0, shared trace correction and explicit constructor guard are kept separate from independent cuts. Named direct contexts retain their pre-existing dynamic policy; no new dynamic validation is claimed.",
+  "conditions": "Private acceptance of the fixed semantic tree. Earlier agreements and state components contain no generator-constructor factory or newly formatted trace branch, so the isolated corrections require only their affected checks. Integration must assess actual-parent interactions and coordinated383/280 ownership; metadata changes do not renew unrelated evidence.",
+  "remaining": "Generator constructors, generator Closure/arrow factory bodies, attributed/byref/other magic factories, wider signatures, dynamic deferred/Trait units, callbacks/delegation and lifecycle combinations remain partial. No intentional engine divergence was introduced."
+}
