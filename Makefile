@@ -115,6 +115,9 @@ test-semantics: build
 	python3 tests/semantics/tick_class_const_sources.py
 	python3 tests/semantics/tick_class_const_review_sources.py
 	python3 tests/semantics/tick_class_const_review_protocol.py
+	python3 tests/semantics/tick_property_sources.py
+	python3 tests/semantics/tick_property_review_sources.py
+	python3 tests/semantics/tick_property_review_protocol.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/output_reference_warning_sources.py

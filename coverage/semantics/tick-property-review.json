@@ -1,0 +1,73 @@
+{
+  "milestone": "ATTR42: unticked plain property defaults",
+  "status": "Independently accepted bounded implementation; wider property/header/default and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revisions": ["943fbc65f", "8c6c54c9d"],
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "46a89efd8a44231712532148d5c05508515d084ef8520012f01e3af1c69efac5",
+    "scope": "Undecorated property groups without hooks visit defaults through the existing constant-context visitor in member order. Their unticked rule and main-oparray adjacency remain intact. The old frequency-zero route explicitly excludes these groups, preventing two different compiler-line summaries. No property producer/consumer, linking, task, state or schema changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_prop_group delegates to zend_compile_prop_decl, which visits defaults in order through zend_const_expr_to_zval, declares each property and then handles optional hooks/attributes. Plain groups add no main opcode, and zend_is_unticked_stmt excludes the property group from Tick emission.",
+    "runtime": "Existing property-default and object-initialization consumers install slots before the enclosing assignment Tick. Ordinary Tick callbacks can read those values and throw while preserving the committed object binding."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-plain-properties-42/strict-report-v2.json",
+      "sha256": "b7191be1bf358285c4849cc44b978b12107dd7545b6455115f7d23fa7729d2d6",
+      "revision": "8c6c54c9d2e15d339e85980f84a571b3ea211db3",
+      "passed": true,
+      "modules": 445
+    },
+    "author_positive_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-plain-properties-42/source-author-v1/report.json",
+      "sha256": "3cb2324f95b80e2218322971180012dd3f0b8e0ba5fba00b7a62e660ff7a3e60",
+      "revision": "01b3193a55f6663a8b7b25feeae86e348fdab8d3",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TPZTWT",
+      "scope": "One original combines a literal property group followed by a no-op/bare directive with uncalled static Closure defaults declaring frequencies 2 then 1. It distinguishes preserved prior adjacency and default compilation order without executing BAD. Its two group inputs have frequencies 1 and 2, so the later frequency-zero fallback exclusion is pointwise inactive; this source was not replayed."
+    },
+    "affected_quiet_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-plain-properties-42/source-overlap-after/report.json",
+      "sha256": "38a1117836e65ba8ffcfcb6bb0753f996b66f96495c891c7c13a343b335f7e25",
+      "revision": "8c6c54c9d2e15d339e85980f84a571b3ea211db3",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TZT",
+      "scope": "A frequency-zero multiline global-constant default has one constant-context line summary, then the file enables ticks and completes normally. This is the only source rerun after the fallback exclusion."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-plain-properties-42/source-review-v1/report.json",
+      "sha256": "c4c847aa3f7a2c6df9a00103077c91c75753b5e15154f6d229a03dbac062030c",
+      "revision": "8c6c54c9d2e15d339e85980f84a571b3ea211db3",
+      "passed": true,
+      "agreements": 1,
+      "observation": "TT2CT1T2TZT",
+      "scope": "Callback 2 reads initialized second=2 after the object assignment and throws, skipping later try output. Catch and subsequent reads preserve first=1, second=2 and the same object."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-plain-properties-42/review-protocol-v1/run/report.json",
+      "sha256": "be5685a1627289f49e9c138bc038585a9d09ea1a9aef0e9d63e0d2a8a657bbfd",
+      "process_sha256": "e0203779a3e92de6b95d926f560dbd72ca652fa1fca65d6377e4ccd84f0edcde",
+      "revision": "118c127d3f08a23e5dbc3e537f3201a29736f68f",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 54,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At the genuine assignment Tick the live object binding and initialized slots 1/2 validate, while class/property markers are absent. Callback reads 2 then aborts; BAD is absent, both slots/object remain after cleanup and counter 6 yields the exact native output. Full-state zero-budget preservation and full-resume equality, plus descriptor/heap/Tick validity, pass."
+    }
+  },
+  "independent_review": "/root/attributes_review found the quiet-rule overlap, confirmed it with original-source execution, accepted its explicit attrs/hooks exclusion and passed the genuine committed-assignment Tick front on first execution. No shared class/enum/runtime edit was needed.",
+  "remaining": "Decorated groups, property hooks, complex headers and unproved nested callable/deferred default producers retain existing dependencies. Existing supported static Closure defaults are reused; no new producer, consumer, whole-family closure or portability claim is made.",
+  "environment": "Original source bytes, paths/cwd, commands, raw channels/exits and module/tool fingerprints remain external in tick-plain-properties-42. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs were stable, exits 0 and driver stderr empty; all campaign executables were reaped. Four regular local tool files were preserved when the idle ATTR41 worktree was reused; this is not a fresh offline rebuild.",
+  "zero_credit": [
+    "source-baseline/report.json at 781593e6a remains false (SHA 23641e91ce806b4bb5d5ae7bc34f780c7a00f2a9a719d7b934e5d4529034b1a8): native TPZTWT versus old Unsupported/empty prefix with tick opcode placement dependency.",
+    "source-overlap-before/report.json at 173e35bfa remains false (SHA 57cebc4f21174b9d936c8e17f5b5f5a4d17b9a8d895fe5e4b0bda0f7667646d7): native TZT versus modeled interpreter_failure/nondeterministic instruction evaluation in the two overlapping property summaries. This is an implementation defect, not Unsupported or a PHP engine divergence.",
+    "An initial selection command used --case instead of the source wrapper's --select; argparse rejected it before execution (exit 2), with no semantic credit. The corrected selected command supplied the preserved before packet.",
+    "No ATTR41, earlier compiler family, output, Generator, linking or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed."
+  ]
+}

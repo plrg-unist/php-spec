@@ -328,8 +328,9 @@ Class-like plans distinguish early binding from emitted declarations, preserving
 method declarables and activation before conditional declaration callbacks.
 EnumCase ticks run before enum activation, preserving adjacency, backed-value
 lines and callback abort without changing the declaration consumer.
-Unticked class-constant groups preserve adjacency while their Closure initializers
-contribute lexical tick plans and ordinary callback/read behavior.
+Unticked class-constant and plain property groups preserve adjacency while their
+Closure initializers contribute lexical tick plans and ordinary callback/read
+behavior.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.
