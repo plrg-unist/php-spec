@@ -194,6 +194,17 @@ recorded cuts. The unchanged-model mismatch and first author fixture failure
 retain zero credit; wider nested exit, pending-Throwable, Fiber and GC paths
 remain partial. [I105 review](coverage/semantics/generator-call-repeated-exit-review.json).
 
+I106 was automatically stopped for possible cybersecurity risk; private work remains preserved, with zero integration or validation credit.
+
+I107 validates the existing normal return after an owning copied-warning
+retval and its Child/After fields retire. The handler resumes the second fresh
+reference; fake and captured real copies then create and use a Generator even
+after the source CV clears. Two native/model source comparisons, fake full
+reached116/121 and independent real joined handoff82/87 pass. The first
+fixture error and timed-out full peer retain zero credit; wider Fiber, GC and
+warning cleanup remain partial.
+[I107 review](coverage/semantics/generator-call-cleanup-return-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory

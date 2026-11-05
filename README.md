@@ -7460,6 +7460,13 @@ status 29 and frees an After sibling; an integer exit replaces status 41 with
 53. Both exact native/model outputs and independent reached ownership gates
 pass. [Repeated cleanup exit review](coverage/semantics/generator-call-repeated-exit-review.json).
 
+Normal return from that owning warning retval also retires Child and After
+before restoring the handler and creating the copied Generator. Pinned fake
+and captured real sources agree with PHP through Generator use and close;
+independent reached checks confirm the real handoff and fake terminal owners.
+The existing rules suffice for this selected case.
+[Normal cleanup review](coverage/semantics/generator-call-cleanup-return-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

@@ -209,6 +209,14 @@ handler restoration and shutdown; wider nested exits and exit with an ordinary
 Throwable already pending remain partial.
 [Repeated cleanup exit review](../../coverage/semantics/generator-call-repeated-exit-review.json).
 
+I107 validates normal return through the same owning retval's Child and After
+field cleanup. The handler restores before a distinct second by-reference cell
+is prepared; the copied fake or captured real Closure then produces a Generator
+despite the cleared source CV. Full source comparisons cover Generator use,
+close and shutdown; reached checks cover fake terminal owners and the real
+captured-copy handoff. No production rule changes.
+[Normal cleanup review](../../coverage/semantics/generator-call-cleanup-return-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

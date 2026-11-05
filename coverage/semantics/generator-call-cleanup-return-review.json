@@ -1,0 +1,55 @@
+{
+  "milestone": "I107 normal owning copied-warning retval cleanup",
+  "status": "Selected fake and captured-real normal return passes; wider lifecycle remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64, php-src 34308a6666b2d489c509541ea9befea9e2b42348, LC_ALL=C, TZ=UTC, CPU4",
+  "scope": "The second copied Closure::call by-reference warning returns an owning retval normally. Its Child then After fields retire after the retval clears the source CV; the handler restores, a distinct second reference is prepared, and the copied Generator is created, entered and closed. Fake method and independent real captured Closure sources expose receiver, capture, argument and weak owner lifetimes.",
+  "semantics": "Existing cleanup, reference and Generator rules suffice for these selected normal paths; I107 changes no production rule. The real reached handoff validates the captured copy and second cell, while complete real and fake native/model sources observe Generator close and shutdown. The fake reached gate also validates terminal owner retirement.",
+  "engine": "zend_error_zstr_at releases the handler retval before restoring EG(user_error_handler); zend_object_std_dtor frees declared Child then After slots; zend_call_function resumes the reference warning; Closure::call creates its copy before the user call. zend_generator_close and zend_generator_free_storage distinguish argument/This release from later Closure and cached-yield release. See vendor/php-src/Zend/{zend.c,zend_objects.c,zend_execute_API.c,zend_closures.c,zend_generators.c}.",
+  "validation": {
+    "native_fake": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-return-107/native-first-238/fake/report.json",
+      "sha256": "faa4634ce52ae7c9372e43ba1850d2d945e16a559b3aead164c0a65dcea968aa",
+      "source_sha256": "bf9e5742afbbe1f7e42a386d3ea5f569f1597a22159b20784654516ea5a45230",
+      "result": "exact exit0, quiet, Child/After/OLD before return, BODY/GEN-FIN and owner/shutdown observations"
+    },
+    "native_real": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-return-107/native-first-238/real/report.json",
+      "sha256": "fa3e012bd04ed3b1a2a48ec5fe766e0af3fb26d6bf91c7ad9453d76c16cc5a37",
+      "source_sha256": "a539e717ddc632bc2829a072420ac3e476c431d9aef7dc17166c46edac010410",
+      "result": "exact exit0, quiet, Child/After/OLD then current/next/getReturn/drop with captured owner and FIN/shutdown observations"
+    },
+    "source_fake": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-return-107/source-fake-6e52/report.json",
+      "sha256": "88163e20e53efb082676d123085c61194c600e397233893ed5ab57267b366912",
+      "revision": "6e52d04abf93185aad73e14868e9d6340ceb04d9",
+      "result": "native/model normal stdout, stderr and exit byte-equal; model600/process620"
+    },
+    "source_real": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-return-107/source-real-6e52/report.json",
+      "sha256": "8f1a91015e119ada8b7d9d4f1196fcafac2bd550fe274d061c3c66b43240f53c",
+      "revision": "6e52d04abf93185aad73e14868e9d6340ceb04d9",
+      "result": "independent captured-Closure native/model full normal path byte-equal; model600/process620"
+    },
+    "fake_reached": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-return-107/author-fake-6901017/report.json",
+      "sha256": "8b4d1d19c168f394140e35049b733c9474f845ec624f204f8614c1bbf2e877a9",
+      "revision": "6901017a2a876c055180e581fcee5091cfd40215",
+      "result": "116 custom/121 reported true, CLEAN, handler, fresh second cell and full normal terminal owners; seek/finish4000, cap600"
+    },
+    "real_handoff": {
+      "report": "../php-spec-evidence-archive/generator-call-cleanup-return-107/peer-real-handoff-8e33/report.json",
+      "sha256": "cf46ba33b43a363b38428bb2a1c8911cb7add78fea3c58ecdfa23b228da225a6",
+      "revision": "8e33c22dce99fcc75ffd46da63f555dce93f279b",
+      "result": "82 custom/87 reported true on the first 82 frozen peer clauses; captured-copy owners, malformed source/copy refusal, handler restoration and distinct second cell; cap600"
+    }
+  },
+  "evidence_contract": "Native-first raw, exact source bytes, profile, commands and full-reap records are external. Source reports pin the PHP/tool identities and stable inputs; both states loaded the full SL manifest with four matching tool binaries, stable HEAD/inputs, true output, exit0, empty stderr and no timeout. The real handoff diagnostic used the first 82 clauses of peer SHA170569; the tracked trimmed peer has exactly those clauses and was not rerun merely for the trim.",
+  "preserved_zero": "The first fake state fixture used GLOBALTABLE after returning to top-level ENV (report ../php-spec-evidence-archive/generator-call-cleanup-return-107/author-fake-first-263d-failed/report.json, SHA01b6e53ed60e9f81f8f4dc23cf885dec4022dec171c51e3d880b5df9f8a4cec7). The original full real peer timed out at600s (../php-spec-evidence-archive/generator-call-cleanup-return-107/peer-real-first-8e33-timeout/report.json, SHAa3e0f245e35b77c7609add62b4ad3d2d27e5331df386d20b11c4b274c1383bc8); prefix56/61 diagnostic was an overlapping subset. All retain zero validation credit.",
+  "composition": "Native/model sources and fake full reached gate ran before the joined real handoff on 8e33c22d. Reviewed intervening anonymous factory, Iterator config, rejected trait header, WeakMap and output-notice changes are disjoint from these accepted named-class sources; no source replay was warranted.",
+  "remaining": "Other retval/argument aliases, throwing and exiting variants beyond the recorded cuts, Fiber, GC, hard bailout and broader Generator lifecycle remain partial. No BOLA property is claimed.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_call_cleanup_return_sources.py --native-report ../php-spec-evidence-archive/generator-call-cleanup-return-107/native-first-238/native-reuse.json",
+    "taskset -c CPU python3 tests/semantics/generator_call_cleanup_return_state.py",
+    "taskset -c CPU python3 tests/semantics/generator_call_cleanup_return_review_state.py"
+  ]
+}
