@@ -454,7 +454,8 @@ def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
   -- if ~$config_strict(S, pconfigcall)
   -- if $config_iterator_string(S, pvalue_name)
   -- if $string_bytes(pvalue_name) = (preqbytes)
-  -- if preqbytes =/= $ptascii("zend.assertions")
+  ;; INI_SET rejects an array/object value before looking up this special option.
+  -- if preqbytes =/= $ptascii("zend.assertions") \/ $config_ini_value_conversion(pvalue) = TYPEREJECT
   -- if $config_iterator_string_value(S, pvalue)
   -- if $(n_object < |S.OBJECTS|)
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class

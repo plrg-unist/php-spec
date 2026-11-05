@@ -115,7 +115,7 @@ def $property_visibility_name(PROPERTY_PRIVATE) = $ptascii("private")
 
 def $property_access_error(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access property starting with \"\\0\""), z)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_BADNAME
-def $property_access_error(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(ppropertydesc.VISIBILITY) ++ $ptascii(" property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string(ppropertydesc.NAME), z)
+def $property_access_error(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot access ") ++ $property_visibility_name(ppropertydesc.VISIBILITY) ++ $ptascii(" property ") ++ $c_string($object_name(S, n)) ++ $ptascii("::$") ++ $c_string(ppropertydesc.NAME), z)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
 
 def $property_read(S, POBJECT n, ptbytes, z) = $property_read_key(S, POBJECT n, ptbytes_key, z)

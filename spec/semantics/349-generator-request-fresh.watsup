@@ -51,6 +51,10 @@ def $destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCT
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
   -- if pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
   -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+def $destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*, pdestructorcall) = (ptask*)
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
 def $generator_request_tail_task(DESTRUCTOR_RESULT pdestructorcall) = true
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
   -- if pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps

@@ -27,7 +27,7 @@ def $property_readonly_written(S, n, ptbytes) = true
   -- if ~$clone_reinitable(S, n, ptbytes)
 def $property_readonly_written(S, n, ptbytes) = false -- otherwise
 dec $property_readonly_message(pstate, nat, ptbytes, ptbytes) : ptbytes
-def $property_readonly_message(S, n, ptbytes, ptbytes_operation) = $ptascii("Cannot ") ++ ptbytes_operation ++ $ptascii(" readonly property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME
+def $property_readonly_message(S, n, ptbytes, ptbytes_operation) = $ptascii("Cannot ") ++ ptbytes_operation ++ $ptascii(" readonly property ") ++ $property_display_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME
   -- if $property_readonly_desc(S, n, ptbytes) = (ppropertydesc)
 def $property_readonly_error(S, n, ptbytes, ptbytes_operation, z) = $throw_scalar(S, "Error", $property_readonly_message(S, n, ptbytes, ptbytes_operation), z)
   -- if S.COMPLETION = NORMAL

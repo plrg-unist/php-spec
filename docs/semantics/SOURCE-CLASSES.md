@@ -548,6 +548,35 @@ records exact originals, table/source forgery refusals, actual own-FCC receives
 and compile-versus-link ordering. Attribute-bearing constants and wider
 member/type/initializer contexts remain partial.
 
+Attribute-free, hook-free anonymous property groups now share the ordinary
+property compiler, including multiple declarators, types and nonliteral defaults.
+Modifier admission shares the ordinary finite predicate for read/set visibility,
+static, readonly and final combinations; compiler-invalid forms retain the shared
+error order. No-argument constructorless allocation first runs pending instance/static
+default work through the existing source-authenticated constructor marker. When
+both default task lists are empty, allocation follows the original direct path.
+
+Private parent and child slots retain separate full-name keys. Instance arrays
+separate on clone writes; repeated visits to one class share static cells, while
+fresh eval compilations receive distinct cells and source identities. Visibility,
+static/instance inheritance and readonly checks use the existing runtime rules.
+The exercised diagnostic class-name operands truncate at NUL without changing
+stored names, keys or successful lookup identities. The
+[property review](../../coverage/semantics/anonymous-properties-review.json)
+records actual default-work/allocation fronts, private-key reads, static sharing
+and compile/link order.
+
+Equivalent read/set visibility normalizes to the ordinary setter, while genuine
+private(set) is implicitly final. Parent-final conflicts precede private-slot
+independence; setter narrowing is checked before read visibility/type inheritance.
+Final properties remain writable. Explicit public(set) readonly permits its first
+global initialization, then ordinary readonly checks reject another write.
+Setter authorization remains lexical; diagnostic caller display uses called scope.
+The [modifier review](../../coverage/semantics/anonymous-property-modifiers-review.json)
+checks stored flags/cells, actual permitted and denied stores, scope/descriptor
+forgeries and compile/link boundaries. Attributes, hooks, promotion and wider
+member/type/default/lifetime combinations remain partial.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
