@@ -59,6 +59,14 @@ dec $gc_one_array_capture(pitem*, nat) : bool
 dec $gc_capture_array_nodes(pitem*) : pnode*
 dec $gc_shared_array_captures(pstate, pitem*, nat, bool) : bool
 dec $gc_plain_captures(pstate, pitem*) : bool
+dec $gc_direct_captures(pitem*) : bool
+dec $gc_direct_array_entries(pentry*) : bool
+dec $gc_direct_graph_nodes(pstate, pnode*, hedge*, pnode*) : bool
+dec $gc_nested_array_edge(hedge) : bool
+dec $gc_nested_array_edges(hedge*) : bool
+dec $gc_reference_payload_valid(pstate, pvalue) : bool
+dec $gc_reference_captures(pstate, pitem*, bool) : bool
+dec $gc_reference_graph_nodes(pstate, pnode*, hedge*, pnode*) : bool
 dec $gc_legacy_array_shape(pstate, pitem*, nat) : bool
 dec $gc_ordinary_node(pstate, pnode) : bool
 dec $gc_ordinary_nodes(pstate, pnode*) : bool
@@ -474,6 +482,62 @@ def $gc_plain_captures(S, (DIRECT pvalue) :: pitem_tail*) = $gc_plain_captures(S
   -- if $value_nodes(pvalue) = eps
   -- if pvalue =/= PUNDEFINED
 def $gc_plain_captures(S, pitem*) = false -- otherwise
+def $gc_direct_captures(eps) = true
+def $gc_direct_captures((DIRECT pvalue) :: pitem_tail*) = $gc_direct_captures(pitem_tail*)
+  -- if pvalue =/= PUNDEFINED
+def $gc_direct_captures(pitem*) = false -- otherwise
+def $gc_direct_array_entries(eps) = true
+def $gc_direct_array_entries((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = $gc_direct_array_entries(pentry_tail*)
+  -- if pvalue =/= PUNDEFINED
+def $gc_direct_array_entries(pentry*) = false -- otherwise
+;; Reach deduplicates traversal, not ownership edges. A table reachable from
+;; its own children would be a forged DIRECT cycle rather than a source DAG.
+def $gc_direct_graph_nodes(S, eps, hedge*, pnode_pool*) = true
+def $gc_direct_graph_nodes(S, (HARRAY n_array) :: pnode_tail*, hedge*, pnode_pool*) = $gc_direct_graph_nodes(S, pnode_tail*, hedge*, pnode_pool*)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_immutable_array(S, n_array)
+  -- if ~$gc_proxy(S, n_array)
+  -- if ~((HARRAY n_array) <- pnode_pool*)
+  -- if $gc_direct_array_entries(S.ARRAYS[n_array].ITEMS)
+  -- if $node_children(S, HARRAY n_array) = $gc_trace_children(S, HARRAY n_array)
+  -- if ~((HARRAY n_array) <- $heap_reach($heap_children(HARRAY n_array, hedge*), eps, hedge*))
+def $gc_direct_graph_nodes(S, (HOBJECT n_leaf) :: pnode_tail*, hedge*, pnode_pool*) = $gc_direct_graph_nodes(S, pnode_tail*, hedge*, pnode_pool*)
+  -- if $(n_leaf < |S.OBJECTS|)
+  -- if (HOBJECT n_leaf) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_leaf] = STDINSTANCE
+  -- if $node_children(S, HOBJECT n_leaf) = eps
+  -- if $gc_trace_children(S, HOBJECT n_leaf) = eps
+def $gc_direct_graph_nodes(S, pnode*, hedge*, pnode_pool*) = false -- otherwise
+def $gc_nested_array_edge(HEDGE (HARRAY n_parent) (HARRAY n_child)) = true
+def $gc_nested_array_edge(hedge) = false -- otherwise
+def $gc_nested_array_edges(eps) = false
+def $gc_nested_array_edges(hedge :: hedge_tail*) = ($gc_nested_array_edge(hedge) \/ $gc_nested_array_edges(hedge_tail*))
+;; Strings add no GC edge; their identity carriers still require authentication.
+def $gc_reference_payload_valid(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
+def $gc_reference_payload_valid(S, pvalue) = true
+  -- if pvalue =/= PUNDEFINED
+  -- if $string_plain(pvalue) = pvalue
+def $gc_reference_payload_valid(S, pvalue) = false -- otherwise
+def $gc_reference_captures(S, eps, true) = true
+def $gc_reference_captures(S, (DIRECT pvalue) :: pitem_tail*, b_seen) = $gc_reference_captures(S, pitem_tail*, b_seen)
+  -- if $gc_reference_payload_valid(S, pvalue)
+def $gc_reference_captures(S, (ALIAS n) :: pitem_tail*, b_seen) = $gc_reference_captures(S, pitem_tail*, true)
+  -- if $ordinary_reference_value(S, n) = (pvalue)
+  -- if $gc_reference_payload_valid(S, pvalue)
+def $gc_reference_captures(S, pitem*, b_seen) = false -- otherwise
+;; Multiple aliases own one wrapper; that wrapper owns its payload only once.
+;; Array entries remain DIRECT, so cells cannot create a captured backedge.
+def $gc_reference_graph_nodes(S, eps, hedge*, pnode_pool*) = true
+def $gc_reference_graph_nodes(S, (HCELL n) :: pnode_tail*, hedge*, pnode_pool*) = $gc_reference_graph_nodes(S, pnode_tail*, hedge*, pnode_pool*)
+  -- if $ordinary_reference_value(S, n) = (pvalue)
+  -- if $gc_reference_payload_valid(S, pvalue)
+  -- if ~((HCELL n) <- pnode_pool*)
+  -- if $node_children(S, HCELL n) = $value_nodes(pvalue)
+  -- if $gc_trace_children(S, HCELL n) = $value_nodes(pvalue)
+def $gc_reference_graph_nodes(S, pnode :: pnode_tail*, hedge*, pnode_pool*) = $gc_reference_graph_nodes(S, pnode_tail*, hedge*, pnode_pool*)
+  -- if $gc_direct_graph_nodes(S, [pnode], hedge*, pnode_pool*)
+def $gc_reference_graph_nodes(S, pnode*, hedge*, pnode_pool*) = false -- otherwise
 ;; Keep the existing exact array admissions separate from the finite rule.
 def $gc_legacy_array_shape(S, [DIRECT (PARRAY n_array)], n_array) = true
   -- if $node_children(S, HARRAY n_array) = eps
@@ -635,6 +699,36 @@ def $gc_ordinary_node(S, HOBJECT n) = true
   -- if pnode_array* = $gc_capture_array_nodes(pitem*)
   -- if $(|pnode_array*| > 1)
   -- if $gc_plain_captures(S, pitem*)
+  -- if $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
+  -- if $gc_trace_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
+  -- if (HOBJECT n) <- $machine_roots(S)
+;; A nested direct capture DAG stays black under the same genuine caller root.
+;; The component-local nested edge keeps this clause separate from flat lanes.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
+  -- if $gc_direct_captures(pitem*)
+  -- if H = $heap_graph(S)
+  -- if pnode_capture* = $heap_reach($closure_items_nodes(pitem*), eps, H.EDGES)
+  -- if $gc_nested_array_edges($heap_live_edges(H.EDGES, pnode_capture*))
+  -- if $gc_direct_graph_nodes(S, pnode_capture*, H.EDGES, $heap_reach($pools_nodes(S.POOLS), eps, H.EDGES))
+  -- if $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
+  -- if $gc_trace_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
+  -- if (HOBJECT n) <- $machine_roots(S)
+;; A genuine ordinary reference capture is disjoint from the DIRECT lanes.
+def $gc_ordinary_node(S, HOBJECT n) = true
+  -- if S.GC.ACTIVE = (pgccall)
+  -- if pgccall.CALLER = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $gc_materialized_caller_target(S, CLOSURE_TARGET n, pcallcontext.CALLSITE)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
+  -- if $gc_reference_captures(S, pitem*, false)
+  -- if H = $heap_graph(S)
+  -- if pnode_capture* = $heap_reach($closure_items_nodes(pitem*), eps, H.EDGES)
+  -- if $gc_reference_graph_nodes(S, pnode_capture*, H.EDGES, $heap_reach($pools_nodes(S.POOLS), eps, H.EDGES))
   -- if $node_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
   -- if $gc_trace_children(S, HOBJECT n) = $closure_items_nodes(pitem*)
   -- if (HOBJECT n) <- $machine_roots(S)

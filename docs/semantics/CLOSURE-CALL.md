@@ -140,6 +140,16 @@ The [joined review](../../coverage/semantics/generator-call-series-current-revie
 records strict433, four source comparisons and 187 custom/192 reported ownership
 checks while preserving every original cut and zero-credit failure.
 
+I99 admits PHP throws while copied reference warnings are pending, including
+Fiber cancellation in an owning handler-return destructor. The engine can leave
+a hidden zero-ref copy without free_obj. One request-global authenticated row
+retains only that copy; its metadata adds no SOURCE/oldThis/API owners. Cleanup releases prepared cells, FIRST, RAW, then SOURCE while preserving
+the supplied exception and handler restoration. Repeated calls retain distinct
+copies/receivers and two edges to their shared capture. This is an abstract
+lifetime model, not raw refcount equality; wider receive/mapping and bailout
+paths remain partial.
+[Cancellation review](../../coverage/semantics/generator-call-cancellation-review.json).
+
 Created user-class Closures use the exact selected method/import scope. A child
 created inside a temporary dummy Closure scope copies the actual function,
 call-site, lexical/called scope and new receiver in a durable certificate. Its

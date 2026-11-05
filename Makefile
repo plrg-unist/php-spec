@@ -90,6 +90,10 @@ test-semantics: build
 	python3 tests/semantics/output_executor_retval_state.py
 	python3 tests/semantics/output_executor_explicit_sources.py
 	python3 tests/semantics/output_executor_explicit_state.py
+	python3 tests/semantics/output_executor_reception_sources.py
+	python3 tests/semantics/output_executor_reception_state.py
+	python3 tests/semantics/output_executor_reception_review_sources.py
+	python3 tests/semantics/output_executor_reception_review_state.py
 	python3 tests/semantics/request_provider.py
 	python3 tests/semantics/evidence.py
 	python3 tests/semantics/source_occurrences.py
@@ -542,6 +546,10 @@ test-semantics: build
 	python3 tests/semantics/generator_byref_sink_scalar_sources.py
 	python3 tests/semantics/generator_byref_sink_negative_sources.py
 	python3 tests/semantics/generator_byref_sink_review_state.py
+	python3 tests/semantics/generator_reference_sink_sources.py
+	python3 tests/semantics/generator_reference_sink_review_sources.py
+	python3 tests/semantics/generator_reference_sink_state.py
+	python3 tests/semantics/generator_reference_sink_review_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_sources.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_review_sources.py
@@ -837,6 +845,9 @@ test-semantics: build
 	python3 tests/semantics/generator_call_warning_retval_sources.py
 	python3 tests/semantics/generator_call_warning_retval_state.py
 	python3 tests/semantics/generator_call_warning_retval_review_state.py
+	python3 tests/semantics/generator_call_cancellation_sources.py
+	python3 tests/semantics/generator_call_cancellation_state.py
+	python3 tests/semantics/generator_call_cancellation_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -953,6 +964,8 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_alias_protocol.py
 	python3 tests/semantics/enum_is_callable_saved_input_protocol.py
 	python3 tests/semantics/enum_is_callable_output_retained_protocol.py
+	python3 tests/semantics/enum_is_callable_output_unique_protocol.py
+	python3 tests/semantics/enum_is_callable_output_exit_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
