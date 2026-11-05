@@ -97,7 +97,7 @@ def checks(program, path, name):
         'S_data = S_pre[.ORIGIN = (porigin_argument)][.TODO = (CONFIG_GENERATOR pconfiggenerator "rewind") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]',
         '$task_nodes(CONFIG_GENERATOR pconfiggenerator "rewind") = [HOBJECT n_generator,HOBJECT n_owner]',
         '~$config_generator_send_allowed(S_data,pconfiggenerator)',
-        'pgeneratorop = {OBJECT n_generator,NAME "rewind",SITE porigin_argument,LINE z_argument,LOOP eps,ADVANCE false,ARGUMENTS eps,STARTPACK true,BORROWED true}',
+        'pgeneratorop = {OBJECT n_generator,NAME "rewind",SITE porigin_argument,LINE z_argument,LOOP eps,ADVANCE false,ARGUMENTS eps,STARTPACK true,BORROWED true, SELECTION eps}',
         '$config_generator_header(S_data,pgeneratorop,pconfiggenerator,"rewind")',
         '$generator_operation_trace(S_data,pgeneratorop) = eps',
         *owners('S_data', 2, 3), *common.public('S_data'),

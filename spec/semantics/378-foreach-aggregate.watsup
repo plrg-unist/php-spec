@@ -502,7 +502,7 @@ rule PhpStep/foreach-aggregate-acquired: S ~> $foreach_aggregate_initial(S, pfor
 def $foreach_aggregate_initial(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_call(S[.ITERATORS = S.ITERATORS ++ [OBJECTITER n pforeachaggregate.OBJECT 0 false]][.NEXTITER = $(n + 1)], pforeachaggregate[.ITERATOR = (n)], "rewind", ptask_tail*)
   -- if $useriter_instance(S, pforeachaggregate.OBJECT)
   -- if n = S.NEXTITER
-def $foreach_aggregate_initial(S, pforeachaggregate, ptask_tail*) = $generator_operate(S[.ITERATORS = S.ITERATORS ++ [GENERATORITER n pforeachaggregate.OBJECT]][.NEXTITER = $(n + 1)][.TODO = (FOREACH_AGGREGATE pforeachaggregate[.ITERATOR = (n)] "generator") :: ptask_tail*], {OBJECT pforeachaggregate.OBJECT, NAME "rewind", SITE pforeachaggregate.SITE, LINE pforeachaggregate.LINE, LOOP ({ITERATOR n, STATEMENT pforeachaggregate.STATEMENT}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false})
+def $foreach_aggregate_initial(S, pforeachaggregate, ptask_tail*) = $generator_operate(S[.ITERATORS = S.ITERATORS ++ [GENERATORITER n pforeachaggregate.OBJECT]][.NEXTITER = $(n + 1)][.TODO = (FOREACH_AGGREGATE pforeachaggregate[.ITERATOR = (n)] "generator") :: ptask_tail*], {OBJECT pforeachaggregate.OBJECT, NAME "rewind", SITE pforeachaggregate.SITE, LINE pforeachaggregate.LINE, LOOP ({ITERATOR n, STATEMENT pforeachaggregate.STATEMENT}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION eps})
   -- if $generator_object(S, pforeachaggregate.OBJECT)
   -- if n = S.NEXTITER
 rule PhpStep/foreach-aggregate-rewind: S ~> $foreach_aggregate_call(S, pforeachaggregate, "valid", ptask_tail*)
@@ -572,7 +572,7 @@ rule PhpStep/foreach-aggregate-current: S ~> $useriter_call(S, n, pforeachaggreg
   -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "current") :: ptask_tail*
   -- if pforeachaggregate.ITERATOR = (n)
   -- if $useriter_instance(S, pforeachaggregate.OBJECT)
-rule PhpStep/foreach-aggregate-generator-body: S ~> $generator_loop_body(S[.TODO = ptask_tail*], {OBJECT pforeachaggregate.OBJECT, NAME "rewind", SITE pforeachaggregate.SITE, LINE pforeachaggregate.LINE, LOOP ({ITERATOR n, STATEMENT pforeachaggregate.STATEMENT}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false})
+rule PhpStep/foreach-aggregate-generator-body: S ~> $generator_loop_body(S[.TODO = ptask_tail*], {OBJECT pforeachaggregate.OBJECT, NAME "rewind", SITE pforeachaggregate.SITE, LINE pforeachaggregate.LINE, LOOP ({ITERATOR n, STATEMENT pforeachaggregate.STATEMENT}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION eps})
   -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "current") :: ptask_tail*
   -- if pforeachaggregate.ITERATOR = (n)
   -- if $generator_object(S, pforeachaggregate.OBJECT)

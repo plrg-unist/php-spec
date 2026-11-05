@@ -133,6 +133,9 @@ dec $generator_operation_site(pstate, pgeneratorop) : bool
 def $generator_operation_site(S, pgeneratorop) = false -- otherwise
 dec $generator_source_method(pstate, porigin, ptbytes) : bool
 dec $generator_method_node(pcnode?, ptbytes) : bool
+dec $generator_computed_method_node(pcnode?) : bool
+dec $generator_method_selection(pstate, poperand, ptbytes, phpType7*, int) : pgeneratormethodselection?
+dec $generator_selected_method(pstate, porigin, nat, ptbytes, int, pgeneratormethodselection?) : bool
 dec $generator_loop_site(pstate, pgeneratorop, pgeneratorloop) : bool
 dec $generator_arguments_supported(phpType7*) : bool
 dec $generator_method_return_tasks(pstate, porigin, ptask*) : ptask*
@@ -1448,7 +1451,7 @@ def $generator_method(ptbytes) = "getreturn" -- if $ptlc(ptbytes) = $ptascii("ge
 def $generator_method(ptbytes) = "send" -- if $ptlc(ptbytes) = $ptascii("send")
 def $generator_method(ptbytes) = "throw" -- if $ptlc(ptbytes) = $ptascii("throw")
 def $generator_method(ptbytes) = "" -- otherwise
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (GENERATOR_ARGS {OBJECT n, NAME $generator_method(ptbytes), SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false} phpType7* eps) :: $generator_method_return_tasks(S, porigin, ptask_tail*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (GENERATOR_ARGS {OBJECT n, NAME $generator_method(ptbytes), SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION pgeneratormethodselection?} phpType7* eps) :: $generator_method_return_tasks(S, porigin, ptask_tail*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -1456,7 +1459,8 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (GENERAT
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_read, n)
   -- if $generator_method(ptbytes) =/= ""
-  -- if $generator_source_method(S, porigin, ptbytes)
+  -- if pgeneratormethodselection? = $generator_method_selection(S, poperand, ptbytes, phpType7*, z)
+  -- if $generator_selected_method(S, porigin, n, ptbytes, z, pgeneratormethodselection?)
   -- if $generator_arguments_supported(phpType7*)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method Generator::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -1471,7 +1475,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_read, n)
   -- if $generator_method(ptbytes) =/= ""
-  -- if ~$generator_source_method(S, porigin, ptbytes)
+  -- if ~$generator_selected_method(S, porigin, n, ptbytes, z, $generator_method_selection(S, poperand, ptbytes, phpType7*, z))
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "generator named or unpacked arguments"]
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -1479,7 +1483,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_read, n)
   -- if $generator_method(ptbytes) =/= ""
-  -- if $generator_source_method(S, porigin, ptbytes)
+  -- if $generator_selected_method(S, porigin, n, ptbytes, z, $generator_method_selection(S, poperand, ptbytes, phpType7*, z))
   -- if ~$generator_arguments_supported(phpType7*)
   -- if ~$generator_api_arguments(phpType7*)
 def $generator_arguments_supported(eps) = true
@@ -1524,7 +1528,7 @@ def $generator_invoke_effect(S, pgeneratorop, pvalue) = $generator_error(S, pgen
 
 ;; Language foreach calls the native iterator hooks without a synthetic
 ;; Generator method frame, and owns the iterator data through the body.
-def $foreach_start(S, statement, plocation, b, z) = $generator_error(S, {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR S.NEXTITER, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false}, "Exception", $ptascii("Cannot traverse an already closed generator"))
+def $foreach_start(S, statement, plocation, b, z) = $generator_error(S, {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR S.NEXTITER, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION eps}, "Exception", $ptascii("Cannot traverse an already closed generator"))
   -- if S.ORIGIN = (porigin)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
@@ -1534,7 +1538,7 @@ def $foreach_start(S, statement, plocation, true, z) = $throw_scalar(S, "Excepti
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
   -- if ~$generator_reference_producer(S, pgenerator)
-def $foreach_start(S, statement, plocation, b, z) = $generator_operate(S[.TODO = ptask_tail*][.ITERATORS = S.ITERATORS ++ [GENERATORITER n_iterator n]][.NEXTITER = $(n_iterator + 1)], {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR n_iterator, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false})
+def $foreach_start(S, statement, plocation, b, z) = $generator_operate(S[.TODO = ptask_tail*][.ITERATORS = S.ITERATORS ++ [GENERATORITER n_iterator n]][.NEXTITER = $(n_iterator + 1)], {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR n_iterator, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION eps})
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S.RESULT = KNOWN (POBJECT n)
@@ -1671,7 +1675,37 @@ def $generator_method_return_tasks(S, porigin, ptask*) = ptask* -- otherwise
 def $generator_method_node((NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata), ptbytes) = ($ptlc($method_source_spelling(phpType20)) = $ptlc(ptbytes) /\ ~$ppfirstclass(phpType7*))
 def $generator_method_node((NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata), ptbytes) = ($ptlc($method_source_spelling(phpType20)) = $ptlc(ptbytes) /\ ~$ppfirstclass(phpType7*))
 def $generator_method_node(pcnode?, ptbytes) = false -- otherwise
-def $generator_operation_site(S, pgeneratorop) = ($generator_source_method(S, pgeneratorop.SITE, $generator_method_display(pgeneratorop.NAME)) /\ $call_line_valid(S, (pgeneratorop.SITE), pgeneratorop.LINE))
+def $generator_computed_method_node((NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)) = ($property_computed_name(phpType20) /\ ~$ppfirstclass(phpType7*))
+def $generator_computed_method_node((NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)) = ($property_computed_name(phpType20) /\ ~$ppfirstclass(phpType7*))
+def $generator_computed_method_node(pcnode?) = false -- otherwise
+;; Freeze the actual resolved name and receiver before argument callbacks. The
+;; later receipt is nonowning and never reads the source CVs again.
+def $generator_method_selection(S, poperand, ptbytes, phpType7*, z) = ({SITE porigin, OBJECT n, NAME ptbytes, LINE z})
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
+  -- if $method_name_task(S, poperand, phpType7*, z)
+  -- if S.ORIGIN = (porigin)
+  -- if $generator_computed_method_node($origin_node(S.SOURCES, porigin))
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_object(S_read, n)
+def $generator_method_selection(S, poperand, ptbytes, phpType7*, z) = eps -- otherwise
+def $generator_selected_method(S, porigin, n, ptbytes, z, eps) = true
+  -- if $generator_source_method(S, porigin, ptbytes)
+  -- if $call_line_valid(S, (porigin), z)
+def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
+  -- if $generator_computed_method_node($origin_node(S.SOURCES, porigin))
+  -- if pgeneratormethodselection.SITE = porigin
+  -- if pgeneratormethodselection.OBJECT = n
+  -- if pgeneratormethodselection.LINE = z
+  -- if $generator_method(pgeneratormethodselection.NAME) =/= ""
+  -- if $ptlc(pgeneratormethodselection.NAME) = $ptlc(ptbytes)
+  -- if $call_line_valid(S, (porigin), z)
+def $generator_selected_method(S, porigin, n, ptbytes, z, pgeneratormethodselection?) = false -- otherwise
+def $generator_operation_site(S, pgeneratorop) = $generator_selected_method(S, pgeneratorop.SITE, pgeneratorop.OBJECT, $generator_method_display(pgeneratorop.NAME), pgeneratorop.LINE, pgeneratorop.SELECTION)
   -- if pgeneratorop.LOOP = eps
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
   -- if ~pgeneratorop.STARTPACK
@@ -1697,7 +1731,7 @@ def $generator_arguments_valid(S, pgeneratorop) = true
   -- if pgeneratorop.ARGUMENTS = [pvalue]
   -- if $generator_input_valid(S, pvalue)
 def $generator_arguments_valid(S, pgeneratorop) = false -- otherwise
-def $generator_operation_valid(S, pgeneratorop) = ($generator_object(S, pgeneratorop.OBJECT) /\ (HOBJECT pgeneratorop.OBJECT <- S.ALLOCATIONS) /\ $generator_operation_site(S, pgeneratorop) /\ (pgeneratorop.NAME <- ["rewind", "valid", "current", "key", "next", "getreturn", "send", "throw"]) /\ $generator_arguments_valid(S, pgeneratorop) /\ (~pgeneratorop.ADVANCE \/ ((pgeneratorop.NAME <- ["next", "send", "throw"]) /\ pgeneratorop.LOOP = eps)))
+def $generator_operation_valid(S, pgeneratorop) = ($generator_object(S, pgeneratorop.OBJECT) /\ (HOBJECT pgeneratorop.OBJECT <- S.ALLOCATIONS) /\ $generator_operation_site(S, pgeneratorop) /\ (pgeneratorop.NAME <- ["rewind", "valid", "current", "key", "next", "getreturn", "send", "throw"]) /\ $generator_arguments_valid(S, pgeneratorop) /\ (pgeneratorop.SELECTION = eps \/ (pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED /\ ~$generator_from_site(S, pgeneratorop.SITE))) /\ (~pgeneratorop.ADVANCE \/ ((pgeneratorop.NAME <- ["next", "send", "throw"]) /\ pgeneratorop.LOOP = eps)))
 def $generator_resumption_valid(S, pgeneratorop) = true
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if $generator_resumption_stage(S, pgeneratorop)

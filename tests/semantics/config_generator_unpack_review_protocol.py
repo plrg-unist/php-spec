@@ -101,7 +101,7 @@ def checks(program, path, name):
         'pcallcontext.TARGET = pgenerator_initial.FUNCTION',
         'S_throw.FRAMES = pframe :: pframe_tail*',
         'pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: (CONFIG_GENERATOR pconfiggenerator "next") :: ptask_tail*',
-        'pgeneratorop = {OBJECT n_generator,NAME "next",SITE porigin_argument,LINE z_argument,LOOP eps,ADVANCE false,ARGUMENTS eps,STARTPACK true,BORROWED true}',
+        'pgeneratorop = {OBJECT n_generator,NAME "next",SITE porigin_argument,LINE z_argument,LOOP eps,ADVANCE false,ARGUMENTS eps,STARTPACK true,BORROWED true, SELECTION eps}',
         '$generator_operation_valid(S_throw,pgeneratorop)',
         '$generator_operation_nodes(pgeneratorop) = eps',
         '$generator_operation_trace(S_throw,pgeneratorop) = eps',

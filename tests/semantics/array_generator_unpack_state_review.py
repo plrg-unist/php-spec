@@ -344,7 +344,7 @@ def body_throw(program, path, stdout):
         f'pcallcontext.FUNCTION = {desc}.FUNCTION',
         'S_resuming.FRAMES = pframe :: pframe_tail*',
         f'pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: (ARRAY_GENERATOR {desc} "next") :: ptask_ready*',
-        f'pgeneratorop = {{OBJECT {obj}, NAME "next", SITE {desc}.SITE, LINE 12, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true}}',
+        f'pgeneratorop = {{OBJECT {obj}, NAME "next", SITE {desc}.SITE, LINE 12, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true, SELECTION eps}}',
         '$generator_operation_valid(S_resuming, pgeneratorop)',
         '$generator_operation_nodes(pgeneratorop) = eps',
         '$generator_operation_trace(S_resuming, pgeneratorop) = eps',

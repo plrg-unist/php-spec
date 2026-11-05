@@ -1225,11 +1225,11 @@ def $generator_from_next(S, n, porigin, ptask*) = $generator_from_child(S, n, po
 def $generator_from_forward("send") = "send"
 def $generator_from_forward("throw") = "throw"
 def $generator_from_forward(text) = "next" -- otherwise
-def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME "current", SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false}
+def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME "current", SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION eps}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.POSITION = 0
-def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME $generator_from_forward(pgeneratorop.NAME), SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS pgeneratorop.ARGUMENTS, STARTPACK false, BORROWED false}
+def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME $generator_from_forward(pgeneratorop.NAME), SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS pgeneratorop.ARGUMENTS, STARTPACK false, BORROWED false, SELECTION eps}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if $(pgeneratorfrom.POSITION > 0)

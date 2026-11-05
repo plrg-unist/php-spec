@@ -408,7 +408,7 @@ def $fiber_traversal_complete(S, pgeneratorop) = $generator_set(S[.TODO = (THROW
   -- if pgenerator.FRAME = (pframe)
   -- if $generator_close_frame_nodes(S, pframe) = eps
 def $fiber_traversal_generator(S, pfibertraversal, text, ptask*) = S_run[.TODO = $fiber_traversal_promote(S_run.TODO)]
-  -- if pgeneratorop = {OBJECT pfibertraversal.OBJECT, NAME text, SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED false}
+  -- if pgeneratorop = {OBJECT pfibertraversal.OBJECT, NAME text, SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED false, SELECTION eps}
   -- if S_run = $generator_operate(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop)
 def $return_discard(S, GENERATOR_RESUME pgeneratorop) = S[.TODO = $fiber_traversal_promote(S.TODO)][.ORIGIN = (pgeneratorop.SITE)]
   -- if pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
@@ -510,7 +510,7 @@ def $fiber_traversal_pending_body(S, n) = true
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
   -- if $fiber_traversal_pending_prefix($function_body_tasks(S, pfunction))
 def $fiber_traversal_pending_body(S, n) = false -- otherwise
-def $fiber_traversal_pending_generator(S, pfibertraversal, ptask*) = $generator_resume(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pfibertraversal.OBJECT, NAME "rewind", SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED false})
+def $fiber_traversal_pending_generator(S, pfibertraversal, ptask*) = $generator_resume(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pfibertraversal.OBJECT, NAME "rewind", SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED false, SELECTION eps})
 rule PhpStep/fiber-traversal-acquired-generator-pending: S ~> $fiber_traversal_pending_generator(S, pfibertraversal, ptask_tail*)
   -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask_tail*
   -- if $fiber_traversal_result_valid(S, pfibertraversal, "acquired-error")

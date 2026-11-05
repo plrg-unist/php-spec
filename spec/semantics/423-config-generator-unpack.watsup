@@ -545,7 +545,7 @@ def $config_generator_operation_tasks(S, pgeneratorop, ptask*) = false -- otherw
 def $config_generator_operation_frames(S, pgeneratorop, eps) = false
 def $config_generator_operation_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($config_generator_operation_tasks($constant_frame_scope(S, pframe, pframe_tail*), pgeneratorop, pframe.TODO) \/ $config_generator_operation_frames(S, pgeneratorop, pframe_tail*))
 def $config_generator_operation_valid(S, pgeneratorop) = ($config_generator_operation_tasks(S, pgeneratorop, S.TODO) \/ $config_generator_operation_frames(S, pgeneratorop, S.FRAMES))
-def $config_generator_run(S, pconfiggenerator, text, ptask*) = $generator_operate(S[.TODO = (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pconfiggenerator.OBJECT, NAME text, SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true})
+def $config_generator_run(S, pconfiggenerator, text, ptask*) = $generator_operate(S[.TODO = (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pconfiggenerator.OBJECT, NAME text, SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true, SELECTION eps})
   -- if $config_generator_valid(S, pconfiggenerator, text)
   -- if $intrinsic_argument(S, pconfiggenerator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
 rule PhpStep/config-generator-resume: S ~> $config_generator_run(S, pconfiggenerator, text, ptask*)

@@ -11,7 +11,7 @@ ROW = next(row for row in json.loads(CATALOG.read_bytes())
 assert hashlib.sha256(ROW['source'].encode()).hexdigest() == ROW['source_sha256']
 STAGE = (
     'S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail* '
-    '-- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD "send" '
+    '-- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD "send" eps '
     '-- if pconfigcall.OWNER = (n_generator) '
     '-- if $lookup(S.ENV, $ptascii("generator")) = (n_generator_cv) '
     '-- if S.STORE[n_generator_cv] = DEFINED PNULL')
@@ -66,7 +66,7 @@ $heap_owners(H, HCELL n_caller_cell) = 1
 $call_task_valid(S, CONFIG_INVOKE pconfigcall)
 ~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.OWNER = eps])
 ~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.OWNER = (n_token)])
-~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.KIND = INTRINSIC_GENERATOR_METHOD "throw"])
+~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.KIND = INTRINSIC_GENERATOR_METHOD "throw" eps])
 ~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.INDEX = 0])
 ~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.PACKS = eps])
 ~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.LINE = $(pconfigcall.LINE + 1)])

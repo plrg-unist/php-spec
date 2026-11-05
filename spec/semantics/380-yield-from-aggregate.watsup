@@ -390,11 +390,11 @@ def $generator_from_next(S, n, porigin, ptask*) = $generator_operate(S[.ORIGIN =
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
   -- if $generator_object(S, n_child)
   -- if porigin = pyieldfromreceipt.SITE
-def $yield_from_iterator_operation(S, n, pyieldfromreceipt, n_child) = {OBJECT n_child, NAME "rewind", SITE pyieldfromreceipt.SITE, LINE pyieldfromreceipt.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED true}
+def $yield_from_iterator_operation(S, n, pyieldfromreceipt, n_child) = {OBJECT n_child, NAME "rewind", SITE pyieldfromreceipt.SITE, LINE pyieldfromreceipt.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED true, SELECTION eps}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.POSITION = 0
-def $yield_from_iterator_operation(S, n, pyieldfromreceipt, n_child) = {OBJECT n_child, NAME "next", SITE pyieldfromreceipt.SITE, LINE pyieldfromreceipt.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED true}
+def $yield_from_iterator_operation(S, n, pyieldfromreceipt, n_child) = {OBJECT n_child, NAME "next", SITE pyieldfromreceipt.SITE, LINE pyieldfromreceipt.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED true, SELECTION eps}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.POSITION = 1

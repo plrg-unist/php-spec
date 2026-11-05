@@ -266,7 +266,7 @@ def $generator_unpack_delegated_blocked(S) = true
 def $generator_unpack_delegated_blocked(S) = false -- otherwise
 def $generator_close_terminal_pending(S) = true -- if $generator_unpack_delegated_blocked(S)
 def $drive_steps(S, n) = S -- if $generator_unpack_delegated_blocked(S)
-def $generator_unpack_run(S, pgeneratorunpack, text, ptask*) = $generator_operate(S[.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pgeneratorunpack.OBJECT, NAME text, SITE porigin, LINE $unpack_line(S, pgeneratorunpack.CALL), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true})
+def $generator_unpack_run(S, pgeneratorunpack, text, ptask*) = $generator_operate(S[.TODO = (GENERATOR_UNPACK pgeneratorunpack text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pgeneratorunpack.OBJECT, NAME text, SITE porigin, LINE $unpack_line(S, pgeneratorunpack.CALL), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true, SELECTION eps})
   -- if $generator_unpack_valid(S, pgeneratorunpack, text)
   -- if $unpack_origin(S, pgeneratorunpack.CALL) = (porigin)
 

@@ -189,7 +189,7 @@ def $array_generator_operation_tasks(S, pgeneratorop, ptask*) = false -- otherwi
 def $array_generator_operation_frames(S, pgeneratorop, eps) = false
 def $array_generator_operation_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($array_generator_operation_tasks($constant_frame_scope(S, pframe, pframe_tail*), pgeneratorop, pframe.TODO) \/ $array_generator_operation_frames(S, pgeneratorop, pframe_tail*))
 def $array_generator_operation_valid(S, pgeneratorop) = ($array_generator_operation_tasks(S, pgeneratorop, S.TODO) \/ $array_generator_operation_frames(S, pgeneratorop, S.FRAMES))
-def $array_generator_run(S, parraygenerator, text, ptask*) = $generator_operate(S[.TODO = (ARRAY_GENERATOR parraygenerator text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT parraygenerator.OBJECT, NAME text, SITE parraygenerator.SITE, LINE parraygenerator.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true})
+def $array_generator_run(S, parraygenerator, text, ptask*) = $generator_operate(S[.TODO = (ARRAY_GENERATOR parraygenerator text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT parraygenerator.OBJECT, NAME text, SITE parraygenerator.SITE, LINE parraygenerator.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED true, SELECTION eps})
   -- if $array_generator_valid(S, parraygenerator, text)
 rule PhpStep/array-generator-resume: S ~> $array_generator_run(S, parraygenerator, text, ptask*)
   -- if S.TODO = (ARRAY_GENERATOR parraygenerator text) :: ptask*
