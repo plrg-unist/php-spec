@@ -845,6 +845,20 @@ def $closure_call_copy_warning_split(S, ptask*, perrorcall) = eps -- otherwise
 def $closure_call_copy_warning_history(S, perrorcall) = S[.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: (ptask_prefix* ++ ptask_after*)]
   -- if $closure_call_copy_warning_split(S, S.TODO, perrorcall) = ((ptask_prefix*, ptask_after*))
 def $closure_call_copy_warning_history(S, perrorcall) = S -- otherwise
+;; The descriptor walk has just validated this marker. Its borrowed registry
+;; may now retire, so later markers must see the remaining authenticated tail.
+def $closure_call_copy_warning_advance(S, S_after, ptask, ptask_tail*) = S_after[.TODO = ptask_tail*]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if $closure_call_copy_warning_split(S, S.TODO, perrorcall) = ((ptask_prefix*, ptask_after*))
+def $closure_call_copy_warning_advance(S, S_after, ERROR_HANDLER_CLEAN perrorcall, ptask_tail*) = S_after[.TODO = ptask_tail*]
+  -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $closure_call_copy_warning_advance(S, S_after, ptask, ptask_tail*) = S_after -- otherwise
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
   -- if $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal)
