@@ -31,7 +31,8 @@ pconfigcall.NAMED
 pconfigcall.SENT = [NAMED_SENT (KNOWN (PINT 41))]
 pconfigcall.PACKS = [pconfigpack]
 pconfigpack.ITEMS = [ENTRY (KSTRING $ptascii("value")) (DIRECT (PINT 41))]
-~((HARRAY pconfigpack.ARRAY) <- S.ALLOCATIONS)
+(HARRAY pconfigpack.ARRAY) <- S.ALLOCATIONS
+(HARRAY pconfigpack.ARRAY) <- $pools_nodes(S.POOLS)
 $lookup(S.ENV, $ptascii("generator")) = (n_generator_cv)
 S.STORE[n_generator_cv] = DEFINED PNULL
 $lookup(S.ENV, $ptascii("method")) = (n_method_cv)
@@ -67,6 +68,7 @@ $heap_valid(H)
 $call_descriptors_valid(S)
 $heap_owners(H, HOBJECT n_generator) = 1
 $heap_owners(H, HOBJECT n_capture) = 1
+$heap_owners(H, HARRAY pconfigpack.ARRAY) = 1
 $call_task_valid(S, CONFIG_INVOKE pconfigcall)
 $call_task_valid(S, GETTER_CAPTURE_RESULT n_capture pconfigcall.SITE)
 ~$call_task_valid(S, CONFIG_INVOKE pconfigcall[.OWNER = (n_capture)])
