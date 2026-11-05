@@ -243,7 +243,7 @@ dec $executor_normal_tasks(pstate, ptask*) : bool
 dec $executor_normal_task(pstate, ptask) : bool
 dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
-dec $executor_tick_args_ready(pvalue*, nat) : bool
+dec $executor_tick_args_ready(pvalue*) : bool
 dec $executor_tick_entry_ready(pstate, ptickentry) : bool
 dec $executor_tick_entries_ready(pstate, ptickentry*) : bool
 dec $executor_tick_ready(pstate) : bool
@@ -327,11 +327,10 @@ def $executor_queue_begin(S) = S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUT
 ;; The same raw invokable object occupies both FCC slots. Keep the registered
 ;; source as a nonowning snapshot after transferring its roots into the task.
 def $executor_tick_nodes(ptickentry) = $operands_roots($shutdown_known(ptickentry.ENTRY.ARGS)) ++ $callback_cache_nodes(ptickentry.ENTRY)
-def $executor_tick_args_ready(eps, n_callback) = true
-def $executor_tick_args_ready(pvalue :: pvalue_tail*, n_callback) = $executor_tick_args_ready(pvalue_tail*, n_callback)
+def $executor_tick_args_ready(eps) = true
+def $executor_tick_args_ready(pvalue :: pvalue_tail*) = $executor_tick_args_ready(pvalue_tail*)
   -- if pvalue = POBJECT n_argument
-  -- if n_argument =/= n_callback
-def $executor_tick_args_ready(pvalue*, n_callback) = false -- otherwise
+def $executor_tick_args_ready(pvalue*) = false -- otherwise
 def $executor_tick_entry_ready(S, ptickentry) = true
   -- if ptickentry.ENTRY.CALL.SENT = (NAMED_SENT (KNOWN (POBJECT n_callback))) :: pnamedslot*
   -- if ptickentry.ENTRY.ARGS = $shutdown_values(pnamedslot*)
@@ -339,7 +338,7 @@ def $executor_tick_entry_ready(S, ptickentry) = true
   -- if $callback_cache_nodes(ptickentry.ENTRY) = [HOBJECT n_callback, HOBJECT n_callback]
   -- if $target_receiver(S, ptickentry.ENTRY.TARGET) = (n_callback)
   -- if ~$closure_callable(S, n_callback)
-  -- if $executor_tick_args_ready(ptickentry.ENTRY.ARGS, n_callback)
+  -- if $executor_tick_args_ready(ptickentry.ENTRY.ARGS)
   -- if $tick_entry_valid(S, ptickentry)
 def $executor_tick_entry_ready(S, ptickentry) = false -- otherwise
 def $executor_tick_entries_ready(S, eps) = true
