@@ -1,0 +1,50 @@
+<?php declare(strict_types=1);
+
+// Rejected sources have no complete AST. Preserve foreign grammar reductions,
+// rather than scanning later tokens or constructing a provisional statement.
+final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
+    public array $headers = [];
+    public bool $parsingStarted = false;
+
+    protected function doParse(): ?array {
+        $this->parsingStarted = true;
+        return parent::doParse();
+    }
+
+    protected function initReduceCallbacks(): void {
+        parent::initReduceCallbacks();
+        // Pinned PHP-Parser 5.8 grammar: declare_list is
+        // non_empty_declare_list no_comma (rule 243, default $$ = $1).
+        if ($this->ruleToLength[243] !== 2 || $this->reduceCallbacks[243] !== null) {
+            throw new RuntimeException('Declare header reduction contract changed');
+        }
+        $this->reduceCallbacks[243] = static function (self $self, int $stackPos): void {
+            $self->semValue = $self->semStack[$stackPos - 1];
+            $close = $self->tokens[$self->tokenPos];
+            if ($close->id !== ord(')')) return;
+            $begin = $self->tokenStartStack[$stackPos - 3];
+            if ($self->tokens[$begin]->id !== T_DECLARE
+                || $self->tokens[$self->tokenStartStack[$stackPos - 2]]->id !== ord('(')) {
+                throw new RuntimeException('Declare header reduction lost its prefix');
+            }
+            $self->headers[] = ['beginLine' => $self->tokens[$begin]->line,
+                'beginTokenPos' => $begin, 'closeLine' => $close->line,
+                'closeTokenPos' => $self->tokenPos, 'items' => $self->semValue];
+        };
+    }
+}
+
+function rejectedHeaderFacts(string $source, bool $evalMode, PhpParser\PhpVersion $version): array {
+    $parser = new RejectedHeaderParser($evalMode ? new EvalLexer() : new FileLexer(), $version);
+    try {
+        $parser->parse($source);
+    } catch (PhpParser\Error $error) {
+        // A later syntax error leaves earlier completed reductions available.
+        // Lexer errors may preempt the parser; no receipt is claimed then.
+    }
+    if (!$parser->parsingStarted || $parser->headers === []) return [];
+    return ['headers' => array_map(static function (array $header): array {
+        $header['items'] = encode($header['items']);
+        return $header;
+    }, $parser->headers)];
+}

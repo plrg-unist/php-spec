@@ -43,8 +43,9 @@ def run(match):
         assert sha(source) == row['source_sha256'], row['id']
         native = subprocess.run([PHP, '-n', *flags, source], cwd=directory,
                                 env=env, capture_output=True, timeout=45)
-        model = subprocess.run([MODEL, source, '--steps', '100000', '--timeout', '45'],
-                               cwd=directory, env=env, capture_output=True, timeout=55)
+        timeout = row.get('model_timeout_seconds', 45)
+        model = subprocess.run([MODEL, source, '--steps', '100000', '--timeout', str(timeout)],
+                               cwd=directory, env=env, capture_output=True, timeout=timeout + 10)
         (directory / 'native.stdout').write_bytes(native.stdout)
         (directory / 'native.stderr').write_bytes(native.stderr)
         (directory / 'model.stdout').write_bytes(model.stdout)

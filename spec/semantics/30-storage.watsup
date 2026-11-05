@@ -102,7 +102,8 @@ syntax pfilephase = FILE_RESOLVE_WAIT | FILE_PARSE_WAIT | FILE_UNIT_RUN | FILE_W
 syntax pfilebinding = { UNIT nat, SITE porigin, KIND int, REQUESTED nat*, RESOLVED nat*, OPENED nat*, BYTES nat*, CLASS porigin? }
 syntax pfileopenresponse = FILE_MISSING nat nat* nat* nat* | FILE_OPEN_FAILURE nat nat* nat* nat* nat* nat* | FILE_OPENED nat nat* nat* nat* nat* nat*
 syntax pdirresponse = DIR_CHANGED nat nat* nat* nat* | DIR_FAILED nat nat* nat* nat* nat
-syntax psourceresponse = SOURCE_ACCEPT nat nat* program | SOURCE_PARSE_REJECT nat nat* nat* int | SOURCE_COMPILE_REJECT nat nat* nat* int
+syntax pparseheader = PARSE_HEADER int int int int phpType49*
+syntax psourceresponse = SOURCE_ACCEPT nat nat* program | SOURCE_PARSE_REJECT nat nat* nat* int | SOURCE_COMPILE_REJECT nat nat* nat* int | SOURCE_REJECT_HEADERS nat nat* pfailedkind nat* int pparseheader*
 syntax pupdate = INCREMENT | DECREMENT
 syntax psilence = SILENCE porigin int
 syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
@@ -743,6 +744,7 @@ syntax pstate = { TICKCOUNT nat, TICKSEQ nat, TICKENTRIES ptickentry*, OUTPUTSEQ
 
 dec $output_write(pstate, preqbytes) : pstate
 dec $output_display(pstate, pevent*) : pstate
+dec $destruction_store_new(pstate) : pstate
 dec $output_finalize(pstate) : pstate
 dec $output_drive_finalize(pstate, nat) : pstate
 dec $output_drain_ready(pstate) : bool

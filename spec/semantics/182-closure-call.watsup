@@ -23,6 +23,7 @@ dec $closure_call_fake_copy_binding(pstate, pboundfake) : bool
 dec $bound_fake_valid(pstate, nat) : bool
 dec $closure_call_copy_begin(pstate, pfunction, pclosurecall, nat) : pstate
 dec $closure_call_copy_invoke(pstate, pfunction, pclosurecall, nat) : pstate
+dec $closure_call_copy_retain(pstate, nat) : pstate
 dec $destruction_values(pnode*) : pdestructionjob*
 dec $destructor_release_begin(pstate, pdestructionjob*) : pstate
 dec $destructor_return_discarded(ptask*) : bool
@@ -498,9 +499,9 @@ def $closure_call_wrapper_names_valid((preqbytes, KNOWN pvalue) :: (preqbytes_ta
 def $closure_call_wrapper_names_valid((preqbytes, poperand)*, (preqbytes_shape, poperand_shape)*) = false -- otherwise
 rule PhpStep/closure-call-invoke: S ~> $closure_call_enter(S[.TODO = ptask_tail*], pfunction, pclosurecall, n_receiver)
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
-  -- if pclosurecall.ERROR = eps
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
+  -- if pclosurecall.ERROR = eps \/ $closure_call_copy_required(S, pfunction, pclosurecall)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
   -- if $deprecated_api_allowed(S, pfunction)
   -- if ~$closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS) \/ $closure_call_copy_required(S, pfunction, pclosurecall)
@@ -581,14 +582,6 @@ rule PhpStep/closure-call-forward-start: S ~> S[.TODO = (CLOSURE_CALL_FORWARD pc
   -- if $deprecated_api_allowed(S, pfunction)
   -- if ~$closure_call_copy_required(S, pfunction, pclosurecall)
   -- if $closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS)
-rule PhpStep/closure-call-copy-preflight-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "Generator Closure::call argument reception"]
-  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
-  -- if pclosurecall.RECEIVER = (n_receiver)
-  -- if $target_function(S, CLOSURE_CALL_TARGET pclosurecall.SOURCE n_receiver) = (pfunction)
-  -- if $closure_call_copy_required(S, pfunction, pclosurecall)
-  -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
-  -- if $deprecated_api_allowed(S, pfunction)
-  -- if pclosurecall.ERROR =/= eps
 rule PhpStep/closure-call-forward-next: S ~> S_value[.TODO = (CLOSURE_CALL_FORWARD pclosurecall $(n + 1) $named_store(pnamedargs, pnamedtarget, S_value.RESULT) n_base) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CLOSURE_CALL_FORWARD pclosurecall n pnamedargs n_base) :: ptask_tail*
   -- if $(n < |pclosurecall.RAW|)
@@ -679,7 +672,7 @@ def $closure_call_copy_row(S, n) = ({OBJECT n, SITE pboundfake.SITE, SOURCE pbou
   -- if $closure_call_fake_copy_binding(S, pboundfake)
   -- if $bound_fake_valid(S, n)
 def $closure_call_copy_row(S, n) = eps -- otherwise
-;; A pre-Gen warning abort leaves the engine's hidden copy at refcount zero
+;; A pre-Gen API abort leaves the engine's hidden copy at refcount zero
 ;; without free_obj. One abstract request owner preserves only its descendants;
 ;; these lookup rows grant no new binding and own neither SOURCE nor API argv.
 dec $closure_call_retained_valid(pstate) : bool
@@ -721,7 +714,7 @@ def $closure_call_copy_receiver(S, pfunction, n_source, n_receiver) = false -- o
 def $closure_call_copy_kind(S, pfunction, pclosurecall, n_receiver) = true
   -- if $closure_call_copy_required(S, pfunction, pclosurecall)
   -- if (HOBJECT pclosurecall.SOURCE) <- S.ALLOCATIONS
-  -- if pclosurecall.PACKS = eps /\ pclosurecall.ERROR = eps
+  -- if pclosurecall.PACKS = eps
   -- if pclosurecall.FIRST = (POBJECT n_receiver)
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $(n_receiver < |S.OBJECTS|)
@@ -746,14 +739,8 @@ def $closure_call_copy_begin(S, pfunction, pclosurecall, n_receiver) = S[.TODO =
   -- if S.OBJECTS[n_receiver] = INSTANCE pmethoddesc.OWNER
   -- if n_new = |S.OBJECTS|
   -- if pboundfake = {SITE pclosurecall.SITE, SOURCE pclosurecall.SOURCE, ORIGINAL $closure_scope_at(S.CLOSURESCOPES, pclosurecall.SOURCE), SCOPE (BIND_CLASS pmethoddesc.OWNER), CALLED (BIND_CLASS pmethoddesc.OWNER), RECEIVER (n_receiver)}
-def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = $closure_call_copy_invoke(S_copy, pfunction, pclosurecall, n_copy)
-  -- if $closure_call_copy_kind(S, pfunction, pclosurecall, n_receiver)
-  -- if ~$closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS)
-  -- if n_copy = |S.OBJECTS|
-  -- if S_copy = $closure_call_copy_begin(S, pfunction, pclosurecall, n_receiver)
 def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = S_copy[.TODO = (CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy 0 {SLOTS eps, NAMED eps} n_base) :: S.TODO]
   -- if $closure_call_copy_kind(S, pfunction, pclosurecall, n_receiver)
-  -- if $closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS)
   -- if n_copy = |S.OBJECTS|
   -- if S_copy = $closure_call_copy_begin(S, pfunction, pclosurecall, n_receiver)
   -- if n_base = |S_copy.STORE|
@@ -775,20 +762,22 @@ def $named_call_valid(S, CLOSURE_TARGET n, (porigin_site)) = true
 dec $closure_call_copy_argument_nodes(pclosurecall, nat) : pnode*
 def $closure_call_copy_argument_nodes(pclosurecall, n_copy) = [HOBJECT n_copy] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)
 def $task_nodes(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_argument_nodes(pclosurecall, n_copy) ++ [HOBJECT pclosurecall.SOURCE]
-dec $closure_call_copy_result_valid(pstate, pclosurecall, nat) : bool
-def $closure_call_copy_result_valid(S, pclosurecall, n_copy) = true
+dec $closure_call_copy_raw_valid(pstate, pclosurecall, nat) : bool
+def $closure_call_copy_raw_valid(S, pclosurecall, n_copy) = true
   -- if $closure_call_copy_row(S, n_copy) = (pclosurebinding)
   -- if pclosurebinding.SITE = pclosurecall.SITE /\ pclosurebinding.SOURCE = pclosurecall.SOURCE
   -- if pclosurebinding.RECEIVER = pclosurecall.RECEIVER
   -- if pclosurecall.FIRST = (POBJECT n_receiver)
   -- if pclosurecall.RECEIVER = (n_receiver)
-  -- if pclosurecall.PACKS = eps /\ pclosurecall.ERROR = eps
+  -- if pclosurecall.PACKS = eps
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if pclosurecall.INDEX = |phpType7*|
   -- if $closure_call_raw_evaluated(pclosurecall.RAW) /\ $closure_call_raw_unique_names(pclosurecall.RAW)
   -- if $closure_call_raw_keys(pclosurecall.RAW) = $closure_call_source_keys($closure_call_forward_args_at(S, pclosurecall.SITE), 0)
   -- if $call_line_valid(S, (pclosurecall.SITE), pclosurecall.LINE)
-def $closure_call_copy_result_valid(S, pclosurecall, n_copy) = false -- otherwise
+def $closure_call_copy_raw_valid(S, pclosurecall, n_copy) = false -- otherwise
+dec $closure_call_copy_result_valid(pstate, pclosurecall, nat) : bool
+def $closure_call_copy_result_valid(S, pclosurecall, n_copy) = (pclosurecall.ERROR = eps /\ $closure_call_copy_raw_valid(S, pclosurecall, n_copy))
 def $call_task_valid(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_result_valid(S, pclosurecall, n_copy)
 ;; The caller's used retval remains owned while API arguments/This run finalizers.
 dec $closure_call_copy_return_valid(pstate, nat, nat) : bool
@@ -818,11 +807,10 @@ rule PhpStep/closure-call-copy-return: S ~> S[.TODO = ptask_tail*][.RESULT = KNO
 ;; The fresh-cell frontier starts after capture/static duplication.
 dec $closure_call_copy_forward_valid(pstate, pclosurecall, nat, nat, pnamedargs, nat) : bool
 def $closure_call_copy_forward_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base) = true
-  -- if $closure_call_copy_result_valid(S, pclosurecall, n_copy)
+  -- if $closure_call_copy_raw_valid(S, pclosurecall, n_copy)
   -- if (HOBJECT pclosurecall.SOURCE) <- S.ALLOCATIONS
   -- if $closure_call_task_valid(S, pclosurecall)
   -- if $target_function(S, CLOSURE_TARGET n_copy) = (pfunction)
-  -- if $closure_call_reference_formal(pfunction.SIGNATURE.PARAMETERS)
   -- if $(n <= |pclosurecall.RAW|) /\ $(n_base <= |S.STORE|)
   -- if S.TODO = ptask :: ptask_tail*
   -- if H_original = $heap_graph(S[.TODO = (CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
@@ -842,7 +830,7 @@ rule PhpStep/closure-call-copy-forward-next: S ~> S_value[.TODO = (CLOSURE_CALL_
   -- if $named_can_store(pnamedargs, pnamedtarget)
   -- if ~$named_reference(pfunction, pnamedtarget)
   -- if S_value = $closure_call_forward_operand(S, pfunction, n_receiver, pnamedtarget, pvalue, pclosurecall.LINE)
-rule PhpStep/closure-call-copy-forward-error: S ~> S[.COMPLETION = UNSUPPORTED "Generator Closure::call argument mapping"]
+rule PhpStep/closure-call-copy-forward-error: S ~> $throwable_allocate(S[.ORIGIN = (pclosurecall.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Error", preqbytes, pclosurecall.LINE, [ptraceframe] ++ $eval_exception_trace_raw(S))
   -- if S.TODO = (CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) :: ptask_tail*
   -- if $call_task_valid(S, CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base)
   -- if $(n < |pclosurecall.RAW|)
@@ -850,10 +838,18 @@ rule PhpStep/closure-call-copy-forward-error: S ~> S[.COMPLETION = UNSUPPORTED "
   -- if $target_function(S, CLOSURE_TARGET n_copy) = (pfunction)
   -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
   -- if ~$named_can_store(pnamedargs, pnamedtarget)
+  -- if pclosurecall.ERROR = (preqbytes)
+  -- if pclosurecall.FIRST = (POBJECT n_receiver)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) :: ptask_tail*
+  -- if $call_task_valid(S, CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base)
+  -- if S_next.TODO = S.TODO /\ $throwable_pending(S_next.COMPLETION)
 rule PhpStep/closure-call-copy-forward-enter: S ~> $closure_call_copy_invoke(S[.TODO = (CLOSURE_CALL_COPY_RESULT pclosurecall[.SENT = pnamedargs] n_copy) :: ptask_tail*], pfunction, pclosurecall[.SENT = pnamedargs], n_copy)
   -- if S.TODO = (CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) :: ptask_tail*
   -- if $call_task_valid(S, CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base)
   -- if n = |pclosurecall.RAW|
+  -- if pclosurecall.ERROR = eps
   -- if $target_function(S, CLOSURE_TARGET n_copy) = (pfunction)
 dec $closure_call_copy_discarded(ptask*) : bool
 def $closure_call_copy_discarded((CLOSURE_CALL_RESULT porigin z) :: ptask_tail*) = $destructor_return_discarded(ptask_tail*)
@@ -874,19 +870,28 @@ rule PhpStep/closure-call-copy-discarded: S ~> $destructor_release_begin(S[.TODO
   -- if $(n_generator < |S.OBJECTS|)
   -- if S.OBJECTS[n_generator] = GENERATOR pgenerator
   -- if pgenerator.CLOSURE = (n_copy)
-;; Wider no-Generator receive/mapping cleanup remains unsupported.
-;; Warning cancellations use the authenticated retained-copy path above.
+;; Wider no-Generator receive cleanup remains unsupported. Mapping and
+;; required-hole cancellations retain the same authenticated hidden copy.
 dec $closure_call_copy_warning_pending(ptask) : bool
 def $closure_call_copy_warning_pending(CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = true
 def $closure_call_copy_warning_pending(ERROR_HANDLER_RESULT perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
 def $closure_call_copy_warning_pending(ERROR_HANDLER_INVOKE perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
 def $closure_call_copy_warning_pending(ERROR_HANDLER_CLEAN perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
 def $closure_call_copy_warning_pending(ptask) = false -- otherwise
-;; Descriptor walks follow the still-owned warning cursor past a pending throw.
+dec $closure_call_copy_cancel_pending(pstate, ptask) : bool
+def $closure_call_copy_cancel_pending(S, ptask) = true
+  -- if $closure_call_copy_warning_pending(ptask)
+def $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) = true
+def $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = true
+  -- if $closure_call_copy_row(S, n_copy) = (pclosurebinding)
+  -- if pclosurebinding <- S.CLOSURECALLRETAINED
+  -- if ~$closure_call_copy_created(S.OBJECTS, n_copy)
+def $closure_call_copy_cancel_pending(S, ptask) = false -- otherwise
+;; Descriptor walks follow the still-owned cancellation cursor past a throw.
 def $call_after_origin(S, THROW_SEARCH n) = S[.TODO = ptask_copy :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_copy :: ptask_tail*
   -- if $throwable_member(S, n)
-  -- if $closure_call_copy_warning_pending(ptask_copy)
+  -- if $closure_call_copy_cancel_pending(S, ptask_copy)
 dec $closure_call_copy_pending(ptask) : bool
 def $closure_call_copy_pending(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = true
 def $closure_call_copy_pending(CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) = true
@@ -899,8 +904,26 @@ def $source_exception_transition(S, S_next) = S_next[.COMPLETION = UNSUPPORTED "
   -- if S_next.SOURCEPENDING = eps
   -- if S_next.TODO = (THROW_SEARCH n) :: ptask_copy :: ptask_tail*
   -- if $closure_call_copy_pending(ptask_copy)
-  -- if ~$closure_call_copy_warning_pending(ptask_copy)
+  -- if ~$closure_call_copy_cancel_pending(S_next, ptask_copy)
   -- if $throwable_member(S_next, n)
+
+;; Named undef-argument handling uses the existing fake receive frame/trace,
+;; but the engine has not yet installed the call-frame Closure addref.
+def $source_exception_transition(S, S_next) = $closure_call_copy_retain(S_next, n_copy)
+  -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: eps
+  -- if $named_preflight_valid(S, porigin, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = CLOSURE_TARGET n_copy
+  -- if $receiving_function(S, porigin) = (pfunction)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) :: ptask_tail*
+  -- if $closure_call_copy_result_valid(S, pclosurecall, n_copy)
+  -- if pcallcontext.CALLSITE = (pclosurecall.SITE)
+  -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
+  -- if $default_at(pfunction.DEFAULTS, n) = eps
+  -- if S_next.COMPLETION = THROWING n_throw
+  -- if $throwable_member(S_next, n_throw)
 
 dec $closure_call_copy_trace(pstate, pframe) : ptraceframe*
 def $closure_call_copy_trace(S, pframe) = [{FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}]
