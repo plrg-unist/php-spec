@@ -1355,6 +1355,13 @@ partial. [Review](coverage/semantics/rejected-property-hook-static-review.json).
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| CLASS182 | Anonymous child factories inside method-owned Closures and arrows; private implementation/review. |
+| I108 | ARRAY-packed real/fake Generator `Closure::call`; private implementation/review. |
+| GC40 | Two-entry WeakMap release with a sole-owned Child value and methodless leaf; source-reached tests and independent callback checks. |
+| COMP178 | Rejected multiproperty brace cutoff and completed-header retention; source/main/reached validation and independent review. |
+| OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
+| ATTR28 | Source-derived switch tick plans, fallthrough and final-value cleanup; private implementation/review. |
+| Enum callable arrays | Embedded reference members and stable first-SEND selection; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
