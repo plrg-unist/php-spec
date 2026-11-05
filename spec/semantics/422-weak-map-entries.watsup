@@ -423,13 +423,12 @@ def $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc :: pprop
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
   -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN) /\ ppropertyslot.NAME = ppropertydesc.KEY
-  -- if ~$property_hook_declared(S, n_value, ppropertydesc.NAME)
+  -- if ~$property_hook_virtual(S, ppropertydesc)
   -- if $weakmap_entries_property_state_free(S, ppropertyslot.STATE)
   -- if $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc_tail*, ppropertyslot_tail*)
 def $weakmap_entries_declared_properties_free(S, n_value, ppropertydesc*, ppropertyslot*) = false -- otherwise
 
 ;; Per-entry and per-property jobs preserve repeated Values and Children.
-dec $weakmap_entries_child_value_free(pstate, pweakmapvalue) : bool
 def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
   -- if $weakmap_entries_value_allowed(S, POBJECT n_value)
 def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
