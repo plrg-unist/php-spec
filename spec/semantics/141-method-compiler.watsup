@@ -127,6 +127,11 @@ def $ppmethod_get_declaration_signature(pssignature) = $ppmethod_get_signature(p
   -- if pssignature.PARAMETERS = [psparam]
   -- if psparam.TYPE = eps \/ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
 def $ppmethod_get_declaration_signature(pssignature) = false -- otherwise
+dec $ppmethod_get_plain_parameters(psparam*) : bool
+def $ppmethod_get_plain_parameters(eps) = true
+def $ppmethod_get_plain_parameters(psparam :: psparam_tail*) = (psparam.TYPE = eps /\ ~psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ $ppmethod_get_plain_parameters(psparam_tail*))
+dec $ppmethod_get_arity_error(pssignature) : bool
+def $ppmethod_get_arity_error(pssignature) = (|pssignature.PARAMETERS| =/= 1 /\ ~pssignature.BYREF /\ pssignature.RETURNS = eps /\ $ppmethod_get_plain_parameters(pssignature.PARAMETERS))
 def $ppmethod_call(flags, ptbytes) = (flags <- [0,1] /\ $ptlc(ptbytes) = $ptascii("__call"))
 def $ppmethod_callstatic(flags, ptbytes) = (flags <- [8,9] /\ $ptlc(ptbytes) = $ptascii("__callstatic"))
 def $ppmethod_call_signature(pssignature) = true
@@ -350,9 +355,13 @@ def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, m
 def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P_body, "magic isset signature")) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ppmethod_isset(flags, ptbytes) /\ ~$ppmethod_isset_signature(pssignature)
+def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppconstant_error(P_body, $ptascii("Method ") ++ $c_string(pchheader.NAME) ++ $ptascii("::") ++ ptbytes ++ $ptascii("() must take exactly 1 argument"), $ppmethod_line(metadata))) ppropertydesc* pmethoddesc*
+  -- if P_body.COMPLETION = PPCNORMAL
+  -- if $ppmethod_get(flags, ptbytes) /\ pchheader.KIND <- ["class", "trait"] /\ $ppmethod_get_arity_error(pssignature)
 def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P_body, "magic getter signature")) ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION = PPCNORMAL
   -- if $ppmethod_get(flags, ptbytes) /\ ~$ppmethod_get_declaration_signature(pssignature) /\ ~(pchheader.KIND = "enum" /\ $ppenum_get_signature(pssignature))
+  -- if ~(pchheader.KIND <- ["class", "trait"]) \/ ~$ppmethod_get_arity_error(pssignature)
 def $ppmethod_finish_raw(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P_restored ppropertydesc* (pmethoddesc* ++ [{ NAME ptbytes, FUNCTION { DEFAULTS $ppmethod_defaults(P_body, pcpath, pssignature.PARAMETERS, 0), ORIGIN PORIGIN P_outer.FOLD.SOURCE.ID pcpath, NAME (pchheader.NAME ++ $ptascii("::") ++ ptbytes), SIGNATURE pssignature_effective, CVS P_body.CVS, ENV P_outer.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 6]), EARLY false, LINE $ppmethod_line(metadata), ENDLINE $psendline(metadata) }, OWNER PORIGIN P_outer.FOLD.SOURCE.ID pcpath[0:$nabs($( |pcpath| - 2))], VISIBILITY $ppmethod_visibility(flags), STATIC $ppproperty_flag(flags, 8), FINAL $ppproperty_flag(flags, 32), ABSTRACT $ppproperty_flag(flags, 16) }])
   -- if P_body.COMPLETION = PPCNORMAL
   -- if ~($ppproperty_flag(flags, 8) /\ $ptlc(ptbytes) = $ptascii("__construct"))
