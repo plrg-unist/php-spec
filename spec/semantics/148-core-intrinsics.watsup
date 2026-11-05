@@ -192,19 +192,20 @@ dec $foreach_bind_exit_pending(pstate) : bool
 dec $update_warning_exit_pending(pstate) : bool
 dec $update_warning_exit_unwind(pstate) : bool
 dec $enum_is_callable_output_exit_pending(pstate) : bool
+dec $enum_is_callable_output_exit_unwind(pstate) : bool
 def $exit_start_unwind(S, z) = $clone_exit_drop($file_warning_drop_scope($error_release_iterators($silence_unwind($file_notice_exit_scope(S)))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if ~$fiber_closing(S, S.ACTIVEFIBER)
   -- if ~$property_dynamic_exit_pending(S)
   -- if ~$foreach_bind_exit_pending(S)
   -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
-  -- if ~$enum_is_callable_output_exit_pending(S)
+  -- if ~$enum_is_callable_output_exit_pending(S) \/ $enum_is_callable_output_exit_unwind(S)
   -- if $source_static_exit_tail(S, S.TODO) = eps
 def $exit_start_unwind(S, z) = $clone_exit_drop($error_release_iterators($silence_unwind($file_notice_exit_scope(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = (EXIT_UNWIND z) :: ptask*][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
   -- if ~$fiber_closing(S, S.ACTIVEFIBER)
   -- if ~$property_dynamic_exit_pending(S)
   -- if ~$foreach_bind_exit_pending(S)
   -- if ~$update_warning_exit_pending(S) \/ $update_warning_exit_unwind(S)
-  -- if ~$enum_is_callable_output_exit_pending(S)
+  -- if ~$enum_is_callable_output_exit_pending(S) \/ $enum_is_callable_output_exit_unwind(S)
   -- if ptask* = $source_static_exit_tail(S, S.TODO)
   -- if ptask* =/= eps
 dec $exit_drive(pstate, nat) : pstate

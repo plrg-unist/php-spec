@@ -2164,12 +2164,15 @@ parameters. Reference yields become snapshots before resume; named keys use the
 ordinary binder. Native iteration adds no method trace frames, and temporary
 versus retained Generators preserve their distinct finally/cache lifetimes.
 See the [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
-Scalar by-value Generator caches now warn within the first two unpacked sends
-to a fixed untyped reference parameter in argument position 1 or 2 of a direct
-named user function returning by value. Distinct private cells preserve both
-values across warnings and callee writes. Dynamic-string sinks, warning-time
-Generator advancement and pending warning exceptions remain explicit Unsupported.
-See the [reference-sink review](coverage/semantics/generator-byref-sink-review.json).
+Direct named functions returning by value receive scalar Generator sends in
+fixed untyped reference parameters at positions 1 or 2, within the first two
+sends. By-value yields keep snapshots; ordinary reference yields reread saved
+cells after normal Warning handlers. Private callee cells stay distinct from
+source aliases and each other through global-name rebinding. Changed by-value
+payloads, keys or producer phase, replacement reference cells, unsupported
+carriers, dynamic-string sinks and pending warning exceptions remain Unsupported.
+See the [snapshot review](coverage/semantics/generator-byref-sink-review.json)
+and [reference-cell review](coverage/semantics/generator-reference-sink-review.json).
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
@@ -3916,6 +3919,14 @@ edges, and per-array self-reach rejects forged DIRECT cycles. Shared nesting, lo
 COW and self-copy snapshots agree with PHP through weak death. References, proxies, pooled descendants
 and user-finalizer children stay outside this lane. See the
 [nested-array review](coverage/semantics/gc-nested-array-review.json).
+
+GC29 admits mixed value/reference captures through ordinary untyped cells.
+Captured aliases retain cell identity across global-name rebinding; each wrapper
+owns its payload once, and reference decrements buffer the collectable payload.
+Shared/distinct wrappers, request strings, nested reference-payload COW and an
+A95 Generator/handler interaction agree with PHP. Typed/backed cells and reference cycles remain outside this lane.
+See the [reference-capture review](coverage/semantics/gc-reference-capture-review.json).
+
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -6816,8 +6827,12 @@ objects now clear the original output cell before destruction, then commit its
 chosen name before returning or propagating a destructor throw. The
 [unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json)
 records twelve normal originals, five explicit controls and 345 independent
-guards. Destructor exit, owning rebound values, late type sources, other array
-sources and autoload,
+guards. Root VM destructor exits now finish local cleanup before committing the
+name; nested queries preserve exit status and skip result assignment. The
+[exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
+records seven exact exits, seven explicit controls and 247 independent guards.
+Switched Fiber exits, replacement cleanup, owning rebound values, late type
+sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

@@ -820,7 +820,18 @@ API frame, whose arguments snapshot the captured cell at trace creation. The
 [unique-output review](../../coverage/semantics/enum-is-callable-output-unique-review.json)
 records twelve normal originals, five explicit controls, strict433,
 345 independent guards and affected retained77 checks at separate cuts.
-Exit, owning rebound values and newly attached type sources remain Unsupported.
+Root VM exit now leaves PHP frames and drains their locals while the real C
+destructor pin and output arguments stay owned. A nonowning continuation then
+finishes the original destructor and commits the name before exit propagates.
+Nested live queries commit in order; neither boolean reaches its abandoned
+assignment. Cleanup destructors have an internal site followed by the actual
+`is_callable` API snapshot. The
+[exit review](../../coverage/semantics/enum-is-callable-output-exit-review.json)
+records seven exact exits, seven explicit controls, strict433 and 247 independent
+guards. Pending output in an active Fiber caller chain refuses explicitly;
+unrelated dormant Fibers do not trigger an early commit. Their force-close
+protocol, cleanup throws or repeated exits, owning rebound values and newly
+attached type sources remain partial.
 Native raw overwrite can retain an abandoned count for a destructor-created
 object until the store sweep; it cannot be modeled as a second checked write.
 Variable array inputs remain outside third-output name authentication.
