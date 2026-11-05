@@ -2,6 +2,7 @@
 """Keep a computed Generator selection through argument-side rebinding."""
 import hashlib
 import json
+import base64
 from pathlib import Path
 import fiber_state_review as review
 
@@ -96,6 +97,27 @@ $call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT 
 $heap_valid($heap_graph(S_normalized))
 $call_descriptors_valid(S_normalized)
 '''.splitlines() if line.strip()]
+
+# These source views test only the shared site predicate, without asserting
+# that the altered source view is a complete executable machine state.
+CHECKS.append('pconfigcall.SITE = PORIGIN n_unit pcpath_site')
+for label, node, method, first_class, expected in (
+        ('bind', 'NExprMethodCall', 'bind', False, True),
+        ('bindto', 'NExprNullsafeMethodCall', 'bindTo', False, True),
+        ('invoke', 'NExprMethodCall', '__invoke', False, True),
+        ('nullinvoke', 'NExprNullsafeMethodCall', '__invoke', False, True),
+        ('other', 'NExprMethodCall', 'other', False, False),
+        ('nullother', 'NExprNullsafeMethodCall', 'other', False, False),
+        ('first', 'NExprMethodCall', '__invoke', True, False),
+        ('nullfirst', 'NExprNullsafeMethodCall', '__invoke', True, False)):
+    spelling = json.dumps(base64.b64encode(method.encode()).decode())
+    arguments = '[(NVariadicPlaceholder metadata_site)]' if first_class else 'eps'
+    expression = (f'{node} expression_receiver (NIdentifier (BYTES {spelling}) metadata_site) '
+                  f'(SEQUENCE ({arguments})) metadata_site')
+    CHECKS += [
+        f'S_{label} = S[.SOURCES = [{{ID n_unit, AST PROGRAM eps, OCCURRENCES '
+        f'[(PCOCCURRENCE pcpath_site ({expression}))]}}]]',
+        ('' if expected else '~') + f'$closure_binding_api_site(S_{label}, pconfigcall.SITE)']
 
 review.CASES = {'i111-peer-computed-selection-normalization-owners': {
     'source': ROW['source'], 'stage': STAGE, 'checks': CHECKS}}
