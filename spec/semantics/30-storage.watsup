@@ -136,7 +136,8 @@ syntax pconfigpack = { INDEX nat, SITE porigin, LINE int, ARRAY nat, ITEMS pentr
 syntax ptraversablepack = { INDEX nat, SITE porigin, LINE int, OBJECT nat, ITEMS pentry* }
 syntax pfiberpack = FIBER_ARRAY_PACK pconfigpack | FIBER_TRAVERSABLE_PACK ptraversablepack
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
-syntax penumqueryinput = { CALL pconfigcall, ARGUMENT porigin, LINE int, DEPTH nat, VALUE ptbytes, ARRAY nat? }
+;; ITEMS fixes the physical member slots; VALUES borrows their SEND payloads.
+syntax penumqueryinput = { CALL pconfigcall, ARGUMENT porigin, LINE int, DEPTH nat, VALUE ptbytes, ARRAY nat?, ITEMS pentry*, VALUES pvalue* }
 syntax pconfigiterator = { CALL pconfigcall, ITERATOR nat, OBJECT nat, INPUT poperand, PRODUCER nat?, ITEMS pentry*, CURRENT poperand, KEY poperand }
 syntax pconfigaggregate = { CALL pconfigcall, OBJECT nat, INPUT poperand }
 syntax pconfiggeneratorproducer = { AGGREGATE pconfigaggregate, METHOD porigin }
@@ -237,7 +238,8 @@ syntax pautoloadregistration = { ENTRY pautoloadentry, INDEX nat, THROW bool, PR
 syntax pshutdownphase = SHUTDOWN_PENDING | SHUTDOWN_RUNNING | SHUTDOWN_DONE
 syntax pdestructionphase = DESTRUCTION_PENDING | DESTRUCTION_GLOBALS | DESTRUCTION_STORE | DESTRUCTION_DONE
 syntax pcallcontext
-syntax penumqueryoutput = { CALL pconfigcall, INPUT penumqueryinput?, CELL nat, OLD nat, OLDARRAY nat?, NAME ptbytes, RESULT bool, DEPTH nat, CALLER pcallcontext? }
+;; VALUES borrows the members selected before output destruction.
+syntax penumqueryoutput = { CALL pconfigcall, INPUT penumqueryinput?, CELL nat, OLD nat, OLDARRAY nat?, VALUES pvalue*, NAME ptbytes, RESULT bool, DEPTH nat, CALLER pcallcontext? }
 syntax pconstantfact
 syntax pconstantcontext
 syntax pobject

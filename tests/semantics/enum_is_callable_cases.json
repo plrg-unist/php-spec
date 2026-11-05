@@ -622,8 +622,8 @@
     "id": "enum-is-callable-third-output-variable-array-embedded-reference",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum PureCheck { case A; }\n$class = FirstCheck::class;\n$call = [&$class, 'from'];\nfunction change_class(): bool {\n    global $class;\n    $class = PureCheck::class;\n    echo 'CHANGE|';\n    return false;\n}\n$name = 'old';\n$ok = is_callable($call, change_class(), $name);\necho 'reference:', (int)$ok, ':', $name, ':', $class, '|';\n",
     "source_sha256": "15f764e297f61b2db2aa0ecaa1566b01abc751f4e9261207810d3c118f54b86e",
-    "expected_model": "unsupported",
-    "purpose": "Embedded reference member observes late class mutation natively; explicit Unsupported boundary until modeled.",
+    "expected_model": "normal",
+    "purpose": "The sent table retains its embedded reference while a later argument changes the receiver; the query reads the new receiver at invocation.",
     "expected_normal_stdout": "CHANGE|reference:0:PureCheck::from:PureCheck|"
   },
   {
@@ -724,5 +724,88 @@
     "purpose": "A throwing child released by the separate holder after name and boolean result commit transfers its exception with both committed values intact.",
     "model_timeout_seconds": 90,
     "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from|D-name|caught:drop:FirstCheck::from:FirstCheck::from:1|"
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-method-tryfrom",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$method = 'from';\n$target = [FirstCheck::class, &$method];\n$name = 'OLD';\n$ok = 'UNCHANGED';\nfunction mutate_method(): bool {\n    global $method;\n    $method = 'tryFrom';\n    echo 'CHANGE|';\n    return false;\n}\n$ok = is_callable($target, mutate_method(), $name);\necho 'chosen:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "f0fdfa4afa83372917c403b2455b7a39329619e780ed0ffa99e929be3a94cbca",
+    "expected_model": "normal",
+    "expected_normal_stdout": "CHANGE|chosen:1:FirstCheck::tryFrom:tryFrom|",
+    "purpose": "A method reference is dereferenced after a later argument changes from to tryFrom."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-method-missing",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$method = 'from';\n$target = [FirstCheck::class, &$method];\n$name = 'OLD';\n$ok = 'UNCHANGED';\nfunction mutate_method(): bool {\n    global $method;\n    $method = 'missing';\n    echo 'CHANGE|';\n    return false;\n}\n$ok = is_callable($target, mutate_method(), $name);\necho 'chosen:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "e1a20cd4db9798623fc962bd7c14dc550b93e64ce84d5fd190b3eec47125b0b6",
+    "expected_model": "normal",
+    "expected_normal_stdout": "CHANGE|chosen:0:FirstCheck::missing:missing|",
+    "purpose": "A method reference changed to an absent method returns false and the new name."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-throw-second",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\n$method = 'from';\n$target = [FirstCheck::class, &$method];\n$name = 'OLD';\n$ok = 'UNCHANGED';\nfunction mutate_then_throw(): bool {\n    global $method;\n    $method = 'tryFrom';\n    echo 'CHANGE|';\n    throw new Exception('stop');\n}\ntry {\n    $ok = is_callable($target, mutate_then_throw(), $name);\n} catch (Throwable $e) {\n    echo 'caught:', $e->getMessage(), ':', $name, ':', $method, ':', $ok, '|';\n}\n",
+    "source_sha256": "0544862590314b0bbd7913b2411a85173f2f004a562fc0d4ed1cf36474fd6751",
+    "expected_model": "normal",
+    "expected_normal_stdout": "CHANGE|caught:stop:OLD:tryFrom:UNCHANGED|",
+    "purpose": "A throwing second argument skips name/result writes while retaining its reference mutation."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-receiver-case",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nenum OtherCheck { case B; }\nfunction change() { global $receiver; $receiver = OtherCheck::B; return false; }\n$receiver = 'refcheck'; $target = [&$receiver, 'cases']; $name = 'OLD';\n$ok = is_callable($target, change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, '|'; echo $receiver === OtherCheck::B ? 'case|' : 'BAD|';\n",
+    "source_sha256": "cf3d2ff12e538e7d69fed1ed6f45e44c7daa4e5ee1ab5fcbf82238d1a92b84bd",
+    "expected_model": "normal",
+    "expected_normal_stdout": "true|OtherCheck::cases|case|",
+    "purpose": "Both reference members may change to a cached case receiver and a generated method."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-member-output-alias",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\n$method = 'from'; $target = [RefCheck::class, &$method]; $name =& $method;\n$ok = is_callable($target, false, $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, ':', $method, ':', $target[1], '|';\n",
+    "source_sha256": "08df9d560160bb45e918cba4104d2868772f849ab1d5bdc5ff0b019d8bd22e06",
+    "expected_model": "normal",
+    "expected_normal_stdout": "true|RefCheck::from:RefCheck::from:RefCheck::from|",
+    "purpose": "The output cell may be the same live reference used by the sent method member."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-destructor-mutation",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nenum OtherCheck { case B; }\nclass Drop {\n public function __destruct() { global $name, $receiver, $method; echo $name === null ? 'null|' : 'BAD|'; $receiver = OtherCheck::B; $method = 'cases'; }\n}\n$receiver = 'refcheck'; $method = 'missing'; $target = [&$receiver, &$method]; $name = new Drop;\n$ok = is_callable($target, false, $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $method, '|'; echo $receiver === OtherCheck::B ? 'changed|' : 'BAD|';\n",
+    "source_sha256": "10af565fdba7aaac02e2ea216318bacf70442e4a12594edab3e59c338905d5bf",
+    "expected_model": "normal",
+    "expected_normal_stdout": "null|false|refcheck::missing:cases|changed|",
+    "purpose": "Output destruction changes both referenced members after selection; the saved false result and raw spelling still commit.",
+    "model_timeout_seconds": 90
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-destructor-throw",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nenum OtherCheck { case B; }\nclass Drop {\n public function __destruct() { global $name, $receiver, $method; echo $name === null ? 'null|' : 'BAD|'; $receiver = OtherCheck::B; $method = 'cases'; throw new Exception('drop'); }\n}\n$receiver = 'refcheck'; $method = 'missing'; $target = [&$receiver, &$method]; $name = new Drop; $ok = 'UNCHANGED';\ntry { $ok = is_callable($target, false, $name); echo 'BAD|'; }\ncatch (Exception $e) { echo 'caught:', $e->getMessage(), '|'; }\necho $name, ':', $method, ':', $ok, '|'; echo $receiver === OtherCheck::B ? 'changed|' : 'BAD|';\n",
+    "source_sha256": "c5ad5d86cf5570bcadc7fbabca7174627d55ae20fedb456fe137b413748be948",
+    "expected_model": "normal",
+    "expected_normal_stdout": "null|caught:drop|refcheck::missing:cases:UNCHANGED|changed|",
+    "purpose": "A throwing output destructor changes both members; saved name commits before catch without assigning the boolean.",
+    "model_timeout_seconds": 90
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-syntax-only",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nfunction change() { global $method; $method = 'missing'; return true; }\n$method = 'from'; $target = [RefCheck::class, &$method]; $name = 'OLD';\n$ok = is_callable($target, change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, '|';\n",
+    "source_sha256": "929c577eacd44b0cde22a9ba957da23d776ddbfe97b5e002878b3a9891806b86",
+    "expected_model": "normal",
+    "expected_normal_stdout": "true|RefCheck::missing|",
+    "purpose": "Syntax-only queries accept the current absent referenced method without entering a body."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-source-rebound",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nfunction change() { global $target, $method; $target = 'REBOUND'; $method = 'missing'; return false; }\n$method = 'from'; $target = [RefCheck::class, &$method]; $name = 'OLD';\n$ok = is_callable($target, change(), $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $target, ':', $method, '|';\n",
+    "source_sha256": "fed645d94735c88df617150aaadfa8d29e867e6fc8859b0ea9599e81e12d503e",
+    "expected_model": "normal",
+    "expected_normal_stdout": "false|RefCheck::missing:REBOUND:missing|",
+    "purpose": "Source rebinding drops its table owner while SENT retains the original reference and observes the later cell mutation."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-destructor-nonstring",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nclass Drop {\n public function __destruct() { global $name, $method; echo $name === null ? 'null|' : 'BAD|'; $method = 17; }\n}\n$method = 'missing'; $target = [RefCheck::class, &$method]; $name = new Drop;\n$ok = is_callable($target, false, $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $method, '|';\n",
+    "source_sha256": "65f03390a744926a9e6b9c768cc6058d6f70ba4888a8f7db76d023e0cf892ab3",
+    "expected_model": "normal",
+    "expected_normal_stdout": "null|false|RefCheck::missing:17|",
+    "purpose": "After query selection the destructor may replace the referenced method with an integer; the saved name/result still commit.",
+    "model_timeout_seconds": 90
   }
 ]
