@@ -4967,15 +4967,18 @@ successful lookups, while diagnostic class-name arguments use native C strings.
 Attributes and wider member/type/initializer contexts remain partial.
 [Own constant review](coverage/semantics/anonymous-own-constants-review.json).
 
-Ordinary anonymous property groups now share named-class type/default preparation,
-visibility, static storage and readonly checks. Nonliteral instance and static
-defaults finish before constructorless allocation; cloned arrays separate on
-write, private parent/child keys retain full NUL-bearing class names, and repeated
-eval compilations keep separate static cells. Link conflicts precede arguments;
-readonly declaration errors precede execution. Only diagnostic class operands
-use C-string display. Attributes, hooks, promotion, asymmetric setters and final
-properties remain outside this admission.
-[Property review](coverage/semantics/anonymous-properties-review.json).
+Ordinary anonymous property groups share named-class type/default preparation,
+visibility, static storage, readonly, final and asymmetric-set checks. Nonliteral
+instance and static defaults finish before constructorless allocation; cloned
+arrays separate on write, private keys retain full NUL-bearing names, and fresh
+eval compilations keep separate static cells. Equivalent read/set visibility
+normalizes away; private(set) is implicitly final, while final properties remain
+writable. Setter permission uses lexical scope and error display uses called
+scope. Link conflicts precede arguments; declaration errors precede execution.
+Only exercised diagnostic class operands use C-string display. Attributes, hooks,
+promotion and wider contexts remain partial.
+[Property review](coverage/semantics/anonymous-properties-review.json),
+[modifier review](coverage/semantics/anonymous-property-modifiers-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

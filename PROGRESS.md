@@ -906,6 +906,15 @@ The original default-allocation and classifier failures remain zero credit.
 Attributes/hooks/promotion/asymmetric setters/final properties and wider contexts
 remain partial. [Review](coverage/semantics/anonymous-properties-review.json).
 
+CLASS174 shares the finite named-property modifier predicate with ordinary
+anonymous groups, including final and asymmetric setters. Setter normalization,
+lexical permission/called-scope display, writable final fields and explicit
+public(set) readonly initialization retain source authority. Twelve exact
+originals, strict434, 120 author and 136 independent reached conditions pass;
+two author fixture corrections retain zero credit. Attributes/hooks/promotion
+and wider contexts remain partial.
+[Review](coverage/semantics/anonymous-property-modifiers-review.json).
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
