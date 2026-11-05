@@ -589,60 +589,18 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR11 retires a single raw invokable tick callback and one copied object
-argument after output FINAL, with no assertion callback and normal completion.
-The tick task owns the argument and both equal FCC object/closure slots while
-the registry empties; it releases the argument first, then the two FCC slots,
-before the existing shutdown-list queue. Two native-first originals agree
-exactly, including a retained shutdown entry. Three reached states pass 88
-assertions and show callback owners 2→1→0; private and joined strict433 pass.
-The earlier Unsupported baseline, two compiler attempts, recorder failure and
-exploratory output-buffer restart controls retain zero agreement credit. Wider
-tick entries, assertion callback, abrupt reentry and late-free paths remain
-partial. [Late tick review](coverage/semantics/callback-late-tick-final-review.json).
-
-ATTR12 extends normal post-FINAL tick retirement to two raw invokable entries,
-each with one copied object argument. The first task owns only its argument and
-two FCC slots while the second stays rooted in the tick list; after the first
-callback retires, the second follows in registration order. One native-first
-source agrees exactly (`B;F;A1;C1;A2;C2;`). Four reached states pass 120
-assertions, including both callbacks' 2→1→0 owner transitions; the ATTR11
-singleton source and reached state still pass. Strict433 passes. The original
-two-entry Unsupported baseline and an unanchored stage selector have zero
-agreement credit. More than two entries, mixed callbacks, assertion callbacks
-and abrupt reentry remain partial. [Tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
-
-ATTR13 removes that length cap for a nonempty ordered tick list whose entries
-have the same normal raw-invokable/one-object-argument shape. Its task still
-transfers one head at a time and leaves the tail rooted. A three-entry
-native-first source agrees exactly in registration order; six reached states
-pass 143 selected checks across first, middle and last entries, including each
-callback's 2→1→0 owners. One shared-callback alias source also agrees, and the
-ATTR11/12 source regressions and private/joined strict433 pass. The prior
-Unsupported baseline and three fixture elaboration failures retain zero
-credit. Mixed callback shapes, assertion roots and abrupt reentry remain
-partial. [Tick-list review](coverage/semantics/callback-late-tick-list-review.json).
-
-ATTR14 admits any finite number of copied object arguments, including zero,
-per raw invokable entry in that ordered post-FINAL list. Each copied argument
-must differ from its callback object. Two native-first mixed-arity sources
-agree exactly, including a shared callback across zero- and two-argument
-entries; a repeated-argument control also agrees. Six source-reached states
-pass 122 checks and show the shared callback's FCC owners 4→3→2→1→0, with both
-arguments retiring before the callback. Private strict433 passes. The earlier
-Unsupported baseline and a draft binding error retain zero credit. Scalar,
-array/reference and callback-as-argument payloads, assertion roots and abrupt
-reentry remain partial. [Tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
-
-ATTR15 also admits a raw invokable callback copied as its own tick argument
-after output FINAL. The copied argument retires before the callback's two FCC
-slots. Two native-first sources agree exactly: self-only prints `B;F;C;`, and
-self plus another object prints `B;F;A;C;`. Seven reached states pass 120
-checks, showing callback owners 3→2→1→0 and the other argument retiring before
-the final callback release. Private and joined strict433 pass. The prior
-Unsupported baseline retains zero credit. Scalar, array/reference payloads,
-assertion roots and abrupt reentry remain partial.
-[Tick self-argument review](coverage/semantics/callback-late-tick-self-argument-review.json).
+ATTR16 generalizes normal post-FINAL raw-invokable tick cleanup to finite
+copied value lists through the existing value roots and recursive release rules.
+Scalar arguments add no heap root; shared arrays keep one child graph, embedded
+reference cells retain later mutations, and ordinary writes preserve copied
+container snapshots. Every argument occurrence retires before separate FCC
+object/closure owners, including callback self children. Five native-first
+sources agree exactly; seven reached groups pass 176 conditions (two derived
+forgery guards), and private strict433 passes. A scalar string-carrier assertion
+was corrected and rerun alone; its original failure retains zero credit. Other
+callback forms, assertion roots and abrupt/reentrant module shutdown remain partial.
+[Copied-value review](coverage/semantics/callback-late-tick-values-review.json)
+retains the earlier finite-list/object/self ledgers and their original failures.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

@@ -38216,14 +38216,16 @@
         "spec/semantics/393-ticks.watsup",
         "spec/semantics/30-storage.watsup",
         "spec/semantics/231-shutdown-functions.watsup",
-        "spec/semantics/443-deprecated-closure-invoke.watsup"
+        "spec/semantics/443-deprecated-closure-invoke.watsup",
+        "spec/semantics/444-executor-final-free.watsup"
       ],
       "helper_tests": [
         "tests/semantics/tick_state.py",
         "tests/semantics/callback_cache_protocol.py",
         "tests/semantics/callback_cache_review_protocol.py",
         "tests/semantics/callback_closure_invoke_protocol.py",
-        "tests/semantics/callback_closure_invoke_review_protocol.py"
+        "tests/semantics/callback_closure_invoke_review_protocol.py",
+        "tests/semantics/deprecated_late_tick_values_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/tick_sources.py",
@@ -38233,7 +38235,12 @@
         "tests/semantics/deprecated_api_native.py",
         "tests/semantics/deprecated_api_models.py",
         "tests/semantics/callback_closure_invoke_cases.py",
-        "tests/semantics/callback_closure_invoke_review_cases.py"
+        "tests/semantics/callback_closure_invoke_review_cases.py",
+        "tests/semantics/deprecated_late_tick_values_review_scalar.php",
+        "tests/semantics/deprecated_late_tick_values_review_shared_array.php",
+        "tests/semantics/deprecated_late_tick_values_review_array_reference.php",
+        "tests/semantics/deprecated_late_tick_values_review_nested_self.php",
+        "tests/semantics/deprecated_late_tick_values_cow.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -38243,9 +38250,11 @@
         "coverage/semantics/tick-author.json",
         "coverage/semantics/tick-review.json",
         "coverage/semantics/callback-fcc-cache-review.json",
-        "coverage/semantics/callback-closure-invoke-review.json"
+        "coverage/semantics/callback-closure-invoke-review.json",
+        "coverage/semantics/builtin-deprecated-closure-trace-head-review.json",
+        "coverage/semantics/callback-late-tick-values-review.json"
       ],
-      "review": "Module393 derives certified compiler marker plans, lexical frequency leakage/restoration and exact callback source lines; request-global uint32 counting and live FCC registry dispatch preserve captured arguments, calling/Fiber restrictions, duplicate scan Errors, source strictness/traces, post-return destruction and cached receiver release after removed params. The ledgers separate original-source agreements, reached-state cuts and zero-credit failures/Unsupported controls. Wider opcode/class/linking placement, ignored callable headers/foreach targets, dynamic/anonymous construction and wider callback forms remain required; no tick or full-core closure. ATTR08 preserves distinct persistent FCC.object/FCC.closure owners, raw-object versus array tick identity, API This borrowing, inline argument\u2192object\u2192Closure retirement and readonly selected-scope cleanup witnesses. Quiet shutdown cache retention extends through FINAL; selected buffered post-output executor release preserves two equal FCC owner slots. Five earlier normal originals, two joined raw-invokable comparisons, 296 earlier reached/guard checks, focused executor reached checks and strict 433 retain recorded cuts; the Closure-object wrapper is extended by ATTR09 below, while wider late-free policy remains partial (callback-fcc-cache-review.json). ATTR09 stages cached tick Closure wrappers with 8192 before outer copies, required-reference warning 2/private cells, then 16384 before inner entry/weak reception. Persistent FCC ownership remains distinct from the inner Closure instance; raw/coerced sensitive traces and raw-argument-before-unused-value cleanup are validated. Five normal agreements (four new native originals + one retained original), four reached groups/302 checks (300 reached + 2 derived) and private 432 and joined strict 433 retain separate cuts; one retained-native warning/unregister source agrees on corrected cache owners. Other APIs and late free remain partial (callback-closure-invoke-review.json). ATTR10 gives the older source-wrapper inner-warning trace head the authenticated explicit call file/line; one native-first original, reached trace state and strict433 pass, while wider wrapper/reentry paths remain partial (builtin-deprecated-closure-trace-head-review.json)."
+      "review": "Module393 derives source-certified compiler marker plans, lexical frequency/counters and captured callback dispatch. Persistent FCC.object/FCC.closure owners, cached Closure __invoke deprecation/reference phases, raw/received snapshots and unused-result cleanup retain the linked reviews; ATTR10 gives source-wrapper inner-warning trace heads their authenticated explicit call file/line. Normal post-FINAL ordered raw-invokable entries now release finite copied value lists before their independent FCC slots. Scalars add no heap roots; arrays preserve repeated container owners, one nested child graph, embedded live reference cells and COW snapshots, including callback self children. Five exact original sources, seven reached groups/176 conditions (two derived guards) and private strict433 cover the new value forms; callback-late-tick-values-review.json records focused ownership checks and links earlier finite-list/object/self evidence without renewing it. Wider marker/class/linking placement, callback forms, assertion roots and abrupt/reentrant late release remain partial; no tick, lifecycle or full-core closure."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",

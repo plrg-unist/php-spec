@@ -4706,32 +4706,15 @@ The source `Closure->__invoke` inner-warning handler trace now inherits the real
 call file/line for both its head and wrapper frame. One native-first original,
 a reached trace state and strict433 pass; broader wrapper/reentry paths remain
 partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
-After output FINAL, one raw invokable tick callback with a copied object
-argument now releases the argument before its two equal FCC owners, then
-continues to the shutdown-list queue. Two native-first sources agree; three
-reached states check 88 conditions, including callback ownership 2→1→0, and
-joined strict433 passes. Other late-free routes remain partial. See the
-[late tick review](coverage/semantics/callback-late-tick-final-review.json).
-Two retained raw invokable tick entries now retire oldest first after output
-FINAL. Each copied argument retires before its callback's separate FCC object
-and closure slots. One native-first source agrees exactly; four reached states
-check 120 conditions, including each callback's 2→1→0 owners. The singleton
-regression and strict433 pass. See the [tick-pair review](coverage/semantics/callback-late-tick-pair-review.json).
-The same normal raw-invokable tick shape now supports any nonempty ordered
-list: each head retires while its tail stays rooted. A three-entry original
-agrees exactly, six reached states check 143 conditions, and a shared-callback
-alias control agrees. One/two-entry source regressions and joined strict433
-pass. See the [tick-list review](coverage/semantics/callback-late-tick-list-review.json).
-Each retained raw invokable tick entry can now copy zero or more object
-arguments distinct from its callback. Mixed zero/one and shared zero/two
-sources agree exactly, as does a duplicate-argument control. Six reached
-states check 122 conditions, including argument order and shared FCC owners;
-strict433 passes. See the [tick-argument review](coverage/semantics/callback-late-tick-arguments-review.json).
-A raw invokable callback can also be copied as one of its own tick arguments.
-Two native-first sources agree exactly; seven reached states check 120
-conditions, including its 3→2→1→0 owners and an unrelated argument's earlier
-destruction. Private and joined strict433 pass. See the
-[self-argument review](coverage/semantics/callback-late-tick-self-argument-review.json).
+After output FINAL, normal raw invokable tick entries retire in registration
+order. Each finite copied value list retires before the independent FCC object
+and closure owners. Scalars add no heap roots; arrays retain copied containers,
+nested object identities and shared reference cells. Five native-first sources
+agree exactly for mixed scalars, repeated/shared arrays, a live embedded alias,
+a nested callback self and COW; seven reached groups check 176 conditions,
+including two derived guards, and private strict433 passes. Other callback forms,
+assertion roots and abrupt/reentrant late release remain partial. See the
+[copied-value review](coverage/semantics/callback-late-tick-values-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
