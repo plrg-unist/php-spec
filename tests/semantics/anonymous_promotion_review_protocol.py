@@ -119,7 +119,7 @@ def promotion_checks(row, fixture, filename):
             'pclassdesc.PROPERTIES = [ppropertydesc_value]',
             'ppropertydesc_tail* = eps',
             'ppropertydesc_value.FINAL /\\ ppropertydesc_value.SETVISIBILITY = eps',
-            '$origin_node(S_pre.SOURCES,ppropertydesc_value.ORIGIN) = (NParam (SEQUENCE eps) (INTEGER 36) phpType18 phpType4_ref phpType4_var phpType10 phpType5 (SEQUENCE eps) metadata)',
+            '$origin_node(S_pre.SOURCES,PORIGIN 0 (pcpath_ctor ++ [PCFIELD 4,PCINDEX 0])) = (NParam (SEQUENCE eps) (INTEGER 36) phpType18 phpType4_ref phpType4_var phpType10 phpType5 (SEQUENCE eps) metadata)',
         ]
     else:
         out += [
