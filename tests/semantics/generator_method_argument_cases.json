@@ -28,5 +28,31 @@
     "native_stdout": "SEND|INIT|GOT|41|tail|THROW|CATCH|1|caught|RETURN|109|1|",
     "native_stderr": "",
     "expected_model": "normal"
+  },
+  {
+    "id": "i109-traversable-pack-visible-unsupported",
+    "purpose": "Boundary control only, zero semantic agreement: a native Generator Traversable argument pack must remain explicit Unsupported before either input/target body, rather than fake a PHP TypeError or a value.",
+    "source": "<?php\nfunction Source109U() { echo 'INPUT|'; yield 41; }\nfunction Target109U() { echo 'BODY|'; $value = yield 'head'; echo 'VALUE|', $value, '|'; yield 'tail'; }\n$generator = Target109U();\necho 'CALL|', $generator->send(...Source109U()), '|';\n",
+    "source_sha256": "2b711cfacfb1bb15fdd1cae5dab30a394e7e2e57aa06df9f85a8236802f25c56",
+    "native_exit": 0,
+    "native_stdout": "CALL|INPUT|BODY|VALUE|41|tail|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "CONFIG Traversable unpack outside initialized Iterator domain",
+    "unsupported_stdout": "CALL|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "65",
+            "76",
+            "76",
+            "124"
+          ]
+        ]
+      }
+    ]
   }
 ]
