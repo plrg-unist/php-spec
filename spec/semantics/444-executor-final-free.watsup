@@ -372,7 +372,7 @@ dec $ob_failure_message(pobcreation) : preqbytes
 dec $ob_failure_warning(pstate, pobcreation) : pstate
 dec $ob_failure_pending_notice(pstate, pobcreation) : pstate
 dec $ob_start_continuation(ptask) : ptask?
-dec $ob_start_discard_phase(pstate, ptask) : pobcreation?
+dec $ob_start_discard_phase(ptask) : pobcreation?
 dec $ob_start_discarded(pstate, nat) : pobcreation?
 dec $ob_start_discard_valid(pstate, pdestructionoperation) : bool
 dec $ob_creation_target(phandlerresolution) : pcalltarget?
@@ -1024,20 +1024,18 @@ def $ob_start_continuation(API_CALLBACK_SEND papiargcursor) = $ob_start_continua
 def $ob_start_continuation(API_CALLBACK_REF papiargcursor) = $ob_start_continuation(perrorcall.RESUME)
   -- if papiargcursor.CALL = API_ERROR perrorcall
 def $ob_start_continuation(ptask) = eps -- otherwise
-def $ob_start_discard_phase(S, ptask) = (pobcreation)
+def $ob_start_discard_phase(ptask) = (pobcreation)
   -- if $ob_start_continuation(ptask) = (OB_START_INVALID_NOTICE pobcreation)
-  -- if $ob_failure_task_valid(S, pobcreation)
-def $ob_start_discard_phase(S, ptask) = (pobcreation)
+def $ob_start_discard_phase(ptask) = (pobcreation)
   -- if $ob_start_continuation(ptask) = (OB_NOTICE_RESULT pobnotice)
   -- if pobnotice.CREATION = (pobcreation)
   -- if pobnotice.CALL.KIND = INTRINSIC_OB_START
-  -- if $ob_notice_valid(S, pobnotice)
-def $ob_start_discard_phase(S, ptask) = eps -- otherwise
+def $ob_start_discard_phase(ptask) = eps -- otherwise
 def $ob_start_discarded(S, n) = (pobcreation)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*
   -- if $throwable_live(S, n)
-  -- if $ob_start_discard_phase(S[.TODO = ptask :: ptask_tail*], ptask) = (pobcreation)
+  -- if $ob_start_discard_phase(ptask) = (pobcreation)
   -- if $call_task_valid(S[.TODO = ptask :: ptask_tail*], ptask)
   -- if $gc_temporary_node(KNOWN pobcreation.VALUE) =/= eps
 def $ob_start_discarded(S, n) = eps -- otherwise
