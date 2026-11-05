@@ -181,6 +181,7 @@ def $weakmap_entries_storage_valid(S, n_map, n_freeing*) = $weakmap_entries_stor
 dec $weakmap_entries_teardown_table(pstate, nat) : bool
 def $weakmap_entries_teardown_table(S, n_map) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, eps, $weakmap_entries_direct_values($weakmap_entries_contents(S, n_map))))
 dec $weakmap_entries_child_storage(pstate, nat) : bool
+dec $weakmap_entries_child_storage_policy(pstate, nat, nat?) : bool
 dec $weakmap_entries_table_valid(pstate, nat, nat*) : bool
 def $weakmap_entries_table_valid(S, n_map, n_freeing*) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_valid(S, n_map, n_freeing*))
 
@@ -293,8 +294,19 @@ def $weakmap_entries_callbacks(S, pweakmapentry :: pweakmapentry_tail*) = ($weak
 ;; Preserve the old methodless notification domain, including active cursors.
 ;; Callback tables use direct-payload authority and cannot invalidate a cursor.
 dec $weakmap_entries_notice_storage(pstate, nat, nat*, bool) : bool
-def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = $weakmap_entries_storage_valid(S, n_map, n_freeing*)
+def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = true
+  -- if $weakmap_entries_storage_valid(S, n_map, n_freeing*)
+def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = true
+  -- if ~$weakmap_entries_storage_valid(S, n_map, n_freeing*)
+  -- if n_freeing* = [n_key]
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if pinstancestorage.OBJECT = n_key
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps /\ pinstancestorage.NOTIFY = eps
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $weakmap_entries_child_storage_policy(S, n_map, (n_key))
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps
 def $weakmap_entries_notice_storage(S, n_map, n_freeing*, true) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, n_freeing*, true))
+def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = false -- otherwise
 def $instance_storage_basic(S, pinstancestorage) = true
   -- if n_map = pinstancestorage.OBJECT
   -- if (HOBJECT n_map) <- S.ALLOCATIONS
@@ -474,22 +486,24 @@ def $weakmap_entries_child_value_free(S, POBJECT n_value) = true
   -- if $weakmap_entries_declared_properties_free(S, n_value, pclassdesc.PROPERTIES, ppropertyslot*)
 def $weakmap_entries_child_value_free(S, pweakmapvalue) = false -- otherwise
 dec $weakmap_entries_child_entries_free(pstate, nat, pweakmapentry*) : bool
-def $weakmap_entries_child_entries_free(S, n_map, eps) = true
-def $weakmap_entries_child_entries_free(S, n_map, pweakmapentry :: pweakmapentry_tail*) = true
+dec $weakmap_entries_child_entries_policy(pstate, nat, nat?, pweakmapentry*) : bool
+def $weakmap_entries_child_entries_policy(S, n_map, n_freeing?, eps) = true
+def $weakmap_entries_child_entries_policy(S, n_map, n_freeing?, pweakmapentry :: pweakmapentry_tail*) = true
   -- if n_key = pweakmapentry.KEY
   -- if $weakmap_entries_find(pweakmapentry_tail*, n_key) = eps
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if S.OBJECTS[n_key] = STDINSTANCE
-  -- if ~$instance_storage_freeing(S, n_key)
+  -- if ~$instance_storage_freeing(S, n_key) \/ n_freeing? = (n_key)
   -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
   -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
   -- if $node_children(S, HOBJECT n_key) = eps
   -- if $weakmap_before_valid(S, pweakmapentry)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
   -- if $weakmap_entries_child_value_free(S, pweakmapentry.VALUE)
-  -- if $weakmap_entries_child_entries_free(S, n_map, pweakmapentry_tail*)
-def $weakmap_entries_child_entries_free(S, n_map, pweakmapentry*) = false -- otherwise
-def $weakmap_entries_child_storage(S, n_map) = true
+  -- if $weakmap_entries_child_entries_policy(S, n_map, n_freeing?, pweakmapentry_tail*)
+def $weakmap_entries_child_entries_policy(S, n_map, n_freeing?, pweakmapentry*) = false -- otherwise
+def $weakmap_entries_child_entries_free(S, n_map, pweakmapentry*) = $weakmap_entries_child_entries_policy(S, n_map, eps, pweakmapentry*)
+def $weakmap_entries_child_storage_policy(S, n_map, n_freeing?) = true
   -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
   -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
   -- if pweakmapentry* =/= eps
@@ -500,8 +514,9 @@ def $weakmap_entries_child_storage(S, n_map) = true
   -- if $object_table_at(S.OBJECTTABLES, n_map) = eps
   -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $heap_valid($heap_graph(S))
   -- if ~$weakmap_entries_callbacks(S, pweakmapentry*)
-  -- if $weakmap_entries_child_entries_free(S, n_map, pweakmapentry*)
-def $weakmap_entries_child_storage(S, n_map) = false -- otherwise
+  -- if $weakmap_entries_child_entries_policy(S, n_map, n_freeing?, pweakmapentry*)
+def $weakmap_entries_child_storage_policy(S, n_map, n_freeing?) = false -- otherwise
+def $weakmap_entries_child_storage(S, n_map) = $weakmap_entries_child_storage_policy(S, n_map, eps)
 dec $weakmap_entries_child_table_free(pstate, nat) : bool
 def $weakmap_entries_child_table_free(S, n_map) = ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_child_storage(S, n_map))
 def $weakmap_entries_free_allowed(S, n_map, pdestructionrelease) = true
