@@ -20,6 +20,22 @@ declare(ticks=1) { 1; }
 echo "Z";
 echo "W";
 ''', b'TZTWT'),
+    'property-group-header-lines-follow-type-or-first-name': (b'''<?php
+function t(){$trace=(new Exception)->getTrace();echo $trace[0]["line"];echo ";";}
+register_tick_function("t");
+interface TickHeaderI43 {}
+class TickTyped43 implements TickHeaderI43 {
+    public function unused(){declare(ticks=1);}
+    public
+    int
+    $value=7;
+}
+class TickUntyped43 implements TickHeaderI43 {
+    public
+    $value=8;
+}
+echo "Z";
+''', b'8;13;Z15;'),
 }
 
 CONTROLS = {
