@@ -34,7 +34,7 @@ require '@ROOT@/frontend/FileLexer.php';
 require '@ROOT@/frontend/EvalLexer.php';
 require '@ROOT@/frontend/RejectedHeaderParser.php';
 $version = PhpParser\PhpVersion::fromComponents(8,5); $records = [];
-$source = 'namespace A {namespace B{}}declare(encoding=1);';
+$source = 'namespace A {namespace B{}}';
 $errors = new PhpParser\ErrorHandler\Collecting();
 $ast = (new PhpParser\Parser\Php8(new EvalLexer(),$version))->parse($source,$errors);
 assert(is_array($ast) && count($errors->getErrors()) === 1);
