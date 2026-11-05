@@ -92,18 +92,6 @@ declare(ticks=1) {
     switch (print 'P') { case 1: echo 'A'; }
     echo 'Z';
 }
-
-EXPECTED = {
-    'review-literal-adjacency': b'ATZT',
-    'review-cv-adjacency': b'ATZT',
-    'review-tmp-free-line': b'AT8;T8;ZT10;',
-    'review-later-condition-declarables': b'AZT',
-    'review-unselected-body-declarables': b'ATZWYTX',
-    'review-empty-tmp-switch-line': b'T6;ZT7;',
-    'review-false-boolean-conditions': b'ATZT',
-    'review-effectful-constant-result': b'PATZT',
-    'review-empty-multiline-case-line': b'T6;ZT9;',
-}
 ''',
     'review-empty-multiline-case-line': b'''<?php
 function t() { $e = new Exception; echo 'T', $e->getTrace()[0]['line'], ';'; }
@@ -116,4 +104,16 @@ declare(ticks=1) {
     echo 'Z';
 }
 ''',
+}
+
+EXPECTED = {
+    'review-literal-adjacency': b'ATZT',
+    'review-cv-adjacency': b'ATZT',
+    'review-tmp-free-line': b'AT8;T8;ZT10;',
+    'review-later-condition-declarables': b'AZT',
+    'review-unselected-body-declarables': b'ATZWYTX',
+    'review-empty-tmp-switch-line': b'T6;ZT7;',
+    'review-false-boolean-conditions': b'ATZT',
+    'review-effectful-constant-result': b'PATZT',
+    'review-empty-multiline-case-line': b'T6;ZT9;',
 }
