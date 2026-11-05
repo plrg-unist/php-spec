@@ -9,17 +9,20 @@ execution creates the certified tasks; callers cannot supply a marker table.
 Named construction visits its class and source-ordered arguments, allowing
 argument Closures to contribute their own lexical plans.
 
-Comma-separated Echo operands compile and execute as Zend's individual Echo
-statements. Each nonfinal operand has a canonical marker at its checked operand
-occurrence; the final operand keeps the enclosing statement marker. Plans emit
-those markers between operand compilations, preserving each operand's line and
-lexical frequency. Runtime markers follow the completed emission before the next
-operand is evaluated, so callbacks can change later CV reads or abort later side
-effects. Empty, null and false operands still emit real operations and tick.
-Wrapped markers retain source authentication and duplicate refusal. Ordinary
-output-chunk callbacks preserve the exact suffix and its saved Tick. The source
-routes are `echo_expr_list`/`echo_expr` in `Zend/zend_language_parser.y` and
-`zend_compile_echo`/`zend_compile_stmt` in `Zend/zend_compile.c`.
+Comma-separated Echo, unset, global and static lists compile as Zend's individual
+statements. Each nonfinal item has a canonical marker at its checked occurrence;
+the final item keeps the enclosing statement marker. Plans interleave compilation
+and emission before visiting later items' declarables. Expression receipts supply
+operand lines; static markers use each `CODESTATIC` binding line. Runtime markers
+follow the completed operation before evaluating the next item, preserving late
+names, reads and initializers. An unset destructor finishes before its Tick; an
+abrupt callback leaves later owners untouched. Static bindings tick on cold and
+warm calls even when an initializer is cached. Empty Echo operands still emit
+real operations and tick. Wrapped markers retain source/line authentication and
+duplicate refusal; existing operation and output-callback suffixes remain intact.
+The source authority is the split lists in `Zend/zend_language_parser.y` and
+`zend_compile_echo`, `zend_compile_unset`, `zend_compile_global_var` and static
+binding emitters in `Zend/zend_compile.c`.
 
 Switch plans visit the subject, every case condition, then every body in compiler
 order. Case bodies share adjacency across selected and unselected branches;
@@ -145,6 +148,9 @@ assignment before callback throw.
 The [Echo tick review](../../coverage/semantics/tick-echo-review.json) records
 per-operand late reads, callback aborts, empty operands, marker lines/frequencies
 and the actual output-chunk suffix interaction.
+The [grouped-emitter review](../../coverage/semantics/tick-grouped-review.json)
+records late unset/global targets, cold/warm static bindings, later initializers
+and destructor completion before an intermediate callback abort.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

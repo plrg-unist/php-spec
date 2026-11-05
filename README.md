@@ -309,9 +309,11 @@ plans use published compiler redirects and retained effects to distinguish
 elided bodies from runtime-unselected bodies, preserving real BOOL operations
 and static-diagnostic omission. Coalescing plans preserve quiet reads and lazy
 fallback execution while compiling fallback bodies and memoizing assignment target
-children in Zend order. Grouped Echo operands run their own ticks before the
-next operand is evaluated, preserving late CV reads, callback aborts and each
-operand's compiler line/frequency through output callbacks. Captured string-carrier
+children in Zend order. Grouped Echo, unset, global and static operations run
+their own ticks before the next item is evaluated, preserving late names/reads,
+initializer order, callback aborts and compiler lines/frequencies. Static bindings
+retain their ticks on warm calls, and unset cleanup finishes before its callback.
+Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.
 

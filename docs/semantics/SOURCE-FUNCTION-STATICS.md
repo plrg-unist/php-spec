@@ -8,6 +8,12 @@ The compiler checks `$this` and duplicate names before the offending initializer
 
 An evaluated initializer runs in the current local environment before the new binding replaces an earlier local or parameter reference. `STATIC_BIND` checks the persistent entry again after evaluation. A recursive call may have initialized it first: that cell wins, and the later outer operand is released without an unnecessary deferred read. Failure before binding leaves the current entry absent while earlier successful declarations remain initialized. Catch/retry observations are retained as explicit dependencies until exception execution is supported.
 
+Under source ticks, grouped declarations retain a marker after each binding,
+including already initialized cells on later calls. Callbacks run before the next
+initializer is evaluated, and each marker uses its `CODESTATIC` bind line. The
+[grouped-emitter review](../../coverage/semantics/tick-grouped-review.json)
+records the actual delayed-initializer and persistent-cell checkpoints.
+
 Resume validation checks source-authenticated declaration names, mode and lines, current task ownership, distinct persistent declaration/cell identities and live defined reference cells. It permits arbitrary consistent cell values and local aliases. At the active binding prefix, a direct CV retains its source variable identity and other operands retain owning value/reference shape. Suspended frames do not borrow the active result for validation. No initialization history or artificial recursion lock is introduced.
 
 An independent paused typed-initializer check also exposed overlapping ordinary and named receive-readiness clauses. The named clause now explicitly requires a named source argument; ordinary, named and unpacked readiness paths are disjoint. Retained predecessor and repaired source/state evidence keep their separate identities.

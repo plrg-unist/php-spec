@@ -972,10 +972,11 @@ Tick plans follow Zend compiler order across Switch conditions/bodies, Match
 conditions/results, Yield key/value and YieldFrom operands. Compiled unselected
 callables contribute lexical declarables. Constant/CV versus temporary cleanup,
 assignment/discard lines and ordinary Generator suspension preserve canonical
-statement markers and the shared request counter. Grouped Echo operands now
-interleave canonical ticks with emission and later operand evaluation, preserving
-late reads, callback aborts, empty-operand operations and per-operand lines and
-frequencies through ordinary output-chunk callbacks.
+statement markers and the shared request counter. Grouped Echo, unset, global
+and static operations interleave canonical ticks with completed operations and
+later item evaluation, preserving late targets, reads, initializers and compiler
+lines/frequencies. Unset cleanup finishes before its Tick; abrupt callbacks leave
+later owners intact. Cached static bindings still tick on later calls.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -991,7 +992,8 @@ Exact source, strict and reached-state cuts remain in the
 [Match](coverage/semantics/tick-match-review.json),
 [conditional](coverage/semantics/tick-elision-review.json),
 [coalesce](coverage/semantics/tick-coalesce-review.json),
-[Echo](coverage/semantics/tick-echo-review.json) and
+[Echo](coverage/semantics/tick-echo-review.json),
+[grouped emitters](coverage/semantics/tick-grouped-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -1690,7 +1692,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | GC47 | Explicit WeakMap offsetUnset with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
-| ATTR35 | Grouped unset, global and static tick emission; private implementation/review. |
+| ATTR36 | Foreach target tick traversal and per-iteration effects; private implementation/review. |
 | Enum callable arrays | Closure cache ownership and bound-scope identity; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

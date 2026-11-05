@@ -9569,7 +9569,8 @@
         "spec/semantics/111-function-statics-compiler.watsup",
         "spec/semantics/112-function-statics.watsup",
         "spec/semantics/113-main-statics-compiler.watsup",
-        "spec/semantics/114-main-statics.watsup"
+        "spec/semantics/114-main-statics.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -9583,9 +9584,18 @@
         "tests/semantics/main_static_compiler.py",
         "tests/semantics/main_statics_protocol.py",
         "tests/semantics/main_statics_state.py",
-        "coverage/semantics/main-statics-review.json"
+        "coverage/semantics/main-statics-review.json",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
-      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Include/eval/repeated op-array activation, closure/method/trait/inherited static identity, objects/destructors and exceptions/retry remain required; no storage family closure."
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Include/eval/repeated op-array activation, closure/method/trait/inherited static identity, objects/destructors and exceptions/retry remain required; no storage family closure.",
+      "helper_tests": [
+        "tests/semantics/tick_grouped_review_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/tick-grouped-review.json"
+      ]
     },
     {
       "node": "Stmt_Block",
@@ -10582,7 +10592,10 @@
         "tests/semantics/buffered_output_warnings.py",
         "tests/semantics/tick_echo_sources.py",
         "tests/semantics/tick_echo_review_sources.py",
-        "tests/semantics/tick_echo_review_cases.py"
+        "tests/semantics/tick_echo_review_cases.py",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
       "review": "Independent phase0 review accepted commit 8b856a27; scalar bootstrap only, complete contextual behavior pending. Module353 authenticates first ordinary CV-base DIM lines and adds bounded writable array-property separation plus fixed-null literal-property warning resume. Seven source agreements retain separate private336 cuts; source-dimension-emission-review.json records the focused validation and remaining receiver/emission obligations. Module357 authenticates first INIT for ordinary CV-base DIM named noarg nonbuiltin key calls without fallback. Existing runtime preserves borrowed base/live lookup and fixed returned key; six exact originals and128 independent premises retain private341, with reviewed actual343 strict composition in source-call-key-emission-review.json. Wider calls/emissions remain required. Module361 adds direct named noarg nonbuiltin ECHO INIT certificates and owning Stringable TMPVAR/REFERENCE carriers. Output precedes temporary release; mutated referents preserve successful bytes through pending destructor exceptions. Ten exact originals retain private344 in source-direct-call-emission-review.json. Wider calls/output producers remain required. SOURCE365 extends361 to one ordinary positional CV argument under direct ECHO, with separate INIT/SEND/ECHO lines and temporary/reference cleanup. source-echo-cv-call-review.json retains nine exact originals and236 premises; wider argument/callee/output producers remain required. One named ordinary CV now shares361's INIT certificate and authenticated known8/deferred7 ECHO line. Existing temporary/reference and named default/warning/unknown-priority paths retain seven exact source observations; see source-echo-named-cv-call-review.json. Wider argument/callee/output producers remain required. Ordinary CV dynamic noarg ECHO now authenticates independent INIT/call/ECHO lines, captured-null warnings and existing returned owners; conditional cast publication has disjoint replay selection. See source-echo-dynamic-cv-call-review.json. One ordinary positional CV argument now retains INIT5/call7/SEND-ECHO9, selected-target warning cleanup and existing returned owners; see the same ledger argument_increment. One named ordinary CV argument through a dynamic callee now separates SEND/ECHO descriptors from documentary CV metadata, preserving slot2/default/unknown priority, captured-null warnings and existing output owners; see the same ledger named_argument_increment. Successful scalar EMIT consumes current-frame scratch BASE without touching saved owners. Source5/state570 retain phase37 in concat-emit-review.json; generic temporary Stringable direct echo remains open/zero agreement and earlier cuts/statuses remain unchanged. Phase38: direct named noarg NEW ECHO keeps original input through output; borrowed CV successful bytes precede pending destructor exception, with generic cast/concat timing preserved. Six source agreements and six whole groups/787 premises cover owners, carriers, budgets, source guards and previous links; older cuts stay frozen, wider inputs/consumers remain required. OP96: First direct plain-CV nonempty flat array in a multi-expression echo retains interned Array through a named Warning callback. False/default writes before later sibling evaluation and sees a separate CV mutation; a supplied throw still writes but skips every sibling. Two exact sources and 153+137 reached-state premises bind first-child/sibling origins, pooled 2\u21921 owners and pending Exception identity. See echo-array-warning-review.json; empty/nested arrays, other buffer changes and wider producers remain partial. OP97: A later direct flat-array CV at echo child1 is read after child0 completes. The first array handler may change child1 from scalar to a fresh array, causing an independent second Warning; normal/default writes both Arrays before later(), while a first or second supplied throw writes its current Array and skips remaining children. Three exact source comparisons (first throw is an OP96 control) and 167+151 reached-state premises bind child indices, two diagnostic sites, pooled 2\u21921 and runtime 1\u21920 owners. See echo-two-array-warning-review.json; broader operand shapes and output lifetimes remain partial. OP103: First-child array echo shares saved OUTPUTSEQ default-buffer admission. Cached Array appends after the handler marker and before later sibling evaluation, or before same-Exception catch with siblings skipped. Five shared print/echo sources and 591 reached premises pass; other buffer shapes remain partial. See buffered-output-warning-review.json.",
       "evidence": [
@@ -10597,7 +10610,8 @@
         "coverage/semantics/echo-array-warning-review.json",
         "coverage/semantics/echo-two-array-warning-review.json",
         "coverage/semantics/buffered-output-warning-review.json",
-        "coverage/semantics/tick-echo-review.json"
+        "coverage/semantics/tick-echo-review.json",
+        "coverage/semantics/tick-grouped-review.json"
       ],
       "helper_tests": [
         "tests/semantics/concat_property_emit_protocol.py",
@@ -10605,7 +10619,8 @@
         "tests/semantics/echo_array_warning_protocol.py",
         "tests/semantics/echo_two_array_warning_protocol.py",
         "tests/semantics/buffered_output_warning_protocol.py",
-        "tests/semantics/tick_echo_review_protocol.py"
+        "tests/semantics/tick_echo_review_protocol.py",
+        "tests/semantics/tick_grouped_review_protocol.py"
       ]
     },
     {
@@ -10911,7 +10926,8 @@
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/81-global-frames.watsup",
-        "spec/semantics/86-reference-arguments.watsup"
+        "spec/semantics/86-reference-arguments.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_calls.py",
@@ -10919,9 +10935,18 @@
         "tests/semantics/function_call_protocol.py",
         "tests/semantics/function_references.py",
         "tests/semantics/function_reference_state.py",
-        "tests/semantics/function_reference_protocol.py"
+        "tests/semantics/function_reference_protocol.py",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open.",
+      "helper_tests": [
+        "tests/semantics/tick_grouped_review_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/tick-grouped-review.json"
+      ]
     },
     {
       "node": "Stmt_Goto",
@@ -11619,7 +11644,8 @@
         "spec/semantics/111-function-statics-compiler.watsup",
         "spec/semantics/112-function-statics.watsup",
         "spec/semantics/113-main-statics-compiler.watsup",
-        "spec/semantics/114-main-statics.watsup"
+        "spec/semantics/114-main-statics.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -11633,9 +11659,18 @@
         "tests/semantics/main_static_compiler.py",
         "tests/semantics/main_statics_protocol.py",
         "tests/semantics/main_statics_state.py",
-        "coverage/semantics/main-statics-review.json"
+        "coverage/semantics/main-statics-review.json",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
-      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Include/eval/repeated op-array activation, closure/method/trait/inherited static identity, objects/destructors and exceptions/retry remain required; no storage family closure."
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Include/eval/repeated op-array activation, closure/method/trait/inherited static identity, objects/destructors and exceptions/retry remain required; no storage family closure.",
+      "helper_tests": [
+        "tests/semantics/tick_grouped_review_protocol.py"
+      ],
+      "evidence": [
+        "coverage/semantics/tick-grouped-review.json"
+      ]
     },
     {
       "node": "Stmt_Switch",
@@ -12275,7 +12310,8 @@
         "spec/semantics/43-array-unset-control.watsup",
         "spec/semantics/406-magic-property-unset.watsup",
         "spec/semantics/150-clone-runtime.watsup",
-        "spec/semantics/233-dimension-key-continuations.watsup"
+        "spec/semantics/233-dimension-key-continuations.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -12315,7 +12351,10 @@
         "tests/semantics/tick_coalesce_reader_sources.py",
         "tests/semantics/tick_coalesce_reader.php",
         "tests/semantics/tick_key_carrier_review_sources.py",
-        "tests/semantics/tick_key_carrier_review_cases.py"
+        "tests/semantics/tick_key_carrier_review_cases.py",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
       "review": "Scalar/array storage and reviewed string write/unset contexts preserve source ordering, aliases and captured locations. Temporary-expression lvalues reject during compilation; broader quiet/property/frame/type contexts remain pending. See traversal-temporary-review.json and dimension-write-review.json. Explicit-request GLOBALS binding/restriction paths are additionally reviewed at652d10b7/request-environment-review.json; frame/object families remain open. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get, nested compound append and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Direct literal public CV/This hooked unset raises Error without getter dispatch or slot mutation, including inside the active getter. Source2/strict375 at 7c7a322a and SL182 (178 reached,4 derived) at 3aa7cd48 check real error/catch states, receiver storage transfer and B-before-D/weak-null. hooked-unset-review.json separates magic-bearing native observations/declaration-stop0 and preserves false182/diagnostics0; __unset consumers, indirect and wider hook families remain required. Validation-only M42 at b559/385 follows a protected ordinary local unset/control: source2, independent pre-unset/ping public107/2 and late same-carrier/caller-alias176 remain separate. The selected temporary stays owned; physical collection and released borrowed Stringable conversion remain open. See reference-return-local-cv-lifetime-review.json. M43: untyped finally cancellation/control source2 and late230 preserve distinct delivered cells; scoped84/270 registered EXIT integrity passes active68/parked23 plus two EXIT-only refusals. Old-cell modeled allocation/root retirement is not physical Zend collection; broad returns OPEN. M44 validation-only at cb498/385: protected return carrier through local unset and genuine Fiber suspension/resume, early58/two refusals and separate late230 worker delivery/r-a/write/budget. No cross-fixture identity, physical collection or broad completion claim. M45 validation-only at cbc57/386: suspended untyped finally cancellation, early92/two phase/EXIT refusals and separate late214 delivered override/worker aliases/write/budget. No cross-fixture identity, physical collection or broad completion claim. M46 validation-only at27a92/386: orphaned suspended carrier early/delayed drop source2, early98/two public phase/close-VM EXIT refusals and separate late270 retirement/canceled worker R/caller-cut budget pass. No runtime, physical collection or cross-fixture identity claim; wider returns remain OPEN. M47 validation-only at0df/387: orphaned suspended carrier destructor Exception source2, early102/one saved-f operation EXIT refusal and separate late260 same-error/null Previous/pure trace/caller-budget pass. Failed Fiber close cancels worker R; final error retirement is separate. No runtime change, native trace/identity, physical collection or general returns closure. M48 at059b/387: selected-return effective GC roots and bounded USER=false request-store Fiber close; source2, independent122/two public refusals and separate late262 pass. Broader layouts/physical collection/returns remain OPEN; see local-CV ledger pending_carrier_cycle. M49 bounded cycle-destructor error: source2/early139 at0ec and late262/paused123 atd16a retain an explicit admission-only bridge, exact fatal/null observations and split/full budget. Private control gains storage-only retirement; broader returns remain OPEN. Selected inherited __unset(string):void now handles direct CV/literal declared-private unset with ordinary initialized-public bypass; source1 and state212 (165 reached,47 derived) cover callback scope and saved receiver cleanup. Wider magic isset/unset remains partial. CLASS112: declared-public-int UNSET/INITIAL/VALUE phases, guarded recursion/reset and compiled-local Probe cleanup pass source4 and focused579. Wider public magic unset remains partial. CLASS118 admits ordinary public nonempty declared/dynamic cached unary CV clones through existing public zero-argument void __clone. Four source agreements at a83c34a75 and 756 focused checks (748 reached + 8 derived) at d1cf12ded cover real callback foreach/membership, singleton-versus-held dynamic aliases, borrowed source retirement, active last-Payload deletion and failed-copy cleanup before the same catch/destination 42. No 300/261/138 or GC rule changes; readonly, zero-declared, copied-declared DIRECT images and wider histories remain partial; mixed-cached-clone-callback-review.json. Existing dynamic unset consumer only; no deletion rule change.",
       "helper_tests": [
@@ -12331,7 +12370,8 @@
         "tests/semantics/magic_unset_protocol.py",
         "tests/semantics/public_unset_protocol.py",
         "tests/semantics/mixed_cached_clone_callback_protocol.py",
-        "tests/semantics/tick_key_carrier_review_protocol.py"
+        "tests/semantics/tick_key_carrier_review_protocol.py",
+        "tests/semantics/tick_grouped_review_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/dimension-edit-review.json",
@@ -12347,7 +12387,8 @@
         "coverage/semantics/public-unset-review.json",
         "docs/semantics/SOURCE-CLONE.md",
         "coverage/semantics/mixed-cached-clone-callback-review.json",
-        "coverage/semantics/tick-key-carrier-review.json"
+        "coverage/semantics/tick-key-carrier-review.json",
+        "coverage/semantics/tick-grouped-review.json"
       ]
     },
     {
@@ -16789,7 +16830,10 @@
         "spec/semantics/226-global-warning-reads.watsup",
         "spec/semantics/233-dimension-key-continuations.watsup",
         "spec/semantics/242-dimension-write-continuations.watsup",
-        "spec/semantics/269-global-read-write-continuations.watsup"
+        "spec/semantics/269-global-read-write-continuations.watsup",
+        "spec/semantics/31-source-origins.watsup",
+        "spec/semantics/112-function-statics.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/globals_warning_protocol.py",
@@ -16799,7 +16843,8 @@
         "tests/semantics/dimension_write_protocol.py",
         "tests/semantics/dimension_write_prepare.py",
         "tests/semantics/globals_write_protocol.py",
-        "tests/semantics/globals_write_prepare.py"
+        "tests/semantics/globals_write_prepare.py",
+        "tests/semantics/tick_grouped_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/request_environment.py",
@@ -16820,7 +16865,10 @@
         "tests/semantics/dimension_write_cases.py",
         "tests/semantics/dimension_write_current.php",
         "tests/semantics/globals_write_cases.py",
-        "tests/semantics/globals_write_current.php"
+        "tests/semantics/globals_write_current.php",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute.c",
@@ -16833,9 +16881,10 @@
         "coverage/semantics/dimension-key-review.json",
         "docs/semantics/SOURCE-DIMENSION-KEYS.md",
         "coverage/semantics/globals-write-review.json",
-        "docs/semantics/SOURCE-GLOBAL-WRITES.md"
+        "docs/semantics/SOURCE-GLOBAL-WRITES.md",
+        "coverage/semantics/tick-grouped-review.json"
       ],
-      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Defined ordinary direct GLOBALS keys now use the genuine global table without request-mode facts, preserving callback local/global isolation and reference rebinding. warning-reads-review.json keeps private/current evidence separate; earlier key-expression warning and broader global consumers remain bounded. Module226 captures the missing direct global R-fetch name/null before callbacks; throws skip later ASSIGN/SEND and preserve the typed destination/original exception. Genuine76 request snapshots retain numeric keys, singleton unwrap, shared references, COW and pool owners. Author8/207 and independent8/221 preserve their private cutoffs; two derived currented6 sources atbb90 retain private/called-class/eager208 and cold typed219 alias/chain interactions. Original count Unsupported, fixture failures and combined CLI60 timeout remain preserved with no agreement credit. Wider key/object/container producers, ordinary snapshots without request facts and broader reference-result consumers remain required. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Append/unset/coalesce-assignment, broader GLOBALS RW and wider producers remain required. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required."
+      "review": "Historical prerequisite review: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Historical first-call source activation: Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Defined ordinary direct GLOBALS keys now use the genuine global table without request-mode facts, preserving callback local/global isolation and reference rebinding. warning-reads-review.json keeps private/current evidence separate; earlier key-expression warning and broader global consumers remain bounded. Module226 captures the missing direct global R-fetch name/null before callbacks; throws skip later ASSIGN/SEND and preserve the typed destination/original exception. Genuine76 request snapshots retain numeric keys, singleton unwrap, shared references, COW and pool owners. Author8/207 and independent8/221 preserve their private cutoffs; two derived currented6 sources atbb90 retain private/called-class/eager208 and cold typed219 alias/chain interactions. Original count Unsupported, fixture failures and combined CLI60 timeout remain preserved with no agreement credit. Wider key/object/container producers, ordinary snapshots without request facts and broader reference-result consumers remain required. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Append/unset/coalesce-assignment, broader GLOBALS RW and wider producers remain required. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required. ATTR35 shares canonical intermediate Tick emission across grouped Echo/unset/global/static items. Operation scopes finish before callbacks; later targets/names/initializers remain delayed, and cached static bindings retain their markers. Item expression receipts and CODESTATIC bind lines authenticate child sites while final items keep the parent statement marker. Exact source and committed-binding/owner checkpoints are in tick-grouped-review.json. Existing wider source/lifetime bounds remain partial."
     },
     {
       "id": "storage.superglobals",
@@ -17512,7 +17561,10 @@
         "spec/semantics/388-source-statics.watsup",
         "spec/semantics/148-core-intrinsics.watsup",
         "spec/semantics/270-eager-destructors.watsup",
-        "spec/semantics/207-error-handler-runtime.watsup"
+        "spec/semantics/207-error-handler-runtime.watsup",
+        "spec/semantics/31-source-origins.watsup",
+        "spec/semantics/81-global-frames.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/function_statics_protocol.py",
@@ -17522,7 +17574,8 @@
         "tests/semantics/source_static_throw_protocol.py",
         "tests/semantics/source_static_exit_protocol.py",
         "tests/semantics/source_static_exit_status_protocol.py",
-        "tests/semantics/source_static_fatal_protocol.py"
+        "tests/semantics/source_static_fatal_protocol.py",
+        "tests/semantics/tick_grouped_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -17542,14 +17595,18 @@
         "coverage/semantics/source-static-throw-review.json",
         "coverage/semantics/source-static-exit-review.json",
         "coverage/semantics/source-static-exit-status-review.json",
-        "coverage/semantics/source-static-fatal-review.json"
+        "coverage/semantics/source-static-fatal-review.json",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
-        "coverage/semantics/function-statics-review.json"
+        "coverage/semantics/function-statics-review.json",
+        "coverage/semantics/tick-grouped-review.json"
       ],
-      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Parser-backed top-level statics388 now authenticate source ownership and release normal/explicit-return slots in compiler declaration order, preserving callable slots and copied return roots. Four checked originals and genuine public frontiers are separate retained cuts in source-static-retirement-review.json. Module116 now keeps authentic top-level eval/file slots outside a real Closure caller's table. Fresh source units, within-unit cache, escaped references, nested source cells and unchanged caller metadata have separate source/state cuts in source-static-identity-review.json. Body throws now release source slots before caller unwind; normal-end destructor throws release remaining slots while pending Throwable identity, Previous chains and escaped roots survive. source-static-throw-review.json records the separate source and production-unwind checks. Graceful exit now keeps an authenticated source-end barrier through real callee restoration and compiler-order table release. Nested source order, destructor parser reentry, saved ownership and escaped roots are checked separately in source-static-exit-review.json. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Wider fatal/compiler producers and static identity/lifecycle remain required. No storage family closure.",
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Parser-backed top-level statics388 now authenticate source ownership and release normal/explicit-return slots in compiler declaration order, preserving callable slots and copied return roots. Four checked originals and genuine public frontiers are separate retained cuts in source-static-retirement-review.json. Module116 now keeps authentic top-level eval/file slots outside a real Closure caller's table. Fresh source units, within-unit cache, escaped references, nested source cells and unchanged caller metadata have separate source/state cuts in source-static-identity-review.json. Body throws now release source slots before caller unwind; normal-end destructor throws release remaining slots while pending Throwable identity, Previous chains and escaped roots survive. source-static-throw-review.json records the separate source and production-unwind checks. Graceful exit now keeps an authenticated source-end barrier through real callee restoration and compiler-order table release. Nested source order, destructor parser reentry, saved ownership and escaped roots are checked separately in source-static-exit-review.json. Source-owned throwing exit destructors now retain user catch/remaining-slot execution and Previous identity. Request signed32 EXITSTATUS survives caught replacement; integer/default calls overwrite it, strings preserve it, and nested resets remain independent of saved EXIT control. source-static-exit-status-review.json separates owner and status source/public cuts. Parser-backed USERFATAL now captures the actual source origin and retires execution contexts through an authenticated fatal snapshot, even without transient frame roots. Static cells retain their existing bailout roots; shutdown source reentry and new-object destruction reuse the established retention/destructor policy. source-static-fatal-review.json records exact source and public-origin/END checks. Wider fatal/compiler producers and static identity/lifecycle remain required. No storage family closure. ATTR35 shares canonical intermediate Tick emission across grouped Echo/unset/global/static items. Operation scopes finish before callbacks; later targets/names/initializers remain delayed, and cached static bindings retain their markers. Item expression receipts and CODESTATIC bind lines authenticate child sites while final items keep the parent statement marker. Exact source and committed-binding/owner checkpoints are in tick-grouped-review.json. Existing wider source/lifetime bounds remain partial.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]
@@ -18760,7 +18817,11 @@
         "spec/semantics/284-arrayaccess-dimensions.watsup",
         "spec/semantics/292-arrayaccess-write-dimensions.watsup",
         "spec/semantics/136-property-runtime.watsup",
-        "spec/semantics/406-magic-property-unset.watsup"
+        "spec/semantics/406-magic-property-unset.watsup",
+        "spec/semantics/31-source-origins.watsup",
+        "spec/semantics/81-global-frames.watsup",
+        "spec/semantics/112-function-statics.watsup",
+        "spec/semantics/393-ticks.watsup"
       ],
       "helper_tests": [
         "tests/semantics/dimension_edit_protocol.py",
@@ -18772,7 +18833,8 @@
         "tests/semantics/arrayaccess_write_protocol.py",
         "tests/semantics/arrayaccess_write_prepare.py",
         "tests/semantics/hooked_unset_protocol.py",
-        "tests/semantics/magic_unset_protocol.py"
+        "tests/semantics/magic_unset_protocol.py",
+        "tests/semantics/tick_grouped_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -18789,7 +18851,10 @@
         "tests/semantics/hooked-unset-scalar.php",
         "tests/semantics/hooked-unset-lifetime.php",
         "tests/semantics/hooked_unset_cases.json",
-        "tests/semantics/magic_unset_cases.json"
+        "tests/semantics/magic_unset_cases.json",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
@@ -18802,9 +18867,10 @@
         "coverage/semantics/arrayaccess-write-review.json",
         "coverage/semantics/hooked-unset-review.json",
         "docs/semantics/SOURCE-PROPERTIES.md",
-        "coverage/semantics/magic-unset-review.json"
+        "coverage/semantics/magic-unset-review.json",
+        "coverage/semantics/tick-grouped-review.json"
       ],
-      "review": "Independent reviewer: bounded array unset 83c228cc; 363 source comparisons and 23 negatives passed stable fingerprint, plus 19 extra reviewer probes. Embedded references and intermediate string protocols remain pending. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get, nested compound append and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Direct literal public CV/This hooked unset raises Error without getter dispatch or slot mutation, including inside the active getter. Source2/strict375 at 7c7a322a and SL182 (178 reached,4 derived) at 3aa7cd48 check real error/catch states, receiver storage transfer and B-before-D/weak-null. hooked-unset-review.json separates magic-bearing native observations/declaration-stop0 and preserves false182/diagnostics0; __unset consumers, indirect and wider hook families remain required. Selected inherited __unset(string):void now handles direct CV/literal declared-private unset with ordinary initialized-public bypass; source1 and state212 (165 reached,47 derived) cover callback scope and saved receiver cleanup. Wider magic isset/unset remains partial.",
+      "review": "Independent reviewer: bounded array unset 83c228cc; 363 source comparisons and 23 negatives passed stable fingerprint, plus 19 extra reviewer probes. Embedded references and intermediate string protocols remain pending. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get, nested compound append and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Direct literal public CV/This hooked unset raises Error without getter dispatch or slot mutation, including inside the active getter. Source2/strict375 at 7c7a322a and SL182 (178 reached,4 derived) at 3aa7cd48 check real error/catch states, receiver storage transfer and B-before-D/weak-null. hooked-unset-review.json separates magic-bearing native observations/declaration-stop0 and preserves false182/diagnostics0; __unset consumers, indirect and wider hook families remain required. Selected inherited __unset(string):void now handles direct CV/literal declared-private unset with ordinary initialized-public bypass; source1 and state212 (165 reached,47 derived) cover callback scope and saved receiver cleanup. Wider magic isset/unset remains partial. ATTR35 shares canonical intermediate Tick emission across grouped Echo/unset/global/static items. Operation scopes finish before callbacks; later targets/names/initializers remain delayed, and cached static bindings retain their markers. Item expression receipts and CODESTATIC bind lines authenticate child sites while final items keep the parent statement marker. Exact source and committed-binding/owner checkpoints are in tick-grouped-review.json. Existing wider source/lifetime bounds remain partial.",
       "planned_source_tests": [
         "tests/semantics/conformance/append-history.php"
       ]
@@ -40314,7 +40380,9 @@
         "spec/semantics/349-generator-request-fresh.watsup",
         "spec/semantics/84-call-integrity.watsup",
         "spec/semantics/31-source-origins.watsup",
-        "spec/semantics/233-dimension-key-continuations.watsup"
+        "spec/semantics/233-dimension-key-continuations.watsup",
+        "spec/semantics/81-global-frames.watsup",
+        "spec/semantics/112-function-statics.watsup"
       ],
       "helper_tests": [
         "tests/semantics/tick_state.py",
@@ -40340,7 +40408,8 @@
         "tests/semantics/tick_elision_review_protocol.py",
         "tests/semantics/tick_coalesce_review_protocol.py",
         "tests/semantics/tick_echo_review_protocol.py",
-        "tests/semantics/tick_key_carrier_review_protocol.py"
+        "tests/semantics/tick_key_carrier_review_protocol.py",
+        "tests/semantics/tick_grouped_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/tick_sources.py",
@@ -40430,7 +40499,10 @@
         "tests/semantics/tick_coalesce_reader_sources.py",
         "tests/semantics/tick_coalesce_reader.php",
         "tests/semantics/tick_key_carrier_review_sources.py",
-        "tests/semantics/tick_key_carrier_review_cases.py"
+        "tests/semantics/tick_key_carrier_review_cases.py",
+        "tests/semantics/tick_grouped_sources.py",
+        "tests/semantics/tick_grouped_review_sources.py",
+        "tests/semantics/tick_grouped_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -40465,9 +40537,10 @@
         "coverage/semantics/tick-elision-review.json",
         "coverage/semantics/tick-coalesce-review.json",
         "coverage/semantics/tick-echo-review.json",
-        "coverage/semantics/tick-key-carrier-review.json"
+        "coverage/semantics/tick-key-carrier-review.json",
+        "coverage/semantics/tick-grouped-review.json"
       ],
-      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial. ATTR31 derives conditional tick plans from published compiled operands, redirects and retained effects. It distinguishes compiler-elided bodies from runtime-unselected callable compilation, keeps boolean conversion operations and selected Switch result kinds, and visits effect roots once. Nine exact normal originals, two explicit compiler-special builtin/fallback refusals and strict437 pass; three reached fronts/130 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts and fixture failures in tick-elision-review.json. Wider child-order, result and lifecycle contexts remain partial. ATTR32 compiles coalesce operands and assignment target children before RHS once, reusing actual compiler redirects/effects for prior prepass elision and memoized write refetch. Quiet reads, runtime lazy RHS and enclosing markers use the existing runtime. Validated callable-key assignments have no registered error handler; the handler-bearing quiet-reader path remains an open composition/performance obligation, with timeouts establishing neither completion nor Unsupported. Seven exact normal originals, strict437 and three actual-continuation fronts/144 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts in tick-coalesce-review.json. Multi-operand echo still has a known between-operand tick gap; wider result/access/lifecycle contexts remain partial. ATTR33 interleaves canonical markers with grouped Echo operand compilation and actual emission. Intermediate wrapped Tick tasks run before evaluating later operands, preserving late CV reads, callback aborts, compiler lines/frequencies and empty-operand operations. The final operand keeps its enclosing statement marker. Canonical source/line checks and wrapped-marker uniqueness reject derived corruption; the ordinary positive-chunk output suffix is exercised directly. Six exact normal originals, strict437 and three reached fronts/138 reported conditions (including bindings and four derived refusals) retain their cuts in tick-echo-review.json. Existing conversion/callable/lifecycle bounds and the separate registered-handler coalesce-reader obligation remain partial. ATTR34 projects string-carrier bytes through the existing key selector, preserving saved identity and numeric/padded string rules. This fixes the registered-handler callable-key coalesce write's proven KEY_WRITE_DIM fixed point; its original now completes at the default60s limit. Three exact originals, strict438 and three progress/identity fronts/140 reported conditions including bindings pass; no derived negatives or schema/owner changes. The original timeout/diagnostic cuts stay zero credit in tick-key-carrier-review.json. Broader producer, conversion and lifetime contexts remain partial."
+      "review": "Module393 derives source-certified compiler marker plans, lexical frequencies/counters and captured dispatch. Linked FCC, Closure reception/warning and trace reviews retain their cuts. Post-FINAL entries retire copied values before independent caches in order, using saved phases/full status for stable exits. Builtin literal Throwable bailout preserves abandoned protections, unfinished jobs/tail and actual fatal status; later queue/inactive free stays separate. Normal named NULL/scalar-return handlers retain Arg2 through Throwable cleanup/registry restore before ordinary continuation. Ignored destructor-body values retire before the inner C decrement; literal-Exception bailout preserves authenticated pending C wrappers and unfinished jobs, counting shared operation/frame/pending owners once. Earlier body-return/body-value bailout reviews retain their exact cuts and partial-context bounds. A different integer exit during ignored body-value cleanup now preserves actual9/515/519 separately from saved main phase263. Only genuine NORMAL/BUDGET canonical unwind in the current singleton null-C Tick-source frame permits status-only source/context lookup; frame validation preserves that witness before caller-scope drop. Ordinary readiness/validity, actual status, saved phases and148 delivery are unchanged. Five new originals and two affected26 controls agree with strict435; five independent groups/775 conditions (765 genuine +10 derived) pass. Original Unsupported and owner-loss diagnostic keep0. Earlier body-value exit/handler reviews retain their cuts. Multiple/USER/non-Tick frames, handlers, unshared owning channels and reentry remain partial. See callback-late-tick-body-reexit-review.json. ATTR28 derives switch tick plans in subject/all-conditions/all-bodies compiler order, preserving final CONST/CV versus temporary-release adjacency, lexical declarables and ordinary fallthrough/jumps. Existing constant receipts and resolved CODENAME facts guard result kinds; potentially compiler-special builtin subtrees and empty multiline case lines remain explicit Unsupported. Source/reached cuts are recorded in tick-switch-review.json; core stays partial. ATTR29 derives Yield key-before-value and YieldFrom operand tick summaries, including nested callable declarables. Admitted bare/direct-assignment SEND and flat-array delegation retain ordinary continuation prefixes, delayed markers and one request counter. Six exact originals and strict435 pass; parked-continuation cuts are recorded in tick-generator-review.json. Existing result-target/delegation/lifecycle boundaries remain partial; no Generator transport or shared state change. ATTR30 derives Match subject/all-conditions/all-results tick traversal, preserving unselected callable declarables and result/jump adjacency. Nonempty Match is a temporary; empty Match keeps its CONST-null compiler result before UnhandledMatchError. Target versus discarded-result marker lines, committed assignment before callback throw and a completed Match value across Generator suspension have eight exact originals and strict436. Canonical source-plan and reached cuts are in tick-match-review.json; compiler-special descendants and wider child/result/control contexts remain partial. ATTR31 derives conditional tick plans from published compiled operands, redirects and retained effects. It distinguishes compiler-elided bodies from runtime-unselected callable compilation, keeps boolean conversion operations and selected Switch result kinds, and visits effect roots once. Nine exact normal originals, two explicit compiler-special builtin/fallback refusals and strict437 pass; three reached fronts/130 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts and fixture failures in tick-elision-review.json. Wider child-order, result and lifecycle contexts remain partial. ATTR32 compiles coalesce operands and assignment target children before RHS once, reusing actual compiler redirects/effects for prior prepass elision and memoized write refetch. Quiet reads, runtime lazy RHS and enclosing markers use the existing runtime. Validated callable-key assignments have no registered error handler; the handler-bearing quiet-reader path remains an open composition/performance obligation, with timeouts establishing neither completion nor Unsupported. Seven exact normal originals, strict437 and three actual-continuation fronts/144 reported conditions (including bindings and one malformed-marker guard) retain scoped cuts in tick-coalesce-review.json. Multi-operand echo still has a known between-operand tick gap; wider result/access/lifecycle contexts remain partial. ATTR33 interleaves canonical markers with grouped Echo operand compilation and actual emission. Intermediate wrapped Tick tasks run before evaluating later operands, preserving late CV reads, callback aborts, compiler lines/frequencies and empty-operand operations. The final operand keeps its enclosing statement marker. Canonical source/line checks and wrapped-marker uniqueness reject derived corruption; the ordinary positive-chunk output suffix is exercised directly. Six exact normal originals, strict437 and three reached fronts/138 reported conditions (including bindings and four derived refusals) retain their cuts in tick-echo-review.json. Existing conversion/callable/lifecycle bounds and the separate registered-handler coalesce-reader obligation remain partial. ATTR34 projects string-carrier bytes through the existing key selector, preserving saved identity and numeric/padded string rules. This fixes the registered-handler callable-key coalesce write's proven KEY_WRITE_DIM fixed point; its original now completes at the default60s limit. Three exact originals, strict438 and three progress/identity fronts/140 reported conditions including bindings pass; no derived negatives or schema/owner changes. The original timeout/diagnostic cuts stay zero credit in tick-key-carrier-review.json. Broader producer, conversion and lifetime contexts remain partial. ATTR35 shares canonical intermediate Tick emission across grouped Echo/unset/global/static items. Operation scopes finish before callbacks; later targets/names/initializers remain delayed, and cached static bindings retain their markers. Item expression receipts and CODESTATIC bind lines authenticate child sites while final items keep the parent statement marker. Exact source and committed-binding/owner checkpoints are in tick-grouped-review.json. Existing wider source/lifetime bounds remain partial."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",

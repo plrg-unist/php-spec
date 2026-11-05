@@ -1,0 +1,76 @@
+{
+  "milestone": "ATTR35: ticks between grouped removal and binding operations",
+  "status": "Independently accepted bounded implementation; wider source/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "3443ee8df",
+    "modules": {
+      "spec/semantics/31-source-origins.watsup": "5d994e6adab9908ba3aec34f515028c84d6887a1864e6cccf663b18320e745af",
+      "spec/semantics/40-control.watsup": "ddbc4f344856cabff20e0c5e2eda5b0bbb3e509b0593cd25cf7c2faf11323910",
+      "spec/semantics/81-global-frames.watsup": "c7b3e863513246c40479c8affc2e063f663967fd25153105e490eefc0eefa1fc",
+      "spec/semantics/112-function-statics.watsup": "734c7a4a5aec5c4ae40d013032862d30168021f9b4e30e9db848008144b48739",
+      "spec/semantics/393-ticks.watsup": "5d1ca12cd2d7b5033107e873331e68c748ee9b7112be9df4e912f4159c9b9d37"
+    },
+    "scope": "One source-ordered grouped fold emits canonical child markers between completed Echo, unset, global and static items. The final item retains its parent statement marker. Runtime builders append the shared AT/TICK wrapper after the original operation, preserving source restoration and later-item evaluation. Static marker lines come from CODESTATIC bind receipts. No state/task/schema or ownership protocol changes.",
+    "compatibility": "The former Echo-only fold and hook become the shared grouped helpers with the same Echo item paths, final marker and runtime suffix. No new output or Generator continuation behavior is introduced. Independent output/Generator review found no concrete changed seam requiring a replay."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "parser": "vendor/php-src/Zend/zend_language_parser.y: unset_variables, global_var_list and static_var_list build individual statements, as echo_expr_list already does.",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_stmt, zend_compile_unset, zend_compile_global_var and static binding emitters place each marker after its real operation; later item compilation follows that marker."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-grouped-35/strict-report-v1.json",
+      "sha256": "d59f0c9bd6be5976f02e5ffd5082e6170b6cd8377f0446e32a2d0c4ed54ec01d",
+      "revision": "97c0e4ef8ddc5078876f549ce433133e273a884f",
+      "passed": true,
+      "modules": 440
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-grouped-35/source-author-v1/report.json",
+      "sha256": "d6d7aaf9c4df52a103400e3bc7f9a40345dc7fa23f9b2155c7d8e5301e29fec2",
+      "revision": "97c0e4ef8ddc5078876f549ce433133e273a884f",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "unset-tick-retargets-later-dynamic-name": "TTAb",
+        "static-bindings-tick-on-cold-and-warm-calls": "TTT1TTTT2T"
+      }
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-grouped-35/source-review-v1/report.json",
+      "sha256": "af24ba49b92ab853d57e4804f79b2ccb8cc92ab5ae710027e982bfb8d2c1f223",
+      "revision": "97c0e4ef8ddc5078876f549ce433133e273a884f",
+      "passed": true,
+      "agreements": 3,
+      "observations": {
+        "review-global-tick-changes-later-dynamic-binding": "TT10|30|U",
+        "review-static-tick-precedes-later-initializer-effects": "TIT2",
+        "review-unset-cleanup-finishes-before-tick-aborts-next-target": "ATCHBZ"
+      }
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-grouped-35/review-protocol-v1/run/report.json",
+      "sha256": "cfdfe6594b85e8760d0c51007ab1f04790b7a11a3f4e04187e14e4c18665748b",
+      "revision": "2a5dd5894396b7abebdfa694011bdaa55b0fa54b",
+      "passed": true,
+      "groups": 3,
+      "reported_conditions": 154,
+      "group_conditions": [50, 53, 51],
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "process": "/home/user/workspace/php-spec-evidence-archive/tick-grouped-35/review-protocol-v1/process.json",
+      "process_sha256": "62b6f3e7badaa5d840783a2806fba0c2db16eef15714863220771ae2cb8dcce6",
+      "scope": "At the actual first Global Tick, the first local aliases its global cell and later local bindings remain absent. At the first Static Tick, only the first persistent cell exists and the next STATIC_INIT is still pending. At the first Unset Tick, destructor A has completed and A is retired while B has its sole owner; callback throw leaves B live until explicit cleanup. Canonical source/line, descriptor/heap validity, budget-resumption and complete native streams agree."
+    }
+  },
+  "behavior": "Callbacks run after each real grouped operation and before the next target, dynamic name or initializer is evaluated. Each item retains its compiler line/frequency. Warm cached static bindings still tick; unset destruction completes before its callback, and callback abort skips later removals.",
+  "independent_review": "/root/attributes_review independently reviewed the shared fold, per-item source authentication and unchanged operation prefixes, then accepted all three actual binding/initialization/cleanup fronts on exact 3443ee8df production.",
+  "remaining": "Wider source/compiler, callable, access and lifecycle contexts remain partial. Existing canonical marker corruption guards remain unchanged; this milestone adds no state/schema transport or family closure.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-grouped-35. Source processes use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached fixtures use checked SL on CPU 5 with caches disabled and encountered determinism checks. Before/after identities remained stable, exits were 0 and stderr empty. Regular copied tools are not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "The baseline source-baseline/report.json at 32e00b708 remains false (SHA 13688b49bf2a4ee63aa82d1f7d320e1b97592bbe7bd49f68a2561cf46cf6214f): the original native stream TTAb disagreed with the former model's normal TaB. It has zero agreement credit; the repaired original has its own completed source observation.",
+    "No old Echo, output, Generator or paused-boundary campaign was repeated. No engine bug, intentional divergence or full-core closure is claimed."
+  ]
+}
