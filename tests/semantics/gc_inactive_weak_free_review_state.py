@@ -128,9 +128,9 @@ def normal(owners):
 HIGHER = normal(2)
 for label, key, observer_kind, parent_kind, retired_kind in [
         ('map_observer', 'n_weak', 2, 1, 1),
-        ('map_referent', 'n_parent', 1, 2, 0)]:
+        ('map_referent', 'n_parent', 1, 1, 0)]:
     HIGHER += [
-        f'S_{label} = S_endpoint[.OBJECTS[n_child] = WEAKMAP ({{KEY {key}, VALUE (PINT 17), BEFORE eps, ORDER 0}})]',
+        f'S_{label} = S_endpoint[.OBJECTS[n_child] = WEAKMAP ({{KEY {key}, VALUE (PINT 17), BEFORE eps, ORDER 1}})]',
         f'H_{label} = $heap_graph(S_{label})',
         f'$heap_valid(H_{label})',
         f'$weakmap_key_maps(S_{label}, S_{label}.ALLOCATIONS, {key}) = [n_child]',
@@ -145,10 +145,17 @@ for label, key, observer_kind, parent_kind, retired_kind in [
         f'$executor_free_key_maps(S_{label}, pexecutorfree_map_{label}.MARKED, {key}) = eps',
         f'$executor_free_kind(S_{label}, [HOBJECT n_weak, HOBJECT n_child], {key}) = {retired_kind}',
         f'pexecutorfree_{label} = $executor_free_force(S_{label}, {{HEAP H_{label}, MARKED eps, DETACHED eps, FAILED eps, UNKNOWN false}}, {key})',
-        f'pexecutorfree_{label}.UNKNOWN',
-        f'pexecutorfree_{label}.MARKED = eps',
-        f'pexecutorfree_{label}.HEAP = H_{label}',
     ]
+    if key == 'n_weak':
+        HIGHER += [f'pexecutorfree_{label}.UNKNOWN',
+                   f'pexecutorfree_{label}.MARKED = eps',
+                   f'pexecutorfree_{label}.HEAP = H_{label}']
+    else:
+        HIGHER += [f'~pexecutorfree_{label}.UNKNOWN /\\ pexecutorfree_{label}.FAILED = eps',
+                   f'pexecutorfree_{label}.MARKED = [HOBJECT n_child, HOBJECT n_parent]',
+                   f'pexecutorfree_{label}.DETACHED = [(n_child, n_parent)]',
+                   f'$heap_children(HOBJECT n_parent, pexecutorfree_{label}.HEAP.EDGES) = eps',
+                   f'$heap_owners(pexecutorfree_{label}.HEAP, HOBJECT n_child) = 0']
 HIGHER += [
     'S_custom = S_endpoint[.OBJECTS[n_child] = WEAKMAP eps]',
     '$executor_free_kind(S_custom, eps, n_child) = 1',
