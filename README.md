@@ -3710,10 +3710,13 @@ Maps or append under private Keys while retaining source evaluation and owner
 increments. Strong direct/quiet fetches retain real Value owners across Key
 death; terminal isset/empty only borrow storage. Explicit unset removes its
 entry before Child cleanup and retains selected operands through cleanup.
-Safe null/bool/int/startup string entries can mix with these objects across
-insertion/replacement, reads, removal, notification and retirement. Occupied
+Safe null/bool/int/startup string and validated binary64 entries can mix with
+these objects across insertion/replacement, reads, removal, notification and retirement. Occupied
 writes publish the new Value before old cleanup; used results copy afterward.
 Same-value replacement still performs its real old-zval GC visit.
+NaN empty tests warn and reread the selected numeric row after a handler;
+captured Map/Key identities add no owners. Structural mutation during that
+borrow and unsupported post-warning representations stop explicitly.
 Selective Key death removes slots individually and preserves
 weak-registration order through Child cleanup and throws. Virtual/wider layouts,
 shared-Key finite payloads,

@@ -1,0 +1,87 @@
+{
+  "scope": "GC50: validated top-level binary64 WeakMap scalar payloads and a source-authenticated borrowed NaN empty-warning continuation with actual post-handler numeric-word reread.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "6268f6d172be1489334ef8efd28b8aeca1eb23b6",
+  "semantic_revision": "2cafb83cfa09117ab4c4abb33886c21c5926f2bb",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "148765b8358c069c05bc50de780b30d8ba254ad474535b05b6c1b46d89572d2e",
+    "spec/semantics/386-weak-map-lifetime.watsup": "498f4f0c3ace4b1473ccd01159c90401d42fdfeb0473fa10d3bec38555545479",
+    "spec/semantics/422-weak-map-entries.watsup": "8fca08c46575dd558e1197af28c2769bbb8487495474cb48444f02fc35d6a0b3"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc-float-payload-author-50/front-2caf-v1/report.json": "2cafb83cfa09117ab4c4abb33886c21c5926f2bb",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/front-3861-handler-failure-v1/report.json": "3861a14425e9910bdd279ac42e6c0a9797a32feb",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/front-73f1-syntax-failure-v1/report.json": "73f1f7a15b4de132cc4e2e5f714b97cdab52efbd",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/model-5fcb-phase-failure-v1/model-float-matrix-copy-quiet-mixed-free-report.json": "5fcb0486b230d27a33bff53764dcb0d60d177842",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/baseline-report.json": "33b817f10b2d5a550980a542cd802664e400e1ad",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/model-float-matrix-copy-quiet-mixed-free-report.json": "dd4ad1b6365330bdf9c067f0791412cf410d7e65",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/model-report.json": "5d75d44490622841a84048810435e1ae61949478",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/native-report.json": "33b817f10b2d5a550980a542cd802664e400e1ad",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-v1/native-report.json": "ca81efd29adb3b87dfe4dc96bc2c5c1cdd0c95e2",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-probe-v1/native-report.json": "ca81efd29adb3b87dfe4dc96bc2c5c1cdd0c95e2",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-int-min-v1/native-report.json": "ca81efd29adb3b87dfe4dc96bc2c5c1cdd0c95e2",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-v2/native-report.json": "e37c908a5fe1542f8c3c37076ef29077d3986636",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-v2/model-report.json": "a44bb63ac7a91d0bbd3de8dacf27dba8ceb8a3d4",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-v2/model-nan-replacement-child-throw-report.json": "5ca407a176733ef89ecd59339a16c4cdbf27e513"
+  },
+  "rule_basis": "The existing scalar policy accepts PFLOAT n exactly below2^64. The old property-only float arm with that identical bound is removed to retain one success path. Singleton/many presence share actual Warning dispatch for empty(NaN); isset and other values retain pure stored-value results. Birth authenticates existing presence source and selected actual row, then saves normalized CALLoffsetExists. The borrowed record preserves original access/task/operands, immutable OWNER/CALLER/TAIL and historical ENTRY metadata. Its marker lookup scans current/saved emitter frames without dynamic CV recapture or heap tracing. Only actual access_operand_roots own anything. Live resume validates canonical Map/Key/current row and unchanged KEY/BEFORE/ORDER; bounded PFLOAT or PINT words use pure double truth without a second warning. Old/new append/unset/notice/free admission fences retain structural selection; occupied replacement/read reentry remain. Other posttags stop explicitly. No301/451 or global conversion edit.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_has_dimension,write_dimension",
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true",
+    "vendor/php-src/Zend/zend_operators.c:zend_nan_coerced_to_type_warning",
+    "spec/semantics/442-deprecated-api-callbacks.watsup:API_CALLBACK_SEND/REF error argument delivery",
+    "spec/semantics/287-source-array-operands.watsup:source_operand_marker/suffix (unchanged)"
+  ],
+  "counts": {
+    "new_exact_originals": 2,
+    "author_exact_originals": 1,
+    "independent_exact_originals": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 93,
+    "new_unsupported_php_controls": 0,
+    "old_runtime_baseline_agreements": 0,
+    "superseded_native_preparation_or_timing_probe_agreements": 0,
+    "compiler_receipt_fixture_dispatch_failure_agreements": 0
+  },
+  "validation": {
+    "author_original": "Negative-zero first insertion/read/copy/empty, NaN used/same-value replacement and real default Warning, many-table infinity read/quiet/coalesce, admitted finite Value with float property, explicit scalar removal and mixed normal Map/Child cleanup agree exactly atdd4. Raw source/path/stdout/stderr/exit and native cut are preserved.",
+    "independent_original": "A finite old Value is replaced byNaN beside a finite sibling. Child cleanup sees publication and result77; the real Warning handler checks level/message/initialNaN, stores PHP_INT_MIN and reenters !empty=true. Original outer empty=true reflects raw negative-zero bits, discriminating saved truth and tagged-current truth. A supplied Child throw preserves identity/creation trace and skips assignment/next statement. Sibling normal cleanup finishes. This exact original passes at5ca with final2caf runtime, cap300.",
+    "front": "One strict-SL93 group uses exact peer source bytes and reaches the genuine handler occupied-write. The actual immutable receipt is in the first saved emitter frame, with no receipt-owned nodes for the borrowed CV operands. The source-reached float-to-INT_MIN write keeps actual row metadata/sibling roots and GC unchanged; only the existing nested writer receiver pin changes Map2to3. Pure PFLOAT/property bounds, raw INT_MIN distinction, unsupported ref/array and wrong owner/mode controls pass. Missing-row/unsupported-posttag counterstates retain the guard; absent-row append refuses. Reconstructed emitter view validates numeric reload; actual driver zero/one-step and full resumed caught-throw completion agree. These helper counterstates/reconstructed views add no PHP original agreement.",
+    "identities": "Credited sources retain stable inputs/head and exact normal exit0. Author stderr contains the expected Warning; peer handled stderr is empty. Process groups finish empty. Four reached-report binary identities were directly postchecked unchanged and independently matched. Raw source/fixture/command/environment/process records remain external."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc50_float_matrix.php": "c37d80b2a169e43f42f823344ff7a42bc55670054bfff5c627e578c35468db9e",
+    "tests/semantics/gc50_peer_nan_child_throw.php": "ea92a7f6f70c687e959842ef2b71f8168f5804639f20b7a873c3ec1f8ddec2a8"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc50_float_sources.py": "8be7dfbf6294bd8e2ba7cbda6646c36e26fc0355b7097dcf0b84c8828fb54773",
+    "tests/semantics/gc50_peer_float_sources.py": "195f82d735eaf141e795601cbdf4c353c79d6debcf10bdf1262b21edb7ec52f3",
+    "tests/semantics/gc50_nan_reentry_state.py": "4abbe68d2227d689263cab11da090adcd4de12384c74e806dc1e1023d8efa531"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-float-payload-author-50/front-2caf-v1/report.json": "de4fe6f07e43cc00e11bc733c819a7e0e9913a5ace3e2c0b4950e7d56c8b4da2",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/front-3861-handler-failure-v1/report.json": "887639a09ba7cc3308d5a6ed9d5f38a15819c11327925e8e3251e13ebaee5e9c",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/front-73f1-syntax-failure-v1/report.json": "b5c107f6d0ae6c49134134040bd84d5650541b53a72a94822c3eae4ac688ceff",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/model-5fcb-phase-failure-v1/model-float-matrix-copy-quiet-mixed-free-report.json": "3ad991b7fc30881687fff6827c374171997adc4d0c08e6ce5f94686aad41b2d7",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/baseline-report.json": "6ae003b5644b894c7f2ba905d3c6625c44fdea4326234338d774a4c7d46b1247",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/model-float-matrix-copy-quiet-mixed-free-report.json": "dfdc1a65e43e1fcc0ee13107ee6275e44d5c796155a1d8617bed6ffe9bef6625",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/model-report.json": "c08b365e511aa0d404b0bb81d2341c97cb273a465bf1a4e0998790be0d73caa5",
+    "../php-spec-evidence-archive/gc-float-payload-author-50/native-v1/native-report.json": "d39cd2baead0e6ca321d9c82b3a817b573669e78348b13146017098990a53dd1",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-v1/native-report.json": "88bc67226a5762ee17d12f5f5fe0205b1af3fee6bf065f3f15442a4b68c82e8b",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-probe-v1/native-report.json": "86e1a8b0f607a6dc628de6be30539dcb1e0fc7eff21b96b880bf83a8a9b85c68",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-int-min-v1/native-report.json": "666d46572122cb55f674ab8d5e08d344aea1863e08d964c06ee1d8fd75cb2fb8",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-v2/native-report.json": "80e3f90a70536999951a27fb9027e8379d2aa9c7ba58d5e877531f6ba3459b85",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-v2/model-report.json": "4dd068636374f117a7a3c83511adf3c6c00f220471053e14b80724d81d38e151",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/native-reentry-v2/model-nan-replacement-child-throw-report.json": "6a4fc692167b6926e0cb4e74f06cefd83b5d65f61ae29b030d645a392df52fac"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-float-payload-author-50/manifest.json": "b63f6440ae46c92ed55ad1395f2df72f35e971c276581e126167192d60a22653",
+    "../php-spec-evidence-archive/gc-float-value-policy-peer-50/independent-summary.json": "6152c106a212deb215d456698a01e8c9b6cfa74fc4866ba1e9498113298e3049"
+  },
+  "preserved_zero_credit": "Old33b baseline stops Unsupported afterB at first insertion. Initial5d75 runner fails before semantics on a noninvertible n_map binding;5fcb fixes sequential binding but warns then stops Unsupported because intrinsic presence PHASE was not normalized. dd4 saves the already-authenticated CALLoffsetExists view and the matrix passes. Peer a44 fails interpreter before handler delivery, not timeout/PHP mismatch; its wrapper KeyErrorfrontend is secondary. Initial73f fixture negative-int syntax failure and corrected3861 no-step failure remain0. The existing-source API_CALLBACK_SEND diagnostic confirms receipt/error/cursor/global-suffix false.2caf fixes only that actual wrapper seam; affected front93 and one peer retry pass. Initial peer default-Warning preparation plus zero/INT_MIN native timing supplements add no original agreement.",
+  "compatibility": "WeakMap-local pure API_CALLBACK_SEND/REF projection unwraps only API_ERROR whose RESUME is this WEAKMAP_NAN record, with the same first-exact marker and tail semantics. It calls no callback validator and cannot recurse. Ordinary/global marker cases are byte-equivalent fallback. The matrixdd4 has no API argument wrapper, so its exact source cut is retained by this concrete bridge; final peer/front exercise2caf. Scalar admission and property delegation share the identical64-bit bound; other existing scalar/object/source policies remain separate. No GC49 or dense48 replay and no intentional engine divergence.",
+  "limits": "Post-warning reread represents only valid PFLOAT or signed64 PINT words; bool/null/string/object/array/reference posttags and missing or structurally changed row selection remain explicit boundaries. Append/unset/notification/free during the borrow, shared-Key finite graphs, active cursors/incoming Map-key associations, collection with active pins, wider object layouts and freeing-Map access remain partial. Stored scalar/object policies and legacy callbacks retain their existing limits. Held GC35, Source47/COMP88 and paused lanes are untouched.",
+  "recovery": "Use gc50_float_sources.py native/model in one fresh directory (cap300); default Warning compares the original absolute source path. Use gc50_peer_float_sources.py native/model (cap300); --case nan-replacement-child-throw preserves the old failed unsuffixed report in the retained peer native-reentry-v2 directory. Run gc50_nan_reentry_state.py for the single93 group. Preserve all old cuts, and do not replay unchanged49 dependencies.",
+  "review": "Independent final-runtime/source and sole-front93 read-only review are CLEAR. Final clean documentation/ledger acceptance is recorded by the paired reviewer handoff."
+}

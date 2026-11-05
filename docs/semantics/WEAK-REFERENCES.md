@@ -1444,10 +1444,12 @@ mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
 
 Canonical singleton and multiple-entry tables accept occupied writes when
 stored Values and the incoming Value satisfy the common policy for safe scalars
-and finite methodless objects. The scalar domain is the existing null/bool/int
-and validated startup-string family; top-level floats, references and arrays
-receive no new admission. Object properties retain their existing primitive
-and direct fieldless-Child policy, including the prior property-float support.
+and finite methodless objects. The scalar domain includes null/bool/int,
+validated startup strings and binary64 bit patterns below 2^64. References and
+arrays receive no new admission. Object properties retain their existing
+primitive/direct fieldless-Child policy. The former separate property-float arm
+is removed: its identical bit bound now delegates to the shared scalar helper,
+keeping successful validation disjoint.
 Existing task, RHS,
 selected operand, receiver and Key authority still apply. The finite arm excludes
 both older writer domains explicitly; private leaf stored Keys, no cursor or
@@ -1490,6 +1492,32 @@ transfer, driver resumption and constructed scalar/leaf default counterstates.
 Those counterstates are not additional PHP agreements; two earlier fixture
 type/representation failures retain zero credit. Shared-Key graphs, collection with active pins,
 wider layouts and reference/array payload extensions remain partial.
+
+NaN empty tests follow `i_zend_is_true`: emit the actual bool-coercion warning,
+then reread the selected stored numeric word after the handler returns. The
+continuation retains source/operand/caller/tail authority and the historical
+Map/Key/entry selection without owning those IDs or the scalar. Only the
+original access operands retain any actual temporary owners. Exact local
+recognition of error callback argument cursors preserves the same marker and
+tail without changing the shared API protocol.
+
+On the pinned 64-bit target, a post-warning float keeps its bits and an int uses
+its represented two's-complement word. Thus replacing NaN by `PHP_INT_MIN`
+makes an ordinary inner empty test false, while the original borrowed double
+test reads negative-zero bits and returns true. This is target-specific union
+behavior, not PHP-wide portability. Other posttags, a missing row or changed
+KEY/BEFORE/ORDER stop explicitly. Append/unset, Key notification and Map free are
+fenced while the borrow is active, including the older leaf/scalar domains;
+existing-row replacement and reads remain available. Guard lookup uses only
+the immutable marker/source, not a heap trace or current CV recapture.
+
+The [float-payload review](../../coverage/semantics/gc-float-payload-review.json)
+binds the default-warning float matrix, reentrant-handler original and genuine
+handler-write ownership/resumption front. It distinguishes primitive no-edge
+updates from the nested writer's real receiver pin, and retains compiler,
+record-normalization and wrapper-dispatch failures at zero credit. Broader
+posttypes, structural mutation during the borrow and active-pin collection
+remain partial; paused generic NaN conversion work is unchanged.
 
 The singleton module386 admits same-key replacement with a leaf `stdClass` key and
 ordinary leaf old/new INSTANCE values. Only VALUE changes: KEY and BEFORE preserve

@@ -718,7 +718,8 @@ Safe scalar and finite methodless WeakMap payloads share validation across inser
 private-Key append, occupied replacement, reads/explicit entry removal from
 multiple-entry tables,
 singleton/multiple-entry Map retirement and selective Key notification. Safe
-null/bool/int/validated startup strings add no heap edge. Object payloads have
+null/bool/int/validated startup strings and binary64 floats add no heap edge.
+Object payloads have
 public untyped nonstatic/nonreadonly backed slots containing primitives or
 fieldless destructor Children; matching
 identities and keys fix declaration order. Ordered jobs preserve repeated Value
@@ -767,6 +768,18 @@ Map retirement evidence are bound in the
 [mixed-payload review](coverage/semantics/gc-mixed-scalar-finite-review.json).
 Three new originals agree exactly and one 89-condition ownership/default group
 passes at its recorded cut; constructed counterstates add no PHP agreement.
+
+Validated float entries preserve negative zero, NaN and infinity through
+ordinary storage/copies and cleanup. NaN empty warns before rereading the
+selected row's numeric word, including a warning handler's same-row update and
+reentry. The borrowed continuation preserves original operands and source/caller
+authority, with no new Value or receiver owner; structural mutation/free is
+fenced across old/new paths. Current float/long words use the pinned 64-bit
+representation, while other post-warning tags stop explicitly. Property-float
+validation delegates to the same bound without a duplicate success arm.
+Two originals agree exactly and one 93-condition handler-write front passes;
+[float-payload review](coverage/semantics/gc-float-payload-review.json) retains
+the failed setup/dispatch cuts with zero credit.
 
 Finite-payload notification admits only the actual retiring leaf `stdClass` Key
 under its validated storage pin. The other Keys remain nonfreeing and registered
@@ -1085,11 +1098,15 @@ Plain global constant groups compile initializers in order and tick after all
 bindings, preserving the final emitter line and installed values on callback abort.
 Class-like plans consume completed early-binding facts to preserve or break prior
 adjacency. Method, class-constant and plain property initializer declarables compile
-even when uncalled; constant/property member groups remain unticked. Conditional
+even when uncalled; constant member groups remain unticked. Conditional
 declarations activate before their header-line Tick, while top declarations have
 no outer Tick.
 Certified EnumCase markers run before the existing enum activation task, retaining
 member order, prior-marker frequency, backed-value lines and abort/resume behavior.
+
+A confirmed ATTR42 gap remains: a property group whose default enables ticks from
+zero misses its marker before declaration. ATTR43 is repairing this path; earlier
+ATTR42 sources had adjacent-Tick suppression and retain their scoped credit.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -1891,7 +1908,7 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 | --- | --- |
 | CLASS191 | __call/__callStatic factories through existing magic argument protocols; native/source preparation. |
 | I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
-| GC50 | Validated PFLOAT WeakMap payloads and scoped NaN access continuation; private implementation/review. |
+| GC51 | Authenticated property-public NaN API cursor continuation; private implementation/review. |
 | COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR43 | Existing property-hook body Tick plans in lexical get/set order; private implementation/review. |
