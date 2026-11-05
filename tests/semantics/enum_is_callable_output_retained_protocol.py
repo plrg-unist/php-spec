@@ -34,7 +34,7 @@ if __name__ == '__main__':
     before = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
               for path in WATCHED}
     retained = base.CASES['enum-is-callable-third-output-old-object-retained']
-    unique = base.CASES['enum-is-callable-third-output-old-object-unsupported']
+    unique = base.CASES['enum-is-callable-third-output-old-object-last']
     base.OUT = OUT / 'retained-source'
     base.OUT.mkdir()
     retained_source = base.checked_source(retained)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         'S_ret_preview = $write_cell_checked(S_ret_send, n_ret_cell, PSTRING $ptascii("HoldCheck::from"), pconfigcall_ret_send.LINE)',
         '$($heap_owners($heap_graph(S_ret_preview), HOBJECT n_old) > 0)',
         'S_nohold = S_ret_send[.STORE = $set_cell(S_ret_send.STORE, n_hold_cell, DEFINED PNULL)]',
-        '~$enum_is_callable_ref_old(S_nohold, n_ret_cell, POBJECT n_old, $ptascii("HoldCheck::from"), pconfigcall_ret_send.LINE)',
+        '$enum_is_callable_ref_last(S_nohold, n_ret_cell, pconfigcall_ret_send.LINE)',
         'S_dead = S_ret_send[.ALLOCATIONS = $destruction_node_delete(S_ret_send.ALLOCATIONS, HOBJECT n_old)]',
         '~$enum_is_callable_ref_old(S_dead, n_ret_cell, POBJECT n_old, $ptascii("HoldCheck::from"), pconfigcall_ret_send.LINE)',
         'S_ret_ref = $drive_steps(S_ret_send[.COMPLETION = NORMAL], 1)',
@@ -118,8 +118,8 @@ if __name__ == '__main__':
         '(HOBJECT n_unique_old) <- S_unique_send.ALLOCATIONS',
         'S_unique_send.OBJECTS[n_unique_old] = INSTANCE porigin_unique_old',
         '$node_children(S_unique_send, HOBJECT n_unique_old) = eps',
-        '$enum_is_callable_ref_old(S_unique_send, n_unique_cell, POBJECT n_unique_old, $ptascii("OldCheck::from"), pconfigcall_unique.LINE) = false',
-        '$enum_is_callable_ref_cell(S_unique_send, pconfigcall_unique, pvalue_unique_input) = eps',
+        '$enum_is_callable_ref_last(S_unique_send, n_unique_cell, pconfigcall_unique.LINE)',
+        '$enum_is_callable_ref_cell(S_unique_send, pconfigcall_unique, pvalue_unique_input) = (n_unique_cell)',
     ]
     fixture = OUT / 'output-retained.watsup'
     fixture.write_text(base.PREFIX + SEEK + '\ndec $main() : bool\ndef $main() = true\n'
