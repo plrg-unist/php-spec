@@ -1,0 +1,179 @@
+;; Closure::call uses a temporary internal function, borrowing newThis from its
+;; outer argv. The original real capture remains its only old-Generator owner.
+def $closure_call_parameters(S, n) = [{NAME $generator_api_parameter(text_method), TYPE eps, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]
+  -- if $closure_call_native(S, n) = (text_method)
+  -- if $generator_argument_count(text_method) = 1
+def $closure_call_parameters(S, n) = eps
+  -- if $closure_call_native(S, n) = (text_method)
+  -- if $generator_argument_count(text_method) = 0
+
+dec $generator_call_selection(pclosurecall) : pgeneratormethodselection
+def $generator_call_selection(pclosurecall) = {SITE pclosurecall.SITE, OBJECT n_receiver, NAME $generator_method_display(text_method), LINE pclosurecall.LINE, CAPTURE (pclosurecall.SOURCE), TEMPORARY true}
+  -- if pclosurecall.NATIVE = (text_method)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+
+def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
+  -- if pgeneratormethodselection.TEMPORARY
+  -- if pgeneratormethodselection.CAPTURE = (n_source)
+  -- if $generator_capture_saved(S, n_source)
+  -- if $closure_call_native(S, n_source) = (text_method)
+  -- if $closure_call_args_at(S, porigin) = phpType7*
+  -- if pgeneratormethodselection.SITE = porigin
+  -- if pgeneratormethodselection.OBJECT = n
+  -- if $generator_object(S, n)
+  -- if pgeneratormethodselection.LINE = z
+  -- if pgeneratormethodselection.NAME = $generator_method_display(text_method)
+  -- if $ptlc(ptbytes) = $ptlc(pgeneratormethodselection.NAME)
+  -- if $call_line_valid(S, (porigin), z)
+
+;; These lookup-only fields survive argv/capture retirement. Reconstituting
+;; allocation membership here grants no machine root or physical owner.
+dec $generator_call_saved_valid(pstate, pclosurecall) : bool
+def $generator_call_saved_valid(S, pclosurecall) = true
+  -- if $generator_capture_saved(S, pclosurecall.SOURCE)
+  -- if pclosurecall.NATIVE = (text_method)
+  -- if $closure_call_native(S, pclosurecall.SOURCE) = (text_method)
+  -- if pclosurecall.FIRST = (POBJECT n_receiver)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $generator_object(S, n_receiver)
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ $fake_bind_history_nodes(S, pclosurecall.SOURCE, eps) ++ [HOBJECT n_receiver]]
+  -- if $closure_call_task_valid(S_history, pclosurecall)
+  -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
+  -- if pclosurecall.INDEX = |phpType7*|
+  -- if $closure_call_warning(S_history, pclosurecall.SOURCE, n_receiver) = eps
+def $generator_call_saved_valid(S, pclosurecall) = false -- otherwise
+
+dec $generator_call_outer_task(ptask, pgeneratormethodselection) : pclosurecall?
+def $generator_call_outer_task(GENERATOR_CALL_RESULT pclosurecall true PNULL, pgeneratormethodselection) = (pclosurecall)
+  -- if pclosurecall.NATIVE = (text_method)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if $generator_call_selection(pclosurecall) = pgeneratormethodselection
+def $generator_call_outer_task(ptask, pgeneratormethodselection) = eps -- otherwise
+dec $generator_call_outer_tasks(ptask*, pgeneratormethodselection) : pclosurecall?
+def $generator_call_outer_tasks(eps, pgeneratormethodselection) = eps
+def $generator_call_outer_tasks(ptask :: ptask_tail*, pgeneratormethodselection) = (pclosurecall)
+  -- if $generator_call_outer_task(ptask, pgeneratormethodselection) = (pclosurecall)
+def $generator_call_outer_tasks(ptask :: ptask_tail*, pgeneratormethodselection) = $generator_call_outer_tasks(ptask_tail*, pgeneratormethodselection)
+  -- if $generator_call_outer_task(ptask, pgeneratormethodselection) = eps
+dec $generator_call_outer_frames(pframe*, pgeneratormethodselection) : pclosurecall?
+def $generator_call_outer_frames(eps, pgeneratormethodselection) = eps
+def $generator_call_outer_frames(pframe :: pframe_tail*, pgeneratormethodselection) = (pclosurecall)
+  -- if $generator_call_outer_tasks(pframe.TODO, pgeneratormethodselection) = (pclosurecall)
+def $generator_call_outer_frames(pframe :: pframe_tail*, pgeneratormethodselection) = $generator_call_outer_frames(pframe_tail*, pgeneratormethodselection)
+  -- if $generator_call_outer_tasks(pframe.TODO, pgeneratormethodselection) = eps
+dec $generator_call_outer(pstate, pgeneratormethodselection) : pclosurecall?
+def $generator_call_outer(S, pgeneratormethodselection) = (pclosurecall)
+  -- if $generator_call_outer_tasks(S.TODO, pgeneratormethodselection) = (pclosurecall)
+def $generator_call_outer(S, pgeneratormethodselection) = $generator_call_outer_frames(S.FRAMES, pgeneratormethodselection)
+  -- if $generator_call_outer_tasks(S.TODO, pgeneratormethodselection) = eps
+
+def $generator_selection_live(S, (pgeneratormethodselection)) = true
+  -- if pgeneratormethodselection.TEMPORARY
+  -- if pgeneratormethodselection.CAPTURE = (n_source)
+  -- if $getter_capture_live(S, n_source)
+  -- if $generator_call_outer(S, pgeneratormethodselection) = (pclosurecall)
+  -- if $generator_call_saved_valid(S, pclosurecall)
+  -- if $heap_subset($closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW), S.ALLOCATIONS)
+def $generator_call_operation_live(S, pgeneratorop) = true
+  -- if ~$generator_temporary_operation(pgeneratorop)
+def $generator_call_operation_live(S, pgeneratorop) = true
+  -- if $generator_temporary_operation(pgeneratorop)
+  -- if pgeneratorop.SELECTION = (pgeneratormethodselection)
+  -- if $generator_call_outer(S, pgeneratormethodselection) = (pclosurecall)
+  -- if $generator_call_selection(pclosurecall) = pgeneratormethodselection
+  -- if pclosurecall.NATIVE = (pgeneratorop.NAME)
+  -- if pclosurecall.RECEIVER = (pgeneratorop.OBJECT)
+  -- if pclosurecall.SITE = pgeneratorop.SITE
+  -- if pclosurecall.LINE = pgeneratorop.LINE
+def $generator_call_operation_live(S, pgeneratorop) = false -- otherwise
+
+rule PhpStep/generator-call-named-error: S ~> $throwable_allocate(S[.TODO = (GENERATOR_CALL_RESULT pclosurecall true PNULL) :: ptask_tail*][.ORIGIN = (pclosurecall.SITE)], "Error", ptbytes, pclosurecall.LINE, [ptraceframe] ++ $eval_exception_trace_raw(S))
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if $generator_call_saved_valid(S, pclosurecall)
+  -- if pclosurecall.ERROR = (ptbytes)
+  -- if ptraceframe = $generator_call_trace(S, pclosurecall)
+rule PhpStep/generator-call-forward: S ~> S[.TODO = (GENERATOR_ARGS pgeneratorop eps $named_operands(pclosurecall.SENT.SLOTS)) :: (GENERATOR_CALL_RESULT pclosurecall true PNULL) :: ptask_tail*][.ORIGIN = (pclosurecall.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
+  -- if $generator_call_saved_valid(S, pclosurecall)
+  -- if pclosurecall.ERROR = eps
+  -- if pclosurecall.NATIVE = (text_method)
+  -- if pclosurecall.RECEIVER = (n_receiver)
+  -- if pgeneratorop = {OBJECT n_receiver, NAME text_method, SITE pclosurecall.SITE, LINE pclosurecall.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION ($generator_call_selection(pclosurecall))}
+
+def $generator_collected_arguments_valid(S, pgeneratorop, eps, poperand*, 0) = true
+  -- if $generator_temporary_operation(pgeneratorop)
+  -- if pgeneratorop.SELECTION = (pgeneratormethodselection)
+  -- if $generator_call_outer(S, pgeneratormethodselection) = (pclosurecall)
+  -- if poperand* = $named_operands(pclosurecall.SENT.SLOTS)
+def $generator_resumption_arguments_valid(S, pgeneratorop) = true
+  -- if $generator_temporary_operation(pgeneratorop)
+  -- if pgeneratorop.SELECTION = (pgeneratormethodselection)
+  -- if $generator_call_outer(S, pgeneratormethodselection) = (pclosurecall)
+  -- if $named_operands(pclosurecall.SENT.SLOTS) = $shutdown_known(pgeneratorop.ARGUMENTS)
+  -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
+
+;; Native handler frames have no user file/line; the outer API retains raw keys.
+dec $generator_call_trace(pstate, pclosurecall) : ptraceframe
+def $generator_call_trace(S, pclosurecall) = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
+  -- if pclosurecall.RECEIVER = (n_receiver)
+def $generator_operation_trace(S, pgeneratorop) = [ptraceframe, $generator_call_trace(S, pclosurecall)]
+  -- if $generator_temporary_operation(pgeneratorop)
+  -- if pgeneratorop.SELECTION = (pgeneratormethodselection)
+  -- if $generator_call_outer(S, pgeneratormethodselection) = (pclosurecall)
+  -- if ptraceframe = {FILE eps, LINE $(-1), FUNCTION $generator_method_display(pgeneratorop.NAME), CLASS ($ptascii("Generator")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pgeneratorop.ARGUMENTS, 0), HASARGS true}
+def $generator_argument_error(S, pgeneratorop, poperand*) = $throwable_allocate(S, "ArgumentCountError", $ptascii("Generator::") ++ $generator_method_display(pgeneratorop.NAME) ++ $ptascii("() expects exactly ") ++ $ntunsigned($generator_argument_count(pgeneratorop.NAME)) ++ $ptascii(" argument") ++ $config_plural($generator_argument_count(pgeneratorop.NAME)) ++ $ptascii(", ") ++ $ntunsigned(|poperand*|) ++ $ptascii(" given"), pgeneratorop.LINE, $source_trace_prefixed(S, [ptraceframe[.ARGS = $trace_indexed_args($trace_extra(S, poperand*), 0)], ptraceframe_outer]))
+  -- if $generator_temporary_operation(pgeneratorop)
+  -- if $generator_operation_trace(S, pgeneratorop) = [ptraceframe, ptraceframe_outer]
+
+;; The inner result is always used. Save it while the outer argv releases in
+;; API order, then drop an unused retval before releasing the original This.
+def $task_nodes(GENERATOR_CALL_RESULT pclosurecall true pvalue) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW) ++ $value_nodes(pvalue)
+def $task_nodes(GENERATOR_CALL_RESULT pclosurecall false pvalue) = [HOBJECT pclosurecall.SOURCE] ++ $value_nodes(pvalue)
+def $task_nodes(GENERATOR_CALL_RETURN pclosurecall pvalue) = $value_nodes(pvalue)
+dec $generator_call_result_valid(pstate, pclosurecall, bool, pvalue) : bool
+def $generator_call_result_valid(S, pclosurecall, b_live, pvalue) = true
+  -- if $generator_call_saved_valid(S, pclosurecall)
+  -- if $getter_capture_live(S, pclosurecall.SOURCE)
+  -- if ~b_live \/ (pvalue = PNULL /\ $heap_subset($closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW), S.ALLOCATIONS))
+  -- if $destructor_return_operand_valid(S, KNOWN pvalue)
+def $generator_call_result_valid(S, pclosurecall, b_live, pvalue) = false -- otherwise
+def $call_task_valid(S, GENERATOR_CALL_RESULT pclosurecall b pvalue) = $generator_call_result_valid(S, pclosurecall, b, pvalue)
+def $call_task_valid(S, GENERATOR_CALL_RETURN pclosurecall pvalue) = ($generator_call_saved_valid(S, pclosurecall) /\ $destructor_return_operand_valid(S, KNOWN pvalue))
+def $generator_internal_task(GENERATOR_CALL_RESULT pclosurecall b pvalue) = true
+def $generator_internal_task(GENERATOR_CALL_RETURN pclosurecall pvalue) = true
+def $fiber_marker(GENERATOR_CALL_RESULT pclosurecall b pvalue) = true
+def $fiber_marker(GENERATOR_CALL_RETURN pclosurecall pvalue) = true
+
+dec $generator_call_discard_result(pstate, pclosurecall, pvalue) : bool
+def $generator_call_discard_result(S, pclosurecall, pvalue) = (~$reference_call_used(S, pclosurecall.SITE) /\ $value_nodes(pvalue) =/= eps)
+rule PhpStep/generator-call-argv-release: S ~> $destructor_release_begin(S[.TODO = (GENERATOR_CALL_RESULT pclosurecall false pvalue) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)))
+  -- if S.TODO = (GENERATOR_CALL_RESULT pclosurecall true PNULL) :: ptask_tail*
+  -- if $generator_call_result_valid(S, pclosurecall, true, PNULL)
+  -- if S.RESULT = KNOWN pvalue
+rule PhpStep/generator-call-unused-result: S ~> S[.TODO = (GENERATOR_CALL_RESULT pclosurecall false PNULL) :: ptask_tail*]
+  -- if S.TODO = (GENERATOR_CALL_RESULT pclosurecall false pvalue) :: ptask_tail*
+  -- if $generator_call_result_valid(S, pclosurecall, false, pvalue)
+  -- if $generator_call_discard_result(S, pclosurecall, pvalue)
+rule PhpStep/generator-call-capture-release: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN pvalue)]
+  -- if S.TODO = (GENERATOR_CALL_RESULT pclosurecall false pvalue) :: ptask_tail*
+  -- if $generator_call_result_valid(S, pclosurecall, false, pvalue)
+  -- if ~$generator_call_discard_result(S, pclosurecall, pvalue)
+rule PhpStep/generator-call-throw-argv-release: S ~> $destructor_release_begin(S[.TODO = (THROW_SEARCH n) :: (GENERATOR_CALL_RESULT pclosurecall false PNULL) :: ptask_tail*], $destruction_values($closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)))
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_CALL_RESULT pclosurecall true PNULL) :: ptask_tail*
+  -- if $generator_call_result_valid(S, pclosurecall, true, PNULL)
+  -- if $throwable_live(S, n)
+rule PhpStep/generator-call-throw-capture-release: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_CALL_RETURN pclosurecall pvalue) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_CALL_RESULT pclosurecall false pvalue) :: ptask_tail*
+  -- if $generator_call_result_valid(S, pclosurecall, false, pvalue)
+  -- if ~$generator_call_discard_result(S, pclosurecall, pvalue)
+  -- if $throwable_live(S, n)
+rule PhpStep/generator-call-throw-unused-result: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_CALL_RESULT pclosurecall false PNULL) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_CALL_RESULT pclosurecall false pvalue) :: ptask_tail*
+  -- if $generator_call_result_valid(S, pclosurecall, false, pvalue)
+  -- if $generator_call_discard_result(S, pclosurecall, pvalue)
+  -- if $throwable_live(S, n)
+rule PhpStep/generator-call-throw-return-release: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_CALL_RETURN pclosurecall pvalue) :: ptask_tail*
+  -- if $generator_call_saved_valid(S, pclosurecall)
+  -- if $destructor_return_operand_valid(S, KNOWN pvalue)
+  -- if $throwable_live(S, n)

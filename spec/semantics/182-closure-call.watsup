@@ -147,8 +147,17 @@ dec $closure_call_first_roots(pvalue?) : pnode*
 def $closure_call_first_roots(eps) = eps
 def $closure_call_first_roots((pvalue)) = $value_nodes(pvalue)
 def $task_nodes(CLOSURE_CALL_ARGS pclosurecall) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $instance_roots(pclosurecall.RECEIVER) ++ $named_slots_roots(pclosurecall.SENT.SLOTS) ++ $named_roots(pclosurecall.SENT.NAMED) ++ $closure_call_raw_roots(pclosurecall.RAW)
+  -- if pclosurecall.NATIVE = eps
+def $task_nodes(CLOSURE_CALL_ARGS pclosurecall) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)
+  -- if pclosurecall.NATIVE = (text_method)
 def $task_nodes(CLOSURE_CALL_SEND pclosurecall) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $instance_roots(pclosurecall.RECEIVER) ++ $named_slots_roots(pclosurecall.SENT.SLOTS) ++ $named_roots(pclosurecall.SENT.NAMED) ++ $closure_call_raw_roots(pclosurecall.RAW)
+  -- if pclosurecall.NATIVE = eps
+def $task_nodes(CLOSURE_CALL_SEND pclosurecall) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)
+  -- if pclosurecall.NATIVE = (text_method)
 def $task_nodes(CLOSURE_CALL_INVOKE pclosurecall) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $instance_roots(pclosurecall.RECEIVER) ++ $named_slots_roots(pclosurecall.SENT.SLOTS) ++ $named_roots(pclosurecall.SENT.NAMED) ++ $closure_call_raw_roots(pclosurecall.RAW)
+  -- if pclosurecall.NATIVE = eps
+def $task_nodes(CLOSURE_CALL_INVOKE pclosurecall) = [HOBJECT pclosurecall.SOURCE] ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW)
+  -- if pclosurecall.NATIVE = (text_method)
 
 dec $closure_call_initial_source_valid(pstate, pclosurecall) : bool
 def $closure_call_initial_source_valid(S, pclosurecall) = $bind_variable_matches(S, $base64(text), pclosurecall.SOURCE)

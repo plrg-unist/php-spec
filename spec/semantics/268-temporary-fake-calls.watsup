@@ -15,9 +15,9 @@ def $closure_call_source(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $closure_call_real(S, n) \/ $fake_bind_object(S, n)
   -- if $closure_callable(S, n)
-  -- if ~$generator_capture_saved(S, n)
 def $closure_call_source(S, n) = false -- otherwise
 def $closure_call_parameters(S, n) = pfunction.SIGNATURE.PARAMETERS
+  -- if $closure_call_native(S, n) = eps
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
 def $closure_call_parameters(S, n) = eps -- otherwise
 def $closure_call_warning(S, n_source, n_receiver) = $real_bind_warning_message(S, n_source, (n_receiver), $bind_object_scope(S, n_receiver))
@@ -69,6 +69,7 @@ rule PhpStep/closure-call-getter-named-error: S ~> $throwable_allocate(S[.TODO =
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $fake_bind_getter(S, pclosurecall.SOURCE) = ((n_old, pgettermethod, text_base))
+  -- if ~$generator_api_getter(pgettermethod)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
   -- if pclosurecall.ERROR = (ptbytes)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
@@ -76,6 +77,7 @@ rule PhpStep/closure-call-getter: S ~> $getter_body(S[.TODO = (CLOSURE_CALL_GETT
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $fake_bind_getter(S, pclosurecall.SOURCE) = ((n_old, pgettermethod, text_base))
+  -- if ~$generator_api_getter(pgettermethod)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
   -- if pclosurecall.ERROR = eps
   -- if pclosurecall.RAW = eps
@@ -83,6 +85,7 @@ rule PhpStep/closure-call-getter-arity: S ~> $throwable_allocate(S[.TODO = ptask
   -- if S.TODO = (CLOSURE_CALL_INVOKE pclosurecall) :: ptask_tail*
   -- if pclosurecall.RECEIVER = (n_receiver)
   -- if $fake_bind_getter(S, pclosurecall.SOURCE) = ((n_old, pgettermethod, text_base))
+  -- if ~$generator_api_getter(pgettermethod)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
   -- if pclosurecall.ERROR = eps
   -- if pclosurecall.RAW =/= eps
@@ -95,7 +98,8 @@ def $temporary_call_task_valid(S, CLOSURE_CALL_GETTER_RESULT pclosurecall) = tru
   -- if $closure_call_args_at(S, pclosurecall.SITE) = phpType7*
   -- if pclosurecall.INDEX = |phpType7*|
   -- if pclosurecall.RECEIVER = (n_receiver)
-  -- if $fake_bind_getter(S, pclosurecall.SOURCE) =/= eps
+  -- if $fake_bind_getter(S, pclosurecall.SOURCE) = ((n_old, pgettermethod, text_base))
+  -- if ~$generator_api_getter(pgettermethod)
   -- if $closure_call_warning(S, pclosurecall.SOURCE, n_receiver) = eps
   -- if pclosurecall.ERROR = eps
   -- if pclosurecall.RAW = eps

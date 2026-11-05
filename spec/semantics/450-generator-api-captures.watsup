@@ -142,6 +142,7 @@ def $generator_selection_live(S, (pgeneratormethodselection)) = true
   -- if pgeneratormethodselection.CAPTURE = eps
   -- if ~pgeneratormethodselection.TEMPORARY
 def $generator_selection_live(S, (pgeneratormethodselection)) = true
+  -- if ~pgeneratormethodselection.TEMPORARY
   -- if pgeneratormethodselection.CAPTURE = (n)
   -- if $getter_capture_live(S, n)
   -- if $generator_capture_marker(S.TODO, n, pgeneratormethodselection.SITE) \/ $generator_capture_marker_frames(S.FRAMES, n, pgeneratormethodselection.SITE)
@@ -201,14 +202,6 @@ def $getter_capture_finish(S, n, porigin, ptask*) = S[.RESULT = KNOWN PNULL][.BA
   -- if $generator_capture_unused_result(S, n, porigin)
 def $getter_capture_finish(S, n, porigin, ptask*) = S[.TODO = ptask*][.BASE = BASE_VALUE S.RESULT]
   -- if ~$generator_capture_unused_result(S, n, porigin)
-
-;; Temporary Closure::call copies keep their separate receiver protocol.
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "captured Generator API Closure::call"]
-  -- if S_read = $resolve_at(S, poperand, z)
-  -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (POBJECT n)
-  -- if $generator_capture_saved(S_read, n)
-  -- if $ptlc(ptbytes) = $ptascii("call")
 
 ;; bindTo releases argv, then an unused copied return, then its original This.
 ;; Static bind has no This; used results keep the ordinary binding completion.
