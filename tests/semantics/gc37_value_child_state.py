@@ -9,13 +9,21 @@ import fiber_state_review as review
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = (ROOT / 'tests/semantics/gc37_value_child_preinsert.php').read_text()
 STAGE = (
-    'S.RESULT = KNOWN (POBJECT n_value) '
-    '-- if $access_set_plan(S) = (paccess_plan) '
-    '-- if paccess_plan.OBJECT = (n_map) '
+    'S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask_tail* '
+    '-- if $lookup(S.ENV, $ptascii("value")) = (n_value_cell) '
+    '-- if S.STORE[n_value_cell] = DEFINED (POBJECT n_value) '
+    '-- if $lookup(S.ENV, $ptascii("map")) = (n_map_cell) '
+    '-- if S.STORE[n_map_cell] = DEFINED (POBJECT n_map) '
     '-- if S.OBJECTS[n_map] = WEAKMAP eps '
     '-- if $object_name(S, n_value) = $ptascii("GC37ValuePre") '
     '-- if $weakmap_declared_value_child(S, n_value)')
 CHECKS = [
+    '$access_set_plan(S) = (paccess_plan)',
+    'paccess_plan.OBJECT = (n_map)',
+    'S_value = $quiet_operand(S, paccess_plan.RHS)',
+    'S_value.RESULT = KNOWN (POBJECT n_value)',
+    'S_key = $quiet_operand(S, paccess_plan.INPUT)',
+    'S_key.RESULT = KNOWN (POBJECT n_key)',
     'paccess = paccess_plan[.SELECTED = $rcontainer_selected(S, paccess_plan.RHS)][.VALUE = POBJECT n_value][.OFFSET = POBJECT n_key]',
     'S.TODO = paccess.TASK :: ptask_tail*',
     'S.OBJECTS[n_key] = STDINSTANCE',
