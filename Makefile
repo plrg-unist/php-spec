@@ -537,6 +537,10 @@ test-semantics: build
 	python3 tests/semantics/generator_call_unpack_state.py
 	python3 tests/semantics/generator_call_unpack_review_sources.py
 	python3 tests/semantics/generator_call_unpack_review_state.py
+	python3 tests/semantics/generator_byref_sink_sources.py
+	python3 tests/semantics/generator_byref_sink_scalar_sources.py
+	python3 tests/semantics/generator_byref_sink_negative_sources.py
+	python3 tests/semantics/generator_byref_sink_review_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_sources.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_state.py
 	python3 tests/semantics/generator_call_unpack_array_delegation_review_sources.py
@@ -817,6 +821,21 @@ test-semantics: build
 	python3 tests/semantics/generator_call_reference_sources.py
 	python3 tests/semantics/generator_call_reference_state.py
 	python3 tests/semantics/generator_call_reference_review_state.py
+	python3 tests/semantics/generator_fake_call_copy_sources.py
+	python3 tests/semantics/generator_fake_call_copy_state.py
+	python3 tests/semantics/generator_fake_call_copy_review_state.py
+	python3 tests/semantics/generator_fake_string_call_sources.py
+	python3 tests/semantics/generator_fake_string_call_state.py
+	python3 tests/semantics/generator_fake_string_call_review_state.py
+	python3 tests/semantics/generator_folded_string_call_sources.py
+	python3 tests/semantics/generator_folded_string_call_state.py
+	python3 tests/semantics/generator_folded_string_call_review_state.py
+	python3 tests/semantics/generator_call_warning_fiber_sources.py
+	python3 tests/semantics/generator_call_warning_fiber_state.py
+	python3 tests/semantics/generator_call_warning_fiber_review_state.py
+	python3 tests/semantics/generator_call_warning_retval_sources.py
+	python3 tests/semantics/generator_call_warning_retval_state.py
+	python3 tests/semantics/generator_call_warning_retval_review_state.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

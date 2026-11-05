@@ -2164,6 +2164,12 @@ parameters. Reference yields become snapshots before resume; named keys use the
 ordinary binder. Native iteration adds no method trace frames, and temporary
 versus retained Generators preserve their distinct finally/cache lifetimes.
 See the [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
+Scalar by-value Generator caches now warn within the first two unpacked sends
+to a fixed untyped reference parameter in argument position 1 or 2 of a direct
+named user function returning by value. Distinct private cells preserve both
+values across warnings and callee writes. Dynamic-string sinks, warning-time
+Generator advancement and pending warning exceptions remain explicit Unsupported.
+See the [reference-sink review](coverage/semantics/generator-byref-sink-review.json).
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
@@ -3146,12 +3152,14 @@ Unknown literal `declare` names now emit ordered E_COMPILE_WARNING (128), bypass
 registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
-Disabled-multibyte encoding declarations now emit source-derived parser warnings
-before compiler warnings, bypass handlers and execute as no-ops. Two originals and
-177 SL premises cover eval, once skip/reparse, raw helper stderr and budget resume.
-Admission is bounded to root single-line declarations with one string literal, no
-body and valid placement; wider shapes/rejected-with-warning inputs remain explicit boundaries.
-[Encoding review](coverage/semantics/encoding-declare-review.json).
+Disabled-multibyte encoding declarations emit source-derived parser warnings
+before compiler diagnostics. Single-line declarations accept literal values,
+mixed/repeated items and ordinary bodies; token positions preserve recursive
+parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
+return premises extend the earlier eval/once checks. Multiline declarations and
+rejected sources with warnings remain explicit boundaries.
+[Original review](coverage/semantics/encoding-declare-review.json),
+[list/body review](coverage/semantics/encoding-list-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3896,6 +3904,12 @@ GC26 admits a direct childless stdClass capture that also occurs in the
 captured array. Both capture orders agree with pinned PHP; two reached D-state
 groups verify the separate edges, one leaf buffer slot and weak lifetime.
 See the [shared-capture review](coverage/semantics/gc-shared-capture-review.json).
+GC27 extends the same rooted caller to finite direct captures with two or
+more array occurrences, preserving shared leaves and repeated array identities.
+Three originals agree with PHP through final weak death. The arrays remain
+one-level, mutable and outside pooled or materialized property tables; this
+rooted lane does not collect Closure cycles. See the
+[multi-array review](coverage/semantics/gc-multi-array-review.json).
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -7127,6 +7141,24 @@ one affected I92 value SEND source, temporary return92 and independent parked
 cache169 states pass at f34d1214a. Receive/mapping errors, callback throws and
 wider calls remain partial.
 [Reference-call review](coverage/semantics/generator-call-reference-review.json).
+
+I94–I98 extend admitted Generator Closure::call behavior to fake user methods
+with exact declaring-class receivers, shared method statics and finite retired
+source histories. Dynamic nonstatic method strings keep their conversion Error;
+folded literal and caller-aware API captures retain their distinct permissions.
+Binding-warning cleanup releases actual API owners in native order. Existing
+copied-reference warning cursors retain argument snapshots and copy ownership
+through Fiber suspension in handlers and owning retval destructors. Each review
+keeps its original native/source/reached cuts and zero-credit failures. The
+[joined review](coverage/semantics/generator-call-series-current-review.json) records
+strict433, four source comparisons and 187 custom ownership checks. Wider
+call/receiver/signature and abrupt warning or no-Generator receive contexts remain
+partial.
+Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
+[I95](coverage/semantics/generator-fake-string-call-review.json),
+[I96](coverage/semantics/generator-folded-string-call-review.json),
+[I97](coverage/semantics/generator-call-warning-fiber-review.json) and
+[I98](coverage/semantics/generator-call-warning-retval-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

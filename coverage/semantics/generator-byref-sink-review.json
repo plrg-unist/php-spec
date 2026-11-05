@@ -1,0 +1,64 @@
+{
+  "milestone": "A94 scalar BYVAL Generator unpack into bounded BYREF destinations",
+  "status": "Bounded feature independently validated; complete PHP core remains unfinished",
+  "independent_reviewer": "config_review_current",
+  "scope": {
+    "producer": "Ordinary named BYVAL Generator without delegation, Closure or method access history; existing retained-CV and temporary input ownership policies apply.",
+    "consumer": "Actual named function-call source node and compiled name select an ordinary function returning by value. A fixed untyped BYREF parameter is in argument position 1 or 2, within the first two unpacked sends.",
+    "behavior": "Key/binding Errors precede Warning. Capture HOLD/KEY/Generator INDEX; normally returning callbacks must leave that cache/key/index unchanged. Each send creates a distinct private reference cell, preserving an earlier cell through the second warning and subsequent callee writes.",
+    "limits": "Dynamic-string or Closure/method sinks, BYREF producers, reference-returning sinks, typed/variadic destinations, owning caches, warning-time advancement and pending warning exceptions remain outside this rule."
+  },
+  "implementation": {
+    "tested_composition": "1de4defbb659bc6d9ea7cdf0f66571dff53fc60e",
+    "master_parent": "b0650c4c0c6869e4a79eb771b4a0cc5d661a8bd5",
+    "direct_source_guard": "307e33739007c7dabdf41e54235c46a44250d21e",
+    "source_hashes": {
+      "spec/semantics/30-storage.watsup": "dabdf25dba389f3d14864972bdea54fd9a4d83c432bf5a2d2558ae20d494bfbd",
+      "spec/semantics/405-call-generator-unpack.watsup": "d3b16bffe4c4337035c541a4e07fab345e061fbfb0f25a91310b7f769dc2f7a7",
+      "spec/semantics/439-call-aggregate-unpack.watsup": "e8e99db5e07cbe0291ea592b61689c060c92a35c516e7de7e5db15140c8a41f0"
+    },
+    "design": "Record-or-eps capture makes Warning/refusal branches disjoint. Authority follows ERROR_HANDLER and real API_ERROR send/reference cursors. Source-valid Unsupported cursors keep INPUT/DATA/SENT/HOLD roots and exact reasons; a pending warning Throwable remains under THROW_SEARCH."
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_UNPACK: key/binding checks, ZVAL_DEREF/Z_TRY_ADDREF, zend_error, ZVAL_NEW_REF and unconditional move_forward.",
+    "vendor/php-src/Zend/zend_generators.c::zend_generator_resume and native Generator iterator callbacks."
+  ],
+  "validation_identity": {
+    "php": "8.5.10 CLI NTS64, source 34308a6666b2d489c509541ea9befea9e2b42348; sole oracle sha256 b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398.",
+    "compiler": "P4-SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml 5.1.0, strict SL/cache-off/encountered determinism checks; all 433 project modules compile in source/state gates.",
+    "environment": "tests/semantics/profile.json; PHP -n; LC_ALL=C/TZ=UTC; PHP_SPEC_SCRIPT_ENCODING unset; one serial leased CPU2 actor, fully reaped.",
+    "records": "Raw reports retain exact revisions, commands, budgets, exits and executed input/binary hashes. Final inventory169/306 and diff checks pass; fixture/documentation changes do not renew old semantic evidence."
+  },
+  "evidence_roots": {
+    "author_native": "/home/user/workspace/php-spec-evidence-archive/config-generator-byref-consumer-native-94",
+    "review": "/home/user/workspace/php-spec-evidence-archive/config-generator-byref-consumer-review-94",
+    "recovery": "Reports below are relative to review; relocations.json maps original private paths to retained raw source/process files. Evidence stays outside Git and is not a build dependency."
+  },
+  "new_source_agreements": {
+    "source-handler-failure-5da/report.json": "5da4a4429cdda888521dc114178258c1a22214a8: only the 2 passing retained/default and temporary/default rows; its handler failure earns 0.",
+    "source-handler-second-501a/report.json": "501a99a614eeba7c2ac33923029a330d7a898777: 2 exact normals, handler global mutation/snapshot and second-position reference destination.",
+    "source-scalar-matrix-1b42/report.json": "1b42a3751e726e827571b106e10166915b2027f0: 1 exact normal distinguishing NULL/true/binary64 1.5/runtime string and private-cell mutation. String identity is nonowning metadata; no string-deallocation claim.",
+    "source-two-reference-1de4/report.json": "1de4defbb659bc6d9ea7cdf0f66571dff53fc60e: 1 exact normal with two reference destinations, two warnings and distinct 33/44 mutations."
+  },
+  "affected_legacy_sources": {
+    "source-legacy-byref-2893/report.json": "28938443c606004dc40a8994821e7f53116c57ae: 1 exact normal for the promoted valid-key reference-target source, including its Closure warning handler.",
+    "source-legacy-acquired-1de4/report.json": "1de4defbb659bc6d9ea7cdf0f66571dff53fc60e: 1 exact normal for acquired method Generator receiver/cache/owning-return cleanup."
+  },
+  "reached_states": {
+    "state-six-501a/report.json": "501a99a614eeba7c2ac33923029a330d7a898777: 6 normal groups/323 reported checks; warning source/capture, fresh cells/Generator owners, API_CALLBACK_SEND, malformed controls and budget/finish consistency.",
+    "state-authority-two-reference-1de4/report.json": "1de4defbb659bc6d9ea7cdf0f66571dff53fc60e: 2 groups/106 checks = refreshed authority 45 (includes INDEX-only mismatch) + new COUNT=1 distinct-cell ownership 61. Refreshed authority is not a new unique group.",
+    "state-legacy-reference-named-1de4/report.json": "1de4defbb659bc6d9ea7cdf0f66571dff53fc60e: 2 groups/141 checks, reference-yield value snapshots and named-slot key/error priority.",
+    "state-legacy-acquired-1de4/report.json": "1de4defbb659bc6d9ea7cdf0f66571dff53fc60e: 1 group/116 checks, acquired method Generator cache and owned receiver."
+  },
+  "unsupported_zero_agreement": {
+    "negative-four-1b42/report.json": "1b42a3751e726e827571b106e10166915b2027f0: 4 exact Unsupported controls: handler advances Generator, BYREF producer with outside alias, Closure sink, and warning-handler throw.",
+    "negative-dynamic-2893/report.json": "28938443c606004dc40a8994821e7f53116c57ae: 1 exact dynamic-string sink Unsupported control.",
+    "state-throw-stop-1b42/report.json": "1b42a3751e726e827571b106e10166915b2027f0: 1 group/44 checks at genuine THROW_SEARCH/ERROR_HANDLER_RESULT; pending Throwable/cursor roots, unchanged store/heap/events, malformed stops and frozen resumption. This is boundary evidence, not engine agreement."
+  },
+  "preserved_failures": {
+    "review": "source-overlap-362979be/report.json retains runtime Warning/refusal overlap; source-handler-failure-5da retains its failed handler row; failure-api-cursor-5da/report.json is a defect assertion with 0 agreement. handler-invoke-front-5da establishes only that reached front.",
+    "author": "baseline-retained/report.json and baseline-scalar/report.json stay under author_native with their original identities and 0 credit. Draft strict433 did not expose the runtime overlap.",
+    "interpretation": "The early temporary last-owner reason was ERROR_UNWIND masking the initial module405 send refusal; it establishes no independent cleanup prerequisite."
+  },
+  "remaining": "Zend advances its native iterator with a warning exception already pending before propagating it. That core behavior remains explicit Unsupported; no engine bug or deliberate engine divergence is claimed."
+}

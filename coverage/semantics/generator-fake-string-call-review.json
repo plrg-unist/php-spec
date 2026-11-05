@@ -1,0 +1,172 @@
+{
+  "milestone": "I95 dynamic-string rejection and finite bound-fake Generator call sources",
+  "status": "Current native3/source3 and four reached fronts 609 custom/629 reported pass at distinct cuts; joined current-tail validation passed; original cuts retained",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "private_base": "296c9c1672615b9b8462af6ff243971377ab5ba5",
+  "scope": "Variable/dynamic string first-class conversion rejects a nonstatic method before later Closure::call arguments. The caller-aware fromCallable(string) API instead supplies an authenticated FROMCALLABLE source with compatible This. Finite METHOD/FROMCALLABLE to BF to call-copy chains preserve original private selection, shared method statics and distinct real owners. A one-line shared history guard makes consumed metadata a fallback only when live function lookup is unavailable, disjoint in both Generator closure and storage consumers. No 210 source-policy, signature, global target/liveness, schema or owner change.",
+  "changed_modules": [
+    "spec/semantics/280-generators.watsup"
+  ],
+  "engine": {
+    "paths": [
+      "vendor/php-src/Zend/zend_execute.c",
+      "vendor/php-src/Zend/zend_vm_def.h",
+      "vendor/php-src/Zend/zend_compile.c",
+      "vendor/php-src/Zend/zend_API.c",
+      "vendor/php-src/Zend/zend_closures.c"
+    ],
+    "symbols": [
+      "zend_init_dynamic_call_string",
+      "ZEND_INIT_DYNAMIC_CALL",
+      "ZEND_CALLABLE_CONVERT",
+      "zend_is_callable_ex",
+      "ZEND_METHOD(Closure, fromCallable)",
+      "ZEND_METHOD(Closure, call)",
+      "zend_compile_dynamic_call"
+    ],
+    "rule": "VM variable/dynamic string conversion rejects nonstatic methods before conversion/call arguments. fromCallable uses its caller-aware resolver and can carry compatible This; it yields FROMCALLABLE, not a STRING capture. Constant/literal strings can take a folded static-method-init route and are a separate remaining control."
+  },
+  "review": "Independent semantic and fixture review CLEAR; joined current-tail review is linked below. Original evidence retains its tested revisions.",
+  "validation": {
+    "native_packets": [
+      {
+        "revision": "0935d83705d161e08821f85b44117c3e4f23e5ff",
+        "count": 1,
+        "selected_id": "i95-fake-bound-call-shared-static-warning",
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95/source-packet/native-first/report.json",
+        "sha256": "93a14fdee53462b4aa66ba35c82719d8c99a40c3e6ab3c2ab2a25fadfb9e6a3d",
+        "note": "Only B141 passed row is current native credit. Aggregatefalse and original invalid positive A forecast0 remain unchanged; B was never replayed."
+      },
+      {
+        "revision": "d06e941817279ba6b2cd561c415d3ef9b43574bf",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95/nonstatic-string-rejection/native-first/report.json",
+        "sha256": "f86f2b98911051b46c2f121f816d18eef8127d26da0b89f6aad2c1a0490e7e08"
+      },
+      {
+        "revision": "d06e941817279ba6b2cd561c415d3ef9b43574bf",
+        "count": 1,
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/independent-fromcallable-string/native-first/report.json",
+        "sha256": "e6abcfd073aeb772afb27914294f129ae832c390ebb1e08dc1e6d093ef68b016"
+      }
+    ],
+    "native_forecast_failure": {
+      "revision": "0935d83705d161e08821f85b44117c3e4f23e5ff",
+      "id": "i95-fake-string-call-value-send",
+      "credit": 0,
+      "result": "Original normal133 forecast failed: native exit255/stdout OLD|, uncaught Error Non-static method Base95A::stream() cannot be called statically during variable string FCC conversion. Primary VM path differs from the API callable resolver. Original bytes/report retained; active new negative source has a new ID and native observation.",
+      "report": "../php-spec-evidence-archive/generator-fake-string-call-95/source-packet/native-first/report.json",
+      "sha256": "93a14fdee53462b4aa66ba35c82719d8c99a40c3e6ab3c2ab2a25fadfb9e6a3d"
+    },
+    "withdrawn_unrun_peer": {
+      "credit": 0,
+      "id": "i95-fake-string-bound-call-reference-throw-independent",
+      "source_sha256": "c1a7495087ba2963563c00c3f635408df89f61a6d50f657d62f4c7f22d50371a",
+      "packet": "../php-spec-evidence-archive/generator-fake-string-call-95-review/independent",
+      "result": "Original variable-STRING positive169 forecast withdrawn before any native/model actor; frozen UNRUN. Permitted API replacement has a distinct ID/source/native report."
+    },
+    "source_failure": {
+      "revision": "316838713e4f4af336f620a8a15df7d485e1ced7",
+      "id": "i95-fake-bound-call-shared-static-warning",
+      "credit": 0,
+      "result": "Interpreter failure0 at generator_storage_history: live-root BF remains callable after a seed/probe Gen consumes its own Closure reference, so live and historical arms both derived true. One shared EPS-lookup guard at6667 makes both consumers disjoint; only affected B retried.",
+      "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/generator-fake-string-call-source-kx4t2wuy/report.json",
+      "sha256": "9d6a7483aafa3474be062654d1858c46b99c2c1f2e150e83ebfca614785a7683"
+    },
+    "source_agreements": [
+      {
+        "id": "i95-nonstatic-string-conversion-error-skips-call-args",
+        "revision": "316838713e4f4af336f620a8a15df7d485e1ced7",
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95/validated/generator-fake-string-call-source-igodae38/report.json",
+        "sha256": "0364dde5b25ad4aa326398fe753a45f4db85ea17a14afe9c354a2c165e80b72f"
+      },
+      {
+        "id": "i95-fake-bound-call-shared-static-warning",
+        "revision": "6667cf3049abe7dbbf4ad3dd30d32f2f4b722fca",
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/generator-fake-string-call-source-q9u35aek/report.json",
+        "sha256": "c43250e07024fcccb3397fefa1011d6d8ecdfb3305dd80629f018e8ae15745e6"
+      },
+      {
+        "id": "i95-fake-fromcallable-string-bound-call-reference-throw-independent",
+        "revision": "6667cf3049abe7dbbf4ad3dd30d32f2f4b722fca",
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/generator-fake-string-call-source-stvcu3hp/report.json",
+        "sha256": "82bb841c4628a2b59a6232add20dcb4287130ed7551f9560cd1a578752a5a28c"
+      }
+    ],
+    "source_result": "Three current originals agree exactly with retained native NORMAL; exit0/empty stderr/no timeout/stable HEAD+inputs, sampled three CPU4 descendants absent/full reap. Negative35 retains3168; only failed B retried and peer169 new at6667. No native/I94 renewal.",
+    "compilation": "All new source and reached tests compile their actual private433-module manifest in SL/cache-off/determinism-on. No separate unchanged empty strict replay. Inherited I94 standalone433@abbee04c retains its original evidence, not new I95 credit.",
+    "state_fronts": [
+      {
+        "id": "i95-live-bound-source-storage",
+        "revision": "59449fe8bc5df5a8c74891d90a19a760779bec36",
+        "custom": 90,
+        "reported": 95,
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/fiber-state-review-4sn8erk6/report.json",
+        "sha256": "6a162ae306ceec945e268af291db012c39b6db3689aeceac56dd19754cee6fe2"
+      },
+      {
+        "id": "i95-bound-source-reference-forward",
+        "revision": "59449fe8bc5df5a8c74891d90a19a760779bec36",
+        "custom": 127,
+        "reported": 132,
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/fiber-state-review-v68alqyl/report.json",
+        "sha256": "1f59678d31fa39bfe06b9e0fcc62c8dc4ad246d3af373a220c1c13f9e97a62c8"
+      },
+      {
+        "id": "i95-fake-fromcallable-string-bound-parked-independent",
+        "revision": "4d9f741b316b3740db67601583d92d394dad4aa6",
+        "custom": 240,
+        "reported": 245,
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/fiber-state-review-hq6z571g/report.json",
+        "sha256": "9d7d819d683851189bdcdce4a8a7bbfa1837c22b02f51df434b29d6fe7257b72"
+      },
+      {
+        "id": "i95-fake-fromcallable-string-bound-closed-independent",
+        "revision": "4d9f741b316b3740db67601583d92d394dad4aa6",
+        "custom": 152,
+        "reported": 157,
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/fiber-state-review-37vqm24a/report.json",
+        "sha256": "32ea8366eaa7e8748b50ba00ef2fd4adea21da1fc2f8e9b2a0a9320082f148dc"
+      }
+    ],
+    "state_counts": {
+      "custom": 609,
+      "reported": 629,
+      "fronts": 4
+    },
+    "actual_tail": {
+      "review": "coverage/semantics/generator-call-series-current-review.json",
+      "tested_revision": "10e99f71acadd330a331cdc015489930b5355b42",
+      "result": "Planned combined strict, selected source and independent owner/cache gates pass; see shared record. Original private cuts/counts are not renewed."
+    },
+    "fixture_failures": [
+      {
+        "revision": "59449fe8bc5df5a8c74891d90a19a760779bec36",
+        "credit": 0,
+        "result": "PARK239 failed at full-name INPUT assumption.234 from_split stores normalized class subject INPUT and full callable ORIGINAL. Peer-only correction at1a3cdf changes INPUT to Base95R, adds explicit ORIGINAL Base95R::stream, and uses valid Other95R class for malformed-subject control. Only failed PARK retried; CLOSED was still new at the correction, source/code/caps unchanged. No diagnostic actor.",
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/fiber-state-review-_cz_d21c/report.json",
+        "sha256": "6abdaa7c416aecd88c9251d962344e96b637f2124496ce36eb8d81f7d66c5e53"
+      },
+      {
+        "revision": "1a3cdf8bc8795feff43f0ab2e805818f0735615b",
+        "credit": 0,
+        "result": "PARK240 passed earlier source/history/owner/input controls, then failed its operation-helper refusal for an UNDEFINED cache cell.281 throw_valid authenticates operation/cache shape; cached_reference_valid checks cell contents separately. Only the failed assertion changed to that content-specific refusal at4d9f741b316b3740db67601583d92d394dad4aa6. Counts/source/code/caps unchanged; affected PARK retry only, CLOSED was still new at that correction.",
+        "report": "../php-spec-evidence-archive/generator-fake-string-call-95-review/validated/fiber-state-review-t4bcu830/report.json",
+        "sha256": "98314560adec9e5117b5dbb95332b9062bf1d758e6ad7cfdefbc836f91360545"
+      }
+    ],
+    "state_result": "Four fronts pass true newline/exit0/empty stderr/no timeout/stable HEAD+watched+author or peer inputs, sampled two CPU4 descendants absent/full reap. Authored LIVE90/FORWARD127 retain59449; corrected PARK240 and new CLOSED152 pass at4d9. Both original fixture failures retain zero credit; only affected PARK retried after each distinct correction. Shared-helper live/history disjointness, finite source/private input identities, physical owners, cached-cell boundary and full/split cleanup are validated. Initial authored300/peer900 caps unchanged."
+  },
+  "remaining": [
+    "Constant/literal folded nonstatic string capture is a separate unrun native hypothesis; this cut does not reject every nonstatic string spelling.",
+    "Other producers, receiver policies, packed/computed call forms and broader transfer/cleanup contexts remain partial.",
+    "No-Generator receive errors, warning-handler throws and mapping errors retain inherited explicit boundaries.",
+    "Core PHP, feature inventory and paused return verification are not closed."
+  ],
+  "reproduction": [
+    "taskset -c 4 python3 tests/semantics/generator_fake_string_call_sources.py --case CASE --native-report RETAINED_NATIVE_REPORT",
+    "taskset -c 4 python3 tests/semantics/generator_fake_string_call_state.py --case CASE",
+    "taskset -c 4 python3 tests/semantics/generator_fake_string_call_review_state.py --case CASE",
+    "Native packets/recorders/raw streams/full-reap sidecars remain external. Initial source caps600/620; authored state300; independent state900 upfront."
+  ]
+}

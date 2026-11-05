@@ -150,6 +150,21 @@ and independent parked-cache169 states pass at f34d1214a. Original failures
 retain zero credit. Receive/callback/mapping errors and wider calls remain
 partial. [I93 review](coverage/semantics/generator-call-reference-review.json).
 
+I94–I98 cover fake user-method Generator Closure::call copies, finite bound
+source histories and distinct dynamic/folded string policies. Fake copies keep
+shared method statics and exact declaring-class receivers; normal/abrupt binding
+warnings release actual API owners in native order. Existing reference-warning
+cursors also survive Fiber suspension in handlers and owning retval destructors.
+Each milestone retains its original native/source/reached cuts and failures.
+Joined strict433, four source comparisons and 187 custom/192 reported ownership
+checks pass at their recorded cuts; see the [joined review](coverage/semantics/generator-call-series-current-review.json). Wider
+call/receiver/signature, mapping, no-Gen receive and abrupt warning contexts remain
+partial. Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
+[I95](coverage/semantics/generator-fake-string-call-review.json),
+[I96](coverage/semantics/generator-folded-string-call-review.json),
+[I97](coverage/semantics/generator-call-warning-fiber-review.json) and
+[I98](coverage/semantics/generator-call-warning-retval-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -361,6 +376,16 @@ corrected P4 helper compile failure retain zero credit. Other captured
 object layouts and nested or destructor-bearing graphs remain partial.
 [GC26 review](coverage/semantics/gc-shared-capture-review.json).
 
+GC27 admits finite direct capture graphs with at least two mutable array
+occurrences under the same authenticated active Closure root. Distinct arrays
+may share childless stdClass leaves; repeated array captures retain each owner
+with at most one candidate slot per identity. Three originals agree exactly,
+including a reordered three-array graph with an unrelated direct leaf and final weak death.
+Three strict D-state groups pass 204+146+193 assertions, independent review
+passes 73, and both affected GC26 groups pass 148. Nested, reference, proxy and finalizer graphs
+remain partial; the hidden Closure capture table remains black under the real
+caller root. [GC27 review](coverage/semantics/gc-multi-array-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -380,6 +405,15 @@ Earlier [I75](coverage/semantics/generator-keyword-creation-review.json),
 [I78](coverage/semantics/generator-closure-factory-review.json) and
 [I79](coverage/semantics/generator-closure-method-review.json) reviews retain
 their distinct scope, counts and raw failures.
+
+Ordinary scalar BYVAL Generator unpack now warns within the first two sends to
+fixed untyped BYREF parameters in argument positions 1 or 2 of direct named
+functions returning by value. Distinct private cells preserve earlier sends
+through the second Warning. Six new and two affected legacy sources agree;
+source-derived ownership, authority and budget gates pass at their recorded cuts.
+Five Unsupported controls and pending-throw stop checks retain zero agreement
+credit. Dynamic-string sinks, pending warning exceptions and wider forms remain partial.
+[Reference-sink review](coverage/semantics/generator-byref-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
 ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
@@ -836,6 +870,17 @@ included and eval first-declaration controls. Forty-four checked-AST premises
 authenticate declaration and item paths, warning location, and malformed
 occurrence refusal. Other declaration shapes and multibyte source conversion
 remain partial. [Review](coverage/semantics/encoding-placement-review.json).
+
+COMP166 admits arbitrary mixed/repeated encoding items with parser-literal values
+and ordinary bodies in checked single-line declarations. Source token positions
+order the complete recursive parser-warning prefix before compiler diagnostics;
+literal concatenation passes the matching parser-form check. Ten original
+sources agree, including strict/tick interactions and include/eval body returns.
+Authored 256, independent dynamic 93 and affected legacy 179 strict-SL premises
+pass, alongside six CLI guards and two explicit multiline Unsupported controls.
+Actual cuts and preserved failures are in the
+[review](coverage/semantics/encoding-list-review.json). Multiline declarations,
+rejected sources with warnings and multibyte conversion remain partial.
 
 ## Active and unintegrated work
 
