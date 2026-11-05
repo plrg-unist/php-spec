@@ -5185,9 +5185,9 @@ compilation precede the static-constructor error. Full method/captured scopes re
 authoritative; only exercised diagnostic class operands use C strings. Abstract
 anonymous methods, attributes and wider magic contexts remain partial. [Method modifier review](coverage/semantics/anonymous-method-modifiers-review.json).
 
-Anonymous child factories compile in ordinary named-class methods and
+Anonymous child factories compile in ordinary nonmagic named-class methods and
 nongenerator byvalue constructors, and in the corresponding unit0 anonymous/Trait
-owners and method-owned Closure/arrow bodies. Nongenerator methods and deferred
+owners and method-owned Closure/arrow bodies. Nongenerator nonmagic methods and deferred
 declarations may return by reference; byvalue generator bodies are also admitted.
 Each compiler return mode must match its own parsed header independently of the
 containing method. Named-owner keys follow their children; anonymous owners
@@ -5206,13 +5206,20 @@ the real Closure until release. Returned cells preserve caller aliases; temporar
 reference returns retain notices and callback cleanup, including Arrow expression
 returns at their authenticated compiled boundary. Lazy child-link failures precede
 arguments, and uncalled compile errors still reject the unit. Reference/generator
-constructors, reference generators, attributes, other magic bodies and wider
+constructors, reference generators, attributes, remaining magic bodies and wider
 binding/dynamic deferred contexts remain partial.
+Byvalue nongenerator `__invoke`, `__get` and `__toString` bodies also admit these
+factories through existing callable, property and string consumers. Getter headers
+keep plain untyped required byvalue parameters and no declared return type.
+Borrowed receiver roots survive caller-variable cleanup, and child warnings
+precede a rejected magic signature. Reference/generator magic forms and wider
+getter headers remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
 [generator Closure](coverage/semantics/anonymous-generator-closure-factories-review.json),
 [reference method](coverage/semantics/anonymous-reference-method-factories-review.json)
-and [reference Closure](coverage/semantics/anonymous-reference-closure-factories-review.json) reviews.
+[reference Closure](coverage/semantics/anonymous-reference-closure-factories-review.json)
+and [magic method](coverage/semantics/anonymous-magic-factories-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

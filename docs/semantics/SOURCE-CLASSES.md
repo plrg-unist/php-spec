@@ -639,10 +639,10 @@ abstract methods, wider method-body factories, attributes and byref/magic/genera
 forms retained explicit boundaries. The historical177 boundary originals
 retain zero credit there; the named-owner witness has a separate fresh178 agreement.
 
-Ordinary methods and nongenerator byvalue constructors in admitted named source
-classes compile anonymous child factories. Unit0 anonymous classes and traits
+Ordinary nonmagic methods and nongenerator byvalue constructors in admitted named
+source classes compile anonymous child factories. Unit0 anonymous classes and traits
 share these contexts, including method-owned Closures and arrows nested through
-admitted deferred bodies. Ordinary methods and deferred Closure/arrow declarations
+admitted deferred bodies. Nonmagic methods and deferred Closure/arrow declarations
 may return by reference when nongenerator; byvalue generator bodies are also
 admitted. Method-owned deferred contexts, anonymous owners and traits retain their
 unit0 restriction; the existing direct named-method dynamic-unit policy is unchanged.
@@ -656,6 +656,15 @@ method's independently checked flag only in a temporary compiler-context query.
 Thus a reference Closure may occur in a byvalue or reference method without
 confusing their return modes. Actual captures, receivers and return cells use the
 ordinary runtime protocols.
+
+Byvalue nongenerator `__invoke`, `__get` and `__toString` factory bodies share this
+method ancestry, including admitted nested deferred factories. Getter headers
+retain untyped required byvalue nonvariadic parameters without defaults and no
+declared return type; successful reception has one parameter. Wider getter
+headers remain a source boundary. Existing callable, property-get and Stringable
+consumers supply the actual receiver/frame; no conversion or dispatch rule is
+widened. A getter frame borrows its receiver from the saved property-result task,
+so clearing the caller's receiver variable does not destroy it during child `new`.
 
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
@@ -699,14 +708,17 @@ expression return is never classified as ordinary implicit-null fallthrough.
 Compilation still rejects errors in uncalled bodies. Child errors precede rejected
 static/return-typed constructors, and earlier private-final warnings remain visible.
 On abrupt unit compilation, diagnostic replay skips only authenticated child
-checkpoints whose owner/child images were never installed; normal and installed
-histories retain their usual publication handling. Lazy child-link failures precede
+checkpoints whose owner/child images were never installed, including named/Trait
+methods authenticated through their actual owner body field. This preserves child
+warnings before a later magic signature fatal. Plain getter wrong-arity errors
+are diagnosed after the body; wider getter signatures retain explicit Unsupported.
+Valid compilation keeps its EARLY activation checkpoints. Normal and installed histories retain their usual handling. Lazy child-link failures precede
 argument effects and preserve the actual call/resumption trace. Protected access,
 promotion, failed constructors, imported names and readonly rules remain ordinary.
 
 Reference/generator constructors, reference generators, attributed factories,
-other magic bodies (including factories inside `__toString`), named nested
-functions and wider binding/dynamic deferred contexts remain partial. Constant
+reference/generator forms of the admitted magic methods, other magic bodies,
+named nested functions and wider binding/dynamic deferred contexts remain partial. Constant
 and default positions retain their separate source fences.
 
 The [method](../../coverage/semantics/anonymous-method-factories-review.json),
@@ -720,7 +732,8 @@ ledgers preserve their historical scopes and source/state evidence. The
 [generator method](../../coverage/semantics/generator-method-factories-review.json),
 [generator Closure](../../coverage/semantics/anonymous-generator-closure-factories-review.json),
 [reference method](../../coverage/semantics/anonymous-reference-method-factories-review.json)
-and [reference Closure](../../coverage/semantics/anonymous-reference-closure-factories-review.json)
+[reference Closure](../../coverage/semantics/anonymous-reference-closure-factories-review.json)
+and [magic method](../../coverage/semantics/anonymous-magic-factories-review.json)
 reviews distinguish exact originals, genuine reached ownership/resumption,
 explicitly derived context refusals and native-only preparations.
 

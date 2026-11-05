@@ -1579,6 +1579,18 @@ derived mode/refusal queries and preserved implementation failures. Reference
 generators, reference/generator constructors, attributes and wider binding/dynamic
 contexts remain partial.
 
+CLASS189 admits anonymous factories in byvalue nongenerator `__invoke`, `__get`
+and `__toString` bodies under existing method/deferred source ancestry. Getters
+keep untyped required nonref/nonvariadic/default-free parameters and no declared
+return type. Existing real consumers preserve receiver ownership after caller
+variables clear. Authenticated named/Trait child checkpoints stay unpublished on
+abrupt owner compilation, preserving child warnings before magic signature errors.
+A bounded post-body compiler arm supplies the missing plain getter arity fatal.
+The [review](coverage/semantics/anonymous-magic-factories-review.json) separates
+original observations, source-derived mode bounds and real getter ownership/budget
+checks. Reference/generator magic forms, wider getter headers, other magic bodies,
+attributes and wider dynamic/binding contexts remain partial.
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
@@ -1812,7 +1824,6 @@ pipe controls pass; parser inputs stay fixed.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS189 | Byvalue nongenerator __invoke/__get/__toString anonymous factories; native/source preparation. |
 | I115 | Temporary Closure::call on captured native Generator APIs; private implementation/review. |
 | GC49 | Shared scalar/finite-object payload policy for mixed WeakMap storage; private implementation/review. |
 | COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
