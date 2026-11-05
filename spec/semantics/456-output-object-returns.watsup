@@ -39,6 +39,7 @@ dec $ob_object_skip_successor(pstate, ptask*, pdestructionoperation, pobobjectre
 dec $ob_object_return_successor(pstate, ptask*, pdestructionoperation, pobobjectreturn) : bool
 dec $ob_object_string_owner(pstate, pobobjectreturn) : bool
 dec $ob_object_string_owner_frames(pframe*, pobobjectreturn) : bool
+dec $ob_object_c_pair_frame(pframe) : bool
 dec $ob_object_callee_cleanup_call(pstate, pdestructionframe, ptask*) : pconfigcall?
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
@@ -205,7 +206,7 @@ def $ob_object_error_return(S, pobobjectreturn) = S[.COMPLETION = NORMAL][.TODO 
   -- if S.COMPLETION = THROWING n
 def $ob_object_error_return(S, pobobjectreturn) = S -- otherwise
 
-def $stringify_source(S, porigin, z, OB_USER_OBJECT_STRING pobobjectreturn) = ($ob_object_current(S, pobobjectreturn) /\ porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL) /\ z = $ob_call_line(pobobjectreturn.INVOKE.CALL) /\ $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn))
+def $stringify_source(S, porigin, z, OB_USER_OBJECT_STRING pobobjectreturn) = (porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL) /\ z = $ob_call_line(pobobjectreturn.INVOKE.CALL) /\ $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn))
 def $stringify_consumer_receiver_valid(S, n, OB_USER_OBJECT_STRING pobobjectreturn) = (n = pobobjectreturn.OBJECT /\ $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn))
 def $ob_object_string(S, n, porigin, z) = (pobobjectreturn)
   -- if $ob_object_site_tasks(S.TODO) = (pobobjectreturn)
@@ -249,6 +250,20 @@ def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_sco
   -- if porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL)
   -- if z = $ob_call_line(pobobjectreturn.INVOKE.CALL)
   -- if ptask_tail* = pobobjectreturn.TAIL
+;; C frame projections keep their executing destructor/handler. Validate the
+;; latent pair against its real saved frame without granting execution entry.
+def $ob_object_c_pair_frame(pframe) = (pframe.CONTEXT = eps /\ pframe.LOCALS = eps /\ pdestructorcall.CALLER = pframe.CONTEXT /\ pdestructorcall.ORIGIN = pframe.ORIGIN /\ pdestructorcall.CONSTCONTEXT = pframe.CONSTCONTEXT)
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+def $ob_object_c_pair_frame(pframe) = (pframe.CONTEXT = eps /\ pframe.LOCALS = eps /\ $exception_warning_resume(perrorcall.RESUME))
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+def $ob_object_c_pair_frame(pframe) = false -- otherwise
+def $stringify_frame_pairs_scope(S, pframe, pframe_tail*) = S[.ORIGIN = pframe.ORIGIN]
+  -- if pframe <- S.FRAMES
+  -- if $ob_object_c_pair_frame(pframe)
+  -- if $ob_object_site_tasks(pframe.TODO) = (pobobjectreturn)
+  -- if pframe.CONTEXT = pobobjectreturn.CALLER
+  -- if pframe.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))
+  -- if $call_task_valid(S[.ORIGIN = pframe.ORIGIN], OB_USER_OBJECT_STRING pobobjectreturn)
 def $ob_object_finish_string(S, pobobjectreturn, pvalue_text, n?) = S[.TODO = (OB_USER_OBJECT_RELEASE pobobjectreturn[.PENDING = n?] $ob_user_output(S, pvalue_text)) :: pobobjectreturn.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $ob_object_string_value(S, pvalue_text)
 def $return_discard(S, STRINGIFY_RESULT n porigin z) = $ob_object_finish_string(S, pobobjectreturn, PSTRING eps, (n_pending))
