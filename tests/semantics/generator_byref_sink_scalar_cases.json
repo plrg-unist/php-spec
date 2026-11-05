@@ -1,0 +1,12 @@
+[
+  {
+    "id": "null-bool-float-owned-string-matrix",
+    "source": "<?php\nfunction null94() { yield 0 => null; }\nfunction bool94() { yield 0 => true; }\nfunction float94() { yield 0 => 1.5; }\nfunction string94() { global $s; yield 0 => $s; }\nfunction warningScalar94($level,$message) { echo \"W;\"; return true; }\nfunction sinkScalar94(&$x) {\n    if ($x === null) { echo \"N;\"; }\n    elseif ($x === true) { echo \"B;\"; }\n    elseif ($x === 1.5) { echo \"F;\"; }\n    elseif ($x === \"ab\") { echo \"S;\"; }\n    else { echo \"BAD;\"; }\n    $x = \"changed\";\n}\n$s=\"a\"; $s.=\"b\"; set_error_handler('warningScalar94');\nsinkScalar94(...null94()); sinkScalar94(...bool94());\nsinkScalar94(...float94()); sinkScalar94(...string94());\necho \"V:\",$s,\";\"; unset($s);\n",
+    "source_sha256": "aeea941c80d1e8565ec93272084150a9a563fd1cb40aef172228f56ad9fe4f14",
+    "purpose": "Core identity checks distinguish all scalar cache types; a mutated fresh sink cell leaves the runtime string source unchanged",
+    "expected_model": "normal",
+    "native_stdout": "W;N;W;B;W;F;W;S;V:ab;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
