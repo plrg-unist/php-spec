@@ -702,8 +702,8 @@
     "id": "enum-is-callable-third-output-variable-array-alias-retained-child-held",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildDrop {\n    public function __destruct() {\n        global $call;\n        echo $call === 'FirstCheck::from' ? 'D-name|' : ($call === null ? 'D-null|' : 'D-other|');\n    }\n}\nfunction rebind_child(): bool {\n    global $call, $holdChild;\n    $child = new ChildDrop;\n    $call = [$child, 'tryFrom'];\n    $holdChild = $child;\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$holdChild = null;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_child(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\nunset($holdChild);\necho 'done|';\n",
     "source_sha256": "cb758e7511e482394a8c5a53afe59c567a5c9d323d6034b34485a346ff2df770",
-    "expected_model": "unsupported",
-    "purpose": "Separate child holder survives rebound array death at the shared-cell name write; pending authenticated ownership route.",
+    "expected_model": "normal",
+    "purpose": "A separate child holder survives rebound array death at the shared-cell name write; its destructor runs when that holder is later released.",
     "model_timeout_seconds": 90,
     "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from|D-name|done|"
   },
