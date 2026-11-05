@@ -7217,7 +7217,11 @@ Ordinary user `Closure::call` now names its temporary function cache separately:
 scope changes and private sources get fresh invocation keys, while nested normal
 calls clear inherited keys and restore the caller on return. See the
 [invocation-cache review](coverage/semantics/enum-is-callable-ordinary-call-cache-review.json).
-Unknown births and wider owners retain their explicit bounds.
+Named and inherited method factories now record a known first literal cache
+scope from the actual creator and lexical class. Clones and same-scope bind/call
+share that cache; changing scope creates a fresh cache. See the
+[scoped-birth review](coverage/semantics/enum-is-callable-scoped-cache-review.json).
+Unknown first births and wider owners retain their explicit bounds.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

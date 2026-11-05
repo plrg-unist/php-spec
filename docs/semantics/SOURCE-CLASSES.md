@@ -1155,8 +1155,19 @@ and API site; saved frames retain them, and ordinary/named function entry
 clears inherited keys. Birth rows own nothing and remain valid after retirement.
 The [invocation-cache review](../../coverage/semantics/enum-is-callable-ordinary-call-cache-review.json)
 records repeated-site, throw and nested-function checks. Static receiver binding
-is rejected before cache birth. Unknown births, computed/packed entry variants,
-internal scope wrappers and wider method/fake/Fiber owners remain partial.
+is rejected before cache birth. Ordinary named/inherited method factories now
+prove literal scope using raw named-Class/method source, exact creator target,
+function and lexical owner, and the validated post-created scope. Trait/imported
+origins and anonymous classes cannot enter through descriptor membership alone.
+First known template scope determines sharing; receiver/CALLED class does not.
+Inherited Child makers retain Base cache policy through clone, same-Base bind/call
+and original retirement, while Child scope changes get fresh caches. Canonical
+literal scope also rejects wrong-class history after retirement. An earlier
+unknown Fiber birth still blocks a later root birth from claiming sharing. The
+[scoped-birth review](../../coverage/semantics/enum-is-callable-scoped-cache-review.json)
+records these cuts. Raw method query-site caches, unknown births, computed/packed
+entry variants, internal/fake/Trait/anonymous/Fiber and inherited include/eval
+creation contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

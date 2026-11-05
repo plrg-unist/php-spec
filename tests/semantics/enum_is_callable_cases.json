@@ -1390,5 +1390,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "query:1:ScopedStatic\\Target::cases|query:1:ScopedStatic\\Target::cases|query:1:ScopedStatic\\Target::cases|query:1:ScopedStatic\\Target::cases|USER:OLD|query:0:OLD|query:1:ScopedStatic\\Target::cases|USER:OLD|query:0:OLD|",
     "purpose": "First named static/inherited method-factory births share the Base lexical template cache across original retirement, clone, same-scope bind and ordinary Closure::call; Child scope changes get fresh caches and select USER."
+  },
+  {
+    "id": "enum-is-callable-third-output-scoped-birth-inherited-instance-factory-lexical-scope-and-receiver-lifetime",
+    "source": "<?php\nnamespace ScopedReceiver;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass BaseFactory {\n    public $label;\n    public function __construct($label) { $this->label = $label; }\n    public function __destruct() { echo 'drop:', $this->label, '|'; }\n    public function make() {\n        return function($install) {\n            $name = 'OLD';\n            $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n            echo 'query:', (int)$ok, ':', $name, '|';\n        };\n    }\n}\nclass ChildFactory extends BaseFactory {}\n$maker = new ChildFactory('maker');\n$query = $maker->make();\n$clone = clone $query;\nunset($query, $maker);\necho 'held|';\n$clone(true);\n$base = new BaseFactory('base');\n$clone->call($base, false);\n$child = new ChildFactory('child');\n$clone->call($child, false);\nunset($base, $child);\n$clone(false);\nunset($clone);\necho 'end|';\n",
+    "source_sha256": "ae2be15aa3fa6d903c318b33c09175642f5d116d4d0f33983e07d933797f0220",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "held|query:1:ScopedReceiver\\Target::cases|query:1:ScopedReceiver\\Target::cases|USER:OLD|query:0:OLD|drop:base|drop:child|query:1:ScopedReceiver\\Target::cases|drop:maker|end|",
+    "purpose": "An inherited instance maker retains Base lexical cache across clone and same-scope call, releases its real receiver only after the last Closure, and gives changed Child scope a fresh cache."
+  },
+  {
+    "id": "enum-is-callable-third-output-scoped-birth-fiber-first-method-factory-birth-stays-unknown",
+    "source": "<?php\nnamespace UnknownScopedFirst;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\nclass Factory {\n    public static function make() {\n        return function($install) {\n            $name = 'OLD';\n            $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n            echo 'query:', (int)$ok, ':', $name, '|';\n        };\n    }\n}\n$fiber = new \\Fiber(function() { return Factory::make(); });\n$fiber->start();\n$first = $fiber->getReturn();\nunset($fiber);\n$later = Factory::make();\n$first(true);\nunset($first);\n$later(false);\necho 'end|';\n",
+    "source_sha256": "9922b2d8bc56073169e93eace627a2aa171374cc2d9a05984616678ccee860f5",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:UnknownScopedFirst\\Target::cases|query:1:UnknownScopedFirst\\Target::cases|end|",
+    "purpose": "An earlier unproved Fiber birth blocks later sharing inference; explicit Unsupported, no engine agreement credit."
   }
 ]

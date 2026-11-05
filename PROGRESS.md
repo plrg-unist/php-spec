@@ -147,7 +147,13 @@ nonowning temporary-function cache identity. Each scope-changing/private call
 gets a fresh key; warmth inside that invocation survives throws and nested calls.
 Ordinary function entry clears inherited keys and frame restoration retains the
 caller key. The [invocation-cache review](coverage/semantics/enum-is-callable-ordinary-call-cache-review.json)
-records the bounded source/context checks; unknown births remain partial.
+records the bounded source/context checks. Named/inherited method factories
+now authenticate first literal cache births from the exact ordinary creator,
+compiled lexical owner and actual post-created scope. An inherited Child receiver
+keeps Base lexical cache policy; clone and same-Base bind/call share it, while
+Child scope changes are fresh. Unknown first births still block later inference.
+The [scoped-birth review](coverage/semantics/enum-is-callable-scoped-cache-review.json)
+records the source/lifetime and unknown-first control cuts.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1812,7 +1818,6 @@ pipe controls pass; parser inputs stay fixed.
 | COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR39 | Class-like declaration tick plans and compiler traversal; private implementation/review. |
-| Enum callable arrays | First scoped literal cache births in named/inherited method factories; private investigation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
