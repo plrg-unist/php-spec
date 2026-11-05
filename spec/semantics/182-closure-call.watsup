@@ -882,6 +882,11 @@ def $closure_call_copy_warning_pending(ERROR_HANDLER_RESULT perrorcall) = $closu
 def $closure_call_copy_warning_pending(ERROR_HANDLER_INVOKE perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
 def $closure_call_copy_warning_pending(ERROR_HANDLER_CLEAN perrorcall) = $closure_call_copy_warning_pending(perrorcall.RESUME)
 def $closure_call_copy_warning_pending(ptask) = false -- otherwise
+;; Descriptor walks follow the still-owned warning cursor past a pending throw.
+def $call_after_origin(S, THROW_SEARCH n) = S[.TODO = ptask_copy :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_copy :: ptask_tail*
+  -- if $throwable_member(S, n)
+  -- if $closure_call_copy_warning_pending(ptask_copy)
 dec $closure_call_copy_pending(ptask) : bool
 def $closure_call_copy_pending(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = true
 def $closure_call_copy_pending(CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) = true
