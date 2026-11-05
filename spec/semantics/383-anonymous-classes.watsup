@@ -658,7 +658,7 @@ rule PhpStep/anonymous-dependency-stage: S ~> S[.TODO = (AT pclassdesc.ORIGIN (S
   -- if ~$anonymous_dependencies_ready(S, pclassdesc)
 
 ;; Constructor selection and its result marker reuse the ordinary call receipt.
-;; No-constructor NEW retains the direct allocation path below.
+;; No-constructor NEW completes pending property defaults before allocation.
 def $new_source_name(S, porigin) = (ptbytes_name)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
   -- if $new_has_ctor(S, ptbytes_name)
@@ -666,9 +666,14 @@ def $new_source_name(S, porigin) = (ptbytes_name)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
   -- if ~$new_has_ctor(S, ptbytes_name)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE phpType7*) metadata)
-  -- if phpType7* =/= eps
 
-rule PhpStep/anonymous-new: S ~> $new_class(S[.TODO = ptask_tail*], ptbytes_name, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata))
+dec $anonymous_new_noctor(pstate, ptbytes, int) : pstate
+def $anonymous_new_noctor(S, ptbytes_name, z) = $noctor_start(S, ptbytes_name, eps, z)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_name)) = (porigin)
+  -- if $instance_default_tasks(S, porigin, z) =/= eps \/ $static_default_tasks(S, porigin, z) =/= eps
+def $anonymous_new_noctor(S, ptbytes_name, z) = $new_class(S, ptbytes_name, z) -- otherwise
+
+rule PhpStep/anonymous-new: S ~> $anonymous_new_noctor(S[.TODO = ptask_tail*], ptbytes_name, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata))
   -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
