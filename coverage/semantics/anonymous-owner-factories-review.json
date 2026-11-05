@@ -1,0 +1,107 @@
+{
+  "scope": "CLASS180: unit0 anonymous owners with direct method or constructor child factories reserve a source-authenticated compiler-local owner descriptor before member compilation; successful bodies replace it in place, and abrupt unit replay skips only unpublished child checkpoints after diagnostics. Parentless and named-parent owners, recursive children, and named-factory composition are included.",
+  "base": "d6bac9ec37b2995e15fe8ee83472d00343753665",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "implementation": [
+    "spec/semantics/383-anonymous-classes.watsup: authenticated owner source envelope, provisional key reservation, in-place final descriptor, anonymous method context and failed-unit child checkpoint proof",
+    "spec/semantics/141-method-compiler.watsup: disjoint generic method-body compiler from the owner-reservation path",
+    "spec/semantics/192-declaration-compiler.watsup: skip only authenticated unpublished child PPCP on abrupt non-Unsupported unit compilation after diagnostic drain"
+  ],
+  "evidence": {
+    "source": {
+      "cases": 22,
+      "statuses": {
+        "normal": 10,
+        "php_error": 2,
+        "static_rejection": 10
+      },
+      "all_native_exact": true,
+      "all_model_exact": true,
+      "stable_inputs": true,
+      "report": ".tools/class180-artifacts/class180-source-tl__xiv4/report.json",
+      "sha256": "6a6778a1bd5fd9986c78caeccc6458096985c28d7b43432bb21998b18be81b29"
+    },
+    "reached": {
+      "conditions": {
+        "owner_reuse": 31,
+        "recursive_depth": 32,
+        "inherited_protected_ctor": 29,
+        "abrupt_child_replay": 14,
+        "pure_source_derived_reservation": 20
+      },
+      "result": "true newline; exit0; empty stderr; stable inputs",
+      "report": ".tools/class180-artifacts/class180-protocol-2f0o7di6/report.json",
+      "sha256": "5ebfa8ac83a0601853d18316e032e222bc9ff3b8ee7ccecdcaf68e1d42373fa9"
+    },
+    "source_boundaries": {
+      "native_positive_cases": 5,
+      "source_gate_conditions": 35,
+      "result": "true newline; exit0; empty stderr; stable inputs",
+      "report": ".tools/class180-artifacts/class180-boundaries-uoy4o3en/report.json",
+      "sha256": "d353ba9b2393815fef057ae1826ed914950c1aea00b5903afe017035ad3f0033"
+    },
+    "strict": {
+      "modules": 435,
+      "result": "true newline; exit0; empty stderr; stable inputs",
+      "report": ".tools/class180-artifacts/class180-strict-okymrne7/report.json",
+      "sha256": "2543f806edd9f0c084f99d78dc2075759bb28dba89e7fc5d9ede15f9ab890327"
+    },
+    "affected": {
+      "class179_constructor_source4": {
+        "result": "4 exact; stable inputs",
+        "report": ".tools/class180-artifacts/class179-source-gabdzjm3/report.json",
+        "sha256": "1921774c6713efcbe4e969f6ed288cdce101baa8cef9f20d53fdccaaafb1f6f0"
+      },
+      "class178_named_method_source3": [
+        {
+          "case": "reversed-template-calls-and-counters",
+          "result": "pass; stable inputs",
+          "report": ".tools/class180-artifacts/method-runtime-6js3r2xu/report.json",
+          "sha256": "df25f59eaf38a08d627508f2561fd659ebb0fe79dc0038a49fae4cbfd8b88ff3"
+        },
+        {
+          "case": "conditional-owner-and-root-counters",
+          "result": "pass; stable inputs",
+          "report": ".tools/class180-artifacts/method-runtime-klmf6f87/report.json",
+          "sha256": "b4c7daf0a56c926be3519767f20c28e6f3df87b3e815c56ecabec48d34be4f65"
+        },
+        {
+          "case": "lazy-final-conflict-before-argument",
+          "result": "pass; stable inputs",
+          "report": ".tools/class180-artifacts/method-runtime-lbbqv4bi/report.json",
+          "sha256": "b462bf2e24daa12951c6fe86164de128c07afbb6d129a695247dcea2436877e7"
+        }
+      ]
+    },
+    "failed_attempts": {
+      "raw": ".tools/class180-artifacts/raw-private/",
+      "credit": "zero",
+      "notes": "Early syntax/fixture probes, the initial missing completed child checkpoint, one unstable input sweep, and a nested-depth 60-second timeout were replaced by fixed-input exact gates. The earlier reached report preceded the appended forward-parent catalog row and is not counted."
+    },
+    "independent_source": {
+      "case": "readonly promoted anonymous owner creates a promoted anonymous child from its property",
+      "native_model_exact": true,
+      "exit_status": 0,
+      "raw_streams": "exact; stderr empty",
+      "report": ".tools/class180-review-artifacts/readonly-promoted-owner-child.review.json",
+      "sha256": "2a3d92c3a0c6fe6b46eb73649e6e249dce77dc611a6caa18a072d0f64e2090a8"
+    }
+  },
+  "remaining": [
+    "Method-owned Closure, arrow and nested named-function child sites need separate deferred-scope context.",
+    "Anonymous owner traits, class constants, implicit Stringable sibling methods, interfaces/attributes and wider member forms remain outside this source envelope.",
+    "Later dynamic source units and wider include/eval histories remain partial."
+  ],
+  "review": {
+    "reviewer": "classes_review_daybreak",
+    "decision": "private_clear_joined_pending",
+    "private_cut": null,
+    "basis": "Independent static/native counterexample review, exact readonly-promoted source and all fixed-input private gates CLEAR; current-parent joined gates pending.",
+    "semantic_cut": "a584f6d28c5d6f75698ed01c10e2d38715cc7afc"
+  }
+}

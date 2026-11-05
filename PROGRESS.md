@@ -1082,17 +1082,29 @@ static/instance/default/byref/inherited/namespace/readonly behavior. Twelve exac
 originals, final435 plus five member-fence checks, 155 author reached +31 pure
 context queries and 212 independent conditions pass at scoped cuts. Initial
 elaboration stops and failed whole state batches retain separate zero-credit
-identities, with completed components qualified. Trait/anonymous source owners,
-method-owned Closures, generators/byref returns/attributes and wider contexts
-remain partial. [Review](coverage/semantics/anonymous-method-factories-review.json).
+identities, with completed components qualified. At that cut, trait/anonymous
+source owners, method-owned Closures, generators/byref returns/attributes and
+wider contexts remain partial. [Review](coverage/semantics/anonymous-method-factories-review.json).
 
 CLASS179 admits anonymous child factories in named `__construct` bodies with
 authenticated owner and compiler context. Child-before-deferred-owner keys,
 repeated construction, inherited access, promotion, failure cleanup and compile
 diagnostic priority match PHP 8.5.10. Reached lazy final-link errors retain their
-constructor trace through eager cleanup. Anonymous-owner methods require
-provisional key reservation before their body compilation and remain partial.
+constructor trace through eager cleanup. At that cut, anonymous-owner methods
+still required provisional key reservation before body compilation.
 [Review](coverage/semantics/anonymous-constructor-factories-review.json).
+
+CLASS180 reserves an anonymous owner's compiler-local descriptor before its
+method bodies and replaces it in place after successful compilation. This
+preserves source-order owner/child/grandchild keys, including reverse and
+repeated calls, named factories with forward parents and anonymous constructors.
+The ordinary runtime handles inherited scope, protected constructors, failed
+owner cleanup and lazy links. Abrupt unit compilation drains child diagnostics
+and skips only authenticated child checkpoints without installed images.
+Twenty-two exact PHP 8.5.10 sources, 106 reached plus 20 pure conditions and
+35 source-boundary checks cover this slice. Method-owned deferred scopes,
+owner traits/constants/implicit Stringable siblings and dynamic units remain
+partial. [Review](coverage/semantics/anonymous-owner-factories-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

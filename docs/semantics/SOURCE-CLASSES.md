@@ -673,9 +673,23 @@ runtime rules. A child compile error precedes a static or return-typed construct
 rejection; private-final child warnings remain visible. Reached final-method link
 errors capture the constructor call stack before eager failed-owner cleanup.
 The [constructor factory review](../../coverage/semantics/anonymous-constructor-factories-review.json)
-records exact sources and reached states. Anonymous owner methods still need an
-earlier owner-key reservation during body compilation; their nested factories
-remain outside this source cut.
+records exact sources and reached states.
+
+Anonymous owner methods and constructors can compile direct anonymous child
+factories. The compiler reserves the owner's generated key before its members,
+keeps that descriptor out of the installed class table during compilation, and
+replaces it in place when the body succeeds. Child and recursive grandchild keys
+therefore follow source order even when methods are called in reverse or more
+than once. A named factory with a forward parent still receives its deferred
+key after the anonymous owner and child. Parentless and inherited owner lexical
+scope, protected constructor access, failed constructor cleanup and reached
+lazy final-link errors use the ordinary runtime rules. An abrupt unit drains
+child warnings before its fatal and skips only authenticated child checkpoints
+whose class images were never installed. The [owner factory review](../../coverage/semantics/anonymous-owner-factories-review.json)
+separates native source comparisons, reached compiler/runtime steps and source
+boundary checks. Method-owned Closures, arrows and nested functions, owner
+traits/constants/implicit Stringable siblings and later dynamic units remain
+outside this admitted source slice.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
