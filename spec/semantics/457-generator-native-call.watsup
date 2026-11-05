@@ -1,5 +1,6 @@
 ;; Closure::call uses a temporary internal function, borrowing newThis from its
 ;; outer argv. The original real capture remains its only old-Generator owner.
+dec $generator_call_trace(pstate, pclosurecall) : ptraceframe
 def $closure_call_parameters(S, n) = [{NAME $generator_api_parameter(text_method), TYPE eps, BYREF false, VARIADIC false, REQUIRED true, DEFAULT PSNONE}]
   -- if $closure_call_native(S, n) = (text_method)
   -- if $generator_argument_count(text_method) = 1
@@ -113,7 +114,6 @@ def $generator_resumption_arguments_valid(S, pgeneratorop) = true
   -- if |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME)
 
 ;; Native handler frames have no user file/line; the outer API retains raw keys.
-dec $generator_call_trace(pstate, pclosurecall) : ptraceframe
 def $generator_call_trace(S, pclosurecall) = {FILE $call_sourcefile(S.FILES, pclosurecall.SITE), LINE pclosurecall.LINE, FUNCTION $ptascii("call"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS ((KINT 0, POBJECT n_receiver) :: $closure_call_trace_raw(S, pclosurecall.RAW)), HASARGS true}
   -- if pclosurecall.RECEIVER = (n_receiver)
 def $generator_operation_trace(S, pgeneratorop) = [ptraceframe, $generator_call_trace(S, pclosurecall)]
