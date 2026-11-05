@@ -70,6 +70,9 @@ $call_task_valid(S, GENERATOR_API_RESULT pgeneratorop (POBJECT n_return))
 ~$call_task_valid(S, GENERATOR_API_RESULT pgeneratorop[.STARTPACK = true] (POBJECT n_return))
 pgeneratorop.SITE = PORIGIN n_unit pcpath_call
 porigin_argument = PORIGIN n_unit (pcpath_call ++ [PCFIELD 2, PCINDEX 0, PCFIELD 1])
+pconfigcall_direct = {SITE pgeneratorop.SITE, KIND INTRINSIC_GENERATOR_METHOD "send" eps, INDEX 0, SENT eps, NAMED false, OWNER (n_target), SELECTION eps, LINE pgeneratorop.LINE, PACKS eps}
+~$generator_iterator_site(S, pconfigcall_direct)
+~$config_iterator_owner_live(S, pconfigcall_direct)
 ~$call_task_valid(S, GENERATOR_API_RESULT pgeneratorop[.SITE = porigin_argument] (POBJECT n_return))
 ~$call_task_valid(S[.ORIGIN = eps], GENERATOR_API_RESULT pgeneratorop (POBJECT n_return))
 ~$call_task_valid(S[.ORIGIN = eps], GENERATOR_API_RETURN pgeneratorop (POBJECT n_return))
