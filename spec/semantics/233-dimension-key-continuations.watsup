@@ -55,6 +55,7 @@ def $key_selected_key(PBOOL false) = (KINT 0)
 def $key_selected_key(PBOOL true) = (KINT 1)
 def $key_selected_key(PINT i) = (KINT i)
 def $key_selected_key(PFLOAT n_bits) = (KINT i) -- if (i, castnotice*) = $float_long(n_bits, true)
+def $key_selected_key(PSTRING_CARRIER pstringidentity n_name*) = $key_selected_key(PSTRING n_name*)
 def $key_selected_key(PSTRING n_name*) = (KINT i) -- if $string_key(n_name*) = INTEGERKEY i
 def $key_selected_key(PSTRING n_name*) = (KSTRING n_name*) -- if $string_key(n_name*) = STRINGKEY
 def $key_selected_key(pvalue) = eps -- otherwise
