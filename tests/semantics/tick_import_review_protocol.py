@@ -23,6 +23,12 @@ def valid(state):
 review.CASES = {
     'eval-import-tick-shares-counter-and-aborts-before-the-pending-class': {
         'source': sources.CASES['review-eval-namespace-import-shares-counter-and-aborts-pending-class'][0].decode(),
+        'eval_sources': [(1, b'''namespace Dyn47;
+interface Ready47 {}
+class Trigger47 { public const VALUE=7; public function unused(){declare(ticks=2);} }
+use Exception as Imported47;
+class Pending47 implements Ready47 { public const VALUE=9; }
+echo "BAD";''')],
         'stage': 'S.TODO = (TICK porigin ptickmarker) :: ptask_tail* -- if S.CURRENT = eps -- if porigin = PORIGIN n_unit pcpath -- if $(n_unit > 0) -- if $origin_node(S.SOURCES, porigin) = (NStmtUse phpType24 phpType51 metadata) -- if S.EVENTS = eps',
         'checks': [
             'porigin = PORIGIN n_unit pcpath', '$(n_unit > 0)',

@@ -785,12 +785,25 @@ def run(selected, *, process_seconds=120):
         try:
             parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source.read_bytes()).decode()})
             assert parsed['accepted'], name
+            parsed_evals = []
+            for unit, data in case.get('eval_sources', []):
+                parsed_eval = frontend.request({'op': 'parse-eval', 'id': str(unit),
+                    'mode': 'eval', 'profile': 'cli-raw-85',
+                    'source': base64.b64encode(data).decode()})
+                assert parsed_eval['accepted'], name
+                parsed_evals.append((unit, data, parsed_eval['ast']))
         finally:
             frontend.close()
         adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], directory / 'adapter')
         try:
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
             assert checked['ok'], name
+            responses = []
+            for unit, data, ast in parsed_evals:
+                checked_eval = adapter.request({'op': 'check', 'ast': ast, 'fixture': True})
+                assert checked_eval['ok'], name
+                responses.append('(SOURCE_ACCEPT ' + str(unit) + ' (' + str(list(data))
+                    + ') ' + checked_eval['fixture'] + ')')
         finally:
             adapter.close()
         fixture = directory / 'test.watsup'
@@ -812,7 +825,12 @@ def run(selected, *, process_seconds=120):
             'def $seek(S, n) = S -- if $stage(S)\n'
             'def $seek(S, n) = $seek($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1))) '
             '-- if ~$stage(S) -- if $(n > 0) -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
-            'def $seek(S, n) = S -- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET\n'
+            + ''.join('def $seek(S, n) = $seek($eval_resume(S, ' + response
+                      + '), $nabs($(n - 1))) -- if ~$stage(S) -- if $(n > 0) '
+                      '-- if $eval_response_valid(S, ' + response + ')\n'
+                      for response in responses)
+            + 'def $seek(S, n) = S -- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET'
+            + ''.join(' -- if ~$eval_response_valid(S, ' + response + ')' for response in responses) + '\n'
             'dec $main() : bool\ndef $main() = true\n'
             + request_prefix + '  -- if S_initial = ' + initial + '\n'
             '  -- if S_reached = $seek(S_initial[.COMPLETION = NORMAL], 4000)\n'
@@ -829,6 +847,9 @@ def run(selected, *, process_seconds=120):
         records.append({'id': name, 'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
                         'assertions': len(case['checks']) + 5 + (4 if 'request_env' in case else 0),
                         'process': process, 'passed': passed})
+        if parsed_evals:
+            records[-1]['eval_source_sha256'] = {str(unit): hashlib.sha256(data).hexdigest()
+                                               for unit, data, _ in parsed_evals}
         if 'request_env' in case:
             records[-1]['request_env_base64'] = [[base64.b64encode(key).decode(),
                 base64.b64encode(value).decode()] for key, value in case['request_env']]
