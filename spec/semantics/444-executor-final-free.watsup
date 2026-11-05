@@ -503,6 +503,7 @@ def $executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n) = S_report[.TODO = 
   -- if pexecutortickfatal = {TICK pexecutortick, COMPLETION S_report.COMPLETION, OBJECT n}
 def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, pcompletion), n)
   -- if $executor_tick_caught(S) = ((pexecutortick, pcompletion))
+def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active(S, pexecutortickfatal.TICK)
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT pexecutortickfatal.OBJECT]
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal false) = eps
 def $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal true) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $throwable_live(S, pexecutortickfatal.OBJECT) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_FATAL pexecutortickfatal true, eps))
