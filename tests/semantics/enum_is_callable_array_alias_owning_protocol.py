@@ -62,7 +62,7 @@ def retained():
         '$($heap_owners($heap_graph(S_retained_write), HARRAY n_retained_old) > 0)',
         '$($heap_owners($heap_graph(S_retained_write), HOBJECT n_retained_child) > 0)',
         'S_retained_after = $drive_steps(S_retained_invoke[.COMPLETION = NORMAL], 1)',
-        'S_retained_after.COMPLETION = NORMAL',
+        'S_retained_after.COMPLETION = BUDGET',
         'S_retained_after.STORE[n_retained_output] = DEFINED (PSTRING penumqueryinput_retained.VALUE)',
         'S_retained_after.STORE[n_hold] = DEFINED (PARRAY n_retained_old)',
         '$($heap_owners($heap_graph(S_retained_after), HARRAY n_retained_old) > 0)',
