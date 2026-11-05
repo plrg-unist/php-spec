@@ -16,6 +16,7 @@ def main(cases=CASES, controls=None, producer=Path(__file__)):
     previous = ticks.fingerprint
     ticks.fingerprint = lambda: {**previous(), **{
         str(path.relative_to(ticks.ROOT)): ticks.sha(path) for path in [Path(__file__), producer]}}
+    ticks.MODEL_TIMEOUT = 180
     ticks.CASES, ticks.CONTROLS = cases, controls or {}
     ticks.STATUSES = {name: 'normal' for name in cases}
     ticks.EXITS = {name: 0 for name in cases}
