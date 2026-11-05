@@ -73,6 +73,8 @@ CASES['handler-invoke-exact-source-and-warning-authority'] = {
                'perrorcall.MESSAGE = $generator_unpack_warning_message(S, pgeneratorunpack)',
                'perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE 5',
                '$error_call_valid(S, perrorcall)',
+               '~$generator_unpack_warning_same(S, pgeneratorunpack[.INDEX = '
+               '($(pgenerator.INDEX + 1))])',
                '~$error_call_valid(S, perrorcall[.LEVEL = 8])',
                '~$error_call_valid(S, perrorcall[.LINE = 0])',
                '~$error_call_valid(S, perrorcall[.MESSAGE = $ptascii("other")])',
