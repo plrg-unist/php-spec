@@ -462,6 +462,18 @@ mismatch/timeout/fixture stops retain zero credit. Wider producers, freeing-obje
 escape/mutation and active-pin collection remain partial.
 [GC34 review](coverage/semantics/gc-ordinary-key-review.json).
 
+GC36 admits one direct destructor-child property on an ordinary `stdClass`
+WeakMap Key, attached before or after first insertion. The physical Key pin keeps
+the field owner through Map value cleanup; wrapper registration order changes
+Value callback visibility, and Key child release follows weak notification.
+Six fresh normal source programs agree (author2, independent4), including a
+throwing Value caught after Child cleanup. Author102 and independent70 reached
+conditions plus an affected GC32 exact source and 71 reached conditions pass at
+their recorded cuts. A two-field producer remains Unsupported with zero agreement;
+the original baseline and fixture failures retain zero credit. Wider layouts,
+multiple Maps, freeing-object mutation and active-pin collection remain partial.
+[GC36 review](coverage/semantics/gc-standard-key-field-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -1179,6 +1191,7 @@ refusals; accepted parsing and native/schema/adapter/P4 contracts are unchanged.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
+| GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
 
 The active table is an owner-confirmed handoff snapshot, not validation credit

@@ -1,0 +1,70 @@
+{
+  "scope": "GC36: one direct child field on an ordinary stdClass WeakMap Key, before or after first registration, with ordered Map value, weak observer and child cleanup.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "cuts": {
+    "base": "f7baa8162d326e971948226e6cbe35c7e314c854",
+    "runtime": "721641dedabb8e218da7fc954438ac181941f261",
+    "author_sources": "83f73e698",
+    "author_reached": "60fb0e000",
+    "boundary": "020aac207",
+    "independent_maintained": "4da5e82af",
+    "throw_maintained": "f33822d0a"
+  },
+  "rule_basis": "Zend/zend_objects.c::zend_object_std_dtor calls zend_weakrefs_notify before dynamic property destruction. Zend/zend_weakrefs.c::zend_weakref_unref visits registrations in order and removes Map entries or clears the wrapper; entry value destruction may execute PHP. Modules386/359 retain the original one-slot Key image and its child owner under the physical storage pin; NOTIFY must clear before instance-storage-slot transfers the child owner.",
+  "validation": {
+    "author": "Two normal source/native exact pairs; two source-reached checks of 51 conditions each, including real pin, sole child owner, observer transition, malformed slot/allocation controls, and 0-step budget resumption.",
+    "independent": "Three normal source/native exact pairs for preinsert, postinsert and observer-first, one normal caught-throw suffix, plus 36 Value-callback and 34 Child-callback reached conditions. Initial fixture failures retain zero credit.",
+    "affected": "Prior GC32 selective standard-Key source agrees and its unchanged source-reached suite passes 71 conditions.",
+    "unsupported": "One two-field original stops explicitly at first insertion after B|; native behavior is retained separately and earns zero agreement. Initial author count-call/nondeterminism candidates also earn zero credit."
+  },
+  "counts": {
+    "new_normal_exact_sources": 6,
+    "author_normal": 2,
+    "independent_normal": 4,
+    "affected_exact_sources": 1,
+    "source_unsupported_controls": 1,
+    "reported_reached_conditions": 243,
+    "author_reached": 102,
+    "independent_reached": 70,
+    "affected_reached": 71
+  },
+  "sources_sha256": {
+    "tests/semantics/gc_standard_key_field_preinsert.php": "55af3a56205b2df7628cfb40a1d1def2b2139ab92e715524cc4d3240f1d4ab26",
+    "tests/semantics/gc_standard_key_field_postinsert.php": "86fd33f71664d50bec5c72d7455ceb8c38039754004f2457f44fd2507f526e69",
+    "tests/semantics/gc_standard_key_field_two_fields.php": "343ec08dbf808965e11b6fffc94e0075840d18c5b289803d6c5ad8d556402939",
+    "tests/semantics/gc36_key_child_preinsert.php": "1c8090e64bdea3ee461e46034ec2b4340a2659fb50e473069ec00a0d39219bfb",
+    "tests/semantics/gc36_key_child_postinsert.php": "03a297c23f8078b9d5292507f358c3bd0be798eee4794d7362e5e60ca8e1bfde",
+    "tests/semantics/gc36_key_child_observer_first.php": "8b2f78fda197897fef2af8ab8ca3feec3de1b92ff638753a05bda8d5e67e589c",
+    "tests/semantics/gc36_key_child_value_throw.php": "fd435442cb7a88803bb095df95dbe6fc3c859691c29ce6fcb9a48cb0238a8a3e",
+    "tests/semantics/gc_key_notify_selective_source.php": "2268e597b707f5bf4cbf22f81ac10e3c984359e60f30cd916d9cc9242a48deef"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-field-key-author-36/harness-v1/native-report.json": "69c7eeb83b576eaf0cdfd8c0a06590ec37f4ccecce0487d2ae6180d7c1ea9441",
+    "../php-spec-evidence-archive/gc-field-key-author-36/harness-v1/model-report.json": "6bd990afe5bd6d0e92bfa6160fc3055eba2c1758a7432d6c8eb65e5ff20f5b3e",
+    "../php-spec-evidence-archive/gc-field-key-author-36/boundary-v1/native-report.json": "895739317767476721d8728f0846745244d9a8155cd4ee367357a1ee03ac55a8",
+    "../php-spec-evidence-archive/gc-field-key-author-36/boundary-v1/model-two-fields-unsupported-report.json": "f02b3397cffe481e249b196542b7c3b7c93e57679c431580a4adab20acc05e68",
+    "../php-spec-evidence-archive/gc-field-key-author-36/reached-v1/preinsert/report.json": "09b52bdea85f1e4d856918cbf27b2663f09e29d11bf86c35cf1587bef1358b69",
+    "../php-spec-evidence-archive/gc-field-key-author-36/reached-v1/postinsert/report.json": "bf956169d26c49dcaafb771f9d552ce559197f1925973699ba4cee2dc0f5586b",
+    "../php-spec-evidence-archive/gc-field-key-author-36/affected-gc32-v1/native-report.json": "f19bd0e992d7c649b5fdcc54c29a7721242d825d7b99539dd6d47eeb31f12751",
+    "../php-spec-evidence-archive/gc-field-key-author-36/affected-gc32-v1/model-selective-report.json": "542695a2b29eeab75cdb3df3b0b3f0c356730b8ea4757b3a386100c5c9d34e52",
+    "../php-spec-evidence-archive/gc-field-key-author-36/reached-v1/affected-gc32/report.json": "e053482423bef718ce320d6bbd1df68c6fecca9ded9d19c374c0ade9685f471f",
+    "../php-spec-evidence-archive/gc-field-key-review-36/native-v1/report.json": "81e9eb33311038b407a1e557e94bd94c266c8ed7a31ea271caec674be09b2de2",
+    "../php-spec-evidence-archive/gc-field-key-review-36/model-v1/report.json": "bbf2a737938354d409412074779a44fe247a79dbbecaeb64e22cd32613277308",
+    "../php-spec-evidence-archive/gc-field-key-review-36/observer-native-v1/report.json": "152b5cd841e59e871788819f99f842574df12df4736ba19cedbf39cc25f03a6e",
+    "../php-spec-evidence-archive/gc-field-key-review-36/observer-model-v1/report.json": "271b76abde32c4db1624c0e788d24e169d3b25663015c6ed93f5c8fd4f52232f",
+    "../php-spec-evidence-archive/gc-field-key-review-36/throw-native-v1/report.json": "9d02caeba13ca992873825bb5ae519a8c6da57a25fef9717f56f099222dd380d",
+    "../php-spec-evidence-archive/gc-field-key-review-36/throw-model-v1/report.json": "8140da0d2a08580ee30a04425009f3797d775e745a3e2bf7d0af1eb63a4f98f6",
+    "../php-spec-evidence-archive/gc-field-key-review-36/reached-value-v1/report.json": "3f2cc3475489b12da8b0fca3f2cd830748718c7dfa26873750b7756eb786e1e9",
+    "../php-spec-evidence-archive/gc-field-key-review-36/reached-child-v2/report.json": "9e864551110e6f3c18aaf2f90aaadad380b6776f284a2eca4f748fa627f858bc"
+  },
+  "limits": "Admitted Key is stdClass with exactly one direct dynamic property owning a sole childless instance whose only method is a public no-argument destructor; one Map entry. Other fields, table-backed layouts, multiple Maps, freeing-object mutation, active-pin collection and wider callbacks retain Unsupported boundaries. No collector/count/nogc rule changed.",
+  "recovery": "Run the maintained gc_standard_key_field_sources.py, gc_standard_key_field_state.py, gc_standard_key_fields_review_sources.py and gc_standard_key_fields_review_state.py with the pinned profile and private outputs. Raw accepted and failed cuts are outside Git under ../php-spec-evidence-archive/gc-field-key-{author,review}-36/; each report hash above identifies its exact cut.",
+  "review": "Independent source and reached-state review accepted the frozen runtime 721641ded; current-parent composition remains a separate gate.",
+  "archive_manifest_sha256": {
+    "../php-spec-evidence-archive/gc-field-key-author-36/manifest.json": "7065ec66939d6966f33ce54b517e88f3bb18d8fb6dc619a8d80d82d20145d6d2",
+    "../php-spec-evidence-archive/gc-field-key-review-36/manifest.json": "ba72f194c09377ed86047f50019daa23c320d7b08f56624ad1e8560ece65c2f0"
+  },
+  "compatibility_bridge": "Every accepted tracked source has the recorded SHA-256 at this private head. Commits after runtime 721641ded add tests and documentation only; git diff 721641ded..f33822d0a -- spec/semantics is empty. Author and independent reports retain their original revision IDs, and no prior failed cut is promoted by this bridge. Actual-parent composition is pending."
+}
