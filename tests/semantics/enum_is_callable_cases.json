@@ -905,5 +905,58 @@
     "model_timeout_seconds": 90,
     "expected_normal_stdout": "null|destructor:0:tempcheck::missing:cases|changed|",
     "purpose": "A reverse-key temporary reference array freezes its false name/result before output destruction changes both referenced members."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-producer-singleton-cow",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\nfunction produce() { global $hold; $method = 'cases'; $target = [TempCheck::class, &$method]; $hold = $target; return $target; }\nfunction change() { global $hold; $hold[1] = 'missing'; return false; }\n$name = 'OLD'; $ok = is_callable(produce(), change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, ':', $hold[1], '|';\n",
+    "source_sha256": "f72e57dcceb004b015ec6d114d5cdefc24b8e319e904fb4d05adb9f93cc3bc80",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "true|TempCheck::cases:missing|",
+    "purpose": "A by-value array producer returns a singleton reference; later COW unwraps the source copy while the sent table retains its old method."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-by-reference-producer",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\nfunction &produce() { global $target; return $target; }\nfunction change() { global $target, $method; $target = 'REBOUND'; $method = 'missing'; return false; }\n$method = 'from'; $target = [TempCheck::class, &$method]; $name = 'OLD';\n$ok = is_callable(produce(), change(), $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $target, ':', $method, '|';\n",
+    "source_sha256": "d8a901f910772637785d805a2f419757d463c6917ed002e508e3f060bfb264f6",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "false|TempCheck::missing:REBOUND:missing|",
+    "purpose": "A reference-return producer is dereferenced at SEND, retaining its original table after the source cell is rebound."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-assignment-result-array",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\nfunction change() { global $target, $method; $target = 'REBOUND'; $method = 'missing'; return false; }\n$method = 'from'; $name = 'OLD';\n$ok = is_callable(($target = [TempCheck::class, &$method]), change(), $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $target, ':', $method, '|';\n",
+    "source_sha256": "b796887230ed9ee80400668ffb65d29efd7d54037f5865ce04262ccc732904f0",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "false|TempCheck::missing:REBOUND:missing|",
+    "purpose": "An array assignment expression supplies a fixed sent value while its source variable is rebound by a later argument."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-literal-throw-trace",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\nclass Drop { public function __destruct() { global $name, $method; echo $name === null ? 'null|' : 'BAD|'; $method = 'cases'; throw new Exception('drop'); } }\n$method = 'missing'; $name = new Drop; $ok = 'UNCHANGED';\ntry { $ok = is_callable([TempCheck::class, &$method], false, $name); echo 'BAD|'; }\ncatch (Exception $e) { $trace = $e->getTrace(); echo $trace[1]['args'][0][1], '|'; echo $trace[1]['args'][2] === null ? 'trace-null|' : 'BAD|'; $method = 'from'; echo $trace[1]['args'][0][1], '|'; }\necho $name, ':', $ok, '|';\n",
+    "source_sha256": "99c8aaf77035652083e548594825a02550c40b1c3f33636edf7485070f670bdd",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "null|cases|trace-null|from|TempCheck::missing:UNCHANGED|",
+    "purpose": "Temporary reference-array output destruction commits the saved name on throw while the API trace retains a shared method cell and a NULL output snapshot."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-literal-second-throw-owns-ref-child",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\nclass LeafDrop { public function __destruct() { echo 'DROP|'; } }\nfunction stop() { global $method; $method = new LeafDrop; unset($GLOBALS['method']); throw new Exception('arg'); }\n$method = 'from'; $name = 'OLD'; $ok = 'UNCHANGED';\ntry { $ok = is_callable([TempCheck::class, &$method], stop(), $name); echo 'BAD|'; }\ncatch (Exception $e) { echo 'caught:', $e->getMessage(), ':', $name, ':', $ok, '|'; }\n",
+    "source_sha256": "7b1448d38eb4d7d8a0b1925337500fe05646fef3adff3b3690aff28690e196a6",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "DROP|caught:arg:OLD:UNCHANGED|",
+    "purpose": "Argument throwing releases the last temporary SENT array and its referenced ordinary child before catch; no output or result write occurs."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-initial-invalid-control",
+    "source": "<?php\nenum TempCheck { case A; }\n$method = 17; $name = 'OLD';\nfunction make_valid(): bool { global $method; $method = 'cases'; return false; }\n$ok = is_callable([TempCheck::class, &$method], make_valid(), $name);\necho 'late:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "8690e72e2b568b43c15f5fe4ab0cbb5276c1a0c2390c5574e75e46c90edfd409",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "late:1:TempCheck::cases:cases|",
+    "purpose": "The receipt still requires an initially valid published enum receiver and string method; a nonstring method changed to valid by a later argument remains explicit Unsupported."
   }
 ]

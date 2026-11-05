@@ -7099,6 +7099,10 @@ preserves the selected name and boolean through output-destructor mutation or
 throw, with ordinary shared/singleton COW and real cell owners; the
 [reference-member review](coverage/semantics/enum-is-callable-reference-array-review.json)
 records the bounded source and state checks.
+Literal and expression-produced arrays, including reference returns, use the
+same receipt with normal SEND owner transfer and argument-throw cleanup;
+the [temporary-array review](coverage/semantics/enum-is-callable-temporary-array-review.json)
+records nine originals and the transfer checks.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt reference members, wider arrays and autoload,

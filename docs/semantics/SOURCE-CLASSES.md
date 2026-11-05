@@ -1052,6 +1052,21 @@ records the source and reached cuts. Engine routes are
 `Zend/zend_vm_def.h:ZEND_SEND_VAR`, `Zend/zend_hash.c:zend_array_dup_value`,
 `Zend/zend_API.c:zend_is_callable_at_frame` and `zend_get_callable_name_ex`, and
 `ext/standard/type.c:PHP_FUNCTION(is_callable)`.
+Literal arrays, assignment results and function-produced arrays now use the
+same first-SEND receipt. The compiled argument origin and send line identify
+the expression; the actual KNOWN, VARIABLE or REFERENCE operand determines
+the transferred table. A temporary keeps its one table owner, while a
+reference-return operand gives up its wrapper owner and retains the table in
+SENT. Shared and singleton reference COW, member output aliases, saved output
+selection and throwing argument cleanup use the existing owners. In particular,
+a last temporary array releases an ordinary child held in its reference cell
+before catch, without writing the skipped name/result. The
+[temporary-array review](../../coverage/semantics/enum-is-callable-temporary-array-review.json)
+records the separate source and reached cuts. First-SEND members must already
+name a published enum receiver and a string method; initially malformed or
+non-enum members that later become valid remain Unsupported. Source routes
+include `Zend/zend_vm_def.h:ZEND_SEND_VAL` and `ZEND_SEND_VAR` for returned VAR
+and ordinary CV operands.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
