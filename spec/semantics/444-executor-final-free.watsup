@@ -646,7 +646,8 @@ def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
 ;; UnwindExit bails out of the module with no report, preserving its full status.
 ;; The abandoned source still carries the original phase completion.
 def $executor_tick_caught(S) = ((pexecutortick, EXITED z))
-  -- if S.COMPLETION = EXITED z /\ S.EXITSTATUS = z /\ $exit_status_valid(S)
+  -- if S.COMPLETION = EXITED z
+  -- if S.EXITSTATUS = z /\ $exit_status_valid(S)
   -- if $executor_free_endpoint(S)
   -- if S.EXCEPTIONHANDLER = eps
   -- if $executor_tick_bailout(S) = (pexecutortick)
