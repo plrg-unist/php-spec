@@ -440,6 +440,18 @@ def $config_iterator_assertion_scalar(PSTRING_CARRIER pstringidentity n*) = true
   -- if (z, eps) = $assertion_quantity_decode(n*)
   -- if $(z >= 0)
 def $config_iterator_assertion_scalar(pvalue) = false -- otherwise
+;; The early receipt precedes option retirement; float text uses live precision
+;; only after the option's destructor has completed.
+def $config_iterator_assertion_float(PFLOAT n) = true
+  -- if $float_decode(n) = FINITE n_sign n_numerator n_denominator
+def $config_iterator_assertion_float(pvalue) = false -- otherwise
+def $config_iterator_assertion_float_at(z_precision, PFLOAT n) = true
+  -- if $config_iterator_assertion_float(PFLOAT n)
+  -- if $precision_ini_valid($decimal_integer(z_precision))
+  -- if (n_input*, false) = $number_text(NFLOAT n, z_precision)
+  -- if (z_quantity, eps) = $assertion_quantity_decode(n_input*)
+  -- if $(z_quantity >= 0)
+def $config_iterator_assertion_float_at(z_precision, pvalue) = false -- otherwise
 def $config_iterator_string_value(S, pvalue) = true
   -- if $config_ini_quiet_value(S, pvalue)
 ;; The copied value remains a live argument and becomes a TypeError trace root.
@@ -461,8 +473,8 @@ def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
   -- if ~$config_strict(S, pconfigcall)
   -- if $config_iterator_string(S, pvalue_name)
   -- if $string_bytes(pvalue_name) = (preqbytes)
-  ;; Rejected values precede lookup; admitted scalars use the setter.
-  -- if preqbytes =/= $ptascii("zend.assertions") \/ $config_ini_value_conversion(pvalue) = TYPEREJECT \/ $config_iterator_assertion_scalar(pvalue)
+  ;; Float receipt precedes option retirement; final quantity is checked later.
+  -- if preqbytes =/= $ptascii("zend.assertions") \/ $config_ini_value_conversion(pvalue) = TYPEREJECT \/ $config_iterator_assertion_scalar(pvalue) \/ $config_iterator_assertion_float(pvalue)
   -- if $config_iterator_string_value(S, pvalue)
   -- if $(n_object < |S.OBJECTS|)
   -- if S.OBJECTS[n_object] = INSTANCE porigin_class
@@ -489,17 +501,24 @@ rule PhpStep/config-iterator-string-assertions-receive: S ~> $config_ini_finish(
   -- if S.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*
   -- if $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
-  -- if $config_iterator_assertion_scalar(pvalue)
+  -- if $config_iterator_assertion_scalar(pvalue) \/ $config_iterator_assertion_float_at($precision_value(S), pvalue)
   -- if pconfigcall_received = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]]
   -- if $string_bytes(pvalue_name) = (preqbytes)
   -- if preqbytes = $ptascii("zend.assertions")
+rule PhpStep/config-iterator-string-assertions-float-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator assertion float outside warning-free nonnegative quantity"]
+  -- if S.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*
+  -- if $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN (PFLOAT n_float))]
+  -- if $config_iterator_assertion_float(PFLOAT n_float)
+  -- if ~$config_iterator_assertion_float_at($precision_value(S), PFLOAT n_float)
+  -- if $string_bytes(pvalue_name) = ($ptascii("zend.assertions"))
 rule PhpStep/config-iterator-string-receive: S ~> $config_ini_finish(S[.TODO = (CONFIG_INVOKE pconfigcall_received) :: ptask_tail*], pconfigcall_received, preqbytes, pvalue)
   -- if S.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_object pvalue_name) :: ptask_tail*
   -- if $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
   -- if pconfigcall_received = pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name), NAMED_SENT (KNOWN pvalue)]]
   -- if $string_bytes(pvalue_name) = (preqbytes)
-  -- if preqbytes =/= $ptascii("zend.assertions") \/ ~$config_iterator_assertion_scalar(pvalue)
+  -- if preqbytes =/= $ptascii("zend.assertions") \/ (~$config_iterator_assertion_scalar(pvalue) /\ ~$config_iterator_assertion_float(pvalue))
 
 ;; Raw option/cast owners retire before this receipt samples the old INI value.
 dec $config_iterator_string_release_tail(ptask*, pdestructionoperation) : ptask?
