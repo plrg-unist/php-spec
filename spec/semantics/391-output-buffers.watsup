@@ -40,6 +40,9 @@ dec $ob_capability(pintrinsic) : int
 dec $ob_failure_verb(pintrinsic) : preqbytes
 dec $ob_notice_message(pobnotice) : preqbytes
 dec $ob_notice(pstate, pconfigcall, pvalue, bool, bool, nat?) : pstate
+dec $ob_notice_with_creation(pstate, pconfigcall, pvalue, bool, bool, nat?, pobcreation?) : pstate
+dec $ob_creation_valid(pstate, pobcreation) : bool
+dec $ob_start_notice_valid(pstate, pobnotice) : bool
 dec $ob_notice_valid(pstate, pobnotice) : bool
 dec $ob_notice_task(ptask, pobnotice) : bool
 dec $ob_notice_tasks(pstate, pobnotice) : bool
@@ -388,16 +391,21 @@ def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $pta
   -- if ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps /\ pobnotice.CALL.KIND <- [INTRINSIC_OB_CLEAN, INTRINSIC_OB_END_CLEAN]
 def $ob_notice_message(pobnotice) = $intrinsic_name(pobnotice.CALL.KIND) ++ $ptascii("(): Failed to delete and flush buffer. No buffer to delete or flush")
   -- if ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps /\ pobnotice.CALL.KIND <- [INTRINSIC_OB_END_FLUSH, INTRINSIC_OB_GET_FLUSH]
-def $ob_notice(S, pconfigcall, pvalue, b_second, b_wrapper, n_level?) = $error_dispatch(S, 8, n_message*, pconfigcall.LINE, DIAGNOSTIC "Notice" n_message* pconfigcall.LINE, OB_NOTICE_RESULT pobnotice)
+def $ob_notice(S, pconfigcall, pvalue, b_second, b_wrapper, n_level?) = $ob_notice_with_creation(S, pconfigcall, pvalue, b_second, b_wrapper, n_level?, eps)
+def $ob_notice_with_creation(S, pconfigcall, pvalue, b_second, b_wrapper, n_level?, pobcreation?) = $error_dispatch(S, 8, n_message*, pconfigcall.LINE, DIAGNOSTIC "Notice" n_message* pconfigcall.LINE, OB_NOTICE_RESULT pobnotice)
   -- if S.TODO = ptask :: ptask_tail*
-  -- if pobnotice = {CALL pconfigcall, VALUE pvalue, SECOND b_second, WRAPPER b_wrapper, LEVEL n_level?, OWNER (|S.FRAMES|), TAIL ptask_tail*}
+  -- if pobnotice = {CALL pconfigcall, CREATION pobcreation?, VALUE pvalue, SECOND b_second, WRAPPER b_wrapper, LEVEL n_level?, OWNER (|S.FRAMES|), TAIL ptask_tail*}
   -- if n_message* = $ob_notice_message(pobnotice)
+def $ob_start_notice_valid(S, pobnotice) = $executor_default_start_valid(S, pobnotice.CALL)
+  -- if pobnotice.CREATION = eps
+def $ob_start_notice_valid(S, pobnotice) = ($ob_creation_valid(S, pobcreation) /\ pobcreation.CALL = pobnotice.CALL)
+  -- if pobnotice.CREATION = (pobcreation)
 def $ob_notice_valid(S, pobnotice) = true
   -- if $output_buffer_kind(pobnotice.CALL.KIND)
   -- if $config_invoke_valid(S, pobnotice.CALL)
   -- if S.ORIGIN = (pobnotice.CALL.SITE)
   -- if pobnotice.OWNER = $dir_warning_owner(S, S.FRAMES)
-  -- if (pobnotice.CALL.KIND =/= INTRINSIC_OB_START /\ pobnotice.CALL.SENT = eps) \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ $executor_default_start_valid(S, pobnotice.CALL))
+  -- if (pobnotice.CALL.KIND =/= INTRINSIC_OB_START /\ pobnotice.CALL.SENT = eps /\ pobnotice.CREATION = eps) \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ $ob_start_notice_valid(S, pobnotice))
   -- if $config_slots_valid(S, [NAMED_SENT (KNOWN pobnotice.VALUE)])
   -- if $ob_pop_kind(pobnotice.CALL.KIND) \/ $ob_active_operation(pobnotice.CALL.KIND) \/ (pobnotice.CALL.KIND = INTRINSIC_OB_START /\ $executor_normal_scope(S) /\ ~S.OUTPUTBLOCKED /\ S.OUTPUTBUFFERS = eps /\ pobnotice.VALUE = PBOOL false /\ ~pobnotice.SECOND /\ ~pobnotice.WRAPPER /\ pobnotice.LEVEL = eps)
   -- if pobnotice.WRAPPER = false \/ ($ob_get_kind(pobnotice.CALL.KIND) /\ ~pobnotice.SECOND /\ pobnotice.LEVEL =/= eps)
