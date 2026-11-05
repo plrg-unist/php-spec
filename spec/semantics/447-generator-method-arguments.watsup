@@ -112,3 +112,70 @@ def $generator_resumption_arguments_valid(S, pgeneratorop) = true
   -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* n_field
   -- if $generator_api_extent(pgeneratorop.NAME, phpType7*, |pgeneratorop.ARGUMENTS|)
 def $generator_resumption_arguments_valid(S, pgeneratorop) = false -- otherwise
+
+
+;; A single initialized Iterator CV feeds an ordinary literal native API.
+;; Captures, computed/nullsafe sources, other packs and Aggregate/Gen producers
+;; keep their independent protocols and cannot enter through KIND alone.
+def $generator_iterator_site(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
+  -- if $generator_api_kind(pconfigcall.KIND)
+  -- if pconfigcall.OWNER = (n_receiver)
+  -- if $generator_object(S, n_receiver)
+  -- if pconfigcall.SELECTION = eps
+  -- if $origin_node(S.SOURCES, pconfigcall.SITE) = (NExprMethodCall expression (NIdentifier (BYTES text) metadata_name) (SEQUENCE [NArg ABSENT (NExprVariable (BYTES text_input) metadata_input) (BOOLEAN false) (BOOLEAN true) metadata_arg]) metadata)
+  -- if $generator_method($base64(text)) = text_method
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression_input, true, eps, PORIGIN n_source pcpath, z))
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
+def $generator_iterator_site(S, pconfigcall) = false -- otherwise
+
+def $config_iterator_history(S, pconfigiterator) = true
+  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if pconfigiterator.CALL.INDEX = 0 /\ pconfigiterator.CALL.SENT = eps
+  -- if ~pconfigiterator.CALL.NAMED /\ pconfigiterator.CALL.PACKS = eps
+  -- if pconfigiterator.PRODUCER = eps
+  -- if pconfigiterator.INPUT = VARIABLE ptbytes z
+  -- if $config_pending_valid(S[.ORIGIN = (pconfigiterator.CALL.SITE)], pconfigiterator.CALL, true)
+  -- if $config_iterator_input(S, pconfigiterator)
+  -- if $config_iterator_items(S, pconfigiterator, pconfigiterator.ITEMS)
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
+
+;; A completed Iterator send has dynamic extent but no missing fixed slots.
+;; Native named delivery can fill only the sole send/throw parameter.
+def $config_iterator_copied_header(S, pconfigcall) = true
+  -- if $generator_iterator_site(S, pconfigcall)
+  -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps
+  -- if $config_call_valid(S, pconfigcall)
+  -- if $config_missing(pconfigcall.SENT, 0) = eps
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
+  -- if ~pconfigcall.NAMED \/ ($generator_argument_count(text_method) = 1 /\ |pconfigcall.SENT| = 1)
+
+;; Finite DATA storage can retire even after rewind clears the input CV.
+;; This permission adds no owner and does not retain a retired source variable.
+def $generator_iterator_data(S, pconfigiterator) = true
+  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if pconfigiterator.PRODUCER = eps
+  -- if pconfigiterator.INPUT = VARIABLE ptbytes z
+  -- if $config_iterator_input(S, pconfigiterator)
+  -- if ($destructor_method(S, pconfigiterator.OBJECT) = eps /\ $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps) \/ $config_iterator_finalizer(S, pconfigiterator.OBJECT)
+def $generator_iterator_data(S, pconfigiterator) = false -- otherwise
+
+def $config_iterator_discard_allowed(S, pconfigiterator) = true
+  -- if S_hold = $config_iterator_discard_scope(S, pconfigiterator)
+  -- if $heap_owners($heap_graph(S_hold), HOBJECT pconfigiterator.OBJECT) = 0
+  -- if (HOBJECT pconfigiterator.OBJECT) <- S.ALLOCATIONS
+  -- if $config_iterator_scope(S, pconfigiterator)
+  -- if $generator_iterator_data(S, pconfigiterator)
+  -- if pconfigiterator.CALL.OWNER = (n_receiver)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+
+rule PhpStep/generator-iterator-ready: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
+  -- if $config_iterator_valid(S, pconfigiterator, "ready")
+  -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if $config_iterator_argument_nodes(pconfigiterator) = eps
+  -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)

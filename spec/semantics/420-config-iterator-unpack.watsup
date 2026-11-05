@@ -15,6 +15,8 @@ dec $config_aggregate_scope(pstate, pconfigaggregate) : bool
 dec $config_aggregate_owners(pstate, pconfigaggregate, nat) : bool
 dec $config_aggregate_source(pstate, pconfigaggregate) : bool
 dec $config_iterator_input(pstate, pconfigiterator) : bool
+dec $generator_iterator_site(pstate, pconfigcall) : bool
+dec $generator_iterator_data(pstate, pconfigiterator) : bool
 dec $config_iterator_owning_input(pconfigiterator) : bool
 dec $config_iterator_input_nodes(pconfigiterator) : pnode*
 dec $config_iterator_quiet_input(pstate, pconfigiterator) : bool
@@ -279,7 +281,7 @@ def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = true
   -- if $config_iterator_producer_valid(S, pconfigiterator)
   -- if $config_iterator_finalizer(S, pconfigiterator.OBJECT)
 def $config_iterator_finalizable_aggregate_data(S, pconfigiterator) = false -- otherwise
-def $config_iterator_aggregate_data(S, pconfigiterator) = ($config_iterator_quiet_aggregate_data(S, pconfigiterator) \/ $config_iterator_finalizable_aggregate_data(S, pconfigiterator))
+def $config_iterator_aggregate_data(S, pconfigiterator) = ($config_iterator_quiet_aggregate_data(S, pconfigiterator) \/ $config_iterator_finalizable_aggregate_data(S, pconfigiterator) \/ $generator_iterator_data(S, pconfigiterator))
 
 def $config_iterator_string(S, PSTRING n*) = $startup_bytes(n*)
 def $config_iterator_string(S, PSTRING_CARRIER pstringidentity n*) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
@@ -425,7 +427,7 @@ def $config_iterator_copied_header(S, pconfigcall) = false -- otherwise
 def $config_iterator_copied_call(S, pconfigcall) = true
   -- if $config_iterator_copied_header(S, pconfigcall)
   -- if $config_iterator_copied_slots(S, pconfigcall.SENT)
-  -- if $named_slots_roots(pconfigcall.SENT) =/= eps
+  -- if $named_slots_roots(pconfigcall.SENT) =/= eps \/ $generator_api_kind(pconfigcall.KIND)
 def $config_iterator_copied_call(S, pconfigcall) = false -- otherwise
 
 ;; The consumed spread supplies one actual child site for option conversion.
@@ -1051,6 +1053,7 @@ rule PhpStep/config-iterator-ready: S ~> $config_receive(S, pconfigcall[.INDEX =
   -- if $config_iterator_valid(S, pconfigiterator, "ready")
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if $config_iterator_argument_nodes(pconfigiterator) = eps
+  -- if ~$generator_api_kind(pconfigiterator.CALL.KIND)
   -- if pconfigcall.KIND =/= INTRINSIC_INI_GET /\ pconfigcall.KIND =/= INTRINSIC_INI_RESTORE
 rule PhpStep/config-iterator-ready-owned: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
