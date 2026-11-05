@@ -5211,6 +5211,15 @@ Closing the execution frame retains that Closure until the Generator is released
 static Closures without captures preserve source identity after their creator retires.
 [Generator Closure factories](coverage/semantics/anonymous-generator-closure-factories-review.json).
 
+Ordinary nongenerator methods declared to return by reference also create
+anonymous classes. Named/anonymous/Trait owners preserve their parsed return mode,
+including existing byvalue Closure factories nested in those methods. Returned
+cells keep real aliases after the callee leaves. Temporary returns retain PHP's
+notice, and throwing notice handlers preserve the distinct used/unused result
+cleanup order. Reference-return constructors, generators and Closure/arrow
+declarations remain partial.
+[Reference method factories](coverage/semantics/anonymous-reference-method-factories-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method

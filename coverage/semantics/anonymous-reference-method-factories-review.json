@@ -1,0 +1,84 @@
+{
+  "scope": "CLASS187: anonymous factories in ordinary nongenerator reference-return METHOD declarations across admitted named/anonymous/Trait owners, including child factories in existing byvalue Closure/arrow bodies. Constructors, reference generators, reference Closure/arrow declarations, other magic bodies and attributed declarations remain separate.",
+  "base": "3c7c67047967284da4d8d5f328a8609a8620265c",
+  "implementation_commit": "51f6a563332bc671086c6b108860dc9b9ef2a333",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c method/function reference flag and ordinary source child compilation; checked NStmtClassMethod byRef bit is authoritative for compiler mode",
+    "Zend/zend_vm_def.h ZEND_RETURN_BY_REF4586 retains variable references, emits the Only-variable notice for temporary designation, materializes/transfers used RV or FREE_OP1 for unused RV, then leaves the callable even after a handler exception",
+    "Existing99-reference-returns and379-reference-return-notices supply real CELL return/alias and notice/cancellation handling; no runtime/schema rule changes were needed"
+  ],
+  "mechanism": "Generalize only ordinary method source flag patterns in383, including anonymous members, scope ancestry and failed-owner checkpoints. Direct method contexts require P.RETURNREF equal the checked method flag. Existing byvalue Closure source mode remains false; its parent authentication copy restores the actual method flag derived from checked ancestry. Independent constructor !ref&&!generator and reference-method !generator guards retain the intended source fences.",
+  "author": {
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class187-reference-method-factories/author/baseline-class180-source-326sf_k_/report.json",
+      "sha256": "7a4ea226271b2da3056a0a71462138cbcbff65b148ebe86c920c3ef215df2ac6",
+      "result": "Actual3c7 pre187 code: native normal, model explicit Unsupported anonymous RTD/body/publication context; zero agreement. Exact provenance beside report."
+    },
+    "source3": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class187-reference-method-factories/author/class180-source-iyv32unz/report.json",
+      "sha256": "91467e62f9c5e0b0d5fcff6a75cd1cee523a408f6ced03388c2a713c48f4cc31",
+      "result": "Exact/stable: named returned CV alias/copy lifetime and owner retirement, Trait static lexical/called scope, anonymous owner/child/repeated-child/root-after keys0/1/1/2."
+    },
+    "source4": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class187-reference-method-factories/author/class180-source-7dzsnyy7/report.json",
+      "sha256": "78a2986097d7c6c7f19a197befabca478da121719a75ec4e7e1f723ebeb21360",
+      "result": "Exact/stable: temporary return notice, used warning-throw WARN;OWNER;CHILD;CAUGHT versus unused WARN;CHILD;OWNER;CAUGHT, and nested byvalue Closure returned through reference method after creator unset."
+    },
+    "distinct_source_agreements": 7,
+    "source_model_limit": "Explicit180s/outer190 for both selected packets. All seven native preparations were selected as distinct CELL/scope/notice/result-demand branches, not extra agreement credit for repeated preparations.",
+    "checked_SL440": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class187-reference-method-factories/author/closure-call-protocol-jrk0xbk9/report.json",
+      "sha256": "8421f6db3532e91aaf948d90eb73ded57b3f02f308cc23b3946936ab3f596a4b",
+      "source_derived_context_queries": 24,
+      "returned_cell_compiler_setup": 5,
+      "genuine_returned_cell_ownership_resumption_retirement": 37,
+      "derived_wrong_return_source_refusal": 1,
+      "result": "First packet both components true newline/exit0/empty stderr/stable. Direct method and inner Closure modes are checked separately; actual RETURN_REF_UNWIND owns the real referenced cell/child, full/split3+4096=4099 states/output agree and child/receiver retire."
+    },
+    "revision_binding": "Source/SL WIP bytes were committed unchanged as51f6a5633; before/after implementation/catalogue/recipe and executed-binary fingerprints bind that semantic cut.",
+    "commands": [
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_reference_method_factory_cases.json --case ref-method-cv-owner-lifetime --case ref-trait-static-scope --case ref-anonymous-owner-template --model-timeout 180",
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_reference_method_factory_cases.json --case ref-method-temporary-return-notice --case ref-method-temporary-warning-throw --case ref-method-nested-closure --case ref-method-unused-temporary-warning-throw --model-timeout 180",
+      "python3 tests/semantics/anonymous_reference_method_factory_protocol.py"
+    ]
+  },
+  "remaining": [
+    "Reference constructors/generators/Closure and arrow declarations",
+    "Attributed methods, wider signatures and magic factories",
+    "Wider binding/callback/dynamic deferred contexts"
+  ],
+  "preservation": {
+    "author_raw_root": "/home/user/workspace/php-spec-evidence-archive/class187-reference-method-factories/author",
+    "notes": "Raw packets bind actual source bytes/file/cwd, profile, commands/exits and implementation/binary fingerprints. Restore recorded raw paths for path-identical replay; artifacts are external evidence rather than build inputs."
+  },
+  "review": {
+    "reviewer": "classes_review",
+    "decision": "accepted_private",
+    "semantic_cut": "51f6a563332bc671086c6b108860dc9b9ef2a333",
+    "independent_record": "coverage/semantics/anonymous-reference-method-factories-independent.json",
+    "basis": "Independent4 exact originals; actual Trait returnedCELL67 and warning-frame45 state groups; new constructor/reference-generator/reference-Closure source refusals31 all clear. No production fix; earlier fixture elaboration/observer packets remain zero-credit, no original-source replay."
+  },
+  "summary": {
+    "distinct_author_source_agreements": 7,
+    "distinct_independent_source_agreements": 4,
+    "author_SL440": {
+      "source_derived_context_queries": 24,
+      "returned_cell_compiler_setup": 5,
+      "genuine_returned_cell_ownership_resumption_retirement": 37,
+      "derived_wrong_return_source_refusal": 1
+    },
+    "independent_SL440": {
+      "compiler_setup": 11,
+      "genuine_returned_cell_callback_ownership_resumption_retirement": 99,
+      "derived_refusals": 2
+    },
+    "explicit_unsupported_source_boundary_conditions": 31,
+    "notes": "Native-positive excluded constructor/reference-generator/reference-Closure inputs carry zero model/native observational agreement credit. Independent record retains fixture corrections and exact original cuts."
+  }
+}

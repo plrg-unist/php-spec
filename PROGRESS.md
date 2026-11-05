@@ -1491,8 +1491,18 @@ frames retire. Static Closures keep source identity after creator retirement.
 The [review](coverage/semantics/anonymous-generator-closure-factories-review.json)
 separates selected originals, actual paused/resumed/closed ownership and budget
 checks, derived refusals and native-only preparation. Generator constructors,
-by-reference-return factories, attributes and wider binding/dynamic contexts remain
-partial.
+by-reference-return factories, attributes and wider binding/dynamic contexts
+remained partial at that cut.
+
+CLASS187 admits anonymous factories in ordinary nongenerator methods declared
+with `&` across admitted named/anonymous/Trait owners. Direct compiler return mode
+matches the parsed header; nested byvalue Closure ancestry restores that method
+mode only in a source-authentication query. Existing returned cells and notice
+handling preserve aliases, receiver/child retirement and used/unused temporary
+return cancellation. The [review](coverage/semantics/anonymous-reference-method-factories-review.json)
+separates source agreements, actual cell/budget checks and derived mode refusals.
+Reference constructors/generators/Closure declarations, attributes and wider
+binding/dynamic contexts remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -1712,7 +1722,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS187 | Ordinary by-reference-return method anonymous factories; native/source preparation. |
+| CLASS188 | Method-owned nongenerator reference-return Closure/arrow factories; native/source preparation. |
 | I114 | Captured Generator API bind/bindTo receiver retargeting; private implementation/review. |
 | GC48 | Occupied WeakMap replacement with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |

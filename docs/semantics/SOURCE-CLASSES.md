@@ -792,8 +792,28 @@ cells until actual release. A static Closure without captures keeps source scope
 after its creator retires. The
 [generator Closure review](../../coverage/semantics/anonymous-generator-closure-factories-review.json)
 separates original execution, paused/resumed/closed ownership, derived refusals
-and native-only preparation. Generator constructors, by-reference-return factories,
+and native-only preparation. Generator constructors, reference-return Closure/arrow factories,
 attributes, wider binding/call forms and dynamic deferred contexts remain partial.
+
+Ordinary nongenerator methods declared with `&` may also contain anonymous
+factories in admitted named/anonymous/Trait owners. Direct compiler `RETURNREF`
+must equal the parsed method header. A nested byvalue Closure keeps its own
+return mode; the existing ancestry proof restores the checked containing method's
+mode only in its temporary compiler-context query. Reference constructors,
+reference generators, other magic bodies and attributed methods retain their
+separate source boundaries.
+
+The runtime uses ordinary returned cells and aliases. Variable returns transfer
+their real cell; caller copies and aliases retain the child independently of the
+method receiver. A temporary return emits the ordinary reference notice. Its
+value remains owned through callbacks, and a throwing handler still completes
+the native return-value handling before callable cleanup. Used and unused results
+therefore preserve their different receiver/child retirement order. The
+[reference method review](../../coverage/semantics/anonymous-reference-method-factories-review.json)
+separates original source observations, actual cell ownership/resumption and
+source-derived mode/refusal checks. Wider signatures, reference Closure/arrow
+declarations, reference generators, constructors and dynamic/binding contexts
+remain partial.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
