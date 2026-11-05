@@ -1,0 +1,133 @@
+{
+  "milestone": "OB11",
+  "status": "Independent private semantic CLEAR; required source, reached, legacy, public-refusal and strict433 gates pass. Actual current-parent composition pending.",
+  "scope": "Known pure invalid ob_start callbacks after complete argument reception in the normal post-output executor queue. Saved failed lookup emits Warning, then the failed-start Notice/false; diagnostics and cleanup retain native handler and argument ordering.",
+  "base": "d839e80db6bdcbd3c328738aa7251ceffaaa3b36",
+  "implementation_commits": [
+    "ebaf7668499743fdcab3b91f44815d1a592de8a8",
+    "4cf8e417ec289d65b32e40bdd38396eefe5a0f92",
+    "8be61b57c6e7b19287004a343de275898ddc4b75",
+    "59619e4339054110ab1e0c96f6877fbf87cfb667"
+  ],
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "main/output.c::zif_ob_start converts all |zll arguments before php_output_handler_create_user; invalid creation emits Warning before failed-start Notice.",
+      "Zend/zend_API.c::zend_fcall_info_init freezes failed callable selection; Warning callback changes cannot retry this attempt.",
+      "Zend/zend.c::zend_error_zstr_at restores/releases the selected handler and return before later diagnostics; pending exceptions skip eligible callbacks but still permit default reporting.",
+      "Zend/zend_vm_def.h::ZEND_DO_ICALL and Zend/zend_execute.h::zend_vm_stack_free_args use root-only zval_ptr_dtor_nogc even with a pending exception."
+    ]
+  },
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; SL",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "environment": "tests/semantics/profile.json; fixed request clock; LC_ALL=C,TZ=UTC,FIRST=one; independent slow native discovery controls remain separate.",
+    "adapter_sha256_by_cut": {
+      "early": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
+      "middle": "58108446eb5cc68533a0cc786beb09795eb32b6842b29d54d6efa07a8de10a21",
+      "final": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a"
+    },
+    "adapter_scope": "Actual packet identities are stable within each campaign. Shared rebuilds between cuts add rejected-header/Main_rejected routes; OB11 uses only the accepted-program route, wrapped as Main_program in the final adapter. Reports preserve actual binaries; no historical identity is replaced."
+  },
+  "behavior": [
+    "Declaration-prefix function history and DIRECT array snapshots retain the original failure across publication, selector repair and receiver retirement. Borrowed checking views add no real owner.",
+    "Invalid creation has no transient zoh. The real raw argument remains owned through Warning and Notice; source-specific RESULT/unreleased and CLEAN/released certificates authenticate return/old-handler destruction without a generic frame-validator change.",
+    "Pending return-destructor throws retain the live Throwable and raw builtin trace arguments. Notice selection samples the restored handler: eligible callbacks are skipped; default reporting obeys mask/display/silence.",
+    "Abrupt failed-Warning argument consumption captures an authenticated source-only receipt after real THROW_SEARCH. Exact root slots use TEMP/NOGC while array descendants keep ordinary cleanup; the source record adds no owner or executable task."
+  ],
+  "validation": {
+    "author_sources": "Thirteen distinct exact normal contexts across actual cuts: twelve through8be61b57c plus returned-Notice-object invalid42 bridge at596 production. Source reception/type ordering, failed publication/selector/receiver lookup, raw/retval/argument cleanup throws and successful captured Closure compatibility remain separate selections.",
+    "independent_sources": "Seven exact normal contexts: late-created raw-handler retirement at its released-phase cut; five cycle/selector/pending-mask/silence contexts at8be; new abrupt direct-cycle source at59619e433. Earlier rows are not replayed or renewed.",
+    "author_states": "Five source-reached groups pass225 reported/180 custom conditions at596 production: pending45, returned-value33 and retired receiver39 from the first packet; affected publication cleanup55 and frozen lookup53 in a separate rerun. Two original global failures retain zero group credit; publication groups claim explicit output/control/ownership checks, not whole declaration history.",
+    "independent_states": "Four source-reached groups pass265 reported conditions: released-handler59 + frozen-repair61 at the first report; cycle55 in the affected-only360s retry; new abrupt issuer/TEMP/trace front90 at59619e433. The180s cycle timeout and mistaken direct-trace-child fixture each retain zero failed-group credit.",
+    "diagnostic": "Normal cleanup20, returned-value21, released handler28, pending operation22 and genuine abrupt argument drop23 reported diagnostic conditions remain separate. Live/final validator decomposition isolates class_state_valid alone. A default-NULL Notice publication baseline passes23 diagnostic conditions: declaration history false, other class and output/ownership components true; native executes FN normally. No baseline native/model tuple agreement is claimed.",
+    "strict433": "Final private cut: true, empty stderr, exit0; ordered433-module SL command and unchanged input hashes in ob11-final-affected-gates/report.json.",
+    "legacy_and_public": "Affected OB09 reception group passes41 reported conditions, now reaching the real frozen failed Warning receipt. Active handler-body reentry and unresolved-class2 controls remain checked Unsupported, with no native agreement credit."
+  },
+  "preserved_failures": [
+    "Original interpreter failures at Warning publication, returned-object destruction and post-restoration raw-handler retirement remain external with zero agreement credit; the affected exact originals pass after local certificates.",
+    "The return-destructor-throw initially interpreter-failed, then completed with premature C before catch. Its exact original now matches with C after caller cleanup after the builtin trace correction.",
+    "The genuine abrupt diagnostic records the original ordinary release adding the cyclic callback to BUFFER. Native gc_status roots totals are observation-only and do not identify the callback or establish model gc_status support.",
+    "The first cyclic reached campaign timed out at180s; only its two passed groups retain credit, with the same final group accepted separately at360s.",
+    "The new abrupt front first failed only an incorrect direct Throwable-child test assumption; the genuine trace property is an owning array. The corrected trace-array reach assertion passes on unchanged production bytes.",
+    "Two author publication-source groups first fail whole call_descriptors checks. Genuine live/final decomposition and a default-NULL Notice baseline isolate inherited declaration_history_valid; affected groups retain local/final controls and ownership without claiming whole class-history closure. Original groups keep zero credit; a diagnostic fixture field-substitution typo also keeps zero execution credit."
+  ],
+  "remaining": [
+    "Unresolved/effectful/deprecated/autoload lookup, including unknown-class callbacks.",
+    "Other abrupt builtin argument-release receipts, including Notice-handler throws; this milestone adds only consumed failed-Warning continuation authority.",
+    "Active handler-body and Warning/deprecation-handler returned-object nested starts; wider abnormal executor queues and cleanup hooks.",
+    "Allocation failure/PHP memory limits and automatic GC trigger/resource effects.",
+    "Inherited folded-TODO live certificate frontier from output-executor-reception-review.json; no generic whole-stack invariant closure is claimed.",
+    "Whole declaration-history validation for late error-handler function publication; the no-failed-receipt default-NULL baseline has the same frontier. Relevant output, registry/control and ownership checks are retained without a whole-class certificate claim."
+  ],
+  "raw_archive": {
+    "directory": "/home/user/workspace/php-spec-evidence-archive/ob11-invalid",
+    "native_directories": [
+      "/home/user/workspace/php-spec-evidence-archive/ob11-review-native-cycle-20261105",
+      "/home/user/workspace/php-spec-evidence-archive/ob11-review-native-order-20261105",
+      "/home/user/workspace/php-spec-evidence-archive/ob11-review-native-pending-20261105",
+      "/home/user/workspace/php-spec-evidence-archive/ob11-review-native-retval-throw-20261105",
+      "/home/user/workspace/php-spec-evidence-archive/ob11-review-native-abrupt-20261105"
+    ],
+    "recovery": "Packets retain original bytes, commands, tool/input hashes, request facts, output channels, process results and failed wire exchanges. Reproduce maintained selected fixtures at their actual private cuts; raw archives stay outside Git.",
+    "publication_diagnostics": [
+      "publication-validator-diagnostic-v2/report.json",
+      "publication-default-control/native.json",
+      "fiber-state-review-02h0biic/report.json"
+    ],
+    "reports_sha256": {
+      "output-executor-invalid-hbl7sayj/report.json": "f6298cca5095f1e082fe55f4b164bd64a359bc61b8693b97f00214cffc3c12f3",
+      "output-executor-invalid-clvjt0wm/report.json": "e0e968129a90e1d92d13c9298a270c2c0536b2a4965f74308dcc44fa7b47bf2a",
+      "output-executor-invalid-rest-wpnoyite/results.json": "07b7b08d8e80dc88efba71a7afbec534b046ef93c7efa714e37594109a52826f",
+      "output-executor-invalid-xw190wlh/report.json": "239af2b3b62e024e8479924c8f02637c17f4900cf7f2aa0980a74611d3bd1a8c",
+      "output-executor-invalid-op8anxnu/report.json": "39930764ca96fc94a83988ea8b2c6df21be1af8eb0ffeab7b146b3c9dd98ba0e",
+      "output-executor-invalid-final-61azlpyd/report.json": "d728fbc6fbaa8c3b8b8fc9bf29e13dbcc51f6e6b8bff3d9a70f49997e1a6009d",
+      "output-executor-invalid-lc9_7bq5/report.json": "4a3201854784afacaa4a972bf8f4e32a18b182e5b692ff9cf2a8e530aa0c0a86",
+      "output-executor-invalid-review-p4nczxhj/report.json": "ce692119962ed8e46615e77914662e533706615e28ea72670de94680f5efbe4b",
+      "output-executor-invalid-review-rest-zq1by9p5/report.json": "2c68029b5610df60a6c6786522cb40ca61337b9ba8b4140933bd9f9e00bfd091",
+      "output-executor-invalid-review-j8l717bc/report.json": "5b701641fc52e6d30227aa75ae7834dc44bdbd117171b1116bf11d342841fbad",
+      "fiber-state-review-9528zrn5/report.json": "744398ba9479cac7672b2bd0f87cd2b42f5cbee7c01a548f62f56607b06b9da5",
+      "fiber-state-review-pgy2_ysb/report.json": "44816ae67cb080bc3c28c58d7a483d687840e7aa5da9c049ab77f895a739a956",
+      "fiber-state-review-ma1ys75k/report.json": "edc7cb5e929c6e89ca75f7ac09ca3af9dab8bb35b934b27a61d7a91e8d855945",
+      "fiber-state-review-y5ubqqs5/report.json": "dc6fe31684c7bca3da43dda0abf76b0fd176a0ba732c4f16833226ebed16bbd1",
+      "fiber-state-review-zka4cvxy/report.json": "cee4825952ce0d5d6bc7684371798a9eac07fa1b7058290c7e98c75612610a8e",
+      "fiber-state-review-ng_hon0d/report.json": "4d7e4f67e7227b40a0696701616de9349275fc47735e45ef1e98ff355d2e0dce",
+      "output-post-deactivate-boundaries-tgaqbf42/report.json": "1c0b6e95cacdd1b803c5aa17f76d287484b78ad99126ad46bb165577f3ea4e32",
+      "ob11-final-affected-gates/report.json": "db2f99ac9f32991a504e9b5ac50f816464dfabbf13c5d0f9c7b8620690bac0f2",
+      "publication-validator-diagnostic-v2/report.json": "76665f2db68da827a42ed34c5c53a3d7885d9fcd6ae86868e559d7eeda194749",
+      "fiber-state-review-02h0biic/report.json": "a5f7f8e5349e2a89b8f8aa98b45783cee9737747e22023c87c96e69290bf6bf4"
+    }
+  },
+  "review": {
+    "reviewer": "/root/output_review_current",
+    "decision": "Private semantic, tests and documentation scope CLEAR; actual-parent union pending."
+  },
+  "reproduce": [
+    "taskset -c 3 python3 tests/semantics/output_executor_invalid_sources.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_invalid_state.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_invalid_review_sources.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_invalid_review_state.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_post_deactivate_boundaries.py"
+  ],
+  "fixture_commits": [
+    "490b3603ac687178da28d622bb76b02233c2f441",
+    "ecf756f1e2ac8875e1a6b0b48cbd75ea650c01ba",
+    "43e8eebbf81a3cc3126ab3cb9453d76012fc6304"
+  ],
+  "compatibility": "596 selects its new source-only receipt only at consumed failed-Warning THROW_SEARCH with a heap argument. Earlier independent six sources and three fronts never select it (normal paths or scalar42); their actual-cut results stand. New abrupt source/front exercise root-only NOGC, raw trace ownership and coherent refusals. Author pending/retval/receiver fronts and the two publication reruns validate final production. The successful captured-Closure compatibility path and normal Notice consumption remain unchanged. No accepted source campaign is renewed for fixture/record corrections.",
+  "private_inputs_scope": "Final43e8eebbf fixture bytes and59619e433 production. Reports retain their original tested heads and selections; these hashes do not describe later parent changes.",
+  "private_inputs_sha256": {
+    "spec/semantics/30-storage.watsup": "2e3d235855eb5361fd50cab34a305248d16c4cce64793b71e8b80fad5654966f",
+    "spec/semantics/391-output-buffers.watsup": "1baf31206ebc37266daabdae02f7a7becb4c937cc65423e2f0cf70e2a1bc5373",
+    "spec/semantics/444-executor-final-free.watsup": "c361b1b5a04d39d2eafdd60a6115fe5b50171da821f71c0303ba830e81d69930",
+    "tests/semantics/output_executor_invalid_sources.py": "42b7580ec4a5e75ee6e49ce7dc31a34f768cce718be012dfce934a9709394347",
+    "tests/semantics/output_executor_invalid_state.py": "bdd03da209c1f1079ff946c9aa6a5b1911c70a83dd3e801c9db5f335d0f25e69",
+    "tests/semantics/output_executor_invalid_review_sources.py": "209f1b83fca05baeb8e7444f96be664af89542b9b24ba065687e185be88a1a75",
+    "tests/semantics/output_executor_invalid_review_state.py": "f27b81c0dca0f04bfac3938c63bcb975284987d1fed90c4f45cf3452453e7397",
+    "tests/semantics/output_executor_reception_review_state.py": "f09c59d173fe7dd971f4a827a3a9edd03a8392f7c7083bcd47065a6ec816390b",
+    "tests/semantics/output_executor_post_deactivate_boundaries.py": "4d221540bf93bf9e941456c7458d91624e925271cb05579a295846bbacc7704d",
+    "tests/semantics/output_executor_post_deactivate_unknown_ob11.php": "7dcc7f7978cf2bd4513fa478ce384766e6635b4556b06ff300f1973169e09f45"
+  }
+}

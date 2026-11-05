@@ -894,7 +894,16 @@ Consumed Closure metadata uses borrowed source certificates and owns nothing.
 The VM argument's root decrement skips GC candidate buffering; array children
 still use ordinary cleanup. The source and reached checks retain their separate
 cuts in the [creation review](coverage/semantics/output-executor-creation-review.json).
-Invalid/effectful creation, active handler-body reentry, deprecation-handler returned-object
+OB11 freezes known invalid callback lookup after conversion, emits Warning then
+the failed-start Notice, and keeps failure final even if the Warning callback
+defines the missing function or repairs referenced selectors. Declaration-prefix
+history and DIRECT snapshots are borrowed checking data. Retired Warning-handler
+objects release before the current Notice handler runs. Warning-return destructor
+throws preserve the pending operation and real builtin argument trace, retaining
+the argument through catch and caller-local cleanup. Pending Notice selection
+distinguishes eligible-handler skip from ordinary reporting/suppression.
+[Failed-lookup review](coverage/semantics/output-executor-invalid-review.json).
+Unresolved/effectful creation, active handler-body reentry, Warning/deprecation-handler returned-object
 starts, allocation failure/memory limits and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
 [general reception review](coverage/semantics/output-executor-reception-review.json).
