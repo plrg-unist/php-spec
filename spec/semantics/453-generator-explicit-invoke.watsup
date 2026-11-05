@@ -36,7 +36,7 @@ def $getter_capture_result_valid(S, n, porigin) = true
   -- if $generator_capture_saved(S, n)
   -- if $getter_capture_live(S, n)
 
-rule PhpStep/generator-invoke-forward: S ~> S[.TODO = (GENERATOR_ARGS pgeneratorop eps $getclass_trace_operands(pconfigcall.SENT)) :: (GETTER_CAPTURE_RESULT n_capture pconfigcall.SITE) :: (GENERATOR_INVOKE_RESULT pconfigcall true) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/generator-invoke-forward: S ~> S[.TODO = (GENERATOR_ARGS pgeneratorop eps $getclass_trace_operands(pconfigcall.SENT)) :: (GETTER_CAPTURE_RESULT n_capture pconfigcall.SITE) :: (GENERATOR_INVOKE_RESULT pconfigcall true PNULL) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: ptask_tail*
   -- if porigin = pconfigcall.SITE
   -- if $config_invoke_valid(S, pconfigcall)
@@ -47,72 +47,86 @@ rule PhpStep/generator-invoke-forward: S ~> S[.TODO = (GENERATOR_ARGS pgenerator
   -- if $config_missing(pconfigcall.SENT, 0) = eps
   -- if pgeneratorop = {OBJECT n_receiver, NAME text_method, SITE pconfigcall.SITE, LINE pconfigcall.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false, SELECTION (pgeneratormethodselection)}
 
-;; The outer buffer is historical after its release step, without new roots.
-def $generator_invoke_marker(GENERATOR_INVOKE_RESULT pconfigcall b, n, porigin) = true
+;; The outer buffer is historical after its release step, without argv roots.
+def $generator_invoke_marker(GENERATOR_INVOKE_RESULT pconfigcall b pvalue, n, porigin) = true
   -- if pconfigcall.SITE = porigin
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text (pgeneratormethodselection)
   -- if pgeneratormethodselection.CAPTURE = (n)
 def $generator_invoke_marker(ptask, n, porigin) = false -- otherwise
 
-def $task_nodes(GENERATOR_INVOKE_RESULT pconfigcall true) = [HOBJECT n_capture] ++ $named_slots_roots(pconfigcall.SENT)
+def $task_nodes(GENERATOR_INVOKE_RESULT pconfigcall true pvalue) = [HOBJECT n_capture] ++ $named_slots_roots(pconfigcall.SENT) ++ $value_nodes(pvalue)
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text (pgeneratormethodselection)
   -- if pgeneratormethodselection.CAPTURE = (n_capture)
-def $task_nodes(GENERATOR_INVOKE_RESULT pconfigcall false) = [HOBJECT n_capture]
+def $task_nodes(GENERATOR_INVOKE_RESULT pconfigcall false pvalue) = [HOBJECT n_capture] ++ $value_nodes(pvalue)
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text (pgeneratormethodselection)
   -- if pgeneratormethodselection.CAPTURE = (n_capture)
+def $task_nodes(GENERATOR_INVOKE_RETURN pconfigcall pvalue) = $value_nodes(pvalue)
 
-dec $generator_invoke_result_valid(pstate, pconfigcall, bool) : bool
-def $generator_invoke_result_valid(S, pconfigcall, b_live) = true
+dec $generator_invoke_saved_valid(pstate, pconfigcall) : bool
+def $generator_invoke_saved_valid(S, pconfigcall) = true
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method (pgeneratormethodselection)
   -- if $generator_api_kind(pconfigcall.KIND)
   -- if pconfigcall.OWNER = (n_receiver)
   -- if pconfigcall.SELECTION = eps
   -- if pgeneratormethodselection.CAPTURE = (n_capture)
-  -- if $getter_capture_live(S, n_capture)
   -- if $generator_capture_wrapper_site(S, pconfigcall.SITE)
   -- if $generator_selected_method(S, pconfigcall.SITE, n_receiver, $generator_method_display(text_method), pconfigcall.LINE, (pgeneratormethodselection))
   -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
   -- if $config_sent_shape(S, pconfigcall)
   -- if $config_missing(pconfigcall.SENT, 0) = eps
-  -- if ~b_live \/ $config_slots_valid(S, pconfigcall.SENT)
-def $generator_invoke_result_valid(S, pconfigcall, b_live) = false -- otherwise
-def $call_task_valid(S, GENERATOR_INVOKE_RESULT pconfigcall b) = $generator_invoke_result_valid(S, pconfigcall, b)
-def $generator_internal_task(GENERATOR_INVOKE_RESULT pconfigcall b) = true
-def $fiber_marker(GENERATOR_INVOKE_RESULT pconfigcall b) = true
+def $generator_invoke_saved_valid(S, pconfigcall) = false -- otherwise
+dec $generator_invoke_result_valid(pstate, pconfigcall, bool, pvalue) : bool
+def $generator_invoke_result_valid(S, pconfigcall, b_live, pvalue) = true
+  -- if $generator_invoke_saved_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method (pgeneratormethodselection)
+  -- if pgeneratormethodselection.CAPTURE = (n_capture)
+  -- if $getter_capture_live(S, n_capture)
+  -- if ~b_live \/ (pvalue = PNULL /\ $config_slots_valid(S, pconfigcall.SENT))
+  -- if $destructor_return_operand_valid(S, KNOWN pvalue)
+def $generator_invoke_result_valid(S, pconfigcall, b_live, pvalue) = false -- otherwise
+def $call_task_valid(S, GENERATOR_INVOKE_RESULT pconfigcall b pvalue) = $generator_invoke_result_valid(S, pconfigcall, b, pvalue)
+def $call_task_valid(S, GENERATOR_INVOKE_RETURN pconfigcall pvalue) = ($generator_invoke_saved_valid(S, pconfigcall) /\ $destructor_return_operand_valid(S, KNOWN pvalue))
+def $generator_internal_task(GENERATOR_INVOKE_RESULT pconfigcall b pvalue) = true
+def $generator_internal_task(GENERATOR_INVOKE_RETURN pconfigcall pvalue) = true
+def $fiber_marker(GENERATOR_INVOKE_RESULT pconfigcall b pvalue) = true
+def $fiber_marker(GENERATOR_INVOKE_RETURN pconfigcall pvalue) = true
 
-;; The inner result is used by the wrapper. Its outer argv goes first, then
-;; the unused/abrupt outer result, then the remaining Closure owner.
-dec $generator_invoke_discard_result(pstate, pconfigcall) : bool
-def $generator_invoke_discard_result(S, pconfigcall) = true
-  -- if S.COMPLETION =/= NORMAL \/ ~$reference_call_used(S, pconfigcall.SITE)
+;; Save the inner return independently of RESULT before argv destructors run.
+;; An unused return drops before the capture, including on an argv throw.
+;; A used but uncommitted return outlives capture retirement on that throw.
+dec $generator_invoke_discard_result(pstate, pconfigcall, pvalue) : bool
+def $generator_invoke_discard_result(S, pconfigcall, pvalue) = (~$reference_call_used(S, pconfigcall.SITE) /\ $value_nodes(pvalue) =/= eps)
+rule PhpStep/generator-invoke-argv-release: S ~> S[.TODO = (GENERATOR_INVOKE_RESULT pconfigcall false pvalue) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GENERATOR_INVOKE_RESULT pconfigcall true PNULL) :: ptask_tail*
+  -- if $generator_invoke_result_valid(S, pconfigcall, true, PNULL)
   -- if S.RESULT = KNOWN pvalue
-  -- if $value_nodes(pvalue) =/= eps
-def $generator_invoke_discard_result(S, pconfigcall) = false -- otherwise
-rule PhpStep/generator-invoke-argv-release: S ~> S[.TODO = (GENERATOR_INVOKE_RESULT pconfigcall false) :: ptask_tail*]
-  -- if S.TODO = (GENERATOR_INVOKE_RESULT pconfigcall true) :: ptask_tail*
-  -- if $generator_invoke_result_valid(S, pconfigcall, true)
-rule PhpStep/generator-invoke-unused-result: S ~> S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (GENERATOR_INVOKE_RESULT pconfigcall false) :: ptask_tail*
-  -- if $generator_invoke_result_valid(S, pconfigcall, false)
-  -- if $generator_invoke_discard_result(S, pconfigcall)
-rule PhpStep/generator-invoke-capture-release: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
-  -- if S.TODO = (GENERATOR_INVOKE_RESULT pconfigcall false) :: ptask_tail*
-  -- if $generator_invoke_result_valid(S, pconfigcall, false)
-  -- if ~$generator_invoke_discard_result(S, pconfigcall)
-rule PhpStep/generator-invoke-throw-argv-release: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall false) :: ptask_tail*]
-  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall true) :: ptask_tail*
-  -- if $generator_invoke_result_valid(S, pconfigcall, true)
+rule PhpStep/generator-invoke-unused-result: S ~> S[.TODO = (GENERATOR_INVOKE_RESULT pconfigcall false PNULL) :: ptask_tail*]
+  -- if S.TODO = (GENERATOR_INVOKE_RESULT pconfigcall false pvalue) :: ptask_tail*
+  -- if $generator_invoke_result_valid(S, pconfigcall, false, pvalue)
+  -- if $generator_invoke_discard_result(S, pconfigcall, pvalue)
+rule PhpStep/generator-invoke-capture-release: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN pvalue)]
+  -- if S.TODO = (GENERATOR_INVOKE_RESULT pconfigcall false pvalue) :: ptask_tail*
+  -- if $generator_invoke_result_valid(S, pconfigcall, false, pvalue)
+  -- if ~$generator_invoke_discard_result(S, pconfigcall, pvalue)
+rule PhpStep/generator-invoke-throw-argv-release: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall false PNULL) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall true PNULL) :: ptask_tail*
+  -- if $generator_invoke_result_valid(S, pconfigcall, true, PNULL)
   -- if $throwable_live(S, n)
-rule PhpStep/generator-invoke-throw-result-release: S ~> S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall false) :: ptask_tail*
-  -- if $generator_invoke_result_valid(S, pconfigcall, false)
-  -- if $generator_invoke_discard_result(S, pconfigcall)
+rule PhpStep/generator-invoke-throw-capture-release: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RETURN pconfigcall pvalue) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall false pvalue) :: ptask_tail*
+  -- if $generator_invoke_result_valid(S, pconfigcall, false, pvalue)
+  -- if ~$generator_invoke_discard_result(S, pconfigcall, pvalue)
   -- if $throwable_live(S, n)
-rule PhpStep/generator-invoke-throw-capture-release: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
-  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall false) :: ptask_tail*
-  -- if $generator_invoke_result_valid(S, pconfigcall, false)
-  -- if ~$generator_invoke_discard_result(S, pconfigcall)
+rule PhpStep/generator-invoke-throw-unused-result: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall false PNULL) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RESULT pconfigcall false pvalue) :: ptask_tail*
+  -- if $generator_invoke_result_valid(S, pconfigcall, false, pvalue)
+  -- if $generator_invoke_discard_result(S, pconfigcall, pvalue)
+  -- if $throwable_live(S, n)
+rule PhpStep/generator-invoke-throw-return-release: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_INVOKE_RETURN pconfigcall pvalue) :: ptask_tail*
+  -- if $generator_invoke_saved_valid(S, pconfigcall)
+  -- if $destructor_return_operand_valid(S, KNOWN pvalue)
   -- if $throwable_live(S, n)
 
 def $generator_operation_trace(S, pgeneratorop) = [ptraceframe, ptraceframe_outer]
