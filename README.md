@@ -3550,15 +3550,24 @@ their referent retires; diagnostics retain the actual internal class name.
 GC30 adds quiet inactive WeakReference unregister and standard-object notification.
 Observer retirement changes the terminal weak-association view without adding a
 referent owner. Real handle order preserves fast-shutdown field shielding and the
-existing inactive public-destructor fatal. Active key-triggered Map notification and weak custom
-hooks remain partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
+existing inactive public-destructor fatal. At the GC30 cut, key-triggered Map
+notification and weak custom hooks remained partial. See the [inactive weak-hook review](coverage/semantics/gc-inactive-weak-free-review.json).
 
 GC31 adds inactive empty/singleton/multi-entry WeakMap free. Every key unregisters
 before ordered value release; later values stay leased when an earlier release
 fails, and shared reference cells retain their payload once. Seven source/request
-contexts and 599 new/affected reached conditions pass. Active key notification,
-incoming Map associations and active free pins remain fenced. See the
+contexts and 599 new/affected reached conditions pass. At that cut, key
+notification, incoming Map associations and active free pins remained fenced. See the
 [inactive Map review](coverage/semantics/gc-inactive-weakmap-free-review.json).
+
+GC32 adds inactive standard-Key notifications. Each selected Map entry detaches
+in registration order before its value releases; surviving slot positions preserve
+nonadjacent equal values and later Map release order. Key fields wait until
+notifications finish, and an earlier fatal retains pending owners. Nine exact
+source/request contexts and 951 reported checks cover selective/nested cleanup
+and reference cells in both allocator modes. Internal Map/WeakReference and custom
+Closure key hooks, active free pins and wider diagnostics remain partial.
+[Key notification review](coverage/semantics/gc-key-notify-review.json).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton
 protocols; module422 adds the multiple-entry lane below. The original first-entry

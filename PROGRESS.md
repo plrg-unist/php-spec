@@ -370,8 +370,8 @@ terminal cleanup. The association view preserves owning edges while ordinary
 field releases/C guards update the local heap; real handle order preserves fast
 field shielding and inactive-destructor failure. Eight exact source/request
 contexts include all three unchanged OB10 originals on their actual canonical
-composition. Author206 and independent341 strict conditions pass. WeakMap/custom
-notifications remain partial. [GC30 review](coverage/semantics/gc-inactive-weak-free-review.json).
+composition. Author206 and independent341 strict conditions pass. Map/custom
+notification remained partial at that cut. [GC30 review](coverage/semantics/gc-inactive-weak-free-review.json).
 
 GC31 adds inactive WeakMap free with all-key unregister before ordered value
 release. Later value leases and shared ALIAS payload ownership survive correctly;
@@ -379,8 +379,18 @@ retired Maps no longer force unrelated key-field cleanup. Seven exact source/req
 contexts cover empty/singleton/multi-entry Maps, AB/BA fatal order, fast/slow alias
 cells and an independent all-unregister-before-value discriminator. Author292,
 peer172 and affected GC30 HIGHER135 pass (599 total); two key-notification
-Unsupported controls keep zero agreement. Active key/incoming-Map notification
-and active free pins remain partial. [GC31 review](coverage/semantics/gc-inactive-weakmap-free-review.json).
+Unsupported controls retain zero agreement at their original cuts. Key/incoming-Map
+notification and active free pins remained partial at that cut. [GC31 review](coverage/semantics/gc-inactive-weakmap-free-review.json).
+
+GC32 adds inactive standard-Key notification before fields. Per-Key registration
+rank and surviving value-slot position preserve selective entry removal, duplicate
+owners and later Map order; nested notifications retain pending entry/field owners.
+Nine exact contexts (eight programs) include the two promoted GC31 originals,
+fast/nonfast reference cells and an independent nonadjacent-duplicate discriminator.
+Author359, independent208 and affected384 conditions pass (951 reported), with
+strict434 at recorded cuts. Original Unsupported, binding/elaboration failures and
+the wrong-W first draft retain zero credit. Internal/custom key hooks and active
+free pins remain partial. [GC32 review](coverage/semantics/gc-key-notify-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
