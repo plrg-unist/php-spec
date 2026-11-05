@@ -154,6 +154,7 @@ def $weakmap_declared_value_child_owners(S, n_value, n_owners) = true
 def $weakmap_declared_value_child_owners(S, n_value, n_owners) = false -- otherwise
 dec $weakmap_declared_value_child(pstate, nat) : bool
 def $weakmap_declared_value_child(S, n_value) = $weakmap_declared_value_child_owners(S, n_value, 1)
+dec $weakmap_shared_registration(pstate, nat, nat, pweakmapvalue) : bool
 dec $weakmap_write_value_allowed(pstate, paccess) : bool
 def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.VALUE = POBJECT n_value
@@ -204,7 +205,6 @@ def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.RHS = S.RESULT
   -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
 def $weakmap_write_value_allowed(S, paccess) = false -- otherwise
-dec $weakmap_shared_registration(pstate, nat, nat, pweakmapvalue) : bool
 dec $weakmap_shared_replacement(pstate, nat, nat, pweakmapvalue) : bool
 dec $weakmap_entries_child_shared_storage(pstate, nat, nat?) : bool
 ;; Weak keys are object identities. Preserve the ordinary leaf producer and
