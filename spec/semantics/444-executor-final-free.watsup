@@ -253,6 +253,7 @@ dec $executor_normal_task(pstate, ptask) : bool
 dec $executor_normal_frames(pstate, pframe*) : bool
 dec $executor_module_owners(pstate) : bool
 dec $executor_tick_completion(pstate, pcompletion) : bool
+dec $executor_tick_history(pstate, pcompletion) : pstate
 dec $executor_tick_ready(pstate) : bool
 dec $executor_tick_valid(pstate, pexecutortick) : bool
 dec $executor_tick_nodes(ptickentry) : pnode*
@@ -351,6 +352,10 @@ def $executor_tick_nodes(ptickentry) = $operands_roots($shutdown_known(ptickentr
 def $executor_tick_completion(S, NORMAL) = (S.SHUTDOWN.COMPLETION = NORMAL /\ S.DESTRUCTION.COMPLETION = NORMAL)
 def $executor_tick_completion(S, EXITED z) = (S.SHUTDOWN.COMPLETION = EXITED z /\ S.DESTRUCTION.COMPLETION = EXITED z /\ S.EXITSTATUS = z)
 def $executor_tick_completion(S, pcompletion) = false -- otherwise
+;; Reporting replaces the actual exit status. A documentary source lookup may
+;; restore its saved code; both real phase completions still authenticate it.
+def $executor_tick_history(S, EXITED z) = S[.EXITSTATUS = z]
+def $executor_tick_history(S, pcompletion) = S -- otherwise
 def $executor_tick_ready(S) = true
   -- if S.TICKENTRIES = ptickentry :: ptickentry_tail*
   -- if $executor_tick_completion(S, S.COMPLETION) /\ S.ASSERTCALLBACK = eps
@@ -378,8 +383,8 @@ def $executor_tick_frames(eps, pexecutortick) = false
 def $executor_tick_frames(pframe :: pframe_tail*, pexecutortick) = ((pframe.CONTEXT = eps /\ $executor_tick_tasks(pframe.TODO, pexecutortick)) \/ $executor_tick_frames(pframe_tail*, pexecutortick))
 def $executor_tick_active(S, pexecutortick) = ($executor_tick_valid(S, pexecutortick) /\ ((S.CURRENT = eps /\ $executor_tick_tasks(S.TODO, pexecutortick)) \/ $executor_tick_frames(S.FRAMES, pexecutortick)))
 def $executor_tick_scope_tasks(S, eps) = false
-def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = ($executor_tick_active(S, pexecutortick) \/ $executor_tick_scope_tasks(S, ptask_tail*))
-  -- if $executor_tick_task(ptask) = (pexecutortick)
+def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = ($output_drain_task(S, ptask) \/ $executor_tick_scope_tasks(S, ptask_tail*))
+  -- if $executor_tick_task(ptask) =/= eps
 def $executor_tick_scope_tasks(S, ptask :: ptask_tail*) = $executor_tick_scope_tasks(S, ptask_tail*)
   -- if $executor_tick_task(ptask) = eps
 def $executor_tick_scope_frames(S, eps) = false
@@ -411,7 +416,7 @@ rule PhpStep/executor-tick-done: S ~> $output_executor_finish(S[.TODO = eps][.CO
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, EXECUTOR_TICK_RELEASE pexecutortick false)
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
-def $eager_operation_source_guard(S, pdestructionoperation) = (($executor_tick_active(S, pexecutortick) \/ ($executor_operation_abandoned(S.DESTRUCTION.ABANDONED, pdestructionoperation) /\ $executor_tick_valid(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick))) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = pexecutortick.VALUE /\ pdestructionoperation.BASE = pexecutortick.BASE)
+def $eager_operation_source_guard(S, pdestructionoperation) = (($executor_tick_active(S, pexecutortick) \/ ($executor_operation_abandoned(S.DESTRUCTION.ABANDONED, pdestructionoperation) /\ $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick))) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = pexecutortick.VALUE /\ pdestructionoperation.BASE = pexecutortick.BASE)
   -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
 def $executor_queue_release(S, pexecutorqueue, pexecutorstage, pnode*) = $eager_operation_begin(S[.TODO = [EXECUTOR_RELEASE pexecutorqueue EXECUTOR_DONE]], S, EXECUTOR_RELEASE pexecutorqueue pexecutorstage, pnode*)
 rule PhpStep/executor-queue-release: S ~> $executor_queue_release(S, pexecutorqueue, EXECUTOR_QUEUE, $executor_queue_nodes(pexecutorqueue.ENTRIES))
@@ -493,8 +498,7 @@ def $executor_tick_abandoned(S, pdestructioncleanup) = (pexecutortick)
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_RELEASE pexecutortick true
-  -- if pexecutortick.COMPLETION = NORMAL
-  -- if $executor_tick_valid(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
+  -- if $executor_tick_valid($executor_tick_history(S, pexecutortick.COMPLETION)[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if $eager_cleanup_valid(S, pdestructioncleanup)
 def $executor_tick_abandoned(S, pdestructioncleanup) = eps -- otherwise
 def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
@@ -502,6 +506,7 @@ def $executor_tick_caught(S) = ((pexecutortick, S.COMPLETION))
   -- if $(|S.DESTRUCTION.ABANDONED| > 0)
   -- if n_last = $nabs($(|S.DESTRUCTION.ABANDONED| - 1))
   -- if $executor_tick_abandoned(S, S.DESTRUCTION.ABANDONED[n_last]) = (pexecutortick)
+  -- if $executor_tick_valid(S[.DESTRUCTION.PHASE = DESTRUCTION_DONE], pexecutortick)
   -- if S.COMPLETION = UNCAUGHT n
   -- if S.EXCEPTIONHANDLER = eps
   -- if $executor_renderable(S, n)
@@ -522,7 +527,7 @@ def $executor_tick_fatal_begin(S, pexecutortick, UNCAUGHT n) = S_report[.TODO = 
   -- if pexecutortickfatal = {TICK pexecutortick, COMPLETION S_report.COMPLETION, OBJECT n}
 def $output_drive_finalize(S, n) = $drive_steps($executor_tick_fatal_begin(S, pexecutortick, pcompletion), n)
   -- if $executor_tick_caught(S) = ((pexecutortick, pcompletion))
-def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active(S, pexecutortickfatal.TICK)
+def $output_drain_task(S, EXECUTOR_TICK_FATAL pexecutortickfatal b) = $executor_tick_active($executor_tick_history(S, pexecutortickfatal.TICK.COMPLETION), pexecutortickfatal.TICK)
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal true) = [HOBJECT pexecutortickfatal.OBJECT]
 def $task_nodes(EXECUTOR_TICK_FATAL pexecutortickfatal false) = eps
 def $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal true) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $throwable_live(S, pexecutortickfatal.OBJECT) /\ $executor_report_cause(S, pexecutortickfatal.COMPLETION, pexecutortickfatal.OBJECT) /\ S.CURRENT = eps /\ S.ORIGIN = eps /\ $source_operand_suffix(S.TODO, EXECUTOR_TICK_FATAL pexecutortickfatal true, eps))
@@ -531,7 +536,7 @@ rule PhpStep/executor-tick-fatal-release: S ~> $eager_operation_begin(S[.TODO = 
   -- if S.TODO = (EXECUTOR_TICK_FATAL pexecutortickfatal true) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $call_task_valid(S, EXECUTOR_TICK_FATAL pexecutortickfatal true)
-def $eager_operation_source_guard(S, pdestructionoperation) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $executor_tick_active(S, pexecutortickfatal.TICK) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+def $eager_operation_source_guard(S, pdestructionoperation) = ($executor_tick_fatal_valid(S, pexecutortickfatal) /\ $executor_tick_active($executor_tick_history(S, pexecutortickfatal.TICK.COMPLETION), pexecutortickfatal.TICK) /\ pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
   -- if pdestructionoperation.SOURCE = EXECUTOR_TICK_FATAL pexecutortickfatal true
 rule PhpStep/executor-tick-fatal-queue: S ~> $executor_queue_begin(S[.TODO = eps][.COMPLETION = pexecutortickfatal.COMPLETION])
   -- if S.TODO = (EXECUTOR_TICK_FATAL pexecutortickfatal false) :: ptask_tail*

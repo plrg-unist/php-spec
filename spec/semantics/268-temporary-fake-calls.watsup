@@ -186,14 +186,30 @@ rule PhpStep/closure-call-copy-reference-resume: S ~> S_reference[.TODO = (CLOSU
 
 ;; Cancellation frees the prepared argv prefix before the VM API arguments.
 ;; The uncreated Gen owns nothing; retain its hidden copy before dropping argv.
-def $error_read_discard(S, CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = $destructor_release_begin(S_retained[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED) ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW) ++ [HOBJECT pclosurecall.SOURCE]))
-  -- if S.TODO = (THROW_SEARCH n_throw) :: ptask_tail*
-  -- if $throwable_member(S, n_throw)
-  -- if $closure_call_copy_reference_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base)
+def $closure_call_copy_retain(S, n_copy) = S[.CLOSURECALLRETAINED = S.CLOSURECALLRETAINED ++ [pclosurebinding]]
   -- if $closure_call_copy_row(S, n_copy) = (pclosurebinding)
   -- if ~$closure_call_copy_created(S.OBJECTS, n_copy)
   -- if ~((HOBJECT n_copy) <- $closure_call_retained_nodes(S.CLOSURECALLRETAINED))
-  -- if S_retained = S[.CLOSURECALLRETAINED = S.CLOSURECALLRETAINED ++ [pclosurebinding]]
+dec $closure_call_copy_cancel_release(pstate, pclosurecall, pnamedargs) : pstate
+def $closure_call_copy_cancel_release(S, pclosurecall, pnamedargs) = $destructor_release_begin(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($named_slots_roots(pnamedargs.SLOTS) ++ $named_roots(pnamedargs.NAMED) ++ $closure_call_first_roots(pclosurecall.FIRST) ++ $closure_call_raw_roots(pclosurecall.RAW) ++ [HOBJECT pclosurecall.SOURCE]))
+  -- if S.TODO = (THROW_SEARCH n_throw) :: ptask_tail*
+  -- if $throwable_member(S, n_throw)
+def $error_read_discard(S, CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base) = $closure_call_copy_cancel_release($closure_call_copy_retain(S, n_copy), pclosurecall, pnamedargs)
+  -- if $closure_call_copy_reference_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base)
+def $return_discard(S, CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) = $closure_call_copy_cancel_release($closure_call_copy_retain(S, n_copy), pclosurecall, pnamedargs)
+  -- if $closure_call_copy_forward_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base)
+  -- if $(n < |pclosurecall.RAW|)
+  -- if pclosurecall.RAW[n] = (pkey, KNOWN pvalue)
+  -- if $target_function(S, CLOSURE_TARGET n_copy) = (pfunction)
+  -- if pnamedtarget = $unpack_target(pfunction.SIGNATURE.PARAMETERS, pkey, n)
+  -- if ~$named_can_store(pnamedargs, pnamedtarget)
+  -- if pclosurecall.ERROR = (preqbytes)
+;; The fake receive frame already released its prepared arguments.
+def $return_discard(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_cancel_release(S, pclosurecall, {SLOTS eps, NAMED eps})
+  -- if $closure_call_copy_result_valid(S, pclosurecall, n_copy)
+  -- if $closure_call_copy_row(S, n_copy) = (pclosurebinding)
+  -- if pclosurebinding <- S.CLOSURECALLRETAINED
+  -- if ~$closure_call_copy_created(S.OBJECTS, n_copy)
 
 def $temporary_call_task_valid(S, ptask) = false -- otherwise
 

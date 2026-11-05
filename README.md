@@ -4758,14 +4758,17 @@ After output FINAL, source-certified tick entries retire in registration order,
 releasing copied values before their independent FCC object/Closure owners.
 Normal completion and stable pending exits use agreeing saved phase completions;
 the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
-An uncaught builtin Exception from a normal-origin argument destructor now stops
-that tick-list cleanup, retaining unfinished arguments, FCC owners and tail
-entries. Its Throwable retires before later active shutdown-queue cleanup and
-inactive executor free. An owning Closure capture can produce the separate
-inactive-child fatal with native exit 0. Five new originals agree exactly;
-five independent groups pass 254 conditions (11 derived), and private strict433
-passes. See the [bailout review](coverage/semantics/callback-late-tick-throw-review.json);
-earlier [exit](coverage/semantics/callback-late-tick-exit-review.json) and
+An uncaught builtin Exception from an argument destructor stops tick-list cleanup
+after normal completion or a stable main exit, retaining unfinished arguments,
+FCC owners and tail entries. Saved full exit codes authenticate abandoned source
+history after the report sets actual status 255; both saved phases stay intact.
+The Throwable retires before later active queue cleanup and inactive executor
+free, whose separate captured-child fatal can end with native status 0.
+Four new exit/throw originals and one affected normal control agree exactly;
+five independent groups pass 265 conditions (9 derived), and private strict433
+passes. See the [exit/throw review](coverage/semantics/callback-late-tick-exit-throw-review.json);
+the earlier [bailout](coverage/semantics/callback-late-tick-throw-review.json),
+[exit](coverage/semantics/callback-late-tick-exit-review.json) and
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
 Wider producers, assertion roots, changed phase completions, exception handlers,
 other throws and exits/reentry during late release remain partial.
@@ -7208,6 +7211,12 @@ catch. Four native originals, three CLI comparisons and two ownership fronts
 (including repeated native output) validate this bounded path; wider receive,
 mapping and bailout contexts remain partial.
 [Cancellation review](coverage/semantics/generator-call-cancellation-review.json).
+
+Ordinary named mapping failures and required named holes now preserve the same
+hidden copies while generated Error traces keep their own argument values.
+Three new originals, two ownership fronts and one affected successful call pass;
+later receive/default errors and bailout paths remain partial.
+[Named-failure review](coverage/semantics/generator-call-mapping-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
