@@ -3657,8 +3657,10 @@ freeing-object escape/mutation and active-pin GC remain partial.
 Singleton and multi-entry Map retirement share finite validation for methodless
 Values with untyped declared Child/primitive storage. Backed stored values clear
 without getter/setter calls; ordered entry/property releases preserve repeated
-Values, shared Children and outside owners. Virtual/wider layouts, freeing-Map
-dimension access and active-pin collection remain partial.
+Values, shared Children and outside owners. The same payloads now enter empty
+Maps or append under private Keys while retaining source evaluation and owner
+increments. Virtual/wider layouts, replacement/shared-Key finite payloads,
+freeing-Map dimension access and active-pin collection remain partial.
 [Finite Value retirement](docs/semantics/WEAK-REFERENCES.md).
 
 [WeakMap386](docs/semantics/WEAK-REFERENCES.md) retains its reviewed singleton

@@ -679,6 +679,22 @@ Unsupported controls with zero agreement and one 95-condition reached
 transfer/budget group pass at their cuts.
 [GC43 review](coverage/semantics/gc-singleton-finite-values-review.json).
 
+GC44 admits prebuilt finite methodless Values at first insertion and private-Key
+append through the same payload validation. The append arm authenticates the
+actual RHS/selected operand and adds one Value edge without copying its Child
+edges. Existing entry metadata and the used-result/temporary protocol remain.
+An already built Value can enter an empty Map, appear under a second Key, and
+coexist with a used-result temporary leaf. Clone producers retain their copied
+Child edges; key-first throws preserve the earlier evaluation/cleanup behavior.
+Occupied replacement and shared-Key finite payloads remain Unsupported. Other
+mutation, quiet/shared-Key/GC admission and ordinary leaf/callback policies are
+unchanged; paused work remains untouched. Two newly supported sources and one
+affected key-order source agree exactly; two Unsupported controls keep zero
+agreement. The append ownership/budget group passes 88 and the focused
+first-write guard group passes 24 at separate cuts; earlier fixture failures
+keep zero credit.
+[GC44 review](coverage/semantics/gc-finite-value-insertion-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
@@ -1640,7 +1656,7 @@ records the pointwise bridge to final semantic bytes.
 | --- | --- |
 | CLASS185 | Class and Trait factories with Generator bodies; private implementation/review. |
 | I112 | Owning native Generator API captures and invocation; private implementation/review. |
-| GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
+| GC45 | Notification when ordinary WeakMap keys die, with finite payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |
 | ATTR32 | Coalesce and coalescing assignment tick order and quiet reads; private implementation/review. |

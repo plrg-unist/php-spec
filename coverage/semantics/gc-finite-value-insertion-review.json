@@ -1,0 +1,84 @@
+{
+  "scope": "GC44: first insertion and absent private-Key append of validated finite methodless WeakMap payloads; shared actual-RHS authority and existing ownership/result/evaluation machinery.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "b5f7d71ca",
+  "semantic_revision": "1415a41a8903f6c79a9d51d8ab226e273727409d",
+  "semantic_sha256": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "a6565e69235a481eb135d9bbe1589147e0380ff465839bd936bbc7d4fcfdc553",
+    "spec/semantics/422-weak-map-entries.watsup": "c16b6e28e3a31782026d3f18cd15c99c34d188e2ba3a4394694edae73c1ad281"
+  },
+  "source_campaign_semantic_revision": "813e79c5ba184c1ffd5c629aed6af9a0f298ce44",
+  "source_campaign_semantic_sha256": {
+    "spec/semantics/386-weak-map-lifetime.watsup": "de28e0975906c89e4c1e77ee2ae08696aaaa74bbac55b44bda1be71462a88415",
+    "spec/semantics/422-weak-map-entries.watsup": "c16b6e28e3a31782026d3f18cd15c99c34d188e2ba3a4394694edae73c1ad281"
+  },
+  "tested_revisions": {
+    "gc-finite-value-insertion-author-44/native-v1/native-report.json": "2a1cbd37157ccafe682dfe5203e44e9691f75734",
+    "gc-finite-value-insertion-author-44/native-v1/baseline-report.json": "ab5a8191f2730701ca5658f2c8104c7af1dd1617",
+    "gc-finite-value-insertion-author-44/native-v1/model-report.json": "813e79c5ba184c1ffd5c629aed6af9a0f298ce44",
+    "gc-finite-value-insertion-author-44/reached-5d9-v1/report.json": "5d9e873c4cde8e579ad299fe253dd74909100261",
+    "gc-finite-value-insertion-author-44/first-write-guard-1415-syntax-failure-v1/report.json": "1415a41a8903f6c79a9d51d8ab226e273727409d",
+    "gc-finite-value-insertion-author-44/first-write-guard-cd5-early-stage-failure-v1/report.json": "cd5a5a6cae3c5f5871d895334ba77865ecf74b50",
+    "gc-finite-value-insertion-author-44/first-write-guard-2066-v1/report.json": "2066dd7c0b7e3282a7e1e393240efa3e37a091fa",
+    "gc-finite-value-insertion-peer-44/native-v1/native-report.json": "c416b9263027c0e8fe79b217f3a8f837ad621492",
+    "gc-finite-value-insertion-peer-44/native-v1/model-key-throw-before-clone-consumption-report.json": "c416b9263027c0e8fe79b217f3a8f837ad621492",
+    "gc-finite-value-insertion-peer-44/native-v1/model-report.json": "c5efc66ca9a7287040b6afda95d55dad7dc436ca"
+  },
+  "rule_basis": "The empty-Map nonleaf first-write arm reuses finite child_value_free and authenticates the actual task/RHS/SELECTED. The new append arm requires canonical finite direct storage, a fresh private absent leaf stdClass Key, no active cursor or incoming Map-key association, and a validated incoming payload. Its explicit exclusion of the old table/payload domain leaves previous writers in charge of their accepted cases. Shared child_storage factors the old many-entry free guard without changing its canonical >=2-entry domain. Actual insertion, result selection, registration and release executors are unchanged.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_write_dimension,zend_weakmap_free_obj",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ASSIGN_DIM,zend_assign_to_object_dim",
+    "vendor/php-src/Zend/zend_objects.c:zend_objects_clone_members,zend_object_std_dtor",
+    "spec/semantics/386-weak-map-lifetime.watsup:weakmap_insert_result,weakmap_write_value_allowed",
+    "spec/semantics/422-weak-map-entries.watsup:weakmap_entries_write_allowed,weakmap_entries_child_storage"
+  ],
+  "counts": {
+    "exact_sources": 3,
+    "newly_supported_exact_sources": 2,
+    "affected_exact_sources": 1,
+    "author_exact_sources": 1,
+    "independent_exact_sources": 2,
+    "unsupported_controls_zero_agreement": 2,
+    "source_reached_groups": 2,
+    "reported_reached_conditions": 112,
+    "append_ownership_budget_conditions": 88,
+    "focused_first_write_guard_conditions": 24
+  },
+  "validation": {
+    "new": "A finite [X,X,Y] Value is fully built before first insertion, then reused under a second Key beside a used-result temporary leaf. Child callbacks observe the pending later leaf and live Keys during Map cleanup. A cloned prebuilt Value independently preserves its copied Child edges after seed retirement, then releases X/Y under the Map pin. These are two newly supported original programs; GC37 had already admitted a narrower single-Child first insertion.",
+    "affected": "A throwing Key overwrites the seed and retires its Children before K, then throws key-44; clone RHS never evaluates. Both old c416 and candidate c5ef agree with native. This is one affected program counted once, not a new producer or two agreements.",
+    "append_reached": "At the actual second-key append, RHS is a borrowed VARIABLE with no operand or REFCELL owner. Adding the duplicate Map slot raises the Value owner count from 2 to 3 while physical Child X owner2/Y owner1 edges remain unchanged; the first entry, BEFORE wrapper and order survive. Invalid selected/RHS and missing-Child controls reject. Discarded-result handling, projected zero/nonzero driver budget and complete resumed equality pass, with final weak-null cleanup.",
+    "first_write_reached": "At a real evaluated empty-Map dimension access plan, the corrected first-write helper accepts the source payload and rejects a dangling Value ID, missing Value allocation, wrong SELECTED/RHS and wrong TODO. These helper counterstates add no PHP agreement. The focused selection passes 24 at 2066; the earlier append 88 retains 5d9 provenance and is not repeated.",
+    "unsupported": "Occupied replacement and a finite payload appended with a Key already registered in another Map both remain explicit Unsupported at WeakMap dimension protocol outside first insertion after B|. Native completes; each model control has zero semantic agreement.",
+    "identities": "All source campaigns retain stable input/head identities. Each successful reached report pins four executed binaries, directly rechecked after completion with unchanged hashes. Raw commands, original bytes, contexts/profiles, process exits and interpreter outcomes remain external."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc44_prebuilt_value_insertion.php": "299d1411d37b160ebe471d6953012299d6c0109fe86c13ec24236624f3cafdb2",
+    "tests/semantics/gc37_value_child_occupied_replacement.php": "fefb8f3a053c74a150bd92a183d25bf3e2760888e378c7610b29c1dac29e663b",
+    "tests/semantics/gc44_shared_key_payload_boundary.php": "d4e8c4de7ec16ae67a9f9360506b02b59a4afc2c0fb7bbd13769905ca2129619",
+    "tests/semantics/gc44_peer_clone_prebuilt.php": "fa649f2a4bc62cf39090d9b9fbfda4a59400a1be2e40ff8d18d2aba0974f6ce9",
+    "tests/semantics/gc44_peer_key_throw_clone.php": "bc99c97ef83f227b807a516e1a09c982818c52379a0eff28b87d8ec46a997965"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/native-v1/native-report.json": "18632f9278b7ed1769832a393cc86e68cb5cc20e66cb7b52186475c6b37cf099",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/native-v1/baseline-report.json": "3f9abff51098238c0abe949e66be94f4fd4181697b39a2dbace34129bc9fcd45",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/native-v1/model-report.json": "2ce6250c352454b0c689dedacb16e95069f37ee35adad605d89050a4ff7780a9",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/reached-5d9-v1/report.json": "7e6c5b49bea83befeb8e928cb2ca355be6311229e10ee2c7263eeac9f026f74b",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/first-write-guard-1415-syntax-failure-v1/report.json": "9dc04848b061c8dcf17ce0da4c5e71ed7d6a98b733af14d71aeca28a391fc605",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/first-write-guard-cd5-early-stage-failure-v1/report.json": "ed0760a29a41a1f4174008f239337687c63cf3311f91f6a441b53b175f5dd29b",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/first-write-guard-2066-v1/report.json": "a1106af203f428bd7426b0fafcc71ca4eaf812ae5095e9a7a3e87a27bfb8b5d1",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-peer-44/native-v1/native-report.json": "217a7b997217bbde201835faac330a8cc8b3d797818b6688722e6aae154cf912",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-peer-44/native-v1/model-key-throw-before-clone-consumption-report.json": "4b37262ae4b461bccb9965c69ba831865c79c82535ec7c5bb216460be9be2df0",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-peer-44/native-v1/model-report.json": "8f8b98312c33eada3c6870f04b7c4b4fe60eaa3ee8d54ae523bb1af53d0afa73"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-insertion-author-44/manifest.json": "9bde4a8aa7ac171f9591c72dab5d22cb0da4438cd08416e26606f2a5986e348b",
+    "../php-spec-evidence-archive/gc-finite-value-insertion-peer-44/independent-summary.json": "8ca72a02754bdbc4ad60d96a077cdbcc4cd89e8336fbd9f7131d30aa3ffa0e73"
+  },
+  "zero_credit": "The old author ab5 prebuilt-payload baseline is Unsupported after B| and has zero agreement. The new focused fixture first stopped at 1415 on inline constructor/length syntax, then at cd5 on an earlier generic property ASSIGN_ARRAY task before access_set_plan existed; both complete raw attempts retain zero credit. The corrected 2066 stage requires the evaluated access plan. No production/source disagreement or interrupted campaign occurred. Invalid helper states and both Unsupported controls add no PHP agreement.",
+  "compatibility_bridge": "All exact-source comparisons and append 88 use 813 runtime. Review 1415 only moves the existing task/RHS/SELECTED/common-payload checks before node_children in the new first-write arm. On valid allocated source Values this is the same conjunction of pure already-bound predicates, with no evaluation executor or accepted-domain change. Common validation now fences malformed dangling identities before lookup, verified by the focused 24 group. The old table/payload writer and global leaf/GC policies remain unchanged; child_storage rewraps the same canonical many-entry free domain. No broad GC43 or accepted append replay is renewed.",
+  "limits": "New keyed append requires canonical finite direct methodless storage, held private unregistered leaf stdClass Keys, no active cursor/incoming Map-key association and public untyped nonstatic/nonreadonly backed primitive/fieldless-destructor-Child payload slots. Typed/reference/virtual/inherited/deeper/owning-array layouts, occupied replacement/shared-Key finite payloads, wider mutation/caller/producer scope, freeing-Map dimension access and active-pin collection remain partial. Global leaf/callback/reference/quiet/collection domains and property/type-source executors are unchanged. Held GC35 and paused work are untouched.",
+  "recovery": "Run gc44_finite_value_sources.py native then model in fresh external outputs; recover the selected prebuilt baseline at ab5 only if needed. Run gc44_peer_clone_sources.py native then model; retain the old selected key suffix separately. Run gc44_finite_value_state.py selections finite-value-append-owner and finite-value-first-write-guards for their distinct obligations. Existing source/append cuts use the explicit valid-input guard-order bridge rather than renewed campaigns.",
+  "review": "Independent runtime/source/static fixture review is CLEAR; final clean documentation/ledger read-only acceptance is requested on the completed private candidate."
+}

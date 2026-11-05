@@ -273,6 +273,28 @@ separates new/promoted sources, affected positives and explicit virtual/incoming
 Child refusals. Typed, alias, inherited/deeper and owning-array layouts,
 freeing-Map dimension access/mutation, active-pin GC and wider callers remain partial.
 
+GC44 uses the same finite payload validator at first insertion and new private-Key
+append. The admitted finite multi-property payloads may be fully built before
+insertion. The first-write arm stays empty-Map-only; the new append arm requires
+canonical finite methodless storage, an absent unregistered leaf `stdClass` Key, no active
+cursor or incoming Map-key association, and the original source task/RHS/selected
+operand. The previous table/payload domain retains its existing policy.
+
+A borrowed CV assignment adds one Value owner for its new slot. Reusing a Value
+under a second Key adds a second Map edge without copying its physical Child
+properties. Used assignment results and temporary producers follow the unchanged
+insert-result and cleanup machinery. A clone source distinguishes copying the
+Value's property edges from merely adding another Value owner.
+
+The new checks run after the existing source/key evaluation. A throwing-key
+source confirms that the Key runs before the clone RHS: overwriting the seed
+retires its Children inside the Key function and the clone never executes.
+The [insertion review](../../coverage/semantics/gc-finite-value-insertion-review.json)
+separates that affected source from newly supported producers and source-reached
+owner/budget checks. Occupied replacement and shared-Key finite payloads remain
+explicit Unsupported; the global leaf predicates, quiet/shared-Key/collection
+admission, property executors and broader mutation boundaries are unchanged.
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release
