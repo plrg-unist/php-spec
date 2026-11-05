@@ -863,6 +863,14 @@ and nonraw/BOM refusal. Joined strict433 passes. Plain and BOM files retain
 their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 [Review](coverage/semantics/halt-preamble-review.json).
 
+COMP165 admits the disabled-multibyte parser warning followed by a static
+first-statement fatal for late or nested sole-string encoding declarations.
+Five pinned-native source cases cover root, namespace and block fatals plus
+included and eval first-declaration controls. Forty-four checked-AST premises
+authenticate declaration and item paths, warning location, and malformed
+occurrence refusal. Other declaration shapes and multibyte source conversion
+remain partial. [Review](coverage/semantics/encoding-placement-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
