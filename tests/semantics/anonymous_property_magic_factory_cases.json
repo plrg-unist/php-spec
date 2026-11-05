@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "property-set-factory-rhs-delivery",
+      "source": "<?php\nclass SetBase190 { private $hidden = 1; private const VALUE = 10; public function __set(string $name, $incoming): void { global $owner, $held, $input; $owner = null; $input = 9; $held = new class($name, $incoming, self::VALUE, static::VALUE, __METHOD__) { public function __construct(public string $name, public int $value, public int $lexical, public int $called, public string $method) {} public function __destruct() { echo 'CHILD;'; } }; echo 'SET;'; } public function __destruct() { global $input; $input = 11; echo 'OWNER;'; } }\nclass SetCalled190 extends SetBase190 { public const VALUE = 20; }\n$owner = new SetCalled190; $input = 7; $assigned = ($owner->hidden = $input); echo 'ANSWER;', $assigned, ':', $input, ';', $held->name, ':', $held->value, ':', $held->lexical, ':', $held->called, ':', $held->method, ';'; unset($held); echo 'AFTER;';\n",
+      "source_sha256": "f320f8567d4215742b77eb95bb143b58cd0b501dbdea25ae65cb4afea09b374e",
+      "stdout_template_base64": "U0VUO09XTkVSO0FOU1dFUjsxMToxMTtoaWRkZW46NzoxMDoyMDpTZXRCYXNlMTkwOjpfX3NldDtDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "property-isset-anonymous-factory-lifetime",
+      "source": "<?php\n$owner = new class { private $hidden = 1; public function __isset(string $name): bool { global $owner; $owner = null; $child = new class($name, true) { public function __construct(public string $name, public bool $ok) { echo 'CHILD;'; } public function __destruct() { echo 'DROP-CHILD;'; } }; echo 'ISSET;'; return $child->ok; } public function __destruct() { echo 'OWNER;'; } };\n$name = $owner::class; $answer = isset($owner->hidden); $after = new class {}; echo 'ANSWER;', $answer, ';', $name, ';', $after::class, ';';\n",
+      "source_sha256": "fbba204d58229b75ab12b43f606d99bc65033a0adab34f98b01f410ea7bf0357",
+      "stdout_template_base64": "Q0hJTEQ7SVNTRVQ7RFJPUC1DSElMRDtPV05FUjtBTlNXRVI7MTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjMkMjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "property-unset-anonymous-factory-keys",
+      "source": "<?php\n$owner = new class { private $hidden = 1; public function __unset(string $name): void { global $owner, $held; $owner = null; $held = new class($name, __METHOD__) { public function __construct(public string $name, public string $method) {} public function __destruct() { echo 'CHILD;'; } }; echo 'UNSET;'; } public function __destruct() { echo 'OWNER;'; } };\n$name = $owner::class; unset($owner->hidden); $after = new class {}; echo 'HELD;', $held->name, ':', $held->method, ';', $name, ';', $held::class, ';', $after::class, ';'; unset($held); echo 'AFTER;';\n",
+      "source_sha256": "31378edf006c27f29f210057dd9e359f0e7cd06c34f2dc8ec1a38a693506d557",
+      "stdout_template_base64": "VU5TRVQ7T1dORVI7SEVMRDtoaWRkZW46Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA6Ol9fdW5zZXQ7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDI7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "property-isset-child-warning-late-owner-error",
+      "source": "<?php\necho 'PRE;';\nclass BadIsset190 {\n public function __isset(string $name): bool { $child = new class { final private function hidden() {} }; return true; }\n public const int BAD = 'bad';\n}\n",
+      "source_sha256": "a516bfbb8029c599af5064da33b2908ceb8d1b4adbe51a1c272caf265ceccdef",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgNApGYXRhbCBlcnJvcjogQ2Fubm90IHVzZSBzdHJpbmcgYXMgdmFsdWUgZm9yIGNsYXNzIGNvbnN0YW50IEJhZElzc2V0MTkwOjpCQUQgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    }
+  ]
+}
