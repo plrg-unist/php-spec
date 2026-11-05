@@ -89,6 +89,8 @@ dec $eager_bailout_source(pstate) : ptask?
 dec $eager_bailout_parent_frames(pframe*, pdestructorcall) : bool
 dec $eager_bailout_parent_pair(pstate, pdestructorcall) : bool
 dec $eager_bailout_parent_shared(pdestructorcall, pdestructorcall) : bool
+dec $eager_bailout_frame_empty(pdestructionframe?) : bool
+dec $eager_bailout_operation_empty(pdestructionoperation?) : bool
 dec $eager_bailout_parent_omittable(pdestructorcall, pdestructorcall) : bool
 dec $eager_bailout_parent_ready(pstate, pdestructorcall) : bool
 dec $eager_bailout_parents(pstate, pdestructorcall, pdestructorcall*) : pdestructioncleanup*?
@@ -1025,9 +1027,13 @@ def $eager_bailout_parent_frames(eps, pdestructorcall) = false
 def $eager_bailout_parent_frames(pframe :: pframe_tail*, pdestructorcall) = ($destructor_c_return_source(pframe.TODO, pdestructorcall) \/ $eager_bailout_parent_frames(pframe_tail*, pdestructorcall))
 def $eager_bailout_parent_pair(S, pdestructorcall) = ($destructor_c_return_source(S.TODO, pdestructorcall) \/ $eager_bailout_parent_frames(S.FRAMES, pdestructorcall))
 def $eager_bailout_parent_shared(pdestructorcall_parent, pdestructorcall) = (pdestructorcall_parent.OPERATION = pdestructorcall.OPERATION /\ pdestructorcall_parent.FRAME = pdestructorcall.FRAME /\ pdestructorcall_parent.PENDING = pdestructorcall.PENDING)
+def $eager_bailout_frame_empty(eps) = true
+def $eager_bailout_frame_empty((pdestructionframe)) = ($task_nodes(DESTRUCTOR_FRAME_EXIT pdestructionframe) = eps)
+def $eager_bailout_operation_empty(eps) = true
+def $eager_bailout_operation_empty((pdestructionoperation)) = ($task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = eps)
 ;; The selected record owns shared channels. A differing omitted channel must
 ;; be rootless; the associated call identifies this actual C bailout.
-def $eager_bailout_parent_omittable(pdestructorcall_parent, pdestructorcall) = ((pdestructorcall_parent.FRAME = pdestructorcall.FRAME \/ $eager_bailout_frame_nodes(pdestructorcall_parent.FRAME) = eps) /\ (pdestructorcall_parent.OPERATION = pdestructorcall.OPERATION \/ $eager_bailout_operation_nodes(pdestructorcall_parent.OPERATION) = eps) /\ (pdestructorcall_parent.PENDING = pdestructorcall.PENDING \/ $instance_roots(pdestructorcall_parent.PENDING) = eps))
+def $eager_bailout_parent_omittable(pdestructorcall_parent, pdestructorcall) = ((pdestructorcall_parent.FRAME = pdestructorcall.FRAME \/ $eager_bailout_frame_empty(pdestructorcall_parent.FRAME)) /\ (pdestructorcall_parent.OPERATION = pdestructorcall.OPERATION \/ $eager_bailout_operation_empty(pdestructorcall_parent.OPERATION)) /\ (pdestructorcall_parent.PENDING = pdestructorcall.PENDING \/ $instance_roots(pdestructorcall_parent.PENDING) = eps))
 def $eager_bailout_parent_ready(S, pdestructorcall) = (~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps /\ pdestructorcall <- S.DESTRUCTION.CALLS /\ $destructor_call_live(S, pdestructorcall) /\ $eager_bailout_parent_pair(S, pdestructorcall))
 def $eager_bailout_parents(S, pdestructorcall, eps) = (eps)
 def $eager_bailout_parents(S, pdestructorcall, pdestructorcall :: pdestructorcall_tail*) = $eager_bailout_parents(S, pdestructorcall, pdestructorcall_tail*)
