@@ -110,7 +110,7 @@ CHECKS = [
     '~((HOBJECT n_b) <- S_done.ALLOCATIONS)',
     '~((HOBJECT n_x) <- S_done.ALLOCATIONS)',
     '~((HOBJECT n_y) <- S_done.ALLOCATIONS)',
-    '(HOBJECT n_key) <- S_done.ALLOCATIONS',
+    '~((HOBJECT n_key) <- S_done.ALLOCATIONS)',
     '$heap_valid($heap_graph(S_done))',
 ]
 review.CASES = {'cow-array-owner-transfer': {'source': SOURCE, 'stage': STAGE, 'checks': CHECKS}}
