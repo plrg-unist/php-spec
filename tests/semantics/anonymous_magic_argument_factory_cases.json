@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-call-delayed-argument-child-return",
+      "source": "<?php\nclass Argument191 { public string $tag = 'old'; public function __destruct() { echo 'ARG(', $this->tag, ');'; } }\nfunction clear191() { global $owner, $argument; $owner = null; $argument = 99; echo 'CLEAR;'; return new Argument191; }\nclass CallBase191 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { echo 'MAGIC;'; return new class($arguments[1], $name . ':' . $arguments[0] . ':' . self::class . ':' . static::class . ':' . self::secret() . ':' . __METHOD__) { public function __construct(public $argument, public string $data) { echo 'CHILD;'; } public function __destruct() { echo 'DROP-CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nclass CallDerived191 extends CallBase191 {}\n$owner = new CallDerived191; $argument = 7; $child = $owner->MiSsInG($argument, clear191()); echo 'RETURN;', $argument, ':'; echo $child->argument->tag, ':', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "bb0fc6d3783618d33ce656255623fe06b8adb4eadca0f6dbb11eca3ef38e1324",
+      "stdout_template_base64": "Q0xFQVI7TUFHSUM7Q0hJTEQ7T1dORVI7UkVUVVJOOzk5Om9sZDpNaVNzSW5HOjc6Q2FsbEJhc2UxOTE6Q2FsbERlcml2ZWQxOTE6UFJJVkFURTpDYWxsQmFzZTE5MTo6X19jYWxsO0RST1AtQ0hJTEQ7QVJHKG9sZCk7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-callstatic-delayed-argument-child-return",
+      "source": "<?php\nclass StaticArgument191 { public string $tag = 'old'; public function __destruct() { echo 'ARG(', $this->tag, ');'; } }\nfunction staticClear191() { global $argument; $argument = 99; echo 'CLEAR;'; return new StaticArgument191; }\nclass StaticBase191 { private static function secret() { return 'PRIVATE'; } public static function __callStatic(string $name, array $arguments) { echo 'MAGIC;'; return new class($arguments[1], $name . ':' . $arguments[0] . ':' . self::class . ':' . static::class . ':' . self::secret() . ':' . __METHOD__) { public function __construct(public $argument, public string $data) { echo 'CHILD;'; } public function __destruct() { echo 'DROP-CHILD;'; } }; } }\nclass StaticDerived191 extends StaticBase191 {}\n$argument = 7; $child = StaticDerived191::MiSsInG($argument, staticClear191()); echo 'RETURN;', $argument, ':'; echo $child->argument->tag, ':', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "b7b405409156199faf851843ffb4e11ec4923aaad85ccba520447ebdf6b7ea3a",
+      "stdout_template_base64": "Q0xFQVI7TUFHSUM7Q0hJTEQ7UkVUVVJOOzk5Om9sZDpNaVNzSW5HOjc6U3RhdGljQmFzZTE5MTpTdGF0aWNEZXJpdmVkMTkxOlBSSVZBVEU6U3RhdGljQmFzZTE5MTo6X19jYWxsU3RhdGljO0RST1AtQ0hJTEQ7QVJHKG9sZCk7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-call-anonymous-single-argument-array",
+      "source": "<?php\n$owner = new class { public function __call(string $name, array $arguments) { return new class($name, __METHOD__, $arguments) { public function __construct(public string $name, public string $method, public array $arguments) {} }; } public function __destruct() { echo 'OWNER;'; } };\n$child = $owner->MiSsInG(7); unset($owner); $after = new class {}; echo $child->name, ':', $child->method, ':', $child->arguments[0], ';', $child::class, ';', $after::class, ';';\n",
+      "source_sha256": "9fc7c9e4edc7aa5873f1ce845acb931c4e44b9bde5c0e1135dfcc9f0dbedfbfd",
+      "stdout_template_base64": "T1dORVI7TWlTc0luRzpjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDo6X19jYWxsOjc7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-callstatic-child-warning-late-owner-error",
+      "source": "<?php\necho 'PRE;';\nclass BadStatic191 {\n public static function __callStatic(string $name, array $arguments) { return new class { final private function hidden() {} }; }\n public const int BAD = 'bad';\n}\n",
+      "source_sha256": "ad5d6c743e2eeb5f06d6db2136d213957a526405fdbb26bb4f315ed675ca1473",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgNApGYXRhbCBlcnJvcjogQ2Fubm90IHVzZSBzdHJpbmcgYXMgdmFsdWUgZm9yIGNsYXNzIGNvbnN0YW50IEJhZFN0YXRpYzE5MTo6QkFEIG9mIHR5cGUgaW50IGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection"
+    }
+  ]
+}

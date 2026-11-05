@@ -54,7 +54,7 @@ def $anonymous_get_factory_parameters(SEQUENCE eps) = true
 def $anonymous_get_factory_parameters(SEQUENCE ((NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN false) (BOOLEAN false) (NExprVariable (BYTES text) metadata_name) ABSENT (SEQUENCE eps) metadata) :: phpType17*)) = ($ptvalidname($base64(text), false) /\ $anonymous_get_factory_parameters(SEQUENCE phpType17*))
 def $anonymous_get_factory_parameters(phpType16) = false -- otherwise
 dec $anonymous_magic_factory(int, bool, ptbytes, phpType16, phpType18, statement*) : bool
-def $anonymous_magic_factory(flags, b_ref, ptbytes, phpType16, phpType18, statement*) = (~b_ref /\ ~$generator_statements(statement*) /\ ($ppmethod_invoke(flags, ptbytes) \/ $ppmethod_tostring(ptbytes) \/ ($ppmethod_get(flags, ptbytes) /\ phpType18 = ABSENT /\ $anonymous_get_factory_parameters(phpType16)) \/ $ppmethod_set(flags, ptbytes) \/ $ppmethod_unset(flags, ptbytes) \/ $ppmethod_isset(flags, ptbytes)))
+def $anonymous_magic_factory(flags, b_ref, ptbytes, phpType16, phpType18, statement*) = (~b_ref /\ ~$generator_statements(statement*) /\ ($ppmethod_invoke(flags, ptbytes) \/ $ppmethod_tostring(ptbytes) \/ ($ppmethod_get(flags, ptbytes) /\ phpType18 = ABSENT /\ $anonymous_get_factory_parameters(phpType16)) \/ $ppmethod_set(flags, ptbytes) \/ $ppmethod_unset(flags, ptbytes) \/ $ppmethod_isset(flags, ptbytes) \/ $ppmethod_call(flags, ptbytes) \/ $ppmethod_callstatic(flags, ptbytes)))
 dec $anonymous_member(statement) : bool
 def $anonymous_member(NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE (phpType57 :: phpType57_tail*)) (SEQUENCE eps) metadata) = true
   -- if $ppproperty_supported(flags)
@@ -74,7 +74,7 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
   -- if $ppmethod_get(flags, $base64(text))
   -- if ~$generator_statements(statement*)
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata) = $anonymous_constructor_parameters(phpType16)
-  -- if $ppmethod_set(flags, $base64(text)) \/ $ppmethod_unset(flags, $base64(text)) \/ $ppmethod_isset(flags, $base64(text))
+  -- if $ppmethod_set(flags, $base64(text)) \/ $ppmethod_unset(flags, $base64(text)) \/ $ppmethod_isset(flags, $base64(text)) \/ $ppmethod_call(flags, $base64(text)) \/ $ppmethod_callstatic(flags, $base64(text))
   -- if ~$generator_statements(statement*)
 def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata) = true
   -- if flags <- [0,1]
