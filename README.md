@@ -7635,6 +7635,12 @@ the Generator. The [API capture review](coverage/semantics/generator-api-capture
 checks reception, escaped captures and weak/finally order. Rebinding these captures,
 Traversable packs and wider call/lifetime combinations remain partial.
 
+Explicit captured API `__invoke` calls now retain outer arguments separately from
+the inner call and keep both native and Closure trace frames. Saved returns
+survive argument destructors; source demand controls their release order when a
+destructor throws. The [wrapper review](coverage/semantics/generator-explicit-invoke-review.json)
+records the mapping, ownership and abrupt-cleanup checks.
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

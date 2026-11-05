@@ -104,9 +104,17 @@ Checked arguments transfer into the ordinary operation without another receiver
 owner. An ignored owning return retires before the capture, then capture storage
 releases the Generator; its finally observes the capture already weak-dead.
 Creation/source receipts remain historical, while active calls require the live
-capture and real result continuation. `bind`/`bindTo`, `Closure::call` and explicit `__invoke` on these
-captures remain explicit Unsupported protocols, separate from normal invocation.
+capture and real result continuation. `bind`/`bindTo` and `Closure::call` on these
+captures remain explicit Unsupported protocols.
 [API capture review](../../coverage/semantics/generator-api-capture-review.json).
+
+Explicit `__invoke` receives the copied native signature before its handler, then
+owns a second capture reference and inner argv without another Gen receiver root.
+Its return is saved through outer argv destruction. Unused returns release before
+the last capture, including on an argument throw; used uncommitted returns release
+after capture/Gen retirement on that throw. Both native and Closure trace frames
+remain present inside the body; cleanup destructors use caller context.
+[Explicit wrapper review](../../coverage/semantics/generator-explicit-invoke-review.json).
 
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
 inside an already running Fiber. Its actual resume operation and parameter cells

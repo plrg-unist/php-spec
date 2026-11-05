@@ -36,6 +36,8 @@ internal getter Closure representation. The capture owns its Generator after the
 source array and receiver CV retire; ordinary invocation shares native argument
 reception and releases the capture before last-owner Generator cleanup.
 [Generator API capture review](../../coverage/semantics/generator-api-capture-review.json).
+Their explicit `__invoke` calls share the [outer wrapper protocol](../../coverage/semantics/generator-explicit-invoke-review.json);
+binding and `Closure::call` remain separate.
 
 Module358 also selects Fiber APIs from simple method arrays and static
 class-method strings. Its capture records dereferenced members and the completed

@@ -301,12 +301,24 @@ after its CV retires. Invocation roots the capture and borrows its receiver,
 retaining the exact argument/Throwable roots through ordinary reception. Unused
 owning returns clear before capture retirement; last-capture forced close runs
 Generator finally after capture weak notification. Active call authority requires a real live marker;
-saved source history remains nonowning. New-tag binding, `Closure::call` and explicit `__invoke` are
-explicit Unsupported protocols with zero agreement. Six unique originals agree;
+saved source history remains nonowning. New-tag binding and `Closure::call` stay
+Unsupported; its earlier explicit `__invoke` boundary is promoted by I113. Six
+unique originals agree;
 the 89/94 ownership/history gate passes with the private 438-module SL manifest.
 Earlier compile/fixture failures retain zero credit; wider lifecycle combinations
 remain partial.
 [I112 review](coverage/semantics/generator-api-capture-review.json).
+
+I113 gives captured native Generator API `__invoke` calls their real outer
+signature, argv and capture owner. Pre-handler mapping errors keep no API frame;
+inner count/type errors and body traces retain both Generator and Closure frames.
+The inner return stays owned through outer argv cleanup. Unused results release
+before capture retirement; used uncommitted results survive it when an argument
+destructor throws. Five unique originals and one affected I111 computed-call
+control agree exactly. The 98/103 bounded ownership/authority gate passes with
+the private 440-module SL manifest.
+Earlier compile, native-fixture and abrupt mismatches keep zero credit; no core
+obligation closes. [I113 review](coverage/semantics/generator-explicit-invoke-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -1688,7 +1700,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS187 | Ordinary by-reference-return method anonymous factories; native/source preparation. |
-| I113 | Explicit Closure::__invoke wrapper for captured Generator APIs; private implementation/review. |
+| I114 | Captured Generator API bind/bindTo receiver retargeting; private implementation/review. |
 | GC47 | Explicit WeakMap offsetUnset with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB18 | Array output return reception and conversion; private implementation/review. |

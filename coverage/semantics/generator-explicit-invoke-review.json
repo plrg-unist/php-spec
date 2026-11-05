@@ -1,0 +1,88 @@
+{
+  "milestone": "I113 explicit Closure::__invoke on captured native Generator APIs",
+  "status": "Independently accepted: five unique I113 exact original normal agreements, one affected prior I111 computed-call control, and one 98/103 bounded ownership/authority front. Wider core stays partial.",
+  "target": "PHP 8.5.10 CLI NTS64, php-src 34308a6666b2d489c509541ea9befea9e2b42348; baseline profile, LC_ALL=C, TZ=UTC; one heavy runner per pair",
+  "scope": "Explicit ordinary, computed and nullsafe __invoke on a captured native Generator method receives its copied native signature before entering the wrapper. Named and ARRAY arguments reuse I109 mapping. The handler retains a second capture owner and copies inner argv; both capture aliases still give Gen one physical child edge, without a direct receiver root. Bind/call and Traversable protocols remain partial.",
+  "rules": "Module453 uses the existing CONFIG and Generator operation with one real outer result continuation. Its true phase owns outer argv and capture; an inner getter marker owns the other capture alias. Completion saves the inner return independently of RESULT before dropping argv. An unused return clears before capture release even on an argv throw. A used uncommitted return survives capture retirement on that throw, then releases in caller context through a value-only marker. Active markers require live capture; saved source/header validation remains nonowning after capture death. Shared exception/destructor modules152/257 are unchanged. A running captured wrapper operation additionally requires its exact true/PNULL outer carrier in current or saved-frame tasks; prehandler CONFIG does not require that later owner.",
+  "engine": "Zend Closure::__invoke copies the underlying arg_info, so unknown/duplicate names fail during outer sends before either handler frame. Its handler calls zend_call_known_fcc with copied args and a used return_value. The internal closure handler borrows Generator This and fcall_end releases inner argv/capture, then outer argv, unused retval, and outer capture. A used outer retval is not committed if argument destruction throws; its caller-side slot releases after capture retirement.",
+  "validation": {
+    "owning_inner_return": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/author-owning-demand-3b/report.json",
+      "sha256": "64b4ccf90eb7030071b2eadd721f81fc2c571eea9bcb1dc8dae6c99011b68a4b",
+      "revision": "aea08e19a789c90d901be5aaa8fb6131bf6c69f9",
+      "result": "One exact original normal agreement at runtime 3b runtime: an ignored outer result remains live while an outer argument destructor advances Gen and replaces its cache, then the result destroys with capture/Gen live before last-capture finally. Exit0/quiet, no timeout, HEAD/inputs stable."
+    },
+    "independent_used_abrupt": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/peer-source-3b/report.json",
+      "sha256": "d3ec28e5e9ddc62ed911916af5c2698b3429ac79aae5e0f22602a0d43f1bd95f",
+      "revision": "60cce112db4f2354628fe98ce23b078caec5e127",
+      "result": "One unchanged independent original exactly agrees at runtime 3b: inner body trace stream\u2192Generator::send\u2192Closure::__invoke\u2192caller; outer argv Token destructor sees both live and only destructor/caller frames, throws supplied Stop. Gen finally sees capture dead; used uncommitted Return destructor sees Gen and capture dead. Identity, original empty trace/Previous null, all weak deaths agree; exit0/quiet/no timeout/stable."
+    },
+    "matrix_and_unused_abrupt": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/author-matrix-unused-3b/report.json",
+      "sha256": "32259871579003ade8b9a0c18fc73df1f94e952882bcd7fc4c233066e330929f",
+      "revision": "aea08e19a789c90d901be5aaa8fb6131bf6c69f9",
+      "result": "Two exact original normal agreements at runtime 3b runtime: unknown/duplicate errors precede handler entry and skip missing-CV warning, crosspack count2/missing0/throw(int) include native+Closure frames and original args/location; final computed nullsafe wrapper receives named send. The separate unused-abrupt original preserves supplied Stop identity/empty trace/Previous null and destroys cached Return with Gen storage weak-live after capture notification. Exit0/quiet/no timeout/stable."
+    },
+    "promoted_original": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/author-promoted-3b/report.json",
+      "sha256": "a8c112d8698377bd3d7c705dccd064bfe755e9073d8dedabb176bc2b74443988",
+      "revision": "aea08e19a789c90d901be5aaa8fb6131bf6c69f9",
+      "result": "The exact I112 Unsupported original (source SHA 8849a9942935b310765ba8e7e0aaa58f0fcea9fa6e1e944de1823b3184ec64dd) now exactly agrees normally: throw(int) has Generator::throw then Closure::__invoke. Old I112 report remains zero agreement. Exit0/quiet/no timeout/stable."
+    },
+    "affected_direct_computed": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/affected-i111-computed-3b/report.json",
+      "sha256": "2068532cc0296c93b0db67c5a3849d7c3c7f825e43277a121c0ed357c0b64f0e",
+      "revision": "aea08e19a789c90d901be5aaa8fb6131bf6c69f9",
+      "result": "One affected existing I111 source exactly agrees through direct computed named-send CONFIG. This checks CAPTURE-qualified wrapper mode after static discovery that any computed method source can match method_source_name. It is a composition refresh, not another unique I113 source. Exit0/quiet/no timeout/stable."
+    },
+    "independent_reached": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/peer-state-50fab/report.json",
+      "sha256": "69bc3133d177a6ff512e34cdc82111beab764908f8f31a720385f11b7735cfb1",
+      "revision": "61da798c3e4f83e25e639da97afdb31413f94e76",
+      "result": "98 custom/103 reported premises pass true LF, exit0/quiet/no timeout, stable clean HEAD. Full 440-module SL manifest plus one fixture. One actual prehandler CONFIG front and one genuine forward step: capture 1/Token 1/Gen child 1 become capture 2/Token 2/Gen child 1, without another Gen root or store/event/allocation change. Budget0 restoration, malformed/dead marker and missing outer-owner refusals pass. Pure metadata/phase/frame helper views check mismatches and saved-frame search independently of current ORIGIN. A pure dead-capture view keeps saved history valid. This gate does not drive to terminal; full original agreement remains at 3b."
+    }
+  },
+  "preserved_zero": {
+    "native_fixture_location": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/author-native-first/report.json",
+      "sha256": "f495304695f13c46205d381481520981529c5d9c676c0078b6b9d5dfbc7462e9",
+      "revision": "ee93745236b13aa1ef79ed4521e3712808fa8bb4",
+      "result": "The first native-only matrix expected no API file/line; pin exposes the same call file/line on both native frames. Corrected and native-refrozen before model credit; zero agreement."
+    },
+    "declaration_compile": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/author-first-9a-failure0/report.json",
+      "sha256": "64ac5c6827d86e69312b7f759eb7d9eec6924ccb234d431164ac67ae18bf6d44",
+      "revision": "9a397fd7e8021f8b1408941ef11e06941a27c186",
+      "result": "Compiler rejected wrapper helper use before declaration. ea0bb moves the declaration before280 completion; no model execution or agreement."
+    },
+    "binding_compile": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/author-ea0b-failure0/report.json",
+      "sha256": "fd69f1fbcfbe2992158e77381cdde5fe5ca8e3e66a0cbbcfc025b2842e83646f",
+      "revision": "ea0bb36959dc4d257d461b109ef2171529080483",
+      "result": "Compiler rejected cfg.SITE as an invertible task-pattern binding. feac binds the site then compares it; no model execution or agreement."
+    },
+    "used_abrupt_mismatch": {
+      "report": "../php-spec-evidence-archive/generator-explicit-invoke-113/peer-source-b648-mismatch0/report.json",
+      "sha256": "3297adfae18b1e0a7b47a41358a450b829168d31dfc11e1847542b6081a337f7",
+      "revision": "51da1d3022c73cee74467fd7d036f9a42831a546",
+      "result": "Both outcomes were normal/quiet but model Return destructor still weak-saw Gen after outer argv throw; all other trace/identity checks matched.3b saves the used uncommitted return through generic RESULT resets. Earlier result stays zero agreement."
+    },
+    "promoted_boundary": {
+      "report": "../php-spec-evidence-archive/generator-api-captures-112/author-explicit-invoke-a73/report.json",
+      "sha256": "14610a3440d68a1f7dde5f16d5969b0ac9b0634d3ca7996b4ea2285e2b9e8300",
+      "revision": "a73b939d1ab37cf0b81ce6a23dde445e63a002d9",
+      "result": "Native-normal explicit throw capture->__invoke adds a separate Closure::__invoke frame after Generator::throw. Model asserts exact Unsupported with only INVOKE|; zero agreement. Ordinary function invocation bypasses this removed wrapper branch; no positive replay. Stable HEAD/inputs, exit1/quiet/no timeout."
+    }
+  },
+  "composition": "Wrapper mode is qualified by actual CAPTURE authority together with source shape. Computed method syntax alone also denotes direct I111 calls, so ordinary direct trace/demand and CONFIG transfer retain their earlier path. The positional api_site classifier remains unchanged; actual captured wrappers alone additionally admit positional CONFIG. Ordinary I112 function invocation and binding/call fences are unchanged. Historical I112 explicit-wrapper Unsupported is promoted by the exact original source, not relabeled as an earlier agreement. CLASS185 body trace handling already selects the nonempty operation trace branch; no body-frame metadata is changed. Final 50fab changes only active operation admission: each453 forward constructor already carries its matching true/PNULL carrier into the caller continuation, preserved by Generator frame installation. Same-front missing/mismatched carrier refusals validate the stricter guard without re-running the earlier normal originals. Generator resume uses save_frame with the unchanged caller TODO, carrying that exact outer owner into saved frames. The final 98/103 gate extends the earlier 87/92 pass at the same source/front; it does not add a second reached front or terminal-run claim.",
+  "remaining": "Captured-method bind/call/rebinding, wider callable/C callback wrappers, Traversable packs, specialized delegation/parked histories, collection and wider abrupt/lifecycle combinations remain partial. No core obligation closes.",
+  "reproduce": [
+    "taskset -c CPU python3 tests/semantics/generator_explicit_invoke_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_api_capture_sources.py --case i113-promoted-explicit-invoke-wrapper",
+    "taskset -c CPU python3 tests/semantics/generator_explicit_invoke_review_sources.py",
+    "taskset -c CPU python3 tests/semantics/generator_explicit_invoke_review_state.py"
+  ],
+  "compiler": "All public source gates load the complete private 440-module SL manifest through elaboration, algorithmic checks and structuring with pinned local tools. The independent reached gate adds one fixture module. Project-local tool reuse is not a fresh offline build or portability claim.",
+  "independent_review": "The Generator/Fiber reviewer independently accepted final runtime 9a397fd7e + ea0bb3695 + feacfe448 + b6484098a + 3b0211ded + 50fabce6b after source/engine/owner/trace review, the used-abrupt counterexample and unchanged corrected source, inspection of four complementary author originals and affected I111 control, and the final 98/103 bounded front. The last change strengthens active admission only; prior 3b full source cuts carry the exact matching carrier by construction, checked at the actual front and through pure saved-frame matching controls. No earlier compile, native-fixture, Unsupported or mismatch attempt is relabeled as an agreement."
+}

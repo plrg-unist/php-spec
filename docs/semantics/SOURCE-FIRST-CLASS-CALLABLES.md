@@ -42,4 +42,8 @@ Native Generator API literal and computed captures now own their selected
 Generator without initializing its body. Normal invocation retains the capture
 and borrows that receiver, preserving escaped-capture and last-owner cleanup.
 The [API capture review](../../coverage/semantics/generator-api-capture-review.json)
-keeps explicit `__invoke`, binding and `Closure::call` protocols open.
+records capture ownership. Explicit `__invoke` now has separate outer argv and
+capture owners, both trace frames and abrupt return cleanup that follows caller
+demand;
+see the [wrapper review](../../coverage/semantics/generator-explicit-invoke-review.json).
+Binding and `Closure::call` remain open.
