@@ -688,8 +688,19 @@ child warnings before its fatal and skips only authenticated child checkpoints
 whose class images were never installed. The [owner factory review](../../coverage/semantics/anonymous-owner-factories-review.json)
 separates native source comparisons, reached compiler/runtime steps and source
 boundary checks. Method-owned Closures, arrows and nested functions, owner
-traits/constants/implicit Stringable siblings and later dynamic units remain
-outside this admitted source slice.
+traits/constants and later dynamic units remain outside this admitted source slice.
+
+An anonymous owner may also declare an ordinary public, class-free
+`__toString` sibling beside its child factory. The provisional descriptor
+remains compiler-local with empty methods and interfaces; successful member
+compilation replaces it in place with the implicit `Stringable` interface and
+clears its early status. Owner, child and later root keys retain source order
+whether `__toString` appears before or after the factory, in a parented owner,
+or in nested Stringable owners. The ordinary method compiler keeps invalid
+return-type and child-default priority, and an abrupt owner leaves earlier
+child checkpoints unpublished. A child created *inside* `__toString` remains
+outside the admitted factory context. The [owner Stringable review](../../coverage/semantics/anonymous-owner-stringable-review.json)
+records source, reached-state and boundary evidence.
 
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted

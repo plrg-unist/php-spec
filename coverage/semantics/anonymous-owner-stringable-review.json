@@ -1,0 +1,117 @@
+{
+  "scope": "CLASS181: an ordinary public, class-free __toString sibling is admitted beside direct child factories in unit0 anonymous owner methods/constructors. The compiler-local provisional owner keeps empty methods/interfaces; existing in-place finish derives implicit Stringable and EARLY=false. Magic-body factories and private/static __toString remain outside the source envelope.",
+  "base": "05d1fcbf8e82b161379530b4584c27d417f0b14a",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "engine_basis": "vendor/php-src/Zend/zend_compile.c zend_begin_method_decl/add_stringable_interface"
+  },
+  "implementation": [
+    "spec/semantics/383-anonymous-classes.watsup: lift only the owner sibling __toString source fence; retain class-free ordinary member and direct method/constructor child gates",
+    "tests/semantics/anonymous_owner_factory_sources.py: select second native-pinned catalog and bounded recursive timeout without changing the default CLASS180 catalog",
+    "tests/semantics/anonymous_owner_factory_boundaries.py: replace now-admitted sibling negative with child-in-__toString positive exclusion"
+  ],
+  "evidence": {
+    "source": {
+      "catalogue_cases": 16,
+      "statuses": {
+        "normal": 10,
+        "static_rejection": 6
+      },
+      "stable_batch": {
+        "exact_rows": 15,
+        "aggregate_passed": false,
+        "uncredited_failure": "nested-stringable-owners model internal 120-second timeout; no semantic observation",
+        "report": ".tools/class181-artifacts/class180-source-4bc1nsd0/report.json",
+        "sha256": "7f556ada8839a65ad1516acd74ab3c6fa0288bb8b0e2581a064518d7d17c0467"
+      },
+      "separate_recursive": {
+        "case": "nested-stringable-owners",
+        "exact": true,
+        "internal_timeout_seconds": 240,
+        "stable_inputs": true,
+        "report": ".tools/class181-artifacts/class180-source-lw9am2c0/report.json",
+        "sha256": "cd27ef9191b8e4801ec713d062862adaf861cc201d2197e91ba782a2e67c82dd"
+      },
+      "total_distinct_exact_sources": 16
+    },
+    "reached": {
+      "conditions": {
+        "owner_after_method": 22,
+        "parented_owner": 21,
+        "nested_stringable_owners": 23,
+        "abrupt_invalid_return_child_checkpoint": 13,
+        "pure_source_derived_reservation": 17
+      },
+      "result": "true newline; exit0; empty stderr; stable inputs",
+      "report": ".tools/class181-artifacts/class181-protocol-j6tnk2xp/report.json",
+      "sha256": "e547446c449f73d7d0e1dcfa53fabd3fd73b25493dadacdeab65ab8d3e57bc2d"
+    },
+    "source_boundaries": {
+      "native_positive_exclusions": 5,
+      "source_gate_conditions": 35,
+      "result": "true newline; exit0; empty stderr; stable inputs",
+      "report": ".tools/class181-artifacts/class180-boundaries-mqs4hzbs/report.json",
+      "sha256": "597d7098e4993b6ffe947992bf196b9e9324d8f4e1f0690e8bb29dc99fe24014"
+    },
+    "strict": {
+      "modules": 435,
+      "result": "true newline; exit0; empty stderr; stable inputs",
+      "report": ".tools/class181-artifacts/class181-strict-ita6fyqh/report.json",
+      "sha256": "c8999bf2ff49b67acef859889ffeaebfec24febfecfa09fa61c511fcfc57d549"
+    },
+    "affected": {
+      "class180_owner_source2": {
+        "result": "2 exact; stable inputs",
+        "report": ".tools/class181-artifacts/class180-source-_3sfbnko/report.json",
+        "sha256": "66fefebb338902c8fb0206b317222a0e6eed19219ad6707d76a6f5486d8ebd51"
+      },
+      "prior_stringable_normal": {
+        "result": "pass; stable inputs",
+        "report": ".tools/class181-artifacts/method-runtime-4kolezu0/report.json",
+        "sha256": "85a3195faed476d919bd8f961fdae7cf3b5fdeb84a677d91220b67ba06ba560c"
+      },
+      "prior_stringable_rejection": {
+        "result": "pass; stable inputs",
+        "report": ".tools/class181-artifacts/method-runtime-ckblp7ja/report.json",
+        "sha256": "19af458b305e973d2a83c4fb7e36f6e5bb61209abc379cb725ab0f044fb2b38d"
+      }
+    },
+    "native_only_exclusions": [
+      {
+        "report": ".tools/class181-review-artifacts/owner-private-tostring-after-child-warning.native.json",
+        "sha256": "b41002228ea48fd338ec0bab37adab5abc5bd4d0d6e44a99bed866c8c9c70342"
+      },
+      {
+        "report": ".tools/class181-review-artifacts/owner-static-tostring-after-child-warning.native.json",
+        "sha256": "48f57eaf98e0aaeb6028ecb28d4a2eddab4839fa6513525cfd25713d91e45d14"
+      },
+      {
+        "report": ".tools/class181-review-artifacts/owner-static-tostring-before-child-warning.native.json",
+        "sha256": "6f9d52d8151ba3ac55555ac565c863e28268689b9fa40f1b56a49231e5dc3b68"
+      },
+      {
+        "report": ".tools/class181-review-artifacts/owner-tostring-body-child-boundary.native.json",
+        "sha256": "70685669decf6e0e1e50064f6f958d7e8127a7c0c57468ccfde3ce5647097265"
+      }
+    ],
+    "failed_attempts": {
+      "raw": ".tools/class181-artifacts/raw-private/",
+      "credit": "zero",
+      "notes": "Baseline valid sibling was Unsupported. An initial sweep hit the old 60-second recursive budget; a later stable full16 batch had one internal 120-second recursive timeout. A redundant replay was stopped/reaped after the decision to retain separate 15+1 cuts. Neither timeout nor stopped replay is counted as agreement."
+    }
+  },
+  "remaining": [
+    "A child factory inside the __toString magic body needs its own context admission.",
+    "Private/static __toString diagnostics, owner traits/constants, method-owned deferred scopes and dynamic source units remain outside this bounded slice."
+  ],
+  "review": {
+    "reviewer": "classes_review_daybreak",
+    "decision": "private_clear_joined_pending",
+    "private_cut": null,
+    "basis": "Independent static/native scope review and fixed-input private source 15+1, reached79+pure17, strict435, boundary35 and affected source4 CLEAR; actual-parent joined interaction review pending.",
+    "semantic_cut": "2ef515d53f59eb05035f1736bd155ff58c66cbb8"
+  }
+}

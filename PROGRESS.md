@@ -1165,9 +1165,21 @@ The ordinary runtime handles inherited scope, protected constructors, failed
 owner cleanup and lazy links. Abrupt unit compilation drains child diagnostics
 and skips only authenticated child checkpoints without installed images.
 Twenty-two exact PHP 8.5.10 sources, 106 reached plus 20 pure conditions and
-35 source-boundary checks cover this slice. Method-owned deferred scopes,
-owner traits/constants/implicit Stringable siblings and dynamic units remain
-partial. [Review](coverage/semantics/anonymous-owner-factories-review.json).
+35 source-boundary checks cover this slice. At that cut, method-owned deferred
+scopes, owner traits/constants/implicit Stringable siblings and dynamic units
+remained partial. [Review](coverage/semantics/anonymous-owner-factories-review.json).
+
+CLASS181 admits an ordinary public `__toString` sibling in an anonymous owner
+whose other method or constructor creates anonymous children. The provisional
+owner remains compiler-local with empty interfaces; existing in-place finish
+derives implicit `Stringable` and clears early status. Before/after member
+order, parented and nested owners, constructor children and compile-error
+priority match PHP 8.5.10. Fifteen exact source rows plus a separately bounded
+recursive source, 79 reached plus 17 source-derived conditions and 35 current
+source-boundary checks cover this slice. The earlier full-batch recursive
+timeout retains zero credit. Child factories inside `__toString`, private/static
+magic variants, traits/constants, deferred scopes and dynamic units remain
+partial. [Review](coverage/semantics/anonymous-owner-stringable-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
