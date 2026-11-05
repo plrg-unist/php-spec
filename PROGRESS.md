@@ -493,6 +493,19 @@ Unsupported with zero agreement. Wider Value layouts, extra child owners,
 Map-first teardown and active-pin collection remain partial.
 [GC37 review](coverage/semantics/gc-declared-value-child-review.json).
 
+GC38 admits ordinary Map-first retirement of the GC37 one-declared-Child
+Value while its leaf `stdClass` Key remains live. The Map unregisters its Key
+and transfers its Value owner before the Value releases Child. During Child's
+destructor, the Value observer's get is null while the Map observer's get is
+still live under the Map storage pin. The new free arm requires no incoming
+Map-key registrations; the existing leaf-Value free path remains available.
+Three new exact sources (including caught Child throw), two affected exact
+sources and 97 reached conditions (author57, independent40) pass at recorded
+cuts. Retained Child owners and incoming Map-key registration stop explicitly
+with zero agreement. Wider Value layouts and active-pin collection remain
+partial; earlier fixture/source drafts retain zero credit.
+[GC38 review](coverage/semantics/gc-map-first-value-child-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator
