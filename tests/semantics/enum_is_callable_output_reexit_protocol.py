@@ -101,7 +101,7 @@ def root_finish(label, start, receipt, status):
 
 
 def own():
-    row, checks = begin('own', 'cleanup-exit-own-local-trace')
+    row, checks = begin('own', 'cleanup-exit-own-local-and-tail')
     checks += [
         'S_own_entry = $eir_seek(S_own_clear, penumqueryoutput_own, 0, 5000)',
         'S_own_entry.TODO = (DESTRUCTOR_ENTER pdestructorcall_own_child) :: ptask_own_child_tail*',
