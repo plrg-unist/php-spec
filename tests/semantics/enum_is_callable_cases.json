@@ -283,11 +283,18 @@
     "expected_normal_stdout": "DROP|after:1:FirstCheck::from|end|"
   },
   {
-    "id": "enum-is-callable-third-output-unique-target-rebind",
+    "id": "enum-is-callable-third-output-unique-array-target-rebind",
     "source": "<?php\nclass TargetDrop {\n    public function __destruct() {\n        global $target;\n        $target = [OtherCheck::class, 'from'];\n        echo 'TARGET-DROP|';\n    }\n}\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n$target = [FirstCheck::class, 'from'];\n$name = new TargetDrop;\n$ok = is_callable($target, false, $name);\necho 'final:', (int)$ok, ':', $name, '|';\n",
     "source_sha256": "8feb6d6407a713148eaf43a7c7361276fd5cc918cebf098fd8eb71a13d80dd17",
+    "expected_model": "unsupported",
+    "purpose": "The preserved array-variable target source remains outside third-output source-name authentication before any old-object destructor."
+  },
+  {
+    "id": "enum-is-callable-third-output-unique-string-target-rebind",
+    "source": "<?php\nclass TargetDrop {\n    public function __destruct() {\n        global $target;\n        $target = 'OtherCheck::from';\n        echo 'TARGET-DROP|';\n    }\n}\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\n$target = 'FirstCheck::from';\n$name = new TargetDrop;\n$ok = is_callable($target, false, $name);\necho 'final:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "1289c0166dfa78cf2e639a278c49fc75bf448888c48edad9fae78cc54e486832",
     "expected_model": "normal",
     "expected_normal_stdout": "TARGET-DROP|final:1:FirstCheck::from|",
-    "purpose": "The output continuation retains the previously saved variable target while its old-object destructor rebinds the current input CV."
+    "purpose": "A saved string target remains authenticated after the output old-object destructor rebinds the current target CV."
   }
 ]
