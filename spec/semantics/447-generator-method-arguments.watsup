@@ -180,3 +180,71 @@ rule PhpStep/generator-iterator-ready: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
   -- if $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
+
+
+;; A genuine direct SEND frees argv before its receiver. Keep the returned
+;; snapshot independently while an argv destructor can reenter that Generator.
+dec $generator_api_result_saved(pstate, pgeneratorop) : bool
+def $generator_api_result_saved(S, pgeneratorop) = true
+  -- if pgeneratorop.NAME = "send"
+  -- if pgeneratorop.ARGUMENTS = [pvalue]
+  -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED /\ ~pgeneratorop.ADVANCE
+  -- if ~$generator_capture_operation(pgeneratorop)
+  -- if ~$generator_from_site(S, pgeneratorop.SITE)
+  -- if $generator_object(S, pgeneratorop.OBJECT)
+  -- if $generator_operation_site(S, pgeneratorop)
+def $generator_api_result_saved(S, pgeneratorop) = false -- otherwise
+
+def $generator_api_finish_needed(S, pgeneratorop) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (pgeneratorop.SITE)
+  -- if $generator_api_result_saved(S, pgeneratorop)
+  -- if $generator_operation_valid(S, pgeneratorop)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $generator_arguments_nodes(pgeneratorop.ARGUMENTS) =/= eps \/ $value_nodes(pvalue) =/= eps
+def $generator_api_finish_needed(S, pgeneratorop) = false -- otherwise
+
+def $generator_complete(S, pgeneratorop) = $destructor_release_begin(S[.TODO = (GENERATOR_API_RESULT pgeneratorop pvalue) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($generator_arguments_nodes(pgeneratorop.ARGUMENTS)))
+  -- if $generator_api_finish_needed(S, pgeneratorop)
+  -- if S.RESULT = KNOWN pvalue
+
+def $task_nodes(GENERATOR_API_RESULT pgeneratorop pvalue) = [HOBJECT pgeneratorop.OBJECT] ++ $value_nodes(pvalue)
+def $task_nodes(GENERATOR_API_RETURN pgeneratorop pvalue) = $value_nodes(pvalue)
+dec $generator_api_result_valid(pstate, pgeneratorop, pvalue) : bool
+def $generator_api_result_valid(S, pgeneratorop, pvalue) = true
+  -- if S.ORIGIN = (pgeneratorop.SITE)
+  -- if $generator_api_result_saved(S, pgeneratorop)
+  -- if (HOBJECT pgeneratorop.OBJECT) <- S.ALLOCATIONS
+  -- if $destructor_return_operand_valid(S, KNOWN pvalue)
+def $generator_api_result_valid(S, pgeneratorop, pvalue) = false -- otherwise
+def $call_task_valid(S, GENERATOR_API_RESULT pgeneratorop pvalue) = $generator_api_result_valid(S, pgeneratorop, pvalue)
+def $call_task_valid(S, GENERATOR_API_RETURN pgeneratorop pvalue) = (S.ORIGIN = (pgeneratorop.SITE) /\ $generator_api_result_saved(S, pgeneratorop) /\ $destructor_return_operand_valid(S, KNOWN pvalue))
+def $generator_internal_task(GENERATOR_API_RESULT pgeneratorop pvalue) = true
+def $generator_internal_task(GENERATOR_API_RETURN pgeneratorop pvalue) = true
+def $fiber_marker(GENERATOR_API_RESULT pgeneratorop pvalue) = true
+def $fiber_marker(GENERATOR_API_RETURN pgeneratorop pvalue) = true
+
+dec $generator_api_discard_result(pstate, pgeneratorop, pvalue) : bool
+def $generator_api_discard_result(S, pgeneratorop, pvalue) = (~$reference_call_used(S, pgeneratorop.SITE) /\ $value_nodes(pvalue) =/= eps)
+rule PhpStep/generator-api-unused-return: S ~> S[.TODO = (GENERATOR_API_RESULT pgeneratorop PNULL) :: ptask_tail*]
+  -- if S.TODO = (GENERATOR_API_RESULT pgeneratorop pvalue) :: ptask_tail*
+  -- if $generator_api_result_valid(S, pgeneratorop, pvalue)
+  -- if $generator_api_discard_result(S, pgeneratorop, pvalue)
+rule PhpStep/generator-api-receiver-release: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN pvalue)]
+  -- if S.TODO = (GENERATOR_API_RESULT pgeneratorop pvalue) :: ptask_tail*
+  -- if $generator_api_result_valid(S, pgeneratorop, pvalue)
+  -- if ~$generator_api_discard_result(S, pgeneratorop, pvalue)
+rule PhpStep/generator-api-throw-unused-return: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_API_RESULT pgeneratorop PNULL) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_API_RESULT pgeneratorop pvalue) :: ptask_tail*
+  -- if $generator_api_result_valid(S, pgeneratorop, pvalue)
+  -- if $generator_api_discard_result(S, pgeneratorop, pvalue)
+  -- if $throwable_live(S, n)
+rule PhpStep/generator-api-throw-receiver-release: S ~> S[.TODO = (THROW_SEARCH n) :: (GENERATOR_API_RETURN pgeneratorop pvalue) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_API_RESULT pgeneratorop pvalue) :: ptask_tail*
+  -- if $generator_api_result_valid(S, pgeneratorop, pvalue)
+  -- if ~$generator_api_discard_result(S, pgeneratorop, pvalue)
+  -- if $throwable_live(S, n)
+rule PhpStep/generator-api-throw-return-release: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_API_RETURN pgeneratorop pvalue) :: ptask_tail*
+  -- if $call_task_valid(S, GENERATOR_API_RETURN pgeneratorop pvalue)
+  -- if $throwable_live(S, n)

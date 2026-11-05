@@ -140,6 +140,7 @@ dec $generator_loop_site(pstate, pgeneratorop, pgeneratorloop) : bool
 dec $generator_arguments_supported(phpType7*) : bool
 dec $generator_method_return_tasks(pstate, porigin, ptask*) : ptask*
 dec $generator_method_unused_result(pstate, pgeneratorop) : bool
+dec $generator_api_finish_needed(pstate, pgeneratorop) : bool
 dec $generator_capture_wrapper_site(pstate, porigin) : bool
 dec $generator_temporary_selection(pgeneratormethodselection?) : bool
 dec $generator_temporary_operation(pgeneratorop) : bool
@@ -1280,6 +1281,7 @@ def $generator_complete(S, pgeneratorop) = S[.RESULT = KNOWN PNULL][.BASE = BASE
   -- if $generator_method_unused_result(S, pgeneratorop)
 def $generator_complete(S, pgeneratorop) = S
   -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK
+  -- if ~$generator_api_finish_needed(S, pgeneratorop)
   -- if ~$generator_method_unused_result(S, pgeneratorop)
 def $generator_complete(S, pgeneratorop) = $fiber_traversal_complete(S, pgeneratorop) -- if pgeneratorop.STARTPACK
 def $generator_complete(S, pgeneratorop) = $generator_loop_ready(S, pgeneratorop)
