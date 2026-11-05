@@ -76,6 +76,25 @@ remain live. Traversable packs, specialized delegated input histories and wider
 lifetime combinations remain partial.
 [Native argument review](../../coverage/semantics/generator-method-arguments-review.json).
 
+
+Ordinary literal API calls also admit one initialized user-Iterator CV spread.
+The selected Generator remains owned while Iterator callbacks may clear or
+replace both source variables. `current()` precedes `key()`; changing the
+Iterator's stored value in `key()` leaves the copied current snapshot intact.
+DATA retires before API reception and body initialization. Unknown/duplicate
+names and order errors precede API entry; count checks retain the Generator
+frame after traversal. Source history can outlive retired DATA and receiver,
+while active cursors require their real selected owner.
+
+Normal genuine direct `send` completion pins the receiver through argument
+release. Its saved returned value remains distinct from the cache while a reentrant
+argument destructor closes execution; the closed Generator retains its cache. An ignored return drops before the receiver; a used
+return escapes or outlives the receiver if an argument destructor throws before
+assignment. Captured, temporary, borrowed and pending-advance protocols keep
+their existing finish paths. Other Traversable source forms, multiple/prefixed
+packs, captured/computed/nullsafe consumers and wider lifecycle combinations
+remain partial. [Iterator API review](../../coverage/semantics/generator-method-iterator-pack-review.json).
+
 Literal nullsafe API calls share the same selected receiver and argument protocol.
 A NULL receiver skips named-CV reception and spread producers. A nonnull call
 returns through the existing nonowning method-result handoff, retaining copied

@@ -387,6 +387,22 @@ drive terminal cleanup. Original failures retain zero credit;
 Traversable and wider lifecycle combinations remain partial.
 [I115 review](coverage/semantics/generator-api-call-review.json).
 
+
+I116 receives one initialized user-Iterator CV pack at ordinary literal native
+Generator APIs. Selected receiver and current snapshots survive callback CV and
+property replacement; finite DATA retires before API reception. Mapping errors
+precede body entry, and count errors retain native frames. Cancellation preserves
+the selected owner even with scalar current/no copied slots. Lookup-only history
+survives receiver retirement while active cursors require real membership.
+Normal genuine direct SEND pins its receiver through argv cleanup and saves
+returned values separately from the retained cache through reentry and
+demand-sensitive supplied throws. Six unique originals agree across their recorded cuts; the sole 99/104
+owner/budget front passes full 445 SL with raw-versus-public decrement staging.
+Captured/temp/borrowed/loop/startpack/from/pending-advance protocols remain
+separate. Original failures and the expensive diagnostic timeout retain zero
+credit; wider Traversable/lifecycle scope remains partial.
+[I116 review](coverage/semantics/generator-method-iterator-pack-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -1979,7 +1995,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS194 | Explicitly named first ordinary-object CV in existing instance magic calls; private implementation/review. |
-| I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
+| I117 | Direct named-Generator SEND body-Throwable unwind and receiver/argument cleanup; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |

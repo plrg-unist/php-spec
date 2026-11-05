@@ -7752,6 +7752,14 @@ errors and API frames remain distinct, and saved owning returns survive ordered
 argument cleanup, including supplied destructor throws. See the
 [native call review](coverage/semantics/generator-api-call-review.json).
 
+
+Direct literal Generator APIs also receive one initialized Iterator CV spread.
+Callbacks may replace the source variables while selected receiver and copied
+values remain owned. Iterator retirement precedes API entry; normal direct
+`send` cleanup releases arguments and ignored returns before its receiver,
+preserving saved values through reentry and supplied destructor throws.
+[Iterator reception review](coverage/semantics/generator-method-iterator-pack-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
