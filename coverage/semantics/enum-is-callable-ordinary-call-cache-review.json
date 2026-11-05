@@ -1,0 +1,70 @@
+{
+  "scope": "Ordinary user Closure::call temporary function cache identity",
+  "target": "PHP8.5.10 CLI NTS64-bit; project-local oracle/profile",
+  "semantic_revision": "cfb840b9cb0a8abf831a7a16d43d487b5e267ec0",
+  "base_revision": "661f27da128446ee59a6a1d893f1f7cfd57a02d4",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "6c047bf2ddd924f3325aaf132dd3cfa7cc627e33395bbebee816a55e722228d7",
+    "spec/semantics/40-control.watsup": "c26f5c3088b81de84b5f3b55c5bf76516524aecf6029d458480d4ecb14a2f449",
+    "spec/semantics/80-call-control.watsup": "603bcee03237f2b8bf02df74fdfb26154cd297ddb5d666fa2cf05c20f8103fcf",
+    "spec/semantics/84-call-integrity.watsup": "40197d935ce457cd98ec09f575fdf5e82cc9a1aeda238f2af29f55d3c1efca17",
+    "spec/semantics/105-named-arguments.watsup": "80fdc07cdcf88201d961d3af5c45970545f8d2de3de769841fd05d4f6d31d195",
+    "spec/semantics/182-closure-call.watsup": "d4f1d351aeda44f5a7c86a3019c1743f40bf4368422cbe2f2d2f822a45b48dde",
+    "spec/semantics/455-closure-function-caches.watsup": "0833227e98710639da285f113dd7851717f23c70a7a2923e6fa3710930dd3927"
+  },
+  "behavior": "CACHE_CALL is a temporary-function invocation identity indexed by append-only CLOSURECALLCACHES, distinct from object IDs and source/SITE identity. Known scope change or private source yields a fresh key; only known nonprivate same-scope policy can share. Existing literal-birth constraints keep unknown policy unknown. The ordinary call entry hook attaches the key after actual target/function/context creation; static and Generator functions cannot mint these rows. Ordinary/named constructors clear CACHE, saved frames preserve caller keys. No new frame/ownership/save-restore rules.",
+  "ownership": "CACHE and birth FUNCTION/SOURCE/RECEIVER/SITE are nonowning history. Current/saved contexts validate populated keys against the actual copied function context; raw ordinary contexts reject inherited keys. Birth rows survive source/receiver retirement without reading captured values or adding roots. Real source/receiver ownership remains in CLOSURE_CALL_TARGET.",
+  "sources": "Four distinct original CLI comparisons agree exactly at their recorded cuts: author private-heap/call and throwing-output/fresh-invocation sources; peer repeated SINGLE API SITE with identical source/receiver proves argument-throw warmth versus a fresh invocation, and nested raw-function reset plus saved outer context restoration. All normal/stdout/stderr/status match pinned PHP. No old private4/shared4/fallback3/acquisition7 campaign replay.",
+  "cut_bridge": "Author source2 and strict-v3 precede the final static-source refusal in e1; both authored functions are nonstatic. Peer source2 and strict-v4 bind e1. The cfb follow-up adds live source/receiver eligibility only for active populated contexts and checks SHARED bounds before indexing; genuine CLOSURE_CALL_TARGET owners stay live. Borrowed row/history rules are unchanged. Final strict-v5 and the final source-derived ownership/context packet bind cfb. Original fingerprints/revisions remain at their actual cuts; no source results are relabeled or repeated.",
+  "strict": "Final strict-v5 passes443,true/exit0/empty stderr/stable13.20s on exact cfb bytes (recorded precommit e1+guard diff). Earlier strict-v4 binds e1; strict-v3 is the pre-static-guard pass. Strict-v1 stopped on a forward helper declaration and strict-v2 on a conjunction binding before execution; both remain zero credit.",
+  "independent": "Fresh661 review tree imports e1 production bytes (review99c78889e) for2 exact/stable CLI originals, then cfb (reviewfa881e99c) for context-v3. Final198 checks/all443 modules pass true/exit0/empty stderr/stable/no timeout115.28s. Actual duplicate birth facts use distinct invocation indices; earlier argument throw warms only that invocation, and a fresh invocation selects USER. Actual helper contexts clear CACHE and restore the saved outer key; named constructor reset is checked. Malformed function/source/receiver/site/key and static-source rows refuse. Borrowed history remains valid after retirement; active populated contexts require live source/receiver. Heap nonownership and budget0/1 pass.",
+  "author_reports": {
+    "strict-v1/report.json": "f06b083f3f6c77f8a86847394fe01f3b65944bae591e618a5ba82db6d9e5d51f",
+    "strict-v2/report.json": "2cbddd355c65862264430b468dedc82247f17944e9fc63e495821a2935f2e224",
+    "strict-v3/report.json": "a62757ae7282da2a1b9d4a67bd42b010671efd2249c032342ccee17344ea14d0",
+    "strict-v4/report.json": "d186dc8a1429dc67484ae22dfd2bfbcb6baa4b5ad2b2077a290fbeb7151f1bde",
+    "author-command.json": "447274f27aff17d2ba212723c5b264891ed393f9f89193c006cf2b3ac19e2c02",
+    "raw/user-string-7bol2des/report.json": "848218044fc88a802706f5ac001d49aed0eabf003c3304e8c6388951011e3bfb",
+    "private-heap-copies-and-cold-shared/native.json": "4d7ff0323215bc2ee605a1d57f11e7ea2ba4c430febb494d71ada1382d44852d",
+    "output-throw-fresh-invocation/native.json": "1b2a8bad4afae827e764fd5572a2e7e22fab05c1c79f8a5e5063965810b4bba4",
+    "strict-v5/report.json": "c8b4e0b54cdbf4d3528b446636d3ce312ad303589463fc45e747f7754c1b5a69"
+  },
+  "remaining": "Unknown first-template scope/birth, computed/packed entry variants, internal/fake/method/Trait/Fiber cache owners, inherited include/eval/constant creation and wider callable/query/output contexts remain partial. Known same-scope shared policy is guarded; current admitted first literal births are unscoped. Full core remains unfinished.",
+  "source_authority": "vendor/php-src/Zend/zend_closures.c:Closure::call (173–216) copies the function context and refreshes runtime cache on scope change or HEAP source; temporary cache is freed after the call. Zend INIT_NS_FCALL selects from that function cache before arguments.",
+  "recovery": "Author ../php-spec-evidence-archive/enum-ordinary-call-cache-128/ contains run_strict.py, strict-v*/command.json, author-command.json and raw/. Peer ../php-spec-evidence-archive/enum-call-cache-review-128/ contains native.py, compare.py, context.py and report/raw directories. Original context-v1/v2 drivers preserve failed fixtures. Maintained source selector: enum_is_callable.py --match third-output-ordinary-call-cache-. Existing local shared-tool links; no fresh rebuild/portability claim.",
+  "failure_disposition": "Two original strict declaration/binding errors retain zero execution credit after narrow fixes. Static-source and active-owner hardening preserve explicit earlier source cuts/bridges. Peer context-v1/v2 stopped at parser-only fixture issues (list-valued record field parentheses, constructor length binding); original drivers/reports remain zero credit, context-v3 fixes only those fixtures. Peer native-report-v0 two-site preparation is not current source credit; final native prep repeats one API site/source/receiver. No production/source discrepancy occurred.",
+  "review": "Independent semantic/source/context/ownership and final metadata/docs/source-copy review CLEAR by /root/enum_review at cfb, with explicit e1/pre-static source bridges. Later documentation/copy edits leave production bytes unchanged.",
+  "runtime_commits": [
+    "e1da762c1961b7e6c33bdb6e07cd579988d8fb4e",
+    "cfb840b9cb0a8abf831a7a16d43d487b5e267ec0"
+  ],
+  "source_records": [
+    {
+      "id": "enum-is-callable-third-output-ordinary-call-cache-private-heap-copies-and-cold-shared",
+      "source_sha256": "967ac7dff776aba3e45884734a350d5fac820899063b9b3c13bdcf5bab8219a8",
+      "expected_model": "normal"
+    },
+    {
+      "id": "enum-is-callable-third-output-ordinary-call-cache-output-throw-fresh-invocation",
+      "source_sha256": "d27a559f059f18edf171720201ccbcac1abcf0c9ca72c69146642d985607dd41",
+      "expected_model": "normal"
+    },
+    {
+      "id": "call-copy-warmthrow-versus-fresh-invocation-single-api-site",
+      "source_sha256": "225a021642445908b00ae493417c352db7a0a85b0572627ce1ba621db2ca718d",
+      "expected_model": "normal"
+    },
+    {
+      "id": "nested-normal-context-reset-and-restore-single-api-site",
+      "source_sha256": "ff5e1f803763f8d31d2ffa919b22f23e3769d60ab881b116fbad4c8a41850aec",
+      "expected_model": "normal"
+    }
+  ],
+  "independent_reports": {
+    "native-report.json": "f2ffe5aa89d85cefdb772b7ad9f02e76bb96543ebf5c4983c46cc5158ccb9a91",
+    "compare-v1/report.json": "077453e3aded0dd0de3d8f6bcf36d1314b490c13d7f5745fdadd9274a6e15907",
+    "context-v1/report.json": "4c582acb8734dd6d5c5c4995d0b3fe1e175f09d6b258502029c56c68498ffa87",
+    "context-v2/report.json": "7be2e08776836806b9768840e5a82be9defcb25d7c22e74ecb7c1a93fa6d3397",
+    "context-v3/report.json": "a3d2d74a68ae7263c499ed07b8bb7e692e216611b4e3d4214cd6730305f71696"
+  }
+}

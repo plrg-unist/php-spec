@@ -1147,9 +1147,16 @@ policy even after old binding records retire. Generator `Closure::call` stamps
 its actual allocated Closure copy after binding/captures/statics; its Generator
 keeps that object through ordinary ownership. The
 [private-cache review](../../coverage/semantics/enum-is-callable-private-cache-review.json)
-records these copies. Ordinary `Closure::call` uses a temporary function context
-without that allocated-copy identity and remains an unproved cache owner. Unknown
-births, internal scope wrappers and wider method/fake/Fiber owners remain partial.
+records these copies. Ordinary user `Closure::call` now gives its temporary
+function an append-index cache identity, separate from Closure object IDs. Known
+scope changes or private sources get fresh invocation keys; only proven same-scope
+nonprivate copies can share. Current contexts bind keys to actual function, live source/receiver
+and API site; saved frames retain them, and ordinary/named function entry
+clears inherited keys. Birth rows own nothing and remain valid after retirement.
+The [invocation-cache review](../../coverage/semantics/enum-is-callable-ordinary-call-cache-review.json)
+records repeated-site, throw and nested-function checks. Static receiver binding
+is rejected before cache birth. Unknown births, computed/packed entry variants,
+internal scope wrappers and wider method/fake/Fiber owners remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

@@ -142,7 +142,12 @@ records the shared slice. Real bind copies and Generator `Closure::call` copies
 now preserve known cache policy: shared same-scope copies share, while changed
 scope and every private copy receive a fresh private key. Retired source stamps
 add no owners. The [private-cache review](coverage/semantics/enum-is-callable-private-cache-review.json)
-records the copy hooks; ordinary `Closure::call` and unknown births remain partial.
+records the copy hooks. Ordinary user `Closure::call` now records a separate
+nonowning temporary-function cache identity. Each scope-changing/private call
+gets a fresh key; warmth inside that invocation survives throws and nested calls.
+Ordinary function entry clears inherited keys and frame restoration retains the
+caller key. The [invocation-cache review](coverage/semantics/enum-is-callable-ordinary-call-cache-review.json)
+records the bounded source/context checks; unknown births remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -1767,6 +1772,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR39 | Class-like declaration tick plans and compiler traversal; private implementation/review. |
+| Enum callable arrays | First scoped literal cache births in named/inherited method factories; private investigation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

@@ -7202,7 +7202,11 @@ Real scope-changing binds now stamp private cache identity; cloning or rebinding
 private Closure creates a fresh private cache, including after its source retires.
 Generator `Closure::call` uses its actual allocated copy and the same policy; see
 the [private-cache review](coverage/semantics/enum-is-callable-private-cache-review.json).
-Ordinary `Closure::call`, unknown births and wider owners retain their explicit bounds.
+Ordinary user `Closure::call` now names its temporary function cache separately:
+scope changes and private sources get fresh invocation keys, while nested normal
+calls clear inherited keys and restore the caller on return. See the
+[invocation-cache review](coverage/semantics/enum-is-callable-ordinary-call-cache-review.json).
+Unknown births and wider owners retain their explicit bounds.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
 sources, typed/backed/debt valid-pair members, wider arrays and autoload,

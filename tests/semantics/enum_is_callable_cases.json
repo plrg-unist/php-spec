@@ -1363,5 +1363,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "null|is_callable:CallOutput\\Target::cases:UNCHANGED|USER:OLD|query:0:OLD|",
     "purpose": "A temporary function cache preserves saved builtin target/name/API trace through output throw, while a later API invocation with the same source and receiver gets a fresh cache and selects USER."
+  },
+  {
+    "id": "enum-is-callable-third-output-ordinary-call-cache-call-copy-warmthrow-versus-fresh-invocation-single-api-site",
+    "source": "<?php\nnamespace CallWarmThrow;\nenum Target { case A; }\nclass Scope {}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n        throw new \\Exception('first');\n    }\n    return false;\n}\n$query = function($install) {\n    for ($i = 0; $i < 2; $i++) {\n        $name = 'OLD';\n        $ok = 'UNCHANGED';\n        try {\n            $ok = is_callable([Target::class, 'cases'], publish($install && $i === 0), $name);\n            echo 'query', $i, ':', (int)$ok, ':', $name, '|';\n        } catch (\\Exception $e) {\n            echo 'caught:', $ok, ':', $name, '|';\n        }\n    }\n};\n$receiver = new Scope;\nfor ($round = 0; $round < 2; $round++) {\n    $query->call($receiver, $round === 0);\n}\n",
+    "source_sha256": "225a021642445908b00ae493417c352db7a0a85b0572627ce1ba621db2ca718d",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "caught:UNCHANGED:OLD|query1:1:CallWarmThrow\\Target::cases|USER:OLD|query0:0:OLD|USER:OLD|query1:0:OLD|",
+    "purpose": "An exact single-API-site native control distinguishes per-invocation cache freshness from same-invocation warmth and saved ordinary function cache contexts."
+  },
+  {
+    "id": "enum-is-callable-third-output-ordinary-call-cache-nested-normal-context-reset-and-restore-single-api-site",
+    "source": "<?php\nnamespace HelperCache {\n    enum Target { case A; }\n    function publish($install) {\n        if ($install) {\n            function is_callable($value, $syntax, $output) { echo 'HELPERUSER:', $output, '|'; return false; }\n        }\n        return false;\n    }\n    function run($install) {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'helper:', (int)$ok, ':', $name, '|';\n    }\n}\nnamespace OuterCache {\n    enum Target { case A; }\n    class Scope {}\n    function publish($install) {\n        if ($install) {\n            function is_callable($value, $syntax, $output) { echo 'OUTERUSER:', $output, '|'; return false; }\n        }\n        return false;\n    }\n    $query = function($install) {\n        for ($i = 0; $i < 2; $i++) {\n            $first = $install && $i === 0;\n            $name = 'OLD';\n            $ok = is_callable([Target::class, 'cases'], publish($first), $name);\n            echo 'outer', $i, ':', (int)$ok, ':', $name, '|';\n            \\HelperCache\\run($first);\n        }\n    };\n    $receiver = new Scope;\n    for ($round = 0; $round < 2; $round++) {\n        $query->call($receiver, $round === 0);\n    }\n}\n",
+    "source_sha256": "ff5e1f803763f8d31d2ffa919b22f23e3769d60ab881b116fbad4c8a41850aec",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "outer0:1:OuterCache\\Target::cases|helper:1:HelperCache\\Target::cases|outer1:1:OuterCache\\Target::cases|helper:1:HelperCache\\Target::cases|OUTERUSER:OLD|outer0:0:OLD|helper:1:HelperCache\\Target::cases|OUTERUSER:OLD|outer1:0:OLD|helper:1:HelperCache\\Target::cases|",
+    "purpose": "An exact single-API-site native control distinguishes per-invocation cache freshness from same-invocation warmth and saved ordinary function cache contexts."
   }
 ]
