@@ -1648,6 +1648,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
 ;; frame pair. Suspension metadata owns values, but does not grant call scope.
 def $generator_source_method(S, porigin, ptbytes) = $generator_method_node($origin_node(S.SOURCES, porigin), ptbytes)
 def $generator_method_node((NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata), ptbytes) = ($ptlc($method_source_spelling(phpType20)) = $ptlc(ptbytes) /\ ~$ppfirstclass(phpType7*))
+def $generator_method_node((NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata), ptbytes) = ($ptlc($method_source_spelling(phpType20)) = $ptlc(ptbytes) /\ ~$ppfirstclass(phpType7*))
 def $generator_method_node(pcnode?, ptbytes) = false -- otherwise
 def $generator_operation_site(S, pgeneratorop) = ($generator_source_method(S, pgeneratorop.SITE, $generator_method_display(pgeneratorop.NAME)) /\ $call_line_valid(S, (pgeneratorop.SITE), pgeneratorop.LINE))
   -- if pgeneratorop.LOOP = eps

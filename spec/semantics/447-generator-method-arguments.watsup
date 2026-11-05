@@ -31,6 +31,12 @@ def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $generator_api_arguments(phpType7*)
   -- if ~$fiber_any_method_site(S, porigin)
   -- if ~$weakref_any_method_site(S, porigin)
+def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $generator_method($base64(text)) =/= ""
+  -- if $generator_api_arguments(phpType7*)
+  -- if ~$fiber_any_method_site(S, porigin)
+  -- if ~$weakref_any_method_site(S, porigin)
 
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_GENERATOR_METHOD text_method, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION eps, LINE z, PACKS eps}) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
