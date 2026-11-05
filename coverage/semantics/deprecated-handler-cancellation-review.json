@@ -1,0 +1,85 @@
+{
+  "milestone": "COMP184",
+  "status": "Implementation and focused validation complete; independent final acceptance pending.",
+  "base": "343caff943a2f4f1ca047a4bcccd83f5d529436b",
+  "branch": "semantics/deprecated-handler-exit-cancellation-184",
+  "raw_root": "../php-spec-evidence-archive/comp184",
+  "behavior": "A fresh local-destructor Exception cancels Deprecated handler exit, restores the genuine saved catch/caller tail and preserves the live exit status. Raw handler restoration keeps the actual pending THROW_SEARCH and released read/API-owner marker through eager old callback destruction. A fresh release throw replaces the pending Exception with its native previous link. Captured API queries survive rebinding, assignment stays untouched and cleared intrinsic owners retire after cancellation.",
+  "implementation": "Only454 return_discard changes: the fresh authenticated marker delegates existing EHR discard into actual THROW_SEARCH plus RELEASED marker; released discard exposes only its genuine stored caller tail. Both use the live pending Throwable and existing source/target/status/suffix/history guards. No new helper, task, record, parser, schema, native helper, state field or runtime admission for owning constant values.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend.c::zend_error_zstr_at (raw handler restoration after call_user_function)",
+    "vendor/php-src/Zend/zend_execute.c/zend_exceptions.c (UnwindExit and destructor replacement throw)",
+    "spec/semantics/152-throwable-runtime.watsup::throw-search-discard",
+    "spec/semantics/270-eager-destructors.watsup::eager_operation_pending/destructor_pending_finish"
+  ],
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json; include_path=.:; LC_ALL=C/TZ=UTC",
+  "validation": {
+    "joined_base": {
+      "report": "joined-main-v1/report.json",
+      "sha256": "a0da4fc8f2c295f993bee6df52ab2f52de5b09ba1fcea3dabbec2761831f93ca",
+      "head": "343caff943a2f4f1ca047a4bcccd83f5d529436b",
+      "modules": 444,
+      "passed": true,
+      "scope": "One requested read-only full-manifest SL true-fixture load and inventory, before184 code edits; zero PHP agreement credit."
+    },
+    "protocol": {
+      "report": "protocol-v2/report.json",
+      "sha256": "0f786302c730488812b16adeb37cda9ba215e341a164b93e8afb4fa0aae3b7e0",
+      "passed": true,
+      "premises": 550,
+      "module_count": 444,
+      "head_stable": true,
+      "inputs_stable": true,
+      "scope": "Genuine pending/eager-release/released/saved-caller frontiers, live current Throwable/previous chain, raw callback and intrinsic owner retirement, source/API context/status and consistent malformed guards. All523 watched inputs match8e2d despite precommit343 head."
+    },
+    "sources": {
+      "captured": {
+        "report": "captured-source-v1/report.json",
+        "sha256": "84f725cbbc03250b7c02f8c927d536120b55235da28362ec87ee6f399bb07a79",
+        "head": "343caff943a2f4f1ca047a4bcccd83f5d529436b",
+        "agreements": 1,
+        "refusal_controls": 0,
+        "head_stable": true,
+        "inputs_stable": true,
+        "passed": true
+      },
+      "other_five": {
+        "report": "sources-v1/report.json",
+        "sha256": "027e98dd0729506daa1ebb8da9c0dfb5334588dc621e6b3eb7a75d399c07c7a1",
+        "head": "8e2d41e9ea165343919f5464bef08fcdd7064472",
+        "agreements": 5,
+        "refusal_controls": 0,
+        "head_stable": true,
+        "inputs_stable": true,
+        "passed": true
+      },
+      "agreements": 6,
+      "refusal_controls": 0,
+      "scope": "Promoted unchanged0dab62 COMP183 refusal, status3, API rebinding/untouched assignment, saved callback protected read, fresh release replacement/previous link and cleared intrinsic owner. Captured525 inputs match8e2d despite precommit343 head."
+    },
+    "affected": {
+      "report": "affected183-sources-v1/report.json",
+      "sha256": "2a1f7683e0cd9d33193a53c88b5bad963199429043a4abee5b9335154e23785f",
+      "head": "8e2d41e9ea165343919f5464bef08fcdd7064472",
+      "agreements": 4,
+      "refusal_controls": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "scope": "Ordinary source/API direct handler throw/retry and body/retval exits: four exact originals, unchanged PHP bytes/expectations."
+    }
+  },
+  "bridges": {
+    "old_sources": "The two new454 branches require an authenticated DEPRECATED_HANDLER_EXIT discarded under actual THROW_SEARCH. Prior49 exact183 cases and six other Unsupported controls do not reach that cancellation; their bytes/expectations and original cuts remain. Only the former cancellation refusal is promoted.",
+    "syntax": "The eight b288 syntax/provenance paths and parser/schema/adapter/native/roundtrip inputs remain unchanged; no syntax replay.",
+    "interfaces": "Whole state/context record updates preserve current opaque cache fields; no new shared storage or public helper signature.",
+    "pipe": "COMP183 eight pipe/roundtrip/lint profiles plus missing-fact control retain their original pipe-v1 cut. No compiler/parser/printer or task/state interface changes; those inputs cannot create a Deprecated exit marker discarded by THROW_SEARCH. No new pipe/corpus replay.",
+    "family": "Current61-case family has55 exact comparisons and six separate Unsupported controls across preserved disjoint cuts. The former cancellation refusal is replaced by its new exact unchanged-source control; prior failure/Unsupported receipts remain historical, with no retroactive agreement."
+  },
+  "preserved_limits": "Owning constant values, coerced queries, trait collision folds, nonliteral Deprecated metadata and wider attribute/default/lifecycle domains remain partial. NextCOMP185 pairs owned value/class/read observations. COMP88 and every other paused boundary remain unchanged.",
+  "review": {
+    "status": "Runtime,550 reached conditions/exact523-input bridge and all six new/promoted plus four affected raw source records independently clear. Final concise docs acceptance pending."
+  },
+  "runtime_and_tests": "8e2d41e9ea165343919f5464bef08fcdd7064472"
+}

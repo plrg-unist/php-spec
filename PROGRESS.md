@@ -1850,8 +1850,8 @@ captured query/prefix selection and recursive-handler protection preserve
 warning order across rebinding, namespace shadows and direct handler throws.
 Body/retval exits retain the disabled handler through local cleanup and protect
 the constant while the saved callback releases; repeated destructor exit keeps
-the latest status. A fresh local-destructor throw cancelling exit stays named
-Unsupported for COMP184. `defined()` remains quiet. Nonowning primitive/interned
+the latest status. At this cut, a fresh local-destructor throw cancelling exit
+stayed named Unsupported for COMP184. `defined()` remains quiet. Nonowning primitive/interned
 strings are paired; owning values, converted queries, trait collision folding
 and wider metadata remain partial. The56-original family has49 exact agreements
 and seven separate refusals across preserved disjoint cuts;341 strict conditions
@@ -1859,14 +1859,25 @@ across441 modules,132 affected conditions and six older originals pass. Final
 pipe controls pass; parser inputs stay fixed.
 [Review](coverage/semantics/deprecated-global-constant-review.json).
 
+COMP184 cancels Deprecated handler exit when a local destructor throws a fresh
+Exception, then restores the real saved catch/caller tail. The two existing
+marker phases preserve pending exceptions/read/API owners through eager saved
+callback release, retain native previous links on replacement and keep exit
+status 3 after catch. The unchanged COMP183 refusal source is promoted; five
+more originals cover source/API and cleared captured-call ownership. Six exact
+source comparisons,550 reached conditions across444 modules and four ordinary
+throw/exit controls pass. The requested joined SL444/inventory base load passes;
+parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
+[Review](coverage/semantics/deprecated-handler-cancellation-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS190 | Byvalue nongenerator __set/__isset/__unset anonymous factories; private implementation/review. |
 | I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
-| GC50 | Validated PFLOAT WeakMap payloads with disjoint property-float handling; private implementation/review. |
-| COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
+| GC50 | PFLOAT work preserved unintegrated; status-only recovery after a generic possible-cybersecurity-risk service stop. |
+| COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR41 | Unticked class-member constant initializer traversal under positive ticks; private implementation/review. |
 | Enum callable arrays | User function/method capture cache identity: cold/private versus initialized shared; private implementation/review. |

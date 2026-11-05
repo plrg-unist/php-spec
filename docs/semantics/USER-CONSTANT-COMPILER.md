@@ -60,16 +60,19 @@ and later namespace shadows. Protection lasts through callback argument sends,
 body and return cleanup. Direct handler throws and admitted body/retval exits
 restore the handler and release protection; locals release while the raw handler
 is still disabled, and a saved callback releases while the constant is protected.
-A local-destructor fresh throw cancelling exit remains named Unsupported for
-COMP184. `defined()` stays quiet; parameter and class initializer caches retain
-their ordinary first-use behavior. Declaration namespace controls literal/null
-admission.
+A fresh local throw can cancel exit and reach the genuine saved catch/caller
+tail. Eager callback release retains the pending exception, protected read and
+captured API owner; a new release exception keeps the previous link, and normal
+continuation preserves the exit status. `defined()` stays quiet; parameter and
+class initializer caches retain their ordinary first-use behavior. Declaration
+namespace controls literal/null admission.
 
 This consumer covers nonowning primitive and interned-string values. Owning
 values, converted queries, trait collision folding, wider metadata expressions
 and reflection remain explicit boundaries. Attribute argument paths acquire no
 runtime initializer authority.
 [COMP183 evidence](../../coverage/semantics/deprecated-global-constant-review.json).
+[COMP184 cancellation](../../coverage/semantics/deprecated-handler-cancellation-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
