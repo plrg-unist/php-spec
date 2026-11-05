@@ -17,19 +17,19 @@ import static_types as types
 b64 = lambda data: base64.b64encode(data).decode()
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 CASES = {
-    'attribute-before-readonly-method': (b'class C{#[A(function(){declare(encoding=1);})] readonly function f(){declare(encoding=2);}}\ndeclare(encoding=3);\necho ;', [1], 1, 'CompileError', 1, False),
-    'readonly-property-control': (b'class C{public readonly int $p;function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2, False),
-    'public-set-method': (b'class C{public(set) function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0, False),
-    'protected-set-method': (b'class C{protected(set) function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0, False),
-    'private-set-method': (b'class C{private(set) function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0, False),
-    'ordinary-static-method': (b'class C{public static function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2, False),
-    'ordinary-final-method': (b'class C{final protected function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2, False),
-    'abstract-body-method': (b'class C{abstract function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2, False),
-    'readonly-incomplete-params': (b'class C{readonly function f($x=(function(){declare(encoding=1);}))', [], 1, 'CompileError', 0, False),
-    'nonliteral-attribute-first': (b'class C{#[A(function(){declare(encoding=1,encoding=true);})] readonly function f(){declare(encoding=2);}}\ndeclare(encoding=3);\necho ;', [1], 1, 'CompileError', 1, False),
-    'readonly-method-body': (b'class C{readonly function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0, False),
-    'readonly-constant-closure': (b'class C{readonly const X=(function(){declare(encoding=1);});}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 1, True),
-    'static-constant-closure': (b'class C{static const X=(function(){declare(encoding=1);});}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 1, True),
+    'attribute-before-readonly-method': (b'class C{#[A(function(){declare(encoding=1);})] readonly function f(){declare(encoding=2);}}\ndeclare(encoding=3);\necho ;', [1], 1, 'CompileError', 1),
+    'readonly-property-control': (b'class C{public readonly int $p;function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2),
+    'public-set-method': (b'class C{public(set) function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0),
+    'protected-set-method': (b'class C{protected(set) function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0),
+    'private-set-method': (b'class C{private(set) function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0),
+    'ordinary-static-method': (b'class C{public static function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2),
+    'ordinary-final-method': (b'class C{final protected function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2),
+    'abstract-body-method': (b'class C{abstract function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [1, 2], 3, 'ParseError', 2),
+    'readonly-incomplete-params': (b'class C{readonly function f($x=(function(){declare(encoding=1);}))', [], 1, 'CompileError', 0),
+    'nonliteral-attribute-first': (b'class C{#[A(function(){declare(encoding=1,encoding=true);})] readonly function f(){declare(encoding=2);}}\ndeclare(encoding=3);\necho ;', [1], 1, 'CompileError', 1),
+    'readonly-method-body': (b'class C{readonly function f(){declare(encoding=1);}}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0),
+    'readonly-constant-closure': (b'class C{readonly const X=(function(){declare(encoding=1);});}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0),
+    'static-constant-closure': (b'class C{static const X=(function(){declare(encoding=1);});}\ndeclare(encoding=2);\necho ;', [], 1, 'CompileError', 0),
 }
 PROBE = r'''<?php declare(strict_types=1);
 require '@ROOT@/frontend/autoload.php';
@@ -61,10 +61,10 @@ foreach ([
     try { $parser->parse($source,new PhpParser\ErrorHandler\Collecting()); }
     catch (PhpParser\Error $error) { $caught = $error->getRawMessage(); }
     assert($parser->parsingStarted && $caught !== null);
-    assert(count($parser->headers) === ($name==='property' ? 2 : ($name==='constant' ? 1 : 0)));
+    assert(count($parser->headers) === ($name==='property' ? 2 : 0));
     if ($name==='grammar' || $name==='property') assert(str_contains($caught,'Syntax error'));
     elseif ($name==='readonly') assert($caught === 'Invalid modifier for method');
-    elseif ($name==='constant') assert(str_contains($caught,'constant modifier'));
+    elseif ($name==='constant') assert($caught==='Invalid modifier for class constant');
     else assert(str_contains($caught,'Multiple abstract modifiers'));
     $records[] = ['id'=>'rejected-stop-'.$name,'headers'=>count($parser->headers),'error'=>$caught];
 }
@@ -78,25 +78,18 @@ def run(out):
     records = []
     try:
         for mode in ('eval', 'file'):
-            for name, (source, lines, line, kind, count, refusal) in CASES.items():
+            for name, (source, lines, line, kind, count) in CASES.items():
                 if mode == 'file':
                     source, lines, line = b'<?php\n' + source, [value + 1 for value in lines], line + 1
                 packet = {'op': 'parse-' + mode, 'id': '9', 'mode': mode, 'profile': 'cli-raw-85', 'source': b64(source)}
                 if mode == 'file': packet.update(requested=b64(b'modifier.php'), resolved=b64(b'/review/modifier.php'), opened=b64(b'/review/modifier.php'))
-                if refusal:
-                    result = frontend.request(packet)
-                    raw = (frontend.output / 'stderr').read_bytes()
-                    delta = raw[len(frontend.recorded_stderr):]; frontend.recorded_stderr.extend(delta)
-                    assert not delta and not CLI['dynamic_parser_stderr'](result, mode, delta)
-                    assert CLI['rejected_encoding_warning_lines'](result) == [2 if mode == 'file' else 1]
-                else:
-                    result = frontend.parse(packet)
-                    assert CLI['rejected_encoding_warning_lines'](result) == lines
+                result = frontend.parse(packet)
+                assert CLI['rejected_encoding_warning_lines'](result) == lines
                 assert not result['diagnostics'] and all(result[key] == value for key, value in packet.items() if key != 'op')
                 assert not result['accepted'] and result['line'] == line
                 assert result['category'] == ('parser_static_rejection' if kind == 'CompileError' else 'parser_rejection')
                 assert len(result.get('headers', [])) == count
-                records.append({'id': name, 'mode': mode, 'warning_lines': lines, 'refusal': refusal,
+                records.append({'id': name, 'mode': mode, 'warning_lines': lines,
                     'source_sha256': hashlib.sha256(source).hexdigest()})
     finally:
         frontend.close()
