@@ -13,8 +13,9 @@ dec $executor_free_standard(pobject) : bool
 dec $executor_free_kind(pstate, pnode*, nat) : nat
 dec $executor_free_hook(pstate, pnode*, pexecutorassociation*, nat) : nat
 dec $executor_free_edges(hedge*, pnode) : hedge*
-dec $executor_free_edge(hedge*, pnode, pnode) : hedge*
-dec $executor_free_entry_edges(hedge*, pnode, pnode*) : hedge*
+dec $executor_free_edge(hedge*, pnode, pnode, nat) : hedge*
+dec $executor_free_entry_edges(hedge*, pnode, nat, pnode*) : hedge*
+dec $executor_free_entry_before(pweakmapentry*, nat, nat, pexecutorassociation*) : nat
 dec $executor_free_mark(pnode, pnode*) : pnode*
 dec $executor_free_body(pstate, pexecutorfree, pnode) : pexecutorfree
 dec $executor_free_fields(pstate, pexecutorfree, pnode) : pexecutorfree
@@ -94,13 +95,23 @@ def $executor_free_edges(eps, pnode) = eps
 def $executor_free_edges((HEDGE pnode pnode_child) :: hedge_tail*, pnode) = $executor_free_edges(hedge_tail*, pnode)
 def $executor_free_edges((HEDGE pnode_other pnode_child) :: hedge_tail*, pnode) = (HEDGE pnode_other pnode_child) :: $executor_free_edges(hedge_tail*, pnode)
   -- if pnode_other =/= pnode
-;; Detach exactly one bucket occurrence, including duplicate equal values.
-def $executor_free_edge(eps, pnode, pnode_child) = eps
-def $executor_free_edge((HEDGE pnode pnode_child) :: hedge_tail*, pnode, pnode_child) = hedge_tail*
-def $executor_free_edge(hedge :: hedge_tail*, pnode, pnode_child) = hedge :: $executor_free_edge(hedge_tail*, pnode, pnode_child)
-  -- if hedge =/= HEDGE pnode pnode_child
-def $executor_free_entry_edges(hedge*, pnode, eps) = hedge*
-def $executor_free_entry_edges(hedge*, pnode, pnode_child :: pnode_tail*) = $executor_free_entry_edges($executor_free_edge(hedge*, pnode, pnode_child), pnode, pnode_tail*)
+;; A bucket's position counts surviving owning slots, including repeated
+;; values. Removing the first equal edge would reorder a later Map free.
+def $executor_free_entry_before(eps, n_map, n_key, pexecutorassociation*) = 0
+def $executor_free_entry_before(pweakmapentry :: pweakmapentry_tail*, n_map, n_key, pexecutorassociation*) = 0
+  -- if pweakmapentry.KEY = n_key
+def $executor_free_entry_before(pweakmapentry :: pweakmapentry_tail*, n_map, n_key, pexecutorassociation*) = $executor_free_entry_before(pweakmapentry_tail*, n_map, n_key, pexecutorassociation*)
+  -- if pweakmapentry.KEY =/= n_key /\ (n_map, pweakmapentry.KEY) <- pexecutorassociation*
+def $executor_free_entry_before(pweakmapentry :: pweakmapentry_tail*, n_map, n_key, pexecutorassociation*) = $(|$weakmap_value_nodes(pweakmapentry.VALUE)| + $executor_free_entry_before(pweakmapentry_tail*, n_map, n_key, pexecutorassociation*))
+  -- if pweakmapentry.KEY =/= n_key /\ ~((n_map, pweakmapentry.KEY) <- pexecutorassociation*)
+def $executor_free_edge(eps, pnode, pnode_child, n) = eps
+def $executor_free_edge((HEDGE pnode pnode_child) :: hedge_tail*, pnode, pnode_child, 0) = hedge_tail*
+def $executor_free_edge((HEDGE pnode pnode_other) :: hedge_tail*, pnode, pnode_child, n) = (HEDGE pnode pnode_other) :: $executor_free_edge(hedge_tail*, pnode, pnode_child, $(n - 1))
+  -- if $(n > 0)
+def $executor_free_edge((HEDGE pnode_other pnode_to) :: hedge_tail*, pnode, pnode_child, n) = (HEDGE pnode_other pnode_to) :: $executor_free_edge(hedge_tail*, pnode, pnode_child, n)
+  -- if pnode_other =/= pnode
+def $executor_free_entry_edges(hedge*, pnode, n, eps) = hedge*
+def $executor_free_entry_edges(hedge*, pnode, n, pnode_child :: pnode_tail*) = $executor_free_entry_edges($executor_free_edge(hedge*, pnode, pnode_child, n), pnode, n, pnode_tail*)
 def $executor_free_mark(HOBJECT n, pnode_marked*) = (HOBJECT n) :: pnode_marked*
 def $executor_free_mark(pnode, pnode_marked*) = pnode_marked* -- otherwise
 
@@ -140,11 +151,12 @@ def $executor_free_notify_maps(S, pexecutorfree, n_key, eps) = pexecutorfree
 def $executor_free_notify_maps(S, pexecutorfree, n_key, n_map :: nat_tail*) = $executor_free_notify_maps(S, pexecutorfree, n_key, nat_tail*)
   -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
   -- if ~(n_map <- $executor_free_live_maps(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n_key))
-def $executor_free_notify_maps(S, pexecutorfree, n_key, n_map :: nat_tail*) = $executor_free_notify_maps(S, $executor_free_release(S, pexecutorfree[.HEAP = H[.EDGES = $executor_free_entry_edges(H.EDGES, HOBJECT n_map, pnode_value*)][.ROOTS = H.ROOTS ++ pnode_value*]][.DETACHED = pexecutorfree.DETACHED ++ [(n_map, n_key)]], pnode_value*), n_key, nat_tail*)
+def $executor_free_notify_maps(S, pexecutorfree, n_key, n_map :: nat_tail*) = $executor_free_notify_maps(S, $executor_free_release(S, pexecutorfree[.HEAP = H[.EDGES = $executor_free_entry_edges(H.EDGES, HOBJECT n_map, n_before, pnode_value*)][.ROOTS = H.ROOTS ++ pnode_value*]][.DETACHED = pexecutorfree.DETACHED ++ [(n_map, n_key)]], pnode_value*), n_key, nat_tail*)
   -- if pexecutorfree.FAILED = eps /\ ~pexecutorfree.UNKNOWN
   -- if n_map <- $executor_free_live_maps(S, pexecutorfree.MARKED, pexecutorfree.DETACHED, n_key)
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
   -- if pnode_value* = $weakmap_value_nodes(pweakmapentry.VALUE)
+  -- if n_before = $executor_free_entry_before($weakmap_entries_contents(S, n_map), n_map, n_key, pexecutorfree.DETACHED)
   -- if H = pexecutorfree.HEAP
   -- if $eager_removed(pnode_value*, $heap_children(HOBJECT n_map, H.EDGES)) = eps
 def $executor_free_release(S, pexecutorfree, pnode*) = pexecutorfree
