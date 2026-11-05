@@ -163,6 +163,7 @@ def $closure_call_copy_raw_arguments_valid(S, pclosurecall) = true
   -- if pclosurecall.PACKS =/= eps
   -- if $closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if $closure_call_source_replay(S, pclosurecall, $closure_call_pack_seed(pclosurecall), pclosurecall.PACKS) = ((pclosurecall_prefix, eps))
+  -- if pclosurecall.ERROR = pclosurecall_prefix.ERROR
   -- if $closure_call_list_bind($closure_call_parameters(S, pclosurecall.SOURCE), pclosurecall[.SENT = {SLOTS eps, NAMED eps}][.ERROR = eps][.PACKS = eps], pclosurecall.RAW, 0) = pclosurecall_prefix
 def $closure_call_copy_named(S, pclosurecall) = $closure_call_pack_named(pclosurecall.RAW)
   -- if pclosurecall.PACKS =/= eps
