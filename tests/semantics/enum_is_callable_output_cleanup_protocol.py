@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Independent C-return pending transfer, cleanup order and exit-status checks."""
+import argparse
 import hashlib
 import json
 import subprocess
@@ -172,11 +173,16 @@ def reached(label, suffix, message, completion, status, two_locals=False, shared
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--control-only', action='store_true')
+    args = parser.parse_args()
     before = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
               for path in WATCHED}
-    checks = reached('string', 'integer-exit-cleanup-throw-later-string', 'local', 'EXITED 23', 23)
-    checks += reached('ordered', 'two-locals-both-throw', 'second', 'NORMAL', 23, two_locals=True)
-    checks += reached('alias', 'two-locals-shared-reference', 'first', 'NORMAL', 23, shared_reference=True)
+    checks = []
+    if not args.control_only:
+        checks += reached('string', 'integer-exit-cleanup-throw-later-string', 'local', 'EXITED 23', 23)
+        checks += reached('ordered', 'two-locals-both-throw', 'second', 'NORMAL', 23, two_locals=True)
+        checks += reached('alias', 'two-locals-shared-reference', 'first', 'NORMAL', 23, shared_reference=True)
     row_exit, cleanup_exit = exitcase.source('exit', 'two-locals-throw-then-exit')
     checks += cleanup_exit + exitcase.capture('exit', 'S_exit_initial', 'FirstCheck::from')
     checks += [
@@ -200,7 +206,8 @@ if __name__ == '__main__':
         'S_exit_early.DESTRUCTION = S_exit_pending.DESTRUCTION',
         'S_exit_early.STORE = S_exit_pending.STORE',
         'S_exit_early.ALLOCATIONS = S_exit_pending.ALLOCATIONS',
-        'S_exit_refused = $drive_steps(S_exit_pending[.COMPLETION = NORMAL], 1)',
+        'S_exit_step = S_exit_pending[.COMPLETION = NORMAL]',
+        'PhpStep: S_exit_step ~> S_exit_refused',
         'S_exit_refused.COMPLETION = UNSUPPORTED "is_callable output exit local cleanup exit"',
         'S_exit_refused.STORE[penumqueryoutput_exit.CELL] = DEFINED PNULL',
         'S_exit_refused.DESTRUCTION = S_exit_pending.DESTRUCTION',
@@ -210,13 +217,15 @@ if __name__ == '__main__':
         '$eic_output(S_exit_refused.EVENTS) = $ptascii("D-null|FIRST-null|SECOND-null|SECOND-STOP|")',
     ]
     checks += [
-        'S_missing = S_string_throw[.TODO = (THROW_SEARCH n_string) :: (DESTRUCTOR_RESULT pdestructorcall_string) :: ptask_string_restore_tail*]',
-        '~$enum_is_callable_exit_restore_valid(S_missing, penumqueryoutput_string, 23)',
-        'S_bad_status = S_string_throw[.TODO = (THROW_SEARCH n_string) :: (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput_string 4294967296) :: (DESTRUCTOR_RESULT pdestructorcall_string) :: ptask_string_restore_tail*]',
-        '~$enum_is_callable_exit_restore_valid(S_bad_status, penumqueryoutput_string, 4294967296)',
-        'penumqueryoutput_depth = penumqueryoutput_string[.DEPTH = $(penumqueryoutput_string.DEPTH + 1)]',
-        '~$enum_is_callable_exit_restore_valid(S_string_throw, penumqueryoutput_depth, 23)',
-        '~$throwable_live(S_string_throw, |S_string_throw.OBJECTS|)',
+        'S_marker = S_exit_c_scope[.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput_exit 23) :: (DESTRUCTOR_RESULT pdestructorcall_exit_c) :: ptask_exit_c_tail*]',
+        '$enum_is_callable_exit_restore_valid(S_marker, penumqueryoutput_exit, 23)',
+        'S_missing = S_marker[.TODO = (DESTRUCTOR_RESULT pdestructorcall_exit_c) :: ptask_exit_c_tail*]',
+        '~$enum_is_callable_exit_restore_valid(S_missing, penumqueryoutput_exit, 23)',
+        'S_bad_status = S_marker[.TODO = (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput_exit 4294967296) :: (DESTRUCTOR_RESULT pdestructorcall_exit_c) :: ptask_exit_c_tail*]',
+        '~$enum_is_callable_exit_restore_valid(S_bad_status, penumqueryoutput_exit, 4294967296)',
+        'penumqueryoutput_depth = penumqueryoutput_exit[.DEPTH = $(penumqueryoutput_exit.DEPTH + 1)]',
+        '~$enum_is_callable_exit_restore_valid(S_marker, penumqueryoutput_depth, 23)',
+        '~$throwable_live(S_marker, |S_marker.OBJECTS|)',
     ]
     fixture = OUT / 'output-cleanup.watsup'
     fixture.write_text(base.PREFIX + exitcase.PREFIX + PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
@@ -228,6 +237,7 @@ if __name__ == '__main__':
     (OUT / 'stdout').write_bytes(result.stdout)
     (OUT / 'stderr').write_bytes(result.stderr)
     record = {'revision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+              'control_only': args.control_only,
               'checks': len(checks), 'exit': result.returncode,
               'stdout': result.stdout.decode(errors='replace'),
               'stderr': result.stderr.decode(errors='replace'),
