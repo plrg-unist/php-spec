@@ -931,6 +931,7 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_output_string_spelling_protocol.py
 	python3 tests/semantics/enum_is_callable_output_variable_protocol.py
 	python3 tests/semantics/enum_is_callable_output_alias_protocol.py
+	python3 tests/semantics/enum_is_callable_saved_input_protocol.py
 	python3 tests/semantics/enum_is_callable_output_retained_protocol.py
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
