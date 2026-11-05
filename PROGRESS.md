@@ -1317,9 +1317,12 @@ then commits `Array` while preserving pending replacements, traces, frozen gette
 and late PRODUCED flags. Reference unwrap transfers the actual Array before
 warning-time alias changes; a narrow GC handoff hook leaves the later retval
 decrement ordinary. Twenty author originals and two reached groups/234 conditions
-pass at recorded cuts; independent review is pending. FINAL Array and object/resource
-conversion remain Unsupported. [Author evidence](coverage/semantics/output-array-return-author.json)
-retains the failed dispatch diagnosis and affected renewals.
+pass at recorded cuts. Four independent originals and one SL439 front with three
+groups/162 conditions pass at the final cut. [Independent review](coverage/semantics/output-array-return-review.json)
+records real transfer/retirement owners, forged-source fallback and affected scalar
+marker authority. FINAL Array and object/resource conversion remain Unsupported.
+[Author evidence](coverage/semantics/output-array-return-author.json) retains the
+failed dispatch diagnosis, scoped GC reviews and affected renewals.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -1737,7 +1740,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | I114 | Captured Generator API bind/bindTo receiver retargeting; private implementation/review. |
 | GC48 | Occupied WeakMap replacement with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
-| OB18 | Array output return reception and conversion; private implementation/review. |
+| OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR38 | Ordinary global constant tick traversal; private implementation/review. |
 | Enum callable arrays | Closure cache ownership and bound-scope identity; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

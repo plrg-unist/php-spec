@@ -426,4 +426,8 @@ including its modeled last-cell child job; actual Array retval destruction keeps
 ordinary GC candidacy. Exact source, successor, retired-cell identity and release
 guards distinguish them. [Author evidence](../../coverage/semantics/output-array-return-author.json)
 records 20 exact originals, two checked refusal controls and two reached groups
-with 234 conditions. Independent acceptance remains separate.
+with 234 conditions. [Independent review](../../coverage/semantics/output-array-return-review.json)
+adds four exact originals and one SL439 front with three groups/162 conditions:
+real CELL/Array owners, pending replacement, readonly metadata, global collector
+dispatch and the affected scalar marker checks. FINAL Array and object/resource
+conversion remain Unsupported.

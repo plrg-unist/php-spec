@@ -247,6 +247,8 @@ cover late alias changes, destructor traces and real cell-release ownership.
 Array returns retain the actual array through its conversion Warning, release it
 before committing `Array`, and preserve replacement exceptions and interrupted
 getter assignment. Reference unwrapping transfers that owner before the Warning.
+[Independent array-return checks](coverage/semantics/output-array-return-review.json)
+cover callback traces, late flags and real release/collector dispatch.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

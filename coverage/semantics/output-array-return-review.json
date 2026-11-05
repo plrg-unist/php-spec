@@ -1,0 +1,27 @@
+{
+  "milestone": "OB18: actual Array output returns through Warning and release",
+  "status": "independently accepted",
+  "tested_revision": "df160038adcc2a4dc9188c1e7c890a0604db7f84",
+  "implementation": "Author8d7080cd0f8839ba989e5c939524ef1892da0eeb on c6c7288ac; review equivalent df160038a on composed757dc7959. Integrate author then this review commit.",
+  "identity": "Pinned PHP8.5.10 CLI NTS64 and profile; SpecTec da36ac3c434cd291940293a63da64544307730a3 SL439, caches disabled and encountered determinism. Reports bind exact original bytes, commands, environment and stable before/after module/binary fingerprints. Existing copied binaries, no new portability claim.",
+  "authority": "Pinned main/output.c::php_output_handler_op; Zend/zend_operators.c::_convert_to_string IS_ARRAY; Zend/zend_operators.h::zend_unwrap_reference; RETURN_BY_REF; destructor exception save/replacement in zend_objects.c.",
+  "semantic_review": "The actual returned Array remains owned during the Warning, then its retval owner releases before fixed Array-string/header commit. Reference unwrapping fixes that Array before later alias writes. Defined callee/Notice returns survive pending exceptions. Destructor replacements retain Previous, authentic caller traces and interrupted assignment. Late Warning/child output keeps PRODUCED for the next call. Normal-return certificates borrow the actual FRAME_EXIT/RESULT owner.",
+  "findings": [
+    "A retired CELL identity was lost by the Array successor. The new readonly CELL field binds the actual REF_ARRAY source to its real WARN continuation without adding a root or reviving the cell; a source-only999999 substitution now fails.",
+    "Actual VALUE-job filters were bypassed by301 default dispatch.301 now delegates only its unmatched default to the co-located451 filters; both original TEMP/NOGC clauses remain unchanged. Actual-state tests distinguish wrapper transfer from the later ordinary Array decrement."
+  ],
+  "sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18-review/sources-01/report.json",
+    "sha256": "3eb67a9049909c2a76f083d102703fd18e6685318c9037e33c0d93c9a458bfbd",
+    "scope": "Four exact normal0 originals: ignored Warning-return destructor/API trace with enabled113/liveA; VM child throw with source7 trace, late53361 and delayed deprecation; calleeD-to-E then Array childC-to-F; reference capture surviving R=false and fresh E-to-F/Previous."
+  },
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-array-conversion-18-review/state-01/report.json",
+    "sha256": "eb54ef47f76ebe94b8cb75c32e4912bb7f9da427bf78e1fba15ccd4701873d5a",
+    "scope": "One SL439 front, three groups/162 premises. Real CELL-to-Array transfer and staged global collector dispatch; coherent sourceCELL forgery rejection and unchanged bad-source fallback; preserved shared buffer; retired Array/DONE owners, sole freshF and PreviousE; KNOWN Array FRAME_EXIT ownership and readonly seal; affected scalar wrong-stage/valid alternate-output refusals under the exact-task matcher; fuel0 and exact completed resume."
+  },
+  "gc_domain_review": "gc_impl and gc_review independently clear final301 SHA7ff2cfd903cb8eb1f48ad8e1e2251ed840c828be2e59aa0cc65740fec94d5d3d and451 SHA91e2973f2818950c6762f4458ac07407fa8ed28b9b3f519dc1ad9162c3339b22. Their scoped review covers native unique/shared no-check transfer, actual dispatch, source/job/default authority and ordinary ARRAY_RESULT decrement. Author ledger binds the234-condition front, same-state dispatch probe and affected source renewals.",
+  "preservation": "Author evidence retains its initial state/dispatch failures and exact compatibility bridges. This peer front passed on its first run. Native-only gc_status/other preparation files remain external and have no model credit; the admitted observer-free originals and real S.GC checks supply the model evidence. No broad OB17/GC replay or metadata-only semantic rerun.",
+  "checks": "Inventory169 constructors/306 runtime obligations, Python compile and git diff --check pass. No new engine divergence.",
+  "limits": "FINAL Array and object/resource output conversion remain explicit Unsupported. Wider control/callable/capability/mutation/Fiber/stdout and other core behavior remain partial; full-core completion is not claimed."
+}
