@@ -122,6 +122,32 @@ dec $weakmap_release_slot_allowed(pstate, pweakmapvalue) : bool
 def $weakmap_release_slot_allowed(S, pvalue) = true
 def $weakmap_release_slot_allowed(S, ALIAS n_cell) = $weakmap_reference_cell_valid(S, n_cell)
 dec $weakmap_free_slot_allowed(pstate, pweakmapvalue) : bool
+dec $weakmap_entries_callback_class(pstate, nat) : bool
+;; A direct Value may already own one declared child at first insertion.
+dec $weakmap_declared_value_child(pstate, nat) : bool
+def $weakmap_declared_value_child(S, n_value) = true
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.METHODS = eps
+  -- if pclassdesc.PROPERTIES = [ppropertydesc]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.TYPE = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n_value) = ([ppropertyslot])
+  -- if ppropertyslot.DECL = (ppropertydesc.ORIGIN)
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_child))
+  -- if $object_table_at(S.OBJECTTABLES, n_value) = eps
+  -- if $node_children(S, HOBJECT n_value) = [HOBJECT n_child]
+  -- if $(n_child < |S.OBJECTS|) /\ (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, n_child)
+  -- if $weakmap_entries_callback_class(S, n_child)
+  -- if $objectprops_at(S.OBJECTPROPS, n_child) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_child) = eps
+  -- if $node_children(S, HOBJECT n_child) = eps
+  -- if $objectprops_valid(S, S.OBJECTPROPS)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 1
+def $weakmap_declared_value_child(S, n_value) = false -- otherwise
 dec $weakmap_write_value_allowed(pstate, paccess) : bool
 def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.VALUE = POBJECT n_value
@@ -129,6 +155,9 @@ def $weakmap_write_value_allowed(S, paccess) = true
   -- if S.OBJECTS[n_value] = INSTANCE porigin
   -- if ~$instance_storage_freeing(S, n_value)
   -- if $node_children(S, HOBJECT n_value) = eps
+def $weakmap_write_value_allowed(S, paccess) = true
+  -- if paccess.VALUE = POBJECT n_value
+  -- if $weakmap_declared_value_child(S, n_value)
 def $weakmap_write_value_allowed(S, paccess) = true
   -- if $weakmap_scalar_value(S, paccess.VALUE)
   -- if S.TODO = paccess.TASK :: ptask_tail*
@@ -150,7 +179,6 @@ dec $weakmap_shared_replacement(pstate, nat, nat, pweakmapvalue) : bool
 ;; Weak keys are object identities. Preserve the ordinary leaf producer and
 ;; admit known internal handlers without copying their outgoing ownership.
 dec $weakmap_insert_key(pstate, nat) : bool
-dec $weakmap_entries_callback_class(pstate, nat) : bool
 dec $weakmap_standard_key_child(pstate, nat) : bool
 def $weakmap_standard_key_child(S, n_key) = true
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
