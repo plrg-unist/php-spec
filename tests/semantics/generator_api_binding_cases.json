@@ -60,5 +60,17 @@
         ]
       }
     ]
+  },
+  {
+    "id": "i114-unused-bindto-copy-before-original-receiver",
+    "purpose": "An ignored binding copy must release its replacement Generator before releasing the original bindTo receiver. A scope callback clears both CVs; new finally still sees original capture/Gen live, followed by old finally after capture weak notification.",
+    "source": "<?php\nfunction old114U() {\n    try { echo 'OLD-INIT|'; yield 'old'; }\n    finally { global $weakOld, $weakCapture; echo 'OLD-FIN|', $weakOld->get() !== null, '|', $weakCapture->get() === null, '|'; }\n}\nfunction replacement114U() {\n    try { echo 'NEW-INIT|'; yield 'new'; }\n    finally { global $weakNew, $weakOld, $weakCapture; echo 'NEW-FIN|', $weakNew->get() !== null, '|', $weakOld->get() !== null, '|', $weakCapture->get() !== null, '|'; }\n}\nfunction scope114U() {\n    global $capture, $replacement, $weakOld, $weakNew, $weakCapture;\n    echo 'SCOPE|'; $capture = null; $replacement = null;\n    echo 'HELD|', $weakOld->get() !== null, '|', $weakNew->get() !== null, '|', $weakCapture->get() !== null, '|';\n    return 'static';\n}\n$old = old114U(); $old->current(); $replacement = replacement114U(); $replacement->current();\n$capture = $old->send(...); $weakOld = WeakReference::create($old); $weakNew = WeakReference::create($replacement); $weakCapture = WeakReference::create($capture); $old = null;\necho 'BIND|'; $capture->bindTo($replacement, scope114U());\necho 'AFTER|', $weakOld->get() === null, '|', $weakNew->get() === null, '|', $weakCapture->get() === null, '|DONE|';\n",
+    "source_sha256": "388441a9b38b3a2ce490d4512b331cd5da641403ed484b0facc15cc9c320ab05",
+    "native_exit": 0,
+    "native_stdout": "OLD-INIT|NEW-INIT|BIND|SCOPE|HELD|1|1|1|NEW-FIN|1|1|1|OLD-FIN|1|1|AFTER|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
   }
 ]
