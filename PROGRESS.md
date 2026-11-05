@@ -413,12 +413,22 @@ GC33 composes inactive internal-Key hooks: WeakReference unregisters its referen
 before incoming Map values; WeakMap unregisters outgoing keys and releases own
 values before incoming notification. Shared values, self-keys and two incoming
 Maps preserve separate owners and registration order. Nine exact positive
-contexts/eight programs include nonfast table retirement; three ordinary unset
-controls stop explicitly before generic retirement and keep zero agreement.
+contexts/eight programs include nonfast table retirement; at that cut, three
+ordinary unset controls stopped before generic retirement with zero agreement.
 Author495, independent51 and affected320 conditions pass (866 reported), with
 strict435 at recorded cuts. Original source/fixture failures remain zero credit.
 Later producer policies, ordinary callback continuations, weak Closure keys and
 active free pins remain partial. [GC33 review](coverage/semantics/gc-compound-key-review.json).
+
+GC34 adds ordinary internal-Key callback continuations. Quiet registrations
+activate cleanup; per-entry leases and parent/Key pins survive nested throws.
+Wrapper unregister precedes incoming callbacks, while Map own values run first;
+authenticated callbacks preserve or replace their weak observer. Fourteen exact
+normal programs and 464 reported conditions (author233, independent86, affected145)
+pass at recorded cuts. The three GC33 ordinary controls are promoted; earlier
+mismatch/timeout/fixture stops retain zero credit. Wider producers, freeing-object
+escape/mutation and active-pin collection remain partial.
+[GC34 review](coverage/semantics/gc-ordinary-key-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
