@@ -255,8 +255,9 @@ def $tick_switch_builtin(pcodename*, pcpath) = true
   -- if $code_name(pcodename*, pcpath) = ((ptbytes, ptbytes_fallback?))
   -- if $pfunction_builtin(ptbytes)
 def $tick_switch_builtin(pcodename*, pcpath) = true
-  -- if $code_name(pcodename*, pcpath) = ((ptbytes, (ptbytes_fallback)))
-  -- if $pfunction_builtin(ptbytes_fallback)
+  -- if $code_name(pcodename*, pcpath) = ((n_name*, n_fallback*?))
+  -- if n_fallback*? = (n_fallback*)
+  -- if $pfunction_builtin(n_fallback*)
 def $tick_switch_builtin(pcodename*, pcpath) = false -- otherwise
 def $tick_switch_call_free(pcodename*, pcpath, phpType19) = (true)
   -- if $code_name(pcodename*, pcpath) = ((ptbytes, ptbytes_fallback?))

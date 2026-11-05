@@ -11,7 +11,5 @@ if __name__ == '__main__':
     sources.ticks.fingerprint = lambda: {
         **previous(), 'tests/semantics/tick_switch_review_cases.py': sources.ticks.sha(Path(cases.__file__))}
     normal = {name: (raw, cases.EXPECTED[name]) for name, raw in cases.CASES.items()}
-    normal['review-effectful-constant-result'] = (
-        cases.CONTROLS['review-effectful-constant-result'], cases.EXPECTED['review-effectful-constant-result'])
-    controls = {'review-empty-multiline-case-line': (cases.CONTROLS['review-empty-multiline-case-line'], b'')}
-    sources.main(normal, controls, Path(__file__))
+    normal.update({name: (raw, cases.EXPECTED[name]) for name, raw in cases.CONTROLS.items()})
+    sources.main(normal, {}, Path(__file__))

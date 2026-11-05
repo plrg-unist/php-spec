@@ -24,7 +24,8 @@ CONTROLS = {
     'folded-builtin-subject': (Path(__file__).with_name('tick_switch_review_defined.php').read_bytes(), b''),
     'imported-builtin-subject': (b'<?php namespace N;use function defined as d;function t(){echo "T";}register_tick_function("N\\\\t");declare(ticks=1){switch(d("PHP_VERSION")){case true:echo "A";}}echo "Z";', b''),
     'qualified-builtin-subject': (HEAD + b'declare(ticks=1){switch(\\defined("PHP_VERSION")){case true:echo "A";}}echo "Z";', b''),
-    'nested-builtin-subject': (HEAD + b'declare(ticks=1){switch(defined("PHP_VERSION")+1){case 2:echo "A";}switch(!defined("PHP_VERSION")){case false:echo "B";}}echo "Z";', b''),
+    'fallback-builtin-subject': (b'<?php namespace N;function t(){echo "T";}register_tick_function("N\\\\t");declare(ticks=1){switch(defined("PHP_VERSION")){case true:echo "A";}}echo "Z";', b''),
+    'nested-builtin-subject': (Path(__file__).with_name('tick_switch_review_nested_defined.php').read_bytes(), b''),
 }
 
 
@@ -32,7 +33,8 @@ def main(cases=CASES, controls=CONTROLS, producer=Path(__file__)):
     previous = ticks.fingerprint
 
     def fingerprint():
-        paths = [Path(__file__), producer, Path(__file__).with_name('tick_switch_review_defined.php')]
+        paths = [Path(__file__), producer, Path(__file__).with_name('tick_switch_review_defined.php'),
+                 Path(__file__).with_name('tick_switch_review_nested_defined.php')]
         return {**previous(), **{str(path.relative_to(ticks.ROOT)): ticks.sha(path) for path in paths}}
 
     ticks.fingerprint = fingerprint
