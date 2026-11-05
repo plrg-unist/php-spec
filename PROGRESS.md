@@ -144,6 +144,15 @@ and independent parked-cache169 states pass at f34d1214a. Original failures
 retain zero credit. Receive/callback/mapping errors and wider calls remain
 partial. [I93 review](coverage/semantics/generator-call-reference-review.json).
 
+I94 adds fake user-method Generator Closure::call copies with exact declaring-class
+receivers and authentic retired source selection. Method statics stay shared;
+existing API/reference/result tasks preserve the copy and receiver through CLOSED
+and release the copy before the cache. Four native/source originals and private433
+pass at distinct cuts; five reached fronts pass 633 custom/658 reported checks.
+Original Unsupported, ARRAY dispatch and fixture prefix failures keep zero credit.
+Wider call/receiver and abrupt receive contexts remain partial; actual-tail
+integration is pending. [I94 review](coverage/semantics/generator-fake-call-copy-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -857,6 +866,7 @@ their `PROGRAM` behavior; other encoded HALT profiles remain partial.
 
 | Track | Owner-confirmed current work |
 | --- | --- |
+| I94 | Fake user-method Generator Closure::call copies independently reviewed at the original private cut; current composition and actual-tail validation pending. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | COMP123 | Held unrun; no actor. |
 

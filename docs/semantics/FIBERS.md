@@ -1199,6 +1199,15 @@ producer/cleanup and
 abrupt reception contexts remain partial.
 [Reference-call review](../../coverage/semantics/generator-call-reference-review.json).
 
+I94 fake method call copies reuse the existing captured-method Gen/resumer proof.
+Only the copied Closure owns the new This; retired original selection and old
+receiver add no owner. Cache-only reference yields and delivered SEND arguments
+remain separate from that binding, and the copy/This survives CLOSED.
+Native4/source4/private433 retain distinct cuts; five reached fronts pass
+633 custom/658 reported checks.
+Wider producer and abrupt receive contexts remain partial.
+[Fake-copy review](../../coverage/semantics/generator-fake-call-copy-review.json).
+
 Shared pending flags and wider parked ownership
 remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
