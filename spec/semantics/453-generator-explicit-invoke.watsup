@@ -30,7 +30,8 @@ def $getter_capture_result_valid(S, n, porigin) = true
   -- if $getter_capture_live(S, n)
 
 rule PhpStep/generator-invoke-forward: S ~> S[.TODO = (GENERATOR_ARGS pgeneratorop eps $getclass_trace_operands(pconfigcall.SENT)) :: (GETTER_CAPTURE_RESULT n_capture pconfigcall.SITE) :: (GENERATOR_INVOKE_RESULT pconfigcall true) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: (GETTER_CAPTURE_RESULT n_capture pconfigcall.SITE) :: ptask_tail*
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: (GETTER_CAPTURE_RESULT n_capture porigin) :: ptask_tail*
+  -- if porigin = pconfigcall.SITE
   -- if $config_invoke_valid(S, pconfigcall)
   -- if $generator_capture_wrapper_site(S, pconfigcall.SITE)
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method (pgeneratormethodselection)
