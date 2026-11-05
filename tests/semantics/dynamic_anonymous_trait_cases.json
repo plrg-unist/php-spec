@@ -132,6 +132,19 @@
       "native_group": "/home/user/workspace/php-spec/.tools/class171-artifacts/author-eval-seeded-adapted-capture.native.json",
       "native_raw_sha256": "325c1acc856165c1bd373f4c08b419ef8fc20b54796e9c31fb7eb57eec134e34",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "eval-repeat-caught-type-trace",
+      "source": "<?php\ntrait Probe171Repeat {\n    public static function m(self $value): string { return self::class === $value::class ? 'scope;' : 'BAD;'; }\n    public const CAPTURE = self::m(...);\n}\n$code = 'return new class { use Probe171Repeat; };';\n$first = eval($code);\n$second = eval($code);\n$one = $first::CAPTURE;\n$two = $second::CAPTURE;\necho $first::class, ';', $second::class, ';';\necho $one($first);\ntry { $two($second); echo 'BAD;'; } catch (TypeError $error) {\n    echo 'M:', $error->getMessage(), \"\\n\";\n    echo 'T:', $error->getTraceAsString(), \"\\n\";\n}\n",
+      "source_sha256": "7f465ed86fdb9ba93d2159bb408c964856ed0e0c92ed4ee49bde78128ddf9247",
+      "stdout_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg3KSA6IGV2YWwoKSdkIGNvZGU6MSQwO2NsYXNzQGFub255bW91cwB7RklMRX0oOCkgOiBldmFsKCknZCBjb2RlOjEkMTtzY29wZTtNOmNsYXNzQGFub255bW91cygpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgY2xhc3NAYW5vbnltb3VzLCBjbGFzc0Bhbm9ueW1vdXMgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAxMwpUOiMwIHtGSUxFfSgxMyk6IGNsYXNzQGFub255bW91czo6bShPYmplY3QoY2xhc3NAYW5vbnltb3VzKSkKIzEge21haW59Cg==",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfSg3KSA6IGV2YWwoKSdkIGNvZGU6MSQwO2NsYXNzQGFub255bW91cwB7RklMRX0oOCkgOiBldmFsKCknZCBjb2RlOjEkMTtzY29wZTtNOmNsYXNzQGFub255bW91cygpOiBBcmd1bWVudCAjMSAoJHZhbHVlKSBtdXN0IGJlIG9mIHR5cGUgY2xhc3NAYW5vbnltb3VzLCBjbGFzc0Bhbm9ueW1vdXMgZ2l2ZW4sIGNhbGxlZCBpbiB7RklMRX0gb24gbGluZSAxMwpUOiMwIHtGSUxFfSgxMyk6IGNsYXNzQGFub255bW91czo6bShPYmplY3QoY2xhc3NAYW5vbnltb3VzKSkKIzEge21haW59Cg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class171-review-artifacts/eval-repeat-caught-type-trace/native.json",
+      "native_raw_sha256": "bf64457c0170afe7fbbeed8792248790f54b4484b8e53d188eb11738c68ed97e",
+      "model_timeout_seconds": 240
     }
   ]
 }
