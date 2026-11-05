@@ -1191,8 +1191,11 @@ retain their distinct dispositions. Ignored diagnostic-return destructors retain
 the disabled running layer, real VM source sites and authentic API trace frames.
 Owned producer reentry, current precision and frozen getter copies stay ordered.
 Sixteen authored originals, two repaired fresh-trace witnesses and three reached
-fronts/160 conditions pass at their recorded cuts. Independent validation is
-pending. FINAL/lower API cascades and wider return/control dependencies remain partial.
+fronts/160 conditions pass at their recorded cuts. Seven independent originals
+and one SL436 front with two reached groups/110 conditions pass at the repaired
+cut. [Independent review](coverage/semantics/output-deprecation-warning-review.json)
+records the trace findings, real owners and exact evidence. FINAL/lower API
+cascades and wider return/control dependencies remain partial.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -1528,7 +1531,7 @@ wider rejected-source/compiler behavior remains partial.
 | I110 | Literal nullsafe native Generator API selection; private implementation/review. |
 | GC43 | Singleton WeakMap value cleanup through finite payload validation; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
-| OB16 | Deprecation-handler throws during produced output; private implementation/review. |
+| OB17 | Scalar reference-return output conversion; private investigation/review. |
 | ATTR30 | Match-expression tick compilation and selected-arm effects; private implementation/review. |
 | Enum callable arrays | First-SEND capture of initially invalid reference members; private investigation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

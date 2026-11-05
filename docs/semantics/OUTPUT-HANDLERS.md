@@ -385,3 +385,7 @@ VM diagnostic-return destructors retain the emitting source file/line. Explicit
 APIs keep the internal destructor site and their authentic builtin trace frame.
 FINAL, explicit lower-cascade deprecation throws, callback exit and wider return
 conversion remain partial.
+[Independent review](../../coverage/semantics/output-deprecation-warning-review.json)
+records seven exact originals and one SL436 front with two groups/110 conditions,
+including both fresh destructor traces, frozen getter identity and sole pending
+and post-route raw owners.
