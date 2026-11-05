@@ -1507,5 +1507,14 @@
     "expected_normal_stdout": "null|is_callable:StringCapture133\\Target::cases:UNCHANGED|retired|query:1:StringCapture133\\Target::cases|done|",
     "model_timeout_seconds": 150,
     "purpose": "Runtime inherited string FCC and clone share actual Base function cache; output destruction removes active capture source and throws, then a fresh Child string capture reuses the cached builtin after original captures retire."
+  },
+  {
+    "id": "enum-is-callable-third-output-runtime-capture-cache-array-inherited-instance",
+    "source": "<?php\nnamespace ArrayCapture133;\nenum Target { case A; }\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n        throw new \\Exception('argument');\n    }\n    return false;\n}\nclass BaseOwner {\n    public function query($install) {\n        $name = 'OLD';\n        $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n        echo 'query:', (int)$ok, ':', $name, '|';\n    }\n    public function __destruct() { echo 'drop|'; }\n}\nclass FirstChild extends BaseOwner {}\nclass LaterChild extends BaseOwner {}\n$receiver = new FirstChild;\n$selected = [$receiver, 'query'];\n$source = $selected(...);\n$copy = clone $source;\nunset($source, $selected, $receiver);\necho 'held|';\ntry { $copy(true); } catch (\\Exception $e) { echo 'caught|'; }\n$copy(false);\nunset($copy, $e);\necho 'retired|';\n$later = new LaterChild;\n$later_selected = [$later, 'query'];\n$fresh = $later_selected(...);\nunset($later_selected, $later);\n$fresh(false);\nunset($fresh);\necho 'done|';\n",
+    "source_sha256": "f9a8debbdcc7525f9100f383c6433c71a64edc928929a1f382e5573b16af7199",
+    "expected_model": "normal",
+    "expected_normal_stdout": "held|caught|query:1:ArrayCapture133\\Target::cases|drop|retired|query:1:ArrayCapture133\\Target::cases|drop|done|",
+    "model_timeout_seconds": 150,
+    "purpose": "Inherited runtime array FCC and clone share actual Base function cache through argument-throw warming, selected-array/source-CV retirement and original receiver release; a later Child capture reuses it without retaining old owners."
   }
 ]

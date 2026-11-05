@@ -1,0 +1,40 @@
+{
+  "scope": "Genuine runtime array/string user-method capture cache owners and clones",
+  "target": "Pinned PHP8.5.10 CLI NTS64-bit, project-local oracle/profile",
+  "base_revision": "b91884104a2a7e41e6c21edfa546667734e65a43",
+  "semantic_revision": "ef5a3f76b575704956c2908f3161e78e514a4206",
+  "semantic_inputs": {
+    "spec/semantics/205-array-callables.watsup": "a63f832d2c85864c42baa96faa6a3d3e05954b7583117dc31a64f5c0bce81a84",
+    "spec/semantics/210-class-method-strings.watsup": "7350eadb0f79ae3623b6296e64b4b8772e241720b9a3b716a201473f4eb7ff62",
+    "spec/semantics/455-closure-function-caches.watsup": "5431f4c146a9dbada310a3313153eff22f6423aeb0b310ef89f6f136e7645496"
+  },
+  "behavior": "Existing ARRAY_CONVERT/STRING_CONVERT and clone hooks stamp actual cache owners without schema. Saved raw METHOD/STATIC/SCOPED targets identify immutable source function through scope wrappers; canonical source/class metadata authenticates selection name/requested class and function scope, never receiver CE. Known INIT at birth is required for resolved-capture Shared stamps, saved record/history and live owner. Parent-stamped clones retain that cache; unstamped parents remain unstamped. Real template-first policy is unchanged.",
+  "ownership": "Captured scope/receiver edges remain real owners. Cache metadata reads no retired receiver or selected-array payload and adds no root. Original capture/clone/receiver retirement leaves usable shared source history; fresh inherited Child captures reuse the Base function cache.",
+  "sources": "Two distinct exact normal originals: author inherited static STRING capture+clone, output destructor unsetting the active source CV and throwing, then fresh Child capture after retirement; peer inherited instance ARRAY capture+clone, selected-array/source/receiver retirement and earlier argument-throw warmth, then fresh Child capture. No132 or older source replay.",
+  "cut_bridge": "Author STRING source passes before the final live-owner INIT guard; constructors/records already required known Shared INIT, which is monotone in genuine source states. Peer ARRAY source passes at7d87 before a later one-line exclusivity correction to overlapping Shared-history helper clauses. Source answers are unchanged; original source fingerprints/revisions remain intact. Final strict-v5 and affected peer state rerun bindef5a, without relabeling or source replay.",
+  "strict": "Final strict-v5 passes445,true/exit0/empty stderr/stable13.28s, recorded7d87+fingerprinted one-line diff equals committedef5a. Earlier strict-v1..v4 pass at their exact cuts; no failed strict run.",
+  "independent": "CLEAR finalef5a/review211f621c6: peer ARRAY exact normal at pre-exclusivity7d87 cut,stable37.84s; corrected state-v3 passes82/all445,true/exit0/empty stderr/stable/no timeout46.15s. Actual birth/INIT, canonical Base function/scope and saved selector, clone/source/array/receiver retirement then fresh Child history, missing INIT birth/live owner/history refusal, malformed values/keys, no roots, budget and final drain pass. Original state-v1 substantive overlap andv2 premature RESULT timing fixture remain zero credit.",
+  "author_reports": {
+    "strict-v1/report.json": "9a277fb17e26296fb03a7bef559cb84c398697abfbbf5b4e7d99d736291601a0",
+    "strict-v2/report.json": "b9fba8656e7406c24cd6b28b0ea8925bde02d199ae912d8bd60b2c1bba6d2f3d",
+    "strict-v3/report.json": "0829f6b2d0c9ff8de7f7d8849579e720846727f4a00d61a36d8d4518d4b339c1",
+    "strict-v4/report.json": "4f034656d2d8a792738365163f7faff69b1a67ac5bcfdc2957472030ecf3c562",
+    "string-inherited-clone-output-throw-retirement/native.json": "17a4447a4e5fcdf4943791c0f37d4e1a10c238cb9ad88c77b25df7685d2219eb",
+    "raw/user-string-orwkcxpl/report.json": "b0f2c799e524518b6f49c715430ed31ee7a7c2d66ba1651b554cf1acc9357bf6",
+    "author-command.json": "477a067ad0d59cf2e0802872cd39205087f0f67ce898d4f23c768f4ff737bc77",
+    "strict-v5/report.json": "6d3b90cf4c643450b95f6a3fe3da9fafcfab3b8e2a0bbcf4c6790fd0f53d76e5"
+  },
+  "peer_reports": {
+    "native-v1/report.json": "abd449ec429b17df125bc8d5d3cde61727adda80e10a2fe36f2f333032816062",
+    "compare-v1/report.json": "63bbf099c830de240b56bfb688d45d0fa078a5eb0a596756c9bf392122716306",
+    "state-v1/report.json": "2f25acdeff329a08c6a5f9214d6b20a58bfc3785799ba44426698e4d6431f60a",
+    "state-v2/report.json": "06c4793457685a51445a2be957780f04baf9e46ac5dd2c5f8329a92f328802b0",
+    "state-v3/report.json": "db1e52370f408b383bb85b8ebe789b8893c4e3d423a7e4785f775b8d35329b43",
+    "state-review.json": "dd0dd98f451238896b21267bc655c4c17c0d2d9ef1c22fda1b421b9ef7ce73f3"
+  },
+  "failure_disposition": "Independent state-v1 failed with real Shared-history nondeterminism: genuine capture history and older first-Shared fallback both succeeded. Original81-check report/fixture/streams are preserved with zero credit. One general exclusivity guard fixes the helper; only affected state reruns. Source comparisons and all strict checks pass at their recorded cuts. Earlier static findings (old fallback INIT guard, immutable selector/function coherence and live owner INIT guard) were corrected at explicitly recorded cuts. Corrected-code state-v2 reached the repaired authority controls but failed a premature fixture RESULT=true expectation after a single invoke step; actual eager cleanup stages the result. Its original fixture/report/streams retain zero credit, and only that observation timing is corrected for affectedv3.",
+  "remaining": "Bound/dummy-scope copies, constant/default/static/property capture births and unproved transformed/native/Generator/Trait/anonymous/Fiber query owners remain unfinished core with explicit fences.",
+  "source_authority": "Pinned Zend runtime INIT/CALLABLE_CONVERT initializes original user method cache before capture. zend_closure_from_frame uses the actual function scope and called class; zend_create_closure_ex shares same-scope initialized non-HEAP cache and clone preserves the sharing policy. Saved selector and raw function/scope prove that policy without old payload liveness.",
+  "recovery": "Author ../php-spec-evidence-archive/enum-array-string-capture-133/: original native source, run_strict.py, strict-v*/command.json/reports, author-command.json, raw/. Peer ../php-spec-evidence-archive/enum-array-string-capture-review-133/: frozen ARRAY original, native/compare/state scripts and raw reports. Maintained selector runtime-capture-cache-. Explicit existing local tool links; no rebuild/portability claim.",
+  "review": "Independent semantic, metadata/docs and exact source-copy review CLEAR finalef5a. No further reread or execution needed."
+}

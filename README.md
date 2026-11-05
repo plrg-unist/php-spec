@@ -7301,6 +7301,9 @@ Method `fromCallable` now distinguishes explicit cold/private from initialized/s
 source caches using actual INIT facts, including argument throws and CAPI entry.
 Clone policy and retired histories preserve that distinction; missing or uncertain
 history stays unknown. See the [method-API cache review](coverage/semantics/enum-is-callable-method-api-cache-review.json).
+Runtime array/string method captures now preserve that INIT-proven cache through
+clones, source/receiver retirement and argument/output throws; see the
+[runtime-capture review](coverage/semantics/enum-is-callable-runtime-capture-cache-review.json).
 Constant/default captures, bound copies and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type

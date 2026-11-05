@@ -1244,6 +1244,13 @@ share. Initialization/uncertainty boundaries preserve each old capture policy af
 later events, and missing history remains unknown. Existing Closure copies never
 initialize the original raw source cache. See the
 [method-API cache review](../../coverage/semantics/enum-is-callable-method-api-cache-review.json).
+Runtime array/string method captures now require recorded INIT at their actual
+birth, immutable raw function identity and canonical declared scope. Saved
+selection names/classes must still resolve to that function through pure class
+metadata; history never dereferences retired receivers or callable arrays. Clone
+lineage, argument-throw warmth and output-throw continuation preserve the shared
+cache after old captures retire. Missing INIT refuses cache stamps, history and live
+ownership. See the [runtime-capture review](../../coverage/semantics/enum-is-callable-runtime-capture-cache-review.json).
 Constant/default/static/property captures, bound/dummy-scope copies, resumed
 Generator, internal/Trait/anonymous/Fiber query owners and wider transformed
 contexts remain partial.

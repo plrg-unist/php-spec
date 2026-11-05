@@ -171,8 +171,14 @@ authenticated raw CAPI entry supply nonowning facts; missing or uncertain views
 stay unknown. Birth-relative history preserves old private captures and fresh
 private clones after later source initialization and retirement. The
 [method-API cache review](coverage/semantics/enum-is-callable-method-api-cache-review.json)
-records the source/owner/budget cuts. Constant/default captures, transformed bound
-copies and Generator/Fiber query owners remain partial.
+records the source/owner/budget cuts. Runtime array/string method captures and
+clones now authenticate shared cache ownership from actual INIT, immutable raw
+function identity and canonical scope. Saved selectors remain coherent after
+selected-array/source/receiver retirement, and argument/output throws preserve
+namespace fallback warmth. The
+[runtime-capture review](coverage/semantics/enum-is-callable-runtime-capture-cache-review.json)
+records this bounded slice. Constant/default captures, transformed bound copies
+and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -2020,7 +2026,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |
 | ATTR48 | Authenticated `__halt_compiler` Tick emission through existing global-file offset facts and runtime; private implementation/review. |
-| Enum callable arrays | Runtime ARRAY/STRING method capture cache identity and clone retirement; private implementation/review. |
+| Enum callable arrays | Known-user fake Closure `bind`/`bindTo` cache-copy policy from authenticated SOURCE and completed scope; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
