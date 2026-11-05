@@ -115,8 +115,8 @@ for label, node, method, first_class, expected in (
     expression = (f'{node} expression_receiver (NIdentifier (BYTES {spelling}) metadata_site) '
                   f'(SEQUENCE ({arguments})) metadata_site')
     CHECKS += [
-        f'S_{label} = S[.SOURCES = [{{ID n_unit, AST PROGRAM eps, OCCURRENCES '
-        f'[(PCOCCURRENCE pcpath_site ({expression}))]}}]]',
+        f'S_{label} = S[.SOURCES = [{{ID n_unit, AST (PROGRAM eps), OCCURRENCES ('
+        f'[(PCOCCURRENCE pcpath_site ({expression}))])}}]]',
         ('' if expected else '~') + f'$closure_binding_api_site(S_{label}, pconfigcall.SITE)']
 
 review.CASES = {'i111-peer-computed-selection-normalization-owners': {
