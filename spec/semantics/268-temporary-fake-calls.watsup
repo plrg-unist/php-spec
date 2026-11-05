@@ -167,9 +167,11 @@ rule PhpStep/closure-call-copy-reference-warning: S ~> $error_dispatch(S[.ORIGIN
   -- if S.TODO = (CLOSURE_CALL_COPY_FORWARD pclosurecall n_copy n pnamedargs n_base) :: ptask_tail*
   -- if $closure_call_copy_reference_valid(S, pclosurecall, n_copy, n, pnamedargs, n_base)
   -- if ptbytes = $closure_call_reference_message(S, pclosurecall, n)
+dec $closure_call_copy_warning_history(pstate, perrorcall) : pstate
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
-  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if S_emit = $closure_call_copy_warning_history(S, perrorcall)
+  -- if $call_task_valid(S_emit, perrorcall.RESUME)
   -- if S.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.SITE = pclosurecall.SITE
   -- if perrorcall.LEVEL = 2

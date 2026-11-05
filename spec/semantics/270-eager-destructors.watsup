@@ -792,6 +792,49 @@ def $eager_cleanup_history(S, pdestructioncleanup) = S_view[.CURRENT = pdestruct
 def $eager_cleanup_history(S, pdestructioncleanup) = S_history[.CURRENT = pdestructioncleanup.CALLER][.ORIGIN = pdestructioncleanup.ORIGIN][.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT][.ALLOCATIONS = S_history.ALLOCATIONS ++ $eager_cleanup_object(S, pdestructioncleanup.SOURCE)]
   -- if S_history = $consumer_producer_history($eager_cleanup_caller_scope(S, pdestructioncleanup), pdestructioncleanup.TARGET)
   -- if $eager_cleanup_warning(pdestructioncleanup.SOURCE) = eps
+;; Fresh prepared cells are checked at the emitting warning cursor. Rotate its
+;; authenticated C prefix behind CLEAN, preserving every other pending owner.
+;; These structural registry walks must not call validators that use this view.
+dec $closure_call_copy_warning_call_prefix(pstate, pdestructorcall) : pstate?
+def $closure_call_copy_warning_call_prefix(S, pdestructorcall) = (S[.DESTRUCTION.CALLS = pdestructorcall_tail*])
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if pdestructorcall.CALLER = S.CURRENT /\ pdestructorcall.ORIGIN = S.ORIGIN /\ pdestructorcall.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
+  -- if pdestructionoperation.CALLER = pdestructorcall.CALLER /\ pdestructionoperation.ORIGIN = pdestructorcall.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+  -- if pdestructionoperation.PENDING = pdestructorcall.PENDING
+def $closure_call_copy_warning_call_prefix(S, pdestructorcall) = eps -- otherwise
+dec $closure_call_copy_warning_prefix(pstate, ptask) : pstate?
+def $closure_call_copy_warning_prefix(S, DESTRUCTOR_ENTER pdestructorcall) = $closure_call_copy_warning_call_prefix(S, pdestructorcall)
+def $closure_call_copy_warning_prefix(S, DESTRUCTOR_RESULT pdestructorcall) = $closure_call_copy_warning_call_prefix(S, pdestructorcall)
+def $closure_call_copy_warning_prefix(S, DESTRUCTOR_RELEASE pdestructionrelease) = (S[.DESTRUCTION.RELEASES = pdestructionrelease_tail*])
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
+  -- if pdestructionrelease.CALLER = S.CURRENT /\ pdestructionrelease.ORIGIN = S.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = S.CONSTCONTEXT
+def $closure_call_copy_warning_prefix(S, DESTRUCTOR_FRAME_EXIT pdestructionframe) = (S[.DESTRUCTION.FRAMES = pdestructionframe_tail*])
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe.CALLER = S.CURRENT /\ pdestructionframe.ORIGIN = S.ORIGIN /\ pdestructionframe.CONSTCONTEXT = S.CONSTCONTEXT
+def $closure_call_copy_warning_prefix(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = (S[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*])
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+def $closure_call_copy_warning_prefix(S, THROW_SEARCH n) = (S)
+  -- if $throwable_member(S, n)
+def $closure_call_copy_warning_prefix(S, ptask) = eps -- otherwise
+dec $closure_call_copy_warning_split(pstate, ptask*, perrorcall) : (ptask*, ptask*)?
+def $closure_call_copy_warning_split(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*, perrorcall) = (([DESTRUCTOR_OPERATION_EXIT pdestructionoperation], ptask_tail*))
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ ~pdestructioncleanup.RELEASED
+  -- if pdestructioncleanup.CALLER = S.CURRENT /\ pdestructioncleanup.ORIGIN = S.ORIGIN /\ pdestructioncleanup.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructionoperation.CALLER = S.CURRENT /\ pdestructionoperation.ORIGIN = S.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT
+def $closure_call_copy_warning_split(S, ptask :: ptask_tail*, perrorcall) = ((ptask :: ptask_prefix*, ptask_after*))
+  -- if $closure_call_copy_warning_prefix(S, ptask) = (S_next)
+  -- if $closure_call_copy_warning_split(S_next, ptask_tail*, perrorcall) = ((ptask_prefix*, ptask_after*))
+def $closure_call_copy_warning_split(S, ptask*, perrorcall) = eps -- otherwise
+def $closure_call_copy_warning_history(S, perrorcall) = S[.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: (ptask_prefix* ++ ptask_after*)]
+  -- if $closure_call_copy_warning_split(S, S.TODO, perrorcall) = ((ptask_prefix*, ptask_after*))
+def $closure_call_copy_warning_history(S, perrorcall) = S -- otherwise
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = DESTRUCTOR_FATAL pdestructionfatal
   -- if $eager_fatal_valid(S, pdestructioncleanup, pdestructionfatal)
