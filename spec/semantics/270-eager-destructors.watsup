@@ -674,7 +674,8 @@ def $destructor_boundary_scope(S, pdestructorcall, pframe :: pframe_tail*) = $de
   -- if ~$destructor_boundary_frame(pframe, pdestructorcall)
 def $destructor_boundary_scope(S, pdestructorcall, eps) = S
 def $destructor_boundary_valid(S, pdestructorcall) = true
-  -- if S_view = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
+  -- if S_scope = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
+  -- if S_view = S_scope[.DESTRUCTION.OPERATIONS = $destructor_saved_operations(S_scope, [pdestructorcall])]
   -- if pdestructorcall.USER = $destructor_user_source(S_view)
   -- if pdestructorcall.SITE = $destructor_source_site(S_view)
   -- if pdestructorcall.LINE = $destructor_source_line(S_view)
