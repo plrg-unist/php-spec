@@ -2034,14 +2034,16 @@ def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, 
 def $enum_is_callable_cleanup_source(ENUM_IS_CALLABLE_EXIT_FRAME penumqueryoutput z) = ((penumqueryoutput, z))
 def $enum_is_callable_cleanup_source(ENUM_IS_CALLABLE_CLEANUP_FRAME penumqueryoutput z pdestructorcall) = ((penumqueryoutput, z))
 def $enum_is_callable_cleanup_source(ptask) = eps -- otherwise
+;; The child operation's live source guard already validates this exact parent marker.
 def $enum_is_callable_cleanup_tail(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput z) :: ptask_tail*, pdestructionoperation, penumqueryoutput, z) = true
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_EXIT_FRAME penumqueryoutput z
-def $enum_is_callable_cleanup_tail(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ENUM_IS_CALLABLE_CLEANUP_RESTORE penumqueryoutput z pdestructorcall) :: ptask_tail*, pdestructionoperation, penumqueryoutput, z) = $enum_is_callable_cleanup_restore_valid(S[.TODO = (ENUM_IS_CALLABLE_CLEANUP_RESTORE penumqueryoutput z pdestructorcall) :: ptask_tail*], penumqueryoutput, z, pdestructorcall)
+def $enum_is_callable_cleanup_tail(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ENUM_IS_CALLABLE_CLEANUP_RESTORE penumqueryoutput z pdestructorcall) :: ptask_tail*, pdestructionoperation, penumqueryoutput, z) = true
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEANUP_FRAME penumqueryoutput z pdestructorcall
 def $enum_is_callable_cleanup_tail(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, penumqueryoutput, z) = $enum_is_callable_cleanup_tail(S, ptask_tail*, pdestructionoperation, penumqueryoutput, z)
   -- if $destructor_release_live(S, pdestructionrelease)
   -- if pdestructionrelease.CALLER = pdestructionoperation.CALLER /\ pdestructionrelease.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
 def $enum_is_callable_cleanup_tail(S, ptask*, pdestructionoperation, penumqueryoutput, z) = false -- otherwise
+;; Result validity checks operation liveness and caller/origin; only this tie remains.
 def $enum_is_callable_cleanup_return(S) = ((penumqueryoutput, z, pdestructorcall, pdestructionoperation))
   -- if S.ACTIVEFIBER = eps /\ S.FIBERCALLERS = eps
   -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
@@ -2049,7 +2051,7 @@ def $enum_is_callable_cleanup_return(S) = ((penumqueryoutput, z, pdestructorcall
   -- if $enum_is_callable_cleanup_source(pdestructionoperation.SOURCE) = ((penumqueryoutput, z))
   -- if pdestructorcall.PENDING = eps /\ pdestructionoperation.PENDING = eps
   -- if pdestructionoperation.COMPLETION = NORMAL
-  -- if $destructor_result_valid(S, pdestructorcall) /\ $destructor_operation_valid(S, pdestructionoperation)
+  -- if $destructor_result_valid(S, pdestructorcall) /\ pdestructionoperation.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
   -- if $enum_is_callable_exit_frame_scope(S, penumqueryoutput, z) = (S_scope)
   -- if $enum_is_callable_cleanup_tail(S, ptask_tail*, pdestructionoperation, penumqueryoutput, z)
   -- if $source_static_exit_tail(S, S.TODO) = eps
