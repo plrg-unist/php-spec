@@ -143,6 +143,41 @@ THROW = [
     *DONE, '~((HOBJECT n_key) <- S_done.ALLOCATIONS)',
     'S_done.OBJECTS[n_outer] = WEAKMAP eps',
 ]
+CHILD = [
+    *VALID, *binding('first', 'n_first_cell', 'n_first'),
+    *binding('second', 'n_second_cell', 'n_second'),
+    'S.TODO = (DESTRUCTOR_ENTER pdestructorcall_first) :: ptask_first_tail*',
+    '$object_name(S, pdestructorcall_first.OBJECT) = $ptascii("GcOrdinaryIncomingThrow34")',
+    'S.OBJECTS[n_second] = WEAKMAP eps',
+    'S.OBJECTS[n_first] = WEAKMAP (pweakmapentry_first)',
+    'n_key = pweakmapentry_first.KEY', 'pweakmapentry_first.VALUE = POBJECT n_later',
+    'S.OBJECTS[n_key] = WEAKREFERENCE (n_target)',
+    '$instance_storage_all(S) = [pinstancestorage_holder, pinstancestorage_key]',
+    'pinstancestorage_key.OBJECT = n_key',
+    'n_holder = pinstancestorage_holder.OBJECT',
+    '$object_name(S, n_holder) = $ptascii("GcOrdinaryIncomingHolder34")',
+    '$instance_storage_basic(S, pinstancestorage_holder)',
+    '$instance_storage_basic(S, pinstancestorage_key)',
+    '$node_children(S, HOBJECT n_holder) = eps',
+    '$node_children(S, HOBJECT n_later) = [HOBJECT n_child_later]',
+    '$object_name(S, n_child_later) = $ptascii("GcOrdinaryIncomingLater34")',
+    '$heap_owners(H, HOBJECT n_key) = 1 /\\ $heap_owners(H, HOBJECT n_holder) = 1',
+    '$heap_owners(H, HOBJECT n_later) = 1 /\\ $heap_owners(H, HOBJECT n_child_later) = 1',
+    '$weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_first]',
+    '$weakref_find(S, S.ALLOCATIONS, n_target) = eps',
+    'S_later = $seek($drive_steps(S, 1), 2000)',
+    'S_later.TODO = (DESTRUCTOR_ENTER pdestructorcall_later) :: ptask_later_tail*',
+    'pdestructorcall_later.OBJECT = n_child_later',
+    'pdestructorcall_later.PENDING = (n_error)',
+    '$destructor_call_pending_valid(S_later, pdestructorcall_later)',
+    'S_later.OBJECTS[n_first] = WEAKMAP eps',
+    '$instance_storage_all(S_later) = [pinstancestorage_later_holder, pinstancestorage_key]',
+    'pinstancestorage_later_holder.OBJECT = n_later',
+    '~((HOBJECT n_holder) <- S_later.ALLOCATIONS)',
+    '$heap_owners($heap_graph(S_later), HOBJECT n_key) = 1',
+    *DONE, 'S_done.OBJECTS[n_first] = WEAKMAP eps /\\ S_done.OBJECTS[n_second] = WEAKMAP eps',
+    '~((HOBJECT n_key) <- S_done.ALLOCATIONS)', '~((HOBJECT n_later) <- S_done.ALLOCATIONS)',
+]
 review.CASES = {
     'ranked-incoming-wrapper-pins': {
         'source': source('gc_ordinary_review_wr_two_incoming_leaves.php'),
@@ -154,6 +189,10 @@ review.CASES = {
         'source': source('gc_ordinary_review_map_own_throw_suffix.php'),
         'stage': 'S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*',
         'checks': THROW},
+    'incoming-child-throw-keeps-later-entry': {
+        'source': source('gc_ordinary_incoming_child_throw_source.php'),
+        'stage': 'S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*',
+        'checks': CHILD},
 }
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
