@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Final method dispatch, cloned FCC scope and denied constructor lifecycle."""
+import argparse
 import base64
 import hashlib
 import json
@@ -159,7 +160,8 @@ def checks(row, fixture, filename):
                 r'S_fail.COMPLETION = BUDGET /\ $method177_front(S_fail,3)',
                 'S_fail.TODO = (THROW_SEARCH n_error) :: ptask_tail*',
                 'S_fail.DESTRUCTION.CALLED = [n_failed]',
-                '(HOBJECT n_failed) <- S_fail.ALLOCATIONS',
+                'S_fail.OBJECTS[n_failed] = INSTANCE pclassdesc.ORIGIN',
+                '~((HOBJECT n_failed) <- S_fail.ALLOCATIONS)',
                 '~$destructor_uncalled_node(S_fail,HOBJECT n_failed)',
                 '$method177_output(S_fail.EVENTS) = $ptascii("before;")',
                 '$string_bytes($throwable_field(S_fail,n_error,"message")) = ($ptascii("Call to private class@anonymous::__construct() from global scope"))',
@@ -173,6 +175,11 @@ def main():
     selected = ['method-final-instance-protected-and-default-static',
                 'method-final-firstclass-clone-self-scope',
                 'constructor-final-private-denial-before-argument-and-destructor']
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--match', choices=selected)
+    options = parser.parse_args()
+    if options.match:
+        selected = [options.match]
     rows = json.loads(CATALOGUE.read_text())['cases']
     raw = Path(tempfile.mkdtemp(prefix='anonymous-method-modifiers-', dir=ROOT / '.tools'))
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
