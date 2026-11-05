@@ -932,8 +932,17 @@ originals, strict433, 82 author, 263 independent and 79 retained saved-view
 conditions pass. Argument type and object trace displays use native C strings;
 fresh eval classes preserve copied constants' selected callable targets. Original
 display/timeout failures and the own-constant author control retain zero credit.
-Own anonymous constants and wider source/member/scope histories remain partial.
+Wider source/member/scope histories remain partial.
 [Review](coverage/semantics/dynamic-anonymous-traits-review.json).
+CLASS172 admits nonempty own constant groups through the ordinary class compiler,
+including multiple declarators, types, visibility and final checks. Own FCCs keep
+separate source/function scopes across eval compilations; trait compatibility and
+parent-final failures retain first-new ordering. Eleven exact originals,
+strict433, 75 author and 192 independent reached conditions pass. Full stored
+names remain authoritative; diagnostic operands use native C strings. The author
+sort-prefix elaboration failure retains zero credit. Attributes and wider
+member/type/initializer contexts remain partial.
+[Review](coverage/semantics/anonymous-own-constants-review.json).
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.

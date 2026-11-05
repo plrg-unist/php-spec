@@ -4936,6 +4936,16 @@ validate before requesting the extra trait parameter view, avoiding a recursive
 dynamic replay dependency.
 [Dynamic trait review](coverage/semantics/dynamic-anonymous-traits-review.json).
 
+Anonymous classes also admit own constant groups through the ordinary constant
+compiler: typed and nullable values, multiple declarators, visibility, final
+rules and trait compatibility retain their source locations and error order.
+Own callable constants preserve separate targets across eval compilations.
+Initializer-type and private-final errors precede execution; parent/trait link
+conflicts precede constructor arguments. Stored names remain complete through
+successful lookups, while diagnostic class-name arguments use native C strings.
+Attributes and wider member/type/initializer contexts remain partial.
+[Own constant review](coverage/semantics/anonymous-own-constants-review.json).
+
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
 Base. First-`new` linking precedes arguments; kind/duplicate checks, method
