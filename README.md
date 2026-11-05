@@ -6786,12 +6786,13 @@ null output CVs now receive names before the boolean result; the
 records three exact outcomes and 79 reached guards. Literal enum method strings
 also preserve raw lowercase, leading backslash and method spelling in the
 third output; the [string-spelling review](coverage/semantics/enum-is-callable-output-string-spelling-review.json)
-records three exact outcomes and 88 reached guards. A separate variable holding
-the enum method string also writes its saved name through a distinct output
-CV; the [variable-output review](coverage/semantics/enum-is-callable-output-variable-review.json)
-records one exact source and 46 reached guards. Shared scalar input/output
-reference cells add one exact source and 43 reached guards in the
-[alias-output review](coverage/semantics/enum-is-callable-output-alias-review.json).
+records three exact outcomes and 88 reached guards. A variable's first SEND now
+saves its enum method string before later argument callbacks can rebind the
+current CV or shared output cell. Nested queries and pre-output throws preserve
+their own continuations. The [saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json)
+records seven exact originals, 200 independent guards and affected variable/alias
+state checks; the earlier [variable](coverage/semantics/enum-is-callable-output-variable-review.json)
+and [alias](coverage/semantics/enum-is-callable-output-alias-review.json) cuts retain their identities.
 Retained childless ordinary output objects also receive the name before their
 last owner is later released; the [retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json)
 records one exact source and 77 reached guards. Last-owner destructor and wider

@@ -98,13 +98,14 @@ explicit Unsupported because its destructor runs during replacement.
 Literal enum method strings now also retain their raw class and method spelling
 in the third output, including lowercase and a leading backslash. Three exact
 outcomes and 88 reached guards pass.
-A separate live variable can now supply the enum method string to a direct
-three-argument `is_callable` call with literal `false`. Its saved and current
-bytes agree, and a distinct initialized output CV receives the name before the
-boolean. One exact original and 46 reached guards pass. A shared scalar
-input/output reference cell also retains the saved name through its write;
-one exact original and 43 reached guards pass. Argument-time target rebinding
-remains explicit Unsupported.
+A source-authenticated receipt now saves a direct variable's enum method string
+at its first SEND. Later argument callbacks can rebind its current CV, including
+a shared input/output cell, without changing the query. Nested queries consume
+their own receipts; a later argument throw skips the query's output and result
+assignment.
+Seven exact originals, strict433, 200 independent guards and the affected
+46/43 variable/alias guards pass.
+[Saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json).
 Retained childless ordinary old output objects now receive the callable name
 while another owner survives; their destructor runs only after the last owner
 is released. The postwrite ownership guard rejects a unique or dead old object.
