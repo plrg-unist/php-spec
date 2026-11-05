@@ -95,6 +95,17 @@ $heap_owners($heap_graph(S_inner), HOBJECT n_capture) = 2
 $heap_owners($heap_graph(S_inner), HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_inner), HOBJECT n_token) = 2
 $call_task_valid(S_inner, GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_token)]))
+S_no_outer = S_inner[.TODO = (GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_token)])) :: (GETTER_CAPTURE_RESULT n_capture porigin_invoke) :: ptask_tail*]
+~$generator_invoke_operation_live(S_no_outer, pgeneratorop)
+~$call_task_valid(S_no_outer, GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_token)]))
+~$generator_invoke_outer_task(GENERATOR_INVOKE_RESULT pconfigcall[.LINE = $(pconfigcall.LINE + 1)] true PNULL, pgeneratorop)
+~$generator_invoke_outer_task(GENERATOR_INVOKE_RESULT pconfigcall[.OWNER = (n_capture)] true PNULL, pgeneratorop)
+~$generator_invoke_outer_task(GENERATOR_INVOKE_RESULT pconfigcall[.KIND = INTRINSIC_GENERATOR_METHOD "throw" (pgeneratormethodselection)] true PNULL, pgeneratorop)
+~$generator_invoke_outer_task(GENERATOR_INVOKE_RESULT pconfigcall[.KIND = INTRINSIC_GENERATOR_METHOD "send" (pgeneratormethodselection[.CAPTURE = eps])] true PNULL, pgeneratorop)
+~$generator_invoke_outer_task(GENERATOR_INVOKE_RESULT pconfigcall false PNULL, pgeneratorop)
+S_inner.FRAMES = pframe :: pframe_tail*
+S_saved_outer = S_no_outer[.FRAMES = pframe[.TODO = (GENERATOR_INVOKE_RESULT pconfigcall true PNULL) :: pframe.TODO] :: pframe_tail*][.ORIGIN = eps]
+$generator_invoke_operation_live(S_saved_outer, pgeneratorop)
 $call_task_valid(S_inner, GENERATOR_INVOKE_RESULT pconfigcall true PNULL)
 ~$call_task_valid(S_inner, GENERATOR_INVOKE_RESULT pconfigcall true (POBJECT n_token))
 ~$call_task_valid(S_inner, GENERATOR_INVOKE_RESULT pconfigcall[.LINE = $(pconfigcall.LINE + 1)] true PNULL)
