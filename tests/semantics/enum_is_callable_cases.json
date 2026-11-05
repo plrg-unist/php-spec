@@ -720,8 +720,8 @@
     "id": "enum-is-callable-third-output-variable-array-alias-retained-child-throw-release",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nclass ChildThrow {\n    public function __destruct() {\n        global $call;\n        echo $call === 'FirstCheck::from' ? 'D-name|' : ($call === null ? 'D-null|' : 'D-other|');\n        throw new Exception('drop');\n    }\n}\nfunction rebind_child(): bool {\n    global $call, $holdChild;\n    $child = new ChildThrow;\n    $call = [$child, 'tryFrom'];\n    $holdChild = $child;\n    echo 'REBIND|';\n    return false;\n}\n$call = [FirstCheck::class, 'from'];\n$name =& $call;\n$holdChild = null;\n$ok = 'UNCHANGED';\n$ok = is_callable($call, rebind_child(), $name);\necho 'chosen:', (int)$ok, ':', $call, ':', $name, '|';\ntry {\n    unset($holdChild);\n    echo 'UNEXPECTED|';\n} catch (Exception $e) {\n    echo 'caught:', $e->getMessage(), ':', $call, ':', $name, ':', (int)$ok, '|';\n}\n",
     "source_sha256": "e6903c227a8fab09d16d1ff5494042ea0fddd361bc6721d405c1bb639c775cef",
-    "expected_model": "unsupported",
-    "purpose": "Throwing child released after the selected name and boolean result commit; pending separate-owner exception route.",
+    "expected_model": "normal",
+    "purpose": "A throwing child released by the separate holder after name and boolean result commit transfers its exception with both committed values intact.",
     "model_timeout_seconds": 90,
     "expected_normal_stdout": "REBIND|chosen:1:FirstCheck::from:FirstCheck::from|D-name|caught:drop:FirstCheck::from:FirstCheck::from:1|"
   }
