@@ -198,14 +198,16 @@ def $closure_call_cache_enter(S) = S[.CURRENT = (pcallcontext[.CACHE = (CACHE_SH
   -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $closure_call_copy_site(S, porigin_site)
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
   -- if $closure_call_cache_policy(S, n_source, n_receiver, 0) = (CACHE_SHARED)
+  -- if HOBJECT n_source <- S.ALLOCATIONS /\ HOBJECT n_receiver <- S.ALLOCATIONS
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
 def $closure_call_cache_enter(S) = S -- otherwise
 
 def $closure_call_context_cache_valid(S, pcallcontext) = true
   -- if pcallcontext.CACHE = eps
 def $closure_call_context_cache_valid(S, pcallcontext) = true
   -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if HOBJECT n_source <- S.ALLOCATIONS /\ HOBJECT n_receiver <- S.ALLOCATIONS
   -- if pcallcontext.CACHE = (CACHE_CALL n)
   -- if $(n < |S.CLOSURECALLCACHES|)
   -- if pcallcontext.CALLSITE = (porigin_site)
@@ -216,8 +218,9 @@ def $closure_call_context_cache_valid(S, pcallcontext) = true
   -- if pcallcontext.CACHE = (CACHE_SHARED)
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $closure_call_copy_site(S, porigin_site)
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
   -- if $closure_call_cache_policy(S, n_source, n_receiver, 0) = (CACHE_SHARED)
+  -- if HOBJECT n_source <- S.ALLOCATIONS /\ HOBJECT n_receiver <- S.ALLOCATIONS
+  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
 def $closure_call_context_cache_valid(S, pcallcontext) = false -- otherwise
 
 def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
