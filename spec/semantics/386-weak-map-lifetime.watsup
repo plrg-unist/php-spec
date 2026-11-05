@@ -673,7 +673,7 @@ dec $weakmap_map_free_slot_allowed(pstate, nat, pweakmapvalue) : bool
 def $weakmap_map_free_slot_allowed(S, n_map, POBJECT n_value) = true
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
   -- if $weakmap_declared_value_child(S, n_value)
-;; A second outside owner delays Child's destructor beyond Map free_obj.
+;; A second Child owner keeps it live through the Value-slot release.
 def $weakmap_map_free_slot_allowed(S, n_map, POBJECT n_value) = true
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
   -- if $heap_owners($heap_graph(S), HOBJECT n_value) = 1

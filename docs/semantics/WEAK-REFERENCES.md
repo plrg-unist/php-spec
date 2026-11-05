@@ -177,9 +177,10 @@ GC39 admits the same ordinary Map-first free when the declared Child has a
 second strong owner. The Map must be the Value's sole owner and have no incoming
 Map-key registration. Freeing the Map removes its Key entry and releases Value;
 Value's declared slot drops one Child owner without calling the Child destructor.
-Map and Value weak gets are null after teardown, while the live Key and retained
-Child remain observable. The later release of Child's last owner runs its
-destructor, including an ordinary caught throw.
+In the tested outside-CV sources, Map and Value weak gets are null after
+teardown, while the live Key and retained Child remain observable. The later
+release of Child's last owner runs its destructor, including an ordinary caught
+throw.
 
 The admission requires exactly two Child owners at the Map free checkpoint;
 it does not constrain where the second owner resides. The tested sources keep

@@ -516,8 +516,8 @@ partial; earlier fixture/source drafts retain zero credit.
 GC39 admits ordinary Map-first retirement of a one-declared-Child Value whose
 Child has two physical owners: the Value property and one other strong owner.
 The Map is the Value's sole owner and has no incoming Map-key registration.
-Map and Value weak gets become null after teardown while Child stays live;
-in the tested outside-CV source, unsetting that owner later runs the destructor.
+In the tested outside-CV source, Map and Value weak gets become null after
+teardown while Child stays live; unsetting that owner later runs its destructor.
 The new arm leaves GC37 insertion, GC38 sole-owned Child cleanup and
 replacement/foreach unchanged.
 Two fresh exact sources (one caught Child throw), two affected exact sources,
