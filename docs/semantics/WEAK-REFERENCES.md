@@ -320,13 +320,13 @@ The finite notice arm excludes active cursors and incoming Map-key associations;
 replacement/shared-Key, wider payload/mutation and active-pin collection policies
 remain unchanged.
 
-Multiple-entry direct and quiet reads reuse the common finite payload policy.
-A separate `offsetGet`/`offsetExists` arm first authenticates the existing source
-read/presence/quiet task, then requires a ranged allocated nonfreeing input Key
-and canonical private finite storage. It explicitly excludes the old storage
+Multiple-entry direct/quiet reads and explicit removal reuse the common finite
+payload policy. The `offsetGet`/`offsetExists`/`offsetUnset` arm authenticates the
+existing source read/presence/quiet/unset task, then requires a ranged allocated
+nonfreeing input Key and canonical private finite storage. It explicitly excludes the old storage
 selector so successful leaf-table derivations remain disjoint. The previous
-access arm stays unchanged;
-`offsetUnset`, replacement and mutation receive no new admission. Stored Keys
+access arm stays unchanged; replacement and wider mutation receive no new
+admission. Stored Keys
 remain leaf `stdClass` objects. An absent direct `KEY_R` input keeps the existing
 ordinary allocated object domain; quiet/presence input retains its existing
 `stdClass` rules. The new finite arm excludes a freeing absent input even when
@@ -343,6 +343,25 @@ whose source adds one held spare Key for a canonical absent-input counterstate.
 That variant has its own source hash/native transcript check and adds no new
 original agreement. Helper pin/protocol counterstates are not PHP executions.
 Freeing-Map dimension access, active-pin collection and wider consumers remain partial.
+
+Explicit unset uses the same existing entry detach and eager release path.
+The selected slot is absent before its Value's Child callbacks run, while sibling
+metadata/edges remain. A fetched or outside Value owner delays property cleanup;
+removing a Map edge does not release its physical Child edges directly.
+
+When removing the last Value owner, changed slot edges precede consumed input
+temporaries in the real job order. A computed Key can clear its outside CV and
+return the selected object; its later Key job keeps that object live through
+Y/X cleanup and pending throw, then releases it before catch. The tested CV Map
+receiver stays live through its actual outside owner. The Value pin owns only
+Value; original slot metadata and operation history add no Key/Child owners.
+The supplied Throwable keeps its identity/creation trace, and an exception skips
+the statement following unset. Generic singleton removal, the old access policy,
+replacement/shared-Key and active-pin collection boundaries are unchanged.
+The [explicit-removal review](../../coverage/semantics/gc-finite-value-unset-review.json)
+separates original native comparisons, actual unlink/selected-owner/budget checks
+and constructed protocol/shape controls. It retains the original overlapping-arm
+failure at zero credit; the separate read regression repair is already integrated.
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

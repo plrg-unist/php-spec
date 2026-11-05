@@ -660,8 +660,8 @@ early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
 
 Finite methodless WeakMap payloads share validation across prebuilt insertion,
-private-Key append, direct/quiet reads from multiple-entry tables, singleton/
-multiple-entry Map retirement and selective Key notification. Public untyped nonstatic/nonreadonly
+private-Key append, reads/explicit entry removal from multiple-entry tables,
+singleton/multiple-entry Map retirement and selective Key notification. Public untyped nonstatic/nonreadonly
 backed slots contain primitives or fieldless destructor Children; matching
 identities and keys fix declaration order. Ordered jobs preserve repeated Value
 and Child edges, outside owners and later cleanup after a Child throw. Backed
@@ -669,8 +669,9 @@ storage clears without hook dispatch; used results, temporary producers and
 clones retain their existing evaluation and owner transfers. Direct fetches
 and used coalescing results add actual Value owners; terminal isset/empty borrow
 storage. These many-table reads keep existing source/key authority, require a
-nonfreeing input Key, and exclude offsetUnset and broader mutation. Missing-Key
-bool/coalescing/Error behavior uses the existing consumer executors.
+nonfreeing input Key. Explicit offsetUnset now shares the same guard and
+existing detach/release executor; replacement/shared-Key and wider mutation
+remain separate. Missing-Key bool/coalescing/Error behavior is unchanged.
 Two new originals and one 73-condition spare-Key reached group pass at their
 separate cuts; the native-checked variant adds no original agreement.
 [Read review](coverage/semantics/gc-finite-value-reads-review.json).
@@ -678,6 +679,15 @@ The finite fallback now explicitly excludes the old storage selector, fixing
 an overlapping-success regression on leaf-many access. A fresh comparison of
 the exact legacy M141 separate-leaf original passes; its repair entry in that
 review retains the separate tested cut and reports.
+
+Explicit removal unlinks the entry before Child cleanup. A fetched Value owner
+can delay all property cleanup; otherwise the removed Value job precedes the
+consumed selected-Key job, keeping a returned Key live through callbacks even
+after its outside CV was cleared. Supplied Child throws preserve later fields,
+Throwable identity/creation trace and the skipped next-statement marker. Two
+new originals and one 102-condition reached group pass at their recorded cuts;
+the original overlap failure and old baseline keep zero credit.
+[Explicit-removal review](coverage/semantics/gc-finite-value-unset-review.json).
 
 
 Finite-payload notification admits only the actual retiring leaf `stdClass` Key
@@ -1704,7 +1714,7 @@ is preserved; its source-domain fix admits no runtime metadata root.
 | --- | --- |
 | CLASS187 | Ordinary by-reference-return method anonymous factories; native/source preparation. |
 | I114 | Captured Generator API bind/bindTo receiver retargeting; private implementation/review. |
-| GC47 | Explicit WeakMap offsetUnset with finite payloads; private implementation/review. |
+| GC48 | Occupied WeakMap replacement with finite payloads; private implementation/review. |
 | COMP183 | Deprecated global constants: fetch/constant() warning delivery and recursive-handler protection. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
 | ATTR37 | Destructuring and Foreach list targets with defined keys and value copying; private implementation/review. |

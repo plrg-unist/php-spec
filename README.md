@@ -3681,8 +3681,9 @@ without getter/setter calls; ordered entry/property releases preserve repeated
 Values, shared Children and outside owners. The same payloads now enter empty
 Maps or append under private Keys while retaining source evaluation and owner
 increments. Strong direct/quiet fetches retain real Value owners across Key
-death; terminal isset/empty only borrow storage. Selective Key death removes
-slots individually and preserves
+death; terminal isset/empty only borrow storage. Explicit unset removes its
+entry before Child cleanup and retains selected operands through cleanup.
+Selective Key death removes slots individually and preserves
 weak-registration order through Child cleanup and throws. Virtual/wider layouts,
 replacement/shared-Key finite payloads,
 freeing-Map dimension access and active-pin collection remain partial.

@@ -1,0 +1,68 @@
+{
+  "scope": "GC47: explicit multiple-entry WeakMap offsetUnset for common finite methodless payloads, using existing source authority and detach/release execution.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "a62f2830e58355878cb3c56836ffa40a5a66f49d",
+  "semantic_revision": "52fded9ab42e81fe613a16743e8b0bdade0e9fc0",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "27ca35cedfcf4d65737ce49dca62bdf7df9eea9c952e364901983c794a8853a0"
+  },
+  "tested_revisions": {
+    "gc-finite-value-unset-author-47/native-v1/native-report.json": "5e10c07757258c1d096ec057ef063a451ac1b84c",
+    "gc-finite-value-unset-author-47/native-v1/baseline-report.json": "5e10c07757258c1d096ec057ef063a451ac1b84c",
+    "gc-finite-value-unset-author-47/native-v1/model-report.json": "d56377926fda300c6a6dfddc0c426fb724ba6028",
+    "gc-finite-value-unset-author-47/model-e1d-overlap-failure-v1/model-report.json": "e1d820aed84aec868526a301c6dc191f8c8ef755",
+    "gc-finite-value-unset-author-47/reached-3ae-v1/report.json": "3ae18fbf069f4c8895273445b4992f4da92f4134",
+    "gc-finite-value-explicit-unset-peer-47/native-v1/native-report.json": "913f5dffc04b97813dca347694ba61f53f3e30b2",
+    "gc-finite-value-explicit-unset-peer-47/native-v1/model-report.json": "60004d011e2392b77fb3e17f23475c48b011bcc6"
+  },
+  "rule_basis": "One source-selector term admits offsetUnset only when existing weakmap_unset_allowed authenticates the actual UNSET_ARRAY/base/selected/input. The shared finite arm retains the exact old-storage exclusion, canonical/private/no-cursor/no-incoming guard and allocated nonfreeing input Key. All entry deletion, result/base discard, eager owner ordering, release jobs, property pins, exception and trace executors are unchanged. Existing singleton and legacy callback/reference domains are unchanged; replacement/shared-Key/active-pin collection are not widened.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_unset_dimension,zend_weakref_unregister,zend_weakref_unref_single",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_UNSET_DIM (FREE_OP2 before FREE_OP1)",
+    "spec/semantics/284-arrayaccess-dimensions.watsup:access-unset,access_record",
+    "spec/semantics/386-weak-map-lifetime.watsup:weakmap_unset_allowed",
+    "spec/semantics/422-weak-map-entries.watsup:weakmap_entries_access_allowed,access_call",
+    "spec/semantics/270-eager-destructors.watsup:eager_owner_order,eager_operation_begin",
+    "spec/semantics/359-instance-storage-pin.watsup:instance_storage_begin"
+  ],
+  "counts": {
+    "exact_sources": 2,
+    "newly_supported_exact_sources": 2,
+    "author_exact_sources": 1,
+    "independent_exact_sources": 1,
+    "old_runtime_baseline_zero_agreement": 1,
+    "new_unsupported_php_controls": 0,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 102
+  },
+  "validation": {
+    "author_original": "A computed Key producer clears its outside Key CV but returns that object. Explicit unlink removes a [X,Y,X] Value beside two leaves. Y then X see entry absent, Map/selected Key/siblings live and Value weak-null. Supplied Y Throwable identity and makeFailure47 creation trace survive; pending X cleanup completes and selected Key becomes weak-null before catch. The statement following unset stays unexecuted. Final Map disposal clears siblings.",
+    "independent_original": "A real fetched Value CV keeps Value/Children live after explicit entry removal. isset0/empty1 report absence while that owner survives; dropping it later runs Y then X, with live Key/Map/sibling leaves and absent entry in each callback. Final Map release clears siblings while the outside Key remains live.",
+    "reached": "One strict-SL group uses the exact author source. At UNSET_ARRAY the outside Key CV is NULL, the owned base operand is its sole Key owner, the receiver operand is borrowed, and Value count1/Child X count2/Y count1 are physical counts. One actual driver step unlinks only the selected row and queues Value before selected Key, preserving sibling records/registrations. EXIT history owns no object; real Value/Key jobs each preserve one owner. The next actual Value storage pin keeps Key as a later real job/nonfreeing object, with Value weak-null, Key/Map weak-live and Child counts unchanged. Zero/one-step pause and whole resumed completion equality pass through caught-throw cleanup.",
+    "counterstates": "Wrong protocol using the existing UNSET record, wrong selected operand, missing Child allocation and constructed cursor reject. These are helper counterstates, not additional PHP executions or Unsupported-source controls.",
+    "identities": "All source campaigns retain stable inputs/head. The reached report pins four executed binaries, directly rechecked after completion with unchanged hashes. Raw source bytes, commands, contexts/profiles, process outcomes and fixture remain external."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc47_unset_selected_key_throw.php": "a4b3281a3c016dbe49adce193d4b58e1e9bd2a91031ec2d6d5ab06046141f02a",
+    "tests/semantics/gc47_peer_unset_retained_value.php": "0c06d4ae88d6f12cc205983c7f4f3683f1aa0127658797693603b76d1eb65ccf"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-unset-author-47/native-v1/native-report.json": "e896ba5f35d5a37ac5eca1509210c2154dc0cc4ddcd453acb34546c8907dbdc3",
+    "../php-spec-evidence-archive/gc-finite-value-unset-author-47/native-v1/baseline-report.json": "b97833600a18d3843408dede2c6b3f6c1ad7f5f5ff194f8ab8d2bac1da5a81d7",
+    "../php-spec-evidence-archive/gc-finite-value-unset-author-47/native-v1/model-report.json": "d8bbc001a0f542dc4a8814ee1a4877d1eb5398c97fc65e60d2730c697b06929d",
+    "../php-spec-evidence-archive/gc-finite-value-unset-author-47/model-e1d-overlap-failure-v1/model-report.json": "70347ae503d79d0b7a759259b76eb29c77d358b31e3c00c7cb3e64ec5efe3738",
+    "../php-spec-evidence-archive/gc-finite-value-unset-author-47/reached-3ae-v1/report.json": "bbe8447af9080162f12e5378f204ea1f611747232fe7cc775065fb9f5c65a779",
+    "../php-spec-evidence-archive/gc-finite-value-explicit-unset-peer-47/native-v1/native-report.json": "3b14b87f9af91b6b9634932357592b943a00191f73cfbc0a79633841dfb9bb52",
+    "../php-spec-evidence-archive/gc-finite-value-explicit-unset-peer-47/native-v1/model-report.json": "0c4a198ecaabab944c7ea9093adccbe51d0aaa7f1fc9b0d30294cf5d8431ac7d"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-unset-author-47/manifest.json": "49e58e07773796ae6a4b4fc4c17baab8c9be9976c0884898e086eb06be765c2c",
+    "../php-spec-evidence-archive/gc-finite-value-explicit-unset-peer-47/independent-summary.json": "ef126641e881840635b37fcc88ec17a28b180311dd51492d6b52136f84d129db"
+  },
+  "zero_credit": "The old author baseline at 5e10c0775 is explicit Unsupported at WeakMap multiple-entry dimension protocol after B|K|1|, zero agreement. Initial e1d candidate hit interpreter nondeterminism when callbacks reached surviving leaf-many presence: old and finite access clauses both succeeded. Failed raw/report remain zero; the harness KeyError after interpreter_failure and finally-preserved report are recorded. No fixture failure or interrupted run occurred. The independently validated M141 legacy repair is not newly counted among the two GC47 original agreements.",
+  "hotfix_and_rebase": "The overlap was inherited from the46 common arm and discovered by the initial47 source. It was repaired independently on main a62f2830e via guard fix 1eafc5e72, exact legacy M141 source and concise existing46-ledger repair entry. This47 series excludes that integrated guard. Author corrected source cut d56377926 and current 52fded9ab have byte-identical module 422; original source/wrapper bytes are unchanged. Peer model 60004 and reached 3ae use the repaired main base. The original d563 tested branch remains available for recovery; no broad GC46 or duplicate GC47 source campaign was renewed.",
+  "limits": "New explicit removal requires canonical finite methodless storage, private nonfreeing leaf stdClass stored Keys, no cursor/incoming Map-key association and a ranged allocated nonfreeing input Key through existing unset authority. Public untyped nonstatic/nonreadonly backed primitives/fieldless-destructor-Child slots only. Typed/reference/virtual/inherited/deeper/owning-array payloads, occupied replacement/shared-stored-Key finite payloads, freeing-Map dimension access, active-pin collection and wider caller/producer/mutation contexts remain partial. The tested Map receiver uses its real outside CV; no extra receiver owner is invented. Held GC35 and paused work remain untouched.",
+  "recovery": "Run gc47_finite_unset_sources.py native then model in fresh external outputs; the original old baseline remains at 5e10c0775. Run gc47_peer_unset_sources.py native then model for retained fetched-owner cleanup. Run gc47_finite_unset_state.py for the one 102-condition strict-SL group (4000 seek/finish steps, process cap of 360 seconds). Corrected d563 source and rebased 52fded9ab runtime share the recorded 422 hash; the prior e1d failure and separately integrated legacy repair retain separate evidence/credit.",
+  "review": "Independent runtime/source/static 102 review is CLEAR; final clean documentation/ledger read-only acceptance is requested on the completed private candidate."
+}
