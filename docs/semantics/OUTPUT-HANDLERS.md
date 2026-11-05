@@ -104,7 +104,8 @@ caller catch. Plain variable operands stay borrowed; wider owned Stringable
 forms remain an explicit dependency.
 
 Callback exit,
-throwing produced-output warning handlers, owning warning-handler abrupt cleanup,
+throwing produced-output warnings from FINAL or lower API cascades, wider owning
+warning-handler abrupt cleanup,
 automatic dispatch from other byte
 producers, wider request-end/fatal callback paths, non-scalar or
 reference-return conversion, typed variadic reception and by-reference variadic
@@ -356,11 +357,31 @@ method receiver. Later argument preparation uses that borrowed metadata without
 owning or reviving the receiver; a later warning can throw before callback entry.
 Reaching actual entry after retirement is explicitly Unsupported.
 
-This does not admit warning-handler owning abrupt cleanup, pre-entry warnings
-from explicit lower cascades or FINAL, produced-output warning throws, or exit.
+Its pre-entry warning protocol excludes wider owning warning-handler abrupt
+cleanup, explicit lower cascades, FINAL and exit. Produced-output deprecation
+uses the separate protocol below.
 [Author evidence](../../coverage/semantics/output-vm-reference-warning-author.json)
 retains exact sources, the reached release/producer fronts and original failures.
 [Independent review](../../coverage/semantics/output-vm-reference-warning-review.json)
 records eleven exact originals and one SL435 front with seven groups/475 reached
 conditions, including cursor authority, sole prefix ownership and retired receiver
 metadata without live roots.
+
+Module448 preserves a defined scalar return when its produced-output deprecation
+handler throws, for source VM output and direct flush/clean/end/get APIs. A single
+pending task keeps the actual return, copied input/phase and Throwable distinct;
+API caller/tail witnesses reuse the existing failed-call tag. The selected handler
+re-enables before normal result commit: FALSE forwards live bytes and disables,
+TRUE/NULL suppress, and other scalars convert using current precision. Lower
+routing retains the pending Throwable and interrupts caller assignment.
+
+An ignored error-handler return can also throw during its destructor. That
+cleanup runs while the output handler is disabled and still running; its output
+bypasses that layer before the saved output return commits. An owned Stringable
+producer retires afterward with the old exception saved, so its destructor can
+invoke the normally processed handler again. Getters retain the original frozen
+bytes, and end/get operations release raw callback owners after lower routing.
+VM diagnostic-return destructors retain the emitting source file/line. Explicit
+APIs keep the internal destructor site and their authentic builtin trace frame.
+FINAL, explicit lower-cascade deprecation throws, callback exit and wider return
+conversion remain partial.

@@ -1,0 +1,79 @@
+{
+  "milestone": "OB16: defined scalar output returns through produced-output deprecation throws",
+  "status": "author validation complete; independent review pending",
+  "tested_parent": "2d3c4a13db9f2406b658de29bff16aebd0fd2620",
+  "composition_parent": "299d710c1; private merge2d3c4a13d includes reviewed OB15 and current enum/attribute/Generator parent changes",
+  "runtime": {
+    "target": "PHP 8.5.10 CLI NTS64",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "modules": 436,
+    "mode": "pinned SpecTec SL; caches disabled, encountered determinism",
+    "current_sha256": {
+      "spec/semantics/30-storage.watsup": "55ceab1c6478059832e64e5d5c91d0abc116794092fa1217f29f1b9c1c220007",
+      "spec/semantics/395-output-handlers.watsup": "0cd2c7029bd195bc8e3226f9582676420408cfd6e352f6a0f0071bc5f6b44b73",
+      "spec/semantics/448-output-deprecation-warning.watsup": "3d3d773c01e4dc3f707602b36275e836110dc08501bd5f00848a968303ae3ba3",
+      "spec/semantics/modules.json": "765b9979adc738ba3174f324cbee4fb05f5f93967104804185c8598e9bada2ca"
+    }
+  },
+  "identity": "Every run binds parent plus stable before/after worktree fingerprints. Traces were added after the initial value/stack gates; the one affected destructor state was corrected and rerun, retaining the other two unchanged fronts.",
+  "authority": [
+    "main/output.c::php_output_handler_op defined retval, temporary disable/reenable and normal output status",
+    "Zend/zend.c error-handler ignored-return destruction",
+    "Zend/zend_objects.c::zend_objects_destroy_object pending exception save/restore"
+  ],
+  "scope": [
+    "Source VM and all six direct clean/flush/end/get APIs retain the actual scalar retval, original FCI input/phase and a separate pending Throwable.",
+    "Existing399 normal API commit and397 pending lower writes preserve result/header differences: false forwards live bytes/disabled, true/null suppress, strings/numbers convert after diagnostic cleanup using current precision.",
+    "API failed-call metadata authenticates exact current caller/tail; snapshots add no owners. Getters retain original frozen bytes through interrupted assignment and raw-zoh release follows lower routing.",
+    "Ignored diagnostic-return destructors run while the output handler stays disabled/running. Real VM source sites and authentic API suffixes distinguish normal/fresh/precreated Throwable paths. Owned producer destructors can reenter the now normally processed handler."
+  ],
+  "sources": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-16/sources-01/report.json",
+      "sha256": "8681ed7aa7936b86f25fc5f1715bea485c1ec57eccc8e54b071b9b2189d98b38",
+      "scope": "Two exact normal originals: VM string and direct flush."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-16/sources-02/report.json",
+      "sha256": "e8bf3b282b47cbb8b8833e736a43933f4ea5dbd08a468781c75efafd0affff24",
+      "scope": "Five exact normal originals: ignored-return destructor, owned producer reentry, changed precision and user/default pending lower routing."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-16/sources-03/report.json",
+      "sha256": "c85175e1658f9011d0430702a2e22dde3ffb35ab4e4fe79600311f843fd6a241",
+      "scope": "Eight exact normal originals: false/true/null and remaining five API modes; FINAL/lower-API controls are explicit Unsupported, zero agreement credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-16/normal-return-trace-01/report.json",
+      "sha256": "27295138d605be99f197e7adb7adec69485b7a488bff433b6047cf31e7e2ffea",
+      "scope": "One exact affected normal ignored-return source: no throw, correct VM destructor source line and print result1."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-16/trace-fixed-01/report.json",
+      "sha256": "ee03fc56d01933efcfe8bcbc2cb63f991da96f5618217f25dcf6bc9bb9ce1973",
+      "scope": "Two peer-authored fresh Throwable observers rerun by implementer: API keeps genuine ob_get_flush frame; VM keeps file/source line7 and no API frame. Not independent model credit here."
+    }
+  ],
+  "reached": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-16/state-01/report.json",
+      "sha256": "14376ef91c9868af7a427e7991c43ef3991e458badc3e7c5971c6306c8eaea32",
+      "scope": "api-frozen-getter63 and vm-false-live-buffer57 completed true/empty stderr/exit0. Separate retval/Throwable roots, copied FCI/getter values, actual API/VM tails, coherent type/flag/tail negatives and budget0/resume. Initial ignored-return37 remains at this old-site cut only."
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-16/state-02/report.json",
+      "sha256": "43702ef9c68c09f828dae05634c80f51b0d9d48201f96d9566d4932d0490f7f6",
+      "scope": "Affected ignored-return-destructor40 completed true/empty stderr/exit0; authentic ERROR_HANDLER_RESULT cleanup/C owners, disabled8305/live AH, real VM site/line, normal budget resume and retirement. Replaces that old37 for current scope."
+    }
+  ],
+  "preserved_zero_credit": [
+    "trace-baseline-api and trace-baseline-vm retain exact normal-output mismatches (missing builtin frame; internal/-1 VM site), each zero agreement credit.",
+    "retired-controls/manifest.json preserves both obsolete always-echo Unsupported originals and hashes. One-shot normal sources and direct unfinished-stage controls replace their maintained selections; old reports retain their original identities."
+  ],
+  "compatibility": "Initial15 source gates and pending getter/false fronts are unchanged by the final disjoint ignored-return trace clauses. The affected VM destructor front and new normal/fresh trace observers bind the current behavior. CASE additions and removal of obsolete CONTROL data do not change common run/profile helpers; old cuts are not renewed.",
+  "limits": [
+    "FINAL and explicit lower-API cascade deprecation throws remain Unsupported. Callback exit, wider return conversions, suspension, capability/mutation/stdout and remaining lifecycle paths retain existing boundaries.",
+    "Full PHP core remains partial; this is a bounded implementation/review milestone."
+  ]
+}

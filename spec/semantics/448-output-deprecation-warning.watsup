@@ -1,0 +1,69 @@
+;; main/output.c keeps a defined retval after its produced-output deprecation
+;; handler throws. Re-enable the surviving handler, commit that normal result,
+;; then propagate the pending exception through the real lower-write/API tail.
+dec $ob_deprecation_context(pstate, pobinvoke) : bool
+dec $ob_deprecation_pending_valid(pstate, pobinvoke, pvalue, nat) : bool
+dec $ob_deprecation_commit(pstate, pobinvoke, poboutput, nat) : pstate
+
+def $ob_deprecation_context(S, pobinvoke) = ($ob_api_failure_context(S, pobinvoke.CALL) /\ $ob_user_failure_current(S, pobinvoke))
+  -- if pobinvoke.CALL = OB_API_FAILED pconfigcall pcallcontext? ptask_native*
+def $ob_deprecation_context(S, pobinvoke) = ($ob_user_failure_vm(pobinvoke) /\ $ob_user_failure_current(S, pobinvoke) /\ $ob_user_failure_context(S, pobwrite))
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+def $ob_deprecation_context(S, pobinvoke) = false -- otherwise
+def $ob_deprecation_pending_valid(S, pobinvoke, pvalue, n) = true
+  -- if $ob_deprecation_context(S, pobinvoke)
+  -- if $call_task_valid(S, OB_USER_DEPRECATED $ob_api_original(pobinvoke) pvalue)
+  -- if $throwable_live(S, n)
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+  -- if $long_and(poutputbuffer.FLAGS, 8192) = 8192 /\ $long_and(poutputbuffer.FLAGS, 32768) = 0
+def $ob_deprecation_pending_valid(S, pobinvoke, pvalue, n) = false -- otherwise
+
+def $ob_api_failure_task(OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) = (pobinvoke.CALL)
+def $ob_user_active_task(OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) = (pobinvoke.BUFFER.ID)
+def $ob_user_disabled_task(OB_USER_DEPRECATED_PENDING pobinvoke pvalue n, n_id) = (pobinvoke.BUFFER.ID = n_id)
+def $output_task_write(OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) = $output_call_write(pobinvoke.CALL)
+def $task_nodes(OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) = $ob_user_nodes(pobinvoke) ++ $value_nodes(pvalue) ++ [HOBJECT n]
+def $call_task_valid(S, OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) = $ob_deprecation_pending_valid(S, pobinvoke, pvalue, n)
+
+def $ob_user_deprecation_discard(S, pobinvoke, pvalue) = S_ready
+  -- if pobinvoke.CALL = OB_API pconfigcall
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_native*
+  -- if pobinvoke_pending = pobinvoke[.CALL = OB_API_FAILED pconfigcall S.CURRENT ptask_native*]
+  -- if S_ready = S[.TODO = (OB_USER_DEPRECATED_PENDING pobinvoke_pending pvalue n) :: ptask_native*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ob_deprecation_pending_valid(S_ready, pobinvoke_pending, pvalue, n)
+def $ob_user_deprecation_discard(S, pobinvoke, pvalue) = S_ready
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $ob_user_failure_vm(pobinvoke)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: pobwrite.TAIL
+  -- if S_ready = S[.TODO = (OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) :: pobwrite.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ob_deprecation_pending_valid(S_ready, pobinvoke, pvalue, n)
+
+rule PhpStep/ob-user-deprecated-pending: S ~> $ob_deprecation_commit(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_and(poutputbuffer.FLAGS, $(-8193))])], $ob_api_original(pobinvoke)[.SENT = eps], $ob_user_output(S, pvalue), n)
+  -- if S.TODO = (OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) :: ptask_tail*
+  -- if $ob_deprecation_pending_valid(S, pobinvoke, pvalue, n)
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+def $ob_deprecation_commit(S, pobinvoke, poboutput, n) = $ob_normal_api_commit(S, pobinvoke, poboutput, n)
+  -- if pobinvoke.CALL = OB_API pconfigcall
+def $ob_deprecation_commit(S, pobinvoke, poboutput, n) = $output_failure_next(S[.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, $ob_user_committed(poutputbuffer, poboutput))], pobwrite, n, $ob_user_routed_bytes(poutputbuffer, poboutput))
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $output_selected(S, pobinvoke) = (poutputbuffer)
+
+def $return_discard(S, OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) = S[.TODO = (OB_USER_DEPRECATED_PENDING pobinvoke pvalue n) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt pending output-handler deprecation cleanup"]
+
+;; A VM write retains its emitting PHP frame during ignored diagnostic-return
+;; cleanup. Explicit output APIs instead retain their real internal frame.
+def $destructor_internal_site_source(ERROR_HANDLER_RESULT perrorcall) = false
+  -- if perrorcall.RESUME = OB_USER_DEPRECATED pobinvoke pvalue
+  -- if pobinvoke.CALL = OB_WRITE pobwrite
+  -- if $output_vm_source(pobwrite.CALLER)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = OB_USER_DEPRECATED pobinvoke pvalue
+  -- if $ob_call_api(pobinvoke.CALL) = (pconfigcall)
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)

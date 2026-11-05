@@ -88,7 +88,9 @@ test-semantics: build
 	python3 tests/semantics/output_vm_reference_warning_state.py
 	python3 tests/semantics/output_automatic_reference_warning_review_sources.py
 	python3 tests/semantics/output_automatic_reference_warning_review_state.py
-	python3 tests/semantics/output_abrupt_sources.py --select reference-warning-throw,reference-warning-retired-entry,callback-exit,produced-warning-throw
+	python3 tests/semantics/output_abrupt_sources.py --select reference-warning-throw,reference-warning-retired-entry,callback-exit
+	python3 tests/semantics/output_deprecation_warning_sources.py
+	python3 tests/semantics/output_deprecation_warning_state.py
 	python3 tests/semantics/output_request_end_sources.py
 	python3 tests/semantics/output_final_protocol.py
 	python3 tests/semantics/output_final_review_protocol.py

@@ -65,6 +65,7 @@ dec $ob_user_release(pstate, pconfigcall, poutputbuffer, pvalue) : pstate
 dec $ob_user_release_valid(pstate, pobrelease) : bool
 dec $ob_user_present(poutputbuffer*, nat) : bool
 dec $ob_user_result_discard(pstate, pobinvoke) : pstate
+dec $ob_user_deprecation_discard(pstate, pobinvoke, pvalue) : pstate
 
 ;; Source selection happens after ordinary ZPP conversion. Invalid/effectful
 ;; callback creation has its own Warning+Notice protocol, not a tick TypeError.
@@ -381,7 +382,8 @@ def $throwable_continuation(S, S_next) = S_next
   -- if pframe.SILENCES = S.SILENCES /\ pframe.BORROWEDREAD = S.BORROWEDREAD /\ pframe.OBJECTCAST = S.OBJECTCAST
 def $return_discard(S, OB_USER_RESULT pobinvoke) = $ob_user_result_discard(S, pobinvoke)
 def $ob_user_result_discard(S, pobinvoke) = S[.TODO = (OB_USER_RESULT pobinvoke) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler callback cleanup"] -- otherwise
-def $return_discard(S, OB_USER_DEPRECATED pobinvoke pvalue) = S[.TODO = (OB_USER_DEPRECATED pobinvoke pvalue) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler deprecation callback cleanup"]
+def $return_discard(S, OB_USER_DEPRECATED pobinvoke pvalue) = $ob_user_deprecation_discard(S, pobinvoke, pvalue)
+def $ob_user_deprecation_discard(S, pobinvoke, pvalue) = S[.TODO = (OB_USER_DEPRECATED pobinvoke pvalue) :: S.TODO][.COMPLETION = UNSUPPORTED "abrupt user output-handler deprecation callback cleanup"] -- otherwise
 
 def $ob_user_scalar(pvalue) = (pvalue = PNULL \/ $typed_scalar(pvalue))
 def $ob_user_bytes(PNULL, z) = eps

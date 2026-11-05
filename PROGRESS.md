@@ -1184,6 +1184,15 @@ retains the receiver-retirement finding and original failures; the
 keeps its separate source and reached cuts.
 Explicit lower-cascade/FINAL pre-entry warnings and wider diagnostic cleanup
 remain partial.
+OB16 preserves scalar output-handler returns through produced-output deprecation
+throws in source VM output and all six direct buffer APIs. Normal headers and
+result bytes commit before pending lower routing; FALSE and suppressing results
+retain their distinct dispositions. Ignored diagnostic-return destructors retain
+the disabled running layer, real VM source sites and authentic API trace frames.
+Owned producer reentry, current precision and frozen getter copies stay ordered.
+Sixteen authored originals, two repaired fresh-trace witnesses and three reached
+fronts/160 conditions pass at their recorded cuts. Independent validation is
+pending. FINAL/lower API cascades and wider return/control dependencies remain partial.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
