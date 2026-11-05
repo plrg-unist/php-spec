@@ -247,6 +247,7 @@ dec $weakmap_free_value_allowed(pstate, pvalue) : bool
 dec $weakmap_replace_allowed(pstate, paccess) : bool
 dec $weakmap_second_write_allowed(pstate, paccess) : bool
 dec $weakmap_registration_next(pstate, nat) : nat
+dec $weakmap_replaced_value(pstate, pweakmapvalue, pvalue) : pstate
 dec $weakmap_insert_result(pstate, paccess) : (pstate, pvalue)
 def $weakmap_insert_result(S, paccess) = (S, PNULL)
   -- if S.TODO = paccess.TASK :: ptask_tail*
@@ -265,7 +266,7 @@ def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WE
   -- if (S_read, pvalue_result) = $weakmap_insert_result(S, paccess)
 ;; Replacing an existing key keeps its registration and publishes the new
 ;; value before ordinary eager release of the old value.
-def $access_call(S, paccess, ptbytes) = S[.OBJECTS[n_map] = WEAKMAP (pweakmapentry[.VALUE = paccess.VALUE])][.TODO = (ACCESS_RESUME paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $access_call(S, paccess, ptbytes) = $weakmap_replaced_value(S[.OBJECTS[n_map] = WEAKMAP (pweakmapentry[.VALUE = paccess.VALUE])][.TODO = (ACCESS_RESUME paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pweakmapentry.VALUE, paccess.VALUE)
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_replace_allowed(S, paccess)
