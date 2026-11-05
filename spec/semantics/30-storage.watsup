@@ -742,6 +742,7 @@ syntax pstate = { TICKCOUNT nat, TICKSEQ nat, TICKENTRIES ptickentry*, OUTPUTSEQ
 
 dec $output_write(pstate, preqbytes) : pstate
 dec $output_display(pstate, pevent*) : pstate
+dec $destruction_store_new(pstate) : pstate
 dec $output_finalize(pstate) : pstate
 dec $output_drive_finalize(pstate, nat) : pstate
 dec $output_drain_ready(pstate) : bool
