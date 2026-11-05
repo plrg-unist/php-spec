@@ -22,13 +22,19 @@ callbacks that clear the receiver CV and change the live RHS.
 
 The admitted byvalue nongenerator `__call`/`__callStatic` bodies may also compile
 source-owned anonymous child factories. Plain headers and the current argument
-producer/value bounds remain intact. Captured integer sends survive later CV
-mutation; the real packed array owns leaf payloads through entry and may survive
+producer/value bounds remain intact. A nonreference first positional CV may
+contain an integer or supported live ordinary leaf object. It is read by value
+before later arguments rebind the CV or clear the receiver. Mixed instance calls
+may retain this positional object before a named later send. The real packed
+array owns leaf payloads through entry and may survive
 through a returned child's field or an escaped Closure. Instance receiver and
 static lexical/called scope remain actual saved context. The
 [factory review](../../coverage/semantics/anonymous-magic-argument-factories-review.json)
 keeps exact original observations and actual frame/array/return retirement checks
-separate from out-of-domain design attempts and retained boundaries.
+separate from out-of-domain design attempts and retained boundaries. The
+[object-CV review](../../coverage/semantics/anonymous-object-cv-magic-review.json)
+promotes the two preserved original sources at a new cut and checks actual first
+CV/array ownership after caller rebinding, return and receiver retirement.
 
 Zero-send instance/static calls now authenticate the same source, selected target
 and plain header without reading a first argument. Their raw zero-argument task
@@ -39,9 +45,10 @@ returned child, while existing collector rules exclude it from candidates and
 the collector graph. A write retains the ordinary COW separation rule.
 Instance receiver cleanup and static lexical/called scope keep their existing
 rules. The [zero-send review](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
-binds actual packing, empty-array ownership and budget-resumption checks. Owning
-first-CV capture and wider producers remain unfinished consumer work; no generic
-dispatch, schema or header rule changes.
+binds actual packing, empty-array ownership and budget-resumption checks.
+Array/string/reference first CVs, explicitly named first object CVs and wider
+producers remain unfinished consumer work; no generic dispatch, schema or header
+rule changes.
 
 For the sole argument-array cases, compiled-local cleanup retires the array and
 payload before releasing the selected receiver, then delivers the cached scalar

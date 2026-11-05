@@ -5254,7 +5254,11 @@ packed array and lexical/called scope after later arguments change caller bindin
 Returned children may retain payloads/arrays after receiver cleanup. Zero-send
 calls use the same selected source and ordinary method frame, with the real
 name and immutable empty array parameters, with no first-argument read.
-Nonempty producer and plain header limits remain; owning first-CV and wider producer forms stay unfinished.
+An initialized nonreference first positional CV may hold an integer or an
+admitted ordinary leaf object; it keeps its original value through later
+rebinding. Existing instance mixed sends retain a positional object before a
+named later argument. Arrays/strings/reference CVs, explicitly named first object
+CVs and wider producer/header forms remain partial.
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
@@ -5264,7 +5268,8 @@ Trait magic declarations remain partial.
 [magic method](coverage/semantics/anonymous-magic-factories-review.json)
 [property magic](coverage/semantics/anonymous-property-magic-factories-review.json)
 [argument magic](coverage/semantics/anonymous-magic-argument-factories-review.json)
-and [zero-send magic](coverage/semantics/anonymous-zero-argument-magic-review.json) reviews.
+[zero-send magic](coverage/semantics/anonymous-zero-argument-magic-review.json)
+and [object-CV magic](coverage/semantics/anonymous-object-cv-magic-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted

@@ -683,9 +683,11 @@ receivers/RHSs and signatures remain partial under the existing
 Argument-magic factory bodies retain plain `__call(string,array)` and static
 `__callStatic(string,array)` headers without a return declaration. Direct
 positional originals admit zero sends or the existing one/two-send family:
-integer literals, an initially nonreference integer first CV, nullary named producers and no-ctor
-named `new`, with supported int/leaf-instance values. Leafhood is the actual
-node-children predicate, not an inference from a property's presence. A later
+integer literals, an initialized nonreference integer/ordinary-object first CV,
+nullary named producers and no-ctor named `new`, with supported int/leaf-instance
+values. Objects require actual `node_children(...)=eps`; primitive fields are
+admitted. Mixed instance sends may keep that positional object before a named
+later argument; explicitly named first CVs retain their integer bound. A later
 argument may change the caller's CV and receiver binding while the earlier send
 stays fixed. The trampoline then supplies the real name/array pair. With no sends,
 Zend supplies `ZVAL_EMPTY_ARRAY`; the model represents that empty value by an
@@ -697,8 +699,8 @@ The parameter CV owns that array; its historical target metadata adds no payload
 owner. Instance magic retains its actual receiver and lexical/called classes;
 static magic invents no receiver. A returned child may retain a payload or the
 actual array after magic-local/receiver cleanup. These source/ownership extensions
-reuse the existing [magic-call consumers](SOURCE-METHODS.md). Owning first-CV
-capture and other unproved producer/layout combinations remain visible
+reuse the existing [magic-call consumers](SOURCE-METHODS.md). Array/string and
+reference first CVs, wider object graphs and unproved producer/layout combinations remain visible
 unfinished core boundaries rather than new dispatch rules.
 
 Named owners receive deferred keys after their children compile; an anonymous
@@ -771,7 +773,8 @@ ledgers preserve their historical scopes and source/state evidence. The
 [magic method](../../coverage/semantics/anonymous-magic-factories-review.json)
 [property magic](../../coverage/semantics/anonymous-property-magic-factories-review.json)
 [argument magic](../../coverage/semantics/anonymous-magic-argument-factories-review.json)
-and [zero-send magic](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
+[zero-send magic](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
+and [object-CV magic](../../coverage/semantics/anonymous-object-cv-magic-review.json)
 reviews distinguish exact originals, genuine reached ownership/resumption,
 explicitly derived context refusals and native-only preparations.
 

@@ -1,0 +1,84 @@
+{
+  "scope": "CLASS193: initialized nonreference ordinary leaf-object first positional CVs in existing magic __call/__callStatic sends, including mixed instance calls with a named later send. Explicitly named first object CVs, arrays/strings/refCVs, wider object graphs/headers/producers remain separate.",
+  "base": "5851459912e8c1cfce1e24cbf6fb97b74ab2a39e",
+  "implementation_commit": "793513c946dd234a4c14198f5c0af963beb9532e",
+  "module_count": 445,
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c zend_compile_args emits CV SEND_VAR_EX; zend_vm_def.h ZEND_SEND_VAR/_EX ZVAL_COPY_DEREF captures the argument before later sends and retains the object.",
+    "Zend/zend_vm_def.h ZEND_CALL_TRAMPOLINE moves original positional sends into the actual argument array; named extras keep keys. Name/array form the handler two-parameter call, retaining actual lexical/called scope and normal cleanup."
+  ],
+  "mechanism": "One414 first-positional-CV guard now uses existing magic_method_value (PINT or live nonfreeing ordinary INSTANCE with node_children=eps), retaining cell allocation/nonreference checks. Its declaration moves earlier. Existing80/86 value-send/root rules and414/415 packing/frame validators supply actual snapshot ownership. No schema, factory/header, allocator or generic dispatch change; named-first PINT guard remains exact.",
+  "author": {
+    "source2": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class193-object-cv-magic/author/class180-source-flyu598j/report.json",
+      "sha256": "ccfc5add1d1cdac282ed0a709e99905c8a267a040b1444eeb99070f6462552fe",
+      "result": "Both preserved original191 instance/static object-CV sources exact/native/model/stable at explicit240s/outer250. Later producer rebinds rootCV to NEW and clears instance receiver; actual OLD survives returned child. NEW destructor precedes held OLD/child destruction.",
+      "original_source_sha256": [
+        "ead9f4b5cd9251ffeed4bf70b76923d31e68f5c79e77dbf7049d1c11e7f5256e",
+        "8a674d761ce55bec334cb7a73aa035112c623ce827cf1db6b4aa4568e94e0664"
+      ]
+    },
+    "SL445": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class193-object-cv-magic/author/closure-call-protocol-lxbxmt1y/report.json",
+      "sha256": "265d30c8bcab2e9a20f86d835098c38697c19ba975a7ccd8d82cbda3ce5e039a",
+      "result": "First attempt TRUE/exit0/empty stderr/stable. Actual raw first CV owns OLD/nonref; same OLD appears in real packedarray at NEW while rootCV owns distinct NEW and receiverCVNULL. Array/OLD/NEW/currentThis each have one actual owner; metadata adds none. Full/split2+4096=4098 exactly matches native output/state and all retire.",
+      "counts": {
+        "compiler_setup": 5,
+        "genuine_capture_array_snapshot_frame_budget_retirement": 71,
+        "derived_called_class_and_caller_origin_refusals": 2
+      }
+    },
+    "commands": [
+      "python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_object_cv_magic_cases.json --model-timeout 240",
+      "python3 tests/semantics/anonymous_object_cv_magic_protocol.py"
+    ]
+  },
+  "independent_review": {
+    "decision": "accepted_private",
+    "semantic_cut": "793513c946dd234a4c14198f5c0af963beb9532e",
+    "record": "coverage/semantics/anonymous-object-cv-magic-independent.json",
+    "source2": {
+      "report_sha256": "1a5f0322792b4613ad798fe83cf0e56f6f659751ae9942315ce3c683d725a0aa",
+      "result": "Mixed object-positional/named-later instance and static escapedClosure originals both exact/native/model/stable at793, explicit300s/no timeout."
+    },
+    "SL445": {
+      "report_sha256": "b40c11efadda835dea7ba76b033957f7575fd325965ec9bfb590ef3399c2dd7b",
+      "result": "First attempt named RETURN\u2192HELD102 TRUE/exit0/empty stderr/stable. Actual mainarray[0=>OLD,later=>9] vs scalar-only namedbuffer; actual Base/C/source/currentThis and root reference nowNEW. AtHELD receiver,NEW,namedbuffer retired while child.savedarray1\u2192OLD1. Full/split2+8192=8194/native output/state/retirement/GCvalid.",
+      "counts": {
+        "compiler_setup": 5,
+        "genuine_named_array_buffer_old_new_receiver_budget_retirement": 95,
+        "derived_refusals": 2
+      }
+    },
+    "notes": "No independent fixture failure, semantic defect, timeout or engine divergence. Compact independent record owns exact external archive paths/commands."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class193-object-cv-magic/author",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/class193-object-cv-magic/author/reports.json",
+    "provenance": "/home/user/workspace/php-spec-evidence-archive/class193-object-cv-magic/author/provenance.json",
+    "historical_zero": "class191-magic-argument-factories/author/out-of-domain-preparations retains original native inputs and the old Unsupported packet with0agreement. New193 source bytes are identical; no191/192 campaign replay.",
+    "recovery": "Use committed catalogue/renderer and recorded commands in a provisioned private root; exact PHP/native/model outputs, commands/exits, fixtures and binary/module fingerprints remain external."
+  },
+  "engine_divergence": "None identified; no author semantic or fixture failure.",
+  "summary": {
+    "distinct_original_agreements": 4,
+    "semantic_cut": "Singlefixed793513c94; authorpreserved2 +peernew2. Old191 Unsupported remains0 at its originalcut; new193 source bytes forauthor2 identical.",
+    "author_SL445": {
+      "compiler_setup": 5,
+      "genuine_runtime": 71,
+      "derived_refusals": 2
+    },
+    "independent_SL445": {
+      "compiler_setup": 5,
+      "genuine_runtime": 95,
+      "derived_refusals": 2
+    },
+    "remaining": "Arrays/strings/reference CVs, explicitly named first object CVs, wider graphs/headers/producers and unproved consumers remain partial. No192/history replay."
+  }
+}
