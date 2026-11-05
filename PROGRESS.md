@@ -1497,8 +1497,10 @@ method throws and destructor replacements preserve normal buffer processing,
 frozen getter copies and API/VM traces. Eighteen exact normal originals, two
 refusal controls and four reached groups/420 conditions pass at their recorded
 cuts. Checks and remaining FINAL/internal/custom/resource boundaries are recorded in
-[author evidence](coverage/semantics/output-object-return-author.json); independent
-acceptance is pending. The two Notice originals retain public60 timeout cuts
+[author evidence](coverage/semantics/output-object-return-author.json). Five independent
+originals agree at their recorded cuts; three reached groups/219 conditions pass
+at the final scope-repaired cut. [Independent review](coverage/semantics/output-object-return-review.json)
+records real C-frame authority, late-cell traces and collector dispatch. The two Notice originals retain public60 timeout cuts
 with zero source agreement; their completed ownership fronts are state evidence.
 That source-performance limitation remains unfinished.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
@@ -2012,7 +2014,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | I117 | Direct named-Generator SEND body-Throwable unwind and receiver/argument cleanup; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
-| OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
+| OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |
 | ATTR47 | Authenticated Use/GroupUse import Tick events with focused eval continuation; private implementation/review. |
 | Enum callable arrays | Runtime ARRAY/STRING method capture cache identity and clone retirement; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

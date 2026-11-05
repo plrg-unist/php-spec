@@ -452,7 +452,10 @@ FINAL object, internal/custom casts, resources and the paused COMP88 supplied
 Throwable/comparison contracts remain separate dependencies.
 [Author evidence](../../coverage/semantics/output-object-return-author.json)
 records 18 exact normal originals, two refusal controls and four reached
-groups/420 conditions; independent acceptance is pending.
+groups/420 conditions. [Independent review](../../coverage/semantics/output-object-return-review.json)
+adds five exact originals at recorded cuts and three SL444 groups/219 conditions.
+Saved output pairs keep their real C-frame witness during validation; execution
+entry still requires the original caller.
 The two Notice originals have public60 timeout cuts with zero source agreement.
 Their full-resumption owner fronts establish state evidence; source performance
 remains an unfinished validation obligation.

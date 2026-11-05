@@ -151,6 +151,8 @@ test-semantics: build
 	python3 tests/semantics/output_object_return_sources.py
 	python3 tests/semantics/output_object_return_state.py --select fresh-unique-ref-object-precast-gc,pending-deprecation-skips-cast
 	python3 tests/semantics/output_object_return_state.py --select method-reference-notice-framed,method-reference-notice-unframed
+	python3 tests/semantics/output_object_conversion_review_sources.py
+	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
 	python3 tests/semantics/output_array_conversion_review_state.py
 	python3 tests/semantics/output_deprecation_warning_review_sources.py
