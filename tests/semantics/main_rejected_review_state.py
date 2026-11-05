@@ -13,7 +13,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tests'))
 from main_rejected_source_review import SOURCE, file_packet
-from encoding_declare_protocol import MESSAGE, ParserWorker, public
+from encoding_declare_protocol import MESSAGE, ParserWorker
 from error_handler_run import recorded
 from recorded_worker import Worker
 import static_types as types
@@ -23,6 +23,16 @@ term = lambda data: '$base64(' + json.dumps(b64(data)) + ')'
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 POSITIONS = ('beginLine', 'beginTokenPos', 'closeLine', 'closeTokenPos')
 REFUSAL = '$initial_state(UNSUPPORTED "invalid rejected main source or startup facts")'
+
+
+def terminal_checks(state):
+    # These results precede PROGRAM installation. Existing VM publication
+    # history deliberately refuses FILES-only terminal observations.
+    return ['$' + predicate + '(' + state + ')' for predicate in ('startup_state_valid', 'display_state_valid',
+        'precision_state_valid', 'exit_status_valid', 'file_state_valid', 'destruction_state_valid', 'source_pending_state_valid')] + [
+        '$heap_valid($heap_graph(' + state + '))', '~$call_descriptors_valid(' + state + ')',
+        '~$declaration_history_valid(' + state + ')',
+        '$declaration_entry_check(' + state + ') = ' + state + '[.COMPLETION = UNSUPPORTED "invalid declaration publication history"]']
 
 
 def prepare(out):
@@ -75,14 +85,17 @@ def prepare(out):
                 state + '.SHUTDOWN.ENTRIES = eps', state + '.DESTRUCTION.HANDLES = eps',
                 *[state + '.' + field + ' = eps' for field in ('SOURCES', 'CODE', 'DECLARATIONS', 'POOLS', 'FUNCTIONS',
                     'CLASSES', 'USERCONSTANTS', 'OBJECTS', 'ARRAYS', 'STORE', 'ALLOCATIONS', 'TODO', 'FRAMES',
-                    'EVALCONTEXTS', 'FILECONTEXTS', 'EVALBINDINGS', 'FILEBINDINGS', 'FAILEDSOURCES')], *public(state)]
+                    'EVALCONTEXTS', 'FILECONTEXTS', 'EVALBINDINGS', 'FILEBINDINGS', 'FAILEDSOURCES')], *terminal_checks(state),
+                state + '_reentry = $drive(' + state + ',0)',
+                state + '_reentry.COMPLETION = UNSUPPORTED "invalid declaration publication history"',
+                *[state + '_reentry.' + field + ' = ' + state + '.' + field for field in ('EVENTS', 'SOURCES', 'CODE', 'OBJECTS')]]
             for reporting in (0, 4, 64, 128):
                 masked = state + '_mask' + str(reporting)
                 startup = '({REPORTING ($ptascii(' + json.dumps(str(reporting)) + ')),INCLUDEPATH ($ptascii(".:"))})'
                 selected = (warnings if reporting & 128 else []) + ([terminal] if reporting & (4 if tag == 'parse' else 64) else [])
                 checks += [masked + ' = ' + entry(source, value, filename, startup=startup),
                     masked + '.EVENTS = [' + ','.join(selected) + ']', masked + '.COMPLETION = ' + state + '.COMPLETION',
-                    masked + '.EXITSTATUS = 255', masked + '.REPORTING = ' + str(reporting), '$call_descriptors_valid(' + masked + ')']
+                    masked + '.EXITSTATUS = 255', masked + '.REPORTING = ' + str(reporting), '$startup_state_valid(' + masked + ')']
             for display in ('0', '1'):
                 shown = state + '_display' + display
                 selected = ['DISPLAY_STDOUT (' + event + ')' for event in events] if display == '1' else []
@@ -94,7 +107,7 @@ def prepare(out):
             if tag == 'parse':
                 checks += [state + '_cwd = ' + entry(source, value, filename, cwd='(' + term(os.fsencode(out)) + ')'),
                     state + '_cwd.FILECWD = (' + term(os.fsencode(out)) + ')', state + '_cwd.INCLUDEDOPENED = [' + term(os.fsencode(filename)) + ']',
-                    state + '_cwd.SOURCES = eps', state + '_cwd.EVENTS = ' + state + '.EVENTS', *public(state + '_cwd')]
+                    state + '_cwd.SOURCES = eps', state + '_cwd.EVENTS = ' + state + '.EVENTS', *terminal_checks(state + '_cwd')]
 
         source, filename, original, value = originals['parse']
         checks += [entry(source, response(original, 'wrong_unit', unit=1), filename) + ' = ' + REFUSAL,
