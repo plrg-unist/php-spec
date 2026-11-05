@@ -90,5 +90,17 @@
     ],
     "model_seconds": 300,
     "process_seconds": 320
+  },
+  {
+    "id": "i112-capture-retirement-cache-throw",
+    "purpose": "A supplied cache-destructor exception observes capture already dead and Generator storage live, keeps caller trace/original exception identity, and finishes both weak retirements before catch.",
+    "source": "<?php\nclass Stop112T extends Exception {}\nclass Token112T {\n    function __construct() { global $weakToken; $weakToken = WeakReference::create($this); }\n    function __destruct() {\n        global $weakGenerator, $weakCapture, $stop;\n        $trace = (new Exception('probe'))->getTrace();\n        echo 'DTOR|', $weakGenerator->get() instanceof Generator, '|', $weakCapture->get() === null, '|';\n        echo 'TRACE|', $trace[0]['function'] === '__destruct', '|', $trace[0]['class'] === 'Token112T', '|', $trace[1]['function'] === 'run112T', '|', !isset($trace[2]), '|';\n        throw $stop;\n    }\n}\nfunction stream112T() { try { echo 'INIT|'; yield new Token112T(); } finally { echo 'FIN|'; } }\nfunction drop112T() { global $capture; $capture = null; return []; }\nfunction run112T() { global $capture; echo 'CALL|'; $capture(...drop112T()); echo 'BAD-RETURN|'; }\n$stop = new Stop112T('given'); $generator = stream112T(); $weakGenerator = WeakReference::create($generator);\n$capture = $generator->current(...); $weakCapture = WeakReference::create($capture); $generator = null;\ntry { run112T(); }\ncatch (Stop112T $caught) {\n    echo 'CATCH|', $caught === $stop, '|', $stop->getTrace() === [], '|', $stop->getPrevious() === null, '|', $weakGenerator->get() === null, '|', $weakCapture->get() === null, '|', $weakToken->get() === null, '|';\n}\necho 'DONE|';\n",
+    "source_sha256": "5c6a45758962740c2f898a241344df0107036917944ce7016b7ee4f419bf71a1",
+    "native_exit": 0,
+    "native_stdout": "CALL|INIT|FIN|DTOR|1|1|TRACE|1|1|1|1|CATCH|1|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 300,
+    "process_seconds": 320
   }
 ]
