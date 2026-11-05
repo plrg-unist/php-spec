@@ -1005,9 +1005,8 @@ reference is captured, and a throwing destructor commits that name before
 exception transfer while leaving the boolean assignment untouched. The
 [variable-array review](../../coverage/semantics/enum-is-callable-variable-array-review.json)
 records seven exact agreements, two explicit Unsupported controls, strict435
-and separate reached groups of 60, 53, 33 and 70 checks. Key-2 input arrays,
-embedded reference members, and rebound arrays with owning children remain
-outside this receipt route. Engine routes are
+and separate reached groups of 60, 53, 33 and 70 checks. Key-2 input arrays and
+wider owning rebound arrays remain outside this receipt route. Engine routes are
 `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
 `Zend/zend_API.c:zend_is_callable_ex`.
 For a shared input/output CV rebound to a new two-entry DIRECT string array,
@@ -1033,7 +1032,26 @@ release. The child remains live until the separate holder is cleared; releasing
 that holder before output instead uses the existing last-owner continuation.
 The [retained-child review](../../coverage/semantics/enum-is-callable-array-alias-retained-child-review.json)
 records three exact agreements, strict435 and separate held75/released55 checks.
-Additional children, ALIAS entries and wider ownership graphs remain partial.
+Additional children or ALIAS entries in the rebound array, and wider ownership
+graphs, remain partial.
+The sent callable array itself now admits DIRECT or genuine untyped ALIAS
+members at keys 0 and 1. The first-SEND receipt saves its table identity,
+physical slots and borrowed initial member values. Later arguments may rebind
+the source or mutate its referenced receiver/method; invocation reads the cells
+in the sent table. Ordinary COW retains shared references and unwraps singleton
+references under the existing array rules. The output may alias a member cell
+or the whole source cell. Before destroying an old output object, invocation
+saves a second borrowed member snapshot, the name and the boolean. Output
+cleanup validates that selection without rereading changed reference payloads,
+including when the destructor changes the method type or throws. Both snapshots
+add no heap owners: SENT and ordinary trace arrays retain the real table/cell
+edges. Typed, coerced, backed, indebted and retired member cells remain explicit
+Unsupported in this receipt route. The
+[reference-member review](../../coverage/semantics/enum-is-callable-reference-array-review.json)
+records the source and reached cuts. Engine routes are
+`Zend/zend_vm_def.h:ZEND_SEND_VAR`, `Zend/zend_hash.c:zend_array_dup_value`,
+`Zend/zend_API.c:zend_is_callable_at_frame` and `zend_get_callable_name_ex`, and
+`ext/standard/type.c:PHP_FUNCTION(is_callable)`.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

@@ -7078,9 +7078,15 @@ until that variable is cleared. Clearing it before output takes the last-owner
 null-before-destructor path; a later throwing destructor sees the committed
 name. The [retained-child review](coverage/semantics/enum-is-callable-array-alias-retained-child-review.json)
 records three exact agreements and separate held75/released55 reached checks.
+Callable arrays with untyped reference members now keep their sent table while
+reading live receiver/method cells at invocation. A borrowed invocation snapshot
+preserves the selected name and boolean through output-destructor mutation or
+throw, with ordinary shared/singleton COW and real cell owners; the
+[reference-member review](coverage/semantics/enum-is-callable-reference-array-review.json)
+records the bounded source and state checks.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type
-sources, wider array sources (including embedded references) and autoload,
+sources, typed/backed/debt reference members, wider arrays and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 

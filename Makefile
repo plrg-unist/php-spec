@@ -1043,6 +1043,8 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_array_alias_owning_protocol.py --group throw
 	python3 tests/semantics/enum_is_callable_array_alias_retained_child_protocol.py --group held
 	python3 tests/semantics/enum_is_callable_array_alias_retained_child_protocol.py --group released
+	python3 tests/semantics/enum_is_callable_reference_array_protocol.py --group alias
+	python3 tests/semantics/enum_is_callable_reference_array_protocol.py --group throw
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py

@@ -755,7 +755,7 @@
     "source_sha256": "cf3d2ff12e538e7d69fed1ed6f45e44c7daa4e5ee1ab5fcbf82238d1a92b84bd",
     "expected_model": "normal",
     "expected_normal_stdout": "true|OtherCheck::cases|case|",
-    "purpose": "Both reference members may change to a cached case receiver and a generated method."
+    "purpose": "A receiver reference may change to a cached enum case while the direct generated method member stays fixed."
   },
   {
     "id": "enum-is-callable-third-output-reference-member-output-alias",
@@ -807,5 +807,67 @@
     "expected_normal_stdout": "null|false|RefCheck::missing:17|",
     "purpose": "After query selection the destructor may replace the referenced method with an integer; the saved name/result still commit.",
     "model_timeout_seconds": 90
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-typed-cell-control",
+    "source": "<?php\nenum RefTyped: int { case A = 1; }\nclass MethodSource { public string $method = 'cases'; }\n$owner = new MethodSource;\n$target = [RefTyped::class, &$owner->method];\n$name = 'OLD';\n$ok = is_callable($target, false, $name);\necho 'typed:', (int)$ok, ':', $name, ':', $owner->method, '|';\n",
+    "source_sha256": "e289f7c4f3eeb17992e0a6f5941cc063a616e9213ca7e567b524be64df5f743f",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "typed:1:RefTyped::cases:cases|",
+    "purpose": "Typed-property reference members remain explicit Unsupported in the receipt path; no native fallback supplies the query result."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-cow-shared-member",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nenum OtherCheck { case B; }\nfunction change() { global $target; $target[0] = OtherCheck::class; $target[1] = 'missing'; return false; }\n$method = 'cases'; $target = [RefCheck::class, &$method]; $name = 'OLD';\n$ok = is_callable($target, change(), $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $target[0], ':', $target[1], ':', $method, '|';\n",
+    "source_sha256": "eea31bb90d5f1dc501d2ad6f486f8f27521f06848c209f0db2e3ab851b9ad239",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "false|RefCheck::missing:OtherCheck:missing:missing|",
+    "purpose": "COW separates the receiver slot while retaining the externally shared method reference in the sent table."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-cow-singleton-member",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nfunction change() { global $target; $target[1] = 'missing'; return false; }\n$method = 'cases'; $target = [RefCheck::class, &$method]; unset($method); $name = 'OLD';\n$ok = is_callable($target, change(), $name);\necho $ok ? 'true|' : 'BAD|'; echo $name, ':', $target[1], '|';\n",
+    "source_sha256": "e7aed857440d3be7d7ff76f9c79173d90ed50b22269b35a2c392f9c28d3187b6",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "true|RefCheck::cases:missing|",
+    "purpose": "COW unwraps the singleton method reference after its external variable is unset; the sent table retains the old method."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-throw-reference-trace",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nclass Drop {\n public function __destruct() { global $name, $method; echo $name === null ? 'null|' : 'BAD|'; $method = 'cases'; throw new Exception('drop'); }\n}\n$method = 'missing'; $target = [RefCheck::class, &$method]; $name = new Drop; $ok = 'UNCHANGED';\ntry { $ok = is_callable($target, false, $name); echo 'BAD|'; }\ncatch (Exception $e) {\n $trace = $e->getTrace();\n echo $trace[0]['function'], ':', $trace[1]['function'], '|';\n echo $trace[1]['args'][0][1], '|';\n echo $trace[1]['args'][2] === null ? 'trace-null|' : 'BAD|';\n $method = 'from'; echo $trace[1]['args'][0][1], '|';\n}\necho $name, ':', $method, ':', $ok, '|';\n",
+    "source_sha256": "40c58fd6481f7cf900aa599e9cc773667ae69767007da544a1477af031de0fe1",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "null|__destruct:is_callable|cases|trace-null|from|RefCheck::missing:from:UNCHANGED|",
+    "purpose": "A throwing destructor commits the saved name while API trace argument arrays retain the actual shared method cell and the captured output argument snapshots NULL."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-whole-output-alias",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nfunction change() { global $method; $method = 'missing'; return false; }\n$method = 'from'; $target = [RefCheck::class, &$method]; $name =& $target;\n$ok = is_callable($target, change(), $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $target, ':', $method, '|';\n",
+    "source_sha256": "fce8d7a706a5a178495ac22d4368d5006571eb4326ba2f9b9477a78933063174",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "false|RefCheck::missing:RefCheck::missing:missing|",
+    "purpose": "Output through the whole input/source cell replaces the table after selecting its current method reference."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-dynamic-members",
+    "source": "<?php\nenum RefCheck: int { case A = 1; }\nclass Drop {\n public function __destruct() { global $name, $receiver, $method; echo $name === null ? 'null|' : 'BAD|'; $receiver = 'OTHER'; $method = 'cases'; }\n}\n$r = 'ref'; $receiver = $r . 'check'; $m = 'miss'; $method = $m . 'ing'; $target = [&$receiver, &$method]; $name = new Drop;\n$ok = is_callable($target, false, $name);\necho $ok ? 'BAD|' : 'false|'; echo $name, ':', $method, ':', $receiver, '|';\n",
+    "source_sha256": "26326fe3cfe5e841cccde98241541ba1e2366ce6a6134cfeac025a9fce1ac6a2",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "null|false|refcheck::missing:cases:OTHER|",
+    "purpose": "Runtime string members keep their selected bytes while output destruction replaces both referenced payloads."
+  },
+  {
+    "id": "enum-is-callable-third-output-reference-user-magic-selection",
+    "source": "<?php\nenum MethodCase { case A; public function item() { echo 'BODY|'; } }\nenum MagicInstance { case A; public function __call($name, $args) { echo 'MAGIC|'; } }\nenum MagicStatic { case A; public static function __callStatic($name, $args) { echo 'STATIC|'; } }\nclass Drop { public function __destruct() { global $name, $method; echo $name === null ? 'null|' : 'BAD|'; $method = 'cases'; } }\n$receiver = MethodCase::A; $method = 'item'; $target = [&$receiver, &$method]; $name = new Drop;\n$ok = is_callable($target, false, $name); echo $ok ? 'true|' : 'BAD|'; echo $name, '|';\n$receiver = MagicInstance::class; $method = 'missing'; $name = new Drop;\n$ok = is_callable($target, false, $name); echo $ok ? 'BAD|' : 'false|'; echo $name, '|';\n$receiver = MagicStatic::A; $method = 'missing'; $name = new Drop;\n$ok = is_callable($target, false, $name); echo $ok ? 'BAD|' : 'false|'; echo $name, '|';\n$receiver = MagicInstance::A; $method = 'missing'; $name = new Drop;\n$ok = is_callable($target, false, $name); echo $ok ? 'true|' : 'BAD|'; echo $name, '|';\n$receiver = MagicStatic::class; $method = 'missing'; $name = new Drop;\n$ok = is_callable($target, false, $name); echo $ok ? 'true|' : 'BAD|'; echo $name, '|';\n",
+    "source_sha256": "7345be27df96fd341e695a14d09d5d585f4b8e066f61b214591733b74e28331c",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "null|true|MethodCase::item|null|false|MagicInstance::missing|null|false|MagicStatic::missing|null|true|MagicInstance::missing|null|true|MagicStatic::missing|",
+    "purpose": "Frozen query selection preserves public case methods and receiver-specific magic admission through method-reference mutation without entering target bodies."
   }
 ]

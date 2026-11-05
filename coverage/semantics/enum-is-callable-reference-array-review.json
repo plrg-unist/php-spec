@@ -1,0 +1,53 @@
+{
+  "scope": "Published-enum is_callable with two-entry live variable arrays containing DIRECT or genuine untyped ALIAS members and a third positional caller-CV output",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_revision": "86ee2dbdf07ca934eaf970a4546620086fd54898",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "868d6dd96d2b50db1f23b8ea2633fd9de39126850c02ae5a3c9b9e32769bb0e5",
+    "spec/semantics/437-enum-runtime.watsup": "b8747e6a8b2a8e794a6ee87aa88b8c58792b8cc9ee8336df934659b0f814c32e"
+  },
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "behavior": "The first SEND fixes the original table and physical DIRECT/ALIAS slots, with borrowed initial payloads authenticating its old name. Invocation dereferences the current cells in that table. Borrowed invocation payloads then freeze the selected name and boolean before output destruction. Shared references, singleton COW unwrapping, source/member output aliases, runtime string carriers and ordinary trace-array cell sharing retain their genuine owners. A destructor may change receiver/method payloads or throw without changing the saved selection; a throwing earlier argument skips both output and result writes.",
+  "source_results": "17 distinct exact native/model stdout, stderr and exit-status agreements: 11 author originals (10 new and the promoted embedded-receiver case) in raw/user-string-jqykmivw and raw/user-string-3k43sw8s, plus six independent originals in peer compare-v1. The six independent source bytes/hashes were copied unchanged into the maintained catalogue after acceptance; they were not rerun or counted twice. No whole-catalogue run is claimed.",
+  "unsupported_controls": "Two source controls in raw/user-string-ycj6j3od pass explicit Unsupported assertions: typed-property member cells and a malformed key-2 input with third output. Both reach reason is_callable outside admitted published enum query; neither is counted as native agreement.",
+  "strict": "All four new reached groups and the two affected groups compile all 435 modules in strict SL mode before running; their recorded direct-input fingerprints bind the accepted semantic bytes. Standalone strict-v2 also returns true/exit0/empty stderr; it ran before the semantic commit with those same bytes.",
+  "reached_results": "Separate author alias32 and early-argument-throw37 groups pass true/exit0/empty stderr/stable at semantic_revision. Separate independent shared-COW69 and output-throw83 groups pass likewise. COW69 proves table-only SEND ownership, real shared reference-edge multiplicity and malformed-cell refusals. Throw83 proves saved false/name versus the now-true live selection, name commit before pending-throw transfer and budget0/1 equivalence. Independent source originals separately distinguish singleton COW unwrapping and genuine shared trace cells. The author groups cover member-cell output aliasing and receipt discard before output on an argument throw.",
+  "affected_results": "Existing variable-array rebind55 and direct-array cleanup70 groups pass separately at semantic_revision. The rebind fixture now supplies coherent new ITEMS/VALUES fields in its forged wrong-table receipt. Its hypothetical source-CV replacement helper is true, as in the existing alias-rebound implementation, while the actual output CV remains distinct.",
+  "retained_failures": "Standalone strict-v1 failed a DSL binding position before the current production bytes; one split premise corrected it. A planned author live56 fixture had invalid cardinality constructor syntax and never executed; redundant live/output author campaigns were then removed in favor of independent COW/output groups. Affected rebind53 lacked the new receipt fields in a constructed wrong-table control; rebind54 then exposed a stale negative superseded by the already-integrated alias-rebound route. Both fixture corrections were independently reviewed; production remained unchanged. These failures earn no success credit.",
+  "engine_routes": [
+    "Zend/zend_vm_def.h:ZEND_SEND_VAR",
+    "Zend/zend_hash.c:zend_array_dup_value",
+    "Zend/zend_API.c:zend_is_callable_at_frame",
+    "Zend/zend_API.c:zend_get_callable_name_ex",
+    "ext/standard/type.c:PHP_FUNCTION(is_callable)"
+  ],
+  "remaining": "Temporary/literal reference-array inputs, typed/coerced/backed/debt member cells, newly attached type sources, named/unpacked output, wider owning rebound arrays and wider loading/member/lifetime contexts remain partial. Existing ALIAS entries in rebound owning-child arrays are outside this increment. Full core remains unfinished.",
+  "reports": {
+    "raw/enum-array-reference-author-native-v1/report.json": "9ebf109337d2ea129d478842b143a037d0603ea03871381c45bc6e295326c947",
+    "raw/enum-array-reference-strict-v1/report.json": "4741984b0958ac852ecda6452ac049230f52ccd9a516c466467255d3234d7d8a",
+    "raw/enum-array-reference-strict-v2/report.json": "e06ef456fa96bc3d3b66ae6b7a6ee55d746d36e2aa878b584a6842616ba589a8",
+    "raw/enum-is-callable-protocol-apz5kmro/report.json": "fcb4e7f6e2b02464059d1c084956230f09cfc980593ea8aec7a09018afb742d3",
+    "raw/enum-is-callable-protocol-b4_8wrr6/report.json": "9082e2cf32949f1ac35ffcfebd5853609d98c475de6dd32b7451d73f4f5a24d3",
+    "raw/enum-is-callable-protocol-c7wd2uko/report.json": "19c4075d7b28ebc9edd36828f71a63dacbb9a2528f2f30484a54e4652afa0839",
+    "raw/enum-is-callable-protocol-lmt_9jay/report.json": "b405a981db1d09f6822b94d2ed4043ff95a6a8863d99cc5314c10c09373712f8",
+    "raw/enum-is-callable-protocol-n9xa487v/report.json": "beeb7764dea197d7395ccd948558a5ea74ef24cfce4a6ce488e641670043e689",
+    "raw/enum-is-callable-protocol-qzia6nq3/report.json": "d1c974652333f9699bf0c0e8b846252a32026bd4485e98634bd8deba4cfeb7ce",
+    "raw/enum-is-callable-protocol-we621vb1/report.json": "933dc83098cb69a6c7e29c7f154cdc420e39b367db3c949d437c3ee1577b6cd2",
+    "raw/user-string-3k43sw8s/report.json": "70f2acaf7465bdc392030c5807cc22890b349d3bbe1469003decbfdba958bc24",
+    "raw/user-string-jqykmivw/report.json": "2b0bc1fdf414127ea8d07a46efe0957cb0c5d67f39ba54838c0fc118cb0e0a33",
+    "raw/user-string-ycj6j3od/report.json": "b71f348e63bce5b2feeea960b003b75893894866535aa1639642a21269a64823"
+  },
+  "independent_reports": {
+    "compare-v1/report.json": "86090c2217a5f27f522041378639791fb37d0bb58fb2db23f1ee5e0ac64d9c43",
+    "reached-cow-v1/report.json": "a485f6da384992b744dda0dafff3e5294d380abd1e859bf8a82493d15c86e487",
+    "reached-throw-v1/report.json": "a814aa3a6d60a5f03fdc2a87a9815d260168c25cfe1b96e87345bdc040d63a19"
+  },
+  "recovery": "Author raw/ and manifest.json are outside Git at ../php-spec-evidence-archive/enum-array-reference-member-120/; independent compare.py, reached.py and raw reports are at ../php-spec-evidence-archive/enum-array-reference-review-119/. Historical argv retains private paths; copy a named raw directory back under its recorded .tools basename if needed. Maintained gates: enum_is_callable.py --match third-output-reference- plus the separately promoted variable-array-embedded-reference; enum_is_callable_reference_array_protocol.py --group alias/throw; enum_is_callable_variable_array_protocol.py --group rebind; enum_is_callable_variable_array_cleanup_protocol.py. Shared private tool links make no fresh rebuild or portability claim.",
+  "review": "Independent semantic, source, fixture and raw-result review CLEAR by /root/enum_review on the recorded 86ee2dbdf semantic cut. Later maintained-test copies, fixture repairs and documentation leave those semantic bytes unchanged."
+}

@@ -91,9 +91,17 @@ that variable is cleared, so its destructor sees the committed name; clearing
 the variable before output gives the existing null-before-destructor path.
 Three exact agreements, strict435 and separate held75/released55 reached
 checks pass at recorded cuts. [Retained-child review](coverage/semantics/enum-is-callable-array-alias-retained-child-review.json).
+Live two-entry callable arrays now retain their real reference cells through
+the first SEND. Invocation reads current receiver/method payloads and freezes
+the selected name and boolean before output destruction; later reference
+mutation, output aliases and throwing cleanup preserve that selection.
+Borrowed snapshots add no owners. Shared and singleton COW keep their ordinary
+array behavior. Seventeen originals agree; two explicit controls and four
+separate reached groups pass at their recorded cuts.
+[Reference-member review](coverage/semantics/enum-is-callable-reference-array-review.json).
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
-wider variable arrays, embedded reference members, named/unpacked output,
+wider variable arrays, typed/backed/debt member cells, named/unpacked output,
 loading and wider enum
 member/lifetime contexts remain partial.
 
@@ -1404,7 +1412,7 @@ wider compiler and attribute behavior remains partial.
 | COMP180 | Rejected anonymous-class modifier cutoff; native/foreign investigation. |
 | OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
 | ATTR28 | Source-derived switch tick plans, fallthrough and final-value cleanup; private implementation/review. |
-| Enum callable arrays | Embedded reference members and stable first-SEND selection; private implementation/review. |
+| Enum callable arrays | Temporary/literal reference-array inputs; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |
