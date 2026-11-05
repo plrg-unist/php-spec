@@ -41,6 +41,7 @@ dec $tick_constant_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_group_site(pstate, porigin, int) : bool
 dec $tick_statement_prefix(pstate, porigin, ptask) : pstate
 dec $tick_case_tasks(pstate, porigin, nat, statement*) : ptask*
+dec $tick_is_case(statement) : bool
 dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
@@ -624,9 +625,13 @@ def $tick_enter(S, porigin, ptask, ptask_tail*) = $tick_statement_prefix($enter_
 ;; runs only from AT entry, so the pending STMT cannot recreate its own prefix.
 def $tick_statement_prefix(S, porigin, STMT (NStmtEnum phpType14 phpType3 phpType50 phpType42 (SEQUENCE statement*) metadata)) = S[.TODO = $tick_case_tasks(S, porigin, 0, statement*) ++ S.TODO]
 def $tick_statement_prefix(S, porigin, ptask) = S -- otherwise
+def $tick_is_case(NStmtEnumCase phpType14 phpType11 phpType5 metadata) = true
+def $tick_is_case(statement) = false -- otherwise
 def $tick_case_tasks(S, porigin, n, eps) = eps
-def $tick_case_tasks(S, porigin, n, (NStmtEnumCase phpType14 phpType11 phpType5 metadata) :: statement*) = $group_tick_tasks(S, $origin_child((porigin), [PCFIELD 4, PCINDEX n])) ++ $tick_case_tasks(S, porigin, $(n + 1), statement*)
-def $tick_case_tasks(S, porigin, n, statement_head :: statement*) = $tick_case_tasks(S, porigin, $(n + 1), statement*) -- otherwise
+def $tick_case_tasks(S, porigin, n, statement_head :: statement*) = $group_tick_tasks(S, $origin_child((porigin), [PCFIELD 4, PCINDEX n])) ++ $tick_case_tasks(S, porigin, $(n + 1), statement*)
+  -- if $tick_is_case(statement_head)
+def $tick_case_tasks(S, porigin, n, statement_head :: statement*) = $tick_case_tasks(S, porigin, $(n + 1), statement*)
+  -- if ~$tick_is_case(statement_head)
 
 dec $tick_kind(pintrinsic) : bool
 dec $tick_registration_valid(pstate, pconfigcall) : bool
