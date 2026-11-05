@@ -7,6 +7,7 @@ import tick_sources as ticks
 
 CASES = {
     'direct-constant-coalesce-emits-switch-temporary': (b'<?php function t(){echo "T";}register_tick_function("t");declare(ticks=1){echo "P";1 ?? 2;switch(1 ?? 2){case 1:echo "A";break;default:echo "B";}echo "Z";}unregister_tick_function("t");', b'PTTATTZT'),
+    'direct-nonnull-coalesce-compiles-unselected-callable': (b'<?php function t(){echo "T";}register_tick_function("t");declare(ticks=0){$x=1 ?? (static function(){declare(ticks=2);return 0;})();echo "A";echo "B";}', b'ATB'),
     'coalesce-assignment-callback-observes-committed-value': (b'<?php $x=null;function t(){global $x;if($x==="new"){echo $x;throw new Exception;}}register_tick_function("t");try{declare(ticks=1){$x ??= (static function(){declare(ticks=1);return "new";})();}}catch(Exception $e){echo "Z";}unregister_tick_function("t");', b'newZ'),
 }
 
