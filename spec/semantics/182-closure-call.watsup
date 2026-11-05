@@ -723,7 +723,7 @@ def $closure_call_copy_kind(S, pfunction, pclosurecall, n_receiver) = false -- o
 def $closure_call_enter(S, pfunction, pclosurecall, n_receiver) = S[.COMPLETION = UNSUPPORTED "Generator Closure::call source or argument form"]
   -- if $closure_call_copy_required(S, pfunction, pclosurecall)
   -- if ~$closure_call_copy_kind(S, pfunction, pclosurecall, n_receiver)
-def $closure_call_copy_begin(S, pfunction, pclosurecall, n_receiver) = S_copy[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $closure_call_copy_begin(S, pfunction, pclosurecall, n_receiver) = $closure_cache_copy(S_copy[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pclosurecall.SOURCE, n_new)
   -- if $object_body(S.OBJECTS[pclosurecall.SOURCE]) = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin_called
   -- if n_new = |S.OBJECTS|

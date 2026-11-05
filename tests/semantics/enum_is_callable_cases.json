@@ -1309,5 +1309,23 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "null|is_callable:SharedOutput\\Target::cases:UNCHANGED|query:1:SharedOutput\\Target::cases|",
     "purpose": "A throwing output destructor preserves the selected builtin API/name and unassigned result; a retained clone later reuses the same shared template cache."
+  },
+  {
+    "id": "enum-is-callable-third-output-private-cache-shared-same-scope-binding",
+    "source": "<?php\nnamespace SharedBinding;\nenum Target { case A; }\nclass Scope {}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\n$query = function($install) {\n    $name = 'OLD';\n    $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n};\n$query(true);\n$same = \\Closure::bind($query, null, null);\n$copy = clone $same;\n$same(false); $copy(false);\n$private = \\Closure::bind($query, null, Scope::class);\n$private(false); $query(false);\n",
+    "source_sha256": "88418dad77dfb436dd5022cacb0a12980231d76ff49a1b17392bf7e5aefedbd7",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:SharedBinding\\Target::cases|query:1:SharedBinding\\Target::cases|query:1:SharedBinding\\Target::cases|USER:OLD|query:0:OLD|query:1:SharedBinding\\Target::cases|",
+    "purpose": "A same-null-scope bind and clone reuse the shared warmed cache; a scope-changing real bind receives a fresh private cache and selects the current local function."
+  },
+  {
+    "id": "enum-is-callable-third-output-private-cache-generator-call-fresh-owner",
+    "source": "<?php\nnamespace PrivateGeneratorCall;\nenum Target { case A; }\nclass Scope {}\nfunction publish($install) {\n    if ($install) {\n        function is_callable($value, $syntax, $output) { echo 'USER:', $output, '|'; return false; }\n    }\n    return false;\n}\n$query = function($install) {\n    $name = 'OLD';\n    $ok = is_callable([Target::class, 'cases'], publish($install), $name);\n    echo 'query:', (int)$ok, ':', $name, '|';\n    yield 1;\n};\n$private = \\Closure::bind($query, null, Scope::class);\n$first = $private(true); $first->current(); unset($first);\n$copy = clone $private;\n$copied = $copy(false); $copied->current(); unset($copied);\n$called = $private->call(new Scope, false); $called->current(); unset($called);\n$last = $private(false); $last->current();\n",
+    "source_sha256": "fa353bde8059b7e77f37c76f87aba89dbbbdfddbd215a59927b22dc07646221d",
+    "expected_model": "normal",
+    "model_timeout_seconds": 150,
+    "expected_normal_stdout": "query:1:PrivateGeneratorCall\\Target::cases|USER:OLD|query:0:OLD|USER:OLD|query:0:OLD|query:1:PrivateGeneratorCall\\Target::cases|",
+    "purpose": "A scoped private Generator Closure preserves its warmed cache, while its clone and actual Closure::call copy each receive a fresh private cache and select the current local function."
   }
 ]

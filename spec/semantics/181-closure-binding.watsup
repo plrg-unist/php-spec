@@ -131,7 +131,7 @@ def $bind_source_lexical(S, n) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
 
 dec $bind_make(pstate, pbindcall, nat?, porigin?, porigin?) : pstate
-def $bind_make(S, pbindcall, n_receiver?, porigin_lexical?, porigin_called?) = S_copy[.CLOSUREBINDINGS = S_copy.CLOSUREBINDINGS ++ [{OBJECT n_new, SITE pbindcall.SITE, SOURCE n_source, LEXICAL porigin_lexical?, CALLED porigin_called?, RECEIVER n_receiver?}]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n_new)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $bind_make(S, pbindcall, n_receiver?, porigin_lexical?, porigin_called?) = $closure_cache_copy(S_copy[.CLOSUREBINDINGS = S_copy.CLOSUREBINDINGS ++ [{OBJECT n_new, SITE pbindcall.SITE, SOURCE n_source, LEXICAL porigin_lexical?, CALLED porigin_called?, RECEIVER n_receiver?}]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n_new)][.BASE = BASE_VALUE (KNOWN PNULL)], n_source, n_new)
   -- if S.TODO = (BIND_INVOKE pbindcall) :: ptask_tail*
   -- if pbindcall.SOURCE = (n_source)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
