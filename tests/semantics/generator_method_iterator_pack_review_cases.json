@@ -10,5 +10,17 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i116-peer-scalar-and-callback-cancellation",
+    "purpose": "A selected Generator still needs ordered cancellation when current is scalar, or current throws before producing an argument. Iterator destructor must see the selected paused Generator alive; Generator finally follows before caller catch. Neither next nor target send body runs.",
+    "source": "<?php\nclass Stop116R extends Exception {}\nclass ScalarArgs116R implements Iterator {\n    function rewind(): void { global $target, $args; echo 'REWIND|'; $target = null; $args = null; }\n    function valid(): bool { return true; }\n    function current(): mixed { global $throwing, $stop; echo 'CURRENT|'; if ($throwing) { throw $stop; } return 17; }\n    function key(): mixed { echo 'KEY|'; return 'extra'; }\n    function next(): void { echo 'BAD-NEXT|'; }\n    function __destruct() { global $weakTarget, $weakArgs; echo 'ITER|', $weakTarget->get() instanceof Generator, '|', $weakArgs->get() === $this, '|'; }\n}\nfunction scalarTarget116R() { try { echo 'INIT|'; yield 1; echo 'BAD-BODY|'; } finally { global $weakArgs; echo 'FIN|', $weakArgs->get() === null, '|'; } }\nfunction scalarRun116R($fail) {\n    global $target, $args, $weakTarget, $weakArgs, $throwing, $stop;\n    echo $fail ? 'CALLBACK|' : 'SCALAR|'; $throwing = $fail;\n    $target = scalarTarget116R(); $target->current(); $args = new ScalarArgs116R;\n    $weakTarget = WeakReference::create($target); $weakArgs = WeakReference::create($args);\n    try { $target->send(...$args); }\n    catch (Throwable $e) { echo 'CATCH|', $e->getMessage(), '|', $weakTarget->get() === null, '|', $weakArgs->get() === null, '|'; }\n}\n$stop = new Stop116R('given'); scalarRun116R(false); scalarRun116R(true); echo 'DONE|';\n",
+    "source_sha256": "e6c96b3395eca3733a9a3f5e99a8d0d6fa83200db0b890de679a4eac044df8d2",
+    "native_exit": 0,
+    "native_stdout": "SCALAR|INIT|REWIND|CURRENT|KEY|ITER|1|1|FIN|1|CATCH|Unknown named parameter $extra|1|1|CALLBACK|INIT|REWIND|CURRENT|ITER|1|1|FIN|1|CATCH|given|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
