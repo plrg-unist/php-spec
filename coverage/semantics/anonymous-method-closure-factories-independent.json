@@ -1,0 +1,68 @@
+{
+  "scope": "CLASS182 independent review: unit0 method-owned value-returning nongenerator Closure/arrow anonymous factories and the shared Closure __METHOD__ correction.",
+  "decision": "accepted_private",
+  "semantic_commit": "14f23fdd1fcb381d3a5927ee1a29a95cfb13a8bf",
+  "private_tested_commit": "fe66b00cd752882e499825021f172b9451303ece",
+  "equal_git_tree": "90e81f10c7a75dd58c8d666b6e60a61e05781961",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC; checked SL435 execution"
+  },
+  "source_review": "zend_begin_func_decl preserves nested Closure names; zend_compile_func_decl_ex retains lexical class context but checks constructor implementation after its body; zend_try_ct_eval_magic_const T_METHOD_C uses raw Closure function_name without a second class prefix. The383 wrapper authenticates each deferred body/root/name before reusing the containing method context. Bounds checks precede slicing; rejected-constructor checkpoints resolve the containing method.",
+  "finding": "Independent named, anonymous-NUL-owner and inherited sources exposed the erroneous77 __METHOD__ owner prefix. Commit431a27059 corrects it; the original three mismatches remain failures. Ordinary method and copied/fake Generator controls pass.",
+  "archive_root": "/home/user/workspace/php-spec-evidence-archive/class182-method-closure-factories/reviewer",
+  "commands": {
+    "artifact": "commands.json",
+    "sha256": "ca28dd30eee42186e3a92e3f2b8e70e34cc0adb92d3df4cb91fb7a39e5650448",
+    "identity": "Exact commands/cwd/cuts are recorded; reports retain binary/module fingerprints, source hashes, original bytes, profile and raw streams. Wrapper definitions are preserved under inputs/."
+  },
+  "checks": {
+    "initial_source9": {
+      "report": "class180-source-2ji7pgtv/report.json",
+      "sha256": "0364e953de2e9eb4a472430bc6fa30f1d7413dffd03ba0a47f55f42a9bcc39c0",
+      "result": "Stable; aggregate failed:5 exact,3 actual name mismatches,1 internal60s timeout. Mismatches and timeout earn zero agreement."
+    },
+    "corrected_affected3": {
+      "report": "class180-source-6up3ugcv/report.json",
+      "sha256": "312c1b31abbbc930328a0335a3d2194e4416cd2468bfb09febb94e4a55fff152",
+      "result": "All3 exact native/model bytes, status and exit; stable."
+    },
+    "child_throw_retry1": {
+      "report": "class180-source-mmzqru68/report.json",
+      "sha256": "45bb3647af81eb9a2182f8f551c424a8f46a8d1b8cf38c9fa55e00e0e6d30830",
+      "result": "Exact with explicit180s model/190s outer budget; stable. Both failed constructors suppress destruction and later class identity retains counter2."
+    },
+    "shared77_sources3": {
+      "report": "class180-source-thnr9_8y/report.json",
+      "sha256": "a27b59ebfa9433cab9bbaf8618d122e763ca5b36090712064ae3c7d602007f73",
+      "result": "All3 exact/stable: ordinary method versus Closure/arrow, nested anonymous names, copied/fake Generator names."
+    },
+    "independent_sl": {
+      "report": "class182-independent-protocol-tjse963m/report.json",
+      "sha256": "064f2285d832f812b9ee72e5d645593689cd5a77c766573aa92c930b68569472",
+      "result": "True newline/exit0/empty stderr/stable; source setup21, explicitly pure context18, source-reached runtime20. Short/forged roots/names/owner contexts refuse; actual NEW retains EARLY identity, valid call/heap/history and exact final output."
+    },
+    "failed_owner_sl": {
+      "report": "closure-call-protocol-3gzb8qw8/report.json",
+      "sha256": "1881d523ef8ded06c0c8f713b7df925ccf283ac37448498c701e9ab6b961ea2d",
+      "result": "Selected author failed-owner component passes SL34 reached premises with whole/split equality; stable. Resolves the earlier AL300 timeout without crediting it."
+    },
+    "source_boundaries": {
+      "reports": ["class180-boundaries-lsch5600/report.json", "class180-boundaries-l6dnfkke/report.json"],
+      "sha256": ["4cc2f712d4a90837df26541d89d4303fa1bfb16b76cfc0da0c3b60a74cad2ce5", "aad7b51bc3b9e3aa98677a544bca786d477441c0b820579f2a81431378b39e69"],
+      "result": "True newline/exit0/empty stderr/stable: maintained35 plus independent14 byref/generator refusal premises. Seven native-positive sources support source-boundary assertions, carrying zero model/native observational agreement."
+    },
+    "method_compiler": {
+      "report": "method-compiler-ijhnf9to/report.json",
+      "sha256": "13dc6b62033f9d49d87a33d90d36669b633560d007f07527ad57233e176b8385",
+      "result": "scope- selection9/55 premises passes with stable fingerprints, including corrected Closure/arrow constants and ordinary method controls."
+    }
+  },
+  "compatibility": "The initial five exact independent rows contain no __METHOD__ node;383 is unchanged and the77 correction is unreachable in them. These retain their original cut, while affected3 and timeout recovery1 bind the final cut:9 distinct independent admitted originals. Author source15 retains its separate qualified evidence. The reserved-self-base native probe was excluded from the model campaign and earns zero semantic credit.",
+  "fixture_corrections": "Two independent SL attempts incorrectly expected deferred publication for an EARLY child, then used PDRCLASS instead of the existing early-declaration marker. Their full failed fixtures/runner snapshots and zero-credit reports remain in class182-independent-protocol-n2qfycjp (sha781e02b99d9f074cbbecbb36c41d0bebf259b219b5c191271462a416a4b39826) and -97hmdehu (shab878a7c589501a680c8d179b1321ae029ee91d55d1b95b0639832c110e7054ed). The successful fixture asserts declaration_early before/after allocation.",
+  "conditions": "Private semantic acceptance only. Integration must assess the actual parent and coordinate any joined heavyweight gate with the active CLASS lane. Metadata-only documentation changes need no semantic rerun.",
+  "remaining": "Attributed/generator/byref-return deferred factories, wider nested functions/trait owners, anonymous-owner explicit-interface/trait/constant composition and dynamic units remain partial. No PHP-engine divergence was introduced."
+}
