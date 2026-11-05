@@ -7521,6 +7521,13 @@ inner duplicate-name Error. The [packed-call review](coverage/semantics/generato
 records the source and ownership checks; computed method names, Traversable
 packs and wider lifecycle combinations remain partial.
 
+Native Generator methods also collect named and ARRAY-packed arguments.
+`send(value: ...)` and `throw(exception: ...)` retain the selected receiver and
+copied value through later argument effects; empty packs reach zero-argument
+methods. Unknown names and unpacking errors precede body initialization, while
+count/type errors keep the API trace. The [native argument review](coverage/semantics/generator-method-arguments-review.json)
+records the source and ownership checks and remaining call/lifetime limits.
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.

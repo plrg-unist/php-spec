@@ -39,6 +39,19 @@ then returns its by-value completion or throws without advancing a suspended
 yield. Positional excess arguments run before the argument-count error and appear
 in its trace.
 
+Module447 collects named and ARRAY-packed arguments for admitted literal native
+Generator methods. The selected receiver and copied values remain owned while
+later producers run. `send` accepts the case-sensitive name `value`, and `throw`
+accepts `exception`; empty packs also reach zero-argument methods. Completed pack
+rows retain source facts without owning the old containers. Unknown names,
+duplicates and pack-local order errors precede API entry and initialization;
+count/type errors retain the native Generator frame. Checked slots transfer into
+the existing argument/resumption cursor with the same roots. Source arrays may
+retire and caller aliases may change while the selected Generator and snapshot
+remain live. Dynamic/nullsafe method selection, Traversable packs, specialized
+delegated input histories and wider lifetime combinations remain partial.
+[Native argument review](../../coverage/semantics/generator-method-arguments-review.json).
+
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
 inside an already running Fiber. Its actual resume operation and parameter cells
 move with that VM; the running Generator owns no duplicate frame. Resume restores
@@ -1069,8 +1082,9 @@ Notice/cleanup readback. Aggregate acquisition has separate START and
 null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
-producers, dynamic/nullsafe API calls and named/unpacked API arguments remain
-required. Other callable factory kinds, wider receiver bindings, implicit
+producers, dynamic/nullsafe API calls and wider named/unpacked API contexts remain
+required. Module447 covers the admitted native method reception above.
+Other callable factory kinds, wider receiver bindings, implicit
 callback creation and remaining changed/imported caller-scope combinations
 remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,

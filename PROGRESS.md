@@ -230,6 +230,19 @@ checks pass with the full 435-module SL manifest at their recorded cuts. Compute
 method names, Traversable packs and wider lifecycles remain partial.
 [I108 review](coverage/semantics/generator-call-array-pack-review.json).
 
+I109 routes native Generator named/ARRAY-packed arguments through one shared
+collector, then transfers its exact receiver/value roots into the ordinary
+Generator argument cursor. Case-sensitive names, pack-local ordering and early
+unknown/duplicate errors preserve initialization and trace priority. Array COW,
+copied reference values and a sole receiver survive source-variable retirement.
+Five unique source agreements (including the positional control), one explicit
+Unsupported control with zero agreement, and the final 83/88 reached gate pass
+at recorded cuts with the full 436-module SL manifest. Earlier runtime, diagnostic
+and fixture failures retain zero credit. Dynamic/nullsafe selection, Traversable
+inputs, specialized delegated histories
+and wider lifetimes remain partial.
+[I109 review](coverage/semantics/generator-method-arguments-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -1479,7 +1492,7 @@ wider rejected-source/compiler behavior remains partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS183 | Anonymous owner interfaces and trait/constant siblings; private implementation/review. |
-| I109 | Native Generator method named/ARRAY-packed argument reception; private implementation/review. |
+| I110 | Literal nullsafe native Generator API selection; private implementation/review. |
 | GC42 | Finite declared-property WeakMap value cleanup; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB16 | Deprecation-handler throws during produced output; private implementation/review. |
