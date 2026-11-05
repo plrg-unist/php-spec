@@ -96,8 +96,10 @@ def checks(captures, closure_nodes, arrays, leaf_owners, direct_leaf, other=Fals
         '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY n_array), INDIRECT n_held $ptascii("head")])',
         '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY n_array), DIRECT PUNDEFINED])',
         '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY n_array), DIRECT (POBJECT n_held)])',
-        '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY |S.ARRAYS|)])',
-        '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY n_array), DIRECT (POBJECT |S.OBJECTS|)])',
+        'n_bad_array = |S.ARRAYS|',
+        'n_bad_object = |S.OBJECTS|',
+        '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY n_bad_array)])',
+        '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY n_array), DIRECT (POBJECT n_bad_object)])',
     ]
     if other:
         result += [
