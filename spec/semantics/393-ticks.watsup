@@ -46,6 +46,8 @@ dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
+dec $tick_block_hook(pcnode) : bool
+dec $tick_hook_bodies(pcoccurrence*) : bool
 dec $tick_early(statement, bool) : bool
 dec $tick_unticked(statement) : bool
 dec $tick_emit(pticksummary, pcpath, int) : pticksummary
@@ -319,6 +321,8 @@ def $tick_nodes(T, pcodeexpr*, eps) = T
 def $tick_nodes(T, pcodeexpr*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $tick_nodes($tick_node(T, pcodeexpr*, pcpath, pcnode), pcodeexpr*, pcoccurrence*)
 def $tick_node(T, pcodeexpr*, pcpath, expression) = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
 def $tick_node(T, pcodeexpr*, pcpath, statement) = $tick_statement(T, pcodeexpr*, pcpath, statement, false)
+def $tick_node(T, pcodeexpr*, pcpath, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)[.LINE = $source_end_line(metadata)]
+  -- if $tick_block_hook(NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
 def $tick_node(T, pcodeexpr*, pcpath, pcnode) = $tick_nodes(T, pcodeexpr*, $pcchildren(pcnode, pcpath)) -- otherwise
 
 ;; ECHO/BIND/UNSET/RETURN/jumps emit real operations even with literal operands.
@@ -526,12 +530,18 @@ def $tick_finally(T, pcodeexpr*, pcpath, phpType67) = T[.DEPENDENCY = ("tick com
 
 ;; Class constants compile their values without a main opcode or trailing Tick.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassConst (SEQUENCE eps) phpType24 phpType18 phpType45 metadata, b) = $tick_constant_nodes(T, pcodeexpr*, $pcfield_phpType45(phpType45, pcpath ++ [PCFIELD 3]))
-;; Plain property defaults share that constant-context order and adjacency.
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 (SEQUENCE eps) metadata, b) = $tick_constant_nodes(T, pcodeexpr*, $pcfield_phpType56(phpType56, pcpath ++ [PCFIELD 3]))
+;; Defaults precede source-order block hooks, each with a separate op array.
+;; Neither default nor hook compilation breaks the enclosing main adjacency.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata, b) = $tick_nodes($tick_constant_nodes(T, pcodeexpr*, $pcfield_phpType56(phpType56, pcpath ++ [PCFIELD 3])), pcodeexpr*, $pcfield_phpType37(phpType37, pcpath ++ [PCFIELD 4]))
+  -- if $tick_hook_bodies($pcfield_phpType37(phpType37, pcpath ++ [PCFIELD 4]))
+def $tick_block_hook(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata) = $tick_inputs_clean(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata, 5)
+def $tick_block_hook(pcnode) = false -- otherwise
+def $tick_hook_bodies(eps) = true
+def $tick_hook_bodies((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_block_hook(pcnode) /\ $tick_hook_bodies(pcoccurrence*))
 ;; Retain the quiet route for other property groups without nested declarations.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata, b) = T
   -- if T.FREQUENCY = 0
-  -- if phpType14 =/= (SEQUENCE eps) \/ phpType37 =/= (SEQUENCE eps)
+  -- if phpType14 =/= (SEQUENCE eps) \/ ~$tick_hook_bodies($pcfield_phpType37(phpType37, eps))
   -- if ~$tick_contains(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
   -- if ~$tick_functions(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
 
