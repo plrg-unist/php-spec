@@ -869,5 +869,41 @@
     "model_timeout_seconds": 90,
     "expected_normal_stdout": "null|true|MethodCase::item|null|false|MagicInstance::missing|null|false|MagicStatic::missing|null|true|MagicInstance::missing|null|true|MagicStatic::missing|",
     "purpose": "Frozen query selection preserves public case methods and receiver-specific magic admission through method-reference mutation without entering target bodies."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-literal-live",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\n$class = 'tempcheck'; $method = 'from'; $name = 'OLD';\nfunction mutate(): bool { global $method; $method = 'tryFrom'; echo 'CHANGE|'; return false; }\n$ok = is_callable([&$class, &$method], mutate(), $name);\necho 'literal:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "1a6cbcb801c0787daf376afbf9df7bee4c3313d11d4cb24506eae288ae039b42",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "CHANGE|literal:1:tempcheck::tryFrom:tryFrom|",
+    "purpose": "Literal array reference members are read after a later argument changes the method, retaining original class-string spelling."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-literal-output-member",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\n$class = TempCheck::class; $method = 'from'; $name =& $method;\n$ok = is_callable([&$class, &$method], false, $name);\necho 'alias:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "de39544ac47e66cbf3b79cb2b009551cc4849283188d00332c8def09962a093f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "alias:1:TempCheck::from:TempCheck::from|",
+    "purpose": "The third output aliases the method reference in a temporary literal array; the selected name writes through that real cell."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-produced-live",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\n$class = TempCheck::class; $method = 'from'; $name = 'OLD';\nfunction target(): array { global $class, $method; echo 'MAKE|'; return [&$class, &$method]; }\nfunction mutate(): bool { global $method; $method = 'missing'; echo 'CHANGE|'; return false; }\n$ok = is_callable(target(), mutate(), $name);\necho 'produced:', (int)$ok, ':', $name, ':', $method, '|';\n",
+    "source_sha256": "c03515aaa28274309ccfab860738dcba22b15924478e47628fb21121290f97c2",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "MAKE|CHANGE|produced:0:TempCheck::missing:missing|",
+    "purpose": "An array returned by value transfers its actual table into the first SEND and reads a shared method reference after the next argument."
+  },
+  {
+    "id": "enum-is-callable-third-output-temporary-literal-destructor",
+    "source": "<?php\nenum TempCheck: int { case A = 1; }\nenum OtherTemp { case B; }\nclass Drop { public function __destruct() { global $name, $class, $method; echo $name === null ? 'null|' : 'BAD|'; $class = OtherTemp::B; $method = 'cases'; } }\n$class = 'tempcheck'; $method = 'missing'; $name = new Drop;\n$ok = is_callable([1 => &$method, 0 => &$class], false, $name);\necho 'destructor:', (int)$ok, ':', $name, ':', $method, '|';\necho $class === OtherTemp::B ? 'changed|' : 'BAD|';\n",
+    "source_sha256": "c8024923e1e31880b815414573bf4ff6c9b5bd38850bcb7d39d1d88c84a06508",
+    "expected_model": "normal",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "null|destructor:0:tempcheck::missing:cases|changed|",
+    "purpose": "A reverse-key temporary reference array freezes its false name/result before output destruction changes both referenced members."
   }
 ]
