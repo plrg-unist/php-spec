@@ -59,6 +59,20 @@ ORIGINALS['cycle-without-handler-gc'] = ORIGINALS['cycle-handler-gc'].replace(
     b', gc_collect_cycles(), "|"; return true;', b'; return true;')
 ORIGINALS['cycle-array-handler-gc'] = ORIGINALS['cycle-handler-gc'].replace(
     b'ob_start(callbackCycleOB10())', b'ob_start([callbackCycleOB10(), "__invoke"])')
+# These originals expose the separate final executor weak/storage frontier.
+# Derived contexts clean observers after the unchanged GC observations.
+LATE_STORAGE_CONTROLS = {
+    name: ORIGINALS.pop(name) for name in (
+        'cycle-handler-gc', 'cycle-without-handler-gc', 'cycle-array-handler-gc')
+}
+CYCLE_CLEANUP = b'''        $survivor = $weak->get();
+        if ($survivor !== null) { $survivor->self = null; }
+        unset($survivor);
+        $weak = null;
+'''
+for name, original in LATE_STORAGE_CONTROLS.items():
+    anchor = b'        echo ob_get_level(), "|D2|";'
+    ORIGINALS[name + '-cleanup'] = original.replace(anchor, CYCLE_CLEANUP + anchor)
 ENVIRONMENTS = {
     'referenced-selector-rebound-slow': [b'LC_ALL=C', b'TZ=UTC', b'FIRST=one', b'USE_ZEND_ALLOC=0'],
 }
