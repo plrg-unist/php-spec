@@ -225,11 +225,18 @@ accepted cuts are retained without replay.
 
 ## Post-FINAL tick callback retirement
 
-At the normal post-output endpoint, a nonempty ordered list of cached raw
-invokable tick entries retires one head at a time. The task owns every copied
-argument occurrence followed by the independent FCC.object and FCC.closure
-slots, even when both slots name the callback object. The remaining registry
-entries stay rooted until their turn; the shutdown-function queue follows.
+At the normal post-output endpoint, a nonempty ordered list of source-certified
+tick entries retires one head at a time. The task owns every copied argument
+occurrence followed by the independent FCC.object and FCC.closure slots.
+Named functions have no cache-object roots; method arrays retain their selected
+receiver; real Closures retain the Closure and any separate bound receiver.
+Raw invokable objects may occupy both FCC slots. The remaining registry entries
+stay rooted until their turn; the shutdown-function queue follows.
+
+Cacheless entries with scalar or zero arguments still drain through a real task.
+Tick readiness excludes both the shutdown-queue and final-executor fallbacks,
+even when the tick list has no heap roots. The shared module-owner predicate
+and existing abrupt-path boundary are unchanged.
 
 Arguments use the existing value-root and recursive release rules. Scalars add
 no heap roots. A copied array contributes one container owner per argument
@@ -239,27 +246,26 @@ alias change the value eventually released. The callback may itself appear as
 an argument or nested array child. Shared containers retain their children until
 the last container owner drops. With the same array in two entries, the first
 callback may retire while the later entry still holds those children; that
-entry then releases the children before its own final FCC slots.
+entry then releases the children before its own final FCC slots. A Closure's
+captured values and bound receiver remain child owners until Closure retirement.
 
 Registration source and selected-target snapshots remain documentary after
-transfer. Validation reconstructs their retired top-level roots without adding
-real owners or resurrecting released array children. The source authority is
-`basic_functions.c:register_tick_function` (`ZVAL_COPY`) and
-`user_tick_function_dtor` (arguments before `zend_fcc_dtor`), with the existing
-source-authenticated entry and executor-task guards.
+transfer. Validation reconstructs their retired top-level roots and Closure
+scope/binding metadata without adding real owners or resurrecting released
+children. The source authority is `basic_functions.c:register_tick_function`
+(`ZVAL_COPY`) and `user_tick_function_dtor` (arguments before `zend_fcc_dtor`),
+and `zend_closures.c:zend_closure_free_storage` (owned captured/static values
+before `this_ptr`), with the existing source-authenticated entry and executor-task
+guards.
 
-Five new native-first sources agree exactly for mixed scalars, a repeated
-nested array shared across entries, an embedded alias mutated after registration,
-a nested callback self and an array COW write. The
-[ATTR16 review](../../coverage/semantics/callback-late-tick-values-review.json)
-records seven reached groups/176 conditions (two derived forgery guards),
-zero-budget resume, private and joined strict433 and the isolated string-carrier assertion
-correction. Earlier finite-list,
-object-argument and direct-self evidence retains its original cuts in the
-[ATTR11](../../coverage/semantics/callback-late-tick-final-review.json),
-[ATTR12](../../coverage/semantics/callback-late-tick-pair-review.json),
-[ATTR13](../../coverage/semantics/callback-late-tick-list-review.json),
-[ATTR14](../../coverage/semantics/callback-late-tick-arguments-review.json) and
-[ATTR15](../../coverage/semantics/callback-late-tick-self-argument-review.json)
-ledgers. Other callback forms, assertion roots and abrupt/reentrant module
-shutdown remain partial; this is no full lifecycle or core closure.
+Five new native-first sources agree exactly for a captured real Closure, a
+separately bound receiver, a mixed named-function/method-array list and both
+zero-root fallback cases. The
+[ATTR17 review](../../coverage/semantics/callback-late-tick-callables-review.json)
+records seven reached groups/187 conditions (seven derived), zero-budget
+resume and private strict433 at their recorded cuts. Copied-value evidence
+retains its original cuts in the
+[ATTR16 review](../../coverage/semantics/callback-late-tick-values-review.json),
+which links the earlier finite-list/object/self ledgers. Wider callable
+producers, assertion roots and abrupt/reentrant module shutdown remain partial;
+this is no full lifecycle or core closure.

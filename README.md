@@ -4706,15 +4706,16 @@ The source `Closure->__invoke` inner-warning handler trace now inherits the real
 call file/line for both its head and wrapper frame. One native-first original,
 a reached trace state and strict433 pass; broader wrapper/reentry paths remain
 partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
-After output FINAL, normal raw invokable tick entries retire in registration
-order. Each finite copied value list retires before the independent FCC object
-and closure owners. Scalars add no heap roots; arrays retain copied containers,
-nested object identities and shared reference cells. Five native-first sources
-agree exactly for mixed scalars, repeated/shared arrays, a live embedded alias,
-a nested callback self and COW; seven reached groups check 176 conditions,
-including two derived guards, and private and joined strict433 passes. Other callback forms,
-assertion roots and abrupt/reentrant late release remain partial. See the
-[copied-value review](coverage/semantics/callback-late-tick-values-review.json).
+After output FINAL, source-certified tick entries retire in registration order.
+Copied values retire before the independent FCC object/Closure owners; arrays
+preserve snapshots and shared references. Named functions, method arrays, real
+Closures and raw invokable objects use their existing cache roots. Cacheless
+scalar/zero-argument entries drain before shutdown-queue or executor fallbacks.
+Five new native-first sources agree exactly; seven reached groups pass 187
+conditions (seven derived), and private strict433 passes. Wider
+producers, assertion roots and abrupt/reentrant late release remain partial.
+See the [callable-cache review](coverage/semantics/callback-late-tick-callables-review.json)
+and retained [copied-value evidence](coverage/semantics/callback-late-tick-values-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow

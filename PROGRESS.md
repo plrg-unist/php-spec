@@ -595,18 +595,19 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR16 generalizes normal post-FINAL raw-invokable tick cleanup to finite
-copied value lists through the existing value roots and recursive release rules.
-Scalar arguments add no heap root; shared arrays keep one child graph, embedded
-reference cells retain later mutations, and ordinary writes preserve copied
-container snapshots. Every argument occurrence retires before separate FCC
-object/closure owners, including callback self children. Five native-first
-sources agree exactly; seven reached groups pass 176 conditions (two derived
-forgery guards), and private and joined strict433 passes. A scalar string-carrier assertion
-was corrected and rerun alone; its original failure retains zero credit. Other
-callback forms, assertion roots and abrupt/reentrant module shutdown remain partial.
-[Copied-value review](coverage/semantics/callback-late-tick-values-review.json)
-retains the earlier finite-list/object/self ledgers and their original failures.
+ATTR17 generalizes normal post-FINAL tick retirement to existing certified
+named-function, method-array and real Closure caches. Each entry releases its
+copied values before its optional FCC object/Closure roots; capture and bound
+receiver children keep their own owners. Cacheless scalar/zero-argument entries
+now drain before the shutdown-queue and executor fallbacks without changing the
+shared module-owner predicate or abrupt boundary. Five native-first originals
+agree exactly; seven reached groups pass 187 conditions (180 reached, seven
+derived), and private strict433 passes. Wider producers, assertion roots
+and abrupt/reentrant module shutdown remain partial.
+[Callable-cache review](coverage/semantics/callback-late-tick-callables-review.json).
+ATTR16's copied-container/reference/self evidence keeps its own accepted cuts
+and original zero-credit scalar fixture failure in the
+[copied-value ledger](coverage/semantics/callback-late-tick-values-review.json).
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
