@@ -1,0 +1,22 @@
+[
+  {
+    "id": "i108-real-positional-pack-retired-source",
+    "purpose": "Retired positional source ARRAY contributes copied raw values, while real Generator copy retains capture, receiver and yield cache through close.",
+    "source": "<?php\nclass Token108A { function __destruct() { echo 'TOKEN|'; } }\nclass Capture108A { function __destruct() { echo 'CAPTURE|'; } }\nclass Receiver108A { public $tag = 31; function __destruct() { echo 'RECEIVER|'; } }\nfunction Pack108A() {\n    global $source, $receiver, $pack;\n    $saved = $pack; $source = null; $receiver = null; $pack = null;\n    echo 'PACK|'; return $saved;\n}\n$capture = new Capture108A();\n$source = function ($first, $second) use ($capture) {\n    global $weakToken, $weakCapture;\n    echo 'BODY|', $this->tag, '|', $first === $weakToken->get(), '|', $capture === $weakCapture->get(), '|';\n    try { yield $first; } finally { echo 'FIN|'; }\n    return $second;\n};\n$weakSource = WeakReference::create($source);\n$weakCapture = WeakReference::create($capture); unset($capture);\n$receiver = new Receiver108A(); $weakReceiver = WeakReference::create($receiver);\n$token = new Token108A(); $weakToken = WeakReference::create($token);\n$pack = [4 => $token, 9 => 47]; unset($token);\necho 'CALL|'; $generator = $source->call($receiver, ...Pack108A());\necho 'CREATED|', $weakSource->get() === null, '|', $weakReceiver->get() instanceof Receiver108A, '|', $weakToken->get() instanceof Token108A, '|';\necho 'CURRENT|', $generator->current() === $weakToken->get(), '|';\n$generator->next(); echo 'RETURN|', $generator->getReturn(), '|', $weakToken->get() instanceof Token108A, '|';\nunset($generator); echo 'GONE|', $weakReceiver->get() === null, '|', $weakToken->get() === null, '|', $weakCapture->get() === null, '|';\n",
+    "source_sha256": "9a232fa297c3e93e65a5133018be64b783ca1662c62f85599463f927eca230c0",
+    "native_exit": 0,
+    "native_stdout": "CALL|PACK|CREATED|1|1|1|CURRENT|BODY|31|1|1|1|FIN|RETURN|47|1|CAPTURE|RECEIVER|TOKEN|GONE|1|1|1|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  },
+  {
+    "id": "i108-fake-mixed-packs-named-default",
+    "purpose": "Distinct ARRAY packs reset positional-after-named ordering; named newThis is separate and canonical positional forwarding precedes inner named arguments.",
+    "source": "<?php\nclass Maker108B {\n    public $tag;\n    function __construct($tag) { $this->tag = $tag; }\n    function stream($first = 11, $second = 19) { echo 'BODY|', $this->tag, '|', $first, '|', $second, '|'; yield $first; return $second; }\n    function __destruct() { echo 'MAKER|', $this->tag, '|'; }\n}\n$old = new Maker108B(7); $source = $old->stream(...); unset($old);\n$receiver = new Maker108B(31);\n$generator = $source->call(...['second' => 23], ...['newThis' => $receiver], ...[17]);\necho 'CREATED|', $generator instanceof Generator, '|';\nunset($source, $receiver); echo 'CURRENT|', $generator->current(), '|';\n$generator->next(); echo 'RETURN|', $generator->getReturn(), '|'; unset($generator); echo 'DONE|';\n",
+    "source_sha256": "e6beecab1b4be781b8e2a613682a6b925cb91446a7a9a9c4776f79db5919f0b3",
+    "native_exit": 0,
+    "native_stdout": "CREATED|1|MAKER|7|CURRENT|BODY|31|17|23|17|RETURN|23|MAKER|31|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal"
+  }
+]
