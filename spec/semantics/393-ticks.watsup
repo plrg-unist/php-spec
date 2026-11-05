@@ -39,6 +39,8 @@ dec $tick_constant_raw(pticksummary, pcodeexpr*, pcpath, expression) : pticksumm
 dec $tick_constant_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_constant_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_group_site(pstate, porigin, int) : bool
+dec $tick_statement_prefix(pstate, porigin, ptask) : pstate
+dec $tick_case_tasks(pstate, porigin, nat, statement*) : ptask*
 dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
@@ -537,6 +539,9 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClass (SEQUENCE eps) phpTyp
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtInterface (SEQUENCE eps) phpType3 phpType42 (SEQUENCE statement*) metadata, b_top) = $tick_class_body(T, pcodeexpr*, pcpath, "interface", 3, statement*, metadata, b_top)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtTrait (SEQUENCE eps) phpType3 (SEQUENCE statement*) metadata, b_top) = $tick_class_body(T, pcodeexpr*, pcpath, "trait", 2, statement*, metadata, b_top)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtEnum (SEQUENCE eps) phpType3 phpType50 phpType42 (SEQUENCE statement*) metadata, b_top) = $tick_class_body(T, pcodeexpr*, pcpath, "enum", 4, statement*, metadata, b_top)
+;; ENUM_CASE adds no main opcode, but compile_stmt may emit its Tick before
+;; DECLARE_CLASS. A prior adjacent Tick keeps its original frequency.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtEnumCase (SEQUENCE eps) (NIdentifier (BYTES text) metadata_name) phpType5 metadata, b) = $tick_constant_nodes(T[.LINE = $source_line(metadata_name)], pcodeexpr*, $pcfield_phpType5(phpType5, pcpath ++ [PCFIELD 2]))
 def $tick_class_body(T, pcodeexpr*, pcpath, text, n_body, statement*, metadata, b_top) = $tick_class_finish(T, T_body, pclassdesc, metadata, b_top)
   -- if $tick_class_at(T.CLASSES, pcpath) = (pclassdesc)
   -- if pclassdesc.KIND = text
@@ -612,9 +617,16 @@ def $group_tick_tasks(S, (porigin)) = [AT porigin (TICK porigin ptickmarker)]
   -- if $tick_marker(S, porigin) = (ptickmarker)
 def $group_tick_tasks(S, porigin?) = eps -- otherwise
 
-def $tick_enter(S, porigin, STMT statement, ptask_tail*) = S[.TODO = [STMT statement, TICK porigin ptickmarker, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)]
+def $tick_enter(S, porigin, STMT statement, ptask_tail*) = $tick_statement_prefix(S[.TODO = [STMT statement, TICK porigin ptickmarker, ORIGIN_RETURN S.ORIGIN] ++ ptask_tail*][.ORIGIN = (porigin)], porigin, STMT statement)
   -- if $tick_marker(S, porigin) = (ptickmarker)
-def $tick_enter(S, porigin, ptask, ptask_tail*) = $enter_constant_task(S, porigin, ptask, ptask_tail*) -- otherwise
+def $tick_enter(S, porigin, ptask, ptask_tail*) = $tick_statement_prefix($enter_constant_task(S, porigin, ptask, ptask_tail*), porigin, ptask) -- otherwise
+;; Reuse the existing source wrapper before the raw Enum activation task. This
+;; runs only from AT entry, so the pending STMT cannot recreate its own prefix.
+def $tick_statement_prefix(S, porigin, STMT (NStmtEnum phpType14 phpType3 phpType50 phpType42 (SEQUENCE statement*) metadata)) = S[.TODO = $tick_case_tasks(S, porigin, 0, statement*) ++ S.TODO]
+def $tick_statement_prefix(S, porigin, ptask) = S -- otherwise
+def $tick_case_tasks(S, porigin, n, eps) = eps
+def $tick_case_tasks(S, porigin, n, (NStmtEnumCase phpType14 phpType11 phpType5 metadata) :: statement*) = $group_tick_tasks(S, $origin_child((porigin), [PCFIELD 4, PCINDEX n])) ++ $tick_case_tasks(S, porigin, $(n + 1), statement*)
+def $tick_case_tasks(S, porigin, n, statement :: statement*) = $tick_case_tasks(S, porigin, $(n + 1), statement*) -- otherwise
 
 dec $tick_kind(pintrinsic) : bool
 dec $tick_registration_valid(pstate, pconfigcall) : bool
