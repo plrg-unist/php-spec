@@ -38,4 +38,24 @@ const TickA38 = 1, TickB38 = 2;
 const TickLate38 = 3;
 echo 'BAD';
 ''', b'12C12NZ'),
+    'review-later-literal-keeps-preceding-closure-compiler-line': (b'''<?php
+function t() { $e = new Exception; echo '[' . $e->getTrace()[0]['line'] . ']'; }
+register_tick_function('t');
+declare(ticks=1);
+const TickClosureCarry38 = static function () {
+    declare(ticks=1);
+},
+TickScalarCarry38 = 2;
+echo 'Z';
+''', b'[4][7]Z[9]'),
+}
+
+CONTROLS = {
+    'review-callable-bearing-constant-array-order-remains-explicit': (b'''<?php
+function t() { echo 'T'; }
+register_tick_function('t');
+declare(ticks=1);
+const TickArrayRefuse38 = [static function () { declare(ticks=2); }];
+echo 'Z';
+''', b'TZT'),
 }
