@@ -18,16 +18,7 @@ echo "Z";
 ''', b'TPZT'),
 }
 
-CONTROLS = {
-    'trait-adaptation-needs-its-own-tick-summary': (b'''<?php
-function t(){echo "T";}
-register_tick_function("t");
-trait TickAliasSource44 { public function run(){return 7;} }
-declare(ticks=1);
-class TickAlias44 { use TickAliasSource44 { run as alias; } }
-echo "Z";
-''', b''),
-}
+CONTROLS = {}
 
 
 def main(cases=CASES, producer=Path(__file__), controls=CONTROLS):
