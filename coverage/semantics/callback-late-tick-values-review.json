@@ -1,6 +1,6 @@
 {
   "milestone": "ATTR16: copied scalar, array and embedded-reference tick arguments after FINAL",
-  "status": "selected normal source and ownership behavior independently validated; joined compiler composition pending; broader core partial",
+  "status": "selected normal source and ownership behavior independently validated; broader core partial",
   "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local binary/profile",
   "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-16",
   "scope": "Normal nonempty ordered raw-invokable tick lists reuse the existing finite copied-value roots and recursive release. Argument occurrences precede independent FCC.object/FCC.closure roots; assertion callback remains empty.",
@@ -24,7 +24,7 @@
     "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "adapter_sha256": "e7fbb8e2b2a4841ea0a9896dd54b0736975382ade056b91491a29dd6fabb9f65",
     "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
-    "semantic_mode": "SL; SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml5.1.0; LC_ALL=C; TZ=UTC; CPU5"
+    "semantic_mode": "SL; SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; LC_ALL=C; TZ=UTC; CPU5"
   },
   "evidence": {
     "native_review": {
@@ -113,6 +113,14 @@
       "source_reached_conditions": 174,
       "derived_forgery_guards": 2,
       "observation": "Scalar copies add no heap nodes. Repeated/shared arrays have separate top roots but one child graph; embedded references retain later mutations. Retired snapshot validation adds no real child owners. Nested callback self adds one child owner before final FCC roots; COW preserves the registered array. Exact source/CALL forgery guards and zero-budget resume remain checked."
+    },
+    "strict_joined": {
+      "revision": "f10c1a41f01b94ef7ffe8dc800035881c76a073e",
+      "report": "strict-f10/report.json",
+      "report_sha256": "f800dcc2b649a6d3e60e4f99fa904a798d68cd70079712746e177c3fa110a078",
+      "modules": 433,
+      "exit": 0,
+      "CPU": 4
     }
   },
   "preserved_earlier_evidence": [
@@ -128,5 +136,14 @@
   ],
   "remaining": "Other callback forms, assertion roots, cycles and wider abrupt/reentrant module shutdown remain partial. Five new source witnesses do not establish exhaustive finite-value or full lifecycle/core coverage.",
   "documentation": "README/PROGRESS/family notes consolidate superseded tick paragraphs into the current behavior; earlier raw cuts and failures remain in their existing ledgers. Documentation-only updates do not renew execution credit.",
-  "review": "Independent review /root/attr_review_current checked native C ownership, five original sources, reached ownership/counterexample checks and test reliability. Final ledger review and current-tail joined strict remain pending."
+  "review": "Independent semantic/test/doc CLEAR for 6536 and composed CLEAR for f10 by /root/attr_review_current. Five exact sources, selected149+27 reached conditions and private/joined strict433 are accepted at their recorded cuts; metadata-only final receipt adds no execution credit.",
+  "composition": {
+    "head": "f10c1a41f01b94ef7ffe8dc800035881c76a073e",
+    "parents": [
+      "6536fd9e10af7b068af2196d355159120f17bc64",
+      "b0650c4c0c6869e4a79eb771b4a0cc5d661a8bd5"
+    ],
+    "compatibility": "COMP165 changes misplaced encoding declarations in92, retained enum output changes437, and CLASS168 changes anonymous trait alias admission383 plus trait-origin/class-name trace rendering. These five ordinary named-class sources contain no declare, enum, is_callable, anonymous classes, traits, diagnostic or trace output. No393/444 or module-order interaction is introduced. Independent selected-program bridge plus joined strict433 validates this composition without replaying accepted sources/reached groups.",
+    "documentation": "Only current notes and this receipt change after f10; no new semantic execution credit."
+  }
 }

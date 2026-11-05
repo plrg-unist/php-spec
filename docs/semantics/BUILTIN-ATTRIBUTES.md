@@ -253,7 +253,7 @@ nested array shared across entries, an embedded alias mutated after registration
 a nested callback self and an array COW write. The
 [ATTR16 review](../../coverage/semantics/callback-late-tick-values-review.json)
 records seven reached groups/176 conditions (two derived forgery guards),
-zero-budget resume, private strict433 and the isolated string-carrier assertion
+zero-budget resume, private and joined strict433 and the isolated string-carrier assertion
 correction. Earlier finite-list,
 object-argument and direct-self evidence retains its original cuts in the
 [ATTR11](../../coverage/semantics/callback-late-tick-final-review.json),

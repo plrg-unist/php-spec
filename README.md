@@ -4712,7 +4712,7 @@ and closure owners. Scalars add no heap roots; arrays retain copied containers,
 nested object identities and shared reference cells. Five native-first sources
 agree exactly for mixed scalars, repeated/shared arrays, a live embedded alias,
 a nested callback self and COW; seven reached groups check 176 conditions,
-including two derived guards, and private strict433 passes. Other callback forms,
+including two derived guards, and private and joined strict433 passes. Other callback forms,
 assertion roots and abrupt/reentrant late release remain partial. See the
 [copied-value review](coverage/semantics/callback-late-tick-values-review.json).
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
@@ -7039,7 +7039,7 @@ I85 admits direct Generator-bodied magic handlers through the same selected
 source target. A real entry receipt follows fresh, resumed and closing frames;
 actual operation ownership prevents a same-function sibling from supplying it.
 The receipt owns no receiver or packed value. Five current originals agree with
-PHP; native observations and private strict433 retain their distinct cuts.
+PHP; native observations and private and joined strict433 retain their distinct cuts.
 Five reached fronts pass 444 custom/469 reported checks. Joined strict433,
 three exact sources and 166 independent reached checks pass at bd274e79f;
 current-tail composition is reviewed at b1adc40c.
