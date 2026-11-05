@@ -45,7 +45,7 @@ def $magic_static_method_descriptor(S, pmagicstaticmethodcall) = true
   -- if pmagicstaticmethodcall.SITE = PORIGIN n_unit pcpath
   -- if $origin_node(S.SOURCES, pmagicstaticmethodcall.SITE) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if pmagicstaticmethodcall.NAME = $base64(text_name) /\ pmagicstaticmethodcall.ARGUMENTS = phpType7*
-  -- if |phpType7*| <- [1,2] \/ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, phpType7*)
+  -- if |phpType7*| <- [0,1,2] \/ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, phpType7*)
   -- if ~$ppscoped_keyword(NName (BYTES text_class) metadata_class)
   -- if pmagicstaticmethodcall.CALLER = eps /\ pmagicstaticmethodcall.OWNER = 0
   -- if $closure_source_class(S, pmagicstaticmethodcall.SITE) = eps
@@ -67,8 +67,12 @@ def $magic_static_method_caller(S, pmagicstaticmethodcall) = true
 def $magic_static_method_caller(S, pmagicstaticmethodcall) = false -- otherwise
 dec $magic_static_method_capture(pstate, pmagicstaticmethodcall) : bool
 def $magic_static_method_capture(S, pmagicstaticmethodcall) = true
+  -- if pmagicstaticmethodcall.ARGUMENTS = eps
   -- if $magic_static_method_caller(S, pmagicstaticmethodcall)
-  -- if $magic_method_argument_capture(S, pmagicstaticmethodcall.ARGUMENTS[0]) \/ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS)
+def $magic_static_method_capture(S, pmagicstaticmethodcall) = true
+  -- if $magic_static_method_caller(S, pmagicstaticmethodcall)
+  -- if pmagicstaticmethodcall.ARGUMENTS = phpType7_argument :: phpType7_tail*
+  -- if $magic_method_argument_capture(S, phpType7_argument) \/ $magic_unpack_arguments(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS)
 def $magic_static_method_capture(S, pmagicstaticmethodcall) = false -- otherwise
 
 dec $magic_static_method_plan(pstate, porigin, ptbytes, phpType7*, int) : pmagicstaticmethodcall?

@@ -151,7 +151,7 @@ def $magic_method_call_source(S, pmagicmethodcall) = true
 def $magic_method_call_source(S, pmagicmethodcall) = false -- otherwise
 def $magic_method_descriptor(S, pmagicmethodcall) = true
   -- if $magic_method_call_source(S, pmagicmethodcall)
-  -- if (|pmagicmethodcall.ARGUMENTS| <- [1,2] /\ ($magic_method_arguments_source(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0) \/ $magic_named_source(S, pmagicmethodcall))) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
+  -- if (|pmagicmethodcall.ARGUMENTS| <- [0,1,2] /\ ($magic_method_arguments_source(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0) \/ $magic_named_source(S, pmagicmethodcall))) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
   -- if $(pmagicmethodcall.OBJECT < |S.OBJECTS|)
   -- if $object_class_origin(S, pmagicmethodcall.OBJECT) = (pmagicmethodcall.CLASS)
   -- if $class_at(S.CLASSES, pmagicmethodcall.CLASS) = (pclassdesc)
@@ -180,16 +180,30 @@ def $magic_method_argument_capture(S, NArg ABSENT expression (BOOLEAN false) (BO
   -- if ~$call_reference_variable(expression)
 def $magic_method_argument_capture(S, phpType7) = false -- otherwise
 dec $magic_method_capture(pstate, pmagicmethodcall) : bool
+;; Zero sends still capture the selected receiver, then the real trampoline
+;; packs an empty arguments array. No first-argument read is performed.
+def $magic_method_capture(S, pmagicmethodcall) = true
+  -- if pmagicmethodcall.ARGUMENTS = eps
+  -- if $magic_method_caller(S, pmagicmethodcall)
+  -- if $origin_node(S.SOURCES, pmagicmethodcall.SITE) = (NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 phpType6 metadata)
+  -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
+  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT pmagicmethodcall.OBJECT)
+def $magic_method_capture(S, pmagicmethodcall) = true
+  -- if pmagicmethodcall.ARGUMENTS = eps
+  -- if $magic_method_caller(S, pmagicmethodcall)
+  -- if $magic_method_scoped_source(S, pmagicmethodcall)
 def $magic_method_capture(S, pmagicmethodcall) = true
   -- if $magic_method_caller(S, pmagicmethodcall)
   -- if $origin_node(S.SOURCES, pmagicmethodcall.SITE) = (NExprMethodCall (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 phpType6 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT pmagicmethodcall.OBJECT)
-  -- if $magic_method_argument_capture(S, pmagicmethodcall.ARGUMENTS[0]) \/ ($magic_named_source(S, pmagicmethodcall) /\ $magic_named_capture_argument(S, pmagicmethodcall.ARGUMENTS[0])) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
+  -- if pmagicmethodcall.ARGUMENTS = phpType7_argument :: phpType7_tail*
+  -- if $magic_method_argument_capture(S, phpType7_argument) \/ ($magic_named_source(S, pmagicmethodcall) /\ $magic_named_capture_argument(S, phpType7_argument)) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
 def $magic_method_capture(S, pmagicmethodcall) = true
   -- if $magic_method_caller(S, pmagicmethodcall)
   -- if $magic_method_scoped_source(S, pmagicmethodcall)
-  -- if $magic_method_argument_capture(S, pmagicmethodcall.ARGUMENTS[0]) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
+  -- if pmagicmethodcall.ARGUMENTS = phpType7_argument :: phpType7_tail*
+  -- if $magic_method_argument_capture(S, phpType7_argument) \/ $magic_unpack_arguments(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS)
 def $magic_method_capture(S, pmagicmethodcall) = false -- otherwise
 
 dec $magic_method_plan(pstate, nat, ptbytes, phpType7*, int) : pmagicmethodcall?
