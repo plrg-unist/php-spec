@@ -1174,5 +1174,32 @@
     "model_timeout_seconds": 150,
     "expected_normal_stdout": "drop:Array:UNCHANGED|__destruct:NOAPI|Array:UNCHANGED|",
     "purpose": "A nested owning argument entry is destroyed after Array commits and the C handler returns; its throw prevents result assignment without an API trace frame."
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-values",
+    "expected_model": "normal",
+    "source": "<?php\nenum AcquireCheck: int { case A = 1; }\n$ok = is_callable('AcquireCheck::cases', false, $fresh);\necho (int)$ok, ':', $fresh, '|';\n$ok = is_callable([AcquireCheck::A, 'from'], false, $caseName);\necho (int)$ok, ':', $caseName, '|';\n$ok = is_callable([AcquireCheck::class, 17], true, $invalidName);\necho (int)$ok, ':', $invalidName, '|';\n",
+    "expected_normal_stdout": "1:AcquireCheck::cases|1:AcquireCheck::from|0:Array|",
+    "purpose": "Uninitialized simple output CVs are quietly acquired for literal, cached-case and type-invalid pair queries; syntax-only does not change false/Array.",
+    "source_sha256": "d476a98a48f57fa5cd19c3ecaf54ce40e08d27e8592823d498d45137234670af",
+    "model_timeout_seconds": 150
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-function-scope",
+    "expected_model": "normal",
+    "source": "<?php\nenum AcquireLocal { case A; }\nfunction localQuery($method) {\n    $ok = is_callable([AcquireLocal::class, $method], false, $name);\n    echo (int)$ok, ':', $name, '|';\n}\nlocalQuery('cases'); localQuery('missing');\n",
+    "expected_normal_stdout": "1:AcquireLocal::cases|0:AcquireLocal::missing|",
+    "purpose": "Each real function frame acquires its own missing output CELL and releases it on return; the runtime false method still writes its selected name.",
+    "source_sha256": "eaf5261aa84b530d94b3ae280238a639c8e2fa9daf461700e8ba197e33204073",
+    "model_timeout_seconds": 150
+  },
+  {
+    "id": "enum-is-callable-third-output-new-cv-unsupported-scalar-control",
+    "expected_model": "unsupported",
+    "source": "<?php\n$ok = is_callable(17, false, $name);\necho (int)$ok, ':', $name, '|';\n",
+    "expected_normal_stdout": "0:17|",
+    "purpose": "Builtin signature demands a reference before scalar query/name admission; the unfinished scalar name path stays explicit Unsupported with no native fallback.",
+    "source_sha256": "d622ba33afe92730de300244e4bfe0dcf5949ac6474106fa6b758942137d638f",
+    "model_timeout_seconds": 150
   }
 ]
