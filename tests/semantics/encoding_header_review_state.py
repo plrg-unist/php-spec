@@ -67,6 +67,13 @@ def prepare(out):
                 '$declare_header_receipt(statement_' + tag + ') = eps', '$encoding_declare_line(statement_' + tag + ') = eps',
                 'P_' + tag + ' = $ppstart(0,U_' + tag + ',$ptascii("receipt.php"))',
                 'P_' + tag + '.COMPLETION = PPCABRUPT (UNSUPPORTED text_' + tag + ')']
+        changed = copy.deepcopy(asts['same-ast-a'])
+        body_meta = changed['program'][0]['fields'][1][0]['meta']
+        body_meta['endTokenPos'] = {'int': str(int(body_meta['startTokenPos']['int']) - 1)}
+        checks += ['U_empty_echo = ' + adapter.request({'op': 'check', 'ast': changed, 'fixture': True})['fixture'],
+            'U_empty_echo = PROGRAM ([statement_empty_echo])', '$declare_header_receipt(statement_empty_echo) = eps',
+            'P_empty_echo = $ppstart(0,U_empty_echo,$ptascii("receipt.php"))',
+            'P_empty_echo.COMPLETION = PPCABRUPT (UNSUPPORTED text_empty_echo)']
         checks += [
             'statement_duplicate = NStmtDeclare (SEQUENCE phpType49_A*) (SEQUENCE statement_A_body*) ((MdeclareHeaderCloseLine 2) :: metadata_A)',
             '$declare_header_receipt(statement_duplicate) = eps', '$encoding_declare_line(statement_duplicate) = eps']
@@ -117,7 +124,9 @@ def main():
     before.update({str(out / name): sha(out / name) for name in ('assertions.json', 'protocol.watsup')})
     modules = [str(ROOT / name) for name in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     run = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *modules, str(out / 'protocol.watsup')], out / 'check', 180)
+    profile = json.loads((ROOT / 'tests/semantics/profile.json').read_text()); profile['include_path'] = '.:'
     report = {'head': head, 'module_count': len(modules), 'premises': count, 'inputs': before, 'process': run,
+              'profile': profile, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC'},
               'head_stable': head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'inputs_stable': before == {path: sha(Path(path)) for path in before},
               'stdout': (out / 'check.stdout').read_text(), 'stderr': (out / 'check.stderr').read_text()}

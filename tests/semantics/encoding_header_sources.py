@@ -26,6 +26,7 @@ CASES = {
     'nested-header-repeat': (b'', [4, 6, 6], (b'declare(Foo) value must be a literal', 3)),
     'heredoc': (b'H|', [5], None), 'parenthesized-literal': (b'P|', [4], None),
     'terminator-newline': (b'N|', [2], None), 'crlf': (b'C|', [4], None),
+    'comment-brace': (b'B|', [2], None), 'comment-colon': (b'B|', [2], None),
     'include-normal': (b'M|C|7|A|', [5], None), 'include-late': (b'M|', [5], (FATAL, 4)),
     'once-normal': (b'M|C|7|R|1|C|7|A|', [5], None),
     'eval-normal': (b'M|E|8|A|', [4, 4], None), 'eval-late': (b'M|', [4], (FATAL, 3)),

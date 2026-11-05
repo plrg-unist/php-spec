@@ -84,7 +84,9 @@ def encoding_warning_lines(ast):
             first_token = integer(child, 'startTokenPos'); last_token = integer(child, 'endTokenPos')
             if (None in (first_line, last_line, first_token, last_token)
                     or not line <= first_line <= last_line <= end
-                    or not token < first_token <= last_token <= last):
+                    or not token < first_token <= last or not token < last_token <= last):
+                return None
+            if last_token < first_token and (child['node'] != 'Stmt_Nop' or first_token != last_token + 1):
                 return None
         return line, token
 

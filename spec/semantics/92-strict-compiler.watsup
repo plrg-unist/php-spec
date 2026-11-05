@@ -17,6 +17,7 @@ dec $declare_header_tokens(metadata) : int*
 dec $declare_header_absent(metadata) : bool
 dec $declare_header_items(phpType49*, int, int, int, int) : bool
 dec $declare_header_body(phpType47, int, int, int, int) : bool
+dec $declare_header_body_span(statement, int, int) : bool
 dec $declare_header_receipt(statement) : (int, int)?
 dec $encoding_item_parent(ppstate, pcpath, pcnode) : (pcpath, statement)?
 dec $encoding_item_position(ppstate, pcpath, pcnode) : (int, int)?
@@ -131,12 +132,18 @@ def $declare_header_items((NDeclareItem phpType11 expression metadata) :: phpTyp
 def $declare_header_items(phpType49*, z_begin, z_line, z_start, z_token) = false -- otherwise
 def $declare_header_body(ABSENT, z_line, z_token, z_end, z_last) = true
 def $declare_header_body(SEQUENCE eps, z_line, z_token, z_end, z_last) = true
+def $declare_header_body_span(statement, z_start, z_end) = true
+  -- if $(z_end >= z_start)
+def $declare_header_body_span(NStmtNop metadata, z_start, z_end) = true
+  -- if $(z_start = z_end + 1)
+def $declare_header_body_span(statement, z_start, z_end) = false -- otherwise
 def $declare_header_body(SEQUENCE (statement :: statement_tail*), z_line, z_token, z_end, z_last) = true
   -- if metadata = $pcmetadata(statement)
   -- if $($source_line(metadata) >= z_line /\ $source_end_line(metadata) >= $source_line(metadata) /\ $source_end_line(metadata) <= z_end)
   -- if $source_token_start(metadata) = (z_body_start)
   -- if $source_token_end(metadata) = (z_body_end)
-  -- if $(z_body_start > z_token /\ z_body_end >= z_body_start /\ z_body_end <= z_last)
+  -- if $(z_body_start > z_token /\ z_body_start <= z_last /\ z_body_end > z_token /\ z_body_end <= z_last)
+  -- if $declare_header_body_span(statement, z_body_start, z_body_end)
   -- if $declare_header_body(SEQUENCE statement_tail*, z_line, z_token, z_end, z_last)
 def $declare_header_body(phpType47, z_line, z_token, z_end, z_last) = false -- otherwise
 def $declare_header_receipt(NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = ((z_line, z_token))
