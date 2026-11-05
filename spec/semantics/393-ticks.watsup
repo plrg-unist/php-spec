@@ -531,6 +531,7 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty (SEQUENCE eps) php
 ;; Retain the quiet route for other property groups without nested declarations.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata, b) = T
   -- if T.FREQUENCY = 0
+  -- if phpType14 =/= (SEQUENCE eps) \/ phpType37 =/= (SEQUENCE eps)
   -- if ~$tick_contains(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
   -- if ~$tick_functions(NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata)
 
