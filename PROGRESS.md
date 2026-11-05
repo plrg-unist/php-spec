@@ -1073,6 +1073,16 @@ The original service fixture's extra namespace diagnostic remains zero credit;
 accepted parsing and the receipt/runtime contracts are unchanged.
 [Review](coverage/semantics/rejected-namespace-review.json).
 
+COMP173 defers rejected-only class/interface/enum, static magic-method and try
+validation to its native compiler phase, retaining later completed parser headers.
+Readonly and duplicate-modifier parser stops remain active; readonly body-prefix
+differences remain explicit refusals. Thirty-eight dynamic and four rejected-main
+comparisons, 49 service controls, 24 affected controls and 110 reached conditions
+with SL435 pass at their recorded cuts. The original history fixture failure
+remains zero credit; its correction requires exactly the rejection-exit record
+and no partial declaration installation.
+[Review](coverage/semantics/rejected-static-validation-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |

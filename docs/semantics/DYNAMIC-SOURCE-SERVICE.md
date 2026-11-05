@@ -34,9 +34,16 @@ identity remain required for source-agreement claims.
 
 Rejected-only extraction defers `checkNamespace`: Zend checks namespace nesting
 during compilation, so a completed nested namespace cannot suppress later parser
-header reductions before a rejection. Genuine grammar errors and other foreign
+header reductions before a rejection. Genuine grammar errors and parser-time
 validation still stop collection. Accepted parsing retains its existing namespace
 checks, and no partial namespace AST is submitted to the compiler.
+
+Compiler-only class/interface/enum checks, static magic-method restrictions and
+try-without-catch validation are also deferred in this rejected-only parser.
+Readonly method and duplicate-modifier validation remains active. Native readonly
+validation occurs before a method body, while the foreign callback runs after it;
+an extra body header therefore remains a checked-prefix refusal. The ordinary
+parser, native helper and receipt/adapter/runtime contracts are unchanged.
 
 Only rejected-unit header extraction uses `RejectedEvalLexer` and
 `RejectedFileLexer`. Their native APIs expose raw token tuples from the actual

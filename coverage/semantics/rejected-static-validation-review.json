@@ -1,0 +1,76 @@
+{
+  "milestone": "COMP173",
+  "status": "Independent private production/test CLEAR; documentation and actual-parent composition pending.",
+  "base": "b828b290b6118bff1f772d58479760f7b40fcb3b",
+  "branch": "semantics/dynamic-source-next-173",
+  "raw_root": "../php-spec-evidence-archive/comp173",
+  "behavior": "Rejected units retain completed encoding headers after class/interface/enum name/parent checks, static magic methods and try-without-catch. Zend performs those checks during compilation after parsing; a later ParseError therefore precedes them. Real syntax, readonly and duplicate-modifier parser stops remain distinct; no partial program or declaration is installed.",
+  "implementation": "Fourteen PHP lines override checkClass/Interface/Enum/TryCatch only in RejectedHeaderParser and retain parent checkClassMethod for READONLY flags while deferring static magic restrictions. Ordinary parsing, native helper, worker/adapter/schema and all authored P4 rules are unchanged. The affected namespace control now tests a real readonly parser stop instead of the newly deferred class-self compiler check.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_class_decl/zend_assert_valid_class_name/zend_compile_try",
+    "vendor/php-src/Zend/zend_API.c::zend_check_magic_method_non_static",
+    "vendor/php-src/Zend/zend_language_parser.y::method_modifiers",
+    "vendor/php-src/Zend/zend_compile.c::zend_modifier_list_to_flags/zend_modifier_token_to_flag",
+    "vendor/php-parser/lib/PhpParser/ParserAbstract.php::checkClass/checkInterface/checkEnum/checkTryCatch/checkClassMethod"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "helper_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "profile": "tests/semantics/profile.json; source include_path=.:; reached genuine startup reporting30719/0",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "native_baseline": {
+    "head": "b828b290b6118bff1f772d58479760f7b40fcb3b",
+    "reports": [
+      "review-static-v1/partial-report.json",
+      "review-static-supplement-v1/report.json",
+      "review-parse-stop-v1/report.json"
+    ],
+    "scope": "26 initial rejected observations plus12 supplemental eval/file observations establish compiler-phase gaps and real syntax/nonliteral/duplicate/readonly stops. Two additional readonly-body observations remain explicit prefix refusals. Optional complete-class-self eval native syntax is accepted while the ordinary frontend remains helper_unsupported: the experimental generic worker assertion/custody failed there. Its original27 observations/streams and zero gate credit remain; file complete control was unrun, no accepted path was changed."
+  },
+  "boundary_validation": {
+    "head": "2ccc4cd9cc1db5033d3a3ea5f12c6e480dee49c3",
+    "service_report": "service-v1/report.json",
+    "controls": 49,
+    "scope": "Forty worker cases include two readonly-body refusals with native empty stderr, plus nine ordinary-parser/real grammar and modifier-stop probes. Frontend/probe exit0, stable head/inputs; native stderr custody4680 bytes. No source agreement credit.",
+    "affected_report": "affected-service-v1/report.json",
+    "affected_controls": 24,
+    "affected_scope": "Updated namespace other-validation control;3120 custodybytes, true/stable/closed. Historical source/state gates are not renewed."
+  },
+  "semantic_validation": {
+    "head": "c1265311f83760cd8b0e3c8c78315ba4e768f99c",
+    "wrapper_report": "source-campaign-v1/wrapper-check/report.json",
+    "wrapper_scope": "All38 caller wrappers parse;19 eval scalar values exactly preserve retained unit bytes. File units/manifests are exact independent originals. Preparation only.",
+    "dynamic_sources": {
+      "agreements": 38,
+      "report": "sources-v1/report.json",
+      "command": "python3 tests/semantics/static_rejected_sources.py --output <external sources-v1>"
+    },
+    "main_sources": {
+      "agreements": 4,
+      "report": "main-v1/report.json",
+      "command": "python3 tests/semantics/static_main_rejected_sources.py --output <external main-v1>"
+    },
+    "independent_reached": {
+      "premises": 110,
+      "module_count": 435,
+      "report": "state-v2/report.json",
+      "scope": "Genuine class-self-body eval receipt under default/startup0 reporting. Exact inner/repeated warning order, source/failure identity, no CLASSES/CLASSNAMES/FUNCTIONS/USERCONSTANTS/SOURCES/CODE/binding installation, only PDEXIT1 PCSREJECT history append, valid free-handle reuse/public zero-budget states, catch/finally output and wrong-unit/bytes/replay refusal. SL true/exit0/empty stderr,70.90s, stable head/inputs and workers exit0."
+    },
+    "stability": "Every raw native/model source stream/status agrees; no source refusal counted as agreement. source-campaign-v1 and short-v1/v2 reap.json retain empty full-private cmdline/cwd/exe/fd scans; all actor/worker groups reaped and direct CPU4/5 loans returned."
+  },
+  "preserved_state_failure": {
+    "head": "2ccc4cd9cc1db5033d3a3ea5f12c6e480dee49c3",
+    "reports": [
+      "short-v1/report.json",
+      "state-v1/report.json"
+    ],
+    "detail": "First110-condition fixture incorrectly equated DECLARATIONS publication histories across parser rejection. It failed at that condition with prior no-class checks true, no timeout; whole reached gate false/zero. 160::eval_resume_rejected and190::declaration_exit require exactly one PDEXIT. Fixture-only c126 correction asserts that append, preserving all no-installation/public/budget checks. Production is unchanged; service49/24 remain at2ccc without replay."
+  },
+  "limits": "Readonly modifier validation is native parser-time before method body, while the current foreign callback is after it; both readonly-body cases still refuse. Other unexplained prefix differences and multibyte conversion remain partial. Ordinary complete-source acceptance and its compiler restrictions are unchanged. No old syntax/runtime/once/ABI campaign is renewed; held paths untouched; no engine bug or intentional divergence claimed.",
+  "review": "Independent private production/test CLEAR exactc126 after all38+4 raw source/status comparisons, boundary49/24 and corrected reached110. Documentation and final actual-parent interaction review remain pending."
+}

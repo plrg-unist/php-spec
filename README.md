@@ -3192,6 +3192,10 @@ accepted lexers, the receipt schema and authored runtime rules are unchanged.
 Rejected sources also retain later headers after completed nested namespaces,
 whose static validation belongs to compilation. Sixteen dynamic and four main
 comparisons plus 100 reached conditions pass.
+Compiler-only class/interface/enum checks, static magic-method restrictions and
+try statements likewise preserve later parser warnings. Thirty-eight dynamic and
+four main comparisons and 110 reached conditions pass; parser-time modifier
+errors remain distinct.
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),
@@ -3199,7 +3203,8 @@ comparisons plus 100 reached conditions pass.
 [lexical-boundary review](coverage/semantics/encoding-lexical-review.json),
 [main-rejection review](coverage/semantics/main-source-rejection-review.json),
 [rejected-scanner review](coverage/semantics/rejected-scanner-tape-review.json),
-[namespace-phase review](coverage/semantics/rejected-namespace-review.json).
+[namespace-phase review](coverage/semantics/rejected-namespace-review.json),
+[compiler-phase review](coverage/semantics/rejected-static-validation-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
