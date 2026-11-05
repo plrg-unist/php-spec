@@ -29,6 +29,10 @@ dec $tick_new_named(phpType28) : bool
 dec $tick_group_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_group_emitter(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_constant_list(pticksummary, pcodeexpr*, pcpath, nat, phpType46*) : pticksummary
+dec $tick_constant_value(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
+dec $tick_constant_raw(pticksummary, pcodeexpr*, pcpath, expression) : pticksummary
+dec $tick_constant_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
+dec $tick_constant_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_group_site(pstate, porigin, int) : bool
 dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
@@ -313,14 +317,41 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGlobal phpType25 metadata, 
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtStatic phpType58 metadata, b) = $tick_group_nodes(T, pcodeexpr*, $pcchildren(NStmtStatic phpType58 metadata, pcpath))
 ;; A global CONST_DECL list is one statement. Each initializer compiles before
 ;; its DECLARE_CONST, but only the completed group receives a trailing Tick.
-;; The existing declaration receipt retains the final emitter's compiler line.
+;; Declaration receipts certify the list, but retain diagnostic line contexts.
+;; The constant-AST walk below threads the actual compiler emitter line.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtConst (SEQUENCE eps) (SEQUENCE phpType46*) metadata, b) = $tick_constant_list(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, phpType46*)
 def $tick_constant_list(T, pcodeexpr*, pcpath, n, eps) = T
-def $tick_constant_list(T, pcodeexpr*, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $tick_constant_list(T_value[.LAST = false][.LINE = z], pcodeexpr*, pcpath, $(n + 1), phpType46*)
-  -- if $code_expression(pcodeexpr*, pcpath ++ [PCINDEX n]) = ((z, b))
-  -- if T_value = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
+def $tick_constant_list(T, pcodeexpr*, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = $tick_constant_list(T_value[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType46*)
+  -- if $code_expression(pcodeexpr*, pcpath ++ [PCINDEX n]) =/= eps
+  -- if T_value = $tick_constant_value(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
 def $tick_constant_list(T, pcodeexpr*, pcpath, n, (NConst phpType11 expression metadata) :: phpType46*) = T[.DEPENDENCY = ("tick global constant declaration descriptor")]
   -- if $code_expression(pcodeexpr*, pcpath ++ [PCINDEX n]) = eps
+;; Constant folding and published redirects remove uncompiled branches. Pure
+;; zvals leave CG(zend_lineno) alone; unfurled const names set it to their line,
+;; and compiling a Closure leaves its end line in the enclosing context.
+def $tick_constant_value(T, pcodeexpr*, pcpath, expression) = T
+  -- if $tick_compiled_constant(pcodeexpr*, pcpath) /\ ~$tick_effect(pcodeexpr*, pcpath)
+def $tick_constant_value(T, pcodeexpr*, pcpath, expression) = $tick_constant_value(T, pcodeexpr*, pcpath_target, expression_target)
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath)
+  -- if $code_redirect(T.REDIRECTS, pcpath) = ((pcpath_target, b))
+  -- if $effect_below(pcpath, pcpath_target) /\ pcpath =/= pcpath_target
+  -- if $tick_redirect_node(T, pcpath_target) = (expression_target)
+def $tick_constant_value(T, pcodeexpr*, pcpath, expression) = $tick_constant_raw(T, pcodeexpr*, pcpath, expression)
+  -- if ~$tick_compiled_constant(pcodeexpr*, pcpath) /\ $code_redirect(T.REDIRECTS, pcpath) = eps
+def $tick_constant_value(T, pcodeexpr*, pcpath, expression) = T[.DEPENDENCY = ("tick constant expression compilation effects")] -- otherwise
+def $tick_constant_raw(T, pcodeexpr*, pcpath, NExprConstFetch name metadata) = T[.LINE = $source_line(metadata)]
+def $tick_constant_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata)[.LINE = $source_end_line(metadata)]
+def $tick_constant_raw(T, pcodeexpr*, pcpath, NExprArray phpType12 metadata) = T[.DEPENDENCY = ("tick callable-bearing constant array compilation")]
+  -- if $tick_functions(NExprArray phpType12 metadata)
+def $tick_constant_raw(T, pcodeexpr*, pcpath, NExprNew phpType28 phpType6 metadata) = T[.DEPENDENCY = ("tick deferred constant construction")]
+def $tick_constant_raw(T, pcodeexpr*, pcpath, expression) = $tick_constant_nodes(T, pcodeexpr*, $pcchildren(expression, pcpath)) -- otherwise
+def $tick_constant_nodes(T, pcodeexpr*, eps) = T
+def $tick_constant_nodes(T, pcodeexpr*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $tick_constant_nodes($tick_constant_node(T, pcodeexpr*, pcpath, pcnode), pcodeexpr*, pcoccurrence*)
+def $tick_constant_node(T, pcodeexpr*, pcpath, expression) = $tick_constant_value(T, pcodeexpr*, pcpath, expression)
+;; Zend's constant AST stores and compiles an array value before its key.
+def $tick_constant_node(T, pcodeexpr*, pcpath, NArrayItem phpType5 expression phpType4_ref phpType4_unpack metadata) = $tick_constant_nodes(T_value, pcodeexpr*, $pcfield_phpType5(phpType5, pcpath ++ [PCFIELD 0]))
+  -- if T_value = $tick_constant_value(T, pcodeexpr*, pcpath ++ [PCFIELD 1], expression)
+def $tick_constant_node(T, pcodeexpr*, pcpath, pcnode) = $tick_constant_nodes(T, pcodeexpr*, $pcchildren(pcnode, pcpath)) -- otherwise
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtReturn phpType5 metadata, b) = $tick_nodes(T, pcodeexpr*, $pcchildren(NStmtReturn phpType5 metadata, pcpath))[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtBreak phpType5 metadata, b) = T[.LAST = false]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtContinue phpType5 metadata, b) = T[.LAST = false]
