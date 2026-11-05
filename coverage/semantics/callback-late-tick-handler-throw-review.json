@@ -1,0 +1,145 @@
+{
+  "milestone": "ATTR25: abrupt ignored handler-value cleanup across pending C wrappers",
+  "status": "Bounded private validation accepted: strict435, six source agreements and independent7/723",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local binary/profile",
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-25",
+  "scope": "Named selected handlers return owning values whose destructors throw a literal builtin Exception while the handler is disabled. Normal or stable main exit, late shutdown-argument cleanup and stopped tick tail. An externally retained value throws later after restoration and instead calls the handler again, returning NULL.",
+  "production": {
+    "revision": "f3391e0cd689771bbc17c736f3d14eef23d52111",
+    "implementation": [
+      "spec/semantics/30-storage.watsup",
+      "spec/semantics/270-eager-destructors.watsup",
+      "spec/semantics/444-executor-final-free.watsup"
+    ],
+    "behavior": "A documentary DESTRUCTOR_C_ABANDONED(parent,selected) source ties a still-pending outer C wrapper to the actual selected bailout call. It owns the parent receiver pair and its unfinished release tail. Each omitted frame/operation/pending channel must be shared with the selected record or canonically rootless; selected completion roots must already be covered by the call pending owner. Existing EH cleanup keeps the old Exception once. Tick fatal admission uses the associated parent and actual last selected call. Exact-shared capture and its source representation remain unchanged."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend.c:zend_user_exception_handler ignored retval dtor precedes old_exception disposal and raw handler restoration",
+      "Zend/zend_execute_API.c:zend_call_function null-C exception tail",
+      "Zend/zend_exceptions.c:zend_throw_exception_internal disabled-handler report/release/bailout",
+      "Zend/zend_objects.c:zend_objects_destroy_object pending inner protection",
+      "Zend/zend_objects_API.c:zend_objects_store_del outer protection",
+      "main/main.c:module-local bailout and later shutdown-function storage cleanup"
+    ]
+  },
+  "evidence": {
+    "native": {
+      "report": "review-native/report.json",
+      "report_sha256": "184d4785f08c3ad81382f6fcb18f64ac9c35dadf378aa1615ef088d2e535b57c",
+      "revision": "919a386364660465de041ec934b66ff0080f61de",
+      "new_originals": 4,
+      "affected_controls": 2,
+      "result": "Fresh object/array/static-Closure: B;F;A;H;R;Q;/255 and one new-R fatal, no H/Arg PHP trace frame or extra inactive-Closure effect. Shared later-R: B;F;A;H;K;R;H;C;Q;/0 without stderr. Normal-handler and old body-value bailout controls retain observations."
+    },
+    "baseline": {
+      "report": "source-baseline-919a/report.json",
+      "report_sha256": "51bb60a5f3afebe863ee93f20ddeb023fd9b4c865354e251e9ea3bc6b239a114",
+      "revision": "919a386364660465de041ec934b66ff0080f61de",
+      "result": "Unsupported distinct pending owners after B;F;A;H;R;, no fatal/Q;112.03s, not timeout. Zero agreement credit."
+    },
+    "diagnostic": {
+      "report": "debug-handler-bailout-919a/report.json",
+      "report_sha256": "6dad055a5ce2be66be7b2a97740f7ac9df078a0bcb750ac08cdac299c5da73e3",
+      "result": "Genuine R THROW_SEARCH retains Arg/R/oldE/newE/K/L/C=2/2/1/1/1/1/2. Both calls have rootless FRAME/OP/PENDING channels, distinct OPs; Arg release tail is L/C/C. Existing EH cleanup is a single unreleased oldE owner. Exact step reaches UNCAUGHT then preserves original state at Unsupported. Diagnostic only, zero agreement credit."
+    },
+    "strict_first": {
+      "report": "strict-paired-full-roots/report.json",
+      "report_sha256": "71cb29bdec6eb1870fdeba8b988cda35f1b7754b4491327d28e5a62c58667e50",
+      "revision": "a0dbb8a43bae7dd9728afd3dd820bc52b1903609",
+      "passed": true,
+      "modules": 435
+    },
+    "source_first": {
+      "report": "source-paired-full-roots/report.json",
+      "report_sha256": "e2a3b40927ec8736e9c229aa3a6d97237bd61a2e87f888ce1baf5e3feaae6210",
+      "revision": "a0dbb8a43bae7dd9728afd3dd820bc52b1903609",
+      "passed": true,
+      "selected": [
+        "object"
+      ],
+      "bridge": "The later new-branch completion guard is pointwise true for the immutable selected OP.NORMAL/PENDINGeps in this source; no replay or new credit."
+    },
+    "source_remaining": {
+      "report": "source-paired-covered/report.json",
+      "report_sha256": "37cae6f57e8fef74cee276268e117ffea2a6132d31fd9639e92da2995d860f87",
+      "revision": "f3391e0cd689771bbc17c736f3d14eef23d52111",
+      "passed": true,
+      "selected": [
+        "array",
+        "closure",
+        "retained",
+        "normal-handler-control",
+        "body-throw-control"
+      ],
+      "result": "All five exact; combined with the retained first object run, four new originals and two affected controls pass. Stable inputs/empty worker stderr/full process reap."
+    },
+    "reached": {
+      "passed": true,
+      "groups": 7,
+      "conditions": 723,
+      "genuine": 690,
+      "derived": 33,
+      "selected_original": {
+        "report": "reached-first/run/report.json",
+        "report_sha256": "1eb5e56f6d886d04b1bd5be5b48fafa9e702920ad692facb410d3a461498ba6d",
+        "outer_report": "reached-first/process.json",
+        "outer_report_sha256": "4010a39ae0d35648fd66fbd30bf78151b571047bc34ab7159a0ea0e1f0a063ad",
+        "revision": "63e4336a17d0a22963a7c223fa689b64f666cd06",
+        "groups": 5,
+        "conditions": 450,
+        "genuine": 419,
+        "derived": 31,
+        "selected": [
+          "handler-value-throw-preserves-two-c-calls-and-old-exception",
+          "shared-handler-value-throws-after-handler-and-original-c-return",
+          "new-fatal-cause-retires-while-original-handler-cleanup-stays-owned",
+          "nested-handler-fatal-keeps-tick-tail-and-continues-late-queue",
+          "old-tick-parent-does-not-authorize-a-later-queue-selection"
+        ],
+        "credit": "Select only these five passing records; whole report is false because the two original event-binding fixtures failed and retain0."
+      },
+      "corrected_only": {
+        "report": "reached-corrected/run/report.json",
+        "report_sha256": "3ee8f277851274b80efeada681c0af2c55a832d9c81e2138ae78ebdf97f47da5",
+        "outer_report": "reached-corrected/process.json",
+        "outer_report_sha256": "8540f25bc18f3ab6c7cd6e18570d77153294a9fb23ba77c86dec87ebf3d28ee7",
+        "revision": "c99e5ea071c6368002f7840af2214612cee80373",
+        "groups": 2,
+        "conditions": 273,
+        "genuine": 271,
+        "derived": 2,
+        "credit": "Only array139 and Closure134 rerun. The sole correction replaces a non-invertible concatenated fatal-event equality with its exact six-event list pattern; same bytes/order/counts. Source/spec unchanged; no native/source/strict replay."
+      },
+      "result": "All selected predicates pass with stable inputs/empty stderr/full reap. Parent/selected and EH owners persist, new cause retires, retained-later H2 completes, and a valid queue cleanup row cannot reuse an old tick association."
+    },
+    "strict_final": {
+      "report": "strict-paired-covered/report.json",
+      "report_sha256": "820d092546528da2ff956255767883ad840b59c385bd97f165f67cafdf1f6eee",
+      "revision": "f3391e0cd689771bbc17c736f3d14eef23d52111",
+      "passed": true,
+      "modules": 435
+    }
+  },
+  "tests": {
+    "new_sources": [
+      "tests/semantics/deprecated_late_tick_handler_throw_object.php",
+      "tests/semantics/deprecated_late_tick_handler_throw_array.php",
+      "tests/semantics/deprecated_late_tick_handler_throw_review_closure.php",
+      "tests/semantics/deprecated_late_tick_handler_throw_review_retained.php"
+    ],
+    "controls": [
+      "tests/semantics/deprecated_late_tick_handler_value_object.php",
+      "tests/semantics/deprecated_late_tick_body_throw_object.php"
+    ],
+    "protocol": "tests/semantics/deprecated_late_tick_handler_throw_review_protocol.py"
+  },
+  "environment": "LC_ALL=C; TZ=UTC; USE_ZEND_ALLOC unset; tests/semantics/profile.json. Exact source/runtime/helper hashes, commands, caps, exits and full process reaping are external. Copied tools make no rebuild/portability claim.",
+  "remaining": "Unshared owning omitted channels, selected completion roots not covered by pending ownership, wider active-frame/reentry/callable/visibility/warning/previous-chain contexts remain partial. No engine-bug or lifecycle/core closure claim.",
+  "zero_credit": [
+    "Original Unsupported baseline and the preservation diagnostic keep zero agreement credit.",
+    "Original array/Closure protocol event-binding failures will remain0; successful unchanged groups and affected-only corrected runs are selected separately.",
+    "ATTR07 unsafe observation is not rerun and has no renewed credit."
+  ]
+}

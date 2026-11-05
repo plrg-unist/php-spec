@@ -673,17 +673,20 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR24 validates existing ignored owning-result cleanup from named selected
-exception handlers during post-FINAL tick retirement. Ordinary VALUE jobs retire
-fresh object/alias-array/static-Closure results before the old Throwable and
-registry restoration, keeping both original C protections. Shared results drop
-2→1 and survive until the later tick argument; saved main263 remains explicit
-exit/CLI7. Four new originals agree; six independent fronts pass 432 genuine
-source-reached checks. Production is unchanged and retains its accepted strict435
-gate. Original timing and recorder failures retain zero
-credit; the corrected array comparison uses the same raw execution.
-[Handler-value review](coverage/semantics/callback-late-tick-handler-value-review.json).
-Earlier [body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
+ATTR25 extends ignored named-handler value cleanup to a literal Exception while
+H is disabled. The existing EH cleanup retains oldE once; typed documentary
+parent/selected-call sources preserve pending C receiver pairs and unfinished
+release tails. Omitted frame/operation/pending channels must be shared or have
+no canonical roots, and selected completion owners must already be covered.
+Tick fatal admission follows the associated parent rather than assuming the last
+selected operation is a tick. A shared value throwing later calls restored H2
+and completes normally, with no phantom parent. Four new originals and two
+affected controls agree; strict435 and seven independent groups/723 conditions
+(690 genuine, 33 derived) pass. The original Unsupported, preservation diagnostic
+and two corrected event-binding failures retain zero agreement credit.
+[Handler-value throw review](coverage/semantics/callback-late-tick-handler-throw-review.json).
+Earlier [normal handler-value](coverage/semantics/callback-late-tick-handler-value-review.json),
+[body-value bailout](coverage/semantics/callback-late-tick-body-throw-review.json),
 [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
 [handler](coverage/semantics/callback-late-tick-handler-review.json),
 [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
@@ -691,9 +694,9 @@ Earlier [body-value bailout](coverage/semantics/callback-late-tick-body-throw-re
 [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
 [copied-value](coverage/semantics/callback-late-tick-values-review.json) evidence
-keeps its original cuts. Abrupt handler-value disposal, owning handler callables,
-distinct pending ownership contexts, direct reference-return bodies and wider
-lifecycle contexts remain partial.
+keeps its original cuts. Unshared owning channels, uncovered selected completion
+owners, wider handler/callable/previous-chain/frame contexts and reentry remain
+partial.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

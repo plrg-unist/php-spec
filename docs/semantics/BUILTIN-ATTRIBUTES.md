@@ -299,7 +299,18 @@ alias arrays preserve repeated owners, and genuinely shared values survive until
 the later tick argument. This is existing generic behavior, with native and
 source-reached witnesses in the
 [handler-value review](../../coverage/semantics/callback-late-tick-handler-value-review.json).
-Abrupt handler-value cleanup remains a separate boundary.
+A literal builtin Exception from that fresh ignored value instead aborts the
+handler API while H is disabled. The old Exception remains in its existing EH
+cleanup, and both original C protections plus unfinished arguments/FCC slots are
+retained. A typed abandoned source associates each distinct parent with the
+actual selected call; omitted owner channels must be shared or rootless and
+selected completion owners covered. Fatal tick admission uses that parent/source
+association rather than assuming the last selected operation is a tick. A shared
+value that throws later sees H restored, calls H again and finishes normally.
+Four new originals and two affected controls agree; strict435 and seven
+independent groups/723 conditions (690 genuine, 33 derived) pass. The
+[handler-value throw review](../../coverage/semantics/callback-late-tick-handler-throw-review.json).
+Wider abrupt handler-value cleanup remains partial.
 
 Ignored owning values returned by the destructor body retire after its PHP locals
 and before the inner C receiver protection. Ordinary VALUE jobs preserve the same
@@ -319,7 +330,7 @@ the stopped tick tail stays rooted. Distinct pending-owner contexts remain an
 explicit boundary. Four new originals and two affected controls agree; strict435
 and seven independent groups/612 conditions (603 reached, nine derived) pass.
 See the [body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json);
-direct reference-return bodies and abrupt selected-handler retval disposal remain partial.
+direct reference-return bodies and wider selected-handler retval disposal remain partial.
 
 Four new handled originals and two affected controls agree; strict433 passes.
 Nine independent groups pass 508 conditions (497 reached, 11 derived). The
