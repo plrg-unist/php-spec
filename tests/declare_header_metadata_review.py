@@ -58,7 +58,8 @@ def main():
     try:
         for name, source, ini, mode, lines, token in cases:
             flags = [part for key, value in ini.items() for part in ('-d', key + '=' + value)]
-            frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(ROOT / 'frontend/worker.php')])
+            frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d', 'display_errors=stderr',
+                               *flags, str(ROOT / 'frontend/worker.php')])
             try:
                 packet = {'op': 'parse', 'source': base64.b64encode(source).decode()}
                 if mode == 'eval': packet.update(op='parse-eval', id='1', mode='eval', profile='cli-raw-85')
@@ -96,7 +97,8 @@ def main():
         for mode in ('file', 'eval'):
             left, right = [originals['pair-' + mode + '-' + str(index)] for index in (0, 1)]
             assert left != right and without_receipts(left) == without_receipts(right)
-        frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', str(ROOT / 'frontend/worker.php')])
+        frontend = Worker([str(ROOT / '.tools/php/bin/php'), '-n', '-d', 'display_errors=stderr',
+                           str(ROOT / 'frontend/worker.php')])
         try:
             control = require(frontend.call(op='parse', source=base64.b64encode(b'<?php echo "B|";').decode()), 'nondeclare control')
             assert control['accepted'] and not declares(control['ast'])
