@@ -548,6 +548,25 @@ records exact originals, table/source forgery refusals, actual own-FCC receives
 and compile-versus-link ordering. Attribute-bearing constants and wider
 member/type/initializer contexts remain partial.
 
+Attribute-free, hook-free anonymous property groups now share the ordinary
+property compiler, including multiple declarators, types and nonliteral defaults.
+Admitted modifiers are ordinary public/protected/private visibility, static and
+readonly combinations; compiler-invalid readonly forms retain the shared error
+order. No-argument constructorless allocation first runs pending instance/static
+default work through the existing source-authenticated constructor marker. When
+both default task lists are empty, allocation follows the original direct path.
+
+Private parent and child slots retain separate full-name keys. Instance arrays
+separate on clone writes; repeated visits to one class share static cells, while
+fresh eval compilations receive distinct cells and source identities. Visibility,
+static/instance inheritance and readonly checks use the existing runtime rules.
+The exercised diagnostic class-name operands truncate at NUL without changing
+stored names, keys or successful lookup identities. The
+[property review](../../coverage/semantics/anonymous-properties-review.json)
+records actual default-work/allocation fronts, private-key reads, static sharing
+and compile/link order. Attributes, hooks, promotion, asymmetric setters, final
+properties and wider member/type/default/lifetime combinations remain partial.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the

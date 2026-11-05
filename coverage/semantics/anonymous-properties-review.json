@@ -1,0 +1,285 @@
+{
+  "scope": "CLASS173: finite attribute-free, hook-free ordinary anonymous property groups reuse named-class compilation and runtime checks. Multiple declarators/nonliteral defaults, visibility, static cells, readonly, private full-name keys and eval identities are covered; wider contexts remain partial.",
+  "implementation": {
+    "base": "f508cc4962e4a6237b41159e15bab66dbbe77a99",
+    "admission_cut": "cec4e74562a210a0f1de7fca916620764dcf3a42",
+    "default_work_cut": "268805d25075300e2c9aea5cd494f7939a26e5df",
+    "semantic_cut": "c40da6569b1c3d3c9df7caf7d9a2627a3185f1f5",
+    "engine_routes": [
+      "Zend/zend_compile.c::zend_compile_prop_decl (types/defaults and readonly error order)",
+      "Zend/zend_inheritance.c::do_inherit_property (visibility/static/readonly inheritance)",
+      "Zend/zend_object_handlers.c::zend_std_get_static_property_with_info and instance property access",
+      "Zend/zend_execute.c::zend_verify_property_type, zend_readonly_property_modification_error_ex and asymmetric property access errors"
+    ]
+  },
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "oracle": [
+      ".tools/php/bin/php",
+      "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    ],
+    "adapter_sha256": "58108446eb5cc68533a0cc786beb09795eb32b6842b29d54d6efa07a8de10a21",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json; -n and exact listed INI; LC_ALL=C, TZ=UTC",
+    "mode": "Strict SL elaboration, algorithmic checks and structuring; serial CPU2 actors with stable inputs and full child reap"
+  },
+  "inputs": {
+    "spec/semantics/135-property-compiler.watsup": "54ab8d5c9699e3d3a65f5527577cc5391792786b5136806d94525046c6a27533",
+    "spec/semantics/153-property-visibility-compiler.watsup": "8e85604f01b0106f3bdd092769377fcb83c7a3441ef9ac5efd742f64fb5eabae",
+    "spec/semantics/154-property-visibility-runtime.watsup": "9fd32dd095be373c5af152846ef28909e79a64e153e20de23122210f162aa377",
+    "spec/semantics/188-class-static-runtime.watsup": "3ffe3778983b2a6204e115b09ca86bb040150bba1463392feb51d264893c711c",
+    "spec/semantics/201-static-set-runtime.watsup": "917aba2048293eb8ce3dbfdaf34de6f16d6f84eed8e836e9e82fc1d860f97aae",
+    "spec/semantics/294-readonly-lifecycle.watsup": "6efb8aa621f9b6d4ae82ae59b87277c57045277e8b57ad85639feadeeb326fab",
+    "spec/semantics/383-anonymous-classes.watsup": "da3d0b82f1458b3d53dab4982874a46c239b8877c88c401a32300f7759dcba67",
+    "spec/semantics/modules.json": "743339812651b2c1317ae062abe926ea0ff797f611d9b516a385f627edf2f255",
+    "tests/semantics/anonymous_property_cases.json": "48dffe270346ed2ec6854890232ed17b03b607a70c7fb7b7b3b472d430bef033",
+    "tests/semantics/anonymous_property_protocol.py": "b6ee6e62674f637bb3194969b3fea1c0e4b3e9eb56f3ea1ac93cf53a7533c15f",
+    "tests/semantics/anonymous_property_review_protocol.py": "fbbd1c749a2781a667765dad9128d0246390229a50c76019c6215392e57b660d",
+    "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "decisions": [
+    "Admit nonempty ordinary property groups with visibility/static/readonly flags 0/1/2/4/8/9/10/12/64/65/66/68/72/73/74/76. Delegate names/types/defaults and invalid readonly diagnostics to the existing compiler; attributes/hooks/promotion/asymmetric setters/final properties remain refused by this gate.",
+    "For no-argument constructorless NEW, run existing class-constant/instance/static default work only when a property default task list is nonempty, then authenticate the existing constructor marker before allocation. With no pending property work, preserve the direct new_class equation.",
+    "Totalize parameter_default_constructor on NStmtClass as false. Anonymous class syntax is distinct from the suspended named-class parameter-default form; this repairs marker authority while retaining source/name/line/readiness checks.",
+    "Preserve complete names in descriptors, private mangled keys and successful lookups. Only exercised compiler/inheritance/access/typed-static/readonly diagnostic class operands use C-string display. Ordinary non-NUL named-class bytes are unchanged."
+  ],
+  "validation": {
+    "strict": {
+      "modules": 434,
+      "revision": "c40da6569b1c3d3c9df7caf7d9a2627a3185f1f5",
+      "supervisor": [
+        ".tools/class173-artifacts/final-guard1.json",
+        "49df42d269d5333e63841f2c21673359a381b3deeaadd7496808cde509136cea"
+      ],
+      "numeric": [
+        ".tools/class173-artifacts/strict2.numeric.json",
+        "0f1faf529ebaa9f3f31dd538e4a03fd9d169f0595be14f609dd819fbdc9d69dd"
+      ]
+    },
+    "sources": {
+      "exact_agreements": 15,
+      "normal": 9,
+      "php_error": 2,
+      "static_rejection": 4,
+      "revision": "06bbc64503d67b35107de13138ddab338d2e089d",
+      "supervisors": [
+        [
+          ".tools/class173-artifacts/source-defaults2.json",
+          "002cb5bbf093887ce21fa35d6504c535625ee8164db68b7da96a16dd356fddc9"
+        ],
+        [
+          ".tools/class173-artifacts/source-remaining1.json",
+          "d0953c9d74229eae1a300af27fdeac2d7b2a5a29d4d7c089f63df6b74580770c"
+        ]
+      ],
+      "reports": {
+        "ordinary-property-expression-defaults-cow": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-01vy77nq/report.json",
+          "1ea4d99981c8b5b07683a61e65efc5f11a43f94d974a582fe942e34b30e65f57"
+        ],
+        "ordinary-property-private-parent-slot-identity": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-6mi2b6nj/report.json",
+          "cf468d8f0c1a49bbd7a1609c7d908600bbc09a0c8dc33910e8452e3a3d7fa005"
+        ],
+        "ordinary-property-private-protected-access": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-18vqjnlf/report.json",
+          "e7e0b30a8d8327b3723f47ca236c74974cbdd7309471fa787adc72f7cdc725b5"
+        ],
+        "ordinary-property-static-same-site-sharing": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-zojvb5ha/report.json",
+          "1c73309ae2ffa8f382578598bd84a9b1cb7f1339042f087aca4203d36a4f9ed6"
+        ],
+        "eval-ordinary-property-static-separate-compilations": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-avmxql8l/report.json",
+          "f82b0ca12306af5df8ef3ca095c7a6885962096819b2727311a8aedeb85479d7"
+        ],
+        "ordinary-property-parent-static-conflict-before-argument": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-tx9ppx2g/report.json",
+          "d16f915beda9e5faf68b7adc45a7d85e3fb48d47afc17be9316ac3b3bf496a35"
+        ],
+        "ordinary-property-parent-visibility-conflict-before-argument": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-g8p_tbfl/report.json",
+          "627eaa49d7b8c776f0b2bad291ecbaf960042e19a4a97babbc9621745613ba68"
+        ],
+        "ordinary-property-readonly-constructor-write": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-0nxisf_u/report.json",
+          "d7a4d7c77fd07c0af33d1cb7798a24e9724a646e4d65954f1531049a80e4cd36"
+        ],
+        "ordinary-property-readonly-default-compile-error": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-_3xbsjcx/report.json",
+          "cc5cd99f43c5bffa1e6a7d96c3ab00c2455a7ff05620086be91b1b5392fbc3d8"
+        ],
+        "ordinary-property-readonly-untyped-compile-error": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-pw7k0yje/report.json",
+          "8354450c3cbf51974a4ce5250a7fc6a4898fd038ae6a3be271b5270296392bbb"
+        ],
+        "ordinary-property-static-readonly-compile-error": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-mx3hxww0/report.json",
+          "e0024699254414b65616f5ec485d94b90bc7d801cf13037ae00f3b202a38b486"
+        ],
+        "ordinary-property-static-readonly-before-default-compile-error": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-29nc0j61/report.json",
+          "6bd8aa496a503993e770fec2017b7e16a1882f66894ef57a4130194ce4561d79"
+        ],
+        "ordinary-property-static-private-protected-access": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-uijj0mj9/report.json",
+          "95e78c97cf7eb688da982fce8efe2c54578bb1f6d9b7f82bb28e785bc529f3b0"
+        ],
+        "ordinary-property-readonly-first-global-write": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-5pq24ekg/report.json",
+          "bef65fead8b7f9116675d4740fe5de9f8905df56fb73bd3226de3cc493089131"
+        ],
+        "ordinary-property-static-typed-errors-preserve-value": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-o144brbg/report.json",
+          "b85fcd82c7076d7a69abc9bb31f25540b7eb0f22821dad8f04de57b6a7407483"
+        ]
+      },
+      "affected_final_cut": {
+        "revision": "c40da6569b1c3d3c9df7caf7d9a2627a3185f1f5",
+        "case": "ordinary-property-expression-defaults-cow",
+        "supervisor": [
+          ".tools/class173-artifacts/final-guard1.json",
+          "49df42d269d5333e63841f2c21673359a381b3deeaadd7496808cde509136cea"
+        ],
+        "report": [
+          ".tools/class173-artifacts/recovered-private-raw/method-runtime-yeeg_u91/report.json",
+          "5269cb8f7ad643397da64bae16a54aff4d9c978a16eac0629625855d3352d730"
+        ]
+      }
+    },
+    "author": {
+      "revision": "c40da6569b1c3d3c9df7caf7d9a2627a3185f1f5",
+      "conditions": 87,
+      "groups": {
+        "default_work_marker_allocation_and_clone_cow": 62,
+        "same_site_static_storage": 25
+      },
+      "result": "true newline, empty stderr, exit0; stable inputs and fully reaped",
+      "supervisor": [
+        ".tools/class173-artifacts/author-two-state2.json",
+        "42f53accb721021fcb763eb3890b9d456d92211436abeb4196b5e66626f0511d"
+      ],
+      "report": [
+        ".tools/class173-artifacts/recovered-private-raw/anonymous-property-pu97zjzt/report.json",
+        "d715e472f5bbc676d4a823339badca31f6a5cfc75eda1147455dfd42a118a1ee"
+      ]
+    },
+    "independent": {
+      "revision": "de9ba4c65657c43b7c261f1814d2a1f70297bd01",
+      "production_equivalent": "06bbc64503d67b35107de13138ddab338d2e089d",
+      "conditions": 124,
+      "groups": {
+        "private_parent_child_keys_and_reads": 37,
+        "separate_eval_static_entries_and_cells": 57,
+        "link_before_argument_and_allocation": 25,
+        "readonly_default_before_static_compile_error": 5
+      },
+      "result": "true newline, empty stderr, exit0; stable inputs and fully reaped",
+      "supervisor": [
+        ".tools/class173-artifacts/review-four-state1.json",
+        "7d9afe3f3f72bf1f5f7adc02e3514f9d12c487e96f2105b3234e065c916545f5"
+      ],
+      "report": [
+        ".tools/class173-review-artifacts/recovered-state/class173-review-state-9x8weni3/report.json",
+        "5b4491242ac83eedf38d79fa5365028e0da156cb82d37f744618c8db7de2913f"
+      ],
+      "final_cut_compatibility": "c40 fills only the previously undefined NStmtClass classifier case. These four groups use direct no-work allocation or fail before a constructor marker; their source fronts, outputs and authority checks are unchanged. The changed marker path has author87, final strict434 and affected-source evidence."
+    }
+  },
+  "failures_preserved_zero_credit": [
+    {
+      "cause": "Original expression-default source reached Unsupported invalid compiled property default: direct no-argument allocation bypassed pending property work. Repaired at268805; original failure retained.",
+      "supervisor": [
+        ".tools/class173-artifacts/source-defaults1.json",
+        "ddca45887e8b86ea6f89008c53638f8ab898f59a623ab21dd846f32626dfdb67"
+      ],
+      "report": [
+        ".tools/class173-artifacts/recovered-private-raw/method-runtime-8riq9y73/report.json",
+        "016b7259d8986d16cea35a69644f091bc5ace1902cf720f0a4671e12afe9e9d9"
+      ]
+    },
+    {
+      "cause": "Author-two-state1 exposed the undefined NStmtClass alternative of parameter_default_constructor in the compound marker predicate. This is a semantic domain failure, not a fixture correction; the successful affected run retains the assertion.",
+      "supervisor": [
+        ".tools/class173-artifacts/author-two-state1.json",
+        "d53fdabf8782096a130da6c993915f834b45b972bd9e0d7af4206af4a88b0e7c"
+      ],
+      "report": [
+        ".tools/class173-artifacts/recovered-private-raw/anonymous-property-f2_bjlsd/report.json",
+        "8f340f174c7aee3e258512578c32d4f535371016d27d352a7fe8903055945c1a"
+      ]
+    },
+    {
+      "cause": "Three bounded diagnostic-only queries isolate the missing classifier at the actual pending-work front; they receive no source or reached-agreement count.",
+      "supervisors": [
+        [
+          ".tools/class173-artifacts/author-work-diagnostic1.json",
+          "d73976bddbb39e3b229ca55312f092ce66a5e495075d7049400394fd931dbde1"
+        ],
+        [
+          ".tools/class173-artifacts/author-work-diagnostic2.json",
+          "327b5a451e17bc9270061022cf315434d56f33c7a99ab3dfba0327fd5234ca1f"
+        ],
+        [
+          ".tools/class173-artifacts/author-work-diagnostic3.json",
+          "9cd41211394c6789f33e044e0a1581cc946ba29ddbb3b13c01abd149fdd86714"
+        ]
+      ],
+      "fixtures": [
+        [
+          ".tools/class173-artifacts/author-work-diagnostic.watsup",
+          "c3af1f6eaf9beaaa04ad569bf00646f5dec7a6f6eb000a318b0e34b5db7a85af"
+        ],
+        [
+          ".tools/class173-artifacts/author-work-diagnostic2.watsup",
+          "349978500bfb5a2ce9e2127c53b3581bea6e5fc785343fa94165b8a4c54f3421"
+        ],
+        [
+          ".tools/class173-artifacts/author-work-diagnostic3.watsup",
+          "4524afad8c04062e471cee7ceb00532396d6464116b99c3c64b88cabc88743ea"
+        ]
+      ]
+    }
+  ],
+  "recovery": {
+    "private_raw": [
+      ".tools/class173-artifacts/recovered-private-raw/locations.json",
+      "bfc8d9fd0f4b1be67eb9a5d25e8bafd96d70794d5c5863309a5d884158af5b02"
+    ],
+    "reviewer_raw": [
+      ".tools/class173-review-artifacts/recovered-state/locations.json",
+      "6787fc459b9e9bdb206f297332d580fb72d9694b0b365802c365fd8d24938eca"
+    ],
+    "native_manifests": [
+      [
+        ".tools/class173-review-artifacts/native-manifest.json",
+        "5c2e15d0afa193e11273a7d4373dcbba97950ee91d9a7ab4a0f3738b79c97fbb"
+      ],
+      [
+        ".tools/class173-review-artifacts/readonly-native-manifest.json",
+        "14389331395389520ed33a8ef5d3520a632c11a9d88f8cec3865c211cc3fc170"
+      ],
+      [
+        ".tools/class173-review-artifacts/runtime-native-manifest.json",
+        "d4b4a345d364c840a456167708745aa4ca37df127b8418d4ebb219a80c13d366"
+      ],
+      [
+        ".tools/class173-review-artifacts/typed-static-native-manifest.json",
+        "f644937edb17bbff1bbd8c87ada335641d360231468041f5386e0236b397ff72"
+      ]
+    ],
+    "commands": "Supervisors store exact command/cwd/revision/watched hashes/affinity/exit/process reap. Source reports bind profile/catalogue bytes and exact streams. Recovery indices map original paths to moved unchanged raw roots."
+  },
+  "review": {
+    "reviewer": "classes_review_current",
+    "decision": "accepted",
+    "current_tail": "c927735dc2b0fa811ac894e3eb90d46f3aa09971",
+    "compatibility": "Actual f508-to-c927 parent delta reviewed once. RejectedHeaderParser changes affect rejected parses only (all15 main ASTs and both eval bodies are accepted). Closure::call copy/cancellation and config-iterator PARRAY INI markers are absent; WeakMap/WeakReference allocation and associations are absent, so association filtering preserves these paths. No class/property/default rule changed in the parent. Retain recorded scoped-cut evidence without replay or a bridge receipt."
+  },
+  "remaining": [
+    "Attributes, property hooks, promotion, asymmetric setters and final-property admission.",
+    "Wider member/type/default/lifetime combinations and runtime diagnostic operands outside these15 originals."
+  ]
+}

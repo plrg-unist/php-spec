@@ -878,6 +878,16 @@ sort-prefix elaboration failure retains zero credit. Attributes and wider
 member/type/initializer contexts remain partial.
 [Review](coverage/semantics/anonymous-own-constants-review.json).
 
+CLASS173 shares finite ordinary anonymous property groups with the named-class
+compiler/runtime: multiple and nonliteral defaults, visibility, static cells and
+readonly checks preserve full private keys and source identity. Deferred defaults
+finish before no-argument constructorless allocation; a missing anonymous-class
+constructor-task classifier case is now explicit. Fifteen exact originals,
+strict434, 87 author and 124 independent reached conditions pass at scoped cuts.
+The original default-allocation and classifier failures remain zero credit.
+Attributes/hooks/promotion/asymmetric setters/final properties and wider contexts
+remain partial. [Review](coverage/semantics/anonymous-properties-review.json).
+
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
 Their exact source, reached-state and affected gates are in
