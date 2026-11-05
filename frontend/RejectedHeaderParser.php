@@ -37,14 +37,7 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
     protected function checkInterface(PhpParser\Node\Stmt\Interface_ $node, int $namePos): void {}
     protected function checkEnum(PhpParser\Node\Stmt\Enum_ $node, int $namePos): void {}
     protected function checkTryCatch(PhpParser\Node\Stmt\TryCatch $node): void {}
-
-    protected function checkClassMethod(PhpParser\Node\Stmt\ClassMethod $node, int $modifierPos): void {
-        // Static magic-method restrictions are compiler checks; readonly is
-        // already rejected during native method-modifier parsing.
-        if ($node->flags & PhpParser\Modifiers::READONLY) {
-            parent::checkClassMethod($node, $modifierPos);
-        }
-    }
+    protected function checkClassMethod(PhpParser\Node\Stmt\ClassMethod $node, int $modifierPos): void {}
 
     protected function doParse(): ?array {
         // Lexing inspects the complete source before grammar reductions start.
@@ -94,6 +87,23 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
             $self->headers[] = ['beginLine' => $self->tokens[$begin]->line,
                 'beginTokenPos' => $begin, 'closeLine' => $close->line,
                 'closeTokenPos' => $self->tokenPos, 'items' => $self->semValue];
+        };
+        // Methods/constants share this reduction before parameters/initializers.
+        // Their actual lookahead selects the target-specific flag set.
+        if ($this->ruleToLength[384] !== 1 || $this->reduceCallbacks[384] !== null) {
+            throw new RuntimeException('Member modifier reduction contract changed');
+        }
+        $this->reduceCallbacks[384] = static function (self $self, int $stackPos): void {
+            $self->semValue = $self->semStack[$stackPos];
+            $allowed = PhpParser\Modifiers::PUBLIC | PhpParser\Modifiers::PROTECTED
+                | PhpParser\Modifiers::PRIVATE | PhpParser\Modifiers::FINAL;
+            $target = $self->tokens[$self->tokenPos]->id;
+            if ($target === T_FUNCTION) $allowed |= PhpParser\Modifiers::STATIC | PhpParser\Modifiers::ABSTRACT;
+            if (($target === T_FUNCTION || $target === T_CONST) && ($self->semValue & ~$allowed)) {
+                // Only a foreign parse stop; the reply retains native diagnostics.
+                throw new PhpParser\Error($target === T_FUNCTION
+                    ? 'Invalid modifier for method' : 'Invalid modifier for class constant');
+            }
         };
     }
 }

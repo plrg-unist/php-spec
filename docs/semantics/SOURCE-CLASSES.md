@@ -664,6 +664,19 @@ separates genuine runtime/source counters from explicitly pure source-derived
 compiler-context queries. Trait and anonymous source owners, method-owned Closures,
 generators, byref returns, attributes and wider source/lifetime contexts remain partial.
 
+Named constructors may now contain anonymous child factories under the same parsed
+owner, method-body and class-context checks. The child template is compiled before
+a deferred named owner receives its key; repeated constructor calls reuse the child
+class while allocating fresh objects. Inherited protected constructors, promotion,
+parent calls, private access and failed-owner child cleanup follow the ordinary
+runtime rules. A child compile error precedes a static or return-typed constructor
+rejection; private-final child warnings remain visible. Reached final-method link
+errors capture the constructor call stack before eager failed-owner cleanup.
+The [constructor factory review](../../coverage/semantics/anonymous-constructor-factories-review.json)
+records exact sources and reached states. Anonymous owner methods still need an
+earlier owner-key reservation during body compilation; their nested factories
+remain outside this source cut.
+
 Unit0 anonymous classes may implement a finite list of
 interfaces, including inherited interface contracts, with or without the admitted
 Base. The generated prefix uses the Base reference when present, otherwise the
@@ -968,10 +981,19 @@ exception transfer while leaving the boolean assignment untouched. The
 [variable-array review](../../coverage/semantics/enum-is-callable-variable-array-review.json)
 records seven exact agreements, two explicit Unsupported controls, strict435
 and separate reached groups of 60, 53, 33 and 70 checks. Key-2 input arrays,
-embedded reference members, and an output alias whose source is rebound to a
-new array remain outside this receipt route. Engine routes are
+embedded reference members, and rebound arrays with owning children remain
+outside this receipt route. Engine routes are
 `ext/standard/type.c:PHP_FUNCTION(is_callable)` and
 `Zend/zend_API.c:zend_is_callable_ex`.
+For a shared input/output CV rebound to a new two-entry DIRECT string array,
+the original first-SEND array and name remain authenticated through the later
+third-argument reference. Writing the selected name releases only the shared
+cell's new-array owner; a separate holder retains that array. A throw in the
+second argument never reaches the output write. The
+[array-alias rebound review](../../coverage/semantics/enum-is-callable-array-alias-rebound-review.json)
+records four exact agreements, one explicit Unsupported owning-object control,
+strict435 and five separate reached groups (229 checks). Rebound arrays with
+object or reference members and wider shapes remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

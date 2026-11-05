@@ -185,6 +185,7 @@ rule PhpStep/instance-storage-table: S ~> $destructor_release_begin(S[.OBJECTTAB
 rule PhpStep/instance-storage-slot: S ~> $instance_storage_transfer(S, pinstancestorage, ptask*)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
   -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NOTIFY = eps
   -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if $(pinstancestorage.NEXT < |pinstancestorage.SLOTS|)
 rule PhpStep/instance-storage-finish: S ~> $destructor_release_begin(S[.TODO = ptask*][.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT pinstancestorage.OBJECT)], [DESTRUCTION_HANDLE pinstancestorage.OBJECT])

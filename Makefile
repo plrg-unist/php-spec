@@ -26,6 +26,8 @@ test: build
 	python3 tests/rejected_eval_lexer_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-lexer.XXXXXXXX)/service"
 	python3 tests/rejected_namespace_service_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-namespace.XXXXXXXX)/service"
 	python3 tests/rejected_static_service_review.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/service"
+	python3 tests/rejected_method_modifier_service_review.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/service"
+	python3 tests/rejected_constant_modifier_service_review.py --output "$$(mktemp -d /tmp/php-spec-constant-modifiers.XXXXXXXX)/service"
 	python3 tests/file_provider_protocol.py
 	python3 tests/encoding_mutation.py
 	python3 tests/source_context_metadata.py
@@ -1011,6 +1013,11 @@ test-semantics: build
 	python3 tests/semantics/enum_is_callable_variable_array_protocol.py --group rebind
 	python3 tests/semantics/enum_is_callable_variable_array_protocol.py --group alias
 	python3 tests/semantics/enum_is_callable_variable_array_cleanup_protocol.py
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group raw
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group case
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group retained
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group throw
+	python3 tests/semantics/enum_is_callable_array_alias_rebound_protocol.py --group control
 	python3 tests/semantics/switch_compiler.py
 	python3 tests/semantics/switch_bool_compiler.py
 	python3 tests/semantics/switch.py
@@ -1756,6 +1763,12 @@ test-semantics: build
 	python3 tests/semantics/static_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/sources"
 	python3 tests/semantics/static_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/main"
 	python3 tests/semantics/rejected_static_review_state.py --output "$$(mktemp -d /tmp/php-spec-rejected-static.XXXXXXXX)/state"
+	python3 tests/semantics/method_modifier_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/sources"
+	python3 tests/semantics/method_modifier_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/main"
+	python3 tests/semantics/rejected_method_modifier_review_state.py --output "$$(mktemp -d /tmp/php-spec-method-modifiers.XXXXXXXX)/state"
+	python3 tests/semantics/constant_modifier_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-constant-modifiers.XXXXXXXX)/sources"
+	python3 tests/semantics/constant_modifier_main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-constant-modifiers.XXXXXXXX)/main"
+	python3 tests/semantics/rejected_constant_modifier_review_state.py --output "$$(mktemp -d /tmp/php-spec-constant-modifiers.XXXXXXXX)/state"
 	python3 tests/semantics/main_rejected_sources.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/sources"
 	python3 tests/main_rejected_source_review.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/service"
 	python3 tests/semantics/main_rejected_review_state.py --output "$$(mktemp -d /tmp/php-spec-main-rejected.XXXXXXXX)/state"

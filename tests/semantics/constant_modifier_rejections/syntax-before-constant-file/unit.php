@@ -1,0 +1,2 @@
+<?php
+echo ;class C{abstract const X=(function(){declare(encoding=1);});}

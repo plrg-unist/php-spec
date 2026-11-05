@@ -1264,6 +1264,7 @@ rule PhpStep/config-ini-get-string-result: S ~> $config_ini_get_finish(S_call, p
   -- if pconfigcall.KIND = INTRINSIC_INI_GET
   -- if S.ORIGIN = (porigin_child)
   -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if ~$config_iterator_copied_call(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n_option*)
   -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
