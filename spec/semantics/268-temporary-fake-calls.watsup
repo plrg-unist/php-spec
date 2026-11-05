@@ -186,7 +186,6 @@ rule PhpStep/closure-call-copy-reference-resume: S ~> S_reference[.TODO = (CLOSU
 
 ;; Cancellation frees the prepared argv prefix before the VM API arguments.
 ;; The uncreated Gen owns nothing; retain its hidden copy before dropping argv.
-dec $closure_call_copy_retain(pstate, nat) : pstate
 def $closure_call_copy_retain(S, n_copy) = S[.CLOSURECALLRETAINED = S.CLOSURECALLRETAINED ++ [pclosurebinding]]
   -- if $closure_call_copy_row(S, n_copy) = (pclosurebinding)
   -- if ~$closure_call_copy_created(S.OBJECTS, n_copy)

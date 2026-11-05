@@ -23,6 +23,7 @@ dec $closure_call_fake_copy_binding(pstate, pboundfake) : bool
 dec $bound_fake_valid(pstate, nat) : bool
 dec $closure_call_copy_begin(pstate, pfunction, pclosurecall, nat) : pstate
 dec $closure_call_copy_invoke(pstate, pfunction, pclosurecall, nat) : pstate
+dec $closure_call_copy_retain(pstate, nat) : pstate
 dec $destruction_values(pnode*) : pdestructionjob*
 dec $destructor_release_begin(pstate, pdestructionjob*) : pstate
 dec $destructor_return_discarded(ptask*) : bool
