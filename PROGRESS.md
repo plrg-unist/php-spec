@@ -115,6 +115,15 @@ compile and fixture failures retain zero credit. Later receives, default throws
 and bailout paths remain partial.
 [I100 review](coverage/semantics/generator-call-mapping-review.json).
 
+I101 replaces required-hole-specific retention with one authenticated restored
+API cursor for admitted pre-Generator receive failures. Arity, type and default
+throws preserve the copy while callee cells retire before API arguments/source.
+Three native/source originals, strict433, new259 custom/269 reported checks and
+the affected129/134 hole recipe pass. A matching adapter and joined default134/139
+gate load current434, covering changed weak-free cleanup. Baseline and fixture
+parser failures retain zero credit; wider producers, collection and bailout
+contexts remain partial. [I101 review](coverage/semantics/generator-call-receive-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory

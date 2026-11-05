@@ -7249,6 +7249,12 @@ Three new originals, two ownership fronts and one affected successful call pass;
 later receive/default errors and bailout paths remain partial.
 [Named-failure review](coverage/semantics/generator-call-mapping-review.json).
 
+Admitted arity, type and default throws before Generator creation now share one
+restored API cleanup protocol. Callee values retire before API arguments/source,
+while the hidden copy keeps its receiver/captures. Native/source and joined
+ownership gates pass; wider producers, collection and bailout remain partial.
+[Receive-failure review](coverage/semantics/generator-call-receive-review.json).
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
