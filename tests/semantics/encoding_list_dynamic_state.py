@@ -95,7 +95,10 @@ def prepare(out):
             (target / 'protocol.watsup').write_text(PREFIX + '\nvar U : program\ndec $main() : bool\ndef $main() = true\n'
                 + ''.join('  -- if ' + check + '\n' for check in checks))
     finally:
-        adapter.close(); frontend.close()
+        try:
+            adapter.close()
+        finally:
+            frontend.close()
 
 
 def main():
