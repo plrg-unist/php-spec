@@ -1,0 +1,69 @@
+{
+  "milestone": "ATTR41: unticked class-member constant initializers",
+  "status": "Independently accepted bounded implementation; wider headers, member producers and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "f15131621",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "68d69250461a67eb4ea9c9a3918d4606a8de742eb2d2394a90c8b3f1e63b60dc",
+    "scope": "One plain ClassConst summary visits existing constant children in declaration/initializer order. ClassConst remains unticked and emits no main opcode, so prior main-oparray adjacency survives. Existing constant-context rules compile supported static Closure bodies and retain their lexical plans. Completed class facts and all runtime/linking/cache consumers are unchanged; no task, state or schema additions."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "vendor/php-src/Zend/zend_compile.c: zend_compile_class_const_group calls zend_compile_class_const_decl, which visits each value through zend_const_expr_to_zval without emitting a main opcode. zend_is_unticked_stmt excludes the surrounding constant group from Tick emission. Existing constant-context Closure compilation contributes file declarables while retaining its own op array.",
+    "runtime": "Existing class-constant lazy activation and constant-callable records supply the invoked Closure and installed sibling values. Its ordinary body Tick and callback paths preserve return, throw and cached identity."
+  },
+  "evidence": {
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-class-const-41/strict-report-v1.json",
+      "sha256": "05170dda05f80a2394ab5ea7deb1456a32ebe64fe2927debb0fed2c52a004f52",
+      "revision": "8bf4cbd0d142e5d8b2bc9d0b9208a805f43fdf91",
+      "passed": true,
+      "modules": 444
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-class-const-41/source-author-v1/report.json",
+      "sha256": "0baa797210bdec8e3b536a816d6c0050bc05186c89ecb7227e28cc5138fe4882",
+      "revision": "8bf4cbd0d142e5d8b2bc9d0b9208a805f43fdf91",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "literal-class-constant-group-preserves-prior-main-tick": "T12T",
+        "class-constant-closures-compile-in-group-order-without-main-opcode": "TZTWT"
+      },
+      "scope": "A literal group and later bare directive discriminate preserved prior adjacency. Uncalled static Closure initializers set frequencies 2 then 1 without executing BAD or creating a group marker."
+    },
+    "independent_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-class-const-41/source-review-v1/report.json",
+      "sha256": "4cc94219c4dc6ea9b10ac127e4118e33bc4a7d5b82c248fe9400ba26016051e8",
+      "revision": "8bf4cbd0d142e5d8b2bc9d0b9208a805f43fdf91",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "review-invoked-const-closure-tick-reads-installed-sibling-constant": "TTVT79TZT",
+        "review-invoked-const-closure-callback-abort-skips-return-output": "TTVT7CT7TZT"
+      },
+      "scope": "Callback 3 runs at the actual constant Closure body Tick and reads installed sibling VALUE 7. Normal return supplies 9; a throwing callback skips the return/caller output while a later read still supplies 7."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-class-const-41/review-protocol-v1/run/report.json",
+      "sha256": "35511c04e7ae9412d82edb10d44b9b470220e813f76dc23b76f2335cf96806d1",
+      "process_sha256": "116dddfd6a71364c3dc1d9d68563b543eee28e2c06f2821622e2bcb6a4b9ea14",
+      "revision": "d793b25b3d37451560bb540afaf2324210e411c5",
+      "passed": true,
+      "groups": 2,
+      "reported_conditions": 120,
+      "group_conditions": [60, 60],
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At each genuine body Tick the active constant-created Closure, source/cache identity and installed class validate, with no class/group marker. Callback 3 reads 7 before normal return 9 or a throw that skips return/caller output. Full-state zero-budget preservation and full-resume equality pass; descriptor/heap/Tick validity and retained cache/object identity hold after cleanup."
+    }
+  },
+  "independent_review": "/root/attributes_review checked the single-clause traversal against pinned compiler order and accepted both genuine active constant-Closure/cache fronts on first execution. Class and enum owners confirmed disjoint compiler/source ownership.",
+  "remaining": "Decorated member constants, positive-frequency properties/hooks, unproved nested callable or deferred initializers and wider linking/lifetime contexts remain partial. This does not add a new constant producer, consumer or whole-family closure.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and module/tool identities remain external in tick-class-const-41. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned PHP profile. Strict/reached execution uses checked SL on CPU 5 with caches disabled and encountered determinism checks. All accepted inputs stayed stable, exits were 0 and driver stderr empty; all campaign executables were reaped. Regular copied tools are not a fresh offline rebuild or portability proof.",
+  "zero_credit": [
+    "source-baseline/report.json at d9769015b remains false (SHA c73209b9c6140396bc6b07bb3e2d2097c22ce5c947a3fa8dbcd22ab989bf9e07): native completed T12T, while the old model returned Unsupported with empty prefix and tick opcode placement dependency.",
+    "No ATTR40, enum/linking, output, Generator or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed."
+  ]
+}

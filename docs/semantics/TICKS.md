@@ -61,6 +61,10 @@ adjacency; `DECLARE_CLASS` breaks it. Top-level declarations have no outer Tick
 and restore the declaration end line. Conditional declarations tick after real
 activation at the certified header line. Method bodies have separate op arrays
 but contribute their file declarables even when never invoked.
+Plain class-member constant groups use the same constant-context visitor in
+declaration order. They emit no main opcode or outer Tick, preserving prior
+adjacency while static Closure initializers contribute their own lexical plans.
+Invoked constant Closures retain ordinary callback reads and abrupt cleanup.
 
 Compiler entry uses completed `P.CLASSES`; runtime lookup borrows `S.CLASSES`
 after public descriptor/declaration-history validation. These facts live only in
@@ -167,7 +171,7 @@ are destroyed after callee restoration while the entry remains running. Genuine
 unwinding clears that state before shutdown callbacks. Fiber switching remains
 blocked during the callback and its returned-value cleanup.
 
-The source summary is deliberately bounded. Wider decorated headers/cases, class
+The source summary is deliberately bounded. Wider decorated headers/cases/member
 constants, positive-frequency properties/hooks,
 other unmodeled statement/expression emission, callable defaults or
 attributes containing nested callables/ticks remain `Unsupported`, as do dynamic
@@ -220,6 +224,9 @@ and conditional activation before header-line callback abort.
 The [enum-case tick review](../../coverage/semantics/tick-enum-case-review.json)
 records actual pre-activation markers, consecutive-case suppression, backed value
 lines, class availability and callback abort/resumption.
+The [class-member constant tick review](../../coverage/semantics/tick-class-const-review.json)
+records unticked group adjacency, initializer declarables and invoked constant
+Closure read/return versus callback abort.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;
