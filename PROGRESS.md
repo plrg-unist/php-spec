@@ -854,6 +854,17 @@ keeps its original cuts. Unshared owning channels, uncovered selected completion
 owners, wider handler/callable/previous-chain/frame contexts and reentry remain
 partial.
 
+ATTR28 derives switch tick plans in subject/all-conditions/all-bodies order.
+Lexical declarables and final constant/CV versus temporary-release adjacency
+preserve ordinary fallthrough, jumps, callback throws and subject destruction.
+Existing constant and resolved-call facts guard result kinds; unproved builtin
+subtrees and missing empty-case lines remain explicit Unsupported. Twenty
+distinct originals agree across recorded cuts, with seven dependency controls,
+strict435 and four independent reached fronts/171 reported conditions, including
+ten labeled derived guards. Failed aggregate packets retain zero pass credit; completed rows
+and affected corrections are scoped separately in the
+[switch tick review](coverage/semantics/tick-switch-review.json).
+
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
 agree on ordered visits and counted nodes in the actual collector plan. The
@@ -1422,7 +1433,7 @@ wider rejected-source/compiler behavior remains partial.
 | GC41 | Finite-entry WeakMap release generalization; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB15 | Reference-warning throws before positive-chunk output callbacks; private implementation/review. |
-| ATTR28 | Source-derived switch tick plans, fallthrough and final-value cleanup; private implementation/review. |
+| ATTR29 | Yield/yield-from tick compilation and counter/resumption behavior; private implementation/review. |
 | Enum callable arrays | Temporary/literal reference-array inputs; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |

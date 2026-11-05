@@ -287,8 +287,10 @@ source and reached-state checks. [Returned-Notice evidence](coverage/semantics/o
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback
-mutation and cleanup order; wider compiler placement and callable forms remain
-explicit dependencies.
+mutation and cleanup order. Switch plans preserve all-conditions-before-bodies
+compilation, lexical frequency changes and constant/CV versus temporary-release
+adjacency; unproved compiler-special subjects and wider placement/callable forms
+remain explicit dependencies.
 
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;

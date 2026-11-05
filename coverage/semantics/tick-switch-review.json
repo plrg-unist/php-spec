@@ -1,0 +1,110 @@
+{
+  "milestone": "ATTR28: source-derived switch tick compilation",
+  "status": "Independently accepted bounded implementation; core and ticks remain partial",
+  "target": "PHP 8.5.10 CLI NTS64; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "029962632",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "fb235f280fbe72c531b16937cdbe6ca8ff474b3ddbf225a3f396eac0f441fc1c",
+    "scope": "Compile subject, all conditions, then all bodies; preserve final CONST/CV versus TMP/VAR release adjacency and lexical declarables. A transient summary carries existing compiled CODENAME facts; no machine state, owner or shared descriptor changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "file": "vendor/php-src/Zend/zend_compile.c",
+    "symbols": [
+      "zend_compile_switch",
+      "zend_emit_tick",
+      "zend_compile_print",
+      "zend_compile_func_defined",
+      "zend_compile_call",
+      "zend_compile_ns_call"
+    ]
+  },
+  "evidence": {
+    "author": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-28/source-v1/report.json",
+      "sha256": "db3bfde5a7dab2d72a63ac5758a032a3a786775a31ef1397a7f2dfdb6b2d5d7e",
+      "agreements": 10,
+      "unsupported_controls": 2,
+      "production": "52454ad7c",
+      "binding": "Report revision080c656a4 had frozen private changes; report module/test hashes match52454ad7c."
+    },
+    "named_call_recheck": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-28/source-named-v1/report.json",
+      "sha256": "0de7bd0038a7fb6e92f0ac4e21e852e7ba0da7c4fbbf0f64158cf0ccb4fe11b8",
+      "agreements": 2,
+      "new_agreements": 0,
+      "unsupported_controls": 3,
+      "production": "011d2fc91"
+    },
+    "independent_retained": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-28/retained-review-normal-rows.json",
+      "sha256": "4351bb9c724305a2a8da252e400740de19ecd8e9226c70cd0f48529e854eef9b",
+      "agreements": 8,
+      "production": "71a74b6bd",
+      "scope": "Eight completed exact normal rows only; original full packet remains false after an incorrect ninth Unsupported assertion."
+    },
+    "independent_affected": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-28/source-review-correction-final/report.json",
+      "sha256": "c3a399352e402b6459065501ffa15345a3b83187c2f0f532a649bd73070f0c5f",
+      "agreements": 2,
+      "production": "029962632",
+      "scope": "Promoted single-line case-header/blank-body original and new simple temporary subject."
+    },
+    "nested_fallback_controls": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-28/source-guards-final/report.json",
+      "sha256": "5c8927790d6c5270b08e4caea0d84051a893e33af7e7ba16cbdbc00335553887",
+      "unsupported_controls": 2,
+      "production": "029962632"
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/builtin-attributes-28/strict-fallback-v2-process.json",
+      "sha256": "7e4378dbc416ee508e344f5e16e459c564245fe2747186fc06310367ae707da3",
+      "modules": 435,
+      "passed": true,
+      "production": "029962632"
+    },
+    "reached_cv": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-switch-28/review-protocol-cv-v1/run/report.json",
+      "sha256": "6bd047f0d033e4411fb805b7b9edf7f1ebf7e71636e1faa3a6048f107317d8e4",
+      "process_sha256": "27f5e7e685e4b3a6e33bb52a1d11819af4219d1b314121e52053048ff66f0720",
+      "groups": 1,
+      "conditions": 42
+    },
+    "reached_lexical_owned": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-switch-28/review-protocol-rest-v1/run/report.json",
+      "sha256": "e48b11d14db6c7c636e8a010f2c32a460cf6063f5afd539188f5cdb8655bf58a",
+      "process_sha256": "2733d6926f7f7504703ca2af1f991f7a24702ea74effc824563408afda517fdb",
+      "groups": 2,
+      "conditions": 82,
+      "scope": "Only passing lexical41 and owning-TMP41 rows; failed original TMP47 and the whole packet receive zero pass credit."
+    },
+    "reached_tmp_corrected": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-switch-28/review-protocol-tmp-v2/run/report.json",
+      "sha256": "98ef9a983af29aeea985c858fac3a549f1c308c4bf7a9f42e933ca31ee8c5711",
+      "process_sha256": "5f8bce079d8a42aae1aebe8000827597b1cab20312257cad20a9951d74484723",
+      "groups": 1,
+      "conditions": 47,
+      "production": "42bf8c04b: final393 plus integrated ATTR27"
+    }
+  },
+  "accepted_totals": {
+    "distinct_normal_originals": 20,
+    "unsupported_controls": 7,
+    "reached_groups": 4,
+    "conditions": 171,
+    "note": "Counts retain distinct recorded cuts; affected repeated originals add no new agreement credit. Unsupported is not agreement. Reported conditions also include helper bindings; counts alone do not establish coverage.",
+    "derived_guard_assertions": 10,
+    "other_conditions": 161
+  },
+  "compatibility": "Later edits only guard unproved compiler-special call kinds, propagate that unknown through subject subtrees, and repair optional fallback extraction. Retained positive subjects are certified constants/CVs or ordinary user calls without builtin fallback; their selected plans are unchanged. Current reached fronts validate the ordinary-call, ownership and resumption boundaries. No metadata-only semantic replay.",
+  "independent_review": "/root/attributes_review accepted production029962632 and the scoped source/reached cuts; final393 hash matches its independent42bf8c04b join with integrated ATTR27.",
+  "environment": "Source records fix LC_ALL=C, TZ=UTC and clear ambient settings. Strict/reached processes use CPU5 and stable before/after inputs. Oracle identity/provision and exact commands, exits, raw channels and group reaping are external. Copied tools establish no rebuild/portability claim.",
+  "remaining": "Fixed builtin/builtin-fallback subtrees without a proved compiler result kind, suppression/destructuring subject classes and empty case metadata spanning multiple lines remain explicit Unsupported. Wider tick statements, callables, Generator/Fiber and lifecycle combinations remain partial.",
+  "zero_credit": [
+    "Initial DSL otherwise/empty-iteration failures and diagnostic fixture preparation errors remain preserved with zero semantic credit.",
+    "Direct and nested defined folding counterexamples were source-derived before old-model execution; inferred extra ticks are not presented as measured failures.",
+    "The full source-review-final packet and rest-v1 protocol packet remain false; only explicitly completed passing rows above are accepted.",
+    "No engine bug, intentional engine divergence, portability or complete-core claim is added."
+  ]
+}

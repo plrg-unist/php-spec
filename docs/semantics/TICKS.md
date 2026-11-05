@@ -9,6 +9,20 @@ execution creates the certified tasks; callers cannot supply a marker table.
 Named construction visits its class and source-ordered arguments, allowing
 argument Closures to contribute their own lexical plans.
 
+Switch plans visit the subject, every case condition, then every body in compiler
+order. Case bodies share adjacency across selected and unselected branches;
+fallthrough and jumps retain the ordinary switch runtime. A final temporary
+subject release permits an enclosing marker, while constant and CV subjects can
+leave that marker suppressed by the final compiled body. Unexecuted condition
+Closures and body declarations still change the file's later tick frequency.
+Existing constant-operand receipts and resolved call facts supply the result-kind
+checks. Fixed builtin calls and builtin fallback selections inside an otherwise
+unproved subject remain Unsupported until their compiler result kind is justified,
+including imported and qualified calls. The model does not infer a temporary
+from binary/unary syntax around a compiler-special call.
+The matching source routes are `zend_compile_switch`, `zend_emit_tick`,
+`zend_compile_print` and `zend_compile_func_defined` in `Zend/zend_compile.c`.
+
 Block `declare(ticks=...)` restores the enclosing frequency. Unbalanced
 declarations compiled inside functions or closures can affect later statements
 in the same file context. Eval/file units begin with frequency zero. Execution
@@ -34,11 +48,13 @@ unwinding clears that state before shutdown callbacks. Fiber switching remains
 blocked during the callback and its returned-value cleanup.
 
 The source summary is deliberately bounded. Wider class/linking placement,
-switch and other unmodeled statement/expression emission, callable defaults or
+other unmodeled statement/expression emission, callable defaults or
 attributes containing nested callables/ticks, and callable-bearing foreach
 targets remain `Unsupported`, as do dynamic and anonymous construction summaries.
 Empty multiline catch/finally/declare bodies without
-the necessary compiler-line description are also explicit dependencies.
+the necessary compiler-line description are also explicit dependencies. Empty
+switch cases whose recorded span covers multiple lines and unproved subject
+kinds, including suppression and destructuring assignment, retain that boundary.
 Effectful keyword/compound callable selection, builtin callback bodies and typed
 variadic tick reception remain open. The tick obligation and full core are partial.
 
@@ -48,6 +64,9 @@ exit status. [Author sources](../../tests/semantics/tick_sources.py),
 [reached states](../../tests/semantics/tick_state.py) cover the admitted behaviors
 and public-state exclusions. Source/state acceptance is recorded separately from
 static elaboration; expected dependencies receive no agreement credit.
+The [switch review](../../coverage/semantics/tick-switch-review.json) records
+the compiler-order, marker-line, cleanup and resumption witnesses at their
+individual cuts, including scoped passing rows from preserved failed packets.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

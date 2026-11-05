@@ -72,7 +72,10 @@ test-semantics: build
 	./scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe
 	python3 tests/semantics/tick_sources.py
 	python3 tests/semantics/tick_review_sources.py
+	python3 tests/semantics/tick_switch_sources.py
+	python3 tests/semantics/tick_switch_review_sources.py
 	python3 tests/semantics/tick_state.py
+	python3 tests/semantics/tick_switch_review_protocol.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/output_reference_warning_sources.py
