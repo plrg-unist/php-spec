@@ -1,0 +1,163 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "owner-own-constants",
+      "source": "<?php\n$owner = new class { public const int A = 4, B = 7; private const string LABEL = 'own'; public function make() { return new class(self::A + self::B, self::LABEL) { public function __construct(public int $value, public string $label) {} }; } };\n$child = $owner->make(); echo $owner::class, ';', $child::class, ';', $child->value, ';', $child->label, ';';\n",
+      "source_sha256": "ec8840c2c381c63f3dd8d0b80f8cf1f1651ad72bd8da5e593f76e83d17ae11ce",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfToyJDE7MTE7b3duOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-interface-prefix",
+      "source": "<?php\ninterface R183Factory { public function make(): object; }\n$owner = new class implements R183Factory { public function make(): object { return new class {}; } };\n$child = $owner->make(); $after = new class {}; echo $owner::class, ';', $child::class, ';', $after::class, ';', ($owner instanceof R183Factory), ';';\n",
+      "source_sha256": "aff2879ea1c63b8a08a30ef7dabae4c3b9962f6a955d1400269690ef8564eca5",
+      "stdout_template_base64": "UjE4M0ZhY3RvcnlAYW5vbnltb3VzAHtGSUxFfTozJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTo0JDI7MTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-multiple-interface-spelling",
+      "source": "<?php\ninterface R183First {} interface R183Second {}\n$owner = new class implements r183first, R183Second { public function make() { return new class {}; } };\n$child = $owner->make(); echo $owner::class, ';', $child::class, ';', ($owner instanceof R183First), ';', ($owner instanceof R183Second), ';';\n",
+      "source_sha256": "e368acc2601e0ea33d39ff17409815efc07d1ecddf330daee0881ac4f58241cd",
+      "stdout_template_base64": "cjE4M2ZpcnN0QGFub255bW91cwB7RklMRX06MyQwO2NsYXNzQGFub255bW91cwB7RklMRX06MyQxOzE7MTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-parent-interface-prefix",
+      "source": "<?php\nclass R183Base { protected function __construct() {} } interface R183Contract { public function make(): object; }\n$owner = new class extends R183Base implements R183Contract { public function __construct() {} public function make(): object { return new class {}; } };\n$child = $owner->make(); echo $owner::class, ';', $child::class, ';';\n",
+      "source_sha256": "bb015bb053a4fc29084dfe2635c6b5c13c9344797e5f32ccdaaa3988d334212d",
+      "stdout_template_base64": "UjE4M0Jhc2VAYW5vbnltb3VzAHtGSUxFfTozJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-trait-data",
+      "source": "<?php\ntrait R183Data { public const int VALUE = 11; public int $value = 5; public function label() { return 'trait'; } }\n$owner = new class { use R183Data; public function make() { return new class($this->value, self::VALUE) { public function __construct(public int $left, public int $right) {} }; } };\n$child = $owner->make(); echo $owner::class, ';', $child::class, ';', $child->left, ';', $child->right, ';', $owner->label(), ';';\n",
+      "source_sha256": "09d558ee910babaf6f1f9d2a75a0390bfcb8477f8c96fed8ba7904c1db988155",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7NTsxMTt0cmFpdDs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-trait-adaptations",
+      "source": "<?php\ntrait R183A { public function label() { return 'A'; } } trait R183B { public function label() { return 'B'; } }\n$owner = new class { use R183A, R183B { R183A::label insteadof R183B; R183B::label as private other; } public function make() { echo $this->label(), $this->other(), ';'; return new class {}; } };\n$child = $owner->make(); echo $owner::class, ';', $child::class, ';';\n",
+      "source_sha256": "7080d6b0c13e178dfc10310283e05b36555aea3c296b21faf6240eadda8ee63d",
+      "stdout_template_base64": "QUI7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDA7Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-trait-stringable",
+      "source": "<?php\ntrait R183String { public function __toString(): string { return 'TRAIT;'; } }\n$owner = new class { use R183String; public function make() { return new class {}; } };\n$child = $owner->make(); echo (string)$owner, ($owner instanceof Stringable), ';', $owner::class, ';', $child::class, ';';\n",
+      "source_sha256": "9fa6e7c6abc4a04d44e7f77ea332b94c46d1d856048832bba1e996ca5d99250f",
+      "stdout_template_base64": "VFJBSVQ7MTtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjMkMDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjMkMTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-composed-closure-factory",
+      "source": "<?php\ninterface R183Maker { public function make(): Closure; } trait R183Value { public const int VALUE = 17; }\n$owner = new class implements R183Maker { use R183Value; public const int OTHER = 6; public function make(): Closure { return fn() => new class(self::VALUE + self::OTHER) { public function __construct(public int $value) {} }; } };\n$f = $owner->make(); unset($owner); $child = $f(); echo $child::class, ';', $child->value, ';';\n",
+      "source_sha256": "cfc5e50e5d70dd539d68a1987875bb0368a125430e57c756ec1a701179cfa14e",
+      "stdout_template_base64": "Y2xhc3NAYW5vbnltb3VzAHtGSUxFfTozJDE7MjM7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-readonly-composed",
+      "source": "<?php\ninterface R183Readonly {} trait R183ReadonlyValue { public const int VALUE = 19; }\n$owner = new readonly class implements R183Readonly { use R183ReadonlyValue; public function make() { return new readonly class(self::VALUE) { public function __construct(public int $value) {} }; } };\n$child = $owner->make(); echo $owner::class, ';', $child::class, ';', $child->value, ';';\n",
+      "source_sha256": "40cc86f12160f6e9fed97580ea8b834a360e28dd4a037909146056d3c5001663",
+      "stdout_template_base64": "UjE4M1JlYWRvbmx5QGFub255bW91cwB7RklMRX06MyQwO2NsYXNzQGFub255bW91cwB7RklMRX06MyQxOzE5Ow==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-constant-callable",
+      "source": "<?php\n$owner = new class { public const CB = self::value(...); public static function value() { return 'CALL;'; } public function make() { return new class {}; } };\n$child = $owner->make(); $f = $owner::CB; echo $f(), $owner::class, ';', $child::class, ';';\n",
+      "source_sha256": "12c8fb77309490d43bdc01c21720f078e450ed00a2e0211d355fe42efec38918",
+      "stdout_template_base64": "Q0FMTDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjIkMTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-trait-constant-compatible",
+      "source": "<?php\ntrait R183Const { public const int VALUE = 3; }\n$owner = new class { use R183Const; public const int VALUE = 3; public function make() { return new class {}; } };\n$child = $owner->make(); echo $owner::VALUE, ';', $owner::class, ';', $child::class, ';';\n",
+      "source_sha256": "a2b1dbae5a6cdf47825ef4aa7cb9ad987d64285c91e838525091be53314ca365",
+      "stdout_template_base64": "MztjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjMkMDtjbGFzc0Bhbm9ueW1vdXMAe0ZJTEV9OjMkMTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "owner-trait-constant-conflict",
+      "source": "<?php\necho 'PRE;'; trait R183Conflict { public const int VALUE = 3; }\n$owner = new class(argument183()) { use R183Conflict; public const int VALUE = 4; public function make() { return new class {}; } };\nfunction argument183() { echo 'BAD;'; return 1; }\n",
+      "source_sha256": "3a94b2427014f51883a8736a318165697bc27d12660b8f29bce9f8066d535ac1",
+      "stdout_template_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IGNsYXNzQGFub255bW91cyBhbmQgUjE4M0NvbmZsaWN0IGRlZmluZSB0aGUgc2FtZSBjb25zdGFudCAoVkFMVUUpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBjbGFzc0Bhbm9ueW1vdXMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "owner-interface-contract-before-arguments",
+      "source": "<?php\necho 'PRE;'; interface R183Need { public function required(): int; }\n$owner = new class(argument183()) implements R183Need { public function make() { return new class {}; } };\nfunction argument183() { echo 'BAD;'; return 1; }\n",
+      "source_sha256": "639b8fb1b5c58005e739ca4813ce25d994bd55ef38a75559812b48b2682e365b",
+      "stdout_template_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIFIxODNOZWVkQGFub255bW91cyBtdXN0IGltcGxlbWVudCAxIGFic3RyYWN0IG1ldGhvZCAoUjE4M05lZWQ6OnJlcXVpcmVkKSBpbiB7RklMRX0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "owner-interface-duplicate-before-arguments",
+      "source": "<?php\necho 'PRE;'; interface R183Duplicate {}\n$owner = new class(argument183()) implements R183Duplicate, R183Duplicate { public function make() { return new class {}; } };\nfunction argument183() { echo 'BAD;'; return 1; }\n",
+      "source_sha256": "d1f17b9ef5f5dee3c339456f705269fe3764925d7f1918f926c0d94d3198d094",
+      "stdout_template_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIFIxODNEdXBsaWNhdGVAYW5vbnltb3VzIGNhbm5vdCBpbXBsZW1lbnQgcHJldmlvdXNseSBpbXBsZW1lbnRlZCBpbnRlcmZhY2UgUjE4M0R1cGxpY2F0ZSBpbiB7RklMRX0gb24gbGluZSAzClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "php_error"
+    },
+    {
+      "id": "owner-child-warning-before-constant-fatal",
+      "source": "<?php\necho 'PRE;';\n$owner = new class { public function make() { return new class { final private function hidden() {} }; } public const int VALUE = 'bad'; };\n",
+      "source_sha256": "4ce32b7f70375fe08efff73717621a811bfa0c6fb82f36579dd1008cdc95449b",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpGYXRhbCBlcnJvcjogQ2Fubm90IHVzZSBzdHJpbmcgYXMgdmFsdWUgZm9yIGNsYXNzIGNvbnN0YW50IGNsYXNzQGFub255bW91czo6VkFMVUUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    },
+    {
+      "id": "owner-child-default-before-interface-link",
+      "source": "<?php\necho 'PRE;'; interface R183Priority { public function required(): int; }\n$owner = new class implements R183Priority { public function make() { return new class { public function invalid(int $value = 'bad') {} }; } };\n",
+      "source_sha256": "6e766ed84cf83a3d6d2c732af31fd91ddaebed09cf905648bf3bb9e70063d0e5",
+      "stdout_template_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection"
+    }
+  ]
+}

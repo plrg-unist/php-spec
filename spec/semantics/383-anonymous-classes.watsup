@@ -205,19 +205,15 @@ def $anonymous_only_anonymous_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurren
   -- if $anonymous_owner_deferred_scope(pcnode)
 def $anonymous_only_anonymous_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode)) /\ $anonymous_only_anonymous_classes(pcoccurrence*))
   -- if ~$anonymous_owner_deferred_scope(pcnode)
-dec $anonymous_owner_factory_blocked_member(statement) : bool
-def $anonymous_owner_factory_blocked_member(NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata) = true
-def $anonymous_owner_factory_blocked_member(NStmtTraitUse phpType42 phpType62 metadata) = true
-def $anonymous_owner_factory_blocked_member(statement) = false -- otherwise
 dec $anonymous_owner_factory_members(statement*) : bool
 def $anonymous_owner_factory_members(eps) = true
-def $anonymous_owner_factory_members(statement :: statement_tail*) = (($anonymous_member(statement) /\ ~$anonymous_owner_factory_blocked_member(statement) /\ $anonymous_no_classes($pcwalk($pcchildren(statement, eps))) \/ ($anonymous_method_factory_node(statement) /\ $anonymous_only_anonymous_classes($pcwalk($pcchildren(statement, eps))))) /\ $anonymous_owner_factory_members(statement_tail*))
+def $anonymous_owner_factory_members(statement :: statement_tail*) = (($anonymous_member(statement) /\ $anonymous_no_classes($pcwalk($pcchildren(statement, eps))) \/ ($anonymous_method_factory_node(statement) /\ $anonymous_only_anonymous_classes($pcwalk($pcchildren(statement, eps))))) /\ $anonymous_owner_factory_members(statement_tail*))
 def $anonymous_owner_factory_members(statement*) = false -- otherwise
 dec $anonymous_owner_factory_node(pcnode) : bool
-def $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
-  -- if $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata)
+def $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 phpType42 (SEQUENCE statement*) metadata) = true
+  -- if $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 phpType42 (SEQUENCE statement*) metadata)
   -- if $anonymous_owner_factory_members(statement*)
-  -- if ~$anonymous_no_classes($pcwalk($pcchildren(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata, eps)))
+  -- if ~$anonymous_no_classes($pcwalk($pcchildren(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 phpType42 (SEQUENCE statement*) metadata, eps)))
 def $anonymous_owner_factory_node(pcnode) = false -- otherwise
 
 dec $anonymous_unit_node(pcnode) : bool
@@ -446,20 +442,23 @@ def $anonymous_compiler_unit(P) = ($anonymous_rtd_unit(P.FOLD.SOURCE) =/= eps /\
 ;; The provisional descriptor is compiler-local until the whole body succeeds.
 dec $anonymous_owner_key(ppstate, pcpath, pchheader, int, nat) : bool
 def $anonymous_owner_key(P, pcpath, pchheader, z_line, n_counter) = true
-  -- if pchheader.PARENT = eps /\ P.EARLY = (pcpath)
+  -- if pchheader.PARENT = eps /\ pchheader.INTERFACES = eps
+  -- if (P.EARLY = (pcpath) /\ ~$pptrait_body_uses(pchheader.BODY)) \/ (P.EARLY = eps /\ $pptrait_body_uses(pchheader.BODY))
   -- if $anonymous_class_name(P.LOCATION.FILE, z_line, n_counter) = (pchheader.NAME)
 def $anonymous_owner_key(P, pcpath, pchheader, z_line, n_counter) = true
-  -- if pchheader.PARENT = (ptbytes_parent)
   -- if P.EARLY = eps
-  -- if $anonymous_parent_class_name(ptbytes_parent, P.LOCATION.FILE, z_line, n_counter) = (pchheader.NAME)
+  -- if $anonymous_interface_prefix(pchheader.PARENT, pchheader.INTERFACES) = (ptbytes_prefix)
+  -- if $anonymous_parent_class_name(ptbytes_prefix, P.LOCATION.FILE, z_line, n_counter) = (pchheader.NAME)
 def $anonymous_owner_key(P, pcpath, pchheader, z_line, n_counter) = false -- otherwise
 def $anonymous_owner_factory_header(P, pcpath, pchheader) = true
   -- if P.COMPLETION = PPCNORMAL /\ P.FOLD.SOURCE.ID = 0
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath) = (NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata)
-  -- if $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath) = (NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE name*) (SEQUENCE statement*) metadata)
+  -- if $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE name*) (SEQUENCE statement*) metadata)
   -- if $class_at(P.CLASSES, PORIGIN 0 pcpath) = eps
   -- if pchheader.KIND = "class" /\ ~pchheader.ABSTRACT /\ ~pchheader.FINAL
-  -- if pchheader.BODY = SEQUENCE statement* /\ pchheader.INTERFACES = eps
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if $pchrefs(name*, "interface name", $ppclass_context(P)) = PCHNAMES ptbytes_interface* eps
+  -- if pchheader.INTERFACES = ptbytes_interface*
   -- if pchheader.READONLY = (flags = 64)
   -- if $pchparent(phpType44, $ppclass_context(P)) = PCHNAMES ptbytes_parent* eps
   -- if pchheader.PARENT = $pchparentoption(ptbytes_parent*)
@@ -470,7 +469,7 @@ def $anonymous_owner_factory_header(P, pcpath, pchheader) = true
 def $anonymous_owner_factory_header(P, pcpath, pchheader) = false -- otherwise
 
 dec $anonymous_owner_reserve(ppstate, pcpath, pchheader) : ppstate
-def $anonymous_owner_reserve(P, pcpath, pchheader) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN 0 pcpath, KIND "class", NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES eps, PROPERTIES eps, METHODS eps, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY pchheader.READONLY, EARLY (pchheader.PARENT = eps), LINE P.LOCATION.LINE }]]
+def $anonymous_owner_reserve(P, pcpath, pchheader) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN 0 pcpath, KIND "class", NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES pchheader.INTERFACES, PROPERTIES eps, METHODS eps, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY pchheader.READONLY, EARLY (P.EARLY = (pcpath)), LINE P.LOCATION.LINE }]]
   -- if P.COMPLETION = PPCNORMAL
 def $anonymous_owner_reserve(P, pcpath, pchheader) = P -- otherwise
 dec $anonymous_owner_finish(ppstate, pcpath, pchheader, ppropertydesc*, pmethoddesc*) : ppstate
@@ -586,15 +585,17 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if $(|P.GOTOROOT| >= 2)
   -- if pcpath_owner = P.GOTOROOT[0:$nabs($(|P.GOTOROOT| - 2))]
   -- if P.GOTOROOT[$nabs($(|P.GOTOROOT| - 2)):2] = [PCFIELD 5, PCINDEX n_method]
-  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_owner) = (NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE eps) (SEQUENCE statement_owner*) metadata_owner)
-  -- if $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE eps) (SEQUENCE statement_owner*) metadata_owner)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_owner) = (NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE name_owner*) (SEQUENCE statement_owner*) metadata_owner)
+  -- if $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE name_owner*) (SEQUENCE statement_owner*) metadata_owner)
   -- if $class_at(P.CLASSES, PORIGIN 0 pcpath_owner) = (pclassdesc_owner)
   -- if pclassdesc_owner.METHODS = eps /\ pclassdesc_owner.PROPERTIES = eps /\ pclassdesc_owner.CONSTANTS = eps
   -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, 0) =/= eps
-  -- if $pchlower(NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE eps) (SEQUENCE statement_owner*) metadata_owner) = PCHRAW pchraw_owner
+  -- if $pchlower(NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE name_owner*) (SEQUENCE statement_owner*) metadata_owner) = PCHRAW pchraw_owner
   -- if $plclasscontext(P.FOLD.SOURCE, pcpath_owner, P.LOCATION.FILE, pclassdesc_owner.LINE) = (ptcontext_owner)
   -- if P.ENV.NAMESPACE = ptcontext_owner.NAMESPACE /\ P.ENV.CLASSES = ptcontext_owner.IMPORTS
-  -- if pchheader_owner = { KIND "class", NAME pclassdesc_owner.NAME, ABSTRACT false, FINAL false, READONLY pclassdesc_owner.READONLY, PARENT pclassdesc_owner.PARENT, INTERFACES eps, BODY pchraw_owner.BODY }
+  -- if $pchrefs(name_owner*, "interface name", ptcontext_owner) = PCHNAMES ptbytes_interface* eps
+  -- if pclassdesc_owner.INTERFACES = ptbytes_interface*
+  -- if pchheader_owner = { KIND "class", NAME pclassdesc_owner.NAME, ABSTRACT false, FINAL false, READONLY pclassdesc_owner.READONLY, PARENT pclassdesc_owner.PARENT, INTERFACES ptbytes_interface*, BODY pchraw_owner.BODY }
   -- if z_method = $declaration_method_keyword_line(metadata, metadata_name)
   -- if $(z_method > 0)
   -- if P.CLASSCONTEXT = ($ppmethod_context(P, pchheader_owner, $base64(text), z_method))
