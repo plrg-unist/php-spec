@@ -22,6 +22,8 @@ dec $tick_redirect_node(pticksummary, pcpath) : expression?
 dec $tick_compiled_constant(pcodeexpr*, pcpath) : bool
 dec $tick_conditional(expression) : bool
 dec $tick_logical(expression) : bool
+dec $tick_value_list(expression) : bool
+dec $tick_list_items(pticksummary, pcodeexpr*, pcpath, nat, phpType13*) : pticksummary
 dec $tick_subject_free(pticksummary, pcodeexpr*, pcpath, expression) : bool?
 dec $tick_new_named(phpType28) : bool
 dec $tick_group_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
@@ -230,6 +232,22 @@ def $tick_expression_raw(T, pcodeexpr*, pcpath, expression) = $tick_nodes(T, pco
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArray phpType12 metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprArray phpType12 metadata, pcpath))
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrayDimFetch expression phpType5 metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprArrayDimFetch expression phpType5 metadata, pcpath))
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprVariable phpType32 metadata) = $tick_nodes(T, pcodeexpr*, $pcchildren(NExprVariable phpType32 metadata, pcpath))
+;; Destructuring returns its RHS operand, after compiling that operand and then
+;; each key/target. FETCH_LIST and the real stores separate nested op arrays.
+;; Callable-bearing reference patterns keep the existing explicit dependency.
+def $tick_value_list(expression) = ~$list_references(phpType13*)
+  -- if $list_pattern(expression) = (phpType13*)
+def $tick_value_list(expression) = false -- otherwise
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprAssign expression_pattern expression_rhs metadata) = $tick_node(T_rhs, pcodeexpr*, pcpath ++ [PCFIELD 0], expression_pattern)
+  -- if $tick_value_list(expression_pattern)
+  -- if T_rhs = $tick_node(T, pcodeexpr*, pcpath ++ [PCFIELD 1], expression_rhs)
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprList (SEQUENCE phpType13*) metadata) = $tick_list_items(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, phpType13*)
+  -- if ~$list_references(phpType13*)
+def $tick_list_items(T, pcodeexpr*, pcpath, n, eps) = T
+def $tick_list_items(T, pcodeexpr*, pcpath, n, ABSENT :: phpType13*) = $tick_list_items(T, pcodeexpr*, pcpath, $(n + 1), phpType13*)
+def $tick_list_items(T, pcodeexpr*, pcpath, n, (NArrayItem phpType5 expression phpType4_ref phpType4_unpack metadata) :: phpType13*) = $tick_list_items(T_target[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType13*)
+  -- if T_key = $tick_nodes(T, pcodeexpr*, $pcfield_phpType5(phpType5, pcpath ++ [PCINDEX n, PCFIELD 0]))
+  -- if T_target = $tick_node(T_key[.LAST = false], pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
   -- if $tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata, 6)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T_body[.LAST = T.LAST]
@@ -997,6 +1015,9 @@ def $tick_expression_children_safe(NExprBinaryOpBooleanAnd expression_1 expressi
 def $tick_expression_children_safe(NExprBinaryOpBooleanOr expression_1 expression_2 metadata) = false
 def $tick_expression_children_safe(NExprBinaryOpLogicalAnd expression_1 expression_2 metadata) = false
 def $tick_expression_children_safe(NExprBinaryOpLogicalOr expression_1 expression_2 metadata) = false
+def $tick_expression_children_safe(NExprAssign expression_pattern expression_rhs metadata) = false
+  -- if $tick_value_list(expression_pattern)
+def $tick_expression_children_safe(NExprList (SEQUENCE phpType13*) metadata) = ($list_references(phpType13*) /\ ~$tick_functions(NExprList (SEQUENCE phpType13*) metadata))
 def $tick_expression_children_safe(NExprAssign (NExprVariable (BYTES text) metadata_var) expression metadata) = true
 def $tick_expression_children_safe(NExprFuncCall phpType19 phpType6 metadata) = true
 def $tick_expression_children_safe(NExprNew phpType28 phpType6 metadata) = false
