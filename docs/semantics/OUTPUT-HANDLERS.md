@@ -351,6 +351,11 @@ retain bytes. Warning output preserves PRODUCED without a failure-path
 deprecation. Owned Stringable producer operands retire before caller catch;
 interrupted print never assigns its normal result.
 
+Cached function metadata also survives a warning retiring a reference-backed raw
+method receiver. Later argument preparation uses that borrowed metadata without
+owning or reviving the receiver; a later warning can throw before callback entry.
+Reaching actual entry after retirement is explicitly Unsupported.
+
 This does not admit warning-handler owning abrupt cleanup, pre-entry warnings
 from explicit lower cascades or FINAL, produced-output warning throws, or exit.
 [Author evidence](../../coverage/semantics/output-vm-reference-warning-author.json)

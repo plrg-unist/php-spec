@@ -44,10 +44,12 @@ CASES = {'strict-receive': (b'<?php\ndeclare(strict_types=1);\nfunction h(int $b
 CASES["owned-stringable-producer"] = (b'<?php $e=new Exception;$x=99;function h($b,$p){global $e;throw $e;}class C{function __toString(){return "A";}function __destruct(){echo "D".ob_get_level();}}ob_start("h",1);try{$x=print new C;}catch(Exception $c){echo ($c===$e?"C":"N");}ob_end_clean();echo ":".$x."Z";', b"AD1C:99Z")
 CASES['reference-warning-throw'] = (b'<?php echo "P";set_error_handler(function(){throw new Exception;});function h(&$b,$p){return $b;}ob_start("h",1);try{echo "A";}catch(Exception $e){echo "C";}ob_end_clean();', b'PAC')
 CONTROLS = {'callback-exit': b'<?php echo "P";function h($b,$p){exit("E");}ob_start("h",1);echo "A";ob_end_clean();',
+ 'reference-warning-retired-entry': b'<?php echo "P";class H{function h(&$b,$p){echo "T";return $b;}}$r=new H;$cb=[&$r,"h"];set_error_handler(function(){global $r;$r=null;return true;});ob_start($cb,1);unset($cb);echo "A";',
  'produced-warning-throw': b'<?php echo "P";set_error_handler(function(){throw new Exception;});function h($b'
                            b',$p){echo "H";return $b;}ob_start("h",1);try{echo "A";}catch(Exception $e){echo '
                            b'"C";}ob_end_clean();'}
 CONTROL_REASONS = {'callback-exit': 'abrupt user output-handler callback cleanup',
+ 'reference-warning-retired-entry': 'user output-handler cached target retired before entry',
  'produced-warning-throw': 'abrupt user output-handler deprecation callback cleanup'}
 
 def sha(path):

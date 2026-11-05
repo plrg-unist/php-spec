@@ -9,7 +9,8 @@
     "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
     "spec_sha256": "f29418c4740de3fe33ae26c59eee4198b48756b5c89986fe29e16eb2f487f163",
     "modules": 435,
-    "compiler": "pinned SpecTec da36ac3c434cd291940293a63da64544307730a3; SL, caches disabled, encountered determinism"
+    "compiler": "pinned SpecTec da36ac3c434cd291940293a63da64544307730a3; SL, caches disabled, encountered determinism",
+    "preparation_sha256": "71a02e057d14d64088fd8a41dc5275aeab5f9ab10a77ef3f99e28cbad2d0920a"
   },
   "authority": [
     "main/output.c::php_output_handler_op",
@@ -19,7 +20,8 @@
     "Echo, print and inline positive-chunk WRITE: warning throws before callback entry, including first/second fixed byref formals and later phase0.",
     "Diagnostic API_ERROR cursors forward existing output context/running/temporary-disabled queries and add no roots.",
     "Exact prepared scalar prefix releases before original FCI inputs; existing pending failure disables selected/reached lower user layers while below-threshold lower layers retain bytes.",
-    "Warning output retains PRODUCED without deprecation; owned Stringable producers retire before catch and interrupted print assignment."
+    "Warning output retains PRODUCED without deprecation; owned Stringable producers retire before catch and interrupted print assignment.",
+    "Cached parameter metadata survives pre-entry borrowed method receiver retirement without a new root. Reaching actual ENTER with that target retired stays explicitly Unsupported."
   ],
   "sources": {
     "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15/sources-02/report.json",
@@ -51,5 +53,24 @@
   "limits": [
     "Owning diagnostic abrupt cleanup, explicit lower-cascade/FINAL pre-entry warnings, callback exit and produced-output-warning throws remain partial.",
     "Wider callable, return conversion, capability/mutation/Fiber/stdout and lifecycle dependencies retain their existing boundaries; no full-core claim."
-  ]
+  ],
+  "retired_receiver_repair": {
+    "finding": "Independent exact source initially interpreter_failed when first warning retired the referenced method receiver before the second warning threw. C retains cached function metadata;395 now borrows it for parameter preparation while requiring live original target authority at actual ENTER.",
+    "sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15/retired-receiver-02/report.json",
+      "sha256": "a54ecb57cf6b3f4a4e1b75992b8296e57a5f9fa50ad205b2619789da9c1313bf",
+      "scope": "Independent retirement original copied byte-for-byte, exact PA|C:D1:2:0:12401/normal0; affected live phase-only source also exact. Stable inputs."
+    },
+    "fence": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15/retired-entry-fence-01/report.json",
+      "sha256": "1bedd73ce4c0c11afc7e184fa8799cf699d71457a758da277bd867b94b64edd4",
+      "scope": "Successful warning followed by retired receiver entry remains explicit Unsupported before body entry; zero native agreement credit. Stable inputs."
+    },
+    "comment_bridge": {
+      "tested395_sha256": "c3b0ebf2f9d4007ff4f340bceb0d1b5858e3682f5ac0f2aad0661f331e35664d",
+      "current395_sha256": "71a02e057d14d64088fd8a41dc5275aeab5f9ab10a77ef3f99e28cbad2d0920a",
+      "difference": "Only the exact two-line cached-metadata explanatory comment was added after the completed source/fence actors. Removing it reproduces both tested395 hashes; no executable rule changed."
+    },
+    "original_failure": "/home/user/workspace/php-spec-evidence-archive/new/output-ordinary-handler-15-review/retired-receiver-01/report.json; preserved by independent reviewer, zero credit."
+  }
 }

@@ -1129,7 +1129,9 @@ prepared scalar wrappers retire before undefined-result failure routes live byte
 through lower buffers. Reached lower user chunks skip entry while smaller chunks
 retain their bytes. Warning output retains PRODUCED without deprecation, and
 owned print operands retire before catch without assigning the print result.
-Six new originals agree; author prepared-prefix and producer fronts pass 108
+Seven targeted originals and one promoted original agree. Cached parameter
+metadata survives a warning retiring its borrowed method receiver; actual entry
+after retirement stays explicitly Unsupported. Prepared-prefix and producer fronts pass 108
 reported conditions at their separate cuts. Independent validation is pending;
 [author evidence](coverage/semantics/output-vm-reference-warning-author.json)
 preserves both accepted fronts and the original failed fixture.
