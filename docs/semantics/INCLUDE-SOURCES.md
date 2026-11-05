@@ -1776,6 +1776,13 @@ without calling `__toString`. The raw option and copied COW array remain in
 TypeError TraceArgs until catch release; a selected setter still works after
 its source variable is rebound to a getter. No new semantic rule was needed.
 
+The [special-option rejection increment](../../coverage/semantics/config-iterator-assertions-reject-review.json)
+allows a copied Stringable option that converts to exact `zend.assertions` when
+its copied value is an admitted array or object. INI_SET rejects that raw value
+with TypeError before directive lookup, after option conversion and disposal;
+TraceArgs retains the copied value. An accepted scalar value with the same
+option still stops explicitly before assertion setting.
+
 Other CONFIG intrinsic acquisition, temporary source/key forms, wider Stringable/effectful
 casts, materialized or special graphs and wider lifecycle contexts retain their
 current boundaries. An effectful last INPUT without an admitted live copied root
