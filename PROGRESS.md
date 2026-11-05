@@ -513,6 +513,20 @@ with zero agreement. Wider Value layouts and active-pin collection remain
 partial; earlier fixture/source drafts retain zero credit.
 [GC38 review](coverage/semantics/gc-map-first-value-child-review.json).
 
+GC39 admits ordinary Map-first retirement of a one-declared-Child Value whose
+Child has two physical owners: the Value property and one other strong owner.
+The Map is the Value's sole owner and has no incoming Map-key registration.
+Map and Value weak gets become null after teardown while Child stays live;
+in the tested outside-CV source, unsetting that owner later runs the destructor.
+The new arm leaves GC37 insertion, GC38 sole-owned Child cleanup and
+replacement/foreach unchanged.
+Two fresh exact sources (one caught Child throw), two affected exact sources,
+and 96 reached conditions (author62, independent34) pass at recorded cuts. An
+owner-three Child remains explicitly Unsupported with zero agreement. Wider
+ownership graphs and active-pin collection remain partial; the baseline and
+early fixture elaboration failures retain zero credit.
+[GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
+
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
 GC12 source pair passes after the A80 and enum-pipe joins; A81's named Generator

@@ -1,0 +1,64 @@
+{
+  "scope": "GC39: ordinary Map-first free of one GC37 declared-child Value whose Child has exactly two physical owners; the Value has one Map owner, the Map has no incoming Map-key registration, and the leaf stdClass Key stays live.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "cuts": {
+    "base": "a57a48ce25258c6f7690bf5d13f5162b7e48ed5b",
+    "author_source": "489591c0ed47dc556384eea89bb477bbd027d1a4",
+    "runtime_final": "bb21b6e8782f6df2134abf5de0199793faa0a212",
+    "author_reached": "35df99defafa0a5764f4802d13b5b214a02fa5aa",
+    "independent_sources": "476b3f32c58a05420ec3e8a926db6c7fd0454fbc",
+    "independent_reached": "ce707283d7e32c4545a9b53d894d269c6a33956e"
+  },
+  "rule_basis": "Only the singleton Map-free helper admits the GC37 exact declared-child layout with Child owner2 and Value owner1, and still requires no incoming Map-key registration. The existing GC37 owner1 first-insertion wrapper, GC38 owner1 Map-free branch, leaf fallback, replacement and foreach remain unchanged. During Value slot release, the shared Child release drops one owner without invoking its destructor; the tested outside-CV owner later causes Child destructor after Map/Value weak gets are null. The guard counts owners but does not authenticate the second owner location.",
+  "counts": {
+    "new_normal_exact_sources": 2,
+    "author_new": 1,
+    "independent_new": 1,
+    "affected_exact_sources": 2,
+    "prior_gc37_key_first": 1,
+    "prior_gc38_owner_one": 1,
+    "new_unsupported_controls": 1,
+    "reported_reached_conditions": 96,
+    "author_reached": 62,
+    "independent_reached": 34
+  },
+  "validation": {
+    "author": "One new retained-Child observer source agrees exactly with pinned PHP at bb21; reached Map-free front passes62 conditions and checks Value owner1, Child owner2, exact new guard and one-step unregister without Child release.",
+    "independent": "Caught Child throw after later outside unset agrees exactly, including Map/Value weak-null suffix; nested shared-release reached checkpoint passes34 conditions and observes Child owner2\u2192owner1 without callback.",
+    "affected": "Prior GC37 Key-first owner1 source and GC38 Map-first owner1 source agree exactly at 35df with unchanged bb21 semantic bytes.",
+    "unsupported": "One producer-reachable Child owner3 source continues natively but stops explicitly at nonempty WeakMap storage destruction after B| in the model, with zero agreement."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc39_map_first_retained_observers.php": "ccf7175aec2e5b7b6f86f40db39add65018ecf72c2d635202bb17783c477ba66",
+    "tests/semantics/gc39_peer_retained_throw.php": "3305e5254fd5263f2577d0b455f7dfc0bf51d410558481ea27832676eabcf7a5",
+    "tests/semantics/gc39_peer_owner3_boundary.php": "5876e20422701f1e6fbe8cf6c4c9936d825b9c16f5ae48548c2113f5b2314e26",
+    "tests/semantics/gc37_value_child_preinsert.php": "f8f23710c740a7acfab562d06568d6f50b995322dc69974ef29a19e477184f1f",
+    "tests/semantics/gc38_map_first_value_child.php": "23c0e8ea02e9b6c499d86d0541014a6f3c59c0f323bdb99c83e14c90bcecf617"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/native-v1/report.json": "96acdc8e2b470d8b6a173cf0c9c99bfb9b2ad160416da259991928c5769a06d4",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/baseline-model-v1/report.json": "6662e538b80e2e08d5d82d009e2cd9a21217f3ca6c107817047d06b105465e17",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/harness-bb21-v1/native-report.json": "b6b5e254b1ab57c3c71bedc23332fe193ed6cb132044aaf2665c2a17cea190ea",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/harness-bb21-v1/model-map-first-retained-child-report.json": "fcecc2b21ca28ee65c8c692be6581632cee88faf58b918cfc86239cff75cab4c",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/reached-front-35df-v1/report.json": "4b65255762f791b4e353d32b8993d7422e531cd3829f9aafbf32181bf7fd9401",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/affected-gc37-35df-v1/native-report.json": "a95cb68491d798e06fe8f165170955ce94da124174fb76edf9b3ce5e502a4890",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/affected-gc37-35df-v1/model-child-before-insertion-report.json": "77b7a5c044a5abdd0c4453a50f74aeecfdf3b05b9daaaaac4b681b1e635aeacb",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/affected-gc38-35df-v1/native-report.json": "ffe71c5b877783e866e3e58c45b7d228e25a9d34dccac2d987f774a22eaad2fa",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/affected-gc38-35df-v1/model-map-first-declared-child-report.json": "18e6a2fff4a9b34054c8842b2ea68a6ad9c6475cac30a72c2a936a5b17245f8a",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/native-v1/report.json": "2330e462d6777eb88e4b362112b1ea69c149bb587847199d75a91fac7f1a19de",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/model-bb21-v1/report.json": "9f1d372aa40165b265b05b46ca0edbc8884253b8fc0756758fff954ab64c1334",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/owner3-native-v1/report.json": "ab8a842dfebe2d473a4cf08cd3dc3f93c235caf3707797338cddd531ae47e07f",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/owner3-model-35df-v1/report.json": "93384b38b1f88712f00338ba5c10c10f77dd991b1a118a9c7f3de6b089d0991f",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/reached-shared-35df-v1/report.json": "b2aa86c78249cee874bcf04898297c47931ad1f0f489019a0c22193753864bd3"
+  },
+  "archive_manifest_sha256": {
+    "../php-spec-evidence-archive/gc-map-first-retained-child-author-39/manifest.json": "1a7100b5007f21043edf1a63137d3d45365d9045937c4e00ab5d9b4ce32e7ea2",
+    "../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/manifest.json": "3f3edf4a1d595f9865e88eff5c7663a8f31f9a78151d4a4a57bbbc78f7dd1bac"
+  },
+  "zero_credit": "At base a57 the new author source stops explicitly after B|; that baseline is zero agreement. The first two peer reached attempts failed SpecTec fixture elaboration before semantic checks and retain zero credit; the corrected third cut passed34 with unchanged runtime/source bytes.",
+  "limits": "One singleton Map, no incoming Map-key registration, live leaf stdClass Key, one GC37 methodless Value with one direct public untyped declared Child property, Value owner1 and Child owner2 at Map free. The rule does not constrain provenance of the second Child owner; accepted sources use an outside CV. Child owner3, other Value layouts/owners, occupied replacement, multi-entry/shared-key writes, reference cells, freeing-object mutation and active-pin collection remain outside this slice.",
+  "recovery": "Run gc39_map_first_retained_sources.py, gc39_map_first_retained_state.py, gc39_peer_retained_sources.py and gc39_peer_retained_state.py with the pinned profile and external outputs. Original raw and receipts remain outside Git under ../php-spec-evidence-archive/gc-map-first-retained-child-author-39/ and ../php-spec-evidence-archive/gc-map-first-retained-child-peer-39/.",
+  "review": "Independent private semantic/source review pending final exact cut.",
+  "compatibility_bridge": "Actual-parent composition pending; frozen bb21 source/reached and affected reports retain their recorded inputs."
+}
