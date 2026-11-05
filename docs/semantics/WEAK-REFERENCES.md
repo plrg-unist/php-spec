@@ -295,6 +295,31 @@ owner/budget checks. Occupied replacement and shared-Key finite payloads remain
 explicit Unsupported; the global leaf predicates, quiet/shared-Key/collection
 admission, property executors and broader mutation boundaries are unchanged.
 
+Selective ordinary Key death in a multiple-entry table uses the same finite
+payload policy. Its sole retiring-Key allowance requires the actual current
+`INSTANCE_STORAGE_STEP`: matching object, valid physical pin, `NEXT=0`, empty
+slots and no pending wrapper notification. That Key must occur in the table;
+every other Key remains nonfreeing and registered only in this Map. The earlier
+leaf/cursor and callback-table policies remain authoritative for their domains,
+and ordinary singleton notification is unchanged.
+
+The existing notification step removes exactly the selected entry, normalizes
+the remaining table and transfers its one Value edge into a release job.
+Each removed entry releases one Value owner; property cleanup waits for the
+last actual owner. Shared Children retain their actual property/job owners. A Key
+wrapper registered before its Map association is weak-null during Child
+callbacks; one registered afterward remains weak-live until callback cleanup
+finishes. Child throws preserve later field roots and cleanup before catch,
+while the Map and surviving sibling Value remain live.
+
+The [finite Key-notification review](../../coverage/semantics/gc-finite-value-key-notice-review.json)
+binds the original source observations and actual reached detach/shared-release
+and budget checks. Reconstructing that observed entry-to-job transfer exposes
+an internal helper input for guard counterstates; these add no PHP agreement.
+The finite notice arm excludes active cursors and incoming Map-key associations;
+replacement/shared-Key, wider payload/mutation and active-pin collection policies
+remain unchanged.
+
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the
 body. This transient record requires a genuine pending constructor or failed-release

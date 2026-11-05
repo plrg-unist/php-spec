@@ -628,79 +628,35 @@ ownership graphs and active-pin collection remain partial; the baseline and
 early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
 
-GC40 admits Map-first retirement of exactly two entries containing one
-sole-owned declared-Child Value and one sole-owned methodless leaf Value.
-Both Keys remain live and registered only in that Map; no incoming Map-key
-registration or active cursor is admitted. Ordered release keeps the leaf
-weakly live during Child's destructor only when its entry follows Value.
-Nested Map/Value pins preserve weak visibility through a caught Child throw.
-Three fresh originals agree, including Child throws in both positions, and
-112 reached conditions (author72, independent40) pass at their recorded cuts.
-Map dimension access during the nested callback and two declared-child Values
-were explicit Unsupported with zero agreement at that cut. Original-source, ownership
-transfer and budget evidence is recorded in the
-[GC40 review](coverage/semantics/gc-two-entry-map-first-review.json).
+Finite methodless WeakMap payloads share validation across prebuilt insertion,
+private-Key append, singleton/multiple-entry Map retirement and selective Key
+notification from multiple-entry tables. Public untyped nonstatic/nonreadonly
+backed slots contain primitives or fieldless destructor Children; matching
+identities and keys fix declaration order. Ordered jobs preserve repeated Value
+and Child edges, outside owners and later cleanup after a Child throw. Backed
+storage clears without hook dispatch; used results, temporary producers and
+clones retain their existing evaluation and owner transfers.
 
-GC41 replaces the two-entry Map-free pairing with a finite fold over direct
-methodless leaves and exact one-declared-Child Values. Physical Value and Child
-ownership may be shared or retained outside the Map; each slot keeps its own
-ordered release job. Repeated Values, shared Children and pending later Child
-cleanup compose with the existing physical pins and caught-throw protocol.
-Held leaf Keys registered only in this Map, no incoming Map-key registration
-and no active cursor remain required. The old two-Child control receives fresh
-agreement in this milestone; its GC40 refusal keeps zero historical credit.
-Four exact sources (three newly authored, one promoted) and one 85-condition
-reached multiplicity/budget group pass at their recorded cuts.
-Extra declared fields were Unsupported at the GC41 cut; freeing-Map dimension
-access remains Unsupported.
-Wider layouts, mutation, active-pin collection and caller contexts remain partial.
-[GC41 review](coverage/semantics/gc-finite-map-first-review.json).
+Finite-payload notification admits only the actual retiring leaf `stdClass` Key
+under its validated storage pin. The other Keys remain nonfreeing and registered
+only in this Map; no active cursor or incoming Map-key association is admitted.
+The removed slot becomes one Value job before callbacks. Earlier Key wrappers
+are weak-null during Child cleanup; later wrappers remain weak-live until that
+cleanup finishes, including a caught throw. Existing leaf/reference, callback,
+ordinary singleton and cursor policies retain their prior domains.
 
-GC42 introduced a finite declared-slot layout for direct methodless Map Values:
-initially public untyped nonstatic/nonreadonly fields without hooks, holding primitive
-leaves or fieldless public-destructor Children. Descriptor identities and keys
-authenticate physical declaration order; existing jobs preserve repeated Child
-edges and borrowed snapshots add no owners. Reverse writes of `[X,Y,X,Z]` drop
-one X owner, then run Y, X and Z while a Y throw preserves pending cleanup.
-The previous extra-null-field refusal receives a fresh comparison here.
-Three exact sources (two new, one promoted), two Unsupported controls with zero
-agreement and one 96-condition reached ownership/budget group pass at their cuts.
-Typed and deeper layouts, property aliases/hooks, freeing-Map dimension access/mutation,
-active-pin collection and wider contexts remain partial; singleton and ordinary
-consumer/type-source rules are unchanged.
-[GC42 review](coverage/semantics/gc-finite-declared-properties-review.json).
-
-GC43 shares that finite payload validation with ordinary singleton Map free,
-removing the separate one-property and Child-owner1/2 arms. Each release keeps
-its actual physical owners: a retained Value survives Map retirement and its
-shared Children run only after the outside Value CV later releases. Singleton
-multi-field Child throws preserve later field cleanup under the Map pin.
-The old leaf/reference fallback and incoming notification behavior remain.
-Backed property storage now uses the common nonvirtual-slot check; teardown
-never calls getters/setters. An already accepted singleton backed getter and
-the old leaf/incoming order are preserved; the old owner3 refusal is freshly
-promoted. Virtual/typed/deeper layouts and incoming-Child notification remain
-explicit limits; property executors/type-source rules and paused work are unchanged.
-Six exact originals (three newly supported, one promoted, two affected), two
-Unsupported controls with zero agreement and one 95-condition reached
-transfer/budget group pass at their cuts.
-[GC43 review](coverage/semantics/gc-singleton-finite-values-review.json).
-
-GC44 admits prebuilt finite methodless Values at first insertion and private-Key
-append through the same payload validation. The append arm authenticates the
-actual RHS/selected operand and adds one Value edge without copying its Child
-edges. Existing entry metadata and the used-result/temporary protocol remain.
-An already built Value can enter an empty Map, appear under a second Key, and
-coexist with a used-result temporary leaf. Clone producers retain their copied
-Child edges; key-first throws preserve the earlier evaluation/cleanup behavior.
-Occupied replacement and shared-Key finite payloads remain Unsupported. Other
-mutation, quiet/shared-Key/GC admission and ordinary leaf/callback policies are
-unchanged; paused work remains untouched. Two newly supported sources and one
-affected key-order source agree exactly; two Unsupported controls keep zero
-agreement. The append ownership/budget group passes 88 and the focused
-first-write guard group passes 24 at separate cuts; earlier fixture failures
-keep zero credit.
-[GC44 review](coverage/semantics/gc-finite-value-insertion-review.json).
+Typed/alias/virtual/inherited/deeper and owning-array layouts, occupied
+replacement/shared-Key finite payloads, wider mutation/caller contexts,
+freeing-Map dimension access and active-pin collection remain partial. Paused
+work is untouched. Three new originals agree exactly and one 91-condition
+reached group passes at their cuts. The [current Key-notification review](coverage/semantics/gc-finite-value-key-notice-review.json)
+separates those source/owner/budget results from reconstructed helper inputs and
+zero-credit baseline/structuring failures. Earlier cuts remain in the reviews for
+[two entries](coverage/semantics/gc-two-entry-map-first-review.json),
+[finite entries](coverage/semantics/gc-finite-map-first-review.json),
+[declared slots](coverage/semantics/gc-finite-declared-properties-review.json),
+[singleton/backed storage](coverage/semantics/gc-singleton-finite-values-review.json)
+and [insertion/append](coverage/semantics/gc-finite-value-insertion-review.json).
 
 The cumulative GC12–19 join passes seven exact original source pairs and seven
 strict SL reached groups (742 assertions) at its frozen cut. One representative
@@ -1660,7 +1616,7 @@ records the pointwise bridge to final semantic bytes.
 | --- | --- |
 | CLASS185 | Class and Trait factories with Generator bodies; private implementation/review. |
 | I112 | Owning native Generator API captures and invocation; private implementation/review. |
-| GC45 | Notification when ordinary WeakMap keys die, with finite payloads; private implementation/review. |
+| GC46 | WeakMap offsetGet and offsetExists with finite payloads; private implementation/review. |
 | COMP182 | Single attributed global constants; trace compiler attribute ordering and source/runtime receipt boundary after COMP181 acceptance. |
 | OB18 | Array output return reception and conversion; private implementation/review. |
 | ATTR33 | Echo tick placement between operands, with late reads and aborts; private implementation/review. |

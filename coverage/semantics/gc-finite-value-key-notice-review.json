@@ -1,0 +1,67 @@
+{
+  "scope": "GC45: selective ordinary Key-death notification in finite multiple-entry WeakMap tables with common methodless declared payloads.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "cd9c0a3b2cc260937497187f37af2be556ac27a8",
+  "semantic_revision": "a1f2b32f38b62a7ef864c242fdc4577c730c5c86",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "b40845a1e6ea5fa8ab4d6e8cea4a07be0cdc2c1062b211dc480b870ad6073f42"
+  },
+  "tested_revisions": {
+    "gc-finite-value-key-notice-author-45/native-v1/native-report.json": "1a9200805460f82d0119619e2fb749cee86633fe",
+    "gc-finite-value-key-notice-author-45/native-v1/baseline-report.json": "1a9200805460f82d0119619e2fb749cee86633fe",
+    "gc-finite-value-key-notice-author-45/native-v1/model-report.json": "a1f2b32f38b62a7ef864c242fdc4577c730c5c86",
+    "gc-finite-value-key-notice-author-45/model-eeee-structuring-failure-v1/model-report.json": "eeeed436a93b4121ad3cb411740739a9ce5fbfab",
+    "gc-finite-value-key-notice-author-45/reached-f478-v1/report.json": "f478a6bf1f2db321129dda5d9e552a3adf5490d0",
+    "gc-finite-value-key-notice-peer-45/native-v1/native-report.json": "f18e9ee3f4e8e219f7b96976428735f90332bcef",
+    "gc-finite-value-key-notice-peer-45/native-v1/model-report.json": "dd1f3e1617bba3429a8537c55188c75d4a9eabf9"
+  },
+  "rule_basis": "The existing finite entry/storage fold gains an optional sole retiring-Key identity. EPS wrappers preserve insertion and Map-free admission. The new methodless notice fallback authenticates the current matching valid INSTANCE_STORAGE_STEP, NEXT=0 and empty SLOTS/NOTIFY, and occurrence of that Key in the table. Every other Key remains nonfreeing, leaf stdClass and registered only here; canonical finite storage, no cursor/incoming Map-key association and existing payload checks remain. The old storage_valid branch retains leaf/cursor behavior, callback true policy is unchanged, and singleton notification plus detach/release/property executors are untouched.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakref_register,zend_weakref_unref_single,zend_weakref_unref,zend_weakrefs_notify",
+    "vendor/php-src/Zend/zend_objects.c:zend_object_std_dtor,zend_object_dtor_property",
+    "spec/semantics/359-instance-storage-pin.watsup:instance_storage_begin,instance_storage_valid",
+    "spec/semantics/257-request-destructors.watsup:destructor_release_begin,destructor-release-shared",
+    "spec/semantics/422-weak-map-entries.watsup:weakmap_entries_notice_storage,weakmap_entries_child_entries_policy,weakmap_entries_child_storage_policy,weakmap_key_notice"
+  ],
+  "counts": {
+    "exact_sources": 3,
+    "newly_supported_exact_sources": 3,
+    "author_exact_sources": 1,
+    "independent_exact_sources": 2,
+    "old_runtime_baseline_zero_agreement": 1,
+    "new_unsupported_php_controls": 0,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 91
+  },
+  "validation": {
+    "author_source": "A prebuilt [X,Y,X] Value occupies two private Key slots beside a leaf. First Key death removes one Value edge without callbacks and leaves Value/Children live. Second Key death removes the final Map edge, invokes Y then X under the post-registration Key pin, and preserves the later leaf. Tail Key death then removes the leaf; empty Map retirement clears its weak identity.",
+    "independent_sources": "Two-entry [X,Y,X] sources distinguish weak registration order while retaining a sibling leaf and live Map. A pre-registration Key wrapper is weak-null during Y/X callbacks. A post-registration wrapper remains weak-live through Y throw and later X cleanup, then is weak-null before catch; Value/Children are dead and the sibling survives. Both compare exactly with native, with normal caught-throw completion, exit0 and empty stderr.",
+    "actual_reached": "One strict-SL source-reached group starts at the actual last-owner first-Key release. S-to-S_started removes exactly the selected entry, leaves sibling metadata/registrations intact and transfers one Value edge into a real job under the Key pin. Value has two owners before/after transfer and Child X owner2/Y owner1 are unchanged. The next actual shared release drops the Value owner count from 2 to 1 without starting a Value pin or callbacks. Early Key weak-null and heap/destruction validity hold. Projected zero/nonzero two-step budget and complete resumed equality pass through final cleanup.",
+    "helper_counterstates": "S_notice reconstructs the internal helper input by inverting only the observed OBJECTS/TODO/RELEASES slot-to-job transfer; calling key_notice reproduces the actual S_started exactly. Its guard accepts the current pin and rejects wrong/missing pin, wrong/extra Key allowance, a forged second freeing sibling marker and finite-payload active cursor. A constructed leaf/cursor table still takes the old storage_valid/notice path. These queries are not additional reached PHP executions or Unsupported PHP controls and add no source agreement.",
+    "identities": "All source campaigns bind stable input/head identities. The reached report pins four executed binaries, directly rechecked after completion with unchanged hashes. Reports/raw preserve original source bytes, commands, contexts/profiles, process exits and interpreter outcomes."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc45_repeated_value_key_death.php": "4474a07b3f74428b47697ac768c55f226f136423fadd5b72540d2083081eec7a",
+    "tests/semantics/gc45_peer_key_before_shared_fields.php": "9841c9b5780ea19d0a4cc45441dd41236a8e2746bba4ae27a859974077a9d213",
+    "tests/semantics/gc45_peer_key_after_throw.php": "69b40169a5b5016891c78803ca68a2876dd532f2463fd29722e2322fa77f3d37"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-author-45/native-v1/native-report.json": "acd3b331479569fe17c7285a6b33beb17e2775b19c0bf37e5d14b1212e495aa8",
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-author-45/native-v1/baseline-report.json": "80738b65bf472db6fbff39a71b8381d95b9d55b70435218a1d084a948039c019",
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-author-45/native-v1/model-report.json": "c734bdd6ed4e7747f47b1045282d2a6d8a70bcd1778e2946ca9daceb408bf89b",
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-author-45/model-eeee-structuring-failure-v1/model-report.json": "0627714de188a6c72c8569197d44ae2c9e95a65657cdd106e498ec8c6ab9a774",
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-author-45/reached-f478-v1/report.json": "4de84b63c644b750ac956106dbe12ff195b588353e561672ae1ff004831e7bb7",
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-peer-45/native-v1/native-report.json": "01cd514fe1de804de33d8ccfb632c1eb9c97058474bedbca21a883ecd784ada8",
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-peer-45/native-v1/model-report.json": "960ea8ebd4da9c08072f19d0d7be9c140c863d2439da76453c41ab28d75f92fc"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-author-45/manifest.json": "0e32505ed36cef0f5232d63cfb18960c98e07043ed0a0fd6ab046877521db86a",
+    "../php-spec-evidence-archive/gc-finite-value-key-notice-peer-45/independent-summary.json": "4421db5a298f7a7c300060586ec909ac0329b18c0aab27f7fb2a24106dee298a"
+  },
+  "zero_credit": "The single author old-runtime baseline at 1a920 is explicit Unsupported at WeakMap key notification storage authority after B|; it has zero agreement. Initial eeee candidate stopped before frontend execution on the SpecTec fixed-false-pattern/otherwise structuring restriction; its failed model report and raw runner_failure remain zero. The harness raised KeyError after that runner failure, then preserved its report in finally; a retry refused to overwrite the failed report before launching any child. The failed report was moved externally before the corrected run. No interrupted campaign or PHP discrepancy occurred. No fresh replacement/shared-Key control result is claimed.",
+  "compatibility_bridge": "Supplying EPS to the new fold makes the retiring-Key equality false and recovers the previous nonfreeing-Key condition exactly. All other fold premises are unchanged. The old methodless storage_valid result is the first notice success and remains available with active leaf cursors; the callback true arm is byte-unchanged. Actual key detachment, weak notification, Value/property jobs and ordinary singleton paths are unchanged. The fresh originals and one reached group validate the newly admitted notification path; prior GC44 producer/replacement/shared-Key and earlier Map-free evidence retain their cuts without renewed campaigns.",
+  "limits": "The new notice arm admits only canonical finite direct methodless storage, one actual retiring leaf stdClass Key registered only here, nonfreeing private siblings, no active cursor/incoming Map-key association and common public untyped nonstatic/nonreadonly backed primitive/fieldless-destructor-Child slots. Typed/reference/virtual/inherited/deeper/owning-array layouts, occupied replacement/shared-Key finite payloads, wider mutation/caller/producer ownership contexts, freeing-Map dimension access and active-pin collection remain partial. Global leaf/quiet/collection admission and property/type-source executors are unchanged. Held GC35 and paused work remain untouched.",
+  "recovery": "Run gc45_finite_key_sources.py native then model in fresh external outputs; recover the single old baseline at 1a920 only if needed. Run gc45_peer_key_sources.py native then model for both wrapper orders and caught Child throw. Run gc45_finite_key_state.py for the one strict-SL actual-transfer/reconstructed-input/budget group. Earlier source cuts and the compile failure remain separately recoverable from the bound reports and raw manifests.",
+  "review": "Independent runtime/source/static 91 review is CLEAR; final clean documentation/ledger read-only acceptance is requested on the completed private candidate."
+}

@@ -3668,7 +3668,9 @@ Values with untyped declared Child/primitive storage. Backed stored values clear
 without getter/setter calls; ordered entry/property releases preserve repeated
 Values, shared Children and outside owners. The same payloads now enter empty
 Maps or append under private Keys while retaining source evaluation and owner
-increments. Virtual/wider layouts, replacement/shared-Key finite payloads,
+increments. Selective Key death removes their slots individually and preserves
+weak-registration order through Child cleanup and throws. Virtual/wider layouts,
+replacement/shared-Key finite payloads,
 freeing-Map dimension access and active-pin collection remain partial.
 [Finite Value retirement](docs/semantics/WEAK-REFERENCES.md).
 
