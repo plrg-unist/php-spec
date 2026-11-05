@@ -336,7 +336,15 @@ counts after a public call, or one store-wrapper count after an inaccessible-met
 warning.
 The disabled error callback's raw zval also remains retained on that bailout.
 Those owners and any pending slots survive into request stage2; active borrowed
-call markers retire. This phase does not claim their later request freeing.
+call markers retire. A throw during an ignored destructor-body value also retains
+still-pending outer C wrappers. Their literal C-return/result pairs and live call
+records authenticate the two receiver counts and unfinished release jobs. The
+selected result/warning record owns shared operation, frame and pending-exception
+values once; parent records require the same descriptors and a selected anchor.
+Distinct pending ownership contexts remain an explicit boundary. The
+[body-value bailout review](../../coverage/semantics/callback-late-tick-body-throw-review.json)
+records current checks; selected-handler owning retval and wider reentry are
+separate limits. This phase does not claim their later request freeing.
 
 An engine fatal bailout also skips live VM frame cleanup. The snapshot retains
 current and saved local, receiver and temporary owners before structural cleanup;

@@ -654,25 +654,27 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR22 retires ignored owning destructor-body values after PHP local cleanup and
-before the inner C protection. RESULT transfers into ordinary VALUE jobs while
-the same C-return/result pair and both protections remain live. Fresh objects,
-alias arrays and static Closure captures retire before the original child;
-externally retained returns survive until their actual later owner. Four new
-originals and two affected controls agree, and strict434 passes. Eight independent
-groups pass 438 genuine source-reached checks. Earlier exact output concealed a
-one-reference error; reached checks now preserve both C protections and the
-original call through returned-value cleanup.
-[Body-return review](coverage/semantics/callback-late-tick-body-return-review.json).
-The [handler review](coverage/semantics/callback-late-tick-handler-review.json)
-retains ATTR21's normal named-handler/Arg2/source-authority coverage and original
-failures. Earlier [exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
+ATTR23 preserves pending outer C wrappers when an ignored destructor-body value
+throws a literal Exception during post-FINAL tick retirement. Each authenticated
+parent retains both receiver protections and its unfinished arguments/FCC slots;
+shared operation/frame/pending owners belong to the selected bailout record once.
+An externally retained value that throws after its original call finishes adds
+no parent. Later active queue cleanup runs with the tick tail still stopped.
+Four new originals and two affected controls agree, and strict435 passes. Seven
+independent groups pass 612 conditions (603 reached, nine derived). The original
+Unsupported outcome, focused owner-loss diagnostic and strict DSL failure retain
+zero agreement credit.
+[Body-value bailout review](coverage/semantics/callback-late-tick-body-throw-review.json).
+Earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+[handler](coverage/semantics/callback-late-tick-handler-review.json),
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
 [bailout](coverage/semantics/callback-late-tick-throw-review.json),
 [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
 [copied-value](coverage/semantics/callback-late-tick-values-review.json) evidence
-keeps its original cuts. Abrupt body-value cleanup, direct reference-return bodies,
-selected-handler owning retval cleanup and wider lifecycle contexts remain partial.
+keeps its original cuts. Distinct pending ownership contexts, direct
+reference-return bodies, selected-handler owning retval and wider lifecycle
+contexts remain partial.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk

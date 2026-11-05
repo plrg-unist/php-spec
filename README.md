@@ -4797,20 +4797,22 @@ The entered null-C destructor frame transfers its receiver protection to an
 authenticated C-return continuation before local cleanup; both C protections
 survive handling, and ordinary release drops the inner protection after registry
 restoration. Handler return 23 leaves full main exit 263 and CLI status 7 intact.
-Ignored owning destructor-body results now retire after PHP local cleanup and
-before the inner C decrement, using ordinary VALUE jobs while both protections
-and the original C call remain live. Fresh objects, alias arrays and static
-Closure captures retire before the original child; externally shared returns
-survive until their later real owner. Four new body-return originals and two
-affected controls agree, and private strict434 passes. Eight independent groups pass 438 genuine source-reached checks. See the [body-return review](coverage/semantics/callback-late-tick-body-return-review.json);
-earlier [handler](coverage/semantics/callback-late-tick-handler-review.json),
-[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json),
-[bailout](coverage/semantics/callback-late-tick-throw-review.json),
-[exit](coverage/semantics/callback-late-tick-exit-review.json) and
+Ignored owning destructor-body results retire after PHP local cleanup and before
+the inner C decrement, retaining both protections and the original C call. An
+unhandled literal Exception during that disposal now preserves authenticated
+pending outer C wrappers and unfinished arguments/FCC slots. Shared
+operation/frame/pending owners count once. Later active queue cleanup runs while
+the stopped tick tail stays rooted; a returned value that throws after its
+original call finishes adds no parent. Four new originals and two affected
+controls agree, and private strict435 passes. Seven independent groups pass 612
+conditions (603 reached, nine derived). See the [body-value bailout review](coverage/semantics/callback-late-tick-body-throw-review.json);
+earlier [body-return](coverage/semantics/callback-late-tick-body-return-review.json),
+[handler](coverage/semantics/callback-late-tick-handler-review.json),
+[exit/throw](coverage/semantics/callback-late-tick-exit-throw-review.json) and
 [cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence
-retains its original cuts. Wider producers, assertion roots, changed phases,
-abrupt body-value cleanup, direct reference-return bodies, owning-result handlers
-and reentrant release remain partial.
+retains its original cuts. Distinct pending-owner contexts, wider producers,
+assertion roots, changed phases, direct reference-return bodies, owning-result
+handlers and reentrant release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
