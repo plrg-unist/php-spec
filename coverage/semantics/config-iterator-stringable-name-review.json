@@ -1,0 +1,37 @@
+{
+  "scope": "A98 ordinary INI_SET unpack from an admitted initialized user Iterator: copied Stringable option after traversal and DATA/INPUT cleanup, with a quiet scalar/null value or live finite ordinary object value. Selected first-class setter Closure ownership is included; warning-handler exception paths are excluded.",
+  "behavior": "Weak option __toString runs after Iterator cleanup. Replacing the raw option slot can run its destructor before the old INI value is sampled or the copied float value is formatted. A copied Stringable object in the value slot is rejected by INI_SET as TypeError without invoking its __toString; its ordinary TraceArgs owner survives through catch. An unknown ordinary directive name does not preempt the value TypeError.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "ext/standard/basic_functions.c zif_ini_set", "Zend/zend_API.c zend_parse_arg_str_weak"]
+  },
+  "author_extension": {
+    "tested_parent": "77e86867257f6e2d2faf2b04bc4a1cb17d96261a",
+    "semantic_module_sha256": "281599f24143458d7b95d2cedb407fbe49fdcadaee9814a63c75496d7c35986c",
+    "case_catalog_sha256": "5a44a38edbf3fb81d3565a66209731634d8a1b6854d85fdb18d2aaf122ea1d87",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, one CPU4 actor",
+    "fresh_source_agreements": [
+      "self-name-formats-float-into-precision-after-disposal",
+      "selected-callee-keeps-original-owner-after-rebinding",
+      "unknown-option-rejects-copied-stringable-value-after-option-disposal"
+    ],
+    "fresh_reached_groups": {
+      "self-name-retirement-precedes-raw-float-formatting": 51,
+      "selected-callee-owner-survives-rebinding-and-string-reception": 45,
+      "copied-stringable-value-rejects-after-unknown-option-conversion": 40
+    },
+    "source_and_state_result": "Three exact native/model normal outcomes and three source-reached groups, 136 assertions, passed. Each selected report has exit 0, stable watched inputs and stable tested HEAD. The later object-only fixture correction leaves the previously selected precision and owner assertions unchanged.",
+    "strict_sl": "Ordered 433-module manifest, exit 0, stdout true, empty stderr; 11.779 seconds on CPU4.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-stringable-name-native-98/author-extension-77e868672",
+    "commands": [
+      "python3 tests/semantics/config_iterator_stringable_name_sources.py --case <each fresh source ID>",
+      "python3 tests/semantics/config_iterator_stringable_name_state.py --case <each fresh reached group ID>",
+      "taskset -c 4 tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json entries> .tools/a98-strict.watsup"
+    ]
+  },
+  "prior_evidence": "At the preserved parent, two author source rows agree but their three-row packet fails at the original self/include_path case; independent review has three other exact sources and 487 reached checks. These prior cuts are not renewed by the fresh three-row run.",
+  "original_failure": "The original self/include_path bytes and native output remain in native-self-float/report.json and author-extension-77e868672/config-iterator-stringable-name-source-dqybgej0/report.json. The latter records model Unsupported at FILEINCLUDEPATH=eps and zero agreement for that original. The precision correction has a distinct fixture ID. Failed constructed-state assumptions are retained under author-extension-77e868672/failed-fixtures and have zero credit.",
+  "limits": "ARRAY values, special zend.assertions option handling, broader object graphs, strict Stringable option rejection, same-object option/value aliases, other CONFIG consumers and effectful/exceptional callbacks remain unvalidated on this receipt. A97 warning-handler exception work is separately held and untouched. This is a bounded differential result, not full PHP core or BOLA verification.",
+  "review": "pending independent CLEAR"
+}
