@@ -11,6 +11,16 @@ final class RejectedEvalLexer extends PhpParser\Lexer {
     }
 }
 
+final class RejectedFileLexer extends PhpParser\Lexer {
+    public function tokenize(string $code, ?PhpParser\ErrorHandler $errorHandler = null): array {
+        $raw = withPhpSourceFile($code, static fn(string $path): array => php_spec_lex_file_rejected($path));
+        $tokens = array_map(static fn(array $token): PhpParser\Token =>
+            new PhpParser\Token(...$token), $raw);
+        $this->postprocessTokens($tokens, $errorHandler ?? new PhpParser\ErrorHandler\Throwing());
+        return $tokens;
+    }
+}
+
 // Rejected sources have no complete AST. Preserve foreign grammar reductions,
 // rather than scanning later tokens or constructing a provisional statement.
 final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
@@ -70,7 +80,7 @@ final class RejectedHeaderParser extends PhpParser\Parser\Php8 {
 }
 
 function rejectedHeaderFacts(string $source, bool $evalMode, PhpParser\PhpVersion $version): array {
-    $parser = new RejectedHeaderParser($evalMode ? new RejectedEvalLexer() : new FileLexer(), $version);
+    $parser = new RejectedHeaderParser($evalMode ? new RejectedEvalLexer() : new RejectedFileLexer(), $version);
     try {
         $parser->parse($source, new PhpParser\ErrorHandler\Collecting());
     } catch (PhpParser\Error $error) {

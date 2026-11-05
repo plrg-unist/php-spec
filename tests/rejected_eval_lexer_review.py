@@ -42,17 +42,30 @@ function parsed(string $source): array {
     try { return ['accepted', php_spec_parse_eval($source)]; }
     catch (Throwable $error) { return [get_class($error), $error->getMessage(), $error->getLine()]; }
 }
+function parsedFile(string $source): array {
+    return withPhpSourceFile($source, static function(string $path): array {
+        try { return ['accepted', php_spec_parse_file($path)]; }
+        catch (Throwable $error) { return [get_class($error), $error->getMessage(), $error->getLine()]; }
+    });
+}
 function tokenFacts(array $tokens): array {
     return array_map(static fn($token): array => [$token->id,base64_encode($token->text),$token->line,$token->pos], $tokens);
 }
-$before = [parsed('return 1;'), parsed("\necho ;")];
+$before = [parsed('return 1;'), parsed("\necho ;"),parsedFile('<?php return 1;'),parsedFile("<?php\necho ;")];
 $records = [];
 $cases = json_decode(file_get_contents($argv[1]), true, flags: JSON_THROW_ON_ERROR);
 foreach ($cases as $case) {
     $source = base64_decode($case['source'], true);
     assert(!str_contains($source, "\0"));
+    $file = $case['file'] ?? false;
     $acceptedBefore = tokenFacts((new EvalLexer())->tokenize('return "A";'));
-    $tokens = php_spec_lex_eval($source); $position = 0; $tape = '';
+    $fileBefore = tokenFacts((new FileLexer())->tokenize('<?php return "A";'));
+    if ($file) {
+        [$tokens,$legacy] = withPhpSourceFile($source, static fn(string $path): array =>
+            [php_spec_lex_file_rejected($path),php_spec_lex_file($path)['tokens']]);
+        if ($case['complete']) assert($tokens === $legacy);
+    } else $tokens = php_spec_lex_eval($source);
+    $position = $start = $tokens[0][3] ?? 0; $tape = '';
     foreach ($tokens as $token) {
         assert(array_is_list($token) && count($token) === 4);
         [$id,$text,$line,$offset] = $token;
@@ -62,17 +75,18 @@ foreach ($cases as $case) {
         assert(substr($source, $offset, strlen($text)) === $text);
         $tape .= $text; $position += strlen($text);
     }
-    assert($tape === substr($source, 0, $position));
-    if ($case['complete']) assert($tape === $source);
-    else assert(strlen($tape) < strlen($source));
+    assert($tape === substr($source, $start, $position-$start));
+    if ($case['complete']) assert($position === strlen($source));
+    else assert($position < strlen($source));
     $collector = new PhpParser\ErrorHandler\Collecting();
-    $checked = (new RejectedEvalLexer())->tokenize($source, $collector);
+    $checked = ($file ? new RejectedFileLexer() : new RejectedEvalLexer())->tokenize($source, $collector);
     $end = $checked[count($checked)-1];
     assert($end->id === 0 && $end->pos === $position && $end->line === lineAt($source, $position));
     assert(count($checked) === count($tokens)+1);
     assert(tokenFacts((new EvalLexer())->tokenize('return "A";')) === $acceptedBefore);
-    assert([parsed('return 1;'),parsed("\necho ;")] === $before);
-    $records[] = ['id'=>$case['id'], 'tokens'=>count($tokens), 'prefix_bytes'=>$position,
+    assert(tokenFacts((new FileLexer())->tokenize('<?php return "A";')) === $fileBefore);
+    assert([parsed('return 1;'),parsed("\necho ;"),parsedFile('<?php return 1;'),parsedFile("<?php\necho ;")] === $before);
+    $records[] = ['id'=>$case['id'], 'file'=>$file, 'tokens'=>count($tokens), 'start'=>$start,'end'=>$position,
         'source_bytes'=>strlen($source), 'eof_line'=>$end->line];
 }
 $source = 'declare(encoding=1);$x="\u{}";declare(encoding=2);';
@@ -83,6 +97,12 @@ $fresh = (new RejectedEvalLexer())->tokenize($source, new PhpParser\ErrorHandler
 assert(count(array_filter($old,static fn($token): bool=>$token->id===T_DECLARE)) === 2);
 assert(count(array_filter($fresh,static fn($token): bool=>$token->id===T_DECLARE)) === 1);
 $records[] = ['id'=>'accepted-tokenizer-preserved', 'old_tokens'=>count($old), 'rejected_tokens'=>count($fresh)];
+$source = '<?php ' . base64_decode($cases[array_search('heredoc-embedded',array_column($cases,'id'),true)]['source'], true);
+$old = (new FileLexer())->tokenize($source, new PhpParser\ErrorHandler\Collecting());
+$fresh = (new RejectedFileLexer())->tokenize($source, new PhpParser\ErrorHandler\Collecting());
+assert(count(array_filter($old,static fn($token): bool=>$token->id===T_DECLARE)) === 3);
+assert(count(array_filter($fresh,static fn($token): bool=>$token->id===T_DECLARE)) === 2);
+$records[] = ['id'=>'accepted-file-tokenizer-preserved', 'old_tokens'=>count($old), 'rejected_tokens'=>count($fresh)];
 echo json_encode($records, JSON_THROW_ON_ERROR), "\n";
 '''
 MULTIBYTE = r'''<?php declare(strict_types=1);
@@ -95,6 +115,11 @@ foreach (['php_spec_parse_eval','php_spec_lex_eval'] as $function) {
             $records[] = ['function'=>$function,'empty'=>$source==='','class'=>get_class($error)];
         }
     }
+}
+try { php_spec_lex_file_rejected($argv[1]); throw new RuntimeException('file profile was accepted'); }
+catch (ValueError $error) {
+    assert($error->getMessage() === 'Rejected file scanner requires the raw source profile');
+    $records[] = ['function'=>'php_spec_lex_file_rejected','class'=>get_class($error)];
 }
 echo json_encode($records, JSON_THROW_ON_ERROR), "\n";
 '''
@@ -130,11 +155,19 @@ def run(out):
     payload = [{'id': name, 'source': b64(source), 'complete': True} for name, source in raw]
     payload += [{'id': name, 'source': b64(CASES[name][0]), 'complete': False}
                 for name in ('plain', 'large', 'double-embedded', 'heredoc-embedded', 'backtick-embedded', 'indent')]
+    files = [('file-empty', b''), ('file-crlf', b'<?php\r\n$x=1;\r\nreturn 2;'),
+        ('file-tags', b'<?php ?>HTML\n<?php return 1;'), ('file-shebang', b'#!/usr/bin/php\n<?php return 1;'),
+        ('file-bom', b'\xef\xbb\xbf<?php return 1;'), ('file-halt', b'<?php __halt_compiler();unscanned "\\u{}"')]
+    payload += [{'id': name, 'file': True, 'source': b64(source), 'complete': True} for name, source in files]
+    payload += [{'id': 'file-' + name, 'file': True, 'source': b64(b'<?php\n' + CASES[name][0]), 'complete': False}
+                for name in ('heredoc-embedded', 'indent')]
     (out / 'tapes.json').write_text(json.dumps(payload) + '\n')
     processes = []
     for name, source, extra in [('tapes', PROBE.replace('@ROOT@', str(ROOT)), [str(out / 'tapes.json')]),
                                ('multibyte', MULTIBYTE, [])]:
         path = out / (name + '.php'); path.write_text(source)
+        if name == 'multibyte':
+            unit = out / 'profile-unit.php'; unit.write_bytes(b'<?php return 1;'); extra = [str(unit)]
         flags = ['-d', 'zend.multibyte=1'] if name == 'multibyte' else []
         process = recorded([str(types.PHP), '-n', *types.FLAGS, *flags, '-d',
             'extension=' + str(ROOT / '.tools/php-file.so'), str(path), *extra], out / name, 15)
