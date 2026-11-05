@@ -11,6 +11,7 @@ FILES = {
     'empty-map-key-unset': 'gc_compound_map_key_unset_control.php',
     'nonempty-map-key-unset': 'gc_compound_map_nonempty_unset_control.php',
     'map-key-cross-shared-unset': 'gc_ordinary_map_cross_shared_source.php',
+    'incoming-child-throw': 'gc_ordinary_incoming_child_throw_source.php',
 }
 PATHS = {name: ROOT / 'tests/semantics' / filename for name, filename in FILES.items()}
 family.CASES = {name: path.read_bytes() for name, path in PATHS.items()}

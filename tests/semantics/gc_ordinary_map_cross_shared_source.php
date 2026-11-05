@@ -12,6 +12,6 @@ $inner[$second] = $value;
 $other[$inner] = $value;
 $outer[$inner] = $value;
 unset($value);
-echo 'B|', count($outer), '|', count($other), '|';
+echo 'B|', $watch->get() === null ? 'dead|' : 'live|';
 unset($inner);
-echo 'A|', count($outer), '|', count($other), '|', $watch->get() === null ? 'dead|' : 'live|';
+echo 'A|', $watch->get() === null ? 'dead|' : 'live|';
