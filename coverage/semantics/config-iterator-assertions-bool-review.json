@@ -1,0 +1,40 @@
+{
+  "scope": "A103 initialized user Iterator copies a Stringable INI_SET option that converts to exact zend.assertions and a Boolean false or true value after traversal and DATA/INPUT cleanup.",
+  "behavior": "False supplies a present empty raw INI string and assertion quantity 0; true supplies string 1. The ordinary assertion setter returns the old value, retains the selected first-class setter after source-variable rebinding, and restores startup 1. The saved A102 receipt certificate authenticates the converted scalar call after the option retires.",
+  "engine": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "symbols": ["Zend/zend_vm_def.h ZEND_SEND_UNPACK", "Zend/zend_API.c zend_parse_arg_str_weak", "ext/standard/basic_functions.c zif_ini_set", "Zend/zend_operators.c __zval_get_string_func", "Zend/zend_ini.c zend_ini_parse_quantity_internal", "Zend/zend.c OnUpdateAssertions"]
+  },
+  "tested_cut": {
+    "revision": "751ad0b0d603140d4a4910042a1d996efd9ab252 plus private A103 semantic/test edit",
+    "semantic_module_sha256": {
+      "172-file-context-intrinsics.watsup": "5c179992152b739183f23b3caa0d9163f66aca54924f36c03ed240cf70f41706",
+      "368-assertion-quantity.watsup": "234cb228d1d10a35c927e4ca936ddeeca8937b380ddaff851b8eb4bbd3d6946f",
+      "420-config-iterator-unpack.watsup": "f44a905a02236993184e6f7d8734f7e62b975dbf407ba1e7da3f5deb6cb6dd41"
+    },
+    "manifest_sha256": "ce5b326b30fdf09bc6791a62e83b6f6eafa95aec20174250cc2c1ec3d38dfdcf",
+    "case_catalog_sha256": "91cbf84f90fe277996247fe1b59ea5f30820778c1d6fece4f04b68c43bf5187d",
+    "state_fixture_sha256": "e7253d6c4f2e888bd2152a7597eecfca157c0193854204da1c1f0d38627a3097",
+    "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, sole CPU4 actor",
+    "sources": [
+      {"id": "temporary-false-installs-empty-raw-and-quantity-zero", "sha256": "ac7a403778fa29ff6a2ffa88a1ed620c0a14c17b2ae97782f9cff8b484301aa4"},
+      {"id": "selected-true-preserves-original-owner-after-rebinding", "sha256": "f3240171c315c83acf473a69e1b8e4507d2a250b762ee6977d603c243c519d8c"}
+    ],
+    "source_result": "Both pinned-native/model exact normal comparisons passed: decoded stdout equal, exit 0, empty stderr, stable watched inputs and tested HEAD. The affected A102 temporary-zero source also passed after the shared predicate change.",
+    "reached": "temporary-false-keeps-empty-raw-distinct-from-zero passed 76 conditions; selected-true-keeps-owner-after-cv-rebinding passed 83. They check receipt certificate, false raw carrier distinct from null, raw INI bytes and assertion quantity, selected Closure owner, old return and restore. PINT 2 and PNULL are refused; a forged rootless assertion record with CONVERSION=eps fails validity.",
+    "strict_sl": "Ordered 435-module manifest, exit 0, stdout true, empty stderr; 12.324 seconds.",
+    "external_raw": "/home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-bool-103/author-751ad0b0d",
+    "commands": [
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_bool_sources.py --case temporary-false-installs-empty-raw-and-quantity-zero",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_bool_sources.py --case selected-true-preserves-original-owner-after-rebinding",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_bool_state.py --case temporary-false-keeps-empty-raw-distinct-from-zero",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_bool_state.py --case selected-true-keeps-owner-after-cv-rebinding",
+      "taskset -c 4 python3 tests/semantics/config_iterator_assertions_int_sources.py --case temporary-option-sets-assertions-zero-after-retirement",
+      "taskset -c 4 tests/semantics/_build/default/numeric_runner.exe --sl <ordered modules.json entries> .tools/a103-strict.watsup"
+    ]
+  },
+  "prior_boundary": "At integrated A102, direct false completed in pinned native PHP while the model returned CONFIG Iterator Stringable option Unsupported. Raw is preserved at /home/user/workspace/php-spec-evidence-archive/config-iterator-assertions-bool-103/baseline-unsupported-751ad0b0d and receives zero agreement credit.",
+  "limits": "This increment admits only Boolean false/true for exact zend.assertions after the copied Stringable route; PINT 0/1 retain A102. PINT 2, null and other accepted scalar shapes remain outside this receipt. Wider option/value graphs, other CONFIG consumers and held A97 warning-handler exception work remain outside this result. No full-core, equivalence or BOLA claim.",
+  "review": "pending independent review"
+}
