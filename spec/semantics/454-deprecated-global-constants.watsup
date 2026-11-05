@@ -178,7 +178,8 @@ def $deprecated_api_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pconfi
   -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
 def $deprecated_api_task(ptask, pconfigcall, n) = false -- otherwise
 def $deprecated_api_valid(S, pconfigcall, n_prefix) = true
-  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_view = $deprecated_handler_history(S, DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix)
+  -- if S_view.TODO = ptask :: ptask_tail*
   -- if $deprecated_api_task(ptask, pconfigcall, n_prefix)
   -- if $(n_prefix <= |S.USERCONSTANTS|)
   -- if $dynamic_global_constant_valid(S, pconfigcall)
@@ -208,3 +209,173 @@ def $error_context_trigger(S, pcallcontext) = (pconfigcall)
 def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix
+
+;; The C warning call keeps its caller operands while locals and the saved raw
+;; handler are released. The snapshot is nonowning; its live task owns exactly
+;; the still-pending caller roots, then only the read and outer continuation.
+dec $deprecated_handler_call(perrorcall) : bool
+dec $deprecated_handler_exit_valid(pstate, pdestructioncleanup, int, ptask*) : bool
+dec $deprecated_handler_exit_status(pstate, pdestructioncleanup, int, pdestructionoperation*) : bool
+def $deprecated_handler_call(perrorcall) = true -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+def $deprecated_handler_call(perrorcall) = true -- if perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n_prefix
+def $deprecated_handler_call(perrorcall) = false -- otherwise
+def $deprecated_handler_history(S, ptask) = $closure_call_copy_warning_history(S, perrorcall)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = ptask
+  -- if $deprecated_handler_call(perrorcall)
+def $deprecated_handler_history(S, ptask) = S -- otherwise
+def $deprecated_handler_exit_ready(S) = true
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $deprecated_handler_call(perrorcall)
+  -- if $error_entered_call_valid(S, perrorcall)
+def $deprecated_handler_exit_ready(S) = false -- otherwise
+def $closure_call_copy_exit_scope(S, S_exit) = S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z S.TODO]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $deprecated_handler_exit_ready(S)
+  -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if S_exit.COMPLETION = NORMAL
+  -- if S_exit.TODO = (EXIT_UNWIND z) :: ptask_exit*
+  -- if pdestructioncleanup = $eager_cleanup_record(S, ERROR_HANDLER_RESULT perrorcall)
+def $deprecated_constant_task(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $deprecated_api_task(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*, pconfigcall, n) = (perrorcall.RESUME = DEPRECATED_GLOBAL_CONSTANT_RESULT pconfigcall n)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $deprecated_constant_protected_task(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*, preqbytes) = $deprecated_constant_protected_task(S, perrorcall.RESUME, preqbytes)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+dec $deprecated_handler_exit_status_source(ptask, pdestructioncleanup, int) : bool
+def $deprecated_handler_exit_status_source(EXIT_UNWIND z, pdestructioncleanup, z) = ~pdestructioncleanup.RELEASED
+def $deprecated_handler_exit_status_source(DEPRECATED_HANDLER_EXIT pdestructioncleanup_old z ptask_saved*, pdestructioncleanup, z) = (~pdestructioncleanup_old.RELEASED /\ pdestructioncleanup = pdestructioncleanup_old[.RELEASED = true])
+def $deprecated_handler_exit_status_source(ptask, pdestructioncleanup, z) = false -- otherwise
+def $deprecated_handler_exit_status(S, pdestructioncleanup, z, pdestructionoperation*) = true -- if z = S.EXITSTATUS
+def $deprecated_handler_exit_status(S, pdestructioncleanup, z, pdestructionoperation :: pdestructionoperation_tail*) = true
+  -- if z =/= S.EXITSTATUS
+  -- if $deprecated_handler_exit_status_source(pdestructionoperation.SOURCE, pdestructioncleanup, z)
+  -- if pdestructionoperation.CALLER = pdestructioncleanup.CALLER /\ pdestructionoperation.ORIGIN = pdestructioncleanup.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+def $deprecated_handler_exit_status(S, pdestructioncleanup, z, pdestructionoperation :: pdestructionoperation_tail*) = $deprecated_handler_exit_status(S, pdestructioncleanup, z, pdestructionoperation_tail*)
+  -- if z =/= S.EXITSTATUS
+  -- if ~$deprecated_handler_exit_status_source(pdestructionoperation.SOURCE, pdestructioncleanup, z) \/ pdestructionoperation.CALLER =/= pdestructioncleanup.CALLER \/ pdestructionoperation.ORIGIN =/= pdestructioncleanup.ORIGIN \/ pdestructionoperation.CONSTCONTEXT =/= pdestructioncleanup.CONSTCONTEXT
+def $deprecated_handler_exit_status(S, pdestructioncleanup, z, eps) = false -- if z =/= S.EXITSTATUS
+def $deprecated_handler_exit_valid(S, pdestructioncleanup, z, ptask_saved*) = true
+  -- if z = $ntprecision32(z)
+  -- if $deprecated_handler_exit_status(S, pdestructioncleanup, z, S.DESTRUCTION.OPERATIONS)
+  -- if $source_operand_suffix(S.TODO, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*, eps)
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if ~((ERROR_HANDLER_RESULT perrorcall) <- ptask_tail*)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $deprecated_handler_call(perrorcall)
+  -- if S.CURRENT = pdestructioncleanup.CALLER /\ S.ORIGIN = pdestructioncleanup.ORIGIN /\ S.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+  -- if $eager_cleanup_valid(S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*]], pdestructioncleanup)
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+  -- if $call_tasks_valid(S_history[.TODO = ptask_saved*], ptask_saved*)
+def $deprecated_handler_exit_valid(S, pdestructioncleanup, z, ptask*) = false -- otherwise
+def $call_task_valid(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*) = $deprecated_handler_exit_valid(S, pdestructioncleanup, z, ptask*)
+def $task_nodes(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*) = $tasks_nodes(ptask*) -- if ~pdestructioncleanup.RELEASED
+def $task_nodes(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*)) = $task_nodes(perrorcall.RESUME) ++ $tasks_nodes(ptask_tail*) -- if pdestructioncleanup.RELEASED
+def $selected_task_nonce(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask*) = $selected_task_nonce(pdestructioncleanup.SOURCE)
+rule PhpStep/deprecated-handler-exit-raw-release: S ~> S_next
+  -- if S.TODO = (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_actual*
+  -- if ptask_actual* = eps
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if $deprecated_handler_exit_valid(S, pdestructioncleanup, z, ptask_saved*)
+  -- if pdestructioncleanup_new = pdestructioncleanup[.RELEASED = true]
+  -- if S_next = $return_discard(S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup_new z ptask_saved*]], ERROR_HANDLER_RESULT perrorcall)
+rule PhpStep/deprecated-handler-exit-done: S ~> $exit_start_unwind(S[.TODO = ptask_tail*], S.EXITSTATUS)
+  -- if S.TODO = (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_actual*
+  -- if ptask_actual* = eps
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.RELEASED
+  -- if $deprecated_handler_exit_valid(S, pdestructioncleanup, z, ptask_saved*)
+
+;; The descriptor walk has consumed this exact authenticated cleanup prefix.
+def $closure_call_copy_warning_advance(S, S_after, ptask, ptask_tail*) = S_after[.TODO = ptask_tail*]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $deprecated_handler_call(perrorcall)
+  -- if $closure_call_copy_warning_split(S, S.TODO, perrorcall) = ((ptask_prefix*, ptask_after*))
+def $closure_call_copy_warning_advance(S, S_after, ERROR_HANDLER_CLEAN perrorcall, ptask_tail*) = S_after[.TODO = ptask_tail*]
+  -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if $deprecated_handler_call(perrorcall)
+
+;; A returned object's destructor can carry UnwindExit through the real C
+;; release operation before the raw handler is restored.
+def $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.USER /\ pdestructorcall.PENDING = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL \/ $exit_completion(pdestructionoperation.COMPLETION)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $deprecated_handler_call(perrorcall)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall /\ ~pdestructioncleanup.RELEASED
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if $destructor_result_valid(S, pdestructorcall) /\ $destructor_operation_valid(S, pdestructionoperation)
+  -- if S_emit = $eager_cleanup_history(S, pdestructioncleanup)
+  -- if $call_task_valid(S_emit, ERROR_HANDLER_CLEAN perrorcall)
+  -- if $closure_call_copy_cleanup_exit_tail(S, ptask_tail*, pdestructionoperation, perrorcall)
+def $deprecated_handler_exit_ready(S) = true
+  -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if $deprecated_handler_call(perrorcall)
+  -- if $error_cleanup_valid(S, perrorcall)
+def $closure_call_copy_exit_scope(S, S_exit) = S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z ((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*)]][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if $deprecated_handler_exit_ready(S)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if S_exit.COMPLETION = NORMAL
+  -- if S_exit.TODO = (EXIT_UNWIND z) :: ptask_exit*
+def $destructor_operation_postfinish(S, pdestructionoperation) = $exit_start_unwind(S, z)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $deprecated_handler_call(perrorcall)
+  -- if pdestructionoperation.COMPLETION = EXITED z
+  -- if pdestructionoperation.PENDING = eps
+  -- if S.COMPLETION = EXITED z
+  -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
+  -- if $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall)
+
+dec $deprecated_handler_exit_operation_source(ptask, pdestructioncleanup, int, ptask*) : bool
+dec $deprecated_handler_exit_operation_tail(pstate, ptask*, pdestructionoperation) : bool
+def $deprecated_handler_exit_operation_source(EXIT_UNWIND z, pdestructioncleanup, z, ptask*) = ~pdestructioncleanup.RELEASED
+def $deprecated_handler_exit_operation_source(DEPRECATED_HANDLER_EXIT pdestructioncleanup_old z ptask*, pdestructioncleanup, z, ptask*) = (~pdestructioncleanup_old.RELEASED /\ pdestructioncleanup = pdestructioncleanup_old[.RELEASED = true])
+def $deprecated_handler_exit_operation_source(ptask_source, pdestructioncleanup, z, ptask_saved*) = false -- otherwise
+def $deprecated_handler_exit_operation_tail(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: eps, pdestructionoperation) = true
+  -- if $deprecated_handler_exit_operation_source(pdestructionoperation.SOURCE, pdestructioncleanup, z, ptask_saved*)
+  -- if pdestructionoperation.CALLER = pdestructioncleanup.CALLER /\ pdestructionoperation.ORIGIN = pdestructioncleanup.ORIGIN /\ pdestructionoperation.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+  -- if $deprecated_handler_exit_valid(S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*]], pdestructioncleanup, z, ptask_saved*)
+def $deprecated_handler_exit_operation_tail(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation) = $deprecated_handler_exit_operation_tail(S, ptask_tail*, pdestructionoperation)
+  -- if $destructor_release_live(S, pdestructionrelease)
+  -- if pdestructionrelease.CALLER = pdestructionoperation.CALLER /\ pdestructionrelease.ORIGIN = pdestructionoperation.ORIGIN /\ pdestructionrelease.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+def $deprecated_handler_exit_operation_tail(S, (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pdestructionoperation) = $deprecated_handler_exit_operation_tail(S, ptask_tail*, pdestructionoperation)
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.CALLER = pdestructionoperation.CALLER /\ pinstancestorage.ORIGIN = pdestructionoperation.ORIGIN /\ pinstancestorage.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT
+def $deprecated_handler_exit_operation_tail(S, ptask*, pdestructionoperation) = false -- otherwise
+def $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))
+  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if pdestructorcall.USER /\ pdestructorcall.PENDING = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.PENDING = eps
+  -- if pdestructionoperation.COMPLETION = NORMAL \/ $exit_completion(pdestructionoperation.COMPLETION)
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if $destructor_result_valid(S, pdestructorcall) /\ $destructor_operation_valid(S, pdestructionoperation)
+  -- if $deprecated_handler_exit_operation_tail(S, ptask_tail*, pdestructionoperation)
+def $destructor_operation_postfinish(S, pdestructionoperation) = S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z_new ptask_saved*]][.COMPLETION = NORMAL]
+  -- if S.TODO = (DEPRECATED_HANDLER_EXIT pdestructioncleanup z_old ptask_saved*) :: ptask_actual*
+  -- if ptask_actual* = eps
+  -- if pdestructionoperation.COMPLETION = EXITED z_new
+  -- if pdestructionoperation.PENDING = eps
+  -- if S.COMPLETION = EXITED z_new /\ z_new = S.EXITSTATUS
+  -- if $deprecated_handler_exit_operation_source(pdestructionoperation.SOURCE, pdestructioncleanup, z_old, ptask_saved*)
+  -- if $deprecated_handler_exit_valid(S[.DESTRUCTION.OPERATIONS = pdestructionoperation :: S.DESTRUCTION.OPERATIONS], pdestructioncleanup, z_old, ptask_saved*)
+
+;; A local destructor can cancel UnwindExit with a fresh throw. Keep the real
+;; caller roots until that cancellation/rethrow protocol is paired.
+def $return_discard(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = S_before[.COMPLETION = UNSUPPORTED "Deprecated constant handler exit cleanup throw"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if S_before = S[.TODO = (THROW_SEARCH n) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_tail*]
+  -- if $deprecated_handler_exit_valid(S_before, pdestructioncleanup, z, ptask_saved*)

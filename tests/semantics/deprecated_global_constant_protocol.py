@@ -33,6 +33,30 @@ def $dep_pause(S,n) = $dep_pause(S_next[.COMPLETION = NORMAL],n_next)
   -- if S_next = $drive_steps(S,1)
   -- if S_next.COMPLETION = BUDGET
 def $dep_pause(S,n) = S -- otherwise
+dec $dep_exit_ready(ptask*) : bool
+def $dep_exit_ready((DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_tail*) = true
+def $dep_exit_ready(ptask*) = false -- otherwise
+dec $dep_exit_pause(pstate,nat) : pstate
+def $dep_exit_pause(S,n) = S -- if $dep_exit_ready(S.TODO)
+def $dep_exit_pause(S,n) = $dep_exit_pause(S_next[.COMPLETION = NORMAL],n_next)
+  -- if ~$dep_exit_ready(S.TODO)
+  -- if $(n > 0) /\\ S.COMPLETION = NORMAL /\\ S.TODO =/= eps
+  -- if n_next = $nabs($(n - 1))
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $dep_exit_pause(S,n) = S -- otherwise
+dec $dep_throw_ready(ptask*) : bool
+def $dep_throw_ready((THROW_SEARCH n) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) :: ptask_tail*) = true
+def $dep_throw_ready(ptask*) = false -- otherwise
+dec $dep_throw_pause(pstate,nat) : pstate
+def $dep_throw_pause(S,n) = S -- if $dep_throw_ready(S.TODO)
+def $dep_throw_pause(S,n) = $dep_throw_pause(S_next[.COMPLETION = NORMAL],n_next)
+  -- if ~$dep_throw_ready(S.TODO)
+  -- if $(n > 0) /\\ S.COMPLETION = NORMAL /\\ S.TODO =/= eps
+  -- if n_next = $nabs($(n - 1))
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $dep_throw_pause(S,n) = S -- otherwise
 '''
 
 
@@ -54,7 +78,8 @@ def prepare(out):
     checks = []
     selected = ('handler-true', 'handler-false', 'interned-string', 'namespace-identity',
         'source-reference-handler', 'api-reference-handler', 'captured-intrinsic', 'array-source-pending',
-        'parameter-cache', 'class-cache', 'relative-null-pending', 'metadata-expression-pending')
+        'parameter-cache', 'class-cache', 'relative-null-pending', 'metadata-expression-pending',
+        'exit-shutdown', 'api-exit-shutdown', 'local-throw-pending')
     try:
         for name in selected:
             path = SOURCE / cases[name]['source']; tag = name.replace('-', '_')
@@ -66,6 +91,28 @@ def prepare(out):
                 'P_' + tag + ' = $ppstart(0,U_' + tag + ',' + types.byte_expr(str(path)) + ')']
             if name in ('relative-null-pending', 'metadata-expression-pending'):
                 checks += ['P_' + tag + '.COMPLETION = PPCABRUPT (UNSUPPORTED "Deprecated global constant metadata")']
+            elif name == 'local-throw-pending':
+                checks += ['P_' + tag + '.COMPLETION = PPCNORMAL',
+                    'S_' + tag + ' = $php_run(U_' + tag + ',0,' + json.dumps(b64(bytes(path))) + ')',
+                    'S_' + tag + '.COMPLETION = BUDGET',
+                    'S_frontier_' + tag + ' = $dep_throw_pause(S_' + tag + '[.COMPLETION = NORMAL],10000)',
+                    'S_frontier_' + tag + '.TODO = (THROW_SEARCH n_cleanup_throw) :: (DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw z_cleanup_throw ptask_cleanup_throw*) :: eps',
+                    '$call_descriptors_valid(S_frontier_' + tag + ')',
+                    '$deprecated_global_protected(S_frontier_' + tag + ',$ptascii("X"))',
+                    'PhpStep: S_frontier_' + tag + ' ~> S_cleanup_throw_refusal',
+                    'S_cleanup_throw_refusal.COMPLETION = UNSUPPORTED "Deprecated constant handler exit cleanup throw"',
+                    'S_cleanup_throw_refusal.TODO = S_frontier_' + tag + '.TODO',
+                    '$call_descriptors_valid(S_cleanup_throw_refusal)',
+                    '$task_nodes(DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw z_cleanup_throw ptask_cleanup_throw*) = $tasks_nodes(ptask_cleanup_throw*)',
+                    'S_cleanup_throw_drop = S_frontier_' + tag + '[.TODO = [THROW_SEARCH n_cleanup_throw]]',
+                    '$return_discard(S_cleanup_throw_drop,DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw[.SOURCE = DISCARD] z_cleanup_throw ptask_cleanup_throw*) = S_cleanup_throw_drop',
+                    '~$call_descriptors_valid(S_frontier_' + tag + '[.TODO = [(THROW_SEARCH $(n_cleanup_throw + 100)),(DEPRECATED_HANDLER_EXIT pdestructioncleanup_throw z_cleanup_throw ptask_cleanup_throw*)]])']
+            elif name in ('exit-shutdown', 'api-exit-shutdown'):
+                checks += ['P_' + tag + '.COMPLETION = PPCNORMAL',
+                    'S_' + tag + ' = $php_run(U_' + tag + ',0,' + json.dumps(b64(bytes(path))) + ')',
+                    'S_' + tag + '.COMPLETION = BUDGET',
+                    'S_frontier_' + tag + ' = $dep_exit_pause(S_' + tag + '[.COMPLETION = NORMAL],10000)',
+                    '$call_descriptors_valid(S_frontier_' + tag + ')']
             elif name == 'array-source-pending':
                 path_fetch = next(path for node, path in nodes(parsed['ast']['program']) if node['node'] == 'Expr_ConstFetch')
                 term = '[' + ','.join('(' + kind + ' ' + str(index) + ')' for kind, index in path_fetch) + ']'
@@ -196,6 +243,50 @@ def prepare(out):
     ]
     checks += ['$constant_declaration_context(S_frontier_namespace_identity.SOURCES[0][.ID = 99],S_frontier_namespace_identity.CODE[0],pcpath_namespace) = eps',
         '$constant_declaration_context(S_frontier_namespace_identity.SOURCES[0],S_frontier_namespace_identity.CODE[0],eps) = eps']
+    for tag in ('exit_shutdown', 'api_exit_shutdown'):
+        state = 'S_frontier_' + tag
+        cleanup = 'pdestructioncleanup_' + tag
+        saved = 'ptask_' + tag + '_saved*'
+        tail = 'ptask_' + tag + '_tail*'
+        error = 'perrorcall_' + tag
+        status = 'z_' + tag
+        marker = 'DEPRECATED_HANDLER_EXIT ' + cleanup + ' ' + status + ' ' + saved
+        released = 'DEPRECATED_HANDLER_EXIT ' + cleanup + '[.RELEASED = true] ' + status + ' ' + saved
+        checks += [state + '.TODO = (' + marker + ') :: eps',
+            cleanup + '.SOURCE = ERROR_HANDLER_RESULT ' + error,
+            saved + ' = (ERROR_HANDLER_RESULT ' + error + ') :: ' + tail,
+            '~' + cleanup + '.RELEASED', status + ' = ' + state + '.EXITSTATUS',
+            state + '.ERRORHANDLER.CALLBACK = eps',
+            '$call_task_valid(' + state + ',' + marker + ')',
+            '$task_nodes(' + marker + ') = $tasks_nodes(' + saved + ')',
+            '$deprecated_global_protected(' + state + ',$ptascii("X"))',
+            'PhpStep: ' + state + ' ~> S_release_' + tag,
+            'S_release_' + tag + '.TODO = (' + released + ') :: eps',
+            'S_release_' + tag + '.ERRORHANDLER.CALLBACK = (' + error + '.CALLBACK)',
+            '$call_descriptors_valid(S_release_' + tag + ')',
+            '$deprecated_global_protected(S_release_' + tag + ',$ptascii("X"))',
+            '$task_nodes(' + released + ') = $task_nodes(' + error + '.RESUME) ++ $tasks_nodes(' + tail + ')',
+            'PhpStep: S_release_' + tag + ' ~> S_unwind_' + tag,
+            'S_unwind_' + tag + '.TODO = (EXIT_UNWIND ' + status + ') :: eps',
+            '$call_descriptors_valid(S_unwind_' + tag + ')',
+            '~$deprecated_global_protected(S_unwind_' + tag + ',$ptascii("X"))']
+        cross = 'perrorcall_api' if tag == 'exit_shutdown' else 'perrorcall_source'
+        malformed = [
+            'DEPRECATED_HANDLER_EXIT ' + cleanup + ' $(' + status + ' + 1) ' + saved,
+            'DEPRECATED_HANDLER_EXIT ' + cleanup + '[.SOURCE = DISCARD] ' + status + ' ' + saved,
+            'DEPRECATED_HANDLER_EXIT ' + cleanup + '[.ORIGIN = eps] ' + status + ' ' + saved,
+            'DEPRECATED_HANDLER_EXIT ' + cleanup + '[.RELEASED = true] ' + status + ' eps',
+            'DEPRECATED_HANDLER_EXIT ' + cleanup + '[.RELEASED = true] ' + status + ' ([DISCARD])',
+            'DEPRECATED_HANDLER_EXIT ' + cleanup + ' ' + status + ' ((ERROR_HANDLER_RESULT ' + error + ') :: ' + saved + ')',
+            'DEPRECATED_HANDLER_EXIT ' + cleanup + '[.SOURCE = ERROR_HANDLER_RESULT ' + cross + '] ' + status + ' ' + saved,
+        ]
+        for index, bad in enumerate(malformed):
+            bad_state = 'S_marker_bad_' + tag + '_' + str(index)
+            checks += [bad_state + ' = ' + state + '[.TODO = [(' + bad + ')]]',
+                '~$call_task_valid(' + bad_state + ',' + bad + ')',
+                '~$call_descriptors_valid(' + bad_state + ')']
+        checks += ['S_marker_duplicate_' + tag + ' = ' + state + '[.TODO = [(' + marker + '),(' + marker + ')]]',
+            '~$call_descriptors_valid(S_marker_duplicate_' + tag + ')']
     (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
     (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
         + ''.join('  -- ' + ('' if check.startswith('PhpStep:') else 'if ') + check + '\n' for check in checks))

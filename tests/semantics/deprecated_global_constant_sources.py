@@ -50,7 +50,7 @@ def main():
             native = recorded([str(types.PHP), '-n', *flags, str(path)], target / 'native', 15)
             row['native'] = native
             stdout = (target / 'native.stdout').read_bytes(); stderr = (target / 'native.stderr').read_bytes()
-            assert not native['timeout'] and not native['group_after'] and native['exit'] == 0
+            assert not native['timeout'] and not native['group_after'] and native['exit'] == case.get('exit_status', 0)
             assert stdout == case['stdout'].encode(), (name, stdout)
             startup = {'error_reporting': b64(b'30719'), 'include_path': b64(b'.:')}
             (target / 'startup.json').write_text(json.dumps(startup) + '\n')

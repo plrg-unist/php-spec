@@ -218,6 +218,7 @@ def $return_discard(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_
 ;; UnwindExit returns through the same C cleanup without a PHP Throwable trace.
 ;; Authenticate the emitting cursor before generic exit clears its scope.
 dec $closure_call_copy_exit_head(pstate) : bool
+dec $deprecated_handler_exit_ready(pstate) : bool
 def $closure_call_copy_exit_head(S) = ($closure_call_copy_cancel_pending(S, ptask) /\ $call_task_valid(S, ptask))
   -- if S.TODO = ptask :: ptask_tail*
 def $closure_call_copy_exit_head(S) = false -- otherwise
@@ -262,6 +263,7 @@ def $closure_call_copy_exit_scope(S, S_exit) = $closure_call_copy_cleanup_exit_r
   -- if $closure_call_copy_cleanup_exit(S) = ((pdestructorcall, pdestructionoperation))
 def $closure_call_copy_exit_scope(S, S_exit) = $closure_call_copy_exit_task(S, $constructor_failed(S_exit), ptask)
   -- if $closure_call_copy_exit_pending(S)
+  -- if ~$deprecated_handler_exit_ready(S)
   -- if $closure_call_copy_cleanup_exit(S) = eps
   -- if S.TODO = ptask :: ptask_tail*
 def $closure_call_copy_exit_scope(S, S_exit) = $constructor_failed(S_exit)

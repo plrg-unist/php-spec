@@ -254,7 +254,7 @@
   "exit-shutdown": {
     "source": "exit-shutdown.php",
     "mode": "main",
-    "status": "normal",
+    "status": "explicit_exit",
     "stdout": "H|S|H|"
   },
   "dynamic-file": {
@@ -293,5 +293,55 @@
     "mode": "main",
     "status": "normal",
     "stdout": "16384|Constant X is deprecated, old|7|7|"
+  },
+  "api-exit-shutdown": {
+    "source": "api-exit-shutdown.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|S|H|"
+  },
+  "builtin-exit-shutdown": {
+    "source": "builtin-exit-shutdown.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|S|H|"
+  },
+  "replacement-exit-shutdown": {
+    "source": "replacement-exit-shutdown.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|S|N|0|7|"
+  },
+  "local-exit-shutdown": {
+    "source": "local-exit-shutdown.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|D|S|H|D|"
+  },
+  "local-reexit-shutdown": {
+    "source": "local-reexit-shutdown.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|D|S|H|D|",
+    "exit_status": 7
+  },
+  "saved-handler-exit-release": {
+    "source": "saved-handler-exit-release.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|D|7|S|B|7|"
+  },
+  "retval-exit-shutdown": {
+    "source": "retval-exit-shutdown.php",
+    "mode": "main",
+    "status": "explicit_exit",
+    "stdout": "H|D|S|H|D|"
+  },
+  "local-throw-pending": {
+    "source": "local-throw-pending.php",
+    "mode": "main",
+    "status": "unsupported",
+    "stdout": "H|D|C|A|",
+    "unsupported_reason": "Deprecated constant handler exit cleanup throw"
   }
 }

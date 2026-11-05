@@ -4,6 +4,7 @@ dec $deprecated_constant_level(pstate, porigin) : int
 dec $deprecated_global_nonowning(pvalue) : bool
 dec $deprecated_value_class(pvalue) : pvalueclass
 dec $deprecated_global_present(pstate, preqbytes, preqbytes?) : bool
+dec $deprecated_handler_history(pstate, ptask) : pstate
 dec $deprecated_constant_name(pstate, preqbytes, preqbytes?) : bool
 def $deprecated_constant_name(S, preqbytes, preqbytes_fallback?) = true
   -- if preqbytes = $ptascii("E_STRICT")
@@ -87,7 +88,8 @@ def $deprecated_constant_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, p
 def $deprecated_constant_task(ptask, pdeprecatedconstant) = false -- otherwise
 dec $deprecated_constant_valid(pstate, pdeprecatedconstant) : bool
 def $deprecated_constant_valid(S, pdeprecatedconstant) = true
-  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_view = $deprecated_handler_history(S, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if S_view.TODO = ptask :: ptask_tail*
   -- if $deprecated_constant_task(ptask, pdeprecatedconstant)
   -- if S.ORIGIN = (pdeprecatedconstant.SITE)
   -- if $deprecated_constant_source(S, pdeprecatedconstant.SITE, pdeprecatedconstant.PREFIX) = (pdeprecatedconstant.LINE)
