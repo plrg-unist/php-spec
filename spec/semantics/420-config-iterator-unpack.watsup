@@ -441,6 +441,12 @@ def $config_iterator_string_value(S, POBJECT n) = true
   -- if $config_iterator_data_value(S, POBJECT n, eps)
   -- if $config_ini_value_conversion(POBJECT n) = TYPEREJECT
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 0)
+;; A copied finite array is likewise a raw value TypeError, with its COW table
+;; and embedded aliases held through the ordinary argument trace.
+def $config_iterator_string_value(S, PARRAY n) = true
+  -- if $config_iterator_data_value(S, PARRAY n, eps)
+  -- if $config_ini_value_conversion(PARRAY n) = TYPEREJECT
+  -- if $($heap_owners($heap_graph(S), HARRAY n) > 0)
 def $config_iterator_string_value(S, pvalue) = false -- otherwise
 def $config_iterator_string_receive_valid(S, pconfigcall, n_object, pvalue_name) = true
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
