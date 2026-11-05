@@ -30,7 +30,7 @@
       "zend_handle_undef_args",
       "zend_call_function",
       "ZEND_METHOD(Closure, call)",
-      "zend_cleanup_live_vars"
+      "cleanup_live_vars"
     ],
     "rule": "exit uses UnwindExit, distinct from zend_bailout. It returns through argument/default cleanup and the raw copied-Closure decrement. Catch/finally are skipped and a failed NEW remains destructor-ineligible."
   },
