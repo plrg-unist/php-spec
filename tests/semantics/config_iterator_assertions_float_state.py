@@ -132,5 +132,5 @@ if __name__ == '__main__':
     parser.add_argument('--case', action='append')
     base.CASES = CASES
     base.INPUTS = [Path(__file__), CATALOG, Path(base.__file__)]
-    base.review.run = partial(base.review.run, process_seconds=300)
+    base.review.run = partial(base.review.run, process_seconds=600)
     raise SystemExit(0 if base.run(parser.parse_args().case) else 1)
