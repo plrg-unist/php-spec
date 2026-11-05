@@ -87,6 +87,16 @@ $heap_owners($heap_graph(S_normalized), HOBJECT n_token) = 2
 $call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_token)]))
 ~$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop[.NAME = "throw"] eps ([KNOWN (POBJECT n_token)]))
 ~$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop eps ([REFERENCE n_caller_cell]))
+$getter_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS [NArg ABSENT expression_pack (BOOLEAN false) (BOOLEAN true) metadata_pack] 2
+phpType7_value = NArg (NIdentifier (BYTES "dmFsdWU=") metadata_pack) expression_pack (BOOLEAN false) (BOOLEAN false) metadata_pack
+phpType7_extra = NArg (NIdentifier (BYTES "ZXh0cmE=") metadata_pack) expression_pack (BOOLEAN false) (BOOLEAN false) metadata_pack
+phpType7_exception = NArg (NIdentifier (BYTES "ZXhjZXB0aW9u") metadata_pack) expression_pack (BOOLEAN false) (BOOLEAN false) metadata_pack
+$generator_api_extent("send", [phpType7_value], 1)
+~$generator_api_extent("send", [phpType7_value], 0)
+~$generator_api_extent("send", [phpType7_value], 2)
+~$generator_api_extent("send", [phpType7_extra], 1)
+$generator_api_extent("throw", [phpType7_exception], 1)
+~$generator_api_extent("throw", [phpType7_value], 1)
 $heap_valid($heap_graph(S_normalized))
 $call_descriptors_valid(S_normalized)
 '''.splitlines() if line.strip()]
