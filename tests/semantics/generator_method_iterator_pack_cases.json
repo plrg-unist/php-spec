@@ -1,0 +1,14 @@
+[
+  {
+    "id": "i116-selected-receiver-current-snapshot",
+    "purpose": "Initialized user Iterator rewinds after literal native send selected old Generator; rewind rebinds target/clears Iterator CV, current copies Token before key overwrites its property. Iterator DATA retires before old-target body; copied Token then retires before selected Generator finally and caller result.",
+    "source": "<?php\nclass Token116A {\n    function __destruct() { global $weakTarget, $weakIterator, $weakToken; echo 'TOKEN|', $weakTarget->get() instanceof Generator, '|', $weakIterator->get() === null, '|', $weakToken->get() === $this, '|'; }\n}\nclass Input116A implements Iterator {\n    public $value;\n    private $done = false;\n    function __construct($value) { $this->value = $value; }\n    function rewind(): void { global $target, $replacement, $iterator, $weakTarget, $weakIterator, $weakToken; echo 'REWIND|'; $target = $replacement; $iterator = null; echo 'HELD|', $weakTarget->get() instanceof Generator, '|', $weakIterator->get() === $this, '|', $weakToken->get() === $this->value, '|'; }\n    function valid(): bool { echo 'VALID|'; return !$this->done; }\n    function current(): mixed { echo 'CURRENT|'; return $this->value; }\n    function key(): mixed { echo 'KEY|'; $this->value = 17; return 0; }\n    function next(): void { echo 'NEXT|'; $this->done = true; }\n    function __destruct() { global $weakTarget, $weakToken; echo 'ITER|', $weakTarget->get() instanceof Generator, '|', $weakToken->get() instanceof Token116A, '|'; }\n}\nfunction target116A($name) {\n    try { echo 'INIT|', $name, '|'; $received = yield 'head'; global $weakToken; echo 'GOT|', $received === $weakToken->get(), '|'; unset($received); yield 'tail'; }\n    finally { global $weakTarget; echo 'FIN|', $name, '|', $weakTarget->get() instanceof Generator, '|'; }\n}\n$target = target116A('old'); $replacement = target116A('new'); $weakTarget = WeakReference::create($target);\n$token = new Token116A; $weakToken = WeakReference::create($token); $iterator = new Input116A($token); $weakIterator = WeakReference::create($iterator); $token = null;\necho 'CALL|'; $result = $target->send(...$iterator);\necho 'RETURN|', $result === 'tail', '|', $target === $replacement, '|', $weakTarget->get() === null, '|', $weakIterator->get() === null, '|', $weakToken->get() === null, '|DONE|';\n",
+    "source_sha256": "ec495e896d88944db6476009273c015ee8e11a11e6d7b67d2a548702dff87aa7",
+    "native_exit": 0,
+    "native_stdout": "CALL|REWIND|HELD|1|1|1|VALID|CURRENT|KEY|NEXT|VALID|ITER|1|1|INIT|old|GOT|1|TOKEN|1|1|1|FIN|old|1|RETURN|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 500,
+    "process_seconds": 520
+  }
+]
