@@ -1,0 +1,69 @@
+{
+  "milestone": "COMP178",
+  "status": "Private implementation validated; independent acceptance pending.",
+  "base": "97d2e2e4b4ef1fa749f8df6b129938b5766aee09",
+  "branch": "semantics/rejected-multiproperty-hook-178",
+  "production_and_tests": "164191f05ff68500fe3bebb99ce0630b14cedae5",
+  "raw_root": "../php-spec-evidence-archive/comp178",
+  "behavior": "Rejected eval, opened-file and main units stop at the opening hook brace after a comma-separated property declaration, before any hook body is parsed. Earlier attribute/default/completed-hook headers survive. Ordinary property and parameter comma lists retain their behavior. Native diagnostic category, message and line remain native parser reply fields.",
+  "implementation": "RejectedHeaderParser wraps pinned PHP-Parser property-list reduction399 and rejects brace lookahead. The original reduction only appends its property item. Accepted parsing, native helper, worker/adapter/schema and authored P4 rules are unchanged.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_language_parser.y::attributed_class_statement/property_list/property/hooked_property",
+    "vendor/php-parser/lib/PhpParser/Parser/Php8.php::rules398/399/360",
+    "frontend/RejectedHeaderParser.php"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS,64-bit",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json; include_path=.:; main reporting30719/display_errors=stderr",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "validation": {
+    "service": {
+      "report": "service-v1/report.json",
+      "sha256": "57de9130fb5be61214a894d29c534b0f0001663bf1f161229f5708e6e5ff71eb",
+      "scope": "76 maintained controls:36 COMP177 originals,12 comma-list/parameter-prefix sources,14 hook modifiers,two former multi-property refusals and12 direct ordinary/rejected parser controls. Source-model agreement credit0.",
+      "head": "97d2e2e4b4ef1fa749f8df6b129938b5766aee09",
+      "head_stable": true,
+      "inputs_stable": true,
+      "controls": 76
+    },
+    "dynamic_sources": {
+      "report": "sources-v1/report.json",
+      "sha256": "2cb114bdcec8e58c312944bd1389bd59107477a75d164e8b4767e9759f19d332",
+      "scope": "12 exact original eval/opened-file comparisons, including both former multi-property service-refusal bytes, prior headers, both initializer closures, property attributes, prior hooks/triple lists and unrelated promoted-parameter lists. All native/model raw streams and normal exit0 agree.",
+      "head": "164191f05ff68500fe3bebb99ce0630b14cedae5",
+      "agreements": 12,
+      "head_stable": true,
+      "inputs_stable": true,
+      "controls": 12
+    },
+    "main_sources": {
+      "report": "main-v1/report.json",
+      "sha256": "56a9bf0378fa8db1f02fbc8c8d2e44bf3f305360589b1471b8042ed09e55df21",
+      "scope": "Four original main-file warning/fatal prefixes; native exit255 and modeled source_rejection/php_error exit255 agree before VM execution.",
+      "head": "164191f05ff68500fe3bebb99ce0630b14cedae5",
+      "agreements": 4,
+      "head_stable": true,
+      "inputs_stable": true,
+      "controls": 4
+    },
+    "independent_service": {
+      "report": "reviewer-matrix-v1/report.json",
+      "sha256": "ddaae091528ec5032010b00d03d89cc499962a15f8b4aaa2a0caf6d2062c3d82",
+      "scope": "40 independent eval/file native+worker challenges:2/3 lists,trivia/multiline,first/last default closures,attributes,readonly/asymmetric/interface/trait,nested hooked initializer classes,prior deferred single hooks,hook-before-comma,ordinary/single/parameter lists,earlier grammar/nonliteral and body lexical priorities. Source-model agreement credit0.",
+      "head": "97d2e2e4b4ef1fa749f8df6b129938b5766aee09",
+      "head_stable": true,
+      "inputs_stable": true,
+      "controls": 40
+    },
+    "identity": "Dynamic/main reports bind clean164191f05 and stable watched inputs before/after execution. Earlier service/challenge reports bind97d2e2e4b plus candidate bytes; their production and maintained service/test bytes were committed unchanged in164191f05. All raw requests/replies, source hashes, streams, command/cwd and process records stay outside Git."
+  },
+  "review": {
+    "status": "Independent production/test review and40-row challenge found no defect; final report acceptance pending."
+  },
+  "limits": "Trusted native parser replies remain foreign facts, not a derivation from submitted bytes. Broader rejected prefixes, multibyte conversion, portability and full core coverage remain partial. Existing P4/state evidence keeps its original identities; no unchanged semantic suite was renewed. Paused routes including COMP88 were untouched."
+}

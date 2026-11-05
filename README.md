@@ -3210,6 +3210,10 @@ four main comparisons plus 108 reached conditions pass.
 Constant modifiers now receive the same early target check before initializers:
 earlier attribute headers survive, while forbidden initializer headers do not.
 Twenty-two dynamic and four main comparisons plus 108 reached conditions pass.
+Rejected comma-separated properties now stop before a hook body, retaining only
+earlier attribute, initializer and completed-hook headers. Twelve dynamic and
+four main originals agree; 76 service controls and 40 independent challenges
+pass. [Multi-property review](coverage/semantics/rejected-multiproperty-hook-review.json).
 [Original review](coverage/semantics/encoding-declare-review.json),
 [list/body review](coverage/semantics/encoding-list-review.json),
 [header review](coverage/semantics/encoding-header-review.json),

@@ -1351,6 +1351,16 @@ fixture failures have zero credit. Accepted parsing, native helper, schema,
 adapter and P4 interfaces are unchanged; wider rejected-source prefixes remain
 partial. [Review](coverage/semantics/rejected-property-hook-static-review.json).
 
+COMP178 stops rejected comma-separated property declarations at their opening
+hook brace, matching Zend's grammar before any hook body. Earlier attribute,
+initializer and completed-hook headers survive; parameter and ordinary property
+lists retain their behavior. Twelve dynamic and four main originals agree,
+76 maintained service controls and 40 independent challenges pass at their
+recorded cuts. The two COMP177 multi-property refusals are now supported.
+Accepted parsing, native helper, schema, adapter and P4 rules are unchanged;
+wider rejected-source prefixes remain partial.
+[Review](coverage/semantics/rejected-multiproperty-hook-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
