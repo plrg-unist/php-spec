@@ -54,6 +54,13 @@ field also uses effective lexer tokens, survives fresh reconstruction, and never
 instructs the printer to replay source. The compiler validates the consumed line
 against the statement's retained start/end range; edited syntax remains explicit
 input, not authenticated source provenance.
+Declare nodes retain integer `declareHeaderCloseLine` and
+`declareHeaderCloseTokenPos` from their matching header `)` token. The lexical
+scan counts actual parenthesis tokens and ignores punctuation inside string and
+comment payloads. These positions distinguish headers whose existing node/item
+spans are identical, and order nested header reductions before the enclosing
+header. Checked reconstruction preserves both fields; printing ignores them.
+They are explicit lexical input facts, with semantic range and uniqueness checks.
 If/elseif/else, while, do and for nodes additionally retain integer
 `statementBodyLine`: the opening brace/colon token line for a synthetic Zend
 statement list, or zero when the grammar uses a single statement. Header scans

@@ -1,0 +1,119 @@
+[
+  {
+    "id": "replacement-string-key-keeps-original-positional-target",
+    "source": "<?php\nfunction &values96() { global $a,$b; echo \"Y0;\"; yield 0 => $a; echo \"Y1;\"; yield \"second\" => $b; echo \"N;\"; }\nfunction sink96(&$first,$second=99) { echo \"S:\",func_num_args(),\":\",$first,\":\",$second,\";\"; $first=33; echo \"R:\",$first,\";\"; }\nfunction warning96($level,$message) { global $g,$old,$b; $g->next(); $old=22; echo \"H:\",$g->key(),\":\",$old,\":\",$b,\";\"; return true; }\n$a=11; $b=11; $old=&$a; set_error_handler('warning96'); echo \"B;\"; $g=values96(); sink96(...$g); echo \"V:\",$a,\":\",$b,\":\",$old,\";\"; unset($g);\n",
+    "source_sha256": "a8eac9b877335af67204e9bbf4fff30460422f7bed11640305da5df89ab8d958",
+    "purpose": "A changed current string key must not retarget the prechecked positional slot; the saved old CELL supplies22 while current cache stays11.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y0;Y1;H:second:22:11;N;S:1:22:99;R:33;V:22:11:22;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "temporary-input-closed-generator-live-cell",
+    "source": "<?php\nfunction &values96() { global $a; echo \"Y;\"; yield 0 => $a; echo \"N:\",$a,\";\"; }\nfunction sink96(&$first,$second=99) { echo \"S:\",func_num_args(),\":\",$first,\":\",$second,\";\"; $first=33; echo \"R:\",$first,\";\"; }\nfunction warning96($level,$message) { global $g,$old; $g->next(); $old=22; echo \"H:\",$old,\";\"; return true; }\n$a=11; $old=&$a; set_error_handler('warning96'); echo \"B;\"; sink96(...($g=values96())); echo \"V:\",$a,\":\",$old,\";\"; unset($g);\n",
+    "source_sha256": "efb43e3aeae450532f029aab4f75a62763bc66573c2e318180dc4c76481899d1",
+    "purpose": "A materialized temporary unpack operand survives normal callback closure; FRAME release leaves the cached CELL and outside aliases live for delivery22.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y;N:11;H:22;S:1:22:99;R:33;V:22:22;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "handler-catches-producer-throw-before-cell-delivery",
+    "source": "<?php\nfunction &values96() { global $a; echo \"Y;\"; yield 0 => $a; echo \"T;\"; throw new Exception(\"G\"); }\nfunction sink96(&$first,$second=99) { echo \"S:\",func_num_args(),\":\",$first,\":\",$second,\";\"; $first=33; echo \"R:\",$first,\";\"; }\nfunction warning96($level,$message) { global $g,$old; try { $g->next(); } catch (Exception $e) { echo \"C:\",$e->getMessage(),\";\"; } $old=22; echo \"H:\",$old,\";\"; return true; }\n$a=11; $old=&$a; set_error_handler('warning96'); echo \"B;\"; $g=values96(); sink96(...$g); echo \"V:\",$a,\":\",$old,\";\"; unset($g);\n",
+    "source_sha256": "cfab51b8c1f19411a7c85b1de97151addee3a1f5557b0c137312ebab46c6dd55",
+    "purpose": "A producer exception caught inside the handler leaves normal Warning return and a live saved cell; it is distinct from the pending Warning-handler exception frontier.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y;T;C:G;H:22;S:1:22:99;R:33;V:22:22;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "byval-equal-cache-used-yield-continues-normally",
+    "source": "<?php\nfunction values96() { echo \"Y0;\"; yield 0 => 11; echo \"Y1;\"; $sent=yield 0 => 11; echo \"Z:\",($sent===null?\"N\":\"X\"),\";\"; }\nfunction sink96(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warning96($level,$message) { global $g; echo \"H;\"; $g->next(); echo \"K:\",$g->key(),\":\",$g->current(),\";\"; return true; }\nset_error_handler('warning96'); echo \"B;\"; $g=values96(); sink96(...$g); unset($g);\n",
+    "source_sha256": "32d5399dacb3a7978afd0c4cb942078b9438297b00b8981bda67c2d614866fab",
+    "purpose": "An ordinary used yield keeps PARKEDeps; equal BYVAL cache/key/largest-key remains admitted and later NEXT sends NULL.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y0;H;Y1;K:0:11;Z:N;S:11;R:33;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "byval-handler-enters-yield-from-boundary",
+    "source": "<?php\nfunction values96() { echo \"Y0;\"; yield 0 => 11; echo \"D;\"; yield from [11]; echo \"N;\"; }\nfunction sink96(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warning96($level,$message) { global $g; echo \"H;\"; $g->next(); echo \"K:\",$g->current(),\";\"; return true; }\nset_error_handler('warning96'); echo \"B;\"; $g=values96(); sink96(...$g); unset($g);\n",
+    "source_sha256": "a6b511cb1b7523e45e841286affd6c52a2a5c70ad495d6c41f7622f9ac4df0c1",
+    "purpose": "Expected Unsupported0: returning handler reaches an actual DELEGATE record; saved source authority stays valid without widening BYVAL delivery.",
+    "expected_model": "unsupported",
+    "native_stdout": "B;Y0;H;D;K:11;N;S:11;R:33;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack reference payload changed during warning",
+    "unsupported_stdout": "B;Y0;H;D;K:11;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "66",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "89",
+            "48",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "72",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "68",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75",
+            "58"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "49",
+            "49"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]

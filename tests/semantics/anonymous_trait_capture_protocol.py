@@ -16,7 +16,7 @@ CASE = 'parented-anonymous-trait-first-capture'
 PREFIX = r'''
 dec $class166_single_trait(statement) : bool
 def $class166_single_trait(NStmtTraitUse (SEQUENCE (name_trait :: eps)) (SEQUENCE eps) metadata_use) = true
-  -- if ~$anonymous_member(NStmtTraitUse (SEQUENCE (name_trait :: name_trait :: eps)) (SEQUENCE eps) metadata_use)
+  -- if $anonymous_member(NStmtTraitUse (SEQUENCE (name_trait :: name_trait :: eps)) (SEQUENCE eps) metadata_use)
 def $class166_single_trait(statement) = false -- otherwise
 '''
 
@@ -41,8 +41,8 @@ def checks(fixture, filename):
         '$anonymous_trait_use_count(statement*) = 1',
         '$anonymous_trait_use_count(statement_use :: statement_use :: eps) = 2',
         '$anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata_class)',
-        '~$anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE eps) (SEQUENCE (statement_use :: statement_use :: eps)) metadata_class)',
-        '~$anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata_class)',
+        '$anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 phpType44 (SEQUENCE eps) (SEQUENCE (statement_use :: statement_use :: eps)) metadata_class)',
+        '$anonymous_class_node(NStmtClass phpType14 phpType24 phpType3 ABSENT (SEQUENCE eps) (SEQUENCE statement*) metadata_class)',
         'S.ORIGIN = (PORIGIN 0 pcpath)',
         '$source_unit(S.SOURCES,0) = (pcunit)',
         '$compilation_projection(S,pcunit) = (ppinstalled)',

@@ -150,12 +150,21 @@ this bounded offset rule.
 ## Encoding declarations
 
 With Zend multibyte disabled, each parser-literal `encoding` item produces a
-Warning128 before compilation. Checked single-line declarations may contain
-mixed or repeated directives, integer/float/string literals or literal
-concatenation, and ordinary bodies. Their encoding items are sorted by original
-token positions: anonymous-class arguments can parse before method bodies even
-when structural AST fields visit the bodies first. Missing or duplicate encoding
-positions are explicit Unsupported.
+Warning128 before compilation. Checked declarations may contain mixed or repeated
+directives, integer/float/string literals or literal concatenation, multiline
+headers and ordinary bodies. The foreign token stream supplies
+`declareHeaderCloseLine` and `declareHeaderCloseTokenPos`; semantic guards check
+unique fields and statement/item/body ranges. Parser warnings use the closing
+line, while compiler diagnostics retain the first item's line.
+
+Warning order follows header-close tokens, then item tokens within each header.
+This covers anonymous-class arguments before method bodies and a declaration
+inside another header's closure value before the enclosing header reduces.
+Repeated encoding items share the header position without sharing their item
+key. Missing, partial, duplicated or inconsistent receipts refuse explicitly.
+Receipt-less legacy ASTs retain the old single-line route only when both new
+fields are absent. Checked integers are explicit lexical input facts, not proof
+that edited metadata came from original source bytes.
 
 Compilation processes the directives and body in order. An encoding declaration
 after a non-declare statement, or inside a namespace or block, raises the
@@ -165,6 +174,11 @@ encoding directive has no runtime effect; its body executes through ordinary
 source work, including returns from included and eval units. Mixed strict/tick
 directives retain their existing rules and are disjoint from encoding-free
 runtime declarations.
+
+Comment-only bodies can contain a synthetic `NStmtNop` whose start token is one
+past its end token. The range guard admits that empty span only for Nops, keeping
+both endpoints after the header and inside the declaration. Ordinary inverted
+statement spans remain Unsupported.
 
 Five [source cases](../../tests/semantics/encoding_placement_sources.py) compare
 exact pinned-native diagnostics, exits and source identities. The
@@ -178,7 +192,11 @@ preserves earlier failed checks. The
 cover recursive warning order, compiler precedence, body scheduling, origin
 guards, budget resume and dynamic return values. Their
 [review ledger](../../coverage/semantics/encoding-list-review.json) retains exact
-tested cuts and earlier failures. Multiline headers and bodies lack an
-authenticated closing-parenthesis line and remain explicit Unsupported, as do
-parser-rejected dynamic sources with warnings. Multibyte-enabled source
-conversion remains partial.
+tested cuts and earlier failures. The
+[header sources](../../tests/semantics/encoding_header_sources.py),
+[compiler fixture](../../tests/semantics/encoding_header_state.py) and
+[independent reached fixture](../../tests/semantics/encoding_header_review_state.py)
+extend these checks to multiline headers, nested reductions and dynamic source
+identity. The [header ledger](../../coverage/semantics/encoding-header-review.json)
+binds those results and the fresh syntax/metadata gates. Parser-rejected dynamic
+sources with warnings and multibyte-enabled source conversion remain partial.

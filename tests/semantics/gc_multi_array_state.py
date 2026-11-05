@@ -152,11 +152,20 @@ DISTINCT = checks(DISTINCT_CAPTURES, '[HARRAY n_array, HOBJECT n_leaf, HARRAY n_
     f'~$gc_plain_captures(S_child, {DISTINCT_CAPTURES})',
     '~$gc_ordinary_node(S_child, HOBJECT n_closure)',
 ]
-for bad in ['DIRECT (PARRAY n_array)', 'DIRECT (POBJECT n_held)', 'ALIAS n_token_local_cell', 'INDIRECT n_held $ptascii("head")', 'DIRECT PUNDEFINED']:
+for bad in ['DIRECT (POBJECT n_held)', 'ALIAS n_token_local_cell', 'INDIRECT n_held $ptascii("head")', 'DIRECT PUNDEFINED']:
     DISTINCT += [
         f'~$gc_plain_captures(S[.ARRAYS[n_second].ITEMS = [ENTRY (KINT 0) ({bad})]], {DISTINCT_CAPTURES})',
         f'~$gc_ordinary_node(S[.ARRAYS[n_second].ITEMS = [ENTRY (KINT 0) ({bad})]], HOBJECT n_closure)',
     ]
+
+
+DISTINCT += [
+    'S_nested = S[.ARRAYS[n_second].ITEMS = [ENTRY (KINT 0) (DIRECT (PARRAY n_array))]]',
+    '$closure_callable(S_nested, n_closure)',
+    '$gc_materialized_caller_target(S_nested, CLOSURE_TARGET n_closure, pcallcontext.CALLSITE)',
+    f'~$gc_plain_captures(S_nested, {DISTINCT_CAPTURES})',
+    '$gc_ordinary_node(S_nested, HOBJECT n_closure)',
+]
 
 REPEATED_CAPTURES = '[DIRECT (PARRAY n_array), DIRECT (PINT 11), DIRECT (PARRAY n_array)]'
 REPEATED = checks(REPEATED_CAPTURES, '[HARRAY n_array, HARRAY n_array]', [

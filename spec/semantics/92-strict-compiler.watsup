@@ -11,7 +11,18 @@ dec $ppstrict_prefix(statement*, nat) : bool
 dec $ppstrict_preceding(statement) : bool
 
 dec $encoding_declare_item(pcnode) : bool
-dec $encoding_declare_count(phpType49*, int) : nat?
+dec $encoding_declare_count(phpType49*, int, int) : nat?
+dec $declare_header_lines(metadata) : int*
+dec $declare_header_tokens(metadata) : int*
+dec $declare_header_line_entry(metadataEntry) : int?
+dec $declare_header_token_entry(metadataEntry) : int?
+dec $declare_header_absent(metadata) : bool
+dec $declare_header_items(phpType49*, int, int, int, int) : bool
+dec $declare_header_body(phpType47, int, int, int, int) : bool
+dec $declare_header_body_span(statement, int, int) : bool
+dec $declare_header_receipt(statement) : (int, int)?
+dec $encoding_item_parent(ppstate, pcpath, pcnode) : (pcpath, statement)?
+dec $encoding_item_position(ppstate, pcpath, pcnode) : (int, int)?
 dec $encoding_declare_line(statement) : int?
 dec $encoding_declare_site(program, pcpath) : int?
 dec $encoding_declare_first(statement*, pcpath) : bool
@@ -19,11 +30,11 @@ dec $encoding_declare_prefix(statement*, nat) : bool
 dec $encoding_declare_late(ppstate, pcpath) : bool
 dec $ppencoding_nodes(ppstate, pcoccurrence*) : ppstate
 dec $ppencoding_node(ppstate, pcpath, pcnode) : ppstate
-dec $ppencoding_collect(ppstate, pcoccurrence*, (int, pcoccurrence)*) : ppstate
-dec $encoding_token_present((int, pcoccurrence)*, int) : bool
-dec $encoding_token_insert((int, pcoccurrence)*, int, pcoccurrence) : (int, pcoccurrence)*
-dec $encoding_token_nodes((int, pcoccurrence)*) : pcoccurrence*
-var encodingpositions : (int, pcoccurrence)*
+dec $ppencoding_collect(ppstate, pcoccurrence*, (int, int, pcoccurrence)*) : ppstate
+dec $encoding_token_present((int, int, pcoccurrence)*, int, int) : bool
+dec $encoding_token_insert((int, int, pcoccurrence)*, int, int, pcoccurrence) : (int, int, pcoccurrence)*
+dec $encoding_token_nodes((int, int, pcoccurrence)*) : pcoccurrence*
+var encodingpositions : (int, int, pcoccurrence)*
 
 def $ppstatement(P, pcpath, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = $ppdeclare_body($ppstrict_items($pplocate(P, pcpath, $ppstrict_line(phpType49*)), pcpath, phpType47, phpType49*), pcpath, phpType47)
   -- if P.COMPLETION = PPCNORMAL
@@ -105,22 +116,80 @@ def $ppstrict_line(eps) = 0
 
 def $encoding_declare_item(NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = ($ptlc($base64(text)) = $ptascii("encoding"))
 def $encoding_declare_item(pcnode) = false -- otherwise
-def $encoding_declare_count(eps, z) = (0)
-def $encoding_declare_count(phpType49 :: phpType49_tail*, z) = $encoding_declare_count(phpType49_tail*, z)
+def $declare_header_line_entry(MdeclareHeaderCloseLine z) = (z)
+def $declare_header_line_entry(metadataEntry) = eps -- otherwise
+def $declare_header_token_entry(MdeclareHeaderCloseTokenPos z) = (z)
+def $declare_header_token_entry(metadataEntry) = eps -- otherwise
+def $declare_header_lines(eps) = eps
+def $declare_header_lines(metadataEntry :: metadata) = z :: $declare_header_lines(metadata)
+  -- if $declare_header_line_entry(metadataEntry) = (z)
+def $declare_header_lines(metadataEntry :: metadata) = $declare_header_lines(metadata)
+  -- if $declare_header_line_entry(metadataEntry) = eps
+def $declare_header_tokens(eps) = eps
+def $declare_header_tokens(metadataEntry :: metadata) = z :: $declare_header_tokens(metadata)
+  -- if $declare_header_token_entry(metadataEntry) = (z)
+def $declare_header_tokens(metadataEntry :: metadata) = $declare_header_tokens(metadata)
+  -- if $declare_header_token_entry(metadataEntry) = eps
+def $declare_header_absent(metadata) = ($declare_header_lines(metadata) = eps /\ $declare_header_tokens(metadata) = eps)
+
+def $declare_header_items(eps, z_begin, z_line, z_start, z_token) = true
+def $declare_header_items((NDeclareItem phpType11 expression metadata) :: phpType49*, z_begin, z_line, z_start, z_token) = true
+  -- if $($source_line(metadata) >= z_begin /\ $source_end_line(metadata) >= $source_line(metadata) /\ $source_end_line(metadata) <= z_line)
+  -- if $source_token_start(metadata) = (z_item_start)
+  -- if $source_token_end(metadata) = (z_item_end)
+  -- if $(z_item_start > z_start /\ z_item_end >= z_item_start /\ z_item_end < z_token)
+  -- if $declare_header_items(phpType49*, z_begin, z_line, z_start, z_token)
+def $declare_header_items(phpType49*, z_begin, z_line, z_start, z_token) = false -- otherwise
+def $declare_header_body(ABSENT, z_line, z_token, z_end, z_last) = true
+def $declare_header_body(SEQUENCE eps, z_line, z_token, z_end, z_last) = true
+def $declare_header_body_span(statement, z_start, z_end) = true
+  -- if $(z_end >= z_start)
+def $declare_header_body_span(NStmtNop metadata, z_start, z_end) = true
+  -- if $(z_start = z_end + 1)
+def $declare_header_body_span(statement, z_start, z_end) = false -- otherwise
+def $declare_header_body(SEQUENCE (statement :: statement_tail*), z_line, z_token, z_end, z_last) = true
+  -- if metadata = $pcmetadata(statement)
+  -- if $($source_line(metadata) >= z_line /\ $source_end_line(metadata) >= $source_line(metadata) /\ $source_end_line(metadata) <= z_end)
+  -- if $source_token_start(metadata) = (z_body_start)
+  -- if $source_token_end(metadata) = (z_body_end)
+  -- if $(z_body_start > z_token /\ z_body_start <= z_last /\ z_body_end > z_token /\ z_body_end <= z_last)
+  -- if $declare_header_body_span(statement, z_body_start, z_body_end)
+  -- if $declare_header_body(SEQUENCE statement_tail*, z_line, z_token, z_end, z_last)
+def $declare_header_body(phpType47, z_line, z_token, z_end, z_last) = false -- otherwise
+def $declare_header_receipt(NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = ((z_line, z_token))
+  -- if $declare_header_lines(metadata) = [z_line]
+  -- if $declare_header_tokens(metadata) = [z_token]
+  -- if z_begin = $source_line(metadata)
+  -- if z_end = $source_end_line(metadata)
+  -- if $(z_begin > 0 /\ z_line >= z_begin /\ z_line <= z_end)
+  -- if $source_token_start(metadata) = (z_start)
+  -- if $source_token_end(metadata) = (z_last)
+  -- if $(z_start >= 0 /\ z_token > z_start /\ z_token <= z_last)
+  -- if $declare_header_items(phpType49*, z_begin, z_line, z_start, z_token)
+  -- if $declare_header_body(phpType47, z_line, z_token, z_end, z_last)
+def $declare_header_receipt(statement) = eps -- otherwise
+
+def $encoding_declare_count(eps, z_begin, z_line) = (0)
+def $encoding_declare_count(phpType49 :: phpType49_tail*, z_begin, z_line) = $encoding_declare_count(phpType49_tail*, z_begin, z_line)
   -- if ~$encoding_declare_item(phpType49)
-def $encoding_declare_count((NDeclareItem (NIdentifier (BYTES text_name) metadata_name) expression metadata_item) :: phpType49*, z) = ($(n + 1))
+def $encoding_declare_count((NDeclareItem (NIdentifier (BYTES text_name) metadata_name) expression metadata_item) :: phpType49*, z_begin, z_line) = ($(n + 1))
   -- if $ptlc($base64(text_name)) = $ptascii("encoding")
   -- if $parser_literal(expression) = (pvalue)
-  -- if $source_line(metadata_item) = z /\ $source_end_line(metadata_item) = z
-  -- if $source_line(metadata_name) = z /\ $source_end_line(metadata_name) = z
-  -- if $source_line($pcmetadata(expression)) = z /\ $source_end_line($pcmetadata(expression)) = z
-  -- if $encoding_declare_count(phpType49*, z) = (n)
-def $encoding_declare_count(phpType49*, z) = eps -- otherwise
+  -- if $($source_line(metadata_item) >= z_begin /\ $source_end_line(metadata_item) >= $source_line(metadata_item) /\ $source_end_line(metadata_item) <= z_line)
+  -- if $($source_line(metadata_name) >= z_begin /\ $source_end_line(metadata_name) >= $source_line(metadata_name) /\ $source_end_line(metadata_name) <= z_line)
+  -- if $($source_line($pcmetadata(expression)) >= z_begin /\ $source_end_line($pcmetadata(expression)) >= $source_line($pcmetadata(expression)) /\ $source_end_line($pcmetadata(expression)) <= z_line)
+  -- if $encoding_declare_count(phpType49*, z_begin, z_line) = (n)
+def $encoding_declare_count(phpType49*, z_begin, z_line) = eps -- otherwise
+def $encoding_declare_line(NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = (z_line)
+  -- if $declare_header_receipt(NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = ((z_line, z_token))
+  -- if $encoding_declare_count(phpType49*, $source_line(metadata), z_line) = (n)
+  -- if $(n > 0)
 def $encoding_declare_line(NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = (z)
+  -- if $declare_header_absent(metadata)
   -- if z = $source_line(metadata)
   -- if $(z > 0)
   -- if $source_end_line(metadata) = z
-  -- if $encoding_declare_count(phpType49*, z) = (n)
+  -- if $encoding_declare_count(phpType49*, z, z) = (n)
   -- if $(n > 0)
 def $encoding_declare_line(statement) = eps -- otherwise
 def $encoding_declare_site(program, [PCINDEX n]) = $encoding_declare_line(statement)
@@ -140,9 +209,30 @@ def $encoding_declare_late(P, pcpath) = true
   -- if ~$encoding_declare_first($pcprogram(P.FOLD.SOURCE.AST), pcpath)
 def $encoding_declare_late(P, pcpath) = false -- otherwise
 
-;; Structural AST field order can differ from parser chronology (anonymous-class
-;; arguments precede its method bodies). Encoding-item token positions order the
-;; complete parser prefix before the separate source compiler traversal.
+;; Header reductions, including a nested declaration inside another header,
+;; order parser warnings before the separate source compiler traversal. Repeated
+;; encoding items share their closing header token and retain item order.
+def $encoding_item_parent(P, pcpath_item, pcnode) = ((pcpath_statement, statement))
+  -- if $encoding_declare_item(pcnode)
+  -- if $(|pcpath_item| >= 2)
+  -- if pcpath_statement = pcpath_item[0:$nabs($(|pcpath_item| - 2))]
+  -- if pcpath_item[$nabs($(|pcpath_item| - 1))] = PCINDEX n_item
+  -- if pcpath_item = pcpath_statement ++ [PCFIELD 0, PCINDEX n_item]
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_statement) = (statement)
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_item) = (pcnode)
+def $encoding_item_parent(P, pcpath, pcnode) = eps -- otherwise
+def $encoding_item_position(P, pcpath, pcnode) = ((z_token, z_item))
+  -- if $encoding_item_parent(P, pcpath, pcnode) = ((pcpath_statement, statement))
+  -- if $declare_header_receipt(statement) = ((z_line, z_token))
+  -- if $source_token_start($pcmetadata(pcnode)) = (z_item)
+  -- if $(z_item >= 0)
+def $encoding_item_position(P, pcpath, pcnode) = ((z_item, z_item))
+  -- if $encoding_item_parent(P, pcpath, pcnode) = ((pcpath_statement, statement))
+  -- if $declare_header_absent($pcmetadata(statement))
+  -- if $source_token_start($pcmetadata(pcnode)) = (z_item)
+  -- if $(z_item >= 0)
+def $encoding_item_position(P, pcpath, pcnode) = eps -- otherwise
+
 def $ppparser_begin(P) = $ppencoding_collect(P[.FOLD.SOURCE = pcunit], pcunit.OCCURRENCES, eps)
   -- if pcunit = $pcsource(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST)
 def $ppencoding_collect(P, pcoccurrence*, encodingpositions) = P
@@ -151,34 +241,28 @@ def $ppencoding_collect(P, eps, encodingpositions) = $ppencoding_nodes(P, $encod
   -- if P.COMPLETION = PPCNORMAL
 def $ppencoding_collect(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, encodingpositions) = $ppencoding_collect(P, pcoccurrence*, encodingpositions)
   -- if P.COMPLETION = PPCNORMAL /\ ~$encoding_declare_item(pcnode)
-def $ppencoding_collect(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, encodingpositions) = $ppencoding_collect(P, pcoccurrence*, $encoding_token_insert(encodingpositions, z, PCOCCURRENCE pcpath pcnode))
+def $ppencoding_collect(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, encodingpositions) = $ppencoding_collect(P, pcoccurrence*, $encoding_token_insert(encodingpositions, z_header, z_item, PCOCCURRENCE pcpath pcnode))
   -- if P.COMPLETION = PPCNORMAL /\ $encoding_declare_item(pcnode)
-  -- if $source_token_start($pcmetadata(pcnode)) = (z)
-  -- if $(z >= 0)
-  -- if ~$encoding_token_present(encodingpositions, z)
+  -- if $encoding_item_position(P, pcpath, pcnode) = ((z_header, z_item))
+  -- if ~$encoding_token_present(encodingpositions, z_header, z_item)
 def $ppencoding_collect(P, pcoccurrence*, encodingpositions) = $ppunsupported(P, "encoding parser warning source position")
   -- otherwise
-def $encoding_token_present(eps, z) = false
-def $encoding_token_present((z_first, pcoccurrence) :: encodingpositions, z) = (z_first = z \/ $encoding_token_present(encodingpositions, z))
-def $encoding_token_insert(eps, z, pcoccurrence) = [(z, pcoccurrence)]
-def $encoding_token_insert((z_first, pcoccurrence_first) :: encodingpositions, z, pcoccurrence) = (z, pcoccurrence) :: (z_first, pcoccurrence_first) :: encodingpositions
-  -- if $(z < z_first)
-def $encoding_token_insert((z_first, pcoccurrence_first) :: encodingpositions, z, pcoccurrence) = (z_first, pcoccurrence_first) :: $encoding_token_insert(encodingpositions, z, pcoccurrence)
-  -- if $(z >= z_first)
+def $encoding_token_present(eps, z_header, z_item) = false
+def $encoding_token_present((z_first_header, z_first_item, pcoccurrence) :: encodingpositions, z_header, z_item) = ((z_first_header = z_header /\ z_first_item = z_item) \/ $encoding_token_present(encodingpositions, z_header, z_item))
+def $encoding_token_insert(eps, z_header, z_item, pcoccurrence) = [(z_header, z_item, pcoccurrence)]
+def $encoding_token_insert((z_first_header, z_first_item, pcoccurrence_first) :: encodingpositions, z_header, z_item, pcoccurrence) = (z_header, z_item, pcoccurrence) :: (z_first_header, z_first_item, pcoccurrence_first) :: encodingpositions
+  -- if $(z_header < z_first_header) \/ (z_header = z_first_header /\ $(z_item < z_first_item))
+def $encoding_token_insert((z_first_header, z_first_item, pcoccurrence_first) :: encodingpositions, z_header, z_item, pcoccurrence) = (z_first_header, z_first_item, pcoccurrence_first) :: $encoding_token_insert(encodingpositions, z_header, z_item, pcoccurrence)
+  -- if $(z_header > z_first_header) \/ (z_header = z_first_header /\ $(z_item >= z_first_item))
 def $encoding_token_nodes(eps) = eps
-def $encoding_token_nodes((z, pcoccurrence) :: encodingpositions) = pcoccurrence :: $encoding_token_nodes(encodingpositions)
+def $encoding_token_nodes((z_header, z_item, pcoccurrence) :: encodingpositions) = pcoccurrence :: $encoding_token_nodes(encodingpositions)
 def $ppencoding_nodes(P, eps) = P
 def $ppencoding_nodes(P, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $ppencoding_nodes($ppencoding_node(P, pcpath, pcnode), pcoccurrence*)
 def $ppencoding_node(P, pcpath, pcnode) = P
   -- if P.COMPLETION =/= PPCNORMAL \/ ~$encoding_declare_item(pcnode)
 def $ppencoding_node(P, pcpath_item, pcnode) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "encoding-disabled" eps { UNIT P.FOLD.SOURCE.ID, PATH pcpath_statement, FILE P.LOCATION.FILE, LINE n_line }]]
   -- if P.COMPLETION = PPCNORMAL /\ $encoding_declare_item(pcnode)
-  -- if $(|pcpath_item| >= 2)
-  -- if pcpath_statement = pcpath_item[0:$nabs($(|pcpath_item| - 2))]
-  -- if pcpath_item[$nabs($(|pcpath_item| - 1))] = PCINDEX n_item
-  -- if pcpath_item = pcpath_statement ++ [PCFIELD 0, PCINDEX n_item]
-  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_statement) = (statement)
-  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_item) = (pcnode)
+  -- if $encoding_item_parent(P, pcpath_item, pcnode) = ((pcpath_statement, statement))
   -- if $encoding_declare_line(statement) = (n_line)
 def $ppencoding_node(P, pcpath, pcnode) = $ppunsupported(P, "encoding parser warning source shape")
   -- otherwise

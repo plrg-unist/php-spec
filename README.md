@@ -2169,12 +2169,20 @@ parameters. Reference yields become snapshots before resume; named keys use the
 ordinary binder. Native iteration adds no method trace frames, and temporary
 versus retained Generators preserve their distinct finally/cache lifetimes.
 See the [Generator unpack review](coverage/semantics/generator-call-unpack-review.json).
-Scalar by-value Generator caches now warn within the first two unpacked sends
-to a fixed untyped reference parameter in argument position 1 or 2 of a direct
-named user function returning by value. Distinct private cells preserve both
-values across warnings and callee writes. Dynamic-string sinks, warning-time
-Generator advancement and pending warning exceptions remain explicit Unsupported.
-See the [reference-sink review](coverage/semantics/generator-byref-sink-review.json).
+Direct named functions returning by value receive scalar Generator sends in
+fixed untyped reference parameters at positions 1 or 2, within the first two
+sends. By-value yields keep snapshots; ordinary reference yields reread saved
+cells after normal Warning handlers. Private callee cells stay distinct from
+source aliases and each other through global-name rebinding. A live selected
+reference cell still supplies delivery after cache replacement, changed keys or
+normal Generator closure; the subsequent iterator advance observes its actual
+phase, including the ordinary running-Generator Error. By-value delivery keeps
+its existing cache/key/index/phase restrictions. Ineligible reference carriers,
+dynamic-string sinks and pending warning exceptions remain Unsupported.
+See the [snapshot review](coverage/semantics/generator-byref-sink-review.json)
+and [reference-cell review](coverage/semantics/generator-reference-sink-review.json);
+the [captured-cell extension](coverage/semantics/generator-captured-cell-sink-review.json)
+records the later delivery rule.
 Array `yield from` producers also unpack through their authentic delegated table
 and current cache. By-value sends preserve reference snapshots and repeated-row
 COW; temporary and retained Generators keep distinct abort/finally cleanup.
@@ -3158,13 +3166,14 @@ registered handlers and continue into the real body. Two fresh originals and
 focused notice/body/shared-throw checks pass. At that cut, wider ticks, encoding
 and directive values remained required. [Declare review](coverage/semantics/compiler-declare-review.json).
 Disabled-multibyte encoding declarations emit source-derived parser warnings
-before compiler diagnostics. Single-line declarations accept literal values,
-mixed/repeated items and ordinary bodies; token positions preserve recursive
-parser-warning order. Ten new originals, 256 compiler/body premises and 93 dynamic
-return premises extend the earlier eval/once checks. Multiline declarations and
-rejected sources with warnings remain explicit boundaries.
+before compiler diagnostics. Checked header-close positions support multiline
+headers and ordinary bodies, preserving nested parser reductions and separate
+first-item compiler lines. Twenty-one new originals and independent compiler/state
+checks pass; the fresh classified syntax gate covers 30,980 profiles. Rejected
+sources with warnings and multibyte-enabled conversion remain partial.
 [Original review](coverage/semantics/encoding-declare-review.json),
-[list/body review](coverage/semantics/encoding-list-review.json).
+[list/body review](coverage/semantics/encoding-list-review.json),
+[header review](coverage/semantics/encoding-header-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
@@ -3915,6 +3924,20 @@ Three originals agree with PHP through final weak death. The arrays remain
 one-level, mutable and outside pooled or materialized property tables; this
 rooted lane does not collect Closure cycles. See the
 [multi-array review](coverage/semantics/gc-multi-array-review.json).
+GC28 also admits finite nested DIRECT-array DAGs under that real caller root.
+Component discovery visits each identity once; tracing and ownership keep repeated
+edges, and per-array self-reach rejects forged DIRECT cycles. Shared nesting, local nested
+COW and self-copy snapshots agree with PHP through weak death. References, proxies, pooled descendants
+and user-finalizer children stay outside this lane. See the
+[nested-array review](coverage/semantics/gc-nested-array-review.json).
+
+GC29 admits mixed value/reference captures through ordinary untyped cells.
+Captured aliases retain cell identity across global-name rebinding; each wrapper
+owns its payload once, and reference decrements buffer the collectable payload.
+Shared/distinct wrappers, request strings, nested reference-payload COW and an
+A95 Generator/handler interaction agree with PHP. Typed/backed cells and reference cycles remain outside this lane.
+See the [reference-capture review](coverage/semantics/gc-reference-capture-review.json).
+
 The [cumulative caller review](coverage/semantics/gc-caller-cumulative-review.json)
 records joined source/state checks and the later integration bridge.
 Materialized ordinary property tables now participate in callback-free explicit
@@ -4725,16 +4748,21 @@ The source `Closure->__invoke` inner-warning handler trace now inherits the real
 call file/line for both its head and wrapper frame. One native-first original,
 a reached trace state and strict433 pass; broader wrapper/reentry paths remain
 partial. See the [trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
-After output FINAL, source-certified tick entries retire in registration order.
-Copied values retire before the independent FCC object/Closure owners; arrays
-preserve snapshots and shared references. Named functions, method arrays, real
-Closures and raw invokable objects use their existing cache roots. Cacheless
-scalar/zero-argument entries drain before shutdown-queue or executor fallbacks.
-Five new native-first sources agree exactly; seven reached groups pass 187
-conditions (seven derived), and private strict433 passes. Wider
-producers, assertion roots and abrupt/reentrant late release remain partial.
-See the [callable-cache review](coverage/semantics/callback-late-tick-callables-review.json)
-and retained [copied-value evidence](coverage/semantics/callback-late-tick-values-review.json).
+After output FINAL, source-certified tick entries retire in registration order,
+releasing copied values before their independent FCC object/Closure owners.
+Normal completion and stable pending exits use agreeing saved phase completions;
+the exact stored exit status survives temporary NORMAL cleanup and CLI narrowing.
+An uncaught builtin Exception from a normal-origin argument destructor now stops
+that tick-list cleanup, retaining unfinished arguments, FCC owners and tail
+entries. Its Throwable retires before later active shutdown-queue cleanup and
+inactive executor free. An owning Closure capture can produce the separate
+inactive-child fatal with native exit 0. Five new originals agree exactly;
+five independent groups pass 254 conditions (11 derived), and private strict433
+passes. See the [bailout review](coverage/semantics/callback-late-tick-throw-review.json);
+earlier [exit](coverage/semantics/callback-late-tick-exit-review.json) and
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) evidence retains its original cuts.
+Wider producers, assertion roots, changed phase completions, exception handlers,
+other throws and exits/reentry during late release remain partial.
 Real Closure and arrow expressions now admit the same builtin literal/NULL flags.
 Keyword receipts preserve multiline declaration names; captures survive warning
 handlers, selected/rebound scopes format diagnostics, and Closure calls borrow
@@ -4876,29 +4904,23 @@ redeclarations and private shadows keep their physical identities, and error
 messages preserve source `self`/`parent` spelling.
 [Typed-property review](coverage/semantics/anonymous-typed-properties-review.json).
 
-One unadapted named trait use in a parented unit0 anonymous class without
-interfaces can supply a constant holding a first-class method capture. The
-captured invocation prints the generated NUL name for both `self::class` and
-`static::class` in this source. Source-authenticated declaration replay selects
-the composed class at `new`.
-One exact source and 48 reached checks cover this bounded form.
-[Anonymous trait-capture review](coverage/semantics/anonymous-trait-capture-review.json).
+Unit0 anonymous classes admit finite trait uses and ordinary adaptations with or
+without a parent and explicit interfaces. Qualified and unqualified aliases,
+visibility changes, final aliases and `insteadof` share named-class resolution;
+an excluded method can still supply a qualified alias. Linking occurs at the
+first reached `new`, before constructor arguments. Copied constant method
+captures keep the generated NUL name and the importing lexical/parent scope;
+failed links publish no class. Trait-link diagnostics truncate each class-name
+argument while keeping stored identities complete. Dynamic-source trait combinations and wider member/lifetime contexts
+remain partial. [Adaptation review](coverage/semantics/anonymous-trait-adaptations-review.json).
 
-A parentless unit0 anonymous class can also defer publication for one unadapted
-named trait use within the existing bounded member grammar. Its trait constant
-captures the copied method under the generated NUL name. A captured `parent`
-parameter fails at receive before the body when the class has no parent; the
-fatal stack frame renders the short anonymous name while `get_class` retains
-the full name. Two exact sources and 88 reached conditions cover this cut.
-[Parentless trait-capture review](coverage/semantics/anonymous-parentless-trait-capture-review.json).
-
-A parented unit0 anonymous class without interfaces can use one named trait
-with a single unqualified `m as q` alias. The trait constant `Y=self::q(...)`
-captures the copied `q`: captured and direct calls retain the anonymous
-`self`/`static` name and accept its Base parent type. An unrelated object
-raises TypeError before the body; the error uses the trait method's source
-location and a short rendered class name while `get_class` keeps the full NUL
-name. [Alias capture review](coverage/semantics/anonymous-trait-alias-capture-review.json).
+Imported and aliased `__toString` methods now retain inferred Stringable
+interfaces through the anonymous descriptor check. The raw header keeps name
+prefixes and interface spelling authoritative; live targets and declaration
+history authenticate the inferred list. Ordinary parentless copied captures
+also retain the missing-parent receive error with inferred interfaces. Stringable
+return, visibility and static conflicts fail before allocation at the trait
+method source. [Stringable trait review](coverage/semantics/anonymous-trait-stringable-review.json).
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
@@ -6815,8 +6837,17 @@ state checks; the earlier [variable](coverage/semantics/enum-is-callable-output-
 and [alias](coverage/semantics/enum-is-callable-output-alias-review.json) cuts retain their identities.
 Retained childless ordinary output objects also receive the name before their
 last owner is later released; the [retained-output review](coverage/semantics/enum-is-callable-output-retained-review.json)
-records one exact source and 77 reached guards. Last-owner destructor and wider
-alias effects, other array sources, autoload,
+records one exact source and 77 reached guards. Last-owner childless ordinary
+objects now clear the original output cell before destruction, then commit its
+chosen name before returning or propagating a destructor throw. The
+[unique-output review](coverage/semantics/enum-is-callable-output-unique-review.json)
+records twelve normal originals, five explicit controls and 345 independent
+guards. Root VM destructor exits now finish local cleanup before committing the
+name; nested queries preserve exit status and skip result assignment. The
+[exit review](coverage/semantics/enum-is-callable-output-exit-review.json)
+records seven exact exits, seven explicit controls and 247 independent guards.
+Switched Fiber exits, replacement cleanup, owning rebound values, late type
+sources, other array sources and autoload,
 case attributes, enum collection policy and wider acquisition remain partial;
 see [current enum scope](PROGRESS.md#integrated-behavior-and-entrypoints).
 
@@ -7164,6 +7195,13 @@ Reviews [I94](coverage/semantics/generator-fake-call-copy-review.json),
 [I96](coverage/semantics/generator-folded-string-call-review.json),
 [I97](coverage/semantics/generator-call-warning-fiber-review.json) and
 [I98](coverage/semantics/generator-call-warning-retval-review.json).
+
+I99 also handles throws during copied reference warnings: the hidden copy keeps
+its receiver/captures until shutdown while prepared and API owners release before
+catch. Four native originals, three CLI comparisons and two ownership fronts
+(including repeated native output) validate this bounded path; wider receive,
+mapping and bailout contexts remain partial.
+[Cancellation review](coverage/semantics/generator-call-cancellation-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

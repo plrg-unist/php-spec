@@ -26,10 +26,13 @@ dec $generator_unpack_owning_chain(pstate, nat, nat) : bool
 dec $generator_unpack_delegated_blocked(pstate) : bool
 dec $generator_unpack_reference_source(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_reference_target(pstate, pgeneratorunpack, pnamedtarget) : bool
+dec $generator_unpack_reference_value(pstate, pgeneratorunpack) : pvalue?
+dec $generator_unpack_capture_mode(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_reference_stage(pstate, pgeneratorunpack) : bool
 dec $generator_unpack_warning_hold(pstate, pgeneratorunpack) : pgeneratorunpack?
 dec $generator_unpack_warning_message(pstate, pgeneratorunpack) : ptbytes
 dec $generator_unpack_warning_same(pstate, pgeneratorunpack) : bool
+dec $generator_unpack_reference_delivery(pstate, pgeneratorunpack) : pvalue?
 dec $generator_unpack_byref(pstate, pgeneratorunpack, ptask*) : pstate
 dec $generator_unpack_reference_blocked(pstate) : bool
 
@@ -47,19 +50,19 @@ def $generator_unpack_input(S, pgeneratorunpack) = false -- otherwise
 def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.ORIGIN = $unpack_origin(S, punpackcall)][.TODO = (GENERATOR_UNPACK pgeneratorunpack "acquire") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if S_prepared.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_prepared, n)
-  -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false, HOLD (KNOWN PNULL), KEY eps, INDEX eps}
+  -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false, HOLD (KNOWN PNULL), KEY eps, INDEX eps, CELL eps}
   -- if $iterator_unpack_plain(S, punpackcall)
   -- if $generator_unpack_input(S_prepared, pgeneratorunpack)
 def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.COMPLETION = UNSUPPORTED "Generator unpack target or operand ownership"][.HELD = S.HELD]
   -- if S_prepared.RESULT = KNOWN (POBJECT n)
   -- if $generator_object(S_prepared, n)
-  -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false, HOLD (KNOWN PNULL), KEY eps, INDEX eps}
+  -- if pgeneratorunpack = {CALL punpackcall, OBJECT n, INPUT S.RESULT, COUNT 0, NAMED false, HOLD (KNOWN PNULL), KEY eps, INDEX eps, CELL eps}
   -- if ~($iterator_unpack_plain(S, punpackcall) /\ $generator_unpack_input(S_prepared, pgeneratorunpack))
 
-def $generator_unpack_shape(pgeneratorunpack, "acquire") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps)
-def $generator_unpack_shape(pgeneratorunpack, "rewind") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps)
-def $generator_unpack_shape(pgeneratorunpack, "next") = ($(pgeneratorunpack.COUNT > 0) /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps)
-def $generator_unpack_shape(pgeneratorunpack, "ready") = ((pgeneratorunpack.COUNT =/= 0 \/ ~pgeneratorunpack.NAMED) /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps)
+def $generator_unpack_shape(pgeneratorunpack, "acquire") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps /\ pgeneratorunpack.CELL = eps)
+def $generator_unpack_shape(pgeneratorunpack, "rewind") = (pgeneratorunpack.COUNT = 0 /\ ~pgeneratorunpack.NAMED /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps /\ pgeneratorunpack.CELL = eps)
+def $generator_unpack_shape(pgeneratorunpack, "next") = ($(pgeneratorunpack.COUNT > 0) /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps /\ pgeneratorunpack.CELL = eps)
+def $generator_unpack_shape(pgeneratorunpack, "ready") = ((pgeneratorunpack.COUNT =/= 0 \/ ~pgeneratorunpack.NAMED) /\ pgeneratorunpack.HOLD = KNOWN PNULL /\ pgeneratorunpack.KEY = eps /\ pgeneratorunpack.INDEX = eps /\ pgeneratorunpack.CELL = eps)
 def $generator_unpack_shape(pgeneratorunpack, "byref") = true
   -- if pgeneratorunpack.HOLD = KNOWN pvalue
   -- if pgeneratorunpack.KEY = (pvalue_key)
@@ -283,16 +286,14 @@ rule PhpStep/generator-unpack-next: S ~> $generator_unpack_run(S, pgeneratorunpa
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "next") :: ptask*
 
 ;; The current-data pointer is borrowed; key checking precedes payload capture.
-;; A plain by-value Generator supplies a dereferenced copy. The warning pins
-;; that copy before a callback; INDEX also detects a callback that resumes it.
+;; A by-value cache supplies a copy. A reference cache supplies a borrowed CELL
+;; designation, read after Warning. INDEX is the largest used integer key.
 def $generator_unpack_reference_source(S, pgeneratorunpack) = true
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
-  -- if pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps /\ pgenerator.REFCELL = eps
   -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps
   -- if $function_at(S.FUNCTIONS, pgenerator.FUNCTION) = (pfunction)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata)
   -- if $function_generator(S, pfunction)
-  -- if ~pfunction.SIGNATURE.BYREF
 def $generator_unpack_reference_source(S, pgeneratorunpack) = false -- otherwise
 def $generator_unpack_reference_target(S, pgeneratorunpack, NAMED_POSITION n) = true
   -- if $(pgeneratorunpack.COUNT < 2)
@@ -310,8 +311,33 @@ def $generator_unpack_reference_target(S, pgeneratorunpack, NAMED_POSITION n) = 
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
   -- if psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.TYPE = eps
 def $generator_unpack_reference_target(S, pgeneratorunpack, pnamedtarget) = false -- otherwise
+def $generator_unpack_reference_value(S, pgeneratorunpack) = (pvalue)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if pgenerator.REFCELL = eps
+  -- if pgenerator.VALUE = (pvalue)
+  -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
+def $generator_unpack_reference_value(S, pgeneratorunpack) = (pvalue)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if pgenerator.VALUE = eps
+  -- if pgenerator.REFCELL = (n_cell)
+  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
+  -- if $iterator_unpack_scalar_operand(S, REFERENCE n_cell)
+def $generator_unpack_reference_value(S, pgeneratorunpack) = eps -- otherwise
+def $generator_unpack_capture_mode(S, pgeneratorunpack) = true
+  -- if pgeneratorunpack.CELL = eps
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if ~$generator_reference_producer(S, pgenerator)
+def $generator_unpack_capture_mode(S, pgeneratorunpack) = true
+  -- if pgeneratorunpack.CELL = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if $generator_reference_producer(S, pgenerator)
+def $generator_unpack_capture_mode(S, pgeneratorunpack) = false -- otherwise
 def $generator_unpack_reference_stage(S, pgeneratorunpack) = true
   -- if $generator_unpack_reference_source(S, pgeneratorunpack)
+  -- if $generator_unpack_capture_mode(S, pgeneratorunpack)
   -- if pgeneratorunpack.HOLD = KNOWN pvalue
   -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
   -- if pgeneratorunpack.KEY = (pvalue_key)
@@ -319,7 +345,7 @@ def $generator_unpack_reference_stage(S, pgeneratorunpack) = true
   -- if $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, KINT z, |pgeneratorunpack.CALL.SENT.SLOTS|) = NAMED_POSITION n
   -- if $generator_unpack_reference_target(S, pgeneratorunpack, NAMED_POSITION n)
 def $generator_unpack_reference_stage(S, pgeneratorunpack) = false -- otherwise
-def $generator_unpack_warning_hold(S, pgeneratorunpack) = (pgeneratorunpack[.HOLD = KNOWN pvalue][.KEY = (pvalue_key)][.INDEX = (pgenerator.INDEX)])
+def $generator_unpack_warning_hold(S, pgeneratorunpack) = (pgeneratorunpack_capture)
   -- if $generator_cached_value(S, pgeneratorunpack.OBJECT, true) = pvalue_key
   -- if $fiber_traversal_key(pvalue_key) = (KINT z_key)
   -- if $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, KINT z_key, |pgeneratorunpack.CALL.SENT.SLOTS|) = NAMED_POSITION n
@@ -327,8 +353,10 @@ def $generator_unpack_warning_hold(S, pgeneratorunpack) = (pgeneratorunpack[.HOL
   -- if $generator_unpack_reference_source(S, pgeneratorunpack)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_PAUSED
-  -- if pvalue = $generator_cached_value(S, pgeneratorunpack.OBJECT, false)
-  -- if $iterator_unpack_scalar_operand(S, KNOWN pvalue)
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
+  -- if $generator_unpack_reference_value(S, pgeneratorunpack) = (pvalue)
+  -- if pgeneratorunpack_capture = pgeneratorunpack[.HOLD = KNOWN pvalue][.KEY = (pvalue_key)][.INDEX = (pgenerator.INDEX)][.CELL = pgenerator.REFCELL]
+  -- if $generator_unpack_capture_mode(S, pgeneratorunpack_capture)
 def $generator_unpack_warning_hold(S, pgeneratorunpack) = eps -- otherwise
 def $generator_unpack_warning_message(S, pgeneratorunpack) = $ptascii("Cannot pass by-reference argument ") ++ $ntunsigned($(n + 1)) ++ $ptascii(" of ") ++ $iterator_unpack_warning_target(S, pgeneratorunpack.CALL.FUNCTION) ++ $ptascii("() by unpacking a Traversable, passing by-value instead")
   -- if pgeneratorunpack.KEY = (pvalue_key)
@@ -342,9 +370,26 @@ def $generator_unpack_warning_same(S, pgeneratorunpack) = true
   -- if pgeneratorunpack.INDEX = (z)
   -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.INDEX = z
+  -- if pgeneratorunpack.CELL = pgenerator.REFCELL
   -- if $generator_cached_value(S, pgeneratorunpack.OBJECT, true) = pvalue_key
-  -- if $generator_cached_value(S, pgeneratorunpack.OBJECT, false) = pvalue
+  -- if pgeneratorunpack.CELL =/= eps \/ $generator_cached_value(S, pgeneratorunpack.OBJECT, false) = pvalue
 def $generator_unpack_warning_same(S, pgeneratorunpack) = false -- otherwise
+;; DEREF selects the live CELL before Warning; its designation owns no wrapper.
+;; A by-value cache retains the original frozen-cache eligibility instead.
+def $generator_unpack_reference_delivery(S, pgeneratorunpack) = (pvalue)
+  -- if pgeneratorunpack.CELL = eps
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
+  -- if $generator_unpack_warning_same(S, pgeneratorunpack)
+  -- if $generator_unpack_reference_value(S, pgeneratorunpack) = (pvalue)
+def $generator_unpack_reference_delivery(S, pgeneratorunpack) = (pvalue)
+  -- if pgeneratorunpack.CELL = (n_cell)
+  -- if S.OBJECTS[pgeneratorunpack.OBJECT] = GENERATOR pgenerator
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if $ordinary_reference_value(S, n_cell) = (pvalue)
+  -- if $iterator_unpack_scalar_operand(S, REFERENCE n_cell)
+def $generator_unpack_reference_delivery(S, pgeneratorunpack) = eps -- otherwise
 def $generator_unpack_send(S, pgeneratorunpack, ptask*) = $throw_scalar(S, "Error", $ptascii("Keys must be of type int|string during argument unpacking"), $unpack_line(S, pgeneratorunpack.CALL))
   -- if $fiber_traversal_key($generator_cached_value(S, pgeneratorunpack.OBJECT, true)) = eps
 def $generator_unpack_send(S, pgeneratorunpack, ptask*) = S_check
@@ -383,15 +428,14 @@ rule PhpStep/generator-unpack-item: S ~> $generator_unpack_send(S, pgeneratorunp
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
 def $generator_unpack_byref(S, pgeneratorunpack, ptask*) = S_fresh[.TODO = (GENERATOR_UNPACK pgeneratorunpack_next "next") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $generator_unpack_reference_source(S, pgeneratorunpack)
-  -- if $generator_unpack_warning_same(S, pgeneratorunpack)
-  -- if pgeneratorunpack.HOLD = KNOWN pvalue
+  -- if $generator_unpack_reference_delivery(S, pgeneratorunpack) = (pvalue)
   -- if pgeneratorunpack.KEY = (pvalue_key)
   -- if $fiber_traversal_key(pvalue_key) = (KINT z_key)
   -- if pnamedtarget = $unpack_send_target(S, pgeneratorunpack.CALL.FUNCTION, KINT z_key, |pgeneratorunpack.CALL.SENT.SLOTS|)
   -- if $generator_unpack_reference_target(S, pgeneratorunpack, pnamedtarget)
   -- if S_fresh = $call_fresh_reference(S, pvalue)
   -- if S_fresh.RESULT = REFERENCE n_cell
-  -- if pgeneratorunpack_next = pgeneratorunpack[.CALL = pgeneratorunpack.CALL[.SENT = $named_store(pgeneratorunpack.CALL.SENT, pnamedtarget, REFERENCE n_cell)]][.COUNT = $(pgeneratorunpack.COUNT + 1)][.HOLD = KNOWN PNULL][.KEY = eps][.INDEX = eps]
+  -- if pgeneratorunpack_next = pgeneratorunpack[.CALL = pgeneratorunpack.CALL[.SENT = $named_store(pgeneratorunpack.CALL.SENT, pnamedtarget, REFERENCE n_cell)]][.COUNT = $(pgeneratorunpack.COUNT + 1)][.HOLD = KNOWN PNULL][.KEY = eps][.INDEX = eps][.CELL = eps]
 def $generator_unpack_byref(S, pgeneratorunpack, ptask*) = S[.COMPLETION = UNSUPPORTED "Generator unpack reference payload changed during warning"] -- otherwise
 rule PhpStep/generator-unpack-byref: S ~> $generator_unpack_byref(S, pgeneratorunpack, ptask*)
   -- if S.TODO = (GENERATOR_UNPACK pgeneratorunpack "byref") :: ptask*

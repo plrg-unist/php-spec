@@ -649,8 +649,33 @@ if the actual cache, key and index remain unchanged, the captured value enters a
 fresh reference cell before the next native resume. The call cursor remains
 authenticated through the real API callback send/reference stages.
 
-Warning-time advancement, dynamic-string sinks and other producer/target forms
-stop with a rooted, source-valid Unsupported cursor. A throwing handler also stays explicit
+The [reference-cell extension](../../coverage/semantics/generator-reference-sink-review.json)
+also admits ordinary cells yielded by named BYREF Generators. Zend dereferences
+the iterator's current-data pointer before Warning; CELL records that selected
+cell without adding an HCELL owner. A normal handler's write through an outside
+alias changes the delivered scalar, while rebinding the actual GLOBALS name
+leaves delivery attached to the original cell. The existing REFERENCE operand
+policy admits NULL, bool, int, float and interned strings; typed/backed/debt cells,
+runtime-string carriers and owning values remain outside this rule. The same
+ordinary-cell and carrier checks apply after the handler, before creating a
+fresh private callee cell. Earlier private cells survive the second Warning.
+
+The [captured-cell extension](../../coverage/semantics/generator-captured-cell-sink-review.json)
+reads the selected live CELL after normal callback return, independently of the
+current cache cell, key, INDEX or Generator phase. The prechecked key still selects
+the original argument slot. Cache replacement cannot redirect that read, even
+when key/index/value stay equal. INDEX is the largest used integer key, not a
+resumption counter. Closing a Generator frees its frame but retains its cached
+value/key until storage retirement; that real cache owner is distinct from the
+nonowning CELL designation. The ordinary iterator NEXT then advances the actual
+Generator, including a used yield's NULL continuation or the Error for a running
+Generator. A producer exception caught inside the callback leaves normal Warning
+return and can still deliver the live cell.
+
+By-value delivery keeps its existing cached-value/key/index/phase equality and
+`DELEGATE = PARKED = eps` guards. Dynamic-string sinks, unavailable or ineligible
+reference cells and these changed by-value states stop with a rooted, source-valid
+Unsupported cursor. A throwing handler also stays explicit
 Unsupported: Zend still calls the native iterator's `move_forward` with its
 exception pending before propagating it. The pending Throwable, Generator,
 INPUT, sent prefix and held scalar remain rooted at this unmodeled frontier;

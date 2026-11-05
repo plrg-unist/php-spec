@@ -30,6 +30,7 @@ dec $trait_fcc_scope_receipt(pstate, pconstantclosure, pmethoddesc, pclosurescop
 dec $trait_fcc_clone_scope(pstate, pconstantclosure*, pmethoddesc, pclosurescope) : porigin?
 dec $trait_fcc_scope_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
 dec $anonymous_parentless_trait_node(pcnode) : bool
+dec $anonymous_interface_targets_valid(pstate, pclassdesc) : bool
 dec $trait_fcc_target_name(pstate, pcalltarget) : preqbytes?
 dec $trait_fcc_receipt_composition(pstate, ptraitcachecause) : (pstate, ptraitmethod*, ptraitmethod*)?
 dec $trait_fcc_receipt_methods(pstate, ptraitcachecause) : (pstate, ptraitmethod*)?
@@ -442,6 +443,17 @@ def $trait_fcc_clone_scope(S, pconstantclosure :: pconstantclosure_tail*, pmetho
   -- if $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = (porigin_owner)
 def $trait_fcc_clone_scope(S, pconstantclosure :: pconstantclosure_tail*, pmethoddesc, pclosurescope) = $trait_fcc_clone_scope(S, pconstantclosure_tail*, pmethoddesc, pclosurescope)
   -- if $(pconstantclosure.OBJECT >= pclosurescope.OBJECT) \/ $(pclosurescope.OBJECT >= |S.OBJECTS|) \/ S.OBJECTS[pclosurescope.OBJECT] =/= METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE pclosurescope.CALLED eps \/ $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = eps
+dec $trait_fcc_parentless_interfaces(pstate, pclassdesc) : bool
+def $trait_fcc_parentless_interfaces(S, pclassdesc) = ($pil_at(S.LINKEDINTERFACES, pclassdesc.ORIGIN) = eps)
+  -- if pclassdesc.INTERFACES = eps
+def $trait_fcc_parentless_interfaces(S, pclassdesc) = true
+  -- if pclassdesc.INTERFACES =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
+  -- if $constant_callable_published(S.DECLARATIONS, pclassdesc.ORIGIN)
+  -- if $anonymous_interface_targets_valid(S, pclassdesc)
+  -- if $declaration_history_valid(S)
+def $trait_fcc_parentless_interfaces(S, pclassdesc) = false -- otherwise
+
 def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
   -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pclosurescope.OBJECT] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps)
@@ -458,9 +470,9 @@ def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclo
   -- if $origin_node(S.SOURCES, porigin_requested) = (pcnode)
   -- if $anonymous_parentless_trait_node(pcnode)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
   -- if $class_link_at(S.LINKEDPARENTS, porigin_requested) = eps
-  -- if $pil_at(S.LINKEDINTERFACES, porigin_requested) = eps
+  -- if $trait_fcc_parentless_interfaces(S, pclassdesc)
   -- if $class_constant_callable_method_history_ordinary(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
 def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps -- otherwise
 def $class_constant_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "retained-cell-alias-write",
+    "source": "<?php\nfunction &valuesReview95() { global $v95; echo \"Y;\"; yield 0 => $v95; echo \"N:\",$v95,\";\"; }\nfunction sinkReview95(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warningReview95($level,$message) { global $alias95; $alias95=22; echo \"H:\",$alias95,\";\"; return true; }\n$v95=11; $alias95=&$v95; set_error_handler('warningReview95'); echo \"B;\"; $g95=valuesReview95(); sinkReview95(...$g95); echo \"V:\",$v95,\";A:\",$alias95,\";\"; unset($g95);\n",
+    "source_sha256": "b39db3b9c66221a839d4a6ec306d4f44f4e15e7f4a13304ef27622b86c0b7c3a",
+    "purpose": "Native-first independent borrowed-cell identity, live-value or source-binding discriminator.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y;H:22;N:22;S:22;R:33;V:22;A:22;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "temporary-cell-alias-write",
+    "source": "<?php\nfunction &valuesReview95() { global $v95; echo \"Y;\"; yield 0 => $v95; echo \"N:\",$v95,\";\"; }\nfunction sinkReview95(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warningReview95($level,$message) { global $alias95; $alias95=22; echo \"H:\",$alias95,\";\"; return true; }\n$v95=11; $alias95=&$v95; set_error_handler('warningReview95'); echo \"B;\"; sinkReview95(...valuesReview95()); echo \"V:\",$v95,\";A:\",$alias95,\";\";\n",
+    "source_sha256": "28d67bfc9cf78def2cfdfa48699d814dc083ace1cc67d91d0ed1c2539c28e093",
+    "purpose": "Native-first independent borrowed-cell identity, live-value or source-binding discriminator.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y;H:22;N:22;S:22;R:33;V:22;A:22;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "retained-global-source-name-replaced",
+    "source": "<?php\nfunction &valuesReview95() { global $v95; echo \"Y;\"; yield 0 => $v95; echo \"N:\",$v95,\";\"; }\nfunction sinkReview95(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warningReview95($level,$message) { global $alias95; $alias95=22; unset($GLOBALS['v95']); $GLOBALS['v95']=44; echo \"H:\",$alias95,\":\",$GLOBALS['v95'],\";\"; return true; }\n$v95=11; $alias95=&$v95; set_error_handler('warningReview95'); echo \"B;\"; $g95=valuesReview95(); sinkReview95(...$g95); echo \"V:\",$v95,\";A:\",$alias95,\";\"; unset($g95);\n",
+    "source_sha256": "5fd5f429c8d6d093a66c15cff8d0343007ac65c986e8257f1c314272b3777d21",
+    "purpose": "Native-first independent borrowed-cell identity, live-value or source-binding discriminator.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y;H:22:44;N:22;S:22;R:33;V:44;A:22;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "handler-local-rebind-keeps-global-cell",
+    "source": "<?php\nfunction &valuesReview95() { global $v95; echo \"Y;\"; yield 0 => $v95; echo \"N:\",$v95,\";\"; }\nfunction sinkReview95(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warningReview95($level,$message) { global $v95,$alias95,$other95; $v95=&$other95; echo \"H:\",$v95,\":\",$alias95,\";\"; return true; }\n$v95=11; $other95=44; $alias95=&$v95; set_error_handler('warningReview95'); echo \"B;\"; $g95=valuesReview95(); sinkReview95(...$g95); echo \"V:\",$v95,\";A:\",$alias95,\";\"; unset($g95);\n",
+    "source_sha256": "d8a6f146b388630c0ba6931595bbea732002259b9df4bd0e62fffddfbbe1d467",
+    "purpose": "Native-first independent borrowed-cell identity, live-value or source-binding discriminator.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y;H:44:11;N:11;S:11;R:33;V:11;A:11;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "live-nonowning-type-matrix",
+    "source": "<?php\nfunction &valuesReview95() { global $v95; echo \"Y;\"; yield 0 => $v95; echo \"N;\"; }\nfunction warningReview95($level,$message) { global $v95,$expected95; $v95=$expected95; echo \"H;\"; return true; }\nfunction sinkReview95(&$x) { global $expected95; echo $x===$expected95?\"T;\":\"BAD;\"; $x=33; }\nfunction runReview95($wanted) { global $v95,$expected95; $v95=11; $expected95=$wanted; sinkReview95(...valuesReview95()); echo $v95===$wanted?\"V;\":\"BADV;\"; }\nset_error_handler('warningReview95'); echo \"B;\"; runReview95(null); runReview95(true); runReview95(1.5); runReview95(\"ok\");\n",
+    "source_sha256": "0986557b6c2db81e7a3384af0172ce1ac4b454dc058cc01e5b9488e17d8fa5ba",
+    "purpose": "Native-first independent borrowed-cell identity, live-value or source-binding discriminator.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y;H;N;T;V;Y;H;N;T;V;Y;H;N;T;V;Y;H;N;T;V;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "same-key-index-value-replacement-cell",
+    "source": "<?php\nfunction &valuesReview95() { global $a95,$b95; echo \"Y0;\"; yield 0 => $a95; echo \"Y1;\"; yield 0 => $b95; echo \"N;\"; }\nfunction sinkReview95(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\nfunction warningReview95($level,$message) { global $g95,$alias95; echo \"H;\"; $g95->next(); $alias95=22; echo \"K:\",$g95->current(),\":\",$alias95,\";\"; return true; }\n$a95=11; $b95=11; $alias95=&$a95; set_error_handler('warningReview95'); echo \"B;\"; $g95=valuesReview95(); sinkReview95(...$g95); echo \"A:\",$a95,\";B:\",$b95,\";\"; unset($g95);\n",
+    "source_sha256": "0c30c2163ce24ff6ef5f8b432cd6e20b18adb88a96969f47028c4e0f282b337c",
+    "purpose": "A96 promotes saved live CELL delivery across replacement even when key/index/value stay equal; original A95 Unsupported evidence remains unchanged with zero agreement credit.",
+    "expected_model": "normal",
+    "native_stdout": "B;Y0;H;Y1;K:11:22;N;S:22;R:33;A:22;B:11;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "runtime-string-cache-ordinary-offset-copy",
+    "source": "<?php\nfunction &valuesReview95() { global $v95; echo \"Y;\"; yield 0 => $v95; echo \"N:\",$v95,\";\"; }\nfunction sinkReview95(&$x) { echo \"S:\",$x,\";\"; $x[0]=\"X\"; echo \"R:\",$x,\";\"; }\n$left95=\"b\"; $right95=\"c\"; $v95=$left95.$right95; $alias95=&$v95; echo \"B;\"; $g95=valuesReview95(); sinkReview95(...$g95); echo \"V:\",$v95,\";A:\",$alias95,\";\"; unset($g95);\n",
+    "source_sha256": "af27d2132133ebb209d3ac6f406437852abe1e8cd28c1cd8138130832a15bc22",
+    "purpose": "Native-first explicit frontier control; expected Unsupported gives zero semantic agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "B;Y;N:bc;S:bc;R:Xc;V:bc;A:bc;",
+    "native_stderr": "Warning: Cannot pass by-reference argument 1 of sinkReview95() by unpacking a Traversable, passing by-value instead in {source} on line 4\n",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack by-reference target",
+    "unsupported_stdout": "B;Y;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "66",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "89",
+            "59"
+          ]
+        ]
+      }
+    ]
+  }
+]
