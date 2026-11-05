@@ -1,0 +1,79 @@
+{
+  "milestone": "OB13",
+  "status": "Private semantic and fixture review CLEAR; current-parent composition pending.",
+  "scope": "A selected post-deactivation output Notice handler returns an object whose destructor throws before the saved Notice cleanup resumes.",
+  "base": "f7baa8162d326e971948226e6cbe35c7e314c854",
+  "implementation": {
+    "spec/semantics/391-output-buffers.watsup": "420703d36ab59f990a960fa1f37c5398f118aa3442751bb2be2894764c4aa5be",
+    "spec/semantics/444-executor-final-free.watsup": "940d952794dc10a69108fba337768541183d37f747ab06a3ecd701994ab15883"
+  },
+  "runtime": {
+    "php": "8.5.10 CLI NTS 64-bit, pinned php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php_file_sha256": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+    "request_clock_sha256": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+    "adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; OCaml 5.1.0; SL",
+    "request": "Fixed LC_ALL=C, TZ=UTC, FIRST=one, request time and file context; project-local pinned PHP and regular extension copies."
+  },
+  "behavior": [
+    "The genuine DESTRUCTOR_OPERATION_EXIT before ERROR_HANDLER_CLEAN may carry a pending live Throwable. The existing pending contract admits it while the Notice task still authenticates its original RESULT cleanup, normal pre-throw completion, caller/origin/context and saved tail.",
+    "A Throwable constructed by the return destructor stores the genuine output intrinsic frame and raw sent arguments in its trace. The shared authenticated Notice descriptor supplies the frame for ob_start and ob_end_clean; it grants no heap owner.",
+    "A precreated Throwable has no new builtin trace owner. VM root argument cleanup remains NOGC while an array child receives ordinary decrement, as established by OB12 and the new returned-object controls."
+  ],
+  "validation": {
+    "author_sources": "Three exact post-deactivation originals (noarg, temporary object, catch-unset) match native stdout/stderr/exit0 and finish model normal; report SHA256 999d582dd3a8e740a9199e44b311d43d98dcd93062a2f7bac59487352cbc1ee8.",
+    "author_state": "One genuine pending OP_EXIT/CLEAN front passes 54 reported conditions: live pending root, Notice/task/source authority, coherent invalid operation/cleanup/membership/tail cases, next THROW_SEARCH, budget resume and final validity. Report SHA256 066deaca89ec1500720ba3f7e62e259806027a8383fe9b5f862ebf677808e647.",
+    "independent_sources": "Three exact precreated-Throwable originals (successful direct, failed direct, successful array child) match native stdout/stderr/exit0 and finish model normal. Report SHA256 f87dab38853bb6b830b29ae317286c4635fd77624237bd35f2fc4c15c6584c96.",
+    "independent_state": "One genuine CLEAN issuer/root front passes 76 reported conditions with coherent Notice/cleanup negatives, actual argument TEMP, no new trace owner, root-only NOGC, self-only survivor, budget and final validity. Report SHA256 6d61da1b6be8e25d7a7cd2b8069f8e6bdac2dd83baf538ea53ba1745f7ca689c.",
+    "offkind_source": "The exact ob_end_clean original SHA256 be320d5e02d90908b2623dd2f61ff4bc659b9bb46fac16c0e1647f8d7a03ec53 matches native stdout/stderr/exit0 and finishes model normal after the generic Notice trace correction; maintained report SHA256 815388abc3010de7b0cd8995d255baedd9522d6b80310c36c817a169a8168821.",
+    "offkind_state": "One genuine ob_end_clean OP_EXIT/CLEAN front passes 35 reported conditions, including the live pending Throwable and stored trace[1].function=ob_end_clean; report SHA256 a15bb12f6906f5beb2a36b50b443026addd71c6dee3dff2f76d85f1624bbfb84.",
+    "strict435": "435 ordered modules, true, empty stderr, exit0 in 15.515s at final private 391/444 hashes; report SHA256 09d9c0880dfeb284c1a2b63558d1e33a13e8398b029c107d9f83a7c6ee30d487."
+  },
+  "tested_cuts": {
+    "ob_start": "Six exact sources and two reached groups/130 conditions passed with 391 SHA256 420703d36ab59f990a960fa1f37c5398f118aa3442751bb2be2894764c4aa5be and 444 SHA256 71101470bb33091ec4927ebfb9609203208b1762985be7ae7ff9a2b9bee4b1ba. The later removal of the OB_START kind guard leaves their selected trace predicate true; these cuts were not replayed.",
+    "ob_end_clean": "One exact source and one reached group/35 conditions passed with the same 391 and final 444 SHA256 940d952794dc10a69108fba337768541183d37f747ab06a3ecd701994ab15883. The original normal-state mismatch at the prior 444 hash retains zero agreement.",
+    "strict": "The final 391/444 pair passed private strict435; no unselected historical campaigns were renewed."
+  },
+  "original_sha256": {
+    "author_noarg": "2c059be52831f81b85587e07879ec5468405b1eb52140172fa7d888ff1f45071",
+    "author_object": "85e03b623af734c49b37f9ef0769965355f2e2bdc07e3bd2eb4358531cbc0b1f",
+    "author_object_unset": "23c9bd1e3064132bcbd10a8780aa66043af6b19ac2d6cd1f8f5b16d535759c2c",
+    "independent_successful_direct": "e86a46dc29ce8f147237b2222160ae3ee56ec048b2ce4f4fcd51992cdbb02309",
+    "independent_failed_direct": "34062e267b0ac7686f682e6b9e75cb99efc4428e80ead642d1839fd45fdad62c",
+    "independent_successful_array_child": "00f0c503ea2dad4f8ee74c7217ba7af97cb4bbe7fc0736d4285e3c480d56f063",
+    "offkind_ob_end_clean": "be320d5e02d90908b2623dd2f61ff4bc659b9bb46fac16c0e1647f8d7a03ec53"
+  },
+  "preserved_failures": [
+    "At the base, the noarg original reaches the pending cleanup pair but stops with interpreter_failure after step 231; bounded prefix observations are diagnostics, not reached validation credit.",
+    "With only the 391 admission, the temporary-object source completed normally but freed the callback before catch instead of after D2. The new trace suffix corrected that exact disagreement; the earlier packet retains zero agreement.",
+    "Before the generic trace correction, the exact ob_end_clean source completed normally with a missing builtin trace frame. Native printed __destruct/ob_end_clean/__destruct/ and model printed __destruct/__destruct/. The first packet remains zero agreement; the same source later passes.",
+    "The first author state fixture had an elaboration-only variable-name error and no runtime or reached credit. No validation assertion or source bound was relaxed for the accepted checks."
+  ],
+  "raw_archive": {
+    "author": "/home/user/workspace/php-spec-evidence-archive/ob13-notice-retval-throw",
+    "independent": "/home/user/workspace/php-spec-evidence-archive/ob13-notice-retval",
+    "offkind_before_report_sha256": "26f6fb0dde51b899e561f89088e229319e9cb54f5627aefdd2c098e2ff1e5fa6",
+    "offkind_after_report_sha256": "e48ada75e107d68e343b1e01a2a0f090c84a37d928f41bcc74ddca3174902552",
+    "native_precreated_report_sha256": "b3f7f976de513ff36886185a4049495fcf353b7615c41b242dcb448bdced21d5",
+    "recovery": "Accepted, failed, native-only and bounded-prefix raw packets retain their exact sources, contexts, outputs, statuses, commands, tool hashes and budgets outside Git; all owned actors were fully reaped."
+  },
+  "review": {
+    "reviewer": "/root/output_review_current",
+    "decision": "Production, author and independent fixtures, seven exact source cuts, 165 reached conditions, generic Notice trace authority, private strict435 and scoped record/docs CLEAR."
+  },
+  "remaining": [
+    "Other output Notice return-destructor variants, Warning/deprecation returned-object nested starts and other unvalidated cleanup variants, active handler-body reentry and wider abrupt queues need source and reached coverage.",
+    "Unresolved/effectful/deprecated/autoload callback lookup, allocation/memory limits and wider executor completion remain partial.",
+    "The inherited folded-TODO and late-publication declaration-history validator frontiers retain their earlier OB09/OB11 scope; this change does not close a whole-stack invariant."
+  ],
+  "reproduce": [
+    "taskset -c 3 python3 tests/semantics/output_executor_notice_retval_throw_sources.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_notice_retval_throw_state.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_notice_retval_throw_review_sources.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_notice_retval_throw_review_state.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_notice_retval_throw_offkind.py",
+    "taskset -c 3 python3 tests/semantics/output_executor_notice_retval_throw_offkind_state.py"
+  ]
+}

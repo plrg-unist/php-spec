@@ -280,6 +280,10 @@ effectful lookup and wider reentry remain partial.
 Throws from the selected Notice handler also preserve the VM's distinct cleanup
 of the callback argument and its children. Consumed Closure checking borrows
 capture metadata after the real owners retire.
+When that handler returns an object whose destructor throws, the saved Notice
+cleanup retains the pending Throwable. A newly constructed Throwable records the
+authentic output builtin in its trace; `ob_start` and `ob_end_clean` have exact
+source and reached-state checks. [Returned-Notice evidence](coverage/semantics/output-executor-notice-retval-throw-review.json).
 
 [Tick callbacks](docs/semantics/TICKS.md) use source-derived marker plans and a
 shared request counter. The live registry preserves captured arguments, callback

@@ -933,8 +933,17 @@ Consumed Closure checks borrow retired capture facts without adding owners.
 Seven exact originals, 279 reported reached conditions and 90 affected Warning
 conditions pass at the recorded private cuts.
 [Notice-discard review](coverage/semantics/output-executor-notice-discard-review.json).
+OB13 admits a live Throwable thrown by a selected Notice handler's returned-object
+destructor before the saved cleanup resumes. The genuine `ob_start` trace keeps
+its temporary callback through catch; precreated-Throwable controls separate
+VM root NOGC from ordinary array-child cleanup. An `ob_end_clean` countercontrol
+also exposes the shared output-intrinsic trace frame. Seven exact originals
+agree, and three reached groups pass 165 reported conditions (author 54,
+independent 76, off-kind 35). Private strict435 passes; earlier failed packets
+retain zero credit. [Returned-Notice throw review](coverage/semantics/output-executor-notice-retval-throw-review.json).
 Unresolved/effectful creation, active handler-body reentry, Warning/deprecation-handler returned-object
-starts, allocation failure/memory limits and wider executor completion remain partial.
+starts, other output Notice returned-object cases, allocation failure/memory limits
+and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
 [general reception review](coverage/semantics/output-executor-reception-review.json).
 

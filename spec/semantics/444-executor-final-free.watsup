@@ -969,6 +969,14 @@ def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, 
   -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if perrorcall.RESUME = OB_START_INVALID_NOTICE pobcreation
   -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pobnotice.CALL, $trace_extra(S_history, $getclass_trace_operands(pobnotice.CALL.SENT)))
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if $eager_operation_source_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = OB_NOTICE_RESULT pobnotice
+  -- if S_history = $eager_cleanup_history(S, pdestructioncleanup)
 ;; A pending Throwable prevents an eligible handler call, but not default output.
 def $ob_failure_pending_notice(S, pobcreation) = S[.ERRORFATALTRACE = eps]
   -- if $eval_compile_recorded_error(S, 8) \/ $error_handler_eligible(S, 8)
