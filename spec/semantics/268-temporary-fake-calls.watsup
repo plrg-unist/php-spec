@@ -226,6 +226,7 @@ dec $closure_call_copy_exit_task(pstate, pstate, ptask) : pstate
 dec $closure_call_copy_exit_supported(ptask) : bool
 def $closure_call_copy_exit_supported(CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = true
 def $closure_call_copy_exit_supported(ERROR_HANDLER_RESULT perrorcall) = true
+  -- if perrorcall.RESUME = CLOSURE_CALL_COPY_REFERENCE pclosurecall n_copy n pnamedargs n_base
 def $closure_call_copy_exit_supported(ptask) = false -- otherwise
 def $closure_call_copy_exit_task(S, S_exit, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy) = $closure_call_copy_release($closure_call_copy_retain(S_exit, n_copy), pclosurecall, {SLOTS eps, NAMED eps})
   -- if $closure_call_copy_cancel_pending(S, CLOSURE_CALL_COPY_RESULT pclosurecall n_copy)
