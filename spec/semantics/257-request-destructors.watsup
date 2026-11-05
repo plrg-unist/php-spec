@@ -132,7 +132,9 @@ dec $destructor_call_valid(pstate, pdestructorcall) : bool
 dec $destructor_call_live(pstate, pdestructorcall) : bool
 dec $destructor_enter_valid(pstate, pdestructorcall) : bool
 dec $destructor_result_valid(pstate, pdestructorcall) : bool
+dec $destructor_c_return_tail(ptask*, pdestructorcall) : ptask*?
 dec $destructor_c_return_source(ptask*, pdestructorcall) : bool
+dec $destructor_c_pending_tail(ptask*, pdestructorcall) : ptask*?
 dec $destructor_c_return_valid(pstate, pdestructorcall) : bool
 dec $destructor_c_frame(pstate) : pdestructorcall?
 dec $destructor_c_frame_restore(pstate, pstate) : pstate
@@ -514,13 +516,14 @@ def $destructor_enter_valid(S, pdestructorcall) = false -- otherwise
 def $destructor_result_valid(S, pdestructorcall) = $destructor_call_valid(S, pdestructorcall)
 def $call_task_valid(S, DESTRUCTOR_ENTER pdestructorcall) = $destructor_enter_valid(S, pdestructorcall)
 def $call_task_valid(S, DESTRUCTOR_RESULT pdestructorcall) = $destructor_result_valid(S, pdestructorcall)
-def $destructor_c_return_source(eps, pdestructorcall) = false
-def $destructor_c_return_source((DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructorcall) = true
-def $destructor_c_return_source((DESTRUCTOR_C_RETURN pdestructorcall) :: eps, pdestructorcall) = false
-def $destructor_c_return_source((DESTRUCTOR_C_RETURN pdestructorcall) :: ptask :: ptask_tail*, pdestructorcall) = false
+def $destructor_c_return_tail(eps, pdestructorcall) = eps
+def $destructor_c_return_tail((DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+def $destructor_c_return_tail((DESTRUCTOR_C_RETURN pdestructorcall) :: eps, pdestructorcall) = eps
+def $destructor_c_return_tail((DESTRUCTOR_C_RETURN pdestructorcall) :: ptask :: ptask_tail*, pdestructorcall) = eps
   -- if ptask =/= DESTRUCTOR_RESULT pdestructorcall
-def $destructor_c_return_source(ptask :: ptask_tail*, pdestructorcall) = $destructor_c_return_source(ptask_tail*, pdestructorcall)
+def $destructor_c_return_tail(ptask :: ptask_tail*, pdestructorcall) = $destructor_c_return_tail(ptask_tail*, pdestructorcall)
   -- if ptask =/= DESTRUCTOR_C_RETURN pdestructorcall
+def $destructor_c_return_source(ptask*, pdestructorcall) = ($destructor_c_return_tail(ptask*, pdestructorcall) =/= eps)
 def $destructor_c_return_valid(S, pdestructorcall) = true
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
   -- if $destructor_result_valid(S, pdestructorcall)
@@ -795,8 +798,20 @@ def $destructor_call_frame_tail(pframe :: pframe_tail*, pdestructorcall) = $dest
   -- if $destructor_call_tail(pframe.TODO, pdestructorcall) = eps
 def $destructor_call_pending_tail(S, pdestructorcall) = (ptask*)
   -- if $destructor_call_tail(S.TODO, pdestructorcall) = (ptask*)
+;; A root null-C call remains pending across its handler's reception and cleanup.
+;; Only its paired original C/result suffix supplies the borrowed pending owner.
+def $destructor_c_pending_tail(ptask*, pdestructorcall) = (ptask_tail*)
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if $destructor_c_return_tail(ptask*, pdestructorcall) = (ptask_tail*)
+def $destructor_c_pending_tail(ptask*, pdestructorcall) = eps -- otherwise
+def $destructor_call_pending_tail(S, pdestructorcall) = (ptask*)
+  -- if $destructor_call_tail(S.TODO, pdestructorcall) = eps
+  -- if $destructor_c_pending_tail(S.TODO, pdestructorcall) = (ptask*)
 def $destructor_call_pending_tail(S, pdestructorcall) = $destructor_call_frame_tail(S.FRAMES, pdestructorcall)
   -- if $destructor_call_tail(S.TODO, pdestructorcall) = eps
+  -- if $destructor_c_pending_tail(S.TODO, pdestructorcall) = eps
 ;; A nested normal return may prepend another frame with the same caller. The
 ;; selected destructor retains its original borrowed pending-frame anchor.
 def $destructor_call_pending_valid(S, pdestructorcall) = true
