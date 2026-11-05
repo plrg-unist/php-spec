@@ -393,8 +393,10 @@
     "id": "enum-is-callable-third-output-exit-local-second-exit",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n}\nregister_shutdown_function('observe');\n\nclass LocalDrop { public function __destruct() { exit('LOCAL-STOP|'); } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit('STOP|');\n    }\n}\n$name = new OldDrop;\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
     "source_sha256": "edcd002d86e3a226f2db282c046bf926403037ac29317b59dbdc9cc2e1f811cd",
-    "expected_model": "unsupported",
-    "purpose": "Explicit unfinished switched-VM, parked-query or replacement-cleanup exit control."
+    "expected_model": "explicit_exit",
+    "purpose": "A second cleanup exit returns through the genuine local C pin, preserving the captured name and latest process status.",
+    "expected_normal_stdout": "D-null|STOP|LOCAL-STOP|shutdown-committed|",
+    "model_timeout_seconds": 90
   },
   {
     "id": "enum-is-callable-third-output-integer-exit-cleanup-throw-caught",
@@ -424,15 +426,19 @@
     "id": "enum-is-callable-third-output-integer-exit-cleanup-string-exit",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass LocalDrop { public function __destruct() { global $name; echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|'; exit('LOCAL-STOP|'); } }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
     "source_sha256": "44f0dd50da503aae4d15f913db68479dcac9fa6c7615c1e451df9b2a5cfd4a05",
-    "expected_model": "unsupported",
-    "purpose": "Explicit unfinished repeated-exit cleanup control."
+    "expected_model": "explicit_exit",
+    "purpose": "A second cleanup exit returns through the genuine local C pin, preserving the captured name and latest process status.",
+    "expected_normal_stdout": "D-null|LOCAL-null|LOCAL-STOP|shutdown-committed|result:UNCHANGED|",
+    "model_timeout_seconds": 90
   },
   {
     "id": "enum-is-callable-third-output-integer-exit-cleanup-integer-exit",
     "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass LocalDrop { public function __destruct() { global $name; echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|'; exit(29); } }\n\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
     "source_sha256": "1f392f0940e729e8cab1df770d5d45f906d0caf0f7c61b0f1f4d19eb746edd9f",
-    "expected_model": "unsupported",
-    "purpose": "Explicit unfinished repeated-exit cleanup control."
+    "expected_model": "explicit_exit",
+    "purpose": "A second cleanup exit returns through the genuine local C pin, preserving the captured name and latest process status.",
+    "expected_normal_stdout": "D-null|LOCAL-null|shutdown-committed|result:UNCHANGED|",
+    "model_timeout_seconds": 90
   },
   {
     "id": "enum-is-callable-third-output-two-locals-first-throw",
@@ -473,5 +479,76 @@
     "purpose": "Compiled CV alias multiplicity and nested C caller identity preserve real cleanup order, pending exception and name commit.",
     "expected_normal_stdout": "D-null|SECOND-null|FIRST-null|CAUGHT:first:FirstCheck::from|PREVIOUS:second|CONTINUE|shutdown-committed|result:UNCHANGED|",
     "model_timeout_seconds": 90
+  },
+  {
+    "id": "enum-is-callable-third-output-cleanup-exit-own-local-and-tail",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildDrop { public function __destruct() { global $name; echo $name === null ? 'CHILD-null|' : 'CHILD-other|'; } }\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $child = new ChildDrop;\n        exit(29);\n    }\n}\nclass TailDrop { public function __destruct() { global $name; echo $name === null ? 'TAIL-null|' : 'TAIL-other|'; $name = 'TAIL-REBOUND'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop; $tail = new TailDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "bfc7a69680149b628fa661e6952956514248b67ea9eb21a9ffdbee17e37d2b42",
+    "expected_model": "explicit_exit",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|LOCAL-null|CHILD-null|TAIL-null|shutdown-committed|result:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-cleanup-exit-own-local-trace",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'CHILD-null|' : 'CHILD-other|';\n        foreach (debug_backtrace() as $f) {\n            echo $f['class'] ?? '-', ':', $f['function'], ':', isset($f['line']) ? 'line:' : 'internal:';\n            foreach ($f['args'] ?? [] as $a) {\n                echo $a === 'FirstCheck::from' ? 'NAME,' : ($a === false ? 'FALSE,' : ($a === null ? 'NULL,' : 'OTHER,'));\n            }\n            echo '|';\n        }\n    }\n}\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $child = new ChildDrop;\n        exit(29);\n    }\n}\nclass TailDrop { public function __destruct() { global $name; echo $name === null ? 'TAIL-null|' : 'TAIL-other|'; $name = 'TAIL-REBOUND'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop; $tail = new TailDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "7b1746a501c79a02bbf7cf945c9e6260cd2d6c30913953844b79f6132d6427d0",
+    "expected_model": "explicit_exit",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|LOCAL-null|CHILD-null|ChildDrop:__destruct:internal:|-:is_callable:line:NAME,FALSE,NULL,|TAIL-null|shutdown-committed|result:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-cleanup-exit-third-integer",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildDrop { public function __destruct() { global $name; echo $name === null ? 'CHILD-null|' : 'CHILD-other|'; exit(31); } }\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $child = new ChildDrop;\n        exit(29);\n    }\n}\nclass TailDrop { public function __destruct() { global $name; echo $name === null ? 'TAIL-null|' : 'TAIL-other|'; $name = 'TAIL-REBOUND'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop; $tail = new TailDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "64337e4ac83edf7541fda06c8f56f8278b4a4183bcf4c82e47566f771a1f3530",
+    "expected_model": "explicit_exit",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|LOCAL-null|CHILD-null|TAIL-null|shutdown-committed|result:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-cleanup-exit-third-string",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildDrop { public function __destruct() { global $name; echo $name === null ? 'CHILD-null|' : 'CHILD-other|'; exit('THIRD|'); } }\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $child = new ChildDrop;\n        exit(29);\n    }\n}\nclass TailDrop { public function __destruct() { global $name; echo $name === null ? 'TAIL-null|' : 'TAIL-other|'; $name = 'TAIL-REBOUND'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop; $tail = new TailDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "7a651f40070c18dc0b7620895811600e04b90b040dd43516a07c277a6d24fc05",
+    "expected_model": "explicit_exit",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|LOCAL-null|CHILD-null|THIRD|TAIL-null|shutdown-committed|result:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-cleanup-exit-own-local-alias",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildFirst { public function __destruct() { global $name; echo $name === null ? 'FIRST-null|' : 'FIRST-other|'; } }\nclass ChildSecond { public function __destruct() { global $name; echo $name === null ? 'SECOND-null|' : 'SECOND-other|'; } }\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $first = new ChildFirst; $second = new ChildSecond; $alias =& $first;\n        exit(29);\n    }\n}\nclass TailDrop { public function __destruct() { global $name; echo $name === null ? 'TAIL-null|' : 'TAIL-other|'; $name = 'TAIL-REBOUND'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop; $tail = new TailDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED|';\n",
+    "source_sha256": "63084ec3299f293159171730698b1e3ebe8696f1567bca0588fbb08f6e166e8e",
+    "expected_model": "explicit_exit",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|LOCAL-null|SECOND-null|FIRST-null|TAIL-null|shutdown-committed|result:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-cleanup-exit-own-local-throw",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildDrop { public function __destruct() { global $name; echo $name === null ? 'CHILD-null|' : 'CHILD-other|'; throw new Exception('child'); } }\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $child = new ChildDrop;\n        exit(29);\n    }\n}\nclass TailDrop { public function __destruct() { global $name; echo $name === null ? 'TAIL-null|' : 'TAIL-other|'; $name = 'TAIL-REBOUND'; } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop; $tail = new TailDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\ntry { $ok = is_callable('FirstCheck::from', false, $name); echo 'UNEXPECTED|'; }\ncatch (Exception $e) { echo 'CAUGHT:', $e->getMessage(), ':', $name, '|'; }\necho 'CONTINUE|';\n",
+    "source_sha256": "15968d6b03c805bc7ddb7ddaaa7e22f4e4ad3ff0587d682af9d533010fee2ac1",
+    "expected_model": "normal",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "D-null|LOCAL-null|CHILD-null|TAIL-null|CAUGHT:child:FirstCheck::from|CONTINUE|shutdown-committed|result:UNCHANGED|"
+  },
+  {
+    "id": "enum-is-callable-third-output-cleanup-exit-child-throw-tail-exit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nfunction observe() {\n    global $name, $ok;\n    echo $name === 'FirstCheck::from' ? 'shutdown-committed|' : ($name === null ? 'shutdown-null|' : 'shutdown-other|');\n    echo 'result:', $ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildDrop { public function __destruct() { global $name; echo $name === null ? 'CHILD-null|' : 'CHILD-other|'; throw new Exception('child'); } }\nclass LocalDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $child = new ChildDrop;\n        exit(29);\n    }\n}\nclass TailDrop { public function __destruct() { global $name; echo $name === null ? 'TAIL-null|' : 'TAIL-other|'; exit('TAIL-STOP|'); } }\nclass OldDrop {\n    public function __destruct() {\n        global $name;\n        echo $name === null ? 'D-null|' : 'D-other|';\n        $local = new LocalDrop; $tail = new TailDrop;\n        exit(23);\n    }\n}\n$name = new OldDrop;\n$ok = 'UNCHANGED';\ntry { $ok = is_callable('FirstCheck::from', false, $name); echo 'UNEXPECTED|'; }\ncatch (Exception $e) { echo 'CAUGHT:', $e->getMessage(), ':', $name, '|'; }\necho 'CONTINUE|';\n",
+    "source_sha256": "4edd0529d97c6529d039af98c0dcfbec1ce3526320c41a326028af8d47a689a5",
+    "expected_model": "unsupported",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90
+  },
+  {
+    "id": "enum-is-callable-third-output-nested-output-cleanup-reexit",
+    "source": "<?php\nenum FirstCheck: int { case A = 1; }\nenum OtherCheck: int { case B = 2; }\nfunction observe() {\n    global $name, $inner_name, $ok, $inner_ok;\n    echo $name === 'FirstCheck::from' ? 'outer-committed|' : 'outer-other|';\n    echo $inner_name === 'OtherCheck::from' ? 'inner-committed|' : 'inner-other|';\n    echo 'results:', $ok, ':', $inner_ok, '|';\n}\nregister_shutdown_function('observe');\nclass ChildDrop {\n    public function __destruct() {\n        global $name, $inner_name;\n        echo $name === null && $inner_name === null ? 'CHILD-both-null|' : 'CHILD-other|';\n    }\n}\nclass LocalDrop {\n    public function __destruct() {\n        global $inner_name;\n        echo $inner_name === null ? 'LOCAL-null|' : 'LOCAL-other|';\n        $child = new ChildDrop;\n        exit(29);\n    }\n}\nclass InnerDrop {\n    public function __destruct() {\n        global $inner_name;\n        echo $inner_name === null ? 'INNER-null|' : 'INNER-other|';\n        $local = new LocalDrop;\n        exit(23);\n    }\n}\nclass OldDrop {\n    public function __destruct() {\n        global $name, $inner_name, $inner_ok;\n        echo $name === null ? 'OUTER-null|' : 'OUTER-other|';\n        $inner_ok = is_callable('OtherCheck::from', false, $inner_name);\n        echo 'UNEXPECTED-INNER|';\n    }\n}\n$name = new OldDrop;\n$inner_name = new InnerDrop;\n$ok = 'UNCHANGED'; $inner_ok = 'UNCHANGED';\n$ok = is_callable('FirstCheck::from', false, $name);\necho 'UNEXPECTED-OUTER|';\n",
+    "source_sha256": "967d529567b4f2deb0cb87efe534fab14540484403accaa2d9db9b1b3d720cc8",
+    "expected_model": "explicit_exit",
+    "purpose": "Staged local C return drains own locals and parent tail before the original name commit, preserving latest status, borrowed anchors and API context.",
+    "model_timeout_seconds": 90,
+    "expected_normal_stdout": "OUTER-null|INNER-null|LOCAL-null|CHILD-both-null|outer-committed|inner-committed|results:UNCHANGED:UNCHANGED|"
   }
 ]
