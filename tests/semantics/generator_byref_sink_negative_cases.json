@@ -197,5 +197,37 @@
         ]
       }
     ]
+  },
+  {
+    "id": "dynamic-string-sink",
+    "source": "<?php\nfunction values94() { global $v; echo \"Y;\"; yield 0 => $v; echo \"N;\"; }\nfunction sink94(&$x) { echo \"S:\",$x,\";\"; $x=33; echo \"R:\",$x,\";\"; }\n$v=11; echo \"B;\"; $g=values94(); $target94='sink94'; $target94(...$g); echo \"V:\",$v,\";\"; unset($g);\n",
+    "source_sha256": "f082c74d30ead64649aa395caa8ccbe234d36410867ba0302afba52ba6527041",
+    "purpose": "Dynamic strings resolve to a named PORIGIN too, but remain outside the direct named-call A94 frontier; zero agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "B;Y;N;S:11;R:33;V:11;",
+    "native_stderr": "Warning: Cannot pass by-reference argument 1 of sink94() by unpacking a Traversable, passing by-value instead in {source} on line 4\n",
+    "native_exit": 0,
+    "unsupported_reason": "Generator unpack by-reference target",
+    "unsupported_stdout": "B;Y;",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "66",
+            "59"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "89",
+            "59"
+          ]
+        ]
+      }
+    ]
   }
 ]
