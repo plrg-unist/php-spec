@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SOURCE = (ROOT / 'tests/semantics/gc50_peer_nan_child_throw.php').read_text()
 STAGE = (
     'S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail* '
-    '-- if S.RESULT = KNOWN (PINT -9223372036854775808) '
+    '-- if S.RESULT = KNOWN (PINT $(-9223372036854775808)) '
     '-- if $access_set_plan(S) = (paccess_plan) '
     '-- if paccess_plan.OBJECT = (n_map) '
     '-- if S.OBJECTS[n_map] = WEAKMAPENTRIES ([pweakmapentry_nan, pweakmapentry_next]) '
@@ -21,7 +21,7 @@ CHECKS = [
     'S_key = $quiet_operand(S, paccess_plan.INPUT)',
     'S_key.RESULT = KNOWN (POBJECT n_key)',
     'n_key = pweakmapentry_nan.KEY',
-    'paccess = paccess_plan[.SELECTED = $rcontainer_selected(S, paccess_plan.RHS)][.VALUE = PINT -9223372036854775808][.OFFSET = POBJECT n_key]',
+    'paccess = paccess_plan[.SELECTED = $rcontainer_selected(S, paccess_plan.RHS)][.VALUE = PINT $(-9223372036854775808)][.OFFSET = POBJECT n_key]',
     'paccess.RHS = S.RESULT',
     '$operand_nodes(paccess.RHS) = eps',
     '$weakmap_value_nodes(pweakmapentry_nan.VALUE) = eps',
@@ -55,8 +55,8 @@ CHECKS = [
     '~$weakmap_entries_child_value_free(S, PARRAY 0)',
     '$weakmap_nan_word(PBOOL false) = eps',
     '$weakmap_nan_word(PNULL) = eps',
-    '$weakmap_nan_word(PINT -9223372036854775808) = (9223372036854775808)',
-    '$truth(S, PINT -9223372036854775808)',
+    '$weakmap_nan_word(PINT $(-9223372036854775808)) = (9223372036854775808)',
+    '$truth(S, PINT $(-9223372036854775808))',
     '~$truth(S, PFLOAT 9223372036854775808)',
     '$weakmap_entries_child_storage(S, n_map)',
     '$weakmap_entries_write_allowed(S, paccess)',
@@ -86,7 +86,7 @@ CHECKS = [
     'S_paused = $drive_steps(S, 1)',
     'S_paused.COMPLETION = BUDGET',
     'S_written = S_paused[.COMPLETION = NORMAL]',
-    'S_written.OBJECTS[n_map] = WEAKMAPENTRIES ([pweakmapentry_nan[.VALUE = PINT -9223372036854775808], pweakmapentry_next])',
+    'S_written.OBJECTS[n_map] = WEAKMAPENTRIES ([pweakmapentry_nan[.VALUE = PINT $(-9223372036854775808)], pweakmapentry_next])',
     'S_written.TODO = (ACCESS_RESUME paccess_called) :: ptask_tail*',
     'paccess_called = paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")]',
     '$task_nodes(ACCESS_RESUME paccess_called) = [HOBJECT n_map]',
