@@ -767,6 +767,7 @@ dec $closure_call_copy_raw_valid(pstate, pclosurecall, nat) : bool
 dec $closure_call_copy_raw_arguments_valid(pstate, pclosurecall) : bool
 def $closure_call_copy_raw_arguments_valid(S, pclosurecall) = true
   -- if pclosurecall.PACKS = eps
+  -- if ~$closure_call_array_pack_site(S, pclosurecall.SITE)
   -- if $closure_call_raw_keys(pclosurecall.RAW) = $closure_call_source_keys($closure_call_forward_args_at(S, pclosurecall.SITE), 0)
 def $closure_call_copy_raw_arguments_valid(S, pclosurecall) = false -- otherwise
 def $closure_call_copy_raw_valid(S, pclosurecall, n_copy) = true
