@@ -170,6 +170,45 @@
       "native_group": "/home/user/workspace/php-spec/.tools/class173-review-artifacts/ordinary-property-static-readonly-before-default-compile-error/native.json",
       "native_raw_sha256": "ecba2e6c7c2addbd22da27738ef9771a748f6f7cdfa240da83219f9a40f2d95d",
       "model_timeout_seconds": 240
+    },
+    {
+      "id": "ordinary-property-static-private-protected-access",
+      "source": "<?php\n$object = new class {\n    private static int $secret = 1 + 2;\n    protected static int $hidden = 7;\n};\necho 'before;';\ntry { echo $object::$secret; } catch (Error $error) { echo $error->getMessage(), ';'; }\ntry { echo $object::$hidden; } catch (Error $error) { echo $error->getMessage(), ';'; }\ntry { $object::$secret = 4; } catch (Error $error) { echo $error->getMessage(), ';'; }\n",
+      "source_sha256": "e1219aa32191bdcb619f2e4f3ecc8447300bb6b30e1872ecc3783fe097644695",
+      "stdout_base64": "YmVmb3JlO0Nhbm5vdCBhY2Nlc3MgcHJpdmF0ZSBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiRzZWNyZXQ7Q2Fubm90IGFjY2VzcyBwcm90ZWN0ZWQgcHJvcGVydHkgY2xhc3NAYW5vbnltb3VzOjokaGlkZGVuO0Nhbm5vdCBhY2Nlc3MgcHJpdmF0ZSBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiRzZWNyZXQ7",
+      "stdout_template_base64": "YmVmb3JlO0Nhbm5vdCBhY2Nlc3MgcHJpdmF0ZSBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiRzZWNyZXQ7Q2Fubm90IGFjY2VzcyBwcm90ZWN0ZWQgcHJvcGVydHkgY2xhc3NAYW5vbnltb3VzOjokaGlkZGVuO0Nhbm5vdCBhY2Nlc3MgcHJpdmF0ZSBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiRzZWNyZXQ7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class173-review-artifacts/ordinary-property-static-private-protected-access/native.json",
+      "native_raw_sha256": "3cb615dee6a233d905cafe0d5b02e8b9598ca1461d3d9143fab3f011051a4676",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "ordinary-property-readonly-first-global-write",
+      "source": "<?php\nfunction probe173Value() { echo 'R;'; return 7; }\n$object = new class { public readonly int $value; };\necho 'before;';\ntry { $object->value = probe173Value(); } catch (Error $error) { echo $error->getMessage(), ';'; }\necho isset($object->value) ? 'BAD;' : 'uninitialized;';\n",
+      "source_sha256": "918e50709798260eadfe7d5b03d4a87855e2a8147acdd8663e4fcebfeb4d7f63",
+      "stdout_base64": "YmVmb3JlO1I7Q2Fubm90IG1vZGlmeSBwcm90ZWN0ZWQoc2V0KSByZWFkb25seSBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiR2YWx1ZSBmcm9tIGdsb2JhbCBzY29wZTt1bmluaXRpYWxpemVkOw==",
+      "stdout_template_base64": "YmVmb3JlO1I7Q2Fubm90IG1vZGlmeSBwcm90ZWN0ZWQoc2V0KSByZWFkb25seSBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiR2YWx1ZSBmcm9tIGdsb2JhbCBzY29wZTt1bmluaXRpYWxpemVkOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class173-review-artifacts/ordinary-property-readonly-first-global-write/native.json",
+      "native_raw_sha256": "14115af531385797509480e7a7ba413f1da47f4c9f3c045f759abc921713672d",
+      "model_timeout_seconds": 240
+    },
+    {
+      "id": "ordinary-property-static-typed-errors-preserve-value",
+      "source": "<?php\n$object = new class { public static int $value; };\necho 'before;';\ntry { echo $object::$value; } catch (Error $error) { echo $error->getMessage(), ';'; }\n$object::$value = 7;\ntry { $object::$value = 'wrong'; } catch (TypeError $error) { echo $error->getMessage(), ';'; }\necho $object::$value, ';';\n",
+      "source_sha256": "9031add72d6c9a755c7f63fe93b576a62204f83bf4a8b6bac6659ee35e45cdfc",
+      "stdout_base64": "YmVmb3JlO1R5cGVkIHN0YXRpYyBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiR2YWx1ZSBtdXN0IG5vdCBiZSBhY2Nlc3NlZCBiZWZvcmUgaW5pdGlhbGl6YXRpb247Q2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gcHJvcGVydHkgY2xhc3NAYW5vbnltb3VzOjokdmFsdWUgb2YgdHlwZSBpbnQ7Nzs=",
+      "stdout_template_base64": "YmVmb3JlO1R5cGVkIHN0YXRpYyBwcm9wZXJ0eSBjbGFzc0Bhbm9ueW1vdXM6OiR2YWx1ZSBtdXN0IG5vdCBiZSBhY2Nlc3NlZCBiZWZvcmUgaW5pdGlhbGl6YXRpb247Q2Fubm90IGFzc2lnbiBzdHJpbmcgdG8gcHJvcGVydHkgY2xhc3NAYW5vbnltb3VzOjokdmFsdWUgb2YgdHlwZSBpbnQ7Nzs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/class173-review-artifacts/ordinary-property-static-typed-errors-preserve-value/native.json",
+      "native_raw_sha256": "4d45e2278ba22ef1e527fd884248b1ba337aeb673d78d6598abce62823e60f10",
+      "model_timeout_seconds": 240
     }
   ]
 }
