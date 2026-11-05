@@ -429,7 +429,7 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if P.GOTOROOT = pcpath_owner ++ [PCFIELD 5, PCINDEX n_method]
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath_owner) = (pcnode_owner)
   -- if $anonymous_named_class_node(pcnode_owner)
-  -- if $plclasscontext(P.FOLD.SOURCE, pcpath_owner, P.LOCATION.FILE, $source_line($pcmetadata(pcnode_owner))) = (ptcontext_owner)
+  -- if $plclasscontext(P.FOLD.SOURCE, pcpath_owner, P.LOCATION.FILE, $nabs($source_line($pcmetadata(pcnode_owner)))) = (ptcontext_owner)
   -- if $anonymous_named_header(pcnode_owner, ptcontext_owner) = ((pchheader, z_owner))
   -- if P.ENV.NAMESPACE = ptcontext_owner.NAMESPACE /\ P.ENV.CLASSES = ptcontext_owner.IMPORTS
   -- if z_method = $declaration_method_keyword_line(metadata, metadata_name)
