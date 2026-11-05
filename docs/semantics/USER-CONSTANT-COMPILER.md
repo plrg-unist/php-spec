@@ -67,12 +67,24 @@ continuation preserves the exit status. `defined()` stays quiet; parameter and
 class initializer caches retain their ordinary first-use behavior. Declaration
 namespace controls literal/null admission.
 
-This consumer covers nonowning primitive and interned-string values. Owning
-values, converted queries, trait collision folding, wider metadata expressions
-and reflection remain explicit boundaries. Attribute argument paths acquire no
-runtime initializer authority.
+The consumer also accepts owning values from the existing ordinary constant
+producers. Direct opcodes retain the actual fetched value/class before warning;
+only that live receipt owns the copy. Stable-text `constant()` and genuine global
+`NConst` AST reads retain selection until successful warning delivery. Arrays,
+certified Closures, user instances and stdClass reuse their existing value-class
+checks. Facts keep the actual class and a prefix-bound nonfoldable lookup, so a
+handler-created namespace shadow cannot change the earlier read. Exit markers
+expose only their genuine saved global binder to context validation; the full
+marker contract still authenticates the callback, status and saved tail.
+
+Owned parameter, class and static-property defaults remain Unsupported until
+their causal/cache consumers are paired; existing scalar defaults are unchanged.
+Function-local dynamic static initializers use ordinary opcodes. Converted
+queries, trait collision folding, wider metadata and reflection remain separate.
+Attribute argument paths acquire no runtime initializer authority.
 [COMP183 evidence](../../coverage/semantics/deprecated-global-constant-review.json).
 [COMP184 cancellation](../../coverage/semantics/deprecated-handler-cancellation-review.json).
+[COMP185 owning reads](../../coverage/semantics/deprecated-owned-constant-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

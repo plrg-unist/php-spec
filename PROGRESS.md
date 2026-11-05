@@ -1934,6 +1934,21 @@ throw/exit controls pass. The requested joined SL444/inventory base load passes;
 parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 [Review](coverage/semantics/deprecated-handler-cancellation-review.json).
 
+COMP185 pairs owning values from existing ordinary constant producers with
+Deprecated reads. Direct opcodes retain the fetched value/class before warning;
+stable-text APIs and genuine global constant AST initializers retain selection
+until successful delivery. Original nonfoldable lookup/class certificates survive
+handler-created namespace shadows. Live receipts own pre-warning copies while
+borrowed parameter metadata stays empty. Genuine saved binders and readonly eval
+control views preserve global-AST exit/cancellation frontiers, including parked
+caller frames. Owned parameter, class and static-property defaults remain
+Unsupported; function-local dynamic statics remain ordinary opcode reads.
+Thirteen new/promoted source agreements, three separate default refusals,
+345 owned-state and550 affected conditions across445 modules, plus four older
+scalar/builtin throw/exit originals pass at frozen156cfe734. The joined SL445/
+inventory base load passes; prior syntax/pipe and other source cuts remain historical.
+[Review](coverage/semantics/deprecated-owned-constant-review.json).
+
 ## Active and unintegrated work
 
 | Track | Owner-confirmed current work |
@@ -1941,7 +1956,7 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 | CLASS193 | Nonreference ordinary-object first CV in existing magic argument protocols; private implementation/review. |
 | I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
 | GC52 | Finite DIRECT-array WeakMap payload layer with existing COW/release; private implementation/review. |
-| COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
+| COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR46 | Authenticated bracketed/unbracketed Namespace Tick placement; native/compiler calibration and private review. |
 | Enum callable arrays | Method fromCallable cache identity from proven cold and actual INIT history; private implementation/review. |

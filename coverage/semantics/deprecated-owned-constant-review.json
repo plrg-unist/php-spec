@@ -1,0 +1,83 @@
+{
+  "milestone": "COMP185",
+  "status": "Frozen implementation and focused validation complete; independent final acceptance pending.",
+  "base": "f09604f2dae9f5a199d597beeadf1a97d251e694",
+  "branch": "semantics/deprecated-owned-constants-185",
+  "runtime_and_tests": "156cfe7347ca798af312fcb7d3e46abe3418e514",
+  "raw_root": "../php-spec-evidence-archive/comp185",
+  "behavior": "Deprecated reads now accept the existing certified owning constant values. Direct opcodes retain the fetched value/class before warning. Stable-text constant() and genuine global NConst AST reads retain selection and deliver after successful warning. Prefix-bound nonfoldable observations survive handler-created namespace shadows, and copied roots survive handler return cleanup, throw and exit cancellation.",
+  "implementation": "The optional pdeprecatedconstant.COPIED payload is owned only by its live source task; borrowed RECEIVE_DEPRECATED metadata requires eps. Source delivery preserves actual CLASS and pvclass_operand facts. The prior-lookup arm requires the real observer head/result and existing polymorphic lookup validity. A structural saved-binder view and first-five-check eval control view expose only actual terminal Deprecated marker continuations, including parked frame TODOs. Full marker/status/target/history, source, file, pending and compiled-image checks still use actual state. No new producer, task, pstate field, parser/frontend-wire-schema/native helper change.",
+  "primary_source": [
+    "vendor/php-src/Zend/zend_execute.c::zend_fetch_constant (copy before warning)",
+    "vendor/php-src/Zend/zend_constants.c::zend_get_constant_ex (selected entry, warning/protection and exception check)",
+    "vendor/php-src/Zend/zend_ast.c::zend_ast_evaluate_inner/ZEND_AST_CONSTANT (copy after successful lookup/warning)",
+    "vendor/php-src/ext/standard/basic_functions.c::constant (copy after successful deprecated lookup/warning)",
+    "vendor/php-src/Zend/zend_types.h::ZVAL_COPY_OR_DUP"
+  ],
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json; include_path=.:; LC_ALL=C/TZ=UTC",
+  "validation": {
+    "joined_base": {
+      "report": "../generator-method-iterator-pack-116/joined-parent-445/report.json",
+      "sha256": "435553519fff228bc75b58d4e58e6f7d87e59cf3126ffe7fff327aa3fc26854e",
+      "head": "f09604f2dae9f5a199d597beeadf1a97d251e694",
+      "modules": 445,
+      "scope": "Requested full-manifest SL true fixture and inventory before185 models; zero PHP agreement credit."
+    },
+    "owned_protocol": {
+      "report": "protocol-owned-v9/report.json",
+      "sha256": "6a39667b1a71272693d3c9ea6154de9f5974298f0dba07e2dcf92c6fb36e2b90",
+      "passed": true,
+      "premises": 345,
+      "modules": 445,
+      "head": "156cfe7347ca798af312fcb7d3e46abe3418e514",
+      "head_stable": true,
+      "inputs_stable": true,
+      "scope": "Live opcode versus AST/API value roots; copied value/class/mode and prior-cache mutants; actual CLEAN, fresh/released owned markers, saved AST binders and parked eval caller; malformed retained eval controls and foreign marker. Changed source/protocol/module inputs match frozen commit; all533 watched inputs, including executed binaries, remain stable."
+    },
+    "affected_protocol": {
+      "report": "affected183-protocol-v1/report.json",
+      "sha256": "99e37203888ec44d3012a0e1f7a6cb0e9c1c36d583d8d869e5a655eb0e181fbe",
+      "head": "156cfe7347ca798af312fcb7d3e46abe3418e514",
+      "passed": true,
+      "premises": 550,
+      "modules": 445,
+      "head_stable": true,
+      "inputs_stable": true,
+      "scope": "Existing scalar/cache/borrowed callback/source/API/exit-cancellation protocol, with only the two array-control expectations promoted and missing-COPIED forged source receipt still rejected."
+    },
+    "sources": {
+      "report": "sources-v1/report.json",
+      "sha256": "548cb36dbbb149fa7c698853aad9c83ee0ffaa7eb6f6ed0c62e6d1e5be862845",
+      "head": "156cfe7347ca798af312fcb7d3e46abe3418e514",
+      "passed": true,
+      "agreements": 13,
+      "refusal_controls": 3,
+      "head_stable": true,
+      "inputs_stable": true,
+      "scope": "Two unchanged promoted arrays and fourteen new originals: COW, certified Closure/stdClass/instance identity, namespace shadow, query rebind/throw, retval mutation, direct/global-AST exit cancellation, function-local dynamic static, and separate parameter/class/static-property default refusals."
+    },
+    "affected_sources": {
+      "report": "affected183-sources-v1/report.json",
+      "sha256": "88c35b23495c75ed103c0744376e75ea5f5bf7597b3b69a85967698059737659",
+      "head": "156cfe7347ca798af312fcb7d3e46abe3418e514",
+      "passed": true,
+      "agreements": 4,
+      "refusal_controls": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "scope": "Four unchanged ordinary scalar source/API throw-retry, startup E_STRICT body exit and retval-destructor exit originals; exact stdout/stderr/native status."
+    }
+  },
+  "preserved_failures": "The initial function-local-static refusal fixture was wrong: PHP compiles its dynamic initializer as an opcode. Its exact bytes are promoted to owned-static-runtime; the refusal now uses a real static-property default. Earlier protocol elaboration/orchestration failures retain zero clean-protocol credit. The actual global-AST wrongcatch discovery and v7 public marker failure remain preserved: the binder fix restored native cancellation, then ast-marker-public-debug-v1 isolated only eval_state_valid, leading to the readonly control view. Smoke/discovery and v8 retain only their original cuts; final credit uses v9 and frozen source packets.",
+  "bridges": {
+    "old_sources": "The two unchanged array originals are promoted. Existing nonowning source COPIED stays empty, and API retains its established captured query/owner continuation; actual selected class, protection and scalar default behavior retain their existing helpers. The affected old protocol and ordinary scalar/builtin throw/exit controls cover those receipt paths; older sources retain their original cuts, without blanket replay.",
+    "syntax_and_pipe": "The eight b288 syntax/provenance inputs and parser/schema/adapter/native/printer paths are unchanged. The COMP183 pipe fixtures cannot reach owning Deprecated read delivery or its saved exit marker; prior pipe/corpus evidence remains at its original cut. No syntax/pipe replay.",
+    "interfaces": "Whole state/context updates preserve opaque cache/native-call fields. Only the existing diagnostic receipt gains optional COPIED; no new live ownership is assigned to historical receive metadata.",
+    "family": "Current75-case membership has68 exact comparisons and seven distinct Unsupported controls across preserved cuts: prior55 exact +new13; four untouched prior refusals +three owned-default limits. The former two array refusals remain historical and gain agreement only from this new packet."
+  },
+  "preserved_limits": "Owned parameter, class and static-property AST defaults remain named Unsupported. Existing scalar defaults remain paired; function-local dynamic statics use ordinary opcodes. Converted queries, trait collision folds, wider/nonliteral Deprecated metadata, uncertified producers and all paused boundaries including COMP88 remain separate. NextCOMP186 pairs genuine owned parameter-default reception/cache before class/static-property defaults.",
+  "review": {
+    "status": "Independent frozen code/source review clear; final evidence acceptance pending."
+  }
+}

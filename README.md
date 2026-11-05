@@ -2672,10 +2672,16 @@ values are paired. Exit restores the raw handler after local and retval cleanup.
 A fresh local-destructor throw can cancel exit and reach the saved catch; the
 pending exception, protected read and API owner survive callback release, and
 the exit status is retained.
-Owning values, converted queries, trait collision folding and wider metadata
-expressions remain partial.
+Existing array, Closure, user-instance and stdClass constant producers now also
+pair owning reads. Direct opcodes retain the fetched value/class before warning;
+`constant()` and global constant AST initializers deliver the captured selection
+after warning. Nonfoldable global initializers preserve their original lookup
+when a handler publishes a namespace shadow, including exit/cancellation cleanup.
+Owned parameter, class and static-property defaults, converted queries, trait
+collision folding and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
+[Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
