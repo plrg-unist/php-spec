@@ -456,12 +456,18 @@ two sends. By-value caches keep their Warning snapshot; ordinary reference
 caches reread a nonowning source-cell designation after the handler. Alias writes
 change delivery, while actual global-name rebinding preserves the old cell.
 Distinct private cells retain earlier sends across the second Warning.
-A95 adds ten new and two affected legacy source agreements; independent
-source-derived ownership, authority, retirement and budget gates pass. Two
-Unsupported controls retain zero agreement credit. Cache replacement, ineligible
-reference carriers and pending warning exceptions remain partial.
+A96 extends delivery from the selected live reference cell through cache
+replacement, changed keys/index, normal closure and a running Generator in a
+suspended Fiber. The next iterator advance retains its ordinary phase behavior.
+Closed Generators keep their cache until storage retirement; CELL adds no owner.
+By-value delivery retains its existing restrictions. Ineligible reference
+carriers and pending warning exceptions remain partial. Eight new and two legacy
+source agreements, strict433 and source-derived ownership/continuation gates pass
+at their recorded cuts; two Unsupported controls retain zero agreement credit.
+Original fixture failures remain preserved separately.
 [Snapshot review](coverage/semantics/generator-byref-sink-review.json),
-[reference-cell review](coverage/semantics/generator-reference-sink-review.json).
+[reference-cell review](coverage/semantics/generator-reference-sink-review.json),
+[captured-cell review](coverage/semantics/generator-captured-cell-sink-review.json).
 
 CONFIG Iterator sends preserve scalar snapshots and finite CFG-admitted ARRAY or
 ordinary non-Stringable INSTANCE arguments. Existing by-value Generator routes
@@ -677,19 +683,21 @@ assertions and full strict433 passes. The old model's two missing location
 predicates remain a zero-credit counterexample. Wider wrapper/reentry and late
 callback cleanup remain partial. [Trace-head review](coverage/semantics/builtin-deprecated-closure-trace-head-review.json).
 
-ATTR18 retains stable pending main-body exits through post-FINAL tick cleanup.
-Saved shutdown/destructor completions authenticate NORMAL or the same EXITED
-code; an exit also matches the full stored status. Copied values and separate
-FCC owners retire under temporary NORMAL execution, then the saved completion
-returns before later entries/queues. Four new exit originals agree exactly,
-including status 263→CLI 7 and string exit at 0; one affected normal cacheless
-control, six reached groups/176 conditions (164 reached, 12 derived) and
-private strict433 also pass. Wider producers, assertion roots,
-changed phase completions and abrupt/reentrant cleanup remain partial.
-[Exit-retirement review](coverage/semantics/callback-late-tick-exit-review.json).
-The earlier [cache-shape](coverage/semantics/callback-late-tick-callables-review.json)
-and [copied-value](coverage/semantics/callback-late-tick-values-review.json)
-ledgers retain their original cuts and zero-credit failures.
+ATTR19 handles selected uncaught builtin Exceptions from normal-origin tick
+argument destructors after FINAL. The module-local bailout leaves two argument
+protections and unfinished argument/FCC/tail owners intact. Live report
+authentication precedes Throwable release; later active shutdown-list cleanup
+and inactive executor free preserve native order. Five new originals agree,
+including a later queue argument and an owning Closure capture's separate
+inactive-child fatal/CLI 0. Five independent groups pass 254 conditions
+(243 reached, 11 derived), and private strict433 passes; the original late-event
+fixture error keeps zero credit.
+[Bailout review](coverage/semantics/callback-late-tick-throw-review.json).
+Wider Throwable/handler, changed-phase and exit/reentry contexts remain partial.
+The earlier [stable-exit](coverage/semantics/callback-late-tick-exit-review.json),
+[cache-shape](coverage/semantics/callback-late-tick-callables-review.json) and
+[copied-value](coverage/semantics/callback-late-tick-values-review.json) ledgers
+retain their original cuts and zero-credit failures.
 
 The earlier GC05 cut admitted public destructors on quiet, canonical
 materialized ordinary cycles when the legacy callback walk and claimed walk
@@ -876,7 +884,17 @@ deprecations and type/count errors precede callback creation. NULL/default
 callbacks then emit E_NOTICE and return false without pushing a buffer,
 including in the authenticated destructor of a Notice handler's returned object.
 Private and actual2257 composition strict433, author17 and independent4
-source/request contexts and scoped reached checks pass at the recorded cuts. Non-NULL creation, active handler-body reentry, deprecation-handler returned-object
+source/request contexts and scoped reached checks pass at the recorded cuts.
+OB10 adds pure callable creation after conversion, with no callback invocation
+or buffer push. Its transient owner releases before the Notice, while ordinary
+argument ownership preserves temporary invokable/array receivers, captured
+Closure cells, bound method receivers and caught-throw cleanup. Selection survives
+Notice-time reference mutation; earlier conversion-handler mutation affects lookup.
+Consumed Closure metadata uses borrowed source certificates and owns nothing.
+The VM argument's root decrement skips GC candidate buffering; array children
+still use ordinary cleanup. The source and reached checks retain their separate
+cuts in the [creation review](coverage/semantics/output-executor-creation-review.json).
+Invalid/effectful creation, active handler-body reentry, deprecation-handler returned-object
 starts, allocation failure/memory limits and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
 [general reception review](coverage/semantics/output-executor-reception-review.json).
