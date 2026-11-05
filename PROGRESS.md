@@ -245,10 +245,20 @@ copied reference values and a sole receiver survive source-variable retirement.
 Five unique source agreements (including the positional control), one explicit
 Unsupported control with zero agreement, and the final 83/88 reached gate pass
 at recorded cuts with the full 436-module SL manifest. Earlier runtime, diagnostic
-and fixture failures retain zero credit. Dynamic/nullsafe selection, Traversable
-inputs, specialized delegated histories
-and wider lifetimes remain partial.
+and fixture failures retain zero credit. Dynamic selection, Traversable inputs,
+specialized delegated histories and wider lifetimes remain partial.
 [I109 review](coverage/semantics/generator-method-arguments-review.json).
+
+I110 admits literal nullsafe native Generator API calls through the existing
+receiver/argument protocol. NULL skips named-CV reception and spread producers;
+nonnull calls preserve their selected receiver, copied values and method-result
+handoff. Ignored owning zero-argument getter copies release before the receiver,
+while used copies survive. Source checks distinguish cache-destructor weak
+liveness and actual empty-pack normalization. Six unique originals agree, one
+Unsupported assertion earns zero agreement, and the 83/88 ownership gate passes
+with the full 436-module SL manifest. Earlier mismatches retain zero credit.
+Dynamic names, Traversable inputs, wider delegation and lifetimes remain partial.
+[I110 review](coverage/semantics/generator-nullsafe-method-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -1571,7 +1581,7 @@ wider rejected-source/compiler behavior remains partial.
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS184 | Trait source methods and Closures with anonymous factories; private implementation/review. |
-| I110 | Literal nullsafe native Generator API selection; private implementation/review. |
+| I111 | Computed native Generator method selection; private implementation/review. |
 | GC44 | WeakMap insertion and append with finite value payloads; private implementation/review. |
 | COMP181 | Accepted attributed global constant-list compiler investigation; full syntax gate required before acceptance. |
 | OB17 | Scalar reference-return output conversion; private investigation/review. |

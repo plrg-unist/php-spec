@@ -48,9 +48,19 @@ duplicates and pack-local order errors precede API entry and initialization;
 count/type errors retain the native Generator frame. Checked slots transfer into
 the existing argument/resumption cursor with the same roots. Source arrays may
 retire and caller aliases may change while the selected Generator and snapshot
-remain live. Dynamic/nullsafe method selection, Traversable packs, specialized
-delegated input histories and wider lifetime combinations remain partial.
+remain live. Dynamic method names, Traversable packs, specialized delegated
+input histories and wider lifetime combinations remain partial.
 [Native argument review](../../coverage/semantics/generator-method-arguments-review.json).
+
+Literal nullsafe API calls share the same selected receiver and argument protocol.
+A NULL receiver skips named-CV reception and spread producers. A nonnull call
+returns through the existing nonowning method-result handoff, retaining copied
+values through receiver retirement. An ignored owning zero-argument `current`,
+`key` or `getReturn` result releases its temporary before the receiver; the
+Generator cache/return still owns the value through storage cleanup. Used results
+retain their caller copy. Independent CURRENT sources distinguish both lifetime
+orders, including an ordinary empty-pack call through Module447.
+[Nullsafe review](../../coverage/semantics/generator-nullsafe-method-review.json).
 
 A named Generator entered by direct zero-argument CURRENT or NEXT can suspend
 inside an already running Fiber. Its actual resume operation and parameter cells
@@ -1082,7 +1092,7 @@ Notice/cleanup readback. Aggregate acquisition has separate START and
 null results and phase-specific error cleanup. Direct Aggregate
 [argument acquisition](SOURCE-CALL-UNPACK.md#direct-aggregate-argument-acquisition)
 now shares the existing Iterator/Generator call sends. Broader reference
-producers, dynamic/nullsafe API calls and wider named/unpacked API contexts remain
+producers, dynamic API names and wider named/unpacked API contexts remain
 required. Module447 covers the admitted native method reception above.
 Other callable factory kinds, wider receiver bindings, implicit
 callback creation and remaining changed/imported caller-scope combinations

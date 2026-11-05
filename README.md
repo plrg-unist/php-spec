@@ -7542,6 +7542,14 @@ methods. Unknown names and unpacking errors precede body initialization, while
 count/type errors keep the API trace. The [native argument review](coverage/semantics/generator-method-arguments-review.json)
 records the source and ownership checks and remaining call/lifetime limits.
 
+Literal nullsafe Generator API calls skip all argument work for a NULL receiver
+and preserve the selected nonnull receiver through later argument effects.
+Used owning getter results survive receiver retirement; ignored zero-argument
+getter copies release first, preserving cache-destructor weak liveness. The
+[nullsafe review](coverage/semantics/generator-nullsafe-method-review.json)
+includes an ordinary empty-pack control through the shared argument collector.
+Dynamic method names and wider call/lifetime combinations remain partial.
+
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
