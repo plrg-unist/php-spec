@@ -25,9 +25,9 @@
   },
   {
     "id": "i110-peer-ordinary-ignored-current-control",
-    "purpose": "An affected ordinary ignored owning CURRENT control checks the shared getter category releases the returned copy before Generator storage.",
-    "source": "<?php\nclass Token110O { function __destruct() { global $weakGenerator; echo 'TOKEN|', $weakGenerator->get() === null, '|'; } }\nfunction stream110O() { try { yield new Token110O(); } finally { echo 'FIN|'; } }\nfunction make110O() { global $weakGenerator; $generator = stream110O(); $weakGenerator = WeakReference::create($generator); return $generator; }\necho 'CURRENT|'; make110O()->current(); echo 'AFTER|', $weakGenerator->get() === null, '|';\n",
-    "source_sha256": "0aaa5aea2c47d65688346ded5c20e4150bcf867f56881f92e08d899f702a3ce5",
+    "purpose": "An ordinary ignored owning CURRENT with an empty ARRAY pack actually normalizes through I109 CONFIG reception, then releases the copied return before Generator storage.",
+    "source": "<?php\nclass Token110O { function __destruct() { global $weakGenerator; echo 'TOKEN|', $weakGenerator->get() === null, '|'; } }\nfunction stream110O() { try { yield new Token110O(); } finally { echo 'FIN|'; } }\nfunction make110O() { global $weakGenerator; $generator = stream110O(); $weakGenerator = WeakReference::create($generator); return $generator; }\necho 'CURRENT|'; make110O()->current(...[]); echo 'AFTER|', $weakGenerator->get() === null, '|';\n",
+    "source_sha256": "ee849d03d6462dcc65f5d2dfc57a19322482f206733b0a4a8cec0a5dbf26d1c7",
     "native_exit": 0,
     "native_stdout": "CURRENT|FIN|TOKEN||AFTER|1|",
     "native_stderr": "",
