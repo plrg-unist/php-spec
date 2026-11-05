@@ -306,7 +306,7 @@ def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = true
   -- if $weakmap_entries_child_storage_policy(S, n_map, (n_key))
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps
 def $weakmap_entries_notice_storage(S, n_map, n_freeing*, true) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, n_freeing*, true))
-def $weakmap_entries_notice_storage(S, n_map, n_freeing*, false) = false -- otherwise
+def $weakmap_entries_notice_storage(S, n_map, n_freeing*, b_callbacks) = false -- otherwise
 def $instance_storage_basic(S, pinstancestorage) = true
   -- if n_map = pinstancestorage.OBJECT
   -- if (HOBJECT n_map) <- S.ALLOCATIONS
