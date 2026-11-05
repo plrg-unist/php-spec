@@ -393,7 +393,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | CALLABLE_DEFAULT_RECEIVE porigin nat
   | CALLABLE_SCALAR_RESULT ptask poperand pvalue int
   | CALLABLE_STRING_RESULT ptask poperand nat nat int
-  | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
+  | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_C_RETURN pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
   | GENERATOR_REQUEST_RESUME pgenclose
   | GENERATOR_REQUEST_REPORT pgenfatal | GENERATOR_REQUEST_BAILOUT pgenfatal
   | GENERATOR_REQUEST_RENDER_RETURN pgenfatal nat bool

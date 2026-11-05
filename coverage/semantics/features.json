@@ -32385,7 +32385,12 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/222-exception-handlers.watsup",
-        "spec/semantics/247-handler-callable-consumers.watsup"
+        "spec/semantics/247-handler-callable-consumers.watsup",
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/270-eager-destructors.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/444-executor-final-free.watsup",
+        "spec/semantics/349-generator-request-fresh.watsup"
       ],
       "helper_tests": [
         "tests/semantics/exception_handler_protocol.py",
@@ -32393,7 +32398,8 @@
         "tests/semantics/exception_handler_state_review.py",
         "tests/semantics/exception_handler_boundaries.py",
         "tests/semantics/callback_api_scope_check.py",
-        "tests/semantics/callback_api_state_review.py"
+        "tests/semantics/callback_api_state_review.py",
+        "tests/semantics/deprecated_late_tick_handler_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/exception_handlers.py",
@@ -32403,7 +32409,12 @@
         "tests/semantics/exception_handler_static_default.py",
         "tests/semantics/callback_api_review.py",
         "tests/semantics/callback_api_review_cases.json",
-        "tests/semantics/callback_api_composition_cases.json"
+        "tests/semantics/callback_api_composition_cases.json",
+        "tests/semantics/deprecated_late_tick_handler_raw.php",
+        "tests/semantics/deprecated_late_tick_handler_owning_capture.php",
+        "tests/semantics/deprecated_late_tick_handler_review_exit263_tail_queue.php",
+        "tests/semantics/deprecated_late_tick_handler_review_normal_bound.php",
+        "tests/semantics/deprecated_late_tick_exit_throw_cacheless.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -32414,9 +32425,11 @@
         "coverage/semantics/exception-handlers-review.json",
         "coverage/semantics/exception-handler-review.json",
         "coverage/semantics/callback-api-consumers-review.json",
-        "coverage/semantics/callback-api-consumer-review.json"
+        "coverage/semantics/callback-api-consumer-review.json",
+        "vendor/php-src/Zend/zend_objects.c",
+        "coverage/semantics/callback-late-tick-handler-review.json"
       ],
-      "review": "Raw nullable set/get/restore stacks and null-caller terminal dispatch222 reuse ordinary weak calls with one authentic Throwable. Borrowed immutable selection snapshots survive registry removal and static selector retirement. Author29/216 and independent33/331 pass at distinct recorded cutoffs, including weak Stringable variadic/default reception and authenticated internal send-warning continuations; actual219 cross-file static-default source1 and production algorithm/structure gates pass. Earlier Unsupported controls retain zero agreement at their original cut. Module247 stages raw keyword/compound registration and null-C terminal re-selection, preserving Unknown0 deprecations, original snapshots, referenced-method effects, handler replacement/restore/throw/exit and selected continuations. Magic/autoload/internal callbacks, destructor/GC/output/free phases, shared207 reference-return bodies and temporary-value reference returns remain open. No complete-core claim."
+      "review": "Raw nullable set/get/restore stacks and null-caller terminal dispatch222 reuse ordinary weak calls with one authentic Throwable. Borrowed immutable selection snapshots survive registry removal and static selector retirement. Author29/216 and independent33/331 pass at distinct recorded cutoffs, including weak Stringable variadic/default reception and authenticated internal send-warning continuations; actual219 cross-file static-default source1 and production algorithm/structure gates pass. Earlier Unsupported controls retain zero agreement at their original cut. Module247 stages raw keyword/compound registration and null-C terminal re-selection, preserving Unknown0 deprecations, original snapshots, referenced-method effects, handler replacement/restore/throw/exit and selected continuations. Magic/autoload/internal callbacks, destructor/GC/output/free phases, shared207 reference-return bodies and temporary-value reference returns remain open. No complete-core claim. Entered null-C tick destructor frames transfer their receiver protection to a paired innermost C-return continuation before local cleanup. Named NULL/scalar-return handlers retain both protections through original Throwable retirement and handler restoration, then ordinary VALUE/GC decrement resumes remaining argument/FCC/tick/queue retirement. Stable main263 survives ignored handler23. Four new originals and two affected controls agree; nine independent groups/508 conditions (497 reached, 11 derived) and strict433 pass. Original ownership/dormant-field failures retain zero credit; wider late handlers and other C lifetimes remain partial."
     },
     {
       "id": "diagnostics.handler-throws",
@@ -38786,7 +38799,10 @@
         "spec/semantics/30-storage.watsup",
         "spec/semantics/231-shutdown-functions.watsup",
         "spec/semantics/443-deprecated-closure-invoke.watsup",
-        "spec/semantics/444-executor-final-free.watsup"
+        "spec/semantics/444-executor-final-free.watsup",
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/270-eager-destructors.watsup",
+        "spec/semantics/349-generator-request-fresh.watsup"
       ],
       "helper_tests": [
         "tests/semantics/tick_state.py",
@@ -38798,7 +38814,8 @@
         "tests/semantics/deprecated_late_tick_callables_review_protocol.py",
         "tests/semantics/deprecated_late_tick_exit_review_protocol.py",
         "tests/semantics/deprecated_late_tick_throw_review_protocol.py",
-        "tests/semantics/deprecated_late_tick_exit_throw_review_protocol.py"
+        "tests/semantics/deprecated_late_tick_exit_throw_review_protocol.py",
+        "tests/semantics/deprecated_late_tick_handler_review_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/tick_sources.py",
@@ -38831,7 +38848,11 @@
         "tests/semantics/deprecated_late_tick_exit_throw_cacheless.php",
         "tests/semantics/deprecated_late_tick_exit_throw_owning_capture.php",
         "tests/semantics/deprecated_late_tick_exit_throw_review_exit7_tail_queue.php",
-        "tests/semantics/deprecated_late_tick_exit_throw_review_string_bound.php"
+        "tests/semantics/deprecated_late_tick_exit_throw_review_string_bound.php",
+        "tests/semantics/deprecated_late_tick_handler_raw.php",
+        "tests/semantics/deprecated_late_tick_handler_owning_capture.php",
+        "tests/semantics/deprecated_late_tick_handler_review_exit263_tail_queue.php",
+        "tests/semantics/deprecated_late_tick_handler_review_normal_bound.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
@@ -38847,9 +38868,12 @@
         "coverage/semantics/callback-late-tick-callables-review.json",
         "coverage/semantics/callback-late-tick-exit-review.json",
         "coverage/semantics/callback-late-tick-throw-review.json",
-        "coverage/semantics/callback-late-tick-exit-throw-review.json"
+        "coverage/semantics/callback-late-tick-exit-throw-review.json",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_execute_API.c",
+        "coverage/semantics/callback-late-tick-handler-review.json"
       ],
-      "review": "Module393 derives source-certified compiler marker plans, lexical frequency/counters and captured callback dispatch. Persistent FCC owners, Closure warning/reception phases and wrapper traces retain linked reviews. Post-FINAL entries release copied values before independent caches; cacheless entries drain before queue/executor fallbacks. Stable exits use agreeing saved phases/full status. Selected builtin Throwable bailouts after NORMAL or stable main EXITED preserve two abandoned argument protections, unfinished argument/FCC jobs and registry tail. Live report authentication precedes Throwable retirement, later queue cleanup and default-fast inactive free. A status-only source lookup authenticates the saved full code after reporting replaces actual status 255 or a later inactive-child fatal leaves 0; live entry/pre-report catch remain strict and saved phases/owners never change. Four new exit/throw originals, one affected NORMAL control, five independent reached groups/265 conditions (9 derived) and private strict433 pass without correction. Earlier value/cache/exit/bailout ledgers retain separate cuts/failures. Wider placement/producers/assertion roots, changed phases, handlers/Throwable payloads and exit/reentry contexts remain partial; no lifecycle or full-core closure."
+      "review": "Module393 derives source-certified compiler marker plans, lexical frequency/counters and captured callback dispatch. Persistent FCC owners, Closure warning/reception phases and wrapper traces retain linked reviews. Post-FINAL entries release copied values before independent caches; cacheless entries drain before queue/executor fallbacks. Stable exits use agreeing saved phases/full status. Selected builtin Throwable bailouts after NORMAL or stable main EXITED preserve two abandoned argument protections, unfinished argument/FCC jobs and registry tail. Live report authentication precedes Throwable retirement, later queue cleanup and default-fast inactive free. A status-only source lookup authenticates the saved full code after reporting replaces actual status 255 or a later inactive-child fatal leaves 0; live entry/pre-report catch remain strict and saved phases/owners never change. Four new exit/throw originals, one affected NORMAL control, five independent reached groups/265 conditions (9 derived) and private strict433 pass without correction. Earlier value/cache/exit/bailout ledgers retain separate cuts/failures. Wider placement/producers/assertion roots, changed phases, handlers/Throwable payloads and exit/reentry contexts remain partial; no lifecycle or full-core closure. Selected named NULL/scalar-return handlers resume ordinary late cleanup. An authenticated entered-frame C-return continuation preserves both protections through handling and uses ordinary VALUE/GC release before the outer result; unhandled bailout transfers the same two without duplication. Four new originals and two affected controls agree; nine independent groups/508 conditions (497 reached, 11 derived) and strict433 pass. Original ownership/dormant-field failures retain zero credit; wider late handlers, pre-body callbacks, owning destructor-body returns and other destructor lifetimes remain partial."
     },
     {
       "id": "lifecycle.output-buffer-callbacks",

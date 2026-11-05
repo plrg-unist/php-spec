@@ -262,7 +262,7 @@ and `zend_closures.c:zend_closure_free_storage` (owned captured/static values
 before `this_ptr`), with the existing source-authenticated entry and executor-task
 guards.
 
-For normal completion or a stable pending main-body exit, a builtin Exception
+With no selected exception handler, after normal completion or a stable main exit, a builtin Exception
 with a literal message thrown by an argument destructor can bail out of tick-list
 destruction. The consumed argument retains the two abandoned destructor/store
 protections; later argument jobs, independent FCC slots and later tick entries
@@ -280,16 +280,28 @@ agree. Entry readiness remains tied to the current full status. Fatal-task scope
 uses the same lookup view without adding owners or changing the actual status,
 which can later become 0 in the separate inactive-child fatal.
 
-Four new native-first exit/throw originals and one affected normal control agree
-exactly. The [ATTR20 review](../../coverage/semantics/callback-late-tick-exit-throw-review.json)
-records five reached groups/265 conditions (9 derived), covering actual versus
-saved status authority, the genuine pending release, budget resume and retained
-owners through later queue/inactive cleanup. No correction was needed.
-Earlier [bailout](../../coverage/semantics/callback-late-tick-throw-review.json),
+A selected named handler returning NULL or a scalar instead resumes the C
+destructor continuation. Its original Throwable retires before registry
+restoration; the throwing argument keeps both C protections until that return.
+Remaining arguments, FCC slots, tick entries and the later queue then retire
+normally. Bound receivers and captured children execute their destructors while
+PHP entry is active. The saved full main exit remains current: handler return 23
+does not replace status 263 or its CLI projection 7. An authenticated C-return
+continuation receives the entered PHP frame's receiver protection before local
+cleanup; its ordinary VALUE decrement occurs after handler restoration and before
+the outer destructor/store result. Unhandled bailout retains the same two roots.
+This does not settle pre-body callback or wider destructor lifetimes.
+
+Four new handled originals and two affected controls agree; strict433 passes.
+Nine independent groups pass 508 conditions (497 reached, 11 derived). The
+[handler review](../../coverage/semantics/callback-late-tick-handler-review.json)
+retains the original Arg2 failure, dormant-field seek failures and corrected cuts.
+Earlier [exit/throw](../../coverage/semantics/callback-late-tick-exit-throw-review.json),
+[bailout](../../coverage/semantics/callback-late-tick-throw-review.json),
 [stable-exit](../../coverage/semantics/callback-late-tick-exit-review.json),
 [cache-shape](../../coverage/semantics/callback-late-tick-callables-review.json)
 and [copied-value](../../coverage/semantics/callback-late-tick-values-review.json)
 evidence keeps its original cuts. Wider callable producers, assertion roots,
-changed phase completions, other throws, exits during cleanup, exception handlers
-and reentrant module shutdown remain partial; this is no full lifecycle or core
-closure.
+changed phase completions, other throws, abrupt/owning-result handlers, pre-body
+callbacks, owning destructor-body returns and reentrant module shutdown remain
+partial; this is no full lifecycle or core closure.
