@@ -90,14 +90,6 @@ def $from_getter(S, n_array) = ((n_receiver, GENERATOR_API_METHOD text_method, "
 dec $generator_capture_invocation_site(pstate, porigin) : bool
 def $generator_capture_invocation_site(S, porigin) = true
   -- if $dynamic_site(S, (porigin))
-def $generator_capture_invocation_site(S, porigin) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
-  -- if ~$ppfirstclass(phpType7*)
-  -- if $method_source_name(phpType20, $ptascii("__invoke"))
-def $generator_capture_invocation_site(S, porigin) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
-  -- if ~$ppfirstclass(phpType7*)
-  -- if $method_source_name(phpType20, $ptascii("__invoke"))
 def $generator_capture_invocation_site(S, porigin) = false -- otherwise
 
 def $generator_selected_method(S, porigin, n, ptbytes, z, (pgeneratormethodselection)) = true
@@ -157,24 +149,6 @@ def $dynamic_value(S, porigin, z_init, z_call) = $generator_capture_enter(S, n, 
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $generator_capture_saved(S, n)
   -- if $closure_callable(S, n)
-def $method_select(S, poperand, ptbytes, phpType7*, z) = $generator_capture_enter(S_read[.TODO = ptask_tail*], n, porigin, z)
-  -- if S.TODO = ptask :: ptask_tail*
-  -- if S.ORIGIN = (porigin)
-  -- if S_read = $resolve_at(S, poperand, z)
-  -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (POBJECT n)
-  -- if $generator_capture_saved(S_read, n)
-  -- if $ptlc(ptbytes) = $ptascii("__invoke")
-  -- if ~$ppfirstclass(phpType7*)
-  -- if $closure_callable(S_read, n)
-
-def $getter_capture_result_valid(S, n, porigin) = true
-  -- if S.ORIGIN = (porigin)
-  -- if ~$dynamic_site(S, (porigin))
-  -- if $generator_capture_invocation_site(S, porigin)
-  -- if $generator_capture_saved(S, n)
-  -- if $getter_capture_live(S, n)
-
 ;; Arguments are already retired. Drop an ignored owning return alone before
 ;; releasing the capture, so its destructor still sees the native call roots.
 dec $generator_capture_unused_result(pstate, nat, porigin) : bool
@@ -205,3 +179,11 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.CO
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $generator_capture_saved(S_read, n)
   -- if $ptlc(ptbytes) = $ptascii("call")
+
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = eps][.COMPLETION = UNSUPPORTED "captured Generator API explicit __invoke"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_capture_saved(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)

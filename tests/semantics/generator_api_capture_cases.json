@@ -102,5 +102,35 @@
     "expected_model": "normal",
     "model_seconds": 300,
     "process_seconds": 320
+  },
+  {
+    "id": "i112-explicit-invoke-wrapper-remains-unsupported",
+    "purpose": "Explicit Closure::__invoke adds a distinct outer native frame; it remains an explicit separate wrapper protocol.",
+    "source": "<?php\nfunction stream112V() { echo 'BAD-BODY|'; yield 'head'; }\n$generator = stream112V(); $capture = $generator->throw(...);\necho 'INVOKE|';\ntry { $capture->__invoke(exception: 17); }\ncatch (TypeError $error) {\n    $trace = $error->getTrace();\n    echo 'TRACE|', $trace[0]['class'] === 'Generator', '|', $trace[0]['function'] === 'throw', '|', $trace[1]['class'] === 'Closure', '|', $trace[1]['function'] === '__invoke', '|', !isset($trace[2]), '|';\n}\n",
+    "source_sha256": "8849a9942935b310765ba8e7e0aaa58f0fcea9fa6e1e944de1823b3184ec64dd",
+    "native_exit": 0,
+    "native_stdout": "INVOKE|TRACE|1|1|1|1|1|",
+    "native_stderr": "",
+    "expected_model": "unsupported",
+    "unsupported_reason": "captured Generator API explicit __invoke",
+    "unsupported_stdout": "INVOKE|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "73",
+            "78",
+            "86",
+            "79",
+            "75",
+            "69",
+            "124"
+          ]
+        ]
+      }
+    ],
+    "model_seconds": 300,
+    "process_seconds": 320
   }
 ]
