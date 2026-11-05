@@ -99,9 +99,68 @@
   ],
   "review": {
     "reviewer": "classes_review_daybreak",
-    "decision": "private_clear_joined_pending",
-    "private_cut": null,
-    "basis": "Independent static/native counterexample review, exact readonly-promoted source and all fixed-input private gates CLEAR; current-parent joined gates pending.",
-    "semantic_cut": "a584f6d28c5d6f75698ed01c10e2d38715cc7afc"
+    "decision": "accepted",
+    "private_cut": "232b9494de49a964c4ec2b6f33f8eb03b4fba743",
+    "basis": "Independent private and joined semantic/evidence CLEAR: exact same patch-id on current parent, source22/strict435/reached106+pure20/boundary35 and focused 238 interactions, exact ATTR26 exit7 and A108 CV Iterator restore bridges on 547; two pre-envelope Unsupported probes retain zero credit.",
+    "semantic_cut": "a584f6d28c5d6f75698ed01c10e2d38715cc7afc",
+    "joined_semantic_cut": "47dfcd615a624bf4915a08601c0a1e81aad45b10"
+  },
+  "joined": {
+    "reviewed_patch_id": "5cdf4bfac407bd3b32add3971c9fe26c9e82fb0c",
+    "first_parent": "2382586d87ae89e86d94d733b8a9c02450769ea4",
+    "first_candidate": "79fab37ea1cd6a5d1ea468266749266bf8125edb",
+    "first_packet": {
+      "source6": {
+        "report": ".tools/class180-artifacts/joined-2382586d8/class180-source-r4kq3m96/report.json",
+        "sha256": "b6f1aa998c08eb4a222e7e467e85016d314491db6053d19b440b02a3b53fa235"
+      },
+      "strict435": {
+        "report": ".tools/class180-artifacts/joined-2382586d8/class180-joined-strict-ujjc9jm8/report.json",
+        "sha256": "a9853672e63bc269f4425e479769351ac2d55e141621684332a187737a1c477f"
+      },
+      "reached106_pure20": {
+        "report": ".tools/class180-artifacts/joined-2382586d8/class180-protocol-f98dvnrp/report.json",
+        "sha256": "963b3ba9a241dcf37fdc2723a8cc0593ec6a755d49550a47da5dc5d58d7a517a"
+      },
+      "boundary35": {
+        "report": ".tools/class180-artifacts/joined-2382586d8/class180-boundaries-uh_p6q7d/report.json",
+        "sha256": "da6d5fd893979cf11a07630492b2e0ce1d992030aa96906262a54fa3ca6af460"
+      },
+      "affected_class179_ctor1": {
+        "report": ".tools/class180-artifacts/joined-2382586d8/class179-source-g688hqyz/report.json",
+        "sha256": "0d12bbd2c95f185e46e1a2711c20b9ab92a5f6fa42e8e02c4beddbce0e436327"
+      },
+      "affected_class178_method1": {
+        "report": ".tools/class180-artifacts/joined-2382586d8/method-runtime-73yi885v/report.json",
+        "sha256": "575270c96f9aca50765e870f576a6a13aac1d315a522a93b0158566450aeda99"
+      }
+    },
+    "first_packet_result": "all exact or true; exit0; empty stderr; stable inputs",
+    "final_parent": "54700807552dd1babe2eb31b37a05ad2349a503f",
+    "final_semantic_candidate": "47dfcd615a624bf4915a08601c0a1e81aad45b10",
+    "final_parent_delta": "ATTR26 changes 444 late destructor EXITED handling; A108 changes only 172/420 CONFIG copied Iterator ini_restore reception. No direct 141/192/383 edit overlap.",
+    "final_bridges": {
+      "attr26_child_late_destructor_exit7": {
+        "report": ".tools/class180-artifacts/joined-547008075/class180-bridge-exit-n499r_e4/report.json",
+        "sha256": "8afa2f60e4697087d2b0e116dbc5a99f37cf260494a45ed3e61bdf7640efee7b"
+      },
+      "a108_cv_iterator_stringable_child_restore": {
+        "report": ".tools/class180-artifacts/joined-547008075/class180-bridge-cv-restore-ic1ev19e/report.json",
+        "sha256": "61a642d000873c95ce1b8ae3ef1c2b7826ad3f7cae231edc08c93cbfbc5c12d2"
+      }
+    },
+    "final_bridge_result": "both exact native/model raw streams and exit status, stable inputs; no semantic change",
+    "uncredited_source_envelope_stops": [
+      {
+        "reason": "direct new ArrayIterator reaches unsupported internal class construction before the CONFIG/CLASS180 composition",
+        "report": ".tools/class180-artifacts/joined-547008075/class180-bridge-restore-bzu_yp4i/report.json",
+        "sha256": "fbaa57ea9f4aca66d380774aff36f343f4a12d7a54e4b315245d235b2950d6dd"
+      },
+      {
+        "reason": "direct new named Iterator unpack lies outside 420 initialized Iterator input shape; CV-held form passed",
+        "report": ".tools/class180-artifacts/joined-547008075/class180-bridge-user-restore-b_iyiksa/report.json",
+        "sha256": "3186dd3152d1918b9f3990a807391ee34fef533d7782f519e9bd6a58ca105171"
+      }
+    ]
   }
 }
