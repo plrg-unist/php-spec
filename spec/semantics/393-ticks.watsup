@@ -52,9 +52,10 @@ dec $tick_property_line(phpType18, phpType56) : int?
 dec $tick_first_type_line(pcoccurrence*) : int?
 dec $tick_type_line(pcnode) : int
 dec $tick_namespace_node(statement) : bool
-dec $tick_has_namespace(statement*) : bool
-dec $tick_namespace_statements(nat, ptickmarker*, nat, statement*, ppwork*) : ptask*
-dec $tick_namespace_tasks(nat, ptickmarker*, nat) : ptask*
+dec $tick_import_node(statement) : bool
+dec $tick_has_flat_work(statement*) : bool
+dec $tick_lexical_statements(nat, ptickmarker*, pcpath, nat, statement*, ppwork*) : ptask*
+dec $tick_lexical_tasks(nat, ptickmarker*, pcpath) : ptask*
 dec $tick_work_below(ppwork*, pcpath) : ppwork*
 dec $tick_early(statement, bool) : bool
 dec $tick_unticked(statement) : bool
@@ -183,8 +184,8 @@ def $tick_declare_body(T, pcodeexpr*, pcpath, SEQUENCE statement*, i_old) = T_bo
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtBlock (SEQUENCE statement*) metadata, b_top) = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, statement*, b_top)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNop metadata, b) = T
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtLabel phpType11 metadata, b) = T
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUse phpType24 phpType51 metadata, b) = T
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGroupUse phpType24 name phpType51 metadata, b) = T
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUse phpType24 phpType51 metadata, b) = T[.LINE = $plcompileline(NStmtUse phpType24 phpType51 metadata)]
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGroupUse phpType24 name phpType51 metadata, b) = T[.LINE = $plcompileline(NStmtGroupUse phpType24 name phpType51 metadata)]
 ;; Trait names/alias/precedence records add no main opcode or callable compilation.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtTraitUse (SEQUENCE (name :: name_tail*)) phpType62 metadata, b) = T[.LINE = $source_line($pcmetadata(name))]
 ;; Semicolon headers compile before their normalized following body; braces
@@ -625,29 +626,34 @@ def $tick_source_plan(S, n) = (T)
   -- if T = $tick_full_plan(pcunit.AST, pcode.EXPRESSIONS, pcode.NAMES, pcode.REDIRECTS, $tick_unit_classes(S.CLASSES, n))
   -- if T.DEPENDENCY = eps
 def $tick_source_plan(S, n) = eps -- otherwise
-;; Lexical compilation flattens Namespace wrappers out of WORK. Merge their
-;; authenticated events around each root's existing work, including empty/EOF.
-def $tick_namespace_work(S, n, ppwork*) = $tick_namespace_statements(n, T.MARKERS, 0, statement*, ppwork*)
+;; Namespace and import metadata is absent from WORK. Merge its certified
+;; events through namespace bodies while preserving the raw work/image.
+def $tick_lexical_work(S, n, ppwork*) = $tick_lexical_statements(n, T.MARKERS, eps, 0, statement*, ppwork*)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if pcunit.AST = PROGRAM statement*
-  -- if $tick_has_namespace(statement*)
+  -- if $tick_has_flat_work(statement*)
   -- if $tick_source_plan(S, n) = (T)
-def $tick_namespace_work(S, n, ppwork*) = $compiled_work(n, ppwork*) -- otherwise
+def $tick_lexical_work(S, n, ppwork*) = $compiled_work(n, ppwork*) -- otherwise
 def $tick_namespace_node(NStmtNamespace phpType44 phpType23 metadata) = true
 def $tick_namespace_node(statement) = false -- otherwise
-def $tick_has_namespace(eps) = false
-def $tick_has_namespace(statement :: statement_tail*) = ($tick_namespace_node(statement) \/ $tick_has_namespace(statement_tail*))
-def $tick_namespace_statements(n, ptickmarker*, n_root, eps, ppwork*) = eps
-def $tick_namespace_statements(n, ptickmarker*, n_root, (NStmtNamespace phpType44 phpType23 metadata) :: statement_tail*, ppwork*) = $tick_namespace_tasks(n, ptickmarker*, n_root) ++ $compiled_work(n, $tick_work_below(ppwork*, [PCINDEX n_root])) ++ $tick_namespace_statements(n, ptickmarker*, $(n_root + 1), statement_tail*, ppwork*)
+def $tick_import_node(NStmtUse phpType24 phpType51 metadata) = true
+def $tick_import_node(NStmtGroupUse phpType24 name phpType51 metadata) = true
+def $tick_import_node(statement) = false -- otherwise
+def $tick_has_flat_work(eps) = false
+def $tick_has_flat_work(statement :: statement_tail*) = ($tick_namespace_node(statement) \/ $tick_import_node(statement) \/ $tick_has_flat_work(statement_tail*))
+def $tick_lexical_statements(n, ptickmarker*, pcpath, n_item, eps, ppwork*) = eps
+def $tick_lexical_statements(n, ptickmarker*, pcpath, n_item, (NStmtNamespace phpType44 (SEQUENCE statement_body*) metadata) :: statement_tail*, ppwork*) = $tick_lexical_tasks(n, ptickmarker*, pcpath ++ [PCINDEX n_item]) ++ $tick_lexical_statements(n, ptickmarker*, pcpath ++ [PCINDEX n_item, PCFIELD 1], 0, statement_body*, ppwork*) ++ $tick_lexical_statements(n, ptickmarker*, pcpath, $(n_item + 1), statement_tail*, ppwork*)
   -- if $plstyle(metadata) = 1
-def $tick_namespace_statements(n, ptickmarker*, n_root, (NStmtNamespace phpType44 phpType23 metadata) :: statement_tail*, ppwork*) = $compiled_work(n, $tick_work_below(ppwork*, [PCINDEX n_root])) ++ $tick_namespace_tasks(n, ptickmarker*, n_root) ++ $tick_namespace_statements(n, ptickmarker*, $(n_root + 1), statement_tail*, ppwork*)
+def $tick_lexical_statements(n, ptickmarker*, pcpath, n_item, (NStmtNamespace phpType44 (SEQUENCE statement_body*) metadata) :: statement_tail*, ppwork*) = $tick_lexical_statements(n, ptickmarker*, pcpath ++ [PCINDEX n_item, PCFIELD 1], 0, statement_body*, ppwork*) ++ $tick_lexical_tasks(n, ptickmarker*, pcpath ++ [PCINDEX n_item]) ++ $tick_lexical_statements(n, ptickmarker*, pcpath, $(n_item + 1), statement_tail*, ppwork*)
   -- if $plstyle(metadata) = 2
-def $tick_namespace_statements(n, ptickmarker*, n_root, statement :: statement_tail*, ppwork*) = $compiled_work(n, $tick_work_below(ppwork*, [PCINDEX n_root])) ++ $tick_namespace_statements(n, ptickmarker*, $(n_root + 1), statement_tail*, ppwork*)
-  -- if ~$tick_namespace_node(statement)
-def $tick_namespace_tasks(n, ptickmarker_all*, n_root) = [AT (PORIGIN n ([PCINDEX n_root])) (TICK (PORIGIN n ([PCINDEX n_root])) ptickmarker)]
-  -- if $tick_marker_at(ptickmarker_all*, [PCINDEX n_root]) = (ptickmarker)
-def $tick_namespace_tasks(n, ptickmarker_all*, n_root) = eps
-  -- if $tick_marker_at(ptickmarker_all*, [PCINDEX n_root]) = eps
+def $tick_lexical_statements(n, ptickmarker*, pcpath, n_item, statement :: statement_tail*, ppwork*) = $tick_lexical_tasks(n, ptickmarker*, pcpath ++ [PCINDEX n_item]) ++ $compiled_work(n, $tick_work_below(ppwork*, pcpath ++ [PCINDEX n_item])) ++ $tick_lexical_statements(n, ptickmarker*, pcpath, $(n_item + 1), statement_tail*, ppwork*)
+  -- if $tick_import_node(statement)
+def $tick_lexical_statements(n, ptickmarker*, pcpath, n_item, statement :: statement_tail*, ppwork*) = $compiled_work(n, $tick_work_below(ppwork*, pcpath ++ [PCINDEX n_item])) ++ $tick_lexical_statements(n, ptickmarker*, pcpath, $(n_item + 1), statement_tail*, ppwork*)
+  -- if ~$tick_namespace_node(statement) /\ ~$tick_import_node(statement)
+def $tick_lexical_tasks(n, ptickmarker_all*, pcpath) = [AT (PORIGIN n pcpath) (TICK (PORIGIN n pcpath) ptickmarker)]
+  -- if $tick_marker_at(ptickmarker_all*, pcpath) = (ptickmarker)
+def $tick_lexical_tasks(n, ptickmarker_all*, pcpath) = eps
+  -- if $tick_marker_at(ptickmarker_all*, pcpath) = eps
 def $tick_work_below(eps, pcpath) = eps
 def $tick_work_below((PPCWORK pcpath_work statement plenv n_line) :: ppwork*, pcpath) = (PPCWORK pcpath_work statement plenv n_line) :: $tick_work_below(ppwork*, pcpath)
   -- if $effect_below(pcpath, pcpath_work)

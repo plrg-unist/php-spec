@@ -271,8 +271,8 @@ def $compiled_work(n, eps) = eps
 def $compiled_work(n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = (AT (PORIGIN n pcpath) (STMT statement)) :: $compiled_work(n, ppwork*)
 ;; Preserve raw compiler images; source-form markers are projected at execution.
 dec $compiled_source_work(pstate, nat, ppwork*) : ptask*
-dec $tick_namespace_work(pstate, nat, ppwork*) : ptask*
-def $compiled_source_work(S, n, ppwork*) = $tick_namespace_work(S, n, ppwork*)
+dec $tick_lexical_work(pstate, nat, ppwork*) : ptask*
+def $compiled_source_work(S, n, ppwork*) = $tick_lexical_work(S, n, ppwork*)
 dec $export_constants((pcpath, pvalue)*) : pconstant*
 def $export_constants(eps) = eps
 def $export_constants((pcpath, pvalue) :: (pcpath_tail, pvalue_tail)*) = (PCONSTANT pcpath pvalue) :: $export_constants((pcpath_tail, pvalue_tail)*)
