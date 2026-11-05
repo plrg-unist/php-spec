@@ -41,6 +41,18 @@ At runtime each completed write remains visible if a later target throws; later
 targets and the body stay unevaluated while ordinary cleanup releases the
 iterator. Callable-bearing reference patterns retain an explicit dependency.
 
+An ordinary global `const A=..., B=...` group is one statement. Plans compile
+initializers in declaration order and reset adjacency after each real binding,
+then emit one marker after the complete group. Declaration receipts certify the
+items but keep diagnostic lines. The constant-AST walk threads the emitted line:
+pure literals preserve it, static Closure compilation leaves its end line, and
+unfolded constant names set their own source line. Constant arrays visit values
+before keys; published folds and redirects omit erased children.
+Callbacks therefore see every completed binding; callback throw skips later
+declarations while the installed constants remain available to the exception
+handler. Callable-bearing constant arrays and deferred construction retain
+explicit dependencies, as do unproved attributed initializer contexts.
+
 Switch plans visit the subject, every case condition, then every body in compiler
 order. Case bodies share adjacency across selected and unselected branches;
 fallthrough and jumps retain the ordinary switch runtime. A final temporary
@@ -175,6 +187,9 @@ target skipping and abrupt target cleanup.
 The [destructuring tick review](../../coverage/semantics/tick-list-review.json)
 records nested RHS/key/target ordering, lazy Foreach list targets and partial
 writes before abrupt cleanup.
+The [global constant tick review](../../coverage/semantics/tick-constant-review.json)
+records whole-group placement, initializer declarables/lines and installed
+bindings surviving callback abort.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

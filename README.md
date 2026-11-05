@@ -322,6 +322,8 @@ Foreach targets compile value before key, including for an empty input, while
 execution retains per-iteration target callbacks and abrupt cleanup.
 By-value destructuring compiles the RHS before nested keys and targets, retaining
 completed writes when a later target throws.
+Plain global constant groups receive one tick after all bindings, with initializer
+declarables and final compiler lines preserved.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.

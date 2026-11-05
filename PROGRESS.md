@@ -1013,6 +1013,8 @@ Foreach value/key targets compile before the body even for empty input. Shared
 by-value list traversal visits RHS, keys and nested targets in compiler order.
 Runtime target callbacks stay lazy per iteration, and later failure preserves
 completed writes while skipping pending targets/body and releasing the iterator.
+Plain global constant groups compile initializers in order and tick after all
+bindings, preserving the final emitter line and installed values on callback abort.
 
 Conditional and coalescing plans use published operands, redirects and retained
 effects. Bodies erased during compilation and their static errors stay absent;
@@ -1031,7 +1033,8 @@ Exact source, strict and reached-state cuts remain in the
 [Echo](coverage/semantics/tick-echo-review.json),
 [grouped emitters](coverage/semantics/tick-grouped-review.json),
 [Foreach targets](coverage/semantics/tick-foreach-review.json),
-[destructuring](coverage/semantics/tick-list-review.json) and
+[destructuring](coverage/semantics/tick-list-review.json),
+[global constants](coverage/semantics/tick-constant-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
