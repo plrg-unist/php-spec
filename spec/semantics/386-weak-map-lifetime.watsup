@@ -162,7 +162,11 @@ def $weakmap_write_value_allowed(S, paccess) = true
   -- if paccess.VALUE = POBJECT n_value
   -- if paccess.OBJECT = (n_map)
   -- if S.OBJECTS[n_map] = WEAKMAP eps
-  -- if $weakmap_declared_value_child(S, n_value)
+  -- if $node_children(S, HOBJECT n_value) =/= eps
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
+  -- if $weakmap_entries_child_value_free(S, paccess.VALUE)
 def $weakmap_write_value_allowed(S, paccess) = true
   -- if $weakmap_scalar_value(S, paccess.VALUE)
   -- if S.TODO = paccess.TASK :: ptask_tail*

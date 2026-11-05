@@ -180,6 +180,7 @@ dec $weakmap_entries_storage_valid(pstate, nat, nat*) : bool
 def $weakmap_entries_storage_valid(S, n_map, n_freeing*) = $weakmap_entries_storage_policy(S, n_map, n_freeing*, false)
 dec $weakmap_entries_teardown_table(pstate, nat) : bool
 def $weakmap_entries_teardown_table(S, n_map) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, eps, $weakmap_entries_direct_values($weakmap_entries_contents(S, n_map))))
+dec $weakmap_entries_child_storage(pstate, nat) : bool
 dec $weakmap_entries_table_valid(pstate, nat, nat*) : bool
 def $weakmap_entries_table_valid(S, n_map, n_freeing*) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_valid(S, n_map, n_freeing*))
 
@@ -207,6 +208,34 @@ def $weakmap_entries_write_allowed(S, paccess) = true
   -- if $node_children(S, HOBJECT n_key) = eps
   -- if ($weakmap_entries_direct_values($weakmap_entries_contents(S, n_map)) /\ ($weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps \/ $weakmap_shared_registration(S, n_map, n_key, paccess.VALUE))) \/ ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps /\ $weakmap_set_shape(paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")]) /\ ($weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map] \/ $weakmap_shared_replacement(S, n_map, n_key, paccess.VALUE)))
   -- if $weakmap_entries_payload_allowed(S, paccess.VALUE, $weakmap_entries_direct_values($weakmap_entries_contents(S, n_map)))
+;; New-key append shares finite Value validation. The older payload/storage
+;; domain keeps its exact replacement, callback and shared-Key policy.
+def $weakmap_entries_write_allowed(S, paccess) = true
+  -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
+  -- if paccess.BASE = BASE_VALUE poperand
+  -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
+  -- if S.TODO = paccess.TASK :: ptask_tail*
+  -- if paccess.RHS = S.RESULT
+  -- if paccess.SELECTED = $rcontainer_selected(S, paccess.RHS)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_entries_child_storage(S, n_map)
+  -- if ~($weakmap_entries_teardown_table(S, n_map) /\ $weakmap_entries_payload_allowed(S, paccess.VALUE, $weakmap_entries_direct_values($weakmap_entries_contents(S, n_map))))
+  -- if S_base = $quiet_operand(S, poperand)
+  -- if S_base.COMPLETION = NORMAL /\ S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.COMPLETION = NORMAL /\ S_key.RESULT = KNOWN paccess.OFFSET
+  -- if S_value = $quiet_operand(S, paccess.SELECTED)
+  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN paccess.VALUE
+  -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = eps
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $objectprops_at(S.OBJECTPROPS, n_key) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n_key) = eps
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if $weakmap_entries_child_value_free(S, paccess.VALUE)
 def $weakmap_entries_write_allowed(S, paccess) = false -- otherwise
 def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry* ++ [{KEY n_key, VALUE paccess.VALUE, BEFORE $weakref_find(S, S.ALLOCATIONS, n_key), ORDER $weakmap_registration_next(S, n_key)}])], paccess, pvalue_result)
   -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_entries_write_allowed(S, paccess)
@@ -460,11 +489,11 @@ def $weakmap_entries_child_entries_free(S, n_map, pweakmapentry :: pweakmapentry
   -- if $weakmap_entries_child_value_free(S, pweakmapentry.VALUE)
   -- if $weakmap_entries_child_entries_free(S, n_map, pweakmapentry_tail*)
 def $weakmap_entries_child_entries_free(S, n_map, pweakmapentry*) = false -- otherwise
-dec $weakmap_entries_child_table_free(pstate, nat) : bool
-def $weakmap_entries_child_table_free(S, n_map) = true
-  -- if $weakmap_entries_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
-  -- if S.OBJECTS[n_map] = WEAKMAPENTRIES pweakmapentry*
-  -- if $(|pweakmapentry*| >= 2)
+def $weakmap_entries_child_storage(S, n_map) = true
+  -- if $weakmap_at(S, n_map) /\ ~$instance_storage_freeing(S, n_map)
+  -- if pweakmapentry* = $weakmap_entries_contents(S, n_map)
+  -- if pweakmapentry* =/= eps
+  -- if S.OBJECTS[n_map] = $weakmap_entries_pack(pweakmapentry*)
   -- if ~$weakmap_foreach_active(S.ITERATORS, n_map)
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_map) = eps
   -- if $objectprops_at(S.OBJECTPROPS, n_map) = eps
@@ -472,7 +501,9 @@ def $weakmap_entries_child_table_free(S, n_map) = true
   -- if $objectprops_valid(S, S.OBJECTPROPS) /\ $heap_valid($heap_graph(S))
   -- if ~$weakmap_entries_callbacks(S, pweakmapentry*)
   -- if $weakmap_entries_child_entries_free(S, n_map, pweakmapentry*)
-def $weakmap_entries_child_table_free(S, n_map) = false -- otherwise
+def $weakmap_entries_child_storage(S, n_map) = false -- otherwise
+dec $weakmap_entries_child_table_free(pstate, nat) : bool
+def $weakmap_entries_child_table_free(S, n_map) = ($weakmap_entries_at(S, n_map) /\ $weakmap_entries_child_storage(S, n_map))
 def $weakmap_entries_free_allowed(S, n_map, pdestructionrelease) = true
   -- if $weakmap_entries_at(S, n_map)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
