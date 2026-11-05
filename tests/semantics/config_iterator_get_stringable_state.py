@@ -18,7 +18,7 @@ def case(source, selected):
         'pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_name))]',
         '$string_bytes(pvalue_name) = ($ptascii("precision"))',
         '$config_iterator_string_receive_valid(S, pconfigcall, n_name, pvalue_name)',
-        '$config_iterator_copied_header(S, pconfigcall)',
+        '$config_iterator_copied_header(S, pconfigcall[.SENT = [NAMED_SENT (KNOWN pvalue_name)]])',
         '~$config_iterator_copied_call(S, pconfigcall)',
         '$task_nodes(CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_name pvalue_name) = '
         + ('[HOBJECT n_owner]' if selected else 'eps'),
