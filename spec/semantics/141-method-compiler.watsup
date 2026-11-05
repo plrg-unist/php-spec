@@ -643,13 +643,16 @@ def $pppromotion_override_source(P, pchheader, ppropertydesc) = false -- otherwi
 
 
 ;; Property-only and empty class paths remain in 135/133; mixed bodies are ordered here.
+dec $anonymous_owner_factory_header(ppstate, pcpath, pchheader) : bool
 def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root($pppromotion_override_unbound(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pchheader, ppropertydesc*, pmethoddesc*), pcpath, pchheader, ppropertydesc*, pmethoddesc*)
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ $ppmethod_body(pchheader.BODY)
+  -- if ~$anonymous_owner_factory_header(P, pcpath, pchheader)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
   -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
 def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_inherited(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, pmethoddesc*)
   -- if pchheader.KIND = "class" /\ pchheader.PARENT =/= eps /\ $ppmethod_body(pchheader.BODY)
+  -- if ~$anonymous_owner_factory_header(P, pcpath, pchheader)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
   -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)

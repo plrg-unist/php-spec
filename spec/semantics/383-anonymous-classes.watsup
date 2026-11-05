@@ -186,10 +186,41 @@ def $anonymous_method_factory_members(statement :: statement_tail*) = true
   -- if $anonymous_method_factory_members(statement_tail*)
 def $anonymous_method_factory_members(statement*) = false -- otherwise
 
+;; An anonymous owner's methods may compile child templates. Other member
+;; positions retain their class-free fence while its key is reserved.
+dec $anonymous_only_anonymous_classes(pcoccurrence*) : bool
+dec $anonymous_owner_deferred_scope(pcnode) : bool
+def $anonymous_owner_deferred_scope(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
+def $anonymous_owner_deferred_scope(NExprClosure phpType14 phpType4_static phpType4_byref phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $anonymous_owner_deferred_scope(NExprArrowFunction phpType14 phpType4_static phpType4_byref phpType16 phpType18 expression metadata) = true
+def $anonymous_owner_deferred_scope(pcnode) = false -- otherwise
+def $anonymous_only_anonymous_classes(eps) = true
+def $anonymous_only_anonymous_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))) /\ $anonymous_only_anonymous_classes(pcoccurrence*))
+  -- if $anonymous_owner_deferred_scope(pcnode)
+def $anonymous_only_anonymous_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode)) /\ $anonymous_only_anonymous_classes(pcoccurrence*))
+  -- if ~$anonymous_owner_deferred_scope(pcnode)
+dec $anonymous_owner_factory_blocked_member(statement) : bool
+def $anonymous_owner_factory_blocked_member(NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata) = true
+def $anonymous_owner_factory_blocked_member(NStmtTraitUse phpType42 phpType62 metadata) = true
+def $anonymous_owner_factory_blocked_member(NStmtClassMethod phpType14 phpType24 phpType4 (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata) = true
+  -- if $ptlc($base64(text)) = $ptascii("__tostring")
+def $anonymous_owner_factory_blocked_member(statement) = false -- otherwise
+dec $anonymous_owner_factory_members(statement*) : bool
+def $anonymous_owner_factory_members(eps) = true
+def $anonymous_owner_factory_members(statement :: statement_tail*) = (($anonymous_member(statement) /\ ~$anonymous_owner_factory_blocked_member(statement) /\ $anonymous_no_classes($pcwalk($pcchildren(statement, eps))) \/ ($anonymous_method_factory_node(statement) /\ $anonymous_only_anonymous_classes($pcwalk($pcchildren(statement, eps))))) /\ $anonymous_owner_factory_members(statement_tail*))
+def $anonymous_owner_factory_members(statement*) = false -- otherwise
+dec $anonymous_owner_factory_node(pcnode) : bool
+def $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata) = true
+  -- if $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata)
+  -- if $anonymous_owner_factory_members(statement*)
+  -- if ~$anonymous_no_classes($pcwalk($pcchildren(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata, eps)))
+def $anonymous_owner_factory_node(pcnode) = false -- otherwise
+
 dec $anonymous_unit_node(pcnode) : bool
 def $anonymous_unit_node(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 (SEQUENCE statement*) metadata) = ($ptvalidname($base64(text), false) /\ $anonymous_no_classes($pcwalk($pcchildren(NStmtClass phpType14 phpType24 (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 (SEQUENCE eps) metadata, eps))) /\ $anonymous_method_factory_members(statement*))
+def $anonymous_unit_node(pcnode) = true -- if $anonymous_owner_factory_node(pcnode)
 def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_interface_node(pcnode) \/ $anonymous_co_resident_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
-  -- if $anonymous_class_like(pcnode) /\ ~$anonymous_named_class_node(pcnode)
+  -- if $anonymous_class_like(pcnode) /\ ~$anonymous_named_class_node(pcnode) /\ ~$anonymous_owner_factory_node(pcnode)
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
 def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode) /\ ~$anonymous_named_scope(pcnode)
@@ -407,6 +438,89 @@ def $anonymous_compiler_unit(P) = $anonymous_unit(P.FOLD.SOURCE) -- if P.FOLD.SO
 def $anonymous_compiler_unit(P) = ($anonymous_rtd_unit(P.FOLD.SOURCE) =/= eps /\ P.EVALCLASS = eps /\ P.DIAGNOSTICS = eps)
   -- if $(P.FOLD.SOURCE.ID > 0)
 
+;; Zend allocates the anonymous owner's key before compiling its members.
+;; The provisional descriptor is compiler-local until the whole body succeeds.
+dec $anonymous_owner_key(ppstate, pcpath, pchheader, int, nat) : bool
+def $anonymous_owner_key(P, pcpath, pchheader, z_line, n_counter) = true
+  -- if pchheader.PARENT = eps /\ P.EARLY = (pcpath)
+  -- if $anonymous_class_name(P.LOCATION.FILE, z_line, n_counter) = (pchheader.NAME)
+def $anonymous_owner_key(P, pcpath, pchheader, z_line, n_counter) = true
+  -- if pchheader.PARENT = (ptbytes_parent)
+  -- if P.EARLY = eps
+  -- if $anonymous_parent_class_name(ptbytes_parent, P.LOCATION.FILE, z_line, n_counter) = (pchheader.NAME)
+def $anonymous_owner_key(P, pcpath, pchheader, z_line, n_counter) = false -- otherwise
+def $anonymous_owner_factory_header(P, pcpath, pchheader) = true
+  -- if P.COMPLETION = PPCNORMAL /\ P.FOLD.SOURCE.ID = 0
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath) = (NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata)
+  -- if $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags) ABSENT phpType44 (SEQUENCE eps) (SEQUENCE statement*) metadata)
+  -- if $class_at(P.CLASSES, PORIGIN 0 pcpath) = eps
+  -- if pchheader.KIND = "class" /\ ~pchheader.ABSTRACT /\ ~pchheader.FINAL
+  -- if pchheader.BODY = SEQUENCE statement* /\ pchheader.INTERFACES = eps
+  -- if pchheader.READONLY = (flags = 64)
+  -- if $pchparent(phpType44, $ppclass_context(P)) = PCHNAMES ptbytes_parent* eps
+  -- if pchheader.PARENT = $pchparentoption(ptbytes_parent*)
+  -- if z_line = $anonymous_class_line(flags, metadata)
+  -- if P.LOCATION.LINE = z_line
+  -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, 0) = (n_counter)
+  -- if $anonymous_owner_key(P, pcpath, pchheader, z_line, n_counter)
+def $anonymous_owner_factory_header(P, pcpath, pchheader) = false -- otherwise
+
+dec $anonymous_owner_reserve(ppstate, pcpath, pchheader) : ppstate
+def $anonymous_owner_reserve(P, pcpath, pchheader) = P[.CLASSES = P.CLASSES ++ [{ ORIGIN PORIGIN 0 pcpath, KIND "class", NAME pchheader.NAME, PARENT pchheader.PARENT, INTERFACES eps, PROPERTIES eps, METHODS eps, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY pchheader.READONLY, EARLY (pchheader.PARENT = eps), LINE P.LOCATION.LINE }]]
+  -- if P.COMPLETION = PPCNORMAL
+def $anonymous_owner_reserve(P, pcpath, pchheader) = P -- otherwise
+dec $anonymous_owner_finish(ppstate, pcpath, pchheader, ppropertydesc*, pmethoddesc*) : ppstate
+def $anonymous_owner_finish(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P[.CLASSES = $trait_class_set(P.CLASSES, pclassdesc[.INTERFACES = ptbytes_interface*][.PROPERTIES = ppropertydesc*][.METHODS = pmethoddesc*][.CONSTANTS = $ppclass_constants(P.CLASSCONSTANTS, PORIGIN 0 pcpath)][.EARLY = (pclassdesc.EARLY /\ ptbytes_interface* = eps)])]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $class_at(P.CLASSES, PORIGIN 0 pcpath) = (pclassdesc)
+  -- if $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*) = ptbytes_interface*
+def $anonymous_owner_finish(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $anonymous_owner_finish(P, pcpath, pchheader, ppropertydesc*, pmethoddesc*) = $ppunsupported(P, "missing provisional anonymous owner") -- otherwise
+
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $anonymous_owner_finish($pppromotion_override_unbound(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pchheader, ppropertydesc*, pmethoddesc*), pcpath, pchheader, ppropertydesc*, pmethoddesc*)
+  -- if pchheader.PARENT = eps /\ $anonymous_owner_factory_header(P, pcpath, pchheader)
+  -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups($anonymous_owner_reserve(P_header, pcpath, pchheader), pcpath, 0, statement*, eps, eps, pchheader)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $anonymous_owner_finish(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, pmethoddesc*)
+  -- if pchheader.PARENT =/= eps /\ $anonymous_owner_factory_header(P, pcpath, pchheader)
+  -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
+  -- if pchheader.BODY = SEQUENCE statement*
+  -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups($anonymous_owner_reserve(P_header, pcpath, pchheader), pcpath, 0, statement*, eps, eps, pchheader)
+
+;; Abrupt unit compilation cannot install earlier anonymous owner children.
+;; Diagnostic replay still runs before this source-authenticated skip.
+dec $anonymous_failed_owner_child_occurrences(ppstate, pcpath, pcoccurrence*) : bool
+dec $anonymous_failed_owner_child_member(ppstate, pcpath, pcoccurrence) : bool
+def $anonymous_failed_owner_child_member(P, pcpath_child, PCOCCURRENCE pcpath_method (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)) = true
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $(|pcpath_method| >= 2)
+  -- if pcpath_owner = pcpath_method[0:$nabs($(|pcpath_method| - 2))]
+  -- if pcpath_method[$nabs($(|pcpath_method| - 2)):2] = [PCFIELD 5, PCINDEX n_method]
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_owner) = (pcnode_owner)
+  -- if $anonymous_owner_factory_node(pcnode_owner)
+  -- if $class_at(P.CLASSES, PORIGIN 0 pcpath_owner) = (pclassdesc_owner)
+  -- if $class_at(P.INSTALLED.CLASSES, PORIGIN 0 pcpath_owner) = eps
+  -- if pcpath_body = pcpath_method ++ [PCFIELD 6]
+  -- if $(|pcpath_body| < |pcpath_child|)
+  -- if pcpath_child[0:|pcpath_body|] = pcpath_body
+def $anonymous_failed_owner_child_member(P, pcpath_child, pcoccurrence) = false -- otherwise
+def $anonymous_failed_owner_child_occurrences(P, pcpath_child, eps) = false
+def $anonymous_failed_owner_child_occurrences(P, pcpath_child, pcoccurrence_head :: pcoccurrence_tail*) = true
+  -- if $anonymous_failed_owner_child_member(P, pcpath_child, pcoccurrence_head)
+def $anonymous_failed_owner_child_occurrences(P, pcpath_child, pcoccurrence_head :: pcoccurrence_tail*) = $anonymous_failed_owner_child_occurrences(P, pcpath_child, pcoccurrence_tail*)
+  -- if ~$anonymous_failed_owner_child_member(P, pcpath_child, pcoccurrence_head)
+def $anonymous_failed_owner_child_checkpoint(P, PORIGIN 0 pcpath_child) = true
+  -- if P.FOLD.SOURCE.ID = 0 /\ $anonymous_unit(P.FOLD.SOURCE)
+  -- if P.COMPLETION = PPCABRUPT pcompletion
+  -- if ~$declaration_unsupported(pcompletion)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_child) = (NStmtClass phpType14 phpType24 ABSENT phpType44 phpType42 phpType23 metadata)
+  -- if $class_at(P.CLASSES, PORIGIN 0 pcpath_child) = (pclassdesc_child)
+  -- if $class_at(P.INSTALLED.CLASSES, PORIGIN 0 pcpath_child) = eps
+  -- if $anonymous_failed_owner_child_occurrences(P, pcpath_child, P.FOLD.SOURCE.OCCURRENCES)
+def $anonymous_failed_owner_child_checkpoint(P, porigin) = false -- otherwise
+
 dec $anonymous_factory_context(ppstate, pcpath) : bool
 def $anonymous_factory_context(P, pcpath) = true
   -- if $anonymous_compilation_unit(P.FOLD.SOURCE)
@@ -417,6 +531,32 @@ def $anonymous_factory_context(P, pcpath) = true
   -- if $anonymous_factory_source(P, pcnode) = ((ptbytes_name, n_body))
   -- if P.FOLD.FUNCTION = ptbytes_name
   -- if pcpath_body = P.GOTOROOT ++ [PCFIELD n_body]
+  -- if $(|pcpath_body| < |pcpath|)
+  -- if pcpath[0:|pcpath_body|] = pcpath_body
+def $anonymous_factory_context(P, pcpath) = true
+  -- if P.FOLD.SOURCE.ID = 0 /\ $anonymous_unit(P.FOLD.SOURCE)
+  -- if ~P.CLOSURE /\ ~P.FOLD.CLOSURE /\ ~P.RETURNREF
+  -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (P.GOTOROOT)) = (NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $anonymous_method_factory_node(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if $(|P.GOTOROOT| >= 2)
+  -- if pcpath_owner = P.GOTOROOT[0:$nabs($(|P.GOTOROOT| - 2))]
+  -- if P.GOTOROOT[$nabs($(|P.GOTOROOT| - 2)):2] = [PCFIELD 5, PCINDEX n_method]
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath_owner) = (NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE eps) (SEQUENCE statement_owner*) metadata_owner)
+  -- if $anonymous_owner_factory_node(NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE eps) (SEQUENCE statement_owner*) metadata_owner)
+  -- if $class_at(P.CLASSES, PORIGIN 0 pcpath_owner) = (pclassdesc_owner)
+  -- if pclassdesc_owner.METHODS = eps /\ pclassdesc_owner.PROPERTIES = eps /\ pclassdesc_owner.CONSTANTS = eps
+  -- if $anonymous_compiled_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, P.FOLD.EXTERNAL, 0) =/= eps
+  -- if $pchlower(NStmtClass (SEQUENCE eps) (INTEGER flags_owner) ABSENT phpType44_owner (SEQUENCE eps) (SEQUENCE statement_owner*) metadata_owner) = PCHRAW pchraw_owner
+  -- if $plclasscontext(P.FOLD.SOURCE, pcpath_owner, P.LOCATION.FILE, pclassdesc_owner.LINE) = (ptcontext_owner)
+  -- if P.ENV.NAMESPACE = ptcontext_owner.NAMESPACE /\ P.ENV.CLASSES = ptcontext_owner.IMPORTS
+  -- if pchheader_owner = { KIND "class", NAME pclassdesc_owner.NAME, ABSTRACT false, FINAL false, READONLY pclassdesc_owner.READONLY, PARENT pclassdesc_owner.PARENT, INTERFACES eps, BODY pchraw_owner.BODY }
+  -- if z_method = $declaration_method_keyword_line(metadata, metadata_name)
+  -- if $(z_method > 0)
+  -- if P.CLASSCONTEXT = ($ppmethod_context(P, pchheader_owner, $base64(text), z_method))
+  -- if P.FOLD.CLASSCONTEXT = P.CLASSCONTEXT
+  -- if P.FOLD.FUNCTION = pclassdesc_owner.NAME ++ $ptascii("::") ++ $base64(text)
+  -- if pcpath_body = P.GOTOROOT ++ [PCFIELD 6]
   -- if $(|pcpath_body| < |pcpath|)
   -- if pcpath[0:|pcpath_body|] = pcpath_body
 def $anonymous_factory_context(P, pcpath) = true
