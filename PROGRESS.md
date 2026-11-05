@@ -788,6 +788,14 @@ Two originals agree exactly and one 93-condition handler-write front passes;
 [float-payload review](coverage/semantics/gc-float-payload-review.json) retains
 the failed setup/dispatch cuts with zero credit.
 
+Public typed float-property NaN warnings also retain their selected borrowed
+receiver through authenticated API callback argument delivery. A handler can
+write the captured slot and rebind the original CV; the result still reads that
+slot. One unchanged original and one 82-condition cursor/ownership/resumption
+front pass. The old interpreter failure keeps zero credit; WeakMap rules and
+their evidence remain unchanged.
+[Property cursor repair](coverage/semantics/gc-property-nan-cursor-review.json).
+
 Finite-payload notification admits only the actual retiring leaf `stdClass` Key
 under its validated storage pin. The other Keys remain nonfreeing and registered
 only in this Map; no active cursor or incoming Map-key association is admitted.
@@ -1925,7 +1933,7 @@ parser/task/state interfaces stay fixed, so the prior pipe/syntax cuts stand.
 | --- | --- |
 | CLASS192 | Zero-argument __call/__callStatic dispatch and real empty-array ownership; private implementation/review. |
 | I116 | Direct literal Generator APIs with one initialized user-Iterator CV pack; private implementation/review. |
-| GC51 | Authenticated property-public NaN API cursor continuation; private implementation/review. |
+| GC52 | Finite DIRECT-array WeakMap payload layer with existing COW/release; private implementation/review. |
 | COMP185 | Owning Deprecated constant values: retain pre/post-warning value/class roots and prefix-bound observations. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR44 | Plain existing TraitUse Tick traversal and imported-method callbacks; private implementation/review. |

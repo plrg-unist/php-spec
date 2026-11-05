@@ -1,0 +1,60 @@
+{
+  "scope": "GC51: restore the existing public typed-float NaN empty handler through authenticated API error argument-send/reference wrappers, preserving the selected borrowed property receipt.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "a6ffde657dc7277392d84f229febc00b48cac303",
+  "semantic_revision": "80cf88b46c4ae10f7b31b9bd555aceb02a5a1c28",
+  "semantic_sha256": {
+    "spec/semantics/411-public-property-empty-nan.watsup": "977572e46fac65abe0df254031491e8429af46108bb46a842a2b800bcce39061"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/front-44bc-v1/report.json": "44bc0c36d2354dfa600a8ba71e70ba7a2063e6b7",
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/native-v1/model-property-nan-one-default-api-handler-report.json": "80cf88b46c4ae10f7b31b9bd555aceb02a5a1c28",
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/native-v1/model-report.json": "61102813bf7493615d6ada630ea1f5ffd9b393ff",
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/native-v1/native-report.json": "61102813bf7493615d6ada630ea1f5ffd9b393ff"
+  },
+  "rule_basis": "API_CALLBACK_SEND/REF(API_ERROR) revalidate error_call_valid before handler entry. The public-property receipt previously used a global suffix projection which sees ERROR_HANDLER wrappers but leaves these API cursors opaque. A411-local pure projection recognizes only API_ERROR whose RESUME is this PROPERTY_PUBLIC_NAN record, then applies the unchanged first-exact-marker/exact-tail policy. One validity premise uses that suffix. It calls no cursor validator and cannot recurse. Source/descriptor/CELL/OWNER/CALLER, current slot/type/truth, task roots, handler argument and generic API validation are unchanged. Other API kinds/resumes keep the global identity fallback.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_has_property",
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true",
+    "spec/semantics/442-deprecated-api-callbacks.watsup:api_callback_begin,api_cursor_valid,API_CALLBACK_SEND/REF (unchanged)",
+    "spec/semantics/287-source-array-operands.watsup:source_operand_marker/suffix (unchanged)"
+  ],
+  "counts": {
+    "restored_existing_exact_originals": 1,
+    "newly_authored_php_sources": 0,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 82,
+    "new_unsupported_php_controls": 0,
+    "old_interpreter_failure_agreements": 0,
+    "constructed_control_php_agreements": 0
+  },
+  "validation": {
+    "original": "The unchanged quiet-public-nan-one-default.php creates an inherited public typed-float NAN property. A named handler writes captured saved.value=1.0, rebinds original child=NULL and returnsfalse. Outer empty is false from the captured live slot; rereading NULL would incorrectly be true. The real fallback Warning is emitted and saved receiver destruction follows the result. Native and80cf model agree exactly on O:I|H|h|F|D|E|, Warning line19, exit0 and normal completion.",
+    "front": "One82-condition strict-SL group reaches actual API_CALLBACK_SEND INDEX0. Global suffix is false while the local exact projection, receipt, error and full cursor validators are true. Child+saved provide the actual receiverowner2; both the receipt and current API cursor own no nodes. Real scalar argument send INDEX0to1 preserves object/slot/store/allocation state, GC and receiverowner2. Zero/one-step driver pauses and full resumed completions agree, including final receiver retirement. The later numericowner1 is not separately asserted; the captured1.0 versus reboundNULL behavior is supplied by the exact original ending.",
+    "counterstates": "Wrong receiptOWNER/tail, wrong diagnosticLINE, other API-error resume and first-matching-marker/tail rejection retain authority. A constructed REF task projects the same record but remains invalid under the full by-value parameter protocol. These are helper/counterstate obligations, not extra source agreements.",
+    "identity": "Credited reports retain stable inputs/head and empty process groups. Source commands/profiles/raw Warning bytes/process outcomes and complete generated front remain external. Four front binary identities were directly postchecked and independently matched unchanged."
+  },
+  "sources_sha256": {
+    "tests/semantics/quiet-public-nan-one-default.php": "2a84e184575dfcfb880a035c653727f7c60a9c6428ded06128443ab3323732a6"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc51_property_nan_sources.py": "cfab763b1587fa724100b5addd296f72bd39deb09ea4a3d747bd48b91f6cfc60",
+    "tests/semantics/gc51_property_nan_state.py": "4f76903b27f48ab64ee934ed9793de1d284e91b1d9c8faf1e0e9b520d82bcf8b"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/front-44bc-v1/report.json": "f4a1dc82f7c786cf73a93cc9b472c54d635b8e2328ba408854c4605283b5faa5",
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/native-v1/model-property-nan-one-default-api-handler-report.json": "d0da0bedb7464dcbe4b23a730528e5bec36b01b1812a92f760726abf6acda352",
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/native-v1/model-report.json": "0f211b98cda2a1b9f5efd5290d425e206dff8217ac85faf6ca4b58478696c79f",
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/native-v1/native-report.json": "0f67b5a6c3744145fb7864547a3f31c529248f5c7ce593255dcfb43ed4d3824c"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-property-nan-cursor-author-51/manifest.json": "7058ac67cb2b8caace82d571c2a8a448bb0a592e9df281dc2c811982b3a0aa2d",
+    "../php-spec-evidence-archive/gc-property-nan-cursor-peer-51/independent-summary.json": "b93d6319ca9f10806593cbc168b57d85d35971977f17bfa9a755f63a5d967574"
+  },
+  "preserved_zero_credit": "Current61102813b model fails interpreter before handler entry after16.00s, stable inputs/head, exit1/no timeout/empty process group; wrapper KeyErrorfrontend is secondary. The complete unsuffixed report/raw is preserved0.80cf changes only actual wrapper recognition; the same unchanged source/native absolute path passes in a distinct case suffix after19.46s. The sole front passes first execution. No historical evidence was rerun or recounted.",
+  "compatibility": "GC50 files30/386/422 are byte-identical to integrateda6. No shared287/442 or global truth/schema/ownership change. Existing no-API property markers use the identical global projection and first-exact-tail semantics. Original direct/reference-property cuts keep their identities; no new reference-slot source claim,50/51 renewal or intentional engine divergence.",
+  "limits": "Property source, visibility/type/layout, receiver/selected-cell lifetime and current numeric-slot limits remain exactly the existing411 policy. This repair adds no generic conversion domain, new object/cell root, arbitrary API authority or wider receipt traversal. Sole-owner receiver retirement and wider quiet-CV collection remain partial. Held GC35, Source47/COMP88 and paused lanes remain untouched.",
+  "recovery": "Run gc51_property_nan_sources.py native then model in one fresh directory under the pinned profile/cap180. Retained native-v1 old unsuffixed failure stays intact; --case property-nan-one-default-api-handler writes the accepted distinct suffix. Run gc51_property_nan_state.py once for the sole strict-SL82 front (cap180).",
+  "review": "Independent frozen runtime/source and sole-front82 static/result review are CLEAR. Final clean documentation/ledger acceptance is provided by the paired reviewer handoff."
+}

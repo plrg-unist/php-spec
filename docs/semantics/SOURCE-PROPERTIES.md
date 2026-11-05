@@ -32,6 +32,17 @@ unsetting/retyping it or retiring its receiver remains outside that direct-slot
 slice; wider quiet-CV GC stays open.
 [Public NaN review](../../coverage/semantics/quiet-public-nan-review.json).
 
+The selected property receipt remains valid while the error API sends handler
+arguments. A local pure projection recognizes only SEND/REF error cursors that
+resume this property operation; source, owner, caller, first matching marker and
+exact tail remain authoritative. The API still validates its own target and
+argument protocol. The projection adds no receiver or cell owner and leaves
+slot/type validation unchanged. One unchanged `1.0`/default-warning original and
+an 82-condition actual cursor/ownership/budget front validate the
+[repair](../../coverage/semantics/gc-property-nan-cursor-review.json); the initial
+interpreter failure retains zero credit. Existing reference-slot evidence keeps
+its original cut without a new source agreement.
+
 An initially referenced public float slot now captures its original inner cell
 before the Warning. Handler property rebinding transfers the property type-source
 to a new cell; the old alias keeps the captured cell live without a marker owner.

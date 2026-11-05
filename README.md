@@ -5829,6 +5829,9 @@ captured live slot: handler writes of `0.0` make it true, while `1.0` or unchang
 NaN make it false without a second warning. A saved alias keeps the receiver live
 after caller-CV rebinding. Four originals and 469 focused checks cover default,
 handled and thrown warnings; [public NaN review](coverage/semantics/quiet-public-nan-review.json).
+Error callback argument delivery preserves the same source/caller/tail receipt
+without adding a receiver owner. One unchanged original and 82 focused checks
+validate the [API cursor repair](coverage/semantics/gc-property-nan-cursor-review.json).
 Referenced float slots now keep their original inner cell across handler property
 rebinding: old-cell `0.0`/`1.0` decides the result even when the new property holds
 the opposite value. Four originals and 298 focused checks cover type-source transfer,
