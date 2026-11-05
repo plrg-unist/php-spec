@@ -171,11 +171,13 @@ def $magic_method_caller(S, pmagicmethodcall) = true
   -- if ~$instance_storage_freeing(S, pmagicmethodcall.OBJECT)
 def $magic_method_caller(S, pmagicmethodcall) = false -- otherwise
 
+dec $magic_method_value(pstate, pvalue) : bool
 dec $magic_method_argument_capture(pstate, phpType7) : bool
 def $magic_method_argument_capture(S, NArg ABSENT (NExprVariable (BYTES text) metadata) (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if $lookup(S.ENV, $base64(text)) = (n)
   -- if $(n < |S.STORE|) /\ (HCELL n) <- S.ALLOCATIONS /\ ~(n <- S.REFCELLS)
-  -- if S.STORE[n] = DEFINED (PINT i)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $magic_method_value(S, pvalue)
 def $magic_method_argument_capture(S, NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) = true
   -- if ~$call_reference_variable(expression)
 def $magic_method_argument_capture(S, phpType7) = false -- otherwise
@@ -262,7 +264,6 @@ def $magic_method_raw_suffix(ptask :: ptask_tail*, pmagicmethodcall) = $magic_me
 dec $magic_method_raw_valid(pstate, pmagicmethodcall) : bool
 def $magic_method_raw_valid(S, pmagicmethodcall) = (($magic_method_caller(S, pmagicmethodcall) /\ $magic_method_raw_suffix(S.TODO, pmagicmethodcall)) \/ $magic_unpack_raw_valid(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall))
 
-dec $magic_method_value(pstate, pvalue) : bool
 def $magic_method_value(S, PINT i) = true
 def $magic_method_value(S, POBJECT n) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
