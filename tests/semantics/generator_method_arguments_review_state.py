@@ -68,7 +68,7 @@ S_pause = $drive(S, 0)
 S_pause.COMPLETION = BUDGET
 S_pause[.COMPLETION = NORMAL] = S
 PhpStep: S ~> S_normalized
-S_normalized.TODO = (GENERATOR_ARGS pgeneratorop eps [KNOWN (POBJECT n_token)]) :: ptask_tail*
+S_normalized.TODO = (GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_token)])) :: ptask_tail*
 pgeneratorop.OBJECT = n_generator
 pgeneratorop.NAME = "send"
 pgeneratorop.SITE = pconfigcall.SITE
@@ -78,15 +78,15 @@ pgeneratorop.LOOP = eps
 pgeneratorop.ARGUMENTS = eps
 ~pgeneratorop.STARTPACK
 ~pgeneratorop.BORROWED
-$task_nodes(GENERATOR_ARGS pgeneratorop eps [KNOWN (POBJECT n_token)]) = $config_nodes(pconfigcall)
+$task_nodes(GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_token)])) = $config_nodes(pconfigcall)
 S_normalized.EVENTS = S.EVENTS
 S_normalized.STORE = S.STORE
 S_normalized.ALLOCATIONS = S.ALLOCATIONS
 $heap_owners($heap_graph(S_normalized), HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_normalized), HOBJECT n_token) = 2
-$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop eps [KNOWN (POBJECT n_token)])
-~$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop[.NAME = "throw"] eps [KNOWN (POBJECT n_token)])
-~$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop eps [REFERENCE n_caller_cell])
+$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop eps ([KNOWN (POBJECT n_token)]))
+~$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop[.NAME = "throw"] eps ([KNOWN (POBJECT n_token)]))
+~$call_task_valid(S_normalized, GENERATOR_ARGS pgeneratorop eps ([REFERENCE n_caller_cell]))
 $heap_valid($heap_graph(S_normalized))
 $call_descriptors_valid(S_normalized)
 '''.splitlines() if line.strip()]
