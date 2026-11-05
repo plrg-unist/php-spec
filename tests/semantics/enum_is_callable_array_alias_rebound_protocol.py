@@ -63,7 +63,8 @@ def raw():
         '$enum_is_callable_saved(S_wrong_id, pconfigcall_raw_send, PARRAY n_raw_array) = eps',
         '$enum_is_callable_ref_array_alias_old(S_wrong_id, pconfigcall_raw_send, n_raw_output, PARRAY n_raw_old, penumqueryinput_raw.VALUE, pconfigcall_raw_send.LINE) = false',
         '$lookup(S_raw_send.ENV, $ptascii("ok")) = (n_raw_ok)',
-        'S_raw_send.STORE[n_raw_ok] = DEFINED (PSTRING $ptascii("UNCHANGED"))',
+        'S_raw_send.STORE[n_raw_ok] = DEFINED pvalue_raw_ok',
+        '$string_bytes(pvalue_raw_ok) = ($ptascii("UNCHANGED"))',
         'S_raw_send.ARRAYS[n_raw_old] = parray_raw_old',
         'n_raw_after = $(n_raw_old + 1)',
         'n_raw_remaining = $nabs($(|S_raw_send.ARRAYS| - n_raw_after))',
@@ -133,7 +134,8 @@ def thrown():
         'n_thrown_old =/= n_thrown_array',
         '$enum_is_callable_variable_array_name(S_thrown_done, PARRAY n_thrown_old) = ($ptascii("OtherCheck::tryFrom"))',
         '$lookup(S_thrown_done.ENV, $ptascii("ok")) = (n_thrown_ok)',
-        'S_thrown_done.STORE[n_thrown_ok] = DEFINED (PSTRING $ptascii("UNCHANGED"))',
+        'S_thrown_done.STORE[n_thrown_ok] = DEFINED pvalue_thrown_ok',
+        '$string_bytes(pvalue_thrown_ok) = ($ptascii("UNCHANGED"))',
         '$eic_output(S_thrown_done.EVENTS) = $ptascii(' + json.dumps(row['expected_normal_stdout']) + ')',
     ]
     return checks
