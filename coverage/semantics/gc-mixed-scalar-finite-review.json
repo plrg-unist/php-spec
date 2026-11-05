@@ -1,0 +1,80 @@
+{
+  "scope": "GC49: one shared policy for safe scalar or finite methodless-object WeakMap payloads across insertion/append, occupied replacement, reads, explicit unset, selective Key notification and ordinary Map retirement.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "b49defed73ff8ca9da151f3a247f073726db6488",
+  "semantic_revision": "687bd303079ae39609fb5cb35ad56d2c9704cd64",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "f74c5d8a592b63e8735c8b027d173761f539a9db978f3cdff69b1010409775b7"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/baseline-report.json": "01ae04e1170ce5910cc053eb292e30722eb33254",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/model-report.json": "8c54acd227de86f4858fa1a4c10427ef82201489",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/model-scalar-to-finite-mixed-map-free-finite-to-null-child-throw-report.json": "687bd303079ae39609fb5cb35ad56d2c9704cd64",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/native-report.json": "01ae04e1170ce5910cc053eb292e30722eb33254",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/reached-9809-type-failure-v1/report.json": "9809ca8c9b317d3355e6380dda98267325b36944",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/reached-fbae-carrier-failure-v1/report.json": "fbae2fe89ecdc69809dc6c8c6c6aa21d4dad78e5",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/reached-30b-v1/report.json": "30b255441111dc71cded1a802599eb0b2bde3c64",
+    "../php-spec-evidence-archive/gc-mixed-value-policy-peer-49/native-v1/native-report.json": "f4a02e1e04bc57bbe8fec8c72983bb58aac05c76",
+    "../php-spec-evidence-archive/gc-mixed-value-policy-peer-49/native-unset-v2/native-report.json": "b57a8b3b66b745a3890aff01c1dfceead6007f6f",
+    "../php-spec-evidence-archive/gc-mixed-value-policy-peer-49/native-unset-v2/model-report.json": "b57a8b3b66b745a3890aff01c1dfceead6007f6f"
+  },
+  "rule_basis": "The existing common child_value_free validator gains one direct pvalue-only arm for weakmap_scalar_value: null/bool/int/validated startup strings. Existing object arms, source/operand/evaluation authority, storage fences, old-domain exclusions and ownership executors remain. This admits scalar/finite mixtures without a separate cardinality path. Many-table present KEY_TEST now binds the actual borrowed stored value and tests nonNULL for isset or negated truth for empty. No value copy/owner is added; absent rows remain unchanged. Prior direct/reference-object rows are nonNULL/truthy, giving exactly the old~b result. No301/GC hook/schema change.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_write_dimension,read_dimension,has_dimension,unset_dimension,free_obj",
+    "vendor/php-src/Zend/zend_execute.c:zend_assign_to_object_dim",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ASSIGN_DIM",
+    "spec/semantics/386-weak-map-lifetime.watsup:weakmap_scalar_value,weakmap_map_free_slot_allowed,correct singleton presence semantics (unchanged)",
+    "spec/semantics/422-weak-map-entries.watsup:common payload/storage guards and present KEY_TEST executor"
+  ],
+  "counts": {
+    "new_exact_originals": 3,
+    "author_exact_originals": 2,
+    "independent_exact_originals": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 89,
+    "new_unsupported_php_controls": 0,
+    "old_runtime_baseline_agreements": 0,
+    "initial_presence_mismatch_agreements": 0,
+    "fixture_setup_failure_agreements": 0,
+    "superseded_peer_native_preparation_agreements": 0
+  },
+  "validation": {
+    "author_sources": "A replaces a safe seed string with a prebuilt finite Value, preserving used-result identity and outside Value/Child owners; appends false, observes isset1/empty1/coalesceFalse, then releases outside owners and normally frees the mixed Map. B replaces a last-owner finite Value by NULL beside a finite sibling; Child observes directNULL/isset0/empty1/coalesce fallback, live sibling and result77, rebinds RHS then throws a supplied Exception. Identity/creation trace and skipped result/next statement agree; final Map retirement releases the sibling.",
+    "independent_source": "Fetched held old[X,Y,X] is replaced by integer0 with used-result identity and mixed-table read/quiet tests. Releasing held old later runs Y then X while the installed0 and finite sibling remain visible. Explicit scalar-row unset proves absence; reappend0 restores a mixed table, then sibling Key death runs Z over the surviving scalar0. Final Map retirement completes normally.",
+    "reached": "One89-condition strict-SL group uses exact authorA bytes. At the real seed-string to finite write, the actual carrier is authenticated by scalar_value/string_bytes. Borrowed RHS/noREFCELL has Value2/Child2. Publication adds exactly one Map Value edge (Value3), preserves Child2, Key/registration and installs the existing Map-only receiver carrier. Used result remains NULL at this checkpoint. Later result owner4 is source/executor reasoning, not a numeric checkpoint. Zero/one-step pause and whole driver-resumed completion pass through mixed-table cleanup.",
+    "counterstates": "Heap-valid constructed all-scalar singleton/many and all-leaf many states check authoritative old writer/access/notice/free selectors and new mixed admission. The leaf state changes the Child property to DIRECTNULL while the real outside Child CV retains it. PFLOAT and ALIAS reject; missing notification pin does not gain authority. These helper counterstates add no PHP original agreement.",
+    "identities": "Credited source reports retain stable inputs/head, exact normal outcomes/exit0/empty stderr and empty process groups. The reached report pins four executed binaries; all were directly rehashed after completion and independently matched unchanged. Raw commands/profiles/cwd/source/carrier/fixture/process outcomes remain external."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc49_scalar_to_finite_mixed_free.php": "62066596e32f21a34b47855ec470644d9c978df13ebc2fb025dd01ad6321d4b9",
+    "tests/semantics/gc49_finite_to_null_throw.php": "ba998548082f9c87e4a335bc745086c4326d90b612147745d73b15db9aa61046",
+    "tests/semantics/gc49_peer_mixed_retained.php": "b9a27a168738e9a818e411a85a39c1c48ed2b28858c03dcf1149a4d78a1ba142"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc49_mixed_payload_sources.py": "ee1eaed5c77dd734510907b88903254d2884f56e19c40eb74f07bec74586ad0b",
+    "tests/semantics/gc49_mixed_payload_state.py": "d769c409c7906097969a1a2b57cf5bc58c14ea69d211ca67d5de781e62fcc530",
+    "tests/semantics/gc49_peer_mixed_sources.py": "ef0325f67bd8dc89d2952f6315ce2fc88651e8399a7b9c2d1222599bf0b925fb"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/baseline-report.json": "1aedb7d3f266ee79b67232e65f0bd85ac48007136fbd0f0915f908a0bd03dcc4",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/model-report.json": "81e580ea4a2f332f0c18c75e0d581c05f5450f0c3fe808444548feb23fc60c57",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/model-scalar-to-finite-mixed-map-free-finite-to-null-child-throw-report.json": "e3514008a8e2a15c00a210aaf269ad6bfc6a0174c7699b3eeca4f8967f5192fa",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/native-v1/native-report.json": "4387b8e4b4ffab20269e2555591f24d76d302b86785881525280785ffcaa95a5",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/reached-9809-type-failure-v1/report.json": "37d2ccd9e69659a96934ce27aa190d84a9d0e1adac4d64e9f8fe718f3af279c1",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/reached-fbae-carrier-failure-v1/report.json": "025ae35cb3a9e6e789368728879ce33f9513e88be08cb82dfa918fa06e2098a4",
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/reached-30b-v1/report.json": "d8bd3768a858a3acb74485434ff0620e47da05f31c4596b2623fd96b4f25fddb",
+    "../php-spec-evidence-archive/gc-mixed-value-policy-peer-49/native-v1/native-report.json": "95e6fbeea02e6996583f97c49c24c5a735c204c499c36fec222ac82656e6bbdc",
+    "../php-spec-evidence-archive/gc-mixed-value-policy-peer-49/native-unset-v2/native-report.json": "0fb72ec60635d5f60aa4a8f876b15703743dbe8d9553df45380b4528c2803d99",
+    "../php-spec-evidence-archive/gc-mixed-value-policy-peer-49/native-unset-v2/model-report.json": "7d7d5740654a77e92f9665dc10f4b48d31c29ecf379332f4c55dd48805b6dc63"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-mixed-scalar-finite-author-49/manifest.json": "5be20351efb23c21b2c046f4e2297b83b9b0be0dd200a883be1718ce6433b1d6",
+    "../php-spec-evidence-archive/gc-mixed-value-policy-peer-49/independent-summary.json": "8808ddbeac5193088771ee2b18038c9717dc0e86e837fe9a3911f2c967e52df6"
+  },
+  "preserved_zero_credit": "Old01ae baselineB stops Unsupported at WeakMap multiple-entry dimension protocol after B|. Initial8c candidate returned empty(false)=0 rather than native1 in a normal result; stable failed report/raw remain0. Corrected687 source2 passed with original native bytes/cut reused and a distinct report suffix. First89 stage failed elaboration because pweakmapvalue was passed to pvalue-only scalar helper; fbae binds its direct pvalue first. Second89 wrongly assumed plain PSTRING rather than the real string carrier;30b checks authenticated string_bytes. Both full failed fixtures remain0, and only that affected fixture was rerun. Peer nativef4 without unset/append is retained superseded preparation0; updatedb57 native/model is the sole independent original agreement.",
+  "compatibility": "The source-backed old object predicate bridge is exact: admitted direct/reference-object Values are nonNULL and truthy, so the new stored-value formula is old~b. Source guards/old writer/access/notice exclusions and free fallback are byte-unchanged. All-leaf deterministic selector calls and constructed scalar defaults pass89. No GC48 dense peer or other unchanged dependency was replayed; no intentional engine divergence remains.",
+  "limits": "New common storage retains canonical tables, private nonfreeing leaf stdClass stored Keys, no cursor/incoming Map-key association and exact current retiring-Key pin where notification applies. Safe scalars use the existing bounded startup-string carrier policy. Top-level PFLOAT, aliases/references, arrays, shared-Key finite graphs, virtual/typed/inherited/deeper/owning-array layouts, freeing-Map dimension access/mutation, collection with active pins and wider callers remain partial. Prior property-float support and legacy callback/reference/singleton policies are unchanged. Held GC35 and paused work remain untouched.",
+  "recovery": "Run gc49_mixed_payload_sources.py native then model in one fresh external output. The historical old refusal requires01ae; corrected original source2 is at687. Run gc49_peer_mixed_sources.py native then model on updatedb57 bytes (cap300). Run gc49_mixed_payload_state.py once for89 with seek/finish4000 and process cap300. Preserve failed8c/type/carrier reports at their original cuts; no48/49 renewal for unchanged inputs is needed.",
+  "review": "Independent frozen runtime/source and sole89 static/reached review are CLEAR. Final read-only documentation/ledger acceptance uses the completed clean candidate."
+}

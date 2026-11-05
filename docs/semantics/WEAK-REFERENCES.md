@@ -1442,9 +1442,13 @@ mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
 
 ## Occupied entry replacement
 
-Canonical singleton and multiple-entry tables also accept occupied writes when
-both stored Values and the incoming Value satisfy the common finite
-methodless-object policy. Existing task, RHS,
+Canonical singleton and multiple-entry tables accept occupied writes when
+stored Values and the incoming Value satisfy the common policy for safe scalars
+and finite methodless objects. The scalar domain is the existing null/bool/int
+and validated startup-string family; top-level floats, references and arrays
+receive no new admission. Object properties retain their existing primitive
+and direct fieldless-Child policy, including the prior property-float support.
+Existing task, RHS,
 selected operand, receiver and Key authority still apply. The finite arm excludes
 both older writer domains explicitly; private leaf stored Keys, no cursor or
 incoming Map-key association, backed untyped primitive/direct-Child storage and
@@ -1468,6 +1472,24 @@ native-only roots probe are separate from original source agreement. The
 binds the source, ownership, candidate-count and budget evidence. Shared-Key
 finite payloads, freeing mutation/access, active-pin collection and wider caller
 contexts remain partial.
+
+The same validator now permits mixed storage through insertion/append, direct
+and quiet reads, explicit unset, selective Key notification and ordinary Map
+retirement. Scalar zvals add no heap edge or heap-node release job; each object
+entry still owns exactly one Value edge. Old writer/access/notice selectors and
+the singleton free fallback stay disjoint. Presence reads borrow the actual
+stored value: isset tests non-NULL, empty tests truth, and coalescing preserves
+false/zero while falling back for NULL. The first GC49 candidate retained the
+object-only predicate; its failed scalar comparison remains zero credit.
+On the old direct/reference-object domain the new predicate reduces exactly to
+the prior result, so those earlier evidence cuts remain valid.
+
+The [mixed-payload review](../../coverage/semantics/gc-mixed-scalar-finite-review.json)
+separates original comparisons from the source-reached Value2-to3/Child2 owner
+transfer, driver resumption and constructed scalar/leaf default counterstates.
+Those counterstates are not additional PHP agreements; two earlier fixture
+type/representation failures retain zero credit. Shared-Key graphs, collection with active pins,
+wider layouts and reference/array payload extensions remain partial.
 
 The singleton module386 admits same-key replacement with a leaf `stdClass` key and
 ordinary leaf old/new INSTANCE values. Only VALUE changes: KEY and BEFORE preserve

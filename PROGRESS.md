@@ -694,11 +694,13 @@ ownership graphs and active-pin collection remain partial; the baseline and
 early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
 
-Finite methodless WeakMap payloads share validation across prebuilt insertion,
+Safe scalar and finite methodless WeakMap payloads share validation across insertion,
 private-Key append, occupied replacement, reads/explicit entry removal from
 multiple-entry tables,
-singleton/multiple-entry Map retirement and selective Key notification. Public untyped nonstatic/nonreadonly
-backed slots contain primitives or fieldless destructor Children; matching
+singleton/multiple-entry Map retirement and selective Key notification. Safe
+null/bool/int/validated startup strings add no heap edge. Object payloads have
+public untyped nonstatic/nonreadonly backed slots containing primitives or
+fieldless destructor Children; matching
 identities and keys fix declaration order. Ordered jobs preserve repeated Value
 and Child edges, outside owners and later cleanup after a Child throw. Backed
 storage clears without hook dispatch; used results, temporary producers and
@@ -735,6 +737,16 @@ Three new originals agree exactly and one 71-condition source-reached group
 passes. The supplemental native-only roots probe adds no source agreement;
 the original baseline and initial independent timeout retain zero credit.
 [Replacement review](coverage/semantics/gc-finite-value-replacement-review.json).
+
+The shared payload policy permits scalar/object mixtures throughout those
+consumers. Present-row predicates borrow the actual stored value: isset tests
+NULL and empty tests truth, so false/zero differ from NULL. The initial GC49
+object-only predicate and two state-fixture setup failures retain zero
+credit. Mixed replacement, retained-owner, unset/append, Key notification and
+Map retirement evidence are bound in the
+[mixed-payload review](coverage/semantics/gc-mixed-scalar-finite-review.json).
+Three new originals agree exactly and one 89-condition ownership/default group
+passes at its recorded cut; constructed counterstates add no PHP agreement.
 
 Finite-payload notification admits only the actual retiring leaf `stdClass` Key
 under its validated storage pin. The other Keys remain nonfreeing and registered
@@ -1830,7 +1842,7 @@ pipe controls pass; parser inputs stay fixed.
 | --- | --- |
 | CLASS190 | Byvalue nongenerator __set/__isset/__unset anonymous factories; private implementation/review. |
 | I115 | Temporary Closure::call on captured native Generator APIs; private implementation/review. |
-| GC49 | Shared scalar/finite-object payload policy for mixed WeakMap storage; private implementation/review. |
+| GC50 | Validated PFLOAT WeakMap payloads with disjoint property-float handling; private implementation/review. |
 | COMP184 | Local-destructor fresh THROW cancelling Deprecated handler exit: restore the genuine saved catch/caller continuation. |
 | OB19 | Object and Stringable output return reception and conversion; private implementation/review. |
 | ATTR40 | EnumCase ticks before DECLARE_CLASS, class availability and abort/resume; private implementation/review. |
