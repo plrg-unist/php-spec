@@ -183,6 +183,10 @@ def $tick_declare_body(T, pcodeexpr*, pcpath, SEQUENCE statement*, i_old) = T_bo
   -- if T_body = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, false)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtBlock (SEQUENCE statement*) metadata, b_top) = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 0], 0, statement*, b_top)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNop metadata, b) = T
+;; HALT registers its offset without an opcode; its AST uses the terminator line.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtHaltCompiler phpType33 metadata, b) = T[.LINE = $source_end_line(metadata)]
+  -- if $pphalt_end(metadata) =/= eps
+  -- if $($source_end_line(metadata) > 0)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtLabel phpType11 metadata, b) = T
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUse phpType24 phpType51 metadata, b) = T[.LINE = $plcompileline(NStmtUse phpType24 phpType51 metadata)]
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGroupUse phpType24 name phpType51 metadata, b) = T[.LINE = $plcompileline(NStmtGroupUse phpType24 name phpType51 metadata)]
