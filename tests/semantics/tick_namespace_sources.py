@@ -19,6 +19,13 @@ register_tick_function('TickNs46\\t');
 class C { public function unused(){declare(ticks=1);} }
 }
 ''', b'T'),
+    'empty-semicolon-namespace-at-eof-keeps-its-header-tick': (b'''<?php
+namespace TickEnd46;
+function t(){echo "T";}
+register_tick_function('TickEnd46\\t');
+class C { public function unused(){declare(ticks=1);} }
+namespace TickAfter46;
+''', b'T'),
 }
 
 

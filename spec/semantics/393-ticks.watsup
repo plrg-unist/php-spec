@@ -644,10 +644,10 @@ def $tick_namespace_statements(n, ptickmarker*, n_root, (NStmtNamespace phpType4
   -- if $plstyle(metadata) = 2
 def $tick_namespace_statements(n, ptickmarker*, n_root, statement :: statement_tail*, ppwork*) = $compiled_work(n, $tick_work_below(ppwork*, [PCINDEX n_root])) ++ $tick_namespace_statements(n, ptickmarker*, $(n_root + 1), statement_tail*, ppwork*)
   -- if ~$tick_namespace_node(statement)
-def $tick_namespace_tasks(n, ptickmarker*, n_root) = [AT (PORIGIN n ([PCINDEX n_root])) (TICK (PORIGIN n ([PCINDEX n_root])) ptickmarker)]
-  -- if $tick_marker_at(ptickmarker*, [PCINDEX n_root]) = (ptickmarker)
-def $tick_namespace_tasks(n, ptickmarker*, n_root) = eps
-  -- if $tick_marker_at(ptickmarker*, [PCINDEX n_root]) = eps
+def $tick_namespace_tasks(n, ptickmarker_all*, n_root) = [AT (PORIGIN n ([PCINDEX n_root])) (TICK (PORIGIN n ([PCINDEX n_root])) ptickmarker)]
+  -- if $tick_marker_at(ptickmarker_all*, [PCINDEX n_root]) = (ptickmarker)
+def $tick_namespace_tasks(n, ptickmarker_all*, n_root) = eps
+  -- if $tick_marker_at(ptickmarker_all*, [PCINDEX n_root]) = eps
 def $tick_work_below(eps, pcpath) = eps
 def $tick_work_below((PPCWORK pcpath_work statement plenv n_line) :: ppwork*, pcpath) = (PPCWORK pcpath_work statement plenv n_line) :: $tick_work_below(ppwork*, pcpath)
   -- if $effect_below(pcpath, pcpath_work)
