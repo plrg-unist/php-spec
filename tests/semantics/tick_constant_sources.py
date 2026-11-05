@@ -24,11 +24,11 @@ echo "Z";
 }
 
 
-def main(cases=CASES, producer=Path(__file__)):
+def main(cases=CASES, producer=Path(__file__), controls=None):
     previous = ticks.fingerprint
     ticks.fingerprint = lambda: {**previous(), **{
         str(path.relative_to(ticks.ROOT)): ticks.sha(path) for path in [Path(__file__), producer]}}
-    ticks.CASES, ticks.CONTROLS = cases, {}
+    ticks.CASES, ticks.CONTROLS = cases, controls or {}
     ticks.STATUSES = {name: 'normal' for name in cases}
     ticks.EXITS = {name: 0 for name in cases}
     ticks.main()
