@@ -15,8 +15,8 @@ CATALOGUE = ROOT / 'tests/semantics/anonymous_readonly_cases.json'
 PREFIX = r'''
 dec $ro176_keywordless(metadata) : metadata
 def $ro176_keywordless(eps) = eps
-def $ro176_keywordless((MclassKeywordLine z) :: metadata_tail*) = $ro176_keywordless(metadata_tail*)
-def $ro176_keywordless(metadataEntry :: metadata_tail*) = metadataEntry :: $ro176_keywordless(metadata_tail*)
+def $ro176_keywordless((MclassKeywordLine z) :: metadataEntry_tail*) = $ro176_keywordless(metadataEntry_tail*)
+def $ro176_keywordless(metadataEntry :: metadataEntry_tail*) = metadataEntry :: $ro176_keywordless(metadataEntry_tail*)
   -- if $class_keyword_item(metadataEntry) = eps
 dec $ro176_assignment(pstate, int) : bool
 def $ro176_assignment(S, z) = true
