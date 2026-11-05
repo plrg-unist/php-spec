@@ -65,7 +65,8 @@ def prepare(out):
             value = ('SOURCE_REJECT_HEADERS 1 ' + term(code) + ' ' + kind + ' '
                 + term(base64.b64decode(parsed['message'])) + ' ' + str(parsed['line']) + ' (' + header_term + ')')
             checks += ['$rejected_headers_valid(' + header_term + ',-1,1)',
-                '$rejected_header_prefix(' + header_term + ') = (' + str(lines) + ',' + stop + ')',
+                '$rejected_header_prefix(' + header_term + ') = (' + str(lines) + ',z_stop_' + tag + '?)',
+                'z_stop_' + tag + '? = ' + stop,
                 '$eval_response_shape(' + value + ')']
             responses[name] = value
 

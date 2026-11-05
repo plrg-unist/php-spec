@@ -62,8 +62,9 @@ def $rejected_header_prefix(eps) = (eps, eps)
 def $rejected_header_prefix((PARSE_HEADER z_begin z_start z_line z_close phpType49*) :: pparseheader*) = (z* ++ z_tail*, z_stop?)
   -- if $rejected_items_prefix(phpType49*, z_line) = (z*, eps)
   -- if $rejected_header_prefix(pparseheader*) = (z_tail*, z_stop?)
-def $rejected_header_prefix((PARSE_HEADER z_begin z_start z_line z_close phpType49*) :: pparseheader*) = (z*, (z_stop))
-  -- if $rejected_items_prefix(phpType49*, z_line) = (z*, (z_stop))
+def $rejected_header_prefix((PARSE_HEADER z_begin z_start z_line z_close phpType49*) :: pparseheader*) = (z*, z_stop?)
+  -- if $rejected_items_prefix(phpType49*, z_line) = (z*, z_stop?)
+  -- if z_stop? =/= eps
 dec $rejected_prefix_completion(int?, pfailedkind, nat*, int) : bool
 def $rejected_prefix_completion(eps, pfailedkind, n_message*, z_line) = true
 def $rejected_prefix_completion((z_line), FAILED_COMPILE, n_message*, z_line) = (n_message* = $ptascii("Encoding must be a literal"))
