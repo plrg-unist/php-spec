@@ -8,6 +8,7 @@ import shutdown_state_review as runner
 
 
 CAPTURES = '[DIRECT (PARRAY n_array), DIRECT (POBJECT n_leaf), DIRECT (PARRAY n_second), DIRECT (POBJECT n_other)]'
+ONE_CAPTURES = '[DIRECT (PARRAY n_array), DIRECT (POBJECT n_other), DIRECT (PINT 11), DIRECT PNULL]'
 CHECKS = [
     'S.CURRENT = (pcallcontext)',
     'pgccall.CALLER = (pcallcontext)',
@@ -52,8 +53,13 @@ CHECKS = [
     '~((HOBJECT n_closure) <- $machine_roots(S_unrooted))',
     '~$gc_ordinary_node(S_unrooted, HOBJECT n_closure)',
     '~$gc_ordinary_node(S[.SOURCES = eps], HOBJECT n_closure)',
-    '$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (POBJECT n_other)])',
-    '~$gc_ordinary_node(S[.OBJECTS[n_closure] = REALCLOSURE porigin_template ([DIRECT (PARRAY n_array), DIRECT (POBJECT n_other)]) eps], HOBJECT n_closure)',
+    f'S_one = S[.OBJECTS[n_closure] = REALCLOSURE porigin_template ({ONE_CAPTURES}) eps]',
+    f'$gc_plain_captures(S_one, {ONE_CAPTURES})',
+    '$closure_callable(S_one, n_closure)',
+    '$gc_materialized_caller_target(S_one, CLOSURE_TARGET n_closure, pcallcontext.CALLSITE)',
+    f'$gc_capture_array_nodes({ONE_CAPTURES}) = [HARRAY n_array]',
+    '~((HOBJECT n_other) <- $node_children(S_one, HARRAY n_array))',
+    '~$gc_ordinary_node(S_one, HOBJECT n_closure)',
     '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), DIRECT (PARRAY n_second), UNINITIALIZED])',
     '~$gc_plain_captures(S, [DIRECT (PARRAY n_array), UNINITIALIZED, DIRECT (PARRAY n_second)])',
     'n_pool = |S.ARRAYS|',
