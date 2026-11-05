@@ -33,6 +33,8 @@ S.STORE[n_old_cv] = DEFINED PNULL
 $lookup(S.ENV, $ptascii("replacement")) = (n_receiver_cv)
 S.STORE[n_receiver_cv] = DEFINED PNULL
 S.OBJECTS[n_source] = GETTERCLOSURE n_old (GENERATOR_API_METHOD "send") "Generator" pgettersource
+pgettersource = GENERATOR_CAPTURE pgeneratormethodselection
+pgeneratormethodselection.OBJECT = n_old
 S.OBJECTS[n_old] = GENERATOR pgenerator_old
 pgenerator_old.PHASE = GENERATOR_PAUSED
 S.OBJECTS[n_receiver] = GENERATOR pgenerator_receiver
@@ -105,7 +107,7 @@ S_bad_scope = S_copy[.OBJECTS[n_copy] = BOUNDFAKECLOSURE pboundfake[.SCOPE = BIN
 S_bad_source = S_copy[.OBJECTS[n_copy] = BOUNDFAKECLOSURE pboundfake[.SOURCE = n_receiver]]
 ~$bound_fake_valid(S_bad_source, n_copy)
 ~$generator_capture_saved(S_bad_source, n_copy)
-S_forged_source = S_copy[.OBJECTS[n_source] = GETTERCLOSURE n_receiver (GENERATOR_API_METHOD "send") "Generator" pgettersource]
+S_forged_source = S_copy[.OBJECTS[n_source] = GETTERCLOSURE n_old (GENERATOR_API_METHOD "send") "Generator" (GENERATOR_CAPTURE pgeneratormethodselection[.OBJECT = n_receiver])]
 ~$generator_capture_saved(S_forged_source, n_copy)
 S_cycle = S_copy[.OBJECTS[n_copy] = BOUNDFAKECLOSURE pboundfake[.SOURCE = n_copy]]
 ~$bound_fake_valid(S_cycle, n_copy)
