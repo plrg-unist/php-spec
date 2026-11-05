@@ -934,6 +934,13 @@ throws preserve the pending operation and real builtin argument trace, retaining
 the argument through catch and caller-local cleanup. Pending Notice selection
 distinguishes eligible-handler skip from ordinary reporting/suppression.
 [Failed-lookup review](coverage/semantics/output-executor-invalid-review.json).
+OB12 shares one argument-discard certificate across admitted Warning and Notice
+throws. A precreated Throwable exposes direct-cycle NOGC versus ordinary
+array-child cleanup; a new Throwable retains the argument through its trace.
+Consumed Closure checks borrow retired capture facts without adding owners.
+Seven exact originals, 279 reported reached conditions and 90 affected Warning
+conditions pass at the recorded private cuts.
+[Notice-discard review](coverage/semantics/output-executor-notice-discard-review.json).
 Unresolved/effectful creation, active handler-body reentry, Warning/deprecation-handler returned-object
 starts, allocation failure/memory limits and wider executor completion remain partial.
 [Explicit-null review](coverage/semantics/output-executor-explicit-null-review.json),
