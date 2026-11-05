@@ -5,6 +5,7 @@ import json
 
 import fiber_state_review as review
 import tick_classlike_review_cases as sources
+import tick_classlike_sources as author
 
 
 def output(*chunks):
@@ -45,6 +46,12 @@ review.CASES = {
             '$tick_marker(S, porigin_declare) = eps',
             'ptickmarker.FREQUENCY = 2', 'ptickmarker.LINE = 7',
             '$tick_marker_valid(S, porigin, ptickmarker)', 'S.TICKCOUNT = 0',
+            '$code_at(S.CODE, n) = (pcode)',
+            '$source_unit(S.SOURCES, n) = (pcunit)',
+            'T_missing = $tick_full_plan(pcunit.AST, pcode.EXPRESSIONS, pcode.NAMES, pcode.REDIRECTS, eps)',
+            'T_missing.DEPENDENCY = ("tick class declaration compiler facts")',
+            'S_forged = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc[.EARLY = false])]',
+            '~$call_descriptors_valid(S_forged)',
             *valid('S'), *PAUSE,
             'S_done.TICKCOUNT = 1', 'S_done.EVENTS = ' + output('T', 'Z'),
         ],
@@ -96,7 +103,30 @@ review.CASES['enum-emitter-enables-following-declare-without-an-enum-marker'] = 
     ],
 }
 
+name = 'conditional-class-tick-sees-activation-before-callback-abort'
+review.CASES['conditional-class-is-installed-before-its-header-tick-and-abort'] = {
+    'source': author.CASES[name][0].decode(),
+    'stage': 'S.TODO = (TICK porigin ptickmarker) :: ptask_tail* -- if S.CURRENT = eps -- if S.EVENTS = ' + output('T'),
+    'checks': [
+        'porigin = PORIGIN n pcpath',
+        'pcpath = [PCINDEX 4, PCFIELD 0, PCINDEX 0, PCFIELD 1, PCINDEX 0]',
+        '$origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)',
+        '$class_at(S.CLASSES, porigin) = (pclassdesc)',
+        'pclassdesc.KIND = "class"', '~pclassdesc.EARLY', 'pclassdesc.LINE = 18',
+        '$class_named(S.CLASSNAMES, $ptascii("ticklate39")) = (porigin)',
+        'ptickmarker.FREQUENCY = 1', 'ptickmarker.LINE = 18',
+        '$tick_marker_valid(S, porigin, ptickmarker)',
+        '$lookup(S.ENV, $ptascii("n")) = (n_count)',
+        'S.STORE[n_count] = DEFINED (PINT 1)',
+        'S.TICKCOUNT = 0', 'S.FRAMES = eps',
+        *valid('S'), *PAUSE,
+        '$class_named(S_done.CLASSNAMES, $ptascii("ticklate39")) = (porigin)',
+        'S_done.EVENTS = ' + output('T', 'T', '[18]', '7', 'C', 'T', 'Z', 'T'),
+    ],
+}
+
 DERIVED_GUARDS = {name: 0 for name in review.CASES}
+DERIVED_GUARDS['early-interface-preserves-suppressed-later-declare-marker'] = 2
 
 
 if __name__ == '__main__':
