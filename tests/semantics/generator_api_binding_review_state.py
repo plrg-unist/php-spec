@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check original and replacement receiver edges at a genuine bind copy."""
+"""Check raw bind-copy edges and the driver's resumable ownership state."""
 import hashlib
 import json
 from pathlib import Path
@@ -89,8 +89,13 @@ $heap_owners($heap_graph(S_copy), HOBJECT n_receiver) = 1
 $bound_fake_valid(S_copy, n_copy)
 $generator_capture_saved(S_copy, n_copy)
 $getter_capture_live(S_copy, n_copy)
-$call_descriptors_valid(S_copy)
+S_copy.DESTRUCTION.HANDLES = S.DESTRUCTION.HANDLES
+$(|S_copy.DESTRUCTION.HANDLES| + 1) = |S_copy.OBJECTS|
 $heap_valid($heap_graph(S_copy))
+S_scheduled = $drive_steps(S, 1)
+S_scheduled.COMPLETION = BUDGET
+$call_descriptors_valid(S_scheduled[.COMPLETION = NORMAL])
+$heap_valid($heap_graph(S_scheduled))
 pconfigcall.SITE = PORIGIN n_unit pcpath_bind
 pcpath_bound = [PCFIELD 0, PCINDEX 15, PCFIELD 0, PCINDEX 1]
 porigin_bound = PORIGIN n_unit pcpath_bound
