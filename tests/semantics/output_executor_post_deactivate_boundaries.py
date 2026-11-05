@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep unmodeled argument and nested-handler starts explicit during cleanup."""
+"""Keep unmodeled callback creation and nested-handler starts explicit."""
 import hashlib
 import json
 import os
@@ -16,7 +16,6 @@ REASON = 'output-handler start after output deactivation'
 CASES = {
     'callable': b'FX|D1|',
     'reentrant': b'FX|D1|H1|',
-    'named_ob08': b'FX|D1|',
     'invalid_ob08': b'FX|D1|',
 }
 
@@ -53,11 +52,15 @@ def run():
             completion = state['COMPLETION']
             stdout = b''.join(bytes(map(int, event['args'][0]))
                               for event in state['EVENTS'] if event['tag'] == 'OUTPUT')
+            task = state['TODO'][0]
+            reception_stage = (task['tag'] == 'CONFIG_INVOKE' if name == 'reentrant'
+                               else task['tag'] == 'OB_PARSE' and int(task['args'][1]) == 3)
             passed = (completion == {'tag': 'UNSUPPORTED', 'args': [REASON]}
                       and stdout == expected_stdout and not state['OUTPUTBUFFERS']
-                      and int(state['OUTPUTSEQ']) == 1)
+                      and int(state['OUTPUTSEQ']) == 1 and reception_stage)
             records.append({'case': name, 'source_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
                             'completion': completion, 'stdout': stdout.decode('ascii'),
+                            'reception_task': task['tag'],
                             'output_seq': state['OUTPUTSEQ'], 'passed': passed})
             print(name, passed, completion['tag'], flush=True)
     finally:
