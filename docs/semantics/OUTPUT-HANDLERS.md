@@ -246,11 +246,30 @@ E_NOTICE and returning false without changing the buffer stack or sequence.
 The same receipt applies in the authenticated destructor of a Notice handler's
 returned object while that handler is disabled. Malformed binder/pack
 descriptors stay invalid.
-Non-NULL callbacks may fail argument reception normally; successful parsing
-stops at checked Unsupported before unresolved callback creation. Active
-handler-body reentry, deprecation-handler returned-object starts and wider
-executor completion remain partial. Handler initialization also allocates the
-aligned chunk buffer before the inactive-output check; allocation failure and
-PHP memory limits remain pending effects, as in the active buffer model.
+OB10 also resolves admitted pure non-NULL callbacks after complete conversion.
+It creates and releases the transient `user->zoh` owner before the inactive
+failure Notice, without invoking the callback or inspecting its required arity.
+Raw argument owners retain temporary invokables and array receivers through the
+diagnostic. Lookup observes conversion-handler changes but is not repeated after
+a Notice handler mutates referenced array selectors or retires a receiver.
+This applies in the authenticated returned-Notice-object destructor as well.
+
+Normal argument consumption uses the VM's root-only `zval_ptr_dtor_nogc` rule;
+array child cleanup still uses ordinary decrements. Explicit GC controls distinguish
+a direct cyclic argument from an array-wrapped child. Consumed Closure operation
+metadata reuses borrowed producer scope/binding certificates and retained capture
+cells solely for checking; it adds no actual owner or invocation authority.
+Factory-local byref captures and bound method receivers retain their native
+destructor timing. Selected-handler throws and callback-destructor throws follow
+the existing Throwable trace and cleanup protocol.
+
+Invalid/effectful callback creation, active handler-body reentry,
+deprecation-handler returned-object starts and wider executor completion remain
+partial. Handler initialization also allocates the aligned chunk buffer before
+the inactive-output check; allocation failure and PHP memory limits remain
+pending effects, as in the active buffer model. Original weak-observer GC
+controls stop at the inactive custom free-hook frontier and retain zero full
+agreement credit; separate explicit-cleanup controls cover the creation protocol.
 [OB08 evidence](../../coverage/semantics/output-executor-explicit-null-review.json),
-[OB09 evidence](../../coverage/semantics/output-executor-reception-review.json).
+[OB09 evidence](../../coverage/semantics/output-executor-reception-review.json),
+[OB10 evidence](../../coverage/semantics/output-executor-creation-review.json).
