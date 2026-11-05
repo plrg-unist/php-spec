@@ -358,7 +358,7 @@ def $file_compiled_paths(S, pfilecontext) = $file_include_after_compile(S.INCLUD
   -- if pfilecontext.OPENED = (n_opened*)
 dec $file_compile_stop_trace(pstate, pfilecontext, ppstate) : ptraceframe*
 def $file_compile_stop_trace(S, pfilecontext, P) = $eval_exception_trace(S) -- otherwise
-def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN][.TAIL = $source_operand_tail(pfilecontext.TAIL)] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $source_operand_work(S_compiled, n_unit, $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit], pfilecontext.TAIL))][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_compiled_paths(S_compiled, pfilecontext)]
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN][.TAIL = $source_operand_tail(pfilecontext.TAIL)] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $source_operand_work(S_compiled, n_unit, $compiled_source_work(S_compiled, n_unit, P.WORK) ++ [FILE_END n_unit], pfilecontext.TAIL))][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_compiled_paths(S_compiled, pfilecontext)]
   -- if S_compiled.COMPLETION = NORMAL
   -- if P.COMPLETION = PPCNORMAL
   -- if pfilecontext.UNIT = (n_unit)

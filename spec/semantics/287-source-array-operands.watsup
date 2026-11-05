@@ -127,7 +127,7 @@ def $source_operand_file_context(pfilecontext :: pfilecontext_tail*, n) = (pfile
   -- if pfilecontext.UNIT = (n)
 def $source_operand_file_context(pfilecontext :: pfilecontext_tail*, n) = $source_operand_file_context(pfilecontext_tail*, n)
   -- if pfilecontext.UNIT =/= (n)
-def $source_operand_body(S, psourceoperand, n) = ($compiled_work(n, P.WORK) ++ [EVAL_END n] ++ psourceoperand.TAIL)
+def $source_operand_body(S, psourceoperand, n) = ($compiled_source_work(S, n, P.WORK) ++ [EVAL_END n] ++ psourceoperand.TAIL)
   -- if psourceoperand.KIND = 0
   -- if $eval_context_at(S.EVALCONTEXTS, n) = (pevalcontext)
   -- if pevalcontext.PHASE = UNIT_RUN
@@ -136,7 +136,7 @@ def $source_operand_body(S, psourceoperand, n) = ($compiled_work(n, P.WORK) ++ [
   -- if pevalcontext.TAIL = psourceoperand.TAIL
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
-def $source_operand_body(S, psourceoperand, n) = ($compiled_work(n, P.WORK) ++ [FILE_END n] ++ psourceoperand.TAIL)
+def $source_operand_body(S, psourceoperand, n) = ($compiled_source_work(S, n, P.WORK) ++ [FILE_END n] ++ psourceoperand.TAIL)
   -- if psourceoperand.KIND =/= 0
   -- if $source_operand_file_context(S.FILECONTEXTS, n) = (pfilecontext)
   -- if pfilecontext.PHASE = FILE_UNIT_RUN

@@ -51,6 +51,11 @@ dec $tick_hook_bodies(pcoccurrence*) : bool
 dec $tick_property_line(phpType18, phpType56) : int?
 dec $tick_first_type_line(pcoccurrence*) : int?
 dec $tick_type_line(pcnode) : int
+dec $tick_namespace_node(statement) : bool
+dec $tick_has_namespace(statement*) : bool
+dec $tick_namespace_statements(nat, ptickmarker*, nat, statement*, ppwork*) : ptask*
+dec $tick_namespace_tasks(nat, ptickmarker*, nat) : ptask*
+dec $tick_work_below(ppwork*, pcpath) : ppwork*
 dec $tick_early(statement, bool) : bool
 dec $tick_unticked(statement) : bool
 dec $tick_emit(pticksummary, pcpath, int) : pticksummary
@@ -137,6 +142,7 @@ def $tick_unticked(NStmtLabel phpType11 metadata) = true
 def $tick_unticked(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) = true
 def $tick_unticked(NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata) = true
 def $tick_unticked(NStmtTraitUse phpType42 phpType62 metadata) = true
+def $tick_unticked(NStmtNamespace phpType44 phpType23 metadata) = true
 def $tick_unticked(statement) = false -- otherwise
 
 def $tick_emit(T, pcpath, z) = T[.MARKERS = T.MARKERS ++ [{PATH pcpath, FREQUENCY $nabs($long_and(T.FREQUENCY, 4294967295)), LINE z}]][.LAST = true]
@@ -181,7 +187,13 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtUse phpType24 phpType51 met
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtGroupUse phpType24 name phpType51 metadata, b) = T
 ;; Trait names/alias/precedence records add no main opcode or callable compilation.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtTraitUse (SEQUENCE (name :: name_tail*)) phpType62 metadata, b) = T[.LINE = $source_line($pcmetadata(name))]
-def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUENCE statement*) metadata, b) = $tick_statements(T, pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, true)
+;; Semicolon headers compile before their normalized following body; braces
+;; compile the body first. Kind and header line come from checked source facts.
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUENCE statement*) metadata, b) = $tick_statements($tick_emit(T[.LINE = $plcompileline(NStmtNamespace phpType44 (SEQUENCE statement*) metadata)], pcpath, $plcompileline(NStmtNamespace phpType44 (SEQUENCE statement*) metadata)), pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, true)
+  -- if $plstyle(metadata) = 1
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUENCE statement*) metadata, b) = $tick_emit(T_body, pcpath, T_body.LINE)
+  -- if $plstyle(metadata) = 2
+  -- if T_body = $tick_statements(T[.LINE = $plcompileline(NStmtNamespace phpType44 (SEQUENCE statement*) metadata)], pcodeexpr*, pcpath ++ [PCFIELD 1], 0, statement*, true)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)][.LINE = $source_end_line(metadata)]
   -- if $tick_inputs_clean(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, 5)
   -- if T_body = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)
@@ -613,6 +625,34 @@ def $tick_source_plan(S, n) = (T)
   -- if T = $tick_full_plan(pcunit.AST, pcode.EXPRESSIONS, pcode.NAMES, pcode.REDIRECTS, $tick_unit_classes(S.CLASSES, n))
   -- if T.DEPENDENCY = eps
 def $tick_source_plan(S, n) = eps -- otherwise
+;; Lexical compilation flattens Namespace wrappers out of WORK. Merge their
+;; authenticated events around each root's existing work, including empty/EOF.
+def $tick_namespace_work(S, n, ppwork*) = $tick_namespace_statements(n, T.MARKERS, 0, statement*, ppwork*)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if pcunit.AST = PROGRAM statement*
+  -- if $tick_has_namespace(statement*)
+  -- if $tick_source_plan(S, n) = (T)
+def $tick_namespace_work(S, n, ppwork*) = $compiled_work(n, ppwork*) -- otherwise
+def $tick_namespace_node(NStmtNamespace phpType44 phpType23 metadata) = true
+def $tick_namespace_node(statement) = false -- otherwise
+def $tick_has_namespace(eps) = false
+def $tick_has_namespace(statement :: statement_tail*) = ($tick_namespace_node(statement) \/ $tick_has_namespace(statement_tail*))
+def $tick_namespace_statements(n, ptickmarker*, n_root, eps, ppwork*) = eps
+def $tick_namespace_statements(n, ptickmarker*, n_root, (NStmtNamespace phpType44 phpType23 metadata) :: statement_tail*, ppwork*) = $tick_namespace_tasks(n, ptickmarker*, n_root) ++ $compiled_work(n, $tick_work_below(ppwork*, [PCINDEX n_root])) ++ $tick_namespace_statements(n, ptickmarker*, $(n_root + 1), statement_tail*, ppwork*)
+  -- if $plstyle(metadata) = 1
+def $tick_namespace_statements(n, ptickmarker*, n_root, (NStmtNamespace phpType44 phpType23 metadata) :: statement_tail*, ppwork*) = $compiled_work(n, $tick_work_below(ppwork*, [PCINDEX n_root])) ++ $tick_namespace_tasks(n, ptickmarker*, n_root) ++ $tick_namespace_statements(n, ptickmarker*, $(n_root + 1), statement_tail*, ppwork*)
+  -- if $plstyle(metadata) = 2
+def $tick_namespace_statements(n, ptickmarker*, n_root, statement :: statement_tail*, ppwork*) = $compiled_work(n, $tick_work_below(ppwork*, [PCINDEX n_root])) ++ $tick_namespace_statements(n, ptickmarker*, $(n_root + 1), statement_tail*, ppwork*)
+  -- if ~$tick_namespace_node(statement)
+def $tick_namespace_tasks(n, ptickmarker*, n_root) = [AT (PORIGIN n ([PCINDEX n_root])) (TICK (PORIGIN n ([PCINDEX n_root])) ptickmarker)]
+  -- if $tick_marker_at(ptickmarker*, [PCINDEX n_root]) = (ptickmarker)
+def $tick_namespace_tasks(n, ptickmarker*, n_root) = eps
+  -- if $tick_marker_at(ptickmarker*, [PCINDEX n_root]) = eps
+def $tick_work_below(eps, pcpath) = eps
+def $tick_work_below((PPCWORK pcpath_work statement plenv n_line) :: ppwork*, pcpath) = (PPCWORK pcpath_work statement plenv n_line) :: $tick_work_below(ppwork*, pcpath)
+  -- if $effect_below(pcpath, pcpath_work)
+def $tick_work_below((PPCWORK pcpath_work statement plenv n_line) :: ppwork*, pcpath) = $tick_work_below(ppwork*, pcpath)
+  -- if ~$effect_below(pcpath, pcpath_work)
 def $tick_marker(S, porigin) = $tick_marker_at(T.MARKERS, pcpath)
   -- if $origin_source(porigin) = PORIGIN n pcpath
   -- if $tick_source_plan(S, n) = (T)

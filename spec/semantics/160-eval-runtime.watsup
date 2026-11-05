@@ -518,7 +518,7 @@ def $eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) = fals
 dec $eval_redeclare_class(pstate, pevalcontext, pclassdesc*, nat*, int) : bool
 def $eval_redeclare_class(S, pevalcontext, eps, n_message*, z) = false
 def $eval_redeclare_class(S, pevalcontext, pclassdesc :: pclassdesc_tail*, n_message*, z) = ($eval_redeclare_class_one(S, pevalcontext, pclassdesc, n_message*, z) \/ $eval_redeclare_class(S, pevalcontext, pclassdesc_tail*, n_message*, z))
-def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN][.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*][.TODO = $source_operand_work(S_compiled, pevalcontext.UNIT, $compiled_work(pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT], pevalcontext.TAIL)][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext[.PHASE = UNIT_RUN][.TAIL = $source_operand_tail(pevalcontext.TAIL)] :: pevalcontext_tail*][.TODO = $source_operand_work(S_compiled, pevalcontext.UNIT, $compiled_source_work(S_compiled, pevalcontext.UNIT, P.WORK) ++ [EVAL_END pevalcontext.UNIT], pevalcontext.TAIL)][.SERVICELEFT = eps][.ORIGIN = (pevalcontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$source_eval_pending_marker(pevalcontext)
   -- if S_compiled.COMPLETION = NORMAL
   -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)

@@ -5,7 +5,7 @@ syntax pgototasks = GOTOTASKS ptask* | GOTOMISSING
 dec $declaration_unit_complete(pdeclaration*, nat) : bool
 
 dec $goto_base(pstate, porigin) : pgototasks
-def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_work(n, P.WORK)
+def $goto_base(S, PORIGIN n pcpath) = GOTOTASKS $compiled_source_work(S, n, P.WORK)
   -- if S.CURRENT = eps
   -- if $source_unit(S.SOURCES, n) = (pcunit)
   -- if P = $eval_source_ppstate(S, pcunit)

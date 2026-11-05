@@ -35,7 +35,7 @@ dec $declaration_finish(pstate, ppstate) : pstate
 dec $declaration_unsupported(pcompletion) : bool
 def $declaration_finish(S, P) = $declaration_stop(S, P, PCSCOMPILER)
   -- if S.COMPLETION =/= NORMAL
-def $declaration_finish(S, P) = $iterator_notice_compile_finish($declaration_exit(S[.TODO = $compiled_work(P.FOLD.SOURCE.ID, P.WORK)], P.FOLD.SOURCE.ID, PCSCOMPLETE), S.TODO, P.FOLD.SOURCE.ID)
+def $declaration_finish(S, P) = $iterator_notice_compile_finish($declaration_exit(S[.TODO = $compiled_source_work(S, P.FOLD.SOURCE.ID, P.WORK)], P.FOLD.SOURCE.ID, PCSCOMPLETE), S.TODO, P.FOLD.SOURCE.ID)
   -- if S.COMPLETION = NORMAL /\ P.COMPLETION = PPCNORMAL
 def $declaration_finish(S, P) = $declaration_stop(S[.COMPLETION = pcompletion], P, PCSCOMPILER)
   -- if S.COMPLETION = NORMAL
