@@ -24,6 +24,8 @@ def $list_warning_frontier(S, 1903) = true
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) :: ptask*
 def $list_warning_frontier(S, 1904) = $a98_review_echo(S, $ptascii("O:"))
 def $list_warning_frontier(S, 1905) = $a98_review_echo(S, $ptascii("A:"))
+def $list_warning_frontier(S, 1906) = true
+  -- if S.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n pvalue) :: ptask*
 '''
 
 
@@ -131,7 +133,29 @@ def conditions(name, program, path, stdout):
             'S_option_dtor.PRECISIONINI = $ptascii("' + str(before) + '")',
             '~((HOBJECT n_iterator) <- S_option_dtor.ALLOCATIONS)',
         ] + public('S_option_dtor')
-    checks += seek('S_converted' if retained else 'S_option_dtor', 1905, 'S_after') + [
+    checks += seek('S_converted' if retained else 'S_option_dtor', 1906, 'S_receipt') + [
+        'S_receipt.TODO = (CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_option pvalue_converted) :: ptask_receipt*',
+        '$task_nodes(CONFIG_ITERATOR_STRING_RECEIVE pconfigcall n_option pvalue_converted) = eps',
+        '$config_iterator_string_receive_valid(S_receipt, pconfigcall, n_option, pvalue_converted)',
+        '~$config_iterator_string_receive_valid(S_receipt, pconfigcall[.LINE = $(pconfigcall.LINE + 1)], n_option, pvalue_converted)',
+        '~$config_iterator_string_receive_valid(S_receipt, pconfigcall[.OWNER = (n_option_watch)], n_option, pvalue_converted)',
+        '~$config_iterator_string_receive_valid(S_receipt, pconfigcall[.INDEX = 0], n_option, pvalue_converted)',
+        '~$config_iterator_string_receive_valid(S_receipt, pconfigcall, n_iterator, pvalue_converted)',
+        '~$config_iterator_string_receive_valid(S_receipt, pconfigcall, n_option, PNULL)',
+        '~$config_iterator_string_receive_valid(S_receipt[.CODE = eps], pconfigcall, n_option, pvalue_converted)',
+        '~$config_iterator_string_receive_valid(S_receipt[.SOURCES = eps], pconfigcall, n_option, pvalue_converted)',
+        '~$config_iterator_string_receive_valid(S_receipt[.OBJECTS[n_option] = STDINSTANCE], pconfigcall, n_option, pvalue_converted)',
+        'S_receipt.PRECISIONINI = $ptascii("' + str(old) + '")',
+        owners('S_receipt', 'HOBJECT n_option', 1 if retained else 0),
+        'PhpStep: S_receipt ~> S_body_done',
+        'S_body_done.PRECISIONINI = $ptascii("' + str(value) + '")',
+        'S_body_done.RESULT = KNOWN pvalue_return',
+        '$string_bytes(pvalue_return) = ($ptascii("' + str(old) + '"))',
+    ] + public('S_receipt') + public('S_body_done') + budget('S_receipt', 'S_receive_budget')
+    if not retained:
+        checks += ['~((HOBJECT n_option) <- S_receipt.ALLOCATIONS)',
+                   '~$stringable_instance(S_receipt, n_option)']
+    checks += seek('S_body_done', 1905, 'S_after') + [
         'S_after.PRECISIONINI = $ptascii("' + str(value) + '")',
         '$weakref_get(S_after, n_option_watch) = ' + ('POBJECT n_option' if retained else 'PNULL'),
     ] + cell('S_after', 'result', 'pvalue_result') + [
