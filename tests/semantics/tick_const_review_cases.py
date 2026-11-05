@@ -2,7 +2,7 @@
 
 CASES = {
     'review-constant-closure-order-keeps-final-initializer-marker-line': (b'''<?php
-function t() { $trace = debug_backtrace(); echo '[' . $trace[0]['line'] . ']'; }
+function t() { $e = new Exception; echo '[' . $e->getTrace()[0]['line'] . ']'; }
 register_tick_function('t');
 declare(ticks=1);
 const TickFirst38 = static function () {
