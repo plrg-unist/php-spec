@@ -263,6 +263,7 @@ def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = tr
 def $closure_function_cache_history(S, PORIGIN n_unit pcpath, CACHE_SHARED) = true
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
   -- if $closure_cache_query_source(S, pfunction.ORIGIN)
+  -- if ~$closure_cache_shared_history(S, S.CLOSURECACHES, pfunction.ORIGIN)
   -- if $closure_cache_first(S.CLOSURECACHES, pfunction.ORIGIN) = (pclosurecache)
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope)
