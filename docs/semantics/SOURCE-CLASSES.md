@@ -1270,10 +1270,17 @@ history without adding owners. Binding-site, descending source, completed-scope
 and copy-parent coherence checks exclude unrelated same-function stamps; copied
 calls do not initialize or taint the original method cache. See the
 [fake-bind cache review](../../coverage/semantics/enum-is-callable-fake-bind-cache-review.json).
-Known unbound nongenerator user-method `Closure::call` cache policy remains pending.
+Known unbound nongenerator user-method `Closure::call` copies now authenticate
+temporary cache history through the named method, immutable source and completed
+exact declaring-class scope. Private sources receive a fresh invocation key;
+Shared sources retain their same-scope cache. Argument-time source removal keeps
+the selected source alive through the real API owners, then retires its old
+receiver independently of the replacement. History adds no pins and leaves raw
+method initialization facts unchanged. See the
+[fake-call cache review](../../coverage/semantics/enum-is-callable-fake-call-cache-review.json).
 Constant/default/static/property captures, resumed Generator,
-internal/Trait/anonymous/Fiber query owners and wider transformed contexts remain
-partial.
+internal/Trait/anonymous/Fiber query owners, bound temporary calls and wider
+transformed contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

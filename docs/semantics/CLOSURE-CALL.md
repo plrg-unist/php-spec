@@ -70,6 +70,15 @@ the temporary function scope. A finite getter invokes its selected method on
 the new receiver after argument/binding checks; it preserves the original capture
 and produces its own count/name errors.
 
+Known unbound nongenerator user-method captures authenticate temporary runtime
+cache rows against the immutable named method and its exact declaring-class
+scope. Private sources receive fresh invocation keys; proven Shared same-scope
+calls retain their cache. The rows own no Closure or receiver and survive their
+retirement as pure history. Existing API owners retain a source removed during
+argument evaluation until cleanup, without initializing its raw method cache.
+See the [fake-call cache review](../../coverage/semantics/enum-is-callable-fake-call-cache-review.json).
+Bound and unproved temporary cache views remain partial.
+
 Reference formals receive isolated fresh cells after outer evaluation and binding,
 in canonical forwarding order. Each warning runs **before** its cell is allocated.
 A handler may change the caller or allocate intervening cells; normal continuation
