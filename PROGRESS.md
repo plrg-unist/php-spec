@@ -1548,7 +1548,11 @@ while the registration remains documentary metadata. Actual retval/cast owners,
 frozen converted bytes and the normal drain retain their order. Two exact normal
 originals, one pending refusal and a reached Array group/95 conditions pass at
 their recorded cuts. [Author evidence](coverage/semantics/output-final-conversion-author.json)
-records authority and limits; independent acceptance is pending. Pending
+records authority and limits. One independent normal original and one SL446
+group/69 conditions validate the actual null caller, two Object owners, internal
+trace and forged/nested frame refusals through full drain.
+[Independent review](coverage/semantics/output-final-conversion-review.json) records
+the exact cuts and observer/fixture corrections. Pending
 conversion exceptions, FINAL non-Stringable Errors and abandoned cast/fatal
 owners remain explicit dependencies. OB19's public Notice performance limitation
 is unchanged.
@@ -2069,7 +2073,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | I120 | Named by-reference Generator direct SEND body-Throwable cleanup through authenticated reference-cache cells and actual argv owners; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
-| OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |
+| OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
 | ATTR51 | Expression-bodied GET-hook Tick traversal through existing arrow tasks, preserving nested expression order, implicit return and receiver callbacks; private implementation/review. |
 | ENUM135 | Known unbound nongenerator user-method fake `Closure::call` cache policy with immutable function/scope and actual call authority; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |

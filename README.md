@@ -258,7 +258,8 @@ cover saved-frame authority, late cell reads, traces and actual receiver release
 Normal FINAL Array/Stringable returns now share conversion and drain paths.
 The Array Warning uses `Unknown:0`; known methods have a real null-C caller and
 retain their retval/cast owners through cleanup. Pending conversion exceptions
-remain explicit dependencies. [Evidence](coverage/semantics/output-final-conversion-author.json).
+remain explicit dependencies. [Independent checks](coverage/semantics/output-final-conversion-review.json)
+cover the actual null caller, trace and frame authority.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

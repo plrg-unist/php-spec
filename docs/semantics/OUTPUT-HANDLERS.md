@@ -432,7 +432,7 @@ with 234 conditions. [Independent review](../../coverage/semantics/output-array-
 adds four exact originals and one SL439 front with three groups/162 conditions:
 real CELL/Array owners, pending replacement, readonly metadata, global collector
 dispatch and the affected scalar marker checks. That cut kept object conversion
-Unsupported; FINAL Array conversion remains outside the current slice.
+and FINAL Array conversion Unsupported.
 
 Module456 adds standard user-object and stdClass return conversion, using the
 existing Stringable call protocol when a method exists. The real retval and cast
@@ -449,8 +449,8 @@ retval destruction retain ordinary GC candidacy. Only authenticated reference
 wrapper handoff visits use the existing no-check hook. Retired cell witnesses
 own nothing; the release successor retains the exact raw method operand identity.
 API/VM trace sites and late PRODUCED flags follow their original output context.
-FINAL object, internal/custom casts, resources and the paused COMP88 supplied
-Throwable/comparison contracts remain separate dependencies.
+At that cut, FINAL object, internal/custom casts, resources and the paused COMP88
+supplied Throwable/comparison contracts remained separate dependencies.
 [Author evidence](../../coverage/semantics/output-object-return-author.json)
 records 18 exact normal originals, two refusal controls and four reached
 groups/420 conditions. [Independent review](../../coverage/semantics/output-object-return-review.json)
@@ -471,5 +471,8 @@ Converted bytes freeze before original-object release; real guard decrements
 remain ordinary GC visits. Pending exceptions inside these conversions stop
 before further unwind; their null-C fatal and abandoned-owner protocol is a
 separate dependency. [Author evidence](../../coverage/semantics/output-final-conversion-author.json)
-records two normal originals, one refusal and 95 reached conditions. Independent
-acceptance is pending; the earlier Notice performance limitation remains open.
+records two normal originals, one refusal and 95 reached conditions.
+[Independent review](../../coverage/semantics/output-final-conversion-review.json)
+adds one exact internal-trace original and one SL446 group/69 conditions through
+real Object owners, null-C entry, frame refusals and full drain. The earlier
+Notice performance limitation remains open.
