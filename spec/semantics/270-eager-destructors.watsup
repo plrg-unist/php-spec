@@ -664,7 +664,7 @@ def $destructor_pending_parent_tasks((DESTRUCTOR_RELEASE pdestructionrelease) ::
 def $destructor_pending_parent_tasks((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = ((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_new*)
   -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = (ptask_new*)
 def $destructor_pending_parent_tasks(ptask*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = eps -- otherwise
-def $destructor_result_pending(S, pdestructorcall) = S_linked[.TODO = ptask_new*][.DESTRUCTION.CALLS = pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_new]]
+def $destructor_result_pending(S, pdestructorcall, pdestructorcall_tail*) = S_linked[.TODO = ptask_new*][.DESTRUCTION.CALLS = pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_new]]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
   -- if $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation_parent)
   -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)

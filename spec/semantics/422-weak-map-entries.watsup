@@ -1672,6 +1672,7 @@ def $weakmap_write_declared_child_call(S, pweakmapwrite, pinstancestorage, pdest
 def $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation)
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
   -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if $destructor_result_valid(S, pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)
   -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation]
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
