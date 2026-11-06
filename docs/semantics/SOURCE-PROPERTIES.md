@@ -267,8 +267,22 @@ uninitialized slot through success, throw and retry. Weak implicit reception can
 produce an integer formal while the caller keeps its original string result.
 Five originals, strict449 and 147 independent slot/source/receipt-owner/budget checks
 are in the [GET-backed no-write review](../../coverage/semantics/get-backed-no-write-set-review.json).
-True virtual pairs, Trait and wider headers remain separate. Ordinary initializer,
-type, parameter, storage and hook execution rules are reused.
+When neither GET nor an ordinary block SET has backing syntax, the class pair is
+genuinely virtual. Actual role/source certificates admit existing block/expression
+GET and implicit/explicit typed SET bodies without implying backing. Descriptor
+metadata remains typed/uninitialized, but the object has no property slot; successful
+SET and throw/retry never create one. Caller string input remains distinct from
+the weakly received integer. Explicit defaults are rejected after both physical
+hooks compile, using the last hook's end line; ordinary invalid-default typing
+and checked hook body/builtin-variance errors retain their earlier priority.
+Seven originals and 150 independent no-slot/source/receipt-owner/budget conditions
+use the current 450-module manifest in the
+[virtual-pair review](../../coverage/semantics/virtual-get-block-set-pair-review.json).
+The original temporary `(array)$object === []` observation stopped during array
+cleanup and remains unresolved with zero credit. Accepted observations assign the
+cast to a CV before testing emptiness; no cleanup rule was expanded. Virtual-pair
+overrides, Trait and wider headers remain separate. Ordinary type, parameter,
+storage and hook execution rules are reused.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the

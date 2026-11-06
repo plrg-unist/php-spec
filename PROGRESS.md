@@ -1437,7 +1437,16 @@ values or a real uninitialized slot through no-write success, throw and retry;
 implicit parameter coercion stays distinct from the caller's original input result.
 Five originals, strict449 and 147 independent source/slot/receipt-owner/budget checks are
 in the [GET-backed no-write review](coverage/semantics/get-backed-no-write-set-review.json).
-True virtual pairs, Trait and wider headers remain separate.
+True virtual class GET/block-SET pairs now retain source roles and typed metadata
+without any object slot. Existing GET forms and implicit/explicit typed SET preserve
+input/return checks, no-write effects and receiver throw/retry. Explicit defaults
+fail after physical hooks at the last hook's end line; earlier default-type and
+checked body/builtin-variance errors keep their priority. Seven originals and
+150 independent no-slot/source/receipt-owner/budget conditions use the current
+450-module manifest in the [virtual-pair review](coverage/semantics/virtual-get-block-set-pair-review.json).
+The original temporary-cast comparison cleanup failure stays unresolved/zero;
+accepted empty-cast observations use a CV. Pair overrides, Trait and wider headers
+remain separate.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2476,7 +2485,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS203 | Fixed-name ordinary USER producers with required by-value arguments and current quiet primitive/leaf returns, using actual target/source and generic SEND/frame ownership; preserve current headers, nullary/array policy and held modes. |
-| ATTR63 | True virtual class GET/block-SET pairs with neither body backing, using real roles, no storage and existing body/parameter paths; preserve backed62 and wider held modes. |
 | COMP191 | Ordinary nongenerator CACHE_CALL default-cache identity and true invocation-completion lifetime (462), preserving Shared/Gen behavior and coordinating the 79/257 release boundary. |
 | ENUM148 | Genuine early named-output reference acquisition history through unset/rebound CV names, preserving SENT owners, builtin/input and current simple-CV domains; coordinate the nonowning reference certificate. |
 | GC60 | Existing-safe quiet scalar current-row callback behavior under the established claim and ownership law; group the primitive family without new phases or wider mutation modes. |

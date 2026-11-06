@@ -5941,6 +5941,11 @@ A backed GET also supplies real storage for a block SET that never writes it.
 Successful no-write calls preserve initialized values or the uninitialized slot;
 source/role authority keeps this distinct from a truly virtual pair.
 [GET-backed no-write review](coverage/semantics/get-backed-no-write-set-review.json).
+True virtual class GET/block-SET pairs retain both source functions and omit the
+property slot. Block/expression GET and implicit/explicit typed SET keep ordinary
+input, return-type and receiver cleanup behavior. A type-valid explicit default
+fails after physical hook compilation, at the last hook's end line.
+[Virtual-pair review](coverage/semantics/virtual-get-block-set-pair-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
