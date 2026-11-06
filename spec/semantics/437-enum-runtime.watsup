@@ -2204,7 +2204,7 @@ def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
 def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
   -- if $(n_old < |S.OBJECTS|) /\ (HOBJECT n_old) <- S.ALLOCATIONS
   -- if $typed_closure(S, n_old)
-  -- if S_write = $write_cell_checked(S, n_cell, PSTRING ptbytes_name, z)
+  -- if S_write = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PSTRING ptbytes_name, z)
   -- if S_write.COMPLETION = NORMAL
   -- if $($heap_owners($heap_graph(S_write), HOBJECT n_old) > 0)
 def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = false -- otherwise
