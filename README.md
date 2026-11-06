@@ -5651,6 +5651,14 @@ owner. Root-only static magic headers,
 FCC/array/unpack modes and other held bounds retain their existing policies.
 [Keyword static review](coverage/semantics/anonymous-keyword-static-producer-magic-review.json).
 
+Immediate keyword-static first-class callable producers now distinguish the
+placeholder capture from the real invocation arguments. Both emitted INITs and
+the saved caller scopes certify selection. Existing METHODCLOSURE/INSTANCE and
+parameter/result owners retain the wrapper without a receiver edge; the tested
+unaliased wrapper retires before the outer send. Wider callable, signature,
+array/unpack and header policies stay separate.
+[Keyword callable review](coverage/semantics/anonymous-keyword-static-firstclass-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),

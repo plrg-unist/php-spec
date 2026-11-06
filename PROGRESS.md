@@ -2704,6 +2704,14 @@ records four original agreements, complementary70/118 state frontiers and25
 eligible-pack guards at private459 cuts. Five intended Unsupported controls,
 the corrected source-admission attempt and all fixture failures/diagnoses keep
 zero agreement. Only affected checks repeated; no native replay or broader gate.
+Keyword-static first-class producers now authenticate separate capture and real
+invocation origins/INITs while preserving forwarded called class. Generic wrapper
+INSTANCE and parameter/result owners need no receiver edge or new source fact.
+Four originals agree on their first model runs; complementary72/109 frontiers
+and25 eligible-pack guards pass at private461 cuts. Three intended Unsupported
+controls retain zero agreement, with no failure/correction/replay. Generic tail
+laws remain reused. [Review](coverage/semantics/anonymous-keyword-static-firstclass-producer-magic-review.json).
+
 
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
@@ -3166,8 +3174,9 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS215 | Immediate literal self/parent/static public static USER FCC invocation with authentic capture and outer argument sites, saved caller scopes and existing wrapper owners; preserve direct producers and held limits. |
+| ATTR74 | Direct named CV/This UNSET of admitted backed hook pairs through canonical descriptor keys, visibility-first denial and hooked-property Error; preserve indirect refusal and storage/owner laws. |
 | COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
+| ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
 | I134 | Distinct initialized borrowed source Generator reentry into the selected target, with two genuine running resumers and descriptor history proof; preserve physical pair/owner and held bounds. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
