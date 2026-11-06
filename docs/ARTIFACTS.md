@@ -1069,3 +1069,10 @@ and `../php-spec-evidence-archive/gc-scalar-alias-peer-73/`.
 The [review](../coverage/semantics/gc-scalar-alias-cow-review.json) keeps the old
 DIRECT-only NAME refusal separate from exact comparisons, singleton old-cell
 preservation and shared external/sibling write-through. Earlier matrices retain their cuts.
+
+GC74 inline-Child COW originals and the selected-target/sibling state front stay
+under `../php-spec-evidence-archive/gc-cow-child-decrement-74/author/` and
+`../php-spec-evidence-archive/gc-copied-target-peer-74/`.
+The [review](../coverage/semantics/gc-copied-target-decrement-review.json) separates
+the already-matching pre-edit console result from the genuine unbuffered-Child
+candidate omission; the diagnostic has zero acceptance credit.

@@ -4375,6 +4375,14 @@ Two exact originals and 321 independent conditions (311 authored) pass at their
 recorded private 466-module cuts across the singleton and shared facets; the
 separate current combined 467-module load also passes.
 [Scalar-reference review](coverage/semantics/gc-scalar-alias-cow-review.json).
+An overwritten COW copy of a DIRECT Child now contributes its real transient
+decrement to possible-root buffering, even when the final graph still has one
+old Child edge. The array header keeps its separate no-visit TEMP behavior;
+untouched copied items and ordinary same-table releases keep their own counts.
+The focused front passes 230 conditions (225 authored). Both originals match
+recorded console/status outcomes, with zero complete-behavior agreement credit;
+the separate borrowed-root header-buffer mismatch remains open.
+[Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

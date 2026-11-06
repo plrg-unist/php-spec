@@ -119,6 +119,18 @@ assignment. The buffer preserves physical slots, reuses freed holes, and
 backfills black-root holes from the last live slot. Allocation order and a
 stable list filter cannot replace this order.
 
+A retained-array COW write first adds an owner of each copied DIRECT Child.
+Overwriting one copied slot then decrements that Child, even when its final
+physical edge count matches the old state. A source-bound pre/post clone and
+STORE image identifies only this selected transient decrement for the existing
+GC observer. The old header still uses its separate no-visit TEMP receipt;
+untouched copied DIRECT Children gain owners, while quiet ALIAS entries supply
+no Child decrement. Ordinary same-table writes keep their actual VALUE release.
+No extra owner, root, task or count unit represents the collapsed copy/drop.
+The separate borrowed-root writeback still buffers an in-place visible header;
+this remaining mismatch is excluded from complete-behavior agreement credit.
+[Copied-target review](../../coverage/semantics/gc-copied-target-decrement-review.json).
+
 Ordinary object free clears allocation and weak lookup before child callbacks,
 while a borrowed retired buffer slot stays occupied until the existing trailing
 store-handle release. It contributes no graph node or owner. A child collector

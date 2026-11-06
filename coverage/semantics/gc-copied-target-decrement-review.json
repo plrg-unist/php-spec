@@ -1,0 +1,131 @@
+{
+  "scope": "GC74: selected copied DIRECT Child transient decrement during already-admitted retained-array COW; source admission and physical ownership remain unchanged.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "source_base": "332aa9e9611860e5129d8650a83ea3e29cc81b29",
+  "semantic_revisions": [
+    "f69d62ca4b652bc7c62adceb75b132563973af75",
+    "d65c880a3b921ff545b5475a7c220497b972ef4b"
+  ],
+  "semantic_sha256": {
+    "spec/semantics/301-cycle-collection.watsup": "38d743148db976151bbea03f14b8ec52bec6f2d68b17e3cc12486c6dbf28c3d0"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_hash.c",
+      "symbols": "zend_array_dup_value",
+      "law": "Duplicating a DIRECT object item adds an owner of that Child."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": "ZEND_ASSIGN_DIM",
+      "law": "SEPARATE_ARRAY occurs before selecting the copied target. zend_assign_to_variable_ex replaces that slot, then GC_DTOR_NO_REF drops its old copied value."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_types.h",
+      "symbols": "GC_DTOR_NO_REF, SEPARATE_ARRAY",
+      "law": "A nonzero copied-Child decrement checks a possible root; the separate old array header uses GC_TRY_DELREF without that visit."
+    }
+  ],
+  "gap": "A selected Child can be copied1 to2 and overwritten back to1 while the final physical graph still contains only its hidden old-row edge.270 final-edge subtraction misses that transient decrement. The old301 same-location array arm requires the post LOCATION array ID to be less than the pre ARRAY length, so it excludes a genuine appended COW clone. The author pre-edit console matches native, but the actual state diagnostic proves the missing fresh Child candidate; it is not a complete-behavior agreement.",
+  "change": "301 alone adds a disjoint root-CV/literal-int-key fresh-index gc_same_location arm and total gc_array_copy_decrements helper. It authenticates actual pre source/root/oldphysical1/units, duplicate_entries target DIRECT Child with zero Child units, exact ARRAY append/root STORE/ALLOC append and unchanged OBJECTS/REFCELLS/units, normal post origin/caches/location, plus the existing DIRECT-or-quiet-ALIA image. It returns only that selected transient decrement to existing gc_decrements. The post state may already contain the real eager header TEMP/OP queue; no raw tail or RESULT assumption is imposed there. Final d65 narrows only the forwarding pattern to BASE_DIM, keeping the old BASE_PROPERTY arm disjoint.",
+  "ownership": "The Child remains physically owned once across author pre/raw/eager/driven states; no owner, root, task, release, unit or receipt represents the collapsed copy/drop. In the peer, untouched sibling physical1 to2 and quiet CELL2 to3 are increases, so they gain no immediate candidate. Its later ordinary same-table sibling replacement has one real VALUE job and one pop/decrement to physical1; the new helper returns eps there. The old header retains its existing TEMP/no-visit receipt and protected count unit.",
+  "unchanged": "39/270/437, all data/credit producers, native count/debt/GC snapshot/schema/task/SOURCE kinds, header TEMP logic and old property/existing-index same-location arms remain literal. No owning-ALIA admission, array mutation inside callback, typed/backing/cyclic or held-domain extension is introduced.",
+  "counts": {
+    "recorded_console_status_exit_matches": 2,
+    "accepted_current_full_native_behavior_agreements": 0,
+    "partial_original_comparisons": 2,
+    "immutable_harness_source_agreement_units": 2,
+    "reported_conditions": 230,
+    "authored_conditions": 225,
+    "independent_fronts": 1,
+    "private_SL_modules": 467,
+    "constructed_or_load_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-cow-child-decrement-74/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-cow-child-decrement-74/author/native-v1/model-report.json",
+      "revision": "7c8cec0276771b663708b120fef83888891812ee",
+      "seconds": 22.180688619613647,
+      "classification": "Partial comparison: genuine console/status/exit match, zero current full-native-behavior credit. The recorded pre-edit cut has the copied-target GC omission. No ordinary same-table write occurs in this source."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-copied-target-peer-74/native-v2/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-copied-target-peer-74/native-v2/model-report.json",
+      "revision": "4e3bcfd7c1dd28ac5463bb9cd4c493d76fe1a9b2",
+      "seconds": 27.37549,
+      "classification": "Partial comparison: genuine console/status/exit match on final f69+d65, zero full-native-behavior credit. The same source executes the known mismatching ordinary same-table borrowed-root writeback."
+    },
+    "bounded_author_bridge": "Final changes add the authenticated Child candidate only; physical heap/tasks/units/PHP events remain the same, and the unit-protected closure still gives GC0 and the same STORE order. This phase reasoning is not promoted to a new complete native observation. Original bytes/file/cwd/profile and raw reports are not rerun or relabeled.",
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc-cow-child-decrement-74/author/strict-v1/report.json",
+      "revision": "f69d62ca4b652bc7c62adceb75b132563973af75",
+      "result": "Standalone SL467 trueLF/empty stderr/exit0/stable/no timeout, load-only0. Subsequent d65 only narrows the forwarding constructor pattern already used by the typed helper; final peer CLI and state front load actual d65 SL467."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc74_copied_target_visit_state.py",
+      "revision": "5093ed64445df49d787460128c17e995c2b98be7",
+      "wrapper": "../php-spec-evidence-archive/gc-copied-target-peer-74/front-v2/run-report.json",
+      "report": "../php-spec-evidence-archive/gc-copied-target-peer-74/front-v2/fiber-state-review-kwn4f4h4/report.json",
+      "seconds": 35.6622242910089,
+      "result": "Corrected affected frontPASS230reported/225authored: genuine preunbuffered Target/Sibling/quiet CELL; raw and eager target-only inference, no fake Child job/owner, source/root/result/unit/append/row/STORE/caches refusals, old property dispatch, unchanged real header TEMP, ordinary sibling helpereps plus one VALUE/pop/candidate, quiet ALIA selectivity, local budgets and one GC0/ordered STORE ending. Raw-to-driver buffer preservation is measured separately from the remaining ordinary-header mismatch. It is bounded state-law evidence, not whole-source native equivalence."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc-cow-child-decrement-74/author/pre-edit-shape-v1/fiber-state-review-jai0b0lw/report.json",
+      "sha256": "19278cc7cace161eae1b1b353ae0c39fae3162d09535c8b42046d1faff14fbe4",
+      "result": "Pre-edit actual COW diagnostic20.531366s, record-return numericexit0/quiet/stable/no timeout, Bool harness false by design. All nine recorded booleans true: genuine Child unbuffered before and after, same-location eps, heap/GC/destruction/descriptors valid, prepared equals raw and directGC equals driven. Childphysical1 throughout; headerphysical1/native2; exact clone/rootSTORE and real queued header TEMP. Zero acceptance/source credit."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-copied-target-peer-74/front-v1/fiber-state-review-vri0555l/report.json",
+      "sha256": "59f1890baca42cb909608f9a510c1ba080a53ec14495a55dac10b0535d314a53",
+      "result": "First maintained front stops at overbroad S_value.GC.BUFFER=S_write.GC.BUFFER after the new copied-target and ordinary one-VALUE checks. Zero front credit. No source/production fix is inferred from that assertion."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-copied-target-peer-74/ordinary-write-shape-v1/fiber-state-review-t1ox6u5_/report.json",
+      "sha256": "d92d230af4667b3d42f630d82576d2a62f79d5c2d9e2cf22a9bddd1d2d6080f0",
+      "result": "Ordinary-write diagnostic27.600555s, record-return numericexit0/quiet/stable/no timeout, Bool harness false by design. Beforebuffer has old ARRAY and Target; raw adds visible ARRAY; driver equals raw. Sibling absent all three, same-location eps, eagerSlots one Sibling. Only fixture raw-to-driver equality plus explicit Child/CELL absence changes for the affected retry."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-copied-target-peer-74/native-v1/native-report.json",
+      "sha256": "6e00dbb7269e53b07bdb5781ab852639cf4416badd917eaa254e8bc7fae5c482",
+      "result": "Peer native preparation without the later ordinary sibling write. Replaced by native-v2 only to add that required phase; no model comparison or exact agreement credited at v1."
+    }
+  ],
+  "remaining_boundary": {
+    "status": "Open, prioritized successor; not a permanent hold or an accepted native behavior.",
+    "cause": "37 location_array_store rewrites a borrowed same-array root through138 write_cell_checked and301 gc_same_cell. Native RC1 SEPARATE_ARRAY is a no-op and has no corresponding header decrement. The actual peer ordinary-write tuple proves a spurious visible-header candidate in the raw model state.",
+    "effect_on_credit": "Peer original remains partial/zero full agreement even though console/status/exit match. Author recorded pre-edit target omission likewise prevents complete credit; its correction bridge stays bounded. Immutable raw harness counts are preserved, not treated as accepted full comparisons.",
+    "scope": "GC74 fixes only the selected COW Child event. The ordinary header mismatch is retained explicitly for the separate next law; no37/gc_same_cell or generic same-target assignment change is made here."
+  },
+  "limits": "Already-admitted retained flat mutable/nonproxy DIRECT or quiet-scalar-ALIA arrays, actual root CV/literal integer key, normal root context, nonowning RHS and old header unit1. Only a copied DIRECT object target with zero Child excess supplies this event. Broader bases/keys/contexts/values, owning ALIA, typed/cyclic/self/backing sources, active creation, GC35/freeing registration/resurrection/reentry/Key/WeakMap-byref/other held domains remain outside this slice. STORE residual allocation is not forced request free.",
+  "fixture_sha256": {
+    "tests/semantics/gc74_direct_child_cow.php": "4b918dd10f076afbb52b4df90ca4ee80d2610f4ca52811cc5861c0565121032c",
+    "tests/semantics/gc74_direct_child_cow_sources.py": "85432638608b17b049620a292c84584d4f294cc52921332598369ea4373f9ac0",
+    "tests/semantics/gc74_peer_selected_child_cow.php": "0e03def909589fff13ffbf2fd8ce494a5dced3f357e3e0d4fba70fd3eabecd2d",
+    "tests/semantics/gc74_peer_selected_child_cow_sources.py": "6f770fed18faa6ecbfb9a574bc329f2086a9a6ac5ead612d0de5062f905ae3ab",
+    "tests/semantics/gc74_copied_target_visit_state.py": "d0fc2d2ab5289958b82fd703fbab0a8fc57deae1823b26568086402ee08aa6e6"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-cow-child-decrement-74/author/native-v1/native-report.json": "41698b9e205047037ae52c54c925b7d5eb48a93f3f6c2804bdbbe34bb4d48029",
+    "../php-spec-evidence-archive/gc-cow-child-decrement-74/author/native-v1/model-report.json": "2a3d216ec641f26aa192615f3b5e17d9c790c996c507450e29b96be9e4d7c57e",
+    "../php-spec-evidence-archive/gc-cow-child-decrement-74/author/strict-v1/report.json": "4174efa7d19d01332413744588bb6441798a26eecd4e506169d6e1cae0e3345d",
+    "../php-spec-evidence-archive/gc-copied-target-peer-74/native-v2/native-report.json": "f5c18669e70a0e514e8e5e22737d36770081d9ab1f48232873e975f04039b206",
+    "../php-spec-evidence-archive/gc-copied-target-peer-74/native-v2/model-report.json": "35f67661a338da5d3ba2383d5e4bad8f4c458a482db10915f0618f121c34bb79",
+    "../php-spec-evidence-archive/gc-copied-target-peer-74/front-v2/run-report.json": "bd7a597bbf496e2ed7314b4142f5f12a75e264c746b5b0c73773e2b8b51f623f",
+    "../php-spec-evidence-archive/gc-copied-target-peer-74/front-v2/fiber-state-review-kwn4f4h4/report.json": "fdc53d22d3994a1eef98dc667c3882e23acab80892138f2422f2c7a28b9e0134",
+    "../php-spec-evidence-archive/gc-copied-target-visit-74/joined-main-468-v1/report.json": "f86449ab57d856b3c6b01c361452fe650e15850d7b84e49ad597d1eb740ddd18"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-copied-target-peer-74/independent-summary.json",
+  "accepted_current": {
+    "revision": "962421cf349e171847b12a70d537d8c53b1aee54",
+    "report": "../php-spec-evidence-archive/gc-copied-target-visit-74/joined-main-468-v1/report.json",
+    "seconds": 14.08684,
+    "result": "One authentic current combined SL468 loadPASS trueLF/quiet exit0/stable/no timeout,0source. Inventory169/306 passes. Separate from private467 partial comparisons and bounded state evidence.",
+    "composition": "Actual delta479/306/30 raw-entry/default hooks require dynamic CV callable-array/string-method invocation, absent for literal function-string availability and zero-formal destructor/shutdown Closure. RAW_ENTRY stays false/empty.414 This-array fromCallable/FCC is absent;447 Generator/static-helper context is absent (no yield/Generator/iteration);456 final __toString/object-output provenance is absent for scalar echo. New borrowed fields/task forms add no owners here."
+  },
+  "recovery": "Both tracked runners reproduce recorded console comparisons against frozen native bytes/file/cwd/profile; raw report counts remain immutable and accepted full credit is0. The one tracked state front tests the bounded target/sibling law at final d65. No source replay is needed for metadata or relabeling; preserve both diagnostics and first front0, and implement the separate borrowed-root header law only under its own coordinated release."
+}

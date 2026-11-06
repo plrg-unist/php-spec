@@ -924,6 +924,16 @@ recorded private 466-module cuts. The shared fixture syntax stop retains zero;
 its corrected affected facet passes without replaying the unchanged singleton.
 The separate current combined SL467 load passes with zero source credit.
 [Scalar-reference review](coverage/semantics/gc-scalar-alias-cow-review.json).
+GC74 accounts for the existing-domain DIRECT target copied then overwritten
+during retained-array COW. Exact source/clone/STORE images supply its transient
+nonlast decrement to existing GC buffering; the old-header TEMP receipt,
+physical ownership and ordinary same-table release rules remain unchanged.
+The focused 230-condition front (225 authored) passes at private SL467. Two
+originals retain console/status matches with zero complete-behavior credit:
+the author comparison precedes the fix, and the peer retains a separate raw
+borrowed-root header-buffer mismatch. That existing boundary is next work.
+The separate current combined SL468 load passes with zero source credit.
+[Copied-target review](coverage/semantics/gc-copied-target-decrement-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3583,7 +3593,6 @@ their work remains unaccepted until integrated.
 | ATTR84 | Indirect append through existing private scalar magic GET, with guard-free receiver lease across Notice and correct release before scalar-container failure. |
 | COMP208 | Owning defaults for literal nullsafe public method calls, preserving nil argument skipping and genuine live selected scopes and cache authority. |
 | ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
-| GC74 | Infer the real copied-target Child decrement during retained-array COW without a net edge loss, preserving header TEMP and existing ownership graphs. |
 | I138 | Scope-free raw static Closure helper frames in existing reentry paths, preserving owning INSTANCE roots through saved VM moves and return. |
 | OB34 | Weak scalar-return TypeErrors during FINAL conversion, preserving genuine rejected-return authority and successful weak coercion without a false error source. |
 
