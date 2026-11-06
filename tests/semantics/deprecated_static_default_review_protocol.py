@@ -14,8 +14,15 @@ import static_types as types
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'tests/semantics/deprecated_static_default_review'
-SELECTIONS = {'lookup': 'global-closure-alias', 'reference': 'retired-typed-reference'}
+SELECTIONS = {'lookup': 'global-closure-alias', 'reference': 'retired-typed-reference',
+    'publication': 'reentrant-old-slot-release'}
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def source_path(group):
+    directory = ROOT / 'tests/semantics/deprecated_static_property_default' if group == 'publication' else SOURCE
+    return directory / (SELECTIONS[group] + '.php')
+
 
 EXTRA = r'''
 dec $static_review_bind_ready(pstate,pstaticdefaultcontext) : bool
@@ -45,6 +52,36 @@ def $static_review_commit_pause(S,porigin,pvalue,n) = $static_review_commit_paus
   -- if S_next = $drive_steps(S,1)
   -- if S_next.COMPLETION = BUDGET
 def $static_review_commit_pause(S,porigin,pvalue,n) = S -- otherwise
+dec $static_review_drop_ready(pstate,nat) : bool
+def $static_review_drop_ready(S,n_old) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (n_old)
+  -- if S.OBJECTS[n_old] = INSTANCE porigin_drop
+  -- if $class_at(S.CLASSES,porigin_drop) = (pclassdesc)
+  -- if pclassdesc.NAME = $ptascii("Drop196")
+  -- if $destructor_method(S,n_old) = (pmethoddesc)
+  -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+def $static_review_drop_ready(S,n_old) = false -- otherwise
+dec $static_review_drop_pause(pstate,nat,nat) : pstate
+def $static_review_drop_pause(S,n_old,n) = S -- if $static_review_drop_ready(S,n_old)
+def $static_review_drop_pause(S,n_old,n) = $static_review_drop_pause(S_next[.COMPLETION = NORMAL],n_old,$nabs($(n - 1)))
+  -- if ~$static_review_drop_ready(S,n_old)
+  -- if S.COMPLETION = NORMAL /\ $(n > 0) /\ S.TODO =/= eps
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $static_review_drop_pause(S,n_old,n) = S -- otherwise
+dec $static_review_publish_ready(pstate) : bool
+def $static_review_publish_ready(S) = true
+  -- if S.TODO = (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*
+def $static_review_publish_ready(S) = false -- otherwise
+dec $static_review_publish_pause(pstate,nat) : pstate
+def $static_review_publish_pause(S,n) = S -- if $static_review_publish_ready(S)
+def $static_review_publish_pause(S,n) = $static_review_publish_pause(S_next[.COMPLETION = NORMAL],$nabs($(n - 1)))
+  -- if ~$static_review_publish_ready(S)
+  -- if S.COMPLETION = NORMAL /\ $(n > 0) /\ S.TODO =/= eps
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $static_review_publish_pause(S,n) = S -- otherwise
 '''
 
 
@@ -165,8 +202,102 @@ def reference(fixture, path, response):
         '$propref_source_valid(S_done,n_reference,RETIRED_CLASS_PROP_SOURCE pstaticdefaultcontext.DECL n_retired)']
 
 
+def publication(fixture, path):
+    return start(fixture, path) + binder() + [
+        'S_bind.RESULT = KNOWN (PARRAY n_new)',
+        '$class_static_at(S_bind.CLASSSTATICS,pstaticdefaultcontext.DECL) = (pclassstatic_old)',
+        'pclassstatic_old.STATE = PROP_VALUE (DIRECT (POBJECT n_old))',
+        'S_bind.OBJECTS[n_old] = INSTANCE porigin_old',
+        '$class_at(S_bind.CLASSES,porigin_old) = (pclassdesc_old)',
+        'pclassdesc_old.NAME = $ptascii("Drop196")',
+        '$static_default_filled(S_bind,ppropertydesc)',
+        '(HOBJECT n_old) <- $class_static_roots(S_bind.CLASSSTATICS)',
+        '$heap_owners($heap_graph(S_bind),HOBJECT n_old) = 1',
+        '(HARRAY n_new) <- $user_constant_roots(S_bind.USERCONSTANTS)',
+        'n_baseline = $heap_owners($heap_graph(S_bind[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]),HARRAY n_new)',
+        '$class_named(S_bind.CLASSNAMES,$ptascii("ns196\\other196")) = (porigin_other)',
+        '$class_static_select(S_bind,porigin_other,$ptascii("value")) = (ppropertydesc_other)',
+        'ppropertydesc_other.DEFAULT = PROP_DEFERRED porigin_other_initializer',
+        '$class_static_at(S_bind.CLASSSTATICS,ppropertydesc_other.ORIGIN) = (pclassstatic_other)',
+        'pclassstatic_other.STATE = PROP_DEFERRED porigin_other_initializer',
+        '~$static_default_filled(S_bind,ppropertydesc_other)',
+        'S_zero = $drive_steps(S_bind,0)', 'S_zero.COMPLETION = BUDGET',
+        'S_zero.CLASSSTATICS = S_bind.CLASSSTATICS',
+        'S_zero.CLASSCONSTANTHISTORY = S_bind.CLASSCONSTANTHISTORY',
+        'S_stage = $drive_steps(S_zero[.COMPLETION = NORMAL],1)',
+        'S_stage.COMPLETION = BUDGET',
+        'S_stage.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext (PARRAY n_new) pvalueclass_new) :: ptask_tail*',
+        'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_old)]',
+        '$destructor_release_valid(S_stage,pdestructionrelease)',
+        'S_stage.RESULT = KNOWN PNULL', 'S_stage.BASE = BASE_VALUE (KNOWN PNULL)',
+        '$class_static_at(S_stage.CLASSSTATICS,pstaticdefaultcontext.DECL) = (pclassstatic_marker)',
+        'pclassstatic_marker.STATE = PROP_STATIC_BINDING',
+        'S_stage.CLASSCONSTANTHISTORY = S_bind.CLASSCONSTANTHISTORY',
+        '~((HOBJECT n_old) <- $class_static_roots(S_stage.CLASSSTATICS))',
+        '$class_static_roots(S_stage.CLASSSTATICS) = eps',
+        '$task_nodes(STATIC_DEFAULT_PUBLISH pstaticdefaultcontext (PARRAY n_new) pvalueclass_new) = [HARRAY n_new]',
+        '$heap_owners($heap_graph(S_stage),HARRAY n_new) = $(n_baseline + 1)',
+        '$heap_owners($heap_graph(S_stage),HOBJECT n_old) = 1',
+        '$static_publication_valid(S_stage,pstaticdefaultcontext,PARRAY n_new,pvalueclass_new)',
+        '$class_statics_valid(S_stage)', '$gc_state_valid(S_stage)',
+        '$destruction_state_valid(S_stage)', '$call_descriptors_valid(S_stage)',
+        '~$static_publication_valid(S_stage[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*],pstaticdefaultcontext,PARRAY n_new,pvalueclass_new)',
+        '~$class_statics_valid(S_stage[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*])',
+        'pstaticdefaultcontext_bad = pstaticdefaultcontext[.ROOT = pstaticdefaultcontext.DECL]',
+        'S_badroot = S_stage[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext_bad (PARRAY n_new) pvalueclass_new) :: ptask_tail*]',
+        '~$static_publication_valid(S_badroot,pstaticdefaultcontext_bad,PARRAY n_new,pvalueclass_new)',
+        '~$class_statics_valid(S_badroot)',
+        '~$static_default_binders_unique((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext (PARRAY n_new) pvalueclass_new) :: (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext (PARRAY n_new) pvalueclass_new) :: ptask_tail*,eps)',
+        'S_read = $class_static_read(S_stage,pstaticdefaultcontext.ROOT,ppropertydesc.NAME,pstaticdefaultcontext.LINE)',
+        'S_read.COMPLETION = UNSUPPORTED "static default slot release"',
+        'S_quiet = $class_static_quiet(S_stage,pstaticdefaultcontext.ROOT,ppropertydesc.NAME)',
+        'S_quiet.COMPLETION = UNSUPPORTED "static default slot release"',
+        'S_store = $class_static_store_ordinary(S_stage,pstaticdefaultcontext.ROOT,ppropertydesc.NAME,PINT 77,pstaticdefaultcontext.LINE)',
+        'S_store.COMPLETION = UNSUPPORTED "static default slot release"',
+        'S_ref = $class_static_reference_fetch_ordinary(S_stage,pstaticdefaultcontext.DECL,pstaticdefaultcontext.LINE)',
+        'S_ref.COMPLETION = UNSUPPORTED "static default slot release"',
+        'S_drop = $static_review_drop_pause(S_stage[.COMPLETION = NORMAL],n_old,10000)',
+        'S_drop.COMPLETION = NORMAL', '$static_review_drop_ready(S_drop,n_old)',
+        '(HOBJECT n_old) <- S_drop.ALLOCATIONS',
+        'n_old <- S_drop.DESTRUCTION.CALLED',
+        '(HOBJECT n_old) <- $call_context_roots(S_drop.CURRENT)',
+        '$class_static_at(S_drop.CLASSSTATICS,pstaticdefaultcontext.DECL) = (pclassstatic_marker)',
+        '~((HOBJECT n_old) <- $class_static_roots(S_drop.CLASSSTATICS))',
+        '$static_publication_frames(S_drop,S_drop.FRAMES,pstaticdefaultcontext.DECL)',
+        '$heap_owners($heap_graph(S_drop),HARRAY n_new) = $(n_baseline + 1)',
+        '$class_statics_valid(S_drop)', '$gc_state_valid(S_drop)',
+        '$destruction_state_valid(S_drop)', '$constant_context_valid(S_drop)',
+        '$call_current_valid(S_drop)',
+        '$class_static_at(S_drop.CLASSSTATICS,ppropertydesc_other.ORIGIN) = (pclassstatic_other)',
+        'S_ready = $static_review_publish_pause(S_drop,10000)',
+        'S_ready.COMPLETION = NORMAL', '$static_review_publish_ready(S_ready)',
+        'S_ready.TODO = (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext (PARRAY n_new) pvalueclass_new) :: ptask_ready*',
+        '~((HOBJECT n_old) <- S_ready.ALLOCATIONS)',
+        '$class_static_at(S_ready.CLASSSTATICS,pstaticdefaultcontext.DECL) = (pclassstatic_marker)',
+        '$static_publication_valid(S_ready,pstaticdefaultcontext,PARRAY n_new,pvalueclass_new)',
+        '$class_statics_valid(S_ready)', '$call_descriptors_valid(S_ready)',
+        '$static_default_filled(S_ready,ppropertydesc_other)',
+        '$class_static_at(S_ready.CLASSSTATICS,ppropertydesc_other.ORIGIN) = (pclassstatic_other_filled)',
+        'pclassstatic_other_filled.STATE = PROP_VALUE (DIRECT (PARRAY n_other))',
+        'S_ready.ARRAYS[n_other].ITEMS = eps',
+        'S_after = $drive_steps(S_ready,1)', 'S_after.COMPLETION = BUDGET',
+        '$class_static_at(S_after.CLASSSTATICS,pstaticdefaultcontext.DECL) = (pclassstatic_new)',
+        'pclassstatic_new.STATE = PROP_VALUE (DIRECT (PARRAY n_new))',
+        'S_after.CLASSCONSTANTHISTORY = S_ready.CLASSCONSTANTHISTORY',
+        '$class_statics_valid(S_after)', '$call_descriptors_valid(S_after)',
+        '~$static_publication_valid(S_after,pstaticdefaultcontext,PARRAY n_new,pvalueclass_new)',
+        'S_done = $drive_steps(S_after[.COMPLETION = NORMAL],10000)',
+        'S_done.COMPLETION = NORMAL', '$call_descriptors_valid(S_done)',
+        '~((HOBJECT n_old) <- S_done.ALLOCATIONS)',
+        '$machine_roots(S_done[.CLASSCONSTANTHISTORY = eps]) = $machine_roots(S_done)',
+        'S_full = $drive_steps(S_bind,10000)', 'S_full.COMPLETION = NORMAL',
+        'S_done.EVENTS = S_full.EVENTS',
+        'S_done.CLASSSTATICS = S_full.CLASSSTATICS',
+        'S_done.CLASSCONSTANTHISTORY = S_full.CLASSCONSTANTHISTORY']
+
+
 def prepare(out, group):
-    path = SOURCE / (SELECTIONS[group] + '.php')
+    path = source_path(group)
     frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
     adapter = Worker([str(ROOT / '_build/default/adapter/main.exe'), str(ROOT)], out / 'adapter', seconds=45)
     try:
@@ -185,7 +316,9 @@ def prepare(out, group):
     finally:
         try: adapter.close()
         finally: frontend.close()
-    checks = lookup(checked['fixture'], path) if group == 'lookup' else reference(checked['fixture'], path, response)
+    if group == 'lookup': checks = lookup(checked['fixture'], path)
+    elif group == 'reference': checks = reference(checked['fixture'], path, response)
+    else: checks = publication(checked['fixture'], path)
     (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
     (out / 'protocol.watsup').write_text(PREFIX + EXTRA + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + check + '\n' for check in checks))
     return len(checks)
@@ -197,7 +330,7 @@ def main():
     parser.add_argument('--group', choices=tuple(SELECTIONS), required=True)
     args = parser.parse_args(); out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / path for path in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    paths = [Path(__file__), SOURCE / (SELECTIONS[args.group] + '.php'), *modules, *(ROOT / path for path in (
+    paths = [Path(__file__), source_path(args.group), *modules, *(ROOT / path for path in (
         'spec/semantics/modules.json', 'spec/schema.json', 'tests/semantics/deprecated_global_constant_protocol.py',
         'tests/semantics/recorded_worker.py', 'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py',
         '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe',
