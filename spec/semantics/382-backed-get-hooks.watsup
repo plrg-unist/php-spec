@@ -83,6 +83,9 @@ def $hook_pair_block_set_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLE
 def $hook_pair_block_set_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
 dec $hook_pair_backed_headers(phpType38, phpType38, ptbytes) : bool
 def $hook_pair_backed_headers(phpType38_get, phpType38_set, ptbytes) = ($hook_pair_short_set_headers(phpType38_get, phpType38_set) \/ $hook_pair_block_set_headers(phpType38_get, phpType38_set, ptbytes))
+;; Asymmetric pair flags authenticate a backed Trait, independently of order.
+dec $hook_pair_flags(int, text, phpType38, phpType38, ptbytes) : bool
+def $hook_pair_flags(flags, text, phpType38_first, phpType38_second, ptbytes) = (flags <- [0,1] \/ (text = "trait" /\ flags <- [256,257,512,513] /\ ($hook_pair_backed_headers(phpType38_first, phpType38_second, ptbytes) \/ $hook_pair_backed_headers(phpType38_second, phpType38_first, ptbytes))))
 dec $hook_pair_virtual_headers(phpType38, phpType38, ptbytes) : bool
 def $hook_pair_virtual_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement_set*) metadata_set_hook, ptbytes) = true
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
@@ -113,9 +116,9 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
   -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
   -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
-  -- if flags <- [0,1] /\ phpType18 =/= ABSENT
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
-  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if $hook_pair_flags(flags, pchheader.KIND, phpType38_first, phpType38_second, ppropertydesc.NAME) /\ phpType18 =/= ABSENT
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.FINAL = $ppproperty_final(flags)
   -- if ppropertydesc.NAME = $base64(text) /\ ppropertydesc.KEY = ppropertydesc.NAME /\ ppropertydesc.TYPE =/= eps
   -- if pchheader.KIND = "class" \/ $property_set_builtin_types(ppropertydesc.TYPE)
   -- if (phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
@@ -150,7 +153,7 @@ def $pphook_pair_compile(P, pcpath, ppropertydesc, phpType38_first, phpType38_se
   -- if P_first = $pphook_compile(P, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc, phpType38_first, pchheader)
   -- if P_first.COMPLETION =/= PPCNORMAL
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_pair_compile(P_next, pcpath, ppropertydesc_new, phpType38_first, phpType38_second, pchheader) ppropertydesc_next*
-  -- if flags <- [0,1] /\ pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $hook_pair_flags(flags, pchheader.KIND, phpType38_first, phpType38_second, $base64(text)) /\ pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, $base64(text), pchheader.KIND) =/= eps
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
@@ -159,7 +162,7 @@ def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flag
   -- if ppropertydesc_new.TYPE =/= eps
   -- if pchheader.KIND = "class" \/ $property_set_builtin_types(ppropertydesc_new.TYPE)
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
-  -- if flags <- [0,1] /\ pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $hook_pair_flags(flags, pchheader.KIND, phpType38_first, phpType38_second, $base64(text)) /\ pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, $base64(text), pchheader.KIND) =/= eps
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
@@ -264,8 +267,8 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
   -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
-  -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
-  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if $hook_pair_flags(flags, pclassdesc.KIND, phpType38_first, phpType38_second, ppropertydesc.NAME) /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.FINAL = $ppproperty_final(flags)
   -- if phpType18 =/= ABSENT /\ ppropertydesc.TYPE =/= eps
   -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pclassdesc.KIND) = (n_get)
