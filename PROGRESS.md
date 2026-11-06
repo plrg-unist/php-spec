@@ -2237,6 +2237,16 @@ the old empty no-constructor and unpack-prefix bounds stay unchanged. The
 [constructor-producer review](coverage/semantics/anonymous-constructor-magic-review.json)
 records five distinct source agreements, separate 160/201 owner/budget fronts and
 a 30-condition zero-constructor unpack guard at their recorded cuts.
+Fixed class/literal public static USER producers now share the quiet COPY
+family with zero/required untyped positional by-value parameters. Actual inherited
+scoped targets preserve declaring/called classes before arguments and add no
+receiver root. Generic inner snapshots, fresh parameters and returned table/child
+owners survive caller mutation and frame retirement. Constructor, nullary,
+contextual-array and438 policies stay unchanged. The
+[static-producer review](coverage/semantics/anonymous-static-producer-magic-review.json)
+records five distinct source agreements, separate 134/204 owner/budget fronts and
+a 29-condition real-source unpack guard at their recorded cuts; five intended
+Unsupported controls retain zero agreement credit.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2595,7 +2605,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS205 | Fixed class/literal public static USER producers with zero/required untyped positional-by-value arguments, authentic declaring/called targets and generic ownership; preserve current quiet return/header policies and held domains. |
+| CLASS206 | Direct static no-capture literal USER Closure producers with zero/required plain positional-by-value arguments, authentic source/template and real targets; preserve current quiet COPY/header and held policies. |
 | ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
 | COMP193 | Public ordinary instance/static method FCC defaults through direct captures, fromCallable and clones, with authentic entry/scope/receiver and Shared/private lifetime; preserve fake rebind, Generator and other held bounds. |
 | ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |

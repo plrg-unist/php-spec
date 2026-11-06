@@ -5426,6 +5426,16 @@ bound, and unpack prefixes keep that old route only. Wider constructor headers,
 inner named calls and nonleaf/array layouts remain partial.
 [Constructor-producer review](coverage/semantics/anonymous-constructor-magic-review.json).
 
+Fixed class/literal public static USER producers now accept zero or required
+untyped positional by-value parameters. Exact compiled class/method and source
+formal certificates select the actual inherited target before inner arguments,
+keeping declaring and called scopes distinct without a receiver owner. Generic
+sends, fresh parameters and return/table/child owners retain the quiet primitive
+or ordinary leaf payload after caller mutation and producer cleanup. Failed
+certificates cannot fall back to integer/leaf admission. Constructor, nullary,
+contextual array and unpack-prefix policies retain their prior bounds.
+[Static-producer review](coverage/semantics/anonymous-static-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
