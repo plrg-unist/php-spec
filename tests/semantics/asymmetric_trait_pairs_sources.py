@@ -7,114 +7,108 @@ import tick_sources as ticks
 
 SOURCE = b'''<?php
 $n=0;
-function rewrite70($entry,$base,$trait,$lexical,$called,$method){
+function protected70($entry,$base,$lexical,$called){
     global $n;$n=$n+1;
-    echo $trait,":",$lexical,":",$called,":",$method,":",$base,";H";echo $entry;echo ";";
-    if($n===3){unset($GLOBALS['object']);echo "U";throw new Exception("gone");}
+    echo "H",$entry,":",$base,":",$lexical,":",$called,";";
+    if($n===2){unset($GLOBALS['object']);echo "U";throw new Exception("gone");}
     return $entry+$base;
 }
-function deniedInput70(){echo "R";return [];}
-function throwingInput70(){echo "Q";throw new Exception("rhs");}
+function denied70(){echo "R";return [];}
+function throwing70(){echo "Q";throw new Exception("rhs");}
 trait ProtectedPair70 {
     public protected(set) int $value=3 {
-        set(int $entry) => rewrite70($entry,$this->value,__TRAIT__,__CLASS__,static::class,__METHOD__);
+        set(int $entry) => protected70($entry,$this->value,__CLASS__,static::class);
         get => 700;
     }
 }
-trait PrivatePair70 {
-    public private(set) int $secret {
-        get {return $this->secret+1000;}
-        set(int|string $entry){
-            echo __TRAIT__,":",__CLASS__,":",static::class,":",($entry==="4"),";P";
-            $this->secret=$entry+20;
-        }
-    }
-}
-trait JoinedPairs70 {use ProtectedPair70,PrivatePair70;}
+trait ProtectedWrapper70 {use ProtectedPair70;}
 class ConsumerA70 {
-    use JoinedPairs70;
-    public function writeProtected($entry){return ($this->value=$entry);}
-    public function writePrivate($entry){return ($this->secret=$entry);}
-    public function writeOtherProtected($other,$entry){return ($other->value=$entry);}
-    public function writeOtherPrivate($other,$entry){return ($other->secret=$entry);}
+    use ProtectedWrapper70;
+    public function put($entry){return ($this->value=$entry);}
+    public function other($target,$entry){return ($target->value=$entry);}
     public function __destruct(){echo "A";}
 }
 class ConsumerB70 {
-    use ProtectedPair70,PrivatePair70;
-    public function writeProtected($entry){return ($this->value=$entry);}
-    public function writePrivate($entry){return ($this->secret=$entry);}
+    use ProtectedPair70;
+    public function put($entry){return ($this->value=$entry);}
     public function __destruct(){echo "B";}
 }
-class GrandA70 extends ConsumerA70 {
-    public function ownProtected($entry){return ($this->value=$entry);}
-    public function ownPrivate($entry){return ($this->secret=$entry);}
-}
+class GrandA70 extends ConsumerA70 {public function own($entry){return ($this->value=$entry);}}
 $object=new GrandA70;$other=new ConsumerB70;
-echo $object->value;echo "/";echo $other->value;echo ";";
-try{echo $object->secret;}catch(Error $error){echo $error->getMessage();echo "|";}
+$result=$object->own("5");echo $result==="5";echo ":";echo $object->value;echo ";";
+try{$result=($object->value=denied70());}catch(TypeError $error){echo "BAD";}catch(Error $error){echo $error->getMessage();echo "|";}
 unset($error);
-$result=$object->writeProtected("5");echo $result==="5";echo ";";
-$secretResult=$object->writePrivate("4");echo $secretResult==="4";echo ":";echo $object->secret;echo ";";
-$result=$object->ownProtected("6");echo $result==="6";echo ";";
-try{$result=($object->value=deniedInput70());}catch(TypeError $error){echo "BAD";}catch(Error $error){echo $error->getMessage();echo "|";}
+try{$result=($object->value=throwing70());}catch(Exception $error){echo "C";echo $result==="5";echo ";";}
 unset($error);
-try{$result=($object->value=throwingInput70());}catch(Exception $error){echo "C";echo $result==="6";echo ";";}
+try{$object->other($other,"4");}catch(Error $error){echo $error->getMessage();echo "|";}
 unset($error);
-try{$object->ownPrivate("6");}catch(Error $error){echo $error->getMessage();echo "|";}
+try{$object->own([]);}catch(TypeError $error){echo "T";}
 unset($error);
-try{$object->writeOtherProtected($other,"4");}catch(Error $error){echo $error->getMessage();echo "|";}
+$shape=(array)$object;echo $shape["value"];echo ";";unset($shape);
+try{$result=$object->put("8");}catch(Exception $error){echo "C";echo $result==="5";echo ";";}
 unset($error);
-try{$object->writeOtherPrivate($other,"4");}catch(Error $error){echo $error->getMessage();echo "|";}
-unset($error);
-try{$object->ownProtected([]);}catch(TypeError $error){echo "T";}
-unset($error);
-try{$object->writePrivate([]);}catch(TypeError $error){echo "T";}
-unset($error);
-$shape=(array)$object;echo $shape["value"];echo ":";echo $shape["secret"];echo ":";echo $object->value;echo ";";unset($shape);
-$secretResult=$other->writePrivate("7");echo $secretResult==="7";echo ":";echo $other->secret;echo ";";
-try{$result=$object->writeProtected("8");}catch(Exception $error){echo "C";echo $result==="6";echo ";";}
-unset($error);
-$result=$other->writeProtected("4");echo $result==="4";echo ";";
-$object=new GrandA70;
-$result=$object->writeProtected("2");echo $result==="2";echo ";";
+$result=$other->put("4");echo $result==="4";echo ";";
+$object=new GrandA70;$result=$object->put("2");echo $result==="2";echo ";";
 $shape=(array)$object;echo $shape["value"];echo ":";echo $object->value;echo ";";unset($shape);
 unset($object);unset($other);echo $n;echo "Z";
 '''
 
-EXPECTED = (
-    b'700/700;'
-    b'Typed property ConsumerA70::$secret must not be accessed before initialization|'
-    b'ProtectedPair70:ConsumerA70:GrandA70:ProtectedPair70::$value::set:3;'
-    b'H5;'
-    b'1;'
-    b'PrivatePair70:ConsumerA70:GrandA70:1;'
-    b'P1:1024;'
-    b'ProtectedPair70:ConsumerA70:GrandA70:ProtectedPair70::$value::set:8;'
-    b'H6;'
-    b'1;'
+SOURCE_EXPECTED = (
+    b'H5:3:ConsumerA70:GrandA70;'
+    b'1:700;'
     b'RCannot modify protected(set) property ConsumerA70::$value from global scope|'
     b'QC1;'
-    b'Cannot modify private(set) property ConsumerA70::$secret from scope GrandA70|'
     b'Cannot modify protected(set) property ConsumerB70::$value from scope GrandA70|'
-    b'Cannot modify private(set) property ConsumerB70::$secret from scope GrandA70|'
-    b'TT14:24:700;'
-    b'PrivatePair70:ConsumerB70:ConsumerB70:;'
-    b'P1:1027;'
-    b'ProtectedPair70:ConsumerA70:GrandA70:ProtectedPair70::$value::set:14;'
-    b'H8;'
+    b'T8;'
+    b'H8:8:ConsumerA70:GrandA70;'
     b'UAC1;'
-    b'ProtectedPair70:ConsumerB70:ConsumerB70:ProtectedPair70::$value::set:3;'
-    b'H4;'
+    b'H4:3:ConsumerB70:ConsumerB70;'
     b'1;'
-    b'ProtectedPair70:ConsumerA70:GrandA70:ProtectedPair70::$value::set:3;'
-    b'H2;'
+    b'H2:3:ConsumerA70:GrandA70;'
     b'1;'
     b'5:700;'
-    b'AB5Z'
+    b'AB4Z'
+)
+
+PRIVATE_SOURCE = b'''<?php
+trait PrivatePair70 {
+    public private(set) int $secret {
+        get {return $this->secret+1000;}
+        set(int|string $entry){echo "P";echo $entry==="4";$this->secret=$entry+20;}
+    }
+}
+class PrivateA70 {
+    use PrivatePair70;
+    public function put($entry){return ($this->secret=$entry);}
+    public function other($target,$entry){return ($target->secret=$entry);}
+}
+class PrivateB70 {use PrivatePair70;public function put($entry){return ($this->secret=$entry);}}
+class PrivateGrand70 extends PrivateA70 {public function own($entry){return ($this->secret=$entry);}}
+$object=new PrivateGrand70;$other=new PrivateB70;
+try{echo $object->secret;}catch(Error $error){echo $error->getMessage();echo "|";}
+unset($error);
+$result=$object->put("4");echo $result==="4";echo ":";echo $object->secret;echo ";";
+try{$object->own("6");}catch(Error $error){echo $error->getMessage();echo "|";}
+unset($error);
+try{$object->other($other,[]);}catch(TypeError $error){echo "BAD";}catch(Error $error){echo $error->getMessage();echo "|";}
+unset($error);
+try{$object->put([]);}catch(TypeError $error){echo "T";}
+unset($error);
+$result=$other->put("7");echo $result==="7";echo ":";echo $other->secret;echo ";";echo $object->secret;
+'''
+
+PRIVATE_SOURCE_EXPECTED = (
+    b'Typed property PrivateA70::$secret must not be accessed before initialization|'
+    b'P11:1024;'
+    b'Cannot modify private(set) property PrivateA70::$secret from scope PrivateGrand70|'
+    b'Cannot modify private(set) property PrivateB70::$secret from scope PrivateGrand70|'
+    b'TP1:1027;'
+    b'1024'
 )
 
 CASES = {
-    'consumer-scoped-asymmetric-pairs-preserve-effects-storage-and-owners': (SOURCE, EXPECTED),
+    'protected-consumer-permission-rhs-priority-and-owner-abort': (SOURCE, SOURCE_EXPECTED),
+    'private-consumer-scope-uninitialized-storage-and-reception': (PRIVATE_SOURCE, PRIVATE_SOURCE_EXPECTED),
     'private-set-pair-finality-fails-after-main-at-child-link':
         (b'<?php\necho "P";\ntrait PrivateFinalPair70 {\n    public private(set) int $value=3 {\n        set(int $entry) => $entry+10;\n        get => 700;\n    }\n}\nclass FinalConsumer70 {use PrivateFinalPair70;}\nif(true){class RedeclaringChild70 extends FinalConsumer70 {public int $value=3;}}\necho "X";\n', b'P'),
 }
