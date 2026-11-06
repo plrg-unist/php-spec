@@ -95,15 +95,18 @@ their existing finish paths. Other Traversable source forms, multiple/prefixed
 packs, captured/computed/nullsafe consumers and wider lifecycle combinations
 remain partial. [Iterator API review](../../coverage/semantics/generator-method-iterator-pack-review.json).
 
-An ordinary named by-value Generator's direct literal `send` also retains its
+An ordinary named by-value Generator's direct `send` also retains its
 receiver when the resumed body throws. The real argv releases in caller context
 while the original Throwable remains pending; only then does the receiver retire.
 A throwing argv destructor replaces that Throwable through the existing Previous
 chain without changing either original trace or assigning the interrupted result.
+Computed calls keep their authenticated I111 method/receiver receipt after an
+argument producer rebinds both source CVs; that receipt adds no heap owner.
 This extension covers the nondelegated resume after initialization, with an owning
-argument. Generator `throw`, pending initialization, reference bodies, nullsafe or
-computed selection, captured APIs and `Closure::call` retain their separate scopes.
-[Body-throw review](../../coverage/semantics/generator-send-body-throw-review.json).
+argument. Generator `throw`, pending initialization, reference bodies, nullsafe
+selection, captured APIs and `Closure::call` retain their separate scopes.
+[Literal body-throw review](../../coverage/semantics/generator-send-body-throw-review.json),
+[computed body-throw review](../../coverage/semantics/generator-computed-send-body-throw-review.json).
 
 Literal nullsafe API calls share the same selected receiver and argument protocol.
 A NULL receiver skips named-CV reception and spread producers. A nonnull call
