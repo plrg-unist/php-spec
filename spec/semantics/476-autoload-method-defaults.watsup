@@ -103,6 +103,12 @@ def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $par
   -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps /\ preceivebirth.SHUTDOWN_ENTRY = eps /\ preceivebirth.API_ENTRY = eps
   -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) =/= eps
 
+dec $parameter_autoload_shift(pdeclautoload*, nat) : pdeclautoload*
+def $parameter_autoload_shift(eps, n_offset) = eps
+def $parameter_autoload_shift((n_index, pautoloadcall, pautoloadentry) :: pdeclautoload_tail*, n_offset) = ($(n_index + n_offset), pautoloadcall, pautoloadentry) :: $parameter_autoload_shift(pdeclautoload_tail*, n_offset)
+def $parameter_receive_cut_autoload(preceivecut, preceivebirth) = (preceivecut.CAUSE.AUTOLOAD = $parameter_autoload_shift(preceivebirth.CAUSE.AUTOLOAD, preceivecut.INDEX))
+  -- if $declaration_autoload_at(preceivebirth.CAUSE.AUTOLOAD, 0) =/= eps
+
 ;; This boundary concerns actual consumers after the receiver has retired.
 ;; Ordinary CV/default reads and ordinary helper calls do not acquire This.
 dec $autoload_retired_expression(expression) : bool

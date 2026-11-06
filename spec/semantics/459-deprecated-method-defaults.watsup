@@ -113,6 +113,8 @@ def $parameter_receive_capture(S, pframe, pframe_tail*, pdeclcause, n_index) = [
   -- if preceiveorder.EFFECTS = [porigin_site]
   -- if $parameter_receive_frontier_valid(S_receive, preceivebirth, porigin_scope?, preceivefrontier)
 
+dec $parameter_receive_cut_autoload(preceivecut, preceivebirth) : bool
+def $parameter_receive_cut_autoload(preceivecut, preceivebirth) = (preceivecut.CAUSE.AUTOLOAD = eps) -- otherwise
 def $parameter_receive_cut_source(S, preceivecut) = true
   -- if $parameter_receive_user_frontier(S, preceivecut.FRONTIER)
   -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
@@ -128,7 +130,7 @@ def $parameter_receive_cut_source(S, preceivecut) = true
   -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
   -- if $parameter_receive_order(S, preceivebirth, porigin_initializer, porigin_scope?, eps) = (preceiveorder)
   -- if preceiveorder.EFFECTS = [porigin_site]
-  -- if preceivecut.CAUSE.AUTOLOAD = eps
+  -- if $parameter_receive_cut_autoload(preceivecut, preceivebirth)
 
 ;; Historical owning aliases use that receive's existing prefix/read certificates.
 def $parameter_callable_flow_at(S, pfunction, n_index, porigin_site, porigin_scope?, pvalueclass, porigin_seen*) = true
