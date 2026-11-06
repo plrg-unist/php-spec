@@ -291,6 +291,21 @@ reuse requires the child's real entry proof. Five normal originals and 86/78/83
 strict462 conditions are recorded in the
 [shutdown review](../../coverage/semantics/deprecated-shutdown-method-default-review.json).
 
+Ordinary public method error and exception handlers receive owning extra defaults
+through their genuine API entry. Error handlers receive four arguments at the
+original diagnostic site; exception handlers receive one Throwable with no callee
+site. A nonowning kind/selected-producer witness preserves closed Shared-cache
+authority after callback cleanup. Borrowed This stays rootless; existing raw
+callback, formal and original-Throwable owners remain intact. Four normal originals
+and 252 strict463 conditions pass. The type case preserves one builtin default-read
+deprecation before two caught TypeErrors, with no handler body entry.
+[Handler review](../../coverage/semantics/deprecated-handler-method-default-review.json).
+This slice admits existing string and direct class/object-array public named-class
+nongenerator by-value methods with plain internal producers. Closure, raw invokable,
+scope/binding/clone producers, nonpublic/magic, by-reference/variadic and Generator
+entries remain separate. Existing handler throw/exit machinery is reused; no new
+general failure campaign or callback lifecycle is claimed.
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

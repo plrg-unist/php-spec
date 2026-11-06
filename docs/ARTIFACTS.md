@@ -125,6 +125,15 @@ binds five exact originals and 86/78/83 strict462 conditions. The completed regi
 row is guarded separately from its failed aggregate. Only the qualified DEFINE
 fixture was remeasured; baseline and preparation failures retain zero credit.
 
+COMP203 error/exception method-default sources and ownership/history checks are
+under `../php-spec-evidence-archive/comp203/`. The
+[review](../coverage/semantics/deprecated-handler-method-default-review.json)
+binds four exact normal originals, including the typed case's builtin stderr,
+and 86/76/90 strict463 conditions. Diagnostic/fixture failures retain zero credit;
+the actual fa5139bf5c joined463 load and inventory pass. Closed-helper erased
+storage views stay distinct from the genuine retirement checkpoints. No native
+or accepted source replay was needed.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

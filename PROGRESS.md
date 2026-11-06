@@ -3274,6 +3274,16 @@ Fixed registration/public/by-value/nongenerator and capture/producer/held bounds
 remain explicit. Source/runtime/tests are accepted at fae753133a; actual joined462
 and inventory pass. [Review](coverage/semantics/deprecated-shutdown-method-default-review.json).
 
+COMP203 receives owning extra defaults in authentic public method error/exception
+handlers after four diagnostic arguments or one Throwable. Exact entered-target
+proofs and nonowning kind/producer history preserve Shared identity and actual
+callback/formal/Throwable owners; borrowed This stays rootless. Four normal
+originals agree, including one builtin default deprecation before repeated caught
+TypeErrors. Strict463 fronts pass 86 exception/76 error-owner/90 rejection checks;
+only the exception front renews budget continuation. Source/runtime/tests are
+accepted at fa5139bf5c; actual joined463 and inventory pass. Broader producers and
+held domains stay separate. [Review](coverage/semantics/deprecated-handler-method-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3283,7 +3293,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS219 | Immediate fresh fixed-name invokable-object FCCs through authentic capture and outer-argument sites, existing constructor/public invoke source certificates and real wrapper receiver ownership; preserve current bounds. |
 | ATTR76 | Plain string-CV names for existing quiet, conditional and ADD hook consumers, retaining late conditional selection and fixed compound PROPERTY authority; preserve producer and owner bounds. |
-| COMP203 | Owning defaults for public ordinary error/exception method handlers through authentic entered API targets, exact arities and captured entry history; preserve existing callback owners and lifecycle. |
+| COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
 | ENUM160 | Effectful callable return-type checks with genuine one-owner returned-value SOURCE transport, existing resolution and native failure/finally ordering; preserve pure union bypass and producer bounds. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |

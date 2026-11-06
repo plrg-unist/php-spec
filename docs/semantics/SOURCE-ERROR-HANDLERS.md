@@ -706,3 +706,12 @@ and cached-callee source1/96 at181f cover the actual static-reference, outer-arr
 prepass and cached-callable composition. Grouped model timeouts and the original
 copy fixture premise remain preserved. Publication retains later released
 reporting, parameter backing and named-class paths with no fresh execution credit.
+
+Public ordinary method handlers now receive owning Deprecated-global defaults
+after Zend's four supplied arguments. The real diagnostic site and selected API
+target authenticate both cold reads and warm cache hits. The original handler is
+disabled during entry, so a default-read deprecation uses builtin reporting;
+existing raw-callback owners and restoration remain intact. Nonowning selected
+history survives receiver cleanup. Four paired error/exception originals and
+252 reached checks are recorded in the
+[handler-default review](../../coverage/semantics/deprecated-handler-method-default-review.json).

@@ -91,3 +91,12 @@ internal callbacks and GC, nonfast or reentrant free request phases remain open.
 reference returns retain their existing Unsupported boundaries; accepted local
 variable reference returns are ignored correctly by this exception callback.
 This milestone does not close complete core.
+
+Public ordinary method handlers now receive owning Deprecated-global defaults
+after the one supplied Throwable. Their genuine null C caller retains the old
+Throwable while its formal is live; the entered target borrows This and the
+existing handler stack retains the raw callable. Selected kind/producer history
+adds no owner and remains valid after actual argument retirement. The bounded
+[handler-default review](../../coverage/semantics/deprecated-handler-method-default-review.json)
+records four paired originals and 252 reached checks, including the exception
+ownership and continuation front. Wider producers and failure modes stay separate.
