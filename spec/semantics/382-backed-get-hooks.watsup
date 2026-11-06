@@ -389,10 +389,7 @@ dec $property_hook_pair_import(pstate, pclassdesc, ppropertydesc, ppropertydesc)
 dec $property_hook_pair_import_at(pstate, (pclassdesc, ppropertydesc)*, ppropertydesc, ppropertydesc) : bool
 def $property_hook_pair_import(S, pclassdesc, ppropertydesc_source, ppropertydesc) = $property_hook_pair_import_at(S, $property_hook_pair_sources(S, pclassdesc, ppropertydesc_source), ppropertydesc_source, ppropertydesc)
 def $property_hook_pair_import_at(S, eps, ppropertydesc_source, ppropertydesc) = false
-def $property_hook_pair_import_at(S, (pclassdesc_child, ppropertydesc_child) :: (pclassdesc_tail, ppropertydesc_tail)*, ppropertydesc_source, ppropertydesc) = true
-  -- if ppropertydesc_child = ppropertydesc
-  -- if $property_hook_pair_export_at(S, pclassdesc_child, ppropertydesc_source, |S.CLASSES|) = (ppropertydesc_child)
-def $property_hook_pair_import_at(S, (pclassdesc_child, ppropertydesc_child) :: (pclassdesc_tail, ppropertydesc_tail)*, ppropertydesc_source, ppropertydesc) = $property_hook_pair_import_at(S, (pclassdesc_tail, ppropertydesc_tail)*, ppropertydesc_source, ppropertydesc) -- otherwise
+def $property_hook_pair_import_at(S, (pclassdesc_child, ppropertydesc_child) :: (pclassdesc_tail, ppropertydesc_tail)*, ppropertydesc_source, ppropertydesc) = ((ppropertydesc_child = ppropertydesc /\ $property_hook_pair_export_at(S, pclassdesc_child, ppropertydesc_source, |S.CLASSES|) = (ppropertydesc_child)) \/ $property_hook_pair_import_at(S, (pclassdesc_tail, ppropertydesc_tail)*, ppropertydesc_source, ppropertydesc))
 ;; The decreasing bound excludes cycles without inventing nested property IDs.
 def $property_hook_pair_export_at(S, pclassdesc, ppropertydesc_source, n_left) = (ppropertydesc_source)
   -- if $(n_left > 0)
