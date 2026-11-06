@@ -1990,6 +1990,14 @@ callback entry requires UNSET, while entered public history survives repopulatio
 Active same-name CV recursion remains outside; literal/private, void method/body,
 storage and one-receipt ownership laws remain pointwise.
 [Public CV unset state review](coverage/semantics/public-cv-magic-unset-state-review.json).
+Indirect append now authenticates its actual main-scope CV/literal-property
+assignment before calling an existing nonref getter on a private integer slot.
+After return, the receiver hold transfers from guarded RESULT to guard-free BASE
+through the indirect-modification Notice. Handler reentry sees IN_GET clear;
+after the handler, scalar verification/copy precedes receiver release and the
+ordinary append Error. Handler throw/destruction and retry preserve the outer
+result. Existing tasks, source nodes, storage and root formulas are reused.
+[Indirect magic getter review](coverage/semantics/indirect-magic-get-append-review.json).
 Main-scope private integer magic `+=` now authenticates plain CV names after the
 existing no-argument integer RHS, then retains the selected receiver/name through
 GET and SET. Existing scalar-int/nonref getter, void setter, method/body and
@@ -3605,7 +3613,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS228 | Caller-This static callback arrays in normal callable factories, preserving the old instance-source law and caller ownership with receiver-free wrappers. |
-| ATTR84 | Indirect append through existing private scalar magic GET, with guard-free receiver lease across Notice and correct release before scalar-container failure. |
 | COMP209 | Defaults for CV-selected class static calls using the existing string-or-object normalization domain, preserving frozen class/function selection before arguments. |
 | ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
 | GC75 | Suppress only borrowed root-array writeback false visits, preserving genuine CV self-assignment and element-reference/value decrements. |

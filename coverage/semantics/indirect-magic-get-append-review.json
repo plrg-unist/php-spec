@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "feature": "ATTR84 indirect scalar-int magic GET append notice and receiver release",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual467 private source/front, current469 composition",
+  "scope": "Main-scope direct-CV/literal-name append assignment through an existing ordinary private raw-int nonref magic getter, with a literal integer RHS and known integer return. Authenticate actual append source/line/descriptor/method and initial receiver; preserve one receiver hold after IN_GET ends through Notice8. Reuse normal reentry, handler throw/unwind, release, DIM_CAPTURE and scalar append Error. Existing untyped getter header and all producer/type/body/reference/name/task/storage/root boundaries remain.",
+  "production": {
+    "commits": [
+      "e50fa036f9770f5a1b3eb7236ad20fa73943cdd4",
+      "702595e714bdb5d7c098463e1cbb76f1c2ef3d0c"
+    ],
+    "source_tip": "de1e5d6503a9fcec0da521d19b7efe6264c3a358",
+    "peer_fixture_commits": [
+      "de1e5d6503a9fcec0da521d19b7efe6264c3a358"
+    ],
+    "files": {
+      "spec/semantics/201-static-set-runtime.watsup": "9049ff1acf72e97c7fe562b8c425d8e99b34bd7e5a9a6e2686c3d13e41957fc6",
+      "spec/semantics/380-magic-property-get.watsup": "eed61401f1509c102c693077445781b57680d391b5a397e1d5436a68b6e0e8b2"
+    },
+    "change": "201 only excludes authenticated indirect append entry from property-pending-literal. 380 adds the closed actual source/entry/capture and PINT completion, transfers guarded RESULT1 to guard-free BASE1 with scalar COPY, and authenticates the Notice source/message/level/line/BASE. Explicit new BASE/tail/COPY-abrupt/eager-release roles remain distinct from owned/factory source. COPY restores the retained integer before unchanged verification. Existing DIM_CAPTURE/append/container checking is reused; old normal completion/copy/tail arms have pointwise negative fences. No generic207/136/86/37/41/task/schema/storage/root-formula edit.",
+    "accepted_source": "5ecf29066084443c536f95bbc335e88fac7f0442"
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_std_read_property, Zend/zend_object_handlers.c949-971, retains GC_ADDREF through the by-value getter, clears IN_GET before the BP_VAR_W indirect-modification Notice, verifies the returned typed payload, then OBJ_RELEASEs the receiver. Thus notice-handler reentry may call GET and the hold outlives that guard. The append source is the real NExprAssign/ArrayDimFetch/PropertyFetch; existing scalar-container handling runs after receiver release. Literal RHS avoids a new effectful delayed-operand ordering claim."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/indirect-magic-get-append-84",
+    "native_first": {
+      "report": "native-v2/report.json",
+      "sha256": "c4a232559a1d65c83a8ad35cdcdd6c49ae51cd694f88da0e859a103de0fec431",
+      "source_sha256": "0fd608b09ece63c027779f970f6ba0ad5d6a05bafd553739a8564fb01a470090",
+      "scope": "One corrected-header compact original: three append operations cover Notice return, handler throw and fresh retry. Each invokes Gsecret, Notice8 with exact message, reentrant Gsecret/7, then removes local/global aliases and emits U. A7 precedes the first/retry scalar-array Error and the second caught notice Exception; keep survives all failures. Corrected native-v2 executes only the changed untyped-header source; original typed native-v1 remains off-domain preparation0. Native preparation has no agreement credit."
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v2/report.json",
+      "sha256": "57c530a61841db6f1b29bb05b19296c9979a0e1e3528056f0858f0b05349be38",
+      "revision": "702595e714bdb5d7c098463e1cbb76f1c2ef3d0c",
+      "driver": "source-final-v2.driver.json",
+      "driver_sha256": "35087b52085112e95e63659b9fed10a034451d16920aec4add71fc5ea43cdb62",
+      "seconds": 61.028721157985274,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 1,
+      "scope": "Corrected single-original PASS at702595e71, actual467/CPU5/preselected1800/completed/passed/exit0/no timeout/before=after. Exact native-v2 observations reused without native execution. Handler reentry/alias drop, Notice return versus throw, A7-before-scalarError or catch, prior resultkeep and fresh retry match. Only the affected original was repeated after the one-line retained-result fix; no old-family/native replay."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 144,
+      "fixture": "tests/semantics/indirect_magic_get_append_review_protocol.py",
+      "scope": "First144 PASS at final702595-equivalent bytes, actual467/CPU5/preselected1800/exit0/no timeout/exact true LF/empty stderr/before=after/current clean. Actual first Notice U follows real ordinary GET reentry and removal of local/global receiver aliases. ERROR.RESUME retains COPY7; guard-free BASE owns receiver1 while handler contexts borrow0 and IN_GET is false. Actual source/client authenticates append LINE17/literal RHS1; entered Notice validity differs from fresh capture and resumed COPY validity. Ten source/message/line/target/non-int-payload/missing-lease/client forgeries pass. Zero-budget identity and one exact normalized resume preserve cached7, A7-before-scalarError/keep and notice Exception priority, fresh retry and final3Z. No peer failure/rerun.",
+      "fixture_sha256": "1e75826dd0e228284055db31748782297d4acbc15bd979ae26b25d783ca48001",
+      "revision": "3eb8d5d00134c7c29209632a8049c9dd119ed822",
+      "report": "review-front-v1/fiber-state-review-mbusvbe0/report.json",
+      "sha256": "219c0f2cd56d95b0d9be0673189391b9d25f0c0c7961da6906578b9a01c6433f",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "340e8f00dd4876a114c0b1e86809fb587a7861823c9b0e70de752e2c0d4c997d",
+      "seconds": 63.374,
+      "exit": 0,
+      "timeout": false,
+      "count_note": "Reported conditions include bindings and five harness conditions; no extra native agreement credit."
+    },
+    "current_main_bridge": {
+      "modules": 469,
+      "source_base": "5ecf29066084443c536f95bbc335e88fac7f0442",
+      "scope": "Actual private467 source-v2/702595 and first144/3eb8 retain their execution identities. New479 RAW_ENTRY remains false: no dynamic CV callable/method wrapper, while notice84 still uses its genuine existing API_ENTRY. No nullsafe480, callable return annotation475, Closure helper/Generator resumer447 or This/static fromCallable/FCC factory414 occurs; ordinary This property reads do exist. Scalar echoes and Error::getMessage do not enter456 native-output/object __toString return conversion. GC74301 needs a credited main-CV integer-DIM array overwrite/object-child COW image; this scalar-temporary append has none and no is_callable NAME credit, so NATIVEEXCESS eps. Real argument/Exception-trace arrays, global cells and Notice/BASE receipts remain. Accepted current469 source differs from authentic private467 execution; shared load is separate with source_credit0, no replay."
+    },
+    "current_joined_load": {
+      "archive": "/home/user/workspace/php-spec-evidence-archive/indirect-magic-get-84",
+      "report": "joined-main-469-v1/report.json",
+      "sha256": "30d7f9ac330cf2804407f2fc943cd3db1699a942dd0fca6b73ceba9a0eb261bb",
+      "inventory_sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9",
+      "revision": "5ecf29066084443c536f95bbc335e88fac7f0442",
+      "modules": 469,
+      "seconds": 13.728237,
+      "passed": true,
+      "exit": 0,
+      "timeout": false,
+      "source_credit": 0,
+      "scope": "Actual shared469 interface load passes true LF/quiet/stable/no timeout, inventory169/306. This checks composition with already-READY joined work and earns no original-source/native agreement; authentic private467 source1/front144 and earlier failed cuts retain their own identities."
+    }
+  },
+  "independent_review": "Final201/380 source/entry/Notice/guard-free carrier/retained-result/normal-abrupt-eager-auth semantic/source/harness/documentation/inventory CLEAR with source1 at702595 and first144 at3eb8d5d00, plus thin accepted5ecf/current469 trigger/default bridge and separate zero-source-credit shared load. Fourteen additive partial rows preserve all475 statuses and implementation fields. Original typed-header preparation, corrected private-error baseline and first COPY-result mismatch remain0. No further test or replay.",
+  "compatibility": "The new source is distinct from owned/factory and reference GET domains. Existing literal normal/quiet sources cannot satisfy the closed append entry, and old completion/copy/tail arms retain their prior behavior behind the indirect-source negative guard. The 201 exception applies only actual main/directCV/literal append with an eligible getter; ordinary property pending remains unchanged elsewhere. Existing generic error dispatch/handler cleanup, value-to-base capture, array checking and ownership formulas are reused. No new reference, array/object result, This/factory/name/RHS/header/body/slot producer is admitted.",
+  "zero_credit": [
+    {
+      "report": "source-baseline-v1/report.json",
+      "sha256": "e8b63f1198d18d2027df3c7e0179e10b5301feb1415052113935a266e1e14325",
+      "driver": "source-baseline-v1.driver.json",
+      "driver_sha256": "f62a6761b44e77bc11db0ca05a2d1c8fa1a665dc60af1e8df5289fbd8ced3aff",
+      "revision": "1e98ca3bbe403412d3d2ef25e89238889c2749c5",
+      "seconds": 14.605163749016356,
+      "credit": 0,
+      "reason": "Off-domain typed __get(string):int preparation returns Unsupported magic getter signature before the new consumer. Original native-v1 and this cut earn0; only the header was corrected, no signature gate widened."
+    },
+    {
+      "report": "source-baseline-v2/report.json",
+      "sha256": "66ae0623518c966d6f5c442e1acfe95a68be7685ff51f42063f8ff8137a151aa",
+      "driver": "source-baseline-v2.driver.json",
+      "driver_sha256": "281ae31d13ef0958de651f8fb799dea78cd26b333e09bd73f78a5d920d49e2b2",
+      "revision": "5faf10de89d29055115dfdf3a63b2a1b8a987dcb",
+      "seconds": 20.75113709102152,
+      "credit": 0,
+      "reason": "Corrected admitted untyped getter baseline produces private-access Error with no GET/Notice, eventually uncaught php_error255; this is the genuine missing indirect-consumer baseline."
+    },
+    {
+      "report": "source-final-v1/report.json",
+      "sha256": "478374fe4ae2a780d40762c87ccd8f7459f2537e9327c38a8a7377d8c32f007e",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "82d2da9af734e95577f4a9d9b56b368ec3a6f1ef84dd5a4b531a1737e622cadc",
+      "revision": "e50fa036f9770f5a1b3eb7236ad20fa73943cdd4",
+      "seconds": 56.94345406402135,
+      "credit": 0,
+      "reason": "First new source run is normal but mismatches native: COPY resumes with NULL and verify returns that state unchanged, so NULL append incorrectly succeeds/result1 and scalar Errors disappear. One-line702595 restores saved COPY PINT before verification."
+    }
+  ],
+  "inventory": "Fourteen existing partial rows add evidence/test/review only; every475 status and implementation field unchanged. Static inventory169/306 and diff check pass.",
+  "remaining": "Other indirect/indexed/reference/unset sources, effectful or wider RHSs, other receiver/name forms, returned references/arrays/objects, non-int/coercion outcomes and wider header/body/producer/owner cases remain separate. Existing Trait/override/nominal/attribute/default/general-binding/owned-NUL and named held modes remain. Full core/properties stay partial; no engine bug or intentional divergence claim.",
+  "environment": "Common accepted95db85ba5/467, fresh private author/review trees after guarded83 cleanup. Four canonical tools copied with matching hashes and13 private reference files exact; no rebuild/portability claim. Original source bytes/profile/commands/cwd/raw outcomes and before-after identities retained externally. One heavy evaluator per pair, native_executed=false reuse and no native fallback."
+}

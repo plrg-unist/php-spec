@@ -1406,6 +1406,21 @@ recursive CV family, method/body/type/header, result, storage, unwind or root ru
 is added. Only the unchanged public-desc declaration moves earlier inside406.
 [Public CV unset state review](../../coverage/semantics/public-cv-magic-unset-state-review.json).
 
+A main-scope direct-CV/literal-name append assignment can also consume an existing
+nonref magic getter for an ordinary private integer property. Its actual source,
+raw descriptor and method authenticate the writable entry; the RHS is a literal
+integer. On a known integer return, guarded GET RESULT transfers its one receiver
+hold to the existing guard-free BASE while COPY retains the scalar. The Notice
+uses the actual property site and line. Its handler can reenter ordinary GET
+with IN_GET clear and remove the last caller alias without retiring the receiver.
+After the handler, COPY restores and verifies the saved integer; BASE releases
+the receiver before DIM_CAPTURE and the original append continuation reach the
+ordinary scalar-container Error. A handler throw instead unwinds that hold before
+catch, preserving the prior outer result. Existing untyped getter signatures,
+normal/quiet GET routes, tasks, storage and root formulas stay unchanged. Other
+indirect sources and returned reference/array/object values remain separate.
+[Indirect magic getter review](../../coverage/semantics/indirect-magic-get-append-review.json).
+
 The existing main-scope private integer magic `+=` family also admits plain CV
 names through a disjoint real PLUS source and pending VARIABLE-name plan. Existing
 PPRW resolution selects receiver and name after the named no-argument integer RHS.

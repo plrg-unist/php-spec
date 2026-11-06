@@ -6575,6 +6575,14 @@ selected NAME survives mutation and its history stays valid if the callback
 repopulates the slot before throwing. Literal/private behavior and recursive-CV
 bounds remain separate; clearing and receipt ownership reuse existing rules.
 [Public CV unset state review](coverage/semantics/public-cv-magic-unset-state-review.json).
+Indirect append through a main-scope CV and literal private integer property now
+calls its existing by-value `__get`. The getter guard ends before the indirect
+modification Notice, while one receiver hold remains through the error handler.
+A handler may read the property again. When it removes the last caller reference,
+receiver destruction precedes the scalar-array Error. A handler throw takes
+priority, and both failures preserve the outer result. Existing untyped getter
+headers, integer payloads and literal integer RHS bounds remain.
+[Indirect magic getter review](coverage/semantics/indirect-magic-get-append-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
