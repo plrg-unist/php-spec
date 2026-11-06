@@ -127,7 +127,9 @@ def assertions(fixture, directory, path, finally_fixture, finally_path):
         'S_capture_found = $drive_steps(S, 1)', 'S_capture_found.COMPLETION = BUDGET',
         'S_capture = S_capture_found[.COMPLETION = NORMAL]',
         'S_capture.FRAMES = [pframe_capture]',
-        'pobobjectreturn_capture = pobobjectreturn[.SOURCE = ((porigin, n_exception))]',
+        '$ob_object_source_new(pobobjectreturn.SOURCE) = ((porigin, pobctorbirth))',
+        'pobctorbirth.OBJECT = n_exception',
+        'pobobjectreturn_capture = pobobjectreturn[.SOURCE = (OBJECT_THROW_BIRTH porigin pobctorbirth)]',
         'S_context_found = $dp_seek(S_capture, 5, 256)',
         r'S_context_found.COMPLETION = NORMAL \/ S_context_found.COMPLETION = BUDGET',
         'S_context = S_context_found[.COMPLETION = NORMAL]',
@@ -137,7 +139,7 @@ def assertions(fixture, directory, path, finally_fixture, finally_path):
         'S_context_target = S_context[.CURRENT = (pcallcontext[.TARGET = METHOD_TARGET n_exception pcallcontext.FUNCTION][.RECEIVER = (n_exception)])]',
         'S_context_pending = S_context[.TODO = [THROW_SEARCH n_object]]',
         'S_context_header = S_context[.CURRENT = (pcallcontext[.CALLSITE = (porigin_site)][.LINE = 0])]',
-        'pobobjectreturn_bad_source = pobobjectreturn_capture[.SOURCE = ((pcallcontext.FUNCTION, n_exception))]',
+        'pobobjectreturn_bad_source = pobobjectreturn_capture[.SOURCE = (OBJECT_THROW_BIRTH pcallcontext.FUNCTION pobctorbirth)]',
         'S_context_source = S_context[.FRAMES = [pframe_capture[.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_bad_source) :: ptask_native*]]]',
         'S_context_stale = S_context[.ALLOCATIONS = $destruction_node_delete(S_context.ALLOCATIONS, HOBJECT n_exception)]',
         'S_stage_found = $dp_seek(S_context, 1, 256)',
@@ -160,9 +162,10 @@ def assertions(fixture, directory, path, finally_fixture, finally_path):
         r'S_exit_found.COMPLETION = NORMAL \/ S_exit_found.COMPLETION = BUDGET',
         'S_exit = S_exit_found[.COMPLETION = NORMAL]',
         'S_exit.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe, OUTPUT_FINAL_OBJECT_CV pobobjectreturn_capture, OUTPUT_DRAIN pobdrain]',
-        'pobobjectreturn_source = pobobjectreturn_capture[.SOURCE = ((pcallcontext.FUNCTION, n_exception))]',
+        'pobobjectreturn_source = pobobjectreturn_capture[.SOURCE = (OBJECT_THROW_BIRTH pcallcontext.FUNCTION pobctorbirth)]',
         'S_source = S_exit[.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe, OUTPUT_FINAL_OBJECT_CV pobobjectreturn_source, OUTPUT_DRAIN pobdrain]]',
-        'pobobjectreturn_identity = pobobjectreturn_capture[.SOURCE = ((porigin, n_object))]',
+        'pobctorbirth_identity = pobctorbirth[.OBJECT = n_object]',
+        'pobobjectreturn_identity = pobobjectreturn_capture[.SOURCE = (OBJECT_THROW_BIRTH porigin pobctorbirth_identity)]',
         'S_identity = S_exit[.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe, OUTPUT_FINAL_OBJECT_CV pobobjectreturn_identity, OUTPUT_DRAIN pobdrain]]',
         'S_report_found = $drive_steps(S_exit, 1)', 'S_report_found.COMPLETION = BUDGET',
         'S_report = S_report_found[.COMPLETION = NORMAL]',
@@ -179,7 +182,7 @@ def assertions(fixture, directory, path, finally_fixture, finally_path):
     warning_events = '[OUTPUT ([80]), WARNING ($ptascii("missing")) 4]'
     fatal_events = '[OUTPUT ([80]), WARNING ($ptascii("missing")) 4, STDERR ' + runner.bytes_expr(expected_fatal(path)) + ']'
     components = [
-        ('real method locals and pending birth', r'$object_name(S, n_object) = $ptascii("T") /\ $object_name(S, n_local) = $ptascii("D") /\ pobobjectreturn.SOURCE = eps /\ $heap_count(HOBJECT n_object, $machine_roots(S)) = 2 /\ $heap_owners($heap_graph(S), HOBJECT n_local) = 1 /\ $heap_count(HOBJECT n_exception, $machine_roots(S)) = 1'),
+        ('real method locals and pending birth', r'$object_name(S, n_object) = $ptascii("T") /\ $object_name(S, n_local) = $ptascii("D") /\ $ob_object_source_new(pobobjectreturn.SOURCE) = ((porigin, pobctorbirth)) /\ $heap_count(HOBJECT n_object, $machine_roots(S)) = 2 /\ $heap_owners($heap_graph(S), HOBJECT n_local) = 1 /\ $heap_count(HOBJECT n_exception, $machine_roots(S)) = 1'),
         ('nonowning direct-throw capture', r'pframe_capture.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_capture) :: ptask_native* /\ $task_nodes(OB_USER_OBJECT_STRING pobobjectreturn_capture) = $task_nodes(OB_USER_OBJECT_STRING pobobjectreturn) /\ $heap_count(HOBJECT n_object, $machine_roots(S_capture)) = 2 /\ $heap_count(HOBJECT n_exception, $machine_roots(S_capture)) = 1'),
         ('exact external context and context-owner refusals', r'pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n_object) /\ $destructor_context_nodes(S_context.CURRENT) = [HOBJECT n_object] /\ $destructor_borrowed_context(S_context) = (pcallcontext) /\ $destructor_borrowed_context(S_context_extra) = eps /\ $destructor_borrowed_context(S_context_receiver) = eps'),
         ('saved consumer keeps current target pending birth and native authority', r'$ob_object_final_saved_context(S_context) = ((pcallcontext, pobobjectreturn_capture)) /\ $ob_object_final_saved_context(S_context_function) = eps /\ $ob_object_final_saved_context(S_context_target) = eps /\ $ob_object_final_saved_context(S_context_pending) = eps /\ $ob_object_final_saved_context(S_context_header) = eps /\ $ob_object_final_saved_context(S_context_source) = eps /\ $ob_object_final_saved_context(S_context_stale) = eps'),
@@ -223,7 +226,7 @@ def assertions(fixture, directory, path, finally_fixture, finally_path):
         '$cl_normal_cleanup(S_normal.TODO, pdestructionframe_normal) = (pobobjectreturn_normal)',
     ]
     components += [
-        ('actual finally override follows captured throw', r'pobobjectreturn_control_capture.SOURCE = ((porigin_control_throw, n_control_exception)) /\ pdestructionframe_normal.FUNCTION = pcallcontext_control.FUNCTION /\ pdestructionframe_normal.PENDING = eps /\ $string_bytes(pvalue_normal) = ($ptascii("H"))'),
+        ('actual finally override follows captured throw', r'$ob_object_source_pending(pobobjectreturn_control_capture.SOURCE) = ((porigin_control_throw, n_control_exception)) /\ pdestructionframe_normal.FUNCTION = pcallcontext_control.FUNCTION /\ pdestructionframe_normal.PENDING = eps /\ $string_bytes(pvalue_normal) = ($ptascii("H"))'),
         ('normal restore clears borrowed freshness before local cleanup', r'pobobjectreturn_normal.SOURCE = eps /\ S_normal.CURRENT = eps /\ S_normal.FRAMES = eps /\ $heap_count(HOBJECT n_control_exception, $machine_roots(S_normal)) = 0 /\ ~((HOBJECT n_control_exception) <- S_normal.ALLOCATIONS) /\ $call_descriptors_valid(S_normal) /\ $heap_valid($heap_graph(S_normal))'),
     ]
     return bindings, components
@@ -289,7 +292,7 @@ def caught_assertions(fixture, directory, path):
         'pframe_catch.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn_catch) :: ptask_native*',
     ]
     components = [
-        ('real fresh-throw capture before catch consumption', r'pobobjectreturn_capture.SOURCE = ((porigin, n_exception)) /\ $heap_count(HOBJECT n_exception, $machine_roots(S_capture)) = 1 /\ $heap_count(HOBJECT n_object, $machine_roots(S_capture)) = 2'),
+        ('real fresh-throw capture before catch consumption', r'$ob_object_source_pending(pobobjectreturn_capture.SOURCE) = ((porigin, n_exception)) /\ $heap_count(HOBJECT n_exception, $machine_roots(S_capture)) = 1 /\ $heap_count(HOBJECT n_object, $machine_roots(S_capture)) = 2'),
         ('actual catch clears borrowed identity while retaining its Throwable', r'pobobjectreturn_catch = pobobjectreturn_capture[.SOURCE = eps] /\ $task_nodes(CATCH_BIND porigin_try n_index n_exception) = [HOBJECT n_exception] /\ $heap_count(HOBJECT n_exception, $machine_roots(S_catch)) = 1 /\ $heap_count(HOBJECT n_object, $machine_roots(S_catch)) = 2 /\ (HOBJECT n_exception) <- S_catch.ALLOCATIONS /\ $call_task_valid(S_catch, CATCH_BIND porigin_try n_index n_exception) /\ S_catch.EVENTS = [OUTPUT ([80])]'),
     ]
     return bindings, components
@@ -318,7 +321,7 @@ def unstaged_assertions(fixture, directory, path):
         'ptask_normal* = pobobjectreturn_normal.TAIL',
     ]
     components = [
-        ('actual fresh throw reaches a real finally H override', r'pobobjectreturn_capture.SOURCE = ((porigin,n_exception)) /\ $string_bytes(pvalue_return) = ($ptascii("H")) /\ ~$destructor_classes(S_return.CLASSES) /\ S_return.ENV = eps'),
+        ('actual fresh throw reaches a real finally H override', r'$ob_object_source_pending(pobobjectreturn_capture.SOURCE) = ((porigin,n_exception)) /\ $string_bytes(pvalue_return) = ($ptascii("H")) /\ ~$destructor_classes(S_return.CLASSES) /\ S_return.ENV = eps'),
         ('unstaged native return clears retired borrowed identity', r'S_normal.CURRENT = eps /\ S_normal.FRAMES = eps /\ S_normal.DESTRUCTION.FRAMES = eps /\ poperand_normal = KNOWN pvalue_return /\ pobobjectreturn_normal = pobobjectreturn_capture[.SOURCE = eps][.RETURNED = (poperand_normal)] /\ $heap_count(HOBJECT n_exception,$machine_roots(S_normal)) = 0 /\ ~((HOBJECT n_exception) <- S_normal.ALLOCATIONS) /\ S_normal.RESULT = KNOWN PNULL /\ S_normal.EVENTS = [OUTPUT ([80])]'),
     ]
     return bindings, components

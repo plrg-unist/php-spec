@@ -24,10 +24,11 @@ def $dp_phase(S, 0) = true
   -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = [pframe]
-  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: ptask_native*
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource eps) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: ptask_native*
 def $dp_phase(S, 2) = true
-  -- if S.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin n eps) :: ptask_native*
-  -- if pdestructionframe.PENDING = (n)
+  -- if S.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource eps) :: ptask_native*
+  -- if $ob_object_source_thrown((pobobjectsource)) = ((porigin, pobctorbirth))
+  -- if pdestructionframe.PENDING = (pobctorbirth.OBJECT)
 def $dp_phase(S, 3) = true
   -- if S.TODO = [OUTPUT_FINAL_DEACTIVATE pobdeactivate]
   -- if pobdeactivate.INDEX = 0
@@ -74,15 +75,20 @@ def reach(fixture, directory, path):
         'S = S_found[.COMPLETION = NORMAL]',
         'S.TODO = (THROW_VALUE porigin z) :: ptask_tail*',
         'S.CURRENT = (pcallcontext)', 'S.FRAMES = [pframe]',
-        'pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_native*',
+        'pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_born eps) :: ptask_native*',
         'pdestructorcall.FRAME = (pdestructionframe_outer)',
         'pdestructionframe_outer.PENDING = (n_old)',
         'S.RESULT = KNOWN (POBJECT n_new)',
         'ptask_native* = [DESTRUCTOR_RELEASE pdestructionrelease, DESTRUCTOR_FRAME_EXIT pdestructionframe_outer, OUTPUT_FINAL_OBJECT_CV pobobjectreturn, OUTPUT_DRAIN pobdrain]',
-        'pobobjectreturn.SOURCE = ((porigin_old, n_old))',
+        '$ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin_old, n_old))',
         'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HCELL n_later_cell)]',
         'S.STORE[n_later_cell] = DEFINED (POBJECT n_later)',
-        'ptask_marker = OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin n_new eps',
+        '$ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource_saved?, ptask_native*))',
+        '$ob_object_source_new(pobobjectsource_saved?) = ((porigin, pobctorbirth))',
+        'pobctorbirth.OBJECT = n_new',
+        'pobobjectsource_capture = OBJECT_THROW_BIRTH porigin pobctorbirth',
+        'pobobjectsource_bad = OBJECT_THROW_BIRTH porigin_old pobctorbirth',
+        'ptask_marker = OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_capture eps',
         'S_capture_found = $drive_steps(S, 1)', 'S_capture_found.COMPLETION = BUDGET',
         'S_capture = S_capture_found[.COMPLETION = NORMAL]',
         'S_capture.TODO = (THROW_SEARCH n_new) :: ptask_unwind*',
@@ -108,14 +114,14 @@ def primary_assertions(fixture, directory, path):
         'S_exit.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_return*',
         'ptask_return* = [DESTRUCTOR_C_RETURN pdestructorcall, DESTRUCTOR_RESULT pdestructorcall, ptask_marker] ++ ptask_native*',
         'S_stale = S_exit[.ALLOCATIONS = $destruction_node_delete(S_exit.ALLOCATIONS, HOBJECT n_new)]',
-        'S_wrong_source = S_exit[.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe, DESTRUCTOR_C_RETURN pdestructorcall, DESTRUCTOR_RESULT pdestructorcall, OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin_old n_new eps] ++ ptask_native*]',
-        'ptask_wrong_source* = [DESTRUCTOR_C_RETURN pdestructorcall, DESTRUCTOR_RESULT pdestructorcall, OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin_old n_new eps] ++ ptask_native*',
+        'S_wrong_source = S_exit[.TODO = [DESTRUCTOR_FRAME_EXIT pdestructionframe, DESTRUCTOR_C_RETURN pdestructorcall, DESTRUCTOR_RESULT pdestructorcall, OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_bad eps] ++ ptask_native*]',
+        'ptask_wrong_source* = [DESTRUCTOR_C_RETURN pdestructorcall, DESTRUCTOR_RESULT pdestructorcall, OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_bad eps] ++ ptask_native*',
         'S_budget = $drive_steps(S_exit, 0)',
         'S_report_found = $drive_steps(S_budget[.COMPLETION = NORMAL], 1)',
         'S_report_found.COMPLETION = BUDGET', 'S_report = S_report_found[.COMPLETION = NORMAL]',
         'S_report.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n_new true]',
         'S_report.DESTRUCTION.ABANDONED = [pdestructioncleanup_local, pdestructioncleanup_outer]',
-        'pdestructioncleanup_bad = pdestructioncleanup_outer[.SOURCE = OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin_old n_new (pobdeactivate)]',
+        'pdestructioncleanup_bad = pdestructioncleanup_outer[.SOURCE = OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_bad (pobdeactivate)]',
         'S_bad_receipt = S_report[.DESTRUCTION.ABANDONED = [pdestructioncleanup_local, pdestructioncleanup_bad]]',
         'S_release_found = $drive_steps(S_report, 1)', 'S_release_found.COMPLETION = BUDGET',
         'S_release = S_release_found[.COMPLETION = NORMAL]',
@@ -127,14 +133,14 @@ def primary_assertions(fixture, directory, path):
     events = '[OUTPUT ([80]), STDERR ' + runner.bytes_expr(expected_fatal(path)) + ']'
     components = [
         ('actual D throw preserves distinct native C owners', r'n_old =/= n_new /\ pobobjectreturn.OBJECT =/= n_later /\ $object_name(S, n_later) = $ptascii("T") /\ pdestructorcall.PENDING = (n_old) /\ ~pdestructorcall.USER /\ pdestructorcall.SITE = eps /\ pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1) /\ $throwable_field(S, n_new, "previous") = PNULL /\ ' + owners('S')),
-        ('borrowed F capture changes no existing owner', r'$task_nodes(ptask_marker) = eps /\ pobobjectreturn.SOURCE = ((porigin_old, n_old)) /\ S_capture.EVENTS = [OUTPUT ([80])] /\ ' + owners('S_capture')),
+        ('borrowed F capture changes no existing owner', r'$task_nodes(ptask_marker) = eps /\ $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin_old, n_old)) /\ S_capture.EVENTS = [OUTPUT ([80])] /\ ' + owners('S_capture')),
         ('public captured native frame', r'$call_descriptors_valid(S_capture) /\ $heap_valid($heap_graph(S_capture)) /\ $output_state_valid(S_capture) /\ $destruction_state_valid(S_capture)'),
         ('actual inner D frame exits before C guards and later CVs', r'S_exit.CURRENT = eps /\ S_exit.FRAMES = eps /\ S_exit.ORIGIN = eps /\ S_exit.DESTRUCTION.FRAMES = [pdestructionframe, pdestructionframe_outer] /\ pdestructionframe.PENDING = (n_new) /\ pdestructionframe_outer.PENDING = (n_old) /\ ~(n_later <- S_exit.DESTRUCTION.CALLED) /\ ~(pobobjectreturn.OBJECT <- S_exit.DESTRUCTION.CALLED) /\ ' + owners('S_exit')),
         ('full actual native return and public admission', r'$ob_object_final_local_ready(S_exit, pobobjectreturn, pdestructorcall, porigin, n_new, pdestructionframe, ptask_return*) /\ $call_descriptors_valid(S_exit) /\ $heap_valid($heap_graph(S_exit)) /\ $output_state_valid(S_exit) /\ $destruction_state_valid(S_exit)'),
         ('stale source pending frame and class refusals', r'~$call_task_valid(S_stale, ptask_marker) /\ ~$ob_object_final_local_ready(S_wrong_source, pobobjectreturn, pdestructorcall, porigin_old, n_new, pdestructionframe, ptask_wrong_source*) /\ ~$ob_object_final_local_ready(S_exit, pobobjectreturn, pdestructorcall, porigin, n_old, pdestructionframe, ptask_return*) /\ ~$ob_object_final_local_ready(S_exit[.FRAMES = [pframe]], pobobjectreturn, pdestructorcall, porigin, n_new, pdestructionframe, ptask_return*) /\ ~$ob_object_final_local_ready(S_exit[.DECLARATIONS = eps], pobobjectreturn, pdestructorcall, porigin, n_new, pdestructionframe, ptask_return*)'),
         ('zero budget preserves all actual C and CV owners', r'S_budget.COMPLETION = BUDGET /\ S_budget.TODO = S_exit.TODO /\ S_budget.DESTRUCTION = S_exit.DESTRUCTION /\ S_budget.ALLOCATIONS = S_exit.ALLOCATIONS /\ S_budget.GC = S_exit.GC /\ S_budget.EVENTS = S_exit.EVENTS'),
         ('nested F fatal precedes old E restoration and later CV execution', 'S_report.EVENTS = ' + events + r' /\ pobdeactivate.COMPLETION = REQUESTFATAL ($ptascii("Exception")) ($ptascii("F")) 4 /\ S_report.EXITSTATUS = 255 /\ $throwable_field(S_report, n_new, "previous") = PNULL /\ S_report.DESTRUCTION.CALLS = eps /\ S_report.DESTRUCTION.FRAMES = eps /\ S_report.DESTRUCTION.RELEASES = eps /\ ~(n_later <- S_report.DESTRUCTION.CALLED) /\ ' + owners('S_report')),
-        ('genuine generic D receipt and separate outer T pair', r'pdestructioncleanup_local.SOURCE = DESTRUCTOR_RESULT pdestructorcall /\ pdestructioncleanup_outer.SOURCE = OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin n_new (pobdeactivate) /\ $eager_cleanup_valid(S_report, pdestructioncleanup_local) /\ $eager_cleanup_valid(S_report, pdestructioncleanup_outer) /\ ~$eager_cleanup_valid(S_bad_receipt, pdestructioncleanup_bad) /\ ~$eager_cleanup_valid(S_report[.DESTRUCTION.ABANDONED = [pdestructioncleanup_local]], pdestructioncleanup_outer) /\ $eager_abandoned_owner(pdestructioncleanup_outer.SOURCE) = [HOBJECT pobobjectreturn.OBJECT, HOBJECT pobobjectreturn.OBJECT] /\ $task_nodes(pdestructioncleanup_outer.SOURCE) = eps /\ ~$call_task_valid(S_report, pdestructioncleanup_outer.SOURCE) /\ $call_descriptors_valid(S_report) /\ $heap_valid($heap_graph(S_report)) /\ $output_state_valid(S_report) /\ $destruction_state_valid(S_report)'),
+        ('genuine generic D receipt and separate outer T pair', r'pdestructioncleanup_local.SOURCE = DESTRUCTOR_RESULT pdestructorcall /\ pdestructioncleanup_outer.SOURCE = OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_capture (pobdeactivate) /\ $eager_cleanup_valid(S_report, pdestructioncleanup_local) /\ $eager_cleanup_valid(S_report, pdestructioncleanup_outer) /\ ~$eager_cleanup_valid(S_bad_receipt, pdestructioncleanup_bad) /\ ~$eager_cleanup_valid(S_report[.DESTRUCTION.ABANDONED = [pdestructioncleanup_local]], pdestructioncleanup_outer) /\ $eager_abandoned_owner(pdestructioncleanup_outer.SOURCE) = [HOBJECT pobobjectreturn.OBJECT, HOBJECT pobobjectreturn.OBJECT] /\ $task_nodes(pdestructioncleanup_outer.SOURCE) = eps /\ ~$call_task_valid(S_report, pdestructioncleanup_outer.SOURCE) /\ $call_descriptors_valid(S_report) /\ $heap_valid($heap_graph(S_report)) /\ $output_state_valid(S_report) /\ $destruction_state_valid(S_report)'),
         ('reported F retires without releasing saved old E or C guards', r'~((HOBJECT n_new) <- S_deactivate.ALLOCATIONS) /\ $eager_cleanup_valid(S_deactivate, pdestructioncleanup_local) /\ $eager_cleanup_valid(S_deactivate, pdestructioncleanup_outer) /\ S_deactivate.EVENTS = S_report.EVENTS /\ ' + owners('S_deactivate', 0)),
         ('actual fatal deactivation keeps skipped CV and abandoned C roots', r'S_done.COMPLETION = pobdeactivate.COMPLETION /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps /\ S_done.OUTPUTBUFFERS = eps /\ S_done.EXITSTATUS = 255 /\ S_done.EVENTS = S_report.EVENTS /\ S_done.DESTRUCTION.ABANDONED = S_report.DESTRUCTION.ABANDONED /\ ~(n_later <- S_done.DESTRUCTION.CALLED) /\ ~(pobobjectreturn.OBJECT <- S_done.DESTRUCTION.CALLED) /\ $eager_cleanup_valid(S_done, pdestructioncleanup_local) /\ $eager_cleanup_valid(S_done, pdestructioncleanup_outer) /\ ' + owners('S_done', 0)),
     ]
@@ -177,7 +183,7 @@ def finally_assertions(fixture, directory, path):
     ]
     components = [
         ('actual finally consumption preserves a valid normal-return budget state', r'~((HOBJECT n_new) <- S_return.ALLOCATIONS) /\ $call_descriptors_valid(S_return) /\ $heap_valid($heap_graph(S_return)) /\ $output_state_valid(S_return) /\ $destruction_state_valid(S_return) /\ ' + owners('S_return', 0)),
-        ('normal restore preserves consumed F metadata and real C owners', r'S_normal.CURRENT = eps /\ S_normal.FRAMES = eps /\ S_normal.ORIGIN = eps /\ pdestructionframe_normal.PENDING = eps /\ pdestructionframe_normal.VALUE = KNOWN PNULL /\ pdestructionframe_outer.PENDING = (n_old) /\ pdestructionrelease_normal.JOBS = eps /\ pobobjectreturn.SOURCE = ((porigin_old, n_old)) /\ $call_descriptors_valid(S_normal) /\ $heap_valid($heap_graph(S_normal)) /\ ' + owners('S_normal', 0)),
+        ('normal restore preserves consumed F metadata and real C owners', r'S_normal.CURRENT = eps /\ S_normal.FRAMES = eps /\ S_normal.ORIGIN = eps /\ pdestructionframe_normal.PENDING = eps /\ pdestructionframe_normal.VALUE = KNOWN PNULL /\ pdestructionframe_outer.PENDING = (n_old) /\ pdestructionrelease_normal.JOBS = eps /\ $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin_old, n_old)) /\ $call_descriptors_valid(S_normal) /\ $heap_valid($heap_graph(S_normal)) /\ ' + owners('S_normal', 0)),
     ]
     return bindings, components
 
