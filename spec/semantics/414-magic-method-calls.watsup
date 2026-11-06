@@ -81,6 +81,7 @@ dec $magic_method_required_producer(pstate, porigin, expression) : pfunction?
 dec $magic_method_constructor_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_static_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_closure_producer(pstate, porigin, expression) : pfunction?
+dec $magic_method_instance_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_argument_source(pstate, porigin, nat, expression) : bool
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_literal_value(S, porigin, expression) = (pvalue)
@@ -110,6 +111,8 @@ def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_static_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_closure_producer(S, porigin, expression) = (pfunction)
+def $magic_method_argument_source(S, porigin, n, expression) = true
+  -- if $magic_method_instance_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = false -- otherwise
 dec $magic_method_arguments_source(pstate, porigin, phpType7*, nat) : bool
 def $magic_method_arguments_source(S, porigin, eps, n) = true
@@ -289,6 +292,47 @@ def $magic_method_closure_producer(S, PORIGIN n_unit pcpath, NExprFuncCall expre
   -- if $closure_lexicals(pfunction.CODE.EXPRESSIONS) = eps
   -- if ~$generator_statements(statement*)
 def $magic_method_closure_producer(S, porigin, expression) = eps -- otherwise
+;; A fresh fixed-name receiver has immutable class authority after retirement.
+;; The original structural caller scope preserves private-shadow selection.
+dec $magic_method_instance_call(expression) : bool
+def $magic_method_instance_call(NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata) = true
+def $magic_method_instance_call(expression) = false -- otherwise
+dec $magic_method_fresh_receiver(pstate, porigin, expression) : porigin?
+def $magic_method_fresh_receiver(S, porigin, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata) = (porigin_class)
+  -- if ~$ppscoped_keyword(NName (BYTES text) metadata_name)
+  -- if $magic_method_no_constructor(S, porigin, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata) = (porigin_class)
+def $magic_method_fresh_receiver(S, porigin, expression) = (porigin_class)
+  -- if $magic_method_constructor_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
+def $magic_method_fresh_receiver(S, porigin, expression) = eps -- otherwise
+def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall expression_receiver (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_fresh_receiver(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), expression_receiver) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc_called)
+  -- if pclassdesc_called.KIND = "class"
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $method_class_selected(S, porigin_class, $base64(text_name), $closure_source_class(S, PORIGIN n_unit pcpath)) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~$ppmethod_magic($base64(text_name)) /\ $ptlc($base64(text_name)) =/= $ptascii("__construct")
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pmethoddesc.OWNER = PORIGIN n_owner pcpath_owner
+  -- if pfunction.ORIGIN = PORIGIN n_owner pcpath_method
+  -- if $(|pcpath_method| > 0)
+  -- if PCINDEX n_method = pcpath_method[$nabs($(|pcpath_method| - 1))]
+  -- if pcpath_method = pcpath_owner ++ [PCFIELD 5, PCINDEX n_method]
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "class"
+  -- if $method_origin(pclassdesc_owner.METHODS, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, pclassdesc_owner.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner phpType44_owner phpType42_owner (SEQUENCE statement_owner*) metadata_owner)
+  -- if $(n_method < |statement_owner*|)
+  -- if statement_owner*[n_method] = NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType17*) ABSENT (SEQUENCE statement*) metadata_function
+  -- if flags <- [0,1] /\ pmethoddesc.NAME = $base64(text_method)
+  -- if |phpType7*| = |phpType17*|
+  -- if $magic_method_required_parameters(phpType17*, pfunction.SIGNATURE.PARAMETERS)
+  -- if ~pfunction.SIGNATURE.BYREF /\ pfunction.SIGNATURE.RETURNS = eps /\ pfunction.DEFAULTS = eps
+  -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ pmethoddesc.NAME
+  -- if pfunction.BODY = pcpath_method ++ [PCFIELD 6]
+  -- if ~$generator_statements(statement*)
+def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
 dec $magic_method_array_producer(pstate, porigin, phpType7*) : pfunction?
 def $magic_method_array_producer(S, porigin, phpType7*) = $magic_method_user_producer(S, porigin, phpType7*, 0)
 ;; The base array-carrier helper retains the first-CV/first-literal policy.
@@ -559,6 +603,11 @@ def $magic_method_copy_source(S, porigin, phpType7*, n) = true
   -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
   -- if $magic_method_closure_producer(S, porigin_argument, expression) = (pfunction)
+def $magic_method_copy_source(S, porigin, phpType7*, n) = true
+  -- if n <- [0,1] /\ $(n < |phpType7*|)
+  -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
+  -- if $magic_method_instance_producer(S, porigin_argument, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_copy_source(S, porigin, phpType7*, n) = false -- otherwise
 dec $magic_method_copy_values(pstate, porigin, phpType7*, nat, poperand*) : (pvalue*)?
 def $magic_method_copy_values(S, porigin, phpType7*, n, eps) = (eps)
@@ -594,6 +643,13 @@ def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN pvalue) :: popera
 def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN pvalue) :: poperand_tail*) = (pvalue :: pvalue_tail*)
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $magic_method_instance_call(expression)
+  -- if $magic_method_copy_source(S, porigin, phpType7*, n)
+  -- if $magic_method_value(S, pvalue) \/ $magic_method_primitive(S, pvalue)
+  -- if $magic_method_copy_values(S, porigin, phpType7*, $(n + 1), poperand_tail*) = (pvalue_tail*)
+def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN pvalue) :: poperand_tail*) = (pvalue :: pvalue_tail*)
+  -- if $(n < |phpType7*|)
+  -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
   -- if $magic_method_no_constructor(S, porigin_argument, expression) = (porigin_class)
   -- if $magic_method_value(S, pvalue)
@@ -614,6 +670,7 @@ def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN pvalue) :: popera
   -- if ~$magic_method_named_new(expression)
   -- if ~$magic_method_static_call(expression)
   -- if ~$magic_method_literal_closure_call(expression)
+  -- if ~$magic_method_instance_call(expression)
   -- if $magic_method_value(S, pvalue) \/ ($magic_method_primitive(S, pvalue) /\ $magic_method_copy_source(S, porigin, phpType7*, n))
   -- if $magic_method_copy_values(S, porigin, phpType7*, $(n + 1), poperand_tail*) = (pvalue_tail*)
 def $magic_method_copy_values(S, porigin, phpType7*, n, poperand*) = eps -- otherwise

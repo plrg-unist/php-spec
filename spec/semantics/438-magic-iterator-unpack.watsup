@@ -19,6 +19,7 @@ def $magic_unpack_explicit_source(S, porigin, expression) = $magic_method_argume
   -- if ~$magic_method_named_new(expression)
   -- if ~$magic_method_static_call(expression)
   -- if ~$magic_method_literal_closure_call(expression)
+  -- if ~$magic_method_instance_call(expression)
 def $magic_unpack_explicit_source(S, porigin, expression) = false -- otherwise
 dec $magic_unpack_source(pstate, porigin, phpType7*, nat) : bool
 def $magic_unpack_source(S, porigin, eps, n) = true
