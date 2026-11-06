@@ -58,6 +58,7 @@ dec $ob_object_final_cv_method(pstate) : pobobjectreturn?
 dec $ob_object_final_cv_source(pstate, pobobjectreturn, porigin, nat) : (pfunction, preqbytes, int)?
 dec $ob_object_final_capture_source(pstate, pobobjectreturn, porigin, nat) : pobobjectsource?
 dec $ob_object_final_capture(pstate, pobobjectreturn, pobobjectsource?) : pstate
+dec $ob_object_final_cv_prefix(ptask*, pobobjectreturn, pdestructionframe) : bool
 dec $ob_object_final_cv_task_valid(pstate, pobobjectreturn) : bool
 dec $ob_object_final_cv_ready(pstate, pobobjectreturn, pdestructionframe, nat) : bool
 
@@ -387,12 +388,19 @@ def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (STRINGIFY_RES
 def $task_nodes(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
 def $ob_user_active_task(OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = (pobobjectreturn.INVOKE.BUFFER.ID)
 def $call_task_valid(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = $ob_object_final_cv_task_valid(S, pobobjectreturn)
+;; call_tasks_valid has already checked FRAME_EXIT when its readonly traversal
+;; pops the frame record. The unchanged real TODO still authenticates this tail.
+def $ob_object_final_cv_prefix((DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: ptask_tail*, pobobjectreturn, pdestructionframe) = (ptask_tail* = pobobjectreturn.TAIL)
+def $ob_object_final_cv_prefix(ptask :: ptask_tail*, pobobjectreturn, pdestructionframe) = $ob_object_final_cv_prefix(ptask_tail*, pobobjectreturn, pdestructionframe)
+  -- if ptask =/= DESTRUCTOR_FRAME_EXIT pdestructionframe
+def $ob_object_final_cv_prefix(ptask*, pobobjectreturn, pdestructionframe) = false -- otherwise
 def $ob_object_final_cv_task_valid(S, pobobjectreturn) = true
   -- if $ob_object_metadata(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn, pobobjectreturn)
   -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
   -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
-  -- if {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN ($ob_call_site(pobobjectreturn.INVOKE.CALL)), CONSTCONTEXT eps} <- S.DESTRUCTION.FRAMES
+  -- if pdestructionframe = {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN ($ob_call_site(pobobjectreturn.INVOKE.CALL)), CONSTCONTEXT eps}
+  -- if pdestructionframe <- S.DESTRUCTION.FRAMES \/ $ob_object_final_cv_prefix(S.TODO, pobobjectreturn, pdestructionframe)
   -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
   -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
 def $ob_object_final_cv_task_valid(S, pobobjectreturn) = false -- otherwise
