@@ -7,6 +7,8 @@ dec $parameter_receive_define_registration(pstate, pconfigcall) : preceivecut*
 dec $parameter_receive_define_metadata_valid(pstate, puserconstant) : bool
 dec $parameter_receive_ingress(pstate, nat, nat) : nat
 dec $parameter_receive_builtin_deprecated(pstate, preceivebirth, porigin) : bool
+dec $deprecated_source_row(pstate, porigin) : puserconstant?
+dec $deprecated_global_metadata(pstate, porigin) : pdeprecatedattribute
 dec $parameter_receive_order(pstate, preceivebirth, porigin, porigin?, porigin*) : preceiveorder?
 dec $parameter_receive_frontier(ptask) : preceivefrontier?
 dec $parameter_receive_frontier_site(preceivefrontier) : porigin?
@@ -221,6 +223,9 @@ dec $parameter_receive_raw_trait(pstate, preceivebirth, porigin, porigin?) : boo
 dec $parameter_receive_deprecated_leaf(pstate, preceivebirth, porigin) : bool
 dec $parameter_receive_user_leaf(pstate, preceivebirth, porigin) : bool
 def $parameter_receive_user_leaf(S, preceivebirth, porigin) = true
+  -- if $(preceivebirth.PREFIX <= |S.USERCONSTANTS|)
+  -- if $deprecated_source_row(S[.USERCONSTANTS = S.USERCONSTANTS[0:preceivebirth.PREFIX]], porigin) = (puserconstant)
+  -- if $deprecated_global_metadata(S, puserconstant.ORIGIN) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
   -- if $parameter_receive_named_entry(S, preceivebirth)
   -- if $(|preceivebirth.CAUSE.CALLS| > 0)
   -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, eps, eps)
