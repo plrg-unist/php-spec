@@ -1422,6 +1422,17 @@ def $destructor_return_discarded((WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_ta
 
 ;; The parked root is a source-checking view only. Storage and owner checks
 ;; below retain the actual callback frame and every real release/carrier root.
+dec $weakmap_write_array_pin(pstate, pweakmapwrite, pinstancestorage) : bool
+dec $weakmap_write_array_call_scope(pstate, pdestructorcall) : pstate?
+dec $weakmap_write_array_child_call(pstate, pweakmapwrite, pinstancestorage, pdestructorcall) : bool
+dec $weakmap_write_array_next_root(ptask*, pinstancestorage) : bool
+dec $weakmap_write_array_queue_head(ptask*, pinstancestorage) : bool
+dec $weakmap_write_array_queue_release(ptask*, pinstancestorage) : pdestructionrelease?
+dec $weakmap_write_array_previous_node(pnode*, pdestructionjob*) : pnode?
+dec $weakmap_write_array_cleanup_child(pstate, pinstancestorage, pdestructionrelease) : nat?
+dec $weakmap_write_array_queue_jobs(pstate, pinstancestorage, pdestructionjob*) : bool
+dec $weakmap_write_array_progress(pstate, pweakmapwrite, pinstancestorage, pdestructionrelease, ptask*) : bool
+dec $weakmap_write_array_parent_tail(pstate, pweakmapwrite, ptask*) : bool
 dec $weakmap_write_scope(pstate, pweakmapwrite) : pstate?
 dec $weakmap_write_selected_child(pinstancestorage) : nat?
 dec $weakmap_write_claim_task(ptask) : bool
@@ -1483,6 +1494,15 @@ def $weakmap_write_scope(S, pweakmapwrite) = (S_scope)
   -- if $weakmap_write_selected_child(pinstancestorage) = (pdestructorcall.OBJECT)
   -- if S_scope = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
 def $weakmap_write_scope(S, pweakmapwrite) = eps -- otherwise
+def $weakmap_write_scope(S, pweakmapwrite) = (S_scope)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if pcallcontext.TARGET = pdestructorcall.TARGET
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_array_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+  -- if $weakmap_write_array_call_scope(S, pdestructorcall) = (S_scope)
 def $weakmap_write_claim_task(WEAKMAP_WRITE_CLAIM pweakmapwrite) = true
 def $weakmap_write_claim_task(ptask) = false -- otherwise
 def $weakmap_write_claim_tail((WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_tail*, pweakmapwrite) = (ptask_tail*)
@@ -1569,11 +1589,13 @@ dec $weakmap_write_history_slots(pstate, pweakmapwrite, ppropertydesc*, ppropert
 dec $weakmap_write_array_history_entries(pstate, pweakmapwrite, pentry*) : bool
 dec $weakmap_write_array_history_state(pstate, pweakmapwrite, ppropstate) : bool
 dec $weakmap_write_array_history_slots(pstate, pweakmapwrite, ppropertydesc*, ppropertyslot*) : bool
-dec $weakmap_write_array_pin(pstate, pweakmapwrite, pinstancestorage) : bool
 dec $weakmap_write_array_call_owners(pstate, pdestructorcall) : bool
 dec $weakmap_write_array_direct_call(pstate, pweakmapwrite, pinstancestorage, pdestructorcall) : bool
 dec $weakmap_write_array_parent(pstate, pdestructorcall) : pdestructionoperation?
 dec $weakmap_write_array_throw_boundary(pstate, pdestructorcall) : bool
+dec $weakmap_write_array_selected(pinstancestorage) : nat?
+dec $weakmap_write_array_job_suffix(pdestructionjob*, pdestructionjob*) : bool
+dec $weakmap_write_array_marker_tasks(ptask*) : ptask*
 dec $weakmap_write_pin(pstate, pweakmapwrite, pinstancestorage) : bool
 dec $weakmap_write_selected_call(pstate, pweakmapwrite, pinstancestorage, pdestructorcall) : bool
 dec $weakmap_write_pin_calls(pstate, pweakmapwrite, pinstancestorage) : bool
@@ -1756,6 +1778,120 @@ def $weakmap_write_array_parent(S, pdestructorcall) = (pdestructionoperation)
   -- if $destructor_operation_suffix(S.DESTRUCTION.OPERATIONS, pdestructionoperation_inner) = [pdestructionoperation_inner, pdestructionoperation]
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
 def $weakmap_write_array_parent(S, pdestructorcall) = eps -- otherwise
+def $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
+  -- if $(pinstancestorage.NEXT > 0) /\ $(pinstancestorage.NEXT <= |nat_order*|)
+  -- if n_slot = nat_order*[$nabs($(pinstancestorage.NEXT - 1))]
+  -- if pinstancestorage.SLOTS[n_slot].STATE = PROP_VALUE (DIRECT (PARRAY n_array))
+def $weakmap_write_array_selected(pinstancestorage) = eps -- otherwise
+def $weakmap_write_array_job_suffix(eps, pdestructionjob_tail*) = (pdestructionjob_tail* = eps)
+def $weakmap_write_array_job_suffix(pdestructionjob :: pdestructionjob_all*, pdestructionjob_tail*) = ((pdestructionjob :: pdestructionjob_all*) = pdestructionjob_tail* \/ $weakmap_write_array_job_suffix(pdestructionjob_all*, pdestructionjob_tail*))
+def $weakmap_write_array_marker_tasks((THROW_SEARCH n) :: ptask_tail*) = ptask_tail*
+def $weakmap_write_array_marker_tasks(ptask*) = ptask* -- otherwise
+def $weakmap_write_array_call_scope(S, pdestructorcall) = (S)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+def $weakmap_write_array_call_scope(S, pdestructorcall) = (S_scope)
+  -- if S.FRAMES = [pframe]
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps /\ pframe.CONSTCONTEXT = eps
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pdestructorcall.TARGET
+  -- if S_scope = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
+def $weakmap_write_array_call_scope(S, pdestructorcall) = eps -- otherwise
+;; The selected Root slot names this retired ownership node. Its unchanged
+;; row is history, and the real remaining VALUE-job suffix supplies the owners.
+def $weakmap_write_array_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if $(n_array < |S.ARRAYS|) /\ ~((HARRAY n_array) <- S.ALLOCATIONS)
+  -- if pdestructorcall <- S.DESTRUCTION.CALLS
+  -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED /\ (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if $weakmap_write_array_call_owners(S, pdestructorcall)
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.FRAME = eps /\ pdestructorcall.USER
+  -- if pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.PENDING = eps
+  -- if $weakmap_entries_callback_class(S, pdestructorcall.OBJECT)
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
+  -- if $weakmap_write_array_parent(S, pdestructorcall) = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if pdestructorcall.RELEASE = (pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)) :: pdestructionjob_tail*
+  -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
+  -- if $weakmap_write_array_job_suffix($destruction_values($node_children(S, HARRAY n_array)), pdestructionrelease.JOBS)
+  -- if pdestructionrelease_remaining = pdestructionrelease[.JOBS = pdestructionjob_tail*]
+  -- if pdestructionrelease_remaining <- S.DESTRUCTION.RELEASES
+  -- if $weakmap_write_array_call_scope(S, pdestructorcall) = (S_scope)
+  -- if $weakmap_write_array_marker_tasks(S_scope.TODO) = ptask_marker :: (DESTRUCTOR_RELEASE pdestructionrelease_remaining) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*
+  -- if $weakmap_write_own_marker(ptask_marker, pdestructorcall)
+def $weakmap_write_array_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) = false -- otherwise
+def $weakmap_write_array_next_root(eps, pinstancestorage) = false
+def $weakmap_write_array_next_root(ptask :: ptask_tail*, pinstancestorage) = (ptask = INSTANCE_STORAGE_STEP pinstancestorage)
+def $weakmap_write_array_queue_head((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pinstancestorage) = $weakmap_write_array_next_root(ptask_tail*, pinstancestorage)
+def $weakmap_write_array_queue_head(ptask*, pinstancestorage) = false -- otherwise
+def $weakmap_write_array_queue_release((DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pinstancestorage) = (pdestructionrelease)
+def $weakmap_write_array_queue_release(ptask :: ptask_tail*, pinstancestorage) = $weakmap_write_array_queue_release(ptask_tail*, pinstancestorage)
+  -- if ptask =/= INSTANCE_STORAGE_STEP pinstancestorage
+  -- if ~$weakmap_write_array_queue_head(ptask :: ptask_tail*, pinstancestorage)
+def $weakmap_write_array_queue_release(ptask*, pinstancestorage) = eps -- otherwise
+def $weakmap_write_array_previous_node(eps, pdestructionjob*) = eps
+def $weakmap_write_array_previous_node(pnode :: pnode_tail*, pdestructionjob*) = (pnode)
+  -- if $destruction_values(pnode_tail*) = pdestructionjob*
+def $weakmap_write_array_previous_node(pnode :: pnode_tail*, pdestructionjob*) = $weakmap_write_array_previous_node(pnode_tail*, pdestructionjob*)
+  -- if $destruction_values(pnode_tail*) =/= pdestructionjob*
+def $weakmap_write_array_cleanup_child(S, pinstancestorage, pdestructionrelease) = (n_child)
+  -- if $weakmap_write_selected_child(pinstancestorage) = (n_child)
+def $weakmap_write_array_cleanup_child(S, pinstancestorage, pdestructionrelease) = (n_child)
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if $weakmap_write_array_previous_node($node_children(S, HARRAY n_array), pdestructionrelease.JOBS) = (HOBJECT n_child)
+def $weakmap_write_array_cleanup_child(S, pinstancestorage, pdestructionrelease) = eps -- otherwise
+def $weakmap_write_array_queue_jobs(S, pinstancestorage, [DESTRUCTION_VALUE (HARRAY n_array)]) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+def $weakmap_write_array_queue_jobs(S, pinstancestorage, pdestructionjob*) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if ~((HARRAY n_array) <- S.ALLOCATIONS)
+  -- if $weakmap_write_array_job_suffix($destruction_values($node_children(S, HARRAY n_array)), pdestructionjob*)
+def $weakmap_write_array_queue_jobs(S, pinstancestorage, [DESTRUCTION_VALUE (HOBJECT n_child)]) = true
+  -- if $weakmap_write_selected_child(pinstancestorage) = (n_child)
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+def $weakmap_write_array_queue_jobs(S, pinstancestorage, eps) = true
+  -- if $weakmap_write_selected_child(pinstancestorage) = (n_child)
+  -- if n_child <- S.DESTRUCTION.CALLED \/ $($heap_owners($heap_graph(S), HOBJECT n_child) > 0)
+def $weakmap_write_array_queue_jobs(S, pinstancestorage, pdestructionjob*) = false -- otherwise
+def $weakmap_write_array_parent_tail(S, pweakmapwrite, (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if $weakmap_write_declared_tail(S, pdestructionoperation, pweakmapwrite, (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*)
+def $weakmap_write_array_parent_tail(S, pweakmapwrite, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if $weakmap_write_declared_tail(S, pdestructionoperation, pweakmapwrite, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*)
+def $weakmap_write_array_parent_tail(S, pweakmapwrite, ptask*) = false -- otherwise
+;; Only the actual selected queue and its immediately preceding Child cleanup
+;; may occur before this Root marker. No array pin or array owner is invented.
+def $weakmap_write_array_progress(S, pweakmapwrite, pinstancestorage, pdestructionrelease, (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: (DESTRUCTOR_RELEASE pdestructionrelease_root) :: ptask_tail*) = true
+  -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
+  -- if pdestructionrelease <- S.DESTRUCTION.RELEASES
+  -- if $weakmap_write_array_queue_jobs(S, pinstancestorage, pdestructionrelease.JOBS)
+  -- if pdestructionrelease_root.JOBS = eps
+  -- if $weakmap_write_release_stamp(pdestructionrelease_root, pweakmapwrite)
+  -- if pdestructionrelease_root <- S.DESTRUCTION.RELEASES
+  -- if $weakmap_write_array_parent_tail(S, pweakmapwrite, ptask_tail*)
+def $weakmap_write_array_progress(S, pweakmapwrite, pinstancestorage, pdestructionrelease, (DESTRUCTOR_RELEASE pdestructionrelease_cleanup) :: ptask_tail*) = true
+  -- if ~$weakmap_write_array_next_root(ptask_tail*, pinstancestorage)
+  -- if $weakmap_write_array_cleanup_child(S, pinstancestorage, pdestructionrelease) = (n_child)
+  -- if n_child <- S.DESTRUCTION.CALLED
+  -- if pdestructionrelease_cleanup.JOBS = eps \/ pdestructionrelease_cleanup.JOBS = [DESTRUCTION_VALUE (HOBJECT n_child)] \/ pdestructionrelease_cleanup.JOBS = [DESTRUCTION_HANDLE n_child]
+  -- if $weakmap_write_release_stamp(pdestructionrelease_cleanup, pweakmapwrite)
+  -- if pdestructionrelease_cleanup <- S.DESTRUCTION.RELEASES
+  -- if $weakmap_write_array_progress(S, pweakmapwrite, pinstancestorage, pdestructionrelease, ptask_tail*)
+def $weakmap_write_array_progress(S, pweakmapwrite, pinstancestorage, pdestructionrelease, (INSTANCE_STORAGE_STEP pinstancestorage_child) :: ptask_tail*) = true
+  -- if pinstancestorage_child.OBJECT =/= pinstancestorage.OBJECT
+  -- if $weakmap_write_array_cleanup_child(S, pinstancestorage, pdestructionrelease) = (pinstancestorage_child.OBJECT)
+  -- if pinstancestorage_child.OBJECT <- S.DESTRUCTION.CALLED
+  -- if $instance_storage_for(S, pinstancestorage_child.OBJECT) = (pinstancestorage_child)
+  -- if pinstancestorage_child.SLOTS = eps /\ pinstancestorage_child.NEXT = 0 /\ pinstancestorage_child.NOTIFY = eps
+  -- if pinstancestorage_child.CALLER = pinstancestorage.CALLER /\ pinstancestorage_child.ORIGIN = pinstancestorage.ORIGIN /\ pinstancestorage_child.CONSTCONTEXT = pinstancestorage.CONSTCONTEXT /\ pinstancestorage_child.USER
+  -- if $weakmap_write_array_progress(S, pweakmapwrite, pinstancestorage, pdestructionrelease, ptask_tail*)
+def $weakmap_write_array_progress(S, pweakmapwrite, pinstancestorage, pdestructionrelease, ptask*) = false -- otherwise
 def $weakmap_write_array_throw_boundary(S, pdestructorcall) = true
   -- if S.COMPLETION = NORMAL /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
   -- if S.DESTRUCTION.CALLS = [pdestructorcall]
@@ -1769,7 +1905,7 @@ def $weakmap_write_array_throw_boundary(S, pdestructorcall) = true
   -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
   -- if S_full = S[.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*]
   -- if $weakmap_write_claim_valid(S_full, pweakmapwrite)
-  -- if $weakmap_write_array_direct_call(S_full, pweakmapwrite, pinstancestorage, pdestructorcall)
+  -- if $weakmap_write_array_direct_call(S_full, pweakmapwrite, pinstancestorage, pdestructorcall) \/ $weakmap_write_array_child_call(S_full, pweakmapwrite, pinstancestorage, pdestructorcall)
   -- if $destructor_pending_parent(S, pdestructorcall) = eps
 def $weakmap_write_array_throw_boundary(S, pdestructorcall) = false -- otherwise
 def $destructor_result_pending(S, pdestructorcall, pdestructorcall_tail*) = S[.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*][.COMPLETION = UNSUPPORTED "throwing Child during WeakMap array-slot cleanup"]
@@ -2209,12 +2345,29 @@ def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) =
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
   -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
   -- if S.DESTRUCTION.CALLS = [pdestructorcall]
-  -- if $weakmap_write_array_direct_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+  -- if $weakmap_write_array_direct_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) \/ $weakmap_write_array_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
   -- if $instance_storage_tail(S_scope.TODO, pinstancestorage) = ((DESTRUCTOR_RELEASE pdestructionrelease_free) :: ptask_tail*)
   -- if pdestructionrelease_free.JOBS = eps
   -- if $weakmap_write_release_stamp(pdestructionrelease_free, pweakmapwrite)
   -- if pdestructionrelease_free <- S.DESTRUCTION.RELEASES
   -- if $weakmap_write_declared_tail(S, pdestructionoperation, pweakmapwrite, ptask_tail*)
+def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
+  -- if S_scope.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: (DESTRUCTOR_RELEASE pdestructionrelease_root) :: ptask_tail*
+  -- if pdestructionrelease_root.JOBS = eps
+  -- if $weakmap_write_release_stamp(pdestructionrelease_root, pweakmapwrite)
+  -- if pdestructionrelease_root <- S.DESTRUCTION.RELEASES
+  -- if $weakmap_write_declared_tail(S, pdestructionoperation, pweakmapwrite, ptask_tail*)
+def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_array_queue_release(S_scope.TODO, pinstancestorage) = (pdestructionrelease)
+  -- if $weakmap_write_array_progress(S, pweakmapwrite, pinstancestorage, pdestructionrelease, S_scope.TODO)
 def $weakmap_write_carrier_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = true
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
   -- if ~((HOBJECT n_old) <- S.ALLOCATIONS)
@@ -2346,6 +2499,52 @@ def $weakmap_write_previous_saved_prefix((DESTRUCTOR_OPERATION_EXIT pdestruction
   -- if $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cleanup) = eps
   -- if $weakmap_write_previous_saved_prefix(ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = (pdestructorcall_all*, pdestructionrelease_all*, [pdestructionoperation_inner, pdestructionoperation])
 def $weakmap_write_previous_saved_prefix(ptask*, pinstancestorage, pdestructionoperation, pweakmapwrite) = eps -- otherwise
+dec $weakmap_write_array_saved_jobs(pstate, pinstancestorage, pdestructionjob*) : bool
+dec $weakmap_write_array_saved_pin(pstate, pinstancestorage, pinstancestorage) : bool
+dec $weakmap_write_array_saved_prefix(pstate, ptask*, pinstancestorage, pdestructionoperation, pweakmapwrite) : (pdestructorcall*, pdestructionrelease*, pdestructionoperation*)?
+def $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionjob*) = true
+  -- if $weakmap_write_declared_jobs(pinstancestorage, pdestructionjob*)
+def $weakmap_write_array_saved_jobs(S, pinstancestorage, [DESTRUCTION_VALUE (HARRAY n_array)]) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+def $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionjob*) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if $weakmap_write_array_job_suffix($destruction_values($node_children(S, HARRAY n_array)), pdestructionjob*)
+def $weakmap_write_array_saved_jobs(S, pinstancestorage, [DESTRUCTION_VALUE (HOBJECT n_child)]) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if (HOBJECT n_child) <- $node_children(S, HARRAY n_array)
+def $weakmap_write_array_saved_jobs(S, pinstancestorage, [DESTRUCTION_HANDLE n_child]) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if (HOBJECT n_child) <- $node_children(S, HARRAY n_array)
+def $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionjob*) = false -- otherwise
+def $weakmap_write_array_saved_pin(S, pinstancestorage, pinstancestorage_step) = true
+  -- if $weakmap_write_declared_saved_pin(pinstancestorage, pinstancestorage_step)
+def $weakmap_write_array_saved_pin(S, pinstancestorage, pinstancestorage_step) = true
+  -- if $weakmap_write_array_selected(pinstancestorage) = (n_array)
+  -- if (HOBJECT pinstancestorage_step.OBJECT) <- $node_children(S, HARRAY n_array)
+  -- if $instance_storage_for(S, pinstancestorage_step.OBJECT) = (pinstancestorage_step)
+  -- if pinstancestorage_step.SLOTS = eps /\ pinstancestorage_step.NEXT = 0 /\ pinstancestorage_step.NOTIFY = eps
+  -- if pinstancestorage_step.CALLER = pinstancestorage.CALLER /\ pinstancestorage_step.ORIGIN = pinstancestorage.ORIGIN /\ pinstancestorage_step.CONSTCONTEXT = pinstancestorage.CONSTCONTEXT /\ pinstancestorage_step.USER
+def $weakmap_write_array_saved_pin(S, pinstancestorage, pinstancestorage_step) = false -- otherwise
+def $weakmap_write_array_saved_prefix(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME paccess) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = (eps, eps, [pdestructionoperation])
+  -- if paccess = pweakmapwrite.ACCESS
+def $weakmap_write_array_saved_prefix(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = (pdestructorcall_all*, pdestructionrelease :: pdestructionrelease_all*, pdestructionoperation_all*)
+  -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
+  -- if $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionrelease.JOBS)
+  -- if $weakmap_write_array_saved_prefix(S, ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = (pdestructorcall_all*, pdestructionrelease_all*, pdestructionoperation_all*)
+def $weakmap_write_array_saved_prefix(S, (INSTANCE_STORAGE_STEP pinstancestorage_step) :: ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = $weakmap_write_array_saved_prefix(S, ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite)
+  -- if $weakmap_write_array_saved_pin(S, pinstancestorage, pinstancestorage_step)
+def $weakmap_write_array_saved_prefix(S, ptask_marker :: ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = ([pdestructorcall], pdestructionrelease_all*, pdestructionoperation_all*)
+  -- if $weakmap_write_own_marker_call(ptask_marker) = (pdestructorcall)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)) :: pdestructionjob_tail*
+  -- if $weakmap_write_array_saved_jobs(S, pinstancestorage, pdestructionrelease.JOBS)
+  -- if $weakmap_write_array_saved_prefix(S, ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = (eps, pdestructionrelease_all*, pdestructionoperation_all*)
+def $weakmap_write_array_saved_prefix(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) :: ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = (pdestructorcall_all*, pdestructionrelease_all*, [pdestructionoperation_inner, pdestructionoperation])
+  -- if pdestructionoperation.PENDING = (n_pending)
+  -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_pending
+  -- if $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) = eps
+  -- if $weakmap_write_array_saved_prefix(S, ptask_tail*, pinstancestorage, pdestructionoperation, pweakmapwrite) = (pdestructorcall_all*, pdestructionrelease_all*, [pdestructionoperation])
+def $weakmap_write_array_saved_prefix(S, ptask*, pinstancestorage, pdestructionoperation, pweakmapwrite) = eps -- otherwise
 dec $weakmap_write_operation_task_valid(pstate, pdestructionoperation, pweakmapwrite) : bool
 def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = true
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
@@ -2468,6 +2667,19 @@ def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
   -- if $heap_graph(S_view) = $heap_graph(S)
   -- if $destructor_operation_valid(S_view, pdestructionoperation)
 def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = false -- otherwise
+def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite) = true
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps
+  -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation]
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
+  -- if ~$destructor_operation_valid(S, pdestructionoperation)
+  -- if $weakmap_write_array_saved_prefix(S, S.TODO, pinstancestorage, pdestructionoperation, pweakmapwrite) = (pdestructorcall_all*, pdestructionrelease_all*, pdestructionoperation_all*)
+  -- if S_view = S[.DESTRUCTION.CALLS = pdestructorcall_all*][.DESTRUCTION.RELEASES = pdestructionrelease_all*][.DESTRUCTION.OPERATIONS = pdestructionoperation_all*]
+  -- if $heap_graph(S_view) = $heap_graph(S)
+  -- if $destructor_operation_valid(S_view, pdestructionoperation)
 def $eager_operation_task_valid(S, pdestructionoperation) = $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
 
@@ -2551,7 +2763,7 @@ def $weakmap_write_callback_read(S, paccess) = true
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
   -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
-  -- if $weakmap_write_array_direct_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+  -- if $weakmap_write_array_direct_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) \/ $weakmap_write_array_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
   -- if $heap_owners($heap_graph(S), HOBJECT pdestructorcall.OBJECT) = 2
   -- if $weakmap_write_callback_site(S, paccess, pweakmapwrite, pcallcontext)
 
