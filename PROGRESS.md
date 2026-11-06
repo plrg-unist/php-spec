@@ -422,18 +422,21 @@ separate. Original failures and the expensive diagnostic timeout retain zero
 credit; wider Traversable/lifecycle scope remains partial.
 [I116 review](coverage/semantics/generator-method-iterator-pack-review.json).
 
-I117–I119 keep an ordinary named by-value Generator's selected SEND receiver
-through body-Throwable argv cleanup. Ordinary and nonnull nullsafe calls retain
-the frozen method/receiver through argument CV rebinding without another owner;
-NULL nullsafe reception skips both producers. Pending search and argv Previous
-chaining preserve original traces and the unassigned result; the nullsafe result
-tail stays nonowning. Four unique originals and three separate source-reached
-owner/receipt/budget fronts pass full446 SL at their recorded cuts. Shared
-Throwable search rules are unchanged. Active delegation, pending initialization,
-reference bodies and wider API/lifecycle modes remain partial.
+I117–I120 keep an ordinary named Generator's selected SEND receiver through
+body-Throwable argv cleanup. By-reference bodies require their actual328 producer
+and live cached HCELL; cell/cache owners stay separate from API argv, and the
+storage pin keeps Gen weak-live during cache destruction. Ordinary and nonnull
+nullsafe calls retain the frozen method/receiver through argument CV rebinding;
+NULL skips both producers. Pending search/Previous chaining preserve original
+traces and the unassigned result, with a nonowning nullsafe tail. Five unique
+originals and four separate reached owner/cache/receipt/budget fronts pass full446
+SL at their recorded cuts. Shared Throwable search rules are unchanged. Active
+delegation, pending initialization, reference snapshots without a live cache cell
+and wider API/lifecycle modes remain partial.
 [Literal review](coverage/semantics/generator-send-body-throw-review.json),
 [computed review](coverage/semantics/generator-computed-send-body-throw-review.json),
-[nullsafe review](coverage/semantics/generator-nullsafe-send-body-throw-review.json).
+[nullsafe review](coverage/semantics/generator-nullsafe-send-body-throw-review.json),
+[reference-cache review](coverage/semantics/generator-reference-send-body-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -2085,7 +2088,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | Track | Owner-confirmed current work |
 | --- | --- |
 | CLASS196 | First original flat-array literal magic sends with integer/ordinary leaf entries and real transient array/receiver owners; private implementation/review. |
-| I120 | Named by-reference Generator direct SEND body-Throwable cleanup through authenticated reference-cache cells and actual argv owners; private implementation/review. |
+| I121 | Named by-reference Generator direct SEND cleanup with an owning VALUE snapshot after authenticated yield/Notice completion and live-owner proof; private implementation/review. |
 | GC54 | One direct-array layer in public untyped backed Value properties, with scalar/fieldless-Child elements and existing HARRAY/COW cleanup; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |

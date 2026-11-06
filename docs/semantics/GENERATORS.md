@@ -95,7 +95,7 @@ their existing finish paths. Other Traversable source forms, multiple/prefixed
 packs, captured/computed/nullsafe consumers and wider lifecycle combinations
 remain partial. [Iterator API review](../../coverage/semantics/generator-method-iterator-pack-review.json).
 
-An ordinary named by-value Generator's direct or nonnull nullsafe `send`
+An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does
 the receiver retire.
@@ -106,11 +106,18 @@ argument producer rebinds both source CVs; that receipt adds no heap owner.
 NULL nullsafe reception skips both computed-name and argument producers. Its
 nonnull result/fetch tail stays nonowning through the same abrupt cleanup.
 This extension covers the nondelegated resume after initialization, with an owning
-argument. Generator `throw`, pending initialization, reference bodies, captured
-APIs and `Closure::call` retain their separate scopes.
+argument. By-reference bodies additionally require the registered Module328
+reference producer, its cached REFCELL and the actual live reference operand;
+storage history alone cannot begin this cleanup. The cache cell and its value
+stay owned by the Generator while argv retires. During later cache destruction,
+the existing storage pin keeps the Generator weak-live until storage finishes.
+Result/return history remains valid after cache retirement. Generator `throw`,
+pending initialization, reference snapshots without a live cache cell, captured APIs and
+`Closure::call` retain their separate scopes.
 [Literal body-throw review](../../coverage/semantics/generator-send-body-throw-review.json),
 [computed body-throw review](../../coverage/semantics/generator-computed-send-body-throw-review.json),
-[nullsafe body-throw review](../../coverage/semantics/generator-nullsafe-send-body-throw-review.json).
+[nullsafe body-throw review](../../coverage/semantics/generator-nullsafe-send-body-throw-review.json),
+[reference-cache body-throw review](../../coverage/semantics/generator-reference-send-body-throw-review.json).
 
 Literal nullsafe API calls share the same selected receiver and argument protocol.
 A NULL receiver skips named-CV reception and spread producers. A nonnull call
