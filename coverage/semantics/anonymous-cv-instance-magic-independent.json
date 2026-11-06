@@ -1,0 +1,117 @@
+{
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; authored core semantics",
+  "scope": "CLASS208 independent review: public literal USER method producers on initialized ordinary plain/reference CV receivers; current zero/required untyped positional by-value parameters, quiet COPY returns and outer magic headers.",
+  "base": "8a64912485243d0feff615c9061e3aa57e9e524b",
+  "implementation_commits": [
+    "15af87817",
+    "70fae1e8c",
+    "099208077"
+  ],
+  "peer_commits": [
+    "853263c4d",
+    "a6922ce6b",
+    "a3310de6e",
+    "4d43e8bb4"
+  ],
+  "module_count": 453,
+  "oracle": {
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "options": "-n and tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "source": {
+    "id": "named-ref-cv-installed-unset-return-this-request",
+    "source_sha256": "81d0b2eb41cc30ffe2fd668b30b7e131137c298abf1823ef79c2f33b9243c72b",
+    "tested_revision": "a6922ce6b3950dc6c63a13128cd3aa20f9ab37f6",
+    "first_model_pass": true,
+    "native_reexecution": false,
+    "agreement_credit": 1,
+    "elapsed_seconds": 148.82896088494454,
+    "model_cap_seconds": 300,
+    "outer_cap_seconds": 310,
+    "result": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/source/report.json",
+      "sha256": "88fd133019c739c6c31dfdeee7e561d6fb34849f175be575ca26ce2ac868aeba"
+    }
+  },
+  "SL453": {
+    "tested_revision": "4d43e8bb4af8966f40602ffedadb4d7ad9379efa",
+    "assertions": 267,
+    "result": "pass",
+    "first_runtime_execution": true,
+    "elapsed_seconds": 275.41226035397267,
+    "inner_cap_seconds": 300,
+    "outer_cap_seconds": 370,
+    "quiet_exit_zero": true,
+    "stable": true,
+    "timeout": false,
+    "unchanged_source_runtime_module_fingerprints": 453,
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/state-corrected/report.json",
+      "sha256": "58c3939e2f93843e89f2fad3790162bc40fe6ffa56a0b4fb39e8287ff20b6225"
+    },
+    "command": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/state-corrected-command.json",
+      "sha256": "b1a0f1900c685cbddb6bd3a9bbdb1ccbdbb854fffdaf0165e33626622028d0a8"
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "state0",
+      "tested_revision": "a6922ce6b3950dc6c63a13128cd3aa20f9ab37f6",
+      "kind": "checker-only fixture failure: nonexistent pframe.ENV field",
+      "elapsed_seconds": 10.650011720019393,
+      "correction": "a3310de6e uses constant_frame_scope for the saved symbol table; no PHP runtime executed",
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/state0/report.json",
+        "sha256": "017d28e384eedf6db975d13d25c279f5d84502682eff4273ad5e291a847881fc"
+      }
+    },
+    {
+      "path": "state1",
+      "tested_revision": "a3310de6e96aea169dd40decd2256e112308e61a",
+      "kind": "checker-only fixture failure: recursive RHS alongside otherwise",
+      "elapsed_seconds": 11.44160991202807,
+      "correction": "4d43e8bb4 gives the task traversal an explicit complementary guard; no PHP runtime executed",
+      "report": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/state1/report.json",
+        "sha256": "f5bde6c74ff1145201fc4431d25456230a71408e8f00e8a5dc49dc888b14dc0e"
+      }
+    }
+  ],
+  "independent_review": {
+    "native_basis": "zend_compile_method_call emits INIT_METHOD_CALL before arguments. ZEND_INIT_METHOD_CALL dereferences the current CV, selects via get_method/private-first scope and retains the receiver with RELEASE_THIS before SEND. zend_std_get_method implements the private-shadow choice.",
+    "actual_source": "An initial NULL reference cell is admitted structurally, then the first ordinary USER argument installs the inherited receiver. The actual METHOD_PREP binds original CV token line and method init runtime line separately; initialized ordinary cell and private-first public source precede the actual METHOD_TARGET.",
+    "selection_history": "Only actual selection mints descriptor-local SITE/CLASS/METHOD. The fact adds no task/heap owner; exact pending carrier, source origins, uniqueness and phase bounds prevent malformed/future authority. After the callback nulls the receiver alias and unsets the receiver name, collection validates the saved class/method source without reading ENV or a live receiver. Permanent source remains valid after final object destruction.",
+    "owners": "Actual ref cell owns one receiver edge, then the real METHOD_TARGET adds one. Inner SEND snapshots authenticated REQUEST_STRING 0 without pinning its source cell. Fresh by-value saved/marker parameters survive late=99/owner=NULL. RETURN_THIS has receiver+result owners; the identical object reaches the named table, static Closure and child, and retires after CHILD at the final cleanup.",
+    "budget": "At the reached child frontier, receiver/caller alias cells, the Closure and outer owner are already retired. Actual 2+4096 steps equal direct4098 for the remaining table/child/returned-producer cleanup and exact final native output.",
+    "counterexamples": "Malformed named SENT remains a recognized candidate but fails pending/read admission. Undefined/propref/debt cell views, duplicate/wrong-site/wrong-method facts, future phase bounds, missing fact and missing CODE refuse. The old first nullary installer certificate remains eligible; the later CV-method role is not an old USER/array producer. The438 explicit-source predicate remains false for this MethodCall.",
+    "finding_resolved_before_freeze": "The initial draft used raw suffix authority without complete CALL_SEND/named SENT validation. Existing call_task_valid/magic_named_raw_valid plus separate candidate recognition now authenticate the actual carrier and prevent a default-true bypass. A later author control found an unexcluded typed formal; the separate099 guard and root-context positive bridge are recorded explicitly.",
+    "private_scope": "Exact pending validation equates descriptor.CALLER to the current context and its structural source scope. The direct argument has the same lexical ancestry; method_class_selected therefore agrees with actual142 method_selected_scope before args. The immutable source derives that scope again after retirement; this is not a reconstruction of arbitrary valid alternative histories."
+  },
+  "main_composition": {
+    "reviewed_main": "c8fd627a4c21ecdc12193e6f8d43e7def4416a96",
+    "module_count": 455,
+    "execution_repeated": false,
+    "bridge": "142/213/414/415/438 are unchanged on main from the source base. New465 and183/184/212/259/454 class-constant binder/cache paths are absent; no is_callable/enum-query output or PRECISION receipt, WeakMap, Traversable unpack, Trait hook, OB/STRINGIFY native Exception/throw continuation appears. Generic437/456 cleanup extensions require their specific absent markers. The30 schema additions concern other records; retain both sets when merging. New466 computed class-cache publication is absent: CLASSCONSTANTWRITES initializes to eps and no replacement/publication path is reached.39 machine roots therefore take the exact old class_constant_roots default;257 class-write abrupt-tail guard remains false. New30 record/state fields are disjoint from producer facts and require the normal eps initialization when merging."
+  },
+  "held": "Computed method names/other receiver expressions, nullsafe/magic receivers, arrays/nonleaf/constrained cells, producer defaults/variadics/reference returns/Generators/inner named/unpack, wider outer headers and request-owned NUL remain outside this family. Existing constructor/nullary/contextual-array policies are unchanged.",
+  "artifacts": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer",
+    "manifest_sha256": "dc7ea933154a0aafedd9b26880553f153d287665f3f74886016f8610835d261c",
+    "artifact_count": 65,
+    "recovery": "Exact source/native/model commands and profile are in source/*.json. State command streams, generated fixtures and frontend/adapter records are retained separately for both checker failures and the corrected pass. Reuse existing original bytes/path/cwd; do not rerun native for bookkeeping."
+  },
+  "engine_divergence": "None identified.",
+  "positive_cut_bridge": {
+    "commit": "099208077",
+    "scope": "Admission-only typed-formal correction after the recorded six source agreements and independent267.",
+    "evidence": "Every direct producer CV read in the six originals is at CURRENT=eps; both owner fixtures bind that root context. The new untyped-cell predicate returns true immediately there and is not consulted by collection or selected-source/fact validation. Peer pure caller views use the existing saved symbol-table scope, without creating a machine owner.",
+    "replay": false,
+    "typed_role": "RECV checks a typed byref formal at entry without attaching a persistent reference type source. The current function signature and current ENV cell equality nevertheless identify the held typed-formal receiver role, including aliases. The correction changes no generic parameter semantics and adds no frame/global history."
+  }
+}
