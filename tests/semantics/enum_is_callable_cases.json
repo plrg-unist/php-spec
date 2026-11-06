@@ -1767,5 +1767,14 @@
     "expected_normal_stdout": "syntax:1:QualifiedChild153::QualifiedParent153::Target|qualified-notice|normal:1:QualifiedChild153::QualifiedParent153::Target|",
     "purpose": "Structural syntax-only qualified-member query succeeds, then normal qualified member reparsing/deprecation remains explicitly Unsupported before its diagnostic; no221 warning/reentry expansion and zero model-agreement credit.",
     "model_timeout_seconds": 150
+  },
+  {
+    "id": "is-callable-user-method-array-drain",
+    "source": "<?php\nclass DrainInput153 {\n    public function Target(int $required) { echo 'BAD-drain|'; strrev('unentered'); }\n    public function __destruct() {\n        global $gone153, $name153, $expected153;\n        $gone153 = true;\n        echo 'input-drain:', (int)($name153 === $expected153), '|';\n    }\n}\nclass DrainOutput153 {\n    public function __destruct() { global $gone153; echo 'output-drain:', (int)$gone153, '|'; }\n}\nfunction removeArray153() { unset($GLOBALS['value153']); return false; }\n$gone153 = false;\n$expected153 = 'DrainInput153::Target';\n$value153 = [new DrainInput153, 'Target'];\n$name153 = new DrainOutput153;\n$ok153 = is_callable($value153, removeArray153(), $name153);\necho 'true-return:', (int)($ok153 === true), ':', $name153, ':', (int)$gone153, '|';\n$gone153 = false;\n$expected153 = 'DrainInput153::missing';\n$value153 = [new DrainInput153, 'missing'];\n$name153 = new DrainOutput153;\n$ok153 = is_callable($value153, removeArray153(), $name153);\necho 'false-return:', (int)($ok153 === false), ':', $name153, ':', (int)$gone153, '|';\n",
+    "source_sha256": "36b56a90970242e3108409966b657a09e09f9ddd8057c1d36f54c45f8c794e3c",
+    "expected_model": "normal",
+    "expected_normal_stdout": "output-drain:0|input-drain:1|true-return:1:DrainInput153::Target:1|output-drain:0|input-drain:1|false-return:1:DrainInput153::missing:1|",
+    "purpose": "A source-unset array has sole real SENT ownership through old-output destruction; queued OUTPUT commits NAME before receiver drain and preserves exact true/false booleans in the existing operation.",
+    "model_timeout_seconds": 180
   }
 ]
