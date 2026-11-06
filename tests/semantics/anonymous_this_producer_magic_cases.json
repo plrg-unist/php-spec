@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-this-direct-pending-leaf",
+      "source": "<?php\nclass ProducerBase216 { public $tag=9; public function __destruct() { echo \"THIS-END;\"; } public function capture($saved,$ignored) { echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } }\nclass ProducerScope216 extends ProducerBase216 { public function run() { global $owner,$argument; return $owner->MiSsInG($this->capture($argument,shift216())); } } class ProducerChild216 extends ProducerScope216 {}\nfunction shift216() { $GLOBALS[\"argument\"] = new New216; $GLOBALS[\"owner\"] = null; $GLOBALS[\"runner\"] = null; echo \"SHIFT;\"; return false; } class Old216 { public function __destruct() { echo \"OLD;\"; } } class New216 { public function __destruct() { echo \"NEW;\"; } }\nclass Base216 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"] = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived216 extends Base216 {}\n$argument = new Old216; $owner = new Derived216; $runner = new ProducerChild216; $child = $runner->run(); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old216) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "3bf8a48df27954d09ba3501e2c8c87f9cb613a5dec6124218b613984e696b3ec",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjE2L1Byb2R1Y2VyQ2hpbGQyMTY7TkVXO0hBTkRMRVI7T1dORVI7VEhJUy1FTkQ7UkVUVVJOO0hFTEQ7Q0hJTEQ7T0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-this-direct-zero-escape",
+      "source": "<?php\nclass SelfBase216 { public $tag=9; public function take() { $GLOBALS[\"runner\"]=null; echo \"SELF;\"; return $this; } public function run() { global $owner; return $owner->MiSsInG(first:$this->take(),later:7); } public function __destruct() { echo \"THIS-END;\"; } } class SelfChild216 extends SelfBase216 {}\nclass ZeroMagic216 { public function __call(string $name,array $arguments) { $GLOBALS[\"owner\"]=null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\n$owner = new ZeroMagic216; $runner = new SelfChild216; $child = $runner->run(); echo \"RETURN;\"; echo ($child->saved[\"first\"] instanceof SelfChild216 && $child->saved[\"later\"] === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "bdfb06eeb6a44a4eca61e803e298e5296322289dbb6b1d972a4597cb0c14c852",
+      "stdout_template_base64": "U0VMRjtIQU5ETEVSO09XTkVSO1JFVFVSTjtIRUxEO0NISUxEO1RISVMtRU5EO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-this-firstclass-pending-leaf",
+      "source": "<?php\nclass ProducerBase216 { public $tag=9; public function __destruct() { echo \"THIS-END;\"; } public function capture($saved,$ignored) { echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } }\nclass ProducerScope216 extends ProducerBase216 { public function run() { global $owner,$argument; return $owner->MiSsInG(($this->capture(...))($argument,shift216())); } } class ProducerChild216 extends ProducerScope216 {}\nfunction shift216() { $GLOBALS[\"argument\"] = new New216; $GLOBALS[\"owner\"] = null; $GLOBALS[\"runner\"] = null; echo \"SHIFT;\"; return false; } class Old216 { public function __destruct() { echo \"OLD;\"; } } class New216 { public function __destruct() { echo \"NEW;\"; } }\nclass Base216 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"] = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived216 extends Base216 {}\n$argument = new Old216; $owner = new Derived216; $runner = new ProducerChild216; $child = $runner->run(); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old216) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "e114594fa04a254cc5824f92761604b9ea0058922c833833fbd527af3f278fa6",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjE2L1Byb2R1Y2VyQ2hpbGQyMTY7TkVXO0hBTkRMRVI7T1dORVI7VEhJUy1FTkQ7UkVUVVJOO0hFTEQ7Q0hJTEQ7T0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

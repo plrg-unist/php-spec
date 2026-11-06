@@ -84,7 +84,12 @@ dec $magic_method_keyword_static_call(expression) : bool
 dec $magic_method_keyword_class(pstate, pcallcontext, ptbytes) : porigin?
 dec $magic_method_keyword_static_source(pstate, pcallcontext?, porigin, ptbytes, ptbytes, phpType7*) : (porigin, porigin, pmethoddesc)?
 dec $magic_method_keyword_static_producer(pstate, pcallcontext?, porigin, expression) : (porigin, porigin, pmethoddesc)?
-dec $magic_method_keyword_arguments(phpType7*) : bool
+dec $magic_method_this_call(expression) : bool
+dec $magic_method_this_source(pstate, pcallcontext?, porigin, ptbytes, phpType7*) : (nat, porigin, pmethoddesc)?
+dec $magic_method_this_producer(pstate, pcallcontext?, porigin, expression) : (nat, porigin, pmethoddesc)?
+dec $magic_method_context_call(expression) : bool
+dec $magic_method_context_source(pstate, pcallcontext?, porigin, expression) : bool
+dec $magic_method_context_arguments(phpType7*) : bool
 dec $magic_method_context_values(pstate, pcallcontext?, porigin, phpType7*, poperand*, pmagicproducerfact*) : (pvalue*)?
 dec $magic_method_context_copy(pstate, pcallcontext?, porigin, phpType7*, nat, poperand*, pmagicproducerfact*) : (pvalue*)?
 dec $magic_method_closure_producer(pstate, porigin, expression) : pfunction?
@@ -160,6 +165,8 @@ def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_static_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_keyword_static_producer(S, S.CURRENT, porigin, expression) = ((porigin_requested, porigin_called, pmethoddesc))
+def $magic_method_argument_source(S, porigin, n, expression) = true
+  -- if $magic_method_this_producer(S, S.CURRENT, porigin, expression) = ((n_this, porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_closure_producer(S, porigin, expression) = (pfunction)
 def $magic_method_argument_source(S, porigin, n, expression) = true
@@ -462,6 +469,36 @@ def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall ex
   -- if $method_class_selected(S, porigin_class, $base64(text_name), $closure_source_class(S, PORIGIN n_unit pcpath)) = (pmethoddesc)
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
 def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
+;; This is immutable caller metadata, not a CV or a new receiver owner. The
+;; instance's class row remains source history after the caller retires.
+def $magic_method_this_call(NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) phpType20 (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
+def $magic_method_this_call(NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
+def $magic_method_this_call(expression) = false -- otherwise
+def $magic_method_this_source(S, (pcallcontext), PORIGIN n_unit pcpath, ptbytes_name, phpType7*) = ((n_this, porigin_class, pmethoddesc))
+  -- if pcallcontext.RECEIVER = (n_this) /\ pcallcontext.CALLED_CLASS = (porigin_class)
+  -- if $object_class_origin(S, n_this) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+  -- if $closure_source_class(S, PORIGIN n_unit pcpath) = (porigin_scope)
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_caller)
+  -- if pcallcontext.FUNCTION = pfunction_caller.ORIGIN
+  -- if $method_class_selected(S, porigin_class, ptbytes_name, (porigin_scope)) = (pmethoddesc)
+  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
+def $magic_method_this_source(S, pcallcontext?, porigin, ptbytes_name, phpType7*) = eps -- otherwise
+def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
+  -- if $direct_this(BYTES text_this)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_call, false))
+  -- if z_call = $source_line(metadata)
+  -- if $magic_method_this_source(S, pcallcontext?, PORIGIN n_unit pcpath, $base64(text_name), phpType7*) = ((n_this, porigin_class, pmethoddesc))
+def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
+  -- if $direct_this(BYTES text_this)
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprMethodCall (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $magic_method_this_source(S, pcallcontext?, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), $base64(text_name), phpType7*) = ((n_this, porigin_class, pmethoddesc))
+def $magic_method_this_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 ;; A bare object call uses effective __invoke, without lexical-private redirect.
 def $magic_method_invokable_call(NExprFuncCall (NExprNew phpType28 phpType6 metadata_new) (SEQUENCE phpType7*) metadata) = true
 def $magic_method_invokable_call(expression) = false -- otherwise
@@ -1081,32 +1118,38 @@ def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicprodu
   -- if $magic_producer_facts_valid(S, porigin_site, phpType7*, pmagicproducerfact*)
 def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicproducerfact*) = eps -- otherwise
 
-;; Only keyword source certification reads CALLER. Values and ownership always
+;; Only contextual source certification reads CALLER. Values and ownership always
 ;; use the real state; other operands keep the old indexed fact-aware domain.
-def $magic_method_keyword_arguments(eps) = false
-def $magic_method_keyword_arguments((NArg phpType3 expression (BOOLEAN b_ref) (BOOLEAN b_unpack) metadata) :: phpType7_tail*) = ($magic_method_keyword_static_call(expression) \/ $magic_method_keyword_arguments(phpType7_tail*))
-def $magic_method_keyword_arguments(phpType7*) = false -- otherwise
+def $magic_method_context_call(expression) = ($magic_method_keyword_static_call(expression) \/ $magic_method_this_call(expression))
+def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
+  -- if $magic_method_keyword_static_producer(S, pcallcontext?, porigin, expression) =/= eps
+def $magic_method_context_source(S, pcallcontext?, porigin, expression) = true
+  -- if $magic_method_this_producer(S, pcallcontext?, porigin, expression) =/= eps
+def $magic_method_context_source(S, pcallcontext?, porigin, expression) = false -- otherwise
+def $magic_method_context_arguments(eps) = false
+def $magic_method_context_arguments((NArg phpType3 expression (BOOLEAN b_ref) (BOOLEAN b_unpack) metadata) :: phpType7_tail*) = ($magic_method_context_call(expression) \/ $magic_method_context_arguments(phpType7_tail*))
+def $magic_method_context_arguments(phpType7*) = false -- otherwise
 def $magic_method_context_copy(S, pcallcontext?, porigin_outer, phpType7*, n, eps, pmagicproducerfact*) = (eps)
   -- if n = |phpType7*|
 def $magic_method_context_copy(S, pcallcontext?, porigin_outer, phpType7*, n, (KNOWN pvalue) :: poperand_tail*, pmagicproducerfact*) = (pvalue :: pvalue_tail*)
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if $magic_method_keyword_static_call(expression)
+  -- if $magic_method_context_call(expression)
   -- if $call_argument_origin(S, (porigin_outer), n) = (porigin_site)
-  -- if $magic_method_keyword_static_producer(S, pcallcontext?, porigin_site, expression) = ((porigin_requested, porigin_called, pmethoddesc))
+  -- if $magic_method_context_source(S, pcallcontext?, porigin_site, expression)
   -- if $magic_method_value(S, pvalue) \/ $magic_method_primitive(S, pvalue)
   -- if $magic_method_context_copy(S, pcallcontext?, porigin_outer, phpType7*, $(n + 1), poperand_tail*, pmagicproducerfact*) = (pvalue_tail*)
 def $magic_method_context_copy(S, pcallcontext?, porigin_outer, phpType7*, n, poperand :: poperand_tail*, pmagicproducerfact*) = (pvalue :: pvalue_tail*)
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if ~$magic_method_keyword_static_call(expression)
+  -- if ~$magic_method_context_call(expression)
   -- if $magic_producer_copy_values(S, porigin_outer, phpType7*[0:$nabs($(n + 1))], n, [poperand], pmagicproducerfact*) = ([pvalue])
   -- if $magic_method_context_copy(S, pcallcontext?, porigin_outer, phpType7*, $(n + 1), poperand_tail*, pmagicproducerfact*) = (pvalue_tail*)
 def $magic_method_context_copy(S, pcallcontext?, porigin_outer, phpType7*, n, poperand*, pmagicproducerfact*) = eps -- otherwise
 def $magic_method_context_values(S, pcallcontext?, porigin_site, phpType7*, poperand*, pmagicproducerfact*) = $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicproducerfact*)
-  -- if ~$magic_method_keyword_arguments(phpType7*)
+  -- if ~$magic_method_context_arguments(phpType7*)
 def $magic_method_context_values(S, pcallcontext?, porigin_site, phpType7*, poperand*, pmagicproducerfact*) = $magic_method_context_copy(S, pcallcontext?, porigin_site, phpType7*, 0, poperand*, pmagicproducerfact*)
-  -- if $magic_method_keyword_arguments(phpType7*)
+  -- if $magic_method_context_arguments(phpType7*)
   -- if $magic_producer_facts_valid(S, porigin_site, phpType7*, pmagicproducerfact*)
 def $magic_method_context_values(S, pcallcontext?, porigin_site, phpType7*, poperand*, pmagicproducerfact*) = eps -- otherwise
 
