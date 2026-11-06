@@ -228,6 +228,8 @@ rule PhpStep/callable-return-begin: S ~> $api_begin(S_read[.TODO = ptask_source 
   -- if S_read.RESULT = KNOWN pvalue
   -- if ptask_source = CALLABLE_RETURN_SOURCE pcallcontext.FUNCTION porigin_site pvalue z eps
 
+dec $callable_return_success(pstate, ptask) : pstate
+dec $callable_return_cv_unwind(pstate, porigin, porigin, int, nat?, pvalue) : pstate
 dec $callable_return_cv_start(pstate, ptask, pvalue) : pstate
 def $callable_return_cv_start(S, ptask_source, pvalue) = $callable_return_success(S_source, ptask_source)
   -- if S.TODO = ptask :: ptask_tail*
@@ -305,7 +307,6 @@ def $callable_return_blocked(S) = true
   -- if $api_query_valid(S, papiquery, 1) /\ $throwable_live(S, n)
   -- if ~$callable_return_finally_safe(S, porigin_site)
 
-dec $callable_return_success(pstate, ptask) : pstate
 def $callable_return_success(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z eps) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
 def $callable_return_success(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z (n)) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: (ptask_tail* ++ [CALLABLE_RETURN_PENDING porigin_function porigin_site z n])][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -324,7 +325,6 @@ def $callable_return_success(S, CALLABLE_RETURN_CV_SOURCE porigin_function porig
   -- if S_move = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED PNULL)]
 def $callable_return_success(S, CALLABLE_RETURN_CV_SOURCE porigin_function porigin_site preqbytes n_cell z n_pending?) = $callable_return_cv_unwind(S, porigin_function, porigin_site, z, n_pending?, PNULL)
   -- if $callable_return_unused(S)
-dec $callable_return_cv_unwind(pstate, porigin, porigin, int, nat?, pvalue) : pstate
 def $callable_return_cv_unwind(S, porigin_function, porigin_site, z, eps, pvalue) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
 def $callable_return_cv_unwind(S, porigin_function, porigin_site, z, (n), pvalue) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: (ptask_tail* ++ [CALLABLE_RETURN_PENDING porigin_function porigin_site z n])][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
