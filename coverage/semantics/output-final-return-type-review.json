@@ -1,0 +1,125 @@
+{
+  "milestone": "OB32: genuine FINAL native string return TypeError",
+  "decision": "CLEAR: 15 independent groups; two exact public source agreements",
+  "runtime": {
+    "base": "da733a54366a8c1d244da7404a4258a59f77840b / accepted465",
+    "source": "0ea852ea62967cf3fdbae12d5c2dd09b01c1dfa5",
+    "implementation": "70e380c7c02c0ef9f4943c0b8e0fa5b92ffb8e4a",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3 SL/cache=false/det=true, C/UTC baseline profile; public90/front300 caps unchanged",
+    "files": {
+      "spec/semantics/30-storage.watsup": "e16fdfe4a00630f22009867d03ba52228350b00f679d533823fe21276ad63371",
+      "spec/semantics/456-output-object-returns.watsup": "118f87c0a303d6dd54327858c0b6554b8a912206dad863a84fe8a80e77df7246",
+      "tests/semantics/output_final_return_type_sources.py": "e5617fef33290264a3f9455a2b4db43638d7e28e0828aa6019b03beb457b2644",
+      "tests/semantics/output_final_return_type_review_state.py": "25d45b8ebc3fae3853874dc4f046170e1a5c6b8e41e403f3434099a549373d49"
+    }
+  },
+  "source_basis": "zend_compile_return emits VERIFY_RETURN_TYPE before finally transfer/ZEND_RETURN. zend_verify_return_error/HANDLE_EXCEPTION creates the error while the native method guard remains live; zend_leave_helper restores the null caller before CV release and zend_call_function reports at the actual C return. Existing80/95/152 provide the genuine modeled failure.",
+  "review": "The exact scalar RETURN_VALUE predecessor,95 rejection and152 successor authorize the distinct nonowning SITE/OBJECT/MESSAGE/LINE record. Own-method compiled return membership/line, fixed TypeError/code0/NULLprev and actual pending identity govern unwind. Live normalized fields reject changed message/code/previous; no CTOR_NEW or literal-body authority is borrowed. Real catch and finally owner consumption clear history before normal restoration.",
+  "owners": "Pending/fatal: original T retval+cast guard2 and real TypeError pending1; metadata owns nothing. Reporting precedes error release; retired Error0 leaves only the genuine abandoned T2 receipt. Normal weak/H publication releases the cast guard and retains retvalT1. Local normal D enters after null-C restoration with D2/T2/error1; Warning missing4 and D retirement precede the original error barrier.",
+  "independent": {
+    "groups": 15,
+    "records": [
+      {
+        "id": "core-01",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/core-01/report.json",
+        "sha256": "4d61de54bf6b511d0a3d7516bfd5d25eeeda2ba877ea0e6576f1669de4139c6e",
+        "groups": 7,
+        "seconds": 182.695
+      },
+      {
+        "id": "weak-02",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/weak-02/report.json",
+        "sha256": "0f9bd3f6b134381734c9509104c4306ee9365b5f0936898f69e4e43b71d30481",
+        "groups": 2,
+        "seconds": 42.68
+      },
+      {
+        "id": "catch-01",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/catch-01/report.json",
+        "sha256": "eed36071d9832994bd0398a772df2cad94add7c767cb986b1961d174e33c673d",
+        "groups": 2,
+        "seconds": 120.972
+      },
+      {
+        "id": "override-02",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/override-02/report.json",
+        "sha256": "f4f110d74c48f4f1838df2089d89341aeb97ae2fac3ce76809fdf54302a5121f",
+        "groups": 2,
+        "seconds": 112.78
+      },
+      {
+        "id": "cleanup-01",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/cleanup-01/report.json",
+        "sha256": "5232f7989ef665f05e852ad199c8ae20631cbd0d653ab4962b88a599b586c9e1",
+        "groups": 2,
+        "seconds": 122.185
+      }
+    ]
+  },
+  "public": {
+    "agreements": 2,
+    "records": [
+      {
+        "id": "strict",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32/model-01/strict/report.json",
+        "sha256": "e5719d857e656955429d2f5f64e909ded171edcc9338edb5c9b28f91baef4148",
+        "seconds": 77.209,
+        "agreements": 1
+      },
+      {
+        "id": "weak",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32/model-01/weak/report.json",
+        "sha256": "fabec0ceeead1f33e7e847cf6917e65eeceb6a0dc35ee2307418d28955f4878e",
+        "seconds": 49.186,
+        "agreements": 1
+      }
+    ],
+    "verification": "Independently decoded raw model JSON/streams/status against each frozen native source/path/profile, tool0/quiet/stable; strict TypeError7/internalT/P255 and weak P42/0."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/baseline-01/report.json",
+    "sha256": "cb1fc692ffd701b87fb10dd1d4ed8af6104ccc084c66b2beb474a9e9fab11038",
+    "observations": 6,
+    "source_agreements": 0,
+    "result": "Unchanged-base source-derived owner/request/materialization observations pass; actual charged BUDGET/ERROR_UNWIND Unsupported pending FINAL conversion is preserved, never reset or counted as agreement."
+  },
+  "affected_author": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32/front-03/report.json",
+    "sha256": "aea6ae075e65e2c1786c2277990d51c302095b903936616e41ff0ce9bbed8b12",
+    "groups": 8,
+    "bridge": "576+bff source/owner/public frontier remains pointwise under70 live-field gate; independent final-byte positive and message/code/previous refusals renew that admission."
+  },
+  "fixture_validation": {
+    "declarations": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/declarations-02/report.json",
+      "sha256": "9cd9c8d07fcdf4ece2b2f68141003bd8609e3c81ab0f1ec287056a9441f20c4e"
+    },
+    "scope": "All five complete assertion bodies elaborate with constant entrypoint, zero application execution. Later normal-owner literal and override-only bare-return selector corrections are exercised by their affected passing packets.",
+    "final_emission": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/reemission-final/comparison.json",
+      "sha256": "7deb1cddd83c6533380a26b5ba876c34860708f58d1dffb1ba51fec37dd1dcd5"
+    },
+    "result": "Final maintained emitter is byte-exact to all five exercised fixtures; Werror Python, JSON, diff and inventory light checks accompany the handoff."
+  },
+  "preserved_zero": [
+    {
+      "packet": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/weak-01/report.json",
+      "credit": 0,
+      "reason": "Normal aggregate wrongly expected T2 after the native call had released its cast guard. Actual projection confirms retvalT1; only weak/catch/override expectation corrected."
+    },
+    {
+      "packet": "/home/user/workspace/php-spec-evidence-archive/new/output-final-return-type-32-review/override-01/report.json",
+      "credit": 0,
+      "reason": "Early H RETURN_UNWIND still has FINALLY_RESUME(error1). Actual bare pre-pop return has history cleared/Error0. Only override selector corrected; seek does not demand SOURCEeps."
+    }
+  ],
+  "diagnostics": "weak-diagnostic01 (seven factors), override-diagnostic01 (eleven factors), AST preparation and declarations add no application agreement or accepted group credit. Author front01 record-format and front02 redundant ABSENT comparison failures remain whole0.",
+  "compatibility": "Only output30 metadata and456 change. Old source tags take identical native-pending/default Exception-kind paths; existing40/80/95/152/161/257/441 task/state/root/return protocols and old record arities are unchanged. No old source or state campaign replay.",
+  "limits": "Existing nonempty compiled-CV, strict/byvalue native __toString with known nonowning scalar result. Empty-local and other generated producers, owning rejected operands, byref results, supplied identities/COMP88, constructor aborts/custom rendering and other held domains do not expand. OB31 public performance and full core remain unfinished.",
+  "reproduce": "tests/semantics/output_final_return_type_review_state.py --stage core|weak|catch|override|cleanup --output DIR. Optional checked/native roots select frozen evidence inputs; default checked frontend/adapter path remains project-local. Raw commands, exits, streams, fixtures and stable input hashes remain external.",
+  "integration": {
+    "status": "Source/runtime and maintained peer packet ready; writer actual-current interface gate pending."
+  }
+}
