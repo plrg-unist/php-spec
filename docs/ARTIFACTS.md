@@ -63,6 +63,13 @@ counterexample and held pending-invoke failure separate from accepted cuts.
 Promoted192 native data keeps its original context with an explicit
 no-file-identity-effects bridge.
 
+COMP194 class-constant originals, lookup receipts, reentrant replacement and
+compiler-prefix checks are under `../php-spec-evidence-archive/comp194/`.
+The [review](../coverage/semantics/deprecated-class-constant-owned-review.json)
+separates the failed object-transfer proof and fixture/load corrections from
+accepted source cuts. Cache-only historical values retain explicit refusal credit0;
+raw streams, source snapshots and recorders remain external.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

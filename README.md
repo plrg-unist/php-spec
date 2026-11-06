@@ -2746,10 +2746,14 @@ retired history keeps no owner alive. Direct public ordinary method FCCs and
 `Closure::fromCallable` copies also receive defaults through their real captured
 descriptor, scope and receiver. A nonowning entry witness preserves selected
 identity through Shared history; fake method statics stay owned by the original
-method. Source donor checks protect hits and post-handler binds. Unknown and
+method. Ordinary named-class constant initializers also receive owning global
+dependencies through their actual binder. Selected lookup prefixes survive
+shadows; type validation precedes cache publication, and reentry preserves
+earlier compiler views without adding historical value owners.
+Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
-Generator and wider dynamic callable recipients, class
-and static-property defaults, converted queries and wider metadata remain partial.
+Generator and wider dynamic callable recipients, wider class-constant initializers and
+static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
@@ -2761,6 +2765,7 @@ and static-property defaults, converted queries and wider metadata remain partia
 [Ordinary Closure::call default review](coverage/semantics/deprecated-closure-call-default-review.json).
 [Scoped Closure-default review](coverage/semantics/deprecated-scoped-closure-default-review.json).
 [Method FCC-default review](coverage/semantics/deprecated-method-fcc-default-review.json).
+[Class-constant initializer review](coverage/semantics/deprecated-class-constant-owned-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional

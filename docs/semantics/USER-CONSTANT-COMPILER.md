@@ -151,6 +151,17 @@ fake cleanup queues cache-free then its actual This-only children.
 Explicit wrapper/pending invokes do not gain owning-default authority from a
 warmed slot; their ordinary non-Deprecated scalar route is separate.
 
+Ordinary named-class constant initializers read owning global dependencies
+through their actual declaration and pending binder. Selected lookup facts
+preserve object/Closure identity after namespace shadows and callback cleanup;
+the request's class-cache row owns the delivered value. Type validation precedes
+publication. A real begin-history cut authenticates nested fills: an untyped
+outer initializer can replace a child's row, while a failed typed outer leaves
+that row intact. Nonowning write facts and old-row snapshots preserve earlier
+compiler prefixes. Snapshots require inline values or an exact permanent global
+donor; cache-only computed old values remain an explicit future boundary.
+No historical field adds a value, source or Closure root.
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
@@ -160,9 +171,10 @@ captured-entry and pending/iteration families.
 
 Arrow and wider fake/nonpublic recipients, by-reference parameters/returns/captures,
 variadic and Generator Closure recipients remain separate. Trait and wider dynamic
-method/callable recipients, plus class and static-property owning defaults,
-retain their separate boundaries. The bounded handler producer remains fixed primitive `define`;
-namespaced fallback `define` is Unsupported here. Scoped builtin/trait warning cuts
+method/callable recipients, plus wider class-constant initializers and owning static-property defaults,
+retain their separate boundaries. For parameter-default causal paths, the bounded
+handler producer remains fixed primitive `define`; namespaced fallback `define`
+is Unsupported there. Scoped builtin/trait warning cuts
 are outside this increment. Existing scalar default routes
 remain paired. Function-local dynamic static initializers use ordinary opcodes.
 Converted queries, trait collision folding, wider metadata and reflection remain
@@ -180,6 +192,7 @@ private-cache marker law does not extend the separate303 close path.
 [COMP191 ordinary Closure::call defaults](../../coverage/semantics/deprecated-closure-call-default-review.json).
 [COMP192 direct scoped Closure defaults](../../coverage/semantics/deprecated-scoped-closure-default-review.json).
 [COMP193 public method FCC defaults](../../coverage/semantics/deprecated-method-fcc-default-review.json).
+[COMP194 class-constant initializers](../../coverage/semantics/deprecated-class-constant-owned-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

@@ -2726,6 +2726,18 @@ remain outside this finite family.
 [Review](coverage/semantics/deprecated-method-fcc-default-review.json). The current
 joined main SL453 load and inventory pass at their recorded cut.
 
+COMP194 receives owning Deprecated globals during ordinary named-class constant
+lazy initialization. Actual declaration/binder and selected lookup facts retain
+callback cleanup and namespace shadowing. Type validation precedes publication;
+a genuine begin-history cut supports nested fills, and untyped replacement
+preserves earlier compiler cache views. Historical facts/snapshots add no root;
+old computed cache-only values remain an explicit future boundary. Static-property
+and Trait initialization and established Generator/303 holds stay separate.
+Twelve originals agree, one explicit availability refusal earns0, and355
+independent strict454 conditions pass. Current joined454/inventory also passes
+at the recorded source cut.
+[Review](coverage/semantics/deprecated-class-constant-owned-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2735,7 +2747,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
 | ATTR68 | Trait GET/short-SET pairs through existing unadapted exporters, authenticated imported RHS/origins/clones and inherent backing; reuse runtime and preserve wider held modes. |
-| COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
 | I129 | Ordinary positional prefixes plus one terminal simple-CV Traversable at admitted native Generator consumers, with actual replay/SENT and prefix roots; exclude array prefixes, multiple Traversables and named-before-unpack. |
