@@ -1,0 +1,62 @@
+{
+  "milestone": "ATTR59: existing expression GET and short SET share backing",
+  "status": "Independently accepted bounded implementation; wider hooks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "f7e15f64464787c6bbb691ff853a62dff41a1e3f",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "c6e0e7156c3a7601934efd5a6a683a2d40677b4be5e2b1360d22524c3b408bac",
+    "scope": "Ordinary parentless CLASS public typed GET index 0/short SET index 1 pairs now admit the existing expression-bodied GET. Pure initialized GET consumes the same actual property/initializer/short-SET backing certificate; ABSENT forms retain genuine uninitialized backing. The existing expression compiler, source-authenticated implicit return, type/storage/runtime and receiver rules are reused. Only GET body recognition and the expression compilation guard change; no new arrow/runtime/storage/schema/task, Trait/byref/attribute/parameter-default or wider header expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "Zend/zend_compile.c: zend_compile_property_hooks rewrites a short GET body to RETURN and short SET to this property's implicit assignment, shares prop_info, preserves physical order/signatures and checks SET variance after compilation. zend_property_hook_uses_property/virtuality establish short SET backing independently of GET syntax. Zend/zend_object_handlers.c: zend_should_call_hook checks the property prototype and receiver; zend_call_get_hook holds the receiver through the getter call."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/expression-get-short-set-pair-59",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "75138b27f69500955a4e54a1fed37f695a3c907c6ac5c6885417246f26531c37",
+      "scope": "Five original normal/static-error sources plus a Trait control pinned before implementation. Native preparation only, no differential credit."
+    },
+    "original_sources": {
+      "report": "source-final-v1/report.json",
+      "sha256": "a80c7a19c716d672f4e0373101236be11b4135873b4650d171084b831fb0e8e5",
+      "passed": true,
+      "normal_agreements": 4,
+      "static_rejection_agreements": 1,
+      "unsupported_controls": 1,
+      "scope": "Exact raw stdout/stderr and native exits: pure initialized GET 700 with implicit backing write; pure ABSENT GET 700 versus exact uninitialized SET backing-read Error and stored 15/12; own-backing ABSENT expression GET Error then 115/112; getter global-removal/throw, SET input versus storage, implicit GET return TypeError and retry G3;UDC1;1;G15;115;1;G12;112;G12;RT1;G12;112;D5Z; and expression $this assignment error before SET variance/main. Trait remains Unsupported with zero agreement. Completed at frozen production with stable inputs; explicit 180-second model/210-second outer case limits, 125.422 seconds total."
+    },
+    "strict": {
+      "report": "strict-report-v1.json",
+      "sha256": "fbad63d3b459e4b9840d3c61329a06d0bc4b2df76a631d65df8570c557ef75f3",
+      "passed": true,
+      "scope": "All 449 manifest modules pass SL elaboration, algorithmic and structuring checks with main=true; exit 0, empty stderr, no timeout, 13.082 seconds and stable inputs."
+    },
+    "independent_reached": {
+      "report": "review-front-v1/fiber-state-review-pck1q9rq/report.json",
+      "sha256": "e21f2076e5ed3171e420d188075619671e93a4fe3625f8d72f6268667b9c6711",
+      "process": "review-front-v1/driver-report.json",
+      "process_sha256": "e9bea2c45334cd9f6ecb026bb3abd1e572ab235146a6723fa3eed17c3aa0927f",
+      "revision": "ad3c2a257135999b82742f74a703e80ce50194ea",
+      "source_sha256": "123de62fcd22967cf447ed8a5652aeb5d8a5f838c1a1a765b06e52a7c0da3f56",
+      "fixture": "tests/semantics/expression_get_short_set_pair_review_protocol.py",
+      "fixture_sha256": "0826fc5e0f3c6669831b219a7de20a6051cbc9f43c1bb8d6351fc0de2660337b",
+      "passed": true,
+      "reported_conditions": 146,
+      "derived_negatives": 7,
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no additional native agreement credit.",
+      "scope": "At first GET helper U, actual property/default/backing 3, helper argument 3, counter 1 and prior result keep authenticate the source. GET 0/SET 1 keep separate expression children/signatures; CODEARROW 12 supplies the real implicit RETURN_VALUE 12 with GET origin, and SET expression 13 cannot supply that return. Actual read site 18 and the saved entered-getter context own the receiver exactly once after global removal; result receipt and pending task roots add none. Seven source/role/line/function refusals, heap/descriptor, zero-budget/full-resume equality, D-before-catch, fresh SET/GET retry, GET return TypeError preserving target, final count 5/result int 112 and receiver retirement pass. Semantic bytes equal f7e15f644; SL 240-second cap, 75.384 seconds, exit 0/exact true/empty stderr, no timeout and stable fixture/source/tool identities."
+    }
+  },
+  "independent_review": "CLEAR for bounded semantics, initialized/ABSENT backing, real implicit-return source/line/type, getter throw/type failure, actual receiver owner, resumption, harness, documentation and inventory.",
+  "compatibility": "A block GET binds the same supported body as before. The class-only pair guards, short SET parameters/source/type rules, initialized property certificate and genuine uninitialized default remain unchanged. The expression GET simply consumes the same certificate when initialized; existing implicit-return/runtime/storage formulas are untouched. ATTR57/58 and older campaigns retain their exact historical cuts without replay.",
+  "zero_credit": {
+    "report": "source-calibration-v1/report.json",
+    "sha256": "68c2970364bcdec9d8faa3376ae5cc5be27c3141053248d10f0434c9aee2a101",
+    "outcome": "At b5f9031ec the original pure initialized expression pair is Unsupported with empty output. Incomplete, no agreement. Earlier failure/Unsupported/timeout cuts retain their original identities."
+  },
+  "environment": "External packets retain original bytes/path/cwd/profile, raw streams/exits, commands, tested revisions and stable identities. One heavy job at a time across the pair; all jobs reaped. Existing local tools reused; no rebuild or portability claim.",
+  "remaining": "Trait, reversed pairs, wider headers and byref/attribute/parameter-default/Tick-bearing forms remain partial. Five originals and a bounded reached front do not close the hook family. Held lanes stay unchanged; no engine bug or intentional divergence is claimed."
+}

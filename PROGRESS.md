@@ -1338,6 +1338,12 @@ TypeErrors, persistent 15/12 and first-write receiver abort/retry preserve stora
 Four originals, strict449 and 148 independent initial-slot/owner/budget checks retain
 their cuts in the [uninitialized-pair review](coverage/semantics/uninitialized-pure-get-short-set-pair-review.json).
 Trait, byref/attribute/default and wider headers stay partial.
+Existing expression-bodied GET now pairs with short SET on the same initialized
+or uninitialized property. Actual backing/source authority reuses implicit-return
+compilation and runtime; getter throw/return TypeError preserves the caller target
+and storage. One saved getter-context receiver owner survives global removal;
+the result receipt adds none. Five originals, strict449 and 146 independent source/
+return/owner/budget checks are in the [expression-pair review](coverage/semantics/expression-get-short-set-pair-review.json).
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2336,7 +2342,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS201 | Primitive literal SEND_VAL/_EX inputs for the existing one/two-argument positional instance/static and named-instance magic calls, with compiled literal/carrier authority for NULL, bool, binary64 and interned strings alongside existing integers; preparation after accepted CLASS200, preserving other CONSTFETCH/USER/CV/array/header/unpack boundaries and held owned-NUL behavior. |
-| ATTR59 | Existing expression-bodied GET plus short SET on the same ordinary parentless public typed class property, retaining GET/SET indices and actual short-SET backing for initialized/absent-initializer forms; clean-base preparation after accepted ATTR58, with existing implicit-return/runtime/storage rules and no trait/byref/attribute/parameter-default/schema expansion. |
+| ATTR60 | Existing short SET physically first and GET second on the same parentless public typed class property; clean-base preparation after accepted ATTR59, deriving logical roles/origins from actual source and preserving physical compilation/error order, existing runtime/storage and role/owner/budget proof without trait/byref/attribute/parameter-default/schema expansion. |
 | COMP190 | Receiver-free empty-scope REAL private and mixed Shared/private default caches with actual private-object/origin identity, nonowning receive-birth ownership and native-proven roots/pruning/lifetime; preparation after accepted COMP189, preserving Shared/default/class-constant encodings and coordinating minimal cache/birth/state regions before edits. |
 | ENUM144 | Entered class-scoped included-unit global-constant public static user-method FCC authority from actual inherited entry scope, first file entry and earlier Producer-class publication distinct from captured Host scope; preparation after accepted ENUM143, proving receiver retirement without metadata pins and excluding eval/default/nonpublic/schema expansion. |
 | GC59 | Last-owner current-row Value/fieldless Child destruction after loop-Value rebinding, with publication before read-only callback return/fresh throw and actual result/cursor proof; first establish separation from held GC35, retaining quiet-release limits and excluding reentrant writes, insertion/unset, Key freeing and active GC. |

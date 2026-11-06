@@ -233,8 +233,17 @@ Four originals, strict449 and 148 independent initial-slot/owner/budget checks a
 [uninitialized-pair review](../../coverage/semantics/uninitialized-pure-get-short-set-pair-review.json).
 The header now needs only the two actual hooks; the maintained ATTR57 fixture drops its
 promoted absent-initializer refusal while its frozen 148 cut retains its identity.
-Trait, reversed/expression-GET pairs and wider headers remain partial. Ordinary
-initializer/type/storage/short-SET execution rules are reused.
+Existing expression-bodied GET hooks also pair with short SET on initialized or
+uninitialized properties. Pure initialized GET uses the same actual backing
+certificate; the existing expression compiler and source-authenticated implicit
+return preserve the property's return type and real expression line. Getter
+throws and return TypeErrors keep the caller's prior target and backing unchanged.
+The entered getter owns its receiver through the saved call context; its result
+receipt adds no owner. Five originals, strict449 and 146 independent source/return/
+owner/budget checks are in the
+[expression-pair review](../../coverage/semantics/expression-get-short-set-pair-review.json).
+Trait, reversed pairs and wider headers remain partial. Ordinary initializer,
+type, storage and hook execution rules are reused.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the
