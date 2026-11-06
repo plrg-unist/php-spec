@@ -1878,8 +1878,14 @@ def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = 
   -- if ~$array_magic(S, porigin_class)
 def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = eps -- otherwise
 dec $enum_is_callable_user_string_result(pstate, pvalue, bool) : bool?
+dec $enum_is_callable_keyword_invalid(pstate, pvalue) : bool
 def $enum_is_callable_user_string_result(S, pvalue, true) = (true)
   -- if $enum_is_callable_user_string(S, pvalue)
+def $enum_is_callable_user_string_result(S, pvalue, false) = (false)
+  -- if $enum_is_callable_user_string(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $enum_is_callable_keyword_invalid(S, PSTRING ptbytes_class)
 def $enum_is_callable_user_string_result(S, pvalue, false) = $enum_is_callable_user_method(S, porigin_class, ptbytes_method, false)
   -- if $enum_is_callable_user_string(S, pvalue)
   -- if $string_bytes(pvalue) = (ptbytes)
@@ -1889,6 +1895,11 @@ def $enum_is_callable_user_string_result(S, pvalue, b_syntax) = eps -- otherwise
 dec $enum_is_callable_user_pair_result(pstate, pvalue*, bool, bool) : bool?
 def $enum_is_callable_user_pair_result(S, pvalue*, true, b_history) = (true)
   -- if $enum_is_callable_user_pair(S, pvalue*, b_history)
+def $enum_is_callable_user_pair_result(S, [pvalue_receiver, pvalue_method], false, b_history) = (false)
+  -- if $enum_is_callable_user_pair(S, [pvalue_receiver, pvalue_method], b_history)
+  -- if $enum_is_callable_keyword_invalid(S, pvalue_receiver)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $method_string_parts(ptbytes_method) = eps
 def $enum_is_callable_user_pair_result(S, [pvalue_receiver, pvalue_method], false, b_history) = $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object)
   -- if $enum_is_callable_user_pair(S, [pvalue_receiver, pvalue_method], b_history)
   -- if $enum_is_callable_user_receiver(S, pvalue_receiver, b_history) = ((porigin_class, b_object))
@@ -2251,9 +2262,76 @@ def $api_is_callable_source(CONFIG_INVOKE pconfigcall) = true -- if pconfigcall.
 def $api_is_callable_source(ENUM_IS_CALLABLE_BOOL_NULL pconfigcall) = true -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
 def $api_source_line(S, ENUM_IS_CALLABLE_BOOL_NULL pconfigcall) = pconfigcall.LINE
 
-;; Initial lookup is bounded to known USER names and a DIRECT live object.
-;; An ALIAS class string may change during the warning; a raw keyword may not
-;; acquire a new caller-context capability through this consumer.
+;; A keyword uses an actual ordinary USER caller, not a Closure/default/API
+;; scope borrowed merely from the current lexical-class field.
+dec $enum_is_callable_keyword_method(pcalltarget) : bool
+def $enum_is_callable_keyword_method(METHOD_TARGET n porigin) = true
+def $enum_is_callable_keyword_method(STATIC_METHOD_TARGET porigin_called porigin) = true
+def $enum_is_callable_keyword_method(SCOPED_TARGET porigin_requested porigin porigin_called n_receiver? poperand) = true
+def $enum_is_callable_keyword_method(pcalltarget) = false -- otherwise
+dec $enum_is_callable_keyword_function(pstate, pcalltarget) : pfunction?
+def $enum_is_callable_keyword_function(S, porigin) = $function_at(S.FUNCTIONS, porigin)
+def $enum_is_callable_keyword_function(S, pcalltarget) = (pmethoddesc.FUNCTION)
+  -- if $enum_is_callable_keyword_method(pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $enum_is_callable_user_class(S, pmethoddesc.OWNER)
+def $enum_is_callable_keyword_function(S, pcalltarget) = eps -- otherwise
+dec $enum_is_callable_keyword_frame(pstate) : bool
+def $enum_is_callable_keyword_frame(S) = true
+  -- if S.CURRENT = eps
+  -- if ~$class_constant_active(S) /\ $static_default_scope(S) = eps
+def $enum_is_callable_keyword_frame(S) = true
+  -- if ~$class_constant_active(S) /\ $static_default_scope(S) = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $enum_is_callable_keyword_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if ~$function_generator(S, pfunction)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, pcallcontext.TARGET)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcallcontext.TARGET)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcallcontext.TARGET)
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_function
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath_site)
+  -- if n_body = |pfunction.BODY|
+  -- if $(n_body <= |pcpath_site|)
+  -- if pcpath_site[0:n_body] = pfunction.BODY
+def $enum_is_callable_keyword_frame(S) = false -- otherwise
+def $enum_is_callable_keyword_invalid(S, pvalue) = true
+  -- if $enum_is_callable_keyword_frame(S)
+  -- if $enum_array_string_valid(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if ~(0 <- ptbytes) /\ $api_keyword(ptbytes)
+  -- if $api_class(S, pvalue, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps) = API_CLASS_INVALID ptbytes_error
+def $enum_is_callable_keyword_invalid(S, pvalue) = false -- otherwise
+dec $enum_is_callable_keyword_receiver(pstate, pvalue) : bool
+def $enum_is_callable_keyword_receiver(S, pvalue) = true
+  -- if $enum_is_callable_keyword_frame(S)
+  -- if $enum_array_string_valid(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if ~(0 <- ptbytes) /\ $api_keyword(ptbytes)
+  -- if $api_class(S, pvalue, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps) = API_CLASS papiclass
+  -- if $enum_is_callable_user_class(S, papiclass.REQUESTED)
+  -- if $enum_is_callable_user_class(S, papiclass.CALLED)
+def $enum_is_callable_keyword_receiver(S, pvalue) = false -- otherwise
+dec $enum_is_callable_keyword_input(pstate, pvalue) : pvalue?
+def $enum_is_callable_keyword_input(S, pvalue) = (PSTRING ptbytes_class)
+  -- if $enum_is_callable_user_string(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $api_keyword(ptbytes_class)
+def $enum_is_callable_keyword_input(S, PARRAY n) = (pvalue_receiver)
+  -- if $enum_is_callable_array_values(S, n) = ([pvalue_receiver, pvalue_method])
+  -- if $enum_is_callable_user_pair(S, [pvalue_receiver, pvalue_method], false)
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver)
+  -- if $api_keyword(ptbytes_receiver)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $method_string_parts(ptbytes_method) = eps
+def $enum_is_callable_keyword_input(S, pvalue) = eps -- otherwise
+
+;; Concrete qualified lookup remains bounded to known USER names and a DIRECT
+;; live object. An ALIAS class string may change during its warning.
 dec $enum_is_callable_api_receiver(pstate, pitem, pvalue) : bool
 def $enum_is_callable_api_receiver(S, pitem, pvalue) = true
   -- if $enum_array_string_valid(S, pvalue)
@@ -2270,16 +2348,16 @@ def $enum_is_callable_api_inner(S, ptbytes) = true
   -- if ptbytes_class =/= eps /\ ~$api_keyword($typed_callable_name(ptbytes_class))
   -- if $enum_is_callable_user_receiver(S, PSTRING ptbytes_class, false) = ((porigin_class, false))
 def $enum_is_callable_api_inner(S, ptbytes) = false -- otherwise
-dec $enum_is_callable_api_input(pstate, pconfigcall) : nat?
-def $enum_is_callable_api_input(S, pconfigcall) = (n)
-  -- if $enum_is_callable_received_ref(S, pconfigcall) = ((PARRAY n, false, n_cell))
-def $enum_is_callable_api_input(S, pconfigcall) = (n)
-  -- if $enum_is_callable_received_input(S, pconfigcall) = ((PARRAY n, false))
+dec $enum_is_callable_api_input(pstate, pconfigcall) : pvalue?
+def $enum_is_callable_api_input(S, pconfigcall) = (pvalue)
+  -- if $enum_is_callable_received_ref(S, pconfigcall) = ((pvalue, false, n_cell))
+def $enum_is_callable_api_input(S, pconfigcall) = (pvalue)
+  -- if $enum_is_callable_received_input(S, pconfigcall) = ((pvalue, false))
 def $enum_is_callable_api_input(S, pconfigcall) = eps -- otherwise
 dec $enum_is_callable_api_candidate(pstate, pconfigcall) : bool
 def $enum_is_callable_api_candidate(S, pconfigcall) = true
   -- if pconfigcall.PACKS = eps
-  -- if $enum_is_callable_api_input(S, pconfigcall) = (n)
+  -- if $enum_is_callable_api_input(S, pconfigcall) = (PARRAY n)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if $typed_callback_array(S, n)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
@@ -2287,6 +2365,11 @@ def $enum_is_callable_api_candidate(S, pconfigcall) = true
   -- if $enum_is_callable_api_receiver(S, pitem_receiver, $entry_value(S, pitem_receiver))
   -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes_method)
   -- if $enum_is_callable_api_inner(S, ptbytes_method)
+def $enum_is_callable_api_candidate(S, pconfigcall) = true
+  -- if pconfigcall.PACKS = eps
+  -- if $enum_is_callable_api_input(S, pconfigcall) = (pvalue)
+  -- if $enum_is_callable_keyword_input(S, pvalue) = (pvalue_receiver)
+  -- if $enum_is_callable_keyword_receiver(S, pvalue_receiver)
 def $enum_is_callable_api_candidate(S, pconfigcall) = false -- otherwise
 
 ;; These source/shape facts are nonrecursive. Reference acquisition is checked
@@ -2339,6 +2422,20 @@ def $enum_is_callable_api_value(S, papiquery, ptbytes) = (false)
 def $enum_is_callable_api_value(S, papiquery, ptbytes) = eps -- otherwise
 
 dec $enum_is_callable_resolution_valid(pstate, penumqueryresolution, pconfigcall) : bool
+dec $enum_is_callable_api_phase(papiquery) : nat
+def $enum_is_callable_api_phase(papiquery) = 0
+  -- if $is_array_value(papiquery.VALUE) /\ papiquery.OUTER = eps
+def $enum_is_callable_api_phase(papiquery) = 1 -- otherwise
+def $enum_is_callable_resolution_valid(S, penumqueryresolution, pconfigcall) = true
+  -- if papiquery = penumqueryresolution.QUERY
+  -- if $enum_is_callable_api_source_shape(S, papiquery, pconfigcall)
+  -- if $enum_is_callable_keyword_receiver(S, papiquery.INPUT)
+  -- if papiquery.OUTER = eps
+  -- if penumqueryresolution.PHASE = $enum_is_callable_api_phase(papiquery)
+  -- if $api_query_shape(S, papiquery, penumqueryresolution.PHASE)
+  -- if $string_bytes(papiquery.VALUE) =/= eps \/ $method_string_parts(papiquery.ORIGINAL) = eps
+  -- if $api_leaf_snapshot(papiquery, penumqueryresolution.LEAF)
+  -- if $enum_is_callable_api_value(S, papiquery, penumqueryresolution.LEAF) = (penumqueryresolution.RESULT)
 def $enum_is_callable_resolution_valid(S, penumqueryresolution, pconfigcall) = true
   -- if papiquery = penumqueryresolution.QUERY
   -- if $enum_is_callable_api_source_shape(S, papiquery, pconfigcall)
@@ -2376,7 +2473,7 @@ def $enum_is_callable_api_complete(S, papiquery, n_phase, ptbytes, b) = S[.TODO 
   -- if $enum_is_callable_api_call(papiquery.SOURCE) = (pconfigcall)
   -- if $enum_is_callable_resolution_valid(S, penumqueryresolution, pconfigcall)
 def $enum_is_callable_api_complete(S, papiquery, n_phase, ptbytes, b) = S[.COMPLETION = UNSUPPORTED "is_callable API resolution outside public USER proof"] -- otherwise
-def $api_method_finish(S, papiquery, ptbytes) = $enum_is_callable_api_complete(S, papiquery, 1, ptbytes, b)
+def $api_method_finish(S, papiquery, ptbytes) = $enum_is_callable_api_complete(S, papiquery, $enum_is_callable_api_phase(papiquery), ptbytes, b)
   -- if $api_is_callable_source(papiquery.SOURCE)
   -- if $enum_is_callable_api_value(S, papiquery, ptbytes) = (b)
 def $api_method_finish(S, papiquery, ptbytes) = S[.COMPLETION = UNSUPPORTED "is_callable API method metadata"]
@@ -2389,18 +2486,24 @@ def $api_finish(S, ptask_source, pvalue, HANDLERINVALID ptbytes) = $enum_is_call
 
 ;; A resolution diagnostic's C caller continues after a handler throw. Move
 ;; its real THROW_SEARCH root to the short API continuation exactly once.
-def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (ENUM_IS_CALLABLE_API_THROW papiquery n) :: ptask_tail*]
+def $identity_read_discard(S, API_CALLABLE_RESULT papiquery n_phase) = S[.TODO = (ENUM_IS_CALLABLE_API_THROW papiquery n) :: ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $api_is_callable_source(papiquery.SOURCE)
-  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
-  -- if $api_query_valid(S_check, papiquery, 1)
-  -- if papiquery.OUTER =/= eps
+  -- if n_phase = $enum_is_callable_api_phase(papiquery)
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery n_phase) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if $api_query_valid(S_check, papiquery, n_phase)
+  -- if papiquery.OUTER =/= eps \/ $enum_is_callable_keyword_receiver(S_check, papiquery.INPUT)
   -- if $throwable_live(S, n)
 def $task_nodes(ENUM_IS_CALLABLE_API_THROW papiquery n) = $task_nodes(papiquery.SOURCE) ++ [HOBJECT n]
 def $selected_task_nonce(ENUM_IS_CALLABLE_API_THROW papiquery n) = $selected_task_nonce(papiquery.SOURCE)
-def $call_task_valid(S, ENUM_IS_CALLABLE_API_THROW papiquery n) = ($api_is_callable_source(papiquery.SOURCE) /\ $api_query_valid(S, papiquery, 1) /\ papiquery.OUTER =/= eps /\ $throwable_live(S, n))
+def $call_task_valid(S, ENUM_IS_CALLABLE_API_THROW papiquery n) = ($api_is_callable_source(papiquery.SOURCE) /\ $api_query_valid(S, papiquery, $enum_is_callable_api_phase(papiquery)) /\ (papiquery.OUTER =/= eps \/ $enum_is_callable_keyword_receiver(S, papiquery.INPUT)) /\ $throwable_live(S, n))
+rule PhpStep/enum-is-callable-api-throw-class-return: S ~> $api_after_class(S[.TODO = (API_CALLABLE_RESULT papiquery 0) :: ptask_tail*][.COMPLETION = THROWING n], papiquery)
+  -- if S.TODO = (ENUM_IS_CALLABLE_API_THROW papiquery n) :: ptask_tail*
+  -- if $enum_is_callable_api_phase(papiquery) = 0
+  -- if $call_task_valid(S, ENUM_IS_CALLABLE_API_THROW papiquery n)
 rule PhpStep/enum-is-callable-api-throw-return: S ~> $api_after_method(S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*][.COMPLETION = THROWING n], papiquery)
   -- if S.TODO = (ENUM_IS_CALLABLE_API_THROW papiquery n) :: ptask_tail*
+  -- if $enum_is_callable_api_phase(papiquery) = 1
   -- if $call_task_valid(S, ENUM_IS_CALLABLE_API_THROW papiquery n)
 
 dec $enum_is_callable_receive_finish(pstate, pconfigcall) : pstate
@@ -2846,6 +2949,15 @@ def $enum_is_callable_output_selection(S, penumqueryoutput) = true
   -- if $enum_is_callable_pair_result(S, penumqueryoutput.VALUES, b_syntax) = (penumqueryoutput.RESULT)
 def $enum_is_callable_output_selection(S, penumqueryoutput) = true
   -- if penumqueryoutput.RESOLUTION = (penumqueryresolution)
+  -- if penumqueryoutput.VALUES = eps
+  -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((pvalue_input, false, penumqueryoutput.CELL))
+  -- if $string_bytes(pvalue_input) =/= eps
+  -- if S_history = S[.TODO = (CONFIG_INVOKE penumqueryoutput.CALL) :: $enum_is_callable_output_input(penumqueryoutput.INPUT)]
+  -- if $enum_is_callable_output_name(S_history, penumqueryoutput, pvalue_input) = (penumqueryoutput.NAME)
+  -- if $enum_is_callable_resolution_valid(S, penumqueryresolution, penumqueryoutput.CALL)
+  -- if penumqueryoutput.RESULT = penumqueryresolution.RESULT
+def $enum_is_callable_output_selection(S, penumqueryoutput) = true
+  -- if penumqueryoutput.RESOLUTION = (penumqueryresolution)
   -- if penumqueryoutput.INPUT = (penumqueryinput)
   -- if penumqueryinput.ARRAY = (n_array)
   -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((PARRAY n_array, false, penumqueryoutput.CELL))
@@ -3007,6 +3119,13 @@ def $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryou
   -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.PENDING =/= eps
   -- if penumqueryoutput.RESOLUTION = (penumqueryresolution)
   -- if penumqueryresolution.PHASE = 1
+def $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) = true
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.PENDING =/= eps
+  -- if penumqueryoutput.RESOLUTION = (penumqueryresolution)
+  -- if penumqueryresolution.PHASE = 0
+  -- if $is_array_value(penumqueryresolution.QUERY.VALUE) /\ penumqueryresolution.QUERY.OUTER = eps
+  -- if $string_bytes(penumqueryresolution.QUERY.INPUT) = (ptbytes)
+  -- if $api_keyword(ptbytes)
 def $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) = false -- otherwise
 def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput = penumqueryoutput_source /\ $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) /\ pdestructionoperation.CELL = penumqueryoutput.CELL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE))
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
@@ -3337,11 +3456,11 @@ rule PhpStep/enum-is-callable-exit-cleanup-throw: S ~> $enum_is_callable_exit_fi
   -- if $enum_is_callable_exit_restore_valid(S, penumqueryoutput, z)
   -- if $throwable_live(S, n)
 
-def $enum_is_callable_receive_finish(S, pconfigcall) = $api_begin(S, ptask_source, PARRAY n)
+def $enum_is_callable_receive_finish(S, pconfigcall) = $api_begin(S, ptask_source, pvalue)
   -- if S.TODO = ptask_source :: ptask_tail*
   -- if $enum_is_callable_api_source(ptask_source, pconfigcall)
   -- if $enum_is_callable_api_candidate(S, pconfigcall)
-  -- if $enum_is_callable_api_input(S, pconfigcall) = (n)
+  -- if $enum_is_callable_api_input(S, pconfigcall) = (pvalue)
 def $enum_is_callable_receive_finish(S, pconfigcall) = S_clear[.TODO = $enum_is_callable_output_tail(S, pconfigcall, penumqueryoutput, ptask_tail*)][.RESULT = KNOWN (PBOOL penumqueryoutput.RESULT)][.BASE = BASE_VALUE (KNOWN PNULL)][.CELL = penumqueryoutput.CELL][.LOCATION = ROOT penumqueryoutput.CELL]
   -- if S.TODO = ptask_query :: ptask_tail*
   -- if $enum_is_callable_query_task(ptask_query, pconfigcall)
