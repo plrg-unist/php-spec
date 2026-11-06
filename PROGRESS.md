@@ -1208,7 +1208,9 @@ remain unticked; property-group Ticks preserve main adjacency, type/name lines
 and callback abort before pending class activation. Short GET expressions retain
 nested callable order and implicit return; callback removal of the global receiver
 keeps it alive until unwind, with later fresh-object retry. Nested Closure scope
-uses completed getter/property ownership. Conditional declarations
+uses completed getter/property ownership. Escaped Trait-getter Closures match
+shared physical code to actual consumer property/getter imports, retaining separate
+lexical/called classes and receivers after getter frames retire. Conditional declarations
 activate before their header-line Tick, while top declarations have
 no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -1260,7 +1262,8 @@ Exact source, strict and reached-state cuts remain in the
 [halt emission](coverage/semantics/tick-halt-review.json),
 [named defaults](coverage/semantics/tick-parameter-review.json),
 [callable defaults](coverage/semantics/tick-callable-parameter-review.json),
-[short getters](coverage/semantics/tick-short-get-review.json) and
+[short getters](coverage/semantics/tick-short-get-review.json),
+[Trait getter scopes](coverage/semantics/tick-trait-get-review.json) and
 [carrier-key](coverage/semantics/tick-key-carrier-review.json) reviews.
 
 Compiler-special builtin/fallback result fences, empty multiline control-body
@@ -2127,7 +2130,6 @@ conditions pass under the unchanged cap. Prior source, pipe and syntax cuts stay
 | GC55 | Finite acyclic nested DIRECT-array root WeakMap payloads with shared DAG/HARRAY edges, COW and path-checked cycles; property arrays stay one layer; private implementation/review. |
 | COMP187 | Owning defaults for ordinary named methods with genuine declaring/called scope and default/cache identity; helper module459 reserved if needed; Closure and class/static-property recipients follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
-| ATTR52 | Trait-imported GET-hook Closure source/consumer scope through authenticated trait/property certificates and the actual called receiver; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

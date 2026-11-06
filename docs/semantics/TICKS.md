@@ -81,7 +81,13 @@ adds no reachable trailing Tick. A callback can read a sibling, remove the globa
 receiver and throw while the hook/Closure retains it until unwind; a fresh object
 can retry normally. Nested Closure scope validation borrows the completed
 declaring property and its exact getter origin; it does not infer class scope
-from syntax alone. Trait-imported getter Closure scope remains pending.
+from syntax alone. Raw Trait GET owners retain their physical source. Imported
+Closures match their lexical consumer through an actual `TRAIT_MEMBER_ORIGIN`
+property and the existing `TRAIT_ORIGIN` getter certificate, independently of a
+live getter frame or receiver guess. One Trait body can therefore supply distinct
+consumer lexical classes and called receivers. Escaped Closures keep those
+receivers after global removal; callback abort, another consumer's normal return
+and explicit Closure release preserve source order and budget resumption.
 The enclosing `PROP_GROUP` can emit a
 Tick when no adjacent Tick suppresses it (`PROP_DECL`, rather than `PROP_GROUP`,
 is in Zend's unticked list). Its seed line comes from the type's first component
@@ -318,6 +324,9 @@ reads, callback abort/retry and full-state resumption checks.
 The [short-GET tick review](../../coverage/semantics/tick-short-get-review.json)
 promotes the exact earlier refusal and records implicit return/unselected Closure
 order plus actual receiver retention, callback abort/destruction and fresh retry.
+The [Trait-getter scope review](../../coverage/semantics/tick-trait-get-review.json)
+records one shared physical Closure across two consumer scopes, an inherited
+called receiver and escaped ownership, with actual import-fact refusal and budget checks.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

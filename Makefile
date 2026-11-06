@@ -145,6 +145,8 @@ test-semantics: build
 	python3 tests/semantics/tick_short_get_sources.py
 	python3 tests/semantics/tick_short_get_review_sources.py
 	python3 tests/semantics/tick_short_get_review_protocol.py
+	python3 tests/semantics/tick_trait_get_sources.py
+	python3 tests/semantics/tick_trait_get_review_protocol.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/output_reference_warning_sources.py

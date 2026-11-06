@@ -1,0 +1,61 @@
+{
+  "milestone": "ATTR52: escaped Trait GET Closure physical source and consumer scope",
+  "status": "Independently accepted bounded implementation; wider hook/trait and full-core work remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "b6aa05906",
+    "semantic_revision": "e10b6a989",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "f248801aafe4ffd26003c5a0598389cf4e2479dcdff45cb629e3406b819c854e",
+    "scope": "Existing source GET ownership now recognizes physical Trait properties. One consumer-matching arm requires the actual TRAIT_MEMBER_ORIGIN property and the existing matching TRAIT_ORIGIN getter certificate. No CURRENT/receiver inference, producer, binding, task/consumer, compiler facts or schema change."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_do_traits_property_binding copies hook functions and calls zend_fixup_trait_method to adjust consumer scope. ZEND_DECLARE_LAMBDA_FUNCTION calls zend_create_closure with the current function scope, called class from This and the actual nonstatic receiver. Physical Trait code and consumer lexical scope therefore remain distinct.",
+    "existing_facts": "Completed raw property/getter origin selects physical Trait source. property_hook_trait_origin authenticates the installed consumer, actual imported property, source export and exact getter origin/name. Existing Closure scope checks retain called-class inheritance and receiver identity."
+  },
+  "evidence": {
+    "native_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-get-52/native-v1/report.json",
+      "sha256": "f4c982cbf5afa2bcdb102b7f1ba17eb534d036e5000c9655e42671a2c11de001",
+      "revision": "878785dcdd37bffc229501baa836a6de30df8559",
+      "passed": true,
+      "scope": "One original: RATickChildA52T7CBTickConsumerB52T992abZ. Escaped Closures share physical Trait code, use ConsumerA/private A with called ChildA and ConsumerB/private B, retain receivers after global removal, commit seen7/9 before callbacks, abort A, complete B and release receivers as ab before Z. Native-only preparation earns no differential credit."
+    },
+    "original_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-get-52/source-baseline/report.json",
+      "sha256": "c7fb38012e5bd4dfcc2aba3d78dfab922f98aef940c712c1734f72ed5d5309ef",
+      "revision": "878785dcdd37bffc229501baa836a6de30df8559",
+      "passed": true,
+      "scope": "The sole original already matches exact native output at878785dcd. This completion observation does not establish intermediate Closure scope validity; the genuine old-code state failure below records that missing certificate."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-get-52/strict-report-v2.json",
+      "sha256": "04fc26f65ab2440da9d12ce3d47abb4b9620aa07d105445471f814fb38b6a9d8",
+      "revision": "b6aa0590651c2786a8a4d02352cea338b7cac4a2",
+      "passed": true,
+      "scope": "Final checked SL compilation stages and main=true execution pass across446 modules with caches disabled and encountered determinism checks."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-trait-get-52/review-protocol-v2/run/report.json",
+      "sha256": "9ff754ce4bec06d3a551fc88610a311f344a3eeed12d3075dfaae78bb14a36e3",
+      "process_sha256": "b78d883bd1452f88d69d648355952ad2f023412ff64f561b30ed4e274fd01d55",
+      "revision": "ad9703d5423c262a6683304d37a4a8d1556617a9",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 89,
+      "derived_negatives": 1,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At the genuine first Closure Tick, raw Trait source and distinct A/called ChildA versus B scopes, receivers and actual imports validate after getter frames/global receivers retire. seen7 is committed. Zero-budget/full-resume equality finishes exact output/n2, ordered receiver destruction and valid descriptors/heap/Ticks. One labeled derived state clears only A property facts: physical source and B matching persist while A matching refuses."
+    }
+  },
+  "compatibility": "Class-owned51 and ordinary method/template/constant cases remain pointwise. For this concrete original, GET/Closure production uses explicit live receiver/scope; self::TOKEN/get_called_class and ordinary sibling/GLOBALS operations use that scope. The repair validates its physical/import certificate without changing its executed tasks/values, so the original-source cut is retained. The final reached packet freshly executes the source and full continuation on final code. Wider scope/capture consumers are not covered by this bridge.",
+  "independent_review": "Peer independently derived the native stream, reviewed physical Trait and authenticated consumer matching against source/import facts, confirmed old-code failure at source-class selection, and passed the final actual escaped-Closure scope/owner/budget front. Declaration movement changes visibility only, not formulas.",
+  "remaining": "Current evidence covers direct existing Trait GET imports with ordinary consumers, an inherited called receiver and shared physical Closure code. Setter-created Closure scope, nested/exported Trait, decorated/byref/header and wider capture/lifetime contexts remain partial. No method-alias/general Trait or producer/runtime admission expansion is claimed.",
+  "environment": "Original bytes/cwd/profile, commands/channels/exits and before/after implementation/tool fingerprints remain external in tick-trait-get-52. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned profile. One CPU5 process at a time across this pair; accepted inputs stable, exit0/empty driver stderr and all executables reaped. Four regular tools were preserved from idle ATTR51; no rebuild/portability claim.",
+  "zero_credit": [
+    "review-protocol-v1/run/report.json SHAa3c858f3d99bdfd5512272d357130b9c9cd871226ce3f8c6c2bb8beeabf02d61/process SHA53927fa0bb2f19425cb33b5f5b89ecfe147af092fc619253324d5b92927623c0 at3246fdfb8 remain false/zero: authentic physical/imported getter facts pass before closure_source_class fails to select the Trait owner.",
+    "strict-report-v1.json SHA0240ab7c148de0362347176a83a2648324c152cb5ba9bed91aeffcfbe6b9c721 remains false/zero atd6b30fcd1: property_hook_trait_origin had to be declared before its new caller. Moving the existing declaration leaves semantics unchanged; only final strict reran.",
+    "No51/50 or broader historical source/state campaigns were replayed. The same new front reran only after its scope repair. Paused boundaries remain untouched; no PHP engine bug or intentional divergence is claimed."
+  ]
+}
