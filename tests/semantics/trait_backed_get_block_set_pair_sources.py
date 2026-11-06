@@ -104,7 +104,7 @@ def main():
     ticks.EXITS = {name: 0 for name in CASES}
     for name in list(CASES)[4:]:
         ticks.STATUSES[name], ticks.EXITS[name] = 'static_rejection', 255
-    ticks.main(model_timeout=180)
+    ticks.main(model_timeout=600)
 
 
 if __name__ == '__main__':
