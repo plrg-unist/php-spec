@@ -5456,6 +5456,16 @@ certificates cannot fall back to integer/leaf admission. Constructor, nullary,
 contextual array and unpack-prefix policies retain their prior bounds.
 [Static-producer review](coverage/semantics/anonymous-static-producer-magic-review.json).
 
+Directly invoked literal static USER Closures now produce the same quiet COPY
+values with zero or required untyped positional by-value parameters. Exact
+original call/child/template and compiled INIT certificates precede admission.
+The real Closure target stays owned across inner argument effects and fresh
+parameters; its escaped result survives target retirement before table/child
+retention. The permanent source/template still certifies collection after the
+ephemeral object is gone. Captures, arrows, dynamic-CV callables and wider modes
+remain partial; constructor, nullary, array and unpack policies stay unchanged.
+[Literal-Closure review](coverage/semantics/anonymous-literal-closure-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),

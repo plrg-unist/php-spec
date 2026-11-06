@@ -1,0 +1,121 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "module_count": 452,
+  "scope": "CLASS206: directly invoked literal static no-capture USER Closures with zero/required untyped positional byvalue parameters, current quiet primitive/ordinary-leaf COPY returns and existing one/two positional instance/static and named-instance magic headers.",
+  "base": "9aab444acfbec9642ba9afa389f74ad4149be9fa",
+  "implementation_commit": "16c1f965dd35ce15816e466400de9eafa021038f",
+  "fixture_commit": "62ed4987527bc610c9d298c3f7db39421570e165",
+  "engine_basis": [
+    "Zend/zend_compile.c zend_compile_dynamic_call emits INIT_DYNAMIC_CALL before zend_compile_call_common argument compilation. DECLARE_LAMBDA_FUNCTION creates a real static Closure without This.",
+    "Zend/zend_execute.c zend_init_dynamic_call_object retains the real Closure through ZEND_CALL_CLOSURE before its temporary operand is released. Existing109/110 select CLOSURE_TARGET before arguments;115/116 retain its exact template and target/INSTANCE owner, while86/80/79 preserve COPY snapshots, fresh parameter cells and return ownership before target/frame retirement."
+  ],
+  "mechanism": "414 authenticates the actual original call and literal child PCFIELD0: unattributed static/byvalue NExprClosure, no captures or return annotation, same-unit CODECALL_INIT, exact permanent CLOSURETEMPLATES descriptor/body, parsed/compiled zero or required untyped nonref/nonvariadic/default-free formals, no lexicals or Generator body. Raw literal-Closure-call collection requires this source certificate before quiet COPY value admission, preventing failed-certificate PINT/live-leaf bypass.438 excludes this new raw shape; constructor/named/static/nullary/contextual-array/header/carrier policies remain unchanged. Actual reached CLOSURE_TARGET is bound to the exact literal template; no arbitrary dynamic-CV target history is inferred. No109/110/115/116/86/frame/owner/schema/allocator/native-evaluation changes.",
+  "author": {
+    "source4": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/author/source/report.json",
+      "sha256": "0699131b6017a0e931d5888c5bbbf0e413d2d51b12c77e130e31d18bcfdf8e12",
+      "count": 4,
+      "result": "First models exactly match once-pinned native bytes/path/cwd/profile at16c: normal/exit0/empty stderr/stable/no timeout under upfront300. Owner76.402/instance78.767/static43.503/named44.883s. Grouped current headers cover zero/required arities and NULL/bool/int/binary64/interned/request string carriers."
+    },
+    "excluded_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/author/boundaries/report.json",
+      "sha256": "56bbe91e4fea7820c59440f56550432c7b8c838f57babd40a70e5f47e86d208a",
+      "count": 6,
+      "agreement_credit": 0,
+      "result": "All6 once-native normal originals reach intended Unsupported, exit1/empty stderr/stable/no timeout under300. Array return emits METHOD before collection refuses; initialized unpack prefix, inner named/default, capture and nonstatic literal stop before METHOD/BODY.21.375/21.097/20.726/21.369/20.975/20.800s. No native repeat."
+    },
+    "owner145": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/author/closure-call-protocol-15i1vc26/report.json",
+      "sha256": "b8a378c3b223b5a82eb9fa40ce279e0c8b8d6ba264564a7db2cc2c6070aa7307",
+      "record_id": "magic-literal-closure-pending-leaf",
+      "conditions": 145,
+      "result": "First SL452 execution true/exit0/empty stderr/stable/no timeout at66cc under300. Actual pending CLOSURE_TARGET body matches the exact literal template, with one real target/INSTANCE owner and no This/scope/capture owners. Old leaf remains in its inner SEND after caller replacement; fresh nonref params receive old/NULL. Callee cells, replacement and ephemeral Closure retire before the same outer table and child retain old. The permanent template/source certificate remains valid after target retirement. Missing CODE/template PINT/live-leaf fallback refuses. Full4098=split2+4096 cleanup preserves call/class/Closure/GC/heap validity."
+    },
+    "unpack_guard29": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/author/closure-call-protocol-15i1vc26/report.json",
+      "sha256": "b8a378c3b223b5a82eb9fa40ce279e0c8b8d6ba264564a7db2cc2c6070aa7307",
+      "record_id": "magic-literal-closure-unpack-prefix-refused",
+      "conditions": 29,
+      "result": "First SL452 execution true/exit0/empty stderr/stable/no timeout under300. At actual pre-call source the new static literal Closure certificate is valid, while438 refuses it. The real initialized [9] pack and compiled spread classifier are eligible; driving reaches exact magic-source Unsupported without METHOD/BODY effects."
+    },
+    "state_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "wrapper_seconds": 135.27219058398623,
+      "note": "Combined145/29 sequential elapsed; each runner retains300s."
+    }
+  },
+  "independent_review": {
+    "status": "accepted_private_CLEAR",
+    "record": "coverage/semantics/anonymous-literal-closure-magic-independent.json",
+    "original_peer_commits": [
+      "f09a01ca5300e64bf57782b0563c317d4b6876e9",
+      "ab7bf7513"
+    ],
+    "author_cherry_picks": [
+      "66cc8e1a516c58a6a4285497e7112dbfd1a43ea7",
+      "6b78df89c0eb2891469d3e5a091d4d8e902b250d"
+    ],
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/reviewer/source/report.json",
+      "sha256": "9546e0cba4be9a6856e0f443056fbf124ab12f6f5b74a2de75774181dd999b11",
+      "count": 1,
+      "id": "named-literal-static-closure-ref-request-retirement",
+      "source_sha256": "2b72f816b248f8942717eb32ee636e34b881b71d8277f66db585174722b76310",
+      "result": "First model exactly matches once-pinned native original bytes/path/cwd/profile: normal/exit0/empty stderr/stable/no timeout;77.810 seconds under upfront300 atf09/452. Native not repeated.",
+      "behavior": "A named original uses a direct static no-capture literal producer. Inner SEND freezes aliased REQUEST-OLD before callback alias99/owner=null. Fresh saved/false params preserve it; handler alias0 and caller cell detachment precede escaped static Closure and child retention of the same named table."
+    },
+    "SL452": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/reviewer/state/report.json",
+      "sha256": "a5e56c197f45c30d1be0e5845ff9841c517e08e5d287c362ff2844b3a9efa076",
+      "conditions": 221,
+      "result": "First execution true/exit0/empty stderr/stable/no timeout;128.598 seconds under300 atf09/452. All452 source/state module fingerprints equal.",
+      "behavior": "Actual pending CLOSURE_TARGET body matches exact literal child/template and has one real target/INSTANCE owner without This/scope/capture owners before inner SEND. One COPY freezes request0 without a caller CELL owner; fresh nonref params preserve it after alias99. Producer cells and ephemeral target retire while permanent template/source authority remains. Real named table parameter/buffer/escaped-Closure owners fall to child alone after caller-cell/receiver/Closure retirement. Full4098 equals split2+4096 and retires child/table with call/class/Closure/GC/heap validity.",
+      "controls": "Missing CODE/template refuses authenticated old PINT/live-leaf substitutions; old array-producer and438 source roles stay ineligible; source certificate still succeeds after actual target retirement.438 remains false for this new source. Generic dynamic call-selected validity is not claimed to reconstruct arbitrary dynamic-CV history. Derived controls earn no native agreement."
+    },
+    "final_review": "CLEAR by /root/recovery_classes_review: original call/child/template/INIT/formal authority; genuine reached target, parameter/receiver distinctions and result-before-target retirement; permanent collection certificate and preserved constructor/nullary/static/contextual-array/438 bounds. No production finding, fixture correction or replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic",
+    "recovery": "Fresh original packet: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_literal_closure_magic_cases.json --model-timeout 300. State: anonymous_literal_closure_magic_protocol.py --sl; --case selects only affected records. Controls bind intended Unsupported reasons/output to separately once-native normal originals and earn no agreement. Raw originals/commands/streams/profile/frozen inputs stay external.",
+    "inputs": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/author/inputs",
+    "identity": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class206-literal-closure-magic/author/identity.json",
+      "sha256": "4815a96126785b84844ff17099cd7dc6522e2131bc1c00bb2ce7c564520b30aa"
+    }
+  },
+  "remaining": "Arrows, captures, dynamic-CV callables, defaults/variadics/ref/Generator/inner-named/unpack/array returns, wider headers and held request-owned NUL/other lanes remain partial.",
+  "engine_divergence": "None identified.",
+  "main_context": {
+    "head": "ae2926474efd0f58fed1de9fd004f3eab3747ab5",
+    "module_count": 453,
+    "finding": "437 ENUM bool marker and422 WeakMap/FOREACH claims are absent.161/456 native Exception CTOR_NEW/output/STRINGIFY/throw markers are absent: constructors here are ordinary USER.464 method-FCC/fromCallable object kinds are absent because both real Closures are REALCLOSURE.306 ENTRY remains eps for ordinary/real-Closure receives;458/459/463 default/marker fallbacks are pointwise with no defaults/private-FCC markers. Critical109/110/115/116/86/80/79/414/438 interfaces unchanged. Later I127420/447 Generator/Iterator/Aggregate/CONFIG cursors are absent; old discard default retained. Private452 source/state cuts preserved.",
+    "joined_interface": {
+      "revision": "0d7a45880c8a2527ae1d5256f2145045f3aadf54",
+      "module_count": 453,
+      "result": "PASS13.429725 seconds, true/newline, quiet exit0, stable/no timeout;169/306 inventory also passes. Required I127 interface load includes exact206 source, separately from private source/state evidence.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/generator-computed-traversable-arguments-127/joined-main-453-v1/report.json",
+      "sha256": "659b980adc85bf225d3690d325d291f23d41b98a264f4baf02851acdbb627953"
+    }
+  },
+  "summary": {
+    "distinct_original_agreements": 5,
+    "author": 4,
+    "independent": 1,
+    "separate_owner_budget_conditions": [
+      145,
+      221
+    ],
+    "separate_source_guard_conditions": 29,
+    "source_refusals": 6,
+    "unsupported_failed_diagnostic_timeout_agreement_credit": 0,
+    "inventory": "169 constructors/306 obligations consistent; same six entries stay partial.",
+    "engine_divergence": "None identified.",
+    "remaining": "Arrows, captures, dynamic-CV callables, defaults/variadics/ref/Generator/inner-named/unpack/array returns, wider headers and held request-owned NUL/other lanes remain partial."
+  }
+}

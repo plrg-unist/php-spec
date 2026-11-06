@@ -2303,6 +2303,16 @@ contextual-array and438 policies stay unchanged. The
 records five distinct source agreements, separate 134/204 owner/budget fronts and
 a 29-condition real-source unpack guard at their recorded cuts; five intended
 Unsupported controls retain zero agreement credit.
+Direct literal static no-capture USER Closures now share quiet COPY through
+zero/required untyped positional by-value arguments. Original child/template and
+compiled INIT authority remain usable after the real target/INSTANCE owner and
+parameter frame retire. Inner snapshots preserve old values through caller writes;
+real outer tables and children retain the returned payload. Existing constructor,
+nullary, contextual-array, header and438 bounds stay unchanged. The
+[literal-Closure review](coverage/semantics/anonymous-literal-closure-magic-review.json)
+records five distinct source agreements, separate 145/221 owner/budget fronts
+and a 29-condition real-source unpack guard at their recorded cuts; six intended
+Unsupported controls retain zero agreement credit.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2676,7 +2686,6 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS206 | Direct static no-capture literal USER Closure producers with zero/required plain positional-by-value arguments, authentic source/template and real targets; preserve current quiet COPY/header and held policies. |
 | ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
 | COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
 | ENUM150 | Ordinary non-method function-string is_callable via actual registry/publication facts, query-cut output history and existing reference/bool continuations; preserve frozen results and held domains. |
