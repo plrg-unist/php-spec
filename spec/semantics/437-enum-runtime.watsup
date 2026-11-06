@@ -3253,7 +3253,8 @@ def $enum_is_callable_output_excess_ready(S, penumqueryoutput) = true
   -- if penumqueryoutput.RESOLUTION = eps
   -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((pvalue_input, b_syntax, penumqueryoutput.CELL))
   -- if $enum_is_callable_function_string(S, pvalue_input)
-  -- if penumqueryoutput.OLD = HOBJECT n_old /\ n_old <- S.DESTRUCTION.CALLED
+  -- if penumqueryoutput.OLD = HOBJECT n_old
+  -- if n_old <- S.DESTRUCTION.CALLED
   -- if S.STORE[penumqueryoutput.CELL] = DEFINED (POBJECT n)
   -- if $enum_is_callable_instance(S, POBJECT n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
