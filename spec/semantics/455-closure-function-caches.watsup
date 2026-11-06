@@ -342,6 +342,16 @@ def $closure_call_cache_record_valid(S, n, pclosurecallcache) = true
   -- if $(pclosurecallcache.SOURCE < |S.OBJECTS|)
   -- if $closure_cache_function(S.OBJECTS[pclosurecallcache.SOURCE]) = (pclosurecallcache.FUNCTION)
   -- if $closure_call_cache_policy(S, pclosurecallcache.SOURCE, pclosurecallcache.RECEIVER, n) = (CACHE_CALL n)
+def $closure_call_cache_record_valid(S, n, pclosurecallcache) = true
+  -- if $closure_call_copy_site(S, pclosurecallcache.SITE)
+  -- if $function_cache_source(S, pclosurecallcache.FUNCTION) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+  -- if $(pclosurecallcache.SOURCE < |S.OBJECTS|) /\ $(pclosurecallcache.RECEIVER < |S.OBJECTS|)
+  -- if $closure_cache_function(S.OBJECTS[pclosurecallcache.SOURCE]) = (pclosurecallcache.FUNCTION)
+  -- if $closure_cache_at(S.CLOSURECACHES, pclosurecallcache.SOURCE) = (pclosurecache)
+  -- if pclosurecache.SCOPE = (BIND_CLASS pmethoddesc.OWNER)
+  -- if S.OBJECTS[pclosurecallcache.RECEIVER] = INSTANCE pmethoddesc.OWNER
+  -- if $closure_call_cache_policy(S, pclosurecallcache.SOURCE, pclosurecallcache.RECEIVER, n) = (CACHE_CALL n)
 def $closure_call_cache_record_valid(S, n, pclosurecallcache) = false -- otherwise
 def $closure_call_cache_records(S, eps, n) = true
 def $closure_call_cache_records(S, pclosurecallcache :: pclosurecallcache_tail*, n) = ($closure_call_cache_record_valid(S, n, pclosurecallcache) /\ $closure_call_cache_records(S, pclosurecallcache_tail*, $(n + 1)))
