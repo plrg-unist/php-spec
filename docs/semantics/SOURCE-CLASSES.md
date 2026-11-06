@@ -1241,17 +1241,20 @@ SEND3. Dynamic `SELECTEDCALLS` keeps the chosen builtin when its source callee
 variable is rebound; an earlier argument throw never acquires the output.
 The [output-acquisition review](../../coverage/semantics/enum-is-callable-output-acquisition-review.json)
 records these source and ownership cuts.
-Named nonunpack output now uses the existing CONFIG destination and source-prefix
-mapping. Quiet reference acquisition follows its actual source SEND, including
-`callable_name` before `value`. Receipts replay from the genuine partial CALL;
-an omitted `syntax_only` stays a hole in that history and defaults to false only
-for invocation. Existing input snapshots, current-owner cell checks and output
-cleanup/throw/name commitment remain intact. Duplicate, unknown and missing
-arguments preserve their actual acquisition order. Detaching the sent output's
-CV name remains explicitly Unsupported, pending acquisition history; packs and
-wider output places stay partial. The
-[named-output review](../../coverage/semantics/enum-is-callable-named-output-review.json)
-records the new source and focused state cut. Fixed namespaced
+Named nonunpack output uses existing CONFIG destination/source-prefix mapping.
+Quiet acquisition follows the actual SEND, including `callable_name` before
+`value`; omitted `syntax_only` stays a hole in history and defaults only for
+invocation. A nonowning certificate now records the actual completed reference
+SEND prefix and caller depth. Source replay and selected builtin/reference facts
+preserve that sent cell through CV unset/rebinding, while SENT remains its real
+owner. Input history retains the genuine partial CALL. Handler capture consumes
+the certificate into existing output ownership before clear/destructor/name
+commitment, including nested queries and argument/output throws. Named argument
+errors retain ordinary acquisition order. Separate rebound-array source/value
+fences, packs and wider output places remain partial. The
+[named-output](../../coverage/semantics/enum-is-callable-named-output-review.json) and
+[reference-history](../../coverage/semantics/enum-is-callable-named-output-reference-history-review.json)
+reviews record the separate source/state cuts. Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing
 the chosen target or reference signature. Root and ordinary named-function

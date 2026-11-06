@@ -40,12 +40,15 @@ CVs, preserving spelling and the captured reference cell. An input-SEND receipt
 keeps a variable input fixed through later callbacks, output aliases and nested
 queries; argument throws skip the query's assignments.
 [Saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json).
-Named nonunpack output now separates source SEND order from the builtin signature
-slots, including early `callable_name` and omitted `syntax_only`. Actual receipt
-CALLs preserve references/holes; existing snapshots, current-cell owners and
-clear/destructor/name-commit behavior remain intact. Named argument errors keep
-acquisition timing. Detaching the output name after SEND remains Unsupported.
-[Named-output review](coverage/semantics/enum-is-callable-named-output-review.json).
+Named nonunpack output separates source SEND order from signature slots,
+including early `callable_name` and omitted `syntax_only`. A nonowning acquisition
+certificate preserves the sent cell through CV unset/rebinding. Real SENT/output
+owners, genuine input history and clear/destructor/name commitment remain intact;
+nested queries, argument/output throws and named errors keep their order. Separate
+rebound-array source/value proofs, packs and wider output places remain partial.
+[Named-output](coverage/semantics/enum-is-callable-named-output-review.json) and
+[reference-history](coverage/semantics/enum-is-callable-named-output-reference-history-review.json)
+reviews retain the two cuts.
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then

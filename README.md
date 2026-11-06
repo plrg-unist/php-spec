@@ -7450,14 +7450,18 @@ reference at SEND3, before query admission. An unset variable quietly becomes
 `null`; callback rebinding, retained old aliases and earlier argument throws keep
 their normal cell identities and order. See the
 [output-acquisition review](coverage/semantics/enum-is-callable-output-acquisition-review.json).
-Named nonunpack queries now map source-order sends into the selected builtin's
+Named nonunpack queries map source-order sends into the selected builtin's
 `value`, `syntax_only` and `callable_name` slots. An early output send quietly
 acquires its real reference cell; omitted `syntax_only` defaults to false only
-for the handler's value view. Saved input and output history retain the actual
-source order, holes, owners and clear/destructor/name-commit behavior. Duplicate,
-unknown and missing arguments keep their ordinary timing. Detaching the output
-name after its send, unpacked references and wider output places remain partial;
-see the [named-output review](coverage/semantics/enum-is-callable-named-output-review.json).
+for the handler's value view. Nonowning acquisition history keeps the sent cell
+through later CV unset/rebinding, with existing SENT and output owners. Saved
+input, nested queries and normal/throwing destruction preserve name commitment
+and the selected builtin. Duplicate, unknown and missing arguments keep their
+ordinary timing. Separate rebound-array source/value bounds, unpacked references
+and wider output places remain partial. The
+[named-output](coverage/semantics/enum-is-callable-named-output-review.json) and
+[reference-history](coverage/semantics/enum-is-callable-named-output-reference-history-review.json)
+reviews retain their source and focused state cuts.
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local
