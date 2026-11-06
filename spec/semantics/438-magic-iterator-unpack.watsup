@@ -11,9 +11,12 @@ def $magic_unpack_argument_name(phpType3) = false -- otherwise
 dec $magic_unpack_explicit_source(pstate, porigin, expression) : bool
 def $magic_unpack_explicit_source(S, porigin, NScalarInt (INTEGER z) metadata) = true
   -- if $compiled_read(S, porigin) = (PINT i)
+def $magic_unpack_explicit_source(S, porigin, expression) = ($magic_method_no_constructor(S, porigin, expression) =/= eps)
+  -- if $magic_method_named_new(expression)
 def $magic_unpack_explicit_source(S, porigin, expression) = $magic_method_argument_source(S, porigin, 0, expression)
   -- if ~$magic_method_literal_shape(expression)
   -- if ~$magic_method_argument_call(expression)
+  -- if ~$magic_method_named_new(expression)
 def $magic_unpack_explicit_source(S, porigin, expression) = false -- otherwise
 dec $magic_unpack_source(pstate, porigin, phpType7*, nat) : bool
 def $magic_unpack_source(S, porigin, eps, n) = true

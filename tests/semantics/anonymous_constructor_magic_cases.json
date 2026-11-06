@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-constructor-family-instance",
+      "source": "<?php\nclass Zero204 { public $value = 0; public function __construct() { $this->value = 7; return 99; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketBase204 { public $value = null; function __construct($saved, $ignored) { $this->value = $saved; return false; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketDerived204 extends PacketBase204 {}\nclass Base204 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$owner = new Derived204; $child = $owner->MiSsInG(new Zero204, new PacketDerived204(8, 9)); unset($owner); echo ($child->saved[0]->value === 7 && $child->saved[1]->value === 8) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "678d54e5779b3bc3379ca725071c78c3813508e081fee93b1fe5ca4047221472",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7UEFDS0VUO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-constructor-family-static",
+      "source": "<?php\nclass Zero204 { public $value = 0; public function __construct() { $this->value = 7; return 99; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketBase204 { public $value = null; function __construct($saved, $ignored) { $this->value = $saved; return false; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketDerived204 extends PacketBase204 {}\nclass Base204 { public static function __callStatic(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } }\nclass Derived204 extends Base204 {}\n$prefix = \"REQUEST\"; $request = $prefix . \"-NEW\"; $child = Derived204::MiSsInG(new PacketDerived204($request, 0)); echo $child->saved[0]->value === \"REQUEST-NEW\" ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "3c043f26349e5f05ada6f1106bc0f7ae4ea370e1000d1e12e5f4152694513981",
+      "stdout_template_base64": "T0s7Q0hJTEQ7UEFDS0VUO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-constructor-family-named",
+      "source": "<?php\nclass Zero204 { public $value = 0; public function __construct() { $this->value = 7; return 99; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketBase204 { public $value = null; function __construct($saved, $ignored) { $this->value = $saved; return false; } public function __destruct() { echo \"PACKET;\"; } }\nclass PacketDerived204 extends PacketBase204 {}\nclass Base204 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$owner = new Derived204; $child = $owner->MiSsInG(first:new PacketDerived204(1.5, 0), later:new Zero204); unset($owner); echo ($child->saved[\"first\"]->value === 1.5 && $child->saved[\"later\"]->value === 7) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "5d477c49a75f40fc773cb9dacb75f06e8c4e951f99cc7833214af90bcabd9010",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7UEFDS0VUO1BBQ0tFVDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-constructor-pending-leaf",
+      "source": "<?php\nfunction shift204() { global $argument, $owner; $argument = new New204; $owner = null; echo \"SHIFT;\"; return null; }\nclass Old204 { public $value = 7; public function __destruct() { echo \"OLD;\"; } }\nclass New204 { public $value = 99; public function __destruct() { echo \"NEW;\"; } }\nclass Packet204 { public $saved = 0; public function __construct($saved, $ignored) { $this->saved = $saved->value; echo \"CTOR;\"; return 7; } public function __destruct() { echo \"PACKET;\"; } }\nclass Base204 { public function __call(string $name, array $arguments) { global $argument; $argument = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived204 extends Base204 {}\n$argument = new Old204; $owner = new Derived204; $child = $owner->MiSsInG(new Packet204($argument, shift204()), null); echo \"RETURN;\"; echo ($child->saved[0] instanceof Packet204 && $child->saved[0]->saved === 7) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "16a92e631c7caa208e7f3fb7b1e412d48082f6f9fe8fba8a39248b502c6153e8",
+      "stdout_template_base64": "U0hJRlQ7Q1RPUjtPTEQ7TkVXO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7UEFDS0VUO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
