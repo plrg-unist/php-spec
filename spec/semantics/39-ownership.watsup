@@ -62,7 +62,6 @@ dec $native_excess_drop_units(pnode*, pnode) : pnode*
 dec $native_decrements(pstate, pstate, pnode*) : pnode*
 def $native_excess_valid(S) = $heap_subset(S.NATIVEEXCESS, S.ALLOCATIONS)
 def $heap_native_rc(H, pnode_excess*, pnode) = $($heap_owners(H, pnode) + $heap_count(pnode, pnode_excess*))
-def $native_rc(S, pnode) = $heap_native_rc($heap_graph(S), S.NATIVEEXCESS, pnode)
 def $native_remove_one(eps, pnode) = eps
 def $native_remove_one(pnode :: pnode_tail*, pnode) = pnode_tail*
 def $native_remove_one(pnode_other :: pnode_tail*, pnode) = pnode_other :: $native_remove_one(pnode_tail*, pnode)
@@ -339,6 +338,7 @@ def $machine_roots(S) = $output_roots(S.OUTPUTBUFFERS) ++ $tick_roots(S.TICKENTR
 
 dec $heap_graph(pstate) : hgraph
 def $heap_graph(S) = {NODES S.ALLOCATIONS, EDGES $allocation_edges(S, S.ALLOCATIONS), ROOTS $machine_roots(S), DEBTS ($literal_reference_retained_nodes(S.LITERALREFDEBTS) ++ $literal_array_retained_nodes(S.LITERALARRAYDEBTS))}
+def $native_rc(S, pnode) = $heap_native_rc($heap_graph(S), S.NATIVEEXCESS, pnode)
 
 ;; Array mutation helpers consume the current task but keep its captured inputs
 ;; alive while RESULT is reused for borrowed lookups. Restore the caller's HELD
