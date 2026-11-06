@@ -1,0 +1,91 @@
+;; Deferred static defaults receive through their actual declaring-property cell.
+dec $owned_static_source(pstate, ppropertydesc) : bool
+def $owned_static_source(S, ppropertydesc) = true
+  -- if ppropertydesc.STATIC
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath_decl
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED (PORIGIN n (pcpath_decl ++ [PCFIELD 1]))
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (PORIGIN n pcpath_owner)
+  -- if $class_at(S.CLASSES, PORIGIN n pcpath_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if |pcpath_decl| = $(|pcpath_owner| + 4)
+  -- if pcpath_decl[0:|pcpath_owner|] = pcpath_owner
+  -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 5, PCINDEX n_group, PCFIELD 3, PCINDEX n_item]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_owner) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text_owner) metadata_owner) phpType44 phpType42 phpType23 metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_owner ++ [PCFIELD 5, PCINDEX n_group])) = (NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata_group)
+  -- if $origin_node(S.SOURCES, ppropertydesc.ORIGIN) = (NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) expression metadata)
+  -- if ppropertydesc.NAME = $base64(text_name)
+def $owned_static_source(S, ppropertydesc) = false -- otherwise
+dec $owned_static_scope(pstate) : bool
+def $owned_static_scope(S) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_at(S.TODO) = (pstaticdefaultcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL /\ pconstantcontext.LINE = pstaticdefaultcontext.LINE
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
+  -- if $owned_static_source(S, ppropertydesc)
+def $owned_static_scope(S) = false -- otherwise
+def $deprecated_constant_static_ast(S, porigin) = true
+  -- if $owned_static_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_valid(S, pconstantcontext)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+  -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin_root)
+  -- if $constant_callable_path(S, porigin, porigin_root)
+  -- if $compiled_read(S, porigin) = eps /\ $compiled_redirect(S, porigin) = eps
+
+;; Selected global identity/prefix is transient binder evidence, never a cache.
+dec $owned_static_lookup_required(pstate, porigin, pconstantfact) : bool
+def $owned_static_lookup_required(S, porigin_decl, pconstantfact) = true
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin_decl) = (ppropertydesc)
+  -- if $owned_static_source(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if ~$constant_callable_foldable(pconstantfact.CLASS)
+  -- if $global_constant_class_supported(pconstantfact.CLASS)
+  -- if $constant_callable_path(S, pconstantfact.ORIGIN, porigin_initializer)
+  -- if $compiled_read(S, pconstantfact.ORIGIN) = eps /\ $compiled_redirect(S, pconstantfact.ORIGIN) = eps
+  -- if $origin_node(S.SOURCES, pconstantfact.ORIGIN) = (NExprConstFetch name metadata)
+def $owned_static_lookup_required(S, porigin_decl, pconstantfact) = false -- otherwise
+def $global_constant_lookup_required(S, porigin_decl, pconstantfact) = true
+  -- if $owned_static_lookup_required(S, porigin_decl, pconstantfact)
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN pconstantcontext.ORIGIN, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX n_constants})
+  -- if $owned_static_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $static_default_context_valid(S, pconstantcontext)
+  -- if S.TODO = (CONSTANT_OBSERVE porigin_site) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $global_constant_observation_prior(S, porigin_site, pvalue, pvalueclass) = eps
+  -- if $owned_static_lookup_required(S, pconstantcontext.ORIGIN, {ORIGIN porigin_site, VALUE eps, CLASS pvalueclass, LOOKUP eps})
+  -- if $global_constant_alias(S, S.USERCONSTANTS, porigin_site) = (puserconstant)
+  -- if puserconstant.VALUE = pvalue /\ puserconstant.CLASS = pvalueclass
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if n_constants = |S.USERCONSTANTS|
+def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = true
+  -- if $owned_static_lookup_required(S, porigin_decl, pconstantfact)
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if pconstantlookup.ORIGIN = porigin_decl /\ pconstantlookup.SITE = pconstantfact.ORIGIN
+  -- if $(pconstantlookup.PREFIX <= |puserconstant_prior*|)
+  -- if $global_constant_alias(S, puserconstant_prior*[0:pconstantlookup.PREFIX], pconstantfact.ORIGIN) = (puserconstant)
+  -- if pconstantlookup.DECL = puserconstant.ORIGIN /\ pconstantfact.CLASS = puserconstant.CLASS
+  -- if pconstantfact.VALUE = eps /\ $constant_fact_value_valid(pconstantfact)
+def $static_default_class_supported(PVINSTANCE n porigin) = true
+
+dec $owned_static_alias_desc(pstate, ppropertydesc*, porigin) : ppropertydesc?
+def $owned_static_alias_desc(S, eps, porigin) = eps
+def $owned_static_alias_desc(S, ppropertydesc :: ppropertydesc_tail*, porigin) = (ppropertydesc)
+  -- if $constant_expression_below(S, ppropertydesc.ORIGIN, porigin)
+def $owned_static_alias_desc(S, ppropertydesc :: ppropertydesc_tail*, porigin) = $owned_static_alias_desc(S, ppropertydesc_tail*, porigin)
+  -- if ~$constant_expression_below(S, ppropertydesc.ORIGIN, porigin)
+def $constant_callable_flow_at(S, porigin_site, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = true
+  -- if ~$constant_callable_foldable(pvalueclass)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $owned_static_alias_desc(S, pclassdesc.PROPERTIES, porigin_site) = (ppropertydesc)
+  -- if $owned_static_source(S, ppropertydesc)
+  -- if $owned_static_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = ppropertydesc.ORIGIN
+  -- if $static_default_binding_head(S.TODO, ppropertydesc.ORIGIN)
+  -- if n_prefix = |S.DECLARATIONS|
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_site) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass
+  -- if $owned_static_lookup_required(S, ppropertydesc.ORIGIN, pconstantfact)
+  -- if $global_constant_lookup_valid(S, ppropertydesc.ORIGIN, pconstantfact, S.USERCONSTANTS)
