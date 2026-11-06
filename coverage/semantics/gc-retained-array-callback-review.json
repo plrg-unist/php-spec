@@ -1,0 +1,97 @@
+{
+  "scope": "GC66: retained plain unimported finite DIRECT-array DAG incoming during occupied current-row last-owner replacement, read and explicitly released by the existing own/Child callbacks. Same root/direct by-value cursor, held Map/private leaf Keys, own finite scalar/fieldless-Child old Value, source/cells/claim and lifecycle bounds.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "semantic_revision": "23dcaf4347bb0729320b7ddc32b83dfe055c5c00",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "1f0f3bfda806f17665907beee2bab5b134abb33804b5eb0d8e4dcfc5cbdd7450"
+  },
+  "source_basis": [
+    "Zend/zend_weakrefs.c:zend_weakmap_write_dimension Z_TRY_ADDREFs incoming, publishes COPY_VALUE before old zval dtor and preserves occupied-key registration; zend_weakmap_read_dimension returns the installed zval.",
+    "Zend/zend_execute.c:zend_fetch_dimension_address_read uses ZVAL_COPY_DEREF on the returned zval. Array copies add an outer owner without duplicating descendant tables/edges; Zend/zend_execute.h:zend_copy_to_variable transfers the result into the local CV.",
+    "Zend/zend_vm_def.h:ZEND_UNSET_CV clears the CV before GC_DTOR. Zend/zend_types.h:GC_DTOR and Zend/zend_variables.h:i_zval_ptr_dtor decrement nonlast owners and check possible roots. Existing eager VALUE-job and candidate rules need no change."
+  ],
+  "incoming_rule": "The19-line422 delta extends only incoming_before to PARRAY through a dedicated finite traversal. Each array is allocated/nonproxy, keys are unique and only DIRECT items are admitted. A branch-local path rejects cycles while permitting shared subarrays. Scalars retain quiet_scalar/nonowning policy; object leaves delegate the literal old incoming leaf/cutoff arm, excluding callback-bearing descendants, owning object subgraphs and Map-Key edges. The original plain unimported RHS binding supplies the real retained outer owner. No broad old payload/free/property policy or global validator on a projected scope is added.",
+  "ownership": "In the minimal actual sources, RHSouter1 becomes slot+RHS2, actual KEY_R/result/CV adds outer3, and explicit callback-local UNSET transfers that owner into a genuine VALUE HARRAY release then drops3to2. Physical shared-subarray/leaf edges and counts stay unchanged. The new traversal/receipt is borrowed proof data and adds no root. Normal used assignment later adds its outer result owner; fresh own throw leaves the original result sentinel, with later Child read and unchanged carrier/claim cleanup. Later retained-result versus RHS-only cleanup is source-visible through leaf WeakReference lifetime.",
+  "unchanged": "Claim/source/cursor/cells/FIRSTNEW, old own weak-live, real standard-storage weak-null and selected Child Root/NEXT, pending ancestry, readonly certificates and every effect body are literal. No386/257/270/301/schema/task/phase/common-fence or GC-policy change. No execution bridge is needed: all new positive cuts use exact23dcaf runtime.",
+  "counts": {
+    "author_exact_originals": 2,
+    "peer_exact_originals": 2,
+    "new_exact_originals": 4,
+    "reported_conditions": 230,
+    "authored_conditions": 225,
+    "independent_fronts": 1,
+    "strict_SL_modules": 456,
+    "baseline_or_constructed_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "author": {
+      "report": "../php-spec-evidence-archive/gc66-retained-array-callback/author/native-v1/model-report.json",
+      "revision": "23dcaf4347bb0729320b7ddc32b83dfe055c5c00",
+      "agreements": 2,
+      "seconds": [
+        95.14264750480652,
+        104.6713855266571
+      ],
+      "result": "Nested outer[29,inner[leaf,17]], construction inner/leaf CVs removed. Actual own weak-live/read/unset then Child weak-null/read/unset. Normal assignment retains an outer result after RHS removal; fresh own Exception line21 preserves77/continued0 and leaf dies on RHS removal. Full Map/result/RHS/leaf endings exactly match native."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-retained-array-peer-66/native-v1/model-report.json",
+      "revision": "e9e3d6504168d721418f5002247fb112ecb32fe7",
+      "runtime_revision": "23dcaf4347bb0729320b7ddc32b83dfe055c5c00",
+      "agreements": 2,
+      "seconds": [
+        136.627266,
+        153.694719
+      ],
+      "result": "Shared outer[17,shared,shared,leaf,leaf], shared[leaf,23], construction shared/leaf CVs removed. Both callback reads and explicit seen unsets preserve result31 until normal assignment/fresh own throw; fresh line25/assignment53, weak phases and full Map/result/RHS leaf survival exactly match native."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc66-retained-array-callback/author/strict-incoming-v1/report.json",
+      "revision": "23dcaf4347bb0729320b7ddc32b83dfe055c5c00",
+      "result": "SL456 true LF/empty stderr/exit0/no timeout; stable HEAD/inputs."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc66_peer_array_state.py",
+      "report": "../php-spec-evidence-archive/gc-retained-array-peer-66/front-v1/fiber-state-review-2ix8ytk3/report.json",
+      "raw_mapping": "../php-spec-evidence-archive/gc-retained-array-peer-66/front-v1/run-report.json",
+      "revision": "e9e3d6504168d721418f5002247fb112ecb32fe7",
+      "runtime_revision": "23dcaf4347bb0729320b7ddc32b83dfe055c5c00",
+      "reported_conditions": 230,
+      "authored_conditions": 225,
+      "seconds": 167.24275,
+      "result": "Authentic prepublication plan/RHSouter1/shared2/leaf3 and DIRECT physical edges. Real own KEY_R2to3, actual seenOwn CV UNSET VALUE-HARRAY job3to2, then fresh Child KEY_R/CV drop with genuine innerSOURCE/parent pending, weakNULL/Rootpin/NEXT/result31. Both raw and driver reads/drops preserve allocations/array tables/object properties/descendant counts; actual buffer membership is measured before release and candidate membership1 verified after. Reference-item/cycle/callback/Map/Key graph controls deny incoming admission and missing RHS denies genuine plan. Actual claim and heap/destruction/descriptors hold through reads/releases and late retiredRoot/parent. Local0/1/2 budget composition passes; front stops at parent exit, originals supply full endings."
+    },
+    "identity": "Each source uses exact native original bytes/file/cwd/profile, normal status and exact stdout/stderr/exit, empty stderr/no timeout and stable HEAD/inputs. Source4 and front230 use literal23dcaf; no old65 source or invariant-matrix replay."
+  },
+  "preserved_zero_credit": [
+    "One author preimplementation baseline at2f0503e6cf8b890565a74183723a225b85bcba31,46.17489457130432s: actual Unsupported WeakMap multiple-entry dimension protocol after S|, quiet0/stable/no timeout. Its external baseline-v1/run.py records the actual outcome without a guessed stage/reason.",
+    "Native-only runs and constructed/counterstate conditions add no PHP agreement; no new positive source/front failure or timeout occurred. Earlier accepted milestones keep their original cuts."
+  ],
+  "integration": {
+    "revision": "10eba24570f3f09933a9698162c7b76555b7d523",
+    "module_context": 457,
+    "result": "Exact five executable/source/final-fixture commits secured;422 equals23dcaf. No shared interface change or extra load/source/front replay. The accepted b6d197457 load predates66 and is not claimed to test66 runtime."
+  },
+  "current_context_bridge": "Independent197/current457 absence/default review:66 uses stored literal null/scalar class defaults and runtime field writes, without owning deferred-global/Deprecated/template facts. INSTANCE_GLOBAL_BIND/BINDING/PUBLISH and CCINSTANCE_LOOKUP/WRITE are absent;246/252 old fallbacks apply,468 owned view/AST/abrupt is inactive,467 retains STATIC and454 instance-AST is false. Separate query-resolution variants are absent. This is a static current-context bridge; genuine source/front/strict execution cuts remain private456.",
+  "limits": "Existing root/direct by-value multiple-entry current-row replacement only. Finite acyclic DIRECT incoming arrays with existing quiet scalars/preexisting methodless leaf objects and shared subarrays; retained unimported plain RHS. Reference items/cycles/callback-bearing descendants/Map-Key backedges excluded; no new array mutation or COW policy. No resurrection, reentrant writes, freeing registration, active collection, Key retirement, by-reference/InternalIterator, supplied Throwable or held GC35/domain expansion. lifecycle.weak-map stays partial.",
+  "independent_summary": "../php-spec-evidence-archive/gc-retained-array-peer-66/independent-summary.json",
+  "fixture_sha256": {
+    "tests/semantics/gc66_retained_array_callback.php": "09852e41a5eded6047497b4eeae5c116b6722609d29ee6d2f24c9e06b1b60cb6",
+    "tests/semantics/gc66_retained_array_callback_sources.py": "a113f3ca0451f33229d492a8c650794678f41496ff9c808b1aa77d371c7aec3f",
+    "tests/semantics/gc66_peer_shared_array_read.php": "399f3333f8a4a81b7148531e47e3179aeb696861e4e7349c97b5f06644423957",
+    "tests/semantics/gc66_peer_shared_array_sources.py": "32aaa107aba4d9d57d87112393a21f0977cd83bc847332de78a0fc72de0cf221",
+    "tests/semantics/gc66_peer_array_state.py": "9ae8a88fc2ea7e9043abccc6acef918fcbfadc8e2bf731776982ad38853d9446"
+  },
+  "report_sha256": {
+    "../php-spec-evidence-archive/gc66-retained-array-callback/author/native-v1/native-report.json": "127834065f9abf36ab483db207279251db130ee8ecf3bbd10ebdf9bcf6ccc99b",
+    "../php-spec-evidence-archive/gc66-retained-array-callback/author/baseline-v1/report.json": "61fd04696b975b738fe3dff9b2287e3533c4c28b3fc6766eb9452647056f8b77",
+    "../php-spec-evidence-archive/gc66-retained-array-callback/author/native-v1/model-report.json": "0078029619d5da51bccff898c44c9ebc76687cc156375da80617104dcd5f56d2",
+    "../php-spec-evidence-archive/gc66-retained-array-callback/author/strict-incoming-v1/report.json": "c69d54bd0b22dc17788c697e40269379c54dfac0de9ddc092478a4f5403cef7e",
+    "../php-spec-evidence-archive/gc-retained-array-peer-66/native-v1/native-report.json": "cfe217b9a359fff9936ba0c2511ed789e531a9b3e35ca888d089ed3c8c650b3f",
+    "../php-spec-evidence-archive/gc-retained-array-peer-66/native-v1/model-report.json": "ea6ac371fdb157f2d6fd050a428cdb378561406d467d50714a9a0a6df5b76426",
+    "../php-spec-evidence-archive/gc-retained-array-peer-66/front-v1/fiber-state-review-2ix8ytk3/report.json": "356328dd12262389adb2729cdcd9bd3981ac9b85d1de3638020d54974241001e",
+    "../php-spec-evidence-archive/gc-retained-array-peer-66/front-v1/run-report.json": "686a07b356f6b60ff560f29bcf910dd81b125f5048ab18fc92707b31f92174da"
+  }
+}

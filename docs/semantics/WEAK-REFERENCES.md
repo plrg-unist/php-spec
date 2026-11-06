@@ -1104,6 +1104,30 @@ and held lifecycle domains remain unchanged. The
 records the new later-normal-Child source, promoted exact native original and
 focused second-handoff/owner/read/budget front.
 
+GC66 admits a retained plain incoming array CV through those same current-row
+claim/source guards. Its finite graph contains only DIRECT array edges, existing
+quiet scalars and preexisting ordinary methodless leaves. A branch-local path
+rejects cycles without rejecting shared subarrays; each physical table retains
+unique keys. Reference items, callback-bearing descendants and Map/Key backedges
+remain excluded. This dedicated incoming policy does not widen old payload or
+property-array free rules.
+
+The original RHS CV remains unimported and holds the outer array throughout
+cleanup. Publication adds the slot owner, then the real callback KEY_R/result/CV
+adds one outer owner. Explicit unset of that callback CV removes exactly that
+owner through the existing nonlast release. Shared descendant edges and counts
+stay fixed across these outer copies. Actual buffer membership is preserved or
+visited by the existing candidate rules; no collection policy changes.
+
+The own callback still observes old weak-live, and the later Child observes
+weak-null under its actual Root pin/history/NEXT. Normal outer assignment adds
+only its result owner; a fresh own throw preserves the sentinel while later
+Child reads and existing carrier/claim cleanup proceed. No new task, record,
+phase, shared executor or common storage fence is needed. The
+[retained-array review](../../coverage/semantics/gc-retained-array-callback-review.json)
+records native source contrasts and the actual outer-copy/CV-release ownership
+front. Mutation/reference/cycle and held lifecycle domains remain unchanged.
+
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned
 `InternalIterator` owns Map once; the factory cursor row is nonowning and fences

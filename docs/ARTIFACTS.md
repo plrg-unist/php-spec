@@ -923,3 +923,11 @@ The [review](../coverage/semantics/gc-finite-previous-handoff-review.json) recor
 the promoted exact GC64 boundary original/native identity and new model cut;
 its historical native reference and GC65 baseline retain zero credit. Previously
 accepted GC64 originals and its invariant matrix retain their recorded cuts.
+
+GC66 retained incoming-array originals and the focused outer-copy/CV-release
+front remain under `../php-spec-evidence-archive/gc66-retained-array-callback/author/`
+and `../php-spec-evidence-archive/gc-retained-array-peer-66/`.
+The [review](../coverage/semantics/gc-retained-array-callback-review.json) retains
+the one preimplementation Unsupported cut and exact normal/fresh source, shared
+descendant, nonlast-release and candidate observations. Earlier GC65 sources
+and invariant matrix keep their original cuts.

@@ -1255,6 +1255,17 @@ Two exact originals and the focused 206-condition front (201 authored) pass at
 their recorded455 cuts; authentic joined456 also passes.
 [Finite-chain review](coverage/semantics/gc-finite-previous-handoff-review.json).
 
+Retained plain DIRECT-array DAG incoming values now share the existing
+current-row own/Child callback phases. Slot publication, KEY_R copy and explicit
+callback-local release change only outer-array owners; shared subarrays and
+ordinary leaf edges retain their physical multiplicity. The RHS remains held
+and unimported, normal used assignment adds its outer result owner, and fresh
+own throw preserves the sentinel before later Child reads. Dedicated finite
+incoming validation leaves old payload/free policies and held domains unchanged.
+Four originals and the focused 230-condition front (225 authored) pass at exact
+private456 cuts; the review records current457 default-route compatibility.
+[Retained-array review](coverage/semantics/gc-retained-array-callback-review.json).
+
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
 element cleanup until their last owner releases. Slots release in declaration
@@ -2948,8 +2959,8 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS211 | Immediate literal instance FCC on initialized plain/reference CV receivers, with actual inner capture SITE versus outer argument mapping, selected-cell receipts and wrapper/borrowed This owners; preserve current holds and avoid collection rereads. |
 | ATTR71 | Symmetric protected/private READ backed Trait pairs with authentic raw/Consumer canonical keys, permitted GET/SET descriptor selection and short implicit NAME writes; preserve public/Parent laws and existing held boundaries. |
+| COMP198 | Ordinary public named USER constructor omitted owning-Deprecated defaults through actual allocated This, METHOD_TARGET and CTOR_RESULT, shared default caches and historical publication proof without receiver roots; preserve construction and held bounds. |
 | ENUM155 | Raw self/parent/static is_callable strings and arrays through actual ordinary USER SCOPE/CALLED/THIS context, with phase-aware resolution, diagnostic and name timing; preserve alias-lifetime, unresolved-metadata and held boundaries. |
-| GC66 | Retained plain DIRECT-array DAG RHS replacement/read with actual outer slot, KEY_R and callback-CV owners, unchanged descendant edges and existing claim/cursor phases; exclude mutation, refs, cycles and Key backedges. |
 | I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
 

@@ -4141,6 +4141,15 @@ Two exact originals and 206 independent conditions (201 authored) pass at their
 recorded455 cuts; authentic joined456 also passes.
 [Finite-chain review](coverage/semantics/gc-finite-previous-handoff-review.json).
 
+Retained finite DIRECT-array DAGs can also supply the installed replacement.
+Own and Child reads add only an outer-array owner; explicit local release drops
+it while shared subarrays and leaf edges retain their multiplicity.
+The incoming CV stays held and unimported. Normal assignment retains its outer
+result; a fresh own throw keeps the sentinel while later Child cleanup reads the
+installed array. Four originals and 230 independent conditions (225 authored)
+pass at their recorded456 cuts.
+[Retained-array review](coverage/semantics/gc-retained-array-callback-review.json).
+
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held
