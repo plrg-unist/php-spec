@@ -119,6 +119,7 @@ dec $ob_object_cv_return_origin(pstate, pobcvreturn) : porigin?
 dec $ob_object_cv_value_frames(pdestructionframe*, pobcvreturn) : bool
 dec $ob_object_cv_carrier(pstate, pfunction, pobcvreturn) : bool
 dec $ob_object_cv_cell(pstate, pobcvassoc) : bool
+dec $ob_object_cv_stored_rows(pstate, pfunction, pobcvassoc*) : bool
 dec $ob_object_cv_commit(pstate, pstate, pobcvreturn) : pobcvassoc?
 dec $ob_object_cv_committed(pstate, pstate) : pobcvassoc?
 dec $ob_object_cv_throw_site(pstate, pfunction, pobcvassoc, porigin) : bool
@@ -474,6 +475,19 @@ def $ob_object_cv_cell(S, pobcvassoc) = true
   -- if $heap_count(HCELL pobcvassoc.CELL, $machine_roots(S)) = 1
   -- if $heap_owners($heap_graph(S), HCELL pobcvassoc.CELL) = 1
 def $ob_object_cv_cell(S, pobcvassoc) = false -- otherwise
+;; The saved C-frame validator has no native ENV. This readonly metadata
+;; check adds no throw authority; the actual read still requires cv_cell.
+def $ob_object_cv_stored_rows(S, pfunction_native, eps) = true
+def $ob_object_cv_stored_rows(S, pfunction_native, pobcvassoc :: pobcvassoc_tail*) = true
+  -- if $ob_object_cv_factory(S, pfunction_native, pobcvassoc.FACTORY) = ((pfunction, pobcvassoc.NAME))
+  -- if pobcvassoc.FACTORY.CONTOUR.CURSOR = |pobcvassoc.FACTORY.CONTOUR.CALLS|
+  -- if (HCELL pobcvassoc.CELL) <- S.ALLOCATIONS
+  -- if S.STORE[pobcvassoc.CELL] = DEFINED (POBJECT pobcvassoc.FACTORY.BIRTH.OBJECT)
+  -- if $ob_object_ctor_fact_live(S, pobcvassoc.FACTORY.BIRTH)
+  -- if $ob_object_cv_remove(pobcvassoc_tail*, pobcvassoc.NAME, pobcvassoc.CELL) = pobcvassoc_tail*
+  -- if $ob_object_cv_spend(pobcvassoc_tail*, pobcvassoc.FACTORY.BIRTH.OBJECT) = pobcvassoc_tail*
+  -- if $ob_object_cv_stored_rows(S, pfunction_native, pobcvassoc_tail*)
+def $ob_object_cv_stored_rows(S, pfunction_native, pobcvassoc*) = false -- otherwise
 
 ;; These observers compare the genuine authored write and resolved throw.
 ;; RESULT may still be present in the raw write; 270 publishes the move to CV1.
@@ -1355,6 +1369,16 @@ def $ob_object_final_local_task_valid(S, pobobjectreturn, pdestructorcall, pobob
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if $ob_object_final_local_source(S, pdestructorcall, pobobjectsource) =/= eps
   -- if $ob_object_source_live(S, (pobobjectsource))
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if $integer_standard_object_handlers(S, POBJECT pdestructorcall.OBJECT)
+  -- if $ob_object_final_cv_task_valid(S, pobobjectreturn)
+def $ob_object_final_local_task_valid(S, pobobjectreturn, pdestructorcall, OBJECT_CV_DATA pobcvassoc* eps) = true
+  -- if pobcvassoc* =/= eps
+  -- if $ob_object_final_local_prefix(S.TODO, pobobjectreturn, pdestructorcall, OBJECT_CV_DATA pobcvassoc* eps) = (ptask_native*)
+  -- if $ob_object_final_local_native(S, pobobjectreturn, pdestructorcall, ptask_native*)
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
+  -- if $ob_object_cv_stored_rows(S, pmethoddesc.FUNCTION, pobcvassoc*)
   -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
   -- if $integer_standard_object_handlers(S, POBJECT pdestructorcall.OBJECT)
   -- if $ob_object_final_cv_task_valid(S, pobobjectreturn)
