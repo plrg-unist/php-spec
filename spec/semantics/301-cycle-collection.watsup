@@ -1036,7 +1036,7 @@ def $gc_array_separation_image(S, n_old, n_new, n_cell, pkey, pvalue) = true
   -- if $gc_direct_array_entries(S.ARRAYS[n_old].ITEMS)
   -- if S.ARRAYS[n_new] = $array_insert(S.ARRAYS[n_old], pkey, DIRECT pvalue)
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_new)
-  -- if $weakmap_write_quiet_scalar(S, pvalue)
+  -- if $value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED
 def $gc_array_separation_image(S, n_old, n_new, n_cell, pkey, pvalue) = false -- otherwise
 def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY n_old]) = [{OPERAND KNOWN (PARRAY n_old), PENDING true}]
   -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
