@@ -237,7 +237,7 @@ def $generator_api_body_producer(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if $class_method_origin(S.CLASSES, pgenerator.FUNCTION) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
   -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
   -- if ~$ppmethod_magic(pmethoddesc.NAME)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
@@ -251,7 +251,7 @@ def $generator_api_body_producer(S, n) = true
   -- if pcpath_method[|pcpath_owner|:2] = [PCFIELD 5, PCINDEX n_method]
   -- if $origin_node(S.SOURCES, pmethoddesc.OWNER) = (NStmtClass phpType14_class (INTEGER int_class) (NIdentifier (BYTES text_class) metadata_name) phpType44 phpType42 phpType23_class metadata_class)
   -- if $origin_node(S.SOURCES, pgenerator.FUNCTION) = (NStmtClassMethod phpType14 (INTEGER int_flags) (BOOLEAN false) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata_function)
-  -- if $ppmethod_visibility(int_flags) = PROPERTY_PUBLIC /\ ~$ppproperty_flag(int_flags, 8) /\ ~$ppproperty_flag(int_flags, 16)
+  -- if $ppmethod_visibility(int_flags) = PROPERTY_PUBLIC /\ pmethoddesc.STATIC = $ppproperty_flag(int_flags, 8) /\ ~$ppproperty_flag(int_flags, 16)
   -- if $generator_statements(statement*)
 def $generator_api_body_producer(S, n) = false -- otherwise
 
