@@ -1727,6 +1727,46 @@ def $enum_is_callable_target(S, PARRAY n) = ((porigin_class, ptbytes_method, b_c
   -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes_method)
 def $enum_is_callable_target(S, pvalue) = eps -- otherwise
 
+;; A plain function name keeps its bytes while namespace lookup waits for
+;; reception. Registered library bodies need not be executable to be callable.
+dec $enum_is_callable_function_string(pstate, pvalue) : bool
+def $enum_is_callable_function_string(S, pvalue) = true
+  -- if $enum_array_string_valid(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if ~(0 <- ptbytes) /\ ~$typed_callable_method(ptbytes, false, false)
+def $enum_is_callable_function_string(S, pvalue) = false -- otherwise
+dec $enum_is_callable_function_history(pstate, pdeclaration*) : bool
+def $enum_is_callable_function_history(S, eps) = true
+def $enum_is_callable_function_history(S, pdeclaration :: pdeclaration_tail*) = $enum_is_callable_function_history(S, pdeclaration_tail*)
+  -- if $constant_callable_function_event(pdeclaration) = eps
+def $enum_is_callable_function_history(S, pdeclaration :: pdeclaration_tail*) = $enum_is_callable_function_history(S, pdeclaration_tail*)
+  -- if $constant_callable_function_event(pdeclaration) = (porigin)
+  -- if $function_at(S.FUNCTIONS, porigin) =/= eps
+def $enum_is_callable_function_history(S, pdeclaration*) = false -- otherwise
+dec $enum_is_callable_function_result(pstate, pvalue, bool, nat) : bool?
+def $enum_is_callable_function_result(S, pvalue, true, n_prefix) = (true)
+  -- if $enum_is_callable_function_string(S, pvalue)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+def $enum_is_callable_function_result(S, pvalue, false, n_prefix) = (true)
+  -- if $enum_is_callable_function_string(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $enum_is_callable_function_history(S, S.DECLARATIONS)
+  -- if S_published = S[.CALLABLES = $constant_callable_functions(S, S.DECLARATIONS)]
+  -- if $callable_at(S.CALLABLES, $ptlc($typed_callable_name(ptbytes))) = $callable_at(S_published.CALLABLES, $ptlc($typed_callable_name(ptbytes)))
+  -- if S_prefix = S[.CALLABLES = $constant_callable_functions(S, S.DECLARATIONS[0:n_prefix])]
+  -- if $typed_registered(S_prefix, ptbytes)
+def $enum_is_callable_function_result(S, pvalue, false, n_prefix) = (false)
+  -- if $enum_is_callable_function_string(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $enum_is_callable_function_history(S, S.DECLARATIONS)
+  -- if S_published = S[.CALLABLES = $constant_callable_functions(S, S.DECLARATIONS)]
+  -- if $callable_at(S.CALLABLES, $ptlc($typed_callable_name(ptbytes))) = $callable_at(S_published.CALLABLES, $ptlc($typed_callable_name(ptbytes)))
+  -- if ~$pfunction_builtin($typed_callable_name(ptbytes))
+  -- if $callable_at($constant_callable_functions(S, S.DECLARATIONS[0:n_prefix]), $ptlc($typed_callable_name(ptbytes))) = eps
+def $enum_is_callable_function_result(S, pvalue, b_syntax, n_prefix) = eps -- otherwise
+
 ;; SENT owns the original table and its reference cells. A borrowed member
 ;; snapshot fixes DIRECT slots, while a genuine ALIAS may change its payload.
 dec $enum_is_callable_member_snapshot(pstate, pitem, pvalue) : bool
@@ -1856,7 +1896,7 @@ def $enum_is_callable_input_source(S, penumqueryinput) = true
   -- if $enum_is_callable_argument(S, pconfigcall, 2) = ((NExprVariable (BYTES text_output) metadata_output, porigin_output, z_output))
   -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_output*)
   -- if penumqueryinput.ARRAY = eps /\ penumqueryinput.ITEMS = eps /\ penumqueryinput.VALUES = eps
-  -- if $enum_is_callable_target(S, PSTRING penumqueryinput.VALUE) = ((porigin_class, ptbytes_method, false))
+  -- if $enum_is_callable_target(S, PSTRING penumqueryinput.VALUE) =/= eps \/ $enum_is_callable_function_string(S, PSTRING penumqueryinput.VALUE)
 def $enum_is_callable_input_source(S, penumqueryinput) = true
   -- if pconfigcall = penumqueryinput.CALL
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
@@ -2029,13 +2069,12 @@ def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if pvalue_input = PSTRING_CARRIER INTERNED_STRING ptbytes_input
   -- if $string_carrier_valid(S, pvalue_input)
   -- if ptbytes_input = $base64(text_input)
-  -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
-  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $enum_is_callable_target(S, pvalue_input) =/= eps \/ $enum_is_callable_function_string(S, pvalue_input)
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if $enum_is_callable_saved(S, pconfigcall, pvalue_input) = (penumqueryinput)
   -- if penumqueryinput.ARRAY = eps
   -- if ptbytes_input = penumqueryinput.VALUE
-  -- if $enum_is_callable_target(S, pvalue_input) = ((porigin_class, ptbytes_method, false))
+  -- if $enum_is_callable_target(S, pvalue_input) =/= eps \/ $enum_is_callable_function_string(S, pvalue_input)
 def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_name)
   -- if $enum_is_callable_saved(S, pconfigcall, PARRAY n_array) = (penumqueryinput)
   -- if penumqueryinput.ARRAY = (n_array)
@@ -2257,6 +2296,8 @@ def $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method) = true
 def $enum_is_callable_case_user_method(S, porigin_class, ptbytes_method) = false -- otherwise
 
 dec $enum_is_callable_result(pstate, pvalue, bool) : bool?
+def $enum_is_callable_result(S, pvalue, b_syntax) = $enum_is_callable_function_result(S, pvalue, b_syntax, |S.DECLARATIONS|)
+  -- if $enum_is_callable_function_string(S, pvalue)
 def $enum_is_callable_result(S, pvalue, true) = (true)
   -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
 def $enum_is_callable_result(S, pvalue, false) = (b_callable)
@@ -2337,13 +2378,18 @@ def $enum_is_callable_output_values(S, (penumqueryinput)) = pvalue*
   -- if penumqueryinput.ARRAY = (n_array)
   -- if $enum_is_callable_array_values(S, n_array) = (pvalue*)
 def $enum_is_callable_output_values(S, penumqueryinput?) = eps -- otherwise
+dec $enum_is_callable_output_result(pstate, pvalue, bool, nat) : bool?
+def $enum_is_callable_output_result(S, pvalue, b_syntax, n_prefix) = $enum_is_callable_function_result(S, pvalue, b_syntax, n_prefix)
+  -- if $enum_is_callable_function_string(S, pvalue)
+def $enum_is_callable_output_result(S, pvalue, b_syntax, n_prefix) = $enum_is_callable_result(S, pvalue, b_syntax)
+  -- if ~$enum_is_callable_function_string(S, pvalue)
 dec $enum_is_callable_output_selection(pstate, penumqueryoutput) : bool
 def $enum_is_callable_output_selection(S, penumqueryoutput) = true
   -- if penumqueryoutput.VALUES = eps
   -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((pvalue_input, b_syntax, penumqueryoutput.CELL))
   -- if S_history = S[.TODO = (CONFIG_INVOKE penumqueryoutput.CALL) :: $enum_is_callable_output_input(penumqueryoutput.INPUT)]
   -- if $enum_is_callable_ref_name(S_history, penumqueryoutput.CALL, pvalue_input) = (penumqueryoutput.NAME)
-  -- if $enum_is_callable_result(S_history, pvalue_input, b_syntax) = (penumqueryoutput.RESULT)
+  -- if $enum_is_callable_output_result(S_history, pvalue_input, b_syntax, penumqueryoutput.PREFIX) = (penumqueryoutput.RESULT)
   -- if $enum_is_callable_output_values(S_history, penumqueryoutput.INPUT) = eps
 def $enum_is_callable_output_selection(S, penumqueryoutput) = true
   -- if penumqueryoutput.VALUES = [pvalue_receiver, pvalue_method]
@@ -2387,6 +2433,7 @@ def $enum_is_callable_output_valid(S, penumqueryoutput) = true
   -- if $enum_is_callable_received_ref(S, pconfigcall) = ((pvalue_input, b_syntax, penumqueryoutput.CELL))
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if penumqueryoutput.DEPTH = |S.FRAMES| /\ penumqueryoutput.CALLER = S.CURRENT
+  -- if $(penumqueryoutput.PREFIX <= |S.DECLARATIONS|)
   -- if $config_selected_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall)
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
   -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
@@ -2414,7 +2461,7 @@ def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
   -- if $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_name)
   -- if n_depth = |S.FRAMES|
   -- if penumqueryinput? = $enum_is_callable_saved(S, pconfigcall, pvalue_input)
-  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_old, OLDARRAY eps, VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, DEPTH n_depth, CALLER S.CURRENT}
+  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_old, OLDARRAY eps, VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, PREFIX |S.DECLARATIONS|, DEPTH n_depth, CALLER S.CURRENT}
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
   -- if S.TODO = ptask_query :: ptask_tail*
@@ -2430,7 +2477,7 @@ def $enum_is_callable_output_capture(S, pconfigcall) = (penumqueryoutput)
   -- if $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_sent) = (ptbytes_name)
   -- if n_depth = |S.FRAMES|
   -- if penumqueryinput? = $enum_is_callable_saved(S, pconfigcall, PARRAY n_sent)
-  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_child, OLDARRAY (n_array), VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, DEPTH n_depth, CALLER S.CURRENT}
+  -- if penumqueryoutput = {CALL pconfigcall, INPUT penumqueryinput?, CELL n_cell, OLD n_child, OLDARRAY (n_array), VALUES $enum_is_callable_output_values(S, penumqueryinput?), NAME ptbytes_name, RESULT b_callable, PREFIX |S.DECLARATIONS|, DEPTH n_depth, CALLER S.CURRENT}
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_capture(S, pconfigcall) = eps -- otherwise
 def $eager_operation_source(S, CONFIG_INVOKE pconfigcall) = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
