@@ -112,3 +112,92 @@ def $constant_callable_flow_at(S, porigin_site, porigin_owner, pvalueclass, n_pr
   -- if pconstantfact.CLASS = pvalueclass
   -- if $owned_static_lookup_required(S, pconstantcontext.ORIGIN, pconstantfact)
   -- if $global_constant_lookup_valid(S, pconstantcontext.ORIGIN, pconstantfact, S.USERCONSTANTS)
+
+;; The declaring row borrows a marker while one task owns the pending new zval.
+def $class_static_roots(pclassstatic :: pclassstatic_tail*) = $class_static_roots(pclassstatic_tail*)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
+def $task_nodes(STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) = $value_nodes(pvalue)
+def $static_default_context_at((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*) = (pstaticdefaultcontext)
+def $static_default_bind_marker(STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) = true
+def $static_default_binding_head((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin) = (pstaticdefaultcontext.DECL = porigin)
+def $static_default_binders_unique((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin_seen*) = (~(pstaticdefaultcontext.DECL <- porigin_seen*) /\ $static_default_binders_unique(ptask*, porigin_seen* ++ [pstaticdefaultcontext.DECL]))
+def $static_default_phases((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, b_property) = $static_default_phases(ptask*, true)
+
+dec $static_publication_task(ptask*, pstaticdefaultcontext, pvalue, pvalueclass) : bool
+def $static_publication_task(eps, pstaticdefaultcontext, pvalue, pvalueclass) = false
+def $static_publication_task((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, pstaticdefaultcontext, pvalue, pvalueclass) = true
+def $static_publication_task(ptask :: ptask_tail*, pstaticdefaultcontext, pvalue, pvalueclass) = $static_publication_task(ptask_tail*, pstaticdefaultcontext, pvalue, pvalueclass)
+  -- if ptask =/= STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass
+dec $static_publication_valid(pstate, pstaticdefaultcontext, pvalue, pvalueclass) : bool
+def $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass) = true
+  -- if $static_publication_task(S.TODO, pstaticdefaultcontext, pvalue, pvalueclass)
+  -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if $owned_static_source(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $static_default_filled(S, ppropertydesc)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pstaticdefaultcontext.DECL /\ pconstantcontext.LINE = pstaticdefaultcontext.LINE
+  -- if S.ORIGIN = (pstaticdefaultcontext.DECL)
+  -- if $static_default_bind_valid(S, pstaticdefaultcontext)
+  -- if pvalueclass = $constant_class(S, porigin_initializer)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $class_constant_runtime_type(S, ppropertydesc.TYPE, pvalue)
+  -- if S_bind = S[.TODO = [STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass]]
+  -- if $property_default_transfer_valid(S_bind, ppropertydesc, pvalueclass)
+def $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass) = false -- otherwise
+dec $static_publication_tasks(pstate, ptask*, porigin) : bool
+def $static_publication_tasks(S, eps, porigin) = false
+def $static_publication_tasks(S, (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin) = true
+  -- if pstaticdefaultcontext.DECL = porigin
+  -- if $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass)
+def $static_publication_tasks(S, ptask :: ptask_tail*, porigin) = $static_publication_tasks(S, ptask_tail*, porigin) -- otherwise
+dec $static_publication_frames(pstate, pframe*, porigin) : bool
+def $static_publication_frames(S, eps, porigin) = false
+def $static_publication_frames(S, pframe :: pframe_tail*, porigin) = ($static_publication_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO, porigin) \/ $static_publication_frames(S, pframe_tail*, porigin))
+def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = true
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
+  -- if pclassstatic.DECL = porigin_decl /\ ppropertydesc.ORIGIN = porigin_decl
+  -- if $owned_static_source(S, ppropertydesc)
+  -- if $static_publication_tasks(S, S.TODO, porigin_decl) \/ $static_publication_frames(S, S.FRAMES, porigin_decl)
+def $call_task_valid(S, STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) = $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass)
+
+def $static_default_commit(S, pstaticdefaultcontext, ppropertydesc, pvalue, ptask_tail*) = $destructor_release_begin(S_stage, $destruction_values($item_nodes(pitem)))
+  -- if $owned_static_source(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE pitem
+  -- if $item_nodes(pitem) =/= eps
+  -- if $static_default_filled(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if pvalueclass = $constant_class(S, porigin_initializer)
+  -- if S_retired = $static_default_retire(S, pstaticdefaultcontext)
+  -- if S_stage = S_retired[.CLASSSTATICS = $class_static_set(S_retired.CLASSSTATICS, pstaticdefaultcontext.DECL, PROP_STATIC_BINDING)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask_tail*]
+dec $static_publication_finish(pstate, pstaticdefaultcontext, pvalue) : pstate
+def $static_publication_finish(S, pstaticdefaultcontext, pvalue) = $static_default_restore($static_default_bound(S, pstaticdefaultcontext, ppropertydesc, pvalue)[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticdefaultcontext.DECL) = (ppropertydesc)
+rule PhpStep/static-default-publish: S ~> $static_publication_finish(S[.TODO = ptask_tail*], pstaticdefaultcontext, pvalue)
+  -- if S.TODO = (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask_tail*
+  -- if $static_publication_valid(S, pstaticdefaultcontext, pvalue, pvalueclass)
+def $call_after_origin(S, STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) = $static_publication_finish(S, pstaticdefaultcontext, pvalue)
+def $return_discard(S, STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) = S[.TODO = (STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: S.TODO][.COMPLETION = UNSUPPORTED "uncertified static-default old-release abrupt completion"]
+  -- if $class_static_at(S.CLASSSTATICS, pstaticdefaultcontext.DECL) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
+
+;; The unreadable slot cannot be consumed or overwritten during old-value release.
+def $class_static_read(S, porigin_requested, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "static default slot release"]
+  -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
+def $class_static_store_ordinary(S, porigin_requested, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "static default slot release"]
+  -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
+def $class_static_reference_fetch_ordinary(S, ppropertyid, z) = S[.COMPLETION = UNSUPPORTED "static default slot release"]
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
+def $class_static_bind_prepare(S, ppropertyid, n_cell, z) = S[.COMPLETION = UNSUPPORTED "static default slot release"]
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING

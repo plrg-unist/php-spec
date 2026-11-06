@@ -109,17 +109,19 @@ def $static_default_filled(S, ppropertydesc) = true
   -- if ppropertydesc.ORIGIN = porigin
   -- if porigin <- $static_default_fills(S.CLASSCONSTANTHISTORY)
 def $static_default_filled(S, ppropertydesc) = false -- otherwise
-def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = true
+dec $static_default_slot_default(pstate, ppropertydesc, pclassstatic) : bool
+def $static_default_slot_default(S, ppropertydesc, pclassstatic) = true
   -- if pclassstatic.DECL = ppropertydesc.ORIGIN
   -- if ppropertydesc.STATIC
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
   -- if pclassstatic.STATE = PROP_DEFERRED porigin_initializer
   -- if $static_default_source_valid(S, ppropertydesc)
   -- if ~$static_default_filled(S, ppropertydesc)
-def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = $property_slot_valid(S, ppropertydesc, {DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.KEY, STATE pclassstatic.STATE})
+def $static_default_slot_default(S, ppropertydesc, pclassstatic) = $property_slot_valid(S, ppropertydesc, {DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.KEY, STATE pclassstatic.STATE})
   -- if pclassstatic.DECL = ppropertydesc.ORIGIN
   -- if ~$static_default_descriptor(ppropertydesc.DEFAULT) \/ $static_default_filled(S, ppropertydesc)
-def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = false -- otherwise
+def $static_default_slot_default(S, ppropertydesc, pclassstatic) = false -- otherwise
+def $static_default_slot_valid(S, ppropertydesc, pclassstatic) = $static_default_slot_default(S, ppropertydesc, pclassstatic) -- otherwise
 
 dec $static_default_trigger_root(pstate, porigin) : porigin?
 def $static_default_trigger_root(S, PORIGIN n pcpath) = $class_named(S.CLASSNAMES, $ptlc(ptbytes))
@@ -372,7 +374,9 @@ def $static_default_array_supported(eps) = true
 def $static_default_array_supported((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($static_default_class_supported(pvalueclass) /\ $static_default_array_supported((pkey_tail, pvalueclass_tail)*))
 
 dec $static_default_bound(pstate, pstaticdefaultcontext, ppropertydesc, pvalue) : pstate
-rule PhpStep/static-default-bind: S ~> $static_default_restore($static_default_bound(S_value, pstaticdefaultcontext, ppropertydesc, pvalue)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
+dec $static_default_commit(pstate, pstaticdefaultcontext, ppropertydesc, pvalue, ptask*) : pstate
+def $static_default_commit(S, pstaticdefaultcontext, ppropertydesc, pvalue, ptask*) = $static_default_restore($static_default_bound(S, pstaticdefaultcontext, ppropertydesc, pvalue)[.TODO = ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext) -- otherwise
+rule PhpStep/static-default-bind: S ~> $static_default_commit(S_value, pstaticdefaultcontext, ppropertydesc, pvalue, ptask_tail*)
   -- if S.TODO = (STATIC_DEFAULT_BIND pstaticdefaultcontext) :: ptask_tail*
   -- if $static_default_bind_valid(S, pstaticdefaultcontext)
   -- if pstaticdefaultcontext.ORIGIN = (porigin_trigger)

@@ -52,7 +52,7 @@ syntax ppropertyvisibility = PROPERTY_PUBLIC | PROPERTY_PROTECTED | PROPERTY_PRI
 syntax pmethoddesc = { NAME ptbytes, FUNCTION pfunction, OWNER porigin, VISIBILITY ppropertyvisibility, STATIC bool, FINAL bool, ABSTRACT bool }
 syntax ppropdefault = PROP_UNINITIALIZED | PROP_NULL | PROP_STORED porigin | PROP_LITERAL pvalue | PROP_DEFERRED porigin
 syntax ppropertydesc = { ORIGIN ppropertyid, NAME ptbytes, KEY ptbytes, VISIBILITY ppropertyvisibility, SETVISIBILITY ppropertyvisibility?, FINAL bool, STATIC bool, READONLY bool, TYPE ptbranch*, DEFAULT ppropdefault, LINE nat }
-syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem | PROP_DEFERRED porigin
+syntax ppropstate = PROP_INITIAL | PROP_UNSET | PROP_VALUE pitem | PROP_DEFERRED porigin | PROP_STATIC_BINDING
 syntax ppropertyslot = { DECL ppropertyid?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
 syntax pobjecttable = { OBJECT nat, TABLE nat }
@@ -636,6 +636,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | CLASS_CONST_CLASS phpType19 phpType20 int | CLASS_CONST_MEMBER phpType19 poperand int | CLASS_CONST_CAPTURE porigin poperand int | CLASS_CONST_BIND porigin | CLASS_CACHE_PUBLISH pclassreplacement
   | TRAIT_OBJECT_COMPARISON ptraitcachecause
   | STATIC_DEFAULT_UPDATE porigin int | STATIC_DEFAULT_BIND pstaticdefaultcontext
+  | STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass
   | INSTANCE_DEFAULT_UPDATE porigin porigin int | INSTANCE_DEFAULT_BIND porigin pstaticdefaultcontext
   | CLASS_CONST_TABLE_UPDATE porigin int | CLASS_CONST_UPDATE porigin int | CLASS_CONST_CONSTRUCT ptbytes phpType7* bool int | CLASS_CONST_STATIC poperand ptbytes int
   | CLASS_CONST_SELECTED pstaticselection ptbytes int
