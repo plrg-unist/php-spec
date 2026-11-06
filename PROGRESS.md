@@ -3073,6 +3073,12 @@ caller owner. Three source agreements,92/122 transfer/retirement fronts,25 pack
 guards and two refusal controls pass first execution at private467 cuts; the
 pack fixture correction preceded execution. Existing owners and438 stay fixed.
 [Review](coverage/semantics/anonymous-this-array-from-callable-producer-magic-review.json).
+Fresh-object method arrays now admit the unchanged plain-static source tail.
+Two original agreements,80/121 selector-retirement/history fronts,25 pack guards
+and one refusal control pass first execution at private468 cuts. The tested
+unaliased selectors die before real argument reads; wrapper metadata adds no
+receiver root. Constructor and generic owner rules stay unchanged.
+[Review](coverage/semantics/anonymous-fresh-static-array-from-callable-producer-magic-review.json).
 
 
 
@@ -3598,7 +3604,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS227 | Fresh-object static callback arrays in normal callable factories, preserving early selector retirement and receiver-free wrapper history. |
+| CLASS228 | Caller-This static callback arrays in normal callable factories, preserving the old instance-source law and caller ownership with receiver-free wrappers. |
 | ATTR84 | Indirect append through existing private scalar magic GET, with guard-free receiver lease across Notice and correct release before scalar-container failure. |
 | COMP208 | Owning defaults for literal nullsafe public method calls, preserving nil argument skipping and genuine live selected scopes and cache authority. |
 | I138 | Scope-free raw static Closure helper frames in existing reentry paths, preserving owning INSTANCE roots through saved VM moves and return. |

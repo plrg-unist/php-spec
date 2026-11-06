@@ -5882,6 +5882,15 @@ the wrapper edge, while returned `$this` may survive caller retirement.
 CV/stored callbacks and broader modes stay separate.
 [This callback array review](coverage/semantics/anonymous-this-array-from-callable-producer-magic-review.json).
 
+Fresh-receiver callback arrays now also select public ordinary static methods
+through the existing original-scope and constructor certificates. The factory
+releases its array/selector owner, and the static wrapper has no receiver edge.
+The tested unaliased selectors retire before real arguments, so destructor writes
+affect the acquired value; other aliases may keep a selector alive. Closed
+selection metadata stays nonowning while INSTANCE and result owners preserve
+argument snapshots. Broader callback histories and modes stay separate.
+[Fresh static selector review](coverage/semantics/anonymous-fresh-static-array-from-callable-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),

@@ -1,0 +1,121 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS227: normal immediate Closure::fromCallable with exact implicit/direct/nonref/nonspread [fresh fixed-name ordinary USER receiver,literal public ordinary static method] array; old no/approvedCtor, REAL zero/required args, quiet COPY and magic headers.",
+  "base": "2921c03e99b112253ff7b164c5c6bc008985810a",
+  "module_count": 468,
+  "mechanism": "414 changes one existing fresh-object-array tail: unchanged plain_instance_source OR unchanged plain_static_source. Original factory/item/literal/constructor/private-first scope_method prefix stays exact; STATIC public USER signature/body checks use REALargs. Existing234 source/history/wrapper validation,438/raw isolation/schema/facts/roots/owners are unchanged.",
+  "engine_basis": [
+    "Pinned zend_API.c4063–4069 records object called_scope then clears fcc.object for a static method.234 from_receiver(STATIC)=eps/from_live_receiver(STATIC)=true; permanent INSTANCE/class metadata validates original INPUT/CLASS after selector retirement without adding an owner.",
+    "The factory releases its real callback-array/selector owner; the STATIC wrapper adds no receiver edge. The tested unaliased selectors retire before real arguments, while constructors that publish This may leave other owners. Existing INSTANCE/parameter/result owners preserve the actual acquired argument; no generic lifetime law or history owner is changed."
+  ],
+  "author": {
+    "source1": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/author/source/report.json",
+      "sha256": "739d42d6afb65eaeddf70ad216a6689207653721bcfa83c5f22515b48ac39010",
+      "count": 1,
+      "result": "FIRST exact normal/quiet/stable/no timeout40.786923633s at99370/private468 under300. Native original once: selector destructor replaces globalOld with New before first argument SEND, later shift replaces global with Later, and returned/handled value remains New. Old zero-signature/other accepted evidence reused without replay."
+    },
+    "owner80": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/author/state-owner/report.json",
+      "sha256": "7c6bddbb4233f1158d364a1b5afe6759db2128fdc3020106bc642c9ee97bee92",
+      "conditions": 80,
+      "result": "FIRST SL468 PASS/true/quiet/exit0/stable/no timeout34.502532725s under300. Real API_RESULT0 precedes selector cleanup. One pause plus actual ready-fence seek equals direct seek, without assuming an exact append across a destructor that allocatesNew. At ready callback/selector are retired, selector owner0, wrapper STATIC/receiverEPS and nonowning INPUT/CLASS history remain valid; globalOld is dead and globalNew installed before any invocation arg. INSTANCE-only frame receives that New despite later globalLater. Real outer SEND protects New after wrapper retirement; pure source/COPY remain valid. EndsSEND."
+    },
+    "unpack25": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/author/state-unpack/report.json",
+      "sha256": "2dd1d71e8282b4081b817dc002a9db00d5f2c76df36a8cc57747a935e9257715",
+      "conditions": 25,
+      "result": "FIRST SL468 PASS/true/quiet/exit0/stable/no timeout20.963163315s under300. New static fresh-array source and initialized classified[9] pack are separately eligible; unchanged438 refuses before factory/selector effects."
+    },
+    "source_refusal": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/author/boundaries/report.json",
+      "sha256": "856ee6ee93592b7012a142dc086786f8d3397c9676afc74ec1d8cfdb176edc47",
+      "count": 1,
+      "agreement_credit": 0,
+      "result": "FIRST intended outer-unpack Unsupported/source-mode exit1/quiet/stable/no timeout. Native original exact normal once; model stops before selector destructor/argument/body effects,0 agreement credit."
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "fixture_commits": [
+      "20975ceb04f1c76b94adeb885133302dad0e776b",
+      "409c387dda012abcd21ba6fc38cc86536eb25d40"
+    ],
+    "record_commit": "33078d959971e6d401ff76689af86ca9ee6f4c70",
+    "record": "coverage/semantics/anonymous-fresh-static-array-from-callable-producer-magic-independent.json",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/reviewer/source/report.json",
+      "sha256": "7ff27f0fcb26df4a352fc9fb2be19a778ee1a191f74c6f4ab42037b7294fa25a",
+      "result": "FIRST exact normal/quiet/stable/no timeout,37.489999342s,SL468,300s inner/310s outer; original native path/cwd/profile retained without relocation or reexecution.",
+      "agreement_credit": 1
+    },
+    "state": {
+      "protocol": "tests/semantics/anonymous_fresh_static_array_from_callable_producer_magic_independent_protocol.py",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/reviewer/state/report.json",
+      "sha256": "8deb437871d8156835f3ef13a568376d9b3d7d47e7ba98f03cf9d35806625d69",
+      "conditions": 121,
+      "result": "FIRST SL468 PASS/true/exit0/quiet/stable/no timeout,wrapper37.789088081s,300s inner/370s outer.",
+      "selection": "Actual API_CALLABLE_RESULT0/SOURCE CONFIG_FROM authenticates fresh inherited constructor class and primary public static Base method/requested and called Child. One step binds/appends FROM(ARRAY true,STATIC true,INVOKE false), with INPUT/CLASS.RECEIVER still naming the selector but from_receiver/Closure scope receiver eps. Pause plus real ready-fence seek equals direct seek.",
+      "owners": "Callback header and selector each have one owner before factory completion. At actual CLOSURE_TARGET ready both are retired and selector has zero owners, while its permanent class row and from_selected/from_valid remain valid; exact CTOR;SELECTOR-END; precedes every real argument. Current INSTANCE owns only wrapper, receiver eps. Saved REQUEST_STRING0 differs from late99; wrapper retires before named SEND and real table/global kept transport the string through final unset.",
+      "retirement": "Final exact output/Closure/heap validity and pure source certificate hold after wrapper/selector retirement. Metadata INPUT/CLASS receiver history creates no real owner. No claim that published/aliased selectors always die, and no old child-tail replay."
+    }
+  },
+  "main_context": {
+    "accepted_source": "92b1f5fb8868981f8c67b6f4452fc4d0902aa129",
+    "accepted_record": "92b1f5fb8868981f8c67b6f4452fc4d0902aa129",
+    "module_count": 469,
+    "authentic_peer_review": {
+      "revision": "61ac8078a3c1ff88b329c5292064bb81247743ec",
+      "module_count": 468,
+      "review": "GC74 copied-DIRECT decrement inference requires actual CV/int ASSIGN_ARRAY plus credited COW separation/alias image with old NATIVEEXCESS1. These originals have real callback/table arrays but no is_callable NAME-output query, so units remain eps and that image cannot arise; no copied target-write path. ENUM162475 still requires declared callable return mask/exact active target. All USER RETURNS eps and producer CLOSURE_TARGET/INSTANCE is outside its new METHOD/fixedSCOPED context, so no callable SOURCE/unref/finish. Authentic private2921/468 cuts retained; no gate/replay."
+    },
+    "review": "GC74 copied-DIRECT decrement inference requires actual CV/int ASSIGN_ARRAY plus credited COW separation/alias image with old NATIVEEXCESS1. These originals have real callback/table arrays but no is_callable NAME-output query, so units remain eps and that image cannot arise; no copied target-write path. ENUM162475 still requires declared callable return mask/exact active target. All USER RETURNS eps and producer CLOSURE_TARGET/INSTANCE is outside its new METHOD/fixedSCOPED context, so no callable SOURCE/unref/finish. Authentic private2921/468 cuts retained; no gate/replay.",
+    "status": "CLEAR",
+    "newer_composition": {
+      "revision": "92b1f5fb8868981f8c67b6f4452fc4d0902aa129",
+      "module_count": 469,
+      "review": "COMP208480 parameter_nullsafe_site requires actual NExprNullsafeMethodCall(nonThis CV,literal member,nonFCC). These originals use normal MethodCall magic, fresh New, normal StaticCall factory and outer dynamic FuncCall/CLOSURE_TARGET; no nullsafe source. New METHOD/STATIC recipient/history/default-owned gates are absent, all USER DEFAULTSeps and no omitted-default reception retain old current predicates. Only480/manifest plus own414 added; no generic schema/root edit. Authentic33078/61ac private468 source/state cut retained."
+    },
+    "joined_load": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp208/joined-main-469-v1/report.json",
+      "sha256": "783abea9c8c8773a54ed825a4f20efca8757766bea53ec69a8c747fd49c58704",
+      "revision": "92b1f5fb8868981f8c67b6f4452fc4d0902aa129",
+      "module_count": 469,
+      "elapsed_seconds": 13.785577464965172,
+      "source_credit": 0,
+      "result": "Actual COMP208 current469 shared load already scheduled with READY227 code included: PASS/trueLF/quiet/exit0/stable/no timeout. Load-only0, no CLASS227 source/state replay or agreement renewal."
+    }
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic",
+    "inputs": {
+      "manifest": "/home/user/workspace/php-spec-evidence-archive/class227-fresh-static-array-from-callable-producer-magic/author/inputs.json",
+      "sha256": "33415858ca41a1580a0aa04529a586dd354501b9b8bc5cdba1065e9da5d4c774",
+      "logical_files": 485,
+      "input_variants": 485,
+      "result": "One union across first author source/control/two states and independent source/state. All468 runtime maps agree; no variants/failures."
+    },
+    "recovery": "Source: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_fresh_static_array_from_callable_producer_magic_cases.json --model-timeout 300. State: anonymous_fresh_static_array_from_callable_producer_magic_protocol.py --sl; --case selects affected only. Original commands/cwd/profile/exits/streams and upfront300 limits remain external."
+  },
+  "execution_accounting": {
+    "source_agreements": 2,
+    "refusal_controls_credit": 0,
+    "failed_attempts": 0,
+    "timeout_attempts": 0,
+    "post_execution_source_corrections": 0,
+    "post_execution_fixture_corrections": 0,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "state_repeats": 0,
+    "note": "All new cuts FIRST. Existing ctor/zero-signature/private-selection/generic tail evidence reused without replay. Runner durations exclude wrapper setup. Private226 publication baseline30472 andpeer/source mirrors omitted from integration."
+  },
+  "remaining": "Other receiver/callback histories, CV/keyword/computed/general arrays, broader signatures/constructors/returns, inner-named/unpack/header/owned-NUL and other held paths remain partial.",
+  "engine_divergence": "None identified in the exercised unaliased fresh selector/static wrapper cuts.",
+  "implementation_commit": "99370ecbc68364632b58e880e173a707ca3b40a4",
+  "author_fixture_commit": "464ca3078d0d6f5983df2f05f4dd826b94f859d6"
+}
