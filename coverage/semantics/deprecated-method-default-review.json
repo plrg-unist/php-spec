@@ -1,0 +1,110 @@
+{
+  "milestone": "COMP187",
+  "status": "independently reviewed; integration is recorded by the current checkpoint",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C, TZ=UTC; original bytes, paths and raw stdout/stderr/status retained",
+  "implementation": {
+    "commits": [
+      "909880587",
+      "63e108a49",
+      "92afbdcab",
+      "4d74af839"
+    ],
+    "reviewed_revision": "1e1eca19608235679535ceb9718d6d957e3a880a",
+    "semantics_tree": "b44b0ac7def96e78588809a9ccd4b9f45398ec6a",
+    "modules": 448,
+    "scope": "Owning user-Deprecated defaults from existing producers in ordinary fixed-name calls to named class methods, with by-value nonvariadic parameters and nongenerator by-value returns.",
+    "source_authority": [
+      "Zend/zend_vm_def.h: ZEND_RECV_INIT evaluates with the actual function's declaring scope, publishes a cacheable result and initializes the formal before argument type verification.",
+      "Zend/zend_constants.c: zend_get_constant_ex retains the selected constant across its warning handler; Zend/zend_ast.c: ZEND_AST_CONSTANT copies the returned selected value.",
+      "Existing196 declaration_invocation/method_call_selection authenticate the historical call site, function, declaring and called scopes;286 publication checks authenticate both classes at the receive birth. No historical row owns a receiver."
+    ]
+  },
+  "review_findings": [
+    "Corrected459's nested optional tuple pattern, which loaded but rejected real method contexts; separate option variables retain the same source authority.",
+    "Reordered184's existing pure root/node/plain-fetch/bind-head predicates ahead of full default-context validation, preventing recursive validation for global X while retaining every guard.",
+    "Narrowed new459 capture/cut to user-Deprecated frontiers and alias flow to a user-Deprecated effect leaf. The generic306 effect-value branch also accepts raw trait effects, so the former generic new branches exceeded this increment's scope.",
+    "Inherited Base/Child calls share the declaring method's default origin/cache. Nested receives may fill that same slot; the outer result replaces it only when cacheable. Empty arrays cache; nonempty arrays remain per-call reads.",
+    "The actual formal owns its value before TypeError, including noncached owning arrays. Exit cancellation retains the real binder and closes its receive at actual discard. A cleared source receiver remains owned by the active call, then retires before result assignment."
+  ],
+  "source_validation": {
+    "author": {
+      "agreements": 7,
+      "unsupported_controls": 3,
+      "reports": [
+        {
+          "path": "author-sources-v2/report.json",
+          "sha256": "b668b03f22e1347103875b05404cd2ea992b7979c45a061070889dab9bfc3e92",
+          "agreements": 6
+        },
+        {
+          "path": "author-controls-v1/report.json",
+          "sha256": "34fe5b9769b0bcdc26d5360ca222eaaaed4711b75ba1edbc3c9bd11f6b14c746",
+          "agreements": 1,
+          "unsupported_controls": 3
+        }
+      ],
+      "compatibility": "These comparisons bind the final63e108a49 runtime bytes before the three scope-narrowing predicates. Final author259 reaches both affected user-Deprecated reentry cuts with the new discriminators true; independent rooted-shadow comparison exercises the narrowed alias flow. The promoted original and type/throw/cleanup routes retain the same bodies, receive state and cleanup. No native replay or old186 evidence renewal is claimed."
+    },
+    "independent": {
+      "report": "reviewer-source-v1/report.json",
+      "sha256": "a3cea3804844b5ec0292eb72007733e5b46cc79675bf8e1b462e89d2c3301873",
+      "agreements": 4,
+      "unsupported_controls": 1,
+      "cases": [
+        "cache-scope",
+        "multiline",
+        "receiver-retirement",
+        "shadow-rooted"
+      ],
+      "control": "Original shadow-scope with unqualified namespaced define remains Unsupported: dynamic constant call domain; zero agreement credit. Rooted \\define is a separate new original.",
+      "native_policy": "The three prior native probes were preserved without replay. Only the new receiver-retirement and rooted-DEFINE sources received new native runs. Model comparisons use the original native source paths and raw streams."
+    },
+    "total_exact_agreements": 11,
+    "unsupported_agreement_credit": 0
+  },
+  "reached_validation": {
+    "author": {
+      "report": "author-protocol-v2/report.json",
+      "sha256": "f1a17432bae4f4606e8324b6e3c6e500cde5b8bf13c15c179d5ea50c77eb3d56",
+      "conditions": 259,
+      "revision": "4d74af839",
+      "seconds": 79.6
+    },
+    "independent": {
+      "report": "reviewer-protocol-v3/report.json",
+      "sha256": "ee7a3b62e5f8863cda1fc8cdd250827ada6ed865b7cd6718bf92b201a0bf26ef",
+      "conditions": 220,
+      "revision": "1e1eca196",
+      "seconds": 45.5
+    },
+    "results": "Both pass SL448 with exact true/newline, empty stderr, exit0, stable tested inputs/revision, no timeout and no surviving process group. State checks supply zero source-agreement credit.",
+    "coverage": "Actual DEFINE cuts and full birth suffix; scope/site/function/default-origin corruption; Base published before Child prefix; inherited cache identity and cache upsert; formal HCELL ownership before TypeError; receiver retirement and absence of metadata-added roots; genuine exit binder; one-step BUDGET/resumption. Genuine raw-trait and builtin method-default frontiers satisfy existing method/order/frontier checks but fail user-leaf/frontier checks and acquire no new scoped capture/cut."
+  },
+  "failures_preserved": {
+    "zero_credit": "Baseline/admission Unsupported packets, guard/DEFINE localization, author-sources-v1 reentry timeout120, reviewer-protocol-v1 empty optional iteration and reviewer-protocol-v2 incorrect INSTANCE assertion remain preserved with zero acceptance credit. The corrected receiver assertion checks RECEIVER; INSTANCE remains empty.",
+    "superseded": "Author-protocol-v1's255 passing conditions retain their pre-narrowing identity; author-protocol-v2's259 conditions are the final affected check. Native-only and diagnostic packets supply no model agreement."
+  },
+  "preserved_limits": "No Closure/trait/by-reference/variadic/Generator/dynamic-name or callable recipient, class/static-property owning default, new producer/schema, or152 Throwable-frame relaxation. Scoped builtin/trait warning certificates are excluded from this increment; the old unscoped routes and cheap builtin/user discriminator remain separate. Wider core and all paused boundaries remain open.",
+  "recovery": {
+    "root": "../php-spec-evidence-archive/comp187/",
+    "commands": [
+      "python3 tests/semantics/deprecated_global_constant_sources.py --output NEW --select method-owned-reentry,method-owned-reentry-nonempty,method-owned-type-cache,method-owned-type-nonempty,method-owned-handler-throw,method-owned-local-exit-cancel",
+      "python3 tests/semantics/deprecated_method_default_protocol.py --output NEW",
+      "python3 tests/semantics/deprecated_method_default_review_protocol.py --output NEW",
+      "The external reviewer-source.py reproduces the frozen-native comparison after restoring its recorded worktree/path. Each report preserves exact argv/cwd, input hashes and raw processes; maintained protocols use only project-local inputs."
+    ],
+    "strict_load": "tests/semantics/_build/default/numeric_runner.exe --sl [all absolute paths from spec/semantics/modules.json, in order] true.watsup; fixture bytes: dec $main() : bool/newline def $main() = true/newline"
+  },
+  "joined_main": {
+    "tested_revision": "5077f9877568815edb7489a68c9aac3e9b8f0e51",
+    "scope": "current-manifest SL elaboration/algorithmic/structuring load only; no PHP replay",
+    "modules": 448,
+    "passed": true,
+    "inputs_stable": true,
+    "report": "../php-spec-evidence-archive/comp187/joined-main-v2/report.json",
+    "report_sha256": "89a4e22eefb71ae29856c427123c0df3cabe07af994b48a799e5820004ad21e8",
+    "metadata_only_worktree_changes": "listed in report; all execution inputs and tested revision remained fixed"
+  }
+}

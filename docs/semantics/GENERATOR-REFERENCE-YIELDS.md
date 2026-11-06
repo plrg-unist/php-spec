@@ -26,6 +26,9 @@ readback requires the corresponding storage to remain live. Genuine Notice and
 error-handler cleanup continuations authenticate their source, payload, line and
 single Generator owner. Handler throws preserve the cached result and use the
 actual child resumer for delegated exception reinjection.
+API callback argument cursors retain the same Notice carrier through value and
+reference preparation. Notice counting adds no owner; the actual cursor, source
+and payload retain their separate validity checks.
 
 Old-cache cleanup also authenticates an explicit literal string key in its runtime
 interned form. The compiled pool keeps plain bytes; the existing compiled-string

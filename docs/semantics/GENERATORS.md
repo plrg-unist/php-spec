@@ -107,17 +107,22 @@ NULL nullsafe reception skips both computed-name and argument producers. Its
 nonnull result/fetch tail stays nonowning through the same abrupt cleanup.
 This extension covers the nondelegated resume after initialization, with an owning
 argument. By-reference bodies additionally require the registered Module328
-reference producer, its cached REFCELL and the actual live reference operand;
-storage history alone cannot begin this cleanup. The cache cell and its value
-stay owned by the Generator while argv retires. During later cache destruction,
+producer and either its cached REFCELL with an actual live reference operand or
+an owning live VALUE snapshot in the selected Generator's real child slots.
+Consumed storage history cannot begin cleanup. A completed initial reference
+Notice can install VALUE for a later SEND body throw. A throwing post-init Notice
+also installs VALUE before closing without finally. Both unwinds use the same
+cache/argv ownership law; cache owners stay separate from API argv.
+During later cache destruction,
 the existing storage pin keeps the Generator weak-live until storage finishes.
 Result/return history remains valid after cache retirement. Generator `throw`,
-pending initialization, reference snapshots without a live cache cell, captured APIs and
+pending initialization, nonowning VALUE snapshots, captured APIs and
 `Closure::call` retain their separate scopes.
 [Literal body-throw review](../../coverage/semantics/generator-send-body-throw-review.json),
 [computed body-throw review](../../coverage/semantics/generator-computed-send-body-throw-review.json),
 [nullsafe body-throw review](../../coverage/semantics/generator-nullsafe-send-body-throw-review.json),
-[reference-cache body-throw review](../../coverage/semantics/generator-reference-send-body-throw-review.json).
+[reference-cache body-throw review](../../coverage/semantics/generator-reference-send-body-throw-review.json),
+[VALUE-snapshot body-throw review](../../coverage/semantics/generator-reference-snapshot-send-body-throw-review.json).
 
 Literal nullsafe API calls share the same selected receiver and argument protocol.
 A NULL receiver skips named-CV reception and spread producers. A nonnull call

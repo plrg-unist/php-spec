@@ -1310,8 +1310,13 @@ publication, a root runtime-declaration receipt and completed main-unit history
 before dummy-bound temporary calls. Known Private source warmth and per-call
 freshness survive retirement under the same existing ownership rules; see the
 [conditional-source review](../../coverage/semantics/enum-is-callable-conditional-user-call-cache-review.json).
+Named functions published inside ordinary early named factories now retain
+cache authority after creator-frame retirement. The saved unscoped call, fixed
+source target and actual earlier publication prefix authenticate the declaration
+without live-frame guesses; see the
+[factory-source review](../../coverage/semantics/enum-is-callable-factory-user-call-cache-review.json).
 Constant/default/static/property captures, resumed Generator,
-internal/Trait/anonymous/Fiber query owners, wider conditional sources
+internal/Trait/anonymous/Fiber query owners, wider conditional/factory sources
 and transformed contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written

@@ -163,6 +163,20 @@ original and three states/234 premises (208 reached,26 derived) are in the
 [set-only review](../../coverage/semantics/backed-set-only-hook-review.json). Other
 set shapes, references, indirect writes and wider override/lifetime families remain required.
 
+Sole public typed short SET hooks on ordinary parentless classes compile the
+authentic expression child, then use the existing backing assignment and void
+fallthrough. A short SET is backed even when its expression contains no explicit
+property access. The exact source hook, completed property, function/code and
+current SET context authenticate the implicit write; no synthetic checked
+assignment or source occurrence is introduced. The original caller input and the
+transformed stored value stay distinct. Parameter rejection precedes the body,
+typed result rejection prevents the slot update, and RHS throws skip the implicit
+assignment.
+The captured write target and existing outer result retain the receiver after
+global removal until abrupt cleanup; retry and ordered destruction are covered
+by the [short-SET review](../../coverage/semantics/short-set-expression-review.json).
+Trait, explicit-parameter, paired/header and Tick-bearing short SET forms remain partial.
+
 Selected sole public typed backed implicit SET hooks also import directly into a
 parentless Consumer. The raw Trait function remains a source authority; only the
 published Consumer clone is callable on Grand. It retains Trait body/magic while

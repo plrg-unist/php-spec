@@ -208,8 +208,13 @@ callable publication, a root runtime-declaration receipt and completed main-unit
 history before the same dummy-bound temporary calls. The
 [conditional-source review](coverage/semantics/enum-is-callable-conditional-user-call-cache-review.json)
 records one exact source agreement, 136 independent conditions and strict447.
-Constant/default captures, wider conditional sources, unproved transformed
-copies and Generator/Fiber query owners remain partial.
+A named function published by an ordinary early named factory now retains
+cache authority after creator-frame retirement. The saved call/source selection
+and earlier publication prefix authenticate its real declaration cause without
+live-frame inference. The [factory-source review](coverage/semantics/enum-is-callable-factory-user-call-cache-review.json)
+records one exact source agreement, 165 independent conditions and strict447.
+Constant/default captures, wider conditional/factory sources, unproved
+transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -455,6 +460,16 @@ and wider API/lifecycle modes remain partial.
 [computed review](coverage/semantics/generator-computed-send-body-throw-review.json),
 [nullsafe review](coverage/semantics/generator-nullsafe-send-body-throw-review.json),
 [reference-cache review](coverage/semantics/generator-reference-send-body-throw-review.json).
+
+I121 admits an owning VALUE snapshot after the genuine by-reference yield/Notice
+path and proves its separate cache, reference and API-argument owners. The actual
+handler API SEND/REF carriers now preserve Notice identity and borrowed scope
+before invocation. The normal R source component retains its original cut through
+that API-only repair; the corrected throwing C source has its own exact cut.
+Independent R107/C117 fronts pass 224 reported conditions (214 custom) over446
+runtime modules plus the fixture at SL447. The original false packet and failed
+diagnostics retain zero credit; wider producers/lifecycle contexts remain partial.
+[Snapshot review](coverage/semantics/generator-reference-snapshot-send-body-throw-review.json).
 
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
@@ -1241,6 +1256,12 @@ Escaped block-SET Closures authenticate exact class/trait setter origins and
 actual consumer imports while retaining captured values and receiver ownership
 after hook return and removal of the original receiver variables
 ([review](coverage/semantics/tick-set-closure-review.json)).
+Ordinary public typed class short SET hooks evaluate the real expression, write
+backing storage and fall through as void while preserving the caller's input
+result. Input errors skip the body; RHS throws skip the implicit assignment and
+result type errors prevent its slot update. Retry and receiver cleanup retain
+the existing owners
+([review](coverage/semantics/short-set-expression-review.json)).
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2171,6 +2192,20 @@ discriminator at ded9e52f4 restores the original E_STRICT/eval-cut check: all 76
 conditions pass under the unchanged cap. Prior source, pipe and syntax cuts stay historical.
 [Review](coverage/semantics/deprecated-parameter-default-review.json).
 
+COMP187 receives owning Deprecated defaults through fixed-name instance/static
+calls to ordinary named-class by-value nongenerator methods. Actual descriptors,
+default/function identities, declaring/called scopes and saved publication/call
+prefixes authenticate reception and handler reentry. Inherited methods share the
+declaring cache; formal/cache ownership precedes type failure, and receiver roots
+and real binders survive cancellation cleanup. Only user-Deprecated frontiers and
+leaves enter this new route. Eleven originals agree exactly, four separate
+Unsupported controls retain zero agreement, and 259 author plus220 independent
+reached conditions pass across448 modules. Closure/trait/byref/variadic/Generator/
+dynamic-call recipients and class/static-property defaults remain partial.
+A focused current-manifest SL448 load also passes; source comparisons retain
+their recorded cuts without replay.
+[Review](coverage/semantics/deprecated-method-default-review.json).
+
 ## Active work
 
 Implementation/reviewer pairs resumed after the daemon restart. Private paths
@@ -2179,11 +2214,11 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS199 | Initial reference-cell flat-array first CV in existing by-value magic sends, with SEND dereference/COW and real cell/table/leaf owners; clean-base preparation after integrated CLASS198. |
-| ATTR54 | Public typed CLASS short SET-hook expressions, with implicit value, backing write and void fallthrough; clean-base preparation after integrated ATTR53. Minimal382/403/393 regions; wider binding/header/schema forms remain outside this slice. |
-| COMP187 | Owning method-default source/invocation authentication in reserved459 with minimal458/306 hooks; `comp187-owned-method-defaults-dev`, `comp187-named-method-defaults-review`. |
-| ENUM139 | Runtime named-user publication inside an ordinary EARLY named factory, authenticated after creator retirement by completed call/declaration history; clean-base work after integrated ENUM138. |
+| ATTR55 | Explicit typed defaultless by-value short SET parameters through existing receive/signature/variance and implicit-write rules; clean-base preparation after integrated ATTR54, without trait/byref/default/attribute/schema expansion. |
+| COMP188 | Unscoped REAL Closure owning defaults, with actual cache identity and roots; clean-base preparation after integrated COMP187, retaining existing producer/schema boundaries. |
+| ENUM140 | Constant-static USERMETHOD first-class Closure cache policy from the actual birth prefix, distinguishing cold Private from initialized Shared owners; clean-base preparation after integrated ENUM139. |
 | GC57 | KEY_R dimension reads during one authenticated nonmutating direct by-value finite cursor; read-consumer admission only, preserving the common cursor fence and fetched owners after integrated GC56. |
-| I121 | Owning direct SEND VALUE snapshots in447 and the confirmed handler-API Notice traversal seam in328; `iterator121-dev`, `iterator121-review`. Affected checks are pending; no30/metadata edits. |
+| I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |
 | OB22 | Fresh exception from default FINAL Stringable conversion, with actual retval/cast-guard owners and ordinary fatal reporting/deactivation; clean-base preparation after integrated OB21. Output retains the source-only30 task region and456. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

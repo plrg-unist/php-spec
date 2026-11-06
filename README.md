@@ -2709,12 +2709,16 @@ Named-function omitted defaults now receive these owning values with the origina
 lookup and callee identity. A reentrant receive can fill the cache while an outer
 read is pending; the outer value replaces it only when cacheable. Cache publication
 and formal-slot ownership precede TypeError, and exit cancellation preserves the
-real default binder until the receive ends. Method/Closure, class and static-property
-defaults, converted queries, trait collision folding and wider metadata remain partial.
+real default binder until the receive ends. Fixed-name instance/static calls also
+receive owning defaults in ordinary named-class by-value nongenerator methods,
+preserving actual scopes, receiver roots and inherited cache identity. Closure,
+trait, by-reference, variadic, Generator and dynamic callable recipients, class
+and static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).
+[Method-default review](coverage/semantics/deprecated-method-default-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
@@ -5836,6 +5840,10 @@ and void return from the property declaration. Assignment20 returns20 while the
 Parent body stores33; a bad array fails before the body and preserves33.
 Ordinary reads keep using the slot. One original and three states/234 checks are
 in the [set-only hook review](coverage/semantics/backed-set-only-hook-review.json).
+Public typed class short SET hooks evaluate their source expression and write its
+result to backing storage before void fallthrough. Assignment retains the original
+input; RHS throws skip the implicit write through retry and receiver cleanup.
+[Short-SET review](coverage/semantics/short-set-expression-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
@@ -7829,13 +7837,16 @@ argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their
 source CVs; NULL nullsafe reception skips both producers. Supplied exceptions keep
 identity, Previous and original traces; an argv destructor may replace the pending
-exception before receiver retirement. By-reference bodies require their real
-cached reference cell, which keeps its value independently of API arguments;
-the Generator stays weak-live while that cached value is destroyed.
+exception before receiver retirement. By-reference bodies require a live cached
+reference cell or an owned VALUE snapshot, separate from API arguments. An initial
+completed reference Notice can install VALUE, and a throwing post-init Notice also
+installs VALUE before close. The SEND unwind keeps cache owners through argv
+cleanup; the Generator stays weak-live while its cached value is destroyed.
 [Literal review](coverage/semantics/generator-send-body-throw-review.json),
 [computed review](coverage/semantics/generator-computed-send-body-throw-review.json),
 [nullsafe review](coverage/semantics/generator-nullsafe-send-body-throw-review.json),
-[reference-cache review](coverage/semantics/generator-reference-send-body-throw-review.json).
+[reference-cache review](coverage/semantics/generator-reference-send-body-throw-review.json),
+[VALUE-snapshot review](coverage/semantics/generator-reference-snapshot-send-body-throw-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

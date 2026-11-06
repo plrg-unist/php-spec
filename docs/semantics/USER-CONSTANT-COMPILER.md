@@ -88,14 +88,27 @@ initialization precede type verification, including a TypeError. Saved exit mark
 expose only their real parameter binder, and receive retirement follows the actual
 binder discard after cancellation.
 
-Method/Closure, class and static-property owning defaults remain Unsupported;
-existing scalar default routes remain paired. Function-local dynamic static initializers use ordinary opcodes. Converted
-queries, trait collision folding, wider metadata and reflection remain separate.
-Attribute argument paths acquire no runtime initializer authority.
+Fixed-name `->` and `::` calls also receive owning defaults in ordinary named,
+by-value nongenerator methods declared in named classes. The actual descriptor,
+default/function identity, declaring and called scopes, and publication prefix
+must match the receive's birth. User-Deprecated handler publications preserve that entire saved
+call suffix; no historical row retains a receiver. Inherited methods share the
+declaring method's default cache. Reentry, formal ownership before TypeError and
+exit cancellation reuse the same receive and cleanup contracts.
+
+Closure, trait, by-reference, variadic, Generator and dynamic-name/callable
+recipients, plus class and static-property owning defaults, retain their separate
+boundaries. The bounded handler producer remains fixed primitive `define`;
+namespaced fallback `define` is Unsupported here. Scoped builtin/trait warning cuts
+are outside this increment. Existing scalar default routes
+remain paired. Function-local dynamic static initializers use ordinary opcodes.
+Converted queries, trait collision folding, wider metadata and reflection remain
+separate. Attribute argument paths acquire no runtime initializer authority.
 [COMP183 evidence](../../coverage/semantics/deprecated-global-constant-review.json).
 [COMP184 cancellation](../../coverage/semantics/deprecated-handler-cancellation-review.json).
 [COMP185 owning reads](../../coverage/semantics/deprecated-owned-constant-review.json).
 [COMP186 parameter defaults](../../coverage/semantics/deprecated-parameter-default-review.json).
+[COMP187 method defaults](../../coverage/semantics/deprecated-method-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

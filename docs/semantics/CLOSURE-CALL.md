@@ -96,8 +96,13 @@ Direct top-level `if`-body function declarations additionally authenticate their
 actual callable publication, root runtime-declaration receipt and completed main
 unit before using that cache history; see the
 [conditional-source review](../../coverage/semantics/enum-is-callable-conditional-user-call-cache-review.json).
+A named function published inside an ordinary early named factory can also use
+that cache after the factory returns. Its actual receipt authenticates the saved
+unscoped call and fixed source target against the pre-publication declaration
+prefix, independently of current frames; see the
+[factory-source review](../../coverage/semantics/enum-is-callable-factory-user-call-cache-review.json).
 Unbound named-function calls on ordinary instances retain the existing scope-change
-Warning and enter no body. Wider conditional sources, unproved transformed
+Warning and enter no body. Wider conditional/factory sources, unproved transformed
 copies and internal/Generator/Fiber query owners remain partial.
 
 Reference formals receive isolated fresh cells after outer evaluation and binding,

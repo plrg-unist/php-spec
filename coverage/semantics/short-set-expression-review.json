@@ -1,0 +1,73 @@
+{
+  "milestone": "ATTR54: source-certified class short SET implicit backing writes",
+  "status": "Independently accepted bounded implementation; wider hooks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "1851385aa04d0142a1dc59be18ac9997ca9bcdb8",
+    "module": "spec/semantics/403-backed-set-hooks.watsup",
+    "sha256": "f5cc714c95b06c4572c3e79f340a3426a42d319336df9fee357c9c49593b6a14",
+    "scope": "A sole ordinary public typed parentless CLASS short SET compiles its authentic expression child, then reuses captured ASSIGN_ARRAY, DISCARD and void fallthrough. Exact source, completed property, function/code and matching current SET context authenticate the implicit backing write. No synthetic checked assignment/source occurrence, new task/schema, general binding, Trait or Tick-plan expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_property_hook_uses_property treats a short SET as backed even without explicit property access. zend_compile_property_hooks rewrites its expression to a backing-property assignment, supplies the implicit value parameter and void return. Existing assignment/typed-store and property-hook call paths retain original input separately from the transformed value.",
+    "abrupt_order": "Input rejection skips body entry; a throwing RHS skips the generated assignment; typed result rejection prevents its slot update. Independent RHS side effects are not rolled back. Existing captured-target and outer-result cleanup preserve receiver lifetime."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/short-set-expression-54",
+    "native_first": [
+      {
+        "report": "native-v1/report.json",
+        "sha256": "554b026885a392f8e1ab5cef0ac126d4ba9407dc7ce3c5b2b694158d195f8fa5",
+        "scope": "Plain input5/stored6 yields056. Composite input/result and backing values, RHS throw/retry, global receiver removal, D3 before catch and fresh D2 yield E445E9C5E223E8UD3CE112D25Z. Native preparation only, no differential credit."
+      },
+      {
+        "report": "native-type-v1/report.json",
+        "sha256": "e8d18bf1e6689888b5fb1f6f3bcb03d3737393ebc1c9b53da7674919f325c6ec",
+        "scope": "Input-array and transformed-array TypeErrors preserve the observed backing2 and yield A2B2. Native preparation only, no differential credit."
+      }
+    ],
+    "original_sources": {
+      "report": "source-final-v1/report.json",
+      "sha256": "6030c1d0e64c1d6b1cfdad9d18b548ef07aaaab5416467d18e6e9b9af7a9c126",
+      "passed": true,
+      "agreements": 3,
+      "scope": "All three original normal sources compare exact raw stdout/stderr and exit0 at final production, with explicit 180-second model/210-second outer budgets and stable inputs."
+    },
+    "strict": {
+      "report": "strict-report-v2.json",
+      "sha256": "072d48abb805725f2fa2b3e2858fb85c68161fe3699619c05199a062a4fd6834",
+      "passed": true,
+      "scope": "Final SL elaboration, algorithmic and structuring checks plus main=true pass across 447 modules; exit0, empty stderr, 13.579 seconds."
+    },
+    "independent_reached": {
+      "report": "review-protocol-v1/run/report.json",
+      "sha256": "cb22d56f5bb0871e730cf427eea7a08ac3f181f45cf5cff512127c508edac5e1",
+      "process": "review-protocol-v1/process.json",
+      "process_sha256": "3713f06ef47699473e6a8100f132e860778c28778193b4ecb812169c08c88b31",
+      "revision": "ec4cf4c34bcd0485c02eb3b563fd81fcffe153e5",
+      "source_sha256": "fb259d225c788636d135d1511e7cfa16b474be0775c80ec6f9cf7a90ac2763a7",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 98,
+      "derived_negatives": 1,
+      "count_note": "Reported conditions include helper bindings and five harness conditions.",
+      "scope": "The genuine fourth RHS is reached after U, before its throw: implicit parameter8, exact expression/implicit task and setter/caller frames authenticate; backing3, prior result2 and count4 remain. The global receiver is absent. Exactly two model owners belong to the captured implicit target and original outer result; this is not a Zend physical-refcount claim. Descriptor/heap checks, function-fact removal refusal, zero-budget/full-resume equality and the full tail pass, including D3 before catch, fresh retry, D2, count5/result1 and receiver retirement. SL, 240-second cap, 56.845 seconds, exit0, empty stderr and stable inputs."
+    }
+  },
+  "independent_review": "CLEAR for bounded producer/runtime behavior, source/task authority, original observations, ownership/abrupt continuation, resumption, harness and revised documentation/inventory. Source fixtures and original output were derived independently; no ATTR53 or broader historical campaign was replayed.",
+  "zero_credit": [
+    {
+      "report": "source-calibration-v1/report.json",
+      "sha256": "f911ea0d91cb40969ee4cab52905f791d089c9ea836cde66368947bb10fbd84b",
+      "outcome": "The plain original at39d27c751 is genuinely Unsupported at empty output: set, by-reference, attributed or defaulted virtual property hook. Incomplete, no agreement."
+    },
+    {
+      "report": "strict-report-v1.json",
+      "sha256": "806789ec6ca1637473bd2e923521730cdf1f81971602e2bb14196b930cbff001",
+      "outcome": "Draft b3ac2767e fails algorithmic binding of n_receiver in a combined equality guard. Final code binds the actual target receiver before checking the context; only final strict earns credit."
+    }
+  ],
+  "environment": "External packets retain original bytes/path/cwd/profile, actual commands, raw streams/status and stable before/after semantic/tool identities. Peer envelope also binds both new fixture scripts. One CPU 5 heavy job at a time across the pair; all jobs reaped. Existing tools reused; no rebuild or portability claim.",
+  "remaining": "Trait, explicit-parameter, paired, byref/decorated/header and positive Tick short-SET contexts remain partial. Broader expression/lifetime combinations are not established by these three originals and one front. Held boundaries remain untouched; no engine bug or intentional divergence is claimed."
+}
