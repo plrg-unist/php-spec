@@ -112,6 +112,13 @@ def $parameter_receive_cache_entry(S, preceivebirth) = ($parameter_receive_closu
 def $parameter_default_recipient(S, pfunction) = $parameter_closure_selected(S, pfunction)
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) =/= eps
 
+;; Existing type-failure ownership is wider than the new Private read route.
+def $deprecated_parameter_recipient(S, pfunction) = $parameter_default_recipient(S, pfunction)
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $deprecated_parameter_recipient(S, pfunction) = $parameter_closure_selected(S, pfunction)
+  -- if $default_cache_owner(S) = (CACHE_PRIVATE n)
+def $deprecated_parameter_recipient(S, pfunction) = false -- otherwise
+
 ;; Both resolved names matter after a handler publishes a namespace shadow.
 ;; This is a source discriminator, without evaluation or diagnostic authority.
 dec $parameter_default_owned_name(pstate, preqbytes) : bool
