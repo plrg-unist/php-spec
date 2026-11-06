@@ -116,7 +116,7 @@ def $parameter_call_source_scope(S, porigin, (porigin_scope)) = true
   -- if pclassdesc.KIND = "class"
   -- if $origin_node(S.SOURCES, porigin_scope) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata)
   -- if $closure_cache_literal_scope(S, porigin, BIND_CLASS porigin_scope)
-def $parameter_call_source_scope(S, porigin, porigin?) = false -- otherwise
+def $parameter_call_source_scope(S, porigin, porigin_scope?) = false -- otherwise
 dec $parameter_call_source(pstate, pfunction) : bool
 def $parameter_call_source(S, pfunction) = true
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
