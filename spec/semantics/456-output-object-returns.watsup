@@ -524,7 +524,8 @@ def $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw) = true
   -- if S.COMPLETION = NORMAL
   -- if S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps /\ S.RETIREDOWNERS = eps
   -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
-  -- if S.RESULT = VARIABLE pobcvassoc.NAME z_origin /\ S.ORIGIN = (porigin_throw)
+  -- if S.RESULT = VARIABLE pobcvassoc.NAME z_origin
+  -- if S.ORIGIN = (porigin_throw)
   -- if $ob_object_cv_native(S) = (pfunction_native)
   -- if $ob_object_cv_throw_site(S, pfunction_native, pobcvassoc, porigin_throw)
   -- if $call_task_valid(S, THROW_VALUE porigin_throw z)
@@ -1335,7 +1336,8 @@ def $source_exception_transition(S, S_next) = $ob_object_final_local_capture(S_n
 ;; The live-CV associations end at the real native frame departure, before
 ;; ordered CV jobs retire their cells. The active throw remains historical.
 def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource_active eps) :: ptask_native*]
-  -- if S.COMPLETION = NORMAL /\ S.TODO = [THROW_SEARCH n_exception]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [THROW_SEARCH n_exception]
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, (OBJECT_CV_DATA pobcvassoc* (pobobjectsource_active)), ptask_native*))
   -- if pobcvassoc* =/= eps
   -- if $ob_object_source_pending((pobobjectsource_active)) = ((porigin, n_exception))
