@@ -239,6 +239,8 @@ def $generator_source_consumer(S, pconfiggenerator) = true
 def $generator_source_consumer(S, pconfiggenerator) = false -- otherwise
 def $config_generator_consumer(S, pconfiggenerator) = true
   -- if $generator_source_consumer(S, pconfiggenerator)
+def $config_generator_prefix_allowed(S, pconfiggenerator, n_count) = true
+  -- if $generator_source_consumer(S, pconfiggenerator)
 
 ;; The actual CONFIG marker supplies the receiver root, including when its CV
 ;; is cleared. The legacy INI outside-owner predicate remains unchanged.

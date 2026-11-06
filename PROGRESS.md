@@ -2696,6 +2696,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS207 | Fresh fixed-name receiver/public literal instance USER producers with authentic method targets and generic ownership; preserve current quiet value/header and held boundaries. |
+| ATTR67 | True virtual Trait GET/block-SET pairs across existing unadapted exporters, authentic raw/flattened partners and no storage; preserve imported inheritance exclusions and held modes. |
 | COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
