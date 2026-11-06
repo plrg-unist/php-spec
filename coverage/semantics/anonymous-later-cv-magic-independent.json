@@ -1,0 +1,61 @@
+{
+  "decision": "CLEAR bounded CLASS202 later-CV actual-SEND snapshots",
+  "implementation_commits": [
+    "98b774d6c",
+    "00d01676f",
+    "404737574",
+    "a25ab0bfd"
+  ],
+  "review_tested_revision": "38c4e9ce3c659d794794db9bd3da3484deb4f966",
+  "production_sha256": {
+    "spec/semantics/86-reference-arguments.watsup": "95fcbbd2bd408e0901728ef0e72fca6e28efd857ebe17daeaf38e7f9d5a21a62",
+    "spec/semantics/213-warning-read-consumers.watsup": "d701f632321780c7e58bcaebe3865e41644bf01b786570e7a7e2016714efd746",
+    "spec/semantics/414-magic-method-calls.watsup": "bfce844c8fab8bf0e944ff09c4a941785b399c3dd0d61510ddfee99f6cd2d94e",
+    "spec/semantics/415-magic-static-method-calls.watsup": "67dd26ed46d154f390e83838115f4fa936b8307857bd93036dc31514cdf8cd78",
+    "spec/semantics/438-magic-iterator-unpack.watsup": "1e1ea465a41cd4484e00afbccb06e4bf7534ff200fa8df62c9ce1d80f9ab1c28"
+  },
+  "module_count": 449,
+  "target": "PHP 8.5.10 CLI/NTS/64; source 34308a6666b2d489c509541ea9befea9e2b42348; oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json; -n; LC_ALL=C; TZ=UTC",
+  "source_review": {
+    "finding": "No remaining production defect. Original argument index 1 and exact quiet CV emission authorize syntax; the actual current SEND task, VARIABLE name/metadata line, send runtime line and current allocated initialized ordinary cell authorize the read. The generic 86 path then dereferences/copies the payload. Collected history uses the original indexed source without rereading a CV changed by the handler.",
+    "engine": "Zend/zend_compile.c zend_compile_args and Zend/zend_vm_def.h SEND_VAR_EX select and read the current CV at SEND. The by-value CV arm uses ZVAL_COPY_DEREF, preserving value/carrier rather than the alias wrapper. CALL_TRAMPOLINE transfers the real argument table; all-named arguments reuse extra_named_params. Existing 30 string storage and 39 ownership remain authoritative.",
+    "resolved_findings": "The initial CODEARG requirement contradicted 78 PPR CV compilation: 33 emits that deferred marker only for PPF, while 314 authenticates this quiet CODEEXPR occurrence. Removed only that invalid premise. The separate missing-CV source exposed 213 warning ingress before 86; adding the same admission premise prevents registered warning callbacks for excluded sends. Original checker/refusal/interpreter failures and diagnostic packets retain zero credit.",
+    "scope": "Only current two-argument positional instance/static and named-instance magic calls gain later plain/reference CVs in the existing primitive/ordinary-leaf domain. Property/coercion/parameter backing, debt/released/missing cells, arrays, bare strings and request-owned NUL remain excluded. First-CV, producer/header and flat-array policy are unchanged.",
+    "unpack": "438 still authenticates explicit CV prefixes at index 0 through its existing adapter. The new admission specialization excludes any unpack argument, so its otherwise-true path preserves previous unpack SEND behavior. No unpack or historical campaign replay."
+  },
+  "independent_source": {
+    "count": 1,
+    "id": "named-later-refcv-request-closure-detachment",
+    "source_sha256": "4e6fa4f27125488f8583c10a660f7415e21d4919a27be3a211f3b2bb4cec3b55",
+    "result": "First model execution exactly matches the once-pinned native original bytes/path/cwd/profile: normal, exit 0, empty stderr, stable and no timeout; 75.494 seconds under the upfront 300-second cap. Native was not rerun.",
+    "behavior": "A first USER argument creates REQUEST-OLD and releases the receiver variable. Multiline named later CV at source line 9 is an explicit alias. Handler writes 99; caller detaches/retires the old cell; the static Closure and its anonymous child retain the saved string with Base lexical/Derived called scope and ordered cleanup.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class202-later-cv-magic/reviewer/source/report.json",
+    "sha256": "8ee24601084f038d7848b0207df053aa9cd2e27080ba6e912412d0b998f08862"
+  },
+  "independent_state": {
+    "conditions": 153,
+    "result": "First SL449 execution true, exit 0, empty stderr, stable and no timeout; 126.322 seconds under the 300-second inner cap.",
+    "behavior": "At genuine named SEND2, exact original CV authority and actual reference cell hold authenticated REQUEST_STRING 0. One real SEND creates a KNOWN snapshot without a CELL send root or new string storage. At actual handler RETURN_VALUE, live CV is 99 while the same named table is held by parameter/buffer/static Closure three times. At root unset(child), the old cell, receiver and Closure have retired; child.saved alone owns that identical table/carrier. Full 4098 equals split 2+4096 and retires child/table with valid call/class/Closure/GC/heap states.",
+    "controls": "Wrong indexed origin, out-of-range source role and a non-SEND current task refuse. The source emission proves no generic deferred CODEARG is needed. Derived controls earn no native agreement.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class202-later-cv-magic/reviewer/state/report.json",
+    "sha256": "d46a51cb5a0e9f9c6ff6e22cc0f2a3c99f4fbd40f2f4adf638e4a80414821b53"
+  },
+  "author_complement": {
+    "sources": "Five exact native/model originals retain their recorded cuts: four at 404737574 and genuine nonreference GLOBALS-only owner at b8a7ca5c3. The first group uses the reference wrapper created by global binding; it is not mislabeled as nonreference.",
+    "states": "Corrected nonreference leaf owner143 passed alone. The separate actual missing-SEND/live-handler30 record passed inside an overall-FAIL mixed packet because owner143 had a parser-only byte fixture failure. Only the affected143 was rerun; the failure and earlier checker/source/ingress failures retain zero credit.",
+    "exclusions": "Three native-normal missing/array/typed originals reach intended Unsupported, exit 1, SHIFT-only output and no warning callback or magic body; agreement credit 0.",
+    "compatibility_bridge": "The one-premise a25 correction affects only the existing 213 positional CALL_SEND missing-read source arm. Five completed positive cuts have defined operands and never select that warning plan; 86/414/415 are unchanged. Other targets use default-true admission. Pointwise compatibility, without positive/native replay."
+  },
+  "main_context": {
+    "head": "76437147fff4cfd42921889c4f68a260c202cfc5",
+    "module_count": 450,
+    "finding": "Actual main keeps 86/213/414/415/438 unchanged from the base. New private-default cache roots/validity/drop are empty in these required-argument, no-default programs. New output-final CV/frame hooks require actual output-conversion markers, absent here; WeakMap claims, hook pairs, enum CONFIG and Generator/Aggregate paths require their distinct real targets. Generic old roots/task identities remain unchanged for these actual magic snapshots. No conflicting source or hook definition. Static compatibility only; private executions retain their exact 449-module cuts."
+  },
+  "documentation_review": "README, PROGRESS, SOURCE-CLASSES and the same six partial inventory entries describe the bounded behavior and retained exclusions. The family ledger preserves mixed outcomes and separate source/state cuts.",
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class202-later-cv-magic/reviewer",
+    "manifest_sha256": "7fedb00f7c33cf452d89b4ff8a3100c18ed43034fefe6c44aa7acacd036ab81d",
+    "recovery": "Original source/native/model commands, path/cwd/profile, streams and authoritative input fingerprints are in source/. The standard SL state fixture and worker exchanges are in state/; its recorded former .tools path is retained. No completed source/native campaign was rerun."
+  },
+  "engine_divergence": "None identified. Later arrays, missing-warning delivery, type-sensitive/backed reads, wider producer/header/static-named/unpack forms and held string/other boundaries remain partial."
+}
