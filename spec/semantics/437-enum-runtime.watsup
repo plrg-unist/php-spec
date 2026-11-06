@@ -2671,7 +2671,59 @@ def $enum_is_callable_output_closure_graph(S, pnode_path*, pnode :: pnode_tail*)
   -- if $enum_is_callable_output_closure_graph(S, pnode_path*, pnode_tail*)
 def $enum_is_callable_output_closure_graph(S, pnode_path*, pnode*) = false -- otherwise
 
+;; Property-output admission is separate from the Closure child domain above.
+;; This checks live storage only; actual cleanup snapshots post-destructor slots.
+dec $enum_is_callable_output_property_slots(pstate, nat, ppropertyslot*) : bool
+def $enum_is_callable_output_property_slots(S, n, eps) = true
+def $enum_is_callable_output_property_slots(S, n, ppropertyslot :: ppropertyslot_tail*) = $enum_is_callable_output_property_slots(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+def $enum_is_callable_output_property_slots(S, n, ppropertyslot :: ppropertyslot_tail*) = $enum_is_callable_output_property_slots(S, n, ppropertyslot_tail*)
+  -- if ppropertyslot.DECL =/= eps
+  -- if $property_slot_descriptor(S, n, ppropertyslot) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
+def $enum_is_callable_output_property_slots(S, n, ppropertyslot*) = false -- otherwise
+dec $enum_is_callable_output_property_layout(pstate, nat) : bool
+def $enum_is_callable_output_property_layout(S, n) = true
+  -- if $objectprops_at(S.OBJECTPROPS, n) = eps
+def $enum_is_callable_output_property_layout(S, n) = $enum_is_callable_output_property_slots(S, n, ppropertyslot*)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+dec $enum_is_callable_output_property_object(pstate, nat) : bool
+def $enum_is_callable_output_property_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $enum_is_callable_user_class(S, porigin)
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
+  -- if $property_hook_pair_plain_parent(S, $property_layout(S, porigin, |S.CLASSES|))
+  -- if $enum_is_callable_output_property_layout(S, n)
+def $enum_is_callable_output_property_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $enum_is_callable_output_property_layout(S, n)
+def $enum_is_callable_output_property_object(S, n) = false -- otherwise
+dec $enum_is_callable_output_property_node(pstate, pnode) : bool
+def $enum_is_callable_output_property_node(S, HOBJECT n) = true
+  -- if $enum_is_callable_output_property_object(S, n)
+def $enum_is_callable_output_property_node(S, pnode) = $enum_is_callable_output_closure_node(S, pnode) -- otherwise
+dec $enum_is_callable_output_property_graph(pstate, pnode*, pnode*) : bool
+def $enum_is_callable_output_property_graph(S, pnode_path*, eps) = true
+def $enum_is_callable_output_property_graph(S, pnode_path*, pnode :: pnode_tail*) = true
+  -- if pnode <- S.ALLOCATIONS
+  -- if ~(pnode <- pnode_path*)
+  -- if $enum_is_callable_output_property_node(S, pnode)
+  -- if $enum_is_callable_output_property_graph(S, pnode_path* ++ [pnode], $node_children(S, pnode))
+  -- if $enum_is_callable_output_property_graph(S, pnode_path*, pnode_tail*)
+def $enum_is_callable_output_property_graph(S, pnode_path*, pnode*) = false -- otherwise
+
 dec $enum_is_callable_ref_last(pstate, nat, int) : bool
+def $enum_is_callable_ref_last(S, n_cell, z) = true
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_old)
+  -- if $enum_is_callable_output_property_object(S, n_old)
+  -- if S.OBJECTS[n_old] = STDINSTANCE \/ $node_children(S, HOBJECT n_old) =/= eps
+  -- if $enum_is_callable_output_property_graph(S, eps, [HOBJECT n_old])
+  -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
+  -- if S_clear.COMPLETION = NORMAL
+  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_old) = 0
 def $enum_is_callable_ref_last(S, n_cell, z) = true
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED (POBJECT n_old)
@@ -2699,6 +2751,14 @@ def $enum_is_callable_ref_last(S, n_cell, z) = true
 def $enum_is_callable_ref_last(S, n_cell, z) = false -- otherwise
 
 dec $enum_is_callable_ref_old(pstate, nat, pvalue, ptbytes, int) : bool
+def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
+  -- if (HOBJECT n_old) <- S.ALLOCATIONS
+  -- if $enum_is_callable_output_property_object(S, n_old)
+  -- if S.OBJECTS[n_old] = STDINSTANCE \/ $node_children(S, HOBJECT n_old) =/= eps
+  -- if $enum_is_callable_output_property_graph(S, eps, [HOBJECT n_old])
+  -- if S_write = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PSTRING ptbytes_name, z)
+  -- if S_write.COMPLETION = NORMAL
+  -- if $($heap_owners($heap_graph(S_write), HOBJECT n_old) > 0)
 def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = true
   -- if $value_nodes(pvalue_old) = eps /\ pvalue_old =/= PUNDEFINED
 def $enum_is_callable_ref_old(S, n_cell, POBJECT n_old, ptbytes_name, z) = true
@@ -3027,6 +3087,10 @@ def $enum_is_callable_output_selection(S, penumqueryoutput) = false -- otherwise
 
 dec $enum_is_callable_output_valid(pstate, penumqueryoutput) : bool
 dec $enum_is_callable_output_old_valid(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_old_valid(S, penumqueryoutput) = true
+  -- if penumqueryoutput.OLDARRAY = eps
+  -- if $(penumqueryoutput.OLD < |S.OBJECTS|)
+  -- if S.OBJECTS[penumqueryoutput.OLD] = STDINSTANCE
 def $enum_is_callable_output_old_valid(S, penumqueryoutput) = true
   -- if penumqueryoutput.OLDARRAY = eps
   -- if $enum_is_callable_output_closure_history(S, penumqueryoutput.OLD)
