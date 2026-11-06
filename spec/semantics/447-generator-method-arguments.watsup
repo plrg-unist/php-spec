@@ -271,6 +271,29 @@ def $config_generator_consumer(S, pconfiggenerator) = true
 def $config_generator_prefix_allowed(S, pconfiggenerator, n_count) = true
   -- if $generator_source_consumer(S, pconfiggenerator)
 
+;; A saved native iterator NEXT identifies only its running source Generator.
+;; The same local proof is used on restored Fiber VMs, without a new owner.
+def $fiber_generator_body_id(S) = (pgeneratorop.OBJECT)
+  -- if $generator_active(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: (CONFIG_GENERATOR pconfiggenerator "next") :: ptask_tail*
+  -- if pgeneratorop.STARTPACK /\ pgeneratorop.BORROWED /\ pgeneratorop.SELECTION = eps
+  -- if S_caller = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $generator_source_consumer(S_caller, pconfiggenerator)
+  -- if $config_generator_operation_tasks(S_caller, pgeneratorop, pframe.TODO)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.FRAME = eps
+  -- if pgenerator.DELEGATE = eps /\ pgenerator.PARKED = eps
+  -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps /\ pgenerator.RETURN = eps
+  -- if pgenerator.REFCELL = eps /\ pgenerator.BORROWED = eps /\ ~pgenerator.PENDING_INIT
+  -- if $fiber_generator_cached_reference_valid(S, pgenerator, pcallcontext)
+  -- if $fiber_generator_callee_valid(S, pgenerator, pcallcontext)
+  -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if $generator_saved_ids(S.FRAMES) = [pgeneratorop.OBJECT]
+  -- if $generator_resume_pairs(S, S.CURRENT, S.FRAMES)
+
 ;; The actual CONFIG marker supplies the receiver root, including when its CV
 ;; is cleared. The legacy INI outside-owner predicate remains unchanged.
 dec $generator_source_live_callee(pstate, pconfiggenerator) : bool
