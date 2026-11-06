@@ -176,6 +176,91 @@ def $generator_aggregate_iterator(S, pconfigiterator) = true
   -- if $config_aggregate_iterator_admitted(S, {CALL pconfigiterator.CALL, OBJECT n_aggregate, INPUT pconfigiterator.INPUT}, pconfigiterator.OBJECT)
 def $generator_aggregate_iterator(S, pconfigiterator) = false -- otherwise
 
+;; A distinct initialized named Generator CV uses the shared native iterator.
+;; Persistent history survives its real RUNNING frame; entry checks live below.
+dec $generator_source_consumer(pstate, pconfiggenerator) : bool
+def $generator_source_consumer(S, pconfiggenerator) = true
+  -- if $generator_aggregate_site(S, pconfiggenerator.CALL)
+  -- if pconfiggenerator.PRODUCER = eps
+  -- if pconfiggenerator.INPUT = VARIABLE ptbytes z
+  -- if pconfiggenerator.CALL.OWNER = (n_receiver)
+  -- if pconfiggenerator.OBJECT =/= n_receiver
+  -- if $(pconfiggenerator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.CREATION = eps
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if S.OBJECTS[n_receiver] = GENERATOR pgenerator_receiver
+  -- if $function_at($all_functions(S), pgenerator_receiver.FUNCTION) = (pfunction_receiver)
+  -- if ~pfunction_receiver.SIGNATURE.BYREF
+def $generator_source_consumer(S, pconfiggenerator) = false -- otherwise
+def $config_generator_consumer(S, pconfiggenerator) = true
+  -- if $generator_source_consumer(S, pconfiggenerator)
+
+;; The actual CONFIG marker supplies the receiver root, including when its CV
+;; is cleared. The legacy INI outside-owner predicate remains unchanged.
+dec $generator_source_live_callee(pstate, pconfiggenerator) : bool
+def $generator_source_live_callee(S, pconfiggenerator) = true
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $generator_source_consumer(S, pconfiggenerator)
+  -- if S.TODO = (CONFIG_UNPACK_PREP pconfiggenerator.CALL) :: ptask*
+  -- if pconfiggenerator.ITEMS = eps
+  -- if $config_generator_scope(S, pconfiggenerator)
+  -- if $config_generator_start_input(S, pconfiggenerator.INPUT, pconfiggenerator.OBJECT)
+  -- if pconfiggenerator.CALL.OWNER = (n_receiver)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if $($heap_owners($heap_graph(S), HOBJECT n_receiver) > 0)
+  -- if S.OBJECTS[pconfiggenerator.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if ~pgenerator.PENDING_INIT /\ pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps
+def $generator_source_live_callee(S, pconfiggenerator) = true
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $generator_source_consumer(S, pconfiggenerator)
+  -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator text) :: ptask*
+  -- if $config_generator_valid(S, pconfiggenerator, text)
+  -- if pconfiggenerator.CALL.OWNER = (n_receiver)
+  -- if (HOBJECT n_receiver) <- S.ALLOCATIONS
+  -- if $($heap_owners($heap_graph(S), HOBJECT n_receiver) > 0)
+def $generator_source_live_callee(S, pconfiggenerator) = false -- otherwise
+def $config_generator_live_callee(S, pconfiggenerator) = $generator_source_live_callee(S, pconfiggenerator)
+  -- if $generator_api_kind(pconfiggenerator.CALL.KIND)
+
+def $config_generator_receive(S, pconfigcall) = S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_api_kind(pconfigcall.KIND)
+  -- if S.TODO = (CONFIG_GENERATOR pconfiggenerator "invoke") :: ptask*
+  -- if $config_generator_valid(S, pconfiggenerator, "invoke")
+  -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall)
+
+;; Pending cleanup transfers the real selected receiver/argv into CONFIG_INVOKE
+;; before DATA release. Generic throw cleanup then retires that continuation.
+dec $generator_source_discard_state(pstate, pconfiggenerator, text) : pstate?
+def $generator_source_discard_state(S, pconfiggenerator, text) = (S_hold)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $throwable_live(S, n)
+  -- if $generator_source_consumer(S, pconfiggenerator)
+  -- if $config_generator_valid(S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*], pconfiggenerator, text)
+  -- if $config_pack_prefix(pconfiggenerator.CALL, pconfiggenerator.ITEMS, false) = (pconfigcall)
+  -- if S_hold = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask*][.ORIGIN = (pconfiggenerator.CALL.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $config_generator_discard_allowed(S_hold, pconfiggenerator)
+def $generator_source_discard_state(S, pconfiggenerator, text) = eps -- otherwise
+dec $generator_source_discard_nodes(pconfiggenerator, text) : pnode*
+def $generator_source_discard_nodes(pconfiggenerator, text) = eps
+  -- if text <- ["invoke", "storage-released"]
+def $generator_source_discard_nodes(pconfiggenerator, text) = [HOBJECT pconfiggenerator.OBJECT]
+  -- if ~(text <- ["invoke", "storage-released"])
+dec $generator_source_discard(pstate, pconfiggenerator, text) : pstate
+def $generator_source_discard(S, pconfiggenerator, text) = $eager_operation_begin(S_hold, S, CONFIG_GENERATOR pconfiggenerator text, $generator_source_discard_nodes(pconfiggenerator, text))
+  -- if $generator_source_discard_state(S, pconfiggenerator, text) = (S_hold)
+  -- if $destructor_operational(S) /\ $eager_operation_pending(S) =/= eps
+def $generator_source_discard(S, pconfiggenerator, text) = $fiber_start_unpack_release(S_hold, $generator_source_discard_nodes(pconfiggenerator, text))
+  -- if $generator_source_discard_state(S, pconfiggenerator, text) = (S_hold)
+  -- if ~$destructor_operational(S) \/ $eager_operation_pending(S) = eps
+def $generator_source_discard(S, pconfiggenerator, text) = S[.TODO = (THROW_SEARCH n) :: (CONFIG_GENERATOR pconfiggenerator text) :: ptask*][.COMPLETION = UNSUPPORTED "CONFIG Generator unpack last cleanup owner"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $generator_source_discard_state(S, pconfiggenerator, text) = eps
+def $config_generator_discard(S, pconfiggenerator, text) = $generator_source_discard(S, pconfiggenerator, text)
+  -- if $generator_api_kind(pconfiggenerator.CALL.KIND)
+
 def $config_iterator_history(S, pconfigiterator) = true
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
   -- if pconfigiterator.CALL.INDEX = 0 /\ pconfigiterator.CALL.SENT = eps
