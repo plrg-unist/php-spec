@@ -23,6 +23,39 @@ CHUNKS = (['B|', 's|', '17', '|', 'C|'] + ['1', '|'] * 5
           + ['M|'] + ['1', '|'] * 2 + ['V|', '1', '|', 'K|', '1', '|'])
 ENDING = 'S_done.EVENTS = [' + ', '.join(
     'OUTPUT $ptascii(' + json.dumps(chunk) + ')' for chunk in CHUNKS) + ']'
+DECLARATIONS = r'''dec $gc59_retired(pstate) : bool
+def $gc59_retired(S) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME paccess) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_tail*
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if pdestructionoperation.PENDING = (n_pending)
+  -- if pweakmapwrite.ACCESS = paccess
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if ~((HOBJECT n_old) <- S.ALLOCATIONS)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+def $gc59_retired(S) = false -- otherwise
+dec $gc59_seek_retired(pstate, nat) : pstate
+def $gc59_seek_retired(S, n) = S -- if $gc59_retired(S)
+def $gc59_seek_retired(S, n) = $gc59_seek_retired($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1)))
+  -- if ~$gc59_retired(S)
+  -- if $(n > 0)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $gc59_seek_retired(S, 0) = S -- if ~$gc59_retired(S)
+def $gc59_seek_retired(S, n) = S
+  -- if ~$gc59_retired(S)
+  -- if $(n > 0)
+  -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+'''
+# Add this front's local continuation finder to the generated checked fixture.
+recorded = review.recorded
+
+
+def recorded_fixture(command, directory, stem, environment, seconds):
+    fixture = Path(command[-1])
+    fixture.write_text(DECLARATIONS + fixture.read_text())
+    return recorded(command, directory, stem, environment, seconds)
+
+
+review.recorded = recorded_fixture
 CHECKS = [
     'S.ORIGIN = (porigin_read)',
     '$destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)',
@@ -152,7 +185,63 @@ CHECKS = [
     r'$call_descriptors_valid(S_read) /\ $heap_valid($heap_graph(S_read))',
     'S_paused = $drive_steps(S, 1)',
     'S_paused = S_read[.COMPLETION = BUDGET]',
-    'S_done = $drive_steps(S_read, 4000)',
+    'S_retired = $gc59_seek_retired(S_read, 4000)[.COMPLETION = NORMAL]',
+    '$gc59_retired(S_retired)',
+    'S_retired.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_retired) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*',
+    'pdestructionoperation_retired.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite',
+    'pdestructionoperation_retired.PENDING = (n_pending)',
+    'n_pending = pweakmapwrite.FIRSTNEW',
+    '$weakmap_write_fresh_pending(S_retired, pweakmapwrite, (n_pending))',
+    '~$weakmap_write_fresh_pending(S_retired, pweakmapwrite[.FIRSTNEW = $(n_pending + 1)], (n_pending))',
+    '~((HOBJECT n_old) <- S_retired.ALLOCATIONS)',
+    '~((HOBJECT n_child) <- S_retired.ALLOCATIONS)',
+    '$weakmap_write_operation_source(S_retired, pdestructionoperation_retired, pweakmapwrite)',
+    'pdestructionoperation_wrong = pdestructionoperation_retired[.SOURCE = ACCESS_RESUME pweakmapwrite.ACCESS]',
+    'S_wrong_source = S_retired[.DESTRUCTION.OPERATIONS = [pdestructionoperation_wrong]][.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_wrong) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*]',
+    '~$weakmap_write_operation_source(S_wrong_source, pdestructionoperation_wrong, pweakmapwrite)',
+    'S_after_old = $drive_steps(S_retired, 1)[.COMPLETION = NORMAL]',
+    'S_after_old.TODO = (THROW_SEARCH n_pending) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*',
+    'S_after_old.DESTRUCTION.OPERATIONS = eps',
+    'S_carrier = $drive_steps(S_after_old, 1)[.COMPLETION = NORMAL]',
+    'S_carrier.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_carrier) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_carrier) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*',
+    'pdestructionoperation_carrier.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite',
+    'pdestructionoperation_carrier.PENDING = (n_pending)',
+    'pdestructionoperation_carrier.VALUE = KNOWN PNULL',
+    'pdestructionrelease_carrier.JOBS = [DESTRUCTION_VALUE (HOBJECT n_map)]',
+    '$heap_owners($heap_graph(S_carrier), HOBJECT n_map) = 3',
+    '$heap_owners($heap_graph(S_carrier), HOBJECT n_new) = 2',
+    'S_carrier.STORE[n_result_cell] = DEFINED (PINT 31)',
+    '$weakmap_write_operation_source(S_carrier, pdestructionoperation_carrier, pweakmapwrite)',
+    '$weakmap_write_source_site(S_carrier, pweakmapwrite, ptask_loop)',
+    '~$weakmap_write_source_site(S_carrier, pweakmapwrite[.MAPCELL = n_key_cell], ptask_loop)',
+    'pdestructionrelease_wrong = pdestructionrelease_carrier[.JOBS = [DESTRUCTION_VALUE (HOBJECT n_new)]]',
+    'S_wrong_carrier = S_carrier[.DESTRUCTION.RELEASES = [pdestructionrelease_wrong]][.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_wrong) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_carrier) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*]',
+    '$heap_valid($heap_graph(S_wrong_carrier))',
+    '~$weakmap_write_operation_source(S_wrong_carrier, pdestructionoperation_carrier, pweakmapwrite)',
+    'pweakmapwrite_wrong = pweakmapwrite[.MAPCELL = n_key_cell]',
+    'S_wrong_claim = S_carrier[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_carrier) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_carrier) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite_wrong) :: ptask_claim_tail*]',
+    '~$weakmap_write_operation_source(S_wrong_claim, pdestructionoperation_carrier, pweakmapwrite)',
+    'S_carrier_drop = $drive_steps(S_carrier, 1)[.COMPLETION = NORMAL]',
+    '$heap_owners($heap_graph(S_carrier_drop), HOBJECT n_map) = 2',
+    'S_carrier_exit = $drive_steps(S_carrier_drop, 1)[.COMPLETION = NORMAL]',
+    'S_pending_claim = $drive_steps(S_carrier_exit, 1)[.COMPLETION = NORMAL]',
+    'S_pending_claim.TODO = (THROW_SEARCH n_pending) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*',
+    r'S_pending_claim.DESTRUCTION.OPERATIONS = eps /\ S_pending_claim.DESTRUCTION.RELEASES = eps',
+    '$return_discard(S_pending_claim, WEAKMAP_WRITE_CLAIM pweakmapwrite) = S_pending_claim',
+    # Constructed normal-pop control keeps the real pending Throwable's owner.
+    'S_head_claim = S_pending_claim[.TODO = (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*][.RESULT = KNOWN (POBJECT n_pending)]',
+    '$heap_owners($heap_graph(S_head_claim), HOBJECT n_pending) = 1',
+    '$call_task_valid(S_head_claim, WEAKMAP_WRITE_CLAIM pweakmapwrite)',
+    'PhpStep: S_head_claim ~> S_popped',
+    'S_popped = S_head_claim[.TODO = ptask_claim_tail*]',
+    '$heap_graph(S_popped) = $heap_graph(S_head_claim)',
+    'S_bad_head = S_head_claim[.TODO = (WEAKMAP_WRITE_CLAIM pweakmapwrite_wrong) :: ptask_claim_tail*]',
+    '~$call_task_valid(S_bad_head, WEAKMAP_WRITE_CLAIM pweakmapwrite_wrong)',
+    'S_discarded = $drive_steps(S_pending_claim, 1)[.COMPLETION = NORMAL]',
+    'S_discarded.TODO = (THROW_SEARCH n_pending) :: ptask_claim_tail*',
+    '$heap_graph(S_discarded) = $heap_graph(S_pending_claim)',
+    'S_discarded.STORE[n_result_cell] = DEFINED (PINT 31)',
+    'S_done = $drive_steps(S_discarded, 4000)',
     '$drive_steps(S_paused[.COMPLETION = NORMAL], 4000) = S_done',
     r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.FRAMES = eps',
     'S_done.CURRENT = eps',
