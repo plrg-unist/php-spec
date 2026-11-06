@@ -463,6 +463,17 @@ def $generator_iterator_reentry_caller(S, n, pframe_callback, pframe_cursor :: p
   -- if S_view = $generator_set(S, n, pgenerator[.PHASE = GENERATOR_PAUSED])
   -- if $generator_selected_traversable_site(S_view, pconfigiterator.CALL)
   -- if $config_iterator_frame(S_view, pcallcontext, pframe_cursor)
+def $generator_iterator_reentry_caller(S, n, pframe_callback, pframe_cursor :: pframe_tail*) = ((S_view, pframe_callback, pframe_cursor, pframe_tail*))
+  -- if pframe_cursor.TODO = (CONFIG_AGGREGATE pconfigaggregate) :: ptask_cursor*
+  -- if pconfigaggregate.CALL.OWNER = (n)
+  -- if pframe_callback.CONTEXT = (pcallcontext)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if (HOBJECT pconfigaggregate.OBJECT) <- S.ALLOCATIONS
+  -- if $($heap_owners($heap_graph(S), HOBJECT pconfigaggregate.OBJECT) > 0)
+  -- if S_view = $generator_set(S, n, pgenerator[.PHASE = GENERATOR_PAUSED])
+  -- if $generator_aggregate_site(S_view, pconfigaggregate.CALL)
+  -- if $config_aggregate_frame(S_view, pcallcontext, pframe_cursor)
 def $generator_iterator_reentry_caller(S, n, pframe_helper, pframe_caller :: pframe_tail*) = $generator_iterator_reentry_caller(S, n, pframe_caller, pframe_tail*)
   -- if pframe_helper.CONTEXT = (pcallcontext)
   -- if pcallcontext.TARGET = pcallcontext.FUNCTION /\ pcallcontext.INSTANCE = eps
