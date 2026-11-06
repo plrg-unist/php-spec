@@ -10,6 +10,16 @@ def $property_magic_update_source(S, PORIGIN n pcpath, pupdate, b_post) = true
   -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
   -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0, PCFIELD 0])
   -- if $closure_source_class(S, PORIGIN n pcpath) = eps
+def $property_magic_update_source(S, PORIGIN n pcpath, pupdate, b_post) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $update_warning_kind(expression) = ((pupdate, b_post))
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NExprVariable (BYTES text_name) metadata_name) metadata_property)
+  -- if $base64(text_receiver) =/= $ptascii("this")
+  -- if $property_magic_cv_source(S, PORIGIN n (pcpath ++ [PCFIELD 0]), $runtime_line(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0], NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NExprVariable (BYTES text_name) metadata_name) metadata_property))
+  -- if $property_source_task(S[.ORIGIN = (PORIGIN n pcpath)], expression)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0, PCFIELD 0])
+  -- if $closure_source_class(S, PORIGIN n pcpath) = eps
 def $property_magic_update_source(S, porigin, pupdate, b_post) = false -- otherwise
 
 ;; This history never re-reads the CV changed by Get or requires its object to
@@ -28,6 +38,7 @@ def $property_magic_update_history(S, ppropertymagicupdate) = true
   -- if $property_magic_set_method_source(S, pmethoddesc_set)
   -- if $property_effective_desc(S, ppropertymagicupdate.GET.OBJECT, ppropertymagicupdate.GET.NAME) = (ppropertydesc)
   -- if ppropertymagicupdate.GET.DECL = eps /\ ppropertydesc.ORIGIN = ppropertymagicupdate.PROPERTY
+  -- if $property_hook_literal_site(S, ppropertymagicupdate.GET.SITE) \/ ~$property_hook_unset_declared(S, ppropertymagicupdate.GET.OBJECT, ppropertydesc.KEY)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pmethoddesc_get.OWNER)
@@ -68,6 +79,38 @@ def $property_magic_update_plan(S) = (ppropertymagicupdate)
   -- if $property_get_method(S, n) = (pmethoddesc_get)
   -- if $property_magic_set_method(S, n) = (pmethoddesc_set)
   -- if z_get = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if ppropertyget = {SITE porigin_site, NAME ptbytes_name, LINE z_get, OBJECT n, CLASS porigin_class, METHOD pmethoddesc_get.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, ptbytes_name)}
+  -- if $property_effective_desc(S, n, ptbytes_name) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertymagicupdate = {SITE porigin_parent, GET ppropertyget, SET pmethoddesc_set.FUNCTION.ORIGIN, PROPERTY porigin_property, LINE z, OP pupdate, POST b_post, OWNER 0, CALLER eps, TAIL ptask_tail*}
+  -- if $property_magic_update_history(S, ppropertymagicupdate)
+  -- if S_get = S[.ORIGIN = (porigin_site)][.TODO = [(PROPERTY_GET_RESULT ppropertyget), ORIGIN_RETURN (porigin_parent), PROPERTY_MAGIC_UPDATE_VALUE ppropertymagicupdate] ++ ptask_tail*]
+  -- if $property_get_capture(S_get, ppropertyget)
+  -- if ~$property_get_guard_tasks(ptask_tail*, n, ptbytes_name) /\ ~$property_get_guard_frames(S.FRAMES, n, ptbytes_name)
+  -- if ~$property_empty_get_active(S, n, ptbytes_name)
+  -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, n, ptbytes_name)
+def $property_magic_update_plan(S) = (ppropertymagicupdate)
+  -- if S.TODO = (UPDATE_PREP pupdate b_post z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin_parent)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $property_magic_update_source(S, porigin_parent, pupdate, b_post)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (expression)
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression_target)
+  -- if S.BASE = BASE_PROPERTY_PENDING (BASE_VALUE (VARIABLE ptbytes_receiver z_cv)) (VARIABLE ptbytes_selector z_name) z_receiver
+  -- if $property_pending_source_base(S[.ORIGIN = (porigin_site)], S.BASE, expression_target)
+  -- if z = $runtime_line(S, eps, expression)
+  -- if z_get = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if $property_magic_cv_name(S[.RESULT = VARIABLE ptbytes_selector z_name], porigin_site, z_get) = (ptbytes_name)
+  -- if S_receiver = $property_pending_resolve(S, BASE_VALUE (VARIABLE ptbytes_receiver z_cv), VARIABLE ptbytes_selector z_name, PPRW, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes_name
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_get_needed(S, n, ptbytes_name) /\ $property_magic_set_needed(S, n, ptbytes_name)
+  -- if $property_get_method(S, n) = (pmethoddesc_get)
+  -- if $property_magic_set_method(S, n) = (pmethoddesc_set)
   -- if ppropertyget = {SITE porigin_site, NAME ptbytes_name, LINE z_get, OBJECT n, CLASS porigin_class, METHOD pmethoddesc_get.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, ptbytes_name)}
   -- if $property_effective_desc(S, n, ptbytes_name) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
