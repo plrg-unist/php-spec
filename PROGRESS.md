@@ -3520,6 +3520,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| ATTR83 | Public integer CV unset distinguishes ordinary INITIAL/VALUE clear from already-UNSET magic dispatch; authenticate actual source/slot/target and retain repopulated callback history with existing receipt hold. |
 | CLASS225 | Immediate normal Closure::fromCallable invocation of fixed class-string/static-method arrays, preserving selected scopes, wrapper ownership and array retirement. |
 | ATTR83 | Public integer CV unset distinguishes ordinary VALUE/INITIAL clears from repeated magic dispatch, preserving the entered receipt through repopulation. |
 | COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
