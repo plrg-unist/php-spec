@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-inherited-static-fcc-ref-request-retirement",
+      "source": "<?php\nfunction peerShift209() { global $late, $owner; $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerProducerBase209 { public static function capture($saved, $marker) { echo 'PRODUCER:', self::class, ':', static::class, ';'; return $saved; } }\nclass PeerProducerChild209 extends PeerProducerBase209 {}\nclass PeerBase209 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { global $alias; $alias = 0; echo 'MAGIC;'; return static function () use ($arguments, $name) { echo 'CLOSURE:', self::secret(), ':', self::class, ':', static::class, ';'; return new class($arguments, $name) { public function __construct(public array $saved, public string $name) {} public function __destruct() { echo 'CHILD;'; } }; }; } public function __destruct() { echo 'OWNER;'; } }\nclass PeerDerived209 extends PeerBase209 {}\n$owner = new PeerDerived209; $prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $alias =& $late;\n$factory = $owner->MiSsInG(first: (PeerProducerChild209::capture(...))($late, peerShift209()), later: 1.5);\necho 'RETURN;'; unset($alias); unset($late); echo 'DETACHED;'; $child = $factory(); unset($factory); echo $child->saved['first'], ':', $child->name, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "c1b251a5d99a52676b0e5f1a438246c122b7df6b7f64159718e3aaf4f8370f9e",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI6UGVlclByb2R1Y2VyQmFzZTIwOTpQZWVyUHJvZHVjZXJDaGlsZDIwOTtNQUdJQztPV05FUjtSRVRVUk47REVUQUNIRUQ7Q0xPU1VSRTpQUklWQVRFOlBlZXJCYXNlMjA5OlBlZXJEZXJpdmVkMjA5O1JFUVVFU1QtT0xEOk1pU3NJbkc7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
