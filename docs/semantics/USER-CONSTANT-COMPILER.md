@@ -210,6 +210,22 @@ old-release abrupt completion remain Unsupported. Construction, producer,
 Trait/Generator/303 and the other held boundaries are unchanged; no class-cache
 image or new Closure identity is introduced.
 
+Fixed-name ordinary public USER constructors receive omitted owning defaults
+after class-template initialization and actual receiver allocation. The live
+method target, receiver/scopes and matching caller `CTOR_RESULT` authenticate
+that recipient. Existing Shared function/default-origin caches compose with
+explicit `__construct` and inherited calls; formal/cache publication precedes
+TypeError, and normal promotion adds its ordinary property owner. Closed receive
+history keeps genuine source/scopes/publication, without retaining or looking
+up the former receiver.
+
+Automatic construction failure suppresses the user destructor even for escaped
+`$this`. Deprecated-handler and ordinary body exits preserve that flag before
+receiver/result roots unwind; explicit `__construct` keeps ordinary method
+semantics. These bounded hooks add no owner, schema field or unwind framework.
+Dynamic, anonymous, keyword-specific and default-AST `new` entry protocols,
+nonpublic/Generator/wider signatures and existing held families remain separate.
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
@@ -244,6 +260,7 @@ private-cache marker law does not extend the separate303 close path.
 [COMP195 computed cache replacement](../../coverage/semantics/computed-class-cache-replacement-review.json).
 [COMP196 static-property defaults](../../coverage/semantics/deprecated-static-property-default-review.json).
 [COMP197 instance-property defaults](../../coverage/semantics/deprecated-instance-property-default-review.json).
+[COMP198 constructor defaults](../../coverage/semantics/deprecated-constructor-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

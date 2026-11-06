@@ -90,6 +90,13 @@ binds nine exact originals and 79/73/46/82 strict457 conditions to their actual
 cuts, including a later legacy-write barrier and exact event-position guard.
 Original preparation failures remain zero credit; completed sources are not replayed.
 
+COMP198 constructor sources and independent receiver/cache/history/exit checks
+are under `../php-spec-evidence-archive/comp198/`. The
+[review](../coverage/semantics/deprecated-constructor-default-review.json) binds
+eight exact originals and 91/51/106 strict458 conditions to their actual cuts.
+Guarded completed rows stay distinct from failed aggregates; both failed-exit
+discrepancies and fixture diagnostics remain external with zero credit.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

@@ -3001,6 +3001,18 @@ Busy same-template, old-release abrupt, Trait/Generator/303 and existing holds
 remain separate. [Review](coverage/semantics/deprecated-instance-property-default-review.json).
 Actual current joined457/inventory pass at b6d797120; source/runtime/tests and material review are secured.
 
+COMP198 receives omitted owning defaults through fixed-name public ordinary
+constructors. Actual allocated This/scopes and caller CTOR_RESULT govern live
+reception; Shared caches compose with explicit/inherited constructor calls and
+existing promotion. Closed receipts survive receiver retirement without adding
+roots. Actual Deprecated-handler and body exits mark failed construction before
+owner release, preserving destructor suppression for escaped This and ordinary
+explicit-call behavior. Eight originals agree (six normal, two explicit exits);
+independent strict458 fronts pass 91/51/106 conditions, and current joined458
+plus inventory pass at e4618952198. Dynamic/anonymous/keyword/default-NEW227,
+nonpublic/Generator/wider signatures and held families remain separate.
+[Review](coverage/semantics/deprecated-constructor-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3009,7 +3021,8 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS212 | Fresh fixed-name USER invokable-object producers with actual effective public __invoke selection before args and ordinary receiver owners; preserve approved constructor, source/header and held bounds without wrapper or CV-history widening. |
-| COMP198 | Ordinary public named USER constructor omitted owning-Deprecated defaults through actual allocated This, METHOD_TARGET and CTOR_RESULT, shared default caches and historical publication proof without receiver roots; preserve construction and held bounds. |
+| ATTR72 | Nonpublic isset/empty and ??= for admitted backed Trait pairs using permitted descriptors and saved caller access, with existing late-RHS selector and owner laws unchanged; preserve producer and held bounds. |
+| COMP199 | Owning defaults for ordinary public constructors selected by initialized plain CV class strings, with exact dynamic-new caller/selection history and existing receiver/cache/failed-construction laws; preserve dynamic and held exclusions. |
 | ENUM156 | Last-owner known ordinary Closure in callable_name with actual captured OLD retirement history and existing capture/static/This child-drain owners; preserve live fresh-query admission and held child/cycle boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | OB29 | Fresh by-value Exception forwarding through finite admitted no-argument return-call contours, consuming actual departed RETURN edges and result owners before native THROW; preserve NULL Previous, rendering and held boundaries. |

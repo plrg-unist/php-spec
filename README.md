@@ -2768,6 +2768,11 @@ Instance-property defaults also bind before allocation, with class-template and
 per-object ownership. Frozen lookup/write records preserve handler shadows and
 link-time child snapshots; historical containers add no root. Nine originals
 and 280 independent strict457 checks cover the finite ordinary-class slice.
+Fixed-name public ordinary constructor defaults also use their real allocated
+receiver and caller result. Shared caches compose with inherited calls and
+explicit `__construct`; existing promotion stays intact. Failed construction is
+marked before exit cleanup, including escaped receivers. Eight originals and
+248 independent strict458 checks retain their separate cuts.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
@@ -2776,6 +2781,7 @@ static-property defaults, converted queries and wider metadata remain partial.
 [Computed class-cache review](coverage/semantics/computed-class-cache-replacement-review.json).
 [Static-property default review](coverage/semantics/deprecated-static-property-default-review.json).
 [Instance-property default review](coverage/semantics/deprecated-instance-property-default-review.json).
+[Constructor default review](coverage/semantics/deprecated-constructor-default-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).
