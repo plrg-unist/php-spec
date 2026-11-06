@@ -5854,6 +5854,11 @@ These short SET hooks also preserve one real typed, defaultless by-value paramet
 including its name and contravariant type. A supplied string remains the assignment
 result while the expression stores an integer; body compilation precedes variance checks.
 [Explicit short-SET review](coverage/semantics/short-set-explicit-review.json).
+Existing class block GET and short SET hooks can also share one backing descriptor,
+with separate source identities. Crossed own-backing accesses bypass the other hook;
+assignment input, transformed storage and getter result survive throw/retry and
+receiver cleanup. A pure GET on an initialized property remains a producer gap.
+[Short-pair review](coverage/semantics/short-get-set-pair-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.

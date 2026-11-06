@@ -1,0 +1,65 @@
+{
+  "milestone": "ATTR56: class block GET and short SET share backing storage",
+  "status": "Independently accepted bounded implementation; wider hooks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "841eda1c701b99964ac8f1a11bfda7e7e0e8d8c6",
+    "modules": {
+      "spec/semantics/382-backed-get-hooks.watsup": "8be0a4aa4fc8543961761ea2302632f66680147c5d3d5725733e0d40e6344cbc",
+      "spec/semantics/403-backed-set-hooks.watsup": "83cdd4955a1d4fdcedc59ca758353d382ff7fbda1eaf31886749d4ff63cb2444"
+    },
+    "scope": "Ordinary parentless CLASS public typed block GET at hook index 0 plus existing short SET at index 1, with implicit or actual typed/defaultless by-value parameter. The two real source functions/signatures share one authenticated backed property. The new header gate remains class-only at compilation and paired-origin authentication. GET retains its existing syntactic own-backing requirement; no Trait, byref/default/attribute/header, task/schema, Tick or runtime-formula expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "Zend/zend_compile.c: zend_property_hook_uses_property makes a short SET inherently backed; zend_property_is_virtual considers all hooks. zend_compile_property_hooks preserves physical order, assigns both functions the same prop_info, rewrites the short SET to an implicit backing assignment, supplies its parameter/void return and checks variance after function compilation.",
+    "runtime": "Zend/zend_object_handlers.c: zend_is_in_hook compares the current function's property prototype; zend_should_call_hook also checks the receiver. zend_call_get_hook and zend_std_write_property bypass the opposite hook for same-property/receiver backing access, hold the receiver across hook execution and restore the original write value."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/short-get-set-pair-56",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "ca9d1ee13858412b128d799936aa8291ff5fc0c136651a65f8f9ea45f415b8a1",
+      "scope": "Three original positive/static-error sources plus one Trait control pinned before implementation. Native preparation only, no differential credit."
+    },
+    "original_sources": {
+      "report": "source-final-v1/report.json",
+      "sha256": "e66170e49d84ddd2deb292337929c7e4b7d6e3612d97b9753747493f44070ade",
+      "passed": true,
+      "normal_agreements": 2,
+      "static_rejection_agreements": 1,
+      "unsupported_controls": 1,
+      "scope": "Exact raw stdout/stderr and native exit comparison: implicit pair produces 5G116; explicit int|string pair produces S4:0;1G115S9:15;CG116S2:16;1G129S8:29;UDCS1:0;1G112D5Z through abort/retry/global receiver removal. Getter Cannot re-assign $this wins over setter variance before main output. The Trait pair remains Unsupported with zero agreement credit. Explicit 180-second model/210-second outer limits; completed with stable inputs."
+    },
+    "strict": {
+      "report": "strict-report-v1.json",
+      "sha256": "ea6ba48cae0f0533eb130f6de6b828711a155116e3b44aadef62287c8e34434f",
+      "passed": true,
+      "scope": "All 448 manifest modules pass SL elaboration, algorithmic and structuring checks with main=true; exit 0, empty stderr, no timeout, 13.301 seconds and stable inputs."
+    },
+    "independent_reached": {
+      "report": "review-front-v1/fiber-state-review-5v_97os7/report.json",
+      "sha256": "7fe0bc46a238b553a848953ffd3f4bfb6b86f5acac898304bcd583161a33bdd1",
+      "process": "review-front-v1/driver-report.json",
+      "process_sha256": "cb89919b4e069f75e22352cfb45133a2314de9a9159465d2b5fa39e1b0092c21",
+      "revision": "dddb793c9e30f4e0f71fe07a0e2e00a6d0a86c8c",
+      "source_sha256": "bb4644d4150e35cb147240575cbdaa888be284e2633971afa866c2f1736f779b",
+      "fixture": "tests/semantics/short_get_set_pair_review_protocol.py",
+      "fixture_sha256": "0ff80a57fce4f9016350443e592650c9d317e5353a0d00b96df011809fb411b0",
+      "passed": true,
+      "reported_conditions": 137,
+      "derived_negatives": 2,
+      "count_note": "Reported conditions include helper bindings and five harness conditions; this front adds no native agreement credit.",
+      "scope": "Actual GET index 0/SET index 1, common property/default, distinct signatures and actual Param authenticate the source. At the fourth-call U, original STRING 8 remains in separate helper/setter cells and the outer result receipt; backing is int 29, previous result STRING 2 and count 4. Two existing captured-target/result owners retain the receiver after global removal. Missing SET function and GET-as-short-SET controls refuse. Heap/descriptor, zero-budget/full-resume equality, D-before-catch, fresh retry, count 5/result STRING 1 and final receiver retirement pass. Frozen production bytes equal 841eda1c7; SL 240-second cap, 93.604 seconds, exit 0, exact true output, empty stderr and stable fixture/source inputs."
+    }
+  },
+  "independent_review": "CLEAR for bounded semantics, physical source roles, signature/backing authority, crossed access, actual ownership/abrupt state, resumption, harness, documentation and inventory.",
+  "compatibility": "The old statement-pair predicate is unchanged. The new alternative remains CLASS-only in both compiler arms and runtime pair origins, then reuses the existing short-SET compiler, signature, expression and implicit-write rules. ATTR54/55 and older accepted campaigns retain their original identities without replay.",
+  "zero_credit": {
+    "report": "source-calibration-v1/report.json",
+    "sha256": "02f06a67b15c8917016f90b8616a177d8bcacd21cb32c82e0507fe53ed88a536",
+    "outcome": "At 31d9f1f14 the unchanged implicit pair is Unsupported with empty output. Incomplete, no agreement. Existing earlier failed/Unsupported/timeout cuts remain under their original identities."
+  },
+  "environment": "External packets preserve original bytes/path/cwd/profile, raw streams/exits, commands, tested revisions and stable identities. One heavy job at a time across the pair; all jobs reaped. Existing tools reused; no rebuild or portability claim.",
+  "remaining": "Pure GET on an initialized property plus an inherently backed short SET is the next real producer gap and remains Unsupported. Trait, reversed/expression-GET pairs, wider headers, byref/default/attribute and Tick-bearing forms remain partial. These three sources and one front do not close the hook family. Held lanes stay unchanged; no engine bug or intentional divergence is claimed."
+}

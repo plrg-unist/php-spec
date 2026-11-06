@@ -175,7 +175,7 @@ assignment.
 The captured write target and existing outer result retain the receiver after
 global removal until abrupt cleanup; retry and ordered destruction are covered
 by the [short-SET review](../../coverage/semantics/short-set-expression-review.json).
-Trait, paired/header and Tick-bearing short SET forms remain partial.
+Trait, wider paired/header and Tick-bearing short SET forms remain partial.
 
 Selected sole public typed backed implicit SET hooks also import directly into a
 parentless Consumer. The raw Trait function remains a source authority; only the
@@ -206,6 +206,19 @@ valid body leaves the variance error before main execution. Typed input/result
 rejections, throw/retry, retained receiver owners and budget resumption are in the
 [explicit short-SET review](../../coverage/semantics/short-set-explicit-review.json).
 Trait, byref/default/attribute and wider header forms remain partial.
+
+An ordinary parentless class can pair an existing public typed block GET with
+an implicit or explicitly typed short SET. Both indexed source functions share
+the actual backing descriptor: an own-backing write in GET bypasses SET, and an
+own-backing read in SET bypasses GET. Assignment input, transformed storage and
+the subsequent getter result remain distinct through RHS throw, retry and receiver
+cleanup. Getter compilation still precedes setter compilation and variance checks.
+Three original-source agreements, strict448 and the independent source/owner/budget
+front are recorded in the
+[short-pair review](../../coverage/semantics/short-get-set-pair-review.json).
+The initialized GET still requires syntactic own-backing access. A pure GET with
+an initialized property and an inherently backed short SET remains Unsupported;
+Trait, reversed/expression-GET pairs and wider header forms remain partial.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the

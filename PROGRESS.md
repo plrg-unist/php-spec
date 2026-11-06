@@ -1283,6 +1283,14 @@ preserving its name, contravariant signature and original string input separatel
 from integer storage. Body compilation precedes variance checks; the existing
 receiver owners survive throw/retry and budget resumption
 ([review](coverage/semantics/short-set-explicit-review.json)).
+Existing public typed class block GET and short SET hooks now share one authentic
+backing descriptor and retain their distinct indexed functions/signatures. Crossed
+own-backing access skips the other hook; assignment input, stored transformation
+and getter result stay distinct through RHS throw, retry and receiver release.
+Three originals agree and strict448 passes; 137 independent source/owner/budget checks
+are in the [short-pair review](coverage/semantics/short-get-set-pair-review.json).
+Pure GET on an initialized property plus an inherently backed short SET remains
+the next producer gap; Trait, byref/attribute/default and wider headers stay partial.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2243,13 +2251,13 @@ their recorded cuts without replay.
 
 ## Active work
 
-Implementation/reviewer pairs resumed after the daemon restart. Private paths
-below are under `.tools/`; their work remains unaccepted until integrated.
+Current implementation/reviewer pairs work in private trees under `.tools/`;
+their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS200 | Coherent existing primitive COPY inputs across current CV, reference CV and nullary by-value USER producers, with source/carrier/ownership proof first; clean-base preparation after integrated CLASS199. Flat-array policy and held owned-NUL/wider producers remain separate. |
-| ATTR56 | Class block-GET plus existing short-SET pairs sharing the actual backed descriptor, source indices and signatures; clean-base preparation after integrated ATTR55, covering crossed backing access/results/abort/ownership without trait/byref/attribute/default/schema expansion. |
+| ATTR57 | Initialized class properties with pure block GET and an existing inherently backed short SET; clean-base preparation after accepted ATTR56, proving the actual shared descriptor/virtuality and preserving source indices, signatures, owners and budget behavior without trait/byref/attribute/default/schema expansion. |
 | COMP188 | Unscoped REAL Closure owning defaults, with actual cache identity and roots; clean-base preparation after integrated COMP187, retaining existing producer/schema boundaries. |
 | ENUM141 | Global-constant callable producer and cache-birth work; clean-base preparation after integrated ENUM140, with exact producer/publication claims coordinated by the pair. |
 | GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |
