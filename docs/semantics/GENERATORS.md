@@ -177,6 +177,24 @@ named-before-unpack, new producer/value modes and the held wider modes remain
 separate; the old INI and prefix-free paths are unchanged.
 [Positional-prefix review](../../coverage/semantics/generator-prefixed-traversable-arguments-review.json).
 
+An authenticated named by-value source Generator can suspend its Fiber during
+the actual borrowed NEXT used by these native consumers. Its real saved frame
+contains GENERATOR_RESUME followed by CONFIG_GENERATOR next. A local proof
+identifies that running source, including when checked inside a restored VM;
+the selected receiver remains paused and contributes no resumer. Physical VM
+nodes retain DATA and prior/copied argv; the source Generator cache supplies
+its separate owner. No new root or Generator PARKED slot is added. Ordinary
+source/value/CV and last-DATA restrictions stay
+in force, including the outside source owner for owning normalized argv.
+Normal resume continues collection before API count/body work. After copied-call
+transfer, pending failure releases normalized argv before the selected receiver
+through a real eager queue, with caller-only pre-API trace context. Early
+noncopied CONFIG_UNPACK_PREP retirement remains a separate cleanup gap. Existing
+helper, Fiber Throwable-injection and guarded-close paths reuse their frame,
+restore and unwind laws; direct source validation covers suspension and normal
+resume.
+[Borrowed-source Fiber review](../../coverage/semantics/generator-borrowed-fiber-arguments-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

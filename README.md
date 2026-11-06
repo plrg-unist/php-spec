@@ -8250,6 +8250,13 @@ completion; normalized argv determines the later API count. INI and prefix-free
 paths keep their existing rules. ARRAY prefixes and multiple Traversable packs remain separate.
 [Positional-prefix review](coverage/semantics/generator-prefixed-traversable-arguments-review.json).
 
+An initialized named by-value Generator argument source can suspend its Fiber
+during the real borrowed `next`. The saved VM carries DATA, the selected receiver
+and earlier/copied argv through normal resume. Later source effects and errors
+still precede API reception; unfinished copied native calls release argv before
+their receiver. Source/cache/value and last-DATA bounds remain unchanged.
+[Borrowed-source Fiber review](coverage/semantics/generator-borrowed-fiber-arguments-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

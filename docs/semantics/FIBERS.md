@@ -75,6 +75,18 @@ unchanged. Four originals preserve normal one/two-level returns and supplied
 Throwable finally unwinding, where two or three distinct parameter cells own the
 same Token. [Helper transfer review](../../coverage/semantics/generator-fiber-helper-transfer-review.json).
 
+Borrowed NEXT during native Generator argument collection now also authenticates
+its actual named by-value source resumer. The saved CONFIG_GENERATOR frame
+retains the selected receiver and frozen argv; the running source has no stored
+Generator frame or delegation PARKED state. The local identity proof works on a
+restored VM independently of ACTIVEFIBER, so existing VM node and unique-resumer
+checks preserve the real owners. Normal resume continues collection or source
+unwind before API reception. Existing named-helper recursion, supplied
+Fiber-Throwable injection and guarded forced close compose through their existing
+frame/restore/unwind laws. They have common-path review rather than new
+source-validation credit here.
+[Borrowed-source review](../../coverage/semantics/generator-borrowed-fiber-arguments-review.json).
+
 Native named Generator delegation uses a structural chain proof instead of a
 single-resumer bound. Each actual parent/child/source pair is checked before a
 local caller projection; real VM scans keep all resumer and delegation-claim

@@ -672,6 +672,22 @@ the raw-count fixture phase error and failed containing selection retain zero cr
 The actual current 454-module joined load/inventory also pass, without source/state replay.
 [Positional-prefix review](coverage/semantics/generator-prefixed-traversable-arguments-review.json).
 
+I130 joins Fiber transfer to the existing named by-value Generator-CV argument
+source during authentic borrowed NEXT. One local saved-frame proof reuses
+CONFIG/source authority and existing VM ownership/unique-resumer checks, without
+new roots or PARKED mutation. DATA/selected/prior+copied argv roots stay distinct
+from the source VALUE cache. Unfinished copied native calls now release argv
+before receiver in actual pre-API throw context. Three native-first sources
+agree at separate retained/corrected cuts; independent N169 plus focused T138
+compose307 conditions without a full307 rerun. The original ordering mismatch,
+superseded T prototypes and diagnostic timeouts retain zero credit. Current456
+joined load/inventory pass with a scoped195/196/GC65 compatibility bridge.
+Source/value/CV/last-DATA and held-mode bounds remain. Existing helper,
+Fiber-Throwable and guarded-close paths have common-law review, without new
+direct source credit. Early noncopied cursor retirement is concrete remaining
+core work, separate from this copied-call correction.
+[Borrowed-source Fiber review](coverage/semantics/generator-borrowed-fiber-arguments-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -2904,10 +2920,11 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| CLASS211 | Immediate literal instance FCC on initialized plain/reference CV receivers, with actual inner capture SITE versus outer argument mapping, selected-cell receipts and wrapper/borrowed This owners; preserve current holds and avoid collection rereads. |
 | ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
 | COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
 | ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |
-| I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
+| GC66 | Retained plain DIRECT-array DAG RHS replacement/read with actual outer slot, KEY_R and callback-CV owners, unchanged descendant edges and existing claim/cursor phases; exclude mutation, refs, cycles and Key backedges. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
