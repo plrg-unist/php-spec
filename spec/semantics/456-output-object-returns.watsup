@@ -724,7 +724,7 @@ def $ob_object_return_error_source(S, pfunction, pobreturnerror) = true
   -- if n_unit = pfunction.CODE.UNIT
   -- if $origin_node(S.SOURCES, pobreturnerror.SITE) = (NStmtReturn expression metadata)
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_return) = ((pobreturnerror.LINE, false))
-  -- if pfunction.CODE.STRICT /\ ~pfunction.SIGNATURE.BYREF
+  -- if ~pfunction.SIGNATURE.BYREF
   -- if $(pobreturnerror.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pobreturnerror.OBJECT] = THROWABLE {KIND "TypeError", ORIGIN (pobreturnerror.SITE), FILEORIGIN (pobreturnerror.SITE)}
 def $ob_object_return_error_source(S, pfunction, pobreturnerror) = false -- otherwise
