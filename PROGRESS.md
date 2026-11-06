@@ -2221,6 +2221,14 @@ admission. Nullary routes and contextual first-array returns stay unchanged;
 [required-producer review](coverage/semantics/anonymous-user-argument-magic-review.json)
 records five distinct source agreements, separate 140/188 owner/budget fronts
 and a 27-condition unpack source guard at their recorded cuts.
+Fixed named new expressions now admit source-certified effective plain public
+constructors with zero/required untyped positional by-value parameters. Generic
+constructor/result owners preserve the allocated ordinary leaf instance across
+argument effects and ignored scalar returns. Collection binds its exact class;
+the old empty no-constructor and unpack-prefix bounds stay unchanged. The
+[constructor-producer review](coverage/semantics/anonymous-constructor-magic-review.json)
+records five distinct source agreements, separate 160/201 owner/budget fronts and
+a 30-condition zero-constructor unpack guard at their recorded cuts.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2579,8 +2587,9 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS204 | Fixed-name new expressions with effective plain public zero/required-by-value positional constructors, authentic NEW-result ownership and ignored scalar constructor returns; preserve current leaf/header policy and held modes. |
+| CLASS205 | Fixed class/literal public static USER producers with zero/required untyped positional-by-value arguments, authentic declaring/called targets and generic ownership; preserve current quiet return/header policies and held domains. |
 | ATTR65 | Acyclic nested Trait wrapper exports of backed GET/block-SET pairs, with authentic intermediate rows, raw partners and flattened Consumer identities; preserve existing cycle/conflict and held boundaries. |
+| COMP193 | Public ordinary instance/static method FCC defaults through direct captures, fromCallable and clones, with authentic entry/scope/receiver and Shared/private lifetime; preserve fake rebind, Generator and other held bounds. |
 | ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
 | GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |
 | I127 | Existing computed/nullsafe native Generator method selection with admitted Iterator, Aggregate or initialized by-value Generator CV packs; preserve actual receipts, ownership and held domains. |

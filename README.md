@@ -5416,6 +5416,16 @@ admission. Nullary producers and the contextual first-array policy stay separate
 inner named arguments, defaults, variadics and wider modes remain partial.
 [Required-producer review](coverage/semantics/anonymous-user-argument-magic-review.json).
 
+Fixed named `new` expressions may use an effective plain public constructor
+with zero or required untyped positional by-value parameters. Source class,
+method and formal certificates retain the selected target through inner argument
+effects. Existing constructor/result owners protect the allocated instance while
+the constructor's scalar return is ignored; collection requires that exact class
+and an ordinary leaf result. The empty no-constructor route retains its prior
+bound, and unpack prefixes keep that old route only. Wider constructor headers,
+inner named calls and nonleaf/array layouts remain partial.
+[Constructor-producer review](coverage/semantics/anonymous-constructor-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
