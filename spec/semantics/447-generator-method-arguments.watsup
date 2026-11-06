@@ -209,7 +209,7 @@ def $generator_api_body_throw(S, pgeneratorop) = true
   -- if ~$generator_temporary_operation(pgeneratorop)
   -- if $generator_operation_valid(S, pgeneratorop)
   -- if $generator_resumption_arguments_valid(S, pgeneratorop)
-  -- if $origin_node(S.SOURCES, pgeneratorop.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $generator_source_method(S, pgeneratorop.SITE, $generator_method_display(pgeneratorop.NAME)) \/ $generator_computed_method_node($origin_node(S.SOURCES, pgeneratorop.SITE))
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps /\ pgenerator.RETURN = eps
   -- if ~pgenerator.PENDING_INIT
