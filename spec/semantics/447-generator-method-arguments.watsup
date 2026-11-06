@@ -119,6 +119,22 @@ def $generator_resumption_arguments_valid(S, pgeneratorop) = false -- otherwise
 dec $generator_selected_traversable_node(pcnode?) : bool
 def $generator_selected_traversable_node((NExprNullsafeMethodCall expression phpType20 phpType6 metadata)) = true
 def $generator_selected_traversable_node(pcnode?) = $generator_computed_method_node(pcnode?) -- otherwise
+;; Earlier ordinary positional sends precede one actual terminal CV spread.
+dec $generator_traversable_source_index(pstate, pconfigcall) : nat?
+def $generator_traversable_source_index(S, pconfigcall) = (n_index)
+  -- if $getter_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS phpType7* 2
+  -- if $(|phpType7*| > 0)
+  -- if n_index = $nabs($(|phpType7*| - 1))
+  -- if phpType7_prefix* = phpType7*[0:n_index]
+  -- if ~$call_unpack_present(phpType7_prefix*) /\ ~$named_present(phpType7_prefix*)
+  -- if $generator_api_argument_list(phpType7_prefix*, false, false)
+  -- if phpType7*[n_index] = NArg ABSENT (NExprVariable (BYTES text_input) metadata_input) (BOOLEAN false) (BOOLEAN true) metadata_arg
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (|phpType7*|)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_index) = ((expression_input, true, eps, PORIGIN n_source pcpath, z))
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
+def $generator_traversable_source_index(S, pconfigcall) = eps -- otherwise
 dec $generator_selected_traversable_site(pstate, pconfigcall) : bool
 def $generator_selected_traversable_site(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
@@ -128,7 +144,8 @@ def $generator_selected_traversable_site(S, pconfigcall) = true
   -- if pconfigcall.SELECTION = eps
   -- if pconfigcall.OWNER = (n_receiver)
   -- if $generator_object(S, n_receiver)
-  -- if $generator_selected_traversable_node($origin_node(S.SOURCES, pconfigcall.SITE))
+  -- if $generator_traversable_source_index(S, pconfigcall) = (n_index)
+  -- if $generator_selected_traversable_node($origin_node(S.SOURCES, pconfigcall.SITE)) \/ $(n_index > 0)
   -- if $generator_selected_method(S, pconfigcall.SITE, n_receiver, $generator_method_display(text_method), pconfigcall.LINE, pgeneratormethodselection?)
   -- if $generator_selection_live(S, pgeneratormethodselection?)
   -- if S.OBJECTS[n_receiver] = GENERATOR pgenerator
@@ -137,14 +154,27 @@ def $generator_selected_traversable_site(S, pconfigcall) = true
   -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps /\ pgenerator.CREATION = eps
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
-  -- if $getter_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS phpType7* 2
-  -- if phpType7* = [(NArg ABSENT (NExprVariable (BYTES text_input) metadata_input) (BOOLEAN false) (BOOLEAN true) metadata_arg)]
-  -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression_input, true, eps, PORIGIN n_source pcpath, z))
-  -- if $code_at(S.CODE, n_source) = (pcode)
-  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
-  -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
 def $generator_selected_traversable_site(S, pconfigcall) = false -- otherwise
+
+def $config_traversable_argument(S, pconfigcall) = $intrinsic_argument(S, pconfigcall.SITE, n_index)
+  -- if $generator_selected_traversable_site(S, pconfigcall)
+  -- if $generator_traversable_source_index(S, pconfigcall) = (n_index)
+def $config_traversable_prefix(S, pconfigcall) = true
+  -- if $generator_selected_traversable_site(S, pconfigcall)
+  -- if $generator_traversable_source_index(S, pconfigcall) = (pconfigcall.INDEX)
+  -- if ~pconfigcall.NAMED /\ pconfigcall.PACKS = eps
+  -- if $config_source_replay(S, pconfigcall, pconfigcall[.INDEX = 0][.SENT = eps][.NAMED = false], eps) = ((pconfigcall_prefix, eps))
+  -- if pconfigcall_prefix.SENT = pconfigcall.SENT /\ ~pconfigcall_prefix.NAMED
+dec $generator_traversable_copied_prefix(pstate, pconfigcall) : bool
+def $generator_traversable_copied_prefix(S, pconfigcall) = true
+  -- if $generator_traversable_source_index(S, pconfigcall) = (0)
+def $generator_traversable_copied_prefix(S, pconfigcall) = true
+  -- if $generator_traversable_source_index(S, pconfigcall) = (n_index)
+  -- if $(n_index > 0)
+  -- if $(n_index <= |pconfigcall.SENT|)
+  -- if ~pconfigcall.NAMED
+  -- if $config_traversable_prefix(S, pconfigcall[.INDEX = n_index][.SENT = pconfigcall.SENT[0:n_index]])
+def $generator_traversable_copied_prefix(S, pconfigcall) = false -- otherwise
 
 def $generator_iterator_site(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
@@ -309,8 +339,7 @@ def $config_generator_discard(S, pconfiggenerator, text) = $generator_source_dis
 def $config_iterator_history(S, pconfigiterator) = true
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
   -- if ~$generator_selected_traversable_site(S, pconfigiterator.CALL) \/ $generator_aggregate_current(S, pconfigiterator.OBJECT)
-  -- if pconfigiterator.CALL.INDEX = 0 /\ pconfigiterator.CALL.SENT = eps
-  -- if ~pconfigiterator.CALL.NAMED /\ pconfigiterator.CALL.PACKS = eps
+  -- if $config_traversable_prefix(S, pconfigiterator.CALL)
   -- if pconfigiterator.PRODUCER = eps \/ $generator_aggregate_iterator(S, pconfigiterator)
   -- if pconfigiterator.INPUT = VARIABLE ptbytes z
   -- if pconfigiterator.CALL.OWNER = (n_receiver)
@@ -324,7 +353,9 @@ def $config_iterator_history(S, pconfigiterator) = true
 ;; Native named delivery can fill only the sole send/throw parameter.
 def $config_iterator_copied_header(S, pconfigcall) = true
   -- if $generator_iterator_site(S, pconfigcall)
-  -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if pconfigcall.PACKS = eps
+  -- if $generator_traversable_copied_prefix(S, pconfigcall)
   -- if $config_call_valid(S, pconfigcall)
   -- if $config_missing(pconfigcall.SENT, 0) = eps
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
@@ -361,7 +392,7 @@ def $generator_iterator_cancel_state(S, pconfigiterator, text) = (S_hold)
   -- if ~(text <- ["ready", "input-release"])
   -- if $config_iterator_valid(S[.TODO = (THROW_SEARCH n) :: (CONFIG_ITERATOR pconfigiterator text) :: ptask*], pconfigiterator, text)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
-  -- if S_hold = S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_hold = S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_iterator_discard_allowed(S_hold, pconfigiterator)
 def $generator_iterator_cancel_state(S, pconfigiterator, text) = eps -- otherwise
 dec $generator_iterator_cancel(pstate, pconfigiterator, text) : pstate

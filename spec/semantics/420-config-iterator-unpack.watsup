@@ -90,6 +90,12 @@ def $config_traversable_value(S, POBJECT n) = ($useriter_instance(S, n) \/ $gene
   -- if HOBJECT n <- S.ALLOCATIONS
 def $config_traversable_value(S, pvalue) = false -- otherwise
 
+;; Consumer-specific terminal source facts keep the default unary INI path.
+dec $config_traversable_argument(pstate, pconfigcall) : (expression, bool, preqbytes?, porigin, int)?
+def $config_traversable_argument(S, pconfigcall) = $intrinsic_argument(S, pconfigcall.SITE, 0) -- otherwise
+dec $config_traversable_prefix(pstate, pconfigcall) : bool
+def $config_traversable_prefix(S, pconfigcall) = (pconfigcall.INDEX = 0 /\ pconfigcall.SENT = eps /\ ~pconfigcall.NAMED /\ pconfigcall.PACKS = eps /\ $intrinsic_count(S, pconfigcall.SITE) = (1)) -- otherwise
+
 def $config_iterator_methods(S, n, eps) = true
 def $config_iterator_methods(S, n, text :: text_tail*) = $config_iterator_methods(S, n, text_tail*)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
@@ -111,14 +117,14 @@ def $config_iterator_retired_methods(S, n, text :: text_tail*) = $config_iterato
 def $config_iterator_retired_methods(S, n, text*) = false -- otherwise
 
 def $config_iterator_input(S, pconfigiterator) = true
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, PORIGIN n_source pcpath, z))
   -- if pconfigiterator.INPUT = VARIABLE ptbytes z
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
 def $config_iterator_input(S, pconfigiterator) = true
   -- if pconfigiterator.INPUT = KNOWN (POBJECT pconfigiterator.OBJECT)
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, PORIGIN n_source pcpath, z))
   -- if expression = NExprFuncCall name (SEQUENCE eps) metadata
   -- if $source_emission_noarg_call(S, n_source, pcpath, expression) = (z_call)
   -- if $code_at(S.CODE, n_source) = (pcode)
@@ -841,7 +847,7 @@ def $config_iterator_valid(S, pconfigiterator, text) = true
   -- if $config_iterator_owner_live(S, pconfigiterator.CALL)
   -- if ~(text <- ["ready", "input-release"])
   -- if $config_iterator_scope(S, pconfigiterator)
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
   -- if S.ORIGIN = (porigin)
   -- if $useriter_cursor_valid(S, pconfigiterator.ITERATOR, pconfigiterator.OBJECT)
   -- if $config_iterator_stage(S, pconfigiterator, text)
@@ -870,12 +876,12 @@ def $config_iterator_target(S, pconfigiterator, pcalltarget, text) = false -- ot
 def $useriter_pending(S, UNPACK_ITERATOR_TARGET n porigin_method, porigin) = true
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = (CALL_ARGS (UNPACK_ITERATOR_TARGET n porigin_method) eps 0 eps (porigin) z) :: (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
   -- if $config_iterator_valid(S, pconfigiterator, text)
   -- if $config_iterator_target(S, pconfigiterator, UNPACK_ITERATOR_TARGET n porigin_method, text)
 def $config_iterator_frame(S, pcallcontext, pframe) = true
   -- if pframe.TODO = (CONFIG_ITERATOR pconfigiterator text) :: ptask_tail*
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
   -- if pframe.ORIGIN = (porigin)
   -- if pcallcontext.CALLSITE = (porigin) /\ pcallcontext.LINE = z
   -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
@@ -914,7 +920,7 @@ def $config_iterator_call(S, pconfigiterator, text, ptask_tail*) = S[.TODO = [(C
   -- if S.OBJECTS[pconfigiterator.OBJECT] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
   -- if $config_iterator_target(S, pconfigiterator, UNPACK_ITERATOR_TARGET pconfigiterator.OBJECT pmethoddesc.FUNCTION.ORIGIN, text)
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
 def $config_iterator_clear(S, pconfigiterator, text, ptask_tail*) = S[.TODO = (CONFIG_ITERATOR pconfigiterator[.CURRENT = KNOWN PNULL][.KEY = KNOWN PNULL] text) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 rule PhpStep/config-iterator-rewind-start: S ~> $config_iterator_call(S, pconfigiterator, "rewind", ptask_tail*)
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "rewind-start") :: ptask_tail*
@@ -962,7 +968,7 @@ rule PhpStep/config-iterator-key-invalid-primitive: S ~> $throw_scalar(S[.RESULT
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
   -- if $config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, S.RESULT)
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
 rule PhpStep/config-iterator-key-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack key outside integer domain"]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "key") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "key")
@@ -985,7 +991,7 @@ def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
   -- if $config_iterator_valid(S, pconfigiterator, "key")
   -- if $config_iterator_owning_release(S, pconfigiterator) \/ $generator_iterator_site(S, pconfigiterator.CALL)
   -- if $config_iterator_live_cv_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_temp_primitive_key(S, pconfigiterator, S.RESULT) \/ $config_iterator_fresh_aggregate_primitive_key(S, pconfigiterator, S.RESULT)
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
   -- if S_next.COMPLETION = THROWN "Error" ($ptascii("Keys must be of type int|string during argument unpacking")) z
   -- if S_next = $throw_scalar(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Error", $ptascii("Keys must be of type int|string during argument unpacking"), z)
 
@@ -996,7 +1002,7 @@ def $config_iterator_send(S, pconfigiterator, ptask_tail*) = $config_iterator_cl
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
   -- if $exit_key_name(pkey) = preqbytes?
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION = NORMAL
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S_checked
@@ -1004,7 +1010,7 @@ def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S_checked
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
   -- if $exit_key_name(pkey) = preqbytes?
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION =/= NORMAL
 def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "CONFIG Iterator unpack current outside admitted argument send domain"]
@@ -1012,7 +1018,7 @@ def $config_iterator_send(S, pconfigiterator, ptask_tail*) = S[.COMPLETION = UNS
   -- if $config_iterator_send_key(S, pconfigiterator, pvalue_key) = (pkey)
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall_prefix)
   -- if $exit_key_name(pkey) = preqbytes?
-  -- if $intrinsic_argument(S, pconfigiterator.CALL.SITE, 0) = ((expression, true, eps, porigin, z))
+  -- if $config_traversable_argument(S, pconfigiterator.CALL) = ((expression, true, eps, porigin, z))
   -- if S_checked = $config_send_check(S, pconfigcall_prefix, preqbytes?, z)
   -- if S_checked.COMPLETION = NORMAL
   -- if ~$config_iterator_current_argument(S, pconfigiterator)
@@ -1054,14 +1060,14 @@ def $config_iterator_unary_option(S, pconfigcall) = true
   -- if $stringable_instance(S, n_object)
   -- if ~$config_strict(S, pconfigcall)
 def $config_iterator_unary_option(S, pconfigcall) = false -- otherwise
-rule PhpStep/config-iterator-ready: S ~> $config_receive(S, pconfigcall[.INDEX = 1])
+rule PhpStep/config-iterator-ready: S ~> $config_receive(S, pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)])
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "ready")
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if $config_iterator_argument_nodes(pconfigiterator) = eps
   -- if ~$generator_api_kind(pconfigiterator.CALL.KIND)
   -- if pconfigcall.KIND =/= INTRINSIC_INI_GET /\ pconfigcall.KIND =/= INTRINSIC_INI_RESTORE
-rule PhpStep/config-iterator-ready-owned: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/config-iterator-ready-owned: S ~> S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_ITERATOR pconfigiterator "ready") :: ptask_tail*
   -- if $config_iterator_valid(S, pconfigiterator, "ready")
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
@@ -1081,7 +1087,7 @@ rule PhpStep/config-iterator-restore-ready-unsupported: S ~> S[.COMPLETION = UNS
   -- if ~$config_iterator_unary_option(S, pconfigcall)
 
 ;; Callback failure tears down cache/DATA before caller catch search resumes.
-def $config_iterator_discard_scope(S, pconfigiterator) = S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: S.TODO]
+def $config_iterator_discard_scope(S, pconfigiterator) = S[.TODO = (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: S.TODO]
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
 def $config_iterator_discard_scope(S, pconfigiterator) = S -- otherwise
@@ -1128,7 +1134,7 @@ def $config_iterator_discard_state(S, pconfigiterator, text) = S[.ITERATORS = $i
   -- if ~(text <- ["input-release", "ready"])
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-def $config_iterator_discard_state(S, pconfigiterator, "input-release") = S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_iterator_discard_state(S, pconfigiterator, "input-release") = S[.ITERATORS = $iterator_remove(S.ITERATORS, pconfigiterator.ITERATOR)][.ORIGIN = (pconfigiterator.CALL.SITE)][.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
@@ -1141,7 +1147,7 @@ def $config_iterator_discard_nodes(pconfigiterator, "input-release") = $config_i
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
 def $config_iterator_discard_nodes(pconfigiterator, text) = $config_iterator_nodes(pconfigiterator, text)
   -- if (~$config_iterator_owning_input(pconfigiterator) \/ text <- ["input-release", "ready"]) /\ $config_iterator_argument_nodes(pconfigiterator) = eps
-def $config_iterator_discard_default(S, pconfigiterator, "ready") = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = 1]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $config_iterator_discard_default(S, pconfigiterator, "ready") = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall[.INDEX = $(pconfigcall.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_iterator_argument_nodes(pconfigiterator) =/= eps
   -- if $config_pack_prefix(pconfigiterator.CALL, pconfigiterator.ITEMS, false) = (pconfigcall)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
