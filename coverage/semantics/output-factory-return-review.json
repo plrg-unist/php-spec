@@ -1,0 +1,106 @@
+{
+  "milestone": "OB28: fresh byvalue factory results before native output throws",
+  "status": "independently CLEAR45; source/runtime integrated with current457 joined load",
+  "tested": {
+    "revision": "75d14b23ca316dddc58f48b7dfb6181e3a3bb9f3",
+    "equivalent_owner_runtime": "d2e5bd45e32a6752f9a3c24f4092810163302bba",
+    "source": "c17f6187a644f41f4abc7f930c35b5dbfc8c7143",
+    "base": "999ff6223c39453911a3b65b11519a26ebaa40b8 / accepted455",
+    "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348; oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3; SL455 cachefalse/dettrue; baseline C/UTC profile",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "cdd4df287882be15246e5b5031ac0f5e342298108b301564a72f0abba984015d",
+      "spec/semantics/456-output-object-returns.watsup": "40c1d0b2dbcac867f0958741c928ff7a45d657445ffab8535cdec806946eac1e"
+    }
+  },
+  "engine": "Pinned zend_vm_def.h RETURN writes the caller return slot before zend_leave_helper restores caller CURRENT and frees producer CVs. The model protects that already-owned slot in FRAME_EXIT.VALUE while RESULT is NULL; the consumer resumes after cleanup. No new cleanup barrier or owner is needed.",
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/baseline-02/report.json",
+    "sha256": "7ecd38f2b6827afad58958fd3de71dc71fc8efe2e248714080bc7767b47140e1",
+    "groups": 12,
+    "native_agreement_credit": 0,
+    "result": "Unchanged999ff/455 source front passes6+6 at59.484/82.416s under300: real RETURN_UNWIND F1, one exact normal pop, minimal unstaged RESULTF versus D-case VALUEF/PENDINGeps/RESULTnull/FUNCTIONmake, then sameF RESULT/nativeTHROW frontier. Warning4/Dretirement and original creation trace/line persist; public invariants/sourceEPS hold. Three states and trace arrays are retained per source."
+  },
+  "review": "The borrowed record separates producer FUNCTION/RETURN, native THROW and unchanged normalized birth5. Shared constructor-result/own-NEW factoring retains the old own-THROW wrappers. The real RETURN_UNWIND source marker is consumed before generic unwind erases it; S.ORIGIN at that point is the enclosing function and cannot identify the return statement. Exactly one actual frame pop plus same-result or genuine VALUE carrier creates RETURNED. The active one-edge contour must equal THROW.child0, linking the selected factory callsite to its exact consumer. Only later matching native THROW_VALUE/RESULTF, full class/current/source authority and absence of a residual factory VALUE owner create THROW. NEW/RETURNED grant no pending/report authority.",
+  "checks": {
+    "groups": 45,
+    "records": {
+      "provenance-minimal-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/provenance-minimal-01/report.json",
+        "sha256": "b7af81edb13761ab3fd9e7cfdd5335a1848d717e05995a54957062332df0894d",
+        "groups": 10,
+        "seconds": 102.487
+      },
+      "provenance-local-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/provenance-local-01/report.json",
+        "sha256": "6384ac66ac89802ac7b07ba32120f850abd4ea435e790215e5d53d607eac9427",
+        "groups": 10,
+        "seconds": 138.707
+      },
+      "report-minimal-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/report-minimal-01/report.json",
+        "sha256": "bede0c51de652e758adaa098ae71e9620e47f6caa7d54b459de89154ebb7dd30",
+        "groups": 4,
+        "seconds": 47.694
+      },
+      "report-local-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/report-local-01/report.json",
+        "sha256": "1ed7fa3b234ea44ff13fb56d1ce6ddc8b82c9b9ca3fd7d23d7a69b3837d44177",
+        "groups": 4,
+        "seconds": 73.834
+      },
+      "override-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/override-01/report.json",
+        "sha256": "7f675b5c06500913c4ea35c9d78c9ee8f03e860b5a92b7bd1bef2960f0e7e731",
+        "groups": 4,
+        "seconds": 81.758
+      },
+      "catch-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/catch-01/report.json",
+        "sha256": "6780440b42f5a1f7e13adcbf547d3af07fc8765393782a55dcfc474b70671ce2",
+        "groups": 3,
+        "seconds": 71.124
+      },
+      "sites-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/sites-01/report.json",
+        "sha256": "e4b1ecd962889aaded1b1a6be98ffdb132dfee2990807f47e693bee51c885936",
+        "groups": 5,
+        "seconds": 90.945
+      },
+      "native-local-01": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28-review/native-local-01/report.json",
+        "sha256": "bcd867dd2d3145763c736548752d597cc05cb6b2cb84d8705f61e8d9bd2145bc",
+        "groups": 5,
+        "seconds": 79.901
+      }
+    },
+    "scope": "Twenty provenance/issuer/marker/owner/phase/budget/public groups, eight C0/retired receipt groups, four producer finally overrides, three native catches, five two-valid-site/older-live-ID refusals and five native-destructor consumer groups. All are source reached; constructed negative states are used only for pure predicate/hook probes, never driven.",
+    "ownership": "Normal factory D cleanup keeps F1 in the real return carrier until publication. Native report retains T2 and retires reported F to0. The separate model-only native-destructor consumer preserves outerT2/localT2/savedE1/F1 with NULLprevious at its real C0. Creator line and retained make trace remain distinct from the later native throw origin.",
+    "refusals": "Wrong ctor mode/result/completion/current owners, producer/return/throw source, marker, frame tail and carrier are refused. A different valid throw site selecting the same factory cannot authenticate the active call edge; coherently retargeted saved consumer tasks do not mint. A genuinely live older factory Throwable cannot replace the new returned object. Retired NEW/RETURNED and wrong-source receipts reject.",
+    "clearing": "Real producer finally RETURN_UNWIND H consumes F and clears NEW before retirement; normal H publication cannot regain authority. Actual native CATCH_BIND clears THROW while caught F remains owned. The scalar throw after producer override is intentionally not executed."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-factory-return-28/model-01/report.json",
+    "sha256": "523f21c4797ade5765d569d11bd3ddcf0b970bffafd22285a3af1e416627b7fb",
+    "agreements": 2,
+    "seconds": [
+      46.463,
+      66.174
+    ],
+    "cap_seconds": 90,
+    "result": "Independently decoded exact stable/quiet tool0/php_error/reasonNone/P255 against the two frozen native reports: E11/make6/internalT; Warning4 then E15/make9/internalT. Source/profile/pinned binary/raw tuples checked without oracle replay. Model-only controls and reached-state checks add no native agreement."
+  },
+  "compatibility": "Only30/456 runtime bytes change; generic80/161/257 return/constructor/frame machinery and ownership remain. Old ctor_birth still requires its own THROW tail and own-THROW/New relation, and legacy CALL tags cannot borrow RETURN proof. Added control phase5-8 declarations are disjoint; the accepted provenance full main bodies/bindings remain byte-identical after those additions. No27 campaign or semantic replay for fixture moves/docs.",
+  "preserved_zero": "Baseline01 selected the earlier handler object return and remains0; corrected phase0 uses noarg raw helper/Throwable shape. Initial provenance declaration preflight used CTOR_CAPTURE without its required nat payload and remains0. Owner front01-04 mechanical binding/representation failures and the metadata-tail fixture comparison remain whole0; final front05 is separate. All failed/unsupported/timeout/interrupted packets retain zero credit.",
+  "limits": "Direct ordinary noarg nongenerator byvalue factory with own return-new builtin Exception, NULLprevious/default rendering. Current continuation owners are absent at birth; saved caller owner bounds remain. Real return/CV/context/C guards are preserved. Supplied identities, COMP88 Stringable, ctor-argument aborts, byref return owners, replacement cleanup throws, selected handlers/custom rendering and all other held domains do not expand. No full-core/Rocq/BOLA or engine-divergence claim.",
+  "reproduce": "tests/semantics/output_factory_return_review_state.py selects provenance/report for minimal/local originals, or override/catch/sites/native_local model-only controls. --native-root fixes frozen original paths without executing the oracle. Reports contain exact argv/cwd/exits and before/after fingerprints; raw evidence stays external.",
+  "current_context": "At current197/GC66/I130/ENUM154, these source programs declare methods without owning property templates and instantiate ordinary T/D plus builtin Exception. They create no WeakMap, Fiber, Generator/native-Generator or query-resolution operation. The new family arms therefore take their default/absent cases; builtin Exception slots and existing output/frame hooks retain their separate authority. No80/161/257 edits, and457 composition retains exactd2 bytes in456 plus disjoint30 additions.",
+  "integration": {
+    "revision": "22cf3900ab845630737025042f89a9507cd80ce9",
+    "modules": 457,
+    "seconds": 13.37812,
+    "report": "/home/user/workspace/php-spec-evidence-archive/output-factory-return-28/joined-main-457-v1/report.json",
+    "sha256": "0ba1717666dea7ea3c774c1d30e1766353a0e592955292ef9ceca5899ca1c9a0",
+    "scope": "Actual main true LF/quiet0/stable/no timeout; inventory169/306. No source/state replay for integration."
+  }
+}
