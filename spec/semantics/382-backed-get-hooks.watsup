@@ -273,7 +273,8 @@ dec $property_hook_pair_virtual(pstate, ppropertydesc) : bool
 def $property_hook_pair_virtual(S, ppropertydesc) = true
   -- if $property_hook_pair_origins(S, ppropertydesc) = [porigin_get, porigin_set]
   -- if ppropertydesc.DEFAULT = PROP_UNINITIALIZED
-  -- if $origin_node(S.SOURCES, ppropertydesc.ORIGIN) = (NPropertyItem phpType40 ABSENT metadata)
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $origin_node(S.SOURCES, porigin_property) = (NPropertyItem phpType40 ABSENT metadata)
   -- if $origin_node(S.SOURCES, porigin_get) = (phpType38_get)
   -- if $origin_node(S.SOURCES, porigin_set) = (phpType38_set)
   -- if $hook_pair_virtual_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
