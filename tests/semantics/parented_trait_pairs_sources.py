@@ -116,6 +116,12 @@ CONTROLS = {
         (b'<?php class ReferenceBase69 {public int $base=13;}'
          b'trait ReferencePair69 {public int $value=3 {&get {static $slot=7;return $slot;}set => $value+10;}}'
          b'class ReferenceConsumer69 extends ReferenceBase69 {use ReferencePair69;}echo "X";', b''),
+    'plain-redeclared-inherited-hook-parent-remains-unsupported':
+        (b'<?php class HookRootControl69 {public int $base=13 {get => $this->base+1000;}}'
+         b'class OrdinaryLookingControl69 extends HookRootControl69 {public int $base=13;}'
+         b'trait HeldPairControl69 {public int $value=3 {get => 700;set => $value+10;}}'
+         b'class HeldConsumerControl69 extends OrdinaryLookingControl69 {use HeldPairControl69;}'
+         b'$object=new HeldConsumerControl69;echo $object->base;echo ";";echo $object->value;', b''),
 }
 
 

@@ -370,9 +370,11 @@ def $property_hook_pair_source_header(S, pclassdesc) = true
   -- if pclassdesc.ABSTRACT = pchheader.ABSTRACT /\ pclassdesc.FINAL = pchheader.FINAL /\ pclassdesc.READONLY = pchheader.READONLY
   -- if pclassdesc.LINE = $nabs(z_line)
 def $property_hook_pair_source_header(S, pclassdesc) = false -- otherwise
+dec $property_hook_effective_origin(pstate, ppropertydesc) : porigin?
+dec $property_set_origin(pstate, ppropertydesc) : porigin?
 dec $property_hook_pair_plain_parent(pstate, ppropertydesc*) : bool
 def $property_hook_pair_plain_parent(S, eps) = true
-def $property_hook_pair_plain_parent(S, ppropertydesc :: ppropertydesc_tail*) = (~$property_hook_source_declared(S, ppropertydesc) /\ $property_hook_pair_plain_parent(S, ppropertydesc_tail*))
+def $property_hook_pair_plain_parent(S, ppropertydesc :: ppropertydesc_tail*) = (~$property_hook_source_declared(S, ppropertydesc) /\ $property_hook_effective_origin(S, ppropertydesc) = eps /\ $property_set_origin(S, ppropertydesc) = eps /\ $property_hook_pair_plain_parent(S, ppropertydesc_tail*))
 dec $property_hook_pair_parent(pstate, pclassdesc, ptbytes) : bool
 def $property_hook_pair_parent(S, pclassdesc, ptbytes) = true
   -- if pclassdesc.PARENT = eps
@@ -612,7 +614,6 @@ dec $property_hook_plain_edge(pstate, ppropertydesc, ppropertydesc, nat) : bool
 dec $property_hook_plain_covariance_parent(pstate, ppropertydesc, ppropertydesc, nat) : bool
 dec $property_hook_plain_getter_walk(pstate, ppropertydesc, nat) : ppropertydesc?
 dec $property_hook_getter(pstate, ppropertydesc) : ppropertydesc?
-dec $property_hook_effective_origin(pstate, ppropertydesc) : porigin?
 dec $property_hook_unbacked_over_ordinary(pstate, ppropertydesc, ppropertydesc, nat) : bool
 dec $property_hook_ordinary_backing(pstate, ppropertydesc, nat) : bool
 dec $property_hook_override_shape(pstate, ppropertydesc, ppropertydesc) : bool
@@ -689,7 +690,6 @@ def $property_hook_virtual_chain(S, ppropertydesc, n) = $property_hook_virtual_c
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
   -- if $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc)
 def $property_hook_virtual_chain(S, ppropertydesc, n) = false -- otherwise
-dec $property_set_origin(pstate, ppropertydesc) : porigin?
 dec $property_hook_properties(pstate, ppropertydesc*) : bool
 def $property_hook_properties(S, eps) = false
 def $property_hook_properties(S, ppropertydesc :: ppropertydesc_tail*) = ($property_hook_effective_origin(S, ppropertydesc) =/= eps \/ $property_set_origin(S, ppropertydesc) =/= eps \/ $property_hook_properties(S, ppropertydesc_tail*))
