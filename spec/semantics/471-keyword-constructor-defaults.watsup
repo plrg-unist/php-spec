@@ -27,3 +27,9 @@ def $parameter_keyword_constructor_calls(S, pdynamicnew, (porigin_function, pori
 def $parameter_keyword_constructor_calls(S, pdynamicnew, pdeclcalls, n_prefix) = false -- otherwise
 def $parameter_dynamic_constructor_source_calls(S, pdynamicnew, pdeclcalls, n_prefix) = $parameter_keyword_constructor_calls(S, pdynamicnew, pdeclcalls, n_prefix)
   -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+
+;; A selected constructor parent needs an authenticated child cache entry.
+;; Existing fixed-New/method children retain their independent entry proof.
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $parameter_receive_cache_entry(S, preceivebirth_child)
+  -- if preceivebirth.ENTRY = eps
+  -- if preceivebirth.CONSTRUCTOR_ENTRY =/= eps
