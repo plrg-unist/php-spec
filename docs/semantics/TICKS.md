@@ -108,8 +108,15 @@ Callbacks can read the offset and throw through handler/shutdown cleanup;
 remaining payload bytes never become executable tasks.
 Old no-fact plan helpers retain their quiet Class route. Missing facts and
 unproved class/member/header emission remain dependencies.
-Ordinary named-function parameter defaults still need left-to-right constant
-traversal before body planning, using the existing static Closure default producer.
+Plain named-function defaults use the constant visitor from left to right before
+body planning. Each receive is a real operation in the callee's fresh op array;
+a top declaration still preserves the main array's prior adjacency. Existing
+clean headers retain their original route. The new route admits undecorated,
+non-Generator, by-value functions with nonpromoted, nonvariadic, by-value
+parameters; callable-bearing method/Closure/Arrow headers remain dependencies.
+Existing static Closure defaults are created afresh on every receive, without
+default-object caching. Their body Tick sees committed writes, can abort a call,
+and leaves another fresh received Closure available for normal completion.
 
 Plain EnumCase statements emit no main opcode, but can add a Tick before the
 enum's `DECLARE_CLASS`. Plans preserve member order and prior adjacency: a later
@@ -290,6 +297,9 @@ eval-unit counter/abort/resume with pending activation and cleanup state.
 The [halt-emission tick review](../../coverage/semantics/tick-halt-review.json)
 records adjacency, split keyword/terminator lines, existing offset lookup and
 callback abort with inert payload and budget/resumption checks.
+The [parameter-default tick review](../../coverage/semantics/tick-parameter-review.json)
+records compiler order, main adjacency, fresh default identities and actual
+write/callback abort/retry with budget/resumption checks.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

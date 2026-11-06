@@ -1,0 +1,72 @@
+{
+  "milestone": "ATTR49: ordinary named-function parameter-default Tick traversal",
+  "status": "Independently reviewed bounded implementation; wider callable/header and full-core work remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "225e5a756",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "3985b0ab276d428ec1a91744292009be442031bbe471b62a0a4c97d5511097c4",
+    "scope": "Plain undecorated nongenerator by-value named functions with ordinary by-value nonvariadic/nonpromoted parameters. A recursive constant-default fold runs before body planning, resets callee adjacency after each receive and restores top-level main adjacency. No producer, receive/cache runtime, machine, schema or source-fact edits."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "zend_compile_func_decl_ex calls zend_compile_params before the statement body. compile_params visits parameters left-to-right, seeds each parameter line, compiles its default as a constant expression, then emits RECV/RECV_INIT in the fresh callee op array. CONSTEXPR Closure compilation contributes file declarables before the enclosing body.",
+    "existing_facts": "NParam FIELD6 defaults use the published operand/redirect/effect constant visitor. Existing286 authenticates static Closure default receives and marks PVCLOSURE noncacheable, creating fresh objects per receive."
+  },
+  "compatibility": "The final pure gate additionally requires a header failing legacy tick_inputs_clean. All previously clean headers, including deferred New defaults, therefore retain their exact old route. Both normal49 sources have direct static Closure defaults and fail inputs_clean, so their traversal/markers are identical before and after this gate refinement. The by-reference control remains excluded at both cuts. No source replay was justified; final strict and the actual state front use the refined gate.",
+  "evidence": {
+    "native_author_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-parameter-49/native-author-v1/report.json",
+      "sha256": "8aa87a2a303ac6b9d099fa6bcaf2dba342246de8559132495112f6b518f2a827",
+      "revision": "384701df36d32e41a6103c4b1ca883a192361077",
+      "passed": true,
+      "scope": "Native-only preparation: uncalled defaults with bare ticks3 then2 compile before the function body; prior main adjacency suppresses a later bare declare. Actual stream TZWTFGTET. Byref control native Z is observational preparation only."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-parameter-49/strict-report-v2.json",
+      "sha256": "4fdee061fe693a31e96cff9544cc18e028befc93353caa062ffa6c09ba4028f0",
+      "revision": "4c5eb3fffd39f8d65c5e184463d704378bbdd149",
+      "passed": true,
+      "scope": "Final checked SL elaboration/algorithmic/structuring and main=true execution pass across446 modules, caches disabled and encountered determinism checks."
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-parameter-49/source-author-v1/report.json",
+      "sha256": "9e12160283b8bb5bb95d81d80f9e86e5cc6a3af36a3a1c3f71e95822a5a3eb23",
+      "revision": "4f4fedb2d61755fd2935ef4c1be3088d87a3527d",
+      "passed": true,
+      "scope": "One exact normal TZWTFGTET plus one explicit byref-header Unsupported control with empty model prefix. BAD default bodies never execute; real F/G body callbacks use the last default frequency2. Control earns zero agreement credit."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-parameter-49/source-review-v1/report.json",
+      "sha256": "d61e30dc6fa0fb906ece04c208089f5f31aa26ae39504b63bb8f06ba2d39c483",
+      "revision": "4f4fedb2d61755fd2935ef4c1be3088d87a3527d",
+      "passed": true,
+      "scope": "Exact FT9CT972Z: two calls receive distinct Closure objects; first commits global9 before callback read9/throw/catchC, the second returns7 normally and final callback count is2."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-parameter-49/review-protocol-v1/run/report.json",
+      "sha256": "42aca6dd1b1b6412846ea9b3783a355257b1cc1159cfdc5a5fb22010c22b4977",
+      "process_sha256": "aaa83353980e12eaf7add769f5904b0483e696803b522d337729639d2aaf46f3",
+      "revision": "420835dcc2911888a099b6b45d30a968c343fda3",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 64,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "Genuine first default-Closure assignment Tick at line12 has two fresh source-certified parameter objects, committed v9/n0 and no default-object cache. Full-state zero-budget/resume equality finishes FT9CT972Z/n2; current source/default records, heap/descriptors/Ticks and preserved object identities validate."
+    }
+  },
+  "agreements": {
+    "unique_normal_sources": 2,
+    "unsupported_controls": 1,
+    "control_agreement_credit": 0
+  },
+  "independent_review": "Peer traced compile_params and the existing fresh-default producer, reviewed callee/main adjacency and explicit route disjointness, accepted the clean-header compatibility bridge and passed the sole actual receive/Closure write/abort/retry front on final production. No semantic or fixture failure remained.",
+  "remaining": "Method/Closure/Arrow callable-bearing headers, attributes, promoted/byref/variadic or generator forms and wider default/lifetime combinations remain partial. Existing callable-array, deferred construction and nested callable-header dependencies are retained; no new producer is admitted.",
+  "environment": "Original bytes, cwd/source identity, commands, channels/exits and before/after tool/module fingerprints remain external in tick-parameter-49. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned profile. One CPU5 process at a time across this pair. Four regular local tools were preserved from idle ATTR48; no fresh build or portability claim. Accepted runs had stable inputs, exit0 and empty driver stderr; all campaign executables were reaped.",
+  "zero_credit": [
+    "source-baseline/report.json SHAb47e5a28572cb89f4607d98ce52f2b372af282eff600af7ad053ca96e4615848 remains false at384701df3: native TZWTFGTET versus old Unsupported/empty prefix at tick opcode placement.",
+    "Intermediate strict-report-v1.json SHAb3432cf54fbd6bf2a9f63dec4afdb4b1f1f7602940f240c5509619c52f4b652b passes at4f4fedb2d but retains its own earlier gate cut; final strict is separately recorded.",
+    "No ATTR48/47 or historical default/runtime campaigns were replayed; paused boundaries remain untouched. No engine bug or intentional divergence is claimed."
+  ]
+}

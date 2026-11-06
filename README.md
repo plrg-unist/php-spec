@@ -349,6 +349,8 @@ Ordinary/group imports emit their own metadata Tick at checked name/prefix lines
 literal eval units share the request counter and preserve callback abort cleanup.
 `__halt_compiler` can tick at its checked terminator line while preserving
 adjacency, offset availability and inert payload bytes.
+Plain named-function defaults compile left-to-right before body tick plans,
+while received Closure defaults retain fresh identity, callback reads and abort cleanup.
 Captured string-carrier
 keys preserve saved identities while using byte/numeric-string classification,
 so registered-handler callable-key writes and equal-byte unset operations progress.
