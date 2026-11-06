@@ -160,10 +160,12 @@ def $magic_method_flat_array(S, n) = true
   -- if $magic_method_flat_entries(S, S.ARRAYS[n].ITEMS)
 def $magic_method_flat_array(S, n) = false -- otherwise
 dec $magic_method_array_capture(pstate, phpType7*) : bool
+;; BY VALUE CV SEND owns the array value after dereferencing a wrapper.
+;; Later writes use ordinary COW; the source cell is never a send root.
 def $magic_method_array_capture(S, phpType7*) = true
   -- if $magic_method_array_cv(phpType7*) = (ptbytes)
   -- if $lookup(S.ENV, ptbytes) = (n_cell)
-  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS /\ ~(n_cell <- S.REFCELLS)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
   -- if $magic_method_flat_array(S, n_array)
 def $magic_method_array_capture(S, phpType7*) = false -- otherwise

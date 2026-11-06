@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-refarray-instance-cow",
+      "source": "<?php\nclass Payload199 { public function __construct(public string $tag) {} public function __destruct() { echo 'PAY-', $this->tag, ';'; } }\nfunction shift199() { global $owner, $alias; $owner = null; $alias[0] = 99; $alias[1] = new Payload199('NEW'); echo 'SHIFT;'; return 9; }\nclass Base199 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { return new class($arguments[0], $name . '|' . $arguments[1] . '|' . self::secret() . '|' . self::class . '|' . static::class . '|' . __METHOD__) { public function __construct(public array $snapshot, public string $data) {} public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nclass Derived199 extends Base199 {}\n$owner = new Derived199; $values = [7, new Payload199('OLD')]; $alias =& $values; $child = $owner->MiSsInG($values, shift199()); echo 'RETURN;'; unset($values); echo 'ALIAS;', $alias[0], '|', $alias[1]->tag, ';'; unset($alias); echo 'HELD;', $child->snapshot[0], '|', $child->snapshot[1]->tag, '|', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "10432040fbec73b26a11b31168c05faf116e3ed21230fdac668acbe63f9ff5ee",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO0FMSUFTOzk5fE5FVztQQVktTkVXO0hFTEQ7N3xPTER8TWlTc0luR3w5fFBSSVZBVEV8QmFzZTE5OXxEZXJpdmVkMTk5fEJhc2UxOTk6Ol9fY2FsbDtDSElMRDtQQVktT0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-refarray-static-cow",
+      "source": "<?php\nclass StaticPayload199 { public function __construct(public string $tag) {} public function __destruct() { echo 'PAY-', $this->tag, ';'; } }\nfunction staticShift199() { global $alias; $alias[0] = 99; $alias[1] = new StaticPayload199('NEW'); echo 'SHIFT-STATIC;'; return 9; }\nclass StaticBase199 { private static function secret() { return 'PRIVATE'; } public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $name . '|' . $arguments[1] . '|' . self::secret() . '|' . self::class . '|' . static::class . '|' . __METHOD__) { public function __construct(public array $snapshot, public string $data) {} public function __destruct() { echo 'CHILD;'; } }; } }\nclass StaticDerived199 extends StaticBase199 {}\n$values = [7, new StaticPayload199('OLD')]; $alias =& $values; $child = StaticDerived199::MiSsInG($values, staticShift199()); echo 'RETURN;'; unset($values); echo 'ALIAS;', $alias[0], '|', $alias[1]->tag, ';'; unset($alias); echo 'HELD;', $child->snapshot[0], '|', $child->snapshot[1]->tag, '|', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "3c918fef8916ff47304fddbb5d1c1fac4af94cbc4edcb67a116a6d387b3f20ba",
+      "stdout_template_base64": "U0hJRlQtU1RBVElDO1JFVFVSTjtBTElBUzs5OXxORVc7UEFZLU5FVztIRUxEOzd8T0xEfE1pU3NJbkd8OXxQUklWQVRFfFN0YXRpY0Jhc2UxOTl8U3RhdGljRGVyaXZlZDE5OXxTdGF0aWNCYXNlMTk5OjpfX2NhbGxTdGF0aWM7Q0hJTEQ7UEFZLU9MRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
