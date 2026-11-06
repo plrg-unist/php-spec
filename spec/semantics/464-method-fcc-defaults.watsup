@@ -62,6 +62,14 @@ def $parameter_default_recipient(S, pfunction) = $method_fcc_current(S, pfunctio
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if $method_fcc_kind(S, n)
 
+;; A held wrapper cannot acquire owning-read authority from a warmed FCC slot.
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $method_fcc_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $default_cache_target($context_target(pcallcontext)) = CLOSURE_TARGET n
+  -- if pcallcontext.TARGET =/= CLOSURE_TARGET n
+  -- if $method_fcc_kind(S, n)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
 ;; Only this genuine entered FCC mints ENTRY. It adds no heap root.
 def $parameter_receive_entry_object(S) = (n)
   -- if S.CURRENT = (pcallcontext)
