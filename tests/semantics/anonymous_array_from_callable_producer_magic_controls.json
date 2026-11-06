@@ -1,0 +1,67 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-array-from-callable-shadow-refused",
+      "source": "<?php\nclass ShadowBase224 { private function capture($saved) { echo \"PRIVATE;\"; return $saved; } public function run() { global $owner; echo \"FIRST;\"; return $owner->MiSsInG((\\Closure::fromCallable([new ShadowChild224,\"capture\"]))(7)); } }\nclass ShadowChild224 extends ShadowBase224 { public function capture($saved) { echo \"PUBLIC;\"; return $saved; } }\nclass BoundaryMagic224 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner=new BoundaryMagic224; $runner=new ShadowBase224; $runner->run();\n",
+      "source_sha256": "7d0587f8a2a6bd47c0dbcaf00657d117be72de21b0fd55d56017964971432186",
+      "stdout_template_base64": "RklSU1Q7UFJJVkFURTtIQU5ETEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "RklSU1Q7"
+    },
+    {
+      "id": "magic-array-from-callable-cv-refused",
+      "source": "<?php\nclass BoundaryReceiver224 { public function capture() { echo \"METHOD;\"; return 7; } }\nclass BoundaryMagic224 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner=new BoundaryMagic224; $receiver=new BoundaryReceiver224; $owner->MiSsInG((\\Closure::fromCallable([$receiver,\"capture\"]))());\n",
+      "source_sha256": "505b00cc0e90f23e24abb1790d0082f6a1cfc7b4f775106a43a025082cb84402",
+      "stdout_template_base64": "TUVUSE9EO0hBTkRMRVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-array-from-callable-inner-named-refused",
+      "source": "<?php\nclass BoundaryReceiver224 { public function capture($saved) { echo \"METHOD;\"; return $saved; } }\nclass BoundaryMagic224 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner=new BoundaryMagic224; $owner->MiSsInG((\\Closure::fromCallable([new BoundaryReceiver224,\"capture\"]))(saved:7));\n",
+      "source_sha256": "7f7b8fd51c5b8627eb419d271aa1adb43652f77c25861bcafed732a734c22374",
+      "stdout_template_base64": "TUVUSE9EO0hBTkRMRVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-array-from-callable-unpack-refused",
+      "source": "<?php\nclass BoundaryReceiver224 { public function capture() { echo \"METHOD;\"; return 7; } }\nclass BoundaryMagic224 { public function __call(string $name,array $arguments) { echo \"HANDLER;\"; return 9; } }\n$owner=new BoundaryMagic224; $pack=[9]; $owner->MiSsInG((\\Closure::fromCallable([new BoundaryReceiver224,\"capture\"]))(),...$pack);\n",
+      "source_sha256": "dd49bf5bd65fa91f969b09a0ab5bf121b4f603e47cb3f19d84ad673a63c928b0",
+      "stdout_template_base64": "TUVUSE9EO0hBTkRMRVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
