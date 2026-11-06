@@ -8718,6 +8718,12 @@ and cached values retain their separate owners. Wider method-source ownership
 forms remain separate.
 [Method-helper review](coverage/semantics/generator-method-helper-reentry-review.json).
 
+Object-form static USER helpers keep the selected method and called class after
+the selector object dies. Simple-CV callsites authenticate the receiver-free
+context without rereading the rebound CV. Inherited lexical/called class identity
+and the existing Generator reentry/Fiber laws remain intact.
+[Object-static helper review](coverage/semantics/generator-object-static-helper-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

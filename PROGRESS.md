@@ -811,6 +811,21 @@ sources gain no new proof here; no older campaign is replayed. One actual curren
 that load adds no source-agreement credit.
 [Method-helper review](coverage/semantics/generator-method-helper-reentry-review.json).
 
+I137 closes receiver-free object-form static USER helper links in the existing
+Generator reentry and Fiber walks. One disjoint late447 classifier arm reuses
+physical public/static/by-value-return method and immutable simple-CV source
+proofs; no selector is reread or retained. Native2 distinguishes preargument
+selector death, inherited lexical/called-class identity through normal parking,
+and static helper links before/inside borrowed-source reentry with a Given throw.
+Both exact source comparisons and the independent180 focused conditions pass
+first attempt at private467 plus fixture468. Actual preclear selector1→parked/
+dual0, cached classes, source/pairs/phase graph and public0/1 cuts are checked.
+The three executable/test commits are accepted at `37e293f57` without another
+load or semantic replay. All old helper guards, real roots, source/value and
+parked-operation bounds remain.
+[Object-static helper review](coverage/semantics/generator-object-static-helper-review.json).
+
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -3537,7 +3552,6 @@ their work remains unaccepted until integrated.
 | COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
 | ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
 | GC74 | Infer the real copied-target Child decrement during retained-array COW without a net edge loss, preserving header TEMP and existing ownership graphs. |
-| I137 | Source-authenticated object-form static helper frames in existing Generator and Fiber paths, preserving selector retirement and frozen called-class metadata. |
 | OB33 | Genuine FINAL scalar-return TypeErrors with empty method CVs, preserving source-kind bounds, the actual empty-frame handoff and native ownership. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

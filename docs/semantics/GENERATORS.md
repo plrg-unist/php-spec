@@ -277,9 +277,19 @@ The named-function fallback, strict tail descent, flat/singleton and transfer
 checks stay exact; dual source reentry keeps both real IDs and its existing
 source/CV/cache/DATA laws. Normal scalar Fiber resume and a method-helper source
 throw have direct source evidence; Fiber injection/guarded close compose through
-unchanged common laws. Object-static, direct This and receiver-bearing scoped
-helper source proofs remain separate; they gain no new helper proof here.
+unchanged common laws. Direct This and receiver-bearing scoped helper source
+proofs remain separate; they gain no new helper proof here.
 [Method-helper review](../../coverage/semantics/generator-method-helper-reentry-review.json).
+
+Ordinary object-form static USER helpers use the receiver-free target already
+selected by method dispatch. The shared helper classifier authenticates the
+registered public static method and immutable non-This simple-CV callsite, while
+existing current/saved-context checks retain the cached physical function,
+lexical owner and called class. Clearing or rebinding the selector during
+argument evaluation adds no helper owner. All four existing finite helper walks
+reuse this source proof; singleton/dual resumers, source-CV/DATA/value policy,
+Fiber transfer and held operations are unchanged.
+[Object-static helper review](../../coverage/semantics/generator-object-static-helper-review.json).
 
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in

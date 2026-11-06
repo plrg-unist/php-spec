@@ -85,6 +85,11 @@ The direct observation is scalar suspend/normal resume; injection and guarded
 close use reviewed common laws without new source credit.
 [Method-helper review](../../coverage/semantics/generator-method-helper-reentry-review.json).
 
+Object-form static helpers add no selector/receiver owner to the saved VM.
+Their cached function and called class survive selector-CV retirement, using the
+same helper source, singleton, transfer and restored-VM laws.
+[Object-static helper review](../../coverage/semantics/generator-object-static-helper-review.json).
+
 Borrowed NEXT during native Generator argument collection now also authenticates
 its actual named by-value source resumer. The saved CONFIG_GENERATOR frame
 retains the selected receiver and frozen argv; the running source has no stored
