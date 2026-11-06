@@ -16,7 +16,7 @@ SELECT = ('S.TODO = (CALL_ARGS (SCOPED_TARGET porigin_requested porigin_method p
           '-- if |phpType7_inner*| = 2 -- if S.CURRENT = (pcallcontext_caller) '
           '-- if pcallcontext_caller.RECEIVER = (n_caller)')
 PRODUCER = ('S.TODO = (RETURN_VALUE z_producer_return) :: ptask_producer_tail* '
-            '-- if S.RESULT = KNOWN pvalue_returned -- if S.CURRENT = (pcallcontext_producer) '
+            '-- if S.RESULT = VARIABLE ($ptascii("saved")) z_saved_return -- if S.CURRENT = (pcallcontext_producer) '
             '-- if pcallcontext_producer.TARGET = SCOPED_TARGET porigin_requested_producer porigin_method_producer porigin_called_producer eps poperand_selector_producer')
 HANDLER = ('S.TODO = (RETURN_VALUE z_handler_return) :: ptask_handler_tail* '
            '-- if S.RESULT = KNOWN (POBJECT n_closure) -- if S.CURRENT = (pcallcontext_handler) '
@@ -88,7 +88,6 @@ def render(case, fixture, filename):
         'pcallcontext_producer.LEXICAL_CLASS = (porigin_declaring)',
         'pcallcontext_producer.CALLED_CLASS = (porigin_called)',
         '$call_context_roots(S_producer.CURRENT) = eps',
-        'pvalue_returned = pvalue_string',
         'S_producer.STORE[n_late_cell] = DEFINED (PINT 99)',
         '$lookup(S_producer.ENV,$ptascii("saved")) = (n_saved_cell)',
         'S_producer.STORE[n_saved_cell] = DEFINED pvalue_string',
