@@ -3506,6 +3506,11 @@ changes and finally. Valid lookup preserves a handler exception through frame
 cleanup; invalid lookup produces a return TypeError, retaining any pending handler
 exception as Previous. Exact
 union alternatives bypass lookup. Wider return sources and contexts remain partial.
+[Plain CV callable returns](coverage/semantics/callable-return-cv-review.json)
+separate shared local references before verification and borrow the actual local
+value through lookup. Protected returns keep their compiler copy; used and ignored
+results preserve native CV cleanup order, handler-throw continuation and local
+TypeError catch/retry. Wider cell and finalizer contexts remain partial.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

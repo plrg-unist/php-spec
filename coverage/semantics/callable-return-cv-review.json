@@ -1,0 +1,160 @@
+{
+  "scope": "ENUM161: defined plain compiled CV callable-return verification, compiler-copy versus unique/shared local unref and actual used/ignored transfer",
+  "base": "f536accbaa7443a9eb0a120a4ab3691eca9e7934 / accepted465",
+  "semantic_revision": "2212d862e1f0083e960f1eb02d1226d48c7e1398",
+  "fixture_revision": "a293438540c3679533e0674db885fdc50a27feb5",
+  "target": "Pinned PHP8.5.10 CLI NTS64, vendored34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "d15185e8209d744368a7ed82c289bab628eb6fe3fc745d2fa65b193562043c35",
+    "spec/semantics/475-callable-return-types.watsup": "a4630d3b982ffbe54f01943cce8c44f17ca7ce401f1f4291fc4ae9f3827acd2f"
+  },
+  "sources": {
+    "slots.php": "9efe2aee3d23aa1fbd7b2383d992ec8eadf2ff661989aeb1ec5baa501c8e4951",
+    "flow.php": "2f23b16e79d1c64c99b0df62bc951b1c8ac5602ad42332659e340b16fee108dc",
+    "protected-flow.php": "727ed2b2f984a356d575a2e5324a9fd4c8ecdf1b7b7f560c6f86841ffe827832",
+    "union.php": "68a730db61288a3efb9c5f4185bd84006fde577790aef8a22ec16d0cec0491bc"
+  },
+  "source_authority": [
+    "Zend/zend_compile.c:5662\u20135734: FAST_CALL/DISCARD_EXCEPTION/RETURN separators and protected CV QM_ASSIGN before VERIFY_RETURN_TYPE.",
+    "Zend/zend_vm_def.h:4431\u20134497: unique/shared by-value reference unref before the second exact-union check; callable slow check flags0.",
+    "Zend/zend_vm_def.h:4535\u20134555: used ordinary CV RETURN moves and NULLs the slot; unused CV stays for frame cleanup, while unused TMP releases before leaving."
+  ],
+  "behavior": [
+    "Only genuine named USER nongenerator/by-value return sites, current compiled local names and plain live DEFINED cells enter the new route. Active finalizers and property/coercion/backing/container/debt/released-cell authority are excluded.",
+    "A protected CV creates the compiler owning temporary without rebinding its original alias. An unprotected shared reference copies into one fresh local HCELL and changes only the active ENV binding; unique reference removes its marker, ordinary local stays. Count is taken before resolving into RESULT.",
+    "Borrowed SOURCE roots no cell or value. Used native RETURN atomically moves into RETURN_UNWIND and NULLs the local; ignored return keeps the actual ENV owner through compiled-variable cleanup. Preparation precedes exact-array union bypass.",
+    "Valid handler throw follows VERIFY\u2192RETURN past local catch, with real pending Exception transfer. Invalid lookup creates TypeError with pending Previous but leaves the borrowed CV for local catch/retry. Ignored protected temporary releases after finally before CV cleanup under actual THROW_SEARCH."
+  ],
+  "native": {
+    "passing": [
+      "native-slots-v1",
+      "native-flow-v1",
+      "native-protected-flow-v1",
+      "native-union-v1"
+    ],
+    "agreement_credit": 0,
+    "note": "Four new immutable originals only; no historical160/native replay."
+  },
+  "comparisons": [
+    {
+      "source": "union.php",
+      "report": "source-union-v1/report.json",
+      "revision": "2212d862e",
+      "seconds": 99.60073065757751,
+      "result": "PASS normal exact bytes, quiet exit0/stable/no timeout",
+      "agreement_credit": 1
+    },
+    {
+      "source": "slots.php",
+      "report": "source-slots-v1/report.json",
+      "revision": "2212d862e1f0083e960f1eb02d1226d48c7e1398",
+      "seconds": 335.75535130500793,
+      "result": "PASS normal exact bytes, quiet exit0/stable/no timeout",
+      "agreement_credit": 1
+    },
+    {
+      "source": "flow.php",
+      "report": "source-flow-v1/report.json",
+      "revision": "2212d862e1f0083e960f1eb02d1226d48c7e1398",
+      "seconds": 347.5857787132263,
+      "result": "PASS normal exact bytes, quiet exit0/stable/no timeout",
+      "agreement_credit": 1
+    },
+    {
+      "source": "protected-flow.php",
+      "report": "source-protected-flow-v1/report.json",
+      "revision": "2212d862e1f0083e960f1eb02d1226d48c7e1398",
+      "seconds": 223.46629285812378,
+      "result": "PASS normal exact bytes, quiet exit0/stable/no timeout",
+      "agreement_credit": 1
+    }
+  ],
+  "strict": {
+    "report": "strict-v4/report.json",
+    "revision": "2212d862e",
+    "modules": 465,
+    "seconds": 29.06222152709961,
+    "result": "PASS true LF/quiet0/stable/no timeout"
+  },
+  "failures": [
+    {
+      "report": "baseline-union-v1/report.json",
+      "kind": "normal output mismatch: ignored CV receiver died inside preceding local destructor before before-end; native dies at CV cleanup",
+      "agreement_credit": 0
+    },
+    {
+      "report": "baseline-slots-v1/report.json",
+      "kind": "existing Unsupported deprecated callable admission continuation",
+      "agreement_credit": 0
+    },
+    {
+      "reports": [
+        "strict-v1/report.json",
+        "strict-v2/report.json",
+        "strict-v3/report.json"
+      ],
+      "kind": "declaration order and premise binding syntax; no execution credit",
+      "agreement_credit": 0
+    }
+  ],
+  "bridge": "The160 fresh-array candidate remains AST-array-only. Owning SOURCE adds an explicit genuine temporary-site guard; common metadata is otherwise unchanged. Its used pending transfer remains literal behind the real caller-used predicate. The new ignored branch follows the native unused-temporary law; no39/79/80/95/221/257/state/root/GC rewrite or old source renewal.",
+  "independent": {
+    "status": "CLEAR semantic/source/state and compact current hash binding",
+    "review_revision": "5a5220217",
+    "runtime_equivalent": "2212d862e1f0083e960f1eb02d1226d48c7e1398",
+    "conditions": 913,
+    "modules": 465,
+    "seconds": 1129.529485,
+    "result": "true LF/empty stderr/exit0/stable/no timeout/group empty",
+    "scope": "Genuine pre-resolve cell counts, ENV-only shared mint and real wrapper decrement, unique unref/plain/protected-copy modes, borrowed SOURCE roots, used move/ignored slot retention, pending caller cancel/temporary release, invalid local catch/retry, exact-union preparation, derived source/storage guards and zero/one budgets.",
+    "preserved_failures": "Original831 state-v1 assumed an immediate API head; two narrow actual projections authenticate old-cell DESTRUCTION_VALUE/OP_EXIT and settled counts. All remain0; no production correction or source/native replay.",
+    "record": "enum-callable-return-cv-review-161/state-review.json"
+  },
+  "remaining": [
+    "Wider CV/place/coercion/typed-reference authority, other value shapes and active-finalizer compiler modes remain partial. The demonstrated exact-union preparation is scoped to the same admitted qualified callable-array domain.",
+    "Existing ALIAS-object receiver/keyword/invocation/producer/pack/Stringable/NUL and held bounds remain.",
+    "The160 pending replacement-finally native timeout boundary remains an explicit stopped refusal; no wider finally transfer is claimed."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-return-cv-161",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-return-cv-review-161",
+    "replay": "Use retained refs and immutable controller/source/report bytes; do not replay prior accepted campaigns for metadata.",
+    "controller_note": "run_model_initial.py preserves the exact controller bytes used by both baselines. The current controller adds an explicit per-source timeout argument; all changed-source runs retain its exact hash and numeric cap."
+  },
+  "review": "CLEAR: independent source/runtime and corrected913/all465 actual owner/source/budget controls, four exact original-source agreements, final compact current report/source bindings and the actual dc1eca57e/current467 composition/load fact. All baselines, grammar failures and original831/projections retain0; three feature statuses remain partial, with no historical source/native replay.",
+  "author_reports": {
+    "baseline-slots-v1/report.json": "8d534a317d9b8e974e370bd8c63b148c3f27044e9c58b0daa847f6f1271e23f2",
+    "baseline-union-v1/report.json": "a5d5eac5c8cbe15d648df10ffd104c9218bab652aca3fbd311a14065d10d17a7",
+    "native-flow-v1/report.json": "4b07780afac52c740787f172bd0b40422dd0631ef2c64464bde01a097682de85",
+    "native-protected-flow-v1/report.json": "77e3f1bbe3ab273f813322bae32ea85443498d974122c7cd9b24ba6cc16a59dd",
+    "native-slots-v1/report.json": "e3ed6c4dbe798563d98d45d0563427e76bd83033488cc4ae9a25f2e03d726060",
+    "native-union-v1/report.json": "a18349ec35d81b24781b6704baac764e22e080ee3f45e59f7ea5ac86d2353814",
+    "source-flow-v1/report.json": "c1e992a5f2af2deb139b50ec40fe719e79bfbfa5bcf223f42aa00dc10e836faf",
+    "source-protected-flow-v1/report.json": "6651df93828ec7bdd458d3263337bd5c57d9ac638dcbc5f2a7dffe90078d73ed",
+    "source-slots-v1/report.json": "bd5ce861dd1013f108fded704e9461483ef7e9b8f875b46f731c636191e8a99f",
+    "source-union-v1/report.json": "9047fb12e7d2fd10a604f2adb859b8c5c4835e856e33c17bdb72b2621e731cf5",
+    "strict-v1/report.json": "8c5a6c60636bab3ec1855edfef047200cfdb8c4c8ea024d93bd30d87ef94702b",
+    "strict-v2/report.json": "cce662e619940febcda07bfe60898fd5bdd352697036c6dafd4150728941a650",
+    "strict-v3/report.json": "f510cd3ed22cf5192057c579c67c81c5b677a1db2e51414551e10308d5f0eaa0",
+    "strict-v4/report.json": "a0c85d0ffe402c4c3c3ec947d9df1cbe30954095841d1e32d1f66fa108a307e2"
+  },
+  "peer_reports": {
+    "state-review.json": "105a459ab0c0a6ae75e6db934e98961b5b0ff5d345c73bea051d86a7660da1dc",
+    "state-v1/report.json": "16a7a149851acdaf3197b9eb45df8f88c5ae2b37f3ff94362c4b2a9c478985d0",
+    "begin-front-v1/report.json": "d5bc430f6530bfb2243863bd2d22edde0fe06c86425723a656e8860c01e441df",
+    "begin-front-v2/report.json": "01f6c32ab8b17532fc7c6fc4fa434514310bb6c9219bf81e3e0b38c35c15f08a",
+    "state-v2/report.json": "6659052c7217e71c5fc18eef596cd440195fd2957b25329b695f1bb4ec2ccef0"
+  },
+  "integration": {
+    "revision": "dc1eca57e822775026392b6a8bf439edbac3cae1",
+    "modules": 467,
+    "seconds": 26.913721,
+    "result": "PASS true LF/quiet0/stable/no timeout; inventory169/306",
+    "agreement_credit": 0,
+    "bridge": "Actual dc1eca57e 475 is byte-exact private2212;30 preserves the exact CV_SOURCE arm alongside disjoint TICK_ENTRY/output-return-source additions, not whole-file equality. Four originals have no ticks, omitted/default or Deprecated callback parameters, magic/hooks/wider property names, Generator/Fiber/collection or output-buffer/native-factory consumer. Added receive fields stay absent; physical owners and empty native-excess state are unchanged on these paths. Actual467 load/inventory are separate load-only evidence, not source/state renewal."
+  },
+  "integration_reports": {
+    "callable-return-cv-161/joined-main-467-v1/report.json": "53535e9d7115320bf49cad5d330bce65c0b64345d087eb97b2b8384f3dca3c47",
+    "callable-return-cv-161/joined-main-467-v1/inventory.json": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+  }
+}

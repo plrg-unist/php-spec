@@ -2098,6 +2098,19 @@ composition is recorded separately;
 the scoped review keeps the unresolved pending/replacing-finally timeouts and
 model-only refusal checks separate. [Callable returns](coverage/semantics/callable-return-review.json).
 
+Plain compiled CV callable returns now distinguish protected compiler copies
+from unique/shared local unref. Shared references separate only the local ENV
+binding before even an exact union match; API lookup borrows its value without
+adding a pin. Used RETURN moves and clears that slot, while ignored results keep
+native compiled-variable cleanup order. Pending handler throws and invalid
+TypeError/local catch-retry preserve the same value and real Exception carriers;
+ignored protected temporaries drain after finally before locals. Plain-cell,
+active-finalizer and existing callable/context bounds remain explicit. Four new
+source agreements and 913 independent ownership/source/budget conditions pass at
+the recorded private 465-module cut; the accepted current 467-module interface
+load is recorded separately.
+[CV return review](coverage/semantics/callable-return-cv-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3499,7 +3512,7 @@ their work remains unaccepted until integrated.
 | CLASS225 | Immediate normal Closure::fromCallable invocation of fixed class-string/static-method arrays, preserving selected scopes, wrapper ownership and array retirement. |
 | ATTR83 | Public integer CV unset distinguishes ordinary VALUE/INITIAL clears from repeated magic dispatch, preserving the entered receipt through repopulation. |
 | COMP207 | Owning defaults for initialized CV public method-callables, using authentic selected wrappers and explicit current/history source proofs. |
-| ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
+| ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
 | GC73 | Quiet-scalar reference leaves in retained credited arrays, preserving singleton unwrapping versus shared-cell COW writes and exact old-header no-visit decrements. |
 | I137 | Source-authenticated object-form static helper frames in existing Generator and Fiber paths, preserving selector retirement and frozen called-class metadata. |
 | OB33 | Genuine FINAL scalar-return TypeErrors with empty method CVs, preserving source-kind bounds, the actual empty-frame handoff and native ownership. |

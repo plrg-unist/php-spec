@@ -62,12 +62,32 @@ as Previous. Existing throwing-frame cleanup also preserves a replacement except
 from a local destructor.
 
 The [scoped review](../../coverage/semantics/callable-return-review.json) binds
-the four originals and owner/budget checks. Effectful CV-return detachment,
-ALIAS object receivers, keyword contexts and wider entries remain unproved by
-this increment. Pending successful lookup with an explicit replacement transfer
+the four originals and owner/budget checks. ALIAS object receivers, keyword
+contexts and wider entries remain outside that increment. Pending successful
+lookup with an explicit replacement transfer
 inside a protected finally stops as Unsupported: two native timeout controls
 remain zero credit, and the stopped state keeps its existing owners. This does
 not change generic finally, destructor, collection or invocation rules.
+
+Plain compiled CV returns now have a separate borrowed continuation. Native
+unref happens before the second exact-union test: a unique reference unwraps in
+place, while a shared reference copies into a new ordinary local cell and leaves
+global/other aliases intact. Lookup adds no value or cell owner. A used RETURN
+moves the local value and clears its slot; an ignored return leaves it for that
+slot's ordinary frame cleanup. A protected CV instead has a real compiler-copy
+temporary and keeps the original alias mapping, so finally may see a changed CV
+while the saved array returns.
+
+A valid lookup-handler throw continues through RETURN, bypassing local catches;
+used and ignored values retain their distinct lifetimes. An ignored protected
+temporary drains after finally and before local cleanup. Invalid lookup raises
+TypeError with any pending handler Exception as Previous, leaving the detached CV
+available to a local catch/retry. The [CV review](../../coverage/semantics/callable-return-cv-review.json)
+keeps these source/ownership cuts separate from the earlier temporary family.
+Admission requires a defined plain untyped local in an ordinary named USER frame
+and the existing direct-receiver callable-array domain. Property/coercion/backing/
+container/debt/released-cell authority and return sites inside an active finalizer
+are outside this cut; the pending replacement-finally refusal remains unchanged.
 
 ## Source metadata and resumed states
 
