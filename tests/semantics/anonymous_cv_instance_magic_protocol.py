@@ -64,7 +64,7 @@ def owner(fixture, filename):
         'S_initial = $php_run(' + fixture + ',0,' + filename + ')',
         r'S_initial.COMPLETION = BUDGET /\ ~S_initial.COMPILESTOP',
         'S_read_found = $factory182_seek(S_initial,2048)', 'S_read_found.COMPLETION = BUDGET',
-        'S_read = S_read_found[.COMPLETION = NORMAL]', READ.replace('S.', 'S_read.'),
+        'S_read = S_read_found[.COMPLETION = NORMAL]', READ.replace('S.', 'S_read.').replace('candidate(S,', 'candidate(S_read,'),
         '$base64(text_receiver_read) = $ptascii("producer")',
         'S_read.RESULT = VARIABLE ($base64(text_receiver_read)) $variable_line(BYTES text_receiver_read,metadata_receiver_read)',
         'z_read = $runtime_line(S_read,eps,expression_producer)',
