@@ -1,0 +1,46 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-static-firstclass-pending-leaf",
+      "source": "<?php\nclass ProducerBase215 { public static function capture($saved,$ignored) { echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } }\nclass ProducerScope215 extends ProducerBase215 { public static function launch() { global $owner,$argument; return $owner->MiSsInG((self::capture(...))($argument,shift215())); } } class ProducerChild215 extends ProducerScope215 {}\nfunction shift215() { $GLOBALS[\"argument\"] = new New215; $GLOBALS[\"owner\"] = null; echo \"SHIFT;\"; return false; } class Old215 { public function __destruct() { echo \"OLD;\"; } } class New215 { public function __destruct() { echo \"NEW;\"; } }\nclass Base215 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"] = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived215 extends Base215 {}\n$argument = new Old215; $owner = new Derived215; $child = ProducerChild215::launch(); echo \"RETURN;\"; echo ($child->saved[0] instanceof Old215) ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "5ced4b67f297fe61ad94f21f929524d08d16e1a84b84fc84a4e3e817a8171824",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjE1L1Byb2R1Y2VyQ2hpbGQyMTU7TkVXO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7T0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-static-firstclass-parent-nullary",
+      "source": "<?php\nclass Ancestor215 { public static function seed() { echo \"SEED;\",self::class,\"/\",static::class,\";\"; return true; } } class Middle215 extends Ancestor215 { public static function launch() { global $owner; return $owner->MiSsInG((parent::seed(...))(),false); } } class Final215 extends Middle215 {}\nclass ParentMagic215 { public function __call(string $name,array $arguments) { echo ($arguments[0] === true && $arguments[1] === false) ? \"HELD;\" : \"BAD;\"; return 9; } }\n$owner = new ParentMagic215; $value = Final215::launch(); echo $value === 9 ? \"OK;\" : \"BAD;\";\n",
+      "source_sha256": "48d51dee907bf939f970d30fbe8d9f9de6271fffc36fa00bba6cd05a8fdfc764",
+      "stdout_template_base64": "U0VFRDtBbmNlc3RvcjIxNS9GaW5hbDIxNTtIRUxEO09LOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-keyword-static-firstclass-called-named",
+      "source": "<?php\nclass Lexical215 { public static function seed() { echo \"WRONG;\"; return 2; } public static function launch() { global $owner; return $owner->MiSsInG(first:(static::seed(...))(),later:7); } } class Called215 extends Lexical215 { public static function seed() { echo \"SELECTED;\",self::class,\"/\",static::class,\";\"; return 1.5; } }\nclass NamedMagic215 { public function __call(string $name,array $arguments) { echo ($arguments[\"first\"] === 1.5 && $arguments[\"later\"] === 7) ? \"HELD;\" : \"BAD;\"; return false; } }\n$owner = new NamedMagic215; $value = Called215::launch(); echo $value === false ? \"OK;\" : \"BAD;\";\n",
+      "source_sha256": "41c22f34b621fbe3d3b67a31f945179e37146db61c4710b66cd09a01b323f371",
+      "stdout_template_base64": "U0VMRUNURUQ7Q2FsbGVkMjE1L0NhbGxlZDIxNTtIRUxEO09LOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

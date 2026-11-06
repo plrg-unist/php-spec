@@ -82,6 +82,7 @@ dec $magic_method_constructor_producer(pstate, porigin, expression) : (porigin, 
 dec $magic_method_static_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_keyword_static_call(expression) : bool
 dec $magic_method_keyword_class(pstate, pcallcontext, ptbytes) : porigin?
+dec $magic_method_keyword_static_source(pstate, pcallcontext?, porigin, ptbytes, ptbytes, phpType7*) : (porigin, porigin, pmethoddesc)?
 dec $magic_method_keyword_static_producer(pstate, pcallcontext?, porigin, expression) : (porigin, porigin, pmethoddesc)?
 dec $magic_method_keyword_arguments(phpType7*) : bool
 dec $magic_method_context_values(pstate, pcallcontext?, porigin, phpType7*, poperand*, pmagicproducerfact*) : (pvalue*)?
@@ -315,6 +316,7 @@ def $magic_method_static_producer(S, porigin, expression) = eps -- otherwise
 ;; Keyword lookup uses the original caller's lexical/called classes. The
 ;; descriptor keeps those nonowning identities after the producer frame leaves.
 def $magic_method_keyword_static_call(NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = $ppscoped_keyword(NName (BYTES text_class) metadata_class)
+def $magic_method_keyword_static_call(NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $ppscoped_keyword(NName (BYTES text_class) metadata_class)
 def $magic_method_keyword_static_call(expression) = false -- otherwise
 def $magic_method_keyword_class(S, pcallcontext, ptbytes) = pcallcontext.LEXICAL_CLASS
   -- if $ptlc(ptbytes) = $ptascii("self")
@@ -325,27 +327,36 @@ def $magic_method_keyword_class(S, pcallcontext, ptbytes) = (porigin_parent)
 def $magic_method_keyword_class(S, pcallcontext, ptbytes) = pcallcontext.CALLED_CLASS
   -- if $ptlc(ptbytes) = $ptascii("static")
 def $magic_method_keyword_class(S, pcallcontext, ptbytes) = eps -- otherwise
-def $magic_method_keyword_static_producer(S, (pcallcontext), PORIGIN n_unit pcpath, NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_requested, porigin_called, pmethoddesc))
+def $magic_method_keyword_static_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata) = ((porigin_requested, porigin_called, pmethoddesc))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if $ppscoped_keyword(NName (BYTES text_class) metadata_class)
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_call, false))
   -- if z_call = $source_line(metadata)
+  -- if $magic_method_keyword_static_source(S, pcallcontext?, PORIGIN n_unit pcpath, $base64(text_class), $base64(text_name), phpType7*) = ((porigin_requested, porigin_called, pmethoddesc))
+def $magic_method_keyword_static_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((porigin_requested, porigin_called, pmethoddesc))
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_name) metadata_name) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $ppscoped_keyword(NName (BYTES text_class) metadata_class)
+  -- if $magic_method_keyword_static_source(S, pcallcontext?, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), $base64(text_class), $base64(text_name), phpType7*) = ((porigin_requested, porigin_called, pmethoddesc))
+def $magic_method_keyword_static_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
+;; Ordinary calls and FCC captures share only immutable keyword selection.
+;; Capture placeholders never stand in for the outer invocation's real args.
+def $magic_method_keyword_static_source(S, (pcallcontext), PORIGIN n_unit pcpath, ptbytes_class, ptbytes_name, phpType7*) = ((porigin_requested, porigin_called, pmethoddesc))
   -- if pcallcontext.LEXICAL_CLASS = (porigin_lexical)
   -- if $closure_source_class(S, PORIGIN n_unit pcpath) = (porigin_lexical)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_caller)
   -- if pcallcontext.FUNCTION = pfunction_caller.ORIGIN
   -- if pcallcontext.CALLED_CLASS = (porigin_called)
-  -- if $magic_method_keyword_class(S, pcallcontext, $base64(text_class)) = (porigin_requested)
+  -- if $magic_method_keyword_class(S, pcallcontext, ptbytes_class) = (porigin_requested)
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc_requested)
   -- if pclassdesc_requested.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_requested.NAME)) = (porigin_requested)
   -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc_called)
   -- if pclassdesc_called.KIND = "class"
-  -- if $effective_method(S, porigin_requested, $base64(text_name), |S.CLASSES|) = (pmethoddesc)
+  -- if $effective_method(S, porigin_requested, ptbytes_name, |S.CLASSES|) = (pmethoddesc)
   -- if $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
-def $magic_method_keyword_static_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
+def $magic_method_keyword_static_source(S, pcallcontext?, porigin, ptbytes_class, ptbytes_name, phpType7*) = eps -- otherwise
 def $magic_method_plain_static_source(S, pmethoddesc, phpType7*) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if ~$ppmethod_magic(pmethoddesc.NAME) /\ $ptlc(pmethoddesc.NAME) =/= $ptascii("__construct")
