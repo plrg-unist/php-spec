@@ -202,7 +202,7 @@ review.CASES = {
             'S_missing_set = S_pair[.FUNCTIONS = [pfunction_get_source]]',
             '$property_hook_trait_selected(S_missing_set, ppropertydesc_b, porigin_get_b) = eps',
             '$property_set_function(S, ppropertyhook[.HOOK = porigin_set_b]) = eps',
-            '$property_set_function(S, ppropertyhook[.PROPERTY = ppropertydesc_b.ORIGIN]) = eps',
+            '$property_set_function(S, ppropertyhook[.PROPERTY = TRAIT_MEMBER_ORIGIN porigin_b porigin_property_source]) = eps',
             '$property_hook_trait_selected(S[.SOURCES = eps], ppropertydesc_a, porigin_set_a) = eps',
             '$property_hook_trait_selected(S_pair[.FUNCTIONS = [pfunction_get_source, pfunction_set_source[.SIGNATURE = $property_set_signature(ppropertydesc_source)]]], ppropertydesc_a, porigin_set_a) = eps',
             'S_paused = $drive_steps(S, 0)',
