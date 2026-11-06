@@ -332,6 +332,26 @@ def $closure_cache_runtime_publication(pdeclaration :: pdeclaration_tail*, porig
 def $closure_cache_runtime_publication(pdeclaration :: pdeclaration_tail*, porigin) = $closure_cache_runtime_publication(pdeclaration_tail*, porigin)
   -- if pdeclaration =/= PDRFUNCTION porigin {UNIT 0, CALLS eps, AUTOLOAD eps}
 
+;; Factory publication is checked against its successful historical prefix.
+dec $closure_cache_factory_publication_at(pstate, porigin, pfunction, nat) : bool
+def $closure_cache_factory_publication_at(S, porigin, pfunction_factory, n) = true
+  -- if $(n < |S.DECLARATIONS|)
+  -- if S.DECLARATIONS[n] = PDRFUNCTION porigin pdeclcause
+  -- if pdeclcause.UNIT = 0 /\ pdeclcause.AUTOLOAD = eps
+  -- if pdeclcause.CALLS = [(pfunction_factory.ORIGIN, (porigin_site), eps, eps)]
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $exit_fixed(S, porigin_site) = ((preqbytes, preqbytes_fallback?))
+  -- if pdeclaration_prefix* = S.DECLARATIONS[0:n]
+  -- if S_prefix = S[.DECLARATIONS = pdeclaration_prefix*][.CALLABLES = $constant_callable_functions(S, pdeclaration_prefix*)]
+  -- if $call_target(S_prefix, preqbytes, preqbytes_fallback?) = (pfunction_factory)
+  -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
+def $closure_cache_factory_publication_at(S, porigin, pfunction_factory, n) = false -- otherwise
+dec $closure_cache_factory_publication(pstate, porigin, pfunction, nat) : bool
+def $closure_cache_factory_publication(S, porigin, pfunction_factory, 0) = false
+def $closure_cache_factory_publication(S, porigin, pfunction_factory, n) = ($closure_cache_factory_publication_at(S, porigin, pfunction_factory, $nabs($(n - 1))) \/ $closure_cache_factory_publication(S, porigin, pfunction_factory, $nabs($(n - 1))))
+  -- if $(n > 0)
+
 ;; A named user function can acquire the dummy Closure scope through binding.
 ;; Its replacement is a real user Closure object, not that object's function scope.
 dec $closure_call_cache_dummy_source(pstate, nat) : porigin?
@@ -356,6 +376,21 @@ def $closure_call_cache_dummy_source(S, n) = (porigin)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
   -- if $declaration_unit_complete(S.DECLARATIONS, 0)
   -- if $closure_cache_runtime_publication(S.DECLARATIONS, porigin)
+def $closure_call_cache_dummy_source(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SCOPE = BIND_INTERNAL ($ptascii("Closure"))
+  -- if $closure_cache_object_function(S, n) = (porigin)
+  -- if $closure_cache_named_source(S, porigin) = (pfunction)
+  -- if ~pfunction.EARLY
+  -- if porigin = PORIGIN 0 pcpath
+  -- if $goto_source_owner($all_functions(S), 0, pcpath) = (pfunction_factory)
+  -- if $closure_cache_named_source(S, pfunction_factory.ORIGIN) = (pfunction_factory)
+  -- if pfunction_factory.EARLY
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction_factory.NAME)) = (pfunction_factory.ORIGIN)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
+  -- if $declaration_unit_complete(S.DECLARATIONS, 0)
+  -- if $closure_cache_factory_publication(S, porigin, pfunction_factory, |S.DECLARATIONS|)
 def $closure_call_cache_dummy_source(S, n) = eps -- otherwise
 
 dec $closure_call_cache_policy(pstate, nat, nat, nat) : pfncacheowner?
