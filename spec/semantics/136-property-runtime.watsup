@@ -1,3 +1,4 @@
+dec $property_hook_name_pending(pstate) : bool
 dec $aggregate_decl_retained(pstate, nat) : bool
 dec $number_compare_decl_unset_allowed(pstate, nat, ptbytes) : bool
 dec $aggregate_membership_boundary(pstate) : pstate
@@ -765,6 +766,7 @@ rule PhpStep/property-base-abrupt: S ~> S_read[.TODO = eps]
   -- if S_read.COMPLETION =/= NORMAL
 rule PhpStep/property-name: S ~> S_name[.TODO = ptask_tail*][.BASE = BASE_PROPERTY pvalue n_name*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_NAME pvalue z) :: ptask_tail*
+  -- if ~$property_hook_name_pending(S)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
   -- if S_name.RESULT = KNOWN pvalue_string

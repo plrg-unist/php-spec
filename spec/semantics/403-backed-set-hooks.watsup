@@ -476,6 +476,20 @@ def $property_set_valid(S, ppropertyhook) = true
   -- if (HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, ppropertyhook.OBJECT)
   -- if ppropertyhook.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprAssign expression_target expression_rhs metadata)
+  -- if porigin_target = PORIGIN n (pcpath ++ [PCFIELD 0])
+  -- if S_site = S[.ORIGIN = (ppropertyhook.SITE)]
+  -- if $property_hook_cv_name_site(S_site, porigin_target, $runtime_line(S_site, [PCFIELD 0], expression_target))
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if $property_hook_named_pair(S, ppropertydesc)
+  -- if $property_assign_task(S[.ORIGIN = (ppropertyhook.SITE)], expression_target, expression_rhs)
+  -- if $call_line_valid(S, (ppropertyhook.SITE), ppropertyhook.LINE)
+def $property_set_valid(S, ppropertyhook) = true
+  -- if $property_set_function(S, ppropertyhook) = (pfunction)
+  -- if (HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS
+  -- if ~$instance_storage_freeing(S, ppropertyhook.OBJECT)
+  -- if ppropertyhook.SITE = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprAssign (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata_property) expression_rhs metadata)
   -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver) \/ $source_emission_this_fetch(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
   -- if $property_effective_desc(S, ppropertyhook.OBJECT, $base64(text_name)) = (ppropertydesc)
@@ -596,12 +610,18 @@ def $property_pending_assign_valid(S, pbase, z, false) = true
   -- if $memoized_write_ready(S, pbase, [PCFIELD 0])
 
 ;; Pending receiver/name resolution precedes RHS dereference, as in ordinary assignment.
+dec $property_set_name_ready(pstate, poperand) : bool
+def $property_set_name_ready(S, poperand) = $property_hook_cv_name_operand(S, poperand, [PCFIELD 0, PCFIELD 1])
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprPropertyFetch expression_receiver (NExprVariable (BYTES text_name) metadata_name) metadata_property) expression_rhs metadata)
+def $property_set_name_ready(S, poperand) = true -- otherwise
 dec $property_set_plan(pstate) : ppropertyhook?
 def $property_set_plan(S) = (ppropertyhook)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if S.ORIGIN = (porigin_site)
   -- if $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, z, false)
+  -- if $property_set_name_ready(S, poperand)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_target.COMPLETION = NORMAL
   -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
@@ -622,6 +642,7 @@ def $property_set_denied_plan(S) = (ppropertyhook)
   -- if $property_set_write_task(ptask) = ((BASE_PROPERTY_PENDING pbase poperand z_receiver, z))
   -- if S.ORIGIN = (porigin_site)
   -- if $property_pending_assign_valid(S, BASE_PROPERTY_PENDING pbase poperand z_receiver, z, false)
+  -- if $property_set_name_ready(S, poperand)
   -- if S_target = $property_pending_resolve(S, pbase, poperand, PPW, z_receiver, z)
   -- if S_target.COMPLETION = NORMAL
   -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
