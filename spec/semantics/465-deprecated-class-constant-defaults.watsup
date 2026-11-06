@@ -146,14 +146,14 @@ def $owned_class_has_replacement(pclassconstantevent :: pclassconstantevent_tail
   -- if $owned_class_replacement_event(pclassconstantevent) = eps
 
 dec $owned_class_cache_prefix(pstate, pclassconstantevent*, nat, pdefaultcache*) : pdefaultcache*
-def $owned_class_cache_prefix(S, eps, n_prefix, pdefaultcache*) = pdefaultcache*
-def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, $default_cache_put(pdefaultcache*, pdefaultcache))
+def $owned_class_cache_prefix(S, eps, n_prefix, pdefaultcache_acc*) = pdefaultcache_acc*
+def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache_acc*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, $default_cache_put(pdefaultcache_acc*, pdefaultcache))
   -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))
   -- if $(n <= n_prefix)
   -- if $class_constant_cache_projection(S, S, pclassconstantevent :: pclassconstantevent_tail*, porigin) = (pdefaultcache)
-def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, pdefaultcache*)
+def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache_acc*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, pdefaultcache_acc*)
   -- if $constant_callable_cache_event(pclassconstantevent) = eps
-def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, pdefaultcache*)
+def $owned_class_cache_prefix(S, pclassconstantevent :: pclassconstantevent_tail*, n_prefix, pdefaultcache_acc*) = $owned_class_cache_prefix(S, pclassconstantevent_tail*, n_prefix, pdefaultcache_acc*)
   -- if $constant_callable_cache_event(pclassconstantevent) = ((porigin, n))
   -- if $(n > n_prefix)
 def $trait_notice_cache_replacements(S, pclassconstantevent*, n_prefix) = ($owned_class_cache_prefix(S, pclassconstantevent*, n_prefix, eps))
