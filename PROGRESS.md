@@ -2793,6 +2793,12 @@ classes separate. Four originals, separate 66/104 target/context fronts, a
 25-check unpack guard and three refusal controls pass first execution at
 private461 cuts. Existing static/This source and generic owner laws are reused;
 actual462 composition follows empty-excess/default fallbacks. [Review](coverage/semantics/anonymous-keyword-instance-producer-magic-review.json).
+Implicit This calls now select inherited public USER __invoke from saved caller
+source and real INIT metadata, using ordinary receiver ownership without CV
+receipts or Closure wrappers. Three originals, 71/94 focused target/context
+fronts,25 pack guards and three refusal controls pass first execution at
+private462 cuts;213/216 generic tails remain reused.
+[Review](coverage/semantics/anonymous-this-invokable-producer-magic-review.json).
 
 
 
@@ -3266,7 +3272,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS218 | Immediate implicit This invocation of ordinary public USER __invoke using authentic saved caller and existing target-before-argument selection; preserve caller/receiver ownership and source limits. |
+| CLASS219 | Immediate fresh fixed-name invokable-object FCCs through authentic capture and outer-argument sites, existing constructor/public invoke source certificates and real wrapper receiver ownership; preserve current bounds. |
 | ATTR76 | Plain string-CV names for existing quiet, conditional and ADD hook consumers, retaining late conditional selection and fixed compound PROPERTY authority; preserve producer and owner bounds. |
 | COMP203 | Owning defaults for public ordinary error/exception method handlers through authentic entered API targets, exact arities and captured entry history; preserve existing callback owners and lifecycle. |
 | GC69 | Exact native-RC NAME overwrites of ordinary Roots with finite public untyped scalar/fieldless-child slots, preserving real descendant owners and STORE allocation order; reuse count and GC laws. |

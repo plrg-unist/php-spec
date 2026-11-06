@@ -898,6 +898,14 @@ receiver or wrapper ownership, including the caller's retained This owner.
 No new history, owner or wider signature/header policy is introduced.
 [Scoped instance review](../../coverage/semantics/anonymous-keyword-instance-producer-magic-review.json).
 
+Implicit calls to `$this` now authenticate public USER `__invoke` from the
+original caller's immutable class/source. Actual call initialization and ordinary
+method selection precede real arguments, while existing receiver and caller
+ownership preserve the selected object through callbacks. Zero/required
+positional modes remain bounded; placeholder capture, stored callable histories
+and wider producer/header modes stay separate.
+[Implicit This review](../../coverage/semantics/anonymous-this-invokable-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order
