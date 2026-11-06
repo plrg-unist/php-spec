@@ -77,7 +77,7 @@ def ownership(fixture, filename):
         'S_after = S_after_found[.COMPLETION = NORMAL]', AFTER.replace('S.', 'S_after.'),
         '~((HOBJECT n_this) <- S_after.ALLOCATIONS)', '$heap_owners($heap_graph(S_after),HOBJECT n_this) = 0',
         '$object_class_origin(S_after,n_this) = (porigin_class)', '$from_selected(S_after,pfrommethod) = (pmethoddesc)',
-        '$from_valid($from_history(S_after,pfrommethod),pfrommethod)',
+        '$from_valid(S_after,pfrommethod)',
         '$magic_method_this_array_from_callable_producer(S_after,pmagicmethodcall.CALLER,porigin_outer,expression_outer) = ((n_this,porigin_class,pmethoddesc))',
     ]
 
