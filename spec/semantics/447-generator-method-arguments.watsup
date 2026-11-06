@@ -498,6 +498,23 @@ def $generator_helper_context(S, pcallcontext) = true
   -- if pmethoddesc.STATIC
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $generator_helper_instance_source($origin_node(S.SOURCES, porigin))
+def $generator_helper_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.INSTANCE = (n) /\ pcallcontext.RECEIVER = eps
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE pcallcontext.FUNCTION eps eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if ~$internal_closure_object(S, n)
+  -- if $function_at(S.CLOSURETEMPLATES, pcallcontext.FUNCTION) = (pfunction)
+  -- if ~$function_generator(S, pfunction) /\ ~pfunction.SIGNATURE.BYREF
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 (BOOLEAN true) (BOOLEAN false) phpType16 (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata)
+  -- if $closure_lexicals(pfunction.CODE.EXPRESSIONS) = eps
+  -- if $static_code_entries(pfunction.CODE.EXPRESSIONS) = eps
+  -- if $closure_callable(S, n)
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall (NExprVariable (BYTES text) metadata_variable) phpType6 metadata_call)
+  -- if ~$direct_this(BYTES text) /\ $dynamic_site(S, (porigin))
 
 ;; A callback may run the selected receiver before the outer API is invoked.
 ;; Authenticate the live resumer before restoring either saved caller scope.
