@@ -155,7 +155,7 @@ syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_CONVERT | ASSERTION_PARSE | ASSERTION_REFUSE int
 syntax ptask
 syntax pshellcontext
-syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobcreation, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode, pobrefreturn, pobarrayreturn, pobobjectreturn
+syntax poutputbuffer, pobdrain, pobdeactivate, pobnotice, pobcreation, pobinvoke, poboutput, pobrelease, pobcall, pobwrite, pobfinish, pobcaller, pobstringrelease, pobapimode, pobrefreturn, pobarrayreturn, pobobjectreturn, pobobjectsource
 syntax ptickmarker, ptickentry, ptickdispatch
 syntax pexecutorqueue, pexecutorstage, pexecutortick, pexecutortickfatal
 syntax pintegeroperation
@@ -647,7 +647,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate
   | OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin nat
   | OUTPUT_FINAL_OBJECT_CV pobobjectreturn
-  | OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin nat pobdeactivate?
+  | OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource pobdeactivate?
   | EXECUTOR_RELEASE pexecutorqueue pexecutorstage | EXECUTOR_TICK_RELEASE pexecutortick bool | EXECUTOR_TICK_FATAL pexecutortickfatal bool
 syntax pdirconversion = { NONCE nat, CALLSITE porigin, CALLLINE int, OBJECT nat, RESULT nat*, SELECTION nat?, OWNERDEPTH nat }
 syntax pdircontext = { NONCE nat, CALL pconfigcall, CWD nat*, REQUESTED nat*, CONVERSION nat?, FRAMEOWNER nat, TAIL ptask* }
@@ -760,8 +760,9 @@ syntax pobapimode = OB_API_RETAIN | OB_API_RESTORE | OB_API_RELEASE
 syntax pobinvoke = { CALL pobcall, BUFFER poutputbuffer, VALUE pvalue, INPUT pvalue, PHASE int, SENT poperand* }
 syntax pobrefreturn = { INVOKE pobinvoke, CELL nat, PENDING nat?, CALLER pcallcontext?, TAIL ptask* }
 syntax pobarrayreturn = { INVOKE pobinvoke, ARRAY nat, CELL nat?, PENDING nat?, CALLER pcallcontext?, TAIL ptask* }
-;; SOURCE borrows a direct fresh-throw birth; it never owns its Throwable.
-syntax pobobjectsource = (porigin, nat)
+;; Normalized birth facts borrow bytes and identity, never carriers or cells.
+syntax pobctorbirth = { SITE porigin, OBJECT nat, MESSAGE preqbytes, CODE int, LINE int }
+syntax pobobjectsource = OBJECT_LEGACY_THROW porigin nat | OBJECT_NEW_BIRTH porigin pobctorbirth | OBJECT_THROW_BIRTH porigin pobctorbirth
 syntax pobobjectreturn = { INVOKE pobinvoke, OBJECT nat, CELL nat?, RETURNED poperand?, PENDING nat?, CALLER pcallcontext?, TAIL ptask*, SOURCE pobobjectsource? }
 syntax pobdeactivate = { CALL pobinvoke, BUFFERS poutputbuffer*, INDEX nat, COMPLETION pcompletion }
 syntax pexecutorqueue = { COMPLETION pcompletion, VALUE poperand, BASE pbase, ORIGIN porigin?, ENTRIES pshutdownentry*, TARGETS pshutdownproducer*, RECEIVERS nat?* }

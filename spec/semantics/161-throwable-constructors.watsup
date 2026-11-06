@@ -242,7 +242,9 @@ dec $ctor_result(pctorcallmode, nat) : pvalue
 def $ctor_commit_field(S, pctorcall, text_field, pvalue, true) = $throwable_constructor_field(S, pctorcall.RECEIVER, text_field, pvalue)
 def $ctor_commit_field(S, pctorcall, text_field, pvalue, false) = S
 dec $ctor_commit(pstate, pctorcall, pvalue, pvalue, pvalue) : pstate
-def $ctor_commit(S, pctorcall, pvalue_message, PINT z_code, pvalue_previous) = S_previous[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $ctor_completed(pstate, pctorcall, pvalue, pvalue, pvalue) : pstate
+def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = S -- otherwise
+def $ctor_commit(S, pctorcall, pvalue_message, PINT z_code, pvalue_previous) = $ctor_completed(S_previous[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)], pctorcall, pvalue_message, PINT z_code, pvalue_previous)
   -- if $string_bytes(pvalue_message) = (preqbytes_message)
   -- if S_message = $ctor_commit_field(S, pctorcall, "message", pvalue_message, $(|pctorcall.SENT| > 0))
   -- if S_code = $ctor_commit_field(S_message, pctorcall, "code", PINT z_code, $(z_code =/= 0))
