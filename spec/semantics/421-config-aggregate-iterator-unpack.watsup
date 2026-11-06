@@ -14,6 +14,8 @@ dec $config_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porig
 dec $config_aggregate_context(pstate, pcallcontext) : bool
 dec $config_aggregate_call(pstate, pconfigaggregate, ptask*) : pstate
 dec $config_aggregate_return_allowed(pstate, pconfigaggregate) : bool
+dec $config_aggregate_iterator_admitted(pstate, pconfigaggregate, nat) : bool
+def $config_aggregate_iterator_admitted(S, pconfigaggregate, n) = true -- otherwise
 dec $config_aggregate_generator_return_allowed(pstate, pconfigaggregate) : bool
 dec $config_generator_scope(pstate, pconfiggenerator) : bool
 dec $config_aggregate_promote(pstate, pconfigaggregate, ptask*) : pstate
@@ -226,12 +228,14 @@ def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_valid(S, pconfigaggregate)
   -- if $config_aggregate_owners(S, pconfigaggregate, 1)
   -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $config_aggregate_iterator_admitted(S, pconfigaggregate, n)
   -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
   -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)
 def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_valid(S, pconfigaggregate)
   -- if $config_aggregate_owners(S, pconfigaggregate, 1)
   -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $config_aggregate_iterator_admitted(S, pconfigaggregate, n)
   -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
   -- if $destructor_method(S, n) = eps
   -- if $node_children(S, HOBJECT n) = eps
@@ -240,6 +244,7 @@ def $config_aggregate_return_allowed(S, pconfigaggregate) = true
   -- if $config_aggregate_valid(S, pconfigaggregate)
   -- if $config_aggregate_owners(S, pconfigaggregate, 1)
   -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $config_aggregate_iterator_admitted(S, pconfigaggregate, n)
   -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
   -- if $config_iterator_finalizer(S, n)
   -- if $config_iterator_start(S, pconfigaggregate.CALL, pconfigaggregate.INPUT, n)

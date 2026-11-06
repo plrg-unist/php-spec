@@ -159,15 +159,21 @@ def $config_aggregate_source(S, pconfigaggregate) = true
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+dec $generator_aggregate_current(pstate, nat) : bool
+def $generator_aggregate_current(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_data
+  -- if $effective_method(S, porigin_data, $ptascii("current"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+def $generator_aggregate_current(S, n) = false -- otherwise
+def $config_aggregate_iterator_admitted(S, pconfigaggregate, n) = $generator_aggregate_current(S, n)
+  -- if $generator_aggregate_site(S, pconfigaggregate.CALL)
 dec $generator_aggregate_iterator(pstate, pconfigiterator) : bool
 def $generator_aggregate_iterator(S, pconfigiterator) = true
   -- if $generator_aggregate_site(S, pconfigiterator.CALL)
   -- if pconfigiterator.PRODUCER = (n_aggregate)
   -- if $config_iterator_producer_valid(S, pconfigiterator)
-  -- if $(pconfigiterator.OBJECT < |S.OBJECTS|)
-  -- if S.OBJECTS[pconfigiterator.OBJECT] = INSTANCE porigin_data
-  -- if $effective_method(S, porigin_data, $ptascii("current"), |S.CLASSES|) = (pmethoddesc)
-  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $config_aggregate_iterator_admitted(S, {CALL pconfigiterator.CALL, OBJECT n_aggregate, INPUT pconfigiterator.INPUT}, pconfigiterator.OBJECT)
 def $generator_aggregate_iterator(S, pconfigiterator) = false -- otherwise
 
 def $config_iterator_history(S, pconfigiterator) = true
