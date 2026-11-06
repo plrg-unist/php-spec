@@ -1,0 +1,151 @@
+;; Origin-keyed defaults are admitted only for one proven shared cache family.
+dec $parameter_closure_source(pstate, pfunction) : bool
+def $parameter_closure_source(S, pfunction) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static (BOOLEAN false) phpType16 phpType21 phpType18 phpType23 metadata)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
+  -- if $parameter_method_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $closure_source_class(S, pfunction.ORIGIN) = eps
+  -- if $closure_cache_literal_scope(S, pfunction.ORIGIN, BIND_UNSCOPED)
+def $parameter_closure_source(S, pfunction) = false -- otherwise
+
+dec $parameter_closure_shared_object(pstate, porigin, nat) : bool
+def $parameter_closure_shared_object(S, porigin, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = porigin /\ pclosurecache.SCOPE = (BIND_UNSCOPED) /\ pclosurecache.CACHE = (CACHE_SHARED)
+def $parameter_closure_shared_object(S, porigin, n) = false -- otherwise
+
+dec $parameter_closure_objects(pstate, porigin, nat) : bool
+def $parameter_closure_objects(S, porigin, n) = true -- if n = |S.OBJECTS|
+def $parameter_closure_objects(S, porigin, n) = ($parameter_closure_shared_object(S, porigin, n) /\ $parameter_closure_objects(S, porigin, $(n + 1)))
+  -- if $(n < |S.OBJECTS|)
+  -- if $closure_cache_object_function(S, n) = (porigin)
+def $parameter_closure_objects(S, porigin, n) = $parameter_closure_objects(S, porigin, $(n + 1))
+  -- if $(n < |S.OBJECTS|)
+  -- if $closure_cache_object_function(S, n) =/= (porigin)
+def $parameter_closure_objects(S, porigin, n) = false -- otherwise
+
+dec $parameter_closure_calls(pclosurecallcache*, porigin) : bool
+def $parameter_closure_calls(eps, porigin) = true
+def $parameter_closure_calls(pclosurecallcache :: pclosurecallcache_tail*, porigin) = (pclosurecallcache.FUNCTION =/= porigin /\ $parameter_closure_calls(pclosurecallcache_tail*, porigin))
+
+dec $parameter_closure_family(pstate, porigin) : bool
+def $parameter_closure_family(S, porigin) = true
+  -- if $closure_cache_first(S.CLOSURECACHES, porigin) = (pclosurecache)
+  -- if pclosurecache.SCOPE = (BIND_UNSCOPED) /\ pclosurecache.CACHE = (CACHE_SHARED)
+  -- if $parameter_closure_objects(S, porigin, 0)
+  -- if $parameter_closure_calls(S.CLOSURECALLCACHES, porigin)
+def $parameter_closure_family(S, porigin) = false -- otherwise
+
+dec $parameter_closure_current(pstate, pfunction) : bool
+def $parameter_closure_current(S, pfunction) = true
+  -- if $parameter_closure_source(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.INSTANCE = (n) /\ pcallcontext.RECEIVER = eps /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps /\ pcallcontext.CACHE = eps
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
+  -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
+  -- if $parameter_closure_shared_object(S, pfunction.ORIGIN, n)
+  -- if $parameter_closure_family(S, pfunction.ORIGIN)
+def $parameter_closure_current(S, pfunction) = false -- otherwise
+
+dec $parameter_receive_closure_entry(pstate, preceivebirth) : bool
+def $parameter_receive_closure_entry(S, preceivebirth) = true
+  -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = (pfunction)
+  -- if $parameter_closure_source(S, pfunction)
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, eps, eps) :: pdeclcalls
+  -- if preceivebirth.CALLSITE = (porigin_site)
+  -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
+  -- if $declaration_invocation(S, pfunction, porigin_site, eps, eps, pdeclcalls)
+  -- if $parameter_closure_family(S, pfunction.ORIGIN)
+def $parameter_receive_closure_entry(S, preceivebirth) = false -- otherwise
+
+def $parameter_receive_deprecated_entry(S, preceivebirth) = $parameter_receive_closure_entry(S, preceivebirth)
+  -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) =/= eps
+def $parameter_receive_cache_entry(S, preceivebirth) = $parameter_receive_closure_entry(S, preceivebirth)
+  -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) =/= eps
+def $parameter_default_recipient(S, pfunction) = $parameter_closure_current(S, pfunction)
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) =/= eps
+
+;; Both resolved names matter after a handler publishes a namespace shadow.
+;; This is a source discriminator, without evaluation or diagnostic authority.
+dec $parameter_default_owned_name(pstate, preqbytes) : bool
+def $parameter_default_owned_name(S, preqbytes) = true
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = (puserconstant)
+  -- if ~$deprecated_global_nonowning(puserconstant.VALUE)
+  -- if $deprecated_global_metadata(S, puserconstant.ORIGIN) = DEPRECATED_ATTRIBUTE ptbytes_message ptbytes_since
+def $parameter_default_owned_name(S, preqbytes) = false -- otherwise
+
+dec $parameter_default_owned_fallback(pstate, preqbytes?) : bool
+def $parameter_default_owned_fallback(S, (preqbytes)) = $parameter_default_owned_name(S, preqbytes)
+def $parameter_default_owned_fallback(S, eps) = false
+
+dec $parameter_default_const_fetch(pcnode) : bool
+dec $parameter_default_owned_source(pstate, porigin) : bool
+dec $parameter_default_owned_children(pstate, nat, pcoccurrence*) : bool
+def $parameter_default_owned_source(S, porigin) = $parameter_default_owned_source(S, porigin_target)
+  -- if $compiled_redirect(S, porigin) = ((porigin_target, expression, b, z))
+def $parameter_default_owned_source(S, PORIGIN n pcpath) = ($parameter_default_owned_name(S, preqbytes) \/ $parameter_default_owned_fallback(S, preqbytes_fallback?))
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+def $parameter_default_owned_source(S, PORIGIN n pcpath) = $parameter_default_owned_children(S, n, $pcchildren(pcnode, pcpath))
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (pcnode)
+  -- if ~$default_closure_node(pcnode)
+  -- if ~$parameter_default_const_fetch(pcnode)
+def $parameter_default_owned_source(S, porigin) = false -- otherwise
+
+def $parameter_default_const_fetch(NExprConstFetch name metadata) = true
+def $parameter_default_const_fetch(pcnode) = false -- otherwise
+def $parameter_default_owned_children(S, n, eps) = false
+def $parameter_default_owned_children(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($parameter_default_owned_source(S, PORIGIN n pcpath) \/ $parameter_default_owned_children(S, n, pcoccurrence*))
+
+def $default_receive_recipient(S, pfunction, pdefault) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = eps
+def $default_receive_recipient(S, pfunction, pdefault) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) =/= eps
+  -- if ~$parameter_default_owned_source(S, pdefault.ORIGIN)
+def $default_receive_recipient(S, pfunction, pdefault) = $parameter_closure_current(S, pfunction)
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) =/= eps
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
+rule PhpStep/default-recipient: S ~> S[.COMPLETION = UNSUPPORTED "uncertified real Closure default cache"]
+  -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $receiving_function(S, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if ~$default_receive_recipient(S, pfunction, pdefault)
+
+
+dec $parameter_closure_bind_task(ptask) : (porigin, nat)?
+def $parameter_closure_bind_task(DEFAULT_BIND porigin n) = ((porigin, n))
+def $parameter_closure_bind_task(NAMED_DEFAULT_BIND porigin n) = ((porigin, n))
+def $parameter_closure_bind_task(ptask) = eps -- otherwise
+rule PhpStep/default-bind-recipient: S ~> S_value[.COMPLETION = UNSUPPORTED "uncertified real Closure default cache"]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $parameter_closure_bind_task(ptask) = ((porigin, n))
+  -- if $receiving_function(S, porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
+  -- if S_value.COMPLETION = NORMAL
+  -- if ~$default_receive_recipient(S_value, pfunction, pdefault)
+
+rule PhpStep/named-preflight-recipient: S ~> S[.COMPLETION = UNSUPPORTED "uncertified real Closure default cache"]
+  -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, porigin) = (pfunction)
+  -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if ~$default_receive_recipient(S, pfunction, pdefault)

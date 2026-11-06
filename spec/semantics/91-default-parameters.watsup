@@ -1,4 +1,5 @@
 dec $typed_default_store(pstate, pfunction, nat, pvalue) : pstate
+dec $default_receive_recipient(pstate, pfunction, pdefault) : bool
 dec $parameter_receive_entry_valid(pstate) : bool
 dec $parameter_receive_begin(pstate, porigin) : pstate
 dec $parameter_receive_end(pstate) : pstate
@@ -112,6 +113,7 @@ rule PhpStep/default-cached: S ~> $typed_default_store(S, pfunction, n, pdefault
   -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
+  -- if $default_receive_recipient(S, pfunction, pdefault)
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
   -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
 rule PhpStep/default-evaluate: S ~> $parameter_receive_begin(S, porigin_param)[.CONSTCONTEXT = ({ORIGIN porigin_param, LINE $default_parameter_line(S, porigin, n), FACTS eps})][.ORIGIN = (porigin_param)][.TODO = [AT pdefault.ORIGIN (EVAL expression), DEFAULT_BIND porigin n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -120,6 +122,7 @@ rule PhpStep/default-evaluate: S ~> $parameter_receive_begin(S, porigin_param)[.
   -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
+  -- if $default_receive_recipient(S, pfunction, pdefault)
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
   -- if $origin_node(S.SOURCES, pdefault.ORIGIN) = (expression)
   -- if porigin_param = $default_parameter_origin(S, porigin, n)
@@ -131,6 +134,7 @@ rule PhpStep/default-bind: S ~> $typed_default_store($default_cache_value($param
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
   -- if S_value.COMPLETION = NORMAL
+  -- if $default_receive_recipient(S_value, pfunction, pdefault)
   -- if S_value.RESULT = KNOWN pvalue
   -- if pvalueclass = $constant_class(S_value, pdefault.ORIGIN)
   -- if $parameter_default_transfer_valid(S_value, pfunction, n, pvalue, pvalueclass)
@@ -141,6 +145,7 @@ rule PhpStep/default-bind-transfer: S ~> S_value[.COMPLETION = UNSUPPORTED "unce
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
   -- if S_value.COMPLETION = NORMAL
+  -- if $default_receive_recipient(S_value, pfunction, pdefault)
   -- if S_value.RESULT = KNOWN pvalue
   -- if pvalueclass = $constant_class(S_value, pdefault.ORIGIN)
   -- if ~$parameter_default_transfer_valid(S_value, pfunction, n, pvalue, pvalueclass)

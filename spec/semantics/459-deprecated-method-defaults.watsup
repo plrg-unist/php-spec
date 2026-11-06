@@ -71,11 +71,16 @@ def $parameter_default_recipient(S, pfunction) = true
   -- if $parameter_method_invocation(S, pfunction, pdeclcause.CALLS, |S.DECLARATIONS|)
 def $parameter_default_recipient(S, pfunction) = false -- otherwise
 
+dec $parameter_receive_cache_entry(pstate, preceivebirth) : bool
+def $parameter_receive_cache_entry(S, preceivebirth) = $parameter_receive_method_entry(S, preceivebirth)
+  -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) =/= eps
+def $parameter_receive_cache_entry(S, preceivebirth) = false -- otherwise
+
 ;; Callback publications keep the exact suspended method's source and scopes.
 def $parameter_receive_capture(S, pframe, pframe_tail*, pdeclcause, n_index) = [{OWNER n_owner, INDEX n_index, FRONTIER preceivefrontier, CAUSE pdeclcause}]
   -- if $parameter_receive_owner(pframe.CONTEXT) = (n_owner)
   -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
-  -- if $parameter_receive_method_entry(S, preceivebirth)
+  -- if $parameter_receive_cache_entry(S, preceivebirth)
   -- if pframe.CONSTCONTEXT = (pconstantcontext)
   -- if pconstantcontext.ORIGIN = preceivebirth.ORIGIN
   -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
@@ -100,7 +105,7 @@ def $parameter_receive_capture(S, pframe, pframe_tail*, pdeclcause, n_index) = [
 def $parameter_receive_cut_source(S, preceivecut) = true
   -- if $parameter_receive_user_frontier(S, preceivecut.FRONTIER)
   -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
-  -- if $parameter_receive_method_entry(S, preceivebirth)
+  -- if $parameter_receive_cache_entry(S, preceivebirth)
   -- if preceivecut.INDEX = 1 /\ |preceivecut.CAUSE.CALLS| = $(preceivecut.INDEX + |preceivebirth.CAUSE.CALLS|)
   -- if preceivecut.CAUSE.CALLS[preceivecut.INDEX:|preceivebirth.CAUSE.CALLS|] = preceivebirth.CAUSE.CALLS
   -- if preceivecut.CAUSE.CALLS[0] = (porigin_handler, porigin_handler_site?, porigin_handler_scope?, porigin_handler_called?)
@@ -122,7 +127,7 @@ def $parameter_callable_flow_at(S, pfunction, n_index, porigin_site, porigin_sco
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = porigin_scope?
   -- if $parameter_receive_owner((pcallcontext)) = (n_owner)
   -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
-  -- if $parameter_receive_method_entry(S, preceivebirth)
+  -- if $parameter_receive_cache_entry(S, preceivebirth)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if pconstantcontext.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, n_index)
   -- if $parameter_receive_default_valid(S, pconstantcontext)
