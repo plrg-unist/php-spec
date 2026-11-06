@@ -625,6 +625,19 @@ mapping cleanup-order mismatch, failed frontier selections and the bounded
 descriptor diagnostic retain zero credit.
 [Selected Traversable review](coverage/semantics/generator-computed-traversable-arguments-review.json).
 
+I128 removes the artificial two-item prefix limit for the existing named
+by-value Generator CV source at authenticated native Generator consumers.
+The shared consumer policy leaves old INI bounds exact; item/source/value,
+real DATA/receiver/copied-prefix owners and borrowed-resume laws remain intact.
+One-CV syntax and held producer/value/lifecycle modes do not widen. Four frozen
+native contrasts pass: scalar fourth-item count, source throw after owning
+prefix3, fourth-key mapping failure and distinct owning prefix3/cache/trace
+retirement. Four exact source comparisons and 363 independent conditions also
+pass first attempt, covering actual third/fourth appends, INI controls,
+borrowed/pending/count/cache roots and public 0/1 budgets. The actual current
+453-module joined load/inventory also pass. Wider core remains partial.
+[Finite-prefix review](coverage/semantics/generator-finite-prefix-arguments-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -2700,7 +2713,6 @@ their work remains unaccepted until integrated.
 | COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
-| I128 | Arbitrary finite prefixes for existing named by-value Generator CV/native Generator consumers through a bounded consumer policy; preserve old INI bounds and all current producer/value/ownership rules. |
 | OB26 | Completed builtin Exception from a direct no-argument ordinary helper through real VM unwind into native output consumers, preserving exact identities and catch/normal clearing; keep wider throw/rendering modes held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

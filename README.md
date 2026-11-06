@@ -8092,8 +8092,8 @@ DATA without a PHP method frame. A quiet source can retire before reception
 after CV rebinding; an owning source cache keeps its outside owner through
 collection and API cleanup. Mapping failure retains selected Gen and copied
 argv in a real CONFIG continuation until DATA release finishes. Payloads with
-uncalled destructors stay outside the existing value policy. Two-item limits
-remain, and wider producer/lifetime modes remain partial.
+uncalled destructors stay outside the existing value policy. INI and other
+source modes retain their item limits; wider producer/lifetime modes remain partial.
 [Generator-source review](coverage/semantics/generator-source-arguments-review.json).
 
 Computed and nullsafe native Generator calls now share these single-CV
@@ -8106,6 +8106,14 @@ captures, temporary sources and the held wider modes remain partial.
 Native Iterator cancellation keeps the receiver and scalar prefix in a real
 CONFIG continuation while unsent current/key and DATA retire before Gen cleanup.
 [Selected Traversable review](coverage/semantics/generator-computed-traversable-arguments-review.json).
+
+An initialized named by-value Generator CV can now supply any finite prefix to
+the admitted native Generator consumers. Collection keeps every copied value
+and performs later source effects or mapping errors before API count checks.
+Real DATA, selected receiver, copied argv and the final source cache keep their
+separate owners. The old INI two-item policy and all producer/value restrictions
+remain intact.
+[Finite-prefix review](coverage/semantics/generator-finite-prefix-arguments-review.json).
 
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe

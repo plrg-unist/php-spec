@@ -108,7 +108,7 @@ promotion. Generator-returning Aggregates, typed/borrowed current cells,
 incoming `throw`, fresh/delegated receivers and wider packs remain separate.
 [Aggregate API review](../../coverage/semantics/generator-aggregate-arguments-review.json).
 
-An initialized ordinary named by-value Generator CV also supplies a bounded
+An initialized ordinary named by-value Generator CV also supplies a
 pack to literal SEND and zero-argument APIs. Source and selected Generators are
 distinct, initialized, by-value and nondelegated. The real native
 iterator owns source DATA and borrows rewind/next without synthetic API frames.
@@ -118,7 +118,7 @@ owning cached value keeps its source CV through collection/API cleanup and can
 outlive the delivered argv and error trace. Pending mapping failure transfers
 receiver/argv to a real CONFIG_INVOKE before source DATA release, then ordinary
 throw cleanup retires that continuation without entering the API. Existing
-two-item/value/storage limits and the old INI outside-owner law remain intact.
+value/storage limits and the old INI two-item/outside-owner laws remain intact.
 The unchanged `destructor_waiting` value guard excludes payload graphs with
 uncalled destructors, including the original Token witness.
 BYREF/typed/borrowed cells, temporary/Aggregate Generator sources, incoming throw,
@@ -147,6 +147,17 @@ Wider signatures,
 typed/borrowed cells, capture/delegation/incoming throw/pending initialization,
 Closure::call and I106 remain separate.
 [Selected Traversable API review](../../coverage/semantics/generator-computed-traversable-arguments-review.json).
+
+The admitted named by-value Generator CV source now collects arbitrary finite
+prefixes for native Generator SEND/zero-argument consumers. A consumer policy
+replaces only the history/send two-item checks; the INI default is unchanged.
+The recursive item and mapped-prefix folds preserve every prior copied value
+and its owner multiplicity while borrowed next continues. Mapping and source
+body throws take priority over API arity, which is checked after collection.
+DATA retirement and pending CONFIG_INVOKE transfer reuse their existing laws;
+the source's last cache may outlive copied argv and error-trace owners. One-CV
+syntax, ordinary values, source/receiver authority and every held mode remain.
+[Finite-prefix review](../../coverage/semantics/generator-finite-prefix-arguments-review.json).
 
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
