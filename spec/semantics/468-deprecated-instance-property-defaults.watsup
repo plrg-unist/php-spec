@@ -102,6 +102,9 @@ def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstan
   -- if pconstantfact.LOOKUP = (pconstantlookup)
   -- if $global_constant_alias(S, S.USERCONSTANTS[0:pconstantlookup.PREFIX], porigin_initializer) = (puserconstant)
 def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstantfact*) = false -- otherwise
+dec $instance_global_history_facts_valid(pstate, porigin, pconstantfact*) : bool
+def $instance_global_history_facts_valid(S, porigin_decl, eps) = true
+def $instance_global_history_facts_valid(S, porigin_decl, pconstantfact :: pconstantfact_tail*) = ($constant_expression_below(S, porigin_decl, pconstantfact.ORIGIN) /\ $constant_fact_value_valid(pconstantfact) /\ $constant_fact_pool_valid(S, pconstantfact) /\ $global_constant_fact_lookup_valid(S, porigin_decl, pconstantfact) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $instance_global_history_facts_valid(S, porigin_decl, pconstantfact_tail*))
 dec $instance_global_record_valid(pstate, pinstanceglobalcertificate) : bool
 def $instance_global_record_valid(S, pinstanceglobalcertificate) = true
   -- if $(pinstanceglobalcertificate.PREFIX <= |S.DECLARATIONS| /\ pinstanceglobalcertificate.HISTORY < |S.CLASSCONSTANTHISTORY|)
@@ -117,7 +120,7 @@ def $instance_global_record_valid(S, pinstanceglobalcertificate) = true
   -- if $class_constant_parent_chain(S, pinstanceglobalcertificate.ROOT, pinstanceglobalcertificate.TARGET, |S.CLASSES|)
   -- if $instance_object_selection_valid(S, pinstanceglobalcertificate.ROOT, pinstanceglobalcertificate.TRIGGER, pinstanceglobalcertificate.SELECTION, pinstanceglobalcertificate.PREFIX)
   -- if $instance_default_filled_at(S, pinstanceglobalcertificate.TARGET, pinstanceglobalcertificate.DECL, S.CLASSCONSTANTHISTORY[0:pinstanceglobalcertificate.HISTORY], |S.CLASSES|)
-  -- if $constant_facts_valid(S, pinstanceglobalcertificate.DECL, pinstanceglobalcertificate.FACTS)
+  -- if $instance_global_history_facts_valid(S, pinstanceglobalcertificate.DECL, pinstanceglobalcertificate.FACTS)
   -- if $global_constant_read_facts(pinstanceglobalcertificate.FACTS) =/= eps
   -- if pinstanceglobalcertificate.CLASS = $constant_class(S[.CONSTCONTEXT = ({ORIGIN pinstanceglobalcertificate.DECL, LINE 0, FACTS pinstanceglobalcertificate.FACTS})], porigin_initializer)
   -- if $instance_global_value_valid(S, ppropertydesc, pinstanceglobalcertificate.VALUE, pinstanceglobalcertificate.CLASS, pinstanceglobalcertificate.FACTS)
@@ -252,6 +255,13 @@ rule PhpStep/instance-default-update-releasing: S ~> S[.COMPLETION = UNSUPPORTED
   -- if S.TODO = (INSTANCE_DEFAULT_UPDATE porigin_target porigin_decl z) :: ptask*
   -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_target, porigin_decl) = (pinstancetemplate)
   -- if pinstancetemplate.STATE = INSTANCE_BINDING
+dec $instance_default_class_releasing(pinstancetemplate*, porigin) : bool
+def $instance_default_class_releasing(eps, porigin) = false
+def $instance_default_class_releasing(pinstancetemplate :: pinstancetemplate_tail*, porigin) = ((pinstancetemplate.CLASS = porigin /\ pinstancetemplate.STATE = INSTANCE_BINDING) \/ $instance_default_class_releasing(pinstancetemplate_tail*, porigin))
+def $runtime_class_link_result(S, S_result, pclassdesc) = S[.COMPLETION = UNSUPPORTED "instance default template release"]
+  -- if S_result.COMPLETION = NORMAL
+  -- if $class_link_at(S_result.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if $instance_default_class_releasing(S.INSTANCEDEFAULTS, porigin_parent)
 
 dec $instance_publication_abrupt_tail(pstate, ptask*) : bool
 def $instance_publication_abrupt_tail(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = true
