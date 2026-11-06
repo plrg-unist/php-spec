@@ -1,0 +1,79 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-keyword-static-private-refused",
+      "source": "<?php\nclass BoundaryScope214 { private static function seed() { echo \"PRIVATE;\"; return 7; } public static function launch() { global $owner; $pack=[9]; return $owner->MiSsInG(self::seed()); } }\nclass BoundaryMagic214 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner = new BoundaryMagic214; BoundaryScope214::launch();\n",
+      "source_sha256": "ccd391c62673830097627781d789efcfe7d677142e4f527cf548b5eb9e94a9aa",
+      "stdout_template_base64": "UFJJVkFURTtCT0RZOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-keyword-static-default-refused",
+      "source": "<?php\nclass BoundaryScope214 { public static function seed($value=7) { echo \"DEFAULT;\"; return $value; } public static function launch() { global $owner; $pack=[9]; return $owner->MiSsInG(self::seed()); } }\nclass BoundaryMagic214 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner = new BoundaryMagic214; BoundaryScope214::launch();\n",
+      "source_sha256": "b32dfc522eb152d58eadec5265f8c4c6f86aa438f0527f26da3c132fca90f6f7",
+      "stdout_template_base64": "REVGQVVMVDtCT0RZOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-keyword-static-array-refused",
+      "source": "<?php\nclass BoundaryScope214 { public static function seed() { echo \"PRODUCER;\"; return [9]; } public static function launch() { global $owner; $pack=[9]; return $owner->MiSsInG(self::seed()); } }\nclass BoundaryMagic214 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner = new BoundaryMagic214; BoundaryScope214::launch();\n",
+      "source_sha256": "38e04c31a6212da9a69ea69ab06d90e225eea970208c390afa4d0f8f645043fe",
+      "stdout_template_base64": "UFJPRFVDRVI7Qk9EWTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "UFJPRFVDRVI7"
+    },
+    {
+      "id": "magic-keyword-static-fcc-refused",
+      "source": "<?php\nclass BoundaryScope214 { public static function seed() { echo \"FCC;\"; return 7; } public static function launch() { global $owner; $pack=[9]; return $owner->MiSsInG((self::seed(...))()); } }\nclass BoundaryMagic214 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner = new BoundaryMagic214; BoundaryScope214::launch();\n",
+      "source_sha256": "3e8c8856597036d137f8af67bfeb24d412d7c5745befffb2b7f3354644c41b12",
+      "stdout_template_base64": "RkNDO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-keyword-static-unpack-refused",
+      "source": "<?php\nclass BoundaryScope214 { public static function seed() { echo \"SEED;\"; return 7; } public static function launch() { global $owner; $pack=[9]; return $owner->MiSsInG(self::seed(),...$pack); } }\nclass BoundaryMagic214 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner = new BoundaryMagic214; BoundaryScope214::launch();\n",
+      "source_sha256": "df776b64e35be87d2faaa46749f97ef77030af7b4b707251637a2a501e5f6955",
+      "stdout_template_base64": "U0VFRDtCT0RZOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
