@@ -241,7 +241,7 @@ def $property_set_expression(S, TRAIT_ORIGIN porigin_owner (PORIGIN n pcpath_hoo
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = ((z_body, b))
 def $property_set_expression(S, porigin) = eps -- otherwise
-def $function_body_tasks(S, pfunction) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), AT pfunction.ORIGIN (ASSIGN_ARRAY (BASE_PROPERTY (POBJECT n_receiver) ppropertydesc.KEY) z false), DISCARD, $function_fallthrough(S, pfunction)]
+def $function_body_tasks(S, pfunction) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), AT pfunction.ORIGIN (ASSIGN_ARRAY (BASE_PROPERTY (POBJECT n_receiver) ppropertydesc.NAME) z false), DISCARD, $function_fallthrough(S, pfunction)]
   -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_hook
   -- if $property_set_expression(S, pfunction.ORIGIN) = ((ppropertydesc, expression, z))
   -- if $function_at($all_functions(S), pfunction.ORIGIN) = (pfunction)
@@ -513,8 +513,7 @@ def $property_set_virtual_active(S, n, ppropertydesc) = true
 def $property_set_virtual_active(S, n, ppropertydesc) = false -- otherwise
 
 def $property_set_needed(S, n, ptbytes) = true
-  -- if $property_lexical_private(S, n, ptbytes) = eps
-  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_selected_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_set_origin(S, ppropertydesc) =/= eps
   -- if ~$property_set_backing(S, n, ppropertydesc)
 def $property_set_needed(S, n, ptbytes) = false -- otherwise
@@ -539,6 +538,7 @@ dec $property_set_access_allowed(pstate, ppropertyhook) : bool
 def $property_set_access_allowed(S, ppropertyhook) = true
   -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
   -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if $property_hook_access_allowed(S, ppropertyhook)
   -- if ~$property_set_denied(S, ppropertyhook.OBJECT, ppropertydesc.KEY)
 def $property_set_access_allowed(S, ppropertyhook) = false -- otherwise
 
@@ -552,8 +552,7 @@ def $property_set_plan(S) = (ppropertyhook)
   -- if S_target.COMPLETION = NORMAL
   -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if $property_set_needed(S, n, ptbytes)
-  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
-  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_selected_desc(S, n, ptbytes) = (ppropertydesc)
   -- if ~$property_set_virtual_active(S, n, ppropertydesc)
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
   -- if porigin_property = ppropertydesc.ORIGIN
@@ -718,7 +717,7 @@ def $property_set_expression_write_valid(S, n_receiver, ptbytes, z) = true
   -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
   -- if pcallcontext.FUNCTION = porigin_hook /\ ppropertyhook.HOOK = porigin_hook
   -- if pcallcontext.RECEIVER = (n_receiver) /\ ppropertyhook.OBJECT = n_receiver
-  -- if ppropertyhook.PROPERTY = ppropertydesc.ORIGIN /\ ptbytes = ppropertydesc.KEY
+  -- if ppropertyhook.PROPERTY = ppropertydesc.ORIGIN /\ ptbytes = ppropertydesc.NAME
   -- if $property_set_context_valid(S, pcallcontext)
 def $property_set_expression_write_valid(S, n_receiver, ptbytes, z) = false -- otherwise
 def $call_task_valid(S, ASSIGN_ARRAY (BASE_PROPERTY (POBJECT n_receiver) ptbytes) z false) = $property_set_expression_write_valid(S, n_receiver, ptbytes, z)

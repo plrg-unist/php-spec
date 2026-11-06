@@ -83,9 +83,9 @@ def $hook_pair_block_set_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLE
 def $hook_pair_block_set_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
 dec $hook_pair_backed_headers(phpType38, phpType38, ptbytes) : bool
 def $hook_pair_backed_headers(phpType38_get, phpType38_set, ptbytes) = ($hook_pair_short_set_headers(phpType38_get, phpType38_set) \/ $hook_pair_block_set_headers(phpType38_get, phpType38_set, ptbytes))
-;; Asymmetric pair flags authenticate a backed Trait, independently of order.
+;; Nonpublic pair flags authenticate a backed Trait, independently of order.
 dec $hook_pair_flags(int, text, phpType38, phpType38, ptbytes) : bool
-def $hook_pair_flags(flags, text, phpType38_first, phpType38_second, ptbytes) = (flags <- [0,1] \/ (text = "trait" /\ flags <- [256,257,512,513] /\ ($hook_pair_backed_headers(phpType38_first, phpType38_second, ptbytes) \/ $hook_pair_backed_headers(phpType38_second, phpType38_first, ptbytes))))
+def $hook_pair_flags(flags, text, phpType38_first, phpType38_second, ptbytes) = (flags <- [0,1] \/ (text = "trait" /\ flags <- [2,4,256,257,512,513] /\ ($hook_pair_backed_headers(phpType38_first, phpType38_second, ptbytes) \/ $hook_pair_backed_headers(phpType38_second, phpType38_first, ptbytes))))
 dec $hook_pair_virtual_headers(phpType38, phpType38, ptbytes) : bool
 def $hook_pair_virtual_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) phpType39_get metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 (SEQUENCE statement_set*) metadata_set_hook, ptbytes) = true
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
@@ -117,9 +117,9 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
   -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
   -- if $hook_pair_flags(flags, pchheader.KIND, phpType38_first, phpType38_second, ppropertydesc.NAME) /\ phpType18 =/= ABSENT
-  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
+  -- if ppropertydesc.VISIBILITY = $ppproperty_visibility(flags) /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.FINAL = $ppproperty_final(flags)
-  -- if ppropertydesc.NAME = $base64(text) /\ ppropertydesc.KEY = ppropertydesc.NAME /\ ppropertydesc.TYPE =/= eps
+  -- if ppropertydesc.NAME = $base64(text) /\ ppropertydesc.KEY = $ppproperty_key(flags, ppropertydesc.NAME, pchheader.NAME) /\ ppropertydesc.TYPE =/= eps
   -- if pchheader.KIND = "class" \/ $property_set_builtin_types(ppropertydesc.TYPE)
   -- if (phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pchheader.KIND) = (n_get)
@@ -267,10 +267,10 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
   -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_first, phpType38_second])) metadata)
-  -- if $hook_pair_flags(flags, pclassdesc.KIND, phpType38_first, phpType38_second, ppropertydesc.NAME) /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
+  -- if $hook_pair_flags(flags, pclassdesc.KIND, phpType38_first, phpType38_second, ppropertydesc.NAME) /\ ppropertydesc.VISIBILITY = $ppproperty_visibility(flags) /\ ppropertydesc.SETVISIBILITY = $ppproperty_set_visibility(flags)
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.FINAL = $ppproperty_final(flags)
   -- if phpType18 =/= ABSENT /\ ppropertydesc.TYPE =/= eps
-  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = $ppproperty_key(flags, ppropertydesc.NAME, pclassdesc.NAME)
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pclassdesc.KIND) = (n_get)
   -- if n_set = $nabs($(1 - n_get))
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (phpType38_first)
@@ -726,9 +726,29 @@ def $property_hook_backing(S, n, ppropertydesc) = true
 def $property_hook_backing(S, n, ppropertydesc) = false -- otherwise
 
 dec $property_set_backing(pstate, nat, ppropertydesc) : bool
-def $property_hook_read_needed(S, n, ptbytes) = true
+;; Resolve a source name before selecting its canonical stored descriptor.
+dec $property_hook_selected_desc(pstate, nat, ptbytes) : ppropertydesc?
+def $property_hook_selected_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_lexical_private(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ppropertydesc.KEY
+def $property_hook_selected_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_lexical_private(S, n, ptbytes) = eps
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ppropertydesc.KEY
+def $property_hook_selected_desc(S, n, ptbytes) = eps -- otherwise
+dec $property_hook_access_allowed(pstate, ppropertyhook) : bool
+def $property_hook_access_allowed(S, ppropertyhook) = true
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
+def $property_hook_access_allowed(S, ppropertyhook) = true
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY =/= PROPERTY_PUBLIC
+  -- if $property_hook_selected_desc(S, ppropertyhook.OBJECT, ppropertydesc.NAME) = (ppropertydesc)
+def $property_hook_access_allowed(S, ppropertyhook) = false -- otherwise
+def $property_hook_read_needed(S, n, ptbytes) = true
+  -- if $property_hook_selected_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) =/= eps
   -- if ~$property_hook_backing(S, n, ppropertydesc)
   -- if ~$property_set_backing(S, n, ppropertydesc)
@@ -1283,8 +1303,7 @@ def $property_hook_plan(S) = (ppropertyhook)
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $property_hook_read_needed(S, n, $base64(text_name))
-  -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_ACCESS $base64(text_name)
-  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if $property_hook_selected_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = porigin_property
   -- if $property_hook_effective_origin(S, ppropertydesc) = (porigin_hook)
   -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
@@ -1296,8 +1315,7 @@ def $property_hook_plan(S) = (ppropertyhook)
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $property_hook_read_needed(S, n, $base64(text_name))
-  -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_ACCESS $base64(text_name)
-  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if $property_hook_selected_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = porigin_property
   -- if $property_hook_effective_origin(S, ppropertydesc) = (porigin_hook)
   -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
@@ -1409,6 +1427,7 @@ def $task_nodes(PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook pbase i z) = [HOBJEC
 
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*) = true
   -- if $property_hook_valid(S, ppropertyhook, false)
+  -- if $property_hook_access_allowed(S, ppropertyhook)
   -- if ~$property_hook_isset_site(S, ppropertyhook.SITE, false) /\ ~$property_hook_isset_site(S, ppropertyhook.SITE, true)
   -- if $property_hook_assign_parent(S, ppropertyhook.SITE) = eps
   -- if $property_hook_compound_parent(S, ppropertyhook.SITE) = eps
