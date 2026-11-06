@@ -23,7 +23,7 @@ SEND = ('S.TODO = (CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall_send) ep
 BOUNDARY = ('S.TODO = (EVAL (NExprMethodCall expression_receiver_boundary phpType20_boundary (SEQUENCE phpType7_boundary*) metadata_boundary)) :: ptask_boundary_tail* '
             '-- if $call_unpack_present(phpType7_boundary*) -- if S.CURRENT = eps')
 PREFIX = names.PREFIX.replace(names.FRONT, CAPTURE)
-for label, front in [('convert', CONVERT), ('body', BODY), ('send', SEND), ('boundary', BOUNDARY)]:
+for label, front in [('body', BODY), ('send', SEND), ('boundary', BOUNDARY)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$invokefcc219_' + label + '_')
 PREFIX += r'''
 dec $invokefcc219_outer_one(ptask) : pmagicmethodcall?
@@ -54,14 +54,13 @@ def ownership(fixture, filename):
         '$magic_method_firstclass_producer(S[.CODE = eps],porigin_outer,expression_outer) = eps',
         '$magic_method_fact_values(S[.CODE = eps],pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,[KNOWN (PINT 9)],eps) = eps',
         'S_one = $drive_steps(S,1)', 'S_one.COMPLETION = BUDGET',
-        'S_convert_found = $invokefcc219_convert_seek(S_one[.COMPLETION = NORMAL],2047)', 'S_convert_found.COMPLETION = BUDGET',
-        'S_direct = $invokefcc219_convert_seek(S,2048)', 'S_direct = S_convert_found',
-        'S_convert = S_convert_found[.COMPLETION = NORMAL]', CONVERT.replace('S.', 'S_convert.'),
+        'S_convert = S_one[.COMPLETION = NORMAL]', CONVERT.replace('S.', 'S_convert.'),
         'n_invoker_convert = n_invoker', 'porigin_method_convert = porigin_method', 'porigin_convert = porigin_capture',
         '$call_selected_valid(S_convert,METHOD_TARGET n_invoker porigin_method,(porigin_capture))',
         '$method_capture_current(S_convert,porigin_capture) = eps',
         'n_wrapper = |S_convert.OBJECTS|',
         'S_wrapped = $drive_steps(S_convert,1)', 'S_wrapped.COMPLETION = BUDGET',
+        'S_direct = $drive_steps(S,2)', 'S_direct = S_wrapped',
         'S_wrapped.OBJECTS = S_convert.OBJECTS ++ [METHODCLOSURE porigin_method porigin_capture porigin_class eps]',
         '$closure_scope_at(S_wrapped.CLOSURESCOPES,n_wrapper) = (pclosurescope)',
         'pclosurescope.RECEIVER = (n_invoker)', 'pclosurescope.CALLED = porigin_class',
