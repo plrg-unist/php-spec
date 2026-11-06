@@ -6415,9 +6415,17 @@ on direct CV receivers. Their selected NAME/DECL and formal name survive handler
 changes to the live name CV. The getter's existing result receipt retains the
 receiver while its context borrows it; the setter keeps its scalar input, private
 storage and late CV-result delivery rules. New getter results are limited to
-unconverted integers. This, factory, reference getters/results, quiet/operator
+unconverted integers. This, factory, reference getters/results, compound updates
 and wider name forms remain separate.
 [Magic CV name review](coverage/semantics/string-cv-magic-properties-review.json).
+Existing magic `isset`, `empty`, `??` and `??=` handlers also accept plain
+string-CV names on direct CV receivers. Quiet callbacks retain the selected name
+across `__isset` and scalar-int `__get`, even when the handler changes the live
+name or removes the global receiver. A false `__isset` skips GET. Conditional
+writes instead reacquire receiver and name after their existing named integer
+RHS: they may select an ordinary property or invoke `__set`. Handler/RHS throws
+leave the outer result unchanged; storage effects follow the executed setter.
+[Quiet magic CV name review](coverage/semantics/string-cv-magic-quiet-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "feature": "ATTR78 quiet magic string-CV names and conditional writes",
+  "status": "accepted bounded partial slice",
+  "target": "PHP 8.5.10 CLI NTS64; actual463 private source/front",
+  "scope": "Direct CV receivers with existing plain/interned non-NUL string-CV property names for terminal isset, paired empty, plain coalesce and conditional assignment. Initial entry validates the emitted operand; selected quiet NAME/descriptor/receiver/caller survives handler mutation and the __isset-to-GET handoff. __isset remains boolean and GET scalar PINT, with false isset using the existing synthetic-null/no-GET path. Conditional writes retain real VARIABLE selectors and the existing named noarg by-value integer RHS, then reacquire receiver/name. No normal-SET RHS, body/type/producer/owner expansion.",
+  "production": {
+    "commits": [
+      "9e9bc8a1b340eac36d6b0d3330bcdeea8f55d282",
+      "980cbbddc745ba45dc264139ac44db048dc467b4"
+    ],
+    "source_tip": "f63a539d68e8040ea97de14bb927da96fe192c1f",
+    "peer_fixture_commits": [
+      "4eefdeec203d6c9dcfc846e843bdb95b140d3dab",
+      "f63a539d68e8040ea97de14bb927da96fe192c1f"
+    ],
+    "files": {
+      "spec/semantics/136-property-runtime.watsup": "615708b2f3b31bbca2148fc49f55304aded89179569f27b923cf1347c3c1a7df",
+      "spec/semantics/407-magic-property-isset.watsup": "f2dfa98a3b70639c08adf93fd281fa396c1a6836347f1f44e51f0a1071747779",
+      "spec/semantics/408-magic-property-empty.watsup": "caff99bdfd41fc5d30467010506062e0f63eeece7e92201a9b679b9f2176f9a5",
+      "spec/semantics/412-magic-property-set.watsup": "c7e7703713d76d3192344e0b13871ee0b874a1ad23fadd9ae8450641364b642b",
+      "spec/semantics/416-magic-property-coalesce.watsup": "47a46b2d2308dfb2e325e5852aa6d7bc7f57cc9db9657156b0b810fc70dcd444"
+    },
+    "change": "136 partitions successful PROPERTY_NAME fallback from distinct quiet/coalesce magic pending roles.407/408 consume actual PROPERTY_NAME+ORIGIN_RETURN+ISSET_RESULT source tasks through the existing receiver-hold operation. Initial name checks remain separate from structural source and saved receipt history.416 authenticates real CV quiet and conditional source; conditional base remains pending VARIABLE receiver/name with existing memoized proof.412 authenticates actual coalesce CV SET and applies entry-only name readiness. Bool/PINT admission guards and disjoint Unsupported preserve new-CV result bounds, while old literal/established routes pass pointwise. No380/201/storage/cleanup/root formula changes. Final initial-name capture guard reconstructs the authentic name VARIABLE/runtime line and compares its plain bytes to receipt NAME in407/408/416 capture only; old literal routes pass pointwise. Later b_get handoff and history never reread current name."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_std_has_property, zend_std_read_property and zend_std_write_property retain the selected member name through magic callbacks with distinct recursion guards and receiver holds. zend_compile_assign_coalesce compiles BP_VAR_IS, then RHS, then memoized BP_VAR_W; existing CV operands remain borrowed selectors. This source extension reuses those current selection, method call and result receipt rules."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/string-cv-magic-quiet-78",
+    "native_first": {
+      "report": "native-v2/report.json",
+      "sha256": "059ffdf54637bbc2f8d3a208d3da51fef5e8557a79827f4fb662833d31136ad1",
+      "scope": "Exactly two compact normals. Corrected quiet source uses a genuine no-GET terminal typed-isset class, then existing paired typed-isset/untyped-get class for empty/coalesce. Saved secret persists after live name=plain, including receiver removal/getter throw before catch; false isset skips GET and getter zero remains present. Conditional source is unchanged from native-v1: RHS retargets to ordinary plain without SET, resets to secret for real SET, and RHS/setter throw preserve outer result. Native-v2 re-executes only changed quiet original; conditional observation reuses native-v1/report.json without execution or added agreement credit.",
+      "source_sha256": {
+        "quiet": "9fe140fff05bbb5286a041cd9c7b2597fd3d43060e2cf3a9ea35d5a4341bd4b0",
+        "conditional": "521df371ae9d16474ea5947d2253aabbb89ea29e1675cd0344cec77711ff80f3"
+      }
+    },
+    "source": {
+      "passed": true,
+      "report": "source-final-v1/report.json",
+      "sha256": "ee4f47dce6956db473204b1d9b4870b22647188c2f732b8df31a291658babedb",
+      "revision": "9e9bc8a1b340eac36d6b0d3330bcdeea8f55d282",
+      "driver": "source-final-v1.driver.json",
+      "driver_sha256": "5513e9e35d85a000856481d083c39f342e0f9310f847210ca9dbd4d99d0d435f",
+      "seconds": 406.0037602169905,
+      "exit": 0,
+      "timeout": false,
+      "native_agreements": 2,
+      "scope": "First corrected two-case campaign PASS at frozen9e9, actual463/CPU5/cap1800/completed/passed/exit0/no timeout/before=after. Both exact originals match frozen native observations reused without execution. Quiet saved NAME survives __isset name mutation and receiver removal; GET throw releases A before catch, fresh retry returns zero and false isset takes fallback without GET. Conditional RHS selects ordinary plain, throws preserving keep, or resets secret for real SET; setter throw and retry preserve the tested result/store distinctions. No production failure or source/native replay."
+    },
+    "independent_reached": {
+      "passed": true,
+      "reported_conditions": 145,
+      "fixture": "tests/semantics/string_cv_magic_quiet_review_protocol.py",
+      "fixture_sha256": "c2277f394c2f21f3db241eeb4107721ce5b698f6043ef9a77aaa549943f70fdc",
+      "source_sha256": "9fe140fff05bbb5286a041cd9c7b2597fd3d43060e2cf3a9ea35d5a4341bd4b0",
+      "revision": "f89a1d387549e9ab2a26d2a9d4825477279841ca",
+      "report": "review-front-v2/fiber-state-review-dn81syav/report.json",
+      "sha256": "f58e203b5ed2bc577175f31a0262aaa4bc470af3cf9ae159b1290c2002197808",
+      "driver": "review-front-v2/driver-report.json",
+      "driver_sha256": "36bfaa55a60d0e276326e2af571bdddc939b896e80345eaac595d84aca3f0965",
+      "seconds": 200.732,
+      "exit": 0,
+      "timeout": false,
+      "scope": "Corrected145 PASS on final980cbb-equivalent bytes, actual463/CPU5/unchanged1800 cap/exit0/no timeout/exact true LF/empty stderr/before=after=current clean. At real GET helper U, selected NAMEsecret/formal/helper membersecret/backing7 survive current nameplain/public99 and absent global object. The RESULT receipt owns receiver1 while getter/helper contexts borrow0. Retained GET pending-call succeeds despite initial-name capture false. Seven source/name/line/phase controls include mismatched initial NAME and explicit GET-PNULL Unsupported. Zero-budget identity and one exact resumed continuation preserve A-before-catch, fresh retry, getter zero, falseisset fallback9 and finalA3Z. Earlier view-only fixture failure stays separate0; no source/native/production replay.",
+      "count_note": "Reported conditions include helper bindings and five harness conditions; no extra native agreement credit."
+    },
+    "capture_guard_bridge": {
+      "revision": "980cbbddc745ba45dc264139ac44db048dc467b4",
+      "scope": "After the stable source cut, initial capture adds emitted VARIABLE/plain-value/receipt-NAME equality only. Every actual new entry plan establishes this same equality, and no user code runs between plan and first pending-call capture. Literal routes pass true. Hence both retained source originals satisfy the strengthening pointwise; entered b_get/history remain structural. The final corrected145 frontier passes the forged first-phase name mismatch and the changed-name saved handoff at the final guard without replaying the source campaign."
+    },
+    "current_main_bridge": {
+      "modules": 465,
+      "source_base": "11c54d207eb59eb146b5befd4103ca54e5de6ef5",
+      "scope": "Actual source2/initial-guard bridge/corrected145 retain their private463 revisions. Since35fa, CLASS220/221 add120/414 CV-invokable/This first-class callable arms: neither original/front has FCC/NVariadicPlaceholder/CV-or-This __invoke capture, so those arms are unselected. Values returned are scalar bool/int or void, with no callable return annotation or array-return admission;475 CALLABLE_RETURN_* tasks never arise and40 callable_return_blocked stays false. No autoload registration/dispatch or owning default receive occurs; literal classes are already installed or builtin, AUTOLOAD_BORROWED_TARGET is absent and receive CAUSE.AUTOLOAD stays eps, so277/459/476 use old/default routes. GC70 was already in base. The new30 CALLABLE_RETURN_* tasks and AUTOLOAD_BORROWED_TARGET variants are unused by these sources; existing property records and count/root calculations stay pointwise. ATTR78 itself has no schema or root-formula edit. Current465 source acceptance is separate from actual private execution, with no current-source execution claim or replay."
+    }
+  },
+  "independent_review": "Final136/407/408/412/416 source/semantic/harness/documentation/inventory CLEAR: source2 at9e9 plus the entailed initial-capture980cbb strengthening, corrected145 atf89a and narrow accepted11c54d207/current465 absent/default bridge. The first derived-caller fixture failure remains zero, and the original off-domain terminal draft/native/calibration remain distinct. All21 additive inventory rows remain partial with every475 status and implementation field unchanged. No further validation.",
+  "compatibility": "Old literal source/capture/method and cleanup routes remain pointwise; new CV source is structural after entry, never a fresh77 capture during handoff. New bool/PINT result guards are true on every old literal/other established route. Actual quiet and conditional receipts, holds, COPY/unwind and storage stay unchanged. Terminal typed isset remains its genuine no-GET producer; paired signatures/body and method/private-property gates are unchanged. Normal77 scalar assignment delivery and201 selection are unchanged.",
+  "zero_credit": [
+    {
+      "report": "native-v1/report.json",
+      "sha256": "e0a15e41ac709be39bfd82227d66836f82f456c35bb130516a043cfe5891c209",
+      "scope": "Original quiet native draft is preserved without agreement credit; terminal typed-isset plus GET exceeded existing407 producer domain. The conditional native record is reused unchanged by native-v2. Only corrected quiet native source was re-executed; no additional source case or producer admission."
+    },
+    {
+      "report": "source-calibration-v1/report.json",
+      "sha256": "ea2012a380f35679368f7a34916f817c352a3549ed01b2e937f37a49fa63901a",
+      "driver": "source-calibration-v1.driver.json",
+      "driver_sha256": "29955a3c10baa037c379252a1d84c4482791ca678e76ec7dafeb5aca0768d997",
+      "seconds": 40.08433129696641,
+      "exit": 1,
+      "timeout": false,
+      "scope": "Original quiet draft stopped Unsupported before effects. It combined terminal typed __isset with present GET outside existing407 producer scope, so this is not isolated evidence of only a CV-entry gap. No agreement. Corrected terminal source was native-frozen without another baseline."
+    },
+    {
+      "report": "review-front-v1/fiber-state-review-w97r06dc/report.json",
+      "sha256": "6d2452a123a93ca3768de072e943e9047056c2d5abdb2c95109f2b314ced436b",
+      "driver": "review-front-v1/driver-report.json",
+      "driver_sha256": "12f9c7cb8624c386c91b86a582a2be7c3e3af25b9d8db101207c8e1c93d7884f",
+      "revision": "c10be729d1aecaf98a5ed71f86ec6fd4b51ea494",
+      "seconds": 130.033,
+      "exit": 1,
+      "timeout": false,
+      "scope": "First145 failed only in a derived saved-caller fixture view: constant_frame_view restores context/source but retains helper ENV, so the direct current-name lookup used the wrong table. Zero reached credit. The only correction uses existing constant_frame_scope; the affected145 rerun passes at final fixture under unchanged1800 cap. Production, source and native bytes unchanged."
+    }
+  ],
+  "inventory": "21 existing consumer/name/source/method/visibility/lifetime rows add evidence only; all remain partial with every status and implementation field unchanged.",
+  "remaining": "This/factory/reference getters/results, ADD/compound magic CV names, arbitrary expressions/Stringable/owned names, NULL/object/coercion getters and wider method/RHS/body/type/producers remain outside this new slice. Existing hook/Trait/override/nominal/attribute/default-parameter/general-binding and owned-NUL holds remain. Full core/properties stay partial; no engine bug or intentional divergence claim.",
+  "environment": "Existing pinned tools/profile; raw original bytes/commands/cwd/streams/exits and before/after fingerprints stay external. Exact native observations reused with native_executed=false. One heavy evaluator per pair; no native fallback/rebuild/portability claim."
+}

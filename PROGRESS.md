@@ -1893,6 +1893,14 @@ A scalar-int/nonref completion gate preserves wider getter/coercion boundaries.
 Existing getter receipt ownership, private setter body/signature/scope and
 integer literal/direct-CV RHS delivery remain unchanged through throw and retry.
 [Magic CV name review](coverage/semantics/string-cv-magic-properties-review.json).
+Quiet magic CV-name consumers now reuse the selected NAME receipt for terminal
+`isset`, `empty` and coalesce, including the `__isset` to GET handoff after name
+mutation. New callback results stay boolean for `__isset` and scalar integer for
+GET; false `__isset` supplies the existing no-GET null path. Conditional assignment
+keeps its real VARIABLE selectors and reacquires receiver/name after the existing
+no-argument integer RHS, preserving ordinary fallback versus actual SET dispatch,
+throw and retry. Entry/source changes leave storage and receipt ownership intact.
+[Quiet magic CV name review](coverage/semantics/string-cv-magic-quiet-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3356,7 +3364,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
-| ATTR78 | Plain CV names for existing magic isset/empty/coalesce/conditional handlers, with saved quiet NAME authority and genuine later assignment reacquisition; preserve scalar, producer and owner bounds. |
+| COMP205 | Extra defaults for existing ordinary public tick method callbacks, with authentic selected tick entry, registered args and marker sites; preserve borrowed receiver, registry owners and current/history laws. |
 | GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |

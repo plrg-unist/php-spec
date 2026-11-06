@@ -1351,9 +1351,28 @@ before catch and fresh retry. Private magic SET uses the real assignment/CV sour
 and the same entry-only name check, retaining its existing descriptor, method,
 signature, body, caller-scope and integer literal/direct-CV RHS limits. Captured
 method input and transformed private storage stay distinct; used CV RHS delivery
-still follows the established late-read rule. No RHS-function, This, factory,
-reference, quiet/operator or owned-name family is added.
+still follows the established late-read rule. This normal assignment route adds
+no RHS-function, This, factory, reference, compound-update or owned-name family.
 [Magic CV name review](../../coverage/semantics/string-cv-magic-properties-review.json).
+
+The same plain/interned non-NUL string-CV name producer now enters existing
+terminal `isset`, paired `empty` and `??` magic consumers through a separate
+PROPERTY_NAME quiet role. Only entry reads the live emitted name operand. The
+real quiet receipt authenticates NAME, property, receiver, caller and source
+through the `__isset` to GET handoff; it remains valid after the live name changes
+or the global receiver disappears. The RESULT task retains its one receiver and
+the handler context borrows it. New CV callbacks accept booleans for `__isset`
+and known integers for GET; other results are Unsupported. False `__isset`
+retains its synthetic null/no-GET path. Terminal typed `__isset` uses the existing
+no-GET producer; paired handlers retain their existing source/signature gates.
+Conditional `??=` retains real pending receiver/name VARIABLE operands and the
+existing named no-argument by-value integer RHS. After RHS effects it selects the
+current target/name again, producing ordinary storage or actual private `__set`
+without a synthetic assignment. Once SET enters, its captured NAME and formal
+argument stay fixed. RHS/SET throws preserve the outer result; no general backing
+rollback is claimed. Normal assignment RHS, This/factory/reference/ADD and wider
+name/result/body/producer families are unchanged.
+[Quiet magic CV name review](../../coverage/semantics/string-cv-magic-quiet-review.json).
 
 Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
 untyped required parameter and no declared return type. The first family covers
