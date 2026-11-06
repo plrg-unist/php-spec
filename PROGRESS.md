@@ -203,8 +203,13 @@ source removal preserves actual API owners and separate captured-leaf cleanup;
 pure history survives retirement without pins. The
 [dummy-scope review](coverage/semantics/enum-is-callable-dummy-user-call-cache-review.json)
 records one exact source agreement, 120 independent reached conditions and
-strict446. Constant/default captures, conditional named-function sources,
-unproved transformed copies and Generator/Fiber query owners remain partial.
+strict446. Direct top-level `if`-body named functions now authenticate actual
+callable publication, a root runtime-declaration receipt and completed main-unit
+history before the same dummy-bound temporary calls. The
+[conditional-source review](coverage/semantics/enum-is-callable-conditional-user-call-cache-review.json)
+records one exact source agreement, 136 independent conditions and strict447.
+Constant/default captures, wider conditional sources, unproved transformed
+copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -2157,7 +2162,7 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 | CLASS198 | Reference-cell first-CV ordinary leaf objects in by-value magic sends in414; `class198-refcell-magic`, `class198-review`; independent owner/budget review is pending. |
 | ATTR54 | Public typed CLASS short SET-hook expressions, with implicit value, backing write and void fallthrough; clean-base preparation after integrated ATTR53. Minimal382/403/393 regions; wider binding/header/schema forms remain outside this slice. |
 | COMP187 | Owning method-default source/invocation authentication in reserved459 with minimal458/306 hooks; `comp187-owned-method-defaults-dev`, `comp187-named-method-defaults-review`. |
-| ENUM138 | Conditional named-user function publication before dummy-bound Closure calls; ENUM137 integrated with one source agreement and120 independent reached conditions at its private446 cut. |
+| ENUM | ENUM138 conditional named-user publication/cache support is integrated; the next bounded producer is being selected. |
 | GC56 | Direct nonmutating by-value foreach over finite WeakMap payloads in386/422; `gc-finite-byvalue-foreach-56`, `gc56-review`; no30/schema edits. |
 | I121 | Owning direct SEND VALUE snapshots in447; `iterator121-dev`, `iterator121-review`. Throwing-Notice cleanup is under narrow diagnostic investigation; no30/metadata edits. |
 | OB22 | Fresh exception from default FINAL Stringable conversion, with actual retval/cast-guard owners and ordinary fatal reporting/deactivation; clean-base preparation after integrated OB21. Output retains the source-only30 task region and456. |

@@ -1300,9 +1300,14 @@ A warmed Private source retains its ordinary choice while each call selects
 independently; real API ownership and captured-leaf cleanup survive argument-time
 source removal. Source/scope/site history adds no roots after retirement. See the
 [dummy-scope review](../../coverage/semantics/enum-is-callable-dummy-user-call-cache-review.json).
+Direct top-level `if`-body named functions now also authenticate actual callable
+publication, a root runtime-declaration receipt and completed main-unit history
+before dummy-bound temporary calls. Known Private source warmth and per-call
+freshness survive retirement under the same existing ownership rules; see the
+[conditional-source review](../../coverage/semantics/enum-is-callable-conditional-user-call-cache-review.json).
 Constant/default/static/property captures, resumed Generator,
-internal/Trait/anonymous/Fiber query owners, conditional named-function sources
-and wider transformed contexts remain partial.
+internal/Trait/anonymous/Fiber query owners, wider conditional sources
+and transformed contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

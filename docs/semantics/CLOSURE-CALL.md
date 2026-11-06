@@ -92,9 +92,13 @@ fresh temporary key. Immutable source/scope/site history survives ancestor,
 source and receiver retirement without owners. The
 [dummy-scope review](../../coverage/semantics/enum-is-callable-dummy-user-call-cache-review.json)
 records one exact source agreement and 120 reached conditions with strict446.
+Direct top-level `if`-body function declarations additionally authenticate their
+actual callable publication, root runtime-declaration receipt and completed main
+unit before using that cache history; see the
+[conditional-source review](../../coverage/semantics/enum-is-callable-conditional-user-call-cache-review.json).
 Unbound named-function calls on ordinary instances retain the existing scope-change
-Warning and enter no body. Conditional named-function sources, unproved
-transformed copies and internal/Generator/Fiber query owners remain partial.
+Warning and enter no body. Wider conditional sources, unproved transformed
+copies and internal/Generator/Fiber query owners remain partial.
 
 Reference formals receive isolated fresh cells after outer evaluation and binding,
 in canonical forwarding order. Each warning runs **before** its cell is allocated.
