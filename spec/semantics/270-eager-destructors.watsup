@@ -650,6 +650,36 @@ def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = $destructor_opera
   -- if S.TODO = (THROW_SEARCH n) :: ptask*
   -- if pdestructionoperation_new = pdestructionoperation[.PENDING = (n)]
 
+;; A protected pending owner can sit below a zero-root cleanup operation.
+;; Only an authenticated adjacent pair may hand its saved exception to Previous;
+;; ordinary destructor results retain their exact nearest-owner route above.
+dec $destructor_pending_parent(pstate, pdestructorcall) : pdestructionoperation?
+def $destructor_pending_parent(S, pdestructorcall) = eps -- otherwise
+dec $destructor_pending_parent_tasks(ptask*, pdestructionoperation, pdestructionoperation, pdestructionoperation, bool) : ptask*?
+def $destructor_pending_parent_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_parent) :: ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, true) = ((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_new) :: ptask_tail*)
+def $destructor_pending_parent_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) :: ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, false) = ((DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) :: ptask_new*)
+  -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, true) = (ptask_new*)
+def $destructor_pending_parent_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = ((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_new*)
+  -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = (ptask_new*)
+def $destructor_pending_parent_tasks((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = ((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_new*)
+  -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = (ptask_new*)
+def $destructor_pending_parent_tasks(ptask*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, b) = eps -- otherwise
+def $destructor_result_pending(S, pdestructorcall) = S_linked[.TODO = ptask_new*][.DESTRUCTION.CALLS = pdestructorcall_tail*][.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_new]]
+  -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation_parent)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation_inner) /\ pdestructorcall.PENDING = eps
+  -- if S.DESTRUCTION.OPERATIONS = [pdestructionoperation_inner, pdestructionoperation_parent]
+  -- if pdestructionoperation_parent.PENDING = (n_old)
+  -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_old /\ pdestructionoperation_inner.PENDING = eps
+  -- if $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) = eps
+  -- if S.TODO = (THROW_SEARCH n_new) :: ptask_tail*
+  -- if n_new =/= n_old
+  -- if S_linked = $throwable_previous(S, n_new, n_old)
+  -- if S_linked.COMPLETION = NORMAL
+  -- if $throwable_field(S_linked, n_new, "previous") = POBJECT n_old
+  -- if pdestructionoperation_new = pdestructionoperation_parent[.PENDING = (n_new)]
+  -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation_parent, pdestructionoperation_new, false) = (ptask_new*)
+
 ;; Trace callsites and executed USER scope are distinct. A returned zval from a
 ;; C API is decremented at an internal site while MAIN may still catch its Error.
 dec $eager_internal_source(ptask) : bool
