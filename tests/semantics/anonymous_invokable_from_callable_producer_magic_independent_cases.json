@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-fresh-invokable-from-callable-request-return-this",
+      "source": "<?php\nfunction peerShift223() { global $late, $owner; $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerInvokerBase223 {\n    public string $text;\n    public function __construct($value) { $this->text = $value; echo 'CTOR;'; return false; }\n    public function __invoke($saved, $marker) {\n        $this->text = $saved;\n        echo 'INVOKE:', self::class, ':', static::class, ';';\n        return $this;\n    }\n    public function __destruct() { echo 'THIS-END;'; }\n}\nclass PeerInvokerChild223 extends PeerInvokerBase223 {}\nclass PeerMagicBase223 {\n    public function __call(string $name, array $arguments) {\n        global $kept; $kept = $arguments['later']; echo 'MAGIC;'; return false;\n    }\n    public function __destruct() { echo 'OWNER;'; }\n}\nclass PeerMagicChild223 extends PeerMagicBase223 {}\n$owner = new PeerMagicChild223;\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$result = $owner->MiSsInG(first: false, later: (\n    \\Closure::fromCallable(new PeerInvokerChild223($late))\n)($late, peerShift223()));\necho 'RETURN;'; echo 'VALUE:', $kept->text, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "dbb692359a42687be36e8056f18152353ca63d05f5b1b5d230d920ee83a7fb72",
+      "stdout_template_base64": "Q1RPUjtTSElGVDtJTlZPS0U6UGVlckludm9rZXJCYXNlMjIzOlBlZXJJbnZva2VyQ2hpbGQyMjM7TUFHSUM7T1dORVI7UkVUVVJOO1ZBTFVFOlJFUVVFU1QtT0xEO1RISVMtRU5EO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
