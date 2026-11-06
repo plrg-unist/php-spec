@@ -4074,6 +4074,16 @@ Seven originals and 208 reached conditions pass across450 modules. Request/unkno
 strings and wider lifecycle forms retain their limits; see the
 [quiet-scalar review](coverage/semantics/gc-foreach-quiet-scalar-review.json).
 
+A direct fieldless old Value can now run its own destructor during that
+last-owner current-row write. Its WeakReference still returns the old object
+before standard storage teardown, while a read through the original Map/Key
+globals sees the published replacement. Normal return assigns the result; a
+fresh Exception preserves its sentinel. Actual call owners, later storage
+retirement and Map-pin cleanup retain separate phase proofs. Four originals and
+329 conditions across the normal/fresh ownership facets pass at separate
+451-module cuts; see the
+[own-destructor review](coverage/semantics/gc-foreach-own-destructor-review.json).
+
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held
@@ -8066,6 +8076,17 @@ argv in a real CONFIG continuation until DATA release finishes. Payloads with
 uncalled destructors stay outside the existing value policy. Two-item limits
 remain, and wider producer/lifetime modes remain partial.
 [Generator-source review](coverage/semantics/generator-source-arguments-review.json).
+
+Computed and nullsafe native Generator calls now share these single-CV
+Traversable packs. The existing selection freezes method name and receiver
+before callbacks rebind their CVs; NULL skips both method and pack reads.
+Iterator, Aggregate-to-Iterator and initialized named Generator sources keep
+their own value, ownership and cleanup limits. New paths require post-init,
+nondelegated by-value receivers and by-value current/source producers;
+captures, temporary sources and the held wider modes remain partial.
+Native Iterator cancellation keeps the receiver and scalar prefix in a real
+CONFIG continuation while unsent current/key and DATA retire before Gen cleanup.
+[Selected Traversable review](coverage/semantics/generator-computed-traversable-arguments-review.json).
 
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe

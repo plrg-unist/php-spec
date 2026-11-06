@@ -1,0 +1,124 @@
+{
+  "scope": "GC62: direct fieldless old Value own destructor during occupied CURRENT-row last-owner replacement, after the actual loop Value CV is rebound to a nonowning scalar. Root caller, one authenticated direct multiple-entry by-value cursor, held Map/leaf Keys, existing leaf or quiet-primitive incoming plain-CV domain; read-only callback normal return/fresh builtin Exception.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; engine 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "semantic_revision": "c34067347cf77a87e71d8c0fc5ab3a9367b5d376",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "eb0947c615eeb85666afb7309776d987d3a7872b13ee4580135976302b644492"
+  },
+  "source_basis": [
+    "Zend/zend_objects_API.c:zend_objects_store_del marks the destructor called and sets one protecting owner before dtor_obj, store invalidation and free_obj; Zend/zend_objects.c:zend_objects_destroy_object adds its second protection, invokes the known noarg method and transfers a fresh pending Exception. Zend/zend_execute_API.c:zend_call_known_function/zend_call_function borrow HAS_THIS on this direct route without another receiver addref.",
+    "Zend/zend_weakrefs.c:zend_weakref_get returns RETVAL_OBJ_COPY while the referent is still live; Zend/zend_objects.c:zend_object_std_dtor notifies weakrefs only in the later storage teardown.",
+    "Zend/zend_weakrefs.c:zend_weakmap_write_dimension adds the incoming owner and publishes an occupied replacement before releasing its copied old zval, preserving registration/order; Zend/zend_execute.c:zend_assign_to_object_dim copies a used result after the handler; Zend/zend_vm_def.h:ZEND_ASSIGN_DIM retains and later releases the real Map carrier.",
+    "Zend/zend_weakrefs.c:zend_weakmap_get_iterator/iterator_get_current_data/iterator_dtor and Zend/zend_vm_def.h:zend_fe_fetch_object_helper preserve hidden Map DATA and the independent copied Value CV."
+  ],
+  "rule": "Root-only direct by-value acquisition reuses the existing all-object callback/leaf construction policy. Capture requires the actual current-row source/cells/cursor, scalar rebound loop CV, last old owner and an uncalled direct fieldless public own destructor. The existing immutable nonowning CLAIM is reused. The actual old VALUE job, saved single-job release, called bit, method target, operation SOURCE and exact ENTER/RESULT continuation authenticate the own call; old has no INSTANCE_STORAGE pin and stays weakly live. Its transient weak-get copy drops before the imported original Map/Key KEY_R read. After callback/result cleanup a separate actual old VALUE job creates the genuine fieldless standard-storage pin, then old retires and existing retired/carrier/claim phases finish normal or fresh-throw assignment. No executor, ownership, schema, common finite storage, by-reference/owned-Iterator or GC policy changes. Fresh own unwind retains the real generic THROW_SEARCH n inner operation before the old CLAIM exit; exact same-pending/source/site/two-operation authority admits actual old job, true pin and retired phases without retagging it or removing any TODO root.",
+  "readonly_certificate": "Exact own ENTER/RESULT and normal release/pin prefixes restore only their borrowed CALLS/RELEASES and delegate to full strict operation validity with identical heap. Normal release-prefix certification requires an own callback class, PENDINGeps and strict actual validity false before restoration. The fresh nested-prefix arm additionally restores only its retained zero-root generic inner operation; that operation must pass its unchanged strict validator. GC59 child/INSTANCE certification stays disjoint, and actual executable SOURCE/phase/executor checks remain strict.",
+  "counts": {
+    "new_exact_originals": 4,
+    "source_reached_facets": 2,
+    "reported_conditions": 329,
+    "authored_conditions": 319,
+    "fresh_conditions": {
+      "reported": 239,
+      "authored": 234
+    },
+    "normal_conditions": {
+      "reported": 90,
+      "authored": 85
+    },
+    "strict_SL_modules": 451,
+    "joined_SL_modules": 453,
+    "baseline_preparation_or_constructed_PHP_agreements": 0
+  },
+  "validation": {
+    "author_normal": {
+      "report": "../php-spec-evidence-archive/gc62-current-row-own-destructor/author/native-v2/model-current-own-destructor-read-normal-report.json",
+      "revision": "69379f02684c543b07e3b104aaae6e2c52781d7e",
+      "agreements": 1,
+      "seconds": 88.7401659488678,
+      "result": "Old weak-get equals this before KEY_R; original Map/Key and copied installed leaf match while outer result remains77. Normal result/continuation and independent old/Map/new/Key retirement match native exactly."
+    },
+    "author_fresh": {
+      "report": "../php-spec-evidence-archive/gc62-current-row-own-destructor/author/native-v2/model-current-own-destructor-read-fresh-throw-report.json",
+      "revision": "69379f02684c543b07e3b104aaae6e2c52781d7e",
+      "agreements": 1,
+      "seconds": 104.25698804855347,
+      "result": "Fresh Exception preserves its destructor line/assignment trace, publication and outer result77/continued0; complete cleanup matches the frozen native original."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc62-current-row-own-destructor/author/strict-v4/report.json",
+      "revision": "c34067347cf77a87e71d8c0fc5ab3a9367b5d376",
+      "result": "Frozen c340 strict SL451 true, exit0/empty stderr/no timeout, stable HEAD/inputs."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-current-row-own-peer-62/native-v1/model-report.json",
+      "revision": "77fb8e5d51f9c064b0ed2b54ce890ce7c1a82037",
+      "agreements": 2,
+      "seconds": [
+        75.513,
+        91.621
+      ],
+      "result": "Spare leaf row first, then own old Value with loop CV false and present NULL replacement. Inline weak-get equals this before KEY_R; normal resultNULL and fresh destructor line13/assignment trace39 with outer result31/continued0 match native, followed by old weak-null and independent Map/Key cleanup."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc62_peer_own_call_state.py",
+      "fresh": {
+        "report": "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v5/fiber-state-review-hp4rsj_1/report.json",
+        "raw_mapping": "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v5/run-report.json",
+        "revision": "154b5ae468edd3865cda6c2e014d98bbdd86915f",
+        "runtime_revision": "679df0b94846c687e3617c78b3f0056dd88205ca",
+        "reported_conditions": 239,
+        "authored_conditions": 234,
+        "result": "Genuine prepublication uncalled gate, raw old WeakReference GET2to3 and later KEY_R old2/no pin, unchanged storage and no incoming NULL owner. Actual fresh nested old VALUE cleanup, fieldless pin/weakNULL, retired inner exit, Map3to2 carrier and abrupt zero-free CLAIM retain strict/global validity. Wrong job/CALLED/target/old receipt/SELECTED/early pin/future prefix and coherent missing-pending/TEMP controls refuse. Candidate membership is preserved by the temporary decrement and removed at real retirement; full native ending and zero/one budgets agree."
+      },
+      "normal": {
+        "report": "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v6-normal/fiber-state-review-m04161vh/report.json",
+        "raw_mapping": "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v6-normal/run-report.json",
+        "revision": "51e7249b841eddcc48f99c92d01074d7c602503f",
+        "runtime_revision": "c34067347cf77a87e71d8c0fc5ab3a9367b5d376",
+        "reported_conditions": 90,
+        "authored_conditions": 85,
+        "result": "Frozen normal original reaches actual PRECALL/ENTER/FREE/PIN/retired/normal CLAIM states with strict/global validity. Exact virtual release certification accepts while strict projected phase stays false; wrong TEMP/missing CALLED controls refuse. Real normal CLAIM pop changes TODO only, preserves the unassigned target/result/physical state, and complete normal ending and zero/one budgets agree."
+      },
+      "identity": "Both facets strict SL451 true, empty stderr/exit0/no timeout and stable HEAD/runtime/test/source inputs. Final fixture8a1240... retains fresh CHECKS/source and adds only the affected normal case; the passed fresh facet keeps its original679/154b identities. An AST comparison confirms unchanged fresh SOURCE/STAGE/CHUNKS/ENDING/CHECKS assignments in the final maintained fixture."
+    },
+    "identity": "All4 source originals match exact original native bytes/file/cwd/profile with exit0/empty stderr/no timeout and stable source/runtime inputs/HEAD. The sole maintained front has fresh239/234 and normal90/85 facets at distinct recorded cuts; no synthetic state or compilation run adds differential credit. SpecTec da36ac3c434cd291940293a63da64544307730a3, local OCaml5.1.0, SL mode; raw/wrapper reports pin binaries/environment and relocation.",
+    "source_bridge": "All4 exact original-source cuts remain69379. Final679df adds outer SOURCE authority only while the genuine inner operation precedes the outer exit, so the outer reducer cannot select that new phase. At actual outer head, the original retired/source arm is unchanged after inner removal. Normal direct tail, capture, callback read, task/heap/executor behavior and prior source reductions remain pointwise unchanged. Final a8b2/c340 add readonly84 normal-prefix/ENTER certification only; tested RESULT markers extract the same call, late fresh PENDINGSome excludes the new normal arm, and the fresh fixture CHECKS/source are unchanged. Source4 and fresh239 cuts retain their identities with independent review; only the affected normal facet executes at final c340."
+  },
+  "old_domain_bridge": "GC58 never uses SOURCECLAIM. GC59/60 old roots are methodless with declared Child storage, so the new sole-method fieldless own-value arms are false, its own-result certificate has no INSTANCE prefix, and extracted callback_owner retains the literal old pin/selected-Child predicates. Old common storage validators, task continuations/owners and publication/release executors are unchanged. No old evidence renewal is claimed.",
+  "preserved_zero_credit": [
+    "Author native-v1/baseline-report.json remains failed0: old-own callback row followed by scalar17 insertion reaches the existing producer refusal before output, while the initial recorder expected the later boundary. No producer guard was broadened.",
+    "Affected source-only native-v2 replaces that sibling scalar with a separate ordinary methodless leaf. Its completed baseline-report.json is Unsupported WeakMap foreach mode, targets, or storage with B| and0agreement. New runtime/source evidence starts from that frozen supported preparation.",
+    "Peer front-v1/v2 fixture notation/binding stops, front-v3 BUDGET-versus-NORMAL finder miss and front-v4 late-prefix miss remain external0. late-cleanup-v1/late-authority-v1 preserve the actual nested fresh prefix and (strict-inner true, outer SOURCE/cursor/destruction/global false, heap true) diagnostic against69379 runtime (actual fixture HEADs remain in their reports); diagnostics add0 PHP agreement."
+  ],
+  "files_sha256": {
+    "tests/semantics/gc62_current_row_own_destructor.php": "0661c95d583043693ca7fcb6a4372f7fa79a5acb185bd4c3b9dd31367dc0ba66",
+    "tests/semantics/gc62_current_row_own_destructor_sources.py": "e40f4e1843ad7cee2aa041e6cfe32510b8f62c422d39f296c43bad0ddddb175c",
+    "tests/semantics/gc62_peer_null_own_read.php": "127171fec43fb3cf470b8bac1deef7c1f5408f8c7fd846ab0f5cb7bdba57fa29",
+    "tests/semantics/gc62_peer_null_own_sources.py": "8c57574e345ff6ba115b87889202f69ed1e15eebf0d27cadc81696b7d4ebcf0f",
+    "tests/semantics/gc62_peer_own_call_state.py": "8a1240b13cb11728e6cccbb528c3842c8a17b656de82acbbe82e26556ccb12c0"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc62-current-row-own-destructor/author/native-v2/native-report.json": "e955fea741d78392ec3b39089a1482e5d2a1cc14bb806cc745514294cb4a9a4a",
+    "../php-spec-evidence-archive/gc62-current-row-own-destructor/author/native-v2/model-current-own-destructor-read-normal-report.json": "a1c7ff49f2cb8747d737b03cb1b24dadc65d593456b231c8923ae5ea28058b8b",
+    "../php-spec-evidence-archive/gc62-current-row-own-destructor/author/native-v2/model-current-own-destructor-read-fresh-throw-report.json": "542d1c059ef3366f166e2d08b2ef1d20f5610b7dc2112a841e562fa079ac0826",
+    "../php-spec-evidence-archive/gc62-current-row-own-destructor/author/strict-v4/report.json": "b59dc9e861b76e92ef145993c2c4a2f4077e348c07a835e6610ef94882749c00",
+    "../php-spec-evidence-archive/gc-current-row-own-peer-62/native-v1/native-report.json": "2cb6d97a32229ac5a9e52d6df4636b0a2718aa56cd46d899a83c27e916318e57",
+    "../php-spec-evidence-archive/gc-current-row-own-peer-62/native-v1/model-report.json": "45108cc6c1a5becec733cbe3dcf64d1baa87bdb305a69ed640340565ded17717",
+    "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v5/fiber-state-review-hp4rsj_1/report.json": "0f4ee1f4e01c663cf780b5872b9a4a70730eec1faa8abe17625fbd62ccc42ca2",
+    "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v5/run-report.json": "542d06cd9dd0ad6876894a02c3c7b971d984732da2c404273d9dc66a99b607b1",
+    "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v6-normal/fiber-state-review-m04161vh/report.json": "9acf823e13351d0cd9e52d96204728923a1be5dcdd609a750047cfa101a702fa",
+    "../php-spec-evidence-archive/gc-current-row-own-peer-62/front-v6-normal/run-report.json": "908bb714bbaf8a90c6b5087e6c5cb21d0a038cf4c7592d9ef94d519be6a8c129",
+    "../php-spec-evidence-archive/gc-current-row-own-call-62/joined-main-453-v1/report.json": "81d381d4c96afcd584a3a6187a7725d9cf92affe7e64bc6b698cc3c84f79437c"
+  },
+  "limits": "Fieldless parentless direct own destructor and existing all-object table construction only; root caller and held nonfreeing Map/ordinary leaf Keys. No resurrection/retained old copy, reentrant writes/insertion/unset, GC35/freeing registrations/Key retirement, by-reference/InternalIterator, active-GC/threshold, wider class/storage/caller or incoming string/conversion/NaN admission. lifecycle.weak-map remains partial.",
+  "composition": {
+    "revision": "ae2926474efd0f58fed1de9fd004f3eab3747ab5",
+    "report": "../php-spec-evidence-archive/gc-current-row-own-call-62/joined-main-453-v1/report.json",
+    "sha256": "81d381d4c96afcd584a3a6187a7725d9cf92affe7e64bc6b698cc3c84f79437c",
+    "modules": 453,
+    "seconds": 13.838256,
+    "result": "Authentic current joined SL453 true/empty stderr/exit0/no timeout, stable inputs; inventory169/306 passes. No original-source or frontier credit renewed."
+  }
+}

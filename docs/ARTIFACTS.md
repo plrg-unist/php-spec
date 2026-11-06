@@ -867,3 +867,10 @@ Independent present-NULL originals and the sole no-incoming-owner/claim/budget
 front are under `../php-spec-evidence-archive/gc-current-row-scalar-peer-60/`.
 The [review](../coverage/semantics/gc-foreach-quiet-scalar-review.json) binds the
 grouped scalar scope, exact runtime/source cuts and raw recovery paths.
+
+GC62 direct old-Value destructor originals and the single weak-live/call/storage
+ownership front are under `../php-spec-evidence-archive/gc62-current-row-own-destructor/author/`
+and `../php-spec-evidence-archive/gc-current-row-own-peer-62/`.
+The [review](../coverage/semantics/gc-foreach-own-destructor-review.json) records
+the exact source cuts and preserves the initial producer/baseline fixture refusal
+with zero agreement; earlier GC59–61 evidence is unchanged.

@@ -125,6 +125,29 @@ BYREF/typed/borrowed cells, temporary/Aggregate Generator sources, incoming thro
 pending initialization, capture/delegation, Closure::call and I106 remain held.
 [Generator-source API review](../../coverage/semantics/generator-source-arguments-review.json).
 
+Computed/nullsafe method selection now feeds the same single-CV Traversable
+protocols. One certificate reuses the actual selected-method receipt, source
+site/line and emitted unpack CV; that metadata owns neither name nor receiver.
+The CONFIG cursor keeps the actual selected Gen and copied values through
+method/receiver/input CV rebinding. NULL skips method-name and pack reads.
+The added path requires SEND/zero-argument APIs at a post-init, nondelegated,
+by-value receiver, excluding captured/temporary selectors and closure/access/
+creation modes. New direct Iterator reception also requires by-value current;
+Aggregate and Generator producers retain their existing admission and owner
+policies. The old ordinary literal admission stays pointwise unchanged. Existing
+argument-source and 280/450 selection minting/liveness rules are reused; no
+new AST domain, receipt/schema or owner kind is added. Native Iterator cancellation
+with no owning copied argv now keeps receiver/prefix in a real CONFIG_INVOKE
+while unsent current/key and DATA retire, then ordinary throw cleanup retires
+the receiver. This also corrects the same already-admitted literal root shape;
+INI and other producer/value admission stay unchanged behind the default dispatch.
+For native nullsafe CONFIG cursors, descriptor tail validation advances from the
+spread origin to the outer callsite without changing physical origins or tasks.
+Wider signatures,
+typed/borrowed cells, capture/delegation/incoming throw/pending initialization,
+Closure::call and I106 remain separate.
+[Selected Traversable API review](../../coverage/semantics/generator-computed-traversable-arguments-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

@@ -596,6 +596,29 @@ initial front/diagnostic fixture failures retain zero credit. The actual current
 451-module joined load/inventory also pass without renewing source cuts.
 [Generator-source review](coverage/semantics/generator-source-arguments-review.json).
 
+I127 connects existing computed/nullsafe selected-method authority to admitted
+single-CV Iterator, Aggregate-to-Iterator and initialized named by-value
+Generator packs. Shared source/selection proof keeps method/receiver identity
+fixed through callback rebinding while actual CONFIG roots own selected Gen
+and argv; NULL skips method and pack reads. New paths stay post-init,
+nondelegated/by-value and exclude captured/temporary selectors and held modes.
+Callback reentry and wider destructor histories stay outside this join.
+Producer/value/owner policies and old ordinary literal admission remain intact;
+new direct Iterator current is by-value. Module 447 reuses existing argument domains
+and 280/450 receipt minting/liveness. A defaulted 420 cancellation dispatch keeps
+the actual native receiver/prefix in CONFIG_INVOKE while key/current/DATA retire,
+including the equivalent admitted literal root shape; old INI/value policy stays.
+Native nullsafe CONFIG descriptors advance tail validation to the outer callsite
+while physical origins/tasks/owners remain unchanged. Six maintained source
+contrasts agree at separate first-four and affected/unrun cuts. Independent
+623 conditions pass as retained Iterator169 plus affected/unrun
+Aggregate190/Generator160/mapping104 at separate cuts. Public descriptors,
+physical selected/cursor/argv roots and 0/1 budgets pass. The actual current
+453-module joined load/inventory also pass. Pre-semantic failures, the genuine
+mapping cleanup-order mismatch, failed frontier selections and the bounded
+descriptor diagnostic retain zero credit.
+[Selected Traversable review](coverage/semantics/generator-computed-traversable-arguments-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -1103,6 +1126,22 @@ identities, NaN and wider mutation/lifecycle forms remain outside this admission
 Seven exact originals and one 208-condition (203 authored) strict450 front pass;
 the sole preimplementation baseline retains zero agreement.
 [Quiet-scalar review](coverage/semantics/gc-foreach-quiet-scalar-review.json).
+
+A separate current-row phase now admits a direct fieldless old Value's own
+public destructor. Its actual last old-zval job selects the call; the old root
+stays weakly live under call/result owners, with no storage pin during that
+callback. Original Map/Key globals read the published leaf or quiet primitive.
+Normal return assigns the outer result; a fresh Exception preserves its sentinel.
+Only later cleanup creates the real standard-storage pin, then retires old and
+releases the Map carrier through the existing nonowning claim.
+Fresh unwind retains its genuine generic THROW_SEARCH inner operation; exact
+phase and readonly future-prefix checks preserve its separate authority.
+Root callers, the existing all-object construction domain and held Keys remain
+bounded;
+resurrection, callback writes, GC35 and active collection are unchanged.
+Four originals and the maintained ownership front's normal/fresh facets pass
+329 conditions (319 authored) at separate451 cuts; current joined453 also passes.
+[Own-destructor review](coverage/semantics/gc-foreach-own-destructor-review.json).
 
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
@@ -2641,8 +2680,7 @@ their work remains unaccepted until integrated.
 | ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
 | COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
 | ENUM150 | Ordinary non-method function-string is_callable via actual registry/publication facts, query-cut output history and existing reference/bool continuations; preserve frozen results and held domains. |
-| GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |
-| I127 | Existing computed/nullsafe native Generator method selection with admitted Iterator, Aggregate or initialized by-value Generator CV packs; preserve actual receipts, ownership and held domains. |
+| OB26 | Completed builtin Exception from a direct no-argument ordinary helper through real VM unwind into native output consumers, preserving exact identities and catch/normal clearing; keep wider throw/rendering modes held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

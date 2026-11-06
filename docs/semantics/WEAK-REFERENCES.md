@@ -542,7 +542,9 @@ Keys outside the authenticated retained-live shape still refuse.
 Last-owner tables that still have multiple entries admit direct fieldless
 parentless Values whose sole method is a public noarg destructor through shared
 construction/free policy in 422; ordinary traversal, reference, factory
-and GC consumers keep their methodless policy. Under the real Map storage pin,
+and GC consumers keep their methodless policy, apart from the source-bound GC62
+direct by-value acquisition and current-row own-destructor exception below.
+Under the real Map storage pin,
 all Key registrations are removed while physical Value edges transfer to the
 same per-slot jobs. Hash rows
 remain borrowed occupancy until cleanup ends: source-authenticated `isset` can
@@ -880,7 +882,9 @@ the body preserves DATA until break/exhaustion; delivered Key/Value CVs can then
 survive Map retirement independently. The
 [finite foreach review](../../coverage/semantics/gc-finite-byvalue-foreach-review.json)
 records original comparisons and the real multiple-entry fetch/budget front.
-The GC58/59/60 occupied-current-row exceptions below extend mutation only. Insertion,
+The GC58/59/60 occupied-current-row exceptions below extend mutation only; GC62
+also acquires the existing all-object fieldless-callback table for that direct
+source-bound consumer. Insertion,
 unset, retiring Keys, additional cursors, wider active GC/destructor contexts,
 producers/targets and reference traversal receive no new admission here.
 
@@ -898,7 +902,7 @@ results add no heap edge; outer-array capture preserves shared descendant
 edges. This extra result can survive clearing the loop Value, breaking and
 retiring Map, then release independently of the copied Key. The
 [current-row read review](../../coverage/semantics/gc-foreach-current-read-review.json)
-records the original comparisons and actual result-owner/budget front. GC58/59/60
+records the original comparisons and actual result-owner/budget front. GC58/59/60/62
 below supply occupied-current-row write exceptions. Quiet, reference and
 public API reads, other mutation, retiring/freeing Keys, extra cursors, active
 GC/destructor contexts and owned `InternalIterator` receive no new admission here.
@@ -919,7 +923,7 @@ Common storage still rejects active cursors. The
 [current-row replacement review](../../coverage/semantics/gc-foreach-current-replacement-review.json)
 records two exact originals and the sole publication/release/result/budget front,
 including a fresh old-array GC candidate and unchanged descendant multiplicities.
-GC59 below supplies the separate last-owner callback exception. Insertion/unset,
+GC59/62 below supply separate last-owner callback exceptions. Insertion/unset,
 Key retirement/freeing, extra cursors, by-reference/owned Iterator modes, wider
 active GC/destructor contexts and RHS producers retain their prior limits.
 
@@ -971,6 +975,38 @@ The [quiet-scalar review](../../coverage/semantics/gc-foreach-quiet-scalar-revie
 records the original comparisons and sole no-incoming-owner/claim/budget front.
 Other mutation, callbacks, producers, cursor modes, Key retirement and active GC
 retain their existing limits.
+
+GC62 admits the old Value's own destructor as a separate phase. The old root is
+direct, parentless and fieldless, with one public noarg destructor; its original
+Map table uses only the existing all-object direct callback/leaf construction
+domain. Root-only direct by-value acquisition keeps common finite, reference and
+owned-Iterator storage guards unchanged. Current-row publication still requires
+the actual rebound scalar loop CV, last old owner, original cells/source/cursor
+and a plain RHS in the existing leaf or quiet-primitive incoming domain.
+
+The real old VALUE job selects that root's destructor. Its saved release record,
+actual target, called bit and exact operation/continuation authenticate the call.
+There is no `INSTANCE_STORAGE_STEP` for old while its user destructor runs:
+WeakReference GET copies the still-live old referent under the real call/result
+owners. The temporary copy releases before the callback's current-key read,
+which uses the same original imported Map/Key cells and sees the published value.
+Normal return assigns the result; a fresh builtin Exception preserves the outer
+sentinel and its destructor trace.
+
+After callback cleanup, the last real result owner becomes an old VALUE job.
+Only its later free creates the authentic fieldless standard-storage pin, at
+which point old's weak GET is NULL. Physical retirement and Map-pin release then
+reuse the existing claim/carrier phases. Fresh unwind retains a genuine generic
+THROW_SEARCH inner operation while the outer claim owns the fresh Exception;
+that zero-root inner exit keeps its strict generic validator. Readonly future-task
+certification recognizes only the corresponding exact own ENTER/RESULT, normal
+release/pin or fresh nested prefix, with identical heap and strict operation
+validity on its borrowed-registry view. The
+[own-destructor review](../../coverage/semantics/gc-foreach-own-destructor-review.json)
+records native/source comparisons and the actual weak-live/cleanup/owner/budget
+front. The quiet GC58 and old-slot/Child GC59/60 proofs remain separate;
+resurrection, reentrant writes, GC35, freeing registrations/Keys, active collection
+and wider class/cursor/caller domains receive no new admission.
 
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned
