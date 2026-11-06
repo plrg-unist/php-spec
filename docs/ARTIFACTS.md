@@ -143,6 +143,15 @@ fallback failures are not startup-fact rejections. Only affected comparisons
 were repeated after fixes, with original native bytes/path/CWD reused. The actual
 67b944566d joined465 load composes accepted475+476 and inventory passes.
 
+COMP205 tick method-default sources and marker/owner/history checks are under
+`../php-spec-evidence-archive/comp205/`. The
+[review](../coverage/semantics/deprecated-tick-method-default-review.json)
+binds four exact normal originals and 72/96/91 strict466 conditions. The old
+attributed-donor planning dependency, baseline entry and pre-execution elaboration
+failure retain zero credit. Native bytes/path/CWD were reused without replay;
+registry retirement is distinct from erased-storage helper controls. Actual
+50f1ee75a joined466 and inventory pass.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

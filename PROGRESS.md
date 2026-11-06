@@ -3388,6 +3388,17 @@ consumers remain held. Four normal originals agree and strict464 fronts pass
 are accepted at67b944566d; actual joined465 and inventory pass.
 [Review](coverage/semantics/deprecated-autoload-method-default-review.json).
 
+COMP205 receives owning extra defaults in genuine ordinary public tick method
+callbacks after their registered arguments. Exact marker/selected-row proof and
+nonowning history preserve Shared identity after unregister, with existing registry
+and formal owners; active unregister retains the calling row. Four normal originals
+agree, including registration-argument rebinding and repeated TypeErrors. Strict466
+fronts pass 72 marker/history, 96 owners/continuation and 91 type/cache conditions.
+The finite noarg Deprecated donor plan applies while ticks are inactive
+(`FREQUENCY=0`); active attributed declarations keep their boundary.
+Source/runtime/tests are accepted at 50f1ee75a; actual joined466 and inventory pass.
+[Review](coverage/semantics/deprecated-tick-method-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3395,10 +3406,11 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
-| COMP205 | Extra defaults for existing ordinary public tick method callbacks, with authentic selected tick entry, registered args and marker sites; preserve borrowed receiver, registry owners and current/history laws. |
+| CLASS223 | Immediate normal Closure::fromCallable invocation of fresh ordinary invokable objects, preserving actual argument-to-wrapper transfer and existing constructor, signature and lifetime bounds. |
+| ATTR80 | Private scalar magic += with plain CV property names, late selection and retained GET/SET receipts under existing main-scope and integer bounds. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
+| OB32 | Genuine strict __toString scalar-return TypeError during FINAL output conversion, preserving original native ownership, default rendering and cleanup. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

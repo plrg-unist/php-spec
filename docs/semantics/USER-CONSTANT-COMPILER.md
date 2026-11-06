@@ -323,6 +323,18 @@ is introduced. Capture/producer/Closure/nonpublic/magic/Generator and wider held
 modes keep their boundaries.
 [Autoload review](../../coverage/semantics/deprecated-autoload-method-default-review.json).
 
+Ordinary public tick method callbacks receive owning extra defaults after their
+registered arguments, with no implicit runtime argument. The actual marker site
+and saved selected entry authenticate current use; nonowning marker/target history
+keeps closed Shared-cache authority after unregister and receiver cleanup. Registry
+receivers and copied arguments retain their existing owners; current This borrows.
+Active unregister raises Error while retaining the calling row. Cache/formal
+publication precedes type rejection, and a warm second marker creates no birth.
+Four normal originals and 259 strict466 conditions pass. Attribute planning is limited to single no-argument
+Deprecated donors while ticks are inactive (`FREQUENCY=0`).
+Closure/capture/producer/private/magic/Generator and wider signatures remain held.
+[Tick review](../../coverage/semantics/deprecated-tick-method-default-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

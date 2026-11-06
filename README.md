@@ -2822,6 +2822,10 @@ one-class-name entry. SPL's registry retains the receiver; the current invocatio
 borrows it, including warning-time unregister and cleanup. Existing captured
 request history validates closed Shared-cache entries without reviving receivers.
 Four originals and 258 strict464 checks pass; retired receiver access stays held.
+Public ordinary tick method callbacks receive owning defaults after their
+registered arguments. Exact marker/selection history survives unregister without
+adding a receiver owner; active unregister keeps its calling row. Four originals
+and 259 strict466 checks pass, including copied registration arguments and warm type rejection.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
@@ -2837,6 +2841,7 @@ static-property defaults, converted queries and wider metadata remain partial.
 [Shutdown method default review](coverage/semantics/deprecated-shutdown-method-default-review.json).
 [Handler method default review](coverage/semantics/deprecated-handler-method-default-review.json).
 [Autoload method default review](coverage/semantics/deprecated-autoload-method-default-review.json).
+[Tick method default review](coverage/semantics/deprecated-tick-method-default-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).

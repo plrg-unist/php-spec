@@ -9,6 +9,15 @@ execution creates the certified tasks; callers cannot supply a marker table.
 Named construction visits its class and source-ordered arguments, allowing
 argument Closures to contribute their own lexical plans.
 
+Ordinary public method callbacks can receive owning Deprecated defaults after
+all registered arguments. Their callee site is the real marker, separate from
+registration. Nonowning selected-target/marker history survives unregister;
+registry receiver/argument owners and borrowed This remain unchanged. Calling-row
+unregister raises Error and retains that row. A finite no-argument Deprecated
+global donor while ticks are inactive (`FREQUENCY=0`) uses the declaration plan; wider
+attributed placement remains a dependency.
+[Default-receive review](../../coverage/semantics/deprecated-tick-method-default-review.json).
+
 Comma-separated Echo, unset, global and static lists compile as Zend's individual
 statements. Each nonfinal item has a canonical marker at its checked occurrence;
 the final item keeps the enclosing statement marker. Plans interleave compilation
