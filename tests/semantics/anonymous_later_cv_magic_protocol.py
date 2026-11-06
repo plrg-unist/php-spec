@@ -84,7 +84,7 @@ def checks(fixture, filename):
         ('coercion', 'S[.REFCOERCIONS = [{CELL n_cell,SITE porigin_site,LINE z_later,VALUE $ptascii("old")}]]'),
         ('backing', 'S[.PARAMETERBACKINGS = [{FUNCTION pmagicmethodcall.METHOD,INDEX 0,CELL n_cell,LINE z_later,VALUE $ptascii("old")}]]'),
         ('plain_string', 'S[.STORE = $set_cell(S.STORE,n_cell,DEFINED (PSTRING $ptascii("bytes")))]'),
-        ('owned_nul', 'S[.STRINGDATA = [[65,0,66]]][.STORE = $set_cell(S.STORE,n_cell,DEFINED (PSTRING_CARRIER (REQUEST_STRING 0) [65,0,66]))]'),
+        ('owned_nul', 'S[.STRINGDATA = [$base64("QQBC")]][.STORE = $set_cell(S.STORE,n_cell,DEFINED (PSTRING_CARRIER (REQUEST_STRING 0) $base64("QQBC")))]'),
         ('no_code', 'S[.CODE = eps]'),
         ('no_source', 'S[.SOURCES = eps]'),
         ('not_send', 'S[.TODO = (CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) eps 2 ([KNOWN (PINT 7),KNOWN (POBJECT n_payload)]) (porigin_site) z_site) :: ptask_send_tail*]'),
@@ -193,9 +193,12 @@ def render(case, fixture, filename):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--sl', action='store_true')
+    parser.add_argument('--case', action='append', choices=(CASE, MISSING))
     args = parser.parse_args()
-    protocol.run({CASE: {'source': ROW['source']}, MISSING: {'source': MISSING_ROW['source']}},
-                 extra_inputs=(CATALOGUE, CONTROLS, Path(__file__)),
+    cases = {CASE: {'source': ROW['source']}, MISSING: {'source': MISSING_ROW['source']}}
+    if args.case:
+        cases = {key: value for key, value in cases.items() if key in args.case}
+    protocol.run(cases, extra_inputs=(CATALOGUE, CONTROLS, Path(__file__)),
                  fixture_renderer=render, runner_flags=('--sl',) if args.sl else ())
 
 
