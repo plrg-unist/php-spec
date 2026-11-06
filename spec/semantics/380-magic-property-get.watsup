@@ -1188,7 +1188,7 @@ rule PhpStep/property-get-indirect-copy: S ~> S_checked[.TODO = ptask_tail*][.BA
   -- if $property_get_valid(S, ppropertyget, true)
   -- if $property_get_tail_valid(S, ppropertyget)
   -- if $call_reference_operand_valid(S, KNOWN (PINT i))
-  -- if S_checked = $property_get_verify(S, ppropertyget, KNOWN (PINT i))
+  -- if S_checked = $property_get_verify(S[.RESULT = KNOWN (PINT i)], ppropertyget, KNOWN (PINT i))
   -- if S_checked.COMPLETION = NORMAL
 ;; Under a pending exception the materialized temporary owns the payload in a
 ;; task, keeping THROW_SEARCH's RESULT null. Its next discard is ordinary270.
