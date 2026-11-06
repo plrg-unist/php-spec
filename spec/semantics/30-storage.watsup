@@ -762,7 +762,8 @@ syntax pdeclaration = PDENTER nat porigin? int | PDENTERPRECISION nat porigin? i
 dec $object_body(pobject) : pobject
 
 syntax preceiveedge = { FRONTIER preceivefrontier, HANDLER porigin }
-syntax preceivebirth = { ORIGIN porigin, FUNCTION porigin, CACHE_OWNER pfncacheowner?, ENTRY nat?, CONSTRUCTOR_ENTRY pdynamicnew?, CALLSITE porigin?, PARENT nat?, PARENTINDEX nat?, PARENTEDGE preceiveedge?, CAUSE pdeclcause, PREFIX nat, PUBLICATION nat, ACTIVE bool }
+syntax pshutdownreceive = { INDEX nat, REGISTRATION porigin, LINE int, TARGET pcalltarget }
+syntax preceivebirth = { ORIGIN porigin, FUNCTION porigin, CACHE_OWNER pfncacheowner?, ENTRY nat?, CONSTRUCTOR_ENTRY pdynamicnew?, SHUTDOWN_ENTRY pshutdownreceive?, CALLSITE porigin?, PARENT nat?, PARENTINDEX nat?, PARENTEDGE preceiveedge?, CAUSE pdeclcause, PREFIX nat, PUBLICATION nat, ACTIVE bool }
 syntax psourcepending = { OPERAND psourceoperand, UNIT nat, HELPER psourcehelper?, EXCEPTION nat, CALLER pcallcontext? }
 
 syntax poutputhandler = { ENTRY pshutdownentry, VALUES pvalue*, ZOH pvalue, NAME preqbytes }

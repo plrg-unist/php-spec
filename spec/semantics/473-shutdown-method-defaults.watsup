@@ -1,0 +1,104 @@
+;; Registration has already cached a public method and copied its arguments.
+;; Its callee has no source callsite; the registration source is separate.
+dec $parameter_shutdown_registration(pstate, porigin, int) : bool
+def $parameter_shutdown_registration(S, porigin, z) = true
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_REGISTER_SHUTDOWN_FUNCTION)
+  -- if $call_line_valid(S, (porigin), z)
+def $parameter_shutdown_registration(S, porigin, z) = false -- otherwise
+dec $parameter_shutdown_first(pvalue) : bool
+def $parameter_shutdown_first(POBJECT n) = true
+def $parameter_shutdown_first(pvalue) = ($string_bytes(pvalue) =/= eps) -- otherwise
+dec $parameter_shutdown_raw(pshutdownentry) : bool
+def $parameter_shutdown_raw(pshutdownentry) = true
+  -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
+  -- if $string_bytes(pvalue) =/= eps
+  -- if pshutdownentry.RAW = eps
+def $parameter_shutdown_raw(pshutdownentry) = true
+  -- if pshutdownentry.CALL.SENT = (NAMED_SENT (KNOWN (PARRAY n))) :: pnamedslot*
+  -- if pshutdownentry.RAW = (parray)
+  -- if |parray.ITEMS| = 2
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (DIRECT pvalue_first)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (DIRECT pvalue_name)
+  -- if $parameter_shutdown_first(pvalue_first)
+  -- if $string_bytes(pvalue_name) =/= eps
+def $parameter_shutdown_raw(pshutdownentry) = false -- otherwise
+dec $parameter_shutdown_receiver(bool, nat?) : bool
+def $parameter_shutdown_receiver(true, eps) = true
+def $parameter_shutdown_receiver(false, (n)) = true
+def $parameter_shutdown_receiver(b, n?) = false -- otherwise
+
+;; Decode only immutable cached fields. This proof deliberately has no
+;; target_function, receiver/argument allocation or registry-row lookup.
+dec $parameter_shutdown_target(pstate, pcalltarget) : (pmethoddesc, porigin, porigin, nat?)?
+def $parameter_shutdown_target(S, HANDLER_METHOD_TARGET b_class porigin_requested ptbytes (SCOPED_TARGET porigin_requested porigin_function porigin_called n_receiver? poperand_selector)) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if $handler_kind_valid(b_class, SCOPED_TARGET porigin_requested porigin_function porigin_called n_receiver? poperand_selector)
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if $parameter_method_source(S, pmethoddesc.FUNCTION) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $ptlc(ptbytes) = $ptlc(pmethoddesc.NAME)
+  -- if ~b_class \/ pmethoddesc.STATIC
+  -- if $parameter_shutdown_receiver(pmethoddesc.STATIC, n_receiver?)
+  -- if $scoped_selector_class(S, poperand_selector) = (porigin_requested)
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
+  -- if $class_origin_matches(S, porigin_called, pclassdesc.NAME, |S.CLASSES|)
+  -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+def $parameter_shutdown_target(S, pcalltarget) = eps -- otherwise
+dec $parameter_shutdown_current(pstate, pfunction) : pshutdownreceive?
+def $parameter_shutdown_current(S, pfunction) = ({INDEX n_index, REGISTRATION pshutdownentry.CALL.SITE, LINE pshutdownentry.CALL.LINE, TARGET pshutdownentry.TARGET})
+  -- if S.CURRENT = (pcallcontext)
+  -- if $shutdown_context_valid(S, pcallcontext)
+  -- if n_index = S.SHUTDOWN.INDEX
+  -- if pshutdownentry = S.SHUTDOWN.ENTRIES[n_index]
+  -- if pshutdownentry.BIRTH = eps /\ pshutdownentry.CAPTURE = eps /\ pshutdownentry.PRODUCER = eps
+  -- if pshutdownentry.CALL.OWNER = eps /\ pshutdownentry.CALL.SELECTION = eps
+  -- if $parameter_shutdown_registration(S, pshutdownentry.CALL.SITE, pshutdownentry.CALL.LINE)
+  -- if $parameter_shutdown_raw(pshutdownentry)
+  -- if $parameter_shutdown_target(S, pshutdownentry.TARGET) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pcallcontext.TARGET = $callback_user_target(pshutdownentry.TARGET)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER) /\ pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if pcallcontext.RECEIVER = n_receiver?
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $parameter_shutdown_current(S, pfunction) = eps -- otherwise
+
+def $parameter_default_recipient(S, pfunction) = true
+  -- if $parameter_shutdown_current(S, pfunction) =/= eps
+def $parameter_receive_shutdown_entry(S) = (pshutdownreceive)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_shutdown_current(S, pfunction) = (pshutdownreceive)
+
+;; INDEX is descriptive after queue release: 444 resets the live index/list.
+;; Captured selection, source and publication supply closed cache authority.
+def $parameter_receive_shutdown_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.SHUTDOWN_ENTRY = (pshutdownreceive)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.CALLSITE = eps /\ preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if $parameter_shutdown_registration(S, pshutdownreceive.REGISTRATION, pshutdownreceive.LINE)
+  -- if $parameter_shutdown_target(S, pshutdownreceive.TARGET) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if preceivebirth.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if preceivebirth.CAUSE.CALLS = [(preceivebirth.FUNCTION, eps, (pmethoddesc.OWNER), (porigin_called))]
+  -- if preceivebirth.CAUSE.AUTOLOAD = eps
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pmethoddesc.FUNCTION, preceivebirth.PUBLICATION)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_requested)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_called)
+def $parameter_receive_method_dispatch(S, preceivebirth) = $parameter_receive_shutdown_witness_valid(S, preceivebirth)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY =/= eps
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $parameter_receive_cache_entry(S, preceivebirth_child)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps
+  -- if preceivebirth.SHUTDOWN_ENTRY =/= eps
+
+;; Other internal/captured method modes cannot borrow a warmed scalar slot
+;; merely because their nullable source site resembles this C callback.
+def $default_nonclosure_recipient(S, pfunction, pdefault) = ($parameter_shutdown_current(S, pfunction) =/= eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = eps
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) =/= eps
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
