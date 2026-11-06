@@ -539,6 +539,21 @@ def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, expression) =
   -- if $string_bytes(pvalue_method) = (ptbytes_method)
   -- if $scope_method(S, porigin_class, ptbytes_method, true, $closure_source_class(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]))) = (pmethoddesc)
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
+def $magic_method_from_callable_producer(S, porigin, expression) = (pmethoddesc.FUNCTION)
+  -- if $magic_method_from_callable_parts(S, porigin, expression) = ((porigin_callback, expression_callback, phpType7*))
+  -- if expression_callback = NExprArray (SEQUENCE ([(NArrayItem ABSENT (NScalarString phpType33_class metadata_class) (BOOLEAN false) (BOOLEAN false) metadata_class_item), (NArrayItem ABSENT (NScalarString phpType33_method metadata_method) (BOOLEAN false) (BOOLEAN false) metadata_method_item)])) metadata_array
+  -- if $origin_child((porigin_callback), [PCFIELD 0, PCINDEX 0, PCFIELD 1]) = (porigin_class_literal)
+  -- if $magic_method_literal_value(S, porigin_class_literal, NScalarString phpType33_class metadata_class) = (pvalue_class)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+  -- if $origin_child((porigin_callback), [PCFIELD 0, PCINDEX 1, PCFIELD 1]) = (porigin_method_literal)
+  -- if $magic_method_literal_value(S, porigin_method_literal, NScalarString phpType33_method metadata_method) = (pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~$api_keyword(ptbytes_class) /\ ~(0 <- ptbytes_class) /\ ~(0 <- ptbytes_method)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
 def $magic_method_from_callable_producer(S, porigin, expression) = eps -- otherwise
 ;; A literal static Closure has one exact permanent source/template even after
 ;; its ephemeral CLOSURE_TARGET owner and parameter frame have retired.

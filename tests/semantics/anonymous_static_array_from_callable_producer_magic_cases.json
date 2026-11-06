@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-static-array-from-callable-effective-old",
+      "source": "<?php\nclass ProducerBase225 { private static function capture($saved,$ignored) { echo \"PRIVATE;\"; return $saved; } public static function run() { global $argument,$owner; echo \"FIRST;\"; return $owner->MiSsInG((\\Closure::fromCallable([\"ProducerChild225\",\"capture\"]))($argument,shift225())); } }\nclass ProducerChild225 extends ProducerBase225 { public static function capture($saved,$ignored) { echo \"PRODUCER:\",self::class,\":\",static::class,\";\"; return $saved; } }\nfunction shift225() { $GLOBALS[\"argument\"]=new New225; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old225 { public function __destruct() { echo \"OLD;\"; } } class New225 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic225 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old225)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old225; $owner=new Magic225; $result=ProducerBase225::run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "ff850ad2730f3e78b712eb5283c45b021b547bb93f2b3a3d15e86abc481ed192",
+      "stdout_template_base64": "RklSU1Q7U0hJRlQ7UFJPRFVDRVI6UHJvZHVjZXJDaGlsZDIyNTpQcm9kdWNlckNoaWxkMjI1O05FVztIQU5ETEVSOk9MRDtPTEQ7T1dORVI7UkVUVVJOO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-array-from-callable-zero-later",
+      "source": "<?php\nclass Zero225 { public static function capture() { echo \"ZERO;\"; return 7; } }\nclass MagicZero225 { public function __call(string $name,array $arguments) { echo ($arguments[0]===1 && $arguments[1]===7)?\"HANDLER;\":\"BAD;\"; return false; } }\n$owner=new MagicZero225; $result=$owner->MiSsInG(1,(\\Closure::fromCallable([\"Zero225\",\"capture\"]))()); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "e40deff98ea4e3a0a342250eb03a12e86460b5ddc7ee0735025b211734a3c499",
+      "stdout_template_base64": "WkVSTztIQU5ETEVSO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
