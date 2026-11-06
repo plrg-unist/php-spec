@@ -51,6 +51,12 @@ unset($object);unset($other);echo $n;echo "Z";
 
 MAGIC_A = b'VirtualPair67:ConsumerA67:ConsumerA67:VirtualPair67::$value::set;'
 MAGIC_B = b'VirtualPair67:ConsumerB67:ConsumerB67:VirtualPair67::$value::set;'
+ALIAS_SOURCE = (b'<?php trait AliasVirtual67 {public int $value {get => 700;'
+                b'set(int $entry){echo "S";$alias=$this;$alias->value=$entry;echo "X";}}}'
+                b'class AliasConsumer67 {use AliasVirtual67;}$object=new AliasConsumer67;$result="keep";'
+                b'echo $object->value;echo ";";try{$result=($object->value="4");}'
+                b'catch(Error $error){echo $error->getMessage();echo "|";echo $result==="keep";echo ";";}'
+                b'unset($error);echo $object->value;echo ";";$shape=(array)$object;echo !$shape;unset($shape);')
 CASES = {
     'virtual-imports-omit-value-storage-alongside-a-real-backed-property':
         (SOURCE, b'700/1011;1:11;'+MAGIC_A+b'H5;N15;1;700;1;1;1014;T'
@@ -92,6 +98,8 @@ CASES = {
          b'trait VirtualLeft67 {use VirtualLeaf67;}\ntrait VirtualRight67 {use VirtualLeaf67;}\n'
          b'trait VirtualJoin67 {use VirtualLeft67,VirtualRight67;}\n'
          b'class VirtualDiamond67 {use VirtualJoin67;}echo "Z";', b'P'),
+    'active-imported-virtual-set-alias-write-errors-without-creating-storage':
+        (ALIAS_SOURCE, b'700;SMust not write to virtual property AliasConsumer67::$value|1;700;1'),
 }
 CONTROLS = {
     'short-set-trait-pair-remains-unsupported':
