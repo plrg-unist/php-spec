@@ -647,6 +647,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | OUTPUT_FINAL_OBJECT_FATAL pobobjectreturn pobdeactivate
   | OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin nat
   | OUTPUT_FINAL_OBJECT_CV pobobjectreturn
+  | OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall porigin nat pobdeactivate?
   | EXECUTOR_RELEASE pexecutorqueue pexecutorstage | EXECUTOR_TICK_RELEASE pexecutortick bool | EXECUTOR_TICK_FATAL pexecutortickfatal bool
 syntax pdirconversion = { NONCE nat, CALLSITE porigin, CALLLINE int, OBJECT nat, RESULT nat*, SELECTION nat?, OWNERDEPTH nat }
 syntax pdircontext = { NONCE nat, CALL pconfigcall, CWD nat*, REQUESTED nat*, CONVERSION nat?, FRAMEOWNER nat, TAIL ptask* }
