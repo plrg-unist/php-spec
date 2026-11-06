@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-this-static-array-from-callable-request-return",
+      "source": "<?php\nfunction peerShift228() { global $late, $owner, $runner; $late = 99; $owner = null; $runner = null; echo 'SHIFT;'; return false; }\nclass PeerCallerBase228 {\n    public $tag = 9;\n    public function run($value) {\n        global $owner;\n        return $owner->MiSsInG(first: false, later: (\n            \\Closure::fromCallable([$this, 'capture'])\n        )($value, peerShift228()));\n    }\n    public static function capture($saved, $marker) {\n        echo 'CAPTURE:', self::class, ':', static::class, ';';\n        return $saved;\n    }\n    public function __destruct() { echo 'THIS-END;'; }\n}\nclass PeerCallerChild228 extends PeerCallerBase228 {}\nclass PeerMagicBase228 {\n    public function __call(string $name, array $arguments) {\n        global $kept; $kept = $arguments['later']; echo 'MAGIC;'; return false;\n    }\n    public function __destruct() { echo 'OWNER;'; }\n}\nclass PeerMagicChild228 extends PeerMagicBase228 {}\n$runner = new PeerCallerChild228;\n$owner = new PeerMagicChild228;\n$prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $kept = null;\n$result = $runner->run($late);\necho 'RETURN;'; echo 'VALUE:', $kept, ';'; unset($kept); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "5f7c14e51def3c900937b4227f9449b249b0864ffb40d428eca14c95061ae4b2",
+      "stdout_template_base64": "U0hJRlQ7Q0FQVFVSRTpQZWVyQ2FsbGVyQmFzZTIyODpQZWVyQ2FsbGVyQ2hpbGQyMjg7TUFHSUM7T1dORVI7VEhJUy1FTkQ7UkVUVVJOO1ZBTFVFOlJFUVVFU1QtT0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
