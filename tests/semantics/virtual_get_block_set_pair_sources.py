@@ -20,16 +20,16 @@ class VirtualPair63 {
     public function __destruct(){echo "D";}
 }
 $object=new VirtualPair63;
-echo $object->value;echo ";";echo (array)$object===[];echo ";";
+echo $object->value;echo ";";$shape=(array)$object;echo !$shape;unset($shape);echo ";";
 $result=($object->value="4");echo $result==="4";echo ";";
-echo $object->value;echo ";";echo (array)$object===[];echo ";";
+echo $object->value;echo ";";$shape=(array)$object;echo !$shape;unset($shape);echo ";";
 try{$object->value=[];}catch(TypeError $error){echo "T";}
 unset($error);
 try{$result=($object->value="8");}catch(Exception $error){echo "C";echo $result==="4";echo ";";}
 unset($error);
 $object=new VirtualPair63;
 $result=($object->value="5");echo $result==="5";echo ";";
-echo $object->value;echo ";";echo (array)$object===[];echo ";";
+echo $object->value;echo ";";$shape=(array)$object;echo !$shape;unset($shape);echo ";";
 unset($object);echo $n;echo "Z";
 '''
 
@@ -45,7 +45,7 @@ CASES = {
          b'$result=($object->value="5");echo $result==="5";echo ";";'
          b'try{$object->value=[];}catch(TypeError $error){echo "T";}'
          b'$answer=[];try{$read=$object->value;}catch(TypeError $error){echo "R";}'
-         b'echo $read;echo ";";echo (array)$object===[];',
+         b'echo $read;echo ";";$shape=(array)$object;echo !$shape;unset($shape);',
          b'G700;E1:5;1;TGR700;1'),
     'virtual-default-rejected-after-successful-physical-hooks':
         (b'<?php echo "P";\nclass VirtualDefault63 {\n public int $value=0 {\n'
