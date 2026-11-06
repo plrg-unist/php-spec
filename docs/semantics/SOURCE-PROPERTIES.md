@@ -356,9 +356,24 @@ path or raw partner leaves the unrelated property's authority intact.
 Six originals and 313 independent exporter/path/clone/slot/receipt-owner/budget
 conditions use the 452-module manifest in the
 [Branching pair review](../../coverage/semantics/branching-trait-exporters-review.json).
-The initial Unsupported and elaboration source cuts remain zero credit. Virtual/short, adapted,
-parented, nominal and wider binding forms remain separate; no descriptor nesting,
-storage, transition or generic Trait linking rule was introduced.
+True virtual Trait GET/ordinary block-SET pairs use the same unadapted export
+paths and atomic raw partners/Params. Both raw bodies lack own-property syntax;
+an imported virtual certificate binds the actual installed Consumer row, raw
+virtual descriptor and unique exporter, without deriving callable clones during
+layout. Existing slot allocation/validation omits the virtual value while keeping
+adjacent backed slots; descriptor UNINITIALIZED metadata does not allocate a
+PROP_INITIAL slot. Direct/branching Consumers retain raw Trait code and distinct
+lexical/called scopes, original string input, typed reception and no-write effects
+through callback throw/retry. GET return-type and raw Trait default, body and builtin
+variance errors retain the existing physical compile priority. Imported virtual pair
+classification prevents entry into the admitted virtual GET override and SET
+inheritance paths through empty raw-origin lists.
+Nine new original-source agreements and 279 independent source/no-slot/clone/
+receipt-owner/budget conditions use the 453-module manifest in the
+[Virtual Trait pair review](../../coverage/semantics/virtual-trait-pairs-review.json).
+The initial Unsupported and elaboration source cuts remain zero credit. Short,
+adapted, parented, nominal and wider binding forms remain separate; no descriptor
+nesting, storage, transition or generic Trait linking rule was introduced.
 
 Selected sole implicit virtual SET hooks also compile on a parentless class,
 with unchanged inheritance. Actual source ABSENT and descriptor PROP_UNINITIALIZED
