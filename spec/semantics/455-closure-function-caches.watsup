@@ -804,7 +804,8 @@ def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddes
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE porigin porigin_site porigin_called eps)
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
-  -- if pconstantclosure.SITE = porigin_site /\ pconstantclosure.DECL = PORIGIN 0 pcpath_decl
+  -- if pconstantclosure.SITE = porigin_site
+  -- if pconstantclosure.DECL = PORIGIN 0 pcpath_decl
   -- if $global_constant_scope(S, 0) = (true, eps)
   -- if $global_constant_callable_header(S, pconstantclosure)
   -- if $constant_callable_record_valid(S, pconstantclosure)
