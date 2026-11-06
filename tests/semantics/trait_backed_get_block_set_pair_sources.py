@@ -86,9 +86,6 @@ CONTROLS = {
     'short-set-trait-pair-remains-unsupported':
         (b'<?php trait ShortTrait64 {public int $value=3 {get => $this->value;set => $value+1;}}'
          b'class ShortConsumer64 {use ShortTrait64;}echo "X";', b''),
-    'nested-trait-pair-remains-unsupported':
-        (b'<?php trait InnerTrait64 {public int $value=3 {set(int $entry){$this->value=$entry;}get => $this->value;}}'
-         b'trait OuterTrait64 {use InnerTrait64;}class NestedConsumer64 {use OuterTrait64;}echo "X";', b''),
     'parented-consumer-trait-pair-remains-unsupported':
         (b'<?php trait ParentTrait64 {public int $value=3 {set(int $entry){$this->value=$entry;}get => $this->value;}}'
          b'class ParentBase64 {}class ParentedConsumer64 extends ParentBase64 {use ParentTrait64;}echo "X";', b''),

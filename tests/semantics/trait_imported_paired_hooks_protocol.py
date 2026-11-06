@@ -679,7 +679,7 @@ DERIVED = ['S_missing_set = S[.FUNCTIONS = [pfunction_get_source]]',
  '$property_hook_trait_export(S_outer_resolved,pclassdesc_consumer[.KIND = "trait"],ppropertydesc_source) = '
  '(ppropertydesc_source)',
  '$property_hook_pair_origins(S_outer_resolved,ppropertydesc_source) = porigin_get_source :: porigin_set_source '
- ':: eps /\\ ~$property_hook_trait_import_supported(S_outer_resolved,pclassdesc_consumer[.KIND = '
+ ':: eps /\\ $property_hook_trait_import_supported(S_outer_resolved,pclassdesc_consumer[.KIND = '
  '"trait"],ppropertydesc_source)']
 
 SET_DERIVED = ['S_missing_get = S[.FUNCTIONS = [pfunction_set_source]]',
