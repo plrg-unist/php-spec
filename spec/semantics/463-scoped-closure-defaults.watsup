@@ -62,9 +62,9 @@ dec $parameter_receive_scoped_entry(pstate, preceivebirth) : bool
 def $parameter_receive_scoped_entry(S, preceivebirth) = true
   -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = (pfunction)
   -- if $parameter_scoped_source(S, pfunction)
-  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_lexical?, porigin_called?) :: pdeclcalls
-  -- if porigin_lexical? = (porigin_lexical)
-  -- if porigin_called? = (porigin_called)
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_entry_lexical?, porigin_entry_called?) :: pdeclcalls
+  -- if porigin_entry_lexical? = (porigin_lexical)
+  -- if porigin_entry_called? = (porigin_called)
   -- if $class_at(S.CLASSES, porigin_lexical) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
   -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc_called)
@@ -80,8 +80,8 @@ def $parameter_receive_scoped_entry(S, preceivebirth) = true
   -- if preceivebirth.CACHE_OWNER =/= eps /\ $default_cache_birth_valid(S, preceivebirth)
 def $parameter_receive_scoped_entry(S, preceivebirth) = false -- otherwise
 def $parameter_receive_closure_entry(S, preceivebirth) = $parameter_receive_scoped_entry(S, preceivebirth)
-  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_lexical?, porigin_called?) :: pdeclcalls
-  -- if porigin_lexical? =/= eps
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_entry_lexical?, porigin_entry_called?) :: pdeclcalls
+  -- if porigin_entry_lexical? =/= eps
   -- if preceivebirth.CALLSITE = (porigin_site)
   -- if ~$closure_call_copy_site(S, porigin_site)
 
