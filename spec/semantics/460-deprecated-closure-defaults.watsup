@@ -47,8 +47,10 @@ def $parameter_closure_family(S, porigin) = true
   -- if $parameter_closure_calls(S.CLOSURECALLCACHES, porigin)
 def $parameter_closure_family(S, porigin) = false -- otherwise
 
-dec $parameter_closure_current(pstate, pfunction) : bool
-def $parameter_closure_current(S, pfunction) = true
+;; A captured read keeps its selected callee when a callback changes the family.
+;; Cache reception and binding additionally require the whole family below.
+dec $parameter_closure_selected(pstate, pfunction) : bool
+def $parameter_closure_selected(S, pfunction) = true
   -- if $parameter_closure_source(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
@@ -59,6 +61,11 @@ def $parameter_closure_current(S, pfunction) = true
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps /\ $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
   -- if $parameter_closure_shared_object(S, pfunction.ORIGIN, n)
+def $parameter_closure_selected(S, pfunction) = false -- otherwise
+
+dec $parameter_closure_current(pstate, pfunction) : bool
+def $parameter_closure_current(S, pfunction) = true
+  -- if $parameter_closure_selected(S, pfunction)
   -- if $parameter_closure_family(S, pfunction.ORIGIN)
 def $parameter_closure_current(S, pfunction) = false -- otherwise
 
@@ -70,14 +77,13 @@ def $parameter_receive_closure_entry(S, preceivebirth) = true
   -- if preceivebirth.CALLSITE = (porigin_site)
   -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
   -- if $declaration_invocation(S, pfunction, porigin_site, eps, eps, pdeclcalls)
-  -- if $parameter_closure_family(S, pfunction.ORIGIN)
 def $parameter_receive_closure_entry(S, preceivebirth) = false -- otherwise
 
 def $parameter_receive_deprecated_entry(S, preceivebirth) = $parameter_receive_closure_entry(S, preceivebirth)
   -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) =/= eps
-def $parameter_receive_cache_entry(S, preceivebirth) = $parameter_receive_closure_entry(S, preceivebirth)
+def $parameter_receive_cache_entry(S, preceivebirth) = ($parameter_receive_closure_entry(S, preceivebirth) /\ $parameter_closure_family(S, preceivebirth.FUNCTION))
   -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) =/= eps
-def $parameter_default_recipient(S, pfunction) = $parameter_closure_current(S, pfunction)
+def $parameter_default_recipient(S, pfunction) = $parameter_closure_selected(S, pfunction)
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) =/= eps
 
 ;; Both resolved names matter after a handler publishes a namespace shadow.
