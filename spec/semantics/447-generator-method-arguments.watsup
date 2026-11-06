@@ -134,11 +134,47 @@ def $generator_iterator_site(S, pconfigcall) = true
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
 def $generator_iterator_site(S, pconfigcall) = false -- otherwise
 
+;; Aggregate acquisition uses the real shared getIterator/return protocol.
+;; Its source history is nonowning; active entry still checks the real receiver.
+dec $generator_aggregate_site(pstate, pconfigcall) : bool
+def $generator_aggregate_site(S, pconfigcall) = true
+  -- if $generator_iterator_site(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
+  -- if text_method <- ["send", "rewind", "valid", "current", "key", "next", "getreturn"]
+  -- if pconfigcall.OWNER = (n_receiver)
+  -- if S.OBJECTS[n_receiver] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if ~pgenerator.PENDING_INIT /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps /\ pgenerator.CREATION = eps
+def $generator_aggregate_site(S, pconfigcall) = false -- otherwise
+def $config_aggregate_source(S, pconfigaggregate) = true
+  -- if $generator_aggregate_site(S, pconfigaggregate.CALL)
+  -- if pconfigaggregate.CALL.INDEX = 0 /\ pconfigaggregate.CALL.SENT = eps
+  -- if ~pconfigaggregate.CALL.NAMED /\ pconfigaggregate.CALL.PACKS = eps
+  -- if pconfigaggregate.CALL.OWNER = (n_receiver)
+  -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_receiver]][.ORIGIN = (pconfigaggregate.CALL.SITE)]
+  -- if $config_pending_valid(S_history, pconfigaggregate.CALL, true)
+  -- if $intrinsic_argument(S, pconfigaggregate.CALL.SITE, 0) = ((expression, true, eps, PORIGIN n_source pcpath, z))
+  -- if pconfigaggregate.INPUT = VARIABLE ptbytes z
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $unpack_cv_at(pcode, pcunit, pcpath) = (ptbytes)
+dec $generator_aggregate_iterator(pstate, pconfigiterator) : bool
+def $generator_aggregate_iterator(S, pconfigiterator) = true
+  -- if $generator_aggregate_site(S, pconfigiterator.CALL)
+  -- if pconfigiterator.PRODUCER = (n_aggregate)
+  -- if $config_iterator_producer_valid(S, pconfigiterator)
+  -- if $(pconfigiterator.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconfigiterator.OBJECT] = INSTANCE porigin_data
+  -- if $effective_method(S, porigin_data, $ptascii("current"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+def $generator_aggregate_iterator(S, pconfigiterator) = false -- otherwise
+
 def $config_iterator_history(S, pconfigiterator) = true
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
   -- if pconfigiterator.CALL.INDEX = 0 /\ pconfigiterator.CALL.SENT = eps
   -- if ~pconfigiterator.CALL.NAMED /\ pconfigiterator.CALL.PACKS = eps
-  -- if pconfigiterator.PRODUCER = eps
+  -- if pconfigiterator.PRODUCER = eps \/ $generator_aggregate_iterator(S, pconfigiterator)
   -- if pconfigiterator.INPUT = VARIABLE ptbytes z
   -- if pconfigiterator.CALL.OWNER = (n_receiver)
   -- if S_history = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_receiver]][.ORIGIN = (pconfigiterator.CALL.SITE)]
@@ -161,7 +197,7 @@ def $config_iterator_copied_header(S, pconfigcall) = true
 ;; This permission adds no owner and does not retain a retired source variable.
 def $generator_iterator_data(S, pconfigiterator) = true
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
-  -- if pconfigiterator.PRODUCER = eps
+  -- if pconfigiterator.PRODUCER = eps \/ $generator_aggregate_iterator(S, pconfigiterator)
   -- if pconfigiterator.INPUT = VARIABLE ptbytes z
   -- if $config_iterator_input(S, pconfigiterator)
   -- if ($destructor_method(S, pconfigiterator.OBJECT) = eps /\ $node_children(S, HOBJECT pconfigiterator.OBJECT) = eps) \/ $config_iterator_finalizer(S, pconfigiterator.OBJECT)
