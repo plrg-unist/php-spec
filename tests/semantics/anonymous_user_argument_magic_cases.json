@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-required-user-family-instance",
+      "source": "<?php\nfunction identity203($saved) { return $saved; }\nfunction first203($saved, $ignored) { return $saved; }\nfunction third203($a, $b, $saved) { return $saved; }\nclass Base203 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived203 extends Base203 {}\n$owner = new Derived203; $child = $owner->MiSsInG(identity203(null), first203(true, 0)); unset($owner); echo ($child->saved[0] === null && $child->saved[1] === true) ? \"OK;\" : \"BAD;\"; unset($child);\n$owner = new Derived203; $child = $owner->MiSsInG(identity203(false), identity203(7)); unset($owner); echo ($child->saved[0] === false && $child->saved[1] === 7) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "a36571c25d3d755a1adae8d5bb2c2dc1751310c4f7e45eb0873c4c920e375373",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-required-user-family-static",
+      "source": "<?php\nfunction identity203($saved) { return $saved; }\nfunction first203($saved, $ignored) { return $saved; }\nfunction third203($a, $b, $saved) { return $saved; }\nclass Base203 { public static function __callStatic(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } }\nclass Derived203 extends Base203 {}\n$prefix = \"REQUEST\"; $request = $prefix . \"-NEW\"; $child = Derived203::MiSsInG(first203(-0.0, 1), identity203($request)); echo ((string)$child->saved[0] === \"-0\" && $child->saved[1] === \"REQUEST-NEW\") ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "83631e0d26d47dfea367e2f669a7c076fcc77263e8e78463d4329d3fc386878e",
+      "stdout_template_base64": "T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-required-user-family-named",
+      "source": "<?php\nfunction identity203($saved) { return $saved; }\nfunction first203($saved, $ignored) { return $saved; }\nfunction third203($a, $b, $saved) { return $saved; }\nclass Base203 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived203 extends Base203 {}\n$owner = new Derived203; $child = $owner->MiSsInG(first:third203(0, 1, \"BYTE\\x80\"), later:first203(1.5, 0)); unset($owner); echo ($child->saved[\"first\"] === \"BYTE\\x80\" && $child->saved[\"later\"] === 1.5) ? \"OK;\" : \"BAD;\"; unset($child);\n$owner = new Derived203; $child = $owner->MiSsInG(first:identity203(42)); unset($owner); echo $child->saved[\"first\"] === 42 ? \"ONE;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "4163fa18b96ca83e57fefa0297e7d1ece796912681ed61585e2df34f792dd360",
+      "stdout_template_base64": "T1dORVI7T0s7Q0hJTEQ7T1dORVI7T05FO0NISUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-required-user-pending-leaf",
+      "source": "<?php\nfunction produce203($saved, $ignored) { echo \"PRODUCER;\"; return $saved; }\nfunction shift203() { global $argument, $owner; $argument = new New203; $owner = null; echo \"SHIFT;\"; return null; }\nclass Old203 { public function __destruct() { echo \"OLD;\"; } }\nclass New203 { public function __destruct() { echo \"NEW;\"; } }\nclass Base203 { public function __call(string $name, array $arguments) { global $argument; $argument = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived203 extends Base203 {}\n$argument = new Old203; $owner = new Derived203; $child = $owner->MiSsInG(produce203($argument, shift203()), 1.5); echo \"RETURN;\"; echo $child->saved[0] instanceof Old203 ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "35fdebb4323f71d1ce8c4386b9a4f88c7a712f22c0554fbf3fc42b22b25487cb",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7TkVXO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7T0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
