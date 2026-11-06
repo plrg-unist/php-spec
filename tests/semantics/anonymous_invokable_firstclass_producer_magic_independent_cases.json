@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-fresh-invokable-fcc-request-return-this",
+      "source": "<?php\nfunction peerShift219() { global $late, $owner; $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerProducerBase219 { public string $text; public function __construct($text) { $this->text = $text; echo 'CTOR;'; return false; } public function __invoke($saved, $marker) { $this->text = $saved; echo 'INVOKE:', self::class, ':', static::class, ';'; return $this; } public function __destruct() { echo 'THIS-END;'; } } class PeerProducerChild219 extends PeerProducerBase219 {}\nclass PeerBase219 { public function __call(string $name, array $arguments) { global $kept, $alias; $alias = 0; $kept = $arguments['first']; echo 'MAGIC;'; return false; } public function __destruct() { echo 'OWNER;'; } } class PeerDerived219 extends PeerBase219 {}\n$owner = new PeerDerived219; $prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $alias =& $late; $kept = null;\n$result = $owner->MiSsInG(first: ((new PeerProducerChild219($late))(...))($late, peerShift219()), later: false);\necho 'RETURN;'; echo 'VALUE:', $kept->text, ';'; unset($kept); unset($alias); unset($late); echo 'AFTER;';\n",
+      "source_sha256": "56df119cddd0e419eb534eb74a7359f61b1efaad9d0be285d3a53065f1e2d643",
+      "stdout_template_base64": "Q1RPUjtTSElGVDtJTlZPS0U6UGVlclByb2R1Y2VyQmFzZTIxOTpQZWVyUHJvZHVjZXJDaGlsZDIxOTtNQUdJQztPV05FUjtSRVRVUk47VkFMVUU6UkVRVUVTVC1PTEQ7VEhJUy1FTkQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
