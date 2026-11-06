@@ -35,7 +35,6 @@ def $property_isset_empty(S, ppropertyisset) = true
 def $property_isset_source(S, ppropertyisset) = true
   -- if $property_isset_empty(S, ppropertyisset)
 
-dec $property_empty_get_source(pstate, pmethoddesc) : bool
 ;; Only authenticated empty preparation defers the ordinary getter interception.
 def $property_empty_prepare(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT true z) :: ptask_tail*

@@ -1,4 +1,5 @@
 ;; Terminal isset retains the receiver while its one-name callback runs.
+dec $property_empty_get_source(pstate, pmethoddesc) : bool
 dec $property_empty_pending(pstate) : bool
 def $property_empty_pending(S) = false -- otherwise
 dec $property_isset_empty(pstate, ppropertyisset) : bool
@@ -113,6 +114,24 @@ def $property_isset_function(S, ppropertyisset) = (pfunction)
   -- if $target_function(S, METHOD_TARGET ppropertyisset.OBJECT ppropertyisset.METHOD) = (pfunction)
 def $property_isset_function(S, ppropertyisset) = eps -- otherwise
 
+;; This terminal composition authenticates both existing method producers,
+;; while the operation invokes only the bool-returning Isset method.
+dec $property_isset_bool_pair(pstate, ppropertyisset) : bool
+def $property_isset_bool_pair(S, ppropertyisset) = true
+  -- if $property_isset_source(S, ppropertyisset)
+  -- if ~$property_isset_empty(S, ppropertyisset)
+  -- if $property_isset_method(S, ppropertyisset.OBJECT) = (pmethoddesc_isset)
+  -- if pmethoddesc_isset.FUNCTION.ORIGIN = ppropertyisset.METHOD
+  -- if $property_magic_method_source(S, pmethoddesc_isset, "__isset")
+  -- if $property_get_method(S, ppropertyisset.OBJECT) = (pmethoddesc_get)
+  -- if pmethoddesc_get.OWNER = pmethoddesc_isset.OWNER
+  -- if $property_empty_get_source(S, pmethoddesc_get)
+  -- if pfunction_get = pmethoddesc_get.FUNCTION
+  -- if $target_function(S, METHOD_TARGET ppropertyisset.OBJECT pfunction_get.ORIGIN) = (pfunction_get)
+  -- if $property_effective_desc(S, ppropertyisset.OBJECT, ppropertyisset.NAME) = (ppropertydesc)
+  -- if ~$property_hook_unset_declared(S, ppropertyisset.OBJECT, ppropertydesc.KEY)
+def $property_isset_bool_pair(S, ppropertyisset) = false -- otherwise
+
 dec $property_isset_valid(pstate, ppropertyisset) : bool
 def $property_isset_valid(S, ppropertyisset) = true
   -- if $property_isset_source(S, ppropertyisset)
@@ -126,7 +145,7 @@ def $property_isset_valid(S, ppropertyisset) = true
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
   -- if $property_unset_access_valid(S, ppropertyisset.OBJECT, ppropertyisset.NAME, ppropertydesc, $property_resolve_scope(S, ppropertyisset.OBJECT, ppropertyisset.NAME, $closure_source_class(S, ppropertyisset.SITE)))
   -- if ~$property_hook_declared(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
-  -- if $property_get_method(S, ppropertyisset.OBJECT) = eps \/ $property_isset_untyped(S, ppropertyisset)
+  -- if $property_get_method(S, ppropertyisset.OBJECT) = eps \/ $property_isset_untyped(S, ppropertyisset) \/ $property_isset_bool_pair(S, ppropertyisset)
 def $property_isset_valid(S, ppropertyisset) = false -- otherwise
 
 ;; Only pending entry reads the CV; the entered callback retains its selection.
@@ -141,7 +160,7 @@ def $property_isset_capture(S, ppropertyisset) = true
 def $property_isset_capture(S, ppropertyisset) = false -- otherwise
 
 ;; Terminal isset never invokes __get. Defer its ordinary read interception
-;; only for this authenticated CV/name/source front and the untyped callback.
+;; only for this authenticated terminal source and its admitted callback.
 def $property_empty_prepare(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin)) :: (ISSET_RESULT false z) :: ptask_tail*
   -- if S.ORIGIN = (porigin) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
@@ -158,7 +177,7 @@ def $property_empty_prepare(S) = true
   -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertyisset = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
-  -- if $property_isset_untyped(S, ppropertyisset) /\ $property_isset_capture(S, ppropertyisset)
+  -- if ($property_isset_untyped(S, ppropertyisset) \/ $property_isset_bool_pair(S, ppropertyisset)) /\ $property_isset_capture(S, ppropertyisset)
 
 dec $property_isset_tail(pstate, ppropertyisset, ptask*) : bool
 def $property_isset_tail(S, ppropertyisset, (PROPERTY_ISSET_RESULT ppropertyisset) :: ptask_tail*) = $property_isset_valid(S, ppropertyisset)
