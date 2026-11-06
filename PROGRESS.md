@@ -764,6 +764,17 @@ Unsupported retain zero credit. Actual current461 shared-interface load/inventor
 pass without source/front or older replay.
 [Iterator reentry review](coverage/semantics/generator-iterator-reentry-review.json).
 
+I134 connects two actual running Generators during native argument collection:
+borrowed source NEXT invokes selected next/send. A default-old423 operation-frame
+scope and local447 dual-pair/source proof authorize only saved target phase
+history; both physical IDs/roots and global pair checks remain real. Source
+CV/cache/DATA, ordinary-prefix/value and final cleanup bounds are unchanged.
+Native2/source2 and independent N135/E139=274 phase/pair/ownership/budget checks
+pass first attempt. The current load of 461 modules and inventory pass at the
+accepted main cut; private source/front cuts remain separate.
+No I133 or older campaign is replayed; Fiber transfer rules and all holds remain.
+[Source reentry review](coverage/semantics/generator-source-reentry-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -3174,10 +3185,11 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| CLASS216 | Public ordinary USER This direct calls and immediate FCCs using authentic saved caller receiver/scope and real capture/outer args; preserve caller-held ownership and source limits. |
 | ATTR74 | Direct named CV/This UNSET of admitted backed hook pairs through canonical descriptor keys, visibility-first denial and hooked-property Error; preserve indirect refusal and storage/owner laws. |
 | COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
-| I134 | Distinct initialized borrowed source Generator reentry into the selected target, with two genuine running resumers and descriptor history proof; preserve physical pair/owner and held bounds. |
+| GC68 | Positive unmatched native reference counts for exact normal sent-cell raw NAME overwrites, preserving physical graph/debt laws and authentic release, GC snapshots and shutdown behavior; preserve explicit refusals elsewhere. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

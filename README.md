@@ -8436,6 +8436,14 @@ graph. Actual state and entry admission stay unchanged. Frozen outer selection,
 prior argv, raw current and DATA keep their separate lifetimes.
 [Iterator reentry review](coverage/semantics/generator-iterator-reentry-review.json).
 
+An initialized named Generator used as an argument source may resume the
+selected receiver during borrowed NEXT. Both real resumers remain in the stack;
+CV and DATA retain the source Gen; its cache separately owns the yielded object.
+Local pair and source-task proofs authorize saved target phase history, leaving the
+physical graph and global two-ID checks unchanged. Native error priority, copied
+argv retirement and cache-only lifetime use the existing cleanup laws.
+[Source reentry review](coverage/semantics/generator-source-reentry-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

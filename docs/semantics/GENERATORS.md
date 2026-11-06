@@ -236,6 +236,20 @@ body helpers and restored Fiber VM laws retain their own authority; the direct
 source observations here cover normal callback reentry and a nested body throw.
 [Iterator reentry review](../../coverage/semantics/generator-iterator-reentry-review.json).
 
+A distinct initialized named by-value Generator source can next/send the
+selected receiver from its actual borrowed NEXT body. The two RUNNING records
+retain two real resumer IDs: the ordinary target operation and the borrowed source
+operation, which adds no DATA owner. Local target-pair validation and the exact
+borrowed-source/CONFIG_GENERATOR task proof authorize a view changing only the
+target phase for saved descriptor checks. A default-old operation-frame scope
+hook lets the unchanged full real pair validator check that borrowed operation;
+the ordinary saved-frame validator uses the same exact endpoint view. Finite
+ordinary named-helper folds retain real source/caller links. Complete graph,
+source CV/DATA/cache multiplicity, normalized argv, entry and final DATA/value
+policies remain unchanged. The existing Fiber transfer domain is unchanged;
+no singleton proof is synthesized and no broader transfer credit is claimed.
+[Source reentry review](../../coverage/semantics/generator-source-reentry-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does
