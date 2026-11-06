@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-literal-closure-family-instance",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$owner = new Derived206; $child = $owner->MiSsInG((static function() { echo \"PRODUCER;\"; return null; })(), (static function($saved,$ignored) { echo \"PRODUCER;\"; return $saved; })(true, 0)); unset($owner); echo ($child->saved[0] === null && $child->saved[1] === true) ? \"OK;\" : \"BAD;\"; unset($child);\n$owner = new Derived206; $child = $owner->MiSsInG((static function($saved) { echo \"PRODUCER;\"; return $saved; })(false), (static function($saved) { echo \"PRODUCER;\"; return $saved; })(7)); unset($owner); echo ($child->saved[0] === false && $child->saved[1] === 7) ? \"OK;\" : \"BAD;\"; unset($child);\necho \"AFTER;\";\n",
+      "source_sha256": "14a0f56f426b71d0758b80b4be4ba4ca9a1d1c29b6aa7b111489dec1b26e5516",
+      "stdout_template_base64": "UFJPRFVDRVI7UFJPRFVDRVI7T1dORVI7T0s7Q0hJTEQ7UFJPRFVDRVI7UFJPRFVDRVI7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-family-static",
+      "source": "<?php\nclass Base206 { public static function __callStatic(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } }\nclass Derived206 extends Base206 {}\n$prefix = \"REQUEST\"; $request = $prefix . \"-NEW\"; $child = Derived206::MiSsInG((static function($saved) { echo \"PRODUCER;\"; return $saved; })($request), (static function($saved,$ignored) { echo \"PRODUCER;\"; return $saved; })(-0.0,0)); echo ($child->saved[0] === \"REQUEST-NEW\" && (string)$child->saved[1] === \"-0\") ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "114f64832cf83abf2d1cf6f4d29359036f2510575cbf3234652e4553dd787fc2",
+      "stdout_template_base64": "UFJPRFVDRVI7UFJPRFVDRVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-family-named",
+      "source": "<?php\nclass Base206 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$owner = new Derived206; $child = $owner->MiSsInG(first:(static function($saved) { echo \"PRODUCER;\"; return $saved; })(\"BYTE\\x80\"), later:(static function($saved,$ignored) { echo \"PRODUCER;\"; return $saved; })(1.5,0)); unset($owner); echo ($child->saved[\"first\"] === \"BYTE\\x80\" && $child->saved[\"later\"] === 1.5) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "92baeee3af257a029cf6a79b9eeb066ffa51b4acd3d873a24e8262774f87f9ec",
+      "stdout_template_base64": "UFJPRFVDRVI7UFJPRFVDRVI7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-literal-closure-pending-leaf",
+      "source": "<?php\nfunction shift206() { global $argument, $owner; $argument = new New206; $owner = null; echo \"SHIFT;\"; return null; }\nclass Old206 { public function __destruct() { echo \"OLD;\"; } }\nclass New206 { public function __destruct() { echo \"NEW;\"; } }\nclass Base206 { public function __call(string $name, array $arguments) { global $argument; $argument = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived206 extends Base206 {}\n$argument = new Old206; $owner = new Derived206; $child = $owner->MiSsInG((static function($saved,$ignored) { echo \"PRODUCER;\"; return $saved; })($argument,shift206()), null); echo \"RETURN;\"; echo $child->saved[0] instanceof Old206 ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "c9fc66dd4d505c1add7fec97481a662b3ed052ad48be1cce6348eac5d33188d3",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7TkVXO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7T0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
