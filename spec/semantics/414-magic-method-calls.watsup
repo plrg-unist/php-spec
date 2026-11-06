@@ -90,6 +90,7 @@ dec $magic_method_this_call(expression) : bool
 dec $magic_method_this_source(pstate, pcallcontext?, porigin, ptbytes, phpType7*) : (nat, porigin, pmethoddesc)?
 dec $magic_method_this_producer(pstate, pcallcontext?, porigin, expression) : (nat, porigin, pmethoddesc)?
 dec $magic_method_this_invokable_call(expression) : bool
+dec $magic_method_this_invokable_source(pstate, pcallcontext?, porigin, phpType7*) : (nat, porigin, pmethoddesc)?
 dec $magic_method_this_invokable_producer(pstate, pcallcontext?, porigin, expression) : (nat, porigin, pmethoddesc)?
 dec $magic_method_context_call(expression) : bool
 dec $magic_method_context_source(pstate, pcallcontext?, porigin, expression) : bool
@@ -552,14 +553,9 @@ def $magic_method_this_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFu
 def $magic_method_this_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 ;; Implicit This invocation uses effective __invoke, never CV/history lookup.
 def $magic_method_this_invokable_call(NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
+def $magic_method_this_invokable_call(NExprFuncCall (NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = $direct_this(BYTES text_this)
 def $magic_method_this_invokable_call(expression) = false -- otherwise
-def $magic_method_this_invokable_producer(S, (pcallcontext), PORIGIN n_unit pcpath, NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
-  -- if $direct_this(BYTES text_this)
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE phpType7*) metadata)
-  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
-  -- if $code_at(S.CODE, n_unit) = (pcode)
-  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
-  -- if $dynamic_fixed_name(S, PORIGIN n_unit pcpath) = eps
+def $magic_method_this_invokable_source(S, (pcallcontext), PORIGIN n_unit pcpath, phpType7*) = ((n_this, porigin_class, pmethoddesc))
   -- if pcallcontext.RECEIVER = (n_this)
   -- if pcallcontext.CALLED_CLASS = (porigin_class)
   -- if $object_class_origin(S, n_this) = (porigin_class)
@@ -573,6 +569,20 @@ def $magic_method_this_invokable_producer(S, (pcallcontext), PORIGIN n_unit pcpa
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
   -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
+def $magic_method_this_invokable_source(S, pcallcontext?, porigin, phpType7*) = eps -- otherwise
+def $magic_method_this_invokable_producer(S, (pcallcontext), PORIGIN n_unit pcpath, NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
+  -- if $direct_this(BYTES text_this)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE phpType7*) metadata)
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $dynamic_fixed_name(S, PORIGIN n_unit pcpath) = eps
+  -- if $magic_method_this_invokable_source(S, (pcallcontext), PORIGIN n_unit pcpath, phpType7*) = ((n_this, porigin_class, pmethoddesc))
+def $magic_method_this_invokable_producer(S, pcallcontext?, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata) = ((n_this, porigin_class, pmethoddesc))
+  -- if $direct_this(BYTES text_this)
+  -- if $magic_method_firstclass_site(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprFuncCall (NExprVariable (BYTES text_this) metadata_this) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_capture) (SEQUENCE phpType7*) metadata)
+  -- if $dynamic_fixed_name(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0])) = eps
+  -- if $magic_method_this_invokable_source(S, pcallcontext?, PORIGIN n_unit (pcpath ++ [PCFIELD 0]), phpType7*) = ((n_this, porigin_class, pmethoddesc))
 def $magic_method_this_invokable_producer(S, pcallcontext?, porigin, expression) = eps -- otherwise
 ;; A bare object call uses effective __invoke, without lexical-private redirect.
 def $magic_method_invokable_call(NExprFuncCall (NExprNew phpType28 phpType6 metadata_new) (SEQUENCE phpType7*) metadata) = true

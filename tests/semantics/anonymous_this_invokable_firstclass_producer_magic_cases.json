@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-this-invoke-fcc-old",
+      "source": "<?php\nclass InvokeBase221 { public $tag=9; public function __destruct() { echo \"THIS-END;\"; } public function __invoke($saved,$ignored) { echo \"INVOKE:\",self::class,\":\",static::class,\";\"; return $saved; } }\nclass InvokeScope221 extends InvokeBase221 { public function run() { global $owner,$argument; return $owner->MiSsInG(($this(...))($argument,shift221())); } } class InvokeChild221 extends InvokeScope221 {}\nfunction shift221() { $GLOBALS[\"argument\"]=new New221; $GLOBALS[\"owner\"]=null; $GLOBALS[\"runner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old221 { public function __destruct() { echo \"OLD;\"; } } class New221 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic221 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old221)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old221; $owner=new Magic221; $runner=new InvokeChild221; $result=$runner->run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "6390b456fb0bad31e8a0bdeebaed34226d06b2a096750c2dad2bb7a7366af5ff",
+      "stdout_template_base64": "U0hJRlQ7SU5WT0tFOkludm9rZUJhc2UyMjE6SW52b2tlQ2hpbGQyMjE7TkVXO0hBTkRMRVI6T0xEO09MRDtPV05FUjtUSElTLUVORDtSRVRVUk47QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-this-invoke-fcc-zero",
+      "source": "<?php\nclass ZeroBase221 { public $tag=9; public function run() { global $owner; return $owner->MiSsInG(first:($this(...))(),later:7); } public function __destruct() { echo \"THIS-END;\"; } }\nclass ZeroChild221 extends ZeroBase221 { public function __invoke() { $GLOBALS[\"runner\"]=null; echo \"CHILD;\"; return $this; } }\nclass ZeroMagic221 { public function __call(string $name,array $arguments) { $GLOBALS[\"owner\"]=null; echo \"HANDLER:\",($arguments[\"first\"] instanceof ZeroChild221 && $arguments[\"later\"]===7)?\"SELF;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$owner=new ZeroMagic221; $runner=new ZeroChild221; $result=$runner->run(); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "2416505f13b48e7ec2a15e757afa0be03415fad355bbac41112a70d9bb44000f",
+      "stdout_template_base64": "Q0hJTEQ7SEFORExFUjpTRUxGO09XTkVSO1RISVMtRU5EO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
