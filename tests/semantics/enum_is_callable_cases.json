@@ -1992,5 +1992,50 @@
     "expected_normal_stdout": "1:TargetCycle157|",
     "purpose": "A std self-cycle stays outside the new acyclic output family, including retained post-write edge counts; native-normal control retains zero agreement.",
     "model_timeout_seconds": 90
+  },
+  {
+    "id": "is-callable-array-output-drain",
+    "source": "<?php\nfunction Target158(int $required) { echo 'BAD-array-target|'; strrev('unentered'); }\n$failure158 = new Exception('array-child158');\nclass ArrayChild158 {\n    public $label;\n    public function __construct($label) { $this->label = $label; }\n    public function __destruct() {\n        global $alias158, $mode158, $drops158, $failure158;\n        $drops158 = $drops158 + 1;\n        if ($alias158 === null) { echo 'child:', $this->label, ':NULL|'; }\n        else { echo 'child:', $this->label, ':', $alias158, '|'; }\n        $inner158 = is_callable('NotPublished158::unused', true, $innerName158);\n        echo 'inner:', (int)$inner158, ':', $innerName158, '|';\n        if ($this->label === 'A' && $mode158 === 'rebind') {\n            unset($GLOBALS['name158'], $GLOBALS['value158']);\n            $GLOBALS['name158'] = ['NEW-OUTPUT'];\n            $GLOBALS['value158'] = 'NEW-INPUT';\n            $alias158 = 'CHILD';\n        }\n        if ($this->label === 'A' && $mode158 === 'throw') { throw $failure158; }\n    }\n}\n$mode158 = 'normal'; $drops158 = 0;\n$name158 = [new ArrayChild158('A'), [new ArrayChild158('B')]];\n$alias158 =& $name158;\n$value158 = 'Absent158';\n$result158 = is_callable($value158, false, $name158);\necho 'normal:', (int)($result158 === false), ':', $alias158, ':', $drops158, '|';\nunset($alias158);\n$mode158 = 'rebind'; $drops158 = 0;\n$name158 = [new ArrayChild158('A'), [new ArrayChild158('B')]];\n$alias158 =& $name158;\n$value158 = 'Target158';\n$result158 = is_callable(callable_name: $name158, value: $value158);\necho 'rebind:', (int)($result158 === true), ':', $alias158, ':', $name158[0], ':', $value158, ':', $drops158, '|';\nunset($alias158);\n$mode158 = 'throw'; $drops158 = 0;\n$name158 = [new ArrayChild158('A'), [new ArrayChild158('B')]];\n$alias158 =& $name158;\n$value158 = 'Target158';\n$result158 = 'UNCHANGED';\ntry { $result158 = is_callable($value158, false, $name158); }\ncatch (Exception $caught158) {\n    echo 'caught:', $alias158, ':', $result158, ':', (int)($caught158 === $failure158), ':', $drops158, '|';\n}\nunset($caught158, $alias158, $failure158);\n",
+    "source_sha256": "7eea4c08f5d09fac3b4b8d329257b17d816dadd0f5a68813d94e1a95da111ff4",
+    "expected_model": "normal",
+    "expected_normal_stdout": "child:A:NULL|inner:1:NotPublished158::unused|child:B:NULL|inner:1:NotPublished158::unused|normal:1:Absent158:2|child:A:NULL|inner:1:NotPublished158::unused|child:B:CHILD|inner:1:NotPublished158::unused|rebind:1:Target158:NEW-OUTPUT:NEW-INPUT:2|child:A:NULL|inner:1:NotPublished158::unused|child:B:NULL|inner:1:NotPublished158::unused|caught:Target158:UNCHANGED:1:2|",
+    "purpose": "Unique nested old arrays clear the actual output cell before ordered children; nested queries, named source/output detachment and child throw preserve frozen NAME and cancel only interrupted result assignment.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-array-output-controls",
+    "source": "<?php\nfunction TargetControl158(int $required) { echo 'BAD-control-target|'; strrev('unentered'); }\nclass HeldChild158 {\n    public function __destruct() {\n        global $alias158, $drops158;\n        $drops158 = $drops158 + 1;\n        echo 'held-drop:', $alias158, '|';\n    }\n}\nclass CallableReceiver158 {\n    public function Target(int $required) { echo 'BAD-method-entry|'; strrev('unentered'); }\n    public function __destruct() {\n        global $alias158, $drops158;\n        $drops158 = $drops158 + 1;\n        echo 'same-drop:', $alias158, '|';\n    }\n}\n$name158 = [];\n$result158 = is_callable('TargetControl158', false, $name158);\necho 'empty:', (int)($result158 === true), ':', $name158, '|';\n$name158 = [1, 'scalar', null];\n$result158 = is_callable('TargetControl158', false, $name158);\necho 'scalar:', (int)($result158 === true), ':', $name158, '|';\n$name158 = [1]; unset($name158[0]);\n$result158 = is_callable('TargetControl158', false, $name158);\necho 'mutable-empty:', (int)($result158 === true), ':', $name158, '|';\n$drops158 = 0;\n$name158 = [new HeldChild158];\n$holder158 = $name158;\n$alias158 =& $name158;\n$result158 = is_callable('TargetControl158', false, $name158);\necho 'retained:', (int)($result158 === true), ':', $alias158, ':', $drops158, '|';\nunset($holder158);\necho 'released:', $drops158, '|';\nunset($alias158);\n$drops158 = 0;\n$name158 = [new CallableReceiver158, 'Target'];\n$alias158 =& $name158;\n$result158 = is_callable($name158, false, $name158);\necho 'same:', (int)($result158 === true), ':', $alias158, ':', $drops158, '|';\nunset($alias158);\n",
+    "source_sha256": "829278dc9f9ebd9d627a9f97ed716721c666d0da24ed27342a594bdcc4adc62d",
+    "expected_model": "normal",
+    "expected_normal_stdout": "empty:1:TargetControl158|scalar:1:TargetControl158|mutable-empty:1:TargetControl158|retained:1:TargetControl158:0|held-drop:TargetControl158|released:1|same-drop:CallableReceiver158::Target|same:1:CallableReceiver158::Target:1|",
+    "purpose": "Empty/scalar/mutable-empty and retained COW arrays, plus same-CV owning receiver input, preserve exact NAME, real SENT roots and boolean through actual argument drain.",
+    "model_timeout_seconds": 180
+  },
+  {
+    "id": "is-callable-array-output-rebound-disjoint",
+    "source": "<?php\nfunction TargetDisjoint158(int $required) { echo 'BAD-general-entry|'; }\nenum DisjointEnum158: string { case One = 'one'; }\nclass DisjointChild158 {\n    public $label;\n    public function __construct(string $label) { $this->label = $label; }\n    public function __destruct() {\n        global $alias158;\n        echo $this->label, '-drop:', $alias158 === null ? 'NULL' : $alias158, '|';\n    }\n}\nfunction replaceDisjoint158() {\n    global $call158;\n    $call158 = [new DisjointChild158('legacy'), 'tryFrom'];\n    return false;\n}\n$name158 = [new DisjointChild158('general'), 'unused'];\n$alias158 =& $name158;\n$result158 = is_callable('TargetDisjoint158', false, $name158);\necho 'general:', (int)($result158 === true), ':', $name158, '|';\nunset($alias158);\n$call158 = ['DisjointEnum158', 'from'];\n$alias158 =& $call158;\n$result158 = is_callable($call158, replaceDisjoint158(), $call158);\necho 'legacy:', (int)($result158 === true), ':', $alias158, '|';\nunset($alias158);\n",
+    "source_sha256": "ac48b83beafd70255320a80631e0960190b9b2311262340df8719102a3e8b10b",
+    "expected_model": "normal",
+    "expected_normal_stdout": "general-drop:NULL|general:1:TargetDisjoint158|legacy-drop:NULL|legacy:1:DisjointEnum158::from|",
+    "purpose": "General object/string old-array shape with string input uses the actual HARRAY witness; a genuinely eligible different-input enum rebound retains its HOBJECT child plus OLDARRAY witness.",
+    "model_timeout_seconds": 120
+  },
+  {
+    "id": "is-callable-array-output-fiber-control",
+    "source": "<?php\nfunction TargetFiber158(int $required) { echo 'BAD-entry|'; }\n$name158 = [new Fiber(static function () { echo 'BAD-fiber-entry|'; })];\n$result158 = is_callable('TargetFiber158', false, $name158);\necho 'fiber:', (int)($result158 === true), ':', $name158, '|';\n",
+    "source_sha256": "c1398bc4135dadcb044794756f49e7c7bcd3436a032b8f454286536df8625b1a",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "fiber:1:TargetFiber158|",
+    "purpose": "An old output array with an opaque Fiber child remains refused before clear; native-normal observation has zero agreement.",
+    "model_timeout_seconds": 90
+  },
+  {
+    "id": "is-callable-array-output-cycle-control",
+    "source": "<?php\nfunction TargetCycle158(int $required) { echo 'BAD-entry|'; }\n$name158 = [];\n$name158[] =& $name158;\n$result158 = is_callable('TargetCycle158', false, $name158);\necho 'cycle:', (int)($result158 === true), ':', $name158, '|';\n",
+    "source_sha256": "abb0702460215480b4e5dba50b3b6dad2ffb074718a90dea08f429c2ea1513ff",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "cycle:1:TargetCycle158|",
+    "purpose": "An old output array containing its own real reference cell stays outside the acyclic family before clear; native-normal observation has zero agreement.",
+    "model_timeout_seconds": 90
   }
 ]
