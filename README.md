@@ -7923,7 +7923,7 @@ cleanup; the Generator stays weak-live while its cached value is destroyed.
 Public instance-method by-value Generators now share direct post-init SEND
 body-throw cleanup. The actual factory This retires during Generator close with
 the native SEND trace, before caller-only argv destruction; Gen/cache owners and
-supplied exception identity survive both callbacks. Reference/magic
+supplied exception identity survive both callbacks. Reference snapshots, magic
 methods and wider lifecycle modes remain partial.
 [Instance-method review](coverage/semantics/generator-instance-send-body-throw-review.json).
 
@@ -7932,6 +7932,12 @@ lexical/called class through direct post-init SEND body throws. Their frame has
 no This owner: an object-CV selector can die before `current()`, while the later
 cache/argv cleanup preserves supplied exceptions and the interrupted result.
 [Static-method review](coverage/semantics/generator-static-send-body-throw-review.json).
+
+Public instance/static reference-Generator methods also admit this unwind with
+a genuine ordinary live cache cell and matching source/signature BYREF flags.
+CELL/cache/argv owners remain separate, and only instance methods retain This.
+VALUE snapshots/Notice paths, typed or borrowed cells and wider lifetimes remain
+partial. [Method-reference review](coverage/semantics/generator-method-reference-send-body-throw-review.json).
 
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual

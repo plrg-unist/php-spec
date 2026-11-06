@@ -527,6 +527,18 @@ flags, absent receiver ownership and malformed-state refusals are independently
 reviewed; the instance case retains its original evidence without replay.
 [Static-method review](coverage/semantics/generator-static-send-body-throw-review.json).
 
+I124 admits ordinary public instance/static reference-Generator SEND body throws
+through source/signature BYREF agreement and their actual live ordinary Module 328
+REFCELL, before storage consumption. CELL/cache/argv and instance This retain
+separate owners; the static selector can retire before initialization. Existing
+static/source authority remains exact. VALUE/Notice, typed/backed/borrowed cells,
+capture/delegation, incoming throw, pending initialization, Closure::call and
+held I106 remain separate.
+Two frozen originals agree with PHP; paired instance/static fronts pass
+393 custom/403 reported conditions across 449 runtime modules plus fixture450,
+with actual CELL/cache/argv/This owners, source guards and budget continuation.
+[Method-reference review](coverage/semantics/generator-method-reference-send-body-throw-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -2375,7 +2387,7 @@ their work remains unaccepted until integrated.
 | COMP190 | Private and mixed REAL Closure default caches (461), with exact cache-owner identity and native lifetime/root/pruning; preserve existing Shared encodings and 455 policy. |
 | ENUM146 | Static Producer authority across scoped include/eval constant method Closure births, with inherited scopes, no This/Producer allocation and genuine earlier publication/entry; preserve route-specific provenance and wider bounds. |
 | GC59 | Last-owner current-row destruction and read-only callbacks, with a nonowning claim across publication, old-value and Map-pin release; preserve the GC35 hold and existing mutation/lifecycle limits. |
-| I124 | Reference Generator instance/static method SEND body-throw cleanup, with genuine 328 ordinary live reference-cache and BYREF/static source coherence; preserve held wider modes. |
+| I125 | Existing Aggregate-to-user-Iterator packs at native Generator SEND/zero-argument APIs, preserving selected Gen, copied argv and INPUT/DATA/420 cursor ownership; retain current mapping/body/budget and held wider bounds. |
 | OB23 | Native FINAL fresh-Throwable CV cleanup with genuine null-C drain/eligibility/freshness proof; preserve the external cast guard and ordinary catch/finally. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

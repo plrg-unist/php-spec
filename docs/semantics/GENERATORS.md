@@ -132,7 +132,7 @@ close with the native SEND trace suffix, before caller-only argv destruction.
 Gen and cache stay live through both callbacks; later cache destruction sees the
 factory and argv dead. The descriptor view authenticates the actual pending
 frame/release/resume pair before projecting its closed resume for placement
-checks; physical tasks and owners remain unchanged. Reference/magic
+checks; physical tasks and owners remain unchanged. Reference snapshots, magic
 methods, capture/delegation, pending initialization and wider lifecycle modes
 remain partial. [Instance-method review](../../coverage/semantics/generator-instance-send-body-throw-review.json).
 
@@ -143,6 +143,14 @@ This or receiver owners. An object-CV selector may retire before `current()`;
 that history does not retain the factory. The real pending frame, cache and argv
 keep their existing cleanup and budget behavior.
 [Static-method review](../../coverage/semantics/generator-static-send-body-throw-review.json).
+
+Public instance/static reference-Generator methods use the same SEND unwind
+only with source/signature BYREF agreement and an actual live Module 328 REFCELL.
+The cell must satisfy the existing ordinary-reference check and precede storage
+consumption. CELL, cached value, argv and instance This retain separate owners;
+static methods retain no This. VALUE snapshots/Notice paths,
+typed/backed/borrowed/released cells and wider producer/lifecycle modes remain
+partial. [Method-reference review](../../coverage/semantics/generator-method-reference-send-body-throw-review.json).
 
 Literal nullsafe API calls share the same selected receiver and argument protocol.
 A NULL receiver skips named-CV reception and spread producers. A nonnull call
