@@ -1388,11 +1388,28 @@ mutation can retire the selected receiver without changing NAME or BOOL; fresh
 queries still require a live receiver. Normal admitted-array OUTPUT commits NAME
 before argument destruction and preserves the boolean in the existing operation.
 This adds an internal resumable step while preserving observable order; it is not
-an extra owner. Normal lookup of qualified array method members remains
-Unsupported pending its deprecation handling; syntax-only still bypasses lookup.
+an extra owner. Qualified array method members use the separate API resolution
+path below; syntax-only still bypasses lookup.
 Existing producer,
 nonunpack, old-output and held bounds remain. The [method-query review](../../coverage/semantics/is-callable-user-method-review.json)
 records the source and history cuts.
+Qualified USER array lookup now consumes the existing staged API resolver after
+successful flag reception. Class selection, diagnostic callbacks and resumed
+method extraction keep their real order. A nonowning resolution witness records
+the actual class/context, leaf and boolean; the optional name is captured only
+after lookup returns. Re-querying that later naming pair may give a different
+boolean and cannot replace the witness. Raw CALL/SENT and the acquired cell stay
+unchanged through warning cursors, handler reentry and cleanup, with one SOURCE
+owner. A lookup-handler throw still performs name clear/destruction/commit before
+propagating and skips result assignment; a reception-handler throw retains the
+earlier cancellation law. Direct receiver arguments drain before catch while the
+real exception remains rooted. The outer namespaced query retains its selected
+nonce across a nested syntax-only query at a distinct depth. Admission remains
+bounded to known public USER
+class strings or DIRECT live object receivers and nonunpack calls; raw lexical
+keywords, ALIAS object receivers, magic/nonpublic/autoload and wider paths remain
+Unsupported. The [API resolution review](../../coverage/semantics/is-callable-api-resolution-review.json)
+records the timing and ownership cut.
 Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing

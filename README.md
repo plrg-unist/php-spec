@@ -7676,8 +7676,14 @@ methods and proved absence without entering bodies. Syntax-only checks bypass
 lookup after validating admitted array shape/types. Names retain string spelling
 or the object's canonical runtime class; borrowed capture history survives
 reference-member mutation and receiver retirement. Normal array cleanup preserves
-the saved boolean. Normal lookup of qualified method members remains Unsupported
-pending its deprecation handling. [Method-query review](coverage/semantics/is-callable-user-method-review.json).
+the saved boolean. [Method-query review](coverage/semantics/is-callable-user-method-review.json).
+Qualified USER array members now use staged API resolution after flag reception.
+The actual resolved boolean stays separate from the later name snapshot, including
+handler reentry and rebinding of the input/output variables. A lookup-handler
+throw still commits the name while canceling result assignment; a flag-reception
+throw leaves the name untouched. Existing owners retain direct receivers through
+normal and pending-exception cleanup. Raw keywords and aliased object receivers
+retain explicit bounds. [Resolution review](coverage/semantics/is-callable-api-resolution-review.json).
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local

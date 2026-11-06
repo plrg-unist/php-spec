@@ -80,6 +80,12 @@ stays separate from lookup; exact names and selected booleans survive member-cel
 mutation, receiver retirement and normal/throwing cleanup using borrowed history
 and the existing result carrier. Three source agreements and 227 independent
 history/ownership/budget checks pass at recorded cuts. [Review](coverage/semantics/is-callable-user-method-review.json).
+Qualified USER array queries now use staged effectful API resolution, retaining
+the resolved boolean independently of the later name snapshot. Lookup-handler
+throw still commits NAME and cancels result assignment; reception-handler throw
+keeps the old NAME. Real SOURCE/cell/exception owners preserve reentry, direct
+receiver drain and namespaced nested queries. Seven source agreements and 259
+independent history/ownership/budget checks pass at recorded cuts. [Review](coverage/semantics/is-callable-api-resolution-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -2923,7 +2929,6 @@ their work remains unaccepted until integrated.
 | CLASS211 | Immediate literal instance FCC on initialized plain/reference CV receivers, with actual inner capture SITE versus outer argument mapping, selected-cell receipts and wrapper/borrowed This owners; preserve current holds and avoid collection rereads. |
 | ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
 | COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
-| ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |
 | GC66 | Retained plain DIRECT-array DAG RHS replacement/read with actual outer slot, KEY_R and callback-CV owners, unchanged descendant edges and existing claim/cursor phases; exclude mutation, refs, cycles and Key backedges. |
 | I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
