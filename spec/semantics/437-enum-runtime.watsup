@@ -1853,18 +1853,21 @@ def $enum_is_callable_user_receiver(S, pvalue, b_history) = eps -- otherwise
 dec $enum_is_callable_user_method(pstate, porigin, ptbytes, bool) : bool?
 def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = (true)
   -- if $enum_is_callable_user_class(S, porigin_class)
+  -- if $method_string_parts(ptbytes_method) = eps
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
   -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
   -- if pmethoddesc.STATIC \/ b_object \/ $array_implicit_this(S, porigin_class)
 def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, false) = (false)
   -- if $enum_is_callable_user_class(S, porigin_class)
+  -- if $method_string_parts(ptbytes_method) = eps
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT /\ ~pmethoddesc.STATIC
   -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
   -- if ~$array_implicit_this(S, porigin_class) /\ ~$array_magic(S, porigin_class)
 def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = (false)
   -- if $enum_is_callable_user_class(S, porigin_class)
+  -- if $method_string_parts(ptbytes_method) = eps
   -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
   -- if ~$array_magic(S, porigin_class)
 def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = eps -- otherwise
