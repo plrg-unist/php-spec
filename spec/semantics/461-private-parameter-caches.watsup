@@ -59,11 +59,13 @@ def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.COMPLETION = UNSU
 ;; Native cache zvals are nonrefcounted. This empty HARRAY root represents the
 ;; immutable value's availability/COW, not a native refcount increment.
 ;; Keys never root a Closure, its source object or its captures.
+dec $private_default_value_roots(pdefaultcache) : pnode*
+def $private_default_value_roots(pdefaultcache) = [HARRAY n]
+  -- if pdefaultcache.VALUE = PARRAY n
+  -- if pdefaultcache.CLASS = PVARRAY true eps
+def $private_default_value_roots(pdefaultcache) = eps -- otherwise
 def $private_default_cache_roots(eps) = eps
-def $private_default_cache_roots(pprivatecache :: pprivatecache_tail*) = (HARRAY n) :: $private_default_cache_roots(pprivatecache_tail*)
-  -- if pprivatecache.ENTRY.VALUE = PARRAY n
-  -- if pprivatecache.ENTRY.CLASS = PVARRAY true eps
-def $private_default_cache_roots(pprivatecache :: pprivatecache_tail*) = $private_default_cache_roots(pprivatecache_tail*) -- otherwise
+def $private_default_cache_roots(pprivatecache :: pprivatecache_tail*) = $private_default_value_roots(pprivatecache.ENTRY) ++ $private_default_cache_roots(pprivatecache_tail*)
 
 dec $private_default_cache_remove(pprivatecache*, nat) : pprivatecache*
 def $private_default_cache_remove(eps, n) = eps

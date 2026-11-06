@@ -61,10 +61,12 @@ def $parameter_receive_deprecated_entry(S, preceivebirth) = false -- otherwise
 
 def $parameter_default_recipient(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
   -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
 def $parameter_default_recipient(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
   -- if pdeclcause = $declaration_cause(S)
