@@ -175,6 +175,7 @@ def $property_coalesce_valid(S, ppropertycoalesce) = false -- otherwise
 dec $property_coalesce_capture(pstate, ppropertycoalesce) : bool
 def $property_coalesce_capture(S, ppropertycoalesce) = true
   -- if $property_coalesce_valid(S, ppropertycoalesce)
+  -- if $property_magic_name_capture(S, ppropertycoalesce.SITE, ppropertycoalesce.LINE, ppropertycoalesce.NAME)
   -- if $origin_node(S.SOURCES, ppropertycoalesce.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT ppropertycoalesce.OBJECT)

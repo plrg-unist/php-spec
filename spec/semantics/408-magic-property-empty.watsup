@@ -171,6 +171,7 @@ def $property_empty_valid(S, ppropertyempty) = false -- otherwise
 dec $property_empty_capture(pstate, ppropertyempty) : bool
 def $property_empty_capture(S, ppropertyempty) = true
   -- if $property_empty_valid(S, ppropertyempty)
+  -- if $property_magic_name_capture(S, ppropertyempty.SITE, ppropertyempty.LINE, ppropertyempty.NAME)
   -- if $origin_node(S.SOURCES, ppropertyempty.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.RESULT = KNOWN (POBJECT ppropertyempty.OBJECT)

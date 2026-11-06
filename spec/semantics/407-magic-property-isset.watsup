@@ -53,6 +53,15 @@ def $property_magic_cv_name(S, porigin, z) = (ptbytes)
   -- if S_name.RESULT = KNOWN pvalue_name
   -- if $string_bytes(pvalue_name) = (ptbytes)
 def $property_magic_cv_name(S, porigin, z) = eps -- otherwise
+dec $property_magic_name_capture(pstate, porigin, int, ptbytes) : bool
+def $property_magic_name_capture(S, porigin, z, ptbytes) = true
+  -- if ~$property_magic_cv_source(S, porigin, z)
+def $property_magic_name_capture(S, porigin, z, ptbytes) = true
+  -- if $property_magic_cv_source(S, porigin, z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch expression_receiver (NExprVariable (BYTES text_name) metadata_name) metadata)
+  -- if poperand_name = VARIABLE $base64(text_name) $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 1], NExprVariable (BYTES text_name) metadata_name)
+  -- if $property_magic_cv_name(S[.RESULT = poperand_name], porigin, z) = (ptbytes)
+def $property_magic_name_capture(S, porigin, z, ptbytes) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = true
   -- if ~$property_magic_cv_source(S, porigin, z)
@@ -127,6 +136,7 @@ def $property_isset_valid(S, ppropertyisset) = false -- otherwise
 dec $property_isset_capture(pstate, ppropertyisset) : bool
 def $property_isset_capture(S, ppropertyisset) = true
   -- if $property_isset_valid(S, ppropertyisset)
+  -- if $property_magic_name_capture(S, ppropertyisset.SITE, ppropertyisset.LINE, ppropertyisset.NAME)
   -- if $origin_node(S.SOURCES, ppropertyisset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
   -- if S_read.RESULT = KNOWN (POBJECT ppropertyisset.OBJECT)
