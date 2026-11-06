@@ -364,10 +364,12 @@ def $output_final_cv_unwind(S) = true
 ;; TOP_FUNCTION restores the null caller before CV destruction. Its receiver
 ;; is an external cast guard, transferred to this actual C-return consumer.
 def $destructor_borrowed_context(S) = (pcallcontext)
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
   -- if S.CURRENT = (pcallcontext)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [THROW_SEARCH n_exception]
+  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (pobobjectreturn.OBJECT)
+  -- if $destructor_context_nodes(S.CURRENT) = [HOBJECT pobobjectreturn.OBJECT]
   -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
   -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps
