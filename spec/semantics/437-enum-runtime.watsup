@@ -2330,8 +2330,11 @@ def $enum_is_callable_keyword_input(S, PARRAY n) = (pvalue_receiver)
   -- if $method_string_parts(ptbytes_method) = eps
 def $enum_is_callable_keyword_input(S, pvalue) = eps -- otherwise
 
-;; Concrete qualified lookup remains bounded to known USER names and a DIRECT
-;; live object. An ALIAS class string may change during its warning.
+;; Concrete qualified lookup uses a live receiver. A completed resolution may
+;; later borrow its class identity, but that history cannot start a new lookup.
+dec $enum_is_callable_api_alias_receiver(pitem, pvalue) : bool
+def $enum_is_callable_api_alias_receiver(ALIAS n_cell, POBJECT n) = true
+def $enum_is_callable_api_alias_receiver(pitem, pvalue) = false -- otherwise
 dec $enum_is_callable_api_receiver(pstate, pitem, pvalue) : bool
 def $enum_is_callable_api_receiver(S, pitem, pvalue) = true
   -- if $enum_array_string_valid(S, pvalue)
@@ -2340,7 +2343,28 @@ def $enum_is_callable_api_receiver(S, pitem, pvalue) = true
   -- if $enum_is_callable_user_receiver(S, pvalue, false) = ((porigin_class, false))
 def $enum_is_callable_api_receiver(S, DIRECT (POBJECT n), POBJECT n) = true
   -- if $enum_is_callable_user_receiver(S, POBJECT n, false) = ((porigin_class, true))
+def $enum_is_callable_api_receiver(S, ALIAS n_cell, POBJECT n) = true
+  -- if $enum_is_callable_member_snapshot(S, ALIAS n_cell, POBJECT n)
+  -- if $enum_is_callable_user_receiver(S, POBJECT n, false) = ((porigin_class, true))
 def $enum_is_callable_api_receiver(S, pitem, pvalue) = false -- otherwise
+dec $enum_is_callable_api_public_method(pstate, porigin, ptbytes) : bool
+def $enum_is_callable_api_public_method(S, porigin_class, ptbytes) = true
+  -- if ~(0 <- ptbytes)
+  -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+def $enum_is_callable_api_public_method(S, porigin_class, ptbytes) = false -- otherwise
+dec $enum_is_callable_api_initial_member(pstate, pitem, pvalue, ptbytes) : bool
+def $enum_is_callable_api_initial_member(S, pitem, pvalue, ptbytes) = true
+  -- if ~$enum_is_callable_api_alias_receiver(pitem, pvalue)
+def $enum_is_callable_api_initial_member(S, pitem, POBJECT n, ptbytes) = true
+  -- if $enum_is_callable_api_alias_receiver(pitem, POBJECT n)
+  -- if $enum_is_callable_user_receiver(S, POBJECT n, false) = ((porigin_outer, true))
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $api_subclass(S, porigin_outer, porigin_class)
+  -- if $enum_is_callable_api_public_method(S, porigin_class, ptbytes_method)
+def $enum_is_callable_api_initial_member(S, pitem, pvalue, ptbytes) = false -- otherwise
 dec $enum_is_callable_api_inner(pstate, ptbytes) : bool
 def $enum_is_callable_api_inner(S, ptbytes) = true
   -- if ~(0 <- ptbytes)
@@ -2365,6 +2389,7 @@ def $enum_is_callable_api_candidate(S, pconfigcall) = true
   -- if $enum_is_callable_api_receiver(S, pitem_receiver, $entry_value(S, pitem_receiver))
   -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes_method)
   -- if $enum_is_callable_api_inner(S, ptbytes_method)
+  -- if $enum_is_callable_api_initial_member(S, pitem_receiver, $entry_value(S, pitem_receiver), ptbytes_method)
 def $enum_is_callable_api_candidate(S, pconfigcall) = true
   -- if pconfigcall.PACKS = eps
   -- if $enum_is_callable_api_input(S, pconfigcall) = (pvalue)
@@ -2422,6 +2447,25 @@ def $enum_is_callable_api_value(S, papiquery, ptbytes) = (false)
 def $enum_is_callable_api_value(S, papiquery, ptbytes) = eps -- otherwise
 
 dec $enum_is_callable_resolution_valid(pstate, penumqueryresolution, pconfigcall) : bool
+;; This view is used only by the completed receipt. Active 221 still requires
+;; api_class's real allocation; no lookup or get_method permission is added.
+dec $enum_is_callable_api_alias_history(pstate, papiquery) : bool
+def $enum_is_callable_api_alias_history(S, papiquery) = true
+  -- if papiquery.VALUE = PARRAY n
+  -- if $(n < |S.ARRAYS|)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (ALIAS n_cell)
+  -- if papiquery.INPUT = POBJECT n_object
+  -- if $enum_is_callable_member_snapshot(S, ALIAS n_cell, POBJECT n_object)
+  -- if $enum_is_callable_user_object_history(S, n_object) = (porigin_outer)
+  -- if papiquery.OUTER = (papiclass_outer)
+  -- if papiclass_outer.REQUESTED = porigin_outer /\ papiclass_outer.CALLED = porigin_outer
+  -- if papiclass_outer.RECEIVER = (n_object) /\ ~papiclass_outer.STRICT
+  -- if $api_raw_shape(S, papiquery)
+  -- if $method_string_parts(papiquery.ORIGINAL) = ((ptbytes_class, ptbytes_method))
+  -- if papiquery.PREFIX = $(|ptbytes_class| + 2) /\ papiquery.WIDTH = |ptbytes_method|
+  -- if $api_class(S, PSTRING ptbytes_class, (papiclass_outer.REQUESTED), papiquery.SCOPE, papiquery.CALLED, papiquery.THIS, papiclass_outer.RECEIVER) = API_CLASS papiquery.CLASS
+  -- if $api_subclass(S, porigin_outer, papiquery.CLASS.REQUESTED)
+def $enum_is_callable_api_alias_history(S, papiquery) = false -- otherwise
 dec $enum_is_callable_api_phase(papiquery) : nat
 def $enum_is_callable_api_phase(papiquery) = 0
   -- if $is_array_value(papiquery.VALUE) /\ papiquery.OUTER = eps
@@ -2439,8 +2483,17 @@ def $enum_is_callable_resolution_valid(S, penumqueryresolution, pconfigcall) = t
 def $enum_is_callable_resolution_valid(S, penumqueryresolution, pconfigcall) = true
   -- if papiquery = penumqueryresolution.QUERY
   -- if $enum_is_callable_api_source_shape(S, papiquery, pconfigcall)
+  -- if $enum_is_callable_api_alias_history(S, papiquery)
+  -- if $enum_is_callable_api_inner(S, papiquery.ORIGINAL)
+  -- if penumqueryresolution.PHASE = 1 /\ penumqueryresolution.RESULT
+  -- if $api_leaf_snapshot(papiquery, penumqueryresolution.LEAF)
+  -- if $enum_is_callable_api_public_method(S, papiquery.CLASS.REQUESTED, penumqueryresolution.LEAF)
+def $enum_is_callable_resolution_valid(S, penumqueryresolution, pconfigcall) = true
+  -- if papiquery = penumqueryresolution.QUERY
+  -- if $enum_is_callable_api_source_shape(S, papiquery, pconfigcall)
   -- if papiquery.VALUE = PARRAY n
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if ~$enum_is_callable_api_alias_receiver(pitem_receiver, papiquery.INPUT)
   -- if $enum_is_callable_api_receiver(S, pitem_receiver, papiquery.INPUT)
   -- if $enum_is_callable_api_inner(S, papiquery.ORIGINAL)
   -- if penumqueryresolution.PHASE = 1
@@ -2453,6 +2506,7 @@ def $enum_is_callable_resolution_valid(S, penumqueryresolution, pconfigcall) = t
   -- if $enum_is_callable_api_source_shape(S, papiquery, pconfigcall)
   -- if papiquery.VALUE = PARRAY n
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if ~$enum_is_callable_api_alias_receiver(pitem_receiver, papiquery.INPUT)
   -- if $enum_is_callable_api_receiver(S, pitem_receiver, papiquery.INPUT)
   -- if $enum_is_callable_api_inner(S, papiquery.ORIGINAL)
   -- if penumqueryresolution.PHASE = 0 /\ penumqueryresolution.LEAF = eps /\ ~penumqueryresolution.RESULT
