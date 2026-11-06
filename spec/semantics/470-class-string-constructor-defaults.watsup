@@ -35,6 +35,7 @@ def $parameter_dynamic_constructor_invocation(S, pfunction, (porigin_function, p
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC
   -- if $class_named(S.CLASSNAMES, $ptlc(pdynamicnew.CLASS)) = (porigin_called)
+  -- if $origin_node(S.SOURCES, porigin_called) = (NStmtClass phpType14_called (INTEGER int_called) (NIdentifier (BYTES text_called) metadata_name_called) phpType44_called phpType42_called phpType23_called metadata_called)
   -- if $effective_method(S, porigin_called, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
   -- if $(n_prefix <= |S.DECLARATIONS|)
   -- if $parameter_callable_function_published(S, pfunction, n_prefix)
