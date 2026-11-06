@@ -5393,6 +5393,16 @@ string carriers. Missing, array-valued and typed/backed cells remain excluded
 before warnings or coercions; unpack prefixes retain their prior policy.
 [Later-CV review](coverage/semantics/anonymous-later-cv-magic-review.json).
 
+Fixed-name ordinary USER producers may take a finite positional list of
+required untyped by-value parameters at exact arity. The original occurrence and
+selected function certify the producer; generic inner sends preserve earlier
+arguments through later caller rebinding. Fresh parameter cells and ordinary
+return, pending-send, table and child owners retain the same quiet primitive or
+ordinary leaf payload. A failed certificate cannot fall back to integer/leaf
+admission. Nullary producers and the contextual first-array policy stay separate;
+inner named arguments, defaults, variadics and wider modes remain partial.
+[Required-producer review](coverage/semantics/anonymous-user-argument-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),

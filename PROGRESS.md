@@ -2161,6 +2161,14 @@ before warnings or coercions. The [later-CV review](coverage/semantics/anonymous
 records six distinct source agreements, separate 143/153 owner/budget fronts and
 a 30-condition pre-warning source guard at their recorded cuts. Unpack prefixes
 retain their earlier policy.
+Fixed-name USER producers with exact required untyped by-value arguments now
+share ordinary inner SEND/parameter/return ownership for quiet primitive/leaf
+results. Source/target/formal certificates have priority over old value-only
+admission. Nullary routes and contextual first-array returns stay unchanged;
+438 preserves earlier unpack prefixes. The
+[required-producer review](coverage/semantics/anonymous-user-argument-magic-review.json)
+records five distinct source agreements, separate 140/188 owner/budget fronts
+and a 27-condition unpack source guard at their recorded cuts.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2507,9 +2515,10 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS203 | Fixed-name ordinary USER producers with required by-value arguments and current quiet primitive/leaf returns, using actual target/source and generic SEND/frame ownership; preserve current headers, nullary/array policy and held modes. |
+| CLASS204 | Fixed-name new expressions with effective plain public zero/required-by-value positional constructors, authentic NEW-result ownership and ignored scalar constructor returns; preserve current leaf/header policy and held modes. |
 | ATTR64 | Direct flat Trait imports of backed GET/block-SET pairs into parentless Consumers, with authentic clone origins and typed defaultless builtin SET parameters; preserve wider Trait and virtual exclusions. |
-| ENUM148 | Genuine early named-output reference acquisition history through unset/rebound CV names, preserving SENT owners, builtin/input and current simple-CV domains; coordinate the nonowning reference certificate. |
+| COMP192 | Direct scoped REAL Closure defaults through authentic binding/clone history, with cache-free timing after captures and before This; preserve Shared/private laws and held wider recipients. |
+| ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
 | GC61 | Prove the generic TEMP receipt pop law and correct any second consumption during storage cleanup; preserve post-pop state and ownership without source-specific policy or schema changes. |
 | I126 | Direct initialized by-value source-Generator CV packs into a distinct native selected Generator, with ≤2 ITEMS and authentic CONFIG receiver-root proof; preserve INI and all wider held modes. |
 | OB24 | Source-produced local destructor's nested null-C abort during native FINAL cleanup, preserving early C return, old exception/guards and skipped CVs; keep supplied-Stringable and wider identity paths held. |
