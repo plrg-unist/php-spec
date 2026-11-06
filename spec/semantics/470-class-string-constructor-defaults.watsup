@@ -1,0 +1,62 @@
+;; FETCH_CLASS selected this string before NEW and its argument expressions.
+;; Its existing receipt borrows the raw value and owns no selector or receiver.
+dec $parameter_constructor_string(pvalue) : bool
+def $parameter_constructor_string(PSTRING ptbytes) = true
+def $parameter_constructor_string(PSTRING_CARRIER pstringidentity ptbytes) = true
+def $parameter_constructor_string(pvalue) = false -- otherwise
+dec $parameter_dynamic_constructor_source(pstate, pdynamicnew) : bool
+def $parameter_dynamic_constructor_source(S, pdynamicnew) = true
+  -- if $origin_node(S.SOURCES, pdynamicnew.SITE) = (NExprNew (NExprVariable phpType32 metadata_variable) (SEQUENCE phpType7*) metadata)
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ~$direct_this(phpType32)
+  -- if $parameter_constructor_string(pdynamicnew.SOURCE)
+  -- if $dynamic_new_keyword(S, pdynamicnew.SITE) = eps
+  -- if $dynamic_new_record_valid(S, pdynamicnew)
+def $parameter_dynamic_constructor_source(S, pdynamicnew) = false -- otherwise
+dec $parameter_dynamic_constructor_record(pstate, pfunction) : pdynamicnew?
+def $parameter_dynamic_constructor_record(S, pfunction) = (pdynamicnew)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if pcallcontext.TARGET = METHOD_TARGET n pfunction.ORIGIN
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (CTOR_RESULT n) :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*
+  -- if pframe.ORIGIN = (pdynamicnew.SITE) /\ pcallcontext.CALLSITE = (pdynamicnew.SITE)
+  -- if $parameter_dynamic_constructor_source(S, pdynamicnew)
+def $parameter_dynamic_constructor_record(S, pfunction) = eps -- otherwise
+dec $parameter_dynamic_constructor_invocation(pstate, pfunction, pdeclcalls, nat, pdynamicnew) : bool
+def $parameter_dynamic_constructor_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix, pdynamicnew) = true
+  -- if porigin_function = pfunction.ORIGIN
+  -- if porigin_site_option? = (pdynamicnew.SITE)
+  -- if porigin_owner_option? = (porigin_owner)
+  -- if porigin_called_option? = (porigin_called)
+  -- if $parameter_dynamic_constructor_source(S, pdynamicnew)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_owner
+  -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC
+  -- if $class_named(S.CLASSNAMES, $ptlc(pdynamicnew.CLASS)) = (porigin_called)
+  -- if $effective_method(S, porigin_called, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pfunction, n_prefix)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_called)
+  -- if $declaration_invocation(S, pfunction, pdynamicnew.SITE, (porigin_owner), (porigin_called), pdeclcalls)
+def $parameter_dynamic_constructor_invocation(S, pfunction, pdeclcalls, n_prefix, pdynamicnew) = false -- otherwise
+def $parameter_method_current_invocation(S, pfunction, pdeclcalls, n_prefix) = $parameter_dynamic_constructor_invocation(S, pfunction, pdeclcalls, n_prefix, pdynamicnew)
+  -- if $parameter_dynamic_constructor_record(S, pfunction) = (pdynamicnew)
+
+;; Birth captures only the exact immediate caller receipt at genuine entry.
+;; Closed validation never reads the former CV or receiver object.
+def $parameter_receive_constructor_entry(S) = (pdynamicnew)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_dynamic_constructor_record(S, pfunction) = (pdynamicnew)
+  -- if $parameter_constructor_current(S, pfunction)
+def $parameter_receive_constructor_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.CONSTRUCTOR_ENTRY = (pdynamicnew)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if preceivebirth.CALLSITE = (pdynamicnew.SITE)
+  -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) = (pmethoddesc)
+  -- if $parameter_dynamic_constructor_invocation(S, pmethoddesc.FUNCTION, preceivebirth.CAUSE.CALLS, preceivebirth.PUBLICATION, pdynamicnew)
+def $parameter_receive_method_dispatch(S, preceivebirth) = $parameter_receive_constructor_witness_valid(S, preceivebirth)
+  -- if preceivebirth.ENTRY = eps
+  -- if preceivebirth.CONSTRUCTOR_ENTRY =/= eps
