@@ -451,12 +451,19 @@ BOUNDARY = [
     'S_stopped = $drive_steps(S, 1)',
     'S_stopped.COMPLETION = UNSUPPORTED "further Child throw during WeakMap current-row cleanup"',
     'S_stopped.EVENTS = S.EVENTS',
+    'S_stopped.TODO = eps',
+    'S_stopped.RESULT = KNOWN PNULL',
+    'S_stopped.BASE = BASE_VALUE (KNOWN PNULL)',
+    'S_stopped.HELD = eps',
+    'S_stopped.ITERATORS = eps',
+    'S_stopped.ALLOCATIONS = S_raw.ALLOCATIONS',
+    'S_stopped.OBJECTPROPS = S_raw.OBJECTPROPS',
     '$throwable_field(S_stopped, n_c, "previous") = PNULL',
     '$throwable_field(S_stopped, n_b, "previous") = POBJECT n_a',
     '$heap_owners($heap_graph(S_stopped), HOBJECT n_a) = 1',
-    '$heap_owners($heap_graph(S_stopped), HOBJECT n_b) = 1',
-    '$heap_owners($heap_graph(S_stopped), HOBJECT n_c) = 1',
-    '$heap_owners($heap_graph(S_stopped), HOBJECT n_tail) = 1',
+    '$heap_owners($heap_graph(S_stopped), HOBJECT n_b) = 0',
+    '$heap_owners($heap_graph(S_stopped), HOBJECT n_c) = 0',
+    '$heap_owners($heap_graph(S_stopped), HOBJECT n_tail) = 0',
 ]
 
 review.CASES = {'shared-child-pending-owner-state': {
