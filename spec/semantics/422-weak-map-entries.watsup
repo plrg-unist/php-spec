@@ -488,14 +488,27 @@ def $weakmap_entries_keys_held(S, eps) = true
 def $weakmap_entries_keys_held(S, pweakmapentry :: pweakmapentry_tail*) = ($($heap_owners($heap_graph(S), HOBJECT pweakmapentry.KEY) > 0) /\ $weakmap_entries_keys_held(S, pweakmapentry_tail*))
 dec $weakmap_entries_free_allowed(pstate, nat, pdestructionrelease) : bool
 ;; Declared storage follows its physical order, independently of write order.
-;; Primitive leaves and fieldless Children add no deeper property protocol.
-dec $weakmap_entries_property_value_free(pstate, pvalue) : bool
-def $weakmap_entries_property_value_free(S, pvalue) = true
+;; Property-array elements use only primitive leaves and fieldless Children.
+dec $weakmap_entries_property_leaf_free(pstate, pvalue) : bool
+def $weakmap_entries_property_leaf_free(S, pvalue) = true
   -- if $weakmap_scalar_value(S, pvalue)
-def $weakmap_entries_property_value_free(S, POBJECT n_child) = true
+def $weakmap_entries_property_leaf_free(S, POBJECT n_child) = true
   -- if $weakmap_entries_callback_class(S, n_child)
   -- if $weakmap_entries_direct_payload(S, POBJECT n_child)
   -- if $($heap_owners($heap_graph(S), HOBJECT n_child) > 0)
+def $weakmap_entries_property_leaf_free(S, pvalue) = false -- otherwise
+dec $weakmap_entries_property_array_entries_free(pstate, pentry*) : bool
+def $weakmap_entries_property_array_entries_free(S, eps) = true
+def $weakmap_entries_property_array_entries_free(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($entry_lookup(pentry_tail*, pkey) = eps /\ $weakmap_entries_property_leaf_free(S, pvalue) /\ $weakmap_entries_property_array_entries_free(S, pentry_tail*))
+def $weakmap_entries_property_array_entries_free(S, pentry*) = false -- otherwise
+dec $weakmap_entries_property_value_free(pstate, pvalue) : bool
+def $weakmap_entries_property_value_free(S, pvalue) = true
+  -- if $weakmap_entries_property_leaf_free(S, pvalue)
+def $weakmap_entries_property_value_free(S, PARRAY n_array) = true
+  -- if $(n_array < |S.ARRAYS|) /\ (HARRAY n_array) <- S.ALLOCATIONS
+  -- if ~$gc_proxy(S, n_array)
+  -- if $heap_valid($heap_graph(S))
+  -- if $weakmap_entries_property_array_entries_free(S, S.ARRAYS[n_array].ITEMS)
 def $weakmap_entries_property_value_free(S, pvalue) = false -- otherwise
 dec $weakmap_entries_property_state_free(pstate, ppropstate) : bool
 def $weakmap_entries_property_state_free(S, PROP_UNSET) = true
