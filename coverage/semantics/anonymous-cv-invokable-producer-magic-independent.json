@@ -1,0 +1,72 @@
+{
+  "status": "CLEAR",
+  "scope": "CLASS213: immediate ordinary USER invokable CV receiver, plain/ref initialized cell, effective public nonstatic __invoke, existing plain zero/required positional-byvalue signature, quiet COPY and outer magic-header domains.",
+  "base": "25818cde1dff2e71721a0477fe0fb1924d0dc98c",
+  "implementation": "817979060",
+  "peer_fixture": "2a401b19a",
+  "tested_revision": "2765a1ffb9458f9f841154fbaf01dea5ac200edb",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "engine_basis": [
+    "Pinned authored zend_vm_def.h ZEND_INIT_DYNAMIC_CALL:3899+ reads the CV/reference payload before selecting an object target and before argument execution; the reference arm dereferences and retries selection.",
+    "Pinned zend_std_get_closure (zend_object_handlers.c:2592+) selects runtime-table __invoke; zend_init_dynamic_call_object (zend_execute.c:5152+) retains ordinary HAS_THIS/RELEASE_THIS. Existing110/142 selects METHOD_TARGET, not a Closure wrapper or borrowed This."
+  ],
+  "static_review": [
+    "110's fixed-name-eps path applies the existing default-true admission hook before resolve; only actual object_invoke_method selection invokes the existing metadata hook.142 changes only two forward-declaration locations.207/213/415/schema/ownership laws are unchanged.",
+    "414 authenticates original FuncCall(CV), exact CV emission/INIT, actual source SITE and real invocation arguments. Its separate selected-source arm uses effective public nonstatic __invoke and the existing plain body/formal matcher; older private-first/nonmagic method arms retain their guards.",
+    "Existing descriptor-local SITE/CLASS/METHOD facts are minted operationally before arguments and validated without receiver-name rereads at collection. Raw CV-invocation fallback exclusion covers zero arguments too;438 explicitly excludes this source from unpack. No added owner, global history or callable-value certificate."
+  ],
+  "original": {
+    "id": "named-ref-cv-invokable-installed-unset-return-this-request",
+    "source_sha256": "d558cd5e77acd3cd602eb996a097637780655104ebf9da74213bebd4bf8c25a4",
+    "catalogue": "tests/semantics/anonymous_cv_invokable_producer_magic_independent_cases.json",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/reviewer/source/native.json",
+    "native_report_sha256": "426a0c373bdb81397d2828c9c8c2f474f99b9d36b46a5e039a644e9f32daab2b",
+    "native": "Once-pinned exact normal exit0/quiet; earlier outer USER installs the inherited receiver into an initial NULL ref cell, then inner argument effects clear the alias/unset its name and replace the request-string source. The actual returnThis survives named table/Closure/child retention."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/reviewer/source/report.json",
+    "sha256": "ae7e177f80138d70a1031c84af2c2c311b70463a9b507cbb1e6b3f0aaf01267c",
+    "result": "FIRST exact normal/quiet/stable/no timeout,149.195200662s,SL458,300s inner/310s outer; native source/path/cwd preserved without native reexecution.",
+    "agreement_credit": 1
+  },
+  "state": {
+    "protocol": "tests/semantics/anonymous_cv_invokable_producer_magic_independent_protocol.py",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/reviewer/state/report.json",
+    "sha256": "9e7b259773dd33abe43ea58c7e6cf461ee6478a1acab4c13b405e044846c5bdc",
+    "conditions": 128,
+    "result": "FIRST SL458 PASS/true/exit0/quiet/stable/no timeout,179.027314389s,300s inner/370s outer.",
+    "frontier": "Genuine CALL_DYNAMIC VARIABLE operand/token/init/call lines and ref cell select inherited effective __invoke before inner arguments. The selected descriptor contains one fact and no receiver pin; real cache task plus source cell give receiver2. FUNCTION_CACHE_INIT to CALL_ARGS split1+1 equals direct2.",
+    "owners": "After aliasNULL/name removal, the ordinary frame has INSTANCEeps and receiver1; returnThis adds RESULT for receiver2. Frame/parameter retirement leaves result1, then one actual named SEND transfers the same handle. Real child table retains the exact REQUEST_STRING0 property; one cleanup tail releases child, table and receiver. Unchanged generic full-tail laws are reused.",
+    "controls": "Malformed named SENT remains a recognized candidate but has no valid pending carrier and cannot read. Length-matched last-index PINT/live-leaf candidates cannot bypass the raw CV guard; real result collection requires the operational fact after receiver-name retirement."
+  },
+  "input_identity": {
+    "module_count": 458,
+    "source_inputs": 469,
+    "state_inputs": 469,
+    "common_hashes_equal": 466,
+    "result": "All458 module hashes and all466 common source/state inputs match; both before/after maps are stable. Exact profile, commands, cwd, exits and raw streams are preserved."
+  },
+  "actual_main_context": {
+    "revision": "bb57941b6b23021b1d49d660cac14c825b1a5d6b",
+    "module_count": 458,
+    "review": "Since base25818,30/456 add OB29 authenticated output Exception-factory normal-return contour and437 adds ENUM156 last-owner is_callable Closure-output graph/history. These sources have neither is_callable/name-output queries nor authenticated output Exception-factory/native-throw contexts; ordinary approved constructors/returns/destructors stay outside those specializations.110/142/414/438 and generic call/owner modules remain unchanged. No source/front/interface replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class213-cv-invokable-producer-magic/reviewer",
+    "manifest": "manifest.json",
+    "manifest_sha256": "75b564248eb44c044853c9906553b75aadc5b5024e49ec9b3e4421234a2bb60d",
+    "artifacts": 31,
+    "recovery": "run-source.py preserves the once-native-pinned path/cwd/profile with300s model limit; run-state.py invokes the maintained protocol through SL. Re-run only affected checks, preserving every prior attempt."
+  },
+  "failed_or_timeout_attempts": 0,
+  "fixture_corrections_after_execution": 0,
+  "native_repeats": 0,
+  "source_repeats": 0,
+  "remaining": "Stored Closure/string/array/computed callable values, nonleaf or constrained receiver cells, dynamic/nullsafe/magic-fallback source, typed/default/variadic/ref/Generator signatures, inner-named/unpack/array-return modes, wider headers and request-owned NUL/other held lanes remain outside this slice.",
+  "engine_divergence": "None identified."
+}
