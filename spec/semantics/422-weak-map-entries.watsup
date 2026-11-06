@@ -1140,6 +1140,24 @@ def $weakmap_foreach_write_operation(S, n_map) = false -- otherwise
 
 ;; Last-owner writes have their own immutable source history. Unlike the quiet
 ;; arm, the old loop CV owns no payload and the old row is destroyed inside Set.
+;; Quiet primitives add no incoming owner. String admission needs authenticated
+;; interned identity as well as the heap law; NaN keeps its existing boundary.
+dec $weakmap_write_quiet_scalar(pstate, pvalue) : bool
+def $weakmap_write_quiet_scalar(S, PNULL) = true
+def $weakmap_write_quiet_scalar(S, PBOOL b) = true
+def $weakmap_write_quiet_scalar(S, PINT i) = true
+def $weakmap_write_quiet_scalar(S, PFLOAT n) = (~$fparts_nan($float_decode(n)))
+  -- if $weakmap_scalar_value(S, PFLOAT n)
+def $weakmap_write_quiet_scalar(S, PSTRING_CARRIER INTERNED_STRING n_bytes*) = $weakmap_scalar_value(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
+def $weakmap_write_quiet_scalar(S, pvalue) = false -- otherwise
+dec $weakmap_write_incoming_before(pstate, pvalue, nat) : bool
+def $weakmap_write_incoming_before(S, POBJECT n_new, n_first) = true
+  -- if $(n_new < n_first)
+  -- if $weakmap_entries_value_allowed(S, POBJECT n_new)
+def $weakmap_write_incoming_before(S, pvalue, n_first) = true
+  -- if $weakmap_write_quiet_scalar(S, pvalue)
+  -- if $value_nodes(pvalue) = eps
+def $weakmap_write_incoming_before(S, pvalue, n_first) = false -- otherwise
 dec $weakmap_write_old_children(pstate, pnode*) : bool
 def $weakmap_write_old_children(S, eps) = true
 def $weakmap_write_old_children(S, (HOBJECT n_child) :: pnode_tail*) = ($weakmap_entries_direct_payload(S, POBJECT n_child) /\ $weakmap_entries_callback_class(S, n_child) /\ $weakmap_write_old_children(S, pnode_tail*))
@@ -1168,8 +1186,7 @@ def $weakmap_write_capture(S, paccess, (FOREACH_NEXT n (HOBJECT n_map) statement
   -- if pweakmapentry.VALUE = POBJECT n_old
   -- if $weakmap_write_old_value(S, n_old)
   -- if $heap_owners($heap_graph(S), HOBJECT n_old) = 1
-  -- if paccess.VALUE = POBJECT n_new
-  -- if $weakmap_entries_value_allowed(S, POBJECT n_new)
+  -- if $weakmap_write_incoming_before(S, paccess.VALUE, |S.OBJECTS|)
   -- if paccess.RHS = VARIABLE n_rhs_name* z_rhs
   -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN false) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
   -- if $weakmap_foreach_name(expression_iterable) = (n_map_name*)
@@ -1264,9 +1281,8 @@ def $weakmap_write_source_site(S, pweakmapwrite, FOREACH_NEXT n (HOBJECT n_map) 
   -- if pweakmapwrite.OLD.KEY = n_key
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapwrite.OLD[.VALUE = paccess.VALUE])
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
-  -- if paccess.VALUE = POBJECT n_new
-  -- if $(n_old < pweakmapwrite.FIRSTNEW) /\ $(n_new < pweakmapwrite.FIRSTNEW) /\ $(pweakmapwrite.FIRSTNEW <= |S.OBJECTS|)
-  -- if $weakmap_entries_value_allowed(S, POBJECT n_new)
+  -- if $(n_old < pweakmapwrite.FIRSTNEW) /\ $(pweakmapwrite.FIRSTNEW <= |S.OBJECTS|)
+  -- if $weakmap_write_incoming_before(S, paccess.VALUE, pweakmapwrite.FIRSTNEW)
   -- if $origin_node(S.SOURCES, porigin_loop) = (statement)
   -- if $goto_foreach_line_valid(S, statement, porigin_loop, z)
   -- if $goto_foreach_mode_valid(S, statement, n)
