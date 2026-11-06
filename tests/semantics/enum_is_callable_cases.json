@@ -1938,5 +1938,59 @@
     "expected_normal_stdout": "1:TargetCycle156|",
     "purpose": "A genuine byref self-cycle remains outside the new acyclic last-owner cut; native-normal observation carries zero model agreement.",
     "model_timeout_seconds": 90
+  },
+  {
+    "id": "is-callable-property-output-owner",
+    "source": "<?php\nfunction Target157(int $required) { echo 'BAD-target|'; strrev('unentered'); }\n$failure157 = new Exception('owner157');\nclass Child157 {\n    public $label;\n    public function __construct($label) { $this->label = $label; }\n    public function __destruct() {\n        global $alias157, $drops157;\n        $drops157 = $drops157 + 1;\n        if ($alias157 === null) { echo 'child:', $this->label, ':NULL|'; }\n        else { echo 'child:', $this->label, ':', $alias157, '|'; }\n    }\n}\nclass Owner157 {\n    public $first;\n    public $second;\n    public function __destruct() {\n        global $alias157, $mode157, $failure157, $owners157;\n        $owners157 = $owners157 + 1;\n        echo 'owner:', $mode157, ':', (int)($alias157 === null), '|';\n        if ($mode157 === 'replace') {\n            unset($this->first);\n            $this->second = new Child157('NEW');\n            echo 'owner-replaced|';\n        }\n        if ($mode157 === 'throw') { throw $failure157; }\n        echo 'owner-end|';\n    }\n}\n$mode157 = 'normal'; $drops157 = 0; $owners157 = 0;\n$name157 = new Owner157;\n$name157->first = new Child157('A');\n$name157->second = new Child157('B');\n$alias157 =& $name157;\n$result157 = is_callable('Absent157', false, $name157);\necho 'normal:', (int)($result157 === false), ':', $alias157, ':', $owners157, ':', $drops157, '|';\nunset($alias157);\n$mode157 = 'replace'; $drops157 = 0; $owners157 = 0;\n$name157 = new Owner157;\n$name157->first = new Child157('A');\n$name157->second = new Child157('B');\n$alias157 =& $name157;\n$result157 = is_callable(callable_name: $name157, value: 'Target157');\necho 'replace:', (int)($result157 === true), ':', $alias157, ':', $owners157, ':', $drops157, '|';\nunset($alias157);\n$mode157 = 'throw'; $drops157 = 0; $owners157 = 0;\n$name157 = new Owner157;\n$name157->first = new Child157('A');\n$name157->second = new Child157('B');\n$alias157 =& $name157;\n$result157 = 'UNCHANGED';\ntry { $result157 = is_callable('Target157', false, $name157); }\ncatch (Exception $caught157) {\n    echo 'caught:', $alias157, ':', $result157, ':', (int)($caught157 === $failure157), ':', $owners157, ':', $drops157, '|';\n}\nunset($caught157, $alias157, $failure157);\n",
+    "source_sha256": "c7046895bda9e358c14935091010e622f91c2b57d37180ad69003478b20c3355",
+    "expected_model": "normal",
+    "expected_normal_stdout": "owner:normal:1|owner-end|child:A:NULL|child:B:NULL|normal:1:Absent157:1:2|owner:replace:1|child:A:NULL|child:B:NULL|owner-replaced|owner-end|child:NEW:NULL|replace:1:Target157:1:3|owner:throw:1|child:A:NULL|child:B:NULL|caught:Target157:UNCHANGED:1:1:2|",
+    "purpose": "Owning USER output clears NULL before owner body, then actual post-body fields; unset/replacement children drain once, pending throw commits NAME and cancels assignment.",
+    "model_timeout_seconds": 240
+  },
+  {
+    "id": "is-callable-property-output-resurrection",
+    "source": "<?php\nfunction TargetRes157(int $required) { echo 'BAD-res-target|'; strrev('unentered'); }\nclass ResChild157 {\n    public function __destruct() {\n        global $alias157, $drops157;\n        $drops157 = $drops157 + 1;\n        echo 'res-child:', $alias157, '|';\n    }\n}\nclass ResOwner157 {\n    public $child;\n    public function __destruct() {\n        global $alias157, $saved157, $owners157;\n        $owners157 = $owners157 + 1;\n        echo 'res-owner:', (int)($alias157 === null), '|';\n        $saved157 = $this;\n    }\n}\n$drops157 = 0; $owners157 = 0;\n$name157 = new ResOwner157;\n$name157->child = new ResChild157;\n$alias157 =& $name157;\n$result157 = is_callable('TargetRes157', false, $name157);\necho 'saved:', (int)($result157 === true), ':', $alias157, ':', $owners157, ':', $drops157, '|';\nunset($saved157);\necho 'released:', $owners157, ':', $drops157, '|';\nunset($alias157);\n",
+    "source_sha256": "6da08f552b9d5170d9df6636aed098bd81964aa91f2e0becfc3b0ca8728b8818",
+    "expected_model": "normal",
+    "expected_normal_stdout": "res-owner:1|saved:1:TargetRes157:1:0|res-child:TargetRes157|released:1:1|",
+    "purpose": "An actual escaped owner root preserves fields across NAME and one owner destructor; only its later last release drains the child with committed NAME.",
+    "model_timeout_seconds": 120
+  },
+  {
+    "id": "is-callable-property-output-controls",
+    "source": "<?php\nfunction TargetControl157(int $required) { echo 'BAD-control|'; strrev('unentered'); }\nclass ControlChild157 {\n    public $label;\n    public function __construct($label) { $this->label = $label; }\n    public function __destruct() {\n        global $alias157;\n        if ($alias157 === null) { echo 'child:', $this->label, ':NULL|'; }\n        else { echo 'child:', $this->label, ':', $alias157, '|'; }\n    }\n}\n#[AllowDynamicProperties]\nclass MixedOwner157 {\n    public $declared;\n    public function __destruct() {\n        global $alias157;\n        if ($alias157 === null) { echo 'mixed-owner:NULL|'; }\n        else { echo 'mixed-owner:', $alias157, '|'; }\n    }\n}\n$name157 = new stdClass;\n$name157->first = new ControlChild157('STD-A');\n$name157->second = new ControlChild157('STD-B');\n$alias157 =& $name157;\n$result157 = is_callable('TargetControl157', false, $name157);\necho 'std:', (int)($result157 === true), ':', $alias157, '|';\nunset($alias157);\n$name157 = new MixedOwner157;\n$name157->declared = new ControlChild157('DECL');\n$name157->dynamic = new ControlChild157('DYN');\n$alias157 =& $name157;\n$result157 = is_callable('TargetControl157', false, $name157);\necho 'mixed:', (int)($result157 === true), ':', $alias157, '|';\nunset($alias157);\n$name157 = new MixedOwner157;\n$name157->declared = new ControlChild157('HELD');\n$holder157 = $name157;\n$alias157 =& $name157;\n$result157 = is_callable('TargetControl157', false, $name157);\necho 'held:', (int)($result157 === true), ':', $alias157, '|';\nunset($holder157, $alias157);\n$name157 = new MixedOwner157;\n$name157->declared = new ControlChild157('SAME');\n$alias157 =& $name157;\n$result157 = is_callable($name157, false, $name157);\necho 'same:', (int)($result157 === false), ':', $alias157, '|';\nunset($alias157);\n$name157 = new stdClass;\n$name157->child = new ControlChild157('STD-SAME');\n$alias157 =& $name157;\n$result157 = is_callable($name157, false, $name157);\necho 'std-same:', (int)($result157 === false), ':', $alias157, '|';\nunset($alias157);\n",
+    "source_sha256": "56f8b2da939c7f63cf42cdb3f23e4236ec10b17d533c9e01542deb1ccd043474",
+    "expected_model": "normal",
+    "expected_normal_stdout": "child:STD-A:NULL|child:STD-B:NULL|std:1:TargetControl157|mixed-owner:NULL|child:DYN:NULL|child:DECL:NULL|mixed:1:TargetControl157|held:1:TargetControl157|mixed-owner:TargetControl157|child:HELD:TargetControl157|mixed-owner:MixedOwner157::__invoke|child:SAME:MixedOwner157::__invoke|same:1:MixedOwner157::__invoke|child:STD-SAME:stdClass::__invoke|std-same:1:stdClass::__invoke|",
+    "purpose": "Std/mixed dynamic-before-declared storage, retained owning USER and USER/std same-CV SENT preserve real owners and exact false/name flow.",
+    "model_timeout_seconds": 180
+  },
+  {
+    "id": "is-callable-property-output-rebind",
+    "source": "<?php\nfunction TargetRebind157(int $required) { echo 'BAD-rebind-target|'; strrev('unentered'); }\nclass RebindChild157 {\n    public function __destruct() {\n        global $alias157;\n        echo 'rebind-child:', (int)($alias157 === null), '|';\n        unset($GLOBALS['value157'], $GLOBALS['name157']);\n        $GLOBALS['value157'] = 'NEW-INPUT';\n        $GLOBALS['name157'] = 'NEW-OUTPUT';\n        $alias157 = 'CHILD';\n    }\n}\nclass RebindOwner157 { public $child; }\n$value157 = 'TargetRebind157';\n$name157 = new RebindOwner157;\n$name157->child = new RebindChild157;\n$alias157 =& $name157;\n$result157 = is_callable(callable_name: $name157, value: $value157);\necho 'rebound:', (int)($result157 === true), ':', $alias157, ':', $name157, ':', $value157, '|';\nunset($alias157);\n",
+    "source_sha256": "6cd084a4939dd6263eaee5f0ca545449c8a32cac5e6a93d69d1712030f2c21a8",
+    "expected_model": "normal",
+    "expected_normal_stdout": "rebind-child:1|rebound:1:TargetRebind157:NEW-OUTPUT:NEW-INPUT|",
+    "purpose": "Child cleanup detaches source/output CVs while the real acquired cell receives frozen NAME through its surviving alias.",
+    "model_timeout_seconds": 120
+  },
+  {
+    "id": "is-callable-property-output-fiber-control",
+    "source": "<?php\nfunction TargetFiber157(int $required) { echo 'BAD-fiber-target|'; strrev('unentered'); }\n$name157 = new stdClass;\n$name157->child = new Fiber(function () { echo 'BAD-fiber-entry|'; });\n$result157 = is_callable('TargetFiber157', false, $name157);\necho (int)($result157 === true), ':', $name157, '|';\n",
+    "source_sha256": "6d82718367b0fab853c91e89f46157111ca9de3095a6f355964885dedf50bca2",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "1:TargetFiber157|",
+    "purpose": "A std output with an opaque Fiber child remains refused before effects; native-normal control retains zero agreement.",
+    "model_timeout_seconds": 90
+  },
+  {
+    "id": "is-callable-property-output-cycle-control",
+    "source": "<?php\nfunction TargetCycle157(int $required) { echo 'BAD-cycle-target|'; strrev('unentered'); }\n$name157 = new stdClass;\n$name157->self = $name157;\n$result157 = is_callable('TargetCycle157', false, $name157);\necho (int)($result157 === true), ':', $name157, '|';\n",
+    "source_sha256": "4fbbcd0a3584c648a1f53dd500c10ef8ade02ece618c49ca9ce70f1bd791270f",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "1:TargetCycle157|",
+    "purpose": "A std self-cycle stays outside the new acyclic output family, including retained post-write edge counts; native-normal control retains zero agreement.",
+    "model_timeout_seconds": 90
   }
 ]
