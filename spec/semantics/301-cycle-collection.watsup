@@ -1026,10 +1026,12 @@ def $gc_array_separation_site(S, (porigin), ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (
   -- if z_dimension = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0, PCFIELD 1], NScalarInt (INTEGER z_key) metadata_key)
   -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension)
   -- if $lookup(S.ENV, n_name*) = (n_cell) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $(n_cell < |S.STORE|)
   -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
 def $gc_array_separation_site(S, porigin?, ptask, n_cell, pkey) = false -- otherwise
 def $gc_array_separation_image(S, n_old, n_new, n_cell, pkey, pvalue) = true
   -- if $(n_old < n_new) /\ $(n_new < |S.ARRAYS|)
+  -- if $(n_cell < |S.STORE|)
   -- if (HARRAY n_old) <- S.ALLOCATIONS /\ (HARRAY n_new) <- S.ALLOCATIONS
   -- if ~$array_immutable(S, n_old) /\ ~$gc_proxy(S, n_old)
   -- if $heap_count(HARRAY n_old, S.NATIVEEXCESS) = 1 /\ $heap_count(HARRAY n_new, S.NATIVEEXCESS) = 0
