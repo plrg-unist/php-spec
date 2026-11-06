@@ -55,6 +55,14 @@ The [review](../coverage/semantics/deprecated-scoped-closure-default-review.json
 records ordinary staged/quiet release, late-called scopes and the separate
 receiver-free fixture correction; held Generator-close behavior earns no credit.
 
+COMP193 public method FCC originals, selected-entry history and borrowed-static
+lifetime checks are under `../php-spec-evidence-archive/comp193/`.
+The [review](../coverage/semantics/deprecated-method-fcc-default-review.json)
+keeps the cold-cache golden and body-fixture corrections, missing-child-entry
+counterexample and held pending-invoke failure separate from accepted cuts.
+Promoted192 native data keeps its original context with an explicit
+no-file-identity-effects bridge.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

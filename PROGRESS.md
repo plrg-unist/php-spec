@@ -2615,6 +2615,21 @@ originals agree; one warmed fake-method refusal retains zero agreement. Separate
 Generator-close release and other held entry families remain outside this law.
 [Review](coverage/semantics/deprecated-scoped-closure-default-review.json).
 
+COMP193 adds direct public ordinary instance/static method FCC and
+`Closure::fromCallable` default recipients and their clones. Actual captured
+descriptor/scope/receiver records select the callee; a nonowning ENTRY witness
+preserves Shared history after source/receiver retirement. Genuine child entry
+and exact cache-owner proof govern reentry. Fake method statics remain owned by
+the original method; private cache-free precedes This-only child cleanup.
+The warm scalar-before-owning-donor source is promoted from its complete192
+native packet. Twelve owning-default originals and one scalar preservation
+original agree; three held controls earn zero agreement. Separate123/114/155/90
+strict453 fronts prove ownership, entry history and cache authority. Explicit
+wrapper/pending owning invokes, nonpublic/Trait/Generator and held303 cleanup
+remain outside this finite family.
+[Review](coverage/semantics/deprecated-method-fcc-default-review.json). The current
+joined main SL453 load and inventory pass at their recorded cut.
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2624,7 +2639,8 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS206 | Direct static no-capture literal USER Closure producers with zero/required plain positional-by-value arguments, authentic source/template and real targets; preserve current quiet COPY/header and held policies. |
 | ATTR66 | Per-property authentic exporter paths across multiple unadapted Traits and branching acyclic wrappers, preserving raw partners and flattened Consumer identities without raw-origin deduplication; retain conflict priority and held bounds. |
-| COMP193 | Public ordinary instance/static method FCC defaults through direct captures, fromCallable and clones, with authentic entry/scope/receiver and Shared/private lifetime; preserve fake rebind, Generator and other held bounds. |
+| COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
+| ENUM150 | Ordinary non-method function-string is_callable via actual registry/publication facts, query-cut output history and existing reference/bool continuations; preserve frozen results and held domains. |
 | GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |
 | I127 | Existing computed/nullsafe native Generator method selection with admitted Iterator, Aggregate or initialized by-value Generator CV packs; preserve actual receipts, ownership and held domains. |
 

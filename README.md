@@ -2736,8 +2736,12 @@ locals and before API arguments/source cleanup; same-scope Shared calls reuse
 their cache. Direct class-scoped REAL literals, bound copies and clones preserve
 actual `$this` and separate lexical/called scopes. On ordinary destruction,
 scoped private caches end after captures/statics and before the bound receiver;
-retired history keeps no owner alive. Source donor checks protect hits and
-post-handler binds. Unknown/fake Closure modes, arrows, trait, by-reference, variadic,
+retired history keeps no owner alive. Direct public ordinary method FCCs and
+`Closure::fromCallable` copies also receive defaults through their real captured
+descriptor, scope and receiver. A nonowning entry witness preserves selected
+identity through Shared history; fake method statics stay owned by the original
+method. Source donor checks protect hits and post-handler binds. Unknown and
+wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, class
 and static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
@@ -2750,6 +2754,7 @@ and static-property defaults, converted queries and wider metadata remain partia
 [Private Closure-cache review](coverage/semantics/deprecated-private-closure-default-review.json).
 [Ordinary Closure::call default review](coverage/semantics/deprecated-closure-call-default-review.json).
 [Scoped Closure-default review](coverage/semantics/deprecated-scoped-closure-default-review.json).
+[Method FCC-default review](coverage/semantics/deprecated-method-fcc-default-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional

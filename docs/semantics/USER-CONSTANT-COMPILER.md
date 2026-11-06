@@ -137,14 +137,28 @@ records retire; pending marker authority ends before the receiver's destructor.
 Birth and stamp history remains valid without reviving cache storage or guessing
 a recipient from a source site.
 
+Direct public ordinary instance/static method FCCs, `Closure::fromCallable`
+results and their clones reuse existing captured descriptors and scope/receiver
+records. Runtime direct captures share the original method cache; cold API
+captures can have private caches, with fresh private clones. A genuine receive
+records its selected callee in nonowning ENTRY history, including Shared owners.
+Active receipts require that exact instance; closed receipts use immutable
+body/cache/function facts without rereading retired receivers or API inputs.
+An ENTRY-bearing parent requires genuine child entry proof for pending-cache
+reuse. A different Shared FCC can fill the same slot, while another Private
+owner cannot. Fake method statics stay owned by the original method; private
+fake cleanup queues cache-free then its actual This-only children.
+Explicit wrapper/pending invokes do not gain owning-default authority from a
+warmed slot; their ordinary non-Deprecated scalar route is separate.
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
-Unknown identities and wider defaults remain core work. The ordinary call path
+Unknown identities and wider defaults remain core work. The ordinary `Closure::call` path
 does not admit fake method sources, Closure receivers or held Generator,
 captured-entry and pending/iteration families.
 
-Arrow/fake recipients, by-reference parameters/returns/captures,
+Arrow and wider fake/nonpublic recipients, by-reference parameters/returns/captures,
 variadic and Generator Closure recipients remain separate. Trait and wider dynamic
 method/callable recipients, plus class and static-property owning defaults,
 retain their separate boundaries. The bounded handler producer remains fixed primitive `define`;
@@ -165,6 +179,7 @@ private-cache marker law does not extend the separate303 close path.
 [COMP190 private Closure caches](../../coverage/semantics/deprecated-private-closure-default-review.json).
 [COMP191 ordinary Closure::call defaults](../../coverage/semantics/deprecated-closure-call-default-review.json).
 [COMP192 direct scoped Closure defaults](../../coverage/semantics/deprecated-scoped-closure-default-review.json).
+[COMP193 public method FCC defaults](../../coverage/semantics/deprecated-method-fcc-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
