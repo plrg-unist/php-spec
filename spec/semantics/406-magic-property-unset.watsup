@@ -332,6 +332,27 @@ def $property_unset_public_guarded_plan(S) = (S_target)
   -- if ppropertyslot.STATE = PROP_UNSET
   -- if $property_unset_needed(S, n, ptbytes)
   -- if $property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+def $property_unset_public_guarded_plan(S) = (S_target)
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase (VARIABLE ptbytes_selector z_name) z_receiver
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $property_pending_source_base(S, S.BASE, expression)
+  -- if $property_magic_cv_name(S[.RESULT = VARIABLE ptbytes_selector z_name], porigin, $property_current_line(S)) = (ptbytes)
+  -- if $property_unset_pending_receiver(S, pbase) = (n)
+  -- if S_target = $property_pending_resolve(S, pbase, VARIABLE ptbytes_selector z_name, PPUNSET, z_receiver, $property_current_line(S))
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_unset_method(S, n) = (pmethoddesc)
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_unset_public_desc(S, n, ptbytes, ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyunset = {SITE porigin, NAME ptbytes, LINE $property_current_line(S), OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if $property_unset_capture(S, ppropertyunset)
+  -- if $property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_unset_public_guarded_plan(S) = eps -- otherwise
 
 dec $property_unset_plan(pstate) : ppropertyunset?
@@ -410,7 +431,6 @@ def $property_unset_public_clear_pending(S) = true
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
   -- if $property_slot_at(ppropertyslot_all*, ppropertydesc.KEY) = (ppropertyslot)
   -- if $property_unset_public_clear_state(ppropertyslot.STATE)
-  -- if ~$property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_unset_public_clear_pending(S) = false -- otherwise
 
 rule PhpStep/property-unset-call: S ~> S_target[.TODO = [(CALL_ARGS (PROPERTY_UNSET_TARGET ppropertyunset) eps 1 ([KNOWN (PSTRING ppropertyunset.NAME)]) (ppropertyunset.SITE) ppropertyunset.LINE), PROPERTY_UNSET_RESULT ppropertyunset] ++ S_inputs.TODO][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
