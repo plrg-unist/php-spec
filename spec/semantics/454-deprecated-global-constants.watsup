@@ -218,7 +218,9 @@ def $deprecated_handler_exit_ready(S) = true
   -- if $deprecated_handler_call(perrorcall)
   -- if $error_entered_call_valid(S, perrorcall)
 def $deprecated_handler_exit_ready(S) = false -- otherwise
-def $closure_call_copy_exit_scope(S, S_exit) = S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z S.TODO]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $deprecated_handler_exit_scope(pstate, pstate) : pstate
+def $deprecated_handler_exit_scope(S, S_scoped) = S_scoped -- otherwise
+def $closure_call_copy_exit_scope(S, S_exit) = $deprecated_handler_exit_scope(S, S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z S.TODO]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
   -- if $deprecated_handler_exit_ready(S)
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if S_exit.COMPLETION = NORMAL
@@ -308,7 +310,7 @@ def $deprecated_handler_exit_ready(S) = true
   -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
   -- if $deprecated_handler_call(perrorcall)
   -- if $error_cleanup_valid(S, perrorcall)
-def $closure_call_copy_exit_scope(S, S_exit) = S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z ((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*)]][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $closure_call_copy_exit_scope(S, S_exit) = $deprecated_handler_exit_scope(S, S[.TODO = [DEPRECATED_HANDLER_EXIT pdestructioncleanup z ((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*)]][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)])
   -- if S.TODO = (ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*
   -- if $deprecated_handler_exit_ready(S)
   -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*

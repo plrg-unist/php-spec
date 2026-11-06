@@ -67,3 +67,10 @@ def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_construct
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $parameter_constructor_site(S, porigin_site)
   -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
+;; The C warning-exit reconstruction must preserve the automatic constructor's
+;; failed flag before its receiver can lose the final owner during unwinding.
+def $deprecated_handler_exit_scope(S, S_scoped) = $constructor_failed(S_scoped)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_constructor_current(S, pfunction)
