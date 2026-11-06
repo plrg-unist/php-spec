@@ -2728,6 +2728,15 @@ Four originals agree on their first model runs; complementary72/109 frontiers
 and25 eligible-pack guards pass at private461 cuts. Three intended Unsupported
 controls retain zero agreement, with no failure/correction/replay. Generic tail
 laws remain reused. [Review](coverage/semantics/anonymous-keyword-static-firstclass-producer-magic-review.json).
+This direct/FCC producers now select public ordinary methods from saved caller
+receiver/class/source identities, with direct CODEEXPR or real FCC INITs/args.
+Caller ownership survives producer return; ReturnThis can escape after caller
+retirement. The [review](coverage/semantics/anonymous-this-producer-magic-review.json)
+records four source agreements, separate 56/117 owner-context fronts, a 25-check
+unpack guard and four refusal controls at private461 cuts. The initial
+checker-only binding failure retains zero credit; caller and producer owners
+remain distinct, with no generic tail replay.
+
 
 
 Later array sends,
@@ -3191,7 +3200,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS216 | Public ordinary USER This direct calls and immediate FCCs using authentic saved caller receiver/scope and real capture/outer args; preserve caller-held ownership and source limits. |
+| CLASS217 | Literal keyword nonstatic public USER direct calls and immediate FCCs with compatible saved caller This and authentic requested/declaring/called metadata; preserve existing source and owner laws. |
 | COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
 | GC68 | Positive unmatched native reference counts for exact normal sent-cell raw NAME overwrites, preserving physical graph/debt laws and authentic release, GC snapshots and shutdown behavior; preserve explicit refusals elsewhere. |

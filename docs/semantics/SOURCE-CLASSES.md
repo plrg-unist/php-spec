@@ -881,6 +881,15 @@ unaliased wrapper retires before the outer send. Wider callable, signature,
 array/unpack and header policies stay separate.
 [Keyword callable review](../../coverage/semantics/anonymous-keyword-static-firstclass-producer-magic-review.json).
 
+Literal public `$this` producers now use the original caller's immutable
+receiver/class/source metadata for direct calls and immediate first-class
+invocations. Existing direct receiver owners or wrapper/INSTANCE edges preserve
+This; releasing a producer edge leaves the caller's owner intact. ReturnThis can
+escape in the argument table after the caller retires, while returnOld allows
+This to retire with the caller. Collection keeps real values and needs no CV
+history, new owner or wider header/signature mode.
+[This producer review](../../coverage/semantics/anonymous-this-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order
