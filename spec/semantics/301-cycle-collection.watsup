@@ -1208,7 +1208,9 @@ def $gc_array_borrowed_cell(S, n_root) = true
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
   -- if S.ITERATORS = eps /\ S.BORROWEDREAD = eps /\ S.DESTRUCTION.OPERATIONS = eps
   -- if S.LOCATION = ROOT n_root /\ S.CELL = n_root
-  -- if S.RESULT = KNOWN (PARRAY n_array) /\ S.STORE[n_root] = DEFINED (PARRAY n_array)
+  -- if S.RESULT = KNOWN (PARRAY n_array)
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_array)
+  -- if $(n_array < |S.ARRAYS|)
   -- if (HARRAY n_array) <- S.ALLOCATIONS
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_root) = eps /\ $container_init_at(S.CONTAINERINITS, n_root) = eps
   -- if ~(n_root <- S.LITERALREFRETAINED) /\ ~(n_root <- S.LITERALREFDEBTS)
