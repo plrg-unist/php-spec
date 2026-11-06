@@ -46,5 +46,17 @@
     "expected_model": "normal",
     "model_seconds": 600,
     "process_seconds": 620
+  },
+  {
+    "id": "i129-scalar-prefix-empty-iterator-send",
+    "purpose": "scalar-prefix-empty-iterator-send",
+    "source": "<?php\nclass Data129S implements Iterator {\n    function __construct() { global $weakData; $weakData = WeakReference::create($this); }\n    function rewind(): void { global $value, $target, $pack; echo 'REWIND|'; $value = null; $target = null; $pack = null; }\n    function valid(): bool { echo 'VALID|'; return false; }\n    function current(): mixed { echo 'BAD-CURRENT|'; return null; }\n    function key(): mixed { echo 'BAD-KEY|'; return 0; }\n    function next(): void { echo 'BAD-NEXT|'; }\n}\nfunction flow129S() {\n    global $weakData, $weakTarget;\n    try { echo 'INIT|'; $received = yield 'head'; echo 'BODY|', $received === 17, '|', $weakData->get() === null, '|', $weakTarget->get() instanceof Generator, '|'; unset($received); yield 'tail'; }\n    finally { echo 'FIN|', $weakData->get() === null, '|', $weakTarget->get() instanceof Generator, '|'; }\n}\nfunction run129S() {\n    global $value, $target, $pack, $weakData, $weakTarget;\n    echo 'CALL|'; $result = $target->send($value, ...$pack);\n    echo 'RETURN|', $result === 'tail', '|', $weakTarget->get() === null, '|', $weakData->get() === null, '|', $value === null, '|', $pack === null, '|';\n}\n$value = 17; $target = flow129S(); $target->current(); $weakTarget = WeakReference::create($target);\n$pack = new Data129S; run129S(); echo 'DONE|';\n",
+    "source_sha256": "5eccc3d8707c6c8aa8c6cc2efeaba13379876fd1f124fd2d59f4fa1d5b284e45",
+    "native_exit": 0,
+    "native_stdout": "INIT|CALL|REWIND|VALID|BODY|1|1|1|FIN|1|1|RETURN|1|1|1|1|1|DONE|",
+    "native_stderr": "",
+    "expected_model": "normal",
+    "model_seconds": 600,
+    "process_seconds": 620
   }
 ]
