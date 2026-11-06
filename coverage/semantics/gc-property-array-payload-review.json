@@ -1,0 +1,68 @@
+{
+  "scope": "GC54: one owning DIRECT-array layer in each validated public untyped backed WeakMap Value property; elements use the existing safe scalar/fieldless-destructor-Child policy.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "655761a29845bd384659199e77626775c90af74f",
+  "semantic_revision": "5081483a558c94d20a9d87bf1efb25ba55d380c4",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "91b864359af05a71614a1a67c471b5beaf23dc1b2787ef5131139051cee0fa18"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc-property-array-author-54/front-720-v1/report.json": "7203887d7f4ed60062c55a79a9070369c7569549",
+    "../php-spec-evidence-archive/gc-property-array-author-54/native-v1/baseline-report.json": "c8ee1a54e1360f742c3ce30bb80c232c4f4e240b",
+    "../php-spec-evidence-archive/gc-property-array-author-54/native-v1/model-report.json": "5081483a558c94d20a9d87bf1efb25ba55d380c4",
+    "../php-spec-evidence-archive/gc-property-array-author-54/native-v1/native-report.json": "c8ee1a54e1360f742c3ce30bb80c232c4f4e240b",
+    "../php-spec-evidence-archive/gc-property-array-peer-54/native-v1/native-report.json": "de935c325aa5cc9b782cf992e461f19a471afb67",
+    "../php-spec-evidence-archive/gc-property-array-peer-54/native-v1/model-report.json": "00914e3e7ab7825f261c97b7f4ff0ee6b42edb85"
+  },
+  "rule_basis": "The exact old scalar/fieldless-Child property predicate factors into property_leaf_free. A finite DIRECT-entry fold calls only that leaf predicate and rejects duplicate keys, ALIAS, PARRAY elements and methodless-object subgraphs. A disjoint PARRAY property arm validates range/allocation/nonproxy/heap before this fold. Other property values delegate to the same old leaf behavior. Descriptor visibility/static/readonly/type/backing/order and source guards are unchanged. Common producer/consumer/free policy inherits the bounded property layer; no array schema, COW, generic ownership, release executor, GC hook or task/record change.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_objects.c:zend_object_std_dtor,zend_object_dtor_property (declared properties_table order and i_zval_ptr_dtor)",
+    "vendor/php-src/Zend/zend_types.h:SEPARATE_ARRAY (zend_array_dup then GC_TRY_DELREF)",
+    "vendor/php-src/Zend/zend_hash.c:zend_array_dup,zend_array_destroy",
+    "spec/semantics/359-instance-storage-pin.watsup:unchanged borrowed SLOTS and slot-to-job transfer",
+    "spec/semantics/257-request-destructors.watsup:unchanged ordered/shared HARRAY and Child jobs"
+  ],
+  "counts": {
+    "new_exact_originals": 2,
+    "author_exact_originals": 1,
+    "independent_exact_originals": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 91,
+    "old_runtime_baseline_agreements": 0,
+    "constructed_control_php_agreements": 0,
+    "new_unsupported_php_controls": 0
+  },
+  "validation": {
+    "author": "A prebuilt Value property contains[X,Y,X,0]. Actual property fetch holds the original table, and a copied array loses element0 through COW. Key death retires Value while held/copy arrays retain Children; dropping held original still runs no callback, and final copy release runsY thenX with Value/Key weak-null and scalar sibling0 readable. Copies preserve object identity. Exact normal85.53s at508, stable original bytes/head.",
+    "independent": "Three declared slots first/middle/last are written in reverse order. First and last share[X,0,Z,X], middle ownsY. Map free first drops the shared array owner, then Ythrows supplied Exception; last array still cleans Z thenX before catch. Map pin/held Key remain weak-live and Value weak-null through callbacks; creation trace, skipped statement and final weak deaths agree. Exact normal151.06s at009 with unchanged508 code.",
+    "front": "One strict-SL91 group uses exact independent source bytes and reaches the real Value pin NEXT0. Physical live slots[array,Y,array] own Array2, ChildX2/Y1/Z1; saved SLOTS own no extra array/Child edges and the pin owns only Value. Actual first-slot transfer clears that slot and queues one HARRAY job while preserving all counts. Actual next shared job drops Array2to1 without copying/releasing Child edges or invoking callbacks. Real Map pin and held Key stay rooted, and outgoing Key registration is already removed. Zero-budget identity, normalized successors, explicit two-step BUDGET and full driver-resumed native throw ending agree; full cleanup retires all selected nodes. Later Y/Z/X decrement counts are not separately measured.",
+    "controls": "Constructed helper inputs reject nested PARRAY, aliased elements, methodless-object recursion, duplicate keys and dangling/unallocated arrays. Property-array callbacks are admitted while the existing top-level common array callback-element domain remains false. These controls add0 PHP agreement. Old scalar/Child behavior and descriptor/type-source guards retain their exact rules.",
+    "identity": "Both source comparisons have stable inputs/head, normal exit0/empty stderr and empty groups. Final front report pins four executed binaries, directly postchecked and independently matched unchanged. Native COW/separation behavior is only original-source evidence here; no new candidate/no-candidate assertion for separation or later cleanup."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc54_property_array_cow_hold.php": "bbf2533e150ebbabe9aa4931aaca339df8e33614df6896b0d6fef4ca24493945",
+    "tests/semantics/gc54_peer_shared_array_property_order.php": "cc61f4b432e66119d46cfd1148598e2c732d0940303e1a93228844704c32ce27"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc54_property_array_sources.py": "6ebd669fa2a22569e9f4e62eb5d4e17795bf54a942e7dc56c33ac486063a9fe6",
+    "tests/semantics/gc54_peer_property_array_sources.py": "9f7c6b09d859e9eb8cb6b2c6baa5552622eb661298182a294fc9ea4fca351a6b",
+    "tests/semantics/gc54_property_array_state.py": "1da5f846b5c6b852351ebf4b9ebb6d1ad5a5024191c02b70a457391fa2efcb65"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-property-array-author-54/front-720-v1/report.json": "ae3909092a47023d8b38058dc8a897b05e9d85b736281ef430600f3b7c40891d",
+    "../php-spec-evidence-archive/gc-property-array-author-54/native-v1/baseline-report.json": "26692cef682b11a757173e1b056163504eed1c69b845703f47f41310b0566b66",
+    "../php-spec-evidence-archive/gc-property-array-author-54/native-v1/model-report.json": "07d42e06d3c4766a5ea2192894f28a4f164a4d6e0556be95e8be148ec7139bd6",
+    "../php-spec-evidence-archive/gc-property-array-author-54/native-v1/native-report.json": "2a8edba4b75b82fb52549c9d00233bc02ee7cd904fde9fc46d6699c47dc87736",
+    "../php-spec-evidence-archive/gc-property-array-peer-54/native-v1/native-report.json": "ea10c69f528a588567b5edc673c57a3ba268f609ed23a1e3ff3b6cc1492611de",
+    "../php-spec-evidence-archive/gc-property-array-peer-54/native-v1/model-report.json": "07a1fd86268017187522dcb2f515d2e44cbb442a853ffcd71320db15d298fe90"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-property-array-author-54/manifest.json": "4f42a2b4c592ab9ff44a0469d8faae6a2f89bc05fd1fc4209c3a83c7f006913d",
+    "../php-spec-evidence-archive/gc-property-array-peer-54/independent-summary.json": "058e45de5321f133b676c53f89adf5d34200e6e42bcef8c1171940af5fc7966d"
+  },
+  "compatibility": "Scalar/fieldless-Child factoring is literal old behavior, disjoint from PARRAY. Existing top-array validation still accepts safe scalars/finite methodless Values; it receives no direct callback-element expansion. The old GC52 property-array refusal using[A,B,A] methodless Values remains false because those elements fail the unchanged fieldless-Child leaf policy. Array properties do not delegate into the general recursive object validator. No52/53 source/front replay or evidence renewal was needed; no intentional engine divergence.",
+  "limits": "Public untyped nonstatic/nonreadonly backed property slots only. No nested/aliased array elements, methodless-object subgraphs inside property arrays, typed/virtual/inherited/deeper hook or recursive graph expansion. Existing Key/table/source/selected/cursor/incoming/freeing/active-GC and wider caller boundaries remain. Held GC35/reentrant-own, Source47/COMP88, V110 and other paused work is untouched.",
+  "recovery": "Run gc54_property_array_sources.py native/model with pinned profile/cap300; c8ee keeps the old first-insertion Unsupported baseline. Run gc54_peer_property_array_sources.py native/model cap360 on the independent source. Run gc54_property_array_state.py for the sole strict-SL91 real slot-to-array transfer group cap360. Complete raw sources/frontend/fixtures/commands/profiles/statuses remain external; no additional campaign or retry.",
+  "review": "Paired frozen runtime/source and front91 static/result review are CLEAR; final clean docs/ledger acceptance is supplied by the paired handoff."
+}

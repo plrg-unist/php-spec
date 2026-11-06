@@ -271,8 +271,9 @@ getter-marker source confirms teardown never calls the getter. Actual property
 access/hook execution and type-source updates are unchanged. The
 [shared Value review](../../coverage/semantics/gc-singleton-finite-values-review.json)
 separates new/promoted sources, affected positives and explicit virtual/incoming
-Child refusals. Typed, alias, inherited/deeper and owning-array layouts,
-freeing-Map dimension access/mutation, active-pin GC and wider callers remain partial.
+Child refusals. At that cut, typed, alias, inherited/deeper and owning-array
+layouts, freeing-Map dimension access/mutation, active-pin GC and wider callers
+remained partial.
 
 GC44 uses the same finite payload validator at first insertion and new private-Key
 append. The admitted finite multi-property payloads may be fully built before
@@ -1447,14 +1448,14 @@ stored Values and the incoming Value satisfy the common policy for safe scalars
 and finite methodless objects, or one direct array layer of those values. The
 scalar domain includes null/bool/int, validated startup strings and binary64 bit
 patterns below 2^64. Reference payloads, aliased array elements and nested arrays
-receive no new admission. Object properties retain their existing
-primitive/direct fieldless-Child policy. The former separate property-float arm
+receive no new admission. Object properties contain primitives, direct fieldless
+Children or one direct array of those leaves. The former separate property-float arm
 is removed: its identical bit bound now delegates to the shared scalar helper,
 keeping successful validation disjoint.
 Existing task, RHS,
 selected operand, receiver and Key authority still apply. The finite arm excludes
 both older writer domains explicitly; validated ordinary leaf stored Keys, no cursor or
-incoming Map-key association, backed untyped primitive/direct-Child storage and
+incoming Map-key association, backed untyped bounded property storage and
 the existing deeper-layout limits remain required.
 
 The new slot is visible before the old Value releases. A fetched old owner can
@@ -1531,8 +1532,8 @@ unchanged. Other consumers reuse the common payload/storage policy.
 An array copy adds a real HARRAY owner without duplicating element edges. COW
 creates another backing table and its own edges. Existing release jobs retire
 the table before releasing its ordered elements, preserving repeated Values,
-Child owners and later cleanup after a throw. Array-valued object properties
-and indirect/by-reference WeakMap dimension writes retain their earlier limits.
+Child owners and later cleanup after a throw. Indirect/by-reference WeakMap
+dimension writes retain their earlier limits.
 The [array-payload review](../../coverage/semantics/gc-direct-array-payload-review.json)
 binds two originals and one COW retirement front. It numerically checks A3/B2
 through table-to-job transfer, then B2-to1; later A3-to2 follows the unchanged
@@ -1540,6 +1541,27 @@ release rule and original ending. Its GC check concerns the actual retired
 copy, with no new candidate-buffer claim for the earlier separation.
 The held Key is live during callbacks/catch, then retires during complete request
 cleanup. The original front's final Key-lifetime assertion retains zero credit.
+
+Each validated public untyped backed Value slot may also own one direct array
+whose elements are existing scalar leaves or fieldless destructor Children.
+Its element fold calls only that leaf predicate, so nested arrays, aliases and
+methodless-object subgraphs cannot recurse through property validation. Actual
+allocation/range, nonproxy and heap checks precede the finite duplicate-key fold.
+Descriptor, backing, declaration order and type-source guards are unchanged.
+
+A property fetch adds an HARRAY owner; COW creates distinct physical Child
+edges. Clearing a declared slot transfers its array owner into the existing
+release job, while the pin's saved slots remain nonowning metadata. Another slot
+or fetched array can defer element cleanup. Existing jobs follow declaration
+order, completing a retiring array's element jobs before moving to the next
+slot. They preserve later Children and a supplied Throwable through abrupt cleanup. The
+[property-array review](../../coverage/semantics/gc-property-array-payload-review.json)
+binds the fetched/COW original, shared-slot throw original and actual array-owner
+transfer front. Both originals agree exactly and the front passes 91 conditions:
+Array2 survives slot-to-job transfer, then an actual shared job drops it to1
+without changing ChildX2/Y1/Z1. Later Y/Z/X retirement is original-source and
+unchanged-rule evidence. The old first-insertion refusal adds zero agreement.
+No generic array, COW, ownership or GC policy is changed.
 
 Ordinary leaf `stdClass` Keys may be shared across canonical Maps containing the
 same finite payloads. Registration validates the actual associated tables,

@@ -3748,6 +3748,10 @@ A finite direct array of these scalars/objects can also be a payload. Shared
 copies retain array owners; COW copies element edges, and ordered cleanup jobs
 preserve later Values through a Child throw. Nested arrays and aliased elements
 remain outside this payload policy.
+Each public untyped backed Value property may hold a direct array of scalars or
+fieldless Children. Sharing those arrays retains real table owners; cleanup
+follows declared-slot order and runs element jobs at an array's last release.
+Nested arrays, aliased elements and methodless objects as elements remain excluded.
 Same-value replacement still performs its real old-zval GC visit.
 NaN empty tests warn and reread the selected numeric row after a handler;
 captured Map/Key identities add no owners. Structural mutation during that

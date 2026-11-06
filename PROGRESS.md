@@ -785,8 +785,8 @@ multiple-entry tables,
 singleton/multiple-entry Map retirement and selective Key notification. Safe
 null/bool/int/validated startup strings and binary64 floats add no heap edge.
 Object payloads have
-public untyped nonstatic/nonreadonly backed slots containing primitives or
-fieldless destructor Children; matching
+public untyped nonstatic/nonreadonly backed slots containing primitives,
+fieldless destructor Children or one direct array of those leaves; matching
 identities and keys fix declaration order. Ordered jobs preserve repeated Value
 and Child edges, outside owners and later cleanup after a Child throw. Backed
 storage clears without hook dispatch; used results, temporary producers and
@@ -877,7 +877,18 @@ pending/delivered-wrapper selections. The preserved early-wrapper source supplie
 the second selection and adds no original differential credit.
 [Shared-Key review](coverage/semantics/gc-shared-key-finite-review.json).
 
-Typed/alias/virtual/inherited/deeper and owning-array property layouts,
+Property-array owners survive ordinary copies and COW. Removing the Value leaves
+a fetched array owner intact; repeated array identities in declared slots defer
+element cleanup until their last owner releases. Slots release in declaration
+order; a final array release runs elements in table order, including cleanup
+after a supplied Child throw between shared array slots.
+Two originals agree exactly and one 91-condition front passes. The front checks
+the actual slot-to-array job transfer and array owner2-to1 with Child edges
+unchanged; later callback order comes from the original endings. The old
+first-insertion baseline retains zero agreement.
+[Property-array review](coverage/semantics/gc-property-array-payload-review.json).
+
+Typed/alias/virtual/inherited/deeper, nested-array and recursive property layouts,
 wider mutation/caller contexts,
 freeing-Map dimension access and active-pin collection remain partial. Paused
 work is untouched. The earlier [private-Key notification review](coverage/semantics/gc-finite-value-key-notice-review.json)
@@ -2092,7 +2103,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | --- | --- |
 | CLASS197 | First nullary named by-value flat-array producer in magic sends, with authenticated source and real producer-frame/argument/table/child owners; private implementation/review. |
 | I121 | Named by-reference Generator direct SEND cleanup with an owning VALUE snapshot after authenticated yield/Notice completion and live-owner proof; private implementation/review. |
-| GC54 | One direct-array layer in public untyped backed Value properties, with scalar/fieldless-Child elements and existing HARRAY/COW cleanup; private implementation/review. |
+| GC55 | Finite acyclic nested DIRECT-array root WeakMap payloads with shared DAG/HARRAY edges, COW and path-checked cycles; property arrays stay one layer; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
 | ATTR52 | Trait-imported GET-hook Closure source/consumer scope through authenticated trait/property certificates and the actual called receiver; private implementation/review. |
