@@ -14,7 +14,8 @@ import static_types as types
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'tests/semantics/deprecated_instance_default_review'
-SELECTIONS = {'alias': 'object-alias-cleanup', 'inheritance': 'inherited-template-snapshot'}
+SELECTIONS = {'alias': 'object-alias-cleanup', 'inheritance': 'inherited-template-snapshot',
+    'legacy': 'legacy-last-write', 'release': 'retired-global-template'}
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 
 EXTRA = r'''
@@ -70,6 +71,46 @@ def $instance_review_write_pause(S,porigin_class,porigin_decl,pvalue,n) = $insta
   -- if S_next = $drive_steps(S,1)
   -- if S_next.COMPLETION = BUDGET
 def $instance_review_write_pause(S,porigin_class,porigin_decl,pvalue,n) = S -- otherwise
+dec $instance_review_drop_ready(pstate) : bool
+def $instance_review_drop_ready(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (n_drop)
+  -- if S.OBJECTS[n_drop] = INSTANCE porigin_drop
+  -- if $class_at(S.CLASSES,porigin_drop) = (pclassdesc)
+  -- if pclassdesc.NAME = $ptascii("Drop197")
+  -- if $destructor_method(S,n_drop) = (pmethoddesc)
+  -- if pcallcontext.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+def $instance_review_drop_ready(S) = false -- otherwise
+dec $instance_review_drop_pause(pstate,nat) : pstate
+def $instance_review_drop_pause(S,n) = S -- if $instance_review_drop_ready(S)
+def $instance_review_drop_pause(S,n) = $instance_review_drop_pause(S_next[.COMPLETION = NORMAL],$nabs($(n - 1)))
+  -- if ~$instance_review_drop_ready(S)
+  -- if S.COMPLETION = NORMAL /\ $(n > 0) /\ S.TODO =/= eps
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $instance_review_drop_pause(S,n) = S -- otherwise
+dec $instance_review_publish_ready(pstate) : bool
+def $instance_review_publish_ready(S) = true
+  -- if S.TODO = (INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*
+def $instance_review_publish_ready(S) = false -- otherwise
+dec $instance_review_publish_pause(pstate,nat) : pstate
+def $instance_review_publish_pause(S,n) = S -- if $instance_review_publish_ready(S)
+def $instance_review_publish_pause(S,n) = $instance_review_publish_pause(S_next[.COMPLETION = NORMAL],$nabs($(n - 1)))
+  -- if ~$instance_review_publish_ready(S)
+  -- if S.COMPLETION = NORMAL /\ $(n > 0) /\ S.TODO =/= eps
+  -- if S_next = $drive_steps(S,1)
+  -- if S_next.COMPLETION = BUDGET
+def $instance_review_publish_pause(S,n) = S -- otherwise
+dec $instance_review_lookup_head(pclassconstantevent,porigin,porigin) : pinstanceglobalcertificate?
+def $instance_review_lookup_head(CCINSTANCE_LOOKUP pinstanceglobalcertificate,porigin_class,porigin_decl) = (pinstanceglobalcertificate)
+  -- if $instance_global_write_matches(pinstanceglobalcertificate,porigin_class,porigin_decl)
+def $instance_review_lookup_head(pclassconstantevent,porigin_class,porigin_decl) = eps -- otherwise
+dec $instance_review_lookup(pclassconstantevent*,porigin,porigin) : pinstanceglobalcertificate?
+def $instance_review_lookup(eps,porigin_class,porigin_decl) = eps
+def $instance_review_lookup(pclassconstantevent :: pclassconstantevent_tail*,porigin_class,porigin_decl) = (pinstanceglobalcertificate)
+  -- if $instance_review_lookup_head(pclassconstantevent,porigin_class,porigin_decl) = (pinstanceglobalcertificate)
+def $instance_review_lookup(pclassconstantevent :: pclassconstantevent_tail*,porigin_class,porigin_decl) = $instance_review_lookup(pclassconstantevent_tail*,porigin_class,porigin_decl)
+  -- if $instance_review_lookup_head(pclassconstantevent,porigin_class,porigin_decl) = eps
 '''
 
 
@@ -213,6 +254,112 @@ def inheritance(fixture, path, responses):
         '$machine_roots(S_done[.CLASSCONSTANTHISTORY = eps]) = $machine_roots(S_done)']
 
 
+def legacy(fixture, path, responses):
+    return ['U = ' + fixture,
+        'S_start = $php_run(U,0,' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
+        'S_start.COMPLETION = BUDGET',
+        'S_wait1 = $drive_steps(S_start[.COMPLETION = NORMAL],10000)',
+        'S_wait1.COMPLETION = SOURCE_PENDING',
+        '$eval_response_valid(S_wait1,' + responses[0] + ')',
+        'S_entered1 = $eval_resume(S_wait1,' + responses[0] + ')',
+        'S_wait2 = $drive_steps(S_entered1,10000)',
+        'S_wait2.COMPLETION = SOURCE_PENDING',
+        '$class_named(S_wait2.CLASSNAMES,$ptascii("ns197") ++ [92] ++ $ptascii("box197")) = (porigin_class)',
+        '$class_at(S_wait2.CLASSES,porigin_class) = (pclassdesc)',
+        'pclassdesc.PROPERTIES = [ppropertydesc]',
+        'porigin_decl = ppropertydesc.ORIGIN',
+        '$instance_default_at(S_wait2.INSTANCEDEFAULTS,porigin_class,porigin_decl) = (pinstancetemplate)',
+        'pinstancetemplate.STATE = INSTANCE_VALUE (PINT 9) PVSCALAR',
+        '$property_default_active_desc(S_wait2,porigin_decl) = (ppropertydesc)',
+        '$instance_global_last_event(S_wait2.CLASSCONSTANTHISTORY,porigin_class,porigin_decl) = (CCINSTANCE_WRITE porigin_class porigin_decl n_write)',
+        '$instance_review_lookup(S_wait2.CLASSCONSTANTHISTORY,porigin_class,porigin_decl) = (pinstanceglobalcertificate_old)',
+        'pinstanceglobalcertificate_old.PREFIX = n_write',
+        'pinstanceglobalcertificate_old.VALUE = PARRAY n_inner',
+        'pvalueclass = pinstanceglobalcertificate_old.CLASS',
+        '$instance_global_record_valid(S_wait2,pinstanceglobalcertificate_old)',
+        '$instance_global_last_write(S_wait2.CLASSCONSTANTHISTORY,porigin_class,porigin_decl) = eps',
+        '$instance_global_last_event(S_wait2.CLASSCONSTANTHISTORY,porigin_class,porigin_decl) = (CCINSTANCE_WRITE porigin_class porigin_decl n_write)',
+        '$eval_response_valid(S_wait2,' + responses[1] + ')',
+        'S_entered2 = $eval_resume(S_wait2,' + responses[1] + ')',
+        'S_done = $drive_steps(S_entered2,10000)', 'S_done.COMPLETION = NORMAL',
+        '$class_named(S_done.CLASSNAMES,$ptascii("ns197") ++ [92] ++ $ptascii("child197")) = (porigin_child)',
+        '$instance_default_at(S_done.INSTANCEDEFAULTS,porigin_child,porigin_decl) = (pinstancetemplate_child)',
+        'pinstancetemplate_child.STATE = INSTANCE_VALUE (PINT 9) PVSCALAR',
+        '$instance_default_link_prefix(S_done.CLASSCONSTANTHISTORY,porigin_child,eps) = (pclassconstantevent_link*)',
+        'n_link = |pclassconstantevent_link*|',
+        'S_done.CLASSCONSTANTHISTORY[n_link] = CCLINK porigin_child n_child',
+        'pinstanceobjectcertificate_bad = INSTANCE_OBJECT_COPY porigin_child n_child (INSTANCE_GLOBAL_BIND pinstanceglobalcertificate_old)',
+        '$instance_object_certificate_valid(S_done,pinstanceobjectcertificate_bad,porigin_child,porigin_decl,pvalueclass)',
+        '~$instance_global_snapshot_valid(S_done,pinstanceobjectcertificate_bad,porigin_child,porigin_decl,S_done.CLASSCONSTANTHISTORY)',
+        '~$instance_default_row_state_valid(S_done,pinstancetemplate_child[.STATE = INSTANCE_OBJECT_VALUE (PARRAY n_inner) pvalueclass pinstanceobjectcertificate_bad],ppropertydesc)',
+        'pclassconstantevent_tail* = S_done.CLASSCONSTANTHISTORY[n_link:$nabs($(|S_done.CLASSCONSTANTHISTORY| - n_link))]',
+        'S_duplicate = S_done[.CLASSCONSTANTHISTORY = pclassconstantevent_link* ++ [CCINSTANCE_LOOKUP pinstanceglobalcertificate_old] ++ pclassconstantevent_tail*]',
+        '$instance_global_record_valid(S_duplicate,pinstanceglobalcertificate_old)',
+        '$instance_global_snapshot_valid(S_duplicate,pinstanceobjectcertificate_bad,porigin_child,porigin_decl,S_duplicate.CLASSCONSTANTHISTORY)',
+        '~$class_constant_history_valid(S_duplicate)',
+        '$class_constant_history_valid(S_done)', '$call_descriptors_valid(S_done)',
+        '$machine_roots(S_duplicate) = $machine_roots(S_done)']
+
+
+def release(fixture, path, responses):
+    return start(fixture, path) + [
+        'S_wait = $drive_steps(S_warn,10000)', 'S_wait.COMPLETION = SOURCE_PENDING',
+        '$eval_response_valid(S_wait,' + responses[0] + ')',
+        'S_entered = $eval_resume(S_wait,' + responses[0] + ')',
+        'S_entered.COMPLETION = NORMAL'
+    ] + binder('S_entered') + [
+        'S_bind.RESULT = KNOWN (PARRAY n_new)',
+        '$instance_default_at(S_bind.INSTANCEDEFAULTS,porigin_class,pstaticdefaultcontext.DECL) = (pinstancetemplate_old)',
+        'pinstancetemplate_old.STATE = INSTANCE_OBJECT_VALUE (PARRAY n_old) pvalueclass_old (INSTANCE_GLOBAL_BIND pinstanceglobalcertificate_old)',
+        'S_bind.ARRAYS[n_old].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_old_closure)),ENTRY (KINT 1) (DIRECT (PARRAY n_old_global))]',
+        'S_bind.ARRAYS[n_new].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_new_closure)),ENTRY (KINT 1) (DIRECT (PARRAY n_new_global))]',
+        'n_old =/= n_new', 'n_old_closure =/= n_new_closure',
+        '$heap_owners($heap_graph(S_bind),HARRAY n_old) = 1',
+        '$heap_owners($heap_graph(S_bind),HARRAY n_new) = 1',
+        'S_stage = $drive_steps(S_bind,1)', 'S_stage.COMPLETION = BUDGET',
+        'S_stage.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_DEFAULT_PUBLISH porigin_class pstaticdefaultcontext (PARRAY n_new) pvalueclass_new) :: ptask_tail*',
+        '$instance_default_at(S_stage.INSTANCEDEFAULTS,porigin_class,pstaticdefaultcontext.DECL) = (pinstancetemplate_marker)',
+        'pinstancetemplate_marker.STATE = INSTANCE_BINDING',
+        'S_stage.RESULT = KNOWN PNULL', 'S_stage.BASE = BASE_VALUE (KNOWN PNULL)',
+        '$instance_default_roots(S_stage.INSTANCEDEFAULTS) = eps',
+        '$task_nodes(INSTANCE_DEFAULT_PUBLISH porigin_class pstaticdefaultcontext (PARRAY n_new) pvalueclass_new) = [HARRAY n_new]',
+        '$heap_owners($heap_graph(S_stage),HARRAY n_new) = 1',
+        '$instance_publication_valid(S_stage,porigin_class,pstaticdefaultcontext,PARRAY n_new,pvalueclass_new)',
+        '~$instance_publication_row_valid(S_stage[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*],pinstancetemplate_marker)',
+        '$call_descriptors_valid(S_stage)',
+        'S_drop = $instance_review_drop_pause(S_stage[.COMPLETION = NORMAL],10000)',
+        'S_drop.COMPLETION = NORMAL', '$instance_review_drop_ready(S_drop)',
+        '~((HARRAY n_old) <- S_drop.ALLOCATIONS)',
+        '~((HOBJECT n_old_closure) <- S_drop.ALLOCATIONS)',
+        '(HARRAY n_new) <- S_drop.ALLOCATIONS',
+        '(HOBJECT n_new_closure) <- S_drop.ALLOCATIONS',
+        '$heap_owners($heap_graph(S_drop),HARRAY n_new) = 1',
+        '$heap_owners($heap_graph(S_drop),HOBJECT n_new_closure) = 1',
+        '$instance_publication_frames(S_drop,S_drop.FRAMES,porigin_class,pstaticdefaultcontext.DECL)',
+        '$instance_global_record_valid(S_drop,pinstanceglobalcertificate_old)',
+        '~$constant_value_class_valid(S_drop,PARRAY n_old,pvalueclass_old)',
+        'S_poison = S_drop[.ARRAYS[n_old].ITEMS = eps]',
+        '$instance_global_record_valid(S_poison,pinstanceglobalcertificate_old)',
+        '$machine_roots(S_drop[.CLASSCONSTANTHISTORY = eps]) = $machine_roots(S_drop)',
+        '$class_constant_history_valid(S_drop)',
+        'S_ready = $instance_review_publish_pause(S_drop,10000)',
+        'S_ready.COMPLETION = NORMAL', '$instance_review_publish_ready(S_ready)',
+        '$instance_global_last_write(S_ready.CLASSCONSTANTHISTORY,porigin_class,pstaticdefaultcontext.DECL) = (pinstanceglobalcertificate_old)',
+        '$instance_publication_valid(S_ready,porigin_class,pstaticdefaultcontext,PARRAY n_new,pvalueclass_new)',
+        '$call_descriptors_valid(S_ready)',
+        'S_after = $drive_steps(S_ready,1)', 'S_after.COMPLETION = BUDGET',
+        '$instance_default_at(S_after.INSTANCEDEFAULTS,porigin_class,pstaticdefaultcontext.DECL) = (pinstancetemplate_new)',
+        'pinstancetemplate_new.STATE = INSTANCE_OBJECT_VALUE (PARRAY n_new) pvalueclass_new (INSTANCE_GLOBAL_BIND pinstanceglobalcertificate_new)',
+        'S_after.CLASSCONSTANTHISTORY[pinstanceglobalcertificate_new.HISTORY] = CCINSTANCE_LOOKUP pinstanceglobalcertificate_new',
+        '$instance_global_last_write(S_after.CLASSCONSTANTHISTORY,porigin_class,pstaticdefaultcontext.DECL) = (pinstanceglobalcertificate_new)',
+        '$instance_global_record_valid(S_after,pinstanceglobalcertificate_old)',
+        '~$instance_global_snapshot_valid(S_after,INSTANCE_GLOBAL_BIND pinstanceglobalcertificate_old,porigin_class,pstaticdefaultcontext.DECL,S_after.CLASSCONSTANTHISTORY)',
+        '$heap_owners($heap_graph(S_after),HARRAY n_new) = 1',
+        '$call_descriptors_valid(S_after)',
+        'S_done = $drive_steps(S_after[.COMPLETION = NORMAL],10000)',
+        'S_done.COMPLETION = NORMAL', '$call_descriptors_valid(S_done)']
+
+
 def prepare(out, group):
     path = SOURCE / (SELECTIONS[group] + '.php')
     frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
@@ -223,10 +370,10 @@ def prepare(out, group):
         checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True})
         assert checked['ok']
         responses = []
-        if group == 'inheritance':
+        if group != 'alias':
             codes = [base64.b64decode(node['fields'][0]['bytes']) for node, _ in nodes(parsed['ast']['program'])
                 if node['node'] == 'Scalar_String' and base64.b64decode(node['fields'][0]['bytes']).startswith(b'namespace Ns197;')]
-            assert len(codes) == 2
+            assert len(codes) == (1 if group == 'release' else 2)
             for request_id, code in enumerate(codes, 1):
                 parsed_eval = frontend.request({'op': 'parse-eval', 'id': str(request_id), 'mode': 'eval',
                     'profile': 'cli-raw-85', 'source': base64.b64encode(code).decode()})
@@ -238,7 +385,10 @@ def prepare(out, group):
     finally:
         try: adapter.close()
         finally: frontend.close()
-    checks = alias(checked['fixture'], path) if group == 'alias' else inheritance(checked['fixture'], path, responses)
+    if group == 'alias': checks = alias(checked['fixture'], path)
+    elif group == 'inheritance': checks = inheritance(checked['fixture'], path, responses)
+    elif group == 'legacy': checks = legacy(checked['fixture'], path, responses)
+    else: checks = release(checked['fixture'], path, responses)
     (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
     (out / 'protocol.watsup').write_text(PREFIX + EXTRA + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + check + '\n' for check in checks))
     return len(checks)
