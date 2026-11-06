@@ -1,0 +1,43 @@
+{
+  "milestone": "OB23: ordinary native FINAL method CV cleanup before default fatal reporting",
+  "status": "Author source validation complete; independently cleared in output-final-cast-locals-review.json",
+  "runtime": {
+    "revision": "c0376b277bacd0d6db19c196da8581c864c524b5",
+    "target": "PHP 8.5.10 CLI NTS64, vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL448, caches disabled and encountered determinism",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "038d24bad2a5bc29c927a0edecd40f635db78c0d99fc53b41a2416a4c456cc61",
+      "spec/semantics/257-request-destructors.watsup": "98779880637de6544bf6a61f2c57f2491cfed1b0d9872ffe63fe369c664e7947",
+      "spec/semantics/270-eager-destructors.watsup": "9e651f14739c32328637c047a0e7aa9943cf3b528ec00a0ec273494ca93b4d67",
+      "spec/semantics/441-output-finalization.watsup": "8dcc1f1ba3e383485a5ee2b17056e0256c0459c4aa4ae5cfc132fc29163d9f5c",
+      "spec/semantics/456-output-object-returns.watsup": "53b06634ab4f117bc6d45c1a83aff3256ba6fbc3138457fb673594c2398990e8"
+    }
+  },
+  "authority": [
+    "Zend/zend_vm_def.h::zend_leave_helper TOP_FUNCTION restores current_execute_data before i_free_compiled_variables and returns through the genuine VM boundary",
+    "Zend/zend_execute.c::i_free_compiled_variables destroys CVs in compiled order",
+    "Zend/zend_object_handlers.c::zend_std_cast_object_tostring retains the external receiver guard across zend_call_known_instance_method",
+    "Zend/zend_execute_API.c::zend_call_function reports the actual null-C pending exception after the VM returns",
+    "Zend/zend_exceptions.c::zend_throw_exception_internal/zend_exception_error report/cache/release the actual Throwable and bail out before the cast guard or original retval decrement"
+  ],
+  "behavior": "A fully checked direct NEW throw stores only borrowed birth metadata in its actual saved native consumer. Ordinary catch/finally and compiled CV cleanup run normally; catch consumption and staged or unstaged normal return clear SOURCE. The null caller/source is restored before local destructors, while one real C consumer retains the original retval and external cast guard. A true FRAME_EXIT remains mandatory with no live jobs or declared destructor. At the real C return, pending identity must equal the captured birth; existing Throwable reporting/release/deactivation and abandoned ownership follow. The earlier empty-CV sole-throw route remains disjoint.",
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-locals-23/model-06/report.json",
+    "report_sha256": "a9877c0a3f29242fdd7a2d12ef8929a3dbb7ce42a53f8a4f22f4e0f643d29024",
+    "native_reference": "/home/user/workspace/php-spec-evidence-archive/new/output-final-cast-locals-23/native-01/report.json",
+    "native_reference_sha256": "fc328b61425ae8e31d848cee68a122fddce912d2ef7fe4bc0c4df2b327608a27",
+    "source_sha256": "85a7d9261924599c47f9d35473c036e91606f915f2c9cb9de38fdf73619039c7",
+    "native_agreements": 1,
+    "seconds": 75.739,
+    "cap_seconds": 90,
+    "passed": true,
+    "observation": "Exact raw stdout P; Warning Undefined variable $missing at line4 before the original Exception E fatal at line9/internal T::__toString; exit255 and no receiver destructor X. Original bytes/path/cwd/profile and stable runtime fingerprints are retained. The frozen native reference is reused without replay."
+  },
+  "optimization": "One external diagnostic at4db completed138 actual transitions in117.388s (137.131s including load/probe). Pending discard steps cost about8s each; full native cv_method recognition cost1.268s versus0.0284s for the structural eligibility helper on the same reached state. The post-capture saved recognizer now checks exact current method/function/headers/receiver, saved frame/consumer/tail, live SOURCE birth and owning DONE drain/pending ID. Full capture/catch/normal and public/report T class authority remain. No native acceleration or cap increase.",
+  "review": "The independent review records separately scoped saved-context/public-authority/native-D/owner/budget checks (10 groups), actual catch consumption (2), staged/unstaged finally-return clearing (2+2), and the no-destructor empty-job barrier (3). Earlier corrected warning/report and full fatal/release facts retain their exact cuts. State-only facts receive no native agreement credit.",
+  "preserved_zero": "model-01/02 load failures, model-03 Unsupported, model-04/05 and control-model-01 public90 timeouts remain0. Independent combined/normal300 timeouts and warning-event/normal-consumer fixture failures remain0 at their original cuts. Root unit0 emits plain WARNING; the unchanged public renderer uses the provided filename. Raw evidence is outside Git under new/output-final-cast-locals-23 and new/output-final-cast-locals-23-review.",
+  "compatibility": "Only the authenticated saved-SOURCE native FINAL path changes eligibility/borrowing. Default hooks are identity/false elsewhere; no new lifecycle phase, heap representation, pstate field or source/AST transport rule. The pobobjectreturn SOURCE field owns nothing. Report admission stays strict after the readonly FRAME_EXIT validator projection; genuine pending frame membership is required for execution. Old OB21/OB22 sources and unrelated families are not replayed.",
+  "limits": "The new birth producer is a direct literal-new builtin Exception with one string literal and NULL previous; method bodies are not whitelisted. Selected exception handlers, supplied Throwable identities, replacement chains, wider constructor/result owners, custom rendering, ticks and lower FINAL cascades remain partial. Paused COMP88 and the existing Notice performance limitation are unchanged. No engine divergence, complete-core, offline-rebuild, Rocq or BOLA claim.",
+  "reproduce": "The external model-06 command reuses native-01/source.php with bin/php-semantics --steps 100000 --timeout 90. The maintained source catalogue is tests/semantics/output_final_cast_locals_sources.py; the independent source-reached harness is output_final_cast_locals_review_state.py. A fresh normal harness run may create its own oracle reference; accepted frozen cuts remain at the linked external reports."
+}

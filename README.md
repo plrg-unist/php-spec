@@ -265,9 +265,12 @@ retain the abandoned return value through inactive deactivation without calling
 its destructor. [Author checks](coverage/semantics/output-final-error-author.json)
 cover two exact originals; the [independent review](coverage/semantics/output-final-error-review.json)
 validates the reached receipt, public owners and complete deactivation.
-A sole direct fresh-Exception `__toString` body with no selected exception handler
-also retains both cast owners through fatal reporting; its [bounded checks](coverage/semantics/output-final-cast-throw-author.json)
-leave wider pending-conversion control unfinished.
+Native FINAL `__toString` methods can unwind a direct
+`throw new Exception(<literal string>)` through ordinary compiled locals and catch/finally. Actual CV
+cleanup precedes null-C fatal reporting while the retval and cast guard remain
+held, including an empty cleanup barrier. Borrowed birth metadata clears when
+caught or returned normally. The [review](coverage/semantics/output-final-cast-locals-review.json)
+records the source/owner cuts and remaining constructor/handler bounds.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)
@@ -2715,12 +2718,12 @@ and formal-slot ownership precede TypeError, and exit cancellation preserves the
 real default binder until the receive ends. Fixed-name instance/static calls also
 receive owning defaults in ordinary named-class by-value nongenerator methods,
 preserving actual scopes, receiver roots and inherited cache identity. Unscoped
-real Closure literals, ordinary clones and receiver-free same-scope bind/bindTo
-copies receive owning defaults when every
-same-template cache history proves Shared/Unscoped. The actual selected Closure
-owns its captures; binding records and retired source stamps preserve the shared
-cache proof. Source donor checks protect cache hits and post-handler binds.
-Scoped/private/unknown Closure families, arrows, trait, by-reference, variadic,
+real Closure literals and receiver-free empty-scope bound copies use the actual
+Shared or private cache, with fresh private clones and separate same-template
+owners. Receive history preserves exact cache identity without retaining old
+Closures; private cache values survive until the actual storage release. Source donor
+checks protect cache hits and post-handler binds. Scoped/temporary/unknown
+Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, class
 and static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
@@ -2730,6 +2733,7 @@ and static-property defaults, converted queries and wider metadata remain partia
 [Method-default review](coverage/semantics/deprecated-method-default-review.json).
 [Closure-default review](coverage/semantics/deprecated-closure-default-review.json).
 [Bound Closure-default review](coverage/semantics/deprecated-bound-closure-default-review.json).
+[Private Closure-cache review](coverage/semantics/deprecated-private-closure-default-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
@@ -4022,9 +4026,19 @@ pass at `b7af270c7`/410. Wider target/value and map-history cases remain partial
 Occupied current-row writes now preserve the actual old loop Value CV during one
 authenticated direct multiple-entry finite by-value loop. Publication precedes
 quiet old-value release; the copied result and saved Map pin retain native order.
-Two originals and 169 reached conditions pass across 448 modules. Common storage,
-last-owner callbacks and wider mutation/cursor/lifecycle cases retain their limits;
+Two originals and 169 reached conditions pass across 448 modules. Common storage
+and wider mutation/cursor/lifecycle cases retain their limits;
 see the [replacement review](coverage/semantics/gc-foreach-current-replacement-review.json).
+
+Last-owner current-row replacement now has a separate operation proof after the
+loop Value CV is rebound to a nonowning scalar. The selected fieldless Child
+destructor reads the installed replacement through the original Map/Key globals;
+a fresh Exception leaves the outer assignment target unchanged. A nonowning
+continuation receipt preserves source and cursor authority through Map-pin cleanup.
+Root callers and incoming ordinary leaves are this cut; callback writes, freeing
+Keys, wider cursors and active GC remain partial. Four originals and 242 reached
+conditions pass across449 modules; see the
+[last-owner review](coverage/semantics/gc-foreach-last-owner-read-review.json).
 
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
@@ -5914,6 +5928,10 @@ Source-backed block SET also pairs with existing getters in either order, includ
 real typed/defaultless inputs. Actual SET syntax supplies backing for pure getters;
 input/storage, statement writes and receiver cleanup retain their ordinary behavior.
 [Block-SET pair review](coverage/semantics/block-set-hook-pair-review.json).
+A backed GET also supplies real storage for a block SET that never writes it.
+Successful no-write calls preserve initialized values or the uninitialized slot;
+source/role authority keeps this distinct from a truly virtual pair.
+[GET-backed no-write review](coverage/semantics/get-backed-no-write-set-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
@@ -7397,6 +7415,14 @@ reference at SEND3, before query admission. An unset variable quietly becomes
 `null`; callback rebinding, retained old aliases and earlier argument throws keep
 their normal cell identities and order. See the
 [output-acquisition review](coverage/semantics/enum-is-callable-output-acquisition-review.json).
+Named nonunpack queries now map source-order sends into the selected builtin's
+`value`, `syntax_only` and `callable_name` slots. An early output send quietly
+acquires its real reference cell; omitted `syntax_only` defaults to false only
+for the handler's value view. Saved input and output history retain the actual
+source order, holes, owners and clear/destructor/name-commit behavior. Duplicate,
+unknown and missing arguments keep their ordinary timing. Detaching the output
+name after its send, unpacked references and wider output places remain partial;
+see the [named-output review](coverage/semantics/enum-is-callable-named-output-review.json).
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local

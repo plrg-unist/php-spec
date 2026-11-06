@@ -96,25 +96,31 @@ call suffix; no historical row retains a receiver. Inherited methods share the
 declaring method's default cache. Reentry, formal ownership before TypeError and
 exit cancellation reuse the same receive and cleanup contracts.
 
-Ordinary unscoped real Closure literals and their ordinary clones now receive
-owning defaults through a proven Shared/Unscoped cache family. The actual live
-callee, template/default and invocation birth must match. Every same-template
-object history needs a known shared stamp, including retired objects; temporary
-`Closure::call` and private/unknown family history stay outside this slice.
-Receiver-free same-scope `bind`/`bindTo` copies and their ordinary clones use the
-same cache proof through their actual binding record, API site and source stamp.
-The source object can retire; its immutable stamp owns neither the copy nor its
-captures. The actual selected Closure and formal retain their real roots. This finite cut keeps
-lexical/called classes empty; broader This/called-class modes remain core work.
-If a callback adds private family history, its
-captured read and cleanup finish before the real binder refuses cache transfer.
-Source-only primary/fallback donor checks protect cache hits as well as evaluation
-and binding, including scalar cached results and later namespace shadows. Folded
-children and nested Closure bodies acquire no read authority. Captured values
-remain owned by the actual call, and the real formal owns defaults before type
-failure. Reentry and cancellation use the existing receive/cache/binder machinery.
+Unscoped real Closure literals, receiver-free empty-scope bound copies and their
+ordinary clones receive owning defaults through their actual cache identity.
+Shared entries retain the default-origin key; private entries additionally name
+the selected Closure object. Same-template Shared/private histories coexist
+without poisoning each other. Every positional/named lookup and write uses that
+identity, including a scalar cached before a later owning donor. Private clones
+and rebindings start fresh caches. Unknown stamps never become Shared implicitly.
 
-Arrow, receiver-bearing or scoped/private bound copies, by-reference parameters/returns/captures,
+The genuine receive birth captures its nonowning cache owner; only same-owner
+closed child receives can justify a filled pending slot. Retired stamps and births
+do not require a live source object. Native cache zvals are nonrefcounted: the model's
+empty-array availability root preserves its immutable value/COW, without claiming
+a native refcount increment or retaining the Closure/source/captures. Private rows
+survive capture/static child callbacks and disappear at the actual store drop,
+after the nonowning destruction handle or through quiet release. Existing Shared
+and class-constant encodings stay fixed. Actual Closure/formal roots preserve
+TypeError and exit-cancellation order; generic scalar/type paths remain separate
+from the new private owning-read authority, which requires an actual REAL callee.
+
+Source-only primary/fallback donor checks still protect hits and post-handler
+binds. Folded children and nested Closure bodies acquire no read authority. Empty
+lexical/called scopes are this finite cut; broader This/scoped/temporary invocation
+modes, unknown identities and wider defaults remain core work.
+
+Arrow, receiver-bearing or scoped bound copies, by-reference parameters/returns/captures,
 variadic and Generator Closure recipients remain separate. Trait and wider dynamic
 method/callable recipients, plus class and static-property owning defaults,
 retain their separate boundaries. The bounded handler producer remains fixed primitive `define`;
@@ -130,6 +136,7 @@ separate. Attribute argument paths acquire no runtime initializer authority.
 [COMP187 method defaults](../../coverage/semantics/deprecated-method-default-review.json).
 [COMP188 Closure defaults](../../coverage/semantics/deprecated-closure-default-review.json).
 [COMP189 bound Closure defaults](../../coverage/semantics/deprecated-bound-closure-default-review.json).
+[COMP190 private Closure caches](../../coverage/semantics/deprecated-private-closure-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

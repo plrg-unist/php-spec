@@ -259,8 +259,16 @@ statement paths before its later property write; the existing outer setter recei
 retains the receiver through throw/retry. Seven originals, strict449 and 156 independent
 source/statement/owner/budget checks are in the
 [block-SET pair review](../../coverage/semantics/block-set-hook-pair-review.json).
-Trait, SET bodies without syntactic backing access and wider headers remain partial.
-Ordinary initializer, type, storage and hook execution rules are reused.
+GET's own-backing syntax also supplies whole-property storage when a block SET
+does not access or write that storage. The actual pair/default/role certificate
+admits its ordinary body and prevents setter-only virtual classification. Initialized
+backing remains unchanged by successful SET; an absent initializer retains a real
+uninitialized slot through success, throw and retry. Weak implicit reception can
+produce an integer formal while the caller keeps its original string result.
+Five originals, strict449 and 147 independent slot/source/receipt-owner/budget checks
+are in the [GET-backed no-write review](../../coverage/semantics/get-backed-no-write-set-review.json).
+True virtual pairs, Trait and wider headers remain separate. Ordinary initializer,
+type, parameter, storage and hook execution rules are reused.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the

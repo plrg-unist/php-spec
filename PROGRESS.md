@@ -34,12 +34,18 @@ The [enum/callable scope](docs/semantics/SOURCE-CLASSES.md) and
 
 Published enum `is_callable` queries cover generated, absent and syntax-only
 methods, source-certified magic fallback and direct public case methods.
-Malformed live arrays return false before syntax-only lookup. Positional name
+Malformed live arrays return false before syntax-only lookup. Admitted name
 output accepts admitted literal/string-variable inputs and initialized scalar
-CVs, preserving spelling and the captured reference cell. A first-SEND receipt
+CVs, preserving spelling and the captured reference cell. An input-SEND receipt
 keeps a variable input fixed through later callbacks, output aliases and nested
 queries; argument throws skip the query's assignments.
 [Saved-input review](coverage/semantics/enum-is-callable-saved-input-review.json).
+Named nonunpack output now separates source SEND order from the builtin signature
+slots, including early `callable_name` and omitted `syntax_only`. Actual receipt
+CALLs preserve references/holes; existing snapshots, current-cell owners and
+clear/destructor/name-commit behavior remain intact. Named argument errors keep
+acquisition timing. Detaching the output name after SEND remains Unsupported.
+[Named-output review](coverage/semantics/enum-is-callable-named-output-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -250,7 +256,7 @@ Other constant/default captures, wider conditional/factory sources, unproved
 transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
-wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
+wider variable arrays, typed/backed/debt valid-pair cells, unpacked output,
 loading and wider enum
 member/lifetime contexts remain partial.
 
@@ -1014,9 +1020,22 @@ publication, copied-result and ordered release rules retain native timing. A
 separate cursor operation proof covers only quiet old-value and later Map-pin
 release, including the old payload's real nonlast GC visit. Two originals agree
 exactly and the sole front passes 169 conditions (164 authored) across 448 modules.
-Common storage, last-owner old callbacks, other mutations, Key retirement/freeing
+Common storage, wider old callbacks, other mutations, Key retirement/freeing
 and wider cursor/lifecycle forms retain their limits.
 [Replacement review](coverage/semantics/gc-foreach-current-replacement-review.json).
+
+Last-owner current-row replacement now authenticates a separate callback phase
+after the loop Value CV is rebound to a nonowning scalar. Ordered old slots
+select the real fieldless Child; its read through original Map/Key global cells
+sees the published leaf. Normal return assigns the result, while a fresh Exception
+preserves the outer target. A nonowning continuation claim retains old-row,
+cursor and cell authority through Map-pin release without adding owners.
+Root callers and ordinary leaf inputs are this cut; quiet GC58 remains separate,
+and held GC35's freeing-Map write is unchanged. Wider mutation/callers, Key freeing,
+by-reference/owned Iterator and active-GC/threshold cases remain partial.
+Four exact originals and one 242-condition (237 authored) strict449 front pass;
+failed fresh/descriptor/dispatch runs remain external with zero agreement.
+[Last-owner review](coverage/semantics/gc-foreach-last-owner-read-review.json).
 
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
@@ -1395,6 +1414,13 @@ Actual SET syntax authenticates pure initialized GET backing; absent initializat
 original string input, transformed storage and checked compiler error order remain
 distinct. Seven originals, strict449 and 156 independent statement/receiver/budget checks
 are in the [block-SET pair review](coverage/semantics/block-set-hook-pair-review.json).
+Backed GET syntax now establishes whole-property storage even when block SET has
+no own-backing access/write. Actual pair/role/default authority preserves initialized
+values or a real uninitialized slot through no-write success, throw and retry;
+implicit parameter coercion stays distinct from the caller's original input result.
+Five originals, strict449 and 147 independent source/slot/receipt-owner/budget checks are
+in the [GET-backed no-write review](coverage/semantics/get-backed-no-write-set-review.json).
+True virtual pairs, Trait and wider headers remain separate.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -1799,8 +1825,18 @@ cuts. The [independent review](coverage/semantics/output-final-cast-throw-review
 clears real owner/GC transfer, Throwable retirement, public guards, budgets and
 full fatal completion; [author evidence](coverage/semantics/output-final-cast-throw-author.json)
 keeps earlier failures at zero.
-Selected handlers, supplied throws, wider bodies/locals and intervening
-catch/finally/ticks remain partial; prior performance/paused boundaries stand.
+OB23 extends the direct literal-new builtin `Exception` route to ordinary compiled
+CVs and in-method catch/finally. Real null-C restoration precedes ordered local
+destruction; an actual frame-exit barrier retains retval/cast owners even when
+no jobs or user destructor exist. Borrowed birth metadata clears on catch or
+staged/unstaged normal return. A structural saved-consumer check removes repeated
+immutable declaration replay during pending unwind; full capture/public/report
+authority remains. One exact original now agrees within its unchanged 90-second
+cap. [Author evidence](coverage/semantics/output-final-cast-locals-author.json) and
+[independent review](coverage/semantics/output-final-cast-locals-review.json) retain
+the source, owner, native-header, budget and normal-return cuts. Selected handlers,
+supplied identities, replacement chains, wider constructor/result owners, ticks
+and lower FINAL cascades remain partial; prior performance/paused boundaries stand.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -2393,6 +2429,21 @@ cache identities and wider default forms remain core work. The prior source cuts
 stand without replay; only460's selected-binding predicate changes.
 [Review](coverage/semantics/deprecated-bound-closure-default-review.json).
 
+COMP190 separates receiver-free empty-scope REAL private caches by actual
+Closure/default identity, alongside unchanged Shared entries. Scalar-before-donor
+and named-invoke preparation use the same owner routing. Genuine receive births
+capture nonowning cache owners; same-cache children can fill a pending slot while
+other live/retired owners cannot. Fresh clones, COW, type ownership and cancellation
+retain native behavior. Private empty-array availability lasts through captured
+child callbacks until actual storage release, without pinning Closure/source
+objects. Fourteen originals agree at preserved cuts;273 independent strict450
+checks cover reentry/provenance, cache/formal roots, retired handles and quiet
+drop. Shared/default/class-constant encodings and455 policy stay fixed. Wider
+scope/This/temporary/unknown modes and default families remain core work.
+[Review](coverage/semantics/deprecated-private-closure-default-review.json).
+
+The combined main SL450 load passes for COMP190, OB23 and GC59; its [shared record](coverage/semantics/deprecated-private-closure-default-review.json) preserves the tested source cut and adds no source-agreement credit.
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2401,12 +2452,12 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS202 | Later plain/reference CV SEND snapshots after an earlier USER argument mutates the CV, with indexed source authority and existing owners; preserve current primitive/leaf, header/string and held bounds. |
-| ATTR62 | GET-own backing supplies whole-pair storage for a nonbacking block SET, with actual roles/order, initialized/absent and no-write/throw/retry behavior; class-only, preserving virtual/Trait/wider bounds. |
-| COMP190 | Private and mixed REAL Closure default caches (461), with exact cache-owner identity and native lifetime/root/pruning; preserve existing Shared encodings and 455 policy. |
-| ENUM147 | Named nonunpack is_callable simple-CV output acquisition and CONFIG mapping, with source SEND order distinct from signature slots; preserve selected builtin, input/history/cleanup and generic named-error timing. |
-| GC59 | Last-owner current-row destruction and read-only callbacks, with a nonowning claim across publication, old-value and Map-pin release; preserve the GC35 hold and existing mutation/lifecycle limits. |
+| ATTR63 | True virtual class GET/block-SET pairs with neither body backing, using real roles, no storage and existing body/parameter paths; preserve backed62 and wider held modes. |
+| COMP191 | Ordinary nongenerator CACHE_CALL default-cache identity and true invocation-completion lifetime (462), preserving Shared/Gen behavior and coordinating the 79/257 release boundary. |
+| ENUM148 | Genuine early named-output reference acquisition history through unset/rebound CV names, preserving SENT owners, builtin/input and current simple-CV domains; coordinate the nonowning reference certificate. |
+| GC60 | Existing-safe quiet scalar current-row callback behavior under the established claim and ownership law; group the primitive family without new phases or wider mutation modes. |
 | I125 | Existing Aggregate-to-user-Iterator packs at native Generator SEND/zero-argument APIs, preserving selected Gen, copied argv and INPUT/DATA/420 cursor ownership; retain current mapping/body/budget and held wider bounds. |
-| OB23 | Native FINAL fresh-Throwable CV cleanup with genuine null-C drain/eligibility/freshness proof; preserve the external cast guard and ordinary catch/finally. |
+| OB24 | Source-produced local destructor's nested null-C abort during native FINAL cleanup, preserving early C return, old exception/guards and skipped CVs; keep supplied-Stringable and wider identity paths held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

@@ -1,0 +1,88 @@
+{
+  "scope": "GC59: occupied CURRENT-row last-owner methodless Value/fieldless Child destruction after the actual loop Value CV becomes a nonowning scalar. One direct multiple-entry finite by-value cursor; root caller, incoming ordinary methodless leaf in an unimported plain RHS CV, held Map/leaf Keys; read-only callback normal return/fresh builtin Exception.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; engine 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "semantic_revision": "287759037cbb98f80b1e0854239f6363b70dc6d2",
+  "semantic_sha256": {
+    "spec/semantics/30-storage.watsup": "ea2d1dc5f8c6e98d581e881b5679f222587dc40d8e6b06bc8dd4287cb658339f",
+    "spec/semantics/270-eager-destructors.watsup": "016458c87d63f42eceb227cdab5515e8268b46eefdffbb5223e4c01c949e3b54",
+    "spec/semantics/422-weak-map-entries.watsup": "25ddf3103ec8ea74ece0b5513afce2bf1ea65328b8e75cf09442642d19aee795"
+  },
+  "source_basis": [
+    "Zend/zend_weakrefs.c:zend_weakmap_write_dimension (incoming owner and occupied publication before copied old-zval release; no new registration), zend_weakmap_read_dimension, zend_weakmap_get_iterator/iterator_get_current_data/iterator_get_current_key/iterator_dtor",
+    "Zend/zend_execute.c:zend_assign_to_object_dim (used temporary copied after handler); Zend/zend_vm_def.h:ZEND_ASSIGN_DIM (Map receiver pin and OP_DATA/Map cleanup), zend_fe_fetch_object_helper (independent copied loop CV), exception dispatch skips outer ASSIGN",
+    "Zend/zend_objects.c:zend_object_std_dtor/zend_object_dtor_property; Zend/zend_variables.h:i_zval_ptr_dtor (declared physical slot order and nonlast shared Child decrement before last callback)",
+    "Zend/zend_objects_API.c:zend_objects_store_del; Zend/zend_objects.c:zend_objects_destroy_object; Zend/zend_exceptions.c:zend_throw_exception_internal (callback pin and pending Throwable transfer)"
+  ],
+  "rule": "Capture only at genuine authenticated current-row publication with last old owner and scalar loop CV. One immutable borrowed receipt holds the original paccess, full old entry, exact iterator/loop source, original Map/Key/Value cells and object-birth cutoff. The same receipt is operation SOURCE and a real WEAKMAP_WRITE_CLAIM continuation after ACCESS_RESUME. Actual root release, old storage pin, full declared slot history, cleared prefix, selected NEXT-1 Child and last remaining Child edge authenticate the callback; ordinary KEY_R must use the actual imported original Map/Key cells and real selected operand. Root source views preserve source/cell authority while all physical storage/ownership checks use actual S. After callback retirement a separate exact phase authenticates the pending old operation and later Map carrier, including fresh Exception transfer and unassigned outer result. No common finite storage, GC58 quiet proof or release/publication executor relaxation. Readonly OP_EXIT task certification additionally handles the exact saved-prefix registry projection without changing executable SOURCE/phase checks or standalone CLAIM validation.",
+  "claim_ownership": "CLAIM has no task nodes/heap owners, no new pstate field and no transport change. Its normal administrative step changes TODO only and preserves RESULT/BASE/physical state; abrupt discard owns/frees nothing. The new arm alone inserts this step. Old writer continuations return their literal previous ACCESS_RESUME::tail and preserve old domains/step counts. The claim bridges erased old-row identity after operation/call/storage-pin retirement; a SOURCE-only marker could not survive that gap.",
+  "counts": {
+    "new_exact_originals": 4,
+    "source_reached_groups": 1,
+    "reported_conditions": 242,
+    "authored_conditions": 237,
+    "strict_SL_modules": 449,
+    "baseline_preparation_or_constructed_PHP_agreements": 0
+  },
+  "validation": {
+    "author_normal": {
+      "report": "../php-spec-evidence-archive/gc59-current-row-last-owner/author/native-v1/model-current-last-owner-child-read-normal-report.json",
+      "revision": "55eb362e94a911f51c91dd5c0ce62f9f08a00e1e",
+      "agreements": 1,
+      "seconds": 97.503,
+      "result": "Callback sees held original Map/Key, old weak null and the published replacement while outer result stays77; normal continuation/result and separate Map/new/Key retirement match native exactly."
+    },
+    "author_fresh": {
+      "report": "../php-spec-evidence-archive/gc59-current-row-last-owner/author/native-v1/model-report.json",
+      "revision": "49dde10a51897676790303ac4e7aaf54f818bcb5",
+      "agreements": 1,
+      "seconds": 112.46232414245605,
+      "result": "The fresh Exception keeps its destructor trace and skips outer result/continued assignment while publication persists; exact native ending. fresh-retry-v3/run.py pins the fresh-only selection at the unchanged native path; no normal/native replay."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc59-current-row-last-owner/author/strict-v5/report.json",
+      "result": "Frozen287759037 strict SL449 true, exit0/empty stderr/no timeout; stable HEAD/inputs."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/native-v1/model-report.json",
+      "revision": "5b6d5e57df612d78d8f7e39173491dac4e4ff9fd",
+      "agreements": 2,
+      "seconds": [
+        108.70616722106934,
+        125.22872066497803
+      ],
+      "result": "Scalar row first, then two declared old slots sharing one fieldless Child. Loop CV false, callback copied leaf, fresh destructor line14/assignment trace line44, outer result31/continued0 on throw and independent retirement match native exactly."
+    },
+    "sole_front": {
+      "report": "../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/front-v3/fiber-state-review-my_8ic3l/report.json",
+      "raw_mapping": "../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/front-v3/run-report.json",
+      "revision": "86d8a38d8edd8fecfdc9e4c559ac81108bf9b99a",
+      "result": "Actual shared-Child callback after two declared slots: old pin1/Child pins2/Map3/new2, both cleared and no remaining old Child edge. Genuine KEY_R adds new2to3 without changing other owners, source/cursor/snapshot or physical descendants. A coherent NEXT2to1/restored second slot keeps Child3 and refuses premature callback. Real retired-old pending OP_EXIT advances through THROW_SEARCH and ACCESS_RESUME Map3to2 carrier to abrupt CLAIM discard, preserving outer result31. Normal-pop constructed control transfers the pending Throwable owner to RESULT and proves TODO-only/identical heap; actual normal originals supply execution evidence. Exact84 future certificate accepts while strict actual phase remains false; malformed actual head, missing pin, wrong SOURCE/job, coherent wrong cell receipt, premature Child and non-CLAIM unregistered controls refuse. Source ending and zero/one-budget resumption match exactly."
+    },
+    "identity": "All4 accepted originals: normal exit0, empty stderr, no timeout, stable source/runtime inputs and HEAD, exact original native file/cwd/profile. SpecTec da36ac3c434cd291940293a63da64544307730a3; local OCaml5.1.0; SL runner. Front v3 is strict449 true with stable fixture/source/runtime inputs and HEAD; raw/wrapper bind binaries and relocation. No original/native/57/58 replay for readonly certificate fixes.",
+    "source_bridge": "The final correction changes only the Some-pending arm: explicit new Exception has Some constructor ORIGIN and NExprNew, not eps. Accepted normal55eb always uses the literally unchanged eps arm. The additional operation SOURCE=CLAIM receipt equality is already entailed by every production caller extracting that receipt from the same SOURCE. No normal/native/57/58 replay. The final84990001a/287759037 correction only certifies future OP_EXIT tasks in the readonly84 saved-frame walk after virtual removal of borrowed CALLS/RELEASES with TODO retained. The new branch requires that exact root projected prefix, same receipt/access/old pin/selected Child job, identical heap, and full strict operation_valid on the borrowed registry view. Actual PhpStep/source/phase guards and all4 source transitions remain unchanged; old domains do not use this new SOURCE constructor. A minimal270 default-otherwise hook delegates readonly OP_EXIT task validation to the exact previous strict check outside SOURCECLAIM; the422 override alone certifies that projected59 prefix. The direct conditional call_task_valid overlap from84990001a is removed. Actual PhpStep still calls the unchanged strict operation validator. No source/native replay for this certificate-only correction."
+  },
+  "files_sha256": {
+    "tests/semantics/gc59_current_row_last_owner.php": "519a63283c2c842216c393f6846e567d1054188f5d28831458e1fea1656b1975",
+    "tests/semantics/gc59_current_row_last_owner_sources.py": "c51dff96d705338bf5e1bad5132c45117d4768a4abebcc0aa5693daac495339e",
+    "tests/semantics/gc59_peer_shared_child_read.php": "08a00edd2ec60e945bd62eb4d74f7470a6e4d84b6fe1888e24e03d82948e1978",
+    "tests/semantics/gc59_peer_shared_child_sources.py": "68e068f19b269eb70dd90d7cd999cd8df9a0803eb7e6090f3917ec7b4ba60803",
+    "tests/semantics/gc59_peer_callback_read_state.py": "29c1effc0545c4e61202cbaf666c0eb3be798d47af9e7d520cb6a066d0144b7e"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc59-current-row-last-owner/author/native-v1/native-report.json": "4b6409e6fd1e06f613c886afa097a95d6e1e351f093c992675863e86381a4538",
+    "../php-spec-evidence-archive/gc59-current-row-last-owner/author/native-v1/model-current-last-owner-child-read-normal-report.json": "55920fbd8a984001c6b7d91347d2dc05c64e26bf60f7510efb1cd9b44afc1991",
+    "../php-spec-evidence-archive/gc59-current-row-last-owner/author/native-v1/model-report.json": "fc06e78033e518e41ad34be5e628f9fefede9eca31b14e63fe313dedf19426cf",
+    "../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/native-v1/model-report.json": "016e14a5876f6ff9ced260d5c3bc241ce94f349f1a60fd24dfc1a903544e0824",
+    "../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/native-v1/native-report.json": "9d212d8e554ac5fbb739baea30214944f1707f388e90c767488e3461f6b0fa70",
+    "../php-spec-evidence-archive/gc59-current-row-last-owner/author/strict-v5/report.json": "73385be900a1a6123d4b82efbe782308d9f20a7f0c2b7a109721172d9553638a",
+    "../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/front-v3/fiber-state-review-my_8ic3l/report.json": "60233a3c68cdc72546659220a3870ee9b20b103649b00abd65afe781cf40852b",
+    "../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/front-v3/run-report.json": "d9894a3ba24c57ffa667b0fdad39e2a7807531ff6b9186786c029aa3c17b77f7"
+  },
+  "zero_credit": "The sole preimplementation baseline remains Unsupported after B|. strict-v1 notation failure, first fresh55eb interpreter_failure at old pending OP_EXIT, fresh-stop-v1 localization and fresh-retry-v2 compile-binding failure804ba remain external and0 agreement. fresh-retry-v2/relocation.json preserves original raw paths/hashes; only affected fresh checks repeated. Failed/Unsupported/timeout/preparation/constructed states never count as PHP agreement. The first solefront27938 global call_frames_valid failure remains front-v1, with focused per-predicate and exact84 per-task diagnostics external and0 credit. It identified the readonly future OP_EXIT certificate gap; only that affected front repeats. Affected front-v2 found encountered nondeterminism between the first conditional task override and270's unconditional constructor case; raw and wrapper remain external0. The default-strict270 hook partitions the readonly cases, and only the same affected front repeats.",
+  "held35_comparison": "Contract/source only, before59 probes: held35 frees Map itself and writes lateMap[oldMap]=newValue during own-value cleanup before incoming weak notification.59 keeps Map through root CV+foreach DATA+receiver pin and only reads its already published row while old Value/Child retire. No held35 source/task import, execution or change.",
+  "limits": "No reentrant write, insertion/unset, freeing Map/Key, extra cursor, byref/owned InternalIterator, wider caller/RHS producer, arrays as incoming replacement, active GC/threshold or held-lane admission. GC58 quiet source/executors remain separate. WeakMap/full core stay partial.",
+  "recovery": "In fresh external output roots run gc59_current_row_last_owner_sources.py and gc59_peer_shared_child_sources.py native then model (cap360/case), preserving original bytes/file/cwd/profile; run gc59_peer_callback_read_state.py for the sole strict callback/owner/budget front. For this accepted author cut preserve native-v1 normal/fresh reports plus fresh-retry-v3 wrapper; metadata-only changes do not need semantic reruns.",
+  "review": "Independent runtime/source/front CLEAR at final287759037 byte hashes, source4 and sole242(237) strict449 front; final concise documentation review is the paired handoff. Compact ack: ../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/independent-summary.json.",
+  "inventory_check": "169 constructors/306 runtime obligations consistent; lifecycle.weak-map remains partial."
+}

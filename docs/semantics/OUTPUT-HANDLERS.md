@@ -501,5 +501,21 @@ destructor witness and 14 reached assertion groups pass at their recorded cuts.
 The [independent review](../../coverage/semantics/output-final-cast-throw-review.json)
 clears real owner/GC transfer, public guards, budgets and the retired-Throwable
 endpoint; [author evidence](../../coverage/semantics/output-final-cast-throw-author.json)
-records scope and preserved failures. Wider bodies/locals, selected handlers,
-supplied identities and custom rendering remain dependencies.
+records scope and preserved failures.
+
+Compiled-CV native FINAL methods now use ordinary catch/finally and ordered local
+cleanup before the genuine null-C return. The existing retval and external cast
+guard transfer to a real C consumer before CV jobs; the frame-exit barrier also
+runs with no live jobs or declared destructor. Local destructors receive the
+actual null caller/internal trace. A borrowed direct-NEW birth records no owner;
+catch consumption and staged or unstaged normal return clear it. Pending identity
+must still match at reporting, followed by ordinary Throwable release and the
+existing abandoned-owner/deactivation policy. Capture, public admission and report
+retain full class authority; intermediate unwind recognizes the exact saved native
+consumer without replaying immutable declarations at every discarded task.
+[Author evidence](../../coverage/semantics/output-final-cast-locals-author.json) and
+[independent review](../../coverage/semantics/output-final-cast-locals-review.json)
+record the exact source and state cuts. The constructor remains a direct literal
+builtin `Exception` with one string literal and NULL previous. Selected handlers,
+supplied identities, replacement chains, wider constructor/result owners, custom
+rendering, ticks and lower FINAL cascades remain dependencies.

@@ -1117,7 +1117,8 @@ consumes it atomically, nested calls keep separate receipts and exception
 unwinding discards it before output capture. The
 [saved-input review](../../coverage/semantics/enum-is-callable-saved-input-review.json)
 records seven exact sources, 200 independent guards and affected variable46/
-alias43 checks. Named/unpacked forms remain partial. Engine routes are
+alias43 checks. Unpacked forms remain partial; named output is described below.
+Engine routes are
 `zend_compile_args`, VM `ZEND_SEND_VAR`/`ZEND_SEND_VAR_EX` and
 `ext/standard/type.c:PHP_FUNCTION(is_callable)`.
 For a live two-entry variable array, the first SEND records its actual array ID
@@ -1220,7 +1221,18 @@ while a retained alias keeps its old cell, or create an output object before
 SEND3. Dynamic `SELECTEDCALLS` keeps the chosen builtin when its source callee
 variable is rebound; an earlier argument throw never acquires the output.
 The [output-acquisition review](../../coverage/semantics/enum-is-callable-output-acquisition-review.json)
-records these source and ownership cuts. Fixed namespaced
+records these source and ownership cuts.
+Named nonunpack output now uses the existing CONFIG destination and source-prefix
+mapping. Quiet reference acquisition follows its actual source SEND, including
+`callable_name` before `value`. Receipts replay from the genuine partial CALL;
+an omitted `syntax_only` stays a hole in that history and defaults to false only
+for invocation. Existing input snapshots, current-owner cell checks and output
+cleanup/throw/name commitment remain intact. Duplicate, unknown and missing
+arguments preserve their actual acquisition order. Detaching the sent output's
+CV name remains explicitly Unsupported, pending acquisition history; packs and
+wider output places stay partial. The
+[named-output review](../../coverage/semantics/enum-is-callable-named-output-review.json)
+records the new source and focused state cut. Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing
 the chosen target or reference signature. Root and ordinary named-function
@@ -1231,7 +1243,7 @@ capture requires a cold builtin lookup or genuine prior authority. The
 [fixed-fallback review](../../coverage/semantics/enum-is-callable-fixed-fallback-review.json)
 records these source, owner and pending-throw checks. Closure scope changes can
 create a private Zend runtime cache, so unproved closure/method/fake/bound and other
-unproved owners refuse explicitly. Named/unpacked and wider output places
+unproved owners refuse explicitly. Unpacked and wider output places
 retain their existing bounds.
 Known unscoped real-Closure births at root or in ordinary named functions now
 carry a nonowning cache stamp. The first literal birth fixes the template's

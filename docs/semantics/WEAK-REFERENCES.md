@@ -880,8 +880,8 @@ the body preserves DATA until break/exhaustion; delivered Key/Value CVs can then
 survive Map retirement independently. The
 [finite foreach review](../../coverage/semantics/gc-finite-byvalue-foreach-review.json)
 records original comparisons and the real multiple-entry fetch/budget front.
-The GC58 occupied-current-row exception below extends mutation only. Insertion,
-unset, retiring Keys, additional cursors, active GC/destructor contexts, wider
+The GC58/59 occupied-current-row exceptions below extend mutation only. Insertion,
+unset, retiring Keys, additional cursors, wider active GC/destructor contexts,
 producers/targets and reference traversal receive no new admission here.
 
 GC57 permits ordinary KEY_R dimension reads from the current row of a finite
@@ -898,8 +898,8 @@ results add no heap edge; outer-array capture preserves shared descendant
 edges. This extra result can survive clearing the loop Value, breaking and
 retiring Map, then release independently of the copied Key. The
 [current-row read review](../../coverage/semantics/gc-foreach-current-read-review.json)
-records the original comparisons and actual result-owner/budget front. GC58
-below supplies the occupied-current-row write exception. Quiet, reference and
+records the original comparisons and actual result-owner/budget front. GC58/59
+below supply occupied-current-row write exceptions. Quiet, reference and
 public API reads, other mutation, retiring/freeing Keys, extra cursors, active
 GC/destructor contexts and owned `InternalIterator` receive no new admission here.
 
@@ -919,9 +919,41 @@ Common storage still rejects active cursors. The
 [current-row replacement review](../../coverage/semantics/gc-foreach-current-replacement-review.json)
 records two exact originals and the sole publication/release/result/budget front,
 including a fresh old-array GC candidate and unchanged descendant multiplicities.
-Insertion/unset, last-owner old-value destruction, Key retirement/freeing, extra
-cursors, by-reference/owned Iterator modes, active GC/destructor contexts and wider
-RHS producers retain their prior limits.
+GC59 below supplies the separate last-owner callback exception. Insertion/unset,
+Key retirement/freeing, extra cursors, by-reference/owned Iterator modes, wider
+active GC/destructor contexts and RHS producers retain their prior limits.
+
+GC59 admits a distinct last-owner operation after the actual loop Value CV has
+been rebound to a nonowning scalar. Its old Value is methodless, with finite
+public untyped declared slots containing scalars or fieldless public-destructor
+Children. The incoming value is an ordinary methodless leaf in a plain RHS CV.
+The write starts in the root caller with no active callback, frame or collector;
+the original Map/Key cells, real loop source, current row and ordered snapshot
+remain mandatory. Map and all Keys remain held and nonfreeing.
+
+Publication precedes ordered old-slot cleanup. Only the actually selected Child
+destructor may perform an ordinary KEY_R read through global aliases of those
+same Map/Key cells. The physical storage pin, cleared slot prefix, last selected
+Child edge and real callback/release job authenticate that read. Its copied
+replacement owner is independent of the loop CV and the pending outer result.
+A normal callback permits the outer result assignment; a freshly constructed
+builtin Exception skips that assignment while retaining the published row.
+
+A borrowed `WEAKMAP_WRITE_CLAIM` receipt carries the original access, old entry,
+cursor, loop source, cell identities and object-birth cutoff through the later
+Map-pin release. The same receipt authenticates both operation sources; it adds
+no heap owner or state field. Its normal administrative step changes only TODO,
+and abrupt discard frees nothing. Existing continuations outside this new arm
+retain their exact tasks and step counts. The
+[last-owner review](../../coverage/semantics/gc-foreach-last-owner-read-review.json)
+records original comparisons and the sole actual callback/owner/budget front.
+Readonly saved-task certification reconstructs only borrowed registries from the
+exact retained prefix, preserving the heap; actual operation execution keeps its
+full phase guard.
+This proof is separate from GC58's quiet-release proof. It does not resume GC35's
+freeing-Map reentrant write, admit callback writes or insertion/unset, or relax
+common storage, wider callers/producers, Key freeing, by-reference/owned Iterator
+or active-GC/threshold boundaries.
 
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned

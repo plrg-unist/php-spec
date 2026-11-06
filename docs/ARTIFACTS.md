@@ -29,6 +29,12 @@ The [review](../coverage/semantics/deprecated-bound-closure-default-review.json)
 records source/state cuts and preserves fixture/entry-diagnostic failures with
 zero acceptance credit; the promoted COMP188 native original retains its exact path.
 
+COMP190 private/mixed cache originals, pending-handle/quiet lifetime checks and
+same/different-owner receive histories are under `../php-spec-evidence-archive/comp190/`.
+The [review](../coverage/semantics/deprecated-private-closure-default-review.json)
+records authentic promotions and complete-row recovery, without renewing old
+campaigns; incorrect boundary expectations and initial strict failures remain separate.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.
@@ -818,3 +824,11 @@ Independent source and the sole 169-condition publication/release/budget front
 are under `../php-spec-evidence-archive/gc-current-row-replace-peer-58/`.
 The [review](../coverage/semantics/gc-foreach-current-replacement-review.json)
 binds the source/runtime cuts and raw recovery paths; earlier GC evidence is unchanged.
+
+GC59's last-owner current-row originals, native tuples, failed fresh-case
+localization and affected retry are under
+`../php-spec-evidence-archive/gc59-current-row-last-owner/author/`.
+Independent originals and the sole actual callback/owner/budget front are under
+`../php-spec-evidence-archive/gc-current-row-last-owner-peer-59/`.
+The [review](../coverage/semantics/gc-foreach-last-owner-read-review.json)
+binds the borrowed claim protocol, tested cuts and raw recovery paths.
