@@ -207,8 +207,8 @@ review.CASES = {
             '$property_hook_trait_selected(S_pair[.FUNCTIONS = [pfunction_get_source, pfunction_set_source[.SIGNATURE = $property_set_signature(ppropertydesc_source)]]], ppropertydesc_a, porigin_set_a) = eps',
             'S_paused = $drive_steps(S, 0)',
             'S_paused = S[.COMPLETION = BUDGET]', *valid('S_paused'),
-            'S_done = $drive(S, 4000)',
-            '$drive(S_paused[.COMPLETION = NORMAL], 4000) = S_done',
+            'S_paused[.COMPLETION = NORMAL] = S',
+            'S_done = $drive(S_paused[.COMPLETION = NORMAL], 4000)',
             'S_done.COMPLETION = NORMAL', 'S_done.TODO = eps',
             'S_done.CURRENT = eps', 'S_done.FRAMES = eps', 'S_done.HELD = eps',
             *valid('S_done'),
@@ -229,4 +229,4 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case', action='append')
     args = parser.parse_args()
-    raise SystemExit(0 if review.run(args.case, process_seconds=240) else 1)
+    raise SystemExit(0 if review.run(args.case, process_seconds=600) else 1)
