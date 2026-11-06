@@ -74,6 +74,8 @@ dec $gc_decrement(pstate, pgc, pnode) : pgc
 dec $gc_decrements(pstate, pgc, pnode*) : pgc
 dec $gc_same_location(pstate, pstate) : pnode*
 dec $gc_array_copy_decrements(pstate, pstate) : pnode*
+dec $gc_array_borrowed_source(pstate, nat) : bool
+dec $gc_array_borrowed_cell(pstate, nat) : bool
 dec $gc_same_property(pstate, pstate, nat, ptbytes) : pnode*
 dec $gc_visit(hgraph, pnode*, pnode*, pnode*) : pnode*
 dec $gc_visit_children(pnode*) : pnode*
@@ -856,6 +858,7 @@ def $gc_decrements(S, pgc, pnode :: pnode_tail*) = $gc_decrements(S, $gc_decreme
 def $gc_same_cell(S, S_next, n) = S_next[.GC = $gc_decrements(S_next, S_next.GC, $value_nodes(pvalue))]
   -- if S.STORE[n] = DEFINED pvalue
   -- if S_next.STORE[n] = DEFINED pvalue
+  -- if ~$gc_array_borrowed_cell(S, n)
 def $gc_same_property(S, S_next, n, ptbytes) = $item_nodes(pitem)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_tail*)
   -- if $objectprops_at(S_next.OBJECTPROPS, n) = (ppropertyslot_next_tail*)
@@ -1183,6 +1186,38 @@ def $gc_array_copy_decrements(S, S_next) = [HOBJECT n_child]
   -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $gc_array_separation_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue) \/ $gc_array_alias_image(S_next, n_old, n_new, n_root, KINT z_key, pvalue)
 def $gc_array_copy_decrements(S, S_next) = eps -- otherwise
+;; location_array writes back its borrowed lookup, without copying a zval.
+;; The originating DIM task has already moved its real inputs to HELD.
+def $gc_array_borrowed_source(S, n_root) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension) expression_rhs metadata)
+  -- if n_name* = $base64(text)
+  -- if z_name = $variable_line(BYTES text, metadata_variable)
+  -- if z_dimension = $runtime_line(S, [PCFIELD 0, PCFIELD 1], NScalarInt (INTEGER z_key) metadata_key)
+  -- if z = $runtime_line(S, [PCFIELD 0], NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension)
+  -- if $gc_array_separation_site(S, (porigin), ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension) z false, n_root, KINT z_key)
+def $gc_array_borrowed_source(S, n_root) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression_base phpType5 metadata)
+  -- if z = $runtime_line(S, eps, NExprArrayDimFetch expression_base phpType5 metadata)
+  -- if $gc_array_reference_site(S, (porigin), ACQUIRE_ARRAY z) = ((pbase, n_root))
+def $gc_array_borrowed_source(S, n_root) = false -- otherwise
+def $gc_array_borrowed_cell(S, n_root) = true
+  -- if $gc_array_borrowed_source(S, n_root)
+  -- if S.COMPLETION = NORMAL /\ $eager_operation_pending(S) = eps
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if S.ITERATORS = eps /\ S.BORROWEDREAD = eps /\ S.DESTRUCTION.OPERATIONS = eps
+  -- if S.LOCATION = ROOT n_root /\ S.CELL = n_root
+  -- if S.RESULT = KNOWN (PARRAY n_array) /\ S.STORE[n_root] = DEFINED (PARRAY n_array)
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_root) = eps /\ $container_init_at(S.CONTAINERINITS, n_root) = eps
+  -- if ~(n_root <- S.LITERALREFRETAINED) /\ ~(n_root <- S.LITERALREFDEBTS)
+  -- if ~(n_array <- S.LITERALARRAYRETAINED) /\ ~(n_array <- S.LITERALARRAYDEBTS)
+  -- if ~$foreach_released_cell(S, n_root)
+  -- if $heap_count(HARRAY n_array, S.NATIVEEXCESS) = 0
+  -- if S_count = S[.RESULT = KNOWN PNULL]
+  -- if $native_excess_valid(S_count) /\ $native_rc(S_count, HARRAY n_array) = 1
+def $gc_array_borrowed_cell(S, n_root) = false -- otherwise
 def $gc_extra_pending_nodes(eps) = eps
 def $gc_extra_pending_nodes({OPERAND KNOWN (POBJECT n), PENDING true} :: pgctemporary_tail*) = (HOBJECT n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
 def $gc_extra_pending_nodes({OPERAND KNOWN (PARRAY n), PENDING true} :: pgctemporary_tail*) = (HARRAY n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
