@@ -62,6 +62,7 @@ dec $ob_object_final_cv_prefix(ptask*, pobobjectreturn, pdestructionframe) : boo
 dec $ob_object_final_cv_task_valid(pstate, pobobjectreturn) : bool
 dec $ob_object_final_cv_ready(pstate, pobobjectreturn, pdestructionframe, nat) : bool
 dec $ob_object_final_cv_eligibility(pstate, pobobjectreturn) : (pfunction, nat)?
+dec $ob_object_final_saved_context(pstate) : (pcallcontext, pobobjectreturn)?
 dec $ob_object_final_cv_eligible_task(pstate, ptask) : bool
 dec $ob_object_final_cv_eligible_tasks(pstate, ptask*) : bool
 dec $ob_object_final_cv_eligible_frames(pstate, pframe*) : bool
@@ -361,17 +362,14 @@ def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, p
   -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
   -- if pobobjectreturn.SOURCE =/= eps
 def $output_final_cv_unwind(S) = true
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
-  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
-  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
-  -- if S.COMPLETION = THROWING n_exception \/ (S.COMPLETION = NORMAL /\ $destructor_leaving_exception(S.TODO) = (n_exception))
+  -- if $ob_object_final_saved_context(S) =/= eps
 
 ;; Native CV slots still need a real return barrier when no class declares a
 ;; destructor. Eligibility uses only source/physical/task facts, never the
 ;; operational or full state validators whose admission it supplies.
 def $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_exception))
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE
-  -- if ~S.OUTPUTBLOCKED /\ S.EXCEPTIONHANDLER = eps
+  -- if ~S.OUTPUTBLOCKED /\ S.EXCEPTIONHANDLER = eps /\ S.SOURCEPENDING = eps
   -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
   -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
   -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
@@ -381,20 +379,28 @@ def $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_excepti
   -- if (HOBJECT pobobjectreturn.OBJECT) <- S.ALLOCATIONS /\ (HOBJECT n_exception) <- S.ALLOCATIONS
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
 def $ob_object_final_cv_eligibility(S, pobobjectreturn) = eps -- otherwise
-def $destructor_native_cv_cleanup(S) = true
-  -- if S.COMPLETION = NORMAL
-  -- if S.TODO = [THROW_SEARCH n_exception]
+;; SOURCE is created only by the fully checked direct-NEW throw above. Its
+;; immutable birth/method facts need no declaration replay on every unwind
+;; step. Keep the actual native frame, headers, live owners and pending ID.
+def $ob_object_final_saved_context(S) = ((pcallcontext, pobobjectreturn))
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = [pframe]
   -- if pframe.TODO = (STRINGIFY_RESULT n_object porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*
   -- if ptask_tail* = pobobjectreturn.TAIL /\ n_object = pobobjectreturn.OBJECT
-  -- if pframe.CONTEXT = eps /\ pframe.ORIGIN = (porigin_site)
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps /\ pframe.ORIGIN = (porigin_site)
   -- if porigin_site = $ob_call_site(pobobjectreturn.INVOKE.CALL)
   -- if $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_exception))
   -- if pcallcontext.TARGET = METHOD_TARGET n_object pfunction.ORIGIN /\ pcallcontext.FUNCTION = pfunction.ORIGIN
   -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1) /\ pcallcontext.ARGC = 0
+  -- if pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
   -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n_object)
   -- if $destructor_context_nodes(S.CURRENT) = [HOBJECT n_object]
+  -- if S.COMPLETION = THROWING n_exception \/ (S.COMPLETION = NORMAL /\ $destructor_leaving_exception(S.TODO) = (n_exception))
+def $ob_object_final_saved_context(S) = eps -- otherwise
+def $destructor_native_cv_cleanup(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [THROW_SEARCH n_exception]
+  -- if $ob_object_final_saved_context(S) =/= eps
 def $ob_object_final_cv_eligible_task(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = true
   -- if $ob_object_final_cv_eligibility(S, pobobjectreturn) = ((pfunction, n_exception))
   -- if {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN eps, CONSTCONTEXT eps} <- S.DESTRUCTION.FRAMES
@@ -404,6 +410,7 @@ def $ob_object_final_cv_eligible_tasks(S, ptask :: ptask_tail*) = ($ob_object_fi
 def $ob_object_final_cv_eligible_frames(S, eps) = false
 def $ob_object_final_cv_eligible_frames(S, pframe :: pframe_tail*) = ((pframe.CONTEXT = eps /\ pframe.ORIGIN = eps /\ $ob_object_final_cv_eligible_tasks(S, pframe.TODO)) \/ $ob_object_final_cv_eligible_frames(S, pframe_tail*))
 def $destructor_native_cv_cleanup(S) = true
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE
   -- if $ob_object_final_cv_eligible_tasks(S, S.TODO) \/ $ob_object_final_cv_eligible_frames(S, S.FRAMES)
 
 ;; TOP_FUNCTION restores the null caller before CV destruction. Its receiver
@@ -412,17 +419,13 @@ def $destructor_borrowed_context(S) = (pcallcontext)
   -- if S.CURRENT = (pcallcontext)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [THROW_SEARCH n_exception]
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
-  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (pobobjectreturn.OBJECT)
-  -- if $destructor_context_nodes(S.CURRENT) = [HOBJECT pobobjectreturn.OBJECT]
-  -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
-  -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) =/= eps
+  -- if $ob_object_final_saved_context(S) = ((pcallcontext, pobobjectreturn))
   -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps
   -- if S.CONSTCONTEXT = eps /\ S.RETIREDOWNERS = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps
   -- if S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
 def $destructor_frame_restore(S, S_restored) = S_restored[.ORIGIN = eps][.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: pobobjectreturn.TAIL]
   -- if $destructor_borrowed_context(S) = (pcallcontext)
-  -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
+  -- if $ob_object_final_saved_context(S) = ((pcallcontext, pobobjectreturn))
   -- if S_restored.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
 def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn[.SOURCE = eps]) :: pobobjectreturn.TAIL]
   -- if S.COMPLETION = NORMAL /\ S.TODO = eps
@@ -443,6 +446,7 @@ def $ob_object_final_cv_task_valid(S, pobobjectreturn) = true
   -- if S.CURRENT = eps /\ S.ORIGIN = eps /\ S.CONSTCONTEXT = eps
   ;; Registration is documentary metadata, never the local destructor caller.
   -- if $ob_object_metadata(S[.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))], OUTPUT_FINAL_OBJECT_CV pobobjectreturn, pobobjectreturn)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
   -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
   -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
