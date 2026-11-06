@@ -31,6 +31,7 @@ syntax pmagicstaticmethodcall
 syntax pconfiggeneratorproducer
 syntax pnamedargs
 syntax pshutdownproducer
+syntax papireceive
 syntax ppropertyhook = { SITE porigin, OBJECT nat, PROPERTY porigin, HOOK porigin, LINE int }
 syntax ppropertyunset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, PROPERTY porigin }
 syntax ppropertyisset = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, PROPERTY porigin }
@@ -763,7 +764,8 @@ dec $object_body(pobject) : pobject
 
 syntax preceiveedge = { FRONTIER preceivefrontier, HANDLER porigin }
 syntax pshutdownreceive = { INDEX nat, REGISTRATION porigin, LINE int, TARGET pcalltarget }
-syntax preceivebirth = { ORIGIN porigin, FUNCTION porigin, CACHE_OWNER pfncacheowner?, ENTRY nat?, CONSTRUCTOR_ENTRY pdynamicnew?, SHUTDOWN_ENTRY pshutdownreceive?, CALLSITE porigin?, PARENT nat?, PARENTINDEX nat?, PARENTEDGE preceiveedge?, CAUSE pdeclcause, PREFIX nat, PUBLICATION nat, ACTIVE bool }
+syntax papireceive = ERROR_RECEIVE pshutdownproducer | EXCEPTION_RECEIVE pshutdownproducer
+syntax preceivebirth = { ORIGIN porigin, FUNCTION porigin, CACHE_OWNER pfncacheowner?, ENTRY nat?, CONSTRUCTOR_ENTRY pdynamicnew?, SHUTDOWN_ENTRY pshutdownreceive?, API_ENTRY papireceive?, CALLSITE porigin?, PARENT nat?, PARENTINDEX nat?, PARENTEDGE preceiveedge?, CAUSE pdeclcause, PREFIX nat, PUBLICATION nat, ACTIVE bool }
 syntax psourcepending = { OPERAND psourceoperand, UNIT nat, HELPER psourcehelper?, EXCEPTION nat, CALLER pcallcontext? }
 
 syntax poutputhandler = { ENTRY pshutdownentry, VALUES pvalue*, ZOH pvalue, NAME preqbytes }

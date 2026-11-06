@@ -163,7 +163,9 @@ def $parameter_default_owned_children(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoc
 
 dec $default_nonclosure_recipient(pstate, pfunction, pdefault) : bool
 def $default_nonclosure_recipient(S, pfunction, pdefault) = $default_cache_route(S, pdefault) -- otherwise
-def $default_receive_recipient(S, pfunction, pdefault) = $default_nonclosure_recipient(S, pfunction, pdefault)
+dec $default_nonclosure_dispatch(pstate, pfunction, pdefault) : bool
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = $default_nonclosure_recipient(S, pfunction, pdefault) -- otherwise
+def $default_receive_recipient(S, pfunction, pdefault) = $default_nonclosure_dispatch(S, pfunction, pdefault)
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = eps
 def $default_receive_recipient(S, pfunction, pdefault) = $default_cache_route(S, pdefault)
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) =/= eps

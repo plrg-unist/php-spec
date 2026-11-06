@@ -66,6 +66,8 @@ dec $parameter_method_current_valid(pstate, pfunction) : bool
 def $parameter_method_current_valid(S, pfunction) = true -- otherwise
 dec $parameter_method_current_invocation(pstate, pfunction, pdeclcalls, nat) : bool
 def $parameter_method_current_invocation(S, pfunction, pdeclcalls, n) = $parameter_method_invocation(S, pfunction, pdeclcalls, n) -- otherwise
+dec $parameter_method_ordinary_current(pstate, pfunction) : bool
+def $parameter_method_ordinary_current(S, pfunction) = true -- otherwise
 def $parameter_default_recipient(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
@@ -73,6 +75,7 @@ def $parameter_default_recipient(S, pfunction) = true
 def $parameter_default_recipient(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $parameter_method_ordinary_current(S, pfunction)
   -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
   -- if pdeclcause = $declaration_cause(S)
   -- if $parameter_method_current_invocation(S, pfunction, pdeclcause.CALLS, |S.DECLARATIONS|)

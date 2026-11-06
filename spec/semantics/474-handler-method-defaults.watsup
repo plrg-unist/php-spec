@@ -44,14 +44,60 @@ def $parameter_api_handler_current(S, pfunction) = eps -- otherwise
 
 def $parameter_default_recipient(S, pfunction) = true
   -- if $parameter_api_handler_current(S, pfunction) =/= eps
-
-;; Cold and warm owning donors use the same selected-entry authority.
-def $parameter_nullsite_method_recipient(S, pfunction) = ($parameter_api_handler_current(S, pfunction) =/= eps)
+def $parameter_method_ordinary_current(S, pfunction) = ($parameter_api_handler_current(S, pfunction) = eps)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = API_BORROWED_TARGET pshutdownproducer
-def $default_nonclosure_recipient(S, pfunction, pdefault) = ($parameter_api_handler_current(S, pfunction) =/= eps)
+
+;; Cold and warm owning donors use the same selected-entry authority.
+def $default_nonclosure_dispatch(S, pfunction, pdefault) = ($parameter_api_handler_current(S, pfunction) =/= eps)
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.CALLSITE =/= eps
   -- if pcallcontext.TARGET = API_BORROWED_TARGET pshutdownproducer
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) =/= eps
   -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
+;; Freeze the actual consumer kind and selected producer before the frame goes.
+;; Neither this metadata nor its receiver identity contributes an owner.
+def $parameter_receive_api_entry(S) = (ERROR_RECEIVE pshutdownproducer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_api_handler_current(S, pfunction) = (pshutdownproducer)
+  -- if $error_context_call(S, pcallcontext) =/= eps
+def $parameter_receive_api_entry(S) = (EXCEPTION_RECEIVE pshutdownproducer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $parameter_api_handler_current(S, pfunction) = (pshutdownproducer)
+  -- if $exception_context_call(S, pcallcontext) =/= eps
+
+dec $parameter_api_receive_site(preceivebirth, papireceive, pfunction) : bool
+def $parameter_api_receive_site(preceivebirth, ERROR_RECEIVE pshutdownproducer, pfunction) = true
+  -- if preceivebirth.CALLSITE = (porigin)
+  -- if pshutdownproducer.SITE = (porigin)
+def $parameter_api_receive_site(preceivebirth, EXCEPTION_RECEIVE pshutdownproducer, pfunction) = true
+  -- if preceivebirth.CALLSITE = eps
+  -- if pshutdownproducer.SITE = (pfunction.ORIGIN)
+  -- if |preceivebirth.CAUSE.CALLS| = 1
+def $parameter_api_receive_site(preceivebirth, papireceive, pfunction) = false -- otherwise
+dec $parameter_api_receive_producer(papireceive) : pshutdownproducer
+def $parameter_api_receive_producer(ERROR_RECEIVE pshutdownproducer) = pshutdownproducer
+def $parameter_api_receive_producer(EXCEPTION_RECEIVE pshutdownproducer) = pshutdownproducer
+
+def $parameter_receive_api_witness_valid(S, preceivebirth) = true
+  -- if preceivebirth.API_ENTRY = (papireceive)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps /\ preceivebirth.SHUTDOWN_ENTRY = eps
+  -- if preceivebirth.CACHE_OWNER = (CACHE_SHARED)
+  -- if pshutdownproducer = $parameter_api_receive_producer(papireceive)
+  -- if pshutdownproducer.INTERNAL /\ pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps /\ pshutdownproducer.CLONE = eps
+  -- if $parameter_shutdown_target(S, pshutdownproducer.TARGET) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if preceivebirth.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, (pmethoddesc.OWNER), (porigin_called)) :: pdeclcalls
+  -- if $parameter_api_receive_site(preceivebirth, papireceive, pmethoddesc.FUNCTION)
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pmethoddesc.FUNCTION, preceivebirth.PUBLICATION)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_requested)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_called)
+def $parameter_receive_method_dispatch(S, preceivebirth) = $parameter_receive_api_witness_valid(S, preceivebirth)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps /\ preceivebirth.SHUTDOWN_ENTRY = eps
+  -- if preceivebirth.API_ENTRY =/= eps
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $parameter_receive_cache_entry(S, preceivebirth_child)
+  -- if preceivebirth.ENTRY = eps /\ preceivebirth.CONSTRUCTOR_ENTRY = eps /\ preceivebirth.SHUTDOWN_ENTRY = eps
+  -- if preceivebirth.API_ENTRY =/= eps

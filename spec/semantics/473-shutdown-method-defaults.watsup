@@ -96,9 +96,7 @@ def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $par
 
 ;; Other internal/captured method modes cannot borrow a warmed scalar slot
 ;; merely because their nullable source site resembles this C callback.
-dec $parameter_nullsite_method_recipient(pstate, pfunction) : bool
-def $parameter_nullsite_method_recipient(S, pfunction) = ($parameter_shutdown_current(S, pfunction) =/= eps) -- otherwise
-def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_nullsite_method_recipient(S, pfunction)
+def $default_nonclosure_recipient(S, pfunction, pdefault) = ($parameter_shutdown_current(S, pfunction) =/= eps)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.CALLSITE = eps
   -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) =/= eps
