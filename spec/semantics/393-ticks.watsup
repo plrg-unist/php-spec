@@ -46,7 +46,7 @@ dec $tick_target_group(statement) : bool
 dec $tick_nodes(pticksummary, pcodeexpr*, pcoccurrence*) : pticksummary
 dec $tick_node(pticksummary, pcodeexpr*, pcpath, pcnode) : pticksummary
 dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
-dec $tick_named_defaults(statement) : bool
+dec $tick_callable_defaults(pcnode) : bool
 dec $tick_plain_parameters(phpType17*) : bool
 dec $tick_parameters(pticksummary, pcodeexpr*, pcpath, nat, phpType17*) : pticksummary
 dec $tick_block_hook(pcnode) : bool
@@ -205,8 +205,11 @@ def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtNamespace phpType44 (SEQUEN
 ;; Parameters compile left-to-right in the fresh callee op array. Each RECV
 ;; breaks its adjacency; a top named declaration preserves the main op array.
 ;; Headers already clean for the legacy route retain that exact behavior.
-def $tick_named_defaults(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_statements(statement*) /\ ~$tick_inputs_clean(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata, 5))
-def $tick_named_defaults(statement) = false -- otherwise
+def $tick_callable_defaults(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_statements(statement*) /\ ~$tick_inputs_clean(NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata, 5))
+def $tick_callable_defaults(NStmtClassMethod (SEQUENCE eps) phpType24 (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_statements(statement*) /\ ~$tick_inputs_clean(NStmtClassMethod (SEQUENCE eps) phpType24 (BOOLEAN false) phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata, 6))
+def $tick_callable_defaults(NExprClosure (SEQUENCE eps) phpType4_static (BOOLEAN false) (SEQUENCE phpType17*) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_statements(statement*) /\ ~$tick_inputs_clean(NExprClosure (SEQUENCE eps) phpType4_static (BOOLEAN false) (SEQUENCE phpType17*) (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata, 6))
+def $tick_callable_defaults(NExprArrowFunction (SEQUENCE eps) phpType4_static (BOOLEAN false) (SEQUENCE phpType17*) phpType18 expression metadata) = ($tick_plain_parameters(phpType17*) /\ ~$generator_syntax(expression) /\ ~$tick_inputs_clean(NExprArrowFunction (SEQUENCE eps) phpType4_static (BOOLEAN false) (SEQUENCE phpType17*) phpType18 expression metadata, 5))
+def $tick_callable_defaults(pcnode) = false -- otherwise
 def $tick_plain_parameters(eps) = true
 def $tick_plain_parameters((NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) phpType10 phpType5 (SEQUENCE eps) metadata) :: phpType17_tail*) = $tick_plain_parameters(phpType17_tail*)
 def $tick_plain_parameters(phpType17*) = false -- otherwise
@@ -214,16 +217,21 @@ def $tick_parameters(T, pcodeexpr*, pcpath, n, eps) = T
 def $tick_parameters(T, pcodeexpr*, pcpath, n, (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata) :: phpType17_tail*) = $tick_parameters(T_default[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType17_tail*)
   -- if T_default = $tick_constant_nodes(T[.LINE = $source_line(metadata)], pcodeexpr*, $pcfield_phpType5(phpType5, pcpath ++ [PCINDEX n, PCFIELD 6]))
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)][.LINE = $source_end_line(metadata)]
-  -- if $tick_named_defaults(NStmtFunction phpType14 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata)
+  -- if $tick_callable_defaults(NStmtFunction phpType14 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata)
   -- if T_parameters = $tick_parameters(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], 0, phpType17*)
   -- if T_body = $tick_function(T_parameters, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b_top) = T_body[.LAST = (b_top /\ T.LAST)][.LINE = $source_end_line(metadata)]
-  -- if ~$tick_named_defaults(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if ~$tick_callable_defaults(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $tick_inputs_clean(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, 5)
   -- if T_body = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 ABSENT metadata, b) = T
   -- if $tick_inputs_clean(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 ABSENT metadata, 6)
+def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassMethod phpType14 phpType24 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata, b) = T_body[.LAST = T.LAST][.LINE = $source_end_line(metadata)]
+  -- if $tick_callable_defaults(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata)
+  -- if T_parameters = $tick_parameters(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 4], 0, phpType17*)
+  -- if T_body = $tick_function(T_parameters, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, b) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)[.LINE = $source_end_line(metadata)]
+  -- if ~$tick_callable_defaults(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
   -- if $tick_inputs_clean(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata, 6)
 def $tick_function(T, pcodeexpr*, pcpath, statement*) = T_body[.LAST = T.LAST]
   -- if T_body = $tick_statements(T[.LAST = false], pcodeexpr*, pcpath, 0, statement*, false)
@@ -321,9 +329,19 @@ def $tick_list_items(T, pcodeexpr*, pcpath, n, ABSENT :: phpType13*) = $tick_lis
 def $tick_list_items(T, pcodeexpr*, pcpath, n, (NArrayItem phpType5 expression phpType4_ref phpType4_unpack metadata) :: phpType13*) = $tick_list_items(T_target[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType13*)
   -- if T_key = $tick_nodes(T, pcodeexpr*, $pcfield_phpType5(phpType5, pcpath ++ [PCINDEX n, PCFIELD 0]))
   -- if T_target = $tick_node(T_key[.LAST = false], pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 (SEQUENCE phpType17*) phpType21 phpType18 (SEQUENCE statement*) metadata) = T_body[.LAST = T.LAST]
+  -- if $tick_callable_defaults(NExprClosure phpType14 phpType4_1 phpType4_2 (SEQUENCE phpType17*) phpType21 phpType18 (SEQUENCE statement*) metadata)
+  -- if T_parameters = $tick_parameters(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], 0, phpType17*)
+  -- if T_body = $tick_function(T_parameters, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 6], statement*)
+  -- if ~$tick_callable_defaults(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata)
   -- if $tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata, 6)
+def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 (SEQUENCE phpType17*) phpType18 expression metadata) = T_body[.LAST = T.LAST]
+  -- if $tick_callable_defaults(NExprArrowFunction phpType14 phpType4_1 phpType4_2 (SEQUENCE phpType17*) phpType18 expression metadata)
+  -- if T_parameters = $tick_parameters(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 3], 0, phpType17*)
+  -- if T_body = $tick_expression(T_parameters, pcodeexpr*, pcpath ++ [PCFIELD 5], expression)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T_body[.LAST = T.LAST]
+  -- if ~$tick_callable_defaults(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata)
   -- if $tick_inputs_clean(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata, 5)
   -- if T_body = $tick_expression(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 5], expression)
 ;; Named construction emits NEW before source-ordered arguments and a retained
@@ -350,8 +368,10 @@ def $tick_match_bodies(T, pcodeexpr*, pcpath, n, eps) = T
 def $tick_match_bodies(T, pcodeexpr*, pcpath, n, (NMatchArm phpType36 expression metadata) :: phpType27*) = $tick_match_bodies(T_body[.LAST = false], pcodeexpr*, pcpath, $(n + 1), phpType27*)
   -- if T_body = $tick_node(T, pcodeexpr*, pcpath ++ [PCINDEX n, PCFIELD 1], expression)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
+  -- if ~$tick_callable_defaults(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata)
   -- if ~$tick_inputs_clean(NExprClosure phpType14 phpType4_1 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata, 6)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata) = T[.DEPENDENCY = ("ticks in callable parameter/default/attribute compilation")]
+  -- if ~$tick_callable_defaults(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata)
   -- if ~$tick_inputs_clean(NExprArrowFunction phpType14 phpType4_1 phpType4_2 phpType16 phpType18 expression metadata, 5)
 def $tick_expression_raw(T, pcodeexpr*, pcpath, expression) = $tick_nodes(T, pcodeexpr*, $pcchildren(expression, pcpath))
   -- if $tick_expression_children_safe(expression)
