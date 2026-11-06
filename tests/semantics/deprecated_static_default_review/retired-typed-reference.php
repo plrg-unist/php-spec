@@ -2,11 +2,10 @@
 namespace {
     #[Deprecated] const X = [1];
     function notice196() {
-        global $alias;
         echo 'H|';
         eval('namespace Ns196; const X = [9];');
-        $alias =& \Ns196\Cache196::$slot;
-        echo $alias[0], '|';
+        $GLOBALS['alias'] =& \Ns196\Cache196::$slot;
+        echo $GLOBALS['alias'][0], '|';
         return true;
     }
 }
