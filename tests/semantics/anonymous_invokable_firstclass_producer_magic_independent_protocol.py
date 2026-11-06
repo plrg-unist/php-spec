@@ -28,7 +28,7 @@ HANDLER = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_magi
 AFTER = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_after) metadata_after])) metadata_echo_after)) :: ptask_after_tail* '
          '-- if $base64(text_after) = $ptascii("RETURN;") -- if S.CURRENT = eps')
 PREFIX = names.PREFIX.replace(names.FRONT, CAPTURE)
-for label, front in [('convert', CONVERT), ('ready', READY), ('producer', PRODUCER), ('send', SEND), ('handler', HANDLER), ('after', AFTER)]:
+for label, front in [('ready', READY), ('producer', PRODUCER), ('send', SEND), ('handler', HANDLER), ('after', AFTER)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$invokefcc219_' + label + '_')
 PREFIX += r'''
 dec $invokefcc219_outer_one(ptask) : pmagicmethodcall?
@@ -70,15 +70,13 @@ def render(case, fixture, filename):
         'porigin_method = pfunction.ORIGIN',
         '$factory182_output(S.EVENTS) = $ptascii("CTOR;")',
         'S_one = $drive_steps(S,1)', 'S_one.COMPLETION = BUDGET',
-        'S_convert_found = $invokefcc219_convert_seek(S_one[.COMPLETION = NORMAL],2047)',
-        'S_convert_found.COMPLETION = BUDGET',
-        'S_direct = $invokefcc219_convert_seek(S,2048)', 'S_direct = S_convert_found',
-        'S_convert = S_convert_found[.COMPLETION = NORMAL]', CONVERT.replace('S.', 'S_convert.'),
+        'S_convert = S_one[.COMPLETION = NORMAL]', CONVERT.replace('S.', 'S_convert.'),
         'n_this_convert = n_this', 'porigin_method_convert = porigin_method', 'porigin_convert = porigin_capture',
         '$call_selected_valid(S_convert,METHOD_TARGET n_this porigin_method,(porigin_capture))',
         '$method_capture_current(S_convert,porigin_capture) = eps',
         'n_wrapper = |S_convert.OBJECTS|',
         'S_wrapped = $drive_steps(S_convert,1)', 'S_wrapped.COMPLETION = BUDGET',
+        'S_direct = $drive_steps(S,2)', 'S_direct = S_wrapped',
         'S_wrapped.OBJECTS = S_convert.OBJECTS ++ [METHODCLOSURE porigin_method porigin_capture porigin_called eps]',
         '$closure_scope_at(S_wrapped.CLOSURESCOPES,n_wrapper) = (pclosurescope)',
         'pclosurescope.LEXICAL = porigin_declaring', 'pclosurescope.CALLED = porigin_called',
