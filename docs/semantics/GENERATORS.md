@@ -108,6 +108,23 @@ promotion. Generator-returning Aggregates, typed/borrowed current cells,
 incoming `throw`, fresh/delegated receivers and wider packs remain separate.
 [Aggregate API review](../../coverage/semantics/generator-aggregate-arguments-review.json).
 
+An initialized ordinary named by-value Generator CV also supplies a bounded
+pack to literal SEND and zero-argument APIs. Source and selected Generators are
+distinct, initialized, by-value and nondelegated. The real native
+iterator owns source DATA and borrows rewind/next without synthetic API frames.
+The actual CONFIG marker keeps the selected receiver live after its CV clears.
+A quiet closed source may lose its CV and retire DATA before reception; an
+owning cached value keeps its source CV through collection/API cleanup and can
+outlive the delivered argv and error trace. Pending mapping failure transfers
+receiver/argv to a real CONFIG_INVOKE before source DATA release, then ordinary
+throw cleanup retires that continuation without entering the API. Existing
+two-item/value/storage limits and the old INI outside-owner law remain intact.
+The unchanged `destructor_waiting` value guard excludes payload graphs with
+uncalled destructors, including the original Token witness.
+BYREF/typed/borrowed cells, temporary/Aggregate Generator sources, incoming throw,
+pending initialization, capture/delegation, Closure::call and I106 remain held.
+[Generator-source API review](../../coverage/semantics/generator-source-arguments-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

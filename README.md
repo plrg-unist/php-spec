@@ -8006,6 +8006,16 @@ return promotion.
 Generator-returning Aggregates, wider packs and lifecycle modes remain partial.
 [Aggregate reception review](coverage/semantics/generator-aggregate-arguments-review.json).
 
+Initialized named by-value Generator CVs also feed these literal APIs on a
+distinct initialized by-value Generator. Real native rewind/next borrows source
+DATA without a PHP method frame. A quiet source can retire before reception
+after CV rebinding; an owning source cache keeps its outside owner through
+collection and API cleanup. Mapping failure retains selected Gen and copied
+argv in a real CONFIG continuation until DATA release finishes. Payloads with
+uncalled destructors stay outside the existing value policy. Two-item limits
+remain, and wider producer/lifetime modes remain partial.
+[Generator-source review](coverage/semantics/generator-source-arguments-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

@@ -569,6 +569,27 @@ fixture450. The constructed BYREF refusal has no native agreement credit.
 All selections pass on their first attempt; existing cleanup law is reused.
 [Aggregate reception review](coverage/semantics/generator-aggregate-arguments-review.json).
 
+I126 connects existing direct named by-value Generator-CV traversal to literal
+native Generator SEND and zero-argument reception, with distinct initialized
+nondelegated source/selected Generators. The actual CONFIG marker supplies the
+receiver root; borrowed source rewind/next keeps real DATA/cache ownership.
+Quiet source retirement and retained owning caches keep their existing limits,
+including the unchanged pending-destructor value guard.
+Pending mapping cleanup transfers selected Gen/copied argv into CONFIG_INVOKE
+before releasing DATA; ordinary throw cleanup then retires that real cursor.
+Old INI/numeric owner checks and source/value/storage policy remain unchanged.
+BYREF/typed/borrowed cells, temporary/Aggregate sources, incoming throw, pending
+initialization, capture/delegation, Closure::call and I106 remain held.
+Frozen native selections cover scalar normal, quiet retained cache/body TypeError,
+mapping and count. Four maintained source agreements retain separate scalar and
+affected/unrun cuts; the destructor-bearing payload refusal and failed selection
+have zero credit. Separate scalar/quiet-cache/mapping fronts pass 430 conditions
+(208/134/88) across 450 runtime modules plus fixture451 per case. Real borrowed
+source, cache/argv roots, direct quiet transfers and public budgets are checked;
+initial front/diagnostic fixture failures retain zero credit. The actual current
+451-module joined load/inventory also pass without renewing source cuts.
+[Generator-source review](coverage/semantics/generator-source-arguments-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -2537,10 +2558,11 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS204 | Fixed-name new expressions with effective plain public zero/required-by-value positional constructors, authentic NEW-result ownership and ignored scalar constructor returns; preserve current leaf/header policy and held modes. |
+| ATTR65 | Acyclic nested Trait wrapper exports of backed GET/block-SET pairs, with authentic intermediate rows, raw partners and flattened Consumer identities; preserve existing cycle/conflict and held boundaries. |
 | COMP192 | Direct scoped REAL Closure defaults through authentic binding/clone history, with cache-free timing after captures and before This; preserve Shared/private laws and held wider recipients. |
 | ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
 | GC61 | Prove the generic TEMP receipt pop law and correct any second consumption during storage cleanup; preserve post-pop state and ownership without source-specific policy or schema changes. |
-| I126 | Direct initialized by-value source-Generator CV packs into a distinct native selected Generator, with ≤2 ITEMS and authentic CONFIG receiver-root proof; preserve INI and all wider held modes. |
+| OB25 | Genuine completed CTOR_NEW provenance for direct native-output own-code throws, preserving actual receiver/result and normalized fields through arguments; coordinate bounded completion/receipt hooks. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
