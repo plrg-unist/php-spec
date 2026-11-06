@@ -287,6 +287,7 @@ def $generator_api_body_cleanup_destructor(DESTRUCTOR_RESULT pdestructorcall) = 
 def $generator_api_body_cleanup_destructor(ptask) = eps -- otherwise
 dec $generator_api_body_cleanup(pstate, ptask*) : (pgeneratorop, ptask*)?
 def $generator_api_body_cleanup(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (GENERATOR_RESUME pgeneratorop) :: ptask_tail*) = ((pgeneratorop, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*))
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
   -- if $destructor_frame_valid(S, pdestructionframe)
   -- if pdestructionframe.PENDING = (n_pending)
   -- if pdestructionframe.VALUE = KNOWN PNULL
@@ -294,7 +295,7 @@ def $generator_api_body_cleanup(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: 
   -- if $class_method_origin(S.CLASSES, pdestructionframe.FUNCTION) = (pmethoddesc)
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.FUNCTION = pdestructionframe.FUNCTION
-  -- if $generator_api_body_throw(S[.TODO = (THROW_SEARCH n_pending) :: ptask_tail*], pgeneratorop)
+  -- if $generator_api_body_throw(S[.TODO = (THROW_SEARCH n_pending) :: ptask_tail*][.COMPLETION = NORMAL], pgeneratorop)
   -- if $generator_resume_ids(ptask_tail*) = eps
 def $generator_api_body_cleanup(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = ((pgeneratorop, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_view*))
   -- if pdestructionrelease.JOBS = eps
