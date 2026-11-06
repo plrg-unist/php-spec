@@ -45,8 +45,9 @@ def $cv208_outer(ptask :: ptask_tail*) = $cv208_outer(ptask_tail*)
   -- if $cv208_outer_one(ptask) = eps
 dec $cv208_bad_sent(ptask*) : ptask*
 def $cv208_bad_sent(eps) = eps
-def $cv208_bad_sent((MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 poperand*) :: ptask_tail*) = (MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 eps) :: ptask_tail*
-def $cv208_bad_sent(ptask :: ptask_tail*) = ptask :: $cv208_bad_sent(ptask_tail*) -- otherwise
+def $cv208_bad_sent((MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 ([KNOWN (PBOOL false)])) :: ptask_tail*) = (MAGIC_METHOD_NAMED_SEND pmagicmethodcall 1 eps) :: ptask_tail*
+def $cv208_bad_sent(ptask :: ptask_tail*) = ptask :: $cv208_bad_sent(ptask_tail*)
+  -- if $cv208_outer_one(ptask) = eps
 '''
 
 
