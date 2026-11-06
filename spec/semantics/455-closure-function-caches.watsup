@@ -324,6 +324,14 @@ def $closure_call_cache_function(S, n) = $closure_cache_function(S.OBJECTS[n])
   -- if ~$bound_fake_object(S, n)
 def $closure_call_cache_function(S, n) = eps -- otherwise
 
+;; A completed top-level runtime publication can also authorize a named source.
+dec $closure_cache_runtime_publication(pdeclaration*, porigin) : bool
+def $closure_cache_runtime_publication(eps, porigin) = false
+def $closure_cache_runtime_publication(pdeclaration :: pdeclaration_tail*, porigin) = true
+  -- if pdeclaration = PDRFUNCTION porigin {UNIT 0, CALLS eps, AUTOLOAD eps}
+def $closure_cache_runtime_publication(pdeclaration :: pdeclaration_tail*, porigin) = $closure_cache_runtime_publication(pdeclaration_tail*, porigin)
+  -- if pdeclaration =/= PDRFUNCTION porigin {UNIT 0, CALLS eps, AUTOLOAD eps}
+
 ;; A named user function can acquire the dummy Closure scope through binding.
 ;; Its replacement is a real user Closure object, not that object's function scope.
 dec $closure_call_cache_dummy_source(pstate, nat) : porigin?
@@ -334,6 +342,20 @@ def $closure_call_cache_dummy_source(S, n) = (porigin)
   -- if $closure_cache_object_function(S, n) = (porigin)
   -- if $closure_cache_named_source(S, porigin) = (pfunction)
   -- if pfunction.EARLY
+def $closure_call_cache_dummy_source(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SCOPE = BIND_INTERNAL ($ptascii("Closure"))
+  -- if $closure_cache_object_function(S, n) = (porigin)
+  -- if $closure_cache_named_source(S, porigin) = (pfunction)
+  -- if ~pfunction.EARLY
+  -- if porigin = PORIGIN 0 pcpath
+  -- if $reference_origin_parent(porigin, 2) = ((porigin_if, [PCFIELD 1, PCINDEX n_index]))
+  -- if $origin_node(S.SOURCES, porigin_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
+  -- if $goto_source_owner($all_functions(S), 0, pcpath) = eps
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin)
+  -- if $declaration_unit_complete(S.DECLARATIONS, 0)
+  -- if $closure_cache_runtime_publication(S.DECLARATIONS, porigin)
 def $closure_call_cache_dummy_source(S, n) = eps -- otherwise
 
 dec $closure_call_cache_policy(pstate, nat, nat, nat) : pfncacheowner?
