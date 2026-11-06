@@ -49,7 +49,7 @@ dec $tick_function(pticksummary, pcodeexpr*, pcpath, statement*) : pticksummary
 dec $tick_callable_defaults(pcnode) : bool
 dec $tick_plain_parameters(phpType17*) : bool
 dec $tick_parameters(pticksummary, pcodeexpr*, pcpath, nat, phpType17*) : pticksummary
-dec $tick_block_hook(pcnode) : bool
+dec $tick_hook_body(pcnode) : bool
 dec $tick_hook_bodies(pcoccurrence*) : bool
 dec $tick_property_line(phpType18, phpType56) : int?
 dec $tick_first_type_line(pcoccurrence*) : int?
@@ -382,7 +382,12 @@ def $tick_nodes(T, pcodeexpr*, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = 
 def $tick_node(T, pcodeexpr*, pcpath, expression) = $tick_expression_line($tick_expression_body(T[.LINE = $source_line($pcmetadata(expression))], pcodeexpr*, pcpath, expression), pcodeexpr*, pcpath, expression)
 def $tick_node(T, pcodeexpr*, pcpath, statement) = $tick_statement(T, pcodeexpr*, pcpath, statement, false)
 def $tick_node(T, pcodeexpr*, pcpath, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata) = $tick_function(T, pcodeexpr*, pcpath ++ [PCFIELD 5], statement*)[.LINE = $source_end_line(metadata)]
-  -- if $tick_block_hook(NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
+  -- if $tick_hook_body(NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
+;; A short GET is an implicit return: its expression compiles in the hook's
+;; op array, but returning does not execute a trailing statement Tick.
+def $tick_node(T, pcodeexpr*, pcpath, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 expression metadata) = T_body[.LAST = T.LAST][.LINE = $source_end_line(metadata)]
+  -- if $tick_hook_body(NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 expression metadata)
+  -- if T_body = $tick_expression(T[.LAST = false], pcodeexpr*, pcpath ++ [PCFIELD 5], expression)
 def $tick_node(T, pcodeexpr*, pcpath, pcnode) = $tick_nodes(T, pcodeexpr*, $pcchildren(pcnode, pcpath)) -- otherwise
 
 ;; ECHO/BIND/UNSET/RETURN/jumps emit real operations even with literal operands.
@@ -590,7 +595,7 @@ def $tick_finally(T, pcodeexpr*, pcpath, phpType67) = T[.DEPENDENCY = ("tick com
 
 ;; Class constants compile their values without a main opcode or trailing Tick.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtClassConst (SEQUENCE eps) phpType24 phpType18 phpType45 metadata, b) = $tick_constant_nodes(T, pcodeexpr*, $pcfield_phpType45(phpType45, pcpath ++ [PCFIELD 3]))
-;; Defaults precede source-order block hooks, each with a separate op array.
+;; Defaults precede source-order hooks, each with a separate op array.
 ;; They add no main opcode; the enclosing PROP_GROUP can still emit its Tick.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata, b) = $tick_nodes($tick_constant_nodes(T[.LINE = z_group], pcodeexpr*, $pcfield_phpType56(phpType56, pcpath ++ [PCFIELD 3])), pcodeexpr*, $pcfield_phpType37(phpType37, pcpath ++ [PCFIELD 4]))
   -- if $tick_property_line(phpType18, phpType56) = (z_group)
@@ -605,10 +610,11 @@ def $tick_type_line(NNullableType phpType35 metadata) = $source_line($pcmetadata
 def $tick_type_line(NIntersectionType (SEQUENCE (phpType35 :: phpType35_tail*)) metadata) = $source_line($pcmetadata(phpType35))
 def $tick_type_line(NUnionType (SEQUENCE (phpType69 :: phpType69_tail*)) metadata) = $tick_type_line(phpType69)
 def $tick_type_line(pcnode) = $source_line($pcmetadata(pcnode)) -- otherwise
-def $tick_block_hook(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata) = $tick_inputs_clean(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata, 5)
-def $tick_block_hook(pcnode) = false -- otherwise
+def $tick_hook_body(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata) = $tick_inputs_clean(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) phpType11 phpType16 (SEQUENCE statement*) metadata, 5)
+def $tick_hook_body(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata) = ($ptlc($base64(text_get)) = $ptascii("get") /\ ~$generator_syntax(expression))
+def $tick_hook_body(pcnode) = false -- otherwise
 def $tick_hook_bodies(eps) = true
-def $tick_hook_bodies((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_block_hook(pcnode) /\ $tick_hook_bodies(pcoccurrence*))
+def $tick_hook_bodies((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($tick_hook_body(pcnode) /\ $tick_hook_bodies(pcoccurrence*))
 ;; Retain the quiet route for other property groups without nested declarations.
 def $tick_statement_body(T, pcodeexpr*, pcpath, NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata, b) = T
   -- if T.FREQUENCY = 0
