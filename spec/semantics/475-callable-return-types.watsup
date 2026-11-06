@@ -182,7 +182,8 @@ def $callable_return_source_identity(ptask) = eps -- otherwise
 dec $callable_return_source_value(pstate, ptask) : pvalue?
 def $callable_return_source_value(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?) = (pvalue)
 def $callable_return_source_value(S, CALLABLE_RETURN_CV_SOURCE porigin_function porigin_site preqbytes n_cell z n_pending?) = (pvalue)
-  -- if $(n_cell < |S.STORE|) /\ S.STORE[n_cell] = DEFINED pvalue
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED pvalue
 def $callable_return_source_value(S, ptask) = eps -- otherwise
 dec $callable_return_source_pending(ptask, nat) : ptask
 def $callable_return_source_pending(CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z eps, n) = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z (n)
