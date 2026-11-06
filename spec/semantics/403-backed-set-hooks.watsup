@@ -76,7 +76,7 @@ def $ppset_explicit_finish(P, P_body, pcpath, ppropertydesc, pssignature, metada
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) phpType16 (SEQUENCE statement*) metadata, pchheader) = $ppset_explicit_finish(P, $ppgoto_finish($ppstatements(P_parameter, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ppropertydesc, pssignature, metadata, pchheader)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps
-  -- if ppropertydesc.TYPE =/= eps /\ $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+  -- if ppropertydesc.TYPE =/= eps /\ ($hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader))
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if $property_set_explicit_signature(phpType16, $ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z)) = (pssignature)
@@ -97,7 +97,7 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps
   -- if ppropertydesc.TYPE =/= eps
-  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pchheader.KIND = "class" /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*))
+  -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ (pchheader.KIND = "class" /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED /\ $hook_body_supported(SEQUENCE statement*)) \/ $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if ptbytes_name = pchheader.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
@@ -251,6 +251,7 @@ def $closure_source_class(S, porigin) = (porigin_class)
 ;; A sole virtual SET has no backing slot and no callable GET.
 def $property_hook_virtual(S, ppropertydesc) = true
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $property_hook_pair_origins(S, ppropertydesc) = eps
   -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
@@ -745,6 +746,7 @@ def $property_hook_declared(S, n, ptbytes) = true
 dec $property_set_virtual_source(pstate, ppropertydesc) : bool
 def $property_set_virtual_source(S, ppropertydesc) = true
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $property_hook_pair_origins(S, ppropertydesc) = eps
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if $property_set_virtual_int(ppropertydesc, SEQUENCE statement*)
