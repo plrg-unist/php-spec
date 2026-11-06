@@ -199,6 +199,15 @@ def rebind_assertions(program,path,writes=1):
   c += [('rebinding first leaves the later real cell and certificate usable',r'$ob_object_cv_associations($ob_object_native_source(S_rebound)) = [pobcvassoc_1] /\ $ob_object_cv_cell(S_rebound,pobcvassoc_1) /\ n_selected = n_exception_1 /\ pobcvassoc_selected = pobcvassoc_1 /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_1 porigin_throw) /\ $heap_owners($heap_graph(S_pending),HOBJECT n_exception_1) = 2 /\ '+public('S_pending'))]
  return b,c
 
+def protocol_assertions(program,path,writes=1):
+ b,c=flow(program,path,writes)
+ prefix=len(b)
+ for fn in (refusals,report_assertions):
+  bindings,checks=fn(program,path,writes)
+  assert bindings[:prefix]==b[:prefix]
+  b+=bindings[prefix:];c+=checks
+ return b,c
+
 def catch_assertions(program,path,writes=2):
  b=written(program,path,2)+throwing('S_dropped_1')
  b += seek('S_catch','S_pending',5,helper='fr')+[
@@ -256,13 +265,13 @@ def main():
  parser.add_argument('--output',type=Path);parser.add_argument('--native-root',type=Path)
  parser.add_argument('--checked-root',type=Path,help='reuse the existing baseline-02/control-preparation-01 checked packets')
  parser.add_argument('--select',choices=(*sources.CASES,'all'),default='all')
- parser.add_argument('--stage',choices=('flow','refusals','report',*CONTROLS),default='flow')
+ parser.add_argument('--stage',choices=('flow','refusals','report','protocol',*CONTROLS),default='flow')
  parser.add_argument('--prepare-only',action='store_true');args=parser.parse_args()
  out=args.output or Path(tempfile.mkdtemp(prefix='factory-cv-review-'));out.mkdir(parents=True,exist_ok=True)
  report={'revision':support.subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD']).decode().strip(),'before':fingerprint(),'records':[],'passed':False,'native_agreement_credit':0,'cap_seconds':300,'stage':args.stage}
  try:
   modules=json.loads((ROOT/'spec/semantics/modules.json').read_text())
-  originals=args.stage in ('flow','refusals','report')
+  originals=args.stage in ('flow','refusals','report','protocol')
   chosen=list(sources.CASES.items()) if originals else [(args.stage,CONTROLS[args.stage])]
   for index,(name,source) in enumerate(chosen,1):
    if originals and args.select not in ('all',name):continue
@@ -282,7 +291,7 @@ def main():
     try:checked=worker.request({'op':'check','ast':parsed['ast'],'fixture':True})
     finally:worker.close()
    writes=2 if name in ('factory-two-cvs','catch','sibling-rebind') else 1
-   fn={'flow':flow,'refusals':refusals,'report':report_assertions,'cleanup':cleanup_assertions,'rebind':rebind_assertions,'catch':catch_assertions,'sibling-rebind':rebind_assertions,'native-local':native_local_assertions,'legacy-helper-catch':legacy_assertions}[args.stage]
+   fn={'flow':flow,'refusals':refusals,'report':report_assertions,'protocol':protocol_assertions,'cleanup':cleanup_assertions,'rebind':rebind_assertions,'catch':catch_assertions,'sibling-rebind':rebind_assertions,'native-local':native_local_assertions,'legacy-helper-catch':legacy_assertions}[args.stage]
    bindings,checks=fn(checked['fixture'],path,writes);fixture=directory/'state.watsup';fixture.write_text(render(bindings,checks))
    record={'case':name,'checks':[name for name,_ in checks],'fixture_sha256':support.common.sha(fixture),'passed':False};report['records'].append(record)
    if args.prepare_only:continue
