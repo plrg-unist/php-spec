@@ -357,6 +357,7 @@ def $property_hook_trait_parent_linked(S, pclassdesc) = true
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
 def $property_hook_trait_parent_linked(S, pclassdesc) = false -- otherwise
 ;; Trait data binds before the Consumer is linked or published.
+dec $anonymous_named_header(pcnode, ptcontext) : (pchheader, int)?
 dec $property_hook_pair_source_header(pstate, pclassdesc) : bool
 def $property_hook_pair_source_header(S, pclassdesc) = true
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath
