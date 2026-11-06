@@ -6269,6 +6269,12 @@ while zero skips both. The conditional write reacquires its borrowed receiver
 after the RHS, preserving cross-Consumer private denial and the original
 assignment input after SET.
 [Quiet conditional review](coverage/semantics/nonpublic-quiet-trait-pairs-review.json).
+Integer-RHS `+=` also composes with symmetric backed pairs. It selects one
+receiver after the RHS, then keeps that object through GET, addition and SET;
+GET-time rebinding cannot retarget the write. The expression keeps the computed
+sum while SET may transform the stored value. Failed operations leave the outer
+assignment result unchanged.
+[Compound pair review](coverage/semantics/compound-get-set-pairs-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

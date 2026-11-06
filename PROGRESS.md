@@ -1787,6 +1787,13 @@ reacquires its receiver after the RHS and enters the existing SET call/result
 rules, preserving original input, transformed storage and private denial after
 rebinding. Getter and RHS aborts preserve the prior result and permit fresh retry.
 [Quiet conditional review](coverage/semantics/nonpublic-quiet-trait-pairs-review.json).
+Existing integer-RHS `+=` now invokes SET after GET/addition for symmetric
+builtin-backed pairs. Permitted descriptor lookup and saved caller access retain
+the selected receiver even if GET rebinds its CV. Real compound source and the
+retained finish task authenticate the SET target; expression result and transformed
+storage remain distinct. The outer operation pin survives the independent SET
+receipt through normal return or unwind; GET-only storage/finish remains unchanged.
+[Compound pair review](coverage/semantics/compound-get-set-pairs-review.json).
 Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
 binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
@@ -3149,7 +3156,6 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS215 | Immediate literal self/parent/static public static USER FCC invocation with authentic capture and outer argument sites, saved caller scopes and existing wrapper owners; preserve direct producers and held limits. |
-| ATTR73 | Existing ADD/int-RHS compound GET composed with admitted symmetric backed GET/SET, one fixed receiver and separate operation/hook pins, computed result distinct from transformed store; preserve GET-only and held limits. |
 | COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I134 | Distinct initialized borrowed source Generator reentry into the selected target, with two genuine running resumers and descriptor history proof; preserve physical pair/owner and held bounds. |

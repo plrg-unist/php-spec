@@ -456,6 +456,17 @@ old receiver before the RHS; later rebinding to an unrelated Consumer preserves
 private denial. Successful SET keeps original STRING5 as the assignment result
 while persisting15. RHS failure leaves the prior result intact for a fresh retry.
 [Quiet conditional review](../../coverage/semantics/nonpublic-quiet-trait-pairs-review.json).
+The existing integer-RHS `+=` path also supports symmetric builtin-backed pairs.
+After RHS effects it selects the permitted descriptor and fixes one receiver for
+GET, addition and SET, even if GET replaces the original CV. The real PLUS parent,
+retained finish task and saved caller authenticate that SET object/property and
+its actual partner/signature. The expression keeps the computed sum while SET
+may transform storage. Getter/RHS/SET throw or typed-write failure leaves the
+outer assignment result unchanged. The compound finish and SET receipt
+independently retain the receiver, with the ordinary extra base owner for a short
+SET. GET-only store/finish is unchanged. The new pair branch excludes asymmetric,
+virtual and byref families.
+[Compound pair review](../../coverage/semantics/compound-get-set-pairs-review.json).
 Raw class nonpublic pairs, virtual nonpublic pairs and combinations with
 asymmetric SET remain held. Internal keys are unowned byte lists, with no
 owned-NUL value or release expansion.
