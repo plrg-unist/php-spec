@@ -75,7 +75,7 @@ def render(case, fixture, filename):
         '$magic_method_this_array_from_callable_producer(S,(pcallcontext_caller),porigin_outer,expression_outer) = ((n_this,porigin_class,pmethoddesc))',
         'pmethoddesc.OWNER =/= porigin_class', 'pmethoddesc.STATIC',
         '$magic_method_this_source(S,(pcallcontext_caller),pconfigcall.SITE,$ptascii("capture"),phpType7_real*) = eps',
-        '$api_method_result(S,papiquery,$ptascii("capture")) = HANDLERRESOLVED (API_METHOD_TARGET papiquery pfunction.ORIGIN ($ptascii("capture")) false)',
+        '$api_method_result(S,papiquery,$ptascii("capture")) = HANDLERRESOLVED (API_METHOD_TARGET papiquery pfunction.ORIGIN ($ptascii("capture")) true)',
         '$heap_owners($heap_graph(S),HARRAY n_callback) = 1',
         '$heap_owners($heap_graph(S),HOBJECT n_this) = 3',
         'n_wrapper = |S.OBJECTS|',
