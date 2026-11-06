@@ -249,8 +249,18 @@ certificates consume the actual getter origin and authenticate the Closure's sou
 class after getter frames retire. Seven originals, strict449, main 148 and
 corrected Closure 37 checks retain their separate cuts in the
 [SET-first review](../../coverage/semantics/set-first-hook-pair-review.json).
-Trait, wider block-SET pairs and wider headers remain partial. Ordinary initializer,
-type, storage and hook execution rules are reused.
+Source-backed block SET also composes with the admitted block/expression GET forms
+in either physical order. Class-only admission preserves real typed/defaultless
+parameters and the old implicit Trait-pair policy. Actual SET backing syntax admits
+pure initialized GET without inventing storage; absent initializers keep their real
+uninitialized state. Original string input, transformed storage and checked physical
+body/builtin-variance priorities remain distinct. A local RHS temporary uses actual
+statement paths before its later property write; the existing outer setter receipt
+retains the receiver through throw/retry. Seven originals, strict449 and 156 independent
+source/statement/owner/budget checks are in the
+[block-SET pair review](../../coverage/semantics/block-set-hook-pair-review.json).
+Trait, SET bodies without syntactic backing access and wider headers remain partial.
+Ordinary initializer, type, storage and hook execution rules are reused.
 
 Selected direct trait SET imports also preserve that real builtin parameter
 signature. Raw Trait property type, Param leaf and variance authenticate the

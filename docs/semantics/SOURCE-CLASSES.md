@@ -733,8 +733,17 @@ named instance calls retain their source bounds and one or two arguments. Generi
 copies the dereferenced value before later effects; string identity and bytes
 survive source retirement without adding heap owners. Flat-array elements keep
 their separate integer/ordinary-leaf bound. Unknown byte-only strings, request
-strings containing NUL, new literal forms and wider producers remain partial.
+strings containing NUL and wider producers remain partial.
 [Primitive review](../../coverage/semantics/anonymous-primitive-magic-review.json).
+
+Direct literal sends also retain the exact quiet compiled value: scalar int,
+binary64 and string literals, fixed NULL/bool names, and a single numeric sign.
+The original occurrence, compiled pool and empty effect list authenticate each
+value; strings keep their interned carrier. A failed literal certificate cannot
+fall back to CV/user-producer admission. Positional instance/static and named
+instance calls keep their one/two-argument bounds. General constant fetches and
+other folded expressions remain separate; explicit unpack prefixes retain their
+prior source policy. [Literal review](../../coverage/semantics/anonymous-literal-magic-review.json).
 
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
@@ -1299,7 +1308,7 @@ site/line/generated filename and an available unscoped caller before the first
 recorded entry, with accepted compilation within the saved birth PREFIX.
 Constant-location and default-receive contexts remain outside this route. See the
 [eval-constant review](../../coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json).
-Class-scoped include/eval globals authenticate named public nongenerator instance
+Class-scoped include/eval globals authenticate named public nongenerator
 producer methods from immutable source and class publication before entry.
 Completed class/method publication establishes caller availability; the target
 unit must finish compilation before its constant birth. Eval also preserves
@@ -1309,6 +1318,11 @@ the captured public static method keeps Host scope. History retains class origin
 after the producer frame/cell retires without owning that receiver. See the
 [scoped-include](../../coverage/semantics/enum-is-callable-scoped-included-constant-method-cache-review.json) and
 [scoped-eval](../../coverage/semantics/enum-is-callable-scoped-eval-constant-method-cache-review.json) reviews.
+Static producer methods use the same earlier-publication and immutable declaring
+scope proof, with no This or producer object allocation. The declaring scope,
+inherited called class and Host capture scope remain separate through both real
+FILE and EVAL provenance; capture ownership and birth policy are unchanged. See
+the [static-producer review](../../coverage/semantics/enum-is-callable-static-producer-constant-method-cache-review.json).
 Method `fromCallable` now uses explicit source-cache
 registration and actual INIT facts, including attempts that throw before body
 entry. Runtime invokable/array/string FCC also records allocation independently

@@ -5347,8 +5347,17 @@ named instance calls retain their source bounds and one or two arguments. Generi
 copies the dereferenced value before later effects; string identity and bytes
 survive source retirement without adding heap owners. Flat-array elements keep
 their separate integer/ordinary-leaf bound. Unknown byte-only strings, request
-strings containing NUL, new literal forms and wider producers remain partial.
+strings containing NUL and wider producers remain partial.
 [Primitive review](coverage/semantics/anonymous-primitive-magic-review.json).
+
+Direct literal sends also retain the exact quiet compiled value: scalar int,
+binary64 and string literals, fixed NULL/bool names, and a single numeric sign.
+The original occurrence, compiled pool and empty effect list authenticate each
+value; strings keep their interned carrier. A failed literal certificate cannot
+fall back to CV/user-producer admission. Positional instance/static and named
+instance calls keep their one/two-argument bounds. General constant fetches and
+other folded expressions remain separate; explicit unpack prefixes retain their
+prior source policy. [Literal review](coverage/semantics/anonymous-literal-magic-review.json).
 
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
@@ -5901,6 +5910,10 @@ Short SET may appear before GET. Logical roles follow the actual source while
 physical compilation preserves checked body/builtin-variance error priority. Existing getters,
 backing storage and source-authenticated Closure ownership retain their behavior.
 [SET-first review](coverage/semantics/set-first-hook-pair-review.json).
+Source-backed block SET also pairs with existing getters in either order, including
+real typed/defaultless inputs. Actual SET syntax supplies backing for pure getters;
+input/storage, statement writes and receiver cleanup retain their ordinary behavior.
+[Block-SET pair review](coverage/semantics/block-set-hook-pair-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
@@ -7431,12 +7444,15 @@ The [root](coverage/semantics/enum-is-callable-global-constant-method-cache-revi
 [include](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json) and
 [eval](coverage/semantics/enum-is-callable-eval-constant-method-cache-review.json)
 reviews retain their separate source and entry cuts.
-Globals created by include or eval inside an ordinary public instance method now
+Globals created by include or eval inside an ordinary public method now
 authenticate entry from the method's declaring class. Inherited entry preserves
-that class separately from the receiver's class and captured method's scope;
+that class separately from the called class and captured method's scope;
 cache metadata keeps no producer object alive. See the
 [scoped-include](coverage/semantics/enum-is-callable-scoped-included-constant-method-cache-review.json) and
 [scoped-eval](coverage/semantics/enum-is-callable-scoped-eval-constant-method-cache-review.json) reviews.
+Public static producers share that authority through both routes with no This or
+producer allocation; the [static-producer review](coverage/semantics/enum-is-callable-static-producer-constant-method-cache-review.json)
+records their joint source and provenance checks.
 Constant/default captures, bound copies and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type

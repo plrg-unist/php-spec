@@ -1,0 +1,126 @@
+{
+  "scope": "CLASS201: direct quiet scalar and single-sign numeric literal SEND_VAL/_EX inputs to existing1\u20132 positional instance/static and named-instance magic consumers. Exact compiled value and interned string carrier; other source/header/producer/lifetime boundaries stay partial.",
+  "base": "f3036b48a913472d911056706b5b6732da25991e",
+  "implementation_commits": [
+    "d55236e32",
+    "42fa5d760"
+  ],
+  "fixture_commits": [
+    "89026a8c6",
+    "a741901b4"
+  ],
+  "module_count": 449,
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "engine_basis": [
+    "Zend/zend_compile.c zend_compile_args selects SEND_VAL[_EX] for CONST/TMP operands; zend_try_ct_eval_const recognizes fixed true/false/null before general lookup. zend_compile_unary_pm retains a quiet constant result for a numeric literal sign.",
+    "zend_insert_literal interns string zvals; authored Zend/zend_vm_def.h SEND_VAL[_EX] copies/transfers the exact value and handles actual refcounts, while CALL_TRAMPOLINE transfers those values into the real argument table.",
+    "Existing33 compiled_read, compiled_effects and compiled_string_value bind the checked source occurrence to its quiet pool value and interned carrier.30/39 represent strings as immutable nonheap metadata."
+  ],
+  "mechanism": "414 whitelists direct scalar literals, fixed unqualified NULL/bool names and a single numeric sign. At collection, raw literal shapes require exact equality with their original compiled value; a missing certificate cannot fall back to CV/USER or old integer/leaf acceptance. String canonicality rejects unknown/request carriers.438 has a small explicit-source adapter preserving its exact prior integer branch and nonliteral CV/array/USER/new policy, so the shared414 source predicate cannot widen unpack. No86/39/schema/clone/native changes.",
+  "author": {
+    "pending_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/author/model-report-magic-literal-pending-instance.json",
+      "sha256": "39250ba89fd346b6f00f87bbe09ac4644f7487eec2b8dccd3e9ff620a882ab65",
+      "count": 1,
+      "result": "Exact original native/model normal/exit0/empty stderr/stable in41.694s at d552 under the upfront300s source cap. No native replay;438-only bridge below preserves this nonunpack cut."
+    },
+    "grouped_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/author/model-report-family.json",
+      "sha256": "be8ac787732f75865c519f108a634e4eebd4072eedc59e5070117d2c9d663d65",
+      "count": 3,
+      "result": "Instance/static/named originals each group six one/two-argument calls, covering NULL, booleans, int, finite/infinite binary64, signed zero, ordinary/empty strings. Exact normal/exit0/empty stderr/stable at42fa;236.738/192.198/249.919s under upfront300s cap; no timeout or native replay."
+    },
+    "owner112": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/author/closure-call-protocol-0jpxq8zy/report.json",
+      "sha256": "603e55c30b316135287076ee6bd617747f66d6dadbf44974e7e0936eae47c288",
+      "record_id": "magic-literal-pending-instance",
+      "conditions": 112,
+      "result": "Owner record passed first execution true/exit0/empty stderr/stable under300s. The overall mixed report is FAIL because its separate original23 guard record failed; no whole-packet pass is claimed. At actual LATER the saved operand is exact INTERNED PENDING from the real pool, with empty STRINGDATA/no string nodes and only selectedThis as SEND root. Real table/child retain that value and NULL through receiver retirement. Full2050 equals split2+2048 at actual RETURN, with final table/child/receiver retirement and call/class/GC/heap validity."
+    },
+    "unpack_guard28": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/author/closure-call-protocol-lurmenpo/report.json",
+      "sha256": "8d4c2cc7f92b305ab00ff62c63da149575447619a1798e31f237b0eb795685d9",
+      "conditions": 28,
+      "result": "Corrected guard alone passed true/exit0/empty stderr/stable/no timeout under300s. Actual pre-call state proves new literal certificate and414 argument-source true, preserved438 explicit source false, real initialized-Iterator spread classifier eligible, and then the same state reaches exact magic-source Unsupported without callbacks. No owner/source/native rerun."
+    },
+    "unpack_source_refusal": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/author/unpack-boundary/report.json",
+      "sha256": "9a1c590d14c8c07abea745b1b287e7652f8587b34075a1d00be94270894d6583",
+      "count": 1,
+      "agreement_credit": 0,
+      "result": "New literal-prefix Iterator original is native normal ITER;BODY;AFTER; but model intentionally Unsupported at magic source/argument mode, exit1/empty observations/no timeout. This is a retained boundary, not native agreement."
+    }
+  },
+  "compatibility_bridge": {
+    "from": "d55236e32",
+    "to": "42fa5d760",
+    "finding": "Only438 explicit-prefix source policy changes;414 production is byte-identical. For completed pending-source and direct source packets, call_unpack_present is false and the separate438 protocol is never selected. The pure boolean guard remains false even if evaluated eagerly. Peer reviewed old integer and nonliteral delegation equivalence; no historical or completed source replay."
+  },
+  "independent_review": {
+    "status": "accepted_private_CLEAR",
+    "record": "coverage/semantics/anonymous-literal-magic-independent.json",
+    "original_peer_commit": "6e2f0760a",
+    "author_cherry_pick": "4d1bab7da",
+    "source": {
+      "count": 1,
+      "id": "named-literal-carriers-closure-table-retirement",
+      "source_sha256": "887127c09a87322e271c71aa1810a1f356145a7bb0d380655ca08e615bc0436d",
+      "result": "First model execution exactly matches its once-pinned native bytes/path/cwd/profile: normal/exit0/empty stderr, stable and no timeout;70.185s under upfront300s cap. Native not rerun.",
+      "behavior": "Named BYTE80 and1.5 literals survive receiver retirement, static Closure escape and actual anonymous-child retention, preserving Base lexical/Derived called scope and ordered cleanup.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/reviewer/source/report.json",
+      "sha256": "ce10255915b4baaf8b69e185ec89ccee8274522cf1459f4afd600299ed966efb"
+    },
+    "SL449": {
+      "conditions": 124,
+      "result": "First SL449 execution true/exit0/empty stderr, stable/no timeout;101.519s under300s inner cap.",
+      "behavior": "At genuine magic RETURN_VALUE, exact compiled INTERNED BYTE80 and binary64 1.5 occupy the same real named table held by parameter/buffer/static Closure three times. Strings/floats have no heap children and STRINGDATA remains empty. At actual root unset(child), receiver and Closure have retired; child.saved alone owns that identical table. Full4098 equals split2+4096 and retires child/table with valid call/class/Closure/GC/heap states.",
+      "controls": "Authentic old-PINT and live-leaf substitutions, wrong float bits/string bytes, bare and valid REQUEST_STRING spoofs, missing pools and swapped original source roles refuse. Flat-array admission stays separate. Derived controls earn no native agreement.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/reviewer/state/report.json",
+      "sha256": "8a50eb8b64757ba04ccaec67e60661d25ed3aef5c58d01474f09cc9bd095960d"
+    },
+    "final_review": "CLEAR bounded CLASS201 d552+42fa from /root/recovery_classes_review. Source/compiler/carrier, literal-value priority and438 policy preservation reviewed. Author 4-case source packet, 112-condition owner record, original 23-condition guard zero and corrected 28-condition guard remain separate; no duplicate campaign or production finding."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/author/closure-call-protocol-0jpxq8zy/report.json",
+      "record_id": "magic-literal-prefix-unpack-refused",
+      "conditions": 23,
+      "result": "Original guard expected ORIGIN after terminal Unsupported cleanup; actual ORIGIN was eps. The source/native refusal and owner112 were already correct. Original fixture/streams/renderer remain external. Only the guard was moved to its actual pre-call front and rerun."
+    },
+    {
+      "finding": "Independent static review caught shared438 literal-prefix widening before any unpack admission baseline was executed.42fa restores prior policy. No false-admission execution or native agreement is claimed."
+    }
+  ],
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic",
+    "author_inputs": "/home/user/workspace/php-spec-evidence-archive/class201-literal-magic/author/inputs",
+    "recovery": "Use the committed positive/control catalogues and protocol with pinned local tools. Fresh source replay: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_literal_magic_cases.json --model-timeout300. State protocol supports --case for affected-only checks. Raw once-pinned originals/path/cwd/profile, source/model commands/streams, first failed and corrected guard fixtures, binaries and frozen414/438/manifest remain external."
+  },
+  "engine_divergence": "None identified.",
+  "remaining": "General constant fetches, arbitrary folded expressions, wider literal/name forms, later CVs/arrays, USER producer/header/reference-return/static-named/unpack extensions remain partial; request-owned NUL and all paused lanes remain held.",
+  "composition_review": {
+    "head": "72224088b9304a2f848ed12129c34ec3d4ffa3d2",
+    "module_count": 449,
+    "finding": "Actual main differences fromf303 are hook-pair compilation, real GENERATOR producer guards and CONSTANTCLOSURE scoped file/eval cache births. These inputs/states contain no hooks, GENERATOR or CONSTANTCLOSURE/dynamic units. New hook closure arms still require real property/hook origins, absent from ordinary __call Closure ancestry and promoted child fields.414/438/33/86/39/string fields and interfaces are unchanged. Pointwise compatibility only; no renewed execution credit."
+  },
+  "summary": {
+    "distinct_original_agreements": 5,
+    "author": 4,
+    "independent": 1,
+    "separate_owner_budget_conditions": [
+      112,
+      124
+    ],
+    "separate_source_guard_conditions": 28,
+    "original_guard_failed_conditions_credit": 0,
+    "new_literal_prefix_unpacked_source_refusal": 1,
+    "unsupported_agreement_credit": 0,
+    "engine_divergence": "None identified.",
+    "remaining": "General constant fetches, other folded expressions, later CVs/arrays, wider sources/headers and held request-owned NUL remain partial."
+  }
+}

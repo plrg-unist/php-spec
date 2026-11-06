@@ -233,7 +233,7 @@ remain separate from nonowning cache history. The
 reviews retain their separate original-source, entry/owner/budget and strict
 cuts, with include recorder controls counted separately.
 Class-scoped include/eval producers authenticate named public nongenerator
-instance methods and their class publication before entry. An inherited
+methods and their class publication before entry. An inherited
 Producer scope stays distinct from Child CALLED and captured Host scope;
 producer retirement adds no metadata pin. Completed class/method publication
 establishes caller availability even during surrounding compilation, while
@@ -242,6 +242,10 @@ exact generated filename and empty LOCATION/RECEIVES. The
 [scoped-include](coverage/semantics/enum-is-callable-scoped-included-constant-method-cache-review.json) and
 [scoped-eval](coverage/semantics/enum-is-callable-scoped-eval-constant-method-cache-review.json)
 reviews retain their separate source, entry/history/retirement and strict cuts.
+Public static producers now share that exact declaring-scope/publication proof
+across both routes with no This or Producer allocation. One mixed source and
+shared route-specific entry/history/root-budget evidence are retained in the
+[static-producer review](coverage/semantics/enum-is-callable-static-producer-constant-method-cache-review.json).
 Other constant/default captures, wider conditional/factory sources, unproved
 transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
@@ -1385,6 +1389,12 @@ Existing descriptor, return, storage and Closure source-owner rules consume thos
 real roles, including source-covered absent initializers. Seven originals and
 strict449 pass; main 148 and corrected Closure 37 checks retain separate cuts in the
 [SET-first review](coverage/semantics/set-first-hook-pair-review.json).
+Source-backed block SET now composes with admitted GET forms and actual physical
+roles, including explicit typed/defaultless input and reversed statement pairs.
+Actual SET syntax authenticates pure initialized GET backing; absent initialization,
+original string input, transformed storage and checked compiler error order remain
+distinct. Seven originals, strict449 and 156 independent statement/receiver/budget checks
+are in the [block-SET pair review](coverage/semantics/block-set-hook-pair-review.json).
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2021,7 +2031,7 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
-CLASS191–200 admit anonymous factories in ordinary byvalue nongenerator `__call`
+CLASS191–201 admit anonymous factories in ordinary byvalue nongenerator `__call`
 and `__callStatic` bodies under their existing plain headers and argument
 consumers. Captured scalar/ordinary leaf-object sends stay fixed through later
 CV/receiver mutation; real packed arrays and actual lexical/called scope preserve child/payload ownership
@@ -2064,7 +2074,15 @@ integer/ordinary-leaf bound. Unknown byte-only strings remain Unsupported;
 request-owned NUL stays held.
 The [primitive review](coverage/semantics/anonymous-primitive-magic-review.json)
 records 23 distinct source agreements and separate owner/budget packets of 105
-and 107 conditions at their recorded cuts. Later array sends,
+and 107 conditions at their recorded cuts. Direct literal sends now authenticate
+their exact quiet compiled value and interned string carrier, with raw-source
+priority over existing COPY roles. Fixed NULL/bool, scalar and single-sign
+numeric literals share the existing protocols; general constant fetches and
+other folded expressions stay separate. Explicit unpack prefixes retain their earlier
+policy. The [literal review](coverage/semantics/anonymous-literal-magic-review.json)
+records five distinct source agreements, separate 112/124 owner/budget fronts,
+and a separate 28-condition real-source unpack guard at their recorded cuts.
+Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
 
@@ -2382,10 +2400,10 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS201 | Primitive literal SEND_VAL/_EX carriers in existing one/two-argument magic-call forms, with compiled literal/identity proof; preserve broader producer and held owned-NUL boundaries. |
-| ATTR61 | Existing source-backed block SET with admitted GET and actual physical roles/order; class-only, preserving current runtime/storage/schema and wider header boundaries. |
+| CLASS202 | Later plain/reference CV SEND snapshots after an earlier USER argument mutates the CV, with indexed source authority and existing owners; preserve current primitive/leaf, header/string and held bounds. |
+| ATTR62 | GET-own backing supplies whole-pair storage for a nonbacking block SET, with actual roles/order, initialized/absent and no-write/throw/retry behavior; class-only, preserving virtual/Trait/wider bounds. |
 | COMP190 | Private and mixed REAL Closure default caches (461), with exact cache-owner identity and native lifetime/root/pruning; preserve existing Shared encodings and 455 policy. |
-| ENUM146 | Static Producer authority across scoped include/eval constant method Closure births, with inherited scopes, no This/Producer allocation and genuine earlier publication/entry; preserve route-specific provenance and wider bounds. |
+| ENUM147 | Named nonunpack is_callable simple-CV output acquisition and CONFIG mapping, with source SEND order distinct from signature slots; preserve selected builtin, input/history/cleanup and generic named-error timing. |
 | GC59 | Last-owner current-row destruction and read-only callbacks, with a nonowning claim across publication, old-value and Map-pin release; preserve the GC35 hold and existing mutation/lifecycle limits. |
 | I125 | Existing Aggregate-to-user-Iterator packs at native Generator SEND/zero-argument APIs, preserving selected Gen, copied argv and INPUT/DATA/420 cursor ownership; retain current mapping/body/budget and held wider bounds. |
 | OB23 | Native FINAL fresh-Throwable CV cleanup with genuine null-C drain/eligibility/freshness proof; preserve the external cast guard and ordinary catch/finally. |
