@@ -745,6 +745,15 @@ instance calls keep their one/two-argument bounds. General constant fetches and
 other folded expressions remain separate; explicit unpack prefixes retain their
 prior source policy. [Literal review](../../coverage/semantics/anonymous-literal-magic-review.json).
 
+Second CV arguments read initialized ordinary cells at their actual SEND in
+these two-argument protocols. An earlier user argument may create or replace the
+CV. Exact indexed source and pending-send authority precede the read; the copied
+primitive or ordinary leaf value then survives handler writes and CV detachment.
+Plain and reference cells share generic SEND ownership, preserving authenticated
+string carriers. Missing, array-valued and typed/backed cells remain excluded
+before warnings or coercions; unpack prefixes retain their prior policy.
+[Later-CV review](../../coverage/semantics/anonymous-later-cv-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

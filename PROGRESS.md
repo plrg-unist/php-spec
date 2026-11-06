@@ -2135,6 +2135,13 @@ other folded expressions stay separate. Explicit unpack prefixes retain their ea
 policy. The [literal review](coverage/semantics/anonymous-literal-magic-review.json)
 records five distinct source agreements, separate 112/124 owner/budget fronts,
 and a separate 28-condition real-source unpack guard at their recorded cuts.
+Indexed second CV sends now check the actual initialized ordinary cell after
+earlier argument effects, then retain the copied primitive/leaf value through
+handler writes and source-cell detachment. Missing/array/typed/backed reads stop
+before warnings or coercions. The [later-CV review](coverage/semantics/anonymous-later-cv-magic-review.json)
+records six distinct source agreements, separate 143/153 owner/budget fronts and
+a 30-condition pre-warning source guard at their recorded cuts. Unpack prefixes
+retain their earlier policy.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2468,7 +2475,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS202 | Later plain/reference CV SEND snapshots after an earlier USER argument mutates the CV, with indexed source authority and existing owners; preserve current primitive/leaf, header/string and held bounds. |
+| CLASS203 | Fixed-name ordinary USER producers with required by-value arguments and current quiet primitive/leaf returns, using actual target/source and generic SEND/frame ownership; preserve current headers, nullary/array policy and held modes. |
 | ATTR63 | True virtual class GET/block-SET pairs with neither body backing, using real roles, no storage and existing body/parameter paths; preserve backed62 and wider held modes. |
 | COMP191 | Ordinary nongenerator CACHE_CALL default-cache identity and true invocation-completion lifetime (462), preserving Shared/Gen behavior and coordinating the 79/257 release boundary. |
 | ENUM148 | Genuine early named-output reference acquisition history through unset/rebound CV names, preserving SENT owners, builtin/input and current simple-CV domains; coordinate the nonowning reference certificate. |
