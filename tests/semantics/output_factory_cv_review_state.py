@@ -133,7 +133,7 @@ def flow(program,path,writes=1):
    (f'write {i} moves the actual result to its private compiled CV cell',f'pobcvassoc_{i}.FACTORY = pobcvreturn_{i} /\\ pobcvassoc_{i}.NAME = preqbytes_name_{i} /\\ pobcvassoc_{i}.CELL = n_cell_{i} /\\ S_written_{i}.RESULT = KNOWN PNULL /\\ S_written_{i}.STORE[n_cell_{i}] = DEFINED (POBJECT n_exception_{i}) /\\ $heap_count(HCELL n_cell_{i}, $machine_roots(S_written_{i})) = 1 /\\ $heap_owners($heap_graph(S_written_{i}), HOBJECT n_exception_{i}) = 1'),
    (f'discard {i} retains the cell-owned result without a direct RESULT root',f'S_dropped_{i}.RESULT = KNOWN PNULL /\\ $ob_object_cv_lookup($ob_object_cv_associations($ob_object_native_source(S_dropped_{i})), preqbytes_name_{i}) = (pobcvassoc_{i}) /\\ $heap_count(HOBJECT n_exception_{i}, $machine_roots(S_dropped_{i})) = 0 /\\ $heap_owners($heap_graph(S_dropped_{i}), HOBJECT n_exception_{i}) = 1 /\\ $ob_object_source_pending($ob_object_native_source(S_dropped_{i})) = eps')]
  c += [('actual selected VARIABLE read remains cell-owned across zero budget',r'preqbytes_read = preqbytes_name_0 /\ n_selected = n_exception_0 /\ $heap_count(HOBJECT n_selected, $machine_roots(S_throw)) = 0 /\ $heap_owners($heap_graph(S_throw), HOBJECT n_selected) = 1 /\ $drive_steps(S_throw, 0) = S_throw[.COMPLETION = BUDGET]'),
-  ('one charged THROW spends only the selected row and publishes F2 with T2',r'S_pending.RESULT = KNOWN PNULL /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_selected porigin_throw) /\ $ob_object_cv_lookup($ob_object_cv_associations($ob_object_native_source(S_pending)), preqbytes_read) = eps /\ $ob_object_source_pending($ob_object_native_source(S_pending)) = ((pobcvassoc_selected.FACTORY.RETURN,n_selected)) /\ $heap_owners($heap_graph(S_pending), HOBJECT n_selected) = 2 /\ $heap_count(HOBJECT n_object, $machine_roots(S_pending)) = 2'),
+  ('one charged THROW spends only the selected row and publishes F2 with T2',r'S_pending.RESULT = KNOWN PNULL /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_selected porigin_throw 0) /\ $ob_object_cv_lookup($ob_object_cv_associations($ob_object_native_source(S_pending)), preqbytes_read) = eps /\ $ob_object_source_pending($ob_object_native_source(S_pending)) = ((pobcvassoc_selected.FACTORY.RETURN,n_selected)) /\ $heap_owners($heap_graph(S_pending), HOBJECT n_selected) = 2 /\ $heap_count(HOBJECT n_object, $machine_roots(S_pending)) = 2'),
   ('selected constructor fields and creation trace survive storage and actual throw',f'$throwable_field(S_pending,n_selected,"line") = PINT {11 if writes==1 else 15} /\\ $throwable_field(S_pending,n_selected,"previous") = PNULL /\\ $throwable_field(S_pending,n_selected,"trace") = $throwable_field(S_write_0,n_selected,"trace")'),
   ('published discarded and pending states remain publicly valid',' /\\ '.join(public(s) for s in [f'S_written_{i}' for i in range(writes)]+[f'S_dropped_{i}' for i in range(writes)]+['S_pending']))]
  if writes==2:
@@ -155,7 +155,7 @@ def refusals(program,path,writes=1):
  c=[('missing actual issued fact and selected stored row cannot mint authority',r'$ob_object_cv_committed(S_no_issued, S_raw_write) = eps /\ $source_exception_transition(S_no_row, S_after_no_row) = S_after_no_row'),
   ('actual observer requires the selected cell name receiver and delayed operand',r'$ob_object_cv_throw(S_throw,S_after_throw,pobcvassoc_selected,porigin_throw) /\ ~$ob_object_cv_throw(S_throw,S_after_throw,pobcvassoc_cell,porigin_throw) /\ ~$ob_object_cv_throw(S_throw,S_after_throw,pobcvassoc_name,porigin_throw) /\ ~$ob_object_cv_throw(S_wrong_receiver,S_after_throw,pobcvassoc_selected,porigin_throw) /\ ~$ob_object_cv_throw(S_wrong_result,S_after_throw,pobcvassoc_selected,porigin_throw)'),
   ('altered birth and pending identity refuse pure capture without executing forged states',r'~$ob_object_cv_throw(S_throw,S_after_throw,pobcvassoc_birth,porigin_throw) /\ ~$ob_object_cv_throw(S_throw,S_after_throw[.COMPLETION = THROWING n_object],pobcvassoc_selected,porigin_throw)'),
-  ('canonical maps reject nested wrappers and do not infer a missing row',r'$ob_object_cv_pack(([pobcvassoc_selected]), (OBJECT_CV_DATA eps eps)) = eps /\ $ob_object_cv_pack(eps,(OBJECT_CV_THROW pobcvassoc_selected porigin_throw)) = (OBJECT_CV_THROW pobcvassoc_selected porigin_throw) /\ $ob_object_cv_lookup(eps,preqbytes_read) = eps /\ $ob_object_source_pending((OBJECT_CV_DATA ([pobcvassoc_selected]) (OBJECT_CV_DATA eps (OBJECT_CV_THROW pobcvassoc_selected porigin_throw)))) = eps')]
+  ('canonical maps reject nested wrappers and do not infer a missing row',r'$ob_object_cv_pack(([pobcvassoc_selected]), (OBJECT_CV_DATA eps eps)) = eps /\ $ob_object_cv_pack(eps,(OBJECT_CV_THROW pobcvassoc_selected porigin_throw 0)) = (OBJECT_CV_THROW pobcvassoc_selected porigin_throw 0) /\ $ob_object_cv_lookup(eps,preqbytes_read) = eps /\ $ob_object_source_pending((OBJECT_CV_DATA ([pobcvassoc_selected]) (OBJECT_CV_DATA eps (OBJECT_CV_THROW pobcvassoc_selected porigin_throw 0)))) = eps')]
  return b,c
 
 def fatal(path,line,frames):
@@ -171,9 +171,9 @@ def report_assertions(program,path,writes=1):
   'S_retired.DESTRUCTION.ABANDONED = [pdestructioncleanup]',
   'pobobjectreturn_uncommitted = pobobjectreturn[.SOURCE = (OBJECT_CV_RETURN pobcvreturn_0)]',
   'pobcvassoc_partial = pobcvassoc_selected[.FACTORY = pobcvassoc_selected.FACTORY[.CONTOUR = pobcvassoc_selected.FACTORY.CONTOUR[.CURSOR = 0]]]',
-  'pobobjectreturn_partial = pobobjectreturn[.SOURCE = (OBJECT_CV_THROW pobcvassoc_partial porigin_throw)]',
+  'pobobjectreturn_partial = pobobjectreturn[.SOURCE = (OBJECT_CV_THROW pobcvassoc_partial porigin_throw 0)]',
   'pobcvassoc_wrong = pobcvassoc_selected[.FACTORY = pobcvassoc_selected.FACTORY[.ASSIGN = pobcvassoc_selected.FACTORY.RETURN]]',
-  'pobobjectreturn_wrong = pobobjectreturn[.SOURCE = (OBJECT_CV_THROW pobcvassoc_wrong porigin_throw)]']
+  'pobobjectreturn_wrong = pobobjectreturn[.SOURCE = (OBJECT_CV_THROW pobcvassoc_wrong porigin_throw 0)]']
  for kind in ('uncommitted','partial','wrong'):
   b += [f'pdestructioncleanup_{kind} = pdestructioncleanup[.SOURCE = OUTPUT_FINAL_OBJECT_THROW pobobjectreturn_{kind} pobdeactivate pobcvassoc_selected.FACTORY.RETURN n_selected]',
    f'S_{kind}_receipt = S_retired[.DESTRUCTION.ABANDONED = [pdestructioncleanup_{kind}]]']
@@ -196,7 +196,7 @@ def rebind_assertions(program,path,writes=1):
   c += [('invalid scalar throw is not executed and cannot recover retired provenance',r'$ob_object_native_source(S_scalar) = eps /\ $heap_count(HOBJECT n_exception_0,$machine_roots(S_scalar)) = 0 /\ S_scalar.EVENTS = [OUTPUT ([80])] /\ '+public('S_scalar'))]
  else:
   b += throwing('S_rebound')
-  c += [('rebinding first leaves the later real cell and certificate usable',r'$ob_object_cv_associations($ob_object_native_source(S_rebound)) = [pobcvassoc_1] /\ $ob_object_cv_cell(S_rebound,pobcvassoc_1) /\ n_selected = n_exception_1 /\ pobcvassoc_selected = pobcvassoc_1 /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_1 porigin_throw) /\ $heap_owners($heap_graph(S_pending),HOBJECT n_exception_1) = 2 /\ '+public('S_pending'))]
+  c += [('rebinding first leaves the later real cell and certificate usable',r'$ob_object_cv_associations($ob_object_native_source(S_rebound)) = [pobcvassoc_1] /\ $ob_object_cv_cell(S_rebound,pobcvassoc_1) /\ n_selected = n_exception_1 /\ pobcvassoc_selected = pobcvassoc_1 /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_1 porigin_throw 0) /\ $heap_owners($heap_graph(S_pending),HOBJECT n_exception_1) = 2 /\ '+public('S_pending'))]
  return b,c
 
 def protocol_assertions(program,path,writes=1):
@@ -213,9 +213,9 @@ def catch_assertions(program,path,writes=2):
  b += seek('S_catch','S_pending',5,helper='fr')+[
   'S_catch.TODO = (CATCH_BIND porigin_try n_index n_exception_0) :: ptask_catch*']
  b += throwing('S_catch','_later')
- c=[('first actual throw spends its fact while later remains live',r'n_selected = n_exception_0 /\ $ob_object_cv_associations($ob_object_native_source(S_pending)) = [pobcvassoc_1] /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_0 porigin_throw)'),
+ c=[('first actual throw spends its fact while later remains live',r'n_selected = n_exception_0 /\ $ob_object_cv_associations($ob_object_native_source(S_pending)) = [pobcvassoc_1] /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_0 porigin_throw 0)'),
   ('genuine catch clears active history and preserves only the later cell association',r'$ob_object_source_active($ob_object_native_source(S_catch)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_catch)) = [pobcvassoc_1] /\ $ob_object_cv_cell(S_catch,pobcvassoc_1) /\ $ob_object_ctor_fact_live(S_catch,pobcvreturn_0.BIRTH) /\ $ob_object_cv_lookup($ob_object_cv_associations($ob_object_native_source(S_catch)),preqbytes_name_0) = eps /\ '+public('S_catch')),
-  ('subsequent genuine later-CV throw uses its own surviving certificate',r'n_selected_later = n_exception_1 /\ pobcvassoc_selected_later = pobcvassoc_1 /\ $ob_object_source_active($ob_object_native_source(S_pending_later)) = (OBJECT_CV_THROW pobcvassoc_1 porigin_throw_later) /\ $ob_object_cv_associations($ob_object_native_source(S_pending_later)) = eps /\ $heap_owners($heap_graph(S_pending_later),HOBJECT n_exception_1) = 2 /\ '+public('S_pending_later'))]
+  ('subsequent genuine later-CV throw uses its own surviving certificate',r'n_selected_later = n_exception_1 /\ pobcvassoc_selected_later = pobcvassoc_1 /\ $ob_object_source_active($ob_object_native_source(S_pending_later)) = (OBJECT_CV_THROW pobcvassoc_1 porigin_throw_later 0) /\ $ob_object_cv_associations($ob_object_native_source(S_pending_later)) = eps /\ $heap_owners($heap_graph(S_pending_later),HOBJECT n_exception_1) = 2 /\ '+public('S_pending_later'))]
  return b,c
 
 def cleanup_assertions(program,path,writes=1):
@@ -238,7 +238,7 @@ def native_local_assertions(program,path,writes=1):
  b += seek('S_exit','S_pending',8,helper='fr')+[
   'S_exit.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_exit*']
  owners=lambda s:f'$heap_count(HOBJECT pobobjectreturn.OBJECT,$machine_roots({s})) = 2 /\\ $heap_count(HOBJECT pdestructorcall.OBJECT,$machine_roots({s})) = 2 /\\ $heap_count(HOBJECT n_old,$machine_roots({s})) = 1'
- c=[('local CV write and actual throw preserve distinct old E and both real C pairs',r'n_selected = n_exception_0 /\ n_selected =/= n_old /\ $ob_object_source_active(pobobjectsource?) = (OBJECT_CV_THROW pobcvassoc_0 porigin_throw) /\ $heap_owners($heap_graph(S_pending),HOBJECT n_selected) = 2 /\ $throwable_field(S_pending,n_selected,"previous") = PNULL /\ '+owners('S_pending')+' /\\ '+public('S_written_0')+' /\\ '+public('S_pending')),
+ c=[('local CV write and actual throw preserve distinct old E and both real C pairs',r'n_selected = n_exception_0 /\ n_selected =/= n_old /\ $ob_object_source_active(pobobjectsource?) = (OBJECT_CV_THROW pobcvassoc_0 porigin_throw 0) /\ $heap_owners($heap_graph(S_pending),HOBJECT n_selected) = 2 /\ $throwable_field(S_pending,n_selected,"previous") = PNULL /\ '+owners('S_pending')+' /\\ '+public('S_written_0')+' /\\ '+public('S_pending')),
   ('actual local C0 follows CV release and retains only pending F1',r'$ob_object_final_local_ready(S_exit,pobobjectreturn,pdestructorcall,pobcvreturn_0.RETURN,n_selected,pdestructionframe,ptask_exit*) /\ pdestructionframe.FUNCTION = pfunction_native.ORIGIN /\ pdestructionframe.FUNCTION =/= pobcvreturn_0.FUNCTION /\ S_exit.CURRENT = eps /\ S_exit.FRAMES = eps /\ ~((HCELL n_cell_0) <- S_exit.ALLOCATIONS) /\ $heap_owners($heap_graph(S_exit),HOBJECT n_selected) = 1 /\ '+owners('S_exit')+' /\\ '+public('S_exit'))]
  return b,c
 
@@ -250,7 +250,7 @@ def legacy_assertions(program,path,writes=1):
  b += throwing('S_catch')
  c=[('stored result survives genuine wrapped old helper NEW THROW and UNWIND', ' /\\ '.join(f'$ob_object_cv_associations($ob_object_native_source({s})) = [pobcvassoc_0] /\\ $heap_owners($heap_graph({s}),HOBJECT n_exception_0) = 1' for s in ('S_legacy_new','S_legacy_throw','S_legacy_unwind'))),
   ('actual native catch clears old helper history and preserves the stored e cell',r'n_legacy =/= n_exception_0 /\ $ob_object_source_active($ob_object_native_source(S_catch)) = eps /\ $ob_object_cv_associations($ob_object_native_source(S_catch)) = [pobcvassoc_0] /\ $ob_object_cv_cell(S_catch,pobcvassoc_0) /\ '+public('S_catch')),
-  ('subsequent actual e throw uses its original factory association',r'n_selected = n_exception_0 /\ pobcvassoc_selected = pobcvassoc_0 /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_0 porigin_throw) /\ $heap_owners($heap_graph(S_pending),HOBJECT n_selected) = 2 /\ '+public('S_pending'))]
+  ('subsequent actual e throw uses its original factory association',r'n_selected = n_exception_0 /\ pobcvassoc_selected = pobcvassoc_0 /\ $ob_object_source_active($ob_object_native_source(S_pending)) = (OBJECT_CV_THROW pobcvassoc_0 porigin_throw 0) /\ $heap_owners($heap_graph(S_pending),HOBJECT n_selected) = 2 /\ '+public('S_pending'))]
  return b,c
 
 def render(bindings,checks):
