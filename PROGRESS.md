@@ -3117,6 +3117,12 @@ receiver root. Constructor and generic owner rules stay unchanged.
 
 
 
+Static This-array factories now use an array-specific saved-caller/public-static
+certificate. Real array release leaves the caller owner intact; receiver-free
+wrapper INSTANCE, inherited scopes, saved arguments and source authority remain
+valid through caller retirement. Two exact sources and separate109/125 owner/source/
+budget checks pass at private469 cuts; initial setup/peer-fixture failures retain
+zero credit. Direct/FCC This,234/438 and actual held bounds stay fixed. [Review](coverage/semantics/anonymous-this-static-array-from-callable-producer-magic-review.json).
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.

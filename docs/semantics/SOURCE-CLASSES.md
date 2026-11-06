@@ -962,8 +962,8 @@ the entered frame owns it through INSTANCE. Existing result owners retain
 snapshots through wrapper retirement. Other callback histories and broader modes stay separate.
 [Static callback array review](../../coverage/semantics/anonymous-static-array-from-callable-producer-magic-review.json).
 
-Normal `Closure::fromCallable([$this,"method"])` producers now use immutable
-saved caller scope and private-first public method selection. The real array
+Normal `Closure::fromCallable([$this,"method"])` producers for nonstatic methods use
+immutable saved caller scope and private-first public method selection. The real array
 edge transfers into the wrapper while the caller keeps its own `$this` owner.
 The entered frame owns the wrapper and borrows `$this`; return-old releases only
 the wrapper edge, while returned `$this` may survive caller retirement.
@@ -978,6 +978,14 @@ affect the acquired value; other aliases may keep a selector alive. Closed
 selection metadata stays nonowning while INSTANCE and result owners preserve
 argument snapshots. Broader callback histories and modes stay separate.
 [Fresh static selector review](../../coverage/semantics/anonymous-fresh-static-array-from-callable-producer-magic-review.json).
+
+Normal This callback arrays also admit literal public ordinary static targets.
+The array-specific certificate uses the original caller and private-first lookup;
+direct and first-class This certificates retain their existing scope. The factory
+releases the real array edge while the caller keeps This alive. The wrapper has
+no receiver edge, and its entered frame owns only INSTANCE; declaring/called
+scope and source authority survive caller retirement.
+[Static This array review](../../coverage/semantics/anonymous-this-static-array-from-callable-producer-magic-review.json).
 
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local

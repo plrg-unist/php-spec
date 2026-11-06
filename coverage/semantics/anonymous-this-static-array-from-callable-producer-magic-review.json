@@ -1,0 +1,96 @@
+{
+  "scope": "CLASS228: normal immediate Closure::fromCallable([$this,literal public ordinary static method])(REALargs), exactly two implicit direct nonreference nonspread callback items; existing zero/required untyped by-value signatures, quiet COPY and magic headers.",
+  "status": "CLEAR",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "base": "92b1f5fb8868981f8c67b6f4452fc4d0902aa129",
+  "module_count": 469,
+  "implementation": "1c61144ccb46a21b8d8755a02a0cff564170f6b0",
+  "mechanism": "414 adds an array-specific helper: unchanged216 instance delegation or disjoint static immutable CALLER receiver/called/object-class/lexical/FUNCTION/source and private-first selection, then existing plain_static_source on REALargs. Existing226 factory parts, This FETCH_THIS emission and real-state context collection are reused. Direct/FCC216,234/438/schema/facts/owners remain unchanged.",
+  "engine_basis": [
+    "zend_API.c::zend_is_callable_check_func records object.ce as called_scope before clearing fcc.object for a static target. zend_object_handlers.c::zend_std_get_method retains original-scope private-first selection.",
+    "zend_closures.c::zend_create_closure_from_callable passes NULL instance for the static fake Closure; zend_create_closure_ex leaves this_ptr undefined. Existing234 from_receiver/static live-history laws therefore need no changes.",
+    "The real callback array releases its object edge while the saved ordinary caller independently owns This. The static producer has wrapper INSTANCE only and no receiver; caller retirement releases its This owner. Immutable class/source history adds no heap root."
+  ],
+  "author": {
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class228-this-static-array-from-callable-producer-magic/author/source/report.json",
+      "sha256": "6303f9fb207521bcdb522c765d45b451e4df296643cc35f3d0af6fdd01557382",
+      "revision": "4f2bfbf5ad013a2bc52d8848e6892e715eec2b84",
+      "agreements": 1,
+      "result": "FIRST exact normal/quiet/stable/no timeout37.866415318s,300s inner/310s outer,469 modules. Once-native original retained unchanged; inherited run clears rootrunner before factory and static producer returns old leaf through inner mutation."
+    },
+    "state": {
+      "protocol": "tests/semantics/anonymous_this_static_array_from_callable_producer_magic_protocol.py",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class228-this-static-array-from-callable-producer-magic/author/state-owner/report.json",
+      "sha256": "5b90b784c884f9e35bd809f9e5a810694b38a5b62da9b9a2748765475da2cbf1",
+      "revision": "faeb914cbfdeb998c11fb7e54467408c9840f46d",
+      "conditions": 109,
+      "result": "FIRST SL469 PASS/true/quiet/exit0/stable/no timeout38.052967374s runner,300s inner. Real array+caller This2 becomes caller1; wrapper child/receiver eps, INSTANCE-only producer frame and saved caller This1; old argument remains distinct from new global. Real SEND releases wrapper, caller retirement releases This; actual retired state validates from_selected/from_valid and original source. One-step pause plus ready seek equals direct seek; old216 static source and missing caller refuse."
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "record": "coverage/semantics/anonymous-this-static-array-from-callable-producer-magic-independent.json",
+    "fixture_commits": [
+      "6117f4852d9f2cf1dabd03cb2a3c239fcdfd40f8",
+      "3f245b683a2a4601d8bc6eeddb53259a3ac088ce",
+      "57ea3182b0d1520a6c7d5ac0805af78e195d50aa"
+    ],
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class228-this-static-array-from-callable-producer-magic/reviewer/source/report.json",
+      "sha256": "59afe29911fa90efb7cfe2c1dc2fa789ef18019e969979b6ca2afefbc3c61ee3",
+      "agreements": 1,
+      "result": "FIRST exact normal/quiet/stable469/no timeout38.645994180s; original native path/cwd/profile retained without reexecution."
+    },
+    "state": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class228-this-static-array-from-callable-producer-magic/reviewer/state/report.json",
+      "sha256": "b17eaf9439654698103619be822df9a0e8c1949c4dc003bba6c5051f7c3026dd",
+      "conditions": 125,
+      "result": "Affected corrected SL469 PASS/true/quiet/exit0/stable/no timeout39.753966165s wrapper under300. Real callerThis3 at factory becomes2 after array release and1 after root clear; static wrapper has no receiver/child and INSTANCE only. Inherited lexical/called scopes, REQUEST snapshot/named output, handlerCURRENT refusal and actual from_valid after caller retirement pass."
+    }
+  },
+  "execution_accounting": {
+    "source_agreements": 2,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "state_repeats": 1,
+    "timeout_attempts": 0,
+    "wrapper_setup_failures": 1,
+    "pre_first_state_review_corrections": 1,
+    "note": "Initial external source-wrapper relative hash key failed before any model subprocess; its original script/setup failure remain external0. Before first author state, review replaced an enlarged history view with actual S_after. Initial peer125 stopped on copied API_METHOD_TARGET STATIC=false; one expected flag was corrected and only that state repeated. No original source/native comparison or production change was repeated; only the affected peer state reran once.",
+    "production_corrections": 0,
+    "peer_fixture_failed_attempts": 1
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class228-this-static-array-from-callable-producer-magic",
+    "setup_failure": "/home/user/workspace/php-spec-evidence-archive/class228-this-static-array-from-callable-producer-magic/author/wrapper-setup-failure.json",
+    "recovery": "Source: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_this_static_array_from_callable_producer_magic_cases.json --model-timeout 300. State: anonymous_this_static_array_from_callable_producer_magic_protocol.py --sl. External run-models.py reuses the once-native path; run-owner-state.py retains commands/cwd/profile/exits/streams/input maps.",
+    "inputs": {
+      "manifest": "author/inputs.json",
+      "sha256": "4e6c0aef72cbe459a32ed98d65a19c0c4a6d01a8fb380488c51a91f91e5992e9",
+      "logical_files": 489,
+      "input_variants": 490,
+      "module_count": 469,
+      "all_runtime_maps_equal": true,
+      "note": "Author/peer accepted cuts and original failed peer0; original3f and corrected57 protocol bytes remain separate. Failed state has zero agreement credit."
+    },
+    "peer_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class228-this-static-array-from-callable-producer-magic/reviewer/state0/report.json",
+      "agreement_credit": 0,
+      "elapsed_seconds": 21.401241668,
+      "reason": "Copied API_METHOD_TARGET expected static flag false; actual selected method is static true."
+    }
+  },
+  "remaining": "Other callback/receiver/name forms, keys/references/spreads, stored histories, broader signatures, inner-named/unpack/array-return/header contexts and actual held lanes remain partial. Direct This-static producers remain the next separate source gap; these exclusions create no new global holds.",
+  "engine_divergence": "None identified in the exercised static This-array factory cuts.",
+  "main_context": {
+    "revision": "b8497971e7008d7df41d991fd1bddad0e09b4b79",
+    "module_count": 469,
+    "review": "ATTR84 new201/380 requires root plain-CV private-int property append with __get; neither source has propertyfetch/append/__get, so new pending guard is false. I138447 requires scope-free REALCLOSURE/directCV helper and Generator context; these are class-scoped FROM captures with literal factory callees and no Generator/resumer. OB34456 weakens strictness only within genuine native-output return-TypeError source; output buffering/errors and USER return types are absent. Authentic private469 cuts retain their identities; no gate/source replay."
+  }
+}
