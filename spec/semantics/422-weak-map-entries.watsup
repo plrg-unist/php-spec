@@ -1257,7 +1257,8 @@ def $weakmap_write_declared_value(S, n_old) = false -- otherwise
 ;; above and all common payload/free policies retain their literal guards.
 def $weakmap_write_array_present(eps) = false
 def $weakmap_write_array_present((HARRAY n) :: pnode_tail*) = true
-def $weakmap_write_array_present(pnode :: pnode_tail*) = $weakmap_write_array_present(pnode_tail*) -- otherwise
+def $weakmap_write_array_present((HOBJECT n) :: pnode_tail*) = $weakmap_write_array_present(pnode_tail*)
+def $weakmap_write_array_present((HCELL n) :: pnode_tail*) = $weakmap_write_array_present(pnode_tail*)
 def $weakmap_write_array_children(S, eps) = true
 def $weakmap_write_array_children(S, (HARRAY n_array) :: pnode_tail*) = true
   -- if $weakmap_entries_property_value_free(S, PARRAY n_array)
