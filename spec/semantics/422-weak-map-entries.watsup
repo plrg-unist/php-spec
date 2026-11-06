@@ -1383,6 +1383,13 @@ dec $weakmap_write_claim_valid(pstate, pweakmapwrite) : bool
 dec $weakmap_write_operation_source(pstate, pdestructionoperation, pweakmapwrite) : bool
 dec $weakmap_write_declared_chain(pstate, pdestructionoperation, pdestructionoperation, pweakmapwrite, pdestructionoperation*) : bool
 dec $weakmap_write_declared_ancestry(pstate, pdestructorcall) : pweakmapwrite?
+dec $weakmap_write_previous_chain(pstate, pdestructionoperation, pdestructionoperation, pweakmapwrite, pdestructionoperation*) : bool
+dec $weakmap_write_previous_ancestry(pstate, pdestructorcall) : pweakmapwrite?
+dec $weakmap_write_previous_child_call(pstate, pweakmapwrite, pinstancestorage, pdestructorcall) : bool
+dec $weakmap_write_previous_pin_calls(pstate, pweakmapwrite, pinstancestorage) : bool
+dec $weakmap_write_previous_cleanup(pstate, ptask*, pdestructionoperation, pweakmapwrite, pinstancestorage) : bool
+dec $weakmap_write_previous_tail(pstate, pdestructionoperation, pweakmapwrite, ptask*) : bool
+dec $weakmap_write_previous_retired(pstate, ptask*, pdestructionoperation, pweakmapwrite) : bool
 def $weakmap_write_scope(S, pweakmapwrite) = (S)
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
 def $weakmap_write_scope(S, pweakmapwrite) = (S_scope)
@@ -1405,6 +1412,19 @@ def $weakmap_write_scope(S, pweakmapwrite) = (S_scope)
   -- if S.DESTRUCTION.CALLS = [pdestructorcall]
   -- if pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructorcall.CONSTCONTEXT = eps /\ pdestructorcall.USER
   -- if $weakmap_write_declared_ancestry(S, pdestructorcall) = (pweakmapwrite)
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_selected_child(pinstancestorage) = (pdestructorcall.OBJECT)
+  -- if S_scope = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
+def $weakmap_write_scope(S, pweakmapwrite) = (S_scope)
+  -- if S.FRAMES = [pframe]
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps /\ pframe.CONSTCONTEXT = eps
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pdestructorcall.TARGET
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructorcall.CONSTCONTEXT = eps /\ pdestructorcall.USER
+  -- if $weakmap_write_previous_ancestry(S, pdestructorcall) = (pweakmapwrite)
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
   -- if $weakmap_write_selected_child(pinstancestorage) = (pdestructorcall.OBJECT)
@@ -1691,6 +1711,115 @@ def $destructor_pending_parent(S, pdestructorcall) = (pdestructionoperation)
   -- if $heap_owners($heap_graph(S), HOBJECT n_old_exception) = 1
   -- if $heap_owners($heap_graph(S), HOBJECT n_new_exception) = 1
   -- if $destructor_pending_parent_tasks(ptask_tail*, pdestructionoperation_inner, pdestructionoperation, pdestructionoperation[.PENDING = (n_new_exception)], false) = (ptask_new*)
+
+;; After the atomic handoff, SOURCE still names A and the parent owns B.
+;; The physical Previous edge, not a second pending root, keeps A alive.
+def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, [pdestructionoperation_inner, pdestructionoperation]) = true
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $weakmap_write_declared_class(S, n_old) /\ n_old <- S.DESTRUCTION.CALLED
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if pdestructionoperation.PENDING = (n_new)
+  -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_old_exception
+  -- if $(n_old_exception < n_new)
+  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_old_exception))
+  -- if $weakmap_write_fresh_pending(S, pweakmapwrite, (n_new))
+  -- if $throwable_field(S, n_old_exception, "previous") = PNULL
+  -- if $throwable_field(S, n_new, "previous") = POBJECT n_old_exception
+  -- if pdestructionoperation_inner.VALUE = KNOWN PNULL /\ pdestructionoperation_inner.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation_inner.COMPLETION = NORMAL /\ pdestructionoperation_inner.PENDING = eps
+  -- if pdestructionoperation_inner.CALLER = eps /\ pdestructionoperation_inner.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructionoperation_inner.CONSTCONTEXT = eps
+  -- if pdestructionoperation_inner.CLEANUP = eps /\ pdestructionoperation_inner.NOGC = eps /\ pdestructionoperation_inner.NOGCEXTRA = eps
+  -- if $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) = eps
+  -- if $destructor_operation_live(S, pdestructionoperation_inner)
+def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, pdestructionoperation_child :: pdestructionoperation_tail*) = $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, pdestructionoperation_tail*)
+  -- if pdestructionoperation_child =/= pdestructionoperation_inner
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if pcallcontext.TARGET = pdestructorcall.TARGET /\ pdestructorcall.OPERATION = (pdestructionoperation_inner)
+  -- if pdestructionoperation_child.CALLER = (pcallcontext)
+  -- if pdestructionoperation_child.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pcallcontext.FUNCTION = PORIGIN n_source pcpath_method
+  -- if pdestructionoperation_child.ORIGIN = (PORIGIN n_source pcpath_child)
+  -- if $effect_below(pcpath_method, pcpath_child)
+  -- if ~$weakmap_write_claim_task(pdestructionoperation_child.SOURCE)
+  -- if pdestructionoperation_child.PENDING = eps /\ pdestructionoperation_child.COMPLETION = NORMAL
+  -- if $destructor_operation_live(S, pdestructionoperation_child)
+def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, [pdestructionoperation_cleanup, pdestructionoperation_inner, pdestructionoperation]) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps
+  -- if $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, [pdestructionoperation_inner, pdestructionoperation])
+  -- if pdestructionoperation.PENDING = (n_new)
+  -- if pdestructionoperation_cleanup.SOURCE = THROW_SEARCH n_new
+  -- if pdestructionoperation_cleanup.VALUE = KNOWN PNULL /\ pdestructionoperation_cleanup.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation_cleanup.PENDING = eps /\ pdestructionoperation_cleanup.COMPLETION = NORMAL
+  -- if pdestructionoperation_cleanup.CALLER = eps /\ pdestructionoperation_cleanup.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructionoperation_cleanup.CONSTCONTEXT = eps
+  -- if pdestructionoperation_cleanup.CLEANUP = eps /\ pdestructionoperation_cleanup.NOGC = eps /\ pdestructionoperation_cleanup.NOGCEXTRA = eps
+  -- if $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cleanup) = eps
+  -- if $destructor_operation_live(S, pdestructionoperation_cleanup)
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_previous_cleanup(S, S.TODO, pdestructionoperation_cleanup, pweakmapwrite, pinstancestorage)
+def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, pdestructionoperation_all*) = false -- otherwise
+def $weakmap_write_previous_cleanup(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pdestructionoperation, pweakmapwrite, pinstancestorage) = true
+  -- if pdestructionrelease.JOBS = eps
+  -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
+  -- if pdestructionrelease <- S.DESTRUCTION.RELEASES
+def $weakmap_write_previous_cleanup(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pweakmapwrite, pinstancestorage) = $weakmap_write_previous_cleanup(S, ptask_tail*, pdestructionoperation, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_selected_child(pinstancestorage) = (n_child)
+  -- if pdestructionrelease.JOBS = eps \/ pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_child)] \/ pdestructionrelease.JOBS = [DESTRUCTION_HANDLE n_child]
+  -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
+  -- if pdestructionrelease <- S.DESTRUCTION.RELEASES
+def $weakmap_write_previous_cleanup(S, (INSTANCE_STORAGE_STEP pinstancestorage_child) :: ptask_tail*, pdestructionoperation, pweakmapwrite, pinstancestorage) = $weakmap_write_previous_cleanup(S, ptask_tail*, pdestructionoperation, pweakmapwrite, pinstancestorage)
+  -- if pinstancestorage_child =/= pinstancestorage
+  -- if $weakmap_write_declared_saved_pin(pinstancestorage, pinstancestorage_child)
+  -- if $instance_storage_for(S, pinstancestorage_child.OBJECT) = (pinstancestorage_child)
+def $weakmap_write_previous_cleanup(S, ptask*, pdestructionoperation, pweakmapwrite, pinstancestorage) = false -- otherwise
+def $weakmap_write_previous_ancestry(S, pdestructorcall) = (pweakmapwrite)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)
+  -- if $destructor_operation_suffix(S.DESTRUCTION.OPERATIONS, pdestructionoperation_inner) = [pdestructionoperation_inner, pdestructionoperation]
+  -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, S.DESTRUCTION.OPERATIONS)
+def $weakmap_write_previous_ancestry(S, pdestructorcall) = eps -- otherwise
+def $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) = true
+  -- if $weakmap_write_selected_child(pinstancestorage) = (pdestructorcall.OBJECT)
+  -- if pdestructorcall <- S.DESTRUCTION.CALLS
+  -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED
+  -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.FRAME = eps /\ pdestructorcall.USER
+  -- if pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if $weakmap_write_previous_ancestry(S, pdestructorcall) = (pweakmapwrite)
+  -- if pdestructorcall.PENDING = eps
+  -- if $weakmap_entries_callback_class(S, pdestructorcall.OBJECT)
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
+  -- if pdestructorcall.RELEASE = (pdestructionrelease)
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]
+  -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
+  -- if pdestructionrelease[.JOBS = eps] <- S.DESTRUCTION.RELEASES
+  -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot*)
+  -- if $heap_count(HOBJECT pdestructorcall.OBJECT, $property_slot_nodes(ppropertyslot*)) = 0
+def $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall) = false -- otherwise
+def $weakmap_write_previous_pin_calls(S, pweakmapwrite, pinstancestorage) = true
+  -- if S.DESTRUCTION.CALLS = eps
+def $weakmap_write_previous_pin_calls(S, pweakmapwrite, pinstancestorage) = true
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+def $weakmap_write_previous_pin_calls(S, pweakmapwrite, pinstancestorage) = false -- otherwise
+def $weakmap_write_previous_tail(S, pdestructionoperation, pweakmapwrite, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_inner) :: (DESTRUCTOR_RELEASE pdestructionrelease_old) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*) = true
+  -- if $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, S.DESTRUCTION.OPERATIONS)
+  -- if pdestructionrelease_old.JOBS = eps
+  -- if $weakmap_write_release_stamp(pdestructionrelease_old, pweakmapwrite)
+  -- if pdestructionrelease_old <- S.DESTRUCTION.RELEASES
+def $weakmap_write_previous_tail(S, pdestructionoperation, pweakmapwrite, ptask*) = false -- otherwise
+def $weakmap_write_previous_retired(S, ptask*, pdestructionoperation, pweakmapwrite) = true
+  -- if $weakmap_write_previous_tail(S, pdestructionoperation, pweakmapwrite, ptask*)
+def $weakmap_write_previous_retired(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pdestructionoperation, pweakmapwrite) = true
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if pdestructionrelease.JOBS = eps \/ pdestructionrelease.JOBS = [DESTRUCTION_HANDLE n_old]
+  -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
+  -- if pdestructionrelease <- S.DESTRUCTION.RELEASES
+  -- if $weakmap_write_previous_retired(S, ptask_tail*, pdestructionoperation, pweakmapwrite)
+def $weakmap_write_previous_retired(S, ptask*, pdestructionoperation, pweakmapwrite) = false -- otherwise
 def $weakmap_write_declared_tail(S, pdestructionoperation, pweakmapwrite, (DESTRUCTOR_RELEASE pdestructionrelease_old) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*) = true
   -- if pdestructionoperation.PENDING = eps
   -- if pdestructionrelease_old.JOBS = eps
@@ -1848,6 +1977,21 @@ def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) =
   -- if ~((HOBJECT n_old) <- S.ALLOCATIONS)
   -- if $instance_storage_for(S, n_old) = eps /\ S.DESTRUCTION.CALLS = eps
   -- if $weakmap_write_retired_prefix(S, S_scope.TODO, pdestructionoperation, pweakmapwrite)
+def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = true
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_previous_pin_calls(S, pweakmapwrite, pinstancestorage)
+  -- if $instance_storage_tail(S_scope.TODO, pinstancestorage) = ((DESTRUCTOR_RELEASE pdestructionrelease_free) :: ptask_tail*)
+  -- if pdestructionrelease_free.JOBS = eps
+  -- if $weakmap_write_release_stamp(pdestructionrelease_free, pweakmapwrite)
+  -- if pdestructionrelease_free <- S.DESTRUCTION.RELEASES
+  -- if $weakmap_write_previous_tail(S, pdestructionoperation, pweakmapwrite, ptask_tail*)
+def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = true
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if ~((HOBJECT n_old) <- S.ALLOCATIONS)
+  -- if $instance_storage_for(S, n_old) = eps /\ S.DESTRUCTION.CALLS = eps
+  -- if $weakmap_write_previous_retired(S, S_scope.TODO, pdestructionoperation, pweakmapwrite)
 def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = false -- otherwise
 def $weakmap_write_carrier_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = true
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
@@ -2067,6 +2211,23 @@ def $weakmap_write_callback_read(S, paccess) = true
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
   -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
   -- if $weakmap_write_declared_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
+  -- if $heap_owners($heap_graph(S), HOBJECT pdestructorcall.OBJECT) = 2
+  -- if $weakmap_write_callback_site(S, paccess, pweakmapwrite, pcallcontext)
+def $weakmap_write_callback_read(S, paccess) = true
+  -- if paccess.MODE = ACCESS_READ KEY_R
+  -- if paccess.SELECTED = $rcontainer_selected(S, S.RESULT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if S.DESTRUCTION.CALLS = [pdestructorcall]
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if $weakmap_write_previous_ancestry(S, pdestructorcall) = (pweakmapwrite)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)
+  -- if $destructor_operation_suffix(S.DESTRUCTION.OPERATIONS, pdestructionoperation_inner) = [pdestructionoperation_inner, pdestructionoperation]
+  -- if $weakmap_write_operation_source(S, pdestructionoperation, pweakmapwrite)
+  -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
+  -- if $instance_storage_for(S, n_old) = (pinstancestorage)
+  -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_previous_child_call(S, pweakmapwrite, pinstancestorage, pdestructorcall)
   -- if $heap_owners($heap_graph(S), HOBJECT pdestructorcall.OBJECT) = 2
   -- if $weakmap_write_callback_site(S, paccess, pweakmapwrite, pcallcontext)
 def $weakmap_write_callback_read(S, paccess) = false -- otherwise
