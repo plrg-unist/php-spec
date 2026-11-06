@@ -310,24 +310,38 @@ def $closure_function_cache_history(S, porigin, pfncacheowner) = false -- otherw
 
 ;; Ordinary Closure::call owns a temporary function, not a copied Closure object.
 ;; The birth index names that function cache and retains no source/receiver root.
+;; Bound fake views require a proven user method and its completed lexical scope.
+dec $closure_call_cache_function(pstate, nat) : porigin?
+def $closure_call_cache_function(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $closure_cache_object_function(S, n) = (porigin)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if ~pmethoddesc.STATIC
+  -- if pboundfake.SCOPE = BIND_CLASS pmethoddesc.OWNER
+def $closure_call_cache_function(S, n) = $closure_cache_function(S.OBJECTS[n])
+  -- if $(n < |S.OBJECTS|)
+  -- if ~$bound_fake_object(S, n)
+def $closure_call_cache_function(S, n) = eps -- otherwise
+
 dec $closure_call_cache_policy(pstate, nat, nat, nat) : pfncacheowner?
 def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_CALL n)
   -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin
   -- if $closure_cache_at(S.CLOSURECACHES, n_source) = (pclosurecache)
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pclosurecache.FUNCTION)
+  -- if $closure_call_cache_function(S, n_source) = (pclosurecache.FUNCTION)
   -- if pclosurecache.CACHE = (CACHE_PRIVATE n_private)
 def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_SHARED)
   -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin
   -- if $closure_cache_at(S.CLOSURECACHES, n_source) = (pclosurecache)
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pclosurecache.FUNCTION)
+  -- if $closure_call_cache_function(S, n_source) = (pclosurecache.FUNCTION)
   -- if pclosurecache.CACHE = (CACHE_SHARED) /\ pclosurecache.SCOPE = (BIND_CLASS porigin)
 def $closure_call_cache_policy(S, n_source, n_receiver, n) = (CACHE_CALL n)
   -- if $(n_source < |S.OBJECTS|) /\ $(n_receiver < |S.OBJECTS|)
   -- if S.OBJECTS[n_receiver] = INSTANCE porigin
   -- if $closure_cache_at(S.CLOSURECACHES, n_source) = (pclosurecache)
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pclosurecache.FUNCTION)
+  -- if $closure_call_cache_function(S, n_source) = (pclosurecache.FUNCTION)
   -- if pclosurecache.CACHE = (CACHE_SHARED)
   -- if pclosurecache.SCOPE = (pbindscope)
   -- if pbindscope =/= BIND_CLASS porigin
@@ -347,7 +361,7 @@ def $closure_call_cache_record_valid(S, n, pclosurecallcache) = true
   -- if $function_cache_source(S, pclosurecallcache.FUNCTION) = (pmethoddesc)
   -- if ~pmethoddesc.STATIC
   -- if $(pclosurecallcache.SOURCE < |S.OBJECTS|) /\ $(pclosurecallcache.RECEIVER < |S.OBJECTS|)
-  -- if $closure_cache_function(S.OBJECTS[pclosurecallcache.SOURCE]) = (pclosurecallcache.FUNCTION)
+  -- if $closure_call_cache_function(S, pclosurecallcache.SOURCE) = (pclosurecallcache.FUNCTION)
   -- if $closure_cache_at(S.CLOSURECACHES, pclosurecallcache.SOURCE) = (pclosurecache)
   -- if pclosurecache.SCOPE = (BIND_CLASS pmethoddesc.OWNER)
   -- if S.OBJECTS[pclosurecallcache.RECEIVER] = INSTANCE pmethoddesc.OWNER
@@ -373,7 +387,7 @@ def $closure_call_cache_enter(S) = S[.CURRENT = (pcallcontext[.CACHE = (CACHE_SH
   -- if $closure_call_copy_site(S, porigin_site)
   -- if $closure_call_cache_policy(S, n_source, n_receiver, 0) = (CACHE_SHARED)
   -- if HOBJECT n_source <- S.ALLOCATIONS /\ HOBJECT n_receiver <- S.ALLOCATIONS
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
+  -- if $closure_call_cache_function(S, n_source) = (pcallcontext.FUNCTION)
 def $closure_call_cache_enter(S) = S -- otherwise
 
 def $closure_call_context_cache_valid(S, pcallcontext) = true
@@ -393,7 +407,7 @@ def $closure_call_context_cache_valid(S, pcallcontext) = true
   -- if $closure_call_copy_site(S, porigin_site)
   -- if $closure_call_cache_policy(S, n_source, n_receiver, 0) = (CACHE_SHARED)
   -- if HOBJECT n_source <- S.ALLOCATIONS /\ HOBJECT n_receiver <- S.ALLOCATIONS
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (pcallcontext.FUNCTION)
+  -- if $closure_call_cache_function(S, n_source) = (pcallcontext.FUNCTION)
 def $closure_call_context_cache_valid(S, pcallcontext) = false -- otherwise
 
 def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
