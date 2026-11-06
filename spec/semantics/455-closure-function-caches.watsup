@@ -787,6 +787,19 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if $function_cache_policy(S, pclosurecache.FUNCTION, pclosurecache.OBJECT) = pclosurecache.CACHE
 
 ;; Constant method-table captures preserve the source cache at the actual birth.
+;; Entry authority is checked before its recorded unit, never from later names.
+dec $closure_cache_file_entry(pstate, pfilebinding, pdeclaration*, pdeclaration*) : bool
+def $closure_cache_file_entry(S, pfilebinding, pdeclaration_prefix*, eps) = false
+def $closure_cache_file_entry(S, pfilebinding, pdeclaration_prefix*, pdeclaration :: pdeclaration_tail*) = true
+  -- if $declaration_entry_input(pdeclaration, pfilebinding.UNIT) = ((porigin_site?, z, z_precision))
+  -- if porigin_site? = (pfilebinding.SITE)
+  -- if S_entry = S[.DECLARATIONS = pdeclaration_prefix*][.CALLABLES = $constant_callable_functions(S, pdeclaration_prefix*)]
+  -- if $declaration_service_available(S_entry, (pfilebinding.SITE))
+  -- if $declaration_service_scope(S_entry, pfilebinding.SITE, eps)
+def $closure_cache_file_entry(S, pfilebinding, pdeclaration_prefix*, pdeclaration :: pdeclaration_tail*) = $closure_cache_file_entry(S, pfilebinding, pdeclaration_prefix* ++ [pdeclaration], pdeclaration_tail*)
+  -- if ~$declaration_enter_item(pdeclaration, pfilebinding.UNIT)
+def $closure_cache_file_entry(S, pfilebinding, pdeclaration_prefix*, pdeclaration*) = false -- otherwise
+
 dec $closure_cache_constant_method_scope(pstate, nat, porigin) : pbindscope?
 def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
   -- if $(n < |S.OBJECTS|)
@@ -808,6 +821,26 @@ def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddes
   -- if pconstantclosure.DECL = PORIGIN 0 pcpath_decl
   -- if $global_constant_scope(S, 0) = (true, eps)
   -- if $global_constant_callable_header(S, pconstantclosure)
+  -- if $constant_callable_record_valid(S, pconstantclosure)
+  -- if $function_cache_source(S, porigin) = (pmethoddesc)
+  -- if pmethoddesc.STATIC /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+;; Included globals additionally require their actual entered, compiled unit.
+def $closure_cache_constant_method_scope(S, n, porigin) = (BIND_CLASS pmethoddesc.OWNER)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE porigin porigin_site porigin_called eps)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if pconstantclosure.DECL = PORIGIN n_unit pcpath_decl
+  -- if $(n_unit > 0)
+  -- if $file_binding_at(S.FILEBINDINGS, n_unit) = (pfilebinding)
+  -- if pfilebinding.CLASS = eps
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = eps
+  -- if $file_bindings_valid(S, [pfilebinding])
+  -- if $global_constant_scope(S, n_unit) = (true, eps)
+  -- if $global_constant_callable_header(S, pconstantclosure)
+  -- if pdeclaration_birth* = S.DECLARATIONS[0:pconstantclosure.PREFIX]
+  -- if $declaration_unit_complete(pdeclaration_birth*, n_unit)
+  -- if $closure_cache_file_entry(S, pfilebinding, eps, pdeclaration_birth*)
   -- if $constant_callable_record_valid(S, pconstantclosure)
   -- if $function_cache_source(S, porigin) = (pmethoddesc)
   -- if pmethoddesc.STATIC /\ pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
