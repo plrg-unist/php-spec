@@ -914,6 +914,8 @@ dec $gc_extra_bounded(pstate, pgctemporary*) : bool
 dec $gc_extra_consumed(pgctemporary*, pnode) : bool
 dec $gc_extra_pending(pdestructionrelease?, pgctemporary*) : bool
 dec $gc_extra_source(poperand, pgctemporary*) : bool
+dec $gc_array_separation_site(pstate, porigin?, ptask, nat, pkey) : bool
+dec $gc_array_separation_image(pstate, nat, nat, nat, pkey, pvalue) : bool
 dec $gc_consumed_decrements(pstate, pstate, pnode*) : pnode*
 dec $gc_consumed_handoff(pstate, pstate, pnode*) : pnode*
 
@@ -1013,6 +1015,45 @@ def $gc_operation_temporary_extra(S, S_next, CONFIG_INVOKE pconfigcall, [HOBJECT
   -- if S_next.COMPLETION = NORMAL
   -- if S_next.RESULT = KNOWN (POBJECT n_wrapper)
   -- if $weakref_at(S_next, n_wrapper) = (WEAKREFERENCE (n_target))
+;; SEPARATE_ARRAY uses GC_TRY_DELREF for its old header. Capture only the
+;; actual retained-CV separation, not a replaced item or another array loss.
+def $gc_array_separation_site(S, (porigin), ASSIGN_ARRAY (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension) z false, n_cell, KINT z_key) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if $eager_source_origin(S, (porigin))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssign (NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension) expression_rhs metadata)
+  -- if n_name* = $base64(text) /\ n_name* <- S.CVS
+  -- if z_name = $variable_line(BYTES text, metadata_variable)
+  -- if z_dimension = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0, PCFIELD 1], NScalarInt (INTEGER z_key) metadata_key)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension)
+  -- if $lookup(S.ENV, n_name*) = (n_cell) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if $propref_at(S.PROPREFS, n_cell) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_cell) = eps
+def $gc_array_separation_site(S, porigin?, ptask, n_cell, pkey) = false -- otherwise
+def $gc_array_separation_image(S, n_old, n_new, n_cell, pkey, pvalue) = true
+  -- if $(n_old < n_new) /\ $(n_new < |S.ARRAYS|)
+  -- if (HARRAY n_old) <- S.ALLOCATIONS /\ (HARRAY n_new) <- S.ALLOCATIONS
+  -- if ~$array_immutable(S, n_old) /\ ~$gc_proxy(S, n_old)
+  -- if $heap_count(HARRAY n_old, S.NATIVEEXCESS) = 1 /\ $heap_count(HARRAY n_new, S.NATIVEEXCESS) = 0
+  -- if $gc_direct_array_entries(S.ARRAYS[n_old].ITEMS)
+  -- if S.ARRAYS[n_new] = $array_insert(S.ARRAYS[n_old], pkey, DIRECT pvalue)
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_new)
+  -- if $weakmap_write_quiet_scalar(S, pvalue)
+def $gc_array_separation_image(S, n_old, n_new, n_cell, pkey, pvalue) = false -- otherwise
+def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY n_old]) = [{OPERAND KNOWN (PARRAY n_old), PENDING true}]
+  -- if S.TODO = (ASSIGN_ARRAY pbase z false) :: ptask_tail*
+  -- if pbase = BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $gc_array_separation_site(S, S.ORIGIN, ASSIGN_ARRAY pbase z false, n_cell, KINT z_key)
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_old)
+  -- if $heap_owners($heap_graph(S), HARRAY n_old) = 1 /\ $native_excess_valid(S)
+  -- if S.RESULT = KNOWN pvalue
+  -- if S_next.RESULT = KNOWN pvalue
+  -- if S_next.COMPLETION = NORMAL /\ S_next.TODO = ptask_tail*
+  -- if n_new = |S.ARRAYS|
+  -- if S_next.ARRAYS = S.ARRAYS ++ [$array_insert(S.ARRAYS[n_old], KINT z_key, DIRECT pvalue)]
+  -- if S_next.NATIVEEXCESS = S.NATIVEEXCESS
+  -- if S_next.CELL = n_cell /\ S_next.LOCATION = ELEMENT n_new (KINT z_key) /\ S_next.KEY = KINT z_key
+  -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $gc_array_separation_image(S_next, n_old, n_new, n_cell, KINT z_key, pvalue)
 def $gc_extra_pending_nodes(eps) = eps
 def $gc_extra_pending_nodes({OPERAND KNOWN (POBJECT n), PENDING true} :: pgctemporary_tail*) = (HOBJECT n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
 def $gc_extra_pending_nodes({OPERAND KNOWN (PARRAY n), PENDING true} :: pgctemporary_tail*) = (HARRAY n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
@@ -1145,6 +1186,21 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if $gc_extra_source(poperand_left, pdestructionoperation.NOGCEXTRA)
   -- if $gc_extra_bounded(S, pdestructionoperation.NOGCEXTRA)
   -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), pdestructionoperation.NOGCEXTRA)
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = [pgctemporary]
+  -- if pdestructionoperation.SOURCE = ASSIGN_ARRAY pbase z false
+  -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.VALUE = KNOWN pvalue
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation.LOCATION = ELEMENT n_new pkey
+  -- if pdestructionoperation.KEY = pkey
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $gc_array_separation_site(S_history, pdestructionoperation.ORIGIN, pdestructionoperation.SOURCE, pdestructionoperation.CELL, pkey)
+  -- if pgctemporary.OPERAND = KNOWN (PARRAY n_old)
+  -- if $gc_array_separation_image(S, n_old, n_new, pdestructionoperation.CELL, pkey, pvalue)
+  -- if (pgctemporary.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary])
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.NOGC = eps
   -- if pdestructionoperation.NOGCEXTRA = eps
