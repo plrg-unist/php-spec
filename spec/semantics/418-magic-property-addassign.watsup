@@ -19,6 +19,24 @@ def $property_magic_add_source(S, PORIGIN n pcpath) = true
   -- if ~$pfunction_builtin(pfunction.NAME) /\ ~$function_generator(S, pfunction)
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
   -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]
+def $property_magic_add_source(S, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if expression = NExprAssignOpPlus expression_target expression_rhs metadata
+  -- if expression_target = NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NExprVariable (BYTES text_name) metadata_name) metadata_property
+  -- if expression_rhs = NExprFuncCall (NName (BYTES text_function) metadata_function) (SEQUENCE eps) metadata_call
+  -- if $base64(text_receiver) =/= $ptascii("this")
+  -- if $property_magic_cv_source(S, PORIGIN n (pcpath ++ [PCFIELD 0]), $runtime_line(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0], expression_target))
+  -- if $property_source_task(S[.ORIGIN = (PORIGIN n pcpath)], expression)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0, PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0, PCFIELD 0])
+  -- if $closure_source_class(S, PORIGIN n pcpath) = eps
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN false) phpType11 (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata_function_source)
+  -- if ~$pfunction_builtin(pfunction.NAME) /\ ~$function_generator(S, pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ ~pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "int"]))]
 def $property_magic_add_source(S, porigin) = false -- otherwise
 
 ;; This descriptor is immutable history. Neither a current CV read nor the
@@ -38,6 +56,7 @@ def $property_magic_add_history(S, ppropertymagicadd) = true
   -- if $property_effective_desc(S, ppropertymagicadd.GET.OBJECT, ppropertymagicadd.GET.NAME) = (ppropertydesc)
   -- if ppropertymagicadd.GET.DECL = eps
   -- if ppropertydesc.ORIGIN = ppropertymagicadd.PROPERTY
+  -- if $property_hook_literal_site(S, ppropertymagicadd.GET.SITE) \/ ~$property_hook_unset_declared(S, ppropertymagicadd.GET.OBJECT, ppropertydesc.KEY)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ppropertydesc.SETVISIBILITY = eps
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (pmethoddesc_get.OWNER)
@@ -79,6 +98,36 @@ def $property_magic_add_plan(S, pbase, KNOWN (PINT i), z) = (ppropertymagicadd)
   -- if $property_get_method(S, n) = (pmethoddesc_get)
   -- if $property_magic_set_method(S, n) = (pmethoddesc_set)
   -- if z_get = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if ppropertyget = {SITE porigin_site, NAME ptbytes_name, LINE z_get, OBJECT n, CLASS porigin_class, METHOD pmethoddesc_get.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, ptbytes_name)}
+  -- if $property_effective_desc(S, n, ptbytes_name) = (ppropertydesc)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertymagicadd = {SITE porigin_parent, GET ppropertyget, SET pmethoddesc_set.FUNCTION.ORIGIN, PROPERTY porigin_property, LINE z, RHS i, OWNER 0, CALLER eps, TAIL S.TODO}
+  -- if $property_magic_add_history(S, ppropertymagicadd)
+  -- if S_get = S[.ORIGIN = (porigin_site)][.TODO = [(PROPERTY_GET_RESULT ppropertyget), ORIGIN_RETURN (porigin_parent), PROPERTY_MAGIC_ADD_VALUE ppropertymagicadd] ++ S.TODO]
+  -- if $property_get_capture(S_get, ppropertyget)
+  -- if ~$property_get_guard_tasks(S.TODO, n, ptbytes_name) /\ ~$property_get_guard_frames(S.FRAMES, n, ptbytes_name)
+  -- if ~$property_empty_get_active(S, n, ptbytes_name)
+  -- if ~$property_magic_set_guard(S, S.CURRENT, S.FRAMES, n, ptbytes_name)
+def $property_magic_add_plan(S, pbase, KNOWN (PINT i), z) = (ppropertymagicadd)
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.ORIGIN = (porigin_parent)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if $property_magic_add_source(S, porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if pbase = BASE_PROPERTY_PENDING (BASE_VALUE (VARIABLE ptbytes_receiver z_cv)) (VARIABLE ptbytes_selector z_name) z_receiver
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_site)
+  -- if $property_pending_source_base(S[.ORIGIN = (porigin_site)], pbase, expression_target)
+  -- if z = $runtime_line(S, eps, NExprAssignOpPlus expression_target expression_rhs metadata)
+  -- if z_get = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if $property_magic_cv_name(S[.RESULT = VARIABLE ptbytes_selector z_name], porigin_site, z_get) = (ptbytes_name)
+  -- if S_receiver = $property_pending_resolve(S, BASE_VALUE (VARIABLE ptbytes_receiver z_cv), VARIABLE ptbytes_selector z_name, PPRW, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes_name
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_get_needed(S, n, ptbytes_name) /\ $property_magic_set_needed(S, n, ptbytes_name)
+  -- if $property_get_method(S, n) = (pmethoddesc_get)
+  -- if $property_magic_set_method(S, n) = (pmethoddesc_set)
   -- if ppropertyget = {SITE porigin_site, NAME ptbytes_name, LINE z_get, OBJECT n, CLASS porigin_class, METHOD pmethoddesc_get.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, ptbytes_name)}
   -- if $property_effective_desc(S, n, ptbytes_name) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
