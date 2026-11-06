@@ -127,7 +127,7 @@ def scope(fixture, path):
         'porigin_child =/= pmethoddesc.OWNER',
         '$lookup(S_bind.GLOBAL.ENV,$ptascii("callback207")) = (n_callback)',
         'S_bind.STORE[n_callback] = DEFINED pvalue_rebound',
-        '$string_bytes(pvalue_rebound) = ($ptascii("Ns207Scope\\Child207::other"))',
+        '$string_bytes(pvalue_rebound) = ($base64("TnMyMDdTY29wZVxDaGlsZDIwNzo6b3RoZXI="))',
         'preceivebirth.CAUSE.CALLS = (pfunction.ORIGIN,pcallcontext.CALLSITE,(pmethoddesc.OWNER),(porigin_child)) :: pdeclcalls',
         '~$parameter_receive_cache_entry(S_bind,preceivebirth[.CAUSE = preceivebirth.CAUSE[.CALLS = (pfunction.ORIGIN,pcallcontext.CALLSITE,eps,eps) :: pdeclcalls]])',
         'S_one_raw = $drive_steps(S_bind,1)', 'S_one_raw.COMPLETION = BUDGET',
