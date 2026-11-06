@@ -306,6 +306,23 @@ scope/binding/clone producers, nonpublic/magic, by-reference/variadic and Genera
 entries remain separate. Existing handler throw/exit machinery is reused; no new
 general failure campaign or callback lifecycle is claimed.
 
+Ordinary public autoload methods receive owning extra defaults after their one
+class-name argument. The exact saved autoload request and selected callback
+authenticate implicit lookup sites and explicit calls with no callee site.
+The registry owns the receiver while registered; the known-function invocation
+borrows This. A warning handler can unregister and clear the last alias, letting
+the receiver die before the loader body. Immutable selected-target metadata still
+validates the name/default body and an ordinary class-publication helper; actual
+retired This, scoped and capture consumers remain explicitly held.
+Closed default authority uses the existing own-index-zero autoload snapshot;
+deeper snapshots authenticate callers. Warning publications preserve the exact
+shifted snapshot list. Existing string carriers reach explicit dispatch through
+their bytes, retaining the original argument record. Four normal originals and
+258 strict464 conditions pass; no new birth field, cache key or global root rule
+is introduced. Capture/producer/Closure/nonpublic/magic/Generator and wider held
+modes keep their boundaries.
+[Autoload review](../../coverage/semantics/deprecated-autoload-method-default-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

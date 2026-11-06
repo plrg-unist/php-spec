@@ -134,6 +134,15 @@ the actual fa5139bf5c joined463 load and inventory pass. Closed-helper erased
 storage views stay distinct from the genuine retirement checkpoints. No native
 or accepted source replay was needed.
 
+COMP204 autoload default sources and ownership/history checks are under
+`../php-spec-evidence-archive/comp204/`. The
+[review](../coverage/semantics/deprecated-autoload-method-default-review.json)
+binds four exact originals and 76/96/86 strict464 conditions. Current-owner and
+publication-cut/string-carrier diagnostics retain their zero credit; earlier
+fallback failures are not startup-fact rejections. Only affected comparisons
+were repeated after fixes, with original native bytes/path/CWD reused. The actual
+67b944566d joined465 load composes accepted475+476 and inventory passes.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

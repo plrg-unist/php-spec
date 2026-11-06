@@ -3338,6 +3338,16 @@ only the exception front renews budget continuation. Source/runtime/tests are
 accepted at fa5139bf5c; actual joined463 and inventory pass. Broader producers and
 held domains stay separate. [Review](coverage/semantics/deprecated-handler-method-default-review.json).
 
+COMP204 receives owning extra defaults in authentic ordinary public autoload
+methods. One class-name argument, selected callback and real lookup/explicit-call
+contours preserve Shared function/default identity. The registry owns its receiver;
+current This borrows it, so actual warning-time unregister can retire it before
+binding/body. Captured selection/request history stays heap-free; retired receiver
+consumers remain held. Four normal originals agree and strict464 fronts pass
+76 shifted-cut/scope,96 retirement and86 rejection checks. Source/runtime/tests
+are accepted at67b944566d; actual joined465 and inventory pass.
+[Review](coverage/semantics/deprecated-autoload-method-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3347,7 +3357,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
 | ATTR78 | Plain CV names for existing magic isset/empty/coalesce/conditional handlers, with saved quiet NAME authority and genuine later assignment reacquisition; preserve scalar, producer and owner bounds. |
-| COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
 | GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
