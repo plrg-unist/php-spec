@@ -101,7 +101,57 @@ def $output_drain_task(S, OUTPUT_DRAIN_RELEASE pobdrain poutputbuffer) = $output
 def $output_drain_task(S, OB_USER_RESULT pobinvoke) = $output_drain_active(S, pobdrain) -- if pobinvoke.CALL = OB_FINAL pobdrain
 def $output_drain_task(S, OUTPUT_WRITE pobwrite) = $output_drain_active(S, pobdrain) -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
 def $output_drain_task(S, OUTPUT_FINISH pobwrite) = $output_drain_active(S, pobdrain) -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
-def $output_drain_task(S, ptask) = false -- otherwise
+dec $output_conversion_call(ptask) : pobcall?
+def $output_conversion_call(OB_USER_REF_ARRAY pobrefreturn n) = (pobrefreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_REF_OBJECT pobrefreturn n) = (pobrefreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_ARRAY_DEPRECATED pobarrayreturn) = (pobarrayreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_ARRAY_WARN pobarrayreturn) = (pobarrayreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_ARRAY_RESULT pobarrayreturn) = (pobarrayreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_ARRAY_DONE pobarrayreturn) = (pobarrayreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) = (pobarrayreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_CAST pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_SKIP pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_STRING pobobjectreturn) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_NORMAL pobobjectreturn pdestructionframe) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_PENDING pobobjectreturn pdestructionframe) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_RETURN pobobjectreturn poperand) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_NOTICE pobobjectreturn n_cell n_pending) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_DONE pobobjectreturn poboutput) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) = (pobobjectreturn.INVOKE.CALL)
+def $output_conversion_call(ERROR_HANDLER_INVOKE perrorcall) = $output_conversion_call(perrorcall.RESUME)
+def $output_conversion_call(ERROR_HANDLER_RESULT perrorcall) = $output_conversion_call(perrorcall.RESUME)
+def $output_conversion_call(ERROR_HANDLER_CLEAN perrorcall) = $output_conversion_call(perrorcall.RESUME)
+def $output_conversion_call(API_CALLBACK_SEND papiargcursor) = $output_conversion_call(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
+def $output_conversion_call(API_CALLBACK_REF papiargcursor) = $output_conversion_call(perrorcall.RESUME) -- if papiargcursor.CALL = API_ERROR perrorcall
+def $output_conversion_call(ptask) = eps -- otherwise
+dec $output_conversion_task(pstate, ptask) : bool
+def $output_conversion_task(S, ptask) = $output_drain_active(S, pobdrain)
+  -- if $output_conversion_call(ptask) = (OB_FINAL pobdrain)
+def $output_conversion_task(S, ptask) = $output_drain_active(S, pobdrain)
+  -- if $output_conversion_call(ptask) = (OB_WRITE pobwrite)
+  -- if pobwrite.CALLER = OUTPUT_FINAL pobdrain
+def $output_conversion_task(S, ptask) = false -- otherwise
+def $output_drain_task(S, ptask) = $output_conversion_task(S, ptask) -- otherwise
+dec $output_conversion_tasks(pstate, ptask*) : bool
+def $output_conversion_tasks(S, eps) = false
+def $output_conversion_tasks(S, ptask :: ptask_tail*) = ($output_conversion_task(S, ptask) \/ $output_conversion_tasks(S, ptask_tail*))
+dec $output_conversion_frames(pstate, pframe*) : bool
+def $output_conversion_frames(S, eps) = false
+def $output_conversion_frames(S, pframe :: pframe_tail*) = ($output_conversion_tasks(S, pframe.TODO) \/ $output_conversion_frames(S, pframe_tail*))
+dec $output_conversion_operations(pstate, pdestructionoperation*) : bool
+def $output_conversion_operations(S, eps) = false
+def $output_conversion_operations(S, pdestructionoperation :: pdestructionoperation_tail*) = ($output_conversion_task(S, pdestructionoperation.SOURCE) \/ $output_conversion_operations(S, pdestructionoperation_tail*))
+dec $output_conversion_pending(pstate) : bool
+def $output_conversion_pending(S) = true -- if $throwable_pending(S.COMPLETION)
+def $output_conversion_pending(S) = true -- if S.COMPLETION = NORMAL -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $output_conversion_pending(S) = false -- otherwise
+def $ob_user_conversion_pending(S) = true
+  -- if $output_conversion_pending(S)
+  -- if $output_conversion_tasks(S, S.TODO) \/ $output_conversion_frames(S, S.FRAMES) \/ $output_conversion_operations(S, S.DESTRUCTION.OPERATIONS)
+def $ob_user_boundary_reason(S) = "pending FINAL Array/Object return conversion"
+  -- if $ob_user_conversion_pending(S)
 def $output_drain_tasks(S, eps) = false
 def $output_drain_tasks(S, ptask :: ptask_tail*) = ($output_drain_task(S, ptask) \/ $output_drain_tasks(S, ptask_tail*))
 def $output_drain_frames(S, eps) = false
@@ -237,6 +287,9 @@ def $ob_call_event(pobcall, text, n_message*, z) = DIAGNOSTIC_INTERNAL text n_me
 def $ob_call_event(pobcall, text, n_message*, z) = DIAGNOSTIC text n_message* z -- if ~$output_drain_final_call(pobcall)
 def $output_drain_warning_resume(OB_USER_REFERENCE pobinvoke n) = $output_drain_final_call(pobinvoke.CALL)
 def $output_drain_warning_resume(OB_USER_DEPRECATED pobinvoke pvalue) = $output_drain_final_call(pobinvoke.CALL)
+def $output_drain_warning_resume(OB_USER_ARRAY_DEPRECATED pobarrayreturn) = $output_drain_final_call(pobarrayreturn.INVOKE.CALL)
+def $output_drain_warning_resume(OB_USER_ARRAY_RESULT pobarrayreturn) = $output_drain_final_call(pobarrayreturn.INVOKE.CALL)
+def $output_drain_warning_resume(OB_USER_OBJECT_DEPRECATED pobobjectreturn) = $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
 def $output_drain_warning_resume(ptask) = false -- otherwise
 def $error_handler_file(S, perrorcall) = $ptascii("Unknown") -- if $output_drain_warning_resume(perrorcall.RESUME)
 

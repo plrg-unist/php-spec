@@ -41,6 +41,11 @@ dec $ob_object_string_owner(pstate, pobobjectreturn) : bool
 dec $ob_object_string_owner_frames(pframe*, pobobjectreturn) : bool
 dec $ob_object_c_pair_frame(pframe) : bool
 dec $ob_object_callee_cleanup_call(pstate, pdestructionframe, ptask*) : pconfigcall?
+dec $ob_object_final_domain(pstate, pcallcontext) : pobobjectreturn?
+dec $ob_object_final_target(pstate, pcallcontext, pobobjectreturn) : bool
+dec $ob_object_final_domain_scan(pstate, pcallcontext, pcallcontext?, pframe*) : pobobjectreturn?
+dec $ob_object_final_enter(pstate, pobobjectreturn, ptask*) : pstate
+dec $ob_object_final_frame(pstate, pcallcontext, pframe, pobobjectreturn) : bool
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
@@ -117,10 +122,10 @@ def $call_task_valid(S, OB_USER_OBJECT_COMMIT pobobjectreturn poboutput) = ($ob_
 def $ob_user_nonscalar_return(S, pobinvoke, POBJECT n) = $ob_object_capture(S, pobinvoke, n, eps) -- if $integer_standard_object_handlers(S, POBJECT n)
 def $ob_ref_nonscalar_return(S, pobrefreturn, POBJECT n) = S[.TODO = (OB_USER_REF_OBJECT pobrefreturn n) :: pobrefreturn.TAIL]
   -- if $integer_standard_object_handlers(S, POBJECT n)
-  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL)
+  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL) \/ pobrefreturn.PENDING = eps
 def $ob_ref_nonscalar_return(S, pobrefreturn, POBJECT n) = S[.COMPLETION = UNSUPPORTED "FINAL object output-handler return conversion"]
   -- if $integer_standard_object_handlers(S, POBJECT n)
-  -- if $output_drain_final_call(pobrefreturn.INVOKE.CALL)
+  -- if $output_drain_final_call(pobrefreturn.INVOKE.CALL) /\ pobrefreturn.PENDING =/= eps
 rule PhpStep/ob-reference-object-transfer: S ~> S[.TODO = (OB_USER_OBJECT_CAST $ob_object_from_ref(pobrefreturn, n)) :: ptask_tail*]
   -- if S.TODO = (OB_USER_REF_OBJECT pobrefreturn n) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_REF_OBJECT pobrefreturn n)
@@ -132,13 +137,12 @@ rule PhpStep/ob-object-normal-pending: S ~> $ob_object_capture(S, pobinvoke, n, 
 def $ob_object_capture(S, pobinvoke, n, n_pending?) = $ob_object_begin(S[.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pobobjectreturn)
   -- if S.TODO = ptask :: ptask_tail*
   -- if pobobjectreturn = {INVOKE pobinvoke, OBJECT n, CELL eps, RETURNED eps, PENDING n_pending?, CALLER S.CURRENT, TAIL ptask_tail*}
-def $ob_object_begin(S, pobobjectreturn) = S[.COMPLETION = UNSUPPORTED "FINAL object output-handler return conversion"] -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+def $ob_object_begin(S, pobobjectreturn) = S[.COMPLETION = UNSUPPORTED "pending FINAL object output-handler return conversion"] -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL) /\ pobobjectreturn.PENDING =/= eps
 def $ob_object_begin(S, pobobjectreturn) = S
-  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL) \/ pobobjectreturn.PENDING = eps
   -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
 def $ob_object_begin(S, pobobjectreturn) = $error_dispatch(S[.TODO = (OB_USER_OBJECT_DEPRECATED pobobjectreturn) :: pobobjectreturn.TAIL][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], 8192, $ob_user_deprecation(pobobjectreturn.INVOKE), $ob_call_line(pobobjectreturn.INVOKE.CALL), $ob_call_event(pobobjectreturn.INVOKE.CALL, "Deprecated", $ob_user_deprecation(pobobjectreturn.INVOKE), $ob_call_line(pobobjectreturn.INVOKE.CALL)), OB_USER_OBJECT_DEPRECATED pobobjectreturn)
-  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
   -- if pobobjectreturn.PENDING = eps
   -- if $output_selected(S, pobobjectreturn.INVOKE) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
@@ -175,7 +179,19 @@ rule PhpStep/ob-object-cast-call: S ~> $user_string_begin(S, pobobjectreturn.OBJ
   -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
   -- if $ob_object_current(S, pobobjectreturn)
   -- if pobobjectreturn.PENDING = eps
+  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
   -- if $stringable_instance(S, pobobjectreturn.OBJECT)
+rule PhpStep/ob-object-final-cast-call: S ~> $ob_object_final_enter(S, pobobjectreturn, ptask_tail*)
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if pobobjectreturn.PENDING = eps
+  -- if $stringable_instance(S, pobobjectreturn.OBJECT)
+def $ob_object_final_enter(S, pobobjectreturn, ptask_tail*) = $call_arity($target_after_enter($call_enter(S_call, pmethoddesc.FUNCTION, eps, eps, $(-1)), METHOD_TARGET pobobjectreturn.OBJECT pmethoddesc.FUNCTION.ORIGIN), pmethoddesc.FUNCTION, 0, eps, $(-1))
+  -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if S_call = S[.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 rule PhpStep/ob-object-cast-pending: S ~> S[.TODO = (OB_USER_OBJECT_SKIP pobobjectreturn) :: ptask_tail*]
   -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
@@ -196,6 +212,14 @@ rule PhpStep/ob-object-cast-error: S ~> $ob_object_error_return($ob_object_error
   -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
   -- if $ob_object_current(S, pobobjectreturn)
+  -- if pobobjectreturn.PENDING = eps
+  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
+rule PhpStep/ob-object-final-no-method: S ~> S[.COMPLETION = UNSUPPORTED "FINAL non-Stringable object conversion Error protocol"]
+  -- if S.TODO = (OB_USER_OBJECT_CAST pobobjectreturn) :: ptask_tail*
+  -- if $call_task_valid(S, OB_USER_OBJECT_CAST pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
   -- if pobobjectreturn.PENDING = eps
   -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
 def $ob_object_error(S, pobobjectreturn) = $config_error(S, pconfigcall, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"))
@@ -286,13 +310,74 @@ def $ob_object_context_scan(S, pcallcontext, (pcallcontext), pframe :: pframe_ta
   -- if pcallcontext.NAMED = eps
   -- if pcallcontext.WRAPPER = eps
   -- if pcallcontext.HOLES = eps
+  -- if ~$output_drain_final_call(pobobjectreturn.INVOKE.CALL)
   -- if $stringify_method_selected(S, n, porigin_method, porigin)
   -- if S_scope = $parameter_string_frame_scope(S, pframe, pframe_tail*)
   -- if $ob_object_string(S_scope, n, porigin, z) = (pobobjectreturn)
+def $ob_object_context_scan(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = (pobobjectreturn)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if S_scope = $parameter_string_frame_scope(S, pframe, pframe_tail*)
+  -- if $ob_object_final_frame(S_scope, pcallcontext, pframe, pobobjectreturn)
 def $ob_object_context_scan(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $ob_object_context_scan(S, pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
 def $ob_object_context_scan(S, pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
 def $reference_callback_used(S, pcallcontext) = (true) -- if $ob_object_context(S, pcallcontext) =/= eps
 def $error_context_trigger(S, pcallcontext) = (pconfigcall) -- if $ob_object_context(S, pcallcontext) = (pobobjectreturn) -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
+
+;; The registration remains documentary metadata; it is never the executing
+;; caller of the known method invoked by the null-C FINAL converter.
+def $ob_object_final_domain(S, pcallcontext) = (pobobjectreturn)
+  -- if S.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if $ob_object_site_tasks(S.TODO) = (pobobjectreturn)
+  -- if $ob_object_current(S, pobobjectreturn)
+  -- if $ob_object_final_target(S, pcallcontext, pobobjectreturn)
+def $ob_object_final_domain(S, pcallcontext) = $ob_object_final_domain_scan(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if $ob_object_site_tasks(S.TODO) = eps
+def $ob_object_final_domain(S, pcallcontext) = eps -- otherwise
+def $ob_object_final_target(S, pcallcontext, pobobjectreturn) = true
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if pcallcontext.TARGET = METHOD_TARGET pobobjectreturn.OBJECT porigin_method
+  -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if porigin_method = pmethoddesc.FUNCTION.ORIGIN
+  -- if $call_task_valid(S, OB_USER_OBJECT_STRING pobobjectreturn)
+def $ob_object_final_target(S, pcallcontext, pobobjectreturn) = false -- otherwise
+def $ob_object_final_domain_scan(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = (pobobjectreturn)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if $ob_object_site_tasks(pframe.TODO) = (pobobjectreturn)
+  -- if S_scope = $parameter_string_frame_scope(S, pframe, pframe_tail*)
+  -- if $ob_object_final_target(S_scope, pcallcontext, pobobjectreturn)
+def $ob_object_final_domain_scan(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $ob_object_final_domain_scan(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
+  -- if pcallcontext_other? =/= (pcallcontext)
+def $ob_object_final_domain_scan(S, pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
+def $ob_object_final_frame(S, pcallcontext, pframe, pobobjectreturn) = true
+  -- if $ob_object_final_domain(S, pcallcontext) = (pobobjectreturn)
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pframe.CONTEXT = pobobjectreturn.CALLER /\ pframe.CONTEXT = eps
+  -- if pframe.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))
+  -- if pframe.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
+def $ob_object_final_frame(S, pcallcontext, pframe, pobobjectreturn) = false -- otherwise
+def $stringify_native_context_kind(S, pcallcontext) = true -- if $ob_object_final_domain(S, pcallcontext) =/= eps
+def $stringify_native_context_frame_valid(S, pcallcontext, pframe) = $ob_object_final_frame(S, pcallcontext, pframe, pobobjectreturn)
+  -- if $ob_object_final_domain(S, pcallcontext) = (pobobjectreturn)
+def $error_context_kind(S, pcallcontext) = true
+  -- if $ob_object_context(S, pcallcontext) = (pobobjectreturn)
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+def $error_context_valid(S, pcallcontext) = true
+  -- if $ob_object_context(S, pcallcontext) = (pobobjectreturn)
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+def $reference_call_frame_site(pcallcontext, pframe) = true
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
+  -- if n = pobobjectreturn.OBJECT /\ porigin = $ob_call_site(pobobjectreturn.INVOKE.CALL) /\ z = 0
+  -- if ptask_native* = pobobjectreturn.TAIL
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS eps, HASARGS true}]
+  -- if $ob_object_context(S, pcallcontext) = (pobobjectreturn)
+  -- if $output_drain_final_call(pobobjectreturn.INVOKE.CALL)
 
 ;; Seal only an actually defined method return before ordered CV/receiver
 ;; cleanup. The seal is readonly; FRAME_EXIT still owns the returned operand.
@@ -532,7 +617,7 @@ def $ob_object_return_successor(S, ptask*, pdestructionoperation, pobobjectretur
 def $eager_operation_source_guard(S, pdestructionoperation) = ($ob_object_current(S, pobobjectreturn) /\ pdestructionoperation.CALLER = pobobjectreturn.CALLER /\ pdestructionoperation.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)) /\ pdestructionoperation.CONSTCONTEXT = S.CONSTCONTEXT /\ pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL) /\ pdestructionoperation.CLEANUP = eps /\ pobobjectreturn.RETURNED = (poperand) /\ $ob_object_return_successor(S, S.TODO, pdestructionoperation, pobobjectreturn))
   -- if pdestructionoperation.SOURCE = OB_USER_OBJECT_RETURN pobobjectreturn poperand
 
-def $destructor_internal_site_source(OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = ($ob_call_api(pobobjectreturn.INVOKE.CALL) =/= eps)
+def $destructor_internal_site_source(OB_USER_OBJECT_RELEASE pobobjectreturn poboutput) = ($ob_call_api(pobobjectreturn.INVOKE.CALL) =/= eps \/ $output_drain_final_call(pobobjectreturn.INVOKE.CALL))
 def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)

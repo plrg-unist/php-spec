@@ -1,0 +1,61 @@
+{
+  "milestone": "OB20: Normal FINAL Array/Object return conversion in null-C context",
+  "status": "Author validation complete; independent acceptance pending",
+  "tested_parent": "cefab98db79d2f3ca3d679b0ceeb9b95de119760",
+  "identity": "Reports retain exact parent, checked original/fixture/raw channels/exits and stable before/after identities. Runtime below matches both passing authored packets. Later selector/docs changes do not renew historical source credit.",
+  "runtime": {
+    "target": "PHP8.5.10 CLI NTS64, sole project-local oracle",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL, caches disabled/encountered determinism",
+    "modules": 446,
+    "sha256": {
+      "spec/semantics/168-user-string-runtime.watsup": "fba03ee7f928bc575a966ae4b6a6e10bb27148aa713e448edb121fdae64684f5",
+      "spec/semantics/395-output-handlers.watsup": "9c4678606703dfba0ced361bd7d66a4284bb31ebdcea808ff68aa7f94f1364c6",
+      "spec/semantics/399-output-result-cleanup.watsup": "88b3ed178cc129565353ea5f46c49bd32248dbd7a164f8fed11fbb76fc049204",
+      "spec/semantics/441-output-finalization.watsup": "a61fbd1706a2c05d97a6698ac2a0773e0e445821d58b33c98d0e8d0c677bd124",
+      "spec/semantics/451-output-array-returns.watsup": "82b99f133c1b52b4b1d0d11a8689f7c708f78572a4da38b98abb59ab241c1b0b",
+      "spec/semantics/456-output-object-returns.watsup": "0a8ee4fd2dd817aa0b5baadb1c6c438075eb8635cdc67f8201dbba1e4872f20e"
+    }
+  },
+  "authority": [
+    "main/main.c:1967,1986 clears current_execute_data before php_output_end_all",
+    "main/output.c::php_output_handler_op retains native callback return, conversion, original retval cleanup and normal lower routing",
+    "Zend/zend_operators.c::_convert_to_string Array/Object and zend_object_handlers.c::zend_std_cast_object_tostring",
+    "Zend/zend_execute_API.c:807-860 known-instance call with no source caller; receiver guard is explicit in the standard cast"
+  ],
+  "behavior": [
+    "Normal FINAL Arrays reuse Warning/release/fixed Array-byte commit; selected Warning handlers receive level2, exact bare message and Unknown:0. Actual returned Array owner remains through the callback and leaves DONE metadata readonly.",
+    "FINAL Stringable methods enter through direct known-method call_enter/target_after_enter/call_arity with CALLSITEeps/LINE-1 and a real saved null-C frame. Documentary registration stays separate. Native-domain selection follows the immediate actual invocation or head scoped pair, so nested same-receiver calls cannot borrow an outer native frame.",
+    "Ordinary source-site context/frame rules exclude that authenticated native domain, including coherent Some(registration)/line0 forgeries. Normal receiver/retval cleanup and real guard GC decrements reuse existing mechanisms; converted bytes freeze before original-object release.",
+    "A separate default-false output conversion boundary refuses pending exceptions before further conversion unwind while preserving current controls/owners. Existing borrowed-receiver access reasons and older FINAL scalar callback protocols remain separate. FINAL non-Stringable conversion Errors are also explicit dependencies."
+  ],
+  "sources": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-conversion-20/sources-03/report.json",
+    "sha256": "c9e7034c9659ff10cc60fae25c6cc4618c5a8d275a306cc9e964843939cac92e",
+    "scope": "Two distinct exact normal originals PArray and PH9:113:A, full raw channels/exit0; one pending fresh-Exception original is explicit Unsupported with zero native agreement.",
+    "passed": true,
+    "stable_fingerprints": true
+  },
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-conversion-20/state-01/report.json",
+    "sha256": "18414610bfb8f3a52324b68ff33d6d8e2269bc301cc643af974f31ab8cb80fcf",
+    "scope": "One SL446 source-reached group/95 conditions: real Warning/retval task owner and null-C drain, actual level/message/file/line arguments, exact tail/array refusals, derived unmaterialized-pending guard preserves frame/control/owners, fuel0, readonly DONE and full normal resume.",
+    "passed": true,
+    "stable_fingerprints": true
+  },
+  "joined_parent": {
+    "revision": "cefab98db79d2f3ca3d679b0ceeb9b95de119760",
+    "report": "generator-send-body-throw-117/joined-parent-446/report.json",
+    "sha256": "9365883cd46104d7f9f0bf4202bdfdcc5a775653780759658e12b82854e880a6",
+    "result": "Integrator/old Generator run: trueLF, exit0/quiet/stable; inventory consistent before first OB20 model."
+  },
+  "preserved": {
+    "failed_packets": "sources-01 undefined forward helper and sources-02 pending-reason provider overlap remain externally preserved with zero packet credit. The final boundary uses its own395 hook,399 reason excludes it, and441 supplies the scoped reason. No cap change or extra original calibration.",
+    "retired_controls": "/home/user/workspace/php-spec-evidence-archive/new/output-final-conversion-20/retired-controls/manifest.json",
+    "scope": "Old FINAL Array/Object refusal selectors retain exact original/native/reason cuts externally with zero agreement. They are retired deliberately; new OB20 positives are distinct originals. No old19 source/Notice campaign is renewed."
+  },
+  "compatibility": "Outside actual FINAL conversion records, the new hooks/defaults preserve old Some-site contexts, frame projections, running/read access and callback behavior pointwise. No30/301/schema change; GC handoff cases are unchanged. Pending Throwable handling inside a conversion, including internally caught exceptions, is conservatively unfinished until its distinct protocol is modeled.",
+  "reproduce": "python3 tests/semantics/output_final_conversion_sources.py --output <external>; python3 tests/semantics/output_final_conversion_state.py --output <external>. Each packet retains actual commands, full pinned profile and original fixture/source bytes.",
+  "limits": "Pending null-C fatal/abandoned cast owners, non-Stringable FINAL Errors, internal/custom/resource conversion and broader control remain explicit dependencies. OB19 public Notice timeout cuts remain0/performance unfinished. No native fallback, deliberate divergence or full-core completion claim.",
+  "checks": "Python compile, inventory169/306 and git diff --check pass; all current gates compile446 modules."
+}

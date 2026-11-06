@@ -115,12 +115,9 @@ CASES = {'normal-vm-late-produced': (b'<?php echo "P";$log="";$n=0;set_error_han
                          b"$e->getMessage().':'.ob_get_level();}",
                          b'P|99:Error:Object of class stdClass could not be converted to string:0')}
 STDERR = {}
-CONTROLS = {'final-object': b"<?php echo 'P';class T{function __toString(){return 'H';}}function h($b,$p){return new T"
-                 b";}ob_start('h');echo 'A';",
- 'internal-object': b"<?php echo 'P';function h($b,$p){return new Exception('E');}ob_start('h');echo 'A';o"
+CONTROLS = {'internal-object': b"<?php echo 'P';function h($b,$p){return new Exception('E');}ob_start('h');echo 'A';o"
                     b'b_get_flush();'}
-CONTROL_REASONS = {'final-object': 'FINAL object output-handler return conversion',
- 'internal-object': 'non-scalar user output-handler return conversion'}
+CONTROL_REASONS = {'internal-object': 'non-scalar user output-handler return conversion'}
 REACHED_ONLY_CASES = {'method-reference-notice-framed', 'method-reference-notice-unframed'}
 _original_fingerprint = runner.fingerprint
 

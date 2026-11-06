@@ -255,6 +255,10 @@ Fresh conversion exceptions retain normal buffer processing and interrupt caller
 assignment; returned reference cells are read after method cleanup.
 [Independent object-return checks](coverage/semantics/output-object-return-review.json)
 cover saved-frame authority, late cell reads, traces and actual receiver release.
+Normal FINAL Array/Stringable returns now share conversion and drain paths.
+The Array Warning uses `Unknown:0`; known methods have a real null-C caller and
+retain their retval/cast owners through cleanup. Pending conversion exceptions
+remain explicit dependencies. [Evidence](coverage/semantics/output-final-conversion-author.json).
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

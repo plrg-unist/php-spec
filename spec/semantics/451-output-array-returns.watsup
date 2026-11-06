@@ -76,9 +76,9 @@ def $call_task_valid(S, OB_USER_ARRAY_COMMIT pobarrayreturn poboutput) = ($ob_ar
 
 def $ob_user_nonscalar_return(S, pobinvoke, PARRAY n) = $ob_array_capture(S, pobinvoke, n, eps)
 def $ob_ref_nonscalar_return(S, pobrefreturn, PARRAY n) = S[.TODO = (OB_USER_REF_ARRAY pobrefreturn n) :: pobrefreturn.TAIL]
-  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL)
+  -- if ~$output_drain_final_call(pobrefreturn.INVOKE.CALL) \/ pobrefreturn.PENDING = eps
 def $ob_ref_nonscalar_return(S, pobrefreturn, PARRAY n) = S[.COMPLETION = UNSUPPORTED "FINAL array output-handler return conversion"]
-  -- if $output_drain_final_call(pobrefreturn.INVOKE.CALL)
+  -- if $output_drain_final_call(pobrefreturn.INVOKE.CALL) /\ pobrefreturn.PENDING =/= eps
 rule PhpStep/ob-reference-array-transfer: S ~> S[.TODO = (OB_USER_ARRAY_WARN $ob_array_from_ref(pobrefreturn, n)) :: ptask_tail*]
   -- if S.TODO = (OB_USER_REF_ARRAY pobrefreturn n) :: ptask_tail*
   -- if $call_task_valid(S, OB_USER_REF_ARRAY pobrefreturn n) /\ $ob_ref_current(S, pobrefreturn)
@@ -89,13 +89,13 @@ rule PhpStep/ob-array-normal-pending: S ~> $ob_array_capture(S, pobinvoke, n, pd
 def $ob_array_capture(S, pobinvoke, n, n_pending?) = $ob_array_begin(S[.TODO = (OB_USER_ARRAY_WARN pobarrayreturn) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pobarrayreturn)
   -- if S.TODO = ptask :: ptask_tail*
   -- if pobarrayreturn = {INVOKE pobinvoke, ARRAY n, CELL eps, PENDING n_pending?, CALLER S.CURRENT, TAIL ptask_tail*}
-def $ob_array_begin(S, pobarrayreturn) = S[.COMPLETION = UNSUPPORTED "FINAL array output-handler return conversion"] -- if $output_drain_final_call(pobarrayreturn.INVOKE.CALL)
+def $ob_array_begin(S, pobarrayreturn) = S[.COMPLETION = UNSUPPORTED "pending FINAL array output-handler return conversion"] -- if $output_drain_final_call(pobarrayreturn.INVOKE.CALL) /\ pobarrayreturn.PENDING =/= eps
 def $ob_array_begin(S, pobarrayreturn) = S
-  -- if ~$output_drain_final_call(pobarrayreturn.INVOKE.CALL)
+  -- if ~$output_drain_final_call(pobarrayreturn.INVOKE.CALL) \/ pobarrayreturn.PENDING = eps
   -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) = 0
 def $ob_array_begin(S, pobarrayreturn) = $error_dispatch(S[.TODO = (OB_USER_ARRAY_DEPRECATED pobarrayreturn) :: pobarrayreturn.TAIL][.OUTPUTBUFFERS = $output_set(S.OUTPUTBUFFERS, poutputbuffer.ID, poutputbuffer[.FLAGS = $long_or($long_and(poutputbuffer.FLAGS, $(-32769)), 8192)])], 8192, $ob_user_deprecation(pobarrayreturn.INVOKE), $ob_call_line(pobarrayreturn.INVOKE.CALL), $ob_call_event(pobarrayreturn.INVOKE.CALL, "Deprecated", $ob_user_deprecation(pobarrayreturn.INVOKE), $ob_call_line(pobarrayreturn.INVOKE.CALL)), OB_USER_ARRAY_DEPRECATED pobarrayreturn)
-  -- if ~$output_drain_final_call(pobarrayreturn.INVOKE.CALL) /\ pobarrayreturn.PENDING = eps
+  -- if pobarrayreturn.PENDING = eps
   -- if $output_selected(S, pobarrayreturn.INVOKE) = (poutputbuffer)
   -- if $long_and(poutputbuffer.FLAGS, 32768) =/= 0
 def $ob_array_begin(S, pobarrayreturn) = $ob_normal_deprecation(S, pobarrayreturn.INVOKE)
@@ -292,7 +292,7 @@ def $gc_consumed_handoff(S, S_next, pnode*) = pnode* -- otherwise
 
 ;; Array-child release executes in the originating API/VM conversion site.
 ;; Ignored diagnostic-return cleanup retains its separate authenticated receipt.
-def $destructor_internal_site_source(OB_USER_ARRAY_RESULT pobarrayreturn) = ($ob_call_api(pobarrayreturn.INVOKE.CALL) =/= eps)
+def $destructor_internal_site_source(OB_USER_ARRAY_RESULT pobarrayreturn) = ($ob_call_api(pobarrayreturn.INVOKE.CALL) =/= eps \/ $output_drain_final_call(pobarrayreturn.INVOKE.CALL))
 def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S_history, pconfigcall, eps)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)

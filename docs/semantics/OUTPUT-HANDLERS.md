@@ -122,8 +122,9 @@ refused; its metadata does not revive the object.
 Internal/custom-object and resource returns are refused before callee cleanup can
 erase the defined value. Referenced values retain their actual cell until
 conversion; admitted scalar, Array and standard-object payloads transfer their
-actual owner. FINAL Array and object conversion
-remains explicitly Unsupported. Full core remains partial.
+actual owner. Normal FINAL Array/Stringable conversion uses the same lifetimes;
+pending conversion/fatal and non-Stringable Error paths remain dependencies.
+Full core remains partial.
 
 Primary authority is `main/output.c` handler creation/op/stack-pop/destruction and
 `Zend/zend_API.c` callable names/selection and
@@ -459,3 +460,16 @@ entry still requires the original caller.
 The two Notice originals have public60 timeout cuts with zero source agreement.
 Their full-resumption owner fronts establish state evidence; source performance
 remains an unfinished validation obligation.
+
+Normal FINAL Array and Stringable returns now reuse their conversion/release
+stages and the real drain. Array Warning handlers receive `Unknown:0`. Known
+Stringable methods have a null callsite/internal line; the earlier registration
+site remains documentary metadata. The exact immediate caller frame binds the
+native domain, so a nested same-receiver call cannot borrow it. A forged
+documentary callsite is excluded from ordinary source-frame admission.
+Converted bytes freeze before original-object release; real guard decrements
+remain ordinary GC visits. Pending exceptions inside these conversions stop
+before further unwind; their null-C fatal and abandoned-owner protocol is a
+separate dependency. [Author evidence](../../coverage/semantics/output-final-conversion-author.json)
+records two normal originals, one refusal and 95 reached conditions. Independent
+acceptance is pending; the earlier Notice performance limitation remains open.

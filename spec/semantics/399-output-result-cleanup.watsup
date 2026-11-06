@@ -50,6 +50,7 @@ def $ob_user_access_pending(S) = true
   -- if $ob_retired_read_task(ptask)
 def $ob_user_boundary_reason(S) = "access through a retired output-handler receiver"
   -- if $ob_user_access_pending(S)
+  -- if ~$ob_user_conversion_pending(S)
 
 def $ob_normal_reference_rest(eps) = false
 def $ob_normal_reference_rest(psparam :: psparam_tail*) = psparam.BYREF -- if psparam.VARIADIC

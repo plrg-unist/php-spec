@@ -1542,6 +1542,16 @@ at the final scope-repaired cut. [Independent review](coverage/semantics/output-
 records real C-frame authority, late-cell traces and collector dispatch. The two Notice originals retain public60 timeout cuts
 with zero source agreement; their completed ownership fronts are state evidence.
 That source-performance limitation remains unfinished.
+OB20 extends normal FINAL returns to Arrays and ordinary Stringable objects.
+Warnings retain `Unknown:0`; known methods enter at a null callsite/internal line
+while the registration remains documentary metadata. Actual retval/cast owners,
+frozen converted bytes and the normal drain retain their order. Two exact normal
+originals, one pending refusal and a reached Array group/95 conditions pass at
+their recorded cuts. [Author evidence](coverage/semantics/output-final-conversion-author.json)
+records authority and limits; independent acceptance is pending. Pending
+conversion exceptions, FINAL non-Stringable Errors and abandoned cast/fatal
+owners remain explicit dependencies. OB19's public Notice performance limitation
+is unchanged.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.

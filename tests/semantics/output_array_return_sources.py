@@ -133,11 +133,9 @@ STDERR = {'default-array-warning': b'Warning: Array to string conversion in {FIL
                        b'o string conversion in {FILE} on line 1\n',
  'promoted-nonscalar-handler': b'Warning: Array to string conversion in {FILE} on line 1\n'}
 CONTROLS = {
-    'final-array': b'<?php echo "P";function h($b,$p){return [];}ob_start("h");echo "A";',
     'internal-object-result': b"<?php echo 'P';function h($b,$p){return new Exception('E');}ob_start('h');echo 'A';ob_get_flush();",
 }
 CONTROL_REASONS = {
-    'final-array': 'FINAL array output-handler return conversion',
     'internal-object-result': 'non-scalar user output-handler return conversion',
 }
 _original_fingerprint = runner.fingerprint
