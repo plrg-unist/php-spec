@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A fixed class-array factory retires its header and invokes without a receiver."""
+"""A fixed class-array factory drops its SEND owner and invokes without a receiver."""
 import base64
 import json
 from pathlib import Path
@@ -55,12 +55,20 @@ def render(case, fixture, filename):
         'expression_callback = NExprArray (SEQUENCE ([(NArrayItem ABSENT expression_class (BOOLEAN false) (BOOLEAN false) metadata_class),(NArrayItem ABSENT expression_method (BOOLEAN false) (BOOLEAN false) metadata_method)])) metadata_array',
         '$origin_child((porigin_callback),[PCFIELD 0,PCINDEX 0,PCFIELD 1]) = (porigin_class_literal)',
         '$origin_child((porigin_callback),[PCFIELD 0,PCINDEX 1,PCFIELD 1]) = (porigin_method_literal)',
-        '$magic_method_literal_value(S,porigin_class_literal,expression_class) = (pvalue_class)',
+        '$compiled_read(S,porigin_callback) = (PARRAY n_callback)',
+        '$compiled_effects(S,porigin_callback) = eps',
+        'S.ARRAYS[n_callback].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_class),ENTRY (KINT 1) (DIRECT pvalue_method)]',
+        '(HARRAY n_callback) <- $pools_nodes(S.POOLS)',
+        r'$compiled_read(S,porigin_class_literal) = eps /\ $compiled_read(S,porigin_method_literal) = eps',
+        '$origin_node(S.SOURCES,porigin_class_literal) = (expression_class)',
+        'expression_class = NScalarString (BYTES text_class) metadata_class_string',
+        '$base64(text_class) = $ptascii("PeerStaticChild225")',
         '$string_bytes(pvalue_class) = ($ptascii("PeerStaticChild225"))',
-        '$magic_method_literal_value(S,porigin_method_literal,expression_method) = (pvalue_method)',
+        '$origin_node(S.SOURCES,porigin_method_literal) = (expression_method)',
+        'expression_method = NScalarString (BYTES text_method) metadata_method_string',
+        '$base64(text_method) = $ptascii("capture")',
         '$string_bytes(pvalue_method) = ($ptascii("capture"))',
         'pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_callback))]', 'papiquery.VALUE = PARRAY n_callback',
-        'S.ARRAYS[n_callback].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_class),ENTRY (KINT 1) (DIRECT pvalue_method)]',
         'papiquery.INPUT = pvalue_class', 'porigin_class = papiquery.CLASS.REQUESTED',
         'papiquery.CLASS.CALLED = porigin_class', 'papiquery.CLASS.STRICT',
         'papiquery.CLASS.RECEIVER = eps', 'papiquery.SCOPE = eps', 'papiquery.THIS = eps',
@@ -69,7 +77,7 @@ def render(case, fixture, filename):
         'pfunction = pmethoddesc.FUNCTION', 'pmethoddesc.STATIC', 'pmethoddesc.OWNER =/= porigin_class',
         '$magic_method_from_callable_producer(S,porigin_outer,expression_outer) = (pfunction)',
         '$api_method_result(S,papiquery,$ptascii("capture")) = HANDLERRESOLVED (API_METHOD_TARGET papiquery pfunction.ORIGIN ($ptascii("capture")) true)',
-        '$heap_owners($heap_graph(S),HARRAY n_callback) = 1',
+        '$heap_owners($heap_graph(S),HARRAY n_callback) = 2',
         '$node_children(S,HARRAY n_callback) = eps', '$factory182_output(S.EVENTS) = eps',
         'n_wrapper = |S.OBJECTS|',
         'S_wrapped = $drive_steps(S,1)', 'S_wrapped.COMPLETION = BUDGET',
@@ -88,7 +96,8 @@ def render(case, fixture, filename):
         'S_direct = $staticarray225_ready_seek(S,2048)', 'S_direct = S_ready_found',
         'S_ready = S_ready_found[.COMPLETION = NORMAL]', READY.replace('S.', 'S_ready.'),
         'n_wrapper_ready = n_wrapper', 'porigin_ready = porigin_outer', 'phpType7_ready* = phpType7_real*',
-        '~((HARRAY n_callback) <- S_ready.ALLOCATIONS)',
+        '(HARRAY n_callback) <- S_ready.ALLOCATIONS',
+        '$heap_owners($heap_graph(S_ready),HARRAY n_callback) = 1',
         '$heap_owners($heap_graph(S_ready),HOBJECT n_wrapper) = 1',
         'S_producer_found = $staticarray225_producer_seek(S_ready,2048)', 'S_producer_found.COMPLETION = BUDGET',
         'S_producer = S_producer_found[.COMPLETION = NORMAL]', PRODUCER.replace('S.', 'S_producer.'),
@@ -113,6 +122,7 @@ def render(case, fixture, filename):
         'S_handler.STORE[n_kept_cell] = DEFINED pvalue_string',
         'S_done = $drive_steps(S_handler,512)', r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps',
         '~((HARRAY n_arguments) <- S_done.ALLOCATIONS)',
+        '$heap_owners($heap_graph(S_done),HARRAY n_callback) = 1',
         '$factory182_output(S_done.EVENTS) = ' + names.template(base64.b64decode(ROW['stdout_template_base64']), filename),
         '$magic_method_from_callable_producer(S_done,porigin_outer,expression_outer) = (pfunction)',
         '$call_descriptors_valid(S_done)', '$closure_state_valid(S_done)', '$gc_state_valid(S_done)', '$heap_valid($heap_graph(S_done))',
