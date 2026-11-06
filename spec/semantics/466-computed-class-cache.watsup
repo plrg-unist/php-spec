@@ -176,6 +176,30 @@ def $return_discard(S, CLASS_CACHE_PUBLISH pclassreplacement) = S[.TODO = (CLASS
 def $call_after_origin(S, CLASS_CACHE_PUBLISH pclassreplacement) = $class_write_publish(S, pclassreplacement, pclassconstantcontext_tail*)
   -- if S.CLASSCONSTANTINIT = pclassreplacement.CONTEXT :: pclassconstantcontext_tail*
 
+;; Null-C destructor exception dispatch occurs before publication-task unwind.
+;; Preserve that actual frontier as unsupported, with newtmp still protected.
+dec $class_write_abrupt_record(pstate, pdestructorcall, pclassreplacement) : bool
+def $class_write_abrupt_record(S, pdestructorcall, pclassreplacement) = true
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.RELEASE =/= eps
+  -- if pdestructorcall.CALLER = pclassreplacement.CALLER /\ pdestructorcall.ORIGIN = pclassreplacement.ORIGIN /\ pdestructorcall.CONSTCONTEXT = pclassreplacement.CONSTCONTEXT
+  -- if $class_write_live(S[.CURRENT = pclassreplacement.CALLER][.ORIGIN = pclassreplacement.ORIGIN][.CONSTCONTEXT = pclassreplacement.CONSTCONTEXT], pclassreplacement)
+def $class_write_abrupt_record(S, pdestructorcall, pclassreplacement) = false -- otherwise
+dec $class_write_abrupt_call(pstate, pdestructorcall, pclassreplacement*) : bool
+def $class_write_abrupt_call(S, pdestructorcall, eps) = false
+def $class_write_abrupt_call(S, pdestructorcall, pclassreplacement :: pclassreplacement_tail*) = ($class_write_abrupt_record(S, pdestructorcall, pclassreplacement) \/ $class_write_abrupt_call(S, pdestructorcall, pclassreplacement_tail*))
+def $class_write_abrupt_tail(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+  -- if ~pdestructorcall.USER
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if $class_write_abrupt_call(S, pdestructorcall, S.CLASSCONSTANTWRITES)
+def $class_write_abrupt_tail(S, (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+  -- if $destructor_c_return_valid(S, pdestructorcall)
+  -- if $class_write_abrupt_call(S, pdestructorcall, S.CLASSCONSTANTWRITES)
+rule PhpStep/class-cache-old-release-abrupt: S ~> S[.COMPLETION = UNSUPPORTED "uncertified class cache old-release abrupt completion"]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $class_write_abrupt_tail(S, ptask*)
+
 ;; Images preserve earlier publications without keeping their containers alive.
 def $class_constant_event_ordinal(CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) = n
 def $constant_callable_cache_event(CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) = ((pdefaultcache.ORIGIN, n))

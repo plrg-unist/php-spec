@@ -16,6 +16,7 @@ dec $class_constant_cache_value_valid(pstate, pdefaultcache) : bool
 dec $class_constant_cache_readable(pstate, porigin) : bool
 def $class_constant_cache_readable(S, porigin) = true -- otherwise
 dec $class_constant_row_payload_valid(pstate, pclassconstantdesc, pdefaultcache) : bool
+dec $class_constant_row_payload_default(pstate, pclassconstantdesc, pdefaultcache) : bool
 dec $class_constant_facts_valid(pstate, porigin, pconstantfact*) : bool
 dec $class_constant_cache_trigger(pstate, porigin, porigin, nat) : bool
 dec $class_constant_binding_head(ptask*, porigin) : bool
@@ -533,13 +534,14 @@ def $class_constant_runtime_type(S, ptbranch*, pvalue) = ($class_constant_value_
 
 def $class_constant_cache_value_valid(S, pdefaultcache) = $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS) -- otherwise
 def $class_constant_facts_valid(S, porigin, pconstantfact*) = $constant_facts_valid(S, porigin, pconstantfact*) -- otherwise
-def $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache) = true
+def $class_constant_row_payload_default(S, pclassconstantdesc, pdefaultcache) = true
   -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
   -- if $class_constant_cache_value_valid(S, pdefaultcache)
   -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
   -- if $constant_callable_cache_prefix(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (n_prefix)
   -- if $constant_callable_cache_valid(S, pclassconstantdesc, pdefaultcache.CLASS, n_prefix)
-def $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache) = false -- otherwise
+def $class_constant_row_payload_default(S, pclassconstantdesc, pdefaultcache) = false -- otherwise
+def $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache) = $class_constant_row_payload_default(S, pclassconstantdesc, pdefaultcache) -- otherwise
 def $class_constant_caches_valid(S, eps) = true
 def $class_constant_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)
