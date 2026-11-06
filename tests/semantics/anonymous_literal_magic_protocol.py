@@ -24,8 +24,11 @@ NEW = ('S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 ABSENT phpType4
 RETURN = ('S.TODO = (STMT (NStmtEcho (SEQUENCE ([NScalarString (BYTES text_return) metadata_string_return])) metadata_echo_return)) :: ptask_return_tail* '
           '-- if $base64(text_return) = $ptascii("RETURN;") '
           '-- if S.CURRENT = eps')
+UNPACK_FRONT = ('S.TODO = (EVAL (NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata_site)) :: ptask_boundary_tail* '
+                '-- if $call_unpack_present(phpType7*) '
+                '-- if S.CURRENT = eps')
 PREFIX = names.PREFIX.replace(names.FRONT, LATER)
-for label, front in [('new', NEW), ('return', RETURN)]:
+for label, front in [('new', NEW), ('return', RETURN), ('boundary', UNPACK_FRONT)]:
     PREFIX += names.PREFIX[names.PREFIX.index('dec $factory182_front'):].replace(names.FRONT, front).replace('$factory182_', '$literal201_' + label + '_')
 PREFIX += r'''
 dec $literal201_send_one(ptask) : (pmagicmethodcall, pvalue)?
@@ -146,9 +149,11 @@ def ownership(row, fixture, filename):
 
 def boundary(fixture, filename):
     return [
-        'S = $php_run(' + fixture + ',4096,' + filename + ')',
-        'S.COMPLETION = UNSUPPORTED "magic method source or argument mode"',
-        '~S.COMPILESTOP', 'S.CURRENT = eps',
+        'S_initial = $php_run(' + fixture + ',0,' + filename + ')',
+        r'S_initial.COMPLETION = BUDGET /\ ~S_initial.COMPILESTOP',
+        'S_found = $literal201_boundary_seek(S_initial,2048)',
+        'S_found.COMPLETION = BUDGET',
+        'S = S_found[.COMPLETION = NORMAL]', UNPACK_FRONT,
         'S.ORIGIN = (porigin_site)',
         '$origin_node(S.SOURCES,porigin_site) = (NExprMethodCall expression_receiver phpType20_name (SEQUENCE phpType7*) metadata_site)',
         'phpType7* = [phpType7_prefix,phpType7_pack]',
@@ -166,6 +171,9 @@ def boundary(fixture, filename):
         '~$magic_unpack_arguments(S,porigin_site,phpType7*)',
         '$factory182_output(S.EVENTS) = eps',
         '$class_state_valid(S)', '$gc_state_valid(S)', '$heap_valid($heap_graph(S))',
+        'S_done = $drive_steps(S,2048)',
+        'S_done.COMPLETION = UNSUPPORTED "magic method source or argument mode"',
+        '$factory182_output(S_done.EVENTS) = eps',
     ]
 
 
