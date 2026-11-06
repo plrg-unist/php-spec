@@ -135,7 +135,7 @@ def $magic_static_method_pack(S, pmagicstaticmethodcall, n, poperand*, porigin?,
   -- if $magic_static_method_raw_valid(S, pmagicstaticmethodcall)
   -- if porigin? = (pmagicstaticmethodcall.SITE) /\ z = pmagicstaticmethodcall.LINE
   -- if n = |pmagicstaticmethodcall.ARGUMENTS| /\ n = |poperand*|
-  -- if $magic_method_call_values(S, pmagicstaticmethodcall.ARGUMENTS, poperand*) = (pvalue*)
+  -- if $magic_method_collected_values(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, poperand*) = (pvalue*)
   -- if S_array = $magic_method_allocate_array(S, pvalue*)
   -- if S_array.RESULT = KNOWN (PARRAY n_array)
 def $magic_static_method_pack(S, pmagicstaticmethodcall, n, poperand*, porigin?, z, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "magic static method send continuation"] -- otherwise
@@ -157,7 +157,7 @@ def $magic_static_method_pending(S, pmagicstaticmethodcall, n, pvalue*) = true
   -- if S.TODO = (CALL_ARGS (MAGIC_STATIC_METHOD_TARGET pmagicstaticmethodcall n pvalue*) eps 2 ([KNOWN (PSTRING pmagicstaticmethodcall.NAME), KNOWN (PARRAY n)]) (pmagicstaticmethodcall.SITE) pmagicstaticmethodcall.LINE) :: METHOD_RESULT :: pmagicstaticmethodcall.TAIL
   -- if $magic_static_method_caller(S, pmagicstaticmethodcall)
   -- if |pvalue*| = |pmagicstaticmethodcall.ARGUMENTS|
-  -- if $magic_method_call_values(S, pmagicstaticmethodcall.ARGUMENTS, (KNOWN pvalue)*) = (pvalue*)
+  -- if $magic_method_collected_values(S, pmagicstaticmethodcall.SITE, pmagicstaticmethodcall.ARGUMENTS, (KNOWN pvalue)*) = (pvalue*)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if S.ARRAYS[n] = $magic_method_array(pvalue*, 0)
 def $magic_static_method_pending(S, pmagicstaticmethodcall, n, pvalue*) = false -- otherwise

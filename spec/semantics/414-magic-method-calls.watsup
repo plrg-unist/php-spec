@@ -116,9 +116,26 @@ def $magic_named_source(S, pmagicmethodcall) = true
   -- if $magic_named_sources(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0)
 def $magic_named_source(S, pmagicmethodcall) = false -- otherwise
 dec $magic_method_value(pstate, pvalue) : bool
-;; Array sends use only the original first-CV or first-literal role. The call
-;; descriptor authenticates this argument list; later producers/unpack retain
-;; the old value domain. Captured arrays are never cloned by the trampoline.
+;; A first array-returning call has a stable, source-backed ordinary target.
+;; No fallback lookup or current execution origin supplies this certificate.
+dec $magic_method_array_producer(pstate, porigin, phpType7*) : pfunction?
+def $magic_method_array_producer(S, porigin, (NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7_tail*) = (pfunction)
+  -- if $(|phpType7_tail*| < 2) /\ ~$call_unpack_present(phpType7_tail*)
+  -- if expression = NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata
+  -- if $call_argument_origin(S, (porigin), 0) = (PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (expression)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $call_target(S, preqbytes, eps) = (pfunction)
+  -- if pfunction.ORIGIN = PORIGIN n_function pcpath_function
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11 (SEQUENCE eps) phpType18 (SEQUENCE statement*) metadata_function)
+  -- if ~pfunction.SIGNATURE.BYREF /\ pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.DEFAULTS = eps
+  -- if pfunction.BODY = pcpath_function ++ [PCFIELD 5]
+  -- if ~$generator_statements(statement*)
+def $magic_method_array_producer(S, porigin, phpType7*) = eps -- otherwise
+;; The base array-carrier helper retains the first-CV/first-literal policy.
+;; The call descriptor authenticates the original list; the producer wrapper
+;; below adds only its certified first-call role. No trampoline clones arrays.
 dec $magic_method_array_cv(phpType7*) : ptbytes?
 def $magic_method_array_cv((NArg phpType3_name (NExprVariable (BYTES text) metadata_variable) (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*) = ($base64(text))
   -- if $(|phpType7_tail*| < 2)
@@ -330,6 +347,15 @@ def $magic_method_call_values(S, phpType7*, (KNOWN (PARRAY n)) :: poperand_tail*
   -- if $magic_method_values(S, poperand_tail*) = (pvalue_tail*)
 def $magic_method_call_values(S, phpType7*, poperand*) = eps -- otherwise
 
+dec $magic_method_collected_values(pstate, porigin, phpType7*, poperand*) : (pvalue*)?
+def $magic_method_collected_values(S, porigin, phpType7*, poperand*) = (pvalue*)
+  -- if $magic_method_call_values(S, phpType7*, poperand*) = (pvalue*)
+def $magic_method_collected_values(S, porigin, phpType7*, (KNOWN (PARRAY n)) :: poperand_tail*) = ((PARRAY n) :: pvalue_tail*)
+  -- if $magic_method_array_producer(S, porigin, phpType7*) = (pfunction)
+  -- if $magic_method_flat_array(S, n)
+  -- if $magic_method_values(S, poperand_tail*) = (pvalue_tail*)
+def $magic_method_collected_values(S, porigin, phpType7*, poperand*) = eps -- otherwise
+
 dec $magic_method_array(pvalue*, nat) : parray
 dec $magic_method_array_insert(parray, pvalue*, nat) : parray
 def $magic_method_array(eps, n) = $array_empty()
@@ -348,7 +374,7 @@ def $magic_method_pack(S, pmagicmethodcall, n, poperand*, porigin?, z, ptask_tai
   -- if $magic_method_raw_valid(S, pmagicmethodcall)
   -- if porigin? = (pmagicmethodcall.SITE) /\ z = pmagicmethodcall.LINE
   -- if n = |pmagicmethodcall.ARGUMENTS| /\ n = |poperand*|
-  -- if $magic_method_call_values(S, pmagicmethodcall.ARGUMENTS, poperand*) = (pvalue*)
+  -- if $magic_method_collected_values(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, poperand*) = (pvalue*)
   -- if S_array = $magic_method_allocate_array(S, pvalue*)
   -- if S_array.RESULT = KNOWN (PARRAY n_array)
 def $magic_method_pack(S, pmagicmethodcall, n, poperand*, porigin?, z, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "magic method send continuation"] -- otherwise
@@ -370,7 +396,7 @@ def $magic_method_pending(S, pmagicmethodcall, n, pvalue*) = true
   -- if S.TODO = (CALL_ARGS (MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*) eps 2 ([KNOWN (PSTRING pmagicmethodcall.NAME), KNOWN (PARRAY n)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: METHOD_RESULT :: pmagicmethodcall.TAIL
   -- if $magic_method_caller(S, pmagicmethodcall)
   -- if |pvalue*| = |pmagicmethodcall.ARGUMENTS|
-  -- if $magic_method_call_values(S, pmagicmethodcall.ARGUMENTS, (KNOWN pvalue)*) = (pvalue*)
+  -- if $magic_method_collected_values(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, (KNOWN pvalue)*) = (pvalue*)
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if S.ARRAYS[n] = $magic_method_array(pvalue*, 0)
 def $magic_method_pending(S, pmagicmethodcall, n, pvalue*) = false -- otherwise
@@ -474,7 +500,7 @@ dec $magic_named_pack(pstate, pmagicmethodcall, poperand*) : pstate
 def $magic_named_pack(S, pmagicmethodcall, poperand*) = S_arguments[.TODO = [(CALL_ARGS (MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) eps 2 ([KNOWN (PSTRING pmagicmethodcall.NAME), KNOWN (PARRAY n_arguments)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE), MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*, METHOD_RESULT] ++ pmagicmethodcall.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $magic_named_raw_valid(S, pmagicmethodcall, |pmagicmethodcall.ARGUMENTS|, poperand*, false)
   -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
-  -- if $magic_method_call_values(S, pmagicmethodcall.ARGUMENTS, poperand*) = (pvalue*)
+  -- if $magic_method_collected_values(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, poperand*) = (pvalue*)
   -- if (parray_arguments, parray_named) = $magic_named_tables(pkey*, pvalue*, $array_empty(), $array_empty())
   -- if S_named = $allocate_array(S, parray_named)
   -- if S_named.RESULT = KNOWN (PARRAY n_named)
@@ -510,7 +536,7 @@ def $magic_named_pending(S, pmagicmethodcall, n_arguments, n_named, pvalue*) = t
   -- if S.TODO = (CALL_ARGS (MAGIC_METHOD_NAMED_TARGET pmagicmethodcall n_arguments n_named pvalue*) eps 2 ([KNOWN (PSTRING pmagicmethodcall.NAME), KNOWN (PARRAY n_arguments)]) (pmagicmethodcall.SITE) pmagicmethodcall.LINE) :: (MAGIC_METHOD_NAMED_RESULT pmagicmethodcall n_arguments n_named pvalue*) :: METHOD_RESULT :: pmagicmethodcall.TAIL
   -- if $magic_method_caller(S, pmagicmethodcall)
   -- if $magic_named_buffer(S, pmagicmethodcall, n_arguments, n_named, pvalue*)
-  -- if $magic_method_call_values(S, pmagicmethodcall.ARGUMENTS, (KNOWN pvalue)*) = (pvalue*)
+  -- if $magic_method_collected_values(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, (KNOWN pvalue)*) = (pvalue*)
   -- if $magic_named_keys(pmagicmethodcall.ARGUMENTS, 0, false, eps) = (pkey*)
   -- if (parray_arguments, parray_named) = $magic_named_tables(pkey*, pvalue*, $array_empty(), $array_empty())
   -- if (HARRAY n_arguments) <- S.ALLOCATIONS
