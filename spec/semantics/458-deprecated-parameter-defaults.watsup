@@ -107,6 +107,8 @@ def $parameter_receive_effect_value(S, preceivebirth, porigin_effect) = true
 
 ;; A pending miss may see a cache filled by its real nested receive. The native
 ;; outer evaluation still delivers its selected value, replacing only if cacheable.
+dec $parameter_receive_child_entry(pstate, preceivebirth, preceivebirth) : bool
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = true -- otherwise
 dec $parameter_receive_cache_child(pstate, preceivebirth, nat, preceivebirth) : bool
 def $parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_child) = true
   -- if ~preceivebirth_child.ACTIVE
@@ -116,6 +118,7 @@ def $parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_chil
   -- if preceivebirth_child.PARENTEDGE = (preceiveedge)
   -- if $parameter_receive_user_frontier(S, preceiveedge.FRONTIER)
   -- if $parameter_receive_source_valid(S, preceivebirth_child)
+  -- if $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child)
 def $parameter_receive_cache_child(S, preceivebirth, n_owner, preceivebirth_child) = false -- otherwise
 dec $parameter_receive_cache_children(pstate, preceivebirth, nat, preceivebirth*) : bool
 def $parameter_receive_cache_children(S, preceivebirth, n_owner, eps) = false

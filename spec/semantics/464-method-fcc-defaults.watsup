@@ -116,3 +116,8 @@ def $private_cache_marker_owner(S, n) = $method_fcc_private_owner(S, n)
   -- if $method_fcc_kind(S, n)
 def $destruction_child_jobs(S, HOBJECT n) = [DESTRUCTION_PRIVATE_CACHE n] ++ $destruction_values($node_children(S, HOBJECT n))
   -- if $method_fcc_private_owner(S, n)
+
+;; An ENTRY-bearing parent cannot borrow cache authority from an unwitnessed
+;; dynamic child. Existing fixed-method children keep their187 entry proof.
+def $parameter_receive_child_entry(S, preceivebirth, preceivebirth_child) = $parameter_receive_cache_entry(S, preceivebirth_child)
+  -- if preceivebirth.ENTRY =/= eps
