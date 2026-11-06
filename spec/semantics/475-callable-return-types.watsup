@@ -504,7 +504,7 @@ def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (API_
 def $task_nodes(CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = [HOBJECT n]
 def $call_task_valid(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $throwable_live(S, n))
 def $task_nodes(CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = $value_nodes(pvalue)
-def $call_task_valid(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ ($is_array_value(pvalue) \/ $callable_return_word(pvalue) =/= eps) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS))
+def $call_task_valid(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $is_array_value(pvalue) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS))
 def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = $throw_frame_resume($restore_frame(S_transfer), n)
   -- if S.TODO = [RETURN_UNWIND (KNOWN pvalue) (porigin_site)]
   -- if $callable_return_metadata(S, porigin_function, porigin_site, z)
