@@ -7616,6 +7616,13 @@ Unsupported. Names use the runtime class and literal `::__invoke`, including
 inherited methods, without entering `__invoke` or `__toString`. Real SENT owners
 and the existing result carrier preserve same-CV writes, detached output cells
 and normal/throwing cleanup. [Instance review](coverage/semantics/is-callable-instance-review.json).
+Ordinary USER method strings and class/object arrays now query public concrete
+methods and proved absence without entering bodies. Syntax-only checks bypass
+lookup after validating admitted array shape/types. Names retain string spelling
+or the object's canonical runtime class; borrowed capture history survives
+reference-member mutation and receiver retirement. Normal array cleanup preserves
+the saved boolean. Normal lookup of qualified method members remains Unsupported
+pending its deprecation handling. [Method-query review](coverage/semantics/is-callable-user-method-review.json).
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local

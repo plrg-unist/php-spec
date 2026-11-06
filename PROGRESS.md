@@ -74,6 +74,12 @@ absence stay separate from unresolved metadata; inherited names use the runtime
 class. Real SENT and acquired-cell owners retain same-CV/removal history through
 normal and throwing output effects. Two source agreements and 179 independent
 ownership/budget checks pass at their recorded cuts. [Review](coverage/semantics/is-callable-instance-review.json).
+Ordinary USER method strings and class/object arrays now share public concrete
+method/known-absence queries without body entry. Structural syntax-only admission
+stays separate from lookup; exact names and selected booleans survive member-cell
+mutation, receiver retirement and normal/throwing cleanup using borrowed history
+and the existing result carrier. Three source agreements and 227 independent
+history/ownership/budget checks pass at recorded cuts. [Review](coverage/semantics/is-callable-user-method-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -2821,7 +2827,6 @@ their work remains unaccepted until integrated.
 | CLASS209 | Immediate fixed-source USER/public-static FCC producers with real conversion/target before positional arguments and wrapper/INSTANCE/result roots; preserve current quiet signatures, outer headers and held bounds. |
 | ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
 | COMP196 | Ordinary named-class deferred static defaults with owning Deprecated globals through real STATIC_DEFAULT_BIND/context and declaring CLASSSTATICS cells; preserve first-fill/reentry/type/reference laws and held boundaries. |
-| ENUM153 | Published USER method strings and class/object callable arrays with concrete public/known-absence facts, syntax-only distinction and frozen NAME/BOOL; preserve unknown metadata and invocation exclusions. |
 | GC64 | Fresh Child exception replacing own-Value pending Exception, with exact Previous/root handoff and later Child order under established Root/NEXT/weakNULL/claim laws; preserve common lifecycle bounds. |
 | I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
 | OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |

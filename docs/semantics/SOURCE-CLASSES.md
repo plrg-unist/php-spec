@@ -1353,6 +1353,24 @@ pending exception and saved name. Its trace may retain the input until the
 caught exception is released. Existing producer, old-output, nonunpack and
 wider object bounds remain. The [instance review](../../coverage/semantics/is-callable-instance-review.json)
 records this slice.
+Ordinary published USER classes also support method-string and class/object-array
+queries for public concrete methods or proved absence, independently of body
+entry. Strings and valid admitted pairs return true in syntax-only mode before
+lookup; normal lookup waits for successful flag reception and respects static
+versus object/compatible-This admission. Unknown class/method metadata, magic and
+nonpublic paths remain Unsupported. String/class-array names preserve original
+bytes; object arrays use the canonical runtime class and original method bytes.
+INPUT certifies structural bytes without looking up a method. After reception,
+the genuine output snapshot borrows immutable object/class history so member-cell
+mutation can retire the selected receiver without changing NAME or BOOL; fresh
+queries still require a live receiver. Normal admitted-array OUTPUT commits NAME
+before argument destruction and preserves the boolean in the existing operation.
+This adds an internal resumable step while preserving observable order; it is not
+an extra owner. Normal lookup of qualified array method members remains
+Unsupported pending its deprecation handling; syntax-only still bypasses lookup.
+Existing producer,
+nonunpack, old-output and held bounds remain. The [method-query review](../../coverage/semantics/is-callable-user-method-review.json)
+records the source and history cuts.
 Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing
