@@ -274,6 +274,23 @@ nonpublic/magic/Generator and wider name/signature modes remain separate.
 The [CV method review](../../coverage/semantics/deprecated-cv-method-default-review.json)
 records four exact normal originals and 55/57/56 independent strict461 conditions.
 
+Ordinary public method shutdown callbacks now receive owning defaults from their
+genuine registry entry. The callee keeps an absent callsite and line -1; registration
+source is separate. Exact entry/target/ARGS/SENT and public function/scopes checks
+protect current reads and hits. A four-field nonowning receive witness captures
+the index, registration source/line and selected target. Closed proof uses immutable
+function/scopes/publication; it reads no retired receiver, arguments or registry
+row. The saved index is descriptive after final cleanup resets the queue.
+
+String, class-array and object-array callbacks include compatible ordinary implicit
+This. Registry receiver/argument ownership and borrowed This remain unchanged.
+This finite route uses fixed registrations with neutral capture/producer metadata
+and existing public nongenerator by-value methods. Closure/raw invokable-object,
+captured/private/magic/Generator and wider modes remain separate. Parent cache
+reuse requires the child's real entry proof. Five normal originals and 86/78/83
+strict462 conditions are recorded in the
+[shutdown review](../../coverage/semantics/deprecated-shutdown-method-default-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

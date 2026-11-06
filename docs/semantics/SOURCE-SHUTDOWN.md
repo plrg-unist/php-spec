@@ -42,6 +42,20 @@ wrapping reference cells and empty internal caller context.
 Variadic conversion records the received argument view separately from the
 original registered copies; later local-array writes leave that view intact.
 
+Public ordinary method callbacks also receive owning Deprecated global defaults.
+Their real callee callsite stays absent with line -1; the registration source is
+not substituted for it. An optional nonowning receive witness captures the exact
+entry index, registration source/line and target. Live proof uses the selected row
+and full argument/context checks; closed proof uses immutable function/scopes and
+publication facts after registry or receiver release. The index is descriptive
+after queue reset and never a cache key. Registry receivers and copied arguments
+keep their existing owners; entered This remains borrowed.
+Fixed string/class-array/object-array registrations include ordinary compatible
+implicit This, with neutral capture/producer metadata. Wider callback families
+retain their earlier bounds. Five exact originals and 247 focused strict462
+conditions are bound in the
+[method-default review](../../coverage/semantics/deprecated-shutdown-method-default-review.json).
+
 Source comparisons and source-reached state checks are separate gates:
 
 ```sh

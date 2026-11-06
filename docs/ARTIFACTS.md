@@ -118,6 +118,13 @@ exact normal originals and 55/57/56 strict461 conditions to their actual cuts.
 All comparisons and novel fronts passed first try; no source/native or older
 matrix replay was needed.
 
+COMP202 shutdown method-default sources and registry/history checks are under
+`../php-spec-evidence-archive/comp202/`. The
+[review](../coverage/semantics/deprecated-shutdown-method-default-review.json)
+binds five exact originals and 86/78/83 strict462 conditions. The completed registry
+row is guarded separately from its failed aggregate. Only the qualified DEFINE
+fixture was remeasured; baseline and preparation failures retain zero credit.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

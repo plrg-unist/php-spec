@@ -3193,6 +3193,15 @@ strict461 fronts pass 55/57/56 conditions, and actual joined461/inventory pass a
 retain their bounds; callback/nonpublic/magic/Generator/wider and held entries
 remain separate. [Review](coverage/semantics/deprecated-cv-method-default-review.json).
 
+COMP202 receives owning defaults in authentic public method shutdown callbacks.
+Exact current entry/arguments and a nonowning selected-target witness preserve the
+absent callee callsite and closed history after registry reset/receiver retirement.
+Registry owners and borrowed This stay unchanged; ordinary implicit This is
+included. Five normal originals agree; independent strict462 fronts pass 86/78/83.
+Fixed registration/public/by-value/nongenerator and capture/producer/held bounds
+remain explicit. Source/runtime/tests are accepted at fae753133a; actual joined462
+and inventory pass. [Review](coverage/semantics/deprecated-shutdown-method-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -3201,7 +3210,7 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS217 | Literal keyword nonstatic public USER direct calls and immediate FCCs with compatible saved caller This and authentic requested/declaring/called metadata; preserve existing source and owner laws. |
-| COMP202 | Owning public ordinary method defaults in authentic registered shutdown callbacks, with registry target/argument retention and real callback entry/history; preserve existing callback and held bounds. |
+| ATTR75 | Normal backed GET/SET with plain non-NUL string CV property names, preserving actual selector timing, canonical descriptor permissions and selected-name ownership; keep quiet and compound consumers held. |
 | ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
 | GC68 | Positive unmatched native reference counts for exact normal sent-cell raw NAME overwrites, preserving physical graph/debt laws and authentic release, GC snapshots and shutdown behavior; preserve explicit refusals elsewhere. |
 | I135 | Ordinary Aggregate getter reentry into the selected initialized Generator before DATA, using actual singleton resumer and source-Aggregate owners with existing descriptor-history and cancellation laws. |
