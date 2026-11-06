@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-array-literal-instance-transient",
+      "source": "<?php\nclass Leaf196 { public string $tag = 'OLD'; public function __destruct() { echo 'PAY-', $this->tag, ';'; } }\nfunction shift196() { global $owner, $replacement; $owner = null; $replacement = new Leaf196; $replacement->tag = 'NEW'; echo 'SHIFT;'; return 9; }\nclass Base196 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { return new class($arguments[0], $name . '|' . $arguments[1] . '|' . self::secret() . '|' . self::class . '|' . static::class . '|' . __METHOD__) { public function __construct(public array $snapshot, public string $data) {} public function __destruct() { echo 'CHILD;'; } }; } public function __destruct() { echo 'OWNER;'; } }\nclass Derived196 extends Base196 {}\n$owner = new Derived196; $child = $owner->MiSsInG([7, new Leaf196], shift196()); echo 'RETURN;'; unset($replacement); echo 'HELD;', $child->snapshot[0], '|', $child->snapshot[1]->tag, '|', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "299dd66a0bfd5aee0900df7144f40c3aa249dd8f5a04e9b303a7d14d210dc2ef",
+      "stdout_template_base64": "U0hJRlQ7T1dORVI7UkVUVVJOO1BBWS1ORVc7SEVMRDs3fE9MRHxNaVNzSW5HfDl8UFJJVkFURXxCYXNlMTk2fERlcml2ZWQxOTZ8QmFzZTE5Njo6X19jYWxsO0NISUxEO1BBWS1PTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-array-literal-static-transient",
+      "source": "<?php\nclass StaticLeaf196 { public string $tag = 'OLD'; public function __destruct() { echo 'PAY-', $this->tag, ';'; } }\nfunction staticShift196() { global $replacement; $replacement = new StaticLeaf196; $replacement->tag = 'NEW'; echo 'SHIFT-STATIC;'; return 9; }\nclass StaticBase196 { private static function secret() { return 'PRIVATE'; } public static function __callStatic(string $name, array $arguments) { return new class($arguments[0], $name . '|' . $arguments[1] . '|' . self::secret() . '|' . self::class . '|' . static::class . '|' . __METHOD__) { public function __construct(public array $snapshot, public string $data) {} public function __destruct() { echo 'CHILD;'; } }; } }\nclass StaticDerived196 extends StaticBase196 {}\n$child = StaticDerived196::MiSsInG([7, new StaticLeaf196], staticShift196()); echo 'RETURN;'; unset($replacement); echo 'HELD;', $child->snapshot[0], '|', $child->snapshot[1]->tag, '|', $child->data, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "434c23f63e7c061b366d9e3b02c664bf9bc4e98b346ad67d1ce780933cc08b25",
+      "stdout_template_base64": "U0hJRlQtU1RBVElDO1JFVFVSTjtQQVktTkVXO0hFTEQ7N3xPTER8TWlTc0luR3w5fFBSSVZBVEV8U3RhdGljQmFzZTE5NnxTdGF0aWNEZXJpdmVkMTk2fFN0YXRpY0Jhc2UxOTY6Ol9fY2FsbFN0YXRpYztDSElMRDtQQVktT0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

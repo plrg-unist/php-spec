@@ -60,9 +60,16 @@ def $magic_method_source(S, pmethoddesc) = true
   -- if $enum_magic_source(S, pmethoddesc, false)
 def $magic_method_source(S, pmethoddesc) = false -- otherwise
 
+dec $magic_method_literal_entries(phpType13*) : bool
+def $magic_method_literal_entries(eps) = true
+def $magic_method_literal_entries((NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13_tail*) = $magic_method_literal_entries(phpType13_tail*)
+def $magic_method_literal_entries(phpType13*) = false -- otherwise
 dec $magic_method_argument_source(pstate, porigin, nat, expression) : bool
 def $magic_method_argument_source(S, porigin, n, NScalarInt (INTEGER z) metadata) = true
   -- if $compiled_read(S, porigin) = (PINT i)
+def $magic_method_argument_source(S, porigin, 0, NExprArray (SEQUENCE phpType13*) metadata) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArray (SEQUENCE phpType13*) metadata)
+  -- if $magic_method_literal_entries(phpType13*)
 def $magic_method_argument_source(S, PORIGIN n_unit pcpath, 0, NExprVariable (BYTES text) metadata) = true
   -- if $base64(text) =/= $ptascii("this")
   -- if $source_emission_cv(S, n_unit, pcpath, NExprVariable (BYTES text) metadata)
@@ -109,7 +116,7 @@ def $magic_named_source(S, pmagicmethodcall) = true
   -- if $magic_named_sources(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, 0)
 def $magic_named_source(S, pmagicmethodcall) = false -- otherwise
 dec $magic_method_value(pstate, pvalue) : bool
-;; An array send is admitted only in the original first-CV role. The call
+;; Array sends use only the original first-CV or first-literal role. The call
 ;; descriptor authenticates this argument list; later producers/unpack retain
 ;; the old value domain. Captured arrays are never cloned by the trampoline.
 dec $magic_method_array_cv(phpType7*) : ptbytes?
@@ -118,6 +125,14 @@ def $magic_method_array_cv((NArg phpType3_name (NExprVariable (BYTES text) metad
   -- if ~$call_unpack_present(phpType7_tail*)
   -- if $base64(text) =/= $ptascii("this")
 def $magic_method_array_cv(phpType7*) = eps -- otherwise
+dec $magic_method_array_source(phpType7*) : bool
+def $magic_method_array_source(phpType7*) = true
+  -- if $magic_method_array_cv(phpType7*) = (ptbytes)
+def $magic_method_array_source((NArg phpType3_name (NExprArray (SEQUENCE phpType13*) metadata_array) (BOOLEAN false) (BOOLEAN false) metadata) :: phpType7_tail*) = true
+  -- if $(|phpType7_tail*| < 2)
+  -- if ~$call_unpack_present(phpType7_tail*)
+  -- if $magic_method_literal_entries(phpType13*)
+def $magic_method_array_source(phpType7*) = false -- otherwise
 dec $magic_method_flat_entries(pstate, pentry*) : bool
 def $magic_method_flat_entries(S, eps) = true
 def $magic_method_flat_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($magic_method_value(S, pvalue) /\ $magic_method_flat_entries(S, pentry_tail*))
@@ -310,7 +325,7 @@ dec $magic_method_call_values(pstate, phpType7*, poperand*) : (pvalue*)?
 def $magic_method_call_values(S, phpType7*, poperand*) = (pvalue*)
   -- if $magic_method_values(S, poperand*) = (pvalue*)
 def $magic_method_call_values(S, phpType7*, (KNOWN (PARRAY n)) :: poperand_tail*) = ((PARRAY n) :: pvalue_tail*)
-  -- if $magic_method_array_cv(phpType7*) = (ptbytes)
+  -- if $magic_method_array_source(phpType7*)
   -- if $magic_method_flat_array(S, n)
   -- if $magic_method_values(S, poperand_tail*) = (pvalue_tail*)
 def $magic_method_call_values(S, phpType7*, poperand*) = eps -- otherwise
