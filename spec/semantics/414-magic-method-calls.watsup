@@ -82,6 +82,33 @@ dec $magic_method_constructor_producer(pstate, porigin, expression) : (porigin, 
 dec $magic_method_static_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
 dec $magic_method_closure_producer(pstate, porigin, expression) : pfunction?
 dec $magic_method_instance_producer(pstate, porigin, expression) : (porigin, pmethoddesc)?
+dec $magic_method_plain_instance_source(pstate, pmethoddesc, phpType7*) : bool
+dec $magic_producer_cv_source(pstate, porigin, expression) : bool
+dec $magic_producer_selected_source(pstate, porigin, porigin) : pmethoddesc?
+dec $magic_producer_index(pstate, porigin, phpType7*, porigin, nat) : nat?
+dec $magic_producer_fact_at(pmagicproducerfact*, porigin) : pmagicproducerfact?
+dec $magic_producer_facts_valid(pstate, porigin, phpType7*, pmagicproducerfact*) : bool
+dec $magic_producer_facts_limit(pstate, porigin, phpType7*, pmagicproducerfact*, nat) : bool
+dec $magic_producer_target(pstate, pcalltarget, nat, porigin) : bool
+dec $magic_producer_pending_task(pstate, ptask, porigin) : (pcalltarget, nat)?
+dec $magic_producer_pending(pstate, ptask*, porigin) : (pcalltarget, nat)?
+dec $magic_producer_target_site(pcalltarget) : porigin?
+dec $magic_producer_candidate_task(pstate, ptask, porigin) : bool
+dec $magic_producer_candidate(pstate, ptask*, porigin) : bool
+dec $magic_producer_target_facts(pcalltarget) : pmagicproducerfact*
+dec $magic_producer_target_set(pcalltarget, pmagicproducerfact*) : pcalltarget
+dec $magic_producer_record_task(ptask, pcalltarget) : ptask
+dec $magic_producer_record_tasks(pstate, ptask*, porigin, pmagicproducerfact) : ptask*
+dec $magic_producer_cell(pstate, preqbytes) : nat?
+dec $magic_producer_read(pstate, porigin, poperand, ptbytes, phpType7*) : bool
+dec $magic_producer_selected(pstate, pcalltarget, porigin) : pstate
+dec $magic_method_raw_valid(pstate, pmagicmethodcall) : bool
+dec $magic_producer_old_value(pstate, porigin, phpType7*, nat, poperand) : pvalue?
+dec $magic_producer_copy_values(pstate, porigin, phpType7*, nat, poperand*, pmagicproducerfact*) : (pvalue*)?
+dec $magic_method_fact_values(pstate, porigin, phpType7*, poperand*, pmagicproducerfact*) : (pvalue*)?
+dec $magic_producer_task_limit(ptask) : (porigin, phpType7*, pmagicproducerfact*, nat)?
+dec $magic_producer_raw_limits(pstate, ptask*, porigin) : bool
+dec $magic_named_raw_valid(pstate, pmagicmethodcall, nat, poperand*, bool) : bool
 dec $magic_method_argument_source(pstate, porigin, nat, expression) : bool
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_literal_value(S, porigin, expression) = (pvalue)
@@ -315,7 +342,6 @@ def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall ex
   -- if $method_class_selected(S, porigin_class, $base64(text_name), $closure_source_class(S, PORIGIN n_unit pcpath)) = (pmethoddesc)
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
 def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
-dec $magic_method_plain_instance_source(pstate, pmethoddesc, phpType7*) : bool
 def $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if ~$ppmethod_magic(pmethoddesc.NAME) /\ $ptlc(pmethoddesc.NAME) =/= $ptascii("__construct")
@@ -341,14 +367,12 @@ def $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) = true
 def $magic_method_plain_instance_source(S, pmethoddesc, phpType7*) = false -- otherwise
 ;; CV receiver syntax is deferred until the actual receiver read. The selected
 ;; source fact stays in this invocation's outer descriptor, without a cell pin.
-dec $magic_producer_cv_source(pstate, porigin, expression) : bool
 def $magic_producer_cv_source(S, PORIGIN n_unit pcpath, NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata) = true
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)
   -- if $base64(text) =/= $ptascii("this")
   -- if $source_emission_cv(S, n_unit, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text) metadata_cv)
   -- if $ppbuiltin_arguments(phpType7*) = (expression*)
 def $magic_producer_cv_source(S, porigin, expression) = false -- otherwise
-dec $magic_producer_selected_source(pstate, porigin, porigin) : pmethoddesc?
 def $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethoddesc)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if expression = NExprMethodCall expression_cv (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata
@@ -358,19 +382,16 @@ def $magic_producer_selected_source(S, porigin_site, porigin_class) = (pmethodde
   -- if $method_class_selected(S, porigin_class, $base64(text_method), $closure_source_class(S, porigin_site)) = (pmethoddesc)
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
 def $magic_producer_selected_source(S, porigin_site, porigin_class) = eps -- otherwise
-dec $magic_producer_index(pstate, porigin, phpType7*, porigin, nat) : nat?
 def $magic_producer_index(S, porigin_outer, eps, porigin_site, n) = eps
 def $magic_producer_index(S, porigin_outer, phpType7 :: phpType7_tail*, porigin_site, n) = (n)
   -- if $call_argument_origin(S, (porigin_outer), n) = (porigin_site)
 def $magic_producer_index(S, porigin_outer, phpType7 :: phpType7_tail*, porigin_site, n) = $magic_producer_index(S, porigin_outer, phpType7_tail*, porigin_site, $(n + 1))
   -- if $call_argument_origin(S, (porigin_outer), n) =/= (porigin_site)
-dec $magic_producer_fact_at(pmagicproducerfact*, porigin) : pmagicproducerfact?
 def $magic_producer_fact_at(eps, porigin_site) = eps
 def $magic_producer_fact_at(pmagicproducerfact :: pmagicproducerfact_tail*, porigin_site) = (pmagicproducerfact)
   -- if pmagicproducerfact.SITE = porigin_site
 def $magic_producer_fact_at(pmagicproducerfact :: pmagicproducerfact_tail*, porigin_site) = $magic_producer_fact_at(pmagicproducerfact_tail*, porigin_site)
   -- if pmagicproducerfact.SITE =/= porigin_site
-dec $magic_producer_facts_valid(pstate, porigin, phpType7*, pmagicproducerfact*) : bool
 def $magic_producer_facts_valid(S, porigin_outer, phpType7*, eps) = true
 def $magic_producer_facts_valid(S, porigin_outer, phpType7*, pmagicproducerfact :: pmagicproducerfact_tail*) = true
   -- if $magic_producer_index(S, porigin_outer, phpType7*, pmagicproducerfact.SITE, 0) = (n)
@@ -379,14 +400,12 @@ def $magic_producer_facts_valid(S, porigin_outer, phpType7*, pmagicproducerfact 
   -- if pmethoddesc.FUNCTION.ORIGIN = pmagicproducerfact.METHOD
   -- if $magic_producer_facts_valid(S, porigin_outer, phpType7*, pmagicproducerfact_tail*)
 def $magic_producer_facts_valid(S, porigin_outer, phpType7*, pmagicproducerfact*) = false -- otherwise
-dec $magic_producer_facts_limit(pstate, porigin, phpType7*, pmagicproducerfact*, nat) : bool
 def $magic_producer_facts_limit(S, porigin_outer, phpType7*, eps, n_limit) = true
 def $magic_producer_facts_limit(S, porigin_outer, phpType7*, pmagicproducerfact :: pmagicproducerfact_tail*, n_limit) = true
   -- if $magic_producer_index(S, porigin_outer, phpType7*, pmagicproducerfact.SITE, 0) = (n)
   -- if $(n < n_limit)
   -- if $magic_producer_facts_limit(S, porigin_outer, phpType7*, pmagicproducerfact_tail*, n_limit)
 def $magic_producer_facts_limit(S, porigin_outer, phpType7*, pmagicproducerfact*, n_limit) = false -- otherwise
-dec $magic_producer_target(pstate, pcalltarget, nat, porigin) : bool
 def $magic_producer_target(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, n, porigin_site) = true
   -- if $(n < |pmagicmethodcall.ARGUMENTS|)
   -- if $call_argument_origin(S, (pmagicmethodcall.SITE), n) = (porigin_site)
@@ -394,7 +413,6 @@ def $magic_producer_target(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, n, pori
   -- if $magic_producer_cv_source(S, porigin_site, expression)
   -- if $magic_method_raw_valid(S[.ORIGIN = (pmagicmethodcall.SITE)], pmagicmethodcall)
 def $magic_producer_target(S, pcalltarget, n, porigin_site) = false -- otherwise
-dec $magic_producer_pending_task(pstate, ptask, porigin) : (pcalltarget, nat)?
 def $magic_producer_pending_task(S, CALL_SEND pcalltarget phpType7* n poperand* (porigin_outer) z, porigin_site) = ((pcalltarget,n))
   -- if $magic_producer_target(S, pcalltarget, n, porigin_site)
   -- if $call_task_valid(S[.ORIGIN = (porigin_outer)], CALL_SEND pcalltarget phpType7* n poperand* (porigin_outer) z)
@@ -402,7 +420,6 @@ def $magic_producer_pending_task(S, MAGIC_METHOD_NAMED_SEND pmagicmethodcall n p
   -- if $magic_producer_target(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall, n, porigin_site)
   -- if $magic_named_raw_valid(S[.ORIGIN = (pmagicmethodcall.SITE)], pmagicmethodcall, n, poperand*, true)
 def $magic_producer_pending_task(S, ptask, porigin_site) = eps -- otherwise
-dec $magic_producer_pending(pstate, ptask*, porigin) : (pcalltarget, nat)?
 def $magic_producer_pending(S, eps, porigin_site) = eps
 def $magic_producer_pending(S, ptask :: ptask_tail*, porigin_site) = ((pcalltarget,n))
   -- if $magic_producer_pending_task(S, ptask, porigin_site) = ((pcalltarget,n))
@@ -410,10 +427,8 @@ def $magic_producer_pending(S, ptask :: ptask_tail*, porigin_site) = $magic_prod
   -- if $magic_producer_pending_task(S, ptask, porigin_site) = eps
 ;; Recognize the source role independently of carrier validity, so a malformed
 ;; active carrier cannot regain the default-true ordinary method route.
-dec $magic_producer_target_site(pcalltarget) : porigin?
 def $magic_producer_target_site(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = (pmagicmethodcall.SITE)
 def $magic_producer_target_site(pcalltarget) = eps -- otherwise
-dec $magic_producer_candidate_task(pstate, ptask, porigin) : bool
 def $magic_producer_candidate_task(S, CALL_SEND pcalltarget phpType7* n poperand* porigin? z, porigin_site) = true
   -- if $magic_producer_target_site(pcalltarget) = (porigin_outer)
   -- if $call_argument_source(S, porigin_outer) = PCALLARGUMENTS phpType7_original* n_field
@@ -422,23 +437,17 @@ def $magic_producer_candidate_task(S, CALL_SEND pcalltarget phpType7* n poperand
   -- if $magic_producer_cv_source(S, porigin_site, expression)
 def $magic_producer_candidate_task(S, MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*, porigin_site) = $magic_producer_candidate_task(S, CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) eps n poperand* (pmagicmethodcall.SITE) pmagicmethodcall.LINE, porigin_site)
 def $magic_producer_candidate_task(S, ptask, porigin_site) = false -- otherwise
-dec $magic_producer_candidate(pstate, ptask*, porigin) : bool
 def $magic_producer_candidate(S, eps, porigin_site) = false
 def $magic_producer_candidate(S, ptask :: ptask_tail*, porigin_site) = ($magic_producer_candidate_task(S, ptask, porigin_site) \/ $magic_producer_candidate(S, ptask_tail*, porigin_site))
-dec $magic_producer_target_facts(pcalltarget) : pmagicproducerfact*
 def $magic_producer_target_facts(MAGIC_METHOD_SEND_TARGET pmagicmethodcall) = pmagicmethodcall.PRODUCERS
-dec $magic_producer_target_set(pcalltarget, pmagicproducerfact*) : pcalltarget
 def $magic_producer_target_set(MAGIC_METHOD_SEND_TARGET pmagicmethodcall, pmagicproducerfact*) = MAGIC_METHOD_SEND_TARGET pmagicmethodcall[.PRODUCERS = pmagicproducerfact*]
-dec $magic_producer_record_task(ptask, pcalltarget) : ptask
 def $magic_producer_record_task(CALL_SEND pcalltarget phpType7* n poperand* porigin? z, pcalltarget_new) = CALL_SEND pcalltarget_new phpType7* n poperand* porigin? z
 def $magic_producer_record_task(MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*, MAGIC_METHOD_SEND_TARGET pmagicmethodcall_new) = MAGIC_METHOD_NAMED_SEND pmagicmethodcall_new n poperand*
-dec $magic_producer_record_tasks(pstate, ptask*, porigin, pmagicproducerfact) : ptask*
 def $magic_producer_record_tasks(S, ptask :: ptask_tail*, porigin_site, pmagicproducerfact) = $magic_producer_record_task(ptask, $magic_producer_target_set(pcalltarget, $magic_producer_target_facts(pcalltarget) ++ [pmagicproducerfact])) :: ptask_tail*
   -- if $magic_producer_pending_task(S, ptask, porigin_site) = ((pcalltarget,n))
 def $magic_producer_record_tasks(S, ptask :: ptask_tail*, porigin_site, pmagicproducerfact) = ptask :: $magic_producer_record_tasks(S, ptask_tail*, porigin_site, pmagicproducerfact)
   -- if $magic_producer_pending_task(S, ptask, porigin_site) = eps
 
-dec $magic_producer_cell(pstate, preqbytes) : nat?
 def $magic_producer_cell(S, preqbytes) = (n_object)
   -- if ~$environment_blocked(S, preqbytes)
   -- if $lookup(S.ENV, preqbytes) = (n_cell)
@@ -452,7 +461,6 @@ def $magic_producer_cell(S, preqbytes) = (n_object)
   -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
   -- if $magic_method_value(S, POBJECT n_object)
 def $magic_producer_cell(S, preqbytes) = eps -- otherwise
-dec $magic_producer_read(pstate, porigin, poperand, ptbytes, phpType7*) : bool
 def $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) = true
   -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget,n))
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall (NExprVariable (BYTES text) metadata_cv) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)
@@ -466,7 +474,6 @@ def $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*) = false 
 def $method_receiver_value_allowed(S, poperand, ptbytes, phpType7*, z) = $magic_producer_read(S, porigin_site, poperand, ptbytes, phpType7*)
   -- if S.ORIGIN = (porigin_site)
   -- if $magic_producer_candidate(S, S.TODO, porigin_site)
-dec $magic_producer_selected(pstate, pcalltarget, porigin) : pstate
 def $magic_producer_selected(S, METHOD_TARGET n_object porigin_method, porigin_site) = S[.TODO = $magic_producer_record_tasks(S, S.TODO, porigin_site, {SITE porigin_site, CLASS porigin_class, METHOD porigin_method})]
   -- if $magic_producer_pending(S, S.TODO, porigin_site) = ((pcalltarget_outer,n))
   -- if $magic_producer_fact_at($magic_producer_target_facts(pcalltarget_outer), porigin_site) = eps
@@ -672,7 +679,6 @@ def $magic_method_raw_suffix(ptask :: ptask_tail*, pmagicmethodcall) = (ptask_ta
   -- if $magic_method_raw_task(ptask, pmagicmethodcall)
 def $magic_method_raw_suffix(ptask :: ptask_tail*, pmagicmethodcall) = $magic_method_raw_suffix(ptask_tail*, pmagicmethodcall)
   -- if ~$magic_method_raw_task(ptask, pmagicmethodcall)
-dec $magic_method_raw_valid(pstate, pmagicmethodcall) : bool
 def $magic_method_raw_valid(S, pmagicmethodcall) = (($magic_method_caller(S, pmagicmethodcall) /\ $magic_method_raw_suffix(S.TODO, pmagicmethodcall)) \/ $magic_unpack_raw_valid(S, MAGIC_METHOD_SEND_TARGET pmagicmethodcall))
   -- if pmagicmethodcall.PRODUCERS = eps \/ $magic_producer_raw_limits(S, S.TODO, pmagicmethodcall.SITE)
 
@@ -828,7 +834,6 @@ def $magic_method_collected_values(S, porigin, phpType7*, (KNOWN (PARRAY n)) :: 
 def $magic_method_collected_values(S, porigin, phpType7*, poperand*) = eps -- otherwise
 ;; Empty facts delegate exactly to the old collector. Only a CV-method source
 ;; consumes a fact; other operands retain their existing contextual domain.
-dec $magic_producer_old_value(pstate, porigin, phpType7*, nat, poperand) : pvalue?
 def $magic_producer_old_value(S, porigin_site, phpType7*, n, poperand) = (pvalue)
   -- if $(n < |phpType7*|)
   -- if $magic_method_copy_values(S, porigin_site, phpType7*[0:$nabs($(n + 1))], n, [poperand]) = ([pvalue])
@@ -837,7 +842,6 @@ def $magic_producer_old_value(S, porigin_site, phpType7*, 0, poperand) = (pvalue
   -- if $magic_method_copy_values(S, porigin_site, phpType7*[0:1], 0, [poperand]) = eps
   -- if $magic_method_collected_values(S, porigin_site, phpType7*[0:1], [poperand]) = ([pvalue])
 def $magic_producer_old_value(S, porigin_site, phpType7*, n, poperand) = eps -- otherwise
-dec $magic_producer_copy_values(pstate, porigin, phpType7*, nat, poperand*, pmagicproducerfact*) : (pvalue*)?
 def $magic_producer_copy_values(S, porigin_outer, phpType7*, n, eps, pmagicproducerfact*) = (eps)
   -- if n = |phpType7*|
 def $magic_producer_copy_values(S, porigin_outer, phpType7*, n, (KNOWN pvalue) :: poperand_tail*, pmagicproducerfact*) = (pvalue :: pvalue_tail*)
@@ -858,7 +862,6 @@ def $magic_producer_copy_values(S, porigin_outer, phpType7*, n, poperand :: pope
   -- if $magic_producer_old_value(S, porigin_outer, phpType7*, n, poperand) = (pvalue)
   -- if $magic_producer_copy_values(S, porigin_outer, phpType7*, $(n + 1), poperand_tail*, pmagicproducerfact*) = (pvalue_tail*)
 def $magic_producer_copy_values(S, porigin_outer, phpType7*, n, poperand*, pmagicproducerfact*) = eps -- otherwise
-dec $magic_method_fact_values(pstate, porigin, phpType7*, poperand*, pmagicproducerfact*) : (pvalue*)?
 def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, eps) = $magic_method_collected_values(S, porigin_site, phpType7*, poperand*)
 def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicproducerfact*) = $magic_producer_copy_values(S, porigin_site, phpType7*, 0, poperand*, pmagicproducerfact*)
   -- if pmagicproducerfact* =/= eps
@@ -867,13 +870,11 @@ def $magic_method_fact_values(S, porigin_site, phpType7*, poperand*, pmagicprodu
 
 ;; At an argument-evaluation continuation its own fact may already be minted;
 ;; a not-yet-evaluated future argument cannot contribute one.
-dec $magic_producer_task_limit(ptask) : (porigin, phpType7*, pmagicproducerfact*, nat)?
 def $magic_producer_task_limit(CALL_ARGS (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) phpType7* n poperand* porigin? z) = ((pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,pmagicmethodcall.PRODUCERS,n))
 def $magic_producer_task_limit(CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) phpType7* n poperand* porigin? z) = ((pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,pmagicmethodcall.PRODUCERS,$(n + 1)))
 def $magic_producer_task_limit(MAGIC_METHOD_NAMED_ARGS pmagicmethodcall n poperand*) = ((pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,pmagicmethodcall.PRODUCERS,n))
 def $magic_producer_task_limit(MAGIC_METHOD_NAMED_SEND pmagicmethodcall n poperand*) = ((pmagicmethodcall.SITE,pmagicmethodcall.ARGUMENTS,pmagicmethodcall.PRODUCERS,$(n + 1)))
 def $magic_producer_task_limit(ptask) = eps -- otherwise
-dec $magic_producer_raw_limits(pstate, ptask*, porigin) : bool
 def $magic_producer_raw_limits(S, eps, porigin_site) = false
 def $magic_producer_raw_limits(S, ptask :: ptask_tail*, porigin_site) = $magic_producer_facts_limit(S, porigin_site, phpType7*, pmagicproducerfact*, n)
   -- if $magic_producer_task_limit(ptask) = ((porigin_site,phpType7*,pmagicproducerfact*,n))
@@ -974,7 +975,6 @@ def $named_call_shape(S, MAGIC_METHOD_TARGET pmagicmethodcall n pvalue*, (porigi
 
 ;; Named sends are collected by their original argument index. Their names do
 ;; not enter the ordinary user-function named-parameter binder.
-dec $magic_named_raw_valid(pstate, pmagicmethodcall, nat, poperand*, bool) : bool
 def $magic_named_raw_valid(S, pmagicmethodcall, n, poperand*, false) = true
   -- if $magic_producer_facts_limit(S, pmagicmethodcall.SITE, pmagicmethodcall.ARGUMENTS, pmagicmethodcall.PRODUCERS, n)
   -- if $magic_named_source(S, pmagicmethodcall)

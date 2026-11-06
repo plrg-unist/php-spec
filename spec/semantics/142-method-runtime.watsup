@@ -1,3 +1,5 @@
+dec $method_receiver_value_allowed(pstate, poperand, ptbytes, phpType7*, int) : bool
+dec $method_selected_metadata(pstate, pcalltarget, porigin?) : pstate
 dec $magic_static_method_needed(pstate, porigin) : bool
 dec $trait_class_link_pending(pstate, pclassdesc) : bool
 ;; Instance targets retain receivers; static targets retain class identities.
@@ -685,8 +687,6 @@ def $method_string(PSTRING_CARRIER pstringidentity n*) = true
 def $method_string(pvalue) = false -- otherwise
 
 dec $method_continue(pstate, poperand, phpType20, phpType7*, int) : pstate
-dec $method_receiver_value_allowed(pstate, poperand, ptbytes, phpType7*, int) : bool
-dec $method_selected_metadata(pstate, pcalltarget, porigin?) : pstate
 def $method_receiver_value_allowed(S, poperand, ptbytes, phpType7*, z) = true -- otherwise
 def $method_selected_metadata(S, pcalltarget, porigin?) = S -- otherwise
 def $method_continue(S, poperand, NIdentifier (BYTES text) metadata_name, phpType7*, z) = $method_select(S, poperand, $base64(text), phpType7*, z)
