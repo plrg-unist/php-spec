@@ -2714,8 +2714,17 @@ def $enum_is_callable_output_property_graph(S, pnode_path*, pnode :: pnode_tail*
   -- if $enum_is_callable_output_property_graph(S, pnode_path*, pnode_tail*)
 def $enum_is_callable_output_property_graph(S, pnode_path*, pnode*) = false -- otherwise
 
+dec $enum_is_callable_rebound_array_last(pstate, nat, int) : bool
+def $enum_is_callable_rebound_array_last(S, n_cell, z) = true
+  -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
+  -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
+  -- if S_clear.COMPLETION = NORMAL /\ S_clear.STORE[n_cell] = DEFINED PNULL
+  -- if $heap_owners($heap_graph(S_clear), HARRAY n_array) = 0
+  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_child) = 1
+def $enum_is_callable_rebound_array_last(S, n_cell, z) = false -- otherwise
 dec $enum_is_callable_ref_last(pstate, nat, int) : bool
 def $enum_is_callable_ref_last(S, n_cell, z) = true
+  -- if ~$enum_is_callable_rebound_array_last(S, n_cell, z)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED (PARRAY n_old)
   -- if $enum_is_callable_output_property_graph(S, eps, [HARRAY n_old])
@@ -2750,11 +2759,7 @@ def $enum_is_callable_ref_last(S, n_cell, z) = true
   -- if S_clear.COMPLETION = NORMAL
   -- if $heap_owners($heap_graph(S_clear), HOBJECT n_old) = 0
 def $enum_is_callable_ref_last(S, n_cell, z) = true
-  -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
-  -- if S_clear = $write_cell_checked(S[.COMPLETION = NORMAL], n_cell, PNULL, z)
-  -- if S_clear.COMPLETION = NORMAL /\ S_clear.STORE[n_cell] = DEFINED PNULL
-  -- if $heap_owners($heap_graph(S_clear), HARRAY n_array) = 0
-  -- if $heap_owners($heap_graph(S_clear), HOBJECT n_child) = 1
+  -- if $enum_is_callable_rebound_array_last(S, n_cell, z)
 def $enum_is_callable_ref_last(S, n_cell, z) = false -- otherwise
 
 dec $enum_is_callable_ref_old(pstate, nat, pvalue, ptbytes, int) : bool
@@ -2797,7 +2802,7 @@ def $enum_is_callable_ref_old(S, n_cell, pvalue_old, ptbytes_name, z) = false --
 dec $enum_is_callable_rebound_array_old_valid(pstate, pstate, nat, nat, int) : bool
 def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = true
   -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
-  -- if $enum_is_callable_ref_last(S, n_cell, z)
+  -- if $enum_is_callable_rebound_array_last(S, n_cell, z)
 def $enum_is_callable_rebound_array_old_valid(S, S_write, n_cell, n_array, z) = true
   -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
   -- if $($heap_owners($heap_graph(S_write), HARRAY n_array) > 0)
@@ -3168,7 +3173,7 @@ def $enum_is_callable_output_rebound_capture(S, pconfigcall) = (penumqueryoutput
   -- if $enum_is_callable_received_ref(S, pconfigcall) = ((PARRAY n_sent, b_syntax, n_cell))
   -- if $enum_is_callable_ref_slots_valid(S, pconfigcall)
   -- if $enum_is_callable_ref_cell(S, pconfigcall, PARRAY n_sent) = (n_cell)
-  -- if $enum_is_callable_ref_last(S, n_cell, pconfigcall.LINE)
+  -- if $enum_is_callable_rebound_array_last(S, n_cell, pconfigcall.LINE)
   -- if $enum_is_callable_rebound_array_child(S, n_cell) = ((n_array, n_child))
   -- if n_array =/= n_sent
   -- if $enum_is_callable_query_result(S, pconfigcall, PARRAY n_sent, b_syntax) = (b_callable)
