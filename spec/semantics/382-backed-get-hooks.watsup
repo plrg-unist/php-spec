@@ -364,7 +364,6 @@ dec $property_hook_pair_export_at(pstate, pclassdesc, ppropertydesc, nat) : ppro
 def $property_hook_pair_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc_export)
   -- if pclassdesc.KIND <- ["class","trait"] /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (statement_owner)
   -- if $pchlower(statement_owner) = PCHRAW pchraw_owner
   -- if pchraw_owner.KIND = pclassdesc.KIND /\ pchraw_owner.PARENT = ABSENT
