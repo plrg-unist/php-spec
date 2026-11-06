@@ -12,7 +12,7 @@ def $owned_static_source(S, ppropertydesc) = true
   -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 5, PCINDEX n_group, PCFIELD 3, PCINDEX n_item]
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_owner) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text_owner) metadata_owner) phpType44 phpType42 phpType23 metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_owner ++ [PCFIELD 5, PCINDEX n_group])) = (NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata_group)
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_decl) = (NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) expression metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_decl) = (NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) expression metadata_item)
   -- if ppropertydesc.NAME = $base64(text_name)
 def $owned_static_source(S, ppropertydesc) = false -- otherwise
 dec $owned_static_scope(pstate) : bool
