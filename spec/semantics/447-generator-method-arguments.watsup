@@ -491,6 +491,13 @@ def $generator_helper_context(S, pcallcontext) = true
   -- if pmethoddesc.STATIC
   -- if pcallcontext.CALLSITE = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+def $generator_helper_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = STATIC_METHOD_TARGET porigin_called pcallcontext.FUNCTION
+  -- if pcallcontext.RECEIVER = eps
+  -- if $generator_helper_method_source(S, pcallcontext) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $generator_helper_instance_source($origin_node(S.SOURCES, porigin))
 
 ;; A callback may run the selected receiver before the outer API is invoked.
 ;; Authenticate the live resumer before restoring either saved caller scope.
