@@ -1516,5 +1516,14 @@
     "expected_normal_stdout": "held|caught|query:1:ArrayCapture133\\Target::cases|drop|retired|query:1:ArrayCapture133\\Target::cases|drop|done|",
     "model_timeout_seconds": 150,
     "purpose": "Inherited runtime array FCC and clone share actual Base function cache through argument-throw warming, selected-array/source-CV retirement and original receiver release; a later Child capture reuses it without retaining old owners."
+  },
+  {
+    "id": "enum-is-callable-third-output-fake-bind-cache-named-shared-dummy-private-retirement",
+    "source": "<?php\nnamespace SharedBind134 {\n    enum Target { case A; }\n    function publish($install) {\n        if ($install) { function is_callable($v,$s,$n) { echo 'USER:', $n, '|'; return false; } }\n        return false;\n    }\n    function query($install) {\n        $name='OLD'; $ok=is_callable([Target::class,'cases'],publish($install),$name);\n        echo 'shared:', (int)$ok, ':', $name, '|';\n    }\n    $origin=query(...); $copy=$origin->bindTo(null); unset($origin);\n    $copy(true); $again=\\Closure::bind($copy,null); unset($copy);\n    $again(false); unset($again);\n}\nnamespace DummyBind134 {\n    enum Target { case A; }\n    function publish($install) {\n        if ($install) { function is_callable($v,$s,$n) { echo 'USER:', $n, '|'; return false; } }\n        return false;\n    }\n    function query($install) {\n        $name='OLD'; $ok=is_callable([Target::class,'cases'],publish($install),$name);\n        echo 'dummy:', (int)$ok, ':', $name, '|';\n    }\n    class Receiver {\n        public $tag;\n        function __construct($tag) { $this->tag=$tag; }\n        function __destruct() { echo 'drop:', $this->tag, '|'; }\n    }\n    $origin=query(...); $a=new Receiver('a');\n    $copy=$origin->bindTo($a,null); unset($origin,$a);\n    $copy(true);\n    $weak=\\WeakReference::create($copy); $again=clone $copy;\n    $copy(false); unset($copy);\n    echo $weak->get() === null ? 'source-gone|' : 'pinned|';\n    $again(false); unset($again); query(false); echo 'done|';\n}\n",
+    "source_sha256": "7fb5bdeabdd3bf90132e7c973b10d826e2e0b219ff483be96342add829357189",
+    "expected_model": "normal",
+    "expected_normal_stdout": "shared:1:SharedBind134\\Target::cases|shared:1:SharedBind134\\Target::cases|dummy:1:DummyBind134\\Target::cases|dummy:1:DummyBind134\\Target::cases|source-gone|USER:OLD|dummy:0:OLD|drop:a|USER:OLD|dummy:0:OLD|done|",
+    "model_timeout_seconds": 150,
+    "purpose": "Known-user named fake bindTo and Closure::bind share same-unscoped runtime cache; completed dummy Closure scope is private and each clone gets a fresh cache, with weak source retirement and receiver cleanup."
   }
 ]

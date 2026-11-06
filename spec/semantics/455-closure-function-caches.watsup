@@ -81,6 +81,21 @@ def $closure_cache_query_source(S, porigin) = true
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
 def $closure_cache_query_source(S, porigin) = false -- otherwise
 
+;; Bound fake bodies retain the immutable function through descending sources.
+;; This lookup needs no retired source allocation, receiver or captured value.
+dec $closure_cache_object_function(pstate, nat) : porigin?
+def $closure_cache_object_function(S, n) = (porigin)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $(pboundfake.SOURCE < n)
+  -- if $closure_binding_api_site(S, pboundfake.SITE)
+  -- if $closure_cache_object_function(S, pboundfake.SOURCE) = (porigin)
+  -- if $closure_cache_query_source(S, porigin)
+def $closure_cache_object_function(S, n) = $closure_cache_function(S.OBJECTS[n])
+  -- if $(n < |S.OBJECTS|)
+  -- if ~$bound_fake_object(S, n)
+def $closure_cache_object_function(S, n) = eps -- otherwise
+
 dec $closure_cache_literal_scope(pstate, porigin, pbindscope) : bool
 def $closure_cache_literal_scope(S, porigin, BIND_UNSCOPED) = true
   -- if $enum_is_callable_fixed_lexical(S, porigin)
@@ -176,11 +191,25 @@ def $closure_cache_object_scope(S, n) = (BIND_CLASS pclosurescope.LEXICAL)
   -- if $closure_cache_resolved_body(S.OBJECTS[n])
   -- if ~$internal_closure_object(S, n)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+def $closure_cache_object_scope(S, n) = (pboundfake.SCOPE)
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $closure_cache_object_function(S, n) =/= eps
 def $closure_cache_object_scope(S, n) = eps -- otherwise
+dec $closure_cache_copy_source(pstate, nat, nat) : bool
+def $closure_cache_copy_source(S, n_source, n) = true
+  -- if $(n_source < n) /\ $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if pboundfake.SOURCE = n_source \/ S.OBJECTS[n_source] = S.OBJECTS[n]
+def $closure_cache_copy_source(S, n_source, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if ~$bound_fake_object(S, n)
+def $closure_cache_copy_source(S, n_source, n) = false -- otherwise
 def $closure_cache_copy(S, n_source, n) = S[.CLOSURECACHES = S.CLOSURECACHES ++ [pclosurecache]]
   -- if $(n_source < n) /\ $(n < |S.OBJECTS|)
-  -- if $closure_cache_function(S.OBJECTS[n]) = (porigin)
-  -- if $closure_cache_function(S.OBJECTS[n_source]) = (porigin)
+  -- if $closure_cache_object_function(S, n) = (porigin)
+  -- if $closure_cache_object_function(S, n_source) = (porigin)
+  -- if $closure_cache_copy_source(S, n_source, n)
   -- if $closure_cache_at(S.CLOSURECACHES, n) = eps
   -- if pbindscope? = $closure_cache_object_scope(S, n)
   -- if pfncacheowner? = $closure_cache_copy_policy($closure_cache_at(S.CLOSURECACHES, n_source), pbindscope?, n)
@@ -191,7 +220,8 @@ def $closure_cache_copy(S, n_source, n) = S -- otherwise
 dec $closure_cache_record_object(pstate, pclosurecache) : bool
 def $closure_cache_record_object(S, pclosurecache) = true
   -- if $(pclosurecache.OBJECT < |S.OBJECTS|)
-  -- if $closure_cache_function(S.OBJECTS[pclosurecache.OBJECT]) = (pclosurecache.FUNCTION)
+  -- if $closure_cache_object_function(S, pclosurecache.OBJECT) = (pclosurecache.FUNCTION)
+  -- if ~$bound_fake_object(S, pclosurecache.OBJECT) \/ pclosurecache.SCOPE = ($fake_bind_scope(S, pclosurecache.OBJECT))
   -- if pclosurecache.SCOPE = eps \/ ~((HOBJECT pclosurecache.OBJECT) <- S.ALLOCATIONS) \/ pclosurecache.SCOPE = $closure_cache_object_scope(S, pclosurecache.OBJECT)
 def $closure_cache_record_object(S, pclosurecache) = false -- otherwise
 dec $closure_cache_record_valid(pstate, pclosurecache*, pclosurecache) : bool
@@ -208,6 +238,7 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
   -- if pclosurecache.SOURCE = (n_source)
   -- if $(n_source < pclosurecache.OBJECT)
+  -- if $closure_cache_copy_source(S, n_source, pclosurecache.OBJECT)
   -- if $closure_cache_at(pclosurecache_prefix*, n_source) = (pclosurecache_source)
   -- if pclosurecache_source.FUNCTION = pclosurecache.FUNCTION
   -- if $closure_cache_copy_policy((pclosurecache_source), pclosurecache.SCOPE, pclosurecache.OBJECT) = pclosurecache.CACHE
@@ -217,6 +248,7 @@ def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = true
   -- if $closure_cache_at(pclosurecache_prefix*, pclosurecache.OBJECT) = eps
   -- if pclosurecache.SOURCE = (n_source)
   -- if $(n_source < pclosurecache.OBJECT)
+  -- if $closure_cache_copy_source(S, n_source, pclosurecache.OBJECT)
   -- if $closure_cache_at(pclosurecache_prefix*, n_source) = eps
   -- if pclosurecache.CACHE = eps
 def $closure_cache_record_valid(S, pclosurecache_prefix*, pclosurecache) = false -- otherwise
@@ -232,7 +264,7 @@ def $closure_function_cache_owner(S, PORIGIN n_unit pcpath) = (pfncacheowner)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
-  -- if $closure_cache_function(S.OBJECTS[n]) = (pcallcontext.FUNCTION)
+  -- if $closure_cache_object_function(S, n) = (pcallcontext.FUNCTION)
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
   -- if pfunction.ORIGIN = pcallcontext.FUNCTION
   -- if $closure_cache_query_source(S, pfunction.ORIGIN)
@@ -558,6 +590,10 @@ dec $function_cache_closure_kind(pstate, nat) : pfunctioncacheevent
 def $function_cache_closure_kind(S, n) = SOURCE_CACHE_COPY
   -- if $(n < |S.OBJECTS|)
   -- if $function_cache_copy_body(S.OBJECTS[n])
+def $function_cache_closure_kind(S, n) = SOURCE_CACHE_COPY
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
+  -- if $closure_cache_object_function(S, n) =/= eps
 def $function_cache_closure_kind(S, n) = SOURCE_CACHE_UNKNOWN -- otherwise
 dec $function_cache_entry_kind(pstate, pcalltarget) : pfunctioncacheevent
 def $function_cache_entry_kind(S, CLOSURE_TARGET n) = $function_cache_closure_kind(S, n)

@@ -882,7 +882,7 @@ dec $generator_bind_unused(pstate, pconfigcall, nat) : bool
 dec $fake_bind_result(pstate, pconfigcall, nat, nat) : pstate
 def $fake_bind_result(S, pconfigcall, n_source, n) = $from_done(S, n)
   -- if ~$generator_bind_unused(S, pconfigcall, n_source)
-def $fake_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake_bind_result(S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], pconfigcall, n_source, n)
+def $fake_bind_allocate(S, pconfigcall, n_source, n_receiver?, pbindscope) = $fake_bind_result($closure_cache_capture_copy(S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n_source, n), pconfigcall, n_source, n)
   -- if n = |S.OBJECTS|
   -- if pboundfake = {SITE pconfigcall.SITE, SOURCE n_source, ORIGINAL $closure_scope_at(S.CLOSURESCOPES, n_source), SCOPE $fake_bind_new_scope(S, n_source, n_receiver?, pbindscope), CALLED $fake_bind_new_called(S, n_receiver?, pbindscope), RECEIVER $fake_bind_new_receiver(S, n_source, n_receiver?)}
 def $fake_bind_new_scope(S, n_source, (n_receiver), BIND_UNSCOPED) = BIND_INTERNAL ($ptascii("Closure"))
@@ -954,7 +954,7 @@ def $class_instanceof(S, POBJECT n, ptbytes) = true
   -- if $bound_fake_object(S, n)
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if $bound_fake_object(S, n)
-def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+def $clone_object(S, n_source) = $closure_cache_capture_copy(S[.OBJECTS = S.OBJECTS ++ [BOUNDFAKECLOSURE pboundfake]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)], n_source, n)
   -- if S.OBJECTS[n_source] = BOUNDFAKECLOSURE pboundfake
   -- if n = |S.OBJECTS|
 def $clone_same_kind(BOUNDFAKECLOSURE pboundfake, BOUNDFAKECLOSURE pboundfake) = true
