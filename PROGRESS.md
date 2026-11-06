@@ -3414,6 +3414,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS223 | Immediate normal Closure::fromCallable invocation of fresh ordinary invokable objects, preserving actual argument-to-wrapper transfer and existing constructor, signature and lifetime bounds. |
 | ATTR80 | Private scalar magic += with plain CV property names, late selection and retained GET/SET receipts under existing main-scope and integer bounds. |
+| COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC72 | Ordinary item-reference acquisition on retained DIRECT arrays, preserving fresh-cell owners and the exact old-header no-visit decrement. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
