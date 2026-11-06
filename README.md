@@ -2728,8 +2728,11 @@ owners. Receive history preserves exact cache identity without retaining old
 Closures; private cache values survive until the actual storage release. Ordinary
 nongenerator `Closure::call` uses its actual invocation cache, freed after callee
 locals and before API arguments/source cleanup; same-scope Shared calls reuse
-their cache. Source donor checks protect hits and post-handler binds. Direct
-scoped/unknown Closure modes, arrows, trait, by-reference, variadic,
+their cache. Direct class-scoped REAL literals, bound copies and clones preserve
+actual `$this` and separate lexical/called scopes. On ordinary destruction,
+scoped private caches end after captures/statics and before the bound receiver;
+retired history keeps no owner alive. Source donor checks protect hits and
+post-handler binds. Unknown/fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, class
 and static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
@@ -2741,6 +2744,7 @@ and static-property defaults, converted queries and wider metadata remain partia
 [Bound Closure-default review](coverage/semantics/deprecated-bound-closure-default-review.json).
 [Private Closure-cache review](coverage/semantics/deprecated-private-closure-default-review.json).
 [Ordinary Closure::call default review](coverage/semantics/deprecated-closure-call-default-review.json).
+[Scoped Closure-default review](coverage/semantics/deprecated-scoped-closure-default-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional

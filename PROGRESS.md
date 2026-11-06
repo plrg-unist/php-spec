@@ -2560,6 +2560,18 @@ owner isolation. Source-only donor guards also protect scalar cache hits.
 Direct scoped, wider receiver/default and held Generator/captured-entry/pending
 families remain core work. [Review](coverage/semantics/deprecated-closure-call-default-review.json). The current joined main SL451 load and inventory check pass; the review records their exact tested cut.
 
+COMP192 adds direct class-scoped REAL Closure literals, binding copies and clones
+with actual borrowed This and distinct lexical/called classes. Existing Shared
+and private owner/birth laws retain clone freshness, named holes, cache reentry,
+TypeError and throw behavior. Ordinary scoped-private destruction preserves rows
+through capture/static callbacks, then frees them before bound This; pending
+HANDLE history alone cannot revive the cache. Quiet and staged receiver-free
+copies, including inherited CalledChild, use the same authentic records. Eleven
+originals agree; one warmed fake-method refusal retains zero agreement. Separate
+107/93/187 strict452 fronts prove roots, exact cache death and owner/scope cuts.
+Generator-close release and other held entry families remain outside this law.
+[Review](coverage/semantics/deprecated-scoped-closure-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2569,7 +2581,6 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS204 | Fixed-name new expressions with effective plain public zero/required-by-value positional constructors, authentic NEW-result ownership and ignored scalar constructor returns; preserve current leaf/header policy and held modes. |
 | ATTR65 | Acyclic nested Trait wrapper exports of backed GET/block-SET pairs, with authentic intermediate rows, raw partners and flattened Consumer identities; preserve existing cycle/conflict and held boundaries. |
-| COMP192 | Direct scoped REAL Closure defaults through authentic binding/clone history, with cache-free timing after captures and before This; preserve Shared/private laws and held wider recipients. |
 | ENUM149 | is_callable syntax_only bool reception under existing scalar/strictness rules and null-deprecation continuations, retaining selected input/output and deferred name commit through reentry or throw. |
 | GC62 | Direct old Value destructor phases during held-Map/Key current replacement, preserving authentic storage/claim and normal/fresh-throw behavior; keep GC35 and wider lifecycle modes held. |
 | I127 | Existing computed/nullsafe native Generator method selection with admitted Iterator, Aggregate or initialized by-value Generator CV packs; preserve actual receipts, ownership and held domains. |

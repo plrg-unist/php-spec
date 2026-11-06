@@ -49,6 +49,12 @@ receipt/decrement/budget front are under
 The [review](../coverage/semantics/gc-temp-release-consumption-review.json)
 also links the untouched motivating ATTR63 failure and its one affected regression.
 
+COMP192 direct scoped REAL default originals and private-cache/This lifetime
+checks are under `../php-spec-evidence-archive/comp192/`.
+The [review](../coverage/semantics/deprecated-scoped-closure-default-review.json)
+records ordinary staged/quiet release, late-called scopes and the separate
+receiver-free fixture correction; held Generator-close behavior earns no credit.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

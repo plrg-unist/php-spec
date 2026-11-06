@@ -96,7 +96,7 @@ call suffix; no historical row retains a receiver. Inherited methods share the
 declaring method's default cache. Reentry, formal ownership before TypeError and
 exit cancellation reuse the same receive and cleanup contracts.
 
-Unscoped real Closure literals, receiver-free empty-scope bound copies and their
+REAL Closure literals, class-scoped method literals, bound copies and their
 ordinary clones receive owning defaults through their actual cache identity.
 Shared entries retain the default-origin key; private entries additionally name
 the selected Closure object. Same-template Shared/private histories coexist
@@ -108,9 +108,12 @@ The genuine receive birth captures its nonowning cache owner; only same-owner
 closed child receives can justify a filled pending slot. Retired stamps and births
 do not require a live source object. Native cache zvals are nonrefcounted: the model's
 empty-array availability root preserves its immutable value/COW, without claiming
-a native refcount increment or retaining the Closure/source/captures. Private rows
-survive capture/static child callbacks and disappear at the actual store drop,
-after the nonowning destruction handle or through quiet release. Existing Shared
+a native refcount increment or retaining the Closure/source/captures/receiver.
+Unscoped private rows survive capture/static callbacks until actual store drop.
+For ordinary scoped destruction, a nonowning private-cache marker ends the rows
+after capture/static callbacks and before bound `$this` release. A remaining
+HANDLE alone cannot validate those retired rows. Quiet release drops them
+atomically. Existing Shared
 and class-constant encodings stay fixed. Actual Closure/formal roots preserve
 TypeError and exit-cancellation order; generic scalar/type paths remain separate
 from the new private owning-read authority, which requires an actual REAL callee.
@@ -125,15 +128,23 @@ and receiver owners then retire before the existing source-Closure owner, with
 no extra capture pin. Quiet, throwing and TypeError completion use the same
 native lifetime; Generator calls retain their separate path.
 
+Direct scoped recipients use actual116 scope/creation records or181 binding/API
+records. The selected REAL Closure owns its receiver; the call borrows it without
+an extra pin. Lexical and called classes stay distinct, including inherited
+receiver-free literals/clones with a late-called Child. New scoped-private row
+lifetime uses the immutable455 class stamp and source proof after live binding
+records retire; pending marker authority ends before the receiver's destructor.
+Birth and stamp history remains valid without reviving cache storage or guessing
+a recipient from a source site.
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.
-Direct Closure recipients keep empty lexical/called scopes; direct scoped modes,
-unknown identities and wider defaults remain core work. The ordinary call path
+Unknown identities and wider defaults remain core work. The ordinary call path
 does not admit fake method sources, Closure receivers or held Generator,
 captured-entry and pending/iteration families.
 
-Arrow, receiver-bearing or scoped bound copies, by-reference parameters/returns/captures,
+Arrow/fake recipients, by-reference parameters/returns/captures,
 variadic and Generator Closure recipients remain separate. Trait and wider dynamic
 method/callable recipients, plus class and static-property owning defaults,
 retain their separate boundaries. The bounded handler producer remains fixed primitive `define`;
@@ -142,6 +153,8 @@ are outside this increment. Existing scalar default routes
 remain paired. Function-local dynamic static initializers use ordinary opcodes.
 Converted queries, trait collision folding, wider metadata and reflection remain
 separate. Attribute argument paths acquire no runtime initializer authority.
+Generator-close release of an already warmed scoped value is held; the ordinary
+private-cache marker law does not extend the separate303 close path.
 [COMP183 evidence](../../coverage/semantics/deprecated-global-constant-review.json).
 [COMP184 cancellation](../../coverage/semantics/deprecated-handler-cancellation-review.json).
 [COMP185 owning reads](../../coverage/semantics/deprecated-owned-constant-review.json).
@@ -151,6 +164,7 @@ separate. Attribute argument paths acquire no runtime initializer authority.
 [COMP189 bound Closure defaults](../../coverage/semantics/deprecated-bound-closure-default-review.json).
 [COMP190 private Closure caches](../../coverage/semantics/deprecated-private-closure-default-review.json).
 [COMP191 ordinary Closure::call defaults](../../coverage/semantics/deprecated-closure-call-default-review.json).
+[COMP192 direct scoped Closure defaults](../../coverage/semantics/deprecated-scoped-closure-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
