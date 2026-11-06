@@ -159,7 +159,8 @@ def $typed_return_callback_candidate(S, z) = true -- if $callable_return_candida
 dec $callable_return_cv_candidate(pstate, int) : bool
 def $callable_return_cv_candidate(S, z) = true
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
-  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (porigin_site)
   -- if $callable_return_active(S, pcallcontext.FUNCTION, porigin_site, z)
   -- if $callable_return_cv_site(S, pcallcontext.FUNCTION, porigin_site, z) = (preqbytes)
   -- if S.RESULT = VARIABLE preqbytes z_name
@@ -245,7 +246,8 @@ def $callable_return_cv_start(S, ptask_source, pvalue) = $api_begin(S[.TODO = pt
 rule PhpStep/callable-return-cv-copy: S ~> $callable_return_cv_start(S, CALLABLE_RETURN_SOURCE pcallcontext.FUNCTION porigin_site pvalue z eps, pvalue)
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
   -- if $callable_return_cv_candidate(S, z)
-  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (porigin_site)
   -- if $callable_return_cv_protected(S, porigin_site)
   -- if S.RESULT = VARIABLE preqbytes z_name
   -- if $lookup(S.ENV, preqbytes) = (n_cell)
@@ -253,7 +255,8 @@ rule PhpStep/callable-return-cv-copy: S ~> $callable_return_cv_start(S, CALLABLE
 rule PhpStep/callable-return-cv-borrow: S ~> $callable_return_cv_start(S_prepared, CALLABLE_RETURN_CV_SOURCE pcallcontext.FUNCTION porigin_site preqbytes S_prepared.CELL z eps, pvalue)
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
   -- if $callable_return_cv_candidate(S, z)
-  -- if S.CURRENT = (pcallcontext) /\ S.ORIGIN = (porigin_site)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (porigin_site)
   -- if ~$callable_return_cv_protected(S, porigin_site)
   -- if S.RESULT = VARIABLE preqbytes z_name
   -- if $lookup(S.ENV, preqbytes) = (n_cell)
