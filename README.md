@@ -7874,6 +7874,11 @@ handler reentry and rebinding of the input/output variables. A lookup-handler
 throw still commits the name while canceling result assignment; a flag-reception
 throw leaves the name untouched. Existing owners retain direct receivers through
 normal and pending-exception cleanup. [Resolution review](coverage/semantics/is-callable-api-resolution-review.json).
+Untyped receiver references now retain the original live public method selection
+through warning rebinding. Completed class history survives later receiver
+destruction; receiver loss during lookup reaches explicit Unsupported. Saved names,
+booleans and real SOURCE/exception owners preserve normal and throwing order.
+[Receiver-alias review](coverage/semantics/is-callable-alias-api-review.json).
 Raw `self`, `parent` and `static` queries now use the genuine ordinary USER
 caller context for strings and bare-method arrays. Inherited lexical and called
 classes, and the real `This` owner, determine availability without invoking bodies.

@@ -1515,10 +1515,25 @@ real exception remains rooted. The outer namespaced query retains its selected
 nonce across a nested syntax-only query at a distinct depth. Admission remains
 bounded to known public USER
 class strings or DIRECT live object receivers and nonunpack calls; raw lexical
-keywords use the dedicated context path below; ALIAS object receivers,
-magic/nonpublic/autoload and wider paths remain Unsupported. The
+keywords use the dedicated context path below. Magic/nonpublic/autoload and wider
+paths retain their bounds. The
 [API resolution review](../../coverage/semantics/is-callable-api-resolution-review.json)
 records the timing and ownership cut.
+Untyped ALIAS receiver entries additionally admit ordinary USER objects with a
+public concrete method present in the requested table. Actual allocation remains
+required throughout active lookup: a real holder can preserve the original object
+while a diagnostic changes its reference cell. The completed resolution receipt
+then validates immutable class history if later output cleanup removes that holder
+and retires the receiver; its resolved boolean and later name snapshot stay fixed.
+If the receiver dies during the diagnostic, entered callback cleanup transports
+only to explicit refusal before method processing. Handler throw retains the real
+SOURCE and exception at that refusal. No active class/getter permission, body
+entry, owner or producer is added. The [receiver-alias review](../../coverage/semantics/is-callable-alias-api-review.json)
+records the separate live and completed-history laws.
+A separate remaining storage issue is owning callback rebinding at the final NAME
+store: Zend safe-dtor followed by raw assignment can leave positive native
+refcount after the stored edge disappears. GC68 addresses a bounded normal-object
+slice through an explicit count law; wider forms remain core work.
 Raw `self`, `parent` and `static` strings and bare-method arrays use the actual
 root or ordinary USER function/public nongenerator method frame. Source-body and
 target metadata authenticate lexical/called class and This, excluding borrowed

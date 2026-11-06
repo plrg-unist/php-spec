@@ -86,6 +86,13 @@ throw still commits NAME and cancels result assignment; reception-handler throw
 keeps the old NAME. Real SOURCE/cell/exception owners preserve reentry, direct
 receiver drain and namespaced nested queries. Seven source agreements and 259
 independent history/ownership/budget checks pass at recorded cuts. [Review](coverage/semantics/is-callable-api-resolution-review.json).
+Untyped receiver references now keep qualified public method resolution tied to
+the original live USER object while a warning changes the current member. A
+completed receipt survives later holder removal/receiver retirement during output
+cleanup. Receiver loss during the warning reaches explicit Unsupported through
+coherent callback/exception transport; no historical lookup or new owner is granted.
+One three-mode source agreement and 98 independent loss/ownership/budget checks
+pass at recorded private 461-module cuts. [Review](coverage/semantics/is-callable-alias-api-review.json).
 Raw keyword callable strings and bare-method arrays now resolve self/parent/static
 from the actual ordinary USER caller frame. Lexical versus called class and real
 This ownership preserve public availability; known invalid scope is false without
@@ -3260,8 +3267,8 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS218 | Immediate implicit This invocation of ordinary public USER __invoke using authentic saved caller and existing target-before-argument selection; preserve caller/receiver ownership and source limits. |
+| ATTR76 | Plain string-CV names for existing quiet, conditional and ADD hook consumers, retaining late conditional selection and fixed compound PROPERTY authority; preserve producer and owner bounds. |
 | COMP203 | Owning defaults for public ordinary error/exception method handlers through authentic entered API targets, exact arities and captured entry history; preserve existing callback owners and lifecycle. |
-| ENUM159 | Qualified-array ALIAS receivers retained through active public lookup, with actual completed-resolution history through later output cleanup; preserve live lookup, explicit refusal and held limits. |
 | GC69 | Exact native-RC NAME overwrites of ordinary Roots with finite public untyped scalar/fieldless-child slots, preserving real descendant owners and STORE allocation order; reuse count and GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |
