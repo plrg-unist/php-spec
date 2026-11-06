@@ -553,6 +553,15 @@ def $source_exception_transition(S, S_next) = $ob_object_final_local_capture(S_n
   -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES /\ S_next.COMPLETION = NORMAL
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
   -- if pobobjectsource? = ((porigin, n))
+;; A normal override consumes the pending owner before GC retires its object.
+;; Clear only this borrowed source at that actual same-frame owner drop.
+def $source_exception_transition(S, S_next) = $ob_object_final_local_capture(S_next, pobobjectreturn, pdestructorcall, eps, ptask_native*)
+  -- if S_next.COMPLETION = NORMAL
+  -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
+  -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
+  -- if pobobjectsource? = ((porigin, n))
+  -- if $($heap_count(HOBJECT n, $machine_roots(S)) > 0)
+  -- if $heap_count(HOBJECT n, $machine_roots(S_next)) = 0
 def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_native*]
   -- if S.COMPLETION = NORMAL /\ S.TODO = eps
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
