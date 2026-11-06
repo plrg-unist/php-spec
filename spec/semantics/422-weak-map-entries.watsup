@@ -1364,6 +1364,7 @@ dec $weakmap_write_selected_call(pstate, pweakmapwrite, pinstancestorage, pdestr
 dec $weakmap_write_pin_calls(pstate, pweakmapwrite, pinstancestorage) : bool
 dec $weakmap_write_own_call(pstate, pweakmapwrite, pdestructorcall) : bool
 dec $weakmap_write_own_marker(ptask, pdestructorcall) : bool
+dec $weakmap_write_own_marker_call(ptask) : pdestructorcall?
 dec $weakmap_write_callback_owner(pstate, pweakmapwrite, pdestructorcall) : bool
 dec $weakmap_write_own_cleanup_tail(pstate, pdestructionoperation, pweakmapwrite, pdestructionrelease, ptask*) : bool
 dec $weakmap_write_own_saved_prefix(ptask*, pdestructionoperation, pweakmapwrite) : (pdestructionoperation, pdestructionrelease*)?
@@ -1471,6 +1472,9 @@ def $weakmap_write_own_call(S, pweakmapwrite, pdestructorcall) = false -- otherw
 def $weakmap_write_own_marker(DESTRUCTOR_ENTER pdestructorcall, pdestructorcall) = true
 def $weakmap_write_own_marker(DESTRUCTOR_RESULT pdestructorcall, pdestructorcall) = true
 def $weakmap_write_own_marker(ptask, pdestructorcall) = false -- otherwise
+def $weakmap_write_own_marker_call(DESTRUCTOR_ENTER pdestructorcall) = (pdestructorcall)
+def $weakmap_write_own_marker_call(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall)
+def $weakmap_write_own_marker_call(ptask) = eps -- otherwise
 def $weakmap_write_callback_owner(S, pweakmapwrite, pdestructorcall) = true
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
@@ -1662,7 +1666,8 @@ def $weakmap_write_operation_task_valid(S, pdestructionoperation, pweakmapwrite)
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
   -- if S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps
-  -- if S.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease_old) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_tail*
+  -- if S.TODO = ptask_marker :: (DESTRUCTOR_RELEASE pdestructionrelease_old) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_tail*
+  -- if $weakmap_write_own_marker_call(ptask_marker) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructorcall.RELEASE = (pdestructionrelease)
   -- if pweakmapwrite.OLD.VALUE = POBJECT pdestructorcall.OBJECT
