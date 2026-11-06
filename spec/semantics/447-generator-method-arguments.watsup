@@ -377,16 +377,29 @@ dec $generator_early_config_call(ptask) : pconfigcall?
 def $generator_early_config_call(CONFIG_SEND pconfigcall) = (pconfigcall)
 def $generator_early_config_call(CONFIG_UNPACK_PREP pconfigcall) = (pconfigcall)
 def $generator_early_config_call(ptask) = eps -- otherwise
+dec $generator_early_config_valid(pstate, ptask) : bool
+def $generator_early_config_valid(S, ptask) = true
+  -- if $generator_early_config_call(ptask) = (pconfigcall)
+  -- if ~pconfigcall.NAMED /\ pconfigcall.PACKS = eps
+  -- if $generator_selected_traversable_site(S, pconfigcall)
+  -- if $call_task_valid(S, ptask)
+def $generator_early_config_valid(S, ptask) = false -- otherwise
 def $return_discard(S, ptask) = $eager_operation_begin(S, S_original, THROW_SEARCH n, $named_slots_roots(pconfigcall.SENT) ++ $exit_owner_nodes(pconfigcall.OWNER))
   -- if $generator_early_config_call(ptask) = (pconfigcall)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $throwable_live(S, n)
   -- if $destructor_operational(S)
-  -- if ~pconfigcall.NAMED /\ pconfigcall.PACKS = eps
   -- if S_original = S[.TODO = (THROW_SEARCH n) :: ptask :: ptask_tail*]
-  -- if $generator_selected_traversable_site(S_original, pconfigcall)
-  -- if $call_task_valid(S_original, ptask)
+  -- if $generator_early_config_valid(S_original, ptask)
+;; Keep a throwing producer until the same actual Search can retire its roots.
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $destructor_operational(S)
+  -- if $generator_early_config_valid(S, ptask)
+  -- if S_next.TODO = S.TODO
+  -- if $throwable_pending(S_next.COMPLETION)
 
 def $config_iterator_history(S, pconfigiterator) = true
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
