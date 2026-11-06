@@ -108,6 +108,9 @@ dec $magic_method_firstclass_capture(expression) : bool
 dec $magic_method_firstclass_call(expression) : bool
 dec $magic_method_firstclass_site(pstate, porigin, expression) : bool
 dec $magic_method_firstclass_producer(pstate, porigin, expression) : pfunction?
+dec $magic_method_from_callable_call(expression) : bool
+dec $magic_method_from_callable_target(pstate, ptbytes, phpType7*) : pfunction?
+dec $magic_method_from_callable_producer(pstate, porigin, expression) : pfunction?
 dec $magic_method_fresh_receiver(pstate, porigin, expression) : porigin?
 dec $magic_method_plain_instance_source(pstate, pmethoddesc, phpType7*) : bool
 dec $magic_method_instance_source_body(pstate, pmethoddesc, phpType7*) : bool
@@ -184,6 +187,8 @@ def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_producer_cv_source(S, porigin, expression)
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_firstclass_producer(S, porigin, expression) = (pfunction)
+def $magic_method_argument_source(S, porigin, n, expression) = true
+  -- if $magic_method_from_callable_producer(S, porigin, expression) = (pfunction)
 def $magic_method_argument_source(S, porigin, n, expression) = true
   -- if $magic_method_invokable_producer(S, porigin, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_argument_source(S, porigin, n, expression) = false -- otherwise
@@ -479,6 +484,35 @@ def $magic_method_firstclass_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (N
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
   -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
 def $magic_method_firstclass_producer(S, porigin, expression) = eps -- otherwise
+;; A normal factory call is distinct from first-class capture of its method.
+def $magic_method_from_callable_call(NExprFuncCall (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7_factory*) metadata_factory) (SEQUENCE phpType7*) metadata) = ~$ppfirstclass(phpType7_factory*)
+def $magic_method_from_callable_call(expression) = false -- otherwise
+def $magic_method_from_callable_target(S, ptbytes, phpType7*) = (pfunction)
+  -- if $method_string_parts(ptbytes) = eps
+  -- if $call_target(S, $typed_callable_name(ptbytes), eps) = (pfunction)
+  -- if $magic_method_plain_user_source(S, pfunction, phpType7*)
+  -- if pfunction.SIGNATURE.RETURNS = eps
+def $magic_method_from_callable_target(S, ptbytes, phpType7*) = (pmethoddesc.FUNCTION)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if ~$api_keyword(ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if $magic_method_plain_static_source(S, pmethoddesc, phpType7*)
+def $magic_method_from_callable_target(S, ptbytes, phpType7*) = eps -- otherwise
+def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata) = (pfunction)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall (NExprStaticCall (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE ([(NArg ABSENT (NScalarString phpType33 metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg)])) metadata_factory) (SEQUENCE phpType7*) metadata)
+  -- if $from_site(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]))
+  -- if $ppbuiltin_arguments(phpType7*) = (expression*)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_factory, false))
+  -- if z_factory = $source_line(metadata_factory)
+  -- if $magic_method_literal_value(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0, PCFIELD 2, PCINDEX 0, PCFIELD 1]), NScalarString phpType33 metadata_string) = (pvalue_string)
+  -- if $string_bytes(pvalue_string) = (ptbytes)
+  -- if $magic_method_from_callable_target(S, ptbytes, phpType7*) = (pfunction)
+def $magic_method_from_callable_producer(S, porigin, expression) = eps -- otherwise
 ;; A literal static Closure has one exact permanent source/template even after
 ;; its ephemeral CLOSURE_TARGET owner and parameter frame have retired.
 dec $magic_method_literal_closure_call(expression) : bool
@@ -1089,6 +1123,11 @@ def $magic_method_copy_source(S, porigin, phpType7*, n) = true
   -- if n <- [0,1] /\ $(n < |phpType7*|)
   -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
+  -- if $magic_method_from_callable_producer(S, porigin_argument, expression) = (pfunction)
+def $magic_method_copy_source(S, porigin, phpType7*, n) = true
+  -- if n <- [0,1] /\ $(n < |phpType7*|)
+  -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if $call_argument_origin(S, (porigin), n) = (porigin_argument)
   -- if $magic_method_invokable_producer(S, porigin_argument, expression) = ((porigin_class, pmethoddesc))
 def $magic_method_copy_source(S, porigin, phpType7*, n) = false -- otherwise
 dec $magic_method_copy_values(pstate, porigin, phpType7*, nat, poperand*) : (pvalue*)?
@@ -1147,7 +1186,7 @@ def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN (POBJECT n_object
 def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN pvalue) :: poperand_tail*) = (pvalue :: pvalue_tail*)
   -- if $(n < |phpType7*|)
   -- if phpType7*[n] = NArg phpType3_name expression (BOOLEAN false) (BOOLEAN false) metadata_arg
-  -- if $magic_method_firstclass_call(expression) \/ $magic_method_invokable_call(expression)
+  -- if $magic_method_firstclass_call(expression) \/ $magic_method_invokable_call(expression) \/ $magic_method_from_callable_call(expression)
   -- if $magic_method_copy_source(S, porigin, phpType7*, n)
   -- if $magic_method_value(S, pvalue) \/ $magic_method_primitive(S, pvalue)
   -- if $magic_method_copy_values(S, porigin, phpType7*, $(n + 1), poperand_tail*) = (pvalue_tail*)
@@ -1161,6 +1200,7 @@ def $magic_method_copy_values(S, porigin, phpType7*, n, (KNOWN pvalue) :: popera
   -- if ~$magic_method_literal_closure_call(expression)
   -- if ~$magic_method_instance_call(expression)
   -- if ~$magic_method_firstclass_call(expression)
+  -- if ~$magic_method_from_callable_call(expression)
   -- if ~$magic_method_invokable_call(expression)
   -- if ~$magic_method_cv_invokable_call(expression)
   -- if $magic_method_value(S, pvalue) \/ ($magic_method_primitive(S, pvalue) /\ $magic_method_copy_source(S, porigin, phpType7*, n))
