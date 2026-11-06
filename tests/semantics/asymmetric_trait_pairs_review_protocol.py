@@ -18,7 +18,7 @@ def protected(consumer, called, base, entry):
 
 
 def private(consumer, called, matched):
-    return ('PrivatePair70', ':', consumer, ':', called, ':', matched, ';', 'P')
+    return ('PrivatePair70', ':', consumer, ':', called, ':', matched, ';P')
 
 
 PREFIX = (
