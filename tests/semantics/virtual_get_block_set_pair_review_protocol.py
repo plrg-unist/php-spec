@@ -79,6 +79,7 @@ review.CASES = {
             '$origin_node(S.SOURCES, PORIGIN 0 pfunction_get.BODY) = (expression_get)',
             '$property_hook_expression_return(S, porigin_get, 11) = (expression_get)',
             '$property_hook_virtual(S, ppropertydesc)',
+            '~$property_hook_override_virtual(S, ppropertydesc)',
             '$property_set_virtual_source(S, ppropertydesc)',
             '$property_set_function(S, ppropertyhook) = (pfunction_set)',
             '$property_set_signature_at(S, ppropertydesc) = (pssignature_set)',
