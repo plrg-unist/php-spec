@@ -208,6 +208,19 @@ The copied-call correction above is unchanged; active pack/producer stages and
 other defaults retain their existing policies.
 [Early-cursor review](../../coverage/semantics/generator-early-cursor-cleanup-review.json).
 
+Native Aggregate acquisition now accepts the actual PREP or CONFIG_AGGREGATE
+receiver root when `getIterator()` removes the outside receiver CV. A default-old
+live-callee hook changes only start and the three ordinary Iterator return arms;
+the source Aggregate keeps its existing real-owner requirement. Return promotion
+still moves the owned result into DATA once. A default-old discard dispatcher
+authenticates the consumed native marker and pending Search, then transfers
+prior SENT before receiver into the existing explicit release queue. No Aggregate
+pin or DATA is invented on failure. The existing pending-release/operation witness
+activates queue validation after ordinary entry. Both operational and ordinary
+failure paths remain coherent with normal return; old INI-only Generator returns,
+Iterator admission, values and frame rules stay unchanged.
+[Aggregate acquisition review](../../coverage/semantics/generator-aggregate-acquisition-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does

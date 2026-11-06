@@ -724,6 +724,20 @@ credit. Actual current457 joined load/inventory pass without source/front replay
 Other task/array-ledger/producer/default policies stay unchanged.
 [Early-cursor review](coverage/semantics/generator-early-cursor-cleanup-review.json).
 
+I132 replaces the outside-callee-owner assumption during native Generator
+Aggregate acquisition with proof of the actual PREP/CONFIG_AGGREGATE marker.
+The borrowed Aggregate retains its real owner; ordinary Iterator return still
+transfers RESULT into DATA once. Native cancellation transfers prior SENT before
+receiver in both operational and ordinary contexts, through the existing real
+Search queue. INI-only Generator returns and producer/value/frame policies stay
+unchanged. Native3 and source3 pass first attempt: normal getter rebinding/return,
+supplied getter exception in a named Fiber, and return-type failure outside one.
+Independent N99/E81/T78=258 owner/promotion/cancellation/public-budget checks
+pass. Existing pending-cleanup activation validates queued jobs after ordinary
+entry; one fixture type-check stop retains zero credit. Actual current459 joined
+interface load/inventory pass; no source/front replay.
+[Aggregate acquisition review](coverage/semantics/generator-aggregate-acquisition-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -3075,7 +3089,6 @@ their work remains unaccepted until integrated.
 | COMP200 | Owning constructor defaults selected by new self/parent/static in physical named ordinary factory methods, preserving actual factory versus constructor scopes, captured selected-entry history and existing cache/receiver laws. |
 | ENUM157 | Owning ordinary USER/stdClass callable_name outputs with live capture and actual post-destructor property storage, mutation/resurrection and historical OLD validation; preserve existing edge, typing and held limits. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
-| I132 | Aggregate getter with sole selected native-Generator cursor ownership through actual PREP/CONFIG_AGG, preserving source Aggregate owners and transferring real prior SENT before receiver on pre-DATA cancellation. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

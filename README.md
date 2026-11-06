@@ -8359,6 +8359,14 @@ Actual SEND/PREP cursors preserve frozen selection and partial source replay;
 no Iterator DATA has been acquired.
 [Early-cursor review](coverage/semantics/generator-early-cursor-cleanup-review.json).
 
+Borrowed Aggregate getters can now clear the selected Generator's outside CV
+while the real acquisition cursor keeps its receiver and prior arguments.
+An ordinary initialized Iterator return transfers once into DATA. Getter and
+return-type failures before DATA release prior argv before the receiver, inside
+and outside Fibers. The Aggregate still needs a real owner during its borrowed
+call; existing INI, producer and value policies remain.
+[Aggregate acquisition review](coverage/semantics/generator-aggregate-acquisition-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their
