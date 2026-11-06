@@ -2430,7 +2430,8 @@ def $enum_is_callable_output_tail(S, pconfigcall, penumqueryoutput, ptask_tail*)
   -- if S.TODO = (ENUM_IS_CALLABLE_API_RETURN penumqueryresolution (n)) :: ptask_tail*
   -- if $enum_is_callable_api_source(penumqueryresolution.QUERY.SOURCE, pconfigcall)
 def $enum_is_callable_output_tail(S, pconfigcall, penumqueryoutput, ptask_tail*) = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: $enum_is_callable_ref_tail(S, pconfigcall, ptask_tail*) -- otherwise
-def $task_nodes(ENUM_IS_CALLABLE_API_RETURN penumqueryresolution n_pending?) = $task_nodes(penumqueryresolution.QUERY.SOURCE) ++ $destructor_pending_nodes(n_pending?)
+def $task_nodes(ENUM_IS_CALLABLE_API_RETURN penumqueryresolution eps) = $task_nodes(penumqueryresolution.QUERY.SOURCE)
+def $task_nodes(ENUM_IS_CALLABLE_API_RETURN penumqueryresolution (n)) = $task_nodes(penumqueryresolution.QUERY.SOURCE) ++ [HOBJECT n]
 def $selected_task_nonce(ENUM_IS_CALLABLE_API_RETURN penumqueryresolution n_pending?) = $selected_task_nonce(penumqueryresolution.QUERY.SOURCE)
 dec $enum_is_callable_api_return_valid(pstate, penumqueryresolution, nat?) : bool
 def $enum_is_callable_api_return_valid(S, penumqueryresolution, n_pending?) = true
