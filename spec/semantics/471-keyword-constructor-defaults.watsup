@@ -1,0 +1,29 @@
+;; The factory's lexical/called scopes select NEW; they are distinct from the
+;; entered constructor's owner/selected class. This receipt owns neither object.
+dec $parameter_keyword_constructor_source(pstate, pdynamicnew) : pmethoddesc?
+def $parameter_keyword_constructor_source(S, pdynamicnew) = (pmethoddesc)
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+  -- if pdynamicnew.CLOSURE = eps
+  -- if pdynamicnew.SITE = PORIGIN n_unit pcpath
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pdynamicnew.SCOPE = (pmethoddesc.OWNER)
+  -- if pdynamicnew.CALLED = (porigin_called)
+  -- if $origin_node(S.SOURCES, porigin_called) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata)
+  -- if $dynamic_new_record_valid(S, pdynamicnew)
+def $parameter_keyword_constructor_source(S, pdynamicnew) = eps -- otherwise
+def $parameter_dynamic_constructor_source(S, pdynamicnew) = true
+  -- if $parameter_keyword_constructor_source(S, pdynamicnew) =/= eps
+
+;; Closed history uses the real factory CALLS head, without a receiver lookup.
+;; In particular self/parent must not forget a different late-called scope.
+dec $parameter_keyword_constructor_calls(pstate, pdynamicnew, pdeclcalls, nat) : bool
+def $parameter_keyword_constructor_calls(S, pdynamicnew, (porigin_function, porigin_site_option?, porigin_scope_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
+  -- if $parameter_keyword_constructor_source(S, pdynamicnew) = (pmethoddesc)
+  -- if porigin_function = pmethoddesc.FUNCTION.ORIGIN
+  -- if porigin_scope_option? = pdynamicnew.SCOPE
+  -- if porigin_called_option? = pdynamicnew.CALLED
+  -- if $parameter_method_invocation(S, pmethoddesc.FUNCTION, (porigin_function, porigin_site_option?, porigin_scope_option?, porigin_called_option?) :: pdeclcalls, n_prefix)
+def $parameter_keyword_constructor_calls(S, pdynamicnew, pdeclcalls, n_prefix) = false -- otherwise
+def $parameter_dynamic_constructor_source_calls(S, pdynamicnew, pdeclcalls, n_prefix) = $parameter_keyword_constructor_calls(S, pdynamicnew, pdeclcalls, n_prefix)
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
