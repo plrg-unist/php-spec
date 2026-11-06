@@ -401,6 +401,7 @@ dec $weakmap_entries_access_storage(pstate, nat, bool) : bool
 def $weakmap_entries_access_storage(S, n_map, false) = $weakmap_entries_table_valid(S, n_map, eps)
 def $weakmap_entries_access_storage(S, n_map, true) = (~$weakmap_foreach_active(S.ITERATORS, n_map) /\ $weakmap_entries_storage_policy(S, n_map, eps, true))
 dec $weakmap_entries_access_allowed(pstate, paccess, ptbytes) : bool
+dec $weakmap_foreach_current_read(pstate, paccess, ptask*) : bool
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_entries_at(S, n_map)
@@ -415,6 +416,15 @@ def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
   -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
   -- if ~$instance_storage_freeing(S, n_key)
   -- if $weakmap_entries_child_storage(S, n_map)
+;; Only this read consumer may use the direct cursor's finite storage proof.
+;; The common table/access policies retain their active-cursor fences.
+def $weakmap_entries_access_allowed(S, paccess, ptbytes) = true
+  -- if ptbytes = $ptascii("offsetGet")
+  -- if $weakmap_read_allowed(S, paccess)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_entries_at(S, n_map)
+  -- if $weakmap_foreach_active(S.ITERATORS, n_map)
+  -- if $weakmap_foreach_current_read(S, paccess, S.TODO)
 def $weakmap_entries_access_allowed(S, paccess, ptbytes) = false -- otherwise
 ;; Explicit unset drops exactly this slot; an absent object Key is unchanged.
 ;; Existing ownership cleanup retires the removed Value or reference-cell edge.
@@ -949,6 +959,45 @@ def $weakmap_finite_foreach_source(S, n_map, NStmtForeach expression_iterable ph
 def $weakmap_finite_foreach_source(S, n_map, statement) = false -- otherwise
 dec $weakmap_entries_byvalue_storage(pstate, nat) : bool
 def $weakmap_entries_byvalue_storage(S, n_map) = ($weakmap_entries_foreach_storage(S, n_map) \/ $weakmap_finite_foreach_storage(S, n_map))
+
+;; The nearest saved loop in this frame authenticates the current Key and the
+;; actual Map/Key CV operands. A read result owns its copied zval; the native
+;; transient receiver pin stays inside this existing atomic builtin read.
+dec $weakmap_foreach_current_read_site(pstate, paccess, ptask) : bool
+def $weakmap_foreach_current_read_site(S, paccess, FOREACH_NEXT n (HOBJECT n_map) statement (porigin_loop) z) = true
+  -- if paccess.OBJECT = (n_map)
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps /\ S.GC.WORKER = eps
+  -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.FRAMES = eps
+  -- if S.ITERATORS = [WEAKMAPITER n n_map n_position n_keys*]
+  -- if $(n_position > 0) /\ $(n_position <= |n_keys*|)
+  -- if n_keys* = $weakmap_entries_keys($weakmap_entries_contents(S, n_map))
+  -- if $weakmap_entries_keys_held(S, $weakmap_entries_contents(S, n_map))
+  -- if $call_task_valid(S, FOREACH_NEXT n (HOBJECT n_map) statement (porigin_loop) z)
+  -- if $weakmap_entries_byvalue_storage(S, n_map)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if n_keys*[$nabs($(n_position - 1))] = n_key
+  -- if paccess.BASE = BASE_VALUE (VARIABLE n_map_name* z_base)
+  -- if paccess.INPUT = VARIABLE n_key_name* z_key
+  -- if paccess.SELECTED = $rcontainer_selected(S, S.RESULT)
+  -- if statement = NStmtForeach expression_iterable expression_key (BOOLEAN false) expression_value (SEQUENCE statement_body*) (BOOLEAN false) metadata
+  -- if $weakmap_foreach_name(expression_iterable) = (n_map_name*)
+  -- if $weakmap_foreach_name(expression_key) = (n_key_name*)
+  -- if $weakmap_finite_foreach_source(S, n_map, statement)
+  -- if $lookup(S.ENV, n_key_name*) = (n_key_cell)
+  -- if $(n_key_cell < |S.STORE|) /\ ~(n_key_cell <- S.REFCELLS)
+  -- if S.STORE[n_key_cell] = DEFINED (POBJECT n_key)
+  -- if $origin_node(S.SOURCES, paccess.TARGET) = (NExprArrayDimFetch expression_map (expression_offset) metadata_read)
+  -- if $weakmap_foreach_name(expression_map) = (n_map_name*)
+  -- if $weakmap_foreach_name(expression_offset) = (n_key_name*)
+  -- if porigin_loop = PORIGIN n_source pcpath_loop
+  -- if paccess.SITE = PORIGIN n_source pcpath_read
+  -- if $effect_below(pcpath_loop ++ [PCFIELD 4], pcpath_read)
+def $weakmap_foreach_current_read_site(S, paccess, ptask) = false -- otherwise
+def $weakmap_foreach_current_read(S, paccess, eps) = false
+def $weakmap_foreach_current_read(S, paccess, ptask :: ptask_tail*) = $weakmap_foreach_current_read_site(S, paccess, ptask)
+  -- if $goto_foreach_task(ptask)
+def $weakmap_foreach_current_read(S, paccess, ptask :: ptask_tail*) = $weakmap_foreach_current_read(S, paccess, ptask_tail*)
+  -- if ~$goto_foreach_task(ptask)
 dec $weakmap_entries_cursor_next(pweakmapentry*, nat, nat*) : (pweakmapentry, nat)?
 def $weakmap_entries_cursor_next(pweakmapentry_all*, n_position, n_keys*) = eps
   -- if $(n_position >= |n_keys*|)
