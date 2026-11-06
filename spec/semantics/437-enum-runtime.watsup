@@ -1805,6 +1805,89 @@ def $enum_is_callable_instance(S, POBJECT n) = true
   -- if S.OBJECTS[n] = STDINSTANCE
 def $enum_is_callable_instance(S, pvalue) = false -- otherwise
 
+;; Runtime class identity remains immutable in OBJECTS after retirement.
+;; Only borrowed INPUT/OUTPUT history uses this view without a live guard.
+dec $enum_is_callable_user_class(pstate, porigin) : bool
+def $enum_is_callable_user_class(S, porigin_class) = true
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_links_valid(S)
+def $enum_is_callable_user_class(S, porigin_class) = false -- otherwise
+dec $enum_is_callable_user_object_history(pstate, nat) : porigin?
+def $enum_is_callable_user_object_history(S, n) = (porigin_class)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $enum_is_callable_user_class(S, porigin_class)
+def $enum_is_callable_user_object_history(S, n) = eps -- otherwise
+dec $enum_is_callable_user_string(pstate, pvalue) : bool
+def $enum_is_callable_user_string(S, pvalue) = true
+  -- if $enum_array_string_valid(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if ~(0 <- ptbytes) /\ $typed_callable_method(ptbytes, false, false)
+def $enum_is_callable_user_string(S, pvalue) = false -- otherwise
+dec $enum_is_callable_user_pair(pstate, pvalue*, bool) : bool
+def $enum_is_callable_user_pair(S, [pvalue_receiver, pvalue_method], b_history) = true
+  -- if $enum_array_string_valid(S, pvalue_receiver) /\ $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver) /\ $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~(0 <- ptbytes_receiver) /\ ~(0 <- ptbytes_method)
+def $enum_is_callable_user_pair(S, [POBJECT n, pvalue_method], b_history) = true
+  -- if $enum_is_callable_user_object_history(S, n) = (porigin_class)
+  -- if b_history \/ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method) /\ ~(0 <- ptbytes_method)
+def $enum_is_callable_user_pair(S, pvalue*, b_history) = false -- otherwise
+dec $enum_is_callable_user_receiver(pstate, pvalue, bool) : (porigin, bool)?
+def $enum_is_callable_user_receiver(S, pvalue_class, b_history) = ((porigin_class, false))
+  -- if $enum_array_string_valid(S, pvalue_class)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class) /\ ~(0 <- ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+  -- if $enum_is_callable_user_class(S, porigin_class)
+def $enum_is_callable_user_receiver(S, POBJECT n, b_history) = ((porigin_class, true))
+  -- if $enum_is_callable_user_object_history(S, n) = (porigin_class)
+  -- if b_history \/ (HOBJECT n) <- S.ALLOCATIONS
+def $enum_is_callable_user_receiver(S, pvalue, b_history) = eps -- otherwise
+dec $enum_is_callable_user_method(pstate, porigin, ptbytes, bool) : bool?
+def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = (true)
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc.STATIC \/ b_object \/ $array_implicit_this(S, porigin_class)
+def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, false) = (false)
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT /\ ~pmethoddesc.STATIC
+  -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if ~$array_implicit_this(S, porigin_class) /\ ~$array_magic(S, porigin_class)
+def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = (false)
+  -- if $effective_method(S, porigin_class, ptbytes_method, |S.CLASSES|) = eps
+  -- if ~$array_magic(S, porigin_class)
+def $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object) = eps -- otherwise
+dec $enum_is_callable_user_string_result(pstate, pvalue, bool) : bool?
+def $enum_is_callable_user_string_result(S, pvalue, true) = (true)
+  -- if $enum_is_callable_user_string(S, pvalue)
+def $enum_is_callable_user_string_result(S, pvalue, false) = $enum_is_callable_user_method(S, porigin_class, ptbytes_method, false)
+  -- if $enum_is_callable_user_string(S, pvalue)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $enum_is_callable_user_receiver(S, PSTRING ptbytes_class, false) = ((porigin_class, false))
+def $enum_is_callable_user_string_result(S, pvalue, b_syntax) = eps -- otherwise
+dec $enum_is_callable_user_pair_result(pstate, pvalue*, bool, bool) : bool?
+def $enum_is_callable_user_pair_result(S, pvalue*, true, b_history) = (true)
+  -- if $enum_is_callable_user_pair(S, pvalue*, b_history)
+def $enum_is_callable_user_pair_result(S, [pvalue_receiver, pvalue_method], false, b_history) = $enum_is_callable_user_method(S, porigin_class, ptbytes_method, b_object)
+  -- if $enum_is_callable_user_pair(S, [pvalue_receiver, pvalue_method], b_history)
+  -- if $enum_is_callable_user_receiver(S, pvalue_receiver, b_history) = ((porigin_class, b_object))
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+def $enum_is_callable_user_pair_result(S, pvalue*, b_syntax, b_history) = eps -- otherwise
+dec $enum_is_callable_array_values(pstate, nat) : pvalue*?
+dec $enum_is_callable_user_value(pstate, pvalue) : bool
+def $enum_is_callable_user_value(S, pvalue) = true
+  -- if $enum_is_callable_user_string(S, pvalue) /\ $enum_is_callable_target(S, pvalue) = eps
+def $enum_is_callable_user_value(S, PARRAY n) = true
+  -- if $enum_is_callable_array_values(S, n) = (pvalue*)
+  -- if $enum_is_callable_user_pair(S, pvalue*, false) /\ $enum_is_callable_target(S, PARRAY n) = eps
+def $enum_is_callable_user_value(S, pvalue) = false -- otherwise
+
 dec $enum_is_callable_short_name(ptbytes) : ptbytes
 def $enum_is_callable_short_name(ptbytes) = ptbytes_method
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
@@ -1893,7 +1976,6 @@ def $enum_is_callable_array_snapshot(S, n, [pvalue_receiver, pvalue_method]) = t
   -- if $enum_is_callable_member_snapshot(S, pitem_method, pvalue_method)
 def $enum_is_callable_array_snapshot(S, n, eps) = $enum_is_callable_bad_array(S, n)
 def $enum_is_callable_array_snapshot(S, n, pvalue*) = false -- otherwise
-dec $enum_is_callable_array_values(pstate, nat) : pvalue*?
 def $enum_is_callable_array_values(S, n) = ([pvalue_receiver, pvalue_method])
   -- if $(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS
   -- if |S.ARRAYS[n].ITEMS| = 2
@@ -1921,6 +2003,11 @@ def $enum_is_callable_input_label(S, [POBJECT n_case, pvalue_method]) = pclassde
   -- if $enum_case_object(S, n_case) = (pclassconstantdesc)
   -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
   -- if pclassdesc.KIND = "enum"
+def $enum_is_callable_input_label(S, [POBJECT n, pvalue_method]) = pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method
+  -- if $enum_is_callable_user_object_history(S, n) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method) /\ ~(0 <- ptbytes_method)
 def $enum_is_callable_input_label(S, pvalue*) = eps -- otherwise
 
 dec $enum_is_callable_pair_invalid(pvalue*) : bool
@@ -1939,6 +2026,16 @@ def $enum_is_callable_pair_name(S, [POBJECT n_case, pvalue_method]) = (pclassdes
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $enum_array_string_valid(S, pvalue_method)
   -- if $string_bytes(pvalue_method) = (ptbytes_method)
+def $enum_is_callable_pair_name(S, [pvalue_receiver, pvalue_method]) = (ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method)
+  -- if $enum_is_callable_receiver(S, pvalue_receiver) = eps
+  -- if $enum_array_string_valid(S, pvalue_receiver) /\ $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver) /\ $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~(0 <- ptbytes_receiver) /\ ~(0 <- ptbytes_method)
+def $enum_is_callable_pair_name(S, [POBJECT n, pvalue_method]) = (pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method)
+  -- if $enum_is_callable_user_object_history(S, n) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $enum_array_string_valid(S, pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method) /\ ~(0 <- ptbytes_method)
 def $enum_is_callable_pair_name(S, pvalue*) = ($ptascii("Array"))
   -- if $enum_is_callable_pair_invalid(pvalue*)
 def $enum_is_callable_pair_name(S, pvalue*) = eps -- otherwise
@@ -1970,7 +2067,7 @@ def $enum_is_callable_input_source(S, penumqueryinput) = true
   -- if $enum_is_callable_argument(S, pconfigcall, 2) = ((NExprVariable (BYTES text_output) metadata_output, porigin_output, z_output))
   -- if $reference_cv(NExprVariable (BYTES text_output) metadata_output) = (n_output*)
   -- if penumqueryinput.ARRAY = eps /\ penumqueryinput.ITEMS = eps /\ penumqueryinput.VALUES = eps
-  -- if $enum_is_callable_target(S, PSTRING penumqueryinput.VALUE) =/= eps \/ $enum_is_callable_function_string(S, PSTRING penumqueryinput.VALUE)
+  -- if $enum_is_callable_target(S, PSTRING penumqueryinput.VALUE) =/= eps \/ $enum_is_callable_function_string(S, PSTRING penumqueryinput.VALUE) \/ $enum_is_callable_user_string(S, PSTRING penumqueryinput.VALUE)
 def $enum_is_callable_input_source(S, penumqueryinput) = true
   -- if pconfigcall = penumqueryinput.CALL
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE
@@ -2096,7 +2193,7 @@ def $enum_is_callable_received_ref(S, pconfigcall) = eps -- otherwise
 dec $enum_is_callable_received_input(pstate, pconfigcall) : (pvalue, bool)?
 def $enum_is_callable_received_input(S, pconfigcall) = ((pvalue_input, b_syntax))
   -- if $enum_is_callable_input(pconfigcall) = ((pvalue_input, b_syntax))
-  -- if pconfigcall.PACKS = eps \/ (~$enum_is_callable_primitive_or_closure(S, pvalue_input) /\ ~$enum_is_callable_instance(S, pvalue_input))
+  -- if pconfigcall.PACKS = eps \/ (~$enum_is_callable_primitive_or_closure(S, pvalue_input) /\ ~$enum_is_callable_instance(S, pvalue_input) /\ ~$enum_is_callable_user_value(S, pvalue_input))
 def $enum_is_callable_received_input(S, pconfigcall) = ((pvalue_input, b_syntax))
   -- if pconfigcall.PACKS = eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN pvalue_syntax)]
@@ -2150,12 +2247,12 @@ def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if pvalue_input = PSTRING_CARRIER INTERNED_STRING ptbytes_input
   -- if $string_carrier_valid(S, pvalue_input)
   -- if ptbytes_input = $base64(text_input)
-  -- if $enum_is_callable_target(S, pvalue_input) =/= eps \/ $enum_is_callable_function_string(S, pvalue_input)
+  -- if $enum_is_callable_target(S, pvalue_input) =/= eps \/ $enum_is_callable_function_string(S, pvalue_input) \/ $enum_is_callable_user_string(S, pvalue_input)
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if $enum_is_callable_saved(S, pconfigcall, pvalue_input) = (penumqueryinput)
   -- if penumqueryinput.ARRAY = eps
   -- if ptbytes_input = penumqueryinput.VALUE
-  -- if $enum_is_callable_target(S, pvalue_input) =/= eps \/ $enum_is_callable_function_string(S, pvalue_input)
+  -- if $enum_is_callable_target(S, pvalue_input) =/= eps \/ $enum_is_callable_function_string(S, pvalue_input) \/ $enum_is_callable_user_string(S, pvalue_input)
 def $enum_is_callable_ref_name(S, pconfigcall, PARRAY n_array) = (ptbytes_name)
   -- if $enum_is_callable_saved(S, pconfigcall, PARRAY n_array) = (penumqueryinput)
   -- if penumqueryinput.ARRAY = (n_array)
@@ -2402,6 +2499,11 @@ def $enum_is_callable_result(S, POBJECT n, b_syntax) = (false)
   -- if S.OBJECTS[n] = STDINSTANCE
 def $enum_is_callable_result(S, pvalue, b_syntax) = $enum_is_callable_function_result(S, pvalue, b_syntax, |S.DECLARATIONS|)
   -- if $enum_is_callable_function_string(S, pvalue)
+def $enum_is_callable_result(S, pvalue, b_syntax) = $enum_is_callable_user_string_result(S, pvalue, b_syntax)
+  -- if $enum_is_callable_user_string(S, pvalue) /\ $enum_is_callable_target(S, pvalue) = eps
+def $enum_is_callable_result(S, PARRAY n, b_syntax) = $enum_is_callable_user_pair_result(S, pvalue*, b_syntax, false)
+  -- if $enum_is_callable_array_values(S, n) = (pvalue*)
+  -- if $enum_is_callable_user_pair(S, pvalue*, false) /\ $enum_is_callable_target(S, PARRAY n) = eps
 def $enum_is_callable_result(S, pvalue, true) = (true)
   -- if $enum_is_callable_target(S, pvalue) = ((porigin_class, ptbytes_method, b_case))
 def $enum_is_callable_result(S, pvalue, false) = (b_callable)
@@ -2437,6 +2539,9 @@ def $enum_is_callable_pair_result(S, pvalue*, true) = (true)
   -- if $enum_is_callable_pair_name(S, pvalue*) = (ptbytes_name)
 def $enum_is_callable_pair_result(S, pvalue*, b_syntax) = (false)
   -- if $enum_is_callable_pair_invalid(pvalue*)
+def $enum_is_callable_pair_result(S, [pvalue_receiver, pvalue_method], false) = $enum_is_callable_user_pair_result(S, [pvalue_receiver, pvalue_method], false, true)
+  -- if $enum_is_callable_receiver(S, pvalue_receiver) = eps
+  -- if $enum_is_callable_user_pair(S, [pvalue_receiver, pvalue_method], true)
 def $enum_is_callable_pair_result(S, [pvalue_receiver, pvalue_method], false) = (true)
   -- if $enum_is_callable_receiver(S, pvalue_receiver) = ((porigin_class, b_case))
   -- if $enum_array_string_valid(S, pvalue_method)
@@ -2658,12 +2763,14 @@ def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput 
 def $eager_operation_source_guard(S, pdestructionoperation) = false
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
   -- if $enum_is_callable_output_scope(S, pdestructionoperation) = eps
-dec $enum_is_callable_output_object_input(pstate, penumqueryoutput) : bool
-def $enum_is_callable_output_object_input(S, penumqueryoutput) = true
+dec $enum_is_callable_output_drain_input(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_drain_input(S, penumqueryoutput) = true
   -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((POBJECT n, b_syntax, penumqueryoutput.CELL))
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $typed_closure(S, n) \/ $enum_is_callable_instance(S, POBJECT n)
-def $enum_is_callable_output_object_input(S, penumqueryoutput) = false -- otherwise
+def $enum_is_callable_output_drain_input(S, penumqueryoutput) = true
+  -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((PARRAY n, b_syntax, penumqueryoutput.CELL))
+def $enum_is_callable_output_drain_input(S, penumqueryoutput) = false -- otherwise
 ;; Commit outside the explicit old-value exit so releasing the final CONFIG
 ;; pin gets its own operation carrying the boolean through receiver destruction.
 def $destructor_operation_postfinish(S, pdestructionoperation) = S
@@ -2671,12 +2778,12 @@ def $destructor_operation_postfinish(S, pdestructionoperation) = S
   -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
-  -- if $enum_is_callable_output_object_input(S, penumqueryoutput)
+  -- if $enum_is_callable_output_drain_input(S, penumqueryoutput)
 def $destructor_operation_postfinish(S, pdestructionoperation) = $enum_is_callable_output_commit(S, penumqueryoutput)
   -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
-  -- if S.COMPLETION =/= NORMAL \/ ~$enum_is_callable_output_object_input(S, penumqueryoutput)
+  -- if S.COMPLETION =/= NORMAL \/ ~$enum_is_callable_output_drain_input(S, penumqueryoutput)
 def $destructor_operation_postfinish(S, pdestructionoperation) = $enum_is_callable_output_commit(S, penumqueryoutput)
   -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
