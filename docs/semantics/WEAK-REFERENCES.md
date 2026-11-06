@@ -1063,8 +1063,8 @@ remain visible, while the outer result assignment stays uncommitted.
 Readonly certification covers the actual throwing RESULT and new cleanup,
 ENTER/RESULT and saved-prefix modes by restoring only borrowed registries with
 identical heap before strict operation checks. Existing GC63 read guards remain
-literal. A further Child throw after that established Previous handoff is
-explicitly Unsupported at its real RESULT boundary. The raw fence retains the
+literal. At that cut, a further Child throw after that established Previous
+handoff is explicitly Unsupported at its real RESULT boundary. The raw fence retains the
 original RESULT marker and every pending/callback root; the public terminal
 driver keeps its existing temporary/task normalization. Default behavior outside
 this history is unchanged. The
@@ -1072,6 +1072,37 @@ this history is unchanged. The
 retains native/source and actual owner/phase/budget evidence. Existing
 Map/Key/incoming restrictions and held resurrection, reentrant writes,
 freeing registration, active collection and Key retirement remain unchanged.
+
+GC65 extends that handoff to a finite canonical Previous path anchored at the
+unchanged inner SOURCE. Every path node is an admitted fresh Exception at or
+after the original receipt's FIRSTNEW. Previous identities strictly decrease,
+and the path ends only at that original source with NULL Previous. Traversal
+therefore rejects cycles and does not impose a fixed length limit. Its identity
+list is borrowed and adds no owner.
+
+At the actual selected Child RESULT, each existing path node must have exactly
+one owner: the current parent pending root or the next newer Previous edge. The
+new throwing Exception must be newer, fresh, NULL-Previous and singly owned by
+THROW_SEARCH. Original claim/cells, Root pin/history/NEXT and absence of any
+remaining Root slot owning the selected Child authenticate the same atomic
+new-Previous/parent-pending transfer. The shared pending bridge consumes this
+proved original-anchor authority; its default equality and the request-destructor
+hook remain unchanged. Real nested cleanup keeps the original SOURCE, and later
+normal Children read the installed replacement before catch with the outer
+assignment uncommitted. Catch may subsequently copy older Exceptions; owner-one
+is a handoff condition rather than a permanent chain restriction.
+
+Readonly validation of the retained throwing RESULT restores only its exact
+borrowed call/release/inner records. The original-anchor path, identical heap,
+live result and strict parent-operation checks are still required; actual
+operation admission and execution remain unchanged.
+
+Established histories with an unproved next handoff retain explicit Unsupported.
+Existing first-handoff, ordinary/default pending behavior, Map/Key/incoming bounds
+and held lifecycle domains remain unchanged. The
+[finite-chain review](../../coverage/semantics/gc-finite-previous-handoff-review.json)
+records the new later-normal-Child source, promoted exact native original and
+focused second-handoff/owner/read/budget front.
 
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned

@@ -1215,12 +1215,23 @@ edge. The parent claim owns the new pending Exception; the genuine generic inner
 operation keeps its source and zero roots. Later declared Children still run in
 order and read the installed row before catch, with the outer result unassigned.
 Separate source/slot/history and saved-prefix proofs cover this handoff without
-changing the earlier read guards or held lifecycle domains. A further Child
-throw in that established Previous history stops explicitly before RESULT
+changing the earlier read guards or held lifecycle domains. At that cut, a further
+Child throw in that established Previous history stops explicitly before RESULT
 consumption; its raw fence retains every pending and callback root. Two originals
 and 375 independent conditions (365 authored) pass at their recorded454 cuts;
 authentic joined455 also passes.
 [Pending-handoff review](coverage/semantics/gc-child-pending-handoff-review.json).
+
+Finite repeated fresh Child throws now preserve the original inner SOURCE while
+extending the parent pending Exception's canonical Previous path. Every path
+identity is fresh and decreases toward the original NULL Previous; the real
+selected RESULT and Root slot history authorize each atomic transfer only while
+every existing node and the new Throwable have one owner. Later normal Child
+reads preserve the installed row and outer sentinel. Existing default pending
+behavior, refusal outside the proved history and held domains remain unchanged.
+Two exact originals and the focused 206-condition front (201 authored) pass at
+their recorded455 cuts; authentic joined456 also passes.
+[Finite-chain review](coverage/semantics/gc-finite-previous-handoff-review.json).
 
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
@@ -2886,7 +2897,6 @@ their work remains unaccepted until integrated.
 | ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
 | COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
 | ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |
-| GC65 | Finite fresh Previous-chain handoffs anchored in original SOURCE, with per-node freshness/ownership/acyclicity and atomic new-head/parent transfer; unchanged257/default domains and refusal elsewhere. |
 | I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
 

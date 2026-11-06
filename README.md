@@ -4120,10 +4120,21 @@ fresh Exception is pending. The old pending owner transfers into the new
 Exception's Previous edge, and the original claim owns the new pending root.
 Later Children still read the installed replacement before catch; the outer
 assignment remains uncommitted. The generic cleanup operation keeps its original
-source and zero roots. A further Child throw under that Previous history stops
-explicitly before another handoff. Two originals and 375 independent conditions
+source and zero roots. At that cut, a further Child throw under that Previous
+history stops explicitly before another handoff. Two originals and 375
+independent conditions
 (365 authored) pass at their recorded454 cuts; joined455 also passes. See the
 [pending-handoff review](coverage/semantics/gc-child-pending-handoff-review.json).
+
+Repeated fresh Child throws now extend a finite canonical Previous chain while
+the generic inner operation keeps the original source. Strictly decreasing fresh
+identities lead to the original NULL Previous; each actual handoff checks one
+owner per chain node before transferring the parent root to a new Previous edge.
+A later normal Child still reads the installed replacement before catch, and the
+outer result remains unassigned. Unproved histories retain explicit refusal.
+Two exact originals and 206 independent conditions (201 authored) pass at their
+recorded455 cuts; authentic joined456 also passes.
+[Finite-chain review](coverage/semantics/gc-finite-previous-handoff-review.json).
 
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach

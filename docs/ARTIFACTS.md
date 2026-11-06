@@ -908,3 +908,11 @@ and `../php-spec-evidence-archive/gc-child-pending-peer-64/`.
 The [review](../coverage/semantics/gc-child-pending-handoff-review.json) records
 the genuine pre-fix pending/Previous state, native handoff and current source/front
 cuts; its baseline/diagnostics retain zero agreement and GC63 is not replayed.
+
+GC65 finite fresh Previous-chain source and focused second-handoff ownership
+front remain under `../php-spec-evidence-archive/gc65-finite-previous-handoff/author/`
+and `../php-spec-evidence-archive/gc-finite-previous-peer-65/`.
+The [review](../coverage/semantics/gc-finite-previous-handoff-review.json) records
+the promoted exact GC64 boundary original/native identity and new model cut;
+its historical native reference and GC65 baseline retain zero credit. Previously
+accepted GC64 originals and its invariant matrix retain their recorded cuts.
