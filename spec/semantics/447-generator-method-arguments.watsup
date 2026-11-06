@@ -114,9 +114,36 @@ def $generator_resumption_arguments_valid(S, pgeneratorop) = true
 def $generator_resumption_arguments_valid(S, pgeneratorop) = false -- otherwise
 
 
-;; A single initialized Iterator CV feeds an ordinary literal native API.
-;; Captures, computed/nullsafe sources, other packs and Aggregate/Gen producers
-;; keep their independent protocols and cannot enter through KIND alone.
+;; The original literal Iterator route keeps its established admission.
+;; Added computed/nullsafe sites use the existing selected-method certificate.
+dec $generator_selected_traversable_node(pcnode?) : bool
+def $generator_selected_traversable_node((NExprNullsafeMethodCall expression phpType20 phpType6 metadata)) = true
+def $generator_selected_traversable_node(pcnode?) = $generator_computed_method_node(pcnode?) -- otherwise
+dec $generator_selected_traversable_site(pstate, pconfigcall) : bool
+def $generator_selected_traversable_site(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
+  -- if text_method <- ["send", "rewind", "valid", "current", "key", "next", "getreturn"]
+  -- if ~$generator_capture_selection_tag(pgeneratormethodselection?)
+  -- if ~$generator_temporary_selection(pgeneratormethodselection?)
+  -- if pconfigcall.SELECTION = eps /\ pconfigcall.OWNER = (n_receiver)
+  -- if $generator_object(S, n_receiver)
+  -- if $generator_selected_traversable_node($origin_node(S.SOURCES, pconfigcall.SITE))
+  -- if $generator_selected_method(S, pconfigcall.SITE, n_receiver, $generator_method_display(text_method), pconfigcall.LINE, pgeneratormethodselection?)
+  -- if $generator_selection_live(S, pgeneratormethodselection?)
+  -- if S.OBJECTS[n_receiver] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_CLOSED]
+  -- if ~pgenerator.PENDING_INIT /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.CLOSURE = eps /\ pgenerator.ACCESS = eps /\ pgenerator.CREATION = eps
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if $getter_arguments(S, pconfigcall.SITE) = PCALLARGUMENTS [(NArg ABSENT (NExprVariable (BYTES text_input) metadata_input) (BOOLEAN false) (BOOLEAN true) metadata_arg)] 2
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (1)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, 0) = ((expression_input, true, eps, PORIGIN n_source pcpath, z))
+  -- if $code_at(S.CODE, n_source) = (pcode)
+  -- if $source_unit(S.SOURCES, n_source) = (pcunit)
+  -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
+def $generator_selected_traversable_site(S, pconfigcall) = false -- otherwise
+
 def $generator_iterator_site(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
   -- if $generator_api_kind(pconfigcall.KIND)
@@ -132,6 +159,8 @@ def $generator_iterator_site(S, pconfigcall) = true
   -- if $code_at(S.CODE, n_source) = (pcode)
   -- if $source_unit(S.SOURCES, n_source) = (pcunit)
   -- if $unpack_cv_at(pcode, pcunit, pcpath) = ($base64(text_input))
+def $generator_iterator_site(S, pconfigcall) = true
+  -- if $generator_selected_traversable_site(S, pconfigcall)
 def $generator_iterator_site(S, pconfigcall) = false -- otherwise
 
 ;; Aggregate acquisition uses the real shared getIterator/return protocol.
@@ -139,7 +168,7 @@ def $generator_iterator_site(S, pconfigcall) = false -- otherwise
 dec $generator_aggregate_site(pstate, pconfigcall) : bool
 def $generator_aggregate_site(S, pconfigcall) = true
   -- if $generator_iterator_site(S, pconfigcall)
-  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
   -- if text_method <- ["send", "rewind", "valid", "current", "key", "next", "getreturn"]
   -- if pconfigcall.OWNER = (n_receiver)
   -- if S.OBJECTS[n_receiver] = GENERATOR pgenerator
@@ -263,6 +292,7 @@ def $config_generator_discard(S, pconfiggenerator, text) = $generator_source_dis
 
 def $config_iterator_history(S, pconfigiterator) = true
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
+  -- if ~$generator_selected_traversable_site(S, pconfigiterator.CALL) \/ $generator_aggregate_current(S, pconfigiterator.OBJECT)
   -- if pconfigiterator.CALL.INDEX = 0 /\ pconfigiterator.CALL.SENT = eps
   -- if ~pconfigiterator.CALL.NAMED /\ pconfigiterator.CALL.PACKS = eps
   -- if pconfigiterator.PRODUCER = eps \/ $generator_aggregate_iterator(S, pconfigiterator)
@@ -281,7 +311,7 @@ def $config_iterator_copied_header(S, pconfigcall) = true
   -- if pconfigcall.INDEX = 1 /\ pconfigcall.PACKS = eps
   -- if $config_call_valid(S, pconfigcall)
   -- if $config_missing(pconfigcall.SENT, 0) = eps
-  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method eps
+  -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
   -- if ~pconfigcall.NAMED \/ ($generator_argument_count(text_method) = 1 /\ |pconfigcall.SENT| = 1)
 
 ;; Finite DATA storage can retire even after rewind clears the input CV.
