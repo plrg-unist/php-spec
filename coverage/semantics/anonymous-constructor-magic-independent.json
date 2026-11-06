@@ -1,0 +1,52 @@
+{
+  "decision": "CLEAR bounded CLASS204 plain named constructor producers",
+  "implementation_commit": "84896417e",
+  "review_tested_revision": "5140548368c24eb2e1bb08bf9bf6da9c93ca72d6",
+  "production_sha256": {
+    "spec/semantics/414-magic-method-calls.watsup": "15bbe5a31fce2a65cea501a2c4b61314894d5152a1c95190d36e85ea8b462b83",
+    "spec/semantics/438-magic-iterator-unpack.watsup": "a6908bcafb9d6f925b6b765e32c24ec2aaaea1d20578587a4f2ccc89e61bdfe6"
+  },
+  "module_count": 451,
+  "target": "PHP 8.5.10 CLI/NTS/64; source34308a6666b2d489c509541ea9befea9e2b42348; oracleb9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC",
+  "source_review": {
+    "finding": "No production defect. Exact original fixed NName/class code selects the effective public ordinary constructor; its declaring-class/member path, parsed and compiled zero/required untyped positional byvalue formals, absent return header and nongenerator/body mode are authentic. Collection requires a live ordinary leaf POBJECT of that exact resolved class, preventing old PINT/unrelated-leaf or missing-certificate fallback.",
+    "engine": "Zend NEW allocates its result before arguments, resolves the constructor and retains a separate This owner for the call. The constructor scalar return is unused while the allocated result remains. Existing142 creates the real METHOD_TARGET and owning CTOR_RESULT;86 copies/dereferences sends,80/79 bind fresh cells and release the frame, then CTOR_RESULT supplies the original instance. No142/161/39/schema/allocator/clone/native-answer change.",
+    "scope": "Current one/two positional instance/static and named-instance magic calls. Effective plain public zero/required-untyped positional byvalue constructors, including inherited targets, produce existing ordinary leaf instances. Wider constructor/name/header/ref/generator/default/variadic/named/unpack and nonleaf/array layouts stay partial.",
+    "preserved_policy": "The old empty/no-ctor source arm remains byte-identical. Its separate exact-source certificate preserves prior integer/leaf query values on valid compiled states; class-descriptor presence already follows from those states.438 named-new prefixes use only that old no-ctor certificate, excluding both new zero-ctor and nonempty forms. Nullary USER, contextual arrays, flat-array entries, authenticated carrier and held owned-NUL/other policies are unchanged."
+  },
+  "independent_source": {
+    "count": 1,
+    "id": "named-inherited-constructor-request-closure-retirement",
+    "source_sha256": "a03e3fa0b363e40188352fe8ed0f346a5b825e8d64bfb82851094a61e3c53a3e",
+    "result": "First model exactly matches once-pinned native original bytes/path/cwd/profile: normal/exit0/empty stderr/stable/no timeout;103.124 seconds under upfront300. Native not repeated.",
+    "behavior": "A named new uses an inherited public constructor. Inner SEND captures aliased REQUEST-OLD before a later argument writes99 and clears the outer receiver variable. The constructor stores that string in a scalar property and returns false. Handler writes0, caller aliases retire, and static Closure/child retain the exact constructed instance through its real table and ordered CHILD;PACKET cleanup.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class204-named-constructor-magic/reviewer/source/report.json",
+    "sha256": "bc5c2ba4646406d551f3be5afe0939ad7376d4adcca1aa9ba9bc8bc1bef0f65b"
+  },
+  "independent_state": {
+    "conditions": 201,
+    "result": "First SL451 execution true/exit0/empty stderr/stable/no timeout;180.779 seconds under300 at514054836.",
+    "behavior": "Real inner METHOD_TARGET SEND and CTOR_RESULT each own the allocated requested-class instance. One COPY preserves request0 without a caller CELL root. Fresh nonref constructor params retain the earlier string after alias99; lexical PacketBase/called PacketDerived selection is exact. At actual RETURN_VALUE false the scalar property has that same carrier; at CTOR_RESULT, parameter cells are gone and one result owner remains. One real step replaces false with that identical instance. The real named table has three parameter/buffer/static-Closure owners and one childless packet edge. At root unset(child), caller cell/receiver/Closure have retired; child alone retains the same table/instance/property. Full4098 equals split2+4096 and retires child/table/packet with valid call/class/Closure/GC/heap states.",
+    "controls": "Authentic old PINT and live unrelated receiver leaf refuse for this constructor source; missing CODE cannot regain old-value admission. Actual constructor source is eligible while438 remains false. Derived controls earn no native agreement.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class204-named-constructor-magic/reviewer/state/report.json",
+    "sha256": "a556fe37e28a96d90aa964fd2066066a0a6a18eede4aa551c94ef590b5756a54"
+  },
+  "author_complement": {
+    "sources": "Four originals first-model exact at848: owner78.486/instance72.692/static66.542/named80.600 seconds under300, stable/no timeout/no native repeat. Headers group zero/required and inherited constructors with primitive scalar fields; positional old/replacement object params distinguish real lifetime and ignored scalar7.",
+    "state": "First author160 owner and30 actual zero-ctor unpack guard both SL451 true/exit0/quiet/stable/no timeout at668daddae. Actual SHIFT holds old input only in SEND plus constructor/result roots2; fresh params release old object before CTOR_RESULT scalar7 becomes original instance, then real table/child retain it. A real old no-ctor RHS remains eligible for prior438 policy. The zero-ctor guard binds eligible public no-arg ctor and allocated [9]/compiled spread before exact source refusal.",
+    "exclusions": "Six once-native normal controls yield intended Unsupported/exit1/stable/quiet/no timeout with0 agreement: zero/required ctor unpack prefixes, inner named/default formals, old no-ctor extra arguments and nonleaf result. No source/native replay or correction.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class204-named-constructor-magic/author/closure-call-protocol-o4cbguan/report.json"
+  },
+  "main_context": {
+    "head": "6dfa934595ba1b484b937917caf6e35a405869cc",
+    "module_count": 452,
+    "finding": "Critical constructor142/161, sends86, frames79/80/257, roots39 and414/438 have no conflicting changes. Earlier Trait hook, Generator CONFIG and native FINAL local-throw arms require absent exact targets/markers.463 receives no defaults here; the escaped magic-born scoped Closure has no binding/clone/Private cache stamp, so new private-cache child jobs are absent.301 exact-head-pop premises preserve ordinary standalone assignment TEMP pops with another owner; ctor-frame/unset object cleanup uses VALUE/cell jobs, with no retained-next-TEMP pending operation. Static compatibility only; private executions retain exact451 cuts."
+  },
+  "documentation_review": "README/PROGRESS/SOURCE-CLASSES and six partial inventory additions are proportional: fixed named ctor/leaf/exact class, old no-ctor/unpack and held bounds are explicit. Final ledger retains five originals, separate160/201 owner fronts,30 source guard and six refusals0.",
+  "archive": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class204-named-constructor-magic/reviewer",
+    "manifest_sha256": "268024421695bb3264894861045d8ac551bf53e912c81dc8bf1fa85078a960c3",
+    "recovery": "source/ retains original bytes/path/cwd/profile, native/model commands and streams. state/ retains the checked fixture and standard worker exchanges; its former .tools path is retained in raw metadata. All451 module fingerprints match across first source/state runs. No retry, correction, native/source replay or production change."
+  },
+  "engine_divergence": "None identified. No204 failed, timeout, correction or diagnostic packet; wider/held lanes remain partial."
+}
