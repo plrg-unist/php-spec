@@ -1,0 +1,17 @@
+;; Inherited interface constants retain their declaring descriptor/cache.
+;; The existing binder, lookup facts and publication/release laws apply there.
+def $owned_class_constant_source(S, pclassconstantdesc) = true
+  -- if ~pclassconstantdesc.FOLDED
+  -- if pclassconstantdesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "interface"
+  -- if pclassconstantdesc.OWNER = PORIGIN n_unit pcpath_owner
+  -- if pclassconstantdesc.ORIGIN = PORIGIN n_unit pcpath_decl
+  -- if |pcpath_decl| = $(|pcpath_owner| + 4)
+  -- if pcpath_decl[0:|pcpath_owner|] = pcpath_owner
+  -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 3, PCINDEX n_group, PCFIELD 3, PCINDEX n_constant]
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n_unit (pcpath_decl ++ [PCFIELD 1])
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.OWNER) = (NStmtInterface phpType14 (NIdentifier (BYTES text_owner) metadata_owner) phpType42 phpType23 metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_owner ++ [PCFIELD 3, PCINDEX n_group])) = (NStmtClassConst (SEQUENCE eps) phpType24 phpType18 phpType45 metadata_group)
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.ORIGIN) = (NConst (NIdentifier (BYTES text_name) metadata_name) expression metadata_constant)
+  -- if pclassconstantdesc.NAME = $base64(text_name)
