@@ -114,7 +114,7 @@ def finish(group):
         '$raw_review_output(S_done.EVENTS) = $base64(' + value + ')',
         '$parameter_receive_cache_entry(S_done,preceivebirth_closed)',
         '$machine_roots(S_done[.PARAMETERRECEIVES = eps]) = $machine_roots(S_done)',
-        'S_history = S_done[.ENV = eps][.GLOBAL.ENV = eps][.STORE = eps][.OBJECTS = eps][.ARRAYS = eps]',
+        'S_history = S_done[.ENV = eps][.GLOBALTABLE = eps][.STORE = eps][.OBJECTS = eps][.ARRAYS = eps]',
         '$parameter_receive_cache_entry(S_history,preceivebirth_closed)',
         '~$parameter_receive_cache_entry(S_history,preceivebirth_closed[.PUBLICATION = 0])']
 
@@ -127,7 +127,8 @@ def scope(fixture, path):
         'pstringselection.SITE = porigin_site',
         'pcallcontext.CALLED_CLASS = (porigin_child)',
         'porigin_child =/= pmethoddesc.OWNER',
-        '$lookup(S_bind.GLOBAL.ENV,$ptascii("callback207")) = (n_callback)',
+        'S_bind.GLOBALTABLE = (psymboltable_bind)',
+        '$lookup(psymboltable_bind.ENV,$ptascii("callback207")) = (n_callback)',
         'S_bind.STORE[n_callback] = DEFINED pvalue_rebound',
         '$string_bytes(pvalue_rebound) = ($base64("TnMyMDdTY29wZVxDaGlsZDIwNzo6b3RoZXI="))',
         'preceivebirth.CAUSE.CALLS = (pfunction.ORIGIN,porigin_site_option?,porigin_owner_option?,porigin_called_option?) :: pdeclcalls',
@@ -170,7 +171,8 @@ def retirement(fixture, path):
     return start(fixture, path) + [
         'S_warn = $dep_pause(S_start[.COMPLETION = NORMAL],20000)',
         '$dep_ready(S_warn.TODO)',
-        '$lookup(S_warn.GLOBAL.ENV,$ptascii("callback207")) = (n_callback)',
+        'S_warn.GLOBALTABLE = (psymboltable_warn)',
+        '$lookup(psymboltable_warn.ENV,$ptascii("callback207")) = (n_callback)',
         'S_warn.STORE[n_callback] = DEFINED (PARRAY n_source_array)',
         '$entry_lookup(S_warn.ARRAYS[n_source_array].ITEMS,KINT 0) = (DIRECT (POBJECT n_source))',
         '$heap_owners($heap_graph(S_warn),HOBJECT n_source) = 1',
