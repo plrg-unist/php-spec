@@ -1,0 +1,57 @@
+;; Handler APIs resolve their copied callable at dispatch. The entered target
+;; borrows This; the existing result/handler records retain the real owners.
+dec $parameter_api_handler_raw(pstate, pvalue, parray?) : bool
+def $parameter_api_handler_raw(S, pvalue, eps) = ($string_bytes(pvalue) =/= eps)
+def $parameter_api_handler_raw(S, PARRAY n, (parray)) = true
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if |parray.ITEMS| = 2
+  -- if $entry_lookup(parray.ITEMS, KINT 0) = (DIRECT pvalue_first)
+  -- if $entry_lookup(parray.ITEMS, KINT 1) = (DIRECT pvalue_name)
+  -- if $parameter_shutdown_first(pvalue_first)
+  -- if $string_bytes(pvalue_name) =/= eps
+def $parameter_api_handler_raw(S, pvalue, parray?) = false -- otherwise
+
+dec $parameter_api_handler_context(pstate, pcallcontext, pfunction, pshutdownproducer) : bool
+def $parameter_api_handler_context(S, pcallcontext, pfunction, pshutdownproducer) = true
+  -- if $error_context_receiving_function(S, pcallcontext) = (pfunction)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.TARGET = (pcallcontext.TARGET)
+  -- if pshutdownproducer.SITE = (perrorcall.SITE)
+  -- if $parameter_api_handler_raw(S, perrorcall.CALLBACK, $exception_snapshot(S, perrorcall.CALLBACK))
+def $parameter_api_handler_context(S, pcallcontext, pfunction, pshutdownproducer) = true
+  -- if $exception_context_valid(S, pcallcontext)
+  -- if $exception_context_call(S, pcallcontext) = (pexceptioncall)
+  -- if pexceptioncall.TARGET = (pcallcontext.TARGET)
+  -- if pshutdownproducer.SITE = (pfunction.ORIGIN)
+  -- if $parameter_api_handler_raw(S, pexceptioncall.CALLBACK, pexceptioncall.RAW)
+def $parameter_api_handler_context(S, pcallcontext, pfunction, pshutdownproducer) = false -- otherwise
+
+dec $parameter_api_handler_current(pstate, pfunction) : pshutdownproducer?
+def $parameter_api_handler_current(S, pfunction) = (pshutdownproducer)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = API_BORROWED_TARGET pshutdownproducer
+  -- if pshutdownproducer.INTERNAL /\ pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps /\ pshutdownproducer.CLONE = eps
+  -- if $parameter_shutdown_target(S, pshutdownproducer.TARGET) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if pmethoddesc.FUNCTION = pfunction
+  -- if $parameter_api_handler_context(S, pcallcontext, pfunction, pshutdownproducer)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER) /\ pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if pcallcontext.RECEIVER = n_receiver?
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $parameter_api_handler_current(S, pfunction) = eps -- otherwise
+
+def $parameter_default_recipient(S, pfunction) = true
+  -- if $parameter_api_handler_current(S, pfunction) =/= eps
+
+;; Cold and warm owning donors use the same selected-entry authority.
+def $parameter_nullsite_method_recipient(S, pfunction) = ($parameter_api_handler_current(S, pfunction) =/= eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = API_BORROWED_TARGET pshutdownproducer
+def $default_nonclosure_recipient(S, pfunction, pdefault) = ($parameter_api_handler_current(S, pfunction) =/= eps)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE =/= eps
+  -- if pcallcontext.TARGET = API_BORROWED_TARGET pshutdownproducer
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) =/= eps
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
