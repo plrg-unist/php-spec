@@ -113,6 +113,15 @@ through clone and repeated binding. Getter bindings invoke the selected getter
 on the new compatible receiver. Free intrinsic bindings clear lexical scope and
 receiver while retaining their changed called class for equality.
 
+Known nongenerator user captures also preserve their runtime-cache policy through
+`bind`/`bindTo` and bound clones. Shared same-scope copies share; a Private source
+or the completed dummy `Closure` scope gives each copy a fresh private key.
+Immutable descending source bodies identify the function after source/receiver
+retirement, while the cache stamp names the actual copy parent. These records
+own no source or receiver and copied calls leave the original raw method cache
+unchanged. Unknown, native and Generator query owners stay outside this slice.
+See the [fake-bind cache review](../../coverage/semantics/enum-is-callable-fake-bind-cache-review.json).
+
 Scope resolution precedes receiver and fake-scope validation. Only exact lowercase
 `static` denotes the previous lexical scope; weak scalar scope operands convert
 to strings. Selected warnings suspend for error handlers. Handler class declarations

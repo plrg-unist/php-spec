@@ -177,8 +177,15 @@ function identity and canonical scope. Saved selectors remain coherent after
 selected-array/source/receiver retirement, and argument/output throws preserve
 namespace fallback warmth. The
 [runtime-capture review](coverage/semantics/enum-is-callable-runtime-capture-cache-review.json)
-records this bounded slice. Constant/default captures, transformed bound copies
-and Generator/Fiber query owners remain partial.
+records this bounded slice. Known user fake `bind`/`bindTo` copies and bound clones
+now retain actual source cache policy and completed scope. Shared same-scope
+copies share; Private and dummy-scope copies receive fresh keys. Immutable source
+history survives original source/receiver retirement without new owners, and
+copied calls leave raw method initialization facts unchanged. The
+[fake-bind cache review](coverage/semantics/enum-is-callable-fake-bind-cache-review.json)
+records two exact source agreements and 123 reached conditions with strict446.
+Constant/default captures, unproved
+transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -2047,7 +2054,7 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |
 | ATTR50 | Shared default Tick traversal for existing ordinary method, Closure and arrow headers, preserving lexical scope, separate op arrays and main adjacency; private implementation/review. |
-| Enum callable arrays | Known-user fake Closure `bind`/`bindTo` cache-copy policy from authenticated SOURCE and completed scope; private implementation/review. |
+| ENUM135 | Known unbound nongenerator user-method fake `Closure::call` cache policy with immutable function/scope and actual call authority; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

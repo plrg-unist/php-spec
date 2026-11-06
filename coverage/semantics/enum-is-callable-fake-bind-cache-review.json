@@ -1,0 +1,36 @@
+{
+  "scope": "Known nongenerator user fake Closure bind/bindTo cache-copy policy and bound clones",
+  "target": "Pinned PHP 8.5.10 CLI NTS64-bit, project-local oracle/profile",
+  "base_revision": "e1b52f1c704f02bfaef8c54cf26fec53ce46d27f",
+  "semantic_revision": "0e5ca25be9230b2d5927abc3a841a8d91a1093c4",
+  "semantic_inputs": {
+    "spec/semantics/253-closure-current-binding.watsup": "821ac6174919ebdf5a3a6583e7b81496584cf90e17ef0544468dd9680625eb02",
+    "spec/semantics/455-closure-function-caches.watsup": "ac37f6a5a5f9ab1c9ea34c71cf83cffe81f33c93aacad895e000b23e479819d1"
+  },
+  "behavior": "Existing 253 bind allocation and bound-fake clone hooks copy only existing source cache stamps. A pure stateful helper follows descending BOUNDFAKE.SOURCE through persistent immutable bodies to known user function identity; binding sites and completed scopes authenticate the new view. Same-scope Shared copies share; Private sources and the completed dummy Closure scope receive fresh private object keys. Unknown/native/Generator query owners remain unproved. No schema change.",
+  "lineage": "Bind stamps name the actual selected source. Clone stamps name the immediate clone parent even when the copied body SOURCE names an older object. Bound copy coherence requires the body SOURCE or an identical cloned parent body; unrelated same-function Shared stamps are rejected. Completed Bound scope equality remains checked after retirement. Known-user bound calls classify as copied functions and leave original raw method INIT/UNKNOWN facts unchanged.",
+  "ownership": "No source, ORIGINAL receiver or cache stamp adds a heap root. Immutable source/body and cache histories remain available after actual source, receiver and selected-array retirement. Real new receiver and clone edges keep their ordinary owners.",
+  "sources": "Two distinct exact normal originals at semantic 0e5 (peer cherry-pick 330af53f0): author named bindTo/Closure::bind same-unscoped Shared and null-scope/non-null-receiver dummy Private with fresh clone, weak source retirement and receiver cleanup; independent cold method fromCallable Private versus runtime ARRAY FCC Shared, retargeted between inherited Child receivers at canonical Base scope through bindTo/Closure::bind and old source/array/receiver retirement. Source SHA-256 7fb5bdeabdd3bf90132e7c973b10d826e2e0b219ff483be96342add829357189 and 7ad188545affcea477e01d013bf885a1c8571e46a8a1e2ff4f9c95dcf7685301. No 132/133 replay.",
+  "strict": "All 446 modules pass SL true/exit0/empty stderr/stable at 0e5 in 12.70s. Author source comparison passes exact normal output/status, stable in 69.69s.",
+  "independent": "CLEAR candidate 0e5 / review 330af53f0: exact normal method original stable/no timeout in 93.62s. State-v1 passes 123 conditions across all 446 modules, true/exit0/empty stderr/stable/no timeout in 109.30s. One bounded process checks a genuine private front after parent/source/receiver retirement, unchanged cold raw source INIT/UNKNOWN facts, immutable function/scope/source history, no old pins, immediate clone-parent stamps, malformed source/scope/cycle/unknown controls, a later Shared checkpoint, zero/one-step resumption and final exact output/drain. No peer 134 failed attempts.",
+  "author_reports": {
+    "strict-v1/report.json": "15619e303378602d915ff5f9a2332888a469e6674f1ab3d36b32d13e08b7843f",
+    "named-shared-and-dummy-private-retirement/native.json": "56aa7064558b55522bce6959f9a644ed77861b06d07d024eae110f7ed3ed6c5c",
+    "raw/user-string-536w73ti/report.json": "caf0c6e623c7de47e76ac6047e814748338eab91f98068c2a7037fdeb8de22e0",
+    "author-command.json": "bf6c6e6327d1e80676963dc14ef46e5c26d5d850366f9d65769fab12920211c0"
+  },
+  "peer_reports": {
+    "native-v1/report.json": "dfffb3ea38535696ee4495b13acc1811c1be43aec429d51228e6814555119f84",
+    "compare-v1/report.json": "842ba08146812a6cbbe99aff878a831fbc95786b5b6c931af2a32bce5d606a70",
+    "state-v1/report.json": "addf906fc86f913f408311576da77f62d4317772403b1c7ac855027b7dcb1b21",
+    "state-review.json": "209742d18bdc00629145f87feeadcb2e29f8079141cd27e004c155b40453dfda"
+  },
+  "failure_disposition": "The preliminary native dummy rebind attempted an incompatible ordinary receiver for an already dummy-scoped fake and produced the native binding Warning then a null-call fatal. Its original bytes, streams and report remain under native-invalid-dummy-rebind-v1 with zero agreement credit. The valid author source uses an actual clone instead. No failed strict or source-comparison run at this cut. Independent source/state gates pass first attempt; their results are separate from the preliminary author native failure.",
+  "remaining": "Constant/default/static/property capture births, unproved transformed/native/Trait/anonymous/Generator/Fiber query owners and wider core remain partial. No Closure::call/native-wrapper/Generator expansion.",
+  "source_authority": "Pinned vendor/php-src/Zend/zend_closures.c::do_closure_bind resolves and validates the requested scope then calls zend_create_closure with the selected source function. zend_create_closure_ex completes a NULL scope with non-null this to zend_ce_closure before comparing function scope/cache: initialized same-scope non-HEAP cache shares, changed scope or HEAP allocates fresh. zend_closure_clone passes the actual parent function and completed scope; zend_create_closure preserves FAKE_CLOSURE/static policy. zend_valid_closure_binding rejects arbitrary fake scope changes before allocation.",
+  "recovery": "Author ../php-spec-evidence-archive/enum-fake-bind-cache-134/: original valid/invalid native sources, run_strict.py/strict-v1, author-command.json and raw/user-string-536w73ti moved intact from ignored .tools. Peer ../php-spec-evidence-archive/enum-fake-bind-cache-review-134/: frozen method original, native.py/native-v1 and compare.py/compare-v1, state.py/state-v1 and state-review.json. Compare/state accept ROOT and a fresh output name. For native recovery, replay its frozen command or copy native script/source to a fresh directory; native.py takes ROOT and writes fixed native-v1. Raw reports preserve commands, tested inputs, profile and streams. Maintained selector fake-bind-cache-. Existing private local tool links only; no rebuild or portability claim.",
+  "review": "Independent semantic/source/state and final metadata/docs/exact case-copy review CLEAR at candidate 0e5. The recovery wording correction changes no tested input; no rerun required.",
+  "inventory": "PASS: 169 constructors and 306 runtime obligations remain consistent; affected calls.closure-binding, protocols.Closure and declarations.generated-enum-methods stay partial. Metadata edits do not renew execution credit.",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_runtime_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+}

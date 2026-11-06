@@ -1255,9 +1255,19 @@ metadata; history never dereferences retired receivers or callable arrays. Clone
 lineage, argument-throw warmth and output-throw continuation preserve the shared
 cache after old captures retire. Missing INIT refuses cache stamps, history and live
 ownership. See the [runtime-capture review](../../coverage/semantics/enum-is-callable-runtime-capture-cache-review.json).
-Constant/default/static/property captures, bound/dummy-scope copies, resumed
-Generator, internal/Trait/anonymous/Fiber query owners and wider transformed
-contexts remain partial.
+Known user fake `bind`/`bindTo` copies now stamp the completed lexical scope and
+actual source cache. Same-scope Shared parents share; Private parents and a
+named function's dummy `Closure` scope receive fresh private keys. Bound clones
+stamp their immediate parent even when their immutable body points further back.
+Source, old receiver and selected-array retirement retain pure function/cache
+history without adding owners. Binding-site, descending source, completed-scope
+and copy-parent coherence checks exclude unrelated same-function stamps; copied
+calls do not initialize or taint the original method cache. See the
+[fake-bind cache review](../../coverage/semantics/enum-is-callable-fake-bind-cache-review.json).
+Known unbound nongenerator user-method `Closure::call` cache policy remains pending.
+Constant/default/static/property captures, resumed Generator,
+internal/Trait/anonymous/Fiber query owners and wider transformed contexts remain
+partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The
