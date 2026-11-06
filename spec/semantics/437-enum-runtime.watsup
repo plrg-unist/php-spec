@@ -1829,18 +1829,21 @@ def $enum_is_callable_user_string(S, pvalue) = false -- otherwise
 dec $enum_is_callable_user_pair(pstate, pvalue*, bool) : bool
 def $enum_is_callable_user_pair(S, [pvalue_receiver, pvalue_method], b_history) = true
   -- if $enum_array_string_valid(S, pvalue_receiver) /\ $enum_array_string_valid(S, pvalue_method)
-  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver) /\ $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
   -- if ~(0 <- ptbytes_receiver) /\ ~(0 <- ptbytes_method)
 def $enum_is_callable_user_pair(S, [POBJECT n, pvalue_method], b_history) = true
   -- if $enum_is_callable_user_object_history(S, n) = (porigin_class)
   -- if b_history \/ (HOBJECT n) <- S.ALLOCATIONS
   -- if $enum_array_string_valid(S, pvalue_method)
-  -- if $string_bytes(pvalue_method) = (ptbytes_method) /\ ~(0 <- ptbytes_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~(0 <- ptbytes_method)
 def $enum_is_callable_user_pair(S, pvalue*, b_history) = false -- otherwise
 dec $enum_is_callable_user_receiver(pstate, pvalue, bool) : (porigin, bool)?
 def $enum_is_callable_user_receiver(S, pvalue_class, b_history) = ((porigin_class, false))
   -- if $enum_array_string_valid(S, pvalue_class)
-  -- if $string_bytes(pvalue_class) = (ptbytes_class) /\ ~(0 <- ptbytes_class)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+  -- if ~(0 <- ptbytes_class)
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
   -- if $enum_is_callable_user_class(S, porigin_class)
 def $enum_is_callable_user_receiver(S, POBJECT n, b_history) = ((porigin_class, true))
@@ -2010,7 +2013,8 @@ def $enum_is_callable_input_label(S, [POBJECT n, pvalue_method]) = pclassdesc.NA
   -- if $enum_is_callable_user_object_history(S, n) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $enum_array_string_valid(S, pvalue_method)
-  -- if $string_bytes(pvalue_method) = (ptbytes_method) /\ ~(0 <- ptbytes_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~(0 <- ptbytes_method)
 def $enum_is_callable_input_label(S, pvalue*) = eps -- otherwise
 
 dec $enum_is_callable_pair_invalid(pvalue*) : bool
@@ -2032,13 +2036,15 @@ def $enum_is_callable_pair_name(S, [POBJECT n_case, pvalue_method]) = (pclassdes
 def $enum_is_callable_pair_name(S, [pvalue_receiver, pvalue_method]) = (ptbytes_receiver ++ $ptascii("::") ++ ptbytes_method)
   -- if $enum_is_callable_receiver(S, pvalue_receiver) = eps
   -- if $enum_array_string_valid(S, pvalue_receiver) /\ $enum_array_string_valid(S, pvalue_method)
-  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver) /\ $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_receiver)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
   -- if ~(0 <- ptbytes_receiver) /\ ~(0 <- ptbytes_method)
 def $enum_is_callable_pair_name(S, [POBJECT n, pvalue_method]) = (pclassdesc.NAME ++ $ptascii("::") ++ ptbytes_method)
   -- if $enum_is_callable_user_object_history(S, n) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $enum_array_string_valid(S, pvalue_method)
-  -- if $string_bytes(pvalue_method) = (ptbytes_method) /\ ~(0 <- ptbytes_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ~(0 <- ptbytes_method)
 def $enum_is_callable_pair_name(S, pvalue*) = ($ptascii("Array"))
   -- if $enum_is_callable_pair_invalid(pvalue*)
 def $enum_is_callable_pair_name(S, pvalue*) = eps -- otherwise
