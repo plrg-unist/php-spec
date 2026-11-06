@@ -645,9 +645,11 @@ def $class_constant_context_valid(S, pconstantcontext) = false -- otherwise
 def $class_constant_scope_valid(S, pclassconstantcontext_busy*) = ($class_constant_table_blocks(S, S.TODO, eps) /\ $class_constant_stack_valid(S_scope, S_scope.CLASSCONSTANTINIT) /\ $class_constant_previous_valid(S_scope) /\ $class_constant_bindings(S_scope.TODO) = $class_constant_contexts(S_scope.CLASSCONSTANTINIT) /\ $class_constant_pairs_valid(S.TODO) /\ $class_constant_update_blocks(S[.CLASSCONSTANTINIT = pclassconstantcontext_busy*], S.TODO, eps) /\ $static_default_blocks(S_scope, S_scope.TODO, eps) /\ $static_default_phases(S_scope.TODO, false) /\ $static_default_binders_unique(S_scope.TODO, eps) /\ $instance_default_scope_valid(S_scope))
   -- if S_scope = S[.CLASSCONSTANTINIT = $class_constant_scope_stack(S)]
 dec $class_constant_saved_scopes_valid(pstate, pframe*) : bool
+dec $class_constant_writes_valid(pstate) : bool
+def $class_constant_writes_valid(S) = true -- otherwise
 def $class_constant_saved_scopes_valid(S, eps) = true
 def $class_constant_saved_scopes_valid(S, pframe :: pframe_tail*) = ($class_constant_scope_valid($constant_frame_scope(S, pframe, pframe_tail*), S.CLASSCONSTANTINIT) /\ $class_constant_saved_scopes_valid(S, pframe_tail*))
-def $class_constant_state_valid(S) = ($class_constant_history_valid(S) /\ $class_constant_caches_valid(S, S.CLASSCONSTANTCACHE) /\ $class_constant_busy_unique(S.CLASSCONSTANTINIT) /\ $class_constant_scope_valid(S, S.CLASSCONSTANTINIT) /\ $class_constant_saved_scopes_valid(S, S.FRAMES) /\ $class_constant_bindings(S.TODO) ++ $class_constant_frames_bindings(S.FRAMES) = $class_constant_contexts(S.CLASSCONSTANTINIT))
+def $class_constant_state_valid(S) = ($class_constant_history_valid(S) /\ $class_constant_caches_valid(S, S.CLASSCONSTANTCACHE) /\ $class_constant_busy_unique(S.CLASSCONSTANTINIT) /\ $class_constant_scope_valid(S, S.CLASSCONSTANTINIT) /\ $class_constant_saved_scopes_valid(S, S.FRAMES) /\ $class_constant_writes_valid(S) /\ $class_constant_bindings(S.TODO) ++ $class_constant_frames_bindings(S.FRAMES) = $class_constant_contexts(S.CLASSCONSTANTINIT))
 
 dec $class_constant_source_task(pstate, phpType19, phpType20) : bool
 def $class_constant_source_task(S, phpType19, phpType20) = true

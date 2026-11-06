@@ -86,8 +86,10 @@ def $class_write_live(S, pclassreplacement) = true
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassreplacement.OLD.ORIGIN) = (pclassreplacement.OLD)
   -- if pclassreplacement.CONTEXT.DECL = pclassreplacement.OLD.ORIGIN
   -- if pclassreplacement.NEW.ORIGIN = pclassreplacement.OLD.ORIGIN
+  -- if pclassreplacement.CONTEXT.ORIGIN = (pclassreplacement.TRIGGER)
   -- if $class_constant_origin(S.CLASSES, pclassreplacement.OLD.ORIGIN) = (pclassconstantdesc)
   -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $class_constant_context_site(S[.CURRENT = pclassreplacement.CALLER][.ORIGIN = pclassreplacement.CONTEXT.ORIGIN][.CONSTCONTEXT = pclassreplacement.CONTEXT.PREVIOUS], pclassreplacement.CONTEXT)
   -- if pclassreplacement.CONSTCONTEXT = (pconstantcontext)
   -- if pconstantcontext.ORIGIN = pclassreplacement.OLD.ORIGIN
   -- if pconstantcontext.FACTS = pclassreplacement.FACTS
@@ -103,6 +105,11 @@ def $class_write_live(S, pclassreplacement) = true
   -- if $class_constant_pending_cache(S, pclassreplacement.CONTEXT)
   -- if $class_write_current(S, pclassreplacement) \/ $class_write_frames(S.FRAMES, pclassreplacement)
 def $class_write_live(S, pclassreplacement) = false -- otherwise
+dec $class_write_list_valid(pstate, pclassreplacement*) : bool
+def $class_write_list_valid(S, eps) = true
+def $class_write_list_valid(S, pclassreplacement :: pclassreplacement_tail*) = ($class_write_live(S, pclassreplacement) /\ $class_write_at(pclassreplacement_tail*, pclassreplacement.OLD.ORIGIN) = eps /\ $class_write_list_valid(S, pclassreplacement_tail*))
+def $class_constant_writes_valid(S) = $class_write_list_valid(S, S.CLASSCONSTANTWRITES)
+  -- if S.CLASSCONSTANTWRITES =/= eps
 
 ;; Registry and image are borrowed. Only the publication task owns newtmp.
 def $task_nodes(CLASS_CACHE_PUBLISH pclassreplacement) = $value_nodes(pclassreplacement.NEW.VALUE)
@@ -162,8 +169,10 @@ rule PhpStep/class-cache-publish: S ~> $class_write_publish(S[.TODO = ptask_tail
   -- if S.CURRENT = pclassreplacement.CALLER /\ S.ORIGIN = pclassreplacement.ORIGIN /\ S.CONSTCONTEXT = pclassreplacement.CONSTCONTEXT
   -- if S.CLASSCONSTANTINIT = pclassreplacement.CONTEXT :: pclassconstantcontext_tail*
   -- if $constant_value_class_valid(S, pclassreplacement.NEW.VALUE, pclassreplacement.NEW.CLASS)
-def $return_discard(S, CLASS_CACHE_PUBLISH pclassreplacement) = S[.COMPLETION = UNSUPPORTED "class cache old-release exception native nontermination"]
-  -- if $class_write_live(S, pclassreplacement)
+def $return_discard(S, CLASS_CACHE_PUBLISH pclassreplacement) = S[.TODO = (CLASS_CACHE_PUBLISH pclassreplacement) :: S.TODO][.COMPLETION = UNSUPPORTED "uncertified class cache old-release abrupt completion"]
+  -- if $class_write_at(S.CLASSCONSTANTWRITES, pclassreplacement.OLD.ORIGIN) = (pclassreplacement)
+  -- if pclassreplacement.CONTEXT <- S.CLASSCONSTANTINIT
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassreplacement.OLD.ORIGIN) = (pclassreplacement.OLD)
 def $call_after_origin(S, CLASS_CACHE_PUBLISH pclassreplacement) = $class_write_publish(S, pclassreplacement, pclassconstantcontext_tail*)
   -- if S.CLASSCONSTANTINIT = pclassreplacement.CONTEXT :: pclassconstantcontext_tail*
 
