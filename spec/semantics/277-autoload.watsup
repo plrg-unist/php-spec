@@ -14,6 +14,16 @@ dec $autoload_snapshot(pstate, pconfigcall, pcalltarget) : parray?
 dec $autoload_entry_history(pstate, pautoloadentry) : pstate
 dec $autoload_entry_valid(pstate, pautoloadentry) : bool
 dec $autoload_entry_live(pstate, pautoloadentry) : bool
+dec $autoload_enter_target(pstate, pautoloadentry, pcalltarget) : pcalltarget
+def $autoload_enter_target(S, pautoloadentry, pcalltarget) = pcalltarget -- otherwise
+dec $autoload_context_target(pstate, pautoloadentry, pcalltarget) : bool
+def $autoload_context_target(S, pautoloadentry, pcalltarget) = (pautoloadentry.TARGET = AUTO_TARGET pcalltarget) -- otherwise
+dec $autoload_result_valid(pstate, pautoloadcall, pautoloadentry) : bool
+def $autoload_result_valid(S, pautoloadcall, pautoloadentry) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry) -- otherwise
+dec $autoload_retained_entry_valid(pstate, pautoloadentry) : bool
+def $autoload_retained_entry_valid(S, pautoloadentry) = $autoload_entry_valid(S, pautoloadentry) -- otherwise
+dec $autoload_retained_scope(pstate, pautoloadentry) : pstate
+def $autoload_retained_scope(S, pautoloadentry) = $autoload_entry_history(S, pautoloadentry) -- otherwise
 dec $autoload_bucket(pautoloadentry) : pautoloadentry?
 dec $autoload_entry_nodes(pautoloadentry) : pnode*
 dec $autoload_target_nodes(pautoloadtarget) : pnode*
@@ -875,7 +885,7 @@ rule PhpStep/autoload-reference-return: S ~> S_cell[.TODO = (AUTO_ENTER pautoloa
   -- if S.TODO = (AUTO_REFERENCE pautoloadcall pautoloadentry) :: ptask_tail*
   -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
   -- if S_cell = $call_fresh_reference(S, PSTRING pautoloadcall.NAME)
-rule PhpStep/autoload-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*], pfunction, [poperand], $autoload_context_site(pautoloadcall), $autoload_context_line(pautoloadcall)), pcalltarget), pfunction, 1, $autoload_context_site(pautoloadcall), $autoload_context_line(pautoloadcall))
+rule PhpStep/autoload-enter: S ~> $call_arity($target_after_enter($call_enter(S[.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*], pfunction, [poperand], $autoload_context_site(pautoloadcall), $autoload_context_line(pautoloadcall)), $autoload_enter_target(S, pautoloadentry, pcalltarget)), pfunction, 1, $autoload_context_site(pautoloadcall), $autoload_context_line(pautoloadcall))
   -- if S.TODO = (AUTO_ENTER pautoloadcall pautoloadentry poperand) :: ptask_tail*
   -- if $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand)
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
@@ -883,16 +893,16 @@ rule PhpStep/autoload-enter: S ~> $call_arity($target_after_enter($call_enter(S[
 ;; zend_hash_move_forward_ex first locates a valid current bucket, then advances.
 rule PhpStep/autoload-result-loaded: S ~> $autoload_complete(S, pautoloadcall)
   -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
-  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if $autoload_result_valid(S, pautoloadcall, pautoloadentry)
   -- if $class_internal(pautoloadcall.KEY) \/ $class_named(S.CLASSNAMES, pautoloadcall.KEY) =/= eps
 rule PhpStep/autoload-result-next: S ~> S[.TODO = (AUTO_NEXT pautoloadcall[.INDEX = $(n + 1)][.BIRTH = eps]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
-  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if $autoload_result_valid(S, pautoloadcall, pautoloadentry)
   -- if ~$class_internal(pautoloadcall.KEY) /\ $class_named(S.CLASSNAMES, pautoloadcall.KEY) = eps
   -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = (n)
 rule PhpStep/autoload-result-exhausted: S ~> $autoload_complete(S, pautoloadcall)
   -- if S.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
-  -- if $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+  -- if $autoload_result_valid(S, pautoloadcall, pautoloadentry)
   -- if ~$class_internal(pautoloadcall.KEY) /\ $class_named(S.CLASSNAMES, pautoloadcall.KEY) = eps
   -- if $autoload_seek(S.AUTOLOAD.ENTRIES, pautoloadcall.INDEX) = eps
 
@@ -985,7 +995,7 @@ def $autoload_sent_valid(S, pautoloadcall, pautoloadentry, REFERENCE n) = true
   -- if S.STORE[n] = DEFINED (PSTRING pautoloadcall.NAME)
 def $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand) = false -- otherwise
 
-;; Entered markers borrow the selected cache. CURRENT is the invocation owner.
+;; Entered markers retain selection history; the entered target defines ownership.
 def $autoload_context_call(pcallcontext, (pcallcontext), pframe :: pframe_tail*) = ((pautoloadcall, pautoloadentry, poperand))
   -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
 def $autoload_context_call(pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $autoload_context_call(pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
@@ -994,14 +1004,14 @@ def $autoload_context_kind(S, pcallcontext) = ($autoload_context_call(pcallconte
 def $autoload_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = true
   -- if pframe.TODO = (AUTO_RESULT pautoloadcall pautoloadentry poperand) :: ptask_tail*
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
-  -- if $autoload_selected_valid(S_scope, pautoloadcall, pautoloadentry)
-  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
+  -- if $autoload_result_valid(S_scope, pautoloadcall, pautoloadentry)
+  -- if $autoload_context_target(S, pautoloadentry, pcallcontext.TARGET)
 def $autoload_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $autoload_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*) -- if pcallcontext_other? =/= (pcallcontext)
 def $autoload_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
 def $autoload_context_valid(S, pcallcontext) = true
   -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand))
   -- if $autoload_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
-  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
+  -- if $autoload_context_target(S, pautoloadentry, pcallcontext.TARGET)
   -- if pcallcontext.CALLSITE = $autoload_context_site(pautoloadcall) /\ pcallcontext.LINE = $autoload_context_line(pautoloadcall)
   -- if pcallcontext.ARGC = 1 /\ pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
   -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
@@ -1015,7 +1025,7 @@ def $reference_call_frame_site(pcallcontext, pframe) = true
   -- if pautoloadcall.RESUME = AUTO_EXPLICIT_DONE pconfigcall
   -- if pframe.ORIGIN = (pconfigcall.SITE) /\ pautoloadcall.SITE = pconfigcall.SITE
   -- if pconfigcall.KIND = INTRINSIC_AUTO_CALL
-  -- if pautoloadentry.TARGET = AUTO_TARGET pcallcontext.TARGET
+  -- if $autoload_context_target(S, pautoloadentry, pcallcontext.TARGET)
 
 ;; Publication keeps only the selected callback and frozen request, not roots.
 def $autoload_declaration_capture(S, n) = [(n, pautoloadcall, pautoloadentry)]
@@ -1099,14 +1109,15 @@ def $autoload_declaration_resume(S, pautoloadcall) = false -- otherwise
 def $declaration_autoload_invocation(S, pautoloadcall, pautoloadentry, porigin_function, porigin_callsite?, porigin_lexical?, porigin_called?) = true
   -- if porigin_callsite? = $autoload_context_site(pautoloadcall)
   -- if $autoload_declaration_resume(S, pautoloadcall)
-  -- if $autoload_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
+  -- if $autoload_retained_entry_valid(S, pautoloadentry) /\ pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
   -- if pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
-  -- if S_history = $autoload_entry_history(S, pautoloadentry)
-  -- if $target_function(S_history, pcalltarget) = (pfunction)
+  -- if S_history = $autoload_retained_scope(S, pautoloadentry)
+  -- if pcalltarget_entered = $autoload_enter_target(S, pautoloadentry, pcalltarget)
+  -- if $target_function(S_history, pcalltarget_entered) = (pfunction)
   -- if pfunction.ORIGIN = porigin_function
-  -- if $target_lexical_class(S_history, pcalltarget) = porigin_lexical?
-  -- if $target_called_class(S_history, pcalltarget) = porigin_called?
+  -- if $target_lexical_class(S_history, pcalltarget_entered) = porigin_lexical?
+  -- if $target_called_class(S_history, pcalltarget_entered) = porigin_called?
 def $error_context_kind(S, pcallcontext) = true -- if $autoload_context_kind(S, pcallcontext)
 def $error_context_valid(S, pcallcontext) = true -- if $autoload_context_valid(S, pcallcontext)
 def $autoload_internal_context(S, pcallcontext) = true -- if $autoload_context_call(pcallcontext, S.CURRENT, S.FRAMES) = ((pautoloadcall, pautoloadentry, poperand)) -- if pautoloadcall.MODE = AUTO_EXPLICIT pconfigcall
@@ -1137,7 +1148,7 @@ def $call_task_valid(S, AUTO_CALL_NULL pconfigcall) = ($config_invoke_valid(S, p
 def $call_task_valid(S, AUTO_NEXT pautoloadcall) = ($autoload_call_valid(S, pautoloadcall) /\ pautoloadcall.BIRTH = eps)
 def $call_task_valid(S, AUTO_REFERENCE pautoloadcall pautoloadentry) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
 def $call_task_valid(S, AUTO_ENTER pautoloadcall pautoloadentry poperand) = $autoload_sent_valid(S, pautoloadcall, pautoloadentry, poperand)
-def $call_task_valid(S, AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_selected_valid(S, pautoloadcall, pautoloadentry)
+def $call_task_valid(S, AUTO_RESULT pautoloadcall pautoloadentry poperand) = $autoload_result_valid(S, pautoloadcall, pautoloadentry)
 def $call_task_valid(S, AUTO_NEW ptbytes phpType7* z z_fetch) = true -- if S.ORIGIN = (porigin) -- if $autoload_ordinary_new_source(S, porigin) -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata) -- if $new_source_name(S, porigin) = (ptbytes) -- if $call_line_valid(S, (porigin), z) \/ $dynamic_new_site(S, porigin, z, z_fetch) -- if z_fetch = z \/ $dynamic_new_site(S, porigin, z, z_fetch)
 def $call_task_valid(S, AUTO_SCOPED_CLASS porigin pvalue_string z) = (S.ORIGIN = (porigin) /\ $autoload_scoped_class_site(S, porigin, pvalue_string, z))
 def $call_task_valid(S, AUTO_SCOPED_SELECTED porigin poperand_class ptbytes_method z) = (S.ORIGIN = (porigin) /\ $autoload_scoped_selected_site(S, porigin, poperand_class, ptbytes_method, z))
