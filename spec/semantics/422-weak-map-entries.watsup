@@ -1744,21 +1744,22 @@ def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionop
   -- if ~$weakmap_write_claim_task(pdestructionoperation_child.SOURCE)
   -- if pdestructionoperation_child.PENDING = eps /\ pdestructionoperation_child.COMPLETION = NORMAL
   -- if $destructor_operation_live(S, pdestructionoperation_child)
-def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, [pdestructionoperation_cleanup, pdestructionoperation_inner, pdestructionoperation]) = true
+def $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, pdestructionoperation_child :: pdestructionoperation_tail*) = true
+  -- if pdestructionoperation_tail* = [pdestructionoperation_inner, pdestructionoperation]
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps
   -- if $weakmap_write_previous_chain(S, pdestructionoperation_inner, pdestructionoperation, pweakmapwrite, [pdestructionoperation_inner, pdestructionoperation])
   -- if pdestructionoperation.PENDING = (n_new)
-  -- if pdestructionoperation_cleanup.SOURCE = THROW_SEARCH n_new
-  -- if pdestructionoperation_cleanup.VALUE = KNOWN PNULL /\ pdestructionoperation_cleanup.BASE = BASE_VALUE (KNOWN PNULL)
-  -- if pdestructionoperation_cleanup.PENDING = eps /\ pdestructionoperation_cleanup.COMPLETION = NORMAL
-  -- if pdestructionoperation_cleanup.CALLER = eps /\ pdestructionoperation_cleanup.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructionoperation_cleanup.CONSTCONTEXT = eps
-  -- if pdestructionoperation_cleanup.CLEANUP = eps /\ pdestructionoperation_cleanup.NOGC = eps /\ pdestructionoperation_cleanup.NOGCEXTRA = eps
-  -- if $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cleanup) = eps
-  -- if $destructor_operation_live(S, pdestructionoperation_cleanup)
+  -- if pdestructionoperation_child.SOURCE = THROW_SEARCH n_new
+  -- if pdestructionoperation_child.VALUE = KNOWN PNULL /\ pdestructionoperation_child.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pdestructionoperation_child.PENDING = eps /\ pdestructionoperation_child.COMPLETION = NORMAL
+  -- if pdestructionoperation_child.CALLER = eps /\ pdestructionoperation_child.ORIGIN = (pweakmapwrite.ACCESS.SITE) /\ pdestructionoperation_child.CONSTCONTEXT = eps
+  -- if pdestructionoperation_child.CLEANUP = eps /\ pdestructionoperation_child.NOGC = eps /\ pdestructionoperation_child.NOGCEXTRA = eps
+  -- if $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation_child) = eps
+  -- if $destructor_operation_live(S, pdestructionoperation_child)
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
   -- if $weakmap_write_declared_pin(S, pweakmapwrite, pinstancestorage)
-  -- if $weakmap_write_previous_cleanup(S, S.TODO, pdestructionoperation_cleanup, pweakmapwrite, pinstancestorage)
+  -- if $weakmap_write_previous_cleanup(S, S.TODO, pdestructionoperation_child, pweakmapwrite, pinstancestorage)
   -- if $weakmap_write_selected_child(pinstancestorage) = (n_child)
   -- if n_child <- S.DESTRUCTION.CALLED
   -- if $objectprops_at(S.OBJECTPROPS, n_old) = (ppropertyslot*)
