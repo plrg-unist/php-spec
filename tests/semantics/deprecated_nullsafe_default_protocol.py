@@ -68,7 +68,7 @@ def instance(fixture,path):
     return start(fixture,path)+[
         'S_nil = $ns_pause(S_start[.COMPLETION = NORMAL],0,20000)','$ns_ready(S_nil,0)',
         'S_nil.PARAMETERSEQ = 0','S_nil.PARAMETERRECEIVES = eps','S_nil.DEFAULTCACHE = eps',
-        'S_nil.GLOBALTABLE = (psymboltable_nil)','$lookup(psymboltable_nil.ENV,$ptascii("receiver")) = (n_receiver_cell)',
+        '$lookup(S_nil.ENV,$ptascii("receiver")) = (n_receiver_cell)',
         'S_nil.STORE[n_receiver_cell] = DEFINED PNULL',
         'S_bind = $ns_pause(S_nil,1,20000)','$ns_ready(S_bind,1)',
         '$ns_output(S_bind.EVENTS) = $ptascii("N|A|H|")',
