@@ -25,6 +25,15 @@ the prior ordinary and callable campaigns. Builtin, method, array and
 constant-context conversion were dependencies of that original increment;
 later family reviews record their separately validated slices.
 
+Public static nongenerator user-method captures from named class constants now
+retain cache policy from their actual constant creation. The initializer receipt,
+declaration prefix and completed scope authenticate the producer; the object
+birth boundary distinguishes cold Private from already initialized Shared without
+initializing the raw method. Private clones get fresh keys and Shared clones
+retain warmth; history preserves both birth policies after later initialization.
+Real constant roots stay separate from nonowning cache history;
+see the [constant-method cache review](../../coverage/semantics/enum-is-callable-constant-method-cache-review.json).
+
 [Stored callable names](../../coverage/semantics/stored-callable-carrier-review.json)
 now enter the same resolver through raw/interned/request string bytes. Compiler
 origins, callee-initialization lines, lookup and method access guards are unchanged.

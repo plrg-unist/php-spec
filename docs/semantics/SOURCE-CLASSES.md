@@ -1263,7 +1263,16 @@ history after retirement; parent-stamped clone copies preserve policy, while
 unstamped constant/API parents stay unstamped. Converting an existing Closure
 through FCC or fromCallable preserves identity and creates no stamp. The
 [shared-capture review](../../coverage/semantics/enum-is-callable-shared-capture-cache-review.json)
-records this bounded slice. Method `fromCallable` now uses explicit source-cache
+records this bounded slice. Named class constants now stamp public static
+nongenerator user-method captures at the actual constant-creation hook. The real
+initializer/PREFIX and completed method scope authenticate the birth; raw method
+cache state stays unchanged. Cold captures receive Private keys, while a source
+initialized before birth supplies Shared. Later raw initialization preserves an
+old Private birth, and clones retain the corresponding fresh/share policy.
+History also recognizes a genuine later Shared birth after an earlier Private
+capture. Constant values keep their real roots; cache metadata adds none. See the
+[constant-method cache review](../../coverage/semantics/enum-is-callable-constant-method-cache-review.json).
+Method `fromCallable` now uses explicit source-cache
 registration and actual INIT facts, including attempts that throw before body
 entry. Runtime invokable/array/string FCC also records allocation independently
 of capture-query admission; raw CAPI method entry supplies its actual later event.
