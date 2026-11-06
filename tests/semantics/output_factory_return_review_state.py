@@ -84,19 +84,22 @@ def pipeline(fixture,path):
  'S_born_found = $drive_steps(S_ctor, 1)','S_born_found.COMPLETION = BUDGET',
  'S_born = S_born_found[.COMPLETION = NORMAL]',
  '$ob_object_native_source(S_born) = (OBJECT_FACTORY_NEW pobfactoryreturn)',
+ 'pobfactoryreturn.CONTOUR.CALLS = [pobsourcecall]',
+ 'pobfactoryreturn.CONTOUR.CURSOR = 0',
+ 'pobfactoryreturn_returned = pobfactoryreturn[.CONTOUR = pobfactoryreturn.CONTOUR[.CURSOR = 1]]',
  'S_return_found = $fr_seek(S_born, 1, 512)',r'S_return_found.COMPLETION = NORMAL \/ S_return_found.COMPLETION = BUDGET',
  'S_return = S_return_found[.COMPLETION = NORMAL]',
  'S_return.TODO = [RETURN_UNWIND (KNOWN (POBJECT n_exception)) (porigin_return)]',
  'S_one_found = $drive_steps(S_return, 1)','S_one_found.COMPLETION = BUDGET',
  'S_one = S_one_found[.COMPLETION = NORMAL]',
- '$ob_object_native_source(S_one) = (OBJECT_FACTORY_RETURNED pobfactoryreturn)',
+ '$ob_object_native_source(S_one) = (OBJECT_FACTORY_RETURNED pobfactoryreturn_returned)',
  'S_ready_found = $fr_seek(S_one, 2, 512)',r'S_ready_found.COMPLETION = NORMAL \/ S_ready_found.COMPLETION = BUDGET',
  'S_ready = S_ready_found[.COMPLETION = NORMAL]',
  'S_ready.TODO = (THROW_VALUE porigin_throw z_throw) :: ptask_ready*',
  'S_active_found = $drive_steps(S_ready, 1)','S_active_found.COMPLETION = BUDGET',
  'S_active = S_active_found[.COMPLETION = NORMAL]',
  'S_active.TODO = (THROW_SEARCH n_exception) :: ptask_active*',
- '$ob_object_native_source(S_active) = (OBJECT_FACTORY_THROW pobfactoryreturn)',
+ '$ob_object_native_source(S_active) = (OBJECT_FACTORY_THROW pobfactoryreturn_returned)',
  ]
 def provenance(fixture,path,local):
  b=pipeline(fixture,path)+[
@@ -124,8 +127,8 @@ def provenance(fixture,path,local):
  ('altered producer return and throw cannot validate the factory source',r'$ob_object_factory_function(S_born, pfunction_native, pobfactoryreturn_function) = eps /\ $ob_object_factory_function(S_born, pfunction_native, pobfactoryreturn_return) = eps /\ $ob_object_factory_function(S_born, pfunction_native, pobfactoryreturn_throw) = eps'),
  ('actual marker and exact one-pop carrier are necessary for returned handoff',r'$source_exception_transition(S_return, S_pre_hook) = S_one /\ $source_exception_transition(S_bad_marker, S_pre_hook) = S_pre_hook /\ $source_exception_transition(S_return, S_no_pop) = S_no_pop /\ $source_exception_transition(S_return, S_no_carrier) = S_no_carrier'),
  ('real return carrier preserves the one returned object',carrier+r' /\ $heap_count(HOBJECT n_exception, $machine_roots(S_return)) = 1 /\ $heap_count(HOBJECT n_exception, $machine_roots(S_one)) = 1 /\ S_one.CURRENT = pframe_call.CONTEXT /\ |S_one.FRAMES| = $(|S_return.FRAMES| - 1)'),
- ('constructed and returned phases cannot report or capture early',r'$ob_object_source_pending((OBJECT_FACTORY_NEW pobfactoryreturn)) = eps /\ $ob_object_source_thrown((OBJECT_FACTORY_NEW pobfactoryreturn)) = eps /\ $ob_object_source_pending((OBJECT_FACTORY_RETURNED pobfactoryreturn)) = eps /\ $ob_object_source_thrown((OBJECT_FACTORY_RETURNED pobfactoryreturn)) = eps /\ $ob_object_factory_capture(S_ready, pfunction_native, (OBJECT_FACTORY_NEW pobfactoryreturn), porigin_throw, n_exception) = eps /\ $ob_object_factory_capture(S_one, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn), porigin_throw, n_exception) = eps'),
- ('only published matching native result becomes pending without a new root',r'S_ready.RESULT = KNOWN (POBJECT n_exception) /\ ~$ob_object_factory_value_frames(S_ready.DESTRUCTION.FRAMES, pobfactoryreturn) /\ $ob_object_factory_capture(S_ready, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn), porigin_throw, n_exception) = (OBJECT_FACTORY_THROW pobfactoryreturn) /\ $ob_object_source_pending($ob_object_native_source(S_active)) = ((porigin_return,n_exception)) /\ $heap_count(HOBJECT n_exception, $machine_roots(S_active)) = 1 /\ $heap_count(HOBJECT n_object, $machine_roots(S_active)) = 2'),
+ ('constructed and returned phases cannot report or capture early',r'$ob_object_source_pending((OBJECT_FACTORY_NEW pobfactoryreturn)) = eps /\ $ob_object_source_thrown((OBJECT_FACTORY_NEW pobfactoryreturn)) = eps /\ $ob_object_source_pending((OBJECT_FACTORY_RETURNED pobfactoryreturn_returned)) = eps /\ $ob_object_source_thrown((OBJECT_FACTORY_RETURNED pobfactoryreturn_returned)) = eps /\ $ob_object_factory_capture(S_ready, pfunction_native, (OBJECT_FACTORY_NEW pobfactoryreturn), porigin_throw, n_exception) = eps /\ $ob_object_factory_capture(S_one, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn_returned), porigin_throw, n_exception) = eps'),
+ ('only published matching native result becomes pending without a new root',r'S_ready.RESULT = KNOWN (POBJECT n_exception) /\ ~$ob_object_factory_value_frames(S_ready.DESTRUCTION.FRAMES, pobfactoryreturn) /\ $ob_object_factory_capture(S_ready, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn_returned), porigin_throw, n_exception) = (OBJECT_FACTORY_THROW pobfactoryreturn_returned) /\ $ob_object_source_pending($ob_object_native_source(S_active)) = ((porigin_return,n_exception)) /\ $heap_count(HOBJECT n_exception, $machine_roots(S_active)) = 1 /\ $heap_count(HOBJECT n_object, $machine_roots(S_active)) = 2'),
  ('zero budget preserves actual return owner and metadata',r'S_budget.COMPLETION = BUDGET /\ S_budget.TODO = S_return.TODO /\ S_budget.CURRENT = S_return.CURRENT /\ S_budget.FRAMES = S_return.FRAMES /\ S_budget.GC = S_return.GC /\ S_budget.EVENTS = S_return.EVENTS /\ S_budget.ALLOCATIONS = S_return.ALLOCATIONS'),
  ('issued handoff and pending states retain public invariants',public('S_born')+' /\\ '+public('S_one')+' /\\ '+public('S_active')),
  ]
@@ -144,9 +147,9 @@ def report_assertions(fixture,path,local):
  'S_retired_found = $fr_seek(S_report, 4, 512)',r'S_retired_found.COMPLETION = NORMAL \/ S_retired_found.COMPLETION = BUDGET',
  'S_retired = S_retired_found[.COMPLETION = NORMAL]',
  'S_retired.DESTRUCTION.ABANDONED = [pdestructioncleanup]',
- 'pobfactoryreturn_wrong = pobfactoryreturn[.RETURN = pobfactoryreturn.THROW]',
+ 'pobfactoryreturn_wrong = pobfactoryreturn_returned[.RETURN = pobfactoryreturn.THROW]',
  'pobobjectreturn_new = pobobjectreturn[.SOURCE = (OBJECT_FACTORY_NEW pobfactoryreturn)]',
- 'pobobjectreturn_returned = pobobjectreturn[.SOURCE = (OBJECT_FACTORY_RETURNED pobfactoryreturn)]',
+ 'pobobjectreturn_returned = pobobjectreturn[.SOURCE = (OBJECT_FACTORY_RETURNED pobfactoryreturn_returned)]',
  'pobobjectreturn_wrong = pobobjectreturn[.SOURCE = (OBJECT_FACTORY_THROW pobfactoryreturn_wrong)]',
  'pdestructioncleanup_new = pdestructioncleanup[.SOURCE = OUTPUT_FINAL_OBJECT_THROW pobobjectreturn_new pobdeactivate pobfactoryreturn.RETURN n_exception]',
  'pdestructioncleanup_returned = pdestructioncleanup[.SOURCE = OUTPUT_FINAL_OBJECT_THROW pobobjectreturn_returned pobdeactivate pobfactoryreturn.RETURN n_exception]',
@@ -220,7 +223,8 @@ def sites_assertions(fixture,path,local=False):
  'S_second_born_found = $drive_steps(S_second_ctor, 1)','S_second_born_found.COMPLETION = BUDGET',
  'S_second_born = S_second_born_found[.COMPLETION = NORMAL]',
  '$ob_object_native_source(S_second_born) = (OBJECT_FACTORY_NEW pobfactoryreturn_second)',
- 'pobfactoryreturn_foreign = pobfactoryreturn_second[.THROW = pobfactoryreturn.THROW]',
+ 'pobfactoryreturn_returned_second = pobfactoryreturn_second[.CONTOUR = pobfactoryreturn_second.CONTOUR[.CURSOR = 1]]',
+ 'pobfactoryreturn_foreign = pobfactoryreturn_second[.THROW = pobfactoryreturn.THROW][.CONTOUR = pobfactoryreturn.CONTOUR]',
  'S_second_no_source = $ob_object_call_capture(S_second_born, eps)',
  'S_second_no_source.FRAMES = pframe_second :: pframe_second_tail*',
  'pframe_second.TODO = (ORIGIN_RETURN (pobfactoryreturn_second.THROW)) :: (THROW_VALUE pobfactoryreturn_second.THROW z_second_throw) :: ptask_second_native*',
@@ -234,7 +238,7 @@ def sites_assertions(fixture,path,local=False):
  ('two actual factory calls retain distinct fresh results and distinct native consumers',r'n_second =/= n_exception /\ pobfactoryreturn_second.THROW =/= pobfactoryreturn.THROW /\ pobfactoryreturn_second.RETURN = pobfactoryreturn.RETURN /\ (HOBJECT n_exception) <- S_second_ready.ALLOCATIONS /\ $heap_owners($heap_graph(S_second_ready), HOBJECT n_exception) = 2 /\ $heap_count(HOBJECT n_second, $machine_roots(S_second_ready)) = 1'),
  ('foreign valid consumer selects same factory but cannot authenticate actual call edge',r'$ob_object_factory_function(S_second_born, pfunction_native, pobfactoryreturn_foreign) = (pfunction_make) /\ $ob_object_factory_current(S_second_born, pobfactoryreturn_foreign) = eps'),
  ('issuer rejects coherently retargeted saved consumer while current callsite stays real',r'$ctor_completed(S_second_no_source, pctorcall_second, pvalue_message_second, PINT z_code_second, PNULL) = S_second_born /\ $ctor_completed(S_foreign_consumer, pctorcall_second, pvalue_message_second, PINT z_code_second, PNULL) = S_foreign_consumer'),
- ('live older Throwable cannot replace the newly returned result',r'$ob_object_factory_capture(S_second_ready, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn_second), porigin_second, n_exception) = eps /\ $ob_object_factory_capture(S_old_result, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn_second), porigin_second, n_second) = eps'),
+ ('live older Throwable cannot replace the newly returned result',r'$ob_object_factory_capture(S_second_ready, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn_returned_second), porigin_second, n_exception) = eps /\ $ob_object_factory_capture(S_old_result, pfunction_native, (OBJECT_FACTORY_RETURNED pobfactoryreturn_returned_second), porigin_second, n_second) = eps'),
  ('second source-reached native throw frontier is publicly valid',public('S_second_ready')),
  ]
  return b,c
@@ -249,7 +253,7 @@ def native_local_assertions(fixture,path,local=False):
  ]
  owners=lambda s:f'$heap_count(HOBJECT pobobjectreturn.OBJECT, $machine_roots({s})) = 2 /\\ $heap_count(HOBJECT pdestructorcall.OBJECT, $machine_roots({s})) = 2 /\\ $heap_count(HOBJECT n_old, $machine_roots({s})) = 1 /\\ $heap_count(HOBJECT n_exception, $machine_roots({s})) = 1'
  c=[
- ('native destructor gets same factory result through real returned owner',r'$ob_object_native_source(S_one) = (OBJECT_FACTORY_RETURNED pobfactoryreturn) /\ $ob_object_source_pending($ob_object_native_source(S_one)) = eps /\ $heap_count(HOBJECT n_exception, $machine_roots(S_one)) = 1 /\ S_ready.RESULT = KNOWN (POBJECT n_exception) /\ ~$ob_object_factory_value_frames(S_ready.DESTRUCTION.FRAMES, pobfactoryreturn)'),
+ ('native destructor gets same factory result through real returned owner',r'$ob_object_native_source(S_one) = (OBJECT_FACTORY_RETURNED pobfactoryreturn_returned) /\ $ob_object_source_pending($ob_object_native_source(S_one)) = eps /\ $heap_count(HOBJECT n_exception, $machine_roots(S_one)) = 1 /\ S_ready.RESULT = KNOWN (POBJECT n_exception) /\ ~$ob_object_factory_value_frames(S_ready.DESTRUCTION.FRAMES, pobfactoryreturn)'),
  ('actual local native throw retains outer cast saved E and selected destructor guards',r'pdestructorcall.OBJECT = n_object /\ n_exception =/= n_old /\ $ob_object_source_pending(pobobjectsource?) = ((pobfactoryreturn.RETURN,n_exception)) /\ $throwable_field(S_active, n_exception, "previous") = PNULL /\ '+owners('S_active')),
  ('factory native-destructor pending state is publicly valid',public('S_active')),
  ('only genuine destructor C0 is ready to report factory-created F',r'$ob_object_final_local_ready(S_exit, pobobjectreturn, pdestructorcall, pobfactoryreturn.RETURN, n_exception, pdestructionframe, ptask_return*) /\ pdestructionframe.FUNCTION = pfunction_native.ORIGIN /\ pdestructionframe.FUNCTION =/= pfunction_make.ORIGIN /\ S_exit.CURRENT = eps /\ S_exit.FRAMES = eps /\ '+owners('S_exit')),
