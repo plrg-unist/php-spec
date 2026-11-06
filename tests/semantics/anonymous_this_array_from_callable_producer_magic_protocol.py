@@ -106,7 +106,7 @@ def unpack_boundary(fixture, filename):
         'phpType7_producer = NArg ABSENT expression_producer (BOOLEAN false) (BOOLEAN false) metadata_producer',
         'phpType7_pack = NArg ABSENT (NExprVariable (BYTES text_pack) metadata_pack) (BOOLEAN false) (BOOLEAN true) metadata_pack_arg',
         '$call_argument_origin(S,(porigin_site),0) = (porigin_producer)',
-        '$magic_method_from_callable_producer(S,porigin_producer,expression_producer) = (pfunction)',
+        '$magic_method_this_array_from_callable_producer(S,S.CURRENT,porigin_producer,expression_producer) = ((n_this,porigin_class,pmethoddesc))',
         '$magic_method_argument_source(S,porigin_producer,0,expression_producer)',
         '~$magic_unpack_explicit_source(S,porigin_producer,expression_producer)',
         '$call_argument_origin(S,(porigin_site),1) = (PORIGIN n_unit pcpath_pack)',
