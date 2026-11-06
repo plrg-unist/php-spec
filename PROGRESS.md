@@ -2550,6 +2550,21 @@ performance remains open; no generic return, type checker or owner protocol chan
 The actual 467-module joined load and 169/306 inventory pass at the recorded cut.
 [Author evidence](coverage/semantics/output-final-return-type-author.json) and
 [review](coverage/semantics/output-final-return-type-review.json).
+OB33 completes the generated native return-TypeError path for empty method CVs.
+The shared full native proof permits the existing return-error producer/tag;
+structural constructor capture and no-tag lifetime paths retain their gate; the
+separate no-CV literal-throw route is unchanged. Real frame exit
+queues an empty release record, and a genuine budget step retires it before
+original C0 readiness; T2/Error1/public validity persist at both stages.
+Two minimal strict/weak originals agree in 36.990/22.054 seconds under 90,
+and the affected 10-group owner/budget/public frontier passes. Twelve independent
+source/old-gate, empty-release/C0, report/retired-receipt, weak, no-variable catch
+and bare-finally groups pass. No field, owner or generic cleanup/type/return protocol
+changes; prior performance limits and held domains remain. Source/runtime/tests
+are secured with the thin current trigger/default bridge and 169/306 inventory;
+the original SL467 cuts remain distinct, with no extra load or source replay.
+[Author evidence](coverage/semantics/output-final-empty-return-author.json) and
+[review](coverage/semantics/output-final-empty-return-review.json).
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -3564,7 +3579,7 @@ their work remains unaccepted until integrated.
 | ENUM162 | Callable return verification in bounded public ordinary instance and fixed-class static method frames, preserving actual context, This roots and return cleanup. |
 | GC74 | Infer the real copied-target Child decrement during retained-array COW without a net edge loss, preserving header TEMP and existing ownership graphs. |
 | I138 | Scope-free raw static Closure helper frames in existing reentry paths, preserving owning INSTANCE roots through saved VM moves and return. |
-| OB33 | Genuine FINAL scalar-return TypeErrors with empty method CVs, preserving source-kind bounds, the actual empty-frame handoff and native ownership. |
+| OB34 | Weak scalar-return TypeErrors during FINAL conversion, preserving genuine rejected-return authority and successful weak coercion without a false error source. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

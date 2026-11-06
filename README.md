@@ -322,6 +322,14 @@ nonowning source fact, separate from constructor births; catch and normal overri
 consume it. Strict integer rejection and weak coercion match two frozen originals.
 [Return-check evidence](coverage/semantics/output-final-return-type-author.json) and
 [review](coverage/semantics/output-final-return-type-review.json).
+Generated strict scalar return TypeErrors also use the original native boundary
+when `__toString` has no compiled CVs. A shared native proof admits only that
+existing error fact; structural constructor capture keeps its earlier gate, and
+the separate no-CV literal-throw route is unchanged. The real empty
+release record retires before C0 readiness. Two minimal strict/weak originals
+match without a local variable or destructor class.
+[Empty-frame evidence](coverage/semantics/output-final-empty-return-author.json) and
+[review](coverage/semantics/output-final-empty-return-review.json).
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

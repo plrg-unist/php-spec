@@ -670,3 +670,20 @@ rendering and other holds remain outside. OB31 source performance stays unfinish
 [Author evidence](../../coverage/semantics/output-final-return-type-author.json) and
 [review](../../coverage/semantics/output-final-return-type-review.json) retain the
 actual 467-module joined load and the precise source/state cuts.
+
+The same generated strict scalar return TypeError now crosses an empty method
+frame. A common full native method/frame proof preserves the existing authority checks.
+Structural constructor-birth capture retains its nonempty-CV gate; the separate
+no-CV literal-throw route is unchanged. Only the actual
+return-error producer and its live tag admit CV0. Source/catch/rootdrop and normal
+clearing use that same distinction. The existing frame mechanism first queues a
+release record with no jobs, then one genuine step retires that record before
+original native C0 readiness. Both stages preserve T2/Error1 and public validity.
+No local, destructor class, new fact or owner is added. Two minimal strict/weak
+originals agree; the affected 10 and independent 12 authority, empty-release/C0,
+report/retired-receipt, weak and clearing groups pass. No-variable catch and bare
+finally overrides retain empty CVS/ENV and retire Error before normal publication.
+Other producer, supplied/COMP88, owning-operand and rendering holds remain; prior
+public performance limits stay separate.
+[Author evidence](../../coverage/semantics/output-final-empty-return-author.json) and
+[review](../../coverage/semantics/output-final-empty-return-review.json).

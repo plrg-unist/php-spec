@@ -1,0 +1,96 @@
+{
+  "milestone": "OB33: generated FINAL return TypeError without method CVs",
+  "status": "Independently CLEAR12 and integrated; two exact source agreements",
+  "runtime": {
+    "base": "dc1eca57e822775026392b6a8bf439edbac3cae1 / accepted467",
+    "source": "33674b2ba752ab847c99490e4990d5ac2752cc7a",
+    "implementation": "9acb07ec21d93e077c3c0e947ca840f40195041b",
+    "target": "PHP 8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "execution": "SpecTec da36ac3c434cd291940293a63da64544307730a3; SL467/cache=false/det=true; C/UTC baseline",
+    "files": {
+      "spec/semantics/456-output-object-returns.watsup": "eb45738b001cc67afd582777f9e935acc1c9eea285ea31bbd2db75cd3d3667f2",
+      "tests/semantics/output_final_empty_return_sources.py": "2f3d4dbad2403ddc8c3981abd3b28137b88629dbb19257156196d398d706175a"
+    }
+  },
+  "source_basis": "The same native strict scalar return42 check creates TypeError even when no compiled CV exists. Zend still restores the null caller and leaves the guarded call frame before null-C reporting; method CV absence does not release the native retval/cast guard early.",
+  "change": "456 extracts the existing full native method/frame proof. Structural constructor-birth capture retains its nonempty-CV wrapper pointwise; the separate accepted no-CV sole-literal throw route is unchanged. Only the genuine existing return-error producer may use the broader proof before mint; only its existing live tag may use it for source/catch/rootdrop/normal clearing. The newtag source alternative drops the CV predicate; source identity, normalized fields and all current/native/class/source guards remain.",
+  "owners": "No new fact, field, owner or task is added. The actual no-CV error retains T2/Error1. Its real empty DESTRUCTOR_RELEASE record remains queued before FRAME_EXIT, so readiness is false there; one genuine budget step retires the empty release before the original C0 becomes ready. Both stages retain public validity and the same owners. Catch without a variable and finallyH keep CVS empty.",
+  "native": {
+    "observations": 2,
+    "records": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-empty-return-33/native-01/report.json",
+        "sha256": "d016ca294327ea81324caec52afe407148ceea4f7dde678452557d3e8138cd7f"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-empty-return-33/native-02/report.json",
+        "sha256": "9974aef5eb60934f2a189bd10faada1bdeb03bc4c67c95d80e991b959107c306"
+      }
+    ],
+    "result": "Minimal strict return42 with no locals/destructor class produces P255/TypeError6/internalT; weak differs only in strict flag and produces P42/0. Pinned binary/profile/source stable; no oracle replay."
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-empty-return-33-review/baseline-02/report.json",
+    "sha256": "1f4bdd9806bb984d68ca79146c9b4eab20c9998e2c9d6eb8d9b9b2267710d8c8",
+    "observations": 6,
+    "seconds": 94.377,
+    "source_agreement_credit": 0,
+    "result": "Actual CVS/ENV/SYMBOLS/functionCVS empty, full native/current/task/frame/public authority,95/152 TypeError6/source/live/T2E1 all pass. The inherited CV gate alone refuses capture; the unmodified charged ERROR_UNWIND Unsupported remains unreset. No baseline C0 claim."
+  },
+  "affected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-empty-return-33/front-03/report.json",
+    "sha256": "ceeb0610cf4226092e6ab75dffd7e9d50bc99acaa188529d308c83ff330dbc72",
+    "groups": 10,
+    "seconds": 90.704,
+    "result": "Actual capture/charged pending, zero/one budgets, exact one native pop to empty release/frame, next real empty-release retirement, bare C0 authority/T2E1 and pivotal public validity pass on final9ac."
+  },
+  "public": {
+    "source_agreements": 2,
+    "cap_seconds": 90,
+    "records": [
+      {
+        "case": "strict",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-empty-return-33/model-01/strict/report.json",
+        "sha256": "c25aaa44d4edd368fedd284c827758f6bc3e0d0f042248011187150872f4c0a4",
+        "passed": true,
+        "native_agreements": 1
+      },
+      {
+        "case": "weak",
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-empty-return-33/model-01/weak/report.json",
+        "sha256": "130ea9a7dad589a3742a0807a709478045899895fb9fb9655b1c750470f4b40b",
+        "passed": true,
+        "native_agreements": 1
+      }
+    ],
+    "seconds": [
+      36.99,
+      22.054
+    ],
+    "result": "Standalone strict/weak outcomes match frozen raw stdout/stderr/status and reasonNone; quiet tool0/revision/input stability, no cap increase or unchanged retry."
+  },
+  "independent": {
+    "status": "CLEAR: core6, weak2, no-variable catch2 and bare-finally override2 on final9ac",
+    "test": "tests/semantics/output_final_empty_return_review_state.py",
+    "review": "coverage/semantics/output-final-empty-return-review.json",
+    "groups": 12,
+    "controls": "Weak normal publication retains T1 without an error fact; no-variable catch clears the fact while Error1 is owned and creates no CV, then Error retires. Genuine bare H return before pop has SOURCEeps/Error0 with CVS/ENV empty; normal publication retains retvalT1.",
+    "peer_commit": "3e47b17a0b67946e588a62c240f7244309716b72",
+    "secured_main": "f7d005bf2ecfb8b481af358c7bc6e313f494b880",
+    "test_sha256": "e64c80bd09a7ae94f694991a99d21da1a66f3732828b8a3dbc949f2983bd4025",
+    "review_sha256_at_peer_commit": "5d26fa10b6b736dc398ba5cd6492a7dae799bd0aa43dc156be7644772554f1fa",
+    "review_sha256": "6b8eb725aee89cbab2565becf826a8ae3ec0d69468b36d357fa0c835c3bf7a40"
+  },
+  "preserved_zero": "Baseline01 fixture used nonexistent contextCVS and failed before source;0. Front01 incorrectly required bare C0 immediately after frame pop; eight other groups observed true but whole packet stays0. Readonly raw projection proved a registered empty release still precedes FRAME_EXIT. Front02 Python raw-string preparation failed before source;0. Only fixture stage/one-real-step expectation changed; front03 passes. Diagnostics/AST preparation add no application agreement.",
+  "compatibility": "Only456 changes;30/40/80/95/152/161/257/270/441/root/result protocols, old record arities and existing Error fact stay unchanged. Structural constructor-birth capture and no-tag lifetime paths retain their nonempty-CV gate; the separate no-CV sole-literal throw route is unchanged. No32/31 application replay or public performance renewal.",
+  "limits": "Direct strict by-value native __toString with known nonowning scalar return, fixed generated TypeError/code0/NULLprevious/default render. Other generated producers, owning rejected operands, supplied identities/COMP88, constructor aborts/custom rendering and other holds do not expand. Existing full-core/Rocq/BOLA and OB31 public performance remain unfinished.",
+  "reproduce": "Frozen native filename/cwd/profile plus bin/php-semantics SOURCE --steps 100000 --timeout 90, C/UTC. Source-derived independent fixtures use unchanged300 cap and cached or self-contained checked ASTs; raw commands/states/results/fingerprints external.",
+  "integration": {
+    "source_runtime": "703c73b697769d34caf7f2bc38b3337147444a47",
+    "maintained_test_review": "f7d005bf2ecfb8b481af358c7bc6e313f494b880",
+    "inventory": "169/306",
+    "check": "456-only with no new payload; writer inventory/diff pass and source2/affected10/independent12 authentic467 cuts retained. No extra load, source or private replay.",
+    "current_context": "GC73 source ASSIGN_ARRAY/CV separation with aliased retained row, CLASS225 literal-static Closure::fromCallable, ATTR83 property UNSET_ARRAY and I137 Generator/static helper entry are absent. COMP207 requires CV call with ARRAY_METHOD_TARGET/STRING_METHOD_TARGET raw wrapper; ordinary h callback and bare native METHOD_TARGET/CALLSITEeps keep raw ingress false/RAW_ENTRYfalse. Both h arguments are supplied and T has no parameters/defaults."
+  }
+}
