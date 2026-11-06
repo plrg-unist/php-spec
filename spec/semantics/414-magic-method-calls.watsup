@@ -550,8 +550,10 @@ def $magic_method_from_callable_producer(S, porigin, expression) = (pmethoddesc.
   -- if $(n_callback < |S.ARRAYS|)
   -- if S.ARRAYS[n_callback].ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_class), ENTRY (KINT 1) (DIRECT pvalue_method)]
   -- if $compiled_effects(S, porigin_callback) = eps
-  -- if ptbytes_class = $base64(text_class) /\ $string_bytes(pvalue_class) = (ptbytes_class)
-  -- if ptbytes_method = $base64(text_method) /\ $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if ptbytes_class = $base64(text_class)
+  -- if $string_bytes(pvalue_class) = (ptbytes_class)
+  -- if ptbytes_method = $base64(text_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
   -- if ~$api_keyword(ptbytes_class) /\ ~(0 <- ptbytes_class) /\ ~(0 <- ptbytes_method)
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
