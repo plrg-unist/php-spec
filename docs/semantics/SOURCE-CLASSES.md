@@ -846,6 +846,15 @@ replacement or unset; collection uses the fact after retirement without rereadin
 the CV. Existing cell, quiet COPY, header and unpack restrictions stay fixed.
 [CV instance-FCC review](../../coverage/semantics/anonymous-cv-instance-firstclass-producer-magic-review.json).
 
+Fresh fixed-name USER invokable objects now produce quiet COPY values through
+public nonstatic `__invoke`. The original NEW and real implicit-call INIT select
+the effective runtime method before arguments. Ordinary METHOD_TARGET/frame
+receiver ownership retains `$this`, with no wrapper INSTANCE. Returning an old
+argument releases the call owner and retires the tested unaliased receiver before
+the handler; returning `$this` retains the same instance in result/table/child.
+Existing constructor, nonmagic-method, signature, header and unpack bounds stay fixed.
+[Invokable producer review](../../coverage/semantics/anonymous-invokable-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

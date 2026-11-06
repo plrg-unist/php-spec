@@ -2589,6 +2589,16 @@ a corrected168-condition returnThis proof and a25-condition eligible-pack guard.
 The new read/cache/conversion budget is1+1+1=3; existing208/210 table/child/full-tail
 laws are reused. Five intended Unsupported controls, the original peer cache-phase
 fixture failure and its bounded diagnostic retain zero agreement.
+Fresh fixed-name USER invokable producers now reuse approved NEW and public
+`__invoke` source/formals. Effective runtime selection precedes arguments;
+ordinary receiver call owners distinguish return-old release from return-this
+result/table/child retention, with no Closure wrapper or CV history.
+The [invokable producer review](coverage/semantics/anonymous-invokable-producer-magic-review.json)
+records four first-pass original agreements,51/129 complementary owner frontiers,
+a25-condition eligible-pack guard and23-condition anonymous-New raw-priority guard.
+The one-word class-domain correction preserves the fixed-name source cuts;
+five intended Unsupported controls have zero agreement. Generic tail laws are
+reused without source/native replay; all wider/held modes remain partial.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -3020,11 +3030,12 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS212 | Fresh fixed-name USER invokable-object producers with actual effective public __invoke selection before args and ordinary receiver owners; preserve approved constructor, source/header and held bounds without wrapper or CV-history widening. |
+| CLASS213 | Ordinary initialized plain/reference USER CV-invokable producers with actual pre-resolve selection and descriptor-local receipts, ordinary receiver owners and raw unpack isolation; preserve non-object callable and paused bounds. |
 | ATTR72 | Nonpublic isset/empty and ??= for admitted backed Trait pairs using permitted descriptors and saved caller access, with existing late-RHS selector and owner laws unchanged; preserve producer and held bounds. |
 | COMP199 | Owning defaults for ordinary public constructors selected by initialized plain CV class strings, with exact dynamic-new caller/selection history and existing receiver/cache/failed-construction laws; preserve dynamic and held exclusions. |
 | ENUM156 | Last-owner known ordinary Closure in callable_name with actual captured OLD retirement history and existing capture/static/This child-drain owners; preserve live fresh-query admission and held child/cycle boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
+| I132 | Aggregate getter with sole selected native-Generator cursor ownership through actual PREP/CONFIG_AGG, preserving source Aggregate owners and transferring real prior SENT before receiver on pre-DATA cancellation. |
 | OB29 | Fresh by-value Exception forwarding through finite admitted no-argument return-call contours, consuming actual departed RETURN edges and result owners before native THROW; preserve NULL Previous, rendering and held boundaries. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
