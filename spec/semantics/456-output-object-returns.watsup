@@ -540,12 +540,12 @@ def $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw) = false -- otherwi
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack(pobcvassoc_next :: pobcvassoc_rest*, eps))
   -- if $ob_object_cv_committed(S, S_next) = (pobcvassoc_next)
   -- if pobcvassoc_rest* = $ob_object_cv_prune(S_next, $ob_object_cv_remove($ob_object_cv_associations($ob_object_native_source(S)), pobcvassoc_next.NAME, pobcvassoc_next.CELL))
-def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack($ob_object_cv_spend(pobcvassoc*, pobcvassoc.FACTORY.BIRTH.OBJECT), (OBJECT_CV_THROW pobcvassoc porigin_throw)))
-  -- if $ob_object_native_source(S) = (OBJECT_CV_DATA pobcvassoc* eps)
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack($ob_object_cv_spend(pobcvassoc_rows*, pobcvassoc_selected.FACTORY.BIRTH.OBJECT), (OBJECT_CV_THROW pobcvassoc_selected porigin_throw)))
+  -- if $ob_object_native_source(S) = (OBJECT_CV_DATA pobcvassoc_rows* eps)
   -- if S.RESULT = VARIABLE preqbytes_name z_origin
-  -- if $ob_object_cv_lookup(pobcvassoc*, preqbytes_name) = (pobcvassoc)
+  -- if $ob_object_cv_lookup(pobcvassoc_rows*, preqbytes_name) = (pobcvassoc_selected)
   -- if S.TODO = (THROW_VALUE porigin_throw z) :: ptask_tail*
-  -- if $ob_object_cv_throw(S, S_next, pobcvassoc, porigin_throw)
+  -- if $ob_object_cv_throw(S, S_next, pobcvassoc_selected, porigin_throw)
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack(pobcvassoc_next*, $ob_object_source_active($ob_object_native_source(S_next))))
   -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
   -- if $ob_object_call_consumer(S) =/= eps
