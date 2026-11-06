@@ -123,7 +123,7 @@ dec $generator_selected_traversable_site(pstate, pconfigcall) : bool
 def $generator_selected_traversable_site(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_GENERATOR_METHOD text_method pgeneratormethodselection?
   -- if text_method <- ["send", "rewind", "valid", "current", "key", "next", "getreturn"]
-  -- if ~$generator_capture_selection_tag(pgeneratormethodselection?)
+  -- if ~$generator_capture_config_tag(pconfigcall)
   -- if ~$generator_temporary_selection(pgeneratormethodselection?)
   -- if pconfigcall.SELECTION = eps /\ pconfigcall.OWNER = (n_receiver)
   -- if $generator_object(S, n_receiver)
