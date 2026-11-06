@@ -490,6 +490,7 @@ def $ob_object_call_capture(S, pobobjectsource?) = S[.FRAMES = [pframe_call, pfr
 def $ob_object_call_capture(S, pobobjectsource?) = S -- otherwise
 def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, (OBJECT_CALL_NEW porigin pobctorbirth pobsourcecall))
   -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps
   -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
   -- if $ob_object_call_valid(S)
   -- if $ob_object_ctor_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous, pfunction) = ((porigin, pobctorbirth))
