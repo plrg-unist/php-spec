@@ -1,15 +1,20 @@
 ;; SPL retains its selected FCC in the registry. Its known-function dispatch
 ;; borrows This; the entered target keeps only immutable selection metadata.
-dec $autoload_method_entry(pstate, pautoloadentry) : (pmethoddesc, porigin, porigin, nat?)?
-def $autoload_method_entry(S, pautoloadentry) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+dec $autoload_method_shape(pautoloadentry) : bool
+def $autoload_method_shape(pautoloadentry) = true
   -- if pautoloadentry.CALL.KIND = INTRINSIC_AUTO_REGISTER
   -- if pautoloadentry.CALL.OWNER = eps /\ pautoloadentry.CALL.SELECTION = eps
-  -- if $autoload_registration_valid(S, pautoloadentry.CALL)
   -- if pautoloadentry.CAPTURE = eps /\ pautoloadentry.PRODUCER = eps /\ pautoloadentry.SCOPE = eps /\ pautoloadentry.BINDING = eps
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
-  -- if $parameter_shutdown_target(S, pcalltarget) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
   -- if pshutdownentry = {CALL pautoloadentry.CALL, BIRTH pautoloadentry.BIRTH, CAPTURE eps, PRODUCER eps, RAW pautoloadentry.RAW, TARGET pcalltarget, CACHEOBJECT eps, ARGS eps}
   -- if $parameter_shutdown_raw(pshutdownentry)
+def $autoload_method_shape(pautoloadentry) = false -- otherwise
+dec $autoload_method_entry(pstate, pautoloadentry) : (pmethoddesc, porigin, porigin, nat?)?
+def $autoload_method_entry(S, pautoloadentry) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
+  -- if $autoload_method_shape(pautoloadentry)
+  -- if $autoload_registration_valid(S, pautoloadentry.CALL)
+  -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
+  -- if $parameter_shutdown_target(S, pcalltarget) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
 def $autoload_method_entry(S, pautoloadentry) = eps -- otherwise
 dec $autoload_method_birth_valid(pstate, pautoloadentry) : bool
 def $autoload_method_birth_valid(S, pautoloadentry) = true
@@ -22,6 +27,7 @@ def $autoload_enter_target(S, pautoloadentry, pcalltarget) = AUTOLOAD_BORROWED_T
   -- if $autoload_method_entry(S, pautoloadentry) =/= eps
   -- if pautoloadentry.TARGET = AUTO_TARGET pcalltarget
 def $autoload_context_target(pautoloadentry, AUTOLOAD_BORROWED_TARGET pcalltarget) = (pautoloadentry.TARGET = AUTO_TARGET pcalltarget)
+  -- if $autoload_method_shape(pautoloadentry)
 def $autoload_result_valid(S, pautoloadcall, pautoloadentry) = ($autoload_call_valid(S, pautoloadcall) /\ $autoload_method_birth_valid(S, pautoloadentry) /\ pautoloadcall.BIRTH = pautoloadentry.BIRTH /\ pautoloadcall.BIRTH =/= eps)
   -- if $autoload_method_entry(S, pautoloadentry) =/= eps
 def $autoload_retained_entry_valid(S, pautoloadentry) = $autoload_method_birth_valid(S, pautoloadentry)

@@ -603,7 +603,7 @@ dec $autoload_new_unlinked_task(pstate, ptask, pframe, pframe*, ptbytes) : bool
 dec $autoload_new_unlinked_scoped(pstate, pautoloadcall, pautoloadentry, ptbytes) : bool
 def $autoload_new_unlinked_task(S, AUTO_RESULT pautoloadcall pautoloadentry poperand, pframe, pframe_tail*, ptbytes) = $autoload_new_unlinked_scoped($constant_frame_scope(S, pframe, pframe_tail*), pautoloadcall, pautoloadentry, ptbytes)
 def $autoload_new_unlinked_task(S, ptask, pframe, pframe_tail*, ptbytes) = false -- otherwise
-def $autoload_new_unlinked_scoped(S, pautoloadcall, pautoloadentry, ptbytes) = ($autoload_selected_valid(S, pautoloadcall, pautoloadentry) /\ $autoload_new_unlinked_call(S, pautoloadcall, ptbytes))
+def $autoload_new_unlinked_scoped(S, pautoloadcall, pautoloadentry, ptbytes) = ($autoload_result_valid(S, pautoloadcall, pautoloadentry) /\ $autoload_new_unlinked_call(S, pautoloadcall, ptbytes))
 def $autoload_new_unlinked_head(S, eps, pframe, pframe_tail*, ptbytes) = false
 def $autoload_new_unlinked_head(S, ptask :: ptask_tail*, pframe, pframe_tail*, ptbytes) = $autoload_new_unlinked_task(S, ptask, pframe, pframe_tail*, ptbytes)
 def $autoload_new_unlinked_frames(S, eps, ptbytes) = false
