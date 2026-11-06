@@ -12,7 +12,7 @@ def $owned_static_source(S, ppropertydesc) = true
   -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 5, PCINDEX n_group, PCFIELD 3, PCINDEX n_item]
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_owner) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text_owner) metadata_owner) phpType44 phpType42 phpType23 metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_owner ++ [PCFIELD 5, PCINDEX n_group])) = (NStmtProperty (SEQUENCE eps) phpType24 phpType18 phpType56 phpType37 metadata_group)
-  -- if $origin_node(S.SOURCES, ppropertydesc.ORIGIN) = (NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) expression metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_decl) = (NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) expression metadata)
   -- if ppropertydesc.NAME = $base64(text_name)
 def $owned_static_source(S, ppropertydesc) = false -- otherwise
 dec $owned_static_scope(pstate) : bool
@@ -70,11 +70,16 @@ def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_
 def $static_default_class_supported(PVINSTANCE n porigin) = true
 
 dec $owned_static_alias_desc(pstate, ppropertydesc*, porigin) : ppropertydesc?
+dec $owned_static_property_below(pstate, ppropertydesc, porigin) : bool
+def $owned_static_property_below(S, ppropertydesc, porigin) = true
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if $constant_expression_below(S, porigin_decl, porigin)
+def $owned_static_property_below(S, ppropertydesc, porigin) = false -- otherwise
 def $owned_static_alias_desc(S, eps, porigin) = eps
 def $owned_static_alias_desc(S, ppropertydesc :: ppropertydesc_tail*, porigin) = (ppropertydesc)
-  -- if $constant_expression_below(S, ppropertydesc.ORIGIN, porigin)
+  -- if $owned_static_property_below(S, ppropertydesc, porigin)
 def $owned_static_alias_desc(S, ppropertydesc :: ppropertydesc_tail*, porigin) = $owned_static_alias_desc(S, ppropertydesc_tail*, porigin)
-  -- if ~$constant_expression_below(S, ppropertydesc.ORIGIN, porigin)
+  -- if ~$owned_static_property_below(S, ppropertydesc, porigin)
 def $constant_callable_flow_at(S, porigin_site, porigin_owner, pvalueclass, n_prefix, porigin_seen*) = true
   -- if ~$constant_callable_foldable(pvalueclass)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
@@ -83,9 +88,9 @@ def $constant_callable_flow_at(S, porigin_site, porigin_owner, pvalueclass, n_pr
   -- if $owned_static_scope(S)
   -- if S.CONSTCONTEXT = (pconstantcontext)
   -- if pconstantcontext.ORIGIN = ppropertydesc.ORIGIN
-  -- if $static_default_binding_head(S.TODO, ppropertydesc.ORIGIN)
+  -- if $static_default_binding_head(S.TODO, pconstantcontext.ORIGIN)
   -- if n_prefix = |S.DECLARATIONS|
   -- if $constant_fact_at(pconstantcontext.FACTS, porigin_site) = (pconstantfact)
   -- if pconstantfact.CLASS = pvalueclass
-  -- if $owned_static_lookup_required(S, ppropertydesc.ORIGIN, pconstantfact)
-  -- if $global_constant_lookup_valid(S, ppropertydesc.ORIGIN, pconstantfact, S.USERCONSTANTS)
+  -- if $owned_static_lookup_required(S, pconstantcontext.ORIGIN, pconstantfact)
+  -- if $global_constant_lookup_valid(S, pconstantcontext.ORIGIN, pconstantfact, S.USERCONSTANTS)
