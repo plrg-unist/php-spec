@@ -37,10 +37,11 @@ def $nullsafe_review_ready(S,2) = true
   -- if $default_current_cache(S,pdefault.ORIGIN) =/= eps
 def $nullsafe_review_ready(S,3) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.TARGET = STATIC_METHOD_TARGET porigin_class pcallcontext.FUNCTION
   -- if S.TODO = (DEFAULT_RECEIVE pcallcontext.FUNCTION 0) :: eps
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if ~$parameter_nullsafe_site(S,porigin_site)
+  -- if $class_method_origin(S.CLASSES,pcallcontext.FUNCTION) = (pmethoddesc)
+  -- if pmethoddesc.STATIC
   -- if $receiving_function(S,pcallcontext.FUNCTION) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS,0) = (pdefault)
   -- if $default_current_cache(S,pdefault.ORIGIN) =/= eps
