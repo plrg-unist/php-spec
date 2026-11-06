@@ -96,14 +96,19 @@ def $parameter_default_owned_fallback(S, eps) = false
 dec $parameter_default_const_fetch(pcnode) : bool
 dec $parameter_default_owned_source(pstate, porigin) : bool
 dec $parameter_default_owned_children(pstate, nat, pcoccurrence*) : bool
+def $parameter_default_owned_source(S, porigin) = false
+  -- if $compiled_read(S, porigin) =/= eps
 def $parameter_default_owned_source(S, porigin) = $parameter_default_owned_source(S, porigin_target)
+  -- if $compiled_read(S, porigin) = eps
   -- if $compiled_redirect(S, porigin) = ((porigin_target, expression, b, z))
 def $parameter_default_owned_source(S, PORIGIN n pcpath) = ($parameter_default_owned_name(S, preqbytes) \/ $parameter_default_owned_fallback(S, preqbytes_fallback?))
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprConstFetch name metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
 def $parameter_default_owned_source(S, PORIGIN n pcpath) = $parameter_default_owned_children(S, n, $pcchildren(pcnode, pcpath))
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (pcnode)
   -- if ~$default_closure_node(pcnode)
