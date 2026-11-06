@@ -197,6 +197,16 @@ def $generator_api_result_saved(S, pgeneratorop) = true
   -- if $generator_operation_site(S, pgeneratorop)
 def $generator_api_result_saved(S, pgeneratorop) = false -- otherwise
 
+;; Reference-body admission needs its actual live cache, not storage history.
+;; The existing result/return markers remain valid after that cache retires.
+dec $generator_api_body_reference(pstate, pgenerator) : bool
+def $generator_api_body_reference(S, pgenerator) = true
+  -- if $generator_reference_producer(S, pgenerator)
+  -- if pgenerator.REFCELL = (n_cache)
+  -- if $generator_reference_valid(S, GENERATOR pgenerator)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cache)
+def $generator_api_body_reference(S, pgenerator) = false -- otherwise
+
 ;; A body throw returns to the real native SEND before its argv is freed.
 ;; Keep the original search ahead of the receiver pin for destructor Previous.
 ;; Operation validation keeps computed selection frozen after source CV rebinding.
@@ -215,7 +225,8 @@ def $generator_api_body_throw(S, pgeneratorop) = true
   -- if ~pgenerator.PENDING_INIT
   -- if pgenerator.CLOSURE = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.ACCESS = eps /\ pgenerator.CREATION = eps
   -- if $function_at(S.FUNCTIONS, pgenerator.FUNCTION) = (pfunction)
-  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN false) phpType11 phpType16 phpType18 phpType23 metadata_function)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN b_ref) phpType11 phpType16 phpType18 phpType23 metadata_function)
+  -- if ~b_ref \/ $generator_api_body_reference(S, pgenerator)
   -- if pgeneratorop.ARGUMENTS = [pvalue]
   -- if $destructor_return_operand_valid(S, KNOWN pvalue)
   -- if $value_nodes(pvalue) =/= eps
