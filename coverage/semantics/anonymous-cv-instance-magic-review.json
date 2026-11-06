@@ -1,0 +1,247 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "module_count": 453,
+  "scope": "CLASS208: literal public ordinary USER instance producers on initialized plain/reference CV receivers, existing zero/required untyped positional byvalue signatures, quiet primitive/ordinary-leaf COPY returns and magic headers.",
+  "base": "8a64912485243d0feff615c9061e3aa57e9e524b",
+  "implementation_commits": [
+    "15af87817db8025fcf86fbc186a0b55d851ed0c1",
+    "70fae1e8c35e19d79071963309d7f03b34b9d899",
+    "099208077ead015976b8f68948308c70255db650"
+  ],
+  "engine_basis": [
+    "Zend/zend_compile.c zend_compile_method_call emits INIT_METHOD_CALL before zend_compile_call_common arguments. Zend/zend_vm_def.h ZEND_INIT_METHOD_CALL reads/dereferences the actual CV, obtains called class/get_method private-first target and retains the real receiver before sends. A missing CV may emit a warning, so this bounded source slice refuses before that read rather than running excluded warning semantics.",
+    "Generic142 METHOD_TARGET and86/80/79 parameter/result ownership preserve the selected receiver and COPY arguments through inner mutation. No new owning node or receiver-cell pin is introduced; return-old releases the call receiver owner, while return-this preserves the same object through result/table/child."
+  ],
+  "mechanism": "142 adds default-true pre-read admission and identity-default selected-metadata hooks.30 adds only nonowning SITE/CLASS/METHOD facts to the two existing magic call descriptors; constructors initialize eps.414/415 authenticate exact original CV receiver source, actual ordinary cell and current pending carrier via call_task_valid/named raw checks. Actual selected METHOD_TARGET mints one fact on the current TODO descriptor, never frames or a global site cache. Immutable structural caller scope authenticates private-first public source selection. Full original argument origins/uniqueness and phase (<n)/(<=n) bounds reject future facts. Collection consumes the fact after rebinding/unsetting/receiver retirement and never rereads the CV; empty-fact paths delegate to the old collector. Existing438 raw-MethodCall exclusion and all contextual array/header policies remain.213 is unchanged because no method warning ingress exists there. Current typed formal receiver roles are additionally excluded by a current signature/ENV cell check, without persistent parameter type metadata.",
+  "author": {
+    "source5": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/source/report.json",
+      "sha256": "ca23277395ae75076f576c3f39743ecbd9bc486cd98a30e4a7fd230208ec3a58",
+      "count": 5,
+      "result": "All five corrected originals exactly match once-pinned native bytes/path/cwd/profile at70fa/453: normal/exit0/empty stderr/stable/no timeout under upfront300.128.608/132.100/83.435/92.735/111.033s; native not repeated. Grouped current headers cover zero/required methods, primitive carriers, inherited scopes, plain/ref CVs, earlier installation, inner replacement, return-old ownership and repeated same-site different selected classes."
+    },
+    "owner147": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-owner-corrected/report.json",
+      "sha256": "e1e06265e6d1013c3d7771c5e9abff3931bc481056e12ec7ace7eaa9dcfc53bb",
+      "conditions": 147,
+      "revision": "0fc059523",
+      "result": "Corrected fixture first PHP-state execution PASS212.068s/453 under300: true/exit0/empty stderr/stable/no timeout. Actual plain CV is installed by first USER; current receiver read/actual selected fact adds no owner. Inner callback replaces receiver and old argument, but METHOD_TARGET and byvalue SEND own original receiver/leaf separately. Fresh nonref saved/ignored params retain old/NULL; unaliased receiver and replacement/NEW retire before real handler table and child retain old. Fact/source still validates after receiver retirement. Full4098 equals split2+4096 and frees child/table/payload with exact native output and call/class/GC/heap validity."
+    },
+    "source_guards": {
+      "missing24": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-missing-corrected/report.json",
+        "sha256": "30df55de6b083b6a7965114cd0935d4e50a4bee478b218930b4ddba15e725ff2",
+        "conditions": 24,
+        "result": "PASS29.354s/453. A real registered warning handler remains eligible; actual missing read is rejected. Exact142 raw method_prepare result is S[COMPLETION Unsupported] with no warning effects. Root40 driver/39 temporary release produces terminal Unsupported/FIRST/TODOeps."
+      },
+      "typed43": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-typed/report.json",
+        "sha256": "952c006cd2f926a25613d7e4aa78e896f6bbb6da2551e2d617fb9454f4f13dbe",
+        "conditions": 43,
+        "result": "First execution PASS31.038s/453. Correctly typed byref formal/initialized leaf is separate from persistent property/coercion/backing registries; current formal/alias cell admission refuses. Exact raw step leaves only completion changed. With one saved frame, one driver step yields BUDGET and ERROR_UNWIND; resume32 reaches terminal Unsupported/FIRST/TODOeps."
+      },
+      "future26": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-future-corrected/report.json",
+        "sha256": "17d2edf4ec2367dfee5df9735433d9f906112f72ada71bdaf46aebe499936309",
+        "conditions": 26,
+        "result": "Parentheses-corrected fixture first PHP-state execution PASS38.814s/453: true/exit0/quiet/stable/no timeout under300. A genuine selected-source future fact is structurally valid but fails current phase limit; the malformed current pending carrier stays candidate=true while pending/read refuse, preventing default fallback."
+      },
+      "repeated45": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-repeated/report.json",
+        "sha256": "c1a0b2c00d29226ef10f04a2b6b723a088ca380142a655964bef0957ba6520e4",
+        "conditions": 45,
+        "result": "First execution PASS131.251s/453: true/exit0/quiet/stable/no timeout under300. The same outer/producer source sites in two root invocations select actual distinct LoopA then LoopB METHOD_TARGET class/method origins and retain only that invocation single fact. The first receiver has retired before the second callee body; exact final native output and call/GC/heap validity pass. This does not claim a structural validator can reconstruct arbitrary alternative valid histories."
+      }
+    },
+    "excluded_sources": {
+      "count": 7,
+      "agreement_credit": 0,
+      "property_backed": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/boundaries0/report.json",
+        "sha256": "2342e026ab54bc0fc1c154f760952068b4cea55da132ac565128a79d21513f92",
+        "count": 1,
+        "result": "The property-backed row passed at70fa/453 in28.733s, intended receiver-read Unsupported/exit1/quiet. The same partial report also preserves the typed-formal false admission0; it is not a globally passing report. Root-true099 bridge preserves this completed property-backed cut."
+      },
+      "corrected_and_unrun6": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/boundaries/report-corrected.json",
+        "sha256": "6e61b4526254def5fa19cb710d20dc6310eea6e9f9d630de979ff4b14e52e105",
+        "count": 6,
+        "result": "Affected typed-formal and five previously unrun controls pass at099/453, stable/no timeout under300.25.794/28.642/24.867/24.524/25.639/24.978s. Typed/nonleaf/default/missing reads stop with FIRST only; inner-named syntax stops before FIRST; array return emits FIRST;METHOD before collection refuses. Original native inputs never repeated."
+      }
+    },
+    "preserved_runner0": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/source0/report.json",
+      "sha256": "210aa2228ea80ee905cff2ce4eb1f790240842e8820a17e2f7772c5a614ebd5e",
+      "revision": "15af87817db8025fcf86fbc186a0b55d851ed0c1",
+      "agreement_credit": 0,
+      "result": "First owner model failed during SpecTec setup before PHP execution: method_selected_metadata was declared below first use.70fa only moves142 hook declarations and414 forward declarations before use. Failed1.968s packet remains0; corrected five source run starts at70fa without any native repeat."
+    },
+    "preserved_checker0": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-owner/report.json",
+      "sha256": "668440b490035a677dee0b759bc039ad1337f9c54d20bbb7f5ae2db0c88069d1",
+      "revision": "099208077",
+      "seconds": 11.149,
+      "agreement_credit": 0,
+      "result": "First owner147 fixture stopped in the checker before PHP-state execution: qualified S fields were renamed to S_read but candidate(S,...) retained an unbound bare S.0fc changes only that helper argument; count147/runtime unchanged. Only the affected owner state reruns before unrun guards."
+    },
+    "preserved_state_failures": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-missing/report.json",
+        "sha256": "744d41bd7c61c7d1b698e8bfa682b5603b00daf6893ef2cd76660c738759c88e",
+        "conditions": 22,
+        "seconds": 28.788,
+        "agreement_credit": 0,
+        "result": "Runtime fixture final-TODO expectation failed after intended Unsupported/FIRST already passed. Raw142 step keeps TODO; terminal40/39 driver cleanup clears it.041a adds exact raw-step equality and asserts driver TODOeps. Typed fixture received the appropriate saved-frame ERROR_UNWIND resume assertions before its first execution."
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/state-future/report.json",
+        "sha256": "020e48386357a8211b7c48e5845b2c0f2ad0dd3b43159e5c018757c4f082650a",
+        "conditions": 26,
+        "seconds": 10.492,
+        "agreement_credit": 0,
+        "result": "Pre-runtime elaboration failed because a bare list after the parenthesized target parsed as target indexing rather than CALL_SEND remaining arguments.899b adds only list parentheses; all26 assertions and production stay unchanged."
+      }
+    ],
+    "state_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "inner_timeout_seconds": 300,
+      "tested_revisions": [
+        "0fc059523",
+        "041aed739",
+        "899b35247"
+      ],
+      "elapsed_note": "Listed state elapsed values include frontend/adapter fixture preparation; raw attempt records retain numeric-runner elapsed/command/exit/streams. Each affected fixture was rerun alone, with completed groups preserved."
+    }
+  },
+  "independent_review": {
+    "status": "accepted_private_CLEAR",
+    "record": "coverage/semantics/anonymous-cv-instance-magic-independent.json",
+    "original_peer_commits": [
+      "853263c4d196458a568b6b79d7bf0e2960da671f",
+      "a6922ce6b3950dc6c63a13128cd3aa20f9ab37f6",
+      "a3310de6e96aea169dd40decd2256e112308e61a",
+      "4d43e8bb4af8966f40602ffedadb4d7ad9379efa",
+      "8ba283183adcb297a99a243932bf35fdb22581a2"
+    ],
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/source/report.json",
+      "sha256": "88fd133019c739c6c31dfdeee7e561d6fb34849f175be575ca26ce2ac868aeba",
+      "count": 1,
+      "source_sha256": "81d0b2eb41cc30ffe2fd668b30b7e131137c298abf1823ef79c2f33b9243c72b",
+      "result": "First model exact/stable/no timeout148.829s at a692/453, under upfront300; original native never repeated."
+    },
+    "SL453": {
+      "conditions": 267,
+      "result": "Corrected267 first PHP-state execution PASS275.412s at4d43/453: true/exit0/empty stderr/stable/no timeout under unchanged300. Both prior checker-only failures remain separately0.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/state-corrected/report.json",
+      "sha256": "58c3939e2f93843e89f2fad3790162bc40fe6ffa56a0b4fb39e8287ff20b6225",
+      "behavior": "Actual initiallyNULL reference receiver is installed by earlier outer USER. The independently bound variable token/init lines and actual ordinary cell/private-first target mint one descriptor-local fact; malformed named SENT cannot regain default admission. Inner callback clears alias and removes receiver name while copied request0 remains in fresh parameters. RETURN_THIS then real named table/escaped Closure/child retain the identical producer/scalar text after caller-cell/frame/receiver-name retirement; full4098 equals split2+4096 cleanup."
+    },
+    "static_review": "Exact actual read and private-first source/target; current-TODO descriptor-only operational minting and no owning fact; precise carrier/SENT/index/tail validation and source-candidate refusal without default fallback; future phase bounds and old empty-fact/array/438 policies. Retains207 private-shadow bridge without claiming a new208 native shadow control.",
+    "preserved_checker0": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/state0/report.json",
+        "seconds": 10.65,
+        "agreement_credit": 0,
+        "result": "Pre-runtime checker failure: fixture queried nonexistent pframe.ENV; corrected to the existing saved-symbol-table view.",
+        "sha256": "017d28e384eedf6db975d13d25c279f5d84502682eff4273ad5e291a847881fc"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/reviewer/state1/report.json",
+        "seconds": 11.442,
+        "agreement_credit": 0,
+        "result": "Pre-runtime checker failure: new negative-task helper used non-pure recursive premises beside otherwise; corrected to exact false-SENT matching and complementary guard.",
+        "sha256": "f5bde6c74ff1145201fc4431d25456230a71408e8f00e8a5dc49dc888b14dc0e"
+      }
+    ],
+    "author_cherry_picks": [
+      "c4f980108",
+      "9bc18e17a",
+      "d5903ebf7",
+      "c4782360f",
+      "54826e8d0"
+    ],
+    "final_review": "Final whole208 CLEAR from recovery_classes_review on099 runtime,899b author fixture and4d43 peer fixture; all147/24/43/26/45 actual author reports verified stable/PASS. Source/private-first read and nonowning invocation facts, typed-formal scope correction/root-true bridge, generic owners/budgets and currentc8fd/455 absent-marker/default-root composition have no remaining finding. Exact private453 cuts and every failed0 packet retain their identities."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic",
+    "recovery": "Fresh originals: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_cv_instance_magic_cases.json --model-timeout 300. State fronts: anonymous_cv_instance_magic_protocol.py --sl; --case selects only affected. Controls compare intended Unsupported reason/output with once-native normal originals, credit0. Raw source paths/cwd/streams/profile and frozen inputs remain external.",
+    "inputs": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/inputs.json",
+      "sha256": "114577f7a9a27988bccc16207b9c049d919bc6f44015b70b3cb89b60732131b7",
+      "directory": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/inputs"
+    },
+    "peer_record": "coverage/semantics/anonymous-cv-instance-magic-independent.json"
+  },
+  "remaining": "Computed method names and other receiver expressions, nullsafe/magic dispatch, array returns, nonleaf/constrained receiver reads, ref-return/Generator/default/variadic producer signatures, inner-named/unpack/header expansion and held request-owned NUL/other lanes remain partial.",
+  "engine_divergence": "None identified.",
+  "typed_formal_correction": {
+    "commit": "099208077ead015976b8f68948308c70255db650",
+    "behavior": "Admission-only current signature/ENV cell test excludes active typed formal receiver cells and aliases, without persistent PHP type metadata or generic parameter changes. A CURRENTeps branch is immediately true.",
+    "preserved_false_admission": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-producer-magic/author/boundaries0/report.json",
+      "sha256": "2342e026ab54bc0fc1c154f760952068b4cea55da132ac565128a79d21513f92",
+      "id": "magic-cv-instance-typed-parameter-ref-refused",
+      "seconds": 70.811,
+      "agreement_credit": 0,
+      "result": "Normal model falsely passed the held typed-formal domain after FIRST;METHOD;BODY. Parameter type reception had no persistent property/backing record, so the old cell test missed this role. Original report/streams/414 snapshot preserved; property-backed control28.733 PASS retained separately."
+    },
+    "positive_cut_bridge": "All six completed positive originals perform direct CV-producer reads at CURRENTeps. The new root branch returns true before scanning; no collection, fact validation, ownership or ordinary dispatch changes. Peer267 binds root CURRENTeps at actual READ and never rereads the receiver after selection. Thus source70fa/a692 and peer2674d43 keep their exact453 cuts, without native/source/peer replay.",
+    "affected_checks": "Corrected typed-formal and five unrun controls all passed;147/24/43/26/45 state proofs passed under unchanged300. Earlier source/peer cuts and property-backed control retain the explicit root-true bridge."
+  },
+  "fixture_commits": [
+    "e96b9b913be1c7a817f12d9fc45968d5c36ec974",
+    "099208077ead015976b8f68948308c70255db650",
+    "0fc059523ca179df69ac3cde847552c147620ca5",
+    "041aed7397bedbbab03b8ef5ee3c3e93b5759f45",
+    "899b35247065ffc57c3c4d8d344432b58b0e5da4"
+  ],
+  "main_context": {
+    "head": "c8fd627a4",
+    "module_count": 455,
+    "execution_repeated": false,
+    "finding": "Peer refreshed main composition: critical142/213/414/415/438 unchanged. New466 class-constant write/publication record initializes eps; no class-constant initializer/cache replacement/publication/throw occurs here.39 machine-root default equals old class_constant_roots and257 abrupt-tail default is false without that record. Earlier465 binder/cache, enum is_callable query/PRECISION/output, WeakMap/Traversable, Trait hook and OB/native Exception/throw continuations require absent source targets/markers. Preserve the private453 cuts; actual joined interface load is recorded separately by the writer.",
+    "secured_source": "a2cc73a0c0545ccd9a76ae800545ae838b648ba5",
+    "joined_interface": {
+      "module_count": 455,
+      "result": "pass",
+      "seconds": 13.428248,
+      "quiet_exit_zero": true,
+      "stable": true,
+      "timeout": false,
+      "report": "/home/user/workspace/php-spec-evidence-archive/class208-cv-instance-magic/joined-main-455-v1/report.json",
+      "sha256": "b5d6b44ecd26c5982a79b3a411caf617eb5ec353ea79f003ebb64c6b43a87c28",
+      "inventory_sha256": "19cf47a70edf83faae21f9cd21bf070ab60036e8d8ed3b1845279156bc9dd11c",
+      "note": "Writer ran one actual current interface load and inventory169/306 after integrating the independently CLEAR executable/test packet. Private453 source/state cuts retain their original inputs and reviewed bridges; no source/frontier replay."
+    }
+  },
+  "summary": {
+    "distinct_original_agreements": 6,
+    "author": 5,
+    "independent": 1,
+    "separate_owner_budget_conditions": [
+      147,
+      267
+    ],
+    "separate_source_guard_conditions": [
+      24,
+      43,
+      26,
+      45
+    ],
+    "source_refusals": 7,
+    "preserved_setup_failure": 1,
+    "preserved_false_admission": 1,
+    "preserved_pre_runtime_state_failures": 4,
+    "preserved_runtime_fixture_expectation_failure": 1,
+    "unsupported_failed_diagnostic_timeout_agreement_credit": 0,
+    "inventory": "169 constructors/306 obligations consistent; all475 statuses unchanged, same six entries remain partial.",
+    "engine_divergence": "None identified."
+  }
+}

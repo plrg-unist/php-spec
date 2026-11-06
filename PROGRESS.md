@@ -2406,6 +2406,21 @@ The [instance-producer review](coverage/semantics/anonymous-instance-producer-ma
 records five full-source agreements, separate 150/275 owner fronts (bounded first
 cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven source
 refusals and the preserved peer checker-only attempt retain zero agreement.
+Initialized plain/reference CV receivers now support the same literal public
+ordinary instance producers. Actual-time receiver/read and private-first selection
+mint a nonowning source/class/method fact on the active outer descriptor; collection
+uses that fact after CV rebinding/unsetting or receiver retirement. Future facts
+and malformed pending carriers refuse without a default-route bypass. Generic
+receiver/SEND/parameter/result/table owners stay unchanged; missing/constrained/
+nonleaf cells stop before warning effects. The
+[CV-instance review](coverage/semantics/anonymous-cv-instance-magic-review.json)
+records six source agreements, separate 147/267 full owner/budget proofs and
+24/43/26/45 missing/typed/future/repeated-source guards at their recorded453 cuts.
+Seven intended source refusals and all preserved setup, admission and fixture
+failures retain zero agreement; the typed-formal guard has an explicit root-context
+bridge for completed positives. The actual joined 455-module interface load and
+inventory169/306 pass at a2cc73a0c; no source/frontier replay. Broader receiver/call
+modes remain partial.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2803,8 +2818,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| COMP195 | Independently CLEAR runtime/tests handed to writer; compact publication closes separately. Dev `.tools/comp195-computed-class-cache-dev`, peer `.tools/comp194-class-constant-owned-defaults-review`. |
-| CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
+| CLASS209 | Immediate fixed-source USER/public-static FCC producers with real conversion/target before positional arguments and wrapper/INSTANCE/result roots; preserve current quiet signatures, outer headers and held bounds. |
 | ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
 | COMP196 | Ordinary named-class deferred static defaults with owning Deprecated globals through real STATIC_DEFAULT_BIND/context and declaring CLASSSTATICS cells; preserve first-fill/reentry/type/reference laws and held boundaries. |
 | ENUM153 | Published USER method strings and class/object callable arrays with concrete public/known-absence facts, syntax-only distinction and frozen NAME/BOOL; preserve unknown metadata and invocation exclusions. |

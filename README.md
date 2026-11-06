@@ -5502,6 +5502,16 @@ retains the same instance in the result, real table and child. Quiet COPY, stati
 header and unpack bounds remain unchanged; wider receiver/call modes stay partial.
 [Instance-producer review](coverage/semantics/anonymous-instance-producer-magic-review.json).
 
+Initialized plain and reference CV receivers now support literal public ordinary
+instance producers under the same quiet COPY and magic-header bounds. The actual
+receiver read follows earlier outer arguments; private-first method selection
+then records only source/class/method identity in that invocation's descriptor.
+Inner rebinding or unsetting cannot retarget the call or force collection to read
+the receiver CV again. Generic method/parameter/result owners retain the actual
+receiver and returned value. Missing, typed-formal, backed and nonleaf receiver
+cells stop before warnings; dynamic names, nullsafe/magic receivers and wider modes remain
+partial. [CV-instance review](coverage/semantics/anonymous-cv-instance-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
