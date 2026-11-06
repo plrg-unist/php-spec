@@ -106,9 +106,6 @@ CONTROLS = {
         (b'<?php trait AdaptedVirtual67 {public int $value {get => 700;set {}}public function tag(){}}'
          b'trait AdaptedWrapper67 {use AdaptedVirtual67 {AdaptedVirtual67::tag as renamed;}}'
          b'class AdaptedConsumer67 {use AdaptedWrapper67;}echo "X";', b''),
-    'parented-virtual-pair-consumer-remains-unsupported':
-        (b'<?php trait ParentedVirtual67 {public int $value {get => 700;set {}}}'
-         b'class ParentBase67 {}class ParentedConsumer67 extends ParentBase67 {use ParentedVirtual67;}echo "X";', b''),
     'reference-get-virtual-trait-pair-remains-unsupported':
         (b'<?php trait ReferenceVirtual67 {public int $value {&get {static $slot=7;return $slot;}set {}}}'
          b'class ReferenceConsumer67 {use ReferenceVirtual67;}echo "X";', b''),

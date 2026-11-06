@@ -356,6 +356,42 @@ def $property_hook_trait_parent_linked(S, pclassdesc) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
 def $property_hook_trait_parent_linked(S, pclassdesc) = false -- otherwise
+;; Trait data binds before the Consumer is linked or published.
+dec $property_hook_pair_source_header(pstate, pclassdesc) : bool
+def $property_hook_pair_source_header(S, pclassdesc) = true
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (pcnode)
+  -- if ptbytes_file = $call_sourcefile(S.FILES, PORIGIN n pcpath)
+  -- if $plclasscontext(pcunit, pcpath, ptbytes_file, pclassdesc.LINE) = (ptcontext)
+  -- if $anonymous_named_header(pcnode, ptcontext) = ((pchheader, z_line))
+  -- if pclassdesc.KIND = pchheader.KIND /\ pclassdesc.NAME = pchheader.NAME /\ pclassdesc.PARENT = pchheader.PARENT
+  -- if pclassdesc.ABSTRACT = pchheader.ABSTRACT /\ pclassdesc.FINAL = pchheader.FINAL /\ pclassdesc.READONLY = pchheader.READONLY
+  -- if pclassdesc.LINE = $nabs(z_line)
+def $property_hook_pair_source_header(S, pclassdesc) = false -- otherwise
+dec $property_hook_pair_plain_parent(pstate, ppropertydesc*) : bool
+def $property_hook_pair_plain_parent(S, eps) = true
+def $property_hook_pair_plain_parent(S, ppropertydesc :: ppropertydesc_tail*) = (~$property_hook_source_declared(S, ppropertydesc) /\ $property_hook_pair_plain_parent(S, ppropertydesc_tail*))
+dec $property_hook_pair_parent(pstate, pclassdesc, ptbytes) : bool
+def $property_hook_pair_parent(S, pclassdesc, ptbytes) = true
+  -- if pclassdesc.PARENT = eps
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (statement_owner)
+  -- if $pchlower(statement_owner) = PCHRAW pchraw_owner
+  -- if pchraw_owner.KIND = pclassdesc.KIND /\ pchraw_owner.PARENT = ABSENT
+def $property_hook_pair_parent(S, pclassdesc, ptbytes) = true
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = (ptbytes_parent)
+  -- if $property_hook_pair_source_header(S, pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ ~pclassdesc_parent.READONLY
+  -- if $property_hook_pair_source_header(S, pclassdesc_parent)
+  -- if $property_hook_trait_parent_linked(S, pclassdesc_parent)
+  -- if ppropertydesc_parent* = $property_info_layout(S, porigin_parent, |S.CLASSES|)
+  -- if $property_hook_pair_plain_parent(S, ppropertydesc_parent*)
+  -- if $ppproperty_desc_at(ppropertydesc_parent*, ptbytes) = eps
+def $property_hook_pair_parent(S, pclassdesc, ptbytes) = false -- otherwise
+dec $property_hook_pair_linked(pstate, pclassdesc, ptbytes) : bool
+def $property_hook_pair_linked(S, pclassdesc, ptbytes) = ($property_hook_pair_parent(S, pclassdesc, ptbytes) /\ $property_hook_trait_parent_linked(S, pclassdesc))
 dec $property_hook_trait_export(pstate, pclassdesc, ppropertydesc) : ppropertydesc?
 dec $property_hook_pair_raw_functions(pstate, ppropertydesc) : pfunction*
 dec $property_hook_pair_export(pstate, pclassdesc, ppropertydesc) : ppropertydesc?
@@ -369,11 +405,9 @@ def $property_hook_pair_candidates(pclassdesc :: pclassdesc_tail*, ptbytes) = $p
 ;; Candidates retain each immediate owner; projection would erase diamonds.
 dec $property_hook_pair_sources(pstate, pclassdesc, ppropertydesc) : (pclassdesc, ppropertydesc)*
 def $property_hook_pair_sources(S, pclassdesc, ppropertydesc_source) = $property_hook_pair_candidates(pclassdesc_exporters*, ppropertydesc_source.NAME)
-  -- if pclassdesc.KIND <- ["class","trait"] /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if pclassdesc.KIND <- ["class","trait"] /\ ~pclassdesc.READONLY
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
-  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (statement_owner)
-  -- if $pchlower(statement_owner) = PCHRAW pchraw_owner
-  -- if pchraw_owner.KIND = pclassdesc.KIND /\ pchraw_owner.PARENT = ABSENT
+  -- if $property_hook_pair_parent(S, pclassdesc, ppropertydesc_source.NAME)
   -- if $property_hook_pair_raw_functions(S, ppropertydesc_source) =/= eps
   -- if $property_hook_pair_backed(S, ppropertydesc_source) \/ $property_hook_pair_virtual(S, ppropertydesc_source)
   -- if ptraitplan = $trait_plan(S, pclassdesc)
@@ -420,10 +454,11 @@ def $property_hook_pair_export_at(S, pclassdesc, ppropertydesc_source, n_left) =
 def $property_hook_pair_virtual(S, ppropertydesc) = true
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_owner)
   -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath)) = (ppropertydesc)
   -- if $trait_property_source_at(S.CLASSES, PORIGIN n pcpath) = (ppropertydesc_source)
+  -- if $property_hook_pair_linked(S, pclassdesc, ppropertydesc_source.NAME)
   -- if $property_hook_pair_virtual(S, ppropertydesc_source)
   -- if $property_hook_pair_export(S, pclassdesc, ppropertydesc_source) = (ppropertydesc_export)
   -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_export)
@@ -467,6 +502,7 @@ def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner 
   -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner porigin_source) = (ppropertydesc)
   -- if $trait_property_source_at(S.CLASSES, $origin_source(porigin_source)) = (ppropertydesc_source)
   -- if ppropertydesc_source.ORIGIN = PORIGIN n pcpath
+  -- if ~$property_hook_pair_declared(S, ppropertydesc_source) \/ $property_hook_pair_linked(S, pclassdesc, ppropertydesc_source.NAME)
   -- if ~$property_hook_pair_declared(S, ppropertydesc_source) \/ $property_set_trait_source(S, pclassdesc, ppropertydesc_source) =/= eps
   -- if $property_declaring_class(S.CLASSES, ppropertydesc_source.ORIGIN) = (porigin_trait)
   -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)

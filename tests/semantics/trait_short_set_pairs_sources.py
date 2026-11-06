@@ -109,9 +109,6 @@ CONTROLS = {
         (b'<?php trait AdaptedShort68 {public int $value=3 {get => 700;set => $value+10;}public function tag(){}}'
          b'trait AdaptedWrapper68 {use AdaptedShort68 {AdaptedShort68::tag as renamed;}}'
          b'class AdaptedConsumer68 {use AdaptedWrapper68;}echo "X";', b''),
-    'parented-short-pair-consumer-remains-unsupported':
-        (b'<?php trait ParentedShort68 {public int $value=3 {get => 700;set => $value+10;}}'
-         b'class ParentBase68 {}class ParentedConsumer68 extends ParentBase68 {use ParentedShort68;}echo "X";', b''),
     'reference-get-short-set-trait-pair-remains-unsupported':
         (b'<?php trait ReferenceShort68 {public int $value=3 {&get {static $slot=7;return $slot;}set => $value+10;}}'
          b'class ReferenceConsumer68 {use ReferenceShort68;}echo "X";', b''),

@@ -80,9 +80,6 @@ CASES = {
          b'class InvalidConsumer64 {use TraitGetBody64;}echo "Z";', b''),
 }
 CONTROLS = {
-    'parented-consumer-trait-pair-remains-unsupported':
-        (b'<?php trait ParentTrait64 {public int $value=3 {set(int $entry){$this->value=$entry;}get => $this->value;}}'
-         b'class ParentBase64 {}class ParentedConsumer64 extends ParentBase64 {use ParentTrait64;}echo "X";', b''),
 }
 
 

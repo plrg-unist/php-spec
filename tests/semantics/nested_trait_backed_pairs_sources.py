@@ -92,10 +92,6 @@ CONTROLS = {
         (b'<?php trait AdaptedInner65 {public int $value=3 {set(int $entry){$this->value=$entry;}get => $this->value;}'
          b'public function tag(){}}trait AdaptedLayer65 {use AdaptedInner65 {tag as renamed;}}'
          b'class AdaptedConsumer65 {use AdaptedLayer65;}echo "X";', b''),
-    'parented-nested-pair-consumer-remains-unsupported':
-        (b'<?php trait ParentInner65 {public int $value=3 {set(int $entry){$this->value=$entry;}get => $this->value;}}'
-         b'trait ParentLayer65 {use ParentInner65;}class ParentBase65 {}'
-         b'class ParentedConsumer65 extends ParentBase65 {use ParentLayer65;}echo "X";', b''),
 }
 
 

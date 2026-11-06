@@ -106,10 +106,6 @@ CONTROLS = {
          b'get => $this->value;}public function tag(){}}trait PlainLeaf66 {public int $aux=3;}'
          b'trait AdaptedJoin66 {use AdaptedLeaf66,PlainLeaf66 {AdaptedLeaf66::tag as renamed;}}'
          b'class AdaptedConsumer66 {use AdaptedJoin66;}echo "X";', b''),
-    'parented-multiple-trait-consumer-remains-unsupported':
-        (b'<?php trait ParentLeaf66 {public int $value=3 {set(int $entry){$this->value=$entry;}get => $this->value;}}'
-         b'trait PlainLeaf66 {public int $aux=3;}class ParentBase66 {}'
-         b'class ParentedConsumer66 extends ParentBase66 {use ParentLeaf66,PlainLeaf66;}echo "X";', b''),
 }
 
 

@@ -318,8 +318,9 @@ def $property_set_trait_source(S, pclassdesc, ppropertydesc_source) = (porigin_h
   -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_trait)
   -- if $class_at(S.CLASSES, porigin_trait) = (pclassdesc_trait)
   -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_exporters*
-  -- if pclassdesc_exporters* =/= [pclassdesc_trait]
+  -- if pclassdesc.PARENT =/= eps \/ pclassdesc_exporters* =/= [pclassdesc_trait]
   -- if $property_hook_pair_export(S, pclassdesc, ppropertydesc_source) =/= eps
+  -- if $property_hook_pair_linked(S, pclassdesc, ppropertydesc_source.NAME)
   -- if $property_set_origin(S, ppropertydesc_source) = (porigin_hook)
 def $property_set_trait_source(S, pclassdesc, ppropertydesc) = eps -- otherwise
 def $property_hook_trait_import_supported(S, pclassdesc, ppropertydesc) = true
