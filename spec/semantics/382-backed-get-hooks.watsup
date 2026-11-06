@@ -67,6 +67,13 @@ def $hook_pair_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) 
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
   -- if $hook_body_backed(SEQUENCE statement_get*, ptbytes) /\ $hook_body_backed(SEQUENCE statement_set*, ptbytes)
 def $hook_pair_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
+dec $property_set_parameters(phpType16) : bool
+dec $hook_pair_short_set_headers(phpType38, phpType38, ptbytes) : bool
+def $hook_pair_short_set_headers(NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) (SEQUENCE statement_get*) metadata_get_hook, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_set) phpType16 expression metadata_set_hook, ptbytes) = true
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $ptlc($base64(text_set)) = $ptascii("set")
+  -- if $hook_body_backed(SEQUENCE statement_get*, ptbytes)
+  -- if $property_set_parameters(phpType16) /\ $hook_body_supported(expression)
+def $hook_pair_short_set_headers(phpType38, phpType38_2, ptbytes) = false -- otherwise
 dec $pphook_pair_compile(ppstate, pcpath, ppropertydesc, phpType38, phpType38, pchheader) : ppstate
 def $pphook_pair_compile(P, pcpath, ppropertydesc, phpType38_get, phpType38_set, pchheader) = $pphook_compile(P_get, pcpath ++ [PCFIELD 4, PCINDEX 1], ppropertydesc, phpType38_set, pchheader)
   -- if P_get = $pphook_compile(P, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc, phpType38_get, pchheader)
@@ -76,7 +83,7 @@ def $pphook_pair_compile(P, pcpath, ppropertydesc, phpType38_get, phpType38_set,
   -- if P_get.COMPLETION =/= PPCNORMAL
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_get, phpType38_set])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_pair_compile(P_next, pcpath, ppropertydesc_new, phpType38_get, phpType38_set, pchheader) ppropertydesc_next*
   -- if flags <- [0,1] /\ pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
-  -- if $hook_pair_headers(phpType38_get, phpType38_set, $base64(text))
+  -- if $hook_pair_headers(phpType38_get, phpType38_set, $base64(text)) \/ (pchheader.KIND = "class" /\ $hook_pair_short_set_headers(phpType38_get, phpType38_set, $base64(text)))
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
   -- if P_next.COMPLETION = PPCNORMAL /\ |ppropertydesc_next*| = $(|ppropertydesc*| + 1)
@@ -85,7 +92,7 @@ def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flag
   -- if pchheader.KIND = "class" \/ $property_set_builtin_types(ppropertydesc_new.TYPE)
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38_get, phpType38_set])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
   -- if flags <- [0,1] /\ pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY /\ ~$pptrait_body_uses(pchheader.BODY)
-  -- if $hook_pair_headers(phpType38_get, phpType38_set, $base64(text))
+  -- if $hook_pair_headers(phpType38_get, phpType38_set, $base64(text)) \/ (pchheader.KIND = "class" /\ $hook_pair_short_set_headers(phpType38_get, phpType38_set, $base64(text)))
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
   -- if P_next.COMPLETION =/= PPCNORMAL
@@ -195,7 +202,7 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if phpType18 =/= ABSENT /\ ppropertydesc.TYPE =/= eps
   -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
-  -- if $hook_pair_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
+  -- if $hook_pair_headers(phpType38_get, phpType38_set, ppropertydesc.NAME) \/ (pclassdesc.KIND = "class" /\ $hook_pair_short_set_headers(phpType38_get, phpType38_set, ppropertydesc.NAME))
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])) = (phpType38_get)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 1])) = (phpType38_set)
   -- if pclassdesc.KIND = "class" \/ $property_set_builtin_types(ppropertydesc.TYPE)
