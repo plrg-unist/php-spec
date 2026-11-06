@@ -3,7 +3,7 @@ class Item194 { public int $value = 3; }
 const BASE = new Item194;
 #[Deprecated] const X = BASE;
 class Local194 {
-    public function __destruct() { echo "D|"; BASE->value = 7; }
+    public function __destruct() { echo "D|"; $item = BASE; $item->value = 7; }
 }
 class Cache194 { public const Y = X; }
 $alias = BASE;
