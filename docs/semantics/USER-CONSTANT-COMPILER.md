@@ -223,8 +223,24 @@ Automatic construction failure suppresses the user destructor even for escaped
 `$this`. Deprecated-handler and ordinary body exits preserve that flag before
 receiver/result roots unwind; explicit `__construct` keeps ordinary method
 semantics. These bounded hooks add no owner, schema field or unwind framework.
-Dynamic, anonymous, keyword-specific and default-AST `new` entry protocols,
+Anonymous, keyword-specific and default-AST `new` entry protocols,
 nonpublic/Generator/wider signatures and existing held families remain separate.
+
+Initialized statically named CV class strings now use the existing dynamic-new
+selection captured before allocation and argument sends. Live reception requires
+the immediate caller's matching `CTOR_RESULT` and `DYNAMIC_NEW_FINISH`; a receive
+birth copies that nonowning selection for closed history. Rebinding or clearing
+the CV does not change the selected class, and history reads no retired receiver.
+Different named subclasses can share one inherited constructor/default cache
+without sharing their per-entry class receipt. Leading slash/case spelling and
+the existing failed-construction exit behavior are preserved.
+
+Existing by-value CV reads retain ordinary alias dereferencing. This adds no
+reference acquisition, reference-result selector or paused protocol. Object,
+temporary, undefined, keyword, anonymous and autoload selection modes remain
+separate; the selected runtime class and constructor owner must both be named.
+The [class-string review](../../coverage/semantics/deprecated-class-string-constructor-default-review.json)
+records four originals and 70/73/53 independent strict459 conditions.
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and

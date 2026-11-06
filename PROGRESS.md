@@ -3043,6 +3043,16 @@ plus inventory pass at e4618952198. Dynamic/anonymous/keyword/default-NEW227,
 nonpublic/Generator/wider signatures and held families remain separate.
 [Review](coverage/semantics/deprecated-constructor-default-review.json).
 
+COMP199 receives owning constructor defaults through initialized CV class strings.
+Exact caller selection and a nonowning birth witness preserve pre-argument class
+selection through rebinding, same-site nested calls and receiver retirement.
+Different selected subclasses retain their own receipts while sharing inherited
+constructor caches. Four originals agree (three normal, one explicit exit7);
+independent strict459 fronts pass 70/73/53 conditions. Ordinary CV aliases keep
+their existing by-value read behavior; wider selectors and held entries remain
+separate. Actual joined459 and inventory pass at ba1bd7c5a9; source/tests and review are secured.
+[Review](coverage/semantics/deprecated-class-string-constructor-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
