@@ -1,0 +1,110 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-cv-invokable-missing-warning-refused",
+      "source": "<?php\nclass ProducerArgBase213 { public function __invoke($saved) { $GLOBALS[\"producer\"] = null; echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild213 extends ProducerArgBase213 {}\nclass Base213 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived213 extends Base213 {}\nfunction warning213($severity,$message) { echo \"WARNING;\"; return true; } function first213() { echo \"FIRST;\"; return 7; } set_error_handler(\"warning213\"); $owner = new Derived213; try { $child = $owner->MiSsInG(first213(),$producer(7)); } catch (Error $e) { echo \"CAUGHT;\"; } unset($owner); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "RklSU1Q7",
+      "agreement_credit": 0,
+      "source_sha256": "2c6e20e8fc252f7b0e4de667d8496663a41afd29117b57d59c3bf5b2a878791d",
+      "stdout_template_base64": "RklSU1Q7V0FSTklORztDQVVHSFQ7T1dORVI7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-invokable-typed-formal-refused",
+      "source": "<?php\nclass ProducerArgBase213 { public function __invoke($saved) { $GLOBALS[\"producer\"] = null; echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild213 extends ProducerArgBase213 {}\nclass Base213 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived213 extends Base213 {}\nfunction run213(ProducerArgChild213 &$receiver,$owner) { return $owner->MiSsInG($receiver(true)); } $producer = new ProducerArgChild213; $owner = new Derived213; $child = run213($producer,$owner); unset($owner,$producer); echo $child->saved[0] === true ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "",
+      "agreement_credit": 0,
+      "source_sha256": "beb0ba2f1b628df09b9a01ab5202ee877b35ec900179923f6283997b0b81440e",
+      "stdout_template_base64": "UFJPRFVDRVI7UHJvZHVjZXJBcmdCYXNlMjEzL1Byb2R1Y2VyQXJnQ2hpbGQyMTM7UFJPVklERVI7Qk9EWTtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-invokable-stored-closure-refused",
+      "source": "<?php\nclass ProducerArgBase213 { public function __invoke($saved) { $GLOBALS[\"producer\"] = null; echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild213 extends ProducerArgBase213 {}\nclass Base213 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived213 extends Base213 {}\n$producer = static function() { echo \"CALLEE;\"; return 7; }; $owner = new Derived213; $child = $owner->MiSsInG($producer()); unset($owner,$producer); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "",
+      "agreement_credit": 0,
+      "source_sha256": "fdfe0bb40a03e44607b2af374a5ec588b1c75aae77013243d0aede334d7b898b",
+      "stdout_template_base64": "Q0FMTEVFO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-invokable-stored-string-refused",
+      "source": "<?php\nclass ProducerArgBase213 { public function __invoke($saved) { $GLOBALS[\"producer\"] = null; echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild213 extends ProducerArgBase213 {}\nclass Base213 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived213 extends Base213 {}\nfunction stringCall213() { echo \"CALLEE;\"; return 7; } $producer = \"stringCall213\"; $owner = new Derived213; $child = $owner->MiSsInG($producer()); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "",
+      "agreement_credit": 0,
+      "source_sha256": "5161f9642a397747e936edbfeb2e7ab763f56dc72df18dbf4cc747638568a4f9",
+      "stdout_template_base64": "Q0FMTEVFO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-invokable-stored-array-refused",
+      "source": "<?php\nclass ProducerArgBase213 { public function __invoke($saved) { $GLOBALS[\"producer\"] = null; echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild213 extends ProducerArgBase213 {}\nclass Base213 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived213 extends Base213 {}\n$producer = [new ProducerArgChild213,\"__invoke\"]; $owner = new Derived213; $child = $owner->MiSsInG($producer(7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "",
+      "agreement_credit": 0,
+      "source_sha256": "837c1a3bc617eaef8bd9a80cca0d8c88940beeadb32a568edfd0bc8c38581d3b",
+      "stdout_template_base64": "UFJPRFVDRVI7UHJvZHVjZXJBcmdCYXNlMjEzL1Byb2R1Y2VyQXJnQ2hpbGQyMTM7UFJPVklERVI7Qk9EWTtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-invokable-default-method-refused",
+      "source": "<?php\nclass ProducerArgBase213 { public function __invoke($saved=7) { $GLOBALS[\"producer\"] = null; echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild213 extends ProducerArgBase213 {}\nclass Base213 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived213 extends Base213 {}\n$producer = new ProducerArgChild213; $owner = new Derived213; $child = $owner->MiSsInG($producer()); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "",
+      "agreement_credit": 0,
+      "source_sha256": "9e80bfc3407173fc4b73ad568ad7ab531c2e5bccda17a92dd12bea3d990db5bf",
+      "stdout_template_base64": "UFJPRFVDRVI7UHJvZHVjZXJBcmdCYXNlMjEzL1Byb2R1Y2VyQXJnQ2hpbGQyMTM7UFJPVklERVI7Qk9EWTtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-invokable-unpack-refused",
+      "source": "<?php\nclass ProducerArgBase213 { public function __invoke($saved) { $GLOBALS[\"producer\"] = null; echo \"PRODUCER;\",self::class,\"/\",static::class,\";\"; return $saved; } public function __destruct() { echo \"PROVIDER;\"; } } class ProducerArgChild213 extends ProducerArgBase213 {}\nclass Base213 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } } class Derived213 extends Base213 {}\n$producer = new ProducerArgChild213; $pack = [9]; $owner = new Derived213; $child = $owner->MiSsInG($producer(7),...$pack); unset($owner); echo ($child->saved[0] === 7 && $child->saved[1] === 9) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "agreement_credit": 0,
+      "source_sha256": "ae1fce05281ae16d99b25742a2de6858c04bd88b34b5a2e93cb3ade63c2e54e3",
+      "stdout_template_base64": "UFJPRFVDRVI7UHJvZHVjZXJBcmdCYXNlMjEzL1Byb2R1Y2VyQXJnQ2hpbGQyMTM7UFJPVklERVI7Qk9EWTtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
