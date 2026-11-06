@@ -10,6 +10,9 @@ import closure_call_protocol as protocol
 
 ROOT = Path(__file__).resolve().parents[2]
 CATALOGUE = ROOT / 'tests/semantics/anonymous_later_cv_magic_cases.json'
+CONTROLS = ROOT / 'tests/semantics/anonymous_later_cv_magic_controls.json'
+MISSING = 'magic-later-cv-missing-before-warning'
+MISSING_ROW = next(row for row in json.loads(CONTROLS.read_text())['cases'] if row['id'] == MISSING)
 CASE = 'magic-later-cv-unwrapped-pending-leaf'
 ROW = next(row for row in json.loads(CATALOGUE.read_text())['cases'] if row['id'] == CASE)
 SEND = ('S.TODO = (CALL_SEND (MAGIC_METHOD_SEND_TARGET pmagicmethodcall) eps 1 ([KNOWN (PINT 7)]) (porigin_site) z_site) :: ptask_send_tail* '
@@ -150,8 +153,39 @@ def checks(fixture, filename):
     return out
 
 
+def warning_boundary(fixture, filename):
+    return [
+        'S_initial = $php_run(' + fixture + ',0,' + filename + ')',
+        r'S_initial.COMPLETION = BUDGET /\ ~S_initial.COMPILESTOP',
+        'S_found = $factory182_seek(S_initial,2048)', 'S_found.COMPLETION = BUDGET',
+        'S = S_found[.COMPLETION = NORMAL]', SEND,
+        'porigin_site = pmagicmethodcall.SITE',
+        'pmagicmethodcall.NAME = $ptascii("missing")',
+        'pmagicmethodcall.ARGUMENTS[1] = NArg ABSENT expression_later (BOOLEAN false) (BOOLEAN false) metadata_later',
+        '$call_argument_origin(S,(porigin_site),1) = (porigin_later)',
+        'z_later = $call_send_line(S,(porigin_site),1)',
+        '$magic_method_argument_source(S,porigin_later,1,expression_later)',
+        '$magic_method_cv_pending(S,MAGIC_METHOD_SEND_TARGET pmagicmethodcall)',
+        '$lookup(S.ENV,$ptascii("later")) = eps',
+        '$error_handler_eligible(S,2)',
+        '$error_missing_operand(S,S.RESULT)',
+        '$factory182_output(S.EVENTS) = $ptascii("SHIFT;")',
+        '~$call_send_value_allowed(S,MAGIC_METHOD_SEND_TARGET pmagicmethodcall,1,expression_later,(porigin_site),(porigin_later),z_later)',
+        '$error_read_plan(S) = eps', '~$error_read_pending(S)',
+        'S_refused = $call_send_parameter(S,MAGIC_METHOD_SEND_TARGET pmagicmethodcall,1,expression_later,(porigin_site),(porigin_later),z_later)',
+        'S_refused.COMPLETION = UNSUPPORTED "by-value argument send domain"',
+        'S_refused.EVENTS = S.EVENTS',
+        'S_done = $drive_steps(S,64)',
+        'S_done.COMPLETION = UNSUPPORTED "by-value argument send domain"',
+        'S_done.TODO = eps',
+        '$factory182_output(S_done.EVENTS) = $ptascii("SHIFT;")',
+        '$call_descriptors_valid(S_done)', '$gc_state_valid(S_done)',
+        '$heap_valid($heap_graph(S_done))',
+    ]
+
+
 def render(case, fixture, filename):
-    clauses = checks(fixture, filename)
+    clauses = warning_boundary(fixture, filename) if case['source'] == MISSING_ROW['source'] else checks(fixture, filename)
     return (PREFIX + '\ndec $main() : bool\ndef $main() = true\n' +
             ''.join('  -- if ' + clause + '\n' for clause in clauses), len(clauses))
 
@@ -160,7 +194,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--sl', action='store_true')
     args = parser.parse_args()
-    protocol.run({CASE: {'source': ROW['source']}}, extra_inputs=(CATALOGUE, Path(__file__)),
+    protocol.run({CASE: {'source': ROW['source']}, MISSING: {'source': MISSING_ROW['source']}},
+                 extra_inputs=(CATALOGUE, CONTROLS, Path(__file__)),
                  fixture_renderer=render, runner_flags=('--sl',) if args.sl else ())
 
 
