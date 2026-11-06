@@ -224,6 +224,36 @@ def $generator_api_body_snapshot(S, n) = true
   -- if $heap_subset($value_nodes(pvalue), $node_children(S, HOBJECT n))
 def $generator_api_body_snapshot(S, n) = false -- otherwise
 
+;; A registered source method outlives its real frame and This. This producer
+;; certificate grants no owner of that retired factory receiver.
+dec $generator_api_body_producer(pstate, nat) : bool
+def $generator_api_body_producer(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $function_at(S.FUNCTIONS, pgenerator.FUNCTION) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN b_ref) phpType11 phpType16 phpType18 phpType23 metadata_function)
+  -- if ~b_ref \/ $generator_api_body_reference(S, pgenerator) \/ $generator_api_body_snapshot(S, n)
+def $generator_api_body_producer(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $class_method_origin(S.CLASSES, pgenerator.FUNCTION) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pmethoddesc.OWNER)
+  -- if $method_origin(pclassdesc.METHODS, pgenerator.FUNCTION) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = PORIGIN n_unit pcpath_owner
+  -- if pgenerator.FUNCTION = PORIGIN n_unit pcpath_method
+  -- if |pcpath_method| = $(|pcpath_owner| + 2)
+  -- if pcpath_method[0:|pcpath_owner|] = pcpath_owner
+  -- if pcpath_method[|pcpath_owner|:2] = [PCFIELD 5, PCINDEX n_method]
+  -- if $origin_node(S.SOURCES, pmethoddesc.OWNER) = (NStmtClass phpType14_class (INTEGER int_class) (NIdentifier (BYTES text_class) metadata_name) phpType44 phpType42 phpType23_class metadata_class)
+  -- if $origin_node(S.SOURCES, pgenerator.FUNCTION) = (NStmtClassMethod phpType14 (INTEGER int_flags) (BOOLEAN false) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata_function)
+  -- if $ppmethod_visibility(int_flags) = PROPERTY_PUBLIC /\ ~$ppproperty_flag(int_flags, 8) /\ ~$ppproperty_flag(int_flags, 16)
+  -- if $generator_statements(statement*)
+def $generator_api_body_producer(S, n) = false -- otherwise
+
 ;; A body throw returns to the real native SEND before its argv is freed.
 ;; Keep the original search ahead of the receiver pin for destructor Previous.
 ;; Operation validation keeps computed selection frozen after source CV rebinding.
@@ -241,9 +271,7 @@ def $generator_api_body_throw(S, pgeneratorop) = true
   -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps /\ pgenerator.RETURN = eps
   -- if ~pgenerator.PENDING_INIT
   -- if pgenerator.CLOSURE = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.ACCESS = eps /\ pgenerator.CREATION = eps
-  -- if $function_at(S.FUNCTIONS, pgenerator.FUNCTION) = (pfunction)
-  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN b_ref) phpType11 phpType16 phpType18 phpType23 metadata_function)
-  -- if ~b_ref \/ $generator_api_body_reference(S, pgenerator) \/ $generator_api_body_snapshot(S, pgeneratorop.OBJECT)
+  -- if $generator_api_body_producer(S, pgeneratorop.OBJECT)
   -- if pgeneratorop.ARGUMENTS = [pvalue]
   -- if $destructor_return_operand_valid(S, KNOWN pvalue)
   -- if $value_nodes(pvalue) =/= eps
