@@ -527,6 +527,18 @@ def $magic_method_from_callable_producer(S, porigin, expression) = (pmethoddesc.
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__invoke")
   -- if $magic_method_instance_source_body(S, pmethoddesc, phpType7*)
+def $magic_method_from_callable_producer(S, PORIGIN n_unit pcpath, expression) = (pmethoddesc.FUNCTION)
+  -- if $magic_method_from_callable_parts(S, PORIGIN n_unit pcpath, expression) = ((porigin_callback, expression_callback, phpType7*))
+  -- if expression_callback = NExprArray (SEQUENCE ([(NArrayItem ABSENT expression_receiver (BOOLEAN false) (BOOLEAN false) metadata_receiver), (NArrayItem ABSENT (NScalarString phpType33 metadata_name) (BOOLEAN false) (BOOLEAN false) metadata_method)])) metadata_array
+  -- if $origin_child((porigin_callback), [PCFIELD 0, PCINDEX 0, PCFIELD 1]) = (porigin_receiver)
+  -- if $magic_method_fresh_receiver(S, porigin_receiver, expression_receiver) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_child((porigin_callback), [PCFIELD 0, PCINDEX 1, PCFIELD 1]) = (porigin_method)
+  -- if $magic_method_literal_value(S, porigin_method, NScalarString phpType33 metadata_name) = (pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes_method)
+  -- if $scope_method(S, porigin_class, ptbytes_method, true, $closure_source_class(S, PORIGIN n_unit (pcpath ++ [PCFIELD 0]))) = (pmethoddesc)
+  -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
 def $magic_method_from_callable_producer(S, porigin, expression) = eps -- otherwise
 ;; A literal static Closure has one exact permanent source/template even after
 ;; its ephemeral CLOSURE_TARGET owner and parameter frame have retired.

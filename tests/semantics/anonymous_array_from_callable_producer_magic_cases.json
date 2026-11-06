@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-fresh-array-from-callable-old",
+      "source": "<?php\nclass ProducerBase224 { public $tag=9; public function __destruct() { echo \"RECEIVER-END;\"; } public function capture($saved,$ignored) { echo \"PRODUCER:\",self::class,\":\",static::class,\";\"; return $saved; } } class ProducerChild224 extends ProducerBase224 {}\nfunction shift224() { $GLOBALS[\"argument\"]=new New224; $GLOBALS[\"owner\"]=null; echo \"SHIFT;\"; return false; }\nclass Old224 { public function __destruct() { echo \"OLD;\"; } } class New224 { public function __destruct() { echo \"NEW;\"; } }\nclass Magic224 { public function __call(string $name,array $arguments) { $GLOBALS[\"argument\"]=null; echo \"HANDLER:\",($arguments[0] instanceof Old224)?\"OLD;\":\"BAD;\"; return false; } public function __destruct() { echo \"OWNER;\"; } }\n$argument=new Old224; $owner=new Magic224; $result=$owner->MiSsInG((\\Closure::fromCallable([new ProducerChild224,\"capture\"]))($argument,shift224())); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "b75aa56dc3d4af30490118b406daa3eaaa999e0e48130ade1f6025f56b6db8d3",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI6UHJvZHVjZXJCYXNlMjI0OlByb2R1Y2VyQ2hpbGQyMjQ7UkVDRUlWRVItRU5EO05FVztIQU5ETEVSOk9MRDtPTEQ7T1dORVI7UkVUVVJOO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-fresh-array-from-callable-zero-later",
+      "source": "<?php\nclass Zero224 { public function capture() { echo \"ZERO;\"; return 7; } public function __destruct() { echo \"ZERO-END;\"; } }\nclass MagicZero224 { public function __call(string $name,array $arguments) { echo ($arguments[0]===1 && $arguments[1]===7)?\"HANDLER;\":\"BAD;\"; return false; } }\n$owner=new MagicZero224; $result=$owner->MiSsInG(1,(\\Closure::fromCallable([new Zero224,\"capture\"]))()); echo \"RETURN;\"; echo $result===false?\"AFTER;\":\"BAD;\";\n",
+      "source_sha256": "66d0f44f26b34c6fd14e2bf3855da8ce744217e122b6817e4bea8b784877a801",
+      "stdout_template_base64": "WkVSTztaRVJPLUVORDtIQU5ETEVSO1JFVFVSTjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
