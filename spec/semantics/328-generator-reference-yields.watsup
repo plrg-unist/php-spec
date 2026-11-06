@@ -226,6 +226,10 @@ def $generator_reference_notice_ids(GENERATOR_YIELD_REF_NOTICE n porigin poperan
 def $generator_reference_notice_ids(ERROR_HANDLER_INVOKE perrorcall) = $generator_reference_notice_ids(perrorcall.RESUME)
 def $generator_reference_notice_ids(ERROR_HANDLER_RESULT perrorcall) = $generator_reference_notice_ids(perrorcall.RESUME)
 def $generator_reference_notice_ids(ERROR_HANDLER_CLEAN perrorcall) = $generator_reference_notice_ids(perrorcall.RESUME)
+def $generator_reference_notice_ids(API_CALLBACK_SEND papiargcursor) = $generator_reference_notice_ids(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+def $generator_reference_notice_ids(API_CALLBACK_REF papiargcursor) = $generator_reference_notice_ids(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
 def $generator_reference_notice_ids(AT porigin ptask) = $generator_reference_notice_ids(ptask)
 def $generator_reference_notice_ids(CHOOSE ptask_true* ptask_false* z) = $generator_reference_notice_tasks(ptask_true*) ++ $generator_reference_notice_tasks(ptask_false*)
 def $generator_reference_notice_ids(ptask) = eps -- otherwise
@@ -350,6 +354,12 @@ def $generator_borrowed_task(S, n, ERROR_HANDLER_RESULT perrorcall) = $generator
   -- if $error_call_valid(S, perrorcall)
 def $generator_borrowed_task(S, n, ERROR_HANDLER_CLEAN perrorcall) = $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
   -- if $error_cleanup_valid(S, perrorcall)
+def $generator_borrowed_task(S, n, API_CALLBACK_SEND papiargcursor) = $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if $call_task_valid(S, API_CALLBACK_SEND papiargcursor)
+def $generator_borrowed_task(S, n, API_CALLBACK_REF papiargcursor) = $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
+  -- if $call_task_valid(S, API_CALLBACK_REF papiargcursor)
 def $generator_borrowed_task(S, n, ptask) = false -- otherwise
 def $generator_borrowed_tasks(S, n, ptask_head :: ptask_tail*) = true
   -- if $generator_borrowed_task(S, n, ptask_head)
