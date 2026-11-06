@@ -1,0 +1,103 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-instance-producer-array-return-refused",
+      "source": "<?php\nclass Receiver207 { public function capture($saved) { echo \"METHOD;\"; return [$saved]; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base207 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived207 extends Base207 {}\n$owner = new Derived207; $child = $owner->missing((new Receiver207)->capture(7)); unset($owner); echo $child->saved[0][0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "TUVUSE9EO1JFQ0VJVkVSOw==",
+      "source_sha256": "16c1fdc88be68ee72ebda2208ac5d27a2f1ea1dfa292c77ee9d17a5d8b255be8",
+      "stdout_template_base64": "TUVUSE9EO1JFQ0VJVkVSO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-instance-producer-unpack-prefix-refused",
+      "source": "<?php\nclass Receiver207 { public function capture($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base207 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived207 extends Base207 {}\n$pack = [9]; $owner = new Derived207; $child = $owner->missing((new Receiver207)->capture(7), ...$pack); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "4065e9d96c802328068938e9e4cf2efe92aeee4991e8186df2226699bd2f7d33",
+      "stdout_template_base64": "TUVUSE9EO1JFQ0VJVkVSO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-instance-producer-inner-named-refused",
+      "source": "<?php\nclass Receiver207 { public function capture($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base207 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived207 extends Base207 {}\n$owner = new Derived207; $child = $owner->missing((new Receiver207)->capture(saved:7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "dae7410c661820394abbf90817c3754551a580afeafbd27ce2e7bc82d74ba29a",
+      "stdout_template_base64": "TUVUSE9EO1JFQ0VJVkVSO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-instance-producer-default-method-refused",
+      "source": "<?php\nclass Receiver207 { public function capture($saved=0) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base207 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived207 extends Base207 {}\n$owner = new Derived207; $child = $owner->missing((new Receiver207)->capture(7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "57088b61bd39090bf1d06b9a737b0f70540e69bd9129c3def0b36a3983670de1",
+      "stdout_template_base64": "TUVUSE9EO1JFQ0VJVkVSO0JPRFk7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-instance-producer-cv-receiver-refused",
+      "source": "<?php\nclass Receiver207 { public function capture($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base207 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived207 extends Base207 {}\n$producer = new Receiver207; $owner = new Derived207; $child = $owner->missing($producer->capture(7)); unset($owner,$producer); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "e3657d716914e56f5032c1318b66eae96d6df888dc3eae600a8af043b9272509",
+      "stdout_template_base64": "TUVUSE9EO0JPRFk7T1dORVI7UkVDRUlWRVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-instance-producer-default-constructor-refused",
+      "source": "<?php\nclass Receiver207 { public function capture($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass ReceiverDefault207 extends Receiver207 { public function __construct($seed=0) { echo \"CTOR;\"; } }\nclass Base207 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived207 extends Base207 {}\n$owner = new Derived207; $child = $owner->missing((new ReceiverDefault207(0))->capture(7)); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "b2fa9fa7d0573fa0adb7494c9cc2e87ad489cb45d1dedb2cf88357b21543b0cc",
+      "stdout_template_base64": "Q1RPUjtNRVRIT0Q7UkVDRUlWRVI7Qk9EWTtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-instance-producer-private-shadow-refused",
+      "source": "<?php\nclass ShadowParent207 { private function capture($saved) { echo \"PRIVATE;\"; return $saved; } public static function run($owner) { return $owner->missing((new ShadowChild207)->capture(7)); } public function __destruct() { echo \"RECEIVER;\"; } }\nclass ShadowChild207 extends ShadowParent207 { public function capture($saved) { echo \"PUBLIC;\"; return $saved; } }\nclass Base207 { public function __call(string $name, array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived207 extends Base207 {}\n$owner = new Derived207; $child = ShadowParent207::run($owner); unset($owner); echo $child->saved[0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "13776979870edff2c8a24769c399126d03a201c9c8dd4e06aead1514d50a88b9",
+      "stdout_template_base64": "UFJJVkFURTtSRUNFSVZFUjtCT0RZO09XTkVSO09LO0NISUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
