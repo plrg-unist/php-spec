@@ -361,6 +361,17 @@ history. Five normal originals and 342 strict468 conditions pass; keyword/magic,
 Closure/API and wider held invocation modes gain no new admission.
 [Raw callable review](../../coverage/semantics/deprecated-raw-callable-default-review.json).
 
+Literal-member nullsafe calls on initialized non-This receiver CVs receive
+owning defaults only after the live ordinary public target is selected. The null
+branch skips argument/default evaluation and the body. Instance This retains its
+normal owner; static selection can continue after the source object retires.
+Captured function/scopes and explicit nullsafe declaration/publication proof
+validate closed history without a new witness or receiver lookup. Four normal
+originals and 281 strict469 conditions pass, including inherited cache separation,
+repeated TypeErrors and one static-binder continuation check. Wider/held entry
+modes remain separate.
+[Nullsafe review](../../coverage/semantics/deprecated-nullsafe-default-review.json).
+
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
 nested Closure bodies acquire no read authority.

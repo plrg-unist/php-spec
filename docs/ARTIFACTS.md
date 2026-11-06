@@ -171,6 +171,15 @@ Native originals were not replayed. Active-child versus closed-child diagnostics
 and the pre-execution observer failure retain zero agreement credit. Actual
 e3d2c106c joined468 and inventory pass.
 
+COMP208 nullsafe-method default sources and current/history checks are under
+`../php-spec-evidence-archive/comp208/`. The
+[review](../coverage/semantics/deprecated-nullsafe-default-review.json) binds four
+first-attempt normal originals and 63/58 author plus 77/83 independent strict469
+conditions. The nil GLOBALTABLE observer failure retains zero credit; only that
+observer changed before the affected check passed. No native/source replay occurred.
+Erased-storage views test pure helper independence, separately from actual receiver
+retirement. Actual92b1f5fb8 joined469 and inventory pass.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

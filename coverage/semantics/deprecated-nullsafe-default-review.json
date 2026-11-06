@@ -1,0 +1,141 @@
+{
+  "milestone": "COMP208",
+  "status": "Independent semantic and material CLEAR; exact nine-commit source/runtime/test packet secured at c1228402644f8ff935324e767e040e95243983e4, actual joined469/inventory PASS at92b1f5fb8868981f8c67b6f4452fc4d0902aa129.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C,TZ=UTC; original source bytes/path/CWD/stdout/stderr/exits retained",
+  "implementation": {
+    "base": "2921c03e99b112253ff7b164c5c6bc008985810a",
+    "runtime": "933afd80156073428deabd2565b57392477d91e4",
+    "module": "spec/semantics/480-nullsafe-method-defaults.watsup",
+    "source": "Initialized statically named non-This CV receiver and literal-identifier NExprNullsafeMethodCall; ordinary public nonabstract named-class nongenerator by-value nonvariadic method.",
+    "current": "Exact normal METHOD_TARGET or STATIC_METHOD_TARGET selection, function/name/receiver/lexical/called fields and Shared owner; owning primary/fallback source gates warm hits too.",
+    "history": "Captured function/scopes and explicit196 nullsafe declaration selection/publication. Present receiver CV, global table, store, arrays and old receiver storage are not queried.",
+    "ownership": "Existing normal target ownership is unchanged: live instance This retains its owner, static selection retains no source object. No new witness/field/root/cache identity or142/196 edit.",
+    "source_basis": [
+      "Zend/zend_compile.c:zend_compile_method_call emits JMP_NULL before method/argument compilation",
+      "Zend/zend_vm_def.h:JMP_NULL,INIT_METHOD_CALL,RECV_INIT; existing target/argument/default ordering"
+    ]
+  },
+  "source_validation": {
+    "original_agreements": 4,
+    "normal": 4,
+    "author_native": {
+      "path": "../php-spec-evidence-archive/comp208/author-native-v1/report.json",
+      "sha256": "f734b9e2ece73d1d0ee242f86e721a16c5dae5490b05a0b23f7764315a334d6f",
+      "head": "342f6162cd054489424772d9918699169d1b9b36"
+    },
+    "author_models": {
+      "path": "../php-spec-evidence-archive/comp208/author-source-v1/report.json",
+      "sha256": "fa24684a961637a62cc955aa474d513cfb62610ffb5bdc0d892bff3da864c4f5",
+      "head": "933afd80156073428deabd2565b57392477d91e4"
+    },
+    "peer_native": {
+      "path": "../php-spec-evidence-archive/comp208/reviewer-native-v1/report.json",
+      "sha256": "ff128cfe30b9c7628f7f5a155029f5fd4bd261bbd3214e58d371b8df3c79cf6f",
+      "head": "e24f51ed640a6af5f9ac88a58acd0d8ee971a689"
+    },
+    "peer_models": {
+      "path": "../php-spec-evidence-archive/comp208/reviewer-model-v1/report.json",
+      "sha256": "08adcd648b17662593521eb2aa4b8d1b567303d0225e61b41e8ed5dccb96b919",
+      "head": "dea61c7d2d79cb668eddd22f981b618486d2d657"
+    },
+    "credit": "All four distinct originals passed native and model first attempt, at runtime933; no native/source replay or source failure."
+  },
+  "reached_validation": {
+    "conditions": 281,
+    "mode": "Strict SL through elaboration/algorithmic checks/structuring, private469, exact true LF/empty stderr/exit0/stable inputs/no timeout/reaped.",
+    "groups": [
+      {
+        "name": "nil/live instance",
+        "conditions": 63,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp208/author-instance-v2/report.json",
+          "sha256": "07ef180513c151d7cd17417f8b9439987be6b6d43ad6ff1a0cc1133c6fb39ad8",
+          "head": "6601bb2ca89893029fe005ffd1aa8fdd8dce31ad"
+        }
+      },
+      {
+        "name": "same-site inheritance/reentry",
+        "conditions": 58,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp208/author-reentry-v1/report.json",
+          "sha256": "6586e08c3aaa3701da25e0882c5cf5ac621cc5de38d515a9c051d608655e8bce",
+          "head": "6601bb2ca89893029fe005ffd1aa8fdd8dce31ad"
+        }
+      },
+      {
+        "name": "static source retirement/continuation",
+        "conditions": 77,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp208/reviewer-retirement-v1/report.json",
+          "sha256": "09d7a47181b69dccaf3dd26cf4c41c9f9555fd130bf22c6c2756db34fe05d4a0",
+          "head": "dea61c7d2d79cb668eddd22f981b618486d2d657"
+        }
+      },
+      {
+        "name": "type/cache",
+        "conditions": 83,
+        "report": {
+          "path": "../php-spec-evidence-archive/comp208/reviewer-reject-v1/report.json",
+          "sha256": "75f8c452b0a3da7085bd1014cc6900bcfb80ec6ee3b5bf5f2fff2cf7a08ede7a",
+          "head": "dea61c7d2d79cb668eddd22f981b618486d2d657"
+        }
+      }
+    ],
+    "decisive": [
+      "Null branch reaches only N| with no argument/default warning/body, PARAMETERSEQ0 and empty default cache; live instance has one This owner after warning clears global, then retires before warm direct receive.",
+      "Same physical nullsafe site/name selects distinct Base/Child functions and default origins; child scalar9 never certifies or overwrites parent owning[] slot, and consistently retargeted current refuses.",
+      "Static source object actually retires during H|D|W| before binder/body with context/target roots0; Shared cache remains usable.",
+      "Cold typed default installs cache and rejected formal before TypeError; warm second nullsafe site repeats rejection without new birth/warning, malformed current NAME refuses owning hit."
+    ],
+    "continuation": "Only independent static group renews one genuine validated zero/one/full continuation equality.",
+    "erased_views": "Erased CV/global/store/object/array views test pure closed-helper independence only; they are not new cleanup transitions or valid whole-state claims."
+  },
+  "failure0": [
+    {
+      "report": {
+        "path": "../php-spec-evidence-archive/comp208/author-instance-v1/report.json",
+        "sha256": "25e816a2f76fa40f1b18cc64bc60ffb695d6d70775a07163046d1914f12c9c6a",
+        "head": "88a4d23ea227506e24a519192035a913ae9256b0"
+      },
+      "reason": "Nil observer required GLOBALTABLE before any $GLOBALS access had materialized it. Corrected only to actual top-level S_nil.ENV; affected instance-v2 passed. Original packet remains failed/zero credit."
+    }
+  ],
+  "protocols": {
+    "author": {
+      "path": "tests/semantics/deprecated_nullsafe_default_protocol.py",
+      "sha256": "a4da69961f506cd37f0f02af63f0eb39c764623e186263cff59c50fad608db93"
+    },
+    "peer": {
+      "path": "tests/semantics/deprecated_nullsafe_default_review_protocol.py",
+      "sha256": "0521a2899584c60f32b14c0f6bb937bfb01bdd289a898e6653870395939dc92b"
+    }
+  },
+  "independent_summary": {
+    "path": "../php-spec-evidence-archive/comp208/reviewer-final-summary.json",
+    "sha256": "1163b10211e8f3925fcaf5aef75224029a6396dc092410e2de281986973b3a42"
+  },
+  "bounds": [
+    "Literal member and initialized quiet non-This CV receiver only; dynamic member names, other receiver expressions and broader nullsafe chains are not newly admitted.",
+    "Closure/FCC/API/magic/nonpublic/Trait/Generator/by-reference/variadic and all established held entry/producer modes remain separate.",
+    "No new target/receive schema, selected-entry bit, root/getter/body/lifecycle/catalog rule or shared142/196 change. Existing RAW_ENTRY remains false on genuine nullsafe births.",
+    "Actual Generator/303, Source47/COMP88/COMP123 and all other holds remain; COMP195 throwing-old native timeout stays inconclusive0."
+  ],
+  "review": "Independent semantic and final material CLEAR without corrections; factual joined fields appended without renewed semantic execution or review gate.",
+  "joined_validation": {
+    "source": "92b1f5fb8868981f8c67b6f4452fc4d0902aa129",
+    "modules": 469,
+    "seconds": 13.785577,
+    "result": "PASS exact true LF, empty stderr, exit0, stable inputs/HEAD, no timeout; load-only0 source agreement credit.",
+    "report": {
+      "path": "../php-spec-evidence-archive/comp208/joined-main-469-v1/report.json",
+      "sha256": "783abea9c8c8773a54ed825a4f20efca8757766bea53ec69a8c747fd49c58704"
+    },
+    "inventory": {
+      "path": "../php-spec-evidence-archive/comp208/joined-main-469-v1/inventory.json",
+      "sha256": "50c3064882a97993d933226427428edf677021b9c2840be4003d13fd145903a9"
+    },
+    "inventory_result": "169 constructors/306 runtime obligations consistent; all475 statuses unchanged, five affected rows remain partial."
+  }
+}

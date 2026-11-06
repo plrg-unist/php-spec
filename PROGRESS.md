@@ -3606,9 +3606,11 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS228 | Caller-This static callback arrays in normal callable factories, preserving the old instance-source law and caller ownership with receiver-free wrappers. |
 | ATTR84 | Indirect append through existing private scalar magic GET, with guard-free receiver lease across Notice and correct release before scalar-container failure. |
-| COMP208 | Owning defaults for literal nullsafe public method calls, preserving nil argument skipping and genuine live selected scopes and cache authority. |
+| COMP209 | Defaults for CV-selected class static calls using the existing string-or-object normalization domain, preserving frozen class/function selection before arguments. |
+| ENUM163 | Phase-aware callable-return verification for raw keyword strings and bare keyword arrays, preserving raw values and verification scope without caller re-query. |
+| GC75 | Suppress only borrowed root-array writeback false visits, preserving genuine CV self-assignment and element-reference/value decrements. |
 | I138 | Scope-free raw static Closure helper frames in existing reentry paths, preserving owning INSTANCE roots through saved VM moves and return. |
-| OB34 | Weak scalar-return TypeErrors during FINAL conversion, preserving genuine rejected-return authority and successful weak coercion without a false error source. |
+| OB35 | Genuine missing-return TypeErrors in native string conversion, preserving appended verification timing and receiver-free error provenance. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
