@@ -125,6 +125,7 @@ def $static_default_bind_marker(STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pva
 def $static_default_binding_head((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin) = (pstaticdefaultcontext.DECL = porigin)
 def $static_default_binders_unique((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin_seen*) = (~(pstaticdefaultcontext.DECL <- porigin_seen*) /\ $static_default_binders_unique(ptask*, porigin_seen* ++ [pstaticdefaultcontext.DECL]))
 def $static_default_phases((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, b_property) = $static_default_phases(ptask*, true)
+def $property_default_phases((STATIC_DEFAULT_PUBLISH pstaticdefaultcontext pvalue pvalueclass) :: ptask*, n_phase) = $property_default_phases(ptask*, 2)
 
 dec $static_publication_task(ptask*, pstaticdefaultcontext, pvalue, pvalueclass) : bool
 def $static_publication_task(eps, pstaticdefaultcontext, pvalue, pvalueclass) = false
