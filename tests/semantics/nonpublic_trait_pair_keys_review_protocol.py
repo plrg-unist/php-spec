@@ -196,7 +196,7 @@ review.CASES = {
             '$property_hook_trait_selected(S_bad_wrapper, ppropertydesc_a, porigin_get_a) = eps',
             '$property_hook_trait_selected(S, ppropertydesc_b, porigin_get_b) = (pfunction_get_b)',
             '$property_hook_trait_selected(S_bad_wrapper, ppropertydesc_b, porigin_get_b) = (pfunction_get_b)',
-            '$property_hook_trait_selected(S[.SOURCES = eps], ppropertydesc_a, porigin_get_a) = eps',
+            '~$property_hook_context_valid(S[.FRAMES = [pframe_get, pframe_reader[.CONTEXT = (pcallcontext_reader[.LEXICAL_CLASS = (porigin_b)])], pframe_main]], pcallcontext_get)',
             'S_paused = $drive_steps(S, 0)',
             'S_paused = S[.COMPLETION = BUDGET]', *valid('S_paused'),
             'S_paused[.COMPLETION = NORMAL] = S',
