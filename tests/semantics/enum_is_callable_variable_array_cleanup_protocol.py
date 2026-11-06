@@ -64,7 +64,7 @@ if __name__ == '__main__':
         'S_entry = $eiu_seek(S_clear, penumqueryoutput, true, 3000)',
         '$eiu_entry(S_entry, penumqueryoutput)',
         'S_entry.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_entry_tail*',
-        'pdestructorcall.OBJECT = penumqueryoutput.OLD',
+        '(HOBJECT pdestructorcall.OBJECT) = penumqueryoutput.OLD',
         'S_entry.STORE[n_output] = DEFINED PNULL',
         'S_exit = $eiu_seek(S_entry, penumqueryoutput, false, 7000)',
         '$eiu_exit(S_exit, penumqueryoutput)',

@@ -120,7 +120,7 @@ def last_owner():
         'S_owner_invoke.TODO = (CONFIG_INVOKE pconfigcall_owner_invoke) :: (ENUM_IS_CALLABLE_INPUT penumqueryinput_owner) :: ptask_owner_tail*',
         '$enum_is_callable_output_capture(S_owner_invoke, pconfigcall_owner_invoke) = (penumqueryoutput_owner)',
         'penumqueryoutput_owner.OLDARRAY = (n_owner_old)',
-        'penumqueryoutput_owner.OLD = n_child',
+        'penumqueryoutput_owner.OLD = HOBJECT n_child',
         '$enum_is_callable_output_valid(S_owner_invoke, penumqueryoutput_owner)',
         'penumqueryoutput_forged = penumqueryoutput_owner[.OLDARRAY = (n_owner_array)]',
         '~$enum_is_callable_output_valid(S_owner_invoke, penumqueryoutput_forged)',

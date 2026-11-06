@@ -94,7 +94,7 @@ def released():
         '$enum_is_callable_ref_last(S_released_invoke, n_released_output, pconfigcall_released_invoke.LINE)',
         '$enum_is_callable_output_capture(S_released_invoke, pconfigcall_released_invoke) = (penumqueryoutput_released)',
         'penumqueryoutput_released.OLDARRAY = (n_released_old)',
-        'penumqueryoutput_released.OLD = n_released_child',
+        'penumqueryoutput_released.OLD = HOBJECT n_released_child',
         'penumqueryoutput_released.NAME = penumqueryinput_released.VALUE',
         '$enum_is_callable_output_valid(S_released_invoke, penumqueryoutput_released)',
         'S_released_clear = $drive_steps(S_released_invoke[.COMPLETION = NORMAL], 1)',

@@ -19,7 +19,7 @@ PREFIX = r'''
 dec $eiu_entry(pstate, penumqueryoutput) : bool
 def $eiu_entry(S, penumqueryoutput) = true
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
-  -- if pdestructorcall.OBJECT = penumqueryoutput.OLD
+  -- if (HOBJECT pdestructorcall.OBJECT) = penumqueryoutput.OLD
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
 def $eiu_entry(S, penumqueryoutput) = false -- otherwise
@@ -67,7 +67,7 @@ def reached(label, case_id, thrown=False):
         f'$enum_is_callable_ref_last(S_{label}_invoke, penumqueryoutput_{label}.CELL, pconfigcall_{label}.LINE)',
         f'$task_nodes(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}) = $config_nodes(pconfigcall_{label})',
         f'$task_nodes(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}) = [HCELL penumqueryoutput_{label}.CELL]',
-        f'~((HOBJECT penumqueryoutput_{label}.OLD) <- $task_nodes(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}))',
+        f'~((penumqueryoutput_{label}.OLD) <- $task_nodes(ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_{label}))',
         f'~$call_task_valid(S_{label}_invoke, ENUM_IS_CALLABLE_CLEAR penumqueryoutput_{label})',
         f'S_{label}_clear = $drive_steps(S_{label}_invoke[.COMPLETION = NORMAL], 1)',
         f'S_{label}_clear.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
@@ -79,9 +79,9 @@ def reached(label, case_id, thrown=False):
         f'S_{label}_entry = $eiu_seek(S_{label}_clear, penumqueryoutput_{label}, true, 2000)',
         f'$eiu_entry(S_{label}_entry, penumqueryoutput_{label})',
         f'S_{label}_entry.TODO = (DESTRUCTOR_ENTER pdestructorcall_{label}) :: ptask_{label}_entry_tail*',
-        f'pdestructorcall_{label}.OBJECT = penumqueryoutput_{label}.OLD',
+        f'(HOBJECT pdestructorcall_{label}.OBJECT) = penumqueryoutput_{label}.OLD',
         f'pdestructorcall_{label}.SITE = eps',
-        f'penumqueryoutput_{label}.OLD <- S_{label}_entry.DESTRUCTION.CALLED',
+        f'pdestructorcall_{label}.OBJECT <- S_{label}_entry.DESTRUCTION.CALLED',
         f'S_{label}_entry.STORE[penumqueryoutput_{label}.CELL] = DEFINED PNULL',
         f'S_{label}_exit = $eiu_seek(S_{label}_entry, penumqueryoutput_{label}, false, 5000)',
         f'$eiu_exit(S_{label}_exit, penumqueryoutput_{label})',
@@ -140,7 +140,8 @@ if __name__ == '__main__':
         '~$enum_is_callable_output_valid(S_normal_exit, penumqueryoutput_name)',
         'penumqueryoutput_result = penumqueryoutput_normal[.RESULT = false]',
         '~$enum_is_callable_output_valid(S_normal_exit, penumqueryoutput_result)',
-        'penumqueryoutput_old = penumqueryoutput_normal[.OLD = |S_normal_exit.OBJECTS|]',
+        'n_old_bound = |S_normal_exit.OBJECTS|',
+        'penumqueryoutput_old = penumqueryoutput_normal[.OLD = HOBJECT n_old_bound]',
         '~$enum_is_callable_output_valid(S_normal_exit, penumqueryoutput_old)',
         'S_detached = S_normal_exit[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_normal) :: ptask_normal_tail*]',
         '$enum_is_callable_output_scope(S_detached, pdestructionoperation_normal) = eps',
@@ -179,10 +180,11 @@ if __name__ == '__main__':
     checks += reached('resurrect', 'unique-resurrect-old')
     checks += [
         '$lookup(S_resurrect_exit.ENV, $ptascii("hold")) = (n_hold_cell)',
-        'S_resurrect_exit.STORE[n_hold_cell] = DEFINED (POBJECT penumqueryoutput_resurrect.OLD)',
-        '(HOBJECT penumqueryoutput_resurrect.OLD) <- S_resurrect_after.ALLOCATIONS',
-        '~((HOBJECT penumqueryoutput_resurrect.OLD) <- S_resurrect_done.ALLOCATIONS)',
-        'S_heap = S_resurrect_exit[.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_resurrect) :: ptask_resurrect_tail*][.STORE = $set_cell(S_resurrect_exit.STORE, penumqueryoutput_resurrect.CELL, DEFINED (POBJECT penumqueryoutput_resurrect.OLD))]',
+        'penumqueryoutput_resurrect.OLD = HOBJECT n_resurrect_old',
+        'S_resurrect_exit.STORE[n_hold_cell] = DEFINED (POBJECT n_resurrect_old)',
+        '(penumqueryoutput_resurrect.OLD) <- S_resurrect_after.ALLOCATIONS',
+        '~((penumqueryoutput_resurrect.OLD) <- S_resurrect_done.ALLOCATIONS)',
+        'S_heap = S_resurrect_exit[.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput_resurrect) :: ptask_resurrect_tail*][.STORE = $set_cell(S_resurrect_exit.STORE, penumqueryoutput_resurrect.CELL, DEFINED (POBJECT n_resurrect_old))]',
         '~$enum_is_callable_output_ready(S_heap, penumqueryoutput_resurrect)',
         'S_heap_after = $enum_is_callable_output_commit(S_heap, penumqueryoutput_resurrect)',
         'S_heap_after.COMPLETION = UNSUPPORTED "is_callable output rebound to owning value or new type source"',
