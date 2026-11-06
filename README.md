@@ -5634,6 +5634,15 @@ rereading the name. Even zero-argument calls require the receipt. Stored Closure
 string and array callable values, wider signatures/headers and unpack stay separate.
 [CV invokable review](coverage/semantics/anonymous-cv-invokable-producer-magic-review.json).
 
+Literal `self::`, `parent::` and `static::` USER producers now use the saved
+caller's lexical and called classes, with public static zero/required by-value
+signatures and existing quiet results. Contextual collection checks real values
+and preserves other CV receipts after the producer returns; the source
+certificate also survives caller retirement. Static targets add no receiver
+owner. Root-only static magic headers,
+FCC/array/unpack modes and other held bounds retain their existing policies.
+[Keyword static review](coverage/semantics/anonymous-keyword-static-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),

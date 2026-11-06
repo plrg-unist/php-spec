@@ -864,6 +864,15 @@ rereading the name. Even zero-argument calls require the receipt. Stored Closure
 string and array callable values, wider signatures/headers and unpack stay separate.
 [CV invokable review](../../coverage/semantics/anonymous-cv-invokable-producer-magic-review.json).
 
+Literal `self::`, `parent::` and `static::` USER producers now use the saved
+caller's lexical and called classes, with public static zero/required by-value
+signatures and existing quiet results. Contextual collection checks real values
+and preserves other CV receipts after the producer returns; the source
+certificate also survives caller retirement. Static targets add no receiver
+owner. Root-only static magic headers,
+FCC/array/unpack modes and other held bounds retain their existing policies.
+[Keyword static review](../../coverage/semantics/anonymous-keyword-static-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

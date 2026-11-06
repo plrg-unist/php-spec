@@ -2669,6 +2669,17 @@ records four first-pass originals,63/128 complementary owner frontiers,39 genuin
 zero-argument receipt checks and25 eligible-pack guards at private458 cuts.
 Seven intended Unsupported controls retain zero agreement; no failed attempt or
 source/native replay occurred. Generic tail laws remain reused.
+
+Literal self/parent/static producers now derive requested and called classes from
+the authenticated saved magic caller, then retain effective public static source
+through frame retirement. Real-state collection preserves quiet values and mixed
+CV receipts without a receiver owner or new history. The
+[keyword static review](coverage/semantics/anonymous-keyword-static-producer-magic-review.json)
+records four original agreements, complementary70/118 state frontiers and25
+eligible-pack guards at private459 cuts. Five intended Unsupported controls,
+the corrected source-admission attempt and all fixture failures/diagnoses keep
+zero agreement. Only affected checks repeated; no native replay or broader gate.
+
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
