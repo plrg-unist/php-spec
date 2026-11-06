@@ -15,7 +15,7 @@ function notice84($level,$message,$file,$line){
 }
 class IndirectMagic84 {
     private int $secret=7;
-    public function __get(string $member):int {echo "G",$member,";";return $this->secret;}
+    public function __get($member) {echo "G",$member,";";return $this->secret;}
     public function __destruct(){echo "A",$this->secret,";";}
 }
 set_error_handler("notice84");
