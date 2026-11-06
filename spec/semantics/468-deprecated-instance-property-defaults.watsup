@@ -92,11 +92,11 @@ def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstan
   -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
   -- if ~$owned_instance_lookup_required(S, porigin_decl, {ORIGIN porigin_initializer, VALUE eps, CLASS pvalueclass, LOOKUP eps})
-def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstantfact*) = (puserconstant.VALUE = pvalue)
+def $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstantfact_saved*) = (puserconstant.VALUE = pvalue)
   -- if ppropertydesc.ORIGIN = porigin_decl
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
   -- if $owned_instance_lookup_required(S, porigin_decl, {ORIGIN porigin_initializer, VALUE eps, CLASS pvalueclass, LOOKUP eps})
-  -- if $constant_fact_at(pconstantfact*, porigin_initializer) = (pconstantfact)
+  -- if $constant_fact_at(pconstantfact_saved*, porigin_initializer) = (pconstantfact)
   -- if pconstantfact.CLASS = pvalueclass
   -- if $global_constant_lookup_valid(S, porigin_decl, pconstantfact, S.USERCONSTANTS)
   -- if pconstantfact.LOOKUP = (pconstantlookup)
@@ -130,11 +130,33 @@ def $instance_object_certificate_prefix(S, INSTANCE_GLOBAL_BIND pinstanceglobalc
 def $instance_object_certificate_valid(S, INSTANCE_GLOBAL_BIND pinstanceglobalcertificate, porigin_class, porigin_decl, pvalueclass) = (pinstanceglobalcertificate.TARGET = porigin_class /\ pinstanceglobalcertificate.DECL = porigin_decl /\ pinstanceglobalcertificate.CLASS = pvalueclass /\ $instance_global_record_valid(S, pinstanceglobalcertificate))
 def $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue) = (pvalue = pinstanceglobalcertificate.VALUE)
   -- if $instance_global_certificate(pinstanceobjectcertificate) = (pinstanceglobalcertificate)
-def $instance_default_transfer_valid(S, pinstancetemplate, ppropertydesc, pvalueclass) = true
+dec $instance_global_write_matches(pinstanceglobalcertificate, porigin, porigin) : bool
+def $instance_global_write_matches(pinstanceglobalcertificate, porigin_class, porigin_decl) = (pinstanceglobalcertificate.TARGET = porigin_class /\ pinstanceglobalcertificate.DECL = porigin_decl)
+dec $instance_global_last_write(pclassconstantevent*, porigin, porigin) : pinstanceglobalcertificate?
+def $instance_global_last_write(eps, porigin_class, porigin_decl) = eps
+def $instance_global_last_write(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = (pinstanceglobalcertificate)
+  -- if $instance_global_last_write(pclassconstantevent_tail*, porigin_class, porigin_decl) = (pinstanceglobalcertificate)
+def $instance_global_last_write((CCINSTANCE_LOOKUP pinstanceglobalcertificate) :: pclassconstantevent_tail*, porigin_class, porigin_decl) = (pinstanceglobalcertificate)
+  -- if $instance_global_last_write(pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
+  -- if $instance_global_write_matches(pinstanceglobalcertificate, porigin_class, porigin_decl)
+dec $instance_global_event_matches(pclassconstantevent, porigin, porigin) : bool
+def $instance_global_event_matches(CCINSTANCE_LOOKUP pinstanceglobalcertificate, porigin_class, porigin_decl) = $instance_global_write_matches(pinstanceglobalcertificate, porigin_class, porigin_decl)
+def $instance_global_event_matches(pclassconstantevent, porigin_class, porigin_decl) = false -- otherwise
+def $instance_global_last_write(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
+  -- if $instance_global_last_write(pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
+  -- if ~$instance_global_event_matches(pclassconstantevent, porigin_class, porigin_decl)
+dec $instance_global_snapshot_valid(pstate, pinstanceobjectcertificate, porigin, porigin, pclassconstantevent*) : bool
+def $instance_global_snapshot_valid(S, INSTANCE_GLOBAL_BIND pinstanceglobalcertificate, porigin_class, porigin_decl, pclassconstantevent*) = ($instance_global_last_write(pclassconstantevent*, porigin_class, porigin_decl) = (pinstanceglobalcertificate))
+def $instance_global_snapshot_valid(S, INSTANCE_OBJECT_COPY porigin_class n pinstanceobjectcertificate, porigin_class, porigin_decl, pclassconstantevent*) = true
+  -- if $instance_global_last_write(pclassconstantevent*, porigin_class, porigin_decl) = eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
+  -- if $instance_default_link_prefix(pclassconstantevent*, porigin_class, eps) = (pclassconstantevent_before*)
+  -- if pclassconstantevent*[|pclassconstantevent_before*|] = CCLINK porigin_class n
+  -- if $instance_global_snapshot_valid(S, pinstanceobjectcertificate, porigin_parent, porigin_decl, pclassconstantevent_before*)
+def $instance_global_snapshot_valid(S, pinstanceobjectcertificate, porigin_class, porigin_decl, pclassconstantevent*) = false -- otherwise
+def $instance_default_transfer_valid(S, pinstancetemplate, ppropertydesc, pvalueclass) = ($instance_object_certificate_valid(S, pinstanceobjectcertificate, pinstancetemplate.CLASS, pinstancetemplate.DECL, pvalueclass) /\ $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue) /\ $instance_global_snapshot_valid(S, pinstanceobjectcertificate, pinstancetemplate.CLASS, pinstancetemplate.DECL, S.CLASSCONSTANTHISTORY))
   -- if pinstancetemplate.STATE = INSTANCE_OBJECT_VALUE pvalue pvalueclass pinstanceobjectcertificate
   -- if $instance_global_certificate(pinstanceobjectcertificate) = (pinstanceglobalcertificate)
-  -- if $instance_object_certificate_valid(S, pinstanceobjectcertificate, pinstancetemplate.CLASS, pinstancetemplate.DECL, pvalueclass)
-  -- if $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue)
 def $instance_default_bound(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = S[.INSTANCEDEFAULTS = $instance_default_set(S.INSTANCEDEFAULTS, porigin_class, pstaticdefaultcontext.DECL, INSTANCE_OBJECT_VALUE pvalue pvalueclass (INSTANCE_GLOBAL_BIND pinstanceglobalcertificate))][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ pclassconstantevent* ++ [CCINSTANCE_LOOKUP pinstanceglobalcertificate]]
   -- if $owned_instance_source(S, ppropertydesc)
   -- if S.CONSTCONTEXT = (pconstantcontext)
@@ -149,3 +171,106 @@ def $class_constant_compile_events(S, (CCINSTANCE_LOOKUP pinstanceglobalcertific
 def $class_constant_history_fills(S, (CCINSTANCE_LOOKUP pinstanceglobalcertificate) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, pinstanceglobalcertificate.PREFIX)
   -- if $(n_previous <= pinstanceglobalcertificate.PREFIX /\ pinstanceglobalcertificate.PREFIX <= |S.DECLARATIONS|)
   -- if $instance_global_record_valid(S, pinstanceglobalcertificate)
+
+;; One publication task protects the new value while the previous template's
+;; ownership is released. The marker and historical certificate own nothing.
+def $instance_default_roots(pinstancetemplate :: pinstancetemplate_tail*) = $instance_default_roots(pinstancetemplate_tail*)
+  -- if pinstancetemplate.STATE = INSTANCE_BINDING
+def $task_nodes(INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) = $value_nodes(pvalue)
+def $static_default_context_at((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*) = (pstaticdefaultcontext)
+def $static_default_bind_marker(INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) = true
+def $static_default_binding_head((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin_decl) = (pstaticdefaultcontext.DECL = porigin_decl)
+def $instance_default_context_at((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*) = (porigin)
+def $instance_default_bind_marker(INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) = true
+def $instance_default_binders_unique((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*, (porigin_seen_class, porigin_seen_decl)*) = (~((porigin, pstaticdefaultcontext.DECL) <- (porigin_seen_class, porigin_seen_decl)*) /\ $instance_default_binders_unique(ptask*, (porigin_seen_class, porigin_seen_decl)* ++ [(porigin, pstaticdefaultcontext.DECL)]))
+def $static_default_binders_unique((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin_seen*) = $static_default_binders_unique(ptask*, porigin_seen*)
+def $static_default_phases((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*, b_property) = $static_default_phases(ptask*, b_property)
+def $property_default_phases((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*, n_phase) = $property_default_phases(ptask*, 1)
+  -- if $(n_phase <= 1)
+dec $instance_publication_task(ptask*, porigin, pstaticdefaultcontext, pvalue, pvalueclass) : bool
+def $instance_publication_task(eps, porigin, pstaticdefaultcontext, pvalue, pvalueclass) = false
+def $instance_publication_task((INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) :: ptask*, porigin, pstaticdefaultcontext, pvalue, pvalueclass) = true
+def $instance_publication_task(ptask :: ptask_tail*, porigin, pstaticdefaultcontext, pvalue, pvalueclass) = $instance_publication_task(ptask_tail*, porigin, pstaticdefaultcontext, pvalue, pvalueclass)
+  -- if ~$static_default_bind_marker(ptask)
+def $instance_publication_task(ptask*, porigin, pstaticdefaultcontext, pvalue, pvalueclass) = false -- otherwise
+dec $instance_publication_valid(pstate, porigin, pstaticdefaultcontext, pvalue, pvalueclass) : bool
+def $instance_publication_valid(S, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass) = true
+  -- if $instance_publication_task(S.TODO, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass)
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_target, pstaticdefaultcontext.DECL) = (pinstancetemplate)
+  -- if pinstancetemplate.STATE = INSTANCE_BINDING
+  -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
+  -- if $instance_default_filled_at(S, porigin_target, pstaticdefaultcontext.DECL, S.CLASSCONSTANTHISTORY, |S.CLASSES|)
+  -- if $instance_default_bind_valid(S, porigin_target, pstaticdefaultcontext)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pvalueclass = $constant_class(S, porigin_initializer)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if $instance_global_value_valid(S, ppropertydesc, pvalue, pvalueclass, pconstantcontext.FACTS)
+  -- if $class_constant_runtime_type(S, ppropertydesc.TYPE, pvalue)
+  -- if S_bind = S[.TODO = [INSTANCE_DEFAULT_PUBLISH porigin_target pstaticdefaultcontext pvalue pvalueclass]]
+  -- if $property_default_transfer_valid(S_bind, ppropertydesc, pvalueclass)
+def $instance_publication_valid(S, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass) = false -- otherwise
+dec $instance_publication_head(pstate, ptask, porigin, porigin) : bool
+dec $instance_publication_tasks(pstate, ptask*, porigin, porigin) : bool
+def $instance_publication_head(S, INSTANCE_DEFAULT_PUBLISH porigin_target pstaticdefaultcontext pvalue pvalueclass, porigin_class, porigin_decl) = (porigin_target = porigin_class /\ pstaticdefaultcontext.DECL = porigin_decl /\ $instance_publication_valid(S, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass))
+def $instance_publication_head(S, ptask, porigin_class, porigin_decl) = false -- otherwise
+def $instance_publication_tasks(S, eps, porigin_class, porigin_decl) = false
+def $instance_publication_tasks(S, ptask :: ptask_tail*, porigin_class, porigin_decl) = ($instance_publication_head(S, ptask, porigin_class, porigin_decl) \/ $instance_publication_tasks(S, ptask_tail*, porigin_class, porigin_decl))
+dec $instance_publication_frames(pstate, pframe*, porigin, porigin) : bool
+def $instance_publication_frames(S, eps, porigin_class, porigin_decl) = false
+def $instance_publication_frames(S, pframe :: pframe_tail*, porigin_class, porigin_decl) = ($instance_publication_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO, porigin_class, porigin_decl) \/ $instance_publication_frames(S, pframe_tail*, porigin_class, porigin_decl))
+dec $instance_publication_row_valid(pstate, pinstancetemplate) : bool
+def $instance_publication_row_valid(S, pinstancetemplate) = ($instance_publication_tasks(S, S.TODO, pinstancetemplate.CLASS, pinstancetemplate.DECL) \/ $instance_publication_frames(S, S.FRAMES, pinstancetemplate.CLASS, pinstancetemplate.DECL))
+def $instance_default_row_state_valid(S, pinstancetemplate, ppropertydesc) = $instance_publication_row_valid(S, pinstancetemplate)
+  -- if pinstancetemplate.STATE = INSTANCE_BINDING
+def $instance_default_history_payload(S, pinstancetemplate) = $instance_publication_row_valid(S, pinstancetemplate)
+  -- if pinstancetemplate.STATE = INSTANCE_BINDING
+def $call_task_valid(S, INSTANCE_DEFAULT_PUBLISH porigin pstaticdefaultcontext pvalue pvalueclass) = $instance_publication_valid(S, porigin, pstaticdefaultcontext, pvalue, pvalueclass)
+def $instance_default_commit(S, porigin_target, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass, ptask_tail*) = $destructor_release_begin(S_stage, $destruction_values($value_nodes(pvalue_old)))
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_target, pstaticdefaultcontext.DECL) = (pinstancetemplate)
+  -- if $instance_default_value(pinstancetemplate.STATE) = ((pvalue_old, pvalueclass_old))
+  -- if $value_nodes(pvalue_old) =/= eps
+  -- if S_stage = S[.INSTANCEDEFAULTS = $instance_default_set(S.INSTANCEDEFAULTS, porigin_target, pstaticdefaultcontext.DECL, INSTANCE_BINDING)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = (INSTANCE_DEFAULT_PUBLISH porigin_target pstaticdefaultcontext pvalue pvalueclass) :: ptask_tail*]
+dec $instance_publication_finish(pstate, porigin, pstaticdefaultcontext, pvalue, pvalueclass) : pstate
+def $instance_publication_finish(S, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass) = $static_default_restore($instance_default_bound(S, porigin_target, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass)[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
+  -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
+def $instance_publication_finish(S, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass) = S -- otherwise
+rule PhpStep/instance-default-publish: S ~> $instance_publication_finish(S[.TODO = ptask_tail*], porigin_target, pstaticdefaultcontext, pvalue, pvalueclass)
+  -- if S.TODO = (INSTANCE_DEFAULT_PUBLISH porigin_target pstaticdefaultcontext pvalue pvalueclass) :: ptask_tail*
+  -- if $instance_publication_valid(S, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass)
+def $call_after_origin(S, INSTANCE_DEFAULT_PUBLISH porigin_target pstaticdefaultcontext pvalue pvalueclass) = $instance_publication_finish(S, porigin_target, pstaticdefaultcontext, pvalue, pvalueclass)
+def $return_discard(S, INSTANCE_DEFAULT_PUBLISH porigin_target pstaticdefaultcontext pvalue pvalueclass) = S[.TODO = (INSTANCE_DEFAULT_PUBLISH porigin_target pstaticdefaultcontext pvalue pvalueclass) :: S.TODO][.COMPLETION = UNSUPPORTED "uncertified instance-default old-release abrupt completion"]
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_target, pstaticdefaultcontext.DECL) = (pinstancetemplate)
+  -- if pinstancetemplate.STATE = INSTANCE_BINDING
+def $property_template_state(S, porigin_target, ppropertydesc) = eps
+  -- if ppropertydesc.ORIGIN = porigin_decl
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_target, porigin_decl) = (pinstancetemplate)
+  -- if pinstancetemplate.STATE = INSTANCE_BINDING
+rule PhpStep/instance-default-update-releasing: S ~> S[.COMPLETION = UNSUPPORTED "instance default template release"]
+  -- if S.TODO = (INSTANCE_DEFAULT_UPDATE porigin_target porigin_decl z) :: ptask*
+  -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_target, porigin_decl) = (pinstancetemplate)
+  -- if pinstancetemplate.STATE = INSTANCE_BINDING
+
+dec $instance_publication_abrupt_tail(pstate, ptask*) : bool
+def $instance_publication_abrupt_tail(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+  -- if ~pdestructorcall.USER /\ ~pdestructorcall.STORE /\ pdestructorcall.RELEASE =/= eps
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if pdestructorcall.CONSTCONTEXT = (pconstantcontext)
+  -- if $instance_default_context_at(S.TODO) = (porigin_target)
+  -- if $instance_publication_tasks(S, S.TODO, porigin_target, pconstantcontext.ORIGIN)
+def $instance_publication_abrupt_tail(S, (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_C_RETURN pdestructorcall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.RELEASE =/= eps
+  -- if $destructor_c_return_valid(S, pdestructorcall)
+  -- if pdestructorcall.CONSTCONTEXT = (pconstantcontext)
+  -- if $instance_default_context_at(S.TODO) = (porigin_target)
+  -- if $instance_publication_tasks(S, S.TODO, porigin_target, pconstantcontext.ORIGIN)
+def $instance_publication_abrupt_tail(S, ptask*) = false -- otherwise
+def $class_write_abrupt_tail(S, ptask*) = true
+  -- if $instance_publication_abrupt_tail(S, ptask*)
+def $class_write_abrupt_reason(S) = "uncertified instance-default old-release abrupt completion"
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $instance_publication_abrupt_tail(S, ptask*)

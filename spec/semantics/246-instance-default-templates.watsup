@@ -280,7 +280,9 @@ def $instance_default_record(S, porigin_class, pstaticdefaultcontext) = eps
   -- if $instance_default_filled_at(S, porigin_class, pstaticdefaultcontext.DECL, S.CLASSCONSTANTHISTORY, |S.CLASSES|)
 dec $instance_default_bound(pstate, porigin, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) : pstate
 def $instance_default_bound(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass) = S[.INSTANCEDEFAULTS = $instance_default_set(S.INSTANCEDEFAULTS, porigin_class, pstaticdefaultcontext.DECL, $instance_default_bound_state(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass))][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ $instance_default_record(S, porigin_class, pstaticdefaultcontext)] -- otherwise
-rule PhpStep/instance-default-bind: S ~> $static_default_restore($instance_default_bound(S_value, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext)
+dec $instance_default_commit(pstate, porigin, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass, ptask*) : pstate
+def $instance_default_commit(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass, ptask*) = $static_default_restore($instance_default_bound(S, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass)[.TODO = ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pstaticdefaultcontext) -- otherwise
+rule PhpStep/instance-default-bind: S ~> $instance_default_commit(S_value, porigin_class, pstaticdefaultcontext, ppropertydesc, pvalue, pvalueclass, ptask_tail*)
   -- if S.TODO = (INSTANCE_DEFAULT_BIND porigin_class pstaticdefaultcontext) :: ptask_tail*
   -- if $instance_default_bind_valid(S, porigin_class, pstaticdefaultcontext)
   -- if $property_default_active_desc(S, pstaticdefaultcontext.DECL) = (ppropertydesc)
@@ -341,6 +343,8 @@ def $instance_default_static_ready(S, porigin_decl, pclassconstantevent*) = $ins
 def $instance_default_static_ready(S, porigin_decl, pclassconstantevent*) = false -- otherwise
 def $class_constant_event_ordinal(CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n) = n
 def $class_constant_compile_events(S, (CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+dec $instance_default_history_payload(pstate, pinstancetemplate) : bool
+def $instance_default_history_payload(S, pinstancetemplate) = ($instance_default_value(pinstancetemplate.STATE) =/= eps) -- otherwise
 def $class_constant_history_fills(S, (CCINSTANCE porigin_class porigin_decl porigin_root porigin_trigger pstaticselection? n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
   -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_class) = (false)
@@ -351,7 +355,7 @@ def $class_constant_history_fills(S, (CCINSTANCE porigin_class porigin_decl pori
   -- if $instance_default_source_valid(S, ppropertydesc)
   -- if $instance_default_prior_done(S, porigin_class, porigin_decl, $property_layout(S, porigin_class, |S.CLASSES|), pclassconstantevent_before*)
   -- if $instance_default_at(S.INSTANCEDEFAULTS, porigin_class, porigin_decl) = (pinstancetemplate)
-  -- if $instance_default_value(pinstancetemplate.STATE) = ((pvalue, pvalueclass))
+  -- if $instance_default_history_payload(S, pinstancetemplate)
   -- if $class_constant_values_done($class_constant_layout(S, porigin_class, |S.CLASSES|), porigin_cached*)
   -- if $class_constant_parent_done(S, porigin_class, (porigin_flag, b_flag)*)
   -- if $class_constant_parent_chain(S, porigin_root, porigin_class, |S.CLASSES|)
