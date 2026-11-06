@@ -2337,6 +2337,16 @@ nullary, contextual-array, header and438 bounds stay unchanged. The
 records five distinct source agreements, separate 145/221 owner/budget fronts
 and a 29-condition real-source unpack guard at their recorded cuts; six intended
 Unsupported controls retain zero agreement credit.
+Fresh fixed-name receivers now support literal public ordinary instance USER
+producers through existing no-ctor/plain-constructor certificates and zero/required
+untyped positional by-value formals. Immutable original caller scope preserves
+actual private-first selection; private shadows are refused. Generic receiver,
+parameter and result owners distinguish receiver call-owner release from
+return-this result/table/child retention. Quiet COPY/header/array and438 bounds stay fixed.
+The [instance-producer review](coverage/semantics/anonymous-instance-producer-magic-review.json)
+records five full-source agreements, separate 150/275 owner fronts (bounded first
+cleanup/full budget) and separate 31/38 unpack/private-shadow guards. Seven source
+refusals and the preserved peer checker-only attempt retain zero agreement.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2710,10 +2720,12 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS207 | Fresh fixed-name receiver/public literal instance USER producers with authentic method targets and generic ownership; preserve current quiet value/header and held boundaries. |
+| CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
+| ATTR68 | Trait GET/short-SET pairs through existing unadapted exporters, authenticated imported RHS/origins/clones and inherent backing; reuse runtime and preserve wider held modes. |
 | COMP194 | Owning Deprecated dependencies during ordinary named-class constant lazy initialization, with authentic declaration, bind/type/cache and saved-tail authority; request class-cache ownership, preserving static-property, Trait and held bounds. |
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
+| I129 | Ordinary positional prefixes plus one terminal simple-CV Traversable at admitted native Generator consumers, with actual replay/SENT and prefix roots; exclude array prefixes, multiple Traversables and named-before-unpack. |
 | OB26 | Completed builtin Exception from a direct no-argument ordinary helper through real VM unwind into native output consumers, preserving exact identities and catch/normal clearing; keep wider throw/rendering modes held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

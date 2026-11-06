@@ -794,6 +794,17 @@ ephemeral object is gone. Captures, arrows, dynamic-CV callables and wider modes
 remain partial; constructor, nullary, array and unpack policies stay unchanged.
 [Literal-Closure review](../../coverage/semantics/anonymous-literal-closure-magic-review.json).
 
+Fixed literal public ordinary instance producers now run on fresh fixed-name
+receivers, using the existing no-constructor or approved plain-constructor
+certificates and zero/required untyped positional by-value method parameters.
+Original structural caller scope preserves private-first selection after receiver
+retirement; a selected private shadow stays outside this public slice. The real
+method target owns its receiver through inner argument effects. Returning an old
+argument releases the receiver call owner before the handler; returning `$this`
+retains the same instance in the result, real table and child. Quiet COPY, static/nullary/constructor,
+header and unpack bounds remain unchanged; wider receiver/call modes stay partial.
+[Instance-producer review](../../coverage/semantics/anonymous-instance-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

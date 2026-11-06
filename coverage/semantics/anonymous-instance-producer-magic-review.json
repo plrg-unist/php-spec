@@ -1,0 +1,143 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "module_count": 453,
+  "scope": "CLASS207: fixed literal public ordinary USER instance producers on fresh fixed-name receivers, existing no-ctor/approved plain-constructor source certificates and zero/required untyped positional byvalue method parameters, current quiet primitive/ordinary-leaf COPY returns and existing magic headers.",
+  "base": "8890056e61727e79b2af8fbb24f8a207b54ec505",
+  "implementation_commit": "bd391d7a4f65418cec4459171ba305dbfe7dc670",
+  "fixture_commits": [
+    "bf13edce50dfd5c246352776ab5952e8443f05fa",
+    "ef150aa2229547270b1945076611a7f2fe44f8e9"
+  ],
+  "engine_basis": [
+    "Zend/zend_compile.c zend_compile_method_call emits INIT_METHOD_CALL before zend_compile_call_common. zend_vm_def.h INIT_METHOD_CALL obtains the effective method and retains the receiver before arguments. zend_object_handlers.c zend_std_get_method/zend_get_parent_private_method give the lexical private parent its own identity despite an effective public Child override.",
+    "Zend compiles/evaluates the fresh receiver and selects the actual instance method before its arguments. Existing142 METHOD_TARGET holds that real receiver and retains declaring/called scope through generic86/80/79 sends, fresh params and result-before-target cleanup. Returning another value releases the call receiver owner; returning this retains the same instance in the result/table. The validated unaliased return-old case retires the receiver before the handler.",
+    "Instance selection is private-first:142 method_class_selected/method_selected_scope can select lexical Base private method despite an effective public Child override.414 already authenticates original caller scope against closure_source_class(outer site); the direct producer argument has the same structural caller ancestry, preserving selection after frame/receiver retirement."
+  ],
+  "mechanism": "414 adds original fresh-receiver/literal-method source authentication. Keyword-free fresh named new reuses old no-ctor or approved public constructor certificates. Existing structural source scope feeds method_class_selected; the actually selected descriptor must be public/nonstatic/nonabstract, ordinary nonmagic/nonctor and direct plain class-method source, with exact parsed/compiled zero/required untyped nonref/nonvariadic/default-free formals, absent return type and nongenerator body. Raw all-MethodCall collection requires the certificate before quiet value admission;438 excludes the new raw shape. No CURRENT/ENV/live-CV target-history inference or142/owner/schema/allocator/native-evaluation change.",
+  "author": {
+    "source4": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/author/source/report.json",
+      "sha256": "67660741498bade946f57615706ae008228bda14153458c5369fb860b27fb745",
+      "count": 4,
+      "result": "First full models exactly match once-pinned native bytes/path/cwd/profile atbd391: normal/exit0/empty stderr/stable/no timeout under upfront300. Owner218.484/instance135.902/static83.893/named97.017s. Grouped current headers cover zero/required methods, no-ctor/zero/required-constructor receivers, inherited lexical/called scopes, NULL/bool/int/binary64/interned/request strings and return-old versus return-this lifetime. Native not repeated."
+    },
+    "excluded_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/author/boundaries/report.json",
+      "sha256": "3946ab3b874915b1c53b7a146f643c0ae15b344a22ef1247189c5cbee423820e",
+      "count": 7,
+      "agreement_credit": 0,
+      "result": "All7 once-native normal originals reach intended Unsupported, exit1/empty stderr/stable/no timeout under300. Array return runs METHOD and receiver destructor before collection refuses. Unpack prefix, inner named/default method, CV receiver and default constructor stop before METHOD/RECEIVER/BODY. Native private-shadow source selects PRIVATE despite public Child override; model refuses that selected-private source before PRIVATE/BODY.24.970/22.913/22.786/22.850/24.416/25.352/25.916s."
+    },
+    "owner150": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/author/closure-call-protocol-7zedf_ze/report.json",
+      "sha256": "0ee856e36122bc30dc78659c177e32fc124acc98662e95f377cdd872b6d2d594",
+      "record_id": "magic-instance-producer-pending-leaf",
+      "conditions": 150,
+      "result": "First SL453 execution true/exit0/empty stderr/stable/no timeout atef150 under300. Actual inherited METHOD_TARGET receiver root is independent of the old pending leaf after caller replacement. Fresh nonref params receive old/NULL; lexical ProducerBase/called ProducerChild remain exact. Producer receiver/param cells and replacement retire before the real handler table/returned child retain old. Source/class/method certificate still succeeds after receiver retirement; missing CODE/classes cannot regain old PINT/live-leaf admission. At genuine root pre-AFTER-OLD fence all first receiver/table/child/payload resources have retired with exact native prefix.2-step resumed seek2048 equals direct seek2050 at that same fence, with call/class/GC/heap validity. This is a bounded first-cleanup proof; the original later return-this call remains covered by full source agreement and separate independent owner proof."
+    },
+    "unpack_guard31": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/author/closure-call-protocol-7zedf_ze/report.json",
+      "sha256": "0ee856e36122bc30dc78659c177e32fc124acc98662e95f377cdd872b6d2d594",
+      "record_id": "magic-instance-producer-unpack-prefix-refused",
+      "conditions": 31,
+      "result": "First SL453 execution true/exit0/empty stderr/stable/no timeout. At genuine pre-call source fresh receiver/public method/structural scope certificates are valid, while438 rejects this new prefix. The actual initialized [9] array and compiled spread classifier are eligible; driving reaches exact magic-source Unsupported without METHOD/RECEIVER/BODY effects. Fresh receiver has not yet been allocated at this front."
+    },
+    "private_shadow_guard38": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/author/closure-call-protocol-7zedf_ze/report.json",
+      "sha256": "0ee856e36122bc30dc78659c177e32fc124acc98662e95f377cdd872b6d2d594",
+      "record_id": "magic-instance-producer-private-shadow-refused",
+      "conditions": 38,
+      "result": "First SL453 execution true/exit0/empty stderr/stable/no timeout. Actual ShadowParent::run caller reaches the original outer call with matching structural scope. Effective Child public method and selected lexical Parent private method have distinct origins; source/copy certificates refuse PRIVATE even with old valid PINT7. A derived pure query with CURRENT/FRAMES cleared still uses original source scope and refuses, while lookup at scope eps would select the public override. Driving the genuine source state reaches exact Unsupported before PRIVATE/RECEIVER/BODY."
+    },
+    "state_environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "wrapper_seconds": 267.62146372901043,
+      "note": "Combined150/31/38 sequential elapsed; each runner retains300s. Fixture preparation/boundary/tail fixes occurred before first state execution and have no execution credit."
+    }
+  },
+  "independent_review": {
+    "status": "accepted_private_CLEAR",
+    "record": "coverage/semantics/anonymous-instance-producer-magic-independent.json",
+    "original_peer_commits": [
+      "3b017e37f",
+      "41f705325a6e2e3696ba7663829791a6ab18b41e",
+      "0a5cefaf0c4c2072ff1336e1c698f7369a3f3cd1",
+      "8a412f060"
+    ],
+    "author_cherry_picks": [
+      "bb551a1bd",
+      "793cedf50",
+      "e3ede3339",
+      "473547f50a7568a581fdc64c2e6306149732bc72"
+    ],
+    "source": {
+      "count": 1,
+      "id": "named-inherited-fresh-return-this-request-retirement",
+      "source_sha256": "6f681e4ef868121fe20194484f15ce3f2158f93fb95879a34c327bd7659fb7ec",
+      "result": "First model exactly matches once-pinned native original bytes/path/cwd/profile: normal/exit0/empty stderr/stable/no timeout;160.676 seconds under upfront300 at41f. Native not repeated.",
+      "behavior": "A named argument uses fresh ProducerChild with an inherited approved constructor and method. The constructor stores request0 and returns false; capture snapshots aliased REQUEST-OLD before a later callback writes99 and clears the outer owner variable. The inherited method prints declaring Base/called Child and returns This. Handler alias0, caller-cell/receiver/Closure retirement and child cleanup preserve that same instance/text until CHILD;PRODUCER-END.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/reviewer/source/report.json",
+      "sha256": "31b7a24f50d283f6bb90edf8964c34cfbdc3051c93b233a1ed3cfe65b3caed79"
+    },
+    "SL453": {
+      "conditions": 275,
+      "result": "Corrected SL453 execution true/exit0/empty stderr/stable/no timeout;240.131 seconds under300 at0a5. The initial checker-only failure remains separate0.",
+      "behavior": "Real CTOR_RESULT owns the fresh requested-class instance after scalar false; one step supplies that identical object. Actual inherited METHOD_TARGET before inner SEND holds one receiver owner. One COPY freezes request0 without caller CELL roots; fresh saved/false cells remain nonref after alias99. At RETURN_VALUE This, receiver plus result own the same object twice; after frame/parameter retirement the head METHOD_RESULT has one returned owner. Its next step preserves exact OBJECTS identity without treating the BASE interpreter cache as a native owner. The real named table has three parameter/buffer/static-Closure owners and one edge to that childless scalar-field instance. After caller cell/outer receiver/escaped Closure retirement, child alone retains the identical table/producer/text. Full4098 equals split2+4096 and releases child/table/producer with ordered output and valid call/class/Closure/GC/heap states.",
+      "controls": "An unrelated real receiver cannot supply this method target. Missing CODE refuses authentic old PINT/live-leaf substitutions. Old array-producer and438 roles stay ineligible; structural fresh-source certification still succeeds after producer destruction. Derived controls earn no native agreement.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/reviewer/state-corrected/report.json",
+      "sha256": "3b6430c526a7d1c6eec6e24c4b47644da32bfd7e64c812bef4f2b611779928ef"
+    },
+    "preserved_checker0": {
+      "revision": "41f705325a6e2e3696ba7663829791a6ab18b41e",
+      "seconds": 11.051,
+      "agreement_credit": 0,
+      "result": "DSL checker stopped before PHP-state evaluation because newly introduced property-list and scalar-slot metavariables shared the same base names.0a5 renames only seven list uses; all275 assertions and production/source bytes are unchanged. Only this affected state fixture was rerun.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/reviewer/state0/report.json",
+      "sha256": "e5707863ade27b3e422bfec6ec010ab730bd2b19622a54a6b7177500ddc0c634"
+    },
+    "final_review": "CLEAR from /root/recovery_classes_review: original fresh receiver/class/method/formal authority and immutable private-first caller scope, actual METHOD_TARGET receiver/params/results, generic call-owner release versus validated unaliased death and return-this retention, no old-value fallback or wider438 source admission. Corrected275 passes; initial checker failure remains0. Runtime/source/native/author cuts unchanged."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic",
+    "recovery": "Fresh originals: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_instance_producer_magic_cases.json --model-timeout 300. State fronts: anonymous_instance_producer_magic_protocol.py --sl; --case selects affected only. Separate control catalogue binds Unsupported reasons/output to once-native normal originals; control credit0. Raw original paths/commands/streams/profile/frozen inputs stay external.",
+    "inputs": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/author/inputs",
+    "identity": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class207-fresh-instance-producer-magic/author/identity.json",
+      "sha256": "0e24201288511f2b741fc84bbcff90fecf545dc7491600cec6c907ee2a3104d2"
+    }
+  },
+  "remaining": "CV/dynamic/nullsafe/magic receivers, ref/Generator/default/variadic/inner-named/unpack/array returns, wider headers and held request-owned NUL/other lanes remain partial.",
+  "engine_divergence": "None identified.",
+  "main_context": {
+    "head": "b0e4bbc446e6ba91f11171069a9c1e74c5b3f848",
+    "module_count": 453,
+    "finding": "Only newer runtime deltas from889 are382/403 backed/virtual Trait export/import guards,437 plain-function is_callable/PREFIX reception, and423/447 native Generator CONFIG prefix policy plus its nonowning30 query field. No Trait, hook, imported/virtual property, is_callable/enum query or native Generator/CONFIG pack exists in these positives; the initialized-array refusal stops before acquisition. The old Generator prefix fallback remains equivalent <=2. Critical142/39/80/414/438 have no conflicting change. Static compatibility only; exact private453 source/state cuts are preserved.",
+    "secured_source": "6a6f8f78c"
+  },
+  "summary": {
+    "distinct_original_agreements": 5,
+    "author": 4,
+    "independent": 1,
+    "separate_owner_budget_conditions": [
+      150,
+      275
+    ],
+    "owner_budget_distinction": "Author150 proves actual pre-AFTER-OLD first cleanup via2+seek2048/direct seek2050; peer275 proves full4098=2+4096 on its separate return-this original.",
+    "separate_source_guard_conditions": [
+      31,
+      38
+    ],
+    "source_refusals": 7,
+    "preserved_checker_failures": 1,
+    "unsupported_failed_diagnostic_timeout_agreement_credit": 0,
+    "inventory": "169 constructors/306 obligations consistent; same six entries stay partial.",
+    "engine_divergence": "None identified.",
+    "remaining": "CV/dynamic/nullsafe/magic receivers, ref/Generator/default/variadic/inner-named/unpack/array returns, wider headers and held request-owned NUL/other lanes remain partial."
+  }
+}
