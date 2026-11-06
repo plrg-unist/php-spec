@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-fresh-invoke-fcc-named-refused",
+      "source": "<?php\nclass Boundary219 { public function __invoke($saved) { echo \"INVOKE;\"; return $saved; } }\nclass Magic219 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner=new Magic219; $owner->MiSsInG(((new Boundary219)(...))(saved:7));\n",
+      "source_sha256": "65e70cc70b9c759b9ff2e1244fbd53a6ada1a3368628b74f10bbad06570a8800",
+      "stdout_template_base64": "SU5WT0tFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    },
+    {
+      "id": "magic-fresh-invoke-fcc-array-refused",
+      "source": "<?php\nclass Boundary219 { public function __invoke() { echo \"INVOKE;\"; return [9]; } }\nclass Magic219 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$owner=new Magic219; $owner->MiSsInG(((new Boundary219)(...))());\n",
+      "source_sha256": "53f1fb75444c31c1bda28e5cf395fec3c94eb2a03925b51605a00efcef203b00",
+      "stdout_template_base64": "SU5WT0tFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "SU5WT0tFOw=="
+    },
+    {
+      "id": "magic-fresh-invoke-fcc-unpack-refused",
+      "source": "<?php\nclass Boundary219 { public function __invoke() { echo \"INVOKE;\"; return 7; } }\nclass Magic219 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return 9; } }\n$pack=[9]; $owner=new Magic219; $owner->MiSsInG(((new Boundary219)(...))(),...$pack);\n",
+      "source_sha256": "b552a173aff16b177f468c5d0982e32170d7a7b9fbe7b8a0e07fb5227e1e15ef",
+      "stdout_template_base64": "SU5WT0tFO0JPRFk7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": ""
+    }
+  ]
+}
