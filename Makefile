@@ -510,6 +510,7 @@ test-semantics: build
 	python3 tests/semantics/strict_declaration_state.py
 	python3 tests/semantics/typed_function_compiler.py
 	python3 tests/semantics/typed_functions.py
+	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py
 	python3 tests/semantics/callable_string.py
