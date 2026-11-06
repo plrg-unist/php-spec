@@ -792,6 +792,25 @@ uses a narrow absence/default bridge without a new load or semantic replay. No o
 return or Fiber/held-mode expansion is introduced.
 [Aggregate reentry review](coverage/semantics/generator-aggregate-reentry-review.json).
 
+I136 adds source-authenticated public USER method helper links to the existing
+singleton Fiber and Iterator/Aggregate/source-Generator reentry walks. Helpers
+return by value; ordinary parameter/source/storage policies are unchanged.
+Immutable simple-CV instance or receiver-free scoped-static callsites preserve
+real method receiver roots across rebinding and VM movement. A real validation
+cycle is cut by checking the cursor head before the body proof; necessary saved-ID
+checks run before deeper helper proofs without changing accepted endpoints.
+Two maintained native/model agreements compose authentic N909 and lean-Ef9 cuts.
+One complete focused packet passes 161 conditions (parked VM 86, dual reentry 75)
+at private462 plus fixture463. Accepted source cuts retain later return/catch and
+retirement observations; repeated validators and later seeks are omitted.
+Original timeouts, fixture stops and diagnostics retain zero credit, including
+the earlier whole237 timeout. The named-function fallback and all source/value/
+held domains remain. Other This/object-static/receiver-bearing scoped helper
+sources gain no new proof here; no older campaign is replayed. One actual current
+466-module shared-interface load passes at `7715a03b0` with inventory 169/306;
+that load adds no source-agreement credit.
+[Method-helper review](coverage/semantics/generator-method-helper-reentry-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -3452,7 +3471,6 @@ their work remains unaccepted until integrated.
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
 | GC73 | Quiet-scalar reference leaves in retained credited arrays, preserving singleton unwrapping versus shared-cell COW writes and exact old-header no-visit decrements. |
-| I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB32 | Genuine strict __toString scalar-return TypeError during FINAL output conversion, preserving original native ownership, default rendering and cleanup. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

@@ -8665,6 +8665,15 @@ return transfers into DATA once; getter failure keeps the accepted pre-DATA
 cleanup order. Literal calls with no positional prefix share this same policy.
 [Aggregate reentry review](coverage/semantics/generator-aggregate-reentry-review.json).
 
+Ordinary public USER method helpers can cross the existing Generator reentry
+and singleton Fiber-transfer walks. Simple non-This object-CV calls retain their
+real method receiver; receiver-free scoped static calls add no object owner.
+Immutable call-source and registered method proofs survive CV rebinding.
+The saved VM moves existing context roots once, while source DATA, copied argv
+and cached values retain their separate owners. Wider method-source ownership
+forms remain separate.
+[Method-helper review](coverage/semantics/generator-method-helper-reentry-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

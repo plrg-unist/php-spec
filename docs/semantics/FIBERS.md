@@ -75,6 +75,16 @@ unchanged. Four originals preserve normal one/two-level returns and supplied
 Throwable finally unwinding, where two or three distinct parameter cells own the
 same Token. [Helper transfer review](../../coverage/semantics/generator-fiber-helper-transfer-review.json).
 
+Source-authenticated public USER method helpers with by-value returns also
+cross the existing singleton transfer walk. A simple non-This object-CV helper
+retains its actual context receiver after the CV clears; a receiver-free scoped
+static helper has no object root. CURRENT and saved frames carry those existing
+edges into the VM and restore them once. Full-prefix flatness, singleton IDs,
+constant/transfer guards and restored-VM close-ID collection remain unchanged.
+The direct observation is scalar suspend/normal resume; injection and guarded
+close use reviewed common laws without new source credit.
+[Method-helper review](../../coverage/semantics/generator-method-helper-reentry-review.json).
+
 Borrowed NEXT during native Generator argument collection now also authenticates
 its actual named by-value source resumer. The saved CONFIG_GENERATOR frame
 retains the selected receiver and frozen argv; the running source has no stored

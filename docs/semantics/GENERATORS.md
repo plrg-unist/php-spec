@@ -263,6 +263,24 @@ retain their accepted rules. INI/Generator returns, source/value and other held
 modes remain unchanged.
 [Aggregate reentry review](../../coverage/semantics/generator-aggregate-reentry-review.json).
 
+Ordinary public USER method helpers with by-value returns now share the four
+existing finite helper walks. A registered named class/method source proof checks
+the physical child path, method name, visibility, static and BYREF return flags.
+Instance helpers require an immutable method/nullsafe callsite on a simple
+non-This CV; scoped static helpers require no receiver or owning selector.
+Existing current/saved context validation supplies the selected receiver,
+lexical/called scope and source line without rereading changed CVs. Real method
+receiver roots remain in the current/saved context and move with a suspended VM.
+The Iterator-frame hook rejects noncursor frames before querying the body proof,
+cutting a same-state validation cycle without changing its real endpoints.
+The named-function fallback, strict tail descent, flat/singleton and transfer
+checks stay exact; dual source reentry keeps both real IDs and its existing
+source/CV/cache/DATA laws. Normal scalar Fiber resume and a method-helper source
+throw have direct source evidence; Fiber injection/guarded close compose through
+unchanged common laws. Object-static, direct This and receiver-bearing scoped
+helper source proofs remain separate; they gain no new helper proof here.
+[Method-helper review](../../coverage/semantics/generator-method-helper-reentry-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does
@@ -397,7 +415,7 @@ An outside NEXT before the first yield fails both native initialization and resu
 chaining two Errors; with an existing cache only resume fails. The
 [transfer review](../../coverage/semantics/generator-fiber-transfer-review.json)
 keeps the original pre-target observer refusal separate from the reached transfer
-fence. Method/Closure helpers, wider delegation, reference caches and wider
+fence. Wider method/Closure helpers, delegation, reference caches and
 close/collection histories remain unvalidated.
 
 Ordinary named helpers above that body also survive Fiber transfer. Each genuine
@@ -408,7 +426,7 @@ frames retain two/three independent parameter cells for the same object; normal
 returns or supplied-Throwable unwinding retire them in actual order. The
 [helper review](../../coverage/semantics/generator-fiber-helper-transfer-review.json)
 keeps native discovery, the genuine refusal and source/state cuts separate.
-Method/Closure helpers, by-reference returns, wider delegation/cache/other-API histories,
+Wider method/Closure helpers, by-reference returns, delegation/cache/other-API histories,
 CONFIG consumers and wider close/collection remain unvalidated.
 
 Named native `yield from` chains also retain every real resumer and source claim
