@@ -1,0 +1,79 @@
+{
+  "status": "CLEAR",
+  "scope": "CLASS225: normal immediate Closure::fromCallable invocation with exactly two implicit/direct/nonref/nonspread callback-array items containing a fixed nonkeyword loaded USER class string and literal public ordinary static method; existing signatures, quiet COPY and magic headers.",
+  "base": "7715a03b07f4100a6599f9f558fb083c64014285",
+  "implementation_commits": [
+    "4907c1cdf90c777d29c86c4b6b8a04abf7f6b46a",
+    "8989e22430b3307d50d5514510cb0ada1e6d1171",
+    "408566564044748d989a76661fef055fdceae542"
+  ],
+  "peer_fixture_commits": [
+    "4560170ad89f9e39d4a977ccbacd7cce426a698e",
+    "ce02e6c78ba85ed4caac04a8318884d0dded1c6b",
+    "03a3a32986d23b32b838b36985eda8d40ff52e03"
+  ],
+  "tested_source_revision": "e7d4cadbd4cb787f00b06d0a6423c27d6eded99c",
+  "tested_state_revision": "e7d4cadbd4cb787f00b06d0a6423c27d6eded99c",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "static_review": [
+    "414 adds a disjoint two-scalar-string array arm. Actual factory parts authenticate normal CODEEXPR/outer INIT and REAL invocation args. Exact original item nodes/paths/bytes agree with the compiled callback-array pool entries; child executable records are absent because the whole literal array folds. No synthetic child emission or global literal_value change.",
+    "Concrete nonkeyword string API_CLASS is STRICT true: scope_method(false) selects effective_method, then old plain_static_source requires public/static/nonabstract ordinary USER source and real zero/required formals. This differs object-selector private-first lookup. API metadata may retain compatible callerThis/called scope; STATIC wrappers always use from_receiver eps. No receiver-owner or history inference.",
+    "Existing234 uses the selected API_METHOD_TARGET to create FROMCALLABLECLOSURE with ARRAY true,STATIC true,INVOKE false. The compiled pool keeps its header; CONFIG_FROM releases its separate SEND owner. Wrapper/INSTANCE/parameter/result laws are unchanged, as are222\u2013224 arms,438/raw priority/schema/facts/roots/owners."
+  ],
+  "original": {
+    "id": "named-static-array-from-callable-request-return",
+    "source_sha256": "90e5817bd696cd11ec07c6fb3ba2e147de30b4dc7b8252378e898418cc41244d",
+    "catalogue": "tests/semantics/anonymous_static_array_from_callable_producer_magic_independent_cases.json",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class225-static-array-from-callable-producer-magic/reviewer/source/native.json",
+    "native_report_sha256": "3893833197d892997c63b68a79dde92b9f801fdd13bd295d38a5ae0570ed5f8f",
+    "result": "Once-native exact normal/quiet exit0: root factory selects inherited Base static method/requested and called Child. Saved REQUEST string survives late99 and magic-ownerNULL, then real named table/global kept; no receiver edge."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class225-static-array-from-callable-producer-magic/reviewer/source/report.json",
+    "sha256": "a7d8837efeb44bf723c01da4b8936c445ea1b4d810e4e8cfffa8f3625e523abc",
+    "result": "FIRST exact normal/quiet/stable/no timeout,51.007024284s,SL466,300s inner/310s outer; original native path/cwd/profile retained without relocation or reexecution.",
+    "agreement_credit": 1
+  },
+  "state": {
+    "protocol": "tests/semantics/anonymous_static_array_from_callable_producer_magic_independent_protocol.py",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class225-static-array-from-callable-producer-magic/reviewer/state/report.json",
+    "sha256": "56d635a8c79bc6b8be27286295ef85690a9a42db2b79f980d64d7c1326b60580",
+    "conditions": 124,
+    "result": "FIRST SL466 PASS/true/exit0/quiet/stable/no timeout,wrapper61.537083266s,300s inner/370s outer.",
+    "selection": "Actual API_CALLABLE_RESULT0/SOURCE CONFIG_FROM carries the direct class/method array. Compiled parent/raw item bytes, missing child emissions, STRICTtrue public effective Base versus requested/called Child are bound before args. One step appends the exact FROM row after separately binding it; no receiver edge and declaring/called Closure scope are real. Pause plus ready-fence seek equals direct seek.",
+    "owners": "At factory the pooled callback header has two owners, pool plus SEND, and no object children. At CLOSURE_TARGET ready only the pool owner remains. Entered INSTANCE owns the wrapper with receiver eps; saved REQUEST_STRING0 differs from late99. Wrapper retires before real named SEND; real table/global kept transport the string until final unset. Pool header retains one owner throughout.",
+    "retirement": "Final exact output and descriptor/Closure/GC/heap validity hold; pure source certificate survives wrapper retirement. No header-death claim, new history owner or old child-tail replay. Former114 prototype was corrected before its first state execution."
+  },
+  "input_identity": {
+    "module_count": 466,
+    "source_inputs": 477,
+    "state_inputs": 477,
+    "common_hashes_equal": 474,
+    "result": "All466 runtime modules and all474 common source/state inputs match after path normalization; before/after maps remain stable."
+  },
+  "actual_main_context": {
+    "revision": "0f7f37b03db197afd984a74fa09eac35786b32d5",
+    "module_count": 467,
+    "review": "COMP206 named callback/default witnesses require genuine shutdown/tick/API/autoload entries; ordinary method/Closure entries here have DEFAULTSeps and306 uses its old selection fallback. ATTR82 terminal Isset/Get bool-pair absent: no isset/empty/property hooks. OB32 requires native-output FINAL CV-method and return TypeError provenance; these originals use primitive echo without such source. ENUM161475 requires a declared callable return mask; all USER RETURNS eps, so no borrowed CV SOURCE/unref/finish. GC73 ALIAS/COW image requires old-header NATIVEEXCESS1 and authentic alias/reference source. No is_callable NAME-output query means units stay eps despite real pool/table arrays, so the new image/credit paths remain absent. Authentic private7715/466 cuts retained; no gate/replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class225-static-array-from-callable-producer-magic/reviewer",
+    "manifest": "manifest.json",
+    "manifest_sha256": "b670d03f09e2e262fc2373faddfc81188122bdfbd2641b00a47f7c77f26eee98",
+    "artifacts": 31,
+    "recovery": "run-source.py uses the once-native original; run-state.py uses maintained124. Commands/cwd/profile/limits/exits/streams/input maps remain external. Rerun affected checks only."
+  },
+  "failed_peer_attempts": 0,
+  "timeout_attempts": 0,
+  "fixture_corrections_after_execution": 0,
+  "native_repeats": 0,
+  "source_repeats": 0,
+  "state_repeats": 0,
+  "remaining": "Other callback arrays/keys/references/spreads, keyword/computed/stored/CV/receiver callbacks, private/nonstatic/magic/internal methods, broader signatures, inner-named/unpack/array-return/header expansion and owned-NUL/other held paths remain partial.",
+  "engine_divergence": "None identified in the exercised fixed static class-array factory invocation cuts."
+}
