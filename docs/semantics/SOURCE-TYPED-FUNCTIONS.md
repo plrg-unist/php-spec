@@ -43,6 +43,32 @@ fallthrough raises its distinct TypeError. Other declared return types, includin
 return diagnostics use the compiled return instruction's emission line;
 fallthrough diagnostics use the function's source end line.
 
+## Effectful callable returns
+
+Ordinary named, nongenerator, by-value USER functions now verify fresh two-entry
+callable arrays through the existing API resolution stages. The receiver is a
+direct published USER class string or live ordinary instance; qualified method
+bytes may come from a reference cell. Public concrete methods and known absence
+are distinguished without invoking the target. Other exact union alternatives,
+including array/object and nullable acceptance, bypass callable diagnostics.
+
+The resolved return temporary has one owner across the API, return unwind and
+caller continuation. Successful verification is not repeated after finally, so
+an aliased method member can change while the same array returns. A handler
+exception after valid lookup survives finally and callee-CV cleanup before the
+returned temporary drains. Invalid lookup instead releases that temporary before
+finally and creates the return TypeError, retaining any pending handler exception
+as Previous. Existing throwing-frame cleanup also preserves a replacement exception
+from a local destructor.
+
+The [scoped review](../../coverage/semantics/callable-return-review.json) binds
+the four originals and owner/budget checks. Effectful CV-return detachment,
+ALIAS object receivers, keyword contexts and wider entries remain unproved by
+this increment. Pending successful lookup with an explicit replacement transfer
+inside a protected finally stops as Unsupported: two native timeout controls
+remain zero credit, and the stopped state keeps its existing owners. This does
+not change generic finally, destructor, collection or invocation rules.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

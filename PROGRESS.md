@@ -2014,6 +2014,17 @@ cuts remain in the [GC03 review](coverage/semantics/gc-registration-order-review
 Typed-current capture and scalar argument snapshots remain in the
 [CONFIG contract](docs/semantics/INCLUDE-SOURCES.md).
 
+Effectful callable return checks now retain a fresh array temporary across
+qualified public lookup, live member mutation and finally. Valid lookup carries
+a handler exception through callee-CV cleanup; invalid lookup drops the temporary
+before finally and creates a return TypeError, retaining any pending handler
+exception as Previous. Exact union branches
+bypass lookup. Four source agreements, private 463-module strict compilation and an independent
+190-condition owner/budget packet pass. Accepted current464 source/interface
+composition is recorded separately;
+the scoped review keeps the unresolved pending/replacing-finally timeouts and
+model-only refusal checks separate. [Callable returns](coverage/semantics/callable-return-review.json).
+
 Current combined behavior is summarized below. Family docs and linked reviews
 retain exact admission limits, original failures and tested cuts; this file does
 not repeat historical receipt counts or renew their execution credit.
@@ -3331,7 +3342,6 @@ their work remains unaccepted until integrated.
 | CLASS221 | Immediate implicit This invokable FCCs with authentic capture/outer arguments and saved caller source, reusing existing target, wrapper and caller-held receiver laws. |
 | ATTR78 | Plain CV names for existing magic isset/empty/coalesce/conditional handlers, with saved quiet NAME authority and genuine later assignment reacquisition; preserve scalar, producer and owner bounds. |
 | COMP204 | Owning extra defaults for existing ordinary public autoload methods, using authentic AUTO_RESULT/CAUSE entry and request history; derive real dispatch/registration owners before any root change. |
-| ENUM160 | Effectful callable return-type checks with genuine one-owner returned-value SOURCE transport, existing resolution and native failure/finally ordering; preserve pure union bypass and producer bounds. |
 | GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB31 | Fresh factory results stored in ordinary helper CVs then thrown through actual finite pending restores, with frame/cell associations and distinct normal and exceptional contours; preserve real owners and held bounds. |

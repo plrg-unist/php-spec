@@ -3469,6 +3469,12 @@ now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)
 binds926 source/state/protocol gates and the one-test correction bridge.
 Remaining callable/type protocols stay pending.
+[Effectful callable returns](coverage/semantics/callable-return-review.json)
+now keep a fresh callable-array temporary through lookup warnings, live member
+changes and finally. Valid lookup preserves a handler exception through frame
+cleanup; invalid lookup produces a return TypeError, retaining any pending handler
+exception as Previous. Exact
+union alternatives bypass lookup. Wider return sources and contexts remain partial.
 [Callable/string parameter precedence](coverage/semantics/callable-string-current-review.json)
 retains admitted public invokable objects before weak string conversion, in either
 union order. Independent source and RECEIVE ownership checks pass; two source

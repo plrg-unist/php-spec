@@ -1,0 +1,187 @@
+{
+  "scope": "ENUM160: effectful callable return verification with the actual resolved temporary",
+  "base": "bb6503744f729137607e1da4514d8389525fd59f / accepted462",
+  "semantic_revision": "fb41872a7a03a425cc245a1c98c2bd1e5f0879a0",
+  "fixture_revision": "66626955aec8e665e4ad33889862af766ffa228d",
+  "target": "Pinned PHP 8.5.10 CLI NTS64, vendored 34308a6666b2d489c509541ea9befea9e2b42348; -n/tests/semantics/profile.json, LC_ALL=C, TZ=UTC",
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "71c82782ac76dd5b9a93be7d47d346c4350b729ee0d418f2c5c8cc49d572e35d",
+    "spec/semantics/40-control.watsup": "fc7fc2cf0bb82333b6c5500220168fc91e7bbd442dc18372100c9945d65e6bfc",
+    "spec/semantics/475-callable-return-types.watsup": "84f5dfb470d51aff18caa0eab244c6787e1b131503cde37402d93a6ac9000390",
+    "spec/semantics/modules.json": "67df492a55a1ff59682ef5275bd584eaf95374dc2c96933de00aa748468c49a6"
+  },
+  "sources": {
+    "timing.php": {
+      "sha256": "32ce37cffe75779567f0ddd19d44ab117471f99f7035e410b0aa7d6c0cf0823a",
+      "maintained": true
+    },
+    "owners.php": {
+      "sha256": "37a2f6caa75aa19abefa6a647dd29b5ccb84e85a135ed189b76a9506b80484d1",
+      "maintained": true
+    },
+    "cleanup-cv-only.php": {
+      "sha256": "691c3b2e6977eaa42c90a1fdd6d63965d336f2fca0a6655ee122200a358d8f5f",
+      "maintained": true
+    },
+    "unions.php": {
+      "sha256": "5fd81e56a9202d9a46c525e985ab86c6b303815bd58a718c36fe851b42f72749",
+      "maintained": true
+    },
+    "cleanup.php": {
+      "sha256": "8ef877a80b1ca7e984210c78c71e3532b871a25e4fa856d9c643f49c491bd480",
+      "maintained": false
+    },
+    "cleanup-basic.php": {
+      "sha256": "729955db9a78a5b5e7a492f1fda225a0ee973fe06eebadf6550f344810e20622",
+      "maintained": false
+    },
+    "cv-refusal.php": {
+      "sha256": "377ee8c42d5a1d2fc352d14e2fcf79f01c0e02d1043b384387edf5810e052c42",
+      "maintained": false
+    },
+    "alias-refusal.php": {
+      "sha256": "3f28115edf4a3cc0f1533b086ac9e5f262d37f23212a7f3be89f991dd79e5e7b",
+      "maintained": false
+    }
+  },
+  "source_authority": [
+    "Ordinary named USER function target/function identity, published descriptor, nongenerator/nonbyref signature and exact fresh NExprArray return root/compiled line/body prefix.",
+    "Two keys0/1, DIRECT known published USER class string or actual live INSTANCE receiver, compatible nonkeyword USER qualified prefix, DIRECT or genuine ALIAS method bytes; PUBLIC concrete metadata or known absence without magic fallback. No target body entry.",
+    "Exact scalar/container/object/null union alternatives use existing type conversion before any callable continuation. Initial unproved effectful CV, receiver ALIAS, keyword and wider entry cases remain outside this increment."
+  ],
+  "behavior": [
+    "RESULT transfers one real array temporary to CALLABLE_RETURN_SOURCE; API query metadata adds no owner. Success transfers that same value into RETURN_UNWIND, without another callable check after finally/member mutation.",
+    "A genuine handler Exception transfers from THROW_SEARCH into SOURCE once. Resolved lookup carries the value through finally with one independent pending marker; frame-end transfer puts only the value into caller CANCEL and reuses existing THROW_SEARCH/restore_frame/FRAME.PENDING cleanup.",
+    "Invalid lookup creates the existing return TypeError and links the actual handler Exception as Previous when present, removing the returned temporary before finally. Valid handler throw removes it after finally/callee-CV cleanup; a CV destructor can replace the pending Exception with Previous preserved.",
+    "The protected-region scan fences pending-success replacement transfers, including expression throw and excluding nested callable bodies. An exact authenticated40 stopped-front hook retains existing SOURCE owners at Unsupported instead of treating the unimplemented continuation as PHP unwind."
+  ],
+  "native": {
+    "passing": [
+      "native-timing-v1",
+      "native-owners-v1",
+      "native-cleanup-cv-v1",
+      "native-unions-v1"
+    ],
+    "timeouts_zero_credit": [
+      "native-cleanup-v1",
+      "native-cleanup-basic-v1"
+    ],
+    "note": "The timeout controls stop after notice:cleanup|finally:cleanup| before destructor markers. Removing conditional return/throw branches from finally gives the passing CV-cleanup contrast. This establishes no engine-bug claim or semantics for the timed-out combination."
+  },
+  "comparisons": [
+    {
+      "report": "source-timing-v1/report.json",
+      "revision": "21dd25ffb95ccd802a4564aca55e16b29eb78e39",
+      "seconds": 151.70096135139465,
+      "agreement_credit": 1
+    },
+    {
+      "report": "source-owners-v1/report.json",
+      "revision": "21dd25ffb95ccd802a4564aca55e16b29eb78e39",
+      "seconds": 147.45440030097961,
+      "agreement_credit": 1
+    },
+    {
+      "report": "source-cleanup-cv-v1/report.json",
+      "revision": "21dd25ffb95ccd802a4564aca55e16b29eb78e39",
+      "seconds": 86.17139029502869,
+      "agreement_credit": 1
+    },
+    {
+      "report": "source-unions-v1/report.json",
+      "revision": "66626955aec8e665e4ad33889862af766ffa228d",
+      "seconds": 34.205549240112305,
+      "agreement_credit": 1
+    }
+  ],
+  "strict": {
+    "current": "strict-v3/report.json",
+    "modules": 463,
+    "seconds": 28.044519424438477,
+    "result": "true LF, quiet exit0, stable/no timeout",
+    "earlier_pass": "strict-v2/report.json"
+  },
+  "refusals": {
+    "passing": [
+      "refusal-pending-v2/report.json",
+      "refusal-cv-v1/report.json",
+      "refusal-alias-v1/report.json"
+    ],
+    "agreement_credit": 0,
+    "native_execution": false,
+    "pending_stdout": "notice:cleanup|",
+    "cv_stdout": "cv-body|",
+    "alias_stdout": "alias-body|"
+  },
+  "failures": [
+    "baseline-timing-v1: original base Unsupported deprecated callable admission continuation,47.556757s,0.",
+    "strict-v1: binding inside Boolean conjunction did not elaborate,21.711582s,0;21dd splits bindings only.",
+    "native-cleanup-v1/basic-v1: two preserved45s timeouts,0; no result or bug claim.",
+    "refusal-pending-v1: raw intended Unsupported was replaced during generic error unwind by a local destructor Exception,71.969211s,0.",
+    "pending-front-v1: diagnostic head/tail variable spelling caused empty-iteration elaboration failure,25.813303s,0; original controller and fixture retained.",
+    "pending-front-v2: actual SOURCE/query valid, finally_safe=false and raw Unsupported established before driver cleanup,70.962674s,diagnostic0.",
+    "Independent state-v1: original190-condition packet queried a dispatch candidate on a BUDGET state,73.09s,0. Corrected state-v2 normalizes candidate inputs, without production or source/native replay."
+  ],
+  "bridge": "The13-line fb418 delta adds only the exact unsafe stopped frontier and two disjoint generic unwind exclusions. The three retained21dd positives have safe protected regions, so this predicate is false pointwise; their source agreements are retained without replay. Fixture-only431/666 leave executable bytes unchanged. Normal/old query, return, Stringable, destructor/Previous/GC and body-entry rules remain literal.",
+  "independent": {
+    "status": "CLEAR",
+    "record": "state-review.json",
+    "runtime_equivalent": "fb41872a7a03a425cc245a1c98c2bd1e5f0879a0",
+    "review_revision": "a82042ce0",
+    "conditions": 190,
+    "modules": 463,
+    "seconds": 450.04101,
+    "result": "state-v2 true LF/empty stderr/exit0/stable/no timeout/groupempty",
+    "scope": "SOURCE/RETURN_UNWIND/frame.PENDING/value-only caller CANCEL owner multiplicities, cleanup Previous, invalid-before-finally release, eligible fresh-array exact union bypass, stopped refusal and three source bounds/budgets",
+    "preserved_failure": "state-v1 used BUDGET instead of NORMAL for dispatch-candidate projection; original190 packet remains0; only fixture normalization changed."
+  },
+  "remaining": [
+    "Effectful return-CV detach before callback lookup.",
+    "ALIAS object receiver lifetime, raw keyword contexts, method/Closure/API borrowed and byref/generator entries are not established by this increment. Genuine inherited ordinary-frame paths are not globally refused merely because no Fiber-specific campaign ran.",
+    "Pending-success protected-finally replacement combination is explicitly Unsupported; both native timeouts retain0. Wider mutation, Stringable/NUL/packs/invocation/producer and held domains do not expand."
+  ],
+  "recovery": {
+    "author_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-return-160",
+    "peer_archive": "/home/user/workspace/php-spec-evidence-archive/enum-callable-return-review-160",
+    "replay": "No old/native/source campaign replay; preserve original failures/controllers/fixtures and compare current hashes or the stated pointwise bridge."
+  },
+  "review": "CLEAR: independent source/runtime and corrected190/all463 owner/history/budget/refusal checks, final compact source/report bindings and actual d303/current464 composition/load bridge. Original190 fixture failure, all author failures/projections/native timeouts and model-only refusals retain0 agreement; exactly three existing feature statuses remain partial. No historical or positive-source replay.",
+  "author_reports": {
+    "baseline-timing-v1/report.json": "961a28dadc8c67c7070aeeee35c9e57295ea46ab44943dc7f931a760a8a5c0d5",
+    "native-cleanup-basic-v1/report.json": "dce38a4ddcc7db74bd2c459fa7a60dbc2a6d23f2a4400d57f22c7180edea09f0",
+    "native-cleanup-cv-v1/report.json": "4c29afe67d7ba03d8b0ba1a78d9c5858a2abc7e77802394fbf78a54650dcbb52",
+    "native-cleanup-v1/report.json": "06dfbfa30a887790f4c0246d15bd6996a4a7087383586978b5892b7fffb20f0a",
+    "native-owners-v1/report.json": "7343fca5ab66512d18f902d03629596ffb11359125ef08dddf21cd2d1a779d63",
+    "native-timing-v1/report.json": "1e20f15f1f1dd7d21bdc6b42772d5b7a6f427281e0b1a58386d60c468c3f7617",
+    "native-unions-v1/report.json": "b712b3986535a21deb205e9bbfb6b60e6a8f1d3489d0d13ac69a62989719bdbc",
+    "pending-front-v1/report.json": "f4553080a0647ded83216c060f5be4c1ae2460dad49a382b7cb23e37f50854e9",
+    "pending-front-v2/report.json": "0f1b9b040555c9185b85b270954ffebf89ed97c25e5176320c5dd8a591f50612",
+    "refusal-alias-v1/report.json": "dad4543193f70f5755bccb638930fc952a9634e5e77bd610b0217383403aebc3",
+    "refusal-cv-v1/report.json": "0643baca48d36747c0b9fc4317540499b57cf016487288c5548789e47ab7686c",
+    "refusal-pending-v1/report.json": "736a4c72459206968f16b2d8f0a9e8111955dff12b9af6b737193c9060ddb5bf",
+    "refusal-pending-v2/report.json": "04c2074447d7b15deb2582b5d45cdefad9e66831f6e43a8d2a56f69eb4119fc7",
+    "source-cleanup-cv-v1/report.json": "3f440152bcdd43d420c694528438046602f9248ce5704c12b9706e3ecaab5c2c",
+    "source-owners-v1/report.json": "ee31c30ddbd7f6a03a6dca2de59206c4d0517b482b8b7af8fdabe38cf6b0a965",
+    "source-timing-v1/report.json": "7470b75e3b0d6e06e3e872195d843e30c31ee860f997980b3bd553216b130c10",
+    "source-unions-v1/report.json": "d5f820383ad9499cab46c07483bdef73607ef40718aad1a0a8818d93cce72566",
+    "strict-v1/report.json": "ab1a360b8a8fec5946e50e723cb84c528dd5af824f2bf84faa69fa2fdb94eee5",
+    "strict-v2/report.json": "c40eb625b45d704cce7b92849ea42eba74a3fcc786f741931449bd7f44d07dca",
+    "strict-v3/report.json": "285687e941d3bbdf130fe6eda54e74eb96fc4b2a3b3278b44ddbb014b923ca07"
+  },
+  "peer_reports": {
+    "state-review.json": "8769aec05c6d806dc22fb4303a5da6a9c00089a86f447ad531fd7f4c81505154",
+    "state-v1/report.json": "88b718d62253d9cea8997e108dd231094a68aba402ee2c009d9267f067a00c6d",
+    "state-v2/report.json": "ababa59d7819cca9e7abc65077a14703f84f6840f45c8f5a6c73e38dadfa68b6"
+  },
+  "integration": {
+    "revision": "d303b466b8591be017c6471acf2ffb19f9ede224",
+    "modules": 464,
+    "result": "joined true LF/quiet exit0/stable/no timeout;36.003974s",
+    "agreement_credit": 0,
+    "bridge": "Independent current-source read:40 and475 are byte-exact fb418.30 retains the exact three return task variants beside disjoint papireceive/API_ENTRY additions;474/475 occur uniquely. Named function handlers have no owning defaults, so474 method-entry/default-handler routes are absent. No is_callable NAME store occurs, so GC69/70 output-excess/readonly routes are absent and NATIVEEXCESS remains empty;39 native-prune substitution is pointwise old. No hooked/dynamic property names, magic/FCC producer or output-factory route occurs. This is current composition/load evidence, not renewal of private463 source/state cuts or whole30/437 equality."
+  },
+  "integration_reports": {
+    "callable-return-types-160/joined-main-464-v1/report.json": "a9defde9cd70396c3796288ca73a502da5d7d15703c6cb6baf76f9f8122c5e67",
+    "callable-return-types-160/joined-main-464-v1/inventory.json": "ba712fa604b97d4e5e8c36728b16bf4a74033b05a5e83653f1e8977b3493989c"
+  }
+}
