@@ -107,10 +107,20 @@ dec $ob_object_cv_associations(pobobjectsource?) : pobcvassoc*
 dec $ob_object_cv_pack(pobcvassoc*, pobobjectsource?) : pobobjectsource?
 dec $ob_object_cv_wrapped(pobobjectsource?) : bool
 dec $ob_object_cv_native(pstate) : pfunction?
+dec $ob_object_cv_end(pobcvreturn) : nat
+dec $ob_object_cv_position(pstate) : nat?
+dec $ob_object_cv_recipient(pstate) : (pstate, pfunction, nat)?
+dec $ob_object_cv_recipient_function(pstate, pfunction, pobcvreturn) : pfunction?
+dec $ob_object_cv_destination(pstate) : (porigin, preqbytes, nat)?
+dec $ob_object_cv_assignment(pstate, pfunction, porigin, pobsourcecall) : preqbytes?
+dec $ob_object_cv_lookup_at(pobcvassoc*, nat, preqbytes) : pobcvassoc?
+dec $ob_object_cv_remove_at(pobcvassoc*, nat, preqbytes, nat) : pobcvassoc*
+dec $ob_object_cv_drop_frame(pobcvassoc*, nat) : pobcvassoc*
 dec $ob_object_cv_lookup(pobcvassoc*, preqbytes) : pobcvassoc?
 dec $ob_object_cv_remove(pobcvassoc*, preqbytes, nat) : pobcvassoc*
 dec $ob_object_cv_spend(pobcvassoc*, nat) : pobcvassoc*
 dec $ob_object_cv_prune(pstate, pobcvassoc*) : pobcvassoc*
+dec $ob_object_cv_prune_at(pstate, nat, pobcvassoc*) : pobcvassoc*
 dec $ob_object_cv_preserve(pobobjectsource?, pobobjectsource?) : pobobjectsource?
 dec $ob_object_cv_functions(pstate, pfunction, pobsourcecall*) : pfunction?
 dec $ob_object_cv_factory(pstate, pfunction, pobcvreturn) : (pfunction, preqbytes)?
@@ -119,6 +129,8 @@ dec $ob_object_cv_return_origin(pstate, pobcvreturn) : porigin?
 dec $ob_object_cv_value_frames(pdestructionframe*, pobcvreturn) : bool
 dec $ob_object_cv_carrier(pstate, pfunction, pobcvreturn) : bool
 dec $ob_object_cv_cell(pstate, pobcvassoc) : bool
+dec $ob_object_cv_binding(pstate, pobcvassoc) : bool
+dec $ob_object_cv_cell_unused(pobcvassoc*, nat) : bool
 dec $ob_object_cv_stored_rows(pstate, pfunction, pobcvassoc*) : bool
 dec $ob_object_cv_commit(pstate, pstate, pobcvreturn) : pobcvassoc?
 dec $ob_object_cv_committed(pstate, pstate) : pobcvassoc?
@@ -384,30 +396,101 @@ def $ob_object_cv_native(S) = (pfunction)
   -- if pcallcontext.TARGET = METHOD_TARGET n pfunction.ORIGIN
   -- if $call_current_valid(S) /\ $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_cv_native(S) = eps -- otherwise
-def $ob_object_cv_lookup(eps, preqbytes) = eps
-def $ob_object_cv_lookup(pobcvassoc :: pobcvassoc_tail*, preqbytes) = (pobcvassoc)
-  -- if pobcvassoc.NAME = preqbytes
-def $ob_object_cv_lookup(pobcvassoc :: pobcvassoc_tail*, preqbytes) = $ob_object_cv_lookup(pobcvassoc_tail*, preqbytes)
-  -- if pobcvassoc.NAME =/= preqbytes
-def $ob_object_cv_remove(eps, preqbytes, n) = eps
-def $ob_object_cv_remove(pobcvassoc :: pobcvassoc_tail*, preqbytes, n) = $ob_object_cv_remove(pobcvassoc_tail*, preqbytes, n)
-  -- if pobcvassoc.NAME = preqbytes \/ pobcvassoc.CELL = n
-def $ob_object_cv_remove(pobcvassoc :: pobcvassoc_tail*, preqbytes, n) = pobcvassoc :: $ob_object_cv_remove(pobcvassoc_tail*, preqbytes, n)
-  -- if pobcvassoc.NAME =/= preqbytes /\ pobcvassoc.CELL =/= n
+def $ob_object_cv_end(pobcvreturn) = $nabs($(|pobcvreturn.CONTOUR.CALLS| - pobcvreturn.FRAME))
+  -- if $(pobcvreturn.FRAME < |pobcvreturn.CONTOUR.CALLS|)
+def $ob_object_cv_end(pobcvreturn) = 0 -- otherwise
+;; Position is a structural view only. Commit/read separately authenticate
+;; the current recipient and native consumer without adding a frame owner.
+def $ob_object_cv_position(S) = (|pobsourcecontour.CALLS|)
+  -- if $ob_object_call_fold(S) = ((S_native, pfunction, pobsourcecontour))
+def $ob_object_cv_position(S) = eps -- otherwise
+def $ob_object_cv_recipient(S) = ((S, pfunction, 0))
+  -- if $ob_object_cv_native(S) = (pfunction)
+def $ob_object_cv_recipient(S) = ((S_native, pfunction, |pobsourcecontour.CALLS|))
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
+  -- if $ob_object_cv_native(S_native) = (pfunction_native)
+  -- if $ob_object_call_valid(S)
+def $ob_object_cv_recipient(S) = eps -- otherwise
+def $ob_object_cv_lookup_at(eps, n_frame, preqbytes) = eps
+def $ob_object_cv_lookup_at(pobcvassoc :: pobcvassoc_tail*, n_frame, preqbytes) = (pobcvassoc)
+  -- if pobcvassoc.FACTORY.FRAME = n_frame /\ pobcvassoc.NAME = preqbytes
+def $ob_object_cv_lookup_at(pobcvassoc :: pobcvassoc_tail*, n_frame, preqbytes) = $ob_object_cv_lookup_at(pobcvassoc_tail*, n_frame, preqbytes)
+  -- if pobcvassoc.FACTORY.FRAME =/= n_frame \/ pobcvassoc.NAME =/= preqbytes
+def $ob_object_cv_lookup(pobcvassoc*, preqbytes) = $ob_object_cv_lookup_at(pobcvassoc*, 0, preqbytes)
+def $ob_object_cv_remove_at(eps, n_frame, preqbytes, n) = eps
+def $ob_object_cv_remove_at(pobcvassoc :: pobcvassoc_tail*, n_frame, preqbytes, n) = $ob_object_cv_remove_at(pobcvassoc_tail*, n_frame, preqbytes, n)
+  -- if pobcvassoc.FACTORY.FRAME = n_frame /\ (pobcvassoc.NAME = preqbytes \/ pobcvassoc.CELL = n)
+def $ob_object_cv_remove_at(pobcvassoc :: pobcvassoc_tail*, n_frame, preqbytes, n) = pobcvassoc :: $ob_object_cv_remove_at(pobcvassoc_tail*, n_frame, preqbytes, n)
+  -- if pobcvassoc.FACTORY.FRAME =/= n_frame \/ (pobcvassoc.NAME =/= preqbytes /\ pobcvassoc.CELL =/= n)
+def $ob_object_cv_remove(pobcvassoc*, preqbytes, n) = $ob_object_cv_remove_at(pobcvassoc*, 0, preqbytes, n)
+def $ob_object_cv_drop_frame(eps, n_frame) = eps
+def $ob_object_cv_drop_frame(pobcvassoc :: pobcvassoc_tail*, n_frame) = $ob_object_cv_drop_frame(pobcvassoc_tail*, n_frame)
+  -- if pobcvassoc.FACTORY.FRAME = n_frame
+def $ob_object_cv_drop_frame(pobcvassoc :: pobcvassoc_tail*, n_frame) = pobcvassoc :: $ob_object_cv_drop_frame(pobcvassoc_tail*, n_frame)
+  -- if pobcvassoc.FACTORY.FRAME =/= n_frame
 def $ob_object_cv_spend(eps, n) = eps
 def $ob_object_cv_spend(pobcvassoc :: pobcvassoc_tail*, n) = $ob_object_cv_spend(pobcvassoc_tail*, n)
   -- if pobcvassoc.FACTORY.BIRTH.OBJECT = n
 def $ob_object_cv_spend(pobcvassoc :: pobcvassoc_tail*, n) = pobcvassoc :: $ob_object_cv_spend(pobcvassoc_tail*, n)
   -- if pobcvassoc.FACTORY.BIRTH.OBJECT =/= n
 def $ob_object_cv_prune(S, eps) = eps
-def $ob_object_cv_prune(S, pobcvassoc :: pobcvassoc_tail*) = pobcvassoc :: $ob_object_cv_prune(S, pobcvassoc_tail*)
-  -- if $ob_object_cv_cell(S, pobcvassoc)
-def $ob_object_cv_prune(S, pobcvassoc :: pobcvassoc_tail*) = $ob_object_cv_prune(S, pobcvassoc_tail*)
-  -- if ~$ob_object_cv_cell(S, pobcvassoc)
+def $ob_object_cv_prune(S, pobcvassoc :: pobcvassoc_tail*) = $ob_object_cv_prune_at(S, n_frame, pobcvassoc :: pobcvassoc_tail*)
+  -- if $ob_object_cv_position(S) = (n_frame)
+def $ob_object_cv_prune(S, pobcvassoc :: pobcvassoc_tail*) = pobcvassoc :: pobcvassoc_tail*
+  -- if $ob_object_cv_position(S) = eps
+def $ob_object_cv_prune_at(S, n_frame, eps) = eps
+def $ob_object_cv_prune_at(S, n_frame, pobcvassoc :: pobcvassoc_tail*) = pobcvassoc :: $ob_object_cv_prune_at(S, n_frame, pobcvassoc_tail*)
+  -- if pobcvassoc.FACTORY.FRAME =/= n_frame
+def $ob_object_cv_prune_at(S, n_frame, pobcvassoc :: pobcvassoc_tail*) = pobcvassoc :: $ob_object_cv_prune_at(S, n_frame, pobcvassoc_tail*)
+  -- if pobcvassoc.FACTORY.FRAME = n_frame
+  -- if $ob_object_cv_binding(S, pobcvassoc)
+def $ob_object_cv_prune_at(S, n_frame, pobcvassoc :: pobcvassoc_tail*) = $ob_object_cv_prune_at(S, n_frame, pobcvassoc_tail*)
+  -- if pobcvassoc.FACTORY.FRAME = n_frame
+  -- if ~$ob_object_cv_binding(S, pobcvassoc)
 def $ob_object_cv_preserve(pobobjectsource_old?, pobobjectsource_next?) = $ob_object_cv_pack($ob_object_cv_associations(pobobjectsource_old?), pobobjectsource_next?)
 
-;; The last edge is the actual assignment RHS. Interior edges retain the
-;; ordinary by-value RETURN(call) law; no later throw is guessed here.
+;; The normal prefix ends at its assignment RHS. The outward suffix proves
+;; the recipient's ordinary selected calls back to the native consumer.
+def $ob_object_cv_recipient_function(S, pfunction_native, pobcvreturn) = (pfunction)
+  -- if pobcvreturn.CONTOUR.NATIVE = pfunction_native.ORIGIN
+  -- if $($ob_object_cv_end(pobcvreturn) > 0)
+  -- if $ob_object_call_functions(S, pfunction_native, pobcvreturn.CONTOUR.CALLS[$ob_object_cv_end(pobcvreturn):pobcvreturn.FRAME]) = (pfunction)
+def $ob_object_cv_recipient_function(S, pfunction_native, pobcvreturn) = eps -- otherwise
+def $ob_object_cv_assignment(S, pfunction_recipient, PORIGIN n_recipient pcpath_assign, pobsourcecall) = (preqbytes_name)
+  -- if pfunction_recipient.ORIGIN = PORIGIN n_recipient pcpath_function
+  -- if $origin_node(S.SOURCES, PORIGIN n_recipient pcpath_assign) = (NExprAssign (NExprVariable phpType32 metadata_variable) (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata_assign)
+  -- if $cv_name(phpType32) = (preqbytes_name)
+  -- if preqbytes_name <- pfunction_recipient.CVS
+  -- if ~((pcpath_assign ++ [PCFIELD 0]) <- pfunction_recipient.CODE.GLOBALS)
+  -- if $code_expression(pfunction_recipient.CODE.EXPRESSIONS, pcpath_assign) = ((z_assign, b_assign))
+  -- if pobsourcecall.SITE = PORIGIN n_recipient (pcpath_assign ++ [PCFIELD 1])
+def $ob_object_cv_assignment(S, pfunction_recipient, porigin_assign, pobsourcecall) = eps -- otherwise
+;; Inspect genuine deferred continuations, stopping at the first WRITE_NAME.
+;; Only callees whose results cross RETURN(call) must return by value.
+def $ob_object_cv_destination(S) = ((porigin_assign, preqbytes_name, |pobsourcecontour_recipient.CALLS|))
+  -- if S.FRAMES = pframe_call :: pframe_tail*
+  -- if pframe_tail* =/= eps
+  -- if S_caller = $constant_frame_scope(S, pframe_call, pframe_tail*)
+  -- if S_caller.TODO = (ORIGIN_RETURN (porigin_assign)) :: (WRITE_NAME preqbytes_name z_assign) :: ptask_caller*
+  -- if $ob_object_call_fold(S) = ((S_native, pfunction, pobsourcecontour))
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $ob_object_call_fold(S_caller) = ((S_native_caller, pfunction_recipient, pobsourcecontour_recipient))
+  -- if pobsourcecall = {FUNCTION pcallcontext.FUNCTION, SITE porigin_site}
+  -- if $ob_object_cv_assignment(S, pfunction_recipient, porigin_assign, pobsourcecall) = (preqbytes_name)
+def $ob_object_cv_destination(S) = $ob_object_cv_destination(S_caller)
+  -- if S.FRAMES = pframe_call :: pframe_tail*
+  -- if pframe_tail* =/= eps
+  -- if S_caller = $constant_frame_scope(S, pframe_call, pframe_tail*)
+  -- if S_caller.TODO = (ORIGIN_RETURN (porigin_return)) :: (RETURN_VALUE z_return) :: ptask_caller*
+  -- if $ob_object_call_fold(S) = ((S_native, pfunction, pobsourcecontour))
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pobsourcecall = {FUNCTION pcallcontext.FUNCTION, SITE porigin_site}
+  -- if $ob_object_factory_return_site(S, pobsourcecall) = (porigin_return)
+def $ob_object_cv_destination(S) = eps -- otherwise
 def $ob_object_cv_functions(S, pfunction_native, [pobsourcecall]) = (pfunction)
   -- if $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction, z))
   -- if ~pfunction.SIGNATURE.BYREF
@@ -419,18 +502,13 @@ def $ob_object_cv_functions(S, pfunction_native, pobsourcecall :: pobsourcecall_
   -- if ~pfunction.SIGNATURE.BYREF
 def $ob_object_cv_functions(S, pfunction_native, pobsourcecall*) = eps -- otherwise
 def $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction, preqbytes_name))
-  -- if pobcvreturn.CONTOUR.NATIVE = pfunction_native.ORIGIN /\ pobcvreturn.CONTOUR.CALLS =/= eps
-  -- if $(pobcvreturn.CONTOUR.CURSOR <= |pobcvreturn.CONTOUR.CALLS|)
-  -- if $ob_object_cv_functions(S, pfunction_native, pobcvreturn.CONTOUR.CALLS) = (pfunction)
+  -- if $($ob_object_cv_end(pobcvreturn) > 0)
+  -- if $(pobcvreturn.CONTOUR.CURSOR <= $ob_object_cv_end(pobcvreturn))
+  -- if $ob_object_cv_recipient_function(S, pfunction_native, pobcvreturn) = (pfunction_recipient)
+  -- if $ob_object_cv_functions(S, pfunction_recipient, pobcvreturn.CONTOUR.CALLS[0:$ob_object_cv_end(pobcvreturn)]) = (pfunction)
   -- if pfunction.ORIGIN = pobcvreturn.FUNCTION
-  -- if pobcvreturn.ASSIGN = PORIGIN n_native pcpath_assign
-  -- if $origin_node(S.SOURCES, pobcvreturn.ASSIGN) = (NExprAssign (NExprVariable phpType32 metadata_variable) (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata_assign)
-  -- if $cv_name(phpType32) = (preqbytes_name)
-  -- if preqbytes_name <- pfunction_native.CVS
-  -- if ~((pcpath_assign ++ [PCFIELD 0]) <- pfunction_native.CODE.GLOBALS)
-  -- if $code_expression(pfunction_native.CODE.EXPRESSIONS, pcpath_assign) = ((z_assign, b_assign))
-  -- if pobsourcecall = pobcvreturn.CONTOUR.CALLS[$nabs($(|pobcvreturn.CONTOUR.CALLS| - 1))]
-  -- if pobsourcecall.SITE = PORIGIN n_native (pcpath_assign ++ [PCFIELD 1])
+  -- if pobsourcecall = pobcvreturn.CONTOUR.CALLS[$nabs($($ob_object_cv_end(pobcvreturn) - 1))]
+  -- if $ob_object_cv_assignment(S, pfunction_recipient, pobcvreturn.ASSIGN, pobsourcecall) = (preqbytes_name)
   -- if pobcvreturn.RETURN = PORIGIN n_producer pcpath_return
   -- if $origin_node(S.SOURCES, pobcvreturn.RETURN) = (NStmtReturn (NExprNew name_new (SEQUENCE phpType7*) metadata_new) metadata_return)
   -- if pobcvreturn.BIRTH.SITE = PORIGIN n_producer (pcpath_return ++ [PCFIELD 0])
@@ -439,7 +517,7 @@ def $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = eps -- otherwise
 def $ob_object_cv_current(S, pobcvreturn) = ((S_native, pfunction))
   -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecontour))
   -- if pobsourcecontour.NATIVE = pobcvreturn.CONTOUR.NATIVE
-  -- if $(pobcvreturn.CONTOUR.CURSOR < |pobcvreturn.CONTOUR.CALLS|)
+  -- if $(pobcvreturn.CONTOUR.CURSOR < $ob_object_cv_end(pobcvreturn))
   -- if pobsourcecontour.CALLS = pobcvreturn.CONTOUR.CALLS[pobcvreturn.CONTOUR.CURSOR:$nabs($(|pobcvreturn.CONTOUR.CALLS| - pobcvreturn.CONTOUR.CURSOR))]
   -- if $ob_object_call_consumer(S_native) = (pfunction_native)
   -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) =/= eps
@@ -447,8 +525,9 @@ def $ob_object_cv_current(S, pobcvreturn) = ((S_native, pfunction))
 def $ob_object_cv_current(S, pobcvreturn) = eps -- otherwise
 def $ob_object_cv_return_origin(S, pobcvreturn) = (pobcvreturn.RETURN)
   -- if pobcvreturn.CONTOUR.CURSOR = 0
+  -- if $($ob_object_cv_end(pobcvreturn) > 0)
 def $ob_object_cv_return_origin(S, pobcvreturn) = $ob_object_factory_return_site(S, pobsourcecall)
-  -- if $(pobcvreturn.CONTOUR.CURSOR > 0) /\ $(pobcvreturn.CONTOUR.CURSOR < |pobcvreturn.CONTOUR.CALLS|)
+  -- if $(pobcvreturn.CONTOUR.CURSOR > 0) /\ $(pobcvreturn.CONTOUR.CURSOR < $ob_object_cv_end(pobcvreturn))
   -- if pobsourcecall = pobcvreturn.CONTOUR.CALLS[$nabs($(pobcvreturn.CONTOUR.CURSOR - 1))]
 def $ob_object_cv_return_origin(S, pobcvreturn) = eps -- otherwise
 def $ob_object_cv_value_frames(eps, pobcvreturn) = false
@@ -469,22 +548,29 @@ def $ob_object_cv_carrier(S, pfunction, pobcvreturn) = true
   -- if ~$ob_object_cv_value_frames(pdestructionframe_tail*, pobcvreturn)
 def $ob_object_cv_carrier(S, pfunction, pobcvreturn) = false -- otherwise
 def $ob_object_cv_cell(S, pobcvassoc) = true
+  -- if $ob_object_cv_position(S) = (pobcvassoc.FACTORY.FRAME)
+  -- if $ob_object_cv_binding(S, pobcvassoc)
+def $ob_object_cv_cell(S, pobcvassoc) = false -- otherwise
+def $ob_object_cv_binding(S, pobcvassoc) = true
   -- if $lookup(S.ENV, pobcvassoc.NAME) = (pobcvassoc.CELL)
   -- if (HCELL pobcvassoc.CELL) <- S.ALLOCATIONS
   -- if S.STORE[pobcvassoc.CELL] = DEFINED (POBJECT pobcvassoc.FACTORY.BIRTH.OBJECT)
   -- if $heap_count(HCELL pobcvassoc.CELL, $machine_roots(S)) = 1
   -- if $heap_owners($heap_graph(S), HCELL pobcvassoc.CELL) = 1
-def $ob_object_cv_cell(S, pobcvassoc) = false -- otherwise
+def $ob_object_cv_binding(S, pobcvassoc) = false -- otherwise
+def $ob_object_cv_cell_unused(eps, n) = true
+def $ob_object_cv_cell_unused(pobcvassoc :: pobcvassoc_tail*, n) = (pobcvassoc.CELL =/= n /\ $ob_object_cv_cell_unused(pobcvassoc_tail*, n))
 ;; The saved C-frame validator has no native ENV. This readonly metadata
 ;; check adds no throw authority; the actual read still requires cv_cell.
 def $ob_object_cv_stored_rows(S, pfunction_native, eps) = true
 def $ob_object_cv_stored_rows(S, pfunction_native, pobcvassoc :: pobcvassoc_tail*) = true
   -- if $ob_object_cv_factory(S, pfunction_native, pobcvassoc.FACTORY) = ((pfunction, pobcvassoc.NAME))
-  -- if pobcvassoc.FACTORY.CONTOUR.CURSOR = |pobcvassoc.FACTORY.CONTOUR.CALLS|
+  -- if pobcvassoc.FACTORY.CONTOUR.CURSOR = $ob_object_cv_end(pobcvassoc.FACTORY)
   -- if (HCELL pobcvassoc.CELL) <- S.ALLOCATIONS
   -- if S.STORE[pobcvassoc.CELL] = DEFINED (POBJECT pobcvassoc.FACTORY.BIRTH.OBJECT)
   -- if $ob_object_ctor_fact_live(S, pobcvassoc.FACTORY.BIRTH)
-  -- if $ob_object_cv_remove(pobcvassoc_tail*, pobcvassoc.NAME, pobcvassoc.CELL) = pobcvassoc_tail*
+  -- if $ob_object_cv_lookup_at(pobcvassoc_tail*, pobcvassoc.FACTORY.FRAME, pobcvassoc.NAME) = eps
+  -- if $ob_object_cv_cell_unused(pobcvassoc_tail*, pobcvassoc.CELL)
   -- if $ob_object_cv_spend(pobcvassoc_tail*, pobcvassoc.FACTORY.BIRTH.OBJECT) = pobcvassoc_tail*
   -- if $ob_object_cv_stored_rows(S, pfunction_native, pobcvassoc_tail*)
 def $ob_object_cv_stored_rows(S, pfunction_native, pobcvassoc*) = false -- otherwise
