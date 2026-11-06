@@ -30,12 +30,15 @@ def $class_constant_compile_history(pclassconstantevent :: pclassconstantevent_t
   -- if $($class_constant_event_ordinal(pclassconstantevent) > n)
 dec $class_constant_cache_projection(pstate, pstate, pclassconstantevent*, porigin) : pdefaultcache?
 def $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) = $default_cache_at(S.CLASSCONSTANTCACHE, porigin) -- otherwise
+dec $class_constant_compile_cache(pstate, pstate, pclassconstantevent*, porigin) : pstate?
+def $class_constant_compile_cache(S, S_entry, pclassconstantevent*, porigin) = (S_entry[.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, pdefaultcache)]) -- otherwise
+  -- if $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) = (pdefaultcache)
 dec $class_constant_compile_events(pstate, pclassconstantevent*, pstate) : pstate?
 def $class_constant_compile_events(S, eps, S_entry) = (S_entry)
 def $class_constant_compile_events(S, (CCLINK porigin n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSES = S_entry.CLASSES ++ [pclassdesc]][.CLASSNAMES = S_entry.CLASSNAMES ++ [($ptlc(pclassdesc.NAME), porigin)]])
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-def $class_constant_compile_events(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = S_entry.CLASSCONSTANTCACHE ++ [pdefaultcache]])
-  -- if $class_constant_cache_projection(S, S_entry, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, porigin) = (pdefaultcache)
+def $class_constant_compile_events(S, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_cached)
+  -- if $class_constant_compile_cache(S, S_entry, (CCCACHE porigin porigin_trigger n) :: pclassconstantevent*, porigin) = (S_cached)
 def $class_constant_compile_events(S, (CCCACHE_ENUM porigin porigin_trigger n n_nonce) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = S_entry.CLASSCONSTANTCACHE ++ [pdefaultcache]])
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, porigin) = (pdefaultcache)
 def $class_constant_compile_events(S, (CCSTATIC porigin porigin_trigger n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
@@ -54,13 +57,13 @@ def $class_constant_compile_value(S, pclassconstantdesc) = ((pvalue, pvalueclass
   -- if pclassconstantdesc.FOLDED
   -- if $pool_value(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalue)
   -- if $pool_class(S.POOLS, pclassconstantdesc.INITIALIZER) = (pvalueclass)
-  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
   -- if $constant_callable_foldable(pvalueclass)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
 def $class_constant_compile_value(S, pclassconstantdesc) = ((pdefaultcache.VALUE, pdefaultcache.CLASS))
   -- if ~pclassconstantdesc.FOLDED
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
-  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
   -- if $constant_callable_foldable(pdefaultcache.CLASS)
+  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
 def $class_constant_compile_value(S, pclassconstantdesc) = eps -- otherwise
 
 ;; Import constant arrays into this unit's allocation space. Objects and

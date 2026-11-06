@@ -1,0 +1,226 @@
+;; Computed old containers are immutable history data, never historical roots.
+dec $class_image_capture(pstate, pvalue, pvalueclass, nat) : pclassimage?
+dec $class_image_capture_items(pstate, pentry*, (pkey, pvalueclass)*, nat) : (pkey, pclassimage)*?
+def $class_image_capture(S, PARRAY n, PVARRAY b (pkey, pvalueclass)*, n_fuel) = ({VALUE PARRAY n, CLASS PVARRAY b (pkey, pvalueclass)*, ARRAY (pclassarrayimage)})
+  -- if $(0 < n_fuel /\ n < |S.ARRAYS|)
+  -- if HARRAY n <- S.ALLOCATIONS
+  -- if $class_image_capture_items(S, S.ARRAYS[n].ITEMS, (pkey, pvalueclass)*, $nabs($(n_fuel - 1))) = ((pkey_image, pclassimage)*)
+  -- if pclassarrayimage = {ITEMS (pkey_image, pclassimage)*, NEXT S.ARRAYS[n].NEXT, POSITIONS S.ARRAYS[n].POSITIONS, SERIAL S.ARRAYS[n].SERIAL}
+def $class_image_capture(S, pvalue, pvalueclass, n_fuel) = ({VALUE pvalue, CLASS pvalueclass, ARRAY eps})
+  -- if ~$is_array_value(pvalue)
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+def $class_image_capture(S, pvalue, pvalueclass, n_fuel) = eps -- otherwise
+def $class_image_capture_items(S, eps, eps, n_fuel) = (eps)
+def $class_image_capture_items(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, (pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*, n_fuel) = ((pkey, pclassimage) :: (pkey_image, pclassimage_tail)*)
+  -- if $class_image_capture(S, pvalue, pvalueclass, n_fuel) = (pclassimage)
+  -- if $class_image_capture_items(S, pentry_tail*, (pkey_tail, pvalueclass_tail)*, n_fuel) = ((pkey_image, pclassimage_tail)*)
+def $class_image_capture_items(S, pentry*, (pkey, pvalueclass)*, n_fuel) = eps -- otherwise
+
+dec $class_image_leaf_shape(pvalue, pvalueclass) : bool
+def $class_image_leaf_shape(pvalue, PVSCALAR) = $constant_nonstring_scalar(pvalue)
+def $class_image_leaf_shape(PSTRING n*, PVSTRING b) = true
+def $class_image_leaf_shape(PSTRING_CARRIER pstringidentity n*, PVSTRING b) = true
+def $class_image_leaf_shape(POBJECT n, PVCLOSURE n porigin) = true
+def $class_image_leaf_shape(POBJECT n, PVINSTANCE n porigin) = true
+def $class_image_leaf_shape(POBJECT n, PVSTDCLASS n porigin) = true
+def $class_image_leaf_shape(POBJECT n, PVENUMCASE n porigin) = true
+def $class_image_leaf_shape(pvalue, pvalueclass) = false -- otherwise
+dec $class_image_valid(pclassimage) : bool
+dec $class_image_items_valid((pkey, pclassimage)*, (pkey, pvalueclass)*) : bool
+def $class_image_valid(pclassimage) = $class_image_leaf_shape(pclassimage.VALUE, pclassimage.CLASS)
+  -- if pclassimage.ARRAY = eps
+def $class_image_valid(pclassimage) = $class_image_items_valid(pclassarrayimage.ITEMS, (pkey, pvalueclass)*)
+  -- if pclassimage.ARRAY = (pclassarrayimage)
+  -- if pclassimage.VALUE = PARRAY n
+  -- if pclassimage.CLASS = PVARRAY b (pkey, pvalueclass)*
+  -- if $constant_class_tree_valid(pclassimage.CLASS)
+def $class_image_valid(pclassimage) = false -- otherwise
+def $class_image_items_valid(eps, eps) = true
+def $class_image_items_valid((pkey, pclassimage) :: (pkey_tail, pclassimage_tail)*, (pkey, pvalueclass) :: (pkey_class_tail, pvalueclass_tail)*) = (pclassimage.CLASS = pvalueclass /\ $class_image_valid(pclassimage) /\ $class_image_items_valid((pkey_tail, pclassimage_tail)*, (pkey_class_tail, pvalueclass_tail)*))
+def $class_image_items_valid((pkey, pclassimage)*, (pkey_class, pvalueclass)*) = false -- otherwise
+
+;; Only foldable images allocate in this compiler-only copy of the state.
+;; Opaque leaves retain identity metadata and cannot become compiler values.
+dec $class_image_materialize(pstate, pclassimage) : (pstate, pvalue)?
+dec $class_image_materialize_items(pstate, (pkey, pclassimage)*) : (pstate, pentry*)?
+def $class_image_materialize(S, pclassimage) = ((S, pclassimage.VALUE))
+  -- if $class_image_valid(pclassimage)
+  -- if ~$constant_callable_foldable(pclassimage.CLASS) \/ pclassimage.ARRAY = eps
+def $class_image_materialize(S, pclassimage) = ((S_array, PARRAY n_array))
+  -- if $class_image_valid(pclassimage)
+  -- if $constant_callable_foldable(pclassimage.CLASS)
+  -- if pclassimage.ARRAY = (pclassarrayimage)
+  -- if $class_image_materialize_items(S, pclassarrayimage.ITEMS) = ((S_items, pentry*))
+  -- if S_array = $allocate_array(S_items, {ITEMS pentry*, NEXT pclassarrayimage.NEXT, POSITIONS pclassarrayimage.POSITIONS, SERIAL pclassarrayimage.SERIAL})
+  -- if S_array.RESULT = KNOWN (PARRAY n_array)
+def $class_image_materialize(S, pclassimage) = eps -- otherwise
+def $class_image_materialize_items(S, eps) = ((S, eps))
+def $class_image_materialize_items(S, (pkey, pclassimage) :: (pkey_tail, pclassimage_tail)*) = ((S_tail, (ENTRY pkey (DIRECT pvalue)) :: pentry*))
+  -- if $class_image_materialize(S, pclassimage) = ((S_item, pvalue))
+  -- if $class_image_materialize_items(S_item, (pkey_tail, pclassimage_tail)*) = ((S_tail, pentry*))
+def $class_image_materialize_items(S, (pkey, pclassimage)*) = eps -- otherwise
+
+dec $class_write_at(pclassreplacement*, porigin) : pclassreplacement?
+def $class_write_at(eps, porigin) = eps
+def $class_write_at(pclassreplacement :: pclassreplacement_tail*, porigin) = (pclassreplacement)
+  -- if pclassreplacement.OLD.ORIGIN = porigin
+def $class_write_at(pclassreplacement :: pclassreplacement_tail*, porigin) = $class_write_at(pclassreplacement_tail*, porigin)
+  -- if pclassreplacement.OLD.ORIGIN =/= porigin
+dec $class_write_task(ptask*, pclassreplacement) : bool
+def $class_write_task(eps, pclassreplacement) = false
+def $class_write_task((CLASS_CACHE_PUBLISH pclassreplacement) :: ptask*, pclassreplacement) = true
+def $class_write_task(ptask :: ptask_tail*, pclassreplacement) = $class_write_task(ptask_tail*, pclassreplacement)
+  -- if ptask =/= CLASS_CACHE_PUBLISH pclassreplacement
+dec $class_write_frames(pframe*, pclassreplacement) : bool
+def $class_write_frames(eps, pclassreplacement) = false
+def $class_write_frames(pframe :: pframe_tail*, pclassreplacement) = (($class_write_task(pframe.TODO, pclassreplacement) /\ pframe.CONTEXT = pclassreplacement.CALLER /\ pframe.ORIGIN = pclassreplacement.ORIGIN /\ pframe.CONSTCONTEXT = pclassreplacement.CONSTCONTEXT) \/ $class_write_frames(pframe_tail*, pclassreplacement))
+dec $class_write_current(pstate, pclassreplacement) : bool
+def $class_write_current(S, pclassreplacement) = true
+  -- if $class_write_task(S.TODO, pclassreplacement)
+  -- if S.CURRENT = pclassreplacement.CALLER /\ S.ORIGIN = pclassreplacement.ORIGIN /\ S.CONSTCONTEXT = pclassreplacement.CONSTCONTEXT
+def $class_write_current(S, pclassreplacement) = false -- otherwise
+dec $class_write_live(pstate, pclassreplacement) : bool
+def $class_write_live(S, pclassreplacement) = true
+  -- if pclassreplacement <- S.CLASSCONSTANTWRITES
+  -- if pclassreplacement.CONTEXT <- S.CLASSCONSTANTINIT
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassreplacement.OLD.ORIGIN) = (pclassreplacement.OLD)
+  -- if pclassreplacement.CONTEXT.DECL = pclassreplacement.OLD.ORIGIN
+  -- if pclassreplacement.NEW.ORIGIN = pclassreplacement.OLD.ORIGIN
+  -- if $class_constant_origin(S.CLASSES, pclassreplacement.OLD.ORIGIN) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if pclassreplacement.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pclassreplacement.OLD.ORIGIN
+  -- if pconstantcontext.FACTS = pclassreplacement.FACTS
+  -- if $constant_facts_valid(S, pclassreplacement.OLD.ORIGIN, pclassreplacement.FACTS)
+  -- if $constant_fact_at(pclassreplacement.FACTS, pclassconstantdesc.INITIALIZER) = (pconstantfact)
+  -- if pconstantfact.CLASS = pclassreplacement.NEW.CLASS
+  -- if $constant_value_class_valid(S, pclassreplacement.NEW.VALUE, pclassreplacement.NEW.CLASS)
+  -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pclassreplacement.NEW.VALUE)
+  -- if pclassreplacement.ORIGIN = (pclassreplacement.OLD.ORIGIN)
+  -- if pclassreplacement.IMAGE.VALUE = pclassreplacement.OLD.VALUE
+  -- if pclassreplacement.IMAGE.CLASS = pclassreplacement.OLD.CLASS
+  -- if $class_image_valid(pclassreplacement.IMAGE)
+  -- if $class_constant_pending_cache(S, pclassreplacement.CONTEXT)
+  -- if $class_write_current(S, pclassreplacement) \/ $class_write_frames(S.FRAMES, pclassreplacement)
+def $class_write_live(S, pclassreplacement) = false -- otherwise
+
+;; Registry and image are borrowed. Only the publication task owns newtmp.
+def $task_nodes(CLASS_CACHE_PUBLISH pclassreplacement) = $value_nodes(pclassreplacement.NEW.VALUE)
+dec $class_write_busy(pstate, pdefaultcache) : bool
+def $class_write_busy(S, pdefaultcache) = true
+  -- if $class_write_at(S.CLASSCONSTANTWRITES, pdefaultcache.ORIGIN) = (pclassreplacement)
+  -- if pclassreplacement.OLD = pdefaultcache
+  -- if $class_write_live(S, pclassreplacement)
+def $class_write_busy(S, pdefaultcache) = false -- otherwise
+dec $class_write_roots(pstate, pdefaultcache*) : pnode*
+def $class_write_roots(S, eps) = eps
+def $class_write_roots(S, pdefaultcache :: pdefaultcache_tail*) = $class_write_roots(S, pdefaultcache_tail*)
+  -- if $class_write_busy(S, pdefaultcache)
+def $class_write_roots(S, pdefaultcache :: pdefaultcache_tail*) = $value_nodes(pdefaultcache.VALUE) ++ $class_write_roots(S, pdefaultcache_tail*)
+  -- if ~$class_write_busy(S, pdefaultcache)
+def $class_constant_machine_roots(S) = $class_write_roots(S, S.CLASSCONSTANTCACHE)
+  -- if S.CLASSCONSTANTWRITES =/= eps
+def $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache) = true
+  -- if $class_write_at(S.CLASSCONSTANTWRITES, pdefaultcache.ORIGIN) = (pclassreplacement)
+  -- if pclassreplacement.OLD = pdefaultcache
+  -- if pclassreplacement.CONTEXT.DECL = pclassconstantdesc.ORIGIN
+  -- if $class_write_live(S, pclassreplacement)
+def $class_constant_cache_readable(S, porigin) = false
+  -- if $class_write_at(S.CLASSCONSTANTWRITES, porigin) = (pclassreplacement)
+  -- if $class_write_live(S, pclassreplacement)
+def $class_constant_binding(CLASS_CACHE_PUBLISH pclassreplacement) = [pclassreplacement.CONTEXT.DECL]
+def $constant_binding(S, CLASS_CACHE_PUBLISH pclassreplacement) = [pclassreplacement.CONTEXT.DECL]
+  -- if $class_write_live(S, pclassreplacement)
+def $call_task_valid(S, CLASS_CACHE_PUBLISH pclassreplacement) = $class_write_live(S, pclassreplacement)
+
+def $computed_class_replacement(S, pdefaultcache) = true
+  -- if pdefaultcache.VALUE = PARRAY n
+  -- if $class_image_capture(S, pdefaultcache.VALUE, pdefaultcache.CLASS, $(|S.ARRAYS| + 1)) = (pclassimage)
+def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $destructor_release_begin(S_stage, $destruction_values($value_nodes(pdefaultcache.VALUE)))
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = (pdefaultcache)
+  -- if ~$owned_class_snapshot_available(S, pdefaultcache)
+  -- if pdefaultcache.VALUE = PARRAY n_old
+  -- if $class_image_capture(S, pdefaultcache.VALUE, pdefaultcache.CLASS, $(|S.ARRAYS| + 1)) = (pclassimage)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pclassreplacement = {CONTEXT pclassconstantcontext, OLD pdefaultcache, IMAGE pclassimage, NEW {ORIGIN pclassconstantcontext.DECL, VALUE pvalue, CLASS pvalueclass}, FACTS pconstantcontext.FACTS, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, TRIGGER porigin_trigger}
+  -- if S_stage = S[.CLASSCONSTANTWRITES = pclassreplacement :: S.CLASSCONSTANTWRITES][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = (CLASS_CACHE_PUBLISH pclassreplacement) :: ptask_tail*]
+
+dec $class_write_delete(pclassreplacement*, porigin) : pclassreplacement*
+def $class_write_delete(eps, porigin) = eps
+def $class_write_delete(pclassreplacement :: pclassreplacement_tail*, porigin) = pclassreplacement_tail*
+  -- if pclassreplacement.OLD.ORIGIN = porigin
+def $class_write_delete(pclassreplacement :: pclassreplacement_tail*, porigin) = pclassreplacement :: $class_write_delete(pclassreplacement_tail*, porigin)
+  -- if pclassreplacement.OLD.ORIGIN =/= porigin
+rule PhpStep/class-cache-publish: S ~> $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTWRITES = $class_write_delete(S.CLASSCONSTANTWRITES, pclassreplacement.OLD.ORIGIN)][.CLASSCONSTANTCACHE = $default_cache_put(S.CLASSCONSTANTCACHE, pclassreplacement.NEW)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCREPLACE_IMAGE pclassreplacement.OLD pclassreplacement.IMAGE pclassreplacement.TRIGGER n_prefix pclassreplacement.FACTS]], pclassreplacement.CONTEXT, pclassconstantcontext_tail*), pclassreplacement.NEW.VALUE, pclassreplacement.NEW.CLASS)
+  -- if S.TODO = (CLASS_CACHE_PUBLISH pclassreplacement) :: ptask_tail*
+  -- if $class_write_live(S, pclassreplacement)
+  -- if S.CURRENT = pclassreplacement.CALLER /\ S.ORIGIN = pclassreplacement.ORIGIN /\ S.CONSTCONTEXT = pclassreplacement.CONSTCONTEXT
+  -- if S.CLASSCONSTANTINIT = pclassreplacement.CONTEXT :: pclassconstantcontext_tail*
+  -- if $constant_value_class_valid(S, pclassreplacement.NEW.VALUE, pclassreplacement.NEW.CLASS)
+  -- if n_prefix = |S.DECLARATIONS|
+def $return_discard(S, CLASS_CACHE_PUBLISH pclassreplacement) = S[.COMPLETION = UNSUPPORTED "class cache old-release exception native nontermination"]
+  -- if $class_write_live(S, pclassreplacement)
+def $call_after_origin(S, CLASS_CACHE_PUBLISH pclassreplacement) = S[.COMPLETION = UNSUPPORTED "class cache old-release exception native nontermination"]
+  -- if $class_write_live(S, pclassreplacement)
+
+;; Images preserve earlier publications without keeping their containers alive.
+def $class_constant_event_ordinal(CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) = n
+def $constant_callable_cache_event(CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) = ((pdefaultcache.ORIGIN, n))
+def $owned_class_replacement_event(CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) = (pdefaultcache)
+def $owned_class_write_facts(CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) = (pconstantfact*)
+def $owned_class_extended_history((CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) :: pclassconstantevent*) = true
+def $class_constant_history_fills(S, (CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if pdefaultcache.ORIGIN <- porigin_cached*
+  -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, pclassconstantdesc.OWNER) = (b_owner)
+  -- if pclassimage.VALUE = pdefaultcache.VALUE /\ pclassimage.CLASS = pdefaultcache.CLASS
+  -- if pclassimage.ARRAY =/= eps /\ $class_image_valid(pclassimage)
+  -- if $class_constant_value_type(pclassconstantdesc.TYPE, pdefaultcache.VALUE)
+  -- if $constant_facts_valid(S, pdefaultcache.ORIGIN, pconstantfact*)
+  -- if $class_constant_cache_trigger(S, pdefaultcache.ORIGIN, porigin_trigger, n)
+
+;; Stop at the first replacement of either kind, never at a later image.
+dec $class_next_image(pclassconstantevent*, porigin) : pclassimage?
+def $class_next_image(eps, porigin) = eps
+def $class_next_image((CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) :: pclassconstantevent*, porigin) = (pclassimage)
+  -- if pdefaultcache.ORIGIN = porigin
+def $class_next_image((CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) :: pclassconstantevent_tail*, porigin) = eps
+  -- if pdefaultcache.ORIGIN = porigin
+def $class_next_image(pclassconstantevent :: pclassconstantevent_tail*, porigin) = $class_next_image(pclassconstantevent_tail*, porigin)
+  -- if $owned_class_replacement_event(pclassconstantevent) = eps
+def $class_next_image(pclassconstantevent :: pclassconstantevent_tail*, porigin) = $class_next_image(pclassconstantevent_tail*, porigin)
+  -- if $owned_class_replacement_event(pclassconstantevent) = (pdefaultcache)
+  -- if pdefaultcache.ORIGIN =/= porigin
+
+dec $class_projection_suffix(pstate, pstate, pclassconstantevent*) : pclassconstantevent*?
+def $class_projection_suffix(S, S_entry, pclassconstantevent*) = (S.CLASSCONSTANTHISTORY[n_after:n_tail])
+  -- if $(|pclassconstantevent*| <= |S_entry.CLASSCONSTANTHISTORY| /\ |S_entry.CLASSCONSTANTHISTORY| <= |S.CLASSCONSTANTHISTORY|)
+  -- if S_entry.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY[0:|S_entry.CLASSCONSTANTHISTORY|]
+  -- if n_after = $nabs($(|S_entry.CLASSCONSTANTHISTORY| - |pclassconstantevent*| + 1))
+  -- if $(n_after <= |S.CLASSCONSTANTHISTORY|)
+  -- if n_tail = $nabs($(|S.CLASSCONSTANTHISTORY| - n_after))
+def $class_projection_suffix(S, S_entry, pclassconstantevent*) = eps -- otherwise
+dec $class_projection_image(pstate, pstate, pclassconstantevent*, porigin) : pclassimage?
+def $class_projection_image(S, S_entry, pclassconstantevent*, porigin) = (pclassimage)
+  -- if $class_projection_suffix(S, S_entry, pclassconstantevent*) = (pclassconstantevent_tail*)
+  -- if $class_next_image(pclassconstantevent_tail*, porigin) = (pclassimage)
+def $class_projection_image(S, S_entry, pclassconstantevent*, porigin) = (pclassreplacement.IMAGE)
+  -- if $class_projection_suffix(S, S_entry, pclassconstantevent*) = (pclassconstantevent_tail*)
+  -- if $owned_class_next_snapshot(pclassconstantevent_tail*, porigin) = eps
+  -- if $class_write_at(S.CLASSCONSTANTWRITES, porigin) = (pclassreplacement)
+  -- if $class_write_live(S, pclassreplacement)
+def $class_projection_image(S, S_entry, pclassconstantevent*, porigin) = eps -- otherwise
+def $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) = (pclassreplacement.OLD)
+  -- if $class_projection_suffix(S, S_entry, pclassconstantevent*) = (pclassconstantevent_tail*)
+  -- if $owned_class_next_snapshot(pclassconstantevent_tail*, porigin) = eps
+  -- if $class_write_at(S.CLASSCONSTANTWRITES, porigin) = (pclassreplacement)
+  -- if $class_write_live(S, pclassreplacement)
+def $class_constant_compile_cache(S, S_entry, pclassconstantevent*, porigin) = (S_image[.RESULT = S_entry.RESULT][.BASE = S_entry.BASE][.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, {ORIGIN porigin, VALUE pvalue, CLASS pclassimage.CLASS})])
+  -- if $class_projection_image(S, S_entry, pclassconstantevent*, porigin) = (pclassimage)
+  -- if $class_image_materialize(S_entry, pclassimage) = ((S_image, pvalue))
+def $class_constant_compile_events(S, (CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_cached)
+  -- if $class_constant_compile_cache(S, S_entry, (CCREPLACE_IMAGE pdefaultcache pclassimage porigin_trigger n pconstantfact*) :: pclassconstantevent*, pdefaultcache.ORIGIN) = (S_cached)

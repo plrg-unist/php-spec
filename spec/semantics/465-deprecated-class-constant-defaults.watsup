@@ -93,6 +93,8 @@ def $owned_class_snapshot_donor(puserconstant :: puserconstant_tail*, pdefaultca
   -- if puserconstant.VALUE = pdefaultcache.VALUE /\ puserconstant.CLASS = pdefaultcache.CLASS
 def $owned_class_snapshot_donor(puserconstant :: puserconstant_tail*, pdefaultcache) = $owned_class_snapshot_donor(puserconstant_tail*, pdefaultcache)
   -- if puserconstant.VALUE =/= pdefaultcache.VALUE \/ puserconstant.CLASS =/= pdefaultcache.CLASS
+dec $computed_class_replacement(pstate, pdefaultcache) : bool
+def $computed_class_replacement(S, pdefaultcache) = false -- otherwise
 dec $owned_class_snapshot_available(pstate, pdefaultcache) : bool
 def $owned_class_snapshot_available(S, pdefaultcache) = ($constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS) /\ ($deprecated_global_nonowning(pdefaultcache.VALUE) \/ $owned_class_snapshot_donor(S.USERCONSTANTS, pdefaultcache)))
 def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*, ptask_tail*, pvalue, pvalueclass, porigin_trigger, n_prefix) = $class_constant_result($class_constant_restore(S[.TODO = ptask_tail*][.CLASSCONSTANTCACHE = $default_cache_put(S.CLASSCONSTANTCACHE, {ORIGIN pclassconstantcontext.DECL, VALUE pvalue, CLASS pvalueclass})][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCREPLACE pdefaultcache porigin_trigger n_prefix pconstantfact*]], pclassconstantcontext, pclassconstantcontext_tail*), pvalue, pvalueclass)
@@ -107,6 +109,7 @@ def $class_constant_store(S, pclassconstantcontext, pclassconstantcontext_tail*,
   -- if $owned_class_constant_source(S, pclassconstantdesc)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantcontext.DECL) = (pdefaultcache)
   -- if ~$owned_class_snapshot_available(S, pdefaultcache)
+  -- if ~$computed_class_replacement(S, pdefaultcache)
 
 def $class_constant_event_ordinal(CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) = n
 def $constant_callable_cache_event(CCREPLACE pdefaultcache porigin_trigger n pconstantfact*) = ((pdefaultcache.ORIGIN, n))
@@ -140,8 +143,8 @@ def $class_constant_cache_projection(S, S_entry, pclassconstantevent*, porigin) 
   -- if $(n_after <= |S.CLASSCONSTANTHISTORY|)
   -- if n_tail = $nabs($(|S.CLASSCONSTANTHISTORY| - n_after))
   -- if $owned_class_next_snapshot(S.CLASSCONSTANTHISTORY[n_after:n_tail], porigin) = (pdefaultcache)
-def $class_constant_compile_events(S, (CCREPLACE pdefaultcache_old porigin_trigger n pconstantfact*) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = $default_cache_put(S_entry.CLASSCONSTANTCACHE, pdefaultcache)])
-  -- if $class_constant_cache_projection(S, S_entry, (CCREPLACE pdefaultcache_old porigin_trigger n pconstantfact*) :: pclassconstantevent*, pdefaultcache_old.ORIGIN) = (pdefaultcache)
+def $class_constant_compile_events(S, (CCREPLACE pdefaultcache_old porigin_trigger n pconstantfact*) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_cached)
+  -- if $class_constant_compile_cache(S, S_entry, (CCREPLACE pdefaultcache_old porigin_trigger n pconstantfact*) :: pclassconstantevent*, pdefaultcache_old.ORIGIN) = (S_cached)
 
 ;; Trait notice projections retain the same historical values; no Trait read
 ;; authority is added. Histories without replacements keep their old path.
@@ -225,8 +228,8 @@ def $class_constant_history_fills(S, (CCCACHE_READ porigin porigin_trigger n pco
   -- if $constant_facts_valid(S, porigin, pconstantfact*)
   -- if $global_constant_read_facts(pconstantfact*) =/= eps
   -- if $class_constant_cache_trigger(S, porigin, porigin_trigger, n)
-def $class_constant_compile_events(S, (CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry[.CLASSCONSTANTCACHE = S_entry.CLASSCONSTANTCACHE ++ [pdefaultcache]])
-  -- if $class_constant_cache_projection(S, S_entry, (CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*, porigin) = (pdefaultcache)
+def $class_constant_compile_events(S, (CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_cached)
+  -- if $class_constant_compile_cache(S, S_entry, (CCCACHE_READ porigin porigin_trigger n pconstantfact*) :: pclassconstantevent*, porigin) = (S_cached)
 
 dec $owned_class_last_write(pclassconstantevent*, porigin) : pclassconstantevent?
 def $owned_class_last_write(eps, porigin) = eps

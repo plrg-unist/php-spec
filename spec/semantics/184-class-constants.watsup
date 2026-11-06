@@ -13,6 +13,9 @@ dec $class_constant_update_marker(ptask) : bool
 dec $static_default_update_marker(ptask) : bool
 dec $class_constant_selection_valid(pstate, pclassconstantcontext) : bool
 dec $class_constant_cache_value_valid(pstate, pdefaultcache) : bool
+dec $class_constant_cache_readable(pstate, porigin) : bool
+def $class_constant_cache_readable(S, porigin) = true -- otherwise
+dec $class_constant_row_payload_valid(pstate, pclassconstantdesc, pdefaultcache) : bool
 dec $class_constant_facts_valid(pstate, porigin, pconstantfact*) : bool
 dec $class_constant_cache_trigger(pstate, porigin, porigin, nat) : bool
 dec $class_constant_binding_head(ptask*, porigin) : bool
@@ -185,6 +188,9 @@ def $class_constant_value(S, pclassconstantdesc, pclassconstantselection, ptbyte
 def $class_constant_value(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = $class_constant_result(S, pdefaultcache.VALUE, pdefaultcache.CLASS)
   -- if ~pclassconstantdesc.FOLDED
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if $class_constant_cache_readable(S, pclassconstantdesc.ORIGIN)
+def $class_constant_value(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = S[.COMPLETION = UNSUPPORTED "class constant cache slot destruction"]
+  -- if ~$class_constant_cache_readable(S, pclassconstantdesc.ORIGIN)
 def $class_constant_value(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z) = $class_constant_begin(S, pclassconstantdesc, pclassconstantselection, ptbytes_requested, z)
   -- if ~pclassconstantdesc.FOLDED
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
@@ -527,17 +533,20 @@ def $class_constant_runtime_type(S, ptbranch*, pvalue) = ($class_constant_value_
 
 def $class_constant_cache_value_valid(S, pdefaultcache) = $constant_value_class_valid(S, pdefaultcache.VALUE, pdefaultcache.CLASS) -- otherwise
 def $class_constant_facts_valid(S, porigin, pconstantfact*) = $constant_facts_valid(S, porigin, pconstantfact*) -- otherwise
+def $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache) = true
+  -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
+  -- if $class_constant_cache_value_valid(S, pdefaultcache)
+  -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
+  -- if $constant_callable_cache_prefix(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (n_prefix)
+  -- if $constant_callable_cache_valid(S, pclassconstantdesc, pdefaultcache.CLASS, n_prefix)
+def $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache) = false -- otherwise
 def $class_constant_caches_valid(S, eps) = true
 def $class_constant_caches_valid(S, pdefaultcache :: pdefaultcache_tail*) = true
   -- if $class_constant_origin(S.CLASSES, pdefaultcache.ORIGIN) = (pclassconstantdesc)
   -- if ~pclassconstantdesc.FOLDED
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = (pclassconstantdesc.OWNER)
   -- if $default_cache_at(pdefaultcache_tail*, pdefaultcache.ORIGIN) = eps
-  -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
-  -- if $class_constant_cache_value_valid(S, pdefaultcache)
-  -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
-  -- if $constant_callable_cache_prefix(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (n_prefix)
-  -- if $constant_callable_cache_valid(S, pclassconstantdesc, pdefaultcache.CLASS, n_prefix)
+  -- if $class_constant_row_payload_valid(S, pclassconstantdesc, pdefaultcache)
   -- if $class_constant_caches_valid(S, pdefaultcache_tail*)
 def $class_constant_caches_valid(S, pdefaultcache*) = false -- otherwise
 
