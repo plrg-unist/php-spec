@@ -1,0 +1,55 @@
+;; Owning dependency reads retain the genuine ordinary class-constant binder.
+dec $owned_class_constant_source(pstate, pclassconstantdesc) : bool
+def $owned_class_constant_source(S, pclassconstantdesc) = true
+  -- if ~pclassconstantdesc.FOLDED
+  -- if $class_at(S.CLASSES, pclassconstantdesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pclassconstantdesc.OWNER = PORIGIN n_unit pcpath_owner
+  -- if pclassconstantdesc.ORIGIN = PORIGIN n_unit pcpath_decl
+  -- if |pcpath_decl| = $(|pcpath_owner| + 4)
+  -- if pcpath_decl[0:|pcpath_owner|] = pcpath_owner
+  -- if pcpath_decl[|pcpath_owner|:4] = [PCFIELD 5, PCINDEX n_group, PCFIELD 3, PCINDEX n_constant]
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n_unit (pcpath_decl ++ [PCFIELD 1])
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.OWNER) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text_owner) metadata_owner) phpType44 phpType42 phpType23 metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit (pcpath_owner ++ [PCFIELD 5, PCINDEX n_group])) = (NStmtClassConst (SEQUENCE eps) phpType24 phpType18 phpType45 metadata_group)
+  -- if $origin_node(S.SOURCES, pclassconstantdesc.ORIGIN) = (NConst (NIdentifier (BYTES text_name) metadata_name) expression metadata_constant)
+  -- if pclassconstantdesc.NAME = $base64(text_name)
+def $owned_class_constant_source(S, pclassconstantdesc) = false -- otherwise
+
+;; The structural source view avoids recursively validating a saved binder.
+dec $owned_class_constant_scope(pstate) : bool
+def $owned_class_constant_scope(S) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.CLASSCONSTANTINIT = pclassconstantcontext :: pclassconstantcontext_tail*
+  -- if pconstantcontext.ORIGIN = pclassconstantcontext.DECL
+  -- if pconstantcontext.LINE = pclassconstantcontext.LINE
+  -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
+  -- if $owned_class_constant_source(S, pclassconstantdesc)
+def $owned_class_constant_scope(S) = false -- otherwise
+def $deprecated_constant_class_ast(S, porigin) = true
+  -- if $owned_class_constant_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $class_constant_context_valid(S, pconstantcontext)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+def $deprecated_constant_class_ast(S, porigin) = false -- otherwise
+
+def $constant_binding(S, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = [pconstantcontext.ORIGIN]
+  -- if $source_operand_suffix(S.TODO, DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*, eps)
+  -- if $owned_class_constant_scope(S)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pdestructioncleanup.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pdestructioncleanup.CALLER = S.CURRENT /\ pdestructioncleanup.ORIGIN = S.ORIGIN
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if pdeprecatedconstant.COPIED = eps
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, pdeprecatedconstant.SITE)
+  -- if $constant_bindings(S[.TODO = ptask_saved*], ptask_saved*) = [pconstantcontext.ORIGIN]
+
+;; Full marker and scope validation authenticate this pure continuation view.
+def $class_constant_binding(DEPRECATED_HANDLER_EXIT pdestructioncleanup z ptask_saved*) = $class_constant_bindings(ptask_saved*)
+  -- if pdestructioncleanup.CONSTCONTEXT = (pconstantcontext)
+  -- if ptask_saved* = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant
+  -- if pdeprecatedconstant.COPIED = eps
