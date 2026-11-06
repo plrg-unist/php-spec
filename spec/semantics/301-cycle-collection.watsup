@@ -916,6 +916,8 @@ dec $gc_extra_pending(pdestructionrelease?, pgctemporary*) : bool
 dec $gc_extra_source(poperand, pgctemporary*) : bool
 dec $gc_array_separation_site(pstate, porigin?, ptask, nat, pkey) : bool
 dec $gc_array_separation_image(pstate, nat, nat, nat, pkey, pvalue) : bool
+dec $gc_array_reference_site(pstate, porigin?, ptask) : (pbase, nat)?
+dec $gc_array_reference_image(pstate, nat, nat, nat, nat, pkey) : bool
 dec $gc_consumed_decrements(pstate, pstate, pnode*) : pnode*
 dec $gc_consumed_handoff(pstate, pstate, pnode*) : pnode*
 
@@ -1056,6 +1058,55 @@ def $gc_operation_temporary_extra(S, S_next, ASSIGN_ARRAY pbase z false, [HARRAY
   -- if S_next.CELL = n_cell /\ S_next.LOCATION = ELEMENT n_new (KINT z_key) /\ S_next.KEY = KINT z_key
   -- if S_next.BASE = BASE_VALUE (KNOWN PNULL)
   -- if $gc_array_separation_image(S_next, n_old, n_new, n_cell, KINT z_key, pvalue)
+;; FETCH_DIM_W separates before MAKE_REF. For a CV base, CELL is borrowed:
+;; only the new array entry owns the new reference until REF_NAME binds it.
+def $gc_array_reference_site(S, (porigin), ACQUIRE_ARRAY z) = ((BASE_DIM (BASE_VALUE (VARIABLE n_name* z_name)) (KNOWN (PINT z_key)) z_dimension, n_root))
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.CONSTCONTEXT = eps
+  -- if $eager_source_origin(S, (porigin))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension)
+  -- if n_name* = $base64(text)
+  -- if n_name* <- S.CVS
+  -- if z_name = $variable_line(BYTES text, metadata_variable)
+  -- if z_dimension = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 1], NScalarInt (INTEGER z_key) metadata_key)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, NExprArrayDimFetch (NExprVariable (BYTES text) metadata_variable) (NScalarInt (INTEGER z_key) metadata_key) metadata_dimension)
+  -- if $lookup(S.ENV, n_name*) = (n_root)
+  -- if $(n_root < |S.STORE|) /\ (HCELL n_root) <- S.ALLOCATIONS
+  -- if $propref_at(S.PROPREFS, n_root) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_root) = eps
+def $gc_array_reference_site(S, porigin?, ptask) = eps -- otherwise
+def $gc_array_reference_image(S, n_old, n_new, n_root, n_reference, pkey) = true
+  -- if $(n_old < n_new) /\ $(n_new < |S.ARRAYS|)
+  -- if $(n_root < |S.STORE|) /\ $(n_reference < |S.STORE|) /\ n_root =/= n_reference
+  -- if (HARRAY n_old) <- S.ALLOCATIONS /\ (HARRAY n_new) <- S.ALLOCATIONS
+  -- if (HCELL n_reference) <- S.ALLOCATIONS /\ n_reference <- S.REFCELLS
+  -- if ~$array_immutable(S, n_old) /\ ~$gc_proxy(S, n_old)
+  -- if $heap_count(HARRAY n_old, S.NATIVEEXCESS) = 1 /\ $heap_count(HARRAY n_new, S.NATIVEEXCESS) = 0
+  -- if $heap_count(HCELL n_reference, S.NATIVEEXCESS) = 0
+  -- if $gc_direct_array_entries(S.ARRAYS[n_old].ITEMS)
+  -- if $entry_lookup(S.ARRAYS[n_old].ITEMS, pkey) = (DIRECT pvalue)
+  -- if S.ARRAYS[n_new] = $array_insert(S.ARRAYS[n_old], pkey, ALIAS n_reference)
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_new) /\ S.STORE[n_reference] = DEFINED pvalue
+  -- if $propref_at(S.PROPREFS, n_reference) = eps /\ $reference_coercion_at(S.REFCOERCIONS, n_reference) = eps
+  -- if $heap_owners($heap_graph(S), HARRAY n_new) = 1 /\ $heap_owners($heap_graph(S), HCELL n_reference) = 1
+def $gc_array_reference_image(S, n_old, n_new, n_root, n_reference, pkey) = false -- otherwise
+def $gc_operation_temporary_extra(S, S_next, ACQUIRE_ARRAY z, [HARRAY n_old]) = [{OPERAND KNOWN (PARRAY n_old), PENDING true}]
+  -- if S.TODO = (ACQUIRE_ARRAY z) :: ptask_tail*
+  -- if $gc_array_reference_site(S, S.ORIGIN, ACQUIRE_ARRAY z) = ((pbase, n_root))
+  -- if S.BASE = pbase
+  -- if pbase = BASE_DIM pbase_root (KNOWN (PINT z_key)) z_dimension
+  -- if S.STORE[n_root] = DEFINED (PARRAY n_old)
+  -- if $(n_old < |S.ARRAYS|) /\ (HARRAY n_old) <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S), HARRAY n_old) = 1 /\ $native_excess_valid(S)
+  -- if $entry_lookup(S.ARRAYS[n_old].ITEMS, KINT z_key) = (DIRECT pvalue)
+  -- if n_new = |S.ARRAYS|
+  -- if n_reference = |S.STORE|
+  -- if S_next.ARRAYS = S.ARRAYS ++ [$array_insert(S.ARRAYS[n_old], KINT z_key, ALIAS n_reference)]
+  -- if S_next.STORE = $set_cell(S.STORE, n_root, DEFINED (PARRAY n_new)) ++ [DEFINED pvalue]
+  -- if S_next.REFCELLS = n_reference :: S.REFCELLS
+  -- if S_next.NATIVEEXCESS = S.NATIVEEXCESS
+  -- if S_next.COMPLETION = NORMAL /\ S_next.TODO = ptask_tail*
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S_next.CELL = n_reference /\ S_next.KEY = KINT z_key /\ S_next.LOCATION = ELEMENT n_new (KINT z_key)
+  -- if $gc_array_reference_image(S_next, n_old, n_new, n_root, n_reference, KINT z_key)
 def $gc_extra_pending_nodes(eps) = eps
 def $gc_extra_pending_nodes({OPERAND KNOWN (POBJECT n), PENDING true} :: pgctemporary_tail*) = (HOBJECT n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
 def $gc_extra_pending_nodes({OPERAND KNOWN (PARRAY n), PENDING true} :: pgctemporary_tail*) = (HARRAY n) :: $gc_extra_pending_nodes(pgctemporary_tail*)
@@ -1202,6 +1253,21 @@ def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
   -- if $gc_array_separation_site(S_history, pdestructionoperation.ORIGIN, pdestructionoperation.SOURCE, pdestructionoperation.CELL, pkey)
   -- if pgctemporary_extra.OPERAND = KNOWN (PARRAY n_old)
   -- if $gc_array_separation_image(S, n_old, n_new, pdestructionoperation.CELL, pkey, pvalue)
+  -- if (pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
+  -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
+def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.NOGC = eps
+  -- if pdestructionoperation.NOGCEXTRA = pgctemporary_extra :: pgctemporary_tail*
+  -- if pgctemporary_tail* = eps
+  -- if pdestructionoperation.SOURCE = ACQUIRE_ARRAY z
+  -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S_history = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $gc_array_reference_site(S_history, pdestructionoperation.ORIGIN, pdestructionoperation.SOURCE) = ((BASE_DIM pbase_root (KNOWN (PINT z_key)) z_dimension, n_root))
+  -- if pdestructionoperation.KEY = KINT z_key
+  -- if pdestructionoperation.LOCATION = ELEMENT n_new (KINT z_key)
+  -- if pgctemporary_extra.OPERAND = KNOWN (PARRAY n_old)
+  -- if $gc_array_reference_image(S, n_old, n_new, n_root, pdestructionoperation.CELL, KINT z_key)
   -- if (pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 1) \/ (~pgctemporary_extra.PENDING /\ $heap_owners($heap_graph(S), HARRAY n_old) = 0)
   -- if $gc_extra_pending($gc_temporary_release($gc_temporary_pairs(S), pdestructionoperation), [pgctemporary_extra])
 def $gc_temporary_metadata_valid(S, pdestructionoperation) = true
