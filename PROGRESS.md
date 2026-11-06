@@ -746,6 +746,17 @@ entry; one fixture type-check stop retains zero credit. Actual current459 joined
 interface load/inventory pass; no source/front replay.
 [Aggregate acquisition review](coverage/semantics/generator-aggregate-acquisition-review.json).
 
+I133 authenticates saved direct-Iterator cursor history while its callback runs
+the already selected initialized Gen via `next`/`send`. One real resumer proof
+and a finite ordinary named-helper fold authorize only the saved callback/cursor
+phase view; runtime state, complete graph and global owner checks stay real.
+Entry PAUSED/CLOSED and existing selection/source/value/held policies are exact.
+Two source agreements pass at separate retained-N/corrected-E cuts; independent
+N120/E121=241 ownership/phase/graph/budget checks pass. The elaboration stop and count-only observer
+Unsupported retain zero credit. Actual current461 shared-interface load/inventory
+pass without source/front or older replay.
+[Iterator reentry review](coverage/semantics/generator-iterator-reentry-review.json).
+
 I83 gives implicit invokable-object factories and direct Generator-bodied
 `__invoke` calls one compiled-source/runtime-effective-method proof. Direct entry
 requires the live receiver; a bounded lookup view authenticates retired factory
@@ -3114,7 +3125,6 @@ their work remains unaccepted until integrated.
 | COMP201 | Owning defaults for public ordinary instance/static methods selected by initialized CV string member names, with actual target/scopes/publication history and unchanged Shared cache/receiver laws; preserve nonstring/magic/held bounds. |
 | ENUM158 | Ordinary array callable_name outputs using actual array-root witnesses, COW/SENT/result owners and ordered HARRAY cleanup; preserve legacy rebound capture, producer/place/pack and held boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
-| I133 | Same selected initialized Generator reentry from direct ordinary Iterator callbacks, with genuine running-body/resumer and saved-cursor witnesses for descriptor history; preserve fresh-entry, physical owner and held bounds. |
 | OB30 | Fresh by-value factory results published to ordinary compiled CVs, then actual same-CV read/throw, with per-live-result provenance and real cell/result/pending owners; preserve factory and held bounds. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

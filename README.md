@@ -8385,6 +8385,15 @@ and outside Fibers. The Aggregate still needs a real owner during its borrowed
 call; existing INI, producer and value policies remain.
 [Aggregate acquisition review](coverage/semantics/generator-aggregate-acquisition-review.json).
 
+An ordinary Iterator callback may resume the already selected Generator with
+`next` or `send` before the outer API is invoked. The real nested resumer and
+saved callback/cursor authenticate its temporary RUNNING history; ordinary named
+helper frames retain their source and caller links. A descriptor view changes
+only the receiver's phase for those saved checks, preserving the complete owner
+graph. Actual state and entry admission stay unchanged. Frozen outer selection,
+prior argv, raw current and DATA keep their separate lifetimes.
+[Iterator reentry review](coverage/semantics/generator-iterator-reentry-review.json).
+
 Ordinary named Generators retain the selected `send` receiver through
 argument cleanup after a nondelegated body throw. Ordinary and nonnull nullsafe
 calls keep the frozen method and receiver after argument producers rebind their

@@ -221,6 +221,21 @@ failure paths remain coherent with normal return; old INI-only Generator returns
 Iterator admission, values and frame rules stay unchanged.
 [Aggregate acquisition review](../../coverage/semantics/generator-aggregate-acquisition-review.json).
 
+An ordinary by-value Iterator callback may invoke post-init `next`/`send`
+on the already selected receiver while its outer native call is still collecting.
+The actual singleton resumer/body proof and saved callback/CONFIG_ITERATOR pair
+supply history authority. A finite fold traverses only ordinary named non-Generator
+by-value helper contexts with genuine locals/source/caller-origin links. The
+existing frame-scope and user-Iterator checks share a view changing only that
+receiver's RUNNING phase to PAUSED; its FRAME, cache and all other fields stay
+real. The whole graph is identical, and global running-record/resumer checks use
+the physical state. Entry still requires PAUSED/CLOSED. Direct Iterator producer,
+value, ordinary-prefix and selection policies are unchanged; Aggregate getter or
+source-Generator reentry and other held modes remain separate. Existing named
+body helpers and restored Fiber VM laws retain their own authority; the direct
+source observations here cover normal callback reentry and a nested body throw.
+[Iterator reentry review](../../coverage/semantics/generator-iterator-reentry-review.json).
+
 An ordinary named Generator's direct or nonnull nullsafe `send`
 retains its receiver when the resumed body throws. The real argv releases in
 caller context while the original Throwable remains pending; only then does
