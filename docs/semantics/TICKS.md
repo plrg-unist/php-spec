@@ -88,6 +88,16 @@ live getter frame or receiver guess. One Trait body can therefore supply distinc
 consumer lexical classes and called receivers. Escaped Closures keep those
 receivers after global removal; callback abort, another consumer's normal return
 and explicit Closure release preserve source order and budget resumption.
+Existing block SET Closures use the exact completed `property_set_origin`, so a
+paired class property's second hook and a sole Trait's first hook retain distinct
+roles. Imported SETs require the actual consumer property and
+`property_set_trait_origin`; their physical Trait source stays separate from the
+consumer lexical class. Captured values survive later parameter reassignment,
+and escaped receivers survive global removal through callback abort, normal
+completion and ordered Closure release. This scope certificate adds no producer
+or expression-order admission; callable-bearing `$GLOBALS` assignments remain
+outside the current Tick plan, so the witness uses ordinary global binding and
+plain-variable assignment.
 The enclosing `PROP_GROUP` can emit a
 Tick when no adjacent Tick suppresses it (`PROP_DECL`, rather than `PROP_GROUP`,
 is in Zend's unticked list). Its seed line comes from the type's first component
@@ -327,6 +337,9 @@ order plus actual receiver retention, callback abort/destruction and fresh retry
 The [Trait-getter scope review](../../coverage/semantics/tick-trait-get-review.json)
 records one shared physical Closure across two consumer scopes, an inherited
 called receiver and escaped ownership, with actual import-fact refusal and budget checks.
+The [block-setter Closure review](../../coverage/semantics/tick-set-closure-review.json)
+records exact class/trait SET roles, captured and backing values, escaped receiver
+ownership, callback abort/normal completion and import-fact refusal with resumption.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

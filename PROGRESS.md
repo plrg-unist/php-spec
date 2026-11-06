@@ -1221,9 +1221,13 @@ nested callable order and implicit return; callback removal of the global receiv
 keeps it alive until unwind, with later fresh-object retry. Nested Closure scope
 uses completed getter/property ownership. Escaped Trait-getter Closures match
 shared physical code to actual consumer property/getter imports, retaining separate
-lexical/called classes and receivers after getter frames retire. Conditional declarations
-activate before their header-line Tick, while top declarations have
-no outer Tick.
+lexical/called classes and receivers after getter frames retire.
+Escaped block-SET Closures authenticate exact class/trait setter origins and
+actual consumer imports while retaining captured values and receiver ownership
+after hook return and removal of the original receiver variables
+([review](coverage/semantics/tick-set-closure-review.json)).
+Conditional declarations activate before their header-line Tick, while top
+declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
 compilation; callbacks retain physical source, alias trace name and receiver
 through abort and retry.
@@ -2151,7 +2155,7 @@ below are under `.tools/`; their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS198 | Reference-cell first-CV ordinary leaf objects in by-value magic sends in414; `class198-refcell-magic`, `class198-review`; independent owner/budget review is pending. |
-| ATTR53 | SET-hook Closure source/import scope in403; `attr53-dev`, `attr53-review`. Corrected native source, strict447 and final107 pass; source timeouts retain zero credit and the longer source comparison is pending. |
+| ATTR54 | Public typed CLASS short SET-hook expressions, with implicit value, backing write and void fallthrough; clean-base preparation after integrated ATTR53. Minimal382/403/393 regions; wider binding/header/schema forms remain outside this slice. |
 | COMP187 | Owning method-default source/invocation authentication in reserved459 with minimal458/306 hooks; `comp187-owned-method-defaults-dev`, `comp187-named-method-defaults-review`. |
 | ENUM138 | Conditional named-user function publication before dummy-bound Closure calls; ENUM137 integrated with one source agreement and120 independent reached conditions at its private446 cut. |
 | GC56 | Direct nonmutating by-value foreach over finite WeakMap payloads in386/422; `gc-finite-byvalue-foreach-56`, `gc56-review`; no30/schema edits. |

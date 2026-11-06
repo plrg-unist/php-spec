@@ -350,6 +350,8 @@ Ordinary block hooks and expression-bodied getters keep separate Tick plans in
 source order, including nested callback reads, receiver retention and abort/retry.
 Escaped Trait-getter Closures keep shared physical code and distinct consumer
 scope, called class and retained receiver through callback abort and release.
+Escaped block-setter Closures authenticate the exact SET role and Trait import,
+retaining copied values, lexical/called scope and receivers after the hook returns.
 Property groups can emit a main Tick before pending class activation; plans
 preserve its adjacency and type/name/default/hook line provenance.
 Trait use and admitted alias/precedence metadata stay unticked while imported

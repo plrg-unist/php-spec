@@ -1,0 +1,85 @@
+{
+  "milestone": "ATTR53: escaped block SET Closure source and consumer scopes",
+  "status": "Independently accepted bounded implementation; wider hooks, callables and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "20fa918f6c9d67fb0a2e957a34075ab3baf2b91e",
+    "module": "spec/semantics/403-backed-set-hooks.watsup",
+    "sha256": "ba21b4c47510753131c802861e35edeef5a526dab41e45a7e82c3f017900e7ba",
+    "scope": "Two arms borrow the nearest raw hook's completed property and exact property_set_origin, then match a Trait consumer through its actual TRAIT_MEMBER_ORIGIN property and exact property_set_trait_origin. Physical Trait source, lexical consumer and called receiver remain separate. No CURRENT/receiver inference, runtime, producer, compiler-order, schema or general binding expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "zend_compile_property_hooks supplies the SET parameter and hook scope. zend_do_traits_property_binding copies hooks and zend_fixup_trait_method changes their consumer scope. ZEND_DECLARE_LAMBDA_FUNCTION passes the current hook scope, called class and actual receiver to zend_create_closure; zend_create_closure_ex retains that receiver.",
+    "roles": "The existing SET-origin helpers authenticate actual source and completed property/import facts. The witness distinguishes the paired class property's second SET hook from the sole Trait property's first SET hook; source-path resemblance alone supplies no authority."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/tick-set-closure-53",
+    "source_sha256": "8be0f49df3bbb762b022773b9f3a7dfd382940160363eaff1eed6e333416e199",
+    "native_first": {
+      "report": "native-v2/report.json",
+      "sha256": "64f43f82a2291b75e87bafc9db13b5f94600d5b72acf7df3ad67ee9e2fc948ee",
+      "passed": true,
+      "scope": "Frozen original bytes produce RATickSetChildA53T10CBTickSetChildB53T1892abZ, empty stderr and exit0. Native preparation, including retained native-v1, earns no differential credit."
+    },
+    "original_source": {
+      "report": "source-final-v2/report.json",
+      "sha256": "8a15c1072c40efdc33fd2631f4a9ea4dfaf5d7fadacd2eeb146369efdb56b8b2",
+      "revision": "dc2dd7d8a9f3f5f95acd0c7b973b82157cd3ff2c",
+      "passed": true,
+      "agreements": 1,
+      "scope": "One exact normal original compares raw stdout/stderr and exit0 under the separate explicit 180-second model/210-second outer resource profile. Both prior 60-second timeout cuts retain zero credit."
+    },
+    "strict": {
+      "report": "strict-report-v2.json",
+      "sha256": "a5f12c6e946b9dddc1e8f5a121a37ee7adfd63e2298560c494f559d642b30fd6",
+      "passed": true,
+      "scope": "Final SL elaboration, algorithmic and structuring checks plus main=true pass across 447 modules at 20fa918f6; exit0, empty stderr, 13.574 seconds."
+    },
+    "independent_reached": {
+      "report": "review-final-v1/run/report.json",
+      "sha256": "c13074bb425da620b4bf649a97b7620a2b6eb23d1dd9fb2d8e41ac36bab776ac",
+      "process": "review-final-v1/process.json",
+      "process_sha256": "2d4d3ec70a50039c41c36efe35908e964ee42f80c7ac0e26838ca51496ef9ed2",
+      "revision": "0cea7b7e535dd8fd48e99e6467170b8bcc9dfcd5",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 107,
+      "derived_negatives": 1,
+      "count_note": "Reported conditions include helper bindings and five harness conditions.",
+      "scope": "At the first actual Closure Tick, paired-class and sole-Trait SET origins, copied values 5/9 after parameter reassignment to 99, backing writes of 5/9, physical source versus lexical/called classes and receiver identities authenticate after setter frames and source receiver variables retire. The committed callback read is 10. Zero-budget/full-resume equality completes callback throw then normal return, read 18/count 2, exact output and ordered physical receiver retirement. Removing only the consumer property facts preserves physical Trait source but refuses consumer matching. SL, 240-second inner cap, 107.533 seconds, exit0, empty stderr and stable inputs."
+    }
+  },
+  "independent_review": "CLEAR for the bounded code, original, reached-state front and harness. The peer independently localized the original admission refusal, checked native compiler/closure/trait paths, demonstrated the missing owner certificate on old code and reviewed actual values, scope, ownership, abrupt continuation, resumption and test reliability.",
+  "compatibility": "The fixture uses existing global binding plus plain-variable assignment; callable-bearing GLOBALS assignment Tick admission stays Unsupported. The harness main(model_timeout=60) preserves every default 60/90 command; only this SET wrapper selects 180/210. That later harness edit changes neither SOURCE bytes nor the imported reached-state front, which never calls its main function, so it does not invalidate the reached cut. Documentation/inventory edits do not renew prior execution credit.",
+  "zero_credit": [
+    {
+      "report": "source-calibration/report.json",
+      "sha256": "4f1155c748717fa31ec38d4d21326f8e8329e264e30bf6d0b2fb8fe869e34756",
+      "outcome": "Original GLOBALS-target callable assignment is Unsupported at empty output by the existing unmodeled expression-order guard; no semantic agreement."
+    },
+    {
+      "report": "source-calibration-v2/report.json",
+      "sha256": "4d444b7878162b2033532a56e800905aaec04810ef7840ac0ea6183c5f63fa54",
+      "outcome": "Corrected global-binding source times out at 60 seconds on old production; incomplete, no agreement."
+    },
+    {
+      "report": "source-final-v1/report.json",
+      "sha256": "60f1677d8fa285275f53c77b8f43f92f7f7baa6e818eee7f94d4d54aa608021d",
+      "outcome": "The same source times out at 60 seconds on final production; incomplete, no retroactive agreement from the separate 180 profile."
+    },
+    {
+      "report": "strict-report-v1.json",
+      "sha256": "99c5fc5ded3399edf25fa6264bcc1de5f8a074b3197ac61ebbb460f475258e39",
+      "outcome": "Draft 7f10177b4 fails algorithmic binding for n_hook in noninvertible concatenation. Removing that redundant equality leaves the exact authenticated SET-origin equality authoritative; only final strict earns credit."
+    },
+    {
+      "report": "review-old-v1/run/report.json",
+      "sha256": "96daf9bcbbe43bb990cb591593af01ef27a6c0fc06af8a6869ea86ca578f0795",
+      "process_sha256": "8c4b04c016ee83c828e314dd64d884b6bc287b89944e7a2e23345e52d7789db2",
+      "outcome": "Genuine old-code source front reaches authenticated raw/imported SET facts, then fails closure_source_class for the class-owned SET Closure. Exit1, no timeout, stable inputs, 49.844 seconds; zero credit."
+    }
+  ],
+  "environment": "External packets preserve original source/path/cwd/profile, actual commands, raw channels/status and before/after semantic/tool identities. Peer envelopes additionally bind both new fixture scripts. One CPU 5 heavy process at a time across this pair; all jobs reaped. Existing tools were reused; no rebuild or portability claim.",
+  "remaining": "Evidence covers this escaped class/sole-Trait block-SET witness with inherited called receivers and callback abort/normal completion. Nested-inner/exported Trait, short SET, decorated/byref/header and wider lifetime contexts remain partial. Held lanes are unchanged; no engine bug or intentional divergence is claimed."
+}
