@@ -3440,6 +3440,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| ATTR82 | Terminal typed-bool magic isset with a present same-owner admitted getter, including literal/CV names; preserve no-GET dispatch, existing bool/private/source and receipt holds. |
 | CLASS224 | Normal Closure::fromCallable invocation of fixed two-item fresh-receiver/method arrays, preserving actual array retirement and receiver-to-wrapper ownership transfer. |
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
