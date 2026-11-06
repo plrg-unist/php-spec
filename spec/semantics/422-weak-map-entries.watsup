@@ -1771,6 +1771,7 @@ def $weakmap_write_array_direct_call(S, pweakmapwrite, pinstancestorage, pdestru
 def $weakmap_write_array_parent(S, pdestructorcall) = (pdestructionoperation)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = WEAKMAP_WRITE_CLAIM pweakmapwrite
+  -- if pdestructionoperation <- S.DESTRUCTION.OPERATIONS
   -- if pdestructionoperation.PENDING = eps /\ pdestructorcall.PENDING = eps
 def $weakmap_write_array_parent(S, pdestructorcall) = (pdestructionoperation)
   -- if $weakmap_write_declared_ancestry(S, pdestructorcall) = (pweakmapwrite)
