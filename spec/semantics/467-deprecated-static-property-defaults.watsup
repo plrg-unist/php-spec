@@ -192,6 +192,11 @@ def $class_static_read(S, porigin_requested, ptbytes, z) = S[.COMPLETION = UNSUP
   -- if $class_static_accessible(S, ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
   -- if pclassstatic.STATE = PROP_STATIC_BINDING
+def $class_static_quiet(S, porigin_requested, ptbytes) = S[.COMPLETION = UNSUPPORTED "static default slot release"]
+  -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
+  -- if $class_static_accessible(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_STATIC_BINDING
 def $class_static_store_ordinary(S, porigin_requested, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "static default slot release"]
   -- if $class_static_select(S, porigin_requested, ptbytes) = (ppropertydesc)
   -- if $class_static_accessible(S, ppropertydesc)
