@@ -1279,8 +1279,11 @@ def $weakmap_key_continue_finite(S, n_key) = true
   -- if $weakmap_entries_child_key(S, n_key, (n_key))
   -- if $weakmap_shared_key_order_safe(S, n_key)
   -- if $weakmap_notice_first(S, n_key, $weakmap_key_maps(S, S.ALLOCATIONS, n_key)) = (n_map)
+  -- if ~$weakmap_nan_guard(S, n_map)
   -- if $weakmap_entries_child_storage_policy(S, n_map, (n_key))
-  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) =/= eps
+  -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_key) = eps \/ $weakref_find(S, S.ALLOCATIONS, n_key) = pweakmapentry.BEFORE
+  -- if $destructor_jobs_valid(S, $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
 def $weakmap_key_continue_finite(S, n_key) = false -- otherwise
 
 def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NOTIFY = $weakmap_notice_wrapper(S, pweakmapentry)]) :: ptask_tail*], $destruction_values($weakmap_value_nodes(pweakmapentry.VALUE)))
