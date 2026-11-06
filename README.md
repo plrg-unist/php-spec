@@ -7403,6 +7403,10 @@ root global constants now preserve cold Private versus initialized Shared cache
 policy through clones and source retirement, using actual constant receipts and
 birth order. Constant values retain their real roots; cache history adds none.
 See the [global-constant review](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json).
+Unscoped entered include units now authenticate the same policy from real file
+bindings and completed compilation within the saved birth prefix. The
+[included-constant review](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json)
+records the finite-provider source, real constant roots and entry guards.
 Constant/default captures, bound copies and wider owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber exits,
 other owning rebound arrays, late type

@@ -1277,6 +1277,12 @@ initializer and saved declaration/SITE/PREFIX receipt. Root-unit unscoped source
 authority remains distinct from a class-constant owner; raw initialization stays
 unchanged, and real constant roots remain separate from nonowning cache history.
 See the [global-constant review](../../coverage/semantics/enum-is-callable-global-constant-method-cache-review.json).
+Unscoped included-unit constants additionally require the real file binding and
+accepted compilation within the saved birth PREFIX. The first entry must match
+that binding's SITE and its earlier available, unscoped caller; later declarations
+cannot repair a missing or forged entry. Existing clone/history policy and real
+constant roots remain unchanged. See the
+[included-constant review](../../coverage/semantics/enum-is-callable-included-constant-method-cache-review.json).
 Method `fromCallable` now uses explicit source-cache
 registration and actual INIT facts, including attempts that throw before body
 entry. Runtime invokable/array/string FCC also records allocation independently

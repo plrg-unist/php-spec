@@ -227,6 +227,13 @@ Private versus Shared without raw initialization or metadata pins. The
 [global-constant review](coverage/semantics/enum-is-callable-global-constant-method-cache-review.json)
 records one exact source agreement, 172 independent publication/owner/budget
 conditions and strict448 at the recorded cuts.
+Unscoped entered include units now authenticate that policy from real file
+bindings, completed compilation at the birth PREFIX and an available unscoped
+caller before the unit's first recorded entry. Pending, nonentered or forged
+receipts add no authority.
+The [included-constant review](coverage/semantics/enum-is-callable-included-constant-method-cache-review.json)
+records one three-file source agreement, 261 independent entry/root/budget
+conditions, strict448 and 29 separate recorder controls at the recorded cuts.
 Other constant/default captures, wider conditional/factory sources, unproved
 transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
@@ -2293,7 +2300,8 @@ their work remains unaccepted until integrated.
 | CLASS200 | Coherent existing primitive COPY inputs across current CV, reference CV and nullary by-value USER producers, with source/carrier/ownership proof first; clean-base preparation after integrated CLASS199. Flat-array policy and held owned-NUL/wider producers remain separate. |
 | ATTR58 | Parentless public typed CLASS pure block GET plus existing short SET with an absent initializer and genuine UNINITIALIZED backing slot until implicit write; preparation after accepted ATTR57, preserving pre-write GET/read distinction, first-write persistence, type failure/retry and actual source/slot/owner/budget proof without trait/byref/attribute/default/schema expansion. |
 | COMP189 | Actual same-scope bind/bindTo REAL Closure default recipients through existing binding records and known Shared/Unscoped family proof, with real receiver/capture/formal roots, cache hits, reentry and cleanup; preparation after accepted COMP188, leaving private/mixed/temporary families and broader identities partial without schema or cache-policy expansion. |
-| ENUM142 | Unscoped included-unit global-constant public static user-method FCC authority from real FILEBINDINGS, entered-unit publication/PREFIX and existing cache-birth/clone/owner consumers; preparation after accepted ENUM141, excluding eval/class/default and wider consumers. |
+| ENUM143 | Unscoped entered eval-unit global-constant public static user-method FCC authority from real EVALBINDINGS, exact source-entry/location, completed caller/unit publication and birth PREFIX; preparation after accepted ENUM142, retaining existing cache/clone/owner consumers without class/default/visibility/schema expansion. |
+| GC59 | Last-owner current-row Value/fieldless Child destruction after loop-Value rebinding, with publication before read-only callback return/fresh throw and actual result/cursor proof; first establish separation from held GC35, retaining quiet-release limits and excluding reentrant writes, insertion/unset, Key freeing and active GC. |
 | I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |
 | OB23 | Structural native-FINAL cleanup of fresh-Throwable CVs before the genuine null-C report, preserving the external cast guard and ordinary catch/finally; clean-base preparation after integrated OB22. Shared hooks require precise region coordination before edits. |
 
