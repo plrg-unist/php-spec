@@ -33,7 +33,7 @@ review.CASES = {
             '$pphalt_offset(pcunit.AST) = (' + str(sources.OFFSET) + ')',
             '|$pcprogram(pcunit.AST)| = 8',
             '$source_line(metadata) = 16', '$source_end_line(metadata) = 19',
-            '$base64(text_payload) = ' + ascii_text("\n<?php echo 'BAD-PAYLOAD'; ?>\n"),
+            '$base64(text_payload) = ' + str(list(sources.SOURCE[sources.OFFSET:])),
             'S.ORIGIN = (porigin)',
             'ptask_tail* = (ORIGIN_RETURN porigin_saved?) :: ptask_after*',
             'ptickmarker.FREQUENCY = 1', 'ptickmarker.LINE = 19',
