@@ -1,0 +1,114 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS226: normal immediate Closure::fromCallable with exactly two implicit/direct/nonref/nonspread items [$this,literal public ordinary nonstatic method], using immutable saved CALLER and existing real-argument/signature/quiet/header bounds.",
+  "base": "48b9c6f1614bcda8273b975ee838fda71250fbe6",
+  "module_count": 467,
+  "mechanism": "414 adds a normal This-array classifier/source helper and wires argument/context admission and collection. Existing normalfactory parts authenticate original source, CODEEXPR/outer INIT and REALargs; actual This child has323 FETCH_THIS emission, method child has its compiled literal. Existing216 this_source authenticates immutable saved CALLER receiver/class/called/lexical/function and private-first PUBLIC/plain target at the actual factory site. Collection keeps values on realS; pure from_callable_producer remains ineligible for This. No ENV/CV history, facts,234/438/schema/root/owner change.",
+  "engine_basis": [
+    "Ordinary This value reads use actual this_receiver and compiled FETCH_THIS, unlike optimized direct method receivers. The callback array cannot fold with This; its real child edge transfers into FROM(ARRAY true,STATIC false,INVOKE false) after API_METHOD_TARGET selection.",
+    "The original caller owns This independently of the array or wrapper. At actual ready the temporary array is retired; entered INSTANCE owns wrapper and borrows This. ReturnOld releases only the wrapper edge, leaving callerThis until caller retirement. ReturnedThis may outlive caller/table through global kept. Immutable object-class rows authenticate source after retirement without a live allocation requirement."
+  ],
+  "author": {
+    "source2": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic/author/source/report.json",
+      "sha256": "a5816ba0b28e6ae3035f222515632829c27ab88222d2e44f5cb6afb1c7191446",
+      "count": 2,
+      "result": "FIRST exact normal/quiet/stable/no timeout51.592008/22.169449s atf58/private467 under300. Native originals once; primary removes outside runner before factory, Child override returnsOld; zero/later retains caller normally."
+    },
+    "owner92": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic/author/state-owner/report.json",
+      "sha256": "574a6858f917371d3bc127e35395742cfbda1fb26bbd1de5ddca2bb0de01439c",
+      "conditions": 92,
+      "result": "FIRST SL467 PASS/true/quiet/exit0/stable/no timeout53.022829054s under300. Actual API_RESULT0 has saved CALLER and one dynamic array/This edge; outside runner alreadyNULL makes receiver2=caller+array. One-step bound FROM append/real ready-fence budget transfers to caller+wrapper2; header retired. Entered INSTANCE borrowsThis, real savedframe owns callerThis, savedOld differs from globalNew. At real outer SEND wrapper is gone and callerThis1 remains; context collection protects old result. At genuine rootRETURN This is retired while pure original savedCALLER certificate remains valid. EndsrootRETURN, reusing generic final tail."
+    },
+    "unpack25": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic/author/state-unpack/report.json",
+      "sha256": "964cb7bd8df1fe7f8e04e3f84134077a1686db1746aa4d2f425499ad96f910ab",
+      "conditions": 25,
+      "result": "FIRST SL467 PASS/true/quiet/exit0/stable/no timeout15.732246583s under300. Contextual This source and initialized classified[9] pack are separately eligible; unchanged438 refuses before effects."
+    },
+    "source_refusals": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic/author/boundaries/report.json",
+      "sha256": "f213df18639380be6cfb4f528a6775870bc261714682a1bfd92d425966ab7a4f",
+      "count": 2,
+      "agreement_credit": 0,
+      "result": "FIRST intended Unsupported/source-mode exit1/quiet/stable/no timeout. UnavailableThis static caller stops afterFIRST before This read (native catchesError and printsUNAVAILABLE); unpack stops before factory/body (nativeMETHOD/HANDLER). Native originals once;0 agreement credit."
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "fixture_commits": [
+      "0653574a5994392b3ec42de53e65e9105e2bab98",
+      "426131ce0b1e9926073c5e56d15c28ceccea10a4"
+    ],
+    "record_commit": "4983cbf4a491595c58d18ecd542b7766a0178118",
+    "record": "coverage/semantics/anonymous-this-array-from-callable-producer-magic-independent.json",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic/reviewer/source/report.json",
+      "sha256": "336d39943bebf35d63682ad100d9046deba923a74fa98339e9a7f0bfd6ff9b22",
+      "result": "FIRST exact normal/quiet/stable/no timeout,43.020201980s,SL467,300s inner/310s outer; original native path/cwd/profile retained without relocation or reexecution.",
+      "agreement_credit": 1
+    },
+    "state": {
+      "protocol": "tests/semantics/anonymous_this_array_from_callable_producer_magic_independent_protocol.py",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic/reviewer/state/report.json",
+      "sha256": "d1b6616f8f212357e09a75dd5eba7764390749f81a0d932e926977c48d5d0faa",
+      "conditions": 122,
+      "result": "FIRST SL467 PASS/true/exit0/quiet/stable/no timeout,wrapper46.963478769s,300s inner/370s outer.",
+      "selection": "Actual API_CALLABLE_RESULT0/SOURCE CONFIG_FROM has current run equal to saved CALLER, nonfolded This item with real323 emission, public private-first inherited Base versus actual/called Child. One step appends the bound FROM row with actual receiver child and declaring/called scope. Pause plus real ready-fence seek equals direct seek.",
+      "owners": "Temporary callback header1 and This3 (global runner, caller, array child) become a receiver-bearing wrapper while the array header retires. After root runnerNULL, RETURN_THIS has caller+wrapper+result3, with the saved frame contributing exactly one This root; current INSTANCE owns wrapper and borrows This. Wrapper-free named SEND has caller+result2. After caller/table retirement kept alone owns This1; final unset retires it. REQUEST_STRING0 snapshot differs from late99.",
+      "retirement": "Final exact output/Closure/heap validity and original saved-CALLER source certificate hold after receiver retirement. Wrong handlerCURRENT source context refuses. No claim that producer edge release kills caller-held This; no new history owner or old child-tail replay."
+    }
+  },
+  "main_context": {
+    "accepted_source": "2921c03e99b112253ff7b164c5c6bc008985810a",
+    "accepted_record": "2921c03e99b112253ff7b164c5c6bc008985810a",
+    "module_count": 468,
+    "authentic_peer_review": {
+      "revision": "37e293f5707327d66ee0a9094e648394ec9c6757",
+      "module_count": 467,
+      "review": "ATTR83 public-CV unset partition requires actual UNSET_ARRAY with BASE_PROPERTY_PENDING/VARIABLE selector plus genuine __unset/public slot/source. These originals use plain CV unset/NULL assignment and literal text property read/write without __unset/hooks, so ordinary CV paths remain. I137 seven447 lines require genuine selected-Generator helper context with STATIC_METHOD_TARGET from object-call source; no Generator/Traversable/resumer exists here, and producer is FROM CLOSURE_TARGET with ordinary instance run. Authentic48b9/private467 cuts retained; no gate/replay."
+    },
+    "newer_composition": {
+      "revision": "2921c03e99b112253ff7b164c5c6bc008985810a",
+      "module_count": 468,
+      "review": "At actual2921/468 newCOMP207479 raw_callable_site requires FuncCall(nonThis CV), selected ARRAY_METHOD_TARGET/STRING_METHOD_TARGET and owning default context. These factory callees are StaticCall expressions, run uses ordinary MethodCall, producer is CLOSURE_TARGET; raw site/target gates are false. All USER DEFAULTSeps and supplied required arguments preclude omitted-default reception;306 RAW_ENTRY defaultsfalse.456 factoring still requires authenticated native-output FINAL object/TypeError source, absent from primitive echoes/no output buffering. Own414 exactf58; authentic4983/37e467 retained, no gate/replay."
+    },
+    "status": "CLEAR"
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic",
+    "inputs": {
+      "manifest": "/home/user/workspace/php-spec-evidence-archive/class226-this-array-from-callable-producer-magic/author/inputs.json",
+      "sha256": "835c1ae78852341766be4d914400be1faddfc7424eb0284e0508b522fb85480f",
+      "logical_files": 484,
+      "input_variants": 484,
+      "result": "One union across first author source/control/two states and independent source/state. All467 runtime maps agree; no variants/failures."
+    },
+    "recovery": "Source: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_this_array_from_callable_producer_magic_cases.json --model-timeout 300. State: anonymous_this_array_from_callable_producer_magic_protocol.py --sl; --case selects affected only. Original commands/cwd/profile/exits/streams and upfront300 limits stay external."
+  },
+  "execution_accounting": {
+    "source_agreements": 3,
+    "refusal_controls_credit": 0,
+    "failed_attempts": 0,
+    "timeout_attempts": 0,
+    "post_execution_source_corrections": 0,
+    "post_execution_fixture_corrections": 0,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "state_repeats": 0,
+    "note": "All source/state/control cuts are FIRST. The copied pure-helper pack premise was replaced with contextual This helper before any state execution;155→aeb has no executed failure. Runner durations exclude wrapper setup. Private225 publication baseline1225 andpeer/source mirrors are omitted from integration."
+  },
+  "remaining": "Other callback arrays/keys/references/spreads, CV/stored/keyword receivers, private/static/magic/internal targets, broader signatures/constructors, inner-named/unpack/array-return/header and owned-NUL/other held paths remain partial.",
+  "engine_divergence": "None identified in the exercised This method-array factory cuts.",
+  "implementation_commit": "f58fb33a75d652bdd4a2ded4caef6d8a36ab98fc",
+  "author_fixture_commits": [
+    "1555603829d46c214c95c581a4a75b930065e338",
+    "aeb3b6a170a3f6deef9a13558c5965b679faeceb"
+  ]
+}

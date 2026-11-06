@@ -5861,6 +5861,14 @@ the entered frame owns it through INSTANCE. Existing result owners retain
 snapshots through wrapper retirement. Other callback histories and broader modes stay separate.
 [Static callback array review](coverage/semantics/anonymous-static-array-from-callable-producer-magic-review.json).
 
+Normal `Closure::fromCallable([$this,"method"])` producers now use immutable
+saved caller scope and private-first public method selection. The real array
+edge transfers into the wrapper while the caller keeps its own `$this` owner.
+The entered frame owns the wrapper and borrows `$this`; return-old releases only
+the wrapper edge, while returned `$this` may survive caller retirement.
+CV/stored callbacks and broader modes stay separate.
+[This callback array review](coverage/semantics/anonymous-this-array-from-callable-producer-magic-review.json).
+
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),

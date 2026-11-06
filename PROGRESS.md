@@ -3048,6 +3048,12 @@ source agreements,92/124 pool/SEND/wrapper fronts,25 pack guards and two refusal
 controls pass at private466 cuts. The original runtime guard failure, checker-only
 correction and bounded diagnostic retain zero credit; no native/state replay.
 [Review](coverage/semantics/anonymous-static-array-from-callable-producer-magic-review.json).
+This method-array fromCallable producers now use original CALLER authority and
+actual This emission, keeping dynamic array/wrapper edges distinct from the
+caller owner. Three source agreements,92/122 transfer/retirement fronts,25 pack
+guards and two refusal controls pass first execution at private467 cuts; the
+pack fixture correction preceded execution. Existing owners and438 stay fixed.
+[Review](coverage/semantics/anonymous-this-array-from-callable-producer-magic-review.json).
 
 
 
