@@ -409,7 +409,7 @@ def $magic_method_instance_producer(S, PORIGIN n_unit pcpath, NExprMethodCall ex
   -- if $magic_method_plain_instance_source(S, pmethoddesc, phpType7*)
 def $magic_method_instance_producer(S, porigin, expression) = eps -- otherwise
 ;; A bare object call uses effective __invoke, without lexical-private redirect.
-def $magic_method_invokable_call(NExprFuncCall (NExprNew phpType19 phpType6 metadata_new) (SEQUENCE phpType7*) metadata) = true
+def $magic_method_invokable_call(NExprFuncCall (NExprNew phpType28 phpType6 metadata_new) (SEQUENCE phpType7*) metadata) = true
 def $magic_method_invokable_call(expression) = false -- otherwise
 def $magic_method_invokable_producer(S, PORIGIN n_unit pcpath, NExprFuncCall expression_new (SEQUENCE phpType7*) metadata) = ((porigin_class, pmethoddesc))
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprFuncCall expression_new (SEQUENCE phpType7*) metadata)
