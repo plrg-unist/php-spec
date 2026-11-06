@@ -942,8 +942,17 @@ invokers through existing constructor and public `__invoke` certificates. The
 factory argument owner transfers to the wrapper receiver edge before real
 arguments; the entered frame owns the wrapper and borrows `$this`. The tested
 return-old path retires its unaliased wrapper and receiver; returned `$this` may
-survive in a table or retained root. Stored callbacks, callback arrays and broader modes stay separate.
+survive in a table or retained root. Stored callbacks and broader modes stay separate.
 [Fresh invokable factory review](../../coverage/semantics/anonymous-invokable-from-callable-producer-magic-review.json).
+
+Normal `Closure::fromCallable` producers now accept exact two-item callback
+arrays containing a fresh fixed-name receiver and literal public ordinary
+nonstatic method. Original factory scope authenticates private-first selection;
+selected private methods remain unsupported. The temporary array retires while
+the wrapper retains its receiver; returned `$this` may escape through the real
+table into a retained root. Stored callbacks, returned arrays and broader modes
+stay separate.
+[Fresh callback array review](../../coverage/semantics/anonymous-array-from-callable-producer-magic-review.json).
 
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local

@@ -2936,6 +2936,13 @@ originals,71/106 argument-owner/wrapper/escape fronts,25 pack guards and three
 refusal controls pass first execution at private466 cuts. Existing receiver,
 INSTANCE and result laws are reused; fixed-string222 behavior stays pointwise.
 [Review](coverage/semantics/anonymous-invokable-from-callable-producer-magic-review.json).
+Fresh two-item method-array fromCallable producers authenticate actual item
+origins, constructor class and private-first public target in the original
+factory scope. Three originals,80/123 array-retirement/receiver-transfer fronts,25
+pack guards and four refusal controls pass first execution at private466 cuts.
+Existing wrapper/INSTANCE/result ownership is reused; fixed-string and direct
+invoker factory behavior stays pointwise.
+[Review](coverage/semantics/anonymous-array-from-callable-producer-magic-review.json).
 
 
 
@@ -3441,9 +3448,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | ATTR82 | Terminal typed-bool magic isset with a present same-owner admitted getter, including literal/CV names; preserve no-GET dispatch, existing bool/private/source and receipt holds. |
-| CLASS224 | Normal Closure::fromCallable invocation of fixed two-item fresh-receiver/method arrays, preserving actual array retirement and receiver-to-wrapper ownership transfer. |
+| CLASS225 | Immediate normal Closure::fromCallable invocation of fixed class-string/static-method arrays, preserving selected scopes, wrapper ownership and array retirement. |
 | COMP206 | Extra defaults for ordinary named USER string callbacks across existing handler, shutdown, tick and autoload entries, preserving authentic current and closed selection authority. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
+| GC73 | Quiet-scalar reference leaves in retained credited arrays, preserving singleton unwrapping versus shared-cell COW writes and exact old-header no-visit decrements. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 | OB32 | Genuine strict __toString scalar-return TypeError during FINAL output conversion, preserving original native ownership, default rendering and cleanup. |
 

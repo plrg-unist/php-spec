@@ -1,0 +1,106 @@
+{
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "scope": "CLASS224: normal immediate Closure::fromCallable factory with an exact two-item implicit-key/direct/nonspread callback array of fresh fixed-name ordinary USER receiver and literal public nonstatic ordinary method; existing no/approvedCtor, zero/required plain signatures, quiet COPY and outer magic headers.",
+  "base": "cd8aa09469e725645219d9714ef047a4d1e412ae",
+  "implementation_commit": "f57308465d975c43b91a60826840c747bda14183",
+  "author_fixture_commit": "a48bc9750985033332e879fc7a9581bfb7c9fc53",
+  "module_count": 466,
+  "mechanism": "414 adds one12-line callback-array arm to the unchanged normalfactory parts. Actual item0 origin authenticates the existing fresh_receiver/class certificate; item1 authenticates the compiled literal method. Immutable original factory scope drives scope_method(...,true) private-first primary selection, then the existing PUBLIC/nonstatic/nonmagic plain-instance body/formal matcher checks REAL outerargs. Existing222/223 arms,234/438/schema/facts/roots/owners are unchanged.",
+  "engine_basis": [
+    "Pinned zend_closures.c339–384 uses zend_is_callable_ex function_handler/called_scope/object to create the fake closure. Object API_CLASS has STRICT false: primary scope_method(true) selects with original factory lexical scope, before PUBLIC admission. Internal Closure getter/missing/magic fallback requires primary selection eps and is absent from this public-primary slice.",
+    "The real CONFIG_FROM argument owns the callback array and its receiver child. Existing234 creates FROM(ARRAY true,INVOKE false,STATIC false); by the actual CLOSURE_TARGET ready fence the callback header has retired while the wrapper receiver edge remains. Entered INSTANCE owns wrapper and borrows This. Tested unaliased returnOld releases receiver/wrapper before outer SEND; returnedThis can survive through result/table/global kept. No general array-return or new history owner is admitted."
+  ],
+  "author": {
+    "source2": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/author/source/report.json",
+      "sha256": "617f31c214388bed41587cc676bf21682945e7dd660cff6ed38563e3acb86cfa",
+      "count": 2,
+      "result": "FIRST exact normal/quiet/stable/no timeout76.539853/45.003528s atf573/private466 under300. Native originals once; noCtor required-returnOld and zero later-position method form one family."
+    },
+    "owner80": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/author/state-owner/report.json",
+      "sha256": "4e4f86703039f2f7b91d9e01bcb3af07c287187f951c8dd7eb662bb4fbcbb849",
+      "conditions": 80,
+      "result": "FIRST SL466 PASS/true/quiet/exit0/stable/no timeout65.710946691s under300. Actual CONFIG_FROM SENT has one callback-array owner and one receiver child; item origins/compiled literal/private-first PUBLIC target authenticate source. Pause plus real ready seek equals direct seek, binding FROM row before exact append. Callback header retired, wrapper edge1 and INSTANCE-only borrowedThis preserve savedOld versus globalNew. Unaliased receiver/wrapper are retired at genuine outer SEND while source and real COPY remain valid. EndsSEND, reusing unchanged generic tail."
+    },
+    "unpack25": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/author/state-unpack/report.json",
+      "sha256": "cdd4ef06458aa3b04c26ff8bfa324627cfe7c4281b73e0fab93120640e2ca1c4",
+      "conditions": 25,
+      "result": "FIRST SL466 PASS/true/quiet/exit0/stable/no timeout35.699305958s under300. Actual initialized classified[9] pack and callback-array source are separately eligible; unchanged438 refuses before effects."
+    },
+    "source_refusals": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/author/boundaries/report.json",
+      "sha256": "ba43659acbe63475c2b83b2bf2efc7a366079a990f951b7e776f90c0d564a05c",
+      "count": 4,
+      "agreement_credit": 0,
+      "result": "FIRST intended Unsupported/source-mode exit1/quiet/stable/no timeout: selected private shadow, CV callback receiver, named inner invocation and outer unpack. Shadow native selects PRIVATE; model stops after FIRST before factory/body. Other models stop before effects. Native originals once exact;0 agreement credit."
+    }
+  },
+  "independent_review": {
+    "status": "CLEAR",
+    "fixture_commits": [
+      "90b170540970f0140b75f920176e39f8d85684e6",
+      "b7389e03cdf0380b2411815d61c3c98b9d7c4ddc"
+    ],
+    "record_commit": "8691850f409019d3602c7e78f8cc7c19b8d75a3f",
+    "record": "coverage/semantics/anonymous-array-from-callable-producer-magic-independent.json",
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/reviewer/source/report.json",
+      "sha256": "0a3fb38dd1a8dd672c7e0dcd422df873087d78516b811c7d87c01abf542f3e6d",
+      "result": "FIRST exact normal/quiet/stable/no timeout,87.621365403s,SL466,300s inner/310s outer; once-native path/cwd/profile retained without relocation or reexecution.",
+      "agreement_credit": 1
+    },
+    "state": {
+      "protocol": "tests/semantics/anonymous_array_from_callable_producer_magic_independent_protocol.py",
+      "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/reviewer/state/report.json",
+      "sha256": "c23eb772dcdcc496e619880499d417f391361e38e81ab2ade5a1ed1bb55ab87e",
+      "conditions": 123,
+      "result": "FIRST SL466 PASS/true/exit0/quiet/stable/no timeout,89.807191303s,300s inner/370s outer.",
+      "selection": "Actual API_CALLABLE_RESULT0/SOURCE CONFIG_FROM carries the direct0/1 array and its literal method. Real item origins, constructor class and primary public API_METHOD_TARGET match source. One step creates exact FROM(ARRAY true,INVOKE false,STATIC false) with declaring Base/called Child/receiver scope; pause plus real ready seek equals direct seek.",
+      "owners": "Before selection the callback array has one owner and its receiver one child edge. At actual CLOSURE_TARGET ready the array header has retired while the wrapper owns the receiver edge. Entered INSTANCE owns wrapper and borrows This; RETURN_THIS gives receiver two owners despite late99/saved REQUEST_STRING0. Wrapper retirement leaves one result owner at real named SEND; table/global kept preserve it through handler/table retirement until final unset.",
+      "retirement": "Final exact output and descriptor/Closure/GC/heap validity hold; pure source certification remains valid after receiver allocation retirement. No new history owner, cloned object, post-retirement operational callable lookup or old child-tail replay."
+    }
+  },
+  "main_context": {
+    "accepted_source": "759228606c2743d341c925f7cd9f97dcae345c6b",
+    "accepted_record": "759228606c2743d341c925f7cd9f97dcae345c6b",
+    "module_count": 466,
+    "authentic_peer_review": {
+      "revision": "34b60017930c760403601970ed0d124096039bd0",
+      "module_count": 466,
+      "review": "ATTR81/current60041 new419 private magic integer pre/post UPDATE_PREP requires a CV property name; these plain literal text assignments/globals/array reads have no ++/-- or magic hooks, so plan/history fence is absent. GC72 new301 TEMP/NOGCEXTRA requires a root-CV ACQUIRE_ARRAY reference source/image with old-header native-excess unit1 and freshHCELL0. Callback items are direct/nonref and ordinary reads acquire no array reference; CONFIG_FROM is not is_callable NAME output, so NATIVEEXCESS stays eps even with real callback/table arrays and the required image cannot arise. Privatecd8aa/466 cuts retained; no extra gate/source replay."
+    },
+    "review": "ATTR81/current60041 new419 private magic integer pre/post UPDATE_PREP requires a CV property name; these plain literal text assignments/globals/array reads have no ++/-- or magic hooks, so plan/history fence is absent. GC72 new301 TEMP/NOGCEXTRA requires a root-CV ACQUIRE_ARRAY reference source/image with old-header native-excess unit1 and freshHCELL0. Callback items are direct/nonref and ordinary reads acquire no array reference; CONFIG_FROM is not is_callable NAME output, so NATIVEEXCESS stays eps even with real callback/table arrays and the required image cannot arise. Privatecd8aa/466 cuts retained; no extra gate/source replay.",
+    "status": "CLEAR"
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic",
+    "inputs": {
+      "manifest": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/author/inputs.json",
+      "sha256": "ea0603b96e0334570eebf9941ba272a0093ba1d12c9dcd1dc3995c4cc36193df",
+      "logical_files": 483,
+      "input_variants": 483,
+      "result": "One union across first author source/control/two states and independent source/state cuts. All466 runtime maps agree; no variants/failures."
+    },
+    "recovery": "Source: anonymous_owner_factory_sources.py --catalogue tests/semantics/anonymous_array_from_callable_producer_magic_cases.json --model-timeout 300. State: anonymous_array_from_callable_producer_magic_protocol.py --sl; --case selects affected only. Original commands/cwd/profile/exits/streams and upfront300 limits stay external."
+  },
+  "execution_accounting": {
+    "source_agreements": 3,
+    "refusal_controls_credit": 0,
+    "failed_attempts": 0,
+    "timeout_attempts": 0,
+    "post_execution_fixture_corrections": 0,
+    "native_repeats": 0,
+    "source_repeats": 0,
+    "state_repeats": 0,
+    "note": "Runner durations exclude wrapper setup. All current cuts are first executions; old222/223 generic evidence is reused without replay. Private peer source/test/record mirrors are omitted from integration."
+  },
+  "remaining": "Other callback arrays/keys/references/spreads, stored/CV receivers, private/static/magic/internal methods, broader signatures/constructors/value/header/unpack domains, returned arrays and owned-NUL/other held paths remain partial.",
+  "engine_divergence": "None identified in the exercised fresh method-array factory cuts."
+}
