@@ -495,10 +495,10 @@ def $ob_object_cv_commit(S, S_next, pobcvreturn) = (pobcvassoc)
   -- if S.COMPLETION = NORMAL /\ S_next.COMPLETION = NORMAL
   -- if S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps /\ S.RETIREDOWNERS = eps
   -- if pobcvreturn.CONTOUR.CURSOR = |pobcvreturn.CONTOUR.CALLS|
+  -- if S.TODO = (WRITE_NAME preqbytes_name z) :: ptask_tail*
+  -- if S.ORIGIN = (pobcvreturn.ASSIGN)
   -- if $ob_object_cv_native(S) = (pfunction_native)
   -- if $ob_object_cv_factory(S, pfunction_native, pobcvreturn) = ((pfunction, preqbytes_name))
-  -- if S.ORIGIN = (pobcvreturn.ASSIGN)
-  -- if S.TODO = (WRITE_NAME preqbytes_name z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT pobcvreturn.BIRTH.OBJECT)
   -- if S_written = $scope_write_name(S_read, [PCFIELD 0], preqbytes_name, POBJECT pobcvreturn.BIRTH.OBJECT)
@@ -549,8 +549,9 @@ def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $o
   -- if $ob_object_cv_throw(S, S_next, pobcvassoc_selected, porigin_throw)
 def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, $ob_object_cv_pack(pobcvassoc_next*, $ob_object_source_active($ob_object_native_source(S_next))))
   -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
-  -- if $ob_object_call_consumer(S) =/= eps
   -- if pobcvassoc* = $ob_object_cv_associations($ob_object_native_source(S))
+  -- if pobcvassoc* =/= eps
+  -- if $ob_object_call_consumer(S) =/= eps
   -- if pobcvassoc_next* = $ob_object_cv_prune(S_next, pobcvassoc*)
   -- if pobcvassoc_next* =/= pobcvassoc*
   -- if $ob_object_cv_committed(S, S_next) = eps
