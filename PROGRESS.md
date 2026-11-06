@@ -1772,7 +1772,7 @@ separates original execution, actual NEW/delivery ownership and budget checks,
 with retained Trait/mode/RHS boundaries. Other magic argument protocols, wider
 signatures/receivers, attributes and generic dispatch remain partial.
 
-CLASS191–194 admit anonymous factories in ordinary byvalue nongenerator `__call`
+CLASS191–195 admit anonymous factories in ordinary byvalue nongenerator `__call`
 and `__callStatic` bodies under their existing plain headers and argument
 consumers. Captured scalar/ordinary leaf-object sends stay fixed through later
 CV/receiver mutation; real packed arrays and actual lexical/called scope preserve child/payload ownership
@@ -1789,8 +1789,12 @@ Named-only argument tables share the real retained buffer, which can remain the
 last payload owner through return before receiver cleanup; the
 [named-CV review](coverage/semantics/anonymous-named-object-cv-magic-review.json)
 tracks this source/ownership slice. Old Unsupported cuts keep zero credit.
-Array/string/reference first CVs, static named sends, Trait, reference/generator,
-attributes and wider producer/dispatch scope remain partial.
+First nonreference flat-array CVs now retain integer/ordinary leaf-object
+snapshots through generic COW and caller rebinding; the
+[array-CV review](coverage/semantics/anonymous-array-cv-magic-review.json)
+tracks source/index authentication and real table/payload owners. Original array
+literals/producers, later array sends, nested/reference carriers, string CVs,
+static named sends, Trait, reference/generator, attributes and wider scope remain partial.
 
 COMP160–161 are integrated through `084768600`: declared INITIAL/UNSET cached
 images and deleted dynamic histories retain comparison, cast and clone behavior.
@@ -2051,7 +2055,8 @@ inventory base load passes; prior syntax/pipe and other source cuts remain histo
 
 | Track | Owner-confirmed current work |
 | --- | --- |
-| CLASS195 | Nonreference first-CV flat-array magic sends with integer/ordinary leaf-object entries and real COW snapshots; private implementation/review. |
+| CLASS196 | First original flat-array literal magic sends with integer/ordinary leaf entries and real transient array/receiver owners; private implementation/review. |
+| I120 | Named by-reference Generator direct SEND body-Throwable cleanup through authenticated reference-cache cells and actual argv owners; private implementation/review. |
 | GC53 | Shared ordinary leaf-Key registrations and ranked retirement over finite payloads; private implementation/review. |
 | COMP186 | Genuine owning parameter-default reception/cache, with warning, selection/read certificates and callee roots; class/static-property defaults follow. |
 | OB20 | Normal FINAL Array/Object return conversion in genuine null-C context; private implementation/review. |

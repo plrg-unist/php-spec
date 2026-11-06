@@ -45,6 +45,16 @@ then precedes receiver cleanup while the cached result stays protected. The
 [named object-CV review](../../coverage/semantics/anonymous-named-object-cv-magic-review.json)
 binds those actual owners and release order.
 
+A first nonreference CV may also contain a flat array with only direct integer
+or ordinary leaf-object entries. Initial capture checks the live carrier and
+cell; collection authenticates the captured value against the same first-CV
+source role after later code rebinds the caller or promotes its cell to a
+reference. Existing byvalue operand holds and array COW separate caller writes.
+Object handles remain shared, and the trampoline places the captured array into
+its real outer argument table. The
+[array-CV review](../../coverage/semantics/anonymous-array-cv-magic-review.json)
+tracks snapshot storage, inner/outer table and payload owners, and release order.
+
 Zero-send instance/static calls now authenticate the same source, selected target
 and plain header without reading a first argument. Their raw zero-argument task
 forms the actual `(name, empty array)` pair, then enters the ordinary two-parameter
@@ -55,8 +65,8 @@ the collector graph. A write retains the ordinary COW separation rule.
 Instance receiver cleanup and static lexical/called scope keep their existing
 rules. The [zero-send review](../../coverage/semantics/anonymous-zero-argument-magic-review.json)
 binds actual packing, empty-array ownership and budget-resumption checks.
-Array/string/reference first CVs, static named sends, unpacking and wider
-producers remain outside this extension; no generic dispatch, schema or header
+Original array literals/producers, later array sends, nested/reference carriers,
+string/reference CVs, static named sends and unpacking remain outside this slice; no generic dispatch, schema or header
 rule changes.
 
 For the sole argument-array cases, compiled-local cleanup retires the array and

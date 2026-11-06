@@ -5271,8 +5271,11 @@ leaf object, retaining its original value through later rebinding. Instance call
 allow positional, mixed and explicitly named first object sends. Named-only calls
 share the real argument table with its retained named buffer; parameter/copy
 release leaves buffer ownership until return cleanup, before receiver release.
-Arrays/strings/reference CVs, static named calls and wider producer/header forms
-remain partial.
+First array CVs may hold flat direct integer/ordinary leaf-object entries.
+Generic COW preserves the captured array through later writes to the caller
+array, while object fields remain shared. Collection authenticates this first-CV
+source role; array literals/producers, later array sends, nested/reference
+carriers, string CVs, static named calls and wider headers remain partial.
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),
 [generator method](coverage/semantics/generator-method-factories-review.json),
@@ -5284,7 +5287,8 @@ Trait magic declarations remain partial.
 [argument magic](coverage/semantics/anonymous-magic-argument-factories-review.json)
 [zero-send magic](coverage/semantics/anonymous-zero-argument-magic-review.json)
 [object-CV magic](coverage/semantics/anonymous-object-cv-magic-review.json)
-and [named object-CV magic](coverage/semantics/anonymous-named-object-cv-magic-review.json) reviews.
+[named object-CV magic](coverage/semantics/anonymous-named-object-cv-magic-review.json)
+and [array-CV magic](coverage/semantics/anonymous-array-cv-magic-review.json) reviews.
 
 Unit0 anonymous classes may implement interfaces,
 including several interfaces and inherited contracts, with or without the admitted
