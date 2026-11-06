@@ -954,6 +954,14 @@ table into a retained root. Stored callbacks, returned arrays and broader modes
 stay separate.
 [Fresh callback array review](../../coverage/semantics/anonymous-array-from-callable-producer-magic-review.json).
 
+Fixed class-string/public-static method arrays now supply normal immediate
+`Closure::fromCallable` producers. Selection uses the effective method, preserving
+declaring and called scope. The compiled pool retains the folded array while
+the factory releases its argument owner. The wrapper has no receiver edge;
+the entered frame owns it through INSTANCE. Existing result owners retain
+snapshots through wrapper retirement. Other callback histories and broader modes stay separate.
+[Static callback array review](../../coverage/semantics/anonymous-static-array-from-callable-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

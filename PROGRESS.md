@@ -3012,6 +3012,12 @@ pack guards and four refusal controls pass first execution at private466 cuts.
 Existing wrapper/INSTANCE/result ownership is reused; fixed-string and direct
 invoker factory behavior stays pointwise.
 [Review](coverage/semantics/anonymous-array-from-callable-producer-magic-review.json).
+Fixed class-string/static-method callback arrays use compiled parent-pool
+authority and effective selection, including the lexical-private contrast. Three
+source agreements,92/124 pool/SEND/wrapper fronts,25 pack guards and two refusal
+controls pass at private466 cuts. The original runtime guard failure, checker-only
+correction and bounded diagnostic retain zero credit; no native/state replay.
+[Review](coverage/semantics/anonymous-static-array-from-callable-producer-magic-review.json).
 
 
 
