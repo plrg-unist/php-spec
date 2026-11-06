@@ -89,7 +89,9 @@ def $parameter_receive_api_witness_valid(S, preceivebirth) = true
   -- if pshutdownproducer.INTERNAL /\ pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps /\ pshutdownproducer.CLONE = eps
   -- if $parameter_shutdown_target(S, pshutdownproducer.TARGET) = ((pmethoddesc, porigin_requested, porigin_called, n_receiver?))
   -- if preceivebirth.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
-  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, (pmethoddesc.OWNER), (porigin_called)) :: pdeclcalls
+  -- if preceivebirth.CAUSE.CALLS = (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls
+  -- if porigin_function = preceivebirth.FUNCTION /\ porigin_site_option? = preceivebirth.CALLSITE
+  -- if porigin_owner_option? = (pmethoddesc.OWNER) /\ porigin_called_option? = (porigin_called)
   -- if $parameter_api_receive_site(preceivebirth, papireceive, pmethoddesc.FUNCTION)
   -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
   -- if $parameter_callable_function_published(S, pmethoddesc.FUNCTION, preceivebirth.PUBLICATION)
