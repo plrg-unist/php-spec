@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-keyword-static-inherited-override-request-mixed-cv",
+      "source": "<?php\nfunction peerShift214() { global $late, $owner, $runner; $late = 99; $owner = null; $runner = null; echo 'SHIFT;'; return false; }\nclass PeerScopeBase214 { public static function capture($saved, $marker) { echo 'BASE;'; return $saved; } public function run() { global $owner, $late, $probe; return $owner->MiSsInG(first: static::capture($late, peerShift214()), later: $probe()); } public function __destruct() { echo 'SCOPE-END;'; } }\nclass PeerScopeMid214 extends PeerScopeBase214 { public static function capture($saved, $marker) { echo 'PRODUCER:', self::class, ':', static::class, ';'; return $saved; } }\nclass PeerScopeChild214 extends PeerScopeMid214 {}\nclass PeerProbe214 { public function __invoke() { global $probe; $probe = null; echo 'PROBE;'; return true; } public function __destruct() { echo 'PROBE-END;'; } }\nclass PeerBase214 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { global $alias; $alias = 0; echo 'MAGIC;'; return static function () use ($arguments, $name) { echo 'CLOSURE:', self::secret(), ':', self::class, ':', static::class, ';'; return new class($arguments, $name) { public function __construct(public array $saved, public string $name) {} public function __destruct() { echo 'CHILD;'; } }; }; } public function __destruct() { echo 'OWNER;'; } }\nclass PeerDerived214 extends PeerBase214 {}\n$owner = new PeerDerived214; $runner = new PeerScopeChild214; $probe = new PeerProbe214; $prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $alias =& $late;\n$factory = $runner->run();\necho 'RETURN;'; unset($alias); unset($late); echo 'DETACHED;'; $child = $factory(); unset($factory); echo $child->saved['first'], ':', $child->name, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "1ceefadd07404a85fe0a52ac699fb4e83ab27b67111b647354ce143bccb8b8a3",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI6UGVlclNjb3BlTWlkMjE0OlBlZXJTY29wZUNoaWxkMjE0O1BST0JFO1BST0JFLUVORDtNQUdJQztPV05FUjtTQ09QRS1FTkQ7UkVUVVJOO0RFVEFDSEVEO0NMT1NVUkU6UFJJVkFURTpQZWVyQmFzZTIxNDpQZWVyRGVyaXZlZDIxNDtSRVFVRVNULU9MRDpNaVNzSW5HO0NISUxEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
