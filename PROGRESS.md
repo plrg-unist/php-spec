@@ -2256,6 +2256,17 @@ A focused current-manifest SL448 load also passes; source comparisons retain
 their recorded cuts without replay.
 [Review](coverage/semantics/deprecated-method-default-review.json).
 
+COMP188 receives owning defaults in actual unscoped real Closure literals and
+ordinary clones whose same-template history proves Shared/Unscoped. Source donor
+checks guard omitted/named-hole cache hits and post-handler binds. Captured reads
+and cleanup survive callback-created private siblings, while the real binder
+refuses their cache transfer. Actual captures/formals preserve ownership and
+type-failure/cancellation order. Twelve originals agree; seven explicit refusals
+retain zero agreement. Private reached checks and the joined main SL449/inventory
+load pass at their recorded cuts. Bound/scoped/private, unknown/temporary cache
+families, arrows and wider defaults remain partial; prior source cuts stand.
+[Review](coverage/semantics/deprecated-closure-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2265,7 +2276,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS200 | Coherent existing primitive COPY inputs across current CV, reference CV and nullary by-value USER producers, with source/carrier/ownership proof first; clean-base preparation after integrated CLASS199. Flat-array policy and held owned-NUL/wider producers remain separate. |
 | ATTR57 | Initialized class properties with pure block GET and an existing inherently backed short SET; clean-base preparation after accepted ATTR56, proving the actual shared descriptor/virtuality and preserving source indices, signatures, owners and budget behavior without trait/byref/attribute/default/schema expansion. |
-| COMP188 | Unscoped REAL Closure owning defaults, with actual cache identity and roots; clean-base preparation after integrated COMP187, retaining existing producer/schema boundaries. |
+| COMP189 | Actual same-scope bind/bindTo REAL Closure default recipients through existing binding records and known Shared/Unscoped family proof, with real receiver/capture/formal roots, cache hits, reentry and cleanup; preparation after accepted COMP188, leaving private/mixed/temporary families and broader identities partial without schema or cache-policy expansion. |
 | ENUM142 | Unscoped included-unit global-constant public static user-method FCC authority from real FILEBINDINGS, entered-unit publication/PREFIX and existing cache-birth/clone/owner consumers; preparation after accepted ENUM141, excluding eval/class/default and wider consumers. |
 | GC58 | Occupied current-row writes during one authenticated direct by-value finite cursor, retaining the old loop CV and actual old-value GC/quiet-release behavior; clean-base preparation after integrated GC57, without insertion/unset/freeing/lifecycle expansion. |
 | I122 | Public instance-method by-value Generator direct post-initialization SEND body throws, with actual factory/class/called-scope/This proof and separate receiver/cache/argument lifetimes; clean-base preparation after integrated I121. |

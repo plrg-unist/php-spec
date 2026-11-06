@@ -96,9 +96,24 @@ call suffix; no historical row retains a receiver. Inherited methods share the
 declaring method's default cache. Reentry, formal ownership before TypeError and
 exit cancellation reuse the same receive and cleanup contracts.
 
-Closure, trait, by-reference, variadic, Generator and dynamic-name/callable
-recipients, plus class and static-property owning defaults, retain their separate
-boundaries. The bounded handler producer remains fixed primitive `define`;
+Ordinary unscoped real Closure literals and their ordinary clones now receive
+owning defaults through a proven Shared/Unscoped cache family. The actual live
+callee, template/default and invocation birth must match. Every same-template
+object history needs a known shared stamp, including retired objects; temporary
+`Closure::call` and private/unknown family history stay outside this slice.
+Known Shared/Unscoped same-scope bound siblings preserve this proof; the selected
+recipient itself must be unbound. If a callback adds private family history, its
+captured read and cleanup finish before the real binder refuses cache transfer.
+Source-only primary/fallback donor checks protect cache hits as well as evaluation
+and binding, including scalar cached results and later namespace shadows. Folded
+children and nested Closure bodies acquire no read authority. Captured values
+remain owned by the actual call, and the real formal owns defaults before type
+failure. Reentry and cancellation use the existing receive/cache/binder machinery.
+
+Arrow, selected bound/scoped/private copies, by-reference parameters/returns/captures,
+variadic and Generator Closure recipients remain separate. Trait and wider dynamic
+method/callable recipients, plus class and static-property owning defaults,
+retain their separate boundaries. The bounded handler producer remains fixed primitive `define`;
 namespaced fallback `define` is Unsupported here. Scoped builtin/trait warning cuts
 are outside this increment. Existing scalar default routes
 remain paired. Function-local dynamic static initializers use ordinary opcodes.
@@ -109,6 +124,7 @@ separate. Attribute argument paths acquire no runtime initializer authority.
 [COMP185 owning reads](../../coverage/semantics/deprecated-owned-constant-review.json).
 [COMP186 parameter defaults](../../coverage/semantics/deprecated-parameter-default-review.json).
 [COMP187 method defaults](../../coverage/semantics/deprecated-method-default-review.json).
+[COMP188 Closure defaults](../../coverage/semantics/deprecated-closure-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

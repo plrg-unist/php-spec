@@ -16,6 +16,13 @@ is `../php-spec-evidence-archive/coverage/semantics/arrows-review-originals.tar.
 These files are local external evidence, not files supplied by a fresh Git clone.
 Copy that directory separately when transferring the full research evidence.
 
+COMP188 Closure-default originals, callback-family failures and focused checks
+are retained uncompressed under `../php-spec-evidence-archive/comp188/`.
+The [review](../coverage/semantics/deprecated-closure-default-review.json) binds
+the preserved source cuts, interrupted-campaign extraction, affected corrections
+and strict-state results. Raw artifacts retain exact source paths/cwd and process
+records; they are evidence, not build/runtime inputs.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

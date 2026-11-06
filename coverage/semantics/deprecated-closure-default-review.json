@@ -1,0 +1,141 @@
+{
+  "milestone": "COMP188",
+  "status": "independently reviewed and integrated; combined main SL449 and inventory pass",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; source 34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C, TZ=UTC; original bytes, paths and raw stdout/stderr/status retained",
+  "implementation": {
+    "commits": [
+      "21f54e660",
+      "39ab7a09a",
+      "ff9985e72",
+      "f7463f688",
+      "88b25c0d5",
+      "55299efcd"
+    ],
+    "modules": 449,
+    "scope": "Owning user-Deprecated defaults from existing producers in actual unscoped REAL Closure calls and ordinary clones, with by-value captures/parameters and nongenerator by-value returns.",
+    "mechanism": "Exact active target/INSTANCE, template/default, source invocation and Shared/Unscoped stamp authenticate the selected callee. Every same-template object, including retired history, needs a known Shared/Unscoped stamp; any same-template temporary-call cache refuses this slice. Source-only primary/fallback donor scans guard omitted and named-hole cache hits, evaluation and post-callback binds, including scalar caches preceding a later owning donor. Compiled reads and nested Closure bodies add no read authority.",
+    "receipt_lifetime": "The captured read keeps its actual structural selected-callee proof if a callback poisons the cache family. Historical births retain source/invocation proof only. Full family proof remains mandatory at receive/cache/bind and new callback-publication/alias-cut authority; private family creation cannot transfer a default through the real binder.",
+    "engine_basis": [
+      "Zend/zend_closures.c zend_create_closure_ex reuses a real Closure runtime cache at the same scope; changed scopes and existing heap caches allocate private cache storage. zend_closure_clone uses that same constructor.",
+      "Zend/zend_closures.c Closure::call uses separate temporary runtime-cache handling when the called scope differs or the original owns heap cache storage.",
+      "Zend/zend_vm_def.h ZEND_RECV_INIT evaluates the actual function default, publishes only cacheable results and initializes the formal before type verification. Existing selected-constant and receive machinery preserves reentry and cleanup."
+    ],
+    "reviewed_semantics": "55299efcd; identical private peer runtime92660cdd777fcc12ad48f0e89e0e261524c22b97",
+    "test_commit": "89b3a0b17, identical cherry-pick of independently maintained c19283f86"
+  },
+  "source_validation": {
+    "author": {
+      "agreements": 9,
+      "frozen_five": {
+        "runtime_revision": "21f54e660ea595e73aa97c2cdd24abab99825c74",
+        "report": "author-frozen-source-reuse.json",
+        "sha256": "04d80a0da0d8289aabcda75a9ed5d04cb45ed274c242fe4ce841dda4152d4aed",
+        "model_report": "model-cache-smoke-v1/report.json",
+        "model_sha256": "c84f2039147608fb126334b0a66e88b6caf854028ca36a5a2800480e5734d83e",
+        "native_report": "native-cache-prep-v1/report.json",
+        "native_sha256": "9f72bac7d5bf5633a4eff2f87f90fb8aaa8250d7f2efb33262a6835879cac4d3",
+        "coverage": "Repeated literals and cold/warm clones, separate templates, all-object retirement, empty/nonempty arrays, namespace-shadow reentry and cache publication before type rejection.",
+        "environment_bridge": "The complete native preparations ran in the former COMP187 cwd and the model in COMP188 cwd with identical absolute original paths/bytes. These sources use no cwd-sensitive service/observer; handled diagnostics and the reviewed environment bridge preserve their original cuts. All five maintained source copies are byte-identical. No source/native replay."
+      },
+      "additional_four": {
+        "revision": "39ab7a09a86110a2b5ff18321d7f16f63e418a6d",
+        "report": "author-new-sources-v1/report.json",
+        "sha256": "cbc85bf9c35650c953f96ba12830d75cd8661708e66599e8b6da77ae41de9cbd",
+        "coverage": "Promoted unchanged COMP186 Closure original, noncached type rejection, handler throw and local-destructor exit cancellation."
+      },
+      "compatibility": "39ab adds actual binding/scope absence; f746 adds by-value USE headers. The frozen originals use ordinary literal/clone births and empty USE lists. 88b25 ignores compiled reads; their reached Deprecated fetches have none. 55299 separates captured selected-read proof from full family cache proof; all these original families remain fully Shared/Unscoped, so their previous predicates remain equivalent. Author318 reaches reentry/cache/type/cleanup with the earlier guarded runtime; final affected independent checks bind the changed cases."
+    },
+    "independent": {
+      "agreements": 3,
+      "refusal_controls": 7,
+      "capture": {
+        "report": "reviewer-completed-capture.json",
+        "sha256": "4537c12b201a7e43cc30159d40268783235875f8b9ef99249622a8d527d4e0be",
+        "agreements": 1,
+        "revision": "a97cda53fed65b59602a6bd2a4ba77a23a4994a4",
+        "result": "The selected Closure owns its captured object after source CV clearing; destructor/output order agrees. This single comparison completed before daemon interruption. The campaign did not complete; no aggregate completion is invented. The source has no cache-family mutation, so the55299 selected/family split preserves its predicates."
+      },
+      "fixed": {
+        "report": "reviewer-source-fixed-v1/report.json",
+        "sha256": "3c123acb02b626895eda83c710d5382ce98029f6561a5dfe157d41020d439f0b",
+        "agreements": 2,
+        "refusal_controls": 4,
+        "revision": "92660cdd777fcc12ad48f0e89e0e261524c22b97",
+        "result": "Folded-child private source and named-hole clone/cache source agree. Callback-retired-private, temporary-call scalar-before-donor, unknown-first-birth and named private-scalar-before-donor refuse explicitly."
+      },
+      "additional_refusals": [
+        {
+          "report": "reviewer-completed-private-scalar.json",
+          "sha256": "51658e1bd9e3b80b785e098e63aa2a1776c65d6cdfdde5b9b6b9fa66b207f66c",
+          "refusal_controls": 1,
+          "result": "Completed initial private-scalar-before-donor refusal at a97. The unchanged initial receive guard supplies the final55299 bridge; no failed campaign is accepted and this control has zero agreement."
+        },
+        {
+          "report": "reviewer-source-define-family-v1/report.json",
+          "sha256": "c1335e9b4d6fcb45e4c3d0b1723e6e06b4f62ea5c1facd03e4074379cd875176",
+          "refusal_controls": 1,
+          "result": "Handler DEFINE followed by private-sibling creation/retirement reaches explicit binder refusal."
+        },
+        {
+          "report": "reviewer-source-bound-v1/report.json",
+          "sha256": "103b2b5c8d2dd1cf3976c4ad7ab2f32889e4623f6bd3b9b83685e708a43ce658",
+          "refusal_controls": 1,
+          "result": "Actual selected same-scope bound recipient refuses; known shared sibling history is distinct."
+        }
+      ],
+      "native_policy": "Compare preserved native originals at exact paths/cwd; only newly authored named/DEFINE and previously unrecorded selected-bound controls needed new native observations. No earlier native or accepted source campaign replay."
+    },
+    "unsupported_agreement_credit": 0,
+    "total_exact_agreements": 12
+  },
+  "reached_validation": {
+    "author": {
+      "revision": "f7463f688c307860af15881e47176c2b805c2241",
+      "report": "author-protocol-v1/report.json",
+      "sha256": "3e60e2e8eea3087b3406fc0a8b05b3715a69b73e854dfc9aea33e22018f20519",
+      "conditions": 318,
+      "result": "Pass SL449: exact true/newline, empty stderr, exit0, stable inputs/revision, no timeout or surviving process group; zero source-agreement credit.",
+      "coverage": "Actual Closure/capture roots and cache stamps; missing/extra cache histories; source/function/site/default/birth corruption; genuine handler DEFINE cuts; nested cacheable/noncacheable receives; formal/cache ownership before TypeError; authentic binder cancellation and receive retirement."
+    },
+    "independent": {
+      "revision": "92660cdd777fcc12ad48f0e89e0e261524c22b97",
+      "report": "reviewer-protocol-v2/report.json",
+      "sha256": "803602496aae09630fecab37543501b822a0f1775fa8ef272e04cff72846c689",
+      "conditions": 91,
+      "result": "Pass SL449: exact true/newline, empty stderr, exit0, stable inputs/revision, no timeout or surviving process group; zero source-agreement credit.",
+      "coverage": "Actual named-clone cache hit with selected stamp missing while first stamp remains; retired unknown object and same-template temporary-call history; selected target/INSTANCE/scopes/cache corruption; callback-retired genuine DEFAULT_BIND after captured read; authentic closed reentry child with function/CAUSE/PARENTINDEX/edge mutations. Zero/full continuations preserve the actual refusal and final result.",
+      "maintained_protocol_bridge": {
+        "report": "reviewer-maintained-protocol-bridge.json",
+        "sha256": "3661b877b447b48f571e5586a08100e8f39be242bf3c758f4c6ca5328c6e8531",
+        "result": "Maintained project-local CLI/root/recorder wrapper retains identical AST fixture producers and assertions to the executed external protocol. Relocation adds no execution credit and required no semantic replay."
+      }
+    }
+  },
+  "joined_main": {
+    "tested_revision": "a1287abebc58919a62d816ba13594d3a1c8143a1",
+    "modules": 449,
+    "report": "joined-main-449-v1/report.json",
+    "sha256": "51a31477cd679e8609a8f7348afbd3b19e43cfc72f6533d0d229b3a53c8df0e0",
+    "result": "PASS SL elaboration, algorithmic and structuring load: exact true/newline, empty stderr, exit0, stable inputs/revision and no timeout in 13.317 seconds. This adds no source-agreement credit.",
+    "composition": "Actual main includes reviewed COMP188 module460 plus accepted ATTR56 and ENUM141. All semantic inputs match the committed source; only feature documentation/inventory was staged during the check. Private source campaigns retain their original identities without replay.",
+    "inventory": {
+      "report": "joined-main-449-inventory-v1.json",
+      "sha256": "e3851481cff7560f43a5463ce321eb909819f7586262fdf3ae795838e14003ff",
+      "result": "PASS: 169 constructors and 306 runtime obligations remain consistent; the four updated entries remain partial."
+    }
+  },
+  "failures_preserved": "Initial undefined-helper and binding-position strict-load failures, preparation-only/native-only packets, interrupted reviewer model work, callback-created-private ERROR_HANDLER_RESULT relation failure and the initial state-fixture length-syntax error retain zero acceptance credit. Corrected affected checks preserve separate cuts; no COMP187 or historical campaign replay.",
+  "limits": "Selected bound/scoped/private recipients, arrows, by-reference captures/parameters/returns, variadics, Generators and private/unknown/temporary cache-family mixtures remain explicit future boundaries. A known Shared/Unscoped same-scope bound sibling is safe history; the actual selected recipient must remain unbound. No schema, producer,152 Throwable-frame,455 cache-policy or30/400 changes. No engine defect or intentional divergence identified; complete core remains unfinished.",
+  "recovery": {
+    "root": "../php-spec-evidence-archive/comp188/",
+    "commands": [
+      "python3 tests/semantics/deprecated_global_constant_sources.py --output NEW --select parameter-owned-closure-pending,closure-owned-type-nonempty,closure-owned-handler-throw,closure-owned-local-exit-cancel",
+      "python3 tests/semantics/deprecated_closure_default_protocol.py --output NEW",
+      "python3 tests/semantics/deprecated_closure_default_review_protocol.py --output NEW",
+      "The external model-prep.py and reviewer-source.py retain exact frozen native/source comparisons; restore recorded worktree paths/cwd for path-identical replay. Per-process records preserve argv, status, raw streams and tested inputs."
+    ],
+    "integration": "The joined_main gate checks the actual combined source inputs; private449 campaigns retain their separate recorded cuts."
+  }
+}

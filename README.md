@@ -2714,14 +2714,19 @@ read is pending; the outer value replaces it only when cacheable. Cache publicat
 and formal-slot ownership precede TypeError, and exit cancellation preserves the
 real default binder until the receive ends. Fixed-name instance/static calls also
 receive owning defaults in ordinary named-class by-value nongenerator methods,
-preserving actual scopes, receiver roots and inherited cache identity. Closure,
-trait, by-reference, variadic, Generator and dynamic callable recipients, class
+preserving actual scopes, receiver roots and inherited cache identity. Unscoped
+real Closure literals and ordinary clones receive owning defaults when every
+same-template cache history proves Shared/Unscoped. The actual selected Closure
+owns its captures; source donor checks protect cache hits and post-handler binds.
+Scoped/private/unknown Closure families, arrows, trait, by-reference, variadic,
+Generator and wider dynamic callable recipients, class
 and static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).
 [Method-default review](coverage/semantics/deprecated-method-default-review.json).
+[Closure-default review](coverage/semantics/deprecated-closure-default-review.json).
 Module400 adds scalar global `define`/`defined`, including dynamic string callees,
 namespace-prefix normalization and captured request strings after CV mutation.
 Rows retain the actual value and string-carrier class. Available positional
