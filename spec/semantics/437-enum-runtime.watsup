@@ -2144,6 +2144,7 @@ def $enum_is_callable_ref_name(S, pconfigcall, pvalue) = $enum_is_callable_primi
 def $enum_is_callable_ref_name(S, pconfigcall, POBJECT n) = ($object_name(S, n) ++ $ptascii("::__invoke"))
   -- if $enum_is_callable_instance(S, POBJECT n)
 def $enum_is_callable_ref_name(S, pconfigcall, POBJECT n) = $enum_is_callable_closure_name(S, n)
+  -- if $typed_closure(S, n)
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if $enum_is_callable_argument(S, pconfigcall, 0) = ((NScalarString (BYTES text_input) metadata_input, porigin_input, z_input))
   -- if pvalue_input = PSTRING_CARRIER INTERNED_STRING ptbytes_input
