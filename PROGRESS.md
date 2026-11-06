@@ -196,9 +196,15 @@ CALLED, and actual call authority preserve Private freshness or Shared reuse wit
 exact Base replacements. The
 [bound-call cache review](coverage/semantics/enum-is-callable-bound-method-call-cache-review.json)
 records one public-method source agreement and 107 reached conditions with
-strict446. Constant/default captures, bound
-free-function/dummy-scope temporary calls, unproved transformed copies and
-Generator/Fiber query owners remain partial.
+strict446. Known early top-level named user functions bound to the dummy
+`Closure` scope now retain their warmed Private source cache while every temporary
+call on a plain real nongenerator user Closure receives a fresh key. Argument-time
+source removal preserves actual API owners and separate captured-leaf cleanup;
+pure history survives retirement without pins. The
+[dummy-scope review](coverage/semantics/enum-is-callable-dummy-user-call-cache-review.json)
+records one exact source agreement, 120 independent reached conditions and
+strict446. Constant/default captures, conditional named-function sources,
+unproved transformed copies and Generator/Fiber query owners remain partial.
 Cleanup exit with an ordinary Throwable already pending, switched Fiber
 completion/force-close, other owning rebound arrays, late attached type sources,
 wider variable arrays, typed/backed/debt valid-pair cells, named/unpacked output,
@@ -2126,17 +2132,24 @@ discriminator at ded9e52f4 restores the original E_STRICT/eval-cut check: all 76
 conditions pass under the unchanged cap. Prior source, pipe and syntax cuts stay historical.
 [Review](coverage/semantics/deprecated-parameter-default-review.json).
 
-## Restart checkpoint
+## Active work
 
-Paused for daemon restart; all pair jobs stopped. Private paths below are under `.tools/` and remain unaccepted. Start fresh agents after restart.
-- CLASS197 integrated; CLASS198 has no tree, native preparation or code. Accepted evidence stays in its family review.
-- ATTR53: `attr53-dev` (3d454fcb1), peer `attr53-review` (01972402c); native passes, model Tick-plan Unsupported; next localize admission, peer107 unrun.
-- COMP187: `comp187-owned-method-defaults-dev` (909880587), peer `comp187-named-method-defaults-review` (c85); draft448/admissions2 Unsupported; next method source guard; module459 reserved.
-- ENUM137: `enum-array-reference-member-current` (90354bf25), peer `enum-dummy-function-call-cache-review-137` (8981401bf); source1/strict446 pass, independent120 unrun.
-- GC56: `gc-finite-byvalue-foreach-56` and `gc56-review` (749624ad0); no edits/native/model; next agreed foreach native preparation.
-- I121: `iterator121-dev` (bcd50d501, three uncommitted publication drafts), peer `iterator121-review` (ed739ae67); aborted-Notice interpreter failure; next narrow cleanup diagnostic.
-- OB21: `output-object-return-19` (573496906), peer `output-ordinary-handler-review-15` (ae784f043, untracked fixture); 573 repair unvalidated; next actual userT receipt/owner front.
-Keep V110, GC35, COMP123 and prior paused boundaries held. Preserve all private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records recovery locations.
+Implementation/reviewer pairs resumed after the daemon restart. Private paths
+below are under `.tools/`; their work remains unaccepted until integrated.
+
+| Track | Current work and private trees |
+| --- | --- |
+| CLASS198 | Reference-cell first-CV ordinary leaf objects in by-value magic sends; `class198-refcell-magic`, `class198-review`; modules414/415,86 only if needed. |
+| ATTR53 | SET-hook Closure source/import scope in403; `attr53-dev`, `attr53-review`. Corrected native source and strict447 pass; source timeouts retain zero credit and final107 review is pending. |
+| COMP187 | Owning method-default source/invocation authentication in reserved459 with minimal458/306 hooks; `comp187-owned-method-defaults-dev`, `comp187-named-method-defaults-review`. |
+| ENUM138 | Conditional named-user function publication before dummy-bound Closure calls; ENUM137 integrated with one source agreement and120 independent reached conditions at its private446 cut. |
+| GC56 | Direct nonmutating by-value foreach over finite WeakMap payloads in386/422; `gc-finite-byvalue-foreach-56`, `gc56-review`; no30/schema edits. |
+| I121 | Owning direct SEND VALUE snapshots in447; `iterator121-dev`, `iterator121-review`. Throwing-Notice cleanup is under narrow diagnostic investigation; no30/metadata edits. |
+| OB21 | Non-Stringable FINAL return conversion and abandoned-receipt validation in456 with the existing source-only30 constructor; `output-object-return-19`, `output-ordinary-handler-review-15`. Actual receipt/owner review is pending. |
+
+Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
+private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records
+recovery locations.
 
 ## Remaining core work
 

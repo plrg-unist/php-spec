@@ -1,0 +1,34 @@
+{
+  "scope": "Known early top-level named user-function dummy-Closure-scope temporary Closure::call cache policy",
+  "target": "Pinned PHP 8.5.10 CLI NTS 64-bit; project-local oracle and tests/semantics/profile.json",
+  "base_revision": "f0b23bb7ed9a38cdc1e4f0dee1b99a1678c501b5",
+  "semantic_revision": "0cdf0a386a7a0f48c4285d46525420c4336daf77",
+  "semantic_inputs": {
+    "spec/semantics/455-closure-function-caches.watsup": "0b7e7d75c41ebc824c5dcaaecc13fce333ee3221930c33b00d3783cadea6b27d"
+  },
+  "behavior": "The method-independent arm authenticates a BOUNDFAKE source through descending immutable SOURCE, an EARLY named nongenerator user function and completed BIND_INTERNAL Closure scope. The replacement must be a plain REAL user nongenerator Closure with its actual template. Known Private cache policy yields a fresh CACHE_CALL per invocation; Shared/unknown stamps are not inferred. The evaluated call site authenticates each row. Existing method, Shared and real-template paths are unchanged; no new module/schema/wrapper.",
+  "ownership": "Cache rows retain only function/source/receiver/site identity. Their validity survives retired ancestor, source and receiver allocations without reading old payload ownership or pinning objects. Real API/current owners preserve argument-time source removal; ordinary cleanup releases the original bound Closure, replacement Closure and captured leaves separately.",
+  "source": "ONE distinct original, SHA-256 9651ec7d98aa57bee7d8e536a7be7bd830a3ad0df10b15b839f92d0deab96eac. The native-first original warms the dummy-bound Private source, publishes a namespace-local is_callable during the first temporary invocation, confirms source warmth, then observes USER on a fresh call. The later argument removes the sole source, checks held selection, source expiry and independent captured-leaf cleanup. Exact paired normal source agreement at 0cdf0a386 is stable/exit0/no timeout in 62.25s. Restart recovery does not replay native/source or 132\u2013136.",
+  "strict": "All 446 modules pass SL true/exit0/empty stderr/stable at 0cdf0a386 in 13.20s. This is the authentic private 446-module cut, distinct from current main447.",
+  "independent": "Production 0cdf0a386 / peer 8981401bf: corrected state-v3 passes 120 conditions across all 446 modules, true/exit0/empty stderr/stable/no timeout in 65.37s. One genuine second temporary-call query front checks CURRENT target/function/site, dummy scope, warmed Private source versus CALL0/1, retired ancestor, actual Bound/REAL receiver/captured-leaf owners, metadata no-root equality, malformed function/scope/source/site/receiver/template/key/unknown/unlive controls, zero/one-step continuation, then exact final output/history/drain. Pinned source, unchanged runtime diff and paired original observations independently reviewed.",
+  "source_authority": "Pinned vendor/php-src/Zend/zend_closures.c::zend_create_closure_ex supplies zend_ce_closure dummy scope when an object is bound with null scope. zend_valid_closure_binding requires a fake scoped function to keep that exact replacement object class. Closure::call copies the nongenerator function, sets scope from the replacement object class, allocates a fresh zeroed runtime cache for HEAP_RT_CACHE/private even at equal scope, and frees it after the call. This authenticates internal class identity only; the function and replacement Closure body are user code.",
+  "author_reports": {
+    "native-v1/report.json": "cd45044170728153672eb244f9a3f4fcfb0ecf5b212e16f05a4a1b7d1e6a5bd4",
+    "strict-v1/report.json": "5ab9ff6c075d35cebb6906e62fffcc33bda253a247d85c703c475e4d23745189",
+    "raw/user-string-_bru3qsd/report.json": "da96e5d0cf2b2575d0559a864499122ec4805a66c50865cc6a4427c91c68dab8",
+    "author-command.json": "17bc6cd6b0a6d4a2c93e0652da0befbaf3491fbb878a0357f74ce4a050965faa"
+  },
+  "failure_disposition": "The native-first, strict446 and paired-source gates pass first attempt. Independent state-v1 parser grouping and state-v2 undeclared-domain variable errors occurred before semantic evaluation and retain zero credit; state-v3 corrects only those fixture expressions. No production changes or source/strict reruns followed. A separate native-only proposal for unbound named-function calls on ordinary instances is rejected before body entry and has zero body-agreement credit; its original failed expectation remains preserved.",
+  "remaining": "Conditional named-function sources, unproved transformed captures, native/internal functions, Generator/Fiber query owners, wider receiver/declaration producers and full core remain partial. Unbound named-function temporary calls on ordinary instances already produce the existing scope-change Warning before body entry; no cache/body admission is needed. No generic internal binding, bound-global producer or visibility expansion.",
+  "recovery": "Author ../php-spec-evidence-archive/enum-dummy-user-call-cache-137/: warm-source-fresh-calls-retirement.php, native-v1/report.json with argv/CWD/profile/raw streams, run_strict.py ROOT OUTPUT, strict-v1, author-command.json and raw/user-string-_bru3qsd preserved intact from ignored .tools. Maintained selector dummy-user-call-cache-. Peer ../php-spec-evidence-archive/enum-dummy-function-call-cache-review-137/: state.py ROOT OUTPUT, state-v1/v2 failures, state-v3 and state-review.json. The rejected unbound-name proposal is retained under ../php-spec-evidence-archive/enum-named-user-call-cache-138/native-v1/. External evidence is not a build prerequisite; no rebuild/portability claim.",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_runtime_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "review": "Independent source/code/state and final docs/inventory/exact maintained-source-copy review CLEAR at frozen 0cdf0a386; metadata-only completion does not renew source, strict or historical evidence.",
+  "peer_reports": {
+    "state-v1/report.json": "8466dd11922b7ade8b418291e59c44e243b60525bfc42054e19125452ac21a10",
+    "state-v2/report.json": "237ef485bb94a4016a446c0c6cfbfe390f0f5ca3eccd7f6a70200da1c87ecef9",
+    "state-v3/report.json": "79a13c5db7642b26260974750f5b20afd646e394e366b639b751bdb5fc788a74",
+    "state-review.json": "2a55f60b74e1f1b9630e69557a20c162156282f11d9fd5c684da19fa9f1af26d"
+  },
+  "inventory": "PASS: 169 constructors and 306 runtime obligations remain consistent; calls.closure-binding, protocols.Closure and declarations.generated-enum-methods remain partial. Metadata edits do not renew execution credit."
+}

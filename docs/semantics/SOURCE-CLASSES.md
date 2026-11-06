@@ -1294,9 +1294,15 @@ receivers still require exact Base scope. Private calls get fresh invocation
 keys and Shared calls keep their cache, with ordinary API ownership and no
 history pins. The [bound-call cache review](../../coverage/semantics/enum-is-callable-bound-method-call-cache-review.json)
 records one public-method original and its reached scope/owner/history checks.
+Known early top-level named user functions bound to the dummy `Closure` scope
+now receive fresh temporary call keys on plain real nongenerator user Closures.
+A warmed Private source retains its ordinary choice while each call selects
+independently; real API ownership and captured-leaf cleanup survive argument-time
+source removal. Source/scope/site history adds no roots after retirement. See the
+[dummy-scope review](../../coverage/semantics/enum-is-callable-dummy-user-call-cache-review.json).
 Constant/default/static/property captures, resumed Generator,
-internal/Trait/anonymous/Fiber query owners, bound free-function/dummy-scope
-temporary calls and wider transformed contexts remain partial.
+internal/Trait/anonymous/Fiber query owners, conditional named-function sources
+and wider transformed contexts remain partial.
 An initialized childless ordinary old output object can also be replaced when
 the actual postwrite ownership graph still owns it. The captured CV is written
 before returning the boolean, and another owner delays destruction. The

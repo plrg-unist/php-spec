@@ -84,8 +84,17 @@ class does not replace Base lexical scope. Actual call authority and exact Base
 replacement preserve Private freshness and Shared reuse without new pins.
 The [bound-call cache review](../../coverage/semantics/enum-is-callable-bound-method-call-cache-review.json)
 records the public-method witness; wider visibility producers keep their existing
-limits. Bound free-function/dummy-scope and other unproved temporary views remain
-partial.
+limits.
+Known early top-level named user functions bound to the dummy `Closure` scope
+now authenticate temporary calls on plain real nongenerator user Closures.
+Their known Private source keeps its ordinary cache while every call receives a
+fresh temporary key. Immutable source/scope/site history survives ancestor,
+source and receiver retirement without owners. The
+[dummy-scope review](../../coverage/semantics/enum-is-callable-dummy-user-call-cache-review.json)
+records one exact source agreement and 120 reached conditions with strict446.
+Unbound named-function calls on ordinary instances retain the existing scope-change
+Warning and enter no body. Conditional named-function sources, unproved
+transformed copies and internal/Generator/Fiber query owners remain partial.
 
 Reference formals receive isolated fresh cells after outer evaluation and binding,
 in canonical forwarding order. Each warning runs **before** its cell is allocated.
