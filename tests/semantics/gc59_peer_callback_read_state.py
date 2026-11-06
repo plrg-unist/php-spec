@@ -185,6 +185,8 @@ CHECKS = [
     '$call_task_valid(S_future, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
     'S_future_wrong_head = S_future[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ACCESS_RESUME pweakmapwrite.ACCESS) :: (WEAKMAP_WRITE_CLAIM pweakmapwrite) :: ptask_claim_tail*]',
     '~$call_task_valid(S_future_wrong_head, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
+    'pdestructionoperation_unregistered = pdestructionoperation[.SOURCE = ACCESS_RESUME pweakmapwrite.ACCESS]',
+    '~$call_task_valid(S_future, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_unregistered)',
     'S_future_bad_job = S_future[.TODO = (DESTRUCTOR_RESULT pdestructorcall_bad) :: (DESTRUCTOR_RELEASE pdestructionrelease_empty) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_after_pin*]',
     '$heap_graph(S_future_bad_job) = $heap_graph(S_future)',
     '~$call_task_valid(S_future_bad_job, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
