@@ -80,6 +80,19 @@ def $property_unset_source(S, ppropertyunset) = true
   -- if $property_unset_site(S, ppropertyunset.SITE, ppropertyunset.NAME, ppropertyunset.LINE)
   -- if $origin_node(S.SOURCES, ppropertyunset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if $base64(text_receiver) =/= $ptascii("this")
+def $property_unset_source(S, ppropertyunset) = true
+  -- if $property_magic_cv_source(S, ppropertyunset.SITE, ppropertyunset.LINE)
+  -- if ppropertyunset.SITE = PORIGIN n pcpath
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_statement = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if PCINDEX n_index = pcpath[$nabs($(|pcpath| - 1))]
+  -- if pcpath = pcpath_statement ++ [PCFIELD 0, PCINDEX n_index]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_statement) = (NStmtUnset (SEQUENCE expression*) metadata_statement)
+  -- if $(n_index < |expression*|)
+  -- if $origin_node(S.SOURCES, ppropertyunset.SITE) = (expression*[n_index])
+  -- if $property_effective_desc(S, ppropertyunset.OBJECT, ppropertyunset.NAME) = (ppropertydesc)
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
+  -- if ~$property_hook_unset_declared(S, ppropertyunset.OBJECT, ppropertydesc.KEY)
 def $property_unset_source(S, ppropertyunset) = false -- otherwise
 
 ;; Source occurrences contain statement roots, not a body sequence node.
@@ -199,6 +212,7 @@ def $property_unset_valid(S, ppropertyunset) = false -- otherwise
 dec $property_unset_capture(pstate, ppropertyunset) : bool
 def $property_unset_capture(S, ppropertyunset) = true
   -- if $property_unset_valid(S, ppropertyunset)
+  -- if $property_magic_name_capture(S, ppropertyunset.SITE, ppropertyunset.LINE, ppropertyunset.NAME)
   -- if $property_unset_capture_state(S, ppropertyunset)
   -- if $origin_node(S.SOURCES, ppropertyunset.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
   -- if S_read = $quiet_operand(S, VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver))
@@ -338,6 +352,27 @@ def $property_unset_plan(S) = (ppropertyunset)
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
   -- if porigin_property = ppropertydesc.ORIGIN
   -- if ppropertyunset = {SITE porigin, NAME ptbytes, LINE $property_current_line(S), OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY porigin_property}
+  -- if $property_unset_capture(S, ppropertyunset)
+  -- if ~$property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
+def $property_unset_plan(S) = (ppropertyunset)
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase (VARIABLE ptbytes_name z_name) z_receiver
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $property_pending_source_base(S, S.BASE, expression)
+  -- if $property_magic_cv_name(S[.RESULT = VARIABLE ptbytes_name z_name], porigin, $property_current_line(S)) = (ptbytes)
+  -- if $property_unset_pending_receiver(S, pbase) = (n)
+  -- if S_target = $property_pending_resolve(S, pbase, VARIABLE ptbytes_name z_name, PPUNSET, z_receiver, $property_current_line(S))
+  -- if S_target.COMPLETION = NORMAL
+  -- if S_target.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $property_unset_needed(S, n, ptbytes)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_unset_method(S, n) = (pmethoddesc)
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if ppropertyunset = {SITE porigin, NAME ptbytes, LINE $property_current_line(S), OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, PROPERTY ppropertydesc.ORIGIN}
   -- if $property_unset_capture(S, ppropertyunset)
   -- if ~$property_unset_guard(S, S.CURRENT, S.FRAMES, n, ptbytes)
 def $property_unset_plan(S) = eps -- otherwise

@@ -37,14 +37,12 @@ def $property_isset_pending(S) = true
   -- if $property_isset_needed(S, n, ptbytes)
 
 ;; Live selectors are read only on initial quiet entry, never on handoff.
-dec $property_magic_cv_source(pstate, porigin, int) : bool
 def $property_magic_cv_source(S, PORIGIN n pcpath, z) = true
   -- if $property_hook_cv_name_site(S, PORIGIN n pcpath, z)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver expression_name metadata)
   -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
   -- if ~$scope_global(S[.ORIGIN = (PORIGIN n pcpath)], [PCFIELD 0])
 def $property_magic_cv_source(S, porigin, z) = false -- otherwise
-dec $property_magic_cv_name(pstate, porigin, int) : ptbytes?
 def $property_magic_cv_name(S, porigin, z) = (ptbytes)
   -- if $property_magic_cv_source(S, porigin, z)
   -- if S_site = S[.ORIGIN = (porigin)]
@@ -53,7 +51,6 @@ def $property_magic_cv_name(S, porigin, z) = (ptbytes)
   -- if S_name.RESULT = KNOWN pvalue_name
   -- if $string_bytes(pvalue_name) = (ptbytes)
 def $property_magic_cv_name(S, porigin, z) = eps -- otherwise
-dec $property_magic_name_capture(pstate, porigin, int, ptbytes) : bool
 def $property_magic_name_capture(S, porigin, z, ptbytes) = true
   -- if ~$property_magic_cv_source(S, porigin, z)
 def $property_magic_name_capture(S, porigin, z, ptbytes) = true
