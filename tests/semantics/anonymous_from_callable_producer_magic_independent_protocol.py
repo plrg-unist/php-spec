@@ -72,6 +72,7 @@ def render(case, fixture, filename):
         '$api_method_result(S,papiquery,$ptascii("capture")) = HANDLERRESOLVED (API_METHOD_TARGET papiquery pfunction.ORIGIN ($ptascii("capture")) true)',
         '$factory182_output(S.EVENTS) = eps', 'n_wrapper = |S.OBJECTS|',
         'S_wrapped = $drive_steps(S,1)', 'S_wrapped.COMPLETION = BUDGET',
+        'S_wrapped.OBJECTS[n_wrapper] = FROMCALLABLECLOSURE pfrommethod',
         'S_wrapped.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]',
         'pfrommethod.SITE = porigin_factory', 'pfrommethod.FACTORY = eps',
         'pfrommethod.FUNCTION = pfunction.ORIGIN', 'pfrommethod.CLASS = papiquery.CLASS',
