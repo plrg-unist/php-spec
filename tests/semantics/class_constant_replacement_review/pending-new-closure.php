@@ -22,7 +22,7 @@ namespace {
     }
 }
 namespace Ns195 {
-    class Aux195 { public const VALUE = [4]; }
+    class Aux195 { public const VALUE = [X]; }
     class Cache195 {
         public const VALUE = [static function ($warm = false) {
             static $held = null;
