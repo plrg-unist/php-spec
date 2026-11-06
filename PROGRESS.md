@@ -2925,6 +2925,7 @@ their work remains unaccepted until integrated.
 | COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
 | ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |
 | GC66 | Retained plain DIRECT-array DAG RHS replacement/read with actual outer slot, KEY_R and callback-CV owners, unchanged descendant edges and existing claim/cursor phases; exclude mutation, refs, cycles and Key backedges. |
+| I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
