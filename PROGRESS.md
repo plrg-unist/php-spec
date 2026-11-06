@@ -2462,6 +2462,19 @@ failures retain zero agreement; the typed-formal guard has an explicit root-cont
 bridge for completed positives. The actual joined 455-module interface load and
 inventory169/306 pass at a2cc73a0c; no source/frontier replay. Broader receiver/call
 modes remain partial.
+Immediate fixed-source function/public-static USER first-class callables now
+produce the existing quiet COPY values. Capture and invocation origins/INITs are
+separate; placeholder conversion selects a real wrapper before outer sends.
+Generic cleanup releases the wrapper call/INSTANCE owner after return; the tested
+unaliased wrappers retire before table/child retention of the result. Collection
+uses permanent function/class source.
+Raw FCC priority and438 isolation keep old nullary/constructor/array/header bounds.
+The [first-class producer review](coverage/semantics/anonymous-firstclass-producer-magic-review.json)
+records five distinct first-pass source agreements, separate 194/267 full
+owner/budget proofs and a 28-condition eligible-pack guard at recorded455 cuts.
+Five intended Unsupported controls retain zero agreement. No209 failures,
+corrections, timeouts or native repeats occurred; current456 composition is
+independently reviewed without source/frontier replay.
 Later array sends,
 unpacking, nested arrays/reference entries, static named sends, Trait,
 reference/generator, attributes and wider scope remain partial.
@@ -2852,6 +2865,16 @@ static-property/Trait and held Generator/303 paths remain separate.
 [Review](coverage/semantics/computed-class-cache-replacement-review.json). Current
 joined455/inventory also passes at the recorded cut.
 
+COMP196 receives owning Deprecated globals in ordinary named-class deferred
+static defaults through actual declaring cells and saved binders. Selected
+lookup facts preserve arrays, objects and Closure aliases across shadows;
+first-fill, handler cancellation and retired typed-reference constraints remain
+intact. Normal old-slot cleanup keeps one pending value owner and commits after
+old-item release. Eight originals agree, including one explicit exit; independent
+82/63/135 strict456 fronts and current joined456/inventory pass. Busy same-slot,
+old-release abrupt, Trait/Generator/303 and wider forms remain separate.
+[Review](coverage/semantics/deprecated-static-property-default-review.json).
+
 ## Active work
 
 Current implementation/reviewer pairs work in private trees under `.tools/`;
@@ -2859,7 +2882,7 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS209 | Immediate fixed-source USER/public-static FCC producers with real conversion/target before positional arguments and wrapper/INSTANCE/result roots; preserve current quiet signatures, outer headers and held bounds. |
+| CLASS210 | Fresh fixed-name receiver FCC followed by immediate invocation, with actual capture scopes, wrapper INSTANCE and borrowed This, return-old/return-this ownership; preserve approved constructor, public USER, quiet/header and held bounds. |
 | ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
 | COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
 | ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |

@@ -815,6 +815,17 @@ receiver and returned value. Missing, typed-formal, backed and nonleaf receiver
 cells stop before warnings; dynamic names, nullsafe/magic receivers and wider modes remain
 partial. [CV-instance review](../../coverage/semantics/anonymous-cv-instance-magic-review.json).
 
+Fixed-source USER functions and public static methods now support immediate
+first-class-callable invocation as quiet COPY producers. The inner singleton
+placeholder captures the selected target; only the outer invocation sends real
+zero/required untyped positional by-value arguments. Original capture/invocation
+source and emitted INITs certify the target. Real NAMEDCLOSURE/METHODCLOSURE,
+INSTANCE, parameter and result owners preserve snapshots through callbacks.
+Returning releases the wrapper call owner; the validated unaliased wrappers retire
+before table/child retention. Permanent function/class source certifies collection. Constructor, nullary, contextual-array, header and
+unpack policies stay separate; wider callable modes remain partial.
+[First-class producer review](../../coverage/semantics/anonymous-firstclass-producer-magic-review.json).
+
 Named owners receive deferred keys after their children compile; an anonymous
 owner reserves its key before compiling members and replaces that compiler-local
 descriptor in place on success. Recursive children therefore retain source order

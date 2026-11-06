@@ -77,6 +77,12 @@ native promotion, affected fixture/validator corrections, and a separate
 inconclusive throwing-child timeout with zero agreement. Raw streams and the
 single bounded stack sample remain external; neither requires a native replay.
 
+COMP196 static-default source and cell/publication evidence is under
+`../php-spec-evidence-archive/comp196/`. The [review](../coverage/semantics/deprecated-static-property-default-review.json)
+separates guarded completed rows from failed aggregates and records the corrected
+explicit-exit classification, array-identity counterexample and unified-phase
+fix. Earlier source/state cuts retain their actual identities; raw data stays external.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

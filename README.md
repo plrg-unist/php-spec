@@ -2756,12 +2756,16 @@ arrays leave a structural history image; compiler replay reconstructs foldable
 arrays in a temporary view. Replacement releases the old value before publishing
 the physically protected new value. Abrupt old-child cleanup remains explicit
 Unsupported; its native timeout supplies no agreement.
+Deferred static-property defaults receive owning globals through their declaring
+cell. Selected lookup facts survive handler shadows; ordinary old-slot release
+keeps one pending value owner, and escaped typed references retain their constraints.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
 static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
 [Computed class-cache review](coverage/semantics/computed-class-cache-replacement-review.json).
+[Static-property default review](coverage/semantics/deprecated-static-property-default-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).
@@ -5523,6 +5527,17 @@ the receiver CV again. Generic method/parameter/result owners retain the actual
 receiver and returned value. Missing, typed-formal, backed and nonleaf receiver
 cells stop before warnings; dynamic names, nullsafe/magic receivers and wider modes remain
 partial. [CV-instance review](coverage/semantics/anonymous-cv-instance-magic-review.json).
+
+Fixed-source USER functions and public static methods now support immediate
+first-class-callable invocation as quiet COPY producers. The inner singleton
+placeholder captures the selected target; only the outer invocation sends real
+zero/required untyped positional by-value arguments. Original capture/invocation
+source and emitted INITs certify the target. Real NAMEDCLOSURE/METHODCLOSURE,
+INSTANCE, parameter and result owners preserve snapshots through callbacks.
+Returning releases the wrapper call owner; the validated unaliased wrappers retire
+before table/child retention. Permanent function/class source certifies collection. Constructor, nullary, contextual-array, header and
+unpack policies stay separate; wider callable modes remain partial.
+[First-class producer review](coverage/semantics/anonymous-firstclass-producer-magic-review.json).
 
 Trait magic declarations remain partial.
 [Trait](coverage/semantics/trait-source-factories-review.json),

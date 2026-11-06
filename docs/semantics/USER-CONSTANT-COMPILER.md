@@ -172,8 +172,25 @@ The image serves earlier compiler prefixes even while release is pending.
 Normal completion publishes once and restores the real initializer context.
 Abrupt old-child cleanup remains explicit Unsupported. The pinned native
 throwing-child original timed out after `H|F|D|`; it establishes no terminating
-catch or publication law. Static-property/Trait initialization and held
-Generator/303 release routes gain no authority.
+catch or publication law. These class-cache rules leave static-property/Trait
+initialization and held Generator/303 release routes separate.
+
+Ordinary named-class deferred static-property defaults now receive existing
+owning globals through their real binder and declaring `CLASSSTATICS` cell.
+Selected lookup facts include array identity, preserving the original value
+after namespace shadowing. Reentry can fill or assign the mutable cell first;
+the checked outer bind preserves first-fill and escaped typed-reference laws.
+Handler throw or exit before binding skips that commit. Global object and
+Closure aliases retain their existing identity and scope.
+
+Normal replacement removes the old cell edge before release. A nonowning marker
+makes the slot unreadable while one publication task protects the new value.
+Publication follows completion of the old-item release; shared or escaped old
+values can survive. In the unique old Drop case, real This/C pins last through
+its destructor and storage drops before commitment. Other-property lazy
+initialization remains available during that callback. Same-slot reads, quiet reads, writes and reference fetch/bind
+during release refuse explicitly. Old-release abrupt completion, Trait,
+Generator/303 and wider construction/producer domains remain separate.
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
@@ -184,7 +201,7 @@ captured-entry and pending/iteration families.
 
 Arrow and wider fake/nonpublic recipients, by-reference parameters/returns/captures,
 variadic and Generator Closure recipients remain separate. Trait and wider dynamic
-method/callable recipients, plus wider class-constant initializers and owning static-property defaults,
+method/callable recipients, plus wider class-constant and property initializers,
 retain their separate boundaries. For parameter-default causal paths, the bounded
 handler producer remains fixed primitive `define`; namespaced fallback `define`
 is Unsupported there. Scoped builtin/trait warning cuts
@@ -207,6 +224,7 @@ private-cache marker law does not extend the separate303 close path.
 [COMP193 public method FCC defaults](../../coverage/semantics/deprecated-method-fcc-default-review.json).
 [COMP194 class-constant initializers](../../coverage/semantics/deprecated-class-constant-owned-review.json).
 [COMP195 computed cache replacement](../../coverage/semantics/computed-class-cache-replacement-review.json).
+[COMP196 static-property defaults](../../coverage/semantics/deprecated-static-property-default-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a
