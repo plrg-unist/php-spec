@@ -358,6 +358,19 @@ def $generator_source_discard(S, pconfiggenerator, text) = S[.TODO = (THROW_SEAR
 def $config_generator_discard(S, pconfiggenerator, text) = $generator_source_discard(S, pconfiggenerator, text)
   -- if $generator_api_kind(pconfiggenerator.CALL.KIND)
 
+;; An unfinished native call frees copied argv before releasing its receiver.
+;; Keep the actual pending step as operation source: no API frame was entered.
+def $return_discard(S, CONFIG_INVOKE pconfigcall) = $eager_operation_begin(S, S_original, THROW_SEARCH n, $named_slots_roots(pconfigcall.SENT) ++ $exit_owner_nodes(pconfigcall.OWNER))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if $destructor_operational(S)
+  -- if S_original = S[.TODO = (THROW_SEARCH n) :: (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
+  -- if $call_task_valid(S_original, CONFIG_INVOKE pconfigcall)
+  -- if $config_iterator_copied_call(S_original, pconfigcall)
+  -- if $generator_api_kind(pconfigcall.KIND)
+  -- if ~$generator_capture_config_tag(pconfigcall)
+
 def $config_iterator_history(S, pconfigiterator) = true
   -- if $generator_iterator_site(S, pconfigiterator.CALL)
   -- if ~$generator_selected_traversable_site(S, pconfigiterator.CALL) \/ $generator_aggregate_current(S, pconfigiterator.OBJECT)
