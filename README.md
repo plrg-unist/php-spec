@@ -4111,6 +4111,16 @@ inner-operation/outer-claim ancestry. Four originals and 506 independent
 conditions (496 authored) pass at the recorded453 cuts; see the
 [declared-own review](coverage/semantics/gc-own-declared-slots-review.json).
 
+A selected fieldless Child can throw a fresh Exception while the own destructor's
+fresh Exception is pending. The old pending owner transfers into the new
+Exception's Previous edge, and the original claim owns the new pending root.
+Later Children still read the installed replacement before catch; the outer
+assignment remains uncommitted. The generic cleanup operation keeps its original
+source and zero roots. A further Child throw under that Previous history stops
+explicitly before another handoff. Two originals and 375 independent conditions
+(365 authored) pass at their recorded454 cuts; joined455 also passes. See the
+[pending-handoff review](coverage/semantics/gc-child-pending-handoff-review.json).
+
 The actual bounded
 `getIterator()` factory now returns an Iterator that owns Map; outer foreach
 keeps its own DATA and current cache. Exhaustion versus an externally held
@@ -6117,6 +6127,12 @@ implicit Consumer write retain distinct source locations, original input and
 pending receiver owners through throw/retry. Wrapper metadata creates no extra
 callable hooks. Distinct exporters remain distinct even with the same raw origin,
 preserving hooked-property conflicts and first local-property priority.
+Consumers may also extend an ordinary source Parent with no declared or effective
+hooks, whose stored fields are disjoint from the imported hook names. Import
+authenticates the declared installed Parent before linking; callable hooks
+require the final Parent link. An ordinary descendant retains Consumer lexical
+ownership and its own called class.
+[Parented pair review](coverage/semantics/parented-trait-pairs-review.json).
 [Nested](coverage/semantics/nested-trait-backed-pairs-review.json),
 [branching](coverage/semantics/branching-trait-exporters-review.json),
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and

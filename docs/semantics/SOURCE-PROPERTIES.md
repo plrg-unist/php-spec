@@ -380,18 +380,37 @@ Consumer row/projection and code occurrence. Existing body tasks evaluate that r
 RHS then perform the implicit assignment at the imported hook origin. Exact function
 lookup prevents a forged BODY/CODE from selecting this sequence. In the main,
 raw RHS13 and hook12 are distinct; a separate native TypeError distinguishes
-RHS6 from implicit-write line5. Initialized slots and genuine ABSENT backing keep original input,
-received values and stored results distinct from pure GET700. Callback abort skips
-the implicit store; input and implicit-write type failures preserve the prior value
-and caller result. At a real RHS helper pause, the pending property base and outer
-SET result each retain one receiver owner; the borrowed context adds none.
+RHS6 from implicit-write line5. Initialized slots and genuine ABSENT backing keep
+original input, received values and stored results distinct from pure GET700.
+Callback abort skips the implicit store; input and implicit-write type failures
+preserve the prior value and caller result. At a real RHS helper pause, the pending
+property base and outer SET result each retain one receiver owner; the borrowed
+context adds none.
 Eight new source agreements and 305 independent source/RHS/write/slot/owner/budget
 conditions use the 453-module manifest in the
 [Short Trait pair review](../../coverage/semantics/trait-short-set-pairs-review.json).
-Recorded prior Unsupported/elaboration cuts and this family's Unsupported
-calibration remain zero credit. Adapted, parented, nominal,
-ref/attribute/default-parameter and wider binding forms remain separate; no descriptor nesting, storage, transition or generic Trait linking rule
-was introduced.
+The admitted pair family also composes into Consumers extending an ordinary
+installed source Parent with no declared/effective hooks or selected-name collision.
+Actual source headers reuse lexical context and the existing named-header compiler;
+pre-link import does not require the Consumer name or Parent link yet. Runtime
+GET/SET/RHS and imported virtual authority require the final SOURCE_PARENT link.
+Raw Trait/wrapper origins remain parentless and final Consumer clone ownership
+stays unchanged. Inherited fields retain their real Parent declarations/defaults;
+an ordinary descendant keeps Consumer lexical scope and its distinct called class.
+The no-inherited-key linker check admits only an already-authenticated imported
+pair; same-name override handling remains unchanged. FINAL Parent metadata is
+admitted before linking so the existing later failure and earlier Trait conflict
+retain native priority. Raw hook compilation errors still precede main. A plain
+Parent redeclaration that inherits an effective GET remains excluded. The final
+absence guards are entailed by the hook-free parentless Bases in all six original
+comparisons, preserving
+that source cut; the new held contrast is checked separately. The final 454-module
+frontier passes 419 source/Parent/layout/clone/owner/budget conditions.
+[Parented pair review](../../coverage/semantics/parented-trait-pairs-review.json).
+Recorded prior Unsupported/elaboration cuts and this family's failed cuts retain
+zero credit. Same-name or hooked Parents, adaptation, nominal,
+ref/attribute/default-parameter and wider binding forms remain separate; no
+new descriptor nesting, storage, transition or generic Trait linking rule was added.
 
 Selected sole implicit virtual SET hooks also compile on a parentless class,
 with unchanged inheritance. Actual source ABSENT and descriptor PROP_UNINITIALIZED

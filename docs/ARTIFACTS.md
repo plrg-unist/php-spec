@@ -895,3 +895,10 @@ and `../php-spec-evidence-archive/gc-own-slots-peer-63/`.
 The [review](../coverage/semantics/gc-own-declared-slots-review.json) retains
 native/source cuts, the genuine fresh Child/inner/outer snapshot and zero-credit
 preparation failures; earlier GC59–62 evidence is unchanged.
+
+GC64 Child/own pending-Exception originals and the actual Previous/parent-owner
+front remain under `../php-spec-evidence-archive/gc64-child-pending-handoff/author/`
+and `../php-spec-evidence-archive/gc-child-pending-peer-64/`.
+The [review](../coverage/semantics/gc-child-pending-handoff-review.json) records
+the genuine pre-fix pending/Previous state, native handoff and current source/front
+cuts; its baseline/diagnostics retain zero agreement and GC63 is not replayed.

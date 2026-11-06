@@ -1,0 +1,126 @@
+{
+  "scope": "GC64: selected fieldless Child fresh Exception replaces the own Value fresh pending Exception during occupied current-row last-owner replacement, with a later declared Child still queued. Existing root/direct by-value cursor, finite public scalar/fieldless-Child slots, held Map/Keys, leaf or quiet incoming CV and readonly callbacks; no held expansion.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "semantic_revision": "16ebd5f8d0eccfd61201196a7263e68ba81c2c38",
+  "semantic_sha256": {
+    "spec/semantics/257-request-destructors.watsup": "75245726a42e828352c4be200e43c53e14bd1fa725dda1b31a372196476ffecb",
+    "spec/semantics/270-eager-destructors.watsup": "e9e65cdd515986f128df9a2792685115e034f3653bc677784f7c935f3aa0c76d",
+    "spec/semantics/422-weak-map-entries.watsup": "741354a842cc3ab4bb547f2ff9c6fd17c05b26c33106a99f36fb9346f3c9dc47"
+  },
+  "source_basis": [
+    "Zend/zend_objects.c:zend_objects_destroy_object saves/clears an existing exception for the callback, then zend_exception_set_previous(new,old) when it throws. zend_object_std_dtor continues declared slots in physical order after weak notification.",
+    "Zend/zend_exceptions.c:zend_exception_set_previous installs the Previous property and GC_DELREFs the transferred old owner; it does not retain an additional old pending root.",
+    "Zend/zend_weakrefs.c:zend_weakmap_write_dimension publishes before old release; zend_weakmap_read_dimension copies the installed replacement. ZEND_ASSIGN_DIM/known-call/iterator machinery retain original Map/Key/current-row and hidden DATA authority."
+  ],
+  "rule": "The actual selected Child RESULT is authorized before CALLS pop by live result/source/call/job, original claim/cells/cursor, full Root history/NEXT and no remaining selected Child edge. Adjacent innerSOURCEA/PENDINGeps plus original parentPENDINGA and fresh null-Previous A/B each owner1 authorize the bounded shared bridge. It installs B.previousA and replaces parentpendingA with B while consuming THROWB, preserving Aedge1/Bparentroot1 and the original zero-root innerSOURCEA. Unauthenticated/default results use the literal old nearest-operation route. No new task/record/owner or retagging.",
+  "phase": "Separate new64 chain/source/read proofs bind actual innerSOURCEA, parentB and physical B.previousA. The actual SOURCEB zero-root selected-Child cleanup also requires its real CALLED bit and no remaining Root edge. Later Child calls retain Root/NEXT/selected history and original imported Map/Key cells, read the installed row before catch and preserve outer sentinel. Earlier63 guards remain literal.",
+  "readonly_certificate": "Before bridge, a retained THROWB::RESULT future prefix restores only the actual old63 call/releases/inner registry and requires live result plus strict outer validity. After bridge, the bounded new collector admits stamped Root/selected releases/pins, one selected ENTER/RESULT, unchanged innerA and optional real zero-root SOURCEB cleanup before exact ACCESS_RESUME/CLAIM. Metadata-only restoration must preserve the heap and pass full strict operation validity. Existing retired-prefix certification is reused.",
+  "counts": {
+    "author_exact_originals": 1,
+    "peer_exact_originals": 1,
+    "reported_conditions": 375,
+    "authored_conditions": 365,
+    "strict_SL_modules": 454,
+    "baseline_diagnostic_or_constructed_PHP_agreements": 0,
+    "new_exact_originals": 2,
+    "positive_reported_conditions": 296,
+    "positive_authored_conditions": 291,
+    "boundary_reported_conditions": 79,
+    "boundary_authored_conditions": 74,
+    "genuine_unsupported_boundaries": 1,
+    "joined_SL_modules": 455
+  },
+  "validation": {
+    "author": {
+      "report": "../php-spec-evidence-archive/gc64-child-pending-handoff/author/native-v1/model-report.json",
+      "revision": "f7ebc266b4438bfb44863a43d5ff021a5e30119e",
+      "agreements": 1,
+      "seconds": 233.45734214782715,
+      "result": "Native exact: own weak-self/read, throwing Child weakNULL/read, later Tail weakNULL/read, caught child-64 line10 Previousown-64 line33 with both __destruct traces at assignment61, Previous.previousNULL, result77/continued0 and complete independent object/Map/Key cleanup."
+    },
+    "strict": {
+      "report": "../php-spec-evidence-archive/gc64-child-pending-handoff/author/strict-boundary-v1/report.json",
+      "revision": "16ebd5f8d0eccfd61201196a7263e68ba81c2c38",
+      "result": "SL454 true/quiet exit0/no timeout; stable HEAD/inputs. Earlier bridge/phase loads retain original cuts."
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/gc-child-pending-peer-64/native-v1/model-report.json",
+      "revision": "ebb6d3544783e15f5e3bf8a7c036304c52129453",
+      "agreements": 1,
+      "seconds": 213.75778985023499,
+      "result": "Native exact: present NULL, repeated ThrowChild first2to1 silent then last-call freshB, ownfreshA, later Tail weakNULL/NULL read before catch. Caught peer-child-64 line10/__destruct assignment66 has Previouspeer-own-64 line34 and Previous.previousNULL; result31/continued0 and independent weakNULL/Map/Key cleanup match."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc64_peer_pending_state.py",
+      "positive": {
+        "report": "../php-spec-evidence-archive/gc-child-pending-peer-64/front-v3/fiber-state-review-hr_b4q6b/report.json",
+        "raw_mapping": "../php-spec-evidence-archive/gc-child-pending-peer-64/front-v3/run-report.json",
+        "revision": "5e2e12a16e3aa5eca048006ec12fe0b5574a3982",
+        "runtime_revision": "f409f173791fb5a5de4ea56aac2074025822ed26",
+        "reported_conditions": 296,
+        "authored_conditions": 291,
+        "result": "Actual shared first2to1 silence; original selected call, raw handoff equals direct hook while driver initializes real Shared VALUE/SOURCEB cleanup separately. Aedge1/Bparent1 and unchanged zero-root innerSOURCEA persist through actual selected child VALUE/pin, TailENTER/read, virtual strict-outer certification, retired Root/inner exit, parent exit and abrupt zero-free CLAIM. CALLED/job/target/line/cell/coherent Root rewind, extraAowner, missing physical Previous and retagging controls refuse. Complete native ending and local zero/one/two budget laws pass."
+      },
+      "boundary": {
+        "report": "../php-spec-evidence-archive/gc-child-pending-peer-64/boundary-v2/fiber-state-review-r3_btvy3/report.json",
+        "raw_mapping": "../php-spec-evidence-archive/gc-child-pending-peer-64/boundary-v2/run-report.json",
+        "revision": "837dd9ed349ecdd69e2a16668a931bc414e70cd4",
+        "runtime_revision": "16ebd5f8d0eccfd61201196a7263e68ba81c2c38",
+        "reported_conditions": 79,
+        "authored_conditions": 74,
+        "source_agreements": 0,
+        "result": "Genuine further freshC reaches actual Tail RESULT with established B.previousA, source/cells/live call/Rootpin/NEXT/last edge and A/B/C1. Old-history/default gate stays disjoint. Direct/raw refusal is exactly the original pre-discard state with Unsupported, preserving its complete heap and every root. Public drive returns the same reason/events/physical allocations/Previous through existing terminal normalization; task/temporary roots clear. No further Previous handoff or normal catch is admitted."
+      },
+      "identity": "One maintained fixture has positive296/291 atf409/5e2 and refusal79/74 at16eb/837. Positive SOURCE/STAGE/SETUP/HANDOFF/READ/FINISH and seek/valid/ending/recorded_fixture ASTs remain unchanged; only the separate boundary facet and its terminal expectations were added/corrected. Each exact raw/wrapper revision and runtime input identity is retained, no positive replay."
+    },
+    "identity": "Exact native files/bytes/cwd/profile and pinned tools; source comparisons require stable inputs/HEAD, normal status, exact stdout/stderr/exit, empty stderr and no timeout. Raw artifacts remain external.",
+    "boundary_native": {
+      "report": "../php-spec-evidence-archive/gc-child-pending-peer-64/boundary-native-v1/native-report.json",
+      "revision": "174d1d3045c1cba07c580b759dfc55924b57701f",
+      "source_sha256": "a1ed8d2b864da8ad5ef07b52231eda5e9c240b2fa0d00a12e6df647cb9805c47",
+      "agreements": 0,
+      "result": "One native-only reference proves the new boundary source is genuine: Cpeer-later64 line20/__destruct assignment67 has PreviousBpeer-child64 line10 and Previous.previousApeer-own64 line35, terminatingNULL. The model admits no longer-chain behavior."
+    }
+  },
+  "execution_bridge": "Authorf7e to889 adds readonly certificates and tightens only SOURCEB cleanup to called/no remaining selected Root edge. Both guards follow from its live selected RESULT, old63 last-owner authority, atomic Previous/parent update and selected fieldless cleanup with Root slots/NEXT parked and CALLED retained. Independent review confirms unchanged genuine source execution; no original or GC63 replay. Finalf409 normalizes only SOURCEB cons dispatch with an exact tail equality after actual scalar-clause guards all pass while the original full-record list arm rejects. Every field/source/pin/CALLED/remaining-edge guard is preserved; no PHP callback/read or reducer runs in that validation-only Child cleanup segment. Final16eb adds only a refusal for THROW under already-established Previous ancestry: the first handoff lacks that ancestry, and positive later Tail never throws. The independently reviewed source2/positivefront296 cuts keep their original identities without replay.",
+  "preserved_zero_credit": [
+    "Author native-v1/baseline-report.json at073798312: Unsupported WeakMap multiple-entry dimension protocol after B|O|1|V|1|1|C|1|1|1|,147.026s/quiet/stable/no timeout,0agreement.",
+    "Peer shape-prep-v1 at909ec: A12/B13 before actual Child RESULT bothPreviousNULL/owners1; real successor adds SOURCE13 zero-root child cleanup and makes nearest innerSOURCE12 pending13 while parentCLAIM stillpending12. Later Tail has pending13 and bothPreviousNULL; physical heaptrue/destructionfalse/descriptorsfalse. Original full metadata and wrapper are external diagnostic0.",
+    "Author strict-bridge-v1/v2 binding/default-premise compiler stops remain external0. v3 passes after splitting inner binding and passing the already-bound CALLS tail into the literal default hook.",
+    "Peer front-v1/fiber-state-review-u6w7wl4w/report.json at ebb6d3544 retains the fixture-only raw PhpStep versus driver-initialized cleanup equality failure,182.960s/stable/no timeout,0credit. Earlier direct handoff/default/A1B1/call-source refusal controls passed before the stop; the corrected same front compares rawS_handoff separately from actual driver SharedVALUE/SOURCEB initialization. No runtime or original-source replay.",
+    "Peer front-v2/fiber-state-review-v9qj8xds/report.json passes corrected raw/driver separation and actual ownership assertions, then stops on SOURCEB destruction validation,177.002s/stable/no timeout,0credit. sourceb-stop-v1 localizes base-pair/cleanup/op/GC/heap checks true but full3-operation chain/parentSOURCE false. sourceb-arm-v1 copies the exact scalar clause: true versus originalfalse, CURRENT/FRAMES/CALLS empty and physical Root nodes[tail] confirmed. f409 expresses that identical guard set through shared cons dispatch and exact tail equality; final positivefront passes. Small standalone list probes remain diagnostic0 and did not establish a general framework failure.",
+    "Boundary-v1/fiber-state-review-7v87cu_j/report.json at174d passes genuine pre-pop authorization/old-mode disjointness, raw exactUnsupported/heap equality and public refusal/events/Previous, then an extra post-terminal Bowner1 expectation fails,186.721s/stable/no timeout,0credit. Existing40:485/39:422 clears terminal task/temporary roots; only those terminal expectations are corrected, with no driver/fence/source change and no further diagnostic campaign. The already-started redundant boundary-stop diagnostic was stopped after that static contract resolved the expectation; raw/interruption0 retained. Corrected boundary-v2 passes with raw preservation and the existing public terminal contract."
+  ],
+  "old_domain_bridge": "The shared hook default is the exact previous chain/resume expression with the already-bound CALLS tail. New authorization requires genuine second fresh throw under declared-own/selected-Child inner\u2192claim ancestry. Old own/Child normal-return paths have no THROWB at RESULT, and old own first throw names the claim directly rather than this inner. New phase/readonly branches require B.previousA with A<B, so prior63 domains preserve their guards, task counts, owners and executors.",
+  "files_sha256": {
+    "tests/semantics/gc64_child_replaces_own_exception.php": "8e5f7ccc9ad7c40d176e805b84b10c42a87a8e1a7ed4020e2f99bf501b490376",
+    "tests/semantics/gc64_child_replaces_own_exception_sources.py": "21277d6f6de25b7ac4f95a111ad45b0e7c7041d093d4a728e1d98ef5a82bb22e",
+    "tests/semantics/gc64_peer_shared_throw_slots.php": "d120a01047cece641501d8d107f970a4d54ec9f67be842a693cef246e70cc9a3",
+    "tests/semantics/gc64_peer_shared_throw_sources.py": "0001497375b3e46c5dfcb6aec5159f9c4994667131e96c34b0bd9e5343b7009b",
+    "tests/semantics/gc64_peer_pending_state.py": "9dae578c87426e8d4c3610a7fc72d08c0481bb8571c25211129935d23be52011"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc64-child-pending-handoff/author/native-v1/native-report.json": "a6ac0f1f05269f90a5dd907a80268eb72b652dcc0cadc9427bc03aa5ea9ac763",
+    "../php-spec-evidence-archive/gc64-child-pending-handoff/author/native-v1/model-report.json": "9f696f77f50ee087f4f7a16a2e6839d4556c73a093fef655b1a9dbc23aadb9c9",
+    "../php-spec-evidence-archive/gc64-child-pending-handoff/author/strict-boundary-v1/report.json": "842227f654c9414911bd01d3377ba4f2b6e2cea7d8411635caef97002dba705e",
+    "../php-spec-evidence-archive/gc-child-pending-peer-64/native-v1/native-report.json": "5ac9c83ded8cf16164fc78e53708510bc6ad3916cffe4146e5528f7b183b6fcf",
+    "../php-spec-evidence-archive/gc-child-pending-peer-64/native-v1/model-report.json": "2e42cddb44ab9244ea5aee3aef1d36715eae520ce0272ddf9b36e80c9279d7f6",
+    "../php-spec-evidence-archive/gc-child-pending-peer-64/front-v3/fiber-state-review-hr_b4q6b/report.json": "3a5743c8da9098520a13d3bcf18732f9e3a18e6d45818ddafcea1d710d054a83",
+    "../php-spec-evidence-archive/gc-child-pending-peer-64/front-v3/run-report.json": "d0924fe6d943a8b7186c165ecfdfbf6840721b81f17c3702a6b7b09fa79dd8b8",
+    "../php-spec-evidence-archive/gc-child-pending-peer-64/boundary-native-v1/native-report.json": "b712d71609946ce2dc675d108a8269c194f8a76025a880e216df7c3eefdf6096",
+    "../php-spec-evidence-archive/gc-child-pending-peer-64/boundary-v2/fiber-state-review-r3_btvy3/report.json": "5f7ac9dbc9d4b8f3e2ff5d182530716cdd8d13445b4fec741f1e500bec575baa",
+    "../php-spec-evidence-archive/gc-child-pending-peer-64/boundary-v2/run-report.json": "889c7e410c136ad0daa22b5d256b95998500e4672d2091d867245f3eb5c5dd0d",
+    "../php-spec-evidence-archive/gc-child-pending-64/joined-main-455-v1/report.json": "ee62d966fadd6ed863d53733cb86c7f9769d24d0cc4ae3293c476b6987815942"
+  },
+  "limits": "Fresh builtin Exception pair with initiallyNULL Previous only, fieldless selected/later Children and existing finite public Root/Map/Key/incoming/source/cursor/caller domains. No supplied/longer chains, further throwing Child, resurrection, retained old copies, reentrant writes, freeing registration, activeGC/threshold, Key retirement, byref/InternalIterator or other held expansion; lifecycle.weak-map remains partial.",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "further_throw_boundary": "Before CALLS pop, actual established previous_ancestry, live RESULT/source, selected declared Rootpin/last Child edge and original claim/cells authenticate a further THROW. It returns explicit Unsupported rather than the unsafe generic nearest-owner route. Restoring the exact consumed RESULT marker changes only completion relative to the real pre-discard state and retains all old/new Throwable and callback roots; no longer-chain admission. Raw root preservation applies at the real refusal transition; public terminal Unsupported still uses existing40-control/39-ownership release_temporaries normalization, which clears task/temporary roots without another pending handoff.",
+  "composition": {
+    "revision": "7e2fc23ba32e6762121dabb92fc83082a000ea82",
+    "report": "../php-spec-evidence-archive/gc-child-pending-64/joined-main-455-v1/report.json",
+    "sha256": "ee62d966fadd6ed863d53733cb86c7f9769d24d0cc4ae3293c476b6987815942",
+    "modules": 455,
+    "seconds": 13.685897,
+    "result": "Authentic current joined SL455 true/quiet exit0/no timeout/stable; inventory169/306 passes.270/422 match final16eb;257 retains accepted COMP195 default-false abrupt-tail declaration/guard differences. These class-write-only guards stay false for the ordinary selected Child route; original source/front cuts are not renewed."
+  }
+}

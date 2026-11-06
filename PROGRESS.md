@@ -1209,6 +1209,19 @@ identical heap; no pin/receipt/schema or executor change is needed. Four origina
 and 506 independent conditions (496 authored) pass at their recorded453 cuts.
 [Declared-own review](coverage/semantics/gc-own-declared-slots-review.json).
 
+A fresh Child throw during fresh-own cleanup now transfers the protected old
+Exception from the actual parent pending root into the new Exception's Previous
+edge. The parent claim owns the new pending Exception; the genuine generic inner
+operation keeps its source and zero roots. Later declared Children still run in
+order and read the installed row before catch, with the outer result unassigned.
+Separate source/slot/history and saved-prefix proofs cover this handoff without
+changing the earlier read guards or held lifecycle domains. A further Child
+throw in that established Previous history stops explicitly before RESULT
+consumption; its raw fence retains every pending and callback root. Two originals
+and 375 independent conditions (365 authored) pass at their recorded454 cuts;
+authentic joined455 also passes.
+[Pending-handoff review](coverage/semantics/gc-child-pending-handoff-review.json).
+
 Property-array owners survive ordinary copies and COW. Removing the Value leaves
 a fetched array owner intact; repeated array identities in declared slots defer
 element cleanup until their last owner releases. Slots release in declaration
@@ -1629,7 +1642,16 @@ pending receiver owners. The [nested](coverage/semantics/nested-trait-backed-pai
 [virtual](coverage/semantics/virtual-trait-pairs-review.json) and
 [short Trait reviews](coverage/semantics/trait-short-set-pairs-review.json) retain
 separate source/path/clone/slot/receipt-owner/budget cuts and zero-credit failures.
-Sole short-SET Traits, adapted/parented, nominal and wider binding remain separate.
+Consumers may also extend ordinary source Parents with disjoint stored fields and
+no declared or effective hooks. Pre-link import checks the actual installed
+declared Parent; runtime hook authority requires the final SOURCE_PARENT link and
+publication. Existing inherited layout, raw Trait/Consumer/descendant scope and
+receiver owners remain distinct through
+throw/retry. Trait conflict precedes a final-Parent linking error, while a raw body
+error precedes main.
+[Parented pair review](coverage/semantics/parented-trait-pairs-review.json).
+Sole short-SET Traits, same-name/hooked Parents, adaptation, nominal and wider
+binding remain separate.
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2839,7 +2861,7 @@ their work remains unaccepted until integrated.
 | --- | --- |
 | CLASS209 | Immediate fixed-source USER/public-static FCC producers with real conversion/target before positional arguments and wrapper/INSTANCE/result roots; preserve current quiet signatures, outer headers and held bounds. |
 | ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
-| COMP196 | Ordinary named-class deferred static defaults with owning Deprecated globals through real STATIC_DEFAULT_BIND/context and declaring CLASSSTATICS cells; preserve first-fill/reentry/type/reference laws and held boundaries. |
+| COMP197 | Ordinary named-class instance-property default templates with owning globals through genuine INSTANCE_DEFAULT_BIND/template authority and per-object copy, ownership, reentry and type laws; preserve construction and held boundaries. |
 | ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |
 | GC65 | Finite fresh Previous-chain handoffs anchored in original SOURCE, with per-node freshness/ownership/acyclicity and atomic new-head/parent transfer; unchanged257/default domains and refusal elsewhere. |
 | I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |

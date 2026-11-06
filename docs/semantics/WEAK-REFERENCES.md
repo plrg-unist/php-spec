@@ -1042,6 +1042,37 @@ the originals. Existing Map/Key/incoming restrictions and
 held resurrection, reentrant writes, freeing registrations, Key retirement,
 active collection and wider cursor/caller boundaries remain unchanged.
 
+GC64 admits a selected fieldless Child's fresh Exception while the own Value's
+fresh Exception is already protected by the original claim. The Child's actual
+RESULT, call/target/job, last selected slot, original source/cells and adjacent
+inner/parent pair authenticate the handoff before call metadata is popped. Both
+fresh Exception identities initially have one real owner and NULL Previous.
+The shared pending bridge atomically installs the new-to-old Previous edge and
+replaces the parent's pending identity. It consumes the new THROW_SEARCH root,
+preserving one owner of each Exception. The genuine inner operation retains its
+old source and zero roots; no operation is retagged.
+
+Dedicated new-phase ancestry binds that unchanged old source to the new parent
+pending identity and physical Previous edge. The real nested cleanup operation
+for the throwing Child must name the new Exception and retain its actual selected
+slot, called bit and absence of remaining Root edges. Later Children use the same
+Root pin/NEXT/history and original Map/Key cells, observe old weak-null and read
+the installed replacement before catch. Fresh lines, traces and Previous identity
+remain visible, while the outer result assignment stays uncommitted.
+
+Readonly certification covers the actual throwing RESULT and new cleanup,
+ENTER/RESULT and saved-prefix modes by restoring only borrowed registries with
+identical heap before strict operation checks. Existing GC63 read guards remain
+literal. A further Child throw after that established Previous handoff is
+explicitly Unsupported at its real RESULT boundary. The raw fence retains the
+original RESULT marker and every pending/callback root; the public terminal
+driver keeps its existing temporary/task normalization. Default behavior outside
+this history is unchanged. The
+[pending-handoff review](../../coverage/semantics/gc-child-pending-handoff-review.json)
+retains native/source and actual owner/phase/budget evidence. Existing
+Map/Key/incoming restrictions and held resurrection, reentrant writes,
+freeing registration, active collection and Key retirement remain unchanged.
+
 Module 424 also admits the actual zero-argument `WeakMap::getIterator()` factory
 for an ordinary Map CV in this methodless singleton lane. Its returned
 `InternalIterator` owns Map once; the factory cursor row is nonowning and fences
