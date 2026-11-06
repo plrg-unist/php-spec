@@ -375,6 +375,7 @@ dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
 dec $default_caches_valid(pstate, pdefaultcache*) : bool
 dec $private_default_caches_valid(pstate, pprivatecache*) : bool
+dec $call_default_caches_valid(pstate, pcallparamcache*) : bool
 dec $static_result_valid(pstate) : bool
 dec $clone_result_valid(pstate) : bool
 dec $getclass_result_valid(pstate) : bool
@@ -482,6 +483,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $constant_context_valid(S)
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
   -- if $private_default_caches_valid(S, S.PRIVATEDEFAULTCACHE)
+  -- if $call_default_caches_valid(S, S.CALLDEFAULTCACHE)
   -- if $static_cells_valid(S, S.STATICS)
   -- if $closure_state_scoped_valid(S_live, S)
 def $call_descriptors_scoped_valid(S_live, S) = false -- otherwise

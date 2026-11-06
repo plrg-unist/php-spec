@@ -1,0 +1,168 @@
+;; Ordinary Closure::call uses the actual invocation cache certified by455.
+;; The Generator copy path and wider owning callable kinds stay separate.
+def $default_cache_owner(S) = (pfncacheowner)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.CACHE = (pfncacheowner)
+  -- if $closure_call_context_cache_valid(S, pcallcontext)
+
+dec $call_default_cache_at(pcallparamcache*, nat, porigin) : pdefaultcache?
+def $call_default_cache_at(eps, n, porigin) = eps
+def $call_default_cache_at(pcallparamcache :: pcallparamcache_tail*, n, porigin) = (pcallparamcache.ENTRY)
+  -- if pcallparamcache.INVOCATION = n /\ pcallparamcache.ENTRY.ORIGIN = porigin
+def $call_default_cache_at(pcallparamcache :: pcallparamcache_tail*, n, porigin) = $call_default_cache_at(pcallparamcache_tail*, n, porigin)
+  -- if pcallparamcache.INVOCATION =/= n \/ pcallparamcache.ENTRY.ORIGIN =/= porigin
+def $default_current_cache(S, porigin) = $call_default_cache_at(S.CALLDEFAULTCACHE, n, porigin)
+  -- if $default_cache_owner(S) = (CACHE_CALL n)
+
+dec $call_default_cache_put(pcallparamcache*, nat, pdefaultcache) : pcallparamcache*
+def $call_default_cache_put(eps, n, pdefaultcache) = [{INVOCATION n, ENTRY pdefaultcache}]
+def $call_default_cache_put(pcallparamcache :: pcallparamcache_tail*, n, pdefaultcache) = {INVOCATION n, ENTRY pdefaultcache} :: pcallparamcache_tail*
+  -- if pcallparamcache.INVOCATION = n /\ pcallparamcache.ENTRY.ORIGIN = pdefaultcache.ORIGIN
+def $call_default_cache_put(pcallparamcache :: pcallparamcache_tail*, n, pdefaultcache) = pcallparamcache :: $call_default_cache_put(pcallparamcache_tail*, n, pdefaultcache)
+  -- if pcallparamcache.INVOCATION =/= n \/ pcallparamcache.ENTRY.ORIGIN =/= pdefaultcache.ORIGIN
+def $default_cache_value(S, porigin, pvalue, pvalueclass) = S[.CALLDEFAULTCACHE = $call_default_cache_put(S.CALLDEFAULTCACHE, n, {ORIGIN porigin, VALUE pvalue, CLASS pvalueclass})]
+  -- if $default_cacheable(pvalueclass) /\ ~$default_scope_dependent(S, porigin)
+  -- if $default_cache_owner(S) = (CACHE_CALL n)
+
+;; As for private Closure rows, an empty HARRAY represents immutable value
+;; availability/COW, not an extra native refcount. The key owns no object.
+def $call_default_cache_roots(eps) = eps
+def $call_default_cache_roots(pcallparamcache :: pcallparamcache_tail*) = $private_default_value_roots(pcallparamcache.ENTRY) ++ $call_default_cache_roots(pcallparamcache_tail*)
+dec $call_default_cache_remove(pcallparamcache*, nat) : pcallparamcache*
+def $call_default_cache_remove(eps, n) = eps
+def $call_default_cache_remove(pcallparamcache :: pcallparamcache_tail*, n) = $call_default_cache_remove(pcallparamcache_tail*, n)
+  -- if pcallparamcache.INVOCATION = n
+def $call_default_cache_remove(pcallparamcache :: pcallparamcache_tail*, n) = pcallparamcache :: $call_default_cache_remove(pcallparamcache_tail*, n)
+  -- if pcallparamcache.INVOCATION =/= n
+dec $call_default_cache_drop(pstate, nat) : pstate
+def $call_default_cache_drop(S, n) = S[.CALLDEFAULTCACHE = $call_default_cache_remove(S.CALLDEFAULTCACHE, n)]
+
+dec $call_default_context(pstate, pcallcontext?, nat) : bool
+def $call_default_context(S, (pcallcontext), n) = true
+  -- if pcallcontext.CACHE = (CACHE_CALL n)
+  -- if $closure_call_context_cache_valid(S, pcallcontext)
+def $call_default_context(S, pcallcontext?, n) = false -- otherwise
+dec $call_default_frames(pstate, pframe*, nat) : bool
+def $call_default_frames(S, eps, n) = false
+def $call_default_frames(S, pframe :: pframe_tail*, n) = ($call_default_context(S, pframe.CONTEXT, n) \/ $call_default_frames(S, pframe_tail*, n))
+dec $call_default_marker(pdestructionjob*, nat) : bool
+def $call_default_marker(eps, n) = false
+def $call_default_marker((DESTRUCTION_CALL_CACHE n) :: pdestructionjob*, n) = true
+def $call_default_marker(pdestructionjob :: pdestructionjob_tail*, n) = $call_default_marker(pdestructionjob_tail*, n) -- otherwise
+dec $call_default_releases(pstate, pdestructionrelease*, nat) : bool
+def $call_default_releases(S, eps, n) = false
+def $call_default_releases(S, pdestructionrelease :: pdestructionrelease_tail*, n) = (($call_default_marker(pdestructionrelease.JOBS, n) /\ $destructor_release_live(S, pdestructionrelease)) \/ $call_default_releases(S, pdestructionrelease_tail*, n))
+dec $call_default_live(pstate, nat) : bool
+def $call_default_live(S, n) = ($call_default_context(S, S.CURRENT, n) \/ $call_default_frames(S, S.FRAMES, n) \/ $call_default_releases(S, S.DESTRUCTION.RELEASES, n))
+
+def $call_default_caches_valid(S, eps) = true
+def $call_default_caches_valid(S, pcallparamcache :: pcallparamcache_tail*) = true
+  -- if n = pcallparamcache.INVOCATION
+  -- if $(n < |S.CLOSURECALLCACHES|)
+  -- if pclosurecallcache = S.CLOSURECALLCACHES[n]
+  -- if $closure_call_cache_record_valid(S, n, pclosurecallcache)
+  -- if $call_default_live(S, n)
+  -- if $function_at($all_functions(S), pclosurecallcache.FUNCTION) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, pcallparamcache.ENTRY.ORIGIN) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if $call_default_cache_at(pcallparamcache_tail*, n, pdefault.ORIGIN) = eps
+  -- if $default_cacheable(pcallparamcache.ENTRY.CLASS)
+  -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
+  -- if $constant_value_class_valid(S, pcallparamcache.ENTRY.VALUE, pcallparamcache.ENTRY.CLASS)
+  -- if $call_default_caches_valid(S, pcallparamcache_tail*)
+def $call_default_caches_valid(S, pcallparamcache*) = false -- otherwise
+
+def $default_cache_birth_valid(S, preceivebirth) = true
+  -- if preceivebirth.CACHE_OWNER = (CACHE_CALL n)
+  -- if $(n < |S.CLOSURECALLCACHES|)
+  -- if pclosurecallcache = S.CLOSURECALLCACHES[n]
+  -- if pclosurecallcache.FUNCTION = preceivebirth.FUNCTION /\ (pclosurecallcache.SITE) = preceivebirth.CALLSITE
+  -- if $closure_call_cache_record_valid(S, n, pclosurecallcache)
+  -- if S.OBJECTS[pclosurecallcache.RECEIVER] = INSTANCE porigin_scope
+  -- if $default_cache_birth_scope(preceivebirth, BIND_CLASS porigin_scope)
+
+;; A temporary cache is freed after callee CV destruction, before context/API
+;; owners. Keep the existing pending return/throw frame protocol intact.
+def $destructor_frame_jobs(S) = $destruction_values($destructor_local_cells(S.ENV, S.SYMBOLS)) ++ [DESTRUCTION_CALL_CACHE n] ++ $destruction_values($destructor_context_nodes(S.CURRENT))
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CACHE = (CACHE_CALL n)
+  -- if $call_default_context(S, S.CURRENT, n)
+  -- if $destructor_borrowed_context(S) = eps
+def $destruction_plain_job(DESTRUCTION_CALL_CACHE n) = false
+def $destruction_job_node(DESTRUCTION_CALL_CACHE n) = eps
+def $destruction_job_nodes((DESTRUCTION_CALL_CACHE n) :: pdestructionjob*) = $destruction_job_nodes(pdestructionjob*)
+def $destruction_release_walk(H, (DESTRUCTION_CALL_CACHE n) :: pdestructionjob*, pnode_done*) = $destruction_release_walk(H, pdestructionjob*, pnode_done*)
+def $destructor_jobs_valid(S, (DESTRUCTION_CALL_CACHE n) :: pdestructionjob*) = true
+  -- if $(n < |S.CLOSURECALLCACHES|)
+  -- if $closure_call_cache_record_valid(S, n, S.CLOSURECALLCACHES[n])
+  -- if $destructor_jobs_valid(S, pdestructionjob*)
+rule PhpStep/destructor-call-cache-free: S ~> $destructor_release_replace($call_default_cache_drop(S, n), pdestructionrelease[.JOBS = pdestructionjob*])
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_CALL_CACHE n) :: pdestructionjob*
+;; Quiet/bailout restoration has no staged local callbacks. Reuse the existing
+;; pure restore hook; neither object retirement nor source destruction frees it.
+def $destructor_frame_restore(S, S_restored) = $call_default_cache_drop(S_restored, n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CACHE = (CACHE_CALL n)
+  -- if $call_default_context(S, S.CURRENT, n)
+  -- if ~$destructor_frame_staged(S)
+
+dec $parameter_call_source_scope(pstate, porigin, porigin?) : bool
+def $parameter_call_source_scope(S, porigin, eps) = $closure_cache_literal_scope(S, porigin, BIND_UNSCOPED)
+def $parameter_call_source_scope(S, porigin, (porigin_scope)) = true
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, porigin_scope) = (NStmtClass phpType14 (INTEGER int) (NIdentifier (BYTES text) metadata_name) phpType44 phpType42 phpType23 metadata)
+  -- if $closure_cache_literal_scope(S, porigin, BIND_CLASS porigin_scope)
+def $parameter_call_source_scope(S, porigin, porigin?) = false -- otherwise
+dec $parameter_call_source(pstate, pfunction) : bool
+def $parameter_call_source(S, pfunction) = true
+  -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = (pfunction)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprClosure phpType14 phpType4_static (BOOLEAN false) phpType16 phpType21 phpType18 phpType23 metadata)
+  -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction) /\ ~$closure_static(S, pfunction)
+  -- if $parameter_closure_uses(phpType21)
+  -- if $parameter_method_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if $parameter_call_source_scope(S, pfunction.ORIGIN, $closure_source_class(S, pfunction.ORIGIN))
+def $parameter_call_source(S, pfunction) = false -- otherwise
+
+dec $parameter_call_current(pstate, pfunction) : bool
+def $parameter_call_current(S, pfunction) = true
+  -- if $parameter_call_source(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_CALL_TARGET n_source n_receiver
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.INSTANCE = (n_source) /\ pcallcontext.RECEIVER = (n_receiver)
+  -- if S.OBJECTS[n_source] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
+  -- if S.OBJECTS[n_receiver] = INSTANCE porigin_scope
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope) /\ pcallcontext.CALLED_CLASS = (porigin_scope)
+  -- if $closure_call_context_cache_valid(S, pcallcontext)
+  -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
+def $parameter_call_current(S, pfunction) = false -- otherwise
+def $parameter_closure_selected(S, pfunction) = $parameter_call_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_call_target(pcallcontext.TARGET)
+def $deprecated_parameter_read_recipient(S, pfunction) = $parameter_call_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_call_target(pcallcontext.TARGET)
+def $deprecated_parameter_recipient(S, pfunction) = $parameter_call_current(S, pfunction)
+  -- if $default_cache_owner(S) = (CACHE_CALL n)
+
+dec $parameter_receive_call_entry(pstate, preceivebirth) : bool
+def $parameter_receive_call_entry(S, preceivebirth) = true
+  -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = (pfunction)
+  -- if $parameter_call_source(S, pfunction)
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, (porigin_scope), (porigin_scope)) :: pdeclcalls
+  -- if preceivebirth.CALLSITE = (porigin_site)
+  -- if $closure_call_copy_site(S, porigin_site)
+  -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_scope)
+  -- if $declaration_invocation(S, pfunction, porigin_site, (porigin_scope), (porigin_scope), pdeclcalls)
+  -- if preceivebirth.CACHE_OWNER =/= eps /\ $default_cache_birth_valid(S, preceivebirth)
+def $parameter_receive_call_entry(S, preceivebirth) = false -- otherwise
+def $parameter_receive_closure_entry(S, preceivebirth) = $parameter_receive_call_entry(S, preceivebirth)
+  -- if preceivebirth.CALLSITE = (porigin_site)
+  -- if $closure_call_copy_site(S, porigin_site)
