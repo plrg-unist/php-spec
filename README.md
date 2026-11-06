@@ -2749,12 +2749,17 @@ identity through Shared history; fake method statics stay owned by the original
 method. Ordinary named-class constant initializers also receive owning global
 dependencies through their actual binder. Selected lookup prefixes survive
 shadows; type validation precedes cache publication, and reentry preserves
-earlier compiler views without adding historical value owners.
+earlier compiler views without adding historical value owners. Computed old
+arrays leave a structural history image; compiler replay reconstructs foldable
+arrays in a temporary view. Replacement releases the old value before publishing
+the physically protected new value. Abrupt old-child cleanup remains explicit
+Unsupported; its native timeout supplies no agreement.
 Source donor checks protect hits and post-handler binds. Unknown and
 wider fake Closure modes, arrows, trait, by-reference, variadic,
 Generator and wider dynamic callable recipients, wider class-constant initializers and
 static-property defaults, converted queries and wider metadata remain partial.
 [Deprecated constant review](coverage/semantics/deprecated-global-constant-review.json).
+[Computed class-cache review](coverage/semantics/computed-class-cache-replacement-review.json).
 [Cancellation review](coverage/semantics/deprecated-handler-cancellation-review.json).
 [Owned-value review](coverage/semantics/deprecated-owned-constant-review.json).
 [Parameter-default review](coverage/semantics/deprecated-parameter-default-review.json).

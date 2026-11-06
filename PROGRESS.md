@@ -2777,12 +2777,24 @@ lazy initialization. Actual declaration/binder and selected lookup facts retain
 callback cleanup and namespace shadowing. Type validation precedes publication;
 a genuine begin-history cut supports nested fills, and untyped replacement
 preserves earlier compiler cache views. Historical facts/snapshots add no root;
-old computed cache-only values remain an explicit future boundary. Static-property
+old computed cache-only values were a future boundary at that cut. Static-property
 and Trait initialization and established Generator/303 holds stay separate.
 Twelve originals agree, one explicit availability refusal earns0, and355
 independent strict454 conditions pass. Current joined454/inventory also passes
 at the recorded source cut.
 [Review](coverage/semantics/deprecated-class-constant-owned-review.json).
+
+COMP195 replaces computed class-cache arrays through genuine staged old-value
+release while one publication task protects the pending new value. Readonly
+structural history reconstructs earlier foldable arrays only in a compiler view;
+retired containers and opaque Closure leaves acquire no historical owner.
+Five originals agree, including one authentic194 native promotion. Separate
+106/114 strict455 fronts prove ownership, history, nested lazy initialization
+and budget continuation. The throwing-old-child native times out after `H|F|D|`;
+its model-only Unsupported control has zero agreement. Wider abrupt,
+static-property/Trait and held Generator/303 paths remain separate.
+[Review](coverage/semantics/computed-class-cache-replacement-review.json). Current
+joined455/inventory also passes at the recorded cut.
 
 ## Active work
 
@@ -2791,9 +2803,11 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
+| COMP195 | Independently CLEAR runtime/tests handed to writer; compact publication closes separately. Dev `.tools/comp195-computed-class-cache-dev`, peer `.tools/comp194-class-constant-owned-defaults-review`. |
 | CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
 | ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
-| COMP195 | Computed owning class-cache container replacement with readonly structural old-value history and genuine staged old release/new protection; preserve nonownership and existing cache/context boundaries. |
+| COMP196 | Ordinary named-class deferred static defaults with owning Deprecated globals through real STATIC_DEFAULT_BIND/context and declaring CLASSSTATICS cells; preserve first-fill/reentry/type/reference laws and held boundaries. |
+| ENUM153 | Published USER method strings and class/object callable arrays with concrete public/known-absence facts, syntax-only distinction and frozen NAME/BOOL; preserve unknown metadata and invocation exclusions. |
 | GC64 | Fresh Child exception replacing own-Value pending Exception, with exact Previous/root handoff and later Child order under established Root/NEXT/weakNULL/claim laws; preserve common lifecycle bounds. |
 | I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
 | OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |

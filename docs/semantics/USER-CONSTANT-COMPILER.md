@@ -158,9 +158,22 @@ the request's class-cache row owns the delivered value. Type validation precedes
 publication. A real begin-history cut authenticates nested fills: an untyped
 outer initializer can replace a child's row, while a failed typed outer leaves
 that row intact. Nonowning write facts and old-row snapshots preserve earlier
-compiler prefixes. Snapshots require inline values or an exact permanent global
-donor; cache-only computed old values remain an explicit future boundary.
-No historical field adds a value, source or Closure root.
+compiler prefixes. Inline values and exact permanent global donors retain their
+existing snapshot route. Computed arrays instead retain readonly images of
+keys, values, nested classes and append metadata. Foldable images reconstruct
+only in a temporary compiler view; retired Closure leaves stay opaque and do
+not become live compiler values. No historical field adds a heap root.
+
+Actual replacement stages old-value release before new publication. The old
+slot is unreadable and contributes no cache root during release; existing
+destruction jobs own its remaining children. One publication task protects the
+new value through callbacks, including another class's lazy initialization.
+The image serves earlier compiler prefixes even while release is pending.
+Normal completion publishes once and restores the real initializer context.
+Abrupt old-child cleanup remains explicit Unsupported. The pinned native
+throwing-child original timed out after `H|F|D|`; it establishes no terminating
+catch or publication law. Static-property/Trait initialization and held
+Generator/303 release routes gain no authority.
 
 Source-only primary/fallback donor checks still protect hits, including cached
 scalars before a later owning donor, and post-handler binds. Folded children and
@@ -193,6 +206,7 @@ private-cache marker law does not extend the separate303 close path.
 [COMP192 direct scoped Closure defaults](../../coverage/semantics/deprecated-scoped-closure-default-review.json).
 [COMP193 public method FCC defaults](../../coverage/semantics/deprecated-method-fcc-default-review.json).
 [COMP194 class-constant initializers](../../coverage/semantics/deprecated-class-constant-owned-review.json).
+[COMP195 computed cache replacement](../../coverage/semantics/computed-class-cache-replacement-review.json).
 
 The initializer uses ordinary source expressions and the existing unit code and
 constant pool. Successful folded child values remain pool owners even when a

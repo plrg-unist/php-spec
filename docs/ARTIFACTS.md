@@ -70,6 +70,13 @@ separates the failed object-transfer proof and fixture/load corrections from
 accepted source cuts. Cache-only historical values retain explicit refusal credit0;
 raw streams, source snapshots and recorders remain external.
 
+COMP195 computed class-cache images and staged replacement evidence are under
+`../php-spec-evidence-archive/comp195/`. The [review](../coverage/semantics/computed-class-cache-replacement-review.json)
+distinguishes completed normal rows in a failed native aggregate, the unchanged194
+native promotion, affected fixture/validator corrections, and a separate
+inconclusive throwing-child timeout with zero agreement. Raw streams and the
+single bounded stack sample remain external; neither requires a native replay.
+
 Historical reports and handoffs retain original paths, hashes, implementation
 identities and commit IDs. References to compressed archives, including claims
 that originals are retained, resolve through this manifest and external archive.

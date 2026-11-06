@@ -518,3 +518,13 @@ from its cast pin. Borrowed CV self-drop retains cast-release destruction before
 and writes a successful string before a pending destructor exception. Callback/cleanup
 previous links and concat timing agree. The frozen phase37 control is not renewed;
 wider owning inputs/consumers remain required. No intentional engine divergence is selected.
+
+## Computed class-cache replacement: abrupt old-child cleanup unresolved
+
+The COMP195 throwing-old-Closure-static original times out on the pinned engine
+after `H|F|D|`, with empty stderr. One bounded stack sample found VM execution
+with a pending exception; source destroy-old/copy-new order alone does not
+establish a terminating catch or publication result. The model explicitly refuses
+this abrupt release frontier. Native timeout and model-only control both earn
+zero agreement; normal replacement records remain separate.
+[Evidence](../../coverage/semantics/computed-class-cache-replacement-review.json).
