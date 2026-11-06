@@ -88,6 +88,17 @@ dec $ob_object_ctor_fact_source(pstate, pfunction, porigin, pobctorbirth) : bool
 dec $ob_object_ctor_fact_live(pstate, pobctorbirth) : bool
 dec $ob_object_ctor_tail(ptask*) : (porigin, int)?
 dec $ob_object_ctor_birth(pstate, pctorcall, pvalue, pvalue, pvalue, pfunction) : (porigin, pobctorbirth)?
+dec $ob_object_source_call(pobobjectsource?) : pobsourcecall?
+dec $ob_object_source_function(pstate, pfunction, pobobjectsource?) : pfunction?
+dec $ob_object_call_function(pstate, pfunction, pobsourcecall) : (pfunction, int)?
+dec $ob_object_call_consumer(pstate) : pfunction?
+dec $ob_object_native_source(pstate) : pobobjectsource?
+dec $ob_object_native_capture(pstate, pobobjectsource?) : pstate
+dec $ob_object_call_context(pstate) : (pstate, pfunction, pobsourcecall)?
+dec $ob_object_call_valid(pstate) : bool
+dec $ob_object_call_capture(pstate, pobobjectsource?) : pstate
+dec $ob_object_call_pending(pstate) : bool
+dec $ob_object_source_reported(pobobjectsource?) : bool
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
@@ -314,18 +325,25 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
 ;; nonowning fact. Only the matching own-code THROW_VALUE promotes it to pending.
 def $ob_object_source_pending((OBJECT_LEGACY_THROW porigin n)) = ((porigin, n))
 def $ob_object_source_pending((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth.OBJECT))
+def $ob_object_source_pending((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecall)) = ((porigin, pobctorbirth.OBJECT))
+def $ob_object_source_pending((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecall)) = ((porigin, pobctorbirth.OBJECT))
 def $ob_object_source_pending(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_birth((OBJECT_NEW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
 def $ob_object_source_birth((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
+def $ob_object_source_birth((OBJECT_CALL_NEW porigin pobctorbirth pobsourcecall)) = ((porigin, pobctorbirth))
+def $ob_object_source_birth((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecall)) = ((porigin, pobctorbirth))
+def $ob_object_source_birth((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecall)) = ((porigin, pobctorbirth))
 def $ob_object_source_birth(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_new((OBJECT_NEW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
 def $ob_object_source_new(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_thrown((OBJECT_THROW_BIRTH porigin pobctorbirth)) = ((porigin, pobctorbirth))
+def $ob_object_source_thrown((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecall)) = ((porigin, pobctorbirth))
 def $ob_object_source_thrown(pobobjectsource?) = eps -- otherwise
 def $ob_object_source_object(pobobjectsource?) = (n)
   -- if $ob_object_source_pending(pobobjectsource?) = ((porigin, n))
 def $ob_object_source_object(pobobjectsource?) = (pobctorbirth.OBJECT)
   -- if $ob_object_source_new(pobobjectsource?) = ((porigin, pobctorbirth))
+def $ob_object_source_object((OBJECT_CALL_NEW porigin pobctorbirth pobsourcecall)) = (pobctorbirth.OBJECT)
 def $ob_object_source_object(pobobjectsource?) = eps -- otherwise
 def $ob_object_ctor_fact_source(S, pfunction, PORIGIN n_unit pcpath_throw, pobctorbirth) = true
   -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
@@ -342,6 +360,27 @@ def $ob_object_source_live(S, pobobjectsource?) = $ob_object_ctor_fact_live(S, p
   -- if $ob_object_source_birth(pobobjectsource?) = ((porigin, pobctorbirth))
 def $ob_object_source_live(S, pobobjectsource?) = true
   -- if $ob_object_source_birth(pobobjectsource?) = eps
+def $ob_object_source_call((OBJECT_CALL_NEW porigin pobctorbirth pobsourcecall)) = (pobsourcecall)
+def $ob_object_source_call((OBJECT_CALL_THROW porigin pobctorbirth pobsourcecall)) = (pobsourcecall)
+def $ob_object_source_call((OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecall)) = (pobsourcecall)
+def $ob_object_source_call(pobobjectsource?) = eps -- otherwise
+;; The producer owns the NEW/throw code; the native consumer owns its cleanup.
+def $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction, z))
+  -- if pobsourcecall.SITE = PORIGIN n_unit pcpath
+  -- if pfunction_native.ORIGIN = PORIGIN n_unit pcpath_native
+  -- if $origin_node(S.SOURCES, pobsourcecall.SITE) = (NExprFuncCall name (SEQUENCE eps) metadata)
+  -- if $code_expression(pfunction_native.CODE.EXPRESSIONS, pcpath) = ((z, b_folded))
+  -- if $call_selected_valid(S, pobsourcecall.FUNCTION, (pobsourcecall.SITE))
+  -- if $function_at(S.FUNCTIONS, pobsourcecall.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.PARAMETERS = eps
+  -- if ~$function_generator(S, pfunction)
+def $ob_object_call_function(S, pfunction_native, pobsourcecall) = eps -- otherwise
+def $ob_object_source_function(S, pfunction_native, pobobjectsource?) = (pfunction_native)
+  -- if $ob_object_source_call(pobobjectsource?) = eps
+def $ob_object_source_function(S, pfunction_native, pobobjectsource?) = (pfunction)
+  -- if $ob_object_source_call(pobobjectsource?) = (pobsourcecall)
+  -- if $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction, z))
+def $ob_object_source_function(S, pfunction_native, pobobjectsource?) = eps -- otherwise
 def $ob_object_ctor_tail((ORIGIN_RETURN (porigin)) :: (THROW_VALUE porigin z) :: ptask_tail*) = ((porigin, z))
 def $ob_object_ctor_tail(ptask*) = eps -- otherwise
 def $ob_object_ctor_birth(S, pctorcall, pvalue_message, PINT z_code, PNULL, pfunction) = ((porigin, pobctorbirth))
@@ -367,6 +406,146 @@ def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) 
   -- if $call_current_valid(S)
   -- if $integer_standard_object_handlers(S, POBJECT pdestructorcall.OBJECT)
   -- if $ob_object_ctor_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous, pmethoddesc.FUNCTION) = ((porigin, pobctorbirth))
+
+;; A helper keeps its own function/locals. This view authenticates the saved
+;; native consumer without moving its context into the helper's execution.
+def $ob_object_call_consumer(S) = (pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = [pframe]
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+  -- if n = pobobjectreturn.OBJECT /\ porigin_site = $ob_call_site(pobobjectreturn.INVOKE.CALL)
+  -- if ptask_native* = pobobjectreturn.TAIL /\ pframe.ORIGIN = (porigin_site)
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = eps /\ pframe.CONSTCONTEXT = eps
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
+  -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if pobdrain.IDS = $output_ids(S.OUTPUTBUFFERS) /\ $output_drain_owned(S, pobdrain)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
+  -- if pcallcontext.TARGET = METHOD_TARGET n pfunction.ORIGIN /\ pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if pcallcontext.CALLSITE = eps /\ pcallcontext.LINE = $(-1) /\ pcallcontext.ARGC = 0
+  -- if pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n)
+  -- if $destructor_context_nodes(S.CURRENT) = [HOBJECT n]
+def $ob_object_call_consumer(S) = (pmethoddesc.FUNCTION)
+  -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
+  -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
+def $ob_object_call_consumer(S) = eps -- otherwise
+def $ob_object_native_source(S) = pobobjectreturn.SOURCE
+  -- if S.FRAMES = [pframe]
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+def $ob_object_native_source(S) = pobobjectsource?
+  -- if S.FRAMES = [pframe]
+  -- if $ob_object_final_local_tail(pframe.TODO) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
+def $ob_object_native_source(S) = eps -- otherwise
+def $ob_object_native_capture(S, pobobjectsource?) = $ob_object_final_capture(S, pobobjectreturn, pobobjectsource?)
+  -- if S.FRAMES = [pframe]
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: ptask_native*
+def $ob_object_native_capture(S, pobobjectsource?) = $ob_object_final_local_capture(S, pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*)
+  -- if S.FRAMES = [pframe]
+  -- if $ob_object_final_local_tail(pframe.TODO) = ((pobobjectreturn, pdestructorcall, pobobjectsource_previous?, ptask_native*))
+def $ob_object_native_capture(S, pobobjectsource?) = S -- otherwise
+def $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_DONE /\ S.SHUTDOWN.PHASE = SHUTDOWN_DONE
+  -- if ~S.OUTPUTBLOCKED /\ S.EXCEPTIONHANDLER = eps /\ S.SOURCEPENDING = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = [pframe_call, pframe_native]
+  -- if pframe_call.CONTEXT = (pcallcontext_native)
+  -- if pframe_call.ORIGIN = (porigin_site)
+  ;; Unfinished constructor/argument receivers are not this owner front.
+  -- if pframe_call.HELD = eps /\ $tasks_nodes(pframe_call.TODO) = eps
+  -- if pcallcontext.TARGET = pcallcontext.FUNCTION
+  -- if pcallcontext.CALLSITE = (porigin_site) /\ pcallcontext.ARGC = 0 /\ pcallcontext.PARAMS = eps
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = eps
+  -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if pcallcontext.CACHE = eps /\ pcallcontext.DEFAULTRECEIVE = eps /\ pcallcontext.WRAPPER = eps
+  -- if pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
+  -- if pobsourcecall = {FUNCTION pcallcontext.FUNCTION, SITE porigin_site}
+  -- if S_native = $constant_frame_scope(S, pframe_call, [pframe_native])
+  -- if $ob_object_call_consumer(S_native) = (pfunction_native)
+  -- if $ob_object_call_function(S, pfunction_native, pobsourcecall) = ((pfunction, z_call))
+  -- if pcallcontext.LINE = z_call
+def $ob_object_call_context(S) = eps -- otherwise
+def $ob_object_call_valid(S) = true
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $call_current_valid(S)
+  -- if $ob_object_final_cv_method(S_native) =/= eps
+def $ob_object_call_valid(S) = true
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $call_current_valid(S)
+  -- if $ob_object_final_local_context(S_native) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
+  -- if $call_current_valid(S_native)
+  -- if $integer_standard_object_handlers(S_native, POBJECT pdestructorcall.OBJECT)
+def $ob_object_call_valid(S) = false -- otherwise
+def $ob_object_call_capture(S, pobobjectsource?) = S[.FRAMES = [pframe_call, pframe_next]]
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if S.FRAMES = [pframe_call, pframe_native]
+  -- if S_next = $ob_object_native_capture(S_native, pobobjectsource?)
+  -- if S_next.FRAMES = [pframe_next]
+def $ob_object_call_capture(S, pobobjectsource?) = S -- otherwise
+def $ctor_completed(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous) = $ob_object_call_capture(S, (OBJECT_CALL_NEW porigin pobctorbirth pobsourcecall))
+  -- if pctorcall.MODE = CTOR_NEW /\ pctorcall.BASE = "Exception"
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $ob_object_call_valid(S)
+  -- if $ob_object_ctor_birth(S, pctorcall, pvalue_message, pvalue_code, pvalue_previous, pfunction) = ((porigin, pobctorbirth))
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_call_capture(S_next[.TODO = ptask_tail*], (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecall))
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n
+  -- if S_next = S[.COMPLETION = THROWING n]
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_NEW porigin pobctorbirth pobsourcecall)
+  -- if pobctorbirth.OBJECT = n
+  -- if S.RESULT = KNOWN (POBJECT n) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.ORIGIN = (porigin) /\ S.HELD = eps /\ S.RETIREDOWNERS = eps
+  -- if $ob_object_call_valid(S) /\ $call_task_valid(S, THROW_VALUE porigin z)
+  -- if $ob_object_ctor_fact_source(S, pfunction, porigin, pobctorbirth) /\ $ob_object_ctor_fact_live(S, pobctorbirth)
+def $ob_object_call_pending(S) = true
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecall)
+  -- if n = pobctorbirth.OBJECT
+  -- if $ob_object_ctor_fact_source(S, pfunction, porigin, pobctorbirth) /\ $ob_object_ctor_fact_live(S, pobctorbirth)
+  -- if S.COMPLETION = THROWING n \/ (S.COMPLETION = NORMAL /\ $destructor_leaving_exception(S.TODO) = (n))
+def $ob_object_call_pending(S) = false -- otherwise
+def $output_final_cv_unwind(S) = true -- if $ob_object_call_pending(S)
+;; Both existing staged and unstaged frame-release paths invoke this hook.
+;; Only actual VM restoration advances the borrowed fact to native authority.
+def $destructor_frame_restore(S, S_restored) = $ob_object_native_capture(S_restored, (OBJECT_CALL_UNWIND porigin pobctorbirth pobsourcecall))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [THROW_SEARCH n]
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecall)
+  -- if pobctorbirth.OBJECT = n /\ $ob_object_call_pending(S)
+  -- if S_restored.CURRENT = S_native.CURRENT /\ S_restored.FRAMES = S_native.FRAMES
+  -- if S_restored.TODO = S_native.TODO /\ S_restored.ORIGIN = S_native.ORIGIN /\ S_restored.CONSTCONTEXT = S_native.CONSTCONTEXT
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, eps)
+  -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin_try) :: ptask_tail*
+  -- if S_next.TODO = (CATCH_BIND porigin_try n_index n) :: ptask_catch*
+  -- if S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES /\ S_next.COMPLETION = NORMAL
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $ob_object_native_source(S_native) = (OBJECT_CALL_THROW porigin pobctorbirth pobsourcecall)
+  -- if pobctorbirth.OBJECT = n
+def $source_exception_transition(S, S_next) = $ob_object_call_capture(S_next, eps)
+  -- if S_next.COMPLETION = NORMAL /\ S_next.CURRENT = S.CURRENT /\ S_next.FRAMES = S.FRAMES
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $ob_object_source_call($ob_object_native_source(S_native)) = (pobsourcecall)
+  -- if $ob_object_source_object($ob_object_native_source(S_native)) = (n)
+  -- if $($heap_count(HOBJECT n, $machine_roots(S)) > 0)
+  -- if $heap_count(HOBJECT n, $machine_roots(S_next)) = 0
+def $destructor_frame_restore(S, S_restored) = $ob_object_native_capture(S_restored, eps)
+  -- if S.COMPLETION = NORMAL /\ S.TODO = eps
+  -- if $ob_object_call_context(S) = ((S_native, pfunction, pobsourcecall))
+  -- if $ob_object_source_call($ob_object_native_source(S_native)) = (pobsourcecall)
+  -- if S_restored.CURRENT = S_native.CURRENT /\ S_restored.FRAMES = S_native.FRAMES
+  -- if S_restored.TODO = S_native.TODO /\ S_restored.ORIGIN = S_native.ORIGIN
+def $ob_object_source_reported(eps) = true
+def $ob_object_source_reported((OBJECT_LEGACY_THROW porigin n)) = true
+def $ob_object_source_reported(pobobjectsource?) = true -- if $ob_object_source_thrown(pobobjectsource?) =/= eps
+def $ob_object_source_reported(pobobjectsource?) = false -- otherwise
 
 ;; A sole direct fresh throw has no user frame cleanup between THROW_VALUE and
 ;; the known-method null-C fatal. Its standard cast guard has not decremented.
@@ -408,7 +587,8 @@ def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfu
   -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
   -- if pfunction = pmethoddesc.FUNCTION
   -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS =/= eps
-  -- if $ob_object_ctor_fact_source(S, pfunction, porigin, pobctorbirth)
+  -- if $ob_object_source_function(S, pfunction, pobobjectreturn.SOURCE) = (pfunction_producer)
+  -- if $ob_object_ctor_fact_source(S, pfunction_producer, porigin, pobctorbirth)
 def $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
 def $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception)
   -- if $ob_object_source_pending(pobobjectreturn.SOURCE) = ((porigin, n_exception))
@@ -620,7 +800,8 @@ def $ob_object_final_local_source(S, pdestructorcall, pobobjectsource) = ((pmeth
   -- if $ob_object_source_birth((pobobjectsource)) = ((porigin, pobctorbirth))
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
   -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc.FUNCTION.ORIGIN
-  -- if $ob_object_ctor_fact_source(S, pmethoddesc.FUNCTION, porigin, pobctorbirth)
+  -- if $ob_object_source_function(S, pmethoddesc.FUNCTION, (pobobjectsource)) = (pfunction_producer)
+  -- if $ob_object_ctor_fact_source(S, pfunction_producer, porigin, pobctorbirth)
 def $ob_object_final_local_source(S, pdestructorcall, pobobjectsource) = eps -- otherwise
 def $ob_object_final_local_birth(S, pdestructorcall, porigin, n_exception) = (OBJECT_THROW_BIRTH porigin pobctorbirth)
   -- if $ob_object_final_local_context(S) = ((pobobjectreturn, pdestructorcall, pobobjectsource?, ptask_native*))
@@ -740,6 +921,7 @@ def $ob_object_final_local_receipt(S, pobobjectreturn, pdestructorcall, pobobjec
 def $eager_abandoned_owner(OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource (pobdeactivate)) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = OUTPUT_FINAL_OBJECT_LOCAL_THROW pobobjectreturn pdestructorcall pobobjectsource (pobdeactivate)
+  -- if $ob_object_source_reported((pobobjectsource))
   -- if $ob_object_source_pending((pobobjectsource)) = ((porigin, n))
   -- if pdestructioncleanup <- S.DESTRUCTION.ABANDONED
   -- if pdestructioncleanup = $ob_object_final_local_receipt(S, pobobjectreturn, pdestructorcall, pobobjectsource, pobdeactivate)
@@ -811,6 +993,7 @@ def $call_task_valid(S, OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate 
 def $eager_abandoned_owner(OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin n_exception) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin n_exception
+  -- if $ob_object_source_reported(pobobjectreturn.SOURCE)
   -- if pdestructioncleanup <- S.DESTRUCTION.ABANDONED
   -- if pdestructioncleanup = $ob_object_final_throw_receipt(S, pobobjectreturn, pobdeactivate, porigin, n_exception)
   -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
