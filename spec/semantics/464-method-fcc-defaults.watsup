@@ -1,0 +1,118 @@
+;; Public ordinary user-method FCCs reuse their captured target and cache owner.
+dec $method_default_name(ptbytes) : bool
+def $method_default_name(ptbytes) = true -- if $(|ptbytes| < 2)
+def $method_default_name(ptbytes) = (ptbytes[0:2] =/= $ptascii("__")) -- if $(|ptbytes| >= 2)
+dec $method_fcc_kind(pstate, nat) : bool
+def $method_fcc_kind(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+def $method_fcc_kind(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+def $method_fcc_kind(S, n) = false -- otherwise
+dec $method_fcc_origin(pstate, nat) : porigin?
+def $method_fcc_origin(S, n) = (porigin_method)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+def $method_fcc_origin(S, n) = (pfrommethod.FUNCTION)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+def $method_fcc_origin(S, n) = eps -- otherwise
+dec $method_fcc_source(pstate, nat) : pmethoddesc?
+def $method_fcc_source(S, n) = (pmethoddesc)
+  -- if $method_fcc_origin(S, n) = (porigin)
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $method_default_name(pmethoddesc.NAME)
+  -- if $parameter_method_source(S, pmethoddesc.FUNCTION) = (pmethoddesc)
+def $method_fcc_source(S, n) = eps -- otherwise
+dec $method_fcc_direct_site(pstate, porigin?) : bool
+def $method_fcc_direct_site(S, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $dynamic_fixed_name(S, porigin) = eps
+def $method_fcc_direct_site(S, porigin?) = false -- otherwise
+
+dec $method_fcc_current(pstate, pfunction) : bool
+def $method_fcc_current(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.INSTANCE = (n) /\ pcallcontext.CACHE = eps /\ pcallcontext.WRAPPER = eps
+  -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
+  -- if $method_fcc_source(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION = pfunction /\ pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
+  -- if $method_fcc_direct_site(S, pcallcontext.CALLSITE)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $closure_scope_row_valid(S, pclosurescope)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, CLOSURE_TARGET n)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, CLOSURE_TARGET n)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, CLOSURE_TARGET n)
+  -- if pmethoddesc.STATIC = (pcallcontext.RECEIVER = eps)
+  -- if $parameter_scoped_receiver(S, pcallcontext)
+  -- if $default_cache_owner(S) =/= eps
+def $method_fcc_current(S, pfunction) = false -- otherwise
+def $scoped_default_recipient(S, pfunction) = $method_fcc_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $method_fcc_kind(S, n)
+def $parameter_default_recipient(S, pfunction) = $method_fcc_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $method_fcc_kind(S, n)
+
+;; Only this genuine entered FCC mints ENTRY. It adds no heap root.
+def $parameter_receive_entry_object(S) = (n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $method_fcc_current(S, pfunction)
+dec $method_fcc_witness(pstate, preceivebirth) : bool
+def $method_fcc_witness(S, preceivebirth) = true
+  -- if preceivebirth.ENTRY = (n)
+  -- if $method_fcc_source(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = preceivebirth.FUNCTION
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = preceivebirth.FUNCTION
+  -- if pclosurecache.SCOPE = (BIND_CLASS pmethoddesc.OWNER)
+  -- if pclosurecache.CACHE = preceivebirth.CACHE_OWNER
+  -- if preceivebirth.CACHE_OWNER = (pfncacheowner)
+  -- if $default_cache_owner_kind(pfncacheowner, n)
+  -- if preceivebirth.CAUSE.CALLS = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_entry_scope?, porigin_entry_called?) :: pdeclcalls
+  -- if porigin_entry_scope? = (pmethoddesc.OWNER)
+  -- if porigin_entry_called? = (porigin_called)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+def $method_fcc_witness(S, preceivebirth) = false -- otherwise
+def $parameter_receive_witness_valid(S, preceivebirth) = $method_fcc_witness(S, preceivebirth)
+  -- if preceivebirth.ENTRY =/= eps
+dec $method_fcc_entry(pstate, preceivebirth) : bool
+def $method_fcc_entry(S, preceivebirth) = true
+  -- if $method_fcc_witness(S, preceivebirth)
+  -- if preceivebirth.ENTRY = (n)
+  -- if $method_fcc_source(S, n) = (pmethoddesc)
+  -- if $method_fcc_direct_site(S, preceivebirth.CALLSITE)
+  -- if $parameter_callable_function_published(S, pmethoddesc.FUNCTION, preceivebirth.PUBLICATION)
+  -- if $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], pmethoddesc.OWNER)
+  -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_entry_scope?, porigin_entry_called?)
+  -- if porigin_entry_called? = (porigin_called)
+  -- if $constant_callable_published(S.DECLARATIONS[0:preceivebirth.PUBLICATION], porigin_called)
+def $method_fcc_entry(S, preceivebirth) = false -- otherwise
+def $parameter_receive_method_dispatch(S, preceivebirth) = $method_fcc_entry(S, preceivebirth)
+  -- if preceivebirth.ENTRY =/= eps
+
+;; Fake closures borrow original method statics. Their only children are This.
+dec $method_fcc_private_owner(pstate, nat) : bool
+def $method_fcc_private_owner(S, n) = true
+  -- if $method_fcc_source(S, n) = (pmethoddesc)
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+  -- if pclosurecache.SCOPE = (BIND_CLASS pmethoddesc.OWNER)
+  -- if pclosurecache.CACHE = (CACHE_PRIVATE n)
+def $method_fcc_private_owner(S, n) = false -- otherwise
+def $private_cache_marker_owner(S, n) = $method_fcc_private_owner(S, n)
+  -- if $method_fcc_kind(S, n)
+def $destruction_child_jobs(S, HOBJECT n) = [DESTRUCTION_PRIVATE_CACHE n] ++ $destruction_values($node_children(S, HOBJECT n))
+  -- if $method_fcc_private_owner(S, n)

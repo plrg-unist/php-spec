@@ -31,6 +31,8 @@ def $parameter_scoped_receiver(S, pcallcontext) = true
   -- if pclassdesc.KIND = "class"
 def $parameter_scoped_receiver(S, pcallcontext) = false -- otherwise
 
+dec $scoped_default_recipient(pstate, pfunction) : bool
+def $scoped_default_recipient(S, pfunction) = $parameter_scoped_current(S, pfunction) -- otherwise
 dec $parameter_scoped_current(pstate, pfunction) : bool
 def $parameter_scoped_current(S, pfunction) = true
   -- if $parameter_scoped_source(S, pfunction)
@@ -53,14 +55,14 @@ def $parameter_scoped_current(S, pfunction) = true
   -- if $default_cache_owner(S) =/= eps
   -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
 def $parameter_scoped_current(S, pfunction) = false -- otherwise
-def $parameter_closure_selected(S, pfunction) = $parameter_scoped_current(S, pfunction)
+def $parameter_closure_selected(S, pfunction) = $scoped_default_recipient(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.LEXICAL_CLASS =/= eps
 
 ;; A source owning donor requires REAL authority even when a fake method would
 ;; find an earlier scalar in the same Shared cache. Other scalar/type routes stay.
-def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_scoped_current(S, pfunction)
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $scoped_default_recipient(S, pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.LEXICAL_CLASS =/= eps
@@ -111,6 +113,8 @@ def $destruction_child_jobs(S, HOBJECT n) = $destruction_values($closure_items_n
   -- if $scoped_private_cache_owner(S, n)
   -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
 
+dec $private_cache_marker_owner(pstate, nat) : bool
+def $private_cache_marker_owner(S, n) = $scoped_private_cache_owner(S, n) -- otherwise
 def $destruction_plain_job(DESTRUCTION_PRIVATE_CACHE n) = false
 def $destruction_job_node(DESTRUCTION_PRIVATE_CACHE n) = eps
 def $destruction_job_nodes((DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*) = $destruction_job_nodes(pdestructionjob*)
@@ -119,7 +123,7 @@ def $destruction_release_walk(H, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjo
 def $gc_release_walk(S, H, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done*)
 def $gc_release_walk_keep(H, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*, pnode_done*, pnode_keep*) = $gc_release_walk_keep(H, pdestructionjob*, pnode_done*, pnode_keep*)
 def $destructor_jobs_valid(S, (DESTRUCTION_PRIVATE_CACHE n) :: pdestructionjob*) = true
-  -- if $scoped_private_cache_owner(S, n)
+  -- if $private_cache_marker_owner(S, n)
   -- if $destructor_jobs_valid(S, [DESTRUCTION_HANDLE n])
   -- if (DESTRUCTION_HANDLE n) <- pdestructionjob*
   -- if $destructor_jobs_valid(S, pdestructionjob*)
@@ -137,4 +141,4 @@ dec $scoped_cache_releases(pstate, pdestructionrelease*, nat) : bool
 def $scoped_cache_releases(S, eps, n) = false
 def $scoped_cache_releases(S, pdestructionrelease :: pdestructionrelease_tail*, n) = (($scoped_cache_marker(pdestructionrelease.JOBS, n) /\ $destructor_release_live(S, pdestructionrelease)) \/ $scoped_cache_releases(S, pdestructionrelease_tail*, n))
 def $private_default_cache_retired(S, n) = ($gc_retired_valid(S, n) /\ $scoped_cache_releases(S, S.DESTRUCTION.RELEASES, n))
-  -- if $scoped_private_cache_owner(S, n)
+  -- if $private_cache_marker_owner(S, n)

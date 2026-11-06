@@ -51,11 +51,14 @@ def $parameter_receive_method_entry(S, preceivebirth) = true
   -- if $parameter_method_invocation(S, pmethoddesc.FUNCTION, preceivebirth.CAUSE.CALLS, preceivebirth.PUBLICATION)
 def $parameter_receive_method_entry(S, preceivebirth) = false -- otherwise
 
+dec $parameter_receive_method_dispatch(pstate, preceivebirth) : bool
+def $parameter_receive_method_dispatch(S, preceivebirth) = $parameter_receive_method_entry(S, preceivebirth) -- otherwise
+
 def $parameter_receive_deprecated_entry(S, preceivebirth) = true
   -- if $parameter_receive_named_entry(S, preceivebirth)
   -- if $(|preceivebirth.CAUSE.CALLS| > 0)
   -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, eps, eps)
-def $parameter_receive_deprecated_entry(S, preceivebirth) = $parameter_receive_method_entry(S, preceivebirth)
+def $parameter_receive_deprecated_entry(S, preceivebirth) = $parameter_receive_method_dispatch(S, preceivebirth)
   -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) =/= eps
 def $parameter_receive_deprecated_entry(S, preceivebirth) = false -- otherwise
 
@@ -72,7 +75,7 @@ def $parameter_default_recipient(S, pfunction) = true
 def $parameter_default_recipient(S, pfunction) = false -- otherwise
 
 dec $parameter_receive_cache_entry(pstate, preceivebirth) : bool
-def $parameter_receive_cache_entry(S, preceivebirth) = $parameter_receive_method_entry(S, preceivebirth)
+def $parameter_receive_cache_entry(S, preceivebirth) = $parameter_receive_method_dispatch(S, preceivebirth)
   -- if $class_method_origin(S.CLASSES, preceivebirth.FUNCTION) =/= eps
 def $parameter_receive_cache_entry(S, preceivebirth) = false -- otherwise
 

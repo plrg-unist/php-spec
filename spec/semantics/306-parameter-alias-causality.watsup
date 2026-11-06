@@ -62,7 +62,12 @@ def $parameter_receive_entry_valid(S) = true
   -- if $call_current_valid(S)
 def $parameter_receive_entry_valid(S) = false -- otherwise
 
-def $parameter_receive_begin(S, porigin) = S[.PARAMETERSEQ = n][.PARAMETERRECEIVES = S.PARAMETERRECEIVES ++ [{ORIGIN porigin, FUNCTION pcallcontext.FUNCTION, CACHE_OWNER $default_cache_owner(S), CALLSITE pcallcontext.CALLSITE, PARENT $parameter_receive_parent(S.FRAMES), PARENTINDEX $parameter_receive_parent_index(S, S.FRAMES, |$declaration_context(S, S.CURRENT)|), PARENTEDGE $parameter_receive_parent_edge(S, S.FRAMES), CAUSE $declaration_cause(S), PREFIX (|S.USERCONSTANTS|), PUBLICATION (|S.DECLARATIONS|), ACTIVE true}]][.CURRENT = (pcallcontext[.DEFAULTRECEIVE = ({ID n, PREFIX (|S.USERCONSTANTS|), PUBLICATION (|S.DECLARATIONS|)})])]
+dec $parameter_receive_entry_object(pstate) : nat?
+def $parameter_receive_entry_object(S) = eps -- otherwise
+dec $parameter_receive_witness_valid(pstate, preceivebirth) : bool
+def $parameter_receive_witness_valid(S, preceivebirth) = (preceivebirth.ENTRY = eps) -- otherwise
+
+def $parameter_receive_begin(S, porigin) = S[.PARAMETERSEQ = n][.PARAMETERRECEIVES = S.PARAMETERRECEIVES ++ [{ORIGIN porigin, FUNCTION pcallcontext.FUNCTION, CACHE_OWNER $default_cache_owner(S), ENTRY $parameter_receive_entry_object(S), CALLSITE pcallcontext.CALLSITE, PARENT $parameter_receive_parent(S.FRAMES), PARENTINDEX $parameter_receive_parent_index(S, S.FRAMES, |$declaration_context(S, S.CURRENT)|), PARENTEDGE $parameter_receive_parent_edge(S, S.FRAMES), CAUSE $declaration_cause(S), PREFIX (|S.USERCONSTANTS|), PUBLICATION (|S.DECLARATIONS|), ACTIVE true}]][.CURRENT = (pcallcontext[.DEFAULTRECEIVE = ({ID n, PREFIX (|S.USERCONSTANTS|), PUBLICATION (|S.DECLARATIONS|)})])]
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.DEFAULTRECEIVE = eps
   -- if n = $(S.PARAMETERSEQ + 1)
@@ -125,6 +130,7 @@ def $parameter_receive_parent_source(S, preceivebirth) = true
   -- if $parameter_receive_parent_route(S, preceivebirth, preceivebirth_parent, n_index)
 def $parameter_receive_parent_source(S, preceivebirth) = false -- otherwise
 def $parameter_receive_source_valid(S, preceivebirth) = true
+  -- if $parameter_receive_witness_valid(S, preceivebirth)
   -- if |preceivebirth.CAUSE.CALLS| =/= 0
   -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_entry_scope?, porigin_entry_called?)
   -- if $parameter_receive_parent_source(S, preceivebirth)
@@ -146,6 +152,7 @@ def $parameter_receive_context_valid(S, (pcallcontext)) = true
   -- if preceivebirth.PREFIX = preceiveowner.PREFIX /\ preceivebirth.PUBLICATION = preceiveowner.PUBLICATION
   -- if preceivebirth.FUNCTION = pcallcontext.FUNCTION /\ preceivebirth.CALLSITE = pcallcontext.CALLSITE
   -- if preceivebirth.CACHE_OWNER = $default_cache_owner(S[.CURRENT = (pcallcontext)])
+  -- if preceivebirth.ENTRY = $parameter_receive_entry_object(S[.CURRENT = (pcallcontext)])
   -- if preceivebirth.CAUSE.CALLS[0] = (pcallcontext.FUNCTION, pcallcontext.CALLSITE, pcallcontext.LEXICAL_CLASS, pcallcontext.CALLED_CLASS)
   -- if preceivebirth.PARENT = $parameter_receive_parent(S.FRAMES)
   -- if preceivebirth.PARENTINDEX = $parameter_receive_parent_index(S, S.FRAMES, |$declaration_context(S, (pcallcontext))|)
