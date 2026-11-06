@@ -87,12 +87,7 @@ CASES = {
         (b'<?php echo "P";\nclass GetBeforeBlockVariance61 {\n public int $value=0 {\n'
          b'  get => ($this=1);\n  set(string $supplied){$this->value=$supplied;}\n }\n}\necho "Z";', b''),
 }
-CONTROLS = {
-    'trait-explicit-backed-block-set-pair-remains-unsupported':
-        (b'<?php trait BlockSetTrait61 {public int $value=3 '
-         b'{get => 700;set(int|string $supplied){$this->value=$supplied+10;}}} '
-         b'class BlockSetConsumer61 {use BlockSetTrait61;}echo "X";', b''),
-}
+CONTROLS = {}
 
 
 def main():

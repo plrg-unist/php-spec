@@ -99,11 +99,16 @@ def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "class") = 
   -- if $hook_pair_backed_headers(phpType38_first, phpType38_second, ptbytes) \/ $hook_pair_virtual_headers(phpType38_first, phpType38_second, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "class") = (1)
   -- if $hook_pair_backed_headers(phpType38_second, phpType38_first, ptbytes) \/ $hook_pair_virtual_headers(phpType38_second, phpType38_first, ptbytes)
+def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "trait") = (0)
+  -- if ~$hook_pair_headers(phpType38_first, phpType38_second, ptbytes)
+  -- if $hook_pair_block_set_headers(phpType38_first, phpType38_second, ptbytes)
+def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, "trait") = (1)
+  -- if $hook_pair_block_set_headers(phpType38_second, phpType38_first, ptbytes)
 def $hook_pair_get_index(phpType38_first, phpType38_second, ptbytes, text) = eps -- otherwise
 ;; Authentication supplies logical roles; backing and virtuality remain distinct.
 dec $pphook_pair_nodes(ppstate, pcpath, ppropertydesc, pchheader) : phpType38*
 def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
-  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
+  -- if pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
   -- if $(|pcpath| >= 2)
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
   -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
@@ -112,6 +117,7 @@ def $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, ph
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if ppropertydesc.NAME = $base64(text) /\ ppropertydesc.KEY = ppropertydesc.NAME /\ ppropertydesc.TYPE =/= eps
+  -- if pchheader.KIND = "class" \/ $property_set_builtin_types(ppropertydesc.TYPE)
   -- if (phpType5 =/= ABSENT /\ $ppproperty_explicit(ppropertydesc.DEFAULT)) \/ (phpType5 = ABSENT /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
   -- if $hook_pair_get_index(phpType38_first, phpType38_second, ppropertydesc.NAME, pchheader.KIND) = (n_get)
   -- if n_set = $nabs($(1 - n_get))
@@ -242,7 +248,6 @@ def $trait_closure_source_matches(S, porigin, porigin_lexical) = true
   -- if $closure_nearest_owner(S, $closure_creation_owners($all_functions(S), porigin), eps) = (PORIGIN n pcpath_hook)
   -- if $(|pcpath_hook| >= 2)
   -- if pcpath_group = pcpath_hook[0:$nabs($(|pcpath_hook| - 2))]
-  -- if pcpath_hook = pcpath_group ++ [PCFIELD 4, PCINDEX 0]
   -- if porigin_property = PORIGIN n (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
   -- if $class_at(S.CLASSES, porigin_lexical) = (pclassdesc_consumer)
   -- if $hook_property_at(pclassdesc_consumer.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_lexical porigin_property) = (ppropertydesc_imported)
@@ -269,6 +274,13 @@ def $property_hook_pair_origins(S, ppropertydesc) = [PORIGIN n (pcpath_group ++ 
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 1])) = (phpType38_second)
   -- if pclassdesc.KIND = "class" \/ $property_set_builtin_types(ppropertydesc.TYPE)
 def $property_hook_pair_origins(S, ppropertydesc) = eps -- otherwise
+dec $property_hook_pair_backed(pstate, ppropertydesc) : bool
+def $property_hook_pair_backed(S, ppropertydesc) = true
+  -- if $property_hook_pair_origins(S, ppropertydesc) = [porigin_get, porigin_set]
+  -- if $origin_node(S.SOURCES, porigin_get) = (phpType38_get)
+  -- if $origin_node(S.SOURCES, porigin_set) = (phpType38_set)
+  -- if $hook_pair_backed_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
+def $property_hook_pair_backed(S, ppropertydesc) = false -- otherwise
 dec $property_hook_pair_virtual(pstate, ppropertydesc) : bool
 def $property_hook_pair_virtual(S, ppropertydesc) = true
   -- if $property_hook_pair_origins(S, ppropertydesc) = [porigin_get, porigin_set]
@@ -390,7 +402,7 @@ def $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner 
   -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source)
   -- if $property_hook_origin(S, ppropertydesc_source) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
-  -- if $hook_body_backed(phpType39, ppropertydesc.NAME) \/ $property_hook_virtual(S, ppropertydesc_source)
+  -- if $hook_body_backed(phpType39, ppropertydesc.NAME) \/ $property_hook_virtual(S, ppropertydesc_source) \/ $property_hook_pair_backed(S, ppropertydesc_source)
 def $property_hook_trait_origin(S, ppropertydesc) = eps -- otherwise
 def $property_hook_origin(S, ppropertydesc) = $property_hook_trait_origin(S, ppropertydesc)
   -- if ppropertydesc.ORIGIN = TRAIT_MEMBER_ORIGIN porigin_owner porigin_source
@@ -414,6 +426,14 @@ def $property_hook_trait_function(S, ppropertydesc) = (pfunction[.ORIGIN = porig
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
 def $property_hook_trait_function(S, ppropertydesc) = eps -- otherwise
+dec $property_hook_trait_selected(pstate, ppropertydesc, porigin) : pfunction?
+def $property_hook_trait_selected(S, ppropertydesc, porigin) = (pfunction)
+  -- if ~$property_hook_pair_declared(S, ppropertydesc)
+  -- if $property_hook_trait_function(S, ppropertydesc) = (pfunction)
+  -- if pfunction.ORIGIN = porigin
+def $property_hook_trait_selected(S, ppropertydesc, porigin) = $function_at($property_hook_trait_pair_functions(S, ppropertydesc), porigin)
+  -- if $property_hook_pair_declared(S, ppropertydesc)
+def $property_hook_trait_selected(S, ppropertydesc, porigin) = eps -- otherwise
 def $property_hook_trait_property_functions(S, eps) = eps
 def $property_hook_trait_property_functions(S, ppropertydesc :: ppropertydesc_tail*) = $property_hook_trait_pair_functions(S, ppropertydesc) ++ $property_hook_trait_property_functions(S, ppropertydesc_tail*)
   -- if $property_hook_pair_declared(S, ppropertydesc)
@@ -520,7 +540,7 @@ def $property_hook_virtual(S, ppropertydesc) = true
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
-  -- if $property_hook_pair_origins(S, ppropertydesc) = eps \/ $property_hook_pair_virtual(S, ppropertydesc)
+  -- if ~$property_hook_pair_declared(S, ppropertydesc) \/ $property_hook_pair_virtual(S, ppropertydesc)
   -- if (ppropertydesc.TYPE = eps /\ ppropertydesc.DEFAULT = PROP_NULL) \/ (ppropertydesc.TYPE =/= eps /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
@@ -788,12 +808,11 @@ def $property_hook_expression_return(S, TRAIT_ORIGIN porigin_owner porigin_sourc
   -- if porigin_source = PORIGIN n pcpath_hook
   -- if $(|pcpath_hook| >= 2)
   -- if pcpath_group = pcpath_hook[0:$nabs($( |pcpath_hook| - 2))]
-  -- if pcpath_hook = pcpath_group ++ [PCFIELD 4, PCINDEX 0]
   -- if porigin_property = PORIGIN n (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner porigin_property) = (ppropertydesc)
   -- if $property_hook_trait_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner porigin_source ptbytes_hook)
-  -- if $property_hook_trait_function(S, ppropertydesc) = (pfunction)
+  -- if $property_hook_trait_selected(S, ppropertydesc, TRAIT_ORIGIN porigin_owner porigin_source ptbytes_hook) = (pfunction)
   -- if $function_at($all_functions(S), TRAIT_ORIGIN porigin_owner porigin_source ptbytes_hook) = (pfunction)
 def $property_hook_expression_return(S, porigin, z) = eps -- otherwise
 def $property_hook_expression_context(S) = true

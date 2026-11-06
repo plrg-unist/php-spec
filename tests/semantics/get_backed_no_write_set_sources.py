@@ -59,12 +59,7 @@ CASES = {
         (b'<?php echo "P";\nclass BackedGetBodyFirst62 {\n public int $value=0 {\n'
          b'  get {$this=1;return $this->value;}\n  set(string $supplied){echo $supplied;}\n }\n}\necho "Z";', b''),
 }
-CONTROLS = {
-    'trait-get-backed-no-write-set-pair-remains-unsupported':
-        (b'<?php trait TraitNoWrite62 {public int $value=3 '
-         b'{get => $this->value+100;set {echo "S";}}} '
-         b'class TraitNoWriteConsumer62 {use TraitNoWrite62;}echo "X";', b''),
-}
+CONTROLS = {}
 
 
 def main():

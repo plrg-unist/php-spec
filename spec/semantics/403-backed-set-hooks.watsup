@@ -251,7 +251,7 @@ def $closure_source_class(S, porigin) = (porigin_class)
 ;; A sole virtual SET has no backing slot and no callable GET.
 def $property_hook_virtual(S, ppropertydesc) = true
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
-  -- if $property_hook_pair_origins(S, ppropertydesc) = eps
+  -- if ~$property_hook_pair_declared(S, ppropertydesc)
   -- if ppropertydesc.TYPE =/= eps /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
@@ -271,7 +271,9 @@ def $property_hook_pair_raw_functions(S, ppropertydesc) = [pfunction_get, pfunct
   -- if pfunction_get.NAME = pclassdesc_trait.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
   -- if pfunction_set.NAME = pclassdesc_trait.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
   -- if pfunction_get.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false}
-  -- if pfunction_set.SIGNATURE = $property_set_signature(ppropertydesc)
+  -- if $property_set_signature_at(S, ppropertydesc) = (pssignature_set)
+  -- if pfunction_set.SIGNATURE = pssignature_set
+  -- if $property_set_builtin_types(pssignature_set.PARAMETERS[0].TYPE)
   -- if pfunction_get.DEFAULTS = eps /\ pfunction_set.DEFAULTS = eps /\ ~pfunction_get.EARLY /\ ~pfunction_set.EARLY
   -- if pfunction_get.BODY = pcpath_get ++ [PCFIELD 5] /\ pfunction_set.BODY = pcpath_set ++ [PCFIELD 5]
   -- if pcpath_group = pcpath_get[0:$nabs($( |pcpath_get| - 2))]
@@ -410,7 +412,7 @@ def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n
   -- if pcpath_property = pcpath_hook[0:$nabs($( |pcpath_hook| - 2))] ++ [PCFIELD 3, PCINDEX 0]
   -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n_hook pcpath_property)) = (ppropertydesc)
   -- if $property_set_trait_origin(S, ppropertydesc) = (pfunction.ORIGIN)
-  -- if $property_hook_trait_function(S, ppropertydesc) = (pfunction)
+  -- if $property_hook_trait_selected(S, ppropertydesc, pfunction.ORIGIN) = (pfunction)
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
   -- if $origin_node(S.SOURCES, PORIGIN n_hook pcpath_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 (SEQUENCE statement*) metadata)
   -- if phpType16 =/= SEQUENCE eps
@@ -746,7 +748,7 @@ def $property_hook_declared(S, n, ptbytes) = true
 dec $property_set_virtual_source(pstate, ppropertydesc) : bool
 def $property_set_virtual_source(S, ppropertydesc) = true
   -- if $property_set_origin(S, ppropertydesc) = (porigin_hook)
-  -- if $property_hook_pair_origins(S, ppropertydesc) = eps \/ $property_hook_pair_virtual(S, ppropertydesc)
+  -- if ~$property_hook_pair_declared(S, ppropertydesc) \/ $property_hook_pair_virtual(S, ppropertydesc)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
   -- if $property_set_virtual_int(ppropertydesc, SEQUENCE statement*)

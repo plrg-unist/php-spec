@@ -105,7 +105,7 @@ review.CASES = {
             '$origin_node(S.SOURCES, porigin_set) = (phpType38_set)',
             '$hook_pair_block_set_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)',
             '$hook_pair_get_index(phpType38_set, phpType38_get, ppropertydesc.NAME, pclassdesc.KIND) = (1)',
-            '$hook_pair_get_index(phpType38_set, phpType38_get, ppropertydesc.NAME, "trait") = eps',
+            '$hook_pair_get_index(phpType38_set, phpType38_get, ppropertydesc.NAME, "trait") = (1)',
             '~$hook_pair_short_set_headers(phpType38_get, phpType38_set)',
             '~$hook_pair_block_set_headers(phpType38_set, phpType38_get, ppropertydesc.NAME)',
             '~$hook_pair_block_set_headers(phpType38_get, phpType38_set, $ptascii("other"))',
