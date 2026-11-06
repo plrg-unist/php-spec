@@ -50,6 +50,10 @@ dec $ob_object_final_fatal(pstate, pobobjectreturn) : pstate
 dec $ob_object_final_fatal_message(pstate, pobobjectreturn) : preqbytes
 dec $ob_object_final_fatal_receipt(pstate, pobobjectreturn, pobdeactivate) : pdestructioncleanup
 dec $ob_object_final_fatal_other(pdestructioncleanup*, pdestructioncleanup) : pdestructioncleanup*
+dec $ob_object_final_throw_source(pstate, pobobjectreturn, porigin, nat) : (pfunction, preqbytes, int)?
+dec $ob_object_final_throw_ready(pstate, pobobjectreturn, porigin, nat) : bool
+dec $ob_object_final_throw(pstate, pobobjectreturn, porigin, nat) : pstate
+dec $ob_object_final_throw_receipt(pstate, pobobjectreturn, pobdeactivate, porigin, nat) : pdestructioncleanup
 
 def $ob_normal_value(S, POBJECT n) = $integer_standard_object_handlers(S, POBJECT n)
 def $ob_object_current(S, pobobjectreturn) = (S.CURRENT = pobobjectreturn.CALLER /\ S.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL)))
@@ -271,6 +275,79 @@ def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if S_history = S[.DESTRUCTION.ABANDONED = $ob_object_final_fatal_other(S.DESTRUCTION.ABANDONED, pdestructioncleanup)]
   -- if $integer_standard_object_handlers(S_history, POBJECT pobobjectreturn.OBJECT)
   -- if ~$stringable_instance(S, pobobjectreturn.OBJECT)
+
+;; A sole direct fresh throw has no user frame cleanup between THROW_VALUE and
+;; the known-method null-C fatal. Its standard cast guard has not decremented.
+def $ob_object_final_throw_source(S, pobobjectreturn, PORIGIN n_unit pcpath_throw, n_exception) = ((pfunction, $base64(text_message), z_new))
+  -- if S.OBJECTS[pobobjectreturn.OBJECT] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
+  -- if pfunction = pmethoddesc.FUNCTION
+  -- if pfunction.ORIGIN = PORIGIN n_unit pcpath_method
+  -- if pfunction.SIGNATURE.PARAMETERS = eps /\ pfunction.CVS = eps
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE ([NStmtExpression (NExprThrow (NExprNew name (SEQUENCE ([NArg ABSENT (NScalarString (BYTES text_message) metadata_string) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata_new) metadata_throw) metadata_statement])) metadata_method)
+  -- if pcpath_throw = pfunction.BODY ++ [PCINDEX 0, PCFIELD 0]
+  -- if porigin_new = PORIGIN n_unit (pcpath_throw ++ [PCFIELD 0])
+  -- if $new_source_name(S, porigin_new) = (ptbytes_class)
+  -- if $throwable_constructor_kind(ptbytes_class) = ("Exception")
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_throw ++ [PCFIELD 0]) = ((z_new, b_folded))
+  -- if $(n_exception < |S.OBJECTS|)
+  -- if S.OBJECTS[n_exception] = THROWABLE {KIND "Exception", ORIGIN (porigin_new), FILEORIGIN (porigin_new)}
+def $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = eps -- otherwise
+def $ob_object_final_throw_ready(S, pobobjectreturn, porigin, n_exception) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = [pframe]
+  -- if S.ORIGIN = (porigin) /\ S.COMPLETION = NORMAL
+  -- if $ob_object_final_domain(S, pcallcontext) = (pobobjectreturn)
+  -- if $ob_object_final_frame($parameter_string_frame_scope(S, pframe, eps), pcallcontext, pframe, pobobjectreturn)
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
+  -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if $ob_object_final_throw_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
+  -- if porigin = PORIGIN n_unit pcpath_throw
+  -- if porigin_statement = PORIGIN n_unit (pfunction.BODY ++ [PCINDEX 0])
+  -- if S.TODO = [THROW_VALUE porigin z_throw, ORIGIN_RETURN (porigin_statement), DISCARD, AT porigin (COMPILED_RESULT false), DISCARD, ORIGIN_RETURN (pfunction.ORIGIN), $function_fallthrough(S, pfunction)]
+  -- if $call_task_valid(S, THROW_VALUE porigin z_throw) /\ $call_current_valid(S)
+  -- if S.RESULT = KNOWN (POBJECT n_exception) /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.HELD = eps /\ S.ENV = eps /\ S.CVS = eps /\ S.SYMBOLS = eps
+  -- if S.CONSTCONTEXT = eps /\ S.RETIREDOWNERS = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps
+  -- if $destructor_frame_nodes(S) = [HOBJECT pobobjectreturn.OBJECT]
+  -- if S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
+  -- if $throwable_live(S, n_exception)
+  -- if $string_bytes($throwable_field(S, n_exception, "message")) = (ptbytes_message)
+  -- if $throwable_field(S, n_exception, "line") = PINT z_new
+  -- if S_proof = $restore_frame_raw(S)[.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $output_final_throw_ready(S_proof, pobobjectreturn.INVOKE, n_exception)
+def $ob_object_final_throw_ready(S, pobobjectreturn, porigin, n_exception) = false -- otherwise
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = $ob_object_final_throw(S_next, pobobjectreturn, porigin, n_exception)
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if S_next = S[.COMPLETION = THROWING n_exception]
+  -- if S.CURRENT = (pcallcontext)
+  -- if $ob_object_final_domain(S, pcallcontext) = (pobobjectreturn)
+  -- if $ob_object_final_throw_ready(S, pobobjectreturn, porigin, n_exception)
+def $ob_object_final_throw(S, pobobjectreturn, porigin, n_exception) = S_report[.DESTRUCTION.ABANDONED = S_report.DESTRUCTION.ABANDONED ++ [$ob_object_final_throw_receipt(S_report, pobobjectreturn, pobdeactivate, porigin, n_exception)]]
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if S_restored = $restore_frame_raw(S)[.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_report = $output_final_throw(S_restored, pobobjectreturn.INVOKE, n_exception)
+  -- if S_report.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n_exception true]
+def $ob_object_final_throw_receipt(S, pobobjectreturn, pobdeactivate, porigin, n_exception) = {SOURCE (OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin n_exception), TARGET $eager_cleanup_target(S, pobdrain.SOURCE.ENTRY.TARGET), CALLER eps, ORIGIN eps, CONSTCONTEXT eps, RELEASED false}
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+def $task_nodes(OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin n_exception) = eps
+def $call_task_valid(S, OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin n_exception) = false
+def $eager_abandoned_owner(OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin n_exception) = $ob_object_nodes(pobobjectreturn) ++ [HOBJECT pobobjectreturn.OBJECT]
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if pdestructioncleanup.SOURCE = OUTPUT_FINAL_OBJECT_THROW pobobjectreturn pobdeactivate porigin n_exception
+  -- if pdestructioncleanup <- S.DESTRUCTION.ABANDONED
+  -- if pdestructioncleanup = $ob_object_final_throw_receipt(S, pobobjectreturn, pobdeactivate, porigin, n_exception)
+  -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
+  -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain] /\ pobobjectreturn.CALLER = eps
+  -- if pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
+  -- if pobdeactivate.CALL = pobobjectreturn.INVOKE /\ pobdeactivate.INDEX = 0
+  -- if $output_deactivate_history(S, pobdeactivate)
+  -- if S_history = S[.DESTRUCTION.ABANDONED = $ob_object_final_fatal_other(S.DESTRUCTION.ABANDONED, pdestructioncleanup)]
+  -- if $integer_standard_object_handlers(S_history, POBJECT pobobjectreturn.OBJECT)
+  -- if $ob_object_final_throw_source(S_history, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
+  -- if pobdeactivate.COMPLETION = REQUESTFATAL ($ptascii("Exception")) ptbytes_message z_new
 def $ob_object_error(S, pobobjectreturn) = $config_error(S, pconfigcall, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"))
   -- if $ob_call_api(pobobjectreturn.INVOKE.CALL) = (pconfigcall)
 def $ob_object_error(S, pobobjectreturn) = $throwable_allocate(S, "Error", $ptascii("Object of class ") ++ $c_string($object_name(S, pobobjectreturn.OBJECT)) ++ $ptascii(" could not be converted to string"), $ob_call_line(pobobjectreturn.INVOKE.CALL), $eval_exception_trace(S))

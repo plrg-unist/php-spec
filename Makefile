@@ -174,6 +174,8 @@ test-semantics: build
 	python3 tests/semantics/output_final_conversion_review_state.py
 	python3 tests/semantics/output_final_error_sources.py
 	python3 tests/semantics/output_final_error_review_state.py
+	python3 tests/semantics/output_final_cast_throw_sources.py
+	python3 tests/semantics/output_final_cast_throw_review_state.py
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py

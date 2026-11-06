@@ -14,10 +14,9 @@ CASES = {'final-array-warning-null-c': (b"<?php echo 'P';$phase=0;set_error_hand
                                b"{$GLOBALS['phase']=$p;return new T;}ob_start('h');echo 'A';",
                                b'PH9:113:A')}
 STDERR = {}
-CONTROLS = {
-    'pending-final-object': b"<?php echo 'P';class T{function __toString(){throw new Exception('E');}}function h($b,$p){return new T;}ob_start('h');echo 'A';",
-}
-CONTROL_REASONS = {'pending-final-object': 'pending FINAL Array/Object return conversion'}
+# The former fresh-Exception refusal is promoted in output_final_cast_throw_sources.
+CONTROLS = {}
+CONTROL_REASONS = {}
 _original_fingerprint = runner.fingerprint
 
 def fingerprint():
