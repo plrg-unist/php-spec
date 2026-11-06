@@ -1017,3 +1017,12 @@ The [review](../coverage/semantics/gc-hidden-reference-copy-review.json) retains
 the original supported-but-wrong COW result at zero credit and separates the
 corrected source comparisons from singleton/self-reference countercontrols.
 Earlier GC68/69 sources and matrices are not replayed.
+
+GC71 retained-array raw-NAME originals and the actual old/new-header COW front
+remain under `../php-spec-evidence-archive/gc-array-native-cow-71/author/`
+and `../php-spec-evidence-archive/gc-array-native-peer-71/`.
+The [review](../coverage/semantics/gc-array-native-cow-review.json) separates the
+single old owning-NAME refusal from exact original comparisons and physical
+header/descendant count controls. It also preserves the driven old-header GC visit
+counterexample and its exact separation-receipt correction. Earlier source
+matrices retain their cuts.

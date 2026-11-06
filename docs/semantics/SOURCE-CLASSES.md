@@ -1505,6 +1505,15 @@ inputs and wider rebound graphs keep their existing refusal. The
 records the retained fieldless original and focused state checks. The
 [property-graph review](../../coverage/semantics/gc-native-rc-property-graph-review.json)
 records descendant protection and allocation-order store callbacks.
+A separate normal arm admits an allocated mutable nonproxy flat DIRECT array
+with existing quiet scalars/fieldless Children, two physical owners and zero prior excess.
+The actual compiled root CV list and ENV identify a distinct allocated retained
+cell containing that same table, with no property/coercion source. This proves
+the surviving owner without naming a variable or inferring future code. The raw
+store credits only the old HARRAY; subsequent native-count COW gives the new
+header zero units. Item references, nested/cyclic tables, typed sources and
+wider root/input/abrupt contexts retain refusal.
+[Array-COW review](../../coverage/semantics/gc-array-native-cow-review.json).
 Existing ordinary USER instances and intrinsic `stdClass` now have a separate
 query view. A published runtime class with valid links proves an absent
 `__invoke` table entry; a present concrete public instance method uses existing

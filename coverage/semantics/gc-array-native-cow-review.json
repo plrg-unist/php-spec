@@ -1,0 +1,137 @@
+{
+  "scope": "GC71: normal raw NAME overwrite of a retained flat DIRECT array, native-count COW and exact old-header no-visit receipt.",
+  "target": "PHP8.5.10 CLI NTS64; engine34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "semantic_revision": "46ed69007b79a539173cd0230155458f34427abb",
+  "semantic_sha256": {
+    "spec/semantics/39-ownership.watsup": "812a6ce5104b08f7fc2191f24fbf97d277358905d44b91807578d45882b0725c",
+    "spec/semantics/301-cycle-collection.watsup": "45d1a267f319ce8ac36ce1f57a3cf60860913e556b32db5b70918a98f1509c48",
+    "spec/semantics/437-enum-runtime.watsup": "103ce850fcf4512fa901dd5e7d322fb23a559eaa65770128b8d7dbcd072395ee"
+  },
+  "source_basis": [
+    {
+      "file": "vendor/php-src/Zend/zend_API.h",
+      "symbols": "_ZEND_TRY_ASSIGN_STR",
+      "law": "safe_dtor may run a callback that fills the exact sent cell; the following raw NAME store overwrites that new zval without decrementing it."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_types.h",
+      "symbols": "SEPARATE_ARRAY",
+      "law": "Native RC greater than one duplicates the array; GC_TRY_DELREF decrements the old header without a possible-root visit."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_hash.c",
+      "symbols": "zend_array_dup",
+      "law": "Only the new physical table and its real item edges are copied; an unmatched native count remains attached to the old header."
+    }
+  ],
+  "change": "39 separate_location_array uses native_rc for its two existing mutable/shared thresholds. A disjoint 437 normal exact-sent-CELL/function-string/root/noactiveGC arm admits an allocated mutable nonproxy flat DIRECT quiet-scalar/fieldless-Child array with physical2 and prior excess0. Actual compiled CVS/ENV plus a distinct allocated untyped cell prove its retained owner. The raw store atomically exchanges one disappearing CELL edge for one old-HARRAY unit: physical2 to1, native2 unchanged; it schedules no old-array decrement. Subsequent COW keeps that unit on the old header and gives the new header zero units, while real Child edges are duplicated and later decremented.",
+  "separation_receipt": "301 adds only a simple root-CV/integer-key ASSIGN_ARRAY receipt for the demonstrated separation. Mintage binds actual source/key/lines, the sole removed old header, pre physical1/native2, exact post old-row preservation plus one appended copied-and-written table, same cell/location/value/tail and unchanged units. Metadata rebinds that source/cell/image with oldunit1/newunit0 and pending physical1 versus consumed0. Existing NOGCEXTRA/TEMP job construction and exact one-head pop suppress only the old-header possible-root visit; ordinary item VALUE jobs remain ordinary. Out-of-range cells and forged source/key/target/progress/row/units reject through total validators. Cons notation partitions the new arm with the existing nonempty receipt clauses.",
+  "unchanged": "Physical heap owners/ROOTS/EDGES/DEBTS, generic native count/delta/prune/GC/snapshot/request algorithms, 30/40/schema/tasks, 257/270 and 37 callers are unchanged. Old object/quiet/abrupt NAME and CONFIG/BINARY NOGC arms stay literal. Empty excess cannot mint the new receipt. No new root, array pin, future-body whitelist or latest-allocation inference is used.",
+  "counts": {
+    "new_exact_originals": 2,
+    "reported_conditions": 322,
+    "authored_conditions": 317,
+    "independent_fronts": 1,
+    "private_SL_modules": 463,
+    "constructed_or_load_PHP_agreements": 0,
+    "inventory_constructors": 169,
+    "inventory_runtime_obligations": 306
+  },
+  "validation": {
+    "author": {
+      "native": "../php-spec-evidence-archive/gc-array-native-cow-71/author/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-array-native-cow-71/author/native-v1/model-report.json",
+      "revision": "cdb65b5df25a9bc9c9cd937e3a60ae3acfdbda99",
+      "seconds": 74.59778022766113,
+      "result": "First exact original agreement; same frozen native bytes/file/cwd/profile, normal/quiet exit0/no timeout/stable inputs. Replacing the visible Child slot leaves hidden old-table ownership through GC0 and STORE D."
+    },
+    "peer": {
+      "native": "../php-spec-evidence-archive/gc-array-native-peer-71/native-v1/native-report.json",
+      "model": "../php-spec-evidence-archive/gc-array-native-peer-71/native-v1/model-report.json",
+      "revision": "7e9dd51829fccdb347debb7d4bd211ce91e9477b",
+      "seconds": 83.76684331893921,
+      "result": "First exact repeated-Child agreement at the same cdb runtime. Scalar sibling COW, then both visible Child replacements/removal, preserve hidden old-table edges, weak liveness, GC0 and late STORE D."
+    },
+    "source_bridge": "The final301 correction changes only the old COW-header VALUE job to TEMP with borrowed progress; raw write and owner pop preserve the same physical heap and PHP events; administrative release/receipt fields differ. Peer actual prebuffer membership makes the old visit an identity. For the author, excess protects the same closure, so collection stays zero and weak/STORE observations stay identical regardless of membership; no unrecorded author buffer identity is claimed. Source2 retain their genuine cdb cuts and are not replayed.",
+    "strict": {
+      "reports": [
+        "../php-spec-evidence-archive/gc-array-native-cow-71/author/strict-v1/report.json",
+        "../php-spec-evidence-archive/gc-array-native-cow-71/author/strict-v3/report.json"
+      ],
+      "result": "463-module load-only PASS trueLF/quiet0/stable/no timeout at cdb and9d respectively; no PHP/reached-state credit. Final463 definitions are also loaded by the actual independent front after the bounds/notation-only refinements."
+    },
+    "sole_front": {
+      "fixture": "tests/semantics/gc71_retained_array_cow_state.py",
+      "revision": "36978f5f6951f36e3073790da0e0c2b7fdf51d8a",
+      "wrapper": "../php-spec-evidence-archive/gc-array-native-peer-71/front-v5/run-report.json",
+      "report": "../php-spec-evidence-archive/gc-array-native-peer-71/front-v5/fiber-state-review-e6ppv8is/report.json",
+      "seconds": 100.356588775001,
+      "result": "322reported/317authored PASS at exact final46ed: actual raw credit/CV and data refusals, native2 COW/oldunit1/newunit0, Child2 to4 to3 to2, exact real TEMP pending-to-consumed once, raw and driven no-visit including canonical unbuffered valid counterstate, coherent forged source/origin/cell/key/location/target/progress/duplicate/row/unit/job refusals, native-white/excess plan, allocation-order STORE and one full ending with local0/1/2 budgets. Genuine carrier CELL drops are retained."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "../php-spec-evidence-archive/gc-array-native-cow-71/author/native-v1/baseline-report.json",
+      "revision": "b724385779b8bf8a228c5f6e04704fc83e1f86f1",
+      "seconds": 49.21781039237976,
+      "result": "Actual prior owning-NAME Unsupported after B|O|; callback array construction/retained binding prerequisites are supported. Zero PHP agreement."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-array-native-cow-71/author/strict-v2/report.json",
+      "result": "First receipt load caught use of a later WeakMap helper before declaration;9d replaces it with existing nonowning-value checks. Compile failure0."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-array-native-peer-71/front-v1/run-report.json",
+      "result": "Fixture required all eager slots empty, overlooking real carrier CELL drops; corrected to exclude only the credited HARRAY. Zero."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-array-native-peer-71/front-v2/run-report.json",
+      "result": "Fixture expected BUDGET from an already-matching NORMAL COW release. No GC assertion ran; corrected entry only. Zero."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-array-native-peer-71/front-v3/run-report.json",
+      "result": "Genuine semantic failure: driven old-header VALUE release re-added the candidate in a canonical unbuffered valid counterstate, contrary to GC_TRY_DELREF. Preserved0."
+    },
+    {
+      "path": "../php-spec-evidence-archive/gc-array-native-peer-71/front-v4/run-report.json",
+      "result": "Generic main failure with no Boolean location; targeted prefix showed correct mintage/TEMP but rejected metadata and no applicable pop. Exact new-arm fixed-list-to-cons notation correction preserves all guards. Zero."
+    },
+    {
+      "paths": [
+        "../php-spec-evidence-archive/gc-array-native-peer-71/cow-successor-diagnostic-v1/report.json",
+        "../php-spec-evidence-archive/gc-array-native-peer-71/cow-successor-diagnostic-v2/report.json",
+        "../php-spec-evidence-archive/gc-array-native-peer-71/cow-successor-diagnostic-v3/report.json"
+      ],
+      "result": "Three same-source reached metadata/localization packets, zero agreement/front acceptance; raw/driver entry, real mintage and failed metadata were kept distinct."
+    }
+  ],
+  "limits": "Credited arrays stay flat mutable nonproxy DIRECT quiet scalars/fieldless uncalled nonKey Children with a real retained root CV; no item references, nested/cyclic tables, typed sources, wider root/input/abrupt credit, active creation or new lifecycle producer. Receipt classification covers the witnessed simple CV/integer-key write; wider separation modes and GC35/freeing registration/resurrection/reentry/Key/other held boundaries remain held. Families stay partial. STORE residual allocation is not a source-forced-free claim.",
+  "fixture_sha256": {
+    "tests/semantics/gc71_array_native_cow.php": "d0d2eb910a0e4b93e326eb24d61188ec5b70dd0ccb64a0825f8d50ceb49cd064",
+    "tests/semantics/gc71_array_native_cow_sources.py": "decb741a2df28586d7afb311463f88f02dc2300baa82269a3628e573acf7c0e9",
+    "tests/semantics/gc71_peer_repeated_array_cow.php": "ce70838f77a031088a1eb741f384b955b1770bbcf95ed606152fe30a062ff7f0",
+    "tests/semantics/gc71_peer_repeated_array_cow_sources.py": "a0dd9c1eb40e065865e1626a88158242f63f9a045c6ed19d7364b2de17b893bd",
+    "tests/semantics/gc71_retained_array_cow_state.py": "65d2b419811964362a3ecca519b0129235a6c8fb1501c7452d30c6e596552f06"
+  },
+  "current_report_sha256": {
+    "../php-spec-evidence-archive/gc-array-native-cow-71/author/native-v1/native-report.json": "5efcb225908b0e0ff2b99a6517e6115dc5f27243eda008b99db01a1d31911c11",
+    "../php-spec-evidence-archive/gc-array-native-cow-71/author/native-v1/baseline-report.json": "feeae9ecbcbd8e2b46fb8c2e5ea5073828e4ae0ab33d7c353a14ddd4b1f5aa33",
+    "../php-spec-evidence-archive/gc-array-native-cow-71/author/native-v1/model-report.json": "8678a0f5023ea5631d02c2ad0a3bbe755be4b60ae9857e706e5c427ca5daf5f7",
+    "../php-spec-evidence-archive/gc-array-native-cow-71/author/strict-v1/report.json": "845822747fdcbab5f64e634e77589e9510d051e6a7512b9f690c2fd22ce01698",
+    "../php-spec-evidence-archive/gc-array-native-cow-71/author/strict-v3/report.json": "0669e5b043453c9b80923e76f0dfea139d164734ff814f96a2c420fcaaf4a7f0",
+    "../php-spec-evidence-archive/gc-array-native-peer-71/native-v1/native-report.json": "adc93100093cf4f82b9eb70a7d7d21fdf0dc30b3089255e84af3097334c1a9b8",
+    "../php-spec-evidence-archive/gc-array-native-peer-71/native-v1/model-report.json": "a26cee3366b827d514a17af312b578dae6dea64263c017a2f3830387cb73c508",
+    "../php-spec-evidence-archive/gc-array-native-peer-71/front-v5/run-report.json": "78b1a21057eebce8ab520ff34eded9b30ac6163c9da1773e61d30bbbf8c59e96",
+    "../php-spec-evidence-archive/gc-array-native-peer-71/front-v5/fiber-state-review-e6ppv8is/report.json": "839df974f436ddc6f17c069ad9a3b94cb9bc445231af9c08a990855812be223e",
+    "../php-spec-evidence-archive/gc-native-array-cow-71/joined-main-465-v1/report.json": "5465a6539f4a8f0d1f8c5d653b6b2a8b42c357784c6ecceaa289b7c5e401d9df"
+  },
+  "independent_ack": "../php-spec-evidence-archive/gc-array-native-peer-71/independent-summary.json",
+  "recovery": "Use the two tracked original runners with their existing native records and original source/path/cwd/profile, then the single tracked actual-state front at the recorded final runtime/tools. Previous failure/diagnostic archives are immutable separate zero cuts; metadata needs no semantic replay.",
+  "accepted_current": {
+    "revision": "107dbbc9ec0f913e079cb042f56ac8ecf67054e0",
+    "report": "../php-spec-evidence-archive/gc-native-array-cow-71/joined-main-465-v1/report.json",
+    "seconds": 29.545853,
+    "result": "One actual combined SL465 load PASS trueLF/quiet exit0/stable/no timeout, zero source agreement credit. Inventory169/306 passes. Private463 source2 and final front cuts stay separate.",
+    "composition": "Narrow actual-guard default bridge: originals/front have no __invoke/FCC/implicitThis callable syntax (CLASS220/221), callable-typed return or CALLABLE_RETURN tasks (ENUM160), autoload registration/borrowed target/default context (COMP204), or property access/hooks/CV property names (ATTR78). Fixed declared classes keep ordinary construction routes. Scalar unbuffered echo has no object-string/final-local provenance, __toString or object factory, so OB31 FRAME/cursor facts remain eps. The authentic joined465 load is separate from private463 source/front credit."
+  }
+}

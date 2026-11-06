@@ -4314,6 +4314,16 @@ shared aliases and later write-through. No array credit or COW threshold changes
 Two exact originals and 154 independent conditions (149 authored) pass at the
 recorded 463-module cuts.
 [Reference-copy review](coverage/semantics/gc-hidden-reference-copy-review.json).
+Retained flat DIRECT arrays can also receive raw NAME count credit. A real second
+CV keeps one visible table owner after the store; its unmatched unit makes the
+native count two, so a later write duplicates the header. Only the old header
+keeps the unit. Real Child edges are copied and released normally, leaving the
+hidden original's Child alive through collection and store shutdown. The actual
+separation receipt preserves the old header's decrement without a GC candidate
+visit; ordinary replaced-item decrements retain their behavior.
+Two exact originals and 322 independent conditions (317 authored) pass at their
+recorded private 463-module cuts; the actual combined 465-module load also passes.
+[Array-COW review](coverage/semantics/gc-array-native-cow-review.json).
 Enum cases carry Zend's `GC_NOT_COLLECTABLE` flag and now skip potential-root
 buffering. Their cached singleton ownership and weak identity remain live;
 ordinary objects retain their physical buffer order and collection behavior.

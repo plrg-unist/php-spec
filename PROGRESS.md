@@ -859,6 +859,17 @@ singleton/source-self rules, COW thresholds and all producers remain unchanged.
 Two exact originals and the focused 154-condition front (149 authored) pass at
 their recorded 463-module cuts; the original wrong normal result stays zero.
 [Reference-copy review](coverage/semantics/gc-hidden-reference-copy-review.json).
+Raw NAME commitment also admits flat mutable DIRECT arrays with an actual
+distinct retained root CV, existing quiet scalars and fieldless Children. Losing
+the sent-cell edge reduces physical owners from two to one while the native count
+stays two through an old-header unit. Separation creates a new header
+with zero excess and real copied Child edges; the hidden original survives visible
+replacement/removal and collection. An exact source/image receipt keeps the
+old-header `GC_TRY_DELREF` out of candidate visits while ordinary item decrements
+remain intact. Old object/abrupt paths and physical owner graphs remain unchanged.
+Two originals retain their private 463-module cuts through the reviewed observation
+bridge; the final 322-condition front (317 authored) and actual joined SL465 load pass.
+[Array-COW review](coverage/semantics/gc-array-native-cow-review.json).
 
 GC07 carries canonical materialized destructor collection through ordinary
 named-function and method callers. Current locals, saved caller locals and real
@@ -3387,7 +3398,6 @@ their work remains unaccepted until integrated.
 | CLASS222 | Immediate invocation of fixed USER function/public-static Closure::fromCallable factories using genuine normal-factory and outer call sites; preserve existing first-class syntax, wrapper owners and bounds. |
 | COMP205 | Extra defaults for existing ordinary public tick method callbacks, with authentic selected tick entry, registered args and marker sites; preserve borrowed receiver, registry owners and current/history laws. |
 | ENUM161 | Typed callable CV returns with distinct protected-copy and unprotected local-cell verification, using actual return ownership and preserving the pending-finally boundary. |
-| GC71 | Retained flat DIRECT array NAME overwrites with old-header native RC credit and actual CV COW at native count, preserving real descendant edges and existing count/GC laws. |
 | I136 | Public ordinary owning-CV instance and receiver-free class-static helper frames in existing Generator reentry history, preserving actual receiver/selector roots and shared Fiber/tail validation. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve

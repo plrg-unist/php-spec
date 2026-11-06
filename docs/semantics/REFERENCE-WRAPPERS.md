@@ -19,6 +19,15 @@ Two exact COW/unpack originals and 154 independent conditions (149 authored)
 pass at their recorded 463-module cuts.
 [Reference-copy review](../../coverage/semantics/gc-hidden-reference-copy-review.json).
 
+Array header separation likewise uses effective native RC. A raw NAME overwrite
+may leave an unmatched old-header unit alongside a real retained CV owner. The
+next CV write therefore separates at native2 despite physical1; duplication adds
+only the new header and its real item edges, with no copied excess unit. Actual
+reference-cell counts and copy/merge singleton rules stay unchanged. A bounded
+source/image receipt reuses the existing one-pop TEMP law for the old header's
+`GC_TRY_DELREF`, without suppressing ordinary item decrements or adding roots.
+[Array-COW review](../../coverage/semantics/gc-array-native-cow-review.json).
+
 Generic dimension fetching through a wrapper containing `false` creates an array
 without the false-to-array deprecation. An intermediate unset through that wrapper
 also skips the deprecation. Final dimension assignment and final unset use their
