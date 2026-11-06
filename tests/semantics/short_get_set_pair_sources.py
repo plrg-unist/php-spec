@@ -52,10 +52,6 @@ CASES = {
          b'echo "Z";', b''),
 }
 CONTROLS = {
-    'trait-short-set-pair-remains-unsupported':
-        (b'<?php trait ShortPairTrait56 {public int $value=0 '
-         b'{get {return $this->value;}set => $value+1;}} '
-         b'class ShortPairConsumer56 {use ShortPairTrait56;}echo "X";', b''),
 }
 
 

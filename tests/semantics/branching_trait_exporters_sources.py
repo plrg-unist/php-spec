@@ -101,10 +101,6 @@ CASES = {
          b'class DistinctConsumer66 {use DistinctLeft66,DistinctRight66;}echo "Z";', b'P'),
 }
 CONTROLS = {
-    'branching-short-set-trait-pair-remains-unsupported':
-        (b'<?php trait ShortLeaf66 {public int $value=3 {get => $this->value;set => $value+1;}}'
-         b'trait PlainLeaf66 {public int $aux=3;}trait ShortJoin66 {use ShortLeaf66,PlainLeaf66;}'
-         b'class ShortConsumer66 {use ShortJoin66;}echo "X";', b''),
     'adapted-multiple-trait-wrapper-remains-unsupported':
         (b'<?php trait AdaptedLeaf66 {public int $value=3 {set(int $entry){$this->value=$entry;}'
          b'get => $this->value;}public function tag(){}}trait PlainLeaf66 {public int $aux=3;}'

@@ -60,10 +60,6 @@ CASES = {
          b'echo "Z";', b''),
 }
 CONTROLS = {
-    'trait-pure-get-short-set-pair-remains-unsupported':
-        (b'<?php trait PureShortPairTrait57 {public int $value=0 '
-         b'{get {return 700;}set => $value+1;}} '
-         b'class PureShortPairConsumer57 {use PureShortPairTrait57;}echo "X";', b''),
 }
 
 def main():

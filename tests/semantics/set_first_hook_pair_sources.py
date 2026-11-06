@@ -81,10 +81,6 @@ CASES = {
          b'  set(int|string $supplied) => ($this=1);\n  get => ($this=2);\n }\n}\necho "Z";', b''),
 }
 CONTROLS = {
-    'trait-set-first-short-set-get-pair-remains-unsupported':
-        (b'<?php trait SetFirstTrait60 {public int $value '
-         b'{set => $value+1;get => 700;}} '
-         b'class SetFirstConsumer60 {use SetFirstTrait60;}echo "X";', b''),
 }
 
 

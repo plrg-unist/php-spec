@@ -102,6 +102,9 @@ CASES = {
          b'class ShortDiamond68 {use ShortJoin68;}echo "Z";', b'P'),
 }
 CONTROLS = {
+    'sole-short-set-trait-remains-unsupported':
+        (b'<?php trait SoleShort68 {public int $value=3 {set => $this->value+1;}}'
+         b'class SoleConsumer68 {use SoleShort68;}echo "X";', b''),
     'adapted-short-pair-wrapper-remains-unsupported':
         (b'<?php trait AdaptedShort68 {public int $value=3 {get => 700;set => $value+10;}public function tag(){}}'
          b'trait AdaptedWrapper68 {use AdaptedShort68 {AdaptedShort68::tag as renamed;}}'

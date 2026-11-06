@@ -88,12 +88,6 @@ CASES = {
          b'class FinalConflictConsumer65 {use FinalWrapper65;public int $value=3;}echo "Z";', b'P'),
 }
 CONTROLS = {
-    'nested-virtual-trait-pair-remains-unsupported':
-        (b'<?php trait VirtualInner65 {public int $value {get => 700;set {echo "S";}}}'
-         b'trait VirtualLayer65 {use VirtualInner65;}class VirtualConsumer65 {use VirtualLayer65;}echo "X";', b''),
-    'nested-short-set-trait-pair-remains-unsupported':
-        (b'<?php trait ShortInner65 {public int $value=3 {get => $this->value;set => $value+1;}}'
-         b'trait ShortLayer65 {use ShortInner65;}class ShortConsumer65 {use ShortLayer65;}echo "X";', b''),
     'adapted-wrapper-trait-pair-remains-unsupported':
         (b'<?php trait AdaptedInner65 {public int $value=3 {set(int $entry){$this->value=$entry;}get => $this->value;}'
          b'public function tag(){}}trait AdaptedLayer65 {use AdaptedInner65 {tag as renamed;}}'

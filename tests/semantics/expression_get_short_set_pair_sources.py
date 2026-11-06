@@ -73,10 +73,6 @@ CASES = {
          b'{get => ($this=1);set(string $supplied) => $supplied;}}echo "Z";', b''),
 }
 CONTROLS = {
-    'trait-expression-get-short-set-pair-remains-unsupported':
-        (b'<?php trait ExpressionPairTrait59 {public int $value '
-         b'{get => 700;set => $value+1;}} '
-         b'class ExpressionPairConsumer59 {use ExpressionPairTrait59;}echo "X";', b''),
 }
 
 

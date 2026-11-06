@@ -102,9 +102,6 @@ CASES = {
         (ALIAS_SOURCE, b'700;SMust not write to virtual property AliasConsumer67::$value|1;700;1'),
 }
 CONTROLS = {
-    'short-set-trait-pair-remains-unsupported':
-        (b'<?php trait ShortVirtual67 {public int $value {get => 700;set => $value+1;}}'
-         b'class ShortConsumer67 {use ShortVirtual67;}echo "X";', b''),
     'adapted-virtual-pair-wrapper-remains-unsupported':
         (b'<?php trait AdaptedVirtual67 {public int $value {get => 700;set {}}public function tag(){}}'
          b'trait AdaptedWrapper67 {use AdaptedVirtual67 {AdaptedVirtual67::tag as renamed;}}'

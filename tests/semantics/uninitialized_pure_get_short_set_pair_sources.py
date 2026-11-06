@@ -79,10 +79,6 @@ CASES = {
          b'echo "Z";', b''),
 }
 CONTROLS = {
-    'trait-uninitialized-pure-get-short-set-pair-remains-unsupported':
-        (b'<?php trait UninitializedShortPairTrait58 {public int $value '
-         b'{get {return 700;}set => $value+1;}} '
-         b'class UninitializedShortPairConsumer58 {use UninitializedShortPairTrait58;}echo "X";', b''),
 }
 
 

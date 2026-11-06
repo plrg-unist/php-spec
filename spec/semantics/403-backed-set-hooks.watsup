@@ -107,11 +107,13 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
 ;; A short SET compiles its real RHS, then implicitly writes the backing slot.
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) phpType16 expression metadata, pchheader) = $ppset_explicit_finish(P, $ppexpr(P_parameter, pcpath ++ [PCFIELD 5], expression, PPR), pcpath, ppropertydesc, pssignature, metadata, pchheader)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
-  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
+  -- if pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
   -- if ppropertydesc.TYPE =/= eps /\ $hook_body_supported(expression)
+  -- if pchheader.KIND = "class" \/ $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if $property_set_explicit_signature(phpType16, $ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z)) = (pssignature)
+  -- if pchheader.KIND = "class" \/ ($property_set_builtin_types(ppropertydesc.TYPE) /\ $property_set_builtin_types(pssignature.PARAMETERS[0].TYPE))
   -- if phpType16 = SEQUENCE ([NParam phpType14_param phpType24_param phpType18_param phpType4_ref phpType4_var phpType10_param phpType5_param phpType37_param metadata_param])
   -- if ptbytes_name = pchheader.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))], pcpath, z), ptbytes_name, pssignature)[.RETURNREF = false][.RETURNS = pssignature.RETURNS][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = ptbytes_name][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
@@ -119,8 +121,9 @@ def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTE
 
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish_named(P, $ppexpr(P_hook, pcpath ++ [PCFIELD 5], expression, PPR), pcpath, ptbytes_name, pssignature, metadata)
   -- if $ptlc($base64(text_set)) = $ptascii("set")
-  -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
+  -- if pchheader.KIND <- ["class","trait"] /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
   -- if ppropertydesc.TYPE =/= eps /\ $hook_body_supported(expression)
+  -- if pchheader.KIND = "class" \/ $pphook_pair_backed(P, pcpath, ppropertydesc, pchheader)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if ptbytes_name = pchheader.NAME ++ $ptascii("::") ++ $property_set_name(ppropertydesc.NAME)
@@ -225,10 +228,23 @@ def $property_set_expression(S, PORIGIN n pcpath_hook) = ((ppropertydesc, expres
   -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
   -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = ((z, b))
+def $property_set_expression(S, TRAIT_ORIGIN porigin_owner (PORIGIN n pcpath_hook) ptbytes_hook) = ((ppropertydesc, expression, z))
+  -- if $(|pcpath_hook| >= 2)
+  -- if pcpath_property = pcpath_hook[0:$nabs($( |pcpath_hook| - 2))] ++ [PCFIELD 3, PCINDEX 0]
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, TRAIT_MEMBER_ORIGIN porigin_owner (PORIGIN n pcpath_property)) = (ppropertydesc)
+  -- if $property_set_origin(S, ppropertydesc) = (TRAIT_ORIGIN porigin_owner (PORIGIN n pcpath_hook) ptbytes_hook)
+  -- if $property_hook_trait_selected(S, ppropertydesc, TRAIT_ORIGIN porigin_owner (PORIGIN n pcpath_hook) ptbytes_hook) = (pfunction)
+  -- if $property_set_expression(S, PORIGIN n pcpath_hook) = ((ppropertydesc_source, expression, z))
+  -- if ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source)
+  -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
+  -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = ((z_body, b))
 def $property_set_expression(S, porigin) = eps -- otherwise
 def $function_body_tasks(S, pfunction) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), AT pfunction.ORIGIN (ASSIGN_ARRAY (BASE_PROPERTY (POBJECT n_receiver) ppropertydesc.KEY) z false), DISCARD, $function_fallthrough(S, pfunction)]
-  -- if pfunction.ORIGIN = PORIGIN n pcpath_hook
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n pcpath_hook
   -- if $property_set_expression(S, pfunction.ORIGIN) = ((ppropertydesc, expression, z))
+  -- if $function_at($all_functions(S), pfunction.ORIGIN) = (pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = PROPERTY_SET_TARGET ppropertyhook
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ ppropertyhook.HOOK = pfunction.ORIGIN
