@@ -101,8 +101,15 @@ statement Tick uses the checked first-name/prefix line and is merged recursively
 through namespace bodies without new consumers. Literal eval imports use the
 same projection and request counter; callbacks can abort before pending class
 activation, then restore the caller continuation.
+Ordinary global-file `__halt_compiler` registers its offset without an opcode,
+then participates in normal Tick adjacency. The parser's terminator/end line
+supplies the marker, with existing halt-position/offset validation retained.
+Callbacks can read the offset and throw through handler/shutdown cleanup;
+remaining payload bytes never become executable tasks.
 Old no-fact plan helpers retain their quiet Class route. Missing facts and
 unproved class/member/header emission remain dependencies.
+Ordinary named-function parameter defaults still need left-to-right constant
+traversal before body planning, using the existing static Closure default producer.
 
 Plain EnumCase statements emit no main opcode, but can add a Tick before the
 enum's `DECLARE_CLASS`. Plans preserve member order and prior adjacency: a later
@@ -280,6 +287,9 @@ and callback line/abort before pending namespace body activation.
 The [import-emission tick review](../../coverage/semantics/tick-import-review.json)
 records multi-item ordinary/group name lines, one Tick per statement and actual
 eval-unit counter/abort/resume with pending activation and cleanup state.
+The [halt-emission tick review](../../coverage/semantics/tick-halt-review.json)
+records adjacency, split keyword/terminator lines, existing offset lookup and
+callback abort with inert payload and budget/resumption checks.
 
 Persistent callback caches now retain FCC.object and raw-object FCC.closure as
 separate owners. A bound Closure therefore has an additional cached receiver;

@@ -1,0 +1,73 @@
+{
+  "milestone": "ATTR48: ordinary global-file HaltCompiler Tick emission",
+  "status": "Independently accepted bounded implementation; wider source/lifetime and full-core obligations remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "66bbe8d2d",
+    "module": "spec/semantics/393-ticks.watsup",
+    "sha256": "821805b8a542f2501331cf98cafac8332969cce31981fc47e69971069f3d6095",
+    "scope": "One four-line Halt summary retains LAST/frequency and uses the checked end line with existing positive halt-end/offset facts. Generic statement emission and the existing authenticated raw Halt consumer provide execution. No producer, constant consumer, work-stream, runtime, machine or schema changes."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "compiler": "zend_compile_halt_compiler only registers the mangled file offset constant, emits no opcode and does not retime CG(zend_lineno). HALT_COMPILER is not unticked, so compile_stmt can emit its trailing Tick subject to adjacency. The parser creates the HALT AST/offset zval after consuming the terminator, supplying its end line.",
+    "existing_facts": "pphalt_valid, pphalt_end/offset and the raw Halt STMT already authenticate terminal/source position and offset availability. Remaining payload bytes are represented as data, not executable statements."
+  },
+  "evidence": {
+    "native_author_first": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-halt-48/native-author-v1/report.json",
+      "sha256": "71692911dd3efcd82d0ef08b382ae458599860ebe6dbe235b66a059d2300e064",
+      "revision": "cee900ac76b3976cbae6c40bdf7820d60bd5a31c",
+      "passed": true,
+      "scope": "Uncalled method enables ticks with no prior marker: Halt dispatches T. A prior real Tick suppresses the Halt marker, still giving T. Both keep BAD payload inert; native-only preparation carries no differential credit."
+    },
+    "strict": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-halt-48/strict-report-v1.json",
+      "sha256": "9cd017c174ac7e96bb2d6adae47ff4b6d801afcb84c9a8a7dae05511ee5b3b08",
+      "revision": "399cf0c4d30009852bd658eae6e9d878be232788",
+      "passed": true,
+      "modules": 446
+    },
+    "author_sources": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-halt-48/source-author-v1/report.json",
+      "sha256": "223d305bcaa9e96b03a8f2fb93fe9ca5ec9f14bafe5ddf30c41b1f31d85d64e4",
+      "revision": "399cf0c4d30009852bd658eae6e9d878be232788",
+      "passed": true,
+      "agreements": 2,
+      "observations": {
+        "real Halt marker": "T",
+        "prior adjacent marker": "T"
+      },
+      "scope": "The two originals discriminate emission from unconditional or duplicated Halt callbacks, with no payload execution."
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-halt-48/source-review-v1/report.json",
+      "sha256": "44e3ffff0915490c46ec0d4f07d10c9049058e088237a63a98910f9a69355f12",
+      "revision": "399cf0c4d30009852bd658eae6e9d878be232788",
+      "passed": true,
+      "agreements": 1,
+      "observation": "T19:410CZ",
+      "scope": "Keyword line16 differs from terminator19. Callback traces19 and reads the existing dynamic offset constant410, then throws through exception handler C and shutdown Z. BAD payload is never executed."
+    },
+    "independent_reached": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/tick-halt-48/review-protocol-v2/run/report.json",
+      "sha256": "6fb2fc4c4f7b550c2a9467a70d0b3194778e030651c89f9d09e2ff350187cbfd",
+      "process_sha256": "9cd4143d3b54c4cd2aa9dcb3464533e734070b7fdb7287012740797c5ca9ec02",
+      "revision": "460620d573a65755e516196e41fa19eb8556b947",
+      "passed": true,
+      "groups": 1,
+      "reported_conditions": 54,
+      "derived_negatives": 0,
+      "count_note": "Reported conditions include helper bindings, not only independent assertions.",
+      "scope": "At the genuine Halt marker, line19/frequency1, exact retained payload and offset410 validate before callback. One step produces canonical TICK_NEXT receipt; zero-budget and one-step/full-resume equality pass. Final normal T19:410CZ, heap/descriptors/Tick validity and inert payload hold."
+    }
+  },
+  "independent_review": "Peer traced the parser/compiler line and opcode path, reviewed the exact clause against existing terminal/offset authority and accepted the actual marker/dispatch/budget front after one payload-expectation fixture correction. No production/source change was required.",
+  "remaining": "Witnesses cover ordinary global files and existing offset consumers. Wider source modes, namespace/encoding cases, owning callbacks and lifetime combinations remain partial; no whole halt/tick family closure is claimed.",
+  "environment": "Original bytes, paths/cwd, commands, raw channels/exits and implementation/tool fingerprints remain external in tick-halt-48. Sources use LC_ALL=C, TZ=UTC, PATH=/usr/bin:/bin and the pinned profile. Checked SL uses CPU 5, disabled caches and encountered determinism checks. All accepted inputs were stable with exit 0/empty driver stderr; all campaign executables were reaped. Regular local tools were preserved from idle ATTR47; no fresh build/portability claim.",
+  "zero_credit": [
+    "source-baseline/report.json at cee900ac7 remains false (SHA b38afe42e0867d0152a452b89d028e2fe82215d1cdd17119692de1954d6c8407): native T versus old Unsupported/empty prefix at tick opcode placement.",
+    "No ATTR47, earlier compiler family, offset-consumer, output, Generator or paused-boundary campaign was replayed. No PHP engine bug or intentional divergence is claimed.",
+    "review-protocol-v1/run/report.json (SHA 043cb073e3257a326251ae0c27843789fca04fe1276c75fc8e7f33f114401c0f; process SHA 3ed337c30a96e84d61dd88e10bdf2998f443cda84c526d43d75b1a55d3eeb1bd) remains false/zero: printable-only ptascii could not represent newline-containing expected payload. Exact byte-list correction changed one fixture assertion, preserving source/code/54 count; only that front reran in v2."
+  ]
+}

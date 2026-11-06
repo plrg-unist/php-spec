@@ -133,6 +133,9 @@ test-semantics: build
 	python3 tests/semantics/tick_import_sources.py
 	python3 tests/semantics/tick_import_review_sources.py
 	python3 tests/semantics/tick_import_review_protocol.py
+	python3 tests/semantics/tick_halt_sources.py
+	python3 tests/semantics/tick_halt_review_sources.py
+	python3 tests/semantics/tick_halt_review_protocol.py
 	python3 tests/semantics/output_buffer_sources.py
 	python3 tests/semantics/output_buffer_state.py
 	python3 tests/semantics/output_reference_warning_sources.py
