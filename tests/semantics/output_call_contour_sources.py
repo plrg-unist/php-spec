@@ -35,7 +35,7 @@ class T {
 }
 function recur() {
     global $level;
-    if ($level > 0) { $level = $level - 1; return recur(); }
+    if ($level--) return recur();
     $message = 'F';
     throw new Exception($message);
 }
@@ -47,8 +47,8 @@ CASES['intermediate-helper-catch'] = CASES['multi-level-native-cast'].replace(
     b"function middle() { $keep = 'M'; return leaf(); }",
     b"function middle() { $keep = 'M'; try { return leaf(); } catch (Exception $e) { return 'H'; } }")
 CASES['intermediate-recursive-normal-override'] = CASES['recursive-native-destructor'].replace(
-    b"if ($level > 0) { $level = $level - 1; return recur(); }",
-    b"if ($level > 0) { $level = $level - 1; try { return recur(); } finally { return 'H'; } }")
+    b"if ($level--) return recur();",
+    b"if ($level--) { try { return recur(); } finally { return 'H'; } }")
 
 if __name__ == '__main__':
     raise SystemExit(0 if scope.main(CASES, 'output-call-contour', Path(__file__),
