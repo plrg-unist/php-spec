@@ -2013,6 +2013,19 @@ with PHP under the unchanged 90-second cap.
 independent 28 provenance, 5 local-endpoint and 8 catch/finally groups pass.
 The current 452-module joined load passes. Current constructor, rendering and
 held-path bounds remain.
+OB26 transports a completed fresh builtin `Exception` from a direct no-argument
+nongenerator helper into the existing native output consumer. Its producer origin
+and native call site remain separate; only the same pending identity at real VM
+restoration advances to native report authority. Helper cleanup keeps its producer
+FUNCTION and restored native CURRENT/callsite, with ordinary staged/unstaged release.
+Both frozen originals agree exactly under90; the reached helper-restore front passes
+8+8 groups. [Author evidence](coverage/semantics/output-helper-unwind-author.json) and
+[review](coverage/semantics/output-helper-unwind-review.json) retain the affected cuts.
+Independent 71 transport/report/issuer/clearing/empty/byref groups pass, including
+the current-continuation owner guard at birth and its checked source bridge.
+The current joined 454-module interface load passes.
+Constructor-argument aborts, owning saved continuations and held domains stay outside
+this cut.
 Unresolved/effectful creation, active handler-body reentry, other Warning/deprecation-handler returned-object
 starts, other output Notice returned-object cases, allocation failure/memory limits
 and wider executor completion remain partial.
@@ -2726,7 +2739,6 @@ their work remains unaccepted until integrated.
 | ENUM151 | Quiet primitive and known Closure-value is_callable classification and exact names through existing registry/input/reference/flag rules, preserving invocation boundaries and held domains. |
 | GC63 | Own Value plus finite scalar/fieldless-Child declared slots, with exact weak-live/null phase and inner-operation ancestry proofs; preserve common fences and held lifecycle modes. |
 | I129 | Ordinary positional prefixes plus one terminal simple-CV Traversable at admitted native Generator consumers, with actual replay/SENT and prefix roots; exclude array prefixes, multiple Traversables and named-before-unpack. |
-| OB26 | Completed builtin Exception from a direct no-argument ordinary helper through real VM unwind into native output consumers, preserving exact identities and catch/normal clearing; keep wider throw/rendering modes held. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

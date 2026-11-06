@@ -1,0 +1,120 @@
+{
+  "milestone": "OB26: fresh helper throws cross real VM restoration into native output cleanup",
+  "status": "source/runtime/tests integrated; independently CLEAR71 groups and current454 joined load; closing metadata ready",
+  "runtime": {
+    "revision": "d578bb7e5c4c05a5868acc410e870fd2c95355e3",
+    "sources": "16822bff1a24c316ef3fd137599deb76bffa00b0",
+    "base": "0d7a45880c8a2527ae1d5256f2145045f3aadf54",
+    "target": "PHP8.5.10 CLI NTS64, vendor/php-src34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "compiler": "SpecTec da36ac3c434cd291940293a63da64544307730a3, SL453, caches disabled, encountered determinism; baseline profile C/UTC",
+    "sha256": {
+      "spec/semantics/30-storage.watsup": "34039c447c0d3102278fd29e54e3861e6ba9798197c7c1b850b56b0acb47cb2a",
+      "spec/semantics/456-output-object-returns.watsup": "033462a8c0fa6c267ec72fb2ef9476438ba59981724968c57571c684b868dd09"
+    },
+    "source_runtime": "82d832b426edc30eadd9b214acb7fd5582837161"
+  },
+  "authority": "ZEND_DO_UCALL records the actual native T/localD caller. Ordinary helper leave restores CURRENT to that caller before helper CV release, then propagates the exception into caller catch/finally. Only later does TOP_FUNCTION restore null before native CV cleanup; zend_call_function frees that native frame before actual null-C reporting. Helper birth/trace and helper FRAME_EXIT.FUNCTION must remain separate from native cleanup FUNCTION; localD still saves oldE separately, so helperF.previous staysNULL.",
+  "change": "The existing completed constructor birth5 is unchanged. A nonowning FUNCTION/SITE call fact links the selected ordinary producer to the native own-code noarg call, using existing call_selected_valid and compiler membership/line. Actual matching helper THROW promotes CALL_NEW to CALL_THROW. The existing destructor_frame_restore hook specializes only exact two-frame helper to one-frame native restoration with the same pending object, advancing CALL_UNWIND while preserving native callsite/current. Native admission/report and both retired receipts reject earlier phases. Helper/caller catch and normal consumption clear borrowed facts; real owners/results are untouched. Empty helpers retain existing unstaged root protection, and byref declarations need no new owner before exceptional retval publication.",
+  "owner_front": "At birth issuance the current helper HELD/tasks_nodes(TODO) must be empty; the saved native caller maintains that bound during helper transport; actual helper/native CV tables and native context remain real owners. Constructor argument tasks/CTOR_RESULT retain their receiver nodes, so this physical guard excludes unfinished constructor arguments and wider owning continuations without a body/remainder whitelist. The helper has raw function target, no receiver/cache/wrapper/argument owners and empty formal/actual args. No context is borrowed into helper cleanup and no forced helper barrier is introduced.",
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26/model-01/report.json",
+    "sha256": "ebf097344a3940e155dd6b5aa721ed3707fe0950d98271db8e9b46bdb7d131c8",
+    "agreements": 2,
+    "records": [
+      {
+        "case": 1,
+        "source_sha256": "762f13de27d08802e61f36084a108467f1b539185a4bcc6315ffcb88bdc2d83f",
+        "native_report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26/native-01/report.json",
+        "native_report_sha256": "8658831d0daaacf6095e893d8dd5d5b7edb2f156a1f7db6928bfc99945df8e0e",
+        "seconds": 64.909,
+        "cap_seconds": 90
+      },
+      {
+        "case": 2,
+        "source_sha256": "301de74022589c1ae4a55e72a7b9076532a42c88e9f05396b1ad78d462e1a525",
+        "native_report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26/native-02/report.json",
+        "native_report_sha256": "2ebc20c15db438e9fad84bf88dbe1d208a6b4f6019d0abf4a5a61cd4a6085a12",
+        "seconds": 76.245,
+        "cap_seconds": 90
+      }
+    ],
+    "result": "Both exact raw tuples agree, stable quiet tool0/php_error/reasonNone/status255/stdoutP. T original: Warning4 then E15, fail()at9 followed by internalT::__toString. Local original: F12, fail()at8 followed by internalT::__destruct, no PreviousE. Native sources/profile/binary/streams independently checked without replay; no25 or unchanged campaign."
+  },
+  "reached": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26/front-06/report.json",
+    "sha256": "b47a57041d3f07e043a0706fe039043830cb029c1ad23790eea23861ab444dcb",
+    "groups": 16,
+    "result": "Actual completed ctor NEW, helper THROW_SEARCH and first real VM restoration pass8+8, quiet stable under300; front runtime bytes equal committed82. Helper FRAME_EXIT keeps producer FUNCTION and native caller/ORIGIN, UNWIND appears only at restore, pending object stays1 and full public validity holds. State checks add no native agreement credit.",
+    "independent": {
+      "decision": "CLEAR,71 groups; quiet/stable SL453, unchanged300 per source, zero native agreement credit",
+      "root": "/home/user/workspace/php-spec-evidence-archive/new/output-helper-unwind-26-review",
+      "review": "output-helper-unwind-review.json",
+      "reports": [
+        {
+          "report": "transport-01/report.json",
+          "sha256": "5a9c157d4ee0c488bf2ea27b078e52d8f66a482df221ab21c9884d8eea280972",
+          "groups": 22
+        },
+        {
+          "report": "report-02/report.json",
+          "sha256": "fbe84e7b4158c13681b20d2da26978ea7c5329cdd54ace7f2dabe0ce176fe8b8",
+          "groups": 10
+        },
+        {
+          "report": "issuer-01/report.json",
+          "sha256": "7c33cc35750810c300bb36e41b382da09614b11630eb93a1c2c4dfd0f32c72fa",
+          "groups": 8
+        },
+        {
+          "report": "helper-catch-01/report.json",
+          "sha256": "d92574a60a3fc683858ee16e8b3d586decc2459f3b38f9ceaef40b1d4417514d",
+          "groups": 4
+        },
+        {
+          "report": "caller-catch-01/report.json",
+          "sha256": "c87822e00c4e2e04d1c736af51b880c297b323f74124d98e52afdb9a3bf32100",
+          "groups": 4
+        },
+        {
+          "report": "helper-normal-01/report.json",
+          "sha256": "1ca88bebdff00e116f15aeff9f252d1a7a036deb2ac1bd263501f2b3584304ee",
+          "groups": 6
+        },
+        {
+          "report": "caller-normal-01/report.json",
+          "sha256": "40944095ab33745979c240b8c8eb96b1a9d4b4caf79f3b8c638bbf4fcf386f55",
+          "groups": 4
+        },
+        {
+          "report": "empty-01/report.json",
+          "sha256": "15328450710cf478a74767d1306bb33a9ce6beffefe177857c6746ad077b96cd",
+          "groups": 6
+        },
+        {
+          "report": "byref-01/report.json",
+          "sha256": "530c80d916b06d428f8bad7c01449c7e67d5826f3a6689286e0d3b3ef96c5a72",
+          "groups": 7
+        }
+      ],
+      "scope": "Transport/report remain pinned82, with final d578 actual root-empty issuer8 bridge. Final helper/caller catch+normal18 prove actual consumption, retirement, public validity and no stale restore. Empty6 prove unstaged helper exit/no fabricated barrier/F1/real C owners; byref7 prove exceptional restoration before retval publication and coherent wrong same-class native receiver/distinct live oldE pending refusal. Wrong producer/callsite/pending/source/phase, saved/current owners,0/1 budgets and live/retired receipts are covered. All probes use real source states; malformed pure-helper checks are never execution starts."
+    }
+  },
+  "preserved_zero": "front01 fixture membership binding and04/05 DSL fresh-binding failures stopped before source and remain0. Prechange source projections02/03 reached normalized completed helper constructor/public state, then actual ERROR_UNWIND Unsupported pending FINAL Array/Object return conversion; whole packets0. No fake THROW_SEARCH or restore was substituted. All raw packets remain external. Independent report01 used invalid fixture slice syntax and remains0; only the affected fixture was corrected, no native/public/old replay.",
+  "compatibility": "Only30 output source variants/call payload and456 source selection/transport/clear/report change. Existing161 completed-constructor hook/birth5,441 default pending guard,79/257 frame release/ordinary roots and all result-owner/phase protocols remain unchanged. OB25 direct facts retain their readers/producer. Its helper-as-constructor-argument case has the real constructor receiver in saved continuation roots, so the new helper context cannot apply; accepted25 cuts stand without replay. Current full authority remains at capture/public/report, and intermediate recognition uses exact source/frame/header/pending/physical facts.",
+  "limits": "Direct ordinary source helper, no formal/actual args, nongenerator, builtin Exception/current ctor arguments, NULLprevious/default rendering and current helper continuation heap/HELD owners absent at birth issuance and saved-native continuation owners absent during transport. No ctor-argument abort, supplied identity, COMP88/Stringable, custom rendering, replacement chains, selected handlers, wider result/continuation owners, deeper abrupt C cleanup, ticks or lower FINAL cascades. Held lanes unchanged; no engine divergence, complete-core, offline-rebuild, Rocq or BOLA claim.",
+  "reproduce": "bin/php-semantics <recorded native source.php> --steps 100000 --timeout 90 at recorded native cwd with C/UTC; maintained source catalogue output_helper_unwind_sources.py and independent reached harness output_helper_unwind_review_state.py. Frozen reports above remain authoritative.",
+  "scope_counterexample": "Peer found that throw new Exception(throw new Exception('J')) could mint the completed inner J while current helper CTOR_SEND still owned the unfinished outer receiver. The one-line d578 helper-issuer guard checks current HELD/tasks_nodes as well as the existing saved-caller front. It changes no fact/owner/restore/report code. Affected issuer01 source-derived positives/current-owner refusals pass4+4, explicitly proving both original actual continuations have empty HELD/task roots; no native/public82 replay is needed for this stricter issuance scope.",
+  "integration": {
+    "revision": "e51237efc9d5fe96a0d3cfbe9109dbb26c8158b3",
+    "modules": 454,
+    "seconds": 15.744223,
+    "passed": true,
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp194/joined-main-454-v1/report.json",
+    "sha256": "79bc2a8e6ca4bdf5e9fe3d89be6e23d192e9afae06fbcf278f1ebb20ea87a1fd",
+    "inventory": "169 constructors/306 obligations; output family remains partial",
+    "inventory_sha256": "10cf3d63a1b24740d314923b5cc45ed41b83cd29a70ab71db25b09185051b44f",
+    "test_revision": "e81842529aa634e5136462fddb045a5c20c8d383",
+    "scope": "Actual combined OB26+independently CLEAR COMP194 interface; quiet stable exit0/no timeout. No source/native replay for integration or closing metadata."
+  }
+}

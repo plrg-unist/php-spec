@@ -280,6 +280,12 @@ normalized fields, preserving identity through string-CV or helper arguments and
 intervening allocations. The nonowning record clears on catch or normal consumption
 and validates reporting after retirement; [review](coverage/semantics/output-ctor-birth-review.json)
 records the current builtin-constructor and default-rendering bounds.
+Direct no-argument nongenerator helpers can also produce these fresh throws.
+Their producer/source facts cross actual VM restoration before gaining native
+report authority; helper cleanup keeps its own function and the native caller.
+Catch and normal overrides clear the nonowning facts.
+[Helper-unwind review](coverage/semantics/output-helper-unwind-review.json) records
+the separate origins, real owners and saved-continuation bounds.
 Normal EOF and integer/string exit now drain the existing handlers after real
 request cleanup, including lower chunk cascades, weak diagnostics and callback-local
 destructors. [OB01 evidence](coverage/semantics/output-request-end-review.json)

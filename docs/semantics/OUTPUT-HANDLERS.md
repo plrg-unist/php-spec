@@ -547,3 +547,25 @@ the source, owner and provenance cuts. The closed no-CV sole-literal route above
 is unchanged. Existing builtin constructor-argument/default-rendering domains,
 supplied identities, replacement chains, selected handlers and lower cascades
 retain their bounds.
+
+A direct ordinary no-argument nongenerator helper may complete and throw the
+fresh builtin `Exception`. Its producer function and the native own-code call site
+form a nonowning fact beside the unchanged normalized constructor birth. The real
+helper `THROW_VALUE` promotes NEW to THROW; only matching pending identity through
+actual VM restoration advances to UNWIND. Native report admission and retired
+receipts require that final phase. Producer NEW/code membership and selected helper
+are authenticated separately from the native cleanup function and caller.
+Ordinary helper exit restores native CURRENT/callsite before releasing helper CVs;
+its frame FUNCTION remains the helper. The later native epilogue performs the
+actual null-C return. Empty-CV helpers reuse existing unstaged release, without an
+extra owner or forced barrier. Helper and caller catch/normal consumption clear
+the fact; a byref-declared helper's exceptional path publishes no reference retval.
+Formal/actual arguments are empty. Current helper HELD/task heap owners are absent
+at birth issuance; the saved native caller keeps that bound during transport.
+Real locals/context remain owned.
+This excludes constructor-argument aborts and wider owning continuations without
+a method-body/remainder whitelist.
+[Author evidence](../../coverage/semantics/output-helper-unwind-author.json) and
+[review](../../coverage/semantics/output-helper-unwind-review.json) record the exact
+source/transport/owner cuts. NULL previous, default rendering and all held domains
+retain their existing bounds.
