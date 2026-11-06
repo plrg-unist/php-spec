@@ -1,9 +1,22 @@
 ;; VERIFY_RETURN_TYPE owns a temporary, or borrows the unwrapped local CV.
 ;; A protected CV has a real QM_ASSIGN temporary; its original slot stays put.
 ;; The query adds no owner. A pending handler exception is independent.
+dec $callable_return_class(pstate, porigin) : bool
+dec $callable_return_function(pstate, porigin) : pfunction?
+def $callable_return_function(S, porigin_function) = (pfunction)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
+def $callable_return_function(S, porigin_function) = (pmethoddesc.FUNCTION)
+  -- if $function_at(S.FUNCTIONS, porigin_function) = eps
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~$ppmethod_magic(pmethoddesc.NAME)
+  -- if $callable_return_class(S, pmethoddesc.OWNER)
+def $callable_return_function(S, porigin_function) = eps -- otherwise
+
 dec $callable_return_metadata(pstate, porigin, porigin, int) : bool
 def $callable_return_metadata(S, porigin_function, porigin_site, z) = true
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_return_function(S, porigin_function) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction)
   -- if "callable" <- $ptmasks(pfunction.SIGNATURE.RETURNS)
   -- if porigin_site = PORIGIN n_unit pcpath_site
@@ -12,16 +25,50 @@ def $callable_return_metadata(S, porigin_function, porigin_site, z) = true
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_site) = ((z, false))
   -- if n_body = |pfunction.BODY|
   -- if $(n_body <= |pcpath_site|) /\ pcpath_site[0:n_body] = pfunction.BODY
-  -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
 def $callable_return_metadata(S, porigin_function, porigin_site, z) = false -- otherwise
+
+;; Immutable descriptors remain valid after creator This retirement. Only this
+;; separate active proof consults the actual target, receiver and caller site.
+dec $callable_return_method_site(pstate, pcalltarget, pmethoddesc, porigin) : bool
+def $callable_return_method_site(S, METHOD_TARGET n porigin_method, pmethoddesc, porigin_site) = true
+  -- if ~pmethoddesc.STATIC /\ pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression_receiver (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(NIdentifier (BYTES text) metadata_name, pmethoddesc.NAME)
+  -- if $method_call_origin_valid(S, n, pmethoddesc, porigin_site)
+def $callable_return_method_site(S, SCOPED_TARGET porigin_requested porigin_method porigin_called eps (KNOWN pvalue_selector), pmethoddesc, porigin_site) = true
+  -- if pmethoddesc.STATIC /\ pmethoddesc.FUNCTION.ORIGIN = porigin_method
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $method_source_name(NIdentifier (BYTES text) metadata_name, pmethoddesc.NAME)
+  -- if $scoped_call_live_scope(S, SCOPED_TARGET porigin_requested porigin_method porigin_called eps (KNOWN pvalue_selector), porigin_site, phpType19, pmethoddesc)
+def $callable_return_method_site(S, pcalltarget, pmethoddesc, porigin_site) = false -- otherwise
+
+dec $callable_return_method_frame(pstate, porigin) : bool
+def $callable_return_method_frame(S, porigin_function) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin_function
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if $callable_return_function(S, porigin_function) = (pmethoddesc.FUNCTION)
+  -- if $target_function(S, pcallcontext.TARGET) = (pmethoddesc.FUNCTION)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, pcallcontext.TARGET)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcallcontext.TARGET)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcallcontext.TARGET)
+  -- if pcallcontext.INSTANCE = eps
+  -- if pcallcontext.CALLSITE = (porigin_call)
+  -- if $callable_return_method_site(S, pcallcontext.TARGET, pmethoddesc, porigin_call)
+  -- if ~$generator_active(S)
+def $callable_return_method_frame(S, porigin_function) = false -- otherwise
 
 dec $callable_return_frame(pstate, porigin) : bool
 def $callable_return_frame(S, porigin_function) = true
+  -- if $function_at(S.FUNCTIONS, porigin_function) =/= eps
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = porigin_function /\ pcallcontext.FUNCTION = porigin_function
   -- if pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
   -- if pcallcontext.RECEIVER = eps /\ pcallcontext.INSTANCE = eps
   -- if ~$generator_active(S)
+def $callable_return_frame(S, porigin_function) = true
+  -- if $callable_return_method_frame(S, porigin_function)
 def $callable_return_frame(S, porigin_function) = false -- otherwise
 dec $callable_return_active(pstate, porigin, porigin, int) : bool
 def $callable_return_active(S, porigin_function, porigin_site, z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_frame(S, porigin_function) /\ S.ORIGIN = (porigin_site))
@@ -67,7 +114,7 @@ def $callable_return_plain_cell(S, preqbytes, n_cell) = true
   -- if ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
   -- if ~$update_released_array_name(S, preqbytes)
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_function(S, pcallcontext.FUNCTION) = (pfunction)
   -- if ~$callable_return_typed_formal(S, pfunction.SIGNATURE.PARAMETERS, n_cell)
 def $callable_return_plain_cell(S, preqbytes, n_cell) = false -- otherwise
 
@@ -85,7 +132,6 @@ def $callable_return_cv_prepare(S, preqbytes, n_cell) = S[.CELL = n_new][.STORE 
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if n_new = |S.STORE|
 
-dec $callable_return_class(pstate, porigin) : bool
 def $callable_return_class(S, porigin) = true
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~$class_internal(pclassdesc.NAME)
@@ -151,7 +197,7 @@ def $callable_return_candidate(S, z) = true
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $callable_return_input(S_read, pvalue)
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_function(S, pcallcontext.FUNCTION) = (pfunction)
   -- if $typed_reference_conversion(S_read, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEDEPENDENT "deprecated callable admission continuation"
 def $callable_return_candidate(S, z) = false -- otherwise
 def $typed_return_callback_candidate(S, z) = true -- if $callable_return_candidate(S, z)
@@ -169,7 +215,7 @@ def $callable_return_cv_candidate(S, z) = true
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $callable_return_input(S, pvalue)
   -- if S.COMPLETION = NORMAL
-  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $callable_return_function(S, pcallcontext.FUNCTION) = (pfunction)
   -- if ptypeconversion = $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false)
   -- if ptypeconversion = TYPEVALUE pvalue \/ ptypeconversion = TYPEDEPENDENT "deprecated callable admission continuation"
 def $callable_return_cv_candidate(S, z) = false -- otherwise
@@ -194,7 +240,7 @@ def $callable_return_source_valid(S, CALLABLE_RETURN_SOURCE porigin_function por
   -- if $callable_return_active(S, porigin_function, porigin_site, z)
   -- if $callable_return_temp_site(S, porigin_function, porigin_site, z)
   -- if $callable_return_array(S, pvalue)
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_return_function(S, porigin_function) = (pfunction)
   -- if ~($typed_exact(pfunction.SIGNATURE.RETURNS, pvalue) \/ $typed_object_exact(S, pfunction.SIGNATURE.RETURNS, pvalue))
   -- if $destructor_pending_valid(S, n_pending?)
   -- if $heap_subset($instance_roots(n_pending?), S.ALLOCATIONS)
@@ -236,13 +282,13 @@ dec $callable_return_cv_start(pstate, ptask, pvalue) : pstate
 def $callable_return_cv_start(S, ptask_source, pvalue) = $callable_return_success(S_source, ptask_source)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $callable_return_source_identity(ptask_source) = ((porigin_function, porigin_site, z, eps))
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_return_function(S, porigin_function) = (pfunction)
   -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEVALUE pvalue
   -- if S_source = S[.TODO = ptask_source :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $callable_return_cv_start(S, ptask_source, pvalue) = $api_begin(S[.TODO = ptask_source :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], ptask_source, pvalue)
   -- if S.TODO = ptask :: ptask_tail*
   -- if $callable_return_source_identity(ptask_source) = ((porigin_function, porigin_site, z, eps))
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_return_function(S, porigin_function) = (pfunction)
   -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, pvalue, pfunction.CODE.STRICT, false) = TYPEDEPENDENT "deprecated callable admission continuation"
 rule PhpStep/callable-return-cv-copy: S ~> $callable_return_cv_start(S, CALLABLE_RETURN_SOURCE pcallcontext.FUNCTION porigin_site pvalue z eps, pvalue)
   -- if S.TODO = (RETURN_VALUE z) :: ptask_tail*
@@ -348,7 +394,7 @@ def $callable_return_reject(S, ptask_source) = $throwable_begin($callable_return
   -- if S.TODO = ptask :: ptask_tail*
   -- if $callable_return_source_identity(ptask_source) = ((porigin_function, porigin_site, z, n_pending?))
   -- if $callable_return_source_value(S, ptask_source) = (pvalue)
-  -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
+  -- if $callable_return_function(S, porigin_function) = (pfunction)
   -- if S_new = $throwable_materialize($throw_scalar(S[.TODO = ptask_tail*], "TypeError", $return_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned"), z))
   -- if S_new.COMPLETION = THROWING n_new
 def $api_finish(S, ptask_source, pvalue, HANDLERINVALID ptbytes) = $callable_return_reject(S, ptask_source)
