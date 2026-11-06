@@ -1205,7 +1205,7 @@ def $weakmap_write_capture(S, paccess, (FOREACH_NEXT n (HOBJECT n_map) statement
   -- if paccess.OFFSET = POBJECT n_key
   -- if $weakmap_entries_find($weakmap_entries_contents(S, n_map), n_key) = (pweakmapentry)
   -- if pweakmapentry.VALUE = POBJECT n_old
-  -- if $weakmap_write_old_value(S, n_old) \/ $weakmap_write_own_value(S, n_old)
+  -- if $weakmap_write_old_value(S, n_old) \/ ($weakmap_write_own_value(S, n_old) /\ ~(n_old <- S.DESTRUCTION.CALLED))
   -- if $heap_owners($heap_graph(S), HOBJECT n_old) = 1
   -- if $weakmap_write_incoming_before(S, paccess.VALUE, |S.OBJECTS|)
   -- if paccess.RHS = VARIABLE n_rhs_name* z_rhs
@@ -1492,7 +1492,7 @@ def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) =
   -- if S.DESTRUCTION.RELEASES = [pdestructionrelease] /\ S.DESTRUCTION.CALLS = eps
   -- if $weakmap_write_release_stamp(pdestructionrelease, pweakmapwrite)
   -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_old)]
-  -- if $weakmap_write_old_value(S, n_old) \/ $weakmap_write_own_value(S, n_old)
+  -- if $weakmap_write_old_value(S, n_old) \/ ($weakmap_write_own_value(S, n_old) /\ ~(n_old <- S.DESTRUCTION.CALLED))
   -- if $heap_owners($heap_graph(S), HOBJECT n_old) = 1
 def $weakmap_write_old_phase(S, S_scope, pdestructionoperation, pweakmapwrite) = true
   -- if S.DESTRUCTION.CALLS = [pdestructorcall]
