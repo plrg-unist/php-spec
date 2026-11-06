@@ -538,6 +538,7 @@ def $generator_iterator_reentry_frames(S, n, pframe :: pframe_tail*) = $generato
 def $generator_iterator_reentry_frames(S, n, pframe*) = eps -- otherwise
 dec $generator_iterator_reentry_view(pstate) : (pstate, pframe, pframe, pframe*)?
 def $generator_iterator_reentry_view(S) = $generator_iterator_reentry_frames(S, n, S.FRAMES)
+  -- if |$generator_saved_ids(S.FRAMES)| = 1
   -- if $fiber_generator_body_id(S) = (n)
 def $generator_iterator_reentry_view(S) = eps -- otherwise
 
@@ -620,6 +621,7 @@ def $generator_source_reentry_body(S, S_scope) = $generator_source_reentry_body(
 def $generator_source_reentry_body(S, S_scope) = eps -- otherwise
 dec $generator_source_reentry_view(pstate) : (pstate, pframe, pframe, pframe*)?
 def $generator_source_reentry_view(S) = $generator_source_reentry_body(S, S)
+  -- if |$generator_saved_ids(S.FRAMES)| = 2
   -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
   -- if $generator_resume_ids(S.TODO) = eps
 def $generator_source_reentry_view(S) = eps -- otherwise
