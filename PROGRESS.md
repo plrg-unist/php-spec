@@ -1357,6 +1357,12 @@ compilation and runtime; getter throw/return TypeError preserves the caller targ
 and storage. One saved getter-context receiver owner survives global removal;
 the result receipt adds none. Five originals, strict449 and 146 independent source/
 return/owner/budget checks are in the [expression-pair review](coverage/semantics/expression-get-short-set-pair-review.json).
+Short SET can also precede GET: actual source derives logical GET 1/SET 0 while
+compilation visits physical 0 then 1, preserving checked SET body/builtin-variance error priority.
+Existing descriptor, return, storage and Closure source-owner rules consume those
+real roles, including source-covered absent initializers. Seven originals and
+strict449 pass; main 148 and corrected Closure 37 checks retain separate cuts in the
+[SET-first review](coverage/semantics/set-first-hook-pair-review.json).
 Conditional declarations activate before their header-line Tick, while top
 declarations have no outer Tick.
 Trait use and admitted alias/precedence metadata add no Tick or repeated method
@@ -2354,12 +2360,13 @@ their work remains unaccepted until integrated.
 
 | Track | Current work and private trees |
 | --- | --- |
-| CLASS201 | Primitive literal SEND_VAL/_EX inputs for the existing one/two-argument positional instance/static and named-instance magic calls, with compiled literal/carrier authority for NULL, bool, binary64 and interned strings alongside existing integers; preparation after accepted CLASS200, preserving other CONSTFETCH/USER/CV/array/header/unpack boundaries and held owned-NUL behavior. |
-| ATTR60 | Existing short SET physically first and GET second on the same parentless public typed class property; clean-base preparation after accepted ATTR59, deriving logical roles/origins from actual source and preserving physical compilation/error order, existing runtime/storage and role/owner/budget proof without trait/byref/attribute/parameter-default/schema expansion. |
-| COMP190 | Receiver-free empty-scope REAL private and mixed Shared/private default caches with actual private-object/origin identity, nonowning receive-birth ownership and native-proven roots/pruning/lifetime; preparation after accepted COMP189, preserving Shared/default/class-constant encodings and coordinating minimal cache/birth/state regions before edits. |
-| ENUM144 | Entered class-scoped included-unit global-constant public static user-method FCC authority from actual inherited entry scope, first file entry and earlier Producer-class publication distinct from captured Host scope; preparation after accepted ENUM143, proving receiver retirement without metadata pins and excluding eval/default/nonpublic/schema expansion. |
-| GC59 | Last-owner current-row Value/fieldless Child destruction after loop-Value rebinding, with publication before read-only callback return/fresh throw and actual result/cursor proof; first establish separation from held GC35, retaining quiet-release limits and excluding reentrant writes, insertion/unset, Key freeing and active GC. |
-| OB23 | Structural native-FINAL cleanup of fresh-Throwable CVs before the genuine null-C report, preserving the external cast guard and ordinary catch/finally; clean-base preparation after integrated OB22. Shared hooks require precise region coordination before edits. |
+| CLASS201 | Primitive literal SEND_VAL/_EX carriers in existing one/two-argument magic-call forms, with compiled literal/identity proof; preserve broader producer and held owned-NUL boundaries. |
+| ATTR61 | Existing source-backed block SET with admitted GET and actual physical roles/order; class-only, preserving current runtime/storage/schema and wider header boundaries. |
+| COMP190 | Private and mixed REAL Closure default caches (461), with exact cache-owner identity and native lifetime/root/pruning; preserve existing Shared encodings and 455 policy. |
+| ENUM144 | Published Producer authority for class-scoped entered-include constant method Closure births, distinct from captured Host scope; preserve first-entry proof, prior cache/owner consumers and receiver retirement. |
+| GC59 | Last-owner current-row destruction and read-only callbacks, with a nonowning claim across publication, old-value and Map-pin release; preserve the GC35 hold and existing mutation/lifecycle limits. |
+| I124 | Reference Generator instance/static method SEND body-throw cleanup, with genuine 328 ordinary live reference-cache and BYREF/static source coherence; preserve held wider modes. |
+| OB23 | Native FINAL fresh-Throwable CV cleanup with genuine null-C drain/eligibility/freshness proof; preserve the external cast guard and ordinary catch/finally. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
 private drafts and external raw evidence; [ARTIFACTS](docs/ARTIFACTS.md) records

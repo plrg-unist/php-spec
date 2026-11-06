@@ -231,8 +231,6 @@ TypeErrors preserve that slot or its prior 15; successful writes and retries sto
 First-write RHS abort/global removal retains the uninitialized receiver until unwind.
 Four originals, strict449 and 148 independent initial-slot/owner/budget checks are in the
 [uninitialized-pair review](../../coverage/semantics/uninitialized-pure-get-short-set-pair-review.json).
-The header now needs only the two actual hooks; the maintained ATTR57 fixture drops its
-promoted absent-initializer refusal while its frozen 148 cut retains its identity.
 Existing expression-bodied GET hooks also pair with short SET on initialized or
 uninitialized properties. Pure initialized GET uses the same actual backing
 certificate; the existing expression compiler and source-authenticated implicit
@@ -242,7 +240,16 @@ The entered getter owns its receiver through the saved call context; its result
 receipt adds no owner. Five originals, strict449 and 146 independent source/return/
 owner/budget checks are in the
 [expression-pair review](../../coverage/semantics/expression-get-short-set-pair-review.json).
-Trait, reversed pairs and wider headers remain partial. Ordinary initializer,
+Short SET may also precede GET physically. Actual names/body certificates derive
+logical GET 1/SET 0 while compilation still visits the physical first hook before
+the second: the checked first SET body/builtin-variance errors precede a later GET body error.
+Block/expression GET and implicit/explicit typed SET retain the same descriptor,
+including source-covered absent initializers. Getter return and Closure class-owner
+certificates consume the actual getter origin and authenticate the Closure's source
+class after getter frames retire. Seven originals, strict449, main 148 and
+corrected Closure 37 checks retain their separate cuts in the
+[SET-first review](../../coverage/semantics/set-first-hook-pair-review.json).
+Trait, wider block-SET pairs and wider headers remain partial. Ordinary initializer,
 type, storage and hook execution rules are reused.
 
 Selected direct trait SET imports also preserve that real builtin parameter

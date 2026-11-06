@@ -1,0 +1,76 @@
+{
+  "milestone": "ATTR60: physical short SET then GET with actual logical roles",
+  "status": "Independently accepted bounded composition; wider hooks and full core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local binary and tests/semantics/profile.json",
+  "production": {
+    "revision": "ee84a110051517fcccd23caf75fed5a6e7fd134a",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "a0a0615c920b7217624105cd693fed18d0104fc3bede1cdff12c6f52e7a40f91",
+    "scope": "Ordinary parentless CLASS public typed pairs admit short SET physically 0/GET physically 1, retaining existing block/expression GET and implicit/typed-defaultless explicit SET. An actual-source role index authenticates logical GET/SET origins; the compiler still visits physical 0 then 1. Initialized pure GET, expression return and Closure source-owner certificates consume the actual getter origin. Explicitly covered ABSENT initialization uses the same genuine backing proof. Transition, execution and storage rules stay unchanged; no schema/task, Trait/byref/attribute/parameter-default or general binding expansion."
+  },
+  "authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "source": "Zend/zend_compile.c: zend_compile_property_hooks iterates the physical hook list and verifies SET variance after that hook's function compilation. It associates each resulting function with the shared prop_info and its actual GET/SET role. Short SET establishes backing through zend_property_hook_uses_property/virtuality. Existing zend_object_handlers.c hook dispatch and receiver holds supply runtime behavior; expression GET retains its implicit RETURN."
+  },
+  "evidence": {
+    "archive": "/home/user/workspace/php-spec-evidence-archive/set-first-hook-pair-60",
+    "native_first": {
+      "report": "native-v1/report.json",
+      "sha256": "2111b5f52243e32a2cb2fe8eea6001e4119c12764c4da32dd35372fe1cebd3fd",
+      "scope": "Seven normal/static-error originals plus a Trait control pinned before implementation. First SET variance wins over later GET-$this error; first SET body-$this error reports line 4 ahead of GET line 5. Native preparation only, no differential credit."
+    },
+    "original_sources": {
+      "report": "source-final-v1/report.json",
+      "sha256": "f13efd8d18e5bf60bdfbd4fe5204c75f2f0ec219e8d2b2f9f458cf96cb84a09e",
+      "passed": true,
+      "normal_agreements": 5,
+      "static_rejection_agreements": 2,
+      "unsupported_controls": 1,
+      "scope": "Exact raw stdout/stderr and native exits cover block GET crossed backing 5G1192G132; pure initialized expression GET 700/implicit write; pure ABSENT GET 700 versus exact backing-read Error and stored 15/12; reversed expression GET throw/return-TypeError/retry/receiver stream; immediate GET Closure class owner; and both physical compiler-priority errors at SET line 4. Trait remains Unsupported with zero agreement. Completed at frozen production with stable inputs; explicit 180-second model/210-second outer case limits, 156.079 seconds total."
+    },
+    "strict": {
+      "report": "strict-report-v1.json",
+      "sha256": "02ac463e807501f9f271d15b03b09a0cbdcfe0962996be31e2c32d457e315c83",
+      "passed": true,
+      "scope": "All 449 manifest modules pass SL elaboration, algorithmic and structuring checks with main=true; exit 0, empty stderr, no timeout, 13.619 seconds and stable inputs."
+    },
+    "independent_main": {
+      "report": "review-front-v1/fiber-state-review-b1hjo59i/report.json",
+      "sha256": "9b602b7822b51f380830142c4f20d145729df814eae80c3f1594a6f1529c8a65",
+      "process": "review-front-v1/driver-report.json",
+      "process_sha256": "4293ffd4e1da40f2956ffef9758782c294c0cff858b7ae0b131c396ca9a017e6",
+      "revision": "639ad5cdff7f6270d737978a5ba38c1aac9f8d52",
+      "record": "set-first-pair-keeps-logical-get-role-return-source-and-getter-context-owner",
+      "source_sha256": "012d017f20e02ba2fb3f736327ab63309c44547ba4dbb1f36a44c0bc61b2e4b2",
+      "accepted_record": true,
+      "packet_passed": false,
+      "reported_conditions": 148,
+      "refusal_checks": 8,
+      "scope": "Only the main record passed: exact true, exit 0, empty stderr and no timeout. Actual source yields GET 1/SET 0, CODEARROW 13/SET expression 12, read site 18, signatures/default/backing 3/argument 3/count 1/result keep. One saved getter-context receiver owner survives global removal; result receipt/task roots add none. Logical header mislabelling, Trait role and source/line/function controls refuse. Heap/descriptor, zero-budget/full-resume, D-before-catch, return-TypeError target preservation, retry/final int 112 and receiver retirement pass. The packet remains false because its separate auxiliary fixture failed before execution."
+    },
+    "independent_closure": {
+      "report": "review-closure-v2/fiber-state-review-4iggpcn_/report.json",
+      "sha256": "bcaa0b7f59cef1ee2d1202be80c3d08ae2ec5dafcdfb364a794f31bf5a659b6b",
+      "process": "review-closure-v2/driver-report.json",
+      "process_sha256": "3270ce6ef1263c2dac3a869085e00366377a702b3de2c42ecf059b1f873d1eb4",
+      "revision": "659d6223d68a4e304bcdf71b39dc2c8f304d4475",
+      "source_sha256": "17879e3a24b5ce4bd0c055612f930f5f1393e572998f2c4b4fc7299d5c35745f",
+      "fixture": "tests/semantics/set_first_hook_pair_review_protocol.py",
+      "fixture_sha256": "8dfcfa8bc8c8024593d63aa17c4d56d7714f86c617bb03a045b8da9d6375fc67",
+      "passed": true,
+      "reported_conditions": 37,
+      "refusal_checks": 1,
+      "scope": "Only the corrected auxiliary was rerun. Its original native IIFE source authenticates the real GET 1 Closure source class after getter frames retire; missing property facts refuse. Actual source/roles, int 15 backing versus original assignment 5, completion and heap/descriptor checks pass. SL, 16.356 seconds, exit 0/exact true/empty stderr, no timeout and stable fixture/source/tool identities."
+    }
+  },
+  "independent_review": "CLEAR for bounded source roles, physical compilation/checked builtin-variance and body error priority, backed initialized/ABSENT descriptor, getter/Closure source authority, actual receiver ownership, resumption, harness, documentation and inventory.",
+  "compatibility": "Existing admitted GET-first pairs still derive index 0 and compile physical 0 then 1. Reverse admission is CLASS short SET only; the old Trait statement-pair policy is unchanged. Exact getter-origin equality already authenticates the two direct source helpers, replacing redundant hard index 0 checks without changing binding or execution. Main 148 was unchanged by the auxiliary-only list/scalar variable-name fix. ATTR59 and earlier execution cuts retain their original identities without replay.",
+  "zero_credit": {
+    "baseline_report": "source-calibration-v1/report.json",
+    "baseline_sha256": "eb98dd37dad9722e21a9890164de878743be49c8fe5df616e2e2e2126fa4eea4",
+    "baseline": "At c1342b126 the original reversed block pair is Unsupported with empty output; incomplete, no agreement.",
+    "failed_auxiliary": "The original review-front-v1 auxiliary record exits1 before evaluation with empty iteration because one fixture variable was reused as both list and scalar. Its original raw report/fixture and overall-false packet remain preserved with zero credit. Only those auxiliary names were corrected; only Closure 37 reran. No main/source/native/production replay. Earlier failures/Unsupported/timeouts retain their identities."
+  },
+  "environment": "External packets preserve original bytes/path/cwd/profile, raw streams/exits, commands, revisions and stable identities. Main 148 and corrected Closure 37 are separate accepted cuts, not one passing original packet. Counts include helper bindings and five harness conditions per group; neither front adds native agreement credit. One heavy job at a time across the pair; all jobs reaped. Existing tools reused; no rebuild or portability claim.",
+  "remaining": "Trait, unresolved nominal variance, wider block-SET pairs/headers and byref/attribute/parameter-default/Tick-bearing forms remain partial. Seven originals and two bounded fronts do not close the hook family. Held lanes stay unchanged; no engine bug or intentional divergence is claimed."
+}

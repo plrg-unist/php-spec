@@ -5897,6 +5897,10 @@ Expression-bodied GET also pairs with short SET through the same real backing
 descriptor. Existing implicit-return rules preserve GET's type and source line;
 throw/type-error retry retains the caller target and saved getter receiver.
 [Expression-pair review](coverage/semantics/expression-get-short-set-pair-review.json).
+Short SET may appear before GET. Logical roles follow the actual source while
+physical compilation preserves checked body/builtin-variance error priority. Existing getters,
+backing storage and source-authenticated Closure ownership retain their behavior.
+[SET-first review](coverage/semantics/set-first-hook-pair-review.json).
 A selected public typed statement pair ordered get then set now keeps two real source
 functions. A write inside GET and read inside SET use backing storage without
 calling the other hook. Assignment20 returns20, stores33 and later reads46.
