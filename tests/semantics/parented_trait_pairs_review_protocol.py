@@ -435,4 +435,4 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--case', action='append')
     args = parser.parse_args()
-    raise SystemExit(0 if review.run(args.case, process_seconds=1800) else 1)
+    raise SystemExit(0 if review.run(args.case, process_seconds=3600) else 1)

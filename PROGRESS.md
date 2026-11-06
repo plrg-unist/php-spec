@@ -2838,10 +2838,10 @@ their work remains unaccepted until integrated.
 | Track | Current work and private trees |
 | --- | --- |
 | CLASS209 | Immediate fixed-source USER/public-static FCC producers with real conversion/target before positional arguments and wrapper/INSTANCE/result roots; preserve current quiet signatures, outer headers and held bounds. |
-| ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
+| ATTR70 | Public-read protected(set)/private(set) backed Trait pairs with exact flags, SETVIS and implicit-final certificates; preserve virtual-asymmetric, arbitrary-final and override exclusions. |
 | COMP196 | Ordinary named-class deferred static defaults with owning Deprecated globals through real STATIC_DEFAULT_BIND/context and declaring CLASSSTATICS cells; preserve first-fill/reentry/type/reference laws and held boundaries. |
 | ENUM154 | is_callable/BOOL_NULL consumption of existing effectful qualified-array resolution, with genuine resolved BOOL distinct from later NAME and authentic SOURCE/nonce/reception/CELL cleanup. |
-| GC64 | Fresh Child exception replacing own-Value pending Exception, with exact Previous/root handoff and later Child order under established Root/NEXT/weakNULL/claim laws; preserve common lifecycle bounds. |
+| GC65 | Finite fresh Previous-chain handoffs anchored in original SOURCE, with per-node freshness/ownership/acyclicity and atomic new-head/parent transfer; unchanged257/default domains and refusal elsewhere. |
 | I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
 | OB28 | Fresh by-value no-argument nongenerator Exception factories through actual RETURN/RESULT/FRAME_EXIT ownership handoff before native output throw; preserve distinct producer/callsite identity and held boundaries. |
 
