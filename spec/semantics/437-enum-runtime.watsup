@@ -1790,6 +1790,21 @@ def $enum_is_callable_primitive_name(PFLOAT n, z_precision) = (ptbytes)
   -- if (ptbytes, false) = $number_text(NFLOAT n, z_precision)
 def $enum_is_callable_primitive_name(pvalue, z_precision) = eps -- otherwise
 
+;; Only a published ordinary runtime table can prove __invoke absent. A
+;; present but ineligible descriptor remains unknown rather than false.
+dec $enum_is_callable_instance(pstate, pvalue) : bool
+def $enum_is_callable_instance(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $class_links_valid(S)
+def $enum_is_callable_instance(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $enum_is_callable_instance(S, pvalue) = false -- otherwise
+
 dec $enum_is_callable_short_name(ptbytes) : ptbytes
 def $enum_is_callable_short_name(ptbytes) = ptbytes_method
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
@@ -2081,7 +2096,7 @@ def $enum_is_callable_received_ref(S, pconfigcall) = eps -- otherwise
 dec $enum_is_callable_received_input(pstate, pconfigcall) : (pvalue, bool)?
 def $enum_is_callable_received_input(S, pconfigcall) = ((pvalue_input, b_syntax))
   -- if $enum_is_callable_input(pconfigcall) = ((pvalue_input, b_syntax))
-  -- if pconfigcall.PACKS = eps \/ ~$enum_is_callable_primitive_or_closure(S, pvalue_input)
+  -- if pconfigcall.PACKS = eps \/ (~$enum_is_callable_primitive_or_closure(S, pvalue_input) /\ ~$enum_is_callable_instance(S, pvalue_input))
 def $enum_is_callable_received_input(S, pconfigcall) = ((pvalue_input, b_syntax))
   -- if pconfigcall.PACKS = eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_input), NAMED_SENT (KNOWN pvalue_syntax)]
@@ -2126,6 +2141,8 @@ def $enum_is_callable_ref_array_receiver(S, pvalue, porigin_class, ptbytes_class
 dec $enum_is_callable_ref_name(pstate, pconfigcall, pvalue) : ptbytes?
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue) = $enum_is_callable_primitive_name(pvalue, $precision_value(S))
   -- if $enum_is_callable_primitive(pvalue)
+def $enum_is_callable_ref_name(S, pconfigcall, POBJECT n) = ($object_name(S, n) ++ $ptascii("::__invoke"))
+  -- if $enum_is_callable_instance(S, POBJECT n)
 def $enum_is_callable_ref_name(S, pconfigcall, POBJECT n) = $enum_is_callable_closure_name(S, n)
 def $enum_is_callable_ref_name(S, pconfigcall, pvalue_input) = (ptbytes_input)
   -- if $enum_is_callable_argument(S, pconfigcall, 0) = ((NScalarString (BYTES text_input) metadata_input, porigin_input, z_input))
@@ -2370,6 +2387,18 @@ def $enum_is_callable_result(S, pvalue, b_syntax) = (false)
 def $enum_is_callable_result(S, POBJECT n, b_syntax) = $typed_callable(S, POBJECT n)
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $typed_closure(S, n)
+def $enum_is_callable_result(S, POBJECT n, b_syntax) = (true)
+  -- if $enum_is_callable_instance(S, POBJECT n)
+  -- if $object_invoke_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if $typed_callable(S, POBJECT n) = (true)
+def $enum_is_callable_result(S, POBJECT n, b_syntax) = (false)
+  -- if $enum_is_callable_instance(S, POBJECT n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("__invoke"), |S.CLASSES|) = eps
+def $enum_is_callable_result(S, POBJECT n, b_syntax) = (false)
+  -- if $enum_is_callable_instance(S, POBJECT n)
+  -- if S.OBJECTS[n] = STDINSTANCE
 def $enum_is_callable_result(S, pvalue, b_syntax) = $enum_is_callable_function_result(S, pvalue, b_syntax, |S.DECLARATIONS|)
   -- if $enum_is_callable_function_string(S, pvalue)
 def $enum_is_callable_result(S, pvalue, true) = (true)
@@ -2628,12 +2657,12 @@ def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput 
 def $eager_operation_source_guard(S, pdestructionoperation) = false
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
   -- if $enum_is_callable_output_scope(S, pdestructionoperation) = eps
-dec $enum_is_callable_output_closure(pstate, penumqueryoutput) : bool
-def $enum_is_callable_output_closure(S, penumqueryoutput) = true
+dec $enum_is_callable_output_object_input(pstate, penumqueryoutput) : bool
+def $enum_is_callable_output_object_input(S, penumqueryoutput) = true
   -- if $enum_is_callable_received_ref(S, penumqueryoutput.CALL) = ((POBJECT n, b_syntax, penumqueryoutput.CELL))
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
-  -- if $typed_closure(S, n)
-def $enum_is_callable_output_closure(S, penumqueryoutput) = false -- otherwise
+  -- if $typed_closure(S, n) \/ $enum_is_callable_instance(S, POBJECT n)
+def $enum_is_callable_output_object_input(S, penumqueryoutput) = false -- otherwise
 ;; Commit outside the explicit old-value exit so releasing the final CONFIG
 ;; pin gets its own operation carrying the boolean through receiver destruction.
 def $destructor_operation_postfinish(S, pdestructionoperation) = S
@@ -2641,12 +2670,12 @@ def $destructor_operation_postfinish(S, pdestructionoperation) = S
   -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
-  -- if $enum_is_callable_output_closure(S, penumqueryoutput)
+  -- if $enum_is_callable_output_object_input(S, penumqueryoutput)
 def $destructor_operation_postfinish(S, pdestructionoperation) = $enum_is_callable_output_commit(S, penumqueryoutput)
   -- if S.TODO = (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput
   -- if $enum_is_callable_output_valid(S, penumqueryoutput)
-  -- if S.COMPLETION =/= NORMAL \/ ~$enum_is_callable_output_closure(S, penumqueryoutput)
+  -- if S.COMPLETION =/= NORMAL \/ ~$enum_is_callable_output_object_input(S, penumqueryoutput)
 def $destructor_operation_postfinish(S, pdestructionoperation) = $enum_is_callable_output_commit(S, penumqueryoutput)
   -- if S.TODO = (THROW_SEARCH n) :: (ENUM_IS_CALLABLE_OUTPUT penumqueryoutput) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput

@@ -1704,5 +1704,32 @@
     "expected_normal_stdout": "1",
     "purpose": "Genuine generic array-unpack source reaches an explicitly refused new Closure query; this control preserves the nonunpack boundary and carries zero model-agreement credit.",
     "model_timeout_seconds": 150
+  },
+  {
+    "id": "is-callable-instance-names",
+    "source": "<?php\nnamespace InstanceQuery152;\nclass ParentTarget {\n    public function __InVoKe(int $required): int { echo 'BAD-invoke|'; return strrev('unentered'); }\n    public function __toString(): string { echo 'BAD-string|'; return 'unconverted'; }\n}\nclass ChildTarget extends ParentTarget {}\nclass PlainTarget {\n    public function __toString(): string { echo 'BAD-plain-string|'; return 'unconverted'; }\n}\n$parent = new ParentTarget;\n$child = new ChildTarget;\n$plain = new PlainTarget;\n$standard = new \\stdClass;\necho 'bare:', (int)is_callable($parent), ':', (int)is_callable($child), ':', (int)is_callable($plain), ':', (int)is_callable($standard), '|';\n$ok = is_callable($parent, false, $name);\necho 'parent:', (int)$ok, ':', $name, '|';\n$ok = is_callable($child, true, $name);\necho 'child:', (int)$ok, ':', $name, '|';\n$ok = is_callable($plain, false, $name);\necho 'plain:', (int)$ok, ':', $name, '|';\n$ok = is_callable($plain, true, $name);\necho 'plain-syntax:', (int)$ok, ':', $name, '|';\n$ok = is_callable($standard, false, $name);\necho 'std:', (int)$ok, ':', $name, '|';\n$ok = is_callable($standard, true, $name);\necho 'std-syntax:', (int)$ok, ':', $name, '|';\n",
+    "source_sha256": "73ce013f83082f75e1526581c3673b19e32cc98440b2c9b7ea54a3cdf8dafb90",
+    "expected_model": "normal",
+    "expected_normal_stdout": "bare:1:1:0:0|parent:1:InstanceQuery152\\ParentTarget::__invoke|child:1:InstanceQuery152\\ChildTarget::__invoke|plain:0:InstanceQuery152\\PlainTarget::__invoke|plain-syntax:0:InstanceQuery152\\PlainTarget::__invoke|std:0:stdClass::__invoke|std-syntax:0:stdClass::__invoke|",
+    "purpose": "Published ordinary USER and stdClass query classification and exact runtime-class names, independent of method-body support, __toString and syntax-only mode.",
+    "model_timeout_seconds": 180
+  },
+  {
+    "id": "is-callable-instance-owners",
+    "source": "<?php\nclass SameInput152 {\n    public function __invoke(int $required) { strrev('unentered'); }\n    public function __destruct() { global $same152; echo 'same-drop:', (int)($same152 === 'SameInput152::__invoke'), '|'; }\n}\n$same152 = new SameInput152;\n$ok152 = is_callable($same152, false, $same152);\necho 'same:', (int)$ok152, ':', $same152, '|';\nclass DetachedInput152 {\n    public function __invoke(int $required) { strrev('unentered'); }\n    public function __destruct() { global $gone152, $alias152; $gone152 = true; echo 'input-drop:', (int)($alias152 === 'DetachedInput152::__invoke'), '|'; }\n}\nclass AbsentInput152 {\n    public function __destruct() { global $gone152, $alias152; $gone152 = true; echo 'absent-drop:', (int)($alias152 === 'AbsentInput152::__invoke'), '|'; }\n}\nclass OldOutput152 {\n    public function __destruct() { global $gone152; echo 'output-drop:', (int)$gone152, '|'; }\n}\nfunction removeInput152($level, $message, $file, $line) {\n    global $gone152;\n    unset($GLOBALS['input152'], $GLOBALS['output152']);\n    $GLOBALS['output152'] = 'NEW';\n    echo 'handler-live:', (int)$gone152, '|';\n    return true;\n}\n$gone152 = false;\n$input152 = new DetachedInput152;\n$output152 = new OldOutput152;\n$alias152 =& $output152;\nset_error_handler('removeInput152');\n$ok152 = is_callable(callable_name: $output152, value: $input152, syntax_only: null);\nrestore_error_handler();\necho 'detached:', (int)$ok152, ':', $alias152, ':', $output152, ':', (int)$gone152, '|';\nunset($alias152);\n$gone152 = false;\n$input152 = new AbsentInput152;\n$output152 = new OldOutput152;\n$alias152 =& $output152;\nset_error_handler('removeInput152');\n$ok152 = is_callable(callable_name: $output152, value: $input152, syntax_only: null);\nrestore_error_handler();\necho 'absent:', (int)$ok152, ':', $alias152, ':', $output152, ':', (int)$gone152, '|';\nunset($alias152);\nclass ThrowOutput152 {\n    public function __destruct() { global $gone152; echo 'output-throw:', (int)$gone152, '|'; throw new Exception('name152'); }\n}\n$gone152 = false;\n$input152 = new DetachedInput152;\n$output152 = new ThrowOutput152;\n$alias152 =& $output152;\n$result152 = 'UNCHANGED';\nset_error_handler('removeInput152');\ntry { $result152 = is_callable(callable_name: $output152, value: $input152, syntax_only: null); }\ncatch (Exception $caught152) { echo 'caught:', $alias152, ':', $output152, ':', $result152, ':', (int)$gone152, '|'; }\nrestore_error_handler();\nunset($caught152, $alias152);\n",
+    "source_sha256": "91f4b0505444e2424e6c2a59695fcc9e35ecde38fd5c6add70788eb5eb22b2f2",
+    "expected_model": "normal",
+    "expected_normal_stdout": "same-drop:1|same:1:SameInput152::__invoke|handler-live:0|output-drop:0|input-drop:1|detached:1:DetachedInput152::__invoke:NEW:1|handler-live:0|output-drop:0|absent-drop:1|absent:0:AbsentInput152::__invoke:NEW:1|handler-live:0|output-throw:0|caught:DetachedInput152::__invoke:NEW:UNCHANGED:0|input-drop:1|",
+    "purpose": "Real SENT/input and acquired output-cell ownership through same-CV write, NULL-handler source removal, true/false ordinary result carriers and throwing output cleanup with exception-trace retention.",
+    "model_timeout_seconds": 180
+  },
+  {
+    "id": "is-callable-instance-packed-control",
+    "source": "<?php\nclass PackedInput152 { public function __invoke(int $required) { strrev('unentered'); } }\n$input152 = new PackedInput152;\necho (int)is_callable(...[$input152]), '|';\n",
+    "source_sha256": "6a764acbc26d5f0fc7e7dc87893d7dddf93823ed4d460f4dd291bbc8fb95ff40",
+    "expected_model": "unsupported",
+    "expected_normal_stdout": "1|",
+    "purpose": "Genuine ordinary USER-instance array-pack query remains explicitly Unsupported; native availability is recorded with zero model-agreement credit.",
+    "model_timeout_seconds": 180
   }
 ]

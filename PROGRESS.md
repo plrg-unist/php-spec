@@ -2788,7 +2788,9 @@ their work remains unaccepted until integrated.
 | CLASS208 | Initialized plain/reference CV receiver public literal USER producers with authentic read/private-first selected targets and no later reread; preserve current domains, headers and pre-warning refusals. |
 | ATTR69 | Parented Trait Consumers with disjoint stored Parent fields, authentic pre-link Parent and final SOURCE_PARENT/layout; preserve same-name/hooked Parent and override exclusions. |
 | COMP195 | Computed owning class-cache container replacement with readonly structural old-value history and genuine staged old release/new protection; preserve nonownership and existing cache/context boundaries. |
+| ENUM152 | Ordinary USER-instance/stdClass callable queries through existing class/method facts and result carriers, preserving proved absence versus unknown metadata and invocation boundaries. |
 | GC64 | Fresh Child exception replacing own-Value pending Exception, with exact Previous/root handoff and later Child order under established Root/NEXT/weakNULL/claim laws; preserve common lifecycle bounds. |
+| I130 | Fiber suspend/resume inside admitted initialized by-value source-Generator CV traversal, using actual borrowed NEXT frame/source-consumer authority and existing saved-VM ownership. |
 | OB27 | Arbitrary finite admitted no-argument helper contours through real same-pending VM restoration, with a nonowning frame-position cursor and original native C0 only. |
 
 Keep V110, GC35, I106, COMP123 and the paused boundaries below held. Preserve
