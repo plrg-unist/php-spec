@@ -1062,8 +1062,7 @@ def $property_hook_assign_plan(S) = (ppropertyhook)
   -- if S_receiver.COMPLETION = NORMAL
   -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes
   -- if $property_hook_read_needed(S, n, ptbytes)
-  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
-  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_selected_desc(S, n, ptbytes) = (ppropertydesc)
   -- if $property_hook_effective_origin(S, ppropertydesc) = (porigin_hook)
   -- if z_property = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
   -- if porigin_property = ppropertydesc.ORIGIN
@@ -1380,8 +1379,7 @@ def $property_hook_isset_plan(S) = (ppropertyhook)
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $property_hook_read_needed(S, n, $base64(text_name))
-  -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_ACCESS $base64(text_name)
-  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if $property_hook_selected_desc(S, n, $base64(text_name)) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = porigin_property
   -- if $property_hook_effective_origin(S, ppropertydesc) = (porigin_hook)
   -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
@@ -1438,9 +1436,11 @@ def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_REF_RESULT pprop
   -- if $property_hook_ref_tail(S, ppropertyhook, text, ptask_tail*)
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) :: ptask_tail*) = true
   -- if $property_hook_valid(S, ppropertyhook, false)
+  -- if $property_hook_access_allowed(S, ppropertyhook)
   -- if ~$property_hook_ref_function(S, ppropertyhook)
   -- if $property_hook_isset_site(S, ppropertyhook.SITE, b)
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*) = true
+  -- if $property_hook_access_allowed(S, ppropertyhook)
   -- if $property_hook_assign_parent(S, ppropertyhook.SITE) = (porigin_parent)
   -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
   -- if $property_hook_assign_source(S, ppropertyhook, pbase, z)
