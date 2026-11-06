@@ -5,7 +5,7 @@ namespace {
 namespace Ns202 {
     function notice202() {
         echo 'H|';
-        define('Ns202\\X', 9);
+        \define('Ns202\\X', 9);
         $GLOBALS['other']->run();
         echo 'Q|';
         return true;
