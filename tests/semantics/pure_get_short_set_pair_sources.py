@@ -45,6 +45,15 @@ CASES = {
          b'echo $result;echo $object->value;', b'5G7009G700'),
     'class-pure-get-explicit-short-set-results-throw-retry-and-receiver':
         (SOURCE, b'S4;1G700S9;CG700S2;1G700S8;UDCS1;1G700D5Z'),
+    'class-pure-get-short-set-observes-persistent-backing':
+        (b'<?php function trackBacking57($supplied,$backing){'
+         b'echo "S";echo $supplied;echo ":";echo $backing;echo ";";'
+         b'return $supplied+$backing+10;}'
+         b'class PureShortPairBacking57 {public int $value=3 '
+         b'{get {echo "G";return 700;}set => trackBacking57($value,$this->value);}} '
+         b'$object=new PureShortPairBacking57;$result=($object->value=5);'
+         b'echo $result;echo $object->value;$result=($object->value=2);'
+         b'echo $result;echo $object->value;', b'S5:3;5G700S2:18;2G700'),
     'pure-get-error-before-short-set-variance-error':
         (b'<?php echo "P";class PureShortPairPriority57 {public int $value=0 '
          b'{get {$this=1;return 700;}set(string $supplied) => $supplied;}}'
