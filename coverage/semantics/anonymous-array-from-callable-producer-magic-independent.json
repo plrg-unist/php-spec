@@ -1,0 +1,71 @@
+{
+  "status": "CLEAR",
+  "scope": "CLASS224: normal immediate Closure::fromCallable invocation with an exact two-item callback array containing a fresh fixed-name ordinary USER receiver and literal public nonstatic ordinary method; existing signatures, quiet COPY and magic headers.",
+  "base": "cd8aa09469e725645219d9714ef047a4d1e412ae",
+  "implementation": "f57308465d975c43b91a60826840c747bda14183",
+  "peer_fixture_commits": ["90b170540970f0140b75f920176e39f8d85684e6", "b7389e03cdf0380b2411815d61c3c98b9d7c4ddc"],
+  "tested_source_revision": "b7389e03cdf0380b2411815d61c3c98b9d7c4ddc",
+  "tested_state_revision": "b7389e03cdf0380b2411815d61c3c98b9d7c4ddc",
+  "target": {
+    "php": "8.5.10 CLI/NTS/64-bit",
+    "source": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json;-n;LC_ALL=C;TZ=UTC"
+  },
+  "static_review": [
+    "414 adds only one12-line producer arm: exactly two implicit0/1 nonref/nonspread array items; actual item0 New origin authenticates existing fresh_receiver/class, item1 origin authenticates compiled literal method bytes. REAL invocation args use the old plain instance source matcher.",
+    "Object API_CLASS has STRICT false: scope_method(true) is method_class_selected, so immutable actual factory lexical scope determines private-first primary selection before the PUBLIC/nonstatic/nonmagic gate. A private shadow refuses; primary public selection excludes the internal Closure getter/missing/magic fallback. No recomputation from current handler scope.",
+    "Pinned zend_closures.c339–384 takes zend_is_callable_ex's function_handler/called_scope/object into the fake closure.234 already transfers the temporary callback array's receiver into FROMCALLABLECLOSURE/INSTANCE borrowedThis. Existing222/223 arms, raw priority,438/234/schema/facts/roots/owners remain unchanged; return-array and stored-CV histories stay held."
+  ],
+  "original": {
+    "id": "named-fresh-array-from-callable-request-return-this",
+    "source_sha256": "6d5b4a2c8b83d3187165915aed5b51c0395dd06fbf74db60447d104564574cd7",
+    "catalogue": "tests/semantics/anonymous_array_from_callable_producer_magic_independent_cases.json",
+    "native_report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/reviewer/source/native.json",
+    "native_report_sha256": "18911a026284f09757260d361b3066abe38c2b550a09515d077362e36f5ba13a",
+    "result": "Once-native exact normal/quiet exit0: callback array contains fresh Child from inherited approved constructor (scalarfalse ignored) and literal capture. Inherited Base method/called Child returns This with saved REQUEST after late99/ownerNULL; named table/global kept retain it until final unset."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/reviewer/source/report.json",
+    "sha256": "0a3fb38dd1a8dd672c7e0dcd422df873087d78516b811c7d87c01abf542f3e6d",
+    "result": "FIRST exact normal/quiet/stable/no timeout,87.621365403s,SL466,300s inner/310s outer; once-native path/cwd/profile retained without relocation or reexecution.",
+    "agreement_credit": 1
+  },
+  "state": {
+    "protocol": "tests/semantics/anonymous_array_from_callable_producer_magic_independent_protocol.py",
+    "report": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/reviewer/state/report.json",
+    "sha256": "c23eb772dcdcc496e619880499d417f391361e38e81ab2ade5a1ed1bb55ab87e",
+    "conditions": 123,
+    "result": "FIRST SL466 PASS/true/exit0/quiet/stable/no timeout,89.807191303s,300s inner/370s outer.",
+    "selection": "Actual API_CALLABLE_RESULT0/SOURCE CONFIG_FROM carries the direct0/1 array and its literal method. Real item origins, constructor class and primary public API_METHOD_TARGET match source. One step creates exact FROM(ARRAY true,INVOKE false,STATIC false) with declaring Base/called Child/receiver scope; pause plus real ready seek equals direct seek.",
+    "owners": "Before selection the callback array has one owner and its receiver one child edge. At actual CLOSURE_TARGET ready the array header has retired while the wrapper owns the receiver edge. Entered INSTANCE owns wrapper and borrows This; RETURN_THIS gives receiver two owners despite late99/saved REQUEST_STRING0. Wrapper retirement leaves one result owner at real named SEND; table/global kept preserve it through handler/table retirement until final unset.",
+    "retirement": "Final exact output and descriptor/Closure/GC/heap validity hold; pure source certification remains valid after receiver allocation retirement. No new history owner, cloned object, post-retirement operational callable lookup or old child-tail replay."
+  },
+  "input_identity": {
+    "module_count": 466,
+    "source_inputs": 477,
+    "state_inputs": 477,
+    "common_hashes_equal": 474,
+    "result": "All466 runtime module hashes and all474 common source/state inputs match after path normalization; original before/after maps remain stable."
+  },
+  "actual_main_context": {
+    "revision": "34b600179",
+    "module_count": 466,
+    "review": "ATTR81/current60041 new419 private magic integer pre/post UPDATE_PREP requires a CV property name; these plain literal text assignments/globals/array reads have no ++/-- or magic hooks, so plan/history fence is absent. GC72 new301 TEMP/NOGCEXTRA requires a root-CV ACQUIRE_ARRAY reference source/image with old-header native-excess unit1 and freshHCELL0. Callback items are direct/nonref and ordinary reads acquire no array reference; CONFIG_FROM is not is_callable NAME output, so NATIVEEXCESS stays eps even with real callback/table arrays and the required image cannot arise. Privatecd8aa/466 cuts retained; no extra gate/source replay."
+  },
+  "preservation": {
+    "root": "/home/user/workspace/php-spec-evidence-archive/class224-fresh-array-from-callable-producer-magic/reviewer",
+    "manifest": "manifest.json",
+    "manifest_sha256": "08b4f061614ef6c11d23df534aac9129f8aabbfa06353e4bc24861f15442da0f",
+    "artifacts": 31,
+    "recovery": "run-source.py uses the once-native original; run-state.py uses maintained123. Commands/cwd/profile/limits/exits/streams and input maps remain external. Rerun affected checks only."
+  },
+  "failed_peer_attempts": 0,
+  "timeout_attempts": 0,
+  "fixture_corrections_after_execution": 0,
+  "native_repeats": 0,
+  "source_repeats": 0,
+  "state_repeats": 0,
+  "remaining": "Other callback arrays/keys/references/spreads, stored/CV receivers, private/static/magic/internal methods, wider signatures/constructors, inner-named/unpack/array-return/header expansion and owned-NUL/other held paths remain partial.",
+  "engine_divergence": "None identified in the exercised fresh method-array factory invocation cuts."
+}
