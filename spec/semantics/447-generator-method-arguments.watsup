@@ -281,6 +281,10 @@ def $generator_api_body_throw(S, pgeneratorop) = false -- otherwise
 ;; HANDLE_EXCEPTION restores the native SEND frame before Generator close frees
 ;; its method This. Authenticate that real pending frame; the descriptor view
 ;; hides only its closed resume from flat placement checks, never from owners.
+dec $generator_api_body_cleanup_destructor(ptask) : pdestructorcall?
+def $generator_api_body_cleanup_destructor(DESTRUCTOR_ENTER pdestructorcall) = (pdestructorcall)
+def $generator_api_body_cleanup_destructor(DESTRUCTOR_RESULT pdestructorcall) = (pdestructorcall)
+def $generator_api_body_cleanup_destructor(ptask) = eps -- otherwise
 dec $generator_api_body_cleanup(pstate, ptask*) : (pgeneratorop, ptask*)?
 def $generator_api_body_cleanup(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (GENERATOR_RESUME pgeneratorop) :: ptask_tail*) = ((pgeneratorop, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*))
   -- if $destructor_frame_valid(S, pdestructionframe)
@@ -296,7 +300,8 @@ def $generator_api_body_cleanup(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: p
   -- if pdestructionrelease.JOBS = eps
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if $generator_api_body_cleanup(S, ptask_tail*) = ((pgeneratorop, ptask_view*))
-def $generator_api_body_cleanup(S, (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = ((pgeneratorop, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_view*))
+def $generator_api_body_cleanup(S, ptask_call :: (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = ((pgeneratorop, ptask_call :: ptask_view*))
+  -- if $generator_api_body_cleanup_destructor(ptask_call) = (pdestructorcall)
   -- if pdestructorcall <- S.DESTRUCTION.CALLS
   -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED
   -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
