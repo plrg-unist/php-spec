@@ -162,6 +162,14 @@ def $callable_return_finally_safe(S, PORIGIN n pcpath) = true
   -- if $callable_return_regions_safe(pcunit.OCCURRENCES, $ppfinally_protected(pcunit.OCCURRENCES, pcpath), $ppfinally_scope(pcunit.OCCURRENCES, pcpath))
 def $callable_return_finally_safe(S, porigin) = false -- otherwise
 
+;; This is an unimplemented continuation, not a PHP exception to unwind.
+def $callable_return_blocked(S) = true
+  -- if S.COMPLETION = UNSUPPORTED "callable return pending replacement finally"
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
+  -- if papiquery.SOURCE = CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z (n)
+  -- if $api_query_valid(S, papiquery, 1) /\ $throwable_live(S, n)
+  -- if ~$callable_return_finally_safe(S, porigin_site)
+
 dec $callable_return_success(pstate, ptask) : pstate
 def $callable_return_success(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z eps) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*

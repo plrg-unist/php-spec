@@ -433,6 +433,9 @@ def $gc_transition(S, S_next) = $prune_allocations(S_next) -- otherwise
 dec $gc_transition_owners(pstate, (pstate, pownerobservation)) : pstate
 def $gc_transition_owners(S, (S_next, pownerobservation)) = $gc_transition(S, S_next) -- otherwise
 dec $drive_steps(pstate, nat) : pstate
+dec $callable_return_blocked(pstate) : bool
+def $callable_return_blocked(S) = false -- otherwise
+def $drive_steps(S, n) = S -- if $callable_return_blocked(S)
 dec $update_callback_previous_blocked(pstate) : bool
 def $update_callback_previous_blocked(S) = false -- otherwise
 def $drive_steps(S, n) = S -- if $update_callback_previous_blocked(S)
@@ -483,6 +486,7 @@ def $drive_steps(S, n) = $drive_steps($throwable_begin(S), n)
   -- if $throwable_pending(S.COMPLETION)
   -- if ~S.COMPILESTOP
 def $drive_steps(S, n) = $output_drive_finalize($prune_allocations($release_temporaries($silence_unwind($shutdown_render_release(S)))), n)
+  -- if ~$callable_return_blocked(S)
   -- if ~$update_callback_previous_blocked(S)
   -- if ~$literal_reference_debt_blocked(S)
   -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET /\ S.COMPLETION =/= SOURCE_PENDING)
@@ -494,6 +498,7 @@ def $drive_steps(S, n) = $output_drive_finalize($prune_allocations($release_temp
   -- if ~$destructor_ready(S)
   -- if ~$generator_close_terminal_pending(S)
 def $drive_steps(S, n) = $drive_steps($start_error_unwind(S), n)
+  -- if ~$callable_return_blocked(S)
   -- if ~$update_callback_previous_blocked(S)
   -- if ~$literal_reference_debt_blocked(S)
   -- if ~$generator_close_terminal_pending(S)
