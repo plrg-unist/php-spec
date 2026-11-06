@@ -943,7 +943,7 @@ def $destructor_frame_order(S, S_restored) = pnode_done* ++ $destruction_nodes_d
 def $destructor_frame_begin(S, S_restored) = $destructor_release_begin(S_return[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.FRAMES = pdestructionframe :: S_return.DESTRUCTION.FRAMES][.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: S_return.TODO], $destruction_values($destructor_frame_nodes(S)))
   -- if S.CURRENT = (pcallcontext)
   -- if S_return = $destructor_c_frame_restore(S, $destructor_frame_restore(S, S_restored))
-  -- if pdestructionframe = {PENDING $destructor_leaving_exception(S.TODO), VALUE S.RESULT, CALLER S_restored.CURRENT, FUNCTION pcallcontext.FUNCTION, ORIGIN S_restored.ORIGIN, CONSTCONTEXT S_restored.CONSTCONTEXT}
+  -- if pdestructionframe = {PENDING $destructor_leaving_exception(S.TODO), VALUE S.RESULT, CALLER S_return.CURRENT, FUNCTION pcallcontext.FUNCTION, ORIGIN S_return.ORIGIN, CONSTCONTEXT S_return.CONSTCONTEXT}
 def $throw_frame_resume(S, n) = S
   -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
   -- if pdestructionframe.PENDING = (n)

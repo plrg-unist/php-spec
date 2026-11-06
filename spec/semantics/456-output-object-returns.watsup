@@ -376,7 +376,7 @@ def $destructor_borrowed_context(S) = (pcallcontext)
   -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ S.HELD = eps
   -- if S.CONSTCONTEXT = eps /\ S.RETIREDOWNERS = eps /\ S.BORROWEDREAD = eps /\ S.OBJECTCAST = eps
   -- if S.DESTRUCTION.FRAMES = eps /\ S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
-def $destructor_frame_restore(S, S_restored) = S_restored[.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: pobobjectreturn.TAIL]
+def $destructor_frame_restore(S, S_restored) = S_restored[.ORIGIN = eps][.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: pobobjectreturn.TAIL]
   -- if $destructor_borrowed_context(S) = (pcallcontext)
   -- if $ob_object_final_cv_method(S) = (pobobjectreturn)
   -- if S_restored.TODO = (STRINGIFY_RESULT pobobjectreturn.OBJECT $ob_call_site(pobobjectreturn.INVOKE.CALL) 0) :: (OB_USER_OBJECT_STRING pobobjectreturn) :: pobobjectreturn.TAIL
@@ -395,11 +395,13 @@ def $ob_object_final_cv_prefix(ptask :: ptask_tail*, pobobjectreturn, pdestructi
   -- if ptask =/= DESTRUCTOR_FRAME_EXIT pdestructionframe
 def $ob_object_final_cv_prefix(ptask*, pobobjectreturn, pdestructionframe) = false -- otherwise
 def $ob_object_final_cv_task_valid(S, pobobjectreturn) = true
-  -- if $ob_object_metadata(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn, pobobjectreturn)
+  -- if S.CURRENT = eps /\ S.ORIGIN = eps /\ S.CONSTCONTEXT = eps
+  ;; Registration is documentary metadata, never the local destructor caller.
+  -- if $ob_object_metadata(S[.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))], OUTPUT_FINAL_OBJECT_CV pobobjectreturn, pobobjectreturn)
   -- if pobobjectreturn.CALLER = eps /\ pobobjectreturn.PENDING = eps /\ pobobjectreturn.RETURNED = eps
   -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
   -- if $ob_object_final_cv_source(S, pobobjectreturn, porigin, n_exception) = ((pfunction, ptbytes_message, z_new))
-  -- if pdestructionframe = {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN ($ob_call_site(pobobjectreturn.INVOKE.CALL)), CONSTCONTEXT eps}
+  -- if pdestructionframe = {PENDING (n_exception), VALUE (KNOWN PNULL), CALLER eps, FUNCTION pfunction.ORIGIN, ORIGIN eps, CONSTCONTEXT eps}
   -- if pdestructionframe <- S.DESTRUCTION.FRAMES \/ $ob_object_final_cv_prefix(S.TODO, pobobjectreturn, pdestructionframe)
   -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
   -- if pobobjectreturn.TAIL = [OUTPUT_DRAIN pobdrain]
@@ -412,7 +414,7 @@ def $ob_object_final_cv_ready(S, pobobjectreturn, pdestructionframe, n_exception
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.EXCEPTIONHANDLER = eps
   -- if S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.CALLS = eps /\ S.DESTRUCTION.OPERATIONS = eps /\ S.DESTRUCTION.CLEANUPS = eps
   -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
-  -- if S_proof = S[.DESTRUCTION.FRAMES = eps][.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_proof = S[.DESTRUCTION.FRAMES = eps][.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))][.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $output_final_throw_ready(S_proof, pobobjectreturn.INVOKE, n_exception)
 def $ob_object_final_cv_ready(S, pobobjectreturn, pdestructionframe, n_exception) = false -- otherwise
 def $destructor_frame_throw_finish(S, pdestructionframe, n_exception, (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: ptask_tail*) = S_report[.DESTRUCTION.ABANDONED = S_report.DESTRUCTION.ABANDONED ++ [$ob_object_final_throw_receipt(S_report, pobobjectreturn, pobdeactivate, porigin, n_exception)]]
@@ -420,7 +422,7 @@ def $destructor_frame_throw_finish(S, pdestructionframe, n_exception, (OUTPUT_FI
   -- if $ob_object_final_cv_ready(S, pobobjectreturn, pdestructionframe, n_exception)
   -- if pobobjectreturn.SOURCE = ((porigin, n_exception))
   -- if pobobjectreturn.INVOKE.CALL = OB_FINAL pobdrain
-  -- if S_return = S[.DESTRUCTION.FRAMES = eps][.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_return = S[.DESTRUCTION.FRAMES = eps][.ORIGIN = ($ob_call_site(pobobjectreturn.INVOKE.CALL))][.TODO = [THROW_SEARCH n_exception, OB_USER_RESULT pobobjectreturn.INVOKE, OUTPUT_DRAIN pobdrain]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_report = $output_final_throw(S_return, pobobjectreturn.INVOKE, n_exception)
   -- if S_report.TODO = [OUTPUT_FINAL_PENDING pobdeactivate n_exception true]
 def $return_discard(S, OUTPUT_FINAL_OBJECT_CV pobobjectreturn) = S[.TODO = (OUTPUT_FINAL_OBJECT_CV pobobjectreturn) :: S.TODO][.COMPLETION = UNSUPPORTED "FINAL cast CV cleanup replacement or supplied Throwable"]
