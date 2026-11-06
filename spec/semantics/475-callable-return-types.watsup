@@ -73,6 +73,22 @@ def $callable_return_frame(S, porigin_function) = false -- otherwise
 dec $callable_return_active(pstate, porigin, porigin, int) : bool
 def $callable_return_active(S, porigin_function, porigin_site, z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_frame(S, porigin_function) /\ S.ORIGIN = (porigin_site))
 
+dec $callable_return_word(pvalue) : (ptbytes, ptbytes)?
+def $callable_return_word(pvalue) = ((ptbytes_class, ptbytes_method))
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if ~(0 <- ptbytes)
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+  -- if $api_keyword(ptbytes_class)
+  -- if $method_string_parts(ptbytes_method) = eps
+def $callable_return_word(pvalue) = eps -- otherwise
+dec $callable_return_direct_site(pstate, porigin) : bool
+def $callable_return_direct_site(S, porigin_site) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprArray (SEQUENCE phpType13*) metadata_array) metadata)
+def $callable_return_direct_site(S, porigin_site) = true
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NScalarString (BYTES text) metadata_string) metadata)
+  -- if $callable_return_word(PSTRING $base64(text)) =/= eps
+def $callable_return_direct_site(S, porigin_site) = false -- otherwise
+
 dec $callable_return_cv_site(pstate, porigin, porigin, int) : preqbytes?
 def $callable_return_cv_site(S, porigin_function, porigin_site, z) = (preqbytes)
   -- if $callable_return_metadata(S, porigin_function, porigin_site, z)
@@ -87,7 +103,7 @@ def $callable_return_cv_protected(S, porigin) = false -- otherwise
 dec $callable_return_temp_site(pstate, porigin, porigin, int) : bool
 def $callable_return_temp_site(S, porigin_function, porigin_site, z) = true
   -- if $callable_return_metadata(S, porigin_function, porigin_site, z)
-  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprArray (SEQUENCE phpType13*) metadata_array) metadata)
+  -- if $callable_return_direct_site(S, porigin_site)
 def $callable_return_temp_site(S, porigin_function, porigin_site, z) = true
   -- if $callable_return_cv_site(S, porigin_function, porigin_site, z) =/= eps
   -- if $callable_return_cv_protected(S, porigin_site)
@@ -161,6 +177,37 @@ def $callable_return_method_known(S, porigin, ptbytes) = true
   -- if ~$array_magic(S, porigin)
 def $callable_return_method_known(S, porigin, ptbytes) = false -- otherwise
 
+dec $callable_return_this_known(pstate, nat?) : bool
+def $callable_return_this_known(S, eps) = true
+def $callable_return_this_known(S, (n)) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $callable_return_class(S, porigin)
+  -- if ~$array_magic(S, porigin)
+def $callable_return_this_known(S, n?) = false -- otherwise
+dec $callable_return_keyword_known(pstate, pvalue, ptbytes) : bool
+def $callable_return_keyword_known(S, pvalue_keyword, ptbytes_method) = true
+  -- if $api_class(S, pvalue_keyword, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps) = API_CLASS papiclass
+  -- if $callable_return_class(S, papiclass.REQUESTED) /\ $callable_return_class(S, papiclass.CALLED)
+  -- if $callable_return_this_known(S, papiclass.RECEIVER)
+  -- if ~$array_magic(S, papiclass.REQUESTED)
+  -- if $callable_return_method_known(S, papiclass.REQUESTED, ptbytes_method)
+def $callable_return_keyword_known(S, pvalue_keyword, ptbytes_method) = true
+  -- if $api_class(S, pvalue_keyword, $api_frame_scope(S), $api_frame_scope(S), $api_frame_called(S), $api_frame_this(S), eps) = API_CLASS_INVALID ptbytes_error
+def $callable_return_keyword_known(S, pvalue_keyword, ptbytes_method) = false -- otherwise
+
+;; The captured array and reference item remain structural through a handler.
+;; Admission checks the initial leaf; resumed eligibility belongs to the cursor.
+dec $callable_return_keyword_array(pstate, pvalue) : bool
+def $callable_return_keyword_array(S, PARRAY n) = true
+  -- if $unpack_container_valid(S, KNOWN (PARRAY n))
+  -- if |S.ARRAYS[n].ITEMS| = 2
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (DIRECT pvalue_keyword)
+  -- if $string_bytes(pvalue_keyword) = (ptbytes_class)
+  -- if $api_keyword(ptbytes_class)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+def $callable_return_keyword_array(S, pvalue) = false -- otherwise
+
 dec $callable_return_array(pstate, pvalue) : bool
 def $callable_return_array(S, PARRAY n) = true
   -- if $unpack_container_valid(S, KNOWN (PARRAY n))
@@ -169,6 +216,9 @@ def $callable_return_array(S, PARRAY n) = true
   -- if $callable_return_receiver(S, pvalue_receiver) =/= eps
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
 def $callable_return_array(S, pvalue) = false -- otherwise
+
+dec $callable_return_value(pstate, pvalue) : bool
+def $callable_return_value(S, pvalue) = ($callable_return_array(S, pvalue) \/ $callable_return_keyword_array(S, pvalue) \/ $callable_return_word(pvalue) =/= eps)
 
 dec $callable_return_input(pstate, pvalue) : bool
 def $callable_return_input(S, PARRAY n) = true
@@ -184,6 +234,16 @@ def $callable_return_input(S, PARRAY n) = true
   -- if $callable_return_class(S, porigin_class)
   -- if $api_subclass(S, porigin_receiver, porigin_class)
   -- if $callable_return_method_known(S, porigin_class, ptbytes_method)
+def $callable_return_input(S, PARRAY n) = true
+  -- if $callable_return_keyword_array(S, PARRAY n)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (DIRECT pvalue_keyword)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes_method)
+  -- if ~(0 <- ptbytes_method) /\ $method_string_parts(ptbytes_method) = eps
+  -- if $callable_return_keyword_known(S, pvalue_keyword, ptbytes_method)
+def $callable_return_input(S, pvalue) = true
+  -- if $callable_return_word(pvalue) = ((ptbytes_class, ptbytes_method))
+  -- if $callable_return_keyword_known(S, PSTRING ptbytes_class, ptbytes_method)
 def $callable_return_input(S, pvalue) = false -- otherwise
 
 dec $callable_return_candidate(pstate, int) : bool
@@ -192,7 +252,7 @@ def $callable_return_candidate(S, z) = true
   -- if S.CURRENT = (pcallcontext)
   -- if S.ORIGIN = (porigin_site)
   -- if $callable_return_active(S, pcallcontext.FUNCTION, porigin_site, z)
-  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprArray (SEQUENCE phpType13*) metadata_array) metadata)
+  -- if $callable_return_direct_site(S, porigin_site)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
@@ -239,7 +299,7 @@ dec $callable_return_source_valid(pstate, ptask) : bool
 def $callable_return_source_valid(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z n_pending?) = true
   -- if $callable_return_active(S, porigin_function, porigin_site, z)
   -- if $callable_return_temp_site(S, porigin_function, porigin_site, z)
-  -- if $callable_return_array(S, pvalue)
+  -- if $callable_return_value(S, pvalue)
   -- if $callable_return_function(S, porigin_function) = (pfunction)
   -- if ~($typed_exact(pfunction.SIGNATURE.RETURNS, pvalue) \/ $typed_object_exact(S, pfunction.SIGNATURE.RETURNS, pvalue))
   -- if $destructor_pending_valid(S, n_pending?)
@@ -251,7 +311,7 @@ def $callable_return_source_valid(S, CALLABLE_RETURN_CV_SOURCE porigin_function 
   -- if $callable_return_plain_cell(S, preqbytes, n_cell)
   -- if ~(n_cell <- S.REFCELLS)
   -- if S.STORE[n_cell] = DEFINED pvalue
-  -- if $callable_return_array(S, pvalue)
+  -- if $callable_return_value(S, pvalue)
   -- if $destructor_pending_valid(S, n_pending?)
   -- if $heap_subset($instance_roots(n_pending?), S.ALLOCATIONS)
 def $callable_return_source_valid(S, ptask) = false -- otherwise
@@ -316,10 +376,30 @@ def $api_method_blocked(S, papiquery) = true
   -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes)
   -- if 0 <- ptbytes
 
+def $callable_return_class_blocked(S, papiquery) = true
+  -- if $callable_return_source_identity(papiquery.SOURCE) =/= eps
+  -- if $api_query_valid(S, papiquery, 0)
+  -- if $callable_return_keyword_array(S, papiquery.VALUE)
+  -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes)
+  -- if (0 <- ptbytes) \/ $method_string_parts(ptbytes) =/= eps
+rule PhpStep/callable-return-class-blocked: S ~> S[.COMPLETION = UNSUPPORTED "callable return keyword method mutation"]
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery 0) :: ptask_tail*
+  -- if $callable_return_class_blocked(S, papiquery)
+
+dec $callable_return_class_notice(papiquery, nat) : bool
+def $callable_return_class_notice(papiquery, 0) = true
+  -- if $is_array_value(papiquery.VALUE)
+  -- if papiquery.OUTER = eps /\ $api_class_warning(papiquery.INPUT) =/= eps
+def $callable_return_class_notice(papiquery, 1) = true
+  -- if $typed_string_value(papiquery.VALUE)
+  -- if papiquery.OUTER = eps /\ $api_class_warning(papiquery.INPUT) =/= eps
+def $callable_return_class_notice(papiquery, n_phase) = false -- otherwise
+
 dec $callable_return_result_valid(pstate, ptask, pcalltarget) : bool
 def $callable_return_result_valid(S, ptask_source, API_METHOD_TARGET papiquery porigin_method ptbytes b_static) = true
   -- if $callable_return_source_valid(S, ptask_source)
-  -- if papiquery.SOURCE = ptask_source /\ $api_query_valid(S, papiquery, 1)
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery n_phase) :: ptask_tail*
+  -- if papiquery.SOURCE = ptask_source /\ $api_query_valid(S, papiquery, n_phase)
   -- if $api_selected_method(S, papiquery, ptbytes) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin_method /\ pmethoddesc.STATIC = b_static
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.ABSTRACT
@@ -352,9 +432,9 @@ def $callable_return_finally_safe(S, porigin) = false -- otherwise
 ;; This is an unimplemented continuation, not a PHP exception to unwind.
 def $callable_return_blocked(S) = true
   -- if S.COMPLETION = UNSUPPORTED "callable return pending replacement finally"
-  -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
+  -- if S.TODO = (API_CALLABLE_RESULT papiquery n_phase) :: ptask_tail*
   -- if $callable_return_source_identity(papiquery.SOURCE) = ((porigin_function, porigin_site, z, (n)))
-  -- if $api_query_valid(S, papiquery, 1) /\ $throwable_live(S, n)
+  -- if $api_query_valid(S, papiquery, n_phase) /\ $throwable_live(S, n)
   -- if ~$callable_return_finally_safe(S, porigin_site)
 
 def $callable_return_success(S, CALLABLE_RETURN_SOURCE porigin_function porigin_site pvalue z eps) = S[.TODO = (RETURN_UNWIND (KNOWN pvalue) (porigin_site)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -402,10 +482,19 @@ def $api_finish(S, ptask_source, pvalue, HANDLERINVALID ptbytes) = $callable_ret
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = S[.COMPLETION = UNSUPPORTED "callable return method metadata"]
   -- if $callable_return_source_identity(papiquery.SOURCE) =/= eps
 
-;; Handler restoration transfers its real exception into SOURCE, then resumes
-;; the same active API lookup. No captured history grants receiver liveness.
+;; A keyword class warning fails callable checking if its handler throws.
+;; Compound-member warnings instead resume the existing method extraction.
+def $identity_read_discard(S, API_CALLABLE_RESULT papiquery n_phase) = $callable_return_reject(S_reject, ptask_source)
+  -- if $callable_return_source_identity(papiquery.SOURCE) = ((porigin_function, porigin_site, z, eps))
+  -- if $callable_return_class_notice(papiquery, n_phase)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery n_phase) :: (ptask_tail* ++ [THROW_SEARCH n])]
+  -- if $api_query_valid(S_check, papiquery, n_phase) /\ $throwable_live(S, n)
+  -- if ptask_source = $callable_return_source_pending(papiquery.SOURCE, n)
+  -- if S_reject = S[.TODO = (API_CALLABLE_RESULT (papiquery[.SOURCE = ptask_source]) n_phase) :: ptask_tail*]
 def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (API_CALLABLE_RESULT (papiquery[.SOURCE = $callable_return_source_pending(papiquery.SOURCE, n)]) 1) :: ptask_tail*]
   -- if $callable_return_source_identity(papiquery.SOURCE) = ((porigin_function, porigin_site, z, eps))
+  -- if ~$callable_return_class_notice(papiquery, 1)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if S_check = S[.TODO = (API_CALLABLE_RESULT papiquery 1) :: (ptask_tail* ++ [THROW_SEARCH n])]
   -- if $api_query_valid(S_check, papiquery, 1) /\ $throwable_live(S, n)
@@ -415,7 +504,7 @@ def $identity_read_discard(S, API_CALLABLE_RESULT papiquery 1) = S[.TODO = (API_
 def $task_nodes(CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = [HOBJECT n]
 def $call_task_valid(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $throwable_live(S, n))
 def $task_nodes(CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = $value_nodes(pvalue)
-def $call_task_valid(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ $is_array_value(pvalue) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS))
+def $call_task_valid(S, CALLABLE_RETURN_CANCEL porigin_function porigin_site pvalue z) = ($callable_return_metadata(S, porigin_function, porigin_site, z) /\ $callable_return_finally_safe(S, porigin_site) /\ ($is_array_value(pvalue) \/ $callable_return_word(pvalue) =/= eps) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS))
 def $return_discard(S, CALLABLE_RETURN_PENDING porigin_function porigin_site z n) = $throw_frame_resume($restore_frame(S_transfer), n)
   -- if S.TODO = [RETURN_UNWIND (KNOWN pvalue) (porigin_site)]
   -- if $callable_return_metadata(S, porigin_function, porigin_site, z)

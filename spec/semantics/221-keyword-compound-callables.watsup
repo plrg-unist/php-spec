@@ -21,6 +21,8 @@ dec $api_initial_class(pstate, pvalue) : papiclassresult
 dec $api_after_class(pstate, papiquery) : pstate
 dec $api_after_method(pstate, papiquery) : pstate
 dec $api_method_blocked(pstate, papiquery) : bool
+dec $callable_return_class_blocked(pstate, papiquery) : bool
+def $callable_return_class_blocked(S, papiquery) = false -- otherwise
 dec $api_object_class(pstate, papiquery) : porigin?
 dec $api_outer_class(papiquery) : porigin
 dec $api_object_method(pstate, papiquery, ptbytes) : pmethoddesc?
@@ -370,6 +372,7 @@ rule PhpStep/api-callable-dispatch: S ~> $api_begin(S[.ERRORHANDLER.CALLBACK = e
   -- if $api_special(S, perrorcall.CALLBACK)
 rule PhpStep/api-callable-class-result: S ~> $api_after_class(S, papiquery)
   -- if S.TODO = (API_CALLABLE_RESULT papiquery 0) :: ptask_tail*
+  -- if ~$callable_return_class_blocked(S, papiquery)
 rule PhpStep/api-callable-method-result: S ~> $api_after_method(S, papiquery)
   -- if S.TODO = (API_CALLABLE_RESULT papiquery 1) :: ptask_tail*
 
