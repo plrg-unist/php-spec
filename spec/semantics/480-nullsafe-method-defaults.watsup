@@ -1,0 +1,65 @@
+;; The null branch never enters a method. A live nullsafe call has already
+;; selected its ordinary target before arguments and omitted defaults run.
+dec $parameter_nullsafe_site(pstate, porigin) : bool
+def $parameter_nullsafe_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall (NExprVariable phpType32 metadata_receiver) (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $cv_name(phpType32) = (ptbytes)
+  -- if ~$direct_this(phpType32) /\ ~$ppfirstclass(phpType7*)
+def $parameter_nullsafe_site(S, porigin) = false -- otherwise
+
+dec $parameter_nullsafe_target(pstate, pcalltarget, porigin) : bool
+def $parameter_nullsafe_target(S, METHOD_TARGET n porigin, porigin_site) = $method_call_selected(S, METHOD_TARGET n porigin, (porigin_site))
+def $parameter_nullsafe_target(S, STATIC_METHOD_TARGET porigin_class porigin, porigin_site) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin, (porigin_site))
+def $parameter_nullsafe_target(S, pcalltarget, porigin_site) = false -- otherwise
+
+dec $parameter_nullsafe_current(pstate, pfunction) : bool
+def $parameter_nullsafe_current(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.NAME = pfunction.NAME
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_nullsafe_site(S, porigin_site)
+  -- if $parameter_nullsafe_target(S, pcallcontext.TARGET, porigin_site)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pcallcontext.CALLED_CLASS = (porigin_called)
+  -- if $parameter_raw_named_class(S, porigin_called)
+  -- if pcallcontext.RECEIVER = $target_receiver(S, pcallcontext.TARGET)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, pcallcontext.TARGET)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.CACHE = eps
+  -- if $default_cache_owner(S) = (CACHE_SHARED)
+def $parameter_nullsafe_current(S, pfunction) = false -- otherwise
+
+def $parameter_method_current_valid(S, pfunction) = $parameter_nullsafe_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_nullsafe_site(S, porigin_site)
+
+;; Historical authority is the captured selected function/scopes and actual
+;; nullsafe source plus publication. The old receiver CV is never reread.
+dec $parameter_nullsafe_invocation(pstate, pfunction, pdeclcalls, nat) : bool
+def $parameter_nullsafe_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
+  -- if porigin_function = pfunction.ORIGIN
+  -- if porigin_site_option? = (porigin_site)
+  -- if porigin_owner_option? = (porigin_owner)
+  -- if porigin_called_option? = (porigin_called)
+  -- if $parameter_nullsafe_site(S, porigin_site)
+  -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc.OWNER = porigin_owner
+  -- if $parameter_raw_named_class(S, porigin_called)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $parameter_callable_function_published(S, pfunction, n_prefix)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_called)
+  -- if $declaration_method_call_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls, false)
+def $parameter_nullsafe_invocation(S, pfunction, pdeclcalls, n_prefix) = false -- otherwise
+
+def $parameter_method_invocation(S, pfunction, pdeclcalls, n_prefix) = true
+  -- if $parameter_nullsafe_invocation(S, pfunction, pdeclcalls, n_prefix)
+
+;; The source donor gates warm scalar hits as well as the first owning read.
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_nullsafe_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $parameter_nullsafe_site(S, porigin_site)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
