@@ -1445,10 +1445,10 @@ mutation during freeing stays Unsupported. Earlier evidence retains its cuts.
 
 Canonical singleton and multiple-entry tables accept occupied writes when
 stored Values and the incoming Value satisfy the common policy for safe scalars
-and finite methodless objects, or one direct array layer of those values. The
+and finite methodless objects, or finite acyclic direct-array graphs of those leaves. The
 scalar domain includes null/bool/int, validated startup strings and binary64 bit
-patterns below 2^64. Reference payloads, aliased array elements and nested arrays
-receive no new admission. Object properties contain primitives, direct fieldless
+patterns below 2^64. Reference payloads and aliased array elements receive no new
+admission. Object properties contain primitives, direct fieldless
 Children or one direct array of those leaves. The former separate property-float arm
 is removed: its identical bit bound now delegates to the shared scalar helper,
 keeping successful validation disjoint.
@@ -1521,10 +1521,12 @@ record-normalization and wrapper-dispatch failures at zero credit. Broader
 posttypes, structural mutation during the borrow and active-pin collection
 remain partial; paused generic NaN conversion work is unchanged.
 
-The direct-array layer validates each actual table element as a direct safe
-scalar or an existing finite methodless object. Aliases, nested arrays and
-duplicate keys reject; actual allocation/range and nonproxy checks precede
-tracing. First insertion authenticates its evaluated RHS/selected source and
+Root arrays validate finite acyclic DIRECT graphs with safe scalar/finite
+methodless-object leaves. Each array adds its ID to the current ancestor path
+before validating entries; sibling entries retain the original path, so shared
+child tables remain admissible. Actual ancestor cycles, aliases and duplicate
+keys reject, with no numeric depth cap or runtime path record. Allocation/range
+and nonproxy checks precede table access. First insertion authenticates its evaluated RHS/selected source and
 requires an empty Map with a validated leaf `stdClass` Key and no incoming Map-key
 association. The older reference-array Key-backedge arm stays disjoint and
 unchanged. Other consumers reuse the common payload/storage policy.
@@ -1534,13 +1536,23 @@ creates another backing table and its own edges. Existing release jobs retire
 the table before releasing its ordered elements, preserving repeated Values,
 Child owners and later cleanup after a throw. Indirect/by-reference WeakMap
 dimension writes retain their earlier limits.
-The [array-payload review](../../coverage/semantics/gc-direct-array-payload-review.json)
-binds two originals and one COW retirement front. It numerically checks A3/B2
+The earlier [flat-array review](../../coverage/semantics/gc-direct-array-payload-review.json)
+binds two originals and one COW retirement front at that cut. It numerically checks A3/B2
 through table-to-job transfer, then B2-to1; later A3-to2 follows the unchanged
 release rule and original ending. Its GC check concerns the actual retired
 copy, with no new candidate-buffer claim for the earlier separation.
 The held Key is live during callbacks/catch, then retires during complete request
 cleanup. The original front's final Key-lifetime assertion retains zero credit.
+Its constructed nested-root refusal is now promoted and retired from the current
+fixture; the old 99-condition report retains its original version and scope.
+The [nested-array review](../../coverage/semantics/gc-nested-array-payload-review.json)
+binds current shared-DAG/COW and last-owner-throw originals plus actual outer-to-inner
+job ownership. The property-array leaf fold remains unchanged and nonrecursive.
+Both originals agree exactly and one 93-condition front passes. Root retirement
+transfers two inner-array jobs without multiplying Value/Child edges; the first
+actual inner job drops owner2-to1 while ValueA2/B1 and Child1 remain unchanged.
+Later Value/Child cleanup is source/generic-rule evidence. A valid-heap ancestor
+cycle and valid HCELL Key backedge stay outside the new graph policy.
 
 Each validated public untyped backed Value slot may also own one direct array
 whose elements are existing scalar leaves or fieldless destructor Children.

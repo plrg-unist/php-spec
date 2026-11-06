@@ -785,7 +785,7 @@ ownership graphs and active-pin collection remain partial; the baseline and
 early fixture elaboration failures retain zero credit.
 [GC39 review](coverage/semantics/gc-map-first-retained-child-review.json).
 
-Safe scalars, finite methodless objects and one direct array layer share
+Safe scalars, finite methodless objects and finite direct-array graphs share
 WeakMap payload validation across insertion,
 ordinary leaf-Key append, occupied replacement, reads/explicit entry removal from
 multiple-entry tables,
@@ -860,14 +860,19 @@ front pass. The old interpreter failure keeps zero credit; WeakMap rules and
 their evidence remain unchanged.
 [Property cursor repair](coverage/semantics/gc-property-nan-cursor-review.json).
 
-Top-level array elements use the existing scalar/object policy; nested arrays
-and aliased elements remain excluded. A fetched array retains its real table
-owner across Key death, while COW creates a separate table with its own repeated
-Value edges. Retirement transfers those edges to ordered jobs without copying
-Child edges. Two originals and one 99-condition COW retirement/ownership front
-pass; the original first-insertion refusal and final-Key fixture mistake retain
-zero credit.
-[Array-payload review](coverage/semantics/gc-direct-array-payload-review.json).
+Root arrays form finite acyclic DIRECT graphs over the existing scalar/object
+leaves. Branch-local ancestor paths reject cycles while admitting shared children;
+property arrays keep their separate one-layer policy. Fetched arrays retain real
+table owners across Key death, and COW creates separate physical edges. Ordered
+retirement transfers each edge to a job without copying descendants. The earlier
+[flat-array cut](coverage/semantics/gc-direct-array-payload-review.json) retains its
+99-condition record; its constructed nested-root refusal is promoted and retired
+from the current fixture without rerunning that campaign.
+Two nested-array originals agree exactly and one 93-condition front passes:
+outer retirement transfers two jobs for the same inner table, then an actual
+inner owner2-to1 release leaves Value/Child edges unchanged. Cycle, ALIAS and
+property-layer counterstates add no PHP agreement; the old baseline remains zero.
+[Nested-array review](coverage/semantics/gc-nested-array-payload-review.json).
 
 Ordinary leaf `stdClass` Keys can register across canonical Maps using the same
 finite payload policy. A nonrecursive fold checks actual associated tables and
@@ -2127,9 +2132,11 @@ conditions pass under the unchanged cap. Prior source, pipe and syntax cuts stay
 | --- | --- |
 | CLASS197 | First nullary named by-value flat-array producer in magic sends, with authenticated source and real producer-frame/argument/table/child owners; private implementation/review. |
 | I121 | Named by-reference Generator direct SEND cleanup with an owning VALUE snapshot after authenticated yield/Notice completion and live-owner proof; private implementation/review. |
-| GC55 | Finite acyclic nested DIRECT-array root WeakMap payloads with shared DAG/HARRAY edges, COW and path-checked cycles; property arrays stay one layer; private implementation/review. |
+| GC56 | Nonmutating by-value foreach over finite WeakMap payloads through one authenticated direct cursor/plain-CV protocol and real Map/Key/Value owners; private implementation/review. |
 | COMP187 | Owning defaults for ordinary named methods with genuine declaring/called scope and default/cache identity; helper module459 reserved if needed; Closure and class/static-property recipients follow. |
 | OB21 | Non-Stringable FINAL return conversion through existing direct-fatal/deactivation machinery with genuine null-C diagnostics; private implementation/review. |
+| ATTR53 | Existing block SET-hook escaped Closure source/consumer ownership through exact hook/property/trait certificates; private implementation/review. |
+| ENUM137 | Known named-user-function BOUNDFAKE temporary call cache on real user-Closure receivers, with exact dummy Closure scope, immutable source and call authority; private implementation/review. |
 | V110 | Temporarily held/unintegrated after repeated generic cybersecurity-risk flag; CPU3 released, exact rejected action unknown. Accepted source3 retained. |
 | GC35 | Held after an automatic possible-cybersecurity-risk stop; private work preserved with zero integration and validation credit. |
 | COMP123 | Held unrun; no actor. |

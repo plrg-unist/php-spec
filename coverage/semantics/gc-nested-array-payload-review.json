@@ -1,0 +1,70 @@
+{
+  "scope": "GC55: finite acyclic nested DIRECT-array ROOT WeakMap payload graphs over the current safe scalar/finite-methodless-object leaves, with shared DAG children and branch-local ancestor rejection.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; LC_ALL=C; TZ=UTC",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "base": "e91ab19d17133730fe12fb66a5dcf9ccca2390e0",
+  "semantic_revision": "f148cc017351b9711239cb6605cd5230915b5cf1",
+  "semantic_sha256": {
+    "spec/semantics/422-weak-map-entries.watsup": "ecc271f7637872bab9e17316fd7b76073917bfcbcf0620ebdbac2e53fbc45740"
+  },
+  "tested_revisions": {
+    "../php-spec-evidence-archive/gc-nested-array-author-55/front-684-v1/report.json": "68454ad77af99bb670003a5d2aebdd6ac7111bc5",
+    "../php-spec-evidence-archive/gc-nested-array-author-55/native-v1/baseline-report.json": "0d92fbb6980a84a6fdc89ebfd7471c1523554f89",
+    "../php-spec-evidence-archive/gc-nested-array-author-55/native-v1/model-report.json": "f148cc017351b9711239cb6605cd5230915b5cf1",
+    "../php-spec-evidence-archive/gc-nested-array-author-55/native-v1/native-report.json": "0d92fbb6980a84a6fdc89ebfd7471c1523554f89",
+    "../php-spec-evidence-archive/gc-nested-array-peer-55/native-v1/native-report.json": "c695c9556d55e693e1b55b2885886c0d420090ed",
+    "../php-spec-evidence-archive/gc-nested-array-peer-55/native-v1/model-report.json": "32091bc7a5c0f137c17082b58c98e3173775f58f"
+  },
+  "rule_basis": "Only the common ROOT PARRAY arm starts an empty path. A DIRECT PARRAY graph item recurses through the path-carrying value helper; all nonarray items use the unchanged scalar/finite-object leaf predicate. Every array validates range/allocation, absence from its current ancestor path, nonproxy and heap before entry access. It pushes its ID for entries; each sibling/tail retains the original path, admitting shared DAG children. The entry fold rejects duplicate keys and ALIAS. The separate property-array fold stays one-layer/scalar-or-fieldless-Child-only, preventing object/array recursion through properties. No depth constant, path record, generic tracing/ownership/COW/release/GC executor change.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c:zend_weakmap_write_dimension,free_obj and zval owner transfers",
+    "vendor/php-src/Zend/zend_types.h:SEPARATE_ARRAY (dup then GC_TRY_DELREF)",
+    "vendor/php-src/Zend/zend_hash.c:zend_array_dup,zend_array_destroy and ordered recursive zval destruction",
+    "spec/semantics/39-ownership.watsup:unchanged HARRAY physical edges",
+    "spec/semantics/257-request-destructors.watsup:unchanged ordered/shared array/value jobs"
+  ],
+  "counts": {
+    "new_exact_originals": 2,
+    "author_exact_originals": 1,
+    "independent_exact_originals": 1,
+    "source_reached_groups": 1,
+    "reported_reached_conditions": 93,
+    "old_runtime_baseline_agreements": 0,
+    "constructed_control_php_agreements": 0,
+    "new_unsupported_php_controls": 0,
+    "old_gc52_source_or_front_renewals": 0
+  },
+  "validation": {
+    "author": "A prebuilt depth3 outer[middle=[inner],inner,0] diamond shares inner[A,B,A] finite Values/Children across distinct ancestor paths. Real Map fetch and outer COW deletion preserve nested object identities. Key death drops the Map root while held/copy arrays retain descendants; dropping held runs no callbacks, final copy cleanup runsY thenX with Key weak-null and scalar sibling0 readable. Exact normal98.23s atf148, stable original bytes/head.",
+    "independent": "A temporary literal root[inner,inner,0] is inserted, then outside inner/Value owners are removed. Map free retires root and eventually last inner; suppliedYthrow thenX cleanup occur while Map pin/held Key remain weak-live and Value weak status is correct. Supplied creation trace, after0, final Map/Value deaths and explicit Key retirement agree. Exact normal93.53s at32091 with unchangedf148 runtime.",
+    "front": "One strict-SL93 group uses exact peer source bytes and reaches the real outer-array VALUE job under the actual Map pin. Outer1 and physical inner2 own ValueA2/B1 with Child1 each; inner owners do not multiply its element edges. Retiring outer replaces its edges by two actual inner jobs while its retained array record owns nothing. Actual first inner shared job drops inner2to1, preserving Value/Child counts and events. Zero-budget identity, normalized successors, explicit two-step BUDGET and full driver-resumed native throw ending agree; all selected tables/Values/Children/Key/Map retire. Later Value/Child decrements are source/generic-rule evidence, not numeric checkpoints.",
+    "controls": "A constructed valid-heap inner-to-outer ancestor cycle rejects, while the actual shared DAG is admitted. A valid constructed HCELL Key-backedge array satisfies the old helper but fails nested graph admission; ALIAS, duplicate-key and missing/dangling allocation controls reject. Property-array nested PARRAY remains false and the old flat leaf-item helper remains distinct. Counterstates add0 PHP agreement.",
+    "identity": "Both source comparisons have stable inputs/head, normal exit0/empty stderr and empty groups. Final front pins four executed binaries, directly postchecked and independently matched unchanged. No new candidate/no-candidate claim for COW separation or later array cleanup."
+  },
+  "sources_sha256": {
+    "tests/semantics/gc55_nested_array_cow_hold.php": "4eeca2eecfcbc4efdbb38b292439d5fff392e5ab0b1cb34bfe78a44a379e192e",
+    "tests/semantics/gc55_peer_shared_inner_array_throw.php": "d40ffa9bd5a192776ec775250e7c210e6d5a3bedbeaf260583d08ac03891034e"
+  },
+  "tests_sha256": {
+    "tests/semantics/gc55_nested_array_sources.py": "a02b8d6e506d3626f2a6dd6179352e4b7f01fc83dd0b373360c4a14dfd68ac97",
+    "tests/semantics/gc55_peer_nested_array_sources.py": "77adad2b77230626bb48afcb06a13597a27b0fa7076ab57e846f8f4f01a97d7b",
+    "tests/semantics/gc55_nested_array_state.py": "911020346aa39a0703efd8eb975f3eef540cf3914dd7476b592af081b70f42ee",
+    "tests/semantics/gc52_array_payload_state.py": "8d28a3a911e023b00f66e1a9ac011aa244af0d0df477a3eb5c80749ff8f56581"
+  },
+  "reports_sha256": {
+    "../php-spec-evidence-archive/gc-nested-array-author-55/front-684-v1/report.json": "058421befe933c977ff36a90be390badcea2b078e3c5786c181502b4a773b7a1",
+    "../php-spec-evidence-archive/gc-nested-array-author-55/native-v1/baseline-report.json": "434fed83b30e4ac058decde78d320991d1048136a9ab6490f1880feaf474b741",
+    "../php-spec-evidence-archive/gc-nested-array-author-55/native-v1/model-report.json": "16d463c6defe47c229e6b4f63c9473a1588c4ba6879a0ba53808eeca7184b8e1",
+    "../php-spec-evidence-archive/gc-nested-array-author-55/native-v1/native-report.json": "2cc2ae245828db17bdc3a80d2c555b76d1cbf1f73b71912e062b1bf7b1125b87",
+    "../php-spec-evidence-archive/gc-nested-array-peer-55/native-v1/native-report.json": "d25d6a62f7ea0db0c91b9f95453ba0d1aa5561339edcb65bb4a17bf9be5d4f53",
+    "../php-spec-evidence-archive/gc-nested-array-peer-55/native-v1/model-report.json": "e4934755060950afb9c75e1cf54a0a5982ca35bb27d171100d2c816a272ed461"
+  },
+  "archive_summary_sha256": {
+    "../php-spec-evidence-archive/gc-nested-array-author-55/manifest.json": "161677f0eea3fa6e725ffd44e0249e2ac4402973ca5198d2e2294194ee2fe7d5",
+    "../php-spec-evidence-archive/gc-nested-array-peer-55/independent-summary.json": "a786041079c495e89569ab0288dba26b5be2f210784407b59a02fb45dae760bf"
+  },
+  "compatibility": "Old flat root-array admissions retain the same bounds/allocation/nonproxy/heap checks and unchanged nonarray leaf results, with a vacuous initial path guard and no changed machine step or owner operation. Existing source/RHS/selected/Key/table and old-writer/backedge exclusions remain. The four-line constructed nested-root refusal in the current GC52 fixture is deliberately retired because55 promotes it; its historic99 report/hash/cut stays intact, and the current95 selection is not renewed or claimed. Root callback-object, alias/reference and54 property-array domains remain unchanged. No52\u201354 source/front replay, no intentional engine divergence.",
+  "limits": "Only finite acyclic DIRECT root-array graphs over current safe scalar/finite objects. Property arrays remain one layer of scalar/fieldless Children. No ALIAS/reference, nested property, recursive/deeper object or typed/virtual/inherited-hook expansion; existing Key/cursor/incoming/freeing/caller/active-GC boundaries remain. Held GC35/reentrant-own, Source47/COMP88, V110 and other paused work is untouched.",
+  "recovery": "Run gc55_nested_array_sources.py native/model cap360;0d92 retains old first-insertion Unsupported baseline. Run gc55_peer_nested_array_sources.py native/model with its pinned cap. Run gc55_nested_array_state.py for the sole strict-SL93 real outer-to-inner multiplicity front cap360. Raw source/frontend/fixtures/commands/profiles/process outcomes remain external. Do not rerun52\u201354 for unchanged dependencies or treat retired current controls as renewed evidence.",
+  "review": "Paired frozen runtime/source and front93 static/result review are CLEAR; final clean docs/ledger acceptance is supplied by the paired handoff."
+}
