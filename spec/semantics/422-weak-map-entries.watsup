@@ -1498,6 +1498,8 @@ def $weakmap_write_scope(S, pweakmapwrite) = (S_scope)
   -- if S.CURRENT = (pcallcontext)
   -- if S.DESTRUCTION.CALLS = [pdestructorcall]
   -- if pcallcontext.TARGET = pdestructorcall.TARGET
+  -- if pdestructorcall.OPERATION = (pdestructionoperation_inner)
+  -- if pdestructionoperation_inner.SOURCE = THROW_SEARCH n_pending
   -- if pweakmapwrite.OLD.VALUE = POBJECT n_old
   -- if $instance_storage_for(S, n_old) = (pinstancestorage)
   -- if $weakmap_write_array_pin(S, pweakmapwrite, pinstancestorage)
