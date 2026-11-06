@@ -1416,9 +1416,23 @@ real exception remains rooted. The outer namespaced query retains its selected
 nonce across a nested syntax-only query at a distinct depth. Admission remains
 bounded to known public USER
 class strings or DIRECT live object receivers and nonunpack calls; raw lexical
-keywords, ALIAS object receivers, magic/nonpublic/autoload and wider paths remain
-Unsupported. The [API resolution review](../../coverage/semantics/is-callable-api-resolution-review.json)
+keywords use the dedicated context path below; ALIAS object receivers,
+magic/nonpublic/autoload and wider paths remain Unsupported. The
+[API resolution review](../../coverage/semantics/is-callable-api-resolution-review.json)
 records the timing and ownership cut.
+Raw `self`, `parent` and `static` strings and bare-method arrays use the actual
+root or ordinary USER function/public nongenerator method frame. Source-body and
+target metadata authenticate lexical/called class and This, excluding borrowed
+Closure/default/API contexts. Known invalid scope returns false without a lookup
+deprecation and still stores the raw name. Successful arrays resume class phase
+0; strings resume method phase 1. The existing resolution receipt and SOURCE
+owners preserve later names, pending lookup throws and output cleanup without
+new roots. The real method frame retains This until return, including an
+inherited Child-only public fallback; a static caller has no such receiver.
+Existing Fiber VM save/restore preserves the same real-frame authority and roots;
+this milestone does not renew separate Fiber lifecycle validation. Initial combined keyword/qualified array members and wider contexts remain
+Unsupported. The [keyword-context review](../../coverage/semantics/is-callable-keyword-context-review.json)
+records these bounded rules.
 Fixed namespaced
 `is_callable(..., publish(), $name)` now records the actual fallback builtin
 before arguments, so `publish()` can declare a local function without changing

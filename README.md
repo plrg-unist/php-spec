@@ -7715,8 +7715,14 @@ The actual resolved boolean stays separate from the later name snapshot, includi
 handler reentry and rebinding of the input/output variables. A lookup-handler
 throw still commits the name while canceling result assignment; a flag-reception
 throw leaves the name untouched. Existing owners retain direct receivers through
-normal and pending-exception cleanup. Raw keywords and aliased object receivers
-retain explicit bounds. [Resolution review](coverage/semantics/is-callable-api-resolution-review.json).
+normal and pending-exception cleanup. [Resolution review](coverage/semantics/is-callable-api-resolution-review.json).
+Raw `self`, `parent` and `static` queries now use the genuine ordinary USER
+caller context for strings and bare-method arrays. Inherited lexical and called
+classes, and the real `This` owner, determine availability without invoking bodies.
+Invalid scope returns false and stores the exact name without a lookup deprecation;
+successful context lookup preserves diagnostic reentry and name commitment even
+when its handler throws. Closure/default/API contexts, aliased object receivers
+and wider paths remain bounded. [Keyword review](coverage/semantics/is-callable-keyword-context-review.json).
 Fixed namespace fallback now keeps the selected builtin through callbacks that
 publish a same-name function. Root and ordinary named-function sites retain the
 cached choice even after an argument throw; fresh sites can select the local

@@ -86,6 +86,13 @@ throw still commits NAME and cancels result assignment; reception-handler throw
 keeps the old NAME. Real SOURCE/cell/exception owners preserve reentry, direct
 receiver drain and namespaced nested queries. Seven source agreements and 259
 independent history/ownership/budget checks pass at recorded cuts. [Review](coverage/semantics/is-callable-api-resolution-review.json).
+Raw keyword callable strings and bare-method arrays now resolve self/parent/static
+from the actual ordinary USER caller frame. Lexical versus called class and real
+This ownership preserve public availability; known invalid scope is false without
+a lookup deprecation. Existing phase-aware receipts retain exact names and lookup-throw
+commitment through reentry and output cleanup. Five source agreements and 166
+independent owner/phase/budget checks pass at recorded private 456-module cuts.
+[Review](coverage/semantics/is-callable-keyword-context-review.json).
 
 Retained childless ordinary output objects delay destruction until their last
 owner leaves. Last-owner output clears to NULL before the destructor, then
@@ -2981,7 +2988,6 @@ their work remains unaccepted until integrated.
 | CLASS212 | Fresh fixed-name USER invokable-object producers with actual effective public __invoke selection before args and ordinary receiver owners; preserve approved constructor, source/header and held bounds without wrapper or CV-history widening. |
 | ATTR71 | Symmetric protected/private READ backed Trait pairs with authentic raw/Consumer canonical keys, permitted GET/SET descriptor selection and short implicit NAME writes; preserve public/Parent laws and existing held boundaries. |
 | COMP198 | Ordinary public named USER constructor omitted owning-Deprecated defaults through actual allocated This, METHOD_TARGET and CTOR_RESULT, shared default caches and historical publication proof without receiver roots; preserve construction and held bounds. |
-| ENUM155 | Raw self/parent/static is_callable strings and arrays through actual ordinary USER SCOPE/CALLED/THIS context, with phase-aware resolution, diagnostic and name timing; preserve alias-lifetime, unresolved-metadata and held boundaries. |
 | GC67 | Own-Value one-layer DIRECT-array slots with authentic Root cursor, retired array row and real ordered child-job proof; preserve direct-slot laws, normal array Children and existing lifecycle/held boundaries. |
 | I131 | Early noncopied native Generator prefix/terminal-CV cancellation with exact CONFIG_SEND/PREP source and SENT replay, real argv-before-receiver cleanup and unchanged admission, roots and held bounds. |
 | OB29 | Fresh by-value Exception forwarding through finite admitted no-argument return-call contours, consuming actual departed RETURN edges and result owners before native THROW; preserve NULL Previous, rendering and held boundaries. |
