@@ -239,6 +239,7 @@ def $generator_api_body_producer(S, n) = true
   -- if $class_method_origin(S.CLASSES, pgenerator.FUNCTION) = (pmethoddesc)
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if ~$ppmethod_magic(pmethoddesc.NAME)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pmethoddesc.OWNER)
@@ -276,6 +277,64 @@ def $generator_api_body_throw(S, pgeneratorop) = true
   -- if $destructor_return_operand_valid(S, KNOWN pvalue)
   -- if $value_nodes(pvalue) =/= eps
 def $generator_api_body_throw(S, pgeneratorop) = false -- otherwise
+
+;; HANDLE_EXCEPTION restores the native SEND frame before Generator close frees
+;; its method This. Authenticate that real pending frame; the descriptor view
+;; hides only its closed resume from flat placement checks, never from owners.
+dec $generator_api_body_cleanup(pstate, ptask*) : (pgeneratorop, ptask*)?
+def $generator_api_body_cleanup(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (GENERATOR_RESUME pgeneratorop) :: ptask_tail*) = ((pgeneratorop, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*))
+  -- if $destructor_frame_valid(S, pdestructionframe)
+  -- if pdestructionframe.PENDING = (n_pending)
+  -- if pdestructionframe.VALUE = KNOWN PNULL
+  -- if pdestructionframe.ORIGIN = (pgeneratorop.SITE)
+  -- if $class_method_origin(S.CLASSES, pdestructionframe.FUNCTION) = (pmethoddesc)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.FUNCTION = pdestructionframe.FUNCTION
+  -- if $generator_api_body_throw(S[.TODO = (THROW_SEARCH n_pending) :: ptask_tail*], pgeneratorop)
+  -- if $generator_resume_ids(ptask_tail*) = eps
+def $generator_api_body_cleanup(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = ((pgeneratorop, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_view*))
+  -- if pdestructionrelease.JOBS = eps
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $generator_api_body_cleanup(S, ptask_tail*) = ((pgeneratorop, ptask_view*))
+def $generator_api_body_cleanup(S, (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = ((pgeneratorop, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_view*))
+  -- if pdestructorcall <- S.DESTRUCTION.CALLS
+  -- if pdestructorcall.OBJECT <- S.DESTRUCTION.CALLED
+  -- if (HOBJECT pdestructorcall.OBJECT) <- S.ALLOCATIONS
+  -- if ~pdestructorcall.STORE /\ pdestructorcall.OPERATION = eps
+  -- if pdestructorcall.FRAME = (pdestructionframe)
+  -- if pdestructorcall.PENDING = pdestructionframe.PENDING
+  -- if pdestructorcall.CALLER = pdestructionframe.CALLER
+  -- if pdestructorcall.ORIGIN = pdestructionframe.ORIGIN /\ pdestructorcall.CONSTCONTEXT = pdestructionframe.CONSTCONTEXT
+  -- if pdestructorcall.RELEASE = (pdestructionrelease[.JOBS = [DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)]])
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc_destructor)
+  -- if pdestructorcall.TARGET = METHOD_TARGET pdestructorcall.OBJECT pmethoddesc_destructor.FUNCTION.ORIGIN
+  -- if S.OBJECTS[pdestructorcall.OBJECT] = INSTANCE porigin_class
+  -- if $class_method_origin(S.CLASSES, pdestructionframe.FUNCTION) = (pmethoddesc_factory)
+  -- if $effective_method(S, porigin_class, pmethoddesc_factory.NAME, |S.CLASSES|) = (pmethoddesc_factory)
+  -- if $generator_api_body_cleanup(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = ((pgeneratorop, ptask_view*))
+  -- if ptask_tail* = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: (GENERATOR_RESUME pgeneratorop) :: ptask_native*
+def $generator_api_body_cleanup(S, ptask*) = eps -- otherwise
+dec $generator_api_body_cleanup_tasks(pstate, ptask*) : ptask*
+def $generator_api_body_cleanup_tasks(S, ptask*) = ptask_view*
+  -- if $generator_api_body_cleanup(S, ptask*) = ((pgeneratorop, ptask_view*))
+def $generator_api_body_cleanup_tasks(S, ptask*) = ptask* -- otherwise
+dec $generator_api_body_cleanup_frames(pstate, pframe*) : pframe*
+def $generator_api_body_cleanup_frames(S, eps) = eps
+def $generator_api_body_cleanup_frames(S, pframe :: pframe_tail*) = pframe[.TODO = $generator_api_body_cleanup_tasks(S_scope, pframe.TODO)] :: $generator_api_body_cleanup_frames(S, pframe_tail*)
+  -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
+def $generator_descriptor_view(S) = S[.TODO = ptask_view*][.FRAMES = pframe_view*]
+  -- if ptask_view* = $generator_api_body_cleanup_tasks(S, S.TODO)
+  -- if pframe_view* = $generator_api_body_cleanup_frames(S, S.FRAMES)
+  -- if ptask_view* =/= S.TODO \/ pframe_view* =/= S.FRAMES
+def $destructor_frame_internal_site(S) = true
+  -- if $destructor_operation_for(S) = eps
+  -- if $generator_api_body_cleanup(S, S.TODO) =/= eps
+def $destructor_trace_suffix(S, pcallcontext) = $generator_operation_trace(S_caller, pgeneratorop)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = eps /\ pdestructorcall.FRAME =/= eps
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if S_caller = $destructor_boundary_scope(S, pdestructorcall, S.FRAMES)
+  -- if $generator_api_body_cleanup(S_caller, S_caller.TODO) = ((pgeneratorop, ptask_view*))
 
 def $generator_loop_discard(S, pgeneratorop) = $destructor_release_begin(S[.TODO = (THROW_SEARCH n) :: (GENERATOR_API_RESULT pgeneratorop PNULL) :: ptask_tail*][.ORIGIN = (pgeneratorop.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $destruction_values($generator_arguments_nodes(pgeneratorop.ARGUMENTS)))
   -- if $generator_api_body_throw(S, pgeneratorop)

@@ -175,6 +175,8 @@ dec $generator_flat_walk(ptask*) : bool
 dec $generator_resume_position(ptask*) : bool
 dec $generator_search_valid(pstate, ptask*) : bool
 dec $generator_flat_frames(pframe*) : bool
+dec $generator_descriptor_view(pstate) : pstate
+def $generator_descriptor_view(S) = S -- otherwise
 dec $generator_frame_valid(pstate, pgenerator, pframe) : bool
 dec $generator_integer(int) : bool
 dec $generator_record_valid(pstate, pgenerator) : bool
@@ -1916,7 +1918,8 @@ def $generator_object_valid(S, GENERATOR pgenerator) = ($generator_record_valid(
 def $generator_object_valid(S, pobject) = true -- otherwise
 dec $generator_close_state_valid(pstate) : bool
 def $generator_close_state_valid(S) = true -- otherwise
-def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_search_valid(S, S.TODO) /\ $generator_flat_frames(S.FRAMES) /\ $generator_from_state_valid(S) /\ $generator_close_state_valid(S) /\ $generator_storage_state_valid(S) /\ $closure_call_retained_valid(S))
+def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S_view.TODO) /\ $generator_search_valid(S, S.TODO) /\ $generator_flat_frames(S_view.FRAMES) /\ $generator_from_state_valid(S) /\ $generator_close_state_valid(S) /\ $generator_storage_state_valid(S) /\ $closure_call_retained_valid(S))
+  -- if S_view = $generator_descriptor_view(S)
 ;; These object-domain walkers leave Generator payload authentication to the
 ;; mandatory generator_state_valid conjunct of public call admission.
 def $closure_live_object_valid(S, n) = true
