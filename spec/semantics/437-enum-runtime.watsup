@@ -2997,7 +2997,15 @@ def $enum_is_callable_output_scope(S, pdestructionoperation) = eps
   -- if ~$enum_is_callable_output_valid(S, penumqueryoutput)
 def $enum_is_callable_output_scope(S, pdestructionoperation) = $enum_is_callable_output_frames(S, S.FRAMES, pdestructionoperation)
   -- if $enum_is_callable_output_at(S.TODO, pdestructionoperation) = eps
-def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput = penumqueryoutput_source /\ pdestructionoperation.VALUE = KNOWN (PBOOL penumqueryoutput.RESULT) /\ pdestructionoperation.CELL = penumqueryoutput.CELL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE))
+dec $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) : bool
+def $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) = true
+  -- if pdestructionoperation.VALUE = KNOWN (PBOOL penumqueryoutput.RESULT)
+def $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) = true
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.PENDING =/= eps
+  -- if penumqueryoutput.RESOLUTION = (penumqueryresolution)
+  -- if penumqueryresolution.PHASE = 1
+def $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) = false -- otherwise
+def $eager_operation_source_guard(S, pdestructionoperation) = (penumqueryoutput = penumqueryoutput_source /\ $enum_is_callable_output_operation_value(pdestructionoperation, penumqueryoutput) /\ pdestructionoperation.CELL = penumqueryoutput.CELL /\ pdestructionoperation.CALLER = penumqueryoutput.CALLER /\ pdestructionoperation.ORIGIN = (penumqueryoutput.CALL.SITE))
   -- if pdestructionoperation.SOURCE = ENUM_IS_CALLABLE_CLEAR penumqueryoutput_source
   -- if $enum_is_callable_output_scope(S, pdestructionoperation) = ((S_scope, penumqueryoutput))
 def $eager_operation_source_guard(S, pdestructionoperation) = false
