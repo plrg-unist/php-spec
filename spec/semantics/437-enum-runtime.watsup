@@ -1519,8 +1519,9 @@ def $enum_is_callable_reference_source(S, pconfigcall, n_depth) = true
   -- if pconfigcall.KIND = INTRINSIC_IS_CALLABLE /\ pconfigcall.NAMED /\ pconfigcall.PACKS = eps
   -- if $(pconfigcall.INDEX > 0)
   -- if n_source = $(pconfigcall.INDEX - 1)
-  -- if $intrinsic_argument(S, pconfigcall.SITE, n_source) = ((expression, false, (preqbytes), porigin, z))
-  -- if $config_parameter(INTRINSIC_IS_CALLABLE, preqbytes) = (2)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_source) = ((expression, false, preqbytes?, porigin, z))
+  -- if preqbytes? =/= eps
+  -- if $config_destination(INTRINSIC_IS_CALLABLE, preqbytes?, n_source) = (2)
   -- if $reference_cv(expression) =/= eps
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
   -- if $config_source_replay(S, pconfigcall, pconfigcall[.INDEX = 0][.SENT = eps][.NAMED = false][.PACKS = eps], eps) = ((pconfigcall, eps))
