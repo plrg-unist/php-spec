@@ -1,0 +1,55 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-static-user-family-instance",
+      "source": "<?php\nclass ProducerBase205 { public static function zero() { echo self::class, \"/\", static::class, \";\"; return null; } static function identity($saved) { echo self::class, \"/\", static::class, \";\"; return $saved; } public static function first($saved, $ignored) { echo self::class, \"/\", static::class, \";\"; return $saved; } }\nclass ProducerChild205 extends ProducerBase205 {}\nclass Base205 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$owner = new Derived205; $child = $owner->MiSsInG(ProducerChild205::zero(), ProducerChild205::first(true, 0)); unset($owner); echo ($child->saved[0] === null && $child->saved[1] === true) ? \"OK;\" : \"BAD;\"; unset($child);\n$owner = new Derived205; $child = $owner->MiSsInG(ProducerChild205::identity(false), ProducerChild205::identity(7)); unset($owner); echo ($child->saved[0] === false && $child->saved[1] === 7) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "ec058a6893c18f6ae7189190eeb165c005bb15da75a1a43e1e5be519eda1c05c",
+      "stdout_template_base64": "UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7T1dORVI7T0s7Q0hJTEQ7UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-user-family-static",
+      "source": "<?php\nclass ProducerBase205 { public static function zero() { echo self::class, \"/\", static::class, \";\"; return null; } static function identity($saved) { echo self::class, \"/\", static::class, \";\"; return $saved; } public static function first($saved, $ignored) { echo self::class, \"/\", static::class, \";\"; return $saved; } }\nclass ProducerChild205 extends ProducerBase205 {}\nclass Base205 { public static function __callStatic(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } }\nclass Derived205 extends Base205 {}\n$prefix = \"REQUEST\"; $request = $prefix . \"-NEW\"; $child = Derived205::MiSsInG(ProducerChild205::identity($request), ProducerChild205::first(-0.0, 0)); echo ($child->saved[0] === \"REQUEST-NEW\" && (string)$child->saved[1] === \"-0\") ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "37cc63d76e7fd700f2e225298152d6b36220f2276130a1e3288bf8e6aa72ab48",
+      "stdout_template_base64": "UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-user-family-named",
+      "source": "<?php\nclass ProducerBase205 { public static function zero() { echo self::class, \"/\", static::class, \";\"; return null; } static function identity($saved) { echo self::class, \"/\", static::class, \";\"; return $saved; } public static function first($saved, $ignored) { echo self::class, \"/\", static::class, \";\"; return $saved; } }\nclass ProducerChild205 extends ProducerBase205 {}\nclass Base205 { public function __call(string $name, array $arguments) { return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$owner = new Derived205; $child = $owner->MiSsInG(first:ProducerChild205::identity(\"BYTE\\x80\"), later:ProducerChild205::first(1.5, 0)); unset($owner); echo ($child->saved[\"first\"] === \"BYTE\\x80\" && $child->saved[\"later\"] === 1.5) ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "11c6089dcbe44bd5981d200e2958b207d5b01e6733cf58bf9269912ce9f4983b",
+      "stdout_template_base64": "UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-static-user-pending-leaf",
+      "source": "<?php\nfunction shift205() { global $argument, $owner; $argument = new New205; $owner = null; echo \"SHIFT;\"; return null; }\nclass Old205 { public function __destruct() { echo \"OLD;\"; } }\nclass New205 { public function __destruct() { echo \"NEW;\"; } }\nclass ProducerBase205 { public static function make($saved, $ignored) { echo \"PRODUCER;\", self::class, \"/\", static::class, \";\"; return $saved; } }\nclass ProducerChild205 extends ProducerBase205 {}\nclass Base205 { public function __call(string $name, array $arguments) { global $argument; $argument = null; echo \"HANDLER;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived205 extends Base205 {}\n$argument = new Old205; $owner = new Derived205; $child = $owner->MiSsInG(ProducerChild205::make($argument, shift205()), null); echo \"RETURN;\"; echo $child->saved[0] instanceof Old205 ? \"HELD;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "source_sha256": "d284475b7918e795954a4f02a4347b9ae6b49cd7823aea778763ee1eb45f6420",
+      "stdout_template_base64": "U0hJRlQ7UFJPRFVDRVI7UHJvZHVjZXJCYXNlMjA1L1Byb2R1Y2VyQ2hpbGQyMDU7TkVXO0hBTkRMRVI7T1dORVI7UkVUVVJOO0hFTEQ7Q0hJTEQ7T0xEO0FGVEVSOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
