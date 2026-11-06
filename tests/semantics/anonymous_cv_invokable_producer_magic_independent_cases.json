@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-ref-cv-invokable-installed-unset-return-this-request",
+      "source": "<?php\nfunction peerInstall213() { global $receiver, $late; $receiver = new PeerProducerChild213($late); echo 'INSTALL;'; return false; }\nfunction peerShift213() { global $receiverAlias, $late, $owner; $receiverAlias = null; unset($GLOBALS['receiver']); $late = 99; $owner = null; echo 'SHIFT;'; return false; }\nclass PeerProducerBase213 { public string $text; public function __construct($text) { $this->text = $text; echo 'CTOR;'; return false; } public function __invoke($saved, $marker) { $this->text = $saved; echo 'PRODUCER:', self::class, ':', static::class, ';'; return $this; } public function __destruct() { echo 'PRODUCER-END;'; } }\nclass PeerProducerChild213 extends PeerProducerBase213 {}\nclass PeerBase213 { private static function secret() { return 'PRIVATE'; } public function __call(string $name, array $arguments) { global $alias, $receiverAlias; $alias = 0; $receiverAlias = 0; echo 'MAGIC;'; return static function () use ($arguments, $name) { echo 'CLOSURE:', self::secret(), ':', self::class, ':', static::class, ';'; return new class($arguments, $name) { public function __construct(public array $saved, public string $name) {} public function __destruct() { echo 'CHILD;'; } }; }; } public function __destruct() { echo 'OWNER;'; } }\nclass PeerDerived213 extends PeerBase213 {}\n$owner = new PeerDerived213; $prefix = 'REQUEST-'; $late = $prefix . 'OLD'; $alias =& $late; $receiver = null; $receiverAlias =& $receiver;\n$factory = $owner->MiSsInG(first: peerInstall213(), later:\n    ($receiver\n    )($late, peerShift213()));\necho 'RETURN;'; unset($alias); unset($late); unset($receiverAlias); echo 'DETACHED;'; $child = $factory(); unset($factory); echo $child->saved['later']->text, ':', $child->name, ';'; unset($child); echo 'AFTER;';\n",
+      "source_sha256": "d558cd5e77acd3cd602eb996a097637780655104ebf9da74213bebd4bf8c25a4",
+      "stdout_template_base64": "Q1RPUjtJTlNUQUxMO1NISUZUO1BST0RVQ0VSOlBlZXJQcm9kdWNlckJhc2UyMTM6UGVlclByb2R1Y2VyQ2hpbGQyMTM7TUFHSUM7T1dORVI7UkVUVVJOO0RFVEFDSEVEO0NMT1NVUkU6UFJJVkFURTpQZWVyQmFzZTIxMzpQZWVyRGVyaXZlZDIxMztSRVFVRVNULU9MRDpNaVNzSW5HO0NISUxEO1BST0RVQ0VSLUVORDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
