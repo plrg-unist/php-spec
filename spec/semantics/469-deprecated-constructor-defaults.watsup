@@ -13,8 +13,11 @@ def $parameter_constructor_selection(S, PORIGIN n_unit pcpath, porigin_called) =
   -- if $class_named(S.CLASSNAMES, $ptlc(preqbytes)) = (porigin_called)
 def $parameter_constructor_selection(S, porigin, porigin_called) = false -- otherwise
 dec $parameter_constructor_invocation(pstate, pfunction, pdeclcalls, nat) : bool
-def $parameter_constructor_invocation(S, pfunction, (porigin_function, (porigin_site), (porigin_owner), (porigin_called)) :: pdeclcalls, n_prefix) = true
+def $parameter_constructor_invocation(S, pfunction, (porigin_function, porigin_site_option?, porigin_owner_option?, porigin_called_option?) :: pdeclcalls, n_prefix) = true
   -- if porigin_function = pfunction.ORIGIN
+  -- if porigin_site_option? = (porigin_site)
+  -- if porigin_owner_option? = (porigin_owner)
+  -- if porigin_called_option? = (porigin_called)
   -- if $parameter_method_source(S, pfunction) = (pmethoddesc)
   -- if pmethoddesc.OWNER = porigin_owner
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__construct")
