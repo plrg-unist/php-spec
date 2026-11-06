@@ -47,6 +47,20 @@ def $parameter_closure_family(S, porigin) = true
   -- if $parameter_closure_calls(S.CLOSURECALLCACHES, porigin)
 def $parameter_closure_family(S, porigin) = false -- otherwise
 
+;; A same-scope binding copies the body without changing its shared cache.
+;; Its source stamp survives source-object retirement and owns no captures.
+dec $parameter_closure_binding(pstate, nat) : bool
+def $parameter_closure_binding(S, n) = true
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $parameter_closure_binding(S, n) = true
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = (pclosurebinding)
+  -- if pclosurebinding.LEXICAL = eps /\ pclosurebinding.CALLED = eps /\ pclosurebinding.RECEIVER = eps
+  -- if $closure_binding_source_valid(S, pclosurebinding)
+  -- if $closure_binding_api_site(S, pclosurebinding.SITE)
+  -- if $closure_cache_object_function(S, n) = (porigin)
+  -- if $parameter_closure_shared_object(S, porigin, pclosurebinding.SOURCE)
+def $parameter_closure_binding(S, n) = false -- otherwise
+
 ;; A captured read keeps its selected callee when a callback changes the family.
 ;; Cache reception and binding additionally require the whole family below.
 dec $parameter_closure_selected(pstate, pfunction) : bool
@@ -58,7 +72,7 @@ def $parameter_closure_selected(S, pfunction) = true
   -- if pcallcontext.INSTANCE = (n) /\ pcallcontext.RECEIVER = eps /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps /\ pcallcontext.CACHE = eps
   -- if $(n < |S.OBJECTS|) /\ HOBJECT n <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = REALCLOSURE pfunction.ORIGIN pitem* pstaticcell*
-  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps /\ $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $parameter_closure_binding(S, n) /\ $closure_scope_at(S.CLOSURESCOPES, n) = eps
   -- if $receiving_function(S, pfunction.ORIGIN) = (pfunction)
   -- if $parameter_closure_shared_object(S, pfunction.ORIGIN, n)
 def $parameter_closure_selected(S, pfunction) = false -- otherwise
