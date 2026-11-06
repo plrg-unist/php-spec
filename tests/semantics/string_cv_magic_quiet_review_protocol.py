@@ -115,7 +115,7 @@ review.CASES = {
             'S.STORE[n_probe] = DEFINED (PBOOL true)',
             '$lookup(S_global.ENV, $ptascii("zero")) = (n_zero)',
             'S.STORE[n_zero] = DEFINED (PBOOL false)',
-            'S_saved = $constant_frame_view(S, pframe_main, eps)',
+            'S_saved = $constant_frame_scope(S, pframe_main, eps)',
             '$property_coalesce_valid(S_saved, ppropertycoalesce)',
             '$property_coalesce_tail(S_saved, ppropertycoalesce, true, S_saved.TODO)',
             '~$property_coalesce_capture(S_saved, ppropertycoalesce)',
