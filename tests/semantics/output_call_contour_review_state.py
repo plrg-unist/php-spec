@@ -400,6 +400,7 @@ def main():
             record['passed'] = True
             (directory / 'report.json').write_text(json.dumps(record, indent=2) + '\n')
             print(short, True, flush=True)
+        assert report['records'], 'no fixture selected'
         report['passed'] = True
     except BaseException as error:
         if isinstance(error, support.subprocess.TimeoutExpired):
