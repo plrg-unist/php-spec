@@ -1,0 +1,103 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "magic-cv-instance-property-backed-ref-refused",
+      "source": "<?php\nclass Receiver208 { public function identity($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base208 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\nfunction first208() { echo \"FIRST;\"; return 0; }\nclass Holder208 { public Receiver208 $slot; } $holder = new Holder208; $holder->slot = new Receiver208; $producer =& $holder->slot; $owner = new Derived208; $child = $owner->missing(first208(), $producer->identity(7)); unset($producer,$holder,$owner); echo $child->saved[1] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "RklSU1Q7",
+      "source_sha256": "8c08e16df9b759f41112e0223eaa543da3df8bd8b29fceca24652468d954e635",
+      "stdout_template_base64": "RklSU1Q7TUVUSE9EO0JPRFk7UkVDRUlWRVI7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-typed-parameter-ref-refused",
+      "source": "<?php\nclass Receiver208 { public function identity($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base208 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\nfunction first208() { echo \"FIRST;\"; return 0; }\nfunction run208(Receiver208 &$producer,$owner) { return $owner->missing(first208(), $producer->identity(7)); } $producer = new Receiver208; $owner = new Derived208; $child = run208($producer,$owner); unset($producer,$owner); echo $child->saved[1] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "RklSU1Q7",
+      "source_sha256": "db2bc0a591dcf903444ee076210452df8f7d055050a3f78bcfcfd72ffc343c1f",
+      "stdout_template_base64": "RklSU1Q7TUVUSE9EO0JPRFk7UkVDRUlWRVI7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-nonleaf-refused",
+      "source": "<?php\nclass Receiver208 { public $owned; public function __construct() { $this->owned = new Leaf208; } public function identity($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Leaf208 { public function __destruct() { echo \"LEAF;\"; } }\nclass Base208 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\nfunction first208() { echo \"FIRST;\"; return 0; }\n$producer = new Receiver208; $owner = new Derived208; $child = $owner->missing(first208(), $producer->identity(7)); unset($producer,$owner); echo $child->saved[1] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "RklSU1Q7",
+      "source_sha256": "e637bef806f1f06080705ea8e9243cd524c9313a9f651635de5d91acd3a9cd08",
+      "stdout_template_base64": "RklSU1Q7TUVUSE9EO0JPRFk7UkVDRUlWRVI7TEVBRjtPV05FUjtPSztDSElMRDtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-default-method-refused",
+      "source": "<?php\nclass Receiver208 { public function identity($saved=0) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base208 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\nfunction first208() { echo \"FIRST;\"; return 0; }\n$producer = new Receiver208; $owner = new Derived208; $child = $owner->missing(first208(), $producer->identity(7)); unset($producer,$owner); echo $child->saved[1] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "RklSU1Q7",
+      "source_sha256": "8a91b5d81913e8b60874b64235b033ed9d9333d2f5ccd9fe938591742d26e010",
+      "stdout_template_base64": "RklSU1Q7TUVUSE9EO0JPRFk7UkVDRUlWRVI7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-inner-named-refused",
+      "source": "<?php\nclass Receiver208 { public function identity($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base208 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\nfunction first208() { echo \"FIRST;\"; return 0; }\n$producer = new Receiver208; $owner = new Derived208; $child = $owner->missing(first208(), $producer->identity(saved:7)); unset($producer,$owner); echo $child->saved[1] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method source or argument mode",
+      "model_stdout_base64": "",
+      "source_sha256": "391082e069d331438db5dcac26bd9f5a3cbf85a642ac3e00bb502646227d7323",
+      "stdout_template_base64": "RklSU1Q7TUVUSE9EO0JPRFk7UkVDRUlWRVI7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-array-return-refused",
+      "source": "<?php\nclass Receiver208 { public function identity($saved) { echo \"METHOD;\"; return [$saved]; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base208 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\nfunction first208() { echo \"FIRST;\"; return 0; }\n$producer = new Receiver208; $owner = new Derived208; $child = $owner->missing(first208(), $producer->identity(7)); unset($producer,$owner); echo $child->saved[1][0] === 7 ? \"OK;\" : \"BAD;\"; unset($child); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method send continuation",
+      "model_stdout_base64": "RklSU1Q7TUVUSE9EOw==",
+      "source_sha256": "b05cf1ba7d662cdab9b9e521dfe5fcd0e923c5565c587c74480364b5dc93dd07",
+      "stdout_template_base64": "RklSU1Q7TUVUSE9EO0JPRFk7UkVDRUlWRVI7T1dORVI7T0s7Q0hJTEQ7QUZURVI7",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "magic-cv-instance-missing-receiver-warning-refused",
+      "source": "<?php\nclass Receiver208 { public function identity($saved) { echo \"METHOD;\"; return $saved; } public function __destruct() { echo \"RECEIVER;\"; } }\nclass Base208 { public function __call(string $name,array $arguments) { echo \"BODY;\"; return new class($arguments) { public function __construct(public array $saved) {} public function __destruct() { echo \"CHILD;\"; } }; } public function __destruct() { echo \"OWNER;\"; } }\nclass Derived208 extends Base208 {}\nfunction first208() { echo \"FIRST;\"; return 0; }\nset_error_handler(static function($severity,$message,$file,$line) { echo \"WARNING;\"; $GLOBALS[\"producer\"] = new Receiver208; return true; }); $owner = new Derived208; try { $child = $owner->missing(first208(), $producer->identity(7)); echo \"RETURN;\"; unset($child); } catch (Error $error) { echo \"ERROR;\"; } unset($owner,$producer); echo \"AFTER;\";\n",
+      "model_status": "unsupported",
+      "model_reason": "magic method producer receiver read",
+      "model_stdout_base64": "RklSU1Q7",
+      "source_sha256": "28daaa4c9e24853f4d7bc0ca15cd12098f75dff240fa0e5597437a5a6d665efa",
+      "stdout_template_base64": "RklSU1Q7V0FSTklORztFUlJPUjtPV05FUjtSRUNFSVZFUjtBRlRFUjs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
