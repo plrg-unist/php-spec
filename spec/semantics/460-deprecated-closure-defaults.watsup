@@ -161,7 +161,9 @@ def $parameter_default_const_fetch(pcnode) = false -- otherwise
 def $parameter_default_owned_children(S, n, eps) = false
 def $parameter_default_owned_children(S, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($parameter_default_owned_source(S, PORIGIN n pcpath) \/ $parameter_default_owned_children(S, n, pcoccurrence*))
 
-def $default_receive_recipient(S, pfunction, pdefault) = $default_cache_route(S, pdefault)
+dec $default_nonclosure_recipient(pstate, pfunction, pdefault) : bool
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $default_cache_route(S, pdefault) -- otherwise
+def $default_receive_recipient(S, pfunction, pdefault) = $default_nonclosure_recipient(S, pfunction, pdefault)
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) = eps
 def $default_receive_recipient(S, pfunction, pdefault) = $default_cache_route(S, pdefault)
   -- if $function_at(S.CLOSURETEMPLATES, pfunction.ORIGIN) =/= eps

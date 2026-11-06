@@ -161,6 +161,13 @@ def $deprecated_parameter_read_recipient(S, pfunction) = $parameter_call_current
 def $deprecated_parameter_recipient(S, pfunction) = $parameter_call_current(S, pfunction)
   -- if $default_cache_owner(S) = (CACHE_CALL n)
 
+;; Cache hits also need the REAL-only read boundary when an owning donor exists.
+;; Classifying only the cached value would admit a scalar warmed before a shadow.
+def $default_nonclosure_recipient(S, pfunction, pdefault) = $parameter_call_current(S, pfunction)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $closure_call_target(pcallcontext.TARGET)
+  -- if $parameter_default_owned_source(S, pdefault.ORIGIN)
+
 dec $parameter_receive_call_entry(pstate, preceivebirth) : bool
 def $parameter_receive_call_entry(S, preceivebirth) = true
   -- if $function_at(S.CLOSURETEMPLATES, preceivebirth.FUNCTION) = (pfunction)
