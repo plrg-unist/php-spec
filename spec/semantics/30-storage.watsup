@@ -81,6 +81,7 @@ syntax pclassarrayimage = { ITEMS (pkey, pclassimage)*, NEXT int, POSITIONS ppos
 syntax pclassimage = { VALUE pvalue, CLASS pvalueclass, ARRAY pclassarrayimage? }
 syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCREPLACE pdefaultcache porigin nat pconstantfact* | CCREPLACE_IMAGE pdefaultcache pclassimage porigin nat pconstantfact* | CCCACHE_READ porigin porigin nat pconstantfact* | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat | CCCACHE_ENUM porigin porigin nat nat
   | CCINSTANCE_LOOKUP pinstanceglobalcertificate
+  | CCINSTANCE_WRITE porigin porigin nat
   | CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin int nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat

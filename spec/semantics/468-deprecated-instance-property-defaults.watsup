@@ -135,23 +135,28 @@ def $instance_object_payload_valid(S, pinstanceobjectcertificate, pvalue) = (pva
   -- if $instance_global_certificate(pinstanceobjectcertificate) = (pinstanceglobalcertificate)
 dec $instance_global_write_matches(pinstanceglobalcertificate, porigin, porigin) : bool
 def $instance_global_write_matches(pinstanceglobalcertificate, porigin_class, porigin_decl) = (pinstanceglobalcertificate.TARGET = porigin_class /\ pinstanceglobalcertificate.DECL = porigin_decl)
-dec $instance_global_last_write(pclassconstantevent*, porigin, porigin) : pinstanceglobalcertificate?
-def $instance_global_last_write(eps, porigin_class, porigin_decl) = eps
-def $instance_global_last_write(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = (pinstanceglobalcertificate)
-  -- if $instance_global_last_write(pclassconstantevent_tail*, porigin_class, porigin_decl) = (pinstanceglobalcertificate)
-def $instance_global_last_write((CCINSTANCE_LOOKUP pinstanceglobalcertificate) :: pclassconstantevent_tail*, porigin_class, porigin_decl) = (pinstanceglobalcertificate)
-  -- if $instance_global_last_write(pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
-  -- if $instance_global_write_matches(pinstanceglobalcertificate, porigin_class, porigin_decl)
 dec $instance_global_event_matches(pclassconstantevent, porigin, porigin) : bool
 def $instance_global_event_matches(CCINSTANCE_LOOKUP pinstanceglobalcertificate, porigin_class, porigin_decl) = $instance_global_write_matches(pinstanceglobalcertificate, porigin_class, porigin_decl)
+def $instance_global_event_matches(CCINSTANCE_WRITE porigin_write porigin_member n, porigin_class, porigin_decl) = (porigin_write = porigin_class /\ porigin_member = porigin_decl)
 def $instance_global_event_matches(pclassconstantevent, porigin_class, porigin_decl) = false -- otherwise
-def $instance_global_last_write(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
-  -- if $instance_global_last_write(pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
+dec $instance_global_last_event(pclassconstantevent*, porigin, porigin) : pclassconstantevent?
+def $instance_global_last_event(eps, porigin_class, porigin_decl) = eps
+def $instance_global_last_event(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = (pclassconstantevent_last)
+  -- if $instance_global_last_event(pclassconstantevent_tail*, porigin_class, porigin_decl) = (pclassconstantevent_last)
+def $instance_global_last_event(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = (pclassconstantevent)
+  -- if $instance_global_last_event(pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
+  -- if $instance_global_event_matches(pclassconstantevent, porigin_class, porigin_decl)
+def $instance_global_last_event(pclassconstantevent :: pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
+  -- if $instance_global_last_event(pclassconstantevent_tail*, porigin_class, porigin_decl) = eps
   -- if ~$instance_global_event_matches(pclassconstantevent, porigin_class, porigin_decl)
+dec $instance_global_last_write(pclassconstantevent*, porigin, porigin) : pinstanceglobalcertificate?
+def $instance_global_last_write(pclassconstantevent*, porigin_class, porigin_decl) = (pinstanceglobalcertificate)
+  -- if $instance_global_last_event(pclassconstantevent*, porigin_class, porigin_decl) = (CCINSTANCE_LOOKUP pinstanceglobalcertificate)
+def $instance_global_last_write(pclassconstantevent*, porigin_class, porigin_decl) = eps -- otherwise
 dec $instance_global_snapshot_valid(pstate, pinstanceobjectcertificate, porigin, porigin, pclassconstantevent*) : bool
 def $instance_global_snapshot_valid(S, INSTANCE_GLOBAL_BIND pinstanceglobalcertificate, porigin_class, porigin_decl, pclassconstantevent*) = ($instance_global_last_write(pclassconstantevent*, porigin_class, porigin_decl) = (pinstanceglobalcertificate))
 def $instance_global_snapshot_valid(S, INSTANCE_OBJECT_COPY porigin_class n pinstanceobjectcertificate, porigin_class, porigin_decl, pclassconstantevent*) = true
-  -- if $instance_global_last_write(pclassconstantevent*, porigin_class, porigin_decl) = eps
+  -- if $instance_global_last_event(pclassconstantevent*, porigin_class, porigin_decl) = eps
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $instance_default_link_prefix(pclassconstantevent*, porigin_class, eps) = (pclassconstantevent_before*)
   -- if pclassconstantevent*[|pclassconstantevent_before*|] = CCLINK porigin_class n
@@ -170,6 +175,18 @@ def $instance_default_bound(S, porigin_class, pstaticdefaultcontext, ppropertyde
   -- if n_history = |S.CLASSCONSTANTHISTORY ++ pclassconstantevent*|
   -- if pinstanceglobalcertificate = {TARGET porigin_class, DECL pstaticdefaultcontext.DECL, ROOT pstaticdefaultcontext.ROOT, TRIGGER porigin_trigger, SELECTION $class_static_selection_at(S.TODO), VALUE pvalue, CLASS pvalueclass, PREFIX n_prefix, HISTORY n_history, FACTS pconstantcontext.FACTS}
 def $class_constant_event_ordinal(CCINSTANCE_LOOKUP pinstanceglobalcertificate) = pinstanceglobalcertificate.PREFIX
+def $instance_default_write_events(S, porigin_class, pstaticdefaultcontext, ppropertydesc) = [CCINSTANCE_WRITE porigin_class pstaticdefaultcontext.DECL n_prefix]
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if n_prefix = |S.DECLARATIONS|
+def $class_constant_event_ordinal(CCINSTANCE_WRITE porigin_class porigin_decl n) = n
+def $class_constant_compile_events(S, (CCINSTANCE_WRITE porigin_class porigin_decl n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_history_fills(S, (CCINSTANCE_WRITE porigin_class porigin_decl n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $instance_default_desc($property_layout(S, porigin_class, |S.CLASSES|), porigin_decl) = (ppropertydesc)
+  -- if $owned_instance_source(S, ppropertydesc)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n], porigin_class)
+  -- if pclassconstantevent_before* = S.CLASSCONSTANTHISTORY[0:$nabs($(|S.CLASSCONSTANTHISTORY| - |pclassconstantevent*| - 1))]
+  -- if $instance_default_filled_at(S, porigin_class, porigin_decl, pclassconstantevent_before*, |S.CLASSES|)
 def $class_constant_compile_events(S, (CCINSTANCE_LOOKUP pinstanceglobalcertificate) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
 def $class_constant_history_fills(S, (CCINSTANCE_LOOKUP pinstanceglobalcertificate) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, pinstanceglobalcertificate.PREFIX)
   -- if $(n_previous <= pinstanceglobalcertificate.PREFIX /\ pinstanceglobalcertificate.PREFIX <= |S.DECLARATIONS|)
